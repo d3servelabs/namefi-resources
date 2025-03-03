@@ -1,0 +1,9 @@
+{
+	"extends": "@namefi-astra/typescript",
+	"compilerOptions": {
+		"baseUrl": ".",
+		"paths": {
+			"@/*": ["./src/*"]
+		}
+	}
+}

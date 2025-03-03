@@ -1,0 +1,11 @@
+{
+  "name": "@namefi-astra/biome",
+  "type": "module",
+  "private": true,
+  "dependencies": {
+    "@biomejs/biome": "1.9.4"
+  },
+  "exports": {
+    ".": "./biome.json"
+  }
+}
