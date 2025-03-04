@@ -26,4 +26,11 @@ export const messageRouter = router({
 		return msg;
 	}),
 	listMessages: publicProcedure.query(() => mockDB.messages),
+	getMessage: publicProcedure.input(z.number()).query(({ input }) => {
+		const msg = mockDB.messages.find((m) => m.id === input);
+		if (!msg) {
+			throw new TRPCError({ code: "NOT_FOUND", message: "Message not found" });
+		}
+		return msg;
+	}),
 });

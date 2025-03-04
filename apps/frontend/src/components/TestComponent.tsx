@@ -7,10 +7,17 @@ import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 
 export default function TestComponent(props: object) {
-	const [count, setCount] = useState(0);
+	const [count, setCount] = useState<number>(2);
+	const [messageId, setMessageId] = useState<number>();
 	const trpc = useTRPC();
 	const listMessages = useQuery(trpc.message.listMessages.queryOptions());
 	const addMessage = useMutation(trpc.message.addMessage.mutationOptions());
+
+	const getMessage = useQuery(
+		trpc.message.getMessage.queryOptions(messageId ?? -1, {
+			enabled: !!messageId,
+		}),
+	);
 
 	return (
 		<div>
@@ -26,11 +33,27 @@ export default function TestComponent(props: object) {
 			>
 				{addMessage.isPending ? "Adding Message ..." : "Add Message"}
 			</button>
-			<ul>
+			<ul className="list-disc py-1 px-1 rounded-lg ring-1 ring-gray-300 *:list-inside mb-3 mt-1">
 				{listMessages.data?.map((message) => (
-					<li key={message.id}>{message.text}</li>
+					<li className="list-disc" key={message.id}>
+						{message.text}
+					</li>
 				))}
 			</ul>
+			<input
+				type="number"
+				className="border border-gray-300 rounded-md p-2 bg-blue-50 text-black"
+				value={messageId}
+				onChange={(e) => setMessageId(Number.parseInt(e.target.value))}
+			/>
+			<button
+				type="button"
+				className="flex items-center gap-2 hover:underline hover:underline-offset-4 hover:bg-blue-700 bg-blue-500 hover:text-white px-4 py-2 rounded-md"
+				onClick={() => getMessage.refetch()}
+			>
+				{getMessage.isFetching ? "Getting Message ..." : "Get Message"}
+			</button>
+			<p>{getMessage.data?.text}</p>
 		</div>
 	);
 }
