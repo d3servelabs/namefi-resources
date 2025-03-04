@@ -20,7 +20,12 @@
 		"react": "^19.0.0",
 		"react-dom": "^19.0.0",
 		"tailwind-merge": "^3.0.2",
-		"tailwindcss-animate": "^1.0.7"
+		"tailwindcss-animate": "^1.0.7",
+		"@namefi-astra/backend": "workspace:*",
+		"@tanstack/react-query": "^5.67.1",
+		"@trpc/client": "^11.0.0-rc.824",
+		"@trpc/tanstack-react-query": "^11.0.0-rc.824",
+		"superjson": "^2.2.2"
 	},
 	"devDependencies": {
 		"@namefi-astra/biome": "workspace:*",
