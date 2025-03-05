@@ -3,7 +3,6 @@
   "private": true,
   "workspaces": [
     "apps/*",
-    "packages/*",
     "tooling/*"
   ],
   "engines": {
@@ -15,6 +14,13 @@
     "turbo": "^2.4.4"
   },
   "scripts": {
-    "format": "turbo format"
-  }
+    "check:fix": "turbo check:fix",
+    "check": "turbo check",
+    "typecheck": "turbo typecheck",
+    "sherif": "bunx sherif@latest -f",
+    "validate": "turbo check typecheck && bunx sherif@latest -f"
+  },
+  "trustedDependencies": [
+    "@biomejs/biome"
+  ]
 }

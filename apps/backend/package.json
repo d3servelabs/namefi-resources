@@ -3,7 +3,8 @@
 	"type": "module",
 	"scripts": {
 		"dev": "tsx watch src/index.ts",
-		"format": "biome check --write",
+		"check": "biome check",
+		"check:fix": "biome check --write",
 		"with-env": "infisical run --token=$INFISICAL_SERVICE_TOKEN -- bun run",
 		"db:generate": "drizzle-kit generate",
 		"db:migrate": "drizzle-kit migrate",
