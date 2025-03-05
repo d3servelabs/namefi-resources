@@ -6,9 +6,9 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { Search } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { Button } from './shadcn/button';
-import { Card, CardContent } from './shadcn/card';
-import { Input } from './shadcn/input';
+import { Button } from './ui/shadcn/button';
+import { Card, CardContent } from './ui/shadcn/card';
+import { Input } from './ui/shadcn/input';
 
 // Dummy domain data
 const DUMMY_DOMAINS = [

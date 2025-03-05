@@ -1,7 +1,7 @@
 'use client';
 
-import { StripeProvider } from '@/components/providers/StripeProvider';
-import { PaymentForm } from '@/components/ui/PaymentForm';
+import { PaymentForm } from '@/components/paymentForm';
+import { StripeProvider } from '@/components/providers/stripeProvider';
 import { Button } from '@/components/ui/shadcn/button';
 import {
   Card,

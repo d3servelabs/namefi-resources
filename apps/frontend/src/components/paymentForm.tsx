@@ -8,7 +8,7 @@ import {
 import { Loader2 } from 'lucide-react';
 import type React from 'react';
 import { useState } from 'react';
-import { Button } from './shadcn/button';
+import { Button } from './ui/shadcn/button';
 
 interface PaymentFormProps {
   amount: number;

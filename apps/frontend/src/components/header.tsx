@@ -4,7 +4,7 @@ import { useTRPC } from '@/utils/trpc';
 import { useLogin, useLogout, usePrivy } from '@privy-io/react-auth';
 import { useQuery } from '@tanstack/react-query';
 import { useMemo, useState } from 'react';
-import { Button } from './shadcn/button';
+import { Button } from './ui/shadcn/button';
 import {
   Dialog,
   DialogContent,
@@ -13,7 +13,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from './shadcn/dialog';
+} from './ui/shadcn/dialog';
 
 function ButtonSkeleton() {
   return <div className="h-9 w-[74px] rounded-md bg-muted animate-pulse" />;

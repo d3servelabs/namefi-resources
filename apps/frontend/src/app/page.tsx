@@ -1,7 +1,7 @@
 'use client';
-
-import { DomainSearch } from '@/components/ui/DomainSearch';
-import { Header } from '@/components/ui/header';
+import { DomainSearch } from '@/components/domainSearch';
+import { Header } from '@/components/header';
+import { ThemedButtons } from '@/components/themedButtons';
 import Image from 'next/image';
 // import Link from 'next/link';
 
@@ -11,6 +11,7 @@ export default function HomePage() {
       <Header />
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
         <DomainSearch />
+        <ThemedButtons />
         {/* <div className="flex gap-4 mb-8">
           <Link
             href="/dns-poc"

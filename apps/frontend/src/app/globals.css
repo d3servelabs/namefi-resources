@@ -126,4 +126,16 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  [data-theme="defi.build"] {
+    --background: #ffffff;
+  }
+
+  [data-theme="avalanche.network"] {
+    --background: #e84142;
+  }
+
+  [data-theme="0x.city"] {
+    --background: #627eea;
+  }
 }
