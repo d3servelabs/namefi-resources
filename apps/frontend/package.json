@@ -9,7 +9,6 @@
 		"build": "next build",
 		"start": "next start",
 		"lint": "next lint",
-		"format": "biome check --write",
 		"typecheck": "tsc --noEmit"
 	},
 	"dependencies": {
