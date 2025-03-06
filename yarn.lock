@@ -587,8 +587,9 @@
   version "workspace:apps/backend"
   resolved "workspace:apps/backend"
   devDependencies:
-    "@namefi-astra/biome" "workspace:*"
-    "@namefi-astra/typescript" "workspace:*"
+    "@namefi-astra/biome" "tooling/biome"
+    "@namefi-astra/typescript" "tooling/typescript"
+    "@types/cors" ""
     "@types/node" "^20.11.17"
     "@types/ws" "^8.5.14"
     drizzle-kit "^0.30.5"
@@ -598,15 +599,18 @@
     "@hono/swagger-ui" "^0.5.1"
     "@hono/zod-openapi" "^0.19.2"
     "@neondatabase/serverless" "^0.10.4"
+    "@trpc/server" "^11.0.0-rc.824"
+    cors "^2.8.5"
     dotenv "^16.4.7"
     drizzle-orm "^0.40.0"
     drizzle-zod "^0.7.0"
     hono "^4.7.2"
+    superjson "^2.2.2"
     ws "^8.18.1"
     znv "^0.4.0"
     zod "^3.24.2"
 
-"@namefi-astra/biome@tooling/biome", "@namefi-astra/biome@workspace:*":
+"@namefi-astra/biome@tooling/biome":
   version "workspace:tooling/biome"
   resolved "workspace:tooling/biome"
   dependencies:
@@ -634,7 +638,7 @@
     tailwind-merge "^3.0.2"
     tailwindcss-animate "^1.0.7"
 
-"@namefi-astra/typescript@tooling/typescript", "@namefi-astra/typescript@workspace:*":
+"@namefi-astra/typescript@tooling/typescript":
   version "workspace:tooling/typescript"
   resolved "workspace:tooling/typescript"
   dependencies:
@@ -916,6 +920,21 @@ colorette@^2.0.19:
   resolved "https://registry.npmjs.org/colorette/-/colorette-2.0.20.tgz"
   integrity sha512-IfEDxwoWIjkeXL1eXcDiow4UbKjhLdq6/EuSVR9GMN7KVH3r9gQ83e73hsz1Nd1T3ijd5xv1wcWRYO+D6kCI2w==
 
+copy-anything@^3.0.2:
+  version "3.0.5"
+  resolved "https://registry.npmjs.org/copy-anything/-/copy-anything-3.0.5.tgz"
+  integrity sha512-yCEafptTtb4bk7GLEQoM8KVJpxAfdBJYaXyzQEgQQQgYrZiDp8SJmGKlYza6CYjEDNstAdNdKA3UuoULlEbS6w==
+  dependencies:
+    is-what "^4.1.8"
+
+cors@^2.8.5:
+  version "2.8.5"
+  resolved "https://registry.npmjs.org/cors/-/cors-2.8.5.tgz"
+  integrity sha512-KIHbLJqu73RGr/hnbrO9uBeixNGuvSQjul/jdFvS/KFSIH1hWVd1ng7zOHx+YrEfInLG7q4n6GHQ9cDtxv/P6g==
+  dependencies:
+    vary "^1"
+    object-assign "^4"
+
 csstype@^3.0.2:
   version "3.1.3"
   resolved "https://registry.npmjs.org/csstype/-/csstype-3.1.3.tgz"
@@ -1110,6 +1129,11 @@ is-arrayish@^0.3.1:
   version "0.3.2"
   resolved "https://registry.npmjs.org/is-arrayish/-/is-arrayish-0.3.2.tgz"
   integrity sha512-eVRqCvVlZbuw3GrM63ovNSNAeA1K16kaR/LRY/92w0zxQ5/1YzwblUX652i4Xs9RwAGjW9d9y6X88t8OaAJfWQ==
+
+is-what@^4.1.8:
+  version "4.1.16"
+  resolved "https://registry.npmjs.org/is-what/-/is-what-4.1.16.tgz"
+  integrity sha512-ZhMwEosbFJkA0YhFnNDgTM4ZxDRsS6HqTo7qsZM08fehyRYIYa0yHu5R6mgo1n/8MgaPBXiPimPD77baVFYg+A==
 
 isexe@^3.1.1:
   version "3.1.1"
@@ -1388,7 +1412,7 @@ postgres-range@^1.1.1:
   resolved "https://registry.npmjs.org/react/-/react-19.0.0.tgz"
   integrity sha512-V8AVnmPIICiWpGfm6GLzCR/W5FXLchHop40W4nXBmdlEceh16rCN8O8LNWm5bh5XUX91fh7KpA+W0TgMKmgTpQ==
 
-"react-dom@^18.2.0 || 19.0.0-rc-de68d2f4-20241204 || ^19.0.0", react-dom@^19.0.0:
+react-dom@>=18.2.0, "react-dom@^18.2.0 || 19.0.0-rc-de68d2f4-20241204 || ^19.0.0", react-dom@^19.0.0:
   version "19.0.0"
   resolved "https://registry.npmjs.org/react-dom/-/react-dom-19.0.0.tgz"
   integrity sha512-4GV5sHFG0e/0AD4X+ySy6UJd3jVl1iNsNHdpad0qhABJ11twS3TTBnseqsKurKcsNqCEFeGL3uLpVChpIO3QfQ==
@@ -1567,6 +1591,11 @@ undici-types@~6.19.2:
   version "6.19.8"
   resolved "https://registry.npmjs.org/undici-types/-/undici-types-6.19.8.tgz"
   integrity sha512-ve2KP6f/JnbPBFyobGHuerC9g1FYGn/F8n1LWTwNxCEzd6IfqTwUQcNXgEtmmQ6DlRrC1hrSrBnCZPokRrDHjw==
+
+vary@^1:
+  version "1.1.2"
+  resolved "https://registry.npmjs.org/vary/-/vary-1.1.2.tgz"
+  integrity sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==
 
 which@^4.0.0:
   version "4.0.0"
