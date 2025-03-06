@@ -1,5 +1,5 @@
 {
-	"id": "a4b2946f-1a73-4c63-b5fd-3fd4fb711287",
+	"id": "04a3c1cf-415d-40f9-a134-c261bb773898",
 	"prevId": "00000000-0000-0000-0000-000000000000",
 	"version": "7",
 	"dialect": "postgresql",
@@ -43,7 +43,8 @@
 					"name": "updated_at",
 					"type": "timestamp",
 					"primaryKey": false,
-					"notNull": true
+					"notNull": true,
+					"default": "now()"
 				}
 			},
 			"indexes": {},
@@ -74,33 +75,35 @@
 					"primaryKey": true,
 					"notNull": true
 				},
-				"name": {
-					"name": "name",
+				"primary_email": {
+					"name": "primary_email",
 					"type": "text",
 					"primaryKey": false,
-					"notNull": true
+					"notNull": false
 				},
-				"age": {
-					"name": "age",
-					"type": "integer",
+				"created_at": {
+					"name": "created_at",
+					"type": "timestamp",
 					"primaryKey": false,
-					"notNull": true
+					"notNull": true,
+					"default": "now()"
 				},
-				"email": {
-					"name": "email",
-					"type": "text",
+				"updated_at": {
+					"name": "updated_at",
+					"type": "timestamp",
 					"primaryKey": false,
-					"notNull": true
+					"notNull": true,
+					"default": "now()"
 				}
 			},
 			"indexes": {},
 			"foreignKeys": {},
 			"compositePrimaryKeys": {},
 			"uniqueConstraints": {
-				"users_table_email_unique": {
-					"name": "users_table_email_unique",
+				"users_table_primary_email_unique": {
+					"name": "users_table_primary_email_unique",
 					"nullsNotDistinct": false,
-					"columns": ["email"]
+					"columns": ["primary_email"]
 				}
 			},
 			"policies": {},

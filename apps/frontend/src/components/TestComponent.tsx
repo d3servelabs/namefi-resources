@@ -18,6 +18,10 @@ export default function TestComponent(props: object) {
 			enabled: !!messageId,
 		}),
 	);
+	const primaryEmail = useQuery(
+		trpc.users.getUserEmail.queryOptions({ id: 1 }),
+	);
+	const createUser = useMutation(trpc.users.createUser.mutationOptions());
 
 	return (
 		<div>
@@ -54,6 +58,19 @@ export default function TestComponent(props: object) {
 				{getMessage.isFetching ? "Getting Message ..." : "Get Message"}
 			</button>
 			<p>{getMessage.data?.text}</p>
+			<button
+				type="button"
+				className="flex items-center gap-2 hover:underline hover:underline-offset-4 hover:bg-blue-700 bg-blue-500 hover:text-white px-4 py-2 rounded-md"
+				onClick={() =>
+					createUser.mutateAsync({ primaryEmail: "test@test.com" })
+				}
+			>
+				{createUser.isPending ? "Creating User ..." : "Create User"}
+			</button>
+
+			{primaryEmail.isLoading && <p>Loading...</p>}
+			{primaryEmail.error && <p>Error: {primaryEmail.error.message}</p>}
+			{primaryEmail.isSuccess && <p>{primaryEmail.data.primaryEmail}</p>}
 		</div>
 	);
 }
