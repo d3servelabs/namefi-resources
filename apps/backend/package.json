@@ -4,6 +4,10 @@
 	"exports": {
 		"./trpc": "./src/trpc/index.ts"
 	},
+	"imports": {
+		"#lib/config": "./src/lib/config/index.ts",
+		"#lib/*": "./src/lib/*.ts"
+	},
 	"scripts": {
 		"dev": "tsx watch src/index.ts",
 		"check": "biome check",

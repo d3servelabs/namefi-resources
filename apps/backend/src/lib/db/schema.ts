@@ -5,11 +5,18 @@ import {
 	createUpdateSchema,
 } from "drizzle-zod";
 
+const timestamps = {
+	createdAt: timestamp("created_at").notNull().defaultNow(),
+	updatedAt: timestamp("updated_at")
+		.notNull()
+		.defaultNow()
+		.$onUpdate(() => new Date()),
+};
+
 export const usersTable = pgTable("users_table", {
 	id: serial("id").primaryKey(),
-	name: text("name").notNull(),
-	age: integer("age").notNull(),
-	email: text("email").notNull().unique(),
+	primaryEmail: text("primary_email").unique(),
+	...timestamps,
 });
 
 export const postsTable = pgTable("posts_table", {
@@ -19,15 +26,13 @@ export const postsTable = pgTable("posts_table", {
 	userId: integer("user_id")
 		.notNull()
 		.references(() => usersTable.id, { onDelete: "cascade" }),
-	createdAt: timestamp("created_at").notNull().defaultNow(),
-	updatedAt: timestamp("updated_at")
-		.notNull()
-		.$onUpdate(() => new Date()),
+	...timestamps,
 });
 
 export const userInsertSchema = createInsertSchema(usersTable);
 export const userSelectSchema = createSelectSchema(usersTable);
 export const userUpdateSchema = createUpdateSchema(usersTable);
+
 export const postInsertSchema = createInsertSchema(postsTable);
 export const postSelectSchema = createSelectSchema(postsTable);
 export const postUpdateSchema = createUpdateSchema(postsTable);

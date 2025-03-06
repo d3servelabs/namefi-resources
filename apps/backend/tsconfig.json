@@ -9,10 +9,6 @@
 		"skipLibCheck": true,
 		"types": ["node"],
 		"jsx": "react-jsx",
-		"jsxImportSource": "hono/jsx",
-		"baseUrl": ".",
-		"paths": {
-			"@/*": ["./src/*"]
-		}
+		"jsxImportSource": "hono/jsx"
 	}
 }
