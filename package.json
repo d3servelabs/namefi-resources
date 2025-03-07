@@ -17,8 +17,9 @@
     "check:fix": "turbo check:fix",
     "check": "turbo check",
     "typecheck": "turbo typecheck",
-    "sherif": "bunx sherif@latest -f",
-    "validate": "turbo check typecheck && bunx sherif@latest -f"
+    "sherif": "bunx sherif@latest",
+    "sherif:fix": "bunx sherif@latest -f",
+    "validate": "turbo check typecheck && bun run sherif"
   },
   "trustedDependencies": [
     "@biomejs/biome"
