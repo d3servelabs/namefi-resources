@@ -1,30 +1,30 @@
-import { initTRPC } from "@trpc/server";
-import type * as trpcExpress from "@trpc/server/adapters/express";
-import superjson from "superjson";
+import { initTRPC } from '@trpc/server';
+import type * as trpcExpress from '@trpc/server/adapters/express';
+import superjson from 'superjson';
 
 export const createContext = ({
-	req,
-	res,
+  req,
+  res,
 }: trpcExpress.CreateExpressContextOptions) => {
-	const getUser = () => {
-		if (req.headers.authorization !== "secret") {
-			return null;
-		}
-		return {
-			name: "alex",
-		};
-	};
+  const getUser = () => {
+    if (req.headers.authorization !== 'secret') {
+      return null;
+    }
+    return {
+      name: 'alex',
+    };
+  };
 
-	return {
-		req,
-		res,
-		user: getUser(),
-	};
+  return {
+    req,
+    res,
+    user: getUser(),
+  };
 };
 export type TrpcContext = Awaited<ReturnType<typeof createContext>>;
 
 const t = initTRPC.context<TrpcContext>().create({
-	transformer: superjson,
+  transformer: superjson,
 });
 
 export const router = t.router;
