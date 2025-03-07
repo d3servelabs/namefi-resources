@@ -1,4 +1,4 @@
-import { TRPCError, initTRPC } from "@trpc/server";
+import { initTRPC } from "@trpc/server";
 import type * as trpcExpress from "@trpc/server/adapters/express";
 import superjson from "superjson";
 
