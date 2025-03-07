@@ -2,9 +2,12 @@
 
 import { useMutation } from '@tanstack/react-query';
 
+import { randomUUID } from 'node:crypto';
 import { useTRPC } from '@/utils/trpc';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
+
+const testUserUuid = randomUUID();
 
 export default function TestComponent(props: object) {
   const [count, setCount] = useState<number>(2);
@@ -19,7 +22,7 @@ export default function TestComponent(props: object) {
     }),
   );
   const primaryEmail = useQuery(
-    trpc.users.getUserEmail.queryOptions({ id: 1 }),
+    trpc.users.getUserEmail.queryOptions({ id: testUserUuid }),
   );
   const createUser = useMutation(trpc.users.createUser.mutationOptions());
 
@@ -62,7 +65,10 @@ export default function TestComponent(props: object) {
         type="button"
         className="flex items-center gap-2 hover:underline hover:underline-offset-4 hover:bg-blue-700 bg-blue-500 hover:text-white px-4 py-2 rounded-md"
         onClick={() =>
-          createUser.mutateAsync({ primaryEmail: 'test@test.com' })
+          createUser.mutateAsync({
+            id: testUserUuid,
+            primaryEmail: 'test@test.com',
+          })
         }
       >
         {createUser.isPending ? 'Creating User ...' : 'Create User'}

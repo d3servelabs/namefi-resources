@@ -67,6 +67,13 @@
         "tailwindcss": "^4",
       },
     },
+    "packages/utils": {
+      "name": "@namefi-astra/utils",
+      "dependencies": {
+        "@namefi-astra/biome": "workspace:*",
+        "@namefi-astra/typescript": "workspace:*",
+      },
+    },
     "tooling/biome": {
       "name": "@namefi-astra/biome",
       "dependencies": {
@@ -219,6 +226,8 @@
     "@namefi-astra/frontend": ["@namefi-astra/frontend@workspace:apps/frontend"],
 
     "@namefi-astra/typescript": ["@namefi-astra/typescript@workspace:tooling/typescript"],
+
+    "@namefi-astra/utils": ["@namefi-astra/utils@workspace:packages/utils"],
 
     "@neondatabase/serverless": ["@neondatabase/serverless@0.10.4", "", { "dependencies": { "@types/pg": "8.11.6" } }, "sha512-2nZuh3VUO9voBauuh+IGYRhGU/MskWHt1IuZvHcJw6GLjDgtqj/KViKo7SIrLdGLdot7vFbiRRw+BgEy3wT9HA=="],
 

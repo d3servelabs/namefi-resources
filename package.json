@@ -3,7 +3,8 @@
   "private": true,
   "workspaces": [
     "apps/*",
-    "tooling/*"
+    "tooling/*",
+    "packages/*"
   ],
   "engines": {
     "node": ">=22.13.1"

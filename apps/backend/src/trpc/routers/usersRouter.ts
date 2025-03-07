@@ -7,7 +7,7 @@ import { publicProcedure, router } from '../context';
 
 export const usersRouter = router({
   getUserEmail: publicProcedure
-    .input(z.object({ id: z.number() }))
+    .input(z.object({ id: z.string() }))
     .query(async ({ input }) => {
       const user = await db
         .select({
