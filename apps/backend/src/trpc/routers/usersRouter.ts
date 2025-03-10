@@ -1,31 +1,14 @@
-import { db, userInsertSchema, usersTable } from '@namefi-astra/db';
-import { TRPCError } from '@trpc/server';
-import { eq } from 'drizzle-orm';
+import { userInsertSchema } from '@namefi-astra/db';
 import { z } from 'zod';
+import { createUser, getUserEmail } from '#services/users';
 import { publicProcedure, router } from '../context';
 
 export const usersRouter = router({
   getUserEmail: publicProcedure
     .input(z.object({ id: z.string() }))
-    .query(async ({ input }) => {
-      const user = await db
-        .select({
-          primaryEmail: usersTable.primaryEmail,
-        })
-        .from(usersTable)
-        .where(eq(usersTable.id, input.id));
-
-      if (!user || user.length === 0) {
-        throw new TRPCError({ code: 'NOT_FOUND', message: 'User not found' });
-      }
-
-      return user[0];
-    }),
+    .query(({ input }) => getUserEmail(input.id)),
 
   createUser: publicProcedure
     .input(userInsertSchema)
-    .mutation(async ({ input }) => {
-      const user = await db.insert(usersTable).values(input).returning();
-      return user[0];
-    }),
+    .mutation(({ input }) => createUser(input)),
 });
