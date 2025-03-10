@@ -1,0 +1,20 @@
+{
+  "name": "@namefi-astra/env",
+  "type": "module",
+  "scripts": {
+    "check": "biome check",
+    "check:fix": "biome check --write",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@namefi-astra/biome": "workspace:*",
+    "@namefi-astra/typescript": "workspace:*"
+  },
+  "exports": {
+    ".": "./src/index.ts"
+  }
+}

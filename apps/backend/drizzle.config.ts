@@ -1,4 +1,4 @@
-import { config } from '@/lib/config';
+import { secrets } from '@/lib/env';
 import { defineConfig as defineDrizzleConfig } from 'drizzle-kit';
 
 export default defineDrizzleConfig({
@@ -6,6 +6,6 @@ export default defineDrizzleConfig({
   out: './src/lib/db/migrations',
   dialect: 'postgresql',
   dbCredentials: {
-    url: config.DATABASE_URL,
+    url: secrets.DATABASE_URL,
   },
 });

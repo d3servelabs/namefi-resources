@@ -4,6 +4,7 @@
 		"module": "ESNext",
 		"strict": true,
 		"strictNullChecks": true,
-		"jsx": "preserve"
+		"jsx": "preserve",
+		"skipLibCheck": true
 	}
 }

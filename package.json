@@ -23,6 +23,9 @@
     "validate": "turbo check typecheck && bun run sherif"
   },
   "trustedDependencies": [
-    "@biomejs/biome"
+    "@biomejs/biome",
+    "esbuild",
+    "lefthook",
+    "sharp"
   ]
 }

@@ -4,11 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
+    "with-env": "infisical run --token=$INFISICAL_SERVICE_TOKEN -- bun run",
     "check": "biome check",
     "check:fix": "biome check --write",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
@@ -29,6 +29,7 @@
   },
   "devDependencies": {
     "@namefi-astra/biome": "workspace:*",
+    "@namefi-astra/env": "workspace:*",
     "@namefi-astra/typescript": "workspace:*",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20.11.17",
