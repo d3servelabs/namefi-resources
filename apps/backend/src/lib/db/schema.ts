@@ -261,5 +261,3 @@ export const orderItemsTable = pgTable(
     index('order_items_status_idx').on(table.status),
   ],
 );
-
-export * from './types';

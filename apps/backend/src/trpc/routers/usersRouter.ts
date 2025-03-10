@@ -2,7 +2,8 @@ import { TRPCError } from '@trpc/server';
 import { eq } from 'drizzle-orm';
 import { z } from 'zod';
 import { db } from '#lib/db/client';
-import { userInsertSchema, usersTable } from '#lib/db/schema';
+import { usersTable } from '#lib/db/schema';
+import { userInsertSchema } from '#lib/db/types';
 import { publicProcedure, router } from '../context';
 
 export const usersRouter = router({

@@ -3,7 +3,7 @@ import { loadConfig, loadSecrets } from '@namefi-astra/env';
 import { configSchema, secretsSchema } from './schema';
 
 export const config = loadConfig({
-  configPath: path.join(import.meta.dirname, 'configs'),
+  configPath: path.join(import.meta.dirname || __dirname, 'configs'),
   configSchema,
 });
 

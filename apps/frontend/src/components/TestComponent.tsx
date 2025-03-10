@@ -2,14 +2,13 @@
 
 import { useMutation } from '@tanstack/react-query';
 
-import { randomUUID } from 'node:crypto';
 import { useTRPC } from '@/utils/trpc';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
-const testUserUuid = randomUUID();
+const testUserUuid = crypto.randomUUID();
 
-export default function TestComponent(props: object) {
+export default function TestComponent() {
   const [count, setCount] = useState<number>(2);
   const [messageId, setMessageId] = useState<number>();
   const trpc = useTRPC();
