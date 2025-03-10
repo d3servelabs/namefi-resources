@@ -85,7 +85,10 @@ export const orderStatusEnum = createStatusEnum('order_status', [
 
 export const paymentStatusEnum = createStatusEnum('payment_status', [
   'REFUND_REQUESTED',
-  'REFUND_SUCCEEDED',
+] as const);
+
+export const refundStatusEnum = createStatusEnum('refund_status', [
+  'REQUIRES_ACTION',
 ] as const);
 
 export const paymentProviderEnum = pgEnum('payment_provider', [
@@ -102,6 +105,7 @@ export const paymentProviderEnum = pgEnum('payment_provider', [
 export const usersTable = pgTable('users', {
   ...randomUuid,
   primaryEmail: text('primary_email').unique(),
+  stripeCustomerId: text('stripe_customer_id').unique(),
   ...timestamps,
 });
 
@@ -157,7 +161,7 @@ export const paymentsTable = pgTable(
     ...randomUuid,
     ...amountInUsdCents,
     status: paymentStatusEnum('status').notNull().default('CREATED'),
-    paymentProvider: paymentProviderEnum('payment_provider'),
+    paymentProvider: paymentProviderEnum('payment_provider').notNull(),
     paymentProviderReferenceId: text('payment_provider_reference_id'),
     ...timestamps,
   },
@@ -182,7 +186,7 @@ export const refundsTable = pgTable(
       .notNull()
       .references(() => paymentsTable.id, { onDelete: 'cascade' }),
     ...amountInUsdCents,
-    status: paymentStatusEnum('status').notNull().default('CREATED'),
+    status: refundStatusEnum('status').notNull().default('CREATED'),
     paymentProviderReferenceId: text('payment_provider_reference_id'),
     ...timestamps,
   },
