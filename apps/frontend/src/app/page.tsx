@@ -1,5 +1,6 @@
 import TestComponent from '@/components/TestComponent';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function Home() {
   return (
@@ -13,6 +14,15 @@ export default function Home() {
           height={38}
           priority={true}
         />
+
+        <div className="flex gap-4 mb-8">
+          <Link
+            href="/dns"
+            className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
+          >
+            DNS Management
+          </Link>
+        </div>
 
         <TestComponent />
         <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
