@@ -1,6 +1,7 @@
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import { publicProcedure, router } from '../context';
+import { dnsRecordsRouter } from './dnsRecordsRouter';
 import { messageRouter } from './messagesRouter';
 import { usersRouter } from './usersRouter';
 
@@ -9,6 +10,7 @@ export const appRouter = router({
   // merge predefined routers
   message: messageRouter,
   users: usersRouter,
+  dnsRecords: dnsRecordsRouter,
   // or individual procedures
   hello: publicProcedure.input(z.string().nullish()).query(({ input, ctx }) => {
     return `hello ${input ?? ctx.user?.name ?? 'world'}`;

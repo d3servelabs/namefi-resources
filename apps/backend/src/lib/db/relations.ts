@@ -2,6 +2,7 @@ import { relations } from 'drizzle-orm';
 import {
   cartItemsTable,
   cartsTable,
+  dnsRecordsTable,
   orderItemsTable,
   ordersTable,
   paymentsTable,

@@ -8,6 +8,7 @@ import type { z } from 'zod';
 import {
   cartItemsTable,
   cartsTable,
+  dnsRecordsTable,
   orderItemsTable,
   ordersTable,
   paymentsTable,
@@ -61,6 +62,15 @@ export const {
 } = createTableSchemas(orderItemsTable, 'orderItem');
 
 /**
+ * DNS Record schemas
+ */
+export const {
+  dnsRecordInsertSchema,
+  dnsRecordSelectSchema,
+  dnsRecordUpdateSchema,
+} = createTableSchemas(dnsRecordsTable, 'dnsRecord');
+
+/**
  * Inferred Zod types for API and validation
  */
 
@@ -98,3 +108,8 @@ export type OrderUpdate = z.infer<typeof orderUpdateSchema>;
 export type OrderItemInsert = z.infer<typeof orderItemInsertSchema>;
 export type OrderItemSelect = z.infer<typeof orderItemSelectSchema>;
 export type OrderItemUpdate = z.infer<typeof orderItemUpdateSchema>;
+
+// DNS Record types
+export type DnsRecordInsert = z.infer<typeof dnsRecordInsertSchema>;
+export type DnsRecordSelect = z.infer<typeof dnsRecordSelectSchema>;
+export type DnsRecordUpdate = z.infer<typeof dnsRecordUpdateSchema>;

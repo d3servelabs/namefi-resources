@@ -261,3 +261,49 @@ export const orderItemsTable = pgTable(
     index('order_items_status_idx').on(table.status),
   ],
 );
+
+// Design discussion:
+//   We didnt create a dns_zones table because there seems to be no need for it.
+//   The ownership of a zone is tied to the NFT address, which is derived from the
+//   domain name.
+export const dnsRecordsTable = pgTable(
+  'dns_records',
+  {
+    ...randomUuid,
+    normalizedDomainName: text('normalized_domain_name').notNull(),
+    /**
+     * The owner name of this DNS record (RFC-1034 3.6, RFC-1035 3.2.1)
+     *
+     * This field follows RFC-1034 conventions where:
+     * - For zone apex records: use "@" or empty string
+     * - For subdomains: use the label only (e.g., "www" not "www.example.com")
+     * - For records outside the zone: use the full name ending with "."
+     *
+     * Within a zone (e.g., "example.com"), a record with name "www" refers to
+     * "www.example.com" and is stored in the database without the zone suffix.
+     *
+     * Note: Names are restricted to lowercase LDH (letters, digits, hyphens)
+     * convention with additional "@" allowed for zone apex, and can include "."
+     * for FQDN notation.
+     */
+    name: text('name').notNull().default('@'), // max 255 chars
+    type: text('type').notNull(),
+    class: text('class').notNull().default('IN'),
+    ttl: integer('ttl').notNull().default(120),
+    rdata: text('rdata').notNull(),
+    metadata: jsonb('metadata').default({}),
+    ...timestamps,
+  },
+  (table) => [
+    index('dns_records_domain_idx').on(table.normalizedDomainName),
+    index('dns_records_name_idx').on(table.name),
+    index('dns_records_type_idx').on(table.type),
+    unique('dns_records_domain_name_type_class_rdata_unique').on(
+      table.normalizedDomainName,
+      table.name,
+      table.type,
+      table.class,
+      table.rdata,
+    ),
+  ],
+);

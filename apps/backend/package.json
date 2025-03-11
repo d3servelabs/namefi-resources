@@ -2,7 +2,8 @@
   "name": "@namefi-astra/backend",
   "type": "module",
   "exports": {
-    "./trpc": "./src/trpc/index.ts"
+    "./trpc": "./src/trpc/index.ts",
+    "./lib/db/types": "./src/lib/db/types.ts"
   },
   "imports": {
     "#lib/env": "./src/lib/env/index.ts",
