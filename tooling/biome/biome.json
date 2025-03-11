@@ -19,7 +19,25 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true
+      "all": true,
+      "performance": {
+        "noBarrelFile": "off",
+        "noReExportAll": "off"
+      },
+      "correctness": {
+        "noNodejsModules": "off",
+        "useImportExtensions": "off"
+      },
+      "style": {
+        "noDefaultExport": "off",
+        "useNamingConvention": "off",
+        "useFilenamingConvention": "off"
+      },
+      "suspicious": {
+        "noEmptyBlockStatements": "off",
+        "noReactSpecificProps": "off",
+        "noConsole": "off"
+      }
     }
   },
   "javascript": {

@@ -8,6 +8,7 @@ import {
   isServer,
 } from '@tanstack/react-query';
 import { createTRPCClient, httpBatchLink } from '@trpc/client';
+import type React from 'react';
 import { useState } from 'react';
 import superjson from 'superjson';
 import { TRPCProvider } from '../utils/trpc';
@@ -23,7 +24,7 @@ function makeQueryClient() {
   });
 }
 
-let browserQueryClient: QueryClient | undefined = undefined;
+let browserQueryClient: QueryClient | undefined;
 
 function getQueryClient() {
   if (isServer) {
@@ -34,7 +35,9 @@ function getQueryClient() {
   // This is very important, so we don't re-make a new client if React
   // suspends during the initial render. This may not be needed if we
   // have a suspense boundary BELOW the creation of the query client
-  if (!browserQueryClient) browserQueryClient = makeQueryClient();
+  if (!browserQueryClient) {
+    browserQueryClient = makeQueryClient();
+  }
   return browserQueryClient;
 }
 

@@ -50,7 +50,7 @@ const randomUuid = {
   id: uuid('id').default(sql`gen_random_uuid()`).primaryKey(),
 };
 
-const amountInUSDCents = {
+const amountInUsdCents = {
   amountInUSDCents: integer('amount_in_usd_cents').notNull(),
 };
 
@@ -137,7 +137,7 @@ export const cartItemsTable = pgTable(
       .notNull()
       .references(() => cartsTable.id, { onDelete: 'cascade' }),
     ...normalizedDomain,
-    ...amountInUSDCents,
+    ...amountInUsdCents,
     metadata: jsonb('metadata').default({}),
     ...timestamps,
   },
@@ -155,7 +155,7 @@ export const paymentsTable = pgTable(
   'payments',
   {
     ...randomUuid,
-    ...amountInUSDCents,
+    ...amountInUsdCents,
     status: paymentStatusEnum('status').notNull().default('CREATED'),
     paymentProvider: paymentProviderEnum('payment_provider'),
     paymentProviderReferenceId: text('payment_provider_reference_id'),
@@ -181,7 +181,7 @@ export const refundsTable = pgTable(
     paymentId: uuid('payment_id')
       .notNull()
       .references(() => paymentsTable.id, { onDelete: 'cascade' }),
-    ...amountInUSDCents,
+    ...amountInUsdCents,
     status: paymentStatusEnum('status').notNull().default('CREATED'),
     paymentProviderReferenceId: text('payment_provider_reference_id'),
     ...timestamps,
@@ -215,7 +215,7 @@ export const ordersTable = pgTable(
     paymentId: uuid('payment_id').references(() => paymentsTable.id, {
       onDelete: 'restrict',
     }),
-    ...amountInUSDCents,
+    ...amountInUsdCents,
     totalAmountInUSDCents: integer('total_amount_in_usd_cents').notNull(),
     metadata: jsonb('metadata').default({}),
     ...timestamps,
@@ -250,7 +250,7 @@ export const orderItemsTable = pgTable(
       .notNull()
       .references(() => ordersTable.id, { onDelete: 'cascade' }),
     ...normalizedDomain,
-    ...amountInUSDCents,
+    ...amountInUsdCents,
     status: orderStatusEnum('status').default('CREATED'),
     metadata: jsonb('metadata').default({}),
     ...timestamps,

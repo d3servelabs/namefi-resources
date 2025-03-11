@@ -4,7 +4,7 @@ import { publicProcedure, router } from '../context';
 
 let id = 0;
 
-const mockDB = {
+const mockDb = {
   messages: [createMessage('initial message')],
 };
 
@@ -21,13 +21,13 @@ function createMessage(text: string) {
 export const messageRouter = router({
   addMessage: publicProcedure.input(z.string()).mutation(({ input }) => {
     const msg = createMessage(input);
-    mockDB.messages.push(msg);
+    mockDb.messages.push(msg);
 
     return msg;
   }),
-  listMessages: publicProcedure.query(() => mockDB.messages),
+  listMessages: publicProcedure.query(() => mockDb.messages),
   getMessage: publicProcedure.input(z.number()).query(({ input }) => {
-    const msg = mockDB.messages.find((m) => m.id === input);
+    const msg = mockDb.messages.find((m) => m.id === input);
     if (!msg) {
       throw new TRPCError({ code: 'NOT_FOUND', message: 'Message not found' });
     }
