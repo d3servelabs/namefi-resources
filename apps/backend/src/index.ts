@@ -24,7 +24,5 @@ serve(
     fetch: app.fetch,
     port: config.PORT,
   },
-  (info) => {
-    console.log(`Server is running on port ${info.port}`);
-  },
+  (_info) => {},
 );

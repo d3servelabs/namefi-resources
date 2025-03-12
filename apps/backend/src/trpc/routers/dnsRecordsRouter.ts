@@ -35,7 +35,7 @@ export const dnsRecordsRouter = router({
    */
   createDnsRecord: publicProcedure
     .input(dnsRecordInsertSchema)
-    .mutation(async ({ input, ctx }) => {
+    .mutation(async ({ input }) => {
       // TODO! implement authentication and zone validation
       type DnsRecordInsertValues = typeof dnsRecordsTable.$inferInsert;
       const record = await db
@@ -59,7 +59,7 @@ export const dnsRecordsRouter = router({
         ttl: z.number().optional(),
       }),
     )
-    .mutation(async ({ input, ctx }) => {
+    .mutation(async ({ input }) => {
       // TODO! implement authentication and zone validation
       // First, verify the record exists and belongs to the specified domain
       const existingRecord = await db
@@ -75,7 +75,7 @@ export const dnsRecordsRouter = router({
           ),
         );
 
-      if (!existingRecord?.length) {
+      if (existingRecord?.length === 0) {
         throw new TRPCError({
           code: 'NOT_FOUND',
           message: 'DNS record not found or does not belong to this domain',
@@ -111,7 +111,7 @@ export const dnsRecordsRouter = router({
         normalizedDomainName: z.string(),
       }),
     )
-    .mutation(async ({ input, ctx }) => {
+    .mutation(async ({ input }) => {
       // TODO! implement authentication and zone validation
       // First, verify the record belongs to the specified domain
       const record = await db
@@ -127,7 +127,7 @@ export const dnsRecordsRouter = router({
           ),
         );
 
-      if (!record?.length) {
+      if (record?.length === 0) {
         throw new TRPCError({
           code: 'NOT_FOUND',
           message: 'DNS record not found or does not belong to this domain',
