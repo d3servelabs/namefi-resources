@@ -1,8 +1,8 @@
 import type { Config } from '../schema';
 
 const stagingConfig: Config = {
-  EXAMPLE_CONFIG_VAR: 'bar',
-  SUPPORTED_LOCALES: ['en', 'fr'],
+  BACKEND_URL: 'https://localhost:3000',
+  PRIVY_APP_ID: 'cm85vu4bk01t3r17tafv824do',
 };
 
 export default stagingConfig;

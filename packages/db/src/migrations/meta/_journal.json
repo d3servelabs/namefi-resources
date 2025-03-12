@@ -15,6 +15,13 @@
       "when": 1741715277706,
       "tag": "0001_eager_maddog",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1742227958381,
+      "tag": "0002_short_proteus",
+      "breakpoints": true
     }
   ]
 }

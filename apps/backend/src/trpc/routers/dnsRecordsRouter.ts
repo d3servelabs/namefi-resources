@@ -2,9 +2,9 @@ import { db, dnsRecordInsertSchema, dnsRecordsTable } from '@namefi-astra/db';
 import { TRPCError } from '@trpc/server';
 import { and, eq } from 'drizzle-orm';
 import { z } from 'zod';
-import { publicProcedure, router } from '../context';
+import { createTRPCRouter, publicProcedure } from '../base';
 
-export const dnsRecordsRouter = router({
+export const dnsRecordsRouter = createTRPCRouter({
   /**
    * Get DNS records for a domain
    */

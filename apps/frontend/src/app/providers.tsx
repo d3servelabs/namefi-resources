@@ -1,7 +1,8 @@
 'use client';
 
+import { config } from '@/lib/env';
 import type { AppRouter } from '@namefi-astra/backend/trpc';
-// Since QueryClientProvider relies on useContext under the hood, we have to put 'use client' on top
+import { PrivyProvider, getAccessToken } from '@privy-io/react-auth';
 import {
   QueryClient,
   QueryClientProvider,
@@ -12,6 +13,7 @@ import type React from 'react';
 import { useState } from 'react';
 import superjson from 'superjson';
 import { TRPCProvider } from '../utils/trpc';
+
 function makeQueryClient() {
   return new QueryClient({
     defaultOptions: {
@@ -51,20 +53,37 @@ export default function Providers({ children }: { children: React.ReactNode }) {
     createTRPCClient<AppRouter>({
       links: [
         httpBatchLink({
-          url: 'http://localhost:3000/trpc',
+          url: `${config.BACKEND_URL}/trpc`,
           transformer: superjson,
-          headers: {
-            'Content-Type': 'application/json',
+          async headers() {
+            return {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${(await getAccessToken()) || ''}`,
+            };
           },
         }),
       ],
     }),
   );
   return (
-    <QueryClientProvider client={queryClient}>
-      <TRPCProvider trpcClient={trpcClient} queryClient={queryClient}>
-        {children}
-      </TRPCProvider>
-    </QueryClientProvider>
+    <PrivyProvider
+      appId={config.PRIVY_APP_ID}
+      config={{
+        appearance: {
+          theme: 'light',
+          accentColor: '#676FFF',
+          logo: 'https://your-logo-url',
+        },
+        embeddedWallets: {
+          createOnLogin: 'off',
+        },
+      }}
+    >
+      <QueryClientProvider client={queryClient}>
+        <TRPCProvider trpcClient={trpcClient} queryClient={queryClient}>
+          {children}
+        </TRPCProvider>
+      </QueryClientProvider>
+    </PrivyProvider>
   );
 }
