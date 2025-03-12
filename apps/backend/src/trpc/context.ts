@@ -1,8 +1,8 @@
+import { db } from '@namefi-astra/db';
 import { initTRPC } from '@trpc/server';
 import type { FetchCreateContextFnOptions } from '@trpc/server/adapters/fetch';
 import type { Context } from 'hono';
 import superjson from 'superjson';
-import { db } from '#lib/db/client';
 
 export const createContext = (
   _opts: FetchCreateContextFnOptions,

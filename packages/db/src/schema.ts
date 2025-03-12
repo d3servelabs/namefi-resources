@@ -50,7 +50,7 @@ const randomUuid = {
   id: uuid('id').default(sql`gen_random_uuid()`).primaryKey(),
 };
 
-const amountInUSDCents = {
+const amountInUsdCents = {
   amountInUSDCents: integer('amount_in_usd_cents').notNull(),
 };
 
@@ -137,7 +137,7 @@ export const cartItemsTable = pgTable(
       .notNull()
       .references(() => cartsTable.id, { onDelete: 'cascade' }),
     ...normalizedDomain,
-    ...amountInUSDCents,
+    ...amountInUsdCents,
     metadata: jsonb('metadata').default({}),
     ...timestamps,
   },
@@ -155,7 +155,7 @@ export const paymentsTable = pgTable(
   'payments',
   {
     ...randomUuid,
-    ...amountInUSDCents,
+    ...amountInUsdCents,
     status: paymentStatusEnum('status').notNull().default('CREATED'),
     paymentProvider: paymentProviderEnum('payment_provider'),
     paymentProviderReferenceId: text('payment_provider_reference_id'),
@@ -181,7 +181,7 @@ export const refundsTable = pgTable(
     paymentId: uuid('payment_id')
       .notNull()
       .references(() => paymentsTable.id, { onDelete: 'cascade' }),
-    ...amountInUSDCents,
+    ...amountInUsdCents,
     status: paymentStatusEnum('status').notNull().default('CREATED'),
     paymentProviderReferenceId: text('payment_provider_reference_id'),
     ...timestamps,
@@ -215,7 +215,7 @@ export const ordersTable = pgTable(
     paymentId: uuid('payment_id').references(() => paymentsTable.id, {
       onDelete: 'restrict',
     }),
-    ...amountInUSDCents,
+    ...amountInUsdCents,
     totalAmountInUSDCents: integer('total_amount_in_usd_cents').notNull(),
     metadata: jsonb('metadata').default({}),
     ...timestamps,
@@ -250,7 +250,7 @@ export const orderItemsTable = pgTable(
       .notNull()
       .references(() => ordersTable.id, { onDelete: 'cascade' }),
     ...normalizedDomain,
-    ...amountInUSDCents,
+    ...amountInUsdCents,
     status: orderStatusEnum('status').default('CREATED'),
     metadata: jsonb('metadata').default({}),
     ...timestamps,
@@ -259,5 +259,51 @@ export const orderItemsTable = pgTable(
     check('amount_in_usd_cents_nonnegative', sql`amount_in_usd_cents >= 0`),
     index('order_items_order_id_idx').on(table.orderId),
     index('order_items_status_idx').on(table.status),
+  ],
+);
+
+// Design discussion:
+//   We didnt create a dns_zones table because there seems to be no need for it.
+//   The ownership of a zone is tied to the NFT address, which is derived from the
+//   domain name.
+export const dnsRecordsTable = pgTable(
+  'dns_records',
+  {
+    ...randomUuid,
+    normalizedDomainName: text('normalized_domain_name').notNull(),
+    /**
+     * The owner name of this DNS record (RFC-1034 3.6, RFC-1035 3.2.1)
+     *
+     * This field follows RFC-1034 conventions where:
+     * - For zone apex records: use "@" or empty string
+     * - For subdomains: use the label only (e.g., "www" not "www.example.com")
+     * - For records outside the zone: use the full name ending with "."
+     *
+     * Within a zone (e.g., "example.com"), a record with name "www" refers to
+     * "www.example.com" and is stored in the database without the zone suffix.
+     *
+     * Note: Names are restricted to lowercase LDH (letters, digits, hyphens)
+     * convention with additional "@" allowed for zone apex, and can include "."
+     * for FQDN notation.
+     */
+    name: text('name').notNull().default('@'), // max 255 chars
+    type: text('type').notNull(),
+    class: text('class').notNull().default('IN'),
+    ttl: integer('ttl').notNull().default(120),
+    rdata: text('rdata').notNull(),
+    metadata: jsonb('metadata').default({}),
+    ...timestamps,
+  },
+  (table) => [
+    index('dns_records_domain_idx').on(table.normalizedDomainName),
+    index('dns_records_name_idx').on(table.name),
+    index('dns_records_type_idx').on(table.type),
+    unique('dns_records_domain_name_type_class_rdata_unique').on(
+      table.normalizedDomainName,
+      table.name,
+      table.type,
+      table.class,
+      table.rdata,
+    ),
   ],
 );

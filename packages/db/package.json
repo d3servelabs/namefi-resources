@@ -6,9 +6,6 @@
     "./*": "./src/*.ts",
     "./types": "./src/types.ts"
   },
-  "imports": {
-    "#lib/env": "./lib/env/index.ts"
-  },
   "scripts": {
     "with-env": "infisical run --token=$INFISICAL_SERVICE_TOKEN -- bun run",
     "db:generate": "drizzle-kit generate",
