@@ -8,6 +8,7 @@
   },
   "scripts": {
     "with-env": "infisical run --token=$INFISICAL_SERVICE_TOKEN -- bun run",
+    "db:check": "drizzle-kit check",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
