@@ -1,31 +1,25 @@
 {
   "name": "namefi-astra",
   "private": true,
-  "workspaces": [
-    "apps/*",
-    "tooling/*",
-    "packages/*"
-  ],
+  "workspaces": ["apps/*", "tooling/*", "packages/*"],
   "engines": {
     "node": ">=22.13.1"
   },
   "packageManager": "bun@1.2.4",
   "devDependencies": {
+    "@biomejs/biome": "1.9.4",
     "lefthook": "^1.11.2",
     "turbo": "^2.4.4"
   },
   "scripts": {
-    "check:fix": "turbo check:fix",
-    "check": "turbo check",
+    "check": "biome check .",
+    "check:error": "biome check . --diagnostic-level=error",
+    "check:fix": "biome check --write .",
+    "check:unsafe": "biome check --write --unsafe .",
     "typecheck": "turbo typecheck",
     "sherif": "bunx sherif@latest",
     "sherif:fix": "bunx sherif@latest -f",
-    "validate": "turbo check typecheck && bun run sherif"
+    "validate": "turbo typecheck && bun check && bun sherif"
   },
-  "trustedDependencies": [
-    "@biomejs/biome",
-    "esbuild",
-    "lefthook",
-    "sharp"
-  ]
+  "trustedDependencies": ["@biomejs/biome", "esbuild", "lefthook", "sharp"]
 }

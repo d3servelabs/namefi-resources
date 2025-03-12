@@ -1,11 +1,5 @@
-import path from 'node:path';
-import { loadConfig, loadSecrets } from '@namefi-astra/env';
-import { configSchema, secretsSchema } from './schema';
-
-export const config = loadConfig({
-  configPath: path.join(import.meta.dirname || __dirname, 'configs'),
-  configSchema,
-});
+import { loadSecrets } from '@namefi-astra/env';
+import { secretsSchema } from './schema';
 
 export const secrets = loadSecrets({
   secretsSchema,

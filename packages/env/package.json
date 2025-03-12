@@ -2,8 +2,6 @@
   "name": "@namefi-astra/env",
   "type": "module",
   "scripts": {
-    "check": "biome check",
-    "check:fix": "biome check --write",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
@@ -11,7 +9,6 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
-    "@namefi-astra/biome": "workspace:*",
     "@namefi-astra/typescript": "workspace:*"
   },
   "exports": {

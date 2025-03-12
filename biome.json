@@ -3,10 +3,11 @@
   "vcs": {
     "enabled": true,
     "clientKind": "git",
-    "useIgnoreFile": true
+    "useIgnoreFile": true,
+    "defaultBranch": "main"
   },
   "files": {
-    "ignoreUnknown": false,
+    "ignoreUnknown": true,
     "ignore": []
   },
   "formatter": {
@@ -22,20 +23,24 @@
       "all": true,
       "performance": {
         "noBarrelFile": "off",
-        "noReExportAll": "off"
+        "noReExportAll": "off",
+        "useTopLevelRegex": "off"
       },
       "correctness": {
         "noNodejsModules": "off",
-        "useImportExtensions": "off"
+        "useImportExtensions": "off",
+        "noUndeclaredDependencies": "off"
       },
       "style": {
         "noDefaultExport": "off",
         "useNamingConvention": "off",
-        "useFilenamingConvention": "off"
+        "useFilenamingConvention": "off",
+        "noNamespaceImport": "off"
       },
       "suspicious": {
         "noEmptyBlockStatements": "off",
         "noReactSpecificProps": "off",
+        "noConsoleLog": "off",
         "noConsole": "off"
       }
     }

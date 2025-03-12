@@ -10,10 +10,6 @@
     "#lib/env": "./lib/env/index.ts"
   },
   "scripts": {
-    "dev": "tsx watch src/index.ts",
-    "check": "biome check",
-    "check:fix": "biome check --write",
-    "trpc": "tsx watch src/trpc/main.ts",
     "with-env": "infisical run --token=$INFISICAL_SERVICE_TOKEN -- bun run",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
@@ -21,30 +17,15 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@hono/node-server": "^1.13.8",
-    "@hono/swagger-ui": "^0.5.1",
-    "@hono/trpc-server": "^0.3.4",
-    "@hono/zod-openapi": "^0.19.2",
     "@namefi-astra/env": "workspace:*",
     "@neondatabase/serverless": "^0.10.4",
-    "@trpc/server": "^11.0.0-rc.824",
-    "cors": "^2.8.5",
-    "dotenv": "^16.4.7",
-    "hono": "^4.7.2",
-    "superjson": "^2.2.2",
-    "ws": "^8.18.1",
-    "znv": "^0.4.0",
     "zod": "^3.24.2"
   },
   "devDependencies": {
-    "@namefi-astra/biome": "workspace:*",
     "@namefi-astra/typescript": "workspace:*",
-    "@types/cors": "^2.8.17",
-    "@types/express": "^5.0.0",
     "@types/node": "^20.11.17",
     "@types/ws": "^8.5.14",
-    "drizzle-kit": "^0.30.5",
-    "tsx": "^4.7.1"
+    "drizzle-kit": "^0.30.5"
   },
   "peerDependencies": {
     "drizzle-orm": "^0.40.0",

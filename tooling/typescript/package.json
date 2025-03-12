@@ -1,15 +1,11 @@
 {
-	"name": "@namefi-astra/typescript",
-	"type": "module",
-	"private": true,
-	"scripts": {
-		"check": "biome check",
-		"check:fix": "biome check --write"
-	},
-	"dependencies": {
-		"typescript": "^5.7.3"
-	},
-	"exports": {
-		".": "./tsconfig.json"
-	}
+  "name": "@namefi-astra/typescript",
+  "type": "module",
+  "private": true,
+  "dependencies": {
+    "typescript": "^5.7.3"
+  },
+  "exports": {
+    ".": "./tsconfig.json"
+  }
 }

@@ -5,10 +5,3 @@ export const secretsSchema = z.object({
 });
 
 export type SecretsSchema = z.infer<typeof secretsSchema>;
-
-export const configSchema = z.object({
-  PORT: z.number().default(3000),
-  LOG_LEVEL: z.enum(['debug', 'info', 'warn', 'error']),
-});
-
-export type Config = z.infer<typeof configSchema>;

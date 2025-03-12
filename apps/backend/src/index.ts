@@ -5,6 +5,7 @@ import { cors } from 'hono/cors';
 import { logger } from 'hono/logger';
 import { prettyJSON } from 'hono/pretty-json';
 import { config } from './lib/env';
+import { createContext } from './trpc';
 import { appRouter } from './trpc/routers/appRouter';
 
 const app = new Hono();
@@ -16,6 +17,7 @@ app.use(
   '/trpc/*',
   trpcServer({
     router: appRouter,
+    createContext,
   }),
 );
 
@@ -24,5 +26,7 @@ serve(
     fetch: app.fetch,
     port: config.PORT,
   },
-  (_info) => {},
+  (info) => {
+    console.info('Server is running on port', info.port);
+  },
 );
