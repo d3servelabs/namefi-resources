@@ -1,8 +1,9 @@
 'use client';
 
 import { useTRPC } from '@/utils/trpc';
-import type { DnsRecordSelect } from '@namefi-astra/backend/lib/db/types';
+import type { DnsRecordSelect } from '@namefi-astra/db/types';
 import { useMutation, useQuery } from '@tanstack/react-query';
+import type React from 'react';
 import { useEffect, useState } from 'react';
 import DnsRecordForm from './components/DnsRecordForm';
 import DnsRecordList from './components/DnsRecordList';
