@@ -108,11 +108,11 @@ const timingMiddleware = t.middleware(async ({ next, path }) => {
 export const publicProcedure = t.procedure.use(timingMiddleware);
 
 /**
- * Middleware for verifying a user's privy authentication token.
+ * Middleware for verifying a user's privy authentication token and creating a user if they don't exist.
  *
  * This middleware will verify the user's privy authentication token, fetch the user from the database, and add the user to the context.
  */
-export const verifyUserAuth = t.middleware(async ({ ctx, next }) => {
+export const verifyUserAuthAndCreation = t.middleware(async ({ ctx, next }) => {
   const authToken = ctx.req.header('Authorization')?.replace('Bearer ', '');
 
   if (!authToken) {
@@ -124,12 +124,19 @@ export const verifyUserAuth = t.middleware(async ({ ctx, next }) => {
 
   try {
     const userClaims = await privyClient.verifyAuthToken(authToken);
-    const user = await db.query.usersTable.findFirst({
+    let user = await db.query.usersTable.findFirst({
       where: eq(usersTable.privyUserId, userClaims.userId),
     });
 
     if (!user) {
-      throw new TRPCError({ code: 'UNAUTHORIZED', message: 'User not found' });
+      // TODO: handle this via webhook
+      const newUser = await db
+        .insert(usersTable)
+        .values({
+          privyUserId: userClaims.userId,
+        })
+        .returning();
+      user = newUser[0];
     }
 
     return next({
@@ -155,7 +162,7 @@ export const verifyUserAuth = t.middleware(async ({ ctx, next }) => {
  */
 export const protectedProcedure = publicProcedure
   .use(timingMiddleware)
-  .use(verifyUserAuth);
+  .use(verifyUserAuthAndCreation);
 
 /**
  * Middleware for verifying the payload of a privy webhook.
@@ -176,7 +183,7 @@ export const verifyPrivyWebhookPayload = t.middleware(async ({ ctx, next }) => {
 
   try {
     const body = await ctx.req.parseBody();
-    await privyClient.verifyWebhook(
+    const verifiedBody = await privyClient.verifyWebhook(
       body,
       {
         id: webhookId,
@@ -189,8 +196,7 @@ export const verifyPrivyWebhookPayload = t.middleware(async ({ ctx, next }) => {
     return next({
       ctx: {
         ...ctx,
-        webhookBody: body,
-        webhookVerified: true,
+        verifiedBody,
       },
     });
   } catch (error) {
