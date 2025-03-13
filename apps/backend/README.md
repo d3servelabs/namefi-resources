@@ -65,7 +65,7 @@ bun run start
 For local development with Bun:
 
 ```bash
-bun run start:bun
+INFISICAL_TOKEN={TOKEN} bun run with-env start:bun
 ```
 
 ## Docker

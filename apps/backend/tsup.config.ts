@@ -1,18 +1,11 @@
-import { defineConfig } from 'tsup';
+import { type Options, defineConfig } from 'tsup';
 
-export default defineConfig({
-  entry: [
-    'src/index.ts',
-    'src/lib/env/configs/development.ts',
-    'src/lib/env/configs/staging.ts',
-    'src/lib/env/configs/production.ts',
-  ],
+const config: Options = {
   splitting: true,
   sourcemap: true,
   clean: true,
   format: ['esm'],
   dts: false,
-  outDir: 'dist',
   target: 'node22',
   minify: process.env.NODE_ENV === 'production',
   shims: true,
@@ -33,4 +26,17 @@ export default defineConfig({
         .map((pattern) => new RegExp(pattern)),
     );
   })(),
-});
+};
+
+export default defineConfig([
+  {
+    entry: ['src/index.ts'],
+    outDir: 'dist',
+    ...config,
+  },
+  {
+    entry: ['src/lib/env/configs/*.ts'],
+    outDir: 'dist/configs',
+    ...config,
+  },
+]);
