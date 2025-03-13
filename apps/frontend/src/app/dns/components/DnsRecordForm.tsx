@@ -1,7 +1,5 @@
 'use client';
-
-import { useTRPC } from '@/utils/trpc';
-import { useMutation } from '@tanstack/react-query';
+import type React from 'react';
 import { useState } from 'react';
 
 interface DnsRecordFormProps {
