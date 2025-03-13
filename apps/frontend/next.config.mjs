@@ -15,7 +15,7 @@ const { config: appConfig } = await jiti.import('./src/lib/env/load');
 const nextConfig = {
   transpilePackages: [
     '@namefi-astra/env',
-    '@namefi-astra/utils',
+    '@namefi-astra/zod-dns',
     '@namefi-astra/backend',
     '@namefi-astra/db',
   ],

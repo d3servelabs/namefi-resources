@@ -1,0 +1,28 @@
+{
+  "name": "@namefi-astra/zod-dns",
+  "author": "Namefi Open Source <oss@namefi.io>",
+  "license": "MIT",
+  "description": "Zod schemas for DNS created by Namefi.io",
+  "version": "0.0.0-pre.2",
+  "type": "module",
+  "scripts": {
+    "check": "biome check",
+    "check:fix": "biome check --write",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest --run"
+  },
+  "dependencies": {
+    "@namefi-astra/typescript": "workspace:*"
+  },
+  "exports": {
+    ".": "./src/index.ts",
+    "./namefi-flavor": "./src/namefi-flavor.ts",
+    "./testing": "./src/index.testing.ts"
+  },
+  "peerDependencies": {
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "vitest": "^3.0.8"
+  }
+}
