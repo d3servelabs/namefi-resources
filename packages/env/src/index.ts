@@ -3,9 +3,9 @@ import { config as loadBaseEnv } from 'dotenv';
 import type { ZodSchema } from 'zod';
 import { baseConfigSchema } from './schema';
 
-loadBaseEnv({ override: true });
+const moduleRequire = createRequire(import.meta.url);
 
-const require = createRequire(import.meta.url);
+loadBaseEnv({ override: true });
 
 export interface LoadConfigOptions<T> {
   configPath: string;
@@ -14,9 +14,13 @@ export interface LoadConfigOptions<T> {
 
 export const loadConfig = <T>(options: LoadConfigOptions<T>) => {
   const validatedBaseConfig = baseConfigSchema.parse(process.env);
-  const { default: envConfig } = require(
-    `${options.configPath}/${validatedBaseConfig.ENVIRONMENT}`,
-  );
+  const envConfigPath = `${options.configPath}/${validatedBaseConfig.ENVIRONMENT}`;
+  let envConfig: unknown;
+  try {
+    ({ default: envConfig } = require(envConfigPath));
+  } catch (_) {
+    ({ default: envConfig } = moduleRequire(envConfigPath));
+  }
   return options.configSchema.parse(envConfig);
 };
 

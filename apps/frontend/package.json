@@ -1,6 +1,7 @@
 {
   "name": "@namefi-astra/frontend",
   "version": "0.1.0",
+  "type": "module",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
@@ -34,6 +35,7 @@
     "@types/node": "^20.11.17",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "jiti": "^2.4.2",
     "tailwindcss": "^4"
   }
 }

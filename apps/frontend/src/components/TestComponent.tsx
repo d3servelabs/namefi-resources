@@ -2,6 +2,7 @@
 
 import { useMutation } from '@tanstack/react-query';
 
+import { config } from '@/lib/env';
 import { useTRPC } from '@/utils/trpc';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
@@ -32,6 +33,7 @@ export default function TestComponent() {
 
   return (
     <div>
+      <h1>Config: {config.EXAMPLE_CONFIG_VAR}</h1>
       <button
         type="button"
         className="flex items-center gap-2 hover:underline hover:underline-offset-4 hover:bg-blue-700 bg-blue-500 hover:text-white px-4 py-2 rounded-md"
