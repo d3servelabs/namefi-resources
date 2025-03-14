@@ -22,7 +22,7 @@ Create an Artifact Registry repository to store your Docker images:
 gcloud artifacts repositories create namefi-astra \
     --repository-format=docker \
     --location=us-central1 \
-    --description="Docker repository for NameFi Astra"
+    --description="Docker repository for namefi-astra"
 ```
 
 ### 2. Set up Workload Identity Federation
