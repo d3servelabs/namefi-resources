@@ -1,0 +1,94 @@
+name: Deploy Backend to Cloud Run
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main    # Regular push to main branch deploys to production
+    tags:
+      - 'staging/v*'  # Tags like staging/v1.0.0 for staging deployment
+      - 'prod/v*'     # Tags like prod/v1.0.0 for production deployment
+      - 'v*'          # Tags like v1.0.0 for production deployment
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - dev
+          - staging
+          - production
+
+env:
+  PROJECT_ID: ${{ vars.GCP_PROJECT_ID }} # GCP project ID
+  REGION: ${{ vars.GCP_REGION }} # GCP region
+  REPO_NAME: ${{ vars.REPOSITORY_NAME }} # Artifact Registry repository name
+  # Set different service names based on the trigger or tag pattern
+  # Regular push to main branch or non-staging tags will deploy to production (GCP_CLOUD_RUN_SERVICE_PROD)
+  SERVICE: >-
+    ${{ 
+      ((github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'staging') || 
+      (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/staging/'))) 
+      && vars.GCP_CLOUD_RUN_SERVICE_STAGING 
+      || ((github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'production') || 
+         (github.event_name == 'push' && (startsWith(github.ref, 'refs/tags/prod/') || startsWith(github.ref, 'refs/tags/v')))) 
+        && vars.GCP_CLOUD_RUN_SERVICE_PROD 
+        || vars.GCP_CLOUD_RUN_SERVICE_DEV 
+    }}
+
+jobs:
+  deploy:
+    name: Build and Deploy
+    runs-on: 'blacksmith-4vcpu-ubuntu-2204'
+    permissions:
+      contents: read
+      id-token: write # Required for GCP Workload Identity Federation
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Debug step to see what environment we're deploying to
+      - name: Debug environment variables
+        run: |
+          echo "Event name: ${{ github.event_name }}"
+          echo "Service name: ${{ env.SERVICE }}"
+          echo "Port: ${{ env.PORT }}"
+
+      # Set up Google Cloud authentication using WIF
+      - name: Google Auth
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
+          service_account: ${{ vars.GCP_WIF_SERVICE_ACCOUNT }}
+      
+      # BEGIN - Docker auth and build
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+      
+      - name: Configure Docker for Artifact Registry
+        run: gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev
+
+      - name: 'Build and Push Container'
+        run: |-
+          DOCKER_TAG="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/cloud-run-source-deploy/${{ env.REPO_NAME }}/${{ env.SERVICE }}:${{ github.sha }}"
+          docker build --tag "${DOCKER_TAG}" . -f apps/backend/Dockerfile
+          docker push "${DOCKER_TAG}"
+
+
+      # Deploy to Cloud Run
+      - name: Deploy to Cloud Run
+        id: deploy
+        uses: google-github-actions/deploy-cloudrun@v2
+        with:
+          service: ${{ env.SERVICE }}
+          region: ${{ env.REGION }}
+          project_id: '${{ env.PROJECT_ID }}'
+          image: ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/${{ env.SERVICE }}:${{ github.sha }}
+          
+      # Output the deployed URL
+      - name: Show Output
+        run: echo "Deployed to ${{ steps.deploy.outputs.url }}" 
