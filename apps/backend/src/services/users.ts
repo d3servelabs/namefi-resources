@@ -14,3 +14,16 @@ export async function getUserEmail(userId: string) {
 
   return user;
 }
+
+export async function getUserStripeCustomerId(userId: string) {
+  const user = await db.query.usersTable.findFirst({
+    columns: { stripeCustomerId: true, id: true },
+    where: eq(usersTable.id, userId),
+  });
+
+  if (!user) {
+    throw new Error('User not found');
+  }
+
+  return user;
+}

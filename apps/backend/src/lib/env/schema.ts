@@ -4,6 +4,7 @@ export const secretsSchema = z.object({
   DATABASE_URL: z.string().url(),
   PRIVY_APP_SECRET: z.string(),
   PRIVY_WEBHOOK_SECRET: z.string(),
+  STRIPE_SECRET_KEY: z.string(),
 });
 
 export type SecretsSchema = z.infer<typeof secretsSchema>;
