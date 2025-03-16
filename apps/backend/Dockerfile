@@ -47,7 +47,9 @@ WORKDIR /app
 # Copy package.json and built application
 COPY --from=builder /app/apps/backend/package.json ./package.json
 COPY --from=builder /app/apps/backend/dist ./dist
-
+# Copy the infisical secret file
+COPY --from=builder /app/.infisical.json ./.infisical.json
+# Copy the node_modules
 COPY --from=deps /app/node_modules ./node_modules
 
 # Don't run as root
