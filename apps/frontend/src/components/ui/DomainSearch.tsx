@@ -1,5 +1,6 @@
 'use client';
 
+import { useAuth } from '@/hooks/useAuth';
 import { useTRPC } from '@/utils/trpc';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { Search } from 'lucide-react';
@@ -22,10 +23,12 @@ export function DomainSearch() {
   const [searchQuery, setSearchQuery] = useState('');
   const router = useRouter();
   const trpc = useTRPC();
+  const { isAuthenticated } = useAuth();
 
   // Get cart data to check if domains are already in cart
   const cartQuery = useQuery({
     ...trpc.carts.getOrCreate.queryOptions(),
+    enabled: isAuthenticated,
   });
 
   // Mutations for cart operations
