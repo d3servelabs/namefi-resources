@@ -1,25 +1,25 @@
-"use client";
+'use client';
 
-import { useTRPC } from "@/utils/trpc";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { Search } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { Button } from "./shadcn/button";
-import { Card, CardContent } from "./shadcn/card";
-import { Input } from "./shadcn/input";
+import { useTRPC } from '@/utils/trpc';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { Search } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { Button } from './shadcn/button';
+import { Card, CardContent } from './shadcn/card';
+import { Input } from './shadcn/input';
 
 // Dummy domain data
 const DUMMY_DOMAINS = [
-  { name: "example.com", price: 1999 },
-  { name: "mydomain.com", price: 2499 },
-  { name: "coolsite.com", price: 1599 },
-  { name: "awesome.com", price: 3999 },
-  { name: "newdomain.com", price: 1799 },
+  { name: 'example.com', price: 1999 },
+  { name: 'mydomain.com', price: 2499 },
+  { name: 'coolsite.com', price: 1599 },
+  { name: 'awesome.com', price: 3999 },
+  { name: 'newdomain.com', price: 1799 },
 ];
 
 export function DomainSearch() {
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
   const router = useRouter();
   const trpc = useTRPC();
 
@@ -48,14 +48,14 @@ export function DomainSearch() {
   // Check if domain is in cart
   const isDomainInCart = (domainName: string) => {
     return cartQuery.data?.items.some(
-      (item) => item.normalizedDomainName === domainName
+      (item) => item.normalizedDomainName === domainName,
     );
   };
 
   // Find cart item ID for a domain
   const getCartItemId = (domainName: string) => {
     return cartQuery.data?.items.find(
-      (item) => item.normalizedDomainName === domainName
+      (item) => item.normalizedDomainName === domainName,
     )?.id;
   };
 
@@ -92,9 +92,9 @@ export function DomainSearch() {
         </Button>
       </div>
 
-      {cartQuery.data?.items?.length > 0? (
+      {cartQuery.data?.items?.length > 0 ? (
         <div className="flex justify-end">
-          <Button onClick={() => router.push("/cart")}>
+          <Button onClick={() => router.push('/cart')}>
             Go to Cart ({cartQuery.data?.items?.length} items)
           </Button>
         </div>
@@ -102,7 +102,7 @@ export function DomainSearch() {
 
       <div className="grid gap-4">
         {DUMMY_DOMAINS.filter((domain) =>
-          domain.name.toLowerCase().includes(searchQuery.toLowerCase())
+          domain.name.toLowerCase().includes(searchQuery.toLowerCase()),
         ).map((domain) => (
           <Card key={domain.name}>
             <CardContent className="flex items-center justify-between p-4">
@@ -113,10 +113,12 @@ export function DomainSearch() {
                 </p>
               </div>
               <Button
-                variant={isDomainInCart(domain.name) ? "secondary" : "default"}
+                variant={isDomainInCart(domain.name) ? 'secondary' : 'default'}
                 onClick={() => handleDomainAction(domain)}
               >
-                {isDomainInCart(domain.name) ? "Remove from Cart" : "Add to Cart"}
+                {isDomainInCart(domain.name)
+                  ? 'Remove from Cart'
+                  : 'Add to Cart'}
               </Button>
             </CardContent>
           </Card>
@@ -124,4 +126,4 @@ export function DomainSearch() {
       </div>
     </div>
   );
-} 
+}

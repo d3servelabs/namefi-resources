@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
 import {
   PaymentElement,
   useElements,
   useStripe,
-} from "@stripe/react-stripe-js";
-import { Loader2 } from "lucide-react";
-import { useState } from "react";
-import { Button } from "./shadcn/button";
+} from '@stripe/react-stripe-js';
+import { Loader2 } from 'lucide-react';
+import type React from 'react';
+import { useState } from 'react';
+import { Button } from './shadcn/button';
 
 interface PaymentFormProps {
-  clientSecret: string;
   amount: number;
   onSuccess?: () => void;
   onError?: (error: Error) => void;
@@ -25,7 +25,7 @@ export function PaymentForm({ amount, onSuccess, onError }: PaymentFormProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!stripe || !elements) {
+    if (!(stripe && elements)) {
       return;
     }
 
@@ -41,13 +41,13 @@ export function PaymentForm({ amount, onSuccess, onError }: PaymentFormProps) {
       });
 
       if (paymentError) {
-        setError(paymentError.message ?? "An error occurred");
+        setError(paymentError.message ?? 'An error occurred');
         onError?.(new Error(paymentError.message));
       } else {
         onSuccess?.();
       }
     } catch (err) {
-      setError("An unexpected error occurred");
+      setError('An unexpected error occurred');
       onError?.(err as Error);
     } finally {
       setIsProcessing(false);
@@ -57,9 +57,7 @@ export function PaymentForm({ amount, onSuccess, onError }: PaymentFormProps) {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <PaymentElement />
-      {error && (
-        <p className="text-sm text-destructive">{error}</p>
-      )}
+      {error && <p className="text-sm text-destructive">{error}</p>}
       <Button
         type="submit"
         disabled={!stripe || isProcessing}
@@ -76,4 +74,4 @@ export function PaymentForm({ amount, onSuccess, onError }: PaymentFormProps) {
       </Button>
     </form>
   );
-} 
+}

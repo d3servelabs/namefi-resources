@@ -1,6 +1,7 @@
-import { type UserInsert, db, usersTable } from '@namefi-astra/db';
+import { db, usersTable } from '@namefi-astra/db';
 import { eq } from 'drizzle-orm';
 
+// Note: This is just created as an example for devs to follow
 export async function getUserEmail(userId: string) {
   const user = await db.query.usersTable.findFirst({
     columns: { primaryEmail: true, id: true },
@@ -12,9 +13,4 @@ export async function getUserEmail(userId: string) {
   }
 
   return user;
-}
-
-export async function createUser(user: UserInsert) {
-  const [newUser] = await db.insert(usersTable).values(user).returning();
-  return newUser;
 }

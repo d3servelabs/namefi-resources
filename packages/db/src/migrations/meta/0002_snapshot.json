@@ -77,12 +77,8 @@
           "name": "cart_items_cart_id_cart_id_fk",
           "tableFrom": "cart_items",
           "tableTo": "cart",
-          "columnsFrom": [
-            "cart_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["cart_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -152,12 +148,8 @@
           "name": "cart_user_id_users_id_fk",
           "tableFrom": "cart",
           "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "set null",
           "onUpdate": "no action"
         }
@@ -167,9 +159,7 @@
         "user_id_idx": {
           "name": "user_id_idx",
           "nullsNotDistinct": false,
-          "columns": [
-            "user_id"
-          ]
+          "columns": ["user_id"]
         }
       },
       "policies": {},
@@ -410,12 +400,8 @@
           "name": "order_items_order_id_orders_id_fk",
           "tableFrom": "order_items",
           "tableTo": "orders",
-          "columnsFrom": [
-            "order_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["order_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -548,12 +534,8 @@
           "name": "orders_user_id_users_id_fk",
           "tableFrom": "orders",
           "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "set null",
           "onUpdate": "no action"
         },
@@ -561,12 +543,8 @@
           "name": "orders_payment_id_payments_id_fk",
           "tableFrom": "orders",
           "tableTo": "payments",
-          "columnsFrom": [
-            "payment_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["payment_id"],
+          "columnsTo": ["id"],
           "onDelete": "restrict",
           "onUpdate": "no action"
         }
@@ -576,9 +554,7 @@
         "orders_payment_id_unique": {
           "name": "orders_payment_id_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "payment_id"
-          ]
+          "columns": ["payment_id"]
         }
       },
       "policies": {},
@@ -670,9 +646,7 @@
         "payments_provider_reference_unique": {
           "name": "payments_provider_reference_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "payment_provider_reference_id"
-          ]
+          "columns": ["payment_provider_reference_id"]
         }
       },
       "policies": {},
@@ -773,12 +747,8 @@
           "name": "refunds_payment_id_payments_id_fk",
           "tableFrom": "refunds",
           "tableTo": "payments",
-          "columnsFrom": [
-            "payment_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["payment_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -788,9 +758,7 @@
         "refunds_provider_reference_unique": {
           "name": "refunds_provider_reference_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "payment_provider_reference_id"
-          ]
+          "columns": ["payment_provider_reference_id"]
         }
       },
       "policies": {},
@@ -847,16 +815,12 @@
         "users_primary_email_unique": {
           "name": "users_primary_email_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "primary_email"
-          ]
+          "columns": ["primary_email"]
         },
         "users_privy_user_id_unique": {
           "name": "users_privy_user_id_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "privy_user_id"
-          ]
+          "columns": ["privy_user_id"]
         }
       },
       "policies": {},

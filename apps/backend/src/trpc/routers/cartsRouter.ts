@@ -1,4 +1,10 @@
-import { cartItemInsertSchema, cartItemUpdateSchema, cartItemsTable, cartsTable, db } from '@namefi-astra/db';
+import {
+  cartItemInsertSchema,
+  cartItemUpdateSchema,
+  cartItemsTable,
+  cartsTable,
+  db,
+} from '@namefi-astra/db';
 import { TRPCError } from '@trpc/server';
 import { eq } from 'drizzle-orm';
 import { z } from 'zod';

@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { DomainSearch } from "@/components/ui/DomainSearch";
+import { DomainSearch } from '@/components/ui/DomainSearch';
 import { Header } from '@/components/ui/header';
 import Image from 'next/image';
 // import Link from 'next/link';

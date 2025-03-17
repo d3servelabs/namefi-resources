@@ -1,9 +1,13 @@
-import { useTRPC } from "@/utils/trpc";
-import { usePrivy } from "@privy-io/react-auth";
-import { useQuery } from "@tanstack/react-query";
+import { useTRPC } from '@/utils/trpc';
+import { usePrivy } from '@privy-io/react-auth';
+import { useQuery } from '@tanstack/react-query';
 
 export function useAuth() {
-  const { authenticated: privyAuthenticated, ready, user: privyUser } = usePrivy();
+  const {
+    authenticated: privyAuthenticated,
+    ready,
+    user: privyUser,
+  } = usePrivy();
   const trpc = useTRPC();
 
   const userQuery = useQuery({
@@ -17,4 +21,4 @@ export function useAuth() {
     user: userQuery.data,
     privyUser,
   };
-} 
+}

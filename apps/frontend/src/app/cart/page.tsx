@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { StripeProvider } from "@/components/providers/StripeProvider";
-import { PaymentForm } from "@/components/ui/PaymentForm";
-import { Button } from "@/components/ui/shadcn/button";
+import { StripeProvider } from '@/components/providers/StripeProvider';
+import { PaymentForm } from '@/components/ui/PaymentForm';
+import { Button } from '@/components/ui/shadcn/button';
 import {
   Card,
   CardContent,
@@ -10,7 +10,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/shadcn/card";
+} from '@/components/ui/shadcn/card';
 import {
   Dialog,
   DialogContent,
@@ -18,12 +18,12 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/shadcn/dialog";
-import { useAuth } from "@/hooks/useAuth";
-import { useTRPC } from "@/utils/trpc";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { Loader2 } from "lucide-react";
-import { useState } from "react";
+} from '@/components/ui/shadcn/dialog';
+import { useAuth } from '@/hooks/useAuth';
+import { useTRPC } from '@/utils/trpc';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { Loader2 } from 'lucide-react';
+import { useState } from 'react';
 
 export default function CartPage() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -40,7 +40,7 @@ export default function CartPage() {
       onSuccess: () => {
         cartQuery.refetch();
       },
-    })
+    }),
   );
 
   const { mutate: clearCart } = useMutation(
@@ -48,7 +48,7 @@ export default function CartPage() {
       onSuccess: () => {
         cartQuery.refetch();
       },
-    })
+    }),
   );
 
   if (isLoading) {
@@ -65,9 +65,7 @@ export default function CartPage() {
         <Card>
           <CardHeader>
             <CardTitle>Sign in required</CardTitle>
-            <CardDescription>
-              Please sign in to view your cart
-            </CardDescription>
+            <CardDescription>Please sign in to view your cart</CardDescription>
           </CardHeader>
         </Card>
       </div>
@@ -77,12 +75,12 @@ export default function CartPage() {
   const cart = cartQuery.data;
 
   if (!cart?.items) {
-    return null
+    return null;
   }
 
   const totalAmount = cart.items.reduce(
     (acc, item) => acc + item.amountInUSDCents,
-    0
+    0,
   );
 
   return (
@@ -93,7 +91,7 @@ export default function CartPage() {
           <CardDescription>
             {cart?.items.length > 0
               ? `${cart.items.length} items in your cart`
-              : "Your cart is empty"}
+              : 'Your cart is empty'}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -112,7 +110,7 @@ export default function CartPage() {
                 variant="destructive"
                 size="sm"
                 onClick={() => {
-                    removeItem(item.id);
+                  removeItem(item.id);
                 }}
               >
                 Remove
@@ -139,7 +137,7 @@ export default function CartPage() {
                   Clear Cart
                 </Button>
                 <Dialog open={showPayment} onOpenChange={setShowPayment}>
-                  <DialogTrigger asChild>
+                  <DialogTrigger asChild={true}>
                     <Button>Proceed to Payment</Button>
                   </DialogTrigger>
                   <DialogContent className="sm:max-w-[425px]">
@@ -149,7 +147,7 @@ export default function CartPage() {
                         Enter your card details to complete the purchase
                       </DialogDescription>
                     </DialogHeader>
-                    <StripeProvider>
+                    <StripeProvider amount={totalAmount}>
                       <PaymentForm
                         amount={totalAmount}
                         onSuccess={() => {
@@ -157,7 +155,7 @@ export default function CartPage() {
                           clearCart();
                         }}
                         onError={(error) => {
-                          console.error("Payment failed:", error);
+                          console.error('Payment failed:', error);
                         }}
                       />
                     </StripeProvider>
