@@ -52,7 +52,7 @@ export function Header() {
 
     return (
         <header className="sticky top-0 z-50 w-full border-b bg-background backdrop-blur supports-[backdrop-filter]:bg-background/60">
-            <div className="container max-w-3xl flex h-14 items-center">
+            <div className="container max-w-full flex h-14 items-center">
                 <div className="mr-4 flex">
                     <a className="mr-6 flex items-center space-x-2" href="/">
                         <span className="font-bold">Namefi Astra</span>
