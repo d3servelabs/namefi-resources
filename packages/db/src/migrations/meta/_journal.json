@@ -22,6 +22,13 @@
       "when": 1742213164264,
       "tag": "0002_lyrical_archangel",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1742232665197,
+      "tag": "0003_sleepy_la_nuit",
+      "breakpoints": true
     }
   ]
 }
