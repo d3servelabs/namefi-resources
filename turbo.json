@@ -12,7 +12,8 @@
       "dependsOn": ["^typecheck"]
     },
     "build": {
-      "dependsOn": ["^build"]
+      "dependsOn": ["^build"],
+      "env": ["*"]
     }
   }
 }
