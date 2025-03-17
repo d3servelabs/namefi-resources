@@ -1,5 +1,6 @@
 import { db, usersTable } from '@namefi-astra/db';
 import { eq } from 'drizzle-orm';
+import { UserNotFoundError } from './errors';
 
 // Note: This is just created as an example for devs to follow
 export async function getUserEmail(userId: string) {
@@ -9,7 +10,7 @@ export async function getUserEmail(userId: string) {
   });
 
   if (!user) {
-    throw new Error('User not found');
+    throw new UserNotFoundError(userId);
   }
 
   return user;
@@ -22,7 +23,7 @@ export async function getUserStripeCustomerId(userId: string) {
   });
 
   if (!user) {
-    throw new Error('User not found');
+    throw new UserNotFoundError(userId);
   }
 
   return user;

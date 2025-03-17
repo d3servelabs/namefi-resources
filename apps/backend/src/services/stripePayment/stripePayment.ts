@@ -1,5 +1,6 @@
 import Stripe from 'stripe';
 import { secrets } from '#lib/env';
+import { PaymentMethodNotFoundError } from './errors';
 
 const stripe = new Stripe(secrets.STRIPE_SECRET_KEY);
 
@@ -61,9 +62,7 @@ export async function createPaymentIntent({
   });
 
   if (!customerHasPaymentMethod) {
-    throw new Error(
-      'The provided Stripe.PaymentMethod ID is not associated with this Stripe.Customer',
-    );
+    throw new PaymentMethodNotFoundError({ stripeCustomerId, paymentMethodId });
   }
 
   const stripePaymentIntent = await stripe.paymentIntents.create({
@@ -123,9 +122,10 @@ export async function deleteCustomerPaymentMethod({
   });
 
   if (!customerHasPaymentMethod) {
-    throw new Error(
-      'The provided Stripe.PaymentMethod ID is not associated with this Stripe.Customer',
-    );
+    throw new PaymentMethodNotFoundError({
+      stripeCustomerId,
+      paymentMethodId: paymentMethodToDeleteId,
+    });
   }
 
   await stripe.paymentMethods.detach(paymentMethodToDeleteId);

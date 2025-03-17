@@ -1,2 +1,2 @@
-export * as stripePaymentService from './stripePayment';
-export * as usersService from './users';
+export * as stripePaymentService from './stripePayment/stripePayment';
+export * as usersService from './users/users';
