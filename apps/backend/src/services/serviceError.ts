@@ -1,4 +1,5 @@
 export enum ServiceName {
+  PAYMENTS = 'PAYMENTS_SERVICE',
   USERS = 'USERS_SERVICE',
   STRIPE = 'STRIPE_PAYMENTS_SERVICE',
 }
