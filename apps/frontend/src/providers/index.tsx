@@ -1,6 +1,6 @@
 'use client';
 
-import { Loading } from '@/components/Loading';
+import { Loading } from '@/components/loading';
 import { NuqsAdapter } from 'nuqs/adapters/next/app';
 import { type ReactNode, Suspense } from 'react';
 import { ArtifactsProvider } from './artifacts';
