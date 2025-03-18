@@ -25,6 +25,7 @@
     "test:ci": "cd ../.. && act -j test --input package_filter=\"@namefi-astra/backend\" --container-architecture linux/amd64",
     "build": "tsup",
     "build:prod": "NODE_ENV=production tsup",
+    "bundle:workflows": "tsx scripts/bundle-workflows.ts",
     "start": "node dist/index.js",
     "start:bun": "bun dist/index.js",
     "start:temporal": "node dist/temporal/main.temporal.js",

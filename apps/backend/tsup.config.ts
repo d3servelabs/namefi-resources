@@ -30,7 +30,7 @@ const config: Options = {
 
 export default defineConfig([
   {
-    entry: ['src/index.ts'],
+    entry: ['src/index.ts', 'src/temporal/main.temporal.ts'],
     outDir: 'dist',
     ...config,
   },

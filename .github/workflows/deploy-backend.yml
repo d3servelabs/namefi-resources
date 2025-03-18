@@ -78,8 +78,8 @@ jobs:
           docker push "${DOCKER_TAG}"
 
 
-      # Deploy to Cloud Run
-      - name: Deploy to Cloud Run
+      # Deploy to Cloud Run (Backend API)
+      - name: Deploy to Cloud Run (Backend/API)
         id: deploy
         uses: google-github-actions/deploy-cloudrun@v2
         with:
@@ -87,7 +87,17 @@ jobs:
           region: ${{ env.REGION }}
           project_id: '${{ env.PROJECT_ID }}'
           image: '${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/cloud-run-source-deploy/${{ env.REPO_NAME }}/${{ env.SERVICE }}:${{ github.sha }}'
-          
+      
+      # Deploy to Cloud Run (Temporal)
+      - name: Deploy to Cloud Run (Backend/Temporal)
+        id: deploy-temporal
+        uses: google-github-actions/deploy-cloudrun@v2
+        with:
+          service: temporal-${{ env.SERVICE }}
+          region: ${{ env.REGION }}
+          project_id: '${{ env.PROJECT_ID }}'
+          image: '${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/cloud-run-source-deploy/${{ env.REPO_NAME }}/${{ env.SERVICE }}:${{ github.sha }}'
+           
       # Output the deployed URL
       - name: Show Output
         run: echo "Deployed to ${{ steps.deploy.outputs.url }}" 
