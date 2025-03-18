@@ -1,5 +1,5 @@
 import { Connection, Client as TemporalClient } from '@temporalio/client';
-import { secrets } from '#lib/env';
+import { config, secrets } from '#lib/env';
 
 const apiKey = secrets.TEMPORAL_API_KEY;
 const authOptions = apiKey
@@ -10,12 +10,12 @@ const authOptions = apiKey
   : {};
 
 export const temporalClient = new TemporalClient({
-  namespace: secrets.TEMPORAL_NAMESPACE,
+  namespace: config.TEMPORAL_NAMESPACE,
   connection: Connection.lazy({
     ...authOptions,
-    address: secrets.TEMPORAL_API_URL,
+    address: config.TEMPORAL_API_URL,
     metadata: {
-      'temporal-namespace': secrets.TEMPORAL_NAMESPACE,
+      'temporal-namespace': config.TEMPORAL_NAMESPACE,
     },
   }),
 });

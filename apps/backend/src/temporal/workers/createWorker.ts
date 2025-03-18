@@ -6,7 +6,7 @@ import {
   type WorkerOptions,
 } from '@temporalio/worker';
 import { isNotNil } from 'ramda';
-import { secrets } from '#lib/env';
+import { config, secrets } from '#lib/env';
 import { type TEMPORAL_ENUMS, TEMPORAL_QUEUES } from '../shared/enums';
 
 export async function createWorker({
@@ -42,9 +42,9 @@ export async function createWorker({
   try {
     // Step 1: Establish a connection with Temporal server.
     const connectionConfig: NativeConnectionOptions = {
-      address: secrets.TEMPORAL_API_URL,
+      address: config.TEMPORAL_API_URL,
       metadata: {
-        'temporal-namespace': secrets.TEMPORAL_NAMESPACE,
+        'temporal-namespace': config.TEMPORAL_NAMESPACE,
       },
     };
     const apiKey = secrets.TEMPORAL_API_KEY;
@@ -54,12 +54,12 @@ export async function createWorker({
     }
     connection = await NativeConnection.connect(connectionConfig);
 
-    console.log(`[${logLabel}]: Connected to ${secrets.TEMPORAL_API_URL}`);
+    console.log(`[${logLabel}]: Connected to ${config.TEMPORAL_API_URL}`);
     // Step 2: Register Workflows and Activities with the Worker.
     const worker = await Worker.create({
       ...(extraWorkerOptions || {}),
       connection,
-      namespace: secrets.TEMPORAL_NAMESPACE,
+      namespace: config.TEMPORAL_NAMESPACE,
       taskQueue: TEMPORAL_QUEUES[temporalEnum],
       ...workflowOption,
       activities,
