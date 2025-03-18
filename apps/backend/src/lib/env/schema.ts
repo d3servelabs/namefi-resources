@@ -5,6 +5,10 @@ export const secretsSchema = z.object({
   PRIVY_APP_SECRET: z.string(),
   PRIVY_WEBHOOK_SECRET: z.string(),
   STRIPE_SECRET_KEY: z.string(),
+  TEMPORAL_API_URL: z.string().url(),
+  TEMPORAL_NAMESPACE: z.string(),
+  TEMPORAL_API_KEY: z.string().optional(),
+  API_AUTH_KEY: z.string(),
 });
 
 export type SecretsSchema = z.infer<typeof secretsSchema>;

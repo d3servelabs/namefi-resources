@@ -1,0 +1,17 @@
+import type { Worker } from '@temporalio/worker';
+import { GreetActivities } from '../activities';
+import { TEMPORAL_ENUMS } from '../shared';
+import { createWorker } from './createWorker';
+
+export let WORKERS: Partial<Record<TEMPORAL_ENUMS, Worker>> | undefined;
+
+export async function initWorkers() {
+  WORKERS = {
+    [TEMPORAL_ENUMS.DEFAULT]: await createWorker({
+      activities: {
+        ...GreetActivities,
+      },
+      temporalEnum: TEMPORAL_ENUMS.DEFAULT,
+    }),
+  };
+}
