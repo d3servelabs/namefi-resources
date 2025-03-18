@@ -1,3 +1,5 @@
+import { Preloader } from '@/components/preloader';
+import { Toaster } from '@/components/ui/shadcn/sonner';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import type React from 'react';
@@ -29,7 +31,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Providers>{children}</Providers>
+        <Providers>
+          <Preloader />
+          <Toaster />
+          {children}
+        </Providers>
       </body>
     </html>
   );
