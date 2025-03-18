@@ -1,5 +1,6 @@
 'use client';
 
+import { config } from '@/lib/env';
 import { PrivyProvider } from '@privy-io/react-auth';
 import type { ReactNode } from 'react';
 
@@ -8,23 +9,15 @@ type Props = { children: ReactNode };
 export const SessionsProvider = ({ children }: Readonly<Props>) => {
   return (
     <PrivyProvider
-      appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID as string}
+      appId={config.PRIVY_APP_ID}
       config={{
-        loginMethods: [
-          'email',
-          'wallet',
-          'google',
-          'twitter',
-          'github',
-          'discord',
-        ],
         appearance: {
           theme: 'light',
-          accentColor: '#7C3AED',
-          logo: '/logo.svg',
+          accentColor: '#676FFF',
+          logo: 'https://your-logo-url',
         },
         embeddedWallets: {
-          createOnLogin: 'users-without-wallets',
+          createOnLogin: 'off',
         },
       }}
     >

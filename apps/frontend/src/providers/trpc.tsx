@@ -2,7 +2,7 @@
 
 import { config } from '@/lib/env';
 import type { AppRouter } from '@namefi-astra/backend/trpc';
-import { PrivyProvider, getAccessToken } from '@privy-io/react-auth';
+import { getAccessToken } from '@privy-io/react-auth';
 import {
   QueryClient,
   QueryClientProvider,
@@ -66,24 +66,10 @@ export function TrpcProvider({ children }: { children: React.ReactNode }) {
     }),
   );
   return (
-    <PrivyProvider
-      appId={config.PRIVY_APP_ID}
-      config={{
-        appearance: {
-          theme: 'light',
-          accentColor: '#676FFF',
-          logo: 'https://your-logo-url',
-        },
-        embeddedWallets: {
-          createOnLogin: 'off',
-        },
-      }}
-    >
-      <QueryClientProvider client={queryClient}>
-        <TRPCProvider trpcClient={trpcClient} queryClient={queryClient}>
-          {children}
-        </TRPCProvider>
-      </QueryClientProvider>
-    </PrivyProvider>
+    <QueryClientProvider client={queryClient}>
+      <TRPCProvider trpcClient={trpcClient} queryClient={queryClient}>
+        {children}
+      </TRPCProvider>
+    </QueryClientProvider>
   );
 }
