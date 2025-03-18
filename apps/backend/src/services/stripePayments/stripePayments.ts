@@ -51,28 +51,46 @@ export async function createPaymentIntent({
   totalAmountInUsdCents,
   stripeCustomerId,
   paymentMethodId,
+  confirmationToken,
 }: {
   totalAmountInUsdCents: number;
   stripeCustomerId: string;
-  paymentMethodId: string;
+  paymentMethodId?: string;
+  confirmationToken?: string;
 }) {
-  const customerHasPaymentMethod = await getCustomerHasPaymentMethod({
-    paymentMethodId,
-    stripeCustomerId,
-  });
+  if (paymentMethodId) {
+    const customerHasPaymentMethod = await getCustomerHasPaymentMethod({
+      paymentMethodId,
+      stripeCustomerId,
+    });
 
-  if (!customerHasPaymentMethod) {
-    throw new PaymentMethodNotFoundError({ stripeCustomerId, paymentMethodId });
+    if (!customerHasPaymentMethod) {
+      throw new PaymentMethodNotFoundError({
+        stripeCustomerId,
+        paymentMethodId,
+      });
+    }
   }
 
-  const stripePaymentIntent = await stripe.paymentIntents.create({
-    amount: totalAmountInUsdCents,
-    currency: 'usd',
-    capture_method: 'manual',
-    customer: stripeCustomerId,
-    confirm: true,
-    payment_method: paymentMethodId,
-  });
+  const paymentIntentParams: Stripe.PaymentIntentCreateParams = Object.assign(
+    {
+      amount: totalAmountInUsdCents,
+      currency: 'usd',
+      capture_method:
+        'manual' as Stripe.PaymentIntentCreateParams.CaptureMethod,
+      customer: stripeCustomerId,
+      confirm: true,
+      automatic_payment_methods: {
+        allow_redirects: 'never',
+        enabled: true,
+      } as Stripe.PaymentIntentCreateParams.AutomaticPaymentMethods,
+    },
+    paymentMethodId ? { payment_method: paymentMethodId } : null,
+    confirmationToken ? { confirmation_token: confirmationToken } : null,
+  );
+
+  const stripePaymentIntent =
+    await stripe.paymentIntents.create(paymentIntentParams);
 
   return { stripePaymentIntent };
 }

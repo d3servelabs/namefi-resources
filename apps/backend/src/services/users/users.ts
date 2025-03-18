@@ -16,9 +16,9 @@ export async function getUserEmail(userId: string) {
   return user;
 }
 
-export async function getUserStripeCustomerId(userId: string) {
+export async function getUserStripeCustomerId({ userId }: { userId: string }) {
   const user = await db.query.usersTable.findFirst({
-    columns: { stripeCustomerId: true, id: true },
+    columns: { stripeCustomerId: true },
     where: eq(usersTable.id, userId),
   });
 
@@ -26,5 +26,5 @@ export async function getUserStripeCustomerId(userId: string) {
     throw new UserNotFoundError(userId);
   }
 
-  return user;
+  return { stripeCustomerId: user.stripeCustomerId };
 }
