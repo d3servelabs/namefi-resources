@@ -24,7 +24,7 @@ import { useTRPC } from '@/utils/trpc';
 import type { ConfirmationToken } from '@stripe/stripe-js';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { Loader2 } from 'lucide-react';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 export default function CartPage() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -53,6 +53,29 @@ export default function CartPage() {
       },
     }),
   );
+
+  const { mutate: checkoutWithCart } = useMutation(
+    trpc.checkouts.checkoutWithCart.mutationOptions({
+      onSuccess: (data) => {
+        console.log(data);
+      },
+    }),
+  );
+
+  const handleSubmitPayment = useCallback(() => {
+    try {
+      checkoutWithCart({
+        totalAmountInUsdCents: totalAmount,
+        paymentProvider: 'STRIPE',
+        paymentProviderOptions: {
+          confirmationToken: confirmationToken?.id,
+        },
+      });
+      clearCart();
+    } catch (error) {
+      console.log(error);
+    }
+  }, [checkoutWithCart, confirmationToken, clearCart]);
 
   if (isLoading) {
     return (
@@ -178,9 +201,7 @@ export default function CartPage() {
                 </Dialog>
                 <Button
                   disabled={confirmationToken === null}
-                  onClick={() => {
-                    clearCart();
-                  }}
+                  onClick={handleSubmitPayment}
                 >
                   Submit Order
                 </Button>
