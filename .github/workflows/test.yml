@@ -1,0 +1,53 @@
+name: Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch: # Allow manual triggering from GitHub UI or CLI
+    inputs:
+      package_filter:
+        description: 'Filter for specific package to test (e.g., "@namefi-astra/backend")'
+        required: false
+        default: ''
+
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: "1.2.4"
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Setup test environment
+        run: |
+          # Copy the .env.test file to the root directory to ensure it's available for all packages
+          cp apps/backend/.env.test .env.test || echo "No .env.test file found"
+
+      - name: Run tests with filter
+        if: ${{ github.event.inputs.package_filter != '' }}
+        run: bun test --filter="${{ github.event.inputs.package_filter }}"
+
+      - name: Run all tests
+        if: ${{ github.event.inputs.package_filter == '' }}
+        run: bun test
+
+      # Optional: Add test coverage reporting
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: false
+          verbose: true
+        if: ${{ env.CODECOV_TOKEN != '' }}
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }} 
