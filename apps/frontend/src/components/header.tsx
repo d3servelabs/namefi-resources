@@ -1,9 +1,12 @@
 'use client';
 
+import animationData from '@/../public/namefi_to_nfi.json';
 import { useTRPC } from '@/utils/trpc';
 import { useLogin, useLogout, usePrivy } from '@privy-io/react-auth';
 import { useQuery } from '@tanstack/react-query';
-import { useMemo, useState } from 'react';
+import type { LottieRefCurrentProps } from 'lottie-react';
+import { useMemo, useRef, useState } from 'react';
+import { LazyLottie } from './lazyLottie';
 import { Button } from './ui/shadcn/button';
 import {
   Dialog,
@@ -27,6 +30,7 @@ export function Header() {
   } = usePrivy();
   const [showConfirm, setShowConfirm] = useState(false);
   const trpc = useTRPC();
+  const lottieRef = useRef<LottieRefCurrentProps>(null);
 
   const userQuery = useQuery({
     ...trpc.users.getUser.queryOptions(),
@@ -65,12 +69,38 @@ export function Header() {
     },
   });
 
+  const handleMouseEnter = () => {
+    if (lottieRef.current) {
+      lottieRef.current.setDirection(1);
+      lottieRef.current.play();
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (lottieRef.current) {
+      lottieRef.current.setDirection(-1);
+      lottieRef.current.play();
+    }
+  };
+
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container max-w-full flex h-14 items-center">
         <div className="mr-4 flex">
-          <a className="mr-6 flex items-center space-x-2" href="/">
-            <span className="font-bold">Namefi Astra</span>
+          <a
+            className="mr-6 flex items-center space-x-2"
+            href="/"
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+          >
+            <LazyLottie
+              id="nfi-to-namefi"
+              lottieRef={lottieRef}
+              getJson={() => Promise.resolve(animationData)}
+              loop={false}
+              autoplay={false}
+              style={{ width: 80, height: 24 }}
+            />
           </a>
         </div>
 
