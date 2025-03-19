@@ -89,11 +89,11 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
         )}
 
         {isAuthenticated && (
-          <DropdownMenu className="w-full">
+          <DropdownMenu>
             <DropdownMenuTrigger asChild={true}>
               <SidebarMenuButton
                 size="lg"
-                className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+                className="data-[state=open]:bg-sidebar-accent w-full data-[state=open]:text-sidebar-accent-foreground"
               >
                 <Avatar className="size-8 rounded-lg">
                   <AvatarImage alt={name} />
