@@ -19,7 +19,7 @@ export function StripeProvider({ children, amount }: StripeProviderProps) {
         mode: 'payment',
         currency: 'usd',
         amount: amount,
-        paymentMethodTypes: ['card'],
+        capture_method: 'manual',
         appearance: {
           theme: 'stripe',
         },

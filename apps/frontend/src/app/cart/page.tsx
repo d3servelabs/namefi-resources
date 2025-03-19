@@ -1,6 +1,6 @@
 'use client';
 
-import { PaymentForm } from '@/components/paymentForm';
+import { AddPaymentMethodForm } from '@/components/addPaymentForm';
 import { StripeProvider } from '@/components/providers/stripeProvider';
 import { Button } from '@/components/ui/shadcn/button';
 import {
@@ -21,6 +21,7 @@ import {
 } from '@/components/ui/shadcn/dialog';
 import { useAuth } from '@/hooks/useAuth';
 import { useTRPC } from '@/utils/trpc';
+import type { ConfirmationToken } from '@stripe/stripe-js';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { Loader2 } from 'lucide-react';
 import { useState } from 'react';
@@ -28,7 +29,9 @@ import { useState } from 'react';
 export default function CartPage() {
   const { isAuthenticated, isLoading } = useAuth();
   const trpc = useTRPC();
-  const [showPayment, setShowPayment] = useState(false);
+  const [showAddPaymentMethod, setShowAddPaymentMethod] = useState(false);
+  const [confirmationToken, setConfirmationToken] =
+    useState<ConfirmationToken | null>(null);
 
   const cartQuery = useQuery({
     ...trpc.carts.getOrCreate.queryOptions(),
@@ -136,23 +139,35 @@ export default function CartPage() {
                 >
                   Clear Cart
                 </Button>
-                <Dialog open={showPayment} onOpenChange={setShowPayment}>
+                <Dialog
+                  open={showAddPaymentMethod}
+                  onOpenChange={(open: boolean) => {
+                    if (open) {
+                      setConfirmationToken(null);
+                    }
+                    setShowAddPaymentMethod(open);
+                  }}
+                >
                   <DialogTrigger asChild={true}>
-                    <Button>Proceed to Payment</Button>
+                    <Button disabled={confirmationToken !== null}>
+                      {confirmationToken === null
+                        ? 'Add Payment Method'
+                        : 'Payment Method Added'}
+                    </Button>
                   </DialogTrigger>
                   <DialogContent className="sm:max-w-[425px]">
                     <DialogHeader>
-                      <DialogTitle>Payment Details</DialogTitle>
+                      <DialogTitle>Payment Method Details</DialogTitle>
                       <DialogDescription>
-                        Enter your card details to complete the purchase
+                        Enter your payment method details. We won't charge you
+                        until you confirm your order.
                       </DialogDescription>
                     </DialogHeader>
                     <StripeProvider amount={totalAmount}>
-                      <PaymentForm
-                        amount={totalAmount}
-                        onSuccess={() => {
-                          setShowPayment(false);
-                          clearCart();
+                      <AddPaymentMethodForm
+                        onSuccess={(confirmationToken) => {
+                          setConfirmationToken(confirmationToken);
+                          setShowAddPaymentMethod(false);
                         }}
                         onError={(error) => {
                           console.error('Payment failed:', error);
@@ -161,6 +176,14 @@ export default function CartPage() {
                     </StripeProvider>
                   </DialogContent>
                 </Dialog>
+                <Button
+                  disabled={confirmationToken === null}
+                  onClick={() => {
+                    clearCart();
+                  }}
+                >
+                  Submit Order
+                </Button>
               </div>
             </div>
           </CardFooter>
