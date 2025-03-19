@@ -1,10 +1,12 @@
 import { Preloader } from '@/components/preloader';
+import { SidebarInset, SidebarProvider } from '@/components/ui/shadcn/sidebar';
 import { Toaster } from '@/components/ui/shadcn/sonner';
 import { cn } from '@/lib/utils';
 import { Providers } from '@/providers';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import type { ReactNode } from 'react';
+import { AppSidebar } from 'src/components/sidebars';
 
 import './globals.css';
 
@@ -40,7 +42,11 @@ export default function RootLayout({
         <Providers>
           <Preloader />
           <Toaster />
-          {children}
+
+          <SidebarProvider>
+            <AppSidebar />
+            <SidebarInset>{children}</SidebarInset>
+          </SidebarProvider>
         </Providers>
       </body>
     </html>

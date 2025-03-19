@@ -1,7 +1,7 @@
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
 import { useQuery } from '@tanstack/react-query';
 import type { LottieComponentProps } from 'lottie-react';
-import { Suspense, lazy } from 'react';
+import { Suspense, lazy, useMemo } from 'react';
 
 const LazyLottieComponent = lazy(() => import('lottie-react'));
 
@@ -13,27 +13,27 @@ interface LottieProps<T extends Record<string, unknown>> {
 export function LazyLottie<T extends Record<string, unknown>>({
   getJson,
   id,
-  ref,
   ...props
 }: LottieProps<T> & Omit<LottieComponentProps, 'animationData'>) {
+  const queryKey = useMemo(() => [id], [id]);
+
   const { data } = useQuery({
-    queryKey: [id],
+    queryKey,
     queryFn: getJson,
     enabled: typeof window !== 'undefined',
   });
 
+  const skeletonStyle = useMemo(
+    () => ({ width: `${props.width}px`, height: `${props.height}px` }),
+    [props.width, props.height],
+  );
+
   if (!data) {
-    return (
-      <Skeleton className={`w-[${props.width}px] h-[${props.height}px]`} />
-    );
+    return <Skeleton style={skeletonStyle} />;
   }
 
   return (
-    <Suspense
-      fallback={
-        <Skeleton className={`w-[${props.width}px] h-[${props.height}px]`} />
-      }
-    >
+    <Suspense fallback={<Skeleton style={skeletonStyle} />}>
       <LazyLottieComponent animationData={data} {...props} />
     </Suspense>
   );
