@@ -21,8 +21,8 @@
   },
   "devDependencies": {
     "@namefi-astra/typescript": "workspace:*",
-    "@types/node": "^20.11.17",
-    "@types/ws": "^8.5.14",
+    "@types/node": "^22.13.10",
+    "@types/ws": "^8.18.0",
     "drizzle-kit": "^0.30.5"
   },
   "peerDependencies": {

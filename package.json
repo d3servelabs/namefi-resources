@@ -5,10 +5,10 @@
   "engines": {
     "node": ">=22.13.1"
   },
-  "packageManager": "bun@1.2.4",
+  "packageManager": "bun@1.2.5",
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
-    "lefthook": "^1.11.2",
+    "lefthook": "^1.11.3",
     "turbo": "^2.4.4"
   },
   "scripts": {
