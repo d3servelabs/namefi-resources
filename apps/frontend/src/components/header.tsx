@@ -12,7 +12,6 @@ import { Separator } from '@/components/ui/shadcn/separator';
 import { SidebarTrigger } from '@/components/ui/shadcn/sidebar';
 import { cn } from '@/lib/utils';
 import { ShoppingCartIcon } from 'lucide-react';
-import Link from 'next/link';
 import { useQueryState } from 'nuqs';
 import {
   type ForwardRefExoticComponent,
@@ -36,23 +35,21 @@ export const Header: ForwardRefExoticComponent<HeaderProps> = forwardRef<
     <header
       ref={ref}
       className={cn(
-        'flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px]',
+        'flex h-16 shrink-0 items-center w-full gap-2 border-b px-4',
         className,
       )}
       {...rest}
     >
       <div className="flex items-center gap-2">
-        <SidebarTrigger />
+        <SidebarTrigger className="-ml-1 mr-2" />
         {domain && <h1 className="text-2xl font-bold">{domain}</h1>}
       </div>
-      <Separator orientation="vertical" className="h-4" />
+      <Separator orientation="vertical" className="mr-2 h-4" />
       <div className="w-full items-center justify-between gap-4 flex">
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem className="hidden md:block">
-              <BreadcrumbLink asChild={true}>
-                <Link href="/">Home</Link>
-              </BreadcrumbLink>
+              <BreadcrumbLink href="#">Home</BreadcrumbLink>
             </BreadcrumbItem>
             {/*<BreadcrumbSeparator className="hidden md:block" />*/}
             {/*<BreadcrumbItem>*/}
