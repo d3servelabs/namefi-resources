@@ -35,7 +35,7 @@ export const Header: ForwardRefExoticComponent<HeaderProps> = forwardRef<
     <header
       ref={ref}
       className={cn(
-        'flex h-16 shrink-0 items-center w-full gap-2 border-b px-4',
+        'flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6',
         className,
       )}
       {...rest}
