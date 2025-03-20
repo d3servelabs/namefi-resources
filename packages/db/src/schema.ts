@@ -12,6 +12,7 @@ import {
   jsonb,
   pgEnum,
   pgTable,
+  primaryKey,
   text,
   timestamp,
   unique,
@@ -310,5 +311,24 @@ export const dnsRecordsTable = pgTable(
       table.class,
       table.rdata,
     ),
+  ],
+);
+
+/**
+ * In our specific indexer situation, for each domain name, only one chainId and one ownerAddress is possible.
+ */
+export const namefiNftTable = pgTable(
+  'namefi_nft',
+  {
+    ...normalizedDomain, // is treated as an id and primary key
+    chainId: integer('chain_id').notNull(),
+    asOfBlockNumber: integer('as_of_block_number').notNull(),
+    ownerAddress: text('owner_address').notNull(),
+  },
+  (table) => [
+    primaryKey({ columns: [table.normalizedDomainName] }),
+    // TODO: in the future we can add an index of "parent domain" to speed up queries
+    index('namefi_nft_owner_address_idx').on(table.ownerAddress),
+    index('namefi_nft_chain_id_idx').on(table.chainId),
   ],
 );

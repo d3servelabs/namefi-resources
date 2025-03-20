@@ -46,7 +46,7 @@ describe('Search Router', () => {
 
     // Check availability items have required structure
     for (const item of result.bulkAvailability) {
-      expect(item).toHaveProperty('domainLdh');
+      expect(item).toHaveProperty('domain');
       expect(item).toHaveProperty('availability');
       expect(typeof item.availability).toBe('boolean');
       expect(item).toHaveProperty('priceInUSD');

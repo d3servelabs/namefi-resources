@@ -12,14 +12,15 @@
  * Behind the scenes, it will query the database for domain.
  */
 
-import { createHash } from 'node:crypto';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { z } from 'zod';
+import { getDomainInfo } from '#services/namefi-registry';
 import { createTRPCRouter, publicProcedure } from '../base';
 
 export const getSuggestions = (
   query: string,
   parentDomain: '0x.city' | 'defi.build',
-) => {
+): NamefiNormalizedDomain[] => {
   // re-write the query by keeping only letters, digits, dash, underscore and dot characters
   const trimmedQuery = query.replace(/[^a-zA-Z0-9-_.]/g, '');
 
@@ -35,23 +36,7 @@ export const getSuggestions = (
     `${trimmedQuery}-awesome.${parentDomain}`,
     `${trimmedQuery}-fantastic.${parentDomain}`,
     `${trimmedQuery}-wonderful.${parentDomain}`,
-  ];
-};
-
-const getDeterministicRandomAvailability = (domainLdh: string) => {
-  // use the domainLdh to generate a deterministic random number
-  const hash = createHash('sha256').update(domainLdh).digest('hex');
-  const randomNumber = Number.parseInt(hash.slice(0, 8), 16) % 100;
-  return randomNumber > 50;
-};
-
-const getBulkAvailabilityAndPricing = async (domainLdhs: string[]) => {
-  // MOCK response. Respond the query term as is, plus 2 variations of it.
-  return domainLdhs.map((domainLdh) => ({
-    domainLdh,
-    availability: getDeterministicRandomAvailability(domainLdh),
-    priceInUSD: 5, // always 5 USD
-  }));
+  ] as NamefiNormalizedDomain[];
 };
 
 export const searchRouter = createTRPCRouter({
@@ -66,7 +51,7 @@ export const searchRouter = createTRPCRouter({
       const { query, parentDomain } = input;
 
       const suggestions = getSuggestions(query, parentDomain);
-      const bulkAvailability = await getBulkAvailabilityAndPricing(suggestions);
+      const bulkAvailability = await getDomainInfo(suggestions);
 
       return { suggestions, bulkAvailability };
     }),

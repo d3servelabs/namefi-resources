@@ -35,6 +35,8 @@
     "@hono/zod-openapi": "^0.19.2",
     "@namefi-astra/db": "workspace:*",
     "@namefi-astra/env": "workspace:*",
+    "@namefi-astra/utils": "workspace:*",
+    "@namefi-astra/zod-dns": "workspace:*",
     "@neondatabase/serverless": "^0.10.4",
     "@privy-io/server-auth": "^1.18.12",
     "@temporalio/activity": "^1.11.7",

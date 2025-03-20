@@ -1,5 +1,22 @@
 {
-  "name": "utils",
+  "name": "@namefi-astra/utils",
   "version": "0.0.0",
-  "private": true
+  "private": true,
+  "exports": {
+    ".": "./index.ts",
+    "./*": "./src/*.ts"
+  },
+  "scripts": {
+    "check": "biome check",
+    "check:fix": "biome check --write",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest --run"
+  },
+  "peerDependencies": {
+    "@namefi-astra/zod-dns": "workspace:*",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "vitest": "^3.0.8"
+  }
 }

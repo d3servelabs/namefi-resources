@@ -18,6 +18,8 @@
         "@hono/zod-openapi": "^0.19.2",
         "@namefi-astra/db": "workspace:*",
         "@namefi-astra/env": "workspace:*",
+        "@namefi-astra/utils": "workspace:*",
+        "@namefi-astra/zod-dns": "workspace:*",
         "@neondatabase/serverless": "^0.10.4",
         "@privy-io/server-auth": "^1.18.12",
         "@temporalio/activity": "^1.11.7",
@@ -135,12 +137,19 @@
       },
     },
     "packages/utils": {
-      "name": "utils",
+      "name": "@namefi-astra/utils",
       "version": "0.0.0",
+      "devDependencies": {
+        "vitest": "^3.0.8",
+      },
+      "peerDependencies": {
+        "@namefi-astra/zod-dns": "workspace:*",
+        "zod": "^3.24.2",
+      },
     },
     "packages/zod-dns": {
       "name": "@namefi-astra/zod-dns",
-      "version": "0.0.0-pre.2",
+      "version": "0.0.0-pre.3",
       "dependencies": {
         "@namefi-astra/typescript": "workspace:*",
       },
@@ -458,6 +467,8 @@
     "@namefi-astra/frontend": ["@namefi-astra/frontend@workspace:apps/frontend"],
 
     "@namefi-astra/typescript": ["@namefi-astra/typescript@workspace:tooling/typescript"],
+
+    "@namefi-astra/utils": ["@namefi-astra/utils@workspace:packages/utils"],
 
     "@namefi-astra/zod-dns": ["@namefi-astra/zod-dns@workspace:packages/zod-dns"],
 
@@ -1824,8 +1835,6 @@
     "utf-8-validate": ["utf-8-validate@5.0.10", "", { "dependencies": { "node-gyp-build": "^4.3.0" } }, "sha512-Z6czzLq4u8fPOyx7TU6X3dvUZVvoJmxSQ+IcrlmagKhilxlhZgxPK6C5Jqbkw1IDUmFTM+cz9QDnnLTwDz/2gQ=="],
 
     "util-deprecate": ["util-deprecate@1.0.2", "", {}, "sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw=="],
-
-    "utils": ["utils@workspace:packages/utils"],
 
     "uuid": ["uuid@9.0.1", "", { "bin": { "uuid": "dist/bin/uuid" } }, "sha512-b+1eJOlsR9K8HJpow9Ok3fiWOWSIcIzXodvv0rQjVoOVNpWMpxf1wZNpt4y9h10odCNrqnYp1OBzRktckBe3sA=="],
 
