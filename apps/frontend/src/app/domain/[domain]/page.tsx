@@ -5,5 +5,5 @@ type Props = {
 export default async function DomainPage({ params }: Props) {
   const { domain } = await params;
 
-  return <div className="p-6">Domain: {domain}</div>;
+  return <div className="p-4">Domain: {domain}</div>;
 }

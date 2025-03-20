@@ -63,13 +63,13 @@ export function AppSidebar() {
     <Sidebar collapsible="icon">
       <SidebarHeader>
         <SidebarGroup>
-          <div className="flex items-center justify-between">
+          <div className="flex overflow-hidden items-center justify-between">
             <Logotype />
             {!isCollapsed && (
               <div
                 className={cn(
                   'flex items-center justify-center size-6 rounded border border-zinc-700 text-xs',
-                  '',
+                  'hidden',
                 )}
               >
                 ID
