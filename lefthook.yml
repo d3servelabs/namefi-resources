@@ -8,3 +8,5 @@ pre-push:
   commands:
     validate:
       run: bun validate
+    validate-secrets:
+      run: bun validate:secrets

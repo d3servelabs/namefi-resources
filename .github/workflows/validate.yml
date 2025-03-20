@@ -2,7 +2,7 @@ name: Validate
 
 on:
   pull_request:
-
+    
 jobs:
   validate:
     runs-on: ubuntu-latest
@@ -19,5 +19,15 @@ jobs:
       - name: Install dependencies
         run: bun install
 
+      - name: Add Infisical
+        run: |
+          curl -1sLf 'https://dl.cloudsmith.io/public/infisical/infisical-cli/setup.deb.sh' | sudo -E bash
+          sudo apt-get update && sudo apt-get install -y infisical
+
       - name: Run validation
         run: bun validate
+
+      - name: Run validation of secrets
+        run: bun validate:secrets
+        env:
+          INFISICAL_SERVICE_TOKEN: ${{ secrets.INFISICAL_SERVICE_TOKEN }}

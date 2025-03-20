@@ -12,6 +12,7 @@ export interface LoadConfigOptions<T> {
   configSchema: ZodSchema<T>;
 }
 
+// TODO(Sami -> Sid): config should be overridable by env vars, otherwise we would have to commit-push-build-deploy every time we want to change a config
 export const loadConfig = <T>(options: LoadConfigOptions<T>) => {
   const validatedBaseConfig = baseConfigSchema.parse(process.env);
   const envConfigPath = `${options.configPath}/${validatedBaseConfig.ENVIRONMENT}`;

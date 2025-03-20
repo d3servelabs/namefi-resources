@@ -8,7 +8,8 @@
     "with-env": "infisical run --token=$INFISICAL_SERVICE_TOKEN -- bun run",
     "build": "next build",
     "start": "next start",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "validate:secrets": "bun run with-env src/lib/env/load.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^4.1.3",

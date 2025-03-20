@@ -21,9 +21,10 @@
     "test:watch": "NODE_ENV=test turbo test:watch",
     "sherif": "bunx sherif@latest",
     "sherif:fix": "bunx sherif@latest -f",
-    "validate": "turbo typecheck && bun check && bun sherif",
     "test:ci": "act -j test --container-architecture linux/amd64",
-    "test:ci:dry": "act -j test -n"
+    "test:ci:dry": "act -j test -n",
+    "validate": "turbo typecheck && bun check && bun sherif",
+    "validate:secrets": "turbo validate:secrets"
   },
   "trustedDependencies": ["@biomejs/biome", "esbuild", "lefthook", "sharp"]
 }

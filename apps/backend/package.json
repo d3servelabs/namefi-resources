@@ -26,7 +26,9 @@
     "build": "tsup",
     "build:prod": "NODE_ENV=production tsup",
     "start": "node dist/index.js",
-    "start:bun": "bun dist/index.js"
+    "start:bun": "bun dist/index.js",
+    "start:temporal": "node dist/temporal/main.temporal.js",
+    "validate:secrets": "bun run with-env src/lib/env/index.ts"
   },
   "dependencies": {
     "@hono/node-server": "^1.13.8",

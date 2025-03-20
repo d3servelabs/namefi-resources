@@ -27,6 +27,9 @@
     "build": {
       "dependsOn": ["^build"],
       "env": ["*"]
+    },
+    "validate:secrets": {
+      "env": ["*"]
     }
   }
 }
