@@ -1,10 +1,17 @@
 'use client';
 
 import { config } from '@/lib/env';
-import { PrivyProvider } from '@privy-io/react-auth';
+import {
+  type PrivyProviderProps,
+  PrivyProvider as _PrivyProvider,
+} from '@privy-io/react-auth';
 import type { ReactNode } from 'react';
+import type React from 'react';
 
 type Props = { children: ReactNode };
+
+// TODO: This is temporary until we have a proper type from Privy
+const PrivyProvider = _PrivyProvider as unknown as React.FC<PrivyProviderProps>;
 
 export const SessionsProvider = ({ children }: Readonly<Props>) => {
   return (
