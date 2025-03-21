@@ -75,8 +75,7 @@ export function AppSidebar() {
     [search],
   );
 
-  const isCollapsed = state === 'collapsed';
-  // const isExpanded = state === "expanded";
+  const isCollapsed = useMemo(() => state === 'collapsed', [state]);
 
   const handleSearch = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     setSearch(event.target.value);
