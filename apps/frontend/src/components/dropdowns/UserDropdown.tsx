@@ -31,10 +31,12 @@ import { cn } from '@/lib/utils';
 import { abbreviation, shortage } from '@/utils/string';
 import { useLogin, useLogout } from '@privy-io/react-auth';
 import {
+  Loader2Icon,
   LogOutIcon,
   MoreHorizontalIcon,
   SettingsIcon,
   UserIcon,
+  WalletIcon,
 } from 'lucide-react';
 import {
   type ForwardRefExoticComponent,
@@ -44,11 +46,13 @@ import {
   useCallback,
 } from 'react';
 
-export type UserDropdownProps = HTMLAttributes<HTMLDivElement>;
+export type UserDropdownProps = HTMLAttributes<HTMLDivElement> & {
+  collapsed?: boolean;
+};
 
 export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
   forwardRef<HTMLDivElement, UserDropdownProps>(function UserDropdown(
-    { className, ...rest }: UserDropdownProps,
+    { collapsed, className, ...rest }: UserDropdownProps,
     ref: ForwardedRef<HTMLDivElement>,
   ) {
     const { isLoading, isAuthenticated, privyUser } = useAuth();
@@ -84,7 +88,14 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
             disabled={isLoading}
             onClick={handleConnect}
           >
-            {isLoading ? 'Loading...' : 'Connect Wallet'}
+            {isLoading ? (
+              <Loader2Icon className="animate-spin size-6" />
+            ) : (
+              <WalletIcon className="size-6" />
+            )}
+            {!collapsed && (
+              <span>{isLoading ? 'Loading...' : 'Connect Wallet'}</span>
+            )}
           </Button>
         )}
 
@@ -101,12 +112,16 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
                     {abbreviation(name.replace('0x', ''), true)}
                   </AvatarFallback>
                 </Avatar>
-                <span className="text-sm hidden md:block">
-                  {shortage(name, 11)}
-                </span>
-                <Button variant="ghost" size="icon">
-                  <MoreHorizontalIcon className="h-5 w-5" />
-                </Button>
+                {!collapsed && (
+                  <span className="text-sm hidden md:block">
+                    {shortage(name, 11)}
+                  </span>
+                )}
+                {!collapsed && (
+                  <Button variant="ghost" size="icon">
+                    <MoreHorizontalIcon className="h-5 w-5" />
+                  </Button>
+                )}
               </SidebarMenuButton>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-56">
@@ -131,7 +146,6 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
                 <AlertDialogContent>
                   <AlertDialogHeader>
                     <AlertDialogTitle>
-                      {' '}
                       Are you sure you want to sign out?
                     </AlertDialogTitle>
                     <AlertDialogDescription>

@@ -43,25 +43,26 @@ export function SidebarDomains({ name, domains }: RecentDomainsProps) {
   return (
     <Collapsible open={isOpen} onOpenChange={setIsOpen} className="w-full">
       <SidebarGroup>
-        <CollapsibleTrigger asChild={true}>
-          <div className="flex items-center justify-between px-4 py-2 cursor-pointer">
-            {!isCollapsed && (
+        {!isCollapsed && (
+          <CollapsibleTrigger asChild={true}>
+            <div className="flex items-center justify-between px-4 py-2 cursor-pointer">
               <span className="text-xs text-zinc-500">{name}</span>
-            )}
-            <ChevronDown
-              className={cn(
-                'h-4 w-4 text-zinc-500 transition-transform',
-                !isOpen && 'transform -rotate-90',
-              )}
-            />
-          </div>
-        </CollapsibleTrigger>
+              <ChevronDown
+                className={cn(
+                  'h-4 w-4 text-zinc-500 transition-transform',
+                  !isOpen && 'transform -rotate-90',
+                )}
+              />
+            </div>
+          </CollapsibleTrigger>
+        )}
         <CollapsibleContent>
           <SidebarGroupContent>
             <SidebarMenu>
               {domains.map((domain) => (
                 <SidebarMenuItem key={domain}>
                   <SidebarMenuButton
+                    tooltip={domain}
                     // onClick={handleDomain(domain)}
                     asChild={true}
                   >

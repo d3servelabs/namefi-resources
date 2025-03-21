@@ -30,6 +30,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { type ChangeEvent, useCallback, useMemo, useState } from 'react';
 import { SidebarDomains } from './SidebarDomains';
 import type { NavItem } from './types';
 
@@ -52,12 +53,34 @@ const ITEMS: NavItem[] = [
 ];
 
 export function AppSidebar() {
+  const [search, setSearch] = useState('');
+
   const pathname = usePathname();
 
   const { state } = useSidebar();
 
+  const domains = useMemo(
+    () =>
+      DOMAINS.filter((domain) =>
+        domain.toLowerCase().includes(search.toLowerCase()),
+      ),
+    [search],
+  );
+
+  const items = useMemo(
+    () =>
+      ITEMS.filter((item) =>
+        item.title.toLowerCase().includes(search.toLowerCase()),
+      ),
+    [search],
+  );
+
   const isCollapsed = state === 'collapsed';
   // const isExpanded = state === "expanded";
+
+  const handleSearch = useCallback((event: ChangeEvent<HTMLInputElement>) => {
+    setSearch(event.target.value);
+  }, []);
 
   return (
     <Sidebar collapsible="icon">
@@ -84,6 +107,8 @@ export function AppSidebar() {
                 Search
               </Label>
               <SidebarInput
+                value={search}
+                onChange={handleSearch}
                 id="search"
                 placeholder="Search..."
                 className="pl-8"
@@ -95,44 +120,49 @@ export function AppSidebar() {
       </SidebarHeader>
 
       <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {ITEMS.map((item, index) => {
-                const Icon = item.icon;
+        {items.length > 0 && (
+          <SidebarGroup>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {items.map((item, index) => {
+                  const Icon = item.icon;
 
-                return (
-                  <SidebarMenuItem key={`${item.href}-${index}`}>
-                    <SidebarMenuButton
-                      isActive={isRouteActive(item, pathname)}
-                      asChild={true}
-                    >
-                      <Link href={item.href} target={item.target}>
-                        {Icon && (
-                          <Icon
-                            className={cn(index === 0 && 'text-emerald-500')}
-                          />
-                        )}
-                        <span>{item.title}</span>
-                        {item.badge && (
-                          <Badge className="ml-auto text-white bg-emerald-500 h-5 w-5 flex items-center justify-center rounded-full p-0">
-                            {item.badge.content}
-                          </Badge>
-                        )}
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                );
-              })}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
+                  return (
+                    <SidebarMenuItem key={`${item.href}-${index}`}>
+                      <SidebarMenuButton
+                        tooltip={item.title}
+                        isActive={isRouteActive(item, pathname)}
+                        asChild={true}
+                      >
+                        <Link href={item.href} target={item.target}>
+                          {Icon && (
+                            <Icon
+                              className={cn(index === 0 && 'text-emerald-500')}
+                            />
+                          )}
+                          <span>{item.title}</span>
+                          {item.badge && (
+                            <Badge className="ml-auto text-white bg-emerald-500 h-5 w-5 flex items-center justify-center rounded-full p-0">
+                              {item.badge.content}
+                            </Badge>
+                          )}
+                        </Link>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  );
+                })}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        )}
 
-        <SidebarDomains name="Domains" domains={DOMAINS} />
+        {domains.length > 0 && (
+          <SidebarDomains name="Domains" domains={domains} />
+        )}
       </SidebarContent>
 
       <SidebarFooter>
-        <UserDropdown />
+        <UserDropdown collapsed={isCollapsed} />
       </SidebarFooter>
 
       <SidebarRail />
