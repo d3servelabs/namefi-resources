@@ -1,29 +1,43 @@
 'use client';
 
 import { useAuth } from '@/hooks/useAuth';
+import { cn } from '@/lib/utils';
+import { formatAmountInUSD } from '@/utils/number';
 import { useTRPC } from '@/utils/trpc';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { Search } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { type FC, type HTMLAttributes, useMemo, useState } from 'react';
 import { Button } from './ui/shadcn/button';
 import { Card, CardContent } from './ui/shadcn/card';
 import { Input } from './ui/shadcn/input';
 
-// Dummy domain data
-const DUMMY_DOMAINS = [
-  { name: 'example.com', price: 1999 },
-  { name: 'mydomain.com', price: 2499 },
-  { name: 'coolsite.com', price: 1599 },
-  { name: 'awesome.com', price: 3999 },
-  { name: 'newdomain.com', price: 1799 },
-];
+export type DomainSearchProps = HTMLAttributes<HTMLDivElement>;
 
-export function DomainSearch() {
-  const [searchQuery, setSearchQuery] = useState('');
+export const DomainSearch: FC<DomainSearchProps> = ({
+  className,
+  ...rest
+}: DomainSearchProps) => {
+  const [query, setQuery] = useState('');
+
   const router = useRouter();
+
   const trpc = useTRPC();
+
   const { isAuthenticated } = useAuth();
+
+  const searchQuery = useQuery({
+    ...trpc.search.search.queryOptions({
+      query,
+      parentDomain: '0x.city',
+    }),
+    enabled: isAuthenticated && query.length > 0,
+  });
+
+  const domains = useMemo(
+    () => searchQuery?.data?.bulkAvailability ?? [],
+    [searchQuery?.data?.bulkAvailability],
+  );
 
   // Get cart data to check if domains are already in cart
   const cartQuery = useQuery({
@@ -62,16 +76,19 @@ export function DomainSearch() {
     )?.id;
   };
 
-  const handleDomainAction = (domain: { name: string; price: number }) => {
-    if (isDomainInCart(domain.name)) {
-      const itemId = getCartItemId(domain.name);
+  const handleDomainAction = (domain: {
+    domain: string;
+    priceInUSD: number;
+  }) => {
+    if (isDomainInCart(domain.domain)) {
+      const itemId = getCartItemId(domain.domain);
       if (itemId) {
         removeFromCart.mutate(itemId);
       }
     } else {
       addToCart.mutate({
-        normalizedDomainName: domain.name,
-        amountInUSDCents: domain.price,
+        normalizedDomainName: domain.domain,
+        amountInUSDCents: domain.priceInUSD * 100,
       });
     }
   };
@@ -81,12 +98,12 @@ export function DomainSearch() {
   }
 
   return (
-    <div className="container mx-auto py-8 space-y-6">
+    <div className={cn('flex gap-4 flex-col', className)} {...rest}>
       <div className="flex gap-4">
         <Input
           placeholder="Search for a domain..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
+          value={query}
+          onChange={(event) => setQuery(event.target.value)}
           className="flex-1"
         />
         <Button>
@@ -103,30 +120,43 @@ export function DomainSearch() {
         </div>
       ) : null}
 
-      <div className="grid gap-4">
-        {DUMMY_DOMAINS.filter((domain) =>
-          domain.name.toLowerCase().includes(searchQuery.toLowerCase()),
-        ).map((domain) => (
-          <Card key={domain.name}>
-            <CardContent className="flex items-center justify-between p-4">
+      <div className="flex flex-col gap-4">
+        {domains.map((domain) => (
+          <Card
+            key={domain.domain}
+            className={cn(
+              'transition-all duration-150',
+              domain.availability
+                ? 'border-green-500/20 hover:border-green-500'
+                : 'border-red-500/20 hover:border-red-500',
+            )}
+          >
+            <CardContent className="flex items-center justify-between">
               <div>
-                <h3 className="font-medium">{domain.name}</h3>
+                <h3 className="font-medium">{domain.domain}</h3>
                 <p className="text-sm text-muted-foreground">
-                  ${(domain.price / 100).toFixed(2)}
+                  {formatAmountInUSD(domain.priceInUSD)}
                 </p>
               </div>
-              <Button
-                variant={isDomainInCart(domain.name) ? 'secondary' : 'default'}
-                onClick={() => handleDomainAction(domain)}
-              >
-                {isDomainInCart(domain.name)
-                  ? 'Remove from Cart'
-                  : 'Add to Cart'}
-              </Button>
+              {domain.availability && (
+                <Button
+                  className="cursor-pointer"
+                  variant={
+                    isDomainInCart(domain.domain) ? 'secondary' : 'default'
+                  }
+                  onClick={() => handleDomainAction(domain)}
+                >
+                  {isDomainInCart(domain.domain)
+                    ? 'Remove from Cart'
+                    : 'Add to Cart'}
+                </Button>
+              )}
             </CardContent>
           </Card>
         ))}
       </div>
     </div>
   );
-}
+};
+
+DomainSearch.displayName = 'DomainSearch';

@@ -1,9 +1,18 @@
 'use client';
 
-import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { CartDropdown } from '@/components/dropdowns/CartDropdown';
 import { UserDropdown } from '@/components/dropdowns/UserDropdown';
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+} from '@/components/ui/shadcn/breadcrumb';
+import { Separator } from '@/components/ui/shadcn/separator';
+import { SidebarTrigger } from '@/components/ui/shadcn/sidebar';
 import { cn } from '@/lib/utils';
+import Link from 'next/link';
+import { useQueryState } from 'nuqs';
 import {
   type ForwardRefExoticComponent,
   type ForwardedRef,
@@ -20,17 +29,36 @@ export const Header: ForwardRefExoticComponent<HeaderProps> = forwardRef<
   { className, ...rest }: HeaderProps,
   ref: ForwardedRef<HTMLDivElement>,
 ) {
+  const [domain] = useQueryState('domain');
+
   return (
     <header
       ref={ref}
       className={cn(
-        'flex h-14 items-center gap-4 border-b backdrop-blur-xl bg-muted/40 px-4 lg:h-[60px]',
+        'flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px]',
         className,
       )}
       {...rest}
     >
+      <div className="flex items-center gap-2">
+        <SidebarTrigger />
+        {domain && <h1 className="text-2xl font-bold">{domain}</h1>}
+      </div>
+      <Separator orientation="vertical" className="h-4" />
       <div className="w-full items-center justify-between gap-4 flex">
-        <Breadcrumbs />
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem className="hidden md:block">
+              <BreadcrumbLink asChild={true}>
+                <Link href="/">Home</Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            {/*<BreadcrumbSeparator className="hidden md:block" />*/}
+            {/*<BreadcrumbItem>*/}
+            {/*  <BreadcrumbPage>Data Fetching</BreadcrumbPage>*/}
+            {/*</BreadcrumbItem>*/}
+          </BreadcrumbList>
+        </Breadcrumb>
         <div className="flex items-center gap-4">
           <CartDropdown />
           <UserDropdown />
