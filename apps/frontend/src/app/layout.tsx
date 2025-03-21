@@ -1,3 +1,5 @@
+import { Footer } from '@/components/footer';
+import { Header } from '@/components/header';
 import { Preloader } from '@/components/preloader';
 import { SidebarInset, SidebarProvider } from '@/components/ui/shadcn/sidebar';
 import { Toaster } from '@/components/ui/shadcn/sonner';
@@ -45,7 +47,11 @@ export default function RootLayout({
 
           <SidebarProvider>
             <AppSidebar />
-            <SidebarInset>{children}</SidebarInset>
+            <SidebarInset>
+              <Header className="sticky top-0 left-0" />
+              {children}
+              <Footer className="hidden" />
+            </SidebarInset>
           </SidebarProvider>
         </Providers>
       </body>

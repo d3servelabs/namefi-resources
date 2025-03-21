@@ -1,120 +1,74 @@
 'use client';
 
-import { useTRPC } from '@/utils/trpc';
-import { useLogin, useLogout, usePrivy } from '@privy-io/react-auth';
-import { useQuery } from '@tanstack/react-query';
-import { useMemo, useState } from 'react';
-import { Button } from './ui/shadcn/button';
+import { UserDropdown } from '@/components/dropdowns/UserDropdown';
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from './ui/shadcn/dialog';
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+} from '@/components/ui/shadcn/breadcrumb';
+import { Button } from '@/components/ui/shadcn/button';
+import { Separator } from '@/components/ui/shadcn/separator';
+import { SidebarTrigger } from '@/components/ui/shadcn/sidebar';
+import { cn } from '@/lib/utils';
+import { ShoppingCartIcon } from 'lucide-react';
+import Link from 'next/link';
+import { useQueryState } from 'nuqs';
+import {
+  type ForwardRefExoticComponent,
+  type ForwardedRef,
+  type HTMLAttributes,
+  forwardRef,
+} from 'react';
 
-function ButtonSkeleton() {
-  return <div className="h-9 w-[74px] rounded-md bg-muted animate-pulse" />;
-}
+export type HeaderProps = HTMLAttributes<HTMLDivElement>;
 
-export function Header() {
-  const {
-    authenticated: privyAuthenticated,
-    ready,
-    user: privyUser,
-  } = usePrivy();
-  const [showConfirm, setShowConfirm] = useState(false);
-  const trpc = useTRPC();
-
-  const userQuery = useQuery({
-    ...trpc.users.getUser.queryOptions(),
-    enabled: !!privyAuthenticated,
-  });
-
-  const authenticated = useMemo(
-    () =>
-      privyAuthenticated &&
-      privyUser &&
-      userQuery.isSuccess &&
-      userQuery.data.privyUserId === privyUser?.id,
-    [
-      privyAuthenticated,
-      privyUser,
-      userQuery.isSuccess,
-      userQuery?.data?.privyUserId,
-    ],
-  );
-
-  const disableLogout = !ready || (ready && !authenticated);
-  const disableLogin = !ready || !!(ready && authenticated);
-
-  const { logout } = useLogout({
-    onSuccess: () => {
-      userQuery.refetch();
-    },
-  });
-
-  const { login } = useLogin({
-    onComplete: () => {
-      userQuery.refetch();
-    },
-    onError: () => {
-      userQuery.refetch();
-    },
-  });
+export const Header: ForwardRefExoticComponent<HeaderProps> = forwardRef<
+  HTMLDivElement,
+  HeaderProps
+>(function Header(
+  { className, ...rest }: HeaderProps,
+  ref: ForwardedRef<HTMLDivElement>,
+) {
+  const [domain] = useQueryState('domain');
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container max-w-full flex h-14 items-center">
-        <div className="mr-4 flex">123</div>
-
-        <div className="flex flex-1 items-center justify-end space-x-2">
-          {ready ? (
-            authenticated ? (
-              <>
-                <Dialog open={showConfirm} onOpenChange={setShowConfirm}>
-                  <DialogTrigger asChild={true}>
-                    <Button variant="ghost">Sign Out</Button>
-                  </DialogTrigger>
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle>Sign Out</DialogTitle>
-                      <DialogDescription>
-                        Are you sure you want to sign out?
-                      </DialogDescription>
-                    </DialogHeader>
-                    <DialogFooter>
-                      <Button
-                        variant="ghost"
-                        onClick={() => setShowConfirm(false)}
-                      >
-                        Cancel
-                      </Button>
-                      <Button
-                        disabled={disableLogout}
-                        onClick={() => {
-                          logout();
-                          setShowConfirm(false);
-                        }}
-                      >
-                        Sign Out
-                      </Button>
-                    </DialogFooter>
-                  </DialogContent>
-                </Dialog>
-              </>
-            ) : (
-              <Button disabled={disableLogin} onClick={login}>
-                Sign In
-              </Button>
-            )
-          ) : (
-            <ButtonSkeleton />
-          )}
+    <header
+      ref={ref}
+      className={cn(
+        'flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px]',
+        className,
+      )}
+      {...rest}
+    >
+      <div className="flex items-center gap-2">
+        <SidebarTrigger />
+        {domain && <h1 className="text-2xl font-bold">{domain}</h1>}
+      </div>
+      <Separator orientation="vertical" className="h-4" />
+      <div className="w-full items-center justify-between gap-4 flex">
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem className="hidden md:block">
+              <BreadcrumbLink asChild={true}>
+                <Link href="/">Home</Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            {/*<BreadcrumbSeparator className="hidden md:block" />*/}
+            {/*<BreadcrumbItem>*/}
+            {/*  <BreadcrumbPage>Data Fetching</BreadcrumbPage>*/}
+            {/*</BreadcrumbItem>*/}
+          </BreadcrumbList>
+        </Breadcrumb>
+        <div className="flex items-center gap-4">
+          <Button variant="ghost" size="icon">
+            <ShoppingCartIcon className="h-5 w-5" />
+          </Button>
+          <UserDropdown />
         </div>
       </div>
     </header>
   );
-}
+});
+
+Header.displayName = 'Header';

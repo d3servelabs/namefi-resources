@@ -54,7 +54,7 @@ export const Preloader: FC<PreloaderProps> = forwardRef(
     {
       disabled = false,
       size = 80,
-      color = '#ffffff',
+      color = '#48E59B',
       thickness = 8,
       speed = 1.2,
       delay = 500,

@@ -8,6 +8,7 @@ import {
   type ForwardRefExoticComponent,
   type ForwardedRef,
   forwardRef,
+  useCallback,
   useRef,
 } from 'react';
 import animationData from '../../public/namefi_to_nfi.json';
@@ -23,24 +24,26 @@ export const Logotype: ForwardRefExoticComponent<LogotypeProps> = forwardRef<
 ) {
   const lottieRef = useRef<LottieRefCurrentProps>(null);
 
-  const handleMouseEnter = () => {
+  const handleMouseEnter = useCallback(() => {
     if (lottieRef.current) {
       lottieRef.current.setDirection(1);
       lottieRef.current.play();
     }
-  };
+  }, []);
 
-  const handleMouseLeave = () => {
+  const handleMouseLeave = useCallback(() => {
     if (lottieRef.current) {
       lottieRef.current.setDirection(-1);
       lottieRef.current.play();
     }
-  };
+  }, []);
+
+  const getJson = useCallback(() => Promise.resolve(animationData), []);
 
   return (
     <a
       ref={ref}
-      className={cn('mr-6 flex items-center space-x-2', className)}
+      className={cn('flex items-center space-x-2', className)}
       {...rest}
       href="/"
       onMouseEnter={handleMouseEnter}
@@ -49,7 +52,7 @@ export const Logotype: ForwardRefExoticComponent<LogotypeProps> = forwardRef<
       <LazyLottie
         id="nfi-to-namefi"
         lottieRef={lottieRef}
-        getJson={() => Promise.resolve(animationData)}
+        getJson={getJson}
         loop={false}
         autoplay={false}
         style={{ width: 80, height: 24 }}
