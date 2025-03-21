@@ -41,7 +41,8 @@
         "noEmptyBlockStatements": "off",
         "noReactSpecificProps": "off",
         "noConsoleLog": "off",
-        "noConsole": "off"
+        "noConsole": "off",
+        "noArrayIndexKey": "off"
       }
     }
   },
