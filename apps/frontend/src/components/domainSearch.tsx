@@ -258,9 +258,9 @@ export const DomainSearch: FC<DomainSearchProps> = ({
             ) : filteredDomains.length > 0 ? (
               // Results
               <div className="flex flex-col gap-4">
-                {filteredDomains.map((domain) => (
+                {filteredDomains.map((domain, index) => (
                   <Card
-                    key={domain.domain}
+                    key={`${parentDomain}-${domain.domain}-${index}`}
                     className={cn(
                       'transition-all duration-150',
                       domain.availability
