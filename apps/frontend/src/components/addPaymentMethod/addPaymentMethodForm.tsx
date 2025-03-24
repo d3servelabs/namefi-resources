@@ -9,7 +9,7 @@ import type { ConfirmationToken } from '@stripe/stripe-js';
 import { Loader2 } from 'lucide-react';
 import type React from 'react';
 import { useCallback, useState } from 'react';
-import { Button } from './ui/shadcn/button';
+import { Button } from '../ui/shadcn/button';
 
 interface AddPaymentMethodFormProps {
   onSuccess?: (confirmationToken: ConfirmationToken) => void;

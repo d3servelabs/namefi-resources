@@ -1,6 +1,6 @@
 'use client';
 
-import { AddPaymentMethodForm } from '@/components/addPaymentForm';
+import { AddPaymentMethodForm } from '@/components/addPaymentMethod/addPaymentMethodForm';
 import { StripeProvider } from '@/components/providers/stripeProvider';
 import { Button } from '@/components/ui/shadcn/button';
 import {
