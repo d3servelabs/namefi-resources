@@ -31,7 +31,7 @@
     "validate:secrets": "bun run with-env src/lib/env/index.ts"
   },
   "dependencies": {
-    "@hono/node-server": "^1.13.8",
+    "@hono/node-server": "^1.14.0",
     "@hono/swagger-ui": "^0.5.1",
     "@hono/trpc-server": "^0.3.4",
     "@hono/zod-openapi": "^0.19.2",
@@ -45,7 +45,7 @@
     "@temporalio/client": "^1.11.7",
     "@temporalio/worker": "^1.11.7",
     "@temporalio/workflow": "^1.11.7",
-    "@trpc/server": "^11.0.0-rc.824",
+    "@trpc/server": "^11.0.0",
     "cors": "^2.8.5",
     "date-fns": "^4.1.0",
     "dotenv": "^16.4.7",
@@ -55,13 +55,13 @@
     "ramda": "^0.30.1",
     "stripe": "^17.7.0",
     "superjson": "^2.2.2",
-    "viem": "^2.23.13",
+    "viem": "^2.23.15",
     "ws": "^8.18.1",
     "zod": "^3.24.2"
   },
   "devDependencies": {
     "@namefi-astra/typescript": "workspace:*",
-    "@types/node": "^22.13.11",
+    "@types/node": "^22.13.13",
     "@types/ramda": "^0.30.2",
     "@types/ws": "^8.18.0",
     "@vitest/coverage-v8": "^3.0.9",

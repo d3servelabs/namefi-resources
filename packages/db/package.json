@@ -21,12 +21,12 @@
   },
   "devDependencies": {
     "@namefi-astra/typescript": "workspace:*",
-    "@types/node": "^22.13.10",
+    "@types/node": "^22.13.13",
     "@types/ws": "^8.18.0",
     "drizzle-kit": "^0.30.5"
   },
   "peerDependencies": {
-    "drizzle-orm": "^0.40.0",
+    "drizzle-orm": "^0.40.1",
     "drizzle-zod": "^0.7.0"
   }
 }
