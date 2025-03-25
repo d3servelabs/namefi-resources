@@ -37,6 +37,7 @@ export async function createPayment({
     },
     chainId && { chainId },
     walletAddress && { walletAddress },
+    { status: 'CREATED' as const },
   );
 
   const [newPayment] = await db

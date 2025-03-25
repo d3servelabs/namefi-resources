@@ -222,13 +222,17 @@ export const ordersTable = pgTable(
   'orders',
   {
     ...randomUuid,
-    userId: uuid('user_id').references(() => usersTable.id, {
-      onDelete: 'set null',
-    }),
+    userId: uuid('user_id')
+      .references(() => usersTable.id, {
+        onDelete: 'set null',
+      })
+      .notNull(),
     status: orderStatusEnum('status').notNull().default('CREATED'),
-    paymentId: uuid('payment_id').references(() => paymentsTable.id, {
-      onDelete: 'restrict',
-    }),
+    paymentId: uuid('payment_id')
+      .references(() => paymentsTable.id, {
+        onDelete: 'restrict',
+      })
+      .notNull(),
     ...amountInUsdCents,
     totalAmountInUSDCents: integer('total_amount_in_usd_cents').notNull(),
     metadata: jsonb('metadata').default({}),

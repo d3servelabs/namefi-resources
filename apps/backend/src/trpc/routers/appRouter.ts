@@ -3,6 +3,7 @@ import { createTRPCRouter } from '../base';
 import { cartsRouter } from './cartsRouter';
 import { checkoutsRouter } from './checkoutsRouter';
 import { dnsRecordsRouter } from './dnsRecordsRouter';
+import { ordersRouter } from './ordersRouter';
 import { registryRouter } from './registryRouter';
 import { searchRouter } from './searchRouter';
 import { usersRouter } from './usersRouter';
@@ -14,6 +15,7 @@ export const appRouter = createTRPCRouter({
   checkouts: checkoutsRouter,
   search: searchRouter,
   registry: registryRouter,
+  orders: ordersRouter,
 });
 
 export type AppRouter = typeof appRouter;

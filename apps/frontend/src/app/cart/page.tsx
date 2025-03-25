@@ -25,15 +25,17 @@ import { formatUnits } from 'viem';
 import { useBalance } from 'wagmi';
 
 export default function CartPage() {
-  type CheckoutWithCartInput = inferInput<
-    typeof trpc.checkouts.checkoutWithCart
-  >;
+  type CreateOrderPaymentInput = inferInput<
+    typeof trpc.orders.createOrder
+  >['paymentMethodDetails'];
 
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<
     SelectedPaymentMethod | undefined | null
   >(null);
-  const [checkoutWithCartRequest, setCheckoutWithCartRequest] =
-    useState<CheckoutWithCartInput | null>(null);
+  const [
+    checkoutWithCartRequestPaymentMethodDetails,
+    setCheckoutWithCartRequestPaymentMethodDetails,
+  ] = useState<CreateOrderPaymentInput | null>(null);
 
   const { isAuthenticated, isLoading, privyUser } = useAuth();
 
@@ -70,25 +72,29 @@ export default function CartPage() {
     }),
   );
 
-  const { mutate: checkoutWithCart } = useMutation(
-    trpc.checkouts.checkoutWithCart.mutationOptions({
+  const { mutate: createOrder } = useMutation({
+    ...trpc.orders.createOrder.mutationOptions({
       onSuccess: (data) => {
         console.log(data);
       },
     }),
-  );
+  });
 
   const { data: nfscBalanceData, refetch: refetchNfscBalance } = useBalance({
-    address: checkoutWithCartRequest?.paymentProviderOptions
+    address: checkoutWithCartRequestPaymentMethodDetails?.paymentProviderOptions
       ?.walletAddress as `0x${string}`,
-    chainId: checkoutWithCartRequest?.paymentProviderOptions?.chainId,
+    chainId:
+      checkoutWithCartRequestPaymentMethodDetails?.paymentProviderOptions
+        ?.chainId,
     token: NFSC_CONTRACT_ADDRESS,
     query: {
       enabled:
-        !!checkoutWithCartRequest &&
-        !!checkoutWithCartRequest.paymentProviderOptions &&
-        !!checkoutWithCartRequest.paymentProviderOptions.walletAddress &&
-        !!checkoutWithCartRequest.paymentProviderOptions.chainId,
+        !!checkoutWithCartRequestPaymentMethodDetails &&
+        !!checkoutWithCartRequestPaymentMethodDetails.paymentProviderOptions &&
+        !!checkoutWithCartRequestPaymentMethodDetails.paymentProviderOptions
+          .walletAddress &&
+        !!checkoutWithCartRequestPaymentMethodDetails.paymentProviderOptions
+          .chainId,
     },
   });
 
@@ -112,18 +118,17 @@ export default function CartPage() {
   const handlePaymentMethodDetailsChanged = useCallback(
     (paymentMethodDetails: PaymentMethodDetails | null) => {
       if (paymentMethodDetails === null || paymentMethodDetails === undefined) {
-        setCheckoutWithCartRequest(null);
+        setCheckoutWithCartRequestPaymentMethodDetails(null);
         return;
       }
 
-      const newCheckoutWithCartRequst: CheckoutWithCartInput = {
+      setCheckoutWithCartRequestPaymentMethodDetails((prev) => ({
+        ...prev,
         ...paymentMethodDetails,
-        totalAmountInUsdCents,
-      };
-      setCheckoutWithCartRequest(newCheckoutWithCartRequst);
+      }));
       refetchNfscBalance();
     },
-    [refetchNfscBalance, totalAmountInUsdCents],
+    [refetchNfscBalance],
   );
 
   const handleSelectedPaymentMethodChanged = useCallback(
@@ -138,33 +143,40 @@ export default function CartPage() {
       case SelectedPaymentMethod.NFSC: {
         return (
           !hasSufficientBalance ||
-          checkoutWithCartRequest?.paymentProviderOptions?.walletAddress ===
-            undefined ||
-          checkoutWithCartRequest?.paymentProviderOptions?.chainId === undefined
+          checkoutWithCartRequestPaymentMethodDetails?.paymentProviderOptions
+            ?.walletAddress === undefined ||
+          checkoutWithCartRequestPaymentMethodDetails?.paymentProviderOptions
+            ?.chainId === undefined
         );
       }
       case SelectedPaymentMethod.SAVED_CARD: {
         return (
-          checkoutWithCartRequest?.paymentProvider !== 'STRIPE' ||
-          checkoutWithCartRequest?.paymentProviderOptions?.paymentMethodId ===
-            null ||
-          checkoutWithCartRequest?.paymentProviderOptions?.paymentMethodId ===
-            undefined
+          checkoutWithCartRequestPaymentMethodDetails?.paymentProvider !==
+            'STRIPE' ||
+          checkoutWithCartRequestPaymentMethodDetails?.paymentProviderOptions
+            ?.paymentMethodId === null ||
+          checkoutWithCartRequestPaymentMethodDetails?.paymentProviderOptions
+            ?.paymentMethodId === undefined
         );
       }
       case SelectedPaymentMethod.NEW_CARD: {
         return (
-          checkoutWithCartRequest?.paymentProvider !== 'STRIPE' ||
-          checkoutWithCartRequest?.paymentProviderOptions
+          checkoutWithCartRequestPaymentMethodDetails?.paymentProvider !==
+            'STRIPE' ||
+          checkoutWithCartRequestPaymentMethodDetails?.paymentProviderOptions
             ?.confirmationTokenId === null ||
-          checkoutWithCartRequest?.paymentProviderOptions
+          checkoutWithCartRequestPaymentMethodDetails?.paymentProviderOptions
             ?.confirmationTokenId === undefined
         );
       }
       default:
         return true;
     }
-  }, [checkoutWithCartRequest, hasSufficientBalance, selectedPaymentMethod]);
+  }, [
+    checkoutWithCartRequestPaymentMethodDetails,
+    hasSufficientBalance,
+    selectedPaymentMethod,
+  ]);
 
   const submitButtonText = useMemo(() => {
     if (!submitPaymentButtonDisabled) {
@@ -203,9 +215,13 @@ export default function CartPage() {
   ]);
 
   const handleSubmitPayment = useCallback(() => {
+    if (!cartQuery.data?.id) {
+      throw new Error('Tried to submit payment with no cart id.');
+    }
+
     if (
-      checkoutWithCartRequest === null ||
-      checkoutWithCartRequest === undefined
+      checkoutWithCartRequestPaymentMethodDetails === null ||
+      checkoutWithCartRequestPaymentMethodDetails === undefined
     ) {
       throw new Error(
         'Tried to submit payment with no payment method attached.',
@@ -213,12 +229,18 @@ export default function CartPage() {
     }
 
     try {
-      checkoutWithCart(checkoutWithCartRequest);
-      clearCart();
+      createOrder({
+        paymentMethodDetails: checkoutWithCartRequestPaymentMethodDetails,
+        cartId: cartQuery.data.id,
+      });
     } catch (error) {
       console.log(error);
     }
-  }, [checkoutWithCart, checkoutWithCartRequest, clearCart]);
+  }, [
+    createOrder,
+    checkoutWithCartRequestPaymentMethodDetails,
+    cartQuery.data?.id,
+  ]);
 
   if (isLoading) {
     return (

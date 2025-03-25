@@ -104,16 +104,17 @@ export async function parkDomain(
       id: record.id,
     })),
   });
-  await db.batch([
-    db
+
+  await db.transaction(async (tx) => {
+    await tx
       .delete(dnsRecordsTable)
       .where(
         and(
           eq(dnsRecordsTable.normalizedDomainName, normalizedDomainName),
           inArray(dnsRecordsTable.id, pluck('id', existingConflictingRecords)),
         ),
-      ),
-    db
+      );
+    await tx
       .insert(dnsRecordsTable)
       .values(
         PARKED_DOMAIN_RECORDS.map((record) => ({
@@ -121,6 +122,6 @@ export async function parkDomain(
           normalizedDomainName,
         })),
       )
-      .returning(),
-  ]);
+      .returning();
+  });
 }

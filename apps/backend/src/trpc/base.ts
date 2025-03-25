@@ -115,12 +115,9 @@ export const publicProcedure = t.procedure.use(timingMiddleware);
 export const verifyUserAuthAndCreation = t.middleware(async ({ ctx, next }) => {
   const authToken = ctx.req.header('Authorization')?.replace('Bearer ', '');
 
-  console.log('authToken', authToken);
-
   if (!authToken) {
     throw new TRPCError({
       code: 'UNAUTHORIZED',
-      message: 'Missing auth token',
     });
   }
 
@@ -148,11 +145,9 @@ export const verifyUserAuthAndCreation = t.middleware(async ({ ctx, next }) => {
       },
     });
   } catch (error) {
-    console.log('error', error);
+    console.error('error', error);
     throw new TRPCError({
       code: 'UNAUTHORIZED',
-      message: 'Invalid auth token',
-      cause: error,
     });
   }
 });
