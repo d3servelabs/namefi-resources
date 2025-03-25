@@ -13,13 +13,15 @@ import {
 } from 'react';
 import animationData from '../../public/namefi_to_nfi.json';
 
-export type LogotypeProps = AnchorHTMLAttributes<HTMLAnchorElement>;
+export type LogotypeProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
+  autoplay?: boolean;
+};
 
 export const Logotype: ForwardRefExoticComponent<LogotypeProps> = forwardRef<
   HTMLAnchorElement,
   LogotypeProps
 >(function Logotype(
-  { className, ...rest }: LogotypeProps,
+  { autoplay, className, ...rest }: LogotypeProps,
   ref: ForwardedRef<HTMLAnchorElement>,
 ) {
   const lottieRef = useRef<LottieRefCurrentProps>(null);
@@ -54,7 +56,7 @@ export const Logotype: ForwardRefExoticComponent<LogotypeProps> = forwardRef<
         lottieRef={lottieRef}
         getJson={getJson}
         loop={false}
-        autoplay={false}
+        autoplay={autoplay}
         style={{ width: 80, height: 24 }}
       />
     </a>

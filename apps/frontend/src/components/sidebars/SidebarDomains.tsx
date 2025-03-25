@@ -16,6 +16,7 @@ import {
 import { cn } from '@/lib/utils';
 import { ChevronDown, Globe } from 'lucide-react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useMemo, useState } from 'react';
 
 interface RecentDomainsProps {
@@ -27,6 +28,8 @@ export function SidebarDomains({ name, domains }: RecentDomainsProps) {
   const [isOpen, setIsOpen] = useState(true);
 
   const { state } = useSidebar();
+
+  const pathname = usePathname();
 
   const isCollapsed = useMemo(() => state === 'collapsed', [state]);
 
@@ -49,16 +52,24 @@ export function SidebarDomains({ name, domains }: RecentDomainsProps) {
         <CollapsibleContent>
           <SidebarGroupContent>
             <SidebarMenu>
-              {domains.map((domain) => (
-                <SidebarMenuItem key={domain}>
-                  <SidebarMenuButton tooltip={domain} asChild={true}>
-                    <Link href={`/domain/${domain}`}>
-                      <Globe className="size-4" />
-                      <span className="truncate">{domain}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
+              {domains.map((domain) => {
+                const href = `/domain/${domain}`;
+
+                return (
+                  <SidebarMenuItem key={domain}>
+                    <SidebarMenuButton
+                      tooltip={domain}
+                      isActive={href === pathname}
+                      asChild={true}
+                    >
+                      <Link href={href}>
+                        <Globe className="size-4" />
+                        <span className="truncate">{domain}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                );
+              })}
             </SidebarMenu>
           </SidebarGroupContent>
         </CollapsibleContent>

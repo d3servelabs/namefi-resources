@@ -1,17 +1,6 @@
 'use client';
 
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from '@/components/ui/shadcn/alert-dialog';
-import {
   Avatar,
   AvatarFallback,
   AvatarImage,
@@ -26,6 +15,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/shadcn/dropdown-menu';
 import { SidebarMenuButton } from '@/components/ui/shadcn/sidebar';
+import { useConfirm } from '@/contexts';
 import { useAuth } from '@/hooks/useAuth';
 import { cn } from '@/lib/utils';
 import { abbreviation, shortage } from '@/utils/string';
@@ -38,6 +28,7 @@ import {
   UserIcon,
   WalletIcon,
 } from 'lucide-react';
+import Link from 'next/link';
 import {
   type ForwardRefExoticComponent,
   type ForwardedRef,
@@ -55,6 +46,8 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
     { collapsed, className, ...rest }: UserDropdownProps,
     ref: ForwardedRef<HTMLDivElement>,
   ) {
+    const confirm = useConfirm();
+
     const { isLoading, isAuthenticated, privyUser } = useAuth();
 
     const name =
@@ -77,8 +70,18 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
     }, [login]);
 
     const handleDisconnect = useCallback(async () => {
-      await logout();
-    }, [logout]);
+      confirm({
+        title: 'Are you sure you want to sign out?',
+        description:
+          'Are you sure you want to sign out? Any unsaved changes will be lost.',
+        cancelText: 'Cancel',
+        confirmText: 'Sign Out',
+        onConfirm: async () => {
+          await logout();
+        },
+        onCancel: () => {},
+      });
+    }, [logout, confirm]);
 
     return (
       <div ref={ref} className={cn('', className)} {...rest}>
@@ -127,40 +130,26 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
             <DropdownMenuContent align="end" className="w-56">
               <DropdownMenuLabel>Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>
-                <UserIcon className="mr-2 h-4 w-4" />
-                <span>Profile</span>
+              <DropdownMenuItem asChild={true}>
+                <Link href="/profile">
+                  <UserIcon className="mr-2 h-4 w-4" />
+                  <span>Profile</span>
+                </Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <SettingsIcon className="mr-2 h-4 w-4" />
-                <span>Settings</span>
+                <Link href="/settings">
+                  <SettingsIcon className="mr-2 h-4 w-4" />
+                  <span>Settings</span>
+                </Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <AlertDialog>
-                <AlertDialogTrigger asChild={true}>
-                  <DropdownMenuItem className="text-red-500">
-                    <LogOutIcon className="mr-2 h-4 w-4" />
-                    <span>Disconnect</span>
-                  </DropdownMenuItem>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>
-                      Are you sure you want to sign out?
-                    </AlertDialogTitle>
-                    <AlertDialogDescription>
-                      Are you sure you want to sign out? Any unsaved changes
-                      will be lost.
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction onClick={handleDisconnect}>
-                      Sign Out
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
+              <DropdownMenuItem
+                onClick={handleDisconnect}
+                className="text-red-500"
+              >
+                <LogOutIcon className="mr-2 h-4 w-4" />
+                <span>Disconnect</span>
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         )}

@@ -1,14 +1,15 @@
 import { Footer } from '@/components/footer';
 import { Header } from '@/components/header';
 import { Preloader } from '@/components/preloader';
+import { AppSidebar } from '@/components/sidebars';
 import { SidebarInset, SidebarProvider } from '@/components/ui/shadcn/sidebar';
 import { Toaster } from '@/components/ui/shadcn/sonner';
+import { Contexts } from '@/contexts';
 import { cn } from '@/lib/utils';
 import { Providers } from '@/providers';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import type { ReactNode } from 'react';
-import { AppSidebar } from 'src/components/sidebars';
 
 import './globals.css';
 
@@ -41,18 +42,20 @@ export default function RootLayout({
           'antialiased min-h-screen w-full overflow-x-hidden overflow-y-auto',
         )}
       >
+        <Preloader />
         <Providers>
-          <Preloader />
-          <Toaster />
+          <Contexts>
+            <Toaster />
 
-          <SidebarProvider>
-            <AppSidebar />
-            <SidebarInset>
-              <Header className="sticky top-0 left-0" />
-              {children}
-              <Footer className="hidden" />
-            </SidebarInset>
-          </SidebarProvider>
+            <SidebarProvider>
+              <AppSidebar />
+              <SidebarInset>
+                <Header className="sticky top-0 left-0" />
+                {children}
+                <Footer className="hidden" />
+              </SidebarInset>
+            </SidebarProvider>
+          </Contexts>
         </Providers>
       </body>
     </html>
