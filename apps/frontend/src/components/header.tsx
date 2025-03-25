@@ -12,7 +12,6 @@ import { Separator } from '@/components/ui/shadcn/separator';
 import { SidebarTrigger } from '@/components/ui/shadcn/sidebar';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
-import { useQueryState } from 'nuqs';
 import {
   type ForwardRefExoticComponent,
   type ForwardedRef,
@@ -29,8 +28,6 @@ export const Header: ForwardRefExoticComponent<HeaderProps> = forwardRef<
   { className, ...rest }: HeaderProps,
   ref: ForwardedRef<HTMLDivElement>,
 ) {
-  const [domain] = useQueryState('domain');
-
   return (
     <header
       ref={ref}
@@ -42,7 +39,6 @@ export const Header: ForwardRefExoticComponent<HeaderProps> = forwardRef<
     >
       <div className="flex items-center gap-2">
         <SidebarTrigger />
-        {domain && <h1 className="text-2xl font-bold">{domain}</h1>}
       </div>
       <Separator orientation="vertical" className="h-4" />
       <div className="w-full items-center justify-between gap-4 flex">

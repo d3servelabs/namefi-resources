@@ -12,6 +12,18 @@ import styled from 'styled-components';
 import type { Classes } from '../types';
 import { type Context, Provider } from '../utils';
 
+const defaults: Classes = {
+  table: 'w-full caption-bottom text-sm',
+  thead: '[&_tr]:border-b',
+  tfoot: 'bg-muted/50 border-t font-medium [&>tr]:last:border-b-0',
+  tbody: '[&_tr:last-child]:border-0',
+  th: 'text-muted-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]',
+  td: 'p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]',
+  tr: 'hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors',
+
+  pivot: '',
+};
+
 interface Props extends TableHTMLAttributes<HTMLTableElement> {
   pivot?: HTMLAttributes<HTMLDivElement>;
   screen?: number;
@@ -45,12 +57,11 @@ const Wrapper = styled.table<Props>`
     }
 
     tbody tr:not(:last-child) {
-      border-bottom: none;
     }
 
     td.pivoted {
       display: flex;
-      gap: 0.75rem;
+      gap: 0.5rem;
       width: 100% !important;
       border: none !important;
     }
@@ -68,7 +79,7 @@ export const Table = forwardRef<HTMLTableElement, Props>(function Table(
   {
     pivot = {},
     screen = 768,
-    classes = {},
+    classes = defaults,
     hasHeader = true,
     hasFooter = true,
     hasPivot = true,

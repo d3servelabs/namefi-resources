@@ -50,7 +50,7 @@ export default function RootLayout({
             <SidebarProvider>
               <AppSidebar />
               <SidebarInset>
-                <Header className="sticky top-0 left-0" />
+                <Header className="sticky backdrop-blur-xl top-0 left-0" />
                 {children}
                 <Footer className="hidden" />
               </SidebarInset>
