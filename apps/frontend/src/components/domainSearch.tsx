@@ -380,8 +380,8 @@ export const DomainSearch: FC<DomainSearchProps> = ({
                   Search for domains
                 </EmptyPlaceholder.Title>
                 <EmptyPlaceholder.Description>
-                  Enter a domain name above to search for available domains on
-                  0x.city
+                  Enter a domain name above to search for available domains on{' '}
+                  {parentDomain}
                 </EmptyPlaceholder.Description>
               </EmptyPlaceholder>
             )}
@@ -399,7 +399,7 @@ export const DomainSearch: FC<DomainSearchProps> = ({
           </EmptyPlaceholder.Title>
           <EmptyPlaceholder.Description>
             Enter a domain name in the search box to find available domains on
-            0x.city
+            {parentDomain}
           </EmptyPlaceholder.Description>
           <Button variant="outline" onClick={() => setQuery('example')}>
             Try an example search
