@@ -1,5 +1,9 @@
-import { DomainSearch } from '@/components/domainSearch';
+import { Search } from '@/components/search';
 
 export default function HomePage() {
-  return <DomainSearch className="p-4" />;
+  return (
+    <div className="p-4">
+      <Search />
+    </div>
+  );
 }
