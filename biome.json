@@ -21,6 +21,9 @@
     "enabled": true,
     "rules": {
       "all": true,
+      "complexity": {
+        "noUselessSwitchCase": "warn"
+      },
       "performance": {
         "noBarrelFile": "off",
         "noReExportAll": "off",
@@ -35,9 +38,11 @@
         "noDefaultExport": "off",
         "useNamingConvention": "off",
         "useFilenamingConvention": "off",
-        "noNamespaceImport": "off"
+        "noNamespaceImport": "off",
+        "useSingleCaseStatement": "off"
       },
       "suspicious": {
+        "noExplicitAny": "info",
         "noEmptyBlockStatements": "off",
         "noReactSpecificProps": "off",
         "noConsoleLog": "off",

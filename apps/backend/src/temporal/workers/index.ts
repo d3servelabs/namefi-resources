@@ -1,5 +1,5 @@
 import type { Worker } from '@temporalio/worker';
-import { GreetActivities } from '../activities';
+import { GreetActivities, MintActivities } from '../activities';
 import { TEMPORAL_ENUMS } from '../shared';
 import { createWorker } from './createWorker';
 
@@ -12,6 +12,12 @@ export async function initWorkers() {
         ...GreetActivities,
       },
       temporalEnum: TEMPORAL_ENUMS.DEFAULT,
+    }),
+    [TEMPORAL_ENUMS.MINT]: await createWorker({
+      activities: {
+        ...MintActivities,
+      },
+      temporalEnum: TEMPORAL_ENUMS.MINT,
     }),
   };
 }

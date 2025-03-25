@@ -7,6 +7,7 @@ export const secretsSchema = z.object({
   STRIPE_SECRET_KEY: z.string(),
   TEMPORAL_API_KEY: z.string().optional(),
   API_AUTH_KEY: z.string(),
+  ALCHEMY_API_KEY: z.string(),
 });
 
 export type SecretsSchema = z.infer<typeof secretsSchema>;

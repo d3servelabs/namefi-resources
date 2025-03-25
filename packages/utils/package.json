@@ -4,7 +4,7 @@
   "private": true,
   "exports": {
     ".": "./index.ts",
-    "./*": "./src/*.ts"
+    "./*": ["./src/*.ts", "./src/*/index.ts"]
   },
   "scripts": {
     "check": "biome check",

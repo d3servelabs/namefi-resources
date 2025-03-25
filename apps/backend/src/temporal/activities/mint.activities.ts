@@ -1,0 +1,418 @@
+import { Context } from '@temporalio/activity';
+import { BigNumber } from 'bignumber.js';
+import { fromPairs, map } from 'ramda';
+import { getAlchemyRpcUrl } from 'src/utils/jsonRpcUrls';
+
+import {
+  http,
+  type Account,
+  type Address,
+  type EstimateGasErrorType,
+  type GetGasPriceErrorType,
+  type Hash,
+  type PrepareTransactionRequestReturnType,
+  type PublicClient,
+  type SendTransactionErrorType,
+  type WaitForTransactionReceiptErrorType,
+  createPublicClient,
+  createWalletClient,
+  encodeFunctionData,
+  formatUnits,
+  getContract,
+  parseUnits,
+} from 'viem';
+import { privateKeyToAccount } from 'viem/accounts';
+import type { Chain } from 'viem/chains';
+import * as chains from 'viem/chains';
+import { createNonceManager, jsonRpc } from 'viem/nonce';
+import {
+  NAMEFI_NFT_CONTRACT_ADDRESS,
+  NFSC_CONTRACT_ADDRESS,
+  NfscAbi,
+  NftAbi,
+} from '../../utils/contracts';
+import { resolve } from '../../utils/resolve';
+
+export type MoneyAmount = {
+  amount: number;
+  currency: 'USD';
+};
+
+const ALLOWED_CHAINS: Chain[] = [chains.sepolia];
+
+export type PreparedTxOnlySerializableParams = Omit<
+  PrepareTransactionRequestReturnType,
+  | 'account'
+  | 'gas'
+  | 'gasPrice'
+  | 'maxFeePerGas'
+  | 'maxPriorityFeePerGas'
+  | 'blobVersionedHashes'
+>;
+
+export type TxPrepareResult =
+  | { preparedTx: PreparedTxOnlySerializableParams }
+  | { error: Error };
+export type TxSendResult =
+  | { status: 'SUCCESS'; txHash: Hash }
+  | {
+      status:
+        | 'FAILED_TO_GET_NONCE'
+        | 'FAILED_TO_SIGN_TRANSACTION'
+        | 'FAILED_TO_SEND_TRANSACTION'
+        | 'FAILED_TO_WAIT_FOR_TRANSACTION'
+        | 'FAILED_TO_ESTIMATE_GAS'
+        | 'FAILED_TO_GET_GAS_PRICE'
+        | 'UNPREDICTABLE_GAS_LIMIT'
+        | 'INSUFFICIENT_FUNDS'
+        | 'NONCE_EXPIRED'
+        | 'REPLACEMENT_UNDERPRICED'
+        | 'GAS_PRICE_TOO_LOW';
+      error: Error;
+    };
+
+const ABSOLUTE_MAX_GAS_PRICE_MULTIPLIER = 1.2;
+
+// Create clients factory
+const createClients = (account: Account) => {
+  const publicClients = fromPairs(
+    map(
+      (chain) => [
+        chain.id,
+        createPublicClient({
+          transport: http(getAlchemyRpcUrl(chain.id)),
+          chain,
+        }),
+      ],
+      ALLOWED_CHAINS,
+    ),
+  );
+
+  const walletClients = fromPairs(
+    map(
+      (chain) => [
+        chain.id,
+        createWalletClient({
+          transport: http(getAlchemyRpcUrl(chain.id)),
+          account,
+          chain,
+        }),
+      ],
+      ALLOWED_CHAINS,
+    ),
+  );
+
+  return {
+    publicClients,
+    walletClients,
+  };
+};
+
+const nonceManager = createNonceManager({
+  source: jsonRpc(),
+});
+const signerAccount = privateKeyToAccount(
+  process.env.LOCAL_SIGNER as `0x${string}`,
+  { nonceManager },
+);
+const clients = createClients(signerAccount);
+
+export const prepareTxToMintNfsc = async (
+  chainId: number,
+  account: Address,
+  namefiMoneyAmount: MoneyAmount,
+): Promise<TxPrepareResult> => {
+  const ctx = Context.current();
+  ctx.log.info(
+    `Minting NFSC - chainId: ${chainId}, account: ${account}, amount: ${namefiMoneyAmount.amount}`,
+  );
+
+  const convertedAmount = parseUnits(namefiMoneyAmount.amount.toString(), 18);
+
+  const preparedTx = await clients.walletClients[
+    chainId
+  ].prepareTransactionRequest({
+    chainId,
+    to: NFSC_CONTRACT_ADDRESS,
+    data: encodeFunctionData({
+      abi: NfscAbi,
+      functionName: 'mint',
+      args: [account, convertedAmount],
+    }),
+  });
+  return {
+    preparedTx: {
+      data: preparedTx.data,
+      to: preparedTx.to,
+      type: preparedTx.type,
+      chainId: preparedTx.chainId,
+      from: preparedTx.from,
+      nonce: preparedTx.nonce,
+      //gas: preparedTx.gas, // not-serializable
+      //gasPrice: preparedTx.gasPrice,
+      //maxFeePerGas: preparedTx.maxFeePerGas,
+      //maxPriorityFeePerGas: preparedTx.maxPriorityFeePerGas,
+    },
+  };
+};
+
+export const prepareTxToMintNamefiNft = async (
+  chainId: number,
+  account: Address,
+  domainNameLdh: string,
+  expirationTimeInUnix: number,
+): Promise<TxPrepareResult> => {
+  const ctx = Context.current();
+  ctx.log.info(
+    `Minting Namefi NFT - chainId: ${chainId}, account: ${account}, domainNameLdh: ${domainNameLdh}, expirationTimeInUnix: ${expirationTimeInUnix}`,
+  );
+
+  const preparedTx = await clients.walletClients[
+    chainId
+  ].prepareTransactionRequest({
+    chainId,
+    to: NAMEFI_NFT_CONTRACT_ADDRESS,
+    data: encodeFunctionData({
+      abi: NftAbi,
+      functionName: 'safeMintByNameNoCharge',
+      args: [account, domainNameLdh, BigInt(expirationTimeInUnix)],
+    }),
+  });
+
+  return {
+    preparedTx: {
+      data: preparedTx.data,
+      to: preparedTx.to,
+      type: preparedTx.type,
+      chainId: preparedTx.chainId,
+      from: preparedTx.from,
+      nonce: preparedTx.nonce,
+      //gas: preparedTx.gas, // not-serializable
+      //gasPrice: preparedTx.gasPrice,
+      //maxFeePerGas: preparedTx.maxFeePerGas,
+      //maxPriorityFeePerGas: preparedTx.maxPriorityFeePerGas,
+    },
+  };
+};
+
+/**
+ * Updates the prepared transaction with current nonce, gas limit, and gas price
+ * @param _preparedTx The prepared transaction without gas parameters
+ * @param chainId The chain ID
+ * @param gasPriceMultiplier Optional multiplier for gas price (default: 1)
+ * @returns Updated transaction parameters or error result
+ */
+const _updatePreparedTxParamsBeforeSend = async (
+  _preparedTx: PreparedTxOnlySerializableParams,
+  chainId: number,
+  gasPriceMultiplier = 1,
+): Promise<
+  TxSendResult | { preparedTx: PrepareTransactionRequestReturnType }
+> => {
+  const ctx = Context.current();
+  const walletClient = clients.walletClients[chainId];
+  const publicClient = clients.publicClients[chainId];
+
+  const preparedTx = {
+    ..._preparedTx,
+    account: walletClient.account,
+  } as PrepareTransactionRequestReturnType;
+
+  //----------------------------------------
+  // Get current nonce for the account
+  //----------------------------------------
+  const [nonceError, nonce] = await resolve(
+    publicClient.getTransactionCount({
+      address: walletClient.account.address,
+    }),
+  );
+  if (nonceError) {
+    const error = nonceError;
+    ctx.log.error('Failed to get nonce - error:');
+    ctx.log.error(JSON.stringify(error));
+    return { status: 'FAILED_TO_GET_NONCE', error };
+  }
+  ctx.log.info(`Nonce: ${nonce}`);
+  preparedTx.nonce = nonce;
+
+  //----------------------------------------
+  // Estimate gas limit for the transaction
+  //----------------------------------------
+  const [gasLimitError, gasLimit] = await resolve(
+    publicClient.estimateGas(preparedTx),
+  );
+
+  if (gasLimitError) {
+    const error = gasLimitError as EstimateGasErrorType;
+    ctx.log.error(`Failed to estimate gas - error: ${error.message}`);
+    ctx.log.error(JSON.stringify(error));
+    return { status: 'UNPREDICTABLE_GAS_LIMIT', error };
+  }
+  ctx.log.info(`Gas limit: ${gasLimit}`);
+
+  preparedTx.gas = gasLimit;
+
+  //----------------------------------------
+  // Get current gas price
+  //----------------------------------------
+  const [gasPriceError, gasPrice] = await resolve(publicClient.getGasPrice());
+
+  if (gasPriceError) {
+    const error = gasPriceError as GetGasPriceErrorType;
+    ctx.log.error(`Failed to get gas price - error: ${error.message}`);
+    ctx.log.error(JSON.stringify(error));
+    return { status: 'FAILED_TO_GET_GAS_PRICE', error };
+  }
+  ctx.log.info(`Gas price: ${gasPrice}`);
+  preparedTx.maxFeePerGas = multiplyBigIntByFraction(
+    gasPrice,
+    Math.min(gasPriceMultiplier, ABSOLUTE_MAX_GAS_PRICE_MULTIPLIER),
+  );
+
+  return { preparedTx };
+};
+
+/**
+ * Signs and sends a transaction to the blockchain with retry logic for gas price
+ * @param _preparedTx The prepared transaction without gas parameters
+ * @param chainId The chain ID to send the transaction to
+ * @param timeoutInMs Timeout in milliseconds for transaction confirmation (default: 30000)
+ * @param gasPriceMultiplier Multiplier for gas price to handle network congestion (default: 1)
+ * @returns Transaction result with status and hash or error details
+ */
+export const signAndSendTransaction = async (
+  _preparedTx: PreparedTxOnlySerializableParams,
+  chainId: number,
+  timeoutInMs = 30000,
+  gasPriceMultiplier = 1,
+): Promise<TxSendResult> => {
+  const ctx = Context.current();
+  const walletClient = clients.walletClients[chainId];
+  const publicClient = clients.publicClients[chainId];
+
+  const result = await _updatePreparedTxParamsBeforeSend(
+    _preparedTx,
+    chainId,
+    gasPriceMultiplier,
+  );
+  if ('status' in result) {
+    return result;
+  }
+  const { preparedTx } = result;
+
+  //----------------------------------------
+  // Sign Transaction
+  //----------------------------------------
+  //
+  // TODO(Sami): investigate  "using sendRawTransaction with a signedTx was not working"
+  //ctx.log.info(`Signing transaction - tx: ${SuperJSON.stringify(preparedTx)}`);
+  //
+  //const [signError, serializedTransaction] = await resolve(
+  //  walletClient.signTransaction(preparedTx),
+  //);
+  //if (signError) {
+  //  const error = signError as SignTransactionErrorType;
+  //  ctx.log.error(`Failed to sign transaction - error: ${error.message}`);
+  //  ctx.log.error(JSON.stringify(error));
+  //  return { status: 'FAILED_TO_SIGN_TRANSACTION', error };
+  //}
+  //ctx.log.info(`Transaction signed - signedTx: ${serializedTransaction}`);
+
+  //----------------------------------------
+  // Send Transaction
+  //----------------------------------------
+  const [sendError, txHash] = await resolve(
+    walletClient.sendTransaction({
+      ...preparedTx,
+    }),
+  );
+  if (sendError) {
+    const error = sendError as SendTransactionErrorType;
+    ctx.log.error(`Failed to send transaction - error: ${error.message}`);
+    ctx.log.error(JSON.stringify(error));
+
+    // determine if it's a known error
+    if ('details' in error) {
+      if (
+        error.details === 'replacement transaction underpriced' ||
+        ('details' in error.cause &&
+          error.cause.details === 'replacement transaction underpriced')
+      ) {
+        return { status: 'REPLACEMENT_UNDERPRICED', error };
+      }
+      if (
+        error.cause.name === 'NonceTooLowError' ||
+        error.details.startsWith('nonce too low')
+      ) {
+        return { status: 'NONCE_EXPIRED', error };
+      }
+    }
+    return { status: 'FAILED_TO_SEND_TRANSACTION', error };
+  }
+  ctx.log.info(`Transaction Sent - hash: ${txHash}`);
+
+  const [waitError, _txReceipt] = await resolve(
+    publicClient.waitForTransactionReceipt({
+      hash: txHash,
+      confirmations: 3,
+      timeout: timeoutInMs,
+    }),
+  );
+
+  if (waitError) {
+    const error = waitError as WaitForTransactionReceiptErrorType;
+    ctx.log.error(`Failed to wait for transaction - error: ${error.message}`);
+    ctx.log.error(JSON.stringify(error));
+    return { status: 'FAILED_TO_WAIT_FOR_TRANSACTION', error };
+  }
+  return {
+    status: 'SUCCESS',
+    txHash,
+  };
+};
+
+// Example of how to use these functions together
+export const mintNFSC = async (
+  chainId: number,
+  account: Address,
+  amount: MoneyAmount,
+) => {
+  const prepareResults = await prepareTxToMintNfsc(chainId, account, amount);
+
+  if ('error' in prepareResults) {
+    throw prepareResults.error;
+  }
+
+  const { preparedTx } = prepareResults;
+
+  return signAndSendTransaction(preparedTx, chainId);
+};
+
+export const getNfscBalanceInUSD = async (
+  chainId: number,
+  account: Address,
+  publicClient: PublicClient = clients.publicClients[chainId],
+): Promise<number> => {
+  const ctx = Context.current();
+  ctx.log.info(
+    `Getting NFSC balance - chainId: ${chainId}, account: ${account}`,
+  );
+
+  const nfscContract = getContract({
+    address: NFSC_CONTRACT_ADDRESS,
+    abi: NfscAbi,
+    client: publicClient,
+  });
+
+  const balance = await nfscContract.read.balanceOf([account]);
+  return Number(formatUnits(balance, 18));
+};
+
+function multiplyBigIntByFraction(
+  bigInt: bigint | bigint,
+  fractionalNumber: number,
+): bigint {
+  return BigInt(
+    BigNumber(bigInt.toString()).multipliedBy(fractionalNumber).toFixed(0),
+  );
+}
