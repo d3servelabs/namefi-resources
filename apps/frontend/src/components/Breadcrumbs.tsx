@@ -10,7 +10,6 @@ import {
 } from '@/components/ui/shadcn/breadcrumb';
 import { useBreadcrumbs } from '@/contexts';
 import { cn } from '@/lib/utils';
-import { capitalize } from 'lodash';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
@@ -41,7 +40,7 @@ export const Breadcrumbs: FC<BreadcrumbsProps> = ({
 
     const segments = pathname.split('/').filter(Boolean);
     return segments.map((segment, index) => ({
-      label: capitalize(segment.replace(/-/g, ' ')),
+      label: segment.replace(/-/g, ' '),
       href: `/${segments.slice(0, index + 1).join('/')}`,
     }));
   }, [pathname]);
@@ -69,10 +68,14 @@ export const Breadcrumbs: FC<BreadcrumbsProps> = ({
             <BreadcrumbItem>
               {breadcrumb.href && index !== breadcrumbs.length - 1 ? (
                 <BreadcrumbLink asChild={true}>
-                  <Link href={breadcrumb.href}>{breadcrumb.label}</Link>
+                  <Link className="capitalize" href={breadcrumb.href}>
+                    {breadcrumb.label}
+                  </Link>
                 </BreadcrumbLink>
               ) : (
-                <BreadcrumbPage>{breadcrumb.label}</BreadcrumbPage>
+                <BreadcrumbPage className="capitalize">
+                  {breadcrumb.label}
+                </BreadcrumbPage>
               )}
             </BreadcrumbItem>
           </Fragment>
