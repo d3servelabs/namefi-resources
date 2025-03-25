@@ -1,5 +1,4 @@
 import { Table } from './components/Table';
-import { Tabler } from './components/Tabler';
 import { Tbody } from './components/Tbody';
 import { Td } from './components/Td';
 import { Tfoot } from './components/Tfoot';
@@ -10,4 +9,4 @@ import { Tr } from './components/Tr';
 export * from './types';
 export * from './utils';
 
-export { Table, Tabler, Tbody, Td, Tfoot, Th, Thead, Tr };
+export { Table, Tbody, Td, Tfoot, Th, Thead, Tr };

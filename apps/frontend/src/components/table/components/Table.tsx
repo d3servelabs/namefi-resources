@@ -2,7 +2,6 @@
 
 import { cn } from '@/lib/utils';
 import {
-  type CSSProperties,
   type HTMLAttributes,
   type TableHTMLAttributes,
   forwardRef,
@@ -11,7 +10,7 @@ import {
 import { useMediaQuery } from 'react-responsive';
 import styled from 'styled-components';
 import type { Classes } from '../types';
-import { type Context, Provider, style2string } from '../utils';
+import { type Context, Provider } from '../utils';
 
 interface Props extends TableHTMLAttributes<HTMLTableElement> {
   pivot?: HTMLAttributes<HTMLDivElement>;
@@ -20,20 +19,9 @@ interface Props extends TableHTMLAttributes<HTMLTableElement> {
   hasHeader?: boolean;
   hasFooter?: boolean;
   hasPivot?: boolean;
-  styles?: CSSProperties;
 }
 
 const Wrapper = styled.table<Props>`
-  table,
-  thead,
-  tfoot,
-  tbody,
-  th,
-  td,
-  tr {
-    ${(props) => style2string(props.styles)}
-  }
-
   @media screen and (max-width: ${(props) => props.screen}px) {
     table,
     thead,
@@ -54,9 +42,6 @@ const Wrapper = styled.table<Props>`
     thead,
     tfoot {
       display: none;
-    }
-
-    tbody tr {
     }
 
     tbody tr:not(:last-child) {
