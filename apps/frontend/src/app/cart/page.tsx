@@ -1,6 +1,6 @@
 'use client';
 
-import { PaymentForm } from '@/components/paymentForm';
+import { AddPaymentMethodForm } from '@/components/addPaymentForm';
 import { StripeProvider } from '@/components/providers/stripeProvider';
 import { Button } from '@/components/ui/shadcn/button';
 import {
@@ -20,14 +20,17 @@ import {
   DialogTrigger,
 } from '@/components/ui/shadcn/dialog';
 import { useAuth } from '@/hooks/useAuth';
-import { formatAmountInUSDCents } from '@/utils/number';
+import { formatAmountInUSD } from '@/utils/number';
 import { useTRPC } from '@/utils/trpc';
+import type { ConfirmationToken } from '@stripe/stripe-js';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { Loader2 } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 export default function CartPage() {
-  const [showPayment, setShowPayment] = useState(false);
+  const [showAddPaymentMethod, setShowAddPaymentMethod] = useState(false);
+  const [confirmationToken, setConfirmationToken] =
+    useState<ConfirmationToken | null>(null);
 
   const { isAuthenticated, isLoading } = useAuth();
 
@@ -43,7 +46,7 @@ export default function CartPage() {
     [cartQuery?.data?.items],
   );
 
-  const totlaAmountInUSDCents = useMemo(
+  const totalAmountInUsdCents = useMemo(
     () => items.reduce((sum, item) => sum + item.amountInUSDCents, 0),
     [items],
   );
@@ -63,6 +66,34 @@ export default function CartPage() {
       },
     }),
   );
+
+  const { mutate: checkoutWithCart } = useMutation(
+    trpc.checkouts.checkoutWithCart.mutationOptions({
+      onSuccess: (data) => {
+        console.log(data);
+      },
+    }),
+  );
+
+  const handleSubmitPayment = useCallback(() => {
+    try {
+      checkoutWithCart({
+        totalAmountInUsdCents,
+        paymentProvider: 'STRIPE',
+        paymentProviderOptions: {
+          confirmationToken: confirmationToken?.id,
+        },
+      });
+      clearCart();
+    } catch (error) {
+      console.log(error);
+    }
+  }, [
+    checkoutWithCart,
+    clearCart,
+    totalAmountInUsdCents,
+    confirmationToken?.id,
+  ]);
 
   if (isLoading) {
     return (
@@ -106,7 +137,7 @@ export default function CartPage() {
                 <div>
                   <p className="font-medium">{item.normalizedDomainName}</p>
                   <p className="text-sm text-muted-foreground">
-                    {formatAmountInUSDCents(item.amountInUSDCents)}
+                    {formatAmountInUSD(item.amountInUSDCents, true)}
                   </p>
                 </div>
                 <Button
@@ -128,7 +159,7 @@ export default function CartPage() {
               <div>
                 <p className="text-lg font-medium">Total:</p>
                 <p className="text-sm text-muted-foreground">
-                  {formatAmountInUSDCents(totlaAmountInUSDCents)}
+                  {formatAmountInUSD(totalAmountInUsdCents, true)}
                 </p>
               </div>
               <div className="flex gap-2">
@@ -140,23 +171,35 @@ export default function CartPage() {
                 >
                   Clear Cart
                 </Button>
-                <Dialog open={showPayment} onOpenChange={setShowPayment}>
+                <Dialog
+                  open={showAddPaymentMethod}
+                  onOpenChange={(open: boolean) => {
+                    if (open) {
+                      setConfirmationToken(null);
+                    }
+                    setShowAddPaymentMethod(open);
+                  }}
+                >
                   <DialogTrigger asChild={true}>
-                    <Button>Proceed to Payment</Button>
+                    <Button disabled={confirmationToken !== null}>
+                      {confirmationToken === null
+                        ? 'Add Payment Method'
+                        : 'Payment Method Added'}
+                    </Button>
                   </DialogTrigger>
                   <DialogContent className="sm:max-w-[425px]">
                     <DialogHeader>
-                      <DialogTitle>Payment Details</DialogTitle>
+                      <DialogTitle>Payment Method Details</DialogTitle>
                       <DialogDescription>
-                        Enter your card details to complete the purchase
+                        Enter your payment method details. We won't charge you
+                        until you confirm your order.
                       </DialogDescription>
                     </DialogHeader>
-                    <StripeProvider amount={totlaAmountInUSDCents}>
-                      <PaymentForm
-                        amount={totlaAmountInUSDCents}
-                        onSuccess={() => {
-                          setShowPayment(false);
-                          clearCart();
+                    <StripeProvider amount={totalAmountInUsdCents}>
+                      <AddPaymentMethodForm
+                        onSuccess={(confirmationToken) => {
+                          setConfirmationToken(confirmationToken);
+                          setShowAddPaymentMethod(false);
                         }}
                         onError={(error) => {
                           console.error('Payment failed:', error);
@@ -165,6 +208,12 @@ export default function CartPage() {
                     </StripeProvider>
                   </DialogContent>
                 </Dialog>
+                <Button
+                  disabled={confirmationToken === null}
+                  onClick={handleSubmitPayment}
+                >
+                  Submit Order
+                </Button>
               </div>
             </div>
           </CardFooter>

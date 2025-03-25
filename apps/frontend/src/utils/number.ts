@@ -1,13 +1,6 @@
-export const formatAmountInUSDCents = (amountInCents: number): string =>
+export const formatAmountInUSD = (amount: number, inCents = false): string =>
   new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
     minimumFractionDigits: 2,
-  }).format(amountInCents / 100);
-
-export const formatAmountInUSD = (amount: number): string =>
-  new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 2,
-  }).format(amount);
+  }).format(inCents ? amount / 100 : amount);

@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/shadcn/dropdown-menu';
 import { useAuth } from '@/hooks/useAuth';
 import { cn } from '@/lib/utils';
-import { formatAmountInUSDCents } from '@/utils/number';
+import { formatAmountInUSD } from '@/utils/number';
 import { useTRPC } from '@/utils/trpc';
 import { useQuery } from '@tanstack/react-query';
 import { ShoppingCart } from 'lucide-react';
@@ -82,7 +82,7 @@ export const CartDropdown: ForwardRefExoticComponent<vProps> = forwardRef<
                 >
                   <span>{item.normalizedDomainName}</span>
                   <span className="text-muted-foreground">
-                    {formatAmountInUSDCents(item.amountInUSDCents)}
+                    {formatAmountInUSD(item.amountInUSDCents, true)}
                   </span>
                 </DropdownMenuItem>
               ))}
@@ -90,7 +90,7 @@ export const CartDropdown: ForwardRefExoticComponent<vProps> = forwardRef<
             <DropdownMenuSeparator />
             <DropdownMenuItem className="justify-between font-medium">
               <span>Total</span>
-              <span>{formatAmountInUSDCents(totlaAmountInUSDCents)}</span>
+              <span>{formatAmountInUSD(totlaAmountInUSDCents, true)}</span>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild={true}>
