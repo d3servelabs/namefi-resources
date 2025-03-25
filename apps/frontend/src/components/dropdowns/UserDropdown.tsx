@@ -136,7 +136,7 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
                   <span>Profile</span>
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              <DropdownMenuItem asChild={true}>
                 <Link href="/settings">
                   <SettingsIcon className="mr-2 h-4 w-4" />
                   <span>Settings</span>
