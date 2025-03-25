@@ -25,7 +25,6 @@ export const getSuggestions = (
   const trimmedQuery = query.replace(/[^a-zA-Z0-9-_.]/g, '');
 
   return [
-    // trimmedQuery,
     `${trimmedQuery}.${parentDomain}`,
     `${trimmedQuery}-good.${parentDomain}`,
     `${trimmedQuery}-great.${parentDomain}`,
