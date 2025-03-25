@@ -22,7 +22,7 @@ export const Header: ForwardRefExoticComponent<HeaderProps> = forwardRef<
   { className, ...rest }: HeaderProps,
   ref: ForwardedRef<HTMLDivElement>,
 ) {
-  const { isMobile, open } = useSidebar();
+  const { isMobile } = useSidebar();
 
   return (
     <header

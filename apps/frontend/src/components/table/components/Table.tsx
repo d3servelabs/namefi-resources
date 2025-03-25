@@ -61,6 +61,7 @@ const Wrapper = styled.table<Props>`
 
     td.pivoted {
       display: flex;
+      align-items: center;
       gap: 0.5rem;
       width: 100% !important;
       border: none !important;
