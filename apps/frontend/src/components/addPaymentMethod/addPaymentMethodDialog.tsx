@@ -1,7 +1,6 @@
 import type { ConfirmationToken } from '@stripe/stripe-js';
-import { PlusCircleIcon } from 'lucide-react';
+import type { ReactNode } from 'react';
 import { StripeProvider } from '../providers/stripeProvider';
-import { Button } from '../ui/shadcn/button';
 import {
   Dialog,
   DialogContent,
@@ -14,37 +13,25 @@ import { AddPaymentMethodForm } from './addPaymentMethodForm';
 
 export interface AddPaymentMethodDialogProps {
   amountInUsdCents: number;
-  iconOnly: boolean;
+  dialogTrigger: ReactNode;
   onAddPaymentMethodError: (error: Error) => void;
   onAddPaymentMethodSuccess: (confirmationToken: ConfirmationToken) => void;
   onOpenChange: (open: boolean) => void;
-  paymentMethodAlreadyAdded: boolean;
   showAddPaymentMethodDialog: boolean;
 }
 
 export function AddPaymentMethodDialog({
   amountInUsdCents,
-  iconOnly,
+  dialogTrigger,
   onAddPaymentMethodError,
   onAddPaymentMethodSuccess,
   onOpenChange,
-  paymentMethodAlreadyAdded,
   showAddPaymentMethodDialog,
 }: AddPaymentMethodDialogProps) {
   return (
     <Dialog open={showAddPaymentMethodDialog} onOpenChange={onOpenChange}>
-      <DialogTrigger asChild={true}>
-        {iconOnly ? (
-          <PlusCircleIcon />
-        ) : (
-          <Button disabled={paymentMethodAlreadyAdded}>
-            {paymentMethodAlreadyAdded
-              ? 'Payment Method Added'
-              : 'Add Payment Method'}
-          </Button>
-        )}
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogTrigger asChild={true}>{dialogTrigger}</DialogTrigger>
+      <DialogContent className="sm:max-w-[425px] max-sm:max-h-[85%] overflow-auto">
         <DialogHeader>
           <DialogTitle>Payment Method Details</DialogTitle>
           <DialogDescription>

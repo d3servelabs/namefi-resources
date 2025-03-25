@@ -1,7 +1,9 @@
 'use client';
-
-import { AddPaymentMethodForm } from '@/components/addPaymentMethod/addPaymentMethodForm';
-import { StripeProvider } from '@/components/providers/stripeProvider';
+import {
+  type PaymentMethodDetails,
+  SelectPaymentMethodCard,
+  SelectedPaymentMethod,
+} from '@/components/selectPaymentMethodCard/selectPaymentMethodCard';
 import { Button } from '@/components/ui/shadcn/button';
 import {
   Card,
@@ -11,28 +13,28 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/shadcn/card';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/shadcn/dialog';
 import { useAuth } from '@/hooks/useAuth';
 import { formatAmountInUSD } from '@/utils/number';
 import { useTRPC } from '@/utils/trpc';
-import type { ConfirmationToken } from '@stripe/stripe-js';
 import { useMutation, useQuery } from '@tanstack/react-query';
+import type { inferInput } from '@trpc/tanstack-react-query';
 import { Loader2 } from 'lucide-react';
 import { useCallback, useMemo, useState } from 'react';
 
-export default function CartPage() {
-  const [showAddPaymentMethod, setShowAddPaymentMethod] = useState(false);
-  const [confirmationToken, setConfirmationToken] =
-    useState<ConfirmationToken | null>(null);
+const USER_BALANCE_IN_USD_CENTS = 2000;
 
-  const { isAuthenticated, isLoading } = useAuth();
+export default function CartPage() {
+  type CheckoutWithCartInput = inferInput<
+    typeof trpc.checkouts.checkoutWithCart
+  >;
+
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<
+    SelectedPaymentMethod | undefined | null
+  >(null);
+  const [checkoutWithCartRequest, setCheckoutWithCartRequest] =
+    useState<CheckoutWithCartInput | null>(null);
+
+  const { isAuthenticated, isLoading, privyUser } = useAuth();
 
   const trpc = useTRPC();
 
@@ -50,6 +52,10 @@ export default function CartPage() {
     () => items.reduce((sum, item) => sum + item.amountInUSDCents, 0),
     [items],
   );
+
+  const hasSufficientBalance = useMemo(() => {
+    return USER_BALANCE_IN_USD_CENTS >= totalAmountInUsdCents;
+  }, [totalAmountInUsdCents]);
 
   const { mutate: removeItem } = useMutation(
     trpc.carts.removeItem.mutationOptions({
@@ -75,25 +81,115 @@ export default function CartPage() {
     }),
   );
 
-  const handleSubmitPayment = useCallback(() => {
-    try {
-      checkoutWithCart({
+  const handlePaymentMethodDetailsChanged = useCallback(
+    (paymentMethodDetails: PaymentMethodDetails | null) => {
+      if (paymentMethodDetails === null || paymentMethodDetails === undefined) {
+        setCheckoutWithCartRequest(null);
+        return;
+      }
+
+      const newCheckoutWithCartRequst: CheckoutWithCartInput = {
+        ...paymentMethodDetails,
         totalAmountInUsdCents,
-        paymentProvider: 'STRIPE',
-        paymentProviderOptions: {
-          confirmationToken: confirmationToken?.id,
-        },
-      });
+      };
+      setCheckoutWithCartRequest(newCheckoutWithCartRequst);
+    },
+    [totalAmountInUsdCents],
+  );
+
+  const handleSelectedPaymentMethodChanged = useCallback(
+    (selectedPaymentMethod: SelectedPaymentMethod | undefined | null) => {
+      setSelectedPaymentMethod(selectedPaymentMethod);
+    },
+    [],
+  );
+
+  const submitPaymentButtonDisabled = useMemo(() => {
+    switch (selectedPaymentMethod) {
+      case SelectedPaymentMethod.NFSC: {
+        return (
+          !hasSufficientBalance ||
+          checkoutWithCartRequest?.paymentProviderOptions?.walletAddress ===
+            undefined ||
+          checkoutWithCartRequest?.paymentProviderOptions?.walletAddress ===
+            null
+        );
+      }
+      case SelectedPaymentMethod.SAVED_CARD: {
+        return (
+          checkoutWithCartRequest?.paymentProvider !== 'STRIPE' ||
+          checkoutWithCartRequest?.paymentProviderOptions?.paymentMethodId ===
+            null ||
+          checkoutWithCartRequest?.paymentProviderOptions?.paymentMethodId ===
+            undefined
+        );
+      }
+      case SelectedPaymentMethod.NEW_CARD: {
+        return (
+          checkoutWithCartRequest?.paymentProvider !== 'STRIPE' ||
+          checkoutWithCartRequest?.paymentProviderOptions?.confirmationToken ===
+            null ||
+          checkoutWithCartRequest?.paymentProviderOptions?.confirmationToken ===
+            undefined
+        );
+      }
+      default:
+        return true;
+    }
+  }, [checkoutWithCartRequest, hasSufficientBalance, selectedPaymentMethod]);
+
+  const submitButtonText = useMemo(() => {
+    if (!submitPaymentButtonDisabled) {
+      return 'Submit Order';
+    }
+
+    switch (selectedPaymentMethod) {
+      case SelectedPaymentMethod.NFSC: {
+        if (!(isAuthenticated && privyUser)) {
+          return 'Sign in to Use NFSC';
+        }
+
+        if (!privyUser?.wallet) {
+          return 'Connect a Wallet to Use NFSC';
+        }
+
+        return 'Insufficient Balance';
+      }
+
+      case SelectedPaymentMethod.SAVED_CARD: {
+        return 'Select a Saved Card';
+      }
+
+      case SelectedPaymentMethod.NEW_CARD: {
+        return 'Add a New Card';
+      }
+      default:
+        return 'Select a Payment Method';
+    }
+  }, [
+    isAuthenticated,
+    privyUser,
+    selectedPaymentMethod,
+    submitPaymentButtonDisabled,
+  ]);
+
+  const handleSubmitPayment = useCallback(() => {
+    if (
+      checkoutWithCartRequest === null ||
+      checkoutWithCartRequest === undefined
+    ) {
+      throw new Error(
+        'Tried to submit payment with no payment method attached.',
+      );
+    }
+
+    try {
+      checkoutWithCart(checkoutWithCartRequest);
       clearCart();
     } catch (error) {
       console.log(error);
     }
-  }, [
-    checkoutWithCart,
-    clearCart,
-    totalAmountInUsdCents,
-    confirmationToken?.id,
-  ]);
+  }, [checkoutWithCart, checkoutWithCartRequest, clearCart]);
 
   if (isLoading) {
     return (
@@ -117,7 +213,7 @@ export default function CartPage() {
   }
 
   return (
-    <div className="p-4">
+    <div className="flex flex-col gap-2 container mx-auto py-8">
       <Card>
         <CardHeader>
           <CardTitle>Your Cart</CardTitle>
@@ -171,54 +267,29 @@ export default function CartPage() {
                 >
                   Clear Cart
                 </Button>
-                <Dialog
-                  open={showAddPaymentMethod}
-                  onOpenChange={(open: boolean) => {
-                    if (open) {
-                      setConfirmationToken(null);
-                    }
-                    setShowAddPaymentMethod(open);
-                  }}
-                >
-                  <DialogTrigger asChild={true}>
-                    <Button disabled={confirmationToken !== null}>
-                      {confirmationToken === null
-                        ? 'Add Payment Method'
-                        : 'Payment Method Added'}
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent className="sm:max-w-[425px]">
-                    <DialogHeader>
-                      <DialogTitle>Payment Method Details</DialogTitle>
-                      <DialogDescription>
-                        Enter your payment method details. We won't charge you
-                        until you confirm your order.
-                      </DialogDescription>
-                    </DialogHeader>
-                    <StripeProvider amount={totalAmountInUsdCents}>
-                      <AddPaymentMethodForm
-                        onSuccess={(confirmationToken) => {
-                          setConfirmationToken(confirmationToken);
-                          setShowAddPaymentMethod(false);
-                        }}
-                        onError={(error) => {
-                          console.error('Payment failed:', error);
-                        }}
-                      />
-                    </StripeProvider>
-                  </DialogContent>
-                </Dialog>
-                <Button
-                  disabled={confirmationToken === null}
-                  onClick={handleSubmitPayment}
-                >
-                  Submit Order
-                </Button>
               </div>
             </div>
           </CardFooter>
         )}
       </Card>
+      {items.length > 0 && (
+        <SelectPaymentMethodCard
+          cartTotalInUsdCents={totalAmountInUsdCents}
+          footerButton={
+            <Button
+              className="w-full"
+              disabled={submitPaymentButtonDisabled}
+              onClick={handleSubmitPayment}
+            >
+              {submitButtonText}
+            </Button>
+          }
+          onPaymentMethodDetailsChanged={(
+            paymentMethodDetails: PaymentMethodDetails | null,
+          ) => handlePaymentMethodDetailsChanged(paymentMethodDetails)}
+          onSelectedPaymentMethodChanged={handleSelectedPaymentMethodChanged}
+        />
+      )}
     </div>
   );
 }
