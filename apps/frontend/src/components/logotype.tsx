@@ -3,6 +3,7 @@
 import { LazyLottie } from '@/components/lazyLottie';
 import { cn } from '@/lib/utils';
 import type { LottieRefCurrentProps } from 'lottie-react';
+import Link from 'next/link';
 import {
   type AnchorHTMLAttributes,
   type ForwardRefExoticComponent,
@@ -43,7 +44,7 @@ export const Logotype: ForwardRefExoticComponent<LogotypeProps> = forwardRef<
   const getJson = useCallback(() => Promise.resolve(animationData), []);
 
   return (
-    <a
+    <Link
       ref={ref}
       className={cn('flex items-center space-x-2', className)}
       {...rest}
@@ -59,7 +60,7 @@ export const Logotype: ForwardRefExoticComponent<LogotypeProps> = forwardRef<
         autoplay={autoplay}
         style={{ width: 80, height: 24 }}
       />
-    </a>
+    </Link>
   );
 });
 
