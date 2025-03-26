@@ -53,8 +53,8 @@ type ParentDomain = '0x.city' | 'defi.build';
 type DomainData = {
   domain: string;
   availability: boolean;
-  priceInUSD: number;
-  currentOwner?: string;
+  priceInUSD?: number | null;
+  currentOwner?: string | null;
 };
 
 // Components
@@ -179,7 +179,7 @@ const DomainCard: FC<{
             <div className="flex items-center gap-4 text-sm text-muted-foreground">
               <div className="flex items-center">
                 <Tag className="mr-1 h-3 w-3" />
-                {formatAmountInUSD(domain.priceInUSD)}
+                {domain.priceInUSD ? formatAmountInUSD(domain.priceInUSD) : ''}
               </div>
               {!domain.availability && domain.currentOwner && (
                 <div className="flex items-center">
@@ -395,7 +395,7 @@ export const Search: FC<DomainSearchProps> = ({
       } else {
         addToCartMutate({
           normalizedDomainName: domain.domain,
-          amountInUSDCents: domain.priceInUSD * 100,
+          amountInUSDCents: domain.priceInUSD ? domain.priceInUSD * 100 : 0,
         });
       }
     },
