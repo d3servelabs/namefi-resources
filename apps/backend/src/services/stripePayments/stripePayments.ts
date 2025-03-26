@@ -1,8 +1,32 @@
+import type { PaymentStatus } from '@namefi-astra/db';
 import Stripe from 'stripe';
 import { secrets } from '#lib/env';
 import { PaymentMethodNotFoundError } from './errors';
 
 const stripe = new Stripe(secrets.STRIPE_SECRET_KEY);
+
+export function stripePaymentIntentStatusToPaymentStatus({
+  paymentIntentStatus,
+}: { paymentIntentStatus: Stripe.PaymentIntent.Status }): PaymentStatus {
+  switch (paymentIntentStatus) {
+    // Intermediate steps
+    case 'processing':
+    case 'requires_action':
+    case 'requires_confirmation':
+    case 'requires_payment_method':
+      return 'PROCESSING';
+
+    case 'canceled':
+      return 'CANCELLED';
+    case 'requires_capture':
+      return 'REQUIRES_CAPTURE';
+    case 'succeeded':
+      return 'SUCCEEDED';
+
+    default:
+      return 'PROCESSING';
+  }
+}
 
 export async function createCustomer({ name }: Stripe.CustomerCreateParams) {
   const stripeCustomer: Stripe.Response<Stripe.Customer> =
