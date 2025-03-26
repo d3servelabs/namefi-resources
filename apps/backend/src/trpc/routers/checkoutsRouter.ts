@@ -40,9 +40,10 @@ export const checkoutsRouter = createTRPCRouter({
               updatedAt: new Date(),
             })
             .where(eq(usersTable.id, ctx.user.id))
-            .returning({ stripeCustomerId: usersTable.id });
+            .returning({ stripeCustomerId: usersTable.stripeCustomerId });
 
-          stripeCustomerId = userWithStripeCustomerId.stripeCustomerId;
+          stripeCustomerId =
+            userWithStripeCustomerId.stripeCustomerId as string;
         }
 
         const { stripePaymentIntent } =

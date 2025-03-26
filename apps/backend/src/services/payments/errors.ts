@@ -17,3 +17,18 @@ export class NegativeAmountInUsdCentsError extends ServiceError {
     );
   }
 }
+
+export class PaymentNotFoundError extends ServiceError {
+  constructor({ paymentId }: { paymentId: string }) {
+    super(`Could not find Payment with ID: ${paymentId}`, ServiceName.PAYMENTS);
+  }
+}
+
+export class UpdatePaymentFailure extends ServiceError {
+  constructor({ paymentId }: { paymentId: string }) {
+    super(
+      `Failed to update Payment with ID: ${paymentId}`,
+      ServiceName.PAYMENTS,
+    );
+  }
+}
