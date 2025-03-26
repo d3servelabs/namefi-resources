@@ -12,7 +12,7 @@ export const checkoutsRouter = createTRPCRouter({
         paymentProvider: z.string(),
         paymentProviderOptions: z
           .object({
-            confirmationToken: z.string().optional(),
+            confirmationTokenId: z.string().optional(),
             paymentMethodId: z.string().optional(),
             walletAddress: z.string().optional(),
           })
@@ -50,7 +50,8 @@ export const checkoutsRouter = createTRPCRouter({
             totalAmountInUsdCents: input.totalAmountInUsdCents,
             paymentMethodId: input.paymentProviderOptions?.paymentMethodId,
             stripeCustomerId,
-            confirmationToken: input.paymentProviderOptions?.confirmationToken,
+            confirmationTokenId:
+              input.paymentProviderOptions?.confirmationTokenId,
           });
 
         // process order and get amountToCatpure

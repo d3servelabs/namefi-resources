@@ -75,12 +75,12 @@ export async function createPaymentIntent({
   totalAmountInUsdCents,
   stripeCustomerId,
   paymentMethodId,
-  confirmationToken,
+  confirmationTokenId,
 }: {
   totalAmountInUsdCents: number;
   stripeCustomerId: string;
   paymentMethodId?: string;
-  confirmationToken?: string;
+  confirmationTokenId?: string;
 }) {
   if (paymentMethodId) {
     const customerHasPaymentMethod = await getCustomerHasPaymentMethod({
@@ -110,7 +110,7 @@ export async function createPaymentIntent({
       } as Stripe.PaymentIntentCreateParams.AutomaticPaymentMethods,
     },
     paymentMethodId ? { payment_method: paymentMethodId } : null,
-    confirmationToken ? { confirmation_token: confirmationToken } : null,
+    confirmationTokenId ? { confirmation_token: confirmationTokenId } : null,
   );
 
   const stripePaymentIntent =

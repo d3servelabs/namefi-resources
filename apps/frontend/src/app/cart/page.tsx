@@ -127,10 +127,10 @@ export default function CartPage() {
       case SelectedPaymentMethod.NEW_CARD: {
         return (
           checkoutWithCartRequest?.paymentProvider !== 'STRIPE' ||
-          checkoutWithCartRequest?.paymentProviderOptions?.confirmationToken ===
-            null ||
-          checkoutWithCartRequest?.paymentProviderOptions?.confirmationToken ===
-            undefined
+          checkoutWithCartRequest?.paymentProviderOptions
+            ?.confirmationTokenId === null ||
+          checkoutWithCartRequest?.paymentProviderOptions
+            ?.confirmationTokenId === undefined
         );
       }
       default:
