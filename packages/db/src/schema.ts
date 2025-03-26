@@ -165,6 +165,8 @@ export const paymentsTable = pgTable(
     status: paymentStatusEnum('status').notNull().default('CREATED'),
     paymentProvider: paymentProviderEnum('payment_provider').notNull(),
     paymentProviderReferenceId: text('payment_provider_reference_id'),
+    chainId: integer('chain_id'),
+    walletAddress: text('wallet_address'),
     ...timestamps,
   },
   (table) => [
@@ -190,6 +192,8 @@ export const refundsTable = pgTable(
     ...amountInUsdCents,
     status: refundStatusEnum('status').notNull().default('CREATED'),
     paymentProviderReferenceId: text('payment_provider_reference_id'),
+    chainId: integer('chain_id'),
+    walletAddress: text('wallet_address'),
     ...timestamps,
   },
   (table) => [
