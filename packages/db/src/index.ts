@@ -1,4 +1,4 @@
-export * from './types';
 export * from './schema';
-export * from './client';
 export * from './relations';
+export * from './types';
+export * from './client';

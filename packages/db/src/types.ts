@@ -16,11 +16,13 @@ import {
   usersTable,
 } from './schema';
 
+// TODO: types are not being exported correctly
 /**
  * Utility to create all necessary Zod schemas for a table
  * @param table The Drizzle table to create schemas for
  * @param prefix The prefix to use for the schema names
  * @returns Object containing insert, select, and update schemas
+ * @deprecated
  */
 const createTableSchemas = <T extends AnyPgTable>(
   table: T,
@@ -34,41 +36,40 @@ const createTableSchemas = <T extends AnyPgTable>(
 /**
  * Zod schemas for type-safe operations
  */
-export const { userInsertSchema, userSelectSchema, userUpdateSchema } =
-  createTableSchemas(usersTable, 'user');
+export const userInsertSchema = createInsertSchema(usersTable);
+export const userSelectSchema = createSelectSchema(usersTable);
+export const userUpdateSchema = createUpdateSchema(usersTable);
 
-export const { cartInsertSchema, cartSelectSchema, cartUpdateSchema } =
-  createTableSchemas(cartsTable, 'cart');
+export const cartInsertSchema = createInsertSchema(cartsTable);
+export const cartSelectSchema = createSelectSchema(cartsTable);
+export const cartUpdateSchema = createUpdateSchema(cartsTable);
 
-export const {
-  cartItemInsertSchema,
-  cartItemSelectSchema,
-  cartItemUpdateSchema,
-} = createTableSchemas(cartItemsTable, 'cartItem');
+export const cartItemInsertSchema = createInsertSchema(cartItemsTable);
+export const cartItemSelectSchema = createSelectSchema(cartItemsTable);
+export const cartItemUpdateSchema = createUpdateSchema(cartItemsTable);
 
-export const { paymentInsertSchema, paymentSelectSchema, paymentUpdateSchema } =
-  createTableSchemas(paymentsTable, 'payment');
+export const paymentInsertSchema = createInsertSchema(paymentsTable);
+export const paymentSelectSchema = createSelectSchema(paymentsTable);
+export const paymentUpdateSchema = createUpdateSchema(paymentsTable);
 
-export const { refundInsertSchema, refundSelectSchema, refundUpdateSchema } =
-  createTableSchemas(refundsTable, 'refund');
+export const refundInsertSchema = createInsertSchema(refundsTable);
+export const refundSelectSchema = createSelectSchema(refundsTable);
+export const refundUpdateSchema = createUpdateSchema(refundsTable);
 
-export const { orderInsertSchema, orderSelectSchema, orderUpdateSchema } =
-  createTableSchemas(ordersTable, 'order');
+export const orderInsertSchema = createInsertSchema(ordersTable);
+export const orderSelectSchema = createSelectSchema(ordersTable);
+export const orderUpdateSchema = createUpdateSchema(ordersTable);
 
-export const {
-  orderItemInsertSchema,
-  orderItemSelectSchema,
-  orderItemUpdateSchema,
-} = createTableSchemas(orderItemsTable, 'orderItem');
+export const orderItemInsertSchema = createInsertSchema(orderItemsTable);
+export const orderItemSelectSchema = createSelectSchema(orderItemsTable);
+export const orderItemUpdateSchema = createUpdateSchema(orderItemsTable);
 
 /**
  * DNS Record schemas
  */
-export const {
-  dnsRecordInsertSchema,
-  dnsRecordSelectSchema,
-  dnsRecordUpdateSchema,
-} = createTableSchemas(dnsRecordsTable, 'dnsRecord');
+export const dnsRecordInsertSchema = createInsertSchema(dnsRecordsTable);
+export const dnsRecordSelectSchema = createSelectSchema(dnsRecordsTable);
+export const dnsRecordUpdateSchema = createUpdateSchema(dnsRecordsTable);
 
 /**
  * Inferred Zod types for API and validation
