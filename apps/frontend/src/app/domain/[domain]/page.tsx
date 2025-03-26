@@ -1,3 +1,5 @@
+import { DnsManagement } from '@/components/DNS/DnsManagement';
+
 type Props = {
   params: Promise<{ domain: string }>;
 };
@@ -5,5 +7,5 @@ type Props = {
 export default async function DomainPage({ params }: Props) {
   const { domain } = await params;
 
-  return <div className="p-4">Domain: {domain}</div>;
+  return <DnsManagement domain={domain} className="p-4" />;
 }

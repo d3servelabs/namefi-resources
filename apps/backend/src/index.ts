@@ -10,7 +10,25 @@ import { appRouter } from './trpc/routers/appRouter';
 
 const app = new Hono();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: (origin) => {
+      if (!origin) {
+        return '*'; // Allow non-browser requests
+      }
+      if (origin.startsWith('http://localhost')) {
+        return origin; // Allow localhost
+      }
+      if (origin.endsWith('.vercel.app') || origin === 'https://vercel.app') {
+        return origin; // Allow Vercel domain and Vercel subdomains
+      }
+      return null; // Block other origins
+    },
+    allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+    allowHeaders: ['Content-Type', 'Authorization'],
+    credentials: true, // Allow cookies if needed
+  }),
+);
 app.use(prettyJSON());
 app.use(logger());
 app.use(
