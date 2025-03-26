@@ -43,6 +43,13 @@
       "when": 1743004897914,
       "tag": "0005_little_joshua_kane",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1743024900606,
+      "tag": "0006_neat_king_cobra",
+      "breakpoints": true
     }
   ]
 }

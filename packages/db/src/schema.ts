@@ -86,6 +86,7 @@ export const orderStatusEnum = createStatusEnum('order_status', [
 
 export const paymentStatusEnum = createStatusEnum('payment_status', [
   'REFUND_REQUESTED',
+  'REQUIRES_CAPTURE',
 ] as const);
 
 export const refundStatusEnum = createStatusEnum('refund_status', [
