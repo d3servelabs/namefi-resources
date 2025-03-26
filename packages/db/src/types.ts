@@ -11,6 +11,8 @@ import {
   dnsRecordsTable,
   orderItemsTable,
   ordersTable,
+  type paymentProviderEnum,
+  type paymentStatusEnum,
   paymentsTable,
   refundsTable,
   usersTable,
@@ -114,3 +116,11 @@ export type OrderItemUpdate = z.infer<typeof orderItemUpdateSchema>;
 export type DnsRecordInsert = z.infer<typeof dnsRecordInsertSchema>;
 export type DnsRecordSelect = z.infer<typeof dnsRecordSelectSchema>;
 export type DnsRecordUpdate = z.infer<typeof dnsRecordUpdateSchema>;
+
+/**
+ * Enum types from pgEnums
+ */
+
+// PaymentEnums
+export type PaymentProvider = (typeof paymentProviderEnum.enumValues)[number];
+export type PaymentStatus = (typeof paymentStatusEnum.enumValues)[number];

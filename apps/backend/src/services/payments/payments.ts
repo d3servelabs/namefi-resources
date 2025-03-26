@@ -1,4 +1,4 @@
-import { db, type paymentProviderEnum, paymentsTable } from '@namefi-astra/db';
+import { type PaymentProvider, db, paymentsTable } from '@namefi-astra/db';
 import { isNil } from 'ramda';
 import {
   CreateNewPaymentFailure,
@@ -10,7 +10,7 @@ export async function createPayment({
   paymentProvider,
 }: {
   amountInUsdCents: number;
-  paymentProvider: (typeof paymentProviderEnum.enumValues)[number];
+  paymentProvider: PaymentProvider;
 }) {
   if (amountInUsdCents < 0) {
     throw new NegativeAmountInUsdCentsError({ amountInUsdCents });
