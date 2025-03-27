@@ -26,7 +26,7 @@ import {
  * @returns Object containing insert, select, and update schemas
  * @deprecated
  */
-const createTableSchemas = <T extends AnyPgTable>(
+const _createTableSchemas = <T extends AnyPgTable>(
   table: T,
   prefix: string,
 ) => ({

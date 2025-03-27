@@ -1,4 +1,4 @@
-import type { NavItem } from '@/components/sidebars/types';
+import type { NavItem } from '@/types';
 
 export function isRouteActive(item: NavItem, pathname: string): boolean {
   if (item.href === pathname) {

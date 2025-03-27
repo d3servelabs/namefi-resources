@@ -18,6 +18,7 @@ import { SidebarMenuButton } from '@/components/ui/shadcn/sidebar';
 import { useConfirm } from '@/contexts';
 import { useAuth } from '@/hooks/useAuth';
 import { cn } from '@/lib/utils';
+import type { NavItem } from '@/types';
 import { abbreviation, shortage } from '@/utils/string';
 import { useLogin, useLogout } from '@privy-io/react-auth';
 import {
@@ -37,6 +38,11 @@ import {
   useCallback,
 } from 'react';
 
+const ITEMS: NavItem[] = [
+  { title: 'Profile', href: '/profile', icon: UserIcon },
+  { title: 'Settings', href: '/settings', icon: SettingsIcon },
+];
+
 export type UserDropdownProps = HTMLAttributes<HTMLDivElement> & {
   collapsed?: boolean;
 };
@@ -53,6 +59,7 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
     const name =
       privyUser?.wallet?.address ||
       privyUser?.email?.address ||
+      privyUser?.google?.email ||
       privyUser?.id ||
       'ME';
 
@@ -130,18 +137,18 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
             <DropdownMenuContent align="end" className="w-56">
               <DropdownMenuLabel>Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem asChild={true}>
-                <Link href="/profile">
-                  <UserIcon className="mr-2 h-4 w-4" />
-                  <span>Profile</span>
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild={true}>
-                <Link href="/settings">
-                  <SettingsIcon className="mr-2 h-4 w-4" />
-                  <span>Settings</span>
-                </Link>
-              </DropdownMenuItem>
+              {ITEMS.map((item) => {
+                const Icon = item.icon;
+
+                return (
+                  <DropdownMenuItem key={item.href} asChild={true}>
+                    <Link href={item.href}>
+                      {Icon && <Icon className="mr-2 h-4 w-4" />}
+                      <span>{item.title}</span>
+                    </Link>
+                  </DropdownMenuItem>
+                );
+              })}
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 onClick={handleDisconnect}

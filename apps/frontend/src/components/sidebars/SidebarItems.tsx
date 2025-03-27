@@ -9,10 +9,10 @@ import {
   SidebarMenuItem,
 } from '@/components/ui/shadcn/sidebar';
 import { cn } from '@/lib/utils';
+import type { NavItem } from '@/types';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import type { FC, HTMLAttributes } from 'react';
-import type { NavItem } from './types';
 import { isRouteActive } from './utils';
 
 export type SidebarItemsProps = HTMLAttributes<HTMLDivElement> & {

@@ -17,6 +17,7 @@ import {
   useSidebar,
 } from '@/components/ui/shadcn/sidebar';
 import { cn } from '@/lib/utils';
+import type { NavItem } from '@/types';
 import {
   Bell,
   Bookmark,
@@ -27,7 +28,6 @@ import {
 } from 'lucide-react';
 import { type ChangeEvent, useCallback, useMemo, useState } from 'react';
 import { SidebarDomains } from './SidebarDomains';
-import type { NavItem } from './types';
 
 const DOMAINS = ['test1.com', 'test2.com', 'test3.com'];
 

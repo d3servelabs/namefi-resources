@@ -1,3 +1,11 @@
+import type { Metadata } from 'next';
+import Profile from './components/profile';
+
+export const metadata: Metadata = {
+  title: 'Profile',
+  description: 'Manage your profile and account settings',
+};
+
 export default function ProfilePage() {
-  return <div className="p-4">Profile</div>;
+  return <Profile />;
 }
