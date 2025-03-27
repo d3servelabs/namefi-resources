@@ -10,7 +10,7 @@ import {
 import { usePrivy } from '@privy-io/react-auth';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { Accounts } from './accounts/accounts';
+import { Accounts } from './accounts';
 import { Footer } from './footer';
 import { Header } from './header';
 import { Personal } from './personal';

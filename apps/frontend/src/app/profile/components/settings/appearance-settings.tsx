@@ -74,12 +74,14 @@ export default function AppearanceSettings() {
 
   return (
     <Card>
-      <CardHeader>
-        <div className="flex items-center gap-2">
-          <Paintbrush className="h-5 w-5 text-primary" />
-          <CardTitle>Appearance</CardTitle>
+      <CardHeader className="flex flex-row items-center justify-between">
+        <div className="flex flex-col gap-1">
+          <div className="flex items-center gap-2">
+            <Paintbrush className="h-5 w-5 text-primary" />
+            <CardTitle>Appearance</CardTitle>
+          </div>
+          <CardDescription>Customize how the application looks</CardDescription>
         </div>
-        <CardDescription>Customize how the application looks</CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="space-y-4">

@@ -34,7 +34,7 @@ import {
   usePrivy,
   useWallets,
 } from '@privy-io/react-auth';
-import { Copy, ExternalLink, Plus, Trash2 } from 'lucide-react';
+import { Copy, ExternalLink, Plus, Trash2, Wallet2 } from 'lucide-react';
 import { type HTMLAttributes, useCallback, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 
@@ -122,9 +122,12 @@ export const Wallets = ({ className, ...rest }: WalletsProps) => {
   return (
     <Card className={cn('', className)} {...rest}>
       <CardHeader className="flex flex-row items-center justify-between">
-        <div>
-          <CardTitle>Connected Wallets</CardTitle>
-          <CardDescription>Manage your blockchain wallets</CardDescription>
+        <div className="flex flex-col gap-1">
+          <div className="flex items-center gap-2">
+            <Wallet2 className="h-5 w-5 text-primary" />
+            <CardTitle>Connected Wallets</CardTitle>
+          </div>
+          <CardDescription>Manage your wallets</CardDescription>
         </div>
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild={true}>

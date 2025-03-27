@@ -30,8 +30,9 @@ import {
   Smartphone,
   TextIcon as Telegram,
   Twitter,
+  Users2,
 } from 'lucide-react';
-import { useCallback, useMemo, useState } from 'react';
+import { type ReactNode, useCallback, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import { Account } from './account';
 
@@ -278,116 +279,139 @@ export const Accounts = ({ user }: AccountsProps) => {
   );
 
   // Provider configuration for rendering
-  const oauthProviders = [
-    {
-      id: 'google' as OAuthProvider,
-      name: 'Google',
-      // icon: <GoogleIcon className="h-5 w-5" />,
-      icon: <Link2 className="h-5 w-5" />,
-      isLinked: !!user.google?.email,
-      linkedValue: user.google?.email,
-    },
-    {
-      id: 'twitter' as OAuthProvider,
-      name: 'Twitter',
-      icon: <Twitter className="h-5 w-5" />,
-      isLinked: !!user.twitter?.username,
-      linkedValue: user.twitter?.username
-        ? `@${user.twitter.username}`
-        : undefined,
-    },
-    {
-      id: 'github' as OAuthProvider,
-      name: 'GitHub',
-      icon: <Github className="h-5 w-5" />,
-      isLinked: !!user.github?.username,
-      linkedValue: user.github?.username,
-    },
-    {
-      id: 'discord' as OAuthProvider,
-      name: 'Discord',
-      // icon: <DiscordIcon className="h-5 w-5" />,
-      icon: <Link2 className="h-5 w-5" />,
-      isLinked: !!user.discord?.username,
-      linkedValue: user.discord?.username,
-    },
-    {
-      id: 'apple' as OAuthProvider,
-      name: 'Apple',
-      icon: <Apple className="h-5 w-5" />,
-      isLinked: !!user.apple?.email,
-      linkedValue: user.apple?.email,
-    },
-    {
-      id: 'farcaster' as OAuthProvider,
-      name: 'Farcaster',
-      // icon: <FarcasterIcon className="h-5 w-5" />,
-      icon: <Link2 className="h-5 w-5" />,
-      isLinked: !!user.farcaster?.fid,
-      linkedValue: user.farcaster?.fid
-        ? `FID: ${user.farcaster.fid}`
-        : undefined,
-    },
-    {
-      id: 'instagram' as OAuthProvider,
-      name: 'Instagram',
-      icon: <Instagram className="h-5 w-5" />,
-      isLinked: !!user.instagram?.username,
-      linkedValue: user.instagram?.username
-        ? `@${user.instagram.username}`
-        : undefined,
-    },
-    {
-      id: 'linkedin' as OAuthProvider,
-      name: 'LinkedIn',
-      icon: <Linkedin className="h-5 w-5" />,
-      isLinked: !!user.linkedin?.email,
-      linkedValue: user.linkedin?.email,
-    },
-    {
-      id: 'spotify' as OAuthProvider,
-      name: 'Spotify',
-      icon: <Music className="h-5 w-5" />,
-      isLinked: !!user.spotify?.email,
-      linkedValue: user.spotify?.email,
-    },
-    {
-      id: 'passkey' as OAuthProvider,
-      name: 'Passkey',
-      // icon: <PasskeyIcon className="h-5 w-5" />,
-      icon: <Link2 className="h-5 w-5" />,
-      isLinked: false,
-      linkedValue: undefined,
-      // isLinked: !!user.passkeys?.length,
-      // linkedValue: user.passkeys?.length ? `${user.passkeys.length} passkey(s)` : undefined,
-    },
-    {
-      id: 'telegram' as OAuthProvider,
-      name: 'Telegram',
-      icon: <Telegram className="h-5 w-5" />,
-      isLinked: !!user.telegram?.username,
-      linkedValue: user.telegram?.username,
-    },
-    {
-      id: 'tiktok' as OAuthProvider,
-      name: 'TikTok',
-      // icon: <TiktokIcon className="h-5 w-5" />,
-      icon: <Link2 className="h-5 w-5" />,
-      isLinked: !!user.tiktok?.username,
-      linkedValue: user.tiktok?.username
-        ? `@${user.tiktok.username}`
-        : undefined,
-    },
-  ];
+  const oauthProviders: {
+    id: OAuthProvider;
+    name: string;
+    icon: ReactNode;
+    isLinked: boolean;
+    linkedValue?: string | null;
+  }[] = useMemo(
+    () => [
+      {
+        id: 'google' as OAuthProvider,
+        name: 'Google',
+        // icon: <GoogleIcon className="h-5 w-5" />,
+        icon: <Link2 className="h-5 w-5" />,
+        isLinked: !!user.google?.email,
+        linkedValue: user.google?.email,
+      },
+      {
+        id: 'twitter' as OAuthProvider,
+        name: 'Twitter',
+        icon: <Twitter className="h-5 w-5" />,
+        isLinked: !!user.twitter?.username,
+        linkedValue: user.twitter?.username
+          ? `@${user.twitter.username}`
+          : undefined,
+      },
+      {
+        id: 'github' as OAuthProvider,
+        name: 'GitHub',
+        icon: <Github className="h-5 w-5" />,
+        isLinked: !!user.github?.username,
+        linkedValue: user.github?.username,
+      },
+      {
+        id: 'discord' as OAuthProvider,
+        name: 'Discord',
+        // icon: <DiscordIcon className="h-5 w-5" />,
+        icon: <Link2 className="h-5 w-5" />,
+        isLinked: !!user.discord?.username,
+        linkedValue: user.discord?.username,
+      },
+      {
+        id: 'apple' as OAuthProvider,
+        name: 'Apple',
+        icon: <Apple className="h-5 w-5" />,
+        isLinked: !!user.apple?.email,
+        linkedValue: user.apple?.email,
+      },
+      {
+        id: 'farcaster' as OAuthProvider,
+        name: 'Farcaster',
+        // icon: <FarcasterIcon className="h-5 w-5" />,
+        icon: <Link2 className="h-5 w-5" />,
+        isLinked: !!user.farcaster?.fid,
+        linkedValue: user.farcaster?.fid
+          ? `FID: ${user.farcaster.fid}`
+          : undefined,
+      },
+      {
+        id: 'instagram' as OAuthProvider,
+        name: 'Instagram',
+        icon: <Instagram className="h-5 w-5" />,
+        isLinked: !!user.instagram?.username,
+        linkedValue: user.instagram?.username
+          ? `@${user.instagram.username}`
+          : undefined,
+      },
+      {
+        id: 'linkedin' as OAuthProvider,
+        name: 'LinkedIn',
+        icon: <Linkedin className="h-5 w-5" />,
+        isLinked: !!user.linkedin?.email,
+        linkedValue: user.linkedin?.email,
+      },
+      {
+        id: 'spotify' as OAuthProvider,
+        name: 'Spotify',
+        icon: <Music className="h-5 w-5" />,
+        isLinked: !!user.spotify?.email,
+        linkedValue: user.spotify?.email,
+      },
+      {
+        id: 'passkey' as OAuthProvider,
+        name: 'Passkey',
+        // icon: <PasskeyIcon className="h-5 w-5" />,
+        icon: <Link2 className="h-5 w-5" />,
+        isLinked: false,
+        linkedValue: undefined,
+        // isLinked: !!user.passkeys?.length,
+        // linkedValue: user.passkeys?.length ? `${user.passkeys.length} passkey(s)` : undefined,
+      },
+      {
+        id: 'telegram' as OAuthProvider,
+        name: 'Telegram',
+        icon: <Telegram className="h-5 w-5" />,
+        isLinked: !!user.telegram?.username,
+        linkedValue: user.telegram?.username,
+      },
+      {
+        id: 'tiktok' as OAuthProvider,
+        name: 'TikTok',
+        // icon: <TiktokIcon className="h-5 w-5" />,
+        icon: <Link2 className="h-5 w-5" />,
+        isLinked: !!user.tiktok?.username,
+        linkedValue: user.tiktok?.username
+          ? `@${user.tiktok.username}`
+          : undefined,
+      },
+    ],
+    [
+      user.google?.email,
+      user.twitter?.username,
+      user.github?.username,
+      user.discord?.username,
+      user.apple?.email,
+      user.farcaster?.fid,
+      user.instagram?.username,
+      user.linkedin?.email,
+      user.spotify?.email,
+      user.telegram?.username,
+      user.tiktok?.username,
+    ],
+  );
 
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between">
-        <div>
-          <CardTitle>Linked Accounts</CardTitle>
-          <CardDescription>
-            Manage your connected accounts and wallets
-          </CardDescription>
+        <div className="flex flex-col gap-1">
+          <div className="flex items-center gap-2">
+            <Users2 className="h-5 w-5 text-primary" />
+            <CardTitle>Linked Accounts</CardTitle>
+          </div>
+
+          <CardDescription>Manage your accounts</CardDescription>
         </div>
       </CardHeader>
       <CardContent>

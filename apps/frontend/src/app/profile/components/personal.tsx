@@ -13,9 +13,9 @@ import { Input } from '@/components/ui/shadcn/input';
 import { Label } from '@/components/ui/shadcn/label';
 import { Textarea } from '@/components/ui/shadcn/textarea';
 import type { User } from '@privy-io/react-auth';
-import { Pencil, Save } from 'lucide-react';
-import type { HTMLAttributes } from 'react';
-import { useEffect, useState } from 'react';
+import { Pencil, Save, User2 } from 'lucide-react';
+import { type HTMLAttributes, useCallback } from 'react';
+import { useState } from 'react';
 import { toast } from 'sonner';
 
 export interface PersonalProps extends HTMLAttributes<HTMLDivElement> {
@@ -24,31 +24,23 @@ export interface PersonalProps extends HTMLAttributes<HTMLDivElement> {
 
 export const Personal = ({ user }: PersonalProps) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [displayName, setDisplayName] = useState('');
   const [bio, setBio] = useState('Tell us about yourself');
 
-  useEffect(() => {
-    setDisplayName(
-      user.wallet?.address ||
-        user.email?.address ||
-        user.google?.email ||
-        user.id ||
-        'ME',
-    );
-  }, [user]);
-
-  const handleSave = () => {
+  const handleSave = useCallback(() => {
     setIsEditing(false);
     toast('Profile updated', {
       description: 'Your profile information has been saved successfully.',
     });
-  };
+  }, []);
 
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between">
-        <div>
-          <CardTitle>Profile Information</CardTitle>
+        <div className="flex flex-col gap-1">
+          <div className="flex items-center gap-2">
+            <User2 className="h-5 w-5 text-primary" />
+            <CardTitle>Profile Information</CardTitle>
+          </div>
           <CardDescription>Update your personal information</CardDescription>
         </div>
         <Button
@@ -65,16 +57,6 @@ export const Personal = ({ user }: PersonalProps) => {
         </Button>
       </CardHeader>
       <CardContent className="space-y-6">
-        <div className="space-y-2">
-          <Label htmlFor="displayName">Display Name</Label>
-          <Input
-            id="displayName"
-            value={displayName}
-            onChange={(e) => setDisplayName(e.target.value)}
-            disabled={!isEditing}
-          />
-        </div>
-
         <div className="space-y-2">
           <Label htmlFor="email">Email</Label>
           <Input

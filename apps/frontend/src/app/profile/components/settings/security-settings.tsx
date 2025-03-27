@@ -92,14 +92,14 @@ export default function SecuritySettings({ user }: SecuritySettingsProps) {
 
   return (
     <Card>
-      <CardHeader>
-        <div className="flex items-center gap-2">
-          <Shield className="h-5 w-5 text-primary" />
-          <CardTitle>Security Settings</CardTitle>
+      <CardHeader className="flex flex-row items-center justify-between">
+        <div className="flex flex-col gap-1">
+          <div className="flex items-center gap-2">
+            <Shield className="h-5 w-5 text-primary" />
+            <CardTitle>Settings</CardTitle>
+          </div>
+          <CardDescription>Manage your account settings</CardDescription>
         </div>
-        <CardDescription>
-          Manage your account security preferences
-        </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="flex items-center justify-between">
