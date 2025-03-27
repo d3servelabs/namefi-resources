@@ -131,17 +131,20 @@ export function RecordDialog() {
     }
 
     // Convert forms back to DnsRecord format
-    const processedRecords = forms.map((form, index) => {
+    const updatedRecords = forms.map((form, index) => {
       const originalRecord =
         index < records.length ? records[index] : undefined;
-      return formValuesToDnsRecord(form.values, originalRecord);
+      return {
+        ...records[index],
+        ...formValuesToDnsRecord(form.values, originalRecord),
+      };
     });
 
     closeRecordFormDialog(mode === 'add' ? 'add' : 'save', {
       success: true,
       originalRecords: records,
-      updatedRecords: processedRecords,
-      message: `Successfully ${mode === 'add' ? 'added' : 'saved'} ${processedRecords.length} record(s)`,
+      updatedRecords,
+      message: `Successfully ${mode === 'add' ? 'added' : 'saved'} ${updatedRecords.length} record(s)`,
     });
   }, [forms, records, mode, closeRecordFormDialog]);
 
