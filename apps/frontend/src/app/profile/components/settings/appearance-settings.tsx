@@ -82,143 +82,132 @@ export default function AppearanceSettings() {
           </div>
           <CardDescription>Customize how the application looks</CardDescription>
         </div>
+        <Button onClick={handleSaveAppearance} disabled={!hasChanges}>
+          Save
+        </Button>
       </CardHeader>
       <CardContent className="space-y-6">
-        <div className="space-y-4">
-          <div>
-            <h3 className="mb-3 text-sm font-medium">Color Scheme</h3>
-            <RadioGroup
-              value={colorScheme}
-              onValueChange={(value) => {
-                setColorScheme(value);
-              }}
-              className="grid grid-cols-3 gap-4"
-            >
-              <div>
-                <RadioGroupItem
-                  value="light"
-                  id="light"
-                  className="peer sr-only"
-                />
-                <Label
-                  htmlFor="light"
-                  className="flex cursor-pointer flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
-                >
-                  <span className="mb-2 block h-6 w-6 rounded-full border bg-white" />
-                  Light
-                  {colorScheme === 'light' && (
-                    <Check className="absolute right-2 top-2 h-4 w-4 text-primary" />
-                  )}
-                </Label>
-              </div>
-              <div>
-                <RadioGroupItem
-                  value="dark"
-                  id="dark"
-                  className="peer sr-only"
-                />
-                <Label
-                  htmlFor="dark"
-                  className="flex cursor-pointer flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
-                >
-                  <span className="mb-2 block h-6 w-6 rounded-full border bg-[#1F2937]" />
-                  Dark
-                  {colorScheme === 'dark' && (
-                    <Check className="absolute right-2 top-2 h-4 w-4 text-primary" />
-                  )}
-                </Label>
-              </div>
-              <div>
-                <RadioGroupItem
-                  value="system"
-                  id="system"
-                  className="peer sr-only"
-                />
-                <Label
-                  htmlFor="system"
-                  className="flex cursor-pointer flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
-                >
-                  <span className="mb-2 block h-6 w-6 rounded-full border bg-gradient-to-r from-white to-[#1F2937]" />
-                  System
-                  {colorScheme === 'system' && (
-                    <Check className="absolute right-2 top-2 h-4 w-4 text-primary" />
-                  )}
-                </Label>
-              </div>
-            </RadioGroup>
-          </div>
-
-          <div>
-            <h3 className="mb-3 text-sm font-medium">Font Size</h3>
-            <RadioGroup
-              value={fontSize}
-              onValueChange={(value) => {
-                setFontSize(value);
-              }}
-              className="grid grid-cols-3 gap-4"
-            >
-              <div>
-                <RadioGroupItem
-                  value="small"
-                  id="small"
-                  className="peer sr-only"
-                />
-                <Label
-                  htmlFor="small"
-                  className="flex cursor-pointer flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
-                >
-                  <span className="text-sm">Aa</span>
-                  Small
-                  {fontSize === 'small' && (
-                    <Check className="absolute right-2 top-2 h-4 w-4 text-primary" />
-                  )}
-                </Label>
-              </div>
-              <div>
-                <RadioGroupItem
-                  value="medium"
-                  id="medium"
-                  className="peer sr-only"
-                />
-                <Label
-                  htmlFor="medium"
-                  className="flex cursor-pointer flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
-                >
-                  <span className="text-base">Aa</span>
-                  Medium
-                  {fontSize === 'medium' && (
-                    <Check className="absolute right-2 top-2 h-4 w-4 text-primary" />
-                  )}
-                </Label>
-              </div>
-              <div>
-                <RadioGroupItem
-                  value="large"
-                  id="large"
-                  className="peer sr-only"
-                />
-                <Label
-                  htmlFor="large"
-                  className="flex cursor-pointer flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
-                >
-                  <span className="text-lg">Aa</span>
-                  Large
-                  {fontSize === 'large' && (
-                    <Check className="absolute right-2 top-2 h-4 w-4 text-primary" />
-                  )}
-                </Label>
-              </div>
-            </RadioGroup>
-          </div>
+        <div>
+          <h3 className="mb-3 text-sm font-medium">Color Scheme</h3>
+          <RadioGroup
+            value={colorScheme}
+            onValueChange={(value) => {
+              setColorScheme(value);
+            }}
+            className="grid grid-cols-3 gap-4"
+          >
+            <div>
+              <RadioGroupItem
+                value="light"
+                id="light"
+                className="peer sr-only"
+              />
+              <Label
+                htmlFor="light"
+                className="flex cursor-pointer flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
+              >
+                <span className="mb-2 block h-6 w-6 rounded-full border bg-white" />
+                Light
+                {colorScheme === 'light' && (
+                  <Check className="absolute right-2 top-2 h-4 w-4 text-primary" />
+                )}
+              </Label>
+            </div>
+            <div>
+              <RadioGroupItem value="dark" id="dark" className="peer sr-only" />
+              <Label
+                htmlFor="dark"
+                className="flex cursor-pointer flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
+              >
+                <span className="mb-2 block h-6 w-6 rounded-full border bg-[#1F2937]" />
+                Dark
+                {colorScheme === 'dark' && (
+                  <Check className="absolute right-2 top-2 h-4 w-4 text-primary" />
+                )}
+              </Label>
+            </div>
+            <div>
+              <RadioGroupItem
+                value="system"
+                id="system"
+                className="peer sr-only"
+              />
+              <Label
+                htmlFor="system"
+                className="flex cursor-pointer flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
+              >
+                <span className="mb-2 block h-6 w-6 rounded-full border bg-gradient-to-r from-white to-[#1F2937]" />
+                System
+                {colorScheme === 'system' && (
+                  <Check className="absolute right-2 top-2 h-4 w-4 text-primary" />
+                )}
+              </Label>
+            </div>
+          </RadioGroup>
         </div>
 
-        <Button
-          onClick={handleSaveAppearance}
-          className="mt-6"
-          disabled={!hasChanges}
-        >
-          Save Preferences
-        </Button>
+        <div>
+          <h3 className="mb-3 text-sm font-medium">Font Size</h3>
+          <RadioGroup
+            value={fontSize}
+            onValueChange={(value) => {
+              setFontSize(value);
+            }}
+            className="grid grid-cols-3 gap-4"
+          >
+            <div>
+              <RadioGroupItem
+                value="small"
+                id="small"
+                className="peer sr-only"
+              />
+              <Label
+                htmlFor="small"
+                className="flex cursor-pointer flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
+              >
+                <span className="text-sm">Aa</span>
+                Small
+                {fontSize === 'small' && (
+                  <Check className="absolute right-2 top-2 h-4 w-4 text-primary" />
+                )}
+              </Label>
+            </div>
+            <div>
+              <RadioGroupItem
+                value="medium"
+                id="medium"
+                className="peer sr-only"
+              />
+              <Label
+                htmlFor="medium"
+                className="flex cursor-pointer flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
+              >
+                <span className="text-base">Aa</span>
+                Medium
+                {fontSize === 'medium' && (
+                  <Check className="absolute right-2 top-2 h-4 w-4 text-primary" />
+                )}
+              </Label>
+            </div>
+            <div>
+              <RadioGroupItem
+                value="large"
+                id="large"
+                className="peer sr-only"
+              />
+              <Label
+                htmlFor="large"
+                className="flex cursor-pointer flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
+              >
+                <span className="text-lg">Aa</span>
+                Large
+                {fontSize === 'large' && (
+                  <Check className="absolute right-2 top-2 h-4 w-4 text-primary" />
+                )}
+              </Label>
+            </div>
+          </RadioGroup>
+        </div>
       </CardContent>
     </Card>
   );
