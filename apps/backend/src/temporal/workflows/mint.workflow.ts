@@ -163,3 +163,39 @@ export async function mintNfsc(
     chainId,
   );
 }
+
+export async function chargeNfscWorkflow(
+  chainId: number,
+  chargee: `0x${string}`,
+  namefiMoneyAmount: MoneyAmount,
+  reason: string,
+  extra: `0x${string}`,
+): Promise<string> {
+  const { prepareTxToChargeNfsc } = workflow.proxyActivities<
+    typeof MintActivities
+  >({
+    startToCloseTimeout: '5 seconds',
+    retry: {
+      maximumAttempts: 1,
+    },
+  });
+
+  const prepareResult: TxPrepareResult = await prepareTxToChargeNfsc(
+    chainId,
+    chargee,
+    namefiMoneyAmount,
+    reason,
+    extra,
+  );
+
+  if ('error' in prepareResult) {
+    throw workflow.ApplicationFailure.create({
+      message: `Failed to prepare transaction: ${prepareResult.error.message}`,
+    });
+  }
+
+  return await _signAndSendTransactionWithRetry(
+    prepareResult.preparedTx,
+    chainId,
+  );
+}

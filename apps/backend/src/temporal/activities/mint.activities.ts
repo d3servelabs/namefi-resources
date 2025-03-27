@@ -416,3 +416,52 @@ function multiplyBigIntByFraction(
     BigNumber(bigInt.toString()).multipliedBy(fractionalNumber).toFixed(0),
   );
 }
+
+/**
+ * Prepare a transaction to charge NFSC
+ * @param chainId - The chain ID
+ * @param chargee - The account to charge
+ * @param amount - The amount to charge
+ * @param reason - The reason for the charge
+ * @param extra - Extra data to include in the charge
+ * @returns The prepared transaction
+ */
+export async function prepareTxToChargeNfsc(
+  chainId: number,
+  chargee: `0x${string}`,
+  namefiMoneyAmount: MoneyAmount,
+  reason: string,
+  extra: `0x${string}`,
+): Promise<TxPrepareResult> {
+  const ctx = Context.current();
+  ctx.log.info(
+    `Charging NFSC - chainId: ${chainId}, chargee: ${chargee}, amount: ${namefiMoneyAmount.amount}`,
+  );
+
+  const charger = signerAccount.publicKey;
+
+  const convertedAmount = parseUnits(namefiMoneyAmount.amount.toString(), 18);
+
+  const preparedTx = await clients.walletClients[
+    chainId
+  ].prepareTransactionRequest({
+    chainId,
+    to: NFSC_CONTRACT_ADDRESS,
+    data: encodeFunctionData({
+      abi: NfscAbi,
+      functionName: 'charge',
+      //address charger, address chargee, uint256 amount, string memory reason, bytes memory extra
+      args: [charger, chargee, convertedAmount, reason, extra],
+    }),
+  });
+  return {
+    preparedTx: {
+      data: preparedTx.data,
+      to: preparedTx.to,
+      type: preparedTx.type,
+      chainId: preparedTx.chainId,
+      from: preparedTx.from,
+      nonce: preparedTx.nonce,
+    },
+  };
+}
