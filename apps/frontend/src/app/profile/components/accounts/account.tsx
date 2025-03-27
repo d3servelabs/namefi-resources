@@ -5,14 +5,14 @@ import { cn } from '@/lib/utils';
 import { Check } from 'lucide-react';
 import type { HTMLAttributes, ReactNode } from 'react';
 
-interface AccountProps extends HTMLAttributes<HTMLDivElement> {
+export interface AccountProps extends HTMLAttributes<HTMLDivElement> {
   title: string;
   icon: ReactNode;
-  isLinked: boolean;
+  isLinked?: boolean;
   linkedValue?: string | null;
   verified?: boolean;
-  onLink: () => void;
-  onUnlink: () => void;
+  onLink?: () => void;
+  onUnlink?: () => void;
 }
 
 export const Account = ({
@@ -39,10 +39,10 @@ export const Account = ({
           {icon}
         </div>
         <div>
-          <p className="font-medium">{title}</p>
+          <div className="font-medium">{title}</div>
           {isLinked ? (
             <div className="flex items-center gap-1">
-              <p className="text-sm text-muted-foreground">{linkedValue}</p>
+              <div className="text-sm text-muted-foreground">{linkedValue}</div>
               {verified && (
                 <span className="flex h-4 w-4 items-center justify-center rounded-full bg-green-100 text-green-600 dark:bg-green-900 dark:text-green-400">
                   <Check className="h-3 w-3" />
@@ -50,7 +50,7 @@ export const Account = ({
               )}
             </div>
           ) : (
-            <p className="text-sm text-muted-foreground">Not connected</p>
+            <div className="text-sm text-muted-foreground">Not connected</div>
           )}
         </div>
       </div>

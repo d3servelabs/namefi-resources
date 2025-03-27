@@ -34,13 +34,8 @@ import {
 import { useCallback, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import { Account } from './account';
-// import { DiscordIcon } from "./icons/discord-icon"
-// import { FarcasterIcon } from "./icons/farcaster-icon"
-// import { GoogleIcon } from "./icons/google-icon"
-// import { PasskeyIcon } from "./icons/passkey-icon"
-// import { TiktokIcon } from "./icons/tiktok-icon"
 
-interface AccountsProps {
+export interface AccountsProps {
   user: User;
 }
 
@@ -60,10 +55,11 @@ export type OAuthProvider =
   | 'tiktok';
 
 export const Accounts = ({ user }: AccountsProps) => {
-  const [isEmailDialogOpen, setIsEmailDialogOpen] = useState(false);
-  const [isPhoneDialogOpen, setIsPhoneDialogOpen] = useState(false);
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
+
+  const [isEmailDialogOpen, setIsEmailDialogOpen] = useState(false);
+  const [isPhoneDialogOpen, setIsPhoneDialogOpen] = useState(false);
 
   const {
     linkEmail,
