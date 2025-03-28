@@ -1,3 +1,4 @@
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import * as workflow from '@temporalio/workflow';
 import type {
   MoneyAmount,
@@ -96,13 +97,13 @@ async function _signAndSendTransactionWithRetry(
 export async function mintNamefiNFT({
   chainId,
   toAddress,
-  domainNameLdh,
-  expirationTimeInUnix,
+  normalizedDomainName,
+  expirationTimeInSeconds,
 }: {
   chainId: number;
   toAddress: `0x${string}`;
-  domainNameLdh: string;
-  expirationTimeInUnix: number;
+  normalizedDomainName: NamefiNormalizedDomain;
+  expirationTimeInSeconds: number;
 }): Promise<string> {
   const { prepareTxToMintNamefiNft } = typedProxyActivities({
     temporalEnum: TEMPORAL_ENUMS.MINT,
@@ -117,8 +118,8 @@ export async function mintNamefiNFT({
   const prepareResult: TxPrepareResult = await prepareTxToMintNamefiNft(
     chainId,
     toAddress,
-    domainNameLdh,
-    expirationTimeInUnix,
+    normalizedDomainName,
+    expirationTimeInSeconds,
   );
 
   if ('error' in prepareResult) {

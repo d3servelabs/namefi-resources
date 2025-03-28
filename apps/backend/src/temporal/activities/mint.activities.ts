@@ -1,7 +1,7 @@
 import { Context } from '@temporalio/activity';
 import { BigNumber } from 'bignumber.js';
 import { fromPairs, map } from 'ramda';
-import { getAlchemyRpcUrl } from 'src/utils/jsonRpcUrls';
+import { getAlchemyRpcUrl } from '../../utils/jsonRpcUrls';
 
 import {
   http,

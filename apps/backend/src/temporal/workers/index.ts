@@ -1,4 +1,5 @@
 import type { Worker } from '@temporalio/worker';
+import { isDomainParked, parkDomain } from '#services/dns/parking';
 import {
   GreetActivities,
   MintActivities,
@@ -16,7 +17,10 @@ export const ACTIVITIES = {
   [TEMPORAL_ENUMS.MINT]: {
     ...MintActivities,
   },
-  [TEMPORAL_ENUMS.DOMAINS]: {},
+  [TEMPORAL_ENUMS.DOMAINS]: {
+    parkDomain,
+    isDomainParked,
+  },
   [TEMPORAL_ENUMS.NOTIFY]: {},
 };
 export type ACTIVITIES = typeof ACTIVITIES;

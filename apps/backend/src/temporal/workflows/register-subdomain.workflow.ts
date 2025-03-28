@@ -1,0 +1,49 @@
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import * as workflow from '@temporalio/workflow';
+import { shortRunningOpts } from '../shared/commonRunningOptions';
+import { TEMPORAL_ENUMS, TEMPORAL_QUEUES } from '../shared/enums';
+import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';
+import { mintNamefiNFT } from './mint.workflow';
+
+export async function registerSubdomainWorkflow(
+  normalizedDomainName: NamefiNormalizedDomain,
+  chainId: number,
+  toAddress: `0x${string}`,
+  expirationTimeInSeconds: number,
+): Promise<string> {
+  await workflow.executeChild(mintNamefiNFT, {
+    args: [
+      {
+        normalizedDomainName,
+        chainId,
+        toAddress,
+        expirationTimeInSeconds,
+      },
+    ],
+    taskQueue: TEMPORAL_QUEUES.MINT,
+    workflowId: `mint-${normalizedDomainName}-${chainId}-${toAddress}-${expirationTimeInSeconds}`,
+  });
+
+  await workflow.startChild(domainSetupWorkflow, {
+    args: [normalizedDomainName],
+    parentClosePolicy: 'ABANDON',
+    workflowId: `domain-setup-${normalizedDomainName}-${chainId}-${toAddress}-${expirationTimeInSeconds}`,
+  });
+
+  // Return a message
+  return `Completed greeting workflow for ${name}`;
+}
+
+export async function domainSetupWorkflow(
+  normalizedDomainName: NamefiNormalizedDomain,
+) {
+  // Get reference to activities
+  const { parkDomain } = typedProxyActivities({
+    temporalEnum: TEMPORAL_ENUMS.DOMAINS,
+    options: {
+      ...shortRunningOpts,
+    },
+  });
+
+  await parkDomain(normalizedDomainName);
+}
