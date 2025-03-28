@@ -12,6 +12,7 @@ export const checkoutsRouter = createTRPCRouter({
         paymentProvider: z.string(),
         paymentProviderOptions: z
           .object({
+            chainId: z.number().optional(),
             confirmationTokenId: z.string().optional(),
             paymentMethodId: z.string().optional(),
             walletAddress: z.string().optional(),

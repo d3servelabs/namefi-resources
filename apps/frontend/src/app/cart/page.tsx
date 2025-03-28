@@ -21,8 +21,6 @@ import type { inferInput } from '@trpc/tanstack-react-query';
 import { Loader2 } from 'lucide-react';
 import { useCallback, useMemo, useState } from 'react';
 
-const USER_BALANCE_IN_USD_CENTS = 2000;
-
 export default function CartPage() {
   type CheckoutWithCartInput = inferInput<
     typeof trpc.checkouts.checkoutWithCart
@@ -53,10 +51,6 @@ export default function CartPage() {
     [items],
   );
 
-  const hasSufficientBalance = useMemo(() => {
-    return USER_BALANCE_IN_USD_CENTS >= totalAmountInUsdCents;
-  }, [totalAmountInUsdCents]);
-
   const { mutate: removeItem } = useMutation(
     trpc.carts.removeItem.mutationOptions({
       onSuccess: () => {
@@ -80,6 +74,26 @@ export default function CartPage() {
       },
     }),
   );
+
+  const selectedWalletChainBalance = useMemo(() => {
+    const selectedWalletAddress =
+      checkoutWithCartRequest?.paymentProviderOptions?.walletAddress;
+    const selectedChainId =
+      checkoutWithCartRequest?.paymentProviderOptions?.chainId;
+
+    if (!(selectedWalletAddress && selectedChainId)) {
+      return null;
+    }
+
+    return selectedChainId;
+  }, [checkoutWithCartRequest]);
+
+  const hasSufficientBalance = useMemo(() => {
+    return (
+      selectedWalletChainBalance &&
+      selectedWalletChainBalance >= totalAmountInUsdCents
+    );
+  }, [selectedWalletChainBalance, totalAmountInUsdCents]);
 
   const handlePaymentMethodDetailsChanged = useCallback(
     (paymentMethodDetails: PaymentMethodDetails | null) => {
@@ -149,11 +163,11 @@ export default function CartPage() {
           return 'Sign in to Use NFSC';
         }
 
-        if (!privyUser?.wallet) {
-          return 'Connect a Wallet to Use NFSC';
+        if (selectedWalletChainBalance === null) {
+          return 'Select a Wallet and Chain';
         }
 
-        return 'Insufficient Balance';
+        return 'Insufficient Credit Balance';
       }
 
       case SelectedPaymentMethod.SAVED_CARD: {
@@ -169,6 +183,7 @@ export default function CartPage() {
   }, [
     isAuthenticated,
     privyUser,
+    selectedWalletChainBalance,
     selectedPaymentMethod,
     submitPaymentButtonDisabled,
   ]);
