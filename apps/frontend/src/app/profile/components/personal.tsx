@@ -22,7 +22,7 @@ export interface PersonalProps extends HTMLAttributes<HTMLDivElement> {
   user: User;
 }
 
-export const Personal = ({ user }: PersonalProps) => {
+export function Personal({ user }: PersonalProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [bio, setBio] = useState('Tell us about yourself');
 
