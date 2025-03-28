@@ -1,5 +1,6 @@
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 import { z } from 'zod';
+import { isDomainParked, parkDomain } from '#services/dns/parking';
 import {
   createRecord,
   createRecordInputSchema,
@@ -77,4 +78,33 @@ export const dnsRecordsRouter = createTRPCRouter({
 
       return { success: true };
     }),
+
+  /**
+   * Park a domain
+   */
+  parkDomain: protectedProcedure
+    .input(
+      z.object({
+        normalizedDomainName: namefiNormalizedDomainSchema,
+        overrideExistingRecords: z.boolean().optional(),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      await assertAuthenticatedUserIsDomainOwner(
+        input.normalizedDomainName,
+        ctx.user,
+      );
+
+      return parkDomain(
+        input.normalizedDomainName,
+        input.overrideExistingRecords,
+      );
+    }),
+
+  /**
+   * Check if a domain is parked
+   */
+  isDomainParked: publicProcedure
+    .input(z.object({ normalizedDomainName: namefiNormalizedDomainSchema }))
+    .query(({ input }) => isDomainParked(input.normalizedDomainName)),
 });
