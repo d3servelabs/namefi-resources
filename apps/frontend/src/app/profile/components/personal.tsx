@@ -98,4 +98,4 @@ export function Personal({ user }: PersonalProps) {
       )}
     </Card>
   );
-};
+}

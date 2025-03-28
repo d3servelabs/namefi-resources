@@ -77,17 +77,6 @@ async function _signAndSendTransactionWithRetry(
         );
         await workflow.sleep('15 seconds');
         continue;
-      // --------------------------------------------------------
-      // ---------------Non-retriable errors---------------------
-      // --------------------------------------------------------
-      case 'INSUFFICIENT_FUNDS': // fallthrough
-      case 'FAILED_TO_GET_GAS_PRICE': // fallthrough
-      case 'FAILED_TO_ESTIMATE_GAS': // fallthrough
-      case 'FAILED_TO_SIGN_TRANSACTION': // fallthrough
-      case 'FAILED_TO_GET_NONCE': // fallthrough
-      case 'FAILED_TO_WAIT_FOR_TRANSACTION': // fallthrough
-      case 'UNPREDICTABLE_GAS_LIMIT': // fallthrough
-      case 'FAILED_TO_SEND_TRANSACTION': // fallthrough
       default:
         // TODO(Victor): use sentio.xyz to simulate the error and get the reason. NFI-2934
         throw new workflow.ApplicationFailure(
