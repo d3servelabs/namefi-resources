@@ -4,6 +4,8 @@
  * Consider splitting into multiple files if schema grows significantly.
  */
 
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import { recordTypeEnum } from '@namefi-astra/zod-dns';
 import { sql } from 'drizzle-orm';
 import {
   check,
@@ -273,6 +275,10 @@ export const orderItemsTable = pgTable(
   ],
 );
 
+export const recordTypePgEnum = pgEnum(
+  'RecordTypeEnum',
+  recordTypeEnum.options,
+);
 // Design discussion:
 //   We didnt create a dns_zones table because there seems to be no need for it.
 //   The ownership of a zone is tied to the NFT address, which is derived from the
@@ -281,7 +287,9 @@ export const dnsRecordsTable = pgTable(
   'dns_records',
   {
     ...randomUuid,
-    normalizedDomainName: text('normalized_domain_name').notNull(),
+    normalizedDomainName: text('normalized_domain_name')
+      .notNull()
+      .$type<NamefiNormalizedDomain>(),
     /**
      * The owner name of this DNS record (RFC-1034 3.6, RFC-1035 3.2.1)
      *
@@ -298,7 +306,7 @@ export const dnsRecordsTable = pgTable(
      * for FQDN notation.
      */
     name: text('name').notNull().default('@'), // max 255 chars
-    type: text('type').notNull(),
+    type: recordTypePgEnum('type').notNull(),
     class: text('class').notNull().default('IN'),
     ttl: integer('ttl').notNull().default(120),
     rdata: text('rdata').notNull(),

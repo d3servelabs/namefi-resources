@@ -1,3 +1,4 @@
+import type { RecordType } from '@namefi-astra/zod-dns';
 import { z } from 'zod';
 
 // DNS record types
@@ -40,7 +41,7 @@ export function formValuesToDnsRecord(
   existingRecord?: { id?: string; notes?: string },
 ): {
   id?: string;
-  type: string;
+  type: RecordType;
   name: string;
   rdata: string;
   ttl: number;
@@ -50,7 +51,7 @@ export function formValuesToDnsRecord(
     id:
       existingRecord?.id ||
       `new-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
-    type: formValues.type,
+    type: formValues.type as RecordType,
     name: `${formValues.name || ''}${formValues.domain}`,
     rdata: formValues.rdata,
     ttl: formValues.ttl,

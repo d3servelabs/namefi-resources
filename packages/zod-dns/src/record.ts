@@ -3,6 +3,16 @@ import { z } from 'zod';
 import { fqdnLowercaseRegex, nameSchema } from './name';
 // -- Single Record Type Validation --
 
+export const recordTypeEnum = z.enum([
+  'A',
+  'AAAA',
+  'CNAME',
+  'MX',
+  'TXT',
+] as const);
+export const RecordType = recordTypeEnum.Values;
+export type RecordType = z.infer<typeof recordTypeEnum>;
+
 // RFC 1035, Section 3.3.11
 // The Time To Live field is an unsigned 32-bit integer that specifies the time interval
 // that the resource record may be cached before it should be discarded.
@@ -21,25 +31,25 @@ const recordBasicSchema = z.object({
 
 // A Record
 const aRecordSchema = recordBasicSchema.extend({
-  type: z.literal('A'),
+  type: z.literal(RecordType.A),
   rdata: z.string().ip({ version: 'v4' }),
 });
 
 // AAAA Record
 const aaaaRecordSchema = recordBasicSchema.extend({
-  type: z.literal('AAAA'),
+  type: z.literal(RecordType.AAAA),
   rdata: z.string().ip({ version: 'v6' }),
 });
 
 // CNAME Record
 const cnameRecordSchema = recordBasicSchema.extend({
-  type: z.literal('CNAME'),
+  type: z.literal(RecordType.CNAME),
   rdata: z.string().regex(fqdnLowercaseRegex),
 });
 
 // MX Record
 const mxRecordSchema = recordBasicSchema.extend({
-  type: z.literal('MX'),
+  type: z.literal(RecordType.MX),
   // MX records have a priority and a target which is a domain name or an IP address
   rdata: z.string().refine(
     (val) => {
@@ -66,7 +76,7 @@ const mxRecordSchema = recordBasicSchema.extend({
 
 // TXT Record
 const txtRecordSchema = recordBasicSchema.extend({
-  type: z.literal('TXT'),
+  type: z.literal(RecordType.TXT),
   rdata: z.string(),
 });
 

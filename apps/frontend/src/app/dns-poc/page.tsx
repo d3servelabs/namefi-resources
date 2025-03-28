@@ -2,12 +2,12 @@
 
 import { useTRPC } from '@/utils/trpc';
 import type { DnsRecordSelect } from '@namefi-astra/db/types';
+import type { RecordType } from '@namefi-astra/zod-dns';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import type React from 'react';
 import { useEffect, useState } from 'react';
 import DnsRecordForm from './components/DnsRecordForm';
 import DnsRecordList from './components/DnsRecordList';
-
 export default function DnsPage() {
   // DNS records state
   const [domainName, setDomainName] = useState<string>('test.com');
@@ -179,7 +179,7 @@ function EditDnsRecordForm({
   onSuccess: () => void;
 }) {
   const trpc = useTRPC();
-  const [recordType, setRecordType] = useState<string>(record.type || 'A');
+  const [recordType, setRecordType] = useState<RecordType>(record.type || 'A');
   const [recordName, setRecordName] = useState<string>(record.name || '@');
   const [recordValue, setRecordValue] = useState<string>(record.rdata || '');
   const [ttl, setTtl] = useState<number>(record.ttl || 120);
@@ -232,7 +232,7 @@ function EditDnsRecordForm({
             id="editRecordType"
             className="w-full border border-gray-300 rounded-md p-2"
             value={recordType}
-            onChange={(e) => setRecordType(e.target.value)}
+            onChange={(e) => setRecordType(e.target.value as RecordType)}
             disabled={updateDnsRecord.isPending}
           >
             <option value="A">A (IPv4 Address)</option>

@@ -3,16 +3,21 @@ import {
   type NamefiNormalizedDomain,
   namefiNormalizedDomainSchema,
 } from '@namefi-astra/utils';
-import { recordSchema, zoneSchema } from '@namefi-astra/zod-dns';
+import {
+  recordSchema,
+  recordTypeEnum,
+  zoneSchema,
+} from '@namefi-astra/zod-dns';
 import { TRPCError } from '@trpc/server';
 import { and, eq } from 'drizzle-orm';
 import { filter, isNotNil, mergeRight } from 'ramda';
 import { z } from 'zod';
+import { areRecordsEqual } from './helpers';
 
 export const updateRecordInputSchema = z.object({
   id: z.string(),
   normalizedDomainName: namefiNormalizedDomainSchema,
-  type: z.string().optional(),
+  type: recordTypeEnum.optional(),
   name: z.string().optional(),
   rdata: z.string().optional(),
   ttl: z.number().optional(),
@@ -73,37 +78,40 @@ export async function getZoneRecords(
 /**
  * Helper function to validate a DNS zone with existing, updated, and new records
  * @param normalizedDomainName - The normalized domain name to validate zone for
- * @param newRecords - Array of new DNS records to add to the zone
+ * @param addRecords - Array of new DNS records to add to the zone
  * @param updatedRecord - Array of existing records with updates to apply
+ * @param deleteRecords - Array of existing records to delete
  * @returns Array of all records in the zone after updates
  */
 export async function validateZone(
   normalizedDomainName: NamefiNormalizedDomain,
-  newRecords: z.infer<typeof recordSchema>[] = [],
-  updatedRecord: Omit<
-    z.infer<typeof updateRecordInputSchema>,
-    'normalizedDomainName'
-  >[] = [],
-  deleteRecords: (z.infer<typeof recordSchema> & { id?: string })[] = [],
+  changes: {
+    addedRecords?: z.infer<typeof recordSchema>[];
+    updatedRecords?: Omit<
+      z.infer<typeof updateRecordInputSchema>,
+      'normalizedDomainName'
+    >[];
+    deletedRecords?: (z.infer<typeof recordSchema> & { id?: string })[];
+  },
 ) {
+  const {
+    addedRecords = [],
+    updatedRecords = [],
+    deletedRecords = [],
+  } = changes;
   const existingRecords = await getZoneRecords(normalizedDomainName);
 
   // Replace updated records in existing records
   const updatedExistingRecords = filter(
     isNotNil,
     existingRecords.map((record) => {
-      const update = updatedRecord.find((u) => u.id === record.id);
+      const update = updatedRecords.find((u) => u.id === record.id);
       if (update) {
         return mergeRight(record, update);
       }
       if (
-        deleteRecords.find(
-          (d) =>
-            d.id === record.id ||
-            (d.name === record.name &&
-              d.type === record.type &&
-              d.rdata === record.rdata &&
-              d.ttl === record.ttl),
+        deletedRecords.find(
+          (d) => d.id === record.id || areRecordsEqual(d, record),
         )
       ) {
         return null;
@@ -122,7 +130,7 @@ export async function validateZone(
         ttl: record.ttl,
       };
     }),
-    ...newRecords,
+    ...addedRecords,
   ];
 
   // Validate the entire zone
@@ -146,7 +154,9 @@ export async function updateRecord(
   await getRecordByIdAndDomainOrThrow(id, normalizedDomainName);
 
   // Validate the zone with the updated record
-  await validateZone(normalizedDomainName, [], [input]);
+  await validateZone(normalizedDomainName, {
+    updatedRecords: [input],
+  });
 
   // Update the record in the database
   const updatedRecord = await db
@@ -198,7 +208,9 @@ export async function createRecord(
   });
 
   // Validate the zone with the new record
-  await validateZone(input.normalizedDomainName, [parsedRecord], []);
+  await validateZone(input.normalizedDomainName, {
+    addedRecords: [parsedRecord],
+  });
 
   const record = await db.insert(dnsRecordsTable).values(input).returning();
   return record[0];

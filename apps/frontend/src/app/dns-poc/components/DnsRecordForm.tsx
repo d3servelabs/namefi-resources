@@ -1,5 +1,6 @@
 'use client';
 import { useTRPC } from '@/utils/trpc';
+import type { RecordType } from '@namefi-astra/zod-dns';
 import { useMutation } from '@tanstack/react-query';
 import type React from 'react';
 import { useState } from 'react';
@@ -14,7 +15,7 @@ export default function DnsRecordForm({
   onSuccess,
 }: DnsRecordFormProps) {
   const trpc = useTRPC();
-  const [recordType, setRecordType] = useState<string>('A');
+  const [recordType, setRecordType] = useState<RecordType>('A');
   const [recordName, setRecordName] = useState<string>('@');
   const [recordValue, setRecordValue] = useState<string>('');
 
@@ -53,7 +54,7 @@ export default function DnsRecordForm({
               id="recordType"
               className="w-full border border-gray-300 rounded-md p-2"
               value={recordType}
-              onChange={(e) => setRecordType(e.target.value)}
+              onChange={(e) => setRecordType(e.target.value as RecordType)}
             >
               <option value="A">A (IPv4 Address)</option>
               <option value="AAAA">AAAA (IPv6 Address)</option>
