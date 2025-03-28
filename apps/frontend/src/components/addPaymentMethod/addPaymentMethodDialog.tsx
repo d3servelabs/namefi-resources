@@ -1,6 +1,3 @@
-import type { ConfirmationToken } from '@stripe/stripe-js';
-import type { ReactNode } from 'react';
-import { StripeProvider } from '../providers/stripeProvider';
 import {
   Dialog,
   DialogContent,
@@ -8,7 +5,10 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '../ui/shadcn/dialog';
+} from '@/components/ui/shadcn/dialog';
+import type { ConfirmationToken } from '@stripe/stripe-js';
+import type { ReactNode } from 'react';
+import { StripeProvider } from '../providers/stripeProvider';
 import { AddPaymentMethodForm } from './addPaymentMethodForm';
 
 export interface AddPaymentMethodDialogProps {

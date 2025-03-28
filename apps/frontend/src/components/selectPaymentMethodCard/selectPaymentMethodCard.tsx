@@ -9,12 +9,7 @@ import {
   useState,
 } from 'react';
 
-import { useAuth } from '@/hooks/useAuth';
-import { cn } from '@/lib/utils';
-import type { paymentProviderEnum } from '@namefi-astra/db';
-import type { ConfirmationToken } from '@stripe/stripe-js';
-import { AddPaymentMethodDialog } from '../addPaymentMethod/addPaymentMethodDialog';
-import { Button } from '../ui/shadcn/button';
+import { Button } from '@/components/ui/shadcn/button';
 import {
   Card,
   CardContent,
@@ -22,16 +17,21 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '../ui/shadcn/card';
-import { Label } from '../ui/shadcn/label';
-import { RadioGroup, RadioGroupItem } from '../ui/shadcn/radio-group';
+} from '@/components/ui/shadcn/card';
+import { Label } from '@/components/ui/shadcn/label';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/shadcn/radio-group';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '../ui/shadcn/select';
+} from '@/components/ui/shadcn/select';
+import { useAuth } from '@/hooks/useAuth';
+import { cn } from '@/lib/utils';
+import type { paymentProviderEnum } from '@namefi-astra/db';
+import type { ConfirmationToken } from '@stripe/stripe-js';
+import { AddPaymentMethodDialog } from '../addPaymentMethod/addPaymentMethodDialog';
 
 const USER_BALANCE_IN_USD_CENTS = 2000;
 const SAVED_CARDS: SavedCardDetails[] = [
