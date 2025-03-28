@@ -19,7 +19,10 @@ export async function createWorker({
   activities: Record<string, (...args: any[]) => any>;
   logLabel?: string;
   temporalEnum: TEMPORAL_ENUMS;
-  extraWorkerOptions?: WorkerOptions;
+  extraWorkerOptions?: Omit<
+    WorkerOptions,
+    'activities' | 'namespace' | 'taskQueue'
+  >;
 }) {
   console.log(`[${logLabel}]: Creating Worker`);
 

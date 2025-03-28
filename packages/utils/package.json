@@ -2,6 +2,7 @@
   "name": "@namefi-astra/utils",
   "version": "0.0.0",
   "private": true,
+  "type": "module",
   "exports": {
     ".": "./index.ts",
     "./*": ["./src/*.ts", "./src/*/index.ts"]
@@ -17,6 +18,7 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
+    "@namefi-astra/typescript": "workspace:*",
     "vitest": "^3.0.9"
   }
 }

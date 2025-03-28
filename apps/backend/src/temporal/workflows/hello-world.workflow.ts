@@ -1,13 +1,15 @@
 import * as workflow from '@temporalio/workflow';
-import type { GreetActivities } from '../activities';
 import { shortRunningOpts } from '../shared/commonRunningOptions';
-import { TEMPORAL_QUEUES } from '../shared/enums';
+import { TEMPORAL_ENUMS } from '../shared/enums';
+import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';
 
 export async function helloWorldWorkflow(name: string): Promise<string> {
   // Get reference to activities
-  const { greet } = workflow.proxyActivities<typeof GreetActivities>({
-    ...shortRunningOpts,
-    taskQueue: TEMPORAL_QUEUES.DEFAULT,
+  const { greet } = typedProxyActivities({
+    temporalEnum: TEMPORAL_ENUMS.DEFAULT,
+    options: {
+      ...shortRunningOpts,
+    },
   });
 
   // Execute the greeting activity

@@ -1,11 +1,12 @@
 import * as workflow from '@temporalio/workflow';
-import type { MintActivities } from '../activities';
 import type {
   MoneyAmount,
   PreparedTxOnlySerializableParams,
   TxPrepareResult,
   TxSendResult,
 } from '../activities/mint.activities';
+import { TEMPORAL_ENUMS } from '../shared/enums';
+import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';
 
 const TIMEOUT_IN_MS = 120_000;
 const MAX_GAS_PRICE_MULTIPLIER = 1.25;
@@ -23,12 +24,13 @@ async function _signAndSendTransactionWithRetry(
   chainId: number,
   maxAttempts = 5,
 ) {
-  const { signAndSendTransaction } = workflow.proxyActivities<
-    typeof MintActivities
-  >({
-    startToCloseTimeout: TIMEOUT_IN_MS,
-    retry: {
-      maximumAttempts: 1, // Not using activity retry. We will retry at flow level
+  const { signAndSendTransaction } = typedProxyActivities({
+    temporalEnum: TEMPORAL_ENUMS.MINT,
+    options: {
+      startToCloseTimeout: TIMEOUT_IN_MS,
+      retry: {
+        maximumAttempts: 1, // Not using activity retry. We will retry at flow level
+      },
     },
   });
 
@@ -102,12 +104,13 @@ export async function mintNamefiNFT({
   domainNameLdh: string;
   expirationTimeInUnix: number;
 }): Promise<string> {
-  const { prepareTxToMintNamefiNft } = workflow.proxyActivities<
-    typeof MintActivities
-  >({
-    startToCloseTimeout: '5 seconds',
-    retry: {
-      maximumAttempts: 1,
+  const { prepareTxToMintNamefiNft } = typedProxyActivities({
+    temporalEnum: TEMPORAL_ENUMS.MINT,
+    options: {
+      startToCloseTimeout: '5 seconds',
+      retry: {
+        maximumAttempts: 1,
+      },
     },
   });
 
@@ -136,12 +139,13 @@ export async function mintNfsc(
   account: `0x${string}`,
   namefiMoneyAmount: MoneyAmount,
 ): Promise<string> {
-  const { prepareTxToMintNfsc } = workflow.proxyActivities<
-    typeof MintActivities
-  >({
-    startToCloseTimeout: '5 seconds',
-    retry: {
-      maximumAttempts: 1,
+  const { prepareTxToMintNfsc } = typedProxyActivities({
+    temporalEnum: TEMPORAL_ENUMS.MINT,
+    options: {
+      startToCloseTimeout: '5 seconds',
+      retry: {
+        maximumAttempts: 1,
+      },
     },
   });
 
@@ -171,12 +175,13 @@ export async function chargeNfscWorkflow(
   reason: string,
   extra: `0x${string}`,
 ): Promise<string> {
-  const { prepareTxToChargeNfsc } = workflow.proxyActivities<
-    typeof MintActivities
-  >({
-    startToCloseTimeout: '5 seconds',
-    retry: {
-      maximumAttempts: 1,
+  const { prepareTxToChargeNfsc } = typedProxyActivities({
+    temporalEnum: TEMPORAL_ENUMS.MINT,
+    options: {
+      startToCloseTimeout: '5 seconds',
+      retry: {
+        maximumAttempts: 1,
+      },
     },
   });
 

@@ -147,6 +147,7 @@
       "name": "@namefi-astra/utils",
       "version": "0.0.0",
       "devDependencies": {
+        "@namefi-astra/typescript": "workspace:*",
         "vitest": "^3.0.9",
       },
       "peerDependencies": {
