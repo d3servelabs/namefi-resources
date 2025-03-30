@@ -10,6 +10,8 @@ export const secretsSchema = z.object({
   ALCHEMY_API_KEY: z.string(),
   SMTP_PASSWORD: z.string().optional(),
   SMTP_USERNAME: z.string().optional(),
+  GCP_HSM_KEYRING_RESOURCE_NAME: z.string().optional(),
+  LOCAL_SIGNER_PRIVATE_KEY: z.string().optional(),
 });
 
 export type SecretsSchema = z.infer<typeof secretsSchema>;

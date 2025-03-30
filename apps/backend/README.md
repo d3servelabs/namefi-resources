@@ -182,3 +182,79 @@ bun test:actions:remote
 ```
 
 ##### Act Troubleshooting
+
+## USING SIGNERS Locally
+
+We are using `viem` for blockchain interactions. There are two ways to configure signers:
+
+### 1. Using Local Private Key (Development)
+
+For local development, you can use a private key signer:
+
+```bash
+# In your .env file
+LOCAL_SIGNER_PRIVATE_KEY=your_private_key_here
+```
+
+The private key should be a hex string starting with `0x`.
+
+### 2. Using Google Cloud HSM (Production)
+
+For production environments, we use Google Cloud HSM for secure key management:
+
+```bash
+# In your .env file
+GCP_HSM_KEYRING_RESOURCE_NAME=your_hsm_key_version_resource_name
+# it should match this format 
+# `projects/([^/]{1,100})/locations/([a-zA-Z0-9_-]{1,63})/keyRings/([a-zA-Z0-9_-]{1,63})/cryptoKeys/([a-zA-Z0-9_-]{1,63})/cryptoKeyVersions/([a-zA-Z0-9_-]{1,63})`
+```
+
+#### Google Cloud Authentication
+
+To use GCP HSM, you need to authenticate with Google Cloud. There are three ways:
+1. **Automatically injected in GCP containers**
+2. **Using Google Cloud CLI**:
+   ```bash
+   # Login to Google Cloud
+   gcloud auth application-default login
+   ```
+
+3. **Using Service Account Key**:
+   - Place your service account key JSON file in `apps/backend/.cred/*.json`
+   - Set the environment variable:
+     ```bash
+     GOOGLE_APPS_CREDENTIALS=apps/backend/.cred/your-service-account.json
+     ```
+
+### Signer Configuration
+
+The system will automatically choose the appropriate signer based on your environment variables:
+
+1. If `GCP_HSM_KEYRING_RESOURCE_NAME` is set, it will use Google Cloud HSM
+2. If `LOCAL_SIGNER_PRIVATE_KEY` is set, it will use the local private key
+3. If neither is set, the application will throw an error
+
+### Usage in Code
+
+The signer is automatically configured and available for use in your code. For example:
+
+```typescript
+// The signer is automatically configured and available
+const signerAccount = secrets.GCP_HSM_KEYRING_RESOURCE_NAME
+  ? await gcpHsmToAccount({
+      hsmKeyVersion: secrets.GCP_HSM_KEYRING_RESOURCE_NAME,
+    })
+  : secrets.LOCAL_SIGNER_PRIVATE_KEY
+    ? privateKeyToAccount(process.env.LOCAL_SIGNER as `0x${string}`, {
+        nonceManager,
+      })
+    : null;
+```
+
+### Security Best Practices
+
+1. Never commit private keys or service account credentials to version control
+2. Use environment variables or secure secret management systems
+3. In production, always use HSM for key management
+4. Keep your service account keys secure and rotate them regularly
+5. Use the minimum required permissions for your service accounts

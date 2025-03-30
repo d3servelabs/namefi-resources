@@ -3,6 +3,7 @@ import { BigNumber } from 'bignumber.js';
 import { fromPairs, map } from 'ramda';
 import { getAlchemyRpcUrl } from '../../utils/jsonRpcUrls';
 
+import { gcpHsmToAccount } from '@valora/viem-account-hsm-gcp';
 import {
   http,
   type Account,
@@ -25,6 +26,7 @@ import { privateKeyToAccount } from 'viem/accounts';
 import type { Chain } from 'viem/chains';
 import * as chains from 'viem/chains';
 import { createNonceManager, jsonRpc } from 'viem/nonce';
+import { secrets } from '#lib/env';
 import {
   NAMEFI_NFT_CONTRACT_ADDRESS,
   NFSC_CONTRACT_ADDRESS,
@@ -108,13 +110,24 @@ const createClients = (account: Account) => {
   };
 };
 
+if (
+  !(secrets.GCP_HSM_KEYRING_RESOURCE_NAME || secrets.LOCAL_SIGNER_PRIVATE_KEY)
+) {
+  throw new Error('Signer configuration missing');
+}
+
 const nonceManager = createNonceManager({
   source: jsonRpc(),
 });
-const signerAccount = privateKeyToAccount(
-  process.env.LOCAL_SIGNER as `0x${string}`,
-  { nonceManager },
-);
+
+const signerAccount = secrets.GCP_HSM_KEYRING_RESOURCE_NAME
+  ? await gcpHsmToAccount({
+      hsmKeyVersion: secrets.GCP_HSM_KEYRING_RESOURCE_NAME,
+    })
+  : privateKeyToAccount(secrets.LOCAL_SIGNER_PRIVATE_KEY as `0x${string}`, {
+      nonceManager,
+    });
+
 const clients = createClients(signerAccount);
 
 export const prepareTxToMintNfsc = async (
