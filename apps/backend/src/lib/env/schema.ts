@@ -8,6 +8,8 @@ export const secretsSchema = z.object({
   TEMPORAL_API_KEY: z.string().optional(),
   API_AUTH_KEY: z.string(),
   ALCHEMY_API_KEY: z.string(),
+  SMTP_PASSWORD: z.string().optional(),
+  SMTP_USERNAME: z.string().optional(),
 });
 
 export type SecretsSchema = z.infer<typeof secretsSchema>;
@@ -18,6 +20,10 @@ export const configSchema = z.object({
   PRIVY_APP_ID: z.string(),
   TEMPORAL_API_URL: z.string().url(),
   TEMPORAL_NAMESPACE: z.string(),
+  SMTP_SECURE: z.boolean(),
+  SMTP_PORT: z.number().optional().default(465),
+  SMTP_HOST: z.string(),
+  APP_URL: z.string(),
 });
 
 export type Config = z.infer<typeof configSchema>;
