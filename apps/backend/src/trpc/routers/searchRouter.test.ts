@@ -5,7 +5,8 @@ import { config } from 'dotenv';
  * This tests the actual tRPC router implementation.
  * Environment variables are loaded from .env.test
  */
-import { describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import * as namefiRegistry from '#services/namefi-registry';
 import type { TrpcContext } from '../base';
 import { searchRouter } from './searchRouter';
 
@@ -13,6 +14,16 @@ import { searchRouter } from './searchRouter';
 config({ path: '.env.test' });
 
 describe('Search Router', () => {
+  beforeEach(() => {
+    vi.spyOn(namefiRegistry, 'getDomainListInfo').mockImplementation(
+      namefiRegistry._mockGetDomainInfo,
+    );
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
   // Create an actual caller for the router
   // The search router doesn't use context values, so we can use a type assertion
   const caller = searchRouter.createCaller({} as unknown as TrpcContext);
