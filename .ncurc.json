@@ -1,8 +1,3 @@
 {
-  "reject": [
-    "@neondatabase/serverless",
-    "drizzle-kit",
-    "drizzle-orm",
-    "drizzle-zod"
-  ]
+  "reject": ["@neondatabase/serverless", "drizzle-orm", "drizzle-zod"]
 }
