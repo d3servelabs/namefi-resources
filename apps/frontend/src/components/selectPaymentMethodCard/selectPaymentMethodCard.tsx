@@ -1,6 +1,6 @@
 'use client';
 
-import { PencilIcon, PlusIcon } from 'lucide-react';
+import { Loader2, PencilIcon, PlusIcon } from 'lucide-react';
 import { type ReactNode, useCallback, useMemo, useState } from 'react';
 
 import { Button } from '@/components/ui/shadcn/button';
@@ -23,14 +23,15 @@ import {
 } from '@/components/ui/shadcn/select';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn, getShortAddress } from '@/lib/utils';
+import { supportedChains } from '@/lib/wagmiConfig';
+import { formatAmountInUSD } from '@/utils/number';
 import type { paymentProviderEnum } from '@namefi-astra/db';
-import { getChain } from '@namefi-astra/utils';
+import { NFSC_CONTRACT_ADDRESS } from '@namefi-astra/utils';
 import { useSolanaWallets, useWallets } from '@privy-io/react-auth';
 import type { ConfirmationToken } from '@stripe/stripe-js';
-import * as chains from 'viem/chains';
+import { formatUnits } from 'viem';
+import { useBalance } from 'wagmi';
 import { AddPaymentMethodDialog } from '../addPaymentMethod/addPaymentMethodDialog';
-
-const SUPPORTED_CHAINS = [chains.base.id, chains.mainnet.id, chains.sepolia.id];
 
 const SAVED_CARDS: SavedCardDetails[] = [
   {
@@ -133,26 +134,39 @@ export function SelectPaymentMethodCard({
     solanaWalletsReady,
   ]);
 
-  const selectedWalletChainBalance = useMemo(() => {
-    const selectedWalletAddress =
-      nfscPaymentMethodDetails?.paymentProviderOptions.walletAddress;
-    const selectedChainId =
-      nfscPaymentMethodDetails?.paymentProviderOptions.chainId;
+  const {
+    data: nfscBalanceData,
+    refetch: refetchNfscBalance,
+    isLoading: balanceIsLoading,
+  } = useBalance({
+    address: nfscPaymentMethodDetails?.paymentProviderOptions
+      .walletAddress as `0x${string}`,
+    chainId: nfscPaymentMethodDetails?.paymentProviderOptions.chainId,
+    token: NFSC_CONTRACT_ADDRESS,
+    query: {
+      enabled:
+        !!nfscPaymentMethodDetails &&
+        !!nfscPaymentMethodDetails.paymentProviderOptions.walletAddress &&
+        !!nfscPaymentMethodDetails.paymentProviderOptions.chainId,
+    },
+  });
 
-    if (!(selectedWalletAddress && selectedChainId)) {
+  const selectedWalletChainNfscBalanceInUsdCents = useMemo(() => {
+    if (!nfscBalanceData) {
       return undefined;
     }
 
-    const selectedBalance = selectedChainId;
-    return selectedBalance;
-  }, [nfscPaymentMethodDetails]);
+    return Number(
+      formatUnits(nfscBalanceData.value, nfscBalanceData.decimals - 2),
+    );
+  }, [nfscBalanceData]);
 
   const hasSufficientBalance = useMemo(() => {
     return (
-      selectedWalletChainBalance &&
-      selectedWalletChainBalance >= cartTotalInUsdCents
+      selectedWalletChainNfscBalanceInUsdCents &&
+      selectedWalletChainNfscBalanceInUsdCents >= cartTotalInUsdCents
     );
-  }, [cartTotalInUsdCents, selectedWalletChainBalance]);
+  }, [cartTotalInUsdCents, selectedWalletChainNfscBalanceInUsdCents]);
 
   const handleRadioGroupValueChanged = useCallback(
     (value: string) => {
@@ -243,8 +257,13 @@ export function SelectPaymentMethodCard({
       };
       setNfscPaymentMethodDetails(newNfscPaymentMethodDetails);
       onPaymentMethodDetailsChanged(newNfscPaymentMethodDetails);
+      refetchNfscBalance();
     },
-    [nfscPaymentMethodDetails, onPaymentMethodDetailsChanged],
+    [
+      nfscPaymentMethodDetails,
+      onPaymentMethodDetailsChanged,
+      refetchNfscBalance,
+    ],
   );
 
   const handleNfscWalletSelectValueChange = useCallback(
@@ -299,8 +318,12 @@ export function SelectPaymentMethodCard({
                   : 'opacity-50',
               )}
             >
-              {selectedWalletChainBalance === undefined ? (
-                <></>
+              {selectedWalletChainNfscBalanceInUsdCents === undefined ? (
+                balanceIsLoading ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <></>
+                )
               ) : (
                 <span
                   className={cn(
@@ -308,7 +331,11 @@ export function SelectPaymentMethodCard({
                     hasSufficientBalance ? 'text-green-500' : 'text-red-500',
                   )}
                 >
-                  Your Credit Balance: ${selectedWalletChainBalance}
+                  Your Credit Balance:{' '}
+                  {formatAmountInUSD(
+                    selectedWalletChainNfscBalanceInUsdCents,
+                    true,
+                  )}
                 </span>
               )}
             </div>
@@ -337,11 +364,11 @@ export function SelectPaymentMethodCard({
                   <SelectValue placeholder="Select a Chain" />
                 </SelectTrigger>
                 <SelectContent>
-                  {SUPPORTED_CHAINS.map((chainId) => (
+                  {supportedChains.map((chain) => (
                     <SelectItem
-                      key={`${chainId}`}
-                      value={`${chainId}`}
-                    >{`${getChain(chainId)?.name}`}</SelectItem>
+                      key={`${chain.id}`}
+                      value={`${chain.id}`}
+                    >{`${chain.name}`}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>

@@ -16,10 +16,13 @@ import {
 import { useAuth } from '@/hooks/useAuth';
 import { formatAmountInUSD } from '@/utils/number';
 import { useTRPC } from '@/utils/trpc';
+import { NFSC_CONTRACT_ADDRESS } from '@namefi-astra/utils';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import type { inferInput } from '@trpc/tanstack-react-query';
 import { Loader2 } from 'lucide-react';
 import { useCallback, useMemo, useState } from 'react';
+import { formatUnits } from 'viem';
+import { useBalance } from 'wagmi';
 
 export default function CartPage() {
   type CheckoutWithCartInput = inferInput<
@@ -75,25 +78,36 @@ export default function CartPage() {
     }),
   );
 
-  const selectedWalletChainBalance = useMemo(() => {
-    const selectedWalletAddress =
-      checkoutWithCartRequest?.paymentProviderOptions?.walletAddress;
-    const selectedChainId =
-      checkoutWithCartRequest?.paymentProviderOptions?.chainId;
+  const { data: nfscBalanceData, refetch: refetchNfscBalance } = useBalance({
+    address: checkoutWithCartRequest?.paymentProviderOptions
+      ?.walletAddress as `0x${string}`,
+    chainId: checkoutWithCartRequest?.paymentProviderOptions?.chainId,
+    token: NFSC_CONTRACT_ADDRESS,
+    query: {
+      enabled:
+        !!checkoutWithCartRequest &&
+        !!checkoutWithCartRequest.paymentProviderOptions &&
+        !!checkoutWithCartRequest.paymentProviderOptions.walletAddress &&
+        !!checkoutWithCartRequest.paymentProviderOptions.chainId,
+    },
+  });
 
-    if (!(selectedWalletAddress && selectedChainId)) {
+  const selectedWalletChainNfscBalanceInUsdCents = useMemo(() => {
+    if (!nfscBalanceData) {
       return null;
     }
 
-    return selectedChainId;
-  }, [checkoutWithCartRequest]);
+    return Number(
+      formatUnits(nfscBalanceData.value, nfscBalanceData.decimals - 2),
+    );
+  }, [nfscBalanceData]);
 
   const hasSufficientBalance = useMemo(() => {
     return (
-      selectedWalletChainBalance &&
-      selectedWalletChainBalance >= totalAmountInUsdCents
+      selectedWalletChainNfscBalanceInUsdCents &&
+      selectedWalletChainNfscBalanceInUsdCents >= totalAmountInUsdCents
     );
-  }, [selectedWalletChainBalance, totalAmountInUsdCents]);
+  }, [selectedWalletChainNfscBalanceInUsdCents, totalAmountInUsdCents]);
 
   const handlePaymentMethodDetailsChanged = useCallback(
     (paymentMethodDetails: PaymentMethodDetails | null) => {
@@ -107,8 +121,9 @@ export default function CartPage() {
         totalAmountInUsdCents,
       };
       setCheckoutWithCartRequest(newCheckoutWithCartRequst);
+      refetchNfscBalance();
     },
-    [totalAmountInUsdCents],
+    [refetchNfscBalance, totalAmountInUsdCents],
   );
 
   const handleSelectedPaymentMethodChanged = useCallback(
@@ -125,8 +140,7 @@ export default function CartPage() {
           !hasSufficientBalance ||
           checkoutWithCartRequest?.paymentProviderOptions?.walletAddress ===
             undefined ||
-          checkoutWithCartRequest?.paymentProviderOptions?.walletAddress ===
-            null
+          checkoutWithCartRequest?.paymentProviderOptions?.chainId === undefined
         );
       }
       case SelectedPaymentMethod.SAVED_CARD: {
@@ -163,11 +177,11 @@ export default function CartPage() {
           return 'Sign in to Use NFSC';
         }
 
-        if (selectedWalletChainBalance === null) {
+        if (selectedWalletChainNfscBalanceInUsdCents === null) {
           return 'Select a Wallet and Chain';
         }
 
-        return 'Insufficient Credit Balance';
+        return 'Insufficient NFSC Balance';
       }
 
       case SelectedPaymentMethod.SAVED_CARD: {
@@ -183,7 +197,7 @@ export default function CartPage() {
   }, [
     isAuthenticated,
     privyUser,
-    selectedWalletChainBalance,
+    selectedWalletChainNfscBalanceInUsdCents,
     selectedPaymentMethod,
     submitPaymentButtonDisabled,
   ]);
