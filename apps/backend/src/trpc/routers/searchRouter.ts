@@ -14,7 +14,7 @@
 
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { z } from 'zod';
-import { getDomainInfo } from '#services/namefi-registry';
+import { getDomainListInfo } from '#services/namefi-registry';
 import { createTRPCRouter, publicProcedure } from '../base';
 
 export const getSuggestions = (
@@ -51,7 +51,7 @@ export const searchRouter = createTRPCRouter({
       const { query, parentDomain } = input;
 
       const suggestions = getSuggestions(query, parentDomain);
-      const bulkAvailability = await getDomainInfo(suggestions);
+      const bulkAvailability = await getDomainListInfo(suggestions);
 
       return { suggestions, bulkAvailability };
     }),

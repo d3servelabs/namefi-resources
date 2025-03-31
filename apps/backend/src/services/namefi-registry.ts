@@ -83,8 +83,3 @@ export const getDomainListInfo = async (domains: NamefiNormalizedDomain[]) => {
     };
   });
 };
-
-/**
- * @deprecated use getDomainListInfo instead
- */
-export const getDomainInfo = getDomainListInfo;
