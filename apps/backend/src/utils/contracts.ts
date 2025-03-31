@@ -41,8 +41,3 @@ export const NfscAbi = parseAbi([
   'function increaseAllowance(address spender, uint256 addedValue) external returns (bool)',
   'function decreaseAllowance(address spender, uint256 subtractedValue) external returns (bool)',
 ]);
-
-export const NFSC_CONTRACT_ADDRESS =
-  '0x0000000000c39A0F674c12A5e63eb8031B550b6f';
-export const NAMEFI_NFT_CONTRACT_ADDRESS =
-  '0x0000000000cf80E7Cf8Fa4480907f692177f8e06';

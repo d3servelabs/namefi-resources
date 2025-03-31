@@ -3,6 +3,10 @@ import { BigNumber } from 'bignumber.js';
 import { fromPairs, map } from 'ramda';
 import { getAlchemyRpcUrl } from '../../utils/jsonRpcUrls';
 
+import {
+  NAMEFI_NFT_CONTRACT_ADDRESS,
+  NFSC_CONTRACT_ADDRESS,
+} from '@namefi-astra/utils';
 import { gcpHsmToAccount } from '@valora/viem-account-hsm-gcp';
 import {
   http,
@@ -27,12 +31,7 @@ import type { Chain } from 'viem/chains';
 import * as chains from 'viem/chains';
 import { createNonceManager, jsonRpc } from 'viem/nonce';
 import { secrets } from '#lib/env';
-import {
-  NAMEFI_NFT_CONTRACT_ADDRESS,
-  NFSC_CONTRACT_ADDRESS,
-  NfscAbi,
-  NftAbi,
-} from '../../utils/contracts';
+import { NfscAbi, NftAbi } from '../../utils/contracts';
 import { resolve } from '../../utils/resolve';
 
 export type MoneyAmount = {
