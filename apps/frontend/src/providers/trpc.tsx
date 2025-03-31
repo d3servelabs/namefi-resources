@@ -61,6 +61,9 @@ export function TrpcProvider({ children }: { children: React.ReactNode }) {
               Authorization: `Bearer ${(await getAccessToken()) || ''}`,
             };
           },
+          fetch(url, options) {
+            return fetch(url, { ...options, credentials: 'include' });
+          },
         }),
       ],
     }),
