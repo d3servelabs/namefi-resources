@@ -1,5 +1,14 @@
-import punycode from 'node:punycode';
 import { z } from 'zod';
+
+export function toASCII(domain: string): string {
+  try {
+    const url = new URL(`https://${domain}`);
+    return url.hostname;
+  } catch (error) {
+    return domain;
+  }
+}
+
 /**
  * Regex to validate that a domain name is normalized in Namefi flavor
  * @see https://regex101.com/r/9KIO7z/1
@@ -20,8 +29,7 @@ export const nameSchema = z
   });
 
 export const normalizeDomainName = (domainNameToNormalize: string) => {
-  const possibleNormalized = punycode
-    .toASCII(domainNameToNormalize)
+  const possibleNormalized = toASCII(domainNameToNormalize)
     .toLowerCase()
     .replace(/\.+$/, ''); // Remove trailing dots
 
