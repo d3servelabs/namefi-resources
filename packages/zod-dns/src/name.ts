@@ -4,7 +4,7 @@ export function toASCII(domain: string): string {
   try {
     const url = new URL(`https://${domain}`);
     return url.hostname;
-  } catch (error) {
+  } catch {
     return domain;
   }
 }
