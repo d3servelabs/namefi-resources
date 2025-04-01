@@ -169,8 +169,13 @@ export const paymentsTable = pgTable(
     status: paymentStatusEnum('status').notNull().default('CREATED'),
     paymentProvider: paymentProviderEnum('payment_provider').notNull(),
     paymentProviderReferenceId: text('payment_provider_reference_id'),
-    chainId: integer('chain_id'),
-    walletAddress: text('wallet_address'),
+    nfscPaymentDetails: jsonb('nfsc_payment_details').$type<{
+      chainId: number;
+      walletAddress: string;
+    }>(),
+    stripePaymentDetails: jsonb('stripe_payment_details').$type<{
+      paymentMethodId?: string;
+    }>(),
     ...timestamps,
   },
   (table) => [

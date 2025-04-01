@@ -96,8 +96,11 @@ export async function processOrderWorkflow(
           userId: orderDetails.userId,
           totalAmountInUsdCents: paymentDetails.amountInUSDCents,
           paymentProvider: paymentDetails.paymentProvider,
-          chainId: paymentDetails.chainId || undefined,
-          walletAddress: paymentDetails.walletAddress || undefined,
+          chainId: paymentDetails.nfscPaymentDetails?.chainId || undefined,
+          walletAddress:
+            paymentDetails.nfscPaymentDetails?.walletAddress || undefined,
+          paymentMethodId:
+            paymentDetails.stripePaymentDetails?.paymentMethodId || undefined,
         },
       ],
       workflowId: `charge-user-${orderDetails.paymentId}`,

@@ -124,3 +124,19 @@ export type DnsRecordUpdate = z.infer<typeof dnsRecordUpdateSchema>;
 // PaymentEnums
 export type PaymentProvider = (typeof paymentProviderEnum.enumValues)[number];
 export type PaymentStatus = (typeof paymentStatusEnum.enumValues)[number];
+
+export type NfscPaymentDetails = { chainId: number; walletAddress: string };
+export type StripePaymentDetails = { paymentMethodId?: string };
+
+export type PaymentProviderDetails =
+  | {
+      paymentProvider: Extract<PaymentProvider, 'STRIPE'>;
+      stripePaymentDetails: StripePaymentDetails;
+    }
+  | {
+      paymentProvider: Extract<
+        PaymentProvider,
+        'NFSC_BASE' | 'NFSC_ETHEREUM' | 'NFSC_ETHEREUM_SEPOLIA'
+      >;
+      nfscPaymentDetails: NfscPaymentDetails;
+    };

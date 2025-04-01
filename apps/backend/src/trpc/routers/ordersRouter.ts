@@ -1,4 +1,5 @@
 import { cartsTable, db } from '@namefi-astra/db';
+import type { PaymentProvider } from '@namefi-astra/db/types';
 import { TRPCError } from '@trpc/server';
 import { eq } from 'drizzle-orm';
 import { z } from 'zod';
@@ -44,17 +45,61 @@ export const ordersRouter = createTRPCRouter({
         0,
       );
 
+      if (
+        !(
+          input.paymentMethodDetails.paymentProvider === 'NFSC_BASE' ||
+          input.paymentMethodDetails.paymentProvider === 'NFSC_ETHEREUM' ||
+          input.paymentMethodDetails.paymentProvider ===
+            'NFSC_ETHEREUM_SEPOLIA' ||
+          input.paymentMethodDetails.paymentProvider === 'STRIPE'
+        )
+      ) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Invalid payment provider',
+        });
+      }
+
       // Create payment first
+      const paymentProvider = input.paymentMethodDetails
+        .paymentProvider as PaymentProvider;
+
+      const nfscPaymentDetails =
+        input.paymentMethodDetails.paymentProviderOptions?.chainId !==
+          undefined &&
+        input.paymentMethodDetails.paymentProviderOptions?.walletAddress !==
+          undefined
+          ? {
+              nfscPaymentDetails: {
+                chainId:
+                  input.paymentMethodDetails.paymentProviderOptions.chainId,
+                walletAddress:
+                  input.paymentMethodDetails.paymentProviderOptions
+                    .walletAddress,
+              },
+            }
+          : undefined;
+
+      const stripePaymentDetails =
+        input.paymentMethodDetails.paymentProviderOptions?.paymentMethodId !==
+        undefined
+          ? {
+              stripePaymentDetails: {
+                paymentMethodId:
+                  input.paymentMethodDetails.paymentProviderOptions
+                    .paymentMethodId,
+              },
+            }
+          : undefined;
+
+      const paymentProviderDetails =
+        paymentProvider === 'STRIPE'
+          ? Object.assign({ paymentProvider }, stripePaymentDetails)
+          : Object.assign({ paymentProvider }, nfscPaymentDetails);
+
       const payment = await createPayment({
         amountInUsdCents: totalAmountInUSDCents,
-        paymentProvider: input.paymentMethodDetails.paymentProvider as
-          | 'NFSC_BASE'
-          | 'NFSC_ETHEREUM'
-          | 'NFSC_ETHEREUM_SEPOLIA'
-          | 'STRIPE',
-        chainId: input.paymentMethodDetails.paymentProviderOptions?.chainId,
-        walletAddress:
-          input.paymentMethodDetails.paymentProviderOptions?.walletAddress,
+        paymentProviderDetails,
       });
 
       // Create order using the service

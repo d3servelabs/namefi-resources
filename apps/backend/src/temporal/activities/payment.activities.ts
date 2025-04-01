@@ -1,5 +1,5 @@
 import {
-  type PaymentProvider,
+  type PaymentProviderDetails,
   type PaymentStatus,
   db,
   paymentsTable,
@@ -17,14 +17,10 @@ import {
 
 export async function createPayment({
   amountInUsdCents,
-  paymentProvider,
-  chainId,
-  walletAddress,
+  paymentProviderDetails,
 }: {
   amountInUsdCents: number;
-  paymentProvider: PaymentProvider;
-  chainId?: number;
-  walletAddress?: string;
+  paymentProviderDetails: PaymentProviderDetails;
 }) {
   if (amountInUsdCents < 0) {
     throw new NegativeAmountInUsdCentsError({ amountInUsdCents });
@@ -33,10 +29,15 @@ export async function createPayment({
   const newPaymentInsertValues = Object.assign(
     {
       amountInUSDCents: amountInUsdCents,
-      paymentProvider,
+      paymentProvider: paymentProviderDetails.paymentProvider,
     },
-    chainId && { chainId },
-    walletAddress && { walletAddress },
+    paymentProviderDetails.paymentProvider === 'STRIPE'
+      ? {
+          stripePaymentDetails: paymentProviderDetails.stripePaymentDetails,
+        }
+      : {
+          nfscPaymentDetails: paymentProviderDetails.nfscPaymentDetails,
+        },
     { status: 'CREATED' as const },
   );
 
@@ -59,8 +60,8 @@ export async function getPaymentDetails({ paymentId }: { paymentId: string }) {
       status: true,
       paymentProvider: true,
       paymentProviderReferenceId: true,
-      chainId: true,
-      walletAddress: true,
+      nfscPaymentDetails: true,
+      stripePaymentDetails: true,
     },
     where: eq(paymentsTable.id, paymentId),
   });

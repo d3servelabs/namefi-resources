@@ -361,12 +361,17 @@ export default function OrderDetailsPage({
                           .replace('NFSC_', 'NFSC on ')
                           .replace('_', ' ')}
                       </Badge>
-                      {order.payment.walletAddress && (
+                      {order.payment?.nfscPaymentDetails?.walletAddress && (
                         <div className="flex items-center gap-2">
                           <span className="text-xs text-gray-500">
-                            {order.payment.walletAddress.substring(0, 6)}...
-                            {order.payment.walletAddress.substring(
-                              order.payment.walletAddress.length - 4,
+                            {order.payment.nfscPaymentDetails.walletAddress.substring(
+                              0,
+                              6,
+                            )}
+                            ...
+                            {order.payment.nfscPaymentDetails.walletAddress.substring(
+                              order.payment.nfscPaymentDetails.walletAddress
+                                .length - 4,
                             )}
                           </span>
                           <TooltipProvider>
@@ -378,7 +383,8 @@ export default function OrderDetailsPage({
                                   className="h-6 w-6"
                                   onClick={() =>
                                     copyToClipboard(
-                                      order.payment.walletAddress as string,
+                                      order.payment?.nfscPaymentDetails
+                                        ?.walletAddress as string,
                                       'walletAddress',
                                     )
                                   }

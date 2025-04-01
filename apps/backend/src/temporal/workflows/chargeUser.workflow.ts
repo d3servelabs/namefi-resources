@@ -43,12 +43,22 @@ export async function chargeUserWorkflow({
     ...shortRunningOpts,
   });
 
+  const nfscPaymentDetails =
+    chainId !== undefined && walletAddress !== undefined
+      ? { nfscPaymentDetails: { chainId, walletAddress } }
+      : undefined;
+  const stripePaymentDetails =
+    paymentMethodId !== undefined
+      ? { stripePaymentDetails: { paymentMethodId } }
+      : undefined;
+  const paymentProviderDetails =
+    paymentProvider === 'STRIPE'
+      ? Object.assign({ paymentProvider }, stripePaymentDetails)
+      : Object.assign({ paymentProvider }, nfscPaymentDetails);
   // MARK: Create Payment in db
   const payment = await createPayment({
     amountInUsdCents: totalAmountInUsdCents,
-    paymentProvider,
-    chainId,
-    walletAddress,
+    paymentProviderDetails,
   });
 
   let paymentStatus = payment.status;
