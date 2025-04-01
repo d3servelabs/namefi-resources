@@ -86,4 +86,17 @@ export const ordersRouter = createTRPCRouter({
         };
       });
     }),
+  getOrder: protectedProcedure
+    .input(z.object({ orderId: z.string() }))
+    .query(async ({ input }) => {
+      const { orderId } = input;
+      const order = await db.query.ordersTable.findFirst({
+        where: eq(ordersTable.id, orderId),
+        with: {
+          items: true,
+          payment: true,
+        },
+      });
+      return order;
+    }),
 });
