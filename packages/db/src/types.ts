@@ -14,6 +14,7 @@ import {
   type paymentProviderEnum,
   type paymentStatusEnum,
   paymentsTable,
+  type refundStatusEnum,
   refundsTable,
   usersTable,
 } from './schema';
@@ -124,6 +125,7 @@ export type DnsRecordUpdate = z.infer<typeof dnsRecordUpdateSchema>;
 // PaymentEnums
 export type PaymentProvider = (typeof paymentProviderEnum.enumValues)[number];
 export type PaymentStatus = (typeof paymentStatusEnum.enumValues)[number];
+export type RefundStatus = (typeof refundStatusEnum.enumValues)[number];
 
 export type NfscPaymentDetails = { chainId: number; walletAddress: string };
 export type StripePaymentDetails = { paymentMethodId?: string };

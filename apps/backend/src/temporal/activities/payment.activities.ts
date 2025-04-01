@@ -1,8 +1,10 @@
 import {
   type PaymentProviderDetails,
   type PaymentStatus,
+  type RefundStatus,
   db,
   paymentsTable,
+  refundsTable,
   usersTable,
 } from '@namefi-astra/db';
 import { eq } from 'drizzle-orm';
@@ -10,9 +12,13 @@ import { isNil } from 'ramda';
 import { stripePaymentService, usersService } from '#services/index';
 import {
   CreateNewPaymentFailure,
+  CreateNewRefundFailure,
+  MissingNfscPaymentDetailsError,
   NegativeAmountInUsdCentsError,
   PaymentNotFoundError,
+  StripeRefundsNotSupportedError,
   UpdatePaymentFailure,
+  UpdateRefundFailure,
 } from '#services/payments/errors';
 
 export async function createPayment({
@@ -51,6 +57,48 @@ export async function createPayment({
   }
 
   return newPayment;
+}
+
+export async function createRefund({
+  paymentId,
+  amountToRefundInUsdCents,
+}: { paymentId: string; amountToRefundInUsdCents: number }) {
+  if (amountToRefundInUsdCents < 0) {
+    throw new NegativeAmountInUsdCentsError({
+      amountInUsdCents: amountToRefundInUsdCents,
+    });
+  }
+
+  const { paymentProvider, nfscPaymentDetails } = await getPaymentDetails({
+    paymentId,
+  });
+
+  if (paymentProvider === 'STRIPE') {
+    throw new StripeRefundsNotSupportedError();
+  }
+
+  if (!nfscPaymentDetails) {
+    throw new MissingNfscPaymentDetailsError({ paymentId });
+  }
+
+  const newRefundInsertValues = Object.assign({
+    amountInUSDCents: amountToRefundInUsdCents,
+    paymentId,
+    status: 'CREATED',
+    chainId: nfscPaymentDetails.chainId,
+    walletAddress: nfscPaymentDetails.walletAddress,
+  });
+
+  const [newRefund] = await db
+    .insert(refundsTable)
+    .values(newRefundInsertValues)
+    .returning();
+
+  if (isNil(newRefund)) {
+    throw new CreateNewRefundFailure();
+  }
+
+  return newRefund;
 }
 
 export async function getPaymentDetails({ paymentId }: { paymentId: string }) {
@@ -147,9 +195,42 @@ export async function updatePayment({
   return updatedPayment;
 }
 
+export async function updateRefund({
+  updateRefundData,
+  refundId,
+}: {
+  updateRefundData: {
+    paymentProviderReferenceId?: string;
+    refundStatus?: RefundStatus;
+  };
+  refundId: string;
+}) {
+  const [updatedRefund] = await db
+    .update(refundsTable)
+    .set({
+      status: updateRefundData?.refundStatus ?? undefined,
+      paymentProviderReferenceId:
+        updateRefundData?.paymentProviderReferenceId ?? undefined,
+      updatedAt: new Date(),
+    })
+    .where(eq(refundsTable.id, refundId))
+    .returning({
+      status: refundsTable.status,
+      paymentProviderReferenceId: refundsTable.paymentProviderReferenceId,
+    });
+
+  if (isNil(updatedRefund)) {
+    throw new UpdateRefundFailure({ refundId });
+  }
+
+  return updatedRefund;
+}
+
 export type PaymentActivities = {
   createPayment: typeof createPayment;
   getPaymentDetails: typeof getPaymentDetails;
   createStripePaymentIntent: typeof createStripePaymentIntent;
   updatePayment: typeof updatePayment;
+  createRefund: typeof createRefund;
+  updateRefund: typeof updateRefund;
 };
