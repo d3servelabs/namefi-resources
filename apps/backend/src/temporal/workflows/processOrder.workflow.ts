@@ -3,7 +3,10 @@ import { ApplicationFailure } from '@temporalio/workflow';
 import type { OrderActivities } from '../activities/order.activities';
 import type { PaymentActivities } from '../activities/payment.activities';
 import { TEMPORAL_ENUMS, TEMPORAL_QUEUES, shortRunningOpts } from '../shared';
-import { chargeUserWorkflow } from './chargeUser.workflow';
+import {
+  type ChargeUserWorkflowInput,
+  chargeUserWorkflow,
+} from './chargeUser.workflow';
 import { processOrderItemWorkflow } from './processOrderItem.workflow';
 
 export type MoneyAmount = {
@@ -42,6 +45,7 @@ export interface NotifyUserInput {
 
 export interface ProcessOrderWorkflowInput {
   orderId: string;
+  paymentMetadata: ChargeUserWorkflowInput['metadata'];
 }
 
 /**
@@ -94,13 +98,8 @@ export async function processOrderWorkflow(
       args: [
         {
           userId: orderDetails.userId,
-          totalAmountInUsdCents: paymentDetails.amountInUSDCents,
-          paymentProvider: paymentDetails.paymentProvider,
-          chainId: paymentDetails.nfscPaymentDetails?.chainId || undefined,
-          walletAddress:
-            paymentDetails.nfscPaymentDetails?.walletAddress || undefined,
-          paymentMethodId:
-            paymentDetails.stripePaymentDetails?.paymentMethodId || undefined,
+          paymentId: orderDetails.paymentId,
+          metadata: input.paymentMetadata,
         },
       ],
       workflowId: `charge-user-${orderDetails.paymentId}`,

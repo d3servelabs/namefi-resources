@@ -1,82 +1,64 @@
-import {
-  type PaymentProvider,
-  type PaymentStatus,
-  paymentProviderEnum,
-} from '@namefi-astra/db';
+import { type PaymentStatus, paymentProviderEnum } from '@namefi-astra/db';
 import * as workflow from '@temporalio/workflow';
 import { stripePaymentIntentStatusToPaymentStatus } from '#services/stripePayments/stripePayments';
 import type { PaymentActivities } from '../activities';
+import type { MoneyAmount } from '../activities/mint.activities';
 import { TEMPORAL_ENUMS, shortRunningOpts } from '../shared';
 import { ChargeStripeWorkflow } from './chargeStripe.workflow';
+import { chargeNfscWorkflow } from './mint.workflow';
 
 const NFSC_PAYMENT_PROVIDERS = paymentProviderEnum.enumValues.filter(
   (provider) => provider.startsWith('NFSC_'),
 );
 
 export type ChargeUserWorkflowInput = {
-  paymentProvider: PaymentProvider;
-  totalAmountInUsdCents: number;
+  paymentId: string;
   userId: string;
-  chainId?: number;
-  confirmationTokenId?: string;
-  paymentMethodId?: string;
-  walletAddress?: string;
+  metadata?: {
+    confirmationTokenId?: string;
+  };
 };
 
 export type ChargeUserWorkflowOutput = {
-  paymentId: string;
   paymentStatus: PaymentStatus;
 };
 
 export async function chargeUserWorkflow({
-  paymentProvider,
-  totalAmountInUsdCents,
+  paymentId,
   userId,
-  chainId,
-  confirmationTokenId,
-  paymentMethodId,
-  walletAddress,
+  metadata,
 }: ChargeUserWorkflowInput): Promise<ChargeUserWorkflowOutput> {
-  const { createPayment, updatePayment } = workflow.proxyActivities<
+  const { getPaymentDetails, updatePayment } = workflow.proxyActivities<
     typeof PaymentActivities
   >({
     ...shortRunningOpts,
   });
 
-  const nfscPaymentDetails =
-    chainId !== undefined && walletAddress !== undefined
-      ? { nfscPaymentDetails: { chainId, walletAddress } }
-      : undefined;
-  const stripePaymentDetails =
-    paymentMethodId !== undefined
-      ? { stripePaymentDetails: { paymentMethodId } }
-      : undefined;
-  const paymentProviderDetails =
-    paymentProvider === 'STRIPE'
-      ? Object.assign({ paymentProvider }, stripePaymentDetails)
-      : Object.assign({ paymentProvider }, nfscPaymentDetails);
-  // MARK: Create Payment in db
-  const payment = await createPayment({
-    amountInUsdCents: totalAmountInUsdCents,
-    paymentProviderDetails,
-  });
+  const {
+    amountInUSDCents,
+    nfscPaymentDetails,
+    paymentProvider,
+    status,
+    stripePaymentDetails,
+  } = await getPaymentDetails({ paymentId });
 
-  let paymentStatus = payment.status;
-  let paymentProviderReferenceId: string | null = null;
+  let paymentStatus = status;
+  let paymentProviderReferenceId: string | undefined;
 
   // MARK: Execute Charge ChildWorkflow based on PaymentProvider
   if (paymentProvider === 'STRIPE') {
     const input = {
       userId,
-      totalAmountInUsdCents,
-      confirmationTokenId,
-      paymentMethodId,
+      totalAmountInUsdCents: amountInUSDCents,
+      confirmationTokenId: metadata?.confirmationTokenId,
+      paymentMethodId: stripePaymentDetails?.paymentMethodId,
     };
+
     try {
       const { paymentIntentId, paymentIntentStatus } =
         await workflow.executeChild(ChargeStripeWorkflow, {
           args: [input],
-          workflowId: `charge-stripe-${payment.id}`,
+          workflowId: `charge-stripe-${paymentId}`,
           taskQueue: TEMPORAL_ENUMS.DEFAULT,
           retry: {
             maximumAttempts: 1,
@@ -88,25 +70,59 @@ export async function chargeUserWorkflow({
       paymentProviderReferenceId = paymentIntentId;
     } catch (error) {
       workflow.log.error(
-        `Error while executing ChargeStripe workflow. workflowId: charge-stripe-${payment.id}, cause: ${JSON.stringify(error)}`,
+        `Error while executing ChargeStripe workflow. workflowId: charge-stripe-${paymentId}, cause: ${JSON.stringify(error)}`,
       );
       paymentStatus = 'FAILED';
     }
   }
 
   if (NFSC_PAYMENT_PROVIDERS.includes(paymentProvider)) {
-    paymentStatus = 'CANCELLED';
+    const input = {
+      chainId: nfscPaymentDetails?.chainId as number,
+      chargee: nfscPaymentDetails?.walletAddress as `0x${string}`,
+      namefiMoneyAmount: {
+        amount: amountInUSDCents,
+        currency: 'USD',
+      } as MoneyAmount,
+      reason: `charge-user.workflow for Payment with ID: ${paymentId}`,
+      extra: '' as `0x${string}`,
+    };
+
+    try {
+      const txHash = await workflow.executeChild(chargeNfscWorkflow, {
+        args: [
+          input.chainId,
+          input.chargee,
+          input.namefiMoneyAmount,
+          input.reason,
+          input.extra,
+        ],
+        workflowId: `charge-nfsc-${paymentId}`,
+        taskQueue: TEMPORAL_ENUMS.MINT,
+        retry: {
+          maximumAttempts: 1,
+        },
+      });
+      paymentStatus = 'SUCCEEDED' as PaymentStatus;
+      paymentProviderReferenceId = txHash;
+    } catch (error) {
+      workflow.log.error(
+        `Error while executing ChargeNfsc workflow. workflowId: charge-nfsc-${paymentId}, cause: ${JSON.stringify(error)}`,
+      );
+      paymentStatus = 'FAILED';
+    }
   }
 
   // MARK: Update Payment
-  const updatePaymentData = Object.assign(
-    { paymentStatus },
-    paymentProviderReferenceId && { paymentProviderReferenceId },
-  );
+  const updatePaymentData = {
+    paymentStatus,
+    paymentProviderReferenceId,
+  };
+
   const updatedPayment = await updatePayment({
-    paymentId: payment.id,
+    paymentId,
     updatePaymentData,
   });
 
-  return { paymentId: payment.id, paymentStatus: updatedPayment.status };
+  return { paymentStatus: updatedPayment.status };
 }
