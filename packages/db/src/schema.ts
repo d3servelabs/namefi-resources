@@ -8,6 +8,7 @@ import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { recordTypeEnum } from '@namefi-astra/zod-dns';
 import { sql } from 'drizzle-orm';
 import {
+  bigint,
   check,
   index,
   integer,
@@ -335,7 +336,7 @@ export const namefiNftTable = pgTable(
   {
     ...normalizedDomain, // is treated as an id and primary key
     chainId: integer('chain_id').notNull(),
-    asOfBlockNumber: integer('as_of_block_number').notNull(),
+    asOfBlockNumber: bigint('as_of_block_number', { mode: 'bigint' }).notNull(),
     ownerAddress: text('owner_address').notNull(),
   },
   (table) => [
