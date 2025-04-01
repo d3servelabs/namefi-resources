@@ -1,3 +1,7 @@
 export * from './chargeStripe.workflow';
 export * from './hello-world.workflow';
 export * from './mint.workflow';
+export * from './processOrder.workflow';
+export * from './processOrderItem.workflow';
+export * from './register-subdomain.workflow';
+export * from './chargeUser.workflow';

@@ -145,3 +145,10 @@ export async function updatePayment({
 
   return updatedPayment;
 }
+
+export type PaymentActivities = {
+  createPayment: typeof createPayment;
+  getPaymentDetails: typeof getPaymentDetails;
+  createStripePaymentIntent: typeof createStripePaymentIntent;
+  updatePayment: typeof updatePayment;
+};

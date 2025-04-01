@@ -1,0 +1,110 @@
+import { cartsTable, db, orderItemsTable, ordersTable } from '@namefi-astra/db';
+import { TRPCError } from '@trpc/server';
+import { eq } from 'drizzle-orm';
+import { OrderNotFoundError } from './errors';
+
+export async function getOrderDetailsOrThrow(orderId: string) {
+  const order = await db.query.ordersTable.findFirst({
+    where: eq(ordersTable.id, orderId),
+    with: {
+      items: true,
+      payment: true,
+      user: true,
+    },
+  });
+
+  if (!order) {
+    throw new OrderNotFoundError({ orderId });
+  }
+
+  return order;
+}
+
+export async function createOrderFromCart({
+  cartId,
+  userId,
+  paymentId,
+}: {
+  cartId: string;
+  userId: string;
+  paymentId: string;
+}) {
+  const cart = await db.query.cartsTable.findFirst({
+    where: eq(cartsTable.id, cartId),
+    with: {
+      items: true,
+    },
+  });
+
+  if (!cart) {
+    throw new TRPCError({
+      code: 'BAD_REQUEST',
+      message: 'Cart not found',
+    });
+  }
+
+  const totalAmountInUSDCents = cart.items.reduce(
+    (acc, item) => acc + item.amountInUSDCents,
+    0,
+  );
+
+  return await db.transaction(async (tx) => {
+    // Create the order first
+    const [order] = await tx
+      .insert(ordersTable)
+      .values({
+        amountInUSDCents: totalAmountInUSDCents,
+        totalAmountInUSDCents,
+        userId,
+        paymentId,
+      })
+      .returning();
+
+    // Create order items
+    const orderItems = await tx
+      .insert(orderItemsTable)
+      .values(
+        cart.items.map((item) => ({
+          orderId: order.id,
+          normalizedDomainName: item.normalizedDomainName,
+          amountInUSDCents: item.amountInUSDCents,
+          metadata: item.metadata,
+        })),
+      )
+      .returning();
+
+    return {
+      ...order,
+      items: orderItems,
+    };
+  });
+}
+
+export async function updateOrderStatus({
+  orderId,
+  status,
+}: {
+  orderId: string;
+  status: 'PROCESSING' | 'FAILED' | 'CREATED' | 'SUCCEEDED';
+}) {
+  const [updatedOrder] = await db
+    .update(ordersTable)
+    .set({
+      status,
+      updatedAt: new Date(),
+    })
+    .where(eq(ordersTable.id, orderId))
+    .returning();
+
+  if (!updatedOrder) {
+    throw new OrderNotFoundError({ orderId });
+  }
+
+  return updatedOrder;
+}
+
+export const orderService = {
+  getOrderDetailsOrThrow,
+  createOrderFromCart,
+  updateOrderStatus,
+};

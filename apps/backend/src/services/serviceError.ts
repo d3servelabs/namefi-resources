@@ -2,6 +2,7 @@ export enum ServiceName {
   PAYMENTS = 'PAYMENTS_SERVICE',
   USERS = 'USERS_SERVICE',
   STRIPE = 'STRIPE_PAYMENTS_SERVICE',
+  ORDERS = 'ORDERS_SERVICE',
 }
 
 export class ServiceError extends Error {
