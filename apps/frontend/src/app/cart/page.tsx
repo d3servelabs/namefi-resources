@@ -20,6 +20,7 @@ import { NFSC_CONTRACT_ADDRESS } from '@namefi-astra/utils';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import type { inferInput } from '@trpc/tanstack-react-query';
 import { Loader2 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { useCallback, useMemo, useState } from 'react';
 import { formatUnits } from 'viem';
 import { useBalance } from 'wagmi';
@@ -72,10 +73,12 @@ export default function CartPage() {
     }),
   );
 
+  const router = useRouter();
+
   const { mutate: createOrder } = useMutation({
     ...trpc.orders.createOrder.mutationOptions({
       onSuccess: (data) => {
-        console.log(data);
+        router.push(`/orders/${data.id}`);
       },
     }),
   });
