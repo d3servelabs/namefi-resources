@@ -27,6 +27,24 @@ export class MissingNfscPaymentDetailsError extends ServiceError {
   }
 }
 
+export class MissingPaymentProviderReferenceId extends ServiceError {
+  constructor({ paymentId }: { paymentId: string }) {
+    super(
+      `Missing paymentProviderReferenceId for Payment with ID: ${paymentId}`,
+      ServiceName.PAYMENTS,
+    );
+  }
+}
+
+export class NfscPaymentCaptureNotSupportedError extends ServiceError {
+  constructor() {
+    super(
+      'Capture for Payments with PaymentProvider.NFSC_* not supported',
+      ServiceName.PAYMENTS,
+    );
+  }
+}
+
 export class NegativeAmountInUsdCentsError extends ServiceError {
   constructor({ amountInUsdCents }: { amountInUsdCents: number }) {
     super(
@@ -39,6 +57,18 @@ export class NegativeAmountInUsdCentsError extends ServiceError {
 export class PaymentNotFoundError extends ServiceError {
   constructor({ paymentId }: { paymentId: string }) {
     super(`Could not find Payment with ID: ${paymentId}`, ServiceName.PAYMENTS);
+  }
+}
+
+export class PaymentNotReadyForCaptureError extends ServiceError {
+  constructor({
+    paymentId,
+    paymentProviderReferenceId,
+  }: { paymentId: string; paymentProviderReferenceId: string }) {
+    super(
+      `Payment with ID: ${paymentId} not ready for capture. paymentProviderReferenceId: ${paymentProviderReferenceId}`,
+      ServiceName.PAYMENTS,
+    );
   }
 }
 

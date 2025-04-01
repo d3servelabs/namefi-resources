@@ -14,12 +14,45 @@ import {
   CreateNewPaymentFailure,
   CreateNewRefundFailure,
   MissingNfscPaymentDetailsError,
+  MissingPaymentProviderReferenceId,
   NegativeAmountInUsdCentsError,
+  NfscPaymentCaptureNotSupportedError,
   PaymentNotFoundError,
+  PaymentNotReadyForCaptureError,
   StripeRefundsNotSupportedError,
   UpdatePaymentFailure,
   UpdateRefundFailure,
 } from '#services/payments/errors';
+
+export async function captureStripePayment({
+  amountToCaptureInUsdCents,
+  paymentId,
+}: { amountToCaptureInUsdCents: number; paymentId: string }) {
+  const { paymentProvider, paymentProviderReferenceId, status } =
+    await getPaymentDetails({ paymentId });
+
+  if (paymentProvider !== 'STRIPE') {
+    throw new NfscPaymentCaptureNotSupportedError();
+  }
+
+  if (isNil(paymentProviderReferenceId)) {
+    throw new MissingPaymentProviderReferenceId({ paymentId });
+  }
+
+  if (status !== 'REQUIRES_CAPTURE') {
+    throw new PaymentNotReadyForCaptureError({
+      paymentId,
+      paymentProviderReferenceId,
+    });
+  }
+
+  const { capturedStripePaymentIntent } =
+    await stripePaymentService.capturePaymentIntent({
+      stripePaymentIntentId: paymentProviderReferenceId,
+      amountToCaptureInUsdCents,
+    });
+  return { capturedStripePaymentIntent };
+}
 
 export async function createPayment({
   amountInUsdCents,
