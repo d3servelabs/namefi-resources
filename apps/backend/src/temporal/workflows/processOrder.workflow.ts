@@ -1,13 +1,13 @@
 import * as workflow from '@temporalio/workflow';
 import { ApplicationFailure } from '@temporalio/workflow';
 import type { OrderActivities } from '../activities/order.activities';
-import type { PaymentActivities } from '../activities/payment.activities';
 import { TEMPORAL_ENUMS, TEMPORAL_QUEUES, shortRunningOpts } from '../shared';
 import {
   type ChargeUserWorkflowInput,
   chargeUserWorkflow,
 } from './chargeUser.workflow';
 import { processOrderItemWorkflow } from './processOrderItem.workflow';
+import { refundUserWorkflow } from './refund-user.workflow';
 
 export type MoneyAmount = {
   amount: number;
@@ -66,11 +66,6 @@ export async function processOrderWorkflow(
       taskQueue: TEMPORAL_QUEUES.DEFAULT,
     });
 
-  const { getPaymentDetails } = workflow.proxyActivities<PaymentActivities>({
-    ...shortRunningOpts,
-    taskQueue: TEMPORAL_QUEUES.DEFAULT,
-  });
-
   try {
     // Update order status to PROCESSING
     await updateOrderStatus({
@@ -87,11 +82,6 @@ export async function processOrderWorkflow(
       });
       throw new Error('Order is empty or malformed');
     }
-
-    // MARK: - Get Payment Details and Charge User
-    const paymentDetails = await getPaymentDetails({
-      paymentId: orderDetails.paymentId,
-    });
 
     // Charge the user for the order
     const chargeResult = await workflow.executeChild(chargeUserWorkflow, {
@@ -164,7 +154,7 @@ export async function processOrderWorkflow(
       // Some items succeeded, some failed
       await updateOrderStatus({
         orderId: input.orderId,
-        status: 'SUCCEEDED', // We don't have a PARTIALLY_COMPLETED status, so use SUCCEEDED
+        status: 'PARTIALLY_COMPLETED',
       });
     }
 
@@ -191,15 +181,36 @@ export async function processOrderWorkflow(
                 .join(', ')}`;
 
       try {
-        await executeNotifyUser({
-          userId: orderDetails.userId,
-          subject,
-          content,
-        });
+        workflow.log.info(
+          `Notifying user ${orderDetails.userId} for order ${input.orderId}`,
+        );
+        // await executeNotifyUser({
+        //   userId: orderDetails.userId,
+        //   subject,
+        //   content,
+        // });
       } catch (e) {
         workflow.log.error(
           `Failed to notify user for order ${input.orderId}. Error: ${e}`,
         );
+      }
+
+      if (failedItems.length > 0) {
+        const totalAmountToRefund = failedItems.reduce((acc, item) => {
+          return acc + item.amountInUSDCents;
+        }, 0);
+
+        await workflow.executeChild(refundUserWorkflow, {
+          args: [
+            {
+              paymentId: orderDetails.paymentId,
+              amountToRefundInUsdCents: totalAmountToRefund,
+            },
+          ],
+          retry: {
+            maximumAttempts: 1,
+          },
+        });
       }
     }
   } catch (e) {

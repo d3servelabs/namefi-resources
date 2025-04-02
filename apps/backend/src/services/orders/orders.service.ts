@@ -85,7 +85,12 @@ export async function updateOrderStatus({
   status,
 }: {
   orderId: string;
-  status: 'PROCESSING' | 'FAILED' | 'CREATED' | 'SUCCEEDED';
+  status:
+    | 'PROCESSING'
+    | 'FAILED'
+    | 'CREATED'
+    | 'SUCCEEDED'
+    | 'PARTIALLY_COMPLETED';
 }) {
   const [updatedOrder] = await db
     .update(ordersTable)

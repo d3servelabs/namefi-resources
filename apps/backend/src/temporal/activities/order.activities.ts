@@ -9,7 +9,12 @@ export function updateOrderStatus({
   status,
 }: {
   orderId: string;
-  status: 'PROCESSING' | 'FAILED' | 'CREATED' | 'SUCCEEDED';
+  status:
+    | 'PROCESSING'
+    | 'FAILED'
+    | 'CREATED'
+    | 'SUCCEEDED'
+    | 'PARTIALLY_COMPLETED';
 }) {
   return orderService.updateOrderStatus({ orderId, status });
 }

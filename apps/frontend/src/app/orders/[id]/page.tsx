@@ -361,7 +361,7 @@ export default function OrderDetailsPage({
                           .replace('NFSC_', 'NFSC on ')
                           .replace('_', ' ')}
                       </Badge>
-                      {order.payment?.nfscPaymentDetails?.walletAddress && (
+                      {order.payment.nfscPaymentDetails?.walletAddress && (
                         <div className="flex items-center gap-2">
                           <span className="text-xs text-gray-500">
                             {order.payment.nfscPaymentDetails.walletAddress.substring(
@@ -383,8 +383,8 @@ export default function OrderDetailsPage({
                                   className="h-6 w-6"
                                   onClick={() =>
                                     copyToClipboard(
-                                      order.payment?.nfscPaymentDetails
-                                        ?.walletAddress as string,
+                                      order.payment.nfscPaymentDetails
+                                        ?.walletAddress || '',
                                       'walletAddress',
                                     )
                                   }

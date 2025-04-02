@@ -5,6 +5,9 @@ import { eq } from 'drizzle-orm';
 import { z } from 'zod';
 import { orderService } from '#services/orders/orders.service';
 import { createPayment } from '../../temporal/activities/payment.activities';
+import { temporalClient } from '../../temporal/client';
+import { TEMPORAL_QUEUES } from '../../temporal/shared';
+import { processOrderWorkflow } from '../../temporal/workflows/processOrder.workflow';
 import { createTRPCRouter, protectedProcedure } from '../base';
 
 export const ordersRouter = createTRPCRouter({
@@ -103,11 +106,28 @@ export const ordersRouter = createTRPCRouter({
       });
 
       // Create order using the service
-      return orderService.createOrderFromCart({
+      const order = await orderService.createOrderFromCart({
         cartId: input.cartId,
         userId: ctx.user.id,
         paymentId: payment.id,
       });
+
+      temporalClient.workflow.start(processOrderWorkflow, {
+        args: [
+          {
+            orderId: order.id,
+            paymentMetadata: {
+              confirmationTokenId:
+                input.paymentMethodDetails.paymentProviderOptions
+                  ?.confirmationTokenId,
+            },
+          },
+        ],
+        taskQueue: TEMPORAL_QUEUES.DOMAINS,
+        workflowId: `process-order-${order.id}`,
+      });
+
+      return order;
     }),
   getOrder: protectedProcedure
     .input(z.object({ orderId: z.string() }))
