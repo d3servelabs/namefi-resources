@@ -66,6 +66,9 @@ export async function createWorker({
       taskQueue: TEMPORAL_QUEUES[temporalEnum],
       ...workflowOption,
       activities,
+      bundlerOptions: {
+        ignoreModules: ['process'],
+      },
     });
 
     // Step 3: Start accepting tasks on the Task Queue specified in TASK_QUEUE_NAME

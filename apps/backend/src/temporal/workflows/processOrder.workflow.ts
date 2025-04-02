@@ -1,13 +1,14 @@
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import * as workflow from '@temporalio/workflow';
 import { ApplicationFailure } from '@temporalio/workflow';
 import type { OrderActivities } from '../activities/order.activities';
-import { TEMPORAL_ENUMS, TEMPORAL_QUEUES, shortRunningOpts } from '../shared';
+import { TEMPORAL_QUEUES, shortRunningOpts } from '../shared';
 import {
   type ChargeUserWorkflowInput,
   chargeUserWorkflow,
 } from './chargeUser.workflow';
+import { finalizePaymentWorkflow } from './finalize-payment-workflow';
 import { processOrderItemWorkflow } from './processOrderItem.workflow';
-import { refundUserWorkflow } from './refund-user.workflow';
 
 export type MoneyAmount = {
   amount: number;
@@ -23,19 +24,12 @@ export enum PaymentStatus {
 export type Address = string;
 
 // MARK: - Workflow Execution Helpers
-const executeNotifyUser = async (input: NotifyUserInput): Promise<void> => {
+const _executeNotifyUser = async (input: NotifyUserInput): Promise<void> => {
   return workflow.executeChild('sendNotificationWorkflow', {
     taskQueue: TEMPORAL_QUEUES.NOTIFY,
     args: [input],
   });
 };
-
-export interface ProcessOrderItemInput {
-  itemId: string;
-  orderId: string;
-  normalizedDomainName: string;
-  userAddress: Address;
-}
 
 export interface NotifyUserInput {
   userId: string;
@@ -59,6 +53,10 @@ export interface ProcessOrderWorkflowInput {
 export async function processOrderWorkflow(
   input: ProcessOrderWorkflowInput,
 ): Promise<void> {
+  workflow.log.info('Processing order', {
+    orderId: input.orderId,
+  });
+
   // MARK: - Activity Setup
   const { getOrderDetailsOrThrow, updateOrderStatus } =
     workflow.proxyActivities<OrderActivities>({
@@ -67,12 +65,6 @@ export async function processOrderWorkflow(
     });
 
   try {
-    // Update order status to PROCESSING
-    await updateOrderStatus({
-      orderId: input.orderId,
-      status: 'PROCESSING',
-    });
-
     // MARK: - Get Order Details
     const orderDetails = await getOrderDetailsOrThrow(input.orderId);
     if (!orderDetails.items || orderDetails.items.length === 0) {
@@ -82,6 +74,12 @@ export async function processOrderWorkflow(
       });
       throw new Error('Order is empty or malformed');
     }
+
+    // Update order status to PROCESSING
+    await updateOrderStatus({
+      orderId: input.orderId,
+      status: 'PROCESSING',
+    });
 
     // Charge the user for the order
     const chargeResult = await workflow.executeChild(chargeUserWorkflow, {
@@ -93,14 +91,17 @@ export async function processOrderWorkflow(
         },
       ],
       workflowId: `charge-user-${orderDetails.paymentId}`,
-      taskQueue: TEMPORAL_ENUMS.DEFAULT,
+      taskQueue: TEMPORAL_QUEUES.DEFAULT,
       retry: {
         maximumAttempts: 1,
       },
     });
 
     // If payment failed, update order status and exit
-    if (chargeResult.paymentStatus !== PaymentStatus.SUCCEEDED) {
+    if (
+      chargeResult.paymentStatus !== PaymentStatus.SUCCEEDED &&
+      chargeResult.paymentStatus !== 'REQUIRES_CAPTURE'
+    ) {
       await updateOrderStatus({
         orderId: input.orderId,
         status: 'FAILED',
@@ -116,12 +117,13 @@ export async function processOrderWorkflow(
             {
               itemId: item.id,
               orderId: input.orderId,
-              normalizedDomainName: item.normalizedDomainName,
-              userAddress: orderDetails.userId as Address,
+              normalizedDomainName:
+                item.normalizedDomainName as NamefiNormalizedDomain,
+              userAddress: '0xB5856d4598c919834913b8656ebc15a64d3C7836',
             },
           ],
           workflowId: `process-order-item-${item.id}`,
-          taskQueue: TEMPORAL_ENUMS.DEFAULT,
+          taskQueue: TEMPORAL_QUEUES.DEFAULT,
           retry: {
             maximumAttempts: 1,
           },
@@ -158,16 +160,39 @@ export async function processOrderWorkflow(
       });
     }
 
+    const amountToRefund = failedItems.reduce((acc, item) => {
+      return acc + item.amountInUSDCents;
+    }, 0);
+
+    const amountToCapture = succeededItems.reduce((acc, item) => {
+      return acc + item.amountInUSDCents;
+    }, 0);
+
+    await workflow.executeChild(finalizePaymentWorkflow, {
+      args: [
+        {
+          paymentId: orderDetails.paymentId,
+          amountToCaptureInUsdCents: amountToCapture,
+          amountToRefundInUsdCents: amountToRefund,
+        },
+      ],
+      workflowId: `finalize-payment-${orderDetails.paymentId}`,
+      taskQueue: TEMPORAL_QUEUES.DEFAULT,
+      retry: {
+        maximumAttempts: 1,
+      },
+    });
+
     // MARK: - Notify User if we have their email
     if (orderDetails.user.primaryEmail) {
-      const subject =
+      const _subject =
         failedItems.length === 0
           ? 'Namefi Order Processing Succeeded'
           : failedItems.length === orderDetails.items.length
             ? 'Namefi Order Processing Failed'
             : 'Namefi Order Processing Partially Completed';
 
-      const content =
+      const _content =
         failedItems.length === 0
           ? `All items in order ${input.orderId} processed successfully`
           : failedItems.length === orderDetails.items.length
@@ -193,24 +218,6 @@ export async function processOrderWorkflow(
         workflow.log.error(
           `Failed to notify user for order ${input.orderId}. Error: ${e}`,
         );
-      }
-
-      if (failedItems.length > 0) {
-        const totalAmountToRefund = failedItems.reduce((acc, item) => {
-          return acc + item.amountInUSDCents;
-        }, 0);
-
-        await workflow.executeChild(refundUserWorkflow, {
-          args: [
-            {
-              paymentId: orderDetails.paymentId,
-              amountToRefundInUsdCents: totalAmountToRefund,
-            },
-          ],
-          retry: {
-            maximumAttempts: 1,
-          },
-        });
       }
     }
   } catch (e) {

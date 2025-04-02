@@ -1,14 +1,14 @@
+import { CHAINS, type NamefiNormalizedDomain } from '@namefi-astra/utils';
 import * as workflow from '@temporalio/workflow';
 import { ApplicationFailure } from '@temporalio/workflow';
 import { TEMPORAL_QUEUES } from '../shared';
-
-type Address = string;
+import { registerSubdomainWorkflow } from './register-subdomain.workflow';
 
 export interface ProcessOrderItemWorkflowInput {
   itemId: string;
   orderId: string;
-  normalizedDomainName: string;
-  userAddress: Address;
+  normalizedDomainName: NamefiNormalizedDomain;
+  userAddress: `0x${string}`;
 }
 
 /**
@@ -21,11 +21,11 @@ export async function processOrderItemWorkflow(
 
   try {
     // TODO: (sid->Ssamo) Figure out how to get the chainId from the order item
-    const chainId = 1; // Example: Ethereum Mainnet
-    const expirationTimeInSeconds = 31536000; // 1 year in seconds
+    const chainId = CHAINS.base.id; // Example: Ethereum Mainnet
+    const expirationTimeInSeconds = 31536000 * 3; // Subdomain will expire in 3 years
 
     // Register the domain
-    await workflow.executeChild('registerSubdomainWorkflow', {
+    await workflow.executeChild(registerSubdomainWorkflow, {
       args: [
         normalizedDomainName,
         chainId,

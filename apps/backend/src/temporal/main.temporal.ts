@@ -5,7 +5,6 @@ import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { logger } from 'hono/logger';
 import { prettyJSON } from 'hono/pretty-json';
-import { config } from '../lib/env';
 import workersRouter from './workers.router';
 
 async function main() {
@@ -22,10 +21,10 @@ async function main() {
   serve(
     {
       fetch: app.fetch,
-      port: config.PORT,
+      port: 3002,
     },
-    (info) => {
-      console.info('Server is running on port', info.port);
+    (_info) => {
+      console.info('Server is running on port', 3002);
     },
   );
 }

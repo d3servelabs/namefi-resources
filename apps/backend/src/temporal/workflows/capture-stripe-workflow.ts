@@ -2,7 +2,7 @@ import type { PaymentStatus } from '@namefi-astra/db';
 import * as workflow from '@temporalio/workflow';
 import { stripePaymentIntentStatusToPaymentStatus } from '#services/stripePayments/stripePayments';
 import type { PaymentActivities } from '../activities';
-import { shortRunningOpts } from '../shared';
+import { TEMPORAL_QUEUES, shortRunningOpts } from '../shared';
 
 export type CaptureStripeWorkflowInput = {
   paymentId: string;
@@ -21,6 +21,7 @@ export async function captureStripeWorkflow({
     typeof PaymentActivities
   >({
     ...shortRunningOpts,
+    taskQueue: TEMPORAL_QUEUES.DEFAULT,
   });
 
   const { capturedStripePaymentIntent } = await captureStripePayment({

@@ -1,7 +1,7 @@
 import * as workflow from '@temporalio/workflow';
 import type Stripe from 'stripe';
 import type { PaymentActivities } from '../activities';
-import { shortRunningOpts } from '../shared';
+import { TEMPORAL_QUEUES, shortRunningOpts } from '../shared';
 
 export type ChargeStripeWorkflowInput = {
   userId: string;
@@ -25,6 +25,7 @@ export async function ChargeStripeWorkflow({
     typeof PaymentActivities
   >({
     ...shortRunningOpts,
+    taskQueue: TEMPORAL_QUEUES.DEFAULT,
   });
 
   const { stripePaymentIntent } = await createStripePaymentIntent({

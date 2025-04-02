@@ -136,13 +136,13 @@ bun run start:temporal
 
 ```psudo code
 CheckoutFlow
-  -> ChargeStripeSubflow or ChargeNfscSubflow
+  -> ChargeUserSubflow
   -> ProcessCartItemFlow(index=1)
     -> SubDomainRegisterSubflow
       -> MintNamefiNftSubflow
       -> PostAcquistionSubflow
-        -> UpdateNameServerActivity
-        -> AddNamefiParkDNSRecordsActivity
-  -> RefundStripeSubflow or RefundNfscSubflow
+        -> SubdomainSetupSubflow
+  -> if paymentprovider == stripe, CaptureStripeSubflow
+  -> 
   -> NotifyUserActivity("Entire order has been completed with no error.")
 ```

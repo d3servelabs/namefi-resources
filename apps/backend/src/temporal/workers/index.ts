@@ -3,6 +3,7 @@ import { isDomainParked, parkDomain } from '#services/dns/parking';
 import {
   GreetActivities,
   MintActivities,
+  OrderActivities,
   PaymentActivities,
 } from '../activities';
 import { TEMPORAL_ENUMS } from '../shared';
@@ -13,6 +14,8 @@ export let WORKERS: Partial<Record<TEMPORAL_ENUMS, Worker>> | undefined;
 export const ACTIVITIES = {
   [TEMPORAL_ENUMS.DEFAULT]: {
     ...GreetActivities, //TODO(Sami): use this instead, below
+    ...OrderActivities,
+    ...PaymentActivities,
   },
   [TEMPORAL_ENUMS.MINT]: {
     ...MintActivities,
@@ -31,6 +34,7 @@ export async function initWorkers() {
       activities: {
         ...GreetActivities,
         ...PaymentActivities,
+        ...OrderActivities,
       },
       temporalEnum: TEMPORAL_ENUMS.DEFAULT,
       logLabel: TEMPORAL_ENUMS.DEFAULT,

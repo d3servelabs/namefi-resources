@@ -5,3 +5,5 @@ export * from './processOrder.workflow';
 export * from './processOrderItem.workflow';
 export * from './register-subdomain.workflow';
 export * from './chargeUser.workflow';
+export * from './refund-user.workflow';
+export * from './finalize-payment-workflow';

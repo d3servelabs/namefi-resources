@@ -1,9 +1,10 @@
-import { type PaymentStatus, paymentProviderEnum } from '@namefi-astra/db';
+import { paymentProviderEnum } from '@namefi-astra/db/schema';
+import type { PaymentStatus } from '@namefi-astra/db/types';
 import * as workflow from '@temporalio/workflow';
-import { stripePaymentIntentStatusToPaymentStatus } from '#services/stripePayments/stripePayments';
+import { stripePaymentIntentStatusToPaymentStatus } from '#services/stripePayments/stripePaymentHelpers';
 import type { PaymentActivities } from '../activities';
 import type { MoneyAmount } from '../activities/mint.activities';
-import { TEMPORAL_ENUMS, shortRunningOpts } from '../shared';
+import { TEMPORAL_QUEUES, shortRunningOpts } from '../shared';
 import { ChargeStripeWorkflow } from './chargeStripe.workflow';
 import { chargeNfscWorkflow } from './mint.workflow';
 
@@ -59,7 +60,7 @@ export async function chargeUserWorkflow({
         await workflow.executeChild(ChargeStripeWorkflow, {
           args: [input],
           workflowId: `charge-stripe-${paymentId}`,
-          taskQueue: TEMPORAL_ENUMS.DEFAULT,
+          taskQueue: TEMPORAL_QUEUES.DEFAULT,
           retry: {
             maximumAttempts: 1,
           },
@@ -98,7 +99,7 @@ export async function chargeUserWorkflow({
           input.extra,
         ],
         workflowId: `charge-nfsc-${paymentId}`,
-        taskQueue: TEMPORAL_ENUMS.MINT,
+        taskQueue: TEMPORAL_QUEUES.MINT,
         retry: {
           maximumAttempts: 1,
         },
