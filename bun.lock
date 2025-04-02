@@ -134,6 +134,8 @@
       "name": "@namefi-astra/db",
       "dependencies": {
         "@namefi-astra/env": "workspace:*",
+        "@namefi-astra/utils": "workspace:*",
+        "@namefi-astra/zod-dns": "workspace:*",
         "@neondatabase/serverless": "^0.10.4",
         "zod": "^3.24.2",
       },

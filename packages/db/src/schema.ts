@@ -277,7 +277,7 @@ export const orderItemsTable = pgTable(
 );
 
 export const recordTypePgEnum = pgEnum(
-  'RecordTypeEnum',
+  'record_type_enum',
   recordTypeEnum.options,
 );
 // Design discussion:
