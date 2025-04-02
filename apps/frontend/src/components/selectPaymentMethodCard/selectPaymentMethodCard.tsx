@@ -134,6 +134,14 @@ export function SelectPaymentMethodCard({
     solanaWalletsReady,
   ]);
 
+  const isUseBalanceQueryEnabled = useMemo(() => {
+    return (
+      !!nfscPaymentMethodDetails &&
+      !!nfscPaymentMethodDetails.paymentProviderOptions.walletAddress &&
+      !!nfscPaymentMethodDetails.paymentProviderOptions.chainId
+    );
+  }, [nfscPaymentMethodDetails]);
+
   const {
     data: nfscBalanceData,
     refetch: refetchNfscBalance,
@@ -144,10 +152,7 @@ export function SelectPaymentMethodCard({
     chainId: nfscPaymentMethodDetails?.paymentProviderOptions.chainId,
     token: NFSC_CONTRACT_ADDRESS,
     query: {
-      enabled:
-        !!nfscPaymentMethodDetails &&
-        !!nfscPaymentMethodDetails.paymentProviderOptions.walletAddress &&
-        !!nfscPaymentMethodDetails.paymentProviderOptions.chainId,
+      enabled: isUseBalanceQueryEnabled,
     },
   });
 
@@ -319,7 +324,7 @@ export function SelectPaymentMethodCard({
               )}
             >
               {selectedWalletChainNfscBalanceInUsdCents === undefined ? (
-                balanceIsLoading ? (
+                isUseBalanceQueryEnabled && balanceIsLoading ? (
                   <Loader2 className="h-4 w-4 animate-spin" />
                 ) : (
                   <></>
