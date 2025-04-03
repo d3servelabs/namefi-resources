@@ -3,6 +3,8 @@ import {
   type PaymentStatus,
   type RefundStatus,
   db,
+  paymentProviderSchema,
+  paymentStatusSchema,
   paymentsTable,
   refundsTable,
   usersTable,
@@ -31,7 +33,7 @@ export async function captureStripePayment({
   const { paymentProvider, paymentProviderReferenceId, status } =
     await getPaymentDetails({ paymentId });
 
-  if (paymentProvider !== 'STRIPE') {
+  if (paymentProvider !== paymentProviderSchema.Values.STRIPE) {
     throw new NfscPaymentCaptureNotSupportedError();
   }
 
@@ -39,7 +41,7 @@ export async function captureStripePayment({
     throw new MissingPaymentProviderReferenceId({ paymentId });
   }
 
-  if (status !== 'REQUIRES_CAPTURE') {
+  if (status !== paymentStatusSchema.Values.REQUIRES_CAPTURE) {
     throw new PaymentNotReadyForCaptureError({
       paymentId,
       paymentProviderReferenceId,
@@ -77,7 +79,7 @@ export async function createPayment({
       : {
           nfscPaymentDetails: paymentProviderDetails.nfscPaymentDetails,
         },
-    { status: 'CREATED' as const },
+    { status: paymentStatusSchema.Values.CREATED },
   );
 
   const [newPayment] = await db

@@ -1,4 +1,10 @@
-import type { PaymentStatus, RefundStatus } from '@namefi-astra/db/types';
+import {
+  type PaymentStatus,
+  type RefundStatus,
+  paymentProviderSchema,
+  paymentStatusSchema,
+  refundStatusSchema,
+} from '@namefi-astra/db/types';
 import { matchAny } from '@namefi-astra/utils';
 import * as workflow from '@temporalio/workflow';
 import { stripePaymentIntentStatusToPaymentStatus } from '#services/stripePayments/stripePaymentHelpers';
@@ -29,7 +35,7 @@ export async function finalizePaymentWorkflow({
     });
 
   const paymentDetails = await getPaymentDetails({ paymentId });
-  if (paymentDetails.paymentProvider === 'STRIPE') {
+  if (paymentDetails.paymentProvider === paymentProviderSchema.Values.STRIPE) {
     if (amountToCaptureInUsdCents > 0) {
       const { capturedStripePaymentIntent } = await captureStripePayment({
         amountToCaptureInUsdCents: amountToCaptureInUsdCents,
@@ -55,9 +61,9 @@ export async function finalizePaymentWorkflow({
   if (
     matchAny(
       paymentDetails.paymentProvider,
-      'NFSC_BASE',
-      'NFSC_ETHEREUM',
-      'NFSC_ETHEREUM_SEPOLIA',
+      paymentProviderSchema.Values.NFSC_BASE,
+      paymentProviderSchema.Values.NFSC_ETHEREUM,
+      paymentProviderSchema.Values.NFSC_ETHEREUM_SEPOLIA,
     )
   ) {
     if (amountToRefundInUsdCents && amountToRefundInUsdCents > 0) {
@@ -75,8 +81,8 @@ export async function finalizePaymentWorkflow({
         },
       });
       return {
-        paymentStatus: 'REFUND_REQUESTED',
-        refundStatus: 'SUCCEEDED',
+        paymentStatus: paymentStatusSchema.Values.REFUND_REQUESTED,
+        refundStatus: refundStatusSchema.Values.SUCCEEDED,
       };
     }
   }

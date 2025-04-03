@@ -4,17 +4,18 @@ import {
   createSelectSchema,
   createUpdateSchema,
 } from 'drizzle-zod';
-import type { z } from 'zod';
+import { z } from 'zod';
 import {
   cartItemsTable,
   cartsTable,
   dnsRecordsTable,
   orderItemsTable,
+  orderStatusEnum,
   ordersTable,
-  type paymentProviderEnum,
-  type paymentStatusEnum,
+  paymentProviderEnum,
+  paymentStatusEnum,
   paymentsTable,
-  type refundStatusEnum,
+  refundStatusEnum,
   refundsTable,
   usersTable,
 } from './schema';
@@ -122,23 +123,43 @@ export type DnsRecordUpdate = z.infer<typeof dnsRecordUpdateSchema>;
  * Enum types from pgEnums
  */
 
-// PaymentEnums
-export type PaymentProvider = (typeof paymentProviderEnum.enumValues)[number];
-export type PaymentStatus = (typeof paymentStatusEnum.enumValues)[number];
-export type RefundStatus = (typeof refundStatusEnum.enumValues)[number];
+export const paymentProviderSchema = z.enum(paymentProviderEnum.enumValues);
+export type PaymentProvider = z.infer<typeof paymentProviderSchema>;
+export const paymentStatusSchema = z.enum(paymentStatusEnum.enumValues);
+export type PaymentStatus = z.infer<typeof paymentStatusSchema>;
+export const refundStatusSchema = z.enum(refundStatusEnum.enumValues);
+export type RefundStatus = z.infer<typeof refundStatusSchema>;
+export const orderStatusSchema = z.enum(orderStatusEnum.enumValues);
+export type OrderStatus = z.infer<typeof orderStatusSchema>;
 
-export type NfscPaymentDetails = { chainId: number; walletAddress: string };
-export type StripePaymentDetails = { paymentMethodId?: string };
+export type NfscPaymentDetails = Exclude<
+  z.infer<typeof paymentInsertSchema.shape.nfscPaymentDetails>,
+  undefined | null
+>;
+// Note: A bug or limitation of drizzle-zod seems to be that optional fields in json are inferred as unknown. Hence defining the type here.
+const stripePaymentDetailsSchema = z.object({
+  paymentMethodId: z.string().optional(),
+});
+export type StripePaymentDetails = z.infer<typeof stripePaymentDetailsSchema>;
 
-export type PaymentProviderDetails =
-  | {
-      paymentProvider: Extract<PaymentProvider, 'STRIPE'>;
-      stripePaymentDetails: StripePaymentDetails;
-    }
-  | {
-      paymentProvider: Extract<
-        PaymentProvider,
-        'NFSC_BASE' | 'NFSC_ETHEREUM' | 'NFSC_ETHEREUM_SEPOLIA'
-      >;
-      nfscPaymentDetails: NfscPaymentDetails;
-    };
+export const paymentProviderDetailsSchema = z.discriminatedUnion(
+  'paymentProvider',
+  [
+    z.object({
+      paymentProvider: z.literal(paymentProviderSchema.Values.STRIPE),
+      stripePaymentDetails: stripePaymentDetailsSchema,
+    }),
+    z.object({
+      paymentProvider: z.enum([
+        paymentProviderSchema.Values.NFSC_BASE,
+        paymentProviderSchema.Values.NFSC_ETHEREUM,
+        paymentProviderSchema.Values.NFSC_ETHEREUM_SEPOLIA,
+      ]),
+      nfscPaymentDetails: paymentInsertSchema.shape.nfscPaymentDetails.unwrap(),
+    }),
+  ],
+);
+
+export type PaymentProviderDetails = z.infer<
+  typeof paymentProviderDetailsSchema
+>;

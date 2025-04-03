@@ -1,4 +1,10 @@
-import { cartsTable, db, orderItemsTable, ordersTable } from '@namefi-astra/db';
+import {
+  type OrderStatus,
+  cartsTable,
+  db,
+  orderItemsTable,
+  ordersTable,
+} from '@namefi-astra/db';
 import { TRPCError } from '@trpc/server';
 import { eq } from 'drizzle-orm';
 import { OrderNotFoundError } from './errors';
@@ -80,17 +86,12 @@ export async function createOrderFromCart({
   });
 }
 
-export async function updateOrderStatus({
+export async function updateOrderStatusOrThrow({
   orderId,
   status,
 }: {
   orderId: string;
-  status:
-    | 'PROCESSING'
-    | 'FAILED'
-    | 'CREATED'
-    | 'SUCCEEDED'
-    | 'PARTIALLY_COMPLETED';
+  status: OrderStatus;
 }) {
   const [updatedOrder] = await db
     .update(ordersTable)
@@ -111,5 +112,5 @@ export async function updateOrderStatus({
 export const orderService = {
   getOrderDetailsOrThrow,
   createOrderFromCart,
-  updateOrderStatus,
+  updateOrderStatusOrThrow,
 };

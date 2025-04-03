@@ -22,6 +22,7 @@ export async function processOrderItemWorkflow(
   try {
     // TODO: (sid->Ssamo) Figure out how to get the chainId from the order item
     const chainId = CHAINS.base.id; // Example: Ethereum Mainnet
+    // TODO: (sid->sami) Change this if needed to parent domain expiration time
     const expirationTimeInSeconds = 31536000 * 3; // Subdomain will expire in 3 years
 
     // Register the domain

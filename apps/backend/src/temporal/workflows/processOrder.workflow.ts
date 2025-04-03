@@ -1,3 +1,4 @@
+import { orderStatusSchema, paymentStatusSchema } from '@namefi-astra/db/types';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import * as workflow from '@temporalio/workflow';
 import { ApplicationFailure } from '@temporalio/workflow';
@@ -9,33 +10,6 @@ import {
 } from './chargeUser.workflow';
 import { finalizePaymentWorkflow } from './finalize-payment-workflow';
 import { processOrderItemWorkflow } from './processOrderItem.workflow';
-
-export type MoneyAmount = {
-  amount: number;
-  currency: string;
-};
-
-export enum PaymentStatus {
-  SUCCEEDED = 'SUCCEEDED',
-  FAILED = 'FAILED',
-  PENDING = 'PENDING',
-}
-
-export type Address = string;
-
-// MARK: - Workflow Execution Helpers
-const _executeNotifyUser = async (input: NotifyUserInput): Promise<void> => {
-  return workflow.executeChild('sendNotificationWorkflow', {
-    taskQueue: TEMPORAL_QUEUES.NOTIFY,
-    args: [input],
-  });
-};
-
-export interface NotifyUserInput {
-  userId: string;
-  subject: string;
-  content: string;
-}
 
 export interface ProcessOrderWorkflowInput {
   orderId: string;
@@ -58,7 +32,7 @@ export async function processOrderWorkflow(
   });
 
   // MARK: - Activity Setup
-  const { getOrderDetailsOrThrow, updateOrderStatus } =
+  const { getOrderDetailsOrThrow, updateOrderStatusOrThrow } =
     workflow.proxyActivities<OrderActivities>({
       ...shortRunningOpts,
       taskQueue: TEMPORAL_QUEUES.DEFAULT,
@@ -68,17 +42,17 @@ export async function processOrderWorkflow(
     // MARK: - Get Order Details
     const orderDetails = await getOrderDetailsOrThrow(input.orderId);
     if (!orderDetails.items || orderDetails.items.length === 0) {
-      await updateOrderStatus({
+      await updateOrderStatusOrThrow({
         orderId: input.orderId,
-        status: 'FAILED',
+        status: orderStatusSchema.Values.FAILED,
       });
       throw new Error('Order is empty or malformed');
     }
 
     // Update order status to PROCESSING
-    await updateOrderStatus({
+    await updateOrderStatusOrThrow({
       orderId: input.orderId,
-      status: 'PROCESSING',
+      status: orderStatusSchema.Values.PROCESSING,
     });
 
     // Charge the user for the order
@@ -99,12 +73,12 @@ export async function processOrderWorkflow(
 
     // If payment failed, update order status and exit
     if (
-      chargeResult.paymentStatus !== PaymentStatus.SUCCEEDED &&
-      chargeResult.paymentStatus !== 'REQUIRES_CAPTURE'
+      chargeResult.paymentStatus !== paymentStatusSchema.Values.SUCCEEDED &&
+      chargeResult.paymentStatus !== paymentStatusSchema.Values.REQUIRES_CAPTURE
     ) {
-      await updateOrderStatus({
+      await updateOrderStatusOrThrow({
         orderId: input.orderId,
-        status: 'FAILED',
+        status: orderStatusSchema.Values.FAILED,
       });
       throw new Error('Payment failed');
     }
@@ -119,6 +93,7 @@ export async function processOrderWorkflow(
               orderId: input.orderId,
               normalizedDomainName:
                 item.normalizedDomainName as NamefiNormalizedDomain,
+              // TODO: (sid) Get user address from order details and replace Alice address
               userAddress: '0xB5856d4598c919834913b8656ebc15a64d3C7836',
             },
           ],
@@ -142,21 +117,21 @@ export async function processOrderWorkflow(
     // MARK: - Update Order Status
     if (failedItems.length === 0) {
       // All items succeeded
-      await updateOrderStatus({
+      await updateOrderStatusOrThrow({
         orderId: input.orderId,
-        status: 'SUCCEEDED',
+        status: orderStatusSchema.Values.SUCCEEDED,
       });
     } else if (succeededItems.length === 0) {
       // All items failed
-      await updateOrderStatus({
+      await updateOrderStatusOrThrow({
         orderId: input.orderId,
-        status: 'FAILED',
+        status: orderStatusSchema.Values.FAILED,
       });
     } else {
       // Some items succeeded, some failed
-      await updateOrderStatus({
+      await updateOrderStatusOrThrow({
         orderId: input.orderId,
-        status: 'PARTIALLY_COMPLETED',
+        status: orderStatusSchema.Values.PARTIALLY_COMPLETED,
       });
     }
 
@@ -206,14 +181,10 @@ export async function processOrderWorkflow(
                 .join(', ')}`;
 
       try {
+        // TODO: (sid) Replace with actual notification workflow
         workflow.log.info(
           `Notifying user ${orderDetails.userId} for order ${input.orderId}`,
         );
-        // await executeNotifyUser({
-        //   userId: orderDetails.userId,
-        //   subject,
-        //   content,
-        // });
       } catch (e) {
         workflow.log.error(
           `Failed to notify user for order ${input.orderId}. Error: ${e}`,
@@ -223,9 +194,9 @@ export async function processOrderWorkflow(
   } catch (e) {
     // Update order status to FAILED if an exception occurs
     try {
-      await updateOrderStatus({
+      await updateOrderStatusOrThrow({
         orderId: input.orderId,
-        status: 'FAILED',
+        status: orderStatusSchema.Values.FAILED,
       });
     } catch (updateError) {
       workflow.log.error(
