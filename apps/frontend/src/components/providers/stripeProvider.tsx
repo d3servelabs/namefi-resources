@@ -9,23 +9,31 @@ const stripePromise = loadStripe(config.STRIPE_PUBLISHABLE_KEY);
 
 export type StripeProviderProps = PropsWithChildren<{
   amount: number;
+  customerSessionClientSecret?: string;
 }>;
 
-export function StripeProvider({ children, amount }: StripeProviderProps) {
+export function StripeProvider({
+  children,
+  amount,
+  customerSessionClientSecret,
+}: StripeProviderProps) {
   return (
-    <Elements
-      stripe={stripePromise}
-      options={{
-        mode: 'payment',
-        currency: 'usd',
-        amount: amount,
-        capture_method: 'manual',
-        appearance: {
-          theme: 'stripe',
-        },
-      }}
-    >
-      {children}
-    </Elements>
+    customerSessionClientSecret && (
+      <Elements
+        stripe={stripePromise}
+        options={{
+          mode: 'payment',
+          currency: 'usd',
+          amount: amount,
+          capture_method: 'manual',
+          appearance: {
+            theme: 'stripe',
+          },
+          customerSessionClientSecret,
+        }}
+      >
+        {children}
+      </Elements>
+    )
   );
 }

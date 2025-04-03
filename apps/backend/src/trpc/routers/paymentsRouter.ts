@@ -1,9 +1,47 @@
+import { db, usersTable } from '@namefi-astra/db';
+import { eq } from 'drizzle-orm';
 import Stripe from 'stripe';
 import { createTRPCRouter, protectedProcedure } from '../base';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
 
 export const paymentsRouter = createTRPCRouter({
+  createCustomerSession: protectedProcedure.mutation(async ({ ctx }) => {
+    let { stripeCustomerId } = ctx.user;
+
+    if (!stripeCustomerId) {
+      const customer = await stripe.customers.create({ name: ctx.user.id });
+
+      const [userWithStripeCustomerId] = await db
+        .update(usersTable)
+        .set({
+          stripeCustomerId: customer.id,
+          updatedAt: new Date(),
+        })
+        .where(eq(usersTable.id, ctx.user.id))
+        .returning({ stripeCustomerId: usersTable.stripeCustomerId });
+
+      stripeCustomerId = userWithStripeCustomerId.stripeCustomerId as string;
+    }
+
+    const customerSession: Stripe.Response<Stripe.CustomerSession> =
+      await stripe.customerSessions.create({
+        customer: stripeCustomerId,
+        components: {
+          payment_element: {
+            enabled: true,
+            features: {
+              payment_method_redisplay: 'enabled',
+              payment_method_save: 'enabled',
+              payment_method_save_usage: 'off_session',
+            },
+          },
+        },
+      });
+
+    return { customerSessionClientSecret: customerSession.client_secret };
+  }),
+
   getPaymentMethods: protectedProcedure.query(async ({ ctx }) => {
     const { stripeCustomerId } = ctx.user;
 

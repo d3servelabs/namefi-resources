@@ -6,8 +6,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/shadcn/dialog';
+import { useTRPC } from '@/utils/trpc';
 import type { ConfirmationToken } from '@stripe/stripe-js';
-import type { ReactNode } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import { type ReactNode, useEffect, useState } from 'react';
 import { StripeProvider } from '../providers/stripeProvider';
 import { AddPaymentMethodForm } from './addPaymentMethodForm';
 
@@ -28,6 +30,25 @@ export function AddPaymentMethodDialog({
   onOpenChange,
   showAddPaymentMethodDialog,
 }: AddPaymentMethodDialogProps) {
+  const [customerSessionClientSecret, setCustomerSessionClientSecret] =
+    useState<string | undefined>(undefined);
+  const trpc = useTRPC();
+
+  const { mutate: createCustomerSession } = useMutation(
+    trpc.payments.createCustomerSession.mutationOptions({
+      onSuccess: (data) => {
+        setCustomerSessionClientSecret(data.customerSessionClientSecret);
+      },
+      onError: (error) => {
+        setCustomerSessionClientSecret(undefined);
+      },
+    }),
+  );
+
+  useEffect(() => {
+    createCustomerSession();
+  }, [createCustomerSession]);
+
   return (
     <Dialog open={showAddPaymentMethodDialog} onOpenChange={onOpenChange}>
       <DialogTrigger asChild={true}>{dialogTrigger}</DialogTrigger>
@@ -39,7 +60,10 @@ export function AddPaymentMethodDialog({
             confirm your order.
           </DialogDescription>
         </DialogHeader>
-        <StripeProvider amount={amountInUsdCents}>
+        <StripeProvider
+          amount={amountInUsdCents}
+          customerSessionClientSecret={customerSessionClientSecret}
+        >
           <AddPaymentMethodForm
             onSuccess={onAddPaymentMethodSuccess}
             onError={onAddPaymentMethodError}
