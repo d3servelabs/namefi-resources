@@ -1,7 +1,6 @@
 import { Context } from '@temporalio/activity';
 import { BigNumber } from 'bignumber.js';
 import { fromPairs, map } from 'ramda';
-import { getAlchemyRpcUrl } from '../../utils/jsonRpcUrls';
 
 import {
   NAMEFI_NFT_CONTRACT_ADDRESS,
@@ -31,8 +30,8 @@ import type { Chain } from 'viem/chains';
 import * as chains from 'viem/chains';
 import { createNonceManager, jsonRpc } from 'viem/nonce';
 import { secrets } from '#lib/env';
-import { NfscAbi, NftAbi } from '../../utils/contracts';
 import { resolve } from '../../utils/resolve';
+import { NfscAbi, NftAbi, chainsToUrls } from './helpers/contracts';
 
 export type MoneyAmount = {
   amount: number;
@@ -81,7 +80,7 @@ const createClients = (account: Account) => {
       (chain) => [
         chain.id,
         createPublicClient({
-          transport: http(getAlchemyRpcUrl(chain.id)),
+          transport: http(chainsToUrls(chain)),
           chain,
         }),
       ],
@@ -94,7 +93,7 @@ const createClients = (account: Account) => {
       (chain) => [
         chain.id,
         createWalletClient({
-          transport: http(getAlchemyRpcUrl(chain.id)),
+          transport: http(chainsToUrls(chain)),
           account,
           chain,
         }),

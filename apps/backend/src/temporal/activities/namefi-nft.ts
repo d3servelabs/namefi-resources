@@ -3,9 +3,9 @@ import { namefiNftTable } from '@namefi-astra/db';
 import { sql } from 'drizzle-orm';
 import superjson from 'superjson';
 // Indexer for Namefi NFT activities
-import { type Address, type Chain, keccak256, parseAbi, toBytes } from 'viem';
+import { type Address, type Chain, keccak256, toBytes } from 'viem';
 import { base, mainnet } from 'viem/chains';
-import { secrets } from '#lib/env';
+import { NftAbi, chainsToUrls } from './helpers/contracts';
 
 // Type definition for normalized domain
 type NamefiNormalizedDomain = string;
@@ -22,32 +22,6 @@ interface DomainOwnerUpdate {
 // Same address for both base and ethereum
 const NAMEFI_NFT_CONTRACT_ADDRESS =
   '0x0000000000cf80e7cf8fa4480907f692177f8e06';
-
-// Parse ABI for the NFT contract
-const parsedAbi = parseAbi([
-  'function idToNormalizedDomainName(uint256 tokenId) public view returns (string memory)',
-  'function normalizedDomainNameToId(string memory domainName) public pure returns (uint256)',
-  'function safeMintByNameNoCharge(address to, string memory domainName, uint256 expirationTime) external',
-  'function safeMintByNameWithCharge(address to, string memory domainName, uint256 expirationTime, address chargee, bytes memory extraData) external',
-  'function burnByName(string memory domainName) external',
-  'function safeTransferFromByName(address from, address to, string memory domainName) public',
-  'function setBaseURI(string memory baseUriStr) public',
-  'function setExpiration(uint256 tokenId, uint256 expirationTime) public',
-  'function lock(uint256 tokenId, bytes calldata extra) external payable',
-  'function lockByName(string memory domainName) external',
-  'function unlock(uint256 tokenId, bytes calldata extra) external payable',
-  'function unlockByName(string memory domainName) external',
-  'function setServiceCreditContract(address addr) public',
-  // Add Transfer event used for owner tracking
-  'event Transfer(address indexed from, address indexed to, uint256 indexed tokenId)',
-]);
-
-const chainsToUrls = (chain: Chain) => {
-  return {
-    [base.id]: `https://base-mainnet.g.alchemy.com/v2/${secrets.ALCHEMY_API_KEY}`,
-    [mainnet.id]: `https://eth-mainnet.g.alchemy.com/v2/${secrets.ALCHEMY_API_KEY}`,
-  }[chain.id];
-};
 
 /**
  * Get domain name owner updates between blocks
@@ -85,7 +59,7 @@ export async function getDomainNameOwnerUpdate(
       : await publicClient.getBlockNumber();
     const transferEvents = await publicClient.getContractEvents({
       address: NAMEFI_NFT_CONTRACT_ADDRESS,
-      abi: parsedAbi,
+      abi: NftAbi,
       eventName: 'Transfer',
       fromBlock: BigInt(fromBlock),
       // If toBlock is not provided, get all events from fromBlock to latest
@@ -121,7 +95,7 @@ export async function getDomainNameOwnerUpdate(
       const domainNamesResults = await publicClient.multicall({
         contracts: tokenIdsInPage.map((tokenId) => ({
           address: NAMEFI_NFT_CONTRACT_ADDRESS as `0x${string}`,
-          abi: parsedAbi,
+          abi: NftAbi,
           functionName: 'idToNormalizedDomainName',
           args: [tokenId],
           blockNumber: BigInt(latestBlock),
