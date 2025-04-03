@@ -5,9 +5,9 @@ import { cors } from 'hono/cors';
 import { logger } from 'hono/logger';
 import { prettyJSON } from 'hono/pretty-json';
 import { config } from './lib/env';
+import { nsJsonRouter } from './ns-json';
 import { createContext } from './trpc';
 import { appRouter } from './trpc/routers/appRouter';
-
 const app = new Hono();
 
 app.use(
@@ -38,6 +38,8 @@ app.use(
     createContext,
   }),
 );
+
+app.route('v1/ns-json', nsJsonRouter);
 
 serve(
   {
