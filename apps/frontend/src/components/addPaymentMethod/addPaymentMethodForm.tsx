@@ -74,7 +74,7 @@ export function AddPaymentMethodForm({
       {error && <p className="text-sm text-destructive">{error}</p>}
       <Button
         type="submit"
-        disabled={!stripe || isProcessing}
+        disabled={!(stripe && elements) || isProcessing}
         className="w-full"
       >
         {isProcessing ? (
