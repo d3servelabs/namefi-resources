@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { nameSchema } from './name';
+import { fqdnLowercaseSchema, nameSchema } from './name';
 import {
+  fqdnLowercaseTestCases,
   nonNormalizedDomainNamesTestCases,
   normalizedDomainNamesTestCases,
 } from './name.testing';
@@ -15,6 +16,16 @@ describe('Domain Name Regex', () => {
   for (const domain of nonNormalizedDomainNamesTestCases) {
     it(`should validate that domain name ${domain.name} is NOT normalized because ${domain.reason}`, () => {
       expect(nameSchema.safeParse(domain.name).success).toBe(domain.valid);
+    });
+  }
+});
+
+describe('fqdnLowercaseSchema', () => {
+  for (const domain of fqdnLowercaseTestCases) {
+    it(`should validate that domain name ${domain.name} being ${domain.valid ? 'valid' : 'invalid'}`, () => {
+      expect(fqdnLowercaseSchema.safeParse(domain.name).success).toBe(
+        domain.valid,
+      );
     });
   }
 });

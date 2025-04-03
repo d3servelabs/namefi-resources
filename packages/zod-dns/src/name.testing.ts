@@ -74,3 +74,30 @@ export const nonNormalizedDomainNamesTestCases = [
   //   reason: "Domain name too long, it has 255 characters",
   // }
 ];
+
+export const fqdnLowercaseTestCases = [
+  {
+    name: 'example.com',
+    valid: false,
+  },
+  {
+    name: 'example.com.',
+    valid: true,
+  },
+  {
+    name: 'abc.example.com.',
+    valid: true,
+  },
+  {
+    name: '张三.com',
+    valid: false,
+  },
+  {
+    name: '_dmarc.example.com.',
+    valid: true,
+  },
+  {
+    name: '__dmarc.example.com.',
+    valid: false,
+  },
+];

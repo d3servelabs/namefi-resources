@@ -35,7 +35,7 @@ reviews:
     - path: "packages/{utils,zod-dns,env}/**/*"
       instructions: |
         Ensure proper test coverage and documentation:
-        - Verify unit tests are included for new functionality
+        - Verify unit tests are included for new functionality, if not, suggest actionable changes
         - Check that functions have clear, descriptive docstrings
     
     # Matches all package.json files across the repository - dependency management files

@@ -1,7 +1,8 @@
 // Router for NS JSON
 
+import { fqdnLowercaseSchema } from '@namefi-astra/zod-dns';
 import { Hono } from 'hono';
-
+import { z } from 'zod';
 const nsJsonRouter = new Hono();
 
 nsJsonRouter.get('/healthz', (c) => c.json({ message: 'OK' }));
@@ -66,33 +67,42 @@ interface DnsResponse {
 }
 
 // Define route handler for DNS API endpoint
-// biome-ignore lint/suspicious/useAwait: to be added
+//
+// Note: to test this endpoint, you can use the following curl command:
+// curl -X GET 'http://localhost:3000/v1/ns-json?name=example.com.&type=1'
 nsJsonRouter.get('/', async (c) => {
   // get qname and qtype from query params
-  const qname = c.req.query('name') as string;
-  const qtype = c.req.query('type') as string;
-  console.log('Received DNS request for domain:', qname, qtype);
 
-  if (!(qname && qtype)) {
-    c.status(400);
-    return c.json({
-      error: 'Missing required parameters',
-      message: 'qname and qtype are required',
-    });
-  }
+  const qnameResult = fqdnLowercaseSchema.safeParse(c.req.query('name'));
 
-  const qtypeNum = Number.parseInt(qtype);
+  const qtypeResult = z
+    .string()
+    .superRefine((val, ctx) => {
+      if (Number.isNaN(Number(val))) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: `Type must be a numeric DNS record type (1-255). Received: "${val}"`,
+        });
+      }
+    })
+    .transform(Number)
+    .pipe(z.number().int().min(1).max(255))
+    .safeParse(c.req.query('type'));
 
-  if (Number.isNaN(qtypeNum) || !Number.isInteger(qtype)) {
-    console.log(`Invalid Record Type (${qtype})`);
+  if (!(qnameResult.success && qtypeResult.success)) {
     c.status(400);
     return c.json({
       error: 'Bad Request',
-      message: `Invalid Record Type (${qtype})`,
+      message: `Invalid parameters, expecting name and type but got errors. ${
+        qnameResult.error ? `name: ${qnameResult.error}` : ''
+      } ${qtypeResult.error ? `type: ${qtypeResult.error}` : ''}`,
     });
   }
 
-  if (!mockDnsTable[qname]?.[qtypeNum]) {
+  const qname = qnameResult.data;
+  const qtype = qtypeResult.data;
+
+  if (!mockDnsTable[qname]?.[qtype]) {
     console.log('No DNS record found for domain:', qname, qtype);
     console.log('Mock DNS table:', mockDnsTable);
     c.status(404);
@@ -103,22 +113,22 @@ nsJsonRouter.get('/', async (c) => {
   }
 
   console.log('Found DNS record for domain:', qname, qtype);
-  console.log('Mock DNS table:', mockDnsTable[qname][qtypeNum]);
+  console.log('Mock DNS table:', mockDnsTable[qname][qtype]);
 
   const result: DnsResponse = {
     RCODE: 0,
     Answer: [
       {
         name: qname,
-        type: qtypeNum,
+        type: qtype,
         TTL: 300,
-        data: mockDnsTable[qname][qtypeNum],
+        data: mockDnsTable[qname][qtype],
       },
     ],
     Question: [
       {
         name: qname,
-        type: qtypeNum,
+        type: qtype,
       },
     ],
   };

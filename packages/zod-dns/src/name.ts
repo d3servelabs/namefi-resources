@@ -28,6 +28,24 @@ export const nameSchema = z
       'Invalid record name, must be @ or a normalized domain name without ending dot',
   });
 
+/**
+ * Schema to validate that a fully qualified domain name is properly formatted.
+ * Requires:
+ * - Must match the {@link nameRegexString} pattern with a trailing dot
+ *
+ * @example
+ * - Valid: "example.com."
+ * - Invalid: "example.com", "Example.com.", "example.com.."
+ */
+export const fqdnLowercaseSchema = z.string().refine(
+  (val) => val === '@' || fqdnLowercaseRegex.test(val),
+  (val) => {
+    return {
+      message: `Invalid fully qualified domain name "${val}" normalized to lowercase. Must match the pattern: ${nameRegexString} with a trailing dot.`,
+    };
+  },
+);
+
 export const normalizeDomainName = (domainNameToNormalize: string) => {
   const possibleNormalized = toASCII(domainNameToNormalize)
     .toLowerCase()
