@@ -50,8 +50,8 @@ export const registryRouter = createTRPCRouter({
           .default(['0x.city', 'defi.build']),
       }),
     )
-    .query(async ({ input }) => {
-      const domains = [];
+    .query(({ input }) => {
+      const domains: string[] = [];
       // Configure the length of generated name combinations
       const generatedNamesLengths = [1, 2];
       // Number of suggestions to generate per name length

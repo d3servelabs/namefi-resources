@@ -30,6 +30,7 @@ export function notMatchAny<
   A extends E,
   K extends E = Exclude<E, T | A>,
 >(toBeChecked: E, ...args: [T, ...A[]]): toBeChecked is K {
+  // biome-ignore lint/suspicious/noExplicitAny: "any" is intentional to enable matching with any input.
   return !matchAny(toBeChecked, ...(args as [any, ...any[]]));
 }
 
@@ -63,6 +64,7 @@ export function mismatchAll<
  */
 export function caseWhen<
   K extends string | number | symbol,
+  // biome-ignore lint/suspicious/noExplicitAny: "any" is intentional to enable matching with any input.
   M extends Record<K, any>,
 >(select: K, map: M): M[K] {
   if (select in map) {

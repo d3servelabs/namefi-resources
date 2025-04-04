@@ -17,9 +17,6 @@ const dnsType = {
   TXT: 16,
 } as const;
 
-type DnsTypeKey = keyof typeof dnsType;
-type DnsTypeValue = (typeof dnsType)[DnsTypeKey];
-
 interface DnsRecord {
   [key: number]: string;
 }

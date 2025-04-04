@@ -29,6 +29,8 @@ interface SecuritySettingsProps {
   user: User;
 }
 
+// biome-ignore lint/correctness/noUnusedVariables: will be used in the future
+// biome-ignore lint/correctness/noUnusedFunctionParameters: will be used in the future
 export default function SecuritySettings({ user }: SecuritySettingsProps) {
   const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
   const [recoveryEnabled, setRecoveryEnabled] = useState(true);
