@@ -1,6 +1,6 @@
 import type { Config } from '../schema';
 
-const developmentConfig: Config = {
+const productionConfig: Config = {
   PORT: 3000,
   LOG_LEVEL: 'debug',
   PRIVY_APP_ID: 'cm2lx4u5a03x3rtgp4keapmrb',
@@ -12,4 +12,4 @@ const developmentConfig: Config = {
   APP_URL: 'astra.namefi.io',
 };
 
-export default developmentConfig;
+export default productionConfig;

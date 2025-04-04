@@ -33,10 +33,12 @@ export async function initWorkers() {
         ...PaymentActivities,
       },
       temporalEnum: TEMPORAL_ENUMS.DEFAULT,
+      logLabel: TEMPORAL_ENUMS.DEFAULT,
     }),
     [TEMPORAL_ENUMS.MINT]: await createWorker({
       activities: ACTIVITIES[TEMPORAL_ENUMS.MINT],
       temporalEnum: TEMPORAL_ENUMS.MINT,
+      logLabel: TEMPORAL_ENUMS.MINT,
       extraWorkerOptions: {
         maxConcurrentWorkflowTaskExecutions: 1,
       },
@@ -44,10 +46,12 @@ export async function initWorkers() {
     [TEMPORAL_ENUMS.DOMAINS]: await createWorker({
       activities: ACTIVITIES[TEMPORAL_ENUMS.DOMAINS],
       temporalEnum: TEMPORAL_ENUMS.DOMAINS,
+      logLabel: TEMPORAL_ENUMS.DOMAINS,
     }),
     [TEMPORAL_ENUMS.NOTIFY]: await createWorker({
       activities: ACTIVITIES[TEMPORAL_ENUMS.NOTIFY],
       temporalEnum: TEMPORAL_ENUMS.NOTIFY,
+      logLabel: TEMPORAL_ENUMS.NOTIFY,
     }),
   };
 }

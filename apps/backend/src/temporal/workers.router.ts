@@ -62,7 +62,7 @@ router.get('/health', async (c) => {
   }
 
   // Return worker statuses and message
-  c.json({ message, workersStatuses });
+  return c.json({ message, workersStatuses });
 });
 
 /**
@@ -82,8 +82,7 @@ router.post('/workers/stop', async (c) => {
   // Verify API key authentication
   if (c.req.header('x-api-key') !== secrets.API_AUTH_KEY) {
     c.status(402);
-    c.text('UNAUTHORIZED');
-    return;
+    return c.text('UNAUTHORIZED');
   }
 
   try {
@@ -108,11 +107,11 @@ router.post('/workers/stop', async (c) => {
     }
 
     c.status(200);
-    c.json({ message: 'done' });
+    return c.json({ message: 'done' });
   } catch (error) {
     // Return 500 error if anything fails during shutdown
     c.status(500);
-    c.json({ error });
+    return c.json({ error });
   }
 });
 
@@ -137,8 +136,7 @@ router.post('/workers/start', async (c) => {
   // Verify API key authentication
   if (c.req.header('x-api-key') !== secrets.API_AUTH_KEY) {
     c.status(402);
-    c.text('UNAUTHORIZED');
-    return;
+    return c.text('UNAUTHORIZED');
   }
 
   try {
@@ -170,11 +168,11 @@ router.post('/workers/start', async (c) => {
     }
 
     c.status(200);
-    c.json({ message: 'done' });
+    return c.json({ message: 'done' });
   } catch (error) {
     // Return 500 error if anything fails during startup
     c.status(500);
-    c.json({ error });
+    return c.json({ error });
   }
 });
 
