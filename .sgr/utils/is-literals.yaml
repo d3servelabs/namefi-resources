@@ -1,0 +1,17 @@
+# Define utility rules
+utils:
+  is-literal: # Rule ID
+    any: # Matches any of the following kinds
+      - kind: 'false'
+      - kind: 'true'
+      - kind: 'null'
+      - kind: 'number'
+      - kind: 'string'
+
+# Use the utility rule in another rule
+rule:
+  any:
+    - matches: is-literal # Reference the utility rule
+    - kind: 'array'
+      has:
+        matches: is-literal # Reference it again for array elements

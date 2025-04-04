@@ -7,6 +7,7 @@
   },
   "packageManager": "bun@1.2.7",
   "devDependencies": {
+    "@ast-grep/cli": "^0.18.0",
     "@biomejs/biome": "1.9.4",
     "lefthook": "^1.11.6",
     "turbo": "^2.4.4"
@@ -23,7 +24,9 @@
     "sherif:fix": "bunx sherif@latest -f",
     "test:ci": "act -j test --container-architecture linux/amd64",
     "test:ci:dry": "act -j test -n",
-    "validate": "turbo typecheck && bun check && bun sherif",
+    "sgr": "node run-sgr.js scan",
+    "sgr:fix": "node run-sgr.js scan --fix",
+    "validate": "turbo typecheck && bun check && bun sherif && bun sgr",
     "validate:secrets": "turbo validate:secrets"
   },
   "trustedDependencies": ["@biomejs/biome", "esbuild", "lefthook", "sharp"]

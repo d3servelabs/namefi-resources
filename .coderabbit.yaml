@@ -42,6 +42,10 @@ reviews:
     - path: "**/package.json"
       instructions: |
         When new dependencies are added, verify that they are actually used in the associated code changes and not just speculatively added.
+  tools:
+    ast-grep:
+      rule_dirs:
+        - ".sgr/rules"
 chat:
   auto_reply: true
 tone_instructions: "Be kind and professional. If a piece of code is unintuitive or challenging to understand the rationale, ask PR author to explain in code documentation"

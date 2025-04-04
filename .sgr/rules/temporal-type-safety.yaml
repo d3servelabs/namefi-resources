@@ -1,0 +1,41 @@
+id: temporal-type-safety
+language: TypeScript
+message: "Temporal workflows should use typedProxyActivities for type safety"
+severity: warning
+rule:
+  pattern: |
+    workflow.proxyActivities<$Type>($options)
+  not:
+    pattern: |
+      typedProxyActivities({
+        temporalEnum: $enum,
+        options: $options
+      })
+fix:
+  template: |
+    typedProxyActivities({
+      temporalEnum: TEMPORAL_ENUMS.{{ default "DEFAULT" }},
+      options: $options
+    })
+  example:
+    source: |
+      const { greet } = workflow.proxyActivities<GreetActivities>({
+        startToCloseTimeout: '1 minute',
+        retry: {
+          maximumAttempts: 3,
+        },
+      });
+    target: |
+      const { greet } = typedProxyActivities({
+        temporalEnum: TEMPORAL_ENUMS.DEFAULT,
+        options: {
+          startToCloseTimeout: '1 minute',
+          retry: {
+            maximumAttempts: 3,
+          },
+        }
+      }); 
+explanation: |
+  Using typedProxyActivities ensures proper typing and consistent task queue usage.
+  This helper sets up the correct task queue based on the temporal enum type
+  and provides better type safety when working with Temporal activities. 

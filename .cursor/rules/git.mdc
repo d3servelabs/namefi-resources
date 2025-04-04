@@ -1,5 +1,5 @@
 ---
-description: When using Git and Graphite (`gt`cli
+description: When using Git (e.g. `git commit`) and Graphite (`gt`cli e.g. `gt create`)
 globs: 
 alwaysApply: false
 ---
@@ -9,3 +9,5 @@ alwaysApply: false
 
 ## When asked for `gt create`
 This is graphite function to create a NEW pull request on top of the one below (current), which has the following usage `gt create <new_branch_name> -m <git_commit_message>`. Based on the current staged git changes, please summarize them as a branch name and a `git commit` message. Please format message as plaintext with proper handle of newline to be copy and used in terminal. Output in markdown for easy copy-and-paste.
+
+## Never execute git commit for me unless I expeclitly ask you to. 
