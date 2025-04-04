@@ -1,0 +1,47 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+
+## Note we choose to only include overridden default values. Anything that matches default values shall not be added here.
+language: "en-US"
+reviews:
+  profile: "chill"
+  collapse_walkthrough: false
+  auto_review:
+    drafts: true
+  path_instructions:
+    # Matches all files in all directories - serves as the base ruleset for all code
+    - path: "**/*"
+      instructions: |
+        Review according to guidelines in .cursor/rules/default.mdc.
+        If PR exceeds 1000 lines of code changes, suggest breaking it down into smaller, focused PRs for better reviewability.
+        Keep README.md and docstrings update to date to the code change.
+    
+    # Matches all TypeScript React (TSX) files - specific UI component files or Email templates
+    - path: "**/*.tsx"
+      instructions: |
+        For UI or visual interaction changes, please ensure the PR description includes visual evidence (Loom video recording or screenshots) demonstrating the changes.
+    
+    # Matches all files in the backend application directory
+    - path: "apps/backend/**/*"
+      instructions: |
+        For backend logic changes, verify that the PR description includes:
+        1. The shell command used to validate the changes
+        2. Sample output from the author's own test run
+    - path: "apps/backend/src/temporal/**/*"
+      instructions: |
+        For temporal logic changes, verify that the PR description includes:
+        1. URL to cloud.temporal.io run or screenshots to local temporal run.
+    
+    # Matches all files in the utility, DNS validation, and environment configuration packages
+    - path: "packages/{utils,zod-dns,env}/**/*"
+      instructions: |
+        Ensure proper test coverage and documentation:
+        - Verify unit tests are included for new functionality
+        - Check that functions have clear, descriptive docstrings
+    
+    # Matches all package.json files across the repository - dependency management files
+    - path: "**/package.json"
+      instructions: |
+        When new dependencies are added, verify that they are actually used in the associated code changes and not just speculatively added.
+chat:
+  auto_reply: true
+tone_instructions: "Be kind and professional. If a piece of code is unintuitive or challenging to understand the rationale, ask PR author to explain in code documentation"

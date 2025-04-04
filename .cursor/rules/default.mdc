@@ -1,0 +1,22 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+## Identifiers and Values
+
+- When handling identifier creation (database IDs, primary keys), add clear docstrings and comments explaining:
+  - Creation method
+  - Normalization process
+  - If normalization isn't defined, add a "TODO" reminder
+
+- For monetary values, always specify:
+  - Currency
+  - Unit of measurement
+
+## Documentation
+
+- Before making significant changes (large code pieces or multiple files):
+  - Check for existing README.md in the folder
+  - Use README.md to understand purpose, context, and scope
+  - If README.md is missing or lacks purpose/context/scope details, update it with this information
