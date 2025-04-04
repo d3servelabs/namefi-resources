@@ -25,6 +25,15 @@ const transporter: Mail = nodemailer.createTransport({
   ...transportOptions,
 });
 
+export interface SendMailInput {
+  to: string[];
+  cc?: string[];
+  bcc?: string[];
+  subject: string;
+  content: { plain?: string; html: string };
+  from?: string;
+}
+
 export async function sendMail({
   to,
   cc = [],
@@ -32,14 +41,7 @@ export async function sendMail({
   subject,
   content,
   from = 'Namefi <support@namefi.io>',
-}: {
-  cc?: string[];
-  bcc?: string[];
-  subject: string;
-  from?: string;
-  to: string[];
-  content: { plain?: string; html: string };
-}) {
+}: SendMailInput) {
   // send mail with defined transport object
   const info = await transporter.sendMail({
     from: from, // sender address

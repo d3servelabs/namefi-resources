@@ -3,6 +3,7 @@ import { isDomainParked, parkDomain } from '#services/dns/parking';
 import {
   GreetActivities,
   MintActivities,
+  NotifyActivities,
   OrderActivities,
   PaymentActivities,
 } from '../activities';
@@ -16,6 +17,7 @@ export const ACTIVITIES = {
     ...GreetActivities, //TODO(Sami): use this instead, below
     ...OrderActivities,
     ...PaymentActivities,
+    ...NotifyActivities,
   },
   [TEMPORAL_ENUMS.MINT]: {
     ...MintActivities,

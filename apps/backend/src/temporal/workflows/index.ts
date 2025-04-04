@@ -7,3 +7,4 @@ export * from './register-subdomain.workflow';
 export * from './chargeUser.workflow';
 export * from './refund-user.workflow';
 export * from './finalize-payment-workflow';
+export * from './notify-user-workflow';
