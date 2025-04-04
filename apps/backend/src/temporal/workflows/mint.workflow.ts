@@ -1,7 +1,6 @@
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import * as workflow from '@temporalio/workflow';
 import type {
-  MoneyAmount,
   PreparedTxOnlySerializableParams,
   TxPrepareResult,
   TxSendResult,
@@ -138,7 +137,7 @@ export async function mintNamefiNFT({
 export async function mintNfsc(
   chainId: number,
   account: `0x${string}`,
-  namefiMoneyAmount: MoneyAmount,
+  amountInUsd: number,
 ): Promise<string> {
   const { prepareTxToMintNfsc } = typedProxyActivities({
     temporalEnum: TEMPORAL_ENUMS.MINT,
@@ -153,7 +152,7 @@ export async function mintNfsc(
   const prepareResult: TxPrepareResult = await prepareTxToMintNfsc(
     chainId,
     account,
-    namefiMoneyAmount,
+    amountInUsd,
   );
 
   if ('error' in prepareResult) {
@@ -172,7 +171,7 @@ export async function mintNfsc(
 export async function chargeNfscWorkflow(
   chainId: number,
   chargee: `0x${string}`,
-  namefiMoneyAmount: MoneyAmount,
+  amountInUsd: number,
   reason: string,
   extra: `0x${string}`,
 ): Promise<string> {
@@ -189,7 +188,7 @@ export async function chargeNfscWorkflow(
   const prepareResult: TxPrepareResult = await prepareTxToChargeNfsc(
     chainId,
     chargee,
-    namefiMoneyAmount,
+    amountInUsd,
     reason,
     extra,
   );

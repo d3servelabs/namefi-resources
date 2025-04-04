@@ -33,11 +33,6 @@ import { secrets } from '#lib/env';
 import { resolve } from '../../utils/resolve';
 import { NfscAbi, NftAbi, chainsToUrls } from './helpers/contracts';
 
-export type MoneyAmount = {
-  amount: number;
-  currency: 'USD';
-};
-
 const ALLOWED_CHAINS: Chain[] = [chains.sepolia];
 
 export type PreparedTxOnlySerializableParams = Omit<
@@ -131,14 +126,14 @@ const clients = createClients(signerAccount);
 export const prepareTxToMintNfsc = async (
   chainId: number,
   account: Address,
-  namefiMoneyAmount: MoneyAmount,
+  amountInUsd: number,
 ): Promise<TxPrepareResult> => {
   const ctx = Context.current();
   ctx.log.info(
-    `Minting NFSC - chainId: ${chainId}, account: ${account}, amount: ${namefiMoneyAmount.amount}`,
+    `Minting NFSC - chainId: ${chainId}, account: ${account}, amountInUsd: ${amountInUsd}`,
   );
 
-  const convertedAmount = parseUnits(namefiMoneyAmount.amount.toString(), 18);
+  const convertedAmount = parseUnits(amountInUsd.toString(), 18);
 
   const preparedTx = await clients.walletClients[
     chainId
@@ -386,9 +381,13 @@ export const signAndSendTransaction = async (
 export const mintNFSC = async (
   chainId: number,
   account: Address,
-  amount: MoneyAmount,
+  amountInUsd: number,
 ) => {
-  const prepareResults = await prepareTxToMintNfsc(chainId, account, amount);
+  const prepareResults = await prepareTxToMintNfsc(
+    chainId,
+    account,
+    amountInUsd,
+  );
 
   if ('error' in prepareResults) {
     throw prepareResults.error;
@@ -432,7 +431,7 @@ function multiplyBigIntByFraction(
  * Prepare a transaction to charge NFSC
  * @param chainId - The chain ID
  * @param chargee - The account to charge
- * @param amount - The amount to charge
+ * @param amountInUsd - The amount to charge in USD
  * @param reason - The reason for the charge
  * @param extra - Extra data to include in the charge
  * @returns The prepared transaction
@@ -440,18 +439,18 @@ function multiplyBigIntByFraction(
 export async function prepareTxToChargeNfsc(
   chainId: number,
   chargee: `0x${string}`,
-  namefiMoneyAmount: MoneyAmount,
+  amountInUsd: number,
   reason: string,
   extra: `0x${string}`,
 ): Promise<TxPrepareResult> {
   const ctx = Context.current();
   ctx.log.info(
-    `Charging NFSC - chainId: ${chainId}, chargee: ${chargee}, amount: ${namefiMoneyAmount.amount}`,
+    `Charging NFSC - chainId: ${chainId}, chargee: ${chargee}, amountInUsd: ${amountInUsd}`,
   );
 
   const charger = signerAccount.publicKey;
 
-  const convertedAmount = parseUnits(namefiMoneyAmount.amount.toString(), 18);
+  const convertedAmount = parseUnits(amountInUsd.toString(), 18);
 
   const preparedTx = await clients.walletClients[
     chainId

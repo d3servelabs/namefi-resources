@@ -8,7 +8,6 @@ import * as workflow from '@temporalio/workflow';
 import type { CreateStripePaymentIntentInput } from '#services/stripePayments/types';
 import type { PaymentActivities } from '../activities';
 import { stripePaymentIntentStatusToPaymentStatus } from '../activities/helpers/stripePaymentHelpers';
-import type { MoneyAmount } from '../activities/mint.activities';
 import { TEMPORAL_QUEUES, shortRunningOpts } from '../shared';
 import { ChargeStripeWorkflow } from './chargeStripe.workflow';
 import { chargeNfscWorkflow } from './mint.workflow';
@@ -89,10 +88,7 @@ export async function chargeUserWorkflow({
     const input = {
       chainId: nfscPaymentDetails?.chainId as number,
       chargee: nfscPaymentDetails?.walletAddress as `0x${string}`,
-      namefiMoneyAmount: {
-        amount: amountInUSDCents,
-        currency: 'USD',
-      } as MoneyAmount,
+      amountInUSD: amountInUSDCents / 100,
       reason: `charge-user.workflow for Payment with ID: ${paymentId}`,
       extra: '' as `0x${string}`,
     };
@@ -102,7 +98,7 @@ export async function chargeUserWorkflow({
         args: [
           input.chainId,
           input.chargee,
-          input.namefiMoneyAmount,
+          input.amountInUSD,
           input.reason,
           input.extra,
         ],

@@ -5,7 +5,6 @@ import {
 } from '@namefi-astra/db/types';
 import * as workflow from '@temporalio/workflow';
 import type { PaymentActivities } from '../activities';
-import type { MoneyAmount } from '../activities/mint.activities';
 import { TEMPORAL_QUEUES, shortRunningOpts } from '../shared';
 import { mintNfsc } from './mint.workflow';
 
@@ -50,15 +49,12 @@ export async function refundUserWorkflow({
   const input = {
     chainId: nfscPaymentDetails?.chainId as number,
     account: nfscPaymentDetails?.walletAddress as `0x${string}`,
-    namefiMoneyAmount: {
-      amount: amountToRefundInUsdCents as number,
-      currency: 'USD',
-    } as MoneyAmount,
+    amountInUsd: amountToRefundInUsdCents / 100,
   };
 
   try {
     paymentProviderReferenceId = await workflow.executeChild(mintNfsc, {
-      args: [input.chainId, input.account, input.namefiMoneyAmount],
+      args: [input.chainId, input.account, input.amountInUsd],
       workflowId: `mint-nfsc-${refundId}`,
       taskQueue: TEMPORAL_QUEUES.MINT,
       retry: {
