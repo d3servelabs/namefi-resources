@@ -26,6 +26,7 @@ export const configSchema = z.object({
   SMTP_PORT: z.number().optional().default(465),
   SMTP_HOST: z.string(),
   APP_URL: z.string(),
+  ALLOWED_ORIGINS: z.string().array().optional().default([]),
 });
 
 export type Config = z.infer<typeof configSchema>;

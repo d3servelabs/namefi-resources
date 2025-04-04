@@ -13,15 +13,14 @@ const app = new Hono();
 app.use(
   cors({
     origin: (origin) => {
-      if (!origin) {
-        return '*'; // Allow non-browser requests
+      if (
+        config.ALLOWED_ORIGINS?.some((allowedOrigin) =>
+          new RegExp(allowedOrigin).test(origin),
+        )
+      ) {
+        return origin;
       }
-      if (origin.startsWith('http://localhost')) {
-        return origin; // Allow localhost
-      }
-      if (origin.endsWith('.vercel.app') || origin === 'https://vercel.app') {
-        return origin; // Allow Vercel domain and Vercel subdomains
-      }
+
       return null; // Block other origins
     },
     allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],

@@ -10,6 +10,7 @@ const developmentConfig: Config = {
   SMTP_HOST: 'localhost',
   SMTP_SECURE: false,
   APP_URL: 'localhost:3001',
+  ALLOWED_ORIGINS: ['^http://localhost'],
 };
 
 export default developmentConfig;

@@ -10,6 +10,10 @@ const stagingConfig: Config = {
   SMTP_SECURE: true,
   SMTP_HOST: 'email-smtp.us-east-1.amazonaws.com',
   APP_URL: 'astra.namefi.dev',
+  ALLOWED_ORIGINS: [
+    // any domain or subdomain for namefi.io namefi.dev namefi.run
+    '^https://astra\\.namefi\\.(io|dev|run)$',
+  ],
 };
 
 export default stagingConfig;

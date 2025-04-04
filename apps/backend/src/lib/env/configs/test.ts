@@ -10,6 +10,7 @@ const testConfig: Config = {
   SMTP_HOST: '',
   SMTP_PORT: 25,
   SMTP_SECURE: false,
+  ALLOWED_ORIGINS: [],
 };
 
 export default testConfig;

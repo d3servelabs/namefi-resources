@@ -10,6 +10,10 @@ const productionConfig: Config = {
   SMTP_SECURE: true,
   SMTP_HOST: 'email-smtp.us-east-1.amazonaws.com',
   APP_URL: 'astra.namefi.io',
+  ALLOWED_ORIGINS: [
+    // any domain or subdomain for namefi.io
+    '^https://astra\\.namefi\\.io$',
+  ],
 };
 
 export default productionConfig;
