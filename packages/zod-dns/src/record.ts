@@ -3,12 +3,16 @@ import { z } from 'zod';
 import { fqdnLowercaseRegex, nameSchema } from './name';
 // -- Single Record Type Validation --
 
+// Design decision: we use a string enum for the record type instead of a numeric enum
+// because it's more readable and easier to work with.
+// See @namefi-astra/docs/architecture/decisions/dns-record-type-format.md for more details.
 export const recordTypeEnum = z.enum([
   'A',
   'AAAA',
   'CNAME',
   'MX',
   'TXT',
+  // We will add more record types as we start supporting them.
 ] as const);
 export const RecordType = recordTypeEnum.Values;
 export type RecordType = z.infer<typeof recordTypeEnum>;

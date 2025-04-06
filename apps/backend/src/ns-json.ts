@@ -1,11 +1,18 @@
-import { fqdnLowercaseSchema } from '@namefi-astra/zod-dns';
+// Router for NS JSON
+
+import { db, dnsRecordsTable } from '@namefi-astra/db';
+import { fqdnLowercaseToNamefiNormalizedDomain } from '@namefi-astra/utils';
+import { fqdnLowercaseSchema, recordTypeEnum } from '@namefi-astra/zod-dns';
+import { and, eq } from 'drizzle-orm';
 import { Hono } from 'hono';
+import { BiMap } from 'mnemonist';
 import { z } from 'zod';
+
 const nsJsonRouter = new Hono();
 
 nsJsonRouter.get('/healthz', (c) => c.json({ message: 'OK' }));
 
-const dnsType = {
+const dnsType = BiMap.from({
   A: 1,
   AAAA: 28,
   CNAME: 5,
@@ -13,7 +20,7 @@ const dnsType = {
   NS: 2,
   SOA: 6,
   TXT: 16,
-} as const;
+}) as BiMap<string, number>;
 
 interface DnsRecord {
   [key: number]: string;
@@ -25,25 +32,25 @@ interface DnsTable {
 
 const mockDnsTable: DnsTable = {
   'example.com.': {
-    [dnsType.A]: '24.199.74.33',
-    [dnsType.AAAA]: '2606:4700:3031:1000:0:0:0:33',
-    [dnsType.MX]: '10 mail.example.com',
+    [dnsType.get('A') as number]: '24.199.74.33',
+    [dnsType.get('AAAA') as number]: '2606:4700:3031:1000:0:0:0:33',
+    [dnsType.get('MX') as number]: '10 mail.example.com',
   },
   '0x801.click.': {
-    [dnsType.A]: '24.199.74.33',
-    [dnsType.AAAA]: '2606:4700:3031:1000:0:0:0:33',
-    [dnsType.MX]: '10 0x801.click',
+    [dnsType.get('A') as number]: '24.199.74.33',
+    [dnsType.get('AAAA') as number]: '2606:4700:3031:1000:0:0:0:33',
+    [dnsType.get('MX') as number]: '10 0x801.click',
   },
   '1.0x801.click.': {
-    [dnsType.A]: '24.199.74.33',
-    [dnsType.AAAA]: '2606:4700:3031:1000:0:0:0:33',
-    [dnsType.MX]: '10 1.0x801.click',
-    [dnsType.TXT]: 'abcd',
+    [dnsType.get('A') as number]: '24.199.74.33',
+    [dnsType.get('AAAA') as number]: '2606:4700:3031:1000:0:0:0:33',
+    [dnsType.get('MX') as number]: '10 1.0x801.click',
+    [dnsType.get('TXT') as number]: 'abcd',
   },
   '0x002.click.': {
-    [dnsType.A]: '24.199.74.33',
-    [dnsType.AAAA]: '2606:4700:3031:1000:0:0:0:33',
-    [dnsType.MX]: '10 0x002.click',
+    [dnsType.get('A') as number]: '24.199.74.33',
+    [dnsType.get('AAAA') as number]: '2606:4700:3031:1000:0:0:0:33',
+    [dnsType.get('MX') as number]: '10 0x002.click',
   },
 };
 
@@ -64,7 +71,8 @@ interface DnsResponse {
 // Define route handler for DNS API endpoint
 //
 // Note: to test this endpoint, you can use the following curl command:
-// curl -X GET 'http://localhost:3000/v1/ns-json?name=example.com.&type=1'
+// curl -X GET 'http://localhost:3000/v1/ns-json?name=example.com.&type=1' # Mocked response
+// curl -X GET 'http://localhost:3000/v1/ns-json?name=test.com.&type=1' # Response from Astra DB
 nsJsonRouter.get('/', async (c) => {
   // get qname and qtype from query params
 
@@ -96,6 +104,31 @@ nsJsonRouter.get('/', async (c) => {
 
   const qname = qnameResult.data;
   const qtype = qtypeResult.data;
+
+  const zoneName = fqdnLowercaseToNamefiNormalizedDomain(qnameResult.data);
+  // convert qtype to RecordType (string enum)
+
+  const qTypeString = dnsType.inverse.get(qtype);
+  const qTypeEnum = recordTypeEnum.parse(qTypeString);
+  const records = await db.query.dnsRecordsTable.findMany({
+    where: and(
+      eq(dnsRecordsTable.normalizedDomainName, zoneName),
+      eq(dnsRecordsTable.type, qTypeEnum),
+    ),
+  });
+  if (records.length > 0) {
+    const result: DnsResponse = {
+      RCODE: 0,
+      Answer: records.map((record) => ({
+        name: record.name,
+        type: dnsType.get(record.type) as number,
+        TTL: record.ttl,
+        data: record.rdata,
+      })),
+    };
+    return c.json(result);
+  }
+
   // make a tRPC query to get the DNS record by calling
   if (!mockDnsTable[qname]?.[qtype]) {
     console.log('No DNS record found for domain:', qname, qtype);

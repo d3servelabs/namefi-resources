@@ -58,6 +58,7 @@
     "drizzle-orm": "^0.40.1",
     "drizzle-zod": "^0.7.0",
     "hono": "^4.7.5",
+    "mnemonist": "^0.40.3",
     "nodemailer": "^6.10.0",
     "p-all": "^5.0.0",
     "p-map": "^7.0.3",
