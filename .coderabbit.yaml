@@ -4,6 +4,7 @@
 language: "en-US"
 reviews:
   profile: "chill"
+  request_changes_workflow: true
   collapse_walkthrough: false
   auto_review:
     drafts: true
