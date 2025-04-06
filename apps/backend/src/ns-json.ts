@@ -1,5 +1,3 @@
-// Router for NS JSON
-
 import { fqdnLowercaseSchema } from '@namefi-astra/zod-dns';
 import { Hono } from 'hono';
 import { z } from 'zod';
@@ -98,7 +96,7 @@ nsJsonRouter.get('/', async (c) => {
 
   const qname = qnameResult.data;
   const qtype = qtypeResult.data;
-
+  // make a tRPC query to get the DNS record by calling
   if (!mockDnsTable[qname]?.[qtype]) {
     console.log('No DNS record found for domain:', qname, qtype);
     console.log('Mock DNS table:', mockDnsTable);
