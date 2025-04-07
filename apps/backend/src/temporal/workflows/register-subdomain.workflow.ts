@@ -1,16 +1,25 @@
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import * as workflow from '@temporalio/workflow';
+import { addYears, getUnixTime } from 'date-fns';
 import { shortRunningOpts } from '../shared/commonRunningOptions';
 import { TEMPORAL_ENUMS, TEMPORAL_QUEUES } from '../shared/enums';
 import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';
 import { mintNamefiNFT } from './mint.workflow';
 
-export async function registerSubdomainWorkflow(
-  normalizedDomainName: NamefiNormalizedDomain,
-  chainId: number,
-  toAddress: `0x${string}`,
-  expirationTimeInSeconds: number,
-): Promise<string> {
+export async function registerSubdomainWorkflow({
+  normalizedDomainName,
+  chainId,
+  toAddress,
+  durationInYears,
+}: {
+  normalizedDomainName: NamefiNormalizedDomain;
+  chainId: number;
+  toAddress: `0x${string}`;
+  durationInYears: number;
+}): Promise<string> {
+  const expirationTimeInSeconds = getUnixTime(
+    addYears(new Date(), durationInYears),
+  );
   await workflow.executeChild(mintNamefiNFT, {
     args: [
       {
@@ -31,7 +40,7 @@ export async function registerSubdomainWorkflow(
   });
 
   // Return a message
-  return `Completed greeting workflow for ${name}`;
+  return `Completed greeting workflow for ${normalizedDomainName}`;
 }
 
 export async function domainSetupWorkflow(

@@ -22,16 +22,17 @@ export async function processOrderItemWorkflow(
   try {
     // TODO: (sid->Ssamo) Figure out how to get the chainId from the order item
     const chainId = CHAINS.base.id; // Example: Ethereum Mainnet
-    // TODO: (sid->sami) Change this if needed to parent domain expiration time
-    const expirationTimeInSeconds = 31536000 * 3; // Subdomain will expire in 3 years
 
     // Register the domain
     await workflow.executeChild(registerSubdomainWorkflow, {
       args: [
-        normalizedDomainName,
-        chainId,
-        userAddress as `0x${string}`,
-        expirationTimeInSeconds,
+        {
+          normalizedDomainName,
+          chainId,
+          toAddress: userAddress as `0x${string}`,
+          // TODO: (sid->sami) Change this if needed to parent domain expiration time
+          durationInYears: 3,
+        },
       ],
       taskQueue: TEMPORAL_QUEUES.DOMAINS,
       workflowId: `register-domain-${input.orderId}-${input.itemId}`,
