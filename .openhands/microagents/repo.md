@@ -1,0 +1,1 @@
+When interacting with github, use the github API and GITHUB_TOKEN. Do NOT use the github CLI and do NOT navigate to github.com with the web browser.
