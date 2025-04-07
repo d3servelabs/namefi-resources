@@ -91,7 +91,7 @@ Set up the following GitHub variables in your repository settings (Settings > Se
 2. `GCP_REGION`: Your preferred GCP region (e.g., us-central1)
 3. `REPOSITORY_NAME`: Your Artifact Registry repository name
 4. `GCP_CLOUD_RUN_SERVICE`: Your production Cloud Run service name
-5. `GCP_CLOUD_RUN_SERVICE_STAGING`: Your staging Cloud Run service name (optional)
+5. `GCP_CLOUD_RUN_SERVICE_DEV`: Your development Cloud Run service name (optional)
 6. `GCP_WIF_PROVIDER`: Your WIF provider ID (format: `projects/PROJECT_NUMBER/locations/global/workloadIdentityPools/POOL_ID/providers/PROVIDER_ID`)
 7. `GCP_WIF_SERVICE_ACCOUNT`: Your GCP service account (format: `deployer-service-account@PROJECT_ID.iam.gserviceaccount.com`)
 
@@ -116,7 +116,7 @@ The workflow will run automatically when changes are pushed to the `main` branch
 You can manually trigger the workflow from the "Actions" tab in your GitHub repository with additional options:
 
 1. **Environment Selection**: Choose between:
-   - `staging`: Uses the `GCP_CLOUD_RUN_SERVICE_STAGING` service
+   - `development`: Uses the `GCP_CLOUD_RUN_SERVICE_DEV` service
    - `production`: Uses the `GCP_CLOUD_RUN_SERVICE` service
 
 ## Troubleshooting

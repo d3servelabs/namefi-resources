@@ -5,7 +5,7 @@ on:
     branches:
       - main    # Regular push to main branch deploys to production
     tags:
-      - 'staging/v*'  # Tags like staging/v1.0.0 for staging deployment
+      - 'dev/v*'  # Tags like dev/v1.0.0 for dev deployment
       - 'prod/v*'     # Tags like prod/v1.0.0 for production deployment
       - 'v*'          # Tags like v1.0.0 for production deployment
   workflow_dispatch:
@@ -13,11 +13,10 @@ on:
       environment:
         description: 'Environment to deploy to'
         required: true
-        default: 'staging'
+        default: 'dev'
         type: choice
         options:
           - dev
-          - staging
           - production
 
 env:
@@ -25,16 +24,15 @@ env:
   REGION: ${{ vars.GCP_REGION }} # GCP region
   REPO_NAME: ${{ vars.REPOSITORY_NAME }} # Artifact Registry repository name
   # Set different service names based on the trigger or tag pattern
-  # Regular push to main branch or non-staging tags will deploy to production (GCP_CLOUD_RUN_SERVICE_PROD)
+  # Regular push to main branch will deploy to production (GCP_CLOUD_RUN_SERVICE_PROD)
   SERVICE: >-
-    ${{ 
-      ((github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'staging') || 
-      (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/staging/'))) 
-      && vars.GCP_CLOUD_RUN_SERVICE_STAGING 
+    ${{
+      ((github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'dev') || 
+      (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/dev/'))) 
+      && vars.GCP_CLOUD_RUN_SERVICE_DEV
       || ((github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'production') || 
          (github.event_name == 'push' && (startsWith(github.ref, 'refs/tags/prod/') || startsWith(github.ref, 'refs/tags/v')))) 
-        && vars.GCP_CLOUD_RUN_SERVICE_PROD 
-        || vars.GCP_CLOUD_RUN_SERVICE_DEV 
+        && vars.GCP_CLOUD_RUN_SERVICE_PROD
     }}
 
 jobs:
