@@ -183,9 +183,9 @@ export async function createStripePaymentIntent({
         updatedAt: new Date(),
       })
       .where(eq(usersTable.id, userId))
-      .returning({ stripeCustomerId: usersTable.id });
+      .returning({ stripeCustomerId: usersTable.stripeCustomerId });
 
-    stripeCustomerId = userWithStripeCustomerId.stripeCustomerId;
+    stripeCustomerId = userWithStripeCustomerId.stripeCustomerId as string;
   }
 
   const { stripePaymentIntent } =
