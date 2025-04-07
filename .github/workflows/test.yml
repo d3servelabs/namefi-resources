@@ -10,6 +10,8 @@ on:
         description: 'Filter for specific package to test (e.g., "@namefi-astra/backend")'
         required: false
         default: ''
+env:
+  ENVIRONEMNT: test
 
 jobs:
   test:

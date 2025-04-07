@@ -2,7 +2,10 @@ name: Validate
 
 on:
   pull_request:
-    
+
+env:
+  ENVIRONEMNT: test 
+
 jobs:
   validate:
     runs-on: ubuntu-latest
