@@ -24,8 +24,8 @@ export interface ProcessOrderWorkflowInput {
  * 4. Handling failures and partial completions
  * 5. Notifying the user of the result
  */
-// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: it's meant to be complex, unfortunately.
 // TODO: (sid) Refactor this workflow to be more readable and maintainable.
+// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: it's meant to be complex, unfortunately.
 export async function processOrderWorkflow(
   input: ProcessOrderWorkflowInput,
 ): Promise<void> {
