@@ -17,12 +17,13 @@ reviews:
         - **Avoid PR too large**: If PR exceeds 1000 lines of code changes, suggest breaking it down into smaller, focused PRs for better reviewability.
         - **Exceptions are exceptions**: Avoid using exceptions as normal control flow. Exceptions should be reserved for exceptional circumstances, not as a mechanism for routine program flow control.
         - **Don't shout at users when unnecessary**: In UI, highlighted colors, bold fonts, and upper-case text attract attention. Use these emphasis techniques sparingly and only when necessary to guide user focus.
-        - "3-strikes DRY"
-          A widely adopted practice is “DRY: don’t repeat ourselves” to share code. There is a tendency in code development to create generalized solutions for future applications because of it. A lot of times, we will never use them; it just ends up adding complexity and increasing the size of the current code. 
-          Therefore, we ask you to generalize the code to be shared only when you see 3 use cases that can be swapped out by the refactor. 
-          When you only encounter the first use case, just write the simplest version that supports it. 
-          For the second use case, please write it again without sharing code—don’t worry about duplicates, and just focus on optimizing it to create a better version than the first one. Oh, by the way, if you can, please in both first use case and second use cases, add in code comment to to mention the duplicated logic of the other, this makes it easier when the third comes and we see an opportunity to refactor. 
-          Only when you see the third use case should you start applying the DRY principle and refactoring. Exceptions: sometimes certain logic needs to be strictly synchronized and consistent, and it can be refactored to share code and avoid duplication in two different instances.
+        - **3-strikes DRY principle**:
+          While "Don't Repeat Yourself" (DRY) is a valuable principle, premature abstraction can lead to unnecessary complexity. Follow these guidelines:
+          1. First occurrence: Write the simplest implementation that works, with a comment noting potential for future reuse.
+          2. Second occurrence: Write it again separately, optimizing based on lessons from the first implementation. Add cross-references in comments between the two implementations.
+          3. Third occurrence: Refactor to share code following the DRY principle.
+          
+          Exception: When logic must be strictly synchronized and consistent across instances, earlier refactoring may be appropriate.
         - "Don’t format code lines that you didn’t change, except for a pure format commit"
           If you have a commit that has certain logic change, formatting it meanwhile makes it
           Hard to focus on what’s actually the logic change
