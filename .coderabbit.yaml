@@ -30,7 +30,7 @@ reviews:
           Prone to merge conflict
           Of course if you are sending a PR/commit ONLY to format code, that’s ok and encouraged, just make sure you ask teammates that they are not actively working on it.
 
-        Finally, pleas always keep README.md and docstrings update to date to the code change.
+        Finally, always keep README.md and docstrings up to date with code changes.
     
     # Matches all TypeScript React (TSX) files - specific UI component files or Email templates
     - path: "**/*.tsx"
