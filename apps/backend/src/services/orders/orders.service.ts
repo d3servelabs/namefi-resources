@@ -59,12 +59,14 @@ export async function createOrderFromCart({
     // Create the order first
     const [order] = await tx
       .insert(ordersTable)
-      .values({
-        amountInUSDCents: totalAmountInUSDCents,
-        totalAmountInUSDCents,
-        userId,
-        paymentId,
-      })
+      .values([
+        {
+          amountInUSDCents: totalAmountInUSDCents,
+          totalAmountInUSDCents,
+          userId,
+          paymentId,
+        },
+      ])
       .returning();
 
     // Create order items

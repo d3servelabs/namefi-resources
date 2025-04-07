@@ -142,24 +142,58 @@ const stripePaymentDetailsSchema = z.object({
 });
 export type StripePaymentDetails = z.infer<typeof stripePaymentDetailsSchema>;
 
+
+export const nfscPaymentProviderSchema = z.enum([
+  paymentProviderSchema.Values.NFSC_BASE,
+  paymentProviderSchema.Values.NFSC_ETHEREUM,
+  paymentProviderSchema.Values.NFSC_ETHEREUM_SEPOLIA,
+]);
+export type NfscPaymentProvider = z.infer<typeof nfscPaymentProviderSchema>;
+
+export const stripePaymentProviderDetailsSchema = z.object({
+  paymentProvider: z.literal(paymentProviderSchema.Values.STRIPE),
+  stripePaymentDetails: stripePaymentDetailsSchema,
+});
+
+export type StripePaymentProviderDetails = z.infer<typeof stripePaymentProviderDetailsSchema>;
+
+export const nfscPaymentProviderDetailsSchema = z.object({
+  paymentProvider: nfscPaymentProviderSchema,
+  nfscPaymentDetails: paymentInsertSchema.shape.nfscPaymentDetails.unwrap(),
+});
+
+export type NfscPaymentProviderDetails = z.infer<typeof nfscPaymentProviderDetailsSchema>;
+
 export const paymentProviderDetailsSchema = z.discriminatedUnion(
   'paymentProvider',
   [
-    z.object({
-      paymentProvider: z.literal(paymentProviderSchema.Values.STRIPE),
-      stripePaymentDetails: stripePaymentDetailsSchema,
-    }),
-    z.object({
-      paymentProvider: z.enum([
-        paymentProviderSchema.Values.NFSC_BASE,
-        paymentProviderSchema.Values.NFSC_ETHEREUM,
-        paymentProviderSchema.Values.NFSC_ETHEREUM_SEPOLIA,
-      ]),
-      nfscPaymentDetails: paymentInsertSchema.shape.nfscPaymentDetails.unwrap(),
-    }),
+    stripePaymentProviderDetailsSchema,
+    nfscPaymentProviderDetailsSchema,
   ],
 );
 
 export type PaymentProviderDetails = z.infer<
   typeof paymentProviderDetailsSchema
 >;
+
+/**
+ * Type guard function to check if payment details are Stripe payment details
+ * @param details The payment provider details to check
+ * @returns Narrowed type with Stripe payment details if applicable
+ */
+export function isStripePayment(
+  details?: PaymentProviderDetails | null
+): details is StripePaymentProviderDetails {
+  return details?.paymentProvider === paymentProviderSchema.Values.STRIPE;
+}
+
+/**
+ * Type guard function to check if payment details are NFSC payment details
+ * @param details The payment provider details to check
+ * @returns Narrowed type with NFSC payment details if applicable
+ */
+export function isNfscPayment(
+  details?: PaymentProviderDetails | null
+): details is NfscPaymentProviderDetails {
+  return nfscPaymentProviderSchema.safeParse(details?.paymentProvider).success;
+}

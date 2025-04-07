@@ -1,23 +1,24 @@
 import { paymentProviderEnum } from '@namefi-astra/db/schema';
-import type { PaymentStatus } from '@namefi-astra/db/types';
+import { type PaymentStatus, paymentProviderSchema, paymentStatusSchema } from '@namefi-astra/db/types';
 import * as workflow from '@temporalio/workflow';
 import { stripePaymentIntentStatusToPaymentStatus } from '#services/stripePayments/stripePaymentHelpers';
 import type { PaymentActivities } from '../activities';
 import type { MoneyAmount } from '../activities/mint.activities';
+import type { CreateStripePaymentIntentInput } from '../activities/payment.activities';
 import { TEMPORAL_QUEUES, shortRunningOpts } from '../shared';
 import { ChargeStripeWorkflow } from './chargeStripe.workflow';
 import { chargeNfscWorkflow } from './mint.workflow';
 
-const NFSC_PAYMENT_PROVIDERS = paymentProviderEnum.enumValues.filter(
+export const NFSC_PAYMENT_PROVIDERS = paymentProviderEnum.enumValues.filter(
   (provider) => provider.startsWith('NFSC_'),
 );
+
+export type PaymentExtraMetadata = Pick<CreateStripePaymentIntentInput, 'confirmationTokenId'>
 
 export type ChargeUserWorkflowInput = {
   paymentId: string;
   userId: string;
-  metadata?: {
-    confirmationTokenId?: string;
-  };
+  metadata?: PaymentExtraMetadata;
 };
 
 export type ChargeUserWorkflowOutput = {
@@ -47,18 +48,16 @@ export async function chargeUserWorkflow({
   let paymentProviderReferenceId: string | undefined;
 
   // MARK: Execute Charge ChildWorkflow based on PaymentProvider
-  if (paymentProvider === 'STRIPE') {
-    const input = {
-      userId,
-      totalAmountInUsdCents: amountInUSDCents,
-      confirmationTokenId: metadata?.confirmationTokenId,
-      paymentMethodId: stripePaymentDetails?.paymentMethodId,
-    };
-
+  if (paymentProvider === paymentProviderSchema.Values.STRIPE) {
     try {
       const { paymentIntentId, paymentIntentStatus } =
         await workflow.executeChild(ChargeStripeWorkflow, {
-          args: [input],
+          args: [{
+            userId,
+            totalAmountInUsdCents: amountInUSDCents,
+            confirmationTokenId: metadata?.confirmationTokenId,
+            paymentMethodId: stripePaymentDetails?.paymentMethodId,
+          }],
           workflowId: `charge-stripe-${paymentId}`,
           taskQueue: TEMPORAL_QUEUES.DEFAULT,
           retry: {
@@ -73,7 +72,7 @@ export async function chargeUserWorkflow({
       workflow.log.error(
         `Error while executing ChargeStripe workflow. workflowId: charge-stripe-${paymentId}, cause: ${JSON.stringify(error)}`,
       );
-      paymentStatus = 'FAILED';
+      paymentStatus = paymentStatusSchema.Values.FAILED;
     }
   }
 
@@ -104,25 +103,21 @@ export async function chargeUserWorkflow({
           maximumAttempts: 1,
         },
       });
-      paymentStatus = 'SUCCEEDED' as PaymentStatus;
+      paymentStatus = paymentStatusSchema.Values.SUCCEEDED;
       paymentProviderReferenceId = txHash;
     } catch (error) {
       workflow.log.error(
         `Error while executing ChargeNfsc workflow. workflowId: charge-nfsc-${paymentId}, cause: ${JSON.stringify(error)}`,
       );
-      paymentStatus = 'FAILED';
+      paymentStatus = paymentStatusSchema.Values.FAILED;
     }
   }
 
   // MARK: Update Payment
-  const updatePaymentData = {
-    paymentStatus,
-    paymentProviderReferenceId,
-  };
-
   const updatedPayment = await updatePayment({
-    paymentId,
-    updatePaymentData,
+    id: paymentId,
+    status: paymentStatus,
+    paymentProviderReferenceId,
   });
 
   return { paymentStatus: updatedPayment.status };

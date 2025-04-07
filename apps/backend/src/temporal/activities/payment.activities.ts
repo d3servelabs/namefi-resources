@@ -1,7 +1,7 @@
 import {
   type PaymentProviderDetails,
-  type PaymentStatus,
-  type RefundStatus,
+  type PaymentUpdate,
+  type RefundUpdate,
   db,
   paymentProviderSchema,
   paymentStatusSchema,
@@ -11,6 +11,7 @@ import {
 } from '@namefi-astra/db';
 import { eq } from 'drizzle-orm';
 import { isNil } from 'ramda';
+import { z } from 'zod';
 import { stripePaymentService, usersService } from '#services/index';
 import {
   CreateNewPaymentFailure,
@@ -156,17 +157,21 @@ export async function getPaymentDetails({ paymentId }: { paymentId: string }) {
   return payment;
 }
 
+export const createStripePaymentIntentSchema = z.object({
+  totalAmountInUsdCents: z.number(),
+  userId: z.string(),
+  confirmationTokenId: z.string().optional(),
+  paymentMethodId: z.string().optional(),
+});
+
+export type CreateStripePaymentIntentInput = z.infer<typeof createStripePaymentIntentSchema>
+
 export async function createStripePaymentIntent({
   totalAmountInUsdCents,
   userId,
   confirmationTokenId,
   paymentMethodId,
-}: {
-  totalAmountInUsdCents: number;
-  userId: string;
-  confirmationTokenId?: string;
-  paymentMethodId?: string;
-}) {
+}: CreateStripePaymentIntentInput) {
   let { stripeCustomerId } = await usersService.getUserStripeCustomerId({
     userId,
   });
@@ -199,63 +204,55 @@ export async function createStripePaymentIntent({
   return { stripePaymentIntent };
 }
 
+export type UpdatePaymentInput = Pick<PaymentUpdate, 'status' | 'paymentProviderReferenceId'> & Required<Pick<PaymentUpdate, 'id'>>
+
 export async function updatePayment({
-  updatePaymentData,
-  paymentId,
-}: {
-  updatePaymentData: {
-    paymentProviderReferenceId?: string;
-    paymentStatus?: PaymentStatus;
-  };
-  paymentId: string;
-}) {
+  id,
+  status,
+  paymentProviderReferenceId,
+  }: UpdatePaymentInput) {
   const [updatedPayment] = await db
     .update(paymentsTable)
     .set({
-      status: updatePaymentData?.paymentStatus ?? undefined,
-      paymentProviderReferenceId:
-        updatePaymentData?.paymentProviderReferenceId ?? undefined,
+      status,
+      paymentProviderReferenceId,
       updatedAt: new Date(),
     })
-    .where(eq(paymentsTable.id, paymentId))
+    .where(eq(paymentsTable.id, id))
     .returning({
       status: paymentsTable.status,
       paymentProviderReferenceId: paymentsTable.paymentProviderReferenceId,
     });
 
   if (isNil(updatedPayment)) {
-    throw new UpdatePaymentFailure({ paymentId });
+    throw new UpdatePaymentFailure({ paymentId: id });
   }
 
   return updatedPayment;
 }
 
+export type UpdateRefundInput = Pick<RefundUpdate, 'status' | 'paymentProviderReferenceId'> & Required<Pick<RefundUpdate, 'id'>>
+
 export async function updateRefund({
-  updateRefundData,
-  refundId,
-}: {
-  updateRefundData: {
-    paymentProviderReferenceId?: string;
-    refundStatus?: RefundStatus;
-  };
-  refundId: string;
-}) {
+  status,
+  id,
+  paymentProviderReferenceId,
+}: UpdateRefundInput) {
   const [updatedRefund] = await db
     .update(refundsTable)
     .set({
-      status: updateRefundData?.refundStatus ?? undefined,
-      paymentProviderReferenceId:
-        updateRefundData?.paymentProviderReferenceId ?? undefined,
+      status,
+      paymentProviderReferenceId,
       updatedAt: new Date(),
     })
-    .where(eq(refundsTable.id, refundId))
+    .where(eq(refundsTable.id, id))
     .returning({
       status: refundsTable.status,
       paymentProviderReferenceId: refundsTable.paymentProviderReferenceId,
     });
 
   if (isNil(updatedRefund)) {
-    throw new UpdateRefundFailure({ refundId });
+    throw new UpdateRefundFailure({ refundId: id });
   }
 
   return updatedRefund;

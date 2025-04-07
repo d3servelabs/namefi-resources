@@ -16,6 +16,7 @@ import {
 import { useAuth } from '@/hooks/useAuth';
 import { formatAmountInUSD } from '@/utils/number';
 import { useTRPC } from '@/utils/trpc';
+import { isNfscPayment } from '@namefi-astra/db/types';
 import { NFSC_CONTRACT_ADDRESS } from '@namefi-astra/utils';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import type { inferInput } from '@trpc/tanstack-react-query';
@@ -28,7 +29,7 @@ import { useBalance } from 'wagmi';
 export default function CartPage() {
   type CreateOrderPaymentInput = inferInput<
     typeof trpc.orders.createOrder
-  >['paymentMethodDetails'];
+  >['paymentProviderDetails'];
 
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<
     SelectedPaymentMethod | undefined | null
@@ -83,23 +84,25 @@ export default function CartPage() {
     }),
   });
 
-  const { data: nfscBalanceData, refetch: refetchNfscBalance } = useBalance({
-    address: checkoutWithCartRequestPaymentMethodDetails?.paymentProviderOptions
-      ?.walletAddress as `0x${string}`,
-    chainId:
-      checkoutWithCartRequestPaymentMethodDetails?.paymentProviderOptions
-        ?.chainId,
-    token: NFSC_CONTRACT_ADDRESS,
-    query: {
-      enabled:
-        !!checkoutWithCartRequestPaymentMethodDetails &&
-        !!checkoutWithCartRequestPaymentMethodDetails.paymentProviderOptions &&
-        !!checkoutWithCartRequestPaymentMethodDetails.paymentProviderOptions
-          .walletAddress &&
-        !!checkoutWithCartRequestPaymentMethodDetails.paymentProviderOptions
-          .chainId,
-    },
-  });
+  const { data: nfscBalanceData, refetch: refetchNfscBalance } = useBalance((() => {
+    if (isNfscPayment(checkoutWithCartRequestPaymentMethodDetails)) {
+      const { nfscPaymentDetails } = checkoutWithCartRequestPaymentMethodDetails;
+      return {
+        address: nfscPaymentDetails?.walletAddress as `0x${string}`,
+        chainId: nfscPaymentDetails?.chainId,
+        token: NFSC_CONTRACT_ADDRESS,
+        query: {
+          enabled: !!nfscPaymentDetails,
+        },
+      }
+    }
+
+    return {
+      query: {
+        enabled: false,
+      },
+    }
+  })());
 
   const selectedWalletChainNfscBalanceInUsdCents = useMemo(() => {
     if (!nfscBalanceData) {
@@ -156,9 +159,9 @@ export default function CartPage() {
         return (
           checkoutWithCartRequestPaymentMethodDetails?.paymentProvider !==
             'STRIPE' ||
-          checkoutWithCartRequestPaymentMethodDetails?.paymentProviderOptions
+          checkoutWithCartRequestPaymentMethodDetails?.stripePaymentDetails
             ?.paymentMethodId === null ||
-          checkoutWithCartRequestPaymentMethodDetails?.paymentProviderOptions
+          checkoutWithCartRequestPaymentMethodDetails?.stripePaymentDetails
             ?.paymentMethodId === undefined
         );
       }
@@ -166,9 +169,9 @@ export default function CartPage() {
         return (
           checkoutWithCartRequestPaymentMethodDetails?.paymentProvider !==
             'STRIPE' ||
-          checkoutWithCartRequestPaymentMethodDetails?.paymentProviderOptions
+          checkoutWithCartRequestPaymentMethodDetails?.stripePaymentDetails
             ?.confirmationTokenId === null ||
-          checkoutWithCartRequestPaymentMethodDetails?.paymentProviderOptions
+          checkoutWithCartRequestPaymentMethodDetails?.stripePaymentDetails
             ?.confirmationTokenId === undefined
         );
       }
@@ -233,7 +236,10 @@ export default function CartPage() {
 
     try {
       createOrder({
-        paymentMethodDetails: checkoutWithCartRequestPaymentMethodDetails,
+        paymentProviderDetails: checkoutWithCartRequestPaymentMethodDetails,
+        paymentMetadata: {
+          confirmationTokenId: undefined,
+        },
         cartId: cartQuery.data.id,
       });
     } catch (error) {
