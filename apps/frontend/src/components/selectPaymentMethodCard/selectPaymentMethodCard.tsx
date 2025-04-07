@@ -39,34 +39,9 @@ import { formatUnits } from 'viem';
 import { useBalance } from 'wagmi';
 import { AddPaymentMethodDialog } from '../addPaymentMethod/addPaymentMethodDialog';
 
-const SAVED_CARDS: SavedCardDetails[] = [
-  {
-    brand: 'visa',
-    expMonth: 1,
-    expYear: 2025,
-    last4: '0102',
-    paymentMethodId: 'visa1',
-  },
-  {
-    brand: 'visa',
-    expMonth: 2,
-    expYear: 2025,
-    last4: '0304',
-    paymentMethodId: 'visa2',
-  },
-  {
-    brand: 'visa',
-    expMonth: 3,
-    expYear: 2025,
-    last4: '0506',
-    paymentMethodId: 'visa3',
-  },
-];
-
 export enum SelectedPaymentMethod {
-  NEW_CARD = 'NEW_CARD',
+  CREDIT_CARD = 'CREDIT_CARD',
   NFSC = 'NFSC',
-  SAVED_CARD = 'SAVED_CARD',
 }
 
 type PaymentDetails = {
@@ -74,14 +49,6 @@ type PaymentDetails = {
   paymentMetadata?: {
     confirmationTokenId?: string;
   };
-};
-
-export type SavedCardDetails = {
-  brand: string;
-  expMonth: number;
-  expYear: number;
-  last4: string;
-  paymentMethodId: string;
 };
 
 export type SelectPaymentMethodCardProps = {
@@ -117,9 +84,7 @@ export function SelectPaymentMethodCard({
         },
       },
     });
-  const [savedCardPaymentMethodDetails, setSavedCardPaymentMethodDetails] =
-    useState<PaymentDetails | null>(null);
-  const [newCardPaymentMethodDetails, setNewCardPaymentMethodDetails] =
+  const [creditCardPaymentMethodDetails, setCreditCardPaymentMethodDetails] =
     useState<PaymentDetails | null>(null);
 
   const { ready: ethereumWalletsReady, wallets: ethereumWallets } =
@@ -201,11 +166,8 @@ export function SelectPaymentMethodCard({
         case SelectedPaymentMethod.NFSC:
           onPaymentMethodDetailsChanged(nfscPaymentMethodDetails);
           break;
-        case SelectedPaymentMethod.SAVED_CARD:
-          onPaymentMethodDetailsChanged(savedCardPaymentMethodDetails);
-          break;
-        case SelectedPaymentMethod.NEW_CARD:
-          onPaymentMethodDetailsChanged(newCardPaymentMethodDetails);
+        case SelectedPaymentMethod.CREDIT_CARD:
+          onPaymentMethodDetailsChanged(creditCardPaymentMethodDetails);
           break;
         default:
         //passthrough
@@ -214,11 +176,10 @@ export function SelectPaymentMethodCard({
       onSelectedPaymentMethodChanged(value as SelectedPaymentMethod);
     },
     [
-      newCardPaymentMethodDetails,
+      creditCardPaymentMethodDetails,
       nfscPaymentMethodDetails,
       onPaymentMethodDetailsChanged,
       onSelectedPaymentMethodChanged,
-      savedCardPaymentMethodDetails,
     ],
   );
 
@@ -235,7 +196,7 @@ export function SelectPaymentMethodCard({
           confirmationTokenId: confirmationToken.id,
         },
       };
-      setNewCardPaymentMethodDetails(newPaymentMethodDetails);
+      setCreditCardPaymentMethodDetails(newPaymentMethodDetails);
       setShowAddPaymentMethodDialog(false);
       setNewCardPreview(
         `•••• •••• •••• ${confirmationToken?.payment_method_preview?.card?.last4}`,
@@ -247,29 +208,10 @@ export function SelectPaymentMethodCard({
 
   const handleAddPaymentMethodError = useCallback(
     (error: Error) => {
-      setNewCardPaymentMethodDetails(null);
+      setCreditCardPaymentMethodDetails(null);
       setNewCardPreview(null);
       onPaymentMethodDetailsChanged(null);
       console.log(error);
-    },
-    [onPaymentMethodDetailsChanged],
-  );
-
-  const handleSavedCardSelectValueChange = useCallback(
-    (value: string) => {
-      const selectedSavedCard = SAVED_CARDS.find(
-        (card) => card.paymentMethodId === value,
-      );
-      const savedCardPaymentMethodDetails: PaymentDetails = {
-        paymentProviderDetails: {
-          paymentProvider: paymentProviderSchema.Values.STRIPE,
-          stripePaymentDetails: {
-            paymentMethodId: selectedSavedCard?.paymentMethodId,
-          },
-        },
-      };
-      setSavedCardPaymentMethodDetails(savedCardPaymentMethodDetails);
-      onPaymentMethodDetailsChanged(savedCardPaymentMethodDetails);
     },
     [onPaymentMethodDetailsChanged],
   );
@@ -434,51 +376,15 @@ export function SelectPaymentMethodCard({
           <div className="space-y-1">
             <div className="flex items-center space-x-2">
               <RadioGroupItem
-                value={SelectedPaymentMethod.SAVED_CARD}
-                id={SelectedPaymentMethod.SAVED_CARD}
+                value={SelectedPaymentMethod.CREDIT_CARD}
+                id={SelectedPaymentMethod.CREDIT_CARD}
               />
               <CreditCardIcon className="h-10 w-10" />
               <Label
-                htmlFor={SelectedPaymentMethod.SAVED_CARD}
+                htmlFor={SelectedPaymentMethod.CREDIT_CARD}
                 className="font-medium"
               >
-                Use saved card
-              </Label>
-            </div>
-            <div className="flex items-center pl-6">
-              <Select
-                disabled={
-                  selectedPaymentMethod !== SelectedPaymentMethod.SAVED_CARD
-                }
-                onValueChange={handleSavedCardSelectValueChange}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select a saved card" />
-                </SelectTrigger>
-                <SelectContent>
-                  {SAVED_CARDS.map((savedCard) => (
-                    <SelectItem
-                      key={savedCard.last4}
-                      value={savedCard.paymentMethodId}
-                    >{`•••• •••• •••• ${savedCard.last4}`}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-
-          <div className="space-y-1">
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem
-                value={SelectedPaymentMethod.NEW_CARD}
-                id={SelectedPaymentMethod.NEW_CARD}
-              />
-              <CreditCardIcon className="h-10 w-10" />
-              <Label
-                htmlFor={SelectedPaymentMethod.NEW_CARD}
-                className="font-medium"
-              >
-                Add a new card
+                Credit Card
               </Label>
             </div>
             <div className="flex items-center pl-6">
@@ -491,9 +397,10 @@ export function SelectPaymentMethodCard({
                 dialogTrigger={
                   <Button
                     variant="outline"
-                    className="justify-start"
+                    className="justify-start disabled:pointer-events-auto disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-background"
                     disabled={
-                      selectedPaymentMethod !== SelectedPaymentMethod.NEW_CARD
+                      selectedPaymentMethod !==
+                      SelectedPaymentMethod.CREDIT_CARD
                     }
                   >
                     {newCardPreview === null ? (
@@ -501,7 +408,7 @@ export function SelectPaymentMethodCard({
                     ) : (
                       <PencilIcon className="mr-2 h-4 w-4" />
                     )}
-                    {newCardPreview ?? 'Add new payment method'}
+                    {newCardPreview ?? 'Add or Select A Card'}
                   </Button>
                 }
               />

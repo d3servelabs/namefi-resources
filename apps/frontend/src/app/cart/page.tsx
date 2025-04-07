@@ -183,22 +183,8 @@ export default function CartPage() {
         }
         return false;
       }
-      case SelectedPaymentMethod.SAVED_CARD: {
-        if (
-          isStripePayment(
-            checkoutWithCartRequestPaymentMethodDetails?.paymentProviderDetails,
-          )
-        ) {
-          return (
-            checkoutWithCartRequestPaymentMethodDetails?.paymentProviderDetails
-              ?.stripePaymentDetails?.paymentMethodId !== null &&
-            checkoutWithCartRequestPaymentMethodDetails?.paymentProviderDetails
-              ?.stripePaymentDetails?.paymentMethodId !== undefined
-          );
-        }
-        return false;
-      }
-      case SelectedPaymentMethod.NEW_CARD: {
+
+      case SelectedPaymentMethod.CREDIT_CARD: {
         if (
           isStripePayment(
             checkoutWithCartRequestPaymentMethodDetails?.paymentProviderDetails,
