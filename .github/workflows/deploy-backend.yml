@@ -1,7 +1,6 @@
 name: Deploy Backend to Cloud Run
 
 on:
-  pull_request:
   push:
     branches:
       - main    # Regular push to main branch deploys to production
