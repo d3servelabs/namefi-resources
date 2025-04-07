@@ -19,6 +19,9 @@ inputs:
 
 This task guides you through reviewing pull requests in namefi-astra according to project standards.
 
+## Finding file changes
+When reviewing file changes, instead of diffing with default branch such as `main` please diff against the base branch of the PR.
+
 ## Review Steps and Guidelines for Each Step
 
 A high quality code review addresses 3 aspects:
@@ -26,6 +29,10 @@ A high quality code review addresses 3 aspects:
 1. is it the appropriate problem (goal)? (Pass 1)
 2. is it the concise and optimal solution? (Pass 2)
 3. is it the high quality implementation? (Pass 3)
+
+For each pass, if needed, you will submit a PR-level comment and multiple line-level suggested changes via Github API.
+
+When everything is done, you will submit a Github pull request review to approve the PR via Github API.
 
 ### **Review Pass 1: Is it the appropriate problem (goal)?**:
 - Review the PR description and linked issues, 
@@ -41,7 +48,7 @@ comment on whether the goal is the right goal. The right goal of a PR should be
   - should not over generalize such as extracting a piece of code logic into a library / component when they are only being used in one place
   - should have proper sizing (not too big, not too small).
 
-Send *PR-level comment* to ask for clarification on the goal of the PR. If all of the above are met, proceed to next Review Pass.
+Send *PR-level comment* to ask for clarification on the goal of the PR. ONLY proceed to next Review Pass if the goal is appropriate, otherwise wait for the author to respond.
 
 ### **Review Pass 2: Is it the concise and optimal solution?**:
    - Understand whether the commit is a small change that fixes a bug or a larger change that implements a new feature/component or refactors code.
@@ -52,7 +59,7 @@ Send *PR-level comment* to ask for clarification on the goal of the PR. If all o
       - Summarize the design decisions made by author
       - Suggest alternative approaches if applicable, and create a table to compare the pros and cons of each approach
 
-Send *PR-level comment* to ask for clarification on the solution of the PR. If all of the above are met, proceed to next Review Pass.
+Send *PR-level comment* to ask for clarification on the solution of the PR. ONLY proceed to next Review Pass if the solution is concise and optimal, otherwise wait for the author to respond.
 
 ### **Review Pass 3: Is it the high quality implementation?**:
 - Verify changes follow `.coderabbit.yaml` rules
@@ -69,7 +76,7 @@ Send *PR-level comment* to ask for clarification on the solution of the PR. If a
    - Confirm adequate test coverage
    - Verify tests pass
 
-Send *line-level suggested change* to ask for fixing the implementation of the PR. If all of the above are met, proceed to next Review Pass.
+Send *line-level suggested change* to ask for fixing the implementation of the PR. ONLY proceed to next Review Pass if the implementation is high quality, otherwise wait for the author to respond.
 
 ## Using Github API
 
