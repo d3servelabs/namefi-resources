@@ -1,0 +1,1 @@
+ALTER TYPE "public"."RecordTypeEnum" RENAME TO "record_type_enum";

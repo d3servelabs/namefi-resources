@@ -57,6 +57,13 @@
       "when": 1743609539396,
       "tag": "0007_bouncy_tempest",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1744051989968,
+      "tag": "0008_tricky_morbius",
+      "breakpoints": true
     }
   ]
 }
