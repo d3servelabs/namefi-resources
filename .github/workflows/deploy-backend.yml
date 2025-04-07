@@ -1,11 +1,11 @@
 name: Deploy Backend to Cloud Run
 
 on:
+  pull_request:
   push:
     branches:
       - main    # Regular push to main branch deploys to production
     tags:
-      - 'dev/v*'  # Tags like dev/v1.0.0 for dev deployment
       - 'prod/v*'     # Tags like prod/v1.0.0 for production deployment
       - 'v*'          # Tags like v1.0.0 for production deployment
   workflow_dispatch:
@@ -24,15 +24,13 @@ env:
   REGION: ${{ vars.GCP_REGION }} # GCP region
   REPO_NAME: ${{ vars.REPOSITORY_NAME }} # Artifact Registry repository name
   # Set different service names based on the trigger or tag pattern
-  # Regular push to main branch will deploy to production (GCP_CLOUD_RUN_SERVICE_PROD)
-  SERVICE: >-
-    ${{
-      ((github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'dev') || 
-      (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/dev/'))) 
-      && vars.GCP_CLOUD_RUN_SERVICE_DEV
-      || ((github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'production') || 
+  # Regular push to main branch or non-staging tags will deploy to production
+  LABEL: >-
+    ${{ 
+      ((github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'production') || 
          (github.event_name == 'push' && (startsWith(github.ref, 'refs/tags/prod/') || startsWith(github.ref, 'refs/tags/v')))) 
-        && vars.GCP_CLOUD_RUN_SERVICE_PROD
+        && 'prod' 
+        || 'dev' 
     }}
 
 jobs:
@@ -51,7 +49,7 @@ jobs:
       - name: Debug environment variables
         run: |
           echo "Event name: ${{ github.event_name }}"
-          echo "Service name: ${{ env.SERVICE }}"
+          echo "Env name: ${{ env.LABEL }}"
           echo "Port: ${{ env.PORT }}"
 
       # Set up Google Cloud authentication using WIF
@@ -71,7 +69,7 @@ jobs:
 
       - name: 'Build and Push Container'
         run: |-
-          DOCKER_TAG="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/cloud-run-source-deploy/${{ env.REPO_NAME }}/${{ env.SERVICE }}:${{ github.sha }}"
+          DOCKER_TAG="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/cloud-run-source-deploy/${{ env.REPO_NAME }}/namefi-astra-api-${{ env.LABEL }}:${{ github.sha }}"
           docker build --tag "${DOCKER_TAG}" . -f apps/backend/Dockerfile
           docker push "${DOCKER_TAG}"
 
@@ -81,20 +79,20 @@ jobs:
         id: deploy
         uses: google-github-actions/deploy-cloudrun@v2
         with:
-          service: ${{ env.SERVICE }}
+          service: 'namefi-astra-api-${{ env.LABEL }}'
           region: ${{ env.REGION }}
           project_id: '${{ env.PROJECT_ID }}'
-          image: '${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/cloud-run-source-deploy/${{ env.REPO_NAME }}/${{ env.SERVICE }}:${{ github.sha }}'
+          image: '${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/cloud-run-source-deploy/${{ env.REPO_NAME }}/namefi-astra-api-${{ env.LABEL }}:${{ github.sha }}'
       
       # Deploy to Cloud Run (Temporal)
       - name: Deploy to Cloud Run (Backend/Temporal)
         id: deploy-temporal
         uses: google-github-actions/deploy-cloudrun@v2
         with:
-          service: temporal-${{ env.SERVICE }}
+          service: 'namefi-astra-temporal-${{ env.LABEL }}'
           region: ${{ env.REGION }}
           project_id: '${{ env.PROJECT_ID }}'
-          image: '${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/cloud-run-source-deploy/${{ env.REPO_NAME }}/${{ env.SERVICE }}:${{ github.sha }}'
+          image: '${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/cloud-run-source-deploy/${{ env.REPO_NAME }}/namefi-astra-api-${{ env.LABEL }}:${{ github.sha }}'
            
       # Output the deployed URL
       - name: Show Output
