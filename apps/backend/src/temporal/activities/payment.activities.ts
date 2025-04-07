@@ -224,7 +224,7 @@ export async function createStripePaymentIntent({
 
 export type UpdatePaymentInput = Pick<
   PaymentUpdate,
-  'status' | 'paymentProviderReferenceId'
+  'status' | 'paymentProviderReferenceId' | 'amountInUSDCents'
 > &
   Required<Pick<PaymentUpdate, 'id'>>;
 
@@ -232,12 +232,14 @@ export async function updatePayment({
   id,
   status,
   paymentProviderReferenceId,
+  amountInUSDCents,
 }: UpdatePaymentInput) {
   const [updatedPayment] = await db
     .update(paymentsTable)
     .set({
       status,
       paymentProviderReferenceId,
+      amountInUSDCents,
     })
     .where(eq(paymentsTable.id, id))
     .returning({

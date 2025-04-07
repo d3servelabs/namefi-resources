@@ -6,7 +6,7 @@ import { TEMPORAL_QUEUES, shortRunningOpts } from '../shared';
 
 export type CaptureStripeWorkflowInput = {
   paymentId: string;
-  amountToCaptureInUsdCents?: number;
+  amountToCaptureInUsdCents: number;
 };
 
 export type CaptureStripeWorkflowOutput = {
@@ -25,7 +25,7 @@ export async function captureStripeWorkflow({
   });
 
   const { capturedStripePaymentIntent } = await captureStripePayment({
-    amountToCaptureInUsdCents: amountToCaptureInUsdCents as number,
+    amountToCaptureInUsdCents: amountToCaptureInUsdCents,
     paymentId,
   });
 
@@ -36,6 +36,8 @@ export async function captureStripeWorkflow({
   const updatedPayment = await updatePayment({
     id: paymentId,
     status: newPaymentStatus,
+    amountInUSDCents:
+      newPaymentStatus === 'SUCCEEDED' ? amountToCaptureInUsdCents : undefined,
   });
 
   return {

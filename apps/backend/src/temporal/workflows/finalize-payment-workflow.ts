@@ -3,7 +3,6 @@ import {
   type RefundStatus,
   paymentProviderSchema,
   paymentStatusSchema,
-  refundStatusSchema,
 } from '@namefi-astra/db/types';
 import { matchAny } from '@namefi-astra/utils';
 import * as workflow from '@temporalio/workflow';
@@ -67,7 +66,7 @@ export async function finalizePaymentWorkflow({
     )
   ) {
     if (amountToRefundInUsdCents && amountToRefundInUsdCents > 0) {
-      await workflow.executeChild(refundUserWorkflow, {
+      const { refundStatus } = await workflow.executeChild(refundUserWorkflow, {
         args: [
           {
             amountToRefundInUsdCents,
@@ -82,7 +81,7 @@ export async function finalizePaymentWorkflow({
       });
       return {
         paymentStatus: paymentStatusSchema.Values.REFUND_REQUESTED,
-        refundStatus: refundStatusSchema.Values.SUCCEEDED,
+        refundStatus: refundStatus,
       };
     }
   }
