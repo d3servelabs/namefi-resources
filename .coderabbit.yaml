@@ -16,8 +16,7 @@ reviews:
         Also check if the PR violates the following principles, and if so, remind the PR author to modify:
         - **Avoid PR too large**: If PR exceeds 1000 lines of code changes, suggest breaking it down into smaller, focused PRs for better reviewability.
         - **Exceptions are exceptions**: Avoid using exceptions as normal control flow. Exceptions should be reserved for exceptional circumstances, not as a mechanism for routine program flow control.
-        - "Don’t shout at users when unnecessary": 
-          In UI, highlighted color / bold fonts / upper-case attracts attention. Whenever unnecessary, try to avoid such.
+        - **Don't shout at users when unnecessary**: In UI, highlighted colors, bold fonts, and upper-case text attract attention. Use these emphasis techniques sparingly and only when necessary to guide user focus.
         - "3-strikes DRY"
           A widely adopted practice is “DRY: don’t repeat ourselves” to share code. There is a tendency in code development to create generalized solutions for future applications because of it. A lot of times, we will never use them; it just ends up adding complexity and increasing the size of the current code. 
           Therefore, we ask you to generalize the code to be shared only when you see 3 use cases that can be swapped out by the refactor. 
