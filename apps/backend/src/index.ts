@@ -7,6 +7,7 @@ import { prettyJSON } from 'hono/pretty-json';
 import { getPoweredByNamefi3POrigins } from '#services/namefi-registry';
 import { config, secrets } from './lib/env';
 import { nsJsonRouter } from './ns-json';
+import { webhooksRouter } from './routers/webhooks';
 import { createContext } from './trpc';
 import { appRouter } from './trpc/routers/appRouter';
 
@@ -55,6 +56,7 @@ app.use(
 );
 
 app.route('v1/ns-json', nsJsonRouter);
+app.route('v1/webhooks', webhooksRouter);
 
 app.get('/config', (c) => {
   const key = c.req.header('x-namefi-key');

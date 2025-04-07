@@ -1,3 +1,4 @@
+import { zJson } from '@namefi-astra/utils/zod-helpers';
 import { z } from 'zod';
 
 export const secretsSchema = z.object({
@@ -13,6 +14,10 @@ export const secretsSchema = z.object({
   GCP_HSM_KEYRING_RESOURCE_NAME: z.string().optional(),
   LOCAL_SIGNER_PRIVATE_KEY: z.string().optional(),
   LOCAL_SIGNER_MNEMONIC: z.string().optional(),
+  X_ALCHEMY_WEBHOOK_NFT_ACTIVITY_SIGNATURE: zJson
+    .optional()
+    .default('{}')
+    .pipe(z.record(z.number(), z.string())),
 });
 
 export type SecretsSchema = z.infer<typeof secretsSchema>;
