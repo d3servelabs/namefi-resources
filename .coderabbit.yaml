@@ -24,11 +24,12 @@ reviews:
           3. Third occurrence: Refactor to share code following the DRY principle.
           
           Exception: When logic must be strictly synchronized and consistent across instances, earlier refactoring may be appropriate.
-        - "Don’t format code lines that you didn’t change, except for a pure format commit"
-          If you have a commit that has certain logic change, formatting it meanwhile makes it
-          Hard to focus on what’s actually the logic change
-          Prone to merge conflict
-          Of course if you are sending a PR/commit ONLY to format code, that’s ok and encouraged, just make sure you ask teammates that they are not actively working on it.
+        - **Don't format code lines that you didn't change**: 
+          When making logic changes, avoid reformatting unrelated code in the same commit as it:
+          - Makes it difficult to focus on the actual logic changes
+          - Increases the likelihood of merge conflicts
+          
+          If you want to format code, submit a separate PR dedicated solely to formatting changes, and coordinate with team members to ensure they're not actively working on the affected files.
 
         Finally, always keep README.md and docstrings up to date with code changes.
     
