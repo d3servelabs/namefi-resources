@@ -1,13 +1,23 @@
 ---
-description: When using Git (e.g. `git commit`) and Graphite (`gt`cli e.g. `gt create`)
+description: Trigger when agent is asked to use Git (e.g. `git commit`) or Graphite (`gt`cli e.g. `gt create`)
 globs: 
 alwaysApply: false
 ---
+# git / gt related
 
-## When user asks for `git commit`
-- Always run  `git --no-pager diff` and go through the *current* code change and summarize the updates into git commit message and then execute the git commit. Commit message should include a brief oneliner summary and then a multi-line bullet points of details. The oneliner summary should follow "conventional commits" format. Check last 100 git commit history to find existing "scope" of convention comments, try to reuse known scope if possible, unless you feel it's better to suggest a new scope, then do use that new scope.
+## Never execute `git commit` or `git push` commands unless I explicitly ask you to
+
+## Summarize code change
+
+- Run `git --no-pager diff --staged` and go through the *current* code change and summarize the updates into <git_commit_message> and suggest a short <new_branch_name>
+
+- You need to make a judgement: if this is a small file change, the <git_commit_message> should only be one single line; If it's more than 100 lines of code change (excluding documentation and comments), or non-trivial code change, <git_commit_messsage> should be one line conventional commit style plus a multi line bullet points
+
+- Run `git log -n 100 --pretty=format:"%h %s" | cat` to the recent commit history to understand the conventional commit message style and scopes being used for <git_commit_message>
 
 ## When asked for `gt create`
-This is graphite function to create a NEW pull request on top of the one below (current), which has the following usage `gt create <new_branch_name> -m <git_commit_message>`. Based on the current staged git changes, please summarize them as a branch name and a `git commit` message. Please format message as plaintext with proper handle of newline to be copy and used in terminal. Output in markdown for easy copy-and-paste.
+This is graphite function to create a NEW pull request on top of the one below (new_branch_name), which has the following usage `gt create <new_branch_name> -m <git_commit_message>`. 
 
-## Never execute git commit for me unless I expeclitly ask you to. 
+## Respond
+
+Based on the current staged git changes, please summarize them as a branch name and a `git commit` or `gt create` message. Please format message as plaintext with proper handle of newline to be copy and used in terminal. Output in markdown for easy copy-and-paste. 
