@@ -6,7 +6,6 @@ import type { z } from 'zod';
  * @param record2 - The second record
  * @returns True if the records are equal, false otherwise
  */
-// TODO: delete or remove 'export', not being used by trpc or temporal.
 export function areRecordsEqual(
   record1: z.infer<typeof recordSchema>,
   record2: z.infer<typeof recordSchema>,
@@ -25,7 +24,6 @@ export function areRecordsEqual(
  * @param record2 - The second record
  * @returns True if the records are in the same record set, false otherwise
  */
-// TODO: delete or remove 'export', not being used by trpc or temporal.
 export function areRecordsInSameSet(
   record1: z.infer<typeof recordSchema>,
   record2: z.infer<typeof recordSchema>,

@@ -30,7 +30,6 @@ export const PARKED_DOMAIN_RECORDS: z.infer<typeof recordSchema>[] = [
  * @param normalizedDomainName - The normalized domain name to get parking records for
  * @returns The parking records for the domain
  */
-// TODO: delete or remove 'export', not being used by trpc or temporal.
 export function getZoneRecordsInPlaceOfParkedRecords(
   normalizedDomainName: NamefiNormalizedDomain,
 ) {

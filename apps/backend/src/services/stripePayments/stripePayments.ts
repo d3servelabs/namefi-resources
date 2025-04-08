@@ -3,7 +3,7 @@ import { PaymentMethodNotFoundError } from './errors';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
 
-// TODO: move to temporal, used only by apps/backend/src/temporal/workflows/finalize-payment-workflow.ts, apps/backend/src/temporal/workflows/finalize-payment-workflow.ts, apps/backend/src/temporal/workflows/capture-stripe-workflow.ts, apps/backend/src/temporal/workflows/capture-stripe-workflow.ts, apps/backend/src/temporal/workflows/chargeUser.workflow.ts, apps/backend/src/temporal/workflows/chargeUser.workflow.ts
+// TODO: move to temporal, used only by apps/backend/src/temporal/workflows/finalize-payment-workflow.ts, apps/backend/src/temporal/workflows/capture-stripe-workflow.ts, apps/backend/src/temporal/workflows/chargeUser.workflow.ts
 export { stripePaymentIntentStatusToPaymentStatus } from './stripePaymentHelpers';
 
 export async function createCustomer({ name }: Stripe.CustomerCreateParams) {
