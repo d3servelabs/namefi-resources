@@ -1,6 +1,5 @@
 'use client';
 import {
-  type PaymentMethodDetails,
   SelectPaymentMethodCard,
   SelectedPaymentMethod,
 } from '@/components/selectPaymentMethodCard/selectPaymentMethodCard';
@@ -16,8 +15,10 @@ import {
 import { useAuth } from '@/hooks/useAuth';
 import { formatAmountInUSD } from '@/utils/number';
 import { useTRPC } from '@/utils/trpc';
-import { isNfscPayment } from '@namefi-astra/db/types';
-import { NFSC_CONTRACT_ADDRESS } from '@namefi-astra/utils';
+import type { DeepPartial } from '@/utils/types';
+import { createOrderInputSchema } from '@namefi-astra/backend/trpc/types';
+import { isNfscPayment, isStripePayment } from '@namefi-astra/db/types';
+import { CHAINS, NFSC_CONTRACT_ADDRESS } from '@namefi-astra/utils';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import type { inferInput } from '@trpc/tanstack-react-query';
 import { Loader2 } from 'lucide-react';
@@ -27,17 +28,17 @@ import { formatUnits } from 'viem';
 import { useBalance } from 'wagmi';
 
 export default function CartPage() {
-  type CreateOrderPaymentInput = inferInput<
-    typeof trpc.orders.createOrder
-  >['paymentProviderDetails'];
-
+  type PaymentDetails = Omit<
+    inferInput<typeof trpc.orders.createOrder>,
+    'cartId' | 'nftMetadata'
+  >;
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<
     SelectedPaymentMethod | undefined | null
   >(null);
   const [
     checkoutWithCartRequestPaymentMethodDetails,
     setCheckoutWithCartRequestPaymentMethodDetails,
-  ] = useState<CreateOrderPaymentInput | null>(null);
+  ] = useState<DeepPartial<PaymentDetails> | null>(null);
 
   const { isAuthenticated, isLoading, privyUser } = useAuth();
 
@@ -84,25 +85,33 @@ export default function CartPage() {
     }),
   });
 
-  const { data: nfscBalanceData, refetch: refetchNfscBalance } = useBalance((() => {
-    if (isNfscPayment(checkoutWithCartRequestPaymentMethodDetails)) {
-      const { nfscPaymentDetails } = checkoutWithCartRequestPaymentMethodDetails;
-      return {
-        address: nfscPaymentDetails?.walletAddress as `0x${string}`,
-        chainId: nfscPaymentDetails?.chainId,
-        token: NFSC_CONTRACT_ADDRESS,
-        query: {
-          enabled: !!nfscPaymentDetails,
-        },
+  const { data: nfscBalanceData, refetch: refetchNfscBalance } = useBalance(
+    (() => {
+      if (
+        checkoutWithCartRequestPaymentMethodDetails?.paymentProviderDetails &&
+        isNfscPayment(
+          checkoutWithCartRequestPaymentMethodDetails?.paymentProviderDetails,
+        )
+      ) {
+        const { nfscPaymentDetails } =
+          checkoutWithCartRequestPaymentMethodDetails.paymentProviderDetails;
+        return {
+          address: nfscPaymentDetails?.walletAddress as `0x${string}`,
+          chainId: nfscPaymentDetails?.chainId,
+          token: NFSC_CONTRACT_ADDRESS,
+          query: {
+            enabled: !!nfscPaymentDetails,
+          },
+        };
       }
-    }
 
-    return {
-      query: {
-        enabled: false,
-      },
-    }
-  })());
+      return {
+        query: {
+          enabled: false,
+        },
+      };
+    })(),
+  );
 
   const selectedWalletChainNfscBalanceInUsdCents = useMemo(() => {
     if (!nfscBalanceData) {
@@ -122,17 +131,21 @@ export default function CartPage() {
   }, [selectedWalletChainNfscBalanceInUsdCents, totalAmountInUsdCents]);
 
   const handlePaymentMethodDetailsChanged = useCallback(
-    (paymentMethodDetails: PaymentMethodDetails | null) => {
+    (
+      paymentMethodDetails: DeepPartial<
+        Omit<PaymentDetails, 'nftMetadata'>
+      > | null,
+    ) => {
       if (paymentMethodDetails === null || paymentMethodDetails === undefined) {
         setCheckoutWithCartRequestPaymentMethodDetails(null);
         return;
       }
 
-      setCheckoutWithCartRequestPaymentMethodDetails((prev) => ({
-        ...prev,
-        ...paymentMethodDetails,
-      }));
-      refetchNfscBalance();
+      setCheckoutWithCartRequestPaymentMethodDetails(paymentMethodDetails);
+
+      if (isNfscPayment(paymentMethodDetails.paymentProviderDetails)) {
+        refetchNfscBalance();
+      }
     },
     [refetchNfscBalance],
   );
@@ -147,33 +160,50 @@ export default function CartPage() {
   const submitPaymentButtonDisabled = useMemo(() => {
     switch (selectedPaymentMethod) {
       case SelectedPaymentMethod.NFSC: {
-        return (
-          !hasSufficientBalance ||
-          checkoutWithCartRequestPaymentMethodDetails?.paymentProviderOptions
-            ?.walletAddress === undefined ||
-          checkoutWithCartRequestPaymentMethodDetails?.paymentProviderOptions
-            ?.chainId === undefined
-        );
+        if (
+          isNfscPayment(
+            checkoutWithCartRequestPaymentMethodDetails?.paymentProviderDetails,
+          )
+        ) {
+          return (
+            !hasSufficientBalance ||
+            checkoutWithCartRequestPaymentMethodDetails?.paymentProviderDetails
+              ?.nfscPaymentDetails?.walletAddress === undefined ||
+            checkoutWithCartRequestPaymentMethodDetails?.paymentProviderDetails
+              ?.nfscPaymentDetails?.chainId === undefined
+          );
+        }
+        return true;
       }
       case SelectedPaymentMethod.SAVED_CARD: {
-        return (
-          checkoutWithCartRequestPaymentMethodDetails?.paymentProvider !==
-            'STRIPE' ||
-          checkoutWithCartRequestPaymentMethodDetails?.stripePaymentDetails
-            ?.paymentMethodId === null ||
-          checkoutWithCartRequestPaymentMethodDetails?.stripePaymentDetails
-            ?.paymentMethodId === undefined
-        );
+        if (
+          isStripePayment(
+            checkoutWithCartRequestPaymentMethodDetails?.paymentProviderDetails,
+          )
+        ) {
+          return (
+            checkoutWithCartRequestPaymentMethodDetails?.paymentProviderDetails
+              ?.stripePaymentDetails?.paymentMethodId === null ||
+            checkoutWithCartRequestPaymentMethodDetails?.paymentProviderDetails
+              ?.stripePaymentDetails?.paymentMethodId === undefined
+          );
+        }
+        return true;
       }
       case SelectedPaymentMethod.NEW_CARD: {
-        return (
-          checkoutWithCartRequestPaymentMethodDetails?.paymentProvider !==
-            'STRIPE' ||
-          checkoutWithCartRequestPaymentMethodDetails?.stripePaymentDetails
-            ?.confirmationTokenId === null ||
-          checkoutWithCartRequestPaymentMethodDetails?.stripePaymentDetails
-            ?.confirmationTokenId === undefined
-        );
+        if (
+          isStripePayment(
+            checkoutWithCartRequestPaymentMethodDetails?.paymentProviderDetails,
+          )
+        ) {
+          return (
+            checkoutWithCartRequestPaymentMethodDetails?.paymentMetadata
+              ?.confirmationTokenId === null ||
+            checkoutWithCartRequestPaymentMethodDetails?.paymentMetadata
+              ?.confirmationTokenId === undefined
+          );
+        }
+        return true;
       }
       default:
         return true;
@@ -225,10 +255,17 @@ export default function CartPage() {
       throw new Error('Tried to submit payment with no cart id.');
     }
 
-    if (
-      checkoutWithCartRequestPaymentMethodDetails === null ||
-      checkoutWithCartRequestPaymentMethodDetails === undefined
-    ) {
+    console.log(checkoutWithCartRequestPaymentMethodDetails);
+
+    const validatedPaymentMethodDetails = createOrderInputSchema
+      .pick({
+        paymentProviderDetails: true,
+        paymentMetadata: true,
+      })
+      .safeParse(checkoutWithCartRequestPaymentMethodDetails);
+
+    if (!validatedPaymentMethodDetails.success) {
+      console.log(validatedPaymentMethodDetails.error);
       throw new Error(
         'Tried to submit payment with no payment method attached.',
       );
@@ -236,11 +273,13 @@ export default function CartPage() {
 
     try {
       createOrder({
-        paymentProviderDetails: checkoutWithCartRequestPaymentMethodDetails,
-        paymentMetadata: {
-          confirmationTokenId: undefined,
-        },
         cartId: cartQuery.data.id,
+        ...validatedPaymentMethodDetails.data,
+        nftMetadata: {
+          // TODO: (sid) Replace Alice address
+          nftWalletAddress: '0xB5856d4598c919834913b8656ebc15a64d3C7836',
+          nftChainId: CHAINS.base.id,
+        },
       });
     } catch (error) {
       console.log(error);
@@ -345,7 +384,7 @@ export default function CartPage() {
             </Button>
           }
           onPaymentMethodDetailsChanged={(
-            paymentMethodDetails: PaymentMethodDetails | null,
+            paymentMethodDetails: DeepPartial<PaymentDetails> | null,
           ) => handlePaymentMethodDetailsChanged(paymentMethodDetails)}
           onSelectedPaymentMethodChanged={handleSelectedPaymentMethodChanged}
         />

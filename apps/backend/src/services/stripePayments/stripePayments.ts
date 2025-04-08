@@ -1,5 +1,6 @@
 import Stripe from 'stripe';
 import { PaymentMethodNotFoundError } from './errors';
+import type { CreateStripePaymentIntentInput } from './types';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
 
@@ -56,12 +57,7 @@ export async function createPaymentIntent({
   stripeCustomerId,
   paymentMethodId,
   confirmationTokenId,
-}: {
-  totalAmountInUsdCents: number;
-  stripeCustomerId: string;
-  paymentMethodId?: string;
-  confirmationTokenId?: string;
-}) {
+}: CreateStripePaymentIntentInput) {
   if (paymentMethodId) {
     const customerHasPaymentMethod = await getCustomerHasPaymentMethod({
       paymentMethodId,

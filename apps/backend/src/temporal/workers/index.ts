@@ -33,11 +33,7 @@ export type ACTIVITIES = typeof ACTIVITIES;
 export async function initWorkers() {
   WORKERS = {
     [TEMPORAL_ENUMS.DEFAULT]: await createWorker({
-      activities: {
-        ...GreetActivities,
-        ...PaymentActivities,
-        ...OrderActivities,
-      },
+      activities: ACTIVITIES[TEMPORAL_ENUMS.DEFAULT],
       temporalEnum: TEMPORAL_ENUMS.DEFAULT,
       logLabel: TEMPORAL_ENUMS.DEFAULT,
     }),

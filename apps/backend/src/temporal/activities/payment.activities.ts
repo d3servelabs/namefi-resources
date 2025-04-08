@@ -11,7 +11,6 @@ import {
 } from '@namefi-astra/db';
 import { eq } from 'drizzle-orm';
 import { isNil } from 'ramda';
-import { z } from 'zod';
 import { stripePaymentService, usersService } from '#services/index';
 import {
   CreateNewPaymentFailure,
@@ -26,6 +25,7 @@ import {
   UpdatePaymentFailure,
   UpdateRefundFailure,
 } from '#services/payments/errors';
+import type { CreateStripePaymentIntentInput } from '#services/stripePayments/types';
 
 export async function captureStripePayment({
   amountToCaptureInUsdCents,
@@ -109,7 +109,7 @@ export async function createRefund({
     paymentId,
   });
 
-  if (paymentProvider === 'STRIPE') {
+  if (paymentProvider === paymentProviderSchema.Values.STRIPE) {
     throw new StripeRefundsNotSupportedError();
   }
 
@@ -157,21 +157,14 @@ export async function getPaymentDetails({ paymentId }: { paymentId: string }) {
   return payment;
 }
 
-export const createStripePaymentIntentSchema = z.object({
-  totalAmountInUsdCents: z.number(),
-  userId: z.string(),
-  confirmationTokenId: z.string().optional(),
-  paymentMethodId: z.string().optional(),
-});
-
-export type CreateStripePaymentIntentInput = z.infer<typeof createStripePaymentIntentSchema>
-
 export async function createStripePaymentIntent({
   totalAmountInUsdCents,
   userId,
   confirmationTokenId,
   paymentMethodId,
-}: CreateStripePaymentIntentInput) {
+}: Omit<CreateStripePaymentIntentInput, 'stripeCustomerId'> & {
+  userId: string;
+}) {
   let { stripeCustomerId } = await usersService.getUserStripeCustomerId({
     userId,
   });
@@ -204,13 +197,17 @@ export async function createStripePaymentIntent({
   return { stripePaymentIntent };
 }
 
-export type UpdatePaymentInput = Pick<PaymentUpdate, 'status' | 'paymentProviderReferenceId'> & Required<Pick<PaymentUpdate, 'id'>>
+export type UpdatePaymentInput = Pick<
+  PaymentUpdate,
+  'status' | 'paymentProviderReferenceId'
+> &
+  Required<Pick<PaymentUpdate, 'id'>>;
 
 export async function updatePayment({
   id,
   status,
   paymentProviderReferenceId,
-  }: UpdatePaymentInput) {
+}: UpdatePaymentInput) {
   const [updatedPayment] = await db
     .update(paymentsTable)
     .set({
@@ -231,7 +228,11 @@ export async function updatePayment({
   return updatedPayment;
 }
 
-export type UpdateRefundInput = Pick<RefundUpdate, 'status' | 'paymentProviderReferenceId'> & Required<Pick<RefundUpdate, 'id'>>
+export type UpdateRefundInput = Pick<
+  RefundUpdate,
+  'status' | 'paymentProviderReferenceId'
+> &
+  Required<Pick<RefundUpdate, 'id'>>;
 
 export async function updateRefund({
   status,

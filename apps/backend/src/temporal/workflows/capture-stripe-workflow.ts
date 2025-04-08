@@ -34,8 +34,8 @@ export async function captureStripeWorkflow({
   });
 
   const updatedPayment = await updatePayment({
-    paymentId,
-    updatePaymentData: { paymentStatus: newPaymentStatus },
+    id: paymentId,
+    status: newPaymentStatus,
   });
 
   return {

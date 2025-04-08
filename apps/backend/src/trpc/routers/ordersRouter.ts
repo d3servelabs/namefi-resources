@@ -1,30 +1,18 @@
-import { cartsTable, db, paymentProviderDetailsSchema } from '@namefi-astra/db';
+import { cartsTable, db } from '@namefi-astra/db';
 import { TRPCError } from '@trpc/server';
 import { eq } from 'drizzle-orm';
 import { z } from 'zod';
-import { orderService } from '#services/orders/orders.service';
-import { createPayment, createStripePaymentIntentSchema } from '../../temporal/activities/payment.activities';
+import { orderService } from '../../services/orders/orders.service';
+import { createPayment } from '../../temporal/activities/payment.activities';
 import { temporalClient } from '../../temporal/client';
 import { TEMPORAL_QUEUES } from '../../temporal/shared';
 import { processOrderWorkflow } from '../../temporal/workflows/processOrder.workflow';
 import { createTRPCRouter, protectedProcedure } from '../base';
-
-
-const paymentMetadataSchema = z.object({
-  ...createStripePaymentIntentSchema.pick({
-    confirmationTokenId: true,
-  }).shape,
-});
+import { createOrderInputSchema } from '../types';
 
 export const ordersRouter = createTRPCRouter({
   createOrder: protectedProcedure
-    .input(
-      z.object({
-        cartId: z.string(),
-        paymentProviderDetails: paymentProviderDetailsSchema,
-        paymentMetadata: paymentMetadataSchema,
-      }),
-    )
+    .input(createOrderInputSchema)
     .mutation(async ({ ctx, input }) => {
       const { cartId } = input;
       const cart = await db.query.cartsTable.findFirst({
@@ -55,6 +43,8 @@ export const ordersRouter = createTRPCRouter({
         cartId: input.cartId,
         userId: ctx.user.id,
         paymentId: payment.id,
+        nftWalletAddress: input.nftMetadata.nftWalletAddress,
+        nftChainId: input.nftMetadata.nftChainId,
       });
 
       temporalClient.workflow.start(processOrderWorkflow, {

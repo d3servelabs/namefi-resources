@@ -1,4 +1,8 @@
-import type { PaymentStatus, RefundStatus } from '@namefi-astra/db/types';
+import {
+  type PaymentStatus,
+  type RefundStatus,
+  paymentStatusSchema,
+} from '@namefi-astra/db/types';
 import * as workflow from '@temporalio/workflow';
 import type { PaymentActivities } from '../activities';
 import type { MoneyAmount } from '../activities/mint.activities';
@@ -7,7 +11,7 @@ import { mintNfsc } from './mint.workflow';
 
 export type RefundUserWorkflowInput = {
   paymentId: string;
-  amountToRefundInUsdCents?: number;
+  amountToRefundInUsdCents: number;
 };
 
 export type RefundUserWorkflowOutput = {
@@ -34,13 +38,13 @@ export async function refundUserWorkflow({
 
   const refund = await createRefund({
     paymentId,
-    amountToRefundInUsdCents: amountToRefundInUsdCents as number,
+    amountToRefundInUsdCents,
   });
   const refundId = refund.id;
 
   await updatePayment({
-    paymentId,
-    updatePaymentData: { paymentStatus: 'REFUND_REQUESTED' },
+    id: paymentId,
+    status: paymentStatusSchema.Values.REFUND_REQUESTED,
   });
 
   const input = {
@@ -71,8 +75,9 @@ export async function refundUserWorkflow({
   }
 
   const updatedRefund = await updateRefund({
-    refundId,
-    updateRefundData: { refundStatus, paymentProviderReferenceId },
+    id: refundId,
+    status: refundStatus,
+    paymentProviderReferenceId,
   });
 
   return {

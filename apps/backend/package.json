@@ -3,7 +3,7 @@
   "type": "module",
   "exports": {
     "./trpc": "./src/trpc/index.ts",
-    "./lib/db/types": "./src/lib/db/types.ts"
+    "./trpc/types": "./src/trpc/types.ts"
   },
   "imports": {
     "#lib/env": "./src/lib/env/index.ts",

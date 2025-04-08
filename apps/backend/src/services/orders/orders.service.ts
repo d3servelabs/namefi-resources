@@ -31,10 +31,14 @@ export async function createOrderFromCart({
   cartId,
   userId,
   paymentId,
+  nftWalletAddress,
+  nftChainId,
 }: {
   cartId: string;
   userId: string;
   paymentId: string;
+  nftWalletAddress: string;
+  nftChainId: number;
 }) {
   const cart = await db.query.cartsTable.findFirst({
     where: eq(cartsTable.id, cartId),
@@ -65,6 +69,8 @@ export async function createOrderFromCart({
           totalAmountInUSDCents,
           userId,
           paymentId,
+          nftWalletAddress,
+          nftChainId,
         },
       ])
       .returning();

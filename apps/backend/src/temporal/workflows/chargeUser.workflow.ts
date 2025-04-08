@@ -1,10 +1,14 @@
 import { paymentProviderEnum } from '@namefi-astra/db/schema';
-import { type PaymentStatus, paymentProviderSchema, paymentStatusSchema } from '@namefi-astra/db/types';
+import {
+  type PaymentStatus,
+  paymentProviderSchema,
+  paymentStatusSchema,
+} from '@namefi-astra/db/types';
 import * as workflow from '@temporalio/workflow';
 import { stripePaymentIntentStatusToPaymentStatus } from '#services/stripePayments/stripePaymentHelpers';
+import type { CreateStripePaymentIntentInput } from '#services/stripePayments/types';
 import type { PaymentActivities } from '../activities';
 import type { MoneyAmount } from '../activities/mint.activities';
-import type { CreateStripePaymentIntentInput } from '../activities/payment.activities';
 import { TEMPORAL_QUEUES, shortRunningOpts } from '../shared';
 import { ChargeStripeWorkflow } from './chargeStripe.workflow';
 import { chargeNfscWorkflow } from './mint.workflow';
@@ -13,7 +17,10 @@ export const NFSC_PAYMENT_PROVIDERS = paymentProviderEnum.enumValues.filter(
   (provider) => provider.startsWith('NFSC_'),
 );
 
-export type PaymentExtraMetadata = Pick<CreateStripePaymentIntentInput, 'confirmationTokenId'>
+export type PaymentExtraMetadata = Pick<
+  CreateStripePaymentIntentInput,
+  'confirmationTokenId'
+>;
 
 export type ChargeUserWorkflowInput = {
   paymentId: string;
@@ -52,12 +59,14 @@ export async function chargeUserWorkflow({
     try {
       const { paymentIntentId, paymentIntentStatus } =
         await workflow.executeChild(ChargeStripeWorkflow, {
-          args: [{
-            userId,
-            totalAmountInUsdCents: amountInUSDCents,
-            confirmationTokenId: metadata?.confirmationTokenId,
-            paymentMethodId: stripePaymentDetails?.paymentMethodId,
-          }],
+          args: [
+            {
+              userId,
+              totalAmountInUsdCents: amountInUSDCents,
+              confirmationTokenId: metadata?.confirmationTokenId,
+              paymentMethodId: stripePaymentDetails?.paymentMethodId,
+            },
+          ],
           workflowId: `charge-stripe-${paymentId}`,
           taskQueue: TEMPORAL_QUEUES.DEFAULT,
           retry: {

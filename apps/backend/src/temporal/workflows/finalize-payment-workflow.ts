@@ -46,8 +46,8 @@ export async function finalizePaymentWorkflow({
         paymentIntentStatus: capturedStripePaymentIntent.status,
       });
       const updatedPayment = await updatePayment({
-        paymentId,
-        updatePaymentData: { paymentStatus: newPaymentStatus },
+        id: paymentId,
+        status: newPaymentStatus,
       });
       return {
         paymentStatus: updatedPayment.status,

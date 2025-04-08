@@ -25,7 +25,12 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { cn, getShortAddress } from '@/lib/utils';
 import { supportedChains } from '@/lib/wagmiConfig';
 import { formatAmountInUSD } from '@/utils/number';
-import type { paymentProviderEnum } from '@namefi-astra/db';
+import type { DeepPartial } from '@/utils/types';
+import {
+  type PaymentProviderDetails,
+  isNfscPayment,
+  paymentProviderSchema,
+} from '@namefi-astra/db/types';
 import { CHAINS, NFSC_CONTRACT_ADDRESS } from '@namefi-astra/utils';
 import { useWallets } from '@privy-io/react-auth';
 import type { ConfirmationToken } from '@stripe/stripe-js';
@@ -64,13 +69,10 @@ export enum SelectedPaymentMethod {
   SAVED_CARD = 'SAVED_CARD',
 }
 
-export type PaymentMethodDetails = {
-  paymentProvider: (typeof paymentProviderEnum.enumValues)[number];
-  paymentProviderOptions: {
-    chainId?: number;
+type PaymentDetails = {
+  paymentProviderDetails: DeepPartial<PaymentProviderDetails>;
+  paymentMetadata?: {
     confirmationTokenId?: string;
-    paymentMethodId?: string;
-    walletAddress?: string;
   };
 };
 
@@ -86,7 +88,7 @@ export type SelectPaymentMethodCardProps = {
   cartTotalInUsdCents: number;
   footerButton?: ReactNode;
   onPaymentMethodDetailsChanged: (
-    paymentMethodDetails: PaymentMethodDetails | null,
+    paymentMethodDetails: PaymentDetails | null,
   ) => void;
   onSelectedPaymentMethodChanged: (
     selectedPaymentMethod: SelectedPaymentMethod | null | undefined,
@@ -107,16 +109,18 @@ export function SelectPaymentMethodCard({
   const [newCardPreview, setNewCardPreview] = useState<string | null>(null);
 
   const [nfscPaymentMethodDetails, setNfscPaymentMethodDetails] =
-    useState<PaymentMethodDetails | null>({
-      paymentProvider: 'NFSC_BASE',
-      paymentProviderOptions: {
-        chainId: CHAINS.base.id,
+    useState<PaymentDetails | null>({
+      paymentProviderDetails: {
+        paymentProvider: paymentProviderSchema.Values.NFSC_BASE,
+        nfscPaymentDetails: {
+          chainId: CHAINS.base.id,
+        },
       },
     });
   const [savedCardPaymentMethodDetails, setSavedCardPaymentMethodDetails] =
-    useState<PaymentMethodDetails | null>(null);
+    useState<PaymentDetails | null>(null);
   const [newCardPaymentMethodDetails, setNewCardPaymentMethodDetails] =
-    useState<PaymentMethodDetails | null>(null);
+    useState<PaymentDetails | null>(null);
 
   const { ready: ethereumWalletsReady, wallets: ethereumWallets } =
     useWallets();
@@ -132,26 +136,47 @@ export function SelectPaymentMethodCard({
   }, [ethereumWallets, ethereumWalletsReady]);
 
   const isUseBalanceQueryEnabled = useMemo(() => {
-    return (
-      !!nfscPaymentMethodDetails &&
-      !!nfscPaymentMethodDetails.paymentProviderOptions.walletAddress &&
-      !!nfscPaymentMethodDetails.paymentProviderOptions.chainId
-    );
+    if (isNfscPayment(nfscPaymentMethodDetails?.paymentProviderDetails)) {
+      return (
+        !!nfscPaymentMethodDetails &&
+        !!nfscPaymentMethodDetails.paymentProviderDetails.nfscPaymentDetails
+          ?.walletAddress &&
+        !!nfscPaymentMethodDetails.paymentProviderDetails.nfscPaymentDetails
+          .chainId
+      );
+    }
+    return false;
   }, [nfscPaymentMethodDetails]);
 
   const {
     data: nfscBalanceData,
     refetch: refetchNfscBalance,
     isLoading: balanceIsLoading,
-  } = useBalance({
-    address: nfscPaymentMethodDetails?.paymentProviderOptions
-      .walletAddress as `0x${string}`,
-    chainId: nfscPaymentMethodDetails?.paymentProviderOptions.chainId,
-    token: NFSC_CONTRACT_ADDRESS,
-    query: {
-      enabled: isUseBalanceQueryEnabled,
-    },
-  });
+  } = useBalance(
+    (() => {
+      if (
+        nfscPaymentMethodDetails?.paymentProviderDetails &&
+        isNfscPayment(nfscPaymentMethodDetails.paymentProviderDetails)
+      ) {
+        const { nfscPaymentDetails } =
+          nfscPaymentMethodDetails.paymentProviderDetails;
+        return {
+          address: nfscPaymentDetails?.walletAddress as `0x${string}`,
+          chainId: nfscPaymentDetails?.chainId,
+          token: NFSC_CONTRACT_ADDRESS,
+          query: {
+            enabled: isUseBalanceQueryEnabled,
+          },
+        };
+      }
+
+      return {
+        query: {
+          enabled: false,
+        },
+      };
+    })(),
+  );
 
   const selectedWalletChainNfscBalanceInUsdCents = useMemo(() => {
     if (!nfscBalanceData) {
@@ -199,9 +224,14 @@ export function SelectPaymentMethodCard({
 
   const handleAddPaymentMethodSuccess = useCallback(
     (confirmationToken: ConfirmationToken) => {
-      const newPaymentMethodDetails: PaymentMethodDetails = {
-        paymentProvider: 'STRIPE',
-        paymentProviderOptions: {
+      const newPaymentMethodDetails: PaymentDetails = {
+        paymentProviderDetails: {
+          paymentProvider: paymentProviderSchema.Values.STRIPE,
+          stripePaymentDetails: {
+            paymentMethodId: undefined,
+          },
+        },
+        paymentMetadata: {
           confirmationTokenId: confirmationToken.id,
         },
       };
@@ -230,10 +260,12 @@ export function SelectPaymentMethodCard({
       const selectedSavedCard = SAVED_CARDS.find(
         (card) => card.paymentMethodId === value,
       );
-      const savedCardPaymentMethodDetails: PaymentMethodDetails = {
-        paymentProvider: 'STRIPE',
-        paymentProviderOptions: {
-          paymentMethodId: selectedSavedCard?.paymentMethodId,
+      const savedCardPaymentMethodDetails: PaymentDetails = {
+        paymentProviderDetails: {
+          paymentProvider: paymentProviderSchema.Values.STRIPE,
+          stripePaymentDetails: {
+            paymentMethodId: selectedSavedCard?.paymentMethodId,
+          },
         },
       };
       setSavedCardPaymentMethodDetails(savedCardPaymentMethodDetails);
@@ -247,14 +279,28 @@ export function SelectPaymentMethodCard({
       walletAddress,
       chainId,
     }: { walletAddress?: string; chainId?: number }) => {
-      const newNfscPaymentMethodDetails: PaymentMethodDetails = {
-        paymentProvider: chainId === 1 ? 'NFSC_ETHEREUM' : 'NFSC_BASE',
-        paymentProviderOptions: {
-          walletAddress:
-            walletAddress ??
-            nfscPaymentMethodDetails?.paymentProviderOptions.walletAddress,
-          chainId:
-            chainId ?? nfscPaymentMethodDetails?.paymentProviderOptions.chainId,
+      const newNfscPaymentMethodDetails: PaymentDetails = {
+        paymentProviderDetails: {
+          paymentProvider:
+            chainId === 1
+              ? paymentProviderSchema.Values.NFSC_ETHEREUM
+              : paymentProviderSchema.Values.NFSC_BASE,
+          nfscPaymentDetails: {
+            walletAddress:
+              walletAddress ??
+              ((isNfscPayment(nfscPaymentMethodDetails?.paymentProviderDetails)
+                ? nfscPaymentMethodDetails.paymentProviderDetails
+                    .nfscPaymentDetails?.walletAddress
+                : undefined) ||
+                undefined),
+            chainId:
+              chainId ??
+              ((isNfscPayment(nfscPaymentMethodDetails?.paymentProviderDetails)
+                ? nfscPaymentMethodDetails.paymentProviderDetails
+                    .nfscPaymentDetails?.chainId
+                : CHAINS.base.id) ||
+                CHAINS.base.id),
+          },
         },
       };
       setNfscPaymentMethodDetails(newNfscPaymentMethodDetails);

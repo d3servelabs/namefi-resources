@@ -142,7 +142,6 @@ const stripePaymentDetailsSchema = z.object({
 });
 export type StripePaymentDetails = z.infer<typeof stripePaymentDetailsSchema>;
 
-
 export const nfscPaymentProviderSchema = z.enum([
   paymentProviderSchema.Values.NFSC_BASE,
   paymentProviderSchema.Values.NFSC_ETHEREUM,
@@ -155,21 +154,24 @@ export const stripePaymentProviderDetailsSchema = z.object({
   stripePaymentDetails: stripePaymentDetailsSchema,
 });
 
-export type StripePaymentProviderDetails = z.infer<typeof stripePaymentProviderDetailsSchema>;
+export type StripePaymentProviderDetails = z.infer<
+  typeof stripePaymentProviderDetailsSchema
+>;
 
 export const nfscPaymentProviderDetailsSchema = z.object({
   paymentProvider: nfscPaymentProviderSchema,
-  nfscPaymentDetails: paymentInsertSchema.shape.nfscPaymentDetails.unwrap(),
+  nfscPaymentDetails: paymentInsertSchema.shape.nfscPaymentDetails
+    .unwrap()
+    .refine((d) => d !== null),
 });
 
-export type NfscPaymentProviderDetails = z.infer<typeof nfscPaymentProviderDetailsSchema>;
+export type NfscPaymentProviderDetails = z.infer<
+  typeof nfscPaymentProviderDetailsSchema
+>;
 
 export const paymentProviderDetailsSchema = z.discriminatedUnion(
   'paymentProvider',
-  [
-    stripePaymentProviderDetailsSchema,
-    nfscPaymentProviderDetailsSchema,
-  ],
+  [stripePaymentProviderDetailsSchema, nfscPaymentProviderDetailsSchema],
 );
 
 export type PaymentProviderDetails = z.infer<
@@ -182,9 +184,9 @@ export type PaymentProviderDetails = z.infer<
  * @returns Narrowed type with Stripe payment details if applicable
  */
 export function isStripePayment(
-  details?: PaymentProviderDetails | null
+  details: unknown,
 ): details is StripePaymentProviderDetails {
-  return details?.paymentProvider === paymentProviderSchema.Values.STRIPE;
+  return stripePaymentProviderDetailsSchema.safeParse(details).success;
 }
 
 /**
@@ -193,7 +195,7 @@ export function isStripePayment(
  * @returns Narrowed type with NFSC payment details if applicable
  */
 export function isNfscPayment(
-  details?: PaymentProviderDetails | null
+  details: unknown,
 ): details is NfscPaymentProviderDetails {
-  return nfscPaymentProviderSchema.safeParse(details?.paymentProvider).success;
+  return nfscPaymentProviderDetailsSchema.safeParse(details).success;
 }
