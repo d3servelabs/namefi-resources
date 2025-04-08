@@ -26,6 +26,7 @@ export async function getOrderDetailsOrThrow(orderId: string) {
   return order;
 }
 
+// TODO: move to trpc, used only by apps/backend/src/trpc/routers/ordersRouter.ts
 export async function createOrderFromCart({
   cartId,
   userId,
@@ -86,6 +87,7 @@ export async function createOrderFromCart({
   });
 }
 
+// TODO: move to temporal, used only by apps/backend/src/temporal/workflows/processOrder.workflow.ts, apps/backend/src/temporal/workflows/processOrder.workflow.ts, apps/backend/src/temporal/workflows/processOrder.workflow.ts, apps/backend/src/temporal/workflows/processOrder.workflow.ts, apps/backend/src/temporal/workflows/processOrder.workflow.ts, apps/backend/src/temporal/workflows/processOrder.workflow.ts, apps/backend/src/temporal/workflows/processOrder.workflow.ts, apps/backend/src/temporal/workflows/processOrder.workflow.ts, apps/backend/src/temporal/activities/order.activities.ts, apps/backend/src/temporal/activities/order.activities.ts, apps/backend/src/temporal/activities/order.activities.ts
 export async function updateOrderStatusOrThrow({
   orderId,
   status,

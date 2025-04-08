@@ -3,6 +3,7 @@ import { PaymentMethodNotFoundError } from './errors';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
 
+// TODO: move to temporal, used only by apps/backend/src/temporal/workflows/finalize-payment-workflow.ts, apps/backend/src/temporal/workflows/finalize-payment-workflow.ts, apps/backend/src/temporal/workflows/capture-stripe-workflow.ts, apps/backend/src/temporal/workflows/capture-stripe-workflow.ts, apps/backend/src/temporal/workflows/chargeUser.workflow.ts, apps/backend/src/temporal/workflows/chargeUser.workflow.ts
 export { stripePaymentIntentStatusToPaymentStatus } from './stripePaymentHelpers';
 
 export async function createCustomer({ name }: Stripe.CustomerCreateParams) {
@@ -11,6 +12,7 @@ export async function createCustomer({ name }: Stripe.CustomerCreateParams) {
   return stripeCustomer;
 }
 
+// TODO: delete or remove 'export', not being used by trpc or temporal.
 export async function createCustomerSession({
   stripeCustomerId,
 }: {
@@ -29,6 +31,7 @@ export async function createCustomerSession({
   return { customerSession };
 }
 
+// TODO: delete or remove 'export', not being used by trpc or temporal.
 export async function createSetupIntent({
   stripeCustomerId,
 }: { stripeCustomerId: string }) {
@@ -107,6 +110,7 @@ export async function capturePaymentIntent({
   return { capturedStripePaymentIntent };
 }
 
+// TODO: delete or remove 'export', not being used by trpc or temporal.
 export async function getCustomerPaymentMethods({
   stripeCustomerId,
 }: { stripeCustomerId: string }) {
@@ -115,6 +119,7 @@ export async function getCustomerPaymentMethods({
   return { customerPaymentMethods: paymentMethods.data };
 }
 
+// TODO: delete or remove 'export', not being used by trpc or temporal.
 export async function getCustomerHasPaymentMethod({
   paymentMethodId,
   stripeCustomerId,
@@ -128,6 +133,7 @@ export async function getCustomerHasPaymentMethod({
   );
 }
 
+// TODO: delete or remove 'export', not being used by trpc or temporal.
 export async function deleteCustomerPaymentMethod({
   paymentMethodToDeleteId,
   stripeCustomerId,

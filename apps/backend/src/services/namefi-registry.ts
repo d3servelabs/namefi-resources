@@ -19,6 +19,7 @@ const _mockDeterministicRandomOwner = (domain: NamefiNormalizedDomain) => {
   return hash.slice(0, 8);
 };
 
+// TODO: move to trpc, used only by apps/backend/src/trpc/routers/searchRouter.test.ts
 export const _mockGetDomainInfo = async (domains: NamefiNormalizedDomain[]) => {
   // MOCK response. Respond the query term as is, plus 2 variations of it.
   return domains.map((domain: NamefiNormalizedDomain) => ({
@@ -35,6 +36,7 @@ export const _mockGetDomainInfo = async (domains: NamefiNormalizedDomain[]) => {
  * @param domains - Array of normalized domain names to query
  * @returns Array of domain information objects containing availability, price, and owner details
  */
+// TODO: move to trpc, used only by apps/backend/src/trpc/routers/registryRouter.ts, apps/backend/src/trpc/routers/registryRouter.ts, apps/backend/src/trpc/routers/registryRouter.ts, apps/backend/src/trpc/routers/registryRouter.ts, apps/backend/src/trpc/routers/searchRouter.ts, apps/backend/src/trpc/routers/searchRouter.ts, apps/backend/src/trpc/routers/searchRouter.test.ts
 export const getDomainListInfo = async (domains: NamefiNormalizedDomain[]) => {
   // Query the database for NFTs matching the provided domain names
   const nfts = await db.query.namefiNftTable.findMany({

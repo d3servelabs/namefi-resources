@@ -35,6 +35,7 @@ export const createRecordInputSchema = dnsRecordInsertSchema.extend({
  * @returns The found DNS record
  * @throws {TRPCError} If record is not found or doesn't belong to Domain
  */
+// TODO: delete or remove 'export', not being used by trpc or temporal.
 export async function getRecordByIdAndDomainOrThrow(
   id: string,
   normalizedDomainName: NamefiNormalizedDomain,
@@ -64,6 +65,7 @@ export async function getRecordByIdAndDomainOrThrow(
  * @param normalizedDomainName - The normalized domain name to get records for
  * @returns An array of DNS records for the domain
  */
+// TODO: move to trpc, used only by apps/backend/src/trpc/routers/dnsRecordsRouter.ts, apps/backend/src/trpc/routers/dnsRecordsRouter.ts
 export async function getZoneRecords(
   normalizedDomainName: NamefiNormalizedDomain,
 ) {
@@ -83,6 +85,7 @@ export async function getZoneRecords(
  * @param deleteRecords - Array of existing records to delete
  * @returns Array of all records in the zone after updates
  */
+// TODO: delete or remove 'export', not being used by trpc or temporal.
 export async function validateZone(
   normalizedDomainName: NamefiNormalizedDomain,
   changes: {
@@ -145,6 +148,7 @@ export async function validateZone(
  * @param input - The input data for the updated record
  * @returns The updated DNS record
  */
+// TODO: move to trpc, used only by apps/backend/src/trpc/routers/dnsRecordsRouter.ts, apps/backend/src/trpc/routers/dnsRecordsRouter.ts, apps/backend/src/trpc/routers/dnsRecordsRouter.ts
 export async function updateRecord(
   input: z.infer<typeof updateRecordInputSchema>,
 ) {
@@ -181,6 +185,7 @@ export async function updateRecord(
  * @param id - The ID of the DNS record to delete
  * @param normalizedDomainName - The normalized domain name to check against
  */
+// TODO: move to trpc, used only by apps/backend/src/trpc/routers/dnsRecordsRouter.ts, apps/backend/src/trpc/routers/dnsRecordsRouter.ts, apps/backend/src/trpc/routers/dnsRecordsRouter.ts
 export async function deleteRecord(
   id: string,
   normalizedDomainName: NamefiNormalizedDomain,
@@ -197,6 +202,7 @@ export async function deleteRecord(
  * @param input - The input data for the new record
  * @returns The created DNS record
  */
+// TODO: move to trpc, used only by apps/backend/src/trpc/routers/dnsRecordsRouter.ts, apps/backend/src/trpc/routers/dnsRecordsRouter.ts
 export async function createRecord(
   input: z.infer<typeof createRecordInputSchema>,
 ) {
