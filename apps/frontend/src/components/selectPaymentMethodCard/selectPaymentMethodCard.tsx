@@ -27,7 +27,7 @@ import { supportedChains } from '@/lib/wagmiConfig';
 import { formatAmountInUSD } from '@/utils/number';
 import type { paymentProviderEnum } from '@namefi-astra/db';
 import { CHAINS, NFSC_CONTRACT_ADDRESS } from '@namefi-astra/utils';
-import { useSolanaWallets, useWallets } from '@privy-io/react-auth';
+import { useWallets } from '@privy-io/react-auth';
 import type { ConfirmationToken } from '@stripe/stripe-js';
 import Image from 'next/image';
 import { formatUnits } from 'viem';
@@ -120,25 +120,16 @@ export function SelectPaymentMethodCard({
 
   const { ready: ethereumWalletsReady, wallets: ethereumWallets } =
     useWallets();
-  const { ready: solanaWalletsReady, wallets: solanaWallets } =
-    useSolanaWallets();
 
   const isMobile = useIsMobile();
 
   const connectedWalletAddresses = useMemo(() => {
-    if (!(ethereumWalletsReady && solanaWalletsReady)) {
+    if (!ethereumWalletsReady) {
       return [];
     }
 
-    return [...ethereumWallets, ...solanaWallets].map(
-      (wallet) => wallet.address,
-    );
-  }, [
-    ethereumWallets,
-    ethereumWalletsReady,
-    solanaWallets,
-    solanaWalletsReady,
-  ]);
+    return [...ethereumWallets].map((wallet) => wallet.address);
+  }, [ethereumWallets, ethereumWalletsReady]);
 
   const isUseBalanceQueryEnabled = useMemo(() => {
     return (
