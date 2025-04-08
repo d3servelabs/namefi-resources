@@ -26,7 +26,7 @@ import { cn, getShortAddress } from '@/lib/utils';
 import { supportedChains } from '@/lib/wagmiConfig';
 import { formatAmountInUSD } from '@/utils/number';
 import type { paymentProviderEnum } from '@namefi-astra/db';
-import { NFSC_CONTRACT_ADDRESS } from '@namefi-astra/utils';
+import { CHAINS, NFSC_CONTRACT_ADDRESS } from '@namefi-astra/utils';
 import { useSolanaWallets, useWallets } from '@privy-io/react-auth';
 import type { ConfirmationToken } from '@stripe/stripe-js';
 import { formatUnits } from 'viem';
@@ -106,7 +106,12 @@ export function SelectPaymentMethodCard({
   const [newCardPreview, setNewCardPreview] = useState<string | null>(null);
 
   const [nfscPaymentMethodDetails, setNfscPaymentMethodDetails] =
-    useState<PaymentMethodDetails | null>(null);
+    useState<PaymentMethodDetails | null>({
+      paymentProvider: 'NFSC_BASE',
+      paymentProviderOptions: {
+        chainId: CHAINS.base.id,
+      },
+    });
   const [savedCardPaymentMethodDetails, setSavedCardPaymentMethodDetails] =
     useState<PaymentMethodDetails | null>(null);
   const [newCardPaymentMethodDetails, setNewCardPaymentMethodDetails] =
@@ -364,6 +369,7 @@ export function SelectPaymentMethodCard({
               <Select
                 disabled={selectedPaymentMethod !== SelectedPaymentMethod.NFSC}
                 onValueChange={handleNfscChainSelectValueChange}
+                defaultValue={`${CHAINS.base.id}`}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select a Chain" />
