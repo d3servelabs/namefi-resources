@@ -1,6 +1,6 @@
 'use client';
 
-import { Loader2, PencilIcon, PlusIcon } from 'lucide-react';
+import { CreditCardIcon, Loader2, PencilIcon, PlusIcon } from 'lucide-react';
 import { type ReactNode, useCallback, useMemo, useState } from 'react';
 
 import { Button } from '@/components/ui/shadcn/button';
@@ -29,6 +29,7 @@ import type { paymentProviderEnum } from '@namefi-astra/db';
 import { CHAINS, NFSC_CONTRACT_ADDRESS } from '@namefi-astra/utils';
 import { useSolanaWallets, useWallets } from '@privy-io/react-auth';
 import type { ConfirmationToken } from '@stripe/stripe-js';
+import Image from 'next/image';
 import { formatUnits } from 'viem';
 import { useBalance } from 'wagmi';
 import { AddPaymentMethodDialog } from '../addPaymentMethod/addPaymentMethodDialog';
@@ -313,11 +314,18 @@ export function SelectPaymentMethodCard({
                 value={SelectedPaymentMethod.NFSC}
                 id={SelectedPaymentMethod.NFSC}
               />
+              <Image
+                src={'/nfsc.svg'}
+                alt="nfsc icon"
+                width={40}
+                height={40}
+                className="w-10 h-10"
+              />
               <Label
                 htmlFor={SelectedPaymentMethod.NFSC}
                 className="font-medium"
               >
-                NFSC
+                Use $NFSC balance
               </Label>
             </div>
             <div
@@ -392,6 +400,7 @@ export function SelectPaymentMethodCard({
                 value={SelectedPaymentMethod.SAVED_CARD}
                 id={SelectedPaymentMethod.SAVED_CARD}
               />
+              <CreditCardIcon className="h-10 w-10" />
               <Label
                 htmlFor={SelectedPaymentMethod.SAVED_CARD}
                 className="font-medium"
@@ -427,6 +436,7 @@ export function SelectPaymentMethodCard({
                 value={SelectedPaymentMethod.NEW_CARD}
                 id={SelectedPaymentMethod.NEW_CARD}
               />
+              <CreditCardIcon className="h-10 w-10" />
               <Label
                 htmlFor={SelectedPaymentMethod.NEW_CARD}
                 className="font-medium"
