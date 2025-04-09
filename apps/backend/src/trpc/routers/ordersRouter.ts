@@ -1,4 +1,4 @@
-import { cartsTable, db } from '@namefi-astra/db';
+import { cartsTable, db, orderItemsTable, ordersTable } from '@namefi-astra/db';
 import { TRPCError } from '@trpc/server';
 import { eq } from 'drizzle-orm';
 import { z } from 'zod';
@@ -38,13 +38,38 @@ export const ordersRouter = createTRPCRouter({
         paymentProviderDetails: input.paymentProviderDetails,
       });
 
-      // Create order using the service
-      const order = await orderService.createOrderFromCart({
-        cartId: input.cartId,
-        userId: ctx.user.id,
-        paymentId: payment.id,
-        nftWalletAddress: input.nftMetadata.nftWalletAddress,
-        nftChainId: input.nftMetadata.nftChainId,
+      // Create order using DB transaction
+      const order = await db.transaction(async (tx) => {
+        // Create the order first
+        const [order] = await tx
+          .insert(ordersTable)
+          .values({
+            amountInUSDCents: totalAmountInUSDCents,
+            totalAmountInUSDCents,
+            userId: ctx.user.id,
+            paymentId: payment.id,
+            nftWalletAddress: input.nftMetadata.nftWalletAddress,
+            nftChainId: input.nftMetadata.nftChainId,
+          })
+          .returning();
+
+        // Create order items
+        const orderItems = await tx
+          .insert(orderItemsTable)
+          .values(
+            cart.items.map((item) => ({
+              orderId: order.id,
+              normalizedDomainName: item.normalizedDomainName,
+              amountInUSDCents: item.amountInUSDCents,
+              metadata: item.metadata,
+            })),
+          )
+          .returning();
+
+        return {
+          ...order,
+          items: orderItems,
+        };
       });
 
       temporalClient.workflow.start(processOrderWorkflow, {
