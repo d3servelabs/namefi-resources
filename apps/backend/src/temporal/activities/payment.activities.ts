@@ -181,7 +181,6 @@ export async function createStripePaymentIntent({
       .update(usersTable)
       .set({
         stripeCustomerId: customer.id,
-        updatedAt: new Date(),
       })
       .where(eq(usersTable.id, userId))
       .returning({ stripeCustomerId: usersTable.stripeCustomerId });
@@ -239,7 +238,6 @@ export async function updatePayment({
     .set({
       status,
       paymentProviderReferenceId,
-      updatedAt: new Date(),
     })
     .where(eq(paymentsTable.id, id))
     .returning({
@@ -270,7 +268,6 @@ export async function updateRefund({
     .set({
       status,
       paymentProviderReferenceId,
-      updatedAt: new Date(),
     })
     .where(eq(refundsTable.id, id))
     .returning({

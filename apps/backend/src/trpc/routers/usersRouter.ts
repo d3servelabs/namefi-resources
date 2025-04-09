@@ -31,7 +31,6 @@ export const usersRouter = createTRPCRouter({
         .update(usersTable)
         .set({
           ...input.data,
-          updatedAt: new Date(),
         })
         .where(eq(usersTable.id, ctx.user.id))
         .returning();

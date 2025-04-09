@@ -18,7 +18,6 @@ export async function updateOrderStatusOrThrow({
     .update(ordersTable)
     .set({
       status,
-      updatedAt: new Date(),
     })
     .where(eq(ordersTable.id, orderId))
     .returning();

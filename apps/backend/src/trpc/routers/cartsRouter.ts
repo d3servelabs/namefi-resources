@@ -69,7 +69,6 @@ export const cartsRouter = createTRPCRouter({
         .set({
           amountInUSDCents: input.amountInUSDCents,
           metadata: input.metadata,
-          updatedAt: new Date(),
         })
         .where(
           and(

@@ -167,7 +167,6 @@ export async function updateRecord(
     .update(dnsRecordsTable)
     .set({
       ...updateData,
-      updatedAt: new Date(),
     })
     .where(
       and(
