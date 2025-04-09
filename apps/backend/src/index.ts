@@ -4,6 +4,7 @@ import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { logger } from 'hono/logger';
 import { prettyJSON } from 'hono/pretty-json';
+import { getPoweredByNamefi3PDomains } from '#services/namefi-registry';
 import { config, secrets } from './lib/env';
 import { nsJsonRouter } from './ns-json';
 import { createContext } from './trpc';
@@ -11,24 +12,33 @@ import { appRouter } from './trpc/routers/appRouter';
 
 const app = new Hono();
 
-app.use(
-  cors({
-    origin: (origin) => {
-      if (
-        config.ALLOWED_ORIGINS?.some((allowedOrigin) =>
-          new RegExp(allowedOrigin).test(origin),
-        )
-      ) {
-        return origin;
-      }
+app.use(async (...args) => {
+  const allowedOrigins: string[] = [
+    ...(config.NAMEFI_FIRST_PARTY_ORIGINS ?? []),
+    ...(await getPoweredByNamefi3PDomains()),
+  ];
 
+  return cors({
+    origin: (origin) => {
+      if (origin) {
+        const parsedOrigin = new URL(origin);
+
+        // Check if it's using https
+        if (!config.ALLOW_HTTP && parsedOrigin.protocol !== 'https:') {
+          return null;
+        }
+
+        if (allowedOrigins.includes(parsedOrigin.hostname)) {
+          return origin;
+        }
+      }
       return null; // Block other origins
     },
     allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
     allowHeaders: ['Content-Type', 'Authorization'],
     credentials: true, // Allow cookies if needed
-  }),
-);
+  })(...args);
+});
 app.use(prettyJSON());
 app.use(logger());
 app.use(

@@ -10,9 +10,9 @@ const testConfig: Config = {
   SMTP_HOST: '',
   SMTP_PORT: 25,
   SMTP_SECURE: false,
-  ALLOWED_ORIGINS: [],
   NAMEFI_FIRST_PARTY_ORIGINS: [],
   ADDITIONAL_POWERED_BY_NAMEFI_THIRD_PARTY_DOMAINS: [],
+  ALLOW_HTTP: false,
 };
 
 export default testConfig;

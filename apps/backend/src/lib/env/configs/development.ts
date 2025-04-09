@@ -10,9 +10,9 @@ const developmentConfig: Config = {
   SMTP_HOST: 'localhost',
   SMTP_SECURE: false,
   APP_URL: 'localhost:3001',
-  ALLOWED_ORIGINS: ['^https://astra\\.namefi\\.dev$'],
   NAMEFI_FIRST_PARTY_ORIGINS: ['astra.namefi.dev'],
   ADDITIONAL_POWERED_BY_NAMEFI_THIRD_PARTY_DOMAINS: ['0x.city'],
+  ALLOW_HTTP: false,
 };
 
 export default developmentConfig;
