@@ -3,6 +3,7 @@ import {
   nameRegex,
   nameRegexString,
 } from '@namefi-astra/zod-dns';
+import { getAddress, isAddress } from 'viem';
 import { z } from 'zod';
 
 export const namefiNormalizedDomainRegex = nameRegex;
@@ -41,3 +42,13 @@ export const fqdnLowercaseToNamefiNormalizedDomain = z
 export type NamefiNormalizedDomain = z.infer<
   typeof namefiNormalizedDomainSchema
 >;
+
+export const checksumWalletAddressSchema = z
+  .string()
+  .refine(isAddress, {
+    message: 'Invalid wallet address',
+  })
+  .transform((address) => getAddress(address))
+  .brand<'ChecksumWalletAddress'>();
+
+export type ChecksumWalletAddress = z.infer<typeof checksumWalletAddressSchema>;
