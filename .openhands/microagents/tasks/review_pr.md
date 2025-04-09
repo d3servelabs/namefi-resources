@@ -57,7 +57,7 @@ Send *PR-level comment* to ask for clarification on the goal of the PR. ONLY pro
       - Summarize the key goal and the solution to that key goal implemented in the PR
       - Check if the author provided documentations about major design decisions
       - Summarize the design decisions made by author
-      - Suggest alternative approaches if applicable, and create a table to compare the pros and cons of each approach
+      - Check completenesss: suggest alternative approaches if applicable, and create a table to compare the pros and cons of each approach
 
 Send *PR-level comment* to ask for clarification on the solution of the PR. ONLY proceed to next Review Pass if the solution is concise and optimal, otherwise wait for the author to respond.
 
@@ -67,6 +67,7 @@ Send *PR-level comment* to ask for clarification on the solution of the PR. ONLY
 - Suggest improvements to the code structure, naming conventions, and documentation
 - Check for proper error handling
 - Ensure consistent formatting
+- Check completeness: suggest other part of the code that needs to be updated to complete the implementation.
 
 - **Documentation**:
    - Verify README/docstring updates
@@ -74,6 +75,7 @@ Send *PR-level comment* to ask for clarification on the solution of the PR. ONLY
 
 - **Testing**:
    - Confirm adequate test coverage
+   - If unit tests should be added, suggest the right tests to add
    - Verify tests pass
 
 Send *line-level suggested change* to ask for fixing the implementation of the PR. ONLY proceed to next Review Pass if the implementation is high quality, otherwise wait for the author to respond.
