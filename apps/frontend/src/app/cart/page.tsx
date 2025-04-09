@@ -1,4 +1,5 @@
 'use client';
+import { NftWalletCard } from '@/components/nftWalletCard';
 import {
   SelectPaymentMethodCard,
   SelectedPaymentMethod,
@@ -39,6 +40,9 @@ export default function CartPage() {
     checkoutWithCartRequestPaymentMethodDetails,
     setCheckoutWithCartRequestPaymentMethodDetails,
   ] = useState<DeepPartial<PaymentDetails> | null>(null);
+  const [selectedNftWalletAddress, setSelectedNftWalletAddress] = useState<
+    string | null
+  >(null);
 
   const { isAuthenticated, isLoading, privyUser } = useAuth();
 
@@ -157,7 +161,7 @@ export default function CartPage() {
     [],
   );
 
-  const submitPaymentButtonDisabled = useMemo(() => {
+  const paymentMethodSelected = useMemo(() => {
     switch (selectedPaymentMethod) {
       case SelectedPaymentMethod.NFSC: {
         if (
@@ -166,14 +170,14 @@ export default function CartPage() {
           )
         ) {
           return (
-            !hasSufficientBalance ||
+            hasSufficientBalance &&
             checkoutWithCartRequestPaymentMethodDetails?.paymentProviderDetails
-              ?.nfscPaymentDetails?.walletAddress === undefined ||
+              ?.nfscPaymentDetails?.walletAddress !== undefined &&
             checkoutWithCartRequestPaymentMethodDetails?.paymentProviderDetails
-              ?.nfscPaymentDetails?.chainId === undefined
+              ?.nfscPaymentDetails?.chainId !== undefined
           );
         }
-        return true;
+        return false;
       }
       case SelectedPaymentMethod.SAVED_CARD: {
         if (
@@ -183,12 +187,12 @@ export default function CartPage() {
         ) {
           return (
             checkoutWithCartRequestPaymentMethodDetails?.paymentProviderDetails
-              ?.stripePaymentDetails?.paymentMethodId === null ||
+              ?.stripePaymentDetails?.paymentMethodId !== null &&
             checkoutWithCartRequestPaymentMethodDetails?.paymentProviderDetails
-              ?.stripePaymentDetails?.paymentMethodId === undefined
+              ?.stripePaymentDetails?.paymentMethodId !== undefined
           );
         }
-        return true;
+        return false;
       }
       case SelectedPaymentMethod.NEW_CARD: {
         if (
@@ -198,15 +202,15 @@ export default function CartPage() {
         ) {
           return (
             checkoutWithCartRequestPaymentMethodDetails?.paymentMetadata
-              ?.confirmationTokenId === null ||
+              ?.confirmationTokenId !== null &&
             checkoutWithCartRequestPaymentMethodDetails?.paymentMetadata
-              ?.confirmationTokenId === undefined
+              ?.confirmationTokenId !== undefined
           );
         }
-        return true;
+        return false;
       }
       default:
-        return true;
+        return false;
     }
   }, [
     checkoutWithCartRequestPaymentMethodDetails,
@@ -215,44 +219,28 @@ export default function CartPage() {
   ]);
 
   const submitButtonText = useMemo(() => {
-    if (!submitPaymentButtonDisabled) {
-      return 'Submit Order';
+    if (!selectedNftWalletAddress) {
+      return 'Select NFT Wallet to Continue';
     }
 
-    switch (selectedPaymentMethod) {
-      case SelectedPaymentMethod.NFSC: {
-        if (!(isAuthenticated && privyUser)) {
-          return 'Sign in to Use NFSC';
-        }
-
-        if (selectedWalletChainNfscBalanceInUsdCents === null) {
-          return 'Select a Wallet and Chain';
-        }
-
-        return 'Insufficient NFSC Balance';
-      }
-
-      case SelectedPaymentMethod.SAVED_CARD: {
-        return 'Select a Saved Card';
-      }
-
-      case SelectedPaymentMethod.NEW_CARD: {
-        return 'Add a New Card';
-      }
-      default:
-        return 'Select a Payment Method';
+    if (!paymentMethodSelected) {
+      return 'Select Payment Method to Continue';
     }
-  }, [
-    isAuthenticated,
-    privyUser,
-    selectedWalletChainNfscBalanceInUsdCents,
-    selectedPaymentMethod,
-    submitPaymentButtonDisabled,
-  ]);
+
+    return 'Submit Order';
+  }, [paymentMethodSelected, selectedNftWalletAddress]);
+
+  const submitOrderDisabled = useMemo(() => {
+    return !(paymentMethodSelected && selectedNftWalletAddress);
+  }, [paymentMethodSelected, selectedNftWalletAddress]);
 
   const handleSubmitPayment = useCallback(() => {
     if (!cartQuery.data?.id) {
       throw new Error('Tried to submit payment with no cart id.');
+    }
+
+    if (!selectedNftWalletAddress) {
+      return;
     }
 
     console.log(checkoutWithCartRequestPaymentMethodDetails);
@@ -276,8 +264,7 @@ export default function CartPage() {
         cartId: cartQuery.data.id,
         ...validatedPaymentMethodDetails.data,
         nftMetadata: {
-          // TODO: (sid) Replace Alice address
-          nftWalletAddress: '0xB5856d4598c919834913b8656ebc15a64d3C7836',
+          nftWalletAddress: selectedNftWalletAddress,
           nftChainId: CHAINS.base.id,
         },
       });
@@ -288,7 +275,15 @@ export default function CartPage() {
     createOrder,
     checkoutWithCartRequestPaymentMethodDetails,
     cartQuery.data?.id,
+    selectedNftWalletAddress,
   ]);
+
+  const handleNftWalletAddressChange = useCallback(
+    (walletAddress: string | null) => {
+      setSelectedNftWalletAddress(walletAddress);
+    },
+    [],
+  );
 
   if (isLoading) {
     return (
@@ -372,22 +367,31 @@ export default function CartPage() {
         )}
       </Card>
       {items.length > 0 && (
-        <SelectPaymentMethodCard
-          cartTotalInUsdCents={totalAmountInUsdCents}
-          footerButton={
+        <>
+          <NftWalletCard
+            onWalletAddressChange={handleNftWalletAddressChange}
+            selectedWalletAddress={selectedNftWalletAddress}
+          />
+
+          <SelectPaymentMethodCard
+            cartTotalInUsdCents={totalAmountInUsdCents}
+            onPaymentMethodDetailsChanged={(
+              paymentMethodDetails: DeepPartial<PaymentDetails> | null,
+            ) => handlePaymentMethodDetailsChanged(paymentMethodDetails)}
+            onSelectedPaymentMethodChanged={handleSelectedPaymentMethodChanged}
+          />
+
+          <div className="mt-4">
             <Button
               className="w-full"
-              disabled={submitPaymentButtonDisabled}
+              disabled={submitOrderDisabled}
               onClick={handleSubmitPayment}
+              size="lg"
             >
               {submitButtonText}
             </Button>
-          }
-          onPaymentMethodDetailsChanged={(
-            paymentMethodDetails: DeepPartial<PaymentDetails> | null,
-          ) => handlePaymentMethodDetailsChanged(paymentMethodDetails)}
-          onSelectedPaymentMethodChanged={handleSelectedPaymentMethodChanged}
-        />
+          </div>
+        </>
       )}
     </div>
   );
