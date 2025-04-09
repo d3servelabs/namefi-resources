@@ -81,6 +81,7 @@ export default function CartPage() {
   const { mutate: createOrder } = useMutation({
     ...trpc.orders.createOrder.mutationOptions({
       onSuccess: (data) => {
+        cartQuery.refetch();
         router.push(`/orders/${data.id}`);
       },
     }),

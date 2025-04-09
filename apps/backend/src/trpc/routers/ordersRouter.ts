@@ -71,22 +71,36 @@ export const ordersRouter = createTRPCRouter({
           )
           .returning();
 
+        // Delete cart items that were used to create the order
+        await tx
+          .delete(cartItemsTable)
+          .where(
+            and(
+              inArray(cartItemsTable.id, cartItemIds),
+              eq(cartItemsTable.userId, ctx.user.id),
+            ),
+          );
+
         return {
           ...order,
           items: orderItems,
         };
       });
 
-      temporalClient.workflow.start(processOrderWorkflow, {
-        args: [
-          {
-            orderId: order.id,
-            paymentMetadata: input.paymentMetadata,
-          },
-        ],
-        taskQueue: TEMPORAL_QUEUES.DOMAINS,
-        workflowId: `process-order-${order.id}`,
-      });
+      try {
+        temporalClient.workflow.start(processOrderWorkflow, {
+          args: [
+            {
+              orderId: order.id,
+              paymentMetadata: input.paymentMetadata,
+            },
+          ],
+          taskQueue: TEMPORAL_QUEUES.DOMAINS,
+          workflowId: `process-order-${order.id}`,
+        });
+      } catch (error) {
+        console.error(error);
+      }
 
       return order;
     }),
