@@ -7,8 +7,8 @@ import {
 } from '@namefi-astra/db/types';
 import { matchAny } from '@namefi-astra/utils';
 import * as workflow from '@temporalio/workflow';
-import { stripePaymentIntentStatusToPaymentStatus } from '#services/stripePayments/stripePaymentHelpers';
 import type { PaymentActivities } from '../activities';
+import { stripePaymentIntentStatusToPaymentStatus } from '../activities/helpers/stripePaymentHelpers';
 import { TEMPORAL_QUEUES, shortRunningOpts } from '../shared';
 import { refundUserWorkflow } from './refund-user.workflow';
 

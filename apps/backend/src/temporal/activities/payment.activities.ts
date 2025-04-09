@@ -11,7 +11,8 @@ import {
 } from '@namefi-astra/db';
 import { eq } from 'drizzle-orm';
 import { isNil } from 'ramda';
-import { stripePaymentService, usersService } from '#services/index';
+import Stripe from 'stripe';
+import { usersService } from '#services/index';
 import {
   CreateNewPaymentFailure,
   CreateNewRefundFailure,
@@ -25,7 +26,10 @@ import {
   UpdatePaymentFailure,
   UpdateRefundFailure,
 } from '#services/payments/errors';
+import { PaymentMethodNotFoundError } from '#services/stripePayments/errors';
 import type { CreateStripePaymentIntentInput } from '#services/stripePayments/types';
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
 
 export async function captureStripePayment({
   amountToCaptureInUsdCents,
@@ -49,11 +53,11 @@ export async function captureStripePayment({
     });
   }
 
-  const { capturedStripePaymentIntent } =
-    await stripePaymentService.capturePaymentIntent({
-      stripePaymentIntentId: paymentProviderReferenceId,
-      amountToCaptureInUsdCents,
-    });
+  const capturedStripePaymentIntent = await stripe.paymentIntents.capture(
+    paymentProviderReferenceId,
+    { amount_to_capture: amountToCaptureInUsdCents },
+  );
+
   return { capturedStripePaymentIntent };
 }
 
@@ -170,9 +174,8 @@ export async function createStripePaymentIntent({
   });
 
   if (!stripeCustomerId) {
-    const customer = await stripePaymentService.createCustomer({
-      name: userId,
-    });
+    const customer: Stripe.Response<Stripe.Customer> =
+      await stripe.customers.create({ name: userId });
 
     const [userWithStripeCustomerId] = await db
       .update(usersTable)
@@ -186,13 +189,36 @@ export async function createStripePaymentIntent({
     stripeCustomerId = userWithStripeCustomerId.stripeCustomerId as string;
   }
 
-  const { stripePaymentIntent } =
-    await stripePaymentService.createPaymentIntent({
-      totalAmountInUsdCents,
-      stripeCustomerId,
-      paymentMethodId,
-      confirmationTokenId,
-    });
+  if (paymentMethodId) {
+    const customerPaymentMethods: Stripe.PaymentMethod[] = (
+      await stripe.customers.listPaymentMethods(stripeCustomerId)
+    ).data;
+
+    const customerHasPaymentMethod = customerPaymentMethods.some(
+      (paymentMethod) => paymentMethod.id === paymentMethodId,
+    );
+
+    if (!customerHasPaymentMethod) {
+      throw new PaymentMethodNotFoundError({
+        stripeCustomerId,
+        paymentMethodId,
+      });
+    }
+  }
+
+  const stripePaymentIntent = await stripe.paymentIntents.create({
+    amount: totalAmountInUsdCents,
+    currency: 'usd',
+    capture_method: 'manual',
+    customer: stripeCustomerId,
+    confirm: true,
+    automatic_payment_methods: {
+      allow_redirects: 'never',
+      enabled: true,
+    },
+    payment_method: paymentMethodId,
+    confirmation_token: confirmationTokenId,
+  });
 
   return { stripePaymentIntent };
 }

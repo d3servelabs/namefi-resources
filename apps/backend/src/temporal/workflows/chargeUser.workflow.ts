@@ -5,9 +5,9 @@ import {
   paymentStatusSchema,
 } from '@namefi-astra/db/types';
 import * as workflow from '@temporalio/workflow';
-import { stripePaymentIntentStatusToPaymentStatus } from '#services/stripePayments/stripePaymentHelpers';
 import type { CreateStripePaymentIntentInput } from '#services/stripePayments/types';
 import type { PaymentActivities } from '../activities';
+import { stripePaymentIntentStatusToPaymentStatus } from '../activities/helpers/stripePaymentHelpers';
 import type { MoneyAmount } from '../activities/mint.activities';
 import { TEMPORAL_QUEUES, shortRunningOpts } from '../shared';
 import { ChargeStripeWorkflow } from './chargeStripe.workflow';

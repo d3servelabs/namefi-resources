@@ -1,7 +1,6 @@
-import type { PaymentStatus } from '@namefi-astra/db';
+import type { PaymentStatus } from '@namefi-astra/db/types';
 import type Stripe from 'stripe';
 
-// TODO: move to temporal, used only by apps/backend/src/temporal/workflows/finalize-payment-workflow.ts, apps/backend/src/temporal/workflows/capture-stripe-workflow.ts, apps/backend/src/temporal/workflows/chargeUser.workflow.ts
 export function stripePaymentIntentStatusToPaymentStatus({
   paymentIntentStatus,
 }: { paymentIntentStatus: Stripe.PaymentIntent.Status }): PaymentStatus {
