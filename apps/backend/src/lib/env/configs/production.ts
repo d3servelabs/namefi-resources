@@ -14,6 +14,8 @@ const productionConfig: Config = {
     // any domain or subdomain for namefi.io
     '^https://astra\\.namefi\\.io$',
   ],
+  NAMEFI_FIRST_PARTY_ORIGINS: ['astra.namefi.io'],
+  ADDITIONAL_POWERED_BY_NAMEFI_THIRD_PARTY_DOMAINS: ['0x.city'],
 };
 
 export default productionConfig;

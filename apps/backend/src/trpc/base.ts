@@ -4,9 +4,11 @@ import { TRPCError } from '@trpc/server';
 import type { FetchCreateContextFnOptions } from '@trpc/server/adapters/fetch';
 import { eq } from 'drizzle-orm';
 import type { Context } from 'hono';
+import { isNil, isNotEmpty } from 'ramda';
 import superjson from 'superjson';
 import { ZodError } from 'zod';
-import { secrets } from '#lib/env';
+import { config, secrets } from '#lib/env';
+import { getPoweredByNamefi3PDomains } from '#services/namefi-registry';
 import { privyClient } from './utils';
 
 /**
@@ -20,18 +22,44 @@ import { privyClient } from './utils';
  *
  * @see https://trpc.io/docs/server/context
  */
-export const createContext = (
+export const createContext = async (
   _opts: FetchCreateContextFnOptions,
   c: Context,
 ) => {
+  const originText = c.req.header('Origin');
+  let parentDomain: string | null = null;
+
+  if (originText && isNotEmpty(originText)) {
+    // parse origin url
+    const origin = new URL(originText);
+
+    // if it's not our own domain, check if it's an allowed parent domain
+    if (!config.NAMEFI_FIRST_PARTY_ORIGINS?.includes(origin.hostname)) {
+      const allowedParentDomains = await getPoweredByNamefi3PDomains();
+      // if it's not an allowed parent domain, throw an error
+      if (!allowedParentDomains.includes(origin.hostname)) {
+        throw new TRPCError({
+          code: 'FORBIDDEN',
+          message: 'parent domain not allowed',
+        });
+      }
+      parentDomain = origin.hostname;
+    }
+  }
+
   return {
     req: c.req,
     res: c.res,
     db,
+    /**
+     * parentDomain - the domain of the selling SLD, it will be null in case of the main/aggregate page
+     */
+    parentDomain,
+    isFirstPartyDomain: isNil(parentDomain),
   };
 };
 
-export type TrpcContext = ReturnType<typeof createContext>;
+export type TrpcContext = Awaited<ReturnType<typeof createContext>>;
 
 /**
  * 2. INITIALIZATION

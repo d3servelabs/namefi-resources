@@ -26,7 +26,17 @@ export const configSchema = z.object({
   SMTP_PORT: z.number().optional().default(465),
   SMTP_HOST: z.string(),
   APP_URL: z.string(),
+  //TODO: consider replacing allowed origins with getAllowedParentDomains and MAIN_PAGE_ALLOWED_PARENT_DOMAINS
   ALLOWED_ORIGINS: z.string().array().optional().default([]),
+  /**
+   * List of first-party domains that are owned by NameFI and allowed to interact with the API.
+   */
+  NAMEFI_FIRST_PARTY_ORIGINS: z.string().array().optional().default([]),
+  ADDITIONAL_POWERED_BY_NAMEFI_THIRD_PARTY_DOMAINS: z
+    .string()
+    .array()
+    .optional()
+    .default([]),
 });
 
 export type Config = z.infer<typeof configSchema>;

@@ -3,6 +3,7 @@ import { db } from '@namefi-astra/db';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { ParseResultType, parseDomain } from 'parse-domain';
 import { isNil } from 'ramda';
+import { config } from '#lib/env';
 
 const _mockDeterministicRandomAvailability = (
   domainLdh: NamefiNormalizedDomain,
@@ -31,6 +32,19 @@ export const _mockGetDomainInfo = async (domains: NamefiNormalizedDomain[]) => {
   }));
 };
 
+// biome-ignore lint/suspicious/useAwait: it will be a db query in upcoming updates
+export const getPoweredByNamefi3PDomains = async () => {
+  const fromDb: string[] = [];
+  const fromConfig =
+    config.ADDITIONAL_POWERED_BY_NAMEFI_THIRD_PARTY_DOMAINS as string[];
+  return Promise.resolve([...fromDb, ...fromConfig]);
+};
+
+// biome-ignore lint/suspicious/useAwait: it will be a db query in upcoming updates
+export const getSubdomainPriceInUsd = async (subdomain: string) => {
+  return 5;
+};
+
 /**
  * Retrieves information about a list of domain names including their availability, price, and current owner.
  * @param domains - Array of normalized domain names to query
@@ -46,42 +60,31 @@ export const getDomainListInfo = async (domains: NamefiNormalizedDomain[]) => {
   // Create a map of domain names to their corresponding NFT records for efficient lookup
   const nftMap = new Map(nfts.map((nft) => [nft.normalizedDomainName, nft]));
 
-  // Temporary hardcoded price mapping for parent domains
-  //TODO: Replace with dynamic pricing system
-  const parentDomainsToPriceMap = new Map([
-    ['0x.city', 5],
-    ['defi.build', 5],
-  ]);
+  return Promise.all(
+    domains.map(async (domain) => {
+      // Parse the domain to extract its components
+      const domainParseResult = parseDomain(domain);
+      // Return default values for invalid or unsupported domains
+      if (domainParseResult.type !== ParseResultType.Listed) {
+        return {
+          domain,
+          availability: false,
+          priceInUSD: null,
+          currentOwner: null,
+        };
+      }
 
-  return domains.map((domain) => {
-    // Parse the domain to extract its components
-    const domainParseResult = parseDomain(domain);
-    // Return default values for invalid or unsupported domains
-    if (domainParseResult.type !== ParseResultType.Listed) {
+      // Look up the NFT and price information
+      const nft = nftMap.get(domain);
+      const price = await getSubdomainPriceInUsd(domain);
+
+      // Return domain information including availability, price, and current owner
       return {
         domain,
-        availability: false,
-        priceInUSD: null,
-        currentOwner: null,
+        availability: isNil(nft),
+        priceInUSD: price,
+        currentOwner: nft?.ownerAddress,
       };
-    }
-
-    // Reconstruct the parent domain from the parsed components
-    const parentDomain = [
-      domainParseResult.domain,
-      ...domainParseResult.topLevelDomains,
-    ].join('.');
-
-    // Look up the NFT and price information
-    const nft = nftMap.get(domain);
-    const price = parentDomainsToPriceMap.get(parentDomain);
-
-    // Return domain information including availability, price, and current owner
-    return {
-      domain,
-      availability: isNil(nft),
-      priceInUSD: price,
-      currentOwner: nft?.ownerAddress,
-    };
-  });
+    }),
+  );
 };
