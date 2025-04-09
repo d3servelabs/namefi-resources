@@ -20,7 +20,7 @@ import type { DeepPartial } from '@/utils/types';
 import { createOrderInputSchema } from '@namefi-astra/backend/trpc/types';
 import { isNfscPayment, isStripePayment } from '@namefi-astra/db/types';
 import { CHAINS, NFSC_CONTRACT_ADDRESS } from '@namefi-astra/utils';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { inferInput } from '@trpc/tanstack-react-query';
 import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -47,6 +47,7 @@ export default function CartPage() {
   const { isAuthenticated, isLoading } = useAuth();
 
   const trpc = useTRPC();
+  const queryClient = useQueryClient();
 
   const cartQuery = useQuery({
     ...trpc.carts.getItems.queryOptions(),
@@ -63,7 +64,7 @@ export default function CartPage() {
   const { mutate: removeItem } = useMutation(
     trpc.carts.removeItem.mutationOptions({
       onSuccess: () => {
-        cartQuery.refetch();
+        queryClient.invalidateQueries(trpc.carts.getItems.queryFilter());
       },
     }),
   );
@@ -71,7 +72,7 @@ export default function CartPage() {
   const { mutate: clearCart } = useMutation(
     trpc.carts.clear.mutationOptions({
       onSuccess: () => {
-        cartQuery.refetch();
+        queryClient.invalidateQueries(trpc.carts.getItems.queryFilter());
       },
     }),
   );
@@ -81,7 +82,7 @@ export default function CartPage() {
   const { mutate: createOrder } = useMutation({
     ...trpc.orders.createOrder.mutationOptions({
       onSuccess: (data) => {
-        cartQuery.refetch();
+        queryClient.invalidateQueries(trpc.carts.getItems.queryFilter());
         router.push(`/orders/${data.id}`);
       },
     }),
