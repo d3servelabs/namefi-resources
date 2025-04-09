@@ -14,12 +14,15 @@
 
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { z } from 'zod';
-import { getDomainListInfo } from '#services/namefi-registry';
+import {
+  getDomainListInfo,
+  getPoweredByNamefi3PDomains,
+} from '#services/namefi-registry';
 import { createTRPCRouter, publicProcedure } from '../base';
 
 export const getSuggestions = (
   query: string,
-  parentDomain: '0x.city' | 'defi.build',
+  parentDomain: string,
 ): NamefiNormalizedDomain[] => {
   // re-write the query by keeping only letters, digits, dash, underscore and dot characters
   const trimmedQuery = query.replace(/[^a-zA-Z0-9-_.]/g, '');
@@ -44,13 +47,31 @@ export const searchRouter = createTRPCRouter({
     .input(
       z.object({
         query: z.string(),
-        parentDomain: z.enum(['0x.city', 'defi.build']),
+        parentDomain: z
+          .string()
+          .optional()
+          .describe(
+            'only pass it if request is sent from a first party domain',
+          ),
       }),
     )
-    .query(async ({ input }) => {
-      const { query, parentDomain } = input;
+    .query(async ({ input, ctx }) => {
+      const { query } = input;
 
-      const suggestions = getSuggestions(query, parentDomain);
+      // if the request is coming from a selling SLD like `0x.city` then it will be `ctx.parentDomain`,
+      // but if that's null then this request is from main-page, so either take in the passed option,
+      // or fallback to first domain in poweredByNamefiDomains (hardcoded for the time being)
+      const parentDomain = ctx.isFirstPartyParentDomain
+        ? input.parentDomain
+        : ctx.parentDomain;
+
+      // TODO: this will be replaced when we implement AI suggestions
+      const poweredByNamefiDomains = await getPoweredByNamefi3PDomains();
+
+      const suggestions = getSuggestions(
+        query,
+        parentDomain ?? poweredByNamefiDomains[0],
+      );
       const bulkAvailability = await getDomainListInfo(suggestions);
 
       return { suggestions, bulkAvailability };

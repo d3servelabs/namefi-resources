@@ -26,7 +26,9 @@ describe('Search Router', () => {
 
   // Create an actual caller for the router
   // The search router doesn't use context values, so we can use a type assertion
-  const caller = searchRouter.createCaller({} as unknown as TrpcContext);
+  const caller = searchRouter.createCaller({
+    isFirstPartyParentDomain: true,
+  } as unknown as TrpcContext);
 
   it('should return search results with suggestions and availability', async () => {
     // Act: Call the actual search procedure with test input

@@ -55,7 +55,7 @@ export const createContext = async (
      * parentDomain - the domain of the selling SLD, it will be null in case of the main/aggregate page
      */
     parentDomain,
-    isFirstPartyDomain: isNil(parentDomain),
+    isFirstPartyParentDomain: isNil(parentDomain),
   };
 };
 
