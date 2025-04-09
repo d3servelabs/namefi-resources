@@ -1,6 +1,11 @@
-import { cartsTable, db, orderItemsTable, ordersTable } from '@namefi-astra/db';
+import {
+  cartItemsTable,
+  db,
+  orderItemsTable,
+  ordersTable,
+} from '@namefi-astra/db';
 import { TRPCError } from '@trpc/server';
-import { eq } from 'drizzle-orm';
+import { and, eq, inArray } from 'drizzle-orm';
 import { z } from 'zod';
 import { orderService } from '../../services/orders/orders.service';
 import { createPayment } from '../../temporal/activities/payment.activities';
@@ -14,21 +19,21 @@ export const ordersRouter = createTRPCRouter({
   createOrder: protectedProcedure
     .input(createOrderInputSchema)
     .mutation(async ({ ctx, input }) => {
-      const { cartId } = input;
-      const cart = await db.query.cartsTable.findFirst({
-        where: eq(cartsTable.id, cartId),
-        with: {
-          items: true,
-        },
+      const { cartItemIds } = input;
+      const cartItems = await db.query.cartItemsTable.findMany({
+        where: and(
+          inArray(cartItemsTable.id, cartItemIds),
+          eq(cartItemsTable.userId, ctx.user.id),
+        ),
       });
 
-      if (!cart) {
+      if (cartItems.length !== cartItemIds.length) {
         throw new TRPCError({
           code: 'BAD_REQUEST',
         });
       }
 
-      const totalAmountInUSDCents = cart.items.reduce(
+      const totalAmountInUSDCents = cartItems.reduce(
         (acc, item) => acc + item.amountInUSDCents,
         0,
       );
@@ -57,7 +62,7 @@ export const ordersRouter = createTRPCRouter({
         const orderItems = await tx
           .insert(orderItemsTable)
           .values(
-            cart.items.map((item) => ({
+            cartItems.map((item) => ({
               orderId: order.id,
               normalizedDomainName: item.normalizedDomainName,
               amountInUSDCents: item.amountInUSDCents,

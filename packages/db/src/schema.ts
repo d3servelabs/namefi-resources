@@ -116,26 +116,6 @@ export const usersTable = pgTable('users', {
 });
 
 /**
- * Carts table
- * Stores shopping carts for users
- * One cart per user (OneToOne relationship)
- */
-export const cartsTable = pgTable(
-  'cart',
-  {
-    ...randomUuid,
-    userId: uuid('user_id').references(() => usersTable.id, {
-      onDelete: 'set null',
-    }),
-    ...timestamps,
-  },
-  (table) => [
-    unique('user_id_idx').on(table.userId),
-    index('cart_user_id_idx').on(table.userId),
-  ],
-);
-
-/**
  * Cart items table
  * Stores individual items in a shopping cart
  */
@@ -143,9 +123,9 @@ export const cartItemsTable = pgTable(
   'cart_items',
   {
     ...randomUuid,
-    cartId: uuid('cart_id')
+    userId: uuid('user_id')
       .notNull()
-      .references(() => cartsTable.id, { onDelete: 'cascade' }),
+      .references(() => usersTable.id, { onDelete: 'cascade' }),
     ...normalizedDomain,
     ...amountInUsdCents,
     metadata: jsonb('metadata').default({}),
@@ -153,7 +133,7 @@ export const cartItemsTable = pgTable(
   },
   (table) => [
     check('amount_in_usd_cents_nonnegative', sql`amount_in_usd_cents >= 0`),
-    index('cart_items_cart_id_idx').on(table.cartId),
+    index('cart_items_user_id_idx').on(table.userId),
   ],
 );
 

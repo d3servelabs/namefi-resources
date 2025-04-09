@@ -20,7 +20,7 @@ const nftMetadataSchema = orderInsertSchema.pick({
 });
 
 export const createOrderInputSchema = z.object({
-  cartId: z.string(),
+  cartItemIds: z.array(z.string()),
   paymentProviderDetails: paymentProviderDetailsSchema,
   paymentMetadata: paymentMetadataSchema,
   nftMetadata: nftMetadataSchema,

@@ -40,14 +40,11 @@ export const CartDropdown: ForwardRefExoticComponent<vProps> = forwardRef<
   const { isAuthenticated } = useAuth();
 
   const cartQuery = useQuery({
-    ...trpc.carts.getOrCreate.queryOptions(),
+    ...trpc.carts.getItems.queryOptions(),
     enabled: isAuthenticated,
   });
 
-  const items = useMemo(
-    () => cartQuery?.data?.items ?? [],
-    [cartQuery?.data?.items],
-  );
+  const items = useMemo(() => cartQuery?.data ?? [], [cartQuery?.data]);
 
   const totlaAmountInUSDCents = useMemo(
     () => items.reduce((sum, item) => sum + item.amountInUSDCents, 0),

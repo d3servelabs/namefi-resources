@@ -339,7 +339,7 @@ export const Search: FC<DomainSearchProps> = ({
     isFetching: isCartFetching,
     refetch: refetchCart,
   } = useQuery({
-    ...trpc.carts.getOrCreate.queryOptions(),
+    ...trpc.carts.getItems.queryOptions(),
     enabled: isAuthenticated,
   });
 
@@ -369,20 +369,19 @@ export const Search: FC<DomainSearchProps> = ({
   // Helper functions
   const isDomainInCart = useCallback(
     (domainName: string) => {
-      return !!cartData?.items.some(
+      return !!cartData?.some(
         (item) => item.normalizedDomainName === domainName,
       );
     },
-    [cartData?.items],
+    [cartData],
   );
 
   const getCartItemId = useCallback(
     (domainName: string) => {
-      return cartData?.items.find(
-        (item) => item.normalizedDomainName === domainName,
-      )?.id;
+      return cartData?.find((item) => item.normalizedDomainName === domainName)
+        ?.id;
     },
-    [cartData?.items],
+    [cartData],
   );
 
   const handleDomainAction = useCallback(

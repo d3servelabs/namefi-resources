@@ -1,7 +1,6 @@
 import { relations } from 'drizzle-orm';
 import {
   cartItemsTable,
-  cartsTable,
   orderItemsTable,
   ordersTable,
   paymentsTable,
@@ -10,25 +9,16 @@ import {
 } from './schema';
 
 // User relations
-export const usersRelations = relations(usersTable, ({ one, many }) => ({
-  cart: one(cartsTable),
+export const usersRelations = relations(usersTable, ({ many }) => ({
+  cartItems: many(cartItemsTable),
   orders: many(ordersTable),
-}));
-
-// Cart relations
-export const cartsRelations = relations(cartsTable, ({ one, many }) => ({
-  user: one(usersTable, {
-    fields: [cartsTable.userId],
-    references: [usersTable.id],
-  }),
-  items: many(cartItemsTable),
 }));
 
 // Cart items relations
 export const cartItemsRelations = relations(cartItemsTable, ({ one }) => ({
-  cart: one(cartsTable, {
-    fields: [cartItemsTable.cartId],
-    references: [cartsTable.id],
+  user: one(usersTable, {
+    fields: [cartItemsTable.userId],
+    references: [usersTable.id],
   }),
 }));
 

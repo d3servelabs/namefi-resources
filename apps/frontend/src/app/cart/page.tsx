@@ -44,19 +44,16 @@ export default function CartPage() {
     string | null
   >(null);
 
-  const { isAuthenticated, isLoading, privyUser } = useAuth();
+  const { isAuthenticated, isLoading } = useAuth();
 
   const trpc = useTRPC();
 
   const cartQuery = useQuery({
-    ...trpc.carts.getOrCreate.queryOptions(),
+    ...trpc.carts.getItems.queryOptions(),
     enabled: isAuthenticated,
   });
 
-  const items = useMemo(
-    () => cartQuery?.data?.items ?? [],
-    [cartQuery?.data?.items],
-  );
+  const items = useMemo(() => cartQuery?.data ?? [], [cartQuery?.data]);
 
   const totalAmountInUsdCents = useMemo(
     () => items.reduce((sum, item) => sum + item.amountInUSDCents, 0),
@@ -234,16 +231,14 @@ export default function CartPage() {
     return !(paymentMethodSelected && selectedNftWalletAddress);
   }, [paymentMethodSelected, selectedNftWalletAddress]);
 
-  const handleSubmitPayment = useCallback(() => {
-    if (!cartQuery.data?.id) {
-      throw new Error('Tried to submit payment with no cart id.');
+  const handleSubmitOrder = useCallback(() => {
+    if (!cartQuery.data || cartQuery.data.length === 0) {
+      throw new Error('Tried to submit order with no cart items.');
     }
 
     if (!selectedNftWalletAddress) {
       return;
     }
-
-    console.log(checkoutWithCartRequestPaymentMethodDetails);
 
     const validatedPaymentMethodDetails = createOrderInputSchema
       .pick({
@@ -253,7 +248,6 @@ export default function CartPage() {
       .safeParse(checkoutWithCartRequestPaymentMethodDetails);
 
     if (!validatedPaymentMethodDetails.success) {
-      console.log(validatedPaymentMethodDetails.error);
       throw new Error(
         'Tried to submit payment with no payment method attached.',
       );
@@ -261,7 +255,7 @@ export default function CartPage() {
 
     try {
       createOrder({
-        cartId: cartQuery.data.id,
+        cartItemIds: cartQuery.data.map((item) => item.id),
         ...validatedPaymentMethodDetails.data,
         nftMetadata: {
           nftWalletAddress: selectedNftWalletAddress,
@@ -269,12 +263,12 @@ export default function CartPage() {
         },
       });
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }, [
     createOrder,
     checkoutWithCartRequestPaymentMethodDetails,
-    cartQuery.data?.id,
+    cartQuery.data,
     selectedNftWalletAddress,
   ]);
 
@@ -385,7 +379,7 @@ export default function CartPage() {
             <Button
               className="w-full"
               disabled={submitOrderDisabled}
-              onClick={handleSubmitPayment}
+              onClick={handleSubmitOrder}
               size="lg"
             >
               {submitButtonText}

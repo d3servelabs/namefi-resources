@@ -71,6 +71,13 @@
       "when": 1744196849703,
       "tag": "0009_lovely_ben_grimm",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1744219440753,
+      "tag": "0010_nifty_thunderball",
+      "breakpoints": true
     }
   ]
 }

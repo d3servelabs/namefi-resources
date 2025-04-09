@@ -7,7 +7,6 @@ import {
 import { z } from 'zod';
 import {
   cartItemsTable,
-  cartsTable,
   dnsRecordsTable,
   orderItemsTable,
   orderStatusEnum,
@@ -44,10 +43,6 @@ export const userInsertSchema = createInsertSchema(usersTable);
 export const userSelectSchema = createSelectSchema(usersTable);
 export const userUpdateSchema = createUpdateSchema(usersTable);
 
-export const cartInsertSchema = createInsertSchema(cartsTable);
-export const cartSelectSchema = createSelectSchema(cartsTable);
-export const cartUpdateSchema = createUpdateSchema(cartsTable);
-
 export const cartItemInsertSchema = createInsertSchema(cartItemsTable);
 export const cartItemSelectSchema = createSelectSchema(cartItemsTable);
 export const cartItemUpdateSchema = createUpdateSchema(cartItemsTable);
@@ -83,11 +78,6 @@ export const dnsRecordUpdateSchema = createUpdateSchema(dnsRecordsTable);
 export type UserInsert = z.infer<typeof userInsertSchema>;
 export type UserSelect = z.infer<typeof userSelectSchema>;
 export type UserUpdate = z.infer<typeof userUpdateSchema>;
-
-// Cart types
-export type CartInsert = z.infer<typeof cartInsertSchema>;
-export type CartSelect = z.infer<typeof cartSelectSchema>;
-export type CartUpdate = z.infer<typeof cartUpdateSchema>;
 
 // CartItem types
 export type CartItemInsert = z.infer<typeof cartItemInsertSchema>;

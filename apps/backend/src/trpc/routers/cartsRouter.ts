@@ -2,50 +2,28 @@ import {
   cartItemInsertSchema,
   cartItemUpdateSchema,
   cartItemsTable,
-  cartsTable,
   db,
 } from '@namefi-astra/db';
-import { TRPCError } from '@trpc/server';
-import { eq } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 import { z } from 'zod';
 import { createTRPCRouter, protectedProcedure } from '../base';
 
 export const cartsRouter = createTRPCRouter({
-  // Get or create cart for the current user
-  getOrCreate: protectedProcedure.query(async ({ ctx }) => {
-    // Try to find existing cart with items
-    let cart = await db.query.cartsTable.findFirst({
-      where: eq(cartsTable.userId, ctx.user.id),
-      with: {
-        items: true,
-      },
+  // Get cart items for the current user
+  getItems: protectedProcedure.query(async ({ ctx }) => {
+    const cartItems = await db.query.cartItemsTable.findMany({
+      where: eq(cartItemsTable.userId, ctx.user.id),
     });
-
-    if (!cart) {
-      // Create new cart if none exists
-      const [newCart] = await db
-        .insert(cartsTable)
-        .values({
-          userId: ctx.user.id,
-        })
-        .returning();
-
-      cart = {
-        ...newCart,
-        items: [],
-      };
-    }
-
-    return cart;
+    return cartItems;
   }),
 
-  // Add item to cart
+  // Add item to cart for the current user
   addItem: protectedProcedure
     .input(
       cartItemInsertSchema
         .omit({
           id: true,
-          cartId: true,
+          userId: true,
           createdAt: true,
           updatedAt: true,
         })
@@ -55,50 +33,23 @@ export const cartsRouter = createTRPCRouter({
         }),
     )
     .mutation(async ({ ctx, input }) => {
-      // Get or create cart
-      let cart = await db.query.cartsTable.findFirst({
-        where: eq(cartsTable.userId, ctx.user.id),
-        with: {
-          items: true,
-        },
-      });
-
-      if (!cart) {
-        const [newCart] = await db
-          .insert(cartsTable)
-          .values({
-            userId: ctx.user.id,
-          })
-          .returning();
-        cart = {
-          ...newCart,
-          items: [],
-        };
-      }
-
       // Add item to cart
-      await db
-        .insert(cartItemsTable)
-        .values({
-          cartId: cart.id,
-          amountInUSDCents: input.amountInUSDCents,
-          normalizedDomainName: input.normalizedDomainName,
-          metadata: input.metadata,
-        })
-        .returning();
-
-      // Return updated cart with items
-      const updatedCart = await db.query.cartsTable.findFirst({
-        where: eq(cartsTable.id, cart.id),
-        with: {
-          items: true,
-        },
+      await db.insert(cartItemsTable).values({
+        userId: ctx.user.id,
+        amountInUSDCents: input.amountInUSDCents,
+        normalizedDomainName: input.normalizedDomainName,
+        metadata: input.metadata,
       });
 
-      return updatedCart;
+      // Return cart items for the current user
+      const cartItems = await db.query.cartItemsTable.findMany({
+        where: eq(cartItemsTable.userId, ctx.user.id),
+      });
+
+      return cartItems;
     }),
 
-  // Update cart item
+  // Update cart item for the current user
   updateItem: protectedProcedure
     .input(
       cartItemUpdateSchema
@@ -113,26 +64,6 @@ export const cartsRouter = createTRPCRouter({
         }),
     )
     .mutation(async ({ ctx, input }) => {
-      // Find cart item and verify ownership
-      const cartItem = await db.query.cartItemsTable.findFirst({
-        where: eq(cartItemsTable.id, input.id),
-        with: {
-          cart: {
-            columns: {
-              userId: true,
-              id: true,
-            },
-          },
-        },
-      });
-
-      if (!cartItem || cartItem.cart.userId !== ctx.user.id) {
-        throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: 'Cart item not found',
-        });
-      }
-
       await db
         .update(cartItemsTable)
         .set({
@@ -140,90 +71,47 @@ export const cartsRouter = createTRPCRouter({
           metadata: input.metadata,
           updatedAt: new Date(),
         })
-        .where(eq(cartItemsTable.id, input.id))
-        .returning();
+        .where(
+          and(
+            eq(cartItemsTable.id, input.id),
+            eq(cartItemsTable.userId, ctx.user.id),
+          ),
+        );
 
       // Return updated cart with items
-      const updatedCart = await db.query.cartsTable.findFirst({
-        where: eq(cartsTable.id, cartItem.cart.id),
-        with: {
-          items: true,
-        },
+      const cartItems = await db.query.cartItemsTable.findMany({
+        where: eq(cartItemsTable.userId, ctx.user.id),
       });
 
-      return updatedCart;
+      return cartItems;
     }),
 
-  // Remove item from cart
+  // Remove item from cart for the current user
   removeItem: protectedProcedure
     .input(z.string().uuid())
     .mutation(async ({ ctx, input }) => {
-      // Find cart item and verify ownership
-      const cartItem = await db.query.cartItemsTable.findFirst({
-        where: eq(cartItemsTable.id, input),
-        with: {
-          cart: {
-            columns: {
-              userId: true,
-              id: true,
-            },
-          },
-        },
-      });
-
-      if (!cartItem || cartItem.cart.userId !== ctx.user.id) {
-        throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: 'Cart item not found',
-        });
-      }
-
-      await db.delete(cartItemsTable).where(eq(cartItemsTable.id, input));
+      await db
+        .delete(cartItemsTable)
+        .where(
+          and(
+            eq(cartItemsTable.id, input),
+            eq(cartItemsTable.userId, ctx.user.id),
+          ),
+        );
 
       // Return updated cart with items
-      const updatedCart = await db.query.cartsTable.findFirst({
-        where: eq(cartsTable.id, cartItem.cart.id),
-        with: {
-          items: true,
-        },
+      const cartItems = await db.query.cartItemsTable.findMany({
+        where: eq(cartItemsTable.userId, ctx.user.id),
       });
 
-      return updatedCart;
+      return cartItems;
     }),
 
-  // Clear cart (remove all items)
+  // Clear cart (remove all items) for the current user
   clear: protectedProcedure.mutation(async ({ ctx }) => {
-    // Get or create cart
-    let cart = await db.query.cartsTable.findFirst({
-      where: eq(cartsTable.userId, ctx.user.id),
-      with: {
-        items: true,
-      },
-    });
-
-    if (!cart) {
-      const [newCart] = await db
-        .insert(cartsTable)
-        .values({
-          userId: ctx.user.id,
-        })
-        .returning();
-      cart = {
-        ...newCart,
-        items: [],
-      };
-    }
-
-    await db.delete(cartItemsTable).where(eq(cartItemsTable.cartId, cart.id));
-
-    // Return updated cart with items
-    const updatedCart = await db.query.cartsTable.findFirst({
-      where: eq(cartsTable.id, cart.id),
-      with: {
-        items: true,
-      },
-    });
-
-    return updatedCart;
+    await db
+      .delete(cartItemsTable)
+      .where(eq(cartItemsTable.userId, ctx.user.id));
+    return [];
   }),
 });
