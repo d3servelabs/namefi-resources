@@ -1,5 +1,4 @@
 'use client';
-
 import { cn } from '@/lib/utils';
 import {
   type CSSProperties,
@@ -12,6 +11,7 @@ import {
   useState,
 } from 'react';
 import styled, { css, keyframes } from 'styled-components';
+import { v4 as uuidv4 } from 'uuid';
 
 const animation = keyframes`
   0% {
@@ -65,10 +65,7 @@ export const Preloader: FC<PreloaderProps> = forwardRef(
   ) => {
     const [loaded, setLoaded] = useState(false);
 
-    const keys = useMemo(
-      () => [...new Array(4)].map(() => crypto.randomUUID()),
-      [],
-    );
+    const keys = useMemo(() => [...new Array(4)].map(() => uuidv4()), []);
 
     const parentStyle = useMemo<CSSProperties>(
       () => ({ width: `${size}px`, height: `${size}px` }),
