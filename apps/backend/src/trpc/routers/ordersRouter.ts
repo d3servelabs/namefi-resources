@@ -14,6 +14,7 @@ import { TEMPORAL_QUEUES } from '../../temporal/shared';
 import { processOrderWorkflow } from '../../temporal/workflows/processOrder.workflow';
 import { createTRPCRouter, protectedProcedure } from '../base';
 import { createOrderInputSchema } from '../types';
+import { isNormalizedDomainNameAllowedForOriginHostname } from '../utils';
 
 export const ordersRouter = createTRPCRouter({
   createOrder: protectedProcedure
@@ -110,4 +111,24 @@ export const ordersRouter = createTRPCRouter({
       const { orderId } = input;
       return await orderService.getOrderDetailsOrThrow(orderId);
     }),
+  getOrderItems: protectedProcedure.query(async ({ ctx }) => {
+    // TODO: (sid) Consider addding pagination to this query if we start to have a lot of orders
+    const allOrders = await db.query.ordersTable.findMany({
+      where: eq(ordersTable.userId, ctx.user.id),
+      with: {
+        items: true,
+      },
+    });
+
+    return allOrders.flatMap((order) =>
+      order.items.flatMap((item) =>
+        isNormalizedDomainNameAllowedForOriginHostname(
+          item.normalizedDomainName,
+          ctx.thirdPartyOriginHostname,
+        )
+          ? [{ ...item, orderId: order.id }]
+          : [],
+      ),
+    );
+  }),
 });
