@@ -57,6 +57,12 @@ reviews:
         For temporal logic changes, verify that the PR description includes:
         1. URL to cloud.temporal.io run or screenshots to local temporal run.
     
+    # Matches database-related files - schema definitions and migrations
+    - path: "**/{schema,migrations}/**/*"
+      instructions: |
+        When updating database schema, follow the procedure documented in docs/DB-MIGRATION-PROCEDURE.md.
+        Ensure migrations are included in the same PR as schema changes and that they pass validation checks.
+        
     # Matches all files in the utility, DNS validation, and environment configuration packages
     - path: "packages/{utils,zod-dns,env}/**/*"
       instructions: |
