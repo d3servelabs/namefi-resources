@@ -7,7 +7,9 @@ import {
   TabsTrigger,
 } from '@/components/ui/shadcn/tabs';
 import { cn } from '@/lib/utils';
-import type { FC, HTMLAttributes } from 'react';
+import { LocalStorageKeys } from '@/utils/localStorageKeys';
+import { type FC, type HTMLAttributes, useEffect } from 'react';
+import { useLocalStorage } from 'usehooks-ts';
 import { DnsRecordsPanel } from './DnsRecordsPanel';
 
 export type DnsManagementProps = HTMLAttributes<HTMLDivElement> & {
@@ -19,6 +21,20 @@ export const DnsManagement: FC<DnsManagementProps> = ({
   className,
   ...rest
 }: DnsManagementProps) => {
+  const [, setRecentDomains] = useLocalStorage(
+    LocalStorageKeys.RECENT_DOMAINS,
+    [domain] as string[],
+  );
+
+  useEffect(() => {
+    setRecentDomains((prevRecentDomains) => {
+      const filtered = prevRecentDomains.filter(
+        (recentDomain) => recentDomain !== domain,
+      );
+      return [...filtered, domain];
+    });
+  }, [setRecentDomains, domain]);
+
   return (
     <div className={cn('', className)} {...rest}>
       <Tabs defaultValue="dns-setting" className="w-full">

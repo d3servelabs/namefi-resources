@@ -18,6 +18,7 @@ import {
 } from '@/components/ui/shadcn/sidebar';
 import { cn } from '@/lib/utils';
 import type { NavItem } from '@/types';
+import { LocalStorageKeys } from '@/utils/localStorageKeys';
 import {
   Bell,
   Bookmark,
@@ -27,9 +28,8 @@ import {
   Search,
 } from 'lucide-react';
 import { type ChangeEvent, useCallback, useMemo, useState } from 'react';
+import { useReadLocalStorage } from 'usehooks-ts';
 import { SidebarDomains } from './SidebarDomains';
-
-const DOMAINS = ['test1.com', 'test2.com', 'test3.com'];
 
 const ITEMS: NavItem[] = [
   { title: 'My Domains', href: '/my-domains', icon: Globe },
@@ -52,12 +52,19 @@ export function AppSidebar() {
 
   const { state } = useSidebar();
 
+  const recentDomains = useReadLocalStorage<string[]>(
+    LocalStorageKeys.RECENT_DOMAINS,
+    { initializeWithValue: false },
+  );
+
   const domains = useMemo(
     () =>
-      DOMAINS.filter((domain) =>
-        domain.toLowerCase().includes(search.toLowerCase()),
-      ),
-    [search],
+      recentDomains
+        ?.filter((domain) =>
+          domain.toLowerCase().includes(search.toLowerCase()),
+        )
+        .toReversed() ?? [],
+    [recentDomains, search],
   );
 
   const items = useMemo(
