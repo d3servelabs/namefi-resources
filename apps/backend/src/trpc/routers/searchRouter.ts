@@ -58,20 +58,16 @@ export const searchRouter = createTRPCRouter({
     .query(async ({ input, ctx }) => {
       const { query } = input;
 
-      // if the request is coming from a selling SLD like `0x.city` then it will be `ctx.parentDomain`,
-      // but if that's null then this request is from main-page, so either take in the passed option,
-      // or fallback to first domain in poweredByNamefiDomains (hardcoded for the time being)
-      const parentDomain = ctx.isFirstPartyParentDomain
-        ? input.parentDomain
-        : ctx.parentDomain;
-
       // TODO: this will be replaced when we implement AI suggestions
       const poweredByNamefiDomains = await getPoweredByNamefi3PDomains();
 
-      const suggestions = getSuggestions(
-        query,
-        parentDomain ?? poweredByNamefiDomains[0],
-      );
+      // if the request is coming from a selling SLD like `0x.city` then it will be `ctx.thirdPartyOrigin`,
+      // but if that's null then this request is from main-page, so either take in the passed option,
+      // or fallback to first domain in poweredByNamefiDomains (hardcoded for the time being)
+      const parentDomain =
+        ctx.thirdPartyOrigin ?? input.parentDomain ?? poweredByNamefiDomains[0];
+
+      const suggestions = getSuggestions(query, parentDomain);
       const bulkAvailability = await getDomainListInfo(suggestions);
 
       return { suggestions, bulkAvailability };

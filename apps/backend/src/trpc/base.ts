@@ -4,7 +4,7 @@ import { TRPCError } from '@trpc/server';
 import type { FetchCreateContextFnOptions } from '@trpc/server/adapters/fetch';
 import { eq } from 'drizzle-orm';
 import type { Context } from 'hono';
-import { isNil, isNotEmpty } from 'ramda';
+import { isNotEmpty } from 'ramda';
 import superjson from 'superjson';
 import { ZodError } from 'zod';
 import { config, secrets } from '#lib/env';
@@ -27,7 +27,7 @@ export const createContext = async (
   c: Context,
 ) => {
   const originText = c.req.header('Origin');
-  let parentDomain: string | null = null;
+  let thirdPartyOrigin: string | null = null;
 
   if (originText && isNotEmpty(originText)) {
     // parse origin url
@@ -43,7 +43,7 @@ export const createContext = async (
           message: 'parent domain not allowed',
         });
       }
-      parentDomain = origin.hostname;
+      thirdPartyOrigin = origin.hostname;
     }
   }
 
@@ -52,10 +52,9 @@ export const createContext = async (
     res: c.res,
     db,
     /**
-     * parentDomain - the domain of the selling SLD, it will be null in case of the main/aggregate page
+     * The domain of the selling SLD, it will be null in case it is a Namefi first party origin
      */
-    parentDomain,
-    isFirstPartyParentDomain: isNil(parentDomain),
+    thirdPartyOrigin,
   };
 };
 
