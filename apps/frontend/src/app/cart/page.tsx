@@ -24,7 +24,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { inferInput } from '@trpc/tanstack-react-query';
 import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { formatUnits } from 'viem';
 import { useBalance } from 'wagmi';
 
@@ -53,6 +53,11 @@ export default function CartPage() {
     ...trpc.carts.getItems.queryOptions(),
     enabled: isAuthenticated,
   });
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: explicitly want to run this effect when isAuthenticated changes
+  useEffect(() => {
+    queryClient.invalidateQueries(trpc.carts.getItems.queryFilter());
+  }, [isAuthenticated, queryClient, trpc.carts.getItems.queryFilter]);
 
   const items = useMemo(() => cartQuery?.data ?? [], [cartQuery?.data]);
 
