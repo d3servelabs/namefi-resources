@@ -30,7 +30,7 @@ export const configSchema = z.object({
    * List of first-party domains that are owned by NameFI and allowed to interact with the API.
    */
   NAMEFI_FIRST_PARTY_ORIGINS: z.string().array().default([]),
-  ADDITIONAL_POWERED_BY_NAMEFI_THIRD_PARTY_DOMAINS: z
+  ADDITIONAL_POWERED_BY_NAMEFI_THIRD_PARTY_ORIGINS: z
     .string()
     .array()
     .default([]),

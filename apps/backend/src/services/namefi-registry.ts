@@ -33,9 +33,9 @@ export const _mockGetDomainInfo = async (domains: NamefiNormalizedDomain[]) => {
 };
 
 // biome-ignore lint/suspicious/useAwait: it will be a db query in upcoming updates
-export const getPoweredByNamefi3PDomains = async () => {
+export const getPoweredByNamefi3POrigins = async () => {
   const fromDb: string[] = [];
-  const fromConfig = config.ADDITIONAL_POWERED_BY_NAMEFI_THIRD_PARTY_DOMAINS;
+  const fromConfig = config.ADDITIONAL_POWERED_BY_NAMEFI_THIRD_PARTY_ORIGINS;
   return Promise.resolve([...fromDb, ...fromConfig]);
 };
 

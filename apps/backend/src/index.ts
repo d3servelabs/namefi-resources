@@ -4,7 +4,7 @@ import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { logger } from 'hono/logger';
 import { prettyJSON } from 'hono/pretty-json';
-import { getPoweredByNamefi3PDomains } from '#services/namefi-registry';
+import { getPoweredByNamefi3POrigins } from '#services/namefi-registry';
 import { config, secrets } from './lib/env';
 import { nsJsonRouter } from './ns-json';
 import { createContext } from './trpc';
@@ -15,21 +15,26 @@ const app = new Hono();
 app.use(async (...args) => {
   const allowedOrigins: string[] = [
     ...config.NAMEFI_FIRST_PARTY_ORIGINS,
-    ...(await getPoweredByNamefi3PDomains()),
+    ...(await getPoweredByNamefi3POrigins()),
   ];
 
   return cors({
     origin: (origin) => {
       if (origin) {
-        const parsedOrigin = new URL(origin);
+        try {
+          const parsedOrigin = new URL(origin);
 
-        // Check if it's using https
-        if (!config.ALLOW_HTTP && parsedOrigin.protocol !== 'https:') {
+          // Check if it's using https
+          if (!config.ALLOW_HTTP && parsedOrigin.protocol !== 'https:') {
+            return null;
+          }
+
+          if (allowedOrigins.includes(parsedOrigin.hostname)) {
+            return origin;
+          }
+        } catch (error) {
+          console.error('Error parsing origin', error);
           return null;
-        }
-
-        if (allowedOrigins.includes(parsedOrigin.hostname)) {
-          return origin;
         }
       }
       return null; // Block other origins

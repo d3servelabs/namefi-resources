@@ -8,7 +8,7 @@ import { isNotEmpty } from 'ramda';
 import superjson from 'superjson';
 import { ZodError } from 'zod';
 import { config, secrets } from '#lib/env';
-import { getPoweredByNamefi3PDomains } from '#services/namefi-registry';
+import { getPoweredByNamefi3POrigins } from '#services/namefi-registry';
 import { privyClient } from './utils';
 
 /**
@@ -30,20 +30,24 @@ export const createContext = async (
   let thirdPartyOrigin: string | null = null;
 
   if (originText && isNotEmpty(originText)) {
-    // parse origin url
-    const origin = new URL(originText);
+    try {
+      // parse origin url
+      const origin = new URL(originText);
 
-    // if it's not our own domain, check if it's an allowed parent domain
-    if (!config.NAMEFI_FIRST_PARTY_ORIGINS?.includes(origin.hostname)) {
-      const allowedParentDomains = await getPoweredByNamefi3PDomains();
-      // if it's not an allowed parent domain, throw an error
-      if (!allowedParentDomains.includes(origin.hostname)) {
-        throw new TRPCError({
-          code: 'FORBIDDEN',
-          message: 'parent domain not allowed',
-        });
+      // if it's not our own domain, check if it's an allowed parent domain
+      if (!config.NAMEFI_FIRST_PARTY_ORIGINS?.includes(origin.hostname)) {
+        const allowedThirdPartyOrigins = await getPoweredByNamefi3POrigins();
+        // if it's not an allowed parent domain, throw an error
+        if (!allowedThirdPartyOrigins.includes(origin.hostname)) {
+          throw new TRPCError({
+            code: 'FORBIDDEN',
+            message: 'parent domain not allowed',
+          });
+        }
+        thirdPartyOrigin = origin.hostname;
       }
-      thirdPartyOrigin = origin.hostname;
+    } catch (error) {
+      console.error('Error parsing origin', error);
     }
   }
 

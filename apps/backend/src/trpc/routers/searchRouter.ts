@@ -16,7 +16,7 @@ import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { z } from 'zod';
 import {
   getDomainListInfo,
-  getPoweredByNamefi3PDomains,
+  getPoweredByNamefi3POrigins,
 } from '#services/namefi-registry';
 import { createTRPCRouter, publicProcedure } from '../base';
 
@@ -59,13 +59,13 @@ export const searchRouter = createTRPCRouter({
       const { query } = input;
 
       // TODO: this will be replaced when we implement AI suggestions
-      const poweredByNamefiDomains = await getPoweredByNamefi3PDomains();
+      const poweredByNamefiOrigins = await getPoweredByNamefi3POrigins();
 
       // if the request is coming from a selling SLD like `0x.city` then it will be `ctx.thirdPartyOrigin`,
       // but if that's null then this request is from main-page, so either take in the passed option,
-      // or fallback to first domain in poweredByNamefiDomains (hardcoded for the time being)
+      // or fallback to first domain in poweredByNamefiOrigins (hardcoded for the time being)
       const parentDomain =
-        ctx.thirdPartyOrigin ?? input.parentDomain ?? poweredByNamefiDomains[0];
+        ctx.thirdPartyOrigin ?? input.parentDomain ?? poweredByNamefiOrigins[0];
 
       const suggestions = getSuggestions(query, parentDomain);
       const bulkAvailability = await getDomainListInfo(suggestions);
