@@ -1,18 +1,15 @@
-import type { Config } from '../schema';
+import type { ConfigInput } from '../schema';
 
-const developmentConfig: Config = {
-  PORT: 3000,
+const developmentConfig: ConfigInput = {
   LOG_LEVEL: 'debug',
   PRIVY_APP_ID: 'cm2lx4u5a03x3rtgp4keapmrb',
   TEMPORAL_API_URL: 'us-east-1.aws.api.temporal.io:7233',
   TEMPORAL_NAMESPACE: 'namefi-astra-dev.yz1vc',
-  SMTP_PORT: 465,
   SMTP_HOST: 'localhost',
   SMTP_SECURE: false,
   APP_URL: 'localhost:3001',
   NAMEFI_FIRST_PARTY_ORIGINS: ['astra.namefi.dev'],
   ADDITIONAL_POWERED_BY_NAMEFI_THIRD_PARTY_DOMAINS: ['0x.city'],
-  ALLOW_HTTP: false,
 };
 
 export default developmentConfig;

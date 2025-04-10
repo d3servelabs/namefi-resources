@@ -21,7 +21,7 @@ if (secrets.SMTP_USERNAME) {
 
 const transporter: Mail = nodemailer.createTransport({
   host: config.SMTP_HOST,
-  port: config.SMTP_PORT || 464,
+  port: config.SMTP_PORT,
   ...transportOptions,
 });
 

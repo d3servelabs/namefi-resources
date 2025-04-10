@@ -14,7 +14,7 @@ const app = new Hono();
 
 app.use(async (...args) => {
   const allowedOrigins: string[] = [
-    ...(config.NAMEFI_FIRST_PARTY_ORIGINS ?? []),
+    ...config.NAMEFI_FIRST_PARTY_ORIGINS,
     ...(await getPoweredByNamefi3PDomains()),
   ];
 

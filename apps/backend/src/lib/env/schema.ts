@@ -23,19 +23,18 @@ export const configSchema = z.object({
   TEMPORAL_API_URL: z.string().url(),
   TEMPORAL_NAMESPACE: z.string(),
   SMTP_SECURE: z.boolean(),
-  SMTP_PORT: z.number().optional().default(465),
+  SMTP_PORT: z.number().default(465),
   SMTP_HOST: z.string(),
   APP_URL: z.string(),
   /**
    * List of first-party domains that are owned by NameFI and allowed to interact with the API.
    */
-  NAMEFI_FIRST_PARTY_ORIGINS: z.string().array().optional().default([]),
+  NAMEFI_FIRST_PARTY_ORIGINS: z.string().array().default([]),
   ADDITIONAL_POWERED_BY_NAMEFI_THIRD_PARTY_DOMAINS: z
     .string()
     .array()
-    .optional()
     .default([]),
-  ALLOW_HTTP: z.boolean().optional().default(false),
+  ALLOW_HTTP: z.boolean().default(false),
 });
 
-export type Config = z.infer<typeof configSchema>;
+export type ConfigInput = z.input<typeof configSchema>;
