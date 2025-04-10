@@ -73,7 +73,9 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
     });
 
     const handleConnect = useCallback(() => {
-      login();
+      login({
+        loginMethods: ['email'],
+      });
     }, [login]);
 
     const handleDisconnect = useCallback(async () => {
