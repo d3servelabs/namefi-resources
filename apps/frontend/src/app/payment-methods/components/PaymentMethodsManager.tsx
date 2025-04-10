@@ -19,7 +19,7 @@ import type { inferOutput } from '@trpc/tanstack-react-query';
 import { CreditCardIcon, Loader2, PlusIcon, TrashIcon } from 'lucide-react';
 import { Suspense, useCallback, useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
-import { PaymentMethodsManagerPlaceholder } from './paymentMethodsManagerPlaceholder';
+import { PaymentMethodsManagerPlaceholder } from './PaymentMethodsManagerPlaceholder';
 
 const LoadingPlaceholder = () => (
   <PaymentMethodsManagerPlaceholder
