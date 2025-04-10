@@ -9,6 +9,10 @@ import {
   chargeUserWorkflow,
 } from './chargeUser.workflow';
 import { finalizePaymentWorkflow } from './finalize-payment-workflow';
+import {
+  NotificationChannel,
+  notifyUserWorkflow,
+} from './notify-user-workflow';
 import { processOrderItemWorkflow } from './processOrderItem.workflow';
 
 export interface ProcessOrderWorkflowInput {
@@ -95,8 +99,8 @@ export async function processOrderWorkflow(
               orderId: input.orderId,
               normalizedDomainName:
                 item.normalizedDomainName as NamefiNormalizedDomain,
-              // TODO: (sid) Get user address from order details and replace Alice address
-              userAddress: '0xB5856d4598c919834913b8656ebc15a64d3C7836',
+              nftWalletAddress: orderDetails.nftWalletAddress as `0x${string}`,
+              nftChainId: orderDetails.nftChainId,
             },
           ],
           workflowId: `process-order-item-${item.id}`,
@@ -162,14 +166,14 @@ export async function processOrderWorkflow(
 
     // MARK: - Notify User if we have their email
     if (orderDetails.user.primaryEmail) {
-      const _subject =
+      const subject =
         failedItems.length === 0
           ? 'Namefi Order Processing Succeeded'
           : failedItems.length === orderDetails.items.length
             ? 'Namefi Order Processing Failed'
             : 'Namefi Order Processing Partially Completed';
 
-      const _content =
+      const content =
         failedItems.length === 0
           ? `All items in order ${input.orderId} processed successfully`
           : failedItems.length === orderDetails.items.length
@@ -183,10 +187,26 @@ export async function processOrderWorkflow(
                 .join(', ')}`;
 
       try {
-        // TODO: (sid) Replace with actual notification workflow
-        workflow.log.info(
-          `Notifying user ${orderDetails.userId} for order ${input.orderId}`,
-        );
+        await workflow.executeChild(notifyUserWorkflow, {
+          args: [
+            {
+              userId: orderDetails.userId,
+              channel: NotificationChannel.EMAIL,
+              payload: {
+                subject,
+                content: {
+                  plain: content,
+                  html: content,
+                },
+              },
+            },
+          ],
+          workflowId: `notify-user-${orderDetails.userId}`,
+          taskQueue: TEMPORAL_QUEUES.DEFAULT,
+          retry: {
+            maximumAttempts: 1,
+          },
+        });
       } catch (e) {
         workflow.log.error(
           `Failed to notify user for order ${input.orderId}. Error: ${e}`,

@@ -1,6 +1,6 @@
 import * as workflow from '@temporalio/workflow';
 import { ApplicationFailure } from '@temporalio/workflow';
-import type { SendMailInput } from 'src/mail/mail-client';
+import type { SendMailInput } from '../../mail/mail-client';
 import type { NotifyActivities } from '../activities/notify.activities';
 import { TEMPORAL_QUEUES, shortRunningOpts } from '../shared';
 
