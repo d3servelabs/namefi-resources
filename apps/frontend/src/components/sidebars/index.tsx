@@ -32,7 +32,7 @@ import { SidebarDomains } from './SidebarDomains';
 const DOMAINS = ['test1.com', 'test2.com', 'test3.com'];
 
 const ITEMS: NavItem[] = [
-  { title: 'My Domains', href: '#', icon: Globe },
+  { title: 'My Domains', href: '/my-domains', icon: Globe },
   { title: 'Domain Bookmark', href: '#', icon: Bookmark },
   { title: 'My Credits', href: '#', icon: CreditCard },
   {
