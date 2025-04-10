@@ -22,6 +22,10 @@ const localConfig: ConfigInput = {
     '0xcity.localhost',
     'defibuild.localhost',
   ],
+  ADDITIONAL_ORIGIN_TO_HOSTNAME_MAP: {
+    '0xcity.localhost': '0x.city',
+    'defibuild.localhost': 'defi.build',
+  },
 };
 
 export default localConfig;

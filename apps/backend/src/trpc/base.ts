@@ -27,7 +27,7 @@ export const createContext = async (
   c: Context,
 ) => {
   const originText = c.req.header('Origin');
-  let thirdPartyOrigin: string | null = null;
+  let thirdPartyOriginHostname: string | null = null;
 
   if (originText && isNotEmpty(originText)) {
     try {
@@ -44,7 +44,7 @@ export const createContext = async (
             message: 'parent domain not allowed',
           });
         }
-        thirdPartyOrigin = origin.hostname;
+        thirdPartyOriginHostname = origin.hostname;
       }
     } catch (error) {
       console.error('Error parsing origin', error);
@@ -56,9 +56,9 @@ export const createContext = async (
     res: c.res,
     db,
     /**
-     * The domain of the selling SLD, it will be null in case it is a Namefi first party origin
+     * The hostname of the selling SLD, it will be null in case it is a Namefi first party origin
      */
-    thirdPartyOrigin,
+    thirdPartyOriginHostname,
   };
 };
 

@@ -65,7 +65,9 @@ export const searchRouter = createTRPCRouter({
       // but if that's null then this request is from main-page, so either take in the passed option,
       // or fallback to first domain in poweredByNamefiOrigins (hardcoded for the time being)
       const parentDomain =
-        ctx.thirdPartyOrigin ?? input.parentDomain ?? poweredByNamefiOrigins[0];
+        ctx.thirdPartyOriginHostname ??
+        input.parentDomain ??
+        poweredByNamefiOrigins[0];
 
       const suggestions = getSuggestions(query, parentDomain);
       const bulkAvailability = await getDomainListInfo(suggestions);

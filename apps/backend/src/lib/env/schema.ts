@@ -34,6 +34,17 @@ export const configSchema = z.object({
     .string()
     .array()
     .default([]),
+  /**
+   * Map of additional origins to their corresponding hostnames.
+   * @example
+   * {
+   *   '0xcity.localhost': '0x.city',
+   *   'defibuild.localhost': 'defi.build',
+   * }
+   */
+  ADDITIONAL_ORIGIN_TO_HOSTNAME_MAP: z
+    .record(z.string(), z.string())
+    .default({}),
   ALLOW_HTTP: z.boolean().default(false),
 });
 

@@ -7,6 +7,7 @@ import {
 import { and, eq } from 'drizzle-orm';
 import { z } from 'zod';
 import { createTRPCRouter, protectedProcedure } from '../base';
+import { isNormalizedDomainNameAllowedForOriginHostname } from '../utils';
 
 export const cartsRouter = createTRPCRouter({
   // Get cart items for the current user
@@ -14,7 +15,7 @@ export const cartsRouter = createTRPCRouter({
     const cartItems = await db.query.cartItemsTable.findMany({
       where: eq(cartItemsTable.userId, ctx.user.id),
     });
-    return cartItems;
+    return filterCartItemsByOrigin(cartItems, ctx.thirdPartyOriginHostname);
   }),
 
   // Add item to cart for the current user
@@ -46,7 +47,7 @@ export const cartsRouter = createTRPCRouter({
         where: eq(cartItemsTable.userId, ctx.user.id),
       });
 
-      return cartItems;
+      return filterCartItemsByOrigin(cartItems, ctx.thirdPartyOriginHostname);
     }),
 
   // Update cart item for the current user
@@ -82,7 +83,7 @@ export const cartsRouter = createTRPCRouter({
         where: eq(cartItemsTable.userId, ctx.user.id),
       });
 
-      return cartItems;
+      return filterCartItemsByOrigin(cartItems, ctx.thirdPartyOriginHostname);
     }),
 
   // Remove item from cart for the current user
@@ -103,7 +104,7 @@ export const cartsRouter = createTRPCRouter({
         where: eq(cartItemsTable.userId, ctx.user.id),
       });
 
-      return cartItems;
+      return filterCartItemsByOrigin(cartItems, ctx.thirdPartyOriginHostname);
     }),
 
   // Clear cart (remove all items) for the current user
@@ -114,3 +115,15 @@ export const cartsRouter = createTRPCRouter({
     return [];
   }),
 });
+
+const filterCartItemsByOrigin = (
+  cartItems: (typeof cartItemsTable.$inferSelect)[],
+  originHostname?: string | null,
+) => {
+  return cartItems.filter((item) =>
+    isNormalizedDomainNameAllowedForOriginHostname(
+      item.normalizedDomainName,
+      originHostname,
+    ),
+  );
+};
