@@ -1,7 +1,13 @@
 'use client';
 
 import { CreditCardIcon, Loader2, PencilIcon, PlusIcon } from 'lucide-react';
-import { type ReactNode, useCallback, useMemo, useState } from 'react';
+import {
+  type ReactNode,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 
 import { Button } from '@/components/ui/shadcn/button';
 import {
@@ -14,16 +20,7 @@ import {
 } from '@/components/ui/shadcn/card';
 import { Label } from '@/components/ui/shadcn/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/shadcn/radio-group';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/shadcn/select';
-import { useIsMobile } from '@/hooks/use-mobile';
-import { cn, getShortAddress } from '@/lib/utils';
-import { supportedChains } from '@/lib/wagmiConfig';
+import { cn } from '@/lib/utils';
 import { formatAmountInUSD } from '@/utils/number';
 import type { DeepPartial } from '@/utils/types';
 import {
@@ -37,6 +34,7 @@ import type { ConfirmationToken } from '@stripe/stripe-js';
 import Image from 'next/image';
 import { formatUnits } from 'viem';
 import { useBalance } from 'wagmi';
+import { SelectChain, SelectWallet } from '../SelectWalletAndChain';
 import { AddPaymentMethodDialog } from '../addPaymentMethod/addPaymentMethodDialog';
 
 export enum SelectedPaymentMethod {
@@ -76,21 +74,12 @@ export function SelectPaymentMethodCard({
   const [newCardPreview, setNewCardPreview] = useState<string | null>(null);
 
   const [nfscPaymentMethodDetails, setNfscPaymentMethodDetails] =
-    useState<PaymentDetails | null>({
-      paymentProviderDetails: {
-        paymentProvider: paymentProviderSchema.Values.NFSC_BASE,
-        nfscPaymentDetails: {
-          chainId: CHAINS.base.id,
-        },
-      },
-    });
+    useState<PaymentDetails | null>(null);
   const [creditCardPaymentMethodDetails, setCreditCardPaymentMethodDetails] =
     useState<PaymentDetails | null>(null);
 
   const { ready: ethereumWalletsReady, wallets: ethereumWallets } =
     useWallets();
-
-  const isMobile = useIsMobile();
 
   const connectedWalletAddresses = useMemo(() => {
     if (!ethereumWalletsReady) {
@@ -99,6 +88,21 @@ export function SelectPaymentMethodCard({
 
     return [...ethereumWallets].map((wallet) => wallet.address);
   }, [ethereumWallets, ethereumWalletsReady]);
+
+  useEffect(() => {
+    setNfscPaymentMethodDetails({
+      paymentProviderDetails: {
+        paymentProvider: paymentProviderSchema.Values.NFSC_BASE,
+        nfscPaymentDetails: {
+          walletAddress:
+            connectedWalletAddresses.length > 0
+              ? connectedWalletAddresses[0]
+              : undefined,
+          chainId: CHAINS.base.id,
+        },
+      },
+    });
+  }, [connectedWalletAddresses]);
 
   const isUseBalanceQueryEnabled = useMemo(() => {
     if (isNfscPayment(nfscPaymentMethodDetails?.paymentProviderDetails)) {
@@ -337,39 +341,20 @@ export function SelectPaymentMethodCard({
               )}
             </div>
             <div className="flex items-center pl-6">
-              <Select
-                disabled={selectedPaymentMethod !== SelectedPaymentMethod.NFSC}
+              <SelectWallet
                 onValueChange={handleNfscWalletSelectValueChange}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select a Wallet" />
-                </SelectTrigger>
-                <SelectContent>
-                  {connectedWalletAddresses.map((walletAddress) => (
-                    <SelectItem
-                      key={`${walletAddress}`}
-                      value={`${walletAddress}`}
-                    >{`${isMobile ? getShortAddress(walletAddress) : walletAddress}`}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <Select
-                disabled={selectedPaymentMethod !== SelectedPaymentMethod.NFSC}
+                selectTriggerDisabled={
+                  selectedPaymentMethod !== SelectedPaymentMethod.NFSC
+                }
+              />
+
+              <SelectChain
+                baseChainOnly={false}
                 onValueChange={handleNfscChainSelectValueChange}
-                defaultValue={`${CHAINS.base.id}`}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select a Chain" />
-                </SelectTrigger>
-                <SelectContent>
-                  {supportedChains.map((chain) => (
-                    <SelectItem
-                      key={`${chain.id}`}
-                      value={`${chain.id}`}
-                    >{`${chain.name}`}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+                selectTriggerDisabled={
+                  selectedPaymentMethod !== SelectedPaymentMethod.NFSC
+                }
+              />
             </div>
           </div>
 
