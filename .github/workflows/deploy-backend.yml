@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main    # Regular push to main branch deploys to production
+      - prod
     tags:
       - 'prod/v*'     # Tags like prod/v1.0.0 for production deployment
       - 'v*'          # Tags like v1.0.0 for production deployment
@@ -27,7 +28,7 @@ env:
   LABEL: >-
     ${{ 
       ((github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'production') || 
-         (github.event_name == 'push' && (startsWith(github.ref, 'refs/tags/prod/') || startsWith(github.ref, 'refs/tags/v')))) 
+         (github.event_name == 'push' && (github.ref == 'refs/heads/prod' || startsWith(github.ref, 'refs/tags/prod/') || startsWith(github.ref, 'refs/tags/v')))) 
         && 'prod' 
         || 'dev' 
     }}
