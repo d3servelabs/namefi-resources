@@ -6,7 +6,7 @@ const developmentConfig: ConfigInput = {
   TEMPORAL_API_URL: 'us-east-1.aws.api.temporal.io:7233',
   TEMPORAL_NAMESPACE: 'namefi-astra-dev.yz1vc',
   SMTP_PORT: 2025,
-  SMTP_HOST: '35.206.88.200',
+  SMTP_HOST: 'smtp.mail.namefi.dev',
   SMTP_SECURE: false,
   APP_URL: 'localhost:3001',
   NAMEFI_FIRST_PARTY_ORIGINS: ['astra.namefi.dev'],

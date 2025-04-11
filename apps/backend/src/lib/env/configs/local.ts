@@ -6,7 +6,7 @@ const localConfig: ConfigInput = {
   TEMPORAL_API_URL: 'localhost:7233',
   TEMPORAL_NAMESPACE: 'default',
   SMTP_PORT: 2025,
-  SMTP_HOST: '35.206.88.200',
+  SMTP_HOST: 'smtp.mail.namefi.dev',
   SMTP_SECURE: false,
   APP_URL: 'localhost:3001',
   /**
