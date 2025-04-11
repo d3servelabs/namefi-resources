@@ -84,7 +84,7 @@ export default function CartPage() {
 
   const router = useRouter();
 
-  const { mutate: createOrder } = useMutation({
+  const { mutate: createOrder, isPending: isCreateOrderPending } = useMutation({
     ...trpc.orders.createOrder.mutationOptions({
       onSuccess: (data) => {
         queryClient.invalidateQueries(trpc.carts.getItems.queryFilter());
@@ -217,8 +217,12 @@ export default function CartPage() {
       return 'Select Payment Method to Continue';
     }
 
+    if (isCreateOrderPending) {
+      return 'Processing...';
+    }
+
     return 'Submit Order';
-  }, [paymentMethodSelected, selectedNftWalletAddress]);
+  }, [isCreateOrderPending, paymentMethodSelected, selectedNftWalletAddress]);
 
   const submitOrderDisabled = useMemo(() => {
     return !(paymentMethodSelected && selectedNftWalletAddress);
@@ -366,18 +370,22 @@ export default function CartPage() {
               paymentMethodDetails: DeepPartial<PaymentDetails> | null,
             ) => handlePaymentMethodDetailsChanged(paymentMethodDetails)}
             onSelectedPaymentMethodChanged={handleSelectedPaymentMethodChanged}
+            footerButton={
+              <Button
+                className="w-full"
+                disabled={submitOrderDisabled || isCreateOrderPending}
+                onClick={handleSubmitOrder}
+                size="lg"
+              >
+                {isCreateOrderPending ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <></>
+                )}
+                {submitButtonText}
+              </Button>
+            }
           />
-
-          <div className="mt-4">
-            <Button
-              className="w-full"
-              disabled={submitOrderDisabled}
-              onClick={handleSubmitOrder}
-              size="lg"
-            >
-              {submitButtonText}
-            </Button>
-          </div>
         </>
       )}
     </div>

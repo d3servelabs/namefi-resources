@@ -52,7 +52,7 @@ export function AddPaymentMethodDialog({
   return (
     <Dialog open={showAddPaymentMethodDialog} onOpenChange={onOpenChange}>
       <DialogTrigger asChild={true}>{dialogTrigger}</DialogTrigger>
-      <DialogContent className="sm:max-w-[425px] max-sm:max-h-[85%] overflow-auto">
+      <DialogContent className="sm:max-w-[425px] max-sm:max-h-[85%]">
         <DialogHeader>
           <DialogTitle>Payment Method Details</DialogTitle>
           <DialogDescription>

@@ -1,6 +1,6 @@
 'use client';
 
-import { CreditCardIcon, Loader2, PencilIcon, PlusIcon } from 'lucide-react';
+import { Loader2, PencilIcon, PlusIcon } from 'lucide-react';
 import {
   type ReactNode,
   useCallback,
@@ -36,6 +36,7 @@ import { formatUnits } from 'viem';
 import { useBalance } from 'wagmi';
 import { SelectChain, SelectWallet } from '../SelectWalletAndChain';
 import { AddPaymentMethodDialog } from '../addPaymentMethod/addPaymentMethodDialog';
+import { Separator } from '../ui/shadcn/separator';
 
 export enum SelectedPaymentMethod {
   CREDIT_CARD = 'CREDIT_CARD',
@@ -292,87 +293,85 @@ export function SelectPaymentMethodCard({
           className="space-y-4"
         >
           <div className="space-y-1">
-            <div className="flex items-center space-x-2">
+            <Label htmlFor={SelectedPaymentMethod.NFSC} className="font-medium">
+              Use $NFSC balance
+            </Label>
+            <div className="flex items-center gap-2">
               <RadioGroupItem
                 value={SelectedPaymentMethod.NFSC}
                 id={SelectedPaymentMethod.NFSC}
               />
-              <Image
-                src={'/nfsc.svg'}
-                alt="nfsc icon"
-                width={40}
-                height={40}
-                className="w-10 h-10"
-              />
-              <Label
-                htmlFor={SelectedPaymentMethod.NFSC}
-                className="font-medium"
+              <Card
+                className={cn(
+                  'py-2 w-full',
+                  selectedPaymentMethod === SelectedPaymentMethod.NFSC
+                    ? ''
+                    : 'border-0 opacity-50',
+                )}
               >
-                Use $NFSC balance
-              </Label>
-            </div>
-            <div
-              className={cn(
-                'flex items-center pl-6',
-                selectedPaymentMethod === SelectedPaymentMethod.NFSC
-                  ? ''
-                  : 'opacity-50',
-              )}
-            >
-              {selectedWalletChainNfscBalanceInUsdCents === undefined ? (
-                isUseBalanceQueryEnabled && balanceIsLoading ? (
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                ) : (
-                  <></>
-                )
-              ) : (
-                <span
-                  className={cn(
-                    'text-sm',
-                    hasSufficientBalance ? 'text-green-500' : 'text-red-500',
-                  )}
-                >
-                  Your Credit Balance:{' '}
-                  {formatAmountInUSD(
-                    selectedWalletChainNfscBalanceInUsdCents,
-                    true,
-                  )}
-                </span>
-              )}
-            </div>
-            <div className="flex items-center pl-6">
-              <SelectWallet
-                onValueChange={handleNfscWalletSelectValueChange}
-                selectTriggerDisabled={
-                  selectedPaymentMethod !== SelectedPaymentMethod.NFSC
-                }
-              />
+                <CardContent className="flex items-center gap-2">
+                  <Image
+                    src={'/nfsc.svg'}
+                    alt="nfsc icon"
+                    width={40}
+                    height={40}
+                    className="w-10 h-10"
+                  />
+                  <div className="flex flex-col items-start gap-1">
+                    <div className="flex items-center">
+                      <SelectWallet
+                        onValueChange={handleNfscWalletSelectValueChange}
+                        selectTriggerDisabled={
+                          selectedPaymentMethod !== SelectedPaymentMethod.NFSC
+                        }
+                      />
 
-              <SelectChain
-                baseChainOnly={false}
-                onValueChange={handleNfscChainSelectValueChange}
-                selectTriggerDisabled={
-                  selectedPaymentMethod !== SelectedPaymentMethod.NFSC
-                }
-              />
+                      <SelectChain
+                        baseChainOnly={false}
+                        onValueChange={handleNfscChainSelectValueChange}
+                        selectTriggerDisabled={
+                          selectedPaymentMethod !== SelectedPaymentMethod.NFSC
+                        }
+                      />
+                    </div>
+                    {selectedWalletChainNfscBalanceInUsdCents === undefined ? (
+                      isUseBalanceQueryEnabled && balanceIsLoading ? (
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                      ) : (
+                        <></>
+                      )
+                    ) : (
+                      <span
+                        className={cn(
+                          'text-sm',
+                          hasSufficientBalance
+                            ? 'text-green-500'
+                            : 'text-red-500',
+                        )}
+                      >
+                        Your Credit Balance:{' '}
+                        {formatAmountInUSD(
+                          selectedWalletChainNfscBalanceInUsdCents,
+                          true,
+                        )}
+                      </span>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
             </div>
           </div>
 
           <div className="space-y-1">
-            <div className="flex items-center space-x-2">
+            <Label htmlFor={SelectedPaymentMethod.NFSC} className="font-medium">
+              Use a credit card
+            </Label>
+            <div className="flex items-center gap-2 w-full">
               <RadioGroupItem
                 value={SelectedPaymentMethod.CREDIT_CARD}
                 id={SelectedPaymentMethod.CREDIT_CARD}
               />
-              <CreditCardIcon className="h-10 w-10" />
-              <Label
-                htmlFor={SelectedPaymentMethod.CREDIT_CARD}
-                className="font-medium"
-              >
-                Credit Card
-              </Label>
-            </div>
-            <div className="flex items-center pl-6">
+
               <AddPaymentMethodDialog
                 amountInUsdCents={cartTotalInUsdCents}
                 onAddPaymentMethodSuccess={handleAddPaymentMethodSuccess}
@@ -382,26 +381,41 @@ export function SelectPaymentMethodCard({
                 dialogTrigger={
                   <Button
                     variant="outline"
-                    className="justify-start disabled:pointer-events-auto disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-background"
+                    className={cn(
+                      'flex justify-between shrink w-full p-2 disabled:pointer-events-auto disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-background',
+                      selectedPaymentMethod ===
+                        SelectedPaymentMethod.CREDIT_CARD
+                        ? ''
+                        : 'opacity-50',
+                    )}
                     disabled={
                       selectedPaymentMethod !==
                       SelectedPaymentMethod.CREDIT_CARD
                     }
                   >
-                    {newCardPreview === null ? (
-                      <PlusIcon className="mr-2 h-4 w-4" />
-                    ) : (
-                      <PencilIcon className="mr-2 h-4 w-4" />
-                    )}
                     {newCardPreview ?? 'Add or Select A Card'}
+                    {newCardPreview === null ? (
+                      <PlusIcon className="h-4 w-4" />
+                    ) : (
+                      <PencilIcon className="h-4 w-4" />
+                    )}
                   </Button>
                 }
               />
             </div>
           </div>
         </RadioGroup>
+
+        <Separator className="my-4" />
       </CardContent>
-      <CardFooter>{footerButton}</CardFooter>
+
+      <CardFooter className="flex flex-col gap-4 w-full">
+        <div className="flex justify-between w-full">
+          <span>Total</span>
+          <span>{formatAmountInUSD(cartTotalInUsdCents, true)} USD</span>
+        </div>
+        {footerButton}
+      </CardFooter>
     </Card>
   );
 }
