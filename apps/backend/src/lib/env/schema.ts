@@ -12,6 +12,7 @@ export const secretsSchema = z.object({
   SMTP_USERNAME: z.string().optional(),
   GCP_HSM_KEYRING_RESOURCE_NAME: z.string().optional(),
   LOCAL_SIGNER_PRIVATE_KEY: z.string().optional(),
+  LOCAL_SIGNER_MNEMONIC: z.string().optional(),
 });
 
 export type SecretsSchema = z.infer<typeof secretsSchema>;

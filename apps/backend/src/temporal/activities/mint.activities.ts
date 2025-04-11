@@ -25,7 +25,7 @@ import {
   getContract,
   parseUnits,
 } from 'viem';
-import { privateKeyToAccount } from 'viem/accounts';
+import { mnemonicToAccount, privateKeyToAccount } from 'viem/accounts';
 import type { Chain } from 'viem/chains';
 import * as chains from 'viem/chains';
 import { createNonceManager, jsonRpc } from 'viem/nonce';
@@ -104,7 +104,11 @@ const createClients = (account: Account) => {
 };
 
 if (
-  !(secrets.GCP_HSM_KEYRING_RESOURCE_NAME || secrets.LOCAL_SIGNER_PRIVATE_KEY)
+  !(
+    secrets.GCP_HSM_KEYRING_RESOURCE_NAME ||
+    secrets.LOCAL_SIGNER_PRIVATE_KEY ||
+    secrets.LOCAL_SIGNER_MNEMONIC
+  )
 ) {
   throw new Error('Signer configuration missing');
 }
@@ -117,9 +121,13 @@ const signerAccount = secrets.GCP_HSM_KEYRING_RESOURCE_NAME
   ? await gcpHsmToAccount({
       hsmKeyVersion: secrets.GCP_HSM_KEYRING_RESOURCE_NAME,
     })
-  : privateKeyToAccount(secrets.LOCAL_SIGNER_PRIVATE_KEY as `0x${string}`, {
-      nonceManager,
-    });
+  : secrets.LOCAL_SIGNER_PRIVATE_KEY
+    ? privateKeyToAccount(secrets.LOCAL_SIGNER_PRIVATE_KEY as `0x${string}`, {
+        nonceManager,
+      })
+    : mnemonicToAccount(secrets.LOCAL_SIGNER_MNEMONIC as string, {
+        nonceManager,
+      });
 
 const clients = createClients(signerAccount);
 
