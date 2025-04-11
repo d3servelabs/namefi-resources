@@ -5,8 +5,10 @@ import { AppSidebar } from '@/components/sidebars';
 import { SidebarInset, SidebarProvider } from '@/components/ui/shadcn/sidebar';
 import { Toaster } from '@/components/ui/shadcn/sonner';
 import { Contexts } from '@/contexts';
+import { config } from '@/lib/env';
 import { cn } from '@/lib/utils';
 import { Providers } from '@/providers';
+import { GoogleAnalytics } from '@next/third-parties/google';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import type { ReactNode } from 'react';
@@ -43,6 +45,7 @@ export default function RootLayout({
         )}
       >
         <Preloader />
+        <GoogleAnalytics gaId={config.GA_MEASUREMENT_ID} />
         <Providers>
           <Contexts>
             <Toaster />
