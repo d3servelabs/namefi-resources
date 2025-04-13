@@ -1,4 +1,5 @@
 import type { DnsRecordSelect } from '@namefi-astra/db/types';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { create } from 'zustand';
 
 export type DialogAction = 'add' | 'edit' | 'delete' | 'save' | 'cancel';
@@ -27,21 +28,30 @@ interface DialogState {
     callback?: DialogCallback;
     preselectedType?: string;
   };
+  normalizedDomainName: NamefiNormalizedDomain;
   openDeleteDialog: (
+    normalizedDomainName: NamefiNormalizedDomain,
     records: DnsRecordSelect[],
     callback?: DialogCallback,
   ) => void;
   openDeleteDialogSingle: (
+    normalizedDomainName: NamefiNormalizedDomain,
     record: DnsRecordSelect,
     callback?: DialogCallback,
   ) => void;
   closeDeleteDialog: (action?: DialogAction, data?: DialogData) => void;
-  openAddDialog: (callback?: DialogCallback, preselectedType?: string) => void;
+  openAddDialog: (
+    normalizedDomainName: NamefiNormalizedDomain,
+    callback?: DialogCallback,
+    preselectedType?: string,
+  ) => void;
   openEditDialog: (
+    normalizedDomainName: NamefiNormalizedDomain,
     records: DnsRecordSelect[],
     callback?: DialogCallback,
   ) => void;
   openEditDialogSingle: (
+    normalizedDomainName: NamefiNormalizedDomain,
     record: DnsRecordSelect,
     callback?: DialogCallback,
   ) => void;
@@ -49,6 +59,7 @@ interface DialogState {
 }
 
 export const useDialogStore = create<DialogState>((set, get) => ({
+  normalizedDomainName: '' as NamefiNormalizedDomain,
   deleteDialog: {
     isOpen: false,
     records: [],
@@ -61,16 +72,18 @@ export const useDialogStore = create<DialogState>((set, get) => ({
     callback: undefined,
     preselectedType: undefined,
   },
-  openDeleteDialog: (records, callback) =>
+  openDeleteDialog: (normalizedDomainName, records, callback) =>
     set({
+      normalizedDomainName,
       deleteDialog: {
         isOpen: true,
         records,
         callback,
       },
     }),
-  openDeleteDialogSingle: (record, callback) =>
+  openDeleteDialogSingle: (normalizedDomainName, record, callback) =>
     set({
+      normalizedDomainName,
       deleteDialog: {
         isOpen: true,
         records: [record],
@@ -90,8 +103,9 @@ export const useDialogStore = create<DialogState>((set, get) => ({
       },
     });
   },
-  openAddDialog: (callback, preselectedType) =>
+  openAddDialog: (normalizedDomainName, callback, preselectedType) =>
     set({
+      normalizedDomainName,
       recordFormDialog: {
         isOpen: true,
         mode: 'add',
@@ -100,8 +114,9 @@ export const useDialogStore = create<DialogState>((set, get) => ({
         preselectedType,
       },
     }),
-  openEditDialog: (records, callback) =>
+  openEditDialog: (normalizedDomainName, records, callback) =>
     set({
+      normalizedDomainName,
       recordFormDialog: {
         isOpen: true,
         mode: 'edit',
@@ -110,8 +125,9 @@ export const useDialogStore = create<DialogState>((set, get) => ({
         preselectedType: undefined,
       },
     }),
-  openEditDialogSingle: (record, callback) =>
+  openEditDialogSingle: (normalizedDomainName, record, callback) =>
     set({
+      normalizedDomainName,
       recordFormDialog: {
         isOpen: true,
         mode: 'edit',

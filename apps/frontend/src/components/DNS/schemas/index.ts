@@ -1,3 +1,4 @@
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import type { RecordType } from '@namefi-astra/zod-dns';
 import { z } from 'zod';
 
@@ -14,11 +15,12 @@ export const DNS_RECORD_TYPES = [
 
 // TTL options in seconds with human-readable labels
 export const TTL_OPTIONS = [
-  { value: '300', label: '5 minutes' },
-  { value: '1200', label: '20 minutes' },
-  { value: '3600', label: '1 hour' },
-  { value: '86400', label: '1 day' },
-  { value: '604800', label: '1 week' },
+  { value: 60, label: '1 minutes' },
+  { value: 300, label: '5 minutes' },
+  { value: 1200, label: '20 minutes' },
+  { value: 3600, label: '1 hour' },
+  { value: 86400, label: '1 day' },
+  { value: 604800, label: '1 week' },
 ];
 
 // Schema for DNS record form
@@ -52,7 +54,7 @@ export function formValuesToDnsRecord(
       existingRecord?.id ||
       `new-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
     type: formValues.type as RecordType,
-    name: `${formValues.name || ''}${formValues.domain}`,
+    name: `${formValues.name || '@'}`,
     rdata: formValues.rdata,
     ttl: formValues.ttl,
     notes: existingRecord?.notes || 'by User',
@@ -64,17 +66,13 @@ export function dnsRecordToFormValues(record: {
   type?: string;
   name?: string;
   rdata?: string;
+  normalizedDomainName: NamefiNormalizedDomain;
   ttl?: number;
 }): DnsRecordFormValues {
-  const nameParts = (record.name || '').split('.');
-  const name = nameParts[0] || '';
-  const domain =
-    nameParts.length > 1 ? `.${nameParts.slice(1).join('.')}` : '.example.com';
-
   return {
     type: record.type || '',
-    name,
-    domain,
+    name: record.name,
+    domain: record.normalizedDomainName,
     rdata: record.rdata || '',
     ttl: record.ttl || 0,
   };

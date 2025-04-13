@@ -18,10 +18,9 @@ import {
 } from '../schemas';
 import { useDialogStore } from '../stores/dialog';
 
-const DEFAULT_DOMAIN = '.example.com';
-
 export function RecordDialog() {
-  const { recordFormDialog, closeRecordFormDialog } = useDialogStore();
+  const { recordFormDialog, closeRecordFormDialog, normalizedDomainName } =
+    useDialogStore();
   const { isOpen, mode, records, preselectedType } = recordFormDialog;
 
   const [forms, setForms] = useState<
@@ -44,7 +43,7 @@ export function RecordDialog() {
         const defaultValues: DnsRecordFormValues = {
           type: preselectedType || 'A',
           name: '',
-          domain: DEFAULT_DOMAIN,
+          domain: normalizedDomainName,
           rdata: '',
           ttl: 3600,
         };
@@ -52,18 +51,18 @@ export function RecordDialog() {
       }
       setFormErrors(false);
     }
-  }, [isOpen, mode, records, preselectedType]);
+  }, [isOpen, mode, records, preselectedType, normalizedDomainName]);
 
   // Memoize the default form values
   const defaultFormValues = useMemo(
     () => ({
       type: preselectedType || 'A',
       name: '',
-      domain: DEFAULT_DOMAIN,
+      domain: normalizedDomainName,
       rdata: '',
       ttl: 3600,
     }),
-    [preselectedType],
+    [preselectedType, normalizedDomainName],
   );
 
   // Memoize the addMoreRecord function
@@ -148,58 +147,6 @@ export function RecordDialog() {
     });
   }, [forms, records, mode, closeRecordFormDialog]);
 
-  // Memoize the dialog title
-  const dialogTitle = useMemo(
-    () => (
-      <DialogTitle className="text-xl">
-        {mode === 'add' ? 'Add DNS Record' : 'Edit DNS Record'}
-      </DialogTitle>
-    ),
-    [mode],
-  );
-
-  // Memoize the error message
-  const errorMessage = useMemo(
-    () =>
-      formErrors && (
-        <div className="text-red-500 text-sm mb-4">
-          Please complete all required fields marked with *
-        </div>
-      ),
-    [formErrors],
-  );
-
-  // Memoize the footer buttons
-  const footerButtons = useMemo(
-    () => (
-      <>
-        <Button
-          variant="link"
-          className="text-emerald-500 hover:text-emerald-400 p-0"
-          onClick={addMoreRecord}
-          type="button"
-        >
-          <Plus className="mr-2 h-4 w-4" />
-          Add more record
-        </Button>
-        <div className="flex gap-2">
-          <Button variant="ghost" onClick={handleCancel} type="button">
-            Cancel
-          </Button>
-          <Button
-            className="bg-emerald-500 hover:bg-emerald-600 text-white"
-            onClick={handleSubmit}
-            type="button"
-            disabled={forms.length === 0}
-          >
-            {mode === 'add' ? 'Add' : 'Save'} record
-          </Button>
-        </div>
-      </>
-    ),
-    [addMoreRecord, handleCancel, handleSubmit, forms.length, mode],
-  );
-
   const handleValues = useCallback(
     (index: number) => (values: DnsRecordFormValues, isValid: boolean) =>
       updateFormValues(index, values, isValid),
@@ -215,10 +162,18 @@ export function RecordDialog() {
         }
       }}
     >
-      <DialogContent className="sm:max-w-[600px] bg-zinc-950 border-zinc-800">
-        <DialogHeader>{dialogTitle}</DialogHeader>
+      <DialogContent className="sm:max-w-[900px] bg-zinc-950 border-zinc-800">
+        <DialogHeader>
+          <DialogTitle className="text-xl">
+            {mode === 'add' ? 'Add DNS Record' : 'Edit DNS Record'}
+          </DialogTitle>
+        </DialogHeader>
 
-        {errorMessage}
+        {formErrors && (
+          <div className="text-red-500 text-sm mb-4">
+            Please complete all required fields marked with *
+          </div>
+        )}
 
         <div className="space-y-6 max-h-[60vh] overflow-y-auto pr-2">
           {forms.map((form, index) => (
@@ -238,7 +193,28 @@ export function RecordDialog() {
         </div>
 
         <DialogFooter className="flex items-center justify-between sm:justify-between gap-2">
-          {footerButtons}
+          <Button
+            variant="link"
+            className="text-emerald-500 hover:text-emerald-400 p-0"
+            onClick={addMoreRecord}
+            type="button"
+          >
+            <Plus className="mr-2 h-4 w-4" />
+            Add more record
+          </Button>
+          <div className="flex gap-2">
+            <Button variant="ghost" onClick={handleCancel} type="button">
+              Cancel
+            </Button>
+            <Button
+              className="bg-emerald-500 hover:bg-emerald-600 text-white"
+              onClick={handleSubmit}
+              type="button"
+              disabled={forms.length === 0}
+            >
+              {mode === 'add' ? 'Add' : 'Save'} record
+            </Button>
+          </div>
         </DialogFooter>
       </DialogContent>
     </Dialog>

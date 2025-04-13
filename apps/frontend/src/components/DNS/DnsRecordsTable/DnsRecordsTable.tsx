@@ -30,6 +30,7 @@ import {
 import { cn } from '@/lib/utils';
 import { useTRPC } from '@/utils/trpc';
 import type { DnsRecordSelect } from '@namefi-astra/db/types';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   type Column,
@@ -96,27 +97,30 @@ interface EditableCellProps {
   onSave: (value: string) => void;
   options?: { value: string; label: string }[];
   isSelectInput?: boolean;
+  enabled?: boolean;
 }
 
 const EditableCell = ({
   value: initialValue,
   row,
-  // column,
   onSave,
   options,
   isSelectInput = false,
+  enabled = true,
 }: EditableCellProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [value, setValue] = useState(initialValue);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleKeyDown = (e: KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      onSave(value);
-      setIsEditing(false);
-    } else if (e.key === 'Escape') {
-      setValue(initialValue);
-      setIsEditing(false);
+    if (enabled) {
+      if (e.key === 'Enter') {
+        onSave(value);
+        setIsEditing(false);
+      } else if (e.key === 'Escape') {
+        setValue(initialValue);
+        setIsEditing(false);
+      }
     }
   };
 
@@ -438,6 +442,7 @@ export const DnsRecordsTable: FC<DnsManagementProps> = ({
                 type
               ) : (
                 <EditableCell
+                  enabled={false}
                   value={type}
                   row={row}
                   column={column}
@@ -491,6 +496,7 @@ export const DnsRecordsTable: FC<DnsManagementProps> = ({
             name
           ) : (
             <EditableCell
+              enabled={false}
               value={name}
               row={row}
               column={column}
@@ -515,6 +521,7 @@ export const DnsRecordsTable: FC<DnsManagementProps> = ({
                 value
               ) : (
                 <EditableCell
+                  enabled={false}
                   value={value}
                   row={row}
                   column={column}
@@ -560,7 +567,9 @@ export const DnsRecordsTable: FC<DnsManagementProps> = ({
 
           // Format TTL for display
           const formatTTL = (ttlValue: string) => {
-            const option = TTL_OPTIONS.find((opt) => opt.value === ttlValue);
+            const option = TTL_OPTIONS.find(
+              (opt) => opt.value.toString() === ttlValue,
+            );
             return option ? option.label : ttlValue;
           };
 
@@ -568,11 +577,15 @@ export const DnsRecordsTable: FC<DnsManagementProps> = ({
             formatTTL(ttl)
           ) : (
             <EditableCell
+              enabled={false}
               value={ttl}
               row={row}
               column={column}
               onSave={(value) => handleCellUpdate(row.id, 'ttl', value)}
-              options={TTL_OPTIONS}
+              options={TTL_OPTIONS.map(({ value, label }) => ({
+                value: value.toString(),
+                label,
+              }))}
               isSelectInput={true}
             />
           );
@@ -611,12 +624,20 @@ export const DnsRecordsTable: FC<DnsManagementProps> = ({
 
           // Memoize the edit handler
           const handleEdit = () => {
-            openEditDialogSingle(record, handleDialogCallback);
+            openEditDialogSingle(
+              domain as NamefiNormalizedDomain,
+              record,
+              handleDialogCallback,
+            );
           };
 
           // Memoize the delete handler
           const handleDelete = () => {
-            openDeleteDialogSingle(record, handleDialogCallback);
+            openDeleteDialogSingle(
+              domain as NamefiNormalizedDomain,
+              record,
+              handleDialogCallback,
+            );
           };
 
           // Memoize the copy handler
@@ -710,6 +731,7 @@ export const DnsRecordsTable: FC<DnsManagementProps> = ({
       },
     ],
     [
+      domain,
       handleCellUpdate,
       handleDialogCallback,
       openDeleteDialogSingle,
@@ -773,30 +795,21 @@ export const DnsRecordsTable: FC<DnsManagementProps> = ({
   // Handle bulk delete
   const handleBulkEdit = useCallback(() => {
     const selectedRecords = selectedRows.map((row) => row.original);
-    openEditDialog(selectedRecords, handleDialogCallback);
-  }, [handleDialogCallback, openEditDialog, selectedRows]);
+    openEditDialog(
+      domain as NamefiNormalizedDomain,
+      selectedRecords,
+      handleDialogCallback,
+    );
+  }, [domain, handleDialogCallback, openEditDialog, selectedRows]);
 
   const handleBulkDelete = useCallback(() => {
     const selectedRecords = selectedRows.map((row) => row.original);
-    openDeleteDialog(selectedRecords, handleDialogCallback);
-  }, [handleDialogCallback, openDeleteDialog, selectedRows]);
-
-  // Memoize pagination handlers
-  const handlePreviousPage = useCallback(() => {
-    setPageIndex((prev) => Math.max(0, prev - 1));
-  }, []);
-
-  const handleNextPage = useCallback(() => {
-    setPageIndex((prev) => Math.min(table.getPageCount() - 1, prev + 1));
-  }, [table]);
-
-  const handleFirstPage = useCallback(() => {
-    setPageIndex(0);
-  }, []);
-
-  const handleLastPage = useCallback(() => {
-    setPageIndex(table.getPageCount() - 1);
-  }, [table]);
+    openDeleteDialog(
+      domain as NamefiNormalizedDomain,
+      selectedRecords,
+      handleDialogCallback,
+    );
+  }, [handleDialogCallback, openDeleteDialog, selectedRows, domain]);
 
   const handlePageSizeChange = useCallback((value: string) => {
     setPageSize(Number(value));
@@ -982,27 +995,6 @@ export const DnsRecordsTable: FC<DnsManagementProps> = ({
     [handleBulkDelete, handleBulkEdit, hasSelectedRows, selectedRows.length],
   );
 
-  // Memoize the pagination info
-  const paginationInfo = useMemo(
-    () => (
-      <span className="text-sm text-zinc-500">
-        Page {pageIndex + 1} of {table.getPageCount() || 1}
-      </span>
-    ),
-    [pageIndex, table],
-  );
-
-  // Memoize the selection info
-  const selectionInfo = useMemo(
-    () => (
-      <div className="text-sm text-zinc-500">
-        {table.getFilteredSelectedRowModel().rows.length} of{' '}
-        {table.getFilteredRowModel().rows.length} row(s) selected.
-      </div>
-    ),
-    [table],
-  );
-
   // Memoize the page size selector
   const pageSizeSelector = useMemo(
     () => (
@@ -1097,13 +1089,19 @@ export const DnsRecordsTable: FC<DnsManagementProps> = ({
         </div>
 
         <div className="flex items-center justify-between">
-          {selectionInfo}
+          <div className="text-sm text-zinc-500">
+            {table.getFilteredSelectedRowModel().rows.length} of{' '}
+            {table.getFilteredRowModel().rows.length} row(s) selected.
+          </div>
           <div className="flex items-center gap-2">
-            {paginationInfo}
+            <span className="text-sm text-zinc-500">
+              Page {pageIndex + 1} of {table.getPageCount() || 1}
+            </span>
+
             <Button
               variant="outline"
               size="sm"
-              onClick={handleFirstPage}
+              onClick={() => setPageIndex(0)}
               disabled={pageIndex === 0}
             >
               <ChevronFirst className="h-4 w-4" />
@@ -1111,7 +1109,7 @@ export const DnsRecordsTable: FC<DnsManagementProps> = ({
             <Button
               variant="outline"
               size="sm"
-              onClick={handlePreviousPage}
+              onClick={() => setPageIndex((prev) => Math.max(0, prev - 1))}
               disabled={pageIndex === 0}
             >
               <ChevronDown className="h-4 w-4 rotate-90" />
@@ -1119,7 +1117,11 @@ export const DnsRecordsTable: FC<DnsManagementProps> = ({
             <Button
               variant="outline"
               size="sm"
-              onClick={handleNextPage}
+              onClick={() =>
+                setPageIndex((prev) =>
+                  Math.min(table.getPageCount() - 1, prev + 1),
+                )
+              }
               disabled={pageIndex >= table.getPageCount() - 1}
             >
               <ChevronDown className="h-4 w-4 -rotate-90" />
@@ -1127,7 +1129,7 @@ export const DnsRecordsTable: FC<DnsManagementProps> = ({
             <Button
               variant="outline"
               size="sm"
-              onClick={handleLastPage}
+              onClick={() => setPageIndex(table.getPageCount() - 1)}
               disabled={pageIndex >= table.getPageCount() - 1}
             >
               <ChevronLast className="h-4 w-4" />

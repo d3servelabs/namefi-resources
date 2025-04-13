@@ -38,8 +38,7 @@ export const DnsManagement: FC<DnsManagementProps> = ({
   return (
     <div className={cn('', className)} {...rest}>
       <Tabs defaultValue="dns-setting" className="w-full">
-        <TabsList className="grid w-full grid-cols-2 mb-8">
-          <TabsTrigger value="overview">Overview</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-1 mb-8">
           <TabsTrigger value="dns-setting">DNS Setting</TabsTrigger>
         </TabsList>
 
@@ -57,29 +56,17 @@ export const DnsManagement: FC<DnsManagementProps> = ({
             </TabsContent>
 
             <TabsContent value="forwarding">
-              <div className="text-center py-12">
-                Forwarding content would go here
-              </div>
+              <div className="text-center py-12">Coming Soon ...</div>
             </TabsContent>
 
             <TabsContent value="nameservers">
-              <div className="text-center py-12">
-                Nameservers content would go here
-              </div>
+              <div className="text-center py-12">Coming Soon ...</div>
             </TabsContent>
 
             <TabsContent value="dnssec">
-              <div className="text-center py-12">
-                DNSSEC content would go here
-              </div>
+              <div className="text-center py-12">Coming Soon ...</div>
             </TabsContent>
           </Tabs>
-        </TabsContent>
-
-        <TabsContent value="overview">
-          <div className="text-center py-12">
-            Overview content would go here
-          </div>
         </TabsContent>
       </Tabs>
     </div>

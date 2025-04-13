@@ -1,3 +1,4 @@
+import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 import type { AnyPgTable } from 'drizzle-orm/pg-core';
 import {
   createInsertSchema,
@@ -66,9 +67,15 @@ export const orderItemUpdateSchema = createUpdateSchema(orderItemsTable);
 /**
  * DNS Record schemas
  */
-export const dnsRecordInsertSchema = createInsertSchema(dnsRecordsTable);
-export const dnsRecordSelectSchema = createSelectSchema(dnsRecordsTable);
-export const dnsRecordUpdateSchema = createUpdateSchema(dnsRecordsTable);
+export const dnsRecordInsertSchema = createInsertSchema(dnsRecordsTable, {
+  normalizedDomainName: namefiNormalizedDomainSchema,
+});
+export const dnsRecordSelectSchema = createSelectSchema(dnsRecordsTable, {
+  normalizedDomainName: namefiNormalizedDomainSchema,
+});
+export const dnsRecordUpdateSchema = createUpdateSchema(dnsRecordsTable, {
+  normalizedDomainName: namefiNormalizedDomainSchema,
+});
 
 /**
  * Inferred Zod types for API and validation

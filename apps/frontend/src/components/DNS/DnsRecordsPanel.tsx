@@ -20,15 +20,17 @@ import {
 } from '@/components/ui/shadcn/dropdown-menu';
 import { cn } from '@/lib/utils';
 import { useTRPC } from '@/utils/trpc';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { Database, FileText, FileType, Mail, Plus, Server } from 'lucide-react';
 import {
   type FC,
   type HTMLAttributes,
+  type ReactNode,
   useCallback,
-  useMemo,
   useState,
 } from 'react';
+import React from 'react';
 import { toast } from 'sonner';
 import {
   type DialogAction,
@@ -49,7 +51,7 @@ export const DnsRecordsPanel: FC<DnsRecordsPanelProps> = ({
 
   const { openAddDialog } = useDialogStore();
 
-  const [hasNameservers, setHasNameservers] = useState(false);
+  const [hasNameservers, setHasNameservers] = useState(true);
 
   // State for data
 
@@ -90,20 +92,23 @@ export const DnsRecordsPanel: FC<DnsRecordsPanelProps> = ({
       }
 
       if (action === 'add' && data.success) {
-        await Promise.allSettled(
+        const res = await Promise.allSettled(
           data.updatedRecords.map((record) =>
             createDnsRecord.mutateAsync({
               normalizedDomainName: domain as string,
               type: record.type,
               name: record.name,
               rdata: record.rdata,
+              ttl: record.ttl,
             }),
           ),
         );
 
-        toast('Records added', {
-          description: data.message,
-        });
+        if (res.every((result) => result.status === 'fulfilled')) {
+          toast('Records added', {
+            description: data.message,
+          });
+        }
       }
     },
     [domain, createDnsRecord],
@@ -112,43 +117,18 @@ export const DnsRecordsPanel: FC<DnsRecordsPanelProps> = ({
   // Memoize the record type handlers
   const handleAddRecord = useCallback(
     (type?: string) => {
-      openAddDialog(handleDialogCallback, type);
+      openAddDialog(
+        domain as NamefiNormalizedDomain,
+        handleDialogCallback,
+        type,
+      );
     },
-    [openAddDialog, handleDialogCallback],
-  );
-
-  // Memoize specific record type handlers
-  const handleAddARecord = useCallback(
-    () => handleAddRecord('A'),
-    [handleAddRecord],
-  );
-  const handleAddAAAARecord = useCallback(
-    () => handleAddRecord('AAAA'),
-    [handleAddRecord],
-  );
-  const handleAddCNAMERecord = useCallback(
-    () => handleAddRecord('CNAME'),
-    [handleAddRecord],
-  );
-  const handleAddMXRecord = useCallback(
-    () => handleAddRecord('MX'),
-    [handleAddRecord],
-  );
-  const handleAddTXTRecord = useCallback(
-    () => handleAddRecord('TXT'),
-    [handleAddRecord],
-  );
-  const handleAddNSRecord = useCallback(
-    () => handleAddRecord('NS'),
-    [handleAddRecord],
-  );
-  const handleAddSRVRecord = useCallback(
-    () => handleAddRecord('SRV'),
-    [handleAddRecord],
+    [domain, openAddDialog, handleDialogCallback],
   );
 
   // Memoize the nameserver switching handler
   const handleSwitchNameservers = useCallback(() => {
+    //TODO
     toast('Switching nameservers', {
       description: 'Please wait while we switch your nameservers to Namefi...',
     });
@@ -163,93 +143,25 @@ export const DnsRecordsPanel: FC<DnsRecordsPanelProps> = ({
     }, 2000);
   }, []);
 
-  // Memoize the card header content
-  const cardHeaderContent = useMemo(
-    () => (
-      <div>
-        <CardTitle className="text-xl font-bold">DNS Records</CardTitle>
-        <CardDescription className="text-zinc-400">
-          Manage your domain's DNS records
-        </CardDescription>
-      </div>
-    ),
-    [],
-  );
-
-  // Memoize the dropdown menu content
-  const dropdownMenuContent = useMemo(
-    () => (
-      <DropdownMenuContent align="end" className="w-56">
-        <DropdownMenuLabel>Record Types</DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={handleAddARecord}>
-          <Database className="mr-2 h-4 w-4" />
-          <span>A Record</span>
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={handleAddAAAARecord}>
-          <Database className="mr-2 h-4 w-4" />
-          <span>AAAA Record</span>
-        </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={handleAddCNAMERecord}>
-          <FileType className="mr-2 h-4 w-4" />
-          <span>CNAME Record</span>
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={handleAddMXRecord}>
-          <Mail className="mr-2 h-4 w-4" />
-          <span>MX Record</span>
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={handleAddTXTRecord}>
-          <FileText className="mr-2 h-4 w-4" />
-          <span>TXT Record</span>
-        </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={handleAddNSRecord}>
-          <Server className="mr-2 h-4 w-4" />
-          <span>NS Record</span>
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={handleAddSRVRecord}>
-          <Server className="mr-2 h-4 w-4" />
-          <span>SRV Record</span>
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    ),
-    [
-      handleAddARecord,
-      handleAddAAAARecord,
-      handleAddCNAMERecord,
-      handleAddMXRecord,
-      handleAddTXTRecord,
-      handleAddNSRecord,
-      handleAddSRVRecord,
-    ],
-  );
-
-  // Memoize the add button
-  const addButton = useMemo(
-    () => (
-      <Button
-        disabled={!domain}
-        className="bg-emerald-500 hover:bg-emerald-600 text-white"
-      >
-        <Plus className="mr-1 h-4 w-4" /> Add record
-      </Button>
-    ),
-    [domain],
-  );
-
   return (
     <Card className={cn('bg-zinc-900 border-zinc-800', className)} {...rest}>
       <CardHeader className="flex flex-row items-center justify-between pb-2">
-        {cardHeaderContent}
+        <div>
+          <CardTitle className="text-xl font-bold">DNS Records</CardTitle>
+          <CardDescription className="text-zinc-400">
+            Manage your domain's DNS records
+          </CardDescription>
+        </div>
 
         {hasNameservers && (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild={true}>
-              {addButton}
-            </DropdownMenuTrigger>
-            {dropdownMenuContent}
-          </DropdownMenu>
+          <AddRecordDropdownMenu onAddRecordClicked={handleAddRecord}>
+            <Button
+              disabled={!domain}
+              className="bg-emerald-500 hover:bg-emerald-600 text-white"
+            >
+              <Plus className="mr-1 h-4 w-4" /> Add record
+            </Button>
+          </AddRecordDropdownMenu>
         )}
       </CardHeader>
       <CardContent>
@@ -264,3 +176,53 @@ export const DnsRecordsPanel: FC<DnsRecordsPanelProps> = ({
 };
 
 DnsRecordsPanel.displayName = 'DnsRecordsPanel';
+
+const AddRecordDropdownMenu = React.memo(
+  ({
+    onAddRecordClicked,
+    children,
+  }: {
+    onAddRecordClicked: (type: string) => void;
+    children: ReactNode;
+  }) => {
+    return (
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild={true}>{children}</DropdownMenuTrigger>
+        <DropdownMenuContent align="end" className="w-56">
+          <DropdownMenuLabel>Record Types</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={() => onAddRecordClicked('A')}>
+            <Database className="mr-2 h-4 w-4" />
+            <span>A Record</span>
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => onAddRecordClicked('AAAA')}>
+            <Database className="mr-2 h-4 w-4" />
+            <span>AAAA Record</span>
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={() => onAddRecordClicked('CNAME')}>
+            <FileType className="mr-2 h-4 w-4" />
+            <span>CNAME Record</span>
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => onAddRecordClicked('MX')}>
+            <Mail className="mr-2 h-4 w-4" />
+            <span>MX Record</span>
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => onAddRecordClicked('TXT')}>
+            <FileText className="mr-2 h-4 w-4" />
+            <span>TXT Record</span>
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={() => onAddRecordClicked('NS')}>
+            <Server className="mr-2 h-4 w-4" />
+            <span>NS Record</span>
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => onAddRecordClicked('SRV')}>
+            <Server className="mr-2 h-4 w-4" />
+            <span>SRV Record</span>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    );
+  },
+);

@@ -1,5 +1,3 @@
-'use client';
-
 import { Button } from '@/components/ui/shadcn/button';
 import {
   Form,
@@ -83,7 +81,7 @@ export function DnsRecordForm({
   const ttlOptions = useMemo(
     () =>
       TTL_OPTIONS.map((option) => (
-        <SelectItem key={option.value} value={option.value}>
+        <SelectItem key={option.value} value={option.value?.toString()}>
           {option.label}
         </SelectItem>
       )),
@@ -208,7 +206,9 @@ export function DnsRecordForm({
                 <FormLabel className="text-sm text-zinc-400">TTL</FormLabel>
                 <div className="flex">
                   <Select
-                    onValueChange={field.onChange}
+                    onValueChange={(value) =>
+                      field.onChange(Number.parseInt(value))
+                    }
                     defaultValue={field.value.toString()}
                   >
                     <FormControl>
