@@ -77,7 +77,7 @@ export default function DnsRecordList({
               onClick={() =>
                 deleteDnsRecord.mutateAsync({
                   id: record.id as string,
-                  normalizedDomainName,
+                  zoneName: normalizedDomainName,
                 })
               }
             >

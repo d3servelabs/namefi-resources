@@ -38,7 +38,7 @@ export function getZoneRecordsInPlaceOfParkedRecords(
     .from(dnsRecordsTable)
     .where(
       and(
-        eq(dnsRecordsTable.normalizedDomainName, normalizedDomainName),
+        eq(dnsRecordsTable.zoneName, normalizedDomainName),
         inArray(
           dnsRecordsTable.type,
           PARKED_DOMAIN_RECORDS.map((record) => record.type),
@@ -110,7 +110,7 @@ export async function parkDomain(
       .delete(dnsRecordsTable)
       .where(
         and(
-          eq(dnsRecordsTable.normalizedDomainName, normalizedDomainName),
+          eq(dnsRecordsTable.zoneName, normalizedDomainName),
           inArray(dnsRecordsTable.id, pluck('id', existingConflictingRecords)),
         ),
       );
@@ -119,7 +119,7 @@ export async function parkDomain(
       .values(
         PARKED_DOMAIN_RECORDS.map((record) => ({
           ...record,
-          normalizedDomainName,
+          zoneName: normalizedDomainName,
         })),
       )
       .returning();

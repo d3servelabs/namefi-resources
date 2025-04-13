@@ -236,7 +236,7 @@ export const DnsRecordsTable: FC<DnsManagementProps> = ({
   const dnsRecords = useQuery(
     trpc.dnsRecords.getRecords.queryOptions(
       {
-        normalizedDomainName: domain ?? '',
+        zoneName: domain ?? '',
       },
       {
         enabled: !!domain,
@@ -306,7 +306,7 @@ export const DnsRecordsTable: FC<DnsManagementProps> = ({
           data.originalRecords.map((record) =>
             deleteDnsRecord.mutateAsync({
               id: record.id as string,
-              normalizedDomainName: domain as string,
+              zoneName: domain as string,
             }),
           ),
         );
@@ -319,7 +319,7 @@ export const DnsRecordsTable: FC<DnsManagementProps> = ({
           data.updatedRecords.map((record) =>
             updateDnsRecord.mutateAsync({
               id: record.id as string,
-              normalizedDomainName: domain as string,
+              zoneName: domain as string,
               type: record.type,
               name: record.name,
               rdata: record.rdata,
@@ -334,7 +334,7 @@ export const DnsRecordsTable: FC<DnsManagementProps> = ({
         await Promise.allSettled(
           data.updatedRecords.map((record) =>
             createDnsRecord.mutateAsync({
-              normalizedDomainName: domain as string,
+              zoneName: domain as string,
               type: record.type,
               name: record.name,
               rdata: record.rdata,

@@ -78,6 +78,13 @@
       "when": 1744219440753,
       "tag": "0010_nifty_thunderball",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1744584470336,
+      "tag": "0011_pale_sharon_carter",
+      "breakpoints": true
     }
   ]
 }

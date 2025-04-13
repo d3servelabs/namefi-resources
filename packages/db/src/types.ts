@@ -68,13 +68,13 @@ export const orderItemUpdateSchema = createUpdateSchema(orderItemsTable);
  * DNS Record schemas
  */
 export const dnsRecordInsertSchema = createInsertSchema(dnsRecordsTable, {
-  normalizedDomainName: namefiNormalizedDomainSchema,
+  zoneName: namefiNormalizedDomainSchema,
 });
 export const dnsRecordSelectSchema = createSelectSchema(dnsRecordsTable, {
-  normalizedDomainName: namefiNormalizedDomainSchema,
+  zoneName: namefiNormalizedDomainSchema,
 });
 export const dnsRecordUpdateSchema = createUpdateSchema(dnsRecordsTable, {
-  normalizedDomainName: namefiNormalizedDomainSchema,
+  zoneName: namefiNormalizedDomainSchema,
 });
 
 /**

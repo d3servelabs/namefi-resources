@@ -279,9 +279,7 @@ export const dnsRecordsTable = pgTable(
   'dns_records',
   {
     ...randomUuid,
-    normalizedDomainName: text('normalized_domain_name')
-      .notNull()
-      .$type<NamefiNormalizedDomain>(),
+    zoneName: text('zone_name').notNull().$type<NamefiNormalizedDomain>(),
     /**
      * The owner name of this DNS record (RFC-1034 3.6, RFC-1035 3.2.1)
      *
@@ -306,11 +304,11 @@ export const dnsRecordsTable = pgTable(
     ...timestamps,
   },
   (table) => [
-    index('dns_records_domain_idx').on(table.normalizedDomainName),
+    index('dns_records_domain_idx').on(table.zoneName),
     index('dns_records_name_idx').on(table.name),
     index('dns_records_type_idx').on(table.type),
     unique('dns_records_domain_name_type_class_rdata_unique').on(
-      table.normalizedDomainName,
+      table.zoneName,
       table.name,
       table.type,
       table.class,

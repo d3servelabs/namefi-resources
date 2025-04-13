@@ -23,7 +23,7 @@ export default function DnsPage() {
   // Query DNS records
   const dnsRecords = useQuery(
     trpc.dnsRecords.getRecords.queryOptions({
-      normalizedDomainName: domainName,
+      zoneName: domainName,
     }),
   );
 
@@ -204,7 +204,7 @@ function EditDnsRecordForm({
     // Call the update mutation with the form data
     updateDnsRecord.mutateAsync({
       id: record.id as string,
-      normalizedDomainName: domainName,
+      zoneName: domainName,
       type: recordType,
       name: recordName,
       rdata: recordValue,

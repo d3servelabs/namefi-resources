@@ -58,7 +58,7 @@ export const DnsRecordsPanel: FC<DnsRecordsPanelProps> = ({
   const dnsRecords = useQuery(
     trpc.dnsRecords.getRecords.queryOptions(
       {
-        normalizedDomainName: domain ?? '',
+        zoneName: domain ?? '',
       },
       {
         enabled: !!domain,
@@ -95,7 +95,7 @@ export const DnsRecordsPanel: FC<DnsRecordsPanelProps> = ({
         const res = await Promise.allSettled(
           data.updatedRecords.map((record) =>
             createDnsRecord.mutateAsync({
-              normalizedDomainName: domain as string,
+              zoneName: domain as string,
               type: record.type,
               name: record.name,
               rdata: record.rdata,

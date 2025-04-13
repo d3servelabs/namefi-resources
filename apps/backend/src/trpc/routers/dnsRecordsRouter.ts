@@ -19,13 +19,13 @@ export const dnsRecordsRouter = createTRPCRouter({
   getRecords: publicProcedure
     .input(
       z.object({
-        normalizedDomainName: namefiNormalizedDomainSchema,
+        zoneName: namefiNormalizedDomainSchema,
       }),
     )
     .query(({ input }) => {
       // In a real implementation, we may want to check permissions
       // before returning records, but for DNS we might allow public reading
-      return getZoneRecords(input.normalizedDomainName);
+      return getZoneRecords(input.zoneName);
     }),
 
   /**
@@ -34,12 +34,9 @@ export const dnsRecordsRouter = createTRPCRouter({
   createDnsRecord: protectedProcedure
     .input(createRecordInputSchema)
     .mutation(async ({ input, ctx }) => {
-      const { normalizedDomainName } = input;
+      const { zoneName } = input;
 
-      await assertAuthenticatedUserIsDomainOwner(
-        normalizedDomainName,
-        ctx.user,
-      );
+      await assertAuthenticatedUserIsDomainOwner(zoneName, ctx.user);
 
       return createRecord(input);
     }),
@@ -50,10 +47,7 @@ export const dnsRecordsRouter = createTRPCRouter({
   updateRecord: protectedProcedure
     .input(updateRecordInputSchema)
     .mutation(async ({ input, ctx }) => {
-      await assertAuthenticatedUserIsDomainOwner(
-        input.normalizedDomainName,
-        ctx.user,
-      );
+      await assertAuthenticatedUserIsDomainOwner(input.zoneName, ctx.user);
 
       return updateRecord(input);
     }),
@@ -65,19 +59,21 @@ export const dnsRecordsRouter = createTRPCRouter({
     .input(
       z.object({
         id: z.string(),
-        normalizedDomainName: namefiNormalizedDomainSchema,
+        zoneName: namefiNormalizedDomainSchema,
       }),
     )
-    .mutation(async ({ input: { normalizedDomainName, id }, ctx }) => {
-      await assertAuthenticatedUserIsDomainOwner(
-        normalizedDomainName,
-        ctx.user,
-      );
+    .mutation(
+      async ({ input: { zoneName: normalizedDomainName, id }, ctx }) => {
+        await assertAuthenticatedUserIsDomainOwner(
+          normalizedDomainName,
+          ctx.user,
+        );
 
-      await deleteRecord(id, normalizedDomainName);
+        await deleteRecord(id, normalizedDomainName);
 
-      return { success: true };
-    }),
+        return { success: true };
+      },
+    ),
 
   /**
    * Park a domain

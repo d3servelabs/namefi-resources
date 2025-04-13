@@ -112,7 +112,7 @@ nsJsonRouter.get('/', async (c) => {
   const qTypeEnum = recordTypeEnum.parse(qTypeString);
   const records = await db.query.dnsRecordsTable.findMany({
     where: and(
-      eq(dnsRecordsTable.normalizedDomainName, zoneName),
+      eq(dnsRecordsTable.zoneName, zoneName),
       eq(dnsRecordsTable.type, qTypeEnum),
     ),
   });

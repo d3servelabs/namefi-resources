@@ -66,13 +66,13 @@ export function dnsRecordToFormValues(record: {
   type?: string;
   name?: string;
   rdata?: string;
-  normalizedDomainName: NamefiNormalizedDomain;
+  zoneName: NamefiNormalizedDomain;
   ttl?: number;
 }): DnsRecordFormValues {
   return {
     type: record.type || '',
     name: record.name,
-    domain: record.normalizedDomainName,
+    domain: record.zoneName,
     rdata: record.rdata || '',
     ttl: record.ttl || 0,
   };

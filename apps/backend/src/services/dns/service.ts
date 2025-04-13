@@ -16,7 +16,7 @@ import { areRecordsEqual } from './helpers';
 
 export const updateRecordInputSchema = z.object({
   id: z.string(),
-  normalizedDomainName: namefiNormalizedDomainSchema,
+  zoneName: namefiNormalizedDomainSchema,
   type: recordTypeEnum.optional(),
   name: z.string().optional(),
   rdata: z.string().optional(),
@@ -24,30 +24,27 @@ export const updateRecordInputSchema = z.object({
 });
 
 export const createRecordInputSchema = dnsRecordInsertSchema.extend({
-  normalizedDomainName: namefiNormalizedDomainSchema,
+  zoneName: namefiNormalizedDomainSchema,
 });
 
 /**
  * Helper function to get a DNS record by ID and domain name.
  * Throws if the record doesn't exist or doesn't belong to the specified domain.
  * @param id - The ID of the DNS record to find
- * @param normalizedDomainName - The normalized domain name to check against
+ * @param zoneName - The normalized domain name to check against
  * @returns The found DNS record
  * @throws {TRPCError} If record is not found or doesn't belong to Domain
  */
 // TODO: delete or remove 'export', not being used by trpc or temporal.
 export async function getRecordByIdAndDomainOrThrow(
   id: string,
-  normalizedDomainName: NamefiNormalizedDomain,
+  zoneName: NamefiNormalizedDomain,
 ) {
   const record = await db
     .select()
     .from(dnsRecordsTable)
     .where(
-      and(
-        eq(dnsRecordsTable.id, id),
-        eq(dnsRecordsTable.normalizedDomainName, normalizedDomainName),
-      ),
+      and(eq(dnsRecordsTable.id, id), eq(dnsRecordsTable.zoneName, zoneName)),
     );
 
   if (record?.length === 0) {
@@ -62,24 +59,22 @@ export async function getRecordByIdAndDomainOrThrow(
 
 /**
  * Helper function to get all DNS records for a given domain
- * @param normalizedDomainName - The normalized domain name to get records for
+ * @param zoneName - The normalized domain name to get records for
  * @returns An array of DNS records for the domain
  */
 // TODO: move to trpc, used only by apps/backend/src/trpc/routers/dnsRecordsRouter.ts
-export async function getZoneRecords(
-  normalizedDomainName: NamefiNormalizedDomain,
-) {
+export async function getZoneRecords(zoneName: NamefiNormalizedDomain) {
   const records = await db
     .select()
     .from(dnsRecordsTable)
-    .where(eq(dnsRecordsTable.normalizedDomainName, normalizedDomainName));
+    .where(eq(dnsRecordsTable.zoneName, zoneName));
 
   return records;
 }
 
 /**
  * Helper function to validate a DNS zone with existing, updated, and new records
- * @param normalizedDomainName - The normalized domain name to validate zone for
+ * @param zoneName - The normalized domain name to validate zone for
  * @param addRecords - Array of new DNS records to add to the zone
  * @param updatedRecord - Array of existing records with updates to apply
  * @param deleteRecords - Array of existing records to delete
@@ -87,12 +82,12 @@ export async function getZoneRecords(
  */
 // TODO: delete or remove 'export', not being used by trpc or temporal.
 export async function validateZone(
-  normalizedDomainName: NamefiNormalizedDomain,
+  zoneName: NamefiNormalizedDomain,
   changes: {
     addedRecords?: z.infer<typeof recordSchema>[];
     updatedRecords?: Omit<
       z.infer<typeof updateRecordInputSchema>,
-      'normalizedDomainName'
+      'zoneName'
     >[];
     deletedRecords?: (z.infer<typeof recordSchema> & { id?: string })[];
   },
@@ -102,7 +97,7 @@ export async function validateZone(
     updatedRecords = [],
     deletedRecords = [],
   } = changes;
-  const existingRecords = await getZoneRecords(normalizedDomainName);
+  const existingRecords = await getZoneRecords(zoneName);
 
   // Replace updated records in existing records
   const updatedExistingRecords = filter(
@@ -138,7 +133,7 @@ export async function validateZone(
 
   // Validate the entire zone
   await zoneSchema.parseAsync({
-    zoneName: normalizedDomainName,
+    zoneName: zoneName,
     records: allRecords,
   });
 }
@@ -152,13 +147,13 @@ export async function validateZone(
 export async function updateRecord(
   input: z.infer<typeof updateRecordInputSchema>,
 ) {
-  const { id, normalizedDomainName, ...updateData } = input;
+  const { id, zoneName, ...updateData } = input;
 
   // First, verify the record exists and belongs to the specified domain
-  await getRecordByIdAndDomainOrThrow(id, normalizedDomainName);
+  await getRecordByIdAndDomainOrThrow(id, zoneName);
 
   // Validate the zone with the updated record
-  await validateZone(normalizedDomainName, {
+  await validateZone(zoneName, {
     updatedRecords: [input],
   });
 
@@ -169,10 +164,7 @@ export async function updateRecord(
       ...updateData,
     })
     .where(
-      and(
-        eq(dnsRecordsTable.id, id),
-        eq(dnsRecordsTable.normalizedDomainName, normalizedDomainName),
-      ),
+      and(eq(dnsRecordsTable.id, id), eq(dnsRecordsTable.zoneName, zoneName)),
     )
     .returning();
 
@@ -182,15 +174,15 @@ export async function updateRecord(
 /**
  * Helper function to delete a DNS record by ID
  * @param id - The ID of the DNS record to delete
- * @param normalizedDomainName - The normalized domain name to check against
+ * @param zoneName - The normalized domain name to check against
  */
 // TODO: move to trpc, used only by apps/backend/src/trpc/routers/dnsRecordsRouter.ts
 export async function deleteRecord(
   id: string,
-  normalizedDomainName: NamefiNormalizedDomain,
+  zoneName: NamefiNormalizedDomain,
 ) {
   // First, verify the record belongs to the specified domain
-  await getRecordByIdAndDomainOrThrow(id, normalizedDomainName);
+  await getRecordByIdAndDomainOrThrow(id, zoneName);
 
   // Delete the record
   await db.delete(dnsRecordsTable).where(eq(dnsRecordsTable.id, id));
@@ -213,7 +205,7 @@ export async function createRecord(
   });
 
   // Validate the zone with the new record
-  await validateZone(input.normalizedDomainName, {
+  await validateZone(input.zoneName, {
     addedRecords: [parsedRecord],
   });
 

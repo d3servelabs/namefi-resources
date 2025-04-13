@@ -30,7 +30,7 @@ export default function DnsRecordForm({
     e.preventDefault();
 
     createDnsRecord.mutateAsync({
-      normalizedDomainName: domainName,
+      zoneName: domainName,
       type: recordType,
       name: recordName,
       rdata: recordValue,
