@@ -15,22 +15,30 @@ import { Skeleton } from '@/components/ui/shadcn/skeleton';
 import { TableBody } from '@/components/ui/shadcn/table';
 import { useAuth } from '@/hooks/useAuth';
 import { cn } from '@/lib/utils';
-import { CHAINS } from '@namefi-astra/utils';
+import { useTRPC } from '@/utils/trpc';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { SearchIcon, Settings2 } from 'lucide-react';
 import Link from 'next/link';
-import { type FC, type HTMLAttributes, Suspense } from 'react';
+import { type FC, type HTMLAttributes, Suspense, useMemo } from 'react';
 
-// TODO(luis): replace with actual API call or hook
 function useGetDomains() {
-  // Mock data for development purposes
-  return [
-    { id: 1, normalizedDomainName: 'foo.0x.city', chainId: CHAINS.base.id },
-    {
-      id: 2,
-      normalizedDomainName: 'bar.defi.build',
-      chainId: CHAINS.mainnet.id,
-    },
-  ];
+  const trpc = useTRPC();
+
+  const { data } = useSuspenseQuery(
+    trpc.users.getCurrentUserDomains.queryOptions(),
+  );
+
+  const domains = useMemo(() => {
+    return (
+      data?.map(({ normalizedDomainName, chainId }) => ({
+        id: normalizedDomainName,
+        normalizedDomainName,
+        chainId,
+      })) || []
+    );
+  }, [data]);
+
+  return domains;
 }
 
 const LoadingSkeletons: FC = () => (
