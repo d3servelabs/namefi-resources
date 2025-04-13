@@ -41,7 +41,7 @@ export const zoneSchema = zoneBasicSchema
     (data) => {
       const recordKeys = new Set();
       return data.records.every((record) => {
-        const key = `${record.name}:${record.type}`;
+        const key = `${record.name}:${record.type}:${record.rdata}`;
         if (recordKeys.has(key)) {
           return false;
         }
@@ -50,7 +50,7 @@ export const zoneSchema = zoneBasicSchema
       });
     },
     {
-      message: 'Duplicate records found (same name and type)',
+      message: 'Duplicate records found (same name, type, and rdata)',
     },
   )
   // Check that there is at most one CNAME record per name

@@ -37,6 +37,24 @@ export const validZoneTestCases = [
   },
   {
     zoneName: 'empty-zone.com',
+    records: [
+      {
+        type: 'A',
+        name: '@',
+        ttl: 3600,
+        rdata: '192.168.1.1',
+      },
+      {
+        type: 'A',
+        name: '@',
+        ttl: 3600,
+        rdata: '192.168.1.2',
+      },
+    ],
+    description: 'Valid zone with multiple records same name and type',
+  },
+  {
+    zoneName: 'subdomain.example.com',
     records: [],
     description: 'Valid zone with no records',
   },
@@ -110,7 +128,7 @@ export const duplicateRecordsTestCases = [
         type: 'A',
         name: 'www',
         ttl: 7200,
-        rdata: '192.168.1.2',
+        rdata: '192.168.1.1',
       },
     ],
     description: 'Zone with duplicate record names and types',
