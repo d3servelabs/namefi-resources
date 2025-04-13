@@ -69,7 +69,11 @@ reviews:
         Ensure proper test coverage and documentation:
         - Verify unit tests are included for new functionality, if not, suggest actionable changes
         - Check that functions have clear, descriptive docstrings
-    
+
+    - path: "packages/db/src/schema.ts"
+      instructions: |
+        Ensure database migration is included when schema.ts is changed.
+
     # Matches all package.json files across the repository - dependency management files
     - path: "**/package.json"
       instructions: |
