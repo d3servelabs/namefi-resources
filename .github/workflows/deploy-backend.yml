@@ -33,6 +33,12 @@ env:
         || 'dev' 
     }}
   ENVIRONEMNT: test
+  INFISICAL_SERVICE_TOKEN: ${{ 
+      ((github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'production') || 
+         (github.event_name == 'push' && (github.ref == 'refs/heads/prod' || startsWith(github.ref, 'refs/tags/prod/') || startsWith(github.ref, 'refs/tags/v')))) 
+        && secrets.INFISICAL_PROD_SERVICE_TOKEN 
+        || secrets.INFISICAL_DEV_SERVICE_TOKEN 
+    }}
 
 jobs:
   deploy:
@@ -41,7 +47,7 @@ jobs:
     permissions:
       contents: read
       id-token: write # Required for GCP Workload Identity Federation
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -60,11 +66,11 @@ jobs:
         with:
           workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
           service_account: ${{ vars.GCP_WIF_SERVICE_ACCOUNT }}
-      
+
       # BEGIN - Docker auth and build
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
-      
+
       - name: Configure Docker for Artifact Registry
         run: gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev
 
@@ -84,7 +90,6 @@ jobs:
           region: ${{ env.REGION }}
           project_id: '${{ env.PROJECT_ID }}'
           image: '${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/cloud-run-source-deploy/${{ env.REPO_NAME }}/namefi-astra-api-${{ env.LABEL }}:${{ github.sha }}'
-      
       # Deploy to Cloud Run (Temporal)
       - name: Deploy to Cloud Run (Backend/Temporal)
         id: deploy-temporal
@@ -94,7 +99,32 @@ jobs:
           region: ${{ env.REGION }}
           project_id: '${{ env.PROJECT_ID }}'
           image: '${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/cloud-run-source-deploy/${{ env.REPO_NAME }}/namefi-astra-api-${{ env.LABEL }}:${{ github.sha }}'
-           
+
       # Output the deployed URL
       - name: Show Output
-        run: echo "Deployed to ${{ steps.deploy.outputs.url }}" 
+        run: echo "Deployed to ${{ steps.deploy.outputs.url }}"
+
+  migrate:
+    needs: [deploy]
+    runs-on: 'blacksmith-4vcpu-ubuntu-2204'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: "1.2.4"
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Add Infisical
+        run: |
+          curl -1sLf 'https://dl.cloudsmith.io/public/infisical/infisical-cli/setup.deb.sh' | sudo -E bash
+          sudo apt-get update && sudo apt-get install -y infisical
+      
+      - name: Run DB Migration
+        working-directory: ./packages/db
+        run: bun with-env db:migrate
