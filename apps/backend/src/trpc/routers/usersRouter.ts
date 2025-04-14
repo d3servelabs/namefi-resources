@@ -50,10 +50,9 @@ export const usersRouter = createTRPCRouter({
 
   getCurrentUserDomains: protectedProcedure.query(async ({ ctx }) => {
     const [error, privyUser] = await resolve(
-      privyClient.getUser({
-        idToken: ctx.user.privyUserId,
-      }),
+      privyClient.getUserById(ctx.user.privyUserId),
     );
+
     if (error || isNil(privyUser)) {
       throw new TRPCError({
         code: 'PRECONDITION_FAILED',
