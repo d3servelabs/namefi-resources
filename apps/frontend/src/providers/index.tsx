@@ -4,6 +4,7 @@ import { Loading } from '@/components/loading';
 import { OriginProvider } from '@/components/providers/originProvider';
 import { getWagmiConfig } from '@/lib/wagmiConfig';
 import { WagmiProvider } from '@privy-io/wagmi';
+import { UsercentricsProvider } from '@s-group/react-usercentrics';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { NuqsAdapter } from 'nuqs/adapters/next/app';
 import { type ReactNode, Suspense, useState } from 'react';
@@ -35,7 +36,9 @@ export const Providers = ({ children }: Readonly<Props>) => {
                 <ProgressProvider>
                   <ArtifactsProvider>
                     <QueryClientProvider client={queryClient}>
-                      <WagmiProvider config={config}>{children}</WagmiProvider>
+                      <WagmiProvider config={config}>
+                        <UsercentricsProvider>{children}</UsercentricsProvider>
+                      </WagmiProvider>
                     </QueryClientProvider>
                   </ArtifactsProvider>
                 </ProgressProvider>

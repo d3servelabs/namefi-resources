@@ -21,6 +21,7 @@ export const configSchema = z.object({
   ADDITIONAL_ORIGIN_TO_HOSTNAME_MAP: z
     .record(z.string(), z.string())
     .default({}),
+  USER_CENTRICS_SETTINGS_ID: z.string(),
 });
 
 export type ConfigInput = z.input<typeof configSchema>;

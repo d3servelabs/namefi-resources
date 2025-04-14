@@ -8,6 +8,7 @@ import { config } from '@/lib/env';
 import { cn } from '@/lib/utils';
 import { Providers } from '@/providers';
 import { GoogleAnalytics } from '@next/third-parties/google';
+import { UsercentricsScript } from '@s-group/react-usercentrics';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import type { ReactNode } from 'react';
@@ -44,11 +45,14 @@ export default function RootLayout({
         )}
       >
         <Preloader />
+        <UsercentricsScript
+          settingsId={config.USER_CENTRICS_SETTINGS_ID}
+          version="preview"
+        />
         <GoogleAnalytics gaId={config.GA_MEASUREMENT_ID} />
         <Providers>
           <Contexts>
             <Toaster />
-
             <SidebarProvider>
               <AppSidebar />
               <Main>{children}</Main>

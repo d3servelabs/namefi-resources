@@ -8,6 +8,7 @@ const developmentConfig: ConfigInput = {
     'pk_test_51Pqc6fP7AJmUlGkqATatN7ovwZrEo0WjmJTjryazMHsXRIzk1WrMQv1C0SQ8J4LrTnrc2O5P4XxnTmtSKIfdl2Ct00o9GOerUj',
   NAMEFI_FIRST_PARTY_ORIGINS: ['astra.namefi.dev'],
   POWERED_BY_NAMEFI_THIRD_PARTY_ORIGINS: ['0x.city', 'defi.build'],
+  USER_CENTRICS_SETTINGS_ID: '5UJHpI8CWth59m',
 };
 
 export default developmentConfig;

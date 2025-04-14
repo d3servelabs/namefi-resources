@@ -16,6 +16,7 @@ const localConfig: ConfigInput = {
     '0xcity.localhost': '0x.city',
     'defibuild.localhost': 'defi.build',
   },
+  USER_CENTRICS_SETTINGS_ID: '5UJHpI8CWth59m',
 };
 
 export default localConfig;
