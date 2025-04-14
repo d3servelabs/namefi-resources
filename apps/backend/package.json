@@ -31,7 +31,8 @@
     "start:temporal": "node dist/temporal/main.temporal.js",
     "validate:secrets": "bun run with-env src/lib/env/index.ts",
     "dev:email": "email dev --port 5050 --dir src/mail/templates",
-    "command:get-nft-updates": "tsx src/scripts/get-nft-updates.ts"
+    "command:get-nft-updates": "tsx src/scripts/get-nft-updates.ts",
+    "command:send-test-email": "tsx src/scripts/send-test-email.tsx"
   },
   "dependencies": {
     "@hono/node-server": "^1.14.0",
