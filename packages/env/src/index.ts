@@ -27,11 +27,13 @@ export const loadConfig = <Output, Def extends ZodTypeDef, Input>(
   return options.configSchema.parse(envConfig);
 };
 
-export interface LoadSecretsOptions<T> {
-  secretsSchema: ZodSchema<T>;
+export interface LoadSecretsOptions<Z> {
+  secretsSchema: Z;
 }
 
-export const loadSecrets = <T>(options: LoadSecretsOptions<T>) => {
+export const loadSecrets = <Z extends ZodSchema<any>>(
+  options: LoadSecretsOptions<Z>,
+): Z['_output'] => {
   const validatedSecrets = options.secretsSchema.parse(process.env);
   return validatedSecrets;
 };
