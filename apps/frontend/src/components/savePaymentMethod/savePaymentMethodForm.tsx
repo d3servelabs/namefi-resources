@@ -6,7 +6,11 @@ import {
   useElements,
   useStripe,
 } from '@stripe/react-stripe-js';
-import type { SetupIntent } from '@stripe/stripe-js';
+import type {
+  ConfirmSetupData,
+  SetupIntent,
+  StripeElements,
+} from '@stripe/stripe-js';
 import { Loader2 } from 'lucide-react';
 import type React from 'react';
 import { useCallback, useState } from 'react';
@@ -14,14 +18,12 @@ import { useCallback, useState } from 'react';
 interface SavePaymentMethodFormProps {
   onSuccess?: (setupIntent: SetupIntent) => void;
   onError?: (error: Error) => void;
-  clientSecret?: string | null;
   returnUrl?: string;
 }
 
 export function SavePaymentMethodForm({
   onSuccess,
   onError,
-  clientSecret,
   returnUrl,
 }: SavePaymentMethodFormProps) {
   const stripe = useStripe();
@@ -40,15 +42,19 @@ export function SavePaymentMethodForm({
       setIsProcessing(true);
       setError(null);
 
-      const paymentOptions: any = {
+      const paymentOptions: {
+        elements: StripeElements;
+        confirmParams?: Partial<ConfirmSetupData>;
+        redirect: 'if_required';
+      } = {
         elements,
-        clientSecret,
         redirect: 'if_required',
       };
 
       if (returnUrl) {
-        paymentOptions.redirect = undefined;
-        paymentOptions.confirmParams = { return_url: returnUrl };
+        paymentOptions.confirmParams = {
+          return_url: returnUrl,
+        };
       }
 
       try {
@@ -75,7 +81,7 @@ export function SavePaymentMethodForm({
         setIsProcessing(false);
       }
     },
-    [elements, onError, onSuccess, stripe, clientSecret, returnUrl],
+    [elements, onError, onSuccess, stripe, returnUrl],
   );
 
   return (

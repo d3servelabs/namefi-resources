@@ -76,7 +76,6 @@ export function SavePaymentMethodDialog({
           <SavePaymentMethodForm
             onSuccess={onSavePaymentMethodSuccess}
             onError={onSavePaymentMethodError}
-            clientSecret={clientSecret}
             returnUrl={returnUrl}
           />
         </StripeProvider>

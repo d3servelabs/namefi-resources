@@ -35,6 +35,12 @@ export const paymentsRouter = createTRPCRouter({
               payment_method_redisplay: 'enabled',
               payment_method_save: 'enabled',
               payment_method_save_usage: 'off_session',
+              payment_method_allow_redisplay_filters: [
+                'always',
+                'limited',
+                'unspecified',
+              ],
+              payment_method_redisplay_limit: undefined, // this removes the redisplay limit (defaults to 3)
             },
           },
         },
