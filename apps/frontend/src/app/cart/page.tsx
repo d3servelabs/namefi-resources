@@ -1,4 +1,5 @@
 'use client';
+import { NamefiButton } from '@/components/namefi-button';
 import { NftWalletCard } from '@/components/nftWalletCard';
 import {
   SelectPaymentMethodCard,
@@ -371,7 +372,8 @@ export default function CartPage() {
             ) => handlePaymentMethodDetailsChanged(paymentMethodDetails)}
             onSelectedPaymentMethodChanged={handleSelectedPaymentMethodChanged}
             footerButton={
-              <Button
+              <NamefiButton
+                variant="default"
                 className="w-full"
                 disabled={submitOrderDisabled || isCreateOrderPending}
                 onClick={handleSubmitOrder}
@@ -383,7 +385,7 @@ export default function CartPage() {
                   <></>
                 )}
                 {submitButtonText}
-              </Button>
+              </NamefiButton>
             }
           />
         </>

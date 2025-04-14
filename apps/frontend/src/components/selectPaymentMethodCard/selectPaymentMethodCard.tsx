@@ -13,12 +13,10 @@ import { Button } from '@/components/ui/shadcn/button';
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from '@/components/ui/shadcn/card';
-import { Label } from '@/components/ui/shadcn/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/shadcn/radio-group';
 import { cn } from '@/lib/utils';
 import { formatAmountInUSD } from '@/utils/number';
@@ -280,22 +278,17 @@ export function SelectPaymentMethodCard({
   return (
     <Card className="w-full mx-auto">
       <CardHeader>
-        <CardTitle>Payment Method</CardTitle>
-        <CardDescription>
-          Select a payment method or add a new card.
-        </CardDescription>
+        <CardTitle className="text-2xl">Payment Method</CardTitle>
       </CardHeader>
 
-      <CardContent className="space-y-6">
+      <CardContent className="">
         <RadioGroup
           value={selectedPaymentMethod}
           onValueChange={handleRadioGroupValueChanged}
-          className="space-y-4"
+          className="flex flex-col gap-6"
         >
-          <div className="space-y-1">
-            <Label htmlFor={SelectedPaymentMethod.NFSC} className="font-medium">
-              Use $NFSC balance
-            </Label>
+          <div className="">
+            <p className="text-base">Use balance</p>
             <div className="flex items-center gap-2">
               <RadioGroupItem
                 value={SelectedPaymentMethod.NFSC}
@@ -303,7 +296,7 @@ export function SelectPaymentMethodCard({
               />
               <Card
                 className={cn(
-                  'py-2 w-full',
+                  'py-2 w-full border-brand-primary',
                   selectedPaymentMethod === SelectedPaymentMethod.NFSC
                     ? ''
                     : 'border-0 opacity-50',
@@ -362,10 +355,8 @@ export function SelectPaymentMethodCard({
             </div>
           </div>
 
-          <div className="space-y-1">
-            <Label htmlFor={SelectedPaymentMethod.NFSC} className="font-medium">
-              Use a credit card
-            </Label>
+          <div className="">
+            <p className="text-base">Use a credit card</p>
             <div className="flex items-center gap-2 w-full">
               <RadioGroupItem
                 value={SelectedPaymentMethod.CREDIT_CARD}
@@ -385,7 +376,7 @@ export function SelectPaymentMethodCard({
                       'flex justify-between shrink w-full p-2 disabled:pointer-events-auto disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-background',
                       selectedPaymentMethod ===
                         SelectedPaymentMethod.CREDIT_CARD
-                        ? ''
+                        ? 'border-brand-primary'
                         : 'opacity-50',
                     )}
                     disabled={
@@ -410,9 +401,11 @@ export function SelectPaymentMethodCard({
       </CardContent>
 
       <CardFooter className="flex flex-col gap-4 w-full">
-        <div className="flex justify-between w-full">
-          <span>Total</span>
-          <span>{formatAmountInUSD(cartTotalInUsdCents, true)} USD</span>
+        <div className="flex justify-between items-center w-full">
+          <p className="text-base">Total</p>
+          <p className="text-lg">
+            {formatAmountInUSD(cartTotalInUsdCents, true)} USD
+          </p>
         </div>
         {footerButton}
       </CardFooter>
