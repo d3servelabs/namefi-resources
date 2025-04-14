@@ -2,10 +2,10 @@ import crypto from 'node:crypto';
 import { CHAINS } from '@namefi-astra/utils/chains';
 import { switchCaseOrDefault } from '@namefi-astra/utils/match';
 import { Hono } from 'hono';
-import { updateNamefiNftIndex } from 'src/temporal/activities/namefi-nft';
 // Router for webhooks
 //
 import { secrets } from '#lib/env';
+import { updateNamefiNftIndex } from '../temporal/activities/namefi-nft';
 
 export const webhooksRouter = new Hono();
 
