@@ -1,14 +1,12 @@
 'use client';
 
+import {
+  useOrigin,
+  useOriginInfo,
+} from '@/components/providers/originProvider';
 import { Badge } from '@/components/ui/shadcn/badge';
 import { Button } from '@/components/ui/shadcn/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/shadcn/card';
+import { Card, CardContent } from '@/components/ui/shadcn/card';
 import { Input } from '@/components/ui/shadcn/input';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
 import {
@@ -24,6 +22,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/shadcn/tooltip';
 import { useAuth } from '@/hooks/useAuth';
+import { config } from '@/lib/env';
 import { cn } from '@/lib/utils';
 import { formatAmountInUSD } from '@/utils/number';
 import { useTRPC } from '@/utils/trpc';
@@ -42,6 +41,7 @@ import {
   type FC,
   type HTMLAttributes,
   useCallback,
+  useEffect,
   useMemo,
   useState,
 } from 'react';
@@ -49,7 +49,6 @@ import { Placeholder } from './Placeholder';
 
 // Types
 export type DomainSearchProps = HTMLAttributes<HTMLDivElement>;
-type ParentDomain = '0x.city' | 'defi.build';
 type DomainData = {
   domain: string;
   availability: boolean;
@@ -59,37 +58,38 @@ type DomainData = {
 
 // Components
 const SearchHeader: FC<{
-  parentDomain: ParentDomain;
-  setParentDomain: (domain: ParentDomain) => void;
-}> = ({ parentDomain, setParentDomain }) => (
-  <CardHeader className="px-0 pt-0">
-    <CardTitle className="text-2xl font-bold">Domain Search</CardTitle>
-    <CardDescription>
-      Find your perfect domain name on the {parentDomain} network
-    </CardDescription>
-    <div className="flex items-center space-x-2 mt-2">
-      <span className="text-sm font-medium">Network:</span>
-      <div className="flex items-center space-x-2">
-        <Button
-          variant={parentDomain === '0x.city' ? 'default' : 'outline'}
-          size="sm"
-          onClick={() => setParentDomain('0x.city')}
-          className="h-8 px-3"
-        >
-          0x.city
-        </Button>
-        <Button
-          variant={parentDomain === 'defi.build' ? 'default' : 'outline'}
-          size="sm"
-          onClick={() => setParentDomain('defi.build')}
-          className="h-8 px-3"
-        >
-          defi.build
-        </Button>
-      </div>
+  parentDomain: string;
+  setParentDomain: (domain: string) => void;
+}> = ({ parentDomain, setParentDomain }) => {
+  const originInfo = useOriginInfo();
+
+  return (
+    <div className="flex flex-col items-center mt-40 p-4 gap-3">
+      <h1 className="text-8xl font-bold text-white drop-shadow-lg">
+        {parentDomain}
+      </h1>
+      <p className="text-4xl text-white font-semibold drop-shadow-xl">
+        Search for a domain on {parentDomain}
+      </p>
+      {originInfo.isFirstPartyOrigin && (
+        <>
+          <span className="text-sm font-medium">Network:</span>
+          {config.POWERED_BY_NAMEFI_THIRD_PARTY_ORIGINS.map((origin) => (
+            <Button
+              key={origin}
+              variant={parentDomain === origin ? 'default' : 'outline'}
+              size="sm"
+              onClick={() => setParentDomain(origin)}
+              className="h-8 px-3"
+            >
+              {origin}
+            </Button>
+          ))}
+        </>
+      )}
     </div>
-  </CardHeader>
-);
+  );
+};
 
 const SearchInput: FC<{
   query: string;
@@ -98,7 +98,7 @@ const SearchInput: FC<{
   onSearch: () => void;
 }> = ({ query, setQuery, isLoading, onSearch }) => (
   <div className="flex gap-4 items-center">
-    <div className="relative flex-1">
+    <div className="relative flex-1 lg:w-[616px]">
       <Input
         placeholder="Search for a domain..."
         value={query}
@@ -147,14 +147,14 @@ const DomainCard: FC<{
   return (
     <Card
       className={cn(
-        'transition-all duration-150',
+        'bg-white/5 backdrop-blur-lg h-32 transition-all duration-150 p-0',
         domain.availability
           ? 'border-green-500/20 hover:border-green-500/40'
           : 'border-red-500/20 hover:border-red-500/40',
       )}
     >
-      <CardContent className="p-6">
-        <div className="flex items-center justify-between">
+      <CardContent className="h-full w-full">
+        <div className="flex items-center justify-between h-full w-full">
           <div className="space-y-1">
             <div className="flex items-center gap-2">
               <h3 className="font-medium text-lg">{domain.domain}</h3>
@@ -197,7 +197,7 @@ const DomainCard: FC<{
               <Tooltip>
                 <TooltipTrigger asChild={true}>
                   <Button
-                    className="cursor-pointer"
+                    className="cursor-pointer bg-brand-primary"
                     variant={isInCart ? 'secondary' : 'default'}
                     onClick={() => handleDomainAction(domain)}
                     disabled={
@@ -256,7 +256,7 @@ const SearchResults: FC<{
   isAddingToCart: boolean;
   isRemovingFromCart: boolean;
   isCartLoading: boolean;
-  parentDomain: ParentDomain;
+  parentDomain: string;
 }> = ({
   isLoading,
   filteredDomains,
@@ -314,7 +314,21 @@ export const Search: FC<DomainSearchProps> = ({
 }: DomainSearchProps) => {
   const [query, setQuery] = useState('');
   const [activeTab, setActiveTab] = useState('all');
-  const [parentDomain, setParentDomain] = useState<ParentDomain>('0x.city');
+  const { isLoading: isOriginLoading, originInfo } = useOrigin();
+  const [parentDomain, setParentDomain] = useState<string | undefined>(
+    undefined,
+  );
+
+  // Initialize parentDomain when origin info is available
+  useEffect(() => {
+    if (!isOriginLoading) {
+      if (originInfo.isFirstPartyOrigin) {
+        setParentDomain(config.POWERED_BY_NAMEFI_THIRD_PARTY_ORIGINS[0]);
+      } else if (originInfo.thirdPartyOrigin) {
+        setParentDomain(originInfo.thirdPartyOrigin);
+      }
+    }
+  }, [isOriginLoading, originInfo]);
 
   const trpc = useTRPC();
   const { isAuthenticated } = useAuth();
@@ -330,7 +344,7 @@ export const Search: FC<DomainSearchProps> = ({
       query,
       parentDomain,
     }),
-    enabled: query.length > 0,
+    enabled: query.length > 0 && !!parentDomain,
   });
 
   const {
@@ -418,22 +432,25 @@ export const Search: FC<DomainSearchProps> = ({
   const isSearchLoading = isLoading || isFetching;
   const isCartDataLoading = isCartLoading || isCartFetching;
 
+  if (isOriginLoading || !parentDomain) {
+    // Return loading state or null while origin info is loading
+    return null;
+  }
+
   return (
     <div className={cn('flex gap-4 flex-col', className)} {...rest}>
-      <Card className="border-none shadow-none">
+      <div className="flex flex-col items-center gap-4">
         <SearchHeader
           parentDomain={parentDomain}
           setParentDomain={setParentDomain}
         />
-        <CardContent className="px-0">
-          <SearchInput
-            query={query}
-            setQuery={setQuery}
-            isLoading={isSearchLoading}
-            onSearch={() => refetch()}
-          />
-        </CardContent>
-      </Card>
+        <SearchInput
+          query={query}
+          setQuery={setQuery}
+          isLoading={isSearchLoading}
+          onSearch={() => refetch()}
+        />
+      </div>
 
       {query.length > 0 ? (
         <Tabs

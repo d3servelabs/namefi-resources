@@ -1,11 +1,21 @@
-import type { Config } from '../schema';
+import type { ConfigInput } from '../schema';
 
-const localConfig: Config = {
+const localConfig: ConfigInput = {
   BACKEND_URL: 'http://localhost:3000',
   GA_MEASUREMENT_ID: 'G-PHKF9PM32W',
   PRIVY_APP_ID: 'cm2lx4u5a03x3rtgp4keapmrb',
   STRIPE_PUBLISHABLE_KEY:
     'pk_test_51Pqc6fP7AJmUlGkqATatN7ovwZrEo0WjmJTjryazMHsXRIzk1WrMQv1C0SQ8J4LrTnrc2O5P4XxnTmtSKIfdl2Ct00o9GOerUj',
+  NAMEFI_FIRST_PARTY_ORIGINS: [
+    'localhost',
+    'namefi.localhost',
+    'astra.localhost',
+  ],
+  POWERED_BY_NAMEFI_THIRD_PARTY_ORIGINS: ['0x.city', 'defi.build'],
+  ADDITIONAL_ORIGIN_TO_HOSTNAME_MAP: {
+    '0xcity.localhost': '0x.city',
+    'defibuild.localhost': 'defi.build',
+  },
 };
 
 export default localConfig;

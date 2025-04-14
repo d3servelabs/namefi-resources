@@ -44,7 +44,9 @@ export const createContext = async (
             message: 'parent domain not allowed',
           });
         }
-        thirdPartyOriginHostname = origin.hostname;
+        thirdPartyOriginHostname =
+          config.ADDITIONAL_ORIGIN_TO_HOSTNAME_MAP[origin.hostname] ??
+          origin.hostname;
       }
     } catch (error) {
       console.error('Error parsing origin', error);

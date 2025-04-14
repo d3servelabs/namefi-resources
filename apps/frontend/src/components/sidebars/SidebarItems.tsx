@@ -41,12 +41,10 @@ export const SidebarItems: FC<SidebarItemsProps> = ({
                   asChild={true}
                 >
                   <Link href={item.href} target={item.target}>
-                    {Icon && (
-                      <Icon className={cn(index === 0 && 'text-emerald-500')} />
-                    )}
+                    {Icon && <Icon />}
                     <span>{item.title}</span>
                     {item.badge && (
-                      <Badge className="ml-auto text-white bg-emerald-500 h-5 w-5 flex items-center justify-center rounded-full p-0">
+                      <Badge className="ml-auto text-white bg-brand-primary h-5 w-5 flex items-center justify-center rounded-full p-0">
                         {item.badge.content}
                       </Badge>
                     )}

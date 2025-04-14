@@ -1,8 +1,7 @@
-import { Footer } from '@/components/footer';
-import { Header } from '@/components/header';
+import { Main } from '@/components/main';
 import { Preloader } from '@/components/preloader';
 import { AppSidebar } from '@/components/sidebars';
-import { SidebarInset, SidebarProvider } from '@/components/ui/shadcn/sidebar';
+import { SidebarProvider } from '@/components/ui/shadcn/sidebar';
 import { Toaster } from '@/components/ui/shadcn/sonner';
 import { Contexts } from '@/contexts';
 import { config } from '@/lib/env';
@@ -41,7 +40,7 @@ export default function RootLayout({
         className={cn(
           geistSans.variable,
           geistMono.variable,
-          'antialiased min-h-screen w-full overflow-x-hidden overflow-y-auto',
+          'antialiased min-h-screen w-full overflow-x-hidden overflow-y-auto bg-origin bg-cover bg-center bg-fixed',
         )}
       >
         <Preloader />
@@ -52,11 +51,7 @@ export default function RootLayout({
 
             <SidebarProvider>
               <AppSidebar />
-              <SidebarInset>
-                <Header className="sticky z-10 backdrop-blur-xl top-0 left-0" />
-                {children}
-                <Footer className="hidden" />
-              </SidebarInset>
+              <Main>{children}</Main>
             </SidebarProvider>
           </Contexts>
         </Providers>

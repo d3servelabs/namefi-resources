@@ -27,6 +27,7 @@ import {
   PenToolIcon,
   Search,
 } from 'lucide-react';
+import { usePathname } from 'next/navigation';
 import { type ChangeEvent, useCallback, useMemo, useState } from 'react';
 import { useReadLocalStorage } from 'usehooks-ts';
 import { SidebarDomains } from './SidebarDomains';
@@ -51,6 +52,8 @@ export function AppSidebar() {
   const [search, setSearch] = useState('');
 
   const { state } = useSidebar();
+
+  const pathname = usePathname();
 
   const recentDomains = useReadLocalStorage<string[]>(
     LocalStorageKeys.RECENT_DOMAINS,
@@ -82,7 +85,13 @@ export function AppSidebar() {
   }, []);
 
   return (
-    <Sidebar collapsible="icon">
+    <Sidebar
+      collapsible="icon"
+      className={cn({
+        '[--sidebar:alpha(var(--color-zinc-600),0.6)] backdrop-blur-3xl':
+          pathname === '/',
+      })}
+    >
       <SidebarHeader>
         <SidebarGroup className={cn(isCollapsed && 'px-0.5')}>
           <div className="flex items-center justify-between">

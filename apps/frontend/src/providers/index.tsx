@@ -1,6 +1,7 @@
 'use client';
 
 import { Loading } from '@/components/loading';
+import { OriginProvider } from '@/components/providers/originProvider';
 import { getWagmiConfig } from '@/lib/wagmiConfig';
 import { WagmiProvider } from '@privy-io/wagmi';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -20,27 +21,29 @@ export const Providers = ({ children }: Readonly<Props>) => {
 
   return (
     <Suspense fallback={<Loading />}>
-      <ThemeProvider
-        storageKey="theme"
-        attribute="class"
-        defaultTheme="dark"
-        enableSystem={false}
-        disableTransitionOnChange={true}
-      >
-        <SessionsProvider>
-          <TrpcProvider>
-            <NuqsAdapter>
-              <ProgressProvider>
-                <ArtifactsProvider>
-                  <QueryClientProvider client={queryClient}>
-                    <WagmiProvider config={config}>{children}</WagmiProvider>
-                  </QueryClientProvider>
-                </ArtifactsProvider>
-              </ProgressProvider>
-            </NuqsAdapter>
-          </TrpcProvider>
-        </SessionsProvider>
-      </ThemeProvider>
+      <OriginProvider>
+        <ThemeProvider
+          storageKey="theme"
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem={false}
+          disableTransitionOnChange={true}
+        >
+          <SessionsProvider>
+            <TrpcProvider>
+              <NuqsAdapter>
+                <ProgressProvider>
+                  <ArtifactsProvider>
+                    <QueryClientProvider client={queryClient}>
+                      <WagmiProvider config={config}>{children}</WagmiProvider>
+                    </QueryClientProvider>
+                  </ArtifactsProvider>
+                </ProgressProvider>
+              </NuqsAdapter>
+            </TrpcProvider>
+          </SessionsProvider>
+        </ThemeProvider>
+      </OriginProvider>
     </Suspense>
   );
 };

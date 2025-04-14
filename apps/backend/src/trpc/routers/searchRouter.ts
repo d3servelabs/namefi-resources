@@ -47,12 +47,7 @@ export const searchRouter = createTRPCRouter({
     .input(
       z.object({
         query: z.string(),
-        parentDomain: z
-          .string()
-          .optional()
-          .describe(
-            'only pass it if request is sent from a first party domain',
-          ),
+        parentDomain: z.string().optional(),
       }),
     )
     .query(async ({ input, ctx }) => {
@@ -61,12 +56,13 @@ export const searchRouter = createTRPCRouter({
       // TODO: this will be replaced when we implement AI suggestions
       const poweredByNamefiOrigins = await getPoweredByNamefi3POrigins();
 
-      // if the request is coming from a selling SLD like `0x.city` then it will be `ctx.thirdPartyOrigin`,
-      // but if that's null then this request is from main-page, so either take in the passed option,
-      // or fallback to first domain in poweredByNamefiOrigins (hardcoded for the time being)
+      // Determine parent domain using fallback chain:
+      // 1. Use input.parentDomain if provided
+      // 2. Otherwise use ctx.thirdPartyOriginHostname if request is from a third-party domain
+      // 3. Finally fall back to first domain in poweredByNamefiOrigins
       const parentDomain =
-        ctx.thirdPartyOriginHostname ??
         input.parentDomain ??
+        ctx.thirdPartyOriginHostname ??
         poweredByNamefiOrigins[0];
 
       const suggestions = getSuggestions(query, parentDomain);
