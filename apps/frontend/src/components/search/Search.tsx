@@ -28,7 +28,7 @@ import { formatAmountInUSD } from '@/utils/number';
 import { useTRPC } from '@/utils/trpc';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import {
-  BadgeCheck,
+  Check,
   CircleOff,
   Loader2,
   SearchIcon,
@@ -148,10 +148,8 @@ const DomainCard: FC<{
   return (
     <Card
       className={cn(
-        'bg-white/5 backdrop-blur-lg h-32 transition-all duration-150 p-0',
-        domain.availability
-          ? 'border-green-500/20 hover:border-green-500/40'
-          : 'border-red-500/20 hover:border-red-500/40',
+        'bg-white/5 backdrop-blur-lg h-32 transition-all duration-150 p-0 border-[1px] border-white/10',
+        domain.availability ? 'opacity-100' : 'opacity-50',
       )}
     >
       <CardContent className="h-full w-full">
@@ -159,21 +157,9 @@ const DomainCard: FC<{
           <div className="space-y-1">
             <div className="flex items-center gap-2">
               <h3 className="font-medium text-lg">{domain.domain}</h3>
-              <Badge
-                variant={domain.availability ? 'default' : 'destructive'}
-                className="ml-2"
-              >
-                {domain.availability ? (
-                  <BadgeCheck className="mr-1 h-3 w-3" />
-                ) : (
+              {!domain.availability && (
+                <Badge variant={'destructive'} className="ml-2">
                   <CircleOff className="mr-1 h-3 w-3" />
-                )}
-                {domain.availability ? 'Available' : 'Taken'}
-              </Badge>
-              {isInCart && (
-                <Badge variant="secondary">
-                  <ShoppingCart className="mr-1 h-3 w-3" />
-                  In Cart
                 </Badge>
               )}
             </div>
@@ -198,7 +184,7 @@ const DomainCard: FC<{
               <Tooltip>
                 <TooltipTrigger asChild={true}>
                   <NamefiButton
-                    className="cursor-pointer bg-brand-primary"
+                    className={cn('cursor-pointer', isInCart && 'bg-black/40')}
                     onClick={() => handleDomainAction(domain)}
                     disabled={
                       isAddingToCart || isRemovingFromCart || isCartLoading
@@ -208,11 +194,11 @@ const DomainCard: FC<{
                     isInCart === isRemovingFromCart ? (
                       <Loader2 className="h-4 w-4 animate-spin" />
                     ) : isInCart ? (
-                      <X className="h-4 w-4" />
+                      <Check className="h-4 w-4" />
                     ) : (
                       <ShoppingCart className="h-4 w-4" />
                     )}
-                    {isInCart ? 'Remove from Cart' : 'Add to Cart'}
+                    {isInCart ? 'In cart' : 'Add to cart'}
                   </NamefiButton>
                 </TooltipTrigger>
                 <TooltipContent>
