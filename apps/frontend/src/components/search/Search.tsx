@@ -45,6 +45,7 @@ import {
   useMemo,
   useState,
 } from 'react';
+import { NamefiButton } from '../namefi-button';
 import { Placeholder } from './Placeholder';
 
 // Types
@@ -196,9 +197,8 @@ const DomainCard: FC<{
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild={true}>
-                  <Button
+                  <NamefiButton
                     className="cursor-pointer bg-brand-primary"
-                    variant={isInCart ? 'secondary' : 'default'}
                     onClick={() => handleDomainAction(domain)}
                     disabled={
                       isAddingToCart || isRemovingFromCart || isCartLoading
@@ -206,14 +206,14 @@ const DomainCard: FC<{
                   >
                     {(isAddingToCart || isRemovingFromCart) &&
                     isInCart === isRemovingFromCart ? (
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      <Loader2 className="h-4 w-4 animate-spin" />
                     ) : isInCart ? (
-                      <X className="mr-2 h-4 w-4" />
+                      <X className="h-4 w-4" />
                     ) : (
-                      <ShoppingCart className="mr-2 h-4 w-4" />
+                      <ShoppingCart className="h-4 w-4" />
                     )}
                     {isInCart ? 'Remove from Cart' : 'Add to Cart'}
-                  </Button>
+                  </NamefiButton>
                 </TooltipTrigger>
                 <TooltipContent>
                   {isInCart
