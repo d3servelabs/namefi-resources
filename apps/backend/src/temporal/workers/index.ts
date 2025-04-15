@@ -7,6 +7,7 @@ import {
   OrderActivities,
   PaymentActivities,
 } from '../activities';
+import { updateNamefiNftIndex } from '../activities/namefi-nft';
 import { TEMPORAL_ENUMS } from '../shared';
 import { createWorker } from './createWorker';
 
@@ -14,10 +15,11 @@ export let WORKERS: Partial<Record<TEMPORAL_ENUMS, Worker>> | undefined;
 
 export const ACTIVITIES = {
   [TEMPORAL_ENUMS.DEFAULT]: {
-    ...GreetActivities, //TODO(Sami): use this instead, below
+    ...GreetActivities,
     ...OrderActivities,
     ...PaymentActivities,
     ...NotifyActivities,
+    updateNamefiNftIndex,
   },
   [TEMPORAL_ENUMS.MINT]: {
     ...MintActivities,
