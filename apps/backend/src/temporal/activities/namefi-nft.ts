@@ -1,6 +1,9 @@
 import { db } from '@namefi-astra/db';
 import { namefiNftTable } from '@namefi-astra/db';
+import BigNumber from 'bignumber.js';
 import { sql } from 'drizzle-orm';
+import pMap from 'p-map';
+import * as R from 'ramda';
 import superjson from 'superjson';
 // Indexer for Namefi NFT activities
 import { type Address, type Chain, keccak256, toBytes } from 'viem';
@@ -57,14 +60,38 @@ export async function getDomainNameOwnerUpdate(
     const latestBlock: bigint = toBlock
       ? BigInt(toBlock)
       : await publicClient.getBlockNumber();
-    const transferEvents = await publicClient.getContractEvents({
-      address: NAMEFI_NFT_CONTRACT_ADDRESS,
-      abi: NftAbi,
-      eventName: 'Transfer',
-      fromBlock: BigInt(fromBlock),
-      // If toBlock is not provided, get all events from fromBlock to latest
-      toBlock: BigInt(latestBlock),
-    });
+
+    const blockRangeSize = 10000;
+    const numRanges = Math.ceil(
+      Number(latestBlock - fromBlock) / blockRangeSize,
+    );
+    // Create block ranges of 10k blocks each [fromBlock, fromBlock + 10k, fromBlock + 20k, ..., latestBlock]
+    const blockRanges = Array.from({ length: numRanges }, (_, i) => ({
+      start: fromBlock + BigInt(i * blockRangeSize),
+      end: BigInt(
+        BigNumber.min(
+          (fromBlock + BigInt((i + 1) * blockRangeSize)).toString(),
+          latestBlock.toString(),
+        ).toString(),
+      ),
+    }));
+
+    // Get events for each block range in parallel
+    const transferEventsArrays = await pMap(
+      blockRanges,
+      (range) => {
+        return publicClient.getContractEvents({
+          address: NAMEFI_NFT_CONTRACT_ADDRESS,
+          abi: NftAbi,
+          eventName: 'Transfer',
+          fromBlock: range.start,
+          toBlock: range.end,
+        });
+      },
+      { concurrency: 3 }, // Limit to 3 concurrent requests, based on trial and error with Alchemy RPC
+    );
+
+    const transferEvents = R.flatten(transferEventsArrays);
     console.debug(`Got ${transferEvents.length} transfer events`);
     // Create a map to track the latest owner for each token ID
     const latestOwners = new Map<bigint, `0x${string}`>();
