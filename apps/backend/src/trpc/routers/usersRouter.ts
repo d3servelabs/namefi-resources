@@ -1,4 +1,6 @@
 import { db, userUpdateSchema, usersTable } from '@namefi-astra/db';
+import type { ChecksumWalletAddress } from '@namefi-astra/utils';
+import { checksumWalletAddressSchema } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
 import { eq } from 'drizzle-orm';
 import { isEmpty, isNil } from 'ramda';
@@ -49,8 +51,9 @@ export const usersRouter = createTRPCRouter({
     }),
 
   getCurrentUserDomains: protectedProcedure.query(async ({ ctx }) => {
+    const { user } = ctx;
     const [error, privyUser] = await resolve(
-      privyClient.getUserById(ctx.user.privyUserId),
+      privyClient.getUserById(user.privyUserId),
     );
 
     if (error || isNil(privyUser)) {
@@ -60,10 +63,29 @@ export const usersRouter = createTRPCRouter({
       });
     }
 
-    // TODO(Sami -> Sid): We need to get the full list of linked wallets from privy
-    const userWalletsAddresses = [privyUser.wallet?.address].filter(
-      (address): address is string => !isNil(address),
+    // #region get all user wallets addresses
+    const userWalletsAddressesSet = new Set<ChecksumWalletAddress>();
+
+    const primaryWalletAddress = checksumWalletAddressSchema.safeParse(
+      privyUser.wallet?.address,
     );
+    if (primaryWalletAddress.success) {
+      userWalletsAddressesSet.add(primaryWalletAddress.data);
+    }
+
+    for (const linkedAccount of privyUser.linkedAccounts) {
+      if (linkedAccount.type === 'wallet') {
+        const checksumWalletAddress = checksumWalletAddressSchema.safeParse(
+          linkedAccount.address,
+        );
+        if (checksumWalletAddress.success) {
+          userWalletsAddressesSet.add(checksumWalletAddress.data);
+        }
+      }
+    }
+    const userWalletsAddresses = Array.from(userWalletsAddressesSet);
+    // #endregion get all user wallets addresses
+
     if (isEmpty(userWalletsAddresses)) {
       return [];
     }
