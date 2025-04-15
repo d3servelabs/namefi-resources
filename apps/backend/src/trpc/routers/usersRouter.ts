@@ -2,7 +2,7 @@ import { db, userUpdateSchema, usersTable } from '@namefi-astra/db';
 import type { ChecksumWalletAddress } from '@namefi-astra/utils';
 import { checksumWalletAddressSchema } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
-import { eq } from 'drizzle-orm';
+import { eq, sql } from 'drizzle-orm';
 import { isEmpty, isNil } from 'ramda';
 import { z } from 'zod';
 import { resolve } from '../../utils/resolve';
@@ -51,7 +51,7 @@ export const usersRouter = createTRPCRouter({
     }),
 
   getCurrentUserDomains: protectedProcedure.query(async ({ ctx }) => {
-    const { user } = ctx;
+    const { user, thirdPartyOriginHostname } = ctx;
     const [error, privyUser] = await resolve(
       privyClient.getUserById(user.privyUserId),
     );
@@ -91,8 +91,17 @@ export const usersRouter = createTRPCRouter({
     }
 
     const nfts = await db.query.namefiNftTable.findMany({
-      where: (table, { inArray }) =>
-        inArray(table.ownerAddress, userWalletsAddresses),
+      where: (table, { inArray, and, ilike, gte }) =>
+        and(
+          inArray(table.ownerAddress, userWalletsAddresses),
+          thirdPartyOriginHostname
+            ? ilike(table.normalizedDomainName, `%.${thirdPartyOriginHostname}`)
+            : undefined,
+          gte(
+            sql`array_length(string_to_array(${table.normalizedDomainName}, '.'), 1)`,
+            3,
+          ),
+        ),
     });
 
     return nfts;
