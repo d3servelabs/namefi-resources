@@ -27,3 +27,23 @@ export async function submitScheduleForUpdateNamefiNftIndex() {
   });
   console.log('Schedule created', schedule);
 }
+
+/**
+ * Trigger the schedule manually
+ */
+export async function triggerUpdateNamefiNftIndex() {
+  const handle = temporalClient.schedule.getHandle(
+    'update-namefi-nft-index-schedule',
+  );
+  await handle.trigger(ScheduleOverlapPolicy.BUFFER_ONE);
+}
+
+/**
+ * Delete the schedule
+ */
+export async function deleteScheduleForUpdateNamefiNftIndex() {
+  const schedule = await temporalClient.schedule.getHandle(
+    'update-namefi-nft-index-schedule',
+  );
+  await schedule.delete();
+}
