@@ -6,6 +6,7 @@ reviews:
   profile: "chill"
   request_changes_workflow: true
   collapse_walkthrough: false
+  poem: false
   auto_review:
     drafts: true
   path_instructions:
