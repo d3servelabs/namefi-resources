@@ -10,7 +10,7 @@ import {
 } from '@namefi-astra/zod-dns';
 import { TRPCError } from '@trpc/server';
 import { and, eq } from 'drizzle-orm';
-import { filter, isNotNil, mergeRight } from 'ramda';
+import { filter, isNotNil, mergeRight, pickBy } from 'ramda';
 import { z } from 'zod';
 import { areRecordsEqual } from './helpers';
 
@@ -23,8 +23,12 @@ export const updateRecordInputSchema = z.object({
   ttl: z.number().optional(),
 });
 
-export const createRecordInputSchema = dnsRecordInsertSchema.extend({
-  zoneName: namefiNormalizedDomainSchema,
+export const createRecordInputSchema = dnsRecordInsertSchema.pick({
+  type: true,
+  name: true,
+  rdata: true,
+  ttl: true,
+  zoneName: true,
 });
 
 /**
@@ -160,9 +164,7 @@ export async function updateRecord(
   // Update the record in the database
   const updatedRecord = await db
     .update(dnsRecordsTable)
-    .set({
-      ...updateData,
-    })
+    .set(pickBy(isNotNil, updateData))
     .where(
       and(eq(dnsRecordsTable.id, id), eq(dnsRecordsTable.zoneName, zoneName)),
     )
