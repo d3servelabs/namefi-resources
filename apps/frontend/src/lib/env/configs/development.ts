@@ -9,6 +9,7 @@ const developmentConfig: ConfigInput = {
   NAMEFI_FIRST_PARTY_ORIGINS: ['astra.namefi.dev'],
   POWERED_BY_NAMEFI_THIRD_PARTY_ORIGINS: ['0x.city', 'defi.build'],
   USER_CENTRICS_SETTINGS_ID: '5UJHpI8CWth59m',
+  USER_CENTRICS_GOOGLE_ANALYTICS_SERVICE_ID: 'HkocEodjb7',
 };
 
 export default developmentConfig;

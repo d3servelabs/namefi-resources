@@ -17,6 +17,7 @@ const localConfig: ConfigInput = {
     'defibuild.localhost': 'defi.build',
   },
   USER_CENTRICS_SETTINGS_ID: '5UJHpI8CWth59m',
+  USER_CENTRICS_GOOGLE_ANALYTICS_SERVICE_ID: 'HkocEodjb7',
 };
 
 export default localConfig;

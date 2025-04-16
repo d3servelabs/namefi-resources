@@ -1,6 +1,7 @@
 'use client';
 
 import { Loading } from '@/components/loading';
+import { InteractionLoggersProvider } from '@/components/providers/interactionLoggersProvider';
 import { OriginProvider } from '@/components/providers/originProvider';
 import { getWagmiConfig } from '@/lib/wagmiConfig';
 import { WagmiProvider } from '@privy-io/wagmi';
@@ -37,7 +38,11 @@ export const Providers = ({ children }: Readonly<Props>) => {
                   <ArtifactsProvider>
                     <QueryClientProvider client={queryClient}>
                       <WagmiProvider config={config}>
-                        <UsercentricsProvider>{children}</UsercentricsProvider>
+                        <UsercentricsProvider>
+                          <InteractionLoggersProvider>
+                            {children}
+                          </InteractionLoggersProvider>
+                        </UsercentricsProvider>
                       </WagmiProvider>
                     </QueryClientProvider>
                   </ArtifactsProvider>

@@ -21,7 +21,11 @@ export const configSchema = z.object({
   ADDITIONAL_ORIGIN_TO_HOSTNAME_MAP: z
     .record(z.string(), z.string())
     .default({}),
+  /**
+   * UserCentrics IDs for cookie consent management
+   */
   USER_CENTRICS_SETTINGS_ID: z.string(),
+  USER_CENTRICS_GOOGLE_ANALYTICS_SERVICE_ID: z.string(),
 });
 
 export type ConfigInput = z.input<typeof configSchema>;
