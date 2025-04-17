@@ -290,12 +290,8 @@ const SearchResults: FC<{
     );
   }
 
-  return (
-    <Placeholder
-      title="Search for domains"
-      description={`Enter a domain name above to search for available domains on ${parentDomain}`}
-    />
-  );
+  // If the query is empty, don't render anything
+  return null;
 };
 
 // Main component
@@ -443,7 +439,7 @@ export const Search: FC<DomainSearchProps> = ({
         />
       </div>
 
-      {query.length > 0 ? (
+      {query.length > 0 && (
         <Tabs
           defaultValue="all"
           value={activeTab}
@@ -485,15 +481,6 @@ export const Search: FC<DomainSearchProps> = ({
             />
           </TabsContent>
         </Tabs>
-      ) : (
-        <Placeholder
-          title="Find your perfect domain"
-          description={`Enter a domain name in the search box to find available domains on ${parentDomain}`}
-        >
-          <Button variant="outline" onClick={() => setQuery('example')}>
-            Try an example search
-          </Button>
-        </Placeholder>
       )}
     </div>
   );
