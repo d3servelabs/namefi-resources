@@ -94,24 +94,14 @@ export const Accounts = ({ user }: AccountsProps) => {
   } = usePrivy();
 
   const handleLinkEmail = useCallback(() => {
-    if (!email) {
-      toast.error('Please enter a valid email address.');
-      return;
-    }
-
     try {
       linkEmail();
-      setIsEmailDialogOpen(false);
-      setEmail('');
-      toast.success('Email verification sent', {
-        description: 'Please check your email to complete the linking process.',
-      });
     } catch (error) {
       toast.error('Failed to link email', {
         description: `Please try again. ${error instanceof Error ? error.message : 'Unknown error'}`,
       });
     }
-  }, [linkEmail, email]);
+  }, [linkEmail]);
 
   const handleUnlinkEmail = useCallback(
     async (email?: string) => {
@@ -423,7 +413,7 @@ export const Accounts = ({ user }: AccountsProps) => {
             isLinked={!!user.email?.address}
             linkedValue={user.email?.address}
             verified={!!user.email?.address}
-            onLink={() => setIsEmailDialogOpen(true)}
+            onLink={handleLinkEmail}
             onUnlink={() => handleUnlinkEmail(user.email?.address)}
           />
 
