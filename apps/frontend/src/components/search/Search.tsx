@@ -24,6 +24,10 @@ import {
 import { useAuth } from '@/hooks/useAuth';
 import { config } from '@/lib/env';
 import { cn } from '@/lib/utils';
+import {
+  InteractionLoggingEventName,
+  type SearchEvent,
+} from '@/utils/interaction-logging/events';
 import { formatAmountInUSD } from '@/utils/number';
 import { useTRPC } from '@/utils/trpc';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -44,6 +48,7 @@ import {
   useState,
 } from 'react';
 import { NamefiButton } from '../namefi-button';
+import { useInteractionLoggers } from '../providers/interactionLoggersProvider';
 import { Placeholder } from './Placeholder';
 
 // Types
@@ -325,6 +330,7 @@ export const Search: FC<DomainSearchProps> = ({
     data: searchData,
     isLoading,
     isFetching,
+    isFetched,
     refetch,
   } = useQuery({
     ...trpc.search.search.queryOptions({
@@ -357,6 +363,19 @@ export const Search: FC<DomainSearchProps> = ({
         onSuccess: () => refetchCart(),
       }),
     });
+
+  // Log completed search queries
+  const { logEventWithInteractionLoggers } = useInteractionLoggers();
+
+  useEffect(() => {
+    if (isFetched) {
+      const searchEvent: SearchEvent = {
+        name: InteractionLoggingEventName.SEARCH,
+        properties: { search_term: query },
+      };
+      logEventWithInteractionLoggers(searchEvent);
+    }
+  }, [isFetched, query, logEventWithInteractionLoggers]);
 
   // Derived state
   const domains = useMemo(

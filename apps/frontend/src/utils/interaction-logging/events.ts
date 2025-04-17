@@ -11,11 +11,18 @@ export enum InteractionLoggingEventName {
  * in the docs. You may need to use the transformEvent inside useGoogleAnalytics to match this format.
  * https://support.google.com/analytics/answer/9267735?hl=en
  */
-export type InteractionLoggingEvent = PurchaseEvent;
+export type InteractionLoggingEvent = PurchaseEvent | SearchEvent;
 
 export type PurchaseEvent = {
   name: InteractionLoggingEventName.PURCHASE;
   properties: {
     amountInUsdCents: number;
+  };
+};
+
+export type SearchEvent = {
+  name: InteractionLoggingEventName.SEARCH;
+  properties: {
+    search_term: string;
   };
 };
