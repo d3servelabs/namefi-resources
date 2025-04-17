@@ -1,7 +1,9 @@
 'use client';
 
-import { config } from '@/lib/env';
-import { getHostname } from '@/lib/utils';
+import {
+  getDomainForPoweredByNamefiThirdPartyOrigin,
+  isNamefiFirstPartyOrigin,
+} from '@/lib/origin-utils';
 import { useEffect, useState } from 'react';
 
 // Discriminated union types for loading states
@@ -20,8 +22,7 @@ export function useIsNamefiFirstPartyOrigin(): LoadingState<boolean> {
 
   useEffect(() => {
     const origin = window.location.origin;
-    const hostname = getHostname(origin);
-    const isFirstParty = config.NAMEFI_FIRST_PARTY_ORIGINS.includes(hostname);
+    const isFirstParty = isNamefiFirstPartyOrigin(origin);
     setState({ isLoaded: true, data: isFirstParty });
   }, []);
 
@@ -42,15 +43,7 @@ export function useGetDomainForPoweredByNamefiThirdPartyOrigin(): LoadingState<
 
   useEffect(() => {
     const origin = window.location.origin;
-    const hostname = getHostname(origin);
-
-    let domain: string | null = null;
-    if (config.POWERED_BY_NAMEFI_THIRD_PARTY_ORIGINS.includes(hostname)) {
-      domain = hostname;
-    } else {
-      domain = config.ADDITIONAL_ORIGIN_TO_HOSTNAME_MAP[hostname] || null;
-    }
-
+    const domain = getDomainForPoweredByNamefiThirdPartyOrigin(origin);
     setState({ isLoaded: true, data: domain });
   }, []);
 
