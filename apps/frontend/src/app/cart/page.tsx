@@ -1,6 +1,7 @@
 'use client';
 import { NamefiButton } from '@/components/namefi-button';
 import { NftWalletCard } from '@/components/nftWalletCard';
+import { useInteractionLoggers } from '@/components/providers/interactionLoggersProvider';
 import {
   SelectPaymentMethodCard,
   SelectedPaymentMethod,
@@ -15,6 +16,10 @@ import {
   CardTitle,
 } from '@/components/ui/shadcn/card';
 import { useAuth } from '@/hooks/useAuth';
+import {
+  InteractionLoggingEventName,
+  type PurchaseEvent,
+} from '@/utils/interaction-logging/events';
 import { formatAmountInUSD } from '@/utils/number';
 import { useTRPC } from '@/utils/trpc';
 import type { DeepPartial } from '@/utils/types';
@@ -44,6 +49,8 @@ export default function CartPage() {
   const [selectedNftWalletAddress, setSelectedNftWalletAddress] = useState<
     string | null
   >(null);
+
+  const { logEventWithInteractionLoggers } = useInteractionLoggers();
 
   const { isAuthenticated, isLoading } = useAuth();
 
@@ -88,6 +95,7 @@ export default function CartPage() {
   const { mutate: createOrder, isPending: isCreateOrderPending } = useMutation({
     ...trpc.orders.createOrder.mutationOptions({
       onSuccess: (data) => {
+        logPurchase();
         queryClient.invalidateQueries(trpc.carts.getItems.queryFilter());
         router.push(`/orders/${data.id}`);
       },
@@ -228,6 +236,14 @@ export default function CartPage() {
   const submitOrderDisabled = useMemo(() => {
     return !(paymentMethodSelected && selectedNftWalletAddress);
   }, [paymentMethodSelected, selectedNftWalletAddress]);
+
+  const logPurchase = useCallback(() => {
+    const purchaseEvent: PurchaseEvent = {
+      name: InteractionLoggingEventName.PURCHASE,
+      properties: { amountInUsdCents: totalAmountInUsdCents },
+    };
+    logEventWithInteractionLoggers(purchaseEvent);
+  }, [logEventWithInteractionLoggers, totalAmountInUsdCents]);
 
   const handleSubmitOrder = useCallback(() => {
     if (!cartQuery.data || cartQuery.data.length === 0) {

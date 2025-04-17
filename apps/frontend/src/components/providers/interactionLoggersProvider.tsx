@@ -1,10 +1,7 @@
 'use client';
 
 import { useGoogleAnalyticsInteractionLogger } from '@/hooks/useGoogleAnalyticsInteractionLogger';
-import type {
-  InteractionLoggingEventName,
-  InteractionLoggingEventProperties,
-} from '@/utils/interaction-logging/events';
+import type { InteractionLoggingEvent } from '@/utils/interaction-logging/events';
 import { type ReactNode, createContext, useCallback, useContext } from 'react';
 
 /**
@@ -12,10 +9,7 @@ import { type ReactNode, createContext, useCallback, useContext } from 'react';
  * Provides method for logging interaction events with our interaction loggers throughout the application
  */
 type IInteractionLoggersContext = {
-  logEventWithInteractionLoggers: (
-    eventName: InteractionLoggingEventName,
-    eventProperties?: InteractionLoggingEventProperties,
-  ) => void;
+  logEventWithInteractionLoggers: (event: InteractionLoggingEvent) => void;
 };
 
 const InteractionLoggersContext = createContext<
@@ -44,11 +38,8 @@ export function InteractionLoggersProvider({
   const { logEvent } = useGoogleAnalyticsInteractionLogger();
 
   const logEventWithInteractionLoggers = useCallback(
-    (
-      eventName: InteractionLoggingEventName,
-      eventProperties?: InteractionLoggingEventProperties,
-    ) => {
-      logEvent(eventName, eventProperties);
+    (event: InteractionLoggingEvent) => {
+      logEvent(event);
     },
     [logEvent],
   );
