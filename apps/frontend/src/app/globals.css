@@ -44,6 +44,7 @@
   --sidebar-border: oklch(0.92 0.004 286.32);
   --sidebar-ring: oklch(0.705 0.015 286.067);
   --brand-primary: #1cd17d;
+  --brand-secondary: #262626;
 }
 
 .dark {
@@ -80,6 +81,7 @@
   --sidebar-border: oklch(0.274 0.006 286.033);
   --sidebar-ring: oklch(0.442 0.017 285.786);
   --brand-primary: #1cd17d;
+  --brand-secondary: #262626;
 }
 
 @theme inline {
@@ -120,6 +122,7 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-brand-primary: var(--brand-primary);
+  --color-brand-secondary: var(--brand-secondary);
 }
 
 @layer base {

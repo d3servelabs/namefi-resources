@@ -29,11 +29,9 @@ import { useTRPC } from '@/utils/trpc';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   Check,
-  CircleOff,
   Loader2,
   SearchIcon,
   ShoppingCart,
-  Tag,
   User,
   X,
 } from 'lucide-react';
@@ -98,33 +96,37 @@ const SearchInput: FC<{
   isLoading: boolean;
   onSearch: () => void;
 }> = ({ query, setQuery, isLoading, onSearch }) => (
-  <div className="flex gap-4 items-center">
-    <div className="relative flex-1 lg:w-[616px]">
-      <Input
-        placeholder="Search for a domain..."
-        value={query}
-        onChange={(event) => setQuery(event.target.value)}
-        className="pr-10"
-      />
-      {query.length > 0 && (
-        <Button
-          variant="ghost"
-          size="icon"
-          className="absolute right-0 top-0 h-full"
-          onClick={() => setQuery('')}
-        >
-          <X className="h-4 w-4" />
-        </Button>
-      )}
+  <div className="flex w-full max-w-3xl mx-auto">
+    <div className="flex items-center w-full bg-black/30 backdrop-blur-md rounded-lg p-1">
+      <div className="relative flex-1 bg-gray-700/80 rounded-md h-12 flex items-center">
+        <div className="flex items-center w-full px-3">
+          <SearchIcon className="h-5 w-5 text-gray-400 mr-2 shrink-0" />
+          <Input
+            placeholder="Search for a domain..."
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            className="border-0 dark:bg-transparent h-full focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-gray-400 flex-1 md:text-lg"
+          />
+          {query.length > 0 && (
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8 rounded-md p-0 ml-1 shrink-0"
+              onClick={() => setQuery('')}
+            >
+              <X className="h-5 w-5 text-gray-400" />
+            </Button>
+          )}
+        </div>
+      </div>
+      <NamefiButton
+        disabled={isLoading || query.length === 0}
+        onClick={onSearch}
+        className="font-semibold rounded-md h-12 ml-1 text-lg w-[128px]"
+      >
+        {isLoading ? <Loader2 className="h-5 w-5 animate-spin" /> : 'Search'}
+      </NamefiButton>
     </div>
-    <Button disabled={isLoading || query.length === 0} onClick={onSearch}>
-      {isLoading ? (
-        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-      ) : (
-        <SearchIcon className="mr-2 h-4 w-4" />
-      )}
-      Search
-    </Button>
   </div>
 );
 
@@ -155,29 +157,27 @@ const DomainCard: FC<{
       <CardContent className="h-full w-full">
         <div className="flex items-center justify-between h-full w-full">
           <div className="space-y-1">
-            <div className="flex items-center gap-2">
-              <h3 className="font-medium text-lg">{domain.domain}</h3>
+            <h3 className="text-2xl font-semibold tracking-tight flex gap-2 items-center">
+              <span>{domain.domain}</span>
               {!domain.availability && (
-                <Badge variant={'destructive'} className="ml-2">
-                  <CircleOff className="mr-1 h-3 w-3" />
+                <Badge className="ml-2 text-xs bg-brand-secondary text-white">
+                  Taken
                 </Badge>
               )}
+            </h3>
+            <div className="flex items-center gap-2">
+              <p className="text-xl font-medium">
+                {domain.priceInUSD ? formatAmountInUSD(domain.priceInUSD) : ''}{' '}
+                USD
+              </p>
             </div>
-            <div className="flex items-center gap-4 text-sm text-muted-foreground">
-              <div className="flex items-center">
-                <Tag className="mr-1 h-3 w-3" />
-                {domain.priceInUSD ? formatAmountInUSD(domain.priceInUSD) : ''}
+            {!domain.availability && domain.currentOwner && (
+              <div className="flex items-center text-sm text-muted-foreground">
+                <User className="mr-1 h-3 w-3" />
+                Owner: {domain.currentOwner.substring(0, 6)}...
+                {domain.currentOwner.substring(domain.currentOwner.length - 4)}
               </div>
-              {!domain.availability && domain.currentOwner && (
-                <div className="flex items-center">
-                  <User className="mr-1 h-3 w-3" />
-                  Owner: {domain.currentOwner.substring(0, 6)}...
-                  {domain.currentOwner.substring(
-                    domain.currentOwner.length - 4,
-                  )}
-                </div>
-              )}
-            </div>
+            )}
           </div>
           {domain.availability && (
             <TooltipProvider>
@@ -218,14 +218,19 @@ const DomainCard: FC<{
 const LoadingSkeletons: FC = () => (
   <div className="flex flex-col gap-4">
     {Array.from({ length: 5 }).map((_, index) => (
-      <Card key={index} className="overflow-hidden">
-        <CardContent className="p-6">
-          <div className="flex items-center justify-between">
-            <div className="space-y-2">
-              <Skeleton className="h-5 w-[200px]" />
-              <Skeleton className="h-4 w-[100px]" />
+      <Card
+        key={index}
+        className="bg-white/5 backdrop-blur-lg h-32 transition-all duration-150 p-0 border-[1px] border-white/10"
+      >
+        <CardContent className="h-full w-full">
+          <div className="flex items-center justify-between h-full w-full">
+            <div className="space-y-1">
+              <Skeleton className="h-8 w-[250px]" />
+              <div className="flex items-center gap-2">
+                <Skeleton className="h-6 w-[100px]" />
+              </div>
             </div>
-            <Skeleton className="h-10 w-[120px]" />
+            <Skeleton className="h-10 w-[120px] rounded-full" />
           </div>
         </CardContent>
       </Card>
@@ -445,14 +450,28 @@ export const Search: FC<DomainSearchProps> = ({
           onValueChange={setActiveTab}
           className="w-full"
         >
-          <TabsList className="grid grid-cols-4 mb-4">
-            <TabsTrigger value="all">All</TabsTrigger>
-            <TabsTrigger value="available">Available</TabsTrigger>
-            <TabsTrigger value="taken">Taken</TabsTrigger>
-            <TabsTrigger value="cart">In Cart</TabsTrigger>
-          </TabsList>
+          <div className="flex justify-between items-center py-5">
+            <h2 className="text-2xl font-semibold">Search Results</h2>
+            <TabsList className="grid grid-cols-4 backdrop-blur-2xl rounded-md bg-black/50">
+              <TabsTrigger className="py-2 px-3 w-32 rounded-sm" value="all">
+                All
+              </TabsTrigger>
+              <TabsTrigger
+                className="py-2 px-3 w-32 rounded-sm"
+                value="available"
+              >
+                Available
+              </TabsTrigger>
+              <TabsTrigger className="py-2 px-3 w-32 rounded-sm" value="taken">
+                Taken
+              </TabsTrigger>
+              <TabsTrigger className="py-2 px-3 w-32 rounded-sm" value="cart">
+                In Cart
+              </TabsTrigger>
+            </TabsList>
+          </div>
 
-          <TabsContent value={activeTab} className="mt-0">
+          <TabsContent value={activeTab} className="mt-4">
             <SearchResults
               isLoading={isSearchLoading}
               filteredDomains={filteredDomains}
