@@ -20,7 +20,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { cn } from '@/lib/utils';
 import type { NavItem } from '@/types';
 import { abbreviation, shortage } from '@/utils/string';
-import { useLogin, useLogout } from '@privy-io/react-auth';
+import { type User, useLogin, useLogout } from '@privy-io/react-auth';
 import {
   Loader2Icon,
   LogOutIcon,
@@ -37,6 +37,7 @@ import {
   forwardRef,
   useCallback,
 } from 'react';
+import { toast } from 'sonner';
 
 const ITEMS: NavItem[] = [
   { title: 'Profile', href: '/profile', icon: UserIcon },
@@ -64,7 +65,20 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
       'ME';
 
     const { login } = useLogin({
-      onComplete: () => {},
+      onComplete: ({ user }: { user: User }) => {
+        // Show warning if user is logged in but has no email associated with their account
+        if (!user.email?.address) {
+          toast.warning('Missing Email', {
+            description:
+              'We will not be able to send you notifications without it.',
+            action: (
+              <Button asChild={true} size={'sm'}>
+                <Link href={'/profile'}>Visit Profile</Link>
+              </Button>
+            ),
+          });
+        }
+      },
       onError: () => {},
     });
 
@@ -74,7 +88,7 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
 
     const handleConnect = useCallback(() => {
       login({
-        loginMethods: ['email'],
+        loginMethods: ['email', 'wallet'],
       });
     }, [login]);
 
