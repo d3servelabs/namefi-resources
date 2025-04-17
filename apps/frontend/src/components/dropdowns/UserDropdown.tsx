@@ -20,7 +20,9 @@ import { useAuth } from '@/hooks/useAuth';
 import { cn } from '@/lib/utils';
 import type { NavItem } from '@/types';
 import { abbreviation, shortage } from '@/utils/string';
+import { useTRPC } from '@/utils/trpc';
 import { type User, useLogin, useLogout } from '@privy-io/react-auth';
+import { useMutation } from '@tanstack/react-query';
 import {
   Loader2Icon,
   LogOutIcon,
@@ -36,6 +38,7 @@ import {
   type HTMLAttributes,
   forwardRef,
   useCallback,
+  useEffect,
 } from 'react';
 import { toast } from 'sonner';
 
@@ -55,7 +58,40 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
   ) {
     const confirm = useConfirm();
 
-    const { isLoading, isAuthenticated, privyUser } = useAuth();
+    const {
+      isLoading,
+      isAuthenticated,
+      privyUser,
+      user: namefiUser,
+    } = useAuth();
+
+    const trpc = useTRPC();
+    const { mutate: updateUser } = useMutation(
+      trpc.users.updateUser.mutationOptions({}),
+    );
+
+    // keep Privy email address and Namefi email address in sync
+    useEffect(() => {
+      if (isLoading || !isAuthenticated) {
+        return;
+      }
+
+      if (!(privyUser && namefiUser)) {
+        return;
+      }
+
+      // add email to db if missing but connected to PrivyUser
+      if (!namefiUser.primaryEmail && privyUser.email?.address) {
+        updateUser({ data: { primaryEmail: privyUser.email.address } });
+        return;
+      }
+
+      // remove email from db if no longer connected to PrivyUser
+      if (namefiUser.primaryEmail && !privyUser.email?.address) {
+        updateUser({ data: { primaryEmail: null } });
+        return;
+      }
+    }, [isAuthenticated, isLoading, namefiUser, privyUser, updateUser]);
 
     const name =
       privyUser?.wallet?.address ||
