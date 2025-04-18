@@ -1,0 +1,36 @@
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/shadcn/select';
+
+export const TablePageSelector = ({
+  pageSize,
+  onPageSizeChange,
+}: {
+  pageSize: number;
+  onPageSizeChange: (pageSize: number) => void;
+}) => {
+  return (
+    <div className="flex items-center gap-2">
+      <span className="text-sm text-zinc-500">Rows per page:</span>
+      <Select
+        value={pageSize.toString()}
+        onValueChange={(value) => onPageSizeChange(Number.parseInt(value))}
+      >
+        <SelectTrigger className="h-8 w-20">
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="5">5</SelectItem>
+          <SelectItem value="10">10</SelectItem>
+          <SelectItem value="20">20</SelectItem>
+          <SelectItem value="50">50</SelectItem>
+          <SelectItem value="100">100</SelectItem>
+        </SelectContent>
+      </Select>
+    </div>
+  );
+};
