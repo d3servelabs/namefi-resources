@@ -68,7 +68,7 @@ export function NameserversPanel() {
     () => (
       <Button
         variant="outline"
-        className="bg-emerald-950/20 text-emerald-500 hover:text-emerald-400 hover:bg-emerald-950/30 border-emerald-800/50"
+        className="bg-brand-primary-950/20 text-brand-primary-500 hover:text-brand-primary-400 hover:bg-brand-primary-950/30 border-brand-primary-800/50"
         onClick={handleResetToNamefi}
         disabled={isLoading || !isUsingCustom}
       >

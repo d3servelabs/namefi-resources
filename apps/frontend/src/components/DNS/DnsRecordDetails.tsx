@@ -116,7 +116,7 @@ export function DnsRecordDetails({
           <Button variant="outline" onClick={() => onOpenChange(false)}>
             Cancel
           </Button>
-          <Button className="bg-emerald-500 hover:bg-emerald-600">
+          <Button className="bg-brand-primary-500 hover:bg-brand-primary-600">
             Save changes
           </Button>
         </DialogFooter>

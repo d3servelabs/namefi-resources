@@ -195,7 +195,7 @@ export function RecordDialog() {
         <DialogFooter className="flex items-center justify-between sm:justify-between gap-2">
           <Button
             variant="link"
-            className="text-emerald-500 hover:text-emerald-400 p-0"
+            className="text-brand-primary-500 hover:text-brand-primary-400 p-0"
             onClick={addMoreRecord}
             type="button"
           >
@@ -207,7 +207,7 @@ export function RecordDialog() {
               Cancel
             </Button>
             <Button
-              className="bg-emerald-500 hover:bg-emerald-600 text-white"
+              className="bg-brand-primary-500 hover:bg-brand-primary-600 text-white"
               onClick={handleSubmit}
               type="button"
               disabled={forms.length === 0}
