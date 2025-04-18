@@ -105,6 +105,7 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
         // Show warning if user is logged in but has no email associated with their account
         if (!user.email?.address) {
           toast.warning('Missing Email', {
+            id: 'missing-email-warning-on-login',
             description:
               'We will not be able to send you notifications without it.',
             action: (
