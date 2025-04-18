@@ -24,7 +24,7 @@ import {
   type DnsRecordFormValues,
   TTL_OPTIONS,
   dnsRecordSchema,
-} from './schemas';
+} from '../schemas';
 
 interface DnsRecordFormProps {
   defaultValues?: DnsRecordFormValues;

@@ -22,12 +22,12 @@ import {
   useState,
 } from 'react';
 import { toast } from 'sonner';
-import { DnsRecordForm } from '../DnsRecordForm';
 import {
   type DnsRecordFormValues,
   dnsRecordToFormValues,
   formValuesToDnsRecord,
 } from '../schemas';
+import { DnsRecordForm } from './DnsRecordForm';
 
 export type AddEditRecordsDialogProps = {
   records?: DnsRecordSelect[];

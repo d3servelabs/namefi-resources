@@ -10,7 +10,7 @@ import { cn } from '@/lib/utils';
 import { LocalStorageKeys } from '@/utils/localStorageKeys';
 import { type FC, type HTMLAttributes, useEffect } from 'react';
 import { useLocalStorage } from 'usehooks-ts';
-import { DnsRecordsPanel } from './DnsRecordsPanel';
+import { DnsRecordsPanel } from './Panels/DNS/DnsRecordsPanel';
 
 export type DnsManagementProps = HTMLAttributes<HTMLDivElement> & {
   domain: string;

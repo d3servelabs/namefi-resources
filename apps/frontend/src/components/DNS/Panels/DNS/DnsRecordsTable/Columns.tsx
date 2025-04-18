@@ -17,9 +17,9 @@ import {
 } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'sonner';
-import { AddEditRecordsDialog } from '../dialogs/AddEditRecordsDialog';
-import { DeleteRecordDialog } from '../dialogs/DeleteRecordsDialog';
-import { DNS_RECORD_TYPES, TTL_OPTIONS } from '../schemas';
+import { AddEditRecordsDialog } from '../../../dialogs/AddEditRecordsDialog';
+import { DeleteRecordDialog } from '../../../dialogs/DeleteRecordsDialog';
+import { DNS_RECORD_TYPES, TTL_OPTIONS } from '../../../schemas';
 import { EditableCell } from './EditableCell';
 
 export const SelectColumnHeader = ({

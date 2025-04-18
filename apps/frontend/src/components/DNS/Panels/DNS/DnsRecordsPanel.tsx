@@ -1,4 +1,4 @@
-import { DnsRecordsTable } from '@/components/DNS/DnsRecordsTable/DnsRecordsTable';
+import { DnsRecordsTable } from '@/components/DNS/Panels/DNS/DnsRecordsTable/DnsRecordsTable';
 import { Button } from '@/components/ui/shadcn/button';
 import {
   Card,
@@ -27,8 +27,8 @@ import {
   useState,
 } from 'react';
 import React from 'react';
-import { AddEditRecordsDialog } from './dialogs/AddEditRecordsDialog';
-import { DNS_RECORD_TYPES } from './schemas';
+import { AddEditRecordsDialog } from '../../dialogs/AddEditRecordsDialog';
+import { DNS_RECORD_TYPES } from '../../schemas';
 
 export type DnsRecordsPanelProps = HTMLAttributes<HTMLDivElement> & {
   domain: string;
