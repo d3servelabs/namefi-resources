@@ -110,7 +110,7 @@ const SearchInput: FC<{
             placeholder="Search for a domain..."
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            className="border-0 dark:bg-transparent h-full focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-gray-400 flex-1 md:text-lg"
+            className="border-0 dark:bg-transparent h-full focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-gray-400 flex-1 md:text-lg shadow-none"
           />
           {query.length > 0 && (
             <Button
