@@ -42,6 +42,8 @@ const DEFAULT_VALUES: DnsRecordFormValues = {
   ttl: 3600,
 };
 
+const resolver = zodResolver(dnsRecordSchema);
+
 export function DnsRecordForm({
   defaultValues = DEFAULT_VALUES,
   onValuesChange,
@@ -49,15 +51,11 @@ export function DnsRecordForm({
   showRemoveButton = false,
   index,
 }: DnsRecordFormProps) {
-  // Memoize the form resolver
-  const resolver = useMemo(() => zodResolver(dnsRecordSchema), []);
-
   const form = useForm<DnsRecordFormValues>({
     resolver,
     defaultValues,
     mode: 'onChange',
   });
-
   // Watch for form changes and notify parent
   const values = form.watch();
   const isValid = form.formState.isValid;
@@ -65,47 +63,6 @@ export function DnsRecordForm({
   useEffect(() => {
     onValuesChange(values, isValid);
   }, [values, isValid, onValuesChange]);
-
-  // Memoize the record type options
-  const recordTypeOptions = useMemo(
-    () =>
-      DNS_RECORD_TYPES.map((type) => (
-        <SelectItem key={type} value={type}>
-          {type}
-        </SelectItem>
-      )),
-    [],
-  );
-
-  // Memoize the TTL options
-  const ttlOptions = useMemo(
-    () =>
-      TTL_OPTIONS.map((option) => (
-        <SelectItem key={option.value} value={option.value?.toString()}>
-          {option.label}
-        </SelectItem>
-      )),
-    [],
-  );
-
-  // Memoize the remove button
-  const removeButton = useMemo(
-    () =>
-      showRemoveButton &&
-      onRemove && (
-        <Button
-          variant="ghost"
-          size="icon"
-          className="ml-2"
-          onClick={onRemove}
-          type="button"
-          aria-label={`Remove record ${index + 1}`}
-        >
-          <Trash2 className="h-4 w-4" />
-        </Button>
-      ),
-    [showRemoveButton, onRemove, index],
-  );
 
   // Memoize the value placeholder based on type
   const valuePlaceholder = useMemo(() => {
@@ -134,7 +91,13 @@ export function DnsRecordForm({
                       <SelectValue placeholder="Select type" />
                     </SelectTrigger>
                   </FormControl>
-                  <SelectContent>{recordTypeOptions}</SelectContent>
+                  <SelectContent>
+                    {DNS_RECORD_TYPES.map((type) => (
+                      <SelectItem key={type} value={type}>
+                        {type}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
                 </Select>
                 <FormMessage className="text-xs text-red-500" />
               </FormItem>
@@ -216,9 +179,29 @@ export function DnsRecordForm({
                         <SelectValue placeholder="Select TTL" />
                       </SelectTrigger>
                     </FormControl>
-                    <SelectContent>{ttlOptions}</SelectContent>
+                    <SelectContent>
+                      {TTL_OPTIONS.map((option) => (
+                        <SelectItem
+                          key={option.value}
+                          value={option.value.toString()}
+                        >
+                          {option.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
                   </Select>
-                  {removeButton}
+                  {showRemoveButton && onRemove && (
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="ml-2"
+                      onClick={onRemove}
+                      type="button"
+                      aria-label={`Remove record ${index + 1}`}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  )}
                 </div>
                 <FormMessage className="text-xs text-red-500" />
               </FormItem>

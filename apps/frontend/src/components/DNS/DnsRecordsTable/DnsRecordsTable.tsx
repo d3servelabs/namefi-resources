@@ -3,7 +3,6 @@
 import type { DnsManagementProps } from '@/components/DNS/DnsManagement';
 import { Table, Tbody, Td, Th, Thead, Tr } from '@/components/table';
 import { Button } from '@/components/ui/shadcn/button';
-import { Checkbox } from '@/components/ui/shadcn/checkbox';
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -14,29 +13,14 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/shadcn/dropdown-menu';
 import { Input } from '@/components/ui/shadcn/input';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/shadcn/select';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/shadcn/tooltip';
 import { cn } from '@/lib/utils';
 import { useTRPC } from '@/utils/trpc';
 import type { DnsRecordSelect } from '@namefi-astra/db/types';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import {
-  type Column,
   type ColumnDef,
   type ColumnFiltersState,
-  type Row,
   type RowSelectionState,
   type SortingState,
   type VisibilityState,
@@ -48,169 +32,48 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import {
-  ArrowUpDown,
-  Check,
   ChevronDown,
   ChevronFirst,
   ChevronLast,
-  ChevronUp,
   Clipboard,
-  Copy,
   Download,
   Edit,
   Filter,
-  RotateCw,
   Search,
   Settings,
   SlidersHorizontal,
   Trash2,
   Upload,
-  X,
 } from 'lucide-react';
-import type { FC, HTMLAttributes, KeyboardEvent } from 'react';
+import type { FC, HTMLAttributes } from 'react';
 import {
   type ChangeEvent,
   useCallback,
   useEffect,
   useMemo,
-  useRef,
   useState,
 } from 'react';
 import { toast } from 'sonner';
-import { DeleteRecordDialog } from '../dialogs/DeleteRecordDialog';
-import { RecordDialog } from '../dialogs/RecordDialog';
-import { DNS_RECORD_TYPES, TTL_OPTIONS } from '../schemas';
+import { DNS_RECORD_TYPES } from '../schemas';
+import { AddEditRecordsDialog } from '../standalone-dialogs/AddEditRecordsDialog';
+import { DeleteRecordDialog } from '../standalone-dialogs/DeleteRecordsDialog';
 import {
-  type DialogAction,
-  type DialogData,
-  useDialogStore,
-} from '../stores/dialog';
+  ActionsColumnCell,
+  NameColumnCell,
+  NameColumnHeader,
+  SelectColumnCell,
+  SelectColumnHeader,
+  TTLColumnCell,
+  TTLColumnHeader,
+  TypeColumnCell,
+  TypeColumnHeader,
+  ValueColumnCell,
+} from './Columns';
+import { TablePageSelector } from './TablePageSelector';
+import { usePagination } from './usePagination';
 
 export type DnsRecordsTableProps = HTMLAttributes<HTMLDivElement> & {
   domain: string;
-};
-
-interface EditableCellProps {
-  value: string;
-  row: Row<DnsRecordSelect>;
-  column: Column<DnsRecordSelect>;
-  onSave: (value: string) => void;
-  options?: { value: string; label: string }[];
-  isSelectInput?: boolean;
-  enabled?: boolean;
-}
-
-const EditableCell = ({
-  value: initialValue,
-  row,
-  onSave,
-  options,
-  isSelectInput = false,
-  enabled = true,
-}: EditableCellProps) => {
-  const [isEditing, setIsEditing] = useState(false);
-  const [value, setValue] = useState(initialValue);
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  const handleKeyDown = (e: KeyboardEvent) => {
-    if (enabled) {
-      if (e.key === 'Enter') {
-        onSave(value);
-        setIsEditing(false);
-      } else if (e.key === 'Escape') {
-        setValue(initialValue);
-        setIsEditing(false);
-      }
-    }
-  };
-
-  useEffect(() => {
-    if (isEditing && inputRef.current) {
-      inputRef.current.focus();
-    }
-  }, [isEditing]);
-
-  const handleSelectChange = (newValue: string) => {
-    setValue(newValue);
-    onSave(newValue);
-    setIsEditing(false);
-  };
-
-  if (isEditing) {
-    if (isSelectInput && options) {
-      return (
-        <Select defaultValue={value} onValueChange={handleSelectChange}>
-          <SelectTrigger className="h-8 w-full bg-zinc-900 border-zinc-700">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            {options.map((option) => (
-              <SelectItem key={option.value} value={option.value}>
-                {option.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      );
-    }
-
-    return (
-      <div className="flex items-center gap-1">
-        <Input
-          ref={inputRef}
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-          onKeyDown={handleKeyDown}
-          onBlur={() => {
-            onSave(value);
-            setIsEditing(false);
-          }}
-          className="h-8 bg-zinc-900 border-zinc-700"
-        />
-        <div className="flex">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-6 w-6 text-green-500"
-            onClick={() => {
-              onSave(value);
-              setIsEditing(false);
-            }}
-          >
-            <Check className="h-3 w-3" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-6 w-6 text-red-500"
-            onClick={() => {
-              setValue(initialValue);
-              setIsEditing(false);
-            }}
-          >
-            <X className="h-3 w-3" />
-          </Button>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <button
-      type="button"
-      className="cursor-pointer hover:bg-zinc-800 p-1 rounded"
-      onClick={() => {
-        // Don't allow editing system records
-        const rdata = row.original.rdata;
-        if (rdata === 'by AutoPark™' || rdata === 'by System') {
-          return;
-        }
-        setIsEditing(true);
-      }}
-    >
-      {initialValue}
-    </button>
-  );
 };
 
 export const DnsRecordsTable: FC<DnsManagementProps> = ({
@@ -219,20 +82,6 @@ export const DnsRecordsTable: FC<DnsManagementProps> = ({
   ...rest
 }: DnsRecordsTableProps) => {
   const trpc = useTRPC();
-
-  // State for table
-  const [sorting, setSorting] = useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
-  const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
-  const [globalFilter, setGlobalFilter] = useState('');
-  const [pageSize, setPageSize] = useState(10);
-  const [pageIndex, setPageIndex] = useState(0);
-  const [data, setData] = useState<DnsRecordSelect[]>([]);
-  const [typeFilter, setTypeFilter] = useState<string[]>([]);
-
-  // State for data
-
   const dnsRecords = useQuery(
     trpc.dnsRecords.getRecords.queryOptions(
       {
@@ -244,113 +93,25 @@ export const DnsRecordsTable: FC<DnsManagementProps> = ({
     ),
   );
 
-  const onRefetch = useCallback(async () => {
-    await dnsRecords.refetch();
-  }, [dnsRecords]);
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
+  const [globalFilter, setGlobalFilter] = useState('');
+  const [typeFilter, setTypeFilter] = useState<string[]>([]);
 
-  // Create DNS record mutation
-  const createDnsRecord = useMutation(
-    trpc.dnsRecords.createDnsRecord.mutationOptions({
-      onSuccess: onRefetch,
-      onError: (error) => {
-        toast('Failed to create DNS record', {
-          description: error.message,
-        });
-      },
-    }),
-  );
-
-  // UpdateNS record mutation
-  const updateDnsRecord = useMutation(
-    trpc.dnsRecords.updateRecord.mutationOptions({
-      onSuccess: onRefetch,
-      onError: (error) => {
-        toast('Failed to update DNS record', {
-          description: error.message,
-        });
-      },
-    }),
-  );
-
-  // Delete DNS record mutation
-  const deleteDnsRecord = useMutation(
-    trpc.dnsRecords.deleteRecord.mutationOptions({
-      onSuccess: onRefetch,
-      onError: (error) => {
-        toast('Failed to delete DNS record', {
-          description: error.message,
-        });
-      },
-    }),
-  );
-
-  // Add the openEditDialog from the store
   const {
-    openDeleteDialog,
-    openDeleteDialogSingle,
-    openEditDialog,
-    openEditDialogSingle,
-  } = useDialogStore();
+    pageSize,
+    pageIndex,
+    setPageIndex,
+    handlePageSizeChange,
+    setPageCount,
+    pageCount,
+  } = usePagination();
 
-  // Define the callback handlers
-  const handleDialogCallback = useCallback(
-    async (action: DialogAction, data?: DialogData) => {
-      console.log(`Dialog action: "${action}"`, data);
-
-      if (!data) {
-        return;
-      }
-
-      if (action === 'delete' && data.success) {
-        await Promise.allSettled(
-          data.originalRecords.map((record) =>
-            deleteDnsRecord.mutateAsync({
-              id: record.id as string,
-              zoneName: domain as string,
-            }),
-          ),
-        );
-
-        toast('Records deleted', {
-          description: data.message,
-        });
-      } else if (action === 'save' && data.success) {
-        await Promise.allSettled(
-          data.updatedRecords.map((record) =>
-            updateDnsRecord.mutateAsync({
-              id: record.id as string,
-              zoneName: domain as string,
-              type: record.type,
-              name: record.name,
-              rdata: record.rdata,
-            }),
-          ),
-        );
-
-        toast('Records saved', {
-          description: data.message,
-        });
-      } else if (action === 'add' && data.success) {
-        await Promise.allSettled(
-          data.updatedRecords.map((record) =>
-            createDnsRecord.mutateAsync({
-              zoneName: domain as string,
-              type: record.type,
-              name: record.name,
-              rdata: record.rdata,
-            }),
-          ),
-        );
-
-        toast('Records added', {
-          description: data.message,
-        });
-      } else if (action === 'cancel') {
-        console.log('Operation cancelled');
-      }
-    },
-    [domain, deleteDnsRecord, updateDnsRecord, createDnsRecord],
-  );
+  useEffect(() => {
+    setPageCount(Math.ceil((dnsRecords.data?.length ?? 0) / pageSize));
+  }, [dnsRecords.data, pageSize, setPageCount]);
 
   // Memoize the handleGlobalFilterChange function
   const handleGlobalFilterChange = useCallback(
@@ -363,11 +124,7 @@ export const DnsRecordsTable: FC<DnsManagementProps> = ({
   // Handle cell updates
   const handleCellUpdate = useCallback(
     (rowId: string, columnId: string, value: string) => {
-      setData((prev) =>
-        prev.map((row) =>
-          row.id === rowId ? { ...row, [columnId]: value } : row,
-        ),
-      );
+      // TODO: Implement this
 
       toast('Record updated', {
         description: `${columnId.charAt(0).toUpperCase() + columnId.slice(1)} updated successfully.`,
@@ -381,440 +138,90 @@ export const DnsRecordsTable: FC<DnsManagementProps> = ({
     () => [
       {
         id: 'select',
-        header: ({ table }) => (
-          <Checkbox
-            checked={
-              table.getIsAllPageRowsSelected() ||
-              (table.getIsSomePageRowsSelected() && 'indeterminate')
-            }
-            onCheckedChange={(value) =>
-              table.toggleAllPageRowsSelected(!!value)
-            }
-            aria-label="Select all"
-          />
-        ),
-        cell: ({ row }) => (
-          <Checkbox
-            checked={row.getIsSelected()}
-            onCheckedChange={(value) => row.toggleSelected(!!value)}
-            aria-label="Select row"
-          />
-        ),
+        header: (context) => <SelectColumnHeader context={context} />,
+        cell: (context) => <SelectColumnCell context={context} />,
         enableSorting: false,
         enableHiding: false,
       },
       {
         accessorKey: 'type',
-        header: ({ column }) => {
-          // Memoize the sort handler
-          const handleSort = () => {
-            column.toggleSorting(column.getIsSorted() === 'asc');
-          };
-
-          return (
-            <div className="flex items-center">
-              <Button
-                variant="ghost"
-                onClick={handleSort}
-                className="p-0 hover:bg-transparent"
-              >
-                Type
-                {column.getIsSorted() === 'asc' ? (
-                  <ChevronUp className="ml-1 h-4 w-4" />
-                ) : column.getIsSorted() === 'desc' ? (
-                  <ChevronDown className="ml-1 h-4 w-4" />
-                ) : (
-                  <ArrowUpDown className="ml-1 h-4 w-4" />
-                )}
-              </Button>
-            </div>
-          );
-        },
-        cell: ({ row, column }) => {
-          const type = row.getValue('type') as string;
-          const rdata = row.original.rdata;
-          const isSystemRecord =
-            rdata === 'by AutoPark™' || rdata === 'by System';
-
-          return (
-            <div className="font-medium">
-              {isSystemRecord ? (
-                type
-              ) : (
-                <EditableCell
-                  enabled={false}
-                  value={type}
-                  row={row}
-                  column={column}
-                  onSave={(value) => handleCellUpdate(row.id, 'type', value)}
-                  options={DNS_RECORD_TYPES.map((type) => ({
-                    value: type,
-                    label: type,
-                  }))}
-                  isSelectInput={true}
-                />
-              )}
-            </div>
-          );
-        },
+        header: (context) => <TypeColumnHeader context={context} />,
+        cell: (context) => (
+          <TypeColumnCell context={context} onCellUpdate={handleCellUpdate} />
+        ),
         filterFn: 'includesString',
       },
       {
         accessorKey: 'name',
-        header: ({ column }) => {
-          // Memoize the sort handler
-          const handleSort = () => {
-            column.toggleSorting(column.getIsSorted() === 'asc');
-          };
-
-          return (
-            <div className="flex items-center">
-              <Button
-                variant="ghost"
-                onClick={handleSort}
-                className="p-0 hover:bg-transparent"
-              >
-                Name
-                {column.getIsSorted() === 'asc' ? (
-                  <ChevronUp className="ml-1 h-4 w-4" />
-                ) : column.getIsSorted() === 'desc' ? (
-                  <ChevronDown className="ml-1 h-4 w-4" />
-                ) : (
-                  <ArrowUpDown className="ml-1 h-4 w-4" />
-                )}
-              </Button>
-            </div>
-          );
-        },
-        cell: ({ row, column }) => {
-          const name = row.getValue('name') as string;
-          const rdata = row.original.rdata;
-          const isSystemRecord =
-            rdata === 'by AutoPark™' || rdata === 'by System';
-
-          return isSystemRecord ? (
-            name
-          ) : (
-            <EditableCell
-              enabled={false}
-              value={name}
-              row={row}
-              column={column}
-              onSave={(value) => handleCellUpdate(row.id, 'name', value)}
-            />
-          );
-        },
+        header: (context) => <NameColumnHeader context={context} />,
+        cell: (context) => (
+          <NameColumnCell context={context} onCellUpdate={handleCellUpdate} />
+        ),
         filterFn: 'includesString',
       },
       {
         accessorKey: 'rdata',
         header: 'Value',
-        cell: ({ row, column }) => {
-          const value = row.getValue('rdata') as string;
-          const rdata = row.original.rdata;
-          const isSystemRecord =
-            rdata === 'by AutoPark™' || rdata === 'by System';
-
-          return (
-            <div className="max-w-[300px] truncate">
-              {isSystemRecord ? (
-                value
-              ) : (
-                <EditableCell
-                  enabled={false}
-                  value={value}
-                  row={row}
-                  column={column}
-                  onSave={(value) => handleCellUpdate(row.id, 'rdata', value)}
-                />
-              )}
-            </div>
-          );
-        },
+        cell: (context) => (
+          <ValueColumnCell context={context} onCellUpdate={handleCellUpdate} />
+        ),
       },
       {
         accessorKey: 'ttl',
-        header: ({ column }) => {
-          // Memoize the sort handler
-          const handleSort = () => {
-            column.toggleSorting(column.getIsSorted() === 'asc');
-          };
-
-          return (
-            <div className="flex items-center">
-              <Button
-                variant="ghost"
-                onClick={handleSort}
-                className="p-0 hover:bg-transparent"
-              >
-                TTL
-                {column.getIsSorted() === 'asc' ? (
-                  <ChevronUp className="ml-1 h-4 w-4" />
-                ) : column.getIsSorted() === 'desc' ? (
-                  <ChevronDown className="ml-1 h-4 w-4" />
-                ) : (
-                  <ArrowUpDown className="ml-1 h-4 w-4" />
-                )}
-              </Button>
-            </div>
-          );
-        },
-        cell: ({ row, column }) => {
-          const ttl = row.getValue('ttl') as string;
-          const rdata = row.original.rdata;
-          const isSystemRecord =
-            rdata === 'by AutoPark™' || rdata === 'by System';
-
-          // Format TTL for display
-          const formatTTL = (ttlValue: string) => {
-            const option = TTL_OPTIONS.find(
-              (opt) => opt.value.toString() === ttlValue,
-            );
-            return option ? option.label : ttlValue;
-          };
-
-          return isSystemRecord ? (
-            formatTTL(ttl)
-          ) : (
-            <EditableCell
-              enabled={false}
-              value={ttl}
-              row={row}
-              column={column}
-              onSave={(value) => handleCellUpdate(row.id, 'ttl', value)}
-              options={TTL_OPTIONS.map(({ value, label }) => ({
-                value: value.toString(),
-                label,
-              }))}
-              isSelectInput={true}
-            />
-          );
-        },
+        header: (context) => <TTLColumnHeader context={context} />,
+        cell: (context) => (
+          <TTLColumnCell context={context} onCellUpdate={handleCellUpdate} />
+        ),
       },
-      // {
-      //   accessorKey: 'rdata',
-      //   header: 'Notes',
-      //   cell: ({ row }) => {
-      //     const record = row.original;
-      //     return (
-      //       <div className="flex items-center gap-1">
-      //         {record.rdata}
-      //         {(record.rdata === 'by AutoPark™' ||
-      //           record.rdata === 'by System') && (
-      //           <TooltipProvider>
-      //             <Tooltip>
-      //               <TooltipTrigger asChild={true}>
-      //                 <Info className="h-4 w-4 text-zinc-500 cursor-help" />
-      //               </TooltipTrigger>
-      //               <TooltipContent>
-      //                 <p>This record is managed by the system</p>
-      //               </TooltipContent>
-      //             </Tooltip>
-      //           </TooltipProvider>
-      //         )}
-      //       </div>
-      //     );
-      //   },
-      // },
       {
         id: 'actions',
         header: 'Actions',
-        cell: ({ row }) => {
-          const record = row.original;
-
-          // Memoize the edit handler
-          const handleEdit = () => {
-            openEditDialogSingle(
-              domain as NamefiNormalizedDomain,
-              record,
-              handleDialogCallback,
-            );
-          };
-
-          // Memoize the delete handler
-          const handleDelete = () => {
-            openDeleteDialogSingle(
-              domain as NamefiNormalizedDomain,
-              record,
-              handleDialogCallback,
-            );
-          };
-
-          // Memoize the copy handler
-          const handleCopy = () => {
-            const text = `${record.type} ${record.name} ${record.rdata} ${record.ttl}`;
-            navigator.clipboard.writeText(text);
-            toast('Copied to clipboard', {
-              description: 'Record details copied to clipboard',
-            });
-          };
-
-          return (
-            <div className="flex items-center gap-2">
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild={true}>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="h-8 w-8"
-                      onClick={handleEdit}
-                    >
-                      <Edit className="h-4 w-4" />
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Edit record</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild={true}>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="h-8 w-8"
-                      onClick={handleDelete}
-                      disabled={
-                        record.rdata === 'by AutoPark™' ||
-                        record.rdata === 'by System'
-                      }
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Delete record</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild={true}>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="h-8 w-8 hidden"
-                      onClick={handleCopy}
-                    >
-                      <Copy className="h-4 w-4" />
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Copy record</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild={true}>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="h-8 w-8 hidden"
-                    >
-                      <RotateCw className="h-4 w-4" />
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Refresh record</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            </div>
-          );
-        },
+        cell: (context) => <ActionsColumnCell context={context} />,
       },
     ],
-    [
-      domain,
-      handleCellUpdate,
-      handleDialogCallback,
-      openDeleteDialogSingle,
-      openEditDialogSingle,
-    ],
+    [handleCellUpdate],
   );
 
-  // Memoize the table options
-  const tableOptions = useMemo(
-    () => ({
-      data,
-      columns,
-      onSortingChange: setSorting,
-      onColumnFiltersChange: setColumnFilters,
-      onColumnVisibilityChange: setColumnVisibility,
-      onRowSelectionChange: setRowSelection,
-      getCoreRowModel: getCoreRowModel(),
-      getSortedRowModel: getSortedRowModel(),
-      getFilteredRowModel: getFilteredRowModel(),
-      getPaginationRowModel: getPaginationRowModel(),
-      state: {
-        sorting,
-        columnFilters,
-        columnVisibility,
-        rowSelection,
-        globalFilter,
-        pagination: {
-          pageIndex,
-          pageSize,
-        },
-      },
-      manualPagination: false,
-      pageCount: Math.ceil(data.length / pageSize),
-    }),
-    [
-      data,
-      columns,
+  // Initialize table
+  const table = useReactTable({
+    data: dnsRecords.data ?? [],
+    columns,
+    onSortingChange: setSorting,
+    onColumnFiltersChange: setColumnFilters,
+    onColumnVisibilityChange: setColumnVisibility,
+    onRowSelectionChange: setRowSelection,
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    state: {
       sorting,
       columnFilters,
       columnVisibility,
       rowSelection,
       globalFilter,
-      pageIndex,
-      pageSize,
-    ],
-  );
-
-  // Initialize table
-  const table = useReactTable(tableOptions);
+      pagination: {
+        pageIndex,
+        pageSize,
+      },
+    },
+    manualPagination: true,
+    pageCount,
+  });
 
   // Add bulk edit button next to bulk delete
-  const selectedRows = useMemo(
+  const selectedRowModels = useMemo(
     () => table.getFilteredSelectedRowModel().rows,
     [table],
   );
-  const hasSelectedRows = useMemo(
-    () => selectedRows.length > 0,
-    [selectedRows.length],
+  const selectedRecords = useMemo(
+    () => selectedRowModels.map((row) => row.original),
+    [selectedRowModels],
   );
-
-  // Handle bulk delete
-  const handleBulkEdit = useCallback(() => {
-    const selectedRecords = selectedRows.map((row) => row.original);
-    openEditDialog(
-      domain as NamefiNormalizedDomain,
-      selectedRecords,
-      handleDialogCallback,
-    );
-  }, [domain, handleDialogCallback, openEditDialog, selectedRows]);
-
-  const handleBulkDelete = useCallback(() => {
-    const selectedRecords = selectedRows.map((row) => row.original);
-    openDeleteDialog(
-      domain as NamefiNormalizedDomain,
-      selectedRecords,
-      handleDialogCallback,
-    );
-  }, [handleDialogCallback, openDeleteDialog, selectedRows, domain]);
-
-  const handlePageSizeChange = useCallback((value: string) => {
-    setPageSize(Number(value));
-    setPageIndex(0); // Reset to first page when changing page size
-  }, []);
+  const hasSelectedRows = useMemo(
+    () => selectedRowModels.length > 0,
+    [selectedRowModels.length],
+  );
 
   // Handle type filtering
   const handleTypeFilterChange = useCallback((type: string) => {
@@ -967,62 +374,46 @@ export const DnsRecordsTable: FC<DnsManagementProps> = ({
     [],
   );
 
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   // Memoize the bulk action buttons
   const bulkActionButtons = useMemo(
     () =>
       hasSelectedRows && (
         <>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handleBulkEdit}
-            className="ml-2"
+          <AddEditRecordsDialog
+            zoneName={domain as NamefiNormalizedDomain}
+            isOpen={isEditDialogOpen}
+            records={selectedRecords}
+            mode="edit"
+            onOpenChange={setIsEditDialogOpen}
           >
-            <Edit className="mr-2 h-4 w-4" />
-            Edit Selected ({selectedRows.length})
-          </Button>
-          <Button
-            variant="destructive"
-            size="sm"
-            onClick={handleBulkDelete}
-            className="ml-2"
+            <Button variant="outline" size="sm" className="ml-2">
+              <Edit className="mr-2 h-4 w-4" />
+              Edit Selected ({selectedRecords.length})
+            </Button>
+          </AddEditRecordsDialog>
+          <DeleteRecordDialog
+            records={selectedRecords}
+            zoneName={domain as NamefiNormalizedDomain}
+            isOpen={isDeleteDialogOpen}
+            onOpenChange={setIsDeleteDialogOpen}
           >
-            <Trash2 className="mr-2 h-4 w-4" />
-            Delete Selected ({selectedRows.length})
-          </Button>
+            <Button variant="destructive" size="sm" className="ml-2">
+              <Trash2 className="mr-2 h-4 w-4" />
+              Delete Selected ({selectedRecords.length})
+            </Button>
+          </DeleteRecordDialog>
         </>
       ),
-    [handleBulkDelete, handleBulkEdit, hasSelectedRows, selectedRows.length],
+    [
+      hasSelectedRows,
+      selectedRecords,
+      domain,
+      isDeleteDialogOpen,
+      isEditDialogOpen,
+    ],
   );
-
-  // Memoize the page size selector
-  const pageSizeSelector = useMemo(
-    () => (
-      <div className="flex items-center gap-2">
-        <span className="text-sm text-zinc-500">Rows per page:</span>
-        <Select
-          value={pageSize.toString()}
-          onValueChange={handlePageSizeChange}
-        >
-          <SelectTrigger className="h-8 w-20">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="5">5</SelectItem>
-            <SelectItem value="10">10</SelectItem>
-            <SelectItem value="20">20</SelectItem>
-            <SelectItem value="50">50</SelectItem>
-            <SelectItem value="100">100</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-    ),
-    [handlePageSizeChange, pageSize],
-  );
-
-  useEffect(() => {
-    setData((dnsRecords.data as DnsRecordSelect[]) || []);
-  }, [dnsRecords.data]);
 
   return (
     <>
@@ -1036,7 +427,12 @@ export const DnsRecordsTable: FC<DnsManagementProps> = ({
             {bulkActionButtons}
           </div>
 
-          <div className="flex items-center gap-2">{pageSizeSelector}</div>
+          <div className="flex items-center gap-2">
+            <TablePageSelector
+              pageSize={pageSize}
+              onPageSizeChange={handlePageSizeChange}
+            />
+          </div>
         </div>
 
         <div className="rounded-md border border-zinc-800">
@@ -1137,10 +533,6 @@ export const DnsRecordsTable: FC<DnsManagementProps> = ({
           </div>
         </div>
       </div>
-      <RecordDialog />
-      <DeleteRecordDialog />
     </>
   );
 };
-
-DnsRecordsTable.displayName = 'DnsRecordsTable';
