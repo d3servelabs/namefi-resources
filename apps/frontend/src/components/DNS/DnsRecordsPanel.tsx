@@ -27,8 +27,8 @@ import {
   useState,
 } from 'react';
 import React from 'react';
+import { AddEditRecordsDialog } from './dialogs/AddEditRecordsDialog';
 import { DNS_RECORD_TYPES } from './schemas';
-import { AddEditRecordsDialog } from './standalone-dialogs/AddEditRecordsDialog';
 
 export type DnsRecordsPanelProps = HTMLAttributes<HTMLDivElement> & {
   domain: string;

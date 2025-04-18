@@ -54,9 +54,9 @@ import {
   useState,
 } from 'react';
 import { toast } from 'sonner';
+import { AddEditRecordsDialog } from '../dialogs/AddEditRecordsDialog';
+import { DeleteRecordDialog } from '../dialogs/DeleteRecordsDialog';
 import { DNS_RECORD_TYPES } from '../schemas';
-import { AddEditRecordsDialog } from '../standalone-dialogs/AddEditRecordsDialog';
-import { DeleteRecordDialog } from '../standalone-dialogs/DeleteRecordsDialog';
 import {
   ActionsColumnCell,
   NameColumnCell,
