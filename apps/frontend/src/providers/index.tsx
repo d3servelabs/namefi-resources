@@ -3,6 +3,7 @@
 import { Loading } from '@/components/loading';
 import { InteractionLoggersProvider } from '@/components/providers/interactionLoggersProvider';
 import { OriginProvider } from '@/components/providers/originProvider';
+import { ThemeProvider as OriginThemeProvider } from '@/components/providers/themeProvider';
 import { getWagmiConfig } from '@/lib/wagmiConfig';
 import { WagmiProvider } from '@privy-io/wagmi';
 import { UsercentricsProvider } from '@s-group/react-usercentrics';
@@ -24,33 +25,35 @@ export const Providers = ({ children }: Readonly<Props>) => {
   return (
     <Suspense fallback={<Loading />}>
       <OriginProvider>
-        <ThemeProvider
-          storageKey="theme"
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem={false}
-          disableTransitionOnChange={true}
-        >
-          <SessionsProvider>
-            <TrpcProvider>
-              <NuqsAdapter>
-                <ProgressProvider>
-                  <ArtifactsProvider>
-                    <QueryClientProvider client={queryClient}>
-                      <WagmiProvider config={config}>
-                        <UsercentricsProvider>
-                          <InteractionLoggersProvider>
-                            {children}
-                          </InteractionLoggersProvider>
-                        </UsercentricsProvider>
-                      </WagmiProvider>
-                    </QueryClientProvider>
-                  </ArtifactsProvider>
-                </ProgressProvider>
-              </NuqsAdapter>
-            </TrpcProvider>
-          </SessionsProvider>
-        </ThemeProvider>
+        <OriginThemeProvider>
+          <ThemeProvider
+            storageKey="theme"
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem={false}
+            disableTransitionOnChange={true}
+          >
+            <SessionsProvider>
+              <TrpcProvider>
+                <NuqsAdapter>
+                  <ProgressProvider>
+                    <ArtifactsProvider>
+                      <QueryClientProvider client={queryClient}>
+                        <WagmiProvider config={config}>
+                          <UsercentricsProvider>
+                            <InteractionLoggersProvider>
+                              {children}
+                            </InteractionLoggersProvider>
+                          </UsercentricsProvider>
+                        </WagmiProvider>
+                      </QueryClientProvider>
+                    </ArtifactsProvider>
+                  </ProgressProvider>
+                </NuqsAdapter>
+              </TrpcProvider>
+            </SessionsProvider>
+          </ThemeProvider>
+        </OriginThemeProvider>
       </OriginProvider>
     </Suspense>
   );

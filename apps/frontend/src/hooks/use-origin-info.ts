@@ -3,13 +3,18 @@
 import {
   getDomainForPoweredByNamefiThirdPartyOrigin,
   isNamefiFirstPartyOrigin,
-} from '@/lib/origin-utils';
+} from '@/lib/origin';
 import { useEffect, useState } from 'react';
 
 // Discriminated union types for loading states
 type LoadingState<T> =
   | { isLoaded: false; data?: T }
   | { isLoaded: true; data: T };
+
+interface ThirdPartyOriginInfo {
+  hostname: string | null;
+  origin: string | null;
+}
 
 /**
  * Hook to check if the current origin is a NameFI first-party origin
@@ -34,17 +39,21 @@ export function useIsNamefiFirstPartyOrigin(): LoadingState<boolean> {
  * Safely handles server-side rendering where window is not available
  * Returns null when there is no third-party origin
  */
-export function useGetDomainForPoweredByNamefiThirdPartyOrigin(): LoadingState<
-  string | null
-> {
-  const [state, setState] = useState<LoadingState<string | null>>({
+export function useGetDomainForPoweredByNamefiThirdPartyOrigin(): LoadingState<ThirdPartyOriginInfo> {
+  const [state, setState] = useState<LoadingState<ThirdPartyOriginInfo>>({
     isLoaded: false,
   });
 
   useEffect(() => {
     const origin = window.location.origin;
-    const domain = getDomainForPoweredByNamefiThirdPartyOrigin(origin);
-    setState({ isLoaded: true, data: domain });
+    const hostname = getDomainForPoweredByNamefiThirdPartyOrigin(origin);
+    setState({
+      isLoaded: true,
+      data: {
+        hostname,
+        origin,
+      },
+    });
   }, []);
 
   return state;

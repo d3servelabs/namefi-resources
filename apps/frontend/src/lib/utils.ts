@@ -10,6 +10,7 @@ export function getShortAddress(address: string) {
 }
 
 export function getHostname(url: string): string {
+  console.log('url', url);
   try {
     const urlObj = new URL(url);
     return urlObj.hostname;

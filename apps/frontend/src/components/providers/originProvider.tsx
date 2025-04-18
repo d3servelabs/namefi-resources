@@ -4,11 +4,14 @@ import {
   useGetDomainForPoweredByNamefiThirdPartyOrigin,
   useIsNamefiFirstPartyOrigin,
 } from '@/hooks/use-origin-info';
+import { getOriginConfig } from '@/lib/origin';
+import type { OriginConfig } from '@/lib/origin/types';
 import { type ReactNode, createContext, useContext, useEffect } from 'react';
 
 interface OriginInfo {
   isFirstPartyOrigin: boolean;
   thirdPartyOrigin: string | null;
+  config: OriginConfig;
 }
 
 // Create a discriminated union based on loading state
@@ -55,19 +58,20 @@ export function OriginProvider({ children }: OriginProviderProps) {
         isLoading: false,
         originInfo: {
           isFirstPartyOrigin: firstPartyState.data,
-          thirdPartyOrigin: thirdPartyState.data,
+          thirdPartyOrigin: thirdPartyState.data?.hostname,
+          config: getOriginConfig(thirdPartyState.data?.origin),
         },
       };
 
   // Set data-origin attribute on body tag when third-party origin is detected
   useEffect(() => {
-    if (!isLoading && thirdPartyState.data) {
-      document.body.setAttribute('data-origin', thirdPartyState.data);
+    if (!isLoading && thirdPartyState.data?.hostname) {
+      document.body.setAttribute('data-origin', thirdPartyState.data.hostname);
     } else if (!isLoading) {
       // Remove the attribute if no third-party origin
       document.body.removeAttribute('data-origin');
     }
-  }, [isLoading, thirdPartyState.data]);
+  }, [isLoading, thirdPartyState.data?.hostname]);
 
   return (
     <OriginContext.Provider value={value}>{children}</OriginContext.Provider>

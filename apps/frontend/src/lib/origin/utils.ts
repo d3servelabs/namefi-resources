@@ -1,7 +1,8 @@
 import { config } from '@/lib/env';
 import { getHostname } from '@/lib/utils';
-import type { Metadata } from 'next';
 import type { ReadonlyHeaders } from 'next/dist/server/web/spec-extension/adapters/headers';
+import { originConfig } from './config';
+import type { OriginConfig } from './types';
 
 /**
  * Get the host from server-side headers
@@ -45,42 +46,18 @@ export function getDomainForPoweredByNamefiThirdPartyOrigin(
 }
 
 /**
- * Metadata configuration by origin type
+ * Get full origin configuration based on current origin
  */
-export type OriginMetadataConfig = {
-  firstParty: Metadata;
-  thirdParty: Record<string, Metadata>;
-};
-
-/**
- * Default metadata configuration
- */
-export const metadataConfig: OriginMetadataConfig = {
-  firstParty: {
-    title: 'Powered by NameFI',
-    description: 'Buy and sell domains with ease',
-  },
-  thirdParty: {
-    '0x.city': {
-      title: '0x.city - Powered by NameFI',
-      description: 'Buy and sell 0x.city domains with ease',
-    },
-    'defi.build': {
-      title: 'defi.build - Powered by NameFI',
-      description: 'Buy and sell defi.build domains with ease',
-    },
-  },
-};
-
-/**
- * Get metadata configuration based on current origin
- */
-export function getMetadataForOrigin(origin: string): Metadata {
-  // Check if it's a third-party origin
-  const thirdPartyDomain = getDomainForPoweredByNamefiThirdPartyOrigin(origin);
-  if (thirdPartyDomain && metadataConfig.thirdParty[thirdPartyDomain]) {
-    return metadataConfig.thirdParty[thirdPartyDomain];
+export function getOriginConfig(origin: string | null): OriginConfig {
+  if (!origin) {
+    return originConfig.firstParty;
   }
 
-  return metadataConfig.firstParty;
+  // Check if it's a third-party origin
+  const thirdPartyDomain = getDomainForPoweredByNamefiThirdPartyOrigin(origin);
+  if (thirdPartyDomain && originConfig.thirdParty[thirdPartyDomain]) {
+    return originConfig.thirdParty[thirdPartyDomain];
+  }
+
+  return originConfig.firstParty;
 }

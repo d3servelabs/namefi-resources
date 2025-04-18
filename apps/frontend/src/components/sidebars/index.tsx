@@ -1,7 +1,7 @@
 'use client';
 
+import { BrandLogo } from '@/components/brandLogo';
 import { UserDropdown } from '@/components/dropdowns/UserDropdown';
-import { Logotype } from '@/components/logotype';
 import { SidebarItems } from '@/components/sidebars/SidebarItems';
 import { Label } from '@/components/ui/shadcn/label';
 import {
@@ -93,8 +93,8 @@ export function AppSidebar() {
     >
       <SidebarHeader>
         <SidebarGroup className={cn(isCollapsed && 'px-0.5')}>
-          <div className="flex items-center justify-between">
-            {!isCollapsed && <Logotype />}
+          <div className="flex items-center justify-between py-2">
+            <BrandLogo collapsed={isCollapsed} />
           </div>
         </SidebarGroup>
         {!isCollapsed && (

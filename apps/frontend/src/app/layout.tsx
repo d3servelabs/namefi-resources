@@ -5,21 +5,17 @@ import { SidebarProvider } from '@/components/ui/shadcn/sidebar';
 import { Toaster } from '@/components/ui/shadcn/sonner';
 import { Contexts } from '@/contexts';
 import { config } from '@/lib/env';
-import {
-  getMetadataForOrigin,
-  getOriginFromServerHeaders,
-  metadataConfig,
-} from '@/lib/origin-utils';
+import { getOriginConfig, getOriginFromServerHeaders } from '@/lib/origin';
 import { cn } from '@/lib/utils';
 import { Providers } from '@/providers';
 import { GoogleAnalytics } from '@next/third-parties/google';
 import { UsercentricsScript } from '@s-group/react-usercentrics';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
+import { headers } from 'next/headers';
 import type { ReactNode } from 'react';
 
 import './globals.css';
-import { headers } from 'next/headers';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -33,21 +29,13 @@ const geistMono = Geist_Mono({
 
 /**
  * Generate metadata for the current origin
-
  * This is a special function that is called by Next.js to generate metadata for the page.
  * @see https://nextjs.org/docs/app/api-reference/functions/generate-metadata
  */
 export async function generateMetadata(): Promise<Metadata> {
-  // Get host from server headers
   const headersList = await headers();
   const origin = getOriginFromServerHeaders(headersList);
-
-  if (!origin) {
-    return metadataConfig.firstParty;
-  }
-
-  // Get origin-specific metadata
-  const metadata = getMetadataForOrigin(origin);
+  const metadata = getOriginConfig(origin).metadata;
 
   return metadata;
 }
@@ -58,7 +46,12 @@ export default function RootLayout({
   children: ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark" suppressHydrationWarning={true}>
+    <html
+      lang="en"
+      className="dark"
+      data-theme="namefi"
+      suppressHydrationWarning={true}
+    >
       <body
         className={cn(
           geistSans.variable,
