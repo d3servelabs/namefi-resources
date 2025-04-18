@@ -86,7 +86,7 @@ export function AppSidebar() {
   return (
     <Sidebar
       collapsible="icon"
-      className={cn({
+      className={cn('border-none!', {
         '[--sidebar:alpha(var(--color-zinc-600),0.6)] backdrop-blur-3xl':
           pathname === '/',
       })}
