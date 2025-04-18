@@ -13,7 +13,6 @@ import {
   SidebarHeader,
   SidebarInput,
   SidebarRail,
-  SidebarTrigger,
   useSidebar,
 } from '@/components/ui/shadcn/sidebar';
 import { cn } from '@/lib/utils';
@@ -96,7 +95,6 @@ export function AppSidebar() {
         <SidebarGroup className={cn(isCollapsed && 'px-0.5')}>
           <div className="flex items-center justify-between">
             {!isCollapsed && <Logotype />}
-            <SidebarTrigger />
           </div>
         </SidebarGroup>
         {!isCollapsed && (

@@ -46,11 +46,10 @@ export const Breadcrumbs: FC<BreadcrumbsProps> = ({
   }, [pathname]);
 
   const breadcrumbs = useMemo(() => {
-    const homeBreadcrumb = { label: 'Home', href: '/' };
     if (items.length === 0) {
-      return [homeBreadcrumb, ...autoBreadcrumbs];
+      return [...autoBreadcrumbs];
     }
-    return [homeBreadcrumb, ...items];
+    return [...items];
   }, [items, autoBreadcrumbs]);
 
   return (
