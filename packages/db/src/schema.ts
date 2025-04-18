@@ -271,10 +271,20 @@ export const recordTypePgEnum = pgEnum(
   'record_type_enum',
   recordTypeEnum.options,
 );
-// Design discussion:
-//   We didnt create a dns_zones table because there seems to be no need for it.
-//   The ownership of a zone is tied to the NFT address, which is derived from the
-//   domain name.
+
+/**
+ * DNS records table
+ * Stores DNS records for a given domain name
+ *
+ * Design discussion:
+ *   We didnt create a dns_zones table because there seems to be no need for it.
+ *   The ownership of a zone is tied to the NFT address, which is derived from the
+ *   domain name.
+ * Note the @link{normalizedDomainName} is treated as a Zone Name and is the primary key.
+ * Only <subdomain> of PoweredByNamefiThirdPartyDomainName is allowed.
+ * This is reistrcted at the API level.
+ * Also the @link{name} field is restricted to be the <subdomain> part not the full domain name.
+ */
 export const dnsRecordsTable = pgTable(
   'dns_records',
   {
