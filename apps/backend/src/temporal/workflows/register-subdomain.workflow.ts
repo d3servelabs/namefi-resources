@@ -11,15 +11,18 @@ export async function registerSubdomainWorkflow({
   chainId,
   toAddress,
   durationInYears,
+  noExpiration = true, // !!TODO: remove this default
 }: {
   normalizedDomainName: NamefiNormalizedDomain;
   chainId: number;
   toAddress: `0x${string}`;
   durationInYears: number;
+  noExpiration?: boolean;
 }): Promise<string> {
-  const expirationTimeInSeconds = getUnixTime(
-    addYears(new Date(), durationInYears),
-  );
+  const expirationTimeInSeconds = noExpiration
+    ? 0
+    : getUnixTime(addYears(new Date(), durationInYears));
+
   await workflow.executeChild(mintNamefiNFT, {
     args: [
       {
