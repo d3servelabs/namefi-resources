@@ -300,7 +300,7 @@ export const dnsRecordsTable = pgTable(
     class: text('class').notNull().default('IN'),
     ttl: integer('ttl').notNull().default(120),
     rdata: text('rdata').notNull(),
-    metadata: jsonb('metadata').default({}),
+    metadata: jsonb('metadata').default({}).$type<any>(),
     ...timestamps,
   },
   (table) => [
