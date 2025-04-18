@@ -1,6 +1,5 @@
 'use client';
 
-import { Separator } from '@/components/ui/shadcn/separator';
 import {
   Tabs,
   TabsContent,
@@ -13,9 +12,6 @@ import { useEffect, useState } from 'react';
 import { Accounts } from './accounts';
 import { Footer } from './footer';
 import { Header } from './header';
-import { Personal } from './personal';
-import AppearanceSettings from './settings/appearance-settings';
-import SecuritySettings from './settings/security-settings';
 import { Wallets } from './wallets';
 
 export default function Profile() {
@@ -46,16 +42,10 @@ export default function Profile() {
       <Header user={user} />
 
       <Tabs defaultValue="accounts">
-        <TabsList className="grid w-full grid-cols-4 lg:w-auto">
-          <TabsTrigger value="personal">Personal</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-2 lg:w-auto">
           <TabsTrigger value="wallets">Wallets</TabsTrigger>
           <TabsTrigger value="accounts">Accounts</TabsTrigger>
-          <TabsTrigger value="settings">Settings</TabsTrigger>
         </TabsList>
-
-        <TabsContent value="personal" className="mt-6 space-y-8">
-          <Personal user={user} />
-        </TabsContent>
 
         <TabsContent value="wallets" className="mt-6">
           <Wallets />
@@ -63,12 +53,6 @@ export default function Profile() {
 
         <TabsContent value="accounts" className="mt-6">
           <Accounts user={user} />
-        </TabsContent>
-
-        <TabsContent value="settings" className="mt-6 space-y-8">
-          <SecuritySettings user={user} />
-          <Separator />
-          <AppearanceSettings />
         </TabsContent>
       </Tabs>
 

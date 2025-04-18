@@ -1,5 +1,6 @@
 'use client';
 
+import { NamefiButton } from '@/components/namefi-button';
 import { Button } from '@/components/ui/shadcn/button';
 import {
   Card,
@@ -131,10 +132,10 @@ export const Wallets = ({ className, ...rest }: WalletsProps) => {
         </div>
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild={true}>
-            <Button size="sm" className="gap-1">
+            <NamefiButton size="sm" className="gap-1">
               <Plus className="h-4 w-4" />
               Connect
-            </Button>
+            </NamefiButton>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>

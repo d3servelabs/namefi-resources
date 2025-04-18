@@ -1,5 +1,6 @@
 'use client';
 
+import { NamefiButton } from '@/components/namefi-button';
 import { Button } from '@/components/ui/shadcn/button';
 import { cn } from '@/lib/utils';
 import { Check } from 'lucide-react';
@@ -29,7 +30,7 @@ export const Account = ({
   return (
     <div
       className={cn(
-        'flex items-center justify-between rounded-lg border p-4',
+        'flex items-center justify-between w-full rounded-lg border p-4',
         className,
       )}
       {...rest}
@@ -60,9 +61,9 @@ export const Account = ({
           Unlink
         </Button>
       ) : (
-        <Button size="sm" onClick={onLink}>
+        <NamefiButton size="sm" onClick={onLink}>
           Link
-        </Button>
+        </NamefiButton>
       )}
     </div>
   );
