@@ -152,6 +152,11 @@ const DomainCard: FC<{
 }) => {
   const isInCart = isDomainInCart(domain.domain);
 
+  // Split domain into subdomain and parent domain
+  const parts = domain.domain.split('.');
+  const subdomain = parts[0];
+  const parentDomain = parts.slice(1).join('.');
+
   return (
     <Card
       className={cn(
@@ -162,8 +167,13 @@ const DomainCard: FC<{
       <CardContent className="h-full w-full">
         <div className="flex items-center justify-between h-full w-full">
           <div className="space-y-1">
-            <h3 className="text-2xl font-semibold tracking-tight flex gap-2 items-center">
-              <span>{domain.domain}</span>
+            <h3 className="font-semibold tracking-tight flex gap-2 items-center">
+              <span>
+                <span className="text-3xl text-brand-primary">{subdomain}</span>
+                <span className="text-2xl text-foreground">
+                  .{parentDomain}
+                </span>
+              </span>
               {!domain.availability && (
                 <Badge className="ml-2 text-xs bg-brand-secondary text-white">
                   Taken
