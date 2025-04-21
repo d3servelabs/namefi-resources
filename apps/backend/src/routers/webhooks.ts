@@ -2,6 +2,7 @@ import crypto from 'node:crypto';
 import { CHAINS } from '@namefi-astra/utils/chains';
 import { switchCaseOrDefault } from '@namefi-astra/utils/match';
 import { Hono } from 'hono';
+import { triggerUpdateNamefiNftIndex } from 'src/temporal/schedules/update-namefi-nft-index';
 import { secrets } from '#lib/env';
 import { updateNamefiNftIndex } from '../temporal/activities/namefi-nft';
 
@@ -38,7 +39,15 @@ webhooksRouter.post('/nft-activity', async (c) => {
       c.status(400);
       return c.text('Invalid Signature');
     }
-    await updateNamefiNftIndex();
+    try {
+      console.log('Triggering NFT Index Update Workflow');
+      await triggerUpdateNamefiNftIndex();
+    } catch (e) {
+      console.error('Error Triggering NFT Index Update Workflow', e);
+      console.log('Trying to update NFT Index directly');
+      await updateNamefiNftIndex();
+    }
+
     c.status(200);
     return c.text('done');
   } catch (e) {
