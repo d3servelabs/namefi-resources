@@ -11,6 +11,7 @@ import {
 
 import { CartCard } from '@/components/cart-card';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/shadcn/radio-group';
+import { useUserWalletAddresses } from '@/hooks/useUserWalletAddresses';
 import { cn } from '@/lib/utils';
 import { formatAmountInUSD } from '@/utils/number';
 import type { DeepPartial } from '@/utils/types';
@@ -20,7 +21,6 @@ import {
   paymentProviderSchema,
 } from '@namefi-astra/db/types';
 import { CHAINS, NFSC_CONTRACT_ADDRESS } from '@namefi-astra/utils';
-import { useWallets } from '@privy-io/react-auth';
 import type { ConfirmationToken } from '@stripe/stripe-js';
 import Image from 'next/image';
 import { formatUnits } from 'viem';
@@ -72,16 +72,7 @@ export function SelectPaymentMethodCard({
   const [creditCardPaymentMethodDetails, setCreditCardPaymentMethodDetails] =
     useState<PaymentDetails | null>(null);
 
-  const { ready: ethereumWalletsReady, wallets: ethereumWallets } =
-    useWallets();
-
-  const connectedWalletAddresses = useMemo(() => {
-    if (!ethereumWalletsReady) {
-      return [];
-    }
-
-    return [...ethereumWallets].map((wallet) => wallet.address);
-  }, [ethereumWallets, ethereumWalletsReady]);
+  const { userWalletAddresses } = useUserWalletAddresses();
 
   useEffect(() => {
     setNfscPaymentMethodDetails({
@@ -89,14 +80,12 @@ export function SelectPaymentMethodCard({
         paymentProvider: paymentProviderSchema.Values.NFSC_BASE,
         nfscPaymentDetails: {
           walletAddress:
-            connectedWalletAddresses.length > 0
-              ? connectedWalletAddresses[0]
-              : undefined,
+            userWalletAddresses.length > 0 ? userWalletAddresses[0] : undefined,
           chainId: CHAINS.base.id,
         },
       },
     });
-  }, [connectedWalletAddresses]);
+  }, [userWalletAddresses]);
 
   const isUseBalanceQueryEnabled = useMemo(() => {
     if (isNfscPayment(nfscPaymentMethodDetails?.paymentProviderDetails)) {

@@ -1,9 +1,8 @@
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useUserWalletAddresses } from '@/hooks/useUserWalletAddresses';
 import { getShortAddress } from '@/lib/utils';
 import { supportedChains } from '@/lib/wagmiConfig';
 import { CHAINS } from '@namefi-astra/utils';
-import { useWallets } from '@privy-io/react-auth';
-import { useMemo } from 'react';
 import type { Chain } from 'viem';
 import { Button } from './ui/shadcn/button';
 import {
@@ -30,18 +29,10 @@ export function SelectWallet({
   selectTriggerDisabled,
 }: SelectWalletProps) {
   const isMobile = useIsMobile();
-  const { ready: ethereumWalletsReady, wallets: ethereumWallets } =
-    useWallets();
 
-  const connectedWalletAddresses = useMemo(() => {
-    if (!ethereumWalletsReady) {
-      return [];
-    }
+  const { userWalletAddresses } = useUserWalletAddresses();
 
-    return [...ethereumWallets].map((wallet) => wallet.address);
-  }, [ethereumWallets, ethereumWalletsReady]);
-
-  if (connectedWalletAddresses.length === 0) {
+  if (userWalletAddresses.length === 0) {
     return (
       <Button variant="outline" disabled={true}>
         No Connected Wallets
@@ -53,13 +44,13 @@ export function SelectWallet({
     <Select
       disabled={selectTriggerDisabled}
       onValueChange={onValueChange}
-      defaultValue={connectedWalletAddresses[0]}
+      defaultValue={userWalletAddresses[0]}
     >
       <SelectTrigger>
         <SelectValue placeholder="Select a Wallet" />
       </SelectTrigger>
       <SelectContent>
-        {connectedWalletAddresses.map((walletAddress) => (
+        {userWalletAddresses.map((walletAddress) => (
           <SelectItem
             key={`${walletAddress}`}
             value={`${walletAddress}`}

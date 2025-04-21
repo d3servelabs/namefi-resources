@@ -2,9 +2,9 @@
 import { NetworkLogo } from '@/components/NetworkLogo';
 import { CartCard } from '@/components/cart-card';
 import { WalletEditableSelect } from '@/components/wallet-editable-select';
+import { useUserWalletAddresses } from '@/hooks/useUserWalletAddresses';
 import { CHAINS, checksumWalletAddressSchema } from '@namefi-astra/utils';
-import { useWallets } from '@privy-io/react-auth';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 export interface NftWalletCardProps {
   onWalletAddressChange: (walletAddress: string | null) => void;
@@ -18,30 +18,23 @@ export function NftWalletCard({
   disabled,
 }: NftWalletCardProps) {
   const [error, setError] = useState<string | null>(null);
-  const { ready: ethereumWalletsReady, wallets: ethereumWallets } =
-    useWallets();
   const hasAutoSelectedRef = useRef(false);
 
-  const connectedWalletAddresses = useMemo(() => {
-    if (!ethereumWalletsReady) {
-      return [];
-    }
-    return [...ethereumWallets].map((wallet) => wallet.address);
-  }, [ethereumWallets, ethereumWalletsReady]);
+  const { userWalletAddresses, userWalletsReady } = useUserWalletAddresses();
 
   // Pre-select first wallet if available and none selected
   useEffect(() => {
     if (
       !(hasAutoSelectedRef.current || selectedWalletAddress) &&
-      connectedWalletAddresses.length > 0 &&
-      ethereumWalletsReady
+      userWalletAddresses.length > 0 &&
+      userWalletsReady
     ) {
-      onWalletAddressChange(connectedWalletAddresses[0]);
+      onWalletAddressChange(userWalletAddresses[0]);
       hasAutoSelectedRef.current = true;
     }
   }, [
-    connectedWalletAddresses,
-    ethereumWalletsReady,
+    userWalletAddresses,
+    userWalletsReady,
     onWalletAddressChange,
     selectedWalletAddress,
   ]);
@@ -68,14 +61,14 @@ export function NftWalletCard({
       <WalletEditableSelect
         value={selectedWalletAddress || ''}
         onValueChange={handleWalletAddressChange}
-        options={connectedWalletAddresses}
+        options={userWalletAddresses}
         placeholder={
-          connectedWalletAddresses.length > 0
+          userWalletAddresses.length > 0
             ? 'Paste a wallet address or select from connected wallets'
             : 'Paste a wallet address to receive domains'
         }
         error={error || undefined}
-        disabled={!ethereumWalletsReady || disabled}
+        disabled={!userWalletsReady || disabled}
         helpText="Domains will be sent to this wallet. Make sure it's correct."
         icon={<NetworkLogo network={CHAINS.base.id} className="size-4" />}
       />
