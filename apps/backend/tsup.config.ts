@@ -11,6 +11,8 @@ const config: Options = {
   shims: true,
   skipNodeModulesBundle: true,
   treeshake: true,
+  keepNames: true,
+  minifyIdentifiers: false,
   esbuildOptions(options) {
     options.conditions = ['node'];
   },
