@@ -1,25 +1,36 @@
 import {
   cartItemsTable,
   db,
+  isNfscPayment,
   orderItemsTable,
   ordersTable,
 } from '@namefi-astra/db';
+import {
+  type ChecksumWalletAddress,
+  checksumWalletAddressSchema,
+} from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
 import { and, desc, eq, inArray } from 'drizzle-orm';
+import { isNil } from 'ramda';
 import { z } from 'zod';
 import { orderService } from '../../services/orders/orders.service';
 import { createPayment } from '../../temporal/activities/payment.activities';
 import { temporalClient } from '../../temporal/client';
 import { TEMPORAL_QUEUES } from '../../temporal/shared';
 import { processOrderWorkflow } from '../../temporal/workflows/processOrder.workflow';
+import { resolve } from '../../utils/resolve';
 import { createTRPCRouter, protectedProcedure } from '../base';
 import { createOrderInputSchema } from '../types';
-import { isNormalizedDomainNameAllowedForOriginHostname } from '../utils';
+import {
+  isNormalizedDomainNameAllowedForOriginHostname,
+  privyClient,
+} from '../utils';
 
 export const ordersRouter = createTRPCRouter({
   createOrder: protectedProcedure
     .input(createOrderInputSchema)
     .mutation(async ({ ctx, input }) => {
+      const { user } = ctx;
       const { cartItemIds } = input;
       const cartItems = await db.query.cartItemsTable.findMany({
         where: and(
@@ -32,6 +43,66 @@ export const ordersRouter = createTRPCRouter({
         throw new TRPCError({
           code: 'BAD_REQUEST',
         });
+      }
+
+      // Validate payment walletAddress (if present) belongs to user
+      if (isNfscPayment(input.paymentProviderDetails)) {
+        const [error, privyUser] = await resolve(
+          privyClient.getUserById(user.privyUserId),
+        );
+
+        if (error || isNil(privyUser)) {
+          console.error('Privy fetch failed', {
+            privyUserId: user.privyUserId,
+            error,
+          });
+          throw new TRPCError({
+            code: 'PRECONDITION_FAILED',
+            message: 'could not find user details',
+          });
+        }
+
+        const paymentWalletChecksumAddress =
+          checksumWalletAddressSchema.safeParse(
+            input.paymentProviderDetails.nfscPaymentDetails.walletAddress,
+          );
+        if (!paymentWalletChecksumAddress.success) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'Payment walletAddress format is incorrect',
+          });
+        }
+
+        // #region get all user wallets addresses
+        const userWalletsAddressesSet = new Set<ChecksumWalletAddress>();
+
+        const primaryWalletAddress = checksumWalletAddressSchema.safeParse(
+          privyUser.wallet?.address,
+        );
+        if (primaryWalletAddress.success) {
+          userWalletsAddressesSet.add(primaryWalletAddress.data);
+        }
+
+        for (const linkedAccount of privyUser.linkedAccounts) {
+          if (linkedAccount.type === 'wallet') {
+            const checksumWalletAddress = checksumWalletAddressSchema.safeParse(
+              linkedAccount.address,
+            );
+            if (checksumWalletAddress.success) {
+              userWalletsAddressesSet.add(checksumWalletAddress.data);
+            }
+          }
+        }
+        const userWalletsAddresses = Array.from(userWalletsAddressesSet);
+        // #endregion get all user wallets addresses
+
+        if (!userWalletsAddresses.includes(paymentWalletChecksumAddress.data)) {
+          console.error('Payment walletAddress validation failed');
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'Invalid payment walletAddress',
+          });
+        }
       }
 
       const totalAmountInUSDCents = cartItems.reduce(
