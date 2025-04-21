@@ -1,6 +1,5 @@
 'use client';
 
-import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { CartDropdown } from '@/components/dropdowns/CartDropdown';
 import { UserDropdown } from '@/components/dropdowns/UserDropdown';
 import { Separator } from '@/components/ui/shadcn/separator';
@@ -36,10 +35,7 @@ export const Header: ForwardRefExoticComponent<HeaderProps> = forwardRef<
       {isMobile && <SidebarTrigger />}
       {isMobile && <Separator orientation="vertical" className="h-4" />}
       <div className="w-full items-center justify-between gap-4 flex">
-        <div className="flex items-center gap-2">
-          <SidebarTrigger className="hidden md:flex" />
-          <Breadcrumbs className="hidden md:flex" />
-        </div>
+        <SidebarTrigger className="hidden md:flex" />
         <div className="flex items-center gap-4">
           <CartDropdown />
           <UserDropdown />
