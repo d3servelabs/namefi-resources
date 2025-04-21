@@ -459,7 +459,7 @@ export async function prepareTxToChargeNfsc(
     `Charging NFSC - chainId: ${chainId}, chargee: ${chargee}, amountInUsd: ${amountInUsd}`,
   );
 
-  const charger = signerAccount.publicKey;
+  const charger = signerAccount.address;
 
   const convertedAmount = parseUnits(amountInUsd.toString(), 18);
 
