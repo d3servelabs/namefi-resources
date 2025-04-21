@@ -11,7 +11,7 @@ export async function registerSubdomainWorkflow({
   chainId,
   toAddress,
   durationInYears,
-  noExpiration = true, // !!TODO: remove this default
+  noExpiration = false,
 }: {
   normalizedDomainName: NamefiNormalizedDomain;
   chainId: number;
