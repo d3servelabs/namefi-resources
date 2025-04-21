@@ -84,6 +84,10 @@ export async function finalizePaymentWorkflow({
         refundStatus: refundStatus,
       };
     }
+
+    return {
+      paymentStatus: paymentDetails.status,
+    };
   }
 
   throw workflow.ApplicationFailure.create({
