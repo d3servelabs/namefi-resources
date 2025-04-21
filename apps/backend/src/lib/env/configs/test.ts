@@ -1,3 +1,4 @@
+import * as chains from 'viem/chains';
 import type { ConfigInput } from '../schema';
 
 const testConfig: ConfigInput = {
@@ -9,6 +10,7 @@ const testConfig: ConfigInput = {
   SMTP_HOST: '',
   SMTP_PORT: 25,
   SMTP_SECURE: false,
+  ALLOWED_CHAINS: [chains.sepolia.id],
 };
 
 export default testConfig;

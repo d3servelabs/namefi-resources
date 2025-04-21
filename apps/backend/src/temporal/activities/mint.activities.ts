@@ -1,10 +1,11 @@
 import { Context } from '@temporalio/activity';
 import { BigNumber } from 'bignumber.js';
-import { fromPairs, map } from 'ramda';
+import { filter, fromPairs, isNotNil, map } from 'ramda';
 
 import {
   NAMEFI_NFT_CONTRACT_ADDRESS,
   NFSC_CONTRACT_ADDRESS,
+  getChain,
 } from '@namefi-astra/utils';
 import { gcpHsmToAccount } from '@valora/viem-account-hsm-gcp';
 import {
@@ -27,13 +28,15 @@ import {
 } from 'viem';
 import { mnemonicToAccount, privateKeyToAccount } from 'viem/accounts';
 import type { Chain } from 'viem/chains';
-import * as chains from 'viem/chains';
 import { createNonceManager, jsonRpc } from 'viem/nonce';
-import { secrets } from '#lib/env';
+import { config, secrets } from '#lib/env';
 import { resolve } from '../../utils/resolve';
 import { NfscAbi, NftAbi, chainsToUrls } from './helpers/contracts';
 
-const ALLOWED_CHAINS: Chain[] = [chains.sepolia];
+const ALLOWED_CHAINS: Chain[] = filter(
+  isNotNil,
+  config.ALLOWED_CHAINS.map((chainId) => getChain(chainId) as Chain),
+);
 
 export type PreparedTxOnlySerializableParams = Omit<
   PrepareTransactionRequestReturnType,

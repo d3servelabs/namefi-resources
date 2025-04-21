@@ -1,3 +1,4 @@
+import * as chains from 'viem/chains';
 import type { ConfigInput } from '../schema';
 
 const productionConfig: ConfigInput = {
@@ -10,6 +11,7 @@ const productionConfig: ConfigInput = {
   APP_URL: 'astra.namefi.io',
   NAMEFI_FIRST_PARTY_ORIGINS: ['astra.namefi.io'],
   ADDITIONAL_POWERED_BY_NAMEFI_THIRD_PARTY_ORIGINS: ['0x.city'],
+  ALLOWED_CHAINS: [chains.mainnet.id, chains.base.id],
 };
 
 export default productionConfig;

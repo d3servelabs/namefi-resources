@@ -1,3 +1,4 @@
+import * as chains from 'viem/chains';
 import type { ConfigInput } from '../schema';
 
 const localConfig: ConfigInput = {
@@ -27,6 +28,7 @@ const localConfig: ConfigInput = {
     '0xcity.localhost': '0x.city',
     'defibuild.localhost': 'defi.build',
   },
+  ALLOWED_CHAINS: [chains.sepolia.id],
 };
 
 export default localConfig;

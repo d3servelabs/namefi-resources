@@ -52,6 +52,7 @@ export const configSchema = z.object({
     .record(z.string(), z.string())
     .default({}),
   ALLOW_HTTP: z.boolean().default(false),
+  ALLOWED_CHAINS: z.number().array().default([]),
 });
 
 export type ConfigInput = z.input<typeof configSchema>;
