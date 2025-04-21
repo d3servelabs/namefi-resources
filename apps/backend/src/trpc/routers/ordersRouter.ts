@@ -5,7 +5,7 @@ import {
   ordersTable,
 } from '@namefi-astra/db';
 import { TRPCError } from '@trpc/server';
-import { and, eq, inArray } from 'drizzle-orm';
+import { and, desc, eq, inArray } from 'drizzle-orm';
 import { z } from 'zod';
 import { orderService } from '../../services/orders/orders.service';
 import { createPayment } from '../../temporal/activities/payment.activities';
@@ -118,6 +118,7 @@ export const ordersRouter = createTRPCRouter({
       with: {
         items: true,
       },
+      orderBy: [desc(ordersTable.createdAt)],
     });
 
     return allOrders.flatMap((order) =>
