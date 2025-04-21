@@ -9,11 +9,13 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 export interface NftWalletCardProps {
   onWalletAddressChange: (walletAddress: string | null) => void;
   selectedWalletAddress: string | null;
+  disabled?: boolean;
 }
 
 export function NftWalletCard({
   onWalletAddressChange,
   selectedWalletAddress,
+  disabled,
 }: NftWalletCardProps) {
   const [error, setError] = useState<string | null>(null);
   const { ready: ethereumWalletsReady, wallets: ethereumWallets } =
@@ -73,7 +75,7 @@ export function NftWalletCard({
             : 'Paste a wallet address to receive domains'
         }
         error={error || undefined}
-        disabled={!ethereumWalletsReady}
+        disabled={!ethereumWalletsReady || disabled}
         helpText="Domains will be sent to this wallet. Make sure it's correct."
         icon={<NetworkLogo network={CHAINS.base.id} className="size-4" />}
       />

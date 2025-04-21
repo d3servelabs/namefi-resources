@@ -16,6 +16,7 @@ import { AddPaymentMethodForm } from './addPaymentMethodForm';
 export interface AddPaymentMethodDialogProps {
   amountInUsdCents: number;
   dialogTrigger: ReactNode;
+  disabled?: boolean;
   onAddPaymentMethodError: (error: Error) => void;
   onAddPaymentMethodSuccess: (confirmationToken: ConfirmationToken) => void;
   onOpenChange: (open: boolean) => void;
@@ -25,6 +26,7 @@ export interface AddPaymentMethodDialogProps {
 export function AddPaymentMethodDialog({
   amountInUsdCents,
   dialogTrigger,
+  disabled,
   onAddPaymentMethodError,
   onAddPaymentMethodSuccess,
   onOpenChange,
@@ -39,7 +41,7 @@ export function AddPaymentMethodDialog({
       onSuccess: (data) => {
         setCustomerSessionClientSecret(data.customerSessionClientSecret);
       },
-      onError: (error) => {
+      onError: (_error) => {
         setCustomerSessionClientSecret(undefined);
       },
     }),
@@ -50,8 +52,13 @@ export function AddPaymentMethodDialog({
   }, [createCustomerSession]);
 
   return (
-    <Dialog open={showAddPaymentMethodDialog} onOpenChange={onOpenChange}>
-      <DialogTrigger asChild={true}>{dialogTrigger}</DialogTrigger>
+    <Dialog
+      open={showAddPaymentMethodDialog}
+      onOpenChange={(open) => !disabled && onOpenChange(open)}
+    >
+      <DialogTrigger disabled={disabled} asChild={true}>
+        {dialogTrigger}
+      </DialogTrigger>
       <DialogContent className="sm:max-w-[425px] max-sm:max-h-[85%]">
         <DialogHeader>
           <DialogTitle>Payment Method Details</DialogTitle>

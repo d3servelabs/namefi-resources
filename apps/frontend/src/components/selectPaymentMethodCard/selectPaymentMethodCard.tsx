@@ -44,6 +44,7 @@ type PaymentDetails = {
 export type SelectPaymentMethodCardProps = {
   cartTotalInUsdCents: number;
   footerButton?: ReactNode;
+  disabled?: boolean;
   onPaymentMethodDetailsChanged: (
     paymentMethodDetails: PaymentDetails | null,
   ) => void;
@@ -55,6 +56,7 @@ export type SelectPaymentMethodCardProps = {
 export function SelectPaymentMethodCard({
   cartTotalInUsdCents,
   footerButton,
+  disabled = false,
   onPaymentMethodDetailsChanged,
   onSelectedPaymentMethodChanged,
 }: SelectPaymentMethodCardProps) {
@@ -149,7 +151,8 @@ export function SelectPaymentMethodCard({
     );
   }, [nfscBalanceData]);
 
-  const hasSufficientBalance = useMemo(() => {
+  // TODO: (sid->zim) use this to render add nfsc dialog
+  const _hasSufficientBalance = useMemo(() => {
     return (
       selectedWalletChainNfscBalanceInUsdCents &&
       selectedWalletChainNfscBalanceInUsdCents >= cartTotalInUsdCents
@@ -293,8 +296,14 @@ export function SelectPaymentMethodCard({
             <RadioGroupItem
               value={SelectedPaymentMethod.NFSC}
               id={SelectedPaymentMethod.NFSC}
+              disabled={disabled}
             />
-            <div className="flex-1 bg-[#18181B] rounded-lg p-4">
+            <div
+              className={cn(
+                'flex-1 bg-[#18181B] rounded-lg p-4',
+                disabled && 'opacity-50',
+              )}
+            >
               <div className="flex items-center gap-4">
                 <Image
                   src={'/nfsc.svg'}
@@ -308,14 +317,16 @@ export function SelectPaymentMethodCard({
                     <SelectWallet
                       onValueChange={handleNfscWalletSelectValueChange}
                       selectTriggerDisabled={
-                        selectedPaymentMethod !== SelectedPaymentMethod.NFSC
+                        selectedPaymentMethod !== SelectedPaymentMethod.NFSC ||
+                        disabled
                       }
                     />
                     <SelectChain
                       baseChainOnly={false}
                       onValueChange={handleNfscChainSelectValueChange}
                       selectTriggerDisabled={
-                        selectedPaymentMethod !== SelectedPaymentMethod.NFSC
+                        selectedPaymentMethod !== SelectedPaymentMethod.NFSC ||
+                        disabled
                       }
                     />
                   </div>
@@ -345,6 +356,7 @@ export function SelectPaymentMethodCard({
             <RadioGroupItem
               value={SelectedPaymentMethod.CREDIT_CARD}
               id={SelectedPaymentMethod.CREDIT_CARD}
+              disabled={disabled}
             />
             <AddPaymentMethodDialog
               amountInUsdCents={cartTotalInUsdCents}
@@ -352,6 +364,7 @@ export function SelectPaymentMethodCard({
               onAddPaymentMethodError={handleAddPaymentMethodError}
               onOpenChange={setShowAddPaymentMethodDialog}
               showAddPaymentMethodDialog={showAddPaymentMethodDialog}
+              disabled={disabled}
               dialogTrigger={
                 <div
                   className={cn(
@@ -359,6 +372,7 @@ export function SelectPaymentMethodCard({
                     selectedPaymentMethod === SelectedPaymentMethod.CREDIT_CARD
                       ? ''
                       : 'opacity-50',
+                    disabled && 'opacity-50 cursor-not-allowed',
                   )}
                 >
                   <div className="flex items-center gap-2">

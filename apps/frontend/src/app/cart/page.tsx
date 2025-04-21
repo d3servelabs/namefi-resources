@@ -8,7 +8,9 @@ import {
   SelectedPaymentMethod,
 } from '@/components/selectPaymentMethodCard/selectPaymentMethodCard';
 import { Separator } from '@/components/ui/shadcn/separator';
+import { Skeleton } from '@/components/ui/shadcn/skeleton';
 import { useAuth } from '@/hooks/useAuth';
+import { cn } from '@/lib/utils';
 import {
   InteractionLoggingEventName,
   type PurchaseEvent,
@@ -42,10 +44,11 @@ export default function CartPage() {
   const [selectedNftWalletAddress, setSelectedNftWalletAddress] = useState<
     string | null
   >(null);
+  const [isRedirecting, setIsRedirecting] = useState(false);
 
   const { logEventWithInteractionLoggers } = useInteractionLoggers();
 
-  const { isAuthenticated, isLoading } = useAuth();
+  const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
 
   const trpc = useTRPC();
   const queryClient = useQueryClient();
@@ -62,6 +65,11 @@ export default function CartPage() {
 
   const items = useMemo(() => cartQuery?.data ?? [], [cartQuery?.data]);
 
+  const isLoading = useMemo(
+    () => isAuthLoading || cartQuery.isLoading,
+    [isAuthLoading, cartQuery.isLoading],
+  );
+
   const totalAmountInUsdCents = useMemo(
     () => items.reduce((sum, item) => sum + item.amountInUSDCents, 0),
     [items],
@@ -75,19 +83,12 @@ export default function CartPage() {
     }),
   );
 
-  const { mutate: clearCart } = useMutation(
-    trpc.carts.clear.mutationOptions({
-      onSuccess: () => {
-        queryClient.invalidateQueries(trpc.carts.getItems.queryFilter());
-      },
-    }),
-  );
-
   const router = useRouter();
 
   const { mutate: createOrder, isPending: isCreateOrderPending } = useMutation({
     ...trpc.orders.createOrder.mutationOptions({
       onSuccess: (data) => {
+        setIsRedirecting(true);
         logPurchase();
         queryClient.invalidateQueries(trpc.carts.getItems.queryFilter());
         router.push(`/orders/${data.id}`);
@@ -219,12 +220,17 @@ export default function CartPage() {
       return 'Select Payment Method to Continue';
     }
 
-    if (isCreateOrderPending) {
+    if (isCreateOrderPending || isRedirecting) {
       return 'Processing...';
     }
 
     return 'Submit Order';
-  }, [isCreateOrderPending, paymentMethodSelected, selectedNftWalletAddress]);
+  }, [
+    isCreateOrderPending,
+    isRedirecting,
+    paymentMethodSelected,
+    selectedNftWalletAddress,
+  ]);
 
   const submitOrderDisabled = useMemo(() => {
     return !(paymentMethodSelected && selectedNftWalletAddress);
@@ -286,12 +292,70 @@ export default function CartPage() {
     [],
   );
 
-  if (isLoading) {
-    return (
-      <div className="flex h-[50vh] items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin" />
+  const isDisabled = useMemo(
+    () => isCreateOrderPending || isRedirecting,
+    [isCreateOrderPending, isRedirecting],
+  );
+
+  const LoadingSkeletons = () => (
+    <div className="container mx-auto py-8 px-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        {/* Left Column */}
+        <div className="space-y-4">
+          {/* NFT Wallet Card Skeleton */}
+          <CartCard title="Select NFT Wallet">
+            <div className="flex flex-col gap-4 mt-6">
+              <Skeleton className="h-10 w-full" />
+              <div className="flex items-center gap-2">
+                <Skeleton className="h-6 w-[200px]" />
+                <Skeleton className="h-6 w-6 rounded-full" />
+              </div>
+            </div>
+          </CartCard>
+
+          {/* Cart Items Skeleton */}
+          <CartCard title="In your cart">
+            <div className="flex flex-col gap-6 mt-6">
+              {Array.from({ length: 2 }).map((_, index) => (
+                <div key={index}>
+                  <div className="flex flex-col gap-4">
+                    <Skeleton className="h-7 w-[250px]" />
+                    <div className="flex items-center justify-between">
+                      <Skeleton className="h-8 w-8 rounded-lg" />
+                      <Skeleton className="h-7 w-[100px]" />
+                    </div>
+                  </div>
+                  {index < 1 && (
+                    <div className="my-6">
+                      <Separator />
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </CartCard>
+        </div>
+
+        {/* Right Column */}
+        <div>
+          <CartCard title="Payment Method">
+            <div className="flex flex-col gap-4 mt-6">
+              <div className="flex items-center justify-between">
+                <Skeleton className="h-6 w-[150px]" />
+                <Skeleton className="h-6 w-[100px]" />
+              </div>
+              <Skeleton className="h-10 w-full" />
+              <Skeleton className="h-10 w-full" />
+              <Skeleton className="h-10 w-full" />
+            </div>
+          </CartCard>
+        </div>
       </div>
-    );
+    </div>
+  );
+
+  if (isLoading) {
+    return <LoadingSkeletons />;
   }
 
   if (!isAuthenticated) {
@@ -307,18 +371,24 @@ export default function CartPage() {
 
   return (
     <div className="container mx-auto py-8 px-8">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        {/* Left Column */}
-        <div className="space-y-4">
-          {/* Receiving Wallet Address Card */}
-          <NftWalletCard
-            onWalletAddressChange={handleNftWalletAddressChange}
-            selectedWalletAddress={selectedNftWalletAddress}
-          />
+      {items.length > 0 ? (
+        <div
+          className={cn(
+            'grid grid-cols-1 lg:grid-cols-2 gap-4 relative',
+            isDisabled && '[&>*]:opacity-50 pointer-events-none',
+          )}
+        >
+          {/* Left Column */}
+          <div className="space-y-4">
+            {/* Receiving Wallet Address Card */}
+            <NftWalletCard
+              onWalletAddressChange={handleNftWalletAddressChange}
+              selectedWalletAddress={selectedNftWalletAddress}
+              disabled={isDisabled}
+            />
 
-          {/* Cart Items Card */}
-          <CartCard title="In your cart">
-            {items.length > 0 && (
+            {/* Cart Items Card */}
+            <CartCard title="In your cart">
               <div className="flex flex-col">
                 {items.map((item, index) => (
                   <div key={item.id}>
@@ -329,10 +399,11 @@ export default function CartPage() {
                       <div className="flex items-center justify-between">
                         <button
                           type="button"
-                          className="p-2 rounded-lg bg-[#27272A] hover:bg-[#3F3F46] transition-colors"
+                          className="p-2 rounded-lg bg-[#27272A] hover:bg-[#3F3F46] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                           onClick={() => {
                             removeItem(item.id);
                           }}
+                          disabled={isDisabled}
                         >
                           <Trash2 className="size-4" />
                         </button>
@@ -349,41 +420,47 @@ export default function CartPage() {
                   </div>
                 ))}
               </div>
-            )}
-          </CartCard>
-        </div>
+            </CartCard>
+          </div>
 
-        {/* Right Column */}
-        <div>
-          {items.length > 0 && (
+          {/* Right Column */}
+          <div>
             <SelectPaymentMethodCard
               cartTotalInUsdCents={totalAmountInUsdCents}
-              onPaymentMethodDetailsChanged={(
-                paymentMethodDetails: DeepPartial<PaymentDetails> | null,
-              ) => handlePaymentMethodDetailsChanged(paymentMethodDetails)}
+              onPaymentMethodDetailsChanged={handlePaymentMethodDetailsChanged}
               onSelectedPaymentMethodChanged={
                 handleSelectedPaymentMethodChanged
               }
+              disabled={isDisabled}
               footerButton={
                 <NamefiButton
                   variant="default"
                   className="w-full"
-                  disabled={submitOrderDisabled || isCreateOrderPending}
+                  disabled={submitOrderDisabled || isDisabled}
                   onClick={handleSubmitOrder}
                   size="lg"
                 >
-                  {isCreateOrderPending ? (
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                  ) : (
-                    <></>
+                  {(isCreateOrderPending || isRedirecting) && (
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   )}
                   {submitButtonText}
                 </NamefiButton>
               }
             />
-          )}
+          </div>
         </div>
-      </div>
+      ) : (
+        <CartCard title="Your cart is empty">
+          <div className="flex flex-col items-center justify-center gap-4 py-8">
+            <p className="text-muted-foreground text-center">
+              Add some domains to your cart to get started
+            </p>
+            <NamefiButton variant="outline" onClick={() => router.push('/')}>
+              Browse Domains
+            </NamefiButton>
+          </div>
+        </CartCard>
+      )}
     </div>
   );
 }
