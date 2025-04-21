@@ -1,24 +1,11 @@
 'use client';
 
+import { StatusBadge } from '@/components/badges/StatusBadge';
+import { CartCard } from '@/components/cart-card';
 import { Badge } from '@/components/ui/shadcn/badge';
 import { Button } from '@/components/ui/shadcn/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/shadcn/card';
 import { Separator } from '@/components/ui/shadcn/separator';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/shadcn/table';
 import {
   Tooltip,
   TooltipContent,
@@ -28,13 +15,16 @@ import {
 import { formatAmountInUSD } from '@/utils/number';
 import { useTRPC } from '@/utils/trpc';
 import { useQuery } from '@tanstack/react-query';
+import { format } from 'date-fns';
 import { Check, ClipboardCopy } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { use, useState } from 'react';
 
 export default function OrderDetailsPage({
   params,
-}: { params: Promise<{ id: string }> }) {
+}: {
+  params: Promise<{ id: string }>;
+}) {
   const { id } = use(params);
   const router = useRouter();
   const [copiedFields, setCopiedFields] = useState<Record<string, boolean>>({});
@@ -55,225 +45,132 @@ export default function OrderDetailsPage({
     }, 2000);
   };
 
-  // Order status badge color mapping
-  const getOrderStatusBadge = (status: string) => {
-    switch (status) {
-      case 'CREATED':
-        return (
-          <Badge
-            variant="secondary"
-            className="bg-gray-200 text-gray-800 hover:bg-gray-300"
-          >
-            Created
-          </Badge>
-        );
-      case 'PROCESSING':
-        return (
-          <Badge
-            variant="secondary"
-            className="bg-blue-100 text-blue-800 hover:bg-blue-200"
-          >
-            Processing
-          </Badge>
-        );
-      case 'SUCCEEDED':
-        return (
-          <Badge className="bg-green-600 text-white hover:bg-green-700">
-            Succeeded
-          </Badge>
-        );
-      case 'FAILED':
-        return (
-          <Badge
-            variant="destructive"
-            className="bg-red-600 text-white hover:bg-red-700"
-          >
-            Failed
-          </Badge>
-        );
-      case 'CANCELLED':
-        return (
-          <Badge
-            variant="outline"
-            className="border-red-300 bg-red-50 text-red-700 hover:bg-red-100"
-          >
-            Cancelled
-          </Badge>
-        );
-      case 'PARTIALLY_COMPLETED':
-        return (
-          <Badge
-            variant="outline"
-            className="border-yellow-300 bg-yellow-50 text-yellow-800 hover:bg-yellow-100"
-          >
-            Partially Completed
-          </Badge>
-        );
-      default:
-        return (
-          <Badge
-            variant="outline"
-            className="border-gray-300 bg-gray-50 text-gray-800 hover:bg-gray-100"
-          >
-            {status || 'Unknown'}
-          </Badge>
-        );
-    }
-  };
-
-  // Payment status badge color mapping
-  const getPaymentStatusBadge = (status: string) => {
-    switch (status) {
-      case 'CREATED':
-        return (
-          <Badge
-            variant="secondary"
-            className="bg-gray-200 text-gray-800 hover:bg-gray-300"
-          >
-            Created
-          </Badge>
-        );
-      case 'PROCESSING':
-        return (
-          <Badge
-            variant="secondary"
-            className="bg-blue-100 text-blue-800 hover:bg-blue-200"
-          >
-            Processing
-          </Badge>
-        );
-      case 'SUCCEEDED':
-        return (
-          <Badge className="bg-green-600 text-white hover:bg-green-700">
-            Succeeded
-          </Badge>
-        );
-      case 'COMPLETED':
-        return (
-          <Badge className="bg-green-600 text-white hover:bg-green-700">
-            Completed
-          </Badge>
-        );
-      case 'FAILED':
-        return (
-          <Badge
-            variant="destructive"
-            className="bg-red-600 text-white hover:bg-red-700"
-          >
-            Failed
-          </Badge>
-        );
-      case 'CANCELLED':
-        return (
-          <Badge
-            variant="outline"
-            className="border-red-300 bg-red-50 text-red-700 hover:bg-red-100"
-          >
-            Cancelled
-          </Badge>
-        );
-      case 'PENDING':
-        return (
-          <Badge
-            variant="outline"
-            className="border-yellow-300 bg-yellow-50 text-yellow-800 hover:bg-yellow-100"
-          >
-            Pending
-          </Badge>
-        );
-      case 'REFUND_REQUESTED':
-        return (
-          <Badge
-            variant="outline"
-            className="border-purple-300 bg-purple-50 text-purple-800 hover:bg-purple-100"
-          >
-            Refund Requested
-          </Badge>
-        );
-      case 'REQUIRES_CAPTURE':
-        return (
-          <Badge
-            variant="outline"
-            className="border-orange-300 bg-orange-50 text-orange-800 hover:bg-orange-100"
-          >
-            Requires Capture
-          </Badge>
-        );
-      default:
-        return (
-          <Badge
-            variant="outline"
-            className="border-gray-300 bg-gray-50 text-gray-800 hover:bg-gray-100"
-          >
-            {status || 'Unknown'}
-          </Badge>
-        );
-    }
-  };
-
   if (isLoading) {
     return (
-      <div className="container py-8">
-        <Skeleton className="h-12 w-1/3 mb-4" />
-        <Skeleton className="h-64 w-full mb-4" />
-        <Skeleton className="h-48 w-full" />
+      <div className="container mx-auto py-8 px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          {/* Order Information Skeleton */}
+          <div>
+            <CartCard title="Order Information">
+              <div className="flex flex-col gap-4 mt-6">
+                {/* Order Status */}
+                <div className="flex items-center justify-between h-8">
+                  <Skeleton className="h-6 w-24" />
+                  <Skeleton className="h-6 w-20" />
+                </div>
+                {/* Order ID */}
+                <div className="flex items-center justify-between h-8">
+                  <Skeleton className="h-6 w-24" />
+                  <div className="flex items-center gap-2">
+                    <Skeleton className="h-6 w-32" />
+                    <Skeleton className="h-8 w-8 rounded-md" />
+                  </div>
+                </div>
+                {/* Payment ID */}
+                <div className="flex items-center justify-between h-8">
+                  <Skeleton className="h-6 w-24" />
+                  <div className="flex items-center gap-2">
+                    <Skeleton className="h-6 w-32" />
+                    <Skeleton className="h-8 w-8 rounded-md" />
+                  </div>
+                </div>
+                {/* Payment Status */}
+                <div className="flex items-center justify-between h-8">
+                  <Skeleton className="h-6 w-24" />
+                  <Skeleton className="h-6 w-20" />
+                </div>
+                {/* Payment Method */}
+                <div className="flex items-center justify-between">
+                  <Skeleton className="h-6 w-24" />
+                  <div className="flex flex-col items-end gap-1">
+                    <Skeleton className="h-6 w-32" />
+                    <Skeleton className="h-4 w-24" />
+                  </div>
+                </div>
+              </div>
+            </CartCard>
+          </div>
+
+          {/* Order Items Skeleton */}
+          <div>
+            <CartCard title="Order Items">
+              <div className="flex flex-col mt-6">
+                {/* Order Items */}
+                {[1, 2].map((_, index) => (
+                  <div key={index}>
+                    <div className="flex flex-col gap-2">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <Skeleton className="h-8 w-48" />
+                          <Skeleton className="h-6 w-20" />
+                        </div>
+                        <Skeleton className="h-8 w-24" />
+                      </div>
+                    </div>
+                    {index < 1 && (
+                      <div className="my-6">
+                        <Separator />
+                      </div>
+                    )}
+                  </div>
+                ))}
+                <div className="mt-6">
+                  <Separator />
+                </div>
+                {/* Total */}
+                <div className="flex items-center justify-between pt-4">
+                  <Skeleton className="h-8 w-16" />
+                  <Skeleton className="h-8 w-24" />
+                </div>
+              </div>
+            </CartCard>
+          </div>
+        </div>
       </div>
     );
   }
 
   if (!order) {
     return (
-      <div className="container py-8">
-        <h1 className="text-2xl font-bold">Order not found</h1>
-        <p className="mt-4">
-          The order you are looking for could not be found. Please check the
-          order ID and try again.
-        </p>
-        <Button className="mt-4" onClick={() => router.push('/orders')}>
-          Back to Orders
-        </Button>
+      <div className="container mx-auto py-8 px-8">
+        <CartCard
+          title="Order not found"
+          description="The order you are looking for could not be found. Please check the order ID and try again."
+          footer={
+            <Button onClick={() => router.push('/orders')}>
+              Back to Orders
+            </Button>
+          }
+        />
       </div>
     );
   }
 
   return (
-    <div className="container py-8">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Order Details</h1>
-        <Button variant="outline" onClick={() => router.push('/orders')}>
-          Back to Orders
-        </Button>
-      </div>
-
-      <div className="grid gap-6">
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex justify-between">
-              <span>Order Information</span>
-              <div className="flex items-center gap-2">
-                <span className="text-sm font-normal text-gray-500">
-                  Status:
-                </span>
-                {order.status ? (
-                  getOrderStatusBadge(order.status)
-                ) : (
-                  <Badge
-                    variant="outline"
-                    className="border-gray-300 bg-gray-50 text-gray-800 hover:bg-gray-100"
-                  >
-                    Unknown
-                  </Badge>
-                )}
+    <div className="container mx-auto py-8 px-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        {/* Left Column - Order Information */}
+        <div className="space-y-4">
+          <CartCard
+            title="Order Information"
+            description={`Placed on ${format(
+              new Date(order.createdAt),
+              'MMM d, yyyy h:mm a',
+            )}`}
+          >
+            <div className="flex flex-col gap-4 mt-6">
+              <div className="flex items-center justify-between h-8">
+                <span className="font-medium">Order Status:</span>
+                <div className="flex items-center">
+                  {order.status ? (
+                    <StatusBadge status={order.status} type="order" />
+                  ) : (
+                    <span>-</span>
+                  )}
+                </div>
               </div>
-            </CardTitle>
-            <CardDescription>
-              Order #{order.id.substring(0, 8)} • Placed on{' '}
-              {new Date(order.createdAt).toLocaleString()}
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid gap-4">
-              <div className="flex items-center justify-between">
+
+              <div className="flex items-center justify-between h-8">
                 <span className="font-medium">Order ID:</span>
                 <div className="flex items-center gap-2">
                   <span className="text-sm text-gray-500">{order.id}</span>
@@ -303,7 +200,7 @@ export default function OrderDetailsPage({
                 </div>
               </div>
 
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between h-8">
                 <span className="font-medium">Payment ID:</span>
                 <div className="flex items-center gap-2">
                   <span className="text-sm text-gray-500">
@@ -339,13 +236,15 @@ export default function OrderDetailsPage({
                 </div>
               </div>
 
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between h-8">
                 <span className="font-medium">Payment Status:</span>
-                {order.payment?.status ? (
-                  getPaymentStatusBadge(order.payment.status)
-                ) : (
-                  <span>-</span>
-                )}
+                <div className="flex items-center">
+                  {order.payment?.status ? (
+                    <StatusBadge status={order.payment.status} type="payment" />
+                  ) : (
+                    <span>-</span>
+                  )}
+                </div>
               </div>
 
               <div className="flex items-center justify-between">
@@ -413,56 +312,52 @@ export default function OrderDetailsPage({
                   )}
                 </div>
               </div>
+            </div>
+          </CartCard>
+        </div>
 
-              <div className="flex items-center justify-between">
-                <span className="font-medium">Total Amount:</span>
-                <span className="font-bold">
+        {/* Right Column - Order Items */}
+        <div className="h-fit">
+          <CartCard title="Order Items">
+            <div className="flex flex-col mt-6">
+              {order.items.map((item, index) => (
+                <div key={item.id}>
+                  <div className="flex flex-col gap-2">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <span className="text-xl">
+                          {item.normalizedDomainName}
+                        </span>
+                        {item.status ? (
+                          <StatusBadge status={item.status} type="order" />
+                        ) : (
+                          <span>-</span>
+                        )}
+                      </div>
+                      <span className="text-xl">
+                        {formatAmountInUSD(item.amountInUSDCents, true)}
+                      </span>
+                    </div>
+                  </div>
+                  {index < order.items.length - 1 && (
+                    <div className="my-6">
+                      <Separator />
+                    </div>
+                  )}
+                </div>
+              ))}
+              <div className="mt-6">
+                <Separator />
+              </div>
+              <div className="flex items-center justify-between pt-4">
+                <span className="text-xl font-medium">Total</span>
+                <span className="text-xl font-bold">
                   {formatAmountInUSD(order.totalAmountInUSDCents, true)}
                 </span>
               </div>
             </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Order Items</CardTitle>
-            <CardDescription>
-              Details of domains purchased in this order
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Domain Name</TableHead>
-                  <TableHead className="text-right">Amount</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {order.items.map((item) => (
-                  <TableRow key={item.id}>
-                    <TableCell className="font-medium">
-                      {item.normalizedDomainName}
-                    </TableCell>
-                    <TableCell className="text-right">
-                      {formatAmountInUSD(item.amountInUSDCents, true)}
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-
-            <Separator className="my-4" />
-
-            <div className="flex justify-between items-center font-bold">
-              <span>Total</span>
-              <span>
-                {formatAmountInUSD(order.totalAmountInUSDCents, true)}
-              </span>
-            </div>
-          </CardContent>
-        </Card>
+          </CartCard>
+        </div>
       </div>
     </div>
   );
