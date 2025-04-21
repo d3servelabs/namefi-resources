@@ -17,7 +17,7 @@ export const secretsSchema = z.object({
   X_ALCHEMY_WEBHOOK_NFT_ACTIVITY_SIGNATURE: zJson
     .optional()
     .default('{}')
-    .pipe(z.record(z.number(), z.string())),
+    .pipe(z.record(z.coerce.number(), z.string())),
 });
 
 export type SecretsSchema = z.infer<typeof secretsSchema>;
