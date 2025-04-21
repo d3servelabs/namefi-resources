@@ -10,7 +10,7 @@ interface StatusBadgeProps {
 }
 
 export function StatusBadge({ status, type }: StatusBadgeProps) {
-  const getStatusBadge = (status: string, type: StatusBadgeType) => {
+  const getStatusBadge = (status: string, _type: StatusBadgeType) => {
     switch (status) {
       case 'CREATED':
         return (
