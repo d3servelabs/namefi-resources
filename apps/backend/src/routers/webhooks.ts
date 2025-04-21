@@ -2,14 +2,14 @@ import crypto from 'node:crypto';
 import { CHAINS } from '@namefi-astra/utils/chains';
 import { switchCaseOrDefault } from '@namefi-astra/utils/match';
 import { Hono } from 'hono';
-// Router for webhooks
-//
 import { secrets } from '#lib/env';
 import { updateNamefiNftIndex } from '../temporal/activities/namefi-nft';
 
+// Router for webhooks
+//
 export const webhooksRouter = new Hono();
 
-webhooksRouter.post(async (c) => {
+webhooksRouter.post('/nft-activity', async (c) => {
   const signature = c.req.header('x-alchemy-signature');
   const rawBody = c.req.raw.body?.toString() ?? '';
   const body = (await c.req.json()) as

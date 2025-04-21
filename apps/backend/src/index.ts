@@ -56,7 +56,7 @@ app.use(
 );
 
 app.route('v1/ns-json', nsJsonRouter);
-app.route('v1/webhooks', webhooksRouter);
+app.route('/webhooks', webhooksRouter);
 
 app.get('/config', (c) => {
   const key = c.req.header('x-namefi-key');
