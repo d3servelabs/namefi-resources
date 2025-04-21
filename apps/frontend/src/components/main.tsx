@@ -22,7 +22,7 @@ export const Main = ({ children }: { children: ReactNode }) => {
         })}
       />
       {children}
-      <Footer className="hidden" />
+      <Footer />
     </SidebarInset>
   );
 };

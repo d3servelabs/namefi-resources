@@ -48,7 +48,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className="dark"
+      className="dark h-full"
       data-theme="namefi"
       suppressHydrationWarning={true}
     >
@@ -56,7 +56,7 @@ export default function RootLayout({
         className={cn(
           geistSans.variable,
           geistMono.variable,
-          'antialiased min-h-screen w-full overflow-x-hidden overflow-y-auto bg-origin bg-cover bg-center bg-fixed',
+          'antialiased min-h-screen w-full overflow-x-hidden overflow-y-auto bg-origin bg-cover bg-center bg-fixed flex flex-col',
         )}
       >
         <Preloader />
