@@ -40,19 +40,17 @@ export function SavePaymentMethodDialog({
   const { mutate: prepareSavePaymentMethod } = useMutation(
     trpc.payments.createSetupIntent.mutationOptions({
       onSuccess: (data) => {
-        console.log('createSetupIntent onSuccess', data);
         setClientSecret(data?.setupIntentClientSecret);
         setCustomerSessionClientSecret(data?.customerSessionClientSecret);
       },
       onError: (error) => {
-        console.log('createCustomerSession onError', error);
+        console.error('Error preparing save payment method:', error);
         setClientSecret(null);
       },
     }),
   );
 
   useEffect(() => {
-    console.log('showAddPaymentMethodDialog', showSavePaymentMethodDialog);
     if (showSavePaymentMethodDialog) {
       prepareSavePaymentMethod();
     }

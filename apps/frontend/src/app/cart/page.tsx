@@ -1,4 +1,5 @@
 'use client';
+import { CartCard } from '@/components/cart-card';
 import { NamefiButton } from '@/components/namefi-button';
 import { NftWalletCard } from '@/components/nftWalletCard';
 import { useInteractionLoggers } from '@/components/providers/interactionLoggersProvider';
@@ -6,15 +7,7 @@ import {
   SelectPaymentMethodCard,
   SelectedPaymentMethod,
 } from '@/components/selectPaymentMethodCard/selectPaymentMethodCard';
-import { Button } from '@/components/ui/shadcn/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/shadcn/card';
+import { Separator } from '@/components/ui/shadcn/separator';
 import { useAuth } from '@/hooks/useAuth';
 import {
   InteractionLoggingEventName,
@@ -28,7 +21,7 @@ import { isNfscPayment, isStripePayment } from '@namefi-astra/db/types';
 import { CHAINS, NFSC_CONTRACT_ADDRESS } from '@namefi-astra/utils';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { inferInput } from '@trpc/tanstack-react-query';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Trash2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { formatUnits } from 'viem';
@@ -303,109 +296,94 @@ export default function CartPage() {
 
   if (!isAuthenticated) {
     return (
-      <div className="container mx-auto py-8">
-        <Card>
-          <CardHeader>
-            <CardTitle>Sign in required</CardTitle>
-            <CardDescription>Please sign in to view your cart</CardDescription>
-          </CardHeader>
-        </Card>
+      <div className="container mx-auto py-8 px-8">
+        <CartCard
+          title="Sign in required"
+          description="Please sign in to view your cart"
+        />
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col gap-2 container mx-auto py-8">
-      <Card>
-        <CardHeader>
-          <CardTitle>Your Cart</CardTitle>
-          <CardDescription>
-            {items.length > 0
-              ? `${items.length} items in your cart`
-              : 'Your cart is empty'}
-          </CardDescription>
-        </CardHeader>
-        {items.length > 0 && (
-          <CardContent>
-            {items.map((item) => (
-              <div
-                key={item.id}
-                className="flex items-center justify-between border-b py-4 last:border-0"
-              >
-                <div>
-                  <p className="font-medium">{item.normalizedDomainName}</p>
-                  <p className="text-sm text-muted-foreground">
-                    {formatAmountInUSD(item.amountInUSDCents, true)}
-                  </p>
-                </div>
-                <Button
-                  variant="destructive"
-                  size="sm"
-                  onClick={() => {
-                    removeItem(item.id);
-                  }}
-                >
-                  Remove
-                </Button>
-              </div>
-            ))}
-          </CardContent>
-        )}
-        {items.length > 0 && (
-          <CardFooter className="flex flex-col gap-4">
-            <div className="flex w-full items-center justify-between">
-              <div>
-                <p className="text-lg font-medium">Total:</p>
-                <p className="text-sm text-muted-foreground">
-                  {formatAmountInUSD(totalAmountInUsdCents, true)}
-                </p>
-              </div>
-              <div className="flex gap-2">
-                <Button
-                  variant="outline"
-                  onClick={() => {
-                    clearCart();
-                  }}
-                >
-                  Clear Cart
-                </Button>
-              </div>
-            </div>
-          </CardFooter>
-        )}
-      </Card>
-      {items.length > 0 && (
-        <>
+    <div className="container mx-auto py-8 px-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        {/* Left Column */}
+        <div className="space-y-4">
+          {/* Receiving Wallet Address Card */}
           <NftWalletCard
             onWalletAddressChange={handleNftWalletAddressChange}
             selectedWalletAddress={selectedNftWalletAddress}
           />
 
-          <SelectPaymentMethodCard
-            cartTotalInUsdCents={totalAmountInUsdCents}
-            onPaymentMethodDetailsChanged={(
-              paymentMethodDetails: DeepPartial<PaymentDetails> | null,
-            ) => handlePaymentMethodDetailsChanged(paymentMethodDetails)}
-            onSelectedPaymentMethodChanged={handleSelectedPaymentMethodChanged}
-            footerButton={
-              <NamefiButton
-                variant="default"
-                className="w-full"
-                disabled={submitOrderDisabled || isCreateOrderPending}
-                onClick={handleSubmitOrder}
-                size="lg"
-              >
-                {isCreateOrderPending ? (
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                ) : (
-                  <></>
-                )}
-                {submitButtonText}
-              </NamefiButton>
-            }
-          />
-        </>
-      )}
+          {/* Cart Items Card */}
+          <CartCard title="In your cart">
+            {items.length > 0 && (
+              <div className="flex flex-col">
+                {items.map((item, index) => (
+                  <div key={item.id}>
+                    <div className="flex flex-col gap-4">
+                      <span className="text-xl">
+                        {item.normalizedDomainName}
+                      </span>
+                      <div className="flex items-center justify-between">
+                        <button
+                          type="button"
+                          className="p-2 rounded-lg bg-[#27272A] hover:bg-[#3F3F46] transition-colors"
+                          onClick={() => {
+                            removeItem(item.id);
+                          }}
+                        >
+                          <Trash2 className="size-4" />
+                        </button>
+                        <span className="text-xl">
+                          {formatAmountInUSD(item.amountInUSDCents, true)}
+                        </span>
+                      </div>
+                    </div>
+                    {index < items.length - 1 && (
+                      <div className="my-6">
+                        <Separator />
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </CartCard>
+        </div>
+
+        {/* Right Column */}
+        <div>
+          {items.length > 0 && (
+            <SelectPaymentMethodCard
+              cartTotalInUsdCents={totalAmountInUsdCents}
+              onPaymentMethodDetailsChanged={(
+                paymentMethodDetails: DeepPartial<PaymentDetails> | null,
+              ) => handlePaymentMethodDetailsChanged(paymentMethodDetails)}
+              onSelectedPaymentMethodChanged={
+                handleSelectedPaymentMethodChanged
+              }
+              footerButton={
+                <NamefiButton
+                  variant="default"
+                  className="w-full"
+                  disabled={submitOrderDisabled || isCreateOrderPending}
+                  onClick={handleSubmitOrder}
+                  size="lg"
+                >
+                  {isCreateOrderPending ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <></>
+                  )}
+                  {submitButtonText}
+                </NamefiButton>
+              }
+            />
+          )}
+        </div>
+      </div>
     </div>
   );
 }

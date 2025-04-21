@@ -9,14 +9,7 @@ import {
   useState,
 } from 'react';
 
-import { Button } from '@/components/ui/shadcn/button';
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/shadcn/card';
+import { CartCard } from '@/components/cart-card';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/shadcn/radio-group';
 import { cn } from '@/lib/utils';
 import { formatAmountInUSD } from '@/utils/number';
@@ -214,7 +207,7 @@ export function SelectPaymentMethodCard({
       setCreditCardPaymentMethodDetails(null);
       setNewCardPreview(null);
       onPaymentMethodDetailsChanged(null);
-      console.log(error);
+      console.error(error);
     },
     [onPaymentMethodDetailsChanged],
   );
@@ -276,139 +269,116 @@ export function SelectPaymentMethodCard({
   );
 
   return (
-    <Card className="w-full mx-auto">
-      <CardHeader>
-        <CardTitle className="text-2xl">Payment Method</CardTitle>
-      </CardHeader>
-
-      <CardContent className="">
-        <RadioGroup
-          value={selectedPaymentMethod}
-          onValueChange={handleRadioGroupValueChanged}
-          className="flex flex-col gap-6"
-        >
-          <div className="">
-            <p className="text-base">Use balance</p>
-            <div className="flex items-center gap-2">
-              <RadioGroupItem
-                value={SelectedPaymentMethod.NFSC}
-                id={SelectedPaymentMethod.NFSC}
-              />
-              <Card
-                className={cn(
-                  'py-2 w-full border-brand-primary',
-                  selectedPaymentMethod === SelectedPaymentMethod.NFSC
-                    ? ''
-                    : 'border-0 opacity-50',
-                )}
-              >
-                <CardContent className="flex items-center gap-2">
-                  <Image
-                    src={'/nfsc.svg'}
-                    alt="nfsc icon"
-                    width={40}
-                    height={40}
-                    className="w-10 h-10"
-                  />
-                  <div className="flex flex-col items-start gap-1">
-                    <div className="flex items-center">
-                      <SelectWallet
-                        onValueChange={handleNfscWalletSelectValueChange}
-                        selectTriggerDisabled={
-                          selectedPaymentMethod !== SelectedPaymentMethod.NFSC
-                        }
-                      />
-
-                      <SelectChain
-                        baseChainOnly={false}
-                        onValueChange={handleNfscChainSelectValueChange}
-                        selectTriggerDisabled={
-                          selectedPaymentMethod !== SelectedPaymentMethod.NFSC
-                        }
-                      />
-                    </div>
-                    {selectedWalletChainNfscBalanceInUsdCents === undefined ? (
-                      isUseBalanceQueryEnabled && balanceIsLoading ? (
-                        <Loader2 className="h-4 w-4 animate-spin" />
-                      ) : (
-                        <></>
-                      )
-                    ) : (
-                      <span
-                        className={cn(
-                          'text-sm',
-                          hasSufficientBalance
-                            ? 'text-green-500'
-                            : 'text-red-500',
-                        )}
-                      >
-                        Your Credit Balance:{' '}
-                        {formatAmountInUSD(
-                          selectedWalletChainNfscBalanceInUsdCents,
-                          true,
-                        )}
-                      </span>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
+    <CartCard
+      title="Payment Method"
+      footer={
+        <div className="flex flex-col gap-4 w-full">
+          <div className="flex items-center justify-between text-xl">
+            <span>Total</span>
+            <span>{formatAmountInUSD(cartTotalInUsdCents, true)} USD</span>
           </div>
-
-          <div className="">
-            <p className="text-base">Use a credit card</p>
-            <div className="flex items-center gap-2 w-full">
-              <RadioGroupItem
-                value={SelectedPaymentMethod.CREDIT_CARD}
-                id={SelectedPaymentMethod.CREDIT_CARD}
-              />
-
-              <AddPaymentMethodDialog
-                amountInUsdCents={cartTotalInUsdCents}
-                onAddPaymentMethodSuccess={handleAddPaymentMethodSuccess}
-                onAddPaymentMethodError={handleAddPaymentMethodError}
-                onOpenChange={setShowAddPaymentMethodDialog}
-                showAddPaymentMethodDialog={showAddPaymentMethodDialog}
-                dialogTrigger={
-                  <Button
-                    variant="outline"
-                    className={cn(
-                      'flex justify-between shrink w-full p-2 disabled:pointer-events-auto disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-background',
-                      selectedPaymentMethod ===
-                        SelectedPaymentMethod.CREDIT_CARD
-                        ? 'border-brand-primary'
-                        : 'opacity-50',
-                    )}
-                    disabled={
-                      selectedPaymentMethod !==
-                      SelectedPaymentMethod.CREDIT_CARD
-                    }
-                  >
-                    {newCardPreview ?? 'Add or Select A Card'}
-                    {newCardPreview === null ? (
-                      <PlusIcon className="h-4 w-4" />
-                    ) : (
-                      <PencilIcon className="h-4 w-4" />
-                    )}
-                  </Button>
-                }
-              />
-            </div>
-          </div>
-        </RadioGroup>
-
-        <Separator className="my-4" />
-      </CardContent>
-
-      <CardFooter className="flex flex-col gap-4 w-full">
-        <div className="flex justify-between items-center w-full">
-          <p className="text-base">Total</p>
-          <p className="text-lg">
-            {formatAmountInUSD(cartTotalInUsdCents, true)} USD
-          </p>
+          {footerButton}
         </div>
-        {footerButton}
-      </CardFooter>
-    </Card>
+      }
+    >
+      <RadioGroup
+        value={selectedPaymentMethod}
+        onValueChange={handleRadioGroupValueChanged}
+        className="flex flex-col gap-6"
+      >
+        {/* NFSC Balance Option */}
+        <div className="space-y-2">
+          <p className="text-xl">Use balance</p>
+          <div className="flex items-center gap-2">
+            <RadioGroupItem
+              value={SelectedPaymentMethod.NFSC}
+              id={SelectedPaymentMethod.NFSC}
+            />
+            <div className="flex-1 bg-[#18181B] rounded-lg p-4">
+              <div className="flex items-center gap-4">
+                <Image
+                  src={'/nfsc.svg'}
+                  alt="nfsc icon"
+                  width={32}
+                  height={32}
+                  className="w-8 h-8"
+                />
+                <div className="flex flex-col gap-2">
+                  <div className="flex items-center gap-2">
+                    <SelectWallet
+                      onValueChange={handleNfscWalletSelectValueChange}
+                      selectTriggerDisabled={
+                        selectedPaymentMethod !== SelectedPaymentMethod.NFSC
+                      }
+                    />
+                    <SelectChain
+                      baseChainOnly={false}
+                      onValueChange={handleNfscChainSelectValueChange}
+                      selectTriggerDisabled={
+                        selectedPaymentMethod !== SelectedPaymentMethod.NFSC
+                      }
+                    />
+                  </div>
+                  {selectedWalletChainNfscBalanceInUsdCents === undefined ? (
+                    isUseBalanceQueryEnabled && balanceIsLoading ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : null
+                  ) : (
+                    <span className="text-white/50 text-sm">
+                      {formatAmountInUSD(
+                        selectedWalletChainNfscBalanceInUsdCents,
+                        true,
+                      )}{' '}
+                      available
+                    </span>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Credit Card Option */}
+        <div className="space-y-2">
+          <p className="text-xl">Use credit card</p>
+          <div className="flex items-center gap-2">
+            <RadioGroupItem
+              value={SelectedPaymentMethod.CREDIT_CARD}
+              id={SelectedPaymentMethod.CREDIT_CARD}
+            />
+            <AddPaymentMethodDialog
+              amountInUsdCents={cartTotalInUsdCents}
+              onAddPaymentMethodSuccess={handleAddPaymentMethodSuccess}
+              onAddPaymentMethodError={handleAddPaymentMethodError}
+              onOpenChange={setShowAddPaymentMethodDialog}
+              showAddPaymentMethodDialog={showAddPaymentMethodDialog}
+              dialogTrigger={
+                <div
+                  className={cn(
+                    'flex justify-between items-center w-full p-4 rounded-lg bg-[#18181B] cursor-pointer',
+                    selectedPaymentMethod === SelectedPaymentMethod.CREDIT_CARD
+                      ? ''
+                      : 'opacity-50',
+                  )}
+                >
+                  <div className="flex items-center gap-2">
+                    <span className="text-base">
+                      {newCardPreview ?? 'Add or Select A Card'}
+                    </span>
+                  </div>
+                  {newCardPreview === null ? (
+                    <PlusIcon className="h-4 w-4" />
+                  ) : (
+                    <PencilIcon className="h-4 w-4" />
+                  )}
+                </div>
+              }
+            />
+          </div>
+        </div>
+      </RadioGroup>
+
+      <Separator className="my-6" />
+    </CartCard>
   );
 }

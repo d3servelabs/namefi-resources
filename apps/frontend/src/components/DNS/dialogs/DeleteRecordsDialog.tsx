@@ -54,8 +54,6 @@ export const DeleteRecordDialog = ({
   const queryClient = useQueryClient();
   const handleDelete = useCallback(async () => {
     try {
-      console.log('Deleting records:', records);
-
       await mutateAsync({
         recordsIds: pluck('id', records),
         zoneName,

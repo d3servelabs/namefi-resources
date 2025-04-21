@@ -120,8 +120,6 @@ export function AddEditRecordsDialog({
           return prevForms;
         }
 
-        // console.log('CHANGED!!!');
-
         const newForms = [...prevForms];
         newForms[index] = { values, isValid };
         return newForms;
@@ -209,7 +207,6 @@ export function AddEditRecordsDialog({
 
   const handleValues = useCallback(
     (index: number) => (values: DnsRecordFormValues, isValid: boolean) => {
-      console.log('>>> values', values, isValid);
       updateFormValues(index, values, isValid);
     },
     [updateFormValues],
