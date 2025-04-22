@@ -3,7 +3,7 @@
 import { db, dnsRecordsTable } from '@namefi-astra/db';
 import { fqdnLowercaseToNamefiNormalizedDomain } from '@namefi-astra/utils';
 import { fqdnLowercaseSchema, recordTypeEnum } from '@namefi-astra/zod-dns';
-import { and, eq } from 'drizzle-orm';
+import { and, eq, sql } from 'drizzle-orm';
 import { Hono } from 'hono';
 import { BiMap } from 'mnemonist';
 import { z } from 'zod';
@@ -105,14 +105,26 @@ nsJsonRouter.get('/', async (c) => {
   const qname = qnameResult.data;
   const qtype = qtypeResult.data;
 
-  const zoneName = fqdnLowercaseToNamefiNormalizedDomain(qnameResult.data);
+  const recordName = fqdnLowercaseToNamefiNormalizedDomain(qname);
   // convert qtype to RecordType (string enum)
 
   const qTypeString = dnsType.inverse.get(qtype);
   const qTypeEnum = recordTypeEnum.parse(qTypeString);
+
   const records = await db.query.dnsRecordsTable.findMany({
     where: and(
-      eq(dnsRecordsTable.zoneName, zoneName),
+      eq(
+        /**
+         * This combines the name and zoneName into a single string.
+         * it also handles the case where the name is '@'
+         * | name | zoneName    | result          |
+         * | ---- | ----------- | --------------- |
+         * | @    | example.com | example.com     |
+         * | www  | example.com | www.example.com |
+         * */
+        sql`ARRAY_TO_STRING( ARRAY[ CASE WHEN ${dnsRecordsTable.name} = '@' THEN NULL ELSE lower(${dnsRecordsTable.name}) END, lower(${dnsRecordsTable.zoneName})], '.')`,
+        recordName,
+      ),
       eq(dnsRecordsTable.type, qTypeEnum),
     ),
   });
@@ -120,7 +132,7 @@ nsJsonRouter.get('/', async (c) => {
     const result: DnsResponse = {
       RCODE: 0,
       Answer: records.map((record) => ({
-        name: record.name,
+        name: recordName,
         type: dnsType.get(record.type) as number,
         TTL: record.ttl,
         data: record.rdata,
