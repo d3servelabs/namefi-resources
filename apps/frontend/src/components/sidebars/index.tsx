@@ -120,7 +120,7 @@ export function AppSidebar() {
         {items.length > 0 && <SidebarItems items={items} />}
 
         {domains.length > 0 && (
-          <SidebarDomains name="Domains" domains={domains} />
+          <SidebarDomains name="Recent domains" domains={domains} />
         )}
       </SidebarContent>
 
