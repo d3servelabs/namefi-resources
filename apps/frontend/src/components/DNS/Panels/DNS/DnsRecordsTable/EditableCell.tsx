@@ -122,12 +122,14 @@ export const EditableCell = ({
       type="button"
       className="cursor-pointer hover:bg-zinc-800 p-1 rounded"
       onClick={() => {
-        // Don't allow editing system records
-        const rdata = row.original.rdata;
-        if (rdata === 'by AutoPark™' || rdata === 'by System') {
-          return;
+        if (enabled) {
+          // Don't allow editing system records
+          const rdata = row.original.rdata;
+          if (rdata === 'by AutoPark™' || rdata === 'by System') {
+            return;
+          }
+          setIsEditing(true);
         }
-        setIsEditing(true);
       }}
     >
       {initialValue}
