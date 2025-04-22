@@ -15,6 +15,9 @@ const productionConfig: ConfigInput = {
     'poweredby.namefi.io',
   ],
   ALLOWED_CHAINS: [chains.mainnet.id, chains.base.id],
+  EMAIL_ADDRESS_TO_OWNED_HOSTNAMES_MAP: {
+    'dev-team@d3serve.xyz': ['0x.city'],
+  },
 };
 
 export default productionConfig;

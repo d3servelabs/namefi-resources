@@ -5,6 +5,7 @@ import { TRPCError } from '@trpc/server';
 import { eq, sql } from 'drizzle-orm';
 import { isEmpty, isNil } from 'ramda';
 import { z } from 'zod';
+import { config } from '#lib/env';
 import { resolve } from '../../utils/resolve';
 import { createTRPCRouter, protectedProcedure } from '../base';
 import { privyClient } from '../utils';
@@ -106,4 +107,98 @@ export const usersRouter = createTRPCRouter({
 
     return nfts;
   }),
+
+  getRegisteredSubdomainsForParentDomainOwner: protectedProcedure.query(
+    async ({ ctx }) => {
+      const { user, thirdPartyOriginHostname } = ctx;
+      const [error, privyUser] = await resolve(
+        privyClient.getUserById(user.privyUserId),
+      );
+
+      if (error || isNil(privyUser)) {
+        throw new TRPCError({
+          code: 'PRECONDITION_FAILED',
+          message: 'could not find user details',
+        });
+      }
+
+      if (isNil(privyUser.email?.address)) {
+        throw new TRPCError({
+          code: 'UNAUTHORIZED',
+          message: 'missing email',
+        });
+      }
+
+      // #region get all issued subdomains for parent domains owned by user
+      const userOwnedParentDomains =
+        config.EMAIL_ADDRESS_TO_OWNED_HOSTNAMES_MAP[privyUser.email.address] ??
+        [];
+
+      const parentDomains = thirdPartyOriginHostname
+        ? userOwnedParentDomains.filter(
+            (domain) => domain === thirdPartyOriginHostname,
+          )
+        : userOwnedParentDomains;
+
+      if (isEmpty(parentDomains)) {
+        throw new TRPCError({
+          code: 'UNAUTHORIZED',
+        });
+      }
+
+      const issuedSubdomainNfts = await db.query.namefiNftTable.findMany({
+        where: (table, { and, ilike, gte, or }) =>
+          and(
+            or(
+              ...parentDomains.map((thirdPartyOrigin) =>
+                ilike(table.normalizedDomainName, `%.${thirdPartyOrigin}`),
+              ),
+            ),
+            gte(
+              sql`array_length(string_to_array(${table.normalizedDomainName}, '.'), 1)`,
+              3,
+            ),
+          ),
+      });
+
+      const subdomainNftsMap: Record<
+        string,
+        (typeof issuedSubdomainNfts)[number]
+      > = {};
+      const subdomainNftDomainNames: string[] = [];
+
+      for (const nft of issuedSubdomainNfts) {
+        subdomainNftDomainNames.push(nft.normalizedDomainName);
+        subdomainNftsMap[nft.normalizedDomainName] = nft;
+      }
+      // #endregion get all parent domains and subdomains
+
+      // #region get successfully processed orderItems for issued subdomains
+      const successfulOrderItems = await db.query.orderItemsTable.findMany({
+        where: (table, { inArray, and }) =>
+          and(
+            inArray(table.normalizedDomainName, subdomainNftDomainNames),
+            eq(table.status, 'SUCCEEDED'),
+          ),
+        columns: {
+          normalizedDomainName: true,
+          amountInUSDCents: true,
+          updatedAt: true,
+        },
+      });
+      // #endregion get successfully processed orderItems for issued subdomains
+
+      const res = successfulOrderItems.map((orderItem) => {
+        return {
+          normalizedDomainName: orderItem.normalizedDomainName,
+          ownerAddress:
+            subdomainNftsMap[orderItem.normalizedDomainName]?.ownerAddress,
+          updatedAt: orderItem.updatedAt,
+          priceInUsdCents: orderItem.amountInUSDCents,
+        };
+      });
+
+      return res;
+    },
+  ),
 });

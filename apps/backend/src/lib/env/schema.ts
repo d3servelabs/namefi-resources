@@ -53,6 +53,18 @@ export const configSchema = z.object({
     .default({}),
   ALLOW_HTTP: z.boolean().default(false),
   ALLOWED_CHAINS: z.number().array().default([]),
+  /**
+   * Maps email addresses to the hostnames they own.
+   * Used to determine which parent domains a user owns based on their email.
+   * @example
+   * {
+   *   'dev-team@d3serve.xyz': ['0x.city'],
+   *   'another-owner@example.com': ['example.com', 'another-domain.com'],
+   * }
+   */
+  EMAIL_ADDRESS_TO_OWNED_HOSTNAMES_MAP: z
+    .record(z.string(), z.string().array())
+    .default({}),
 });
 
 export type ConfigInput = z.input<typeof configSchema>;
