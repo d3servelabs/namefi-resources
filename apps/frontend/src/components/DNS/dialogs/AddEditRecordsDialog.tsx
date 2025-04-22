@@ -1,3 +1,4 @@
+import { MultipleLinesArrayErrorMessage } from '@/components/MultipleLinesArrayErrorMessage';
 import { Button } from '@/components/ui/shadcn/button';
 import {
   Dialog,
@@ -176,14 +177,41 @@ export function AddEditRecordsDialog({
         });
       }
 
-      queryClient.invalidateQueries({
+      await queryClient.invalidateQueries({
         queryKey: trpc.dnsRecords.getRecords.queryKey({ zoneName }),
       });
     } catch (error) {
-      console.error(error);
       if (error instanceof TRPCClientError) {
-        if (error.data?.zodError) {
-          toast.error(error.data.zodError);
+        const zodFlattenedError = error.data?.zodError;
+        if (zodFlattenedError) {
+          if (
+            zodFlattenedError.formErrors &&
+            zodFlattenedError.formErrors.length > 0
+          ) {
+            toast.error(
+              <MultipleLinesArrayErrorMessage
+                lines={zodFlattenedError.formErrors}
+              />,
+              {
+                duration: 10_000,
+                dismissible: true,
+              },
+            );
+          } else if (
+            zodFlattenedError.fieldErrors?.records &&
+            zodFlattenedError.fieldErrors.records.length > 0
+          ) {
+            toast.error(
+              <MultipleLinesArrayErrorMessage
+                lines={zodFlattenedError.fieldErrors.records.map(
+                  (e: string, i: number) => `Record ${i + 1}: ${e}`,
+                )}
+              />,
+              { duration: 10_000, dismissible: true },
+            );
+          } else {
+            toast.error('Undetermined Error, please contact support');
+          }
         } else {
           toast.error(error.message);
         }
