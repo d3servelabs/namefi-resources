@@ -50,6 +50,7 @@ export function mismatchAll<
   A extends E,
   K extends E = Exclude<E, T | A>,
 >(toBeChecked: E, ...args: [T, ...A[]]): toBeChecked is K {
+  // biome-ignore lint/suspicious/noExplicitAny: expected since the correct type is defined in the function signature
   return !matchAny(toBeChecked, ...(args as [any, ...any[]]));
 }
 
@@ -86,8 +87,11 @@ export const switchCase = caseWhen;
  * @returns The value associated with the selected key or the default value
  */
 export function caseWhenOr<
+  // biome-ignore lint/suspicious/noExplicitAny: expected since the type will extend it
   K extends keyof any,
+  // biome-ignore lint/suspicious/noExplicitAny: expected since the type will extend it
   M extends Partial<Record<K, any>>,
+  // biome-ignore lint/suspicious/noExplicitAny: expected since the type will extend it
   D extends any | undefined | null,
 >(
   select: K,
