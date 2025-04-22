@@ -1,5 +1,6 @@
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import type { RecordType } from '@namefi-astra/zod-dns';
+import { recordSchema } from '@namefi-astra/zod-dns';
 import { z } from 'zod';
 
 // DNS record types
@@ -24,18 +25,23 @@ export const TTL_OPTIONS = [
 ];
 
 // Schema for DNS record form
-export const dnsRecordSchema = z.object({
-  type: z.string({
-    required_error: 'Record type is required',
-    invalid_type_error: 'Invalid record type',
-  }),
-  name: z.string().optional(),
-  domain: z.string(),
-  rdata: z.string().min(1, { message: 'Value is required' }),
-  ttl: z.number().min(1, { message: 'TTL is required' }),
-});
+export const dnsRecordSchema = z
+  .object({
+    type: z.string({
+      required_error: 'Record type is required',
+      invalid_type_error: 'Invalid record type',
+    }),
+    name: z
+      .string()
+      .optional()
+      .transform((val) => val || '@'),
+    domain: z.string(),
+    rdata: z.string().min(1, { message: 'Value is required' }),
+    ttl: z.number().min(1, { message: 'TTL is required' }),
+  })
+  .pipe(recordSchema);
 
-export type DnsRecordFormValues = z.infer<typeof dnsRecordSchema>;
+export type DnsRecordFormValues = (typeof dnsRecordSchema)['_input'];
 
 // Helper function to convert form values to DnsRecord
 export function formValuesToDnsRecord(

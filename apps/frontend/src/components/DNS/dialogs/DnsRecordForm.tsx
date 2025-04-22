@@ -16,6 +16,7 @@ import {
   SelectValue,
 } from '@/components/ui/shadcn/select';
 import { zodResolver } from '@hookform/resolvers/zod';
+import type { RecordType } from '@namefi-astra/zod-dns';
 import { Trash2 } from 'lucide-react';
 import { useEffect, useMemo } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -35,7 +36,7 @@ interface DnsRecordFormProps {
 }
 
 const DEFAULT_VALUES: DnsRecordFormValues = {
-  type: 'A',
+  type: 'A' as RecordType,
   name: '',
   domain: '.example.com',
   rdata: '',
@@ -54,7 +55,7 @@ export function DnsRecordForm({
   const form = useForm<DnsRecordFormValues>({
     resolver,
     defaultValues,
-    mode: 'onChange',
+    mode: 'all',
   });
   // Watch for form changes and notify parent
   const values = form.watch();
