@@ -1,7 +1,10 @@
+import { orderStatusSchema } from '@namefi-astra/db/types';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import * as workflow from '@temporalio/workflow';
 import { ApplicationFailure } from '@temporalio/workflow';
-import { TEMPORAL_QUEUES } from '../shared';
+import { resolve } from '../../utils/resolve';
+import type { OrderActivities } from '../activities/order.activities';
+import { TEMPORAL_QUEUES, shortRunningOpts } from '../shared';
 import { registerSubdomainWorkflow } from './register-subdomain.workflow';
 
 export interface ProcessOrderItemWorkflowInput {
@@ -19,6 +22,11 @@ export async function processOrderItemWorkflow(
   input: ProcessOrderItemWorkflowInput,
 ): Promise<void> {
   const { normalizedDomainName, nftWalletAddress, nftChainId } = input;
+  const { updateOrderItemStatusOrThrow } =
+    workflow.proxyActivities<OrderActivities>({
+      ...shortRunningOpts,
+      taskQueue: TEMPORAL_QUEUES.DEFAULT,
+    });
 
   try {
     // Register the domain
@@ -35,12 +43,48 @@ export async function processOrderItemWorkflow(
       taskQueue: TEMPORAL_QUEUES.DOMAINS,
       workflowId: `register-domain-${input.orderId}-${input.itemId}`,
     });
+
+    // update orderItem status in db
+    const [updateStatusError, _res] = await resolve(
+      updateOrderItemStatusOrThrow({
+        orderItemId: input.itemId,
+        status: orderStatusSchema.Values.SUCCEEDED,
+      }),
+    );
+
+    if (updateStatusError) {
+      workflow.log.error(
+        `Failed to update orderItem ${input.itemId} status to ${orderStatusSchema.Values.SUCCEEDED}: ${
+          updateStatusError instanceof Error
+            ? updateStatusError.message
+            : String(updateStatusError)
+        }`,
+      );
+    }
   } catch (e) {
     workflow.log.error(
       `Failed to process order item ${input.itemId} for order ${input.orderId}: ${
         e instanceof Error ? e.message : String(e)
       }`,
     );
+
+    // update orderItem status in db
+    const [updateStatusError, _res] = await resolve(
+      updateOrderItemStatusOrThrow({
+        orderItemId: input.itemId,
+        status: orderStatusSchema.Values.FAILED,
+      }),
+    );
+
+    if (updateStatusError) {
+      workflow.log.error(
+        `Failed to update orderItem ${input.itemId} status to ${orderStatusSchema.Values.FAILED}: ${
+          updateStatusError instanceof Error
+            ? updateStatusError.message
+            : String(updateStatusError)
+        }`,
+      );
+    }
 
     throw ApplicationFailure.create({
       nonRetryable: true,
