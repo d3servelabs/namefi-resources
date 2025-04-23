@@ -130,7 +130,7 @@ function SoldDomainsContent() {
   );
 }
 
-export default function Dashboard() {
+export default function ManageDashboard() {
   const { isAuthenticated, isLoading } = useAuth();
 
   if (!(isLoading || isAuthenticated)) {

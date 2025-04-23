@@ -108,6 +108,45 @@ export const usersRouter = createTRPCRouter({
     return nfts;
   }),
 
+  getManagerPageEntrypointViewable: protectedProcedure.query(
+    async ({ ctx }) => {
+      const { user, thirdPartyOriginHostname } = ctx;
+      const [error, privyUser] = await resolve(
+        privyClient.getUserById(user.privyUserId),
+      );
+
+      if (error || isNil(privyUser)) {
+        throw new TRPCError({
+          code: 'PRECONDITION_FAILED',
+          message: 'could not find user details',
+        });
+      }
+
+      if (isNil(privyUser.email?.address)) {
+        throw new TRPCError({
+          code: 'UNAUTHORIZED',
+        });
+      }
+
+      const userOwnedParentDomains =
+        config.EMAIL_ADDRESS_TO_OWNED_HOSTNAMES_MAP[
+          privyUser.email.address
+        ]?.filter(
+          (domain) =>
+            isNil(thirdPartyOriginHostname) ||
+            domain === thirdPartyOriginHostname,
+        ) ?? [];
+
+      if (isEmpty(userOwnedParentDomains)) {
+        throw new TRPCError({
+          code: 'UNAUTHORIZED',
+        });
+      }
+
+      return { viewable: true };
+    },
+  ),
+
   getRegisteredSubdomainsForParentDomainOwner: protectedProcedure.query(
     async ({ ctx }) => {
       const { user, thirdPartyOriginHostname } = ctx;

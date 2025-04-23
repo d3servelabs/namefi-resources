@@ -15,9 +15,12 @@ import {
   SidebarRail,
   useSidebar,
 } from '@/components/ui/shadcn/sidebar';
+import { useAuth } from '@/hooks/useAuth';
 import { cn } from '@/lib/utils';
 import type { NavItem } from '@/types';
 import { LocalStorageKeys } from '@/utils/localStorageKeys';
+import { useTRPC } from '@/utils/trpc';
+import { useQuery } from '@tanstack/react-query';
 import {
   Bell,
   Bookmark,
@@ -44,7 +47,7 @@ const ITEMS: NavItem[] = [
       variant: 'default',
     },
   },
-  { title: 'Tools', href: '#', icon: PenToolIcon },
+  { title: 'Manage', href: '/manage', icon: PenToolIcon },
 ];
 
 export function AppSidebar() {
@@ -53,6 +56,39 @@ export function AppSidebar() {
   const { state } = useSidebar();
 
   const pathname = usePathname();
+
+  const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
+  const trpc = useTRPC();
+
+  const {
+    data,
+    isError: isManagerEntryPointViewableError,
+    isFetching: isManagerEntryPointViewableFetching,
+    isLoading: isManagerEntryPointViewableLoading,
+  } = useQuery({
+    ...trpc.users.getManagerPageEntrypointViewable.queryOptions(),
+    enabled: !isAuthLoading && isAuthenticated,
+  });
+
+  const showManageEntrypoint = useMemo(() => {
+    if (
+      !isAuthenticated ||
+      isManagerEntryPointViewableLoading ||
+      isManagerEntryPointViewableFetching ||
+      isManagerEntryPointViewableError ||
+      !data
+    ) {
+      return false;
+    }
+
+    return data.viewable;
+  }, [
+    data,
+    isAuthenticated,
+    isManagerEntryPointViewableError,
+    isManagerEntryPointViewableFetching,
+    isManagerEntryPointViewableLoading,
+  ]);
 
   const recentDomains = useReadLocalStorage<string[]>(
     LocalStorageKeys.RECENT_DOMAINS,
@@ -69,13 +105,18 @@ export function AppSidebar() {
     [recentDomains, search],
   );
 
-  const items = useMemo(
-    () =>
-      ITEMS.filter((item) =>
-        item.title.toLowerCase().includes(search.toLowerCase()),
-      ),
-    [search],
-  );
+  const items = useMemo(() => {
+    return ITEMS.filter((item) => {
+      if (item.title.toLowerCase() === 'manage') {
+        return (
+          showManageEntrypoint &&
+          item.title.toLowerCase().includes(search.toLowerCase())
+        );
+      }
+
+      return item.title.toLowerCase().includes(search.toLowerCase());
+    });
+  }, [search, showManageEntrypoint]);
 
   const isCollapsed = useMemo(() => state === 'collapsed', [state]);
 
