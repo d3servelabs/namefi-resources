@@ -18,3 +18,24 @@ export function getHostname(url: string): string {
     return '';
   }
 }
+
+export function formatDate(date: Date): string {
+  return date.toLocaleString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true,
+  });
+}
+
+export function getSubDomainAndParentDomainFromNormalizedDomainName(
+  normalizedDomainName: string,
+): { subdomain: string; parentDomain: string } {
+  const [subdomain, ...parentDomain] = normalizedDomainName.split('.');
+  return {
+    subdomain,
+    parentDomain: parentDomain.join('.'),
+  };
+}

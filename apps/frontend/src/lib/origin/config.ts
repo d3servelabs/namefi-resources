@@ -25,7 +25,7 @@ export const originConfig: OriginConfigMap = {
       },
       brandLogo: {
         type: 'image',
-        logo: '/logos/0x-logo.png',
+        logo: '/logos/0x-logo.svg',
         title: '0x.city',
         alt: '0x.city Logo',
       },

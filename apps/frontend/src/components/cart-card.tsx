@@ -12,7 +12,7 @@ import { cn } from '@/lib/utils';
 import type { ReactNode } from 'react';
 
 interface CartCardProps {
-  title: string;
+  title?: string;
   description?: string;
   children?: ReactNode;
   footer?: ReactNode;
@@ -33,10 +33,14 @@ export function CartCard({
         className,
       )}
     >
-      <CardHeader className="p-0 pb-4">
-        <CardTitle className="text-2xl font-semibold">{title}</CardTitle>
-        {description && <CardDescription>{description}</CardDescription>}
-      </CardHeader>
+      {(title || description) && (
+        <CardHeader className="p-0 pb-4">
+          {title && (
+            <CardTitle className="text-2xl font-semibold">{title}</CardTitle>
+          )}
+          {description && <CardDescription>{description}</CardDescription>}
+        </CardHeader>
+      )}
       {children && <CardContent className="p-0">{children}</CardContent>}
       {footer && <CardFooter className="p-0 pt-4">{footer}</CardFooter>}
     </Card>
