@@ -7,6 +7,16 @@ import {
   SelectPaymentMethodCard,
   SelectedPaymentMethod,
 } from '@/components/selectPaymentMethodCard/selectPaymentMethodCard';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/shadcn/alert-dialog';
 import { Separator } from '@/components/ui/shadcn/separator';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
 import { useAuth } from '@/hooks/useAuth';
@@ -45,6 +55,7 @@ export default function CartPage() {
     string | null
   >(null);
   const [isRedirecting, setIsRedirecting] = useState(false);
+  const [isErrorDialogOpen, setIsErrorDialogOpen] = useState(false);
 
   const { logEventWithInteractionLoggers } = useInteractionLoggers();
 
@@ -92,6 +103,9 @@ export default function CartPage() {
         logPurchase();
         queryClient.invalidateQueries(trpc.carts.getItems.queryFilter());
         router.push(`/orders/${data.id}`);
+      },
+      onError: () => {
+        setIsErrorDialogOpen(true);
       },
     }),
   });
@@ -354,6 +368,11 @@ export default function CartPage() {
     </div>
   );
 
+  const handleRetryOrder = useCallback(() => {
+    setIsErrorDialogOpen(false);
+    handleSubmitOrder();
+  }, [handleSubmitOrder]);
+
   if (isLoading) {
     return <LoadingSkeletons />;
   }
@@ -371,6 +390,27 @@ export default function CartPage() {
 
   return (
     <div className="container mx-auto py-8 px-8">
+      <AlertDialog open={isErrorDialogOpen} onOpenChange={setIsErrorDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Oops! Something went wrong.</AlertDialogTitle>
+            <AlertDialogDescription>
+              Don&apos;t worry, you won&apos;t be charged. Feel free to try
+              again or head back to your cart.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Close</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleRetryOrder}
+              className="bg-brand-primary hover:bg-brand-primary/90 text-white"
+            >
+              Try Again
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
       {items.length > 0 ? (
         <div
           className={cn(
