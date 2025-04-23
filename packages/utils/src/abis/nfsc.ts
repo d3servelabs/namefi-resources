@@ -1,7 +1,5 @@
 import { parseAbi } from 'viem';
-import type { Chain } from 'viem/chains';
-import { base, sepolia } from 'viem/chains';
-import { secrets } from '#lib/env';
+
 // Parse ABI for the NFT contract
 export const NftAbi = parseAbi([
   'function idToNormalizedDomainName(uint256 tokenId) public view returns (string memory)',
@@ -29,6 +27,7 @@ export const NfscAbi = parseAbi([
   'function transferFromBatch(address[] calldata senders, address[] calldata receiptients, uint256[] calldata amounts, bytes calldata)',
   'function transferBatch(address[] calldata receiptients, uint256[] calldata amounts, bytes calldata)',
   'event Charge(address charger, address chargee, uint256 amount, string reason, bytes extra)',
+  'function buyWithEthers() payable',
 
   // ERC20
   'function name() external view returns (string memory)',
@@ -44,10 +43,3 @@ export const NfscAbi = parseAbi([
   'function decreaseAllowance(address spender, uint256 subtractedValue) external returns (bool)',
   'function price(address payToken) external view returns (uint256)',
 ]);
-
-export const chainsToUrls = (chain: Chain) => {
-  return {
-    [base.id]: `https://base-mainnet.g.alchemy.com/v2/${secrets.ALCHEMY_API_KEY}`,
-    [sepolia.id]: `https://eth-sepolia.g.alchemy.com/v2/${secrets.ALCHEMY_API_KEY}`,
-  }[chain.id];
-};
