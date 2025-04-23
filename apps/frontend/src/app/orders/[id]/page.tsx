@@ -26,6 +26,14 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { use, useEffect, useMemo } from 'react';
+import {
+  FacebookIcon,
+  FacebookShareButton,
+  LinkedinIcon,
+  LinkedinShareButton,
+  TwitterIcon,
+  TwitterShareButton,
+} from 'react-share';
 
 interface OrderPageProps {
   params: Promise<{ id: string }>;
@@ -80,6 +88,13 @@ export default function OrderPage({ params }: OrderPageProps) {
 
   const origin = useOrigin();
 
+  const shareMessage = useMemo(() => {
+    if (orderItems?.length === 0) {
+      return '';
+    }
+    return `I just registered ${orderItems.length} domain${orderItems.length > 1 ? 's' : ''} on Namefi!`;
+  }, [orderItems]);
+
   if (
     isAuthLoading ||
     isOrderLoading ||
@@ -128,7 +143,7 @@ export default function OrderPage({ params }: OrderPageProps) {
             <div className="flex justify-between items-center">
               <Skeleton className="h-6 w-24" />
               <div className="flex gap-4">
-                {[1, 2, 3, 4].map((i) => (
+                {[1, 2, 3].map((i) => (
                   <Skeleton key={i} className="h-9 w-9 rounded-md" />
                 ))}
               </div>
@@ -273,34 +288,44 @@ export default function OrderPage({ params }: OrderPageProps) {
           <div className="flex justify-between items-center">
             <span className="text-muted-foreground">Share on</span>
             <div className="flex gap-4">
-              <Button
-                variant="outline"
-                size="icon"
-                className="bg-transparent border-white/10 hover:bg-white/5"
+              <TwitterShareButton
+                url={`${window.location.origin}/orders/${id}`}
+                title={shareMessage}
               >
-                𝕏
-              </Button>
-              <Button
-                variant="outline"
-                size="icon"
-                className="bg-transparent border-white/10 hover:bg-white/5"
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="bg-transparent border-none rounded-sm overflow-hidden cursor-pointer p-0"
+                >
+                  <TwitterIcon className="size-9" />
+                </Button>
+              </TwitterShareButton>
+
+              <LinkedinShareButton
+                url={`${window.location.origin}/orders/${id}`}
+                title={shareMessage}
               >
-                𝕟
-              </Button>
-              <Button
-                variant="outline"
-                size="icon"
-                className="bg-transparent border-white/10 hover:bg-white/5"
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="bg-transparent border-none rounded-sm overflow-hidden cursor-pointer p-0"
+                >
+                  <LinkedinIcon className="size-9" />
+                </Button>
+              </LinkedinShareButton>
+
+              <FacebookShareButton
+                url={`${window.location.origin}/orders/${id}`}
+                title={shareMessage}
               >
-                𝕥
-              </Button>
-              <Button
-                variant="outline"
-                size="icon"
-                className="bg-transparent border-white/10 hover:bg-white/5"
-              >
-                𝕕
-              </Button>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="bg-transparent border-none rounded-sm overflow-hidden cursor-pointer p-0"
+                >
+                  <FacebookIcon className="size-9" />
+                </Button>
+              </FacebookShareButton>
             </div>
           </div>
         </CartCard>
