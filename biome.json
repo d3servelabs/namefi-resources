@@ -23,33 +23,33 @@
       "all": true,
       "complexity": {
         "noUselessSwitchCase": "warn",
-        "noExcessiveCognitiveComplexity": "off",
-        "noForEach": "off"
+        "noExcessiveCognitiveComplexity": "info",
+        "noForEach": "info"
       },
       "performance": {
-        "noBarrelFile": "off",
-        "noReExportAll": "off",
-        "useTopLevelRegex": "off"
+        "noBarrelFile": "info",
+        "noReExportAll": "info",
+        "useTopLevelRegex": "info"
       },
       "correctness": {
-        "noNodejsModules": "off",
-        "useImportExtensions": "off",
-        "noUndeclaredDependencies": "off"
+        "noNodejsModules": "info",
+        "useImportExtensions": "info",
+        "noUndeclaredDependencies": "info"
       },
       "style": {
-        "noDefaultExport": "off",
-        "useNamingConvention": "off",
-        "useFilenamingConvention": "off",
-        "noNamespaceImport": "off",
-        "useSingleCaseStatement": "off"
+        "noDefaultExport": "info",
+        "useNamingConvention": "info",
+        "useFilenamingConvention": "info",
+        "noNamespaceImport": "info",
+        "useSingleCaseStatement": "info"
       },
       "suspicious": {
         "noExplicitAny": "info",
-        "noEmptyBlockStatements": "off",
-        "noReactSpecificProps": "off",
-        "noConsoleLog": "off",
-        "noConsole": "off",
-        "noArrayIndexKey": "off"
+        "noEmptyBlockStatements": "info",
+        "noReactSpecificProps": "info",
+        "noConsoleLog": "info",
+        "noConsole": "info",
+        "noArrayIndexKey": "info"
       }
     }
   },

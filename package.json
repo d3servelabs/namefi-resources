@@ -26,7 +26,7 @@
     "test:ci:dry": "act -j test -n",
     "sgr": "node run-sgr.js scan",
     "sgr:fix": "node run-sgr.js scan --fix",
-    "validate": "turbo typecheck && bun check && bun sherif && bun sgr",
+    "validate": "turbo typecheck && bun check:error && bun sherif && bun sgr",
     "validate:secrets": "turbo validate:secrets"
   },
   "trustedDependencies": ["@biomejs/biome", "esbuild", "lefthook", "sharp"]
