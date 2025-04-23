@@ -1,36 +1,13 @@
-import { createHash } from 'node:crypto';
 import { db } from '@namefi-astra/db';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import { addWeeks, isAfter } from 'date-fns';
 import { ParseResultType, parseDomain } from 'parse-domain';
 import { isNil } from 'ramda';
 import { config } from '#lib/env';
-
-const _mockDeterministicRandomAvailability = (
-  domainLdh: NamefiNormalizedDomain,
-) => {
-  // use the domainLdh to generate a deterministic random number
-  const hash = createHash('sha256').update(domainLdh).digest('hex');
-  const randomNumber = Number.parseInt(hash.slice(0, 8), 16) % 100;
-  return randomNumber > 50;
-};
-
-const _mockDeterministicRandomOwner = (domain: NamefiNormalizedDomain) => {
-  // use the domainLdh to generate a deterministic random owner
-  const hash = createHash('sha256').update(domain).digest('hex');
-  return hash.slice(0, 8);
-};
-
-// TODO: move to trpc, used only by apps/backend/src/trpc/routers/searchRouter.test.ts
-export const _mockGetDomainInfo = async (domains: NamefiNormalizedDomain[]) => {
-  // MOCK response. Respond the query term as is, plus 2 variations of it.
-  return domains.map((domain: NamefiNormalizedDomain) => ({
-    domain,
-    availability: _mockDeterministicRandomAvailability(domain),
-    priceInUSD: 5, // XXX: always 5 USD for mock
-    currentOwner: _mockDeterministicRandomOwner(domain),
-    // expiration date will not be supplied for now as we are not creating a concept of expiration date in pilot phase.
-  }));
-};
+import {
+  hashBasedPercentageRollouted,
+  isReserved,
+} from './namefi-registry-helpers';
 
 // biome-ignore lint/suspicious/useAwait: it will be a db query in upcoming updates
 export const getPoweredByNamefi3PHostnames = async () => {
@@ -49,8 +26,16 @@ export const getSubdomainPriceInUsd = async (_subdomain: string) => {
  * @param domains - Array of normalized domain names to query
  * @returns Array of domain information objects containing availability, price, and owner details
  */
-// TODO: move to trpc, used only by apps/backend/src/trpc/routers/registryRouter.ts, apps/backend/src/trpc/routers/searchRouter.ts, apps/backend/src/trpc/routers/searchRouter.test.ts
-export const getDomainListInfo = async (domains: NamefiNormalizedDomain[]) => {
+export const getDomainListInfo = async (
+  domains: NamefiNormalizedDomain[],
+): Promise<
+  {
+    domain: NamefiNormalizedDomain;
+    availability: boolean;
+    priceInUSD: number | undefined;
+    currentOwner: string | undefined;
+  }[]
+> => {
   // Query the database for NFTs matching the provided domain names
   const nfts = await db.query.namefiNftTable.findMany({
     where: (nft, { inArray }) => inArray(nft.normalizedDomainName, domains),
@@ -61,16 +46,52 @@ export const getDomainListInfo = async (domains: NamefiNormalizedDomain[]) => {
 
   return Promise.all(
     domains.map(async (domain) => {
+      const unavailableDomainInfo = {
+        domain,
+        availability: false,
+        priceInUSD: undefined,
+        currentOwner: undefined,
+      };
       // Parse the domain to extract its components
       const domainParseResult = parseDomain(domain);
       // Return default values for invalid or unsupported domains
       if (domainParseResult.type !== ParseResultType.Listed) {
-        return {
-          domain,
-          availability: false,
-          priceInUSD: null,
-          currentOwner: null,
-        };
+        return unavailableDomainInfo;
+      }
+
+      const prefix = domainParseResult.subDomains[0] as NamefiNormalizedDomain;
+
+      // Apex ‑ we currently don’t allow registering the parent domain itself
+      if (!prefix) return unavailableDomainInfo;
+
+      const parentDomain = domainParseResult.subDomains
+        .slice(1)
+        .join('.') as NamefiNormalizedDomain;
+      // Check if the domain is too short
+      if (prefix.length <= 3) return unavailableDomainInfo;
+
+      // Check if the domain is reserved
+      if (isReserved(prefix)) return unavailableDomainInfo;
+
+      if (parentDomain === '0x.city') {
+        // schedule of percentage
+        const startDate = new Date('2025-05-05');
+        let currentPercentage = 0;
+        const today = new Date();
+
+        if (isAfter(today, addWeeks(startDate, 3))) {
+          currentPercentage = 100;
+        } else if (isAfter(today, addWeeks(startDate, 2))) {
+          currentPercentage = 30;
+        } else if (isAfter(today, addWeeks(startDate, 1))) {
+          currentPercentage = 10;
+        } else {
+          currentPercentage = 0;
+        }
+        // we only enable a percentage of subdomain registrations for 0x.city
+        // we use keccak256 to hash the domain and check if the last 4 bytes are less than PERCENT of the total number of subdomains
+        if (!hashBasedPercentageRollouted(domain, currentPercentage))
+          return unavailableDomainInfo;
       }
 
       // Look up the NFT and price information

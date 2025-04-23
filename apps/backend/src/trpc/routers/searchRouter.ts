@@ -17,7 +17,7 @@ import { z } from 'zod';
 import {
   getDomainListInfo,
   getPoweredByNamefi3PHostnames,
-} from '#services/namefi-registry';
+} from '#lib/namefi-registry';
 import { createTRPCRouter, publicProcedure } from '../base';
 
 export const getSuggestions = (

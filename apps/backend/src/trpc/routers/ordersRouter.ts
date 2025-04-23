@@ -7,6 +7,7 @@ import {
 } from '@namefi-astra/db';
 import {
   type ChecksumWalletAddress,
+  type NamefiNormalizedDomain,
   checksumWalletAddressSchema,
 } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
@@ -14,6 +15,7 @@ import { and, desc, eq, inArray } from 'drizzle-orm';
 import { isNil } from 'ramda';
 import Stripe from 'stripe';
 import { z } from 'zod';
+import { getDomainListInfo } from '#lib/namefi-registry';
 import { orderService } from '../../services/orders/orders.service';
 import { createPayment } from '../../temporal/activities/payment.activities';
 import { temporalClient } from '../../temporal/client';
@@ -41,6 +43,28 @@ export const ordersRouter = createTRPCRouter({
           eq(cartItemsTable.userId, ctx.user.id),
         ),
       });
+
+      // Validate all domains are available for purchase
+      const domains = cartItems.map(
+        (item) => item.normalizedDomainName as NamefiNormalizedDomain,
+      );
+      const domainAvailabilities = await getDomainListInfo(domains);
+      const allDomainsAvailable = domainAvailabilities.every(
+        (availability) => availability.availability,
+      );
+
+      // We understand that there is a small chance of race condition here,
+      // but we are ok with it. The ultimate guarantee is that when domain is being
+      // minted onchain the chain (NFT contract) will reject the transaction
+      // if the domain is not available
+      if (!allDomainsAvailable) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: `One or more domains are not available for purchase: ${domainAvailabilities
+            .filter((availability) => !availability.availability)
+            .map((availability) => availability.domain)}`,
+        });
+      }
 
       if (cartItems.length !== cartItemIds.length) {
         throw new TRPCError({

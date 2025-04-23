@@ -4,7 +4,7 @@ import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { logger } from 'hono/logger';
 import { prettyJSON } from 'hono/pretty-json';
-import { getPoweredByNamefi3PHostnames } from '#services/namefi-registry';
+import { getPoweredByNamefi3PHostnames } from '#lib/namefi-registry';
 import { config, secrets } from './lib/env';
 import { nsJsonRouter } from './ns-json';
 import { webhooksRouter } from './routers/webhooks';

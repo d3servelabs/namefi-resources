@@ -22,7 +22,9 @@
     "rules": {
       "all": true,
       "complexity": {
-        "noUselessSwitchCase": "warn"
+        "noUselessSwitchCase": "warn",
+        "noExcessiveCognitiveComplexity": "off",
+        "noForEach": "off"
       },
       "performance": {
         "noBarrelFile": "off",

@@ -6,7 +6,7 @@ import {
   uniqueNamesGenerator,
 } from 'unique-names-generator';
 import { z } from 'zod';
-import { getDomainListInfo } from '#services/namefi-registry';
+import { getDomainListInfo } from '#lib/namefi-registry';
 import { createTRPCRouter, publicProcedure } from '../base';
 
 /**

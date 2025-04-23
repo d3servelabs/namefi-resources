@@ -1,12 +1,8 @@
 import { config } from 'dotenv';
-/**
- * tRPC Integration Test for searchRouter
- *
- * This tests the actual tRPC router implementation.
- * Environment variables are loaded from .env.test
- */
+
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import * as namefiRegistry from '#services/namefi-registry';
+import * as namefiRegistry from '#lib/namefi-registry';
 import type { TrpcContext } from '../base';
 import { searchRouter } from './searchRouter';
 
@@ -15,8 +11,19 @@ config({ path: '.env.test' });
 
 describe('Search Router', () => {
   beforeEach(() => {
+    // Clear mocks before each test
+    vi.clearAllMocks();
+
+    // Provide a default mock implementation for getDomainListInfo
+    // It should return an array matching the structure expected by the router
     vi.spyOn(namefiRegistry, 'getDomainListInfo').mockImplementation(
-      namefiRegistry._mockGetDomainInfo,
+      async (domains: NamefiNormalizedDomain[]) =>
+        domains.map((domain) => ({
+          domain,
+          availability: true, // Default to available
+          priceInUSD: 9.99, // Add a mock price
+          currentOwner: undefined,
+        })),
     );
   });
 
@@ -56,6 +63,11 @@ describe('Search Router', () => {
     // Check bulk availability array has same length as suggestions
     expect(Array.isArray(result.bulkAvailability)).toBe(true);
     expect(result.bulkAvailability.length).toBe(result.suggestions.length);
+
+    // Check that getDomainListInfo was called with the generated suggestions
+    expect(namefiRegistry.getDomainListInfo).toHaveBeenCalledWith(
+      result.suggestions,
+    );
 
     // Check availability items have required structure
     for (const item of result.bulkAvailability) {

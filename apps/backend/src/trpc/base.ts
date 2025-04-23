@@ -8,7 +8,7 @@ import { isNotEmpty } from 'ramda';
 import superjson from 'superjson';
 import { ZodError } from 'zod';
 import { config, secrets } from '#lib/env';
-import { getPoweredByNamefi3PHostnames } from '#services/namefi-registry';
+import { getPoweredByNamefi3PHostnames } from '#lib/namefi-registry';
 import { privyClient } from './utils';
 
 /**
