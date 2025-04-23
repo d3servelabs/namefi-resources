@@ -19,12 +19,13 @@ import {
   getSubDomainAndParentDomainFromNormalizedDomainName,
 } from '@/lib/utils';
 import { useTRPC } from '@/utils/trpc';
+import { orderStatusSchema } from '@namefi-astra/db/types';
 import { useQuery } from '@tanstack/react-query';
 import { SquareArrowOutUpRightIcon } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { use, useMemo } from 'react';
+import { use, useEffect, useMemo } from 'react';
 
 interface OrderPageProps {
   params: Promise<{ id: string }>;
@@ -41,43 +42,84 @@ export default function OrderPage({ params }: OrderPageProps) {
     enabled: !!id && isAuthenticated,
   });
 
+  const isSuccessfulOrder = useMemo(() => {
+    return (
+      order?.status !== orderStatusSchema.Values.FAILED &&
+      order?.status !== orderStatusSchema.Values.CANCELLED
+    );
+  }, [order]);
+
+  useEffect(() => {
+    if (!isSuccessfulOrder) {
+      router.replace(`/orders/${id}/details`);
+    }
+  }, [isSuccessfulOrder, id, router]);
+
   const orderItems = useMemo(() => {
     if (!order?.items) {
       return [];
     }
-    return order.items.map((item) => {
-      const { subdomain, parentDomain } =
-        getSubDomainAndParentDomainFromNormalizedDomainName(
-          item.normalizedDomainName,
-        );
-      return {
-        subdomain,
-        parentDomain,
-        fullDomain: item.normalizedDomainName,
-      };
-    });
+    return order.items
+      .filter(
+        (item) =>
+          item.status !== orderStatusSchema.Values.FAILED &&
+          item.status !== orderStatusSchema.Values.CANCELLED,
+      )
+      .map((item) => {
+        const { subdomain, parentDomain } =
+          getSubDomainAndParentDomainFromNormalizedDomainName(
+            item.normalizedDomainName,
+          );
+        return {
+          subdomain,
+          parentDomain,
+          fullDomain: item.normalizedDomainName,
+        };
+      });
   }, [order?.items]);
 
   const origin = useOrigin();
 
-  if (isAuthLoading || isOrderLoading || origin.isLoading) {
+  if (
+    isAuthLoading ||
+    isOrderLoading ||
+    origin.isLoading ||
+    !isSuccessfulOrder
+  ) {
     return (
       <div className="container mx-auto py-8 px-8">
         <div className="max-w-2xl mx-auto">
           <div className="text-center mb-8">
-            <Skeleton className="h-10 w-64 mx-auto mb-4" />
-            <Skeleton className="h-6 w-96 mx-auto" />
+            <Skeleton className="h-12 w-48 mx-auto mb-4" />
+            <Skeleton className="h-6 w-[400px] mx-auto" />
           </div>
 
-          <CartCard title="Loading..." className="mb-6">
-            <div className="relative aspect-square w-full overflow-hidden rounded-lg bg-black/[0.03]">
-              <Skeleton className="h-full w-full" />
-            </div>
-          </CartCard>
-
-          <div className="mb-6">
-            <Skeleton className="h-10 w-full" />
-          </div>
+          <Carousel className="mb-6">
+            <CarouselContent className="-ml-2 md:-ml-4">
+              {[1, 2, 3].map((index) => (
+                <CarouselItem
+                  key={index}
+                  className="md:basis-1/2 lg:basis-1/3 pl-2 md:pl-4"
+                >
+                  <CartCard className="p-4">
+                    <div className="relative w-full aspect-square overflow-hidden rounded-md bg-black/[0.03] border-1 border-brand-primary">
+                      <Skeleton className="h-full w-full" />
+                      <div className="absolute top-4.5 left-4.5">
+                        <Skeleton className="h-6 w-24" />
+                      </div>
+                      <div className="absolute bottom-0 left-0 right-0 px-3 py-4 bg-gradient-to-t from-black/90 via-black/10 to-transparent">
+                        <Skeleton className="h-8 w-32 mb-2" />
+                        <Skeleton className="h-6 w-24" />
+                      </div>
+                    </div>
+                    <Skeleton className="h-10 w-full mt-4" />
+                  </CartCard>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious />
+            <CarouselNext />
+          </Carousel>
 
           <CartCard
             title="Share"
@@ -87,7 +129,7 @@ export default function OrderPage({ params }: OrderPageProps) {
               <Skeleton className="h-6 w-24" />
               <div className="flex gap-4">
                 {[1, 2, 3, 4].map((i) => (
-                  <Skeleton key={i} className="h-9 w-9" />
+                  <Skeleton key={i} className="h-9 w-9 rounded-md" />
                 ))}
               </div>
             </div>
@@ -98,12 +140,18 @@ export default function OrderPage({ params }: OrderPageProps) {
             className="mb-6 bg-black/[0.03] border-white/10"
           >
             <div className="space-y-4">
-              {[1, 2, 3].map((i) => (
-                <div key={i} className="flex justify-between items-center">
-                  <Skeleton className="h-6 w-24" />
-                  <Skeleton className="h-6 w-32" />
-                </div>
-              ))}
+              <div className="flex justify-between items-center">
+                <Skeleton className="h-6 w-16" />
+                <Skeleton className="h-6 w-32" />
+              </div>
+              <div className="flex justify-between items-center">
+                <Skeleton className="h-6 w-24" />
+                <Skeleton className="h-6 w-24" />
+              </div>
+              <div className="flex justify-between items-center">
+                <Skeleton className="h-6 w-20" />
+                <Skeleton className="h-6 w-24" />
+              </div>
             </div>
           </CartCard>
 
@@ -113,7 +161,7 @@ export default function OrderPage({ params }: OrderPageProps) {
           </div>
 
           <div className="text-center">
-            <Skeleton className="h-6 w-48 mx-auto" />
+            <Skeleton className="h-6 w-64 mx-auto" />
           </div>
         </div>
       </div>
@@ -153,8 +201,8 @@ export default function OrderPage({ params }: OrderPageProps) {
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold mb-4">Congratulations!</h1>
           <p className="text-muted-foreground text-lg">
-            Your domains have been successfully registered and your NFTs are on
-            the way.
+            You've successfully registered {orderItems.length} domains and your
+            NFTs are on the way.
           </p>
         </div>
 
@@ -194,7 +242,7 @@ export default function OrderPage({ params }: OrderPageProps) {
                         />
                       </div>
                     </div>
-                    <div className="absolute bottom-0 left-0 right-0 flex flex-col items-start text-white p-2 bg-gradient-to-t from-black/90 via-black/10 to-transparent">
+                    <div className="absolute bottom-0 left-0 right-0 flex flex-col items-start text-white px-3 py-4 bg-gradient-to-t from-black/90 via-black/10 to-transparent">
                       <h2 className="text-2xl font-semibold">
                         {item.subdomain}
                       </h2>
@@ -287,7 +335,7 @@ export default function OrderPage({ params }: OrderPageProps) {
             className="flex-1 bg-black/[0.03] border-white/10 hover:bg-white/5"
             asChild={true}
           >
-            <Link href="/orders">Order history</Link>
+            <Link href={`/orders/${id}/details`}>View full details</Link>
           </NamefiButton>
           <NamefiButton className="flex-1" asChild={true}>
             <Link href="/">Back to home</Link>
