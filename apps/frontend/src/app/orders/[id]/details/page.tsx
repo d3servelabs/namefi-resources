@@ -2,7 +2,6 @@
 
 import { StatusBadge } from '@/components/badges/StatusBadge';
 import { CartCard } from '@/components/cart-card';
-import { Badge } from '@/components/ui/shadcn/badge';
 import { Button } from '@/components/ui/shadcn/button';
 import { Separator } from '@/components/ui/shadcn/separator';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
@@ -12,13 +11,16 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/shadcn/tooltip';
+import { useAuth } from '@/hooks/useAuth';
+import { getShortAddress } from '@/lib/utils';
 import { formatAmountInUSD } from '@/utils/number';
 import { useTRPC } from '@/utils/trpc';
+import { getChain } from '@namefi-astra/utils';
 import { useQuery } from '@tanstack/react-query';
 import { format } from 'date-fns';
-import { Check, ClipboardCopy } from 'lucide-react';
+import { Check, ClipboardCopy, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { use, useState } from 'react';
+import { use, useMemo, useState } from 'react';
 
 export default function OrderDetailsPage({
   params,
@@ -29,12 +31,61 @@ export default function OrderDetailsPage({
   const router = useRouter();
   const [copiedFields, setCopiedFields] = useState<Record<string, boolean>>({});
 
+  const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
   const trpc = useTRPC();
 
   const { data: order, isLoading } = useQuery({
     ...trpc.orders.getOrder.queryOptions({ orderId: id }),
     enabled: !!id,
   });
+
+  const {
+    data: paymentMethodDetails,
+    isLoading: arePaymentMethodDetailsLoading,
+  } = useQuery({
+    ...trpc.orders.getOrderPaymentMethodDetails.queryOptions({ orderId: id }),
+    enabled: !!id && isAuthenticated,
+  });
+
+  const isCreditCardPayment = useMemo(
+    () => order?.payment?.paymentProvider === 'STRIPE',
+    [order?.payment?.paymentProvider],
+  );
+
+  const creditCardPreviewText = useMemo(() => {
+    if (
+      !isCreditCardPayment ||
+      arePaymentMethodDetailsLoading ||
+      !paymentMethodDetails
+    ) {
+      return '-';
+    }
+
+    if (!(paymentMethodDetails.brand && paymentMethodDetails.last4)) {
+      return 'Credit Card';
+    }
+
+    return `${paymentMethodDetails.brand.toLocaleUpperCase()}(${paymentMethodDetails.last4})`;
+  }, [
+    arePaymentMethodDetailsLoading,
+    isCreditCardPayment,
+    paymentMethodDetails,
+  ]);
+
+  const onChainPaymentPreviewText = useMemo(() => {
+    if (isCreditCardPayment) {
+      return '';
+    }
+
+    if (!order?.payment?.nfscPaymentDetails) {
+      return '-';
+    }
+
+    const chain = getChain(order.payment.nfscPaymentDetails.chainId);
+    const chainName =
+      chain?.name || `Chain ID ${order.payment.nfscPaymentDetails.chainId}`;
+    return `(${chainName}) ${getShortAddress(order.payment.nfscPaymentDetails.walletAddress)}`;
+  }, [isCreditCardPayment, order?.payment]);
 
   const copyToClipboard = (text: string, field: string) => {
     navigator.clipboard.writeText(text);
@@ -79,7 +130,7 @@ export default function OrderDetailsPage({
                   <Skeleton className="h-6 w-24" />
                   <Skeleton className="h-6 w-20" />
                 </div>
-                {/* Payment Method */}
+                {/* Payment */}
                 <div className="flex items-center justify-between">
                   <Skeleton className="h-6 w-24" />
                   <div className="flex flex-col items-end gap-1">
@@ -247,68 +298,54 @@ export default function OrderDetailsPage({
                 </div>
               </div>
 
-              <div className="flex items-center justify-between">
-                <span className="font-medium">Payment Method:</span>
-                <div className="flex flex-col items-end gap-1">
-                  {order.payment?.paymentProvider ? (
-                    <>
-                      <Badge
-                        variant="outline"
-                        className="border-gray-300 bg-gray-50 text-gray-800 hover:bg-gray-100"
-                      >
-                        {order.payment.paymentProvider
-                          .replace('NFSC_', 'NFSC on ')
-                          .replace('_', ' ')}
-                      </Badge>
-                      {order.payment.nfscPaymentDetails?.walletAddress && (
-                        <div className="flex items-center gap-2">
-                          <span className="text-xs text-gray-500">
-                            {order.payment.nfscPaymentDetails.walletAddress.substring(
-                              0,
-                              6,
-                            )}
-                            ...
-                            {order.payment.nfscPaymentDetails.walletAddress.substring(
-                              order.payment.nfscPaymentDetails.walletAddress
-                                .length - 4,
-                            )}
-                          </span>
-                          <TooltipProvider>
-                            <Tooltip>
-                              <TooltipTrigger asChild={true}>
-                                <Button
-                                  variant="ghost"
-                                  size="icon"
-                                  className="h-6 w-6"
-                                  onClick={() =>
-                                    copyToClipboard(
-                                      order.payment.nfscPaymentDetails
-                                        ?.walletAddress || '',
-                                      'walletAddress',
-                                    )
-                                  }
-                                >
-                                  {copiedFields.walletAddress ? (
-                                    <Check size={12} />
-                                  ) : (
-                                    <ClipboardCopy size={12} />
-                                  )}
-                                </Button>
-                              </TooltipTrigger>
-                              <TooltipContent>
-                                <p>
-                                  {copiedFields.walletAddress
-                                    ? 'Copied!'
-                                    : 'Copy Wallet Address'}
-                                </p>
-                              </TooltipContent>
-                            </Tooltip>
-                          </TooltipProvider>
-                        </div>
-                      )}
-                    </>
+              <div className="flex items-center justify-between h-8">
+                <span className="font-medium">Payment:</span>
+                <div className="flex items-center gap-2">
+                  {isCreditCardPayment ? (
+                    isAuthLoading || arePaymentMethodDetailsLoading ? (
+                      <Loader2 className="animate-spin" />
+                    ) : (
+                      <span className="text-sm text-gray-500">
+                        {creditCardPreviewText}
+                      </span>
+                    )
                   ) : (
-                    <span>-</span>
+                    <span className="text-sm text-gray-500">
+                      {onChainPaymentPreviewText}
+                    </span>
+                  )}
+                  {!isCreditCardPayment && (
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild={true}>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8"
+                            onClick={() =>
+                              copyToClipboard(
+                                order.payment?.nfscPaymentDetails
+                                  ?.walletAddress ?? '',
+                                'walletAddress',
+                              )
+                            }
+                          >
+                            {copiedFields.walletAddress ? (
+                              <Check size={16} />
+                            ) : (
+                              <ClipboardCopy size={16} />
+                            )}
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>
+                            {copiedFields.walletAddress
+                              ? 'Copied!'
+                              : 'Copy Wallet Address'}
+                          </p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
                   )}
                 </div>
               </div>

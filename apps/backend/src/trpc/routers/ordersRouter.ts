@@ -12,6 +12,7 @@ import {
 import { TRPCError } from '@trpc/server';
 import { and, desc, eq, inArray } from 'drizzle-orm';
 import { isNil } from 'ramda';
+import Stripe from 'stripe';
 import { z } from 'zod';
 import { orderService } from '../../services/orders/orders.service';
 import { createPayment } from '../../temporal/activities/payment.activities';
@@ -25,6 +26,8 @@ import {
   isNormalizedDomainNameAllowedForOriginHostname,
   privyClient,
 } from '../utils';
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
 
 export const ordersRouter = createTRPCRouter({
   createOrder: protectedProcedure
@@ -203,4 +206,58 @@ export const ordersRouter = createTRPCRouter({
       ),
     );
   }),
+
+  getOrderPaymentMethodDetails: protectedProcedure
+    .input(z.object({ orderId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const { user } = ctx;
+      const { orderId } = input;
+
+      const { userId, payment } =
+        await orderService.getOrderDetailsOrThrow(orderId);
+
+      if (userId !== user.id) {
+        throw new TRPCError({
+          code: 'UNAUTHORIZED',
+        });
+      }
+
+      if (isNfscPayment(payment)) {
+        return {
+          isOnChainPayment: true,
+          txHash: payment.paymentProviderReferenceId,
+          chainId: payment.nfscPaymentDetails.chainId,
+          walletAddress: payment.nfscPaymentDetails.walletAddress,
+        };
+      }
+
+      if (isNil(payment.paymentProviderReferenceId)) {
+        return {
+          isOnChainPayment: false,
+          brand: undefined,
+          last4: undefined,
+        };
+      }
+
+      const stripePaymentIntent = await stripe.paymentIntents.retrieve(
+        payment.paymentProviderReferenceId,
+        { expand: ['payment_method'] },
+      );
+
+      if (isNil(stripePaymentIntent.payment_method)) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'payment information missing',
+        });
+      }
+
+      const paymentMethod =
+        stripePaymentIntent.payment_method as Stripe.PaymentMethod;
+
+      return {
+        isOnChainPayment: false,
+        brand: paymentMethod.card?.brand,
+        last4: paymentMethod.card?.last4,
+      };
+    }),
 });

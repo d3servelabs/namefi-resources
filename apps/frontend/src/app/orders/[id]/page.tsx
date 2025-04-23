@@ -16,12 +16,14 @@ import { Skeleton } from '@/components/ui/shadcn/skeleton';
 import { useAuth } from '@/hooks/useAuth';
 import {
   formatDate,
+  getShortAddress,
   getSubDomainAndParentDomainFromNormalizedDomainName,
 } from '@/lib/utils';
 import { useTRPC } from '@/utils/trpc';
 import { orderStatusSchema } from '@namefi-astra/db/types';
+import { getChain } from '@namefi-astra/utils';
 import { useQuery } from '@tanstack/react-query';
-import { SquareArrowOutUpRightIcon } from 'lucide-react';
+import { Loader2, SquareArrowOutUpRightIcon } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -47,6 +49,14 @@ export default function OrderPage({ params }: OrderPageProps) {
 
   const { data: order, isLoading: isOrderLoading } = useQuery({
     ...trpc.orders.getOrder.queryOptions({ orderId: id }),
+    enabled: !!id && isAuthenticated,
+  });
+
+  const {
+    data: paymentMethodDetails,
+    isLoading: arePaymentMethodDetailsLoading,
+  } = useQuery({
+    ...trpc.orders.getOrderPaymentMethodDetails.queryOptions({ orderId: id }),
     enabled: !!id && isAuthenticated,
   });
 
@@ -94,6 +104,43 @@ export default function OrderPage({ params }: OrderPageProps) {
     }
     return `I just registered ${orderItems.length} domain${orderItems.length > 1 ? 's' : ''} on Namefi!`;
   }, [orderItems]);
+
+  const isCreditCardPayment = useMemo(
+    () => order?.payment?.paymentProvider === 'STRIPE',
+    [order?.payment?.paymentProvider],
+  );
+
+  const creditCardPreviewText = useMemo(() => {
+    if (
+      !isCreditCardPayment ||
+      arePaymentMethodDetailsLoading ||
+      !paymentMethodDetails
+    ) {
+      return '-';
+    }
+
+    if (!(paymentMethodDetails.brand && paymentMethodDetails.last4)) {
+      return 'Credit Card';
+    }
+
+    return `${paymentMethodDetails.brand.toLocaleUpperCase()}(${paymentMethodDetails.last4})`;
+  }, [
+    arePaymentMethodDetailsLoading,
+    isCreditCardPayment,
+    paymentMethodDetails,
+  ]);
+
+  const onChainPaymentPreviewText = useMemo(() => {
+    if (isCreditCardPayment) {
+      return '';
+    }
+
+    if (!order?.payment.nfscPaymentDetails) {
+      return '-';
+    }
+
+    return `(${getChain(order.payment.nfscPaymentDetails.chainId)?.name}) ${getShortAddress(order.payment.nfscPaymentDetails.walletAddress)}`;
+  }, [isCreditCardPayment, order?.payment]);
 
   if (
     isAuthLoading ||
@@ -345,11 +392,15 @@ export default function OrderPage({ params }: OrderPageProps) {
             </div>
             <div className="flex justify-between items-center">
               <span className="text-muted-foreground">Payment</span>
-              <span>
-                {order.payment?.paymentProvider === 'STRIPE'
-                  ? 'Credit card'
-                  : order.payment?.paymentProvider}
-              </span>
+              {isCreditCardPayment ? (
+                isAuthLoading || arePaymentMethodDetailsLoading ? (
+                  <Loader2 className="animate-spin" />
+                ) : (
+                  <span>{creditCardPreviewText}</span>
+                )
+              ) : (
+                <span>{onChainPaymentPreviewText}</span>
+              )}
             </div>
           </div>
         </CartCard>
