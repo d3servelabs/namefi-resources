@@ -1,4 +1,5 @@
 import { Main } from '@/components/main';
+import OriginBackground from '@/components/origin-background';
 import { Preloader } from '@/components/preloader';
 import { AppSidebar } from '@/components/sidebars';
 import { SidebarProvider } from '@/components/ui/shadcn/sidebar';
@@ -14,7 +15,6 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { headers } from 'next/headers';
 import type { ReactNode } from 'react';
-
 import './globals.css';
 
 const geistSans = Geist({
@@ -56,7 +56,7 @@ export default function RootLayout({
         className={cn(
           geistSans.variable,
           geistMono.variable,
-          'antialiased min-h-screen w-full overflow-x-hidden overflow-y-auto bg-origin bg-cover bg-center bg-fixed flex flex-col',
+          'antialiased min-h-screen w-full overflow-x-hidden overflow-y-auto flex flex-col',
         )}
       >
         <Preloader />
@@ -67,6 +67,7 @@ export default function RootLayout({
         <GoogleAnalytics gaId={config.GA_MEASUREMENT_ID} />
         <Providers>
           <Contexts>
+            <OriginBackground />
             <Toaster />
             <SidebarProvider>
               <AppSidebar />

@@ -17,7 +17,7 @@ type ImageLogo = BaseBrandLogo & {
   /**
    * Static image for the brand logo
    */
-  logo: StaticImageData | string;
+  image: StaticImageData | string;
 };
 
 type LottieLogo = BaseBrandLogo & {
@@ -36,17 +36,29 @@ type LottieLogo = BaseBrandLogo & {
   height: number;
 };
 
+type Background = {
+  /**
+   * Background image for the origin
+   */
+  image: StaticImageData | string;
+  /**
+   * Alt text for accessibility
+   */
+  alt: string;
+};
+
 /**
  * Brand logo configuration with support for either static images or Lottie animations
  */
-export type BrandLogoConfig = ImageLogo | LottieLogo;
+export type Logo = ImageLogo | LottieLogo;
 
 /**
  * Origin-specific configuration
  */
 export type OriginConfig = {
   metadata: Metadata;
-  brandLogo: BrandLogoConfig;
+  logo: Logo;
+  background?: Background;
 };
 
 /**

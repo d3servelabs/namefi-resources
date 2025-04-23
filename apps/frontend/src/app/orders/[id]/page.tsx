@@ -167,19 +167,20 @@ export default function OrderPage({ params }: OrderPageProps) {
               >
                 <CartCard className="p-4">
                   <div className="relative w-full aspect-square overflow-hidden rounded-md bg-black/[0.03] border-1 border-brand-primary">
-                    <Image
-                      src="/backgrounds/0x.city.png"
-                      alt={item.fullDomain}
-                      fill={true}
-                      className="object-cover"
-                    />
+                    {origin.originInfo.config.background && (
+                      <Image
+                        src={origin.originInfo.config.background.image}
+                        alt={origin.originInfo.config.background.alt}
+                        fill={true}
+                        className="object-cover"
+                      />
+                    )}
                     <div className="absolute top-4.5 left-4.5">
                       <div className="bg-black/70 backdrop-blur-[50px] py-[2px] px-[3px] gap-[3px] rounded-[2px] flex items-center">
-                        {origin.originInfo.config.brandLogo.type ===
-                          'image' && (
+                        {origin.originInfo.config.logo.type === 'image' && (
                           <Image
-                            src={origin.originInfo.config.brandLogo.logo}
-                            alt={origin.originInfo.config.brandLogo.alt}
+                            src={origin.originInfo.config.logo.image}
+                            alt={origin.originInfo.config.logo.alt}
                             className="rounded-[1px]"
                             width={14}
                             height={14}

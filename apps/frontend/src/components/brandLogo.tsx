@@ -28,35 +28,35 @@ export const BrandLogo: ForwardRefExoticComponent<BrandLogoProps> = forwardRef<
 ) {
   const { isLoading, originInfo } = useOrigin();
   const lottieRef = useRef<LottieRefCurrentProps>(null);
-  const brandLogo = isLoading ? null : originInfo.config.brandLogo;
+  const logo = isLoading ? null : originInfo.config.logo;
 
   const getJson = useCallback(async () => {
-    if (brandLogo?.type === 'lottie') {
+    if (logo?.type === 'lottie') {
       try {
-        const response = await fetch(brandLogo.lottie);
+        const response = await fetch(logo.lottie);
         return response.json();
       } catch {
         throw new Error('Failed to load Lottie animation');
       }
     }
     throw new Error('No Lottie animation data available');
-  }, [brandLogo]);
+  }, [logo]);
 
   const handleMouseEnter = useCallback(() => {
-    if (lottieRef.current && brandLogo?.type === 'lottie' && !collapsed) {
+    if (lottieRef.current && logo?.type === 'lottie' && !collapsed) {
       lottieRef.current.setDirection(1);
       lottieRef.current.play();
     }
-  }, [brandLogo, collapsed]);
+  }, [logo, collapsed]);
 
   const handleMouseLeave = useCallback(() => {
-    if (lottieRef.current && brandLogo?.type === 'lottie' && !collapsed) {
+    if (lottieRef.current && logo?.type === 'lottie' && !collapsed) {
       lottieRef.current.setDirection(-1);
       lottieRef.current.play();
     }
-  }, [brandLogo, collapsed]);
+  }, [logo, collapsed]);
 
-  if (isLoading || !brandLogo) {
+  if (isLoading || !logo) {
     return null;
   }
 
@@ -73,22 +73,22 @@ export const BrandLogo: ForwardRefExoticComponent<BrandLogoProps> = forwardRef<
       {...rest}
     >
       <div className="relative flex shrink-0 items-center justify-center">
-        {brandLogo.type === 'image' ? (
+        {logo.type === 'image' ? (
           <Image
-            src={brandLogo.logo}
-            alt={brandLogo.alt}
-            title={brandLogo.title}
+            src={logo.image}
+            alt={logo.alt}
+            title={logo.title}
             width={26}
             height={26}
             className="rounded-md object-contain h-6.5 w-6.5"
             priority={true}
           />
-        ) : brandLogo.type === 'lottie' ? (
+        ) : logo.type === 'lottie' ? (
           <LazyLottie
             id={`brand-logo-${originInfo.thirdPartyOrigin || 'default'}`}
             lottieRef={lottieRef}
             getJson={getJson}
-            style={{ width: brandLogo.width, height: brandLogo.height }}
+            style={{ width: logo.width, height: logo.height }}
             loop={false}
             autoplay={false}
           />
@@ -97,7 +97,7 @@ export const BrandLogo: ForwardRefExoticComponent<BrandLogoProps> = forwardRef<
 
       {!collapsed && (
         <span className="text-xl font-semibold transition-opacity duration-200 ease-in-out">
-          {brandLogo.title}
+          {logo.title}
         </span>
       )}
     </Link>
