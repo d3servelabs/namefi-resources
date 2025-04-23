@@ -35,11 +35,8 @@ export const configSchema = z.object({
   /**
    * List of first-party domains that are owned by NameFI and allowed to interact with the API.
    */
-  NAMEFI_FIRST_PARTY_ORIGINS: z.string().array().default([]),
-  ADDITIONAL_POWERED_BY_NAMEFI_THIRD_PARTY_ORIGINS: z
-    .string()
-    .array()
-    .default([]),
+  NAMEFI_FIRST_PARTY_HOSTNAMES: z.string().array().default([]),
+  POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES: z.string().array().default([]),
   /**
    * Map of additional origins to their corresponding hostnames.
    * @example
@@ -48,9 +45,7 @@ export const configSchema = z.object({
    *   'defibuild.localhost': 'defi.build',
    * }
    */
-  ADDITIONAL_ORIGIN_TO_HOSTNAME_MAP: z
-    .record(z.string(), z.string())
-    .default({}),
+  ADDITIONAL_HOSTNAME_MAP: z.record(z.string(), z.string()).default({}),
   ALLOW_HTTP: z.boolean().default(false),
   ALLOWED_CHAINS: z.number().array().default([]),
   /**

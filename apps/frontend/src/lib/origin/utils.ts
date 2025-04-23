@@ -26,7 +26,7 @@ export function getOriginFromServerHeaders(
  */
 export function isNamefiFirstPartyOrigin(origin: string): boolean {
   const hostname = getHostname(origin);
-  return config.NAMEFI_FIRST_PARTY_ORIGINS.includes(hostname);
+  return config.NAMEFI_FIRST_PARTY_HOSTNAMES.includes(hostname);
 }
 
 /**
@@ -38,11 +38,11 @@ export function getDomainForPoweredByNamefiThirdPartyOrigin(
 ): string | null {
   const hostname = getHostname(origin);
 
-  if (config.POWERED_BY_NAMEFI_THIRD_PARTY_ORIGINS.includes(hostname)) {
+  if (config.POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES.includes(hostname)) {
     return hostname;
   }
 
-  return config.ADDITIONAL_ORIGIN_TO_HOSTNAME_MAP[hostname] || null;
+  return config.ADDITIONAL_HOSTNAME_MAP[hostname] || null;
 }
 
 /**

@@ -15,16 +15,16 @@ const localConfig: ConfigInput = {
    * to be able to test use `bun with-env dev -- --experimental-https` on the frontend
    */
   ALLOW_HTTP: true,
-  NAMEFI_FIRST_PARTY_ORIGINS: [
+  NAMEFI_FIRST_PARTY_HOSTNAMES: [
     'localhost',
     'namefi.localhost',
     'astra.localhost',
   ],
-  ADDITIONAL_POWERED_BY_NAMEFI_THIRD_PARTY_ORIGINS: [
+  POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES: [
     '0xcity.localhost',
     'defibuild.localhost',
   ],
-  ADDITIONAL_ORIGIN_TO_HOSTNAME_MAP: {
+  ADDITIONAL_HOSTNAME_MAP: {
     '0xcity.localhost': '0x.city',
     'defibuild.localhost': 'defi.build',
   },

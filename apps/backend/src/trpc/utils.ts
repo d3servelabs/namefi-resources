@@ -15,7 +15,7 @@ export const isNormalizedDomainNameAllowedForOriginHostname = (
   }
   const acceptedHostnames = [
     originHostname,
-    config.ADDITIONAL_ORIGIN_TO_HOSTNAME_MAP[originHostname],
+    config.ADDITIONAL_HOSTNAME_MAP[originHostname],
   ].filter(Boolean);
   return acceptedHostnames.some((hostname) =>
     normalizedDomainName.endsWith(hostname),

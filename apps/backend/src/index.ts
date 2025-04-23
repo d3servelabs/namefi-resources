@@ -4,7 +4,7 @@ import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { logger } from 'hono/logger';
 import { prettyJSON } from 'hono/pretty-json';
-import { getPoweredByNamefi3POrigins } from '#services/namefi-registry';
+import { getPoweredByNamefi3PHostnames } from '#services/namefi-registry';
 import { config, secrets } from './lib/env';
 import { nsJsonRouter } from './ns-json';
 import { webhooksRouter } from './routers/webhooks';
@@ -14,9 +14,9 @@ import { appRouter } from './trpc/routers/appRouter';
 const app = new Hono();
 
 app.use(async (...args) => {
-  const allowedOrigins: string[] = [
-    ...config.NAMEFI_FIRST_PARTY_ORIGINS,
-    ...(await getPoweredByNamefi3POrigins()),
+  const allowedHostnames: string[] = [
+    ...config.NAMEFI_FIRST_PARTY_HOSTNAMES,
+    ...(await getPoweredByNamefi3PHostnames()),
   ];
 
   return cors({
@@ -30,7 +30,12 @@ app.use(async (...args) => {
             return null;
           }
 
-          if (allowedOrigins.includes(parsedOrigin.hostname)) {
+          if (
+            allowedHostnames.includes(parsedOrigin.hostname) ||
+            allowedHostnames.includes(
+              config.ADDITIONAL_HOSTNAME_MAP[parsedOrigin.hostname],
+            )
+          ) {
             return origin;
           }
         } catch (error) {

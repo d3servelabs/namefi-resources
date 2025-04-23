@@ -16,7 +16,7 @@ import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { z } from 'zod';
 import {
   getDomainListInfo,
-  getPoweredByNamefi3POrigins,
+  getPoweredByNamefi3PHostnames,
 } from '#services/namefi-registry';
 import { createTRPCRouter, publicProcedure } from '../base';
 
@@ -54,7 +54,7 @@ export const searchRouter = createTRPCRouter({
       const { query } = input;
 
       // TODO: this will be replaced when we implement AI suggestions
-      const poweredByNamefiOrigins = await getPoweredByNamefi3POrigins();
+      const poweredByNamefiHostnames = await getPoweredByNamefi3PHostnames();
 
       // Determine parent domain using fallback chain:
       // 1. Use input.parentDomain if provided
@@ -63,7 +63,7 @@ export const searchRouter = createTRPCRouter({
       const parentDomain =
         input.parentDomain ??
         ctx.thirdPartyOriginHostname ??
-        poweredByNamefiOrigins[0];
+        poweredByNamefiHostnames[0];
 
       const suggestions = getSuggestions(query, parentDomain);
       const bulkAvailability = await getDomainListInfo(suggestions);

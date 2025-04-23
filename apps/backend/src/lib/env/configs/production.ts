@@ -9,11 +9,8 @@ const productionConfig: ConfigInput = {
   SMTP_SECURE: true,
   SMTP_HOST: 'email-smtp.us-east-1.amazonaws.com',
   APP_URL: 'astra.namefi.io',
-  NAMEFI_FIRST_PARTY_ORIGINS: ['astra.namefi.io'],
-  ADDITIONAL_POWERED_BY_NAMEFI_THIRD_PARTY_ORIGINS: [
-    '0x.city',
-    'poweredby.namefi.io',
-  ],
+  NAMEFI_FIRST_PARTY_HOSTNAMES: ['astra.namefi.io'],
+  POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES: ['0x.city', 'poweredby.namefi.io'],
   ALLOWED_CHAINS: [chains.mainnet.id, chains.base.id],
   EMAIL_ADDRESS_TO_OWNED_HOSTNAMES_MAP: {
     'dev-team@d3serve.xyz': ['0x.city'],

@@ -78,7 +78,7 @@ const SearchHeader: FC<{
       {originInfo.isFirstPartyOrigin && (
         <>
           <span className="text-sm font-medium">Network:</span>
-          {config.POWERED_BY_NAMEFI_THIRD_PARTY_ORIGINS.map((origin) => (
+          {config.POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES.map((origin) => (
             <Button
               key={origin}
               variant={parentDomain === origin ? 'default' : 'outline'}
@@ -325,7 +325,7 @@ export const Search: FC<DomainSearchProps> = ({
   useEffect(() => {
     if (!isOriginLoading) {
       if (originInfo.isFirstPartyOrigin) {
-        setParentDomain(config.POWERED_BY_NAMEFI_THIRD_PARTY_ORIGINS[0]);
+        setParentDomain(config.POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES[0]);
       } else if (originInfo.thirdPartyOrigin) {
         setParentDomain(originInfo.thirdPartyOrigin);
       }

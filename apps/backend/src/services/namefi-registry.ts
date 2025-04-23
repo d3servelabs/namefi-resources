@@ -33,14 +33,14 @@ export const _mockGetDomainInfo = async (domains: NamefiNormalizedDomain[]) => {
 };
 
 // biome-ignore lint/suspicious/useAwait: it will be a db query in upcoming updates
-export const getPoweredByNamefi3POrigins = async () => {
+export const getPoweredByNamefi3PHostnames = async () => {
   const fromDb: string[] = [];
-  const fromConfig = config.ADDITIONAL_POWERED_BY_NAMEFI_THIRD_PARTY_ORIGINS;
+  const fromConfig = config.POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES;
   return Promise.resolve([...fromDb, ...fromConfig]);
 };
 
 // biome-ignore lint/suspicious/useAwait: it will be a db query in upcoming updates
-export const getSubdomainPriceInUsd = async (subdomain: string) => {
+export const getSubdomainPriceInUsd = async (_subdomain: string) => {
   return 5;
 };
 
