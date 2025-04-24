@@ -203,6 +203,17 @@ export const DnsRecordsTable: FC<DnsManagementProps> = ({
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    globalFilterFn: (row, _columnId, filterValue) => {
+      if (!filterValue || filterValue.length === 0) {
+        return true;
+      }
+      return (
+        row.original.type.includes(filterValue) ||
+        row.original.name.includes(filterValue) ||
+        row.original.rdata.includes(filterValue) ||
+        row.original.ttl.toString().includes(filterValue)
+      );
+    },
     state: {
       sorting,
       columnFilters: finalColumnFilters,
