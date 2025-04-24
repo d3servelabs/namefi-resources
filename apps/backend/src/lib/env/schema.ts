@@ -24,6 +24,7 @@ export type SecretsSchema = z.infer<typeof secretsSchema>;
 
 export const configSchema = z.object({
   PORT: z.number().default(3000),
+  TEMPORAL_WORKER_PORT: z.number().default(3000),
   LOG_LEVEL: z.enum(['debug', 'info', 'warn', 'error']),
   PRIVY_APP_ID: z.string(),
   TEMPORAL_API_URL: z.string().url(),

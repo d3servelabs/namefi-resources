@@ -6,6 +6,7 @@ const localConfig: ConfigInput = {
   PRIVY_APP_ID: 'cm2lx4u5a03x3rtgp4keapmrb',
   TEMPORAL_API_URL: 'localhost:7233',
   TEMPORAL_NAMESPACE: 'default',
+  TEMPORAL_WORKER_PORT: 3001,
   SMTP_PORT: 2025,
   SMTP_HOST: 'smtp.mail.namefi.dev',
   SMTP_SECURE: false,

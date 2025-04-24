@@ -22,7 +22,7 @@ async function main() {
   serve(
     {
       fetch: app.fetch,
-      port: config.PORT,
+      port: config.TEMPORAL_WORKER_PORT,
     },
     (info) => {
       console.info('Server is running on port', info.port);
