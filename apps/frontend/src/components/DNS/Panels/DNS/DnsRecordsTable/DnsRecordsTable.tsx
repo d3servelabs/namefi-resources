@@ -149,7 +149,12 @@ export const DnsRecordsTable: FC<DnsManagementProps> = ({
         cell: (context) => (
           <TypeColumnCell context={context} onCellUpdate={handleCellUpdate} />
         ),
-        filterFn: 'includesString',
+        filterFn: (row, _, filterValue) => {
+          if (!filterValue || filterValue.length === 0) {
+            return true;
+          }
+          return filterValue.includes(row.original.type);
+        },
       },
       {
         accessorKey: 'name',
@@ -182,6 +187,10 @@ export const DnsRecordsTable: FC<DnsManagementProps> = ({
     [handleCellUpdate],
   );
 
+  const finalColumnFilters = useMemo(
+    () => [{ id: 'type', value: typeFilter }, ...columnFilters],
+    [typeFilter, columnFilters],
+  );
   // Initialize table
   const table = useReactTable({
     data: dnsRecords.data ?? [],
@@ -196,7 +205,7 @@ export const DnsRecordsTable: FC<DnsManagementProps> = ({
     getPaginationRowModel: getPaginationRowModel(),
     state: {
       sorting,
-      columnFilters,
+      columnFilters: finalColumnFilters,
       columnVisibility,
       rowSelection,
       globalFilter,
@@ -226,30 +235,15 @@ export const DnsRecordsTable: FC<DnsManagementProps> = ({
   // Handle type filtering
   const handleTypeFilterChange = useCallback((type: string) => {
     setTypeFilter((prev) => {
-      if (prev.includes(type)) {
-        return prev.filter((t) => t !== type);
+      const newSet = new Set(prev);
+      if (newSet.has(type)) {
+        newSet.delete(type);
+      } else {
+        newSet.add(type);
       }
-      return [...prev, type];
+      return Array.from(newSet);
     });
   }, []);
-
-  useEffect(() => {
-    if (typeFilter.length > 0) {
-      setColumnFilters((prev) => {
-        const typeFilterIndex = prev.findIndex(
-          (filter) => filter.id === 'type',
-        );
-        if (typeFilterIndex >= 0) {
-          const newFilters = [...prev];
-          newFilters[typeFilterIndex] = { id: 'type', value: typeFilter };
-          return newFilters;
-        }
-        return [...prev, { id: 'type', value: typeFilter }];
-      });
-    } else {
-      setColumnFilters((prev) => prev.filter((filter) => filter.id !== 'type'));
-    }
-  }, [typeFilter]);
 
   // Memoize the search input
   const searchInput = useMemo(
