@@ -19,6 +19,10 @@ inputs:
 
 This task guides you through reviewing pull requests in namefi-astra according to project standards.
 
+## If it's trivial small change
+
+If the PR is a trivial small change, you can approve it directly.
+
 ## Finding file changes
 When reviewing file changes, instead of diffing with default branch such as `main` please diff against the base branch of the PR.
 
