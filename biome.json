@@ -46,7 +46,7 @@
       "suspicious": {
         "noExplicitAny": "info",
         "noEmptyBlockStatements": "info",
-        "noReactSpecificProps": "info",
+        "noReactSpecificProps": { "level": "info", "fix": "unsafe" },
         "noConsoleLog": "info",
         "noConsole": "info",
         "noArrayIndexKey": "info"
