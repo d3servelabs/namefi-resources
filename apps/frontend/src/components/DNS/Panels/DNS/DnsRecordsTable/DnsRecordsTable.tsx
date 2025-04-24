@@ -230,9 +230,10 @@ export const DnsRecordsTable: FC<DnsManagementProps> = ({
   });
 
   // Add bulk edit button next to bulk delete
+  // biome-ignore lint/correctness/useExhaustiveDependencies: this is an extra state that is needed to trigger getting the selected rows
   const selectedRowModels = useMemo(
     () => table.getFilteredSelectedRowModel().rows,
-    [table],
+    [rowSelection, table],
   );
   const selectedRecords = useMemo(
     () => selectedRowModels.map((row) => row.original),
