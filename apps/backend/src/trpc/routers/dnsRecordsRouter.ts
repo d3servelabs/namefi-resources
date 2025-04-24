@@ -133,8 +133,9 @@ export const dnsRecordsRouter = createTRPCRouter({
               .returning()
               .getSQL(),
           ),
+          sql`;\n`,
         );
-        return tx.execute(multiStatementSQL);
+        return tx.execute(multiStatementSQL.inlineParams());
       });
 
       return updatedRecords;
