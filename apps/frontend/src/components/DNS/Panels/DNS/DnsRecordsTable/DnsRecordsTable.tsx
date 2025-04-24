@@ -273,6 +273,7 @@ export const DnsRecordsTable: FC<DnsManagementProps> = ({
   );
 
   // Memoize the column visibility dropdown
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   const columnVisibilityDropdown = useMemo(
     () => (
       <DropdownMenu>
@@ -305,7 +306,7 @@ export const DnsRecordsTable: FC<DnsManagementProps> = ({
         </DropdownMenuContent>
       </DropdownMenu>
     ),
-    [table],
+    [columnVisibility],
   );
 
   // Memoize the filter dropdown
