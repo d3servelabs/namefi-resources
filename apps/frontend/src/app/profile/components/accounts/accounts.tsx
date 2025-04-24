@@ -10,6 +10,7 @@ import {
 import { type User, usePrivy } from '@privy-io/react-auth';
 import { Mail, Users2 } from 'lucide-react';
 import { useCallback } from 'react';
+import { TwitterIcon } from 'react-share';
 import { toast } from 'sonner';
 import { Account } from './account';
 
@@ -18,7 +19,7 @@ export interface AccountsProps {
 }
 
 export const Accounts = ({ user }: AccountsProps) => {
-  const { linkEmail, unlinkEmail } = usePrivy();
+  const { linkEmail, linkTwitter, unlinkEmail, unlinkTwitter } = usePrivy();
 
   const handleLinkEmail = useCallback(() => {
     try {
@@ -48,6 +49,36 @@ export const Accounts = ({ user }: AccountsProps) => {
     [unlinkEmail],
   );
 
+  const handleLinkTwitter = useCallback(() => {
+    try {
+      linkTwitter();
+    } catch (error) {
+      toast.error('Failed to link Twitter account', {
+        description: `Please try again. ${error instanceof Error ? error.message : 'Unknown error'}`,
+      });
+    }
+  }, [linkTwitter]);
+
+  const handleUnlinkTwitter = useCallback(
+    async (subject: string) => {
+      if (!subject) {
+        return;
+      }
+
+      try {
+        await unlinkTwitter(subject);
+        toast.success('Twitter account unlinked', {
+          description: 'Your account has been successfully unlinked.',
+        });
+      } catch (error) {
+        toast.error('Failed to unlink Twitter account', {
+          description: `Please try again. ${error instanceof Error ? error.message : 'Unknown error'}`,
+        });
+      }
+    },
+    [unlinkTwitter],
+  );
+
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between">
@@ -70,6 +101,18 @@ export const Accounts = ({ user }: AccountsProps) => {
             verified={!!user.email?.address}
             onLink={handleLinkEmail}
             onUnlink={() => handleUnlinkEmail(user.email?.address)}
+          />
+
+          <Account
+            title="Twitter"
+            icon={<TwitterIcon className="h-5 w-5" />}
+            isLinked={!!user.twitter?.username}
+            linkedValue={
+              user.twitter?.username ? `@${user.twitter.username}` : undefined
+            }
+            verified={!!user.twitter?.username}
+            onLink={handleLinkTwitter}
+            onUnlink={() => handleUnlinkTwitter(user.twitter?.subject ?? '')}
           />
         </div>
       </CardContent>
