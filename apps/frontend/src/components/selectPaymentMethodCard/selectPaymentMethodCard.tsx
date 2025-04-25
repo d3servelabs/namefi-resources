@@ -385,3 +385,27 @@ export function SelectPaymentMethodCard({
     </CartCard>
   );
 }
+
+export type NoPaymentMethodRequiredCardProps = {
+  footerButton?: ReactNode;
+  disabled?: boolean;
+};
+
+export function NoPaymentMethodRequiredCard({
+  footerButton,
+}: NoPaymentMethodRequiredCardProps) {
+  return (
+    <CartCard
+      title="Payment Method"
+      footer={<div className="flex flex-col gap-4 w-full">{footerButton}</div>}
+    >
+      <div className="flex flex-col items-center justify-center">
+        <p className="text-muted-foreground text-center">
+          We hope you'll enjoy your new domains! We'll send them to the wallet
+          address you've provided.
+        </p>
+      </div>
+      <Separator className="my-6" />
+    </CartCard>
+  );
+}

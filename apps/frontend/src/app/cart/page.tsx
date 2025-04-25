@@ -4,6 +4,7 @@ import { NamefiButton } from '@/components/namefi-button';
 import { NftWalletCard } from '@/components/nftWalletCard';
 import { useInteractionLoggers } from '@/components/providers/interactionLoggersProvider';
 import {
+  NoPaymentMethodRequiredCard,
   SelectPaymentMethodCard,
   SelectedPaymentMethod,
 } from '@/components/selectPaymentMethodCard/selectPaymentMethodCard';
@@ -29,7 +30,11 @@ import { formatAmountInUSD } from '@/utils/number';
 import { useTRPC } from '@/utils/trpc';
 import type { DeepPartial } from '@/utils/types';
 import { createOrderInputSchema } from '@namefi-astra/backend/trpc/types';
-import { isNfscPayment, isStripePayment } from '@namefi-astra/db/types';
+import {
+  isNfscPayment,
+  isStripePayment,
+  paymentProviderSchema,
+} from '@namefi-astra/db/types';
 import { CHAINS, NFSC_CONTRACT_ADDRESS } from '@namefi-astra/utils';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { inferInput } from '@trpc/tanstack-react-query';
@@ -84,6 +89,11 @@ export default function CartPage() {
   const totalAmountInUsdCents = useMemo(
     () => items.reduce((sum, item) => sum + item.amountInUSDCents, 0),
     [items],
+  );
+
+  const cartItemsAreAllPromo = useMemo(
+    () => items.length > 0 && totalAmountInUsdCents === 0,
+    [items, totalAmountInUsdCents],
   );
 
   const { mutate: removeItem } = useMutation(
@@ -149,11 +159,19 @@ export default function CartPage() {
   }, [nfscBalanceData]);
 
   const hasSufficientBalance = useMemo(() => {
+    if (cartItemsAreAllPromo) {
+      return true;
+    }
+
     return (
       selectedWalletChainNfscBalanceInUsdCents &&
       selectedWalletChainNfscBalanceInUsdCents >= totalAmountInUsdCents
     );
-  }, [selectedWalletChainNfscBalanceInUsdCents, totalAmountInUsdCents]);
+  }, [
+    cartItemsAreAllPromo,
+    selectedWalletChainNfscBalanceInUsdCents,
+    totalAmountInUsdCents,
+  ]);
 
   const handlePaymentMethodDetailsChanged = useCallback(
     (
@@ -181,6 +199,35 @@ export default function CartPage() {
     },
     [],
   );
+
+  useEffect(() => {
+    // TODO(Luis): consider changing how we set paymentDetails for promo-only orders.
+    // When no payment method details are required because cartItemsAreAllPromo, we
+    // set the paymentMethodDetails as nfscPaymentDetails with the same walletAddress
+    // and chainId as the receiving wallet
+    if (cartItemsAreAllPromo) {
+      handleSelectedPaymentMethodChanged(SelectedPaymentMethod.NFSC);
+      const newNfscPaymentMethodDetails: DeepPartial<
+        Omit<PaymentDetails, 'nftMetadata'>
+      > | null = selectedNftWalletAddress
+        ? {
+            paymentProviderDetails: {
+              paymentProvider: paymentProviderSchema.Values.NFSC_BASE, // default value for receiving wallet
+              nfscPaymentDetails: {
+                walletAddress: selectedNftWalletAddress,
+                chainId: CHAINS.base.id, // default value for receiving wallet
+              },
+            },
+          }
+        : null;
+      handlePaymentMethodDetailsChanged(newNfscPaymentMethodDetails);
+    }
+  }, [
+    cartItemsAreAllPromo,
+    selectedNftWalletAddress,
+    handlePaymentMethodDetailsChanged,
+    handleSelectedPaymentMethodChanged,
+  ]);
 
   const paymentMethodSelected = useMemo(() => {
     switch (selectedPaymentMethod) {
@@ -465,28 +512,49 @@ export default function CartPage() {
 
           {/* Right Column */}
           <div>
-            <SelectPaymentMethodCard
-              cartTotalInUsdCents={totalAmountInUsdCents}
-              onPaymentMethodDetailsChanged={handlePaymentMethodDetailsChanged}
-              onSelectedPaymentMethodChanged={
-                handleSelectedPaymentMethodChanged
-              }
-              disabled={isDisabled}
-              footerButton={
-                <NamefiButton
-                  variant="default"
-                  className="w-full"
-                  disabled={submitOrderDisabled || isDisabled}
-                  onClick={handleSubmitOrder}
-                  size="lg"
-                >
-                  {(isCreateOrderPending || isRedirecting) && (
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  )}
-                  {submitButtonText}
-                </NamefiButton>
-              }
-            />
+            {cartItemsAreAllPromo ? (
+              <NoPaymentMethodRequiredCard
+                footerButton={
+                  <NamefiButton
+                    variant="default"
+                    className="w-full"
+                    disabled={submitOrderDisabled || isDisabled}
+                    onClick={handleSubmitOrder}
+                    size="lg"
+                  >
+                    {(isCreateOrderPending || isRedirecting) && (
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    )}
+                    {submitButtonText}
+                  </NamefiButton>
+                }
+              />
+            ) : (
+              <SelectPaymentMethodCard
+                cartTotalInUsdCents={totalAmountInUsdCents}
+                onPaymentMethodDetailsChanged={
+                  handlePaymentMethodDetailsChanged
+                }
+                onSelectedPaymentMethodChanged={
+                  handleSelectedPaymentMethodChanged
+                }
+                disabled={isDisabled}
+                footerButton={
+                  <NamefiButton
+                    variant="default"
+                    className="w-full"
+                    disabled={submitOrderDisabled || isDisabled}
+                    onClick={handleSubmitOrder}
+                    size="lg"
+                  >
+                    {(isCreateOrderPending || isRedirecting) && (
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    )}
+                    {submitButtonText}
+                  </NamefiButton>
+                }
+              />
+            )}
           </div>
         </div>
       ) : (
