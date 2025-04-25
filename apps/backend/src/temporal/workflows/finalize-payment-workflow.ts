@@ -34,6 +34,17 @@ export async function finalizePaymentWorkflow({
     });
 
   const paymentDetails = await getPaymentDetails({ paymentId });
+
+  // MARK: Payments with original amountInUSDCents === 0 (because of promos) should already be marked as successful
+  // and amountToCapture and amountToRefund should === 0 or be null
+  if (
+    paymentDetails.status === paymentStatusSchema.Values.SUCCEEDED &&
+    amountToCaptureInUsdCents === 0 &&
+    !amountToRefundInUsdCents
+  ) {
+    return { paymentStatus: paymentDetails.status };
+  }
+
   if (paymentDetails.paymentProvider === paymentProviderSchema.Values.STRIPE) {
     if (amountToCaptureInUsdCents > 0) {
       const { capturedStripePaymentIntent } = await captureStripePayment({

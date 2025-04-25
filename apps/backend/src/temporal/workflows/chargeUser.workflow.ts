@@ -53,6 +53,20 @@ export async function chargeUserWorkflow({
   let paymentStatus = status;
   let paymentProviderReferenceId: string | undefined;
 
+  //  MARK: Payments with amountInUSDCents === 0 should be marked as successful
+  if (amountInUSDCents === 0) {
+    paymentStatus = paymentStatusSchema.Values.SUCCEEDED;
+
+    // MARK: Update Payment
+    const updatedPayment = await updatePayment({
+      id: paymentId,
+      status: paymentStatus,
+      paymentProviderReferenceId,
+    });
+
+    return { paymentStatus: updatedPayment.status };
+  }
+
   // MARK: Execute Charge ChildWorkflow based on PaymentProvider
   if (paymentProvider === paymentProviderSchema.Values.STRIPE) {
     try {
