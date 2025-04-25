@@ -1,3 +1,4 @@
+import type { SearchComponent } from '@/components/search/types';
 import type { Metadata } from 'next';
 import type { StaticImageData } from 'next/image';
 
@@ -52,6 +53,10 @@ type Background = {
  */
 export type Logo = ImageLogo | LottieLogo;
 
+export type LandingPage = {
+  component?: SearchComponent;
+};
+
 /**
  * Origin-specific configuration
  */
@@ -59,6 +64,7 @@ export type OriginConfig = {
   metadata: Metadata;
   logo: Logo;
   background?: Background;
+  landingPage?: LandingPage;
 };
 
 /**
@@ -68,3 +74,12 @@ export type OriginConfigMap = {
   firstParty: OriginConfig;
   thirdParty: Record<string, OriginConfig>;
 };
+
+/**
+ * Information about the origin
+ */
+export interface OriginInfo {
+  isFirstPartyOrigin: boolean;
+  thirdPartyHostname: string | null;
+  config: OriginConfig;
+}

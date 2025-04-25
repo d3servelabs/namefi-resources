@@ -1,3 +1,4 @@
+import { Search as AstraSearch } from '@/components/astra/Search';
 import type { OriginConfigMap } from './types';
 
 /**
@@ -15,6 +16,9 @@ export const originConfig: OriginConfigMap = {
       alt: 'NameFi Logo',
       width: 80,
       height: 24,
+    },
+    landingPage: {
+      component: AstraSearch,
     },
   },
   thirdParty: {

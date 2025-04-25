@@ -1,9 +1,5 @@
 'use client';
 
-import {
-  useOrigin,
-  useOriginInfo,
-} from '@/components/providers/originProvider';
 import { Badge } from '@/components/ui/shadcn/badge';
 import { Button } from '@/components/ui/shadcn/button';
 import { Card, CardContent } from '@/components/ui/shadcn/card';
@@ -21,16 +17,15 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/shadcn/tooltip';
-import { useAuth } from '@/hooks/useAuth';
+import { useCart } from '@/hooks/landing/use-cart';
+import {
+  type DomainData,
+  useDomainFilters,
+} from '@/hooks/landing/use-domain-filters';
+import { useSearch } from '@/hooks/landing/use-search';
 import { config } from '@/lib/env';
 import { cn } from '@/lib/utils';
-import {
-  InteractionLoggingEventName,
-  type SearchEvent,
-} from '@/utils/interaction-logging/events';
 import { formatAmountInUSD } from '@/utils/number';
-import { useTRPC } from '@/utils/trpc';
-import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   Check,
   Loader2,
@@ -39,34 +34,17 @@ import {
   User,
   X,
 } from 'lucide-react';
-import {
-  type FC,
-  type HTMLAttributes,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import { type FC, useState } from 'react';
 import { NamefiButton } from '../namefi-button';
-import { useInteractionLoggers } from '../providers/interactionLoggersProvider';
 import { Placeholder } from './Placeholder';
-
-// Types
-export type DomainSearchProps = HTMLAttributes<HTMLDivElement>;
-type DomainData = {
-  domain: string;
-  availability: boolean;
-  priceInUSD?: number | null;
-  currentOwner?: string | null;
-};
+import type { SearchComponent } from './types';
 
 // Components
-const SearchHeader: FC<{
+export const SearchHeader: FC<{
   parentDomain: string;
   setParentDomain: (domain: string) => void;
-}> = ({ parentDomain, setParentDomain }) => {
-  const originInfo = useOriginInfo();
-
+  isFirstPartyOrigin: boolean;
+}> = ({ parentDomain, setParentDomain, isFirstPartyOrigin }) => {
   return (
     <div className="flex flex-col items-center mt-40 p-4 gap-3">
       <h1 className="text-8xl font-bold text-white drop-shadow-lg">
@@ -75,7 +53,7 @@ const SearchHeader: FC<{
       <p className="text-4xl text-white font-semibold drop-shadow-xl">
         Search for a domain on {parentDomain}
       </p>
-      {originInfo.isFirstPartyOrigin && (
+      {isFirstPartyOrigin && (
         <>
           <span className="text-sm font-medium">Network:</span>
           {config.POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES.map((origin) => (
@@ -95,7 +73,7 @@ const SearchHeader: FC<{
   );
 };
 
-const SearchInput: FC<{
+export const SearchInput: FC<{
   query: string;
   setQuery: (query: string) => void;
   isLoading: boolean;
@@ -135,7 +113,7 @@ const SearchInput: FC<{
   </div>
 );
 
-const DomainCard: FC<{
+export const DomainCard: FC<{
   domain: DomainData;
   isDomainInCart: (domain: string) => boolean;
   handleDomainAction: (domain: DomainData) => void;
@@ -230,7 +208,7 @@ const DomainCard: FC<{
   );
 };
 
-const LoadingSkeletons: FC = () => (
+export const LoadingSkeletons: FC = () => (
   <div className="flex flex-col gap-4">
     {Array.from({ length: 5 }).map((_, index) => (
       <Card
@@ -253,7 +231,7 @@ const LoadingSkeletons: FC = () => (
   </div>
 );
 
-const SearchResults: FC<{
+export const SearchResults: FC<{
   isLoading: boolean;
   filteredDomains: DomainData[];
   query: string;
@@ -310,155 +288,46 @@ const SearchResults: FC<{
 };
 
 // Main component
-export const Search: FC<DomainSearchProps> = ({
-  className,
-  ...rest
-}: DomainSearchProps) => {
-  const [query, setQuery] = useState('');
-  const [activeTab, setActiveTab] = useState('all');
-  const { isLoading: isOriginLoading, originInfo } = useOrigin();
-  const [parentDomain, setParentDomain] = useState<string | undefined>(
-    undefined,
-  );
-
-  // Initialize parentDomain when origin info is available
-  useEffect(() => {
-    if (!isOriginLoading) {
-      if (originInfo.isFirstPartyOrigin) {
-        setParentDomain(config.POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES[0]);
-      } else if (originInfo.thirdPartyOrigin) {
-        setParentDomain(originInfo.thirdPartyOrigin);
-      }
+export const Search: SearchComponent = ({ originInfo }) => {
+  const [parentDomain, setParentDomain] = useState<string | undefined>(() => {
+    if (originInfo.isFirstPartyOrigin) {
+      return config.POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES[0];
     }
-  }, [isOriginLoading, originInfo]);
 
-  const trpc = useTRPC();
-  const { isAuthenticated } = useAuth();
-
-  // Data fetching hooks
-  const {
-    data: searchData,
-    isLoading,
-    isFetching,
-    isFetched,
-    refetch,
-  } = useQuery({
-    ...trpc.search.search.queryOptions({
-      query,
-      parentDomain,
-    }),
-    enabled: query.length > 0 && !!parentDomain,
+    if (originInfo.thirdPartyHostname) {
+      return originInfo.thirdPartyHostname;
+    }
+    return undefined;
   });
+
+  const { query, setQuery, domains, isSearchLoading, refetch } =
+    useSearch(parentDomain);
 
   const {
-    data: cartData,
-    isLoading: isCartLoading,
-    isFetching: isCartFetching,
-    refetch: refetchCart,
-  } = useQuery({
-    ...trpc.carts.getItems.queryOptions(),
-    enabled: isAuthenticated,
-  });
+    isCartDataLoading,
+    isAddingToCart,
+    isRemovingFromCart,
+    isDomainInCart,
+    handleDomainAction,
+  } = useCart();
 
-  // Mutations
-  const { mutate: addToCartMutate, isPending: isAddingToCart } = useMutation({
-    ...trpc.carts.addItem.mutationOptions({
-      onSuccess: () => refetchCart(),
-    }),
-  });
-
-  const { mutate: removeFromCartMutate, isPending: isRemovingFromCart } =
-    useMutation({
-      ...trpc.carts.removeItem.mutationOptions({
-        onSuccess: () => refetchCart(),
-      }),
-    });
-
-  // Log completed search queries
-  const { logEventWithInteractionLoggers } = useInteractionLoggers();
-
-  useEffect(() => {
-    if (isFetched) {
-      const searchEvent: SearchEvent = {
-        name: InteractionLoggingEventName.SEARCH,
-        properties: { search_term: query },
-      };
-      logEventWithInteractionLoggers(searchEvent);
-    }
-  }, [isFetched, query, logEventWithInteractionLoggers]);
-
-  // Derived state
-  const domains = useMemo(
-    () =>
-      (searchData?.bulkAvailability ?? []).filter(
-        (domain) => domain.domain !== query,
-      ),
-    [searchData?.bulkAvailability, query],
+  const { activeTab, setActiveTab, filteredDomains } = useDomainFilters(
+    domains,
+    isDomainInCart,
   );
 
-  // Helper functions
-  const isDomainInCart = useCallback(
-    (domainName: string) => {
-      return !!cartData?.some(
-        (item) => item.normalizedDomainName === domainName,
-      );
-    },
-    [cartData],
-  );
-
-  const getCartItemId = useCallback(
-    (domainName: string) => {
-      return cartData?.find((item) => item.normalizedDomainName === domainName)
-        ?.id;
-    },
-    [cartData],
-  );
-
-  const handleDomainAction = useCallback(
-    (domain: DomainData) => {
-      if (isDomainInCart(domain.domain)) {
-        const itemId = getCartItemId(domain.domain);
-        if (itemId) {
-          removeFromCartMutate(itemId);
-        }
-      } else {
-        addToCartMutate({
-          normalizedDomainName: domain.domain,
-          amountInUSDCents: domain.priceInUSD ? domain.priceInUSD * 100 : 0,
-        });
-      }
-    },
-    [isDomainInCart, getCartItemId, removeFromCartMutate, addToCartMutate],
-  );
-
-  // Filter domains based on active tab
-  const filteredDomains = useMemo(() => {
-    if (activeTab === 'available') {
-      return domains.filter((domain) => domain.availability);
-    }
-    if (activeTab === 'taken') {
-      return domains.filter((domain) => !domain.availability);
-    }
-    if (activeTab === 'cart') {
-      return domains.filter((domain) => isDomainInCart(domain.domain));
-    }
-    return domains;
-  }, [domains, activeTab, isDomainInCart]);
-
-  const isSearchLoading = isLoading || isFetching;
-  const isCartDataLoading = isCartLoading || isCartFetching;
-
-  if (isOriginLoading || !parentDomain) {
+  if (!parentDomain) {
     // Return loading state or null while origin info is loading
     return null;
   }
 
   return (
-    <div className={cn('flex gap-4 flex-col', className)} {...rest}>
+    <div className="flex gap-4 flex-col">
       <div className="flex flex-col items-center gap-4">
         <SearchHeader
           parentDomain={parentDomain}
           setParentDomain={setParentDomain}
+          isFirstPartyOrigin={originInfo.isFirstPartyOrigin}
         />
         <SearchInput
           query={query}
@@ -515,4 +384,4 @@ export const Search: FC<DomainSearchProps> = ({
   );
 };
 
-Search.displayName = 'DomainSearch';
+Search.displayName = 'Search';

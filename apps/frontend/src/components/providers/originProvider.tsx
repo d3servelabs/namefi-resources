@@ -5,14 +5,8 @@ import {
   useIsNamefiFirstPartyOrigin,
 } from '@/hooks/use-origin-info';
 import { getOriginConfig } from '@/lib/origin';
-import type { OriginConfig } from '@/lib/origin/types';
+import type { OriginInfo } from '@/lib/origin/types';
 import { type ReactNode, createContext, useContext, useEffect } from 'react';
-
-interface OriginInfo {
-  isFirstPartyOrigin: boolean;
-  thirdPartyOrigin: string | null;
-  config: OriginConfig;
-}
 
 // Create a discriminated union based on loading state
 type OriginContextType =
@@ -58,7 +52,7 @@ export function OriginProvider({ children }: OriginProviderProps) {
         isLoading: false,
         originInfo: {
           isFirstPartyOrigin: firstPartyState.data,
-          thirdPartyOrigin: thirdPartyState.data?.hostname,
+          thirdPartyHostname: thirdPartyState.data?.hostname,
           config: getOriginConfig(thirdPartyState.data?.origin),
         },
       };

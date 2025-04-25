@@ -85,7 +85,7 @@ export const BrandLogo: ForwardRefExoticComponent<BrandLogoProps> = forwardRef<
           />
         ) : logo.type === 'lottie' ? (
           <LazyLottie
-            id={`brand-logo-${originInfo.thirdPartyOrigin || 'default'}`}
+            id={`brand-logo-${originInfo.thirdPartyHostname || 'default'}`}
             lottieRef={lottieRef}
             getJson={getJson}
             style={{ width: logo.width, height: logo.height }}

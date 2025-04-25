@@ -20,7 +20,7 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
     }
 
     // Set data-theme attribute based on origin
-    const themeName = getThemeFromOrigin(origin.originInfo.thirdPartyOrigin);
+    const themeName = getThemeFromOrigin(origin.originInfo.thirdPartyHostname);
     setTheme(themeName);
   }, [origin]);
 

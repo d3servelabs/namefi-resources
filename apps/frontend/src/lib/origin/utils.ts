@@ -2,7 +2,7 @@ import { config } from '@/lib/env';
 import { getHostname } from '@/lib/utils';
 import type { ReadonlyHeaders } from 'next/dist/server/web/spec-extension/adapters/headers';
 import { originConfig } from './config';
-import type { OriginConfig } from './types';
+import type { OriginConfig, OriginInfo } from './types';
 
 /**
  * Get the host from server-side headers
@@ -60,4 +60,18 @@ export function getOriginConfig(origin: string | null): OriginConfig {
   }
 
   return originConfig.firstParty;
+}
+
+export function getOriginInfo(origin: string): OriginInfo {
+  const isFirstPartyOrigin = isNamefiFirstPartyOrigin(origin);
+  const hostname = getHostname(origin);
+  const processedHostname = isFirstPartyOrigin
+    ? hostname
+    : getDomainForPoweredByNamefiThirdPartyOrigin(origin) || hostname;
+
+  return {
+    isFirstPartyOrigin,
+    thirdPartyHostname: processedHostname,
+    config: getOriginConfig(origin),
+  };
 }
