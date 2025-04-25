@@ -1,9 +1,14 @@
 import { db, userUpdateSchema, usersTable } from '@namefi-astra/db';
-import type { ChecksumWalletAddress } from '@namefi-astra/utils';
-import { checksumWalletAddressSchema } from '@namefi-astra/utils';
+import {
+  type ChecksumWalletAddress,
+  type NamefiNormalizedDomain,
+  checksumWalletAddressSchema,
+  getSubDomainAndParentDomainFromNormalizedDomainName,
+  namefiNormalizedDomainSchema,
+} from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
 import { eq, sql } from 'drizzle-orm';
-import { isEmpty, isNil } from 'ramda';
+import { isEmpty, isNil, isNotNil } from 'ramda';
 import { z } from 'zod';
 import { config } from '#lib/env';
 import { resolve } from '../../utils/resolve';
@@ -49,6 +54,17 @@ export const usersRouter = createTRPCRouter({
       }
 
       return updatedUser;
+    }),
+
+  getUserQualifiesForDomainNamePromo: protectedProcedure
+    .input(z.object({ normalizedDomainName: namefiNormalizedDomainSchema }))
+    .query(async ({ input, ctx }) => {
+      const { user } = ctx;
+
+      return await userQualifiesForDomainNamePromo({
+        normalizedDomainName: input.normalizedDomainName,
+        user,
+      });
     }),
 
   getCurrentUserDomains: protectedProcedure.query(async ({ ctx }) => {
@@ -241,3 +257,52 @@ export const usersRouter = createTRPCRouter({
     },
   ),
 });
+
+/*
+ * Function that checks if the the User qualifies for a promo for the provided normalizedDomainName.
+ * The current implementation checks if normalizedDomainName has the "0x.city" parent domain, the
+ * User has a Privy LinkedAccount username that starts with "0x", and the rest of the LinkedAccount
+ * username must match the normalizedDomainName's subdomain exactly.
+ * Ex: PrivyUser { email: {address: "0xnetizen1@gmail.com"}}, normalizedDomainName: "netizen1.0x.city" -> true
+ * Ex: PrivyUser { twitter: {username: "0xnetizen1"}}, normalizedDomainName: "netizen1.0x.city" -> true
+ */
+async function userQualifiesForDomainNamePromo({
+  normalizedDomainName,
+  user,
+}: {
+  normalizedDomainName: NamefiNormalizedDomain;
+  user: { privyUserId: string };
+}) {
+  const { subdomain, parentDomain } =
+    getSubDomainAndParentDomainFromNormalizedDomainName(normalizedDomainName);
+
+  if (!subdomain || parentDomain !== '0x.city') {
+    return false;
+  }
+
+  // Check privyUser exists
+  const [error, privyUser] = await resolve(
+    privyClient.getUserById(user.privyUserId),
+  );
+
+  if (error || isNil(privyUser)) {
+    return false;
+  }
+
+  // check email address
+  const privyEmailAddress = privyUser.email?.address;
+  if (isNotNil(privyEmailAddress) && privyEmailAddress.startsWith('0x')) {
+    const [name] = privyEmailAddress.split('@');
+    if (name.slice(2) === subdomain) {
+      return true;
+    }
+  }
+
+  // check twitter username
+  const privyTwitterUserName = privyUser.twitter?.username;
+  if (isNotNil(privyTwitterUserName) && privyTwitterUserName.startsWith('0x')) {
+    return privyTwitterUserName.slice(2) === subdomain;
+  }
+
+  return false;
+}

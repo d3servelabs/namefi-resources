@@ -1,4 +1,4 @@
-import { db, usersTable } from '@namefi-astra/db';
+import { type UserSelect, db, usersTable } from '@namefi-astra/db';
 import { initTRPC } from '@trpc/server';
 import { TRPCError } from '@trpc/server';
 import type { FetchCreateContextFnOptions } from '@trpc/server/adapters/fetch';
@@ -68,6 +68,10 @@ export const createContext = async (
      * The hostname of the selling SLD, it will be null in case it is a Namefi first party origin
      */
     thirdPartyOriginHostname,
+    /**
+     * A test user we can provide to return when verifyUserAuthAndCreation is called from tests
+     */
+    testUser: null as UserSelect | null,
   };
 };
 
@@ -153,6 +157,15 @@ export const publicProcedure = t.procedure.use(timingMiddleware);
  * This middleware will verify the user's privy authentication token, fetch the user from the database, and add the user to the context.
  */
 export const verifyUserAuthAndCreation = t.middleware(async ({ ctx, next }) => {
+  if (ctx.testUser) {
+    return next({
+      ctx: {
+        ...ctx,
+        user: ctx.testUser,
+      },
+    });
+  }
+
   const authToken = ctx.req.header('Authorization')?.replace('Bearer ', '');
 
   if (!authToken) {

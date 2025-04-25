@@ -29,13 +29,3 @@ export function formatDate(date: Date): string {
     hour12: true,
   });
 }
-
-export function getSubDomainAndParentDomainFromNormalizedDomainName(
-  normalizedDomainName: string,
-): { subdomain: string; parentDomain: string } {
-  const [subdomain, ...parentDomain] = normalizedDomainName.split('.');
-  return {
-    subdomain,
-    parentDomain: parentDomain.join('.'),
-  };
-}

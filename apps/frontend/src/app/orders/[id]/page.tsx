@@ -14,14 +14,13 @@ import {
 } from '@/components/ui/shadcn/carousel';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
 import { useAuth } from '@/hooks/useAuth';
-import {
-  formatDate,
-  getShortAddress,
-  getSubDomainAndParentDomainFromNormalizedDomainName,
-} from '@/lib/utils';
+import { formatDate, getShortAddress } from '@/lib/utils';
 import { useTRPC } from '@/utils/trpc';
 import { orderStatusSchema } from '@namefi-astra/db/types';
-import { getChain } from '@namefi-astra/utils';
+import {
+  getChain,
+  getSubDomainAndParentDomainFromNormalizedDomainName,
+} from '@namefi-astra/utils';
 import { useQuery } from '@tanstack/react-query';
 import { Loader2, SquareArrowOutUpRightIcon } from 'lucide-react';
 import Image from 'next/image';
