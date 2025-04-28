@@ -2,16 +2,14 @@ import { useAuth } from '@/hooks/useAuth';
 import { useTRPC } from '@/utils/trpc';
 import type { CartItemSelect as DbCartItem } from '@namefi-astra/db/types';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { useLocalStorage } from 'usehooks-ts';
 
 /**
  * Type for cart items stored both in server and localStorage
  */
-type CartItem = Pick<
-  DbCartItem,
-  'normalizedDomainName' | 'amountInUSDCents' | 'metadata'
->;
+type CartItem = Pick<DbCartItem, 'normalizedDomainName' | 'amountInUSDCents'> &
+  Partial<Pick<DbCartItem, 'metadata'>>;
 
 /**
  * Type for local cart items with client-side generated ID
@@ -25,6 +23,8 @@ type LocalCartItem = CartItem & Pick<DbCartItem, 'id'>;
 export function useCart() {
   const trpc = useTRPC();
   const { isAuthenticated } = useAuth();
+  // Ref to track sync status
+  const isSyncing = useRef(false);
 
   // Local storage cart for non-authenticated users
   const [localCartItems, setLocalCartItems, removeLocalCartItems] =
@@ -50,7 +50,7 @@ export function useCart() {
     isPending: isAddingToServerCart,
     mutateAsync: addToCartMutateAsync,
   } = useMutation({
-    ...trpc.carts.addItem.mutationOptions({
+    ...trpc.carts.addItems.mutationOptions({
       onSuccess: () => refetchCart(),
     }),
   });
@@ -122,11 +122,10 @@ export function useCart() {
         const cartItem: CartItem = {
           normalizedDomainName: domainName,
           amountInUSDCents: domain.priceInUSD ? domain.priceInUSD * 100 : 0,
-          metadata: {},
         };
 
         if (isAuthenticated) {
-          addToCartMutate(cartItem);
+          addToCartMutate([cartItem]);
         } else {
           addToLocalCart(cartItem);
         }
@@ -146,22 +145,27 @@ export function useCart() {
   // Sync local cart to server when user authenticates
   useEffect(() => {
     const syncLocalCartToServer = async () => {
-      if (!isAuthenticated || localCartItems.length === 0) {
+      if (
+        !isAuthenticated ||
+        localCartItems.length === 0 ||
+        isSyncing.current
+      ) {
         return;
       }
 
       try {
-        // Process items in sequence to prevent race conditions
-        for (const item of localCartItems) {
-          // Extract just the fields needed for the server (omit local id)
-          const { id, ...backendItem } = item;
-          await addToCartMutateAsync(backendItem);
+        isSyncing.current = true;
+        const backendItems = localCartItems.map(({ id, ...item }) => item);
+        // Only call if there are items to add
+        if (backendItems.length > 0) {
+          await addToCartMutateAsync(backendItems);
         }
-        // Clear local cart after successful sync
         removeLocalCartItems();
       } catch (error) {
         console.error('Failed to sync local cart to server:', error);
         // Don't clear local cart on failure to prevent data loss
+      } finally {
+        isSyncing.current = false;
       }
     };
 

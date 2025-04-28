@@ -4,7 +4,7 @@ import {
   cartItemsTable,
   db,
 } from '@namefi-astra/db';
-import { and, eq } from 'drizzle-orm';
+import { and, eq, sql } from 'drizzle-orm';
 import { z } from 'zod';
 import { createTRPCRouter, protectedProcedure } from '../base';
 import { isNormalizedDomainNameAllowedForOriginHostname } from '../utils';
@@ -18,31 +18,46 @@ export const cartsRouter = createTRPCRouter({
     return filterCartItemsByOrigin(cartItems, ctx.thirdPartyOriginHostname);
   }),
 
-  // Add item to cart for the current user
-  addItem: protectedProcedure
+  // Add multiple items to cart for the current user
+  addItems: protectedProcedure
     .input(
-      cartItemInsertSchema
-        .omit({
-          id: true,
-          userId: true,
-          createdAt: true,
-          updatedAt: true,
-        })
-        .required()
-        .partial({
-          metadata: true,
-        }),
+      z.array(
+        cartItemInsertSchema
+          .omit({
+            id: true,
+            userId: true,
+            createdAt: true,
+            updatedAt: true,
+          })
+          .required()
+          .partial({
+            metadata: true,
+          }),
+      ),
     )
     .mutation(async ({ ctx, input }) => {
-      // Add item to cart
-      await db.insert(cartItemsTable).values({
+      // Prepare items for insertion with user ID
+      const itemsToInsert = input.map((item) => ({
         userId: ctx.user.id,
-        amountInUSDCents: input.amountInUSDCents,
-        normalizedDomainName: input.normalizedDomainName,
-        metadata: input.metadata,
-      });
+        amountInUSDCents: item.amountInUSDCents,
+        normalizedDomainName: item.normalizedDomainName,
+        metadata: item.metadata || {},
+      }));
 
-      // Return cart items for the current user
+      // Insert items with conflict handling
+      await db
+        .insert(cartItemsTable)
+        .values(itemsToInsert)
+        .onConflictDoUpdate({
+          target: [cartItemsTable.userId, cartItemsTable.normalizedDomainName],
+          set: {
+            amountInUSDCents: sql`excluded.amount_in_usd_cents`,
+            metadata: sql`excluded.metadata`,
+            updatedAt: sql`now()`,
+          },
+        });
+
+      // Return updated cart with items
       const cartItems = await db.query.cartItemsTable.findMany({
         where: eq(cartItemsTable.userId, ctx.user.id),
       });
