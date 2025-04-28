@@ -1,0 +1,1 @@
+ALTER TABLE "cart_items" ADD CONSTRAINT "cart_items_user_id_domain_unique" UNIQUE("user_id","normalized_domain_name");

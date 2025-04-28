@@ -133,6 +133,10 @@ export const cartItemsTable = pgTable(
   },
   (table) => [
     check('amount_in_usd_cents_nonnegative', sql`amount_in_usd_cents >= 0`),
+    unique('cart_items_user_id_domain_unique').on(
+      table.userId,
+      table.normalizedDomainName,
+    ),
     index('cart_items_user_id_idx').on(table.userId),
   ],
 );
