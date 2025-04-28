@@ -20,7 +20,7 @@ const Hero: FC = () => {
       <h2 className="text-3xl md:text-4xl font-bold mb-6">
         Building theDecentralized Future Together
       </h2>
-      <p className="max-w-3xl mx-auto text-lg text-muted-foreground">
+      <p className="max-w-3xl mx-auto text-lg text-muted-foreground px-4">
         Join the network of '0x Generation' citizens, where you not only have
         anidentity but also define the future together.
         <br />
@@ -33,10 +33,12 @@ const Hero: FC = () => {
 // What Is Section with Orbiting Circles
 const WhatIsSection: FC = () => {
   return (
-    <section className="px-14 flex flex-col md:flex-row items-center justify-between gap-10">
+    <section className="px-14 flex flex-col lg:flex-row items-center justify-between gap-10">
       <div className="md:w-1/2 text-white max-w-2xl flex flex-col gap-6 justify-center">
-        <h2 className="text-5xl font-bold mb-6">What Is 0x.City</h2>
-        <p className="text-lg leading-relaxed text-muted-foreground">
+        <h2 className="text-5xl text-center lg:text-left font-bold mb-6">
+          What Is 0x.City
+        </h2>
+        <p className="text-lg leading-relaxed text-center lg:text-left text-muted-foreground">
           0x.City is a community belonging to "0x Citizens." We are a group of
           people who deeply believe in the future of blockchain and
           decentralization. Using "0x" in addresses, social accounts, and
@@ -45,7 +47,7 @@ const WhatIsSection: FC = () => {
           decentralized new digital world together.
         </p>
       </div>
-      <div className="relative flex h-[635] md:w-1/2 flex-col items-center justify-center overflow-hidden">
+      <div className="relative flex h-[635] scale-70 lg:scale-100 w-full lg:w-1/2 flex-col items-center justify-center overflow-hidden">
         <OrbitingCircles path={true} radius={120} iconSize={72}>
           <Image
             src="/assets/orbiting-circles/clip.svg"
@@ -177,7 +179,7 @@ const CitizenCard: FC<CitizenCardProps> = ({
 };
 
 // Who Are 0x Citizens Section
-export const SomeGeneralLandingComponent: FC = () => {
+export const WhoAre0xCitizens: FC = () => {
   const citizenTypes = [
     {
       title: 'Blockchain Believer',

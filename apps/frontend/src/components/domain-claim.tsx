@@ -131,8 +131,8 @@ export const DomainClaim: FC<DomainClaimProps> = ({
         <p className="text-lg text-gray-300">{subtitle}</p>
       </div>
 
-      <div className="flex items-center justify-between gap-2 border border-white/10 rounded-lg p-2">
-        <div className="relative bg-black/40 h-14 flex items-center flex-1 rounded-md">
+      <div className="flex md:flex-row flex-col items-center justify-between gap-2 border border-white/10 rounded-lg p-2">
+        <div className="relative shrink-0 bg-black/40 h-14 flex items-center flex-1 rounded-md">
           <div className="absolute left-3 text-gray-400">
             <SearchIcon className="h-5 w-5" />
           </div>
