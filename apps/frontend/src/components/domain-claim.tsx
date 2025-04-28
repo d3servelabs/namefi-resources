@@ -5,7 +5,7 @@ import { useCart } from '@/hooks/landing/use-cart';
 import { useAuth } from '@/hooks/useAuth';
 import { useTRPC } from '@/utils/trpc';
 import { useQuery } from '@tanstack/react-query';
-import { Loader2, SearchIcon } from 'lucide-react';
+import { CheckIcon, Loader2, SearchIcon } from 'lucide-react';
 import { useCallback, useMemo, useState } from 'react';
 import type { ChangeEvent, FC } from 'react';
 import { useDebounceValue } from 'usehooks-ts';
@@ -51,7 +51,7 @@ export const DomainClaim: FC<DomainClaimProps> = ({
   const trpc = useTRPC();
   const { isAuthenticated } = useAuth();
 
-  const { handleDomainAction, isAddingToCart } = useCart();
+  const { handleDomainAction, isAddingToCart, isDomainInCart } = useCart();
 
   const { data: qualifiesForPromo, isFetching: isQualifiesForPromoFetching } =
     useQuery({
@@ -70,8 +70,20 @@ export const DomainClaim: FC<DomainClaimProps> = ({
     });
 
   const canClaim = useMemo(() => {
-    return isSubdomainValueValid && isDomainAvailable && qualifiesForPromo;
-  }, [isSubdomainValueValid, isDomainAvailable, qualifiesForPromo]);
+    return (
+      isSubdomainValueValid &&
+      isDomainAvailable &&
+      qualifiesForPromo &&
+      !isDomainInCart(`${subdomainValue}.${domain}`)
+    );
+  }, [
+    isSubdomainValueValid,
+    isDomainAvailable,
+    qualifiesForPromo,
+    isDomainInCart,
+    subdomainValue,
+    domain,
+  ]);
 
   const buttonText = useMemo(() => {
     if (!isAuthenticated) {
@@ -81,6 +93,13 @@ export const DomainClaim: FC<DomainClaimProps> = ({
       return (
         <>
           <Loader2 className="w-4 h-4 animate-spin" /> Checking...
+        </>
+      );
+    }
+    if (isDomainInCart(`${subdomainValue}.${domain}`)) {
+      return (
+        <>
+          <CheckIcon className="w-4 h-4" /> In Cart
         </>
       );
     }
@@ -97,6 +116,9 @@ export const DomainClaim: FC<DomainClaimProps> = ({
     isDomainAvailableFetching,
     isAddingToCart,
     isAuthenticated,
+    isDomainInCart,
+    subdomainValue,
+    domain,
   ]);
 
   const onInputChange = useCallback(

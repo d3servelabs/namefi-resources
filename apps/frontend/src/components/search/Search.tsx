@@ -162,9 +162,8 @@ export const DomainCard: FC<{
             <div className="flex items-center gap-2">
               <p className="text-xl font-medium">
                 {isNotNil(domain.priceInUSD)
-                  ? formatAmountInUSD(domain.priceInUSD)
-                  : ''}{' '}
-                USD
+                  ? `${formatAmountInUSD(domain.priceInUSD)} USD`
+                  : ''}
               </p>
             </div>
             {!domain.availability && domain.currentOwner && (
