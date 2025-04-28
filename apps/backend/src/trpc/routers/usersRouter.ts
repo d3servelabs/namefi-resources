@@ -293,15 +293,27 @@ export async function userQualifiesForDomainNamePromo({
   const privyEmailAddress = privyUser.email?.address;
   if (isNotNil(privyEmailAddress) && privyEmailAddress.startsWith('0x')) {
     const [name] = privyEmailAddress.split('@');
-    if (name.slice(2) === subdomain) {
+    if (name.slice(2).toLowerCase() === subdomain.toLowerCase()) {
       return true;
     }
   }
 
   // check twitter username
-  const privyTwitterUserName = privyUser.twitter?.username;
-  if (isNotNil(privyTwitterUserName) && privyTwitterUserName.startsWith('0x')) {
-    return privyTwitterUserName.slice(2) === subdomain;
+  const privyTwitterDisplayName = privyUser.twitter?.name;
+  if (
+    isNotNil(privyTwitterDisplayName) &&
+    privyTwitterDisplayName.startsWith('0x')
+  ) {
+    return (
+      privyTwitterDisplayName.slice(2).toLowerCase() === subdomain.toLowerCase()
+    );
+  }
+
+  const privyTwitterHandle = privyUser.twitter?.username;
+  if (isNotNil(privyTwitterHandle) && privyTwitterHandle.startsWith('0x')) {
+    return (
+      privyTwitterHandle.slice(2).toLowerCase() === subdomain.toLowerCase()
+    );
   }
 
   return false;

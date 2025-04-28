@@ -6,6 +6,9 @@ import * as namefiRegistry from '#lib/namefi-registry';
 import type { TrpcContext } from '../base';
 import { searchRouter } from './searchRouter';
 
+const testUser = {
+  privyUserId: '123',
+} as any;
 // TODO: consider use vitest setup to do it globally after NamefiRegistry
 config({ path: '.env.test' });
 
@@ -35,9 +38,7 @@ describe('Search Router', () => {
   // The search router doesn't use context values, so we can use a type assertion
   const caller = searchRouter.createCaller({
     thirdPartyOriginHostname: null,
-    testUser: {
-      privyUserId: '123',
-    } as any,
+    testUser,
   } satisfies Omit<TrpcContext, 'db' | 'req' | 'res'> as TrpcContext);
 
   it('should return search results with suggestions and availability', async () => {
@@ -70,6 +71,7 @@ describe('Search Router', () => {
     // Check that getDomainListInfo was called with the generated suggestions
     expect(namefiRegistry.getDomainListInfo).toHaveBeenCalledWith(
       result.suggestions,
+      testUser,
     );
 
     // Check availability items have required structure
