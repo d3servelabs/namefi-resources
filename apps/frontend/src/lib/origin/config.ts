@@ -10,6 +10,7 @@ export const originConfig: OriginConfigMap = {
     metadata: {
       title: 'Powered by NameFi',
       description: 'Buy and sell domains with ease',
+      icons: [{ rel: 'icon', url: '/favicon.ico' }],
     },
     logo: {
       type: 'lottie',
@@ -27,6 +28,7 @@ export const originConfig: OriginConfigMap = {
       metadata: {
         title: '0x.city - Powered by NameFi',
         description: 'Buy and sell 0x.city domains with ease',
+        icons: [{ rel: 'icon', url: '/favicon-0x-city.ico' }],
       },
       logo: {
         type: 'image',
@@ -46,6 +48,7 @@ export const originConfig: OriginConfigMap = {
       metadata: {
         title: 'defi.build - Powered by NameFi',
         description: 'Buy and sell defi.build domains with ease',
+        icons: [{ rel: 'icon', url: '/favicon.ico' }],
       },
       logo: {
         type: 'image',
