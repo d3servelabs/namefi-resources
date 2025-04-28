@@ -12,7 +12,10 @@
  * Behind the scenes, it will query the database for domain.
  */
 
-import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import {
+  type NamefiNormalizedDomain,
+  namefiNormalizedDomainSchema,
+} from '@namefi-astra/utils';
 import { z } from 'zod';
 import {
   getDomainListInfo,
@@ -69,5 +72,27 @@ export const searchRouter = createTRPCRouter({
       const bulkAvailability = await getDomainListInfo(suggestions);
 
       return { suggestions, bulkAvailability };
+    }),
+
+  isDomainAvailable: publicProcedure
+    .input(
+      z.object({
+        domain: namefiNormalizedDomainSchema.describe(
+          'The domain to check availability for',
+        ),
+      }),
+    )
+    .query(async ({ input, ctx }) => {
+      const { domain } = input;
+
+      const availability = await getDomainListInfo([domain]);
+
+      if (availability.length !== 1) {
+        return {
+          domain: domain,
+          availability: false,
+        };
+      }
+      return availability[0];
     }),
 });
