@@ -28,7 +28,6 @@ import {
   Loader2Icon,
   LogOutIcon,
   MoreHorizontalIcon,
-  SettingsIcon,
   UserIcon,
   WalletIcon,
 } from 'lucide-react';
@@ -45,7 +44,6 @@ import { toast } from 'sonner';
 
 const ITEMS: NavItem[] = [
   { title: 'Profile', href: '/profile', icon: UserIcon },
-  { title: 'Settings', href: '/settings', icon: SettingsIcon },
 ];
 
 export type UserDropdownProps = HTMLAttributes<HTMLDivElement> & {
@@ -161,9 +159,7 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
             ) : (
               <WalletIcon className="size-6" />
             )}
-            {!collapsed && (
-              <span>{isLoading ? 'Loading...' : 'Connect Wallet'}</span>
-            )}
+            {!collapsed && <span>{isLoading ? 'Loading...' : 'Sign In'}</span>}
           </Button>
         )}
 
