@@ -4,6 +4,7 @@ import { Marquee } from '@/components/magicui/marquee';
 import { OrbitingCircles } from '@/components/magicui/orbiting-circles';
 import { IdCard } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
 import { DomainClaim } from '../domain-claim';
@@ -253,16 +254,59 @@ const DomainClaimSection: FC = () => {
   );
 };
 
+// Community Section
+const CommunitySection: FC = () => {
+  return (
+    <section className="py-20 flex flex-col items-center">
+      <h2 className="text-5xl font-bold mb-4 text-white text-center">
+        Join the Community
+      </h2>
+      <p className="text-lg text-white text-center mb-10">
+        Stay in the loop, ask questions and share ideas:
+      </p>
+
+      <div className="flex gap-4">
+        <Link
+          href="https://x.com/0xDotCity"
+          target="_blank"
+          className="flex items-center justify-center bg-black border border-white/20 hover:bg-white/10 text-white p-4 rounded-lg transition-all"
+        >
+          <Image
+            src="/assets/social/twitter.svg"
+            alt="Twitter"
+            width={20}
+            height={20}
+          />
+        </Link>
+        <Link
+          href="https://t.me/zeroxdotcity"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center justify-center bg-black border border-white/20 hover:bg-white/10 text-white p-4 rounded-lg transition-all"
+        >
+          <Image
+            src="/assets/social/telegram.svg"
+            alt="Telegram"
+            width={20}
+            height={20}
+          />
+        </Link>
+      </div>
+    </section>
+  );
+};
+
 // Main Landing Component
 export const Landing: FC = () => {
   return (
-    <div className="flex flex-col mt-40 pb-20 gap-10 bg-black/80 backdrop-blur-3xl">
+    <div className="flex flex-col mt-40 pb-20 gap-10 bg-gradient-to-b from-black/40 from-[0%] via-black/70 via-[10%] to-black/90 to-[80%] backdrop-blur-3xl">
       <Hero />
       <div>
         <WhatIsSection />
         <WhyJoin />
         {/* <WhoAre0xCitizens /> */}
         <DomainClaimSection />
+        <CommunitySection />
       </div>
     </div>
   );
