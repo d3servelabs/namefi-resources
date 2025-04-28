@@ -206,6 +206,80 @@ export const verifyUserAuthAndCreation = t.middleware(async ({ ctx, next }) => {
 });
 
 /**
+ * Middleware for verifying a user's privy authentication token and creating a user if they don't exist.
+ *
+ * This middleware will verify the user's privy authentication token, fetch the user from the database, and add the user to the context.
+ * If the user is not found, it will return a null user.
+ */
+export const maybeVerifyUserAuthAndCreation = t.middleware(
+  async ({ ctx, next }) => {
+    if (ctx.testUser) {
+      return next({
+        ctx: {
+          ...ctx,
+          user: ctx.testUser,
+        },
+      });
+    }
+
+    const authToken = ctx.req.header('Authorization')?.replace('Bearer ', '');
+
+    if (!authToken) {
+      return next({
+        ctx: {
+          ...ctx,
+          user: null,
+        },
+      });
+    }
+    try {
+      const userClaims = await privyClient.verifyAuthToken(authToken);
+      let user = await db.query.usersTable.findFirst({
+        where: eq(usersTable.privyUserId, userClaims.userId),
+      });
+
+      if (!user) {
+        // TODO: handle this via webhook
+        const newUser = await db
+          .insert(usersTable)
+          .values({
+            privyUserId: userClaims.userId,
+          })
+          .returning();
+        user = newUser[0];
+      }
+
+      return next({
+        ctx: {
+          ...ctx,
+          user,
+        },
+      });
+    } catch (error) {
+      console.error('error', error);
+      return next({
+        ctx: {
+          ...ctx,
+          user: null,
+        },
+      });
+    }
+  },
+);
+
+/**
+ * Authed or public  procedure
+ * This is to be used for procedures that are not protected, but we might want different behavior based on whether the user is authenticated or not.
+ *
+ *  It will check if the user is authenticated,
+ * if so it will verify the user's authentication token and add the user to the context.
+ * If the user is not authenticated, it will add a null user to the context.
+ */
+export const authedOrPublicProcedure = publicProcedure.use(
+  maybeVerifyUserAuthAndCreation,
+);
+
+/**
  * Protected procedure
  *
  * This is the piece we will use to build new queries and mutations on our tRPC API. It will
