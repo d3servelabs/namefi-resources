@@ -35,10 +35,10 @@ describe('Search Router', () => {
   // The search router doesn't use context values, so we can use a type assertion
   const caller = searchRouter.createCaller({
     thirdPartyOriginHostname: null,
-  } satisfies Omit<
-    TrpcContext,
-    'testUser' | 'db' | 'req' | 'res' | 'isTestContext'
-  > as TrpcContext);
+    testUser: {
+      privyUserId: '123',
+    } as any,
+  } satisfies Omit<TrpcContext, 'db' | 'req' | 'res'> as TrpcContext);
 
   it('should return search results with suggestions and availability', async () => {
     // Act: Call the actual search procedure with test input

@@ -4,6 +4,7 @@ import { addWeeks, isAfter } from 'date-fns';
 import { ParseResultType, parseDomain } from 'parse-domain';
 import { isNil } from 'ramda';
 import { config } from '#lib/env';
+import { userQualifiesForDomainNamePromo } from '../trpc/routers/usersRouter';
 import {
   hashBasedPercentageRollouted,
   isReserved,
@@ -28,6 +29,7 @@ export const getSubdomainPriceInUsd = async (_subdomain: string) => {
  */
 export const getDomainListInfo = async (
   domains: NamefiNormalizedDomain[],
+  user?: { privyUserId: string },
 ): Promise<
   {
     domain: NamefiNormalizedDomain;
@@ -59,19 +61,25 @@ export const getDomainListInfo = async (
         return unavailableDomainInfo;
       }
 
-      const prefix = domainParseResult.subDomains[0] as NamefiNormalizedDomain;
+      const prefix = domainParseResult.subDomains[0] as NamefiNormalizedDomain; //TODO: this only works for selling third level domains
 
       // Apex ‑ we currently don’t allow registering the parent domain itself
-      if (!prefix) return unavailableDomainInfo;
+      if (!prefix) {
+        return unavailableDomainInfo;
+      }
 
-      const parentDomain = domainParseResult.subDomains
+      const parentDomain = domainParseResult.labels
         .slice(1)
-        .join('.') as NamefiNormalizedDomain;
+        .join('.') as NamefiNormalizedDomain; //TODO: this only works for selling third level domains
       // Check if the domain is too short
-      if (prefix.length <= 3) return unavailableDomainInfo;
+      if (prefix.length <= 3) {
+        return unavailableDomainInfo;
+      }
 
       // Check if the domain is reserved
-      if (isReserved(prefix)) return unavailableDomainInfo;
+      if (isReserved(prefix)) {
+        return unavailableDomainInfo;
+      }
 
       if (parentDomain === '0x.city') {
         // schedule of percentage
@@ -90,8 +98,23 @@ export const getDomainListInfo = async (
         }
         // we only enable a percentage of subdomain registrations for 0x.city
         // we use keccak256 to hash the domain and check if the last 4 bytes are less than PERCENT of the total number of subdomains
-        if (!hashBasedPercentageRollouted(domain, currentPercentage))
-          return unavailableDomainInfo;
+        const shouldRollout = hashBasedPercentageRollouted(
+          domain,
+          currentPercentage,
+        );
+
+        if (!shouldRollout) {
+          if (!user?.privyUserId) {
+            return unavailableDomainInfo;
+          }
+          const userQualifies = await userQualifiesForDomainNamePromo({
+            normalizedDomainName: domain,
+            user,
+          });
+          if (!userQualifies) {
+            return unavailableDomainInfo;
+          }
+        }
       }
 
       // Look up the NFT and price information

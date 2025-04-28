@@ -266,7 +266,7 @@ export const usersRouter = createTRPCRouter({
  * Ex: PrivyUser { email: {address: "0xnetizen1@gmail.com"}}, normalizedDomainName: "netizen1.0x.city" -> true
  * Ex: PrivyUser { twitter: {username: "0xnetizen1"}}, normalizedDomainName: "netizen1.0x.city" -> true
  */
-async function userQualifiesForDomainNamePromo({
+export async function userQualifiesForDomainNamePromo({
   normalizedDomainName,
   user,
 }: {

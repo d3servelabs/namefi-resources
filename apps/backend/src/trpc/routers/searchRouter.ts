@@ -21,7 +21,7 @@ import {
   getDomainListInfo,
   getPoweredByNamefi3PHostnames,
 } from '#lib/namefi-registry';
-import { createTRPCRouter, publicProcedure } from '../base';
+import { authedOrPublicProcedure, createTRPCRouter } from '../base';
 
 export const getSuggestions = (
   query: string,
@@ -46,7 +46,7 @@ export const getSuggestions = (
 };
 
 export const searchRouter = createTRPCRouter({
-  search: publicProcedure
+  search: authedOrPublicProcedure
     .input(
       z.object({
         query: z.string(),
@@ -69,12 +69,12 @@ export const searchRouter = createTRPCRouter({
         poweredByNamefiHostnames[0];
 
       const suggestions = getSuggestions(query, parentDomain);
-      const bulkAvailability = await getDomainListInfo(suggestions);
+      const bulkAvailability = await getDomainListInfo(suggestions, ctx.user);
 
       return { suggestions, bulkAvailability };
     }),
 
-  isDomainAvailable: publicProcedure
+  isDomainAvailable: authedOrPublicProcedure
     .input(
       z.object({
         domain: namefiNormalizedDomainSchema.describe(
@@ -85,7 +85,7 @@ export const searchRouter = createTRPCRouter({
     .query(async ({ input, ctx }) => {
       const { domain } = input;
 
-      const availability = await getDomainListInfo([domain]);
+      const availability = await getDomainListInfo([domain], ctx.user);
 
       if (availability.length !== 1) {
         return {
