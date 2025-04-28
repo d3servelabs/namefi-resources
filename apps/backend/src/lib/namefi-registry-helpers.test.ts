@@ -229,4 +229,21 @@ describe('isReserved', () => {
       expect(isReserved(domain as NamefiNormalizedDomain)).toBe(true);
     });
   });
+
+  it('should return true for blockchain-specific reserved domains', () => {
+    const blockchainReservedDomains = [
+      'wallet',
+      'staking',
+      'swap',
+      'bridge',
+      'contract',
+      'dex',
+      'forum',
+      'docs',
+    ];
+
+    blockchainReservedDomains.forEach((domain) => {
+      expect(isReserved(domain as NamefiNormalizedDomain)).toBe(true);
+    });
+  });
 });
