@@ -34,6 +34,7 @@ import {
   User,
   X,
 } from 'lucide-react';
+import { isNotNil } from 'ramda';
 import { type FC, useState } from 'react';
 import { NamefiButton } from '../namefi-button';
 import { Placeholder } from './Placeholder';
@@ -160,7 +161,9 @@ export const DomainCard: FC<{
             </h3>
             <div className="flex items-center gap-2">
               <p className="text-xl font-medium">
-                {domain.priceInUSD ? formatAmountInUSD(domain.priceInUSD) : ''}{' '}
+                {isNotNil(domain.priceInUSD)
+                  ? formatAmountInUSD(domain.priceInUSD)
+                  : ''}{' '}
                 USD
               </p>
             </div>
