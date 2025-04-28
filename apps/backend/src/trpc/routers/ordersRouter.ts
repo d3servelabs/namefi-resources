@@ -1,4 +1,5 @@
 import {
+  type PaymentSelect,
   cartItemsTable,
   db,
   isNfscPayment,
@@ -14,6 +15,7 @@ import { TRPCError } from '@trpc/server';
 import { and, desc, eq, inArray } from 'drizzle-orm';
 import { isNil } from 'ramda';
 import Stripe from 'stripe';
+import { zeroAddress } from 'viem';
 import { z } from 'zod';
 import { getDomainListInfo } from '#lib/namefi-registry';
 import { orderService } from '../../services/orders/orders.service';
@@ -72,75 +74,90 @@ export const ordersRouter = createTRPCRouter({
         });
       }
 
-      // Validate payment walletAddress (if present) belongs to user
-      if (isNfscPayment(input.paymentProviderDetails)) {
-        const [error, privyUser] = await resolve(
-          privyClient.getUserById(user.privyUserId),
-        );
-
-        if (error || isNil(privyUser)) {
-          console.error('Privy fetch failed', {
-            privyUserId: user.privyUserId,
-            error,
-          });
-          throw new TRPCError({
-            code: 'PRECONDITION_FAILED',
-            message: 'could not find user details',
-          });
-        }
-
-        const paymentWalletChecksumAddress =
-          checksumWalletAddressSchema.safeParse(
-            input.paymentProviderDetails.nfscPaymentDetails.walletAddress,
-          );
-        if (!paymentWalletChecksumAddress.success) {
-          throw new TRPCError({
-            code: 'BAD_REQUEST',
-            message: 'Payment walletAddress format is incorrect',
-          });
-        }
-
-        // #region get all user wallets addresses
-        const userWalletsAddressesSet = new Set<ChecksumWalletAddress>();
-
-        const primaryWalletAddress = checksumWalletAddressSchema.safeParse(
-          privyUser.wallet?.address,
-        );
-        if (primaryWalletAddress.success) {
-          userWalletsAddressesSet.add(primaryWalletAddress.data);
-        }
-
-        for (const linkedAccount of privyUser.linkedAccounts) {
-          if (linkedAccount.type === 'wallet') {
-            const checksumWalletAddress = checksumWalletAddressSchema.safeParse(
-              linkedAccount.address,
-            );
-            if (checksumWalletAddress.success) {
-              userWalletsAddressesSet.add(checksumWalletAddress.data);
-            }
-          }
-        }
-        const userWalletsAddresses = Array.from(userWalletsAddressesSet);
-        // #endregion get all user wallets addresses
-
-        if (!userWalletsAddresses.includes(paymentWalletChecksumAddress.data)) {
-          console.error('Payment walletAddress validation failed');
-          throw new TRPCError({
-            code: 'BAD_REQUEST',
-            message: 'Invalid payment walletAddress',
-          });
-        }
-      }
-
       const totalAmountInUsdCents = cartItems.reduce(
         (acc, item) => acc + item.amountInUSDCents,
         0,
       );
+      let payment: PaymentSelect | undefined;
+      if (totalAmountInUsdCents > 0) {
+        // Validate payment walletAddress (if present) belongs to user
+        if (isNfscPayment(input.paymentProviderDetails)) {
+          const [error, privyUser] = await resolve(
+            privyClient.getUserById(user.privyUserId),
+          );
 
-      const payment = await createPayment({
-        amountInUsdCents: totalAmountInUsdCents,
-        paymentProviderDetails: input.paymentProviderDetails,
-      });
+          if (error || isNil(privyUser)) {
+            console.error('Privy fetch failed', {
+              privyUserId: user.privyUserId,
+              error,
+            });
+            throw new TRPCError({
+              code: 'PRECONDITION_FAILED',
+              message: 'could not find user details',
+            });
+          }
+
+          const paymentWalletChecksumAddress =
+            checksumWalletAddressSchema.safeParse(
+              input.paymentProviderDetails.nfscPaymentDetails.walletAddress,
+            );
+          if (!paymentWalletChecksumAddress.success) {
+            throw new TRPCError({
+              code: 'BAD_REQUEST',
+              message: 'Payment walletAddress format is incorrect',
+            });
+          }
+
+          // #region get all user wallets addresses
+          const userWalletsAddressesSet = new Set<ChecksumWalletAddress>();
+
+          const primaryWalletAddress = checksumWalletAddressSchema.safeParse(
+            privyUser.wallet?.address,
+          );
+          if (primaryWalletAddress.success) {
+            userWalletsAddressesSet.add(primaryWalletAddress.data);
+          }
+
+          for (const linkedAccount of privyUser.linkedAccounts) {
+            if (linkedAccount.type === 'wallet') {
+              const checksumWalletAddress =
+                checksumWalletAddressSchema.safeParse(linkedAccount.address);
+              if (checksumWalletAddress.success) {
+                userWalletsAddressesSet.add(checksumWalletAddress.data);
+              }
+            }
+          }
+          const userWalletsAddresses = Array.from(userWalletsAddressesSet);
+          // #endregion get all user wallets addresses
+
+          if (
+            !userWalletsAddresses.includes(paymentWalletChecksumAddress.data)
+          ) {
+            console.error('Payment walletAddress validation failed');
+            throw new TRPCError({
+              code: 'BAD_REQUEST',
+              message: 'Invalid payment walletAddress',
+            });
+          }
+        }
+
+        payment = await createPayment({
+          amountInUsdCents: totalAmountInUsdCents,
+          paymentProviderDetails: input.paymentProviderDetails,
+        });
+      } else {
+        // for zero or negative, we cfreate a NFSC with 0 address
+        payment = await createPayment({
+          amountInUsdCents: totalAmountInUsdCents,
+          paymentProviderDetails: {
+            paymentProvider: 'NFSC_BASE',
+            nfscPaymentDetails: {
+              chainId: 8453,
+              walletAddress: zeroAddress,
+            },
+          },
+        });
+      }
 
       // Create order using DB transaction
       const order = await db.transaction(async (tx) => {

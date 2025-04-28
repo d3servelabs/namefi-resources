@@ -1,5 +1,5 @@
 import { useIsMobile } from '@/hooks/use-mobile';
-import { useUserWalletAddresses } from '@/hooks/useUserWalletAddresses';
+import { useLinkedWalletAddresses } from '@/hooks/useUserWalletAddresses';
 import { getShortAddress } from '@/lib/utils';
 import { supportedChains } from '@/lib/wagmiConfig';
 import { CHAINS } from '@namefi-astra/utils';
@@ -30,9 +30,9 @@ export function SelectWallet({
 }: SelectWalletProps) {
   const isMobile = useIsMobile();
 
-  const { userWalletAddresses } = useUserWalletAddresses();
+  const { linkedWalletAddresses } = useLinkedWalletAddresses();
 
-  if (userWalletAddresses.length === 0) {
+  if (linkedWalletAddresses.length === 0) {
     return (
       <Button variant="outline" disabled={true}>
         No Connected Wallets
@@ -44,13 +44,13 @@ export function SelectWallet({
     <Select
       disabled={selectTriggerDisabled}
       onValueChange={onValueChange}
-      defaultValue={userWalletAddresses[0]}
+      defaultValue={linkedWalletAddresses[0]}
     >
       <SelectTrigger>
         <SelectValue placeholder="Select a Wallet" />
       </SelectTrigger>
       <SelectContent>
-        {userWalletAddresses.map((walletAddress) => (
+        {linkedWalletAddresses.map((walletAddress) => (
           <SelectItem
             key={`${walletAddress}`}
             value={`${walletAddress}`}
