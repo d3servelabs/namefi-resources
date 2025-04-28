@@ -12,6 +12,7 @@
   bottom: 0;
   border-radius: 8px;
   border: 1px solid transparent;
+  pointer-events: none;
   background: linear-gradient(
       to bottom,
       color-mix(in srgb, var(--brand-primary) 50%, transparent) 0%,

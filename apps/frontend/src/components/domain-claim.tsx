@@ -7,7 +7,7 @@ import { useTRPC } from '@/utils/trpc';
 import { useQuery } from '@tanstack/react-query';
 import { Loader2, SearchIcon } from 'lucide-react';
 import { useCallback, useMemo, useState } from 'react';
-import type { FC } from 'react';
+import type { ChangeEvent, FC } from 'react';
 import { useDebounceValue } from 'usehooks-ts';
 import { NamefiButton } from './namefi-button';
 import { Separator } from './ui/shadcn/separator';
@@ -45,7 +45,7 @@ export const DomainClaim: FC<DomainClaimProps> = ({
     useDebounceValue(subdomainValue, 500);
 
   const isSubdomainValueValid = useMemo(() => {
-    return subdomainValue.length > 0 && subdomainValue.length > 3;
+    return subdomainValue.length > 0;
   }, [subdomainValue]);
 
   const trpc = useTRPC();
@@ -100,7 +100,7 @@ export const DomainClaim: FC<DomainClaimProps> = ({
   ]);
 
   const onInputChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
+    (e: ChangeEvent<HTMLInputElement>) => {
       setSubdomainValue(e.target.value);
       setDebouncedSubdomainValue(e.target.value);
     },
@@ -108,12 +108,7 @@ export const DomainClaim: FC<DomainClaimProps> = ({
   );
 
   const handleClaim = useCallback(() => {
-    if (
-      subdomainValue &&
-      subdomainValue.length > 0 &&
-      qualifiesForPromo &&
-      onClaim
-    ) {
+    if (canClaim) {
       handleDomainAction({
         domain: `${subdomainValue}.${domain}`,
         priceInUSD: 0,
@@ -122,7 +117,7 @@ export const DomainClaim: FC<DomainClaimProps> = ({
         onClaim(subdomainValue);
       }
     }
-  }, [subdomainValue, domain, qualifiesForPromo, onClaim, handleDomainAction]);
+  }, [canClaim, handleDomainAction, onClaim, subdomainValue, domain]);
 
   return (
     <div className="w-full max-w-4xl mx-auto p-16 justify-center items-center">
