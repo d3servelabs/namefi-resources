@@ -3,7 +3,7 @@ import type { ConfigInput } from '../schema';
 
 const productionConfig: ConfigInput = {
   LOG_LEVEL: 'debug',
-  PRIVY_APP_ID: 'cm2lx4u5a03x3rtgp4keapmrb',
+  PRIVY_APP_ID: 'cm23ds44v09x0oyiqqa7blr8i',
   TEMPORAL_API_URL: 'us-east-1.aws.api.temporal.io:7233',
   TEMPORAL_NAMESPACE: 'namefi-astra-prod.yz1vc',
   SMTP_SECURE: true,

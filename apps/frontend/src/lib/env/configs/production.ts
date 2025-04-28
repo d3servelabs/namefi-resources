@@ -3,7 +3,7 @@ import type { ConfigInput } from '../schema';
 const productionConfig: ConfigInput = {
   BACKEND_URL: 'https://backend.astra.namefi.io',
   GA_MEASUREMENT_ID: 'G-S8GRYLE2XF',
-  PRIVY_APP_ID: 'cm2lx4u5a03x3rtgp4keapmrb',
+  PRIVY_APP_ID: 'cm23ds44v09x0oyiqqa7blr8i',
   STRIPE_PUBLISHABLE_KEY:
     'pk_live_51Pqc6fP7AJmUlGkq2dbLhK6JAASyzHwYSmlfdHYobkUlJiqeqAkuKykPEb0wTc57n7sqR2QJjI9TDz65Y7zn69I900f95GY1Al',
   NAMEFI_FIRST_PARTY_HOSTNAMES: ['astra.namefi.io'],
