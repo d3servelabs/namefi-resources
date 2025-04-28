@@ -1,0 +1,25 @@
+.gradient-border-mask {
+  position: relative;
+  padding: 15px 20px;
+}
+
+.gradient-border-mask::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  background: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--brand-primary) 50%, transparent) 0%,
+      color-mix(in srgb, var(--brand-primary) 50%, transparent) 30%,
+      transparent 100%
+    )
+    border-box;
+  -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: destination-out;
+  mask-composite: exclude;
+}

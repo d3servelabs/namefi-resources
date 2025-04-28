@@ -1,0 +1,9 @@
+<svg width="72" height="72" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="72" height="72" rx="36" fill="white" fill-opacity="0.05"/>
+<rect x="0.5" y="0.5" width="71" height="71" rx="35.5" stroke="white" stroke-opacity="0.1"/>
+<rect x="8" y="8" width="56" height="56" rx="28" fill="#B25EEE"/>
+<path d="M36 21V32.0833L45.375 36.2767L36 21ZM36 21L26.625 36.2767L36 32.085V21ZM36 43.4617V50.9983L45.375 38.025L36 43.4617ZM36 50.9983V43.4617L26.625 38.025L36 50.9983Z" fill="white"/>
+<path opacity="0.3" d="M36 41.7154L45.375 36.277L36 32.082V41.7154ZM26.625 36.277L36 41.7137V32.0837L26.625 36.277Z" fill="white"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M36 41.715L26.625 36.2767L36 21L45.375 36.2767L36 41.715ZM27.2483 35.8333L35.85 21.8167V32.0083L27.2483 35.8333ZM27.12 36.2167L35.85 32.3383V41.2783L27.12 36.2167ZM36.15 32.3383V41.2783L44.8717 36.215L36.15 32.3383ZM36.15 32.0083L44.75 35.8333L36.15 21.8167V32.0083Z" fill="white"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M36 43.3462L26.625 38.0195L36 51.0029L45.375 38.0195L36 43.3462ZM27.675 38.9579L35.85 43.6079V50.2829L27.675 38.9579ZM36.15 43.6079V50.2829L44.325 38.9579L36.15 43.6079Z" fill="white"/>
+</svg>

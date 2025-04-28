@@ -1,3 +1,4 @@
+import { Search as ZeroxCitySearch } from '@/components/0xcity/Search';
 import { Search as AstraSearch } from '@/components/astra/Search';
 import type { OriginConfigMap } from './types';
 
@@ -36,6 +37,9 @@ export const originConfig: OriginConfigMap = {
       background: {
         image: '/backgrounds/0x.city.png',
         alt: '0x.city Background',
+      },
+      landingPage: {
+        component: ZeroxCitySearch,
       },
     },
     'defi.build': {

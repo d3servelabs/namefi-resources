@@ -4,10 +4,13 @@ import {
   cartItemsTable,
   db,
 } from '@namefi-astra/db';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import { TRPCError } from '@trpc/server';
 import { and, eq, sql } from 'drizzle-orm';
 import { z } from 'zod';
 import { createTRPCRouter, protectedProcedure } from '../base';
 import { isNormalizedDomainNameAllowedForOriginHostname } from '../utils';
+import { userQualifiesForDomainNamePromo } from './usersRouter';
 
 export const cartsRouter = createTRPCRouter({
   // Get cart items for the current user
@@ -36,6 +39,34 @@ export const cartsRouter = createTRPCRouter({
       ),
     )
     .mutation(async ({ ctx, input }) => {
+      // Check if any items have 0 price and verify they qualify for promos
+      const promoItems = input.filter((item) => item.amountInUSDCents === 0);
+
+      if (promoItems.length > 0) {
+        const qualificationChecks = await Promise.all(
+          promoItems.map(async (item) => {
+            const qualifies = await userQualifiesForDomainNamePromo({
+              normalizedDomainName:
+                item.normalizedDomainName as NamefiNormalizedDomain,
+              user: ctx.user,
+            });
+
+            return { item, qualifies };
+          }),
+        );
+
+        const nonQualifyingItem = qualificationChecks.find(
+          (check) => !check.qualifies,
+        );
+
+        if (nonQualifyingItem) {
+          throw new TRPCError({
+            code: 'FORBIDDEN',
+            message: 'User does not qualify for promotional pricing',
+          });
+        }
+      }
+
       // Prepare items for insertion with user ID
       const itemsToInsert = input.map((item) => ({
         userId: ctx.user.id,
