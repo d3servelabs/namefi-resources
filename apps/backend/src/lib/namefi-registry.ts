@@ -18,8 +18,11 @@ export const getPoweredByNamefi3PHostnames = async () => {
 };
 
 // biome-ignore lint/suspicious/useAwait: it will be a db query in upcoming updates
-export const getSubdomainPriceInUsd = async (_subdomain: string) => {
-  return 5;
+export const getSubdomainPriceInUsd = async (
+  _subdomain: string, // not using this
+  isFreeMint: boolean,
+) => {
+  return isFreeMint ? 0 : 5;
 };
 
 /**
@@ -81,6 +84,7 @@ export const getDomainListInfo = async (
         return unavailableDomainInfo;
       }
 
+      // Currently only 0x.city is supported
       if (parentDomain === '0x.city') {
         // schedule of percentage
         const startDate = new Date('2025-05-05');
@@ -103,31 +107,34 @@ export const getDomainListInfo = async (
           currentPercentage,
         );
 
+        let userQualifiesFor0xDotCity = false;
         if (!shouldRollout) {
           if (!user?.privyUserId) {
             return unavailableDomainInfo;
           }
-          const userQualifies = await userQualifiesForDomainNamePromo({
+          userQualifiesFor0xDotCity = await userQualifiesForDomainNamePromo({
             normalizedDomainName: domain,
             user,
           });
-          if (!userQualifies) {
+          if (!userQualifiesFor0xDotCity) {
             return unavailableDomainInfo;
           }
         }
+        // Look up the NFT and price information
+        const nft = nftMap.get(domain);
+        const isFreeMint = userQualifiesFor0xDotCity;
+        const price = await getSubdomainPriceInUsd(domain, isFreeMint);
+
+        // Return domain information including availability, price, and current owner
+        return {
+          domain,
+          availability: isNil(nft),
+          priceInUSD: price,
+          currentOwner: nft?.ownerAddress,
+        };
       }
 
-      // Look up the NFT and price information
-      const nft = nftMap.get(domain);
-      const price = await getSubdomainPriceInUsd(domain);
-
-      // Return domain information including availability, price, and current owner
-      return {
-        domain,
-        availability: isNil(nft),
-        priceInUSD: price,
-        currentOwner: nft?.ownerAddress,
-      };
+      return unavailableDomainInfo;
     }),
   );
 };
