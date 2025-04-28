@@ -21,6 +21,10 @@ app.use(async (...args) => {
 
   return cors({
     origin: (origin) => {
+      if (config.ALLOW_ALL_ORIGINS) {
+        return origin;
+      }
+
       if (origin) {
         try {
           const parsedOrigin = new URL(origin);

@@ -29,6 +29,16 @@ export const createContext = async (
   const originText = c.req.header('Origin');
   let thirdPartyOriginHostname: string | null = null;
 
+  if (config.ALLOW_ALL_ORIGINS) {
+    return {
+      req: c.req,
+      res: c.res,
+      db,
+      thirdPartyOriginHostname,
+      testUser: null,
+    };
+  }
+
   if (originText && isNotEmpty(originText)) {
     try {
       // parse origin url

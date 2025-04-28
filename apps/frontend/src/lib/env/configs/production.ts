@@ -7,7 +7,10 @@ const productionConfig: ConfigInput = {
   STRIPE_PUBLISHABLE_KEY:
     'pk_live_51Pqc6fP7AJmUlGkq2dbLhK6JAASyzHwYSmlfdHYobkUlJiqeqAkuKykPEb0wTc57n7sqR2QJjI9TDz65Y7zn69I900f95GY1Al',
   NAMEFI_FIRST_PARTY_HOSTNAMES: ['astra.namefi.io'],
-  POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES: ['0x.city', 'defi.build'],
+  POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES: ['0x.city'],
+  ADDITIONAL_HOSTNAME_MAP: {
+    '0xcity.astra.namefi.io': '0x.city',
+  },
   USER_CENTRICS_SETTINGS_ID: '5UJHpI8CWth59m',
   USER_CENTRICS_GOOGLE_ANALYTICS_SERVICE_ID: 'HkocEodjb7',
 };

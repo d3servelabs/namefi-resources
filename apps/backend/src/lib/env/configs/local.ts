@@ -33,6 +33,7 @@ const localConfig: ConfigInput = {
   EMAIL_ADDRESS_TO_OWNED_HOSTNAMES_MAP: {
     'dev-team@d3serve.xyz': ['0x.city'],
   },
+  ALLOW_ALL_ORIGINS: true,
 };
 
 export default localConfig;

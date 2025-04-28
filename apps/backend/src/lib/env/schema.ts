@@ -61,6 +61,11 @@ export const configSchema = z.object({
   EMAIL_ADDRESS_TO_OWNED_HOSTNAMES_MAP: z
     .record(z.string(), z.string().array())
     .default({}),
+  /**
+   * If true, all origins will be allowed.
+   * This is useful for local development.
+   */
+  ALLOW_ALL_ORIGINS: z.boolean().default(false),
 });
 
 export type ConfigInput = z.input<typeof configSchema>;
