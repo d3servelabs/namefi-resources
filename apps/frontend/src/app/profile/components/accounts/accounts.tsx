@@ -1,5 +1,6 @@
 'use client';
 
+import { Button } from '@/components/ui/shadcn/button';
 import {
   Card,
   CardContent,
@@ -7,9 +8,17 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/shadcn/card';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/shadcn/dialog';
 import { type User, usePrivy } from '@privy-io/react-auth';
 import { Mail, Users2 } from 'lucide-react';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { TwitterIcon } from 'react-share';
 import { toast } from 'sonner';
 import { Account } from './account';
@@ -19,6 +28,9 @@ export interface AccountsProps {
 }
 
 export const Accounts = ({ user }: AccountsProps) => {
+  const [isUnlinkEmailDialogOpen, setIsUnlinkEmailDialogOpen] = useState(false);
+  const [isUnlinkTwitterDialogOpen, setIsUnlinkTwitterDialogOpen] =
+    useState(false);
   const { linkEmail, linkTwitter, unlinkEmail, unlinkTwitter } = usePrivy();
 
   const handleLinkEmail = useCallback(() => {
@@ -34,13 +46,16 @@ export const Accounts = ({ user }: AccountsProps) => {
   const handleUnlinkEmail = useCallback(
     async (email?: string) => {
       if (!email) {
+        setIsUnlinkEmailDialogOpen(false);
         return;
       }
 
       try {
         await unlinkEmail(email);
+        setIsUnlinkEmailDialogOpen(false);
         toast.success('Email unlinked successfully');
       } catch (error) {
+        setIsUnlinkEmailDialogOpen(false);
         toast.error('Failed to unlink email', {
           description: `Please try again. ${error instanceof Error ? error.message : 'Unknown error'}`,
         });
@@ -62,15 +77,18 @@ export const Accounts = ({ user }: AccountsProps) => {
   const handleUnlinkTwitter = useCallback(
     async (subject: string) => {
       if (!subject) {
+        setIsUnlinkTwitterDialogOpen(false);
         return;
       }
 
       try {
         await unlinkTwitter(subject);
+        setIsUnlinkTwitterDialogOpen(false);
         toast.success('Twitter account unlinked', {
           description: 'Your account has been successfully unlinked.',
         });
       } catch (error) {
+        setIsUnlinkTwitterDialogOpen(false);
         toast.error('Failed to unlink Twitter account', {
           description: `Please try again. ${error instanceof Error ? error.message : 'Unknown error'}`,
         });
@@ -100,7 +118,7 @@ export const Accounts = ({ user }: AccountsProps) => {
             linkedValue={user.email?.address}
             verified={!!user.email?.address}
             onLink={handleLinkEmail}
-            onUnlink={() => handleUnlinkEmail(user.email?.address)}
+            onUnlink={() => setIsUnlinkEmailDialogOpen(true)}
           />
 
           <Account
@@ -112,10 +130,64 @@ export const Accounts = ({ user }: AccountsProps) => {
             }
             verified={!!user.twitter?.username}
             onLink={handleLinkTwitter}
-            onUnlink={() => handleUnlinkTwitter(user.twitter?.subject ?? '')}
+            onUnlink={() => setIsUnlinkTwitterDialogOpen(true)}
           />
         </div>
       </CardContent>
+
+      {/* Email Dialog */}
+      <Dialog
+        open={isUnlinkEmailDialogOpen}
+        onOpenChange={setIsUnlinkEmailDialogOpen}
+      >
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Unlink Email</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to continue?
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setIsUnlinkEmailDialogOpen(false)}
+            >
+              Cancel
+            </Button>
+            <Button onClick={() => handleUnlinkEmail(user.email?.address)}>
+              Unlink
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Twitter Dialog */}
+      <Dialog
+        open={isUnlinkTwitterDialogOpen}
+        onOpenChange={setIsUnlinkTwitterDialogOpen}
+      >
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Unlink Twitter</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to continue?
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setIsUnlinkTwitterDialogOpen(false)}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={() => handleUnlinkTwitter(user.twitter?.subject ?? '')}
+            >
+              Unlink
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </Card>
   );
 };
