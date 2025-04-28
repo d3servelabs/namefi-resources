@@ -21,14 +21,7 @@ import type { NavItem } from '@/types';
 import { LocalStorageKeys } from '@/utils/localStorageKeys';
 import { useTRPC } from '@/utils/trpc';
 import { useQuery } from '@tanstack/react-query';
-import {
-  Bell,
-  Bookmark,
-  CreditCard,
-  Globe,
-  PenToolIcon,
-  Search,
-} from 'lucide-react';
+import { Bookmark, CreditCard, Globe, PenToolIcon, Search } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { type ChangeEvent, useCallback, useMemo, useState } from 'react';
 import { useReadLocalStorage } from 'usehooks-ts';
@@ -37,16 +30,7 @@ import { SidebarDomains } from './SidebarDomains';
 const ITEMS: NavItem[] = [
   { title: 'My Domains', href: '/my-domains', icon: Globe },
   { title: 'Domain Bookmark', href: '#', icon: Bookmark },
-  { title: 'My Credits', href: '#', icon: CreditCard },
-  {
-    title: 'Notification',
-    href: '#',
-    icon: Bell,
-    badge: {
-      content: 2,
-      variant: 'default',
-    },
-  },
+  { title: 'My Payment Methods', href: '/payment-methods', icon: CreditCard },
   { title: 'Manage', href: '/manage', icon: PenToolIcon },
 ];
 
