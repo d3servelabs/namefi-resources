@@ -48,7 +48,7 @@ export const ordersRouter = createTRPCRouter({
       const domains = cartItems.map(
         (item) => item.normalizedDomainName as NamefiNormalizedDomain,
       );
-      const domainAvailabilities = await getDomainListInfo(domains);
+      const domainAvailabilities = await getDomainListInfo(domains, ctx.user);
       const allDomainsAvailable = domainAvailabilities.every(
         (availability) => availability.availability,
       );
