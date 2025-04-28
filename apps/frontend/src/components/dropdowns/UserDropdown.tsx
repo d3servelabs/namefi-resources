@@ -16,6 +16,7 @@ import {
 } from '@/components/ui/shadcn/dropdown-menu';
 import { SidebarMenuButton } from '@/components/ui/shadcn/sidebar';
 import { useConfirm } from '@/contexts';
+import { useCart } from '@/hooks/landing/use-cart';
 import { useAuth } from '@/hooks/useAuth';
 import { cn } from '@/lib/utils';
 import type { NavItem } from '@/types';
@@ -57,6 +58,7 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
     ref: ForwardedRef<HTMLDivElement>,
   ) {
     const confirm = useConfirm();
+    const { clearLocalCart } = useCart();
 
     const {
       isLoading,
@@ -120,7 +122,10 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
     });
 
     const { logout } = useLogout({
-      onSuccess: () => {},
+      onSuccess: () => {
+        // Clear the local cart when the user logs out
+        clearLocalCart();
+      },
     });
 
     const handleConnect = useCallback(() => {
