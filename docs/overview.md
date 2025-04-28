@@ -575,7 +575,7 @@ The multi-tenant architecture affects several aspects of the application:
 3. **Subdomain Restrictions**: Only subdomains of the parent domain can be managed
 
 ```typescript
-// Example of multi-tenant CORS configuration
+// Multi-tenant CORS configuration from apps/backend/src/index.ts
 app.use(async (...args) => {
   const allowedHostnames: string[] = [
     ...config.NAMEFI_FIRST_PARTY_HOSTNAMES,
@@ -584,9 +584,33 @@ app.use(async (...args) => {
 
   return cors({
     origin: (origin) => {
-      // Origin validation logic
+      if (origin) {
+        try {
+          const parsedOrigin = new URL(origin);
+
+          // Check if it's using https
+          if (!config.ALLOW_HTTP && parsedOrigin.protocol !== 'https:') {
+            return null;
+          }
+
+          if (
+            allowedHostnames.includes(parsedOrigin.hostname) ||
+            allowedHostnames.includes(
+              config.ADDITIONAL_HOSTNAME_MAP[parsedOrigin.hostname],
+            )
+          ) {
+            return origin;
+          }
+        } catch (error) {
+          console.error('Error parsing origin', error);
+          return null;
+        }
+      }
+      return null; // Block other origins
     },
-    // Other CORS settings
+    allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+    allowHeaders: ['Content-Type', 'Authorization'],
+    credentials: true, // Allow cookies if needed
   })(...args);
 });
 ```
@@ -727,15 +751,33 @@ export const ordersRouter = createTRPCRouter({
    cp apps/backend/.env.template apps/backend/.env
    ```
 
+   Key environment variables required:
+
+   **Backend Environment Variables**:
+   - `DATABASE_URL`: PostgreSQL connection string
+   - `STRIPE_SECRET_KEY`: API key for Stripe payment integration
+   - `ENVIRONMENT`: Development environment (local, development, production)
+   - `API_AUTH_KEY`: Authentication key for API access
+   - `TEMPORAL_API_KEY`, `TEMPORAL_NAMESPACE`, `TEMPORAL_API_URL`: Temporal workflow engine configuration
+
+   **Blockchain Integration Variables**:
+   - `LOCAL_SIGNER_PRIVATE_KEY`: Private key for blockchain transactions
+   - `GCP_HSM_KEYRING_RESOURCE_NAME`: For production HSM key management
+   - `BLOCKCHAIN_RPC_URL`: RPC endpoint for blockchain network
+   - `NFT_CONTRACT_ADDRESS`: Address of the NFT contract for domain ownership
+   - `NFSC_TOKEN_ADDRESS`: Address of the NFSC token contract for payments
+
 4. **Start the backend**:
    ```bash
-   bun --cwd apps/backend with-env env
+   bun --cwd apps/backend with-env dev
    ```
+   The backend will be available at http://localhost:3000
 
 5. **Start the frontend**:
    ```bash
-   bun --cwd apps/frontend with-env env
+   bun --cwd apps/frontend with-env dev
    ```
+   The frontend will be available at http://localhost:23001
 
 ### Running Tests
 
