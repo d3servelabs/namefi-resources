@@ -222,13 +222,13 @@ export const TTLColumnCell = ({
   const isSystemRecord = rdata === 'by AutoPark™' || rdata === 'by System';
 
   // Format TTL for display
-  const formatTTL = (ttlValue: string) => {
+  const formatTtl = (ttlValue: string) => {
     const option = TTL_OPTIONS.find((opt) => opt.value.toString() === ttlValue);
     return option ? option.label : ttlValue;
   };
 
   return isSystemRecord ? (
-    formatTTL(ttl)
+    formatTtl(ttl)
   ) : (
     <EditableCell
       enabled={false}

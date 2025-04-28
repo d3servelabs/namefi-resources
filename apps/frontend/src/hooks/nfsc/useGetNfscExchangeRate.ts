@@ -39,11 +39,11 @@ export default function useGetNfscExchangeRate(props: Props = {}) {
 // Transform the raw price data into the actual exchange rate
 function calculateExchangeRate(rawPrice: bigint): string {
   try {
-    const ONE_ETH = parseUnits('1', 18);
+    const oneEth = parseUnits('1', 18);
     if (rawPrice === 0n) {
       return '0';
     }
-    const intermediateResult = ONE_ETH / rawPrice;
+    const intermediateResult = oneEth / rawPrice;
     return formatUnits(intermediateResult, 9);
   } catch (error) {
     console.error('Error calculating exchange rate:', error);

@@ -119,7 +119,7 @@ export const dnsRecordsRouter = createTRPCRouter({
       });
 
       const updatedRecords = await db.transaction(async (tx) => {
-        const multiStatementSQL = sql.join(
+        const multiStatementSql = sql.join(
           records.map((record) =>
             tx
               .update(dnsRecordsTable)
@@ -135,7 +135,7 @@ export const dnsRecordsRouter = createTRPCRouter({
           ),
           sql`;\n`,
         );
-        return tx.execute(multiStatementSQL.inlineParams());
+        return tx.execute(multiStatementSql.inlineParams());
       });
 
       return updatedRecords;

@@ -20,6 +20,7 @@ import {
 } from '@/components/ui/shadcn/alert-dialog';
 import { Separator } from '@/components/ui/shadcn/separator';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
+import { useCart } from '@/hooks/landing/use-cart';
 import { useAuth } from '@/hooks/useAuth';
 import { cn } from '@/lib/utils';
 import {
@@ -36,7 +37,7 @@ import {
   paymentProviderSchema,
 } from '@namefi-astra/db/types';
 import { CHAINS, NFSC_CONTRACT_ADDRESS } from '@namefi-astra/utils';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import type { inferInput } from '@trpc/tanstack-react-query';
 import { Loader2, Trash2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -67,39 +68,29 @@ export default function CartPage() {
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
 
   const trpc = useTRPC();
-  const queryClient = useQueryClient();
 
-  const cartQuery = useQuery({
-    ...trpc.carts.getItems.queryOptions(),
-    enabled: isAuthenticated,
-  });
-
-  // biome-ignore lint/correctness/useExhaustiveDependencies: explicitly want to run this effect when isAuthenticated changes
-  useEffect(() => {
-    queryClient.invalidateQueries(trpc.carts.getItems.queryFilter());
-  }, [isAuthenticated, queryClient, trpc.carts.getItems.queryFilter]);
-
-  const items = useMemo(() => cartQuery?.data ?? [], [cartQuery?.data]);
+  // Use the useCart hook instead of direct trpc calls
+  const { cartData: items, isCartDataLoading, refetchCart } = useCart();
 
   const isLoading = useMemo(
-    () => isAuthLoading || cartQuery.isLoading,
-    [isAuthLoading, cartQuery.isLoading],
+    () => isAuthLoading || isCartDataLoading,
+    [isAuthLoading, isCartDataLoading],
   );
 
   const totalAmountInUsdCents = useMemo(
-    () => items.reduce((sum, item) => sum + item.amountInUSDCents, 0),
+    () => items?.reduce((sum, item) => sum + item.amountInUSDCents, 0) ?? 0,
     [items],
   );
-
   const cartItemsAreAllPromo = useMemo(
-    () => items.length > 0 && totalAmountInUsdCents === 0,
+    () => items && items.length > 0 && totalAmountInUsdCents === 0,
     [items, totalAmountInUsdCents],
   );
 
+  // Use removeFromCartMutate from useCart hook
   const { mutate: removeItem } = useMutation(
     trpc.carts.removeItem.mutationOptions({
       onSuccess: () => {
-        queryClient.invalidateQueries(trpc.carts.getItems.queryFilter());
+        refetchCart();
       },
     }),
   );
@@ -111,7 +102,7 @@ export default function CartPage() {
       onSuccess: (data) => {
         setIsRedirecting(true);
         logPurchase();
-        queryClient.invalidateQueries(trpc.carts.getItems.queryFilter());
+        refetchCart();
         router.push(`/orders/${data.id}`);
       },
       onError: () => {
@@ -306,7 +297,7 @@ export default function CartPage() {
   }, [logEventWithInteractionLoggers, totalAmountInUsdCents]);
 
   const handleSubmitOrder = useCallback(() => {
-    if (!cartQuery.data || cartQuery.data.length === 0) {
+    if (!items || items.length === 0) {
       throw new Error('Tried to submit order with no cart items.');
     }
 
@@ -329,7 +320,7 @@ export default function CartPage() {
 
     try {
       createOrder({
-        cartItemIds: cartQuery.data.map((item) => item.id),
+        cartItemIds: items.map((item) => item.id),
         ...validatedPaymentMethodDetails.data,
         nftMetadata: {
           nftWalletAddress: selectedNftWalletAddress,
@@ -342,7 +333,7 @@ export default function CartPage() {
   }, [
     createOrder,
     checkoutWithCartRequestPaymentMethodDetails,
-    cartQuery.data,
+    items,
     selectedNftWalletAddress,
   ]);
 
@@ -458,7 +449,7 @@ export default function CartPage() {
         </AlertDialogContent>
       </AlertDialog>
 
-      {items.length > 0 ? (
+      {items && items.length > 0 ? (
         <div
           className={cn(
             'grid grid-cols-1 lg:grid-cols-2 gap-4 relative',

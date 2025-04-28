@@ -1,9 +1,9 @@
 import nodemailer from 'nodemailer';
 import type Mail from 'nodemailer/lib/mailer';
-import type SMTPTransport from 'nodemailer/lib/smtp-transport';
+import type smtpTransport from 'nodemailer/lib/smtp-transport';
 import { config, secrets } from '#lib/env';
 
-const transportOptions: SMTPTransport.Options = config.SMTP_SECURE
+const transportOptions: smtpTransport.Options = config.SMTP_SECURE
   ? { secure: true }
   : {
       secure: false,

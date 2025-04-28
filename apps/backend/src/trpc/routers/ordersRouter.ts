@@ -132,13 +132,13 @@ export const ordersRouter = createTRPCRouter({
         }
       }
 
-      const totalAmountInUSDCents = cartItems.reduce(
+      const totalAmountInUsdCents = cartItems.reduce(
         (acc, item) => acc + item.amountInUSDCents,
         0,
       );
 
       const payment = await createPayment({
-        amountInUsdCents: totalAmountInUSDCents,
+        amountInUsdCents: totalAmountInUsdCents,
         paymentProviderDetails: input.paymentProviderDetails,
       });
 
@@ -148,8 +148,8 @@ export const ordersRouter = createTRPCRouter({
         const [order] = await tx
           .insert(ordersTable)
           .values({
-            amountInUSDCents: totalAmountInUSDCents,
-            totalAmountInUSDCents,
+            amountInUSDCents: totalAmountInUsdCents,
+            totalAmountInUSDCents: totalAmountInUsdCents,
             userId: ctx.user.id,
             paymentId: payment.id,
             nftWalletAddress: input.nftMetadata.nftWalletAddress,

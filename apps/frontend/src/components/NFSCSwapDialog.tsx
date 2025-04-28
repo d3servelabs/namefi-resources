@@ -11,7 +11,7 @@ import {
 import { Input } from '@/components/ui/shadcn/input';
 import { useBuyNfsc } from '@/hooks/nfsc/useBuyNfsc';
 import useGetNfscExchangeRate from '@/hooks/nfsc/useGetNfscExchangeRate';
-import useNFSCBalance from '@/hooks/nfsc/useNFSCBalance';
+import useNfscBalance from '@/hooks/nfsc/useNFSCBalance';
 import { AlertCircle, ArrowDown } from 'lucide-react';
 import { Loader2 } from 'lucide-react';
 import Image from 'next/image';
@@ -39,7 +39,7 @@ export default function NFSCSwapDialog(props: Props) {
     nativeBalance,
     isLoading,
     refetch: refetchBalances,
-  } = useNFSCBalance();
+  } = useNfscBalance();
   const { data: conversionRate, isLoading: isConversionRateLoading } =
     useGetNfscExchangeRate();
   const { writeContractAsync: exchangeNfsc, isPending } = useBuyNfsc({

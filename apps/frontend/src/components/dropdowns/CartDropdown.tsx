@@ -11,11 +11,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/shadcn/dropdown-menu';
-import { useAuth } from '@/hooks/useAuth';
+import { useCart } from '@/hooks/landing/use-cart';
 import { cn } from '@/lib/utils';
 import { formatAmountInUSD } from '@/utils/number';
-import { useTRPC } from '@/utils/trpc';
-import { useQuery } from '@tanstack/react-query';
 import { ShoppingCart } from 'lucide-react';
 import Link from 'next/link';
 import {
@@ -26,80 +24,69 @@ import {
   useMemo,
 } from 'react';
 
-export type vProps = HTMLAttributes<HTMLDivElement>;
+export type CartDropdownProps = HTMLAttributes<HTMLDivElement>;
 
-export const CartDropdown: ForwardRefExoticComponent<vProps> = forwardRef<
-  HTMLDivElement,
-  vProps
->(function v(
-  { className, ...rest }: vProps,
-  ref: ForwardedRef<HTMLDivElement>,
-) {
-  const trpc = useTRPC();
+export const CartDropdown: ForwardRefExoticComponent<CartDropdownProps> =
+  forwardRef<HTMLDivElement, CartDropdownProps>(function v(
+    { className, ...rest }: CartDropdownProps,
+    ref: ForwardedRef<HTMLDivElement>,
+  ) {
+    const { cartData: items = [] } = useCart();
 
-  const { isAuthenticated } = useAuth();
+    const totalAmountInUsdCents = useMemo(
+      () => items.reduce((sum, item) => sum + item.amountInUSDCents, 0),
+      [items],
+    );
 
-  const cartQuery = useQuery({
-    ...trpc.carts.getItems.queryOptions(),
-    enabled: isAuthenticated,
-  });
-
-  const items = useMemo(() => cartQuery?.data ?? [], [cartQuery?.data]);
-
-  const totlaAmountInUSDCents = useMemo(
-    () => items.reduce((sum, item) => sum + item.amountInUSDCents, 0),
-    [items],
-  );
-
-  return (
-    <div ref={ref} className={cn('', className)} {...rest}>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild={true}>
-          <Button variant="ghost" size="icon" className="relative">
-            <ShoppingCart className="h-5 w-5" />
-            {items.length > 0 && (
-              <Badge
-                className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 text-xs"
-                variant="destructive"
-              >
-                {items.length}
-              </Badge>
-            )}
-          </Button>
-        </DropdownMenuTrigger>
-        {items.length > 0 && (
-          <DropdownMenuContent className="w-56" align="end">
-            <DropdownMenuLabel>My Cart</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              {items.map((item) => (
-                <DropdownMenuItem
-                  key={item.id}
-                  className="flex justify-between"
+    return (
+      <div ref={ref} className={cn('', className)} {...rest}>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild={true}>
+            <Button variant="ghost" size="icon" className="relative">
+              <ShoppingCart className="h-5 w-5" />
+              {items.length > 0 && (
+                <Badge
+                  className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 text-xs"
+                  variant="destructive"
                 >
-                  <span>{item.normalizedDomainName}</span>
-                  <span className="text-muted-foreground">
-                    {formatAmountInUSD(item.amountInUSDCents, true)}
-                  </span>
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem className="justify-between font-medium">
-              <span>Total</span>
-              <span>{formatAmountInUSD(totlaAmountInUSDCents, true)}</span>
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem asChild={true}>
-              <Button className="w-full" variant="default" asChild={true}>
-                <Link href="/cart">Checkout</Link>
-              </Button>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        )}
-      </DropdownMenu>
-    </div>
-  );
-});
+                  {items.length}
+                </Badge>
+              )}
+            </Button>
+          </DropdownMenuTrigger>
+          {items.length > 0 && (
+            <DropdownMenuContent className="w-56" align="end">
+              <DropdownMenuLabel>My Cart</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuGroup>
+                {items.map((item) => (
+                  <DropdownMenuItem
+                    key={item.id}
+                    className="flex justify-between"
+                  >
+                    <span>{item.normalizedDomainName}</span>
+                    <span className="text-muted-foreground">
+                      {formatAmountInUSD(item.amountInUSDCents, true)}
+                    </span>
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuGroup>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem className="justify-between font-medium">
+                <span>Total</span>
+                <span>{formatAmountInUSD(totalAmountInUsdCents, true)}</span>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem asChild={true}>
+                <Button className="w-full" variant="default" asChild={true}>
+                  <Link href="/cart">Checkout</Link>
+                </Button>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          )}
+        </DropdownMenu>
+      </div>
+    );
+  });
 
 CartDropdown.displayName = 'CartDropdown';
