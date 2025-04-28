@@ -20,7 +20,7 @@ const Hero: FC = () => {
       <h2 className="text-3xl md:text-4xl font-bold mb-6">
         Building theDecentralized Future Together
       </h2>
-      <p className="max-w-3xl mx-auto text-lg opacity-80">
+      <p className="max-w-3xl mx-auto text-lg text-muted-foreground">
         Join the network of '0x Generation' citizens, where you not only have
         anidentity but also define the future together.
         <br />
@@ -36,7 +36,7 @@ const WhatIsSection: FC = () => {
     <section className="px-14 flex flex-col md:flex-row items-center justify-between gap-10">
       <div className="md:w-1/2 text-white max-w-2xl flex flex-col gap-6 justify-center">
         <h2 className="text-5xl font-bold mb-6">What Is 0x.City</h2>
-        <p className="text-lg leading-relaxed">
+        <p className="text-lg leading-relaxed text-muted-foreground">
           0x.City is a community belonging to "0x Citizens." We are a group of
           people who deeply believe in the future of blockchain and
           decentralization. Using "0x" in addresses, social accounts, and
@@ -100,7 +100,7 @@ const WhyJoin: FC = () => {
       <h2 className="text-5xl font-bold mb-4 text-white text-center">
         Why Join the Movement?
       </h2>
-      <p className="text-lg text-white text-center mb-12 max-w-4xl">
+      <p className="text-lg text-muted-foreground text-center mb-12 max-w-4xl">
         "Having your own yourname.0x.city is not just an identifier, but also a
         ticket to join this decentralized cultural movement."
       </p>
@@ -261,7 +261,7 @@ const CommunitySection: FC = () => {
       <h2 className="text-5xl font-bold mb-4 text-white text-center">
         Join the Community
       </h2>
-      <p className="text-lg text-white text-center mb-10">
+      <p className="text-lg text-muted-foreground text-center mb-10">
         Stay in the loop, ask questions and share ideas:
       </p>
 
