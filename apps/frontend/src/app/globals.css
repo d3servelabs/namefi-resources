@@ -44,7 +44,9 @@
   --sidebar-border: oklch(0.92 0.004 286.32);
   --sidebar-ring: oklch(0.705 0.015 286.067);
   --brand-primary: #1cd17d;
-  --brand-secondary: #262626;
+  /* Add these colors for astra */
+  --brand-secondary: #1cd17d;
+  --brand-tertiary: #1cd17d;
 }
 
 .dark {
@@ -81,7 +83,9 @@
   --sidebar-border: oklch(0.274 0.006 286.033);
   --sidebar-ring: oklch(0.442 0.017 285.786);
   --brand-primary: #1cd17d;
-  --brand-secondary: #262626;
+  /* Add these colors for astra */
+  --brand-secondary: #1cd17d;
+  --brand-tertiary: #1cd17d;
 }
 
 @theme inline {
@@ -123,6 +127,7 @@
   --color-sidebar-ring: var(--sidebar-ring);
   --color-brand-primary: var(--brand-primary);
   --color-brand-secondary: var(--brand-secondary);
+  --color-brand-tertiary: var(--brand-tertiary);
   --animate-marquee: marquee var(--duration) infinite linear;
   --animate-marquee-vertical: marquee-vertical var(--duration) linear infinite;
   @keyframes marquee {
@@ -169,5 +174,7 @@
 
   [data-origin="0x.city"] {
     --brand-primary: #4f46e5;
+    --brand-secondary: #6366f1;
+    --brand-tertiary: #818cf8;
   }
 }
