@@ -126,34 +126,34 @@ const WhyJoin: FC = () => {
       </p>
 
       <div className="flex flex-col gap-6 w-full max-w-4xl">
-        <div className="bg-white/10 backdrop-blur-3xl rounded-lg p-6 border border-white/10">
+        <div className="bg-black/40 backdrop-blur-sm rounded-lg p-6 border border-white/10">
           <div className="flex items-center gap-4">
-            <div className="bg-brand-primary rounded-lg p-2">
+            <div className="bg-indigo-500/20 rounded-lg p-2">
               <IdCard className="w-8 h-8" />
             </div>
-            <h3 className="text-xl font-semibold text-white">
+            <h3 className="text-xl font-bold text-white">
               Registered a name starting with 0x on ENS
             </h3>
           </div>
         </div>
 
-        <div className="bg-white/10 backdrop-blur-3xl rounded-lg p-6 border border-white/10">
+        <div className="bg-black/40 backdrop-blur-sm rounded-lg p-6 border border-white/10">
           <div className="flex items-center gap-4">
-            <div className="bg-brand-primary rounded-lg p-2">
+            <div className="bg-indigo-500/20 rounded-lg p-2">
               <IdCard className="w-8 h-8" />
             </div>
-            <h3 className="text-xl font-semibold text-white">
+            <h3 className="text-xl font-bold text-white">
               Using 0x as your digital imprint on Twitter/Farcaster
             </h3>
           </div>
         </div>
 
-        <div className="bg-white/10 backdrop-blur-3xl rounded-lg p-6 border border-white/10">
+        <div className="bg-black/40 backdrop-blur-sm rounded-lg p-6 border border-white/10">
           <div className="flex items-center gap-4">
-            <div className="bg-brand-primary rounded-lg p-2">
+            <div className="bg-indigo-500/20 rounded-lg p-2">
               <IdCard className="w-8 h-8" />
             </div>
-            <h3 className="text-xl font-semibold text-white">
+            <h3 className="text-xl font-bold text-white">
               Actively participating and creating in DAOs, NFTs, DeFi
             </h3>
           </div>

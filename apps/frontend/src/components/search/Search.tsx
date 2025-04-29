@@ -148,16 +148,14 @@ export const DomainCard: FC<{
           <div className="space-y-1">
             <h3 className="font-semibold tracking-tight flex gap-2 items-center">
               <span>
-                <span className="text-3xl text-brand-tertiary">
-                  {subdomain}
-                </span>
+                <span className="text-3xl text-brand-primary">{subdomain}</span>
                 <span className="text-2xl text-foreground">
                   .{parentDomain}
                 </span>
               </span>
               {!domain.availability && (
-                <Badge className="ml-2 text-xs bg-black/70 text-white">
-                  Unavailable
+                <Badge className="ml-2 text-xs bg-brand-secondary text-white">
+                  Taken
                 </Badge>
               )}
             </h3>
@@ -390,11 +388,8 @@ export const Search: SearchComponent = ({ originInfo }) => {
               >
                 Available
               </TabsTrigger>
-              <TabsTrigger
-                className="py-2 px-3 w-32 rounded-sm"
-                value="unavailable"
-              >
-                Unavailable
+              <TabsTrigger className="py-2 px-3 w-32 rounded-sm" value="taken">
+                Taken
               </TabsTrigger>
               <TabsTrigger className="py-2 px-3 w-32 rounded-sm" value="cart">
                 In Cart

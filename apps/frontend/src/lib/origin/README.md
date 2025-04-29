@@ -52,7 +52,6 @@ Currently, only the following brand-related properties are themed:
 
 - `--color-brand-primary`: Primary brand color
 - `--color-brand-secondary`: Secondary brand color
-- `--color-brand-tertiary`: Tertiary brand color
 
 All other properties (like background colors, text colors, etc.) remain consistent across themes.
 
@@ -79,7 +78,6 @@ To add support for a new origin:
    [data-theme="new-theme-name"] {
      --color-brand-primary: #your-brand-color;
      --color-brand-secondary: #your-secondary-color;
-     --color-brand-tertiary: #your-tertiary-color;
    }
    ```
 

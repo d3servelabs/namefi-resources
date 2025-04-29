@@ -85,11 +85,8 @@ export const Search: SearchComponent = ({ originInfo }) => {
               >
                 Available
               </TabsTrigger>
-              <TabsTrigger
-                className="py-2 px-3 w-32 rounded-sm"
-                value="unavailable"
-              >
-                Unavailable
+              <TabsTrigger className="py-2 px-3 w-32 rounded-sm" value="taken">
+                Taken
               </TabsTrigger>
               <TabsTrigger className="py-2 px-3 w-32 rounded-sm" value="cart">
                 In Cart

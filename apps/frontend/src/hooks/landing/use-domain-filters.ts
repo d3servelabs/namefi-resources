@@ -21,7 +21,7 @@ export function useDomainFilters(
     if (activeTab === 'available') {
       return domains.filter((domain) => domain.availability);
     }
-    if (activeTab === 'unavailable') {
+    if (activeTab === 'taken') {
       return domains.filter((domain) => !domain.availability);
     }
     if (activeTab === 'cart') {
