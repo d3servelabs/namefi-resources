@@ -72,6 +72,8 @@ import {
 import { TablePageSelector } from './TablePageSelector';
 import { usePagination } from './usePagination';
 
+const ENABLE_PAGINATION = false;
+
 export type DnsRecordsTableProps = HTMLAttributes<HTMLDivElement> & {
   domain: string;
 };
@@ -225,7 +227,7 @@ export const DnsRecordsTable: FC<DnsManagementProps> = ({
         pageSize,
       },
     },
-    manualPagination: true,
+    manualPagination: false,
     pageCount,
   });
 
