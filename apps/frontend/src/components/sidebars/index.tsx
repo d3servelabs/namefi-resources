@@ -22,6 +22,7 @@ import { LocalStorageKeys } from '@/utils/localStorageKeys';
 import { useTRPC } from '@/utils/trpc';
 import { useQuery } from '@tanstack/react-query';
 import {
+  ArrowRight,
   ClipboardList,
   Compass,
   CreditCard,
@@ -29,9 +30,10 @@ import {
   PenToolIcon,
   Search,
 } from 'lucide-react';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { type ChangeEvent, useCallback, useMemo, useState } from 'react';
 import { useReadLocalStorage } from 'usehooks-ts';
+import { Button } from '../ui/shadcn/button';
 import { SidebarDomains } from './SidebarDomains';
 
 const ITEMS: NavItem[] = [
@@ -100,21 +102,23 @@ export function AppSidebar() {
   const items = useMemo(() => {
     return ITEMS.filter((item) => {
       if (item.title.toLowerCase() === 'manage') {
-        return (
-          showManageEntrypoint &&
-          item.title.toLowerCase().includes(search.toLowerCase())
-        );
+        return showManageEntrypoint;
       }
 
-      return item.title.toLowerCase().includes(search.toLowerCase());
+      return true;
     });
-  }, [search, showManageEntrypoint]);
+  }, [showManageEntrypoint]);
 
   const isCollapsed = useMemo(() => state === 'collapsed', [state]);
 
   const handleSearch = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     setSearch(event.target.value);
   }, []);
+
+  const router = useRouter();
+  const searchForDomain = useCallback(() => {
+    router.push(`/?query=${search}`);
+  }, [search, router]);
 
   return (
     <Sidebar
@@ -131,21 +135,42 @@ export function AppSidebar() {
           </div>
         </SidebarGroup>
         {!isCollapsed && (
-          <SidebarGroup className="py-0">
-            <SidebarGroupContent className="relative">
-              <Label htmlFor="search" className="sr-only">
-                Search
-              </Label>
-              <SidebarInput
-                value={search}
-                onChange={handleSearch}
-                id="search"
-                placeholder="Search..."
-                className="pl-8"
-              />
-              <Search className="pointer-events-none absolute left-2 top-1/2 size-4 -translate-y-1/2 select-none opacity-50" />
-            </SidebarGroupContent>
-          </SidebarGroup>
+          <div className="flex items-center flex-row">
+            <SidebarGroup className="py-0">
+              <SidebarGroupContent className="relative">
+                <Label htmlFor="search" className="sr-only">
+                  Search
+                </Label>
+                <SidebarInput
+                  value={search}
+                  onChange={handleSearch}
+                  id="search"
+                  placeholder="Search..."
+                  className="pl-8"
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter') {
+                      searchForDomain();
+                    }
+                  }}
+                />
+                <Search className="pointer-events-none absolute left-2 top-1/2 size-4 -translate-y-1/2 select-none opacity-50" />
+              </SidebarGroupContent>
+            </SidebarGroup>
+            {search.length > 0 && (
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={searchForDomain}
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter') {
+                    searchForDomain();
+                  }
+                }}
+              >
+                <ArrowRight className="size-4 select-none opacity-50" />
+              </Button>
+            )}
+          </div>
         )}
       </SidebarHeader>
 

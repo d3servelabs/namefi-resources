@@ -5,15 +5,31 @@ import {
 } from '@/utils/interaction-logging/events';
 import { useTRPC } from '@/utils/trpc';
 import { useQuery } from '@tanstack/react-query';
+import { useSearchParams } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 
 /**
  * Hook for managing domain search functionality
  */
-export function useSearch(parentDomain: string | undefined) {
+export function useSearch(
+  parentDomain: string | undefined,
+  enabledAutoUrlQueryMonitor = true,
+) {
   const [query, setQuery] = useState('');
   const trpc = useTRPC();
   const { logEventWithInteractionLoggers } = useInteractionLoggers();
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    if (!enabledAutoUrlQueryMonitor) {
+      return;
+    }
+
+    const searchQuery = searchParams.get('query');
+    if (searchQuery) {
+      setQuery(searchQuery);
+    }
+  }, [searchParams, enabledAutoUrlQueryMonitor]);
 
   // Data fetching for search results
   const {
