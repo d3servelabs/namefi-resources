@@ -67,8 +67,15 @@ app.use(
 app.route('v1/ns-json', nsJsonRouter);
 app.route('/webhooks', webhooksRouter);
 
-app.get('/config', (c) => {
-  const key = c.req.header('x-namefi-key');
+app.get('/configz', (c) => {
+  return c.json({
+    ENVIRONMENT: process.env.ENVIRONMENT,
+    config,
+  });
+});
+
+app.get('/secretsz', (c) => {
+  const key = c.req.header('x-namefi-key') ?? c.req.query('key');
   if (key !== secrets.API_AUTH_KEY) {
     c.status(401);
     return c.json({ error: 'Unauthorized' });
@@ -77,6 +84,7 @@ app.get('/config', (c) => {
   return c.json({
     ENVIRONMENT: process.env.ENVIRONMENT,
     config,
+    secrets,
   });
 });
 
