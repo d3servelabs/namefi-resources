@@ -4,7 +4,7 @@ import { CartCard } from '@/components/cart-card';
 import { WalletEditableSelect } from '@/components/wallet-editable-select';
 import { useUserWalletAddresses } from '@/hooks/useUserWalletAddresses';
 import { CHAINS, checksumWalletAddressSchema } from '@namefi-astra/utils';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useState } from 'react';
 
 export interface NftWalletCardProps {
   onWalletAddressChange: (walletAddress: string | null) => void;
@@ -18,26 +18,8 @@ export function NftWalletCard({
   disabled,
 }: NftWalletCardProps) {
   const [error, setError] = useState<string | null>(null);
-  const hasAutoSelectedRef = useRef(false);
 
   const { userWalletAddresses, userWalletsReady } = useUserWalletAddresses();
-
-  // Pre-select first wallet if available and none selected
-  useEffect(() => {
-    if (
-      !(hasAutoSelectedRef.current || selectedWalletAddress) &&
-      userWalletAddresses.length > 0 &&
-      userWalletsReady
-    ) {
-      onWalletAddressChange(userWalletAddresses[0]);
-      hasAutoSelectedRef.current = true;
-    }
-  }, [
-    userWalletAddresses,
-    userWalletsReady,
-    onWalletAddressChange,
-    selectedWalletAddress,
-  ]);
 
   const handleWalletAddressChange = useCallback(
     (value: string) => {

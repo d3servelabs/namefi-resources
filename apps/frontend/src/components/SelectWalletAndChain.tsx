@@ -41,11 +41,7 @@ export function SelectWallet({
   }
 
   return (
-    <Select
-      disabled={selectTriggerDisabled}
-      onValueChange={onValueChange}
-      defaultValue={linkedWalletAddresses[0]}
-    >
+    <Select disabled={selectTriggerDisabled} onValueChange={onValueChange}>
       <SelectTrigger>
         <SelectValue placeholder="Select a Wallet" />
       </SelectTrigger>
