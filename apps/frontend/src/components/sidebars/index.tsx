@@ -37,7 +37,7 @@ import { Button } from '../ui/shadcn/button';
 import { SidebarDomains } from './SidebarDomains';
 
 const ITEMS: NavItem[] = [
-  { title: 'Discover', href: '/discover', icon: Compass },
+  { title: 'Discover', href: '/', icon: Compass },
   { title: 'My Domains', href: '/my-domains', icon: Globe },
   { title: 'My Orders', href: '/orders', icon: ClipboardList },
   { title: 'My Payment Methods', href: '/payment-methods', icon: CreditCard },
