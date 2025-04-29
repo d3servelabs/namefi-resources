@@ -17,6 +17,12 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/shadcn/dialog';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/shadcn/tooltip';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useLinkedWallets } from '@/hooks/useUserWalletAddresses';
 import { cn, getShortAddress } from '@/lib/utils';
@@ -51,6 +57,17 @@ export const Wallets = ({ className, ...rest }: WalletsProps) => {
 
   const { user, linkWallet, unlinkWallet } = usePrivy();
   const { linkedWallets } = useLinkedWallets();
+
+  const isFirstConnectedWallet = useCallback(
+    (wallet: WalletWithMetadata) => {
+      if (!user?.wallet) {
+        return false;
+      }
+
+      return user.wallet.address === wallet.address;
+    },
+    [user],
+  );
 
   const handleLinkWallet = useCallback(() => {
     linkWallet();
@@ -140,6 +157,9 @@ export const Wallets = ({ className, ...rest }: WalletsProps) => {
                     <div className="text-sm text-muted-foreground">
                       {shortage(wallet.address, 11)}
                     </div>
+                    <div className="text-sm text-muted-foreground">
+                      {isFirstConnectedWallet(wallet) ? '(Primary)' : ''}
+                    </div>
                   </div>
                 </div>
                 <div className="flex gap-2">
@@ -164,7 +184,25 @@ export const Wallets = ({ className, ...rest }: WalletsProps) => {
                   >
                     <ExternalLink className="h-4 w-4" />
                   </Button>
-                  {wallet.address !== user?.wallet?.address && (
+                  {isFirstConnectedWallet(wallet) ? (
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger>
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            aria-label="Remove wallet"
+                            disabled={true}
+                          >
+                            <Trash2 className="h-4 w-4 text-destructive" />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          Primary wallet cannot be unlinked
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  ) : (
                     <Button
                       variant="outline"
                       size="icon"
