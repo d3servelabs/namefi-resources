@@ -72,13 +72,7 @@ export const Footer: ForwardRefExoticComponent<FooterProps> = forwardRef<
             </button>
           )}
           <Link
-            href="/private-terms"
-            className="text-gray-300 hover:text-white text-sm"
-          >
-            Private Terms
-          </Link>
-          <Link
-            href="/terms"
+            href="https://namefi.io/tos"
             className="text-gray-300 hover:text-white text-sm"
           >
             Terms & Conditions
