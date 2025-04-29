@@ -60,7 +60,7 @@ export function AddEditRecordsDialog({
       name: '',
       domain: zoneName,
       rdata: '',
-      ttl: 3600,
+      ttl: 60,
     }),
     [preselectedType, zoneName],
   );
