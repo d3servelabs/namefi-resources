@@ -69,7 +69,7 @@ export default function RootLayout({
           <Contexts>
             <OriginBackground />
             <Toaster />
-            <SidebarProvider>
+            <SidebarProvider defaultOpen={false}>
               <AppSidebar />
               <Main>{children}</Main>
             </SidebarProvider>
