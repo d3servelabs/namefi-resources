@@ -23,6 +23,7 @@ import { useTRPC } from '@/utils/trpc';
 import { useQuery } from '@tanstack/react-query';
 import {
   ClipboardList,
+  Compass,
   CreditCard,
   Globe,
   PenToolIcon,
@@ -34,6 +35,7 @@ import { useReadLocalStorage } from 'usehooks-ts';
 import { SidebarDomains } from './SidebarDomains';
 
 const ITEMS: NavItem[] = [
+  { title: 'Discover', href: '/discover', icon: Compass },
   { title: 'My Domains', href: '/my-domains', icon: Globe },
   { title: 'My Orders', href: '/orders', icon: ClipboardList },
   { title: 'My Payment Methods', href: '/payment-methods', icon: CreditCard },
