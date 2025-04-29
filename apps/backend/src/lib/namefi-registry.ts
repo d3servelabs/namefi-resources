@@ -1,6 +1,7 @@
-import { db } from '@namefi-astra/db';
+import { db, orderItemStatusSchema } from '@namefi-astra/db';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { addWeeks, isAfter } from 'date-fns';
+import { inArray } from 'drizzle-orm';
 import { ParseResultType, parseDomain } from 'parse-domain';
 import { isNil } from 'ramda';
 import { config } from '#lib/env';
@@ -120,6 +121,23 @@ export const getDomainListInfo = async (
             return unavailableDomainInfo;
           }
         }
+
+        const orderItems = await db.query.orderItemsTable.findMany({
+          where: (orderItems, { and, ilike }) =>
+            and(
+              ilike(orderItems.normalizedDomainName, domain),
+              inArray(orderItems.status, [
+                orderItemStatusSchema.Enum.PROCESSING,
+                orderItemStatusSchema.Enum.SUCCEEDED, // TODO: SUCCEEDED should be also constrained by date, since we don't want old orders to prevent repurchase
+                orderItemStatusSchema.Enum.CREATED, // TODO: CREATED should be also constrained by date, since we don't want old unprocessed orders to prevent repurchase
+              ]),
+            ),
+        });
+
+        if (orderItems.length > 0) {
+          return unavailableDomainInfo;
+        }
+
         // Look up the NFT and price information
         const nft = nftMap.get(domain);
         const isFreeMint = userQualifiesFor0xDotCity;

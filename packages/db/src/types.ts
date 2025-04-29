@@ -196,3 +196,6 @@ export function isNfscPayment(
 ): details is NfscPaymentProviderDetails {
   return nfscPaymentProviderDetailsSchema.safeParse(details).success;
 }
+
+export const orderItemStatusSchema = z.enum(orderStatusEnum.enumValues);
+export type OrderItemStatus = z.infer<typeof orderItemStatusSchema>;
