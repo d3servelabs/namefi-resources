@@ -1,26 +1,70 @@
-.gradient-border-mask {
+@import "tailwindcss";
+
+/* Define reusable gradient border utility */
+@utility gradient-border {
   position: relative;
-  padding: 15px 20px;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    border-color: transparent;
+    background-origin: border-box;
+    -webkit-mask: linear-gradient(#fff 0 0) padding-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: destination-out;
+    mask-composite: exclude;
+  }
 }
 
-.gradient-border-mask::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  border-radius: 8px;
-  border: 1px solid transparent;
-  pointer-events: none;
-  background: linear-gradient(
-      to bottom,
-      color-mix(in srgb, var(--brand-primary) 50%, transparent) 0%,
-      color-mix(in srgb, var(--brand-primary) 50%, transparent) 30%,
-      transparent 100%
-    )
-    border-box;
-  -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: destination-out;
-  mask-composite: exclude;
+/* Define component classes with gradient borders */
+@layer components {
+  .gradient-border-mask {
+    @apply gradient-border;
+
+    &::before {
+      border-radius: 8px;
+      border: 1px solid transparent;
+      background-image: linear-gradient(
+        to bottom,
+        color-mix(in srgb, var(--brand-primary) 50%, transparent) 0%,
+        color-mix(in srgb, var(--brand-primary) 50%, transparent) 30%,
+        transparent 100%
+      );
+    }
+  }
+
+  .gradient-border-top {
+    @apply gradient-border;
+
+    &::before {
+      border-top: 1px solid transparent;
+      background-image: linear-gradient(
+        to right,
+        transparent 0%,
+        color-mix(in srgb, var(--color-white) 50%, transparent) 15%,
+        color-mix(in srgb, var(--color-white) 50%, transparent) 85%,
+        transparent 100%
+      );
+    }
+  }
+
+  .gradient-border-bottom {
+    @apply gradient-border;
+
+    &::before {
+      border-bottom: 1px solid transparent;
+      background-image: linear-gradient(
+        to right,
+        transparent 0%,
+        color-mix(in srgb, var(--color-white) 10%, transparent) 15%,
+        color-mix(in srgb, var(--color-white) 10%, transparent) 85%,
+        transparent 100%
+      );
+    }
+  }
 }

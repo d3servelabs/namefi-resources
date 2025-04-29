@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
 import { DomainClaim } from '../domain-claim';
 import './styles.css';
+import { Separator } from '../ui/shadcn/separator';
 
 // Hero Section
 const Hero: FC = () => {
@@ -33,9 +34,9 @@ const Hero: FC = () => {
 // What Is Section with Orbiting Circles
 const WhatIsSection: FC = () => {
   return (
-    <section className="px-14 flex flex-col lg:flex-row items-center justify-between gap-10">
-      <div className="md:w-1/2 text-white max-w-2xl flex flex-col gap-6 justify-center">
-        <h2 className="text-5xl text-center lg:text-left font-bold mb-6">
+    <section className="px-14 flex flex-col lg:flex-row items-center justify-evenly gap-10 gradient-border-top gradient-border-bottom">
+      <div className="md:w-1/2 text-white flex flex-col gap-6 justify-center">
+        <h2 className="text-5xl text-center lg:text-left font-bold">
           What Is 0x.City
         </h2>
         <p className="text-lg leading-relaxed text-center lg:text-left text-muted-foreground">
@@ -47,8 +48,19 @@ const WhatIsSection: FC = () => {
           decentralized new digital world together.
         </p>
       </div>
+      <Separator
+        orientation="vertical"
+        className="bg-white/10 self-stretch !h-auto"
+      />
       <div className="relative flex h-[635] scale-70 lg:scale-100 w-full lg:w-1/2 flex-col items-center justify-center overflow-hidden">
-        <OrbitingCircles path={true} radius={120} iconSize={72}>
+        <Image
+          src="/logos/0x-logo.svg"
+          alt="0x logo"
+          width={120}
+          height={120}
+          className="rounded-full absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 shadow-[0px_0px_250px_0px_#6366F1,0px_0px_250px_0px_#6366F1,0px_0px_151.2px_0px_#6366F1,0px_0px_75.6px_0px_#6366F1,0px_0px_21.6px_0px_#6366F1,0px_0px_10.8px_0px_#6366F1]"
+        />
+        <OrbitingCircles path={true} radius={120} iconSize={72} speed={0.5}>
           <Image
             src="/assets/orbiting-circles/clip.svg"
             alt="clip"
@@ -56,7 +68,13 @@ const WhatIsSection: FC = () => {
             height={72}
           />
         </OrbitingCircles>
-        <OrbitingCircles path={true} radius={200} iconSize={72}>
+        <OrbitingCircles
+          path={true}
+          radius={200}
+          iconSize={72}
+          reverse={true}
+          speed={0.75}
+        >
           <Image
             src="/assets/orbiting-circles/leaf.svg"
             alt="clip"
@@ -76,7 +94,7 @@ const WhatIsSection: FC = () => {
             height={72}
           />
         </OrbitingCircles>
-        <OrbitingCircles path={true} radius={280} iconSize={72}>
+        <OrbitingCircles path={true} radius={280} iconSize={72} speed={1}>
           <Image
             src="/assets/orbiting-circles/cube.svg"
             alt="clip"
@@ -98,7 +116,7 @@ const WhatIsSection: FC = () => {
 // Why Join Section with feature cards
 const WhyJoin: FC = () => {
   return (
-    <section className="px-14 py-20 flex flex-col items-center">
+    <section className="px-14 py-20 flex flex-col items-center gradient-border-bottom">
       <h2 className="text-5xl font-bold mb-4 text-white text-center">
         Why Join the Movement?
       </h2>
@@ -240,7 +258,7 @@ export const WhoAre0xCitizens: FC = () => {
 const DomainClaimSection: FC = () => {
   const router = useRouter();
   return (
-    <section className="flex flex-col items-center">
+    <section className="flex flex-col items-center gradient-border-bottom">
       <div className="relative my-20 w-[80%]">
         <div className="relative gradient-border-mask">
           <div className="absolute top-0 left-0 right-0 h-[400px] w-full bg-[radial-gradient(54.3%_55.57%_at_50%_0%,rgba(79,70,229,0.20)_0%,rgba(79,70,229,0.00)_100%)] pointer-events-none" />
