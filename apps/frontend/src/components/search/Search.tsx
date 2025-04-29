@@ -27,10 +27,10 @@ import { config } from '@/lib/env';
 import { cn } from '@/lib/utils';
 import { formatAmountInUSD } from '@/utils/number';
 import {
-  Check,
   Loader2,
   SearchIcon,
   ShoppingCart,
+  Trash,
   User,
   X,
 } from 'lucide-react';
@@ -176,32 +176,62 @@ export const DomainCard: FC<{
           </div>
           {domain.availability && (
             <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild={true}>
-                  <NamefiButton
-                    className={cn('cursor-pointer', isInCart && 'bg-black/40')}
-                    onClick={() => handleDomainAction(domain)}
-                    disabled={
-                      isAddingToCart || isRemovingFromCart || isCartLoading
-                    }
-                  >
-                    {(isAddingToCart || isRemovingFromCart) &&
-                    isInCart === isRemovingFromCart ? (
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                    ) : isInCart ? (
-                      <Check className="h-4 w-4" />
-                    ) : (
-                      <ShoppingCart className="h-4 w-4" />
-                    )}
-                    {isInCart ? 'In cart' : 'Add to cart'}
-                  </NamefiButton>
-                </TooltipTrigger>
-                <TooltipContent>
-                  {isInCart
-                    ? 'Remove this domain from your cart'
-                    : 'Add this domain to your cart'}
-                </TooltipContent>
-              </Tooltip>
+              {isInCart ? (
+                <div className="flex space-x-2">
+                  <Tooltip>
+                    <TooltipTrigger asChild={true}>
+                      <NamefiButton
+                        className="bg-black/40 border-white/10 hover:bg-red-600/80 hover:border-red-400/50 shrink-0"
+                        onClick={() => handleDomainAction(domain)}
+                        disabled={isRemovingFromCart || isCartLoading}
+                      >
+                        {isRemovingFromCart ? (
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                        ) : (
+                          <Trash className="h-4 w-4 mr-1" />
+                        )}
+                        Remove
+                      </NamefiButton>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      Remove this domain from your cart
+                    </TooltipContent>
+                  </Tooltip>
+
+                  <Tooltip>
+                    <TooltipTrigger asChild={true}>
+                      <NamefiButton
+                        className="shrink-0"
+                        onClick={() => {
+                          window.location.href = '/cart';
+                        }}
+                      >
+                        <ShoppingCart className="h-4 w-4 mr-1" />
+                        View Cart
+                      </NamefiButton>
+                    </TooltipTrigger>
+                    <TooltipContent>Go to your cart</TooltipContent>
+                  </Tooltip>
+                </div>
+              ) : (
+                <Tooltip>
+                  <TooltipTrigger asChild={true}>
+                    <NamefiButton
+                      className="shrink-0"
+                      onClick={() => handleDomainAction(domain)}
+                      disabled={isAddingToCart || isCartLoading}
+                    >
+                      {isAddingToCart ? (
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                      ) : (
+                        <ShoppingCart className="h-4 w-4" />
+                      )}
+                      Add to cart
+                    </NamefiButton>
+                  </TooltipTrigger>
+                  <TooltipContent>Add this domain to your cart</TooltipContent>
+                </Tooltip>
+              )}
             </TooltipProvider>
           )}
         </div>
