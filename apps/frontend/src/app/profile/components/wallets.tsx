@@ -16,87 +16,76 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '@/components/ui/shadcn/dialog';
-import { Label } from '@/components/ui/shadcn/label';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/shadcn/select';
-import { cn } from '@/lib/utils';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { useLinkedWallets } from '@/hooks/useUserWalletAddresses';
+import { cn, getShortAddress } from '@/lib/utils';
 import { shortage } from '@/utils/string';
-import {
-  type ConnectedWallet,
-  type Wallet,
-  type WalletListEntry,
-  usePrivy,
-  useWallets,
-} from '@privy-io/react-auth';
+import { type WalletWithMetadata, usePrivy } from '@privy-io/react-auth';
 import { Copy, ExternalLink, Plus, Trash2, Wallet2 } from 'lucide-react';
-import { type HTMLAttributes, useCallback, useMemo, useState } from 'react';
+import { type HTMLAttributes, useCallback, useState } from 'react';
 import { toast } from 'sonner';
 
-const WALLETS = {
-  metamask: 'MetaMask',
-  coinbase_wallet: 'Coinbase Wallet',
-  rainbow: 'Rainbow',
-  phantom: 'Phantom',
-  zerion: 'Zerion',
-  cryptocom: 'Crypto.com',
-  uniswap: 'Uniswap',
-  okx_wallet: 'OKX Wallet',
-  universal_profile: 'Universal Profile',
+const getWalletIcon = (type: string) => {
+  switch (type.toLowerCase()) {
+    case 'metamask':
+      return '🦊';
+    case 'coinbase_wallet':
+      return '💰';
+    case 'walletconnect':
+      return '🔗';
+    case 'embedded':
+      return '🔒';
+    default:
+      return '👛';
+  }
 };
 
 interface WalletsProps extends HTMLAttributes<HTMLDivElement> {}
 
 export const Wallets = ({ className, ...rest }: WalletsProps) => {
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isUnlinkWalletDialogOpen, setIsUnlinkWalletDialogOpen] =
+    useState(false);
+  const [walletToUnlink, setWalletToUnlink] = useState<string | null>(null);
+  const isMobile = useIsMobile();
 
-  const [selectedWalletType, setSelectedWalletType] =
-    useState<string>('metamask');
-
-  const { user, linkWallet, connectWallet, unlinkWallet } = usePrivy();
-
-  const { wallets: connections } = useWallets();
-
-  const wallets = useMemo(() => {
-    if (!user?.wallet) {
-      return connections;
-    }
-
-    if (connections.length === 0) {
-      return [user.wallet];
-    }
-
-    if (
-      connections.some((wallet) => wallet.address === user?.wallet?.address)
-    ) {
-      return connections;
-    }
-
-    return [...connections, user.wallet];
-  }, [user?.wallet, connections]);
+  const { user, linkWallet, unlinkWallet } = usePrivy();
+  const { linkedWallets } = useLinkedWallets();
 
   const handleLinkWallet = useCallback(() => {
-    linkWallet({
-      walletList: [selectedWalletType as WalletListEntry],
-    });
-  }, [linkWallet, selectedWalletType]);
+    linkWallet();
+  }, [linkWallet]);
 
-  const handleUnlinkWallet = useCallback(
-    async (wallet: Wallet | ConnectedWallet) => {
-      await unlinkWallet(wallet.address);
+  const handleUnlinkWalletButtonClick = useCallback(
+    (wallet: WalletWithMetadata) => {
+      setWalletToUnlink(wallet.address);
+      setIsUnlinkWalletDialogOpen(true);
+    },
+    [],
+  );
+
+  const handleUnlinkWalletConfirm = useCallback(
+    async (walletAddress: string) => {
+      if (!walletAddress) {
+        setIsUnlinkWalletDialogOpen(false);
+        return;
+      }
+
+      try {
+        await unlinkWallet(walletAddress);
+        setIsUnlinkWalletDialogOpen(false);
+        toast.success('Wallet unlinked', {
+          description: 'Wallet has been successfully unlinked.',
+        });
+      } catch (error) {
+        setIsUnlinkWalletDialogOpen(false);
+        toast.error('Failed to unlink wallet', {
+          description: `${error instanceof Error ? error.message : 'Unknown error'}`,
+        });
+      }
     },
     [unlinkWallet],
   );
-
-  const handleConnectWallet = useCallback(() => {
-    connectWallet();
-  }, [connectWallet]);
 
   const handleCopyAddress = useCallback(async (address: string) => {
     await navigator.clipboard.writeText(address);
@@ -105,96 +94,44 @@ export const Wallets = ({ className, ...rest }: WalletsProps) => {
     });
   }, []);
 
-  const getWalletIcon = (type: string) => {
-    switch (type.toLowerCase()) {
-      case 'metamask':
-        return '🦊';
-      case 'coinbase_wallet':
-        return '💰';
-      case 'walletconnect':
-        return '🔗';
-      case 'embedded':
-        return '🔒';
-      default:
-        return '👛';
-    }
-  };
-
   return (
     <Card className={cn('', className)} {...rest}>
       <CardHeader className="flex flex-row items-center justify-between">
         <div className="flex flex-col gap-1">
           <div className="flex items-center gap-2">
             <Wallet2 className="h-5 w-5 text-primary" />
-            <CardTitle>Connected Wallets</CardTitle>
+            <CardTitle>Linked Wallets</CardTitle>
           </div>
           <CardDescription>Manage your wallets</CardDescription>
         </div>
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <DialogTrigger asChild={true}>
-            <NamefiButton size="sm" className="gap-1">
-              <Plus className="h-4 w-4" />
-              Connect
-            </NamefiButton>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-[425px]">
-            <DialogHeader>
-              <DialogTitle>Connect Wallet</DialogTitle>
-              <DialogDescription>
-                Choose how you want to connect your wallet.
-              </DialogDescription>
-            </DialogHeader>
-            <div className="grid gap-4 py-4">
-              <div className="grid gap-2">
-                <Label htmlFor="wallet-type">Wallet Type</Label>
-                <Select
-                  value={selectedWalletType}
-                  onValueChange={setSelectedWalletType}
-                >
-                  <SelectTrigger id="wallet-type">
-                    <SelectValue placeholder="Select wallet type" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {Object.entries(WALLETS).map(([key, value]) => (
-                      <SelectItem key={key} value={key}>
-                        {value}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-            <DialogFooter>
-              <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
-                Cancel
-              </Button>
-              <Button onClick={handleLinkWallet}>Link Wallet</Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+
+        <NamefiButton size="sm" className="gap-1" onClick={handleLinkWallet}>
+          <Plus className="h-4 w-4" />
+          Link
+        </NamefiButton>
       </CardHeader>
       <CardContent>
-        {wallets.length === 0 ? (
+        {linkedWallets.length === 0 ? (
           <div className="flex h-40 flex-col items-center justify-center rounded-lg border border-dashed">
-            <p className="text-muted-foreground">No wallets connected</p>
+            <p className="text-muted-foreground">No linked wallets</p>
             <Button
               variant="outline"
               className="mt-4"
-              onClick={handleConnectWallet}
+              onClick={handleLinkWallet}
             >
-              Connect Wallet
+              Link Wallet
             </Button>
           </div>
         ) : (
           <div className="space-y-4">
-            {wallets.map((wallet) => (
+            {linkedWallets.map((wallet) => (
               <div
                 key={wallet.address}
                 className="flex items-center justify-between rounded-lg border p-4"
               >
                 <div className="flex items-center gap-3">
                   <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">
-                    {getWalletIcon(wallet.walletClientType)}
+                    {getWalletIcon(wallet.walletClientType ?? '')}
                   </div>
                   <div>
                     <div className="font-medium capitalize">
@@ -231,7 +168,7 @@ export const Wallets = ({ className, ...rest }: WalletsProps) => {
                     <Button
                       variant="outline"
                       size="icon"
-                      onClick={() => handleUnlinkWallet(wallet)}
+                      onClick={() => handleUnlinkWalletButtonClick(wallet)}
                       aria-label="Remove wallet"
                     >
                       <Trash2 className="h-4 w-4 text-destructive" />
@@ -243,6 +180,34 @@ export const Wallets = ({ className, ...rest }: WalletsProps) => {
           </div>
         )}
       </CardContent>
+
+      {/* Unlink Wallet Dialog */}
+      <Dialog
+        open={isUnlinkWalletDialogOpen}
+        onOpenChange={setIsUnlinkWalletDialogOpen}
+      >
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Unlink Wallet</DialogTitle>
+            <DialogDescription>
+              {`Are you sure you want to continue unlinking wallet with address ${isMobile ? getShortAddress(walletToUnlink ?? '') : walletToUnlink}?`}
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setIsUnlinkWalletDialogOpen(false)}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={() => handleUnlinkWalletConfirm(walletToUnlink ?? '')}
+            >
+              Unlink
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </Card>
   );
 };

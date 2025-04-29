@@ -24,16 +24,33 @@ export function useConnectedWalletAddresses() {
 }
 
 /**
- * Hook to get a user's LinkedWallets from Privy. Currently, we only support Ethereum wallets
+ * Hook to get a user's LinkedWallet addresses from Privy. Currently, we only support Ethereum wallets
  */
 export function useLinkedWalletAddresses() {
+  const { linkedWallets, linkedWalletsReady } = useLinkedWallets();
+
+  const linkedWalletAddresses = useMemo(() => {
+    if (!linkedWalletsReady) {
+      return [];
+    }
+
+    return linkedWallets.map((linkedWallet) => linkedWallet.address);
+  }, [linkedWalletsReady, linkedWallets]);
+
+  return { linkedWalletsReady, linkedWalletAddresses };
+}
+
+/**
+ * Hook to get a user's LinkedWallets from Privy. Currently, we only support Ethereum wallets
+ */
+export function useLinkedWallets() {
   const { user: privyUser, ready: privyUserReady, authenticated } = usePrivy();
 
   const linkedWalletsReady = useMemo(() => {
     return privyUserReady && authenticated && privyUser;
   }, [authenticated, privyUser, privyUserReady]);
 
-  const linkedWalletAddresses = useMemo(() => {
+  const linkedWallets = useMemo(() => {
     if (!linkedWalletsReady) {
       return [];
     }
@@ -41,12 +58,11 @@ export function useLinkedWalletAddresses() {
     return (
       privyUser?.linkedAccounts
         .filter((linkedAccount) => linkedAccount.type === 'wallet')
-        .filter((linkedWallet) => linkedWallet.chainType === 'ethereum')
-        .map((linkedWallet) => linkedWallet.address) ?? []
+        .filter((linkedWallet) => linkedWallet.chainType === 'ethereum') ?? []
     );
   }, [linkedWalletsReady, privyUser]);
 
-  return { linkedWalletsReady, linkedWalletAddresses };
+  return { linkedWalletsReady, linkedWallets };
 }
 
 /**
