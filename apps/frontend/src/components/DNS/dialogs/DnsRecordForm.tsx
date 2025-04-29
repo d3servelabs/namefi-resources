@@ -40,7 +40,7 @@ const DEFAULT_VALUES: DnsRecordFormValues = {
   name: '',
   domain: '.example.com',
   rdata: '',
-  ttl: 3600,
+  ttl: 60,
 };
 
 const resolver = zodResolver(dnsRecordSchema);

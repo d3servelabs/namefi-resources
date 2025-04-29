@@ -312,7 +312,7 @@ export const dnsRecordsTable = pgTable(
     name: text('name').notNull().default('@'), // max 255 chars
     type: recordTypePgEnum('type').notNull(),
     class: text('class').notNull().default('IN'),
-    ttl: integer('ttl').notNull().default(120),
+    ttl: integer('ttl').notNull().default(60),
     rdata: text('rdata').notNull(),
     metadata: jsonb('metadata').default({}).$type<any>(),
     ...timestamps,
