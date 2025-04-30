@@ -1,6 +1,6 @@
 import { LocalStorageKeys } from '@/utils/localStorageKeys';
 import { useTRPC } from '@/utils/trpc';
-import { useSuspenseQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useEffect, useMemo } from 'react';
 import { useLocalStorage } from 'usehooks-ts';
 
@@ -10,9 +10,8 @@ export function useRecentDomains({
   newlyVisitedDomain?: string;
 } = {}) {
   const trpc = useTRPC();
-  const { data: currentUserDomains } = useSuspenseQuery(
-    trpc.users.getCurrentUserDomains.queryOptions(),
-  );
+  const { data } = useQuery(trpc.users.getCurrentUserDomains.queryOptions());
+  const currentUserDomains = useMemo(() => data ?? [], [data]);
 
   const [_recentDomains, setRecentDomains] = useLocalStorage(
     LocalStorageKeys.RECENT_DOMAINS,
