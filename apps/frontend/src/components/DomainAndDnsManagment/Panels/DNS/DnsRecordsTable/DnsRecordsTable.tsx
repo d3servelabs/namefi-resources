@@ -1,6 +1,4 @@
 'use client';
-
-import type { DnsManagementProps } from '@/components/DNS/DnsManagement';
 import { Table, Tbody, Td, Th, Thead, Tr } from '@/components/table';
 import { Button } from '@/components/ui/shadcn/button';
 import {
@@ -78,7 +76,7 @@ export type DnsRecordsTableProps = HTMLAttributes<HTMLDivElement> & {
   domain: string;
 };
 
-export const DnsRecordsTable: FC<DnsManagementProps> = ({
+export const DnsRecordsTable: FC<DnsRecordsTableProps> = ({
   domain,
   className,
   ...rest

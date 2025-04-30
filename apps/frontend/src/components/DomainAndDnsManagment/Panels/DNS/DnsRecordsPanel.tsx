@@ -1,4 +1,4 @@
-import { DnsRecordsTable } from '@/components/DNS/Panels/DNS/DnsRecordsTable/DnsRecordsTable';
+import { DnsRecordsTable } from '@/components/DomainAndDnsManagment/Panels/DNS/DnsRecordsTable/DnsRecordsTable';
 import { Button } from '@/components/ui/shadcn/button';
 import {
   Card,

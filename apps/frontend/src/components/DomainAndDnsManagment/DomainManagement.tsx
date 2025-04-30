@@ -12,15 +12,15 @@ import { type FC, type HTMLAttributes, useEffect } from 'react';
 import { useLocalStorage } from 'usehooks-ts';
 import { DnsRecordsPanel } from './Panels/DNS/DnsRecordsPanel';
 
-export type DnsManagementProps = HTMLAttributes<HTMLDivElement> & {
+export type DomainManagementProps = HTMLAttributes<HTMLDivElement> & {
   domain: string;
 };
 
-export const DnsManagement: FC<DnsManagementProps> = ({
+export const DomainManagement: FC<DomainManagementProps> = ({
   domain,
   className,
   ...rest
-}: DnsManagementProps) => {
+}: DomainManagementProps) => {
   const [, setRecentDomains] = useLocalStorage(
     LocalStorageKeys.RECENT_DOMAINS,
     [domain] as string[],
@@ -72,5 +72,3 @@ export const DnsManagement: FC<DnsManagementProps> = ({
     </div>
   );
 };
-
-DnsManagement.displayName = 'DnsManagement';
