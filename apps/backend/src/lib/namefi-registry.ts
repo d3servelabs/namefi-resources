@@ -1,7 +1,6 @@
 import { db, orderItemStatusSchema } from '@namefi-astra/db';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
-import { addWeeks, isAfter } from 'date-fns';
-import { inArray } from 'drizzle-orm';
+import { addWeeks, isAfter, subDays } from 'date-fns';
 import { ParseResultType, parseDomain } from 'parse-domain';
 import { isNil } from 'ramda';
 import { config } from '#lib/env';
@@ -87,20 +86,7 @@ export const getDomainListInfo = async (
 
       // Currently only 0x.city is supported
       if (parentDomain === '0x.city') {
-        // schedule of percentage
-        const startDate = new Date('2025-05-05');
-        let currentPercentage = 0;
-        const today = new Date();
-
-        if (isAfter(today, addWeeks(startDate, 3))) {
-          currentPercentage = 100;
-        } else if (isAfter(today, addWeeks(startDate, 2))) {
-          currentPercentage = 30;
-        } else if (isAfter(today, addWeeks(startDate, 1))) {
-          currentPercentage = 10;
-        } else {
-          currentPercentage = 0;
-        }
+        const currentPercentage = get0xDotCityPercentageRollout();
         // we only enable a percentage of subdomain registrations for 0x.city
         // we use keccak256 to hash the domain and check if the last 4 bytes are less than PERCENT of the total number of subdomains
         const shouldRollout = hashBasedPercentageRollouted(
@@ -123,14 +109,17 @@ export const getDomainListInfo = async (
         }
 
         const orderItems = await db.query.orderItemsTable.findMany({
-          where: (orderItems, { and, ilike }) =>
+          where: (orderItems, { and, ilike, or, gt, eq }) =>
             and(
               ilike(orderItems.normalizedDomainName, domain),
-              inArray(orderItems.status, [
-                orderItemStatusSchema.Enum.PROCESSING,
-                orderItemStatusSchema.Enum.SUCCEEDED, // TODO: SUCCEEDED should be also constrained by date, since we don't want old orders to prevent repurchase
-                orderItemStatusSchema.Enum.CREATED, // TODO: CREATED should be also constrained by date, since we don't want old unprocessed orders to prevent repurchase
-              ]),
+              or(
+                eq(orderItems.status, orderItemStatusSchema.Enum.PROCESSING),
+                and(
+                  // CREATED should be also constrained by date, since we don't want old unprocessed orders to prevent repurchase
+                  eq(orderItems.status, orderItemStatusSchema.Enum.CREATED),
+                  gt(orderItems.createdAt, subDays(new Date(), 2)), //TODO: this is a temporary constraint, we should find a better way to do this or at least define certain limits for duration of unprocessed orders
+                ),
+              ),
             ),
         });
 
@@ -155,4 +144,23 @@ export const getDomainListInfo = async (
       return unavailableDomainInfo;
     }),
   );
+};
+
+export const get0xDotCityPercentageRollout = () => {
+  // schedule of percentage
+  const startDate = new Date('2025-05-05');
+  let currentPercentage = 0;
+  const today = new Date();
+
+  if (isAfter(today, addWeeks(startDate, 3))) {
+    currentPercentage = 100;
+  } else if (isAfter(today, addWeeks(startDate, 2))) {
+    currentPercentage = 30;
+  } else if (isAfter(today, addWeeks(startDate, 1))) {
+    currentPercentage = 10;
+  } else {
+    currentPercentage = 1;
+  }
+
+  return currentPercentage;
 };

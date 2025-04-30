@@ -6,8 +6,15 @@ import {
   uniqueNamesGenerator,
 } from 'unique-names-generator';
 import { z } from 'zod';
-import { getDomainListInfo } from '#lib/namefi-registry';
-import { authedOrPublicProcedure, createTRPCRouter } from '../base';
+import {
+  get0xDotCityPercentageRollout,
+  getDomainListInfo,
+} from '#lib/namefi-registry';
+import {
+  authedOrPublicProcedure,
+  createTRPCRouter,
+  publicProcedure,
+} from '../base';
 
 /**
  * Schema for parsing and validating an array of normalized domain names.
@@ -109,4 +116,8 @@ export const registryRouter = createTRPCRouter({
       const normalizeDomains = parseNormalizedDomainsArraySchema.parse(domains);
       return getDomainListInfo(normalizeDomains, ctx.user);
     }),
+
+  get0xDotCityPercentageRollout: publicProcedure.query(async () =>
+    get0xDotCityPercentageRollout(),
+  ),
 });
