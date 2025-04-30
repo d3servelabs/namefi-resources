@@ -124,7 +124,12 @@ export default function OrderPage({ params }: OrderPageProps) {
     if (orderItems?.length === 0) {
       return '';
     }
-    return `I just registered ${orderItems.length} domain${orderItems.length > 1 ? 's' : ''} on Namefi!`;
+
+    const domainList = orderItems.map((item) => item.fullDomain).join(', ');
+
+    return orderItems.length > 1
+      ? `Great I've just got ${domainList} from 0x.city (#PoweredByNamefi), come check it out!`
+      : `Great I've just got ${orderItems[0].fullDomain} from 0x.city (#PoweredByNamefi), come check it out`;
   }, [orderItems]);
 
   const isCreditCardPayment = useMemo(
@@ -335,8 +340,8 @@ export default function OrderPage({ params }: OrderPageProps) {
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold mb-4">Congratulations!</h1>
           <p className="text-muted-foreground text-lg">
-            You've successfully registered {orderItems.length} domains and your
-            NFTs are on the way.
+            You've got your {orderItems.length > 1 ? 'domains' : 'domain'} and
+            here {orderItems.length > 1 ? 'are the NFTs' : 'is the NFT'}
           </p>
         </div>
 
@@ -378,7 +383,7 @@ export default function OrderPage({ params }: OrderPageProps) {
             <span className="text-muted-foreground">Share on</span>
             <div className="flex gap-4">
               <TwitterShareButton
-                url={`${window.location.origin}/orders/${id}`}
+                url={`https://${origin.originInfo.thirdPartyHostname}`}
                 title={shareMessage}
               >
                 <Button
@@ -391,7 +396,7 @@ export default function OrderPage({ params }: OrderPageProps) {
               </TwitterShareButton>
 
               <LinkedinShareButton
-                url={`${window.location.origin}/orders/${id}`}
+                url={`https://${origin.originInfo.thirdPartyHostname}`}
                 title={shareMessage}
               >
                 <Button
@@ -404,7 +409,7 @@ export default function OrderPage({ params }: OrderPageProps) {
               </LinkedinShareButton>
 
               <FacebookShareButton
-                url={`${window.location.origin}/orders/${id}`}
+                url={`https://${origin.originInfo.thirdPartyHostname}`}
                 title={shareMessage}
               >
                 <Button
@@ -458,13 +463,6 @@ export default function OrderPage({ params }: OrderPageProps) {
           <NamefiButton className="flex-1" asChild={true}>
             <Link href="/">Back to home</Link>
           </NamefiButton>
-        </div>
-
-        <div className="text-center text-muted-foreground">
-          Need help?{' '}
-          <Link href="/contact" className="underline hover:text-white">
-            Contact us
-          </Link>
         </div>
       </div>
     </div>
