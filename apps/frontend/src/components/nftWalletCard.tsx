@@ -2,9 +2,12 @@
 import { NetworkLogo } from '@/components/NetworkLogo';
 import { CartCard } from '@/components/cart-card';
 import { WalletEditableSelect } from '@/components/wallet-editable-select';
-import { useUserWalletAddresses } from '@/hooks/useUserWalletAddresses';
+import {
+  useLinkedWalletAddresses,
+  useUserWalletAddresses,
+} from '@/hooks/useUserWalletAddresses';
 import { CHAINS, checksumWalletAddressSchema } from '@namefi-astra/utils';
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 export interface NftWalletCardProps {
   onWalletAddressChange: (walletAddress: string | null) => void;
@@ -20,6 +23,30 @@ export function NftWalletCard({
   const [error, setError] = useState<string | null>(null);
 
   const { userWalletAddresses, userWalletsReady } = useUserWalletAddresses();
+  const { linkedWalletAddresses, linkedWalletsReady } =
+    useLinkedWalletAddresses();
+
+  const { options, optionsReady } = useMemo(() => {
+    if (!(linkedWalletsReady && userWalletsReady)) {
+      return { options: [], optionsReady: false };
+    }
+
+    const options: { walletAddress: string; isLinkedWallet: boolean }[] =
+      userWalletAddresses.map((walletAddress) => {
+        if (linkedWalletAddresses.includes(walletAddress)) {
+          return { walletAddress, isLinkedWallet: true };
+        }
+
+        return { walletAddress, isLinkedWallet: false };
+      });
+
+    return { options, optionsReady: true };
+  }, [
+    linkedWalletAddresses,
+    linkedWalletsReady,
+    userWalletAddresses,
+    userWalletsReady,
+  ]);
 
   const handleWalletAddressChange = useCallback(
     (value: string) => {
@@ -43,14 +70,14 @@ export function NftWalletCard({
       <WalletEditableSelect
         value={selectedWalletAddress || ''}
         onValueChange={handleWalletAddressChange}
-        options={userWalletAddresses}
+        options={options}
         placeholder={
           userWalletAddresses.length > 0
             ? 'Paste a wallet address or select from connected wallets'
             : 'Paste a wallet address to receive domains'
         }
         error={error || undefined}
-        disabled={!userWalletsReady || disabled}
+        disabled={!optionsReady || disabled}
         helpText="Domains will be sent to this wallet. Make sure it's correct."
         icon={<NetworkLogo network={CHAINS.base.id} className="size-4" />}
       />

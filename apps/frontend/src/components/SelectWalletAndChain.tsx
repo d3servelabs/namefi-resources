@@ -3,7 +3,9 @@ import { useLinkedWalletAddresses } from '@/hooks/useUserWalletAddresses';
 import { getShortAddress } from '@/lib/utils';
 import { supportedChains } from '@/lib/wagmiConfig';
 import { CHAINS } from '@namefi-astra/utils';
+import { useCallback, useState } from 'react';
 import type { Chain } from 'viem';
+import { Badge } from './ui/shadcn/badge';
 import { Button } from './ui/shadcn/button';
 import {
   Select,
@@ -28,7 +30,18 @@ export function SelectWallet({
   onValueChange,
   selectTriggerDisabled,
 }: SelectWalletProps) {
+  const [selectWalletAddress, setSelectedWalletAddress] = useState<
+    string | null
+  >(null);
   const isMobile = useIsMobile();
+
+  const handleValueChange = useCallback(
+    (value: string) => {
+      setSelectedWalletAddress(value);
+      onValueChange(value);
+    },
+    [onValueChange],
+  );
 
   const { linkedWalletAddresses } = useLinkedWalletAddresses();
 
@@ -41,16 +54,18 @@ export function SelectWallet({
   }
 
   return (
-    <Select disabled={selectTriggerDisabled} onValueChange={onValueChange}>
+    <Select disabled={selectTriggerDisabled} onValueChange={handleValueChange}>
       <SelectTrigger>
-        <SelectValue placeholder="Select a Wallet" />
+        <SelectValue placeholder="Select a Wallet">{`${isMobile ? getShortAddress(selectWalletAddress ?? '') : selectWalletAddress}`}</SelectValue>
       </SelectTrigger>
       <SelectContent>
         {linkedWalletAddresses.map((walletAddress) => (
-          <SelectItem
-            key={`${walletAddress}`}
-            value={`${walletAddress}`}
-          >{`${isMobile ? getShortAddress(walletAddress) : walletAddress}`}</SelectItem>
+          <SelectItem key={`${walletAddress}`} value={`${walletAddress}`}>
+            <div className="flex items-center gap-2">
+              <Badge>Linked</Badge>
+              {`${isMobile ? getShortAddress(walletAddress) : walletAddress}`}
+            </div>
+          </SelectItem>
         ))}
       </SelectContent>
     </Select>

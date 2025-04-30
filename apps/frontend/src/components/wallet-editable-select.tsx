@@ -7,17 +7,19 @@ import {
   SelectItem,
   SelectTrigger,
 } from '@/components/ui/shadcn/select';
-import { cn } from '@/lib/utils';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { cn, getShortAddress } from '@/lib/utils';
 import { CHAINS } from '@namefi-astra/utils';
 import type { ChangeEvent, ReactNode } from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useResizeObserver } from 'usehooks-ts';
 import { NetworkLogo } from './NetworkLogo';
+import { Badge } from './ui/shadcn/badge';
 
 interface WalletEditableSelectProps {
   value: string;
   onValueChange: (value: string) => void;
-  options?: string[];
+  options?: { walletAddress: string; isLinkedWallet: boolean }[];
   placeholder?: string;
   error?: string;
   disabled?: boolean;
@@ -48,6 +50,7 @@ export function WalletEditableSelect({
     ref: inputRef,
     box: 'border-box',
   });
+  const isMobile = useIsMobile();
 
   // Only update from props if the value is different from both input and selected
   useEffect(() => {
@@ -110,10 +113,18 @@ export function WalletEditableSelect({
               style={{ width: width ? `${width}px` : undefined }}
             >
               {options.map((option) => (
-                <SelectItem key={option} value={option}>
+                <SelectItem
+                  key={option.walletAddress}
+                  value={option.walletAddress}
+                >
                   <div className="flex items-center gap-2">
+                    <Badge>
+                      {option.isLinkedWallet ? 'Linked' : 'Connected'}
+                    </Badge>
                     <NetworkLogo network={CHAINS.base.id} className="size-4" />
-                    {option}
+                    {isMobile
+                      ? getShortAddress(option.walletAddress)
+                      : option.walletAddress}
                   </div>
                 </SelectItem>
               ))}
