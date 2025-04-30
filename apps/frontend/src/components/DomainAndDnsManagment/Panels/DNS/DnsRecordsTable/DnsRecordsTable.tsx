@@ -43,6 +43,7 @@ import {
   Trash2,
   Upload,
 } from 'lucide-react';
+import { pick, pluck } from 'ramda';
 import type { FC, HTMLAttributes } from 'react';
 import {
   type ChangeEvent,
@@ -195,6 +196,8 @@ export const DnsRecordsTable: FC<DnsRecordsTableProps> = ({
   const table = useReactTable({
     data: dnsRecords.data ?? [],
     columns,
+    enableRowSelection: true,
+    getRowId: (row) => row.id,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
@@ -243,6 +246,14 @@ export const DnsRecordsTable: FC<DnsRecordsTableProps> = ({
     () => selectedRowModels.length > 0,
     [selectedRowModels.length],
   );
+
+  useEffect(() => {
+    if (dnsRecords.data) {
+      setRowSelection((rowSelection) =>
+        pick(pluck('id', dnsRecords.data ?? []), rowSelection),
+      );
+    }
+  }, [dnsRecords.data]);
 
   // Handle type filtering
   const handleTypeFilterChange = useCallback((type: string) => {
