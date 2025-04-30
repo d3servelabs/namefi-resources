@@ -1,5 +1,7 @@
 # namefi-astra
 
+[![codecov](https://codecov.io/gh/d3servelabs/namefi-astra/branch/main/graph/badge.svg)](https://codecov.io/gh/d3servelabs/namefi-astra)
+
 To install dependencies:
 
 ```bash
