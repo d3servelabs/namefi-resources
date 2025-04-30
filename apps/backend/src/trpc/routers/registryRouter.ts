@@ -7,7 +7,7 @@ import {
 } from 'unique-names-generator';
 import { z } from 'zod';
 import { getDomainListInfo } from '#lib/namefi-registry';
-import { createTRPCRouter, publicProcedure } from '../base';
+import { authedOrPublicProcedure, createTRPCRouter } from '../base';
 
 /**
  * Schema for parsing and validating an array of normalized domain names.
@@ -23,13 +23,41 @@ export const registryRouter = createTRPCRouter({
    * @param input.domains - Array of domain names to get information for
    * @returns Domain information for the provided domains
    */
-  getDomainListInfo: publicProcedure
+  getDomainListInfo: authedOrPublicProcedure
     .input(
       z.object({
         domains: parseNormalizedDomainsArraySchema,
       }),
     )
-    .query(({ input }) => getDomainListInfo(input.domains)),
+    .query(({ input, ctx }) => getDomainListInfo(input.domains, ctx.user)),
+
+  /**
+   * Retrieves information for a single domain name.
+   * @param input.domain - The domain name to get information for
+   * @returns Domain information for the provided domain
+   */
+  getDomainInfo: authedOrPublicProcedure
+    .input(
+      z.object({
+        domain: namefiNormalizedDomainSchema.describe(
+          'The domain to check availability for',
+        ),
+      }),
+    )
+    .query(async ({ input, ctx }) => {
+      const { domain } = input;
+
+      const availability = await getDomainListInfo([domain], ctx.user);
+
+      if (availability.length !== 1) {
+        return {
+          domain: domain,
+          availability: false,
+        };
+      }
+      return availability[0];
+    }),
+
   /**
    * Generates domain name suggestions based on a query string.
    * Combines the query with adjectives and colors to create unique domain names.
@@ -37,7 +65,7 @@ export const registryRouter = createTRPCRouter({
    * @param input.parentDomains - Optional array of parent domains to append to generated names
    * @returns Domain information for all generated domain suggestions
    */
-  queryDomain: publicProcedure
+  queryDomain: authedOrPublicProcedure
     .input(
       z.object({
         // The base query string to generate domain suggestions from
@@ -50,7 +78,7 @@ export const registryRouter = createTRPCRouter({
           .default(['0x.city', 'defi.build']),
       }),
     )
-    .query(({ input }) => {
+    .query(({ input, ctx }) => {
       const domains: string[] = [];
       // Configure the length of generated name combinations
       const generatedNamesLengths = [1, 2];
@@ -79,6 +107,6 @@ export const registryRouter = createTRPCRouter({
 
       // Normalize and validate all generated domain names
       const normalizeDomains = parseNormalizedDomainsArraySchema.parse(domains);
-      return getDomainListInfo(normalizeDomains);
+      return getDomainListInfo(normalizeDomains, ctx.user);
     }),
 });
