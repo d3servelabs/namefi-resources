@@ -16,9 +16,9 @@ import {
   useSidebar,
 } from '@/components/ui/shadcn/sidebar';
 import { useAuth } from '@/hooks/useAuth';
+import { useRecentDomains } from '@/hooks/useRecentDomains';
 import { cn } from '@/lib/utils';
 import type { NavItem } from '@/types';
-import { LocalStorageKeys } from '@/utils/localStorageKeys';
 import { useTRPC } from '@/utils/trpc';
 import { useQuery } from '@tanstack/react-query';
 import {
@@ -32,7 +32,6 @@ import {
 } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
 import { type ChangeEvent, useCallback, useMemo, useState } from 'react';
-import { useReadLocalStorage } from 'usehooks-ts';
 import { Button } from '../ui/shadcn/button';
 import { SidebarDomains } from './SidebarDomains';
 
@@ -84,10 +83,9 @@ export function AppSidebar() {
     isManagerEntryPointViewableLoading,
   ]);
 
-  const recentDomains = useReadLocalStorage<string[]>(
-    LocalStorageKeys.RECENT_DOMAINS,
-    { initializeWithValue: false },
-  );
+  const { recentDomains } = useRecentDomains({
+    newlyVisitedDomain: '',
+  });
 
   const domains = useMemo(
     () =>

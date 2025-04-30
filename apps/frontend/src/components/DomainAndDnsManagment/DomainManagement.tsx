@@ -6,13 +6,12 @@ import {
   TabsList,
   TabsTrigger,
 } from '@/components/ui/shadcn/tabs';
+import { useRecentDomains } from '@/hooks/useRecentDomains';
 import { cn } from '@/lib/utils';
-import { LocalStorageKeys } from '@/utils/localStorageKeys';
 import { useTRPC } from '@/utils/trpc';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { AlertTriangle } from 'lucide-react';
-import { type FC, type HTMLAttributes, useEffect, useMemo } from 'react';
-import { useLocalStorage } from 'usehooks-ts';
+import { type FC, type HTMLAttributes, useMemo } from 'react';
 import { Alert, AlertDescription, AlertTitle } from '../ui/shadcn/alert';
 import { DnsRecordsPanel } from './Panels/DNS/DnsRecordsPanel';
 export type DomainManagementProps = HTMLAttributes<HTMLDivElement> & {
@@ -24,20 +23,6 @@ export const DomainManagement: FC<DomainManagementProps> = ({
   className,
   ...rest
 }: DomainManagementProps) => {
-  const [, setRecentDomains] = useLocalStorage(
-    LocalStorageKeys.RECENT_DOMAINS,
-    [domain] as string[],
-  );
-
-  useEffect(() => {
-    setRecentDomains((prevRecentDomains) => {
-      const filtered = prevRecentDomains.filter(
-        (recentDomain) => recentDomain !== domain,
-      );
-      return [...filtered, domain];
-    });
-  }, [setRecentDomains, domain]);
-
   const trpc = useTRPC();
   const { data: currentUserDomains } = useSuspenseQuery(
     trpc.users.getCurrentUserDomains.queryOptions(),
@@ -50,6 +35,10 @@ export const DomainManagement: FC<DomainManagementProps> = ({
       ),
     [currentUserDomains, domain],
   );
+
+  useRecentDomains({
+    newlyVisitedDomain: domain,
+  });
 
   return (
     <div className={cn('', className)} {...rest}>
