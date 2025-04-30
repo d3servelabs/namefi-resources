@@ -35,17 +35,20 @@ jobs:
           # Copy the .env.test file to the root directory to ensure it's available for all packages
           cp apps/backend/.env.test .env.test || echo "No .env.test file found"
 
-      - name: Run tests with filter
+      - name: Run tests with filter and coverage
         if: ${{ github.event.inputs.package_filter != '' }}
-        run: bun test --filter="${{ github.event.inputs.package_filter }}"
+        run: bun test:coverage --filter="${{ github.event.inputs.package_filter }}"
 
-      - name: Run all tests
+      - name: Run all tests with coverage
         if: ${{ github.event.inputs.package_filter == '' }}
-        run: bun run test:coverage
-      
-      # Optional: Add test coverage reporting
+        run: bun test:coverage
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           slug: d3servelabs/namefi-astra
+          fail_ci_if_error: false
+          verbose: true
+        if: ${{ env.CODECOV_TOKEN != '' }}
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }} 

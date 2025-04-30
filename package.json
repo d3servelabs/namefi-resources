@@ -22,7 +22,7 @@
     "typecheck": "turbo typecheck",
     "test": "NODE_ENV=test turbo test",
     "test:watch": "NODE_ENV=test turbo test:watch",
-    "test:coverage": "NODE_ENV=test turbo run test:coverage",
+    "test:coverage": "NODE_ENV=test turbo test:coverage",
     "sherif": "bunx sherif@latest",
     "sherif:fix": "bunx sherif@latest -f",
     "test:ci": "act -j test --container-architecture linux/amd64",
