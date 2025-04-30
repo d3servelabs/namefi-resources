@@ -44,7 +44,7 @@ import {
   Upload,
 } from 'lucide-react';
 import { pick, pluck } from 'ramda';
-import type { FC, HTMLAttributes } from 'react';
+import type { Dispatch, FC, HTMLAttributes, SetStateAction } from 'react';
 import {
   type ChangeEvent,
   useCallback,
@@ -205,7 +205,9 @@ export const DnsRecordsTable: FC<DnsRecordsTableProps> = ({
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
+    ...(ENABLE_PAGINATION
+      ? { getPaginationRowModel: getPaginationRowModel() }
+      : {}),
     globalFilterFn: (row, _columnId, filterValue) => {
       if (!filterValue || filterValue.length === 0) {
         return true;
@@ -223,13 +225,9 @@ export const DnsRecordsTable: FC<DnsRecordsTableProps> = ({
       columnVisibility,
       rowSelection,
       globalFilter,
-      pagination: {
-        pageIndex,
-        pageSize,
-      },
+      ...(ENABLE_PAGINATION ? { pagination: { pageIndex, pageSize } } : {}),
     },
-    manualPagination: false,
-    pageCount,
+    ...(ENABLE_PAGINATION ? { manualPagination: false, pageCount } : {}),
   });
 
   // Add bulk edit button next to bulk delete
@@ -445,12 +443,14 @@ export const DnsRecordsTable: FC<DnsRecordsTableProps> = ({
             {bulkActionButtons}
           </div>
 
-          <div className="flex items-center gap-2">
-            <TablePageSelector
-              pageSize={pageSize}
-              onPageSizeChange={handlePageSizeChange}
-            />
-          </div>
+          {ENABLE_PAGINATION && (
+            <div className="flex items-center gap-2">
+              <TablePageSelector
+                pageSize={pageSize}
+                onPageSizeChange={handlePageSizeChange}
+              />
+            </div>
+          )}
         </div>
 
         <div className="rounded-md border border-zinc-800">
@@ -507,50 +507,70 @@ export const DnsRecordsTable: FC<DnsRecordsTableProps> = ({
             {table.getFilteredSelectedRowModel().rows.length} of{' '}
             {table.getFilteredRowModel().rows.length} row(s) selected.
           </div>
-          <div className="flex items-center gap-2">
-            <span className="text-sm text-zinc-500">
-              Page {pageIndex + 1} of {table.getPageCount() || 1}
-            </span>
-
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setPageIndex(0)}
-              disabled={pageIndex === 0}
-            >
-              <ChevronFirst className="h-4 w-4" />
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setPageIndex((prev) => Math.max(0, prev - 1))}
-              disabled={pageIndex === 0}
-            >
-              <ChevronDown className="h-4 w-4 rotate-90" />
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() =>
-                setPageIndex((prev) =>
-                  Math.min(table.getPageCount() - 1, prev + 1),
-                )
-              }
-              disabled={pageIndex >= table.getPageCount() - 1}
-            >
-              <ChevronDown className="h-4 w-4 -rotate-90" />
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setPageIndex(table.getPageCount() - 1)}
-              disabled={pageIndex >= table.getPageCount() - 1}
-            >
-              <ChevronLast className="h-4 w-4" />
-            </Button>
-          </div>
+          {ENABLE_PAGINATION && (
+            <TableFooterPageSelector
+              pageIndex={pageIndex}
+              setPageIndex={setPageIndex}
+              pageCount={pageCount}
+            />
+          )}
         </div>
       </div>
     </>
+  );
+};
+
+type TableFooterPageSelectorProps = {
+  pageIndex: number;
+  setPageIndex: Dispatch<SetStateAction<number>>;
+  pageCount: number;
+};
+
+const TableFooterPageSelector: FC<TableFooterPageSelectorProps> = ({
+  pageIndex,
+  setPageIndex,
+  pageCount,
+}) => {
+  return (
+    <div className="flex items-center gap-2">
+      <span className="text-sm text-zinc-500">
+        Page {pageIndex + 1} of {pageCount || 1}
+      </span>
+
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={() => setPageIndex(0)}
+        disabled={pageIndex === 0}
+      >
+        <ChevronFirst className="h-4 w-4" />
+      </Button>
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={() => setPageIndex((prev) => Math.max(0, prev - 1))}
+        disabled={pageIndex === 0}
+      >
+        <ChevronDown className="h-4 w-4 rotate-90" />
+      </Button>
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={() =>
+          setPageIndex((prev) => Math.min(pageCount - 1, prev + 1))
+        }
+        disabled={pageIndex >= pageCount - 1}
+      >
+        <ChevronDown className="h-4 w-4 -rotate-90" />
+      </Button>
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={() => setPageIndex(pageCount - 1)}
+        disabled={pageIndex >= pageCount - 1}
+      >
+        <ChevronLast className="h-4 w-4" />
+      </Button>
+    </div>
   );
 };
