@@ -1,8 +1,8 @@
 import axios from 'axios';
-import { config } from '../../lib/env';
+import { secrets } from '../../lib/env';
 
 export async function triggerNamefiGptCronJob() {
-  if (!config.GITHUB_WORKFLOWS_TOKEN) {
+  if (!secrets.GITHUB_WORKFLOWS_TOKEN) {
     throw new Error('GITHUB_WORKFLOWS_TOKEN is not set');
   }
   await axios.post(
@@ -14,7 +14,7 @@ export async function triggerNamefiGptCronJob() {
     {
       headers: {
         Accept: 'application/vnd.github+json',
-        Authorization: `Bearer ${config.GITHUB_WORKFLOWS_TOKEN}`,
+        Authorization: `Bearer ${secrets.GITHUB_WORKFLOWS_TOKEN}`,
         'X-GitHub-Api-Version': '2022-11-28',
       },
     },
