@@ -17,7 +17,7 @@ export const loadConfig = <Output, Def extends ZodTypeDef, Input>(
   options: LoadConfigOptions<Output, Def, Input>,
 ) => {
   const validatedBaseConfig = baseConfigSchema.parse(process.env);
-  const envConfigPath = `${options.configPath}/${validatedBaseConfig.ENVIRONMENT}.ts`;
+  const envConfigPath = `${options.configPath}/${validatedBaseConfig.ENVIRONMENT}`;
   let envConfig: unknown;
   try {
     ({ default: envConfig } = require(envConfigPath));
