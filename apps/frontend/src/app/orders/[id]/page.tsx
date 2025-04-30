@@ -3,6 +3,7 @@
 import { AuthRequired } from '@/components/auth-required';
 import { CartCard } from '@/components/cart-card';
 import { NamefiButton } from '@/components/namefi-button';
+import { NftDomainCard } from '@/components/nft-domain-card';
 import { useOrigin } from '@/components/providers/originProvider';
 import { Button } from '@/components/ui/shadcn/button';
 import {
@@ -22,8 +23,7 @@ import {
   getSubDomainAndParentDomainFromNormalizedDomainName,
 } from '@namefi-astra/utils';
 import { useQuery } from '@tanstack/react-query';
-import { Loader2, SquareArrowOutUpRightIcon } from 'lucide-react';
-import Image from 'next/image';
+import { Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { use, useEffect, useMemo } from 'react';
@@ -49,6 +49,19 @@ export default function OrderPage({ params }: OrderPageProps) {
   const { data: order, isLoading: isOrderLoading } = useQuery({
     ...trpc.orders.getOrder.queryOptions({ orderId: id }),
     enabled: !!id && isAuthenticated,
+    refetchInterval: (query) => {
+      const currentStatus = query.state.data?.status;
+
+      if (
+        !currentStatus ||
+        currentStatus === orderStatusSchema.Values.PROCESSING ||
+        currentStatus === orderStatusSchema.Values.CREATED
+      ) {
+        return 5000;
+      }
+
+      return false;
+    },
   });
 
   const {
@@ -59,18 +72,25 @@ export default function OrderPage({ params }: OrderPageProps) {
     enabled: !!id && isAuthenticated,
   });
 
-  const isSuccessfulOrder = useMemo(() => {
+  const isFailedOrder = useMemo(() => {
     return (
-      order?.status !== orderStatusSchema.Values.FAILED &&
-      order?.status !== orderStatusSchema.Values.CANCELLED
+      order?.status === orderStatusSchema.Values.FAILED ||
+      order?.status === orderStatusSchema.Values.CANCELLED
     );
-  }, [order]);
+  }, [order?.status]);
+
+  const isCompletedOrder = useMemo(() => {
+    return (
+      order?.status === orderStatusSchema.Values.SUCCEEDED ||
+      order?.status === orderStatusSchema.Values.PARTIALLY_COMPLETED
+    );
+  }, [order?.status]);
 
   useEffect(() => {
-    if (!isSuccessfulOrder) {
+    if (isFailedOrder) {
       router.replace(`/orders/${id}/details`);
     }
-  }, [isSuccessfulOrder, id, router]);
+  }, [isFailedOrder, id, router]);
 
   const orderItems = useMemo(() => {
     if (!order?.items) {
@@ -96,6 +116,9 @@ export default function OrderPage({ params }: OrderPageProps) {
   }, [order?.items]);
 
   const origin = useOrigin();
+
+  // Show carousel only when we have 3 or more domains, otherwise center cards in a flex row
+  const showCarousel = orderItems.length > 2;
 
   const shareMessage = useMemo(() => {
     if (orderItems?.length === 0) {
@@ -141,12 +164,16 @@ export default function OrderPage({ params }: OrderPageProps) {
     return `(${getChain(order.payment.nfscPaymentDetails.chainId)?.name}) ${getShortAddress(order.payment.nfscPaymentDetails.walletAddress)}`;
   }, [isCreditCardPayment, order?.payment]);
 
-  if (
-    isAuthLoading ||
-    isOrderLoading ||
-    origin.isLoading ||
-    !isSuccessfulOrder
-  ) {
+  if (!(isAuthLoading || isAuthenticated)) {
+    return (
+      <AuthRequired
+        title="Sign in required"
+        description="Please sign in to view your order details"
+      />
+    );
+  }
+
+  if (isAuthLoading || isOrderLoading || origin.isLoading) {
     return (
       <div className="container mx-auto py-8 px-8">
         <div className="max-w-2xl mx-auto">
@@ -229,15 +256,6 @@ export default function OrderPage({ params }: OrderPageProps) {
     );
   }
 
-  if (!(isAuthLoading || isAuthenticated)) {
-    return (
-      <AuthRequired
-        title="Sign in required"
-        description="Please sign in to view your order details"
-      />
-    );
-  }
-
   if (!order) {
     return (
       <div className="container mx-auto py-8 px-8">
@@ -256,6 +274,61 @@ export default function OrderPage({ params }: OrderPageProps) {
     );
   }
 
+  if (!isCompletedOrder) {
+    return (
+      <div className="container mx-auto py-8 px-8">
+        <div className="max-w-2xl mx-auto text-center">
+          <h1 className="text-4xl font-bold mb-4">
+            Great! We are ready to secure your domain
+          </h1>
+          <p className="text-muted-foreground text-lg mb-8 flex items-center justify-center gap-2">
+            Hang on tight...
+            <Loader2 className="h-5 w-5 animate-spin" />
+          </p>
+
+          {showCarousel ? (
+            <Carousel className="mb-6">
+              <CarouselContent className="-ml-2 md:-ml-4">
+                {orderItems.map((item, index) => (
+                  <CarouselItem
+                    key={index}
+                    className="md:basis-1/2 lg:basis-1/3 pl-2 md:pl-4"
+                  >
+                    <NftDomainCard
+                      item={item}
+                      origin={origin.originInfo}
+                      isCompleted={isCompletedOrder}
+                    />
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious />
+              <CarouselNext />
+            </Carousel>
+          ) : (
+            <div className="mb-6 flex flex-wrap justify-center gap-4">
+              {orderItems.map((item, index) => (
+                <NftDomainCard
+                  key={index}
+                  item={item}
+                  origin={origin.originInfo}
+                  isCompleted={isCompletedOrder}
+                  className="p-4 w-full sm:w-3/4 md:w-1/2 lg:w-1/3 max-w-sm"
+                />
+              ))}
+            </div>
+          )}
+
+          <div className="flex gap-4 mb-8 justify-center">
+            <NamefiButton asChild={true}>
+              <Link href={`/orders/${id}/details`}>View order details</Link>
+            </NamefiButton>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="container mx-auto py-8 px-8">
       <div className="max-w-2xl mx-auto">
@@ -267,68 +340,38 @@ export default function OrderPage({ params }: OrderPageProps) {
           </p>
         </div>
 
-        <Carousel className="mb-6">
-          <CarouselContent className="-ml-2 md:-ml-4">
+        {showCarousel ? (
+          <Carousel className="mb-6">
+            <CarouselContent className="-ml-2 md:-ml-4">
+              {orderItems.map((item, index) => (
+                <CarouselItem
+                  key={index}
+                  className="md:basis-1/2 lg:basis-1/3 pl-2 md:pl-4"
+                >
+                  <NftDomainCard
+                    item={item}
+                    origin={origin.originInfo}
+                    isCompleted={isCompletedOrder}
+                  />
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious />
+            <CarouselNext />
+          </Carousel>
+        ) : (
+          <div className="mb-6 flex flex-wrap justify-center gap-4">
             {orderItems.map((item, index) => (
-              <CarouselItem
+              <NftDomainCard
                 key={index}
-                className="md:basis-1/2 lg:basis-1/3 pl-2 md:pl-4"
-              >
-                <CartCard className="p-4">
-                  <div className="relative w-full aspect-square overflow-hidden rounded-md bg-black/[0.03] border-1 border-brand-primary">
-                    {origin.originInfo.config.background && (
-                      <Image
-                        src={origin.originInfo.config.background.image}
-                        alt={origin.originInfo.config.background.alt}
-                        fill={true}
-                        className="object-cover"
-                      />
-                    )}
-                    <div className="absolute top-4.5 left-4.5">
-                      <div className="bg-black/70 backdrop-blur-[50px] py-[2px] px-[3px] gap-[3px] rounded-[2px] flex items-center">
-                        {origin.originInfo.config.logo.type === 'image' && (
-                          <Image
-                            src={origin.originInfo.config.logo.image}
-                            alt={origin.originInfo.config.logo.alt}
-                            className="rounded-[1px]"
-                            width={14}
-                            height={14}
-                          />
-                        )}
-                        <Image
-                          src="/powered-by-namefi-stacked.svg"
-                          alt="Powered by Namefi"
-                          width={25.375}
-                          height={16}
-                        />
-                      </div>
-                    </div>
-                    <div className="absolute bottom-0 left-0 right-0 flex flex-col items-start text-white px-3 py-4 bg-gradient-to-t from-black/90 via-black/10 to-transparent">
-                      <h2 className="text-2xl font-semibold">
-                        {item.subdomain}
-                      </h2>
-                      <p className="text-md font-semibold">
-                        .{item.parentDomain}
-                      </p>
-                    </div>
-                  </div>
-                  <NamefiButton
-                    variant="ghost"
-                    className="w-full mt-4 bg-black/[0.03] border-white/10"
-                    asChild={true}
-                  >
-                    <Link href={`https://${item.fullDomain}`} target="_blank">
-                      View Your Domain
-                      <SquareArrowOutUpRightIcon className="w-4 h-4" />
-                    </Link>
-                  </NamefiButton>
-                </CartCard>
-              </CarouselItem>
+                item={item}
+                origin={origin.originInfo}
+                isCompleted={isCompletedOrder}
+                className="p-4 w-full sm:w-3/4 md:w-1/2 lg:w-1/3 max-w-sm"
+              />
             ))}
-          </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
-        </Carousel>
+          </div>
+        )}
 
         <CartCard className="mb-6 bg-black/[0.03] border-white/10">
           <div className="flex justify-between items-center">
