@@ -66,6 +66,11 @@ export const configSchema = z.object({
    * This is useful for local development.
    */
   ALLOW_ALL_ORIGINS: z.boolean().default(false),
+
+  /**
+   * The token for the GitHub Actions workflow.
+   */
+  GITHUB_WORKFLOWS_TOKEN: z.string().optional(),
 });
 
 export type ConfigInput = z.input<typeof configSchema>;

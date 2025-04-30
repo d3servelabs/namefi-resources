@@ -8,6 +8,8 @@ import {
   PaymentActivities,
 } from '../activities';
 import { updateNamefiNftIndex } from '../activities/namefi-nft';
+import { triggerNamefiGptCronJob } from '../activities/triggerNamefiGptCronJob';
+import { triggerUpdateNamefiNftIndex } from '../schedules/update-namefi-nft-index';
 import { TEMPORAL_ENUMS } from '../shared';
 import { createWorker } from './createWorker';
 
@@ -20,6 +22,8 @@ export const ACTIVITIES = {
     ...PaymentActivities,
     ...NotifyActivities,
     updateNamefiNftIndex,
+    triggerUpdateNamefiNftIndex,
+    triggerNamefiGptCronJob,
   },
   [TEMPORAL_ENUMS.MINT]: {
     ...MintActivities,

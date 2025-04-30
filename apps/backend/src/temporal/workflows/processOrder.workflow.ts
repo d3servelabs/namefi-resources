@@ -3,7 +3,8 @@ import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import * as workflow from '@temporalio/workflow';
 import { ApplicationFailure } from '@temporalio/workflow';
 import type { OrderActivities } from '../activities/order.activities';
-import { TEMPORAL_QUEUES, shortRunningOpts } from '../shared';
+import { TEMPORAL_ENUMS, TEMPORAL_QUEUES, shortRunningOpts } from '../shared';
+import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';
 import {
   type ChargeUserWorkflowInput,
   chargeUserWorkflow,
@@ -213,6 +214,14 @@ export async function processOrderWorkflow(
         );
       }
     }
+
+    try {
+      await postProcessOrder();
+    } catch (e) {
+      workflow.log.error(
+        `Failed to post-process order ${input.orderId}. Error: ${e}`,
+      );
+    }
   } catch (e) {
     // Update order status to FAILED if an exception occurs
     try {
@@ -232,4 +241,27 @@ export async function processOrderWorkflow(
       cause: e instanceof Error ? e : new Error(String(e)),
     });
   }
+}
+
+async function postProcessOrder() {
+  const { triggerNamefiGptCronJob, triggerUpdateNamefiNftIndex } =
+    typedProxyActivities({
+      temporalEnum: TEMPORAL_ENUMS.DEFAULT,
+      options: {
+        ...shortRunningOpts,
+      },
+    });
+
+  const results = await Promise.allSettled([
+    triggerNamefiGptCronJob(),
+    triggerUpdateNamefiNftIndex(),
+  ]);
+
+  results.forEach((result, index) => {
+    if (result.status === 'rejected') {
+      workflow.log.error(
+        `Failed to post-process order, ${index === 0 ? 'GPT' : 'NFT Index'}. Error: ${result.reason}`,
+      );
+    }
+  });
 }
