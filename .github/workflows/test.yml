@@ -41,15 +41,11 @@ jobs:
 
       - name: Run all tests
         if: ${{ github.event.inputs.package_filter == '' }}
-        run: bun test
-
+        run: bun run test:coverage
+      
       # Optional: Add test coverage reporting
       - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          fail_ci_if_error: false
-          verbose: true
-        if: ${{ env.CODECOV_TOKEN != '' }}
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }} 
+          slug: d3servelabs/namefi-astra

@@ -6,8 +6,10 @@
       "devDependencies": {
         "@ast-grep/cli": "^0.18.0",
         "@biomejs/biome": "1.9.4",
+        "@vitest/coverage-v8": "^3.1.2",
         "lefthook": "^1.11.6",
         "turbo": "^2.4.4",
+        "vitest": "^3.1.2",
       },
     },
     "apps/backend": {
