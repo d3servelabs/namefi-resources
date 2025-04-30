@@ -1,17 +1,10 @@
 'use client';
 
 import { Loader2, PencilIcon, PlusIcon } from 'lucide-react';
-import {
-  type ReactNode,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import { type ReactNode, useCallback, useMemo, useState } from 'react';
 
 import { CartCard } from '@/components/cart-card';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/shadcn/radio-group';
-import { useUserWalletAddresses } from '@/hooks/useUserWalletAddresses';
 import { cn } from '@/lib/utils';
 import { formatAmountInUSD } from '@/utils/number';
 import type { DeepPartial } from '@/utils/types';
@@ -71,21 +64,6 @@ export function SelectPaymentMethodCard({
     useState<PaymentDetails | null>(null);
   const [creditCardPaymentMethodDetails, setCreditCardPaymentMethodDetails] =
     useState<PaymentDetails | null>(null);
-
-  const { userWalletAddresses } = useUserWalletAddresses();
-
-  useEffect(() => {
-    setNfscPaymentMethodDetails({
-      paymentProviderDetails: {
-        paymentProvider: paymentProviderSchema.Values.NFSC_BASE,
-        nfscPaymentDetails: {
-          walletAddress:
-            userWalletAddresses.length > 0 ? userWalletAddresses[0] : undefined,
-          chainId: CHAINS.base.id,
-        },
-      },
-    });
-  }, [userWalletAddresses]);
 
   const isUseBalanceQueryEnabled = useMemo(() => {
     if (isNfscPayment(nfscPaymentMethodDetails?.paymentProviderDetails)) {
