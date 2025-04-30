@@ -8,10 +8,13 @@ import {
 } from '@/components/ui/shadcn/tabs';
 import { cn } from '@/lib/utils';
 import { LocalStorageKeys } from '@/utils/localStorageKeys';
-import { type FC, type HTMLAttributes, useEffect } from 'react';
+import { useTRPC } from '@/utils/trpc';
+import { useSuspenseQuery } from '@tanstack/react-query';
+import { AlertTriangle } from 'lucide-react';
+import { type FC, type HTMLAttributes, useEffect, useMemo } from 'react';
 import { useLocalStorage } from 'usehooks-ts';
+import { Alert, AlertDescription, AlertTitle } from '../ui/shadcn/alert';
 import { DnsRecordsPanel } from './Panels/DNS/DnsRecordsPanel';
-
 export type DomainManagementProps = HTMLAttributes<HTMLDivElement> & {
   domain: string;
 };
@@ -35,8 +38,35 @@ export const DomainManagement: FC<DomainManagementProps> = ({
     });
   }, [setRecentDomains, domain]);
 
+  const trpc = useTRPC();
+  const { data: currentUserDomains } = useSuspenseQuery(
+    trpc.users.getCurrentUserDomains.queryOptions(),
+  );
+
+  const isDomainOwnedByCurrentUser = useMemo(
+    () =>
+      currentUserDomains.some(
+        (ownedDomain) => ownedDomain.normalizedDomainName === domain,
+      ),
+    [currentUserDomains, domain],
+  );
+
   return (
     <div className={cn('', className)} {...rest}>
+      {isDomainOwnedByCurrentUser ? undefined : (
+        <Alert
+          variant="default"
+          className="my-1 dark:bg-amber-500/50 bg-amber-200"
+        >
+          <AlertTriangle className="h-4 w-4" />
+          <AlertTitle>Heads up!</AlertTitle>
+          <AlertDescription>
+            This domain is owned by another user. You are viewing public
+            information
+          </AlertDescription>
+        </Alert>
+      )}
+
       <Tabs defaultValue="dns-setting" className="w-full">
         <TabsList className="grid w-full grid-cols-1 mb-8">
           <TabsTrigger value="dns-setting">DNS Setting</TabsTrigger>
