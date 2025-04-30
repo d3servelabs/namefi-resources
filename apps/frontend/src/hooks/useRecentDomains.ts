@@ -1,47 +1,51 @@
 import { LocalStorageKeys } from '@/utils/localStorageKeys';
-import { useTRPC } from '@/utils/trpc';
-import { useQuery } from '@tanstack/react-query';
 import { useEffect, useMemo } from 'react';
 import { useLocalStorage } from 'usehooks-ts';
+import { useAuth } from './useAuth';
 
 export function useRecentDomains({
   newlyVisitedDomain,
 }: {
   newlyVisitedDomain?: string;
 } = {}) {
-  const trpc = useTRPC();
-  const { data } = useQuery(trpc.users.getCurrentUserDomains.queryOptions());
-  const currentUserDomains = useMemo(() => data ?? [], [data]);
+  const { isAuthenticated, user } = useAuth();
 
-  const [_recentDomains, setRecentDomains] = useLocalStorage(
-    LocalStorageKeys.RECENT_DOMAINS,
-    [newlyVisitedDomain] as string[],
-  );
+  const [_recentDomains, _setRecentDomains] = useLocalStorage<
+    Record<string, string[]>
+  >(LocalStorageKeys.RECENT_DOMAINS, {});
 
   useEffect(() => {
-    if (newlyVisitedDomain) {
-      setRecentDomains((prevRecentDomains) => {
-        const filtered = prevRecentDomains.filter(
+    if (newlyVisitedDomain && isAuthenticated && user) {
+      _setRecentDomains((prevRecentDomains) => {
+        const currentRecentDomains = prevRecentDomains[user.id] ?? [];
+        const filtered = currentRecentDomains.filter(
           (recentDomain) =>
             recentDomain !== '' && recentDomain !== newlyVisitedDomain,
         );
-        return [...filtered, newlyVisitedDomain].filter((recentDomain) =>
-          currentUserDomains.some(
-            (d) => d.normalizedDomainName === recentDomain,
-          ),
-        );
+        return {
+          ...prevRecentDomains,
+          [user.id]: [...filtered, newlyVisitedDomain],
+        };
       });
     }
-  }, [newlyVisitedDomain, currentUserDomains, setRecentDomains]);
+  }, [newlyVisitedDomain, _setRecentDomains, isAuthenticated, user]);
 
   const recentDomains = useMemo(() => {
-    return _recentDomains.filter((domain) => {
-      return currentUserDomains.some((d) => d.normalizedDomainName === domain);
-    });
-  }, [_recentDomains, currentUserDomains]);
+    if (!user) {
+      return [];
+    }
+    return _recentDomains[user.id] ?? [];
+  }, [_recentDomains, user]);
 
   return {
     recentDomains,
-    setRecentDomains,
+    setRecentDomains: (recentDomains: string[]) => {
+      _setRecentDomains((prevRecentDomains) => {
+        if (!user) {
+          return prevRecentDomains;
+        }
+        return { ...prevRecentDomains, [user.id]: recentDomains };
+      });
+    },
   };
 }
