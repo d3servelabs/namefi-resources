@@ -182,39 +182,28 @@ export default function OrderPage({ params }: OrderPageProps) {
     return (
       <div className="container mx-auto py-8 px-8">
         <div className="max-w-2xl mx-auto text-center">
-          <Skeleton className="h-12 w-[400px] mx-auto mb-4" />
-          <div className="flex items-center justify-center gap-2 mb-8">
-            <Skeleton className="h-6 w-[150px]" />
-            <Skeleton className="h-5 w-5 rounded-full" />
-          </div>
+          <h1 className="text-4xl font-bold mb-4">
+            Great! We are ready to secure your domain
+          </h1>
+          <p className="text-muted-foreground text-lg mb-8 flex items-center justify-center gap-2">
+            Hang on tight...
+            <Loader2 className="h-5 w-5 animate-spin" />
+          </p>
 
-          <div className="mb-6">
-            <Carousel>
-              <CarouselContent className="-ml-2 md:-ml-4">
-                {[1, 2, 3].map((index) => (
-                  <CarouselItem
-                    key={index}
-                    className="md:basis-1/2 lg:basis-1/3 pl-2 md:pl-4"
-                  >
-                    <CartCard className="p-4">
-                      <div className="relative w-full aspect-square overflow-hidden rounded-md bg-black/[0.03] border-1 border-brand-primary">
-                        <Skeleton className="h-full w-full" />
-                        <div className="absolute top-4.5 left-4.5">
-                          <Skeleton className="h-6 w-24" />
-                        </div>
-                        <div className="absolute bottom-0 left-0 right-0 px-3 py-4 bg-gradient-to-t from-black/90 via-black/10 to-transparent">
-                          <Skeleton className="h-8 w-32 mb-2" />
-                          <Skeleton className="h-6 w-24" />
-                        </div>
-                      </div>
-                      <Skeleton className="h-10 w-full mt-4" />
-                    </CartCard>
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-              <CarouselPrevious />
-              <CarouselNext />
-            </Carousel>
+          <div className="mb-6 flex justify-center">
+            <CartCard className="p-4 w-full sm:w-3/4 md:w-1/2 lg:w-1/3 max-w-sm">
+              <div className="relative w-full aspect-square overflow-hidden rounded-md bg-black/[0.03] border-1 border-brand-primary">
+                <Skeleton className="h-full w-full" />
+                <div className="absolute top-4.5 left-4.5">
+                  <Skeleton className="h-6 w-24" />
+                </div>
+                <div className="absolute bottom-0 left-0 right-0 px-3 py-4 bg-gradient-to-t from-black/90 via-black/10 to-transparent">
+                  <Skeleton className="h-8 w-32 mb-2" />
+                  <Skeleton className="h-6 w-24" />
+                </div>
+              </div>
+              <Skeleton className="h-10 w-full mt-4" />
+            </CartCard>
           </div>
 
           <div className="flex justify-center mb-8">
