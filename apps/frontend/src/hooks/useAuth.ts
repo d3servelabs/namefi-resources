@@ -15,7 +15,6 @@ export function useAuth() {
   return {
     isAuthenticated: authenticated && !!userQuery.data?.privyUserId,
     isLoading: !ready || userQuery.isLoading,
-
     user: userQuery.data,
     privyUser,
   };

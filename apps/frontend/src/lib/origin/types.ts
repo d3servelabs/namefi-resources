@@ -53,6 +53,13 @@ type Background = {
  */
 export type Logo = ImageLogo | LottieLogo;
 
+/**
+ * Privy auth logo configuration
+ */
+export type AuthLogo = {
+  image: string;
+};
+
 export type LandingPage = {
   component?: SearchComponent;
 };
@@ -63,6 +70,7 @@ export type LandingPage = {
 export type OriginConfig = {
   metadata: Metadata;
   logo: Logo;
+  authLogo?: AuthLogo;
   background?: Background;
   landingPage?: LandingPage;
 };

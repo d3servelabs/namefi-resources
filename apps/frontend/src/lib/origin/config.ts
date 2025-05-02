@@ -36,6 +36,9 @@ export const originConfig: OriginConfigMap = {
         title: '0x.city',
         alt: '0x.city Logo',
       },
+      authLogo: {
+        image: '/logos/0xcity-powered-by-namefi.svg',
+      },
       background: {
         image: '/backgrounds/0x.city.png',
         alt: '0x.city Background',

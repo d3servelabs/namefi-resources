@@ -1,5 +1,6 @@
 'use client';
 
+import { useOrigin } from '@/components/providers/originProvider';
 import { config } from '@/lib/env';
 import {
   type PrivyProviderProps,
@@ -16,6 +17,7 @@ const PrivyProvider = _PrivyProvider as unknown as React.FC<PrivyProviderProps>;
 
 export const SessionsProvider = ({ children }: Readonly<Props>) => {
   const theme = useTheme();
+  const origin = useOrigin();
 
   return (
     <PrivyProvider
@@ -24,7 +26,7 @@ export const SessionsProvider = ({ children }: Readonly<Props>) => {
         appearance: {
           theme: theme.theme as 'light' | 'dark',
           accentColor: '#48E59B',
-          logo: '/logotype.svg',
+          logo: origin.originInfo?.config?.authLogo?.image ?? '/logotype.svg',
         },
         embeddedWallets: {
           createOnLogin: 'off',
