@@ -159,10 +159,12 @@
 }
 
 @layer base {
-  * {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
     @apply border-border outline-ring/50;
-    border-color: var(--border);
-    outline-color: var(--ring);
   }
   body {
     @apply bg-background text-foreground;
@@ -176,5 +178,15 @@
     --brand-primary: #4f46e5;
     --brand-secondary: #6366f1;
     --brand-tertiary: #818cf8;
+  }
+}
+
+@layer components {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    @apply border-border outline-ring/50;
   }
 }
