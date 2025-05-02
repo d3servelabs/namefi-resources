@@ -1,8 +1,9 @@
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useLinkedWalletAddresses } from '@/hooks/useUserWalletAddresses';
+import { config } from '@/lib/env';
 import { getShortAddress } from '@/lib/utils';
-import { supportedChains } from '@/lib/wagmiConfig';
-import { CHAINS } from '@namefi-astra/utils';
+import { CHAINS, getChain } from '@namefi-astra/utils';
+import { filter, isNotNil } from 'ramda';
 import { useCallback, useState } from 'react';
 import type { Chain } from 'viem';
 import { Badge } from './ui/shadcn/badge';
@@ -14,6 +15,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from './ui/shadcn/select';
+
+const ALLOWED_CHAINS: Chain[] = filter(
+  isNotNil,
+  config.ALLOWED_CHAINS.map((chainId) => getChain(chainId) as Chain),
+);
 
 interface SelectWalletProps {
   onValueChange: (walletAddress: string) => void;
@@ -97,7 +103,7 @@ export function SelectChain({
         <SelectValue placeholder="Select a Chain" />
       </SelectTrigger>
       <SelectContent>
-        {supportedChains.map((chain: Chain) => (
+        {ALLOWED_CHAINS.map((chain: Chain) => (
           <SelectItem
             key={`${chain.id}`}
             value={`${chain.id}`}

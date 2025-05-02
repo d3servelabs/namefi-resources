@@ -1,3 +1,4 @@
+import * as chains from 'viem/chains';
 import type { ConfigInput } from '../schema';
 
 const localConfig: ConfigInput = {
@@ -18,6 +19,7 @@ const localConfig: ConfigInput = {
   },
   USER_CENTRICS_SETTINGS_ID: '5UJHpI8CWth59m',
   USER_CENTRICS_GOOGLE_ANALYTICS_SERVICE_ID: 'HkocEodjb7',
+  ALLOWED_CHAINS: [chains.sepolia.id],
 };
 
 export default localConfig;
