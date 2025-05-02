@@ -7,5 +7,9 @@ type Props = {
 export default async function DomainPage({ params }: Props) {
   const { domain } = await params;
 
-  return <DomainManagement domain={domain} className="p-4" />;
+  return (
+    <div className="p-4 max-w-[1400px] mx-auto w-full">
+      <DomainManagement domain={domain} />
+    </div>
+  );
 }
