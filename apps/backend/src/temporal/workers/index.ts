@@ -50,7 +50,7 @@ export async function initWorkers() {
       temporalEnum: TEMPORAL_ENUMS.MINT,
       logLabel: TEMPORAL_ENUMS.MINT,
       extraWorkerOptions: {
-        maxConcurrentWorkflowTaskExecutions: 1,
+        maxConcurrentActivityTaskExecutions: 1,
       },
     }),
     [TEMPORAL_ENUMS.DOMAINS]: await createWorker({
