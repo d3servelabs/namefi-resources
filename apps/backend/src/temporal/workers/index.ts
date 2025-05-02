@@ -32,7 +32,9 @@ export const ACTIVITIES = {
     parkDomain,
     isDomainParked,
   },
-  [TEMPORAL_ENUMS.NOTIFY]: {},
+  [TEMPORAL_ENUMS.NOTIFY]: {
+    ...NotifyActivities,
+  },
 };
 export type ACTIVITIES = typeof ACTIVITIES;
 

@@ -19,7 +19,7 @@ export const notifyUserWorkflow = async (input: NotifyUserWorkflowInput) => {
   const { sendEmailOrThrow, getUserEmailOrThrow } =
     workflow.proxyActivities<NotifyActivities>({
       ...shortRunningOpts,
-      taskQueue: TEMPORAL_QUEUES.DEFAULT,
+      taskQueue: TEMPORAL_QUEUES.NOTIFY,
     });
 
   try {
