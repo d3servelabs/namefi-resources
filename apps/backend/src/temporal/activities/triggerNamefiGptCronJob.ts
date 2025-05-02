@@ -8,7 +8,7 @@ export async function triggerNamefiGptCronJob() {
   await axios.post(
     'https://api.github.com/repos/d3servelabs/namefi-gpt/actions/workflows/86835114/dispatches',
     {
-      ref: 'namefi',
+      ref: 'main',
       inputs: {},
     },
     {
