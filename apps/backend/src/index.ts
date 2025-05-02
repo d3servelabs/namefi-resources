@@ -67,14 +67,14 @@ app.use(
 app.route('v1/ns-json', nsJsonRouter);
 app.route('/webhooks', webhooksRouter);
 
-app.get('/configz', (c) => {
+app.get('/configfi', (c) => {
   return c.json({
     ENVIRONMENT: process.env.ENVIRONMENT,
     config,
   });
 });
 
-app.get('/secretsz', (c) => {
+app.get('/secretsfi', (c) => {
   const key = c.req.header('x-namefi-key') ?? c.req.query('key');
   if (key !== secrets.API_AUTH_KEY) {
     c.status(401);
