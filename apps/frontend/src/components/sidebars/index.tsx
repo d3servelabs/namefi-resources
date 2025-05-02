@@ -63,6 +63,15 @@ export function AppSidebar() {
     enabled: !isAuthLoading && isAuthenticated,
   });
 
+  const frontendVersion = useMemo(() => {
+    return {
+      version: process.env.version,
+      name: process.env.name,
+    };
+  }, []);
+
+  const backendVersion = useQuery(trpc.version.queryOptions());
+
   const showManageEntrypoint = useMemo(() => {
     if (
       !isAuthenticated ||
@@ -182,6 +191,16 @@ export function AppSidebar() {
 
       <SidebarFooter>
         <UserDropdown collapsed={isCollapsed} />
+        {!isCollapsed && (
+          <div className="grid grid-cols-2 gap-1 text-xs font-medium text-white/40">
+            <div className="flex flex-row gap-1">
+              <span>App: {frontendVersion.version}</span>
+            </div>
+            <div className="flex flex-row gap-1">
+              <span>API: {backendVersion.data?.version}</span>
+            </div>
+          </div>
+        )}
       </SidebarFooter>
 
       <SidebarRail />

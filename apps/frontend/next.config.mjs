@@ -4,6 +4,7 @@
  * @see https://nextjs.org/docs/pages/api-reference/config/typescript
  */
 import { createJiti } from 'jiti';
+import packageJson from './package.json' with { type: 'json' };
 
 /** @type {import('jiti').Jiti} */
 const jiti = createJiti(import.meta.url, { tryNative: false });
@@ -23,6 +24,13 @@ const nextConfig = {
     define: {
       'process.env.LOADED_CONFIG': JSON.stringify(appConfig),
     },
+  },
+  env: {
+    version: packageJson.version,
+    name: packageJson.name,
+  },
+  devIndicators: {
+    position: 'bottom-right',
   },
 };
 

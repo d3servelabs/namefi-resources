@@ -1,4 +1,4 @@
-import { createTRPCRouter } from '../base';
+import { createTRPCRouter, publicProcedure } from '../base';
 
 import { cartsRouter } from './cartsRouter';
 import { dnsRecordsRouter } from './dnsRecordsRouter';
@@ -16,6 +16,15 @@ export const appRouter = createTRPCRouter({
   search: searchRouter,
   registry: registryRouter,
   orders: ordersRouter,
+
+  version: publicProcedure.query(() => {
+    const result = {
+      version: process.env.npm_package_version,
+      name: process.env.npm_package_name,
+    };
+
+    return result;
+  }),
 });
 
 export type AppRouter = typeof appRouter;
