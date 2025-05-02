@@ -56,6 +56,7 @@ export const DomainManagement: FC<DomainManagementProps> = ({
         </Alert>
       )}
 
+      <h1 className="text-4xl font-bold my-2">{domain}</h1>
       <Tabs defaultValue="dns-setting" className="w-full">
         <MainTabs />
 
