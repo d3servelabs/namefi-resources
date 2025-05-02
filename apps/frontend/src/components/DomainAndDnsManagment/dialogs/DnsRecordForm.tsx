@@ -15,11 +15,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/shadcn/select';
+import { Textarea } from '@/components/ui/shadcn/textarea';
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { RecordType } from '@namefi-astra/zod-dns';
 import { Trash2 } from 'lucide-react';
 import { useEffect, useMemo } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import {
   DNS_RECORD_TYPES,
   type DnsRecordFormValues,
@@ -71,10 +72,12 @@ export function DnsRecordForm({
     return type === 'A' ? '192.168.1.1' : 'example.com';
   }, [form]);
 
+  const zoneName = useMemo(() => form.getValues('domain') ?? '', [form]);
+
   return (
     <Form {...form}>
-      <div className="grid grid-cols-12 gap-4">
-        <div className="col-span-2">
+      <div className="flex flex-row flex-wrap *:px-2 gap-y-2">
+        <div className="w-2/12">
           <FormField
             control={form.control}
             name="type"
@@ -88,7 +91,7 @@ export function DnsRecordForm({
                   defaultValue={field.value}
                 >
                   <FormControl>
-                    <SelectTrigger className="bg-zinc-900 border-zinc-800">
+                    <SelectTrigger className="w-full bg-zinc-900 border-zinc-800">
                       <SelectValue placeholder="Select type" />
                     </SelectTrigger>
                   </FormControl>
@@ -105,63 +108,7 @@ export function DnsRecordForm({
             )}
           />
         </div>
-
-        <div className="col-span-4">
-          <FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-sm text-zinc-400">Name</FormLabel>
-                <div className="flex">
-                  <FormControl>
-                    <Input
-                      placeholder="www or @"
-                      className="bg-zinc-900 border-zinc-800 rounded-r-none"
-                      {...field}
-                    />
-                  </FormControl>
-                  <Controller
-                    control={form.control}
-                    name="domain"
-                    render={({ field }) => (
-                      <Input
-                        className="bg-zinc-900 border-zinc-800 border-l-0 rounded-l-none text-zinc-500"
-                        value={field.value}
-                        readOnly={true}
-                      />
-                    )}
-                  />
-                </div>
-                <FormMessage className="text-xs text-red-500" />
-              </FormItem>
-            )}
-          />
-        </div>
-
-        <div className="col-span-4">
-          <FormField
-            control={form.control}
-            name="rdata"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-sm text-zinc-400">
-                  Value <span className="text-red-500">*</span>
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder={valuePlaceholder}
-                    className="bg-zinc-900 border-zinc-800"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage className="text-xs text-red-500" />
-              </FormItem>
-            )}
-          />
-        </div>
-
-        <div className="col-span-2">
+        <div className="w-2/12">
           <FormField
             control={form.control}
             name="ttl"
@@ -209,6 +156,66 @@ export function DnsRecordForm({
             )}
           />
         </div>
+
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <div
+              style={{
+                width: `clamp(${zoneName.length + 20}ch, ${Math.max(zoneName.length + (field.value?.length ?? 0), 1)}ch, calc(100% * 8/12))`,
+              }}
+            >
+              <FormItem>
+                <FormLabel className="text-sm text-zinc-400">Name</FormLabel>
+                <div className="flex flex-row flex-nowrap">
+                  <FormControl>
+                    <Input
+                      placeholder="www or @"
+                      className="bg-zinc-900 border-zinc-800 rounded-r-none"
+                      {...field}
+                    />
+                  </FormControl>
+                  <Input
+                    className="w-fit bg-zinc-900 border-zinc-800 border-l-0 rounded-l-none text-zinc-500"
+                    style={{
+                      width: `clamp(20ch, ${Math.max(zoneName.length + 20, 1)}ch, 100%)`,
+                    }}
+                    value={zoneName}
+                    readOnly={true}
+                  />
+                </div>
+                <FormMessage className="text-xs text-red-500" />
+              </FormItem>
+            </div>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="rdata"
+          render={({ field }) => (
+            <div
+              style={{
+                width: `clamp(20ch, ${Math.max(field.value.length, 1)}ch, calc(100%))`,
+              }}
+            >
+              <FormItem>
+                <FormLabel className="text-sm text-zinc-400">
+                  Value <span className="text-red-500">*</span>
+                </FormLabel>
+                <FormControl>
+                  <Textarea
+                    placeholder={valuePlaceholder}
+                    className="bg-zinc-900 border-zinc-800"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage className="text-xs text-red-500" />
+              </FormItem>
+            </div>
+          )}
+        />
       </div>
     </Form>
   );
