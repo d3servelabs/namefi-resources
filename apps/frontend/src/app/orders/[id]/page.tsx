@@ -181,80 +181,44 @@ export default function OrderPage({ params }: OrderPageProps) {
   if (isAuthLoading || isOrderLoading || origin.isLoading) {
     return (
       <div className="container mx-auto py-8 px-8">
-        <div className="max-w-2xl mx-auto">
-          <div className="text-center mb-8">
-            <Skeleton className="h-12 w-48 mx-auto mb-4" />
-            <Skeleton className="h-6 w-[400px] mx-auto" />
+        <div className="max-w-2xl mx-auto text-center">
+          <Skeleton className="h-12 w-[400px] mx-auto mb-4" />
+          <div className="flex items-center justify-center gap-2 mb-8">
+            <Skeleton className="h-6 w-[150px]" />
+            <Skeleton className="h-5 w-5 rounded-full" />
           </div>
 
-          <Carousel className="mb-6">
-            <CarouselContent className="-ml-2 md:-ml-4">
-              {[1, 2, 3].map((index) => (
-                <CarouselItem
-                  key={index}
-                  className="md:basis-1/2 lg:basis-1/3 pl-2 md:pl-4"
-                >
-                  <CartCard className="p-4">
-                    <div className="relative w-full aspect-square overflow-hidden rounded-md bg-black/[0.03] border-1 border-brand-primary">
-                      <Skeleton className="h-full w-full" />
-                      <div className="absolute top-4.5 left-4.5">
-                        <Skeleton className="h-6 w-24" />
+          <div className="mb-6">
+            <Carousel>
+              <CarouselContent className="-ml-2 md:-ml-4">
+                {[1, 2, 3].map((index) => (
+                  <CarouselItem
+                    key={index}
+                    className="md:basis-1/2 lg:basis-1/3 pl-2 md:pl-4"
+                  >
+                    <CartCard className="p-4">
+                      <div className="relative w-full aspect-square overflow-hidden rounded-md bg-black/[0.03] border-1 border-brand-primary">
+                        <Skeleton className="h-full w-full" />
+                        <div className="absolute top-4.5 left-4.5">
+                          <Skeleton className="h-6 w-24" />
+                        </div>
+                        <div className="absolute bottom-0 left-0 right-0 px-3 py-4 bg-gradient-to-t from-black/90 via-black/10 to-transparent">
+                          <Skeleton className="h-8 w-32 mb-2" />
+                          <Skeleton className="h-6 w-24" />
+                        </div>
                       </div>
-                      <div className="absolute bottom-0 left-0 right-0 px-3 py-4 bg-gradient-to-t from-black/90 via-black/10 to-transparent">
-                        <Skeleton className="h-8 w-32 mb-2" />
-                        <Skeleton className="h-6 w-24" />
-                      </div>
-                    </div>
-                    <Skeleton className="h-10 w-full mt-4" />
-                  </CartCard>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            <CarouselPrevious />
-            <CarouselNext />
-          </Carousel>
-
-          <CartCard
-            title="Share"
-            className="mb-6 bg-black/[0.03] border-white/10"
-          >
-            <div className="flex justify-between items-center">
-              <Skeleton className="h-6 w-24" />
-              <div className="flex gap-4">
-                {[1, 2, 3].map((i) => (
-                  <Skeleton key={i} className="h-9 w-9 rounded-md" />
+                      <Skeleton className="h-10 w-full mt-4" />
+                    </CartCard>
+                  </CarouselItem>
                 ))}
-              </div>
-            </div>
-          </CartCard>
-
-          <CartCard
-            title="Order Details"
-            className="mb-6 bg-black/[0.03] border-white/10"
-          >
-            <div className="space-y-4">
-              <div className="flex justify-between items-center">
-                <Skeleton className="h-6 w-16" />
-                <Skeleton className="h-6 w-32" />
-              </div>
-              <div className="flex justify-between items-center">
-                <Skeleton className="h-6 w-24" />
-                <Skeleton className="h-6 w-24" />
-              </div>
-              <div className="flex justify-between items-center">
-                <Skeleton className="h-6 w-20" />
-                <Skeleton className="h-6 w-24" />
-              </div>
-            </div>
-          </CartCard>
-
-          <div className="flex gap-4 mb-8">
-            <Skeleton className="h-10 flex-1" />
-            <Skeleton className="h-10 flex-1" />
+              </CarouselContent>
+              <CarouselPrevious />
+              <CarouselNext />
+            </Carousel>
           </div>
 
-          <div className="text-center">
-            <Skeleton className="h-6 w-64 mx-auto" />
+          <div className="flex justify-center mb-8">
+            <Skeleton className="h-10 w-[180px]" />
           </div>
         </div>
       </div>
