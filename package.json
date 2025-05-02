@@ -9,12 +9,16 @@
   "devDependencies": {
     "@ast-grep/cli": "^0.18.0",
     "@biomejs/biome": "1.9.4",
+    "@infisical/cli": "^0.40.0",
     "@vitest/coverage-v8": "^3.1.2",
     "lefthook": "^1.11.6",
     "turbo": "^2.4.4",
     "vitest": "^3.1.2"
   },
   "scripts": {
+    "preinstall": "bun run fix-infisical",
+    "fix-infisical": "bun --cwd node_modules/@infisical/cli preinstall",
+    "link-infisical": "bun run scripts/link-infisical.ts",
     "check": "biome check .",
     "check:error": "biome check . --diagnostic-level=error",
     "check:fix": "biome check --write .",
