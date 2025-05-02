@@ -2,6 +2,7 @@ import { orderStatusSchema, paymentStatusSchema } from '@namefi-astra/db/types';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import * as workflow from '@temporalio/workflow';
 import { ApplicationFailure } from '@temporalio/workflow';
+import type { NotifyActivities } from '../activities/notify.activities';
 import type { OrderActivities } from '../activities/order.activities';
 import { TEMPORAL_ENUMS, TEMPORAL_QUEUES, shortRunningOpts } from '../shared';
 import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';
@@ -43,6 +44,12 @@ export async function processOrderWorkflow(
     workflow.proxyActivities<OrderActivities>({
       ...shortRunningOpts,
       taskQueue: TEMPORAL_QUEUES.DEFAULT,
+    });
+
+  const { getOrderProcessedEmailContent } =
+    workflow.proxyActivities<NotifyActivities>({
+      ...shortRunningOpts,
+      taskQueue: TEMPORAL_QUEUES.NOTIFY,
     });
 
   try {
@@ -174,20 +181,13 @@ export async function processOrderWorkflow(
             ? 'Namefi Order Processing Failed'
             : 'Namefi Order Processing Partially Completed';
 
-      const content =
-        failedItems.length === 0
-          ? `All items in order ${input.orderId} processed successfully`
-          : failedItems.length === orderDetails.items.length
-            ? `Failed to process all items in order ${input.orderId}`
-            : `Some items in order ${input.orderId} failed to process.\nFailed items: ${failedItems
-                .map((item) => item.normalizedDomainName)
-                .join(
-                  ', ',
-                )}.\nFollowing items were processed successfully: ${succeededItems
-                .map((item) => item.normalizedDomainName)
-                .join(', ')}`;
-
       try {
+        const { content } = await getOrderProcessedEmailContent({
+          orderId: input.orderId,
+          succeededItems,
+          failedItems,
+        });
+
         await workflow.executeChild(notifyUserWorkflow, {
           args: [
             {
