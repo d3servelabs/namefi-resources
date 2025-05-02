@@ -20,7 +20,7 @@ import type { DnsRecordSelect } from '@namefi-astra/db';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { TRPCClientError } from '@trpc/client';
-import { ChevronDown, Loader2 } from 'lucide-react';
+import { ChevronDown, CircleCheck, CircleX, Loader2 } from 'lucide-react';
 import { pluck } from 'ramda';
 import { type ReactNode, useCallback } from 'react';
 import { toast } from 'sonner';
@@ -63,14 +63,30 @@ export const DeleteRecordDialog = ({
       queryClient.invalidateQueries({
         queryKey: trpc.dnsRecords.getRecords.queryKey({ zoneName }),
       });
+      toast.success(`Successfully deleted ${recordCount} record(s)`, {
+        duration: 10_000,
+        dismissible: true,
+        icon: <CircleCheck className="h-4 w-4" />,
+        richColors: true,
+      });
     } catch (error) {
       console.error('Error deleting records:', error);
       onDeleteSettledCallback?.('failure');
       if (error instanceof TRPCClientError) {
         if (error.data?.zodError) {
-          toast.error(error.data.zodError);
+          toast.error(error.data.zodError, {
+            duration: 10_000,
+            dismissible: true,
+            icon: <CircleX className="h-4 w-4" />,
+            richColors: true,
+          });
         } else {
-          toast.error(`Failed to delete record(s): ${error.message}`);
+          toast.error(`Failed to delete record(s): ${error.message}`, {
+            duration: 10_000,
+            dismissible: true,
+            icon: <CircleX className="h-4 w-4" />,
+            richColors: true,
+          });
         }
       }
     }

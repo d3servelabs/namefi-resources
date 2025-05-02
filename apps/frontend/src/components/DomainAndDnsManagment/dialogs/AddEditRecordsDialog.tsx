@@ -14,7 +14,7 @@ import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import type { RecordType } from '@namefi-astra/zod-dns';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { TRPCClientError } from '@trpc/client';
-import { Loader2, Plus } from 'lucide-react';
+import { CircleCheck, CircleX, Loader2, Plus } from 'lucide-react';
 import {
   type ReactNode,
   useCallback,
@@ -167,6 +167,17 @@ export function AddEditRecordsDialog({
           zoneName,
           records: updatedRecords,
         });
+        toast.success(
+          `${updatedRecords.length} ${
+            updatedRecords.length === 1 ? 'Record' : 'Records'
+          } updated successfully`,
+          {
+            duration: 10_000,
+            dismissible: true,
+            icon: <CircleCheck className="h-4 w-4" />,
+            richColors: true,
+          },
+        );
       } else if (mode === 'add') {
         const newRecords = forms.map((form) => {
           return formValuesToDnsRecord(form.values);
@@ -175,11 +186,25 @@ export function AddEditRecordsDialog({
           zoneName,
           records: newRecords,
         });
+
+        toast.success(
+          `${newRecords.length} ${
+            newRecords.length === 1 ? 'Record' : 'Records'
+          } saved successfully`,
+          {
+            duration: 10_000,
+            dismissible: true,
+            icon: <CircleCheck className="h-4 w-4" />,
+            richColors: true,
+          },
+        );
       }
 
       await queryClient.invalidateQueries({
         queryKey: trpc.dnsRecords.getRecords.queryKey({ zoneName }),
       });
+
+      onOpenChange?.(false);
     } catch (error) {
       if (error instanceof TRPCClientError) {
         const zodFlattenedError = error.data?.zodError;
@@ -195,6 +220,8 @@ export function AddEditRecordsDialog({
               {
                 duration: 10_000,
                 dismissible: true,
+                icon: <CircleX className="h-4 w-4" />,
+                richColors: true,
               },
             );
           } else if (
@@ -207,17 +234,26 @@ export function AddEditRecordsDialog({
                   (e: string, i: number) => `Record ${i + 1}: ${e}`,
                 )}
               />,
-              { duration: 10_000, dismissible: true },
+              {
+                duration: 10_000,
+                dismissible: true,
+                icon: <CircleX className="h-4 w-4" />,
+                richColors: true,
+              },
             );
           } else {
-            toast.error('Undetermined Error, please contact support');
+            toast.error('Undetermined Error, please contact support', {
+              duration: 10_000,
+              dismissible: true,
+              icon: <CircleX className="h-4 w-4" />,
+              richColors: true,
+            });
           }
         } else {
           toast.error(error.message);
         }
       }
     } finally {
-      onOpenChange?.(false);
       onSubmitSettled?.();
     }
   }, [
