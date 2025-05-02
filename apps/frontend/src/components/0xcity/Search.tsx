@@ -11,6 +11,7 @@ import { useDomainFilters } from '@/hooks/landing/use-domain-filters';
 import { useSearch } from '@/hooks/landing/use-search';
 import { config } from '@/lib/env';
 import { useState } from 'react';
+import FloatingCart from '../floating-cart';
 import {
   type SearchComponent,
   SearchHeader,
@@ -54,7 +55,7 @@ export const Search: SearchComponent = ({ originInfo }) => {
   }
 
   return (
-    <div className="flex gap-4 flex-col">
+    <div className="relative flex gap-4 flex-col">
       <div className="flex flex-col items-center gap-4">
         <SearchHeader
           parentDomain={parentDomain}
@@ -71,58 +72,63 @@ export const Search: SearchComponent = ({ originInfo }) => {
 
       <div className="-mx-4">
         {query.length > 0 ? (
-          <div className="backdrop-blur-3xl bg-black/20 px-4">
-            <Tabs
-              defaultValue="all"
-              value={activeTab}
-              onValueChange={setActiveTab}
-              className="w-full"
-            >
-              <div className="flex justify-between items-center py-5">
-                <h2 className="text-2xl font-semibold">Search Results</h2>
-                <TabsList className="grid grid-cols-4 backdrop-blur-2xl rounded-md bg-black/50">
-                  <TabsTrigger
-                    className="py-2 px-3 w-32 rounded-sm"
-                    value="all"
-                  >
-                    All
-                  </TabsTrigger>
-                  <TabsTrigger
-                    className="py-2 px-3 w-32 rounded-sm"
-                    value="available"
-                  >
-                    Available
-                  </TabsTrigger>
-                  <TabsTrigger
-                    className="py-2 px-3 w-32 rounded-sm"
-                    value="unavailable"
-                  >
-                    Unavailable
-                  </TabsTrigger>
-                  <TabsTrigger
-                    className="py-2 px-3 w-32 rounded-sm"
-                    value="cart"
-                  >
-                    In Cart
-                  </TabsTrigger>
-                </TabsList>
-              </div>
+          <>
+            <div className="backdrop-blur-3xl bg-black/20 px-4 pb-4 relative">
+              <Tabs
+                defaultValue="all"
+                value={activeTab}
+                onValueChange={setActiveTab}
+                className="w-full"
+              >
+                <div className="flex justify-between items-center py-5">
+                  <h2 className="text-2xl font-semibold">Search Results</h2>
+                  <TabsList className="grid grid-cols-4 backdrop-blur-2xl rounded-md bg-black/50">
+                    <TabsTrigger
+                      className="py-2 px-3 w-32 rounded-sm"
+                      value="all"
+                    >
+                      All
+                    </TabsTrigger>
+                    <TabsTrigger
+                      className="py-2 px-3 w-32 rounded-sm"
+                      value="available"
+                    >
+                      Available
+                    </TabsTrigger>
+                    <TabsTrigger
+                      className="py-2 px-3 w-32 rounded-sm"
+                      value="unavailable"
+                    >
+                      Unavailable
+                    </TabsTrigger>
+                    <TabsTrigger
+                      className="py-2 px-3 w-32 rounded-sm"
+                      value="cart"
+                    >
+                      In Cart
+                    </TabsTrigger>
+                  </TabsList>
+                </div>
 
-              <TabsContent value={activeTab} className="mt-4">
-                <SearchResults
-                  isLoading={isSearchLoading}
-                  filteredDomains={filteredDomains}
-                  query={query}
-                  isDomainInCart={isDomainInCart}
-                  handleDomainAction={handleDomainAction}
-                  isAddingToCart={isAddingToCart}
-                  isRemovingFromCart={isRemovingFromCart}
-                  isCartLoading={isCartDataLoading}
-                  parentDomain={parentDomain}
-                />
-              </TabsContent>
-            </Tabs>
-          </div>
+                <TabsContent value={activeTab} className="mt-4">
+                  <SearchResults
+                    isLoading={isSearchLoading}
+                    filteredDomains={filteredDomains}
+                    query={query}
+                    isDomainInCart={isDomainInCart}
+                    handleDomainAction={handleDomainAction}
+                    isAddingToCart={isAddingToCart}
+                    isRemovingFromCart={isRemovingFromCart}
+                    isCartLoading={isCartDataLoading}
+                    parentDomain={parentDomain}
+                  />
+                </TabsContent>
+              </Tabs>
+            </div>
+            <div className="sticky bottom-5 flex justify-center mt-4 px-4">
+              <FloatingCart />
+            </div>
+          </>
         ) : (
           <Landing />
         )}
