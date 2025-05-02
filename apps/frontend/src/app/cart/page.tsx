@@ -37,7 +37,7 @@ import {
   paymentProviderSchema,
 } from '@namefi-astra/db/types';
 import { CHAINS, NFSC_CONTRACT_ADDRESS } from '@namefi-astra/utils';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { inferInput } from '@trpc/tanstack-react-query';
 import { Loader2, Trash2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -69,12 +69,15 @@ export default function CartPage() {
 
   const trpc = useTRPC();
 
-  // Use the useCart hook instead of direct trpc calls
   const { cartData: items, isCartDataLoading, refetchCart } = useCart();
 
+  const queryClient = useQueryClient();
+
+  // Show loading skeletons only on initial load – avoid layout shift once the
+  // user has pressed the submit button and the page is about to redirect.
   const isLoading = useMemo(
-    () => isAuthLoading || isCartDataLoading,
-    [isAuthLoading, isCartDataLoading],
+    () => (isAuthLoading || isCartDataLoading) && !isRedirecting,
+    [isAuthLoading, isCartDataLoading, isRedirecting],
   );
 
   const totalAmountInUsdCents = useMemo(
@@ -102,7 +105,9 @@ export default function CartPage() {
       onSuccess: (data) => {
         setIsRedirecting(true);
         logPurchase();
-        refetchCart();
+        queryClient.invalidateQueries({
+          queryKey: trpc.carts.getItems.queryKey(),
+        });
         router.push(`/orders/${data.id}`);
       },
       onError: () => {
