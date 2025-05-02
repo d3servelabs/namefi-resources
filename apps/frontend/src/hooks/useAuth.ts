@@ -7,15 +7,16 @@ export function useAuth() {
 
   const trpc = useTRPC();
 
-  const userQuery = useQuery({
-    ...trpc.users.getUser.queryOptions(),
-    enabled: authenticated,
-  });
+  const userQuery = useQuery(
+    trpc.users.getUser.queryOptions(undefined, {
+      enabled: authenticated,
+    }),
+  );
 
   return {
     isAuthenticated: authenticated && !!userQuery.data?.privyUserId,
     isLoading: !ready || userQuery.isLoading,
-    user: userQuery.data,
+    user: authenticated ? userQuery.data : undefined,
     privyUser,
   };
 }
