@@ -128,6 +128,16 @@ export async function processOrderWorkflow(
       (_, index) => orderItemResults[index].status === 'fulfilled',
     );
 
+    try {
+      if (succeededItems.length > 0) {
+        await postProcessOrder();
+      }
+    } catch (e) {
+      workflow.log.error(
+        `Failed to post-process order ${input.orderId}. Error: ${e}`,
+      );
+    }
+
     // MARK: - Update Order Status
     if (failedItems.length === 0) {
       // All items succeeded
@@ -213,14 +223,6 @@ export async function processOrderWorkflow(
           `Failed to notify user for order ${input.orderId}. Error: ${e}`,
         );
       }
-    }
-
-    try {
-      await postProcessOrder();
-    } catch (e) {
-      workflow.log.error(
-        `Failed to post-process order ${input.orderId}. Error: ${e}`,
-      );
     }
   } catch (e) {
     // Update order status to FAILED if an exception occurs
