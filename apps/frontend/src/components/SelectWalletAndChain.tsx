@@ -45,18 +45,19 @@ export function SelectWallet({
 
   const { linkedWalletAddresses } = useLinkedWalletAddresses();
 
-  if (linkedWalletAddresses.length === 0) {
-    return (
-      <Button variant="outline" disabled={true}>
-        No Connected Wallets
-      </Button>
-    );
-  }
-
   return (
-    <Select disabled={selectTriggerDisabled} onValueChange={handleValueChange}>
+    <Select
+      disabled={selectTriggerDisabled || linkedWalletAddresses.length === 0}
+      onValueChange={handleValueChange}
+    >
       <SelectTrigger>
-        <SelectValue placeholder="Select a Wallet">{`${isMobile ? getShortAddress(selectWalletAddress ?? '') : selectWalletAddress}`}</SelectValue>
+        <SelectValue
+          placeholder={
+            linkedWalletAddresses.length === 0
+              ? 'No Linked Wallets'
+              : 'Select a Wallet'
+          }
+        >{`${isMobile ? getShortAddress(selectWalletAddress ?? '') : selectWalletAddress}`}</SelectValue>
       </SelectTrigger>
       <SelectContent>
         {linkedWalletAddresses.map((walletAddress) => (
