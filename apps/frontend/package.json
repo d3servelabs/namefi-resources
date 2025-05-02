@@ -4,8 +4,8 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "ENVIRONMENT=local PORT=5000 next dev --turbopack",
-    "with-env": "infisical run --token=$INFISICAL_SERVICE_TOKEN -- bun run",
+    "dev": "ENVIRONMENT=local PORT=5050 next dev --turbopack",
+    "with-env": "infisical run --token=$INFISICAL_SERVICE_TOKEN -- bun",
     "build": "next build",
     "start": "next start",
     "typecheck": "tsc --noEmit",

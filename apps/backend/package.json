@@ -14,7 +14,7 @@
     "dev": "ENVIRONMENT=local tsx watch src/index.ts",
     "dev:temporal": "ENVIRONMENT=local tsx watch src/temporal/main.temporal.ts",
     "trpc": "tsx watch src/trpc/main.ts",
-    "with-env": "infisical run --token=$INFISICAL_SERVICE_TOKEN -- bun run",
+    "with-env": "infisical run --token=$INFISICAL_SERVICE_TOKEN -- bun",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
