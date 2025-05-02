@@ -49,7 +49,7 @@ export async function processOrderWorkflow(
   const { getOrderProcessedEmailContent } =
     workflow.proxyActivities<NotifyActivities>({
       ...shortRunningOpts,
-      taskQueue: TEMPORAL_QUEUES.NOTIFY,
+      taskQueue: TEMPORAL_QUEUES.DEFAULT,
     });
 
   try {
