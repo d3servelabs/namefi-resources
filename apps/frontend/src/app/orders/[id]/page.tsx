@@ -22,7 +22,7 @@ import {
   getChain,
   getSubDomainAndParentDomainFromNormalizedDomainName,
 } from '@namefi-astra/utils';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -45,6 +45,15 @@ export default function OrderPage({ params }: OrderPageProps) {
   const router = useRouter();
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
   const trpc = useTRPC();
+
+  const queryClient = useQueryClient();
+  const cartItemsQueryKey = trpc.carts.getItems.queryKey();
+
+  useEffect(() => {
+    queryClient.invalidateQueries({
+      queryKey: cartItemsQueryKey,
+    });
+  }, [queryClient, cartItemsQueryKey]);
 
   const { data: order, isLoading: isOrderLoading } = useQuery({
     ...trpc.orders.getOrder.queryOptions({ orderId: id }),
