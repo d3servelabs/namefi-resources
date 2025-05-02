@@ -1,15 +1,9 @@
 'use client';
 
+import { AuthRequired } from '@/components/auth-required';
 import { SavePaymentMethodDialog } from '@/components/savePaymentMethod/savePaymentMethodDialog';
 import { Button } from '@/components/ui/shadcn/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/shadcn/card';
+import { Card, CardContent, CardFooter } from '@/components/ui/shadcn/card';
 import { useAuth } from '@/hooks/useAuth';
 import { cn } from '@/lib/utils';
 import { useTRPC } from '@/utils/trpc';
@@ -58,22 +52,11 @@ export default function PaymentMethodsManager() {
   }, []);
 
   if (!isAuthenticated) {
-    return (
-      <div className="container mx-auto py-8">
-        <Card>
-          <CardHeader>
-            <CardTitle>Sign in required</CardTitle>
-            <CardDescription>
-              Please sign in to view your payment methods
-            </CardDescription>
-          </CardHeader>
-        </Card>
-      </div>
-    );
+    return <AuthRequired />;
   }
 
   return (
-    <div className="w-full p-4">
+    <div className="container mx-auto py-8 px-8">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold">Payment Methods</h2>
         <SavePaymentMethodDialog

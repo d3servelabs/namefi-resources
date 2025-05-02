@@ -1,9 +1,9 @@
 'use client';
+import { AuthRequired } from '@/components/auth-required';
 import { Table, Td, Th, Thead, Tr } from '@/components/table';
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from '@/components/ui/shadcn/card';
@@ -134,22 +134,11 @@ export default function ManageDashboard() {
   const { isAuthenticated, isLoading } = useAuth();
 
   if (!(isLoading || isAuthenticated)) {
-    return (
-      <div className="container mx-auto py-8">
-        <Card className="bg-white/[0.03] border border-white/10 shadow-sm rounded-lg p-6 gap-0">
-          <CardHeader>
-            <CardTitle>Sign in required</CardTitle>
-            <CardDescription>
-              Please sign in to view your sold domains
-            </CardDescription>
-          </CardHeader>
-        </Card>
-      </div>
-    );
+    return <AuthRequired />;
   }
 
   return (
-    <div className="w-full p-4">
+    <div className="container mx-auto py-8 px-8">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold">My Sold Domains</h2>
       </div>

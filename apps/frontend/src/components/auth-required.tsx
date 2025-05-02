@@ -1,4 +1,5 @@
 import { CartCard } from '@/components/cart-card';
+import { UserDropdown } from './dropdowns/UserDropdown';
 
 interface AuthRequiredProps {
   title?: string;
@@ -11,7 +12,9 @@ export function AuthRequired({
 }: AuthRequiredProps) {
   return (
     <div className="container mx-auto py-8 px-8">
-      <CartCard title={title} description={description} />
+      <CartCard title={title} description={description}>
+        <UserDropdown className="w-fit" />
+      </CartCard>
     </div>
   );
 }

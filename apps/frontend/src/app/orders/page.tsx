@@ -1,5 +1,6 @@
 'use client';
 
+import { AuthRequired } from '@/components/auth-required';
 import { StatusBadge } from '@/components/badges/StatusBadge';
 import { CartCard } from '@/components/cart-card';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
@@ -36,14 +37,7 @@ export default function OrdersPage() {
   );
 
   if (!(isAuthenticated || isLoading)) {
-    return (
-      <div className="container mx-auto py-8 px-8">
-        <CartCard
-          title="Sign in required"
-          description="Please sign in to view your orders"
-        />
-      </div>
-    );
+    return <AuthRequired />;
   }
 
   return (

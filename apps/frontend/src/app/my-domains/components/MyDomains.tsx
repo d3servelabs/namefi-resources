@@ -1,16 +1,11 @@
 'use client';
 
 import NetworkLogo from '@/components/NetworkLogo';
+import { AuthRequired } from '@/components/auth-required';
 import { EmptyPlaceholder } from '@/components/empty-placeholder';
 import { Table, Td, Th, Thead, Tr } from '@/components/table';
 import { Button } from '@/components/ui/shadcn/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/shadcn/card';
+import { Card, CardContent } from '@/components/ui/shadcn/card';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
 import { TableBody } from '@/components/ui/shadcn/table';
 import { useAuth } from '@/hooks/useAuth';
@@ -134,22 +129,11 @@ export default function MyDomains() {
   const { isAuthenticated, isLoading } = useAuth();
 
   if (!(isLoading || isAuthenticated)) {
-    return (
-      <div className="container mx-auto py-8">
-        <Card>
-          <CardHeader>
-            <CardTitle>Sign in required</CardTitle>
-            <CardDescription>
-              Please sign in to view your domains
-            </CardDescription>
-          </CardHeader>
-        </Card>
-      </div>
-    );
+    return <AuthRequired />;
   }
 
   return (
-    <div className="w-full p-4">
+    <div className="container mx-auto py-8 px-8">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold">My Domains</h2>
       </div>

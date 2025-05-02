@@ -1,4 +1,5 @@
 'use client';
+import { AuthRequired } from '@/components/auth-required';
 import { CartCard } from '@/components/cart-card';
 import { NamefiButton } from '@/components/namefi-button';
 import { NftWalletCard } from '@/components/nftWalletCard';
@@ -416,14 +417,7 @@ export default function CartPage() {
   }
 
   if (!isAuthenticated) {
-    return (
-      <div className="container mx-auto py-8 px-8">
-        <CartCard
-          title="Sign in required"
-          description="Please sign in to view your cart"
-        />
-      </div>
-    );
+    return <AuthRequired />;
   }
 
   return (
