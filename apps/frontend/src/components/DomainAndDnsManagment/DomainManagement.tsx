@@ -57,9 +57,7 @@ export const DomainManagement: FC<DomainManagementProps> = ({
       )}
 
       <Tabs defaultValue="dns-setting" className="w-full">
-        <TabsList className="grid w-full grid-cols-1 mb-8">
-          <TabsTrigger value="dns-setting">DNS Setting</TabsTrigger>
-        </TabsList>
+        <MainTabs />
 
         <TabsContent value="dns-setting">
           <Tabs defaultValue="dns-records">
@@ -89,5 +87,16 @@ export const DomainManagement: FC<DomainManagementProps> = ({
         </TabsContent>
       </Tabs>
     </div>
+  );
+};
+
+const showTabs = false;
+const MainTabs = () => {
+  return (
+    <TabsList
+      className={cn('w-full grid-cols-1 mb-8', showTabs ? 'grid' : 'hidden')}
+    >
+      <TabsTrigger value="dns-setting">DNS Setting</TabsTrigger>
+    </TabsList>
   );
 };
