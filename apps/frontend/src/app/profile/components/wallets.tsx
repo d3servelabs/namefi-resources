@@ -92,11 +92,13 @@ export const Wallets = ({ className, ...rest }: WalletsProps) => {
         await unlinkWallet(walletAddress);
         setIsUnlinkWalletDialogOpen(false);
         toast.success('Wallet unlinked', {
+          id: `wallet-unlink-success-${walletAddress}`,
           description: 'Wallet has been successfully unlinked.',
         });
       } catch (error) {
         setIsUnlinkWalletDialogOpen(false);
         toast.error('Failed to unlink wallet', {
+          id: `wallet-unlink-failure-${walletAddress}`,
           description: `${error instanceof Error ? error.message : 'Unknown error'}`,
         });
       }
