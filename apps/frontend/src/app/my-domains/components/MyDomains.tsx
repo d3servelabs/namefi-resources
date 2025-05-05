@@ -12,7 +12,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { cn } from '@/lib/utils';
 import { useTRPC } from '@/utils/trpc';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { SearchIcon, Settings2 } from 'lucide-react';
+import { SearchIcon, Settings } from 'lucide-react';
 import Link from 'next/link';
 import { type FC, type HTMLAttributes, Suspense, useMemo } from 'react';
 
@@ -102,7 +102,12 @@ function MyDomainsTable() {
                   <NetworkLogo network={item.chainId} className="w-6 h-6" />
                 </Td>
                 <Td className="font-medium w-full">
-                  {item.normalizedDomainName}
+                  <Link
+                    href={`/domain/${item.normalizedDomainName}`}
+                    aria-label={`Settings for ${item.normalizedDomainName}`}
+                  >
+                    {item.normalizedDomainName}
+                  </Link>
                 </Td>
                 <Td className="text-right">
                   <div className="flex gap-2">
@@ -111,7 +116,7 @@ function MyDomainsTable() {
                         href={`/domain/${item.normalizedDomainName}`}
                         aria-label={`Settings for ${item.normalizedDomainName}`}
                       >
-                        <Settings2 />
+                        <Settings /> Manage DNS
                       </Link>
                     </Button>
                   </div>
