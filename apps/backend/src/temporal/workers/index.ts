@@ -20,7 +20,6 @@ export const ACTIVITIES = {
     ...GreetActivities,
     ...OrderActivities,
     ...PaymentActivities,
-    ...NotifyActivities,
     updateNamefiNftIndex,
     triggerUpdateNamefiNftIndex,
     triggerNamefiGptCronJob,

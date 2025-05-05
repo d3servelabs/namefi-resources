@@ -213,7 +213,7 @@ export async function processOrderWorkflow(
             },
           ],
           workflowId: `notify-user-${orderDetails.userId}`,
-          taskQueue: TEMPORAL_QUEUES.DEFAULT,
+          taskQueue: TEMPORAL_QUEUES.NOTIFY,
           retry: {
             maximumAttempts: 1,
           },
