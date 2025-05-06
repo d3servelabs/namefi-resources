@@ -78,9 +78,12 @@ Send *PR-level comment* to ask for clarification on the solution of the PR. ONLY
    - Check for new configuration needs
 
 - **Testing**:
-   - Confirm adequate test coverage
-   - If unit tests should be added, suggest the right tests to add
-   - Verify tests pass
+   - For any changes involving payments, transactions, user assets, or user identity, require the following for approval:
+    - Confirm adequate test coverage
+    - If unit tests should be added, suggest the right tests to add
+    - Verify tests pass
+  - For all other changes:
+    - If unit tests should be added, suggest the right tests to add, but do not block approval
 
 Send *line-level suggested change* to ask for fixing the implementation of the PR. ONLY proceed to next Review Pass if the implementation is high quality, otherwise wait for the author to respond.
 

@@ -45,6 +45,15 @@ reviews:
         For backend logic changes, verify that the PR description includes:
         1. The shell command used to validate the changes
         2. Sample output from the author's own test run
+
+        For any changes involving payments, transactions, user assets, or user identity, require the following for approval:
+        1. Confirm adequate test coverage
+        2. If unit tests should be added, suggest the right tests to add
+        3. Verify tests pass
+
+        For changes not involving payments, transactions, user assets, or user identity:
+        1. If unit tests should be added, suggest the right tests to add, but do not block approval
+
     - path: "apps/backend/src/services/**/*"
       instructions: |
         This folder is to be renamed soon, only shared code for trpc and temporal
