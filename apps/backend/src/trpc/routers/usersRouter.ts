@@ -8,11 +8,15 @@ import {
 } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
 import { eq, sql } from 'drizzle-orm';
-import { isEmpty, isNil, isNotNil } from 'ramda';
+import { isEmpty, isNil, isNotEmpty, isNotNil } from 'ramda';
 import { z } from 'zod';
 import { config } from '#lib/env';
 import { resolve } from '../../utils/resolve';
-import { createTRPCRouter, protectedProcedure } from '../base';
+import {
+  authedOrPublicProcedure,
+  createTRPCRouter,
+  protectedProcedure,
+} from '../base';
 import { privyClient } from '../utils';
 
 export const usersRouter = createTRPCRouter({
@@ -124,24 +128,20 @@ export const usersRouter = createTRPCRouter({
     return nfts;
   }),
 
-  getManagerPageEntrypointViewable: protectedProcedure.query(
+  getManagerPageEntrypointViewable: authedOrPublicProcedure.query(
     async ({ ctx }) => {
       const { user, thirdPartyOriginHostname } = ctx;
+
+      if (!user) {
+        return { viewable: false };
+      }
+
       const [error, privyUser] = await resolve(
         privyClient.getUserById(user.privyUserId),
       );
 
-      if (error || isNil(privyUser)) {
-        throw new TRPCError({
-          code: 'PRECONDITION_FAILED',
-          message: 'could not find user details',
-        });
-      }
-
-      if (isNil(privyUser.email?.address)) {
-        throw new TRPCError({
-          code: 'UNAUTHORIZED',
-        });
+      if (error || isNil(privyUser) || isNil(privyUser.email?.address)) {
+        return { viewable: false };
       }
 
       const userOwnedParentDomains =
@@ -153,13 +153,7 @@ export const usersRouter = createTRPCRouter({
             domain === thirdPartyOriginHostname,
         ) ?? [];
 
-      if (isEmpty(userOwnedParentDomains)) {
-        throw new TRPCError({
-          code: 'UNAUTHORIZED',
-        });
-      }
-
-      return { viewable: true };
+      return { viewable: isNotEmpty(userOwnedParentDomains) };
     },
   ),
 

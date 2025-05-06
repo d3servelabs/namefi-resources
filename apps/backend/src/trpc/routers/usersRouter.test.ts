@@ -1,5 +1,7 @@
 import { config } from 'dotenv';
 
+import type { HonoRequest } from 'hono';
+import type { RequestHeader } from 'hono/utils/headers';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { TrpcContext } from '../base';
 import { privyClient } from '../utils';
@@ -203,5 +205,244 @@ describe('Users Router', () => {
 
     // Assert: Check the structure of the response
     expect(result).toBe(false);
+  });
+});
+
+describe('getManagerPageEntrypointViewable', () => {
+  beforeEach(() => {
+    // Clear mocks before each test
+    vi.clearAllMocks();
+
+    // Provide a default mock implementation for privyClient.getUserById
+    // It should return a PrivyUser with different linked accounts
+    vi.spyOn(privyClient, 'getUserById').mockImplementation(
+      async (privyUserId: string) => {
+        switch (privyUserId) {
+          case 'testUser0xCityOwner':
+            return await Promise.resolve({
+              id: privyUserId,
+              isGuest: false,
+              createdAt: new Date(),
+              linkedAccounts: [],
+              email: {
+                address: 'test-0x-city-owner@d3serve.xyz',
+                firstVerifiedAt: new Date(),
+                verifiedAt: new Date(),
+                latestVerifiedAt: new Date(),
+              },
+              customMetadata: {},
+            });
+
+          case 'testUserNonParentDomainOwner':
+            return await Promise.resolve({
+              id: 'testUserNonParentDomainOwner',
+              isGuest: false,
+              createdAt: new Date(),
+              linkedAccounts: [],
+              email: {
+                address: 'testUser@d3serve.xyz',
+                firstVerifiedAt: new Date(),
+                verifiedAt: new Date(),
+                latestVerifiedAt: new Date(),
+              },
+              customMetadata: {},
+            });
+
+          case 'testUserNoEmailAddress':
+            return await Promise.resolve({
+              id: 'testUserNonParentDomainOwner',
+              isGuest: false,
+              createdAt: new Date(),
+              linkedAccounts: [],
+              email: undefined,
+              customMetadata: {},
+            });
+
+          default:
+            throw new Error('Could not find privyUser');
+        }
+      },
+    );
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  const testUser0xCityOwner = {
+    id: 'testUser0xCityOwner',
+    primaryEmail: 'test-0x-city-owner@d3serve.xyz',
+    stripeCustomerId: null,
+    privyUserId: 'testUser0xCityOwner',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  };
+
+  it('should return false for null user', async () => {
+    const callerWithNullUser = usersRouter.createCaller(
+      {
+        thirdPartyOriginHostname: null,
+        testUser: null,
+        // Mock empty request headers to get a null user in the ctx
+        req: {
+          header: ((name?: RequestHeader | string) => {
+            if (typeof name === 'undefined') {
+              return {};
+            }
+            return null;
+          }) as {
+            (name: RequestHeader): string | undefined;
+            (name: string): string | undefined;
+            (): Record<string, string>;
+          },
+        } satisfies Pick<HonoRequest, 'header'> as unknown as HonoRequest,
+      } satisfies Omit<
+        TrpcContext,
+        'user' | 'db' | 'res'
+      > as unknown as TrpcContext,
+      {},
+    );
+
+    const result = await callerWithNullUser.getManagerPageEntrypointViewable();
+
+    // Assert: Check the structure of the response
+    expect(result.viewable).toBe(false);
+  });
+
+  it('should return false for user with no email address', async () => {
+    const callerWithNoEmailAddress = usersRouter.createCaller(
+      {
+        thirdPartyOriginHostname: null,
+        testUser: {
+          id: 'testUserNoEmailAddress',
+          primaryEmail: null,
+          stripeCustomerId: null,
+          privyUserId: 'testUserNonParentDomainOwner',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+      } satisfies Omit<
+        TrpcContext,
+        'user' | 'db' | 'req' | 'res'
+      > as TrpcContext,
+      {},
+    );
+
+    const result =
+      await callerWithNoEmailAddress.getManagerPageEntrypointViewable();
+
+    // Assert: Check the structure of the response
+    expect(result.viewable).toBe(false);
+  });
+
+  it('should return false when getting Privy user throws error', async () => {
+    const callerWithGetPrivyUserError = usersRouter.createCaller(
+      {
+        thirdPartyOriginHostname: null,
+        testUser: {
+          id: 'testUserGetPrivyUserThrowsError',
+          primaryEmail: null,
+          stripeCustomerId: null,
+          privyUserId: 'testUserGetPrivyUserThrowsError',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+      } satisfies Omit<
+        TrpcContext,
+        'user' | 'db' | 'req' | 'res'
+      > as TrpcContext,
+      {},
+    );
+
+    const result =
+      await callerWithGetPrivyUserError.getManagerPageEntrypointViewable();
+
+    // Assert: Check the structure of the response
+    expect(result.viewable).toBe(false);
+  });
+
+  it('should return false for non-parent-domain-owner', async () => {
+    const callerWithNonParentDomainOwner = usersRouter.createCaller(
+      {
+        thirdPartyOriginHostname: null,
+        testUser: {
+          id: 'testUserNonParentDomainOwner',
+          primaryEmail: 'testUser@d3serve.xyz',
+          stripeCustomerId: null,
+          privyUserId: 'testUserNonParentDomainOwner',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+      } satisfies Omit<
+        TrpcContext,
+        'user' | 'db' | 'req' | 'res'
+      > as TrpcContext,
+      {},
+    );
+
+    const result =
+      await callerWithNonParentDomainOwner.getManagerPageEntrypointViewable();
+
+    // Assert: Check the structure of the response
+    expect(result.viewable).toBe(false);
+  });
+
+  it('should return false for 0x.city owner from defi.build origin', async () => {
+    const callerWith0xCityOwnerUserFromDefiBuildOrigin =
+      usersRouter.createCaller(
+        {
+          thirdPartyOriginHostname: 'defi.build',
+          testUser: testUser0xCityOwner,
+        } satisfies Omit<
+          TrpcContext,
+          'user' | 'db' | 'req' | 'res'
+        > as TrpcContext,
+        {},
+      );
+
+    const result =
+      await callerWith0xCityOwnerUserFromDefiBuildOrigin.getManagerPageEntrypointViewable();
+
+    // Assert: Check the structure of the response
+    expect(result.viewable).toBe(false);
+  });
+
+  it('should return true for 0x.city owner from 0x.city origin', async () => {
+    const callerWith0xCityOwnerUserFrom0xCityOrigin = usersRouter.createCaller(
+      {
+        thirdPartyOriginHostname: '0x.city',
+        testUser: testUser0xCityOwner,
+      } satisfies Omit<
+        TrpcContext,
+        'user' | 'db' | 'req' | 'res'
+      > as TrpcContext,
+      {},
+    );
+
+    const result =
+      await callerWith0xCityOwnerUserFrom0xCityOrigin.getManagerPageEntrypointViewable();
+
+    // Assert: Check the structure of the response
+    expect(result.viewable).toBe(true);
+  });
+
+  it('should return true for 0x.city owner with no third party origin', async () => {
+    const callerWith0xCityOwnerUserNoThirdPartyOrigin =
+      usersRouter.createCaller(
+        {
+          thirdPartyOriginHostname: null,
+          testUser: testUser0xCityOwner,
+        } satisfies Omit<
+          TrpcContext,
+          'user' | 'db' | 'req' | 'res'
+        > as TrpcContext,
+        {},
+      );
+
+    const result =
+      await callerWith0xCityOwnerUserNoThirdPartyOrigin.getManagerPageEntrypointViewable();
+
+    // Assert: Check the structure of the response
+    expect(result.viewable).toBe(true);
   });
 });

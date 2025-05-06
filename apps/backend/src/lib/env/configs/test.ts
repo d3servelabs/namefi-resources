@@ -11,6 +11,9 @@ const testConfig: ConfigInput = {
   SMTP_PORT: 25,
   SMTP_SECURE: false,
   ALLOWED_CHAINS: [chains.sepolia.id],
+  EMAIL_ADDRESS_TO_OWNED_HOSTNAMES_MAP: {
+    'test-0x-city-owner@d3serve.xyz': ['0x.city'],
+  },
 };
 
 export default testConfig;
