@@ -63,6 +63,7 @@ export default function CartPage() {
   >(null);
   const [isRedirecting, setIsRedirecting] = useState(false);
   const [isErrorDialogOpen, setIsErrorDialogOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const { logEventWithInteractionLoggers } = useInteractionLoggers();
 
@@ -106,7 +107,8 @@ export default function CartPage() {
         logPurchase();
         router.push(`/orders/${data.id}`);
       },
-      onError: () => {
+      onError: (error) => {
+        setErrorMessage(error.message);
         setIsErrorDialogOpen(true);
       },
     }),
@@ -428,7 +430,10 @@ export default function CartPage() {
             <AlertDialogTitle>Oops! Something went wrong.</AlertDialogTitle>
             <AlertDialogDescription>
               Don&apos;t worry, you won&apos;t be charged. Feel free to try
-              again or head back to your cart.
+              again or head back to your cart.{' '}
+              <p className="italic">
+                {errorMessage ? `(Error - ${errorMessage})` : ''}
+              </p>
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

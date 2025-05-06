@@ -18,6 +18,7 @@ import Stripe from 'stripe';
 import { zeroAddress } from 'viem';
 import { z } from 'zod';
 import { getDomainListInfo } from '#lib/namefi-registry';
+import { NegativeAmountInUsdCentsError } from '#services/payments/errors';
 import { orderService } from '../../services/orders/orders.service';
 import { createPayment } from '../../temporal/activities/payment.activities';
 import { temporalClient } from '../../temporal/client';
@@ -93,7 +94,7 @@ export const ordersRouter = createTRPCRouter({
             });
             throw new TRPCError({
               code: 'PRECONDITION_FAILED',
-              message: 'could not find user details',
+              message: 'Could not find user details',
             });
           }
 
@@ -141,22 +142,50 @@ export const ordersRouter = createTRPCRouter({
           }
         }
 
-        payment = await createPayment({
-          amountInUsdCents: totalAmountInUsdCents,
-          paymentProviderDetails: input.paymentProviderDetails,
-        });
+        try {
+          payment = await createPayment({
+            amountInUsdCents: totalAmountInUsdCents,
+            paymentProviderDetails: input.paymentProviderDetails,
+          });
+        } catch (error) {
+          console.error((error as Error).message);
+          if (error instanceof NegativeAmountInUsdCentsError) {
+            throw new TRPCError({
+              code: 'BAD_REQUEST',
+              message: 'Invalid cart items total',
+            });
+          }
+          throw new TRPCError({
+            code: 'INTERNAL_SERVER_ERROR',
+            message: 'Could not create payment',
+          });
+        }
       } else {
         // for zero or negative, we cfreate a NFSC with 0 address
-        payment = await createPayment({
-          amountInUsdCents: totalAmountInUsdCents,
-          paymentProviderDetails: {
-            paymentProvider: 'NFSC_BASE',
-            nfscPaymentDetails: {
-              chainId: 8453,
-              walletAddress: zeroAddress,
+        try {
+          payment = await createPayment({
+            amountInUsdCents: totalAmountInUsdCents,
+            paymentProviderDetails: {
+              paymentProvider: 'NFSC_BASE',
+              nfscPaymentDetails: {
+                chainId: 8453,
+                walletAddress: zeroAddress,
+              },
             },
-          },
-        });
+          });
+        } catch (error) {
+          console.error((error as Error).message);
+          if (error instanceof NegativeAmountInUsdCentsError) {
+            throw new TRPCError({
+              code: 'BAD_REQUEST',
+              message: 'Invalid cart items total',
+            });
+          }
+          throw new TRPCError({
+            code: 'INTERNAL_SERVER_ERROR',
+            message: 'Could not create payment',
+          });
+        }
       }
 
       // Create order using DB transaction
