@@ -17,10 +17,11 @@ import {
 } from '@/components/ui/shadcn/select';
 import { Textarea } from '@/components/ui/shadcn/textarea';
 import { zodResolver } from '@hookform/resolvers/zod';
-import type { RecordType } from '@namefi-astra/zod-dns';
+import { type RecordType, sanitizeDnsRecord } from '@namefi-astra/zod-dns';
 import { Trash2 } from 'lucide-react';
 import { useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 import {
   DNS_RECORD_TYPES,
   type DnsRecordFormValues,
@@ -43,8 +44,14 @@ const DEFAULT_VALUES: DnsRecordFormValues = {
   rdata: '',
   ttl: 60,
 };
-
-const resolver = zodResolver(dnsRecordSchema);
+const resolver = zodResolver(
+  z
+    .any()
+    .transform((val) => {
+      return sanitizeDnsRecord(val);
+    })
+    .pipe(dnsRecordSchema),
+);
 
 export function DnsRecordForm({
   defaultValues = DEFAULT_VALUES,
@@ -63,7 +70,8 @@ export function DnsRecordForm({
   const isValid = form.formState.isValid;
 
   useEffect(() => {
-    onValuesChange(values, isValid);
+    const sanitizedValues = sanitizeDnsRecord(values);
+    onValuesChange(sanitizedValues, isValid);
   }, [values, isValid, onValuesChange]);
 
   // Memoize the value placeholder based on type
