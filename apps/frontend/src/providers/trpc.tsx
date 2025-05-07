@@ -8,7 +8,12 @@ import {
   QueryClientProvider,
   isServer,
 } from '@tanstack/react-query';
-import { createTRPCClient, httpBatchLink } from '@trpc/client';
+import {
+  createTRPCClient,
+  httpBatchLink,
+  httpLink,
+  splitLink,
+} from '@trpc/client';
 import type React from 'react';
 import { useState } from 'react';
 import superjson from 'superjson';
@@ -52,18 +57,39 @@ export function TrpcProvider({ children }: { children: React.ReactNode }) {
   const [trpcClient] = useState(() =>
     createTRPCClient<AppRouter>({
       links: [
-        httpBatchLink({
-          url: `${config.BACKEND_URL}/trpc`,
-          transformer: superjson,
-          async headers() {
-            return {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${(await getAccessToken()) || ''}`,
-            };
+        splitLink({
+          condition(op) {
+            // check for context property `skipBatch`
+            return op.context.skipBatch === true;
           },
-          fetch(url, options) {
-            return fetch(url, { ...options, credentials: 'include' });
-          },
+          // when condition is true, use normal request
+          true: httpLink({
+            url: `${config.BACKEND_URL}/trpc`,
+            transformer: superjson,
+            async headers() {
+              return {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${(await getAccessToken()) || ''}`,
+              };
+            },
+            fetch(url, options) {
+              return fetch(url, { ...options, credentials: 'include' });
+            },
+          }),
+          // when condition is false, use batching
+          false: httpBatchLink({
+            url: `${config.BACKEND_URL}/trpc`,
+            transformer: superjson,
+            async headers() {
+              return {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${(await getAccessToken()) || ''}`,
+              };
+            },
+            fetch(url, options) {
+              return fetch(url, { ...options, credentials: 'include' });
+            },
+          }),
         }),
       ],
     }),
