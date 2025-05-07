@@ -1,4 +1,5 @@
 import { useInteractionLoggers } from '@/components/providers/interactionLoggersProvider';
+import type { AppRouterOutputs } from '@/providers/trpc';
 import {
   InteractionLoggingEventName,
   type SearchEvent,
@@ -6,8 +7,10 @@ import {
 import { useTRPC } from '@/utils/trpc';
 import { useQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'next/navigation';
+import { ascend, prop, sortWith, uniqBy } from 'ramda';
 import { useEffect, useMemo, useState } from 'react';
 
+type Suggestion = AppRouterOutputs['search']['getDomainSuggestions'][number];
 /**
  * Hook for managing domain search functionality
  */
@@ -47,6 +50,11 @@ export function useSearch(
       },
       {
         enabled: query.length > 0 && !!parentDomain,
+        refetchOnWindowFocus: false,
+        refetchOnMount: false,
+        refetchOnReconnect: false,
+        refetchInterval: false,
+        staleTime: Number.POSITIVE_INFINITY,
         trpc: {
           context: {
             skipBatch: true,
@@ -70,6 +78,38 @@ export function useSearch(
       },
       {
         enabled: query.length > 0 && !!parentDomain,
+        refetchOnWindowFocus: false,
+        refetchOnMount: false,
+        refetchOnReconnect: false,
+        refetchInterval: false,
+        staleTime: Number.POSITIVE_INFINITY,
+        trpc: {
+          context: {
+            skipBatch: true,
+          },
+        },
+      },
+    ),
+  );
+
+  const {
+    data: llmDomainSuggestions,
+    isLoading: isLlmDomainSuggestionsLoading,
+    isFetching: isLlmDomainSuggestionsFetching,
+    isFetched: isLlmDomainSuggestionsFetched,
+  } = useQuery(
+    trpc.search.getLlmDomainSuggestions.queryOptions(
+      {
+        query,
+        parentDomain,
+      },
+      {
+        enabled: query.length > 0 && !!parentDomain,
+        refetchOnWindowFocus: false,
+        refetchOnMount: false,
+        refetchOnReconnect: false,
+        refetchInterval: false,
+        staleTime: Number.POSITIVE_INFINITY,
         trpc: {
           context: {
             skipBatch: true,
@@ -91,17 +131,38 @@ export function useSearch(
   }, [isFetched, query, logEventWithInteractionLoggers]);
 
   // Derived state for domains
-  const domains = useMemo(
-    () => [
-      ...(searchData?.bulkAvailability ?? []),
+  const domains = useMemo(() => {
+    const _domains = [
       ...(domainSuggestions ?? []),
-    ],
-    [searchData?.bulkAvailability, domainSuggestions],
-  );
+      ...(llmDomainSuggestions ?? []),
+    ];
+
+    return [
+      ...(searchData?.bulkAvailability ?? []),
+      ...sortWith(
+        [
+          (a: Suggestion, b: Suggestion) => {
+            if (a.availability === b.availability) {
+              return 0;
+            }
+            if (a.availability && !b.availability) {
+              return -1;
+            }
+            return 1;
+          },
+          ascend(prop('domain')),
+        ],
+        uniqBy(prop('domain'), _domains),
+      ),
+    ];
+  }, [searchData?.bulkAvailability, domainSuggestions, llmDomainSuggestions]);
 
   const isSearchLoading = isLoading || isFetching;
   const areSuggestionsLoading =
-    isDomainSuggestionsLoading || isDomainSuggestionsFetching;
+    isDomainSuggestionsLoading ||
+    isDomainSuggestionsFetching ||
+    isLlmDomainSuggestionsLoading ||
+    isLlmDomainSuggestionsFetching;
 
   return {
     query,
@@ -112,7 +173,9 @@ export function useSearch(
     searchData,
     isFetched,
     isDomainSuggestionsFetched,
+    isLlmDomainSuggestionsFetched,
     areSuggestionsLoading,
     domainSuggestions,
+    llmDomainSuggestions,
   };
 }

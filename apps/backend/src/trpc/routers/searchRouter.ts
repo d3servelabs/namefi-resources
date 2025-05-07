@@ -18,6 +18,7 @@ import {
 } from '@namefi-astra/utils';
 import { getTags } from '@namefi/cat';
 import { TRPCError } from '@trpc/server';
+import type { ChatCompletionMessageParam } from 'openai/resources/chat/completions';
 import { take, uniqBy } from 'ramda';
 import {
   adjectives,
@@ -27,11 +28,13 @@ import {
   uniqueNamesGenerator,
 } from 'unique-names-generator';
 import { z } from 'zod';
+import { deepseek } from '#lib/llm/deepseek';
+import { openai } from '#lib/llm/gpt';
 import { getDomainListInfo } from '#lib/namefi-registry';
 import { authedOrPublicProcedure, createTRPCRouter } from '../base';
 
 type Tag = ReturnType<typeof getTags>[number];
-type Suggestion = {
+export type Suggestion = {
   domain: NamefiNormalizedDomain;
   availability: boolean;
   priceInUSD: number | undefined;
@@ -135,6 +138,7 @@ export const searchRouter = createTRPCRouter({
       }),
     )
     .query(async ({ input, ctx }) => {
+      const startTime = performance.now();
       const { query } = input;
 
       const parentDomain = input.parentDomain ?? ctx.thirdPartyOriginHostname;
@@ -154,9 +158,10 @@ export const searchRouter = createTRPCRouter({
       // Rule-based suggestions for clubs
       let suggestions: Suggestion[] = [];
 
-      const startTime = performance.now();
+      const loopStartTime = performance.now();
       const maxDuration = 2000;
       const maxRound = 5;
+      let currentSuggestions: Suggestion[] = [];
       let round = 0; // Number of rounds to generate suggestions (to avoid infinite loops) this is enabled when onlyAvailable is false
       do {
         // do-while to ensure at least 1 round is generated
@@ -166,41 +171,93 @@ export const searchRouter = createTRPCRouter({
           tags,
           round,
         );
-        const bulkAvailability = await getDomainListInfo(
-          normalizedSuggestions,
-          {
-            privyUserId: ctx.user.privyUserId,
-          },
-        );
+        currentSuggestions = await getDomainListInfo(normalizedSuggestions, {
+          privyUserId: ctx.user.privyUserId,
+        });
         // If we are not filtering by availability, add all suggestions and break
         if (!input.onlyAvailable) {
-          suggestions.push(...bulkAvailability);
+          suggestions.push(...currentSuggestions);
           break;
         }
 
         // Add available suggestions
-        suggestions.push(...bulkAvailability.filter((d) => d.availability));
-
-        // If we are on the last round, add all unavailable suggestions to not end up with empty suggestions
-        if (round === maxRound - 1 && suggestions.length < 20) {
-          suggestions.push(
-            ...take(
-              20 - suggestions.length,
-              bulkAvailability.filter((d) => !d.availability),
-            ),
-          );
-        }
+        suggestions.push(...currentSuggestions.filter((d) => d.availability));
 
         round++;
       } while (
         suggestions.length < 20 &&
         round < maxRound &&
-        performance.now() - startTime < maxDuration
+        performance.now() - loopStartTime < maxDuration
       );
+
+      // If we are on the last round, add all unavailable suggestions to not end up with empty suggestions
+      if (suggestions.length < 20) {
+        suggestions.push(
+          ...take(
+            20 - suggestions.length,
+            currentSuggestions.filter((d) => !d.availability),
+          ),
+        );
+      }
 
       // Remove duplicates and the original domain
       suggestions = uniqBy((d) => d.domain, suggestions);
 
+      const endTime = performance.now();
+      console.log(
+        `[getDomainSuggestions] Time taken: ${endTime - startTime} milliseconds`,
+      );
+      return suggestions;
+    }),
+
+  getLlmDomainSuggestions: authedOrPublicProcedure
+    .input(
+      z.object({
+        query: sanitizedQuerySchema,
+        parentDomain: z.string().optional(),
+        onlyAvailable: z.boolean().optional().default(true),
+      }),
+    )
+    .query(async ({ input, ctx }) => {
+      const { query } = input;
+
+      const parentDomain = input.parentDomain ?? ctx.thirdPartyOriginHostname;
+
+      if (!parentDomain) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Parent domain is required',
+        });
+      }
+
+      // Rule-based suggestions for clubs
+      let suggestions: Suggestion[] = [];
+
+      performance.mark('llm-suggestions-start');
+      const llmSuggestions = await generateLlmSuggestions(query, parentDomain);
+      const bulkAvailability = await getDomainListInfo(
+        llmSuggestions,
+        ctx.user,
+      );
+      performance.mark('llm-suggestions-end');
+      // If we are not filtering by availability, add all suggestions and break
+      if (input.onlyAvailable) {
+        suggestions.push(...bulkAvailability.filter((d) => d.availability));
+      } else {
+        suggestions.push(...bulkAvailability);
+      }
+
+      // Remove duplicates and the original domain
+      suggestions = uniqBy((d) => d.domain, suggestions);
+
+      const measure = performance.measure(
+        'llm-suggestions',
+        'llm-suggestions-start',
+        'llm-suggestions-end',
+      );
+      console.log(
+        `[getLlmDomainSuggestions] Time taken: ${measure.duration} milliseconds`,
+      );
       return suggestions;
     }),
 });
@@ -375,3 +432,74 @@ function filterNamefiNormalizedDomain(
   }
   return result;
 }
+
+const enableDeepSeek = false;
+async function generateLlmSuggestions(query: string, parentDomain: string) {
+  const messages = [
+    {
+      role: 'system',
+      content:
+        'Just return the domain suggestions, no other text or explanation or enumeration. The domain suggestions should be separated by newlines.',
+    },
+    {
+      role: 'user',
+      content: `For the second level domain ${parentDomain}, generate 40 third-level domain suggestions for the query: ${query}.
+ the domain should only have 3 dots. the third level domain should end with .${parentDomain}.`,
+    },
+  ] as ChatCompletionMessageParam[];
+
+  //send query to llm to generate 20 suggestions to openai
+  const requests = [
+    measurePerformance('openai-completion', async () =>
+      openai.chat.completions.create({
+        model: 'gpt-4o-mini',
+        messages,
+      }),
+    ),
+  ];
+  if (enableDeepSeek) {
+    requests.push(
+      measurePerformance('deepseek-completion', () =>
+        deepseek.chat.completions.create({
+          model: 'deepseek-chat',
+          messages,
+        }),
+      ),
+    );
+  }
+  const response = await Promise.allSettled(requests);
+
+  const suggestions = response.flatMap((r) => {
+    if (r.status !== 'fulfilled') {
+      return [];
+    }
+
+    const trimmedLines = (
+      r.value.choices?.[0]?.message.content?.split('\n') ?? []
+    ).map((s: string) => s.trim());
+
+    return trimmedLines.filter(
+      (s: string) =>
+        s.endsWith(`.${parentDomain}`) && // ensure the domain ends with the parent domain
+        s.split('.').length === 3 && // ensure the domain is 3 levels deep
+        s !== `${query}.${parentDomain}`, // ensure the domain is not the original query
+    );
+  });
+
+  return filterNamefiNormalizedDomain(suggestions);
+}
+
+/**
+ * Measures the performance of a function
+ * @param label - The label to measure the performance of
+ * @param fn - The function to measure the performance of
+ * @returns The result of the function
+ */
+const measurePerformance = async (label: string, fn: () => Promise<any>) => {
+  performance.mark(`${label}-start`);
+  const result = await fn();
+  performance.mark(`${label}-end`);
+  const measure = performance.measure(label, `${label}-start`, `${label}-end`);
+  console.log(`[${label}] Time taken: ${measure.duration} milliseconds`);
+  return result;
+};
