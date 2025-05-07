@@ -330,6 +330,14 @@ function generateNumberClubSuggestions(
       suggestions.push(`${query.split('').reverse().join('')}.${parentDomain}`);
       // add repeated query
       suggestions.push(`${query.repeat(2)}.${parentDomain}`);
+      // add all windowed sub strings
+      suggestions.push(
+        ...windowedSubStrings(query).map((s) => `${s}.${parentDomain}`),
+      );
+      // add all rotate permutations
+      suggestions.push(
+        ...stringRotatePermutations(query).map((s) => `${s}.${parentDomain}`),
+      );
     }
   }
   return suggestions;
@@ -502,4 +510,52 @@ const measurePerformance = async (label: string, fn: () => Promise<any>) => {
   const measure = performance.measure(label, `${label}-start`, `${label}-end`);
   console.log(`[${label}] Time taken: ${measure.duration} milliseconds`);
   return result;
+};
+
+/**
+ * Rotates a string n times
+ * @param str - The string to rotate
+ * @param n - The number of times to rotate the string
+ * @returns The rotated string
+ */
+export const rotateString = (str: string, n: number) => {
+  // this way count is always positive and in the range of the string length and works for negative numbers
+  // example: string length is 3, n is -4, count will be 2,
+  // example: string length is 3, n is 4, count will be 1
+  // example: string length is 3, n is 5, count will be 2
+  const count = (n % str.length) + (n < 0 ? str.length : 0);
+
+  return str.slice(count) + str.slice(0, count);
+};
+
+/**
+ * Generates all unique rotations of a string
+ * @param str - The string to generate rotations for
+ * @returns All unique rotations of the string
+ */
+export const stringRotatePermutations = (str: string) => {
+  const permutations = new Set<string>();
+  for (let i = 0; i < str.length; i++) {
+    permutations.add(rotateString(str, i));
+  }
+  return Array.from(permutations);
+};
+
+/**
+ * Generates all unique windowed sub strings of a string
+ * example:
+ * input: 'abc'
+ * output: ['a', 'b', 'c', 'ab', 'bc']
+ *
+ * @param str - The string to generate windowed sub strings for
+ * @returns All unique windowed sub strings of the string
+ */
+export const windowedSubStrings = (str: string) => {
+  const windows = new Set<string>();
+  for (let windowSize = 1; windowSize < str.length; windowSize++) {
+    for (let i = 0; i <= str.length - windowSize; i++) {
+      windows.add(str.slice(i, i + windowSize));
+    }
+  }
+  return Array.from(windows);
 };

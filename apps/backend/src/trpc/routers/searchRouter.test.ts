@@ -4,7 +4,12 @@ import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import * as namefiRegistry from '#lib/namefi-registry';
 import type { TrpcContext } from '../base';
-import { searchRouter } from './searchRouter';
+import {
+  rotateString,
+  searchRouter,
+  stringRotatePermutations,
+  windowedSubStrings,
+} from './searchRouter';
 
 const testUser = {
   privyUserId: '123',
@@ -138,5 +143,42 @@ describe('Search Router', () => {
     for (const item of result) {
       expect(item.domain.endsWith('.0x.city')).toBe(true);
     }
+  });
+});
+
+describe('String Rotation Permutations', () => {
+  it('should generate all unique rotations of a string', () => {
+    const input = 'abc';
+    const expected = ['abc', 'bca', 'cab'];
+
+    const result = stringRotatePermutations(input);
+    expect(result).toEqual(expected);
+  });
+});
+
+describe('String windowed sub strings', () => {
+  it('should generate all unique windowed sub strings of a string', () => {
+    const input = 'abc';
+    const expected = ['a', 'b', 'c', 'ab', 'bc'];
+
+    const result = windowedSubStrings(input);
+    expect(result).toEqual(expected);
+  });
+});
+describe('Rotate String', () => {
+  it('should rotate a string by the specified positions', () => {
+    expect(rotateString('abc', 1)).toEqual('bca');
+    expect(rotateString('abc', 2)).toEqual('cab');
+    expect(rotateString('abc', 3)).toEqual('abc');
+    expect(rotateString('abc', 4)).toEqual('bca');
+    expect(rotateString('abc', 5)).toEqual('cab');
+    expect(rotateString('abc', 6)).toEqual('abc');
+
+    expect(rotateString('abc', -1)).toEqual('cab');
+    expect(rotateString('abc', -2)).toEqual('bca');
+    expect(rotateString('abc', -3)).toEqual('abc');
+    expect(rotateString('abc', -4)).toEqual('cab');
+    expect(rotateString('abc', -5)).toEqual('bca');
+    expect(rotateString('abc', -6)).toEqual('abc');
   });
 });
