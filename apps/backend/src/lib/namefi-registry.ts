@@ -32,7 +32,7 @@ export const getSubdomainPriceInUsd = async (
  */
 export const getDomainListInfo = async (
   domains: NamefiNormalizedDomain[],
-  user?: { privyUserId: string },
+  user?: { privyUserId: string } | null,
 ): Promise<
   {
     domain: NamefiNormalizedDomain;

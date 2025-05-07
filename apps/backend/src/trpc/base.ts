@@ -82,10 +82,23 @@ export const createContext = async (
      * A test user we can provide to return when verifyUserAuthAndCreation is called from tests
      */
     testUser: null as UserSelect | null,
-  };
+  } satisfies TrpcContext;
 };
 
-export type TrpcContext = Awaited<ReturnType<typeof createContext>>;
+export type TrpcContext = {
+  req: Context['req'];
+  res: Context['res'];
+  db: typeof db;
+  thirdPartyOriginHostname: string | null;
+  testUser: UserSelect | null;
+};
+
+export type TrpcContextWithUser = TrpcContext & {
+  user: UserSelect;
+};
+export type TrpcContextWithUserOrNull = TrpcContext & {
+  user: UserSelect | null;
+};
 
 /**
  * 2. INITIALIZATION
@@ -166,54 +179,56 @@ export const publicProcedure = t.procedure.use(timingMiddleware);
  *
  * This middleware will verify the user's privy authentication token, fetch the user from the database, and add the user to the context.
  */
-export const verifyUserAuthAndCreation = t.middleware(async ({ ctx, next }) => {
-  if (ctx.testUser) {
-    return next({
-      ctx: {
-        ...ctx,
-        user: ctx.testUser,
-      },
-    });
-  }
-
-  const authToken = ctx.req.header('Authorization')?.replace('Bearer ', '');
-
-  if (!authToken) {
-    throw new TRPCError({
-      code: 'UNAUTHORIZED',
-    });
-  }
-
-  try {
-    const userClaims = await privyClient.verifyAuthToken(authToken);
-    let user = await db.query.usersTable.findFirst({
-      where: eq(usersTable.privyUserId, userClaims.userId),
-    });
-
-    if (!user) {
-      // TODO: handle this via webhook
-      const newUser = await db
-        .insert(usersTable)
-        .values({
-          privyUserId: userClaims.userId,
-        })
-        .returning();
-      user = newUser[0];
+export const verifyUserAuthAndCreation = t.middleware<TrpcContextWithUser>(
+  async ({ ctx, next }) => {
+    if (ctx.testUser) {
+      return next({
+        ctx: {
+          ...ctx,
+          user: ctx.testUser,
+        },
+      });
     }
 
-    return next({
-      ctx: {
-        ...ctx,
-        user,
-      },
-    });
-  } catch (error) {
-    console.error('error', error);
-    throw new TRPCError({
-      code: 'UNAUTHORIZED',
-    });
-  }
-});
+    const authToken = ctx.req.header('Authorization')?.replace('Bearer ', '');
+
+    if (!authToken) {
+      throw new TRPCError({
+        code: 'UNAUTHORIZED',
+      });
+    }
+
+    try {
+      const userClaims = await privyClient.verifyAuthToken(authToken);
+      let user = await db.query.usersTable.findFirst({
+        where: eq(usersTable.privyUserId, userClaims.userId),
+      });
+
+      if (!user) {
+        // TODO: handle this via webhook
+        const newUser = await db
+          .insert(usersTable)
+          .values({
+            privyUserId: userClaims.userId,
+          })
+          .returning();
+        user = newUser[0];
+      }
+
+      return next({
+        ctx: {
+          ...ctx,
+          user,
+        },
+      });
+    } catch (error) {
+      console.error('error', error);
+      throw new TRPCError({
+        code: 'UNAUTHORIZED',
+      });
+    }
+  },
+);
 
 /**
  * Middleware for verifying a user's privy authentication token and creating a user if they don't exist.
@@ -221,8 +236,8 @@ export const verifyUserAuthAndCreation = t.middleware(async ({ ctx, next }) => {
  * This middleware will verify the user's privy authentication token, fetch the user from the database, and add the user to the context.
  * If the user is not found, it will return a null user.
  */
-export const maybeVerifyUserAuthAndCreation = t.middleware(
-  async ({ ctx, next }) => {
+export const maybeVerifyUserAuthAndCreation =
+  t.middleware<TrpcContextWithUserOrNull>(async ({ ctx, next }) => {
     if (ctx.testUser) {
       return next({
         ctx: {
@@ -274,8 +289,7 @@ export const maybeVerifyUserAuthAndCreation = t.middleware(
         },
       });
     }
-  },
-);
+  });
 
 /**
  * Authed or public  procedure

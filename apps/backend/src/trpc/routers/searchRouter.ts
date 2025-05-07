@@ -171,9 +171,10 @@ export const searchRouter = createTRPCRouter({
           tags,
           round,
         );
-        currentSuggestions = await getDomainListInfo(normalizedSuggestions, {
-          privyUserId: ctx.user.privyUserId,
-        });
+        currentSuggestions = await getDomainListInfo(
+          normalizedSuggestions,
+          ctx.user,
+        );
         // If we are not filtering by availability, add all suggestions and break
         if (!input.onlyAvailable) {
           suggestions.push(...currentSuggestions);
