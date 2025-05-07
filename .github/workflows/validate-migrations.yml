@@ -1,0 +1,104 @@
+name: Validate Database Migrations
+
+on:
+  pull_request:
+  workflow_dispatch:  # Allow manual triggering
+
+env:
+  ENVIRONEMNT: test  # Match the typo in other workflow files for consistency
+
+jobs:
+  check-for-sql-changes:
+    name: Check for SQL Changes
+    runs-on: ubuntu-latest
+    outputs:
+      has_sql_changes: ${{ steps.check-sql-changes.outputs.has_sql_changes }}
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          
+      - name: Check for SQL migration changes
+        id: check-sql-changes
+        run: |
+          # For pull requests, check files changed between base and head
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            SQL_FILES=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | grep -E '\.sql$' || true)
+          else
+            # For workflow_dispatch or other events, check last commit
+            SQL_FILES=$(git diff --name-only HEAD^ HEAD | grep -E '\.sql$' || true)
+          fi
+          
+          if [[ -n "$SQL_FILES" ]]; then
+            echo "SQL files changed in this diff:"
+            echo "$SQL_FILES"
+            echo "has_sql_changes=true" >> $GITHUB_OUTPUT
+          else
+            echo "No SQL files changed, workflow will be skipped"
+            echo "has_sql_changes=false" >> $GITHUB_OUTPUT
+          fi
+
+  validate-migrations:
+    name: Validate DB Migrations
+    needs: check-for-sql-changes
+    if: needs.check-for-sql-changes.outputs.has_sql_changes == 'true'
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: "1.2.4"
+
+      - name: Install dependencies
+        run: |
+          # intentionally run twice to ensure infisical is installed
+          bun install && bun install 
+          
+      - name: Create test branch in Neon
+        id: create-branch
+        run: |
+          # Create a new branch with timestamp for uniqueness
+          BRANCH_ID="migration-test-${GITHUB_REF_NAME:-${GITHUB_SHA}}"
+          echo "Creating test branch: $BRANCH_ID"
+          # Check if branch already exists
+          EXISTING_BRANCH=$(bun run neonctl branches list --project-id ${{ secrets.NEON_PROJECT_ID }} --api-key ${{ secrets.NEON_API_KEY }} | grep -w "$BRANCH_ID" || true)
+          
+          if [ ! -z "$EXISTING_BRANCH" ]; then
+            echo "Branch $BRANCH_ID already exists, deleting it first"
+            bun run neonctl branches delete $BRANCH_ID --project-id ${{ secrets.NEON_PROJECT_ID }} --api-key ${{ secrets.NEON_API_KEY }} --force
+          fi
+          bun run neonctl branches create --name $BRANCH_ID --project-id ${{ secrets.NEON_PROJECT_ID }} --api-key ${{ secrets.NEON_API_KEY }}
+          
+          # Save branch ID for later steps
+          echo "BRANCH_ID=$BRANCH_ID" >> $GITHUB_ENV
+
+      - name: Get connection string for test branch
+        id: connection-string
+        run: |
+          CS=$(bun run neonctl connection-string --branch ${{ env.BRANCH_ID }} --project-id ${{ secrets.NEON_PROJECT_ID }} --api-key ${{ secrets.NEON_API_KEY }})
+          echo "DATABASE_URL=$CS" >> $GITHUB_ENV
+
+      - name: Run migrations on test branch
+        working-directory: ./packages/db
+        run: |
+          echo "Running migrations on branch: ${{ env.BRANCH_ID }}"
+          echo "DATABASE_URL: ${{ env.DATABASE_URL }}"
+          bun db:migrate
+
+      - name: Clean up test branch
+        if: always()
+        run: |
+          if [ "${{ job.status }}" == "success" ]; then
+            echo "Migrations successful, cleaning up branch: ${{ env.BRANCH_ID }}"
+          else
+            echo "Migrations failed, but still cleaning up branch: ${{ env.BRANCH_ID }}"
+          fi
+          bun run neonctl branches delete ${{ env.BRANCH_ID }} --project-id ${{ secrets.NEON_PROJECT_ID }} --api-key ${{ secrets.NEON_API_KEY }} --force 

@@ -217,3 +217,7 @@ next-env.d.ts
 
 #gcp creds
 .cred
+
+# github actions
+.secrets
+.vars
