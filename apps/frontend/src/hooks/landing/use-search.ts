@@ -39,12 +39,45 @@ export function useSearch(
     isFetched,
     refetch,
   } = useQuery({
-    ...trpc.search.search.queryOptions({
-      query,
-      parentDomain,
-    }),
-    enabled: query.length > 0 && !!parentDomain,
+    ...trpc.search.search.queryOptions(
+      {
+        query,
+        parentDomain,
+        withSuggestions: false,
+      },
+      {
+        enabled: query.length > 0 && !!parentDomain,
+        trpc: {
+          context: {
+            skipBatch: true,
+          },
+        },
+      },
+    ),
   });
+
+  const {
+    data: domainSuggestions,
+    isLoading: isDomainSuggestionsLoading,
+    isFetching: isDomainSuggestionsFetching,
+    isFetched: isDomainSuggestionsFetched,
+  } = useQuery(
+    trpc.search.getDomainSuggestions.queryOptions(
+      {
+        query,
+        parentDomain: parentDomain ?? '',
+        onlyAvailable: true,
+      },
+      {
+        enabled: query.length > 0 && !!parentDomain,
+        trpc: {
+          context: {
+            skipBatch: true,
+          },
+        },
+      },
+    ),
+  );
 
   // Log completed search queries
   useEffect(() => {
@@ -59,14 +92,16 @@ export function useSearch(
 
   // Derived state for domains
   const domains = useMemo(
-    () =>
-      (searchData?.bulkAvailability ?? []).filter(
-        (domain) => domain.domain !== query,
-      ),
-    [searchData?.bulkAvailability, query],
+    () => [
+      ...(searchData?.bulkAvailability ?? []),
+      ...(domainSuggestions ?? []),
+    ],
+    [searchData?.bulkAvailability, domainSuggestions],
   );
 
   const isSearchLoading = isLoading || isFetching;
+  const areSuggestionsLoading =
+    isDomainSuggestionsLoading || isDomainSuggestionsFetching;
 
   return {
     query,
@@ -76,5 +111,8 @@ export function useSearch(
     refetch,
     searchData,
     isFetched,
+    isDomainSuggestionsFetched,
+    areSuggestionsLoading,
+    domainSuggestions,
   };
 }

@@ -32,8 +32,14 @@ export const Search: SearchComponent = ({ originInfo }) => {
     return undefined;
   });
 
-  const { query, setQuery, domains, isSearchLoading, refetch } =
-    useSearch(parentDomain);
+  const {
+    query,
+    setQuery,
+    domains,
+    isSearchLoading,
+    refetch,
+    areSuggestionsLoading,
+  } = useSearch(parentDomain);
   const {
     isCartDataLoading,
     isAddingToCart,
@@ -62,7 +68,7 @@ export const Search: SearchComponent = ({ originInfo }) => {
         <SearchInput
           query={query}
           setQuery={setQuery}
-          isLoading={isSearchLoading}
+          isLoading={isSearchLoading || areSuggestionsLoading}
           onSearch={() => refetch()}
         />
       </div>
@@ -102,6 +108,7 @@ export const Search: SearchComponent = ({ originInfo }) => {
             <TabsContent value={activeTab} className="mt-4">
               <SearchResults
                 isLoading={isSearchLoading}
+                isLoadingMore={areSuggestionsLoading}
                 filteredDomains={filteredDomains}
                 query={query}
                 isDomainInCart={isDomainInCart}
