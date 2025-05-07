@@ -108,3 +108,87 @@ export const recordSchema = z.union([
   mxRecordSchema,
   txtRecordSchema,
 ]);
+
+/**
+ * Sanitize and normalize a DNS record object before validation.
+ * Returns a new object with sanitized fields, does not mutate the input.
+ *
+ * - Trims whitespace from all fields
+ * - Collapses multiple spaces
+ * - Lowercases domain names
+ * - Ensures CNAME/MX targets are FQDNs with trailing dot
+ * - Ensures MX priority is an integer and target is normalized
+ * - Removes non-printable/control characters
+ * - Applies best practices for each record type
+ *
+ * @param record The DNS record object to sanitize
+ * @param options Options for the sanitization
+ * @returns A new sanitized DNS record object
+ */
+export function sanitizeDnsRecord(
+  record: any,
+  options?: {
+    usingFullRecordName?: boolean;
+  },
+): any {
+  const { usingFullRecordName = false } = options ?? {};
+  // Helper to clean up whitespace and control chars
+  const clean = (str: string) => {
+    // Remove ASCII control characters (0-31, 127)
+    let cleaned = '';
+    for (let i = 0; i < str.length; i++) {
+      const code = str.charCodeAt(i);
+      if ((code >= 32 && code !== 127) || code === 10 || code === 13) {
+        cleaned += str[i];
+      }
+    }
+    return cleaned.replace(/\s+/g, ' ').trim();
+  };
+
+  // Helper to ensure FQDN with trailing dot
+  const ensureFqdn = (str: string) => {
+    const s = clean(str).toLowerCase();
+    return s.endsWith('.') ? s : `${s}.`;
+  };
+
+  // Shallow copy to avoid mutation
+  const sanitized = { ...record };
+
+  // Sanitize common fields
+  if (typeof sanitized.name === 'string') {
+    sanitized.name = clean(sanitized.name).toLowerCase();
+
+    if (usingFullRecordName) {
+      sanitized.name = ensureFqdn(sanitized.name);
+    }
+  }
+  if (typeof sanitized.ttl === 'string' || typeof sanitized.ttl === 'number') {
+    sanitized.ttl = Number(String(sanitized.ttl).replace(/\D/g, ''));
+  }
+
+  // Sanitize rdata based on type
+  switch (sanitized.type) {
+    case 'CNAME':
+      if (typeof sanitized.rdata === 'string') {
+        sanitized.rdata = ensureFqdn(sanitized.rdata);
+      }
+      break;
+    case 'MX':
+      if (typeof sanitized.rdata === 'string') {
+        // Collapse whitespace, split into priority and target
+        const rdata = clean(sanitized.rdata);
+        const [priorityRaw, ...targetParts] = rdata.split(/\s+/);
+        const priority = priorityRaw.replace(/\D/g, '');
+        const target = ensureFqdn(targetParts.join(' '));
+        sanitized.rdata = `${priority} ${target}`;
+      }
+      break;
+    default:
+      if (typeof sanitized.rdata === 'string') {
+        sanitized.rdata = clean(sanitized.rdata);
+      }
+      break;
+  }
+
+  return sanitized;
+}
