@@ -20,10 +20,12 @@ import { useCart } from '@/hooks/landing/use-cart';
 import { useAuth } from '@/hooks/useAuth';
 import { cn } from '@/lib/utils';
 import type { NavItem } from '@/types';
+import { LocalStorageKeys } from '@/utils/localStorageKeys';
 import { abbreviation, shortage } from '@/utils/string';
 import { useTRPC } from '@/utils/trpc';
 import { type User, useLogin, useLogout } from '@privy-io/react-auth';
 import { useMutation } from '@tanstack/react-query';
+import { addDays, isAfter } from 'date-fns';
 import {
   Loader2Icon,
   LogOutIcon,
@@ -41,6 +43,7 @@ import {
   useEffect,
 } from 'react';
 import { toast } from 'sonner';
+import { useLocalStorage } from 'usehooks-ts';
 
 const ITEMS: NavItem[] = [
   { title: 'Profile', href: '/profile', icon: UserIcon },
@@ -68,6 +71,30 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
     const trpc = useTRPC();
     const { mutate: updateUser } = useMutation(
       trpc.users.updateUser.mutationOptions({}),
+    );
+
+    const [
+      missingEmailToastLastDismissedDate,
+      setMissingEmailToastLastDismissedDate,
+    ] = useLocalStorage<string | null>(
+      LocalStorageKeys.MISSING_EMAIL_TOAST_LAST_SHOWN_DATE,
+      null,
+    );
+
+    const missingEmailToastDismissalExpired = useCallback(
+      (currentDate: Date) => {
+        if (!missingEmailToastLastDismissedDate) {
+          return true;
+        }
+
+        const lastShownDate = new Date(missingEmailToastLastDismissedDate);
+        if (isAfter(currentDate, addDays(lastShownDate, 3))) {
+          return true;
+        }
+
+        return false;
+      },
+      [missingEmailToastLastDismissedDate],
     );
 
     // keep Privy email address and Namefi email address in sync
@@ -102,17 +129,23 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
 
     const { login } = useLogin({
       onComplete: ({ user }: { user: User }) => {
+        const now = new Date();
         // Show warning if user is logged in but has no email associated with their account
-        if (!user.email?.address) {
-          toast.warning('Missing Email', {
+        if (!user.email?.address && missingEmailToastDismissalExpired(now)) {
+          toast.info('Consider Adding Your Email', {
             id: 'missing-email-warning-on-login',
             description:
-              'We will not be able to send you notifications without it.',
+              'We send important notifications via email (including order status updates)',
             action: (
               <Button asChild={true} size={'sm'}>
                 <Link href={'/profile'}>Visit Profile</Link>
               </Button>
             ),
+            closeButton: true,
+
+            onDismiss: () => {
+              setMissingEmailToastLastDismissedDate(now.toString());
+            },
           });
         }
       },
