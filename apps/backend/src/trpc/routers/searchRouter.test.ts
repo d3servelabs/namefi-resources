@@ -46,6 +46,7 @@ describe('Search Router', () => {
     const result = await caller.search({
       query: 'test-domain',
       parentDomain: '0x.city',
+      withSuggestions: true,
     });
 
     // Assert: Check the structure of the response
@@ -57,11 +58,11 @@ describe('Search Router', () => {
     expect(result.suggestions.length).toBeGreaterThan(0);
 
     // First suggestion should be the trimmed query
-    expect(result.suggestions[0]).toBe('test-domain');
+    expect(result.bulkAvailability[0].domain).toBe('test-domain.0x.city');
 
     // Check that other suggestions include the parent domain
     for (let i = 1; i < result.suggestions.length; i++) {
-      expect(result.suggestions[i].includes('0x.city')).toBe(true);
+      expect(result.bulkAvailability[i].domain.endsWith('0x.city')).toBe(true);
     }
 
     // Check bulk availability array has same length as suggestions
@@ -91,7 +92,7 @@ describe('Search Router', () => {
     });
 
     // First suggestion should be trimmed
-    expect(result.suggestions[0]).toBe('testdomain');
+    expect(result.bulkAvailability[0].domain).toBe('testdomain.0x.city');
   });
 
   it('should use the specified parent domain in suggestions', async () => {
@@ -102,12 +103,40 @@ describe('Search Router', () => {
     });
 
     // First suggestion should be the query
-    expect(result.suggestions[0]).toBe('test-domain');
+    expect(result.bulkAvailability[0].domain).toBe('test-domain.defi.build');
 
     // Other suggestions should use defi.build
     for (let i = 1; i < result.suggestions.length; i++) {
-      expect(result.suggestions[i].includes('defi.build')).toBe(true);
-      expect(result.suggestions[i].includes('0x.city')).toBe(false);
+      expect(result.suggestions[i].endsWith('defi.build')).toBe(true);
+      expect(result.suggestions[i].endsWith('0x.city')).toBe(false);
+    }
+  });
+
+  it('should generate English word club suggestions', async () => {
+    const result = await caller.getDomainSuggestions({
+      query: 'test',
+      parentDomain: '0x.city',
+    });
+
+    expect(result.length).toBeGreaterThan(0);
+
+    // Check that the suggestions include the parent domain
+    for (const item of result) {
+      expect(item.domain.endsWith('.0x.city')).toBe(true);
+    }
+  });
+
+  it('should generate number club suggestions', async () => {
+    const result = await caller.getDomainSuggestions({
+      query: '123',
+      parentDomain: '0x.city',
+    });
+
+    expect(result.length).toBeGreaterThan(0);
+
+    // Check that the suggestions include the parent domain
+    for (const item of result) {
+      expect(item.domain.endsWith('.0x.city')).toBe(true);
     }
   });
 });
