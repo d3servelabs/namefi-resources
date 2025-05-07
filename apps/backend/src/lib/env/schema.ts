@@ -22,6 +22,8 @@ export const secretsSchema = z.object({
    * The token for the GitHub Actions workflow.
    */
   GITHUB_WORKFLOWS_TOKEN: z.string().optional(),
+  DEEPSEEK_API_KEY: z.string().optional(),
+  OPENAI_API_KEY: z.string().optional(),
 });
 
 export type SecretsSchema = z.infer<typeof secretsSchema>;
