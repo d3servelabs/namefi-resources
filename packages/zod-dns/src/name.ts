@@ -24,8 +24,7 @@ export const fqdnLowercaseRegex = new RegExp(`^${nameRegexString}\\.$`);
 export const nameSchema = z
   .string()
   .refine((name) => name === '@' || nameRegex.test(name), {
-    message:
-      'Invalid record name, must be @ or a normalized domain name without ending dot',
+    message: `Invalid record name. Must be "@" or a normalized domain name (lowercase, digits, hyphens, underscores, no ending dot, max 255 chars, see regex: ${nameRegexString}).`,
   });
 
 /**
@@ -41,7 +40,7 @@ export const fqdnLowercaseSchema = z.string().refine(
   (val) => val === '@' || fqdnLowercaseRegex.test(val),
   (val) => {
     return {
-      message: `Invalid fully qualified domain name "${val}" normalized to lowercase. Must match the pattern: ${nameRegexString} with a trailing dot.`,
+      message: `Invalid fully qualified domain name: "${val}". Must be "@" or a normalized, lowercase domain name with a trailing dot, Example: "example.com."`,
     };
   },
 );
@@ -52,7 +51,9 @@ export const normalizeDomainName = (domainNameToNormalize: string) => {
     .replace(/\.+$/, ''); // Remove trailing dots
 
   if (!verifyNormalized(possibleNormalized)) {
-    throw new Error('Invalid domain name, we are unable to normalize it.');
+    throw new Error(
+      `Invalid domain name: "${domainNameToNormalize}". Unable to normalize according to Namefi rules (lowercase, digits, hyphens, underscores, max 255 chars). Please check your input.`,
+    );
   }
 
   return possibleNormalized;

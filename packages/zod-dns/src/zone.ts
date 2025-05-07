@@ -30,7 +30,8 @@ const zoneBasicSchema = z
       });
     },
     {
-      message: 'Invalid record name',
+      message:
+        'One or more record names are invalid or not normalized according to DNS rules (lowercase, digits, hyphens, underscores, max 255 chars). Please check all record names and the zone name.',
     },
   );
 
@@ -50,7 +51,8 @@ export const zoneSchema = zoneBasicSchema
       });
     },
     {
-      message: 'Duplicate records found (same name, type, and rdata)',
+      message:
+        'Duplicate records detected: Each (name, type, rdata) combination must be unique within the zone. Please remove or modify duplicates.',
     },
   )
   // Check that there is at most one CNAME record per name
@@ -69,7 +71,8 @@ export const zoneSchema = zoneBasicSchema
       });
     },
     {
-      message: 'There should be only one CNAME record for any given name',
+      message:
+        'Each name may have at most one CNAME record. Please ensure no duplicate CNAME records exist for the same name.',
     },
   )
   /**
@@ -95,7 +98,7 @@ export const zoneSchema = zoneBasicSchema
     },
     {
       message:
-        'For any CNAME record, no other record of any type can have the same name',
+        'If a CNAME record exists for a name, no other record type may use that name. Please remove conflicting records.',
     },
   );
 
