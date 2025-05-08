@@ -1,4 +1,5 @@
 'use client';
+import { NamefiButton } from '@/components/namefi-button';
 import { useTRPC } from '@/utils/trpc';
 import type { RecordType } from '@namefi-astra/zod-dns';
 import { useMutation } from '@tanstack/react-query';
@@ -101,13 +102,13 @@ export default function DnsRecordForm({
         </div>
 
         <div className="flex justify-end">
-          <button
+          <NamefiButton
             type="submit"
-            className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 disabled:bg-gray-300 disabled:cursor-not-allowed"
+            className="px-4 py-2 rounded-md disabled:cursor-not-allowed"
             disabled={createDnsRecord.isPending || !recordValue.trim()}
           >
             {createDnsRecord.isPending ? 'Adding...' : 'Add Record'}
-          </button>
+          </NamefiButton>
         </div>
       </form>
     </div>
