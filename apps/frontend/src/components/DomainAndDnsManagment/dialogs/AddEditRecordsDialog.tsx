@@ -314,18 +314,20 @@ export function AddEditRecordsDialog({
         </div>
 
         <DialogFooter className="flex items-center justify-between sm:justify-between gap-2">
-          <Button
-            variant="link"
-            className="text-brand-primary-500 hover:text-brand-primary-400 p-0"
-            onClick={addMoreRecord}
-            type="button"
-          >
-            <Plus className="mr-2 h-4 w-4" />
-            Add more record
-          </Button>
+          {mode === 'add' && (
+            <Button
+              variant="secondary"
+              className="p-0"
+              onClick={addMoreRecord}
+              type="button"
+            >
+              <Plus className="mr-2 h-4 w-4" />
+              Add more record
+            </Button>
+          )}
           <div className="flex gap-2">
             <Button
-              variant="ghost"
+              variant="destructive"
               onClick={() => {
                 onCancelClicked?.();
                 onOpenChange?.(false);
@@ -335,7 +337,6 @@ export function AddEditRecordsDialog({
               Cancel
             </Button>
             <Button
-              className="bg-brand-primary-500 hover:bg-brand-primary-600 text-white"
               onClick={handleSubmit}
               type="button"
               disabled={
