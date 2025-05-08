@@ -15,6 +15,8 @@ type Props = { children: ReactNode };
 // TODO: This is temporary until we have a proper type from Privy
 const PrivyProvider = _PrivyProvider as unknown as React.FC<PrivyProviderProps>;
 
+export const FORCED_THEME: 'light' | 'dark' | undefined = 'dark';
+
 export const SessionsProvider = ({ children }: Readonly<Props>) => {
   const theme = useTheme();
   const origin = useOrigin();
@@ -24,7 +26,7 @@ export const SessionsProvider = ({ children }: Readonly<Props>) => {
       appId={config.PRIVY_APP_ID}
       config={{
         appearance: {
-          theme: theme.theme as 'light' | 'dark',
+          theme: FORCED_THEME || (theme.theme as 'light' | 'dark'),
           accentColor: '#48E59B',
           logo: origin.originInfo?.config?.authLogo?.image ?? '/logotype.svg',
         },

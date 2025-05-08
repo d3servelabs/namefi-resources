@@ -8,10 +8,12 @@ import {
 } from '@/components/ui/shadcn/avatar';
 import { Button } from '@/components/ui/shadcn/button';
 import { cn } from '@/lib/utils';
+import { FORCED_THEME } from '@/providers/sessions';
 import { shortage } from '@/utils/string';
 import { type User, usePrivy } from '@privy-io/react-auth';
 import { LogOut } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { isNil } from 'ramda';
 import type { FC, HTMLAttributes } from 'react';
 import { toast } from 'sonner';
 import { ThemeDropdown } from './dropdowns/theme-dropdown';
@@ -93,7 +95,7 @@ export const Header: FC<HeaderProps> = ({
       </div>
 
       <div className="flex items-center gap-2">
-        <ThemeDropdown />
+        {isNil(FORCED_THEME) && <ThemeDropdown />}
         <Button variant="destructive" onClick={handleLogout} className="gap-2">
           <LogOut className="h-4 w-4" />
           Sign Out
