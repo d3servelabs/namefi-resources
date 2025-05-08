@@ -14,7 +14,7 @@
   "scripts": {
     "force-local": "ENVIRONMENT=local bun",
     "dev": "bun run force-local tsx watch src/index.ts",
-    "dev:temporal": "bun run force-local tsx watch src/temporal/main.temporal.ts",
+    "dev:temporal": "wait-on tcp:${TEMPORAL_SERVER_PORT:-7233} && bun run force-local tsx watch src/temporal/main.temporal.ts",
     "trpc": "tsx watch src/trpc/main.ts",
     "with-env": "infisical run --token=$INFISICAL_SERVICE_TOKEN -- bun",
     "db:generate": "drizzle-kit generate",
@@ -32,7 +32,7 @@
     "start:bun": "bun dist/index.js",
     "start:temporal": "node dist/temporal/main.temporal.js",
     "validate:secrets": "bun run with-env src/lib/env/index.ts",
-    "dev:email": "email dev --port 5050 --dir src/mail/templates",
+    "dev:email": "email dev --port 3005 --dir src/mail/templates",
     "command:get-nft-updates": "tsx src/scripts/get-nft-updates.ts",
     "command:send-test-email": "tsx src/scripts/send-test-email.tsx",
     "command:trigger-nft-updates-workflow": "tsx src/scripts/trigger-nft-updates-workflow.ts",

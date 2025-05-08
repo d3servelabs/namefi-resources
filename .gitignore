@@ -221,3 +221,6 @@ next-env.d.ts
 # github actions
 .secrets
 .vars
+
+# temporal
+.namefi-astra-local-temporal.db

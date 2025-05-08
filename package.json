@@ -14,7 +14,8 @@
     "concurrently": "^9.1.2",
     "lefthook": "^1.11.6",
     "turbo": "^2.4.4",
-    "vitest": "^3.1.2"
+    "vitest": "^3.1.2",
+    "wait-on": "^8.0.3"
   },
   "scripts": {
     "preinstall": "bun run fix-infisical",
@@ -27,7 +28,7 @@
     "dev:backend:api": "bun --cwd=apps/backend with-env force-local dev",
     "dev:backend:email": "bun --cwd=apps/backend with-env force-local dev:email",
     "dev:backend:temporal": "bun --cwd=apps/backend with-env force-local dev:temporal",
-    "dev:temporal-server": "temporal server start-dev",
+    "dev:temporal-server": "temporal server start-dev --db-filename ./.namefi-astra-local-temporal.db",
     "dev:frontend": "bun --cwd=apps/frontend with-env force-local dev",
     "dev": "concurrently -n 'backend:api,frontend,backend:email,temporal:server,temporal:worker' -c 'blue.bold,green.bold,yellow.bold,red.bold,cyan.bold' \"bun run dev:backend:api\" \"bun run dev:frontend\" \"bun run dev:backend:email\" \"bun run dev:temporal-server\" \"bun run dev:backend:temporal\"",
     "typecheck": "turbo typecheck",
