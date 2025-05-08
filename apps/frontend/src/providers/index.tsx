@@ -12,7 +12,7 @@ import { NuqsAdapter } from 'nuqs/adapters/next/app';
 import { type ReactNode, Suspense, useState } from 'react';
 import { ArtifactsProvider } from './artifacts';
 import { ProgressProvider } from './progress';
-import { SessionsProvider } from './sessions';
+import { FORCED_THEME, SessionsProvider } from './sessions';
 import { ThemeProvider } from './theme';
 import { TrpcProvider } from './trpc';
 
@@ -32,6 +32,7 @@ export const Providers = ({ children }: Readonly<Props>) => {
             defaultTheme="dark"
             enableSystem={false}
             disableTransitionOnChange={true}
+            forcedTheme={FORCED_THEME}
           >
             <SessionsProvider>
               <TrpcProvider>
