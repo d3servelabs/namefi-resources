@@ -3,48 +3,39 @@
 [![Test](https://github.com/d3servelabs/namefi-astra/actions/workflows/test.yml/badge.svg)](https://github.com/d3servelabs/namefi-astra/actions/workflows/test.yml)
 [![Validate](https://github.com/d3servelabs/namefi-astra/actions/workflows/validate.yml/badge.svg)](https://github.com/d3servelabs/namefi-astra/actions/workflows/validate.yml)
 
-To install dependencies:
+## Quick Start
+
+Once you have all dependencies installed
+
+First, export one single infisical token for authenticating your dev secrets
 
 ```bash
-bun install
+export INFISICAL_SERVICE_TOKEN=<your-infisical-token> # Ask Victor for it
 ```
 
-This project was created using `bun init` in bun v1.2.2. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
-
-## Local dev
-
-- Scripts running for local dev should have `ENVIRONMENT=local <command>`, either when you run them or when you define them in package.json::scripts, for Exmaple;
-
-```json
-{
-    ...
-    "scripts": {
-        "dev": "ENVIRONMENT=local next dev"
-    }
-    ...
-}
-```
-
-- Frontend Apps should have ports >= 5000 and Backend Apps >= 3000
-  - apps/frontend => localhost:5000
-  - apps/backend#main => localhost:3000
-  - apps/backend#temporal => localhost:3001
-
-### To Start the app locally
+Then, start the dev server
 
 ```bash
-# Backend
-bun --cwd=apps/frontend dev
-
-#Frontend
-bun --cwd=apps/backend dev
+bun run dev
 ```
 
-If you need Temporal, you need to have it installed locally [installation](https://learn.temporal.io/getting_started/typescript/dev_environment/?os=linux#set-up-a-local-temporal-service-for-development-with-temporal-cli)
+Then you can validate your setup by accessing 
+1. the app frontend at [http://localhost:23001](http://localhost:23001)
+2. the backend api server at [http://localhost:3000](http://localhost:3000) 
+3. the backend email server at [http://localhost:5050](http://localhost:5050) 
+4. the temporal server at [http://localhost:8233](http://localhost:8233)
 
-```bash
-# in separate shells
-temporal server start-dev
-# in separate shells
-bun --cwd=apps/backend  dev:temporal
-```
+## Installing the prerequisites and dependencies
+
+You would likely need to install the following prerequisites:
+
+- [Node.js](https://nodejs.org/en/download/)
+- [Temporal](https://learn.temporal.io/getting_started/typescript/dev_environment/?os=linux#set-up-a-local-temporal-service-for-development-with-temporal-cli)
+- [Bun](https://bun.sh/docs/installation)
+- [Infisical CLI](https://infisical.com/docs/cli/installation)
+- [Docker](https://docs.docker.com/get-docker/) (for containerized services and running tests)
+- [Act](https://github.com/nektos/act) (for running GitHub Actions workflows locally)
+- [Git](https://git-scm.com/downloads) (for version control and Git hooks)
+- [nvm](https://github.com/nvm-sh/nvm#install--update-script) (to manage Node.js versions)
+- [Concurrently](https://www.npmjs.com/package/concurrently) (for running multiple dev processes; install globally: `npm install -g concurrently`)
+- [GitHub CLI](https://cli.github.com/) (for triggering remote workflows) (optional)
