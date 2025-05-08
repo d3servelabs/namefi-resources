@@ -28,6 +28,7 @@ export function SavePaymentMethodForm({
 }: SavePaymentMethodFormProps) {
   const stripe = useStripe();
   const elements = useElements();
+  const [isFormReady, setIsFormReady] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -86,22 +87,24 @@ export function SavePaymentMethodForm({
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <PaymentElement />
+      <PaymentElement onReady={() => setIsFormReady(true)} />
       {error && <p className="text-sm text-destructive">{error}</p>}
-      <Button
-        type="submit"
-        disabled={!(stripe && elements) || isProcessing}
-        className="w-full"
-      >
-        {isProcessing ? (
-          <>
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            Processing...
-          </>
-        ) : (
-          'Save this Payment Method'
-        )}
-      </Button>
+      {isFormReady && (
+        <Button
+          type="submit"
+          disabled={!(stripe && elements) || isProcessing}
+          className="w-full"
+        >
+          {isProcessing ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Processing...
+            </>
+          ) : (
+            'Save this Payment Method'
+          )}
+        </Button>
+      )}
     </form>
   );
 }
