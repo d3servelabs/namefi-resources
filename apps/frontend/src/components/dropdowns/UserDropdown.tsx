@@ -1,10 +1,4 @@
 'use client';
-
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from '@/components/ui/shadcn/avatar';
 import { Button } from '@/components/ui/shadcn/button';
 import {
   DropdownMenu,
@@ -21,7 +15,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { cn } from '@/lib/utils';
 import type { NavItem } from '@/types';
 import { LocalStorageKeys } from '@/utils/localStorageKeys';
-import { abbreviation, shortage } from '@/utils/string';
+import { shortage } from '@/utils/string';
 import { useTRPC } from '@/utils/trpc';
 import { type User, useLogin, useLogout } from '@privy-io/react-auth';
 import { useMutation } from '@tanstack/react-query';
@@ -44,6 +38,7 @@ import {
 } from 'react';
 import { toast } from 'sonner';
 import { useLocalStorage } from 'usehooks-ts';
+import { CurrentUserAvatar } from '../UserAvatar';
 
 const ITEMS: NavItem[] = [
   { title: 'Profile', href: '/profile', icon: UserIcon },
@@ -203,12 +198,7 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
                 size="lg"
                 className="data-[state=open]:bg-sidebar-accent w-full data-[state=open]:text-sidebar-accent-foreground"
               >
-                <Avatar className="size-8 rounded-lg">
-                  <AvatarImage alt={name} />
-                  <AvatarFallback className="rounded-lg">
-                    {abbreviation(name.replace('0x', ''), true)}
-                  </AvatarFallback>
-                </Avatar>
+                <CurrentUserAvatar />
                 {!collapsed && (
                   <span className="text-sm hidden md:block">
                     {shortage(name, 11)}

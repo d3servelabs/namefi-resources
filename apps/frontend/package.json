@@ -13,6 +13,7 @@
     "validate:secrets": "bun run with-env src/lib/env/load.ts"
   },
   "dependencies": {
+    "@cfx-kit/wallet-avatar": "^0.0.5",
     "@hookform/resolvers": "^5.0.1",
     "@namefi-astra/backend": "workspace:*",
     "@namefi-astra/env": "workspace:*",
