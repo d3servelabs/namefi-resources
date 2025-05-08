@@ -17,7 +17,7 @@ import {
   DialogTitle,
 } from '@/components/ui/shadcn/dialog';
 import { type User, usePrivy } from '@privy-io/react-auth';
-import { Mail, Users2 } from 'lucide-react';
+import { GithubIcon, Mail, Users2 } from 'lucide-react';
 import { useCallback, useState } from 'react';
 import { TwitterIcon } from 'react-share';
 import { toast } from 'sonner';
@@ -29,9 +29,19 @@ export interface AccountsProps {
 
 export const Accounts = ({ user }: AccountsProps) => {
   const [isUnlinkEmailDialogOpen, setIsUnlinkEmailDialogOpen] = useState(false);
+  const [isUnlinkGitHubDialogOpen, setIsUnlinkGitHubDialogOpen] =
+    useState(false);
+
   const [isUnlinkTwitterDialogOpen, setIsUnlinkTwitterDialogOpen] =
     useState(false);
-  const { linkEmail, linkTwitter, unlinkEmail, unlinkTwitter } = usePrivy();
+  const {
+    linkEmail,
+    linkGithub,
+    linkTwitter,
+    unlinkEmail,
+    unlinkGithub,
+    unlinkTwitter,
+  } = usePrivy();
 
   const handleLinkEmail = useCallback(() => {
     try {
@@ -62,6 +72,39 @@ export const Accounts = ({ user }: AccountsProps) => {
       }
     },
     [unlinkEmail],
+  );
+
+  const handleLinkGitHub = useCallback(() => {
+    try {
+      linkGithub();
+    } catch (error) {
+      toast.error('Failed to link GitHub account', {
+        description: `Please try again. ${error instanceof Error ? error.message : 'Unknown error'}`,
+      });
+    }
+  }, [linkGithub]);
+
+  const handleUnlinkGitHub = useCallback(
+    async (subject: string) => {
+      if (!subject) {
+        setIsUnlinkGitHubDialogOpen(false);
+        return;
+      }
+
+      try {
+        await unlinkGithub(subject);
+        setIsUnlinkGitHubDialogOpen(false);
+        toast.success('GitHub account unlinked', {
+          description: 'Your account has been successfully unlinked.',
+        });
+      } catch (error) {
+        setIsUnlinkGitHubDialogOpen(false);
+        toast.error('Failed to unlink GitHub account', {
+          description: `Please try again. ${error instanceof Error ? error.message : 'Unknown error'}`,
+        });
+      }
+    },
+    [unlinkGithub],
   );
 
   const handleLinkTwitter = useCallback(() => {
@@ -132,6 +175,18 @@ export const Accounts = ({ user }: AccountsProps) => {
             onLink={handleLinkTwitter}
             onUnlink={() => setIsUnlinkTwitterDialogOpen(true)}
           />
+
+          <Account
+            title="GitHub"
+            icon={<GithubIcon className="h-5 w-5" />} // TODO(Luis): update icon
+            isLinked={!!user.github?.username}
+            linkedValue={
+              user.github?.username ? `${user.github.username}` : undefined
+            }
+            verified={!!user.github?.username}
+            onLink={handleLinkGitHub}
+            onUnlink={() => setIsUnlinkGitHubDialogOpen(true)}
+          />
         </div>
       </CardContent>
 
@@ -155,6 +210,34 @@ export const Accounts = ({ user }: AccountsProps) => {
               Cancel
             </Button>
             <Button onClick={() => handleUnlinkEmail(user.email?.address)}>
+              Unlink
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* GitHub Dialog */}
+      <Dialog
+        open={isUnlinkGitHubDialogOpen}
+        onOpenChange={setIsUnlinkGitHubDialogOpen}
+      >
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Unlink GitHub</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to continue?
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setIsUnlinkGitHubDialogOpen(false)}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={() => handleUnlinkGitHub(user.github?.subject ?? '')}
+            >
               Unlink
             </Button>
           </DialogFooter>
