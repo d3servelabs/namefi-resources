@@ -2,10 +2,11 @@ import { config } from 'dotenv';
 
 import type { HonoRequest } from 'hono';
 import type { RequestHeader } from 'hono/utils/headers';
+import { type Address, type BlockTag, zeroAddress } from 'viem';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { TrpcContext } from '../base';
 import { privyClient } from '../utils';
-import { usersRouter } from './usersRouter';
+import { usersRouter, viemEthereumPublicClient } from './usersRouter';
 
 // TODO: consider use vitest setup to do it globally after NamefiRegistry
 config({ path: '.env.test' });
@@ -19,45 +20,74 @@ describe('Users Router', () => {
     // It should return a PrivyUser with different linked accounts
     vi.spyOn(privyClient, 'getUserById').mockImplementation(
       async (privyUserId: string) => {
+        const basePrivyUser = {
+          isGuest: false,
+          createdAt: new Date(),
+          linkedAccounts: [],
+          customMetadata: {},
+        };
+
         switch (privyUserId) {
           case 'testUserWithQualifyingEmail':
             return await Promise.resolve({
+              ...basePrivyUser,
               id: privyUserId,
-              isGuest: false,
-              createdAt: new Date(),
-              linkedAccounts: [],
               email: {
                 address: '0xnetizen1@d3serve.xyz',
                 firstVerifiedAt: new Date(),
                 verifiedAt: new Date(),
                 latestVerifiedAt: new Date(),
               },
-              customMetadata: {},
             });
 
-          case 'testUserWithQualifyingTwitter':
+          case 'testUserWithQualifyingTwitterHandle':
             return await Promise.resolve({
+              ...basePrivyUser,
               id: privyUserId,
-              isGuest: false,
-              createdAt: new Date(),
-              linkedAccounts: [],
               twitter: {
-                name: 'testUserWithQualifyingTwitter',
+                name: 'testUserWithQualifyingTwitterHandle',
                 username: '0xnetizen1',
                 subject: 'subject',
                 firstVerifiedAt: new Date(),
                 verifiedAt: new Date(),
                 latestVerifiedAt: new Date(),
               },
-              customMetadata: {},
+            });
+
+          case 'testUserWithQualifyingTwitterName':
+            return await Promise.resolve({
+              ...basePrivyUser,
+              id: privyUserId,
+              twitter: {
+                name: '0xnetizen1',
+                username: 'testUserWithQualifyingTwitterName',
+                subject: 'subject',
+                firstVerifiedAt: new Date(),
+                verifiedAt: new Date(),
+                latestVerifiedAt: new Date(),
+              },
+            });
+
+          case 'testUserWithQualifyingEns':
+            return await Promise.resolve({
+              ...basePrivyUser,
+              id: privyUserId,
+              linkedAccounts: [
+                {
+                  type: 'wallet',
+                  address: zeroAddress,
+                  chainType: 'ethereum',
+                  firstVerifiedAt: new Date(),
+                  verifiedAt: new Date(),
+                  latestVerifiedAt: new Date(),
+                },
+              ],
             });
 
           case 'testUserWithoutQualifyingAccount':
             return await Promise.resolve({
+              ...basePrivyUser,
               id: privyUserId,
-              isGuest: false,
-              createdAt: new Date(),
-              linkedAccounts: [],
               email: {
                 address: '0xnetizen.1@d3serve.xyz',
                 firstVerifiedAt: new Date(),
@@ -72,18 +102,76 @@ describe('Users Router', () => {
                 verifiedAt: new Date(),
                 latestVerifiedAt: new Date(),
               },
-              customMetadata: {},
+              linkedAccounts: [
+                {
+                  type: 'wallet',
+                  address: '0x0000000000000000000000000000000000000001',
+                  chainType: 'ethereum',
+                  firstVerifiedAt: new Date(),
+                  verifiedAt: new Date(),
+                  latestVerifiedAt: new Date(),
+                },
+                {
+                  type: 'wallet',
+                  address: '0x0000000000000000000000000000000000000002',
+                  chainType: 'ethereum',
+                  firstVerifiedAt: new Date(),
+                  verifiedAt: new Date(),
+                  latestVerifiedAt: new Date(),
+                },
+                {
+                  type: 'wallet',
+                  address: '0x0000000000000000000000000000000000000003',
+                  chainType: 'ethereum',
+                  firstVerifiedAt: new Date(),
+                  verifiedAt: new Date(),
+                  latestVerifiedAt: new Date(),
+                },
+                {
+                  type: 'wallet',
+                  address: '0x0000000000000000000000000000000000000004',
+                  chainType: 'ethereum',
+                  firstVerifiedAt: new Date(),
+                  verifiedAt: new Date(),
+                  latestVerifiedAt: new Date(),
+                },
+              ],
             });
 
           case 'testUserWithNoLinkedAccounts': // fallthrough
           default:
             return await Promise.resolve({
+              ...basePrivyUser,
               id: 'testUserWithNoLinkedAccounts',
-              isGuest: false,
-              createdAt: new Date(),
-              linkedAccounts: [],
-              customMetadata: {},
             });
+        }
+      },
+    );
+
+    vi.spyOn(viemEthereumPublicClient, 'getEnsName').mockImplementation(
+      async (args: {
+        blockNumber?: bigint | undefined | undefined;
+        blockTag?: BlockTag | undefined;
+        address: Address;
+        gatewayUrls?: string[] | undefined | undefined;
+        strict?: boolean | undefined | undefined;
+        universalResolverAddress?: `0x${string}` | undefined;
+      }) => {
+        switch (args.address) {
+          // qualifies
+          case zeroAddress:
+            return await Promise.resolve('0xnetizen1.eth');
+          // doesn't qualify (doesn't start with 0x)
+          case '0x0000000000000000000000000000000000000001':
+            return await Promise.resolve('netizen1.eth');
+          // doesn't qualify (doesn't match subdomain)
+          case '0x0000000000000000000000000000000000000002':
+            return await Promise.resolve('0xnetizen2.eth');
+          // doesn't resolve ens lookup
+          case '0x0000000000000000000000000000000000000003':
+            return await Promise.reject();
+          default:
+            return await Promise.resolve(null);
         }
       },
     );
@@ -93,73 +181,31 @@ describe('Users Router', () => {
     vi.restoreAllMocks();
   });
 
-  // Create a caller for the router with testUserWithQualifyingEmail
-  const callerWithUserWithQualifyingEmail1 = usersRouter.createCaller(
-    {
-      thirdPartyOriginHostname: null,
-      testUser: {
-        id: 'testUserWithQualifyingEmail',
-        primaryEmail: null,
-        stripeCustomerId: null,
-        privyUserId: 'testUserWithQualifyingEmail',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-    } satisfies Omit<TrpcContext, 'user' | 'db' | 'req' | 'res'> as TrpcContext,
-    {},
-  );
-
-  // Create a caller for the router with testUserWithQualifyingTwitter
-  const callerWithUserWithQualifyingTwitter = usersRouter.createCaller(
-    {
-      thirdPartyOriginHostname: null,
-      testUser: {
-        id: 'testUserWithQualifyingTwitter',
-        primaryEmail: null,
-        stripeCustomerId: null,
-        privyUserId: 'testUserWithQualifyingTwitter',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-    } satisfies Omit<TrpcContext, 'user' | 'db' | 'req' | 'res'> as TrpcContext,
-    {},
-  );
-
-  // Create a caller for the router with testUserWithQualifyingTwitter
-  const callerWithUserWithoutQualifyingAccount = usersRouter.createCaller(
-    {
-      thirdPartyOriginHostname: null,
-      testUser: {
-        id: 'testUserWithoutQualifyingAccount',
-        primaryEmail: null,
-        stripeCustomerId: null,
-        privyUserId: 'testUserWithoutQualifyingAccount',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-    } satisfies Omit<TrpcContext, 'user' | 'db' | 'req' | 'res'> as TrpcContext,
-    {},
-  );
-
-  // Create a caller for the router with testUserWithQualifyingTwitter
-  const callerWithUserWithNoLinkedAccounts = usersRouter.createCaller(
-    {
-      thirdPartyOriginHostname: null,
-      testUser: {
-        id: 'testUserWithNoLinkedAccounts',
-        primaryEmail: null,
-        stripeCustomerId: null,
-        privyUserId: 'testUserWithNoLinkedAccounts',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-    } satisfies Omit<TrpcContext, 'user' | 'db' | 'req' | 'res'> as TrpcContext,
-    {},
-  );
-
+  const baseTestUser = {
+    primaryEmail: null,
+    stripeCustomerId: null,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  };
   const testNormalizedDomainName = 'netizen1.0x.city';
 
   it('should return true for testUserWithQualifyingEmail', async () => {
+    // Create a caller for the router with testUserWithQualifyingEmail
+    const callerWithUserWithQualifyingEmail1 = usersRouter.createCaller(
+      {
+        thirdPartyOriginHostname: null,
+        testUser: {
+          ...baseTestUser,
+          id: 'testUserWithQualifyingEmail',
+          privyUserId: 'testUserWithQualifyingEmail',
+        },
+      } satisfies Omit<
+        TrpcContext,
+        'user' | 'db' | 'req' | 'res'
+      > as TrpcContext,
+      {},
+    );
+
     const result =
       await callerWithUserWithQualifyingEmail1.getUserQualifiesForDomainNamePromo(
         {
@@ -171,9 +217,25 @@ describe('Users Router', () => {
     expect(result).toBe(true);
   });
 
-  it('should return true for testUserWithQualifyingTwitter', async () => {
+  it('should return true for testUserWithQualifyingTwitterHandle', async () => {
+    // Create a caller for the router with testUserWithQualifyingTwitterHandle
+    const callerWithUserWithQualifyingTwitterHandle = usersRouter.createCaller(
+      {
+        thirdPartyOriginHostname: null,
+        testUser: {
+          ...baseTestUser,
+          id: 'testUserWithQualifyingTwitterHandle',
+          privyUserId: 'testUserWithQualifyingTwitterHandle',
+        },
+      } satisfies Omit<
+        TrpcContext,
+        'user' | 'db' | 'req' | 'res'
+      > as TrpcContext,
+      {},
+    );
+
     const result =
-      await callerWithUserWithQualifyingTwitter.getUserQualifiesForDomainNamePromo(
+      await callerWithUserWithQualifyingTwitterHandle.getUserQualifiesForDomainNamePromo(
         {
           normalizedDomainName: testNormalizedDomainName,
         },
@@ -183,7 +245,77 @@ describe('Users Router', () => {
     expect(result).toBe(true);
   });
 
+  it('should return true for testUserWithQualifyingTwitterName', async () => {
+    // Create a caller for the router with testUserWithQualifyingTwitterName
+    const callerWithUserWithQualifyingTwitterName = usersRouter.createCaller(
+      {
+        thirdPartyOriginHostname: null,
+        testUser: {
+          ...baseTestUser,
+          id: 'testUserWithQualifyingTwitterName',
+          privyUserId: 'testUserWithQualifyingTwitterName',
+        },
+      } satisfies Omit<
+        TrpcContext,
+        'user' | 'db' | 'req' | 'res'
+      > as TrpcContext,
+      {},
+    );
+
+    const result =
+      await callerWithUserWithQualifyingTwitterName.getUserQualifiesForDomainNamePromo(
+        {
+          normalizedDomainName: testNormalizedDomainName,
+        },
+      );
+
+    // Assert: Check the structure of the response
+    expect(result).toBe(true);
+  });
+
+  it('should return true for testUserWithQualifyingEns', async () => {
+    // Create a caller for the router with testUserWithQualifyingEns
+    const callerWithUserWithQualifyingEns = usersRouter.createCaller(
+      {
+        thirdPartyOriginHostname: null,
+        testUser: {
+          ...baseTestUser,
+          id: 'testUserWithQualifyingEns',
+          privyUserId: 'testUserWithQualifyingEns',
+        },
+      } satisfies Omit<
+        TrpcContext,
+        'user' | 'db' | 'req' | 'res'
+      > as TrpcContext,
+      {},
+    );
+
+    const result =
+      await callerWithUserWithQualifyingEns.getUserQualifiesForDomainNamePromo({
+        normalizedDomainName: testNormalizedDomainName,
+      });
+
+    // Assert: Check the structure of the response
+    expect(result).toBe(true);
+  });
+
   it('should return false for testUserWithoutQualifyingAccount', async () => {
+    // Create a caller for the router with testUserWithoutQualifyingAccount
+    const callerWithUserWithoutQualifyingAccount = usersRouter.createCaller(
+      {
+        thirdPartyOriginHostname: null,
+        testUser: {
+          ...baseTestUser,
+          id: 'testUserWithoutQualifyingAccount',
+          privyUserId: 'testUserWithoutQualifyingAccount',
+        },
+      } satisfies Omit<
+        TrpcContext,
+        'user' | 'db' | 'req' | 'res'
+      > as TrpcContext,
+      {},
+    );
+
     const result =
       await callerWithUserWithoutQualifyingAccount.getUserQualifiesForDomainNamePromo(
         {
@@ -196,6 +328,22 @@ describe('Users Router', () => {
   });
 
   it('should return false for testUserWithNoLinkedAccounts', async () => {
+    // Create a caller for the router with testUserWithNoLinkedAccounts
+    const callerWithUserWithNoLinkedAccounts = usersRouter.createCaller(
+      {
+        thirdPartyOriginHostname: null,
+        testUser: {
+          ...baseTestUser,
+          id: 'testUserWithNoLinkedAccounts',
+          privyUserId: 'testUserWithNoLinkedAccounts',
+        },
+      } satisfies Omit<
+        TrpcContext,
+        'user' | 'db' | 'req' | 'res'
+      > as TrpcContext,
+      {},
+    );
+
     const result =
       await callerWithUserWithNoLinkedAccounts.getUserQualifiesForDomainNamePromo(
         {

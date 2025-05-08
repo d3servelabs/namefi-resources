@@ -1,23 +1,37 @@
 import { db, userUpdateSchema, usersTable } from '@namefi-astra/db';
 import {
-  type ChecksumWalletAddress,
   type NamefiNormalizedDomain,
-  checksumWalletAddressSchema,
   getSubDomainAndParentDomainFromNormalizedDomainName,
   namefiNormalizedDomainSchema,
 } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
 import { eq, sql } from 'drizzle-orm';
 import { isEmpty, isNil, isNotEmpty, isNotNil } from 'ramda';
+import { http, createPublicClient } from 'viem';
+import * as chains from 'viem/chains';
 import { z } from 'zod';
-import { config } from '#lib/env';
+import { config, secrets } from '#lib/env';
 import { resolve } from '../../utils/resolve';
 import {
   authedOrPublicProcedure,
   createTRPCRouter,
   protectedProcedure,
 } from '../base';
-import { privyClient } from '../utils';
+import {
+  getPrivyUserLinkedEthereumChecksumWalletAddresses,
+  privyClient,
+} from '../utils';
+
+if (!secrets.ALCHEMY_API_KEY) {
+  throw new Error('Cannot create Ethereum public client');
+}
+
+export const viemEthereumPublicClient = createPublicClient({
+  chain: chains.mainnet,
+  transport: http(
+    `https://eth-mainnet.g.alchemy.com/v2/${secrets.ALCHEMY_API_KEY}`,
+  ),
+});
 
 export const usersRouter = createTRPCRouter({
   getUser: protectedProcedure.query(async ({ ctx }) => {
@@ -71,6 +85,7 @@ export const usersRouter = createTRPCRouter({
       });
     }),
 
+  // TODO: add tests for this procedure
   getCurrentUserDomains: protectedProcedure.query(async ({ ctx }) => {
     const { user, thirdPartyOriginHostname } = ctx;
     const [error, privyUser] = await resolve(
@@ -84,37 +99,22 @@ export const usersRouter = createTRPCRouter({
       });
     }
 
-    // #region get all user wallets addresses
-    const userWalletsAddressesSet = new Set<ChecksumWalletAddress>();
+    const privyUserLinkedEthereumChecksumWalletAddresses =
+      getPrivyUserLinkedEthereumChecksumWalletAddresses({
+        privyUser,
+      });
 
-    const primaryWalletAddress = checksumWalletAddressSchema.safeParse(
-      privyUser.wallet?.address,
-    );
-    if (primaryWalletAddress.success) {
-      userWalletsAddressesSet.add(primaryWalletAddress.data);
-    }
-
-    for (const linkedAccount of privyUser.linkedAccounts) {
-      if (linkedAccount.type === 'wallet') {
-        const checksumWalletAddress = checksumWalletAddressSchema.safeParse(
-          linkedAccount.address,
-        );
-        if (checksumWalletAddress.success) {
-          userWalletsAddressesSet.add(checksumWalletAddress.data);
-        }
-      }
-    }
-    const userWalletsAddresses = Array.from(userWalletsAddressesSet);
-    // #endregion get all user wallets addresses
-
-    if (isEmpty(userWalletsAddresses)) {
+    if (isEmpty(privyUserLinkedEthereumChecksumWalletAddresses)) {
       return [];
     }
 
     const nfts = await db.query.namefiNftTable.findMany({
       where: (table, { inArray, and, ilike, gte }) =>
         and(
-          inArray(table.ownerAddress, userWalletsAddresses),
+          inArray(
+            table.ownerAddress,
+            privyUserLinkedEthereumChecksumWalletAddresses,
+          ),
           thirdPartyOriginHostname
             ? ilike(table.normalizedDomainName, `%.${thirdPartyOriginHostname}`)
             : undefined,
@@ -292,22 +292,48 @@ export async function userQualifiesForDomainNamePromo({
     }
   }
 
-  // check twitter username
+  // check twitter name
   const privyTwitterDisplayName = privyUser.twitter?.name;
   if (
     isNotNil(privyTwitterDisplayName) &&
-    privyTwitterDisplayName.startsWith('0x')
+    privyTwitterDisplayName.startsWith('0x') &&
+    privyTwitterDisplayName.slice(2).toLowerCase() === subdomain.toLowerCase()
   ) {
-    return (
-      privyTwitterDisplayName.slice(2).toLowerCase() === subdomain.toLowerCase()
-    );
+    return true;
   }
 
+  // check twitter handle (aka username)
   const privyTwitterHandle = privyUser.twitter?.username;
-  if (isNotNil(privyTwitterHandle) && privyTwitterHandle.startsWith('0x')) {
-    return (
-      privyTwitterHandle.slice(2).toLowerCase() === subdomain.toLowerCase()
-    );
+  if (
+    isNotNil(privyTwitterHandle) &&
+    privyTwitterHandle.startsWith('0x') &&
+    privyTwitterHandle.slice(2).toLowerCase() === subdomain.toLowerCase()
+  ) {
+    return true;
+  }
+
+  // check ENS for all user wallets
+  const privyUserLinkedEthereumChecksumWalletAddresses =
+    getPrivyUserLinkedEthereumChecksumWalletAddresses({
+      privyUser,
+    });
+  const ensLookups = await Promise.allSettled(
+    privyUserLinkedEthereumChecksumWalletAddresses.map((address) =>
+      viemEthereumPublicClient.getEnsName({ address }),
+    ),
+  );
+
+  for (const result of ensLookups) {
+    if (result.status === 'rejected' || result.value == null) {
+      continue;
+    }
+    const ensName = result.value;
+    if (isNotNil(ensName) && ensName.startsWith('0x')) {
+      const ensNamePrefix = ensName.split('.')[0];
+      if (ensNamePrefix.slice(2).toLowerCase() === subdomain.toLowerCase()) {
+        return true;
+      }
+    }
   }
 
   return false;

@@ -7,7 +7,6 @@ import {
   ordersTable,
 } from '@namefi-astra/db';
 import {
-  type ChecksumWalletAddress,
   type NamefiNormalizedDomain,
   checksumWalletAddressSchema,
 } from '@namefi-astra/utils';
@@ -28,6 +27,7 @@ import { resolve } from '../../utils/resolve';
 import { createTRPCRouter, protectedProcedure } from '../base';
 import { createOrderInputSchema } from '../types';
 import {
+  getPrivyUserLinkedEthereumChecksumWalletAddresses,
   isNormalizedDomainNameAllowedForOriginHostname,
   privyClient,
 } from '../utils';
@@ -109,30 +109,15 @@ export const ordersRouter = createTRPCRouter({
             });
           }
 
-          // #region get all user wallets addresses
-          const userWalletsAddressesSet = new Set<ChecksumWalletAddress>();
-
-          const primaryWalletAddress = checksumWalletAddressSchema.safeParse(
-            privyUser.wallet?.address,
-          );
-          if (primaryWalletAddress.success) {
-            userWalletsAddressesSet.add(primaryWalletAddress.data);
-          }
-
-          for (const linkedAccount of privyUser.linkedAccounts) {
-            if (linkedAccount.type === 'wallet') {
-              const checksumWalletAddress =
-                checksumWalletAddressSchema.safeParse(linkedAccount.address);
-              if (checksumWalletAddress.success) {
-                userWalletsAddressesSet.add(checksumWalletAddress.data);
-              }
-            }
-          }
-          const userWalletsAddresses = Array.from(userWalletsAddressesSet);
-          // #endregion get all user wallets addresses
+          const privyUserLinkedEthereumChecksumWalletAddresses =
+            getPrivyUserLinkedEthereumChecksumWalletAddresses({
+              privyUser,
+            });
 
           if (
-            !userWalletsAddresses.includes(paymentWalletChecksumAddress.data)
+            !privyUserLinkedEthereumChecksumWalletAddresses.includes(
+              paymentWalletChecksumAddress.data,
+            )
           ) {
             console.error('Payment walletAddress validation failed');
             throw new TRPCError({

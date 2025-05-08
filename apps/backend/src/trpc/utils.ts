@@ -1,4 +1,9 @@
-import { PrivyClient } from '@privy-io/server-auth';
+import {
+  type ChecksumWalletAddress,
+  checksumWalletAddressSchema,
+} from '@namefi-astra/utils';
+import { PrivyClient, type User } from '@privy-io/server-auth';
+import { isNotNil } from 'ramda';
 import { config, secrets } from '#lib/env';
 
 export const privyClient = new PrivyClient(
@@ -21,3 +26,35 @@ export const isNormalizedDomainNameAllowedForOriginHostname = (
     normalizedDomainName.endsWith(hostname),
   );
 };
+
+export function getPrivyUserLinkedEthereumWalletAddresses({
+  privyUser,
+}: { privyUser: User }): string[] {
+  const privyUserEthereumWalletAddresses = privyUser.linkedAccounts
+    .map((linkedAccount) =>
+      linkedAccount.type === 'wallet' && linkedAccount.chainType === 'ethereum'
+        ? linkedAccount.address
+        : null,
+    )
+    .filter((walletAddress) => isNotNil(walletAddress));
+
+  return Array.from(new Set(privyUserEthereumWalletAddresses));
+}
+
+export function getPrivyUserLinkedEthereumChecksumWalletAddresses({
+  privyUser,
+}: { privyUser: User }): ChecksumWalletAddress[] {
+  const privyUserLinkedChecksumWalletAddresses =
+    getPrivyUserLinkedEthereumWalletAddresses({ privyUser }).map(
+      (linkedWalletAddress) => {
+        const checksumWalletAddress =
+          checksumWalletAddressSchema.safeParse(linkedWalletAddress);
+        if (!checksumWalletAddress.success) {
+          throw new Error('Could not format wallet address');
+        }
+        return checksumWalletAddress.data;
+      },
+    );
+
+  return privyUserLinkedChecksumWalletAddresses;
+}
