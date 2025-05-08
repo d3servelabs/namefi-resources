@@ -1,6 +1,7 @@
 'use client';
 
 import { AuthRequired } from '@/components/auth-required';
+import { NamefiButton } from '@/components/namefi-button';
 import { SavePaymentMethodDialog } from '@/components/savePaymentMethod/savePaymentMethodDialog';
 import { Button } from '@/components/ui/shadcn/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/shadcn/card';
@@ -62,10 +63,10 @@ export default function PaymentMethodsManager() {
         <SavePaymentMethodDialog
           amountInUsdCents={1000}
           dialogTrigger={
-            <Button>
+            <NamefiButton>
               <PlusIcon className="mr-2 h-4 w-4" />
               Add Payment Method
-            </Button>
+            </NamefiButton>
           }
           onSavePaymentMethodError={handleSavePaymentMethodError}
           onSavePaymentMethodSuccess={handleSavePaymentMethodSuccess}

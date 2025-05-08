@@ -1,6 +1,5 @@
 'use client';
 
-import { Button } from '@/components/ui/shadcn/button';
 import {
   PaymentElement,
   useElements,
@@ -14,6 +13,7 @@ import type {
 import { Loader2 } from 'lucide-react';
 import type React from 'react';
 import { useCallback, useState } from 'react';
+import { NamefiButton } from '../namefi-button';
 
 interface SavePaymentMethodFormProps {
   onSuccess?: (setupIntent: SetupIntent) => void;
@@ -90,7 +90,7 @@ export function SavePaymentMethodForm({
       <PaymentElement onReady={() => setIsFormReady(true)} />
       {error && <p className="text-sm text-destructive">{error}</p>}
       {isFormReady && (
-        <Button
+        <NamefiButton
           type="submit"
           disabled={!(stripe && elements) || isProcessing}
           className="w-full"
@@ -103,7 +103,7 @@ export function SavePaymentMethodForm({
           ) : (
             'Save this Payment Method'
           )}
-        </Button>
+        </NamefiButton>
       )}
     </form>
   );
