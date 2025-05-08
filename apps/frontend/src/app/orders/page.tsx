@@ -13,7 +13,6 @@ import {
   TableRow,
 } from '@/components/ui/shadcn/table';
 import { useAuth } from '@/hooks/useAuth';
-import { shortage } from '@/utils/string';
 import { useTRPC } from '@/utils/trpc';
 import { useQuery } from '@tanstack/react-query';
 import { format } from 'date-fns';
@@ -49,7 +48,7 @@ export default function OrdersPage() {
               <TableHead>Domain Name</TableHead>
               <TableHead>Created At</TableHead>
               <TableHead>Status</TableHead>
-              <TableHead>Order ID</TableHead>
+              <TableHead />
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -99,7 +98,7 @@ export default function OrdersPage() {
                       className="font-mono text-sm hover:underline inline-flex items-center gap-1 text-muted-foreground hover:text-foreground"
                     >
                       <ExternalLink className="h-3 w-3" />
-                      {shortage(item.orderId, 8)}
+                      View Details
                     </Link>
                   </TableCell>
                 </TableRow>
