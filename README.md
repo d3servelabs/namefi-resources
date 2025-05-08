@@ -19,10 +19,11 @@ Then, start the dev server
 bun run dev
 ```
 
-Then you can validate your setup by accessing 
-1. the app frontend at [http://localhost:23001](http://localhost:23001)
-2. the backend api server at [http://localhost:3000](http://localhost:3000) 
-3. the backend email server at [http://localhost:5050](http://localhost:5050) 
+Then you can validate your setup by accessing
+
+1. the app frontend at [http://localhost:5050](http://localhost:5050)
+2. the backend api server at [http://localhost:3000](http://localhost:3000)
+3. the backend email server at [http://localhost:3005](http://localhost:3005)
 4. the temporal server at [http://localhost:8233](http://localhost:8233)
 
 ## Installing the prerequisites and dependencies
@@ -37,5 +38,4 @@ You would likely need to install the following prerequisites:
 - [Act](https://github.com/nektos/act) (for running GitHub Actions workflows locally)
 - [Git](https://git-scm.com/downloads) (for version control and Git hooks)
 - [nvm](https://github.com/nvm-sh/nvm#install--update-script) (to manage Node.js versions)
-- [Concurrently](https://www.npmjs.com/package/concurrently) (for running multiple dev processes; install globally: `npm install -g concurrently`)
 - [GitHub CLI](https://cli.github.com/) (for triggering remote workflows) (optional)

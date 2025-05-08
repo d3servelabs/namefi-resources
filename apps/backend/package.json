@@ -12,8 +12,9 @@
     "#services/*": "./src/services/*.ts"
   },
   "scripts": {
-    "dev": "ENVIRONMENT=local tsx watch src/index.ts",
-    "dev:temporal": "ENVIRONMENT=local tsx watch src/temporal/main.temporal.ts",
+    "force-local": "ENVIRONMENT=local bun",
+    "dev": "bun run force-local tsx watch src/index.ts",
+    "dev:temporal": "bun run force-local tsx watch src/temporal/main.temporal.ts",
     "trpc": "tsx watch src/trpc/main.ts",
     "with-env": "infisical run --token=$INFISICAL_SERVICE_TOKEN -- bun",
     "db:generate": "drizzle-kit generate",
