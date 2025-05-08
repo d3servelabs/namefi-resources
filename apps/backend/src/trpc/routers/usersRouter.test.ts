@@ -68,6 +68,46 @@ describe('Users Router', () => {
               },
             });
 
+          case 'testUserWithQualifyingGithubEmail':
+            return await Promise.resolve({
+              ...basePrivyUser,
+              id: privyUserId,
+              github: {
+                email: '0xnetizen1@d3serve.xyz',
+                firstVerifiedAt: new Date(),
+                verifiedAt: new Date(),
+                latestVerifiedAt: new Date(),
+              },
+            });
+
+          case 'testUserWithQualifyingGithubUsername':
+            return await Promise.resolve({
+              ...basePrivyUser,
+              id: privyUserId,
+              github: {
+                name: 'testUserWithQualifyingGithubUsername',
+                username: '0xnetizen1',
+                subject: 'subject',
+                firstVerifiedAt: new Date(),
+                verifiedAt: new Date(),
+                latestVerifiedAt: new Date(),
+              },
+            });
+
+          case 'testUserWithQualifyingGithubName':
+            return await Promise.resolve({
+              ...basePrivyUser,
+              id: privyUserId,
+              github: {
+                name: '0xnetizen1',
+                username: 'testUserWithQualifyingGithubName',
+                subject: 'subject',
+                firstVerifiedAt: new Date(),
+                verifiedAt: new Date(),
+                latestVerifiedAt: new Date(),
+              },
+            });
+
           case 'testUserWithQualifyingEns':
             return await Promise.resolve({
               ...basePrivyUser,
@@ -90,6 +130,15 @@ describe('Users Router', () => {
               id: privyUserId,
               email: {
                 address: '0xnetizen.1@d3serve.xyz',
+                firstVerifiedAt: new Date(),
+                verifiedAt: new Date(),
+                latestVerifiedAt: new Date(),
+              },
+              github: {
+                name: 'testUserWithoutQualifyingAccount',
+                username: 'testUserWithQualifyingGithubName',
+                email: 'testUserWithoutQualifyingAccount@d3serve.xyz',
+                subject: 'subject',
                 firstVerifiedAt: new Date(),
                 verifiedAt: new Date(),
                 latestVerifiedAt: new Date(),
@@ -264,6 +313,90 @@ describe('Users Router', () => {
 
     const result =
       await callerWithUserWithQualifyingTwitterName.getUserQualifiesForDomainNamePromo(
+        {
+          normalizedDomainName: testNormalizedDomainName,
+        },
+      );
+
+    // Assert: Check the structure of the response
+    expect(result).toBe(true);
+  });
+
+  it('should return true for testUserWithQualifyingGithubEmail', async () => {
+    // Create a caller for the router with testUserWithQualifyingGithubEmail
+    const callerWithUserWithQualifyingGithubEmail = usersRouter.createCaller(
+      {
+        thirdPartyOriginHostname: null,
+        testUser: {
+          ...baseTestUser,
+          id: 'testUserWithQualifyingGithubEmail',
+          privyUserId: 'testUserWithQualifyingGithubEmail',
+        },
+      } satisfies Omit<
+        TrpcContext,
+        'user' | 'db' | 'req' | 'res'
+      > as TrpcContext,
+      {},
+    );
+
+    const result =
+      await callerWithUserWithQualifyingGithubEmail.getUserQualifiesForDomainNamePromo(
+        {
+          normalizedDomainName: testNormalizedDomainName,
+        },
+      );
+
+    // Assert: Check the structure of the response
+    expect(result).toBe(true);
+  });
+
+  it('should return true for testUserWithQualifyingGithubUsername', async () => {
+    // Create a caller for the router with testUserWithQualifyingGithubUsername
+    const callerWithUserWithQualifyingGithubUsername = usersRouter.createCaller(
+      {
+        thirdPartyOriginHostname: null,
+        testUser: {
+          ...baseTestUser,
+          id: 'testUserWithQualifyingGithubUsername',
+          privyUserId: 'testUserWithQualifyingGithubUsername',
+        },
+      } satisfies Omit<
+        TrpcContext,
+        'user' | 'db' | 'req' | 'res'
+      > as TrpcContext,
+      {},
+    );
+
+    const result =
+      await callerWithUserWithQualifyingGithubUsername.getUserQualifiesForDomainNamePromo(
+        {
+          normalizedDomainName: testNormalizedDomainName,
+        },
+      );
+
+    // Assert: Check the structure of the response
+    expect(result).toBe(true);
+  });
+
+  it('should return true for testUserWithQualifyingGithubName', async () => {
+    // Create a caller for the router with testUserWithQualifyingGithubName
+    const callerWithUserWithQualifyingGithubName = usersRouter.createCaller(
+      {
+        thirdPartyOriginHostname: null,
+        testUser: {
+          ...baseTestUser,
+          id: 'testUserWithQualifyingGithubName',
+          privyUserId: 'testUserWithQualifyingGithubName',
+        },
+      } satisfies Omit<
+        TrpcContext,
+        'user' | 'db' | 'req' | 'res'
+      > as TrpcContext,
+      {},
+    );
+
+    const result =
+      await callerWithUserWithQualifyingGithubName.getUserQualifiesForDomainNamePromo(
         {
           normalizedDomainName: testNormalizedDomainName,
         },

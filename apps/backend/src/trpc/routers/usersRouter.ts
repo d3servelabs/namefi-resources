@@ -283,34 +283,29 @@ export async function userQualifiesForDomainNamePromo({
     return false;
   }
 
+  const accountNamesToCheck: (string | null | undefined)[] = [];
+
   // check email address
   const privyEmailAddress = privyUser.email?.address;
-  if (isNotNil(privyEmailAddress) && privyEmailAddress.startsWith('0x')) {
+  if (isNotNil(privyEmailAddress)) {
     const [name] = privyEmailAddress.split('@');
-    if (name.slice(2).toLowerCase() === subdomain.toLowerCase()) {
-      return true;
-    }
+    accountNamesToCheck.push(name);
   }
 
-  // check twitter name
-  const privyTwitterDisplayName = privyUser.twitter?.name;
-  if (
-    isNotNil(privyTwitterDisplayName) &&
-    privyTwitterDisplayName.startsWith('0x') &&
-    privyTwitterDisplayName.slice(2).toLowerCase() === subdomain.toLowerCase()
-  ) {
-    return true;
+  // check twitter
+  accountNamesToCheck.push(privyUser.twitter?.name);
+  accountNamesToCheck.push(privyUser.twitter?.username);
+
+  // #region check github
+  const githubEmailAddress = privyUser.github?.email;
+  if (isNotNil(githubEmailAddress)) {
+    const [name] = githubEmailAddress.split('@');
+    accountNamesToCheck.push(name);
   }
 
-  // check twitter handle (aka username)
-  const privyTwitterHandle = privyUser.twitter?.username;
-  if (
-    isNotNil(privyTwitterHandle) &&
-    privyTwitterHandle.startsWith('0x') &&
-    privyTwitterHandle.slice(2).toLowerCase() === subdomain.toLowerCase()
-  ) {
-    return true;
-  }
+  accountNamesToCheck.push(privyUser.github?.name);
+  accountNamesToCheck.push(privyUser.github?.username);
+  // #endregion check github
 
   // check ENS for all user wallets
   const privyUserLinkedEthereumChecksumWalletAddresses =
@@ -328,13 +323,17 @@ export async function userQualifiesForDomainNamePromo({
       continue;
     }
     const ensName = result.value;
-    if (isNotNil(ensName) && ensName.startsWith('0x')) {
+    if (isNotNil(ensName)) {
       const ensNamePrefix = ensName.split('.')[0];
-      if (ensNamePrefix.slice(2).toLowerCase() === subdomain.toLowerCase()) {
-        return true;
-      }
+      accountNamesToCheck.push(ensNamePrefix);
     }
   }
+  // #endregion check ENS for all user wallets
 
-  return false;
+  return accountNamesToCheck.some(
+    (accountName) =>
+      isNotNil(accountName) &&
+      accountName.startsWith('0x') &&
+      accountName.slice(2).toLowerCase() === subdomain.toLowerCase(),
+  );
 }
