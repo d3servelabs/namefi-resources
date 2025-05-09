@@ -217,15 +217,15 @@ export default function OrderPage({ params }: OrderPageProps) {
       progressBarRef.current?.finish();
     }
   }, [isCompletedOrder]);
-  const [debouncedIsCompletedOrder] = useDebounceValue(isCompletedOrder, 2000);
+  const [debouncedIsCompletedOrder] = useDebounceValue(isCompletedOrder, 3000);
 
   const progressBar = useMemo(() => {
     return (
-      <div className="flex items-center justify-center py-2">
+      <div className="flex items-center justify-center py-4">
         <AutoStartProgressBar key={'progress-bar'} ref={progressBarRef} />
       </div>
     );
-  }, [progressBarRef]);
+  }, []);
 
   if (!(isAuthLoading || isAuthenticated)) {
     return (

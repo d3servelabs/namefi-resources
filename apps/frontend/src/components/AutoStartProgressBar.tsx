@@ -13,7 +13,7 @@ export type AutoStartProgressBar = {
   finish: () => void;
   reset: () => void;
 };
-const duration = 30;
+const duration = 45;
 export const AutoStartProgressBar = forwardRef<AutoStartProgressBar, any>(
   (_, ref) => {
     const motionValue = useMotionValue(0);
@@ -27,8 +27,8 @@ export const AutoStartProgressBar = forwardRef<AutoStartProgressBar, any>(
     const init = useCallback(() => {
       const controls = animate(motionValue, 90, { duration });
       const jiggle = () => {
-        return animate(motionValue, 70, {
-          duration: 2,
+        return animate(motionValue, 75, {
+          duration: 1,
           onComplete: () => {
             animate(motionValue, 90, { duration: 10, onComplete: jiggle });
           },
@@ -50,10 +50,12 @@ export const AutoStartProgressBar = forwardRef<AutoStartProgressBar, any>(
       ref,
       () => ({
         finish: () => {
-          scope.animations.forEach((animation) => {
+          for (const animation of scope.animations) {
             animation.stop();
-          });
-          animate(motionValue, 100, { duration: 1 });
+          }
+          setTimeout(() => {
+            animate(motionValue, 100, { duration: 1 });
+          }, 500);
         },
         reset: () => {
           animate(motionValue, 0, { duration: 1, onComplete: init });
