@@ -1,4 +1,4 @@
-import { db, orderItemStatusSchema } from '@namefi-astra/db';
+import { db, orderItemStatusSchema, orderStatusSchema } from '@namefi-astra/db';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { addWeeks, isAfter, subDays } from 'date-fns';
 import { ParseResultType, parseDomain } from 'parse-domain';
@@ -108,7 +108,7 @@ export const getDomainListInfo = async (
           }
         }
 
-        const orderItems = await db.query.orderItemsTable.findMany({
+        const orderItemsWithOrder = await db.query.orderItemsTable.findMany({
           where: (orderItems, { and, ilike, or, gt, eq }) =>
             and(
               ilike(orderItems.normalizedDomainName, domain),
@@ -117,10 +117,26 @@ export const getDomainListInfo = async (
                 and(
                   // CREATED should be also constrained by date, since we don't want old unprocessed orders to prevent repurchase
                   eq(orderItems.status, orderItemStatusSchema.Enum.CREATED),
-                  gt(orderItems.createdAt, subDays(new Date(), 2)), //TODO: this is a temporary constraint, we should find a better way to do this or at least define certain limits for duration of unprocessed orders
+                  gt(orderItems.createdAt, subDays(new Date(), 1)), //TODO: this is a temporary constraint, we should find a better way to do this or at least define certain limits for duration of unprocessed orders
                 ),
               ),
             ),
+          //TODO: temporary, use a leftjoin or a view instead
+          with: {
+            order: true,
+          },
+        });
+        //TODO: temporary, use a leftjoin or a view instead
+        const orderItems = orderItemsWithOrder.filter((orderItem) => {
+          if (orderItem.status === orderItemStatusSchema.Enum.CREATED) {
+            return (
+              [
+                orderStatusSchema.Enum.PROCESSING,
+                orderStatusSchema.Enum.CREATED,
+              ] as any
+            ).includes(orderItem.order.status);
+          }
+          return true;
         });
 
         if (orderItems.length > 0) {
