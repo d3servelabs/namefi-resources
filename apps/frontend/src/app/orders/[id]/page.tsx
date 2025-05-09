@@ -1,5 +1,6 @@
 'use client';
 
+import { AutoStartProgressBar } from '@/components/AutoStartProgressBar';
 import { AuthRequired } from '@/components/auth-required';
 import { CartCard } from '@/components/cart-card';
 import { NamefiButton } from '@/components/namefi-button';
@@ -26,7 +27,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { use, useEffect, useMemo } from 'react';
+import { use, useEffect, useMemo, useRef } from 'react';
 import {
   FacebookIcon,
   FacebookShareButton,
@@ -35,6 +36,7 @@ import {
   TwitterIcon,
   TwitterShareButton,
 } from 'react-share';
+import { useDebounceValue } from 'usehooks-ts';
 
 interface OrderPageProps {
   params: Promise<{ id: string }>;
@@ -178,6 +180,23 @@ export default function OrderPage({ params }: OrderPageProps) {
     return `(${getChain(order.payment.nfscPaymentDetails.chainId)?.name}) ${getShortAddress(order.payment.nfscPaymentDetails.walletAddress)}`;
   }, [isCreditCardPayment, order?.payment]);
 
+  const progressBarRef = useRef<AutoStartProgressBar>(null);
+
+  useEffect(() => {
+    if (isCompletedOrder) {
+      progressBarRef.current?.finish();
+    }
+  }, [isCompletedOrder]);
+  const [debouncedIsCompletedOrder] = useDebounceValue(isCompletedOrder, 2000);
+
+  const progressBar = useMemo(() => {
+    return (
+      <div className="flex items-center justify-center py-2">
+        <AutoStartProgressBar key={'progress-bar'} ref={progressBarRef} />
+      </div>
+    );
+  }, [progressBarRef]);
+
   if (!(isAuthLoading || isAuthenticated)) {
     return (
       <AuthRequired
@@ -198,6 +217,7 @@ export default function OrderPage({ params }: OrderPageProps) {
             Hang on tight...
             <Loader2 className="h-5 w-5 animate-spin" />
           </p>
+          {progressBar}
 
           <div className="mb-6 flex justify-center">
             <CartCard className="p-4 w-full sm:w-3/4 md:w-1/2 lg:w-1/3 max-w-sm">
@@ -241,7 +261,7 @@ export default function OrderPage({ params }: OrderPageProps) {
     );
   }
 
-  if (!isCompletedOrder) {
+  if (!debouncedIsCompletedOrder) {
     return (
       <div className="container mx-auto py-8 px-8">
         <div className="max-w-2xl mx-auto text-center">
@@ -252,6 +272,7 @@ export default function OrderPage({ params }: OrderPageProps) {
             Hang on tight...
             <Loader2 className="h-5 w-5 animate-spin" />
           </p>
+          {progressBar}
 
           {showCarousel ? (
             <Carousel className="mb-6">
