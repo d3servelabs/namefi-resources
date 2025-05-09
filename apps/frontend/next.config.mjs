@@ -28,6 +28,7 @@ const nextConfig = {
   env: {
     version: packageJson.version,
     name: packageJson.name,
+    ENVIRONMENT: process.env.ENVIRONMENT,
   },
   devIndicators: {
     position: 'bottom-right',

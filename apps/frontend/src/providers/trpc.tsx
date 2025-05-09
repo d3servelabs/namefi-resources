@@ -1,6 +1,7 @@
 'use client';
 
 import { config } from '@/lib/env';
+import { datadogLogs } from '@datadog/browser-logs';
 import type { AppRouter } from '@namefi-astra/backend/trpc';
 import { getAccessToken } from '@privy-io/react-auth';
 import {
@@ -9,6 +10,7 @@ import {
   isServer,
 } from '@tanstack/react-query';
 import {
+  TRPCClientError,
   createTRPCClient,
   httpBatchLink,
   httpLink,
@@ -20,10 +22,41 @@ import { useState } from 'react';
 import superjson from 'superjson';
 import { TRPCProvider } from '../utils/trpc';
 
+if (process.env.NEXT_PUBLIC_DATADOG_LOGS_CLIENT_TOKEN) {
+  datadogLogs.init({
+    clientToken: process.env.NEXT_PUBLIC_DATADOG_LOGS_CLIENT_TOKEN,
+    site: 'us5.datadoghq.com',
+    service: `namefi-astra-frontend-${process.env.ENVIRONMENT}`,
+    forwardErrorsToLogs: true,
+    forwardConsoleLogs: ['error', 'info'],
+    sessionSampleRate: 100,
+  });
+}
+
 function makeQueryClient() {
   return new QueryClient({
     defaultOptions: {
+      mutations: {
+        onError: (error) => {
+          datadogLogs.logger.error('Mutation error', error);
+        },
+      },
       queries: {
+        retry(failureCount, error) {
+          if (
+            typeof window === 'undefined' ||
+            !(error instanceof TRPCClientError)
+          ) {
+            return false;
+          }
+
+          if (failureCount < 2) {
+            return true;
+          }
+
+          datadogLogs.logger.error('Query error', error);
+          return false;
+        },
         // With SSR, we usually want to set some default staleTime
         // above 0 to avoid refetching immediately on the client
         staleTime: 60 * 1000,

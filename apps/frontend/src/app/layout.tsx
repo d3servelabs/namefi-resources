@@ -16,6 +16,7 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import { headers } from 'next/headers';
 import type { ReactNode } from 'react';
 import './globals.css';
+import DatadogRum from '@/components/DatadogRum';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -59,6 +60,7 @@ export default function RootLayout({
           'antialiased min-h-screen w-full overflow-x-hidden overflow-y-auto flex flex-col',
         )}
       >
+        <DatadogRum />
         <Preloader />
         <UsercentricsScript
           settingsId={config.USER_CENTRICS_SETTINGS_ID}

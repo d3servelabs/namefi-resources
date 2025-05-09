@@ -85,6 +85,9 @@
       "version": "0.1.1-beta",
       "dependencies": {
         "@cfx-kit/wallet-avatar": "^0.0.5",
+        "@datadog/browser-logs": "^6.6.4",
+        "@datadog/browser-rum": "^6.6.4",
+        "@datadog/browser-rum-react": "^6.6.4",
         "@hookform/resolvers": "^5.0.1",
         "@namefi-astra/backend": "workspace:*",
         "@namefi-astra/env": "workspace:*",
@@ -287,6 +290,16 @@
     "@cfx-kit/wallet-avatar": ["@cfx-kit/wallet-avatar@0.0.5", "", { "dependencies": { "@types/mersenne-twister": "^1.1.2", "mersenne-twister": "^1.1.0" } }, "sha512-qQjAxtkAWAG2YCUEffFmySVRwFquYCk3fH62dEv0IKnuTHZeqbqmlTgsXPvNUqBo4wPRZt0J4IxxFhykTvFfbA=="],
 
     "@coinbase/wallet-sdk": ["@coinbase/wallet-sdk@4.3.0", "", { "dependencies": { "@noble/hashes": "^1.4.0", "clsx": "^1.2.1", "eventemitter3": "^5.0.1", "preact": "^10.24.2" } }, "sha512-T3+SNmiCw4HzDm4we9wCHCxlP0pqCiwKe4sOwPH3YAK2KSKjxPRydKu6UQJrdONFVLG7ujXvbd/6ZqmvJb8rkw=="],
+
+    "@datadog/browser-core": ["@datadog/browser-core@6.6.4", "", {}, "sha512-VpJ10Rbj0UX5i1mbZo575ZA04O6cfBNI2L3TstxZPtnT/XQtqAm0KZpazW4sAZ8IFQXNHxMYYVe43mViapP0rw=="],
+
+    "@datadog/browser-logs": ["@datadog/browser-logs@6.6.4", "", { "dependencies": { "@datadog/browser-core": "6.6.4" }, "peerDependencies": { "@datadog/browser-rum": "6.6.4" }, "optionalPeers": ["@datadog/browser-rum"] }, "sha512-ga1PM1dLKk23W0Ad2jm/ISRopj28X4XB0gxRMjDA78qS51t75OTbNmianZOqv6qXWGFeGwsZ4dACoF7MuFWkFA=="],
+
+    "@datadog/browser-rum": ["@datadog/browser-rum@6.6.4", "", { "dependencies": { "@datadog/browser-core": "6.6.4", "@datadog/browser-rum-core": "6.6.4" }, "peerDependencies": { "@datadog/browser-logs": "6.6.4" }, "optionalPeers": ["@datadog/browser-logs"] }, "sha512-SgC38/GGAKczbkPEt+4qDTC2AIHyMTGcVnfObyXMxX3dSNGN64CRGuZCqQxV2Efl0hZiFJ/sOGDDP/BTQZ9eDw=="],
+
+    "@datadog/browser-rum-core": ["@datadog/browser-rum-core@6.6.4", "", { "dependencies": { "@datadog/browser-core": "6.6.4" } }, "sha512-8T/nAA5qn/hIhntF8uSj8lL7R56bGgM/bld8h78iQCHbwxNKGX14pGw7rIANW7IpUo7qsRa+DPl5uXyNT7m2Dw=="],
+
+    "@datadog/browser-rum-react": ["@datadog/browser-rum-react@6.6.4", "", { "dependencies": { "@datadog/browser-core": "6.6.4", "@datadog/browser-rum-core": "6.6.4" }, "peerDependencies": { "react": "18 || 19", "react-router-dom": "6 || 7" }, "optionalPeers": ["react", "react-router-dom"] }, "sha512-XTVwo8rnsiMN8KR9UUKUTJkJXCP6AZgq7kPKYqK61xttaJvW1jB3mOiJYrZe9bNac0c7N2RiXbrEXVKWgQhe1w=="],
 
     "@drizzle-team/brocli": ["@drizzle-team/brocli@0.10.2", "", {}, "sha512-z33Il7l5dKjUgGULTqBsQBQwckHh5AbIuxhdsIxDDiZAzBOrZO6q9ogcWC65kU382AfynTfgNumVcNIjuIua6w=="],
 
