@@ -12,7 +12,7 @@
     "#services/*": "./src/services/*.ts"
   },
   "scripts": {
-    "force-local": "ENVIRONMENT=local bun",
+    "force-local": "ENVIRONMENT=local LOG_LEVEL=debug bun",
     "dev": "bun run force-local tsx watch src/index.ts",
     "dev:temporal": "wait-on tcp:${TEMPORAL_SERVER_PORT:-7233} && bun run force-local tsx watch src/temporal/main.temporal.ts",
     "trpc": "tsx watch src/trpc/main.ts",
@@ -65,6 +65,7 @@
     "drizzle-orm": "^0.40.1",
     "drizzle-zod": "^0.7.0",
     "hono": "^4.7.5",
+    "hono-pino-logger": "^1.0.0",
     "mnemonist": "^0.40.3",
     "nodemailer": "^6.10.0",
     "openai": "^4.97.0",
@@ -72,6 +73,8 @@
     "p-map": "^7.0.3",
     "p-props": "^6.0.0",
     "parse-domain": "^8.2.2",
+    "pino": "^9.6.0",
+    "pino-pretty": "^13.0.0",
     "ramda": "^0.30.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",

@@ -1,9 +1,10 @@
 import { serve } from '@hono/node-server';
 import { trpcServer } from '@hono/trpc-server'; // Deno 'npm:@hono/trpc-server'
 import { Hono } from 'hono';
+import { pinoLogger as pinoLoggerHono } from 'hono-pino-logger';
 import { cors } from 'hono/cors';
-import { logger } from 'hono/logger';
 import { prettyJSON } from 'hono/pretty-json';
+import { logger } from '#lib/logger';
 import { getPoweredByNamefi3PHostnames } from '#lib/namefi-registry';
 import { config, secrets } from './lib/env';
 import { nsJsonRouter } from './ns-json';
@@ -55,7 +56,7 @@ app.use(async (...args) => {
   })(...args);
 });
 app.use(prettyJSON());
-app.use(logger());
+app.use(pinoLoggerHono(logger));
 app.use(
   '/trpc/*',
   trpcServer({

@@ -8,6 +8,7 @@ import { isNotEmpty } from 'ramda';
 import superjson from 'superjson';
 import { ZodError } from 'zod';
 import { config, secrets } from '#lib/env';
+import { logger } from '#lib/logger';
 import { getPoweredByNamefi3PHostnames } from '#lib/namefi-registry';
 import { privyClient } from './utils';
 
@@ -149,18 +150,24 @@ export const createTRPCRouter = t.router;
  * network latency that would occur in production but not in local development.
  */
 const timingMiddleware = t.middleware(async ({ next, path }) => {
-  const start = Date.now();
-
-  if (t._config.isDev) {
-    // artificial delay in dev
-    const waitMs = Math.floor(Math.random() * 400) + 100;
-    await new Promise((resolve) => setTimeout(resolve, waitMs));
-  }
+  performance.mark('requestStart-trpc');
 
   const result = await next();
+  performance.mark('requestEnd-trpc');
 
-  const end = Date.now();
-  console.log(`[TRPC] ${path} took ${end - start}ms to execute`);
+  const measure = performance.measure(
+    'request-trpc',
+    'requestStart-trpc',
+    'requestEnd-trpc',
+  );
+  logger.trace(
+    {
+      context: 'TRPC',
+      path,
+      measure,
+    },
+    `[TRPC][TIMING] ${path} took ${Math.round(measure.duration)}ms to execute`,
+  );
 
   return result;
 });
