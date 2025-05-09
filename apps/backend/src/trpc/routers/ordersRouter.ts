@@ -234,12 +234,21 @@ export const ordersRouter = createTRPCRouter({
 
       return order;
     }),
+
   getOrder: protectedProcedure
     .input(z.object({ orderId: z.string() }))
-    .query(async ({ input }) => {
+    .query(async ({ ctx, input }) => {
       const { orderId } = input;
-      return await orderService.getOrderDetailsOrThrow(orderId);
+      const order = await orderService.getOrderDetailsOrThrow(orderId);
+      if (order.userId !== ctx.user.id) {
+        throw new TRPCError({
+          code: 'UNAUTHORIZED',
+          message: 'You are not authorized to access this order',
+        });
+      }
+      return order;
     }),
+
   getOrderItems: protectedProcedure.query(async ({ ctx }) => {
     // TODO: (sid) Consider addding pagination to this query if we start to have a lot of orders
     const allOrders = await db.query.ordersTable.findMany({
@@ -274,6 +283,7 @@ export const ordersRouter = createTRPCRouter({
       if (userId !== user.id) {
         throw new TRPCError({
           code: 'UNAUTHORIZED',
+          message: 'You are not authorized to access this order',
         });
       }
 

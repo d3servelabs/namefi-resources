@@ -15,6 +15,7 @@ import {
   CarouselPrevious,
 } from '@/components/ui/shadcn/carousel';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
+import { Unauthorized } from '@/components/unauthorized';
 import { useAuth } from '@/hooks/useAuth';
 import { formatDate, getShortAddress } from '@/lib/utils';
 import { useTRPC } from '@/utils/trpc';
@@ -24,6 +25,7 @@ import {
   getSubDomainAndParentDomainFromNormalizedDomainName,
 } from '@namefi-astra/utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { TRPCClientError } from '@trpc/client';
 import { Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -57,7 +59,11 @@ export default function OrderPage({ params }: OrderPageProps) {
     });
   }, [queryClient, cartItemsQueryKey]);
 
-  const { data: order, isLoading: isOrderLoading } = useQuery({
+  const {
+    data: order,
+    isLoading: isOrderLoading,
+    error,
+  } = useQuery({
     ...trpc.orders.getOrder.queryOptions({ orderId: id }),
     enabled: !!id && isAuthenticated,
     refetchInterval: (query) => {
@@ -73,6 +79,18 @@ export default function OrderPage({ params }: OrderPageProps) {
 
       return false;
     },
+    retry(failureCount, error) {
+      if (failureCount >= 3) {
+        return false;
+      }
+      if (
+        error instanceof TRPCClientError &&
+        error.data?.code === 'UNAUTHORIZED'
+      ) {
+        return false;
+      }
+      return true;
+    },
   });
 
   const {
@@ -81,6 +99,18 @@ export default function OrderPage({ params }: OrderPageProps) {
   } = useQuery({
     ...trpc.orders.getOrderPaymentMethodDetails.queryOptions({ orderId: id }),
     enabled: !!id && isAuthenticated,
+    retry(failureCount, error) {
+      if (failureCount >= 3) {
+        return false;
+      }
+      if (
+        error instanceof TRPCClientError &&
+        error.data?.code === 'UNAUTHORIZED'
+      ) {
+        return false;
+      }
+      return true;
+    },
   });
 
   const isFailedOrder = useMemo(() => {
@@ -242,7 +272,15 @@ export default function OrderPage({ params }: OrderPageProps) {
       </div>
     );
   }
-
+  if (
+    error &&
+    error instanceof TRPCClientError &&
+    error.data?.code === 'UNAUTHORIZED'
+  ) {
+    return (
+      <Unauthorized description="You are not authorized to view this order." />
+    );
+  }
   if (!order) {
     return (
       <div className="container mx-auto py-8 px-8">

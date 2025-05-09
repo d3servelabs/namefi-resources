@@ -11,12 +11,14 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/shadcn/tooltip';
+import { Unauthorized } from '@/components/unauthorized';
 import { useAuth } from '@/hooks/useAuth';
 import { getShortAddress } from '@/lib/utils';
 import { formatAmountInUSD } from '@/utils/number';
 import { useTRPC } from '@/utils/trpc';
 import { getChain } from '@namefi-astra/utils';
 import { useQuery } from '@tanstack/react-query';
+import { TRPCClientError } from '@trpc/client';
 import { format } from 'date-fns';
 import { Check, ClipboardCopy, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -34,9 +36,25 @@ export default function OrderDetailsPage({
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
   const trpc = useTRPC();
 
-  const { data: order, isLoading } = useQuery({
+  const {
+    data: order,
+    isLoading,
+    error,
+  } = useQuery({
     ...trpc.orders.getOrder.queryOptions({ orderId: id }),
     enabled: !!id,
+    retry(failureCount, error) {
+      if (failureCount >= 3) {
+        return false;
+      }
+      if (
+        error instanceof TRPCClientError &&
+        error.data?.code === 'UNAUTHORIZED'
+      ) {
+        return false;
+      }
+      return true;
+    },
   });
 
   const {
@@ -45,6 +63,18 @@ export default function OrderDetailsPage({
   } = useQuery({
     ...trpc.orders.getOrderPaymentMethodDetails.queryOptions({ orderId: id }),
     enabled: !!id && isAuthenticated,
+    retry(failureCount, error) {
+      if (failureCount >= 3) {
+        return false;
+      }
+      if (
+        error instanceof TRPCClientError &&
+        error.data?.code === 'UNAUTHORIZED'
+      ) {
+        return false;
+      }
+      return true;
+    },
   });
 
   const isCreditCardPayment = useMemo(
@@ -180,7 +210,15 @@ export default function OrderDetailsPage({
       </div>
     );
   }
-
+  if (
+    error &&
+    error instanceof TRPCClientError &&
+    error.data?.code === 'UNAUTHORIZED'
+  ) {
+    return (
+      <Unauthorized description="You are not authorized to view this order." />
+    );
+  }
   if (!order) {
     return (
       <div className="container mx-auto py-8 px-8">

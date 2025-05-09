@@ -7,9 +7,9 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/shadcn/card';
+import { useAuth } from '@/hooks/useAuth';
 import { ShieldAlert } from 'lucide-react';
 import Link from 'next/link';
-import { useCallback } from 'react';
 
 export interface UnauthorizedProps {
   title?: string;
@@ -24,13 +24,7 @@ export function Unauthorized({
   authUrl = '/',
   homeUrl = '/',
 }: UnauthorizedProps) {
-  const handleAuth = useCallback(() => {
-    //
-  }, []);
-
-  const handleHome = useCallback(() => {
-    //
-  }, []);
+  const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm p-4">
@@ -43,16 +37,13 @@ export function Unauthorized({
           <CardDescription className="mt-2">{description}</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="flex flex-col space-y-2 sm:flex-row sm:space-x-2 sm:space-y-0">
-            <Button onClick={handleAuth} className="w-full" asChild={true}>
-              <Link href={authUrl}>Sign In</Link>
-            </Button>
-            <Button
-              onClick={handleHome}
-              variant="outline"
-              className="w-full"
-              asChild={true}
-            >
+          <div className="flex flex-col space-y-2 sm:space-x-2 sm:space-y-0 gap-2">
+            {!isAuthenticated && !isAuthLoading && (
+              <Button className="w-full" asChild={true}>
+                <Link href={authUrl}>Sign In</Link>
+              </Button>
+            )}
+            <Button variant="outline" className="w-full" asChild={true}>
               <Link href={homeUrl}>Go to Home</Link>
             </Button>
           </div>
