@@ -7,6 +7,7 @@ import { and, eq, sql } from 'drizzle-orm';
 import { Hono } from 'hono';
 import { BiMap } from 'mnemonist';
 import { z } from 'zod';
+import { createLogger } from '#lib/logger';
 
 const nsJsonRouter = new Hono();
 
@@ -74,6 +75,8 @@ interface DnsResponse {
 // curl -X GET 'http://localhost:3000/v1/ns-json?name=example.com.&type=1' # Mocked response
 // curl -X GET 'http://localhost:3000/v1/ns-json?name=test.com.&type=1' # Response from Astra DB
 nsJsonRouter.get('/', async (c) => {
+  const _logger = createLogger({ context: 'NS-JSON', query: c.req.query() });
+  _logger.info('Received request');
   // get qname and qtype from query params
 
   const qnameResult = fqdnLowercaseSchema.safeParse(c.req.query('name'));
@@ -143,8 +146,7 @@ nsJsonRouter.get('/', async (c) => {
 
   // make a tRPC query to get the DNS record by calling
   if (!mockDnsTable[qname]?.[qtype]) {
-    console.log('No DNS record found for domain:', qname, qtype);
-    console.log('Mock DNS table:', mockDnsTable);
+    _logger.warn(`No DNS record found for domain ${qname} ${qtype}`);
     c.status(404);
     return c.json({
       error: 'Not Found',
@@ -152,8 +154,15 @@ nsJsonRouter.get('/', async (c) => {
     });
   }
 
-  console.log('Found DNS record for domain:', qname, qtype);
-  console.log('Mock DNS table:', mockDnsTable[qname][qtype]);
+  _logger.info(
+    {
+      context: 'NS-JSON',
+      qname,
+      qtype,
+      foundRecord: mockDnsTable[qname][qtype],
+    },
+    `Found DNS record ${qname} ${qtype}`,
+  );
 
   const result: DnsResponse = {
     RCODE: 0,
@@ -172,14 +181,15 @@ nsJsonRouter.get('/', async (c) => {
       },
     ],
   };
-  console.log('Sending DNS response:', result);
+  _logger.info({ result }, 'Sending DNS response');
   return c.json(result);
 });
 
 // fallback route when not captured
 // biome-ignore lint/suspicious/useAwait: to be added
 nsJsonRouter.use('/*', async (c) => {
-  console.log('Unhandled request:', c.req.method, c.req.url);
+  const _logger = createLogger({ context: 'NS-JSON', query: c.req.query() });
+  _logger.error(`Unhandled request: ${c.req.method} ${c.req.url}`);
   c.status(404);
   return c.json({
     error: 'Not Found',
