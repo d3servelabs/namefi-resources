@@ -5,6 +5,7 @@ import { NamefiButton } from '@/components/namefi-button';
 import { SavePaymentMethodDialog } from '@/components/savePaymentMethod/savePaymentMethodDialog';
 import { Button } from '@/components/ui/shadcn/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/shadcn/card';
+import { Skeleton } from '@/components/ui/shadcn/skeleton';
 import { useAuth } from '@/hooks/useAuth';
 import { cn } from '@/lib/utils';
 import { useTRPC } from '@/utils/trpc';
@@ -16,13 +17,27 @@ import { Suspense, useCallback, useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import { PaymentMethodsManagerPlaceholder } from './PaymentMethodsManagerPlaceholder';
 
-const LoadingPlaceholder = () => (
-  <PaymentMethodsManagerPlaceholder
-    title="Loading payment methods"
-    description="Please wait while we load your payment methods"
-    icon={<Loader2 className="animate-spin" />}
-  />
-);
+const LoadingSkeletons = () => {
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      {[...new Array(3)].map((_, index) => (
+        <Card key={index} className={cn('relative')}>
+          <CardContent className="pt-6">
+            <div className="flex items-start gap-4">
+              <Skeleton className="h-9 w-9" />
+              <div className="flex-1">
+                <Skeleton className="h-8 w-20" />
+              </div>
+            </div>
+          </CardContent>
+          <CardFooter className="flex justify-between border-t pt-4">
+            <Skeleton className="h-8 w-8" />
+          </CardFooter>
+        </Card>
+      ))}
+    </div>
+  );
+};
 
 const EmptyPlaceholder = () => (
   <PaymentMethodsManagerPlaceholder
@@ -74,7 +89,7 @@ export default function PaymentMethodsManager() {
           showSavePaymentMethodDialog={showSavePaymentMethodDialog}
         />
       </div>
-      <Suspense fallback={<LoadingPlaceholder />}>
+      <Suspense fallback={<LoadingSkeletons />}>
         <PaymentMethodsGrid
           paymentMethodsRefetchRequired={paymentMethodsRefetchRequired}
           onPaymentMethodsRefetch={() =>
@@ -169,7 +184,7 @@ function PaymentMethodsGrid({
   ]);
 
   if (getPaymentMethodsFetching) {
-    return <LoadingPlaceholder />;
+    return <LoadingSkeletons />;
   }
 
   if (creditCards.length === 0) {
