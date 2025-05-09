@@ -183,16 +183,13 @@ function PaymentMethodsGrid({
           <CardContent className="pt-6">
             <div className="flex items-start gap-4">
               <div className="p-2 rounded-full bg-muted">
-                <CreditCardIcon className="h-4 w-4" />
+                <CreditCardIcon className="h-5 w-5" />
               </div>
               <div className="flex-1">
-                <h3 className="font-medium">{method.last4}</h3>
-                <>
-                  <p className="text-sm text-muted-foreground">
-                    {method.brand} •••• {method.last4}
-                  </p>
-                  <p className="text-xs text-muted-foreground">{`Expires ${method.exp_month}/${method.exp_year}`}</p>
-                </>
+                <h3 className="font-medium capitalize">
+                  {method.brand} ({method.last4})
+                </h3>
+                <p className="text-xs text-muted-foreground">{`Expires ${method.exp_month}/${method.exp_year}`}</p>
               </div>
             </div>
           </CardContent>
