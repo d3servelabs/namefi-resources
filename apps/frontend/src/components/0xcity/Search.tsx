@@ -10,7 +10,9 @@ import { useCart } from '@/hooks/landing/use-cart';
 import { useDomainFilters } from '@/hooks/landing/use-domain-filters';
 import { useSearch } from '@/hooks/landing/use-search';
 import { config } from '@/lib/env';
-import { useState } from 'react';
+import { useTRPC } from '@/utils/trpc';
+import { useQuery } from '@tanstack/react-query';
+import { useMemo, useState } from 'react';
 import FloatingCart from '../floating-cart';
 import {
   type SearchComponent,
@@ -18,6 +20,7 @@ import {
   SearchInput,
   SearchResults,
 } from '../search';
+import { Alert, AlertDescription } from '../ui/shadcn/alert';
 import { Landing } from './Landing';
 
 // Main component
@@ -55,6 +58,21 @@ export const Search: SearchComponent = ({ originInfo }) => {
     isDomainInCart,
   );
 
+  const trpc = useTRPC();
+
+  const { data: rolloutPercent, isLoading: isLoadingRolloutPercent } = useQuery(
+    trpc.registry.get0xDotCityPercentageRollout.queryOptions(),
+  );
+
+  const shouldShowRolloutBanner = useMemo(() => {
+    return (
+      query.length === 0 && // hide when showing search results
+      !isLoadingRolloutPercent &&
+      rolloutPercent !== undefined &&
+      rolloutPercent !== 100
+    );
+  }, [isLoadingRolloutPercent, query, rolloutPercent]);
+
   if (!parentDomain) {
     // Return loading state or null while origin info is loading
     return null;
@@ -74,6 +92,16 @@ export const Search: SearchComponent = ({ originInfo }) => {
           isLoading={isSearchLoading}
           onSearch={() => refetch()}
         />
+        {shouldShowRolloutBanner && (
+          <Alert className="w-full max-w-3xl mx-auto bg-gray-700/80">
+            <AlertDescription className="text-foreground">
+              *We are making domain names available in waves. Currently,{' '}
+              {rolloutPercent}% of domain names are available. Already use a 0x
+              username elsewhere? Skip the line by using the claim feature
+              below!
+            </AlertDescription>
+          </Alert>
+        )}
       </div>
 
       <div className="-mx-4">

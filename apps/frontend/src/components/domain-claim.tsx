@@ -6,10 +6,19 @@ import { useAuth } from '@/hooks/useAuth';
 import { useTRPC } from '@/utils/trpc';
 import { useQuery } from '@tanstack/react-query';
 import { CheckIcon, Loader2, SearchIcon } from 'lucide-react';
+import Link from 'next/link';
 import { useCallback, useMemo, useState } from 'react';
 import type { ChangeEvent, FC } from 'react';
 import { useDebounceValue } from 'usehooks-ts';
+import { UserDropdown } from './dropdowns/UserDropdown';
 import { NamefiButton } from './namefi-button';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from './ui/shadcn/accordion';
+import { Button } from './ui/shadcn/button';
 import { Separator } from './ui/shadcn/separator';
 
 interface DomainClaimProps {
@@ -146,6 +155,50 @@ export const DomainClaim: FC<DomainClaimProps> = ({
       <div className="flex flex-col items-center justify-center text-center mb-12">
         <h2 className="text-4xl font-bold text-white mb-2">{title}</h2>
         <p className="text-lg text-gray-300">{subtitle}</p>
+        <p className="text-gray-300 mb-2">
+          Follow the steps below to see if you qualify
+        </p>
+        <Accordion
+          type="single"
+          collapsible={true}
+          className="w-full rounded-lg p-4 border "
+        >
+          <AccordionItem value="item-1">
+            <AccordionTrigger>Sign In</AccordionTrigger>
+            <AccordionContent className="flex flex-col gap-2">
+              <p className="text-start">
+                {isAuthenticated
+                  ? 'Thanks for signing in! You can proceed to the next step.'
+                  : 'Sign in or create an account to get started.'}
+              </p>
+              {!isAuthenticated && <UserDropdown className="w-fit" />}
+            </AccordionContent>
+          </AccordionItem>
+          <AccordionItem value="item-2">
+            <AccordionTrigger>Link Social Media</AccordionTrigger>
+            <AccordionContent className="flex flex-col gap-2">
+              <p className="text-start">
+                Link a social media account with a qualifying username by
+                visiting your profile page. For now, usernames that start with
+                "0x" qualify you for the promo.
+              </p>
+              <Button asChild={true} size={'sm'} className="w-fit">
+                <Link href={'/profile'}>Visit Profile Page</Link>
+              </Button>
+            </AccordionContent>
+          </AccordionItem>
+          <AccordionItem value="item-3">
+            <AccordionTrigger>Enter Domain Name</AccordionTrigger>
+            <AccordionContent className="flex flex-col gap-2">
+              <p className="text-start">
+                Enter your qualifying social media username without "0x" below.
+                (Ex: if your username is "0xResident", enter "Resident" below.)
+                If the domain name is available, you'll be able to claim it for
+                free!
+              </p>
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
       </div>
 
       <div className="flex md:flex-row flex-col items-center justify-between gap-2 border border-white/10 rounded-lg p-2">
