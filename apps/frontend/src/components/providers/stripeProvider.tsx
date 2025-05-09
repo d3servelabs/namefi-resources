@@ -1,6 +1,7 @@
 'use client';
 
 import { config } from '@/lib/env';
+import { getTheme } from '@/lib/origin';
 import { Elements } from '@stripe/react-stripe-js';
 import {
   type StripeElementsOptions,
@@ -23,9 +24,20 @@ export function StripeProvider({
   clientSecret,
   customerSessionClientSecret,
 }: StripeProviderProps) {
+  const appearance: StripeElementsOptions['appearance'] = useMemo(() => {
+    const theme = getTheme();
+    return {
+      theme: 'night',
+      variables: {
+        colorPrimary: theme === '0x-city' ? '#4f46e5' : '#1cd17d',
+        colorBackground: '#09090b',
+      },
+    };
+  }, []);
+
   const stripeElementOptions: StripeElementsOptions | null = useMemo(() => {
     if (clientSecret) {
-      return { clientSecret } as StripeElementsOptionsClientSecret;
+      return { clientSecret, appearance } as StripeElementsOptionsClientSecret;
     }
 
     if (customerSessionClientSecret) {
@@ -34,15 +46,13 @@ export function StripeProvider({
         currency: 'usd',
         amount: amount,
         capture_method: 'manual',
-        appearance: {
-          theme: 'stripe',
-        },
+        appearance,
         customerSessionClientSecret,
       };
     }
 
     return null;
-  }, [amount, clientSecret, customerSessionClientSecret]);
+  }, [amount, appearance, clientSecret, customerSessionClientSecret]);
 
   return (
     stripeElementOptions && (
