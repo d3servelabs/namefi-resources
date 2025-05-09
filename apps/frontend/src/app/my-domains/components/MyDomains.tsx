@@ -38,19 +38,34 @@ function useGetDomains() {
 
 const LoadingSkeletons: FC = () => (
   <div className="flex flex-col gap-4">
-    {Array.from({ length: 3 }).map((_, index) => (
-      <Card key={index} className="overflow-hidden">
-        <CardContent className="p-6">
-          <div className="flex items-center justify-between">
-            <div className="space-y-2">
-              <Skeleton className="h-5 w-[200px]" />
-              <Skeleton className="h-4 w-[100px]" />
-            </div>
-            <Skeleton className="h-10 w-[120px]" />
-          </div>
-        </CardContent>
-      </Card>
-    ))}
+    <Card>
+      <CardContent>
+        <Table className="w-full">
+          <Thead>
+            <Tr>
+              <Th>Chain</Th>
+              <Th>Domain Name</Th>
+              <Th>Actions</Th>
+            </Tr>
+          </Thead>
+          <TableBody>
+            {[...new Array(3)].map((_, index) => (
+              <Tr key={index}>
+                <Td>
+                  <Skeleton className="h-6 w-6" />
+                </Td>
+                <Td className="font-medium w-full">
+                  <Skeleton className="h-6 w-32" />
+                </Td>
+                <Td className="text-right">
+                  <Skeleton className="h-6 w-32" />
+                </Td>
+              </Tr>
+            ))}
+          </TableBody>
+        </Table>
+      </CardContent>
+    </Card>
   </div>
 );
 
