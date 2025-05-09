@@ -1,3 +1,4 @@
+import { isNotNil } from 'ramda';
 import { useMemo, useState } from 'react';
 
 export type DomainData = {
@@ -23,6 +24,9 @@ export function useDomainFilters(
     }
     if (activeTab === 'unavailable') {
       return domains.filter((domain) => !domain.availability);
+    }
+    if (activeTab === 'taken') {
+      return domains.filter((domain) => isNotNil(domain.currentOwner));
     }
     if (activeTab === 'cart') {
       return domains.filter((domain) => isDomainInCart(domain.domain));

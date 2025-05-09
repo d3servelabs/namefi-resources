@@ -158,7 +158,7 @@ export const DomainCard: FC<{
               </span>
               {!domain.availability && (
                 <Badge className="ml-2 text-xs bg-black/70 text-white">
-                  Unavailable
+                  {isNotNil(domain.currentOwner) ? 'Taken' : 'Unavailable'}
                 </Badge>
               )}
             </h3>
@@ -169,7 +169,7 @@ export const DomainCard: FC<{
                   : ''}
               </p>
             </div>
-            {!domain.availability && domain.currentOwner && (
+            {!domain.availability && isNotNil(domain.currentOwner) && (
               <div className="flex items-center text-sm text-muted-foreground">
                 <User className="mr-1 h-3 w-3" />
                 Owner: {domain.currentOwner.substring(0, 6)}...
@@ -400,6 +400,12 @@ export const Search: SearchComponent = ({ originInfo }) => {
                   value="available"
                 >
                   Available
+                </TabsTrigger>
+                <TabsTrigger
+                  className="py-2 px-3 w-32 rounded-sm"
+                  value="taken"
+                >
+                  Taken
                 </TabsTrigger>
                 <TabsTrigger
                   className="py-2 px-3 w-32 rounded-sm"
