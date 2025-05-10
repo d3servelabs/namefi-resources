@@ -1,4 +1,9 @@
+import { useInteractionLoggers } from '@/components/providers/interactionLoggersProvider';
 import { useAuth } from '@/hooks/useAuth';
+import {
+  type AddToCartEvent,
+  InteractionLoggingEventName,
+} from '@/utils/interaction-logging/events';
 import { useTRPC } from '@/utils/trpc';
 import type { CartItemSelect as DbCartItem } from '@namefi-astra/db/types';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -25,6 +30,7 @@ export function useCart() {
   const { isAuthenticated } = useAuth();
   // Ref to track sync status
   const isSyncing = useRef(false);
+  const { logEventWithInteractionLoggers } = useInteractionLoggers();
 
   // Local storage cart for non-authenticated users
   const [localCartItems, setLocalCartItems, removeLocalCartItems] =
@@ -103,6 +109,17 @@ export function useCart() {
     [cartData],
   );
 
+  const logAddToCart = useCallback(
+    (item: CartItem) => {
+      const purchaseEvent: AddToCartEvent = {
+        name: InteractionLoggingEventName.ADD_TO_CART,
+        properties: { amountInUsdCents: item.amountInUSDCents },
+      };
+      logEventWithInteractionLoggers(purchaseEvent);
+    },
+    [logEventWithInteractionLoggers],
+  );
+
   const handleDomainAction = useCallback(
     (domain: { domain: string; priceInUSD?: number | null }) => {
       const domainName = domain.domain;
@@ -126,8 +143,10 @@ export function useCart() {
 
         if (isAuthenticated) {
           addToCartMutate([cartItem]);
+          logAddToCart(cartItem);
         } else {
           addToLocalCart(cartItem);
+          logAddToCart(cartItem);
         }
       }
     },
@@ -139,6 +158,7 @@ export function useCart() {
       isAuthenticated,
       addToLocalCart,
       removeFromLocalCart,
+      logAddToCart,
     ],
   );
 

@@ -18,6 +18,15 @@ const USER_CENTRICS_GOOGLE_ANALYTICS_SERVICE_ID =
 
 function transformEvent(event: InteractionLoggingEvent) {
   switch (event.name) {
+    case InteractionLoggingEventName.ADD_TO_CART:
+      return {
+        name: event.name,
+        properties: {
+          currency: 'USD', // required to be 3-letter ISO 4217 by GoogleAnalytics
+          value: event.properties.amountInUsdCents / 100,
+          items: [], // TODO(Luis): replace items with Item type from GoogleAnalytics
+        },
+      };
     case InteractionLoggingEventName.PURCHASE:
       return {
         name: event.name,
