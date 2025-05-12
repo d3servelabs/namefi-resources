@@ -2,6 +2,7 @@
 
 import { Input } from '@/components/ui/shadcn/input';
 import { useCart } from '@/hooks/landing/use-cart';
+import { useIsMobile } from '@/hooks/use-mobile';
 import { useAuth } from '@/hooks/useAuth';
 import { useTRPC } from '@/utils/trpc';
 import { useQuery } from '@tanstack/react-query';
@@ -52,6 +53,8 @@ export const DomainClaim: FC<DomainClaimProps> = ({
   const [subdomainValue, setSubdomainValue] = useState('');
   const [debouncedSubdomainValue, setDebouncedSubdomainValue] =
     useDebounceValue(subdomainValue, 500);
+
+  const isMobile = useIsMobile();
 
   const isSubdomainValueValid = useMemo(() => {
     return subdomainValue.length > 0;
@@ -203,20 +206,20 @@ export const DomainClaim: FC<DomainClaimProps> = ({
 
       <div className="flex md:flex-row flex-col items-center justify-between gap-2 border border-white/10 rounded-lg p-2">
         <div className="relative shrink-0 bg-black/40 h-14 flex items-center flex-1 rounded-md">
-          <div className="absolute left-3 text-gray-400">
-            <SearchIcon className="h-5 w-5" />
+          <div className="flex items-center justify-center pl-2 gap-1 md:gap-2 h-14">
+            <SearchIcon className="h-5 w-5 text-gray-400" />
+            <Input
+              placeholder={isMobile ? 'name' : 'yourname'}
+              value={subdomainValue}
+              onChange={onInputChange}
+              className="w-full px-0 border-0 dark:bg-transparent h-full shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-gray-500 text-lg"
+            />
           </div>
-          <Input
-            placeholder="yourname"
-            value={subdomainValue}
-            onChange={onInputChange}
-            className="pl-10 border-0 dark:bg-transparent h-full shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-gray-500 text-lg"
-          />
-          <Separator orientation="vertical" className="mx-4 h-3" />
+          <Separator orientation="vertical" className="mx-0.5 md:mx-4 h-3" />
           <div className="mr-4 text-gray-400 text-lg">.{domain}</div>
         </div>
         <NamefiButton
-          className="w-44 h-14"
+          className="w-40 md:w-44 h-14"
           onClick={handleClaim}
           disabled={!canClaim}
         >
