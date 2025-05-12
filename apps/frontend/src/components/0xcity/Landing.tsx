@@ -19,7 +19,7 @@ const Hero: FC = () => {
         We are 0xCitizens:
       </h1>
       <h2 className="text-3xl md:text-4xl font-bold mb-6">
-        Building theDecentralized Future Together
+        Building the Decentralized Future Together
       </h2>
       <p className="max-w-3xl mx-auto text-lg text-muted-foreground px-4">
         Join the network of '0x Generation' citizens, where you not only have
@@ -34,7 +34,7 @@ const Hero: FC = () => {
 // What Is Section with Orbiting Circles
 const WhatIsSection: FC = () => {
   return (
-    <section className="px-14 flex flex-col lg:flex-row items-center justify-evenly gap-10 gradient-border-top gradient-border-bottom">
+    <section className="px-14 py-20 flex flex-col lg:flex-row items-center justify-evenly gap-10 gradient-border-top gradient-border-bottom overflow-hidden">
       <div className="md:w-1/2 text-white flex flex-col gap-6 justify-center">
         <h2 className="text-5xl text-center lg:text-left font-bold">
           What Is 0x.City
@@ -52,7 +52,7 @@ const WhatIsSection: FC = () => {
         orientation="vertical"
         className="bg-white/10 self-stretch !h-auto"
       />
-      <div className="relative flex h-[635] scale-70 lg:scale-100 w-full lg:w-1/2 flex-col items-center justify-center overflow-hidden">
+      <div className="relative flex h-[635] scale-70 lg:scale-100 w-[100vh] md:w-full lg:w-1/2 flex-col items-center justify-center overflow-hidden">
         <Image
           src="/logos/0x-logo.svg"
           alt="0x logo"

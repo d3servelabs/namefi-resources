@@ -46,14 +46,15 @@ export const SearchHeader: FC<{
   parentDomain: string;
   setParentDomain: (domain: string) => void;
   isFirstPartyOrigin: boolean;
-}> = ({ parentDomain, setParentDomain, isFirstPartyOrigin }) => {
+  tagline?: string;
+}> = ({ parentDomain, setParentDomain, isFirstPartyOrigin, tagline }) => {
   return (
     <div className="flex flex-col items-center mt-40 p-4 gap-3">
       <h1 className="text-8xl font-bold text-white drop-shadow-lg">
         {parentDomain}
       </h1>
-      <p className="text-4xl text-white font-semibold drop-shadow-xl">
-        Search for a domain on {parentDomain}
+      <p className="text-4xl text-center text-white font-semibold drop-shadow-xl">
+        {tagline || `Search for a domain on ${parentDomain}`}
       </p>
       {isFirstPartyOrigin && (
         <>

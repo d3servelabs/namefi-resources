@@ -85,6 +85,7 @@ export const Search: SearchComponent = ({ originInfo }) => {
           parentDomain={parentDomain}
           setParentDomain={setParentDomain}
           isFirstPartyOrigin={originInfo.isFirstPartyOrigin}
+          tagline="Claim your citizenship for the future world"
         />
         <SearchInput
           query={query}
@@ -114,29 +115,29 @@ export const Search: SearchComponent = ({ originInfo }) => {
                 onValueChange={setActiveTab}
                 className="w-full"
               >
-                <div className="flex justify-between items-center py-5">
+                <div className="flex flex-col md:flex-row justify-between items-center py-5">
                   <h2 className="text-2xl font-semibold">Search Results</h2>
-                  <TabsList className="grid grid-cols-4 backdrop-blur-2xl rounded-md bg-black/50">
+                  <TabsList className="grid grid-cols-4 mt-4 md:mt-0 backdrop-blur-2xl rounded-md bg-black/50">
                     <TabsTrigger
-                      className="py-2 px-3 w-32 rounded-sm"
+                      className="py-2 px-3 md:w-32 rounded-sm"
                       value="all"
                     >
                       All
                     </TabsTrigger>
                     <TabsTrigger
-                      className="py-2 px-3 w-32 rounded-sm"
+                      className="py-2 px-3 md:w-32 rounded-sm"
                       value="available"
                     >
                       Available
                     </TabsTrigger>
                     <TabsTrigger
-                      className="py-2 px-3 w-32 rounded-sm"
+                      className="py-2 px-3 md:w-32 rounded-sm"
                       value="unavailable"
                     >
                       Unavailable
                     </TabsTrigger>
                     <TabsTrigger
-                      className="py-2 px-3 w-32 rounded-sm"
+                      className="py-2 px-3 md:w-32 rounded-sm"
                       value="cart"
                     >
                       In Cart
