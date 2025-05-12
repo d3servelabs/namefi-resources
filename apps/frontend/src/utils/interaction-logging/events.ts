@@ -1,3 +1,5 @@
+import type { CartItemSelect } from '@namefi-astra/db/types';
+
 export enum InteractionLoggingEventName {
   // GoogleAnalytics-recommended events
   ADD_TO_CART = 'add_to_cart',
@@ -5,6 +7,11 @@ export enum InteractionLoggingEventName {
   SEARCH = 'search',
   SIGN_UP = 'sign_up',
 }
+
+export type InteractionLoggingCartItem = Pick<
+  CartItemSelect,
+  'amountInUSDCents' | 'normalizedDomainName'
+>;
 
 /*
  * Before adding a new event name, see if GoogleAnalytics has a recommended event that covers that need first.
@@ -20,14 +27,15 @@ export type InteractionLoggingEvent =
 export type AddToCartEvent = {
   name: InteractionLoggingEventName.ADD_TO_CART;
   properties: {
-    amountInUsdCents: number;
+    cartItem: InteractionLoggingCartItem;
   };
 };
 
 export type PurchaseEvent = {
   name: InteractionLoggingEventName.PURCHASE;
   properties: {
-    amountInUsdCents: number;
+    totalAmountInUsdCents: number;
+    cartItems: InteractionLoggingCartItem[];
   };
 };
 

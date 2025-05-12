@@ -2,6 +2,7 @@
 
 import { config } from '@/lib/env';
 import {
+  type InteractionLoggingCartItem,
   type InteractionLoggingEvent,
   InteractionLoggingEventName,
 } from '@/utils/interaction-logging/events';
@@ -16,26 +17,44 @@ const GA_MEASUREMENT_ID = config.GA_MEASUREMENT_ID;
 const USER_CENTRICS_GOOGLE_ANALYTICS_SERVICE_ID =
   config.USER_CENTRICS_GOOGLE_ANALYTICS_SERVICE_ID;
 
+// From Google Analytics documentation
+type Item = { item_id: string; price: number };
+
+function interactionLoggingCartItemToGoogleAnalyticsItem(
+  cartItem: InteractionLoggingCartItem,
+): Item {
+  return {
+    item_id: cartItem.normalizedDomainName,
+    price: cartItem.amountInUSDCents / 100,
+  } as Item;
+}
+
 function transformEvent(event: InteractionLoggingEvent) {
   switch (event.name) {
-    case InteractionLoggingEventName.ADD_TO_CART:
+    case InteractionLoggingEventName.ADD_TO_CART: {
+      const { cartItem } = event.properties;
       return {
         name: event.name,
         properties: {
           currency: 'USD', // required to be 3-letter ISO 4217 by GoogleAnalytics
-          value: event.properties.amountInUsdCents / 100,
-          items: [], // TODO(Luis): replace items with Item type from GoogleAnalytics
+          value: cartItem.amountInUSDCents / 100,
+          items: [interactionLoggingCartItemToGoogleAnalyticsItem(cartItem)],
         },
       };
-    case InteractionLoggingEventName.PURCHASE:
+    }
+    case InteractionLoggingEventName.PURCHASE: {
+      const { cartItems, totalAmountInUsdCents } = event.properties;
       return {
         name: event.name,
         properties: {
           currency: 'USD', // required to be 3-letter ISO 4217 by GoogleAnalytics
-          value: event.properties.amountInUsdCents / 100,
-          items: [], // TODO(Luis): replace items with Item type from GoogleAnalytics
+          value: totalAmountInUsdCents / 100,
+          items: cartItems.map((cartItem: InteractionLoggingCartItem) =>
+            interactionLoggingCartItemToGoogleAnalyticsItem(cartItem),
+          ),
         },
       };
+    }
     default:
       return event;
   }

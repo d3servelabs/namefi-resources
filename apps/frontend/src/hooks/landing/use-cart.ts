@@ -110,12 +110,14 @@ export function useCart() {
   );
 
   const logAddToCart = useCallback(
-    (item: CartItem) => {
-      const purchaseEvent: AddToCartEvent = {
+    (cartItem: CartItem) => {
+      const addToCartEvent: AddToCartEvent = {
         name: InteractionLoggingEventName.ADD_TO_CART,
-        properties: { amountInUsdCents: item.amountInUSDCents },
+        properties: {
+          cartItem,
+        },
       };
-      logEventWithInteractionLoggers(purchaseEvent);
+      logEventWithInteractionLoggers(addToCartEvent);
     },
     [logEventWithInteractionLoggers],
   );

@@ -292,12 +292,19 @@ export default function CartPage() {
   }, [paymentMethodSelected, selectedNftWalletAddress]);
 
   const logPurchase = useCallback(() => {
+    if (!items) {
+      return;
+    }
+
     const purchaseEvent: PurchaseEvent = {
       name: InteractionLoggingEventName.PURCHASE,
-      properties: { amountInUsdCents: totalAmountInUsdCents },
+      properties: {
+        totalAmountInUsdCents,
+        cartItems: items,
+      },
     };
     logEventWithInteractionLoggers(purchaseEvent);
-  }, [logEventWithInteractionLoggers, totalAmountInUsdCents]);
+  }, [items, logEventWithInteractionLoggers, totalAmountInUsdCents]);
 
   const handleSubmitOrder = useCallback(() => {
     if (!items || items.length === 0) {
