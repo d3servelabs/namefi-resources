@@ -147,24 +147,26 @@ export const DomainCard: FC<{
     >
       <CardContent className="h-full w-full">
         <div className="flex items-center justify-between h-full w-full">
-          <div className="space-y-1">
-            <h3 className="font-semibold tracking-tight flex gap-2 items-center">
-              <span>
-                <span className="text-3xl text-brand-tertiary">
-                  {subdomain}
-                </span>
-                <span className="text-2xl text-foreground">
-                  .{parentDomain}
-                </span>
-              </span>
+          <div className="space-y-1 flex-1 min-w-0 mr-4 overflow-hidden">
+            <div className="font-semibold tracking-tight flex items-start gap-2">
+              <div className="min-w-0 flex-1">
+                <h3 className="line-clamp-2 break-words">
+                  <span className="text-3xl text-brand-tertiary">
+                    {subdomain}
+                  </span>
+                  <span className="text-2xl text-foreground">
+                    .{parentDomain}
+                  </span>
+                </h3>
+              </div>
               {!domain.availability && (
-                <Badge className="ml-2 text-xs bg-black/70 text-white">
+                <Badge className="ml-2 text-xs bg-black/70 text-white shrink-0 mt-2">
                   {isNotNil(domain.currentOwner) ? 'Taken' : 'Unavailable'}
                 </Badge>
               )}
-            </h3>
+            </div>
             <div className="flex items-center gap-2">
-              <p className="text-xl font-medium">
+              <p className="text-xl font-medium line-clamp-1">
                 {isNotNil(domain.priceInUSD)
                   ? `${formatAmountInUSD(domain.priceInUSD)} USD`
                   : ''}
@@ -172,16 +174,20 @@ export const DomainCard: FC<{
             </div>
             {!domain.availability && isNotNil(domain.currentOwner) && (
               <div className="flex items-center text-sm text-muted-foreground">
-                <User className="mr-1 h-3 w-3" />
-                Owner: {domain.currentOwner.substring(0, 6)}...
-                {domain.currentOwner.substring(domain.currentOwner.length - 4)}
+                <User className="mr-1 h-3 w-3 shrink-0" />
+                <span className="line-clamp-1">
+                  Owner: {domain.currentOwner.substring(0, 6)}...
+                  {domain.currentOwner.substring(
+                    domain.currentOwner.length - 4,
+                  )}
+                </span>
               </div>
             )}
           </div>
           {domain.availability && (
             <TooltipProvider>
               {isInCart ? (
-                <div className="flex space-x-2">
+                <div className="flex space-x-2 shrink-0">
                   <Tooltip>
                     <TooltipTrigger asChild={true}>
                       <NamefiButton
@@ -253,13 +259,13 @@ export const LoadingSkeletons: FC = () => (
       >
         <CardContent className="h-full w-full">
           <div className="flex items-center justify-between h-full w-full">
-            <div className="space-y-1">
-              <Skeleton className="h-8 w-[250px]" />
+            <div className="space-y-1 flex-1 min-w-0 mr-4">
+              <Skeleton className="h-8 w-full max-w-[250px]" />
               <div className="flex items-center gap-2">
-                <Skeleton className="h-6 w-[100px]" />
+                <Skeleton className="h-6 w-full max-w-[100px]" />
               </div>
             </div>
-            <Skeleton className="h-10 w-[120px] rounded-full" />
+            <Skeleton className="h-10 w-[120px] rounded-full shrink-0" />
           </div>
         </CardContent>
       </Card>
