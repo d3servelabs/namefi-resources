@@ -1,5 +1,4 @@
 import { useInteractionLoggers } from '@/components/providers/interactionLoggersProvider';
-import type { AppRouterOutputs } from '@/providers/trpc';
 import {
   InteractionLoggingEventName,
   type SearchEvent,
@@ -7,7 +6,7 @@ import {
 import { useTRPC } from '@/utils/trpc';
 import { useQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'next/navigation';
-import { ascend, prop, sortWith, uniqBy } from 'ramda';
+import { groupBy, prop, uniqBy } from 'ramda';
 import { useEffect, useMemo, useState } from 'react';
 import { useDebounceValue } from 'usehooks-ts';
 
@@ -24,7 +23,6 @@ const sharedQueryOptions = {
   },
 } as const;
 
-type Suggestion = AppRouterOutputs['search']['getDomainSuggestions'][number];
 /**
  * Hook for managing domain search functionality
  */
@@ -120,28 +118,20 @@ export function useSearch(
 
   // Derived state for domains
   const domains = useMemo(() => {
-    const _domains = [
+    const _domains = uniqBy(prop('domain'), [
       ...(domainSuggestions ?? []),
       ...(llmDomainSuggestions ?? []),
-    ];
+    ]);
+
+    const _domainsByAvailability = groupBy(
+      ({ availability }) => (availability ? 'available' : 'unavailable'),
+      _domains,
+    );
 
     return [
       ...(searchData?.bulkAvailability ?? []),
-      ...sortWith(
-        [
-          (a: Suggestion, b: Suggestion) => {
-            if (a.availability === b.availability) {
-              return 0;
-            }
-            if (a.availability && !b.availability) {
-              return -1;
-            }
-            return 1;
-          },
-          ascend(prop('domain')),
-        ],
-        uniqBy(prop('domain'), _domains),
-      ),
+      ...(_domainsByAvailability.available ?? []),
+      ...(_domainsByAvailability.unavailable ?? []),
     ];
   }, [searchData?.bulkAvailability, domainSuggestions, llmDomainSuggestions]);
 
