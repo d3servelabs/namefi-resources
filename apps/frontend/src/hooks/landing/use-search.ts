@@ -9,6 +9,20 @@ import { useQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'next/navigation';
 import { ascend, prop, sortWith, uniqBy } from 'ramda';
 import { useEffect, useMemo, useState } from 'react';
+import { useDebounceValue } from 'usehooks-ts';
+
+const sharedQueryOptions = {
+  refetchOnWindowFocus: false,
+  refetchOnMount: false,
+  refetchOnReconnect: false,
+  refetchInterval: false,
+  staleTime: Number.POSITIVE_INFINITY,
+  trpc: {
+    context: {
+      skipBatch: true,
+    },
+  },
+} as const;
 
 type Suggestion = AppRouterOutputs['search']['getDomainSuggestions'][number];
 /**
@@ -19,6 +33,7 @@ export function useSearch(
   enabledAutoUrlQueryMonitor = true,
 ) {
   const [query, setQuery] = useState('');
+  const [debouncedQuery] = useDebounceValue(query, 800);
   const trpc = useTRPC();
   const { logEventWithInteractionLoggers } = useInteractionLoggers();
   const searchParams = useSearchParams();
@@ -44,22 +59,13 @@ export function useSearch(
   } = useQuery({
     ...trpc.search.search.queryOptions(
       {
-        query,
+        query: debouncedQuery,
         parentDomain,
         withSuggestions: false,
       },
       {
-        enabled: query.length > 0 && !!parentDomain,
-        refetchOnWindowFocus: false,
-        refetchOnMount: false,
-        refetchOnReconnect: false,
-        refetchInterval: false,
-        staleTime: Number.POSITIVE_INFINITY,
-        trpc: {
-          context: {
-            skipBatch: true,
-          },
-        },
+        enabled: debouncedQuery.length > 0 && !!parentDomain,
+        ...sharedQueryOptions,
       },
     ),
   });
@@ -72,22 +78,13 @@ export function useSearch(
   } = useQuery(
     trpc.search.getDomainSuggestions.queryOptions(
       {
-        query,
+        query: debouncedQuery,
         parentDomain: parentDomain ?? '',
         onlyAvailable: true,
       },
       {
-        enabled: query.length > 0 && !!parentDomain,
-        refetchOnWindowFocus: false,
-        refetchOnMount: false,
-        refetchOnReconnect: false,
-        refetchInterval: false,
-        staleTime: Number.POSITIVE_INFINITY,
-        trpc: {
-          context: {
-            skipBatch: true,
-          },
-        },
+        enabled: debouncedQuery.length > 0 && !!parentDomain,
+        ...sharedQueryOptions,
       },
     ),
   );
@@ -100,21 +97,12 @@ export function useSearch(
   } = useQuery(
     trpc.search.getLlmDomainSuggestions.queryOptions(
       {
-        query,
+        query: debouncedQuery,
         parentDomain,
       },
       {
-        enabled: query.length > 0 && !!parentDomain,
-        refetchOnWindowFocus: false,
-        refetchOnMount: false,
-        refetchOnReconnect: false,
-        refetchInterval: false,
-        staleTime: Number.POSITIVE_INFINITY,
-        trpc: {
-          context: {
-            skipBatch: true,
-          },
-        },
+        enabled: debouncedQuery.length > 0 && !!parentDomain,
+        ...sharedQueryOptions,
       },
     ),
   );
@@ -167,6 +155,7 @@ export function useSearch(
   return {
     query,
     setQuery,
+    debouncedQuery,
     domains,
     isSearchLoading,
     refetch,
