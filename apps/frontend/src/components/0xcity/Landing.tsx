@@ -22,8 +22,8 @@ const Hero: FC = () => {
         Building the Decentralized Future Together
       </h2>
       <p className="max-w-3xl mx-auto text-lg text-muted-foreground px-4">
-        Join the network of '0x Generation' citizens, where you not only have
-        anidentity but also define the future together.
+        Join the network of '0x Generation' citizens, where you not only have an
+        identity but also define the future together.
         <br />
         Claim yourname.0x.city and join the movement
       </p>
