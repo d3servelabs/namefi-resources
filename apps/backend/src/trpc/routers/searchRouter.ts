@@ -30,6 +30,7 @@ import {
 import { z } from 'zod';
 import { deepseek } from '#lib/llm/deepseek';
 import { openai } from '#lib/llm/gpt';
+import { createLogger } from '#lib/logger';
 import { getDomainListInfo } from '#lib/namefi-registry';
 import { authedOrPublicProcedure, createTRPCRouter } from '../base';
 
@@ -135,9 +136,33 @@ export const searchRouter = createTRPCRouter({
         query: sanitizedQuerySchema,
         parentDomain: z.string(),
         onlyAvailable: z.boolean().optional().default(true),
+        maxDuration: z
+          .number()
+          .optional()
+          .default(2000)
+          .describe(
+            'The maximum duration of the query in milliseconds, ' +
+              '(this is not strict, it is just a reference to know when to stop trying to find more suggestions), ' +
+              'the actual duration could be less (if all results are found before this duration)' +
+              ' or more than this value (if the round before last takes just a few milliseconds less than this value)',
+          ),
+        maxRound: z
+          .number()
+          .optional()
+          .default(5)
+          .describe(
+            'The maximum number of rounds to generate suggestions. ' +
+              'This is to avoid infinite loops. this is enabled when onlyAvailable is true. ' +
+              'this is not strict, it is just a reference to know when to stop trying to find more suggestions',
+          ),
       }),
     )
     .query(async ({ input, ctx }) => {
+      const logger = createLogger({
+        context: 'getDomainSuggestions',
+        input,
+        userId: ctx.user?.id,
+      });
       const startTime = performance.now();
       const { query } = input;
 
@@ -159,18 +184,21 @@ export const searchRouter = createTRPCRouter({
       let suggestions: Suggestion[] = [];
 
       const loopStartTime = performance.now();
-      const maxDuration = 2000;
-      const maxRound = 5;
+      logger.info(`[getDomainSuggestions] Starting loop ${loopStartTime}`);
+      const maxDuration = input.maxDuration;
+      const maxRound = input.maxRound;
       let currentSuggestions: Suggestion[] = [];
-      let round = 0; // Number of rounds to generate suggestions (to avoid infinite loops) this is enabled when onlyAvailable is false
+
+      // Number of rounds to generate suggestions (to avoid infinite loops) this is enabled when onlyAvailable is false
+      // Also acts as a seed in the suggestions and reference to avoid repeating the initial base suggestions
+      let round = 0;
+      const totalSuggestions = new Set<string>();
       do {
         // do-while to ensure at least 1 round is generated
-        const normalizedSuggestions = await generateSuggestions(
-          query,
-          parentDomain,
-          tags,
-          round,
-        );
+        const normalizedSuggestions = (
+          await generateSuggestions(query, parentDomain, tags, round)
+        ).filter((d) => !totalSuggestions.has(d));
+        normalizedSuggestions.forEach((d) => totalSuggestions.add(d));
         currentSuggestions = await getDomainListInfo(
           normalizedSuggestions,
           ctx.user,
@@ -205,7 +233,7 @@ export const searchRouter = createTRPCRouter({
       suggestions = uniqBy((d) => d.domain, suggestions);
 
       const endTime = performance.now();
-      console.log(
+      logger.info(
         `[getDomainSuggestions] Time taken: ${endTime - startTime} milliseconds`,
       );
       return suggestions;
@@ -220,6 +248,11 @@ export const searchRouter = createTRPCRouter({
       }),
     )
     .query(async ({ input, ctx }) => {
+      const logger = createLogger({
+        context: 'getLlmDomainSuggestions',
+        input,
+        userId: ctx.user?.id,
+      });
       const { query } = input;
 
       const parentDomain = input.parentDomain ?? ctx.thirdPartyOriginHostname;
@@ -256,7 +289,7 @@ export const searchRouter = createTRPCRouter({
         'llm-suggestions-start',
         'llm-suggestions-end',
       );
-      console.log(
+      logger.info(
         `[getLlmDomainSuggestions] Time taken: ${measure.duration} milliseconds`,
       );
       return suggestions;

@@ -117,30 +117,75 @@ export function useSearch(
   }, [isFetched, query, logEventWithInteractionLoggers]);
 
   // Derived state for domains
+  const shouldFetchExtraDomainSuggestions = useMemo(() => {
+    if (!(domainSuggestions && llmDomainSuggestions)) {
+      // If we don't have any base suggestions yet, we don't need to fetch extra suggestions
+      return false;
+    }
+
+    const _domains = uniqBy(prop('domain'), [
+      ...(domainSuggestions ?? []),
+      ...(llmDomainSuggestions ?? []),
+    ]).filter(({ availability }) => availability);
+
+    return _domains.length < 2;
+  }, [domainSuggestions, llmDomainSuggestions]);
+
+  const {
+    data: extraDomainSuggestions,
+    isLoading: isExtraDomainSuggestionsLoading,
+    isFetching: isExtraDomainSuggestionsFetching,
+    isFetched: isExtraDomainSuggestionsFetched,
+  } = useQuery(
+    trpc.search.getDomainSuggestions.queryOptions(
+      {
+        query: debouncedQuery,
+        parentDomain: parentDomain ?? '',
+        onlyAvailable: true,
+        maxDuration: 20_000,
+        maxRound: 10,
+      },
+      {
+        enabled:
+          debouncedQuery.length > 0 &&
+          !!parentDomain &&
+          shouldFetchExtraDomainSuggestions,
+        ...sharedQueryOptions,
+      },
+    ),
+  );
+
   const domains = useMemo(() => {
     const _domains = uniqBy(prop('domain'), [
       ...(domainSuggestions ?? []),
       ...(llmDomainSuggestions ?? []),
+      ...(extraDomainSuggestions ?? []),
     ]);
 
     const _domainsByAvailability = groupBy(
       ({ availability }) => (availability ? 'available' : 'unavailable'),
       _domains,
     );
-
     return [
       ...(searchData?.bulkAvailability ?? []),
       ...(_domainsByAvailability.available ?? []),
       ...(_domainsByAvailability.unavailable ?? []),
     ];
-  }, [searchData?.bulkAvailability, domainSuggestions, llmDomainSuggestions]);
+  }, [
+    searchData?.bulkAvailability,
+    domainSuggestions,
+    llmDomainSuggestions,
+    extraDomainSuggestions,
+  ]);
 
   const isSearchLoading = isLoading || isFetching;
   const areSuggestionsLoading =
     isDomainSuggestionsLoading ||
     isDomainSuggestionsFetching ||
     isLlmDomainSuggestionsLoading ||
-    isLlmDomainSuggestionsFetching;
+    isLlmDomainSuggestionsFetching ||
+    isExtraDomainSuggestionsLoading ||
+    isExtraDomainSuggestionsFetching;
 
   return {
     query,
@@ -153,8 +198,10 @@ export function useSearch(
     isFetched,
     isDomainSuggestionsFetched,
     isLlmDomainSuggestionsFetched,
+    isExtraDomainSuggestionsFetched,
     areSuggestionsLoading,
     domainSuggestions,
     llmDomainSuggestions,
+    extraDomainSuggestions,
   };
 }
