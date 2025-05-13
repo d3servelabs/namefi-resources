@@ -18,13 +18,14 @@ const USER_CENTRICS_GOOGLE_ANALYTICS_SERVICE_ID =
   config.USER_CENTRICS_GOOGLE_ANALYTICS_SERVICE_ID;
 
 // From Google Analytics documentation
-type Item = { item_id: string; price: number };
+type Item = { item_name: string; item_id: string; price: number };
 
 function interactionLoggingCartItemToGoogleAnalyticsItem(
   cartItem: InteractionLoggingCartItem,
 ): Item {
   return {
     item_id: cartItem.normalizedDomainName,
+    item_name: cartItem.normalizedDomainName,
     price: cartItem.amountInUSDCents / 100,
   } as Item;
 }
