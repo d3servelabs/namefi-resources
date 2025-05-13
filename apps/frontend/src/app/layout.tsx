@@ -17,6 +17,7 @@ import { headers } from 'next/headers';
 import type { ReactNode } from 'react';
 import './globals.css';
 import DatadogRum from '@/components/DatadogRum';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -68,6 +69,8 @@ export default function RootLayout({
         />
         <GoogleAnalytics gaId={config.GA_MEASUREMENT_ID} />
         <Providers>
+          <ReactQueryDevtools initialIsOpen={false} />
+
           <Contexts>
             <OriginBackground />
             <Toaster />

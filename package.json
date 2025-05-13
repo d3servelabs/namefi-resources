@@ -31,6 +31,7 @@
     "dev:temporal-server": "temporal server start-dev --db-filename ./.namefi-astra-local-temporal.db",
     "dev:frontend": "bun --cwd=apps/frontend with-env force-local dev",
     "dev": "concurrently -n 'backend:api,frontend,backend:email,temporal:server,temporal:worker' -c 'blue.bold,green.bold,yellow.bold,red.bold,cyan.bold' \"bun run dev:backend:api\" \"bun run dev:frontend\" \"bun run dev:backend:email\" \"bun run dev:temporal-server\" \"bun run dev:backend:temporal\"",
+    "dev:base": "concurrently -n 'backend:api,frontend' -c 'blue.bold,red.bold' \"bun run dev:backend:api\" \"bun run dev:frontend\"",
     "typecheck": "turbo typecheck",
     "test": "NODE_ENV=test turbo test",
     "test:watch": "NODE_ENV=test turbo test:watch",
