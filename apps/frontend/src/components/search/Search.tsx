@@ -34,6 +34,7 @@ import {
   User,
   X,
 } from 'lucide-react';
+import { AnimatePresence, motion } from 'motion/react';
 import { isNotNil } from 'ramda';
 import { type FC, useState } from 'react';
 import FloatingCart from '../floating-cart';
@@ -296,35 +297,59 @@ export const SearchResults: FC<{
   isCartLoading,
   parentDomain,
 }) => {
-  if (isLoading) {
-    return <LoadingSkeletons />;
-  }
-
-  if (filteredDomains.length > 0) {
+  if (filteredDomains.length > 0 || isLoading || isLoadingMore) {
     return (
       <div className="flex flex-col gap-4">
-        {filteredDomains.map((domain, index) => (
-          <DomainCard
-            key={`${parentDomain}-${domain.domain}-${index}`}
-            domain={domain}
-            isDomainInCart={isDomainInCart}
-            handleDomainAction={handleDomainAction}
-            isAddingToCart={isAddingToCart}
-            isRemovingFromCart={isRemovingFromCart}
-            isCartLoading={isCartLoading}
-          />
-        ))}
-        {isLoadingMore && <LoadingSkeletons />}
+        <AnimatePresence mode="sync" presenceAffectsLayout={true}>
+          {isLoading ? (
+            <LoadingSkeletons key={`${parentDomain}-loading`} />
+          ) : (
+            <>
+              {filteredDomains.map((domain) => (
+                <motion.div
+                  exit={{ x: '-100vw', opacity: 0 }}
+                  animate={{ x: 0, y: 0, opacity: 1 }}
+                  initial={{ y: '100vh', opacity: 0 }}
+                  transition={{ duration: 0.5, ease: 'easeInOut' }}
+                  key={`${parentDomain}-${domain.domain}-${domain.availability}`}
+                  layout={true}
+                >
+                  <DomainCard
+                    key={`${parentDomain}-${domain.domain}-${domain.availability}`}
+                    domain={domain}
+                    isDomainInCart={isDomainInCart}
+                    handleDomainAction={handleDomainAction}
+                    isAddingToCart={isAddingToCart}
+                    isRemovingFromCart={isRemovingFromCart}
+                    isCartLoading={isCartLoading}
+                  />
+                </motion.div>
+              ))}
+
+              {isLoadingMore && (
+                <LoadingSkeletons key={`${parentDomain}-loading`} />
+              )}
+            </>
+          )}
+        </AnimatePresence>
       </div>
     );
   }
 
   if (query.length > 0) {
     return (
-      <Placeholder
-        title="No domains found"
-        description={`No domains matching "${query}" were found. Try a different search term.`}
-      />
+      <AnimatePresence mode="sync" presenceAffectsLayout={true}>
+        <motion.div
+          animate={{ x: 0, opacity: 1 }}
+          initial={{ x: '100vw', opacity: 0 }}
+          transition={{ duration: 0.5, ease: 'easeInOut' }}
+        >
+          <Placeholder
+            title="No domains found"
+            description={`No domains matching "${query}" were found. Try a different search term.`}
+          />
+        </motion.div>
+      </AnimatePresence>
     );
   }
 
