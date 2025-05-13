@@ -34,7 +34,12 @@ export const Header: ForwardRefExoticComponent<HeaderProps> = forwardRef<
     >
       {isMobile && <SidebarTrigger />}
       {isMobile && <Separator orientation="vertical" className="h-4" />}
-      <div className="w-full items-center justify-between gap-4 flex">
+      <div
+        className={cn(
+          'w-full items-center gap-4 flex',
+          isMobile ? 'justify-end' : 'justify-between',
+        )}
+      >
         <SidebarTrigger className="hidden md:flex" />
         <div className="flex items-center gap-4">
           <CartDropdown />
