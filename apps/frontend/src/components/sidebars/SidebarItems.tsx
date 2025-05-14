@@ -7,6 +7,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from '@/components/ui/shadcn/sidebar';
 import { cn } from '@/lib/utils';
 import type { NavItem } from '@/types';
@@ -25,6 +26,7 @@ export const SidebarItems: FC<SidebarItemsProps> = ({
   ...rest
 }: SidebarItemsProps) => {
   const pathname = usePathname();
+  const { isMobile, setOpenMobile } = useSidebar();
 
   return (
     <SidebarGroup className={cn('', className)} {...rest}>
@@ -40,7 +42,15 @@ export const SidebarItems: FC<SidebarItemsProps> = ({
                   isActive={isRouteActive(item, pathname)}
                   asChild={true}
                 >
-                  <Link href={item.href} target={item.target}>
+                  <Link
+                    href={item.href}
+                    target={item.target}
+                    onClick={() => {
+                      if (isMobile) {
+                        setOpenMobile(false);
+                      }
+                    }}
+                  >
                     {Icon && <Icon />}
                     <span>{item.title}</span>
                     {item.badge && (
