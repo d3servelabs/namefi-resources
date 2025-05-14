@@ -71,7 +71,12 @@ export default function CartPage() {
 
   const trpc = useTRPC();
 
-  const { cartData: items, isCartDataLoading, refetchCart } = useCart();
+  const {
+    cartData: items,
+    isCartDataLoading,
+    isRemovingFromCart,
+    removeItem,
+  } = useCart();
 
   // Show loading skeletons only on initial load – avoid layout shift once the
   // user has pressed the submit button and the page is about to redirect.
@@ -87,15 +92,6 @@ export default function CartPage() {
   const cartItemsAreAllPromo = useMemo(
     () => items && items.length > 0 && totalAmountInUsdCents === 0,
     [items, totalAmountInUsdCents],
-  );
-
-  // Use removeFromCartMutate from useCart hook
-  const { mutate: removeItem } = useMutation(
-    trpc.carts.removeItem.mutationOptions({
-      onSuccess: () => {
-        refetchCart();
-      },
-    }),
   );
 
   const router = useRouter();
@@ -487,9 +483,13 @@ export default function CartPage() {
                           onClick={() => {
                             removeItem(item.id);
                           }}
-                          disabled={isDisabled}
+                          disabled={isDisabled || isRemovingFromCart}
                         >
-                          <Trash2 className="size-4" />
+                          {isRemovingFromCart ? (
+                            <Loader2 className="size-4 animate-spin" />
+                          ) : (
+                            <Trash2 className="size-4" />
+                          )}
                         </button>
                         <span className="text-xl">
                           {formatAmountInUSD(item.amountInUSDCents, true)}

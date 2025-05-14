@@ -40,7 +40,6 @@ export function useCart() {
   const {
     data: serverCartData,
     isLoading: isCartLoading,
-    isFetching: isCartFetching,
     refetch: refetchCart,
   } = useQuery({
     ...trpc.carts.getItems.queryOptions(),
@@ -61,12 +60,15 @@ export function useCart() {
     }),
   });
 
-  const { mutate: removeFromCartMutate, isPending: isRemovingFromServerCart } =
-    useMutation({
-      ...trpc.carts.removeItem.mutationOptions({
-        onSuccess: () => refetchCart(),
-      }),
-    });
+  const {
+    mutate: removeFromCartMutate,
+    isPending: isRemovingFromServerCart,
+    mutateAsync: removeFromCartMutateAsync,
+  } = useMutation({
+    ...trpc.carts.removeItem.mutationOptions({
+      onSuccess: () => refetchCart(),
+    }),
+  });
 
   // Local cart operations
   const addToLocalCart = useCallback(
@@ -87,6 +89,18 @@ export function useCart() {
       );
     },
     [setLocalCartItems],
+  );
+
+  // Remove cart item by ID
+  const removeItem = useCallback(
+    (itemId: string) => {
+      if (isAuthenticated) {
+        removeFromCartMutate(itemId);
+      } else {
+        setLocalCartItems((prev) => prev.filter((item) => item.id !== itemId));
+      }
+    },
+    [isAuthenticated, removeFromCartMutate, setLocalCartItems],
   );
 
   // Helper functions
@@ -204,9 +218,7 @@ export function useCart() {
   // Loading states
   const isAddingToCart = isAuthenticated ? isAddingToServerCart : false;
   const isRemovingFromCart = isAuthenticated ? isRemovingFromServerCart : false;
-  const isCartDataLoading = isAuthenticated
-    ? isCartLoading || isCartFetching
-    : false;
+  const isCartDataLoading = isAuthenticated ? isCartLoading : false;
 
   return {
     cartData,
@@ -218,5 +230,6 @@ export function useCart() {
     handleDomainAction,
     refetchCart,
     clearLocalCart: removeLocalCartItems,
+    removeItem,
   };
 }
