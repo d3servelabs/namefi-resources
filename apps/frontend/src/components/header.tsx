@@ -27,7 +27,7 @@ export const Header: ForwardRefExoticComponent<HeaderProps> = forwardRef<
     <header
       ref={ref}
       className={cn(
-        'flex h-14 items-center gap-4 backdrop-blur-xl bg-muted/40 px-4 lg:h-[60px]',
+        'sticky top-0 z-50 flex h-14 items-center gap-4 backdrop-blur-xl bg-muted/40 px-4 lg:static lg:h-[60px]',
         className,
       )}
       {...rest}
