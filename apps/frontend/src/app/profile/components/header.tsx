@@ -1,11 +1,7 @@
 'use client';
 
 import { Copy } from '@/components/Copy';
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from '@/components/ui/shadcn/avatar';
+import { CurrentUserAvatar } from '@/components/UserAvatar';
 import { Button } from '@/components/ui/shadcn/button';
 import { cn } from '@/lib/utils';
 import { FORCED_THEME } from '@/providers/sessions';
@@ -57,10 +53,7 @@ export const Header: FC<HeaderProps> = ({
       {...rest}
     >
       <div className="flex items-center gap-4">
-        <Avatar className="h-20 w-20 border-2 border-primary/10">
-          <AvatarImage alt={wallet || email || 'ME'} />
-          <AvatarFallback className="text-lg">ME</AvatarFallback>
-        </Avatar>
+        <CurrentUserAvatar className="h-20 w-20" />
         <div>
           {wallet ? (
             <Copy
