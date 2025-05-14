@@ -6,12 +6,17 @@ import { type Address, type BlockTag, zeroAddress } from 'viem';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { TrpcContext } from '../base';
 import { privyClient } from '../utils';
-import { usersRouter, viemEthereumPublicClient } from './usersRouter';
+import {
+  getQualifyingDomainNameFromUserIdentifier,
+  usersRouter,
+  viemEthereumPublicClient,
+} from './usersRouter';
 
 // TODO: consider use vitest setup to do it globally after NamefiRegistry
 config({ path: '.env.test' });
 
-describe('Users Router', () => {
+describe('getUserQualifiesForDomainNamePromo', () => {
+  // TODO(Luis): consider refactoring mocking
   beforeEach(() => {
     // Clear mocks before each test
     vi.clearAllMocks();
@@ -725,5 +730,697 @@ describe('getManagerPageEntrypointViewable', () => {
 
     // Assert: Check the structure of the response
     expect(result.viewable).toBe(true);
+  });
+});
+
+describe('getQualifyingDomainNameFromUserIdentifier', () => {
+  it('should return null for null identifier', async () => {
+    const result = await getQualifyingDomainNameFromUserIdentifier(null);
+    expect(result).toBe(null);
+  });
+
+  it('should return null for undefined identifier', async () => {
+    const result = await getQualifyingDomainNameFromUserIdentifier(undefined);
+    expect(result).toBe(null);
+  });
+
+  it('should return null for identifier that does not start with 0x', async () => {
+    const result =
+      await getQualifyingDomainNameFromUserIdentifier('1xidentifier');
+    expect(result).toBe(null);
+  });
+
+  it('should return a qualifying domain name for identifier that starts with 0x', async () => {
+    const result =
+      await getQualifyingDomainNameFromUserIdentifier('0xidentifier');
+    expect(result).toBe('identifier.0x.city');
+  });
+});
+
+describe('getUserQualifyingDomainNamesForPromo', () => {
+  beforeEach(() => {
+    // Clear mocks before each test
+    vi.clearAllMocks();
+
+    // Provide a default mock implementation for privyClient.getUserById
+    // It should return a PrivyUser with different linked accounts
+    vi.spyOn(privyClient, 'getUserById').mockImplementation(
+      async (privyUserId: string) => {
+        const basePrivyUser = {
+          isGuest: false,
+          createdAt: new Date(),
+          linkedAccounts: [],
+          customMetadata: {},
+        };
+
+        switch (privyUserId) {
+          case 'testUserWithQualifyingEmail':
+            return await Promise.resolve({
+              ...basePrivyUser,
+              id: privyUserId,
+              email: {
+                address: '0xnetizen1@d3serve.xyz',
+                firstVerifiedAt: new Date(),
+                verifiedAt: new Date(),
+                latestVerifiedAt: new Date(),
+              },
+            });
+
+          case 'testUserWithQualifyingTwitterHandle':
+            return await Promise.resolve({
+              ...basePrivyUser,
+              id: privyUserId,
+              twitter: {
+                name: 'testUserWithQualifyingTwitterHandle',
+                username: '0xnetizen1',
+                subject: 'subject',
+                firstVerifiedAt: new Date(),
+                verifiedAt: new Date(),
+                latestVerifiedAt: new Date(),
+              },
+            });
+
+          case 'testUserWithQualifyingTwitterName':
+            return await Promise.resolve({
+              ...basePrivyUser,
+              id: privyUserId,
+              twitter: {
+                name: '0xnetizen1',
+                username: 'testUserWithQualifyingTwitterName',
+                subject: 'subject',
+                firstVerifiedAt: new Date(),
+                verifiedAt: new Date(),
+                latestVerifiedAt: new Date(),
+              },
+            });
+
+          case 'testUserWithQualifyingGithubEmail':
+            return await Promise.resolve({
+              ...basePrivyUser,
+              id: privyUserId,
+              github: {
+                email: '0xnetizen1@d3serve.xyz',
+                firstVerifiedAt: new Date(),
+                verifiedAt: new Date(),
+                latestVerifiedAt: new Date(),
+              },
+            });
+
+          case 'testUserWithQualifyingGithubUsername':
+            return await Promise.resolve({
+              ...basePrivyUser,
+              id: privyUserId,
+              github: {
+                name: 'testUserWithQualifyingGithubUsername',
+                username: '0xnetizen1',
+                subject: 'subject',
+                firstVerifiedAt: new Date(),
+                verifiedAt: new Date(),
+                latestVerifiedAt: new Date(),
+              },
+            });
+
+          case 'testUserWithQualifyingGithubName':
+            return await Promise.resolve({
+              ...basePrivyUser,
+              id: privyUserId,
+              github: {
+                name: '0xnetizen1',
+                username: 'testUserWithQualifyingGithubName',
+                subject: 'subject',
+                firstVerifiedAt: new Date(),
+                verifiedAt: new Date(),
+                latestVerifiedAt: new Date(),
+              },
+            });
+
+          case 'testUserWithQualifyingEns':
+            return await Promise.resolve({
+              ...basePrivyUser,
+              id: privyUserId,
+              linkedAccounts: [
+                {
+                  type: 'wallet',
+                  address: zeroAddress,
+                  chainType: 'ethereum',
+                  firstVerifiedAt: new Date(),
+                  verifiedAt: new Date(),
+                  latestVerifiedAt: new Date(),
+                },
+              ],
+            });
+
+          case 'testUserWithSolanaWalletOnly':
+            return await Promise.resolve({
+              ...basePrivyUser,
+              id: privyUserId,
+              linkedAccounts: [
+                {
+                  type: 'wallet',
+                  address: zeroAddress,
+                  chainType: 'solana',
+                  firstVerifiedAt: new Date(),
+                  verifiedAt: new Date(),
+                  latestVerifiedAt: new Date(),
+                },
+              ],
+            });
+
+          case 'testUserWithMultipleQualifyingAccounts':
+            return await Promise.resolve({
+              ...basePrivyUser,
+              id: privyUserId,
+              email: {
+                address: '0xnetizen1@d3serve.xyz',
+                firstVerifiedAt: new Date(),
+                verifiedAt: new Date(),
+                latestVerifiedAt: new Date(),
+              },
+              twitter: {
+                name: 'testUserWithMultipleQualifyingAccounts',
+                username: '0xnetizen2',
+                subject: 'subject',
+                firstVerifiedAt: new Date(),
+                verifiedAt: new Date(),
+                latestVerifiedAt: new Date(),
+              },
+              github: {
+                name: '0xnetizen1',
+                email: '0xnetizen1@d3serve.xyz',
+                username: 'testUserWithQualifyingGithubName',
+                subject: 'subject',
+                firstVerifiedAt: new Date(),
+                verifiedAt: new Date(),
+                latestVerifiedAt: new Date(),
+              },
+              linkedAccounts: [
+                {
+                  type: 'wallet',
+                  address: zeroAddress,
+                  chainType: 'ethereum',
+                  firstVerifiedAt: new Date(),
+                  verifiedAt: new Date(),
+                  latestVerifiedAt: new Date(),
+                },
+              ],
+            });
+
+          case 'testUserWithoutQualifyingAccount':
+            return await Promise.resolve({
+              ...basePrivyUser,
+              id: privyUserId,
+              email: {
+                address: '1xnetizen.1@d3serve.xyz',
+                firstVerifiedAt: new Date(),
+                verifiedAt: new Date(),
+                latestVerifiedAt: new Date(),
+              },
+              github: {
+                name: 'testUserWithoutQualifyingAccount',
+                username: 'testUserWithQualifyingGithubName',
+                email: 'testUserWithoutQualifyingAccount@d3serve.xyz',
+                subject: 'subject',
+                firstVerifiedAt: new Date(),
+                verifiedAt: new Date(),
+                latestVerifiedAt: new Date(),
+              },
+              twitter: {
+                name: 'testUserWithoutQualifyingAccount',
+                username: 'netizen1',
+                subject: 'subject',
+                firstVerifiedAt: new Date(),
+                verifiedAt: new Date(),
+                latestVerifiedAt: new Date(),
+              },
+              linkedAccounts: [
+                {
+                  type: 'wallet',
+                  address: '0x0000000000000000000000000000000000000001',
+                  chainType: 'ethereum',
+                  firstVerifiedAt: new Date(),
+                  verifiedAt: new Date(),
+                  latestVerifiedAt: new Date(),
+                },
+                {
+                  type: 'wallet',
+                  address: '0x0000000000000000000000000000000000000002',
+                  chainType: 'ethereum',
+                  firstVerifiedAt: new Date(),
+                  verifiedAt: new Date(),
+                  latestVerifiedAt: new Date(),
+                },
+                {
+                  type: 'wallet',
+                  address: '0x0000000000000000000000000000000000000003',
+                  chainType: 'ethereum',
+                  firstVerifiedAt: new Date(),
+                  verifiedAt: new Date(),
+                  latestVerifiedAt: new Date(),
+                },
+                {
+                  type: 'wallet',
+                  address: '0x0000000000000000000000000000000000000004',
+                  chainType: 'ethereum',
+                  firstVerifiedAt: new Date(),
+                  verifiedAt: new Date(),
+                  latestVerifiedAt: new Date(),
+                },
+              ],
+            });
+
+          case 'testUserWithNoLinkedAccounts': // fallthrough
+          default:
+            return await Promise.resolve({
+              ...basePrivyUser,
+              id: 'testUserWithNoLinkedAccounts',
+            });
+        }
+      },
+    );
+
+    vi.spyOn(viemEthereumPublicClient, 'getEnsName').mockImplementation(
+      async (args: {
+        blockNumber?: bigint | undefined | undefined;
+        blockTag?: BlockTag | undefined;
+        address: Address;
+        gatewayUrls?: string[] | undefined | undefined;
+        strict?: boolean | undefined | undefined;
+        universalResolverAddress?: `0x${string}` | undefined;
+      }) => {
+        switch (args.address) {
+          // qualifies
+          case zeroAddress:
+            return await Promise.resolve('0xnetizen1.eth');
+          // doesn't qualify (doesn't start with 0x)
+          case '0x0000000000000000000000000000000000000001':
+            return await Promise.resolve('netizen1.eth');
+          // doesn't qualify (doesn't start with 0x)
+          case '0x0000000000000000000000000000000000000002':
+            return await Promise.resolve('1xnetizen2.eth');
+          // doesn't resolve ens lookup
+          case '0x0000000000000000000000000000000000000003':
+            return await Promise.reject();
+          default:
+            return await Promise.resolve(null);
+        }
+      },
+    );
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  const baseTestUser = {
+    primaryEmail: null,
+    stripeCustomerId: null,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  };
+
+  it('should return qualifying domain name for testUserWithQualifyingEmail', async () => {
+    // Create a caller for the router with testUserWithQualifyingEmail
+    const callerWithUserWithQualifyingEmail1 = usersRouter.createCaller(
+      {
+        thirdPartyOriginHostname: '0x.city',
+        testUser: {
+          ...baseTestUser,
+          id: 'testUserWithQualifyingEmail',
+          privyUserId: 'testUserWithQualifyingEmail',
+        },
+      } satisfies Omit<
+        TrpcContext,
+        'user' | 'db' | 'req' | 'res'
+      > as TrpcContext,
+      {},
+    );
+
+    const result =
+      await callerWithUserWithQualifyingEmail1.getUserQualifyingDomainNamesForPromo();
+    const expected = [
+      { qualifyingDomainName: 'netizen1.0x.city', linkedAccountType: 'email' },
+    ];
+
+    // Assert: Check the structure of the response
+    expect(result).toEqual(expected);
+  });
+
+  it('should return qualifying domain name for testUserWithQualifyingTwitterHandle', async () => {
+    // Create a caller for the router with testUserWithQualifyingTwitterHandle
+    const callerWithUserWithQualifyingTwitterHandle = usersRouter.createCaller(
+      {
+        thirdPartyOriginHostname: '0x.city',
+        testUser: {
+          ...baseTestUser,
+          id: 'testUserWithQualifyingTwitterHandle',
+          privyUserId: 'testUserWithQualifyingTwitterHandle',
+        },
+      } satisfies Omit<
+        TrpcContext,
+        'user' | 'db' | 'req' | 'res'
+      > as TrpcContext,
+      {},
+    );
+
+    const result =
+      await callerWithUserWithQualifyingTwitterHandle.getUserQualifyingDomainNamesForPromo();
+    const expected = [
+      {
+        qualifyingDomainName: 'netizen1.0x.city',
+        linkedAccountType: 'twitter_oauth',
+      },
+    ];
+
+    // Assert: Check the structure of the response
+    expect(result).toEqual(expected);
+  });
+
+  it('should return qualifying domain name for testUserWithQualifyingTwitterName', async () => {
+    // Create a caller for the router with testUserWithQualifyingTwitterName
+    const callerWithUserWithQualifyingTwitterName = usersRouter.createCaller(
+      {
+        thirdPartyOriginHostname: '0x.city',
+        testUser: {
+          ...baseTestUser,
+          id: 'testUserWithQualifyingTwitterName',
+          privyUserId: 'testUserWithQualifyingTwitterName',
+        },
+      } satisfies Omit<
+        TrpcContext,
+        'user' | 'db' | 'req' | 'res'
+      > as TrpcContext,
+      {},
+    );
+
+    const result =
+      await callerWithUserWithQualifyingTwitterName.getUserQualifyingDomainNamesForPromo();
+    const expected = [
+      {
+        qualifyingDomainName: 'netizen1.0x.city',
+        linkedAccountType: 'twitter_oauth',
+      },
+    ];
+
+    // Assert: Check the structure of the response
+    expect(result).toEqual(expected);
+  });
+
+  it('should return qualifying domain name for testUserWithQualifyingGithubEmail', async () => {
+    // Create a caller for the router with testUserWithQualifyingGithubEmail
+    const callerWithUserWithQualifyingGithubEmail = usersRouter.createCaller(
+      {
+        thirdPartyOriginHostname: '0x.city',
+        testUser: {
+          ...baseTestUser,
+          id: 'testUserWithQualifyingGithubEmail',
+          privyUserId: 'testUserWithQualifyingGithubEmail',
+        },
+      } satisfies Omit<
+        TrpcContext,
+        'user' | 'db' | 'req' | 'res'
+      > as TrpcContext,
+      {},
+    );
+
+    const result =
+      await callerWithUserWithQualifyingGithubEmail.getUserQualifyingDomainNamesForPromo();
+    const expected = [
+      {
+        qualifyingDomainName: 'netizen1.0x.city',
+        linkedAccountType: 'github_oauth',
+      },
+    ];
+
+    // Assert: Check the structure of the response
+    expect(result).toEqual(expected);
+  });
+
+  it('should return qualifying domain name for testUserWithQualifyingGithubUsername', async () => {
+    // Create a caller for the router with testUserWithQualifyingGithubUsername
+    const callerWithUserWithQualifyingGithubUsername = usersRouter.createCaller(
+      {
+        thirdPartyOriginHostname: '0x.city',
+        testUser: {
+          ...baseTestUser,
+          id: 'testUserWithQualifyingGithubUsername',
+          privyUserId: 'testUserWithQualifyingGithubUsername',
+        },
+      } satisfies Omit<
+        TrpcContext,
+        'user' | 'db' | 'req' | 'res'
+      > as TrpcContext,
+      {},
+    );
+
+    const result =
+      await callerWithUserWithQualifyingGithubUsername.getUserQualifyingDomainNamesForPromo();
+    const expected = [
+      {
+        qualifyingDomainName: 'netizen1.0x.city',
+        linkedAccountType: 'github_oauth',
+      },
+    ];
+
+    // Assert: Check the structure of the response
+    expect(result).toEqual(expected);
+  });
+
+  it('should return qualifying domain name for testUserWithQualifyingGithubName', async () => {
+    // Create a caller for the router with testUserWithQualifyingGithubName
+    const callerWithUserWithQualifyingGithubName = usersRouter.createCaller(
+      {
+        thirdPartyOriginHostname: '0x.city',
+        testUser: {
+          ...baseTestUser,
+          id: 'testUserWithQualifyingGithubName',
+          privyUserId: 'testUserWithQualifyingGithubName',
+        },
+      } satisfies Omit<
+        TrpcContext,
+        'user' | 'db' | 'req' | 'res'
+      > as TrpcContext,
+      {},
+    );
+
+    const result =
+      await callerWithUserWithQualifyingGithubName.getUserQualifyingDomainNamesForPromo();
+    const expected = [
+      {
+        qualifyingDomainName: 'netizen1.0x.city',
+        linkedAccountType: 'github_oauth',
+      },
+    ];
+
+    // Assert: Check the structure of the response
+    expect(result).toEqual(expected);
+  });
+
+  it('should return qualifying domain name for testUserWithQualifyingEns', async () => {
+    // Create a caller for the router with testUserWithQualifyingEns
+    const callerWithUserWithQualifyingEns = usersRouter.createCaller(
+      {
+        thirdPartyOriginHostname: '0x.city',
+        testUser: {
+          ...baseTestUser,
+          id: 'testUserWithQualifyingEns',
+          privyUserId: 'testUserWithQualifyingEns',
+        },
+      } satisfies Omit<
+        TrpcContext,
+        'user' | 'db' | 'req' | 'res'
+      > as TrpcContext,
+      {},
+    );
+
+    const result =
+      await callerWithUserWithQualifyingEns.getUserQualifyingDomainNamesForPromo();
+    const expected = [
+      {
+        qualifyingDomainName: 'netizen1.0x.city',
+        linkedAccountType: 'wallet',
+      },
+    ];
+
+    // Assert: Check the structure of the response
+    expect(result).toEqual(expected);
+  });
+
+  it('should return multiple qualifying domain names for testUserWithMultipleQualifyingAccounts', async () => {
+    // Create a caller for the router with testUserWithQualifyingEns
+    const callerWithUserWithMultipleQualifyingAccounts =
+      usersRouter.createCaller(
+        {
+          thirdPartyOriginHostname: '0x.city',
+          testUser: {
+            ...baseTestUser,
+            id: 'testUserWithMultipleQualifyingAccounts',
+            privyUserId: 'testUserWithMultipleQualifyingAccounts',
+          },
+        } satisfies Omit<
+          TrpcContext,
+          'user' | 'db' | 'req' | 'res'
+        > as TrpcContext,
+        {},
+      );
+
+    const result =
+      await callerWithUserWithMultipleQualifyingAccounts.getUserQualifyingDomainNamesForPromo();
+
+    // Assert: Check the structure of the response
+    expect(result.length).toBe(2);
+    expect(result).toContainEqual({
+      qualifyingDomainName: 'netizen1.0x.city',
+      linkedAccountType: 'email',
+    });
+    expect(result).toContainEqual({
+      qualifyingDomainName: 'netizen2.0x.city',
+      linkedAccountType: 'twitter_oauth',
+    });
+  });
+
+  it('should return empty list for testUserWithoutQualifyingAccount', async () => {
+    // Create a caller for the router with testUserWithoutQualifyingAccount
+    const callerWithUserWithoutQualifyingAccount = usersRouter.createCaller(
+      {
+        thirdPartyOriginHostname: '0x.city',
+        testUser: {
+          ...baseTestUser,
+          id: 'testUserWithoutQualifyingAccount',
+          privyUserId: 'testUserWithoutQualifyingAccount',
+        },
+      } satisfies Omit<
+        TrpcContext,
+        'user' | 'db' | 'req' | 'res'
+      > as TrpcContext,
+      {},
+    );
+
+    const result =
+      await callerWithUserWithoutQualifyingAccount.getUserQualifyingDomainNamesForPromo();
+
+    // Assert: Check the structure of the response
+    expect(result).toEqual([]);
+  });
+
+  it('should return empty list for testUserWithNoLinkedAccounts', async () => {
+    // Create a caller for the router with testUserWithNoLinkedAccounts
+    const callerWithUserWithNoLinkedAccounts = usersRouter.createCaller(
+      {
+        thirdPartyOriginHostname: '0x.city',
+        testUser: {
+          ...baseTestUser,
+          id: 'testUserWithNoLinkedAccounts',
+          privyUserId: 'testUserWithNoLinkedAccounts',
+        },
+      } satisfies Omit<
+        TrpcContext,
+        'user' | 'db' | 'req' | 'res'
+      > as TrpcContext,
+      {},
+    );
+
+    const result =
+      await callerWithUserWithNoLinkedAccounts.getUserQualifyingDomainNamesForPromo();
+
+    // Assert: Check the structure of the response
+    expect(result).toEqual([]);
+  });
+
+  it('should return empty list for testUserWithSolanaWalletOnly', async () => {
+    const callerWithUserWithSolanaWalletOnly = usersRouter.createCaller(
+      {
+        thirdPartyOriginHostname: '0x.city',
+        testUser: {
+          id: 'testUserWithSolanaWalletOnly',
+          primaryEmail: null,
+          stripeCustomerId: null,
+          privyUserId: 'testUserWithSolanaWalletOnly',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+      } satisfies Omit<
+        TrpcContext,
+        'user' | 'db' | 'req' | 'res'
+      > as TrpcContext,
+      {},
+    );
+
+    const result =
+      await callerWithUserWithSolanaWalletOnly.getUserQualifyingDomainNamesForPromo();
+
+    // Assert: Check the structure of the response
+    expect(result).toEqual([]);
+  });
+
+  it('should return empty list when getting Privy user throws error', async () => {
+    const callerWithGetPrivyUserError = usersRouter.createCaller(
+      {
+        thirdPartyOriginHostname: '0x.city',
+        testUser: {
+          id: 'testUserGetPrivyUserThrowsError',
+          primaryEmail: null,
+          stripeCustomerId: null,
+          privyUserId: 'testUserGetPrivyUserThrowsError',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+      } satisfies Omit<
+        TrpcContext,
+        'user' | 'db' | 'req' | 'res'
+      > as TrpcContext,
+      {},
+    );
+
+    const result =
+      await callerWithGetPrivyUserError.getUserQualifyingDomainNamesForPromo();
+
+    // Assert: Check the structure of the response
+    expect(result).toEqual([]);
+  });
+
+  it('should return empty list when thirdPartyOriginHostname is not 0x.city', async () => {
+    const callerWithDifferentHostname = usersRouter.createCaller(
+      {
+        thirdPartyOriginHostname: 'different.domain',
+        testUser: {
+          ...baseTestUser,
+          id: 'testUserWithQualifyingEmail',
+          privyUserId: 'testUserWithQualifyingEmail',
+        },
+      } satisfies Omit<
+        TrpcContext,
+        'user' | 'db' | 'req' | 'res'
+      > as TrpcContext,
+      {},
+    );
+
+    const result =
+      await callerWithDifferentHostname.getUserQualifyingDomainNamesForPromo();
+
+    // Assert: Check the structure of the response
+    expect(result).toEqual([]);
+  });
+
+  it('should return empty list when thirdPartyOriginHostname is null', async () => {
+    const callerWithDifferentHostname = usersRouter.createCaller(
+      {
+        thirdPartyOriginHostname: null,
+        testUser: {
+          ...baseTestUser,
+          id: 'testUserWithQualifyingEmail',
+          privyUserId: 'testUserWithQualifyingEmail',
+        },
+      } satisfies Omit<
+        TrpcContext,
+        'user' | 'db' | 'req' | 'res'
+      > as TrpcContext,
+      {},
+    );
+
+    const result =
+      await callerWithDifferentHostname.getUserQualifyingDomainNamesForPromo();
+
+    // Assert: Check the structure of the response
+    expect(result).toEqual([]);
   });
 });

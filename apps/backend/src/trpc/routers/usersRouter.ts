@@ -4,6 +4,7 @@ import {
   getSubDomainAndParentDomainFromNormalizedDomainName,
   namefiNormalizedDomainSchema,
 } from '@namefi-astra/utils';
+import type { LinkedAccountWithMetadata } from '@privy-io/server-auth';
 import { TRPCError } from '@trpc/server';
 import { eq, sql } from 'drizzle-orm';
 import { isEmpty, isNil, isNotEmpty, isNotNil } from 'ramda';
@@ -250,6 +251,126 @@ export const usersRouter = createTRPCRouter({
       return res;
     },
   ),
+
+  getUserQualifyingDomainNamesForPromo: protectedProcedure.query(
+    async ({ ctx }) => {
+      const { user, thirdPartyOriginHostname } = ctx;
+
+      if (thirdPartyOriginHostname !== '0x.city') {
+        return [];
+      }
+
+      // Check privyUser exists
+      const [error, privyUser] = await resolve(
+        privyClient.getUserById(user.privyUserId),
+      );
+
+      if (error || isNil(privyUser)) {
+        return [];
+      }
+
+      type QualifyingDomainNameForPromoWithLinkedAccountType = {
+        qualifyingDomainName: string;
+        linkedAccountType:
+          | 'email'
+          | 'github_oauth'
+          | 'twitter_oauth'
+          | 'wallet';
+      };
+
+      const results: QualifyingDomainNameForPromoWithLinkedAccountType[] = [];
+      const qualifyingDomainNamesSet = new Set<string>();
+      const maybeAddToResults = ({
+        qualifyingDomainName,
+        linkedAccountType,
+      }: QualifyingDomainNameForPromoWithLinkedAccountType) => {
+        if (!qualifyingDomainNamesSet.has(qualifyingDomainName)) {
+          results.push({ qualifyingDomainName, linkedAccountType });
+        }
+        qualifyingDomainNamesSet.add(qualifyingDomainName);
+      };
+
+      // check email address
+      const qualifyingDomainNamesFromEmail = isNotNil(privyUser.email)
+        ? await getQualifyingPromoDomainNamesFromPrivyLinkedAccount({
+            privyLinkedAccount: {
+              ...privyUser.email,
+              type: 'email',
+            } as LinkedAccountWithMetadata,
+          })
+        : [];
+
+      for (const domainName of qualifyingDomainNamesFromEmail) {
+        maybeAddToResults({
+          qualifyingDomainName: domainName,
+          linkedAccountType: 'email',
+        });
+      }
+
+      // check github
+      const qualifyingDomainNamesFromGitHub = isNotNil(privyUser.github)
+        ? await getQualifyingPromoDomainNamesFromPrivyLinkedAccount({
+            privyLinkedAccount: {
+              ...privyUser.github,
+              type: 'github_oauth',
+            } as LinkedAccountWithMetadata,
+          })
+        : [];
+
+      for (const domainName of qualifyingDomainNamesFromGitHub) {
+        maybeAddToResults({
+          qualifyingDomainName: domainName,
+          linkedAccountType: 'github_oauth',
+        });
+      }
+
+      // check twitter
+      const qualifyingDomainNamesFromTwitter = isNotNil(privyUser.twitter)
+        ? await getQualifyingPromoDomainNamesFromPrivyLinkedAccount({
+            privyLinkedAccount: {
+              ...privyUser.twitter,
+              type: 'twitter_oauth',
+            } as LinkedAccountWithMetadata,
+          })
+        : [];
+
+      for (const domainName of qualifyingDomainNamesFromTwitter) {
+        maybeAddToResults({
+          qualifyingDomainName: domainName,
+          linkedAccountType: 'twitter_oauth',
+        });
+      }
+
+      // check ENS for all user wallets
+      const walletDomainPromises = await Promise.allSettled(
+        privyUser.linkedAccounts
+          .filter((linkedAccount) => linkedAccount.type === 'wallet')
+          .map((linkedWallet) =>
+            getQualifyingPromoDomainNamesFromPrivyLinkedAccount({
+              privyLinkedAccount: linkedWallet as LinkedAccountWithMetadata,
+            }),
+          ),
+      );
+
+      for (const result of walletDomainPromises) {
+        if (result.status === 'rejected') {
+          continue;
+        }
+
+        const [domainName] = result.value;
+        if (isNil(domainName)) {
+          continue;
+        }
+
+        maybeAddToResults({
+          qualifyingDomainName: domainName,
+          linkedAccountType: 'wallet',
+        });
+      }
+
+      return results;
+    },
+  ),
 });
 
 /*
@@ -336,4 +457,93 @@ export async function userQualifiesForDomainNamePromo({
       accountName.startsWith('0x') &&
       accountName.slice(2).toLowerCase() === subdomain.toLowerCase(),
   );
+}
+
+export function getQualifyingDomainNameFromUserIdentifier(
+  identifier: string | null | undefined,
+): string | null {
+  if (isNil(identifier) || !identifier.startsWith('0x')) {
+    return null;
+  }
+  return `${identifier.slice(2).toLowerCase()}.0x.city`;
+}
+
+/**
+ * Function that retrieves domain names that qualify for the 0x.city promotion based on the
+ * input Privy LinkedAccount.
+ */
+export async function getQualifyingPromoDomainNamesFromPrivyLinkedAccount({
+  privyLinkedAccount,
+}: { privyLinkedAccount: LinkedAccountWithMetadata }) {
+  const qualifyingDomainNames = new Set<string>();
+
+  switch (privyLinkedAccount.type) {
+    case 'email': {
+      const domainName = getQualifyingDomainNameFromUserIdentifier(
+        privyLinkedAccount.address?.split('@')[0],
+      );
+      if (domainName) {
+        qualifyingDomainNames.add(domainName);
+      }
+      break;
+    }
+
+    case 'github_oauth': {
+      const identifiers = [
+        privyLinkedAccount.email?.split('@')[0],
+        privyLinkedAccount.name,
+        privyLinkedAccount.username,
+      ];
+      for (const identifier of identifiers) {
+        const domainName =
+          getQualifyingDomainNameFromUserIdentifier(identifier);
+        if (domainName) {
+          qualifyingDomainNames.add(domainName);
+        }
+      }
+      break;
+    }
+
+    case 'twitter_oauth': {
+      const identifiers = [
+        privyLinkedAccount.name,
+        privyLinkedAccount.username,
+      ];
+      for (const identifier of identifiers) {
+        const domainName =
+          getQualifyingDomainNameFromUserIdentifier(identifier);
+        if (domainName) {
+          qualifyingDomainNames.add(domainName);
+        }
+      }
+      break;
+    }
+
+    case 'wallet': {
+      if (privyLinkedAccount.chainType !== 'ethereum') {
+        break;
+      }
+
+      const [error, ensName] = await resolve(
+        viemEthereumPublicClient.getEnsName({
+          address: privyLinkedAccount.address as `0x${string}`,
+        }),
+      );
+
+      if (!error && isNotNil(ensName)) {
+        const domainName = getQualifyingDomainNameFromUserIdentifier(
+          ensName.split('.')[0],
+        );
+        if (domainName) {
+          qualifyingDomainNames.add(domainName);
+        }
+      }
+      break;
+    }
+
+    default:
+      return [];
+  }
+
+  return Array.from(qualifyingDomainNames);
 }
