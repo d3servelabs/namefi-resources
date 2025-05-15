@@ -178,7 +178,7 @@ export const Wallets = ({ className, ...rest }: WalletsProps) => {
                     size="icon"
                     onClick={() =>
                       window.open(
-                        `https://etherscan.io/address/${wallet.address}`,
+                        `https://basescan.org/address/${wallet.address}#nfttransfers`,
                         '_blank',
                       )
                     }
