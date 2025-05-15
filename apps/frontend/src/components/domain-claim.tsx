@@ -81,6 +81,44 @@ export const DomainClaim: FC<DomainClaimProps> = ({
       enabled: isSubdomainValueValid,
     });
 
+  const {
+    data: qualifyingDomainNamesForPromoWithLinkedAccountType,
+    isFetching: isQualifyingDomainNamesForPromoFetching,
+  } = useQuery({
+    ...trpc.users.getUserQualifyingDomainNamesForPromo.queryOptions(),
+    enabled: isAuthenticated,
+  });
+
+  const qualifyingDomainNamesForPromo = useMemo(() => {
+    if (isQualifyingDomainNamesForPromoFetching) {
+      return [];
+    }
+
+    return qualifyingDomainNamesForPromoWithLinkedAccountType?.map(
+      (qualifyingDomainNameForPromoWithType) =>
+        qualifyingDomainNameForPromoWithType.qualifyingDomainName,
+    );
+  }, [
+    isQualifyingDomainNamesForPromoFetching,
+    qualifyingDomainNamesForPromoWithLinkedAccountType,
+  ]);
+
+  const qualifyingDomainNamesText = useMemo(() => {
+    if (isQualifyingDomainNamesForPromoFetching) {
+      return 'Checking for qualifying domains based on your linked social media accounts...';
+    }
+
+    if (qualifyingDomainNamesForPromo === undefined) {
+      return 'Error while checking for qualifying domains based on your linked social media accounts.';
+    }
+
+    if (qualifyingDomainNamesForPromo?.length === 0) {
+      return `It looks like your linked social media accounts don't qualify you to claim a free domain name.`;
+    }
+
+    return `Your qualifying domain names: ${qualifyingDomainNamesForPromo.map((domainName) => `"${domainName}"`).join(', ')}`;
+  }, [isQualifyingDomainNamesForPromoFetching, qualifyingDomainNamesForPromo]);
+
   const canClaim = useMemo(() => {
     return (
       isSubdomainValueValid &&
@@ -194,11 +232,10 @@ export const DomainClaim: FC<DomainClaimProps> = ({
             <AccordionTrigger>Enter Domain Name</AccordionTrigger>
             <AccordionContent className="flex flex-col gap-2">
               <p className="text-start">
-                Enter your qualifying social media username without "0x" below.
-                (Ex: if your username is "0xResident", enter "Resident" below.)
-                If the domain name is available, you'll be able to claim it for
-                free!
+                Enter your qualifying domain name below. If it's available,
+                you'll be able to claim it for free!
               </p>
+              <p className="text-start">{qualifyingDomainNamesText}</p>
             </AccordionContent>
           </AccordionItem>
         </Accordion>
