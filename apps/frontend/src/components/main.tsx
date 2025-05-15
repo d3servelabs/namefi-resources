@@ -12,7 +12,7 @@ export const Main = ({ children }: { children: ReactNode }) => {
 
   return (
     <SidebarInset
-      className={cn({
+      className={cn('max-w-full overflow-x-hidden', {
         'bg-transparent': pathname === '/',
       })}
     >

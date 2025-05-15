@@ -178,7 +178,7 @@ const CitizenCard: FC<CitizenCardProps> = ({
   imageAlt = 'Citizen Profile',
 }) => {
   return (
-    <div className="relative bg-black/40 h-46 w-160 backdrop-blur-sm rounded-lg p-8 border border-white/10">
+    <div className="relative h-46 w-160 rounded-lg p-8 border border-white/10 bg-[radial-gradient(50%_99.18%_at_50%_66.85%,rgba(79,70,229,0.10)_0%,rgba(79,70,229,0.00)_100%),rgba(255,255,255,0.03)] shadow-sm">
       <div className="flex gap-4 justify-between items-center">
         <Image
           src={imageSrc}
@@ -188,8 +188,8 @@ const CitizenCard: FC<CitizenCardProps> = ({
           className="object-cover rounded-md size-30"
         />
         <div className="flex flex-col gap-2 flex-1 items-start justify-start">
-          <h3 className="text-xl font-bold text-white mb-2">{title}</h3>
-          <p className="text-sm text-gray-300">{description}</p>
+          <h3 className="text-xl font-bold text-white">{title}</h3>
+          <p className="text-muted-foreground">{description}</p>
         </div>
       </div>
     </div>
@@ -203,28 +203,28 @@ export const WhoAre0xCitizens: FC = () => {
       title: 'Blockchain Believer',
       description:
         'Deeply believes in blockchain and decentralized finance(DeFi) as the future, actively participating in related ecosystem building.',
-      imageSrc: '/Avatar.png',
+      imageSrc: '/assets/citizens/believer.png',
       imageAlt: 'Blockchain Believer',
     },
     {
       title: 'Crypto KOL/Influencer',
       description:
         "Uses the '0x' prefix in social media and identity markers such as Twitter, ENS, email, etc. expressing identification with crypto culture.",
-      imageSrc: '/Avatar.png',
+      imageSrc: '/assets/citizens/influencer.png',
       imageAlt: 'Crypto KOL/Influencer',
     },
     {
       title: 'Sovereignty Advocate',
       description:
         'Advocates for open, transparent, permissionless network culture, pursuing financial sovereignty and personal identity autonomy.',
-      imageSrc: '/Avatar.png',
+      imageSrc: '/assets/citizens/advocate.png',
       imageAlt: 'Sovereignty Advocate',
     },
     {
       title: 'Technical Specialist',
       description:
         'Has strong technical sensibility for Ethereum smart contracts, blockchain infrastructure, and other crypto native tools.',
-      imageSrc: '/Avatar.png',
+      imageSrc: '/assets/citizens/specialist.png',
       imageAlt: 'Technical Specialist',
     },
   ];
@@ -250,6 +250,19 @@ export const WhoAre0xCitizens: FC = () => {
             />
           ))}
         </Marquee>
+        <Marquee pauseOnHover={true} reverse={true}>
+          {citizenTypes.map((citizen, index) => (
+            <CitizenCard
+              key={`citizen-${index}`}
+              title={citizen.title}
+              description={citizen.description}
+              imageSrc={citizen.imageSrc}
+              imageAlt={citizen.imageAlt}
+            />
+          ))}
+        </Marquee>
+        <div className="pointer-events-none absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-background" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 w-1/4 bg-gradient-to-l from-background" />
       </div>
     </section>
   );
@@ -324,7 +337,7 @@ export const Landing: FC = () => {
       <div>
         <WhatIsSection />
         <WhyJoin />
-        {/* <WhoAre0xCitizens /> */}
+        <WhoAre0xCitizens />
         <DomainClaimSection />
         <CommunitySection />
       </div>
