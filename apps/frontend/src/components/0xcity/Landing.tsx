@@ -143,7 +143,7 @@ const WhyJoin: FC = () => {
               <IdCard className="w-8 h-8" />
             </div>
             <h3 className="text-xl font-semibold text-white">
-              Using 0x as your digital imprint on Twitter/Farcaster
+              Using 0x as your digital imprint on Twitter
             </h3>
           </div>
         </div>
