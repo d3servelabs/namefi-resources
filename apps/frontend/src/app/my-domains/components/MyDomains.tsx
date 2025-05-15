@@ -1,6 +1,7 @@
 'use client';
 
 import NetworkLogo from '@/components/NetworkLogo';
+import { TruncatedTextWithHover } from '@/components/TruncatedTextWithHover';
 import { AuthRequired } from '@/components/auth-required';
 import { EmptyPlaceholder } from '@/components/empty-placeholder';
 import { Table, Td, Th, Thead, Tr } from '@/components/table';
@@ -25,10 +26,11 @@ function useGetDomains() {
 
   const domains = useMemo(() => {
     return (
-      data?.map(({ normalizedDomainName, chainId }) => ({
+      data?.map(({ normalizedDomainName, chainId, ownerAddress }) => ({
         id: normalizedDomainName,
         normalizedDomainName,
         chainId,
+        ownerAddress,
       })) || []
     );
   }, [data]);
@@ -44,6 +46,7 @@ const LoadingSkeletons: FC = () => (
           <Thead>
             <Tr>
               <Th>Chain</Th>
+              <Th>Wallet</Th>
               <Th>Domain Name</Th>
               <Th>Actions</Th>
             </Tr>
@@ -54,8 +57,11 @@ const LoadingSkeletons: FC = () => (
                 <Td>
                   <Skeleton className="h-6 w-6" />
                 </Td>
+                <Td>
+                  <Skeleton className="h-6 w-24" />
+                </Td>
                 <Td className="font-medium w-full">
-                  <Skeleton className="h-6 w-32" />
+                  <Skeleton className="h-6 w-28" />
                 </Td>
                 <Td className="text-right">
                   <Skeleton className="h-6 w-32" />
@@ -106,6 +112,7 @@ function MyDomainsTable() {
           <Thead>
             <Tr>
               <Th>Chain</Th>
+              <Th>Wallet</Th>
               <Th>Domain Name</Th>
               <Th>Actions</Th>
             </Tr>
@@ -115,6 +122,11 @@ function MyDomainsTable() {
               <Tr key={item.id}>
                 <Td>
                   <NetworkLogo network={item.chainId} className="w-6 h-6" />
+                </Td>
+                <Td>
+                  <TruncatedTextWithHover maxLength={12}>
+                    {item.ownerAddress}
+                  </TruncatedTextWithHover>
                 </Td>
                 <Td className="font-medium w-full">
                   <Link
