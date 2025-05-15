@@ -12,6 +12,7 @@ import {
   type ForwardedRef,
   forwardRef,
   useCallback,
+  useEffect,
   useRef,
 } from 'react';
 
@@ -30,6 +31,13 @@ export const BrandLogo: ForwardRefExoticComponent<BrandLogoProps> = forwardRef<
   const lottieRef = useRef<LottieRefCurrentProps>(null);
   const logo = isLoading ? null : originInfo.config.logo;
 
+  useEffect(() => {
+    if (lottieRef.current && logo?.type === 'lottie') {
+      lottieRef.current.setDirection(collapsed ? -1 : 1);
+      lottieRef.current.play();
+    }
+  }, [collapsed, logo]);
+
   const getJson = useCallback(async () => {
     if (logo?.type === 'lottie') {
       try {
@@ -41,20 +49,6 @@ export const BrandLogo: ForwardRefExoticComponent<BrandLogoProps> = forwardRef<
     }
     throw new Error('No Lottie animation data available');
   }, [logo]);
-
-  const handleMouseEnter = useCallback(() => {
-    if (lottieRef.current && logo?.type === 'lottie' && !collapsed) {
-      lottieRef.current.setDirection(1);
-      lottieRef.current.play();
-    }
-  }, [logo, collapsed]);
-
-  const handleMouseLeave = useCallback(() => {
-    if (lottieRef.current && logo?.type === 'lottie' && !collapsed) {
-      lottieRef.current.setDirection(-1);
-      lottieRef.current.play();
-    }
-  }, [logo, collapsed]);
 
   if (isLoading || !logo) {
     return null;
@@ -68,8 +62,6 @@ export const BrandLogo: ForwardRefExoticComponent<BrandLogoProps> = forwardRef<
         'flex items-center gap-3 transition-all duration-300 ease-in-out overflow-hidden',
         className,
       )}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
       {...rest}
     >
       <div className="relative flex shrink-0 items-center justify-center">
