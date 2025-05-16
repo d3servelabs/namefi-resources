@@ -9,7 +9,8 @@
     "check": "biome check",
     "check:fix": "biome check --write",
     "typecheck": "tsc --noEmit",
-    "test": "vitest --run"
+    "test": "vitest --run",
+    "test:coverage": "bun vitest run --coverage"
   },
   "dependencies": {
     "@namefi-astra/typescript": "workspace:*"
@@ -20,5 +21,8 @@
   "peerDependencies": {
     "vitest": "^3.1.2",
     "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@namefi-astra/typescript": "workspace:*"
   }
 }

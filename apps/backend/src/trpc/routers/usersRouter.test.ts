@@ -2,6 +2,8 @@ import type { HonoRequest } from 'hono';
 import type { RequestHeader } from 'hono/utils/headers';
 import { type Address, type BlockTag, zeroAddress } from 'viem';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { config as actualAppConfig } from '#lib/env'; // Import the actual config
+import testEnvConfig from '../../lib/env/configs/test'; // Import the test config file directly
 import type { TrpcContext } from '../base';
 import { privyClient } from '../utils';
 import {
@@ -494,6 +496,11 @@ describe('getManagerPageEntrypointViewable', () => {
   beforeEach(() => {
     // Clear mocks before each test
     vi.clearAllMocks();
+
+    // Directly set the problematic config part for these tests
+    // This ensures the test config is used, bypassing potential loading issues.
+    actualAppConfig.EMAIL_ADDRESS_TO_OWNED_HOSTNAMES_MAP =
+      testEnvConfig.EMAIL_ADDRESS_TO_OWNED_HOSTNAMES_MAP ?? {};
 
     // Provide a default mock implementation for privyClient.getUserById
     // It should return a PrivyUser with different linked accounts

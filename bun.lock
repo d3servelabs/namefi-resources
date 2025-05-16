@@ -198,6 +198,7 @@
       "version": "0.0.0",
       "devDependencies": {
         "@namefi-astra/typescript": "workspace:*",
+        "vitest": "^3.1.2",
       },
       "peerDependencies": {
         "@namefi-astra/zod-dns": "workspace:*",
@@ -210,6 +211,9 @@
       "name": "@namefi-astra/zod-dns",
       "version": "0.0.0-pre.3",
       "dependencies": {
+        "@namefi-astra/typescript": "workspace:*",
+      },
+      "devDependencies": {
         "@namefi-astra/typescript": "workspace:*",
       },
       "peerDependencies": {

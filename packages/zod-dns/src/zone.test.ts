@@ -46,7 +46,13 @@ describe('DNS Zone Validation', () => {
         const result = zoneSchema.safeParse(testCase);
         expect(result.success).toBe(false);
         if (!result.success) {
-          expect(result.error.message).toContain('Duplicate records found');
+          const hasError = result.error.issues.some(
+            (issue) =>
+              issue.code === 'custom' &&
+              issue.message ===
+                'Duplicate records detected: Each (name, type, rdata) combination must be unique within the zone. Please remove or modify duplicates.',
+          );
+          expect(hasError).toBe(true);
         }
       });
     }
@@ -58,9 +64,13 @@ describe('DNS Zone Validation', () => {
         const result = zoneSchema.safeParse(testCase);
         expect(result.success).toBe(false);
         if (!result.success) {
-          expect(result.error.message).toContain(
-            'There should be only one CNAME record for any given name',
+          const hasError = result.error.issues.some(
+            (issue) =>
+              issue.code === 'custom' &&
+              issue.message ===
+                'Each name may have at most one CNAME record. Please ensure no duplicate CNAME records exist for the same name.',
           );
+          expect(hasError).toBe(true);
         }
       });
     }
@@ -72,9 +82,14 @@ describe('DNS Zone Validation', () => {
         const result = zoneSchema.safeParse(testCase);
         expect(result.success).toBe(false);
         if (!result.success) {
-          expect(result.error.message).toContain(
-            'For any CNAME record, no other record of any type can have the same name',
+          // Check for the CNAME conflict error in the structured error format
+          const hasConflictError = result.error.issues.some(
+            (issue) =>
+              issue.code === 'custom' &&
+              issue.message ===
+                'If a CNAME record exists for a name, no other record type may use that name. Please remove conflicting records.',
           );
+          expect(hasConflictError).toBe(true);
         }
       });
     }
