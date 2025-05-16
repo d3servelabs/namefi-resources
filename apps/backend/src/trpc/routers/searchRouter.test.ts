@@ -1,5 +1,3 @@
-import { config } from 'dotenv';
-
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import * as namefiRegistry from '#lib/namefi-registry';
@@ -14,8 +12,6 @@ import {
 const testUser = {
   privyUserId: '123',
 } as any;
-// TODO: consider use vitest setup to do it globally after NamefiRegistry
-config({ path: '.env.test' });
 
 describe('Search Router', () => {
   beforeEach(() => {

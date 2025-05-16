@@ -1,5 +1,3 @@
-import { config } from 'dotenv';
-
 import type { HonoRequest } from 'hono';
 import type { RequestHeader } from 'hono/utils/headers';
 import { type Address, type BlockTag, zeroAddress } from 'viem';
@@ -12,11 +10,9 @@ import {
   viemEthereumPublicClient,
 } from './usersRouter';
 
-// TODO: consider use vitest setup to do it globally after NamefiRegistry
-config({ path: '.env.test' });
-
 describe('getUserQualifiesForDomainNamePromo', () => {
   // TODO(Luis): consider refactoring mocking
+
   beforeEach(() => {
     // Clear mocks before each test
     vi.clearAllMocks();
