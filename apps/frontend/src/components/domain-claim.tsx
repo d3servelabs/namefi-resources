@@ -243,7 +243,7 @@ export const DomainClaim: FC<DomainClaimProps> = ({
 
       <div className="flex md:flex-row flex-col items-center justify-between gap-2 border border-white/10 rounded-lg p-2">
         <div className="relative shrink-0 bg-black/40 h-14 flex items-center flex-1 rounded-md">
-          <div className="flex items-center justify-center pl-2 gap-1 md:gap-2 h-14">
+          <div className="flex items-center justify-center w-full pl-2 gap-1 md:gap-2 h-14">
             <SearchIcon className="h-5 w-5 text-gray-400" />
             <Input
               placeholder={isMobile ? 'name' : 'yourname'}
