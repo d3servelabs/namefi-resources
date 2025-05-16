@@ -27,6 +27,7 @@ import { cn } from '@/lib/utils';
 import {
   InteractionLoggingEventName,
   type PurchaseEvent,
+  type SubmitOrderFailureEvent,
 } from '@/utils/interaction-logging/events';
 import { formatAmountInUSD } from '@/utils/number';
 import { useTRPC } from '@/utils/trpc';
@@ -100,10 +101,11 @@ export default function CartPage() {
     ...trpc.orders.createOrder.mutationOptions({
       onSuccess: (data) => {
         setIsRedirecting(true);
-        logPurchase();
+        logSubmitOrder({ success: true });
         router.push(`/orders/${data.id}`);
       },
       onError: (error) => {
+        logSubmitOrder({ success: false });
         setErrorMessage(error.message);
         setIsErrorDialogOpen(true);
       },
@@ -287,20 +289,25 @@ export default function CartPage() {
     return !(paymentMethodSelected && selectedNftWalletAddress);
   }, [paymentMethodSelected, selectedNftWalletAddress]);
 
-  const logPurchase = useCallback(() => {
-    if (!items) {
-      return;
-    }
+  const logSubmitOrder = useCallback(
+    ({ success }: { success: boolean }) => {
+      if (!items) {
+        return;
+      }
 
-    const purchaseEvent: PurchaseEvent = {
-      name: InteractionLoggingEventName.PURCHASE,
-      properties: {
-        totalAmountInUsdCents,
-        cartItems: items,
-      },
-    };
-    logEventWithInteractionLoggers(purchaseEvent);
-  }, [items, logEventWithInteractionLoggers, totalAmountInUsdCents]);
+      const interactionLoggingEvent: PurchaseEvent | SubmitOrderFailureEvent = {
+        name: success
+          ? InteractionLoggingEventName.Purchase
+          : InteractionLoggingEventName.SubmitOrderFailure,
+        properties: {
+          totalAmountInUsdCents,
+          cartItems: items,
+        },
+      };
+      logEventWithInteractionLoggers(interactionLoggingEvent);
+    },
+    [items, logEventWithInteractionLoggers, totalAmountInUsdCents],
+  );
 
   const handleSubmitOrder = useCallback(() => {
     if (!items || items.length === 0) {

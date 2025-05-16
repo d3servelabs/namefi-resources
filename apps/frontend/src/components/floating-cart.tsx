@@ -21,7 +21,7 @@ const FloatingCart = () => {
 
   const logBeginCheckout = useCallback(() => {
     const beginCheckoutEvent: BeginCheckoutEvent = {
-      name: InteractionLoggingEventName.BEGIN_CHECKOUT,
+      name: InteractionLoggingEventName.BeginCheckout,
       properties: {
         totalAmountInUsdCents,
         cartItems: items,

@@ -2,12 +2,15 @@ import type { CartItemSelect } from '@namefi-astra/db/types';
 
 export enum InteractionLoggingEventName {
   // GoogleAnalytics-recommended events
-  ADD_TO_CART = 'add_to_cart',
-  BEGIN_CHECKOUT = 'begin_checkout',
-  PURCHASE = 'purchase',
-  REMOVE_FROM_CART = 'remove_from_cart',
-  SEARCH = 'search',
-  SIGN_UP = 'sign_up',
+  AddToCart = 'add_to_cart',
+  BeginCheckout = 'begin_checkout',
+  Purchase = 'purchase',
+  RemoveFromCart = 'remove_from_cart',
+  Search = 'search',
+  SignUp = 'sign_up',
+
+  // Checkout Events
+  SubmitOrderFailure = 'submit_order_failure',
 }
 
 export type InteractionLoggingCartItem = Pick<
@@ -26,17 +29,18 @@ export type InteractionLoggingEvent =
   | BeginCheckoutEvent
   | PurchaseEvent
   | RemoveFromCartEvent
-  | SearchEvent;
+  | SearchEvent
+  | SubmitOrderFailureEvent;
 
 export type AddToCartEvent = {
-  name: InteractionLoggingEventName.ADD_TO_CART;
+  name: InteractionLoggingEventName.AddToCart;
   properties: {
     cartItem: InteractionLoggingCartItem;
   };
 };
 
 export type BeginCheckoutEvent = {
-  name: InteractionLoggingEventName.BEGIN_CHECKOUT;
+  name: InteractionLoggingEventName.BeginCheckout;
   properties: {
     totalAmountInUsdCents?: number;
     cartItems?: InteractionLoggingCartItem[];
@@ -44,7 +48,7 @@ export type BeginCheckoutEvent = {
 };
 
 export type PurchaseEvent = {
-  name: InteractionLoggingEventName.PURCHASE;
+  name: InteractionLoggingEventName.Purchase;
   properties: {
     totalAmountInUsdCents: number;
     cartItems: InteractionLoggingCartItem[];
@@ -52,15 +56,23 @@ export type PurchaseEvent = {
 };
 
 export type RemoveFromCartEvent = {
-  name: InteractionLoggingEventName.REMOVE_FROM_CART;
+  name: InteractionLoggingEventName.RemoveFromCart;
   properties: {
     cartItem: InteractionLoggingCartItem;
   };
 };
 
 export type SearchEvent = {
-  name: InteractionLoggingEventName.SEARCH;
+  name: InteractionLoggingEventName.Search;
   properties: {
     search_term: string;
+  };
+};
+
+export type SubmitOrderFailureEvent = {
+  name: InteractionLoggingEventName.SubmitOrderFailure;
+  properties: {
+    totalAmountInUsdCents: number;
+    cartItems: InteractionLoggingCartItem[];
   };
 };

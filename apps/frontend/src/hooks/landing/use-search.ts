@@ -109,7 +109,7 @@ export function useSearch(
   useEffect(() => {
     if (isFetched && query.length > 0) {
       const searchEvent: SearchEvent = {
-        name: InteractionLoggingEventName.SEARCH,
+        name: InteractionLoggingEventName.Search,
         properties: { search_term: query },
       };
       logEventWithInteractionLoggers(searchEvent);

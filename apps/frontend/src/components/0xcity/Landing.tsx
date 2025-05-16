@@ -279,7 +279,7 @@ const DomainClaimSection: FC = () => {
 
   const logBeginCheckout = useCallback(() => {
     const beginCheckoutEvent: BeginCheckoutEvent = {
-      name: InteractionLoggingEventName.BEGIN_CHECKOUT,
+      name: InteractionLoggingEventName.BeginCheckout,
       properties: {},
     };
     logEventWithInteractionLoggers(beginCheckoutEvent);

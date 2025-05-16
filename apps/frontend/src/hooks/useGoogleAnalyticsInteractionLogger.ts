@@ -32,8 +32,8 @@ function interactionLoggingCartItemToGoogleAnalyticsItem(
 
 function transformEvent(event: InteractionLoggingEvent) {
   switch (event.name) {
-    case InteractionLoggingEventName.ADD_TO_CART: // fallthrough
-    case InteractionLoggingEventName.REMOVE_FROM_CART: {
+    case InteractionLoggingEventName.AddToCart: // fallthrough
+    case InteractionLoggingEventName.RemoveFromCart: {
       const { cartItem } = event.properties;
       return {
         name: event.name,
@@ -44,7 +44,7 @@ function transformEvent(event: InteractionLoggingEvent) {
         },
       };
     }
-    case InteractionLoggingEventName.BEGIN_CHECKOUT: {
+    case InteractionLoggingEventName.BeginCheckout: {
       const { cartItems, totalAmountInUsdCents } = event.properties;
       return {
         name: event.name,
@@ -60,7 +60,8 @@ function transformEvent(event: InteractionLoggingEvent) {
         },
       };
     }
-    case InteractionLoggingEventName.PURCHASE: {
+    case InteractionLoggingEventName.Purchase: // fallthrough
+    case InteractionLoggingEventName.SubmitOrderFailure: {
       const { cartItems, totalAmountInUsdCents } = event.properties;
       return {
         name: event.name,

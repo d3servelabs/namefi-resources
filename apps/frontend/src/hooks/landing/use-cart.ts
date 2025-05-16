@@ -127,7 +127,7 @@ export function useCart() {
   const logAddToCart = useCallback(
     (cartItem: CartItem) => {
       const addToCartEvent: AddToCartEvent = {
-        name: InteractionLoggingEventName.ADD_TO_CART,
+        name: InteractionLoggingEventName.AddToCart,
         properties: {
           cartItem,
         },
@@ -140,7 +140,7 @@ export function useCart() {
   const logRemoveFromCart = useCallback(
     (cartItem: CartItem) => {
       const removeFromCartEvent: RemoveFromCartEvent = {
-        name: InteractionLoggingEventName.REMOVE_FROM_CART,
+        name: InteractionLoggingEventName.RemoveFromCart,
         properties: {
           cartItem,
         },
