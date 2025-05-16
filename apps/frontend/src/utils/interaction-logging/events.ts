@@ -5,6 +5,7 @@ export enum InteractionLoggingEventName {
   ADD_TO_CART = 'add_to_cart',
   BEGIN_CHECKOUT = 'begin_checkout',
   PURCHASE = 'purchase',
+  REMOVE_FROM_CART = 'remove_from_cart',
   SEARCH = 'search',
   SIGN_UP = 'sign_up',
 }
@@ -24,6 +25,7 @@ export type InteractionLoggingEvent =
   | AddToCartEvent
   | BeginCheckoutEvent
   | PurchaseEvent
+  | RemoveFromCartEvent
   | SearchEvent;
 
 export type AddToCartEvent = {
@@ -46,6 +48,13 @@ export type PurchaseEvent = {
   properties: {
     totalAmountInUsdCents: number;
     cartItems: InteractionLoggingCartItem[];
+  };
+};
+
+export type RemoveFromCartEvent = {
+  name: InteractionLoggingEventName.REMOVE_FROM_CART;
+  properties: {
+    cartItem: InteractionLoggingCartItem;
   };
 };
 

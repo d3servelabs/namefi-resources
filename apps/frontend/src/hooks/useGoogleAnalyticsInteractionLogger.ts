@@ -32,7 +32,8 @@ function interactionLoggingCartItemToGoogleAnalyticsItem(
 
 function transformEvent(event: InteractionLoggingEvent) {
   switch (event.name) {
-    case InteractionLoggingEventName.ADD_TO_CART: {
+    case InteractionLoggingEventName.ADD_TO_CART: // fallthrough
+    case InteractionLoggingEventName.REMOVE_FROM_CART: {
       const { cartItem } = event.properties;
       return {
         name: event.name,

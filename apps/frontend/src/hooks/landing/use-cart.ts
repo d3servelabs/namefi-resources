@@ -3,6 +3,7 @@ import { useAuth } from '@/hooks/useAuth';
 import {
   type AddToCartEvent,
   InteractionLoggingEventName,
+  type RemoveFromCartEvent,
 } from '@/utils/interaction-logging/events';
 import { useTRPC } from '@/utils/trpc';
 import type { CartItemSelect as DbCartItem } from '@namefi-astra/db/types';
@@ -136,9 +137,26 @@ export function useCart() {
     [logEventWithInteractionLoggers],
   );
 
+  const logRemoveFromCart = useCallback(
+    (cartItem: CartItem) => {
+      const removeFromCartEvent: RemoveFromCartEvent = {
+        name: InteractionLoggingEventName.REMOVE_FROM_CART,
+        properties: {
+          cartItem,
+        },
+      };
+      logEventWithInteractionLoggers(removeFromCartEvent);
+    },
+    [logEventWithInteractionLoggers],
+  );
+
   const handleDomainAction = useCallback(
     (domain: { domain: string; priceInUSD?: number | null }) => {
       const domainName = domain.domain;
+      const cartItem: CartItem = {
+        normalizedDomainName: domainName,
+        amountInUSDCents: domain.priceInUSD ? domain.priceInUSD * 100 : 0,
+      };
 
       if (isDomainInCart(domainName)) {
         // Remove domain from cart
@@ -146,24 +164,18 @@ export function useCart() {
           const itemId = getCartItemId(domainName);
           if (itemId) {
             removeFromCartMutate(itemId);
+            logRemoveFromCart(cartItem);
           }
         } else {
           removeFromLocalCart(domainName);
+          logRemoveFromCart(cartItem);
         }
+      } else if (isAuthenticated) {
+        addToCartMutate([cartItem]);
+        logAddToCart(cartItem);
       } else {
-        // Add domain to cart
-        const cartItem: CartItem = {
-          normalizedDomainName: domainName,
-          amountInUSDCents: domain.priceInUSD ? domain.priceInUSD * 100 : 0,
-        };
-
-        if (isAuthenticated) {
-          addToCartMutate([cartItem]);
-          logAddToCart(cartItem);
-        } else {
-          addToLocalCart(cartItem);
-          logAddToCart(cartItem);
-        }
+        addToLocalCart(cartItem);
+        logAddToCart(cartItem);
       }
     },
     [
@@ -175,6 +187,7 @@ export function useCart() {
       addToLocalCart,
       removeFromLocalCart,
       logAddToCart,
+      logRemoveFromCart,
     ],
   );
 
