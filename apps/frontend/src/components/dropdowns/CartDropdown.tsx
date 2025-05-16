@@ -13,6 +13,10 @@ import {
 } from '@/components/ui/shadcn/dropdown-menu';
 import { useCart } from '@/hooks/landing/use-cart';
 import { cn } from '@/lib/utils';
+import {
+  type BeginCheckoutEvent,
+  InteractionLoggingEventName,
+} from '@/utils/interaction-logging/events';
 import { formatAmountInUSD } from '@/utils/number';
 import { ShoppingCart } from 'lucide-react';
 import Link from 'next/link';
@@ -21,8 +25,10 @@ import {
   type ForwardedRef,
   type HTMLAttributes,
   forwardRef,
+  useCallback,
   useMemo,
 } from 'react';
+import { useInteractionLoggers } from '../providers/interactionLoggersProvider';
 
 export type CartDropdownProps = HTMLAttributes<HTMLDivElement>;
 
@@ -31,12 +37,24 @@ export const CartDropdown: ForwardRefExoticComponent<CartDropdownProps> =
     { className, ...rest }: CartDropdownProps,
     ref: ForwardedRef<HTMLDivElement>,
   ) {
+    const { logEventWithInteractionLoggers } = useInteractionLoggers();
     const { cartData: items = [] } = useCart();
 
     const totalAmountInUsdCents = useMemo(
       () => items.reduce((sum, item) => sum + item.amountInUSDCents, 0),
       [items],
     );
+
+    const logBeginCheckout = useCallback(() => {
+      const beginCheckoutEvent: BeginCheckoutEvent = {
+        name: InteractionLoggingEventName.BEGIN_CHECKOUT,
+        properties: {
+          totalAmountInUsdCents,
+          cartItems: items,
+        },
+      };
+      logEventWithInteractionLoggers(beginCheckoutEvent);
+    }, [items, logEventWithInteractionLoggers, totalAmountInUsdCents]);
 
     return (
       <div ref={ref} className={cn('', className)} {...rest}>
@@ -79,7 +97,9 @@ export const CartDropdown: ForwardRefExoticComponent<CartDropdownProps> =
               <DropdownMenuSeparator />
               <DropdownMenuItem asChild={true}>
                 <Button className="w-full" variant="default" asChild={true}>
-                  <Link href="/cart">Checkout</Link>
+                  <Link href="/cart" onClick={logBeginCheckout}>
+                    Checkout
+                  </Link>
                 </Button>
               </DropdownMenuItem>
             </DropdownMenuContent>

@@ -1,17 +1,34 @@
 import { useCart } from '@/hooks/landing/use-cart';
+import {
+  type BeginCheckoutEvent,
+  InteractionLoggingEventName,
+} from '@/utils/interaction-logging/events';
 import { ShoppingCartIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
+import { useInteractionLoggers } from './providers/interactionLoggersProvider';
 import { Button } from './ui/shadcn/button';
 
 const FloatingCart = () => {
   const { cartData: items, isCartDataLoading, refetchCart } = useCart();
+  const { logEventWithInteractionLoggers } = useInteractionLoggers();
   const router = useRouter();
 
   const totalAmountInUsdCents = useMemo(
     () => items?.reduce((sum, item) => sum + item.amountInUSDCents, 0) ?? 0,
     [items],
   );
+
+  const logBeginCheckout = useCallback(() => {
+    const beginCheckoutEvent: BeginCheckoutEvent = {
+      name: InteractionLoggingEventName.BEGIN_CHECKOUT,
+      properties: {
+        totalAmountInUsdCents,
+        cartItems: items,
+      },
+    };
+    logEventWithInteractionLoggers(beginCheckoutEvent);
+  }, [items, logEventWithInteractionLoggers, totalAmountInUsdCents]);
 
   return items && items.length > 0 ? (
     <div className="flex justify-between items-center p-4 rounded-xl bg-white/3 border border-white/10 backdrop-blur-3xl w-full md:w-1/2">
@@ -24,7 +41,10 @@ const FloatingCart = () => {
       <Button
         className="relative"
         variant="outline"
-        onClick={() => router.push('/cart')}
+        onClick={() => {
+          logBeginCheckout();
+          router.push('/cart');
+        }}
       >
         <ShoppingCartIcon className="size-4" />
         View cart

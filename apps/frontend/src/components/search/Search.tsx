@@ -25,6 +25,10 @@ import {
 import { useSearch } from '@/hooks/landing/use-search';
 import { config } from '@/lib/env';
 import { cn } from '@/lib/utils';
+import {
+  type BeginCheckoutEvent,
+  InteractionLoggingEventName,
+} from '@/utils/interaction-logging/events';
 import { formatAmountInUSD } from '@/utils/number';
 import {
   Loader2,
@@ -36,10 +40,12 @@ import {
 } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { MotionConfig, useReducedMotion } from 'motion/react';
+import { useRouter } from 'next/navigation';
 import { isNotNil } from 'ramda';
-import { type FC, useState } from 'react';
+import { type FC, useCallback, useState } from 'react';
 import FloatingCart from '../floating-cart';
 import { NamefiButton } from '../namefi-button';
+import { useInteractionLoggers } from '../providers/interactionLoggersProvider';
 import { Placeholder } from './Placeholder';
 import type { SearchComponent } from './types';
 
@@ -133,6 +139,17 @@ export const DomainCard: FC<{
   isRemovingFromCart,
   isCartLoading,
 }) => {
+  const { logEventWithInteractionLoggers } = useInteractionLoggers();
+  const router = useRouter();
+
+  const logBeginCheckout = useCallback(() => {
+    const beginCheckoutEvent: BeginCheckoutEvent = {
+      name: InteractionLoggingEventName.BEGIN_CHECKOUT,
+      properties: {},
+    };
+    logEventWithInteractionLoggers(beginCheckoutEvent);
+  }, [logEventWithInteractionLoggers]);
+
   const isInCart = isDomainInCart(domain.domain);
 
   // Split domain into subdomain and parent domain
@@ -215,7 +232,8 @@ export const DomainCard: FC<{
                       <NamefiButton
                         className="shrink-0"
                         onClick={() => {
-                          window.location.href = '/cart';
+                          logBeginCheckout();
+                          router.push('/cart');
                         }}
                       >
                         <ShoppingCart className="h-4 w-4 mr-1" />

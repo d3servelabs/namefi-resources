@@ -6,9 +6,14 @@ import { IdCard } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import type { FC } from 'react';
+import { type FC, useCallback } from 'react';
 import { DomainClaim } from '../domain-claim';
 import './styles.css';
+import {
+  type BeginCheckoutEvent,
+  InteractionLoggingEventName,
+} from '@/utils/interaction-logging/events';
+import { useInteractionLoggers } from '../providers/interactionLoggersProvider';
 import { Separator } from '../ui/shadcn/separator';
 
 // Hero Section
@@ -269,7 +274,17 @@ export const WhoAre0xCitizens: FC = () => {
 };
 
 const DomainClaimSection: FC = () => {
+  const { logEventWithInteractionLoggers } = useInteractionLoggers();
   const router = useRouter();
+
+  const logBeginCheckout = useCallback(() => {
+    const beginCheckoutEvent: BeginCheckoutEvent = {
+      name: InteractionLoggingEventName.BEGIN_CHECKOUT,
+      properties: {},
+    };
+    logEventWithInteractionLoggers(beginCheckoutEvent);
+  }, [logEventWithInteractionLoggers]);
+
   return (
     <section className="flex flex-col items-center gradient-border-bottom">
       <div className="relative my-20 w-[80%]">
@@ -278,6 +293,7 @@ const DomainClaimSection: FC = () => {
           <DomainClaim
             domain="0x.city"
             onClaim={() => {
+              logBeginCheckout();
               router.push('/cart');
             }}
           />

@@ -43,6 +43,22 @@ function transformEvent(event: InteractionLoggingEvent) {
         },
       };
     }
+    case InteractionLoggingEventName.BEGIN_CHECKOUT: {
+      const { cartItems, totalAmountInUsdCents } = event.properties;
+      return {
+        name: event.name,
+        properties: {
+          currency: 'USD', // required to be 3-letter ISO 4217 by GoogleAnalytics
+          value:
+            totalAmountInUsdCents === undefined
+              ? undefined
+              : totalAmountInUsdCents / 100,
+          items: cartItems?.map((cartItem: InteractionLoggingCartItem) =>
+            interactionLoggingCartItemToGoogleAnalyticsItem(cartItem),
+          ),
+        },
+      };
+    }
     case InteractionLoggingEventName.PURCHASE: {
       const { cartItems, totalAmountInUsdCents } = event.properties;
       return {
