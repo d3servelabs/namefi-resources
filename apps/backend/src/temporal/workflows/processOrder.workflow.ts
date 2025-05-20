@@ -2,6 +2,7 @@ import { orderStatusSchema, paymentStatusSchema } from '@namefi-astra/db/types';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import * as workflow from '@temporalio/workflow';
 import { ApplicationFailure } from '@temporalio/workflow';
+import { resolve } from '../../utils/resolve';
 import type { NotifyActivities } from '../activities/notify.activities';
 import type { OrderActivities } from '../activities/order.activities';
 import { TEMPORAL_ENUMS, TEMPORAL_QUEUES, shortRunningOpts } from '../shared';
@@ -40,11 +41,14 @@ export async function processOrderWorkflow(
   });
 
   // MARK: - Activity Setup
-  const { getOrderDetailsOrThrow, updateOrderStatusOrThrow } =
-    workflow.proxyActivities<OrderActivities>({
-      ...shortRunningOpts,
-      taskQueue: TEMPORAL_QUEUES.DEFAULT,
-    });
+  const {
+    getOrderDetailsOrThrow,
+    updateOrderItemStatusOrThrow,
+    updateOrderStatusOrThrow,
+  } = workflow.proxyActivities<OrderActivities>({
+    ...shortRunningOpts,
+    taskQueue: TEMPORAL_QUEUES.DEFAULT,
+  });
 
   const { getOrderProcessedEmailContent } =
     workflow.proxyActivities<NotifyActivities>({
@@ -90,6 +94,26 @@ export async function processOrderWorkflow(
       chargeResult.paymentStatus !== paymentStatusSchema.Values.SUCCEEDED &&
       chargeResult.paymentStatus !== paymentStatusSchema.Values.REQUIRES_CAPTURE
     ) {
+      // set orderItem statuses to CANCELLED in db
+      for (const item of orderDetails.items) {
+        const [updateStatusError, _res] = await resolve(
+          updateOrderItemStatusOrThrow({
+            orderItemId: item.id,
+            status: orderStatusSchema.Values.CANCELLED,
+          }),
+        );
+
+        if (updateStatusError) {
+          workflow.log.error(
+            `Failed to update orderItem ${item.id} status to ${orderStatusSchema.Values.CANCELLED}: ${
+              updateStatusError instanceof Error
+                ? updateStatusError.message
+                : String(updateStatusError)
+            }`,
+          );
+        }
+      }
+
       await updateOrderStatusOrThrow({
         orderId: input.orderId,
         status: orderStatusSchema.Values.FAILED,
