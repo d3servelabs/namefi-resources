@@ -1,5 +1,6 @@
 import { db, userUpdateSchema, usersTable } from '@namefi-astra/db';
 import {
+  NAMEFI_NFT_CONTRACT_ADDRESS,
   type NamefiNormalizedDomain,
   getSubDomainAndParentDomainFromNormalizedDomainName,
   namefiNormalizedDomainSchema,
@@ -12,6 +13,7 @@ import { http, createPublicClient } from 'viem';
 import * as chains from 'viem/chains';
 import { z } from 'zod';
 import { config, secrets } from '#lib/env';
+import { NftAbi } from '../../temporal/activities/helpers/contracts';
 import { resolve } from '../../utils/resolve';
 import {
   authedOrPublicProcedure,
@@ -26,6 +28,13 @@ import {
 if (!secrets.ALCHEMY_API_KEY) {
   throw new Error('Cannot create Ethereum public client');
 }
+
+export const viemBasePublicClient = createPublicClient({
+  chain: chains.base,
+  transport: http(
+    `https://base-mainnet.g.alchemy.com/v2/${secrets.ALCHEMY_API_KEY}`,
+  ),
+});
 
 export const viemEthereumPublicClient = createPublicClient({
   chain: chains.mainnet,
@@ -126,7 +135,31 @@ export const usersRouter = createTRPCRouter({
         ),
     });
 
-    return nfts;
+    try {
+      const latestBlock = await viemBasePublicClient.getBlockNumber();
+      const tokenIdResults = await viemBasePublicClient.multicall({
+        contracts: nfts.map((nft) => ({
+          address: NAMEFI_NFT_CONTRACT_ADDRESS as `0x${string}`,
+          abi: NftAbi,
+          functionName: 'normalizedDomainNameToId',
+          args: [nft.normalizedDomainName],
+          blockNumber: BigInt(latestBlock),
+        })),
+      });
+
+      const nftsWithTokenIds = nfts.map((nft, i) => {
+        const result = tokenIdResults[i];
+        const tokenId =
+          result.status === 'success' ? (result.result as string) : undefined;
+        return { ...nft, tokenId };
+      });
+
+      return nftsWithTokenIds;
+    } catch (error) {
+      console.log('Failed to fetch tokenIds for getCurrentUserDomains:', error);
+      // Return NFTs without tokenIds if multicall fails
+      return nfts.map((nft) => ({ ...nft, tokenId: undefined }));
+    }
   }),
 
   getManagerPageEntrypointViewable: authedOrPublicProcedure.query(

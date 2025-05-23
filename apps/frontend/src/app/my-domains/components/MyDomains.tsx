@@ -12,8 +12,9 @@ import { TableBody } from '@/components/ui/shadcn/table';
 import { useAuth } from '@/hooks/useAuth';
 import { cn } from '@/lib/utils';
 import { useTRPC } from '@/utils/trpc';
+import { NAMEFI_NFT_CONTRACT_ADDRESS } from '@namefi-astra/utils';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { SearchIcon, Settings } from 'lucide-react';
+import { ExternalLink, SearchIcon, Settings } from 'lucide-react';
 import Link from 'next/link';
 import { type FC, type HTMLAttributes, Suspense, useMemo } from 'react';
 
@@ -26,11 +27,12 @@ function useGetDomains() {
 
   const domains = useMemo(() => {
     return (
-      data?.map(({ normalizedDomainName, chainId, ownerAddress }) => ({
+      data?.map(({ normalizedDomainName, chainId, ownerAddress, tokenId }) => ({
         id: normalizedDomainName,
         normalizedDomainName,
         chainId,
         ownerAddress,
+        tokenId,
       })) || []
     );
   }, [data]);
@@ -144,6 +146,16 @@ function MyDomainsTable() {
                         aria-label={`Settings for ${item.normalizedDomainName}`}
                       >
                         <Settings /> Manage DNS
+                      </Link>
+                    </Button>
+                    <Button variant="outline" asChild={true}>
+                      <Link
+                        href={`https://basescan.org/nft/${NAMEFI_NFT_CONTRACT_ADDRESS}/${item.tokenId ?? ''}`}
+                        aria-label={`View NFT for ${item.normalizedDomainName}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <ExternalLink /> View NFT
                       </Link>
                     </Button>
                   </div>
