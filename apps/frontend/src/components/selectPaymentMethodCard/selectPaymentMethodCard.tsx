@@ -55,7 +55,7 @@ export function SelectPaymentMethodCard({
 }: SelectPaymentMethodCardProps) {
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<
     SelectedPaymentMethod | undefined
-  >(undefined);
+  >(SelectedPaymentMethod.NFSC);
   const [showAddPaymentMethodDialog, setShowAddPaymentMethodDialog] =
     useState(false);
   const [newCardPreview, setNewCardPreview] = useState<string | null>(null);

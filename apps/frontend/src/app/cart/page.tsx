@@ -54,7 +54,7 @@ export default function CartPage() {
   >;
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<
     SelectedPaymentMethod | undefined | null
-  >(null);
+  >(SelectedPaymentMethod.NFSC);
   const [
     checkoutWithCartRequestPaymentMethodDetails,
     setCheckoutWithCartRequestPaymentMethodDetails,
