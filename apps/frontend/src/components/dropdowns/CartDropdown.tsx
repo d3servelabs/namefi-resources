@@ -56,6 +56,8 @@ export const CartDropdown: ForwardRefExoticComponent<CartDropdownProps> =
       logEventWithInteractionLoggers(beginCheckoutEvent);
     }, [items, logEventWithInteractionLoggers, totalAmountInUsdCents]);
 
+    const isCartEmpty = items.length === 0;
+
     return (
       <div ref={ref} className={cn('', className)} {...rest}>
         <DropdownMenu>
@@ -72,38 +74,45 @@ export const CartDropdown: ForwardRefExoticComponent<CartDropdownProps> =
               )}
             </Button>
           </DropdownMenuTrigger>
-          {items.length > 0 && (
-            <DropdownMenuContent className="w-56" align="end">
-              <DropdownMenuLabel>My Cart</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuGroup>
-                {items.map((item) => (
-                  <DropdownMenuItem
-                    key={item.id}
-                    className="flex justify-between"
-                  >
-                    <span>{item.normalizedDomainName}</span>
-                    <span className="text-muted-foreground">
-                      {formatAmountInUSD(item.amountInUSDCents, true)}
-                    </span>
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuGroup>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem className="justify-between font-medium">
-                <span>Total</span>
-                <span>{formatAmountInUSD(totalAmountInUsdCents, true)}</span>
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem asChild={true}>
-                <Button className="w-full" variant="default" asChild={true}>
-                  <Link href="/cart" onClick={logBeginCheckout}>
-                    Checkout
-                  </Link>
-                </Button>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          )}
+          <DropdownMenuContent className="w-56" align="end">
+            <DropdownMenuLabel>My Cart</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuGroup>
+              {items.map((item) => (
+                <DropdownMenuItem
+                  key={item.id}
+                  className="flex justify-between"
+                >
+                  <span>{item.normalizedDomainName}</span>
+                  <span className="text-muted-foreground">
+                    {formatAmountInUSD(item.amountInUSDCents, true)}
+                  </span>
+                </DropdownMenuItem>
+              ))}
+              {isCartEmpty && (
+                <DropdownMenuItem className="justify-start font-medium italic">
+                  <span>Your cart is empty</span>
+                </DropdownMenuItem>
+              )}
+            </DropdownMenuGroup>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem className="justify-between font-medium">
+              <span>Total</span>
+              <span>{formatAmountInUSD(totalAmountInUsdCents, true)}</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild={true}>
+              <Button
+                className="w-full"
+                variant="default"
+                asChild={!isCartEmpty}
+                disabled={isCartEmpty}
+              >
+                <Link href="/cart" onClick={logBeginCheckout}>
+                  Checkout
+                </Link>
+              </Button>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
         </DropdownMenu>
       </div>
     );
