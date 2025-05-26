@@ -331,7 +331,10 @@ export function SelectPaymentMethodCard({
               onAddPaymentMethodError={handleAddPaymentMethodError}
               onOpenChange={setShowAddPaymentMethodDialog}
               showAddPaymentMethodDialog={showAddPaymentMethodDialog}
-              disabled={disabled}
+              disabled={
+                disabled ||
+                selectedPaymentMethod !== SelectedPaymentMethod.CREDIT_CARD
+              }
               dialogTrigger={
                 <div
                   className={cn(
@@ -339,12 +342,15 @@ export function SelectPaymentMethodCard({
                     selectedPaymentMethod === SelectedPaymentMethod.CREDIT_CARD
                       ? ''
                       : 'opacity-50',
-                    disabled && 'opacity-50 cursor-not-allowed',
+                    (disabled ||
+                      selectedPaymentMethod !==
+                        SelectedPaymentMethod.CREDIT_CARD) &&
+                      'opacity-50 cursor-not-allowed',
                   )}
                 >
                   <div className="flex items-center gap-2">
                     <span className="text-base">
-                      {newCardPreview ?? 'Add or Select A Card'}
+                      {newCardPreview ?? 'Add or Select A Saved Card'}
                     </span>
                   </div>
                   {newCardPreview === null ? (
