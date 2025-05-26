@@ -1,4 +1,5 @@
 'use client';
+import { TruncatedTextWithHover } from '@/components/TruncatedTextWithHover';
 import { AuthRequired } from '@/components/auth-required';
 import { Table, Td, Th, Thead, Tr } from '@/components/table';
 import {
@@ -10,7 +11,6 @@ import {
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
 import { TableBody } from '@/components/ui/shadcn/table';
 import { useAuth } from '@/hooks/useAuth';
-import { getShortAddress } from '@/lib/utils';
 import { formatAmountInUSD } from '@/utils/number';
 import { useTRPC } from '@/utils/trpc';
 import { useSuspenseQuery } from '@tanstack/react-query';
@@ -111,7 +111,9 @@ function SoldDomainsContent() {
                   <Tr key={item.normalizedDomainName}>
                     <Td className="font-medium">{item.normalizedDomainName}</Td>
                     <Td className="font-medium">
-                      {getShortAddress(item.ownerAddress ?? '')}
+                      <TruncatedTextWithHover maxLength={12}>
+                        {item.ownerAddress}
+                      </TruncatedTextWithHover>
                     </Td>
                     <Td className="font-medium">
                       {item.updatedAt.toLocaleDateString()}
