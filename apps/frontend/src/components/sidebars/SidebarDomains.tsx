@@ -39,10 +39,10 @@ export function SidebarDomains({ name, domains }: RecentDomainsProps) {
         {!isCollapsed && (
           <CollapsibleTrigger asChild={true}>
             <div className="flex items-center justify-between px-4 py-2 cursor-pointer">
-              <span className="text-xs text-zinc-500">{name}</span>
+              <span className="text-xs">{name}</span>
               <ChevronDown
                 className={cn(
-                  'h-4 w-4 text-zinc-500 transition-transform',
+                  'h-4 w-4 transition-transform',
                   !isOpen && 'transform -rotate-90',
                 )}
               />
