@@ -6,7 +6,7 @@
 
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { recordTypeEnum } from '@namefi-astra/zod-dns';
-import { sql } from 'drizzle-orm';
+import { asc, eq, getTableColumns, sql } from 'drizzle-orm';
 import {
   bigint,
   check,
@@ -15,6 +15,7 @@ import {
   jsonb,
   pgEnum,
   pgTable,
+  pgView,
   primaryKey,
   text,
   timestamp,
@@ -348,4 +349,94 @@ export const namefiNftTable = pgTable(
     index('namefi_nft_owner_address_idx').on(table.ownerAddress),
     index('namefi_nft_chain_id_idx').on(table.chainId),
   ],
+);
+
+/**
+ * Domain tags table
+ * Stores individual tags for a domain name
+ */
+export const domainTagsTable = pgTable(
+  'domain_tags',
+  {
+    ...randomUuid,
+    ...normalizedDomain,
+    tag: text('tag').notNull(),
+    metadata: jsonb('metadata').default({}),
+    ...timestamps,
+  },
+  (table) => [
+    index('domain_tags_tag_idx').on(table.tag),
+    unique('domain_tags_tag_unique').on(table.normalizedDomainName, table.tag),
+  ],
+);
+
+// view to get all tags for a domain name
+export const domainTagsArrayView = pgView('domain_tags_array_view').as((qb) =>
+  qb
+    .select({
+      normalizedDomainName: domainTagsTable.normalizedDomainName,
+      tags: sql<string>`array_agg(${domainTagsTable.tag})`.as('tags'),
+    })
+    .from(domainTagsTable)
+    .groupBy(domainTagsTable.normalizedDomainName)
+    .orderBy(asc(domainTagsTable.normalizedDomainName)),
+);
+
+// view to join domain tags with nft
+export const domainTagsWithNftView = pgView('domain_tags_with_nft_view').as(
+  (qb) =>
+    qb
+      .select({
+        tag: domainTagsTable.tag,
+        ...getTableColumns(namefiNftTable),
+      })
+      .from(domainTagsTable)
+      .leftJoin(
+        namefiNftTable,
+        eq(
+          domainTagsTable.normalizedDomainName,
+          namefiNftTable.normalizedDomainName,
+        ),
+      )
+      .orderBy(
+        asc(namefiNftTable.chainId),
+        asc(domainTagsTable.normalizedDomainName),
+      ),
+);
+
+// view to join domain tags with nft and order items
+export const domainTagsWithNftAndOrderItemsView = pgView(
+  'domain_tags_with_nft_and_order_items_view',
+).as((qb) =>
+  qb
+    .select({
+      tag: domainTagsTable.tag,
+      chainId: namefiNftTable.chainId,
+      ownerAddress: namefiNftTable.ownerAddress,
+      asOfBlockNumber: namefiNftTable.asOfBlockNumber,
+      ...getTableColumns(orderItemsTable),
+      orderStatus: sql<string>`orders.status`.as('order_status'),
+      orderUserId: sql<string>`orders.user_id`.as('order_user_id'),
+      orderPaymentId: sql<string>`orders.payment_id`.as('order_payment_id'),
+    })
+    .from(domainTagsTable)
+    .leftJoin(
+      namefiNftTable,
+      eq(
+        domainTagsTable.normalizedDomainName,
+        namefiNftTable.normalizedDomainName,
+      ),
+    )
+    .leftJoin(
+      orderItemsTable,
+      eq(
+        domainTagsTable.normalizedDomainName,
+        orderItemsTable.normalizedDomainName,
+      ),
+    )
+    .leftJoin(ordersTable, eq(orderItemsTable.orderId, ordersTable.id))
+    .orderBy(
+      asc(orderItemsTable.createdAt),
+      asc(domainTagsTable.normalizedDomainName),
+    ),
 );
