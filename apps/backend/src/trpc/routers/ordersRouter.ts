@@ -14,7 +14,7 @@ import {
 } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
 import { and, desc, eq, inArray } from 'drizzle-orm';
-import { groupBy, indexBy, isNil } from 'ramda';
+import { groupBy, indexBy, isNil, prop } from 'ramda';
 import Stripe from 'stripe';
 import { zeroAddress } from 'viem';
 import { z } from 'zod';
@@ -443,6 +443,57 @@ async function validateCartItems(userId: string, cartItemIds?: string[]) {
       message: `Pricing has changed for these domains: ${priceChangedCartItems.map((item) => item.originalItem.normalizedDomainName).join(', ')}`,
     });
   }
+}
+
+/**
+ * Reflects the changes in the cart items
+ * @param userId - The user id
+ * @param cartItemIds - The cart item ids
+ */
+async function reflectChangesInCartItemsIfAnyAndReturnSummary(
+  userId: string,
+  cartItemIds?: string[],
+) {
+  const {
+    noLongerAvailableCartItems,
+    priceChangedCartItems,
+    areThereAnyChanges,
+  } = await getChangesIfAnyToCartItems(userId, cartItemIds);
+  if (!areThereAnyChanges) {
+    return;
+  }
+  const summary = generateSummaryOfCartItemsChanges({
+    noLongerAvailableCartItems,
+    priceChangedCartItems,
+    areThereAnyChanges,
+  });
+
+  await db.transaction(async (tx) => {
+    if (noLongerAvailableCartItems.length > 0) {
+      await tx
+        .delete(cartItemsTable)
+        .where(
+          inArray(
+            cartItemsTable.id,
+            noLongerAvailableCartItems.map(prop('id')),
+          ),
+        );
+    }
+    if (priceChangedCartItems.length > 0) {
+      await Promise.all(
+        priceChangedCartItems.map(async (item) => {
+          await tx
+            .update(cartItemsTable)
+            .set({
+              amountInUSDCents: item.newItem.amountInUSDCents,
+            })
+            .where(eq(cartItemsTable.id, item.newItem.id));
+        }),
+      );
+    }
+  });
+
+  return summary;
 }
 
 /**
