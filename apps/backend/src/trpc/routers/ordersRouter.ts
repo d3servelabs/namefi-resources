@@ -444,3 +444,52 @@ async function validateCartItems(userId: string, cartItemIds?: string[]) {
     });
   }
 }
+
+/**
+ * Generates a summary of the cart items changes
+ * @param changes - The changes
+ * @returns The summary
+ */
+function generateSummaryOfCartItemsChanges(
+  changes: Pick<
+    Awaited<ReturnType<typeof getChangesIfAnyToCartItems>>,
+    | 'noLongerAvailableCartItems'
+    | 'priceChangedCartItems'
+    | 'areThereAnyChanges'
+  >,
+) {
+  const {
+    noLongerAvailableCartItems,
+    priceChangedCartItems,
+    areThereAnyChanges,
+  } = changes;
+  if (!areThereAnyChanges) {
+    return [];
+  }
+  const summary: string[] = [];
+  if (noLongerAvailableCartItems.length > 0) {
+    const length = noLongerAvailableCartItems.length;
+    summary.push(
+      `${length === 1 ? 'One domain is no longer' : 'multiple domains are'} no longer available for purchase: ${noLongerAvailableCartItems.map((item) => item.normalizedDomainName).join(', ')}`,
+    );
+  }
+  if (priceChangedCartItems.length > 0) {
+    const groupByPriceChangedCartItems = groupBy(
+      (item) =>
+        `${item.originalItem.amountInUSDCents}-${item.newItem.amountInUSDCents}`,
+      priceChangedCartItems,
+    );
+    Object.entries(groupByPriceChangedCartItems).forEach(([key, items]) => {
+      if (items && items.length > 0) {
+        const fromPriceInUsdCents = items[0].originalItem.amountInUSDCents;
+        const toPriceInUsdCents = items[0].newItem.amountInUSDCents;
+        const fromPriceInUsd = (fromPriceInUsdCents / 100).toFixed(2);
+        const toPriceInUsd = (toPriceInUsdCents / 100).toFixed(2);
+        summary.push(
+          `Pricing has changed from ${fromPriceInUsd} $USD to ${toPriceInUsd} $USD for these domains: ${items.map((item) => item.originalItem.normalizedDomainName).join(', ')}`,
+        );
+      }
+    });
+  }
+  return summary;
+}
