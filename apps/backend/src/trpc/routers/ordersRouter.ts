@@ -1,10 +1,12 @@
 import {
+  type CartItemSelect,
   type PaymentSelect,
   cartItemsTable,
   db,
   isNfscPayment,
   orderItemsTable,
   ordersTable,
+  usersTable,
 } from '@namefi-astra/db';
 import {
   type NamefiNormalizedDomain,
@@ -12,7 +14,7 @@ import {
 } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
 import { and, desc, eq, inArray } from 'drizzle-orm';
-import { isNil } from 'ramda';
+import { groupBy, indexBy, isNil } from 'ramda';
 import Stripe from 'stripe';
 import { zeroAddress } from 'viem';
 import { z } from 'zod';
@@ -326,3 +328,95 @@ export const ordersRouter = createTRPCRouter({
       };
     }),
 });
+
+/**
+ * Returns the changes if any to the cart items
+ * @param userId - The user id
+ * @param cartItemIds - The cart item ids
+ * @returns The changes if any to the cart items
+ */
+async function getChangesIfAnyToCartItems(
+  userId: string,
+  cartItemIds?: string[],
+) {
+  const user = await db.query.usersTable.findFirst({
+    where: eq(usersTable.id, userId),
+  });
+
+  if (isNil(user)) {
+    throw new TRPCError({
+      code: 'NOT_FOUND',
+      message: 'User not found',
+    });
+  }
+
+  const cartItems = (await db.query.cartItemsTable.findMany({
+    where: and(
+      (cartItemIds?.length ?? 0) > 0
+        ? inArray(cartItemsTable.id, cartItemIds ?? [])
+        : undefined,
+      eq(cartItemsTable.userId, userId),
+    ),
+  })) as CartItemSelect[];
+  const domains = cartItems.map(
+    (item) => item.normalizedDomainName as NamefiNormalizedDomain,
+  );
+  const domainAvailabilitiesWithPricing = await getDomainListInfo(
+    domains,
+    user,
+  );
+
+  const domainPricingByNormalizedDomainName = indexBy(
+    (item) => item.domain,
+    domainAvailabilitiesWithPricing,
+  );
+
+  const cartItemsGroupedByAvailability = groupBy((item) => {
+    const domainPricing =
+      domainPricingByNormalizedDomainName[
+        item.normalizedDomainName as NamefiNormalizedDomain
+      ];
+    return domainPricing?.availability ? 'available' : 'unavailable';
+  }, cartItems);
+
+  const noLongerAvailableCartItems =
+    cartItemsGroupedByAvailability.unavailable ?? [];
+  const stillAvailableCartItems =
+    cartItemsGroupedByAvailability.available ?? [];
+
+  const priceChangedCartItems: {
+    originalItem: CartItemSelect;
+    newItem: CartItemSelect;
+  }[] = [];
+  const cartItemsWithChangesReflected = stillAvailableCartItems.map(
+    (originalItem) => {
+      const domainPricing =
+        domainPricingByNormalizedDomainName[
+          originalItem.normalizedDomainName as NamefiNormalizedDomain
+        ];
+      const newAmountInUsdCents = 100 * (domainPricing?.priceInUSD ?? 0);
+      if (newAmountInUsdCents !== originalItem.amountInUSDCents) {
+        priceChangedCartItems.push({
+          originalItem,
+          newItem: {
+            ...originalItem,
+            amountInUSDCents: newAmountInUsdCents,
+          },
+        });
+      }
+
+      return {
+        ...originalItem,
+        amountInUSDCents: newAmountInUsdCents,
+      };
+    },
+  );
+  // TODO: add validation for duration
+  return {
+    noLongerAvailableCartItems,
+    priceChangedCartItems,
+    cartItemsWithChangesReflected,
+    areThereAnyChanges:
+      noLongerAvailableCartItems.length > 0 || priceChangedCartItems.length > 0,
+  };
+}
