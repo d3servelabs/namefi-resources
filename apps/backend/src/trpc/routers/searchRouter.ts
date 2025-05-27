@@ -28,9 +28,10 @@ import {
   uniqueNamesGenerator,
 } from 'unique-names-generator';
 import { z } from 'zod';
+import { getClubsCategoriesWithStats } from '#lib/clubs-categories';
 import { deepseek } from '#lib/llm/deepseek';
 import { openai } from '#lib/llm/gpt';
-import { createLogger } from '#lib/logger';
+import { createLogger, logger } from '#lib/logger';
 import { getDomainListInfo } from '#lib/namefi-registry';
 import { authedOrPublicProcedure, createTRPCRouter } from '../base';
 
@@ -294,6 +295,21 @@ export const searchRouter = createTRPCRouter({
       );
       return suggestions;
     }),
+  getClubsCategoriesWithStats: authedOrPublicProcedure.query(
+    async ({ ctx }) => {
+      const parentDomain = ctx.thirdPartyOriginHostname;
+      const startTime = performance.now();
+      const categories = await getClubsCategoriesWithStats(parentDomain);
+      const endTime = performance.now();
+      logger.info(
+        `[getClubsCategoriesWithStats] Time taken: ${endTime - startTime} milliseconds`,
+      );
+      logger.info(
+        `[getClubsCategoriesWithStats] Number of categories: ${categories.length}`,
+      );
+      return categories;
+    },
+  ),
 });
 
 /**
