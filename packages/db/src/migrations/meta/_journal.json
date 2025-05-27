@@ -92,6 +92,13 @@
       "when": 1745834888428,
       "tag": "0012_worried_sentry",
       "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1747397746052,
+      "tag": "0013_jsonb-flat-array-agg",
+      "breakpoints": true
     }
   ]
 }
