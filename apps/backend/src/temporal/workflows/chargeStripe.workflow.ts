@@ -1,7 +1,6 @@
-import * as workflow from '@temporalio/workflow';
 import type Stripe from 'stripe';
-import type { PaymentActivities } from '../activities';
-import { TEMPORAL_QUEUES, shortRunningOpts } from '../shared';
+import { TEMPORAL_ENUMS, shortRunningOpts } from '../shared';
+import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';
 
 export type ChargeStripeWorkflowInput = {
   userId: string;
@@ -21,11 +20,11 @@ export async function ChargeStripeWorkflow({
   confirmationTokenId,
   paymentMethodId,
 }: ChargeStripeWorkflowInput): Promise<ChargeStripeWorkflowOutput> {
-  const { createStripePaymentIntent } = workflow.proxyActivities<
-    typeof PaymentActivities
-  >({
-    ...shortRunningOpts,
-    taskQueue: TEMPORAL_QUEUES.DEFAULT,
+  const { createStripePaymentIntent } = typedProxyActivities({
+    temporalEnum: TEMPORAL_ENUMS.DEFAULT,
+    options: {
+      ...shortRunningOpts,
+    },
   });
 
   const { stripePaymentIntent } = await createStripePaymentIntent({

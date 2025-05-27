@@ -6,9 +6,9 @@ import {
 } from '@namefi-astra/db/types';
 import { matchAny } from '@namefi-astra/utils';
 import * as workflow from '@temporalio/workflow';
-import type { PaymentActivities } from '../activities';
 import { stripePaymentIntentStatusToPaymentStatus } from '../activities/helpers/stripePaymentHelpers';
-import { TEMPORAL_QUEUES, shortRunningOpts } from '../shared';
+import { TEMPORAL_ENUMS, TEMPORAL_QUEUES, shortRunningOpts } from '../shared';
+import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';
 import { refundUserWorkflow } from './refund-user.workflow';
 
 export type CaptureStripeWorkflowInput = {
@@ -28,9 +28,11 @@ export async function finalizePaymentWorkflow({
   amountToRefundInUsdCents,
 }: CaptureStripeWorkflowInput): Promise<CaptureStripeWorkflowOutput> {
   const { captureStripePayment, updatePayment, getPaymentDetails } =
-    workflow.proxyActivities<typeof PaymentActivities>({
-      ...shortRunningOpts,
-      taskQueue: TEMPORAL_QUEUES.DEFAULT,
+    typedProxyActivities({
+      temporalEnum: TEMPORAL_ENUMS.DEFAULT,
+      options: {
+        ...shortRunningOpts,
+      },
     });
 
   const paymentDetails = await getPaymentDetails({ paymentId });

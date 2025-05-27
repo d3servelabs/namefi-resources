@@ -4,8 +4,8 @@ import {
   paymentStatusSchema,
 } from '@namefi-astra/db/types';
 import * as workflow from '@temporalio/workflow';
-import type { PaymentActivities } from '../activities';
-import { TEMPORAL_QUEUES, shortRunningOpts } from '../shared';
+import { TEMPORAL_ENUMS, TEMPORAL_QUEUES, shortRunningOpts } from '../shared';
+import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';
 import { mintNfsc } from './mint.workflow';
 
 export type RefundUserWorkflowInput = {
@@ -23,9 +23,11 @@ export async function refundUserWorkflow({
   amountToRefundInUsdCents,
 }: RefundUserWorkflowInput): Promise<RefundUserWorkflowOutput> {
   const { createRefund, getPaymentDetails, updatePayment, updateRefund } =
-    workflow.proxyActivities<typeof PaymentActivities>({
-      ...shortRunningOpts,
-      taskQueue: TEMPORAL_QUEUES.DEFAULT,
+    typedProxyActivities({
+      temporalEnum: TEMPORAL_ENUMS.DEFAULT,
+      options: {
+        ...shortRunningOpts,
+      },
     });
 
   const { nfscPaymentDetails } = await getPaymentDetails({

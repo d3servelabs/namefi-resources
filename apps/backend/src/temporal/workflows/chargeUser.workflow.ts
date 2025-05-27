@@ -6,9 +6,9 @@ import {
 } from '@namefi-astra/db/types';
 import * as workflow from '@temporalio/workflow';
 import type { CreateStripePaymentIntentInput } from '#services/stripePayments/types';
-import type { PaymentActivities } from '../activities';
 import { stripePaymentIntentStatusToPaymentStatus } from '../activities/helpers/stripePaymentHelpers';
-import { TEMPORAL_QUEUES, shortRunningOpts } from '../shared';
+import { TEMPORAL_ENUMS, TEMPORAL_QUEUES, shortRunningOpts } from '../shared';
+import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';
 import { ChargeStripeWorkflow } from './chargeStripe.workflow';
 import { chargeNfscWorkflow } from './mint.workflow';
 
@@ -36,10 +36,11 @@ export async function chargeUserWorkflow({
   userId,
   metadata,
 }: ChargeUserWorkflowInput): Promise<ChargeUserWorkflowOutput> {
-  const { getPaymentDetails, updatePayment } = workflow.proxyActivities<
-    typeof PaymentActivities
-  >({
-    ...shortRunningOpts,
+  const { getPaymentDetails, updatePayment } = typedProxyActivities({
+    temporalEnum: TEMPORAL_ENUMS.DEFAULT,
+    options: {
+      ...shortRunningOpts,
+    },
   });
 
   const {

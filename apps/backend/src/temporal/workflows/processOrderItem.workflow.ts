@@ -3,8 +3,8 @@ import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import * as workflow from '@temporalio/workflow';
 import { ApplicationFailure } from '@temporalio/workflow';
 import { resolve } from '../../utils/resolve';
-import type { OrderActivities } from '../activities/order.activities';
-import { TEMPORAL_QUEUES, shortRunningOpts } from '../shared';
+import { TEMPORAL_ENUMS, TEMPORAL_QUEUES, shortRunningOpts } from '../shared';
+import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';
 import { registerSubdomainWorkflow } from './register-subdomain.workflow';
 
 export interface ProcessOrderItemWorkflowInput {
@@ -22,11 +22,12 @@ export async function processOrderItemWorkflow(
   input: ProcessOrderItemWorkflowInput,
 ): Promise<void> {
   const { normalizedDomainName, nftWalletAddress, nftChainId } = input;
-  const { updateOrderItemStatusOrThrow } =
-    workflow.proxyActivities<OrderActivities>({
+  const { updateOrderItemStatusOrThrow } = typedProxyActivities({
+    temporalEnum: TEMPORAL_ENUMS.DEFAULT,
+    options: {
       ...shortRunningOpts,
-      taskQueue: TEMPORAL_QUEUES.DEFAULT,
-    });
+    },
+  });
 
   try {
     // Register the domain

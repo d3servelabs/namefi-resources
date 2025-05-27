@@ -45,16 +45,19 @@ export async function processOrderWorkflow(
     getOrderDetailsOrThrow,
     updateOrderItemStatusOrThrow,
     updateOrderStatusOrThrow,
-  } = workflow.proxyActivities<OrderActivities>({
-    ...shortRunningOpts,
-    taskQueue: TEMPORAL_QUEUES.DEFAULT,
+  } = typedProxyActivities({
+    temporalEnum: TEMPORAL_ENUMS.DEFAULT,
+    options: {
+      ...shortRunningOpts,
+    },
   });
 
-  const { getOrderProcessedEmailContent } =
-    workflow.proxyActivities<NotifyActivities>({
+  const { getOrderProcessedEmailContent } = typedProxyActivities({
+    temporalEnum: TEMPORAL_ENUMS.NOTIFY,
+    options: {
       ...shortRunningOpts,
-      taskQueue: TEMPORAL_QUEUES.NOTIFY,
-    });
+    },
+  });
 
   try {
     // MARK: - Get Order Details
