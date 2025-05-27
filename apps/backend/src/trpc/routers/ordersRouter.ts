@@ -49,6 +49,8 @@ export const ordersRouter = createTRPCRouter({
         ),
       });
 
+      await validateCartItems(ctx.user.id, cartItemIds);
+
       // Validate all domains are available for purchase
       const domains = cartItems.map(
         (item) => item.normalizedDomainName as NamefiNormalizedDomain,
@@ -326,6 +328,16 @@ export const ordersRouter = createTRPCRouter({
         brand: paymentMethod.card?.brand,
         last4: paymentMethod.card?.last4,
       };
+    }),
+
+  reflectChangesInCartItemsIfAnyAndReturnSummary: protectedProcedure
+    .input(z.object({ cartItemIds: z.array(z.string()).optional() }))
+    .mutation(({ ctx, input }) => {
+      const { cartItemIds } = input;
+      return reflectChangesInCartItemsIfAnyAndReturnSummary(
+        ctx.user.id,
+        cartItemIds,
+      );
     }),
 });
 

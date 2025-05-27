@@ -19,6 +19,14 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/shadcn/alert-dialog';
+import { Button } from '@/components/ui/shadcn/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/shadcn/card';
 import { Separator } from '@/components/ui/shadcn/separator';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
 import { useCart } from '@/hooks/landing/use-cart';
@@ -39,9 +47,10 @@ import {
   paymentProviderSchema,
 } from '@namefi-astra/db/types';
 import { CHAINS, NFSC_CONTRACT_ADDRESS } from '@namefi-astra/utils';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { inferInput } from '@trpc/tanstack-react-query';
-import { Loader2, Trash2 } from 'lucide-react';
+import { ArchiveX, Loader2, Trash2 } from 'lucide-react';
+import { AnimatePresence, motion } from 'motion/react';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { formatUnits } from 'viem';
@@ -78,6 +87,47 @@ export default function CartPage() {
     isRemovingFromCart,
     removeItem,
   } = useCart();
+
+  const [cartItemsAreUpToDate, setCartItemsAreUpToDate] = useState(false);
+  const [cartItemsAreUpdating, setCartItemsAreUpdating] = useState(false);
+  const [cartItemsChangesSummary, setCartItemsChangesSummary] =
+    useState<string[]>();
+  const { mutateAsync: reflectChangesInCartItemsIfAnyAndReturnSummary } =
+    useMutation(
+      trpc.orders.reflectChangesInCartItemsIfAnyAndReturnSummary.mutationOptions(),
+    );
+
+  const queryClient = useQueryClient();
+
+  const checkCartItemsForUpdates = useCallback(async () => {
+    if (!cartItemsAreUpdating) {
+      setCartItemsAreUpdating(true);
+      const _cartItemsChangesSummary =
+        await reflectChangesInCartItemsIfAnyAndReturnSummary({
+          cartItemIds: items?.map((item) => item.id),
+        });
+      if (_cartItemsChangesSummary && _cartItemsChangesSummary.length > 0) {
+        setCartItemsChangesSummary(_cartItemsChangesSummary);
+      }
+
+      await queryClient.refetchQueries({
+        queryKey: trpc.carts.getItems.queryKey(),
+      });
+      setCartItemsAreUpdating(false);
+      setCartItemsAreUpToDate(true);
+    }
+  }, [
+    reflectChangesInCartItemsIfAnyAndReturnSummary,
+    items,
+    queryClient,
+    cartItemsAreUpdating,
+    trpc,
+  ]);
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  useEffect(() => {
+    checkCartItemsForUpdates();
+  }, []);
 
   // Show loading skeletons only on initial load – avoid layout shift once the
   // user has pressed the submit button and the page is about to redirect.
@@ -286,8 +336,11 @@ export default function CartPage() {
   ]);
 
   const submitOrderDisabled = useMemo(() => {
-    return !(paymentMethodSelected && selectedNftWalletAddress);
-  }, [paymentMethodSelected, selectedNftWalletAddress]);
+    return (
+      !(paymentMethodSelected && selectedNftWalletAddress) &&
+      !cartItemsAreUpToDate
+    );
+  }, [paymentMethodSelected, selectedNftWalletAddress, cartItemsAreUpToDate]);
 
   const logSubmitOrder = useCallback(
     ({ success }: { success: boolean }) => {
@@ -457,6 +510,49 @@ export default function CartPage() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {cartItemsChangesSummary && cartItemsChangesSummary.length > 0 && (
+        <AnimatePresence>
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.5 }}
+            className="container mx-auto py-4"
+          >
+            <Card
+              className={cn(
+                'bg-white/[0.03] border border-white/10 shadow-sm rounded-lg p-6 gap-0',
+              )}
+            >
+              <div className="flex flex-row justify-between pb-2">
+                <CardHeader className="p-0 flex-1">
+                  <CardTitle className="text-xl font-semibold">
+                    Cart Changes
+                  </CardTitle>
+                  <CardDescription>
+                    Some changes were made to your cart.
+                  </CardDescription>
+                </CardHeader>
+                <Button
+                  variant="outline"
+                  onClick={() => setCartItemsChangesSummary(undefined)}
+                >
+                  <ArchiveX className="size-4" /> Dismiss
+                </Button>
+              </div>
+
+              <CardContent className="p-0">
+                <ul className="list-disc list-inside flex flex-col items-start justify-start gap-4 py-4">
+                  {cartItemsChangesSummary.map((change) => (
+                    <li key={change}>{change}</li>
+                  ))}
+                </ul>
+              </CardContent>
+            </Card>
+          </motion.div>
+        </AnimatePresence>
+      )}
 
       {items && items.length > 0 ? (
         <div
