@@ -420,3 +420,27 @@ async function getChangesIfAnyToCartItems(
       noLongerAvailableCartItems.length > 0 || priceChangedCartItems.length > 0,
   };
 }
+
+/**
+ * Validates the cart items
+ * @param userId - The user id
+ * @param cartItemIds - The cart item ids
+ * @returns The changes if any to the cart items
+ */
+async function validateCartItems(userId: string, cartItemIds?: string[]) {
+  const { noLongerAvailableCartItems, priceChangedCartItems } =
+    await getChangesIfAnyToCartItems(userId, cartItemIds);
+  if (noLongerAvailableCartItems.length > 0) {
+    throw new TRPCError({
+      code: 'BAD_REQUEST',
+      message: `One or more domains are not available for purchase: ${noLongerAvailableCartItems.map((item) => item.normalizedDomainName).join(', ')}`,
+    });
+  }
+
+  if (priceChangedCartItems.length > 0) {
+    throw new TRPCError({
+      code: 'BAD_REQUEST',
+      message: `Pricing has changed for these domains: ${priceChangedCartItems.map((item) => item.originalItem.normalizedDomainName).join(', ')}`,
+    });
+  }
+}
