@@ -1,4 +1,5 @@
 import type { Worker } from '@temporalio/worker';
+import { addCategoriesToDomainsWithNoCategories } from '#lib/clubs-categories';
 import { isDomainParked, parkDomain } from '#services/dns/parking';
 import {
   GreetActivities,
@@ -23,6 +24,7 @@ export const ACTIVITIES = {
     updateNamefiNftIndex,
     triggerUpdateNamefiNftIndex,
     triggerNamefiGptCronJob,
+    addCategoriesToDomainsWithNoCategories,
   },
   [TEMPORAL_ENUMS.MINT]: {
     ...MintActivities,
