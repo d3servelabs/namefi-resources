@@ -6,8 +6,15 @@ import {
   useLinkedWalletAddresses,
   useUserWalletAddresses,
 } from '@/hooks/useUserWalletAddresses';
+import { config } from '@/lib/env';
 import { CHAINS, checksumWalletAddressSchema } from '@namefi-astra/utils';
 import { useCallback, useMemo, useState } from 'react';
+
+const DEFAULT_RECEIVING_WALLET_CHAIN_ID = config.ALLOWED_CHAINS.includes(
+  CHAINS.base.id,
+)
+  ? CHAINS.base.id
+  : CHAINS.sepolia.id;
 
 export interface NftWalletCardProps {
   onWalletAddressChange: (walletAddress: string | null) => void;
@@ -79,7 +86,12 @@ export function NftWalletCard({
         error={error || undefined}
         disabled={!optionsReady || disabled}
         helpText="Domains will be sent to this wallet. Make sure it's correct."
-        icon={<NetworkLogo network={CHAINS.base.id} className="size-4" />}
+        icon={
+          <NetworkLogo
+            network={DEFAULT_RECEIVING_WALLET_CHAIN_ID}
+            className="size-4"
+          />
+        }
       />
     </CartCard>
   );

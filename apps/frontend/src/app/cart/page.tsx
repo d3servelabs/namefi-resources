@@ -31,6 +31,7 @@ import { Separator } from '@/components/ui/shadcn/separator';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
 import { useCart } from '@/hooks/landing/use-cart';
 import { useAuth } from '@/hooks/useAuth';
+import { config } from '@/lib/env';
 import { cn } from '@/lib/utils';
 import {
   InteractionLoggingEventName,
@@ -55,6 +56,15 @@ import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { formatUnits } from 'viem';
 import { useBalance } from 'wagmi';
+
+const DEFAULT_CHAIN_ID = config.ALLOWED_CHAINS.includes(CHAINS.base.id)
+  ? CHAINS.base.id
+  : CHAINS.sepolia.id;
+
+const DEFAULT_NFSC_PAYMENT_PROVIDER =
+  DEFAULT_CHAIN_ID === CHAINS.base.id
+    ? paymentProviderSchema.Values.NFSC_BASE
+    : paymentProviderSchema.Values.NFSC_ETHEREUM_SEPOLIA;
 
 export default function CartPage() {
   type PaymentDetails = Omit<
@@ -254,10 +264,10 @@ export default function CartPage() {
       > | null = selectedNftWalletAddress
         ? {
             paymentProviderDetails: {
-              paymentProvider: paymentProviderSchema.Values.NFSC_BASE, // default value for receiving wallet
+              paymentProvider: DEFAULT_NFSC_PAYMENT_PROVIDER, // default value for receiving wallet
               nfscPaymentDetails: {
                 walletAddress: selectedNftWalletAddress,
-                chainId: CHAINS.base.id, // default value for receiving wallet
+                chainId: DEFAULT_CHAIN_ID, // default value for receiving wallet
               },
             },
           }
@@ -390,7 +400,7 @@ export default function CartPage() {
         ...validatedPaymentMethodDetails.data,
         nftMetadata: {
           nftWalletAddress: selectedNftWalletAddress,
-          nftChainId: CHAINS.base.id,
+          nftChainId: DEFAULT_CHAIN_ID,
         },
       });
     } catch (error) {

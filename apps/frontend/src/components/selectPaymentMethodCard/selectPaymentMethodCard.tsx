@@ -5,6 +5,7 @@ import { type ReactNode, useCallback, useMemo, useState } from 'react';
 
 import { CartCard } from '@/components/cart-card';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/shadcn/radio-group';
+import { config } from '@/lib/env';
 import { cn } from '@/lib/utils';
 import { formatAmountInUSD } from '@/utils/number';
 import type { DeepPartial } from '@/utils/types';
@@ -21,6 +22,10 @@ import { useBalance } from 'wagmi';
 import { SelectChain, SelectWallet } from '../SelectWalletAndChain';
 import { AddPaymentMethodDialog } from '../addPaymentMethod/addPaymentMethodDialog';
 import { Separator } from '../ui/shadcn/separator';
+
+const DEFAULT_PAYMENT_CHAIN_ID = config.ALLOWED_CHAINS.includes(CHAINS.base.id)
+  ? CHAINS.base.id
+  : CHAINS.sepolia.id;
 
 export enum SelectedPaymentMethod {
   CREDIT_CARD = 'CREDIT_CARD',
@@ -190,9 +195,11 @@ export function SelectPaymentMethodCard({
       const newNfscPaymentMethodDetails: PaymentDetails = {
         paymentProviderDetails: {
           paymentProvider:
-            chainId === 1
+            chainId === CHAINS.mainnet.id
               ? paymentProviderSchema.Values.NFSC_ETHEREUM
-              : paymentProviderSchema.Values.NFSC_BASE,
+              : chainId === CHAINS.base.id
+                ? paymentProviderSchema.Values.NFSC_BASE
+                : paymentProviderSchema.Values.NFSC_ETHEREUM_SEPOLIA,
           nfscPaymentDetails: {
             walletAddress:
               walletAddress ??
@@ -206,8 +213,8 @@ export function SelectPaymentMethodCard({
               ((isNfscPayment(nfscPaymentMethodDetails?.paymentProviderDetails)
                 ? nfscPaymentMethodDetails.paymentProviderDetails
                     .nfscPaymentDetails?.chainId
-                : CHAINS.base.id) ||
-                CHAINS.base.id),
+                : DEFAULT_PAYMENT_CHAIN_ID) ||
+                DEFAULT_PAYMENT_CHAIN_ID),
           },
         },
       };

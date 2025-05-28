@@ -20,6 +20,9 @@ const ALLOWED_CHAINS: Chain[] = filter(
   isNotNil,
   config.ALLOWED_CHAINS.map((chainId) => getChain(chainId) as Chain),
 );
+const DEFAULT_PAYMENT_CHAIN_ID = config.ALLOWED_CHAINS.includes(CHAINS.base.id)
+  ? CHAINS.base.id
+  : CHAINS.sepolia.id;
 
 interface SelectWalletProps {
   onValueChange: (walletAddress: string) => void;
@@ -97,7 +100,7 @@ export function SelectChain({
     <Select
       disabled={selectTriggerDisabled}
       onValueChange={onValueChange}
-      defaultValue={`${CHAINS.base.id}`}
+      defaultValue={`${DEFAULT_PAYMENT_CHAIN_ID}`}
     >
       <SelectTrigger>
         <SelectValue placeholder="Select a Chain" />
