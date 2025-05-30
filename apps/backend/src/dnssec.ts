@@ -55,7 +55,7 @@ dnssecRouter.get('/', async (c) => {
   _logger.info({ domainConfig }, 'Domain config found');
   if (domainConfig.length > 0) {
     return c.json({
-      keyOwner: domainConfig[0].normalizedDomainName,
+      keyOwner: `${domainConfig[0].normalizedDomainName}.`,
       dnssecEnabled: domainConfig[0].dnssecEnabled,
     });
   }
