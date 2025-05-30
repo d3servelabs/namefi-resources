@@ -9,6 +9,7 @@ import { recordTypeEnum } from '@namefi-astra/zod-dns';
 import { asc, eq, getTableColumns, sql } from 'drizzle-orm';
 import {
   bigint,
+  boolean,
   check,
   index,
   integer,
@@ -439,4 +440,53 @@ export const domainTagsWithNftAndOrderItemsView = pgView(
       asc(orderItemsTable.createdAt),
       asc(domainTagsTable.normalizedDomainName),
     ),
+);
+
+/**
+ * Domain config table
+ * Stores domain config for a given domain name
+ */
+export const domainConfigTable = pgTable(
+  'domain_config',
+  {
+    ...randomUuid,
+    normalizedDomainName: text('normalized_domain_name')
+      .notNull()
+      .$type<NamefiNormalizedDomain>(),
+    dnssecEnabled: boolean('dnssec_enabled').notNull().default(false),
+    ...timestamps,
+  },
+  (table) => [
+    index('domain_config_domain_idx').on(table.normalizedDomainName),
+    unique('domain_config_domain_unique').on(table.normalizedDomainName),
+  ],
+);
+
+/**
+ * Domain user preferences table
+ * Stores user preferences for a given domain name
+ */
+export const domainUserPreferencesTable = pgTable(
+  'domain_user_preferences',
+  {
+    ...randomUuid,
+    normalizedDomainName: text('normalized_domain_name')
+      .notNull()
+      .$type<NamefiNormalizedDomain>(),
+    userId: uuid('user_id')
+      .notNull()
+      .references(() => usersTable.id, { onDelete: 'cascade' }),
+    autoRenewEnabled: boolean('auto_renew_enabled').notNull().default(false),
+    autoEnsEnabled: boolean('auto_ens_enabled').notNull().default(false),
+    autoParkEnabled: boolean('auto_park_enabled').notNull().default(false),
+    ...timestamps,
+  },
+  (table) => [
+    index('domain_user_preferences_domain_idx').on(table.normalizedDomainName),
+    index('domain_user_preferences_user_id_idx').on(table.userId),
+    unique('domain_user_preferences_domain_user_id_unique').on(
+      table.normalizedDomainName,
+      table.userId,
+    ),
+  ],
 );

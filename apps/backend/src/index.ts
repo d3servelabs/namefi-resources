@@ -6,6 +6,7 @@ import { cors } from 'hono/cors';
 import { prettyJSON } from 'hono/pretty-json';
 import { logger } from '#lib/logger';
 import { getPoweredByNamefi3PHostnames } from '#lib/namefi-registry';
+import { dnssecRouter } from './dnssec';
 import { config, secrets } from './lib/env';
 import { nsJsonRouter } from './ns-json';
 import { webhooksRouter } from './routers/webhooks';
@@ -66,6 +67,7 @@ app.use(
 );
 
 app.route('v1/ns-json', nsJsonRouter);
+app.route('v1/dnssec', dnssecRouter);
 app.route('/webhooks', webhooksRouter);
 
 app.get('/configfi', (c) => {
