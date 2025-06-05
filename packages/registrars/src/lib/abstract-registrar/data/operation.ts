@@ -1,0 +1,7 @@
+export enum DomainOwnershipOperation {
+  REGISTER = 'REGISTER',
+  TRANSFER = 'TRANSFER',
+  CHANGE_OWNERSHIP = 'CHANGE_OWNERSHIP',
+  RENEW = 'RENEW',
+  RESTORE = 'RESTORE',
+}
