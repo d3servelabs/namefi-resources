@@ -4,3 +4,6 @@ export * from './src/domain-names';
 export * from './src/namefi-flavor';
 export * from './src/match';
 export * from './src/zod-helpers';
+export * from './src/promises/resolve';
+export * from './src/safe-parse-json';
+export * from './src/assert';
