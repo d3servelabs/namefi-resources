@@ -1,0 +1,995 @@
+import punycode from 'node:punycode';
+import { assertNot, assertNotNil, parseJsonOrNull } from '@namefi-astra/utils';
+import { differenceInMinutes } from 'date-fns';
+import { HttpsProxyAgent } from 'https-proxy-agent';
+import pino from 'pino';
+import { head, isEmpty, isNil, prop } from 'ramda';
+import type {
+  ContactsMap,
+  DnssecKey,
+  DomainContacts,
+  DomainPriceDetails,
+  DomainRegistration,
+  DomainSuggestionsQueryResult,
+  DomainSummary,
+  Nameserver,
+  Nameservers,
+  PriceWithCurrency,
+  RdapDomainStatus,
+} from '#/lib/abstract-registrar';
+import {
+  AbstractRegistrarService,
+  DomainAvailability,
+  DomainContactPrivacyEnum,
+  DomainOwnershipOperation,
+  OperationStatus,
+  OperationType,
+  RenewOption,
+} from '#/lib/abstract-registrar';
+import type {
+  DomainsQueryResult,
+  LongRunningOperationResult,
+  RegisterDomainInput,
+  RenewDomainInput,
+  TransferDomainInput,
+  VerifyTransferInAuthCodeOutput,
+} from '#/lib/abstract-registrar';
+import type {
+  DynadotDomainInfo,
+  DynadotLockDomainCommandOutput,
+  DynadotRegisterCommandOutput,
+  DynadotRenewCommandOutput,
+  DynadotResponseCode,
+  DynadotResponseStatus,
+  DynadotSetRenewOptionCommandOutput,
+  ProxyOptions,
+} from '#/lib/dynadot';
+import { Dynadot, DynadotCommand, DynadotTransferStatus } from '#/lib/dynadot';
+import { IdnLanguageCodeISO639_2 } from '#/lib/idn/idn-language-code';
+import { RDAP } from '#/lib/rdap-whois/rdap_client';
+import { supportsDnssec } from '#/lib/supports-dnssec';
+import { Registrars } from '../registrars-keys';
+import { DynadotTransformers } from './transformers';
+
+const DYNADOT_DOMAIN_REGISTER_CHECK_TIME_WINDOW_IN_MINUTES = 30;
+
+export class DynadotRegistrarService extends AbstractRegistrarService<Registrars> {
+  key = Registrars.Dynadot;
+  readonly logger = pino({ name: DynadotRegistrarService.name });
+  private readonly client: Dynadot;
+
+  constructor(config: {
+    DYNADOT_API_KEY: string;
+    DYNADOT_PRIVATE_KEY?: string;
+    DYNADOT_ACCOUNT_ID?: string;
+    DYNADOT_HTTPS_PROXY_AGENT?: string;
+    DYNADOT_CONFIG_LOG_SYSTEM_BUSY?: boolean;
+    DYNADOT_CONFIG_RETRY_COUNT?: number;
+    DYNADOT_CONFIG_RETRY_WHEN_BUSY?: boolean;
+    DYNADOT_CONFIG_RETRY_BACKOFF?: number;
+  }) {
+    super();
+    let proxyOptions: ProxyOptions | undefined;
+
+    if (config.DYNADOT_PRIVATE_KEY && config.DYNADOT_ACCOUNT_ID) {
+      proxyOptions = {
+        namefiProxy: {
+          privateKey: Buffer.from(
+            config.DYNADOT_PRIVATE_KEY,
+            'base64',
+          ).toString('utf8'),
+          accountId: config.DYNADOT_ACCOUNT_ID,
+        },
+      };
+    } else if (config.DYNADOT_HTTPS_PROXY_AGENT) {
+      proxyOptions = {
+        httpsAgent: new HttpsProxyAgent(config.DYNADOT_HTTPS_PROXY_AGENT),
+      };
+    }
+    this.client = new Dynadot({
+      apiKey: config.DYNADOT_API_KEY,
+      loggingOptions: {
+        enabled: true,
+        prefix: Dynadot.name,
+        allowSystemBusyLog: config.DYNADOT_CONFIG_LOG_SYSTEM_BUSY,
+
+        blackList(params: any) {
+          return params?.command === DynadotCommand.tld_price;
+        },
+      },
+      ...(proxyOptions ? { proxyOptions } : {}),
+      retryOptions: {
+        maxRetries: config.DYNADOT_CONFIG_RETRY_COUNT ?? 3,
+        retryWhenBusy: config.DYNADOT_CONFIG_RETRY_WHEN_BUSY ?? true,
+        backoff: config.DYNADOT_CONFIG_RETRY_BACKOFF ?? 1000,
+      },
+    });
+  }
+
+  async registerDomain(
+    args: RegisterDomainInput,
+  ): Promise<LongRunningOperationResult<DynadotRegisterCommandOutput>> {
+    //todo validate price
+    const { domainName, durationInYears } = args;
+    const privacy =
+      args.privacy !== DomainContactPrivacyEnum.PUBLIC_CONTACT_DATA;
+    //todo handle privacy
+    //todo handle contacts
+    const searchRes = await this.searchForDomain(domainName);
+    const response = await this.client.command(DynadotCommand.register, {
+      domain: punycode.toASCII(domainName),
+      duration: durationInYears,
+      language: IdnLanguageCodeISO639_2(domainName),
+      premium: searchRes.result.isPremium ? '1' : undefined,
+    });
+
+    assertNot(responseFailed(response.RegisterResponse), 'Response Failed');
+    if (response.RegisterResponse.Status === 'success') {
+      return {
+        operationId: generateOperationId(
+          OperationType.REGISTER_DOMAIN,
+          domainName,
+        ),
+        status: getImmediateOperationStatus(response.RegisterResponse),
+        response,
+        type: OperationType.REGISTER_DOMAIN,
+      };
+    }
+
+    return {
+      operationId: generateOperationId(
+        OperationType.REGISTER_DOMAIN,
+        domainName,
+      ),
+      status: OperationStatus.FAILED,
+      response,
+      type: OperationType.REGISTER_DOMAIN,
+    };
+  }
+
+  async renewDomain(
+    args: RenewDomainInput,
+  ): Promise<LongRunningOperationResult<DynadotRenewCommandOutput>> {
+    const response = await this.client.command(DynadotCommand.renew, {
+      domain: punycode.toASCII(args.domainName),
+      duration: args.durationInYears,
+      no_renew_if_late_renew_fee_needed: 1,
+    });
+    assertNot(responseFailed(response.RenewResponse), 'Response Failed');
+    return {
+      type: OperationType.RENEW_DOMAIN,
+      operationId: generateOperationId(
+        OperationType.RENEW_DOMAIN,
+        args.domainName,
+        {
+          status: getImmediateOperationStatus(response.RenewResponse),
+        },
+      ),
+      status: getImmediateOperationStatus(response.RenewResponse),
+      response,
+    };
+  }
+
+  async transferDomain(
+    args: TransferDomainInput,
+  ): Promise<LongRunningOperationResult<any>> {
+    const { domainName, nameservers, authCode } = args;
+    const privacy =
+      args.privacy !== DomainContactPrivacyEnum.PUBLIC_CONTACT_DATA;
+
+    //todo handle contacts, privacy, nameservers, [x]duration, [x] renew
+    const response = await this.client.command(DynadotCommand.transfer, {
+      domain: punycode.toASCII(domainName),
+      currency: 'USD',
+      auth: authCode,
+    });
+
+    assertNot(responseFailed(response.TransferResponse), 'Response Failed');
+
+    return {
+      type: OperationType.TRANSFER_IN_DOMAIN,
+      operationId: generateOperationId(
+        OperationType.TRANSFER_IN_DOMAIN,
+        args.domainName,
+      ),
+      status: getRunningOperationStatus(response.TransferResponse),
+      response,
+    };
+  }
+
+  async renewAuthCode(domainName: string): Promise<string> {
+    const response = await this.client.command(
+      DynadotCommand.get_transfer_auth_code,
+      {
+        domain: punycode.toASCII(domainName),
+        new_code: 1,
+      },
+    );
+    assertNot(
+      responseFailed(response.GetTransferAuthCodeResponse),
+      'Response Failed',
+    );
+
+    return response.GetTransferAuthCodeResponse.AuthCode;
+  }
+
+  async retrieveAuthCode(domainName: string): Promise<string> {
+    const response = await this.client.command(
+      DynadotCommand.get_transfer_auth_code,
+      {
+        domain: punycode.toASCII(domainName),
+      },
+    );
+    assertNot(
+      responseFailed(response.GetTransferAuthCodeResponse),
+      'Response Failed',
+    );
+
+    return response.GetTransferAuthCodeResponse.AuthCode;
+  }
+
+  verifyAuthCode(
+    domainName: string,
+    authCode: string,
+  ): Promise<VerifyTransferInAuthCodeOutput> {
+    return new Promise((resolve) => {
+      resolve({
+        transferable: true,
+        response: {},
+      });
+    });
+  }
+
+  async lockDomain(
+    domainName: string,
+  ): Promise<LongRunningOperationResult<DynadotLockDomainCommandOutput>> {
+    const response = await this.client.command(DynadotCommand.lock_domain, {
+      domain: punycode.toASCII(domainName),
+    });
+    assertNot(responseFailed(response.LockDomainResponse), 'Response Failed');
+
+    return {
+      type: OperationType.DOMAIN_CHANGE_LOCK,
+      operationId: generateOperationId(
+        OperationType.DOMAIN_CHANGE_LOCK,
+        domainName,
+        {
+          status: getImmediateOperationStatus(response.LockDomainResponse),
+        },
+      ),
+      status: getImmediateOperationStatus(response.LockDomainResponse),
+      response,
+    };
+  }
+
+  async unlockDomain(
+    domainName: string,
+  ): Promise<LongRunningOperationResult<any>> {
+    const response = await this.client.command(DynadotCommand.unlock_domain, {
+      domain: punycode.toASCII(domainName),
+    });
+    console.log('response', response);
+    assertNot(responseFailed(response.UnlockDomainResponse), 'Response Failed');
+
+    return {
+      type: OperationType.DOMAIN_CHANGE_LOCK,
+      operationId: generateOperationId(
+        OperationType.DOMAIN_CHANGE_LOCK,
+        domainName,
+        {
+          status: getImmediateOperationStatus(response.UnlockDomainResponse),
+        },
+      ),
+      status: getImmediateOperationStatus(response.UnlockDomainResponse),
+      response: {},
+    };
+  }
+
+  async _getDomainInfo(domainName: string) {
+    const response = await this.client.command(DynadotCommand.domain_info, {
+      domain: punycode.toASCII(domainName),
+    });
+
+    // if (response.DomainInfoResponse.Error === 'could not find domain in your account') {
+    // 	throw new DomainNotFoundError();
+    // }
+    assertNot(
+      responseFailed(response.DomainInfoResponse),
+      'Dynadot: Domain Info Response Failed',
+    );
+    return response.DomainInfoResponse.DomainInfo;
+  }
+
+  async _checkDomainRegister(
+    domainName: string,
+    operationId: string,
+    timestamp: Date,
+  ): Promise<LongRunningOperationResult> {
+    const response = await this.client.command(DynadotCommand.domain_info, {
+      domain: punycode.toASCII(domainName),
+    });
+
+    // NOTE: Check if the operation is within the 30-minute window after submission as per Dynadot recommendation
+    const isWithin30MinsAfterSubmission =
+      differenceInMinutes(new Date(), timestamp) <
+      DYNADOT_DOMAIN_REGISTER_CHECK_TIME_WINDOW_IN_MINUTES;
+
+    if (
+      response.DomainInfoResponse.Error ===
+      'could not find domain in your account'
+    ) {
+      // NOTE: If the domain is not found in your account, check if the operation is within the 30-minute window after submission as per Dynadot recommendation
+      if (isWithin30MinsAfterSubmission) {
+        return {
+          status: OperationStatus.IN_PROGRESS,
+          response: response.DomainInfoResponse,
+          operationId,
+          type: OperationType.REGISTER_DOMAIN,
+        };
+      }
+      return {
+        status: OperationStatus.FAILED,
+        response: response.DomainInfoResponse,
+        operationId,
+        type: OperationType.REGISTER_DOMAIN,
+        message: response.DomainInfoResponse.Error,
+      };
+    }
+    return response.DomainInfoResponse.DomainInfo?.Expiration
+      ? {
+          status: OperationStatus.SUCCESSFUL,
+          response: response.DomainInfoResponse,
+          operationId,
+          type: OperationType.REGISTER_DOMAIN,
+        }
+      : {
+          status: OperationStatus.IN_PROGRESS,
+          response: response.DomainInfoResponse,
+          operationId,
+          type: OperationType.REGISTER_DOMAIN,
+        };
+  }
+
+  async getDomainDetails(domainName: string): Promise<DomainRegistration> {
+    const domainInfo = await this._getDomainInfo(domainName);
+    if (isNil(domainInfo)) {
+      throw new Error('Domain Not Found');
+    }
+    const [
+      nameservers,
+      [RegistrantContact, AdminContact, TechContact, BillingContact],
+    ] = await Promise.all([
+      this.getNameServers(domainName),
+      this._getContactList([
+        domainInfo.Whois.Registrant.ContactId,
+        domainInfo.Whois.Admin.ContactId,
+        domainInfo.Whois.Technical.ContactId,
+        domainInfo.Whois.Billing.ContactId,
+      ]),
+    ]);
+
+    if (isNil(RegistrantContact)) {
+      throw new Error('Registrant Contact not found');
+    }
+
+    return {
+      ...DynadotTransformers.DomainInfoTransformer.from({
+        domainInfo,
+        nameservers,
+
+        contacts: {
+          RegistrantContact,
+          AdminContact,
+          TechContact,
+          BillingContact,
+        },
+      }),
+      supportsDnssec: supportsDnssec(domainName),
+    };
+  }
+
+  async getDomainStatus(domainName: string): Promise<RdapDomainStatus> {
+    const { status } = await RDAP.queryDomainStatus(domainName);
+    return status;
+  }
+
+  async getDomainPrice(
+    domainName: string,
+    operation: DomainOwnershipOperation,
+  ): Promise<PriceWithCurrency> {
+    const prices = await this.getDomainPriceDetails(domainName);
+
+    switch (operation) {
+      case DomainOwnershipOperation.REGISTER:
+        return prices.registrationPrice;
+      case DomainOwnershipOperation.CHANGE_OWNERSHIP:
+        return prices.changeOwnershipPrice;
+      case DomainOwnershipOperation.RENEW:
+        return prices.renewalPrice;
+      case DomainOwnershipOperation.RESTORE:
+        return prices.restorationPrice;
+      case DomainOwnershipOperation.TRANSFER:
+        return prices.transferPrice;
+      default:
+        throw new Error('Invalid operation');
+    }
+  }
+
+  async _getTldPrices(options = { useCachedValue: false }) {
+    const response = await this.client.command(DynadotCommand.tld_price, {
+      currency: 'USD',
+    });
+
+    assertNot(responseFailed(response.TldPriceResponse), 'Response Failed');
+    return response.TldPriceResponse;
+  }
+
+  async getTldPrices(options = { useCachedValue: false }) {
+    const response = await this._getTldPrices(options);
+    return Object.fromEntries(
+      response.TldPrice.map((value) => [
+        value.Tld.replace(/^\./, ''),
+        {
+          registrationPrice: {
+            price: Math.ceil(Number.parseFloat(value.Price.Register)),
+            currency: response.Currency,
+          },
+          renewalPrice: {
+            price: Math.ceil(Number.parseFloat(value.Price.Renew)),
+            currency: response.Currency,
+          },
+          transferPrice: {
+            price: Math.ceil(Number.parseFloat(value.Price.Transfer)),
+            currency: response.Currency,
+          },
+          changeOwnershipPrice: {
+            price: 0,
+            currency: response.Currency,
+          },
+          restorationPrice: {
+            price: Math.ceil(Number.parseFloat(value.Price.Restore) * 10),
+            currency: response.Currency,
+          },
+        } as DomainPriceDetails,
+      ]),
+    );
+  }
+
+  async getDomainPriceDetails(domainName: string): Promise<DomainPriceDetails> {
+    const searchRes = await this.searchForDomain(domainName);
+    const pricing = searchRes?.result?.price;
+    assertNotNil(pricing, 'Pricing Not found');
+
+    return pricing;
+  }
+
+  async _getNonPremiumDomainPriceDetails(
+    domainName: string,
+    options = { useCachedValue: false },
+  ): Promise<DomainPriceDetails> {
+    const response = await this._getTldPrices(options);
+    const pricing = response.TldPrice.find((p) => domainName.endsWith(p.Tld));
+    assertNotNil(pricing, 'Pricing Not found');
+
+    return {
+      registrationPrice: {
+        price: Math.ceil(Number.parseFloat(pricing.Price.Register)),
+        currency: response.Currency,
+      } as PriceWithCurrency,
+      renewalPrice: {
+        price: Math.ceil(Number.parseFloat(pricing.Price.Renew)),
+        currency: response.Currency,
+      } as PriceWithCurrency,
+      transferPrice: {
+        price: Math.ceil(Number.parseFloat(pricing.Price.Transfer)),
+        currency: response.Currency,
+      } as PriceWithCurrency,
+      changeOwnershipPrice: {
+        price: 0,
+        currency: response.Currency,
+      } as PriceWithCurrency,
+      restorationPrice: {
+        price: Math.ceil(Number.parseFloat(pricing.Price.Restore)),
+        currency: response.Currency,
+      } as PriceWithCurrency, //TODO XX validate this (Sadly Dynadot API doesn't return Restoration Price)
+    } as DomainPriceDetails;
+  }
+
+  async addDelegationSigner(
+    domainName: string,
+    signingAttributes: DnssecKey,
+  ): Promise<LongRunningOperationResult<any>> {
+    assertNotNil(signingAttributes.algorithm, 'Algorithm is required');
+    assertNotNil(signingAttributes.publicKey, 'Public Key is required');
+    assertNotNil(signingAttributes.keyTag, 'Key Tag is required');
+    assertNotNil(signingAttributes.digestType, 'Digest Type is required');
+    assertNotNil(signingAttributes.digest, 'Digest is required');
+    const response = await this.client.command(DynadotCommand.set_dnssec, {
+      domain_name: punycode.toASCII(domainName),
+      algorithm: signingAttributes.algorithm,
+      public_key: signingAttributes.publicKey,
+      flags: signingAttributes.flags,
+      key_tag: signingAttributes.keyTag,
+      digest_type: signingAttributes.digestType,
+      digest: signingAttributes.digest,
+    });
+
+    assertNot(responseFailed(response.SetDnssecResponse), 'Response Failed');
+    return {
+      type: OperationType.ADD_DNSSEC,
+      operationId: generateOperationId(OperationType.ADD_DNSSEC, domainName, {
+        status: getImmediateOperationStatus(response.SetDnssecResponse),
+      }),
+      status: getImmediateOperationStatus(response.SetDnssecResponse),
+      response,
+    };
+  }
+
+  async removeDelegationSigner(
+    domainName: string,
+    publicKeyOrId: string,
+  ): Promise<LongRunningOperationResult<any>> {
+    const response = await this.client.command(DynadotCommand.clear_dnssec, {
+      domain_name: punycode.toASCII(domainName),
+    });
+    assertNot(responseFailed(response.ClearDnssecResponse), 'Response Failed');
+    const status = getImmediateOperationStatus(response.ClearDnssecResponse);
+    return {
+      type: OperationType.REMOVE_DNSSEC,
+      operationId: generateOperationId(
+        OperationType.REMOVE_DNSSEC,
+        domainName,
+        {
+          status,
+        },
+      ),
+      status,
+      response,
+    };
+  }
+
+  async searchForDomain(
+    query: string,
+  ): Promise<
+    DomainsQueryResult<Registrars> & { result: { isPremium?: boolean } }
+  > {
+    const response = await this.client.command(DynadotCommand.search, {
+      currency: 'USD',
+      show_price: '1',
+      domain0: punycode.toASCII(query),
+    });
+    const prices = await this._getNonPremiumDomainPriceDetails(query, {
+      useCachedValue: true,
+    });
+    assertNot(responseFailed(response.SearchResponse), 'Response Failed');
+    const firstSearchResult = head(response.SearchResponse.SearchResults);
+
+    if (
+      !isNil(firstSearchResult.DomainName) &&
+      firstSearchResult.DomainName.toLowerCase() === query.toLowerCase() &&
+      (firstSearchResult.Status === 'success' ||
+        firstSearchResult.Available === 'yes')
+    ) {
+      const parsedPrice = domainPriceDetailsFrom(firstSearchResult.Price);
+
+      return {
+        result: {
+          domainName: punycode.toUnicode(firstSearchResult.DomainName),
+          price: parsedPrice.isPremium ? parsedPrice.priceDetails : prices,
+          isPremium: parsedPrice.isPremium,
+          available:
+            firstSearchResult.Available === 'yes'
+              ? DomainAvailability.AVAILABLE
+              : DomainAvailability.UNAVAILABLE,
+        },
+        suggestions: [],
+      };
+    }
+
+    return {
+      result: {
+        domainName: punycode.toUnicode(query),
+        price: prices, //todo!!
+        available: DomainAvailability.UNAVAILABLE,
+        isPremium: false,
+      },
+      suggestions: [],
+    };
+  }
+
+  async getSuggestions(
+    query: string,
+    suggestionsCount: number,
+  ): Promise<DomainSuggestionsQueryResult<Registrars>> {
+    const res = await this.searchForDomain(query);
+    return { result: res.suggestions };
+  }
+
+  updateDomainContacts(
+    domainName: string,
+    contacts: Partial<DomainContacts>,
+  ): Promise<LongRunningOperationResult<any>> {
+    //todo NIT
+    const response = {};
+    return new Promise((resolve) => {
+      resolve({
+        type: OperationType.UPDATE_DOMAIN_CONTACT,
+        operationId: generateOperationId(
+          OperationType.UPDATE_DOMAIN_CONTACT,
+          domainName,
+        ),
+        status: OperationStatus.SUBMITTED,
+        response,
+      });
+    });
+  }
+
+  async getDomainContacts(domainName: string): Promise<DomainContacts> {
+    const response = await this.getDomainDetails(domainName);
+    return response.contacts;
+  }
+
+  async _getContact(contactId: string) {
+    const response = await this.client.command(DynadotCommand.get_contact, {
+      contact_id: contactId,
+    });
+    assertNot(responseFailed(response.GetContactResponse), 'Response Failed');
+    return response.GetContactResponse.GetContact;
+  }
+
+  async _getContactList(contactIds: string[]) {
+    const contactIdsSet = new Set(contactIds);
+    const contactsMap = new Map(
+      await Promise.all(
+        Array.from(contactIdsSet).map(async (id) => {
+          const contact = await this._getContact(id);
+          return [id, contact] as const;
+        }),
+      ),
+    );
+    return contactIds.map((id) => contactsMap.get(id));
+  }
+
+  async setNameServers(
+    domainName: string,
+    nameservers: Nameserver[],
+  ): Promise<LongRunningOperationResult<any>> {
+    const response = await this.client.command(DynadotCommand.set_ns, {
+      domain: punycode.toASCII(domainName),
+      ...Object.fromEntries(nameservers.map((name, i) => [`ns${i}`, name])),
+    });
+
+    assertNot(responseFailed(response.SetNsResponse), 'Response Failed');
+    return {
+      type: OperationType.UPDATE_NAMESERVER,
+      operationId: generateOperationId(
+        OperationType.UPDATE_NAMESERVER,
+        domainName,
+      ),
+      status: getImmediateOperationStatus(response.SetNsResponse),
+      response,
+    };
+  }
+
+  async getNameServers(domainName: string): Promise<Nameservers> {
+    const response = await this.client.command(DynadotCommand.get_ns, {
+      domain: punycode.toASCII(domainName),
+    });
+
+    assertNot(responseFailed(response.GetNsResponse), 'Response Failed');
+    return Promise.resolve(
+      Object.entries(response.GetNsResponse.NsContent ?? {})
+        .filter(([key]) => key.toLowerCase().startsWith('host'))
+        .map(prop(1)) as Nameservers,
+    );
+  }
+
+  async _getTransferStatus(domainName: string) {
+    const response = await this.client.command(
+      DynadotCommand.get_transfer_status,
+      {
+        domain: punycode.toASCII(domainName),
+        transfer_type: 'in',
+      },
+    );
+    assertNot(
+      responseFailed(response.GetTransferStatusResponse),
+      'Response Failed',
+    );
+    return response.GetTransferStatusResponse.TransferList;
+  }
+
+  async getOperationStatus(
+    domainNameLdh: string,
+    operationId: string,
+  ): Promise<LongRunningOperationResult<any>> {
+    const { operationType, domainName, extraData, timestamp } =
+      parseOperationId(operationId);
+    this.logger.debug({
+      method: 'getOperationStatus',
+      operationType,
+      domainName,
+      extraData,
+    });
+    switch (operationType) {
+      case OperationType.REGISTER_DOMAIN: {
+        return Promise.resolve(
+          this._checkDomainRegister(
+            domainName,
+            operationId,
+            new Date(timestamp),
+          ),
+        );
+      }
+      case OperationType.TRANSFER_IN_DOMAIN: {
+        const response = await this._getTransferStatus(domainName);
+        assertNotNil(response, 'Response Failed');
+        const latestStatus = response[0];
+        let status: OperationStatus;
+        switch (latestStatus.TransferStatus) {
+          case DynadotTransferStatus.NONE:
+            status = OperationStatus.SUBMITTED;
+            break;
+          case DynadotTransferStatus.WAITING:
+          case DynadotTransferStatus.Approved:
+            status = OperationStatus.IN_PROGRESS;
+            break;
+
+          case DynadotTransferStatus.LOCKED:
+          case DynadotTransferStatus.AUTH_CODE_NEEDED:
+            status = OperationStatus.ERROR;
+            break;
+
+          case DynadotTransferStatus.CANCELLED:
+          case DynadotTransferStatus.FAILED:
+            status = OperationStatus.FAILED;
+            break;
+
+          case DynadotTransferStatus.Transferred:
+            status = OperationStatus.SUCCESSFUL;
+            break;
+          default:
+            status = OperationStatus.ERROR;
+            break;
+        }
+        return Promise.resolve({
+          type: operationType,
+          operationId,
+          response,
+          status,
+        });
+      }
+      case OperationType.RENEW_DOMAIN:
+      case OperationType.DOMAIN_CHANGE_LOCK:
+      case OperationType.ADD_DNSSEC:
+      case OperationType.REMOVE_DNSSEC:
+        return Promise.resolve({
+          type: operationType,
+          operationId,
+          response: {},
+          status: extraData?.status,
+        });
+      default:
+        return Promise.resolve({
+          type: operationType,
+          operationId,
+          response: {},
+          status: OperationStatus.FAILED,
+        });
+    }
+  }
+
+  async setRenewOption(
+    domainName: string,
+    option: RenewOption,
+  ): Promise<LongRunningOperationResult<DynadotSetRenewOptionCommandOutput>> {
+    const response = await this.client.command(
+      DynadotCommand.set_renew_option,
+      {
+        domain: domainName,
+        renew_option: option === RenewOption.AUTOMATIC ? 'auto' : 'donot',
+      },
+    );
+    return {
+      response,
+      type:
+        option === RenewOption.AUTOMATIC
+          ? OperationType.ENABLE_AUTORENEW
+          : OperationType.DISABLE_AUTORENEW,
+      status:
+        response.SetRenewOptionResponse.Status === 'success'
+          ? OperationStatus.SUCCESSFUL
+          : OperationStatus.FAILED,
+      operationId: '',
+    };
+  }
+
+  async getRenewOption(domainName: string): Promise<RenewOption> {
+    const response = await this.getDomainDetails(domainName);
+    return response.autoRenewOption;
+  }
+
+  async updateDomainContactsPrivacy(
+    domainName: string,
+    privacy: ContactsMap<DomainContactPrivacyEnum>,
+  ): Promise<LongRunningOperationResult<any>> {
+    const response = await this.client.command(DynadotCommand.set_privacy, {
+      domain: punycode.toASCII(domainName),
+      option:
+        privacy.registrantContact === 'PUBLIC_CONTACT_DATA' ? 'off' : 'full',
+    });
+    return {
+      response,
+      operationId: generateOperationId(
+        OperationType.CHANGE_PRIVACY_PROTECTION,
+        domainName,
+      ),
+      type: OperationType.CHANGE_PRIVACY_PROTECTION,
+      status: getImmediateOperationStatus(response.SetPrivacyResponse),
+    };
+  }
+
+  /**
+   * Retrieves a list of all domains in the Dynadot account.
+   *
+   * @description
+   * This method fetches all domains by paginating through the Dynadot API's
+   * list_domain command.
+   *
+   * It handles pagination automatically by:
+   * 1. Starting with page 0
+   * 2. Fetching 5000 domains per page
+   * 3. Continuing to next page until no more domains are found or an error occurs
+   * TODO:(sami): consider adding a cache layer to this method
+   *
+   * @returns Promise<DomainSummary[]> Array of domain summaries containing:
+   * - domainName: The name of the domain
+   * - expirationTime: When the domain expires
+   * - autoRenewOption: Whether the domain is set to auto-renew
+   * - transferLocked: Whether the domain is locked for transfer
+   *
+   * @throws Will throw an error if the API request fails
+   */
+  async listAllDomains(): Promise<DomainSummary[]> {
+    const domains: DynadotDomainInfo[] = [];
+    let nextPage: number | null = 0;
+    do {
+      const res = await this.client.command(DynadotCommand.list_domain, {
+        count_per_page: 5000,
+        page_index: nextPage,
+      });
+      domains.push(...(res.ListDomainInfoResponse.MainDomains ?? []));
+      if (
+        res.ListDomainInfoResponse.ResponseCode !== '1' ||
+        isEmpty(res.ListDomainInfoResponse.MainDomains ?? [])
+      ) {
+        nextPage = null;
+      } else {
+        nextPage++;
+      }
+    } while (nextPage !== null);
+
+    return domains.map(({ RenewOption: Renew, Name, Locked, Expiration }) => ({
+      domainName: Name,
+      expirationTime: new Date(Number.parseInt(Expiration)),
+      autoRenewOption:
+        Renew === 'manual renewal' ? RenewOption.MANUAL : RenewOption.AUTOMATIC,
+      transferLocked: Locked === 'yes',
+    }));
+  }
+}
+
+function parsePriceForDomain(price: string | undefined | null) {
+  return (price?.toLowerCase().split(/\s+and\s+/) ?? []).reduce(
+    (acc, next) => {
+      if (next.includes('price')) {
+        const info = /(\w+) price: ([\d\.]+) in (\w{3})/.exec(next);
+        assertNotNil(info, 'Invalid price format');
+        acc.prices.push({
+          type: info[1] as any,
+          amount: Math.ceil(Number.parseFloat(info[2])),
+          currency: info[3].toUpperCase(),
+        });
+      } else if (next.includes('premium')) {
+        acc.premium = next !== 'domain is not a premium domain';
+      }
+
+      return acc;
+    },
+    {
+      prices: <
+        { amount: number; currency: string; type: 'registration' | 'renewal' }[]
+      >[],
+      premium: false as boolean,
+    },
+  );
+}
+
+function domainPriceDetailsFrom(price: string | undefined | null) {
+  const parsedPrice = parsePriceForDomain(price);
+
+  const priceDetails: DomainPriceDetails = {} as any;
+
+  parsedPrice.prices.forEach((details) => {
+    switch (details.type) {
+      case 'renewal':
+        priceDetails.renewalPrice = {
+          price: details.amount,
+          currency: details.currency,
+        };
+        break;
+      case 'registration':
+        priceDetails.registrationPrice = {
+          price: details.amount,
+          currency: details.currency,
+        };
+        break;
+    }
+  });
+
+  return { priceDetails, isPremium: parsedPrice.premium };
+}
+
+function getNonce(length: number) {
+  return new Array(length)
+    .fill(0)
+    .map(() => Math.round(Math.random() * 9))
+    .join('');
+}
+
+function responseFailed(args: { ResponseCode: DynadotResponseCode }) {
+  const resCode = args.ResponseCode.toString();
+  return resCode !== '0' && resCode !== '1';
+}
+
+const RADIX = 32;
+const ID_SEP = ':/:/';
+
+function generateOperationId(
+  operationType: OperationType,
+  domainName: string,
+  extraData?: Record<string, any>,
+) {
+  return [
+    operationType,
+    domainName,
+    Date.now().toString(RADIX),
+    getNonce(4),
+    Buffer.from(JSON.stringify(extraData ?? {})).toString('base64'),
+  ].join(ID_SEP);
+}
+
+function parseOperationId(operationId: string) {
+  const parts = operationId.split(ID_SEP);
+  if (parts.length !== 5) {
+    throw new Error('invalid-operationId');
+  }
+
+  return {
+    operationType: parts[0] as OperationType,
+    domainName: parts[1],
+    timestamp: Number.parseInt(parts[2], RADIX),
+    nonce: parts[3],
+    extraData: parseJsonOrNull<any>(
+      Buffer.from(parts[4], 'base64').toString('utf-8'),
+    ),
+  };
+}
+
+function getImmediateOperationStatus(response?: {
+  ResponseCode: DynadotResponseCode;
+  Status?: DynadotResponseStatus | string;
+}) {
+  return response?.Status === 'success' || response?.ResponseCode !== '-1'
+    ? OperationStatus.SUCCESSFUL
+    : OperationStatus.FAILED;
+}
+
+function getRunningOperationStatus(response?: {
+  ResponseCode: DynadotResponseCode;
+  Status?: DynadotResponseStatus | string;
+}) {
+  return response?.Status === 'success' || response?.ResponseCode !== '-1'
+    ? OperationStatus.IN_PROGRESS
+    : OperationStatus.FAILED;
+}
