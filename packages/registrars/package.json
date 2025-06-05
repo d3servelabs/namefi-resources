@@ -1,0 +1,50 @@
+{
+  "name": "@namefi-astra/registrars",
+  "license": "MIT",
+  "description": "DNS tools created and maintained by Namefi Team",
+  "version": "0.0.0-pre.1",
+  "type": "module",
+  "imports": {
+    "#/lib/env": "./src/lib/env/index.ts",
+    "#/lib/*": "./src/lib/*"
+  },
+  "scripts": {
+    "check": "biome check",
+    "check:fix": "biome check --write",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest --run",
+    "test:coverage": "bun vitest run --coverage",
+    "build": "tsup",
+    "scrape": "bun src/lib/idn/scripts/scrape.ts",
+    "scrape:all": "bun src/lib/idn/scripts/scrape-language-codes.ts",
+    "generate-regex": "bun src/lib/idn/scripts/generate-regex.ts"
+  },
+  "dependencies": {
+    "@aws-sdk/client-route-53-domains": "^3.823.0",
+    "@namefi-astra/utils": "workspace:*",
+    "axios": "^1.9.0",
+    "axios-logger": "^2.8.1",
+    "cheerio": "^1.0.0",
+    "commander": "^14.0.0",
+    "jsesc": "^3.1.0",
+    "pino": "^9.6.0",
+    "ramda": "^0.30.1",
+    "regenerate": "^1.4.2",
+    "tldts": "^7.0.8",
+    "vcf": "^2.1.2"
+  },
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "peerDependencies": {
+    "vitest": "^3.1.2",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@namefi-astra/typescript": "workspace:*",
+    "@types/jsesc": "^3.0.3",
+    "@types/regenerate": "^1.4.3",
+    "@types/vcf": "^2.0.7",
+    "tsup": "^8.4.0"
+  }
+}
