@@ -4,17 +4,14 @@ import type {
   DomainContacts,
   DomainRegistration,
   Nameservers,
-} from '#/lib/abstract-registrar';
-import {
-  DomainContactPrivacyEnum,
-  RenewOption,
-} from '#/lib/abstract-registrar';
-import type { Transformers } from '#/lib/abstract-registrar/transformers';
+} from '#lib/abstract-registrar';
+import { DomainContactPrivacyEnum, RenewOption } from '#lib/abstract-registrar';
+import type { Transformers } from '#lib/abstract-registrar/transformers';
 import type {
   DynadotDomainInfo,
   DynadotGetContactDetails,
   DynadotTldPriceCommandOutput,
-} from '#/lib/dynadot';
+} from '#lib/dynadot/index';
 
 export type DynadotContactsMap = {
   RegistrantContact: DynadotGetContactDetails;

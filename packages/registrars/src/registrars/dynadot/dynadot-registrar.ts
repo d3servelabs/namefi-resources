@@ -16,7 +16,7 @@ import type {
   Nameservers,
   PriceWithCurrency,
   RdapDomainStatus,
-} from '#/lib/abstract-registrar';
+} from '#lib/abstract-registrar';
 import {
   AbstractRegistrarService,
   DomainAvailability,
@@ -25,7 +25,7 @@ import {
   OperationStatus,
   OperationType,
   RenewOption,
-} from '#/lib/abstract-registrar';
+} from '#lib/abstract-registrar';
 import type {
   DomainsQueryResult,
   LongRunningOperationResult,
@@ -33,7 +33,7 @@ import type {
   RenewDomainInput,
   TransferDomainInput,
   VerifyTransferInAuthCodeOutput,
-} from '#/lib/abstract-registrar';
+} from '#lib/abstract-registrar';
 import type {
   DynadotDomainInfo,
   DynadotLockDomainCommandOutput,
@@ -43,11 +43,15 @@ import type {
   DynadotResponseStatus,
   DynadotSetRenewOptionCommandOutput,
   ProxyOptions,
-} from '#/lib/dynadot';
-import { Dynadot, DynadotCommand, DynadotTransferStatus } from '#/lib/dynadot';
-import { IdnLanguageCodeISO639_2 } from '#/lib/idn/idn-language-code';
-import { RDAP } from '#/lib/rdap-whois/rdap_client';
-import { supportsDnssec } from '#/lib/supports-dnssec';
+} from '#lib/dynadot/index';
+import {
+  Dynadot,
+  DynadotCommand,
+  DynadotTransferStatus,
+} from '#lib/dynadot/index';
+import { IdnLanguageCodeISO639_2 } from '#lib/idn/idn-language-code';
+import { RDAP } from '#lib/rdap-whois/rdap_client';
+import { supportsDnssec } from '#lib/supports-dnssec';
 import { Registrars } from '../registrars-keys';
 import { DynadotTransformers } from './transformers';
 
@@ -67,6 +71,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService<Registrars
     DYNADOT_CONFIG_RETRY_COUNT?: number;
     DYNADOT_CONFIG_RETRY_WHEN_BUSY?: boolean;
     DYNADOT_CONFIG_RETRY_BACKOFF?: number;
+    DYNADOT_BASE_URL?: string;
   }) {
     super();
     let proxyOptions: ProxyOptions | undefined;
@@ -88,6 +93,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService<Registrars
     }
     this.client = new Dynadot({
       apiKey: config.DYNADOT_API_KEY,
+      baseUrl: config.DYNADOT_BASE_URL,
       loggingOptions: {
         enabled: true,
         prefix: Dynadot.name,

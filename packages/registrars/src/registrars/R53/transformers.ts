@@ -1,8 +1,5 @@
 import type * as R53 from '@aws-sdk/client-route-53-domains';
-import {
-  DomainContactPrivacyEnum,
-  RenewOption,
-} from '#/lib/abstract-registrar';
+import { DomainContactPrivacyEnum, RenewOption } from '#lib/abstract-registrar';
 import type {
   ContactEntity,
   DnssecAlgorithms,
@@ -13,8 +10,8 @@ import type {
   DomainRegistration,
   Nameservers,
   PriceWithCurrency,
-} from '#/lib/abstract-registrar';
-import type { Transformers } from '#/lib/abstract-registrar';
+} from '#lib/abstract-registrar';
+import type { Transformers } from '#lib/abstract-registrar';
 
 export type R53ContactsMap = {
   RegistrantContact: R53.ContactDetail;

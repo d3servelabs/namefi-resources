@@ -25,7 +25,7 @@ import {
 } from '@aws-sdk/client-route-53-domains';
 import { assertNotNil } from '@namefi-astra/utils';
 import pino from 'pino';
-import { AbstractRegistrarService } from '#/lib/abstract-registrar';
+import { AbstractRegistrarService } from '#lib/abstract-registrar';
 import type {
   ContactsMap,
   DnssecKey,
@@ -44,7 +44,7 @@ import type {
   RenewDomainInput,
   TransferDomainInput,
   VerifyTransferInAuthCodeOutput,
-} from '#/lib/abstract-registrar';
+} from '#lib/abstract-registrar';
 import {
   DomainAvailability,
   DomainContactPrivacyEnum,
@@ -52,9 +52,9 @@ import {
   OperationStatus,
   OperationType,
   RenewOption,
-} from '#/lib/abstract-registrar';
-import { IdnLanguageCodeISO639_2 } from '#/lib/idn/idn-language-code';
-import { supportsDnssec } from '#/lib/supports-dnssec';
+} from '#lib/abstract-registrar';
+import { IdnLanguageCodeISO639_2 } from '#lib/idn/idn-language-code';
+import { supportsDnssec } from '#lib/supports-dnssec';
 import { Registrars } from '../registrars-keys';
 import { R53Transformers } from './transformers';
 

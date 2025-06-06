@@ -24,19 +24,18 @@ import type {
   PriceWithCurrency,
   RdapDomainStatus,
   RenewOption,
-} from '#/lib/abstract-registrar';
-import { DomainAvailability } from '#/lib/abstract-registrar/data';
-import type { DnssecKey } from '#/lib/abstract-registrar/data/dnssec';
+} from '#lib/abstract-registrar';
+import { DomainAvailability } from '#lib/abstract-registrar';
+import type { DnssecKey } from '#lib/abstract-registrar/data/dnssec';
 import type {
   RegisterDomainInput,
   RenewDomainInput,
   TransferDomainInput,
   LongRunningOperationResult as iLongRunningOperationResult,
-} from '#/lib/abstract-registrar/registrar-service';
-import { AbstractRegistrarService } from '#/lib/abstract-registrar/registrar-service';
-import { secrets } from '#/lib/env';
-import { config } from '#/lib/env';
-import { supportsDnssec } from '#/lib/supports-dnssec';
+} from '#lib/abstract-registrar/registrar-service';
+import { AbstractRegistrarService } from '#lib/abstract-registrar/registrar-service';
+import { config, secrets } from '#lib/env';
+import { supportsDnssec } from '#lib/supports-dnssec';
 import { R53RegistrarService } from './R53/r53-registrar';
 import { DynadotRegistrarService } from './dynadot/dynadot-registrar';
 import { Registrars } from './registrars-keys';
@@ -429,23 +428,6 @@ export class RegistrarService extends AbstractRegistrarService {
   }
 }
 
-const r53Registrar = new R53RegistrarService({
-  region: config.AWS_REGION,
-  accessKeyId: secrets.AWS_ACCESS_KEY_ID,
-  secretAccessKey: secrets.AWS_SECRET_ACCESS_KEY,
-});
-const dynadot = new DynadotRegistrarService({
-  DYNADOT_API_KEY: secrets.DYNADOT_API_KEY,
-  DYNADOT_PRIVATE_KEY: secrets.DYNADOT_PRIVATE_KEY,
-  DYNADOT_ACCOUNT_ID: config.DYNADOT_ACCOUNT_ID,
-});
-
-export const registrarService = new RegistrarService(r53Registrar, dynadot, {
-  config: {
-    USE_MOCK_REGISTRARS: false,
-  },
-});
-
 export function createRegistrarService(
   _config: {
     USE_MOCK_REGISTRARS?: boolean;
@@ -460,7 +442,7 @@ export function createRegistrarService(
   const dynadot = new DynadotRegistrarService({
     DYNADOT_API_KEY: secrets.DYNADOT_API_KEY,
     DYNADOT_PRIVATE_KEY: secrets.DYNADOT_PRIVATE_KEY,
-    DYNADOT_ACCOUNT_ID: config.DYNADOT_ACCOUNT_ID,
+    DYNADOT_ACCOUNT_ID: secrets.DYNADOT_ACCOUNT_ID,
   });
 
   return new RegistrarService(r53Registrar, dynadot, {

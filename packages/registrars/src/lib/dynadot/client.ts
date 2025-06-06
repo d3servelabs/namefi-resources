@@ -6,7 +6,7 @@ import Axios, {
 import AxiosLogger from 'axios-logger';
 import { setGlobalConfig } from 'axios-logger';
 import { assocPath, isNotNil, mergeDeepLeft, omit, take } from 'ramda';
-import { signMessage } from '#/lib/sign-message';
+import { signMessage } from '#lib/sign-message';
 import type { DynadotCommandOutput, DynadotCommandsParams } from './commands';
 import type { DynadotCommand, DynadotResponse } from './common-types';
 import { DynadotBaseErrorMessage } from './common-types';
@@ -41,15 +41,16 @@ export class Dynadot {
     retryOptions,
     loggingOptions,
     proxyOptions,
+    baseUrl: _baseUrl,
   }: {
     apiKey: string;
     retryOptions?: RetryOptions;
     loggingOptions?: LoggingOptions;
     proxyOptions?: ProxyOptions;
+    baseUrl?: string;
   }) {
     const namefiProxy = proxyOptions?.namefiProxy;
-    const baseUrl =
-      process.env.DYNADOT_BASE_URL || 'https://api.dynadot.com/api3.json';
+    const baseUrl = _baseUrl || 'https://api.dynadot.com/api3.json';
     this.instance = Axios.create({
       ...(isNotNil(namefiProxy)
         ? {

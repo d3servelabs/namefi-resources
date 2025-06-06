@@ -5,8 +5,7 @@
     "outDir": "./dist",
     "rootDir": "./src",
     "paths": {
-      "#/lib/env": ["./src/lib/env/index.ts"],
-      "#/lib/*": ["./src/lib/*"]
+      "#/lib/env": ["./src/lib/env/index.ts"]
     }
   },
   "include": ["src/**/*.ts"],

@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 export const configSchema = z.object({
   AWS_REGION: z.string(),
-  DYNADOT_ACCOUNT_ID: z.string().optional(),
+  DYNADOT_BASE_URL: z.string().optional(),
 });
 
 export type ConfigInput = z.input<typeof configSchema>;
@@ -13,6 +13,7 @@ export const secretsSchema = z.object({
   WHOIS_API_KEY: z.string(),
   DYNADOT_API_KEY: z.string(),
   DYNADOT_PRIVATE_KEY: z.string().optional(),
+  DYNADOT_ACCOUNT_ID: z.string().optional(),
 });
 
 export type SecretsSchema = z.infer<typeof secretsSchema>;
