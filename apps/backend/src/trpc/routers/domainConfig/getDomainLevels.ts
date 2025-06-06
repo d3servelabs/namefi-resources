@@ -1,0 +1,52 @@
+import { ParseResultType, parseDomain } from 'parse-domain';
+
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+
+export type DomainLevels = {
+  levels: NamefiNormalizedDomain[];
+  parentDomain: NamefiNormalizedDomain | undefined;
+};
+
+/**
+ * Get the levels of a domain
+ * This function is used to get the levels of a domain and the parent domain
+ * This is helpful to get around the subTLDs like co.uk, co.za, etc., because you can't just split the domain by the dot.
+ *
+ * @param normalizedDomainName - The normalized domain name to get the levels of
+ * @returns The levels of the domain
+ */
+export const getDomainLevels = (
+  normalizedDomainName: NamefiNormalizedDomain,
+): DomainLevels => {
+  const domainParseResult = parseDomain(normalizedDomainName);
+  // Return default values for invalid or unsupported domains
+  if (domainParseResult.type !== ParseResultType.Listed) {
+    return {
+      levels: [],
+      parentDomain: undefined,
+    };
+  }
+
+  const levels = [
+    ...domainParseResult.subDomains,
+    domainParseResult.domain,
+    domainParseResult.topLevelDomains.join('.'),
+  ] as NamefiNormalizedDomain[];
+
+  if (levels.length === 2) {
+    return {
+      levels,
+      parentDomain: domainParseResult.topLevelDomains.join(
+        '.',
+      ) as NamefiNormalizedDomain,
+    };
+  }
+
+  return {
+    levels,
+    parentDomain: [
+      domainParseResult.domain,
+      ...domainParseResult.topLevelDomains,
+    ].join('.') as NamefiNormalizedDomain,
+  };
+};
