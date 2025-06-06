@@ -11,8 +11,11 @@ import { cn } from '@/lib/utils';
 import { useTRPC } from '@/utils/trpc';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { AlertTriangle } from 'lucide-react';
+import Link from 'next/link';
 import { type FC, type HTMLAttributes, useMemo } from 'react';
 import { Alert, AlertDescription, AlertTitle } from '../ui/shadcn/alert';
+import { Button } from '../ui/shadcn/button';
+import { Card, CardHeader, CardTitle } from '../ui/shadcn/card';
 import { DnsRecordsPanel } from './Panels/DNS/DnsRecordsPanel';
 export type DomainManagementProps = HTMLAttributes<HTMLDivElement> & {
   domain: string;
@@ -36,6 +39,14 @@ export const DomainManagement: FC<DomainManagementProps> = ({
     [currentUserDomains, domain],
   );
 
+  const {
+    data: { features: domainSupportedFeatures },
+  } = useSuspenseQuery(
+    trpc.domainConfig.getDomainSupportedFeatures.queryOptions({
+      normalizedDomainName: domain,
+    }),
+  );
+
   useRecentDomains({
     newlyVisitedDomain: domain,
   });
@@ -55,38 +66,67 @@ export const DomainManagement: FC<DomainManagementProps> = ({
           </AlertDescription>
         </Alert>
       )}
-
       <h1 className="text-4xl font-bold my-2">{domain}</h1>
-      <Tabs defaultValue="dns-setting" className="w-full">
-        <MainTabs />
 
-        <TabsContent value="dns-setting">
-          <Tabs defaultValue="dns-records">
-            <TabsList className="mb-8">
-              <TabsTrigger value="dns-records">DNS Records</TabsTrigger>
-              <TabsTrigger value="forwarding">Forwarding</TabsTrigger>
-              <TabsTrigger value="nameservers">Nameservers</TabsTrigger>
-              <TabsTrigger value="dnssec">DNSSEC</TabsTrigger>
-            </TabsList>
+      {domainSupportedFeatures.domainManagement.enabled ? (
+        <Tabs defaultValue="dns-setting" className="w-full">
+          <MainTabs />
 
-            <TabsContent value="dns-records">
-              <DnsRecordsPanel domain={domain} />
-            </TabsContent>
+          <TabsContent value="dns-setting">
+            <Tabs defaultValue="dns-records">
+              <TabsList className="mb-8">
+                <TabsTrigger value="dns-records">DNS Records</TabsTrigger>
+                <TabsTrigger value="forwarding">Forwarding</TabsTrigger>
+                <TabsTrigger value="nameservers">Nameservers</TabsTrigger>
+                <TabsTrigger value="dnssec">DNSSEC</TabsTrigger>
+              </TabsList>
 
-            <TabsContent value="forwarding">
-              <div className="text-center py-12">Coming Soon ...</div>
-            </TabsContent>
+              <TabsContent value="dns-records">
+                <DnsRecordsPanel domain={domain} />
+              </TabsContent>
 
-            <TabsContent value="nameservers">
-              <div className="text-center py-12">Coming Soon ...</div>
-            </TabsContent>
+              <TabsContent value="forwarding">
+                <div className="text-center py-12">Coming Soon ...</div>
+              </TabsContent>
 
-            <TabsContent value="dnssec">
-              <div className="text-center py-12">Coming Soon ...</div>
-            </TabsContent>
-          </Tabs>
-        </TabsContent>
-      </Tabs>
+              <TabsContent value="nameservers">
+                <div className="text-center py-12">Coming Soon ...</div>
+              </TabsContent>
+
+              <TabsContent value="dnssec">
+                <div className="text-center py-12">Coming Soon ...</div>
+              </TabsContent>
+            </Tabs>
+          </TabsContent>
+        </Tabs>
+      ) : (
+        <Card className={cn('bg-zinc-900 border-zinc-800')}>
+          <CardHeader>
+            <CardTitle>Domain Not Migrated Yet</CardTitle>
+          </CardHeader>
+          <div className="text-center py-2 flex flex-col gap-4 items-center">
+            <p
+              className="text-zinc-200 text-md font-medium"
+              // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
+              dangerouslySetInnerHTML={{
+                __html:
+                  domainSupportedFeatures.domainManagement.config.message ?? '',
+              }}
+            />
+            {domainSupportedFeatures.domainManagement.config.redirectTo ? (
+              <Button variant="outline" asChild={true}>
+                <Link
+                  href={
+                    domainSupportedFeatures.domainManagement.config.redirectTo
+                  }
+                >
+                  Redirect to Registrar
+                </Link>
+              </Button>
+            ) : undefined}
+          </div>
+        </Card>
+      )}
     </div>
   );
 };
