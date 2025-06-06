@@ -7,16 +7,31 @@ import { EmptyPlaceholder } from '@/components/empty-placeholder';
 import { Table, Td, Th, Thead, Tr } from '@/components/table';
 import { Button } from '@/components/ui/shadcn/button';
 import { Card, CardContent } from '@/components/ui/shadcn/card';
+import { Input } from '@/components/ui/shadcn/input';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/shadcn/select';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
 import { TableBody } from '@/components/ui/shadcn/table';
 import { useAuth } from '@/hooks/useAuth';
+import { config } from '@/lib/env';
 import { cn } from '@/lib/utils';
 import { useTRPC } from '@/utils/trpc';
-import { NAMEFI_NFT_CONTRACT_ADDRESS } from '@namefi-astra/utils';
+import { NAMEFI_NFT_CONTRACT_ADDRESS, getChain } from '@namefi-astra/utils';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { ExternalLink, SearchIcon, Settings } from 'lucide-react';
+import { ExternalLink, Search, SearchIcon, Settings } from 'lucide-react';
 import Link from 'next/link';
-import { type FC, type HTMLAttributes, Suspense, useMemo } from 'react';
+import {
+  type FC,
+  type HTMLAttributes,
+  Suspense,
+  useMemo,
+  useState,
+} from 'react';
 
 function useGetDomains() {
   const trpc = useTRPC();
@@ -102,6 +117,21 @@ const MyDomainsEmptyPlaceholder: FC<HTMLAttributes<HTMLDivElement>> = ({
 
 function MyDomainsTable() {
   const domains = useGetDomains();
+  const [chainFilter, setChainFilter] = useState<number | undefined>(undefined);
+  const [filter, setFilter] = useState('');
+  const filteredDomains = useMemo(() => {
+    return domains.filter(
+      (domain) =>
+        domain.normalizedDomainName
+          .toLowerCase()
+          .includes(filter.toLowerCase()) &&
+        (chainFilter === undefined || domain.chainId === chainFilter),
+    );
+  }, [domains, filter, chainFilter]);
+
+  const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFilter(e.target.value);
+  };
 
   if (domains.length === 0) {
     return <MyDomainsEmptyPlaceholder />;
@@ -110,6 +140,37 @@ function MyDomainsTable() {
   return (
     <Card>
       <CardContent>
+        <div className="flex justify-end mb-4 gap-2">
+          <Select
+            value={chainFilter?.toString() ?? '-1'}
+            onValueChange={(value) =>
+              setChainFilter(
+                !value || value === '-1' ? undefined : Number.parseInt(value),
+              )
+            }
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Select chain" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value={'-1'}>All</SelectItem>
+              {config.ALLOWED_CHAINS.map((chainId) => (
+                <SelectItem key={chainId} value={chainId.toString()}>
+                  {getChain(chainId)?.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <div className="relative w-64 ">
+            <Search className="absolute left-2 top-2.5 h-4 w-4 text-zinc-500" />
+            <Input
+              placeholder="Search domains..."
+              value={filter ?? ''}
+              onChange={handleFilterChange}
+              className="pl-8"
+            />
+          </div>
+        </div>
         <Table className="w-full">
           <Thead>
             <Tr>
@@ -120,7 +181,7 @@ function MyDomainsTable() {
             </Tr>
           </Thead>
           <TableBody>
-            {domains.map((item) => (
+            {filteredDomains.map((item) => (
               <Tr key={item.id}>
                 <Td>
                   <NetworkLogo network={item.chainId} className="w-6 h-6" />
