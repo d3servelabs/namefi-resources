@@ -362,7 +362,7 @@ export class RegistrarService extends AbstractRegistrarService {
       case Registrars.Dynadot:
         return this.dynadot.getDomainPriceDetails(domainName);
       default:
-        throw new Error('unknown-registrar');
+        throw new Error('getDomainPriceDetails: unknown-registrar');
     }
   }
 
@@ -404,8 +404,9 @@ export class RegistrarService extends AbstractRegistrarService {
     return null;
   }
 
-  getRegistrarFromDomainName(domain: string): Promise<Registrars> {
-    throw new Error('unknown-registrar');
+  // biome-ignore lint/suspicious/useAwait: <explanation>
+  async getRegistrarFromDomainName(domain: string): Promise<Registrars> {
+    throw new Error('getRegistrarFromDomainName: unknown-registrar');
   }
 
   private async getRegistrar(
@@ -418,13 +419,37 @@ export class RegistrarService extends AbstractRegistrarService {
     domainName: string,
     registrar?: Registrars | null,
   ) {
-    const _registrar =
-      registrar ??
-      (await resolve(this.getRegistrarFromDomainName(domainName))).result ??
-      (await this.searchForDomain(domainName)).registrarKey;
-    //TODO !! ensure all edge cases
+    if (registrar) {
+      return registrar;
+    }
 
-    return _registrar;
+    const _registrar = await resolve(
+      this.getRegistrarFromDomainName(domainName),
+    );
+
+    if (_registrar.result) {
+      return _registrar.result;
+    }
+
+    const domainDetailsList = await Promise.allSettled(
+      this.getAllowedRegistrars().map(async (registrarKey) => {
+        const registrar = this._getRegistrar(registrarKey);
+        const domainDetails = await registrar.getDomainDetails(domainName);
+        return {
+          registrarKey,
+          domainDetails,
+        };
+      }),
+    );
+    const domainDetails = domainDetailsList.find(
+      (result) => result.status === 'fulfilled',
+    );
+
+    if (domainDetails) {
+      return domainDetails.value.registrarKey;
+    }
+
+    return (await this.searchForDomain(domainName)).registrarKey;
   }
 }
 
@@ -443,6 +468,7 @@ export function createRegistrarService(
     DYNADOT_API_KEY: secrets.DYNADOT_API_KEY,
     DYNADOT_PRIVATE_KEY: secrets.DYNADOT_PRIVATE_KEY,
     DYNADOT_ACCOUNT_ID: secrets.DYNADOT_ACCOUNT_ID,
+    DYNADOT_BASE_URL: config.DYNADOT_BASE_URL,
   });
 
   return new RegistrarService(r53Registrar, dynadot, {
