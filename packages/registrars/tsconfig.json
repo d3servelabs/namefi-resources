@@ -3,10 +3,7 @@
   "compilerOptions": {
     "moduleResolution": "bundler",
     "outDir": "./dist",
-    "rootDir": "./src",
-    "paths": {
-      "#/lib/env": ["./src/lib/env/index.ts"]
-    }
+    "rootDir": "./src"
   },
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules", "dist"]

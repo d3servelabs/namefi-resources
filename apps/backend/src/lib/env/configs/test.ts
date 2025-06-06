@@ -14,6 +14,7 @@ const testConfig: ConfigInput = {
   EMAIL_ADDRESS_TO_OWNED_HOSTNAMES_MAP: {
     'test-0x-city-owner@d3serve.xyz': ['0x.city'],
   },
+  DYNADOT_BASE_URL: 'https://dynadot.namefi.dev/api3.json',
 };
 
 export default testConfig;

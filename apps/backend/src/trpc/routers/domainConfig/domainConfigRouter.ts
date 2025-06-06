@@ -6,14 +6,23 @@ import {
 } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
-import { config } from '#lib/env';
+import { config, secrets } from '#lib/env';
 import { logger } from '#lib/logger';
 import { getPoweredByNamefi3PDomains } from '../../../lib/namefi-registry';
 import { createTRPCRouter, protectedProcedure } from '../../base';
 import { assertAuthenticatedUserIsDomainOwner } from '../../guards/assert-domain-owner';
 import { getDomainLevels } from './getDomainLevels';
 
-const registrar = createRegistrarService();
+// TODO add to context
+const registrar = createRegistrarService({
+  AWS_REGION: config.AWS_REGION,
+  AWS_ACCESS_KEY_ID: secrets.AWS_ACCESS_KEY_ID,
+  AWS_SECRET_ACCESS_KEY: secrets.AWS_SECRET_ACCESS_KEY,
+  DYNADOT_API_KEY: secrets.DYNADOT_API_KEY,
+  DYNADOT_PRIVATE_KEY: secrets.DYNADOT_PRIVATE_KEY,
+  DYNADOT_ACCOUNT_ID: secrets.DYNADOT_ACCOUNT_ID,
+  DYNADOT_BASE_URL: config.DYNADOT_BASE_URL,
+});
 
 export const domainConfigRouter = createTRPCRouter({
   /**

@@ -3,8 +3,6 @@ import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import * as workflow from '@temporalio/workflow';
 import { ApplicationFailure } from '@temporalio/workflow';
 import { resolve } from '../../utils/resolve';
-import type { NotifyActivities } from '../activities/notify.activities';
-import type { OrderActivities } from '../activities/order.activities';
 import { TEMPORAL_ENUMS, TEMPORAL_QUEUES, shortRunningOpts } from '../shared';
 import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';
 import {

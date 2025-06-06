@@ -34,6 +34,7 @@ const localConfig: ConfigInput = {
     'dev-team@d3serve.xyz': ['0x.city'],
   },
   ALLOW_ALL_ORIGINS: true,
+  DYNADOT_BASE_URL: 'https://dynadot.namefi.dev/api3.json',
 };
 
 export default localConfig;

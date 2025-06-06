@@ -34,7 +34,6 @@ import type {
   LongRunningOperationResult as iLongRunningOperationResult,
 } from '#lib/abstract-registrar/registrar-service';
 import { AbstractRegistrarService } from '#lib/abstract-registrar/registrar-service';
-import { config, secrets } from '#lib/env';
 import { supportsDnssec } from '#lib/supports-dnssec';
 import { R53RegistrarService } from './R53/r53-registrar';
 import { DynadotRegistrarService } from './dynadot/dynadot-registrar';
@@ -453,27 +452,32 @@ export class RegistrarService extends AbstractRegistrarService {
   }
 }
 
-export function createRegistrarService(
-  _config: {
-    USE_MOCK_REGISTRARS?: boolean;
-  } = {},
-): RegistrarService {
+export function createRegistrarService(config: {
+  USE_MOCK_REGISTRARS?: boolean;
+  AWS_REGION: string;
+  AWS_ACCESS_KEY_ID: string;
+  AWS_SECRET_ACCESS_KEY: string;
+  DYNADOT_API_KEY: string;
+  DYNADOT_PRIVATE_KEY?: string;
+  DYNADOT_ACCOUNT_ID?: string;
+  DYNADOT_BASE_URL?: string;
+}): RegistrarService {
   const r53Registrar = new R53RegistrarService({
     region: config.AWS_REGION,
-    accessKeyId: secrets.AWS_ACCESS_KEY_ID,
-    secretAccessKey: secrets.AWS_SECRET_ACCESS_KEY,
+    accessKeyId: config.AWS_ACCESS_KEY_ID,
+    secretAccessKey: config.AWS_SECRET_ACCESS_KEY,
   });
 
   const dynadot = new DynadotRegistrarService({
-    DYNADOT_API_KEY: secrets.DYNADOT_API_KEY,
-    DYNADOT_PRIVATE_KEY: secrets.DYNADOT_PRIVATE_KEY,
-    DYNADOT_ACCOUNT_ID: secrets.DYNADOT_ACCOUNT_ID,
+    DYNADOT_API_KEY: config.DYNADOT_API_KEY,
+    DYNADOT_PRIVATE_KEY: config.DYNADOT_PRIVATE_KEY,
+    DYNADOT_ACCOUNT_ID: config.DYNADOT_ACCOUNT_ID,
     DYNADOT_BASE_URL: config.DYNADOT_BASE_URL,
   });
 
   return new RegistrarService(r53Registrar, dynadot, {
     config: {
-      USE_MOCK_REGISTRARS: _config.USE_MOCK_REGISTRARS ?? false,
+      USE_MOCK_REGISTRARS: config.USE_MOCK_REGISTRARS ?? false,
     },
   });
 }
