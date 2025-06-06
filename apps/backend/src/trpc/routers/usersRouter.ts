@@ -29,6 +29,8 @@ if (!secrets.ALCHEMY_API_KEY) {
   throw new Error('Cannot create Ethereum public client');
 }
 
+const ONLY_SHOW_SUBDOMAINS_FOR_CURRENT_USER = false;
+
 export const viemBasePublicClient = createPublicClient({
   chain: chains.base,
   transport: http(
@@ -128,10 +130,12 @@ export const usersRouter = createTRPCRouter({
           thirdPartyOriginHostname
             ? ilike(table.normalizedDomainName, `%.${thirdPartyOriginHostname}`)
             : undefined,
-          gte(
-            sql`array_length(string_to_array(${table.normalizedDomainName}, '.'), 1)`,
-            3,
-          ),
+          ONLY_SHOW_SUBDOMAINS_FOR_CURRENT_USER
+            ? gte(
+                sql`array_length(string_to_array(${table.normalizedDomainName}, '.'), 1)`,
+                3,
+              )
+            : undefined,
         ),
     });
 

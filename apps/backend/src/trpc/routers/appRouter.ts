@@ -2,6 +2,7 @@ import { createTRPCRouter, publicProcedure } from '../base';
 
 import { cartsRouter } from './cartsRouter';
 import { dnsRecordsRouter } from './dnsRecordsRouter';
+import { domainConfigRouter } from './domainConfig/domainConfigRouter';
 import { ordersRouter } from './ordersRouter';
 import { paymentsRouter } from './paymentsRouter';
 import { registryRouter } from './registryRouter';
@@ -16,6 +17,7 @@ export const appRouter = createTRPCRouter({
   search: searchRouter,
   registry: registryRouter,
   orders: ordersRouter,
+  domainConfig: domainConfigRouter,
 
   version: publicProcedure.query(() => {
     const result = {

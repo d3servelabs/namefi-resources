@@ -45,6 +45,7 @@
     "@hono/zod-openapi": "^0.19.2",
     "@namefi-astra/db": "workspace:*",
     "@namefi-astra/env": "workspace:*",
+    "@namefi-astra/registrars": "workspace:*",
     "@namefi-astra/utils": "workspace:*",
     "@namefi-astra/zod-dns": "workspace:*",
     "@namefi/cat": "^1.0.0-beta.8",

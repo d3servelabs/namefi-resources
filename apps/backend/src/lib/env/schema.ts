@@ -1,3 +1,4 @@
+import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 import { zJson } from '@namefi-astra/utils/zod-helpers';
 import { z } from 'zod';
 
@@ -72,6 +73,12 @@ export const configSchema = z.object({
    * This is useful for local development.
    */
   ALLOW_ALL_ORIGINS: z.boolean().default(false),
+  /**
+   * The nameservers that NameFI will use for its own domains.
+   */
+  NAMEFI_ASTRA_NAMESERVERS: namefiNormalizedDomainSchema
+    .array()
+    .default(['ns3.namefi.dev', 'ns4.namefi.dev']),
 });
 
 export type ConfigInput = z.input<typeof configSchema>;

@@ -201,17 +201,17 @@ export class RegistrarService extends AbstractRegistrarService {
       : [override];
     const registrarsList = registrars.map((r) => this._getRegistrar(r));
 
-    const responsesList = await Promise.all(
-      registrarsList.map((r) => resolve(r.searchForDomain(query))),
+    const responsesList = await Promise.allSettled(
+      registrarsList.map((r) => r.searchForDomain(query)),
     );
 
     const responsesByRegistrar = Object.fromEntries(
       Object.entries(zipObj(registrars, responsesList))
-        .filter(([_, [__, res]]) => isNotNil(res))
-        .map(([key, [_, res]]) => [key, res]) as [
-        Registrars,
-        DomainsQueryResult<Registrars>,
-      ][],
+        .filter(([_, res]) => res.status === 'fulfilled')
+        .map(([key, res]) => [
+          key,
+          res.status === 'fulfilled' ? res.value : null,
+        ]) as [Registrars, DomainsQueryResult<Registrars>][],
     );
 
     const isAvailableOnAnyRegistrar = Object.values(responsesByRegistrar).some(

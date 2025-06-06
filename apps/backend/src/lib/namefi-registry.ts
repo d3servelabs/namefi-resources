@@ -17,6 +17,10 @@ export const getPoweredByNamefi3PHostnames = async () => {
   return Promise.resolve([...fromDb, ...fromConfig]);
 };
 
+export const getPoweredByNamefi3PDomains = () => {
+  return Promise.resolve(['0x.city'] as NamefiNormalizedDomain[]);
+};
+
 // biome-ignore lint/suspicious/useAwait: it will be a db query in upcoming updates
 export const getSubdomainPriceInUsd = async (
   _subdomain: string, // not using this
