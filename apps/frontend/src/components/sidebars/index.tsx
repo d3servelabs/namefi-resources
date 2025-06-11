@@ -29,6 +29,7 @@ import {
   Globe,
   PenToolIcon,
   Search,
+  Sparkles,
 } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
 import { type ChangeEvent, useCallback, useMemo, useState } from 'react';
@@ -37,6 +38,7 @@ import { SidebarDomains } from './SidebarDomains';
 
 const ITEMS: NavItem[] = [
   { title: 'Discover', href: '/', icon: Compass },
+  { title: 'AI Tools', href: '/ai-brand-generator', icon: Sparkles },
   { title: 'My Domains', href: '/my-domains', icon: Globe },
   { title: 'My Orders', href: '/orders', icon: ClipboardList },
   { title: 'My Payment Methods', href: '/payment-methods', icon: CreditCard },

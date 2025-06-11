@@ -13,6 +13,7 @@ const config: Options = {
   treeshake: true,
   keepNames: true,
   minifyIdentifiers: false,
+  onSuccess: 'cp -r src/assets dist/ 2>/dev/null || true',
   esbuildOptions(options) {
     options.conditions = ['node'];
   },

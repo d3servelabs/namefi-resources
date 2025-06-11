@@ -43,6 +43,7 @@
     "@hono/swagger-ui": "^0.5.1",
     "@hono/trpc-server": "^0.3.4",
     "@hono/zod-openapi": "^0.19.2",
+    "@namefi-astra/ai": "workspace:*",
     "@namefi-astra/db": "workspace:*",
     "@namefi-astra/env": "workspace:*",
     "@namefi-astra/registrars": "workspace:*",
@@ -69,7 +70,7 @@
     "hono-pino-logger": "^1.0.0",
     "mnemonist": "^0.40.3",
     "nodemailer": "^6.10.0",
-    "openai": "^4.97.0",
+    "openai": "^4.103.0",
     "p-all": "^5.0.0",
     "p-map": "^7.0.3",
     "p-props": "^6.0.0",
@@ -86,7 +87,7 @@
     "superjson": "^2.2.2",
     "unique-names-generator": "^4.7.1",
     "viem": "^2.24.2",
-    "zod": "^3.24.3"
+    "zod": "3.23.8"
   },
   "devDependencies": {
     "@namefi-astra/typescript": "workspace:*",

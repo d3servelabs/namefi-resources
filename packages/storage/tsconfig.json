@@ -1,0 +1,6 @@
+{
+  "extends": "@namefi-astra/typescript",
+  "compilerOptions": {
+    "moduleResolution": "bundler"
+  }
+}
