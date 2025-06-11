@@ -61,7 +61,7 @@ export function useSearch(
         parentDomain,
       },
       {
-        enabled: debouncedQuery.length > 0 && !!parentDomain,
+        enabled: debouncedQuery.length > 0,
         ...sharedQueryOptions,
       },
     ),
@@ -80,7 +80,7 @@ export function useSearch(
         onlyAvailable: true,
       },
       {
-        enabled: debouncedQuery.length > 0 && !!parentDomain,
+        enabled: debouncedQuery.length > 0,
         ...sharedQueryOptions,
       },
     ),

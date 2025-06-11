@@ -6,6 +6,7 @@ export type DomainData = {
   availability: boolean;
   priceInUSD?: number | null;
   currentOwner?: string | null;
+  registrarKey?: string;
 };
 
 /**

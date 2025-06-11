@@ -51,8 +51,8 @@ import type { SearchComponent } from './types';
 
 // Components
 export const SearchHeader: FC<{
-  parentDomain: string;
-  setParentDomain: (domain: string) => void;
+  parentDomain: string | undefined;
+  setParentDomain: (domain: string | undefined) => void;
   isFirstPartyOrigin: boolean;
   tagline?: string;
 }> = ({ parentDomain, setParentDomain, isFirstPartyOrigin, tagline }) => {
@@ -67,6 +67,15 @@ export const SearchHeader: FC<{
       {isFirstPartyOrigin && (
         <>
           <span className="text-sm font-medium">Network:</span>
+          <Button
+            key="main"
+            variant={parentDomain === undefined ? 'default' : 'outline'}
+            size="sm"
+            onClick={() => setParentDomain(undefined)}
+            className="h-8 px-3"
+          >
+            All Networks
+          </Button>
           {config.POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES.map((origin) => (
             <Button
               key={origin}
@@ -303,7 +312,7 @@ export const SearchResults: FC<{
   isAddingToCart: boolean;
   isRemovingFromCart: boolean;
   isCartLoading: boolean;
-  parentDomain: string;
+  parentDomain: string | undefined;
 }> = ({
   isLoading,
   isLoadingMore,

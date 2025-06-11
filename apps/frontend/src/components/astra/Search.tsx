@@ -7,10 +7,15 @@ import {
   TabsTrigger,
 } from '@/components/ui/shadcn/tabs';
 import { useCart } from '@/hooks/landing/use-cart';
-import { useDomainFilters } from '@/hooks/landing/use-domain-filters';
+import {
+  type DomainData,
+  useDomainFilters,
+} from '@/hooks/landing/use-domain-filters';
 import { useSearch } from '@/hooks/landing/use-search';
 import { config } from '@/lib/env';
-import { useState } from 'react';
+import { createAsyncInterval } from '@/utils/createAsyncInterval';
+import { useCallback, useEffect, useState } from 'react';
+import { toast } from 'sonner';
 import FloatingCart from '../floating-cart';
 import {
   type SearchComponent,
@@ -18,6 +23,16 @@ import {
   SearchInput,
   SearchResults,
 } from '../search';
+import { Button } from '../ui/shadcn/button';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '../ui/shadcn/dialog';
 
 // Main component
 export const Search: SearchComponent = ({ originInfo }) => {
@@ -45,20 +60,37 @@ export const Search: SearchComponent = ({ originInfo }) => {
     isAddingToCart,
     isRemovingFromCart,
     isDomainInCart,
-    handleDomainAction,
+    handleDomainAction: handleDomainActionFromCart,
   } = useCart();
   const { activeTab, setActiveTab, filteredDomains } = useDomainFilters(
     domains,
     isDomainInCart,
   );
 
-  if (!parentDomain) {
+  const [redirectToRegistrar, setRedirectToRegistrar] = useState<
+    DomainData | undefined
+  >();
+  const handleDomainAction = (domain: DomainData) => {
+    if (domain.registrarKey) {
+      setRedirectToRegistrar(domain);
+    } else {
+      handleDomainActionFromCart(domain);
+    }
+  };
+
+  if (!originInfo) {
     // Return loading state or null while origin info is loading
     return null;
   }
 
   return (
     <div className="relative flex gap-4 flex-col">
+      {redirectToRegistrar && (
+        <RegistrarRedirect
+          domain={redirectToRegistrar}
+          cancelRedirect={() => setRedirectToRegistrar(undefined)}
+        />
+      )}
       <div className="flex flex-col items-center gap-4">
         <SearchHeader
           parentDomain={parentDomain}
@@ -130,3 +162,67 @@ export const Search: SearchComponent = ({ originInfo }) => {
 };
 
 Search.displayName = 'AstraSearch';
+
+const RegistrarRedirect = ({
+  domain,
+  cancelRedirect,
+}: { domain: DomainData; cancelRedirect: () => void }) => {
+  const [countdown, setCountdown] = useState(10);
+
+  const redirect = useCallback(() => {
+    window.location.href = `https://app.namefi.io/v3/payment?cart=${encodeURIComponent(domain.domain)}`;
+  }, [domain.domain]);
+
+  useEffect(() => {
+    const abortController = new AbortController();
+
+    (async () => {
+      const interval = 1000;
+      try {
+        for await (const _ of createAsyncInterval(
+          interval,
+          abortController.signal,
+          { maxCount: 10 },
+        )) {
+          setCountdown((countdown) => Math.max(countdown - 1, 0));
+        }
+        redirect();
+      } catch (error) {
+        console.error('error', error);
+      }
+    })();
+
+    return () => {
+      abortController.abort();
+    };
+  }, [redirect]);
+  const _cancelRedirect = useCallback(() => {
+    toast.warning('User cancelled redirect');
+    cancelRedirect();
+  }, [cancelRedirect]);
+
+  return (
+    <Dialog open={true} modal={true}>
+      <DialogContent className="sm:max-w-2xl">
+        <DialogHeader>
+          <DialogTitle>Redirect to NamefiApp</DialogTitle>
+          <DialogClose onClick={_cancelRedirect} />
+        </DialogHeader>
+        <div className="flex flex-col gap-4 w-full">
+          <DialogDescription className="text-md font-medium text-gray-300">
+            This domain is not available on Namefi Astra, but it is available on
+            NamefiApp.
+          </DialogDescription>
+          <DialogDescription className="text-sm font-medium text-gray-400">
+            You will be redirected to the registrar to complete the purchase. in{' '}
+            {countdown} seconds
+          </DialogDescription>
+        </div>
+        <DialogFooter>
+          <Button onClick={redirect}>Redirect Now</Button>
+          <Button onClick={_cancelRedirect}>Cancel</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+};
