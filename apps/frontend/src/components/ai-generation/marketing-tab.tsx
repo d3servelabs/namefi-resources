@@ -159,6 +159,7 @@ export function MarketingTab({
         onGenerateAnother={
           lastMarketingPrompt ? handleGenerateAnotherMarketingImage : undefined
         }
+        brandDomain={brandDomain}
       />
     </>
   );

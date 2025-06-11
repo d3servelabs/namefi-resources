@@ -156,6 +156,7 @@ export function LogoTab({
         onGenerateAnother={
           lastLogoPrompt ? handleGenerateAnotherLogo : undefined
         }
+        brandDomain={brandDomain}
       />
     </>
   );

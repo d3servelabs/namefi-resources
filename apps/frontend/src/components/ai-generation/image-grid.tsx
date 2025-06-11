@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/shadcn/button';
 import { Card, CardContent } from '@/components/ui/shadcn/card';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
 import { Download, Plus } from 'lucide-react';
+import { TwitterIcon, TwitterShareButton } from 'react-share';
 
 export interface GeneratedItem {
   id?: string;
@@ -30,6 +31,7 @@ interface ImageGridProps {
   title: string;
   isLoading?: boolean;
   onGenerateAnother?: () => void;
+  brandDomain?: string;
 }
 
 export function ImageGrid({
@@ -37,6 +39,7 @@ export function ImageGrid({
   title,
   isLoading,
   onGenerateAnother,
+  brandDomain,
 }: ImageGridProps) {
   const handleDownload = async (url: string, index: number) => {
     try {
@@ -69,21 +72,36 @@ export function ImageGrid({
                 alt={item.concept || item.prompt || `${title} ${index + 1}`}
                 className="object-cover w-full h-full"
               />
-              <div className="absolute top-2 right-2 flex gap-2">
-                <CopyLinkButton link={item.url} />
+            </div>
+            {/* Action buttons below image */}
+            <div className="p-3 border-b border-t flex gap-2 justify-center">
+              <CopyLinkButton link={item.url} />
+              <TwitterShareButton
+                url={item.url}
+                title={`Check out my domain: ${brandDomain || 'example.com'} @namefi_io`}
+              >
                 <Button
                   type="button"
                   variant="secondary"
                   size="icon"
-                  onClick={() => handleDownload(item.url, index)}
                   className="bg-muted/90"
-                  title="Download image"
+                  title="Share on Twitter"
                 >
-                  <Download className="h-4 w-4" />
+                  <TwitterIcon className="h-4 w-4 rounded" />
                 </Button>
-              </div>
+              </TwitterShareButton>
+              <Button
+                type="button"
+                variant="secondary"
+                size="icon"
+                onClick={() => handleDownload(item.url, index)}
+                className="bg-muted/90"
+                title="Download image"
+              >
+                <Download className="h-4 w-4" />
+              </Button>
             </div>
-            <CardContent className="p-4">
+            <CardContent className="px-4">
               <div className="flex flex-wrap gap-2 mb-2">
                 {item.type && (
                   <span className="text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded">
@@ -127,10 +145,6 @@ export function ImageGrid({
                   </div>
                 </div>
               )}
-
-              <p className="text-sm text-gray-600 line-clamp-3">
-                {item.concept || item.prompt}
-              </p>
             </CardContent>
           </Card>
         ))}
