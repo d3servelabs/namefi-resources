@@ -5,11 +5,13 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "dotenv": "^16.4.7",
-    "zod": "3.23.8"
+    "dotenv": "^16.4.7"
   },
   "devDependencies": {
     "@namefi-astra/typescript": "workspace:*"
+  },
+  "peerDependencies": {
+    "zod": "^3.23.8"
   },
   "exports": {
     ".": "./src/index.ts"

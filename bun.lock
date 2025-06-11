@@ -206,10 +206,12 @@
       "name": "@namefi-astra/env",
       "dependencies": {
         "dotenv": "^16.4.7",
-        "zod": "3.23.8",
       },
       "devDependencies": {
         "@namefi-astra/typescript": "workspace:*",
+      },
+      "peerDependencies": {
+        "zod": "^3.23.8",
       },
     },
     "packages/registrars": {
