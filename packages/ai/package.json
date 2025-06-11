@@ -7,7 +7,8 @@
   },
   "scripts": {
     "with-env": "infisical run --token=$INFISICAL_SERVICE_TOKEN -- bun",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "validate:secrets": "bun run with-env src/lib/env/index.ts"
   },
   "dependencies": {
     "@langchain/core": "^0.3.57",
