@@ -1,0 +1,81 @@
+import punycode from 'node:punycode';
+import { assert } from '@namefi-astra/utils/assert';
+import { hexToBytes, isHex, keccak256, pad } from 'viem';
+
+export type NftId = bigint;
+export type NftHexId = SizedHexString<32>;
+/**
+ * A hex string with a prefix of 0x.
+ */
+export type HexString = `0x${string}` & {
+  readonly __brand: {
+    /**
+     * The charset of the hex string.
+     */
+    readonly charset: 'hex';
+    /**
+     * Whether the hex string is prefixed with 0x.
+     */
+    readonly isPrefixed: true;
+    /**
+     * Whether the hex string is lowercase.
+     */
+    readonly isLowercase: true;
+  };
+};
+
+export type SizedHexString<N extends number> = HexString & {
+  readonly __brand: {
+    /**
+     * size of the hex string in bytes (characters/2) (not including the 0x prefix)
+     */
+    readonly size: N;
+  };
+};
+
+export function assertSizedHexString<N extends number>(
+  value: `0x${string}`,
+  size: N,
+): asserts value is SizedHexString<N> {
+  // all characters are valid lowercase hex characters
+  assert(
+    !!value.match(/^0x[0-9a-f]+$/),
+    `Not a valid HexString, characters must be 0-9, a-f and prefixed with 0x, got: ${value}`,
+  );
+
+  assert(isHex(value), `Not a HexString, got: ${value}`);
+  const receivedSize = hexToBytes(value).length;
+  assert(
+    receivedSize === size,
+    `Expected a HexString of size ${size}, got ${receivedSize}`,
+  );
+}
+
+/**
+ * Hashes a domain name using the keccak256 hash function and pads the result to 32 bytes.
+ * @param maybeNormalizedDomainName - The domain name to hash.
+ * @returns The hashed domain name.
+ */
+export function nftHexIdFromDomainName(
+  maybeNormalizedDomainName: string,
+): SizedHexString<32> {
+  const normalizedDomainName = punycode.toASCII(
+    maybeNormalizedDomainName.toLowerCase(),
+  );
+  const result = pad(keccak256(Buffer.from(normalizedDomainName)), {
+    size: 32,
+    dir: 'left',
+  });
+  assertSizedHexString(result, 32);
+  return result as SizedHexString<32>;
+}
+
+/**
+ * Converts a domain name to a bigint.
+ * @param maybeNormalizedDomainName - The domain name to convert.
+ * @returns The bigint representation of the domain name.
+ */
+export function nftIdFromDomainName(maybeNormalizedDomainName: string): NftId {
+  const hexId = nftHexIdFromDomainName(maybeNormalizedDomainName);
+  return BigInt(hexId);
+}
