@@ -6,27 +6,31 @@ import {
   generateMarketingImage,
   researchDomain,
 } from '@namefi-astra/ai';
+import { db } from '@namefi-astra/db';
+import { aiGenerationsTable } from '@namefi-astra/db/schema';
+import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
+import { and, desc, eq } from 'drizzle-orm';
 import { z } from 'zod';
 import { createTRPCRouter, protectedProcedure } from '../base';
 
 const generateLogoInputSchema = z.object({
-  brandName: z.string().min(1, 'Brand name is required'),
+  brandName: namefiNormalizedDomainSchema,
   description: z.string().optional(),
-  type: z.string().optional(),
-  style: z.string().optional(),
+  type: z.string().min(1, 'Logo type is required'),
+  style: z.string().min(1, 'Logo style is required'),
 });
 
 const generateMarketingImageInputSchema = z.object({
-  domain: z.string().min(1, 'Domain name is required'),
+  domain: namefiNormalizedDomainSchema,
   description: z.string().optional(),
-  basedOnLogoCallId: z.string().optional(),
+  referenceLogoGenerationId: z.string().optional(),
 });
 
 export const aiRouter = createTRPCRouter({
   generateLogo: protectedProcedure
     .input(generateLogoInputSchema)
-    .mutation(async ({ input }) => {
+    .mutation(async ({ input, ctx }) => {
       try {
         const { brandName, description, type, style } = input;
 
@@ -53,17 +57,28 @@ export const aiRouter = createTRPCRouter({
           });
         }
 
-        return {
-          success: true,
-          runId,
-          logo: generatedLogo,
-          brandAnalysis: {
-            brandAttributes: logoConcept.brandAttributes,
-            targetAudience: logoConcept.targetAudience,
-            visualIdentity: logoConcept.visualIdentity,
-            colorPalette: logoConcept.colorPalette,
-          },
-        };
+        // Step 3: Create generation record only after successful generation
+        const [generationRecord] = await db
+          .insert(aiGenerationsTable)
+          .values({
+            userId: ctx.user.id,
+            domain: brandName,
+            type: 'logo',
+            input: {
+              type: 'logo',
+              logoType: type,
+              logoStyle: style,
+              description,
+            },
+            output: {
+              type: 'logo',
+              url: generatedLogo.url,
+              externalId: generatedLogo.generationCallId,
+            },
+          })
+          .returning();
+
+        return generationRecord;
       } catch (error) {
         console.error('Logo generation error:', error);
         throw new TRPCError({
@@ -76,27 +91,48 @@ export const aiRouter = createTRPCRouter({
 
   generateMarketingImage: protectedProcedure
     .input(generateMarketingImageInputSchema)
-    .mutation(async ({ input }) => {
+    .mutation(async ({ input, ctx }) => {
       try {
-        const { domain, description, basedOnLogoCallId } = input;
+        const { domain, description, referenceLogoGenerationId } = input;
 
-        // Step 1: Research the domain
+        // Step 1: Find reference generation if basedOnLogoCallId provided
+        let referenceLogoGenerationExternalId: string | undefined;
+        if (referenceLogoGenerationId) {
+          const referenceLogoGeneration = await db
+            .select()
+            .from(aiGenerationsTable)
+            .where(
+              and(
+                eq(aiGenerationsTable.userId, ctx.user.id),
+                eq(aiGenerationsTable.id, referenceLogoGenerationId),
+                eq(aiGenerationsTable.type, 'logo'),
+              ),
+            )
+            .then((results) => results[0]);
+
+          if (referenceLogoGeneration) {
+            referenceLogoGenerationExternalId =
+              referenceLogoGeneration.output.externalId;
+          }
+        }
+
+        // Step 2: Research the domain
         const searchResults = await researchDomain(domain, description);
 
-        // Step 2: Analyze domain and generate single marketing concept
+        // Step 3: Analyze domain and generate single marketing concept
         const research = await analyzeDomain(
           domain,
           description,
           searchResults,
         );
 
-        // Step 3: Generate single image
+        // Step 4: Generate single image
         const runId = createRunId(domain);
         const generatedImage = await generateMarketingImage(
           domain,
           research.marketingConcept,
           runId,
-          basedOnLogoCallId, // Pass the logo call ID for multi-turn
+          referenceLogoGenerationExternalId,
         );
 
         if (!generatedImage) {
@@ -106,17 +142,27 @@ export const aiRouter = createTRPCRouter({
           });
         }
 
-        return {
-          success: true,
-          runId,
-          image: generatedImage, // Single image instead of array
-          domainResearch: {
-            potentialUses: research.potentialUses,
-            targetAudience: research.targetAudience,
-            valueProposition: research.valueProposition,
-            investmentHighlights: research.investmentHighlights,
-          },
-        };
+        // Step 5: Create generation record only after successful generation
+        const [generationRecord] = await db
+          .insert(aiGenerationsTable)
+          .values({
+            userId: ctx.user.id,
+            domain,
+            type: 'marketing',
+            input: {
+              type: 'marketing',
+              description,
+            },
+            output: {
+              type: 'marketing',
+              url: generatedImage.url,
+              externalId: generatedImage.generationCallId,
+            },
+            referenceGenerationId: referenceLogoGenerationId,
+          })
+          .returning();
+
+        return generationRecord;
       } catch (error) {
         console.error('Marketing image generation error:', error);
         throw new TRPCError({
@@ -127,5 +173,58 @@ export const aiRouter = createTRPCRouter({
               : 'Failed to generate marketing images',
         });
       }
+    }),
+
+  getGenerationsByDomain: protectedProcedure
+    .input(
+      z.object({
+        domain: namefiNormalizedDomainSchema,
+      }),
+    )
+    .query(({ input, ctx }) => {
+      return db
+        .select()
+        .from(aiGenerationsTable)
+        .where(
+          and(
+            eq(aiGenerationsTable.userId, ctx.user.id),
+            eq(aiGenerationsTable.domain, input.domain),
+          ),
+        )
+        .orderBy(desc(aiGenerationsTable.createdAt));
+    }),
+
+  getUserDomains: protectedProcedure.query(async ({ ctx }) => {
+    const domains = await db
+      .selectDistinct({
+        domain: aiGenerationsTable.domain,
+        latestGeneration: aiGenerationsTable.createdAt,
+      })
+      .from(aiGenerationsTable)
+      .where(eq(aiGenerationsTable.userId, ctx.user.id))
+      .orderBy(desc(aiGenerationsTable.createdAt));
+
+    return domains;
+  }),
+
+  getGenerationsByType: protectedProcedure
+    .input(
+      z.object({
+        domain: namefiNormalizedDomainSchema,
+        type: z.enum(['logo', 'marketing']),
+      }),
+    )
+    .query(({ input, ctx }) => {
+      return db
+        .select()
+        .from(aiGenerationsTable)
+        .where(
+          and(
+            eq(aiGenerationsTable.userId, ctx.user.id),
+            eq(aiGenerationsTable.domain, input.domain),
+            eq(aiGenerationsTable.type, input.type),
+          ),
+        )
+        .orderBy(desc(aiGenerationsTable.createdAt));
     }),
 });

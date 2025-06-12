@@ -31,8 +31,8 @@ export function LogoTab({
   const [error, setError] = useState<string | null>(null);
   const [lastLogoPrompt, setLastLogoPrompt] = useState<{
     domain: string;
-    type?: string;
-    style?: string;
+    type: string;
+    style: string;
     description?: string;
   } | null>(null);
 
@@ -41,7 +41,7 @@ export function LogoTab({
   const generateLogoMutation = useMutation(
     trpc.ai.generateLogo.mutationOptions({
       onSuccess: (data, variables) => {
-        if (data.logo) {
+        if (data.output) {
           // Create a descriptive prompt for storage
           const promptParts = [`Logo for ${variables.brandName}`];
           if (variables.type) promptParts.push(`Type: ${variables.type}`);
@@ -61,18 +61,18 @@ export function LogoTab({
 
           console.log('Logo generation completed, calling onComplete with:', {
             prompt,
-            url: data.logo.url,
+            url: data.output.url,
             domain: variables.brandName,
-            generationCallId: data.logo.generationCallId,
+            generationCallId: data.output.externalId || '',
             metadata,
           });
 
           // Call parent to save to storage
           onComplete?.(
             prompt,
-            data.logo.url,
+            data.output.url,
             variables.brandName,
-            data.logo.generationCallId || '',
+            data.output.externalId || '',
             metadata,
           );
 
@@ -90,8 +90,8 @@ export function LogoTab({
 
   const handleGenerateLogos = async (
     domain: string,
-    type?: string,
-    style?: string,
+    type: string,
+    style: string,
     description?: string,
   ) => {
     setError(null);
@@ -99,15 +99,15 @@ export function LogoTab({
 
     const payload: {
       brandName: string;
-      type?: string;
-      style?: string;
+      type: string;
+      style: string;
       description?: string;
     } = {
       brandName: domain,
+      type,
+      style,
     };
 
-    if (type) payload.type = type;
-    if (style) payload.style = style;
     if (description) payload.description = description;
 
     generateLogoMutation.mutate(payload);

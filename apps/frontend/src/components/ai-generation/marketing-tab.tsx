@@ -40,7 +40,7 @@ export function MarketingTab({
   const generateMarketingImageMutation = useMutation(
     trpc.ai.generateMarketingImage.mutationOptions({
       onSuccess: (data, variables) => {
-        if (data.image) {
+        if (data.output) {
           // Handle single image response
           const prompt = `Marketing image for ${variables.domain}${variables.description ? `: ${variables.description}` : ''}${lastMarketingPrompt?.selectedLogoId ? ' (based on logo)' : ''}`;
 
@@ -57,9 +57,9 @@ export function MarketingTab({
 
           onComplete?.(
             prompt,
-            data.image.url,
+            data.output.url,
             variables.domain,
-            data.image.generationCallId,
+            data.output.externalId || '',
             metadata,
           );
 

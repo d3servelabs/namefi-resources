@@ -14,8 +14,8 @@ import { NamefiButton } from '../namefi-button';
 interface LogoGeneratorProps {
   onGenerate: (
     domain: string,
-    type?: string,
-    style?: string,
+    type: string,
+    style: string,
     description?: string,
   ) => void;
   isLoading?: boolean;
@@ -41,8 +41,8 @@ export function LogoGenerator({
     if (domainToUse.trim()) {
       onGenerate(
         domainToUse,
-        selectedType || undefined,
-        selectedStyle || undefined,
+        selectedType,
+        selectedStyle,
         description || undefined,
       );
     }
