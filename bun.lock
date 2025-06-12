@@ -205,8 +205,15 @@
     "packages/dns-tools": {
       "name": "@namefi-astra/dns-tools",
       "version": "0.0.0-pre.1",
+      "bin": {
+        "dns-tools": "./dist/bin.js",
+      },
+      "dependencies": {
+        "commander": "^14.0.0",
+      },
       "devDependencies": {
         "@namefi-astra/typescript": "workspace:*",
+        "tsup": "^8.4.0",
       },
       "peerDependencies": {
         "vitest": "^3.1.2",
@@ -3158,6 +3165,8 @@
     "@metamask/sdk-communication-layer/uuid": ["uuid@8.3.2", "", { "bin": { "uuid": "dist/bin/uuid" } }, "sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg=="],
 
     "@metamask/utils/superstruct": ["superstruct@1.0.4", "", {}, "sha512-7JpaAoX2NGyoFlI9NBh66BQXGONc+uE+MRS5i2iOBKuS4e+ccgMDjATgZldkah+33DakBxDHiss9kvUcGAO8UQ=="],
+
+    "@namefi-astra/dns-tools/zod": ["zod@3.25.57", "", {}, "sha512-6tgzLuwVST5oLUxXTmBqoinKMd3JeesgbgseXeFasKKj8Q1FCZrHnbqJOyiEvr4cVAlbug+CgIsmJ8cl/pU5FA=="],
 
     "@privy-io/api-base/zod": ["zod@3.25.57", "", {}, "sha512-6tgzLuwVST5oLUxXTmBqoinKMd3JeesgbgseXeFasKKj8Q1FCZrHnbqJOyiEvr4cVAlbug+CgIsmJ8cl/pU5FA=="],
 

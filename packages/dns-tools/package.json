@@ -10,7 +10,15 @@
     "check:fix": "biome check --write",
     "typecheck": "tsc --noEmit",
     "test": "vitest --run",
-    "test:coverage": "bun vitest run --coverage"
+    "test:coverage": "bun vitest run --coverage",
+    "build": "tsup",
+    "dns-tools": "node dist/bin.js"
+  },
+  "bin": {
+    "dns-tools": "./dist/bin.js"
+  },
+  "dependencies": {
+    "commander": "^14.0.0"
   },
   "exports": {
     ".": "./src/index.ts"
@@ -20,6 +28,7 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
-    "@namefi-astra/typescript": "workspace:*"
+    "@namefi-astra/typescript": "workspace:*",
+    "tsup": "^8.4.0"
   }
 }
