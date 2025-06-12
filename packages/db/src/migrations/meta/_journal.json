@@ -113,6 +113,13 @@
       "when": 1748607398516,
       "tag": "0015_bored_thundra",
       "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "7",
+      "when": 1749730418921,
+      "tag": "0016_lively_stick",
+      "breakpoints": true
     }
   ]
 }

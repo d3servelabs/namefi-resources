@@ -11,6 +11,7 @@ import {
   bigint,
   boolean,
   check,
+  foreignKey,
   index,
   integer,
   jsonb,
@@ -488,5 +489,66 @@ export const domainUserPreferencesTable = pgTable(
       table.normalizedDomainName,
       table.userId,
     ),
+  ],
+);
+
+export const aiGenerationTypeEnum = pgEnum('ai_generation_type', [
+  'logo',
+  'marketing',
+] as const);
+
+export const aiGenerationsTable = pgTable(
+  'ai_generations',
+  {
+    ...randomUuid,
+    userId: uuid('user_id')
+      .notNull()
+      .references(() => usersTable.id, { onDelete: 'cascade' }),
+    domain: text('domain').notNull().$type<NamefiNormalizedDomain>(),
+    type: aiGenerationTypeEnum('type').notNull(),
+    referenceGenerationId: uuid('reference_generation_id'),
+    input: jsonb('input').notNull().$type<
+      | {
+          type: 'logo';
+          logoType: string;
+          logoStyle: string;
+          description?: string;
+        }
+      | {
+          type: 'marketing';
+          description?: string;
+        }
+    >(),
+    output: jsonb('output').notNull().$type<
+      | {
+          type: 'logo';
+          url: string;
+          externalId?: string;
+        }
+      | {
+          type: 'marketing';
+          url: string;
+          externalId?: string;
+        }
+    >(),
+    metadata: jsonb('metadata').default({}),
+    ...timestamps,
+  },
+  (table) => [
+    index('ai_generations_user_domain_type_idx').on(
+      table.userId,
+      table.domain,
+      table.type,
+    ),
+    index('ai_generations_user_domain_created_idx').on(
+      table.userId,
+      table.domain,
+      table.createdAt,
+    ),
+    foreignKey({
+      columns: [table.referenceGenerationId],
+      foreignColumns: [table.id],
+      name: 'ai_generations_reference_generation_fk',
+    }).onDelete('set null'),
   ],
 );

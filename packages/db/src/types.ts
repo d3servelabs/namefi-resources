@@ -7,6 +7,7 @@ import {
 } from 'drizzle-zod';
 import { z } from 'zod';
 import {
+  aiGenerationsTable,
   cartItemsTable,
   dnsRecordsTable,
   orderItemsTable,
@@ -78,6 +79,13 @@ export const dnsRecordUpdateSchema = createUpdateSchema(dnsRecordsTable, {
 });
 
 /**
+ * AI Generation schemas
+ */
+export const aiGenerationInsertSchema = createInsertSchema(aiGenerationsTable);
+export const aiGenerationSelectSchema = createSelectSchema(aiGenerationsTable);
+export const aiGenerationUpdateSchema = createUpdateSchema(aiGenerationsTable);
+
+/**
  * Inferred Zod types for API and validation
  */
 
@@ -115,6 +123,11 @@ export type OrderItemUpdate = z.infer<typeof orderItemUpdateSchema>;
 export type DnsRecordInsert = z.infer<typeof dnsRecordInsertSchema>;
 export type DnsRecordSelect = z.infer<typeof dnsRecordSelectSchema>;
 export type DnsRecordUpdate = z.infer<typeof dnsRecordUpdateSchema>;
+
+// AI Generation types
+export type AiGenerationInsert = z.infer<typeof aiGenerationInsertSchema>;
+export type AiGenerationSelect = z.infer<typeof aiGenerationSelectSchema>;
+export type AiGenerationUpdate = z.infer<typeof aiGenerationUpdateSchema>;
 
 /**
  * Enum types from pgEnums
