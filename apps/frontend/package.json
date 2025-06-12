@@ -4,6 +4,7 @@
   "type": "module",
   "private": true,
   "scripts": {
+    "clean": "git clean -xdf .next .turbo node_modules out dist",
     "force-local": "ENVIRONMENT=local bun",
     "dev": "bun run force-local next dev --turbopack --port 5050",
     "with-env": "infisical run --token=$INFISICAL_SERVICE_TOKEN -- bun",

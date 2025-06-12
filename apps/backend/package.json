@@ -12,6 +12,7 @@
     "#services/*": "./src/services/*.ts"
   },
   "scripts": {
+    "clean": "git clean -xdf .next .turbo node_modules out dist",
     "force-local": "ENVIRONMENT=local LOG_LEVEL=debug bun",
     "dev": "bun run force-local tsx watch src/index.ts",
     "dev:temporal": "wait-on tcp:${TEMPORAL_SERVER_PORT:-7233} && bun run force-local tsx watch src/temporal/main.temporal.ts",
