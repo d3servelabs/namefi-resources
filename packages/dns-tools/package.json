@@ -1,0 +1,25 @@
+{
+  "name": "@namefi-astra/dns-tools",
+  "author": "Namefi Open Source <oss@namefi.io>",
+  "license": "MIT",
+  "description": "DNS tools created and maintained by Namefi Team",
+  "version": "0.0.0-pre.1",
+  "type": "module",
+  "scripts": {
+    "check": "biome check",
+    "check:fix": "biome check --write",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest --run",
+    "test:coverage": "bun vitest run --coverage"
+  },
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "peerDependencies": {
+    "vitest": "^3.1.2",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@namefi-astra/typescript": "workspace:*"
+  }
+}

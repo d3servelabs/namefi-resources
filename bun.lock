@@ -202,6 +202,17 @@
         "drizzle-zod": "^0.7.0",
       },
     },
+    "packages/dns-tools": {
+      "name": "@namefi-astra/dns-tools",
+      "version": "0.0.0-pre.1",
+      "devDependencies": {
+        "@namefi-astra/typescript": "workspace:*",
+      },
+      "peerDependencies": {
+        "vitest": "^3.1.2",
+        "zod": "^3.24.2",
+      },
+    },
     "packages/env": {
       "name": "@namefi-astra/env",
       "dependencies": {
@@ -753,6 +764,8 @@
     "@namefi-astra/backend": ["@namefi-astra/backend@workspace:apps/backend"],
 
     "@namefi-astra/db": ["@namefi-astra/db@workspace:packages/db"],
+
+    "@namefi-astra/dns-tools": ["@namefi-astra/dns-tools@workspace:packages/dns-tools"],
 
     "@namefi-astra/env": ["@namefi-astra/env@workspace:packages/env"],
 
