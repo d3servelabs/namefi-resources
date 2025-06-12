@@ -9,6 +9,7 @@
     "#lib/abstract-registrar": "./src/lib/abstract-registrar/index.ts"
   },
   "scripts": {
+    "clean": "git clean -xdf .next .turbo node_modules out dist",
     "check": "biome check",
     "check:fix": "biome check --write",
     "typecheck": "tsc --noEmit",

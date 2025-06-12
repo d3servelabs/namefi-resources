@@ -5,6 +5,7 @@
     ".": "./src/index.ts"
   },
   "scripts": {
+    "clean": "git clean -xdf .next .turbo node_modules out dist",
     "with-env": "infisical run --token=$INFISICAL_SERVICE_TOKEN -- bun",
     "typecheck": "tsc --noEmit",
     "validate:secrets": "bun run with-env src/lib/env/index.ts"

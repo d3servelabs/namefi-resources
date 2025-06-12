@@ -2,6 +2,7 @@
   "name": "@namefi-astra/env",
   "type": "module",
   "scripts": {
+    "clean": "git clean -xdf .next .turbo node_modules out dist",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

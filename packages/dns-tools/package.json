@@ -6,6 +6,7 @@
   "version": "0.0.0-pre.1",
   "type": "module",
   "scripts": {
+    "clean": "git clean -xdf .next .turbo node_modules out dist",
     "check": "biome check",
     "check:fix": "biome check --write",
     "typecheck": "tsc --noEmit",
@@ -25,7 +26,7 @@
   },
   "peerDependencies": {
     "vitest": "^3.1.2",
-    "zod": "^3.24.2"
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@namefi-astra/typescript": "workspace:*",
