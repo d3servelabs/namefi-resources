@@ -10,7 +10,7 @@ import { db } from '@namefi-astra/db';
 import { aiGenerationsTable } from '@namefi-astra/db/schema';
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
-import { and, desc, eq } from 'drizzle-orm';
+import { and, count, desc, eq, max, sql } from 'drizzle-orm';
 import { z } from 'zod';
 import { createTRPCRouter, protectedProcedure } from '../base';
 
@@ -195,14 +195,25 @@ export const aiRouter = createTRPCRouter({
     }),
 
   getUserDomains: protectedProcedure.query(async ({ ctx }) => {
+    const latestGenerationAlias = max(aiGenerationsTable.createdAt).as(
+      'latestGeneration',
+    );
+
     const domains = await db
-      .selectDistinct({
+      .select({
         domain: aiGenerationsTable.domain,
-        latestGeneration: aiGenerationsTable.createdAt,
+        latestGeneration: latestGenerationAlias,
+        logoCount: count(
+          sql`CASE WHEN ${aiGenerationsTable.type} = 'logo' THEN 1 END`,
+        ).as('logoCount'),
+        marketingCount: count(
+          sql`CASE WHEN ${aiGenerationsTable.type} = 'marketing' THEN 1 END`,
+        ).as('marketingCount'),
       })
       .from(aiGenerationsTable)
       .where(eq(aiGenerationsTable.userId, ctx.user.id))
-      .orderBy(desc(aiGenerationsTable.createdAt));
+      .groupBy(aiGenerationsTable.domain)
+      .orderBy(desc(latestGenerationAlias));
 
     return domains;
   }),

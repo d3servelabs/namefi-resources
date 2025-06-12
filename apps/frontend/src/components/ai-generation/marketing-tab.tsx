@@ -6,16 +6,6 @@ import { type GeneratedItem, ImageGrid } from './image-grid';
 import { MarketingImageGenerator } from './marketing-image-generator';
 
 interface MarketingTabProps {
-  onComplete?: (
-    prompt: string,
-    result: string,
-    domain: string,
-    generationCallId: string | undefined,
-    metadata?: {
-      description?: string;
-      basedOnLogoId?: string;
-    },
-  ) => void;
   existingGenerations?: Generation[];
   brandDomain?: string;
   onGenerationUpdate?: () => void; // Callback to refresh generations
@@ -23,7 +13,6 @@ interface MarketingTabProps {
 }
 
 export function MarketingTab({
-  onComplete,
   existingGenerations = [],
   brandDomain,
   onGenerationUpdate,
@@ -50,18 +39,12 @@ export function MarketingTab({
             basedOnLogoId?: string;
           } = {};
 
-          if (variables.description)
+          if (variables.description) {
             metadata.description = variables.description;
-          if (lastMarketingPrompt?.selectedLogoId)
+          }
+          if (lastMarketingPrompt?.selectedLogoId) {
             metadata.basedOnLogoId = lastMarketingPrompt.selectedLogoId;
-
-          onComplete?.(
-            prompt,
-            data.output.url,
-            variables.domain,
-            data.output.externalId || '',
-            metadata,
-          );
+          }
 
           // Refresh the generations list
           onGenerationUpdate?.();
@@ -70,7 +53,7 @@ export function MarketingTab({
     }),
   );
 
-  const handleGenerateMarketingImages = async (
+  const handleGenerateMarketingImages = (
     domain: string,
     description?: string,
     selectedLogoId?: string,
@@ -80,20 +63,15 @@ export function MarketingTab({
     const requestBody: {
       domain: string;
       description?: string;
-      basedOnLogoCallId?: string;
+      referenceLogoGenerationId?: string;
     } = {
       domain,
       description,
     };
 
-    // If a logo is selected, include the logo generation call ID for multi-turn
+    // If a logo is selected, include the logo generation ID for reference
     if (selectedLogoId) {
-      const selectedLogo = availableLogos.find(
-        (logo) => logo.id === selectedLogoId,
-      );
-      if (selectedLogo?.generationCallId) {
-        requestBody.basedOnLogoCallId = selectedLogo.generationCallId;
-      }
+      requestBody.referenceLogoGenerationId = selectedLogoId;
     }
 
     generateMarketingImageMutation.mutate(requestBody);

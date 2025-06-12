@@ -7,6 +7,7 @@ import { Textarea } from '@/components/ui/shadcn/textarea';
 import type { Generation } from '@/types/brand';
 import { Check } from 'lucide-react';
 import { useState } from 'react';
+import type { FormEvent } from 'react';
 import { NamefiButton } from '../namefi-button';
 
 interface MarketingImageGeneratorProps {
@@ -31,7 +32,7 @@ export function MarketingImageGenerator({
   const [selectedLogoId, setSelectedLogoId] = useState<string | null>(null);
   const [openPanel, setOpenPanel] = useState<null | 'about' | 'logos'>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     const domainToUse = fixedDomain || domain;
     if (domainToUse.trim()) {

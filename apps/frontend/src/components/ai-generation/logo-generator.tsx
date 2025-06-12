@@ -9,6 +9,7 @@ import { LOGO_STYLES, LOGO_TYPES } from '@/lib/types/logo-options';
 import { cn } from '@/lib/utils';
 import { Check, Sparkles } from 'lucide-react';
 import { useState } from 'react';
+import type { FormEvent } from 'react';
 import { NamefiButton } from '../namefi-button';
 
 interface LogoGeneratorProps {
@@ -35,7 +36,7 @@ export function LogoGenerator({
     null,
   );
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     const domainToUse = fixedDomain || domain;
     if (domainToUse.trim()) {
@@ -49,13 +50,17 @@ export function LogoGenerator({
   };
 
   const getTypeDisplay = () => {
-    if (!selectedType) return null;
+    if (!selectedType) {
+      return null;
+    }
     const type = LOGO_TYPES[selectedType as keyof typeof LOGO_TYPES];
     return type ? type.name : selectedType;
   };
 
   const getStyleDisplay = () => {
-    if (!selectedStyle) return null;
+    if (!selectedStyle) {
+      return null;
+    }
     const style = LOGO_STYLES[selectedStyle as keyof typeof LOGO_STYLES];
     return style ? style.name : selectedStyle;
   };

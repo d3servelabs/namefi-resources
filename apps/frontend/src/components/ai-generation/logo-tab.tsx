@@ -6,24 +6,12 @@ import { type GeneratedItem, ImageGrid } from './image-grid';
 import { LogoGenerator } from './logo-generator';
 
 interface LogoTabProps {
-  onComplete?: (
-    prompt: string,
-    result: string,
-    domain: string,
-    generationCallId: string,
-    metadata?: {
-      logoType?: string;
-      logoStyle?: string;
-      generationCallId?: string;
-    },
-  ) => void;
   existingGenerations?: Generation[];
   brandDomain?: string;
   onGenerationUpdate?: () => void; // Callback to refresh generations
 }
 
 export function LogoTab({
-  onComplete,
   existingGenerations = [],
   brandDomain,
   onGenerationUpdate,
@@ -43,21 +31,21 @@ export function LogoTab({
       onSuccess: (data, variables) => {
         if (data.output) {
           // Create a descriptive prompt for storage
-          const promptParts = [`Logo for ${variables.brandName}`];
-          if (variables.type) promptParts.push(`Type: ${variables.type}`);
-          if (variables.style) promptParts.push(`Style: ${variables.style}`);
-          if (variables.description)
+          const promptParts = [
+            `Logo for ${variables.brandName}`,
+            `Type: ${variables.type}`,
+            `Style: ${variables.style}`,
+          ];
+
+          if (variables.description) {
             promptParts.push(`Description: ${variables.description}`);
+          }
           const prompt = promptParts.join(', ');
 
-          // Create metadata object with only defined values
-          const metadata: {
-            logoType?: string;
-            logoStyle?: string;
-          } = {};
-
-          if (variables.type) metadata.logoType = variables.type;
-          if (variables.style) metadata.logoStyle = variables.style;
+          const metadata = {
+            logoType: variables.type,
+            logoStyle: variables.style,
+          };
 
           console.log('Logo generation completed, calling onComplete with:', {
             prompt,
@@ -66,15 +54,6 @@ export function LogoTab({
             generationCallId: data.output.externalId || '',
             metadata,
           });
-
-          // Call parent to save to storage
-          onComplete?.(
-            prompt,
-            data.output.url,
-            variables.brandName,
-            data.output.externalId || '',
-            metadata,
-          );
 
           // Refresh the generations list
           onGenerationUpdate?.();
@@ -88,7 +67,7 @@ export function LogoTab({
     }),
   );
 
-  const handleGenerateLogos = async (
+  const handleGenerateLogos = (
     domain: string,
     type: string,
     style: string,
@@ -108,7 +87,9 @@ export function LogoTab({
       style,
     };
 
-    if (description) payload.description = description;
+    if (description) {
+      payload.description = description;
+    }
 
     generateLogoMutation.mutate(payload);
   };

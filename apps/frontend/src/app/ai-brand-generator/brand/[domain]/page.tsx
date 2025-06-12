@@ -6,10 +6,11 @@ import { TabSelector } from '@/components/ai-generation/tab-selector';
 import { AuthRequired } from '@/components/auth-required';
 import { Button } from '@/components/ui/shadcn/button';
 import { useAuth } from '@/hooks/useAuth';
-import { storage } from '@/lib/storage';
-import type { Brand, Generation } from '@/types/brand';
+import type { Generation } from '@/types/brand';
+import { useTRPC } from '@/utils/trpc';
+import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import { use, useEffect, useState } from 'react';
+import { use, useState } from 'react';
 
 interface BrandDetailPageProps {
   params: Promise<{ domain: string }>;
@@ -17,57 +18,30 @@ interface BrandDetailPageProps {
 
 export default function BrandDetailPage({ params }: BrandDetailPageProps) {
   const router = useRouter();
-  const [brand, setBrand] = useState<Brand | null>(null);
   const [activeTab, setActiveTab] = useState<'logo' | 'marketing'>('logo');
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
+  const trpc = useTRPC();
 
   // Unwrap the params Promise
   const { domain } = use(params);
 
-  // Load brand from storage on component mount
-  useEffect(() => {
-    if (isAuthenticated && domain) {
-      const loadedBrand = storage.getBrandByDomain(domain);
-      setBrand(loadedBrand);
-    }
-  }, [isAuthenticated, domain]);
+  // Load generations for this domain
+  const { data: generations = [], refetch: refetchGenerations } = useQuery({
+    ...trpc.ai.getGenerationsByDomain.queryOptions({ domain }),
+    enabled: isAuthenticated && !!domain,
+  });
 
-  const handleGenerationComplete = (
-    type: 'logo' | 'marketing',
-    prompt: string,
-    result: string,
-    domainParam: string,
-    generationCallId: string | undefined,
-    metadata?: Generation['metadata'],
-  ) => {
-    // Get or create brand based on domain
-    const updatedBrand = storage.getOrCreateBrand(domainParam);
-
-    // Add generation to the brand
-    const generation = storage.addGeneration(updatedBrand.id, {
-      type,
-      prompt,
-      result,
-      generationCallId,
-      metadata,
-    });
-
-    if (generation) {
-      // Update local state
-      setBrand({
-        ...updatedBrand,
-        generations: [...updatedBrand.generations, generation],
-      });
-    }
+  const handleGenerationComplete = () => {
+    // Refetch generations to update the list after a new generation
+    refetchGenerations();
   };
 
-  const refreshGenerations = () => {
-    // Reload brand from storage to get latest generations
-    const loadedBrand = storage.getBrandByDomain(domain);
-    if (loadedBrand) {
-      setBrand(loadedBrand);
-    }
-  };
+  // Create brand name from domain (e.g., "example.com" -> "Example")
+  const brandName = domain
+    ?.split('.')[0]
+    .split('-')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
 
   if (isAuthLoading) {
     return (
@@ -81,11 +55,13 @@ export default function BrandDetailPage({ params }: BrandDetailPageProps) {
     return <AuthRequired />;
   }
 
-  if (!brand) {
+  if (generations.length === 0) {
     return (
       <div className="container mx-auto py-8 px-8">
         <div className="text-center">
-          <h2 className="text-2xl font-bold mb-4">Brand not found</h2>
+          <h2 className="text-2xl font-bold mb-4">
+            No generations found for {domain}
+          </h2>
           <Button onClick={() => router.push('/ai-brand-generator')}>
             Go back to AI Brand Generator
           </Button>
@@ -95,18 +71,42 @@ export default function BrandDetailPage({ params }: BrandDetailPageProps) {
   }
 
   // Filter generations by type
-  const logoGenerations = brand.generations.filter((g) => g.type === 'logo');
-  const marketingGenerations = brand.generations.filter(
+  const logoGenerations = generations.filter((g) => g.type === 'logo');
+  const marketingGenerations = generations.filter(
     (g) => g.type === 'marketing',
   );
+
+  // Map tRPC generations to the frontend Generation type
+  const mapGeneration = (gen: (typeof generations)[0]): Generation => ({
+    id: gen.id,
+    brandId: `brand_${domain}`,
+    type: gen.type,
+    prompt:
+      gen.input.type === 'logo'
+        ? `${gen.input.logoType} ${gen.input.logoStyle}${gen.input.description ? ` - ${gen.input.description}` : ''}`
+        : gen.input.description || '',
+    result: gen.output.url,
+    generationCallId: gen.output.externalId,
+    createdAt: gen.createdAt.toISOString(),
+    metadata:
+      gen.input.type === 'logo'
+        ? {
+            logoStyle: gen.input.logoStyle,
+            logoType: gen.input.logoType,
+          }
+        : undefined,
+  });
+
+  const mappedLogoGenerations = logoGenerations.map(mapGeneration);
+  const mappedMarketingGenerations = marketingGenerations.map(mapGeneration);
 
   return (
     <div className="container max-w-4xl mx-auto py-8 px-8">
       {/* Brand Header */}
       <div className="flex justify-between items-center mb-6">
         <div>
-          <h2 className="text-2xl font-bold">{brand.name}</h2>
-          <p className="text-muted-foreground mt-1">{brand.domain}</p>
+          <h2 className="text-2xl font-bold">{brandName}</h2>
+          <p className="text-muted-foreground mt-1">{domain}</p>
         </div>
       </div>
 
@@ -117,48 +117,16 @@ export default function BrandDetailPage({ params }: BrandDetailPageProps) {
         {/* Tab Content */}
         {activeTab === 'logo' ? (
           <LogoTab
-            onComplete={(
-              prompt,
-              result,
-              domainParam,
-              generationCallId,
-              metadata,
-            ) =>
-              handleGenerationComplete(
-                'logo',
-                prompt,
-                result,
-                domainParam,
-                generationCallId,
-                metadata,
-              )
-            }
-            existingGenerations={logoGenerations}
-            brandDomain={brand.domain}
-            onGenerationUpdate={refreshGenerations}
+            existingGenerations={mappedLogoGenerations}
+            brandDomain={domain}
+            onGenerationUpdate={handleGenerationComplete}
           />
         ) : (
           <MarketingTab
-            onComplete={(
-              prompt,
-              result,
-              domainParam,
-              generationCallId,
-              metadata,
-            ) =>
-              handleGenerationComplete(
-                'marketing',
-                prompt,
-                result,
-                domainParam,
-                generationCallId,
-                metadata,
-              )
-            }
-            existingGenerations={marketingGenerations}
-            brandDomain={brand.domain}
-            onGenerationUpdate={refreshGenerations}
-            availableLogos={logoGenerations}
+            existingGenerations={mappedMarketingGenerations}
+            brandDomain={domain}
+            onGenerationUpdate={handleGenerationComplete}
+            availableLogos={mappedLogoGenerations}
           />
         )}
       </div>
