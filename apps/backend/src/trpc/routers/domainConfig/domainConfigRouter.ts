@@ -1,29 +1,20 @@
 import type { Nameserver } from '@namefi-astra/registrars/lib/abstract-registrar/data/nameservers';
 import { toPunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
-import { createRegistrarService } from '@namefi-astra/registrars/registrars/main-registrar';
 import {
   type NamefiNormalizedDomain,
   namefiNormalizedDomainSchema,
 } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
-import { config, secrets } from '#lib/env';
+import { config } from '#lib/env';
 import { logger } from '#lib/logger';
-import { getPoweredByNamefi3PDomains } from '../../../lib/namefi-registry';
+import {
+  getPoweredByNamefi3PDomains,
+  sldRegistrar,
+} from '../../../lib/namefi-registry';
 import { createTRPCRouter, protectedProcedure } from '../../base';
 import { assertAuthenticatedUserIsDomainOwner } from '../../guards/assert-domain-owner';
 import { getDomainLevels } from './getDomainLevels';
-
-// TODO add to context
-const sldRegistrar = createRegistrarService({
-  AWS_REGION: config.AWS_REGION,
-  AWS_ACCESS_KEY_ID: secrets.AWS_ACCESS_KEY_ID,
-  AWS_SECRET_ACCESS_KEY: secrets.AWS_SECRET_ACCESS_KEY,
-  DYNADOT_API_KEY: secrets.DYNADOT_API_KEY,
-  DYNADOT_PRIVATE_KEY: secrets.DYNADOT_PRIVATE_KEY,
-  DYNADOT_ACCOUNT_ID: secrets.DYNADOT_ACCOUNT_ID,
-  DYNADOT_BASE_URL: config.DYNADOT_BASE_URL,
-});
 
 export const domainConfigRouter = createTRPCRouter({
   /**
