@@ -47,32 +47,21 @@ describe('Search Router', () => {
     const result = await caller.search({
       query: 'test-domain',
       parentDomain: '0x.city',
-      withSuggestions: true,
     });
 
     // Assert: Check the structure of the response
-    expect(result).toHaveProperty('suggestions');
     expect(result).toHaveProperty('bulkAvailability');
-
-    // Check suggestions array contents
-    expect(Array.isArray(result.suggestions)).toBe(true);
-    expect(result.suggestions.length).toBeGreaterThan(0);
 
     // First suggestion should be the trimmed query
     expect(result.bulkAvailability[0].domain).toBe('test-domain.0x.city');
 
-    // Check that other suggestions include the parent domain
-    for (let i = 1; i < result.suggestions.length; i++) {
-      expect(result.bulkAvailability[i].domain.endsWith('0x.city')).toBe(true);
-    }
-
     // Check bulk availability array has same length as suggestions
     expect(Array.isArray(result.bulkAvailability)).toBe(true);
-    expect(result.bulkAvailability.length).toBe(result.suggestions.length);
+    expect(result.bulkAvailability.length).toBe(1);
 
     // Check that getDomainListInfo was called with the generated suggestions
     expect(namefiRegistry.getDomainListInfo).toHaveBeenCalledWith(
-      result.suggestions,
+      ['test-domain.0x.city'],
       testUser,
     );
 
@@ -105,12 +94,6 @@ describe('Search Router', () => {
 
     // First suggestion should be the query
     expect(result.bulkAvailability[0].domain).toBe('test-domain.defi.build');
-
-    // Other suggestions should use defi.build
-    for (let i = 1; i < result.suggestions.length; i++) {
-      expect(result.suggestions[i].endsWith('defi.build')).toBe(true);
-      expect(result.suggestions[i].endsWith('0x.city')).toBe(false);
-    }
   });
 
   it('should generate English word club suggestions', async () => {

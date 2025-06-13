@@ -32,7 +32,7 @@ import { getClubsCategoriesWithStats } from '#lib/clubs-categories';
 import { deepseek } from '#lib/llm/deepseek';
 import { openai } from '#lib/llm/gpt';
 import { createLogger, logger } from '#lib/logger';
-import { getDomainListInfo } from '#lib/namefi-registry';
+import { getDomainListInfo, sldRegistrar } from '#lib/namefi-registry';
 import { authedOrPublicProcedure, createTRPCRouter } from '../base';
 
 type Tag = ReturnType<typeof getTags>[number];
@@ -74,9 +74,8 @@ export const searchRouter = createTRPCRouter({
   search: authedOrPublicProcedure
     .input(
       z.object({
-        query: sanitizedQuerySchema,
+        query: z.string(),
         parentDomain: z.string().optional(),
-        withSuggestions: z.boolean().optional().default(false),
       }),
     )
     .query(async ({ input, ctx }) => {
@@ -84,23 +83,15 @@ export const searchRouter = createTRPCRouter({
 
       const parentDomain = input.parentDomain ?? ctx.thirdPartyOriginHostname;
 
-      if (!parentDomain) {
-        throw new TRPCError({
-          code: 'BAD_REQUEST',
-          message: 'Parent domain is required',
-        });
+      let domain: NamefiNormalizedDomain;
+      if (parentDomain) {
+        const sanitizedQuery = sanitizedQuerySchema.parse(query);
+        domain = namefiNormalizedDomainSchema.parse(
+          `${sanitizedQuery}.${parentDomain}`,
+        );
+      } else {
+        domain = namefiNormalizedDomainSchema.parse(query);
       }
-
-      if (input.withSuggestions) {
-        const suggestions = getSuggestions(query, parentDomain);
-        const bulkAvailability = await getDomainListInfo(suggestions, ctx.user);
-
-        return { suggestions, bulkAvailability };
-      }
-
-      const domain = namefiNormalizedDomainSchema.parse(
-        `${query}.${parentDomain}`,
-      );
       const availability = await getDomainListInfo([domain], ctx.user);
 
       return {
@@ -134,8 +125,8 @@ export const searchRouter = createTRPCRouter({
   getDomainSuggestions: authedOrPublicProcedure
     .input(
       z.object({
-        query: sanitizedQuerySchema,
-        parentDomain: z.string(),
+        query: z.string(),
+        parentDomain: z.string().optional(),
         onlyAvailable: z.boolean().optional().default(true),
         maxDuration: z
           .number()
@@ -159,85 +150,28 @@ export const searchRouter = createTRPCRouter({
       }),
     )
     .query(async ({ input, ctx }) => {
-      const logger = createLogger({
-        context: 'getDomainSuggestions',
-        input,
-        userId: ctx.user?.id,
-      });
-      const startTime = performance.now();
       const { query } = input;
 
       const parentDomain = input.parentDomain ?? ctx.thirdPartyOriginHostname;
 
-      if (!parentDomain) {
-        throw new TRPCError({
-          code: 'BAD_REQUEST',
-          message: 'Parent domain is required',
+      if (parentDomain) {
+        const sanitizedQuery = sanitizedQuerySchema.parse(query);
+        return get3rdLevelDomainsSuggestions({
+          query: sanitizedQuery,
+          parentDomain,
+          maxDuration: input.maxDuration,
+          maxRound: input.maxRound,
+          onlyAvailable: input.onlyAvailable,
+          user: ctx.user,
         });
       }
-
-      const domain = namefiNormalizedDomainSchema.parse(
-        `${query}.${parentDomain}`,
+      const suggestions = await sldRegistrar.getSuggestions(query, 15);
+      return getDomainListInfo(
+        suggestions.result.map((d) =>
+          namefiNormalizedDomainSchema.parse(d.domainName),
+        ),
+        ctx.user,
       );
-      const tags = getTags(domain);
-
-      // Rule-based suggestions for clubs
-      let suggestions: Suggestion[] = [];
-
-      const loopStartTime = performance.now();
-      logger.info(`[getDomainSuggestions] Starting loop ${loopStartTime}`);
-      const maxDuration = input.maxDuration;
-      const maxRound = input.maxRound;
-      let currentSuggestions: Suggestion[] = [];
-
-      // Number of rounds to generate suggestions (to avoid infinite loops) this is enabled when onlyAvailable is false
-      // Also acts as a seed in the suggestions and reference to avoid repeating the initial base suggestions
-      let round = 0;
-      const totalSuggestions = new Set<string>();
-      do {
-        // do-while to ensure at least 1 round is generated
-        const normalizedSuggestions = (
-          await generateSuggestions(query, parentDomain, tags, round)
-        ).filter((d) => !totalSuggestions.has(d));
-        normalizedSuggestions.forEach((d) => totalSuggestions.add(d));
-        currentSuggestions = await getDomainListInfo(
-          normalizedSuggestions,
-          ctx.user,
-        );
-        // If we are not filtering by availability, add all suggestions and break
-        if (!input.onlyAvailable) {
-          suggestions.push(...currentSuggestions);
-          break;
-        }
-
-        // Add available suggestions
-        suggestions.push(...currentSuggestions.filter((d) => d.availability));
-
-        round++;
-      } while (
-        suggestions.length < 20 &&
-        round < maxRound &&
-        performance.now() - loopStartTime < maxDuration
-      );
-
-      // If we are on the last round, add all unavailable suggestions to not end up with empty suggestions
-      if (suggestions.length < 20) {
-        suggestions.push(
-          ...take(
-            20 - suggestions.length,
-            currentSuggestions.filter((d) => !d.availability),
-          ),
-        );
-      }
-
-      // Remove duplicates and the original domain
-      suggestions = uniqBy((d) => d.domain, suggestions);
-
-      const endTime = performance.now();
-      logger.info(
-        `[getDomainSuggestions] Time taken: ${endTime - startTime} milliseconds`,
-      );
-      return suggestions;
     }),
 
   getLlmDomainSuggestions: authedOrPublicProcedure
@@ -311,6 +245,96 @@ export const searchRouter = createTRPCRouter({
     },
   ),
 });
+
+export async function get3rdLevelDomainsSuggestions(input: {
+  query: string;
+  parentDomain: string;
+  maxDuration: number;
+  maxRound: number;
+  onlyAvailable: boolean;
+  user: {
+    id: string;
+    privyUserId: string;
+  } | null;
+}) {
+  const logger = createLogger({
+    context: 'getDomainSuggestions',
+    input,
+    userId: input.user?.id,
+  });
+  const startTime = performance.now();
+  const { query } = input;
+
+  const parentDomain = input.parentDomain;
+
+  if (!parentDomain) {
+    throw new TRPCError({
+      code: 'BAD_REQUEST',
+      message: 'Parent domain is required',
+    });
+  }
+
+  const domain = namefiNormalizedDomainSchema.parse(`${query}.${parentDomain}`);
+  const tags = getTags(domain);
+
+  // Rule-based suggestions for clubs
+  let suggestions: Suggestion[] = [];
+
+  const loopStartTime = performance.now();
+  logger.info(`[getDomainSuggestions] Starting loop ${loopStartTime}`);
+  const maxDuration = input.maxDuration;
+  const maxRound = input.maxRound;
+  let currentSuggestions: Suggestion[] = [];
+
+  // Number of rounds to generate suggestions (to avoid infinite loops) this is enabled when onlyAvailable is false
+  // Also acts as a seed in the suggestions and reference to avoid repeating the initial base suggestions
+  let round = 0;
+  const totalSuggestions = new Set<string>();
+  do {
+    // do-while to ensure at least 1 round is generated
+    const normalizedSuggestions = (
+      await generateSuggestions(query, parentDomain, tags, round)
+    ).filter((d) => !totalSuggestions.has(d));
+    normalizedSuggestions.forEach((d) => totalSuggestions.add(d));
+    currentSuggestions = await getDomainListInfo(
+      normalizedSuggestions,
+      input.user,
+    );
+    // If we are not filtering by availability, add all suggestions and break
+    if (!input.onlyAvailable) {
+      suggestions.push(...currentSuggestions);
+      break;
+    }
+
+    // Add available suggestions
+    suggestions.push(...currentSuggestions.filter((d) => d.availability));
+
+    round++;
+  } while (
+    suggestions.length < 20 &&
+    round < maxRound &&
+    performance.now() - loopStartTime < maxDuration
+  );
+
+  // If we are on the last round, add all unavailable suggestions to not end up with empty suggestions
+  if (suggestions.length < 20) {
+    suggestions.push(
+      ...take(
+        20 - suggestions.length,
+        currentSuggestions.filter((d) => !d.availability),
+      ),
+    );
+  }
+
+  // Remove duplicates and the original domain
+  suggestions = uniqBy((d) => d.domain, suggestions);
+
+  const endTime = performance.now();
+  logger.info(
+    `[getDomainSuggestions] Time taken: ${endTime - startTime} milliseconds`,
+  );
+  return suggestions;
+}
 
 /**
  * Generates natural names

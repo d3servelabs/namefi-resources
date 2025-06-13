@@ -59,7 +59,6 @@ export function useSearch(
       {
         query: debouncedQuery,
         parentDomain,
-        withSuggestions: false,
       },
       {
         enabled: debouncedQuery.length > 0 && !!parentDomain,
