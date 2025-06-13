@@ -13,8 +13,6 @@
     "check": "biome check",
     "check:fix": "biome check --write",
     "typecheck": "tsc --noEmit",
-    "test": "vitest --run",
-    "test:coverage": "bun vitest run --coverage",
     "scrape:all": "bun src/lib/idn/scripts/scrape.ts",
     "scrape:by-language-codes": "bun src/lib/idn/scripts/scrape-by-language-codes.ts",
     "generate-regex": "bun src/lib/idn/scripts/generate-regex.ts"

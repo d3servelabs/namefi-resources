@@ -1,3 +1,4 @@
+import type { PunycodeDomainName } from '#lib/data/validations';
 import type {
   ContactsMap,
   DomainAvailability,
@@ -30,7 +31,7 @@ export type LongRunningOperationResult<T = any> = {
 };
 
 export type RegisterDomainInput = {
-  domainName: string;
+  domainName: PunycodeDomainName;
   durationInYears: number;
   renewOption: RenewOption;
   contacts: DomainContacts;
@@ -39,7 +40,7 @@ export type RegisterDomainInput = {
 };
 
 export type TransferDomainInput = {
-  domainName: string;
+  domainName: PunycodeDomainName;
   // durationInYears: number;
   // renewOption: RenewOption;
   contacts: DomainContacts;
@@ -50,7 +51,7 @@ export type TransferDomainInput = {
 };
 
 export type RenewDomainInput = {
-  domainName: string;
+  domainName: PunycodeDomainName;
   durationInYears: number;
   /**
    *  This is used as extra confirmation ([Dynadot] incase you want to use price re-confirmations before submission),
@@ -89,49 +90,52 @@ export abstract class AbstractRegistrarService<T extends string = string> {
   //#endregion DomainImport
 
   //#region AuthCode
-  abstract retrieveAuthCode(domainName: string, options?: any): Promise<string>;
+  abstract retrieveAuthCode(
+    domainName: PunycodeDomainName,
+    options?: any,
+  ): Promise<string>;
 
   //#endregion AuthCode
 
   //#region Locks
 
   abstract lockDomain(
-    domainName: string,
+    domainName: PunycodeDomainName,
     options?: any,
   ): Promise<LongRunningOperationResult>;
 
   abstract unlockDomain(
-    domainName: string,
+    domainName: PunycodeDomainName,
     options?: any,
   ): Promise<LongRunningOperationResult>;
 
   //#endregion Locks
 
   abstract getDomainDetails(
-    domainName: string,
+    domainName: PunycodeDomainName,
     options?: any,
   ): Promise<DomainRegistration>;
 
   abstract getDomainStatus(
-    domainName: string,
+    domainName: PunycodeDomainName,
     options?: any,
   ): Promise<RdapDomainStatus>;
 
   abstract getDomainPrice(
-    domainName: string,
+    domainName: PunycodeDomainName,
     operation: DomainOwnershipOperation,
     options?: any,
   ): Promise<PriceWithCurrency>;
 
   //#region DNSSEC
   abstract addDelegationSigner(
-    domainName: string,
+    domainName: PunycodeDomainName,
     signingAttributes: DnssecKey,
     options?: any,
   ): Promise<LongRunningOperationResult>;
 
   abstract removeDelegationSigner(
-    domainName: string,
+    domainName: PunycodeDomainName,
     publicKeyOrId: string,
     options?: any,
   ): Promise<LongRunningOperationResult>;
@@ -140,13 +144,13 @@ export abstract class AbstractRegistrarService<T extends string = string> {
 
   //#region Domain Contacts
   abstract updateDomainContacts(
-    domainName: string,
+    domainName: PunycodeDomainName,
     contacts: Partial<DomainContacts>,
     options?: any,
   ): Promise<LongRunningOperationResult>;
 
   abstract getDomainContacts(
-    domainName: string,
+    domainName: PunycodeDomainName,
     options?: any,
   ): Promise<DomainContacts>;
 
@@ -171,37 +175,41 @@ export abstract class AbstractRegistrarService<T extends string = string> {
 
   //#region Nameservers
   abstract setNameServers(
-    domainName: string,
+    domainName: PunycodeDomainName,
     nameservers: Nameservers,
     options?: any,
   ): Promise<LongRunningOperationResult>;
 
   abstract getNameServers(
-    domainName: string,
+    domainName: PunycodeDomainName,
     options?: any,
   ): Promise<Nameservers>;
 
   //#endregion Nameservers
 
   abstract getOperationStatus(
-    domainName: string,
+    domainName: PunycodeDomainName,
     operationId: string,
     options?: any,
   ): Promise<LongRunningOperationResult>;
 
   abstract setRenewOption(
-    domainName: string,
+    domainName: PunycodeDomainName,
     option: RenewOption,
     options?: any,
   ): Promise<LongRunningOperationResult>;
 
   abstract getRenewOption(
-    domainName: string,
+    domainName: PunycodeDomainName,
     options?: any,
   ): Promise<RenewOption>;
   abstract listAllDomains(): Promise<DomainSummary[]>;
 
-  setDomainLockState(domainName: string, activateLock: boolean, options?: any) {
+  setDomainLockState(
+    domainName: PunycodeDomainName,
+    activateLock: boolean,
+    options?: any,
+  ) {
     if (activateLock) {
       return this.lockDomain(domainName, options);
     }
@@ -211,7 +219,7 @@ export abstract class AbstractRegistrarService<T extends string = string> {
 
 export type DomainsQueryResult<T extends string> = {
   result: {
-    domainName: string;
+    domainName: PunycodeDomainName;
     available: DomainAvailability;
     price: DomainPriceDetails;
   };

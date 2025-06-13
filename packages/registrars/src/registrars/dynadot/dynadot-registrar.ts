@@ -3,7 +3,7 @@ import { assertNot, assertNotNil, parseJsonOrNull } from '@namefi-astra/utils';
 import { differenceInMinutes } from 'date-fns';
 import { HttpsProxyAgent } from 'https-proxy-agent';
 import pino from 'pino';
-import { head, isEmpty, isNil, prop } from 'ramda';
+import { compose, head, isEmpty, isNil, prop } from 'ramda';
 import type {
   ContactsMap,
   DnssecKey,
@@ -34,6 +34,12 @@ import type {
   TransferDomainInput,
   VerifyTransferInAuthCodeOutput,
 } from '#lib/abstract-registrar';
+import {
+  type PunycodeDomainName,
+  assertPunycodeDomainName,
+  toPunycodeDomainName,
+  toPunycodeFqdn,
+} from '#lib/data/validations';
 import type {
   DynadotDomainInfo,
   DynadotLockDomainCommandOutput,
@@ -117,19 +123,25 @@ export class DynadotRegistrarService extends AbstractRegistrarService<Registrars
   ): Promise<LongRunningOperationResult<DynadotRegisterCommandOutput>> {
     //todo validate price
     const { domainName, durationInYears } = args;
+
+    assertPunycodeDomainName(domainName);
+    assertNotNil(durationInYears, 'Duration in years is required');
+
     const privacy =
       args.privacy !== DomainContactPrivacyEnum.PUBLIC_CONTACT_DATA;
     //todo handle privacy
     //todo handle contacts
     const searchRes = await this.searchForDomain(domainName);
+
     const response = await this.client.command(DynadotCommand.register, {
-      domain: punycode.toASCII(domainName),
+      domain: domainName,
       duration: durationInYears,
       language: IdnLanguageCodeISO639_2(domainName),
       premium: searchRes.result.isPremium ? '1' : undefined,
     });
 
     assertNot(responseFailed(response.RegisterResponse), 'Response Failed');
+
     if (response.RegisterResponse.Status === 'success') {
       return {
         operationId: generateOperationId(
@@ -156,8 +168,10 @@ export class DynadotRegistrarService extends AbstractRegistrarService<Registrars
   async renewDomain(
     args: RenewDomainInput,
   ): Promise<LongRunningOperationResult<DynadotRenewCommandOutput>> {
+    assertPunycodeDomainName(args.domainName);
+
     const response = await this.client.command(DynadotCommand.renew, {
-      domain: punycode.toASCII(args.domainName),
+      domain: args.domainName,
       duration: args.durationInYears,
       no_renew_if_late_renew_fee_needed: 1,
     });
@@ -179,13 +193,14 @@ export class DynadotRegistrarService extends AbstractRegistrarService<Registrars
   async transferDomain(
     args: TransferDomainInput,
   ): Promise<LongRunningOperationResult<any>> {
+    assertPunycodeDomainName(args.domainName);
     const { domainName, nameservers, authCode } = args;
     const privacy =
       args.privacy !== DomainContactPrivacyEnum.PUBLIC_CONTACT_DATA;
 
     //todo handle contacts, privacy, nameservers, [x]duration, [x] renew
     const response = await this.client.command(DynadotCommand.transfer, {
-      domain: punycode.toASCII(domainName),
+      domain: domainName,
       currency: 'USD',
       auth: authCode,
     });
@@ -203,11 +218,13 @@ export class DynadotRegistrarService extends AbstractRegistrarService<Registrars
     };
   }
 
-  async renewAuthCode(domainName: string): Promise<string> {
+  async renewAuthCode(domainName: PunycodeDomainName): Promise<string> {
+    assertPunycodeDomainName(domainName);
+
     const response = await this.client.command(
       DynadotCommand.get_transfer_auth_code,
       {
-        domain: punycode.toASCII(domainName),
+        domain: domainName,
         new_code: 1,
       },
     );
@@ -219,11 +236,13 @@ export class DynadotRegistrarService extends AbstractRegistrarService<Registrars
     return response.GetTransferAuthCodeResponse.AuthCode;
   }
 
-  async retrieveAuthCode(domainName: string): Promise<string> {
+  async retrieveAuthCode(domainName: PunycodeDomainName): Promise<string> {
+    assertPunycodeDomainName(domainName);
+
     const response = await this.client.command(
       DynadotCommand.get_transfer_auth_code,
       {
-        domain: punycode.toASCII(domainName),
+        domain: domainName,
       },
     );
     assertNot(
@@ -235,7 +254,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService<Registrars
   }
 
   verifyAuthCode(
-    domainName: string,
+    domainName: PunycodeDomainName,
     authCode: string,
   ): Promise<VerifyTransferInAuthCodeOutput> {
     return new Promise((resolve) => {
@@ -247,10 +266,12 @@ export class DynadotRegistrarService extends AbstractRegistrarService<Registrars
   }
 
   async lockDomain(
-    domainName: string,
+    domainName: PunycodeDomainName,
   ): Promise<LongRunningOperationResult<DynadotLockDomainCommandOutput>> {
+    assertPunycodeDomainName(domainName);
+
     const response = await this.client.command(DynadotCommand.lock_domain, {
-      domain: punycode.toASCII(domainName),
+      domain: domainName,
     });
     assertNot(responseFailed(response.LockDomainResponse), 'Response Failed');
 
@@ -269,12 +290,14 @@ export class DynadotRegistrarService extends AbstractRegistrarService<Registrars
   }
 
   async unlockDomain(
-    domainName: string,
+    domainName: PunycodeDomainName,
   ): Promise<LongRunningOperationResult<any>> {
+    assertPunycodeDomainName(domainName);
+
     const response = await this.client.command(DynadotCommand.unlock_domain, {
-      domain: punycode.toASCII(domainName),
+      domain: domainName,
     });
-    console.log('response', response);
+
     assertNot(responseFailed(response.UnlockDomainResponse), 'Response Failed');
 
     return {
@@ -291,14 +314,13 @@ export class DynadotRegistrarService extends AbstractRegistrarService<Registrars
     };
   }
 
-  async _getDomainInfo(domainName: string) {
+  async _getDomainInfo(domainName: PunycodeDomainName) {
+    assertPunycodeDomainName(domainName);
+
     const response = await this.client.command(DynadotCommand.domain_info, {
-      domain: punycode.toASCII(domainName),
+      domain: domainName,
     });
 
-    // if (response.DomainInfoResponse.Error === 'could not find domain in your account') {
-    // 	throw new DomainNotFoundError();
-    // }
     assertNot(
       responseFailed(response.DomainInfoResponse),
       'Dynadot: Domain Info Response Failed',
@@ -307,12 +329,14 @@ export class DynadotRegistrarService extends AbstractRegistrarService<Registrars
   }
 
   async _checkDomainRegister(
-    domainName: string,
+    domainName: PunycodeDomainName,
     operationId: string,
     timestamp: Date,
   ): Promise<LongRunningOperationResult> {
+    assertPunycodeDomainName(domainName);
+
     const response = await this.client.command(DynadotCommand.domain_info, {
-      domain: punycode.toASCII(domainName),
+      domain: domainName,
     });
 
     // NOTE: Check if the operation is within the 30-minute window after submission as per Dynadot recommendation
@@ -356,7 +380,11 @@ export class DynadotRegistrarService extends AbstractRegistrarService<Registrars
         };
   }
 
-  async getDomainDetails(domainName: string): Promise<DomainRegistration> {
+  async getDomainDetails(
+    domainName: PunycodeDomainName,
+  ): Promise<DomainRegistration> {
+    assertPunycodeDomainName(domainName);
+
     const domainInfo = await this._getDomainInfo(domainName);
     if (isNil(domainInfo)) {
       throw new Error('Domain Not Found');
@@ -394,15 +422,21 @@ export class DynadotRegistrarService extends AbstractRegistrarService<Registrars
     };
   }
 
-  async getDomainStatus(domainName: string): Promise<RdapDomainStatus> {
+  async getDomainStatus(
+    domainName: PunycodeDomainName,
+  ): Promise<RdapDomainStatus> {
+    assertPunycodeDomainName(domainName);
+
     const { status } = await RDAP.queryDomainStatus(domainName);
     return status;
   }
 
   async getDomainPrice(
-    domainName: string,
+    domainName: PunycodeDomainName,
     operation: DomainOwnershipOperation,
   ): Promise<PriceWithCurrency> {
+    assertPunycodeDomainName(domainName);
+
     const prices = await this.getDomainPriceDetails(domainName);
 
     switch (operation) {
@@ -461,7 +495,10 @@ export class DynadotRegistrarService extends AbstractRegistrarService<Registrars
     );
   }
 
-  async getDomainPriceDetails(domainName: string): Promise<DomainPriceDetails> {
+  async getDomainPriceDetails(
+    domainName: PunycodeDomainName,
+  ): Promise<DomainPriceDetails> {
+    assertPunycodeDomainName(domainName);
     const searchRes = await this.searchForDomain(domainName);
     const pricing = searchRes?.result?.price;
     assertNotNil(pricing, 'Pricing Not found');
@@ -470,9 +507,11 @@ export class DynadotRegistrarService extends AbstractRegistrarService<Registrars
   }
 
   async _getNonPremiumDomainPriceDetails(
-    domainName: string,
+    domainName: PunycodeDomainName,
     options = { useCachedValue: false },
   ): Promise<DomainPriceDetails> {
+    assertPunycodeDomainName(domainName);
+
     const response = await this._getTldPrices(options);
     const pricing = response.TldPrice.find((p) => domainName.endsWith(p.Tld));
     assertNotNil(pricing, 'Pricing Not found');
@@ -502,9 +541,11 @@ export class DynadotRegistrarService extends AbstractRegistrarService<Registrars
   }
 
   async addDelegationSigner(
-    domainName: string,
+    domainName: PunycodeDomainName,
     signingAttributes: DnssecKey,
   ): Promise<LongRunningOperationResult<any>> {
+    assertPunycodeDomainName(domainName);
+
     assertNotNil(signingAttributes.algorithm, 'Algorithm is required');
     assertNotNil(signingAttributes.publicKey, 'Public Key is required');
     assertNotNil(signingAttributes.keyTag, 'Key Tag is required');
@@ -532,11 +573,13 @@ export class DynadotRegistrarService extends AbstractRegistrarService<Registrars
   }
 
   async removeDelegationSigner(
-    domainName: string,
+    domainName: PunycodeDomainName,
     publicKeyOrId: string,
   ): Promise<LongRunningOperationResult<any>> {
+    assertPunycodeDomainName(domainName);
+
     const response = await this.client.command(DynadotCommand.clear_dnssec, {
-      domain_name: punycode.toASCII(domainName),
+      domain_name: domainName,
     });
     assertNot(responseFailed(response.ClearDnssecResponse), 'Response Failed');
     const status = getImmediateOperationStatus(response.ClearDnssecResponse);
@@ -555,10 +598,12 @@ export class DynadotRegistrarService extends AbstractRegistrarService<Registrars
   }
 
   async searchForDomain(
-    query: string,
+    query: PunycodeDomainName,
   ): Promise<
     DomainsQueryResult<Registrars> & { result: { isPremium?: boolean } }
   > {
+    assertPunycodeDomainName(query);
+
     const response = await this.client.command(DynadotCommand.search, {
       currency: 'USD',
       show_price: '1',
@@ -580,7 +625,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService<Registrars
 
       return {
         result: {
-          domainName: punycode.toUnicode(firstSearchResult.DomainName),
+          domainName: toPunycodeDomainName(firstSearchResult.DomainName),
           price: parsedPrice.isPremium ? parsedPrice.priceDetails : prices,
           isPremium: parsedPrice.isPremium,
           available:
@@ -594,7 +639,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService<Registrars
 
     return {
       result: {
-        domainName: punycode.toUnicode(query),
+        domainName: toPunycodeDomainName(query),
         price: prices, //todo!!
         available: DomainAvailability.UNAVAILABLE,
         isPremium: false,
@@ -604,17 +649,20 @@ export class DynadotRegistrarService extends AbstractRegistrarService<Registrars
   }
 
   async getSuggestions(
-    query: string,
+    query: PunycodeDomainName,
     suggestionsCount: number,
   ): Promise<DomainSuggestionsQueryResult<Registrars>> {
+    assertPunycodeDomainName(query);
+
     const res = await this.searchForDomain(query);
     return { result: res.suggestions };
   }
 
   updateDomainContacts(
-    domainName: string,
+    domainName: PunycodeDomainName,
     contacts: Partial<DomainContacts>,
   ): Promise<LongRunningOperationResult<any>> {
+    assertPunycodeDomainName(domainName);
     //todo NIT
     const response = {};
     return new Promise((resolve) => {
@@ -630,7 +678,11 @@ export class DynadotRegistrarService extends AbstractRegistrarService<Registrars
     });
   }
 
-  async getDomainContacts(domainName: string): Promise<DomainContacts> {
+  async getDomainContacts(
+    domainName: PunycodeDomainName,
+  ): Promise<DomainContacts> {
+    assertPunycodeDomainName(domainName);
+
     const response = await this.getDomainDetails(domainName);
     return response.contacts;
   }
@@ -657,11 +709,13 @@ export class DynadotRegistrarService extends AbstractRegistrarService<Registrars
   }
 
   async setNameServers(
-    domainName: string,
+    domainName: PunycodeDomainName,
     nameservers: Nameserver[],
   ): Promise<LongRunningOperationResult<any>> {
+    assertPunycodeDomainName(domainName);
+
     const response = await this.client.command(DynadotCommand.set_ns, {
-      domain: punycode.toASCII(domainName),
+      domain: domainName,
       ...Object.fromEntries(nameservers.map((name, i) => [`ns${i}`, name])),
     });
 
@@ -677,24 +731,26 @@ export class DynadotRegistrarService extends AbstractRegistrarService<Registrars
     };
   }
 
-  async getNameServers(domainName: string): Promise<Nameservers> {
+  async getNameServers(domainName: PunycodeDomainName): Promise<Nameservers> {
+    assertPunycodeDomainName(domainName);
+
     const response = await this.client.command(DynadotCommand.get_ns, {
-      domain: punycode.toASCII(domainName),
+      domain: domainName,
     });
 
     assertNot(responseFailed(response.GetNsResponse), 'Response Failed');
-    return Promise.resolve(
-      Object.entries(response.GetNsResponse.NsContent ?? {})
-        .filter(([key]) => key.toLowerCase().startsWith('host'))
-        .map(prop(1)) as Nameservers,
-    );
+    const nameservers = Object.entries(response.GetNsResponse.NsContent ?? {})
+      .filter(([key]) => key.toLowerCase().startsWith('host'))
+      .map(compose(toPunycodeFqdn, prop(1)));
+    return nameservers;
   }
 
-  async _getTransferStatus(domainName: string) {
+  async _getTransferStatus(domainName: PunycodeDomainName) {
+    assertPunycodeDomainName(domainName);
     const response = await this.client.command(
       DynadotCommand.get_transfer_status,
       {
-        domain: punycode.toASCII(domainName),
+        domain: domainName,
         transfer_type: 'in',
       },
     );
@@ -706,9 +762,11 @@ export class DynadotRegistrarService extends AbstractRegistrarService<Registrars
   }
 
   async getOperationStatus(
-    domainNameLdh: string,
+    domainNameLdh: PunycodeDomainName,
     operationId: string,
   ): Promise<LongRunningOperationResult<any>> {
+    assertPunycodeDomainName(domainNameLdh);
+
     const { operationType, domainName, extraData, timestamp } =
       parseOperationId(operationId);
     this.logger.debug({
@@ -721,14 +779,14 @@ export class DynadotRegistrarService extends AbstractRegistrarService<Registrars
       case OperationType.REGISTER_DOMAIN: {
         return Promise.resolve(
           this._checkDomainRegister(
-            domainName,
+            domainNameLdh,
             operationId,
             new Date(timestamp),
           ),
         );
       }
       case OperationType.TRANSFER_IN_DOMAIN: {
-        const response = await this._getTransferStatus(domainName);
+        const response = await this._getTransferStatus(domainNameLdh);
         assertNotNil(response, 'Response Failed');
         const latestStatus = response[0];
         let status: OperationStatus;
@@ -786,9 +844,11 @@ export class DynadotRegistrarService extends AbstractRegistrarService<Registrars
   }
 
   async setRenewOption(
-    domainName: string,
+    domainName: PunycodeDomainName,
     option: RenewOption,
   ): Promise<LongRunningOperationResult<DynadotSetRenewOptionCommandOutput>> {
+    assertPunycodeDomainName(domainName);
+
     const response = await this.client.command(
       DynadotCommand.set_renew_option,
       {
@@ -810,17 +870,21 @@ export class DynadotRegistrarService extends AbstractRegistrarService<Registrars
     };
   }
 
-  async getRenewOption(domainName: string): Promise<RenewOption> {
+  async getRenewOption(domainName: PunycodeDomainName): Promise<RenewOption> {
+    assertPunycodeDomainName(domainName);
+
     const response = await this.getDomainDetails(domainName);
     return response.autoRenewOption;
   }
 
   async updateDomainContactsPrivacy(
-    domainName: string,
+    domainName: PunycodeDomainName,
     privacy: ContactsMap<DomainContactPrivacyEnum>,
   ): Promise<LongRunningOperationResult<any>> {
+    assertPunycodeDomainName(domainName);
+
     const response = await this.client.command(DynadotCommand.set_privacy, {
-      domain: punycode.toASCII(domainName),
+      domain: domainName,
       option:
         privacy.registrantContact === 'PUBLIC_CONTACT_DATA' ? 'off' : 'full',
     });
@@ -876,7 +940,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService<Registrars
     } while (nextPage !== null);
 
     return domains.map(({ RenewOption: Renew, Name, Locked, Expiration }) => ({
-      domainName: Name,
+      domainName: toPunycodeDomainName(Name),
       expirationTime: new Date(Number.parseInt(Expiration)),
       autoRenewOption:
         Renew === 'manual renewal' ? RenewOption.MANUAL : RenewOption.AUTOMATIC,
@@ -953,7 +1017,7 @@ const ID_SEP = ':/:/';
 
 function generateOperationId(
   operationType: OperationType,
-  domainName: string,
+  domainName: PunycodeDomainName,
   extraData?: Record<string, any>,
 ) {
   return [

@@ -53,6 +53,7 @@ import {
   OperationType,
   RenewOption,
 } from '#lib/abstract-registrar';
+import { toPunycodeDomainName } from '#lib/data/validations';
 import { IdnLanguageCodeISO639_2 } from '#lib/idn/idn-language-code';
 import { supportsDnssec } from '#lib/supports-dnssec';
 import { Registrars } from '../registrars-keys';
@@ -69,7 +70,8 @@ import type {
   TransferDomainCommandInput,
 } from '@aws-sdk/client-route-53-domains';
 import { isNil } from 'ramda';
-
+import type { PunycodeDomainName } from '#lib/data/validations';
+import { assertPunycodeDomainName } from '#lib/data/validations';
 export class R53RegistrarService extends AbstractRegistrarService<Registrars> {
   key = Registrars.Route53;
   nameservers = [1, 2, 3, 4].map((i) => `ns${i}.namefi.io`);
@@ -108,6 +110,8 @@ export class R53RegistrarService extends AbstractRegistrarService<Registrars> {
   ): Promise<LongRunningOperationResult<RegisterDomainCommandOutput>> {
     //todo validate price
     const { domainName, durationInYears, renewOption } = args;
+    assertPunycodeDomainName(domainName);
+
     const privacy =
       args.privacy !== DomainContactPrivacyEnum.PUBLIC_CONTACT_DATA;
     const contacts = R53Transformers.ContactsMapTransformer.to(args.contacts);
@@ -138,8 +142,10 @@ export class R53RegistrarService extends AbstractRegistrarService<Registrars> {
   async renewDomain(
     args: RenewDomainInput,
   ): Promise<LongRunningOperationResult<RenewDomainCommandOutput>> {
+    assertPunycodeDomainName(args.domainName);
+
     const command = new RenewDomainCommand({
-      DomainName: punycode.toASCII(args.domainName),
+      DomainName: args.domainName,
       DurationInYears: args.durationInYears,
       CurrentExpiryYear: args.currentExpirationDate.getFullYear(),
     });
@@ -155,13 +161,15 @@ export class R53RegistrarService extends AbstractRegistrarService<Registrars> {
   async transferDomain(
     args: TransferDomainInput,
   ): Promise<LongRunningOperationResult<any>> {
+    assertPunycodeDomainName(args.domainName);
+
     const { domainName, nameservers, authCode } = args;
     const privacy =
       args.privacy !== DomainContactPrivacyEnum.PUBLIC_CONTACT_DATA;
     const contacts = R53Transformers.ContactsMapTransformer.to(args.contacts);
     const input: TransferDomainCommandInput = {
       IdnLangCode: IdnLanguageCodeISO639_2(domainName),
-      DomainName: punycode.toASCII(domainName), // required
+      DomainName: domainName, // required
       DurationInYears: 1, // required
       AutoRenew: true,
       RegistrantContact: contacts.RegistrantContact,
@@ -183,10 +191,12 @@ export class R53RegistrarService extends AbstractRegistrarService<Registrars> {
     };
   }
 
-  async retrieveAuthCode(domainName: string): Promise<string> {
+  async retrieveAuthCode(domainName: PunycodeDomainName): Promise<string> {
+    assertPunycodeDomainName(domainName);
+
     const res = await this.client.send(
       new RetrieveDomainAuthCodeCommand({
-        DomainName: punycode.toASCII(domainName),
+        DomainName: domainName,
       }),
     );
     assertNotNil(res.AuthCode, 'Auth code is not available');
@@ -194,12 +204,14 @@ export class R53RegistrarService extends AbstractRegistrarService<Registrars> {
   }
 
   async verifyAuthCode(
-    domainName: string,
+    domainName: PunycodeDomainName,
     authCode: string,
   ): Promise<VerifyTransferInAuthCodeOutput> {
+    assertPunycodeDomainName(domainName);
+
     const response = await this.client.send(
       new CheckDomainTransferabilityCommand({
-        DomainName: punycode.toASCII(domainName),
+        DomainName: domainName,
         AuthCode: authCode,
       }),
     );
@@ -218,11 +230,13 @@ export class R53RegistrarService extends AbstractRegistrarService<Registrars> {
   }
 
   async lockDomain(
-    domainName: string,
+    domainName: PunycodeDomainName,
   ): Promise<LongRunningOperationResult<any>> {
+    assertPunycodeDomainName(domainName);
+
     const response = await this.client.send(
       new EnableDomainTransferLockCommand({
-        DomainName: punycode.toASCII(domainName),
+        DomainName: domainName,
       }),
     );
     return {
@@ -234,11 +248,13 @@ export class R53RegistrarService extends AbstractRegistrarService<Registrars> {
   }
 
   async unlockDomain(
-    domainName: string,
+    domainName: PunycodeDomainName,
   ): Promise<LongRunningOperationResult<any>> {
+    assertPunycodeDomainName(domainName);
+
     const response = await this.client.send(
       new DisableDomainTransferLockCommand({
-        DomainName: punycode.toASCII(domainName),
+        DomainName: domainName,
       }),
     );
 
@@ -250,21 +266,30 @@ export class R53RegistrarService extends AbstractRegistrarService<Registrars> {
     };
   }
 
-  async getDomainDetails(domainName: string): Promise<DomainRegistration> {
+  async getDomainDetails(
+    domainName: PunycodeDomainName,
+  ): Promise<DomainRegistration> {
+    assertPunycodeDomainName(domainName);
+
     const response = await this.client.send(
       new GetDomainDetailCommand({
-        DomainName: punycode.toASCII(domainName),
+        DomainName: domainName,
       }),
     );
+
     return {
       ...R53Transformers.DomainInfoTransformer.from(response),
       supportsDnssec: supportsDnssec(domainName),
     };
   }
 
-  async getDomainStatus(domainName: string): Promise<RdapDomainStatus> {
+  async getDomainStatus(
+    domainName: PunycodeDomainName,
+  ): Promise<RdapDomainStatus> {
+    assertPunycodeDomainName(domainName);
+
     const command = new GetDomainDetailCommand({
-      DomainName: punycode.toASCII(domainName), // required
+      DomainName: domainName, // required
     });
     const response = await this.client.send(command);
     assertNotNil(response.StatusList, 'Status list is not available');
@@ -282,9 +307,10 @@ export class R53RegistrarService extends AbstractRegistrarService<Registrars> {
   }
 
   async getDomainPrice(
-    domainName: string,
+    domainName: PunycodeDomainName,
     operation: DomainOwnershipOperation,
   ): Promise<PriceWithCurrency> {
+    assertPunycodeDomainName(domainName);
     const prices = await this.getDomainPriceDetails(domainName);
 
     switch (operation) {
@@ -303,7 +329,11 @@ export class R53RegistrarService extends AbstractRegistrarService<Registrars> {
     }
   }
 
-  async getDomainPriceDetails(domainName: string): Promise<DomainPriceDetails> {
+  async getDomainPriceDetails(
+    domainName: PunycodeDomainName,
+  ): Promise<DomainPriceDetails> {
+    assertPunycodeDomainName(domainName);
+
     const response = await this._getTldDomainsPricingFromDomainName({
       domainName,
     });
@@ -311,9 +341,11 @@ export class R53RegistrarService extends AbstractRegistrarService<Registrars> {
   }
 
   async addDelegationSigner(
-    domainName: string,
+    domainName: PunycodeDomainName,
     signingAttributes: DnssecKey,
   ): Promise<LongRunningOperationResult<any>> {
+    assertPunycodeDomainName(domainName);
+
     const command = new AssociateDelegationSignerToDomainCommand({
       DomainName: domainName,
       SigningAttributes: {
@@ -333,7 +365,7 @@ export class R53RegistrarService extends AbstractRegistrarService<Registrars> {
   }
 
   async removeDelegationSigner(
-    domainName: string,
+    domainName: PunycodeDomainName,
     publicKeyOrId: string,
   ): Promise<LongRunningOperationResult<any>> {
     const response = await this.client.send(
@@ -354,6 +386,8 @@ export class R53RegistrarService extends AbstractRegistrarService<Registrars> {
   async searchForDomain(
     query: string,
   ): Promise<DomainsQueryResult<Registrars>> {
+    assertPunycodeDomainName(query);
+
     const [searchResults, price] = await Promise.all([
       this.client.send(
         new CheckDomainAvailabilityCommand({
@@ -381,6 +415,7 @@ export class R53RegistrarService extends AbstractRegistrarService<Registrars> {
     query: string,
     suggestionsCount: number,
   ): Promise<DomainSuggestionsQueryResult<Registrars>> {
+    assertPunycodeDomainName(query);
     const [suggestions] = await Promise.all([
       this._getDomainSuggestionsWithPrices({
         domainName: query,
@@ -400,11 +435,13 @@ export class R53RegistrarService extends AbstractRegistrarService<Registrars> {
   }
 
   async updateDomainContacts(
-    domainName: string,
+    domainName: PunycodeDomainName,
     contacts: Partial<DomainContacts>,
   ): Promise<LongRunningOperationResult<any>> {
+    assertPunycodeDomainName(domainName);
+
     const command = new UpdateDomainContactCommand({
-      DomainName: punycode.toASCII(domainName), // required
+      DomainName: domainName, // required
       ...R53Transformers.ContactsMapTransformer.to(contacts),
     });
     const response = await this.client.send(command);
@@ -417,18 +454,24 @@ export class R53RegistrarService extends AbstractRegistrarService<Registrars> {
     };
   }
 
-  async getDomainContacts(domainName: string): Promise<DomainContacts> {
+  async getDomainContacts(
+    domainName: PunycodeDomainName,
+  ): Promise<DomainContacts> {
+    assertPunycodeDomainName(domainName);
+
     const response = await this.getDomainDetails(domainName);
     return response.contacts;
   }
 
   async setNameServers(
-    domainName: string,
+    domainName: PunycodeDomainName,
     nameservers: Nameserver[],
   ): Promise<LongRunningOperationResult<any>> {
+    assertPunycodeDomainName(domainName);
+
     const response = await this.client.send(
       new UpdateDomainNameserversCommand({
-        DomainName: punycode.toASCII(domainName),
+        DomainName: domainName,
         Nameservers: nameservers.map((Name) => ({ Name })),
       }),
     );
@@ -441,16 +484,20 @@ export class R53RegistrarService extends AbstractRegistrarService<Registrars> {
     };
   }
 
-  async getNameServers(domainName: string): Promise<Nameservers> {
+  async getNameServers(domainName: PunycodeDomainName): Promise<Nameservers> {
+    assertPunycodeDomainName(domainName);
+
     const response = await this.getDomainDetails(domainName);
     assertNotNil(response.nameservers, 'Nameservers are not available');
     return response.nameservers;
   }
 
   async getOperationStatus(
-    domainName: string,
+    domainName: PunycodeDomainName,
     operationId: string,
   ): Promise<LongRunningOperationResult> {
+    assertPunycodeDomainName(domainName);
+
     //todo!! use detailed status
     const response = await this.client.send(
       new GetOperationDetailCommand({
@@ -471,11 +518,13 @@ export class R53RegistrarService extends AbstractRegistrarService<Registrars> {
   }
 
   async setRenewOption(
-    domainName: string,
+    domainName: PunycodeDomainName,
     option: RenewOption,
   ): Promise<LongRunningOperationResult<any>> {
+    assertPunycodeDomainName(domainName);
+
     const input = {
-      DomainName: punycode.toASCII(domainName),
+      DomainName: domainName,
     };
     const command =
       option === RenewOption.AUTOMATIC
@@ -494,17 +543,21 @@ export class R53RegistrarService extends AbstractRegistrarService<Registrars> {
     };
   }
 
-  async getRenewOption(domainName: string): Promise<RenewOption> {
+  async getRenewOption(domainName: PunycodeDomainName): Promise<RenewOption> {
+    assertPunycodeDomainName(domainName);
+
     const response = await this.getDomainDetails(domainName);
     return response.autoRenewOption;
   }
 
   async updateDomainContactsPrivacy(
-    domainName: string,
+    domainName: PunycodeDomainName,
     privacy: ContactsMap<DomainContactPrivacyEnum>,
   ): Promise<LongRunningOperationResult<any>> {
+    assertPunycodeDomainName(domainName);
+
     const command = new UpdateDomainContactPrivacyCommand({
-      DomainName: punycode.toASCII(domainName), // required
+      DomainName: domainName, // required
       AdminPrivacy:
         privacy.adminContact === DomainContactPrivacyEnum.PRIVATE_CONTACT_DATA,
       RegistrantPrivacy:
@@ -563,7 +616,7 @@ export class R53RegistrarService extends AbstractRegistrarService<Registrars> {
           `Transfer lock is not available for domain ${DomainName}`,
         );
         return {
-          domainName: DomainName,
+          domainName: toPunycodeDomainName(DomainName),
           expirationTime: new Date(Expiry),
           autoRenewOption: AutoRenew
             ? RenewOption.AUTOMATIC
@@ -603,7 +656,7 @@ export class R53RegistrarService extends AbstractRegistrarService<Registrars> {
 
   async _getTldDomainsPricingFromDomainName({
     domainName,
-  }: { domainName: string }): Promise<DomainPrice> {
+  }: { domainName: PunycodeDomainName }): Promise<DomainPrice> {
     const levels = domainName.split('.'); // use tldts
     const tld = levels.pop();
     if (isNil(tld)) {
@@ -621,7 +674,7 @@ export class R53RegistrarService extends AbstractRegistrarService<Registrars> {
   }
 
   async _getDomainSuggestionsWithPrices(input: {
-    domainName: string;
+    domainName: PunycodeDomainName;
     suggestionsCount?: number;
     onlyAvailable?: boolean;
   }): Promise<GetDomainSuggestionsWithPricesOutput> {
@@ -654,7 +707,7 @@ export class R53RegistrarService extends AbstractRegistrarService<Registrars> {
       const price = this.priceMap[tld];
 
       finalOutput.push({
-        domainName: DomainName,
+        domainName: toPunycodeDomainName(DomainName),
         availability: (Availability as any) || 'UNAVAILABLE',
         price,
       });
@@ -665,21 +718,7 @@ export class R53RegistrarService extends AbstractRegistrarService<Registrars> {
 }
 type TldPrices = DomainPrice;
 export type GetDomainSuggestionsWithPricesOutput = {
-  domainName: string;
+  domainName: PunycodeDomainName;
   availability: DomainAvailability;
   price: TldPrices;
 }[];
-
-// export type TransferDomainInput = {
-//   domainName: string;
-//   duration: number;
-//   autoRenew: boolean;
-//   privacy: boolean;
-//   authCode: string;
-//   contacts: {
-//     technicalContact?: TransferDomainCommandInput['TechContact'];
-//     adminContact?: TransferDomainCommandInput['AdminContact'];
-//     registrantContact: TransferDomainCommandInput['RegistrantContact'];
-//   };
-//   nameServers?: TransferDomainCommandInput['Nameservers'];
-// };

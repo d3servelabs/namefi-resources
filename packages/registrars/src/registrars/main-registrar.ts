@@ -34,6 +34,10 @@ import type {
   LongRunningOperationResult as iLongRunningOperationResult,
 } from '#lib/abstract-registrar/registrar-service';
 import { AbstractRegistrarService } from '#lib/abstract-registrar/registrar-service';
+import {
+  type PunycodeDomainName,
+  assertPunycodeDomainName,
+} from '#lib/data/validations';
 import { supportsDnssec } from '#lib/supports-dnssec';
 import { R53RegistrarService } from './R53/r53-registrar';
 import { DynadotRegistrarService } from './dynadot/dynadot-registrar';
@@ -97,20 +101,20 @@ export class RegistrarService extends AbstractRegistrarService {
       .then(injectRegistrar(args.registrarKey));
   }
 
-  async retrieveAuthCode(domainName: string): Promise<string> {
+  async retrieveAuthCode(domainName: PunycodeDomainName): Promise<string> {
     const provider = await this.getRegistrar(domainName);
     return provider.retrieveAuthCode(domainName);
   }
 
   async lockDomain(
-    domainName: string,
+    domainName: PunycodeDomainName,
   ): Promise<LongRunningOperationResult<any>> {
     const provider = await this.getRegistrar(domainName);
     return provider.lockDomain(domainName).then(injectRegistrar(provider.key));
   }
 
   async unlockDomain(
-    domainName: string,
+    domainName: PunycodeDomainName,
   ): Promise<LongRunningOperationResult<any>> {
     const provider = await this.getRegistrar(domainName);
     return provider
@@ -118,7 +122,9 @@ export class RegistrarService extends AbstractRegistrarService {
       .then(injectRegistrar(provider.key));
   }
 
-  async getDomainDetails(domainName: string): Promise<DomainRegistration> {
+  async getDomainDetails(
+    domainName: PunycodeDomainName,
+  ): Promise<DomainRegistration> {
     const provider = await this.getRegistrar(domainName);
     const details = await provider.getDomainDetails(domainName);
     return {
@@ -127,13 +133,15 @@ export class RegistrarService extends AbstractRegistrarService {
     };
   }
 
-  async getDomainStatus(domainName: string): Promise<RdapDomainStatus> {
+  async getDomainStatus(
+    domainName: PunycodeDomainName,
+  ): Promise<RdapDomainStatus> {
     const provider = await this.getRegistrar(domainName);
     return provider.getDomainStatus(domainName);
   }
 
   async getDomainPrice(
-    domainName: string,
+    domainName: PunycodeDomainName,
     operation: DomainOwnershipOperation,
     options?: { registrar: Registrars },
   ): Promise<PriceWithCurrency> {
@@ -144,7 +152,7 @@ export class RegistrarService extends AbstractRegistrarService {
   }
 
   async addDelegationSigner(
-    domainName: string,
+    domainName: PunycodeDomainName,
     signingAttributes: DnssecKey,
   ): Promise<LongRunningOperationResult<any>> {
     const provider = await this.getRegistrar(domainName);
@@ -154,7 +162,7 @@ export class RegistrarService extends AbstractRegistrarService {
   }
 
   async removeDelegationSigner(
-    domainName: string,
+    domainName: PunycodeDomainName,
     publicKeyOrId: string,
   ): Promise<LongRunningOperationResult<any>> {
     const provider = await this.getRegistrar(domainName);
@@ -164,7 +172,7 @@ export class RegistrarService extends AbstractRegistrarService {
   }
 
   async updateDomainContacts(
-    domainName: string,
+    domainName: PunycodeDomainName,
     contacts: Partial<DomainContacts>,
   ): Promise<LongRunningOperationResult<any>> {
     const provider = await this.getRegistrar(domainName);
@@ -173,13 +181,15 @@ export class RegistrarService extends AbstractRegistrarService {
       .then(injectRegistrar(provider.key));
   }
 
-  async getDomainContacts(domainName: string): Promise<DomainContacts> {
+  async getDomainContacts(
+    domainName: PunycodeDomainName,
+  ): Promise<DomainContacts> {
     const provider = await this.getRegistrar(domainName);
     return provider.getDomainContacts(domainName);
   }
 
   async updateDomainContactsPrivacy(
-    domainName: string,
+    domainName: PunycodeDomainName,
     privacy: ContactsMap<DomainContactPrivacyEnum>,
   ): Promise<LongRunningOperationResult<any>> {
     const provider = await this.getRegistrar(domainName);
@@ -189,9 +199,10 @@ export class RegistrarService extends AbstractRegistrarService {
   }
 
   async searchForDomain(
-    query: string,
+    query: PunycodeDomainName,
     options?: { overrideRegistrar?: Registrars },
   ): Promise<WithRegistrar<DomainsQueryResult<Registrars>>> {
+    assertPunycodeDomainName(query);
     const override =
       options?.overrideRegistrar ?? this.getOverriddenRegistrar();
 
@@ -306,7 +317,7 @@ export class RegistrarService extends AbstractRegistrarService {
   }
 
   async setNameServers(
-    domainName: string,
+    domainName: PunycodeDomainName,
     nameservers: Nameservers,
   ): Promise<LongRunningOperationResult<any>> {
     const provider = await this.getRegistrar(domainName);
@@ -315,13 +326,13 @@ export class RegistrarService extends AbstractRegistrarService {
       .then(injectRegistrar(provider.key));
   }
 
-  async getNameServers(domainName: string): Promise<Nameservers> {
+  async getNameServers(domainName: PunycodeDomainName): Promise<Nameservers> {
     const provider = await this.getRegistrar(domainName);
     return provider.getNameServers(domainName);
   }
 
   async getOperationStatus(
-    domainNameLdh: string,
+    domainNameLdh: PunycodeDomainName,
     operationId: string,
   ): Promise<LongRunningOperationResult<any>> {
     const registrar = this._getRegistrar(
@@ -333,7 +344,7 @@ export class RegistrarService extends AbstractRegistrarService {
   }
 
   async setRenewOption(
-    domainName: string,
+    domainName: PunycodeDomainName,
     option: RenewOption,
   ): Promise<LongRunningOperationResult<any>> {
     const provider = await this.getRegistrar(domainName);
@@ -342,13 +353,13 @@ export class RegistrarService extends AbstractRegistrarService {
       .then(injectRegistrar(provider.key));
   }
 
-  async getRenewOption(domainName: string): Promise<RenewOption> {
+  async getRenewOption(domainName: PunycodeDomainName): Promise<RenewOption> {
     const provider = await this.getRegistrar(domainName);
     return provider.getRenewOption(domainName);
   }
 
   async getDomainPriceDetails(
-    domainName: string,
+    domainName: PunycodeDomainName,
     options?: { registrar?: Registrars },
   ): Promise<DomainPriceDetails> {
     const registrar = await this.determineRegistrar(
@@ -404,18 +415,20 @@ export class RegistrarService extends AbstractRegistrarService {
   }
 
   // biome-ignore lint/suspicious/useAwait: <explanation>
-  async getRegistrarFromDomainName(domain: string): Promise<Registrars> {
+  async getRegistrarFromDomainName(
+    domain: PunycodeDomainName,
+  ): Promise<Registrars> {
     throw new Error('getRegistrarFromDomainName: unknown-registrar');
   }
 
   private async getRegistrar(
-    domain: string,
+    domain: PunycodeDomainName,
   ): Promise<AbstractRegistrarService<Registrars>> {
     return this._getRegistrar(await this.determineRegistrar(domain));
   }
 
   private async determineRegistrar(
-    domainName: string,
+    domainName: PunycodeDomainName,
     registrar?: Registrars | null,
   ) {
     if (registrar) {

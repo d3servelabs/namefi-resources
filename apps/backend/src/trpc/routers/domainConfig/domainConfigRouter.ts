@@ -1,4 +1,5 @@
 import type { Nameserver } from '@namefi-astra/registrars/lib/abstract-registrar/data/nameservers';
+import { toPunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
 import { createRegistrarService } from '@namefi-astra/registrars/registrars/main-registrar';
 import {
   type NamefiNormalizedDomain,
@@ -14,7 +15,7 @@ import { assertAuthenticatedUserIsDomainOwner } from '../../guards/assert-domain
 import { getDomainLevels } from './getDomainLevels';
 
 // TODO add to context
-const registrar = createRegistrarService({
+const sldRegistrar = createRegistrarService({
   AWS_REGION: config.AWS_REGION,
   AWS_ACCESS_KEY_ID: secrets.AWS_ACCESS_KEY_ID,
   AWS_SECRET_ACCESS_KEY: secrets.AWS_SECRET_ACCESS_KEY,
@@ -36,7 +37,9 @@ export const domainConfigRouter = createTRPCRouter({
     )
     .query(async ({ input, ctx }) => {
       await assertAuthenticatedUserIsDomainOwner(input.zoneName, ctx.user);
-      const domainDetails = await registrar.getDomainDetails(input.zoneName);
+      const domainDetails = await sldRegistrar.getDomainDetails(
+        toPunycodeDomainName(input.zoneName),
+      );
       return domainDetails;
     }),
 
@@ -138,7 +141,9 @@ export const domainConfigRouter = createTRPCRouter({
 const checkIfUsingNamefiNameservers = async (
   normalizedDomainName: NamefiNormalizedDomain,
 ) => {
-  const nameservers = await registrar.getNameServers(normalizedDomainName);
+  const nameservers = await sldRegistrar.getNameServers(
+    toPunycodeDomainName(normalizedDomainName),
+  );
   const isUsingOtherNameservers = nameservers.some(
     (ns: Nameserver) =>
       !config.NAMEFI_ASTRA_NAMESERVERS.includes(
@@ -151,7 +156,9 @@ const checkIfUsingNamefiNameservers = async (
 const checkIfUsingOldNamefiNameservers = async (
   normalizedDomainName: NamefiNormalizedDomain,
 ) => {
-  const nameservers = await registrar.getNameServers(normalizedDomainName);
+  const nameservers = await sldRegistrar.getNameServers(
+    toPunycodeDomainName(normalizedDomainName),
+  );
 
   const isUsingOtherNameservers = nameservers.some(
     (ns: Nameserver) => !['ns1.namefi.io', 'ns2.namefi.io'].includes(ns),

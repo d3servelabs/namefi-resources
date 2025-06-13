@@ -1,2 +1,4 @@
-export type Nameserver = string & { readonly __brand: 'Nameserver' };
+import type { PunycodeFqdn } from '#lib/data/validations';
+
+export type Nameserver = PunycodeFqdn;
 export type Nameservers = Nameserver[];

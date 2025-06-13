@@ -7,6 +7,7 @@ import type {
 } from '#lib/abstract-registrar';
 import { DomainContactPrivacyEnum, RenewOption } from '#lib/abstract-registrar';
 import type { Transformers } from '#lib/abstract-registrar/transformers';
+import { toPunycodeDomainName } from '#lib/data/validations';
 import type {
   DynadotDomainInfo,
   DynadotGetContactDetails,
@@ -173,7 +174,7 @@ export const DynadotTransformers = {
             : RenewOption.AUTOMATIC,
         creationTime: new Date(Number.parseFloat(domain.Registration)),
         expirationTime: new Date(Number.parseFloat(domain.Expiration)),
-        domainName: domain.Name,
+        domainName: toPunycodeDomainName(domain.Name),
         nameservers: nameservers,
         contacts: DynadotTransformers.ContactsMapTransformer.from(contacts),
         contactsPrivacy: {

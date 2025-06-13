@@ -1,4 +1,5 @@
 import type * as R53 from '@aws-sdk/client-route-53-domains';
+import { isNil, isNotNil } from 'ramda';
 import { DomainContactPrivacyEnum, RenewOption } from '#lib/abstract-registrar';
 import type {
   ContactEntity,
@@ -8,11 +9,10 @@ import type {
   DomainContacts,
   DomainPriceDetails,
   DomainRegistration,
-  Nameservers,
   PriceWithCurrency,
 } from '#lib/abstract-registrar';
 import type { Transformers } from '#lib/abstract-registrar';
-
+import { toPunycodeDomainName, toPunycodeFqdn } from '#lib/data/validations';
 export type R53ContactsMap = {
   RegistrantContact: R53.ContactDetail;
   AdminContact?: R53.ContactDetail;
@@ -197,9 +197,10 @@ export const R53Transformers = {
           : RenewOption.MANUAL,
         creationTime: domain.CreationDate,
         expirationTime: domain.ExpirationDate,
-        domainName: domain.DomainName,
-        nameservers: (domain.Nameservers?.map(({ Name }) => Name) ??
-          []) as Nameservers,
+        domainName: toPunycodeDomainName(domain.DomainName),
+        nameservers: (domain.Nameservers ?? [])
+          .map(({ Name }) => (isNil(Name) ? undefined : toPunycodeFqdn(Name)))
+          .filter(isNotNil),
         contacts: R53Transformers.ContactsMapTransformer.from(domain),
         contactsPrivacy: {
           registrantContact: domain.RegistrantPrivacy
