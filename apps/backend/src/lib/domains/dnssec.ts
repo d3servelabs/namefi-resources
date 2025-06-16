@@ -17,7 +17,6 @@ import {
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 import { WorkflowIdReusePolicy } from '@temporalio/common';
 import { TRPCError } from '@trpc/server';
-import { eq } from 'drizzle-orm';
 import { isEmpty, isNil, isNotEmpty, isNotNil } from 'ramda';
 import { parse as tldtsParse } from 'tldts';
 import { z } from 'zod';
@@ -129,9 +128,17 @@ export async function setZoneSigningFlag(
 ) {
   const normalizedDomainName = namefiNormalizedDomainSchema.parse(domainName);
   await db
-    .update(domainConfigTable)
-    .set({ dnssecEnabled: enable })
-    .where(eq(domainConfigTable.normalizedDomainName, normalizedDomainName));
+    .insert(domainConfigTable)
+    .values({
+      normalizedDomainName,
+      dnssecEnabled: enable,
+    })
+    .onConflictDoUpdate({
+      target: [domainConfigTable.normalizedDomainName],
+      set: {
+        dnssecEnabled: enable,
+      },
+    });
 }
 
 /**
