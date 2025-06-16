@@ -45,6 +45,7 @@
     "@hono/trpc-server": "^0.3.4",
     "@namefi-astra/ai": "workspace:*",
     "@namefi-astra/db": "workspace:*",
+    "@namefi-astra/dns-tools": "workspace:*",
     "@namefi-astra/env": "workspace:*",
     "@namefi-astra/registrars": "workspace:*",
     "@namefi-astra/utils": "workspace:*",

@@ -1,11 +1,11 @@
 import { exec } from 'node:child_process';
 import { resolveNs } from 'node:dns/promises';
-import { setTimeout } from 'node:timers/promises';
 import util from 'node:util';
 import { promisify } from 'node:util';
 import { db, domainConfigTable } from '@namefi-astra/db';
+import { computeDsDigest, parseDnskeyRecord } from '@namefi-astra/dns-tools';
 import {
-  DnssecAlgorithms,
+  type DnssecAlgorithms,
   DnssecDigestType,
   DnssecFlags,
   type DnssecKey,
@@ -23,11 +23,13 @@ import { eq } from 'drizzle-orm';
 import { isEmpty, isNil, isNotEmpty, isNotNil } from 'ramda';
 import { parse as tldtsParse } from 'tldts';
 import { z } from 'zod';
+import { config } from '#lib/env';
 import { logger } from '#lib/logger';
 import { sldRegistrar } from '#lib/namefi-registry';
 import { temporalClient } from '../../temporal/client';
 import { TEMPORAL_QUEUES } from '../../temporal/shared';
 import { disableDnssecWorkflow } from '../../temporal/workflows/disable-dnssec.workflow';
+
 util.inspect.defaultOptions.depth = null;
 
 const execAsync = promisify(exec);
@@ -140,15 +142,25 @@ export async function setZoneSigningFlag(
 export async function getZoneDnssecSigningConfig(
   domainName: PunycodeDomainName,
 ): Promise<DnssecKey> {
-  //TODO: Implement this
-  await setTimeout(100);
+  const dnskey = await parseDnskeyRecord(config.DNSSEC_DNSKEY_PUBLIC_RECORD);
+  const keyTag = config.DNSSEC_DNSKEY_KEY_TAG;
+
+  const digest = await computeDsDigest(
+    domainName,
+    dnskey.flags,
+    dnskey.protocol,
+    dnskey.algorithm,
+    dnskey.publicKey,
+    DnssecDigestType.SHA_256,
+  );
+
   return {
-    algorithm: DnssecAlgorithms.ECDSA_P256SHA256,
-    publicKey: '1234567890',
+    algorithm: dnskey.algorithm as DnssecAlgorithms,
+    publicKey: dnskey.publicKey,
     flags: DnssecFlags.KSK,
-    keyTag: 1234567890,
+    keyTag,
     digestType: DnssecDigestType.SHA_256,
-    digest: '1234567890',
+    digest,
   };
 }
 // #endregion Zone DNSSEC

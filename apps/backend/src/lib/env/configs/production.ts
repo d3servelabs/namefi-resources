@@ -19,6 +19,11 @@ const productionConfig: ConfigInput = {
     'dev-team@d3serve.xyz': ['0x.city'],
   },
   NAMEFI_ASTRA_NAMESERVERS: ['ns3.namefi.io.', 'ns4.namefi.io.'],
+
+  // TODO: replace with actual values (temporary)
+  DNSSEC_DNSKEY_PUBLIC_RECORD:
+    'example.com. 3600 IN DNSKEY 257 3 13 g2sb5aS1wJZPanPqAeUzcb6pNM6h9ruKJb2ptCEtppMEBdmvVnS49wATr083ghefNvYN2tl552ICYiNxm2q54w==',
+  DNSSEC_DNSKEY_KEY_TAG: 22005,
 };
 
 export default productionConfig;

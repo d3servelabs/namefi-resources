@@ -89,6 +89,8 @@ export const configSchema = z.object({
 
   AWS_REGION: z.string().default('us-east-1'),
   DYNADOT_BASE_URL: z.string().optional(),
+  DNSSEC_DNSKEY_PUBLIC_RECORD: z.string(),
+  DNSSEC_DNSKEY_KEY_TAG: z.number(),
 });
 
 export type ConfigInput = z.input<typeof configSchema>;
