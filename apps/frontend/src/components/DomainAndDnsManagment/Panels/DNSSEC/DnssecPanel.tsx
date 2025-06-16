@@ -164,6 +164,10 @@ export const DnssecPanelInner = ({
     }),
   );
 
+  const disableAllButtons = useMemo(() => {
+    return !!activeNameserversChangeWorkflow;
+  }, [activeNameserversChangeWorkflow]);
+
   if (isLoading || isLoadingActiveNameserversChangeWorkflow) {
     return (
       <Layout>
@@ -219,10 +223,6 @@ export const DnssecPanelInner = ({
   );
   const isUsingNamefiSigning =
     data.isUsingNamefiDelegationSigner && data.zoneHasActiveDnssec;
-
-  const disableAllButtons = useMemo(() => {
-    return !!activeNameserversChangeWorkflow;
-  }, [activeNameserversChangeWorkflow]);
 
   return (
     <Layout>
