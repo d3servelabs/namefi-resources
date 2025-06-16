@@ -262,6 +262,41 @@ export async function enableAutoDnssecForDomainImmediate(
   await setZoneSigningFlag(domainName, true);
 }
 
+/**
+ * Get active DNSSEC operation workflows
+ * @param domainName - The domain name to get the active DNSSEC operation workflows for
+ * @returns {Promise<boolean>} - true if there are active DNSSEC operation workflows, false otherwise
+ */
+export async function getActiveDnssecOperationWorkflows(
+  domainName: PunycodeDomainName,
+) {
+  const workflows = await temporalClient.workflow.list({
+    query: `TaskQueue = '${TEMPORAL_QUEUES.DOMAINS}' AND ExecutionStatus = 'Running' AND (WorkflowId = 'disable-dnssec-${domainName}' OR WorkflowId = 'enable-dnssec-${domainName}')`,
+  });
+
+  for await (const workflow of workflows) {
+    const status = await workflow.status;
+    if (status.name === 'RUNNING') {
+      return {
+        operation: workflow.workflowId.includes('disable-dnssec')
+          ? 'REMOVE_DNSSEC'
+          : 'ENABLE_DNSSEC',
+        workflowId: workflow.workflowId,
+        runId: workflow.runId,
+        workflowType: workflow.type,
+        status: status.name,
+      };
+    }
+  }
+  return null;
+}
+
+/**
+ * Disables DNSSEC for a domain
+ * @param domainName - The domain name to disable DNSSEC for
+ * @param userId - The user ID to associate with the operation
+ * @returns {Promise<void>} - Returns the result of disabling DNSSEC
+ */
 export async function disableDnssecForDomain(
   domainName: PunycodeDomainName,
   userId?: string,
@@ -280,7 +315,8 @@ export async function disableDnssecForDomain(
   try {
     await temporalClient.workflow.start(disableDnssecWorkflow, {
       taskQueue: TEMPORAL_QUEUES.DOMAINS,
-      workflowId: `disable-dnssec-${domainName}-${Date.now()}`,
+      workflowId: `disable-dnssec-${domainName}`,
+      workflowIdReusePolicy: WorkflowIdReusePolicy.ALLOW_DUPLICATE,
       args: [
         {
           domainName,

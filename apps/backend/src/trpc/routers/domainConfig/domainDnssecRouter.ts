@@ -11,6 +11,7 @@ import {
   associateDelegationSigner,
   disableDnssecForDomain,
   enableAutoDnssecForDomain,
+  getActiveDnssecOperationWorkflows,
   getDnssecStatusDetails,
 } from '#lib/domains/dnssec';
 
@@ -139,5 +140,27 @@ export const domainDnssecRouter = createTRPCRouter({
         },
         'Successfully associated delegation signer',
       );
+    }),
+
+  /**
+   * Get active DNSSEC operation workflows
+   */
+  getActiveDnssecOperationWorkflows: protectedProcedure
+    .input(z.object({ domainName: namefiNormalizedDomainSchema }))
+    .query(async ({ input, ctx }) => {
+      await assertAuthenticatedUserIsDomainOwner(input.domainName, ctx.user);
+      const activeDnssecOperationWorkflows =
+        await getActiveDnssecOperationWorkflows(
+          toPunycodeDomainName(input.domainName),
+        );
+      if (activeDnssecOperationWorkflows) {
+        return {
+          workflowDetails: activeDnssecOperationWorkflows,
+          hasActiveWorkflow: true,
+        };
+      }
+      return {
+        hasActiveWorkflow: false,
+      };
     }),
 });
