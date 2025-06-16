@@ -55,6 +55,8 @@ const injectRegistrar = assoc('registrarKey');
 export class RegistrarService extends AbstractRegistrarService {
   key = 'main';
   logger = pino({ name: RegistrarService.name });
+  private readonly domainToRegistrar: Map<PunycodeDomainName, Registrars> =
+    new Map();
   private readonly r53Registrar: R53RegistrarService;
   private readonly dynadot: DynadotRegistrarService;
   private readonly config: {
@@ -335,9 +337,7 @@ export class RegistrarService extends AbstractRegistrarService {
     domainNameLdh: PunycodeDomainName,
     operationId: string,
   ): Promise<LongRunningOperationResult<any>> {
-    const registrar = this._getRegistrar(
-      await this.getRegistrarFromDomainName(domainNameLdh),
-    );
+    const registrar = await this.getRegistrar(domainNameLdh);
     return registrar
       .getOperationStatus(domainNameLdh, operationId)
       .then(injectRegistrar(registrar.key));
@@ -388,9 +388,13 @@ export class RegistrarService extends AbstractRegistrarService {
         this._getRegistrar(registrar).listAllDomains(),
       ),
     );
-    return domainsLists.flatMap((list, index) =>
+    const domains = domainsLists.flatMap((list, index) =>
       list.map(injectRegistrar(registrars[index])),
     );
+    domains.forEach((domain) => {
+      this.domainToRegistrar.set(domain.domainName, domain.registrarKey);
+    });
+    return domains;
   }
 
   private _getRegistrar(
@@ -434,6 +438,10 @@ export class RegistrarService extends AbstractRegistrarService {
     if (registrar) {
       return registrar;
     }
+    const cachedRegistrar = this.domainToRegistrar.get(domainName);
+    if (cachedRegistrar) {
+      return cachedRegistrar;
+    }
 
     const _registrar = await resolve(
       this.getRegistrarFromDomainName(domainName),
@@ -458,10 +466,13 @@ export class RegistrarService extends AbstractRegistrarService {
     );
 
     if (domainDetails) {
+      this.domainToRegistrar.set(domainName, domainDetails.value.registrarKey);
       return domainDetails.value.registrarKey;
     }
 
-    return (await this.searchForDomain(domainName)).registrarKey;
+    const registrarKey = (await this.searchForDomain(domainName)).registrarKey;
+    this.domainToRegistrar.set(domainName, registrarKey);
+    return registrarKey;
   }
 }
 
