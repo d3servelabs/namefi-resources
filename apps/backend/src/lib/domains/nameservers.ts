@@ -282,3 +282,32 @@ export async function submitNameserversChangeWorkflow(
     workflowIdConflictPolicy: 'FAIL',
   });
 }
+
+/**
+ * Queries the active nameservers change workflow for a domain
+ * @param domainName - The domain name to query the active nameservers change workflow for
+ * @returns {Promise<{operation: 'CHANGE_NAMESERVERS' | 'RESET_NAMESERVERS', workflowId: string, runId: string, workflowType: string, status: string} | null>} - The active nameservers change workflow for the domain
+ */
+export async function queryActiveNameserversChangeWorkflow(
+  domainName: PunycodeDomainName,
+) {
+  const workflows = await temporalClient.workflow.list({
+    query: `TaskQueue = '${TEMPORAL_QUEUES.DOMAINS}' AND ExecutionStatus = 'Running' AND (WorkflowId = 'change-nameservers-${domainName}' OR WorkflowId = 'reset-nameservers-${domainName}')`,
+  });
+
+  for await (const workflow of workflows) {
+    const status = await workflow.status;
+    if (status.name === 'RUNNING') {
+      return {
+        operation: workflow.workflowId.includes('change-nameservers')
+          ? 'CHANGE_NAMESERVERS'
+          : 'RESET_NAMESERVERS',
+        workflowId: workflow.workflowId,
+        runId: workflow.runId,
+        workflowType: workflow.type,
+        status: status.name,
+      };
+    }
+  }
+  return null;
+}

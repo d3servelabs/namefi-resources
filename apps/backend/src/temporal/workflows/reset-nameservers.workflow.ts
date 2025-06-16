@@ -1,9 +1,13 @@
 import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
-import { matchAny } from '@namefi-astra/utils';
+import {
+  WorkflowIdConflictPolicy,
+  WorkflowIdReusePolicy,
+} from '@temporalio/common';
 import * as workflow from '@temporalio/workflow';
-import { TEMPORAL_ENUMS, shortRunningOpts } from '../shared';
+import { TEMPORAL_ENUMS, TEMPORAL_QUEUES, shortRunningOpts } from '../shared';
 import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';
-import { disableDnssecWorkflow } from './disable-dnssec.workflow';
+import { changeNameserversWorkflow } from './change-nameservers.workflow';
+import { enableDnssecWorkflow } from './enable-dnssec.workflow';
 
 /**
  * This workflow is used to reset the nameservers for a domain.
@@ -13,11 +17,9 @@ export async function resetNameserversWorkflow({
   domainName,
 }: { domainName: PunycodeDomainName }) {
   const {
-    setNameserversForDomain,
     checkIfUsingNamefiNameservers,
     getDefaultNameservers,
     getDomainDetails,
-    enableAutoDnssecForDomain,
   } = typedProxyActivities({
     temporalEnum: TEMPORAL_ENUMS.DOMAINS,
     options: {
@@ -32,30 +34,24 @@ export async function resetNameserversWorkflow({
     });
   }
 
-  try {
-    await disableDnssecWorkflow({
-      domainName,
-    });
-  } catch (error: any) {
-    workflow.log.error(error.message);
-    if (
-      !(
-        error instanceof workflow.ApplicationFailure &&
-        matchAny(error.type, 'dnssec/not-supported', 'dnssec/disabled')
-      )
-    ) {
-      throw error;
-    }
-  }
-
   const nameservers = await getDefaultNameservers();
-  await setNameserversForDomain({
+  await changeNameserversWorkflow({
     domainName,
     nameservers,
   });
 
   const domainDetails = await getDomainDetails(domainName);
   if (domainDetails.supportsDnssec) {
-    await enableAutoDnssecForDomain(domainName);
+    await workflow.executeChild(enableDnssecWorkflow, {
+      taskQueue: TEMPORAL_QUEUES.DOMAINS,
+      workflowId: `enable-dnssec-${domainName}`,
+      workflowIdReusePolicy: WorkflowIdReusePolicy.ALLOW_DUPLICATE,
+      workflowIdConflictPolicy: WorkflowIdConflictPolicy.FAIL,
+      args: [
+        {
+          domainName,
+        },
+      ],
+    });
   }
 }

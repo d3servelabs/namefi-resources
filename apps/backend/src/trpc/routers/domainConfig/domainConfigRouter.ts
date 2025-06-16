@@ -9,6 +9,7 @@ import { z } from 'zod';
 import {
   checkIfUsingNamefiNameservers,
   checkIfUsingOldNamefiNameservers,
+  queryActiveNameserversChangeWorkflow,
   submitNameserversChangeWorkflow,
   submitResetNameserversWorkflow,
 } from '#lib/domains/nameservers';
@@ -70,6 +71,19 @@ export const domainConfigRouter = createTRPCRouter({
     .mutation(async ({ input, ctx }) => {
       await assertAuthenticatedUserIsDomainOwner(input.domainName, ctx.user);
       await submitResetNameserversWorkflow(
+        toPunycodeDomainName(input.domainName),
+      );
+    }),
+
+  queryActiveNameserversChangeWorkflow: protectedProcedure
+    .input(
+      z.object({
+        domainName: namefiNormalizedDomainSchema,
+      }),
+    )
+    .query(async ({ input, ctx }) => {
+      await assertAuthenticatedUserIsDomainOwner(input.domainName, ctx.user);
+      return await queryActiveNameserversChangeWorkflow(
         toPunycodeDomainName(input.domainName),
       );
     }),
