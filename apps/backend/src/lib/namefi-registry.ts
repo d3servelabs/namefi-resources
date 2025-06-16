@@ -6,8 +6,8 @@ import { addWeeks, isAfter, subDays } from 'date-fns';
 import { ParseResultType, parseDomain } from 'parse-domain';
 import { isNil, isNotNil } from 'ramda';
 import { config } from '#lib/env';
+import { userQualifiesForDomainNamePromo } from '#lib/userPromo';
 import { getDomainLevels } from '../trpc/routers/domainConfig/getDomainLevels';
-import { userQualifiesForDomainNamePromo } from '../trpc/routers/usersRouter';
 import {
   hashBasedPercentageRollouted,
   isReserved,

@@ -4,13 +4,10 @@ import { type Address, type BlockTag, zeroAddress } from 'viem';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { config as actualAppConfig } from '#lib/env'; // Import the actual config
 import testEnvConfig from '../../lib/env/configs/test'; // Import the test config file directly
+import { getQualifyingDomainNameFromUserIdentifier } from '../../lib/userPromo';
 import type { TrpcContext } from '../base';
 import { privyClient } from '../utils';
-import {
-  getQualifyingDomainNameFromUserIdentifier,
-  usersRouter,
-  viemEthereumPublicClient,
-} from './usersRouter';
+import { usersRouter, viemEthereumPublicClient } from './usersRouter';
 
 describe('getUserQualifiesForDomainNamePromo', () => {
   // TODO(Luis): consider refactoring mocking

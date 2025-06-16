@@ -8,9 +8,9 @@ import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
 import { and, eq, sql } from 'drizzle-orm';
 import { z } from 'zod';
+import { userQualifiesForDomainNamePromo } from '#lib/userPromo';
 import { createTRPCRouter, protectedProcedure } from '../base';
 import { isNormalizedDomainNameAllowedForOriginHostname } from '../utils';
-import { userQualifiesForDomainNamePromo } from './usersRouter';
 
 export const cartsRouter = createTRPCRouter({
   // Get cart items for the current user
