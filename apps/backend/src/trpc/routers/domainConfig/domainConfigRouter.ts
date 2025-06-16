@@ -18,7 +18,9 @@ import {
 } from '../../../lib/namefi-registry';
 import { createTRPCRouter, protectedProcedure } from '../../base';
 import { assertAuthenticatedUserIsDomainOwner } from '../../guards/assert-domain-owner';
+import { domainDnssecRouter } from './domainDnssecRouter';
 import { getDomainLevels } from './getDomainLevels';
+
 export const domainConfigRouter = createTRPCRouter({
   /**
    * Get Domain Details
@@ -105,6 +107,13 @@ export const domainConfigRouter = createTRPCRouter({
                   message: 'Coming Soon ...',
                 },
               },
+              dnssecManagement: {
+                enabled: false,
+                config: {
+                  showPanel: true,
+                  message: `DNSSEC is automatically managed by Namefi for subdomains of ${domainLevels.parentDomain}.`,
+                },
+              },
             },
           };
         }
@@ -120,6 +129,16 @@ export const domainConfigRouter = createTRPCRouter({
                   showPanel: true,
                   message:
                     'You are using the NamefiApp nameservers.<br /> Please head to the NamefiApp dashboard to manage your domain.',
+                  redirectTo: `https://app.namefi.io/dashboard/domains/${input.normalizedDomainName}`,
+                  redirectToLabel: 'Redirect to NamefiApp',
+                },
+              },
+              dnssecManagement: {
+                enabled: false,
+                config: {
+                  showPanel: true,
+                  message:
+                    'You are using the old Namefi nameservers. Please head to the NamefiApp dashboard to manage your domain.',
                   redirectTo: `https://app.namefi.io/dashboard/domains/${input.normalizedDomainName}`,
                   redirectToLabel: 'Redirect to NamefiApp',
                 },
@@ -155,6 +174,15 @@ export const domainConfigRouter = createTRPCRouter({
                 showPanel: true,
               },
             },
+            dnssecManagement: {
+              enabled: isUsingNamefiNameservers,
+              config: {
+                showPanel: true,
+                message: isUsingNamefiNameservers
+                  ? undefined
+                  : 'You are using other nameservers. You need to head to your nameserver provider to manage your dnssec.',
+              },
+            },
           },
         };
       } catch (error) {
@@ -165,4 +193,6 @@ export const domainConfigRouter = createTRPCRouter({
         });
       }
     }),
+
+  dnssec: domainDnssecRouter,
 });

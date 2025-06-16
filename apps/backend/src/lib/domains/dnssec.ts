@@ -14,10 +14,7 @@ import {
   type PunycodeDomainName,
   toPunycodeFqdn,
 } from '@namefi-astra/registrars/lib/data/validations';
-import {
-  type ChecksumWalletAddress,
-  namefiNormalizedDomainSchema,
-} from '@namefi-astra/utils';
+import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
 import { eq } from 'drizzle-orm';
 import { isEmpty, isNil, isNotEmpty, isNotNil } from 'ramda';
@@ -29,6 +26,7 @@ import { sldRegistrar } from '#lib/namefi-registry';
 import { temporalClient } from '../../temporal/client';
 import { TEMPORAL_QUEUES } from '../../temporal/shared';
 import { disableDnssecWorkflow } from '../../temporal/workflows/disable-dnssec.workflow';
+import { checkIfNameserversAreNamefiNameservers } from './nameservers';
 
 util.inspect.defaultOptions.depth = null;
 
@@ -173,21 +171,35 @@ export async function getZoneDnssecSigningConfig(
  * @returns {Promise<DnssecStatusDetails>} - The DNSSEC status details
  */
 export async function getDnssecStatusDetails(domainName: PunycodeDomainName) {
-  const [details, isZoneSigningEnabled] = await Promise.all([
+  const [details, isZoneSigningEnabled, zoneSigningConfig] = await Promise.all([
     sldRegistrar.getDomainDetails(domainName),
     getZoneSigningFlag(domainName),
+    getZoneDnssecSigningConfig(domainName),
   ]);
 
   _logger.trace({ details, isZoneSigningEnabled });
 
   const hasDelegationSigner =
     isNotNil(details.dnssecKeys) && isNotEmpty(details.dnssecKeys);
+  const isUsingNamefiDelegationSigner = details.dnssecKeys?.some(
+    (key) =>
+      key.keyTag === config.DNSSEC_DNSKEY_KEY_TAG &&
+      key.flags === zoneSigningConfig.flags &&
+      key.digestType === zoneSigningConfig.digestType &&
+      key.digest?.toLowerCase() === zoneSigningConfig.digest?.toLowerCase(),
+  );
+  const isUsingNamefiNameservers = checkIfNameserversAreNamefiNameservers(
+    details.nameservers,
+  );
+
   return {
     supportsDnssec: details.supportsDnssec,
     hasDelegationSigner,
-    zoneHasActiveDnssec: isZoneSigningEnabled,
     delegationSigners: details.dnssecKeys,
-    zoneSigningConfig: getZoneDnssecSigningConfig(domainName),
+    isUsingNamefiDelegationSigner,
+    zoneHasActiveDnssec: isZoneSigningEnabled,
+    zoneSigningConfig,
+    isUsingNamefiNameservers,
   };
 }
 
@@ -208,12 +220,11 @@ export async function enableAutoDnssecForDomain(
 
 export async function disableDnssecForDomain(
   domainName: PunycodeDomainName,
-  userAddress: ChecksumWalletAddress,
+  userId?: string,
 ) {
   const trail: any = {
     operation: 'REMOVE_DNSSEC',
-    actor: `user:${userAddress}`,
-    userAddress,
+    actor: userId ? `user:${userId}` : 'system',
     domainName,
   };
 
