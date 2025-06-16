@@ -1,12 +1,16 @@
-import type { Nameserver } from '@namefi-astra/registrars/lib/abstract-registrar/data/nameservers';
-import { toPunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
 import {
-  type NamefiNormalizedDomain,
-  namefiNormalizedDomainSchema,
-} from '@namefi-astra/utils';
+  toPunycodeDomainName,
+  toPunycodeFqdn,
+} from '@namefi-astra/registrars/lib/data/validations';
+import { punycodeFqdnSchema } from '@namefi-astra/registrars/lib/data/validations';
+import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
-import { config } from '#lib/env';
+import {
+  checkIfUsingNamefiNameservers,
+  checkIfUsingOldNamefiNameservers,
+  setNameserversForDomain,
+} from '#lib/domains/nameservers';
 import { logger } from '#lib/logger';
 import {
   getPoweredByNamefi3PDomains,
@@ -15,7 +19,6 @@ import {
 import { createTRPCRouter, protectedProcedure } from '../../base';
 import { assertAuthenticatedUserIsDomainOwner } from '../../guards/assert-domain-owner';
 import { getDomainLevels } from './getDomainLevels';
-
 export const domainConfigRouter = createTRPCRouter({
   /**
    * Get Domain Details
@@ -23,15 +26,34 @@ export const domainConfigRouter = createTRPCRouter({
   getDomainDetails: protectedProcedure
     .input(
       z.object({
-        zoneName: namefiNormalizedDomainSchema,
+        domainName: namefiNormalizedDomainSchema,
       }),
     )
     .query(async ({ input, ctx }) => {
-      await assertAuthenticatedUserIsDomainOwner(input.zoneName, ctx.user);
+      await assertAuthenticatedUserIsDomainOwner(input.domainName, ctx.user);
       const domainDetails = await sldRegistrar.getDomainDetails(
-        toPunycodeDomainName(input.zoneName),
+        toPunycodeDomainName(input.domainName),
       );
       return domainDetails;
+    }),
+  /**
+   * Change Domain Nameservers
+   */
+  changeDomainNameservers: protectedProcedure
+    .input(
+      z.object({
+        domainName: namefiNormalizedDomainSchema,
+        nameservers: z.array(punycodeFqdnSchema).min(2).max(4),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      await assertAuthenticatedUserIsDomainOwner(input.domainName, ctx.user);
+      await setNameserversForDomain({
+        domainName: toPunycodeDomainName(input.domainName),
+        nameservers: input.nameservers.map((nameserver) =>
+          toPunycodeFqdn(nameserver),
+        ),
+      });
     }),
 
   /**
@@ -86,35 +108,51 @@ export const domainConfigRouter = createTRPCRouter({
             },
           };
         }
+        const isUsingOldNamefiNameservers =
+          await checkIfUsingOldNamefiNameservers(input.normalizedDomainName);
+
+        if (isUsingOldNamefiNameservers) {
+          return {
+            features: {
+              domainManagement: {
+                enabled: true,
+                config: {
+                  showPanel: true,
+                  message:
+                    'You are using the NamefiApp nameservers.<br /> Please head to the NamefiApp dashboard to manage your domain.',
+                  redirectTo: `https://app.namefi.io/dashboard/domains/${input.normalizedDomainName}`,
+                  redirectToLabel: 'Redirect to NamefiApp',
+                },
+              },
+            },
+          };
+        }
 
         const isUsingNamefiNameservers = await checkIfUsingNamefiNameservers(
           input.normalizedDomainName,
         );
-        const isUsingOldNamefiNameservers =
-          await checkIfUsingOldNamefiNameservers(input.normalizedDomainName);
 
         return {
           features: {
             domainManagement: {
+              enabled: true,
+              config: {
+                showPanel: true,
+              },
+            },
+            dnsManagement: {
               enabled: isUsingNamefiNameservers,
               config: {
                 showPanel: true,
-                message: isUsingOldNamefiNameservers
-                  ? 'You are using the NamefiApp nameservers.<br /> Please head to the NamefiApp dashboard to manage your domain.'
-                  : isUsingNamefiNameservers
-                    ? undefined
-                    : 'You are using other nameservers.',
-                redirectTo: isUsingOldNamefiNameservers
-                  ? `https://app.namefi.io/dashboard/domains/${input.normalizedDomainName}`
-                  : undefined,
-                redirectToLabel: 'Redirect to NamefiApp',
+                message: isUsingNamefiNameservers
+                  ? undefined
+                  : 'You are using other nameservers. You need to head to your nameserver provider to manage your domain.',
               },
             },
             nameserversManagement: {
-              enabled: false,
+              enabled: true,
               config: {
                 showPanel: true,
-                message: 'Coming Soon ...',
               },
             },
           },
@@ -128,31 +166,3 @@ export const domainConfigRouter = createTRPCRouter({
       }
     }),
 });
-
-const checkIfUsingNamefiNameservers = async (
-  normalizedDomainName: NamefiNormalizedDomain,
-) => {
-  const nameservers = await sldRegistrar.getNameServers(
-    toPunycodeDomainName(normalizedDomainName),
-  );
-  const isUsingOtherNameservers = nameservers.some(
-    (ns: Nameserver) =>
-      !config.NAMEFI_ASTRA_NAMESERVERS.includes(
-        ns as unknown as NamefiNormalizedDomain,
-      ),
-  );
-  return !isUsingOtherNameservers;
-};
-
-const checkIfUsingOldNamefiNameservers = async (
-  normalizedDomainName: NamefiNormalizedDomain,
-) => {
-  const nameservers = await sldRegistrar.getNameServers(
-    toPunycodeDomainName(normalizedDomainName),
-  );
-
-  const isUsingOtherNameservers = nameservers.some(
-    (ns: Nameserver) => !['ns1.namefi.io', 'ns2.namefi.io'].includes(ns),
-  );
-  return !isUsingOtherNameservers;
-};

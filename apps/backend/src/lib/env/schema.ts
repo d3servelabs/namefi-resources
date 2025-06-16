@@ -1,4 +1,4 @@
-import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
+import { punycodeFqdnSchema } from '@namefi-astra/registrars/lib/data/validations';
 import { zJson } from '@namefi-astra/utils/zod-helpers';
 import { z } from 'zod';
 
@@ -83,9 +83,9 @@ export const configSchema = z.object({
   /**
    * The nameservers that NameFI will use for its own domains.
    */
-  NAMEFI_ASTRA_NAMESERVERS: namefiNormalizedDomainSchema
+  NAMEFI_ASTRA_NAMESERVERS: punycodeFqdnSchema
     .array()
-    .default(['ns3.namefi.dev', 'ns4.namefi.dev']),
+    .default(['ns3.namefi.dev.', 'ns4.namefi.dev.']),
 
   AWS_REGION: z.string().default('us-east-1'),
   DYNADOT_BASE_URL: z.string().optional(),
