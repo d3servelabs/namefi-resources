@@ -12,3 +12,4 @@ export * from './update-nft-index.workflow';
 export * from './disable-dnssec.workflow';
 export * from './reset-nameservers.workflow';
 export * from './enable-dnssec.workflow';
+export * from './change-nameservers.workflow';

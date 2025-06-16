@@ -10,6 +10,12 @@ import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { config } from '#lib/env';
 import { logger } from '#lib/logger';
 import { sldRegistrar } from '#lib/namefi-registry';
+import { temporalClient } from '../../temporal/client';
+import { TEMPORAL_QUEUES } from '../../temporal/shared';
+import {
+  changeNameserversWorkflow,
+  resetNameserversWorkflow,
+} from '../../temporal/workflows';
 
 const _logger = logger.child({
   service: 'DomainsDnssecService',
@@ -218,7 +224,7 @@ export async function setNameserversForDomain({
   domainName,
   nameservers,
 }: { domainName: PunycodeDomainName; nameservers: Nameserver[] }) {
-  await sldRegistrar.setNameServers(domainName, nameservers);
+  return await sldRegistrar.setNameServers(domainName, nameservers);
 }
 
 /**
@@ -230,4 +236,49 @@ export async function setNameserversForDomain({
 export async function getNameserversForDomain(domainName: PunycodeDomainName) {
   const registrarNameservers = await sldRegistrar.getNameServers(domainName);
   return registrarNameservers;
+}
+
+/**
+ * Submits a reset nameservers workflow for a domain
+ * @param domainName - The domain name to submit the reset nameservers workflow for
+ */
+export async function submitResetNameserversWorkflow(
+  domainName: PunycodeDomainName,
+) {
+  await temporalClient.workflow.start(resetNameserversWorkflow, {
+    args: [
+      {
+        domainName: toPunycodeDomainName(domainName),
+      },
+    ],
+    workflowId: `reset-nameservers-${domainName}`,
+    taskQueue: TEMPORAL_QUEUES.DOMAINS,
+    workflowIdReusePolicy: 'ALLOW_DUPLICATE',
+    workflowIdConflictPolicy: 'USE_EXISTING',
+  });
+}
+
+/**
+ * Submits a nameservers change workflow for a domain
+ * @param domainName - The domain name to submit the nameservers change workflow for
+ * @param nameservers - The nameservers to set for the domain
+ */
+export async function submitNameserversChangeWorkflow(
+  domainName: PunycodeDomainName,
+  nameservers: Nameserver[],
+) {
+  await temporalClient.workflow.start(changeNameserversWorkflow, {
+    args: [
+      {
+        domainName: toPunycodeDomainName(domainName),
+        nameservers: nameservers.map((nameserver) =>
+          toPunycodeFqdn(nameserver),
+        ),
+      },
+    ],
+    workflowId: `change-nameservers-${domainName}`,
+    taskQueue: TEMPORAL_QUEUES.DOMAINS,
+    workflowIdReusePolicy: 'ALLOW_DUPLICATE',
+    workflowIdConflictPolicy: 'FAIL',
+  });
 }

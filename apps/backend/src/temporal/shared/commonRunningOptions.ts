@@ -18,3 +18,12 @@ export const longRunningOpts: workflow.ActivityOptions = {
     maximumAttempts: 3,
   },
 };
+
+export const pollingOpts: workflow.ActivityOptions = {
+  startToCloseTimeout: '1 minute',
+  retry: {
+    initialInterval: '2 minutes',
+    maximumInterval: '2 minutes',
+    maximumAttempts: undefined,
+  },
+};

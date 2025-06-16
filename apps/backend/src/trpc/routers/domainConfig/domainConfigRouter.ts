@@ -9,7 +9,8 @@ import { z } from 'zod';
 import {
   checkIfUsingNamefiNameservers,
   checkIfUsingOldNamefiNameservers,
-  setNameserversForDomain,
+  submitNameserversChangeWorkflow,
+  submitResetNameserversWorkflow,
 } from '#lib/domains/nameservers';
 import { logger } from '#lib/logger';
 import {
@@ -38,6 +39,7 @@ export const domainConfigRouter = createTRPCRouter({
       );
       return domainDetails;
     }),
+
   /**
    * Change Domain Nameservers
    */
@@ -50,12 +52,26 @@ export const domainConfigRouter = createTRPCRouter({
     )
     .mutation(async ({ input, ctx }) => {
       await assertAuthenticatedUserIsDomainOwner(input.domainName, ctx.user);
-      await setNameserversForDomain({
-        domainName: toPunycodeDomainName(input.domainName),
-        nameservers: input.nameservers.map((nameserver) =>
-          toPunycodeFqdn(nameserver),
-        ),
-      });
+      await submitNameserversChangeWorkflow(
+        toPunycodeDomainName(input.domainName),
+        input.nameservers.map((nameserver) => toPunycodeFqdn(nameserver)),
+      );
+    }),
+
+  /**
+   * Change Domain Nameservers
+   */
+  resetDomainNameservers: protectedProcedure
+    .input(
+      z.object({
+        domainName: namefiNormalizedDomainSchema,
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      await assertAuthenticatedUserIsDomainOwner(input.domainName, ctx.user);
+      await submitResetNameserversWorkflow(
+        toPunycodeDomainName(input.domainName),
+      );
     }),
 
   /**
