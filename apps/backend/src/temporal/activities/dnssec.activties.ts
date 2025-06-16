@@ -1,9 +1,11 @@
+import type { DnssecKey } from '@namefi-astra/registrars/lib/abstract-registrar/data/dnssec';
 import type { OperationStatus } from '@namefi-astra/registrars/lib/abstract-registrar/data/operation-status';
 import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
 import type { ChecksumWalletAddress } from '@namefi-astra/utils';
 import {
-  checkDissociateDelegationSignerRequest,
+  checkDelegationSignerAssociationChangeRequest,
   checkDsRecordExists,
+  getZoneDnssecSigningConfig,
 } from '#lib/domains/dnssec';
 import {
   getDefaultNameservers,
@@ -32,7 +34,31 @@ export async function pollDsRecordRemovalStatus({
   registrarOperationId: string;
   domainName: PunycodeDomainName;
 }): Promise<OperationStatus> {
-  const status = await checkDissociateDelegationSignerRequest({
+  const status = await checkDelegationSignerAssociationChangeRequest({
+    registrarOperationId,
+    domainName,
+  });
+  switch (status) {
+    case 'SUBMITTED':
+    case 'IN_PROGRESS':
+      throw new Error('Still IN_PROGRESS');
+    default:
+      return status;
+  }
+}
+/**
+ * Poll the removal status of the DS record
+ * @param input - The input object containing the registrar operation ID and domain name
+ * @returns {Promise<OperationStatus>} - The operation status
+ */
+export async function pollDsRecordAssociationStatus({
+  registrarOperationId,
+  domainName,
+}: {
+  registrarOperationId: string;
+  domainName: PunycodeDomainName;
+}): Promise<OperationStatus> {
+  const status = await checkDelegationSignerAssociationChangeRequest({
     registrarOperationId,
     domainName,
   });
@@ -58,6 +84,28 @@ export async function pollDsRecordRemovalPropagation(
     throw new Error('Still IN_PROGRESS');
   }
   return 'SUCCESSFUL';
+}
+
+export async function pollDsRecordPropagation(
+  domainName: PunycodeDomainName,
+  dsRecord: DnssecKey,
+): Promise<OperationStatus> {
+  // TODO: Check against the DS record
+  const res = await checkDsRecordExists(domainName);
+  if (!res) {
+    throw new Error('Still IN_PROGRESS');
+  }
+  return 'SUCCESSFUL';
+}
+
+export async function pollNamefiDefaultDsRecordPropagation(
+  domainName: PunycodeDomainName,
+): Promise<OperationStatus> {
+  const zoneSigningConfig = await getZoneDnssecSigningConfig(domainName);
+  if (!zoneSigningConfig) {
+    throw new Error('Zone signing config not found');
+  }
+  return pollDsRecordPropagation(domainName, zoneSigningConfig);
 }
 
 /**

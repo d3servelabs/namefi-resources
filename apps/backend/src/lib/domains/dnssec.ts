@@ -15,6 +15,7 @@ import {
   toPunycodeFqdn,
 } from '@namefi-astra/registrars/lib/data/validations';
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
+import { WorkflowIdReusePolicy } from '@temporalio/common';
 import { TRPCError } from '@trpc/server';
 import { eq } from 'drizzle-orm';
 import { isEmpty, isNil, isNotEmpty, isNotNil } from 'ramda';
@@ -26,6 +27,7 @@ import { sldRegistrar } from '#lib/namefi-registry';
 import { temporalClient } from '../../temporal/client';
 import { TEMPORAL_QUEUES } from '../../temporal/shared';
 import { disableDnssecWorkflow } from '../../temporal/workflows/disable-dnssec.workflow';
+import { enableDnssecWorkflow } from '../../temporal/workflows/enable-dnssec.workflow';
 import { checkIfNameserversAreNamefiNameservers } from './nameservers';
 
 util.inspect.defaultOptions.depth = null;
@@ -85,7 +87,7 @@ export async function disassociateDelegationSigner(
   return sldRegistrar.removeDelegationSigner(domainName, keyId);
 }
 
-export async function checkDissociateDelegationSignerRequest({
+export async function checkDelegationSignerAssociationChangeRequest({
   domainName,
   registrarOperationId,
 }: { domainName: PunycodeDomainName; registrarOperationId: string }) {
@@ -211,6 +213,48 @@ export async function getDnssecStatusDetails(domainName: PunycodeDomainName) {
  * @returns {Promise<any>} - Returns the result of associating the DS record
  */
 export async function enableAutoDnssecForDomain(
+  domainName: PunycodeDomainName,
+  userId?: string,
+) {
+  const trail: any = {
+    operation: 'ENABLE_DNSSEC',
+    actor: userId ? `user:${userId}` : 'system',
+    domainName,
+  };
+
+  _logger.debug(
+    trail,
+    `Submitting Request to enable DNSSEC for domain ${domainName}`,
+  );
+
+  try {
+    await temporalClient.workflow.start(enableDnssecWorkflow, {
+      taskQueue: TEMPORAL_QUEUES.DOMAINS,
+      workflowId: `enable-dnssec-${domainName}`,
+      workflowIdReusePolicy: WorkflowIdReusePolicy.ALLOW_DUPLICATE,
+      args: [
+        {
+          domainName,
+        },
+      ],
+    });
+
+    _logger.debug(trail, 'EnableDnssec Temporal Workflow Started Successfully');
+  } catch (error) {
+    _logger.fatal(trail, 'EnableDnssec Temporal Workflow Start Failed');
+    _logger.error('Temporal Error', error);
+    throw error;
+  }
+}
+
+/**
+ * Enables DNSSEC for a domain using a provided KSK or by creating a new one.
+ * is a simplified version of enableDnssecForDomain that doesn't track operations.
+ * @param {string} domainName - The domain name to enable DNSSEC for
+ * @param {DnssecKey} [ksk] - Optional Key Signing Key (KSK). If not provided, a new one will be created
+ * @returns {Promise<any>} - Returns the result of associating the DS record
+ */
+export async function enableAutoDnssecForDomainImmediate(
   domainName: PunycodeDomainName,
 ) {
   //Add DS record to parent zone

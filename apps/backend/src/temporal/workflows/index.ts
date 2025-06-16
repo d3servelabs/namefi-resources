@@ -9,3 +9,6 @@ export * from './refund-user.workflow';
 export * from './finalize-payment-workflow';
 export * from './notify-user-workflow';
 export * from './update-nft-index.workflow';
+export * from './disable-dnssec.workflow';
+export * from './reset-nameservers.workflow';
+export * from './enable-dnssec.workflow';
