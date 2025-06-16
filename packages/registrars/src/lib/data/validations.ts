@@ -1,4 +1,4 @@
-import punycode from 'node:punycode';
+import punycode from 'punycodejs';
 import { BRAND, z } from 'zod';
 
 /**

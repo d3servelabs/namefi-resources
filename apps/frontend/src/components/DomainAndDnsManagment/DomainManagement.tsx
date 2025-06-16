@@ -9,6 +9,7 @@ import {
 import { useRecentDomains } from '@/hooks/useRecentDomains';
 import { cn } from '@/lib/utils';
 import { useTRPC } from '@/utils/trpc';
+import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { AlertTriangle } from 'lucide-react';
 import Link from 'next/link';
@@ -17,6 +18,7 @@ import { Alert, AlertDescription, AlertTitle } from '../ui/shadcn/alert';
 import { Button } from '../ui/shadcn/button';
 import { Card, CardHeader, CardTitle } from '../ui/shadcn/card';
 import { DnsRecordsPanel } from './Panels/DNS/DnsRecordsPanel';
+import { NameserversPanel } from './Panels/Nameservers/NameserversPanel';
 export type DomainManagementProps = HTMLAttributes<HTMLDivElement> & {
   domain: string;
 };
@@ -51,6 +53,18 @@ export const DomainManagement: FC<DomainManagementProps> = ({
     newlyVisitedDomain: domain,
   });
 
+  const nameserversManagement = useMemo(() => {
+    return (
+      domainSupportedFeatures.nameserversManagement ?? {
+        enabled: false,
+        config: {
+          showPanel: false,
+          message: 'Coming Soon ...',
+        },
+      }
+    );
+  }, [domainSupportedFeatures]);
+
   return (
     <div className={cn('', className)} {...rest}>
       {isDomainOwnedByCurrentUser ? undefined : (
@@ -77,7 +91,9 @@ export const DomainManagement: FC<DomainManagementProps> = ({
               <TabsList className="mb-8">
                 <TabsTrigger value="dns-records">DNS Records</TabsTrigger>
                 <TabsTrigger value="forwarding">Forwarding</TabsTrigger>
-                <TabsTrigger value="nameservers">Nameservers</TabsTrigger>
+                {nameserversManagement.config.showPanel ? (
+                  <TabsTrigger value="nameservers">Nameservers</TabsTrigger>
+                ) : undefined}
                 <TabsTrigger value="dnssec">DNSSEC</TabsTrigger>
               </TabsList>
 
@@ -89,9 +105,25 @@ export const DomainManagement: FC<DomainManagementProps> = ({
                 <div className="text-center py-12">Coming Soon ...</div>
               </TabsContent>
 
-              <TabsContent value="nameservers">
-                <div className="text-center py-12">Coming Soon ...</div>
-              </TabsContent>
+              {nameserversManagement.config.showPanel ? (
+                <TabsContent value="nameservers">
+                  {nameserversManagement.enabled ? (
+                    <NameserversPanel
+                      domainName={domain as PunycodeDomainName}
+                    />
+                  ) : nameserversManagement.config.message ? (
+                    <div
+                      className="text-center py-12"
+                      // biome-ignore lint/security/noDangerouslySetInnerHtml:
+                      dangerouslySetInnerHTML={{
+                        __html: nameserversManagement.config.message,
+                      }}
+                    />
+                  ) : (
+                    <div className="text-center py-12">Coming Soon ...</div>
+                  )}
+                </TabsContent>
+              ) : undefined}
 
               <TabsContent value="dnssec">
                 <div className="text-center py-12">Coming Soon ...</div>
