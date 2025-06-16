@@ -48,6 +48,7 @@ import {
 import { isNotEmpty, isNotNil } from 'ramda';
 import { useMemo } from 'react';
 import { toast } from 'sonner';
+import { ActiveNameserversChangeWorkflowBanner } from '../Nameservers/NameserversPanel';
 
 type DnssecStatusDetails =
   AppRouterOutput['domainConfig']['dnssec']['getDomainDnssecDetails'];
@@ -154,7 +155,16 @@ export const DnssecPanelInner = ({
     ),
   );
 
-  if (isLoading) {
+  const {
+    data: activeNameserversChangeWorkflow,
+    isLoading: isLoadingActiveNameserversChangeWorkflow,
+  } = useQuery(
+    trpc.domainConfig.queryActiveNameserversChangeWorkflow.queryOptions({
+      domainName,
+    }),
+  );
+
+  if (isLoading || isLoadingActiveNameserversChangeWorkflow) {
     return (
       <Layout>
         <div className="flex flex-col gap-2">
@@ -189,6 +199,7 @@ export const DnssecPanelInner = ({
       </Layout>
     );
   }
+
   const zoneSigningStatus = (
     <div className="flex items-center gap-2">
       <div className="flex items-center gap-2">
@@ -209,9 +220,16 @@ export const DnssecPanelInner = ({
   const isUsingNamefiSigning =
     data.isUsingNamefiDelegationSigner && data.zoneHasActiveDnssec;
 
+  const disableAllButtons = useMemo(() => {
+    return !!activeNameserversChangeWorkflow;
+  }, [activeNameserversChangeWorkflow]);
+
   return (
     <Layout>
       <div className="flex flex-col items-start gap-4">
+        <ActiveNameserversChangeWorkflowBanner
+          activeNameserversChangeWorkflow={activeNameserversChangeWorkflow}
+        />
         {isUsingNamefiSigning ? (
           <div className="flex items-center gap-2">
             <p>Namefi is signing records for this domain</p>
@@ -251,7 +269,11 @@ export const DnssecPanelInner = ({
           {zoneSigningStatus}
         </div>
 
-        <DnssecPanelAction domainName={domainName} dnssecDetails={data} />
+        <DnssecPanelAction
+          domainName={domainName}
+          dnssecDetails={data}
+          disableAllButtons={disableAllButtons}
+        />
 
         <div className="text-sm text-zinc-500 mt-4">
           <p>
@@ -267,7 +289,12 @@ export const DnssecPanelInner = ({
 export const DnssecPanelAction = ({
   domainName,
   dnssecDetails,
-}: { domainName: PunycodeDomainName; dnssecDetails: DnssecStatusDetails }) => {
+  disableAllButtons,
+}: {
+  domainName: PunycodeDomainName;
+  dnssecDetails: DnssecStatusDetails;
+  disableAllButtons: boolean;
+}) => {
   const trpc = useTRPC();
   const queryClient = useQueryClient();
   const {
@@ -370,6 +397,7 @@ export const DnssecPanelAction = ({
         <AlertDialog>
           <AlertDialogTrigger asChild={true}>
             <LoadingButton
+              disabled={disableAllButtons}
               isLoading={disableNamefiSigning.isPending}
               loadingText="Disabling..."
             >
@@ -402,8 +430,9 @@ export const DnssecPanelAction = ({
       ) : (
         <AsyncButton
           loadingText="Enabling..."
-          onClick={(e) => enableNamefiSigning.mutateAsync({ domainName })}
+          onClick={() => enableNamefiSigning.mutateAsync({ domainName })}
           variant={'default'}
+          disabled={disableAllButtons}
         >
           <ShieldPlusIcon width={20} height={20} /> Enable Namefi Signing
         </AsyncButton>

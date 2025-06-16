@@ -25,7 +25,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/shadcn/tooltip';
 import { cn } from '@/lib/utils';
-import { useTRPC, useTRPCClient } from '@/utils/trpc';
+import { type AppRouterOutput, useTRPC, useTRPCClient } from '@/utils/trpc';
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { Nameserver } from '@namefi-astra/registrars/lib/abstract-registrar/data/nameservers';
 import {
@@ -39,7 +39,7 @@ import {
   useQueryClient,
   useSuspenseQuery,
 } from '@tanstack/react-query';
-import { Info, RotateCw, SaveIcon } from 'lucide-react';
+import { Info, Loader2, RotateCw, SaveIcon } from 'lucide-react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { useCallback, useMemo, useState } from 'react';
 import React from 'react';
@@ -84,30 +84,76 @@ const NameserversPanelForm = React.memo(
     nameservers,
   }: DomainNameserversFormProps) {
     const trpc = useTRPC();
+    const [loadingOperation, setLoadingOperation] = useState<string | null>(
+      null,
+    );
 
     const trpcClient = useTRPCClient();
 
     const queryClient = useQueryClient();
+
     const { data: domainDnssecDetails, isLoading: isDnssecLoading } = useQuery(
-      trpc.domainConfig.dnssec.getDomainDnssecDetails.queryOptions({
-        domainName,
-      }),
+      trpc.domainConfig.dnssec.getDomainDnssecDetails.queryOptions(
+        {
+          domainName,
+        },
+        {
+          refetchInterval: 8_000,
+          refetchOnWindowFocus: true,
+        },
+      ),
     );
 
-    const [isLoading, setIsLoading] = useState(false);
+    const {
+      data: activeNameserversChangeWorkflow,
+      refetch: refetchActiveNameserversChangeWorkflow,
+    } = useQuery(
+      trpc.domainConfig.queryActiveNameserversChangeWorkflow.queryOptions(
+        {
+          domainName,
+        },
+        {
+          refetchInterval: 8_000,
+          refetchOnWindowFocus: true,
+        },
+      ),
+    );
 
-    const handleResetToNamefi = useCallback(() => {
-      setIsLoading(true);
+    const disableAllButtons = useMemo(() => {
+      return !!loadingOperation || !!activeNameserversChangeWorkflow;
+    }, [loadingOperation, activeNameserversChangeWorkflow]);
 
-      // Simulate API call
-      setTimeout(() => {
-        setIsLoading(false);
+    const invalidateQueries = useCallback(async () => {
+      await queryClient.invalidateQueries({
+        queryKey: trpc.domainConfig.getDomainDetails.queryKey({ domainName }),
+      });
+      await queryClient.invalidateQueries({
+        queryKey: trpc.domainConfig.getDomainSupportedFeatures.queryKey({
+          normalizedDomainName: domainName,
+        }),
+      });
+      await queryClient.invalidateQueries({
+        queryKey: trpc.domainConfig.dnssec.getDomainDnssecDetails.queryKey({
+          domainName,
+        }),
+      });
+      await refetchActiveNameserversChangeWorkflow();
+    }, [trpc, queryClient, domainName, refetchActiveNameserversChangeWorkflow]);
 
-        toast('Nameservers reset', {
-          description: 'Your nameservers have been reset to Namefi defaults.',
+    const handleResetToNamefi = useCallback(async () => {
+      setLoadingOperation('resetting');
+
+      try {
+        await trpcClient.domainConfig.resetDomainNameservers.mutate({
+          domainName,
         });
-      }, 1000);
-    }, []);
+        toast.success('Nameservers reset to Namefi defaults');
+      } catch (error: any) {
+        toast.error(error.message ?? 'Failed to reset nameservers');
+      }
+      await invalidateQueries();
+      setLoadingOperation(null);
+    }, [trpcClient, domainName, invalidateQueries]);
 
     const validationSchema = useMemo(
       () =>
@@ -158,33 +204,10 @@ const NameserversPanelForm = React.memo(
           toast.success('Nameservers Updated Successfully');
         }
       } catch (error: any) {
-        const message = error?.response?.data?.message?.replaceAll(
-          /\\(x?\d+)/g,
-          (_: string, captureGroup: string) => {
-            return String.fromCharCode(Number.parseInt(captureGroup, 8));
-          },
-        );
-        toast.error(
-          message.split('\n').map((s: string) => (
-            <>
-              {s}
-              <br key={s} />
-            </>
-          )) ?? 'Failed to update Nameservers',
-        );
+        toast.error(error.message ?? 'Failed to update Nameservers');
       }
 
-      await queryClient.invalidateQueries({
-        queryKey: [
-          trpc.domainConfig.getDomainDetails.queryKey({ domainName }),
-          trpc.domainConfig.getDomainSupportedFeatures.queryKey({
-            normalizedDomainName: domainName,
-          }),
-          trpc.domainConfig.dnssec.getDomainDnssecDetails.queryKey({
-            domainName,
-          }),
-        ],
-      });
+      await invalidateQueries();
     };
 
     const values = watch();
@@ -225,21 +248,24 @@ const NameserversPanelForm = React.memo(
       }
 
       return (
-        <Button
+        <LoadingButton
           variant="outline"
           className="bg-brand-primary-950/20 text-brand-primary-500 hover:text-brand-primary-400 hover:bg-brand-primary-950/30 border-brand-primary-800/50"
           onClick={handleResetToNamefi}
-          disabled={isLoading}
+          isLoading={loadingOperation === 'resetting'}
+          disabled={disableAllButtons}
         >
-          {isLoading ? (
-            <RotateCw className="mr-2 h-4 w-4 animate-spin" />
-          ) : (
-            <RotateCw className="mr-2 h-4 w-4" />
-          )}
+          <RotateCw className="mr-2 h-4 w-4" />
           Reset to Namefi Nameservers
-        </Button>
+        </LoadingButton>
       );
-    }, [handleResetToNamefi, isLoading, domainDnssecDetails, isDnssecLoading]);
+    }, [
+      handleResetToNamefi,
+      loadingOperation,
+      domainDnssecDetails,
+      isDnssecLoading,
+      disableAllButtons,
+    ]);
 
     const areChanged = useMemo(() => {
       return !arrayEquals(values.nameservers, nameservers);
@@ -252,6 +278,10 @@ const NameserversPanelForm = React.memo(
     return (
       <Form {...form}>
         <div className="flex flex-col gap-2">
+          <ActiveNameserversChangeWorkflowBanner
+            activeNameserversChangeWorkflow={activeNameserversChangeWorkflow}
+          />
+
           {resetButton}
           <AnimatePresence mode="sync" presenceAffectsLayout={true}>
             {values.nameservers.map((_, index) => (
@@ -276,6 +306,7 @@ const NameserversPanelForm = React.memo(
                 <FormField
                   control={control}
                   name={`nameservers.${index}`}
+                  disabled={disableAllButtons}
                   render={({ field }) => (
                     <FormItem className="w-full">
                       <FormLabel className="text-sm text-zinc-400">
@@ -285,7 +316,7 @@ const NameserversPanelForm = React.memo(
                       <div className="flex items-center gap-2">
                         <FormControl>
                           <Input
-                            value={field.value}
+                            {...field}
                             onChange={(e) =>
                               handleUpdateNameserver(index, e.target.value)
                             }
@@ -299,6 +330,7 @@ const NameserversPanelForm = React.memo(
                             size="sm"
                             onClick={() => handleRemoveNameserver(index)}
                             className="text-zinc-400 hover:text-red-500"
+                            disabled={disableAllButtons}
                           >
                             Remove
                           </Button>
@@ -317,13 +349,18 @@ const NameserversPanelForm = React.memo(
                   variant="outline"
                   onClick={handleAddNameserver}
                   className="w-auto py-1.25 px-5 "
+                  disabled={disableAllButtons}
                 >
                   Add nameserver
                 </Button>
               )}
               <div className="flex items-center gap-2">
                 {areChanged ? (
-                  <Button variant="destructive" onClick={cancelChanges}>
+                  <Button
+                    variant="destructive"
+                    onClick={cancelChanges}
+                    disabled={disableAllButtons}
+                  >
                     Cancel
                   </Button>
                 ) : (
@@ -334,7 +371,9 @@ const NameserversPanelForm = React.memo(
                   loadingText="Saving..."
                   className={cn('w-auto py-1.25 px-5')}
                   onClick={handleSubmit(onSubmit)}
-                  disabled={isSubmitting || !isValid || !areChanged}
+                  disabled={
+                    isSubmitting || !isValid || !areChanged || disableAllButtons
+                  }
                   variant={'default'}
                 >
                   <SaveIcon width={20} height={20} /> Save Changes
@@ -400,6 +439,7 @@ export const NameserversPanelInner = ({
       </Layout>
     );
   }
+
   return (
     <Layout>
       <NameserversPanelForm
@@ -457,4 +497,25 @@ export const NameserversPanel = ({
     );
   }
   return false;
+};
+
+export const ActiveNameserversChangeWorkflowBanner = ({
+  activeNameserversChangeWorkflow,
+}: {
+  activeNameserversChangeWorkflow?: AppRouterOutput['domainConfig']['queryActiveNameserversChangeWorkflow'];
+}) => {
+  if (!activeNameserversChangeWorkflow) {
+    return null;
+  }
+
+  return (
+    <div className="flex bg-zinc-800 border-zinc-700 rounded-md p-2 w-full justify-center items-center gap-2">
+      <Loader2 className="h-4 w-4 animate-spin" />
+      <p>
+        {activeNameserversChangeWorkflow.operation === 'RESET_NAMESERVERS'
+          ? 'An operation to reset nameservers to Namefi defaults is in progress...'
+          : 'An operation to update nameservers is in progress...'}
+      </p>
+    </div>
+  );
 };
