@@ -16,6 +16,129 @@ const _logger = logger.child({
 });
 
 /**
+ * The result of comparing arrays of nameservers to expected nameservers
+ */
+export type NameserversComparisonResult = {
+  /**
+   * True if the nameservers are an exact match, i.e. arrays are the equivalent
+   */
+  isExactMatch: boolean;
+  /**
+   * True if the nameservers are a complete mismatch, i.e. no nameservers are in common
+   */
+  isCompleteMismatch: boolean;
+  /**
+   * True if the nameservers are using other nameservers along with the expected nameservers
+   */
+  isUsingOtherNameserversAlongWithExpectedNameservers: boolean;
+  /**
+   * True if the nameservers are using all the expected nameservers, ie; nameservers array includes all the expected nameservers
+   */
+  isUsingAllExpectedNameservers: boolean;
+  /**
+   * The nameservers that are used but not in the expected nameservers
+   */
+  usedNameserversNotInExpected: Set<Nameserver>;
+  /**
+   * The nameservers that are not used but are in the expected nameservers
+   */
+  unusedExpectedNameservers: Set<Nameserver>;
+  /**
+   * The nameservers that are in both the nameservers and expected nameservers
+   * if isExactMatch is true or isUsingAllExpectedNameservers is true, this will be the same as expectedNameservers
+   * if isCompleteMismatch is true, this will be an empty set
+   */
+  intersection: Set<Nameserver>;
+  /**
+   * The nameservers that are in the nameservers but not in the expected nameservers
+   * if isExactMatch is true, this will be an empty set
+   * if isCompleteMismatch is true, this will be the same as nameservers
+   */
+  difference: Set<Nameserver>;
+};
+
+/**
+ * Compares nameservers to expected nameservers
+ * @param nameservers - The nameservers to compare
+ * @param expectedNameservers - The expected nameservers
+ * @returns {NameserversComparisonResult} - The comparison result
+ */
+export function compareNameservers(
+  nameservers: Nameserver[],
+  expectedNameservers: Nameserver[],
+) {
+  const usedNameserversNotInExpected = new Set(nameservers);
+  const unusedExpectedNameservers = new Set(expectedNameservers);
+
+  // Initialize sets for the intersection and difference
+  const intersection = new Set<Nameserver>();
+  const difference = new Set<Nameserver>();
+
+  // Find the intersection of the nameservers and expected nameservers
+  expectedNameservers.forEach((ns) => {
+    if (usedNameserversNotInExpected.has(ns)) {
+      usedNameserversNotInExpected.delete(ns);
+      unusedExpectedNameservers.delete(ns);
+      intersection.add(ns);
+    } else {
+      difference.add(ns);
+    }
+  });
+
+  usedNameserversNotInExpected.forEach((ns) => {
+    difference.add(ns);
+  });
+
+  const isUsingAllExpectedNameservers = unusedExpectedNameservers.size === 0;
+  const isUsingOtherNameserversAlongWithExpectedNameservers =
+    isUsingAllExpectedNameservers && usedNameserversNotInExpected.size > 0;
+
+  const isExactMatch = difference.size === 0;
+  const isCompleteMismatch = intersection.size === 0;
+
+  return {
+    isExactMatch,
+    isCompleteMismatch,
+    isUsingOtherNameserversAlongWithExpectedNameservers,
+    isUsingAllExpectedNameservers,
+    usedNameserversNotInExpected,
+    unusedExpectedNameservers,
+    intersection,
+    difference,
+  };
+}
+
+/**
+ * Checks if a domain is using the Namefi Astra nameservers
+ * @param nameservers - The nameservers to check
+ * @returns {boolean} - True if the domain is using the Namefi Astra nameservers, false otherwise
+ */
+export const checkIfNameserversAreNamefiNameservers = (
+  nameservers: Nameserver[],
+): boolean => {
+  const comparisonResult = compareNameservers(
+    nameservers,
+    config.NAMEFI_ASTRA_NAMESERVERS,
+  );
+  return comparisonResult.isExactMatch;
+};
+
+/**
+ * Checks if a domain is using the old Namefi nameservers
+ * @param nameservers - The nameservers to check
+ * @returns {boolean} - True if the domain is using the old Namefi nameservers, false otherwise
+ */
+export const checkIfNameserversAreOldNamefiNameservers = (
+  nameservers: Nameserver[],
+): boolean => {
+  const comparisonResult = compareNameservers(nameservers, [
+    toPunycodeFqdn('ns1.namefi.io.'),
+    toPunycodeFqdn('ns2.namefi.io.'),
+  ]);
+  return comparisonResult.isExactMatch;
+};
+
+/**
  * Checks if a domain is using the Namefi Astra nameservers
  * @param normalizedDomainName - The normalized domain name to check
  * @returns {Promise<boolean>} - True if the domain is using the Namefi Astra nameservers, false otherwise
@@ -26,16 +149,14 @@ export const checkIfUsingNamefiNameservers = async (
   const nameservers = await sldRegistrar.getNameServers(
     toPunycodeDomainName(normalizedDomainName),
   );
-  const isUsingOtherNameservers = nameservers.some(
-    (ns: Nameserver) => !config.NAMEFI_ASTRA_NAMESERVERS.includes(ns),
-  );
-  return !isUsingOtherNameservers;
+  return checkIfNameserversAreNamefiNameservers(nameservers);
+  // TODO: if there's an advanced user that wants to use fallback nameservers, we should return comparisonResult.isUsingAllExpectedNameservers
 };
 
 /**
- * Checks if a domain is using the old Namefi Astra nameservers
+ * Checks if a domain is using the old Namefi nameservers
  * @param normalizedDomainName - The normalized domain name to check
- * @returns {Promise<boolean>} - True if the domain is using the old Namefi Astra nameservers, false otherwise
+ * @returns {Promise<boolean>} - True if the domain is using the old Namefi nameservers, false otherwise
  */
 export const checkIfUsingOldNamefiNameservers = async (
   normalizedDomainName: NamefiNormalizedDomain,
@@ -44,14 +165,7 @@ export const checkIfUsingOldNamefiNameservers = async (
     toPunycodeDomainName(normalizedDomainName),
   );
 
-  const isUsingOtherNameservers = nameservers.some(
-    (ns) =>
-      ![
-        toPunycodeFqdn('ns1.namefi.io.'),
-        toPunycodeFqdn('ns2.namefi.io.'),
-      ].includes(ns),
-  );
-  return !isUsingOtherNameservers;
+  return checkIfNameserversAreOldNamefiNameservers(nameservers);
 };
 
 /**
