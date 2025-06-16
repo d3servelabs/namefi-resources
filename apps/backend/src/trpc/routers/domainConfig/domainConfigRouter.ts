@@ -168,7 +168,7 @@ export const domainConfigRouter = createTRPCRouter({
                 config: {
                   showPanel: true,
                   message:
-                    'You are using the old Namefi nameservers. Please head to the NamefiApp dashboard to manage your domain.',
+                    'You are using the legacy Namefi nameservers. Please head to the NamefiApp dashboard to manage your domain.',
                   redirectTo: `https://app.namefi.io/dashboard/domains/${input.normalizedDomainName}`,
                   redirectToLabel: 'Redirect to NamefiApp',
                 },

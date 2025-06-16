@@ -130,11 +130,11 @@ export const checkIfNameserversAreNamefiNameservers = (
 };
 
 /**
- * Checks if a domain is using the old Namefi nameservers
+ * Checks if a domain is using the legacy Namefi nameservers
  * @param nameservers - The nameservers to check
- * @returns {boolean} - True if the domain is using the old Namefi nameservers, false otherwise
+ * @returns {boolean} - True if the domain is using the legacy Namefi nameservers, false otherwise
  */
-export const checkIfNameserversAreOldNamefiNameservers = (
+export const checkIfNameserversAreLegacyNamefiNameservers = (
   nameservers: Nameserver[],
 ): boolean => {
   const comparisonResult = compareNameservers(nameservers, [
@@ -160,9 +160,9 @@ export const checkIfUsingNamefiNameservers = async (
 };
 
 /**
- * Checks if a domain is using the old Namefi nameservers
+ * Checks if a domain is using the legacy Namefi nameservers
  * @param normalizedDomainName - The normalized domain name to check
- * @returns {Promise<boolean>} - True if the domain is using the old Namefi nameservers, false otherwise
+ * @returns {Promise<boolean>} - True if the domain is using the legacy Namefi nameservers, false otherwise
  */
 export const checkIfUsingOldNamefiNameservers = async (
   normalizedDomainName: NamefiNormalizedDomain,
@@ -171,7 +171,7 @@ export const checkIfUsingOldNamefiNameservers = async (
     toPunycodeDomainName(normalizedDomainName),
   );
 
-  return checkIfNameserversAreOldNamefiNameservers(nameservers);
+  return checkIfNameserversAreLegacyNamefiNameservers(nameservers);
 };
 
 /**
