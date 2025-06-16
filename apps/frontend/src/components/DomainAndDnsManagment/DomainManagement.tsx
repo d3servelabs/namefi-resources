@@ -59,18 +59,6 @@ export const DomainManagement: FC<DomainManagementProps> = ({
     newlyVisitedDomain: domain,
   });
 
-  const nameserversManagement = useMemo(() => {
-    return (
-      domainSupportedFeatures.nameserversManagement ?? {
-        enabled: false,
-        config: {
-          showPanel: false,
-          message: 'Coming Soon ...',
-        },
-      }
-    );
-  }, [domainSupportedFeatures]);
-
   return (
     <div className={cn('', className)} {...rest}>
       {isDomainOwnedByCurrentUser ? undefined : (
@@ -105,28 +93,7 @@ export const DomainManagement: FC<DomainManagementProps> = ({
 
               <TabsContent value="dns-management">
                 <div className="flex flex-col gap-4">
-                  {nameserversManagement.config.showPanel ? (
-                    nameserversManagement.enabled ? (
-                      <NameserversPanel
-                        domainName={domain as PunycodeDomainName}
-                      />
-                    ) : nameserversManagement.config.message ? (
-                      <Card className={cn('bg-zinc-900 border-zinc-800')}>
-                        <CardHeader>
-                          <CardTitle>Nameservers Management</CardTitle>
-                        </CardHeader>
-                        <div
-                          className="text-center py-12"
-                          // biome-ignore lint/security/noDangerouslySetInnerHtml:
-                          dangerouslySetInnerHTML={{
-                            __html: nameserversManagement.config.message,
-                          }}
-                        />
-                      </Card>
-                    ) : (
-                      <ComingSoonCard title="Nameservers Management" />
-                    )
-                  ) : undefined}
+                  <NameserversPanel domainName={domain as PunycodeDomainName} />
 
                   <DnssecPanel domainName={domain as PunycodeDomainName} />
                 </div>
