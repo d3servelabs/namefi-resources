@@ -148,6 +148,9 @@ const NameserversPanelInner = React.memo(
           trpc.domainConfig.getDomainSupportedFeatures.queryKey({
             normalizedDomainName: domainName,
           }),
+          trpc.domainConfig.dnssec.getDomainDnssecDetails.queryKey({
+            domainName,
+          }),
         ],
       });
     };

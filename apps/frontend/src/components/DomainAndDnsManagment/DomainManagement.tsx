@@ -18,6 +18,7 @@ import { Alert, AlertDescription, AlertTitle } from '../ui/shadcn/alert';
 import { Button } from '../ui/shadcn/button';
 import { Card, CardHeader, CardTitle } from '../ui/shadcn/card';
 import { DnsRecordsPanel } from './Panels/DNS/DnsRecordsPanel';
+import { DnssecPanel } from './Panels/DNSSEC/DnssecPanel';
 import { NameserversPanel } from './Panels/Nameservers/NameserversPanel';
 export type DomainManagementProps = HTMLAttributes<HTMLDivElement> & {
   domain: string;
@@ -44,9 +45,14 @@ export const DomainManagement: FC<DomainManagementProps> = ({
   const {
     data: { features: domainSupportedFeatures },
   } = useSuspenseQuery(
-    trpc.domainConfig.getDomainSupportedFeatures.queryOptions({
-      normalizedDomainName: domain,
-    }),
+    trpc.domainConfig.getDomainSupportedFeatures.queryOptions(
+      {
+        normalizedDomainName: domain,
+      },
+      {
+        refetchInterval: 10000,
+      },
+    ),
   );
 
   useRecentDomains({
@@ -90,43 +96,40 @@ export const DomainManagement: FC<DomainManagementProps> = ({
             <Tabs defaultValue="dns-records">
               <TabsList className="mb-8">
                 <TabsTrigger value="dns-records">DNS Records</TabsTrigger>
-                <TabsTrigger value="forwarding">Forwarding</TabsTrigger>
-                {nameserversManagement.config.showPanel ? (
-                  <TabsTrigger value="nameservers">Nameservers</TabsTrigger>
-                ) : undefined}
-                <TabsTrigger value="dnssec">DNSSEC</TabsTrigger>
+                <TabsTrigger value="dns-management">DNS Management</TabsTrigger>
               </TabsList>
 
               <TabsContent value="dns-records">
                 <DnsRecordsPanel domain={domain} />
               </TabsContent>
 
-              <TabsContent value="forwarding">
-                <div className="text-center py-12">Coming Soon ...</div>
-              </TabsContent>
+              <TabsContent value="dns-management">
+                <div className="flex flex-col gap-4">
+                  {nameserversManagement.config.showPanel ? (
+                    nameserversManagement.enabled ? (
+                      <NameserversPanel
+                        domainName={domain as PunycodeDomainName}
+                      />
+                    ) : nameserversManagement.config.message ? (
+                      <Card className={cn('bg-zinc-900 border-zinc-800')}>
+                        <CardHeader>
+                          <CardTitle>Nameservers Management</CardTitle>
+                        </CardHeader>
+                        <div
+                          className="text-center py-12"
+                          // biome-ignore lint/security/noDangerouslySetInnerHtml:
+                          dangerouslySetInnerHTML={{
+                            __html: nameserversManagement.config.message,
+                          }}
+                        />
+                      </Card>
+                    ) : (
+                      <ComingSoonCard title="Nameservers Management" />
+                    )
+                  ) : undefined}
 
-              {nameserversManagement.config.showPanel ? (
-                <TabsContent value="nameservers">
-                  {nameserversManagement.enabled ? (
-                    <NameserversPanel
-                      domainName={domain as PunycodeDomainName}
-                    />
-                  ) : nameserversManagement.config.message ? (
-                    <div
-                      className="text-center py-12"
-                      // biome-ignore lint/security/noDangerouslySetInnerHtml:
-                      dangerouslySetInnerHTML={{
-                        __html: nameserversManagement.config.message,
-                      }}
-                    />
-                  ) : (
-                    <div className="text-center py-12">Coming Soon ...</div>
-                  )}
-                </TabsContent>
-              ) : undefined}
-
-              <TabsContent value="dnssec">
-                <div className="text-center py-12">Coming Soon ...</div>
+                  <DnssecPanel domainName={domain as PunycodeDomainName} />
+                </div>
               </TabsContent>
             </Tabs>
           </TabsContent>
@@ -171,5 +174,20 @@ const MainTabs = () => {
     >
       <TabsTrigger value="dns-setting">DNS Setting</TabsTrigger>
     </TabsList>
+  );
+};
+
+export const ComingSoonCard = ({
+  title,
+}: {
+  title: string;
+}) => {
+  return (
+    <Card className={cn('bg-zinc-900 border-zinc-800')}>
+      <CardHeader>
+        <CardTitle>{title}</CardTitle>
+      </CardHeader>
+      <div className="text-center py-12">Coming Soon ...</div>
+    </Card>
   );
 };

@@ -143,6 +143,13 @@ export const domainConfigRouter = createTRPCRouter({
                   redirectToLabel: 'Redirect to NamefiApp',
                 },
               },
+
+              nameserversManagement: {
+                enabled: true,
+                config: {
+                  showPanel: true,
+                },
+              },
             },
           };
         }
