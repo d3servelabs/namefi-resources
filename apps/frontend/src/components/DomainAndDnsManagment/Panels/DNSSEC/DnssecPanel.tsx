@@ -1,12 +1,26 @@
 'use client';
 
 import { AsyncButton } from '@/components/buttons/AsyncButton';
+import { LoadingButton } from '@/components/buttons/LoadingButton';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/shadcn/alert-dialog';
+import { Button } from '@/components/ui/shadcn/button';
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
 } from '@/components/ui/shadcn/card';
+import { Skeleton } from '@/components/ui/shadcn/skeleton';
 import {
   Tooltip,
   TooltipContent,
@@ -14,10 +28,15 @@ import {
   TooltipTrigger,
 } from '@/components/ui/shadcn/tooltip';
 import { cn } from '@/lib/utils';
-import { useTRPC } from '@/utils/trpc';
+import { type AppRouterOutput, useTRPC } from '@/utils/trpc';
 import type { Nameserver } from '@namefi-astra/registrars/lib/abstract-registrar/data/nameservers';
 import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
-import { useMutation, useQuery, useSuspenseQuery } from '@tanstack/react-query';
+import {
+  useMutation,
+  useQuery,
+  useQueryClient,
+  useSuspenseQuery,
+} from '@tanstack/react-query';
 import {
   Info,
   Loader2,
@@ -29,6 +48,9 @@ import {
 import { isNotEmpty, isNotNil } from 'ramda';
 import { useMemo } from 'react';
 import { toast } from 'sonner';
+
+type DnssecStatusDetails =
+  AppRouterOutput['domainConfig']['dnssec']['getDomainDnssecDetails'];
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -122,39 +144,31 @@ export const DnssecPanelInner = ({
   const trpc = useTRPC();
 
   const { data, isLoading } = useQuery(
-    trpc.domainConfig.dnssec.getDomainDnssecDetails.queryOptions({
-      domainName,
-    }),
-  );
-
-  const enableNamefiSigning = useMutation(
-    trpc.domainConfig.dnssec.enableDnssec.mutationOptions({
-      onSuccess() {
-        toast.success('Request to Enable DNSSEC has been sent');
+    trpc.domainConfig.dnssec.getDomainDnssecDetails.queryOptions(
+      {
+        domainName,
       },
-      onError(error) {
-        console.error(error);
-        toast.error('Request to Enable DNSSEC has failed');
+      {
+        refetchInterval: 8_000,
       },
-    }),
-  );
-  const disableNamefiSigning = useMutation(
-    trpc.domainConfig.dnssec.disableDnssec.mutationOptions({
-      onSuccess() {
-        toast.success('Request to Disable DNSSEC has been sent');
-      },
-      onError(error) {
-        console.error(error);
-        toast.error('Request to Disable DNSSEC has failed');
-      },
-    }),
+    ),
   );
 
   if (isLoading) {
     return (
       <Layout>
-        <div className="flex items-center justify-center h-full">
-          <Loader2 className="h-4 w-4 animate-spin" />
+        <div className="flex flex-col gap-2">
+          <Skeleton className="h-6 w-80" />
+          <div className="flex items-center gap-2">
+            <Skeleton className="h-6 w-8" />
+            <Skeleton className="h-6 w-64" />
+          </div>
+          <div className="flex items-center gap-2">
+            <Skeleton className="h-6 w-8" />
+            <Skeleton className="h-6 w-64" />
+          </div>
+          <Skeleton className="h-8 w-48" />
+          <Skeleton className="h-4 w-96 mt-4" />
         </div>
       </Layout>
     );
@@ -175,7 +189,6 @@ export const DnssecPanelInner = ({
       </Layout>
     );
   }
-
   const zoneSigningStatus = (
     <div className="flex items-center gap-2">
       <div className="flex items-center gap-2">
@@ -193,7 +206,6 @@ export const DnssecPanelInner = ({
       </div>
     </div>
   );
-
   const isUsingNamefiSigning =
     data.isUsingNamefiDelegationSigner && data.zoneHasActiveDnssec;
 
@@ -239,32 +251,163 @@ export const DnssecPanelInner = ({
           {zoneSigningStatus}
         </div>
 
-        <div className="flex items-center gap-2 justify-between">
-          {isUsingNamefiSigning ? (
-            <AsyncButton
-              loadingText="Disabling..."
-              onClick={(e) => disableNamefiSigning.mutateAsync({ domainName })}
-              variant={'default'}
-            >
-              <ShieldMinusIcon width={20} height={20} /> Disable Namefi Signing
-            </AsyncButton>
-          ) : (
-            <AsyncButton
-              loadingText="Enabling..."
-              onClick={(e) => enableNamefiSigning.mutateAsync({ domainName })}
-              variant={'default'}
-            >
-              <ShieldPlusIcon width={20} height={20} /> Enable Namefi Signing
-            </AsyncButton>
-          )}
-        </div>
+        <DnssecPanelAction domainName={domainName} dnssecDetails={data} />
 
         <div className="text-sm text-zinc-500 mt-4">
           <p>
-            Changes to nameservers can take 24-48 hours to propagate globally.
+            Changes to DNSSEC are not immediate. It can take up to 24-48 hours
+            to propagate globally.
           </p>
         </div>
       </div>
     </Layout>
+  );
+};
+
+export const DnssecPanelAction = ({
+  domainName,
+  dnssecDetails,
+}: { domainName: PunycodeDomainName; dnssecDetails: DnssecStatusDetails }) => {
+  const trpc = useTRPC();
+  const queryClient = useQueryClient();
+  const {
+    data: activeDnssecOperationWorkflows,
+    isLoading: isLoadingActiveDnssecOperationWorkflows,
+  } = useQuery(
+    trpc.domainConfig.dnssec.getActiveDnssecOperationWorkflows.queryOptions({
+      domainName,
+    }),
+  );
+
+  const isUsingNamefiSigning =
+    dnssecDetails.isUsingNamefiDelegationSigner &&
+    dnssecDetails.zoneHasActiveDnssec;
+
+  const refetchQueries = async () => {
+    await queryClient.invalidateQueries({
+      queryKey: trpc.domainConfig.dnssec.getDomainDnssecDetails.queryKey({
+        domainName,
+      }),
+    });
+    await queryClient.refetchQueries({
+      queryKey:
+        trpc.domainConfig.dnssec.getActiveDnssecOperationWorkflows.queryKey({
+          domainName,
+        }),
+    });
+  };
+
+  const enableDnssecMutationOptions =
+    trpc.domainConfig.dnssec.enableDnssec.mutationOptions();
+
+  const enableNamefiSigning = useMutation({
+    ...enableDnssecMutationOptions,
+    mutationFn: async () => {
+      if (enableDnssecMutationOptions?.mutationFn) {
+        try {
+          await enableDnssecMutationOptions.mutationFn({ domainName });
+          await refetchQueries();
+          toast.success('Request to Enable DNSSEC has been sent');
+        } catch (error) {
+          console.error(error);
+          toast.error('Request to Enable DNSSEC has failed');
+        }
+      }
+    },
+  });
+
+  const disableDnssecMutationOptions =
+    trpc.domainConfig.dnssec.disableDnssec.mutationOptions();
+
+  const disableNamefiSigning = useMutation({
+    ...disableDnssecMutationOptions,
+    mutationFn: async () => {
+      if (disableDnssecMutationOptions?.mutationFn) {
+        try {
+          await disableDnssecMutationOptions.mutationFn({ domainName });
+          await refetchQueries();
+          toast.success('Request to Disable DNSSEC has been sent');
+        } catch (error) {
+          console.error(error);
+          toast.error('Request to Disable DNSSEC has failed');
+        }
+      }
+    },
+  });
+
+  if (isLoadingActiveDnssecOperationWorkflows) {
+    return (
+      <div className="flex flex-col gap-2">
+        <Skeleton className="h-8 w-48" />
+      </div>
+    );
+  }
+
+  if (activeDnssecOperationWorkflows?.hasActiveWorkflow) {
+    const operation =
+      activeDnssecOperationWorkflows?.workflowDetails?.operation;
+    if (operation) {
+      return (
+        <div className="flex items-center gap-2 bg-zinc-800 p-2 rounded-md">
+          <Loader2 className="w-4 h-4 animate-spin" />
+          <p>
+            A request to {operation === 'REMOVE_DNSSEC' ? 'disable' : 'enable'}{' '}
+            DNSSEC is already in progress
+          </p>
+        </div>
+      );
+    }
+    return (
+      <div>
+        <p>An operation is already in progress</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex items-center gap-2 justify-between">
+      {isUsingNamefiSigning ? (
+        <AlertDialog>
+          <AlertDialogTrigger asChild={true}>
+            <LoadingButton
+              isLoading={disableNamefiSigning.isPending}
+              loadingText="Disabling..."
+            >
+              <ShieldMinusIcon width={20} height={20} /> Disable Namefi Signing
+            </LoadingButton>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Disable Namefi Signing</AlertDialogTitle>
+              <AlertDialogDescription>
+                Are you sure you want to disable Namefi Signing?
+                <br />
+                <p>
+                  This will reduce the security of your domain. and it will
+                  affect service that rely on it (e.g. AutoENS)
+                </p>
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction
+                onClick={() => disableNamefiSigning.mutate({ domainName })}
+                asChild={true}
+              >
+                <Button variant={'destructive'}>Confirm and Disable</Button>
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      ) : (
+        <AsyncButton
+          loadingText="Enabling..."
+          onClick={(e) => enableNamefiSigning.mutateAsync({ domainName })}
+          variant={'default'}
+        >
+          <ShieldPlusIcon width={20} height={20} /> Enable Namefi Signing
+        </AsyncButton>
+      )}
+    </div>
   );
 };
