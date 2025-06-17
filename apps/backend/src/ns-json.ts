@@ -9,10 +9,12 @@ import type { RecordType } from '@namefi-astra/zod-dns';
 import { fqdnLowercaseSchema, recordTypeEnum } from '@namefi-astra/zod-dns';
 import { and, eq, sql } from 'drizzle-orm';
 import { Hono } from 'hono';
+import { isNotEmpty, isNotNil } from 'ramda';
 import { z } from 'zod';
 import { createLogger } from '#lib/logger';
 import { dnsRecordTypeCodes } from './lib/dns/recordTypeCodes';
 import type { DnsResponse, DnsTable } from './lib/dns/types';
+import { getAnswerForDnsQueryFromPreferences } from './lib/domains/domainPreferences';
 
 const nsJsonRouter = new Hono();
 
@@ -27,7 +29,6 @@ const USE_MOCK_DNS_TABLE = false;
 // curl -X GET 'http://localhost:3000/v1/ns-json?name=test.com.&type=1' # Response from Astra DB
 nsJsonRouter.get('/', async (c) => {
   const _logger = createLogger({ context: 'NS-JSON', query: c.req.query() });
-  _logger.info('Received request');
   // get qname and qtype from query params
 
   const qnameResult = fqdnLowercaseSchema.safeParse(c.req.query('name'));
@@ -66,7 +67,7 @@ nsJsonRouter.get('/', async (c) => {
   const qTypeEnum = recordTypeEnum.parse(qTypeString);
 
   const response = await getAnswerForDnsQuery(recordName, qTypeEnum);
-  _logger.info({ response }, 'Response from getAnswerForDnsQuery');
+
   if (response) {
     return c.json(response);
   }
@@ -78,7 +79,6 @@ nsJsonRouter.get('/', async (c) => {
     }
   }
 
-  _logger.warn(`No DNS record found for domain ${qname} ${qtype}`);
   c.status(404);
   return c.json({
     error: 'Not Found',
@@ -104,6 +104,31 @@ export const getAnswerForDnsQuery = async (
   recordName: NamefiNormalizedDomain,
   qTypeEnum: RecordType,
 ) => {
+  const result: DnsResponse = {
+    RCODE: undefined,
+    Answer: [],
+  };
+
+  const answerFromPreferences = await getAnswerForDnsQueryFromPreferences(
+    recordName,
+    qTypeEnum,
+  );
+
+  if (answerFromPreferences) {
+    if (isNotNil(answerFromPreferences.RCODE)) {
+      return answerFromPreferences;
+    }
+    if (
+      isNotNil(answerFromPreferences.Answer) &&
+      isNotEmpty(answerFromPreferences.Answer)
+    ) {
+      result.Answer = [
+        ...(result.Answer ?? []),
+        ...answerFromPreferences.Answer,
+      ];
+    }
+  }
+
   const records = await db.query.dnsRecordsTable.findMany({
     where: and(
       eq(
@@ -121,17 +146,22 @@ export const getAnswerForDnsQuery = async (
       eq(dnsRecordsTable.type, qTypeEnum),
     ),
   });
-  if (records.length > 0) {
-    const result: DnsResponse = {
+
+  result.Answer = [
+    ...(result.Answer ?? []),
+    ...records.map((record) => ({
+      name: recordName,
+      type: dnsRecordTypeCodes.get(record.type) as number,
+      TTL: record.ttl,
+      data: record.rdata,
+    })),
+  ];
+
+  if (isNotNil(result.Answer) && isNotEmpty(result.Answer)) {
+    return {
+      ...result,
       RCODE: 0,
-      Answer: records.map((record) => ({
-        name: recordName,
-        type: dnsRecordTypeCodes.get(record.type) as number,
-        TTL: record.ttl,
-        data: record.rdata,
-      })),
     };
-    return result;
   }
 
   return null;
@@ -176,7 +206,7 @@ export const getAnswerForDnsQueryMock = (
     return null;
   }
   const _logger = createLogger({
-    context: '[MOCK]NS-JSON',
+    context: 'NS-JSON',
     query: {
       name: qname,
       type: qtype,
@@ -188,7 +218,6 @@ export const getAnswerForDnsQueryMock = (
   }
   _logger.info(
     {
-      context: 'NS-JSON',
       qname: qname,
       qtype: qtype,
       foundRecord: record,
@@ -214,6 +243,5 @@ export const getAnswerForDnsQueryMock = (
     ],
   };
 
-  _logger.info({ result }, 'Sending DNS response');
   return result;
 };
