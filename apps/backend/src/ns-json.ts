@@ -66,14 +66,31 @@ nsJsonRouter.get('/', async (c) => {
   const qTypeEnumParseResult = recordTypeEnum.safeParse(qTypeString);
 
   if (!qTypeEnumParseResult.success) {
+    if (qTypeString) {
+      return c.json({
+        RCODE: 0,
+        Answer: [],
+      });
+    }
+    c.status(400);
     return c.json({
-      RCODE: 0,
-      Answer: [],
+      error: 'Bad Request',
+      message: `Invalid DNS record type: ${qTypeString}`,
     });
   }
 
   const qTypeEnum = qTypeEnumParseResult.data;
-  const recordName = fqdnLowercaseToNamefiNormalizedDomain(qname);
+  let recordName: NamefiNormalizedDomain;
+  try {
+    recordName = fqdnLowercaseToNamefiNormalizedDomain(qname);
+  } catch (err) {
+    _logger.warn({ err }, 'Domain normalisation failed');
+    c.status(400);
+    return c.json({
+      error: 'Bad Request',
+      message: (err as Error).message,
+    });
+  }
 
   const response = await getAnswerForDnsQuery(recordName, qTypeEnum);
 
