@@ -11,6 +11,10 @@
     "jsx": "react-jsx",
     "outDir": "./dist",
     "rootDir": ".",
-    "baseUrl": "."
-  }
+    "baseUrl": ".",
+    "paths": {
+      "#lib/*": ["./src/lib/*"]
+    }
+  },
+  "include": ["global.ts", "src/**/*.ts"]
 }

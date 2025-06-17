@@ -1,3 +1,6 @@
+// this needs to be the first import
+import '../global';
+// other imports
 import { serve } from '@hono/node-server';
 import { trpcServer } from '@hono/trpc-server'; // Deno 'npm:@hono/trpc-server'
 import { Hono } from 'hono';

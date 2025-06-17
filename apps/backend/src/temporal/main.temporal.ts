@@ -1,3 +1,6 @@
+// this needs to be the first import
+import '../../global';
+// other imports
 import { initWorkers } from './workers';
 
 import { serve } from '@hono/node-server';

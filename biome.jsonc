@@ -58,5 +58,20 @@
     "formatter": {
       "quoteStyle": "single"
     }
-  }
+  },
+  "overrides": [
+    {
+      "include": ["apps/backend/**/*.ts"],
+      "javascript": {
+        "globals": ["console", "logger", "createLogger"]
+      },
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noConsoleLog": "warn"
+          }
+        }
+      }
+    }
+  ]
 }
