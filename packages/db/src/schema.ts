@@ -454,7 +454,13 @@ export const domainConfigTable = pgTable(
     normalizedDomainName: text('normalized_domain_name')
       .notNull()
       .$type<NamefiNormalizedDomain>(),
+    /**
+     * @note: dnssec_enabled is defaulted to false, because it needs to be setup correctly before it can be enabled (enableDnssecWorkflow)
+     */
     dnssecEnabled: boolean('dnssec_enabled').notNull().default(false),
+    autoEnsEnabled: boolean('auto_ens_enabled').notNull().default(true),
+    autoParkEnabled: boolean('auto_park_enabled').notNull().default(true),
+    forwardTo: text('forward_to'),
     ...timestamps,
   },
   (table) => [
@@ -477,9 +483,10 @@ export const domainUserPreferencesTable = pgTable(
     userId: uuid('user_id')
       .notNull()
       .references(() => usersTable.id, { onDelete: 'cascade' }),
+    /**
+     * @note: auto_renew_enabled is defaulted to false, because the nft could be transferred to another wallet and inflict charges on another user
+     */
     autoRenewEnabled: boolean('auto_renew_enabled').notNull().default(false),
-    autoEnsEnabled: boolean('auto_ens_enabled').notNull().default(false),
-    autoParkEnabled: boolean('auto_park_enabled').notNull().default(false),
     ...timestamps,
   },
   (table) => [
