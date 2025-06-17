@@ -1,10 +1,10 @@
 import Axios, {
+  type AxiosError,
   type AxiosInstance,
   type AxiosProxyConfig,
   type AxiosResponse,
 } from 'axios';
-import AxiosLogger from 'axios-logger';
-import { setGlobalConfig } from 'axios-logger';
+import pino from 'pino';
 import { assocPath, isNotNil, mergeDeepLeft, omit, take } from 'ramda';
 import { signMessage } from '#lib/sign-message';
 import type { DynadotCommandOutput, DynadotCommandsParams } from './commands';
@@ -21,6 +21,7 @@ export type LoggingOptions = {
   prefix: string;
   allowSystemBusyLog?: boolean;
   blackList?: (params: Record<string, any>) => boolean;
+  customLogger?: pino.Logger;
 };
 export type ProxyOptions = {
   httpAgent?: any;
@@ -84,6 +85,10 @@ export class Dynadot {
         Object.entries(config.params ?? {}).forEach(
           ([key, value]: [string, any]) => url.searchParams.set(key, value),
         );
+        (config as any).context = {
+          ...((config as any).context ?? {}),
+          params: config.params,
+        }; //this is for logging
         config.params = undefined;
         config.url = url.toString(); // payload is sent as query params (so url-encoded params ), hence signing the url
         config.headers['x-namefi-signature'] = signMessage({
@@ -168,29 +173,70 @@ class MaxTriesReachedError extends Error {
 }
 
 function setupLoggers(instance: AxiosInstance, options: LoggingOptions) {
-  if (options.enabled !== false) {
-    setGlobalConfig({
-      prefixText: options.prefix,
-      dateFormat: 'HH:MM:ss',
-      status: true,
-      method: false,
-      headers: false,
-      params: true,
-      data: true,
+  const logger =
+    options.customLogger ??
+    pino({
+      name: options.prefix ?? 'Dynadot',
     });
 
-    const errorLogger = (error: any) => {
-      AxiosLogger.errorLogger(error);
+  if (options.enabled !== false) {
+    const errorLogger = (error: AxiosError) => {
+      let _error = assocPath(['config', 'params', 'key'], '[REDACTED]', error);
+      _error = assocPath(
+        ['config', 'context', 'params', 'key'],
+        '[REDACTED]',
+        _error,
+      );
+      // this should remove it from both request and response object as well since it's cyclic
+      logger.error(_error, 'Request Error');
     };
+    const requestLogger = (req: any) => {
+      const params = req.params ?? {};
+      const command = params.command;
+      const domain =
+        params.domain ??
+        params.domainName ??
+        params.domainNameLdh ??
+        params.domain_name;
+      logger.info(
+        {
+          command,
+          domain,
+          params: omit(['command'], params ?? {}),
+        },
+        `${domain ? `Domain(${domain}) ` : ''}Command(${command}) Request Sent`,
+      );
+    };
+    const responseLogger = (res: AxiosResponse) => {
+      const context = (res.config as any).context ?? {};
+      const params = context.params ?? {};
+      const command = params.command;
+      const domain =
+        params.domain ??
+        params.domainName ??
+        params.domainNameLdh ??
+        params.domain_name;
+      logger.info(
+        {
+          command,
+          domain,
+          params: omit(['command'], params ?? {}),
+          data: res.data,
+          status: res.status,
+          statusText: res.statusText,
+        },
+        `${domain ? `Domain(${domain}) ` : ''}Command(${command}) Response Received`,
+      );
+    };
+
     instance.interceptors.request.use((req) => {
       if (options.blackList?.(req.params)) {
         return req;
       }
-      AxiosLogger.requestLogger(
-        assocPath(['params', 'key'], '[REDACTED]', req),
-      );
+      requestLogger(assocPath(['params', 'key'], '[REDACTED]', req));
       return req;
     }, errorLogger);
+
     instance.interceptors.response.use((res) => {
       if (options.blackList?.(res.config.params)) {
         return res;
@@ -210,11 +256,17 @@ function setupLoggers(instance: AxiosInstance, options: LoggingOptions) {
           return res;
         }
       }
-      const dataText = JSON.stringify(res.data);
-      const _res = assocPath(['config', 'params', 'key'], '[REDACTED]', res);
-      AxiosLogger.responseLogger({
+      let _res = assocPath(['config', 'params', 'key'], '[REDACTED]', res);
+      _res = assocPath(
+        ['config', 'context', 'params', 'key'],
+        '[REDACTED]',
+        _res,
+      );
+      const dataText = JSON.stringify(_res.data);
+
+      responseLogger({
         ..._res,
-        data: take(200, dataText) + (dataText.length > 400 ? '...' : ''),
+        data: dataText.length > 200 ? `${take(200, dataText)}...` : _res.data,
       });
       return _res;
     }, errorLogger);

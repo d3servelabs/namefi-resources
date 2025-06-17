@@ -77,9 +77,7 @@ export class R53RegistrarService extends AbstractRegistrarService<Registrars> {
   nameservers = [1, 2, 3, 4].map((i) => `ns${i}.namefi.io`);
   client: Route53DomainsClient;
 
-  logger = pino({
-    name: 'R53RegistrarService',
-  });
+  readonly logger: pino.Logger;
 
   priceMap: Record<
     any,
@@ -90,12 +88,17 @@ export class R53RegistrarService extends AbstractRegistrarService<Registrars> {
     region,
     accessKeyId,
     secretAccessKey,
+    customLogger,
   }: {
     region: string;
     accessKeyId: string;
     secretAccessKey: string;
+    customLogger?: pino.Logger;
   }) {
     super();
+    this.logger = customLogger ?? pino({ name: R53RegistrarService.name });
+    this.logger.info('R53RegistrarService constructor');
+
     this.client = new Route53DomainsClient({
       region,
       credentials: {

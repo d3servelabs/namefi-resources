@@ -485,6 +485,7 @@ export function createRegistrarService(config: {
   DYNADOT_PRIVATE_KEY?: string;
   DYNADOT_ACCOUNT_ID?: string;
   DYNADOT_BASE_URL?: string;
+  customLogger?: pino.Logger;
 }): RegistrarService {
   const r53Registrar = new R53RegistrarService({
     region: config.AWS_REGION,
@@ -497,6 +498,7 @@ export function createRegistrarService(config: {
     DYNADOT_PRIVATE_KEY: config.DYNADOT_PRIVATE_KEY,
     DYNADOT_ACCOUNT_ID: config.DYNADOT_ACCOUNT_ID,
     DYNADOT_BASE_URL: config.DYNADOT_BASE_URL,
+    customLogger: config.customLogger,
   });
 
   return new RegistrarService(r53Registrar, dynadot, {

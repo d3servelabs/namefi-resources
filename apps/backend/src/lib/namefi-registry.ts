@@ -19,6 +19,8 @@ import { toPunycodeDomainName } from '@namefi-astra/registrars/lib/data/validati
 import { resolve } from '@namefi-astra/utils/promises/resolve';
 import pMap from 'p-map';
 import { secrets } from '#lib/env';
+import { logger } from '#lib/logger';
+
 export const sldRegistrar = createRegistrarService({
   AWS_REGION: config.AWS_REGION,
   AWS_ACCESS_KEY_ID: secrets.AWS_ACCESS_KEY_ID,
@@ -27,6 +29,7 @@ export const sldRegistrar = createRegistrarService({
   DYNADOT_PRIVATE_KEY: secrets.DYNADOT_PRIVATE_KEY,
   DYNADOT_ACCOUNT_ID: secrets.DYNADOT_ACCOUNT_ID,
   DYNADOT_BASE_URL: config.DYNADOT_BASE_URL,
+  customLogger: logger,
 });
 
 // biome-ignore lint/suspicious/useAwait: it will be a db query in upcoming updates

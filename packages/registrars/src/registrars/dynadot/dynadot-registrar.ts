@@ -65,7 +65,7 @@ const DYNADOT_DOMAIN_REGISTER_CHECK_TIME_WINDOW_IN_MINUTES = 30;
 
 export class DynadotRegistrarService extends AbstractRegistrarService<Registrars> {
   key = Registrars.Dynadot;
-  readonly logger = pino({ name: DynadotRegistrarService.name });
+  readonly logger: pino.Logger;
   private readonly client: Dynadot;
 
   constructor(config: {
@@ -78,8 +78,13 @@ export class DynadotRegistrarService extends AbstractRegistrarService<Registrars
     DYNADOT_CONFIG_RETRY_WHEN_BUSY?: boolean;
     DYNADOT_CONFIG_RETRY_BACKOFF?: number;
     DYNADOT_BASE_URL?: string;
+    customLogger?: pino.Logger;
   }) {
     super();
+    this.logger =
+      config.customLogger ?? pino({ name: DynadotRegistrarService.name });
+    this.logger.info('DynadotRegistrarService constructor');
+
     let proxyOptions: ProxyOptions | undefined;
 
     if (config.DYNADOT_PRIVATE_KEY && config.DYNADOT_ACCOUNT_ID) {
@@ -104,7 +109,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService<Registrars
         enabled: true,
         prefix: Dynadot.name,
         allowSystemBusyLog: config.DYNADOT_CONFIG_LOG_SYSTEM_BUSY,
-
+        customLogger: config.customLogger,
         blackList(params: any) {
           return params?.command === DynadotCommand.tld_price;
         },
