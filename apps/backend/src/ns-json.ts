@@ -22,18 +22,9 @@ nsJsonRouter.get('/healthz', (c) => c.json({ message: 'OK' }));
 
 const USE_MOCK_DNS_TABLE = false;
 
-// Define route handler for DNS API endpoint
-//
-// Note: to test this endpoint, you can use the following curl command:
-// curl -X GET 'http://localhost:3000/v1/ns-json?name=example.com.&type=1' # Mocked response
-// curl -X GET 'http://localhost:3000/v1/ns-json?name=test.com.&type=1' # Response from Astra DB
-nsJsonRouter.get('/', async (c) => {
-  const _logger = createLogger({ context: 'NS-JSON', query: c.req.query() });
-  // get qname and qtype from query params
-
-  const qnameResult = fqdnLowercaseSchema.safeParse(c.req.query('name'));
-
-  const qtypeResult = z
+const requestQuerySchema = z.object({
+  name: fqdnLowercaseSchema,
+  type: z
     .string()
     .superRefine((val, ctx) => {
       if (Number.isNaN(Number(val))) {
@@ -44,27 +35,45 @@ nsJsonRouter.get('/', async (c) => {
       }
     })
     .transform(Number)
-    .pipe(z.number().int().min(1).max(255))
-    .safeParse(c.req.query('type'));
+    .pipe(z.number().int().min(1).max(255)),
+});
 
-  if (!(qnameResult.success && qtypeResult.success)) {
+// Define route handler for DNS API endpoint
+//
+// Note: to test this endpoint, you can use the following curl command:
+// curl -X GET 'http://localhost:3000/v1/ns-json?name=example.com.&type=1' # Mocked response
+// curl -X GET 'http://localhost:3000/v1/ns-json?name=test.com.&type=1' # Response from Astra DB
+nsJsonRouter.get('/', async (c) => {
+  const _logger = createLogger({ context: 'NS-JSON', query: c.req.query() });
+  // get qname and qtype from query params
+
+  const requestQueryResult = requestQuerySchema.safeParse(c.req.query());
+
+  if (!requestQueryResult.success) {
     c.status(400);
     return c.json({
       error: 'Bad Request',
-      message: `Invalid parameters, expecting name and type but got errors. ${
-        qnameResult.error ? `name: ${qnameResult.error}` : ''
-      } ${qtypeResult.error ? `type: ${qtypeResult.error}` : ''}`,
+      message: `Invalid parameters, expecting name and type but got errors. ${requestQueryResult.error.issues
+        .map((issue) => `${issue.path.join('.')}: ${issue.message}`)
+        .join(', ')}`,
     });
   }
 
-  const qname = qnameResult.data;
-  const qtype = qtypeResult.data;
+  const { name: qname, type: qtype } = requestQueryResult.data;
 
-  const recordName = fqdnLowercaseToNamefiNormalizedDomain(qname);
   // convert qtype to RecordType (string enum)
-
   const qTypeString = dnsRecordTypeCodes.inverse.get(qtype);
-  const qTypeEnum = recordTypeEnum.parse(qTypeString);
+  const qTypeEnumParseResult = recordTypeEnum.safeParse(qTypeString);
+
+  if (!qTypeEnumParseResult.success) {
+    return c.json({
+      RCODE: 0,
+      Answer: [],
+    });
+  }
+
+  const qTypeEnum = qTypeEnumParseResult.data;
+  const recordName = fqdnLowercaseToNamefiNormalizedDomain(qname);
 
   const response = await getAnswerForDnsQuery(recordName, qTypeEnum);
 
