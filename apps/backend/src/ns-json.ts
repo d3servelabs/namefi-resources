@@ -1,73 +1,24 @@
 // Router for NS JSON
 
 import { db, dnsRecordsTable } from '@namefi-astra/db';
-import { fqdnLowercaseToNamefiNormalizedDomain } from '@namefi-astra/utils';
+import {
+  type NamefiNormalizedDomain,
+  fqdnLowercaseToNamefiNormalizedDomain,
+} from '@namefi-astra/utils';
+import type { RecordType } from '@namefi-astra/zod-dns';
 import { fqdnLowercaseSchema, recordTypeEnum } from '@namefi-astra/zod-dns';
 import { and, eq, sql } from 'drizzle-orm';
 import { Hono } from 'hono';
-import { BiMap } from 'mnemonist';
 import { z } from 'zod';
 import { createLogger } from '#lib/logger';
+import { dnsRecordTypeCodes } from './lib/dns/recordTypeCodes';
+import type { DnsResponse, DnsTable } from './lib/dns/types';
 
 const nsJsonRouter = new Hono();
 
 nsJsonRouter.get('/healthz', (c) => c.json({ message: 'OK' }));
 
-const dnsType = BiMap.from({
-  A: 1,
-  AAAA: 28,
-  CNAME: 5,
-  MX: 15,
-  NS: 2,
-  SOA: 6,
-  TXT: 16,
-}) as BiMap<string, number>;
-
-interface DnsRecord {
-  [key: number]: string;
-}
-
-interface DnsTable {
-  [domain: string]: DnsRecord;
-}
-
-const mockDnsTable: DnsTable = {
-  'example.com.': {
-    [dnsType.get('A') as number]: '24.199.74.33',
-    [dnsType.get('AAAA') as number]: '2606:4700:3031:1000:0:0:0:33',
-    [dnsType.get('MX') as number]: '10 mail.example.com',
-  },
-  '0x801.click.': {
-    [dnsType.get('A') as number]: '24.199.74.33',
-    [dnsType.get('AAAA') as number]: '2606:4700:3031:1000:0:0:0:33',
-    [dnsType.get('MX') as number]: '10 0x801.click',
-  },
-  '1.0x801.click.': {
-    [dnsType.get('A') as number]: '24.199.74.33',
-    [dnsType.get('AAAA') as number]: '2606:4700:3031:1000:0:0:0:33',
-    [dnsType.get('MX') as number]: '10 1.0x801.click',
-    [dnsType.get('TXT') as number]: 'abcd',
-  },
-  '0x002.click.': {
-    [dnsType.get('A') as number]: '24.199.74.33',
-    [dnsType.get('AAAA') as number]: '2606:4700:3031:1000:0:0:0:33',
-    [dnsType.get('MX') as number]: '10 0x002.click',
-  },
-};
-
-interface DnsResponse {
-  RCODE?: number;
-  Answer?: Array<{
-    name: string;
-    type: number;
-    TTL: number;
-    data: string;
-  }>;
-  Question?: Array<{
-    name: string;
-    type: number;
-  }>;
-}
+const USE_MOCK_DNS_TABLE = false;
 
 // Define route handler for DNS API endpoint
 //
@@ -111,9 +62,48 @@ nsJsonRouter.get('/', async (c) => {
   const recordName = fqdnLowercaseToNamefiNormalizedDomain(qname);
   // convert qtype to RecordType (string enum)
 
-  const qTypeString = dnsType.inverse.get(qtype);
+  const qTypeString = dnsRecordTypeCodes.inverse.get(qtype);
   const qTypeEnum = recordTypeEnum.parse(qTypeString);
 
+  const response = await getAnswerForDnsQuery(recordName, qTypeEnum);
+  _logger.info({ response }, 'Response from getAnswerForDnsQuery');
+  if (response) {
+    return c.json(response);
+  }
+
+  if (USE_MOCK_DNS_TABLE) {
+    const response = await getAnswerForDnsQueryMock(recordName, qTypeEnum);
+    if (response) {
+      return c.json(response);
+    }
+  }
+
+  _logger.warn(`No DNS record found for domain ${qname} ${qtype}`);
+  c.status(404);
+  return c.json({
+    error: 'Not Found',
+    message: 'No DNS record found for domain',
+  });
+});
+
+// fallback route when not captured
+// biome-ignore lint/suspicious/useAwait: to be added
+nsJsonRouter.use('/*', async (c) => {
+  const _logger = createLogger({ context: 'NS-JSON', query: c.req.query() });
+  _logger.error(`Unhandled request: ${c.req.method} ${c.req.url}`);
+  c.status(404);
+  return c.json({
+    error: 'Not Found',
+    message: 'The requested endpoint does not exist',
+  });
+});
+
+export { nsJsonRouter };
+
+export const getAnswerForDnsQuery = async (
+  recordName: NamefiNormalizedDomain,
+  qTypeEnum: RecordType,
+) => {
   const records = await db.query.dnsRecordsTable.findMany({
     where: and(
       eq(
@@ -136,30 +126,72 @@ nsJsonRouter.get('/', async (c) => {
       RCODE: 0,
       Answer: records.map((record) => ({
         name: recordName,
-        type: dnsType.get(record.type) as number,
+        type: dnsRecordTypeCodes.get(record.type) as number,
         TTL: record.ttl,
         data: record.rdata,
       })),
     };
-    return c.json(result);
+    return result;
   }
 
-  // make a tRPC query to get the DNS record by calling
-  if (!mockDnsTable[qname]?.[qtype]) {
-    _logger.warn(`No DNS record found for domain ${qname} ${qtype}`);
-    c.status(404);
-    return c.json({
-      error: 'Not Found',
-      message: 'No DNS record found for domain',
-    });
-  }
+  return null;
+};
 
+const mockDnsTable: DnsTable = {
+  'example.com.': {
+    [dnsRecordTypeCodes.get('A') as number]: '24.199.74.33',
+    [dnsRecordTypeCodes.get('AAAA') as number]: '2606:4700:3031:1000:0:0:0:33',
+    [dnsRecordTypeCodes.get('MX') as number]: '10 mail.example.com',
+  },
+  '0x801.click.': {
+    [dnsRecordTypeCodes.get('A') as number]: '24.199.74.33',
+    [dnsRecordTypeCodes.get('AAAA') as number]: '2606:4700:3031:1000:0:0:0:33',
+    [dnsRecordTypeCodes.get('MX') as number]: '10 0x801.click',
+  },
+  '1.0x801.click.': {
+    [dnsRecordTypeCodes.get('A') as number]: '24.199.74.33',
+    [dnsRecordTypeCodes.get('AAAA') as number]: '2606:4700:3031:1000:0:0:0:33',
+    [dnsRecordTypeCodes.get('MX') as number]: '10 1.0x801.click',
+    [dnsRecordTypeCodes.get('TXT') as number]: 'abcd',
+  },
+  '0x002.click.': {
+    [dnsRecordTypeCodes.get('A') as number]: '24.199.74.33',
+    [dnsRecordTypeCodes.get('AAAA') as number]: '2606:4700:3031:1000:0:0:0:33',
+    [dnsRecordTypeCodes.get('MX') as number]: '10 0x002.click',
+  },
+};
+
+/**
+ * Mocked DNS table for testing
+ * @param qname - The name of the DNS record
+ * @param qtypeEnum - The type of the DNS record
+ * @returns The DNS response
+ */
+export const getAnswerForDnsQueryMock = (
+  qname: string,
+  qtypeEnum: RecordType,
+) => {
+  const qtype = dnsRecordTypeCodes.get(qtypeEnum);
+  if (!qtype) {
+    return null;
+  }
+  const _logger = createLogger({
+    context: '[MOCK]NS-JSON',
+    query: {
+      name: qname,
+      type: qtype,
+    },
+  });
+  const record = mockDnsTable[qname]?.[qtype];
+  if (!record) {
+    return null;
+  }
   _logger.info(
     {
       context: 'NS-JSON',
-      qname,
-      qtype,
-      foundRecord: mockDnsTable[qname][qtype],
+      qname: qname,
+      qtype: qtype,
+      foundRecord: record,
     },
     `Found DNS record ${qname} ${qtype}`,
   );
@@ -181,20 +213,7 @@ nsJsonRouter.get('/', async (c) => {
       },
     ],
   };
+
   _logger.info({ result }, 'Sending DNS response');
-  return c.json(result);
-});
-
-// fallback route when not captured
-// biome-ignore lint/suspicious/useAwait: to be added
-nsJsonRouter.use('/*', async (c) => {
-  const _logger = createLogger({ context: 'NS-JSON', query: c.req.query() });
-  _logger.error(`Unhandled request: ${c.req.method} ${c.req.url}`);
-  c.status(404);
-  return c.json({
-    error: 'Not Found',
-    message: 'The requested endpoint does not exist',
-  });
-});
-
-export { nsJsonRouter };
+  return result;
+};
