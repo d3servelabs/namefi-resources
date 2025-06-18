@@ -514,6 +514,16 @@ export const aiGenerationsTable = pgTable(
     domain: text('domain').notNull().$type<NamefiNormalizedDomain>(),
     type: aiGenerationTypeEnum('type').notNull(),
     referenceGenerationId: uuid('reference_generation_id'),
+    tokenUsage: jsonb('token_usage')
+      .$type<
+        Array<{
+          model: string;
+          inputTokens: number;
+          outputTokens: number;
+        }>
+      >()
+      .notNull()
+      .default([]),
     input: jsonb('input').notNull().$type<
       | {
           type: 'logo';

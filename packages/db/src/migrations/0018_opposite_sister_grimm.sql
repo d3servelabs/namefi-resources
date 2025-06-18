@@ -1,0 +1,1 @@
+ALTER TABLE "ai_generations" ADD COLUMN "token_usage" jsonb DEFAULT '[]'::jsonb NOT NULL;
