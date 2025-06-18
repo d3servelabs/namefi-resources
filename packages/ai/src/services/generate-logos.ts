@@ -1,3 +1,4 @@
+import type { UsageMetadata } from '@langchain/core/messages';
 import { MODEL_CONFIGS, STORAGE_BUCKETS } from '../lib/config/models';
 import {
   createGenerationMessages,
@@ -28,6 +29,8 @@ interface GeneratedLogo {
   storagePath?: string;
   revisedPrompt?: string;
   generationCallId?: string;
+  tokenUsage?: UsageMetadata;
+  model: string;
 }
 
 /**
@@ -121,6 +124,8 @@ export async function generateLogo(
         storagePath: filePath,
         revisedPrompt,
         generationCallId,
+        tokenUsage: response.usage_metadata,
+        model: MODEL_CONFIGS.LOGO_GENERATION.toolConfig.model,
       };
     }
 

@@ -32,7 +32,7 @@ export const MODEL_CONFIGS = {
   } satisfies ImageGenerationConfig,
 
   MARKETING_IMAGE_GENERATION: {
-    model: 'gpt-4.1-mini',
+    model: 'gpt-4.1',
     temperature: 0.7,
     toolConfig: {
       type: 'image_generation',

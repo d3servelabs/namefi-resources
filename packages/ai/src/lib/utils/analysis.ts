@@ -1,4 +1,8 @@
-import { HumanMessage, SystemMessage } from '@langchain/core/messages';
+import {
+  HumanMessage,
+  SystemMessage,
+  type UsageMetadata,
+} from '@langchain/core/messages';
 import { ChatOpenAI } from '@langchain/openai';
 import type { z } from 'zod';
 import { secrets } from '../env';
@@ -19,6 +23,12 @@ export function createAnalysisModel(config: AnalysisConfig): ChatOpenAI {
   });
 }
 
+export type AnalysisResult<T> = {
+  data: T;
+  tokenUsage?: UsageMetadata;
+  model: string;
+};
+
 /**
  * Perform structured analysis using a schema
  */
@@ -28,13 +38,21 @@ export async function performStructuredAnalysis<T>(
   schemaName: string,
   systemPrompt: string,
   userPrompt: string,
-): Promise<T> {
+): Promise<AnalysisResult<T>> {
   const structuredModel = model.withStructuredOutput(schema, {
     name: schemaName,
+    includeRaw: true,
   });
 
-  return (await structuredModel.invoke([
+  const result = await structuredModel.invoke([
     new SystemMessage(systemPrompt),
     new HumanMessage(userPrompt),
-  ])) as T;
+  ]);
+
+  return {
+    data: result.parsed as T,
+    // @ts-expect-error - TODO: fix this type mismatch
+    tokenUsage: result.raw.usage_metadata as UsageMetadata,
+    model: model.model,
+  };
 }

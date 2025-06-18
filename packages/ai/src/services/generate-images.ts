@@ -1,4 +1,8 @@
-import { AIMessage, type BaseMessageLike } from '@langchain/core/messages';
+import {
+  AIMessage,
+  type BaseMessageLike,
+  type UsageMetadata,
+} from '@langchain/core/messages';
 import { MODEL_CONFIGS, STORAGE_BUCKETS } from '../lib/config/models';
 import { sanitizeDomainName } from '../lib/utils/domain';
 import {
@@ -32,6 +36,8 @@ interface GeneratedImage {
   storagePath?: string;
   revisedPrompt?: string;
   generationCallId?: string;
+  tokenUsage?: UsageMetadata;
+  model: string;
 }
 
 /**
@@ -177,6 +183,8 @@ export async function generateMarketingImage(
         storagePath: filePath,
         revisedPrompt,
         generationCallId,
+        tokenUsage: response.usage_metadata,
+        model: MODEL_CONFIGS.MARKETING_IMAGE_GENERATION.toolConfig.model,
       };
     }
 

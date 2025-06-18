@@ -1,6 +1,6 @@
 import { PutObjectCommand } from '@aws-sdk/client-s3';
 import {
-  type AIMessageChunk,
+  type AIMessage,
   type BaseMessageLike,
   HumanMessage,
   SystemMessage,
@@ -50,7 +50,7 @@ export function createImageGenerationModel(config: ImageGenerationConfig) {
 /**
  * Extract image data from AI response
  */
-export function extractImageData(response: AIMessageChunk): ImageData {
+export function extractImageData(response: AIMessage): ImageData {
   if (!response.additional_kwargs?.tool_outputs) {
     console.error('No tool outputs found in response');
     return { imageData: null };
@@ -107,7 +107,7 @@ export async function uploadImageToS3(
 export async function generateImageWithTiming(
   model: ReturnType<ChatOpenAI['bindTools']>,
   messages: BaseMessageLike[],
-): Promise<AIMessageChunk> {
+): Promise<AIMessage> {
   const startTime = Date.now();
   const response = await model.invoke(messages);
   const generationTime = Date.now() - startTime;

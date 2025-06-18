@@ -35,12 +35,11 @@ export const aiRouter = createTRPCRouter({
         const { brandName, description, type, style } = input;
 
         // Step 1: Analyze brand and generate logo concept
-        const logoConcept = await analyzeLogoRequirements(
-          brandName,
-          description,
-          type,
-          style,
-        );
+        const {
+          data: logoConcept,
+          tokenUsage: logoConceptTokenUsage,
+          model: logoConceptModel,
+        } = await analyzeLogoRequirements(brandName, description, type, style);
 
         // Step 2: Generate logo image
         const runId = createRunId(brandName);
@@ -56,6 +55,19 @@ export const aiRouter = createTRPCRouter({
             message: 'Failed to generate logo',
           });
         }
+
+        const aggregateTokenUsage = [
+          {
+            model: logoConceptModel,
+            inputTokens: logoConceptTokenUsage?.input_tokens ?? 0,
+            outputTokens: logoConceptTokenUsage?.output_tokens ?? 0,
+          },
+          {
+            model: generatedLogo.model,
+            inputTokens: generatedLogo.tokenUsage?.input_tokens ?? 0,
+            outputTokens: generatedLogo.tokenUsage?.output_tokens ?? 0,
+          },
+        ];
 
         // Step 3: Create generation record only after successful generation
         const [generationRecord] = await db
@@ -75,6 +87,7 @@ export const aiRouter = createTRPCRouter({
               url: generatedLogo.url,
               externalId: generatedLogo.generationCallId,
             },
+            tokenUsage: aggregateTokenUsage,
           })
           .returning();
 
@@ -120,11 +133,11 @@ export const aiRouter = createTRPCRouter({
         const searchResults = await researchDomain(domain, description);
 
         // Step 3: Analyze domain and generate single marketing concept
-        const research = await analyzeDomain(
-          domain,
-          description,
-          searchResults,
-        );
+        const {
+          data: research,
+          tokenUsage: researchTokenUsage,
+          model: researchModel,
+        } = await analyzeDomain(domain, description, searchResults);
 
         // Step 4: Generate single image
         const runId = createRunId(domain);
@@ -142,6 +155,19 @@ export const aiRouter = createTRPCRouter({
           });
         }
 
+        const aggregateTokenUsage = [
+          {
+            model: researchModel,
+            inputTokens: researchTokenUsage?.input_tokens ?? 0,
+            outputTokens: researchTokenUsage?.output_tokens ?? 0,
+          },
+          {
+            model: generatedImage.model,
+            inputTokens: generatedImage.tokenUsage?.input_tokens ?? 0,
+            outputTokens: generatedImage.tokenUsage?.output_tokens ?? 0,
+          },
+        ];
+
         // Step 5: Create generation record only after successful generation
         const [generationRecord] = await db
           .insert(aiGenerationsTable)
@@ -158,6 +184,7 @@ export const aiRouter = createTRPCRouter({
               url: generatedImage.url,
               externalId: generatedImage.generationCallId,
             },
+            tokenUsage: aggregateTokenUsage,
             referenceGenerationId: referenceLogoGenerationId,
           })
           .returning();

@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { MODEL_CONFIGS } from '../lib/config/models';
 import {
+  type AnalysisResult,
   createAnalysisModel,
   performStructuredAnalysis,
 } from '../lib/utils/analysis';
@@ -53,7 +54,7 @@ export function analyzeDomain(
   domain: string,
   description: string | undefined,
   searchResults: string,
-): Promise<DomainResearch> {
+): Promise<AnalysisResult<DomainResearch>> {
   const chatModel = createAnalysisModel(MODEL_CONFIGS.DOMAIN_ANALYSIS);
 
   const userPrompt = domainAnalysisUserPrompt({

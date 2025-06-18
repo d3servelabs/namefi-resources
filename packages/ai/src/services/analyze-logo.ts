@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { MODEL_CONFIGS } from '../lib/config/models';
 import { LOGO_STYLES, LOGO_TYPES } from '../lib/types/logo-options';
 import {
+  type AnalysisResult,
   createAnalysisModel,
   performStructuredAnalysis,
 } from '../lib/utils/analysis';
@@ -70,7 +71,7 @@ export function analyzeLogoRequirements(
   description: string | undefined,
   logoType: string | undefined,
   logoStyle: string | undefined,
-): Promise<LogoConcept> {
+): Promise<AnalysisResult<LogoConcept>> {
   const chatModel = createAnalysisModel(MODEL_CONFIGS.LOGO_ANALYSIS);
 
   const userPrompt = logoAnalysisUserPrompt({
