@@ -131,6 +131,7 @@ export const cartItemsTable = pgTable(
       .references(() => usersTable.id, { onDelete: 'cascade' }),
     ...normalizedDomain,
     ...amountInUsdCents,
+    durationInYears: integer('duration_in_years'),
     metadata: jsonb('metadata').default({}),
     ...timestamps,
   },

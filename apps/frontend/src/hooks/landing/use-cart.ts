@@ -14,7 +14,10 @@ import { useLocalStorage } from 'usehooks-ts';
 /**
  * Type for cart items stored both in server and localStorage
  */
-type CartItem = Pick<DbCartItem, 'normalizedDomainName' | 'amountInUSDCents'> &
+type CartItem = Pick<
+  DbCartItem,
+  'normalizedDomainName' | 'amountInUSDCents' | 'durationInYears'
+> &
   Partial<Pick<DbCartItem, 'metadata'>>;
 
 /**
@@ -156,6 +159,7 @@ export function useCart() {
       const cartItem: CartItem = {
         normalizedDomainName: domainName,
         amountInUSDCents: domain.priceInUSD ? domain.priceInUSD * 100 : 0,
+        durationInYears: 3,
       };
 
       if (isDomainInCart(domainName)) {
