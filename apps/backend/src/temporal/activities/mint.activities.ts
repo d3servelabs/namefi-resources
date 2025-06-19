@@ -1,13 +1,13 @@
-import { Context } from '@temporalio/activity';
-import { BigNumber } from 'bignumber.js';
-import { filter, fromPairs, isNotNil, map } from 'ramda';
-
 import {
   NAMEFI_NFT_CONTRACT_ADDRESS,
   NFSC_CONTRACT_ADDRESS,
   getChain,
 } from '@namefi-astra/utils';
+import { Context } from '@temporalio/activity';
+import * as workflow from '@temporalio/workflow';
 import { gcpHsmToAccount } from '@valora/viem-account-hsm-gcp';
+import { BigNumber } from 'bignumber.js';
+import { filter, fromPairs, isNotNil, map } from 'ramda';
 import {
   http,
   type Account,
@@ -30,6 +30,7 @@ import { mnemonicToAccount, privateKeyToAccount } from 'viem/accounts';
 import type { Chain } from 'viem/chains';
 import { createNonceManager, jsonRpc } from 'viem/nonce';
 import { config, secrets } from '#lib/env';
+import { nftIdFromDomainName } from '#lib/nftHash';
 import { resolve } from '../../utils/resolve';
 import { NfscAbi, NftAbi, chainsToUrls } from './helpers/contracts';
 
@@ -486,3 +487,45 @@ export async function prepareTxToChargeNfsc(
     },
   };
 }
+
+export const prepareTxToSetExpirationForNamefiNft = async (
+  chainId: number,
+  domainNameLdh: string,
+  expirationTimeInUnix: number,
+): Promise<TxPrepareResult> => {
+  const ctx = Context.current();
+  const tokenId = nftIdFromDomainName(domainNameLdh);
+
+  ctx.log.info(
+    `Setting expiration for Namefi NFT - chainId: ${chainId}, tokenId: ${tokenId}, domainNameLdh: ${domainNameLdh}, expirationTimeInUnix: ${expirationTimeInUnix}`,
+  );
+  const walletClient = clients.walletClients[chainId];
+  if (!walletClient) {
+    ctx.log.error(`Wallet client not found for chainId: ${chainId}`);
+    throw workflow.ApplicationFailure.create({
+      message: `Wallet client not found for chainId: ${chainId}`,
+      nonRetryable: true,
+    });
+  }
+
+  const preparedTx = await walletClient.prepareTransactionRequest({
+    chainId,
+    to: NAMEFI_NFT_CONTRACT_ADDRESS,
+    data: encodeFunctionData({
+      abi: NftAbi,
+      functionName: 'setExpiration',
+      args: [tokenId, BigInt(expirationTimeInUnix)],
+    }),
+  });
+
+  return {
+    preparedTx: {
+      data: preparedTx.data,
+      to: preparedTx.to,
+      type: preparedTx.type,
+      chainId: preparedTx.chainId,
+      from: preparedTx.from,
+      nonce: preparedTx.nonce,
+    },
+  };
+};

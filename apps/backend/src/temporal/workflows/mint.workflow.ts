@@ -204,3 +204,37 @@ export async function chargeNfscWorkflow(
     chainId,
   );
 }
+
+export async function setExpirationForNamefiNft(
+  chainId: number,
+  domainNameLdh: string,
+  expirationTimeInUnix: number,
+): Promise<string> {
+  const { prepareTxToSetExpirationForNamefiNft } = typedProxyActivities({
+    temporalEnum: TEMPORAL_ENUMS.MINT,
+    options: {
+      startToCloseTimeout: '5 seconds',
+      retry: {
+        maximumAttempts: 1,
+      },
+    },
+  });
+
+  const prepareResult: TxPrepareResult =
+    await prepareTxToSetExpirationForNamefiNft(
+      chainId,
+      domainNameLdh,
+      expirationTimeInUnix,
+    );
+
+  if ('error' in prepareResult) {
+    throw new workflow.ApplicationFailure(
+      `Failed to prepare transaction: ${prepareResult.error.message}`,
+    );
+  }
+
+  return await _signAndSendTransactionWithRetry(
+    prepareResult.preparedTx,
+    chainId,
+  );
+}
