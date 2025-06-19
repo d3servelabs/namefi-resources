@@ -32,6 +32,7 @@ export const secretsSchema = z.object({
   DYNADOT_API_KEY: z.string(),
   DYNADOT_PRIVATE_KEY: z.string().optional(),
   DYNADOT_ACCOUNT_ID: z.string().optional(),
+  DEFAULT_EPP_CODE_ENCRYPTION_KEY_ID: z.string(),
 });
 
 export type SecretsSchema = z.infer<typeof secretsSchema>;

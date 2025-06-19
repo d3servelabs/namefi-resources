@@ -1,0 +1,47 @@
+import { DecryptCommand, EncryptCommand, KMSClient } from '@aws-sdk/client-kms';
+import { config, secrets } from './env';
+
+const kmsClient = new KMSClient({
+  region: config.AWS_REGION,
+  credentials: {
+    accessKeyId: secrets.AWS_ACCESS_KEY_ID,
+    secretAccessKey: secrets.AWS_SECRET_ACCESS_KEY,
+  },
+});
+
+export async function decryptEppAuthCode(
+  encryptedAuthorizationCode: string,
+  encryptionKeyId: string,
+) {
+  const input = {
+    CiphertextBlob: Buffer.from(encryptedAuthorizationCode, 'base64'),
+    KeyId: encryptionKeyId,
+  };
+  const command = new DecryptCommand(input);
+  const response = await kmsClient.send(command);
+  if (!response.Plaintext) {
+    throw new Error('Failed to decrypt EPP authorization code');
+  }
+  return Buffer.from(response.Plaintext).toString('utf-8');
+}
+
+export async function encryptEppAuthCode(eppAuthorizationCode: string) {
+  const encryptionKeyId = secrets.DEFAULT_EPP_CODE_ENCRYPTION_KEY_ID;
+  if (!encryptionKeyId) {
+    throw new Error('ENCRYPTION_KEY_ID is not set');
+  }
+  const input = {
+    KeyId: encryptionKeyId,
+    Plaintext: Buffer.from(eppAuthorizationCode, 'utf-8'),
+  };
+  const command = new EncryptCommand(input);
+  const { CiphertextBlob, KeyId } = await kmsClient.send(command);
+  if (!CiphertextBlob || !KeyId) {
+    throw new Error('Failed to encrypt EPP authorization code');
+  }
+  return {
+    encryptedEppAuthorizationCode:
+      Buffer.from(CiphertextBlob).toString('base64'),
+    encryptionKeyId: KeyId,
+  };
+}

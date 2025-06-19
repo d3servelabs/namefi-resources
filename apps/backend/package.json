@@ -40,6 +40,7 @@
     "command:trigger-nft-updates-schedule": "tsx src/scripts/trigger-nft-updates-schedule.ts"
   },
   "dependencies": {
+    "@aws-sdk/client-kms": "^3.830.0",
     "@hono/node-server": "^1.14.0",
     "@hono/swagger-ui": "^0.5.1",
     "@hono/trpc-server": "^0.3.4",
