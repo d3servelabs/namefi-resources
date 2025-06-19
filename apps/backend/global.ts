@@ -1,20 +1,45 @@
+import superjson from 'superjson';
 import {
   createLogger as createLoggerInstance,
   logger as loggerInstance,
 } from '#lib/logger';
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+const tryOrNull = (fn: (...args: any[]) => any, ...args: any[]) => {
+  try {
+    const result = fn(...args);
+    return result;
+  } catch (e) {
+    return null;
+  }
+};
+
+// biome-ignore lint/suspicious/noExplicitAny: expect any
 const consoleArgsToPinoArgs = (args: any[]): [any, ...any[]] => {
-  if (args.length <= 1) {
+  if (args.length === 0) {
+    return ['empty'];
+  }
+
+  if (args.length === 1) {
     return [args[0]];
   }
+
   return [
+    { array: args },
     args
       .map((arg) => {
         if (typeof arg === 'string') {
           return arg;
         }
-        return JSON.stringify(arg);
+        try {
+          const stringified =
+            tryOrNull(JSON.stringify, arg) ??
+            tryOrNull(String, arg) ??
+            tryOrNull(superjson.stringify, arg);
+
+          return stringified ?? 'unserializable';
+        } catch (e: unknown) {
+          return 'error: unserializable';
+        }
       })
       .join(' '),
   ];
