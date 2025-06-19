@@ -264,6 +264,7 @@ export const orderItemsTable = pgTable(
       .references(() => ordersTable.id, { onDelete: 'cascade' }),
     ...normalizedDomain,
     ...amountInUsdCents,
+    durationInYears: integer('duration_in_years'),
     status: orderStatusEnum('status').default('CREATED'),
     metadata: jsonb('metadata').default({}),
     ...timestamps,

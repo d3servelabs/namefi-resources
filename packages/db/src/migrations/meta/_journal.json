@@ -141,6 +141,13 @@
       "when": 1750232629767,
       "tag": "0019_harsh_timeslip",
       "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1750253786042,
+      "tag": "0020_hot_snowbird",
+      "breakpoints": true
     }
   ]
 }
