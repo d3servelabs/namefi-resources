@@ -25,6 +25,9 @@ export const ACTIVITIES = {
     triggerUpdateNamefiNftIndex,
     triggerNamefiGptCronJob,
     addCategoriesToDomainsWithNoCategories,
+    generalAlertNamefi: async (...args: any[]) => {
+      throw new Error('Not implemented');
+    },
   },
   [TEMPORAL_ENUMS.MINT]: {
     ...MintActivities,
