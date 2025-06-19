@@ -17,6 +17,7 @@ import {
 
 import { logger } from '#lib/logger';
 
+import { TRPCError } from '@trpc/server';
 import { createTRPCRouter, protectedProcedure } from '../../base';
 import { assertAuthenticatedUserIsDomainOwner } from '../../guards/assert-domain-owner';
 
@@ -149,18 +150,36 @@ export const domainDnssecRouter = createTRPCRouter({
     .input(z.object({ domainName: namefiNormalizedDomainSchema }))
     .query(async ({ input, ctx }) => {
       await assertAuthenticatedUserIsDomainOwner(input.domainName, ctx.user);
-      const activeDnssecOperationWorkflows =
-        await getActiveDnssecOperationWorkflows(
-          toPunycodeDomainName(input.domainName),
-        );
-      if (activeDnssecOperationWorkflows) {
+      try {
+        const activeDnssecOperationWorkflows =
+          await getActiveDnssecOperationWorkflows(
+            toPunycodeDomainName(input.domainName),
+          );
+        if (activeDnssecOperationWorkflows) {
+          return {
+            workflowDetails: activeDnssecOperationWorkflows,
+            hasActiveWorkflow: true,
+          };
+        }
         return {
-          workflowDetails: activeDnssecOperationWorkflows,
-          hasActiveWorkflow: true,
+          hasActiveWorkflow: false,
         };
+      } catch (error: any) {
+        logger.error(error);
+        if (
+          error &&
+          'cause' in error &&
+          'code' in error.cause &&
+          error.cause.code === 14
+        ) {
+          return {
+            hasActiveWorkflow: false,
+          };
+        }
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Error querying active nameservers change workflow',
+        });
       }
-      return {
-        hasActiveWorkflow: false,
-      };
     }),
 });

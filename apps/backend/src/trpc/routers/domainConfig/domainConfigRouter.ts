@@ -7,6 +7,10 @@ import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import {
+  getDomainPreferencesAndConfig,
+  updateDomainPreferencesAndConfig,
+} from '#lib/domains/domainPreferences';
+import {
   checkIfUsingNamefiNameservers,
   checkIfUsingOldNamefiNameservers,
   queryActiveNameserversChangeWorkflow,
@@ -83,9 +87,28 @@ export const domainConfigRouter = createTRPCRouter({
     )
     .query(async ({ input, ctx }) => {
       await assertAuthenticatedUserIsDomainOwner(input.domainName, ctx.user);
-      return await queryActiveNameserversChangeWorkflow(
-        toPunycodeDomainName(input.domainName),
-      );
+      try {
+        const activeNameserversChangeWorkflow =
+          await queryActiveNameserversChangeWorkflow(
+            toPunycodeDomainName(input.domainName),
+          );
+
+        return activeNameserversChangeWorkflow;
+      } catch (error: any) {
+        logger.error(error);
+        if (
+          error &&
+          'cause' in error &&
+          'code' in error.cause &&
+          error.cause.code === 14
+        ) {
+          return null;
+        }
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Error querying active nameservers change workflow',
+        });
+      }
     }),
 
   /**
@@ -229,6 +252,38 @@ export const domainConfigRouter = createTRPCRouter({
           message: 'Error checking domain supported features',
         });
       }
+    }),
+
+  getDomainPreferencesAndConfig: protectedProcedure
+    .input(
+      z.object({
+        domainName: namefiNormalizedDomainSchema,
+      }),
+    )
+    .query(async ({ input, ctx }) => {
+      await assertAuthenticatedUserIsDomainOwner(input.domainName, ctx.user);
+      return await getDomainPreferencesAndConfig(input.domainName);
+    }),
+
+  updateDomainPreferencesAndConfig: protectedProcedure
+    .input(
+      z.object({
+        domainName: namefiNormalizedDomainSchema,
+        domainPreferencesAndConfig: z.object({
+          forwardTo: z.string().optional(),
+          autoEnsEnabled: z.boolean().optional(),
+          autoParkEnabled: z.boolean().optional(),
+          autoRenewEnabled: z.boolean().optional(),
+        }),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      await assertAuthenticatedUserIsDomainOwner(input.domainName, ctx.user);
+      return await updateDomainPreferencesAndConfig(
+        input.domainName,
+        ctx.user.id,
+        input.domainPreferencesAndConfig,
+      );
     }),
 
   dnssec: domainDnssecRouter,

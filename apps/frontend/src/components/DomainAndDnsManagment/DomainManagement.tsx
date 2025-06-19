@@ -19,6 +19,7 @@ import { Button } from '../ui/shadcn/button';
 import { Card, CardHeader, CardTitle } from '../ui/shadcn/card';
 import { DnsRecordsPanel } from './Panels/DNS/DnsRecordsPanel';
 import { DnssecPanel } from './Panels/DNSSEC/DnssecPanel';
+import { DomainConfigAndPrefs } from './Panels/DomainConfigAndPrefs/DomainConfigAndPrefs';
 import { NameserversPanel } from './Panels/Nameservers/NameserversPanel';
 export type DomainManagementProps = HTMLAttributes<HTMLDivElement> & {
   domain: string;
@@ -96,6 +97,9 @@ export const DomainManagement: FC<DomainManagementProps> = ({
                   <NameserversPanel domainName={domain as PunycodeDomainName} />
 
                   <DnssecPanel domainName={domain as PunycodeDomainName} />
+                  <DomainConfigAndPrefs
+                    domainName={domain as PunycodeDomainName}
+                  />
                 </div>
               </TabsContent>
             </Tabs>
