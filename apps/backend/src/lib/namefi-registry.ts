@@ -7,7 +7,7 @@ import { ParseResultType, parseDomain } from 'parse-domain';
 import { isNil, isNotNil } from 'ramda';
 import { config } from '#lib/env';
 import { userQualifiesForDomainNamePromo } from '#lib/userPromo';
-import { getDomainLevels } from '../trpc/routers/domainConfig/getDomainLevels';
+import { getDomainLevels } from './get-domain-levels';
 import {
   hashBasedPercentageRollouted,
   isReserved,

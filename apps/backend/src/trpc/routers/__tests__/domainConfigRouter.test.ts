@@ -1,6 +1,6 @@
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { describe, expect, it } from 'vitest';
-import { getDomainLevels } from '../domainConfig/getDomainLevels';
+import { getDomainLevels } from '../../../lib/get-domain-levels';
 
 describe('getDomainLevels', () => {
   it('should return correct levels and parent domain for a top-level domain', () => {

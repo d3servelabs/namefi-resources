@@ -14,6 +14,7 @@ import {
   submitResetNameserversWorkflow,
 } from '#lib/domains/nameservers';
 import { logger } from '#lib/logger';
+import { getDomainLevels } from '../../../lib/get-domain-levels';
 import {
   getPoweredByNamefi3PDomains,
   sldRegistrar,
@@ -21,7 +22,6 @@ import {
 import { createTRPCRouter, protectedProcedure } from '../../base';
 import { assertAuthenticatedUserIsDomainOwner } from '../../guards/assert-domain-owner';
 import { domainDnssecRouter } from './domainDnssecRouter';
-import { getDomainLevels } from './getDomainLevels';
 
 export const domainConfigRouter = createTRPCRouter({
   /**
