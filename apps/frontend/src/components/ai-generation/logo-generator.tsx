@@ -29,8 +29,8 @@ export function LogoGenerator({
   fixedDomain,
 }: LogoGeneratorProps) {
   const [domain, setDomain] = useState('');
-  const [selectedType, setSelectedType] = useState<string>('');
-  const [selectedStyle, setSelectedStyle] = useState<string>('');
+  const [selectedType, setSelectedType] = useState<string>('let-ai-choose');
+  const [selectedStyle, setSelectedStyle] = useState<string>('let-ai-choose');
   const [description, setDescription] = useState('');
   const [openPanel, setOpenPanel] = useState<null | 'type' | 'style' | 'about'>(
     null,
