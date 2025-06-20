@@ -88,62 +88,6 @@ export const domainSingleYearPricingTemplate = (
  * @param _durationInYears - The duration in years to compute the charges for (must be an integer between 1 and 10)
  * @returns The charges for the given duration
  * @throws Error if duration is not an integer, less than 1, or greater than 10
- * @deprecated use computeChargesInUsdOrThrow instead
- */
-export function computeCharges(
-  pricingDetails: PricingDetails,
-  _durationInYears: number,
-) {
-  if (!Number.isInteger(_durationInYears)) {
-    throw new Error('Duration must be an integer');
-  }
-  if (_durationInYears < 1 || _durationInYears > 10) {
-    throw new Error('Invalid duration');
-  }
-  const durationInYears = _durationInYears as unknown as
-    | 1
-    | 2
-    | 3
-    | 4
-    | 5
-    | 6
-    | 7
-    | 8
-    | 9
-    | 10;
-
-  if (pricingDetails.type === 'SINGLE_YEAR') {
-    return pricingDetails.price.amount * durationInYears;
-  }
-
-  const allowedYears = Object.keys(pricingDetails.price).map(Number);
-  if (!allowedYears.includes(durationInYears)) {
-    throw new Error('Invalid duration, no price found');
-  }
-
-  const price = pricingDetails.price[durationInYears];
-  if (!price) {
-    throw new Error('Invalid duration, no price found');
-  }
-  if (
-    price.amount <= 0 ||
-    Number.isNaN(price.amount) ||
-    price.amount === Number.POSITIVE_INFINITY ||
-    price.amount === Number.NEGATIVE_INFINITY ||
-    price.amount === undefined ||
-    price.amount === null ||
-    price.amount > 100_0000 //TODO: this is a temporary fix to avoid miscalculations, we should find a better way to handle this
-  ) {
-    throw new Error('Invalid price');
-  }
-  return price.amount;
-}
-
-/**
- * @param pricingDetails - The pricing details to compute the charges for
- * @param _durationInYears - The duration in years to compute the charges for (must be an integer between 1 and 10)
- * @returns The charges for the given duration
- * @throws Error if duration is not an integer, less than 1, or greater than 10
  */
 export function computeChargesInUsdOrThrow(
   pricingDetails: PricingDetails,

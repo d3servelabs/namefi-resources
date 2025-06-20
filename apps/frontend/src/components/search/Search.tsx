@@ -18,10 +18,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/shadcn/tooltip';
 import { useCart } from '@/hooks/landing/use-cart';
-import {
-  type DomainData,
-  useDomainFilters,
-} from '@/hooks/landing/use-domain-filters';
+import { useDomainFilters } from '@/hooks/landing/use-domain-filters';
 import { useSearch } from '@/hooks/landing/use-search';
 import { config } from '@/lib/env';
 import { cn } from '@/lib/utils';
@@ -30,6 +27,8 @@ import {
   InteractionLoggingEventName,
 } from '@/utils/interaction-logging/events';
 import { formatAmountInUSD } from '@/utils/number';
+import type { DomainAvailabilityInfo } from '@/utils/types';
+import { computeChargesInUsdOrThrow } from '@namefi-astra/utils';
 import {
   Loader2,
   SearchIcon,
@@ -42,7 +41,7 @@ import { AnimatePresence, motion } from 'motion/react';
 import { MotionConfig, useReducedMotion } from 'motion/react';
 import { useRouter } from 'next/navigation';
 import { isNotNil } from 'ramda';
-import { type FC, useCallback, useState } from 'react';
+import { type FC, useCallback, useMemo, useState } from 'react';
 import FloatingCart from '../floating-cart';
 import { NamefiButton } from '../namefi-button';
 import { useInteractionLoggers } from '../providers/interactionLoggersProvider';
@@ -134,9 +133,15 @@ export const SearchInput: FC<{
 );
 
 export const DomainCard: FC<{
-  domain: DomainData;
+  domain: DomainAvailabilityInfo;
   isDomainInCart: (domain: string) => boolean;
-  handleDomainAction: (domain: DomainData) => void;
+  handleDomainAction: ({
+    domainAvailabilityInfo,
+    durationInYears,
+  }: {
+    domainAvailabilityInfo: DomainAvailabilityInfo;
+    durationInYears?: number;
+  }) => void;
   isAddingToCart: boolean;
   isRemovingFromCart: boolean;
   isCartLoading: boolean;
@@ -160,6 +165,16 @@ export const DomainCard: FC<{
   }, [logEventWithInteractionLoggers]);
 
   const isInCart = isDomainInCart(domain.domain);
+
+  const priceInUsd = useMemo(() => {
+    if (!domain.pricingDetails) {
+      return undefined;
+    }
+    return computeChargesInUsdOrThrow(
+      domain.pricingDetails.registrationPrice,
+      1,
+    );
+  }, [domain.pricingDetails]);
 
   // Split domain into subdomain and parent domain
   const parts = domain.domain.split('.');
@@ -195,8 +210,8 @@ export const DomainCard: FC<{
             </div>
             <div className="flex items-center gap-2">
               <p className="text-xl font-medium line-clamp-1">
-                {isNotNil(domain.priceInUSD)
-                  ? `${formatAmountInUSD(domain.priceInUSD)} USD`
+                {isNotNil(priceInUsd)
+                  ? `${formatAmountInUSD(priceInUsd)} USD`
                   : ''}
               </p>
             </div>
@@ -220,7 +235,12 @@ export const DomainCard: FC<{
                     <TooltipTrigger asChild={true}>
                       <NamefiButton
                         className="bg-black/40 border-white/10 hover:bg-red-600/80 hover:border-red-400/50 shrink-0"
-                        onClick={() => handleDomainAction(domain)}
+                        onClick={() =>
+                          handleDomainAction({
+                            domainAvailabilityInfo: domain,
+                            durationInYears: 3,
+                          })
+                        }
                         disabled={isRemovingFromCart || isCartLoading}
                       >
                         {isRemovingFromCart ? (
@@ -257,7 +277,12 @@ export const DomainCard: FC<{
                   <TooltipTrigger asChild={true}>
                     <NamefiButton
                       className="shrink-0"
-                      onClick={() => handleDomainAction(domain)}
+                      onClick={() =>
+                        handleDomainAction({
+                          domainAvailabilityInfo: domain,
+                          durationInYears: 3,
+                        })
+                      }
                       disabled={isAddingToCart || isCartLoading}
                     >
                       {isAddingToCart ? (
@@ -305,10 +330,16 @@ export const LoadingSkeletons: FC = () => (
 export const SearchResults: FC<{
   isLoading: boolean;
   isLoadingMore: boolean;
-  filteredDomains: DomainData[];
+  filteredDomains: DomainAvailabilityInfo[];
   query: string;
   isDomainInCart: (domain: string) => boolean;
-  handleDomainAction: (domain: DomainData) => void;
+  handleDomainAction: ({
+    domainAvailabilityInfo,
+    durationInYears,
+  }: {
+    domainAvailabilityInfo: DomainAvailabilityInfo;
+    durationInYears?: number;
+  }) => void;
   isAddingToCart: boolean;
   isRemovingFromCart: boolean;
   isCartLoading: boolean;

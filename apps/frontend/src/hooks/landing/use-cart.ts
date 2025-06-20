@@ -6,31 +6,27 @@ import {
   type RemoveFromCartEvent,
 } from '@/utils/interaction-logging/events';
 import { useTRPC } from '@/utils/trpc';
-import type { AppRouter } from '@namefi-astra/backend/trpc';
 import type { CartItemSelect as DbCartItem } from '@namefi-astra/db/types';
+import { computeChargesInUsdOrThrow, usdToCents } from '@namefi-astra/utils';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import type { inferRouterOutputs } from '@trpc/server';
 import { useCallback, useEffect, useRef } from 'react';
 import { useLocalStorage } from 'usehooks-ts';
-
-type DomainInfo =
-  inferRouterOutputs<AppRouter>['registry']['getDomainListInfo'][number];
+import type { DomainAvailabilityInfo } from '../../utils/types';
 
 /**
  * Type for cart items stored both in server and localStorage
  */
 type CartItem = Pick<
   DbCartItem,
-  'normalizedDomainName' | 'amountInUSDCents' | 'durationInYears' | 'createdAt'
+  | 'normalizedDomainName'
+  | 'amountInUSDCents'
+  | 'durationInYears'
+  | 'createdAt'
+  | 'id'
 > &
   Partial<Pick<DbCartItem, 'metadata'>> & {
-    domainInfo?: DomainInfo;
+    domainAvailabilityInfo?: DomainAvailabilityInfo;
   };
-
-/**
- * Type for local cart items with client-side generated ID
- */
-type LocalCartItem = CartItem & Pick<DbCartItem, 'id'>;
 
 /**
  * Hook for managing cart functionality (adding/removing items, checking cart status)
@@ -45,7 +41,7 @@ export function useCart() {
 
   // Local storage cart for non-authenticated users
   const [localCartItems, setLocalCartItems, removeLocalCartItems] =
-    useLocalStorage<LocalCartItem[]>('user-cart-items', []);
+    useLocalStorage<CartItem[]>('user-cart-items', []);
 
   // Cart data fetching from server (for authenticated users)
   const {
@@ -69,37 +65,19 @@ export function useCart() {
   }
 
   // Cart mutations for authenticated users
-  const {
-    mutate: addToCartMutate,
-    isPending: isAddingToServerCart,
-    mutateAsync: addToCartMutateAsync,
-  } = useMutation({
-    ...trpc.carts.addItems.mutationOptions({
-      onSuccess: () => refetchCart(),
-    }),
-  });
+  const { isPending: isAddingToServerCart, mutateAsync: addToCartMutateAsync } =
+    useMutation({
+      ...trpc.carts.addItems.mutationOptions({
+        onSuccess: () => refetchCart(),
+      }),
+    });
 
-  const {
-    mutate: removeFromCartMutate,
-    isPending: isRemovingFromServerCart,
-    mutateAsync: removeFromCartMutateAsync,
-  } = useMutation({
-    ...trpc.carts.removeItem.mutationOptions({
-      onSuccess: () => refetchCart(),
-    }),
-  });
-
-  // Local cart operations
-  const addToLocalCart = useCallback(
-    (item: CartItem) => {
-      const localItem: LocalCartItem = {
-        ...item,
-        id: crypto.randomUUID(),
-      };
-      setLocalCartItems((prevItems) => [...prevItems, localItem]);
-    },
-    [setLocalCartItems],
-  );
+  const { mutate: removeFromCartMutate, isPending: isRemovingFromServerCart } =
+    useMutation({
+      ...trpc.carts.removeItem.mutationOptions({
+        onSuccess: () => refetchCart(),
+      }),
+    });
 
   const removeFromLocalCart = useCallback(
     (domainName: string) => {
@@ -169,42 +147,63 @@ export function useCart() {
   );
 
   const handleDomainAction = useCallback(
-    (domain: { domain: string; priceInUSD?: number | null }) => {
-      const domainName = domain.domain;
-      const cartItem: CartItem = {
-        normalizedDomainName: domainName,
-        amountInUSDCents: domain.priceInUSD ? domain.priceInUSD * 100 : 0,
-        durationInYears: 3,
+    async ({
+      domainAvailabilityInfo,
+      durationInYears = 3,
+    }: {
+      domainAvailabilityInfo: DomainAvailabilityInfo;
+      durationInYears?: number;
+    }) => {
+      // Calculate proper price using multi-year pricing for cart item creation
+      if (!domainAvailabilityInfo.pricingDetails?.registrationPrice) {
+        throw new Error('Registration pricing details are unavailable');
+      }
+
+      const chargeAmountInUsd = computeChargesInUsdOrThrow(
+        domainAvailabilityInfo.pricingDetails.registrationPrice,
+        durationInYears,
+      );
+      const calculatedAmount = usdToCents(chargeAmountInUsd);
+
+      const cartItem: Omit<CartItem, 'id'> = {
+        normalizedDomainName: domainAvailabilityInfo.domain,
+        amountInUSDCents: calculatedAmount,
+        durationInYears,
         createdAt: new Date(),
       };
 
-      if (isDomainInCart(domainName)) {
+      if (isDomainInCart(domainAvailabilityInfo.domain)) {
         // Remove domain from cart
-        if (isAuthenticated) {
-          const itemId = getCartItemId(domainName);
-          if (itemId) {
+        const itemId = getCartItemId(domainAvailabilityInfo.domain);
+        if (itemId) {
+          if (isAuthenticated) {
             removeFromCartMutate(itemId);
-            logRemoveFromCart(cartItem);
+            logRemoveFromCart({ ...cartItem, id: itemId });
+          } else {
+            removeFromLocalCart(domainAvailabilityInfo.domain);
+            logRemoveFromCart({ ...cartItem, id: itemId });
           }
-        } else {
-          removeFromLocalCart(domainName);
-          logRemoveFromCart(cartItem);
         }
       } else if (isAuthenticated) {
-        addToCartMutate([cartItem]);
-        logAddToCart(cartItem);
+        // here we should get the id from mutation result
+        const [{ id: itemId }] = await addToCartMutateAsync([cartItem]);
+        logAddToCart({ ...cartItem, id: itemId });
       } else {
-        addToLocalCart(cartItem);
-        logAddToCart(cartItem);
+        const itemId = crypto.randomUUID();
+        setLocalCartItems((prevItems) => [
+          ...prevItems,
+          { ...cartItem, id: itemId },
+        ]);
+        logAddToCart({ ...cartItem, id: itemId });
       }
     },
     [
       isDomainInCart,
       getCartItemId,
       removeFromCartMutate,
-      addToCartMutate,
+      addToCartMutateAsync,
       isAuthenticated,
-      addToLocalCart,
+      setLocalCartItems,
       removeFromLocalCart,
       logAddToCart,
       logRemoveFromCart,

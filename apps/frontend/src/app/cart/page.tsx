@@ -48,7 +48,12 @@ import {
   isStripePayment,
   paymentProviderSchema,
 } from '@namefi-astra/db/types';
-import { CHAINS, NFSC_CONTRACT_ADDRESS } from '@namefi-astra/utils';
+import {
+  CHAINS,
+  NFSC_CONTRACT_ADDRESS,
+  computeChargesInUsdOrThrow,
+  usdToCents,
+} from '@namefi-astra/utils';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { inferInput } from '@trpc/tanstack-react-query';
 import { ArchiveX, Loader2, Trash2 } from 'lucide-react';
@@ -440,13 +445,73 @@ export default function CartPage() {
   const handleDurationChange = useCallback(
     async (itemId: string, newDuration: number) => {
       if (isAuthenticated) {
+        // Find the item for optimistic pricing calculation
+        const item = items?.find((i) => i.id === itemId);
+
+        if (item?.domainAvailabilityInfo) {
+          try {
+            // Calculate optimistic price update
+            if (
+              !item.domainAvailabilityInfo.pricingDetails?.registrationPrice
+            ) {
+              throw new Error('Registration pricing details are unavailable');
+            }
+
+            const chargeAmountInUsd = computeChargesInUsdOrThrow(
+              item.domainAvailabilityInfo.pricingDetails.registrationPrice,
+              newDuration,
+            );
+            const optimisticAmount = usdToCents(chargeAmountInUsd);
+
+            // Optimistically update the local state
+            queryClient.setQueryData(
+              trpc.carts.getItems.queryKey(),
+              (oldData) => {
+                if (!oldData) {
+                  return oldData;
+                }
+                return oldData.map((cartItem) =>
+                  cartItem.id === itemId
+                    ? {
+                        ...cartItem,
+                        durationInYears: newDuration,
+                        amountInUSDCents: optimisticAmount,
+                      }
+                    : cartItem,
+                );
+              },
+            );
+          } catch (error) {
+            // If optimistic pricing fails, just update duration
+            // The server will provide the correct pricing
+            console.warn('Failed to calculate optimistic pricing:', error);
+            queryClient.setQueryData(
+              trpc.carts.getItems.queryKey(),
+              (oldData) => {
+                if (!oldData) {
+                  return oldData;
+                }
+                return oldData.map((cartItem) =>
+                  cartItem.id === itemId
+                    ? {
+                        ...cartItem,
+                        durationInYears: newDuration,
+                      }
+                    : cartItem,
+                );
+              },
+            );
+          }
+        }
+
+        // Update on server (this will correct any optimistic calculation errors)
         await updateCartItem({
           id: itemId,
           durationInYears: newDuration,
         });
       }
     },
-    [isAuthenticated, updateCartItem],
+    [isAuthenticated, updateCartItem, items, queryClient, trpc],
   );
 
   const LoadingSkeletons = () => (
@@ -630,19 +695,21 @@ export default function CartPage() {
                             )}
                           </button>
                           <DurationStepper
-                            value={item.durationInYears ?? 1}
+                            value={item.durationInYears ?? 3}
                             onChange={(value) =>
                               handleDurationChange(item.id, value)
                             }
                             min={
-                              item.domainInfo?.durationValidationInYears?.min ??
-                              1
+                              item.domainAvailabilityInfo
+                                ?.durationValidationInYears?.min ?? 1
                             }
                             max={
-                              item.domainInfo?.durationValidationInYears?.max ??
-                              10
+                              item.domainAvailabilityInfo
+                                ?.durationValidationInYears?.max ?? 10
                             }
-                            disabled={isDisabled || !item.domainInfo}
+                            disabled={
+                              isDisabled || !item.domainAvailabilityInfo
+                            }
                             className="w-32"
                           />
                         </div>

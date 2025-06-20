@@ -7,13 +7,11 @@ import {
   TabsTrigger,
 } from '@/components/ui/shadcn/tabs';
 import { useCart } from '@/hooks/landing/use-cart';
-import {
-  type DomainData,
-  useDomainFilters,
-} from '@/hooks/landing/use-domain-filters';
+import { useDomainFilters } from '@/hooks/landing/use-domain-filters';
 import { useSearch } from '@/hooks/landing/use-search';
 import { config } from '@/lib/env';
 import { createAsyncInterval } from '@/utils/createAsyncInterval';
+import type { DomainAvailabilityInfo } from '@/utils/types';
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import FloatingCart from '../floating-cart';
@@ -68,13 +66,22 @@ export const Search: SearchComponent = ({ originInfo }) => {
   );
 
   const [redirectToRegistrar, setRedirectToRegistrar] = useState<
-    DomainData | undefined
+    DomainAvailabilityInfo | undefined
   >();
-  const handleDomainAction = (domain: DomainData) => {
+  const handleDomainAction = ({
+    domainAvailabilityInfo: domain,
+    durationInYears,
+  }: {
+    domainAvailabilityInfo: DomainAvailabilityInfo;
+    durationInYears?: number;
+  }) => {
     if (domain.registrarKey) {
       setRedirectToRegistrar(domain);
     } else {
-      handleDomainActionFromCart(domain);
+      handleDomainActionFromCart({
+        domainAvailabilityInfo: domain,
+        durationInYears,
+      });
     }
   };
 
@@ -166,7 +173,7 @@ Search.displayName = 'AstraSearch';
 const RegistrarRedirect = ({
   domain,
   cancelRedirect,
-}: { domain: DomainData; cancelRedirect: () => void }) => {
+}: { domain: DomainAvailabilityInfo; cancelRedirect: () => void }) => {
   const [countdown, setCountdown] = useState(10);
 
   const redirect = useCallback(() => {

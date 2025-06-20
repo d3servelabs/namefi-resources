@@ -5,6 +5,7 @@ import {
   db,
 } from '@namefi-astra/db';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import { computeChargesInUsdOrThrow, usdToCents } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
 import { and, eq, sql } from 'drizzle-orm';
 import { z } from 'zod';
@@ -37,7 +38,7 @@ export const cartsRouter = createTRPCRouter({
 
     return filteredCartItems.map((item) => ({
       ...item,
-      domainInfo: domainInfoMap.get(
+      domainAvailabilityInfo: domainInfoMap.get(
         item.normalizedDomainName as NamefiNormalizedDomain,
       ),
     }));
@@ -137,10 +138,49 @@ export const cartsRouter = createTRPCRouter({
         }),
     )
     .mutation(async ({ ctx, input }) => {
+      // If duration is being updated, recalculate the amount using proper pricing
+      let updatedAmountInUsdCents = input.amountInUSDCents;
+
+      if (input.durationInYears && !input.amountInUSDCents) {
+        // Get the current cart item to fetch domain info
+        const currentItem = await db.query.cartItemsTable.findFirst({
+          where: and(
+            eq(cartItemsTable.id, input.id),
+            eq(cartItemsTable.userId, ctx.user.id),
+          ),
+        });
+
+        if (!currentItem) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'Cart item not found',
+          });
+        }
+
+        const domainInfos = await getDomainListInfo(
+          [currentItem.normalizedDomainName as NamefiNormalizedDomain],
+          ctx.user,
+        );
+
+        const domainInfo = domainInfos[0];
+        if (!domainInfo?.pricingDetails?.registrationPrice) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: `Pricing details unavailable for domain: ${currentItem.normalizedDomainName}`,
+          });
+        }
+
+        const chargeAmountInUsd = computeChargesInUsdOrThrow(
+          domainInfo.pricingDetails.registrationPrice,
+          input.durationInYears,
+        );
+        updatedAmountInUsdCents = usdToCents(chargeAmountInUsd);
+      }
+
       await db
         .update(cartItemsTable)
         .set({
-          amountInUSDCents: input.amountInUSDCents,
+          amountInUSDCents: updatedAmountInUsdCents,
           durationInYears: input.durationInYears,
           metadata: input.metadata,
         })

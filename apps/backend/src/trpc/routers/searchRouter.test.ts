@@ -26,7 +26,6 @@ describe('Search Router', () => {
         domains.map((domain) => ({
           domain,
           availability: true, // Default to available
-          priceInUSD: 9.99, // Add a mock price
           pricingDetails: domainSingleYearPricingTemplate(9.99, 'USD'),
           currentOwner: undefined,
           durationValidationInYears: {
@@ -76,7 +75,6 @@ describe('Search Router', () => {
       expect(item).toHaveProperty('domain');
       expect(item).toHaveProperty('availability');
       expect(typeof item.availability).toBe('boolean');
-      expect(item).toHaveProperty('priceInUSD');
     }
   });
 

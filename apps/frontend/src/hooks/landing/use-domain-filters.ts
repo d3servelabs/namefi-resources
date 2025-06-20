@@ -1,19 +1,12 @@
 import { isNotNil } from 'ramda';
 import { useMemo, useState } from 'react';
-
-export type DomainData = {
-  domain: string;
-  availability: boolean;
-  priceInUSD?: number | null;
-  currentOwner?: string | null;
-  registrarKey?: string;
-};
+import type { DomainAvailabilityInfo } from '../../utils/types';
 
 /**
  * Hook for filtering domains based on tab selection
  */
 export function useDomainFilters(
-  domains: DomainData[],
+  domains: DomainAvailabilityInfo[],
   isDomainInCart: (domain: string) => boolean,
 ) {
   const [activeTab, setActiveTab] = useState('all');

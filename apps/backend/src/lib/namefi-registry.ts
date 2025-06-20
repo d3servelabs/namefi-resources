@@ -68,10 +68,6 @@ export const getSubdomainPriceInUsd = async (
 export type DomainAvailabilityInfo = {
   domain: NamefiNormalizedDomain;
   availability: boolean;
-  /**
-   * @deprecated use pricingDetails instead
-   */
-  priceInUSD: number | undefined;
   pricingDetails: DomainPricingDetails | undefined;
   /**
    * Current owner of the domain
@@ -79,7 +75,7 @@ export type DomainAvailabilityInfo = {
   currentOwner: string | undefined;
   /** */
   registrarKey?: string;
-  durationValidationInYears: {
+  durationValidationInYears?: {
     min: number;
     max: number;
   };
@@ -107,7 +103,6 @@ export const getDomainListInfo = async (
       const unavailableDomainInfo = {
         domain,
         availability: false,
-        priceInUSD: undefined,
         pricingDetails: undefined,
         currentOwner: undefined,
         registrarKey: undefined,
@@ -134,7 +129,6 @@ export const getDomainListInfo = async (
           return {
             domain,
             availability: false,
-            priceInUSD: undefined,
             pricingDetails: undefined,
             currentOwner: nft.ownerAddress,
             durationValidationInYears: DOMAIN_DURATION_CONFIG,
@@ -207,7 +201,6 @@ export const getDomainListInfo = async (
           ),
           availability:
             response.result.available === DomainAvailability.AVAILABLE,
-          priceInUSD: response.result.price.registrationPrice.price,
           pricingDetails: {
             registrationPrice,
             renewalPrice: singleYearPricingTemplate(
@@ -300,7 +293,6 @@ export const getDomainListInfo = async (
           return {
             domain,
             availability: isNil(nft),
-            priceInUSD: price,
             pricingDetails: domainSingleYearPricingTemplate(price, 'USD'),
             currentOwner: nft?.ownerAddress,
             durationValidationInYears: DOMAIN_DURATION_CONFIG,

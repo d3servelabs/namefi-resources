@@ -40,7 +40,6 @@ import {
 import { authedOrPublicProcedure, createTRPCRouter } from '../base';
 
 type Tag = ReturnType<typeof getTags>[number];
-export type Suggestion = DomainAvailabilityInfo;
 
 const sanitizedQuerySchema = z.string().transform((val) => {
   return val
@@ -117,7 +116,10 @@ export const searchRouter = createTRPCRouter({
         return {
           domain: domain,
           availability: false,
-        };
+          pricingDetails: undefined,
+          currentOwner: undefined,
+          durationValidationInYears: undefined,
+        } satisfies DomainAvailabilityInfo;
       }
       return availability[0];
     }),
@@ -200,7 +202,7 @@ export const searchRouter = createTRPCRouter({
       }
 
       // Rule-based suggestions for clubs
-      let suggestions: Suggestion[] = [];
+      let suggestions: DomainAvailabilityInfo[] = [];
 
       performance.mark('llm-suggestions-start');
       const llmSuggestions = await generateLlmSuggestions(query, parentDomain);
@@ -278,13 +280,13 @@ export async function get3rdLevelDomainsSuggestions(input: {
   const tags = getTags(domain);
 
   // Rule-based suggestions for clubs
-  let suggestions: Suggestion[] = [];
+  let suggestions: DomainAvailabilityInfo[] = [];
 
   const loopStartTime = performance.now();
   logger.info(`[getDomainSuggestions] Starting loop ${loopStartTime}`);
   const maxDuration = input.maxDuration;
   const maxRound = input.maxRound;
-  let currentSuggestions: Suggestion[] = [];
+  let currentSuggestions: DomainAvailabilityInfo[] = [];
 
   // Number of rounds to generate suggestions (to avoid infinite loops) this is enabled when onlyAvailable is false
   // Also acts as a seed in the suggestions and reference to avoid repeating the initial base suggestions

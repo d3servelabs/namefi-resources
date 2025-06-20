@@ -11,6 +11,8 @@ import {
 import {
   type NamefiNormalizedDomain,
   checksumWalletAddressSchema,
+  computeChargesInUsdOrThrow,
+  usdToCents,
 } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
 import { and, desc, eq, inArray } from 'drizzle-orm';
@@ -411,7 +413,20 @@ async function getChangesIfAnyToCartItems(
         domainPricingByNormalizedDomainName[
           originalItem.normalizedDomainName as NamefiNormalizedDomain
         ];
-      const newAmountInUsdCents = 100 * (domainPricing?.priceInUSD ?? 0);
+
+      if (!domainPricing?.pricingDetails?.registrationPrice) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: `Pricing details unavailable for domain: ${originalItem.normalizedDomainName}`,
+        });
+      }
+
+      const chargeAmountInUsd = computeChargesInUsdOrThrow(
+        domainPricing.pricingDetails.registrationPrice,
+        originalItem.durationInYears ?? 3,
+      );
+      let newAmountInUsdCents = usdToCents(chargeAmountInUsd);
+
       const { min, max } = domainPricing?.durationValidationInYears ?? {
         min: 1,
         max: 1,
@@ -419,11 +434,20 @@ async function getChangesIfAnyToCartItems(
       let newDurationInYears = originalItem.durationInYears ?? min;
       if (newDurationInYears < min || newDurationInYears > max) {
         newDurationInYears = Math.min(Math.max(newDurationInYears, min), max);
+
+        // Recalculate amount with corrected duration
+        const correctedChargeAmountInUsd = computeChargesInUsdOrThrow(
+          domainPricing.pricingDetails.registrationPrice,
+          newDurationInYears,
+        );
+        newAmountInUsdCents = usdToCents(correctedChargeAmountInUsd);
+
         durationValidationChangedCartItems.push({
           originalItem,
           newItem: {
             ...originalItem,
             durationInYears: newDurationInYears,
+            amountInUSDCents: newAmountInUsdCents,
           },
         });
       }
@@ -434,6 +458,7 @@ async function getChangesIfAnyToCartItems(
           newItem: {
             ...originalItem,
             amountInUSDCents: newAmountInUsdCents,
+            durationInYears: newDurationInYears,
           },
         });
       }
@@ -622,7 +647,7 @@ function generateSummaryOfCartItemsChanges(
   if (durationValidationChangedCartItems.length > 0) {
     const groupByDurationValidationChangedCartItems = groupBy(
       (item: { originalItem: CartItemSelect; newItem: CartItemSelect }) =>
-        `${item.originalItem.durationInYears ?? 1}-${item.newItem.durationInYears ?? 1}`,
+        `${item.originalItem.durationInYears ?? 3}-${item.newItem.durationInYears ?? 3}`,
       durationValidationChangedCartItems,
     );
     Object.entries(groupByDurationValidationChangedCartItems).forEach(

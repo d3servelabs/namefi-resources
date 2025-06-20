@@ -73,13 +73,15 @@ export const DomainClaim: FC<DomainClaimProps> = ({
       enabled: isAuthenticated && isSubdomainValueValid,
     });
 
-  const { data: isDomainAvailable, isFetching: isDomainAvailableFetching } =
-    useQuery({
-      ...trpc.search.isDomainAvailable.queryOptions({
-        domain: `${debouncedSubdomainValue}.${domain}`,
-      }),
-      enabled: isSubdomainValueValid,
-    });
+  const {
+    data: domainAvailabilityInfo,
+    isFetching: isDomainAvailableFetching,
+  } = useQuery({
+    ...trpc.search.isDomainAvailable.queryOptions({
+      domain: `${debouncedSubdomainValue}.${domain}`,
+    }),
+    enabled: isSubdomainValueValid,
+  });
 
   const {
     data: qualifyingDomainNamesForPromoWithLinkedAccountType,
@@ -122,13 +124,13 @@ export const DomainClaim: FC<DomainClaimProps> = ({
   const canClaim = useMemo(() => {
     return (
       isSubdomainValueValid &&
-      isDomainAvailable &&
+      domainAvailabilityInfo &&
       qualifiesForPromo &&
       !isDomainInCart(`${subdomainValue}.${domain}`)
     );
   }, [
     isSubdomainValueValid,
-    isDomainAvailable,
+    domainAvailabilityInfo,
     qualifiesForPromo,
     isDomainInCart,
     subdomainValue,
@@ -180,16 +182,22 @@ export const DomainClaim: FC<DomainClaimProps> = ({
   );
 
   const handleClaim = useCallback(() => {
-    if (canClaim) {
+    if (canClaim && domainAvailabilityInfo) {
       handleDomainAction({
-        domain: `${subdomainValue}.${domain}`,
-        priceInUSD: 0,
+        domainAvailabilityInfo,
+        durationInYears: 3,
       });
       if (onClaim) {
         onClaim(subdomainValue);
       }
     }
-  }, [canClaim, handleDomainAction, onClaim, subdomainValue, domain]);
+  }, [
+    canClaim,
+    handleDomainAction,
+    onClaim,
+    subdomainValue,
+    domainAvailabilityInfo,
+  ]);
 
   return (
     <div className="w-full max-w-4xl mx-auto p-16 justify-center items-center">

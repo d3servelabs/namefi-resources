@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   type PriceWithCurrency,
   type PricingDetails,
-  computeCharges,
+  computeChargesInUsdOrThrow,
   domainRegistrationMultiYearPricingTemplateFromSingleYear,
   domainSingleYearPricingTemplate,
   multiYearPricingTemplate,
@@ -187,7 +187,7 @@ describe('domainSingleYearPricingTemplate', () => {
   });
 });
 
-describe('computeCharges', () => {
+describe('computeChargesInUsdOrThrow', () => {
   describe('with SINGLE_YEAR pricing', () => {
     const singleYearPricing: PricingDetails = {
       type: 'SINGLE_YEAR',
@@ -198,17 +198,17 @@ describe('computeCharges', () => {
     };
 
     it('should compute charges for 1 year', () => {
-      const result = computeCharges(singleYearPricing, 1);
+      const result = computeChargesInUsdOrThrow(singleYearPricing, 1);
       expect(result).toBe(10.99);
     });
 
     it('should compute charges for multiple years (linear scaling)', () => {
-      const result = computeCharges(singleYearPricing, 3);
+      const result = computeChargesInUsdOrThrow(singleYearPricing, 3);
       expect(result).toBe(32.97); // 10.99 * 3
     });
 
     it('should compute charges for 10 years', () => {
-      const result = computeCharges(singleYearPricing, 10);
+      const result = computeChargesInUsdOrThrow(singleYearPricing, 10);
       expect(result).toBe(109.9); // 10.99 * 10
     });
 
@@ -220,7 +220,7 @@ describe('computeCharges', () => {
           currency: 'USD',
         },
       };
-      const result = computeCharges(zeroPricing, 5);
+      const result = computeChargesInUsdOrThrow(zeroPricing, 5);
       expect(result).toBe(0);
     });
 
@@ -232,7 +232,7 @@ describe('computeCharges', () => {
           currency: 'USD',
         },
       };
-      const result = computeCharges(negativePricing, 2);
+      const result = computeChargesInUsdOrThrow(negativePricing, 2);
       expect(result).toBe(-11); // -5.50 * 2
     });
 
@@ -244,9 +244,9 @@ describe('computeCharges', () => {
           currency: 'USD',
         },
       };
-      expect(() => computeCharges(singleYearPricing, 1.5 as any)).toThrow(
-        'Duration must be an integer',
-      );
+      expect(() =>
+        computeChargesInUsdOrThrow(singleYearPricing, 1.5 as any),
+      ).toThrow('Duration must be an integer');
     });
   });
 
@@ -266,44 +266,44 @@ describe('computeCharges', () => {
     };
 
     it('should compute charges for 1 year', () => {
-      const result = computeCharges(multiYearPricing, 1);
+      const result = computeChargesInUsdOrThrow(multiYearPricing, 1);
       expect(result).toBe(10.99);
     });
 
     it('should compute charges for 2 years', () => {
-      const result = computeCharges(multiYearPricing, 2);
+      const result = computeChargesInUsdOrThrow(multiYearPricing, 2);
       expect(result).toBe(19.99);
     });
 
     it('should compute charges for 3 years', () => {
-      const result = computeCharges(multiYearPricing, 3);
+      const result = computeChargesInUsdOrThrow(multiYearPricing, 3);
       expect(result).toBe(28.99);
     });
 
     it('should compute charges for 5 years', () => {
-      const result = computeCharges(multiYearPricing, 5);
+      const result = computeChargesInUsdOrThrow(multiYearPricing, 5);
       expect(result).toBe(45.99);
     });
 
     it('should compute charges for 10 years', () => {
-      const result = computeCharges(multiYearPricing, 10);
+      const result = computeChargesInUsdOrThrow(multiYearPricing, 10);
       expect(result).toBe(89.99);
     });
 
     it('should throw error for duration not in pricing table', () => {
-      expect(() => computeCharges(multiYearPricing, 4)).toThrow(
+      expect(() => computeChargesInUsdOrThrow(multiYearPricing, 4)).toThrow(
         'Invalid duration, no price found',
       );
-      expect(() => computeCharges(multiYearPricing, 6)).toThrow(
+      expect(() => computeChargesInUsdOrThrow(multiYearPricing, 6)).toThrow(
         'Invalid duration, no price found',
       );
-      expect(() => computeCharges(multiYearPricing, 7)).toThrow(
+      expect(() => computeChargesInUsdOrThrow(multiYearPricing, 7)).toThrow(
         'Invalid duration, no price found',
       );
-      expect(() => computeCharges(multiYearPricing, 8)).toThrow(
+      expect(() => computeChargesInUsdOrThrow(multiYearPricing, 8)).toThrow(
         'Invalid duration, no price found',
       );
-      expect(() => computeCharges(multiYearPricing, 9)).toThrow(
+      expect(() => computeChargesInUsdOrThrow(multiYearPricing, 9)).toThrow(
         'Invalid duration, no price found',
       );
     });
@@ -319,19 +319,19 @@ describe('computeCharges', () => {
     };
 
     it('should throw error for duration less than 1', () => {
-      expect(() => computeCharges(singleYearPricing, 0)).toThrow(
+      expect(() => computeChargesInUsdOrThrow(singleYearPricing, 0)).toThrow(
         'Invalid duration',
       );
-      expect(() => computeCharges(singleYearPricing, -1)).toThrow(
+      expect(() => computeChargesInUsdOrThrow(singleYearPricing, -1)).toThrow(
         'Invalid duration',
       );
     });
 
     it('should throw error for duration greater than 10', () => {
-      expect(() => computeCharges(singleYearPricing, 11)).toThrow(
+      expect(() => computeChargesInUsdOrThrow(singleYearPricing, 11)).toThrow(
         'Invalid duration',
       );
-      expect(() => computeCharges(singleYearPricing, 15)).toThrow(
+      expect(() => computeChargesInUsdOrThrow(singleYearPricing, 15)).toThrow(
         'Invalid duration',
       );
     });
@@ -346,7 +346,7 @@ describe('computeCharges', () => {
           currency: 'USD',
         },
       };
-      const result = computeCharges(largePricing, 10);
+      const result = computeChargesInUsdOrThrow(largePricing, 10);
       expect(result).toBe(9999999.9); // 999999.99 * 10
     });
   });
