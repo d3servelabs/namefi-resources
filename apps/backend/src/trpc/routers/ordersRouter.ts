@@ -200,6 +200,7 @@ export const ordersRouter = createTRPCRouter({
               orderId: order.id,
               normalizedDomainName: item.normalizedDomainName,
               amountInUSDCents: item.amountInUSDCents,
+              durationInYears: item.durationInYears,
               metadata: item.metadata,
             })),
           )
@@ -400,6 +401,10 @@ async function getChangesIfAnyToCartItems(
     originalItem: CartItemSelect;
     newItem: CartItemSelect;
   }[] = [];
+  const durationValidationChangedCartItems: {
+    originalItem: CartItemSelect;
+    newItem: CartItemSelect;
+  }[] = [];
   const cartItemsWithChangesReflected = stillAvailableCartItems.map(
     (originalItem) => {
       const domainPricing =
@@ -407,6 +412,22 @@ async function getChangesIfAnyToCartItems(
           originalItem.normalizedDomainName as NamefiNormalizedDomain
         ];
       const newAmountInUsdCents = 100 * (domainPricing?.priceInUSD ?? 0);
+      const { min, max } = domainPricing?.durationValidationInYears ?? {
+        min: 1,
+        max: 1,
+      };
+      let newDurationInYears = originalItem.durationInYears ?? min;
+      if (newDurationInYears < min || newDurationInYears > max) {
+        newDurationInYears = Math.min(Math.max(newDurationInYears, min), max);
+        durationValidationChangedCartItems.push({
+          originalItem,
+          newItem: {
+            ...originalItem,
+            durationInYears: newDurationInYears,
+          },
+        });
+      }
+
       if (newAmountInUsdCents !== originalItem.amountInUSDCents) {
         priceChangedCartItems.push({
           originalItem,
@@ -420,16 +441,21 @@ async function getChangesIfAnyToCartItems(
       return {
         ...originalItem,
         amountInUSDCents: newAmountInUsdCents,
+        durationInYears: newDurationInYears,
       };
     },
   );
-  // TODO: add validation for duration
+
   return {
     noLongerAvailableCartItems,
     priceChangedCartItems,
+    durationValidationChangedCartItems,
     cartItemsWithChangesReflected,
     areThereAnyChanges:
-      noLongerAvailableCartItems.length > 0 || priceChangedCartItems.length > 0,
+      noLongerAvailableCartItems.length > 0 ||
+      priceChangedCartItems.length > 0 ||
+      durationValidationChangedCartItems.length > 0,
+    domainPricingByNormalizedDomainName,
   };
 }
 
@@ -440,8 +466,12 @@ async function getChangesIfAnyToCartItems(
  * @returns The changes if any to the cart items
  */
 async function validateCartItems(userId: string, cartItemIds?: string[]) {
-  const { noLongerAvailableCartItems, priceChangedCartItems } =
-    await getChangesIfAnyToCartItems(userId, cartItemIds);
+  const {
+    noLongerAvailableCartItems,
+    priceChangedCartItems,
+    durationValidationChangedCartItems,
+    domainPricingByNormalizedDomainName,
+  } = await getChangesIfAnyToCartItems(userId, cartItemIds);
   if (noLongerAvailableCartItems.length > 0) {
     throw new TRPCError({
       code: 'BAD_REQUEST',
@@ -453,6 +483,25 @@ async function validateCartItems(userId: string, cartItemIds?: string[]) {
     throw new TRPCError({
       code: 'BAD_REQUEST',
       message: `Pricing has changed for these domains: ${priceChangedCartItems.map((item) => item.originalItem.normalizedDomainName).join(', ')}`,
+    });
+  }
+
+  if (durationValidationChangedCartItems.length > 0) {
+    const invalidDomains = durationValidationChangedCartItems.map((item) => {
+      const domainPricing =
+        domainPricingByNormalizedDomainName[
+          item.originalItem.normalizedDomainName as NamefiNormalizedDomain
+        ];
+      const { min, max } = domainPricing?.durationValidationInYears ?? {
+        min: 1,
+        max: 10,
+      };
+      return `${item.originalItem.normalizedDomainName} (must be between ${min} and ${max} years)`;
+    });
+
+    throw new TRPCError({
+      code: 'BAD_REQUEST',
+      message: `Invalid duration for these domains: ${invalidDomains.join(', ')}`,
     });
   }
 }
@@ -469,6 +518,7 @@ async function reflectChangesInCartItemsIfAnyAndReturnSummary(
   const {
     noLongerAvailableCartItems,
     priceChangedCartItems,
+    durationValidationChangedCartItems,
     areThereAnyChanges,
   } = await getChangesIfAnyToCartItems(userId, cartItemIds);
   if (!areThereAnyChanges) {
@@ -477,6 +527,7 @@ async function reflectChangesInCartItemsIfAnyAndReturnSummary(
   const summary = generateSummaryOfCartItemsChanges({
     noLongerAvailableCartItems,
     priceChangedCartItems,
+    durationValidationChangedCartItems,
     areThereAnyChanges,
   });
 
@@ -503,6 +554,18 @@ async function reflectChangesInCartItemsIfAnyAndReturnSummary(
         }),
       );
     }
+    if (durationValidationChangedCartItems.length > 0) {
+      await Promise.all(
+        durationValidationChangedCartItems.map(async (item) => {
+          await tx
+            .update(cartItemsTable)
+            .set({
+              durationInYears: item.newItem.durationInYears,
+            })
+            .where(eq(cartItemsTable.id, item.newItem.id));
+        }),
+      );
+    }
   });
 
   return summary;
@@ -518,12 +581,14 @@ function generateSummaryOfCartItemsChanges(
     Awaited<ReturnType<typeof getChangesIfAnyToCartItems>>,
     | 'noLongerAvailableCartItems'
     | 'priceChangedCartItems'
+    | 'durationValidationChangedCartItems'
     | 'areThereAnyChanges'
   >,
 ) {
   const {
     noLongerAvailableCartItems,
     priceChangedCartItems,
+    durationValidationChangedCartItems,
     areThereAnyChanges,
   } = changes;
   if (!areThereAnyChanges) {
@@ -553,6 +618,26 @@ function generateSummaryOfCartItemsChanges(
         );
       }
     });
+  }
+  if (durationValidationChangedCartItems.length > 0) {
+    const groupByDurationValidationChangedCartItems = groupBy(
+      (item: { originalItem: CartItemSelect; newItem: CartItemSelect }) =>
+        `${item.originalItem.durationInYears ?? 1}-${item.newItem.durationInYears ?? 1}`,
+      durationValidationChangedCartItems,
+    );
+    Object.entries(groupByDurationValidationChangedCartItems).forEach(
+      ([_key, items]) => {
+        if (items && items.length > 0) {
+          const fromDurationInYears = items[0].originalItem.durationInYears;
+          const toDurationInYears = items[0].newItem.durationInYears;
+          if (fromDurationInYears != null && toDurationInYears != null) {
+            summary.push(
+              `Duration has changed from ${fromDurationInYears} years to ${toDurationInYears} years for these domains: ${items.map((item) => item.originalItem.normalizedDomainName).join(', ')}`,
+            );
+          }
+        }
+      },
+    );
   }
   return summary;
 }

@@ -409,9 +409,15 @@ export default function OrderDetailsPage({
                           <span>-</span>
                         )}
                       </div>
-                      <span className="text-xl">
-                        {formatAmountInUSD(item.amountInUSDCents, true)}
-                      </span>
+                      <div className="flex flex-col items-end gap-1">
+                        <span className="text-xl">
+                          {formatAmountInUSD(item.amountInUSDCents, true)}
+                        </span>
+                        <span className="text-sm text-gray-500">
+                          {item.durationInYears ?? 3} year
+                          {(item.durationInYears ?? 3) > 1 ? 's' : ''}
+                        </span>
+                      </div>
                     </div>
                   </div>
                   {index < order.items.length - 1 && (

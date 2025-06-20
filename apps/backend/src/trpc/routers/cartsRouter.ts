@@ -8,6 +8,7 @@ import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
 import { and, eq, sql } from 'drizzle-orm';
 import { z } from 'zod';
+import { getDomainListInfo } from '#lib/namefi-registry';
 import { userQualifiesForDomainNamePromo } from '#lib/userPromo';
 import { createTRPCRouter, protectedProcedure } from '../base';
 import { isNormalizedDomainNameAllowedForOriginHostname } from '../utils';
@@ -18,7 +19,28 @@ export const cartsRouter = createTRPCRouter({
     const cartItems = await db.query.cartItemsTable.findMany({
       where: eq(cartItemsTable.userId, ctx.user.id),
     });
-    return filterCartItemsByOrigin(cartItems, ctx.thirdPartyOriginHostname);
+    const filteredCartItems = filterCartItemsByOrigin(
+      cartItems,
+      ctx.thirdPartyOriginHostname,
+    );
+
+    const domainInfos = await getDomainListInfo(
+      filteredCartItems.map(
+        (item) => item.normalizedDomainName as NamefiNormalizedDomain,
+      ),
+      ctx.user,
+    );
+
+    const domainInfoMap = new Map(
+      domainInfos.map((info) => [info.domain, info]),
+    );
+
+    return filteredCartItems.map((item) => ({
+      ...item,
+      domainInfo: domainInfoMap.get(
+        item.normalizedDomainName as NamefiNormalizedDomain,
+      ),
+    }));
   }),
 
   // Add multiple items to cart for the current user
@@ -104,11 +126,14 @@ export const cartsRouter = createTRPCRouter({
         .pick({
           id: true,
           amountInUSDCents: true,
+          durationInYears: true,
           metadata: true,
         })
         .required()
         .partial({
           metadata: true,
+          amountInUSDCents: true,
+          durationInYears: true,
         }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -116,6 +141,7 @@ export const cartsRouter = createTRPCRouter({
         .update(cartItemsTable)
         .set({
           amountInUSDCents: input.amountInUSDCents,
+          durationInYears: input.durationInYears,
           metadata: input.metadata,
         })
         .where(

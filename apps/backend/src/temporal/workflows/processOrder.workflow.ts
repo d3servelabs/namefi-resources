@@ -132,6 +132,7 @@ export async function processOrderWorkflow(
               orderId: input.orderId,
               normalizedDomainName:
                 item.normalizedDomainName as NamefiNormalizedDomain,
+              durationInYears: item.durationInYears ?? 3,
               nftWalletAddress: orderDetails.nftWalletAddress as `0x${string}`,
               nftChainId: orderDetails.nftChainId,
             },

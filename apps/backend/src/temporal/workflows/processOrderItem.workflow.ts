@@ -11,6 +11,7 @@ export interface ProcessOrderItemWorkflowInput {
   itemId: string;
   orderId: string;
   normalizedDomainName: NamefiNormalizedDomain;
+  durationInYears: number;
   nftWalletAddress: `0x${string}`;
   nftChainId: number;
 }
@@ -21,7 +22,12 @@ export interface ProcessOrderItemWorkflowInput {
 export async function processOrderItemWorkflow(
   input: ProcessOrderItemWorkflowInput,
 ): Promise<void> {
-  const { normalizedDomainName, nftWalletAddress, nftChainId } = input;
+  const {
+    normalizedDomainName,
+    nftWalletAddress,
+    nftChainId,
+    durationInYears,
+  } = input;
   const { updateOrderItemStatusOrThrow } = typedProxyActivities({
     temporalEnum: TEMPORAL_ENUMS.DEFAULT,
     options: {
@@ -38,7 +44,7 @@ export async function processOrderItemWorkflow(
           chainId: nftChainId,
           toAddress: nftWalletAddress as `0x${string}`,
           // TODO: (sid->sami) Change this if needed to parent domain expiration time
-          durationInYears: 3,
+          durationInYears,
         },
       ],
       taskQueue: TEMPORAL_QUEUES.DOMAINS,

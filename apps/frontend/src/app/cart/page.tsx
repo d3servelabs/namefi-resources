@@ -1,6 +1,7 @@
 'use client';
 import { AuthRequired } from '@/components/auth-required';
 import { CartCard } from '@/components/cart-card';
+import { DurationStepper } from '@/components/duration-stepper';
 import { NamefiButton } from '@/components/namefi-button';
 import { NftWalletCard } from '@/components/nftWalletCard';
 import { useInteractionLoggers } from '@/components/providers/interactionLoggersProvider';
@@ -346,9 +347,10 @@ export default function CartPage() {
   ]);
 
   const submitOrderDisabled = useMemo(() => {
-    return (
-      !(paymentMethodSelected && selectedNftWalletAddress) &&
-      !cartItemsAreUpToDate
+    return !(
+      paymentMethodSelected &&
+      selectedNftWalletAddress &&
+      cartItemsAreUpToDate
     );
   }, [paymentMethodSelected, selectedNftWalletAddress, cartItemsAreUpToDate]);
 
@@ -423,6 +425,28 @@ export default function CartPage() {
   const isDisabled = useMemo(
     () => isCreateOrderPending || isRedirecting,
     [isCreateOrderPending, isRedirecting],
+  );
+
+  const { mutateAsync: updateCartItem } = useMutation(
+    trpc.carts.updateItem.mutationOptions({
+      onSuccess: () => {
+        queryClient.refetchQueries({
+          queryKey: trpc.carts.getItems.queryKey(),
+        });
+      },
+    }),
+  );
+
+  const handleDurationChange = useCallback(
+    async (itemId: string, newDuration: number) => {
+      if (isAuthenticated) {
+        await updateCartItem({
+          id: itemId,
+          durationInYears: newDuration,
+        });
+      }
+    },
+    [isAuthenticated, updateCartItem],
   );
 
   const LoadingSkeletons = () => (
@@ -590,20 +614,38 @@ export default function CartPage() {
                         {item.normalizedDomainName}
                       </span>
                       <div className="flex items-center justify-between">
-                        <button
-                          type="button"
-                          className="p-2 rounded-lg bg-[#27272A] hover:bg-[#3F3F46] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                          onClick={() => {
-                            removeItem(item.id);
-                          }}
-                          disabled={isDisabled || isRemovingFromCart}
-                        >
-                          {isRemovingFromCart ? (
-                            <Loader2 className="size-4 animate-spin" />
-                          ) : (
-                            <Trash2 className="size-4" />
-                          )}
-                        </button>
+                        <div className="flex items-center gap-4">
+                          <button
+                            type="button"
+                            className="p-2 rounded-lg bg-[#27272A] hover:bg-[#3F3F46] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            onClick={() => {
+                              removeItem(item.id);
+                            }}
+                            disabled={isDisabled || isRemovingFromCart}
+                          >
+                            {isRemovingFromCart ? (
+                              <Loader2 className="size-4 animate-spin" />
+                            ) : (
+                              <Trash2 className="size-4" />
+                            )}
+                          </button>
+                          <DurationStepper
+                            value={item.durationInYears ?? 1}
+                            onChange={(value) =>
+                              handleDurationChange(item.id, value)
+                            }
+                            min={
+                              item.domainInfo?.durationValidationInYears?.min ??
+                              1
+                            }
+                            max={
+                              item.domainInfo?.durationValidationInYears?.max ??
+                              10
+                            }
+                            disabled={isDisabled || !item.domainInfo}
+                            className="w-32"
+                          />
+                        </div>
                         <span className="text-xl">
                           {formatAmountInUSD(item.amountInUSDCents, true)}
                         </span>

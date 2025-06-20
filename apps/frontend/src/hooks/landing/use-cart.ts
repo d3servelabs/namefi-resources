@@ -6,19 +6,26 @@ import {
   type RemoveFromCartEvent,
 } from '@/utils/interaction-logging/events';
 import { useTRPC } from '@/utils/trpc';
+import type { AppRouter } from '@namefi-astra/backend/trpc';
 import type { CartItemSelect as DbCartItem } from '@namefi-astra/db/types';
 import { useMutation, useQuery } from '@tanstack/react-query';
+import type { inferRouterOutputs } from '@trpc/server';
 import { useCallback, useEffect, useRef } from 'react';
 import { useLocalStorage } from 'usehooks-ts';
+
+type DomainInfo =
+  inferRouterOutputs<AppRouter>['registry']['getDomainListInfo'][number];
 
 /**
  * Type for cart items stored both in server and localStorage
  */
 type CartItem = Pick<
   DbCartItem,
-  'normalizedDomainName' | 'amountInUSDCents' | 'durationInYears'
+  'normalizedDomainName' | 'amountInUSDCents' | 'durationInYears' | 'createdAt'
 > &
-  Partial<Pick<DbCartItem, 'metadata'>>;
+  Partial<Pick<DbCartItem, 'metadata'>> & {
+    domainInfo?: DomainInfo;
+  };
 
 /**
  * Type for local cart items with client-side generated ID
@@ -51,7 +58,15 @@ export function useCart() {
   });
 
   // Determine which cart data to use based on authentication status
-  const cartData = isAuthenticated ? serverCartData : localCartItems;
+  let cartData = isAuthenticated ? serverCartData : localCartItems;
+  if (cartData && cartData.length > 0 && cartData[0].createdAt) {
+    cartData = cartData
+      .slice()
+      .sort(
+        (a, b) =>
+          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+      );
+  }
 
   // Cart mutations for authenticated users
   const {
@@ -160,6 +175,7 @@ export function useCart() {
         normalizedDomainName: domainName,
         amountInUSDCents: domain.priceInUSD ? domain.priceInUSD * 100 : 0,
         durationInYears: 3,
+        createdAt: new Date(),
       };
 
       if (isDomainInCart(domainName)) {

@@ -21,6 +21,11 @@ import pMap from 'p-map';
 import { secrets } from '#lib/env';
 import { logger } from '#lib/logger';
 
+export const DOMAIN_DURATION_CONFIG = {
+  min: 1,
+  max: 10,
+} as const;
+
 export const sldRegistrar = createRegistrarService({
   AWS_REGION: config.AWS_REGION,
   AWS_ACCESS_KEY_ID: secrets.AWS_ACCESS_KEY_ID,
@@ -66,6 +71,10 @@ export const getDomainListInfo = async (
     priceInUSD: number | undefined;
     currentOwner: string | undefined;
     registrarKey?: string;
+    durationValidationInYears: {
+      min: number;
+      max: number;
+    };
   }[]
 > => {
   // Query the database for NFTs matching the provided domain names
@@ -85,6 +94,7 @@ export const getDomainListInfo = async (
         priceInUSD: undefined,
         currentOwner: undefined,
         registrarKey: undefined,
+        durationValidationInYears: DOMAIN_DURATION_CONFIG,
       };
       // Parse the domain to extract its components
       const domainParseResult = parseDomain(domain);
@@ -109,6 +119,7 @@ export const getDomainListInfo = async (
             availability: false,
             priceInUSD: undefined,
             currentOwner: nft.ownerAddress,
+            durationValidationInYears: DOMAIN_DURATION_CONFIG,
           };
         }
         const responseOrError = await resolve(
@@ -164,6 +175,7 @@ export const getDomainListInfo = async (
           priceInUSD: response.result.price.registrationPrice.price,
           currentOwner: undefined,
           registrarKey: response.registrarKey,
+          durationValidationInYears: DOMAIN_DURATION_CONFIG,
         };
       }
       if (levels.length === 3) {
@@ -244,6 +256,7 @@ export const getDomainListInfo = async (
             availability: isNil(nft),
             priceInUSD: price,
             currentOwner: nft?.ownerAddress,
+            durationValidationInYears: DOMAIN_DURATION_CONFIG,
           };
         }
       }

@@ -27,6 +27,10 @@ describe('Search Router', () => {
           availability: true, // Default to available
           priceInUSD: 9.99, // Add a mock price
           currentOwner: undefined,
+          durationValidationInYears: {
+            min: 1,
+            max: 10,
+          },
         })),
     );
   });
