@@ -695,7 +695,7 @@ export default function CartPage() {
                             )}
                           </button>
                           <DurationStepper
-                            value={item.durationInYears ?? 3}
+                            value={item.durationInYears}
                             onChange={(value) =>
                               handleDurationChange(item.id, value)
                             }

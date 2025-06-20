@@ -414,8 +414,8 @@ export default function OrderDetailsPage({
                           {formatAmountInUSD(item.amountInUSDCents, true)}
                         </span>
                         <span className="text-sm text-gray-500">
-                          {item.durationInYears ?? 3} year
-                          {(item.durationInYears ?? 3) > 1 ? 's' : ''}
+                          {item.durationInYears} year
+                          {item.durationInYears > 1 ? 's' : ''}
                         </span>
                       </div>
                     </div>

@@ -423,7 +423,7 @@ async function getChangesIfAnyToCartItems(
 
       const chargeAmountInUsd = computeChargesInUsdOrThrow(
         domainPricing.pricingDetails.registrationPrice,
-        originalItem.durationInYears ?? 3,
+        originalItem.durationInYears,
       );
       let newAmountInUsdCents = usdToCents(chargeAmountInUsd);
 
@@ -431,7 +431,7 @@ async function getChangesIfAnyToCartItems(
         min: 1,
         max: 1,
       };
-      let newDurationInYears = originalItem.durationInYears ?? min;
+      let newDurationInYears = originalItem.durationInYears;
       if (newDurationInYears < min || newDurationInYears > max) {
         newDurationInYears = Math.min(Math.max(newDurationInYears, min), max);
 
@@ -647,7 +647,7 @@ function generateSummaryOfCartItemsChanges(
   if (durationValidationChangedCartItems.length > 0) {
     const groupByDurationValidationChangedCartItems = groupBy(
       (item: { originalItem: CartItemSelect; newItem: CartItemSelect }) =>
-        `${item.originalItem.durationInYears ?? 3}-${item.newItem.durationInYears ?? 3}`,
+        `${item.originalItem.durationInYears}-${item.newItem.durationInYears}`,
       durationValidationChangedCartItems,
     );
     Object.entries(groupByDurationValidationChangedCartItems).forEach(
