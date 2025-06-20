@@ -48,8 +48,5 @@
     "validate": "turbo typecheck && bun check:error && bun sherif && bun sgr",
     "validate:secrets": "turbo validate:secrets"
   },
-  "trustedDependencies": ["@biomejs/biome", "esbuild", "lefthook", "sharp"],
-  "dependencies": {
-    "react-markdown": "^10.1.0"
-  }
+  "trustedDependencies": ["@biomejs/biome", "esbuild", "lefthook", "sharp"]
 }
