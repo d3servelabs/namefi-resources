@@ -8,7 +8,10 @@ import {
   PaymentActivities,
 } from '../activities';
 import { DomainsActivities } from '../activities/domain';
-import { updateNamefiNftIndex } from '../activities/namefi-nft';
+import {
+  getNftExpirationTimeInSeconds,
+  updateNamefiNftIndex,
+} from '../activities/namefi-nft';
 import { triggerNamefiGptCronJob } from '../activities/triggerNamefiGptCronJob';
 import { triggerUpdateNamefiNftIndex } from '../schedules/update-namefi-nft-index';
 import { TEMPORAL_ENUMS } from '../shared';
@@ -31,6 +34,7 @@ export const ACTIVITIES = {
   },
   [TEMPORAL_ENUMS.MINT]: {
     ...MintActivities,
+    getNftExpirationTimeInSeconds,
   },
   [TEMPORAL_ENUMS.DOMAINS]: DomainsActivities,
   [TEMPORAL_ENUMS.NOTIFY]: {

@@ -1,13 +1,22 @@
 import { db } from '@namefi-astra/db';
 import { namefiNftTable } from '@namefi-astra/db';
+import { getChain } from '@namefi-astra/utils';
 import BigNumber from 'bignumber.js';
 import { sql } from 'drizzle-orm';
 import pMap from 'p-map';
 import * as R from 'ramda';
 import superjson from 'superjson';
 // Indexer for Namefi NFT activities
-import { type Address, type Chain, keccak256, toBytes } from 'viem';
+import {
+  http,
+  type Address,
+  type Chain,
+  createPublicClient,
+  keccak256,
+  toBytes,
+} from 'viem';
 import { base, mainnet } from 'viem/chains';
+import { nftIdFromDomainName } from '#lib/nftHash';
 import { NftAbi, chainsToUrls } from './helpers/contracts';
 
 // Type definition for normalized domain
@@ -294,4 +303,28 @@ export const updateNamefiNftIndex = async () => {
       console.debug(`No domain owner updates found for chain ${chain.name}`);
     }
   }
+};
+
+export const getNftExpirationTimeInSeconds = async (
+  chainId: number,
+  domainName: string,
+) => {
+  const chain = getChain(chainId);
+  if (!chain) {
+    throw new Error(`Chain ${chainId} not found`);
+  }
+  const publicClient = createPublicClient({
+    chain,
+    transport: http(chainsToUrls(chain)),
+  });
+  const nftId = nftIdFromDomainName(domainName);
+
+  const expirationTimeFromContract = await publicClient.readContract({
+    address: NAMEFI_NFT_CONTRACT_ADDRESS as `0x${string}`,
+    abi: NftAbi,
+    functionName: 'getExpiration',
+    args: [nftId],
+  });
+
+  return Number(expirationTimeFromContract);
 };

@@ -4,7 +4,7 @@ import type {
   NamefiNormalizedDomain,
 } from '@namefi-astra/utils';
 import * as workflow from '@temporalio/workflow';
-import { getUnixTime } from 'date-fns';
+import { addYears, differenceInYears, getUnixTime } from 'date-fns';
 import { typedProxyActivities } from 'src/temporal/shared/workflow-helpers/typed-proxy-activities';
 import { getDomainLevels } from '#lib/get-domain-levels';
 import {
@@ -268,8 +268,46 @@ async function _extendSldDomainAndReturnNewExpirationTime({
   return nextExpirationTime;
 }
 
-function _extend3ldDomainAndReturnNewExpirationTime(
-  input: ExtendDomainRegistrationWorkflowInput & { chainId: number },
-): string | Date {
-  throw new Error('Not implemented');
+async function _extend3ldDomainAndReturnNewExpirationTime({
+  chainId,
+  normalizedDomainName,
+  durationInYears,
+}: ExtendDomainRegistrationWorkflowInput & { chainId: number }): Promise<
+  string | Date
+> {
+  // TODO: add validation for parent domain
+  const { getNftExpirationTimeInSeconds } = typedProxyActivities({
+    temporalEnum: TEMPORAL_ENUMS.MINT,
+    options: {
+      ...shortRunningOpts,
+    },
+  });
+  const nftExpirationTime = await getNftExpirationTimeInSeconds(
+    chainId,
+    normalizedDomainName,
+  );
+  /**
+   * This gets the number of full years until the NFT expires
+   * For example, if the NFT expires in 9 years and 1 month, this will return 9
+   */
+  const numOfFullYearsUntilNftExpiration = differenceInYears(
+    new Date(nftExpirationTime * 1000),
+    new Date(),
+  );
+
+  if (numOfFullYearsUntilNftExpiration > 9) {
+    throw workflow.ApplicationFailure.create({
+      nonRetryable: true,
+      message:
+        'NFT Registration Duration is currently 10 years, cannot extend registration',
+    });
+  }
+  if (numOfFullYearsUntilNftExpiration + durationInYears > 10) {
+    throw workflow.ApplicationFailure.create({
+      nonRetryable: true,
+      message:
+        'you are trying to extend the registration for more than 10 years, which is not allowed',
+    });
+  }
+  return addYears(new Date(nftExpirationTime * 1000), durationInYears);
 }

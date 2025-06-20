@@ -21,6 +21,7 @@ export const NftAbi = parseAbi([
   'function setServiceCreditContract(address addr) public',
   // Add Transfer event used for owner tracking
   'event Transfer(address indexed from, address indexed to, uint256 indexed tokenId)',
+  'function getExpiration(uint256 tokenId) public view returns (uint256)',
 ]);
 
 // Parse ABI for the NFSC contract
