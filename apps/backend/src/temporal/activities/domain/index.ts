@@ -1,3 +1,5 @@
+import { db } from '@namefi-astra/db';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import * as DnssecLib from '#lib/domains/dnssec';
 import * as NameserversLib from '#lib/domains/nameservers';
 import { getPoweredByNamefi3PDomains } from '#lib/namefi-registry';
@@ -14,4 +16,20 @@ export const DomainsActivities = {
   ...DnssecActivities,
   ...RegistrarActivities,
   getPoweredByNamefi3PDomains,
+  getDomainChain,
 };
+
+export async function getDomainChain(
+  normalizedDomainName: NamefiNormalizedDomain,
+): Promise<number> {
+  const domain = await db.query.namefiNftTable.findFirst({
+    where: (table, { eq }) =>
+      eq(table.normalizedDomainName, normalizedDomainName),
+  });
+
+  if (!domain) {
+    throw new Error(`Domain ${normalizedDomainName} not found`);
+  }
+
+  return domain.chainId;
+}
