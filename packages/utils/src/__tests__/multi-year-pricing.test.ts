@@ -248,6 +248,22 @@ describe('computeChargesInUsdOrThrow', () => {
         computeChargesInUsdOrThrow(singleYearPricing, 1.5 as any),
       ).toThrow('Duration must be an integer');
     });
+
+    it('should throw ZodError for decimal durations with correct message', () => {
+      const singleYearPricing: PricingDetails = {
+        type: 'SINGLE_YEAR',
+        price: {
+          amount: 10.99,
+          currency: 'USD',
+        },
+      };
+      try {
+        computeChargesInUsdOrThrow(singleYearPricing, 1.5 as any);
+        expect(true).toBe(false); // Should not reach here
+      } catch (error: any) {
+        expect(error.message).toContain('Duration must be an integer');
+      }
+    });
   });
 
   describe('with MULTI_YEAR pricing', () => {

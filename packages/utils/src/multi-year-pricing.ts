@@ -1,3 +1,7 @@
+import { z } from 'zod';
+
+type OneToTenYears = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
+
 export type PricingType = 'SINGLE_YEAR' | 'MULTI_YEAR';
 export type PriceWithCurrency = {
   amount: number;
@@ -10,7 +14,7 @@ export type PricingDetails =
     }
   | {
       type: 'MULTI_YEAR';
-      price: Record<1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10, PriceWithCurrency>;
+      price: Record<OneToTenYears, PriceWithCurrency>;
     };
 
 export type DomainPricingDetails = {
@@ -83,6 +87,37 @@ export const domainSingleYearPricingTemplate = (
   importPrice: singleYearPricingTemplate(price, currency),
 });
 
+export type PriceFromDomainAvailabilityInfo = {
+  pricingDetails: DomainPricingDetails;
+};
+
+/**
+ * @param pricingDetails - The pricing details to compute the charges for
+ * @param _durationInYears - The duration in years to compute the charges for (must be an integer between 1 and 10)
+ * @param operation - The operation to compute the charges for (must be one of 'REGISTER', 'RENEW', 'IMPORT')
+ * @returns The charges for the given duration
+ * @throws Error if duration is not an integer, less than 1, or greater than 10
+ */
+export function computeChargesInUsdFromDomainAvailabilityInfo(
+  { pricingDetails }: PriceFromDomainAvailabilityInfo,
+  _durationInYears: number,
+  operation: 'REGISTER' | 'RENEW' | 'IMPORT',
+) {
+  const _pricingDetails =
+    operation === 'REGISTER'
+      ? pricingDetails.registrationPrice
+      : operation === 'RENEW'
+        ? pricingDetails.renewalPrice
+        : pricingDetails.importPrice;
+
+  if (!_pricingDetails) {
+    throw new Error(
+      `No pricing details found for the given operation: ${operation}`,
+    );
+  }
+  return computeChargesInUsdOrThrow(_pricingDetails, _durationInYears);
+}
+
 /**
  * @param pricingDetails - The pricing details to compute the charges for
  * @param _durationInYears - The duration in years to compute the charges for (must be an integer between 1 and 10)
@@ -93,23 +128,12 @@ export function computeChargesInUsdOrThrow(
   pricingDetails: PricingDetails,
   _durationInYears: number,
 ) {
-  if (!Number.isInteger(_durationInYears)) {
-    throw new Error('Duration must be an integer');
-  }
-  if (_durationInYears < 1 || _durationInYears > 10) {
-    throw new Error('Invalid duration');
-  }
-  const durationInYears = _durationInYears as unknown as
-    | 1
-    | 2
-    | 3
-    | 4
-    | 5
-    | 6
-    | 7
-    | 8
-    | 9
-    | 10;
+  const durationInYears = z
+    .number()
+    .int('Duration must be an integer')
+    .min(1, 'Invalid duration')
+    .max(10, 'Invalid duration')
+    .parse(_durationInYears) as OneToTenYears;
 
   if (pricingDetails.type === 'SINGLE_YEAR') {
     return pricingDetails.price.amount * durationInYears;
