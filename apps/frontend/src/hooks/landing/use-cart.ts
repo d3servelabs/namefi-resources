@@ -23,6 +23,8 @@ type CartItem = Pick<
   | 'durationInYears'
   | 'createdAt'
   | 'id'
+  | 'encryptionKeyId'
+  | 'encryptedEppAuthorizationCode'
 > &
   Partial<Pick<DbCartItem, 'metadata'>> & {
     domainAvailabilityInfo?: DomainAvailabilityInfo;
@@ -170,6 +172,8 @@ export function useCart() {
         amountInUSDCents: calculatedAmount,
         durationInYears,
         createdAt: new Date(),
+        encryptionKeyId: null, //TODO(sami->sid): i added this because tslint
+        encryptedEppAuthorizationCode: null,
       };
 
       if (isDomainInCart(domainAvailabilityInfo.domain)) {
