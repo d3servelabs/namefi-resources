@@ -1,7 +1,16 @@
 import { db, orderItemStatusSchema, orderStatusSchema } from '@namefi-astra/db';
 import { createRegistrarService } from '@namefi-astra/registrars/registrars/main-registrar';
-import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
-import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
+import type {
+  DomainPricingDetails,
+  NamefiNormalizedDomain,
+  PricingDetails,
+} from '@namefi-astra/utils';
+import {
+  domainRegistrationMultiYearPricingTemplateFromSingleYear,
+  domainSingleYearPricingTemplate,
+  namefiNormalizedDomainSchema,
+  singleYearPricingTemplate,
+} from '@namefi-astra/utils';
 import { addWeeks, isAfter, subDays } from 'date-fns';
 import { ParseResultType, parseDomain } from 'parse-domain';
 import { isNil, isNotNil } from 'ramda';
@@ -56,6 +65,25 @@ export const getSubdomainPriceInUsd = async (
   return isFreeMint ? 0 : 5;
 };
 
+export type DomainAvailabilityInfo = {
+  domain: NamefiNormalizedDomain;
+  availability: boolean;
+  /**
+   * @deprecated use pricingDetails instead
+   */
+  priceInUSD: number | undefined;
+  pricingDetails: DomainPricingDetails | undefined;
+  /**
+   * Current owner of the domain
+   */
+  currentOwner: string | undefined;
+  /** */
+  registrarKey?: string;
+  durationValidationInYears: {
+    min: number;
+    max: number;
+  };
+};
 /**
  * Retrieves information about a list of domain names including their availability, price, and current owner.
  * @param domains - Array of normalized domain names to query
@@ -64,19 +92,7 @@ export const getSubdomainPriceInUsd = async (
 export const getDomainListInfo = async (
   domains: NamefiNormalizedDomain[],
   user?: { privyUserId: string } | null,
-): Promise<
-  {
-    domain: NamefiNormalizedDomain;
-    availability: boolean;
-    priceInUSD: number | undefined;
-    currentOwner: string | undefined;
-    registrarKey?: string;
-    durationValidationInYears: {
-      min: number;
-      max: number;
-    };
-  }[]
-> => {
+): Promise<DomainAvailabilityInfo[]> => {
   // Query the database for NFTs matching the provided domain names
   const nfts = await db.query.namefiNftTable.findMany({
     where: (nft, { inArray }) => inArray(nft.normalizedDomainName, domains),
@@ -92,6 +108,7 @@ export const getDomainListInfo = async (
         domain,
         availability: false,
         priceInUSD: undefined,
+        pricingDetails: undefined,
         currentOwner: undefined,
         registrarKey: undefined,
         durationValidationInYears: DOMAIN_DURATION_CONFIG,
@@ -118,6 +135,7 @@ export const getDomainListInfo = async (
             domain,
             availability: false,
             priceInUSD: undefined,
+            pricingDetails: undefined,
             currentOwner: nft.ownerAddress,
             durationValidationInYears: DOMAIN_DURATION_CONFIG,
           };
@@ -165,6 +183,23 @@ export const getDomainListInfo = async (
         if (orderItems.length > 0) {
           return unavailableDomainInfo;
         }
+        let registrationPrice: PricingDetails = singleYearPricingTemplate(
+          response.result.price.registrationPrice.price,
+          response.result.price.registrationPrice.currency,
+        );
+        if (response.registrarKey === 'namefi') {
+          registrationPrice =
+            domainRegistrationMultiYearPricingTemplateFromSingleYear(
+              {
+                amount: response.result.price.registrationPrice.price,
+                currency: response.result.price.registrationPrice.currency,
+              },
+              {
+                amount: response.result.price.renewalPrice.price,
+                currency: response.result.price.renewalPrice.currency,
+              },
+            );
+        }
 
         return {
           domain: namefiNormalizedDomainSchema.parse(
@@ -173,6 +208,17 @@ export const getDomainListInfo = async (
           availability:
             response.result.available === DomainAvailability.AVAILABLE,
           priceInUSD: response.result.price.registrationPrice.price,
+          pricingDetails: {
+            registrationPrice,
+            renewalPrice: singleYearPricingTemplate(
+              response.result.price.renewalPrice.price,
+              response.result.price.renewalPrice.currency,
+            ),
+            importPrice: singleYearPricingTemplate(
+              response.result.price.transferPrice.price,
+              response.result.price.transferPrice.currency,
+            ),
+          },
           currentOwner: undefined,
           registrarKey: response.registrarKey,
           durationValidationInYears: DOMAIN_DURATION_CONFIG,
@@ -255,9 +301,10 @@ export const getDomainListInfo = async (
             domain,
             availability: isNil(nft),
             priceInUSD: price,
+            pricingDetails: domainSingleYearPricingTemplate(price, 'USD'),
             currentOwner: nft?.ownerAddress,
             durationValidationInYears: DOMAIN_DURATION_CONFIG,
-          };
+          } satisfies DomainAvailabilityInfo;
         }
       }
 

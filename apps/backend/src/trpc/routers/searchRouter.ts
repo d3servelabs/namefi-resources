@@ -32,16 +32,16 @@ import { getClubsCategoriesWithStats } from '#lib/clubs-categories';
 import { deepseek } from '#lib/llm/deepseek';
 import { openai } from '#lib/llm/gpt';
 import { createLogger, logger } from '#lib/logger';
-import { getDomainListInfo, sldRegistrar } from '#lib/namefi-registry';
+import {
+  type DomainAvailabilityInfo,
+  getDomainListInfo,
+  sldRegistrar,
+} from '#lib/namefi-registry';
 import { authedOrPublicProcedure, createTRPCRouter } from '../base';
 
 type Tag = ReturnType<typeof getTags>[number];
-export type Suggestion = {
-  domain: NamefiNormalizedDomain;
-  availability: boolean;
-  priceInUSD: number | undefined;
-  currentOwner: string | undefined;
-};
+export type Suggestion = DomainAvailabilityInfo;
+
 const sanitizedQuerySchema = z.string().transform((val) => {
   return val
     .trim()

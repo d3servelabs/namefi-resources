@@ -1,4 +1,5 @@
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import { domainSingleYearPricingTemplate } from '@namefi-astra/utils';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import * as namefiRegistry from '#lib/namefi-registry';
 import type { TrpcContext } from '../base';
@@ -26,6 +27,7 @@ describe('Search Router', () => {
           domain,
           availability: true, // Default to available
           priceInUSD: 9.99, // Add a mock price
+          pricingDetails: domainSingleYearPricingTemplate(9.99, 'USD'),
           currentOwner: undefined,
           durationValidationInYears: {
             min: 1,
