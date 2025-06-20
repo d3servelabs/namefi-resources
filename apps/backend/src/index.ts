@@ -83,6 +83,7 @@ app.get('/configfi', (c) => {
 app.get('/secretsfi', (c) => {
   const key = c.req.header('x-namefi-key') ?? c.req.query('key');
   if (key !== secrets.API_AUTH_KEY) {
+    logger.fatal('Unauthorized request to secretsfi', { key });
     c.status(401);
     return c.json({ error: 'Unauthorized' });
   }
