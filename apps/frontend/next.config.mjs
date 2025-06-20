@@ -33,6 +33,14 @@ const nextConfig = {
   devIndicators: {
     position: 'bottom-right',
   },
+  async rewrites() {
+    return [
+      {
+        source: '/b/:path*',
+        destination: 'https://blog.labs.namefi.io/b/:path*',
+      },
+    ];
+  },
 };
 
 export default nextConfig;
