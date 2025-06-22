@@ -1,6 +1,9 @@
 import * as _inspector from 'node:inspector';
 import pino, { type DestinationStream } from 'pino';
 import pinoPretty from 'pino-pretty';
+import { dropWhile, isNotNil, mergeDeepRight, pickBy } from 'ramda';
+
+Error.stackTraceLimit = 100;
 
 const inspector = _inspector;
 if (process.env.INSPECTOR_PORT) {
@@ -10,29 +13,48 @@ if (process.env.INSPECTOR_PORT) {
 export const logger = pino(
   {
     level: process.env.LOG_LEVEL || 'trace',
-    formatters: {
-      log(obj) {
-        const level = obj.level as number;
-        const error = (obj.error as Error) ?? (obj.err as Error) ?? {};
-        const extras: Record<string, any> = {};
-        if (error) {
-          extras.error = {
-            ...error,
-            message: error.message,
-            stack: error.stack,
-          };
-        } else if (level >= 50) {
-          extras.error = new Error((obj.msg as string) ?? 'error');
-        }
-
-        // biome-ignore lint/performance/noDelete: assigning as undefined will result in logging undefined instead of removing the key
-        delete obj.error;
-        // biome-ignore lint/performance/noDelete: assigning as undefined will result in logging undefined instead of removing the key
-        delete obj.err;
-        return {
-          ...obj,
-          ...extras,
+    mixin(obj: any, level: number, logger: any) {
+      const error = (obj.error as Error) ?? (obj.err as Error);
+      const extras: Record<string, any> = { err: undefined };
+      if (error) {
+        extras.error = {
+          ...error,
+          message: error.message,
+          stack: error.stack,
         };
+      } else if (level >= 50) {
+        extras.error = new Error((obj.msg as string) ?? 'error');
+      }
+
+      return extras;
+    },
+    mixinMergeStrategy(mergeObject, mixinObject: any) {
+      return pickBy(
+        (value) => isNotNil(value),
+        mergeDeepRight(mergeObject, mixinObject),
+      );
+    },
+    hooks: {
+      logMethod(args, method, level) {
+        const _args: [any, ...any[]] = [...args];
+        if (method.name === 'error' || method.name === 'fatal' || level >= 50) {
+          if (_args.length === 1) {
+            if (typeof _args[0] === 'string') {
+              const newError = new Error(_args[0] as string);
+              const stack = newError.stack?.split('\n') ?? [];
+              // remove the lines related to this function, and start the stack with the caller of this function
+              newError.stack = [
+                stack[0],
+                ...dropWhile(
+                  (line) => /^\s*at\s*Pino./.test(line),
+                  stack.slice(1),
+                ),
+              ].join('\n');
+              _args[0] = newError;
+            }
+          }
+        }
+        method.apply(this, _args);
       },
     },
   },
