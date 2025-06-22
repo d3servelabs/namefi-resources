@@ -15,13 +15,13 @@ import type {
   DomainContactPrivacyEnum,
   DomainContacts,
   DomainOwnershipOperation,
-  DomainPriceDetails,
+  DomainPricingDetails,
   DomainRegistration,
   DomainSuggestionsQueryResult,
   DomainSummary,
   DomainsQueryResult,
   Nameservers,
-  PriceWithCurrency,
+  PricingDetails,
   RdapDomainStatus,
   RenewOption,
 } from '#lib/abstract-registrar';
@@ -38,6 +38,7 @@ import {
   type PunycodeDomainName,
   assertPunycodeDomainName,
 } from '#lib/data/validations';
+import { computeChargesInUsdOrThrow } from '#lib/multi-year-pricing';
 import { supportsDnssec } from '#lib/supports-dnssec';
 import { R53RegistrarService } from './R53/r53-registrar';
 import { DynadotRegistrarService } from './dynadot/dynadot-registrar';
@@ -146,7 +147,7 @@ export class RegistrarService extends AbstractRegistrarService {
     domainName: PunycodeDomainName,
     operation: DomainOwnershipOperation,
     options?: { registrar: Registrars },
-  ): Promise<PriceWithCurrency> {
+  ): Promise<PricingDetails> {
     const registrar = isNotNil(options?.registrar)
       ? this._getRegistrar(options.registrar)
       : await this.getRegistrar(domainName); // todo for renew
@@ -231,28 +232,41 @@ export class RegistrarService extends AbstractRegistrarService {
     );
     const priceType = isAvailableOnAnyRegistrar
       ? 'registrationPrice'
-      : 'transferPrice';
+      : 'importPrice';
 
-    const pricesByRegistrar: Record<Registrars, PriceWithCurrency> =
+    const pricesByRegistrar: Record<Registrars, PricingDetails> =
       Object.fromEntries(
         (
           Object.entries(responsesByRegistrar).filter(([_, value]) => {
-            const hasPrice =
-              value?.result.price[priceType].price &&
-              value.result.price[priceType].price > 0;
-            const available =
-              value?.result.available === DomainAvailability.AVAILABLE;
-            const availableForOperation =
-              isAvailableOnAnyRegistrar === available; // availableWhenRegistration And notAvailableWhenTransfer
-            return hasPrice && availableForOperation;
+            try {
+              const { price, available: availability } = value.result;
+              const hasPrice =
+                price[priceType]?.price &&
+                computeChargesInUsdOrThrow(price[priceType], 1) > 0;
+
+              const available = availability === DomainAvailability.AVAILABLE;
+              const availableForOperation =
+                isAvailableOnAnyRegistrar === available; // availableWhenRegistration And notAvailableWhenTransfer
+              return hasPrice && availableForOperation;
+            } catch (error) {
+              this.logger.error(error);
+              return false;
+            }
           }) as [Registrars, DomainsQueryResult<Registrars>][]
         ).map(([key, value]) => [key, value.result.price[priceType]]),
       );
 
     const { registrar } = Object.entries(pricesByRegistrar).reduce(
       (prev, [registrar, price]) => {
-        if (price.price < prev.bestPrice) {
-          return { bestPrice: price.price, registrar };
+        try {
+          if (computeChargesInUsdOrThrow(price, 1) < prev.bestPrice) {
+            return {
+              bestPrice: computeChargesInUsdOrThrow(price, 1),
+              registrar,
+            };
+          }
+        } catch (error) {
+          this.logger.error(error);
         }
         return prev;
       },
@@ -361,7 +375,7 @@ export class RegistrarService extends AbstractRegistrarService {
   async getDomainPriceDetails(
     domainName: PunycodeDomainName,
     options?: { registrar?: Registrars },
-  ): Promise<DomainPriceDetails> {
+  ): Promise<DomainPricingDetails> {
     const registrar = await this.determineRegistrar(
       domainName,
       options?.registrar,

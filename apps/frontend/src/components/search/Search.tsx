@@ -28,7 +28,7 @@ import {
 } from '@/utils/interaction-logging/events';
 import { formatAmountInUSD } from '@/utils/number';
 import type { DomainAvailabilityInfo } from '@/utils/types';
-import { computeChargesInUsdOrThrow } from '@namefi-astra/utils';
+import { computeChargesInUsdOrThrow } from '@namefi-astra/registrars/multi-year-pricing';
 import {
   Loader2,
   SearchIcon,

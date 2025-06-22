@@ -1,7 +1,6 @@
 export * from './contact';
 export * from './domain';
 export * from './domain-availability';
-export * from './domain-price-details';
 export * from './domain-status';
 export * from './nameservers';
 export * from './operation';

@@ -7,7 +7,10 @@ import {
 } from '@/utils/interaction-logging/events';
 import { useTRPC } from '@/utils/trpc';
 import type { CartItemSelect as DbCartItem } from '@namefi-astra/db/types';
-import { computeChargesInUsdOrThrow, usdToCents } from '@namefi-astra/utils';
+import {
+  computeChargesInUsdOrThrow,
+  usdToCents,
+} from '@namefi-astra/registrars/multi-year-pricing';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useCallback, useEffect, useRef } from 'react';
 import { useLocalStorage } from 'usehooks-ts';

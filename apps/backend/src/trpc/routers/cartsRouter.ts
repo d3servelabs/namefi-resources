@@ -4,8 +4,11 @@ import {
   cartItemsTable,
   db,
 } from '@namefi-astra/db';
+import {
+  computeChargesInUsdOrThrow,
+  usdToCents,
+} from '@namefi-astra/registrars/multi-year-pricing';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
-import { computeChargesInUsdOrThrow, usdToCents } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
 import { and, eq, sql } from 'drizzle-orm';
 import { z } from 'zod';

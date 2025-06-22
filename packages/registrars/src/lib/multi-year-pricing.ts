@@ -1,91 +1,8 @@
 import { z } from 'zod';
-
-type OneToTenYears = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
-
-export type PricingType = 'SINGLE_YEAR' | 'MULTI_YEAR';
-export type PriceWithCurrency = {
-  amount: number;
-  currency: string;
-};
-export type PricingDetails =
-  | {
-      type: 'SINGLE_YEAR';
-      price: PriceWithCurrency;
-    }
-  | {
-      type: 'MULTI_YEAR';
-      price: Record<OneToTenYears, PriceWithCurrency>;
-    };
-
-export type DomainPricingDetails = {
-  registrationPrice: PricingDetails;
-  renewalPrice: PricingDetails;
-  importPrice: PricingDetails;
-};
-
-/**
- * @param price - The price to use for the pricing template
- * @returns The pricing template for a single year
- */
-export const singleYearPricingTemplate = (price: number, currency = 'USD') => ({
-  type: 'SINGLE_YEAR' as const,
-  price: {
-    amount: price,
-    currency,
-  },
-});
-
-/**
- * @param prices - The prices to use for the pricing template
- * @param currency - The currency to use for the pricing template
- * @returns The pricing template for a multi year
- */
-export const multiYearPricingTemplate = (
-  prices: number[],
-  currency: string,
-) => {
-  const priceMap = Object.fromEntries(
-    prices.map((price, index) => [
-      index + 1,
-      {
-        amount: price,
-        currency,
-      },
-    ]),
-  ) as Record<1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10, PriceWithCurrency>;
-  return {
-    type: 'MULTI_YEAR' as const,
-    price: priceMap,
-  } satisfies PricingDetails;
-};
-
-export const domainRegistrationMultiYearPricingTemplateFromSingleYear = (
-  registrationPrice: PriceWithCurrency,
-  renewalPrice: PriceWithCurrency,
-) => {
-  if (registrationPrice.currency !== renewalPrice.currency) {
-    throw new Error(
-      'Registration and renewal prices must have the same currency',
-    );
-  }
-  const prices = new Array(10)
-    .fill(0)
-    .map((_, index) => registrationPrice.amount + renewalPrice.amount * index);
-  return multiYearPricingTemplate(prices, registrationPrice.currency);
-};
-
-/**
- * @param price - The price to use for the pricing template
- * @returns The pricing template for a single year
- */
-export const domainSingleYearPricingTemplate = (
-  price: number,
-  currency = 'USD',
-) => ({
-  registrationPrice: singleYearPricingTemplate(price, currency),
-  renewalPrice: singleYearPricingTemplate(price, currency),
-  importPrice: singleYearPricingTemplate(price, currency),
-});
+import type {
+  DomainPricingDetails,
+  PricingDetails,
+} from './abstract-registrar/data/price-with-currency';
 
 export type PriceFromDomainAvailabilityInfo = {
   pricingDetails: DomainPricingDetails;
@@ -133,9 +50,9 @@ export function computeChargesInUsdOrThrow(
     .int('Duration must be an integer')
     .min(1, 'Invalid duration')
     .max(10, 'Invalid duration')
-    .parse(_durationInYears) as OneToTenYears;
+    .parse(_durationInYears);
 
-  if (pricingDetails.type === 'SINGLE_YEAR') {
+  if (pricingDetails.type === 'PER_YEAR') {
     return pricingDetails.price.amount * durationInYears;
   }
 

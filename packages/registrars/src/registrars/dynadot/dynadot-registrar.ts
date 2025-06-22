@@ -8,13 +8,13 @@ import type {
   ContactsMap,
   DnssecKey,
   DomainContacts,
-  DomainPriceDetails,
+  DomainPricingDetails,
   DomainRegistration,
   DomainSuggestionsQueryResult,
   DomainSummary,
   Nameserver,
   Nameservers,
-  PriceWithCurrency,
+  PricingDetails,
   RdapDomainStatus,
 } from '#lib/abstract-registrar';
 import {
@@ -24,7 +24,10 @@ import {
   DomainOwnershipOperation,
   OperationStatus,
   OperationType,
+  type PriceWithCurrency,
   RenewOption,
+  multiYearPricingTemplate,
+  singleYearPricingTemplate,
 } from '#lib/abstract-registrar';
 import type {
   DomainsQueryResult,
@@ -59,7 +62,7 @@ import { IdnLanguageCodeISO639_2 } from '#lib/idn/idn-language-code';
 import { RDAP } from '#lib/rdap-whois/rdap_client';
 import { supportsDnssec } from '#lib/supports-dnssec';
 import { Registrars } from '../registrars-keys';
-import { DynadotTransformers } from './transformers';
+import { fromDynadotContactsMap } from './helpers';
 
 const DYNADOT_DOMAIN_REGISTER_CHECK_TIME_WINDOW_IN_MINUTES = 30;
 
@@ -412,17 +415,35 @@ export class DynadotRegistrarService extends AbstractRegistrarService<Registrars
     }
 
     return {
-      ...DynadotTransformers.DomainInfoTransformer.from({
-        domainInfo,
-        nameservers,
-
-        contacts: {
-          RegistrantContact,
-          AdminContact,
-          TechContact,
-          BillingContact,
-        },
+      autoRenewOption:
+        domainInfo.RenewOption === 'manual renewal'
+          ? RenewOption.MANUAL
+          : RenewOption.AUTOMATIC,
+      creationTime: new Date(Number.parseFloat(domainInfo.Registration)),
+      expirationTime: new Date(Number.parseFloat(domainInfo.Expiration)),
+      domainName: toPunycodeDomainName(domainInfo.Name),
+      nameservers: nameservers,
+      contacts: fromDynadotContactsMap({
+        RegistrantContact,
+        AdminContact,
+        TechContact,
+        BillingContact,
       }),
+      contactsPrivacy: {
+        registrantContact:
+          domainInfo.Privacy === 'full'
+            ? DomainContactPrivacyEnum.PRIVATE_CONTACT_DATA
+            : DomainContactPrivacyEnum.PUBLIC_CONTACT_DATA,
+        adminContact:
+          domainInfo.Privacy === 'full'
+            ? DomainContactPrivacyEnum.PRIVATE_CONTACT_DATA
+            : DomainContactPrivacyEnum.PUBLIC_CONTACT_DATA,
+        technicalContact:
+          domainInfo.Privacy === 'full'
+            ? DomainContactPrivacyEnum.PRIVATE_CONTACT_DATA
+            : DomainContactPrivacyEnum.PUBLIC_CONTACT_DATA,
+      },
+      dnssecKeys: [],
       supportsDnssec: supportsDnssec(domainName),
     };
   }
@@ -439,7 +460,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService<Registrars
   async getDomainPrice(
     domainName: PunycodeDomainName,
     operation: DomainOwnershipOperation,
-  ): Promise<PriceWithCurrency> {
+  ): Promise<PricingDetails> {
     assertPunycodeDomainName(domainName);
 
     const prices = await this.getDomainPriceDetails(domainName);
@@ -447,14 +468,15 @@ export class DynadotRegistrarService extends AbstractRegistrarService<Registrars
     switch (operation) {
       case DomainOwnershipOperation.REGISTER:
         return prices.registrationPrice;
-      case DomainOwnershipOperation.CHANGE_OWNERSHIP:
-        return prices.changeOwnershipPrice;
+
       case DomainOwnershipOperation.RENEW:
         return prices.renewalPrice;
-      case DomainOwnershipOperation.RESTORE:
-        return prices.restorationPrice;
       case DomainOwnershipOperation.TRANSFER:
-        return prices.transferPrice;
+        return prices.importPrice;
+      //   case DomainOwnershipOperation.CHANGE_OWNERSHIP:
+      //     return prices.changeOwnershipPrice;
+      // case DomainOwnershipOperation.RESTORE:
+      //   return prices.restorationPrice;
       default:
         throw new Error('Invalid operation');
     }
@@ -471,38 +493,34 @@ export class DynadotRegistrarService extends AbstractRegistrarService<Registrars
 
   async getTldPrices(options = { useCachedValue: false }) {
     const response = await this._getTldPrices(options);
+    if (response.Currency !== 'USD') {
+      throw new Error('Unsupported currency');
+    }
     return Object.fromEntries(
       response.TldPrice.map((value) => [
         value.Tld.replace(/^\./, ''),
         {
-          registrationPrice: {
-            price: Math.ceil(Number.parseFloat(value.Price.Register)),
-            currency: response.Currency,
-          },
-          renewalPrice: {
-            price: Math.ceil(Number.parseFloat(value.Price.Renew)),
-            currency: response.Currency,
-          },
-          transferPrice: {
-            price: Math.ceil(Number.parseFloat(value.Price.Transfer)),
-            currency: response.Currency,
-          },
-          changeOwnershipPrice: {
-            price: 0,
-            currency: response.Currency,
-          },
-          restorationPrice: {
-            price: Math.ceil(Number.parseFloat(value.Price.Restore) * 10),
-            currency: response.Currency,
-          },
-        } as DomainPriceDetails,
+          registrationPrice: singleYearPricingTemplate(
+            Math.ceil(Number.parseFloat(value.Price.Register)),
+          ),
+          renewalPrice: singleYearPricingTemplate(
+            Math.ceil(Number.parseFloat(value.Price.Renew)),
+          ),
+          importPrice: singleYearPricingTemplate(
+            Math.ceil(Number.parseFloat(value.Price.Transfer)),
+          ),
+          changeOwnershipPrice: singleYearPricingTemplate(0),
+          restorationPrice: singleYearPricingTemplate(
+            Math.ceil(Number.parseFloat(value.Price.Restore) * 10),
+          ),
+        } as DomainPricingDetails,
       ]),
     );
   }
 
   async getDomainPriceDetails(
     domainName: PunycodeDomainName,
-  ): Promise<DomainPriceDetails> {
+  ): Promise<DomainPricingDetails> {
     assertPunycodeDomainName(domainName);
     const searchRes = await this.searchForDomain(domainName);
     const pricing = searchRes?.result?.price;
@@ -514,35 +532,33 @@ export class DynadotRegistrarService extends AbstractRegistrarService<Registrars
   async _getNonPremiumDomainPriceDetails(
     domainName: PunycodeDomainName,
     options = { useCachedValue: false },
-  ): Promise<DomainPriceDetails> {
+  ): Promise<DomainPricingDetails> {
     assertPunycodeDomainName(domainName);
 
     const response = await this._getTldPrices(options);
     const pricing = response.TldPrice.find((p) => domainName.endsWith(p.Tld));
     assertNotNil(pricing, 'Pricing Not found');
 
+    const registerPrice = Math.ceil(Number.parseFloat(pricing.Price.Register));
+    const renewPrice = Math.ceil(Number.parseFloat(pricing.Price.Renew));
+    const prices = new Array(10)
+      .fill(0)
+      .map((_, index) => registerPrice + renewPrice * index);
+
+    const registrationPrice =
+      renewPrice > registerPrice
+        ? multiYearPricingTemplate(prices)
+        : singleYearPricingTemplate(registerPrice);
+
     return {
-      registrationPrice: {
-        price: Math.ceil(Number.parseFloat(pricing.Price.Register)),
-        currency: response.Currency,
-      } as PriceWithCurrency,
-      renewalPrice: {
-        price: Math.ceil(Number.parseFloat(pricing.Price.Renew)),
-        currency: response.Currency,
-      } as PriceWithCurrency,
-      transferPrice: {
-        price: Math.ceil(Number.parseFloat(pricing.Price.Transfer)),
-        currency: response.Currency,
-      } as PriceWithCurrency,
-      changeOwnershipPrice: {
-        price: 0,
-        currency: response.Currency,
-      } as PriceWithCurrency,
-      restorationPrice: {
-        price: Math.ceil(Number.parseFloat(pricing.Price.Restore)),
-        currency: response.Currency,
-      } as PriceWithCurrency, //TODO XX validate this (Sadly Dynadot API doesn't return Restoration Price)
-    } as DomainPriceDetails;
+      registrationPrice: registrationPrice,
+      renewalPrice: singleYearPricingTemplate(
+        Math.ceil(Number.parseFloat(pricing.Price.Renew)),
+      ),
+      importPrice: singleYearPricingTemplate(
+        Math.ceil(Number.parseFloat(pricing.Price.Transfer)),
+      ),
+    };
   }
 
   async addDelegationSigner(
@@ -614,9 +630,12 @@ export class DynadotRegistrarService extends AbstractRegistrarService<Registrars
       show_price: '1',
       domain0: punycode.toASCII(query),
     });
-    const prices = await this._getNonPremiumDomainPriceDetails(query, {
-      useCachedValue: true,
-    });
+    const nonPremiumPrices = await this._getNonPremiumDomainPriceDetails(
+      query,
+      {
+        useCachedValue: true,
+      },
+    );
     assertNot(responseFailed(response.SearchResponse), 'Response Failed');
     const firstSearchResult = head(response.SearchResponse.SearchResults);
 
@@ -626,12 +645,42 @@ export class DynadotRegistrarService extends AbstractRegistrarService<Registrars
       (firstSearchResult.Status === 'success' ||
         firstSearchResult.Available === 'yes')
     ) {
-      const parsedPrice = domainPriceDetailsFrom(firstSearchResult.Price);
+      const parsedPrice = parseDomainPriceString(firstSearchResult.Price);
+      let price: DomainPricingDetails = nonPremiumPrices;
+
+      if (parsedPrice.isPremium) {
+        if (
+          !(
+            parsedPrice.priceDetails?.registrationPrice &&
+            parsedPrice.priceDetails?.renewalPrice
+          )
+        ) {
+          throw new Error(
+            `Price Details not found for premium domain(${firstSearchResult.DomainName})`,
+          );
+        }
+        const registerPrice =
+          parsedPrice.priceDetails?.registrationPrice?.amount;
+        const renewPrice = parsedPrice.priceDetails?.renewalPrice?.amount;
+        const prices = new Array(10)
+          .fill(0)
+          .map((_, index) => registerPrice + renewPrice * index);
+
+        const registrationPrice =
+          renewPrice > registerPrice
+            ? multiYearPricingTemplate(prices)
+            : singleYearPricingTemplate(registerPrice);
+        price = {
+          registrationPrice: registrationPrice,
+          renewalPrice: singleYearPricingTemplate(renewPrice),
+          importPrice: singleYearPricingTemplate(Number.NaN),
+        };
+      }
 
       return {
         result: {
           domainName: toPunycodeDomainName(firstSearchResult.DomainName),
-          price: parsedPrice.isPremium ? parsedPrice.priceDetails : prices,
+          price,
           isPremium: parsedPrice.isPremium,
           available:
             firstSearchResult.Available === 'yes'
@@ -645,7 +694,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService<Registrars
     return {
       result: {
         domainName: toPunycodeDomainName(query),
-        price: prices, //todo!!
+        price: nonPremiumPrices, //todo!! figure out transfer price for premium domains
         available: DomainAvailability.UNAVAILABLE,
         isPremium: false,
       },
@@ -980,25 +1029,32 @@ function parsePriceForDomain(price: string | undefined | null) {
   );
 }
 
-function domainPriceDetailsFrom(price: string | undefined | null) {
+function parseDomainPriceString(price: string | undefined | null) {
   const parsedPrice = parsePriceForDomain(price);
 
-  const priceDetails: DomainPriceDetails = {} as any;
+  const priceDetails: Partial<
+    Record<'registrationPrice' | 'renewalPrice', PriceWithCurrency>
+  > = {};
 
   parsedPrice.prices.forEach((details) => {
+    if (details.currency !== 'USD') {
+      throw new Error('Unsupported currency');
+    }
     switch (details.type) {
       case 'renewal':
         priceDetails.renewalPrice = {
-          price: details.amount,
+          amount: details.amount,
           currency: details.currency,
         };
         break;
       case 'registration':
         priceDetails.registrationPrice = {
-          price: details.amount,
+          amount: details.amount,
           currency: details.currency,
         };
         break;
+      default:
+        return;
     }
   });
 
@@ -1018,7 +1074,7 @@ function responseFailed(args: { ResponseCode: DynadotResponseCode }) {
 }
 
 const RADIX = 32;
-const ID_SEP = ':/:/';
+const ID_SEP = ':::';
 
 function generateOperationId(
   operationType: OperationType,

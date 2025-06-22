@@ -9,10 +9,12 @@ import {
   usersTable,
 } from '@namefi-astra/db';
 import {
-  type NamefiNormalizedDomain,
-  checksumWalletAddressSchema,
   computeChargesInUsdOrThrow,
   usdToCents,
+} from '@namefi-astra/registrars/multi-year-pricing';
+import {
+  type NamefiNormalizedDomain,
+  checksumWalletAddressSchema,
 } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
 import { and, desc, eq, inArray } from 'drizzle-orm';

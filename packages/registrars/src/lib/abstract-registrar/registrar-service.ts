@@ -5,11 +5,12 @@ import type {
   DomainContactPrivacyEnum,
   DomainContacts,
   DomainOwnershipOperation,
-  DomainPriceDetails,
+  DomainPricingDetails,
   DomainRegistration,
   DomainSummary,
   Nameservers,
   PriceWithCurrency,
+  PricingDetails,
   RdapDomainStatus,
   RenewOption,
 } from './data';
@@ -36,7 +37,7 @@ export type RegisterDomainInput = {
   renewOption: RenewOption;
   contacts: DomainContacts;
   privacy: DomainContactPrivacyEnum;
-  price: PriceWithCurrency;
+  // price: PriceWithCurrency;
 };
 
 export type TransferDomainInput = {
@@ -45,7 +46,7 @@ export type TransferDomainInput = {
   // renewOption: RenewOption;
   contacts: DomainContacts;
   privacy: DomainContactPrivacyEnum;
-  price: PriceWithCurrency;
+  // price: PriceWithCurrency;
   authCode: string;
   nameservers: Nameservers;
 };
@@ -125,7 +126,7 @@ export abstract class AbstractRegistrarService<T extends string = string> {
     domainName: PunycodeDomainName,
     operation: DomainOwnershipOperation,
     options?: any,
-  ): Promise<PriceWithCurrency>;
+  ): Promise<PricingDetails>;
 
   //#region DNSSEC
   abstract addDelegationSigner(
@@ -221,7 +222,7 @@ export type DomainsQueryResult<T extends string> = {
   result: {
     domainName: PunycodeDomainName;
     available: DomainAvailability;
-    price: DomainPriceDetails;
+    price: DomainPricingDetails;
   };
   suggestions: DomainSuggestion<T>[];
 };

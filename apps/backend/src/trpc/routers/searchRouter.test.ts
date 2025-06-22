@@ -1,5 +1,4 @@
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
-import { domainSingleYearPricingTemplate } from '@namefi-astra/utils';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import * as namefiRegistry from '#lib/namefi-registry';
 import type { TrpcContext } from '../base';
@@ -26,7 +25,20 @@ describe('Search Router', () => {
         domains.map((domain) => ({
           domain,
           availability: true, // Default to available
-          pricingDetails: domainSingleYearPricingTemplate(9.99, 'USD'),
+          pricingDetails: {
+            registrationPrice: {
+              type: 'PER_YEAR',
+              price: { amount: 9.99, currency: 'USD' },
+            },
+            renewalPrice: {
+              type: 'PER_YEAR',
+              price: { amount: 9.99, currency: 'USD' },
+            },
+            importPrice: {
+              type: 'PER_YEAR',
+              price: { amount: 9.99, currency: 'USD' },
+            },
+          },
           currentOwner: undefined,
           durationValidationInYears: {
             min: 1,

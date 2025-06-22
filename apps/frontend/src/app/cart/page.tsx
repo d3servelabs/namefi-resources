@@ -49,11 +49,10 @@ import {
   paymentProviderSchema,
 } from '@namefi-astra/db/types';
 import {
-  CHAINS,
-  NFSC_CONTRACT_ADDRESS,
   computeChargesInUsdOrThrow,
   usdToCents,
-} from '@namefi-astra/utils';
+} from '@namefi-astra/registrars/multi-year-pricing';
+import { CHAINS, NFSC_CONTRACT_ADDRESS } from '@namefi-astra/utils';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { inferInput } from '@trpc/tanstack-react-query';
 import { ArchiveX, Loader2, Trash2 } from 'lucide-react';

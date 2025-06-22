@@ -1,5 +1,4 @@
 import punycode from 'node:punycode';
-
 import {
   AssociateDelegationSignerToDomainCommand,
   CheckDomainAvailabilityCommand,
@@ -30,7 +29,7 @@ import type {
   ContactsMap,
   DnssecKey,
   DomainContacts,
-  DomainPriceDetails,
+  DomainPricingDetails,
   DomainRegistration,
   DomainSuggestionsQueryResult,
   DomainSummary,
@@ -38,7 +37,7 @@ import type {
   LongRunningOperationResult,
   Nameserver,
   Nameservers,
-  PriceWithCurrency,
+  PricingDetails,
   RdapDomainStatus,
   RegisterDomainInput,
   RenewDomainInput,
@@ -57,7 +56,6 @@ import { toPunycodeDomainName } from '#lib/data/validations';
 import { IdnLanguageCodeISO639_2 } from '#lib/idn/idn-language-code';
 import { supportsDnssec } from '#lib/supports-dnssec';
 import { Registrars } from '../registrars-keys';
-import { R53Transformers } from './transformers';
 
 import type {
   DomainPrice,
@@ -72,6 +70,12 @@ import type {
 import { isNil } from 'ramda';
 import type { PunycodeDomainName } from '#lib/data/validations';
 import { assertPunycodeDomainName } from '#lib/data/validations';
+import {
+  fromR53DomainInfo,
+  fromR53DomainPrice,
+  toR53Contact,
+  toR53ContactsMap,
+} from './helpers';
 export class R53RegistrarService extends AbstractRegistrarService<Registrars> {
   key = Registrars.Route53;
   nameservers = [1, 2, 3, 4].map((i) => `ns${i}.namefi.io`);
@@ -117,7 +121,7 @@ export class R53RegistrarService extends AbstractRegistrarService<Registrars> {
 
     const privacy =
       args.privacy !== DomainContactPrivacyEnum.PUBLIC_CONTACT_DATA;
-    const contacts = R53Transformers.ContactsMapTransformer.to(args.contacts);
+    const contacts = toR53ContactsMap(args.contacts);
     const input: RegisterDomainCommandInput = {
       IdnLangCode: IdnLanguageCodeISO639_2(domainName),
       DomainName: punycode.toASCII(domainName), // required
@@ -169,7 +173,7 @@ export class R53RegistrarService extends AbstractRegistrarService<Registrars> {
     const { domainName, nameservers, authCode } = args;
     const privacy =
       args.privacy !== DomainContactPrivacyEnum.PUBLIC_CONTACT_DATA;
-    const contacts = R53Transformers.ContactsMapTransformer.to(args.contacts);
+    const contacts = toR53ContactsMap(args.contacts);
     const input: TransferDomainCommandInput = {
       IdnLangCode: IdnLanguageCodeISO639_2(domainName),
       DomainName: domainName, // required
@@ -281,7 +285,7 @@ export class R53RegistrarService extends AbstractRegistrarService<Registrars> {
     );
 
     return {
-      ...R53Transformers.DomainInfoTransformer.from(response),
+      ...fromR53DomainInfo(response),
       supportsDnssec: supportsDnssec(domainName),
     };
   }
@@ -304,7 +308,7 @@ export class R53RegistrarService extends AbstractRegistrarService<Registrars> {
     return Object.fromEntries(
       Object.entries(response).map(([key, value]) => [
         key,
-        R53Transformers.DomainPriceDetailsTransformer.from(value),
+        fromR53DomainPrice(value),
       ]),
     );
   }
@@ -312,21 +316,21 @@ export class R53RegistrarService extends AbstractRegistrarService<Registrars> {
   async getDomainPrice(
     domainName: PunycodeDomainName,
     operation: DomainOwnershipOperation,
-  ): Promise<PriceWithCurrency> {
+  ): Promise<PricingDetails> {
     assertPunycodeDomainName(domainName);
     const prices = await this.getDomainPriceDetails(domainName);
 
     switch (operation) {
       case DomainOwnershipOperation.REGISTER:
         return prices.registrationPrice;
-      case DomainOwnershipOperation.CHANGE_OWNERSHIP:
-        return prices.changeOwnershipPrice;
       case DomainOwnershipOperation.RENEW:
         return prices.renewalPrice;
-      case DomainOwnershipOperation.RESTORE:
-        return prices.restorationPrice;
       case DomainOwnershipOperation.TRANSFER:
-        return prices.transferPrice;
+        return prices.importPrice;
+      // case DomainOwnershipOperation.CHANGE_OWNERSHIP:
+      //   return prices.changeOwnershipPrice;
+      // case DomainOwnershipOperation.RESTORE:
+      //   return prices.restorationPrice;
       default:
         throw new Error(`Unknown operation: ${operation}`);
     }
@@ -334,13 +338,13 @@ export class R53RegistrarService extends AbstractRegistrarService<Registrars> {
 
   async getDomainPriceDetails(
     domainName: PunycodeDomainName,
-  ): Promise<DomainPriceDetails> {
+  ): Promise<DomainPricingDetails> {
     assertPunycodeDomainName(domainName);
 
     const response = await this._getTldDomainsPricingFromDomainName({
       domainName,
     });
-    return R53Transformers.DomainPriceDetailsTransformer.from(response);
+    return fromR53DomainPrice(response);
   }
 
   async addDelegationSigner(
@@ -404,7 +408,7 @@ export class R53RegistrarService extends AbstractRegistrarService<Registrars> {
     return {
       result: {
         domainName: query,
-        price: R53Transformers.DomainPriceDetailsTransformer.from(price),
+        price: fromR53DomainPrice(price),
         available:
           searchResults.Availability === 'AVAILABLE'
             ? DomainAvailability.AVAILABLE
@@ -428,9 +432,7 @@ export class R53RegistrarService extends AbstractRegistrarService<Registrars> {
     return {
       result: suggestions.map((suggestion) => ({
         domainName: suggestion.domainName,
-        price: R53Transformers.DomainPriceDetailsTransformer.from(
-          suggestion.price,
-        ),
+        price: fromR53DomainPrice(suggestion.price),
         available: suggestion.availability,
         registrarKey: Registrars.Route53,
       })),
@@ -445,7 +447,18 @@ export class R53RegistrarService extends AbstractRegistrarService<Registrars> {
 
     const command = new UpdateDomainContactCommand({
       DomainName: domainName, // required
-      ...R53Transformers.ContactsMapTransformer.to(contacts),
+      RegistrantContact: contacts.registrantContact
+        ? toR53Contact(contacts.registrantContact)
+        : undefined,
+      AdminContact: contacts.adminContact
+        ? toR53Contact(contacts.adminContact)
+        : undefined,
+      TechContact: contacts.technicalContact
+        ? toR53Contact(contacts.technicalContact)
+        : undefined,
+      BillingContact: contacts.billingContact
+        ? toR53Contact(contacts.billingContact)
+        : undefined,
     });
     const response = await this.client.send(command);
 

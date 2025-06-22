@@ -266,7 +266,7 @@ function setupLoggers(instance: AxiosInstance, options: LoggingOptions) {
 
       responseLogger({
         ..._res,
-        data: dataText.length > 200 ? `${take(200, dataText)}...` : _res.data,
+        data: dataText.length > 400 ? `${take(400, dataText)}...` : _res.data,
       });
       return _res;
     }, errorLogger);

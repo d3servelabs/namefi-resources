@@ -6,7 +6,8 @@
   "type": "module",
   "imports": {
     "#lib/*": "./src/lib/*.ts",
-    "#lib/abstract-registrar": "./src/lib/abstract-registrar/index.ts"
+    "#lib/abstract-registrar": "./src/lib/abstract-registrar/index.ts",
+    "#multi-year-pricing": "./src/lib/multi-year-pricing.ts"
   },
   "scripts": {
     "clean": "git clean -xdf .next .turbo node_modules out dist",
@@ -33,7 +34,8 @@
     "vcf": "^2.1.2"
   },
   "exports": {
-    "./*": "./src/*.ts"
+    "./*": "./src/*.ts",
+    "./multi-year-pricing": "./src/lib/multi-year-pricing.ts"
   },
   "peerDependencies": {
     "vitest": "^3.1.2",

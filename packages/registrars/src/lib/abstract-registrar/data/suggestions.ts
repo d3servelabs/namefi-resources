@@ -1,11 +1,11 @@
 import type { PunycodeDomainName } from '#lib/data/validations';
 import type { DomainAvailability } from './domain-availability';
-import type { DomainPriceDetails } from './domain-price-details';
+import type { DomainPricingDetails } from './price-with-currency';
 
 export type DomainSuggestion<Registrars extends string> = {
   domainName: PunycodeDomainName;
   available: DomainAvailability;
-  price: Pick<DomainPriceDetails, 'registrationPrice'>;
+  price: Pick<DomainPricingDetails, 'registrationPrice'>;
   registrarKey: Registrars;
 };
 

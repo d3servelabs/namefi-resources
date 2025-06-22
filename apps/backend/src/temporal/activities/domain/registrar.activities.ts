@@ -10,7 +10,6 @@ import {
   type PunycodeDomainName,
   toPunycodeDomainName,
 } from '@namefi-astra/registrars/lib/data/validations';
-import { R53Transformers } from '@namefi-astra/registrars/registrars/R53/transformers';
 import type { Registrars } from '@namefi-astra/registrars/registrars/registrars-keys';
 import {
   type NamefiNormalizedDomain,
@@ -112,10 +111,6 @@ export async function sendRegisterOrImportRequestToNamefiRegistrar(
     );
     return sldRegistrar.transferDomain({
       domainName: _domainNameLdh as PunycodeDomainName,
-      price: {
-        price: 0,
-        currency: 'USD',
-      },
       contacts,
       privacy: DomainContactPrivacyEnum.PRIVATE_CONTACT_DATA,
       registrarKey,
@@ -125,10 +120,6 @@ export async function sendRegisterOrImportRequestToNamefiRegistrar(
   }
   return sldRegistrar.registerDomain({
     domainName: _domainNameLdh,
-    price: {
-      price: 0,
-      currency: 'USD',
-    },
     contacts,
     privacy: DomainContactPrivacyEnum.PRIVATE_CONTACT_DATA,
     registrarKey,
@@ -173,23 +164,23 @@ const DEFAULT_CONTACT = (
   contactType: 'registrant' | 'admin' | 'tech' = 'registrant',
 ) => {
   const domain = ALLOW_EMAIL_LABELS ? _domain : undefined;
-
-  return R53Transformers.ContactTransformer.from({
-    FirstName: 'D3Bridge',
-    LastName: 'Domains',
-    ContactType: 'COMPANY',
-    OrganizationName: 'D3Serve',
-    AddressLine1: '1111 W EL CAMINO REAL',
-    AddressLine2: 'STE133x178 att D3ServeLabs',
-    City: 'Sunnyvale',
-    State: 'CA',
-    CountryCode: 'US',
-    ZipCode: '94087',
-    PhoneNumber: '+1.6503365691',
-    Email: domain
+  return {
+    countryCode: 'US',
+    email: domain
       ? `dns-${contactType}-contact+${domain}@d3bridge.xyz`
       : `dns-${contactType}-contact@d3bridge.xyz`,
-  } as any);
+    city: 'Sunnyvale',
+    organizationName: 'D3Serve',
+    addressLines: ['1111 W EL CAMINO REAL', 'STE133x178 att D3ServeLabs'],
+    fax: '+1.6503365691',
+    phoneNumber: '+1.6503365691',
+    zipCode: '94087',
+    state: 'CA',
+    firstName: 'D3Bridge',
+    lastName: 'Domains',
+    contactType: 'COMPANY',
+    extraParams: [],
+  };
 };
 
 /**
