@@ -111,6 +111,7 @@ export const cartsRouter = createTRPCRouter({
             normalizedDomainName: item.normalizedDomainName,
             durationInYears: item.durationInYears,
             type: item.type,
+            registrar: item.registrar,
             metadata: item.metadata || {},
             encryptionKeyId: item.encryptionKeyId || null,
             encryptedEppAuthorizationCode:

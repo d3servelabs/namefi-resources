@@ -36,6 +36,7 @@ type CartItem = Pick<
   | 'encryptionKeyId'
   | 'encryptedEppAuthorizationCode'
   | 'type'
+  | 'registrar'
 > &
   Partial<Pick<DbCartItem, 'metadata'>> & {
     domainAvailabilityInfo?: DomainAvailabilityInfo;
@@ -197,6 +198,8 @@ export function useCart() {
           durationInYears,
           createdAt: new Date(),
           type: operationType,
+          // TODO: (sid->sami) add "namefi" in registar and make it required
+          registrar: domainAvailabilityInfo.registrarKey || 'namefi',
           encryptionKeyId: null,
           encryptedEppAuthorizationCode: null,
           eppAuthorizationCode:

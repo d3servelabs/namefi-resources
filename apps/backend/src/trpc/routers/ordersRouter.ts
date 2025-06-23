@@ -207,6 +207,7 @@ export const ordersRouter = createTRPCRouter({
               amountInUSDCents: item.amountInUSDCents,
               durationInYears: item.durationInYears,
               type: item.type,
+              registrar: item.registrar,
               metadata: item.metadata,
             })),
           )
