@@ -98,7 +98,8 @@ export const cartsRouter = createTRPCRouter({
         userId: ctx.user.id,
         amountInUSDCents: item.amountInUSDCents,
         normalizedDomainName: item.normalizedDomainName,
-        durationInYears: 3,
+        durationInYears: item.durationInYears,
+        type: item.type,
         metadata: item.metadata || {},
       }));
 

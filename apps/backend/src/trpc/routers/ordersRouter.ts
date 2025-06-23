@@ -205,6 +205,7 @@ export const ordersRouter = createTRPCRouter({
               normalizedDomainName: item.normalizedDomainName,
               amountInUSDCents: item.amountInUSDCents,
               durationInYears: item.durationInYears,
+              type: item.type,
               metadata: item.metadata,
             })),
           )

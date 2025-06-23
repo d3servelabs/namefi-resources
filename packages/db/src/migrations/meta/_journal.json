@@ -169,6 +169,27 @@
       "when": 1750427594786,
       "tag": "0023_loving_redwing",
       "breakpoints": true
+    },
+    {
+      "idx": 24,
+      "version": "7",
+      "when": 1750667303526,
+      "tag": "0024_safe_jack_power",
+      "breakpoints": true
+    },
+    {
+      "idx": 25,
+      "version": "7",
+      "when": 1750667341335,
+      "tag": "0025_jittery_swarm",
+      "breakpoints": true
+    },
+    {
+      "idx": 26,
+      "version": "7",
+      "when": 1750667450444,
+      "tag": "0026_familiar_venus",
+      "breakpoints": true
     }
   ]
 }

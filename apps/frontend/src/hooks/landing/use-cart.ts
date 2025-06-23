@@ -6,7 +6,10 @@ import {
   type RemoveFromCartEvent,
 } from '@/utils/interaction-logging/events';
 import { useTRPC } from '@/utils/trpc';
-import type { CartItemSelect as DbCartItem } from '@namefi-astra/db/types';
+import {
+  type CartItemSelect as DbCartItem,
+  itemTypeSchema,
+} from '@namefi-astra/db/types';
 import {
   computeChargesInUsdOrThrow,
   usdToCents,
@@ -28,6 +31,7 @@ type CartItem = Pick<
   | 'id'
   | 'encryptionKeyId'
   | 'encryptedEppAuthorizationCode'
+  | 'type'
 > &
   Partial<Pick<DbCartItem, 'metadata'>> & {
     domainAvailabilityInfo?: DomainAvailabilityInfo;
@@ -175,7 +179,8 @@ export function useCart() {
         amountInUSDCents: calculatedAmount,
         durationInYears,
         createdAt: new Date(),
-        encryptionKeyId: null, //TODO(sami->sid): i added this because tslint
+        type: itemTypeSchema.Values.REGISTER,
+        encryptionKeyId: null,
         encryptedEppAuthorizationCode: null,
       };
 

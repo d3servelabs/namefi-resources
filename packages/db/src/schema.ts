@@ -118,6 +118,11 @@ export const usersTable = pgTable('users', {
   ...timestamps,
 });
 
+export const itemTypeEnum = pgEnum('item_type', [
+  'REGISTER',
+  'IMPORT',
+] as const);
+
 /**
  * Cart items table
  * Stores individual items in a shopping cart
@@ -132,6 +137,7 @@ export const cartItemsTable = pgTable(
     ...normalizedDomain,
     ...amountInUsdCents,
     durationInYears: integer('duration_in_years').notNull(),
+    type: itemTypeEnum('type').notNull(),
     encryptionKeyId: text('encryption_key_id'),
     encryptedEppAuthorizationCode: text('encrypted_epp_authorization_code'),
     metadata: jsonb('metadata').default({}),
@@ -267,6 +273,7 @@ export const orderItemsTable = pgTable(
     ...normalizedDomain,
     ...amountInUsdCents,
     durationInYears: integer('duration_in_years').notNull(),
+    type: itemTypeEnum('type').notNull(),
     encryptionKeyId: text('encryption_key_id'),
     encryptedEppAuthorizationCode: text('encrypted_epp_authorization_code'),
     status: orderStatusEnum('status').default('CREATED'),

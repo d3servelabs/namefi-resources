@@ -17,6 +17,7 @@ import {
   paymentStatusEnum,
   paymentsTable,
   refundStatusEnum,
+  itemTypeEnum,
   refundsTable,
   usersTable,
 } from './schema';
@@ -212,3 +213,6 @@ export function isNfscPayment(
 
 export const orderItemStatusSchema = z.enum(orderStatusEnum.enumValues);
 export type OrderItemStatus = z.infer<typeof orderItemStatusSchema>;
+
+export const itemTypeSchema = z.enum(itemTypeEnum.enumValues);
+export type ItemType = z.infer<typeof itemTypeSchema>;
