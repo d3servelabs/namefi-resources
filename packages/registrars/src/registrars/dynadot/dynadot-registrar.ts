@@ -770,7 +770,9 @@ export class DynadotRegistrarService extends AbstractRegistrarService<Registrars
 
     const response = await this.client.command(DynadotCommand.set_ns, {
       domain: domainName,
-      ...Object.fromEntries(nameservers.map((name, i) => [`ns${i}`, name])),
+      ...Object.fromEntries(
+        nameservers.map((name, i) => [`ns${i}`, toPunycodeDomainName(name)]), // Dynadot expects punycode domain names
+      ),
     });
     if (responseFailed(response.SetNsResponse)) {
       this.logger.error(
