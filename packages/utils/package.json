@@ -5,7 +5,10 @@
   "type": "module",
   "exports": {
     ".": "./index.ts",
-    "./*": ["./src/*.ts", "./src/*/index.ts"]
+    "./*": [
+      "./src/*.ts",
+      "./src/*/index.ts"
+    ]
   },
   "scripts": {
     "clean": "git clean -xdf .next .turbo node_modules out dist",
@@ -14,6 +17,9 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest --run",
     "test:coverage": "bun vitest run --coverage"
+  },
+  "dependencies": {
+    "ramda": "^0.30.1"
   },
   "peerDependencies": {
     "@namefi-astra/zod-dns": "workspace:*",

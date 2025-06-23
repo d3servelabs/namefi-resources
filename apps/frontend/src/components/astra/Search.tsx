@@ -173,7 +173,10 @@ Search.displayName = 'AstraSearch';
 const RegistrarRedirect = ({
   domain,
   cancelRedirect,
-}: { domain: DomainAvailabilityInfo; cancelRedirect: () => void }) => {
+}: {
+  domain: DomainAvailabilityInfo;
+  cancelRedirect: () => void;
+}) => {
   const [countdown, setCountdown] = useState(10);
 
   const redirect = useCallback(() => {

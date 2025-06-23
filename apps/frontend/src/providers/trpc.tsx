@@ -16,7 +16,6 @@ import {
   httpLink,
   splitLink,
 } from '@trpc/client';
-import type { inferRouterInputs, inferRouterOutputs } from '@trpc/server';
 import type React from 'react';
 import { useState } from 'react';
 import superjson from 'superjson';
@@ -136,6 +135,3 @@ export function TrpcProvider({ children }: { children: React.ReactNode }) {
     </QueryClientProvider>
   );
 }
-
-export type AppRouterInputs = inferRouterInputs<AppRouter>;
-export type AppRouterOutputs = inferRouterOutputs<AppRouter>;

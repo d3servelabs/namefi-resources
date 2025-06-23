@@ -29,7 +29,9 @@ export const isNormalizedDomainNameAllowedForOriginHostname = (
 
 export function getPrivyUserLinkedEthereumWalletAddresses({
   privyUser,
-}: { privyUser: User }): string[] {
+}: {
+  privyUser: User;
+}): string[] {
   const privyUserEthereumWalletAddresses = privyUser.linkedAccounts
     .map((linkedAccount) =>
       linkedAccount.type === 'wallet' && linkedAccount.chainType === 'ethereum'
@@ -43,7 +45,9 @@ export function getPrivyUserLinkedEthereumWalletAddresses({
 
 export function getPrivyUserLinkedEthereumChecksumWalletAddresses({
   privyUser,
-}: { privyUser: User }): ChecksumWalletAddress[] {
+}: {
+  privyUser: User;
+}): ChecksumWalletAddress[] {
   const privyUserLinkedChecksumWalletAddresses =
     getPrivyUserLinkedEthereumWalletAddresses({ privyUser }).map(
       (linkedWalletAddress) => {

@@ -97,7 +97,10 @@ const AddRecordDropdownMenu = React.memo(
   ({
     onAddRecordClicked,
     children,
-  }: { onAddRecordClicked: (type: string) => void; children: ReactNode }) => {
+  }: {
+    onAddRecordClicked: (type: string) => void;
+    children: ReactNode;
+  }) => {
     return (
       <DropdownMenu>
         <DropdownMenuTrigger asChild={true}>{children}</DropdownMenuTrigger>

@@ -13,7 +13,10 @@ import { disableDnssecWorkflow } from './disable-dnssec.workflow';
 export async function changeNameserversWorkflow({
   domainName,
   nameservers,
-}: { domainName: PunycodeDomainName; nameservers: Nameserver[] }) {
+}: {
+  domainName: PunycodeDomainName;
+  nameservers: Nameserver[];
+}) {
   // Long-running activities configuration
   const pollingActivities = typedProxyActivities({
     temporalEnum: TEMPORAL_ENUMS.DOMAINS,

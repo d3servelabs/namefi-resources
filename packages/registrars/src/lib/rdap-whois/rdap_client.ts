@@ -34,7 +34,7 @@ async function getLockState(domain: string): Promise<GetLockStateResponse> {
   let prohibited = false;
   let isAddPeriod = false;
   let isTransferPeriod = false;
-  // biome-ignore lint/suspicious/noExplicitAny:
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   for (const value of status as any[]) {
     if (!isAddPeriod && value === 'add period') {
       isAddPeriod = true;
@@ -100,7 +100,7 @@ async function queryRegistrarInfo(
   return getRegistrarInfoFromRdapResponse(_rdapResponse);
 }
 
-// biome-ignore lint/suspicious/noExplicitAny:
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 export type RegistrarInfo = { name: string; vCard?: any };
 
 export const RDAP = {

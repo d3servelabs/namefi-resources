@@ -20,7 +20,7 @@ type AsyncResultTuple<T, E = ErrorOrData> =
   | AsyncResultTupleSuccessful<T>
   | AsyncResultTupleFailure<E>;
 
-// biome-ignore lint/suspicious/noExplicitAny:
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 export class PrimitiveValueError<T = any> extends Error {
   value: T;
   constructor(value: T, message?: string) {

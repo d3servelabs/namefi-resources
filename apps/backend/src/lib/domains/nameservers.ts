@@ -223,7 +223,10 @@ export function getDefaultNameservers(): Promise<Nameserver[]> {
 export async function setNameserversForDomain({
   domainName,
   nameservers,
-}: { domainName: PunycodeDomainName; nameservers: Nameserver[] }) {
+}: {
+  domainName: PunycodeDomainName;
+  nameservers: Nameserver[];
+}) {
   return await sldRegistrar.setNameServers(domainName, nameservers);
 }
 

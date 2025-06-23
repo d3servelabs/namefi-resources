@@ -1,8 +1,8 @@
 import { cn } from '@/lib/utils';
 import { CHAINS } from '@namefi-astra/utils';
 import { AlertTriangleIcon } from 'lucide-react';
-import BaseNetwork from 'public/chains/BaseNetwork';
-import EthNetwork from 'public/chains/EthNetwork';
+import BaseNetwork from '@/components/chains/BaseNetwork';
+import EthNetwork from '@/components/chains/EthNetwork';
 import type React from 'react';
 import { useMemo } from 'react';
 

@@ -89,7 +89,10 @@ export async function disassociateDelegationSigner(
 export async function checkDelegationSignerAssociationChangeRequest({
   domainName,
   registrarOperationId,
-}: { domainName: PunycodeDomainName; registrarOperationId: string }) {
+}: {
+  domainName: PunycodeDomainName;
+  registrarOperationId: string;
+}) {
   const lrOperation = await sldRegistrar.getOperationStatus(
     domainName,
     registrarOperationId,

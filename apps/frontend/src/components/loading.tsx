@@ -100,7 +100,7 @@ export const Loading: FC<LoadingProps> = forwardRef(
         {...rest}
       >
         <IconComponent className={iconVariants({ size, variant })} />
-        {showText && <span aria-label={text}>{text}</span>}
+        {showText && <span>{text}</span>}
       </div>
     );
 

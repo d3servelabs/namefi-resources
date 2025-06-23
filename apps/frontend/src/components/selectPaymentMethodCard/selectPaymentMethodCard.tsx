@@ -191,7 +191,10 @@ export function SelectPaymentMethodCard({
     ({
       walletAddress,
       chainId,
-    }: { walletAddress?: string; chainId?: number }) => {
+    }: {
+      walletAddress?: string;
+      chainId?: number;
+    }) => {
       const newNfscPaymentMethodDetails: PaymentDetails = {
         paymentProviderDetails: {
           paymentProvider:

@@ -45,7 +45,7 @@ const sanitizedQuerySchema = z.string().transform((val) => {
   return val
     .trim()
     .toLowerCase()
-    .replace(/[!$_#@\.\+]/g, '');
+    .replace(/[!$_#@.+]/g, '');
 });
 
 export const getSuggestions = (

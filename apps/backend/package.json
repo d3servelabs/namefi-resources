@@ -58,6 +58,7 @@
     "@react-email/components": "^0.0.34",
     "@temporalio/activity": "^1.11.7",
     "@temporalio/client": "^1.11.7",
+    "@temporalio/common": "^1.11.7",
     "@temporalio/worker": "^1.11.7",
     "@temporalio/workflow": "^1.11.7",
     "@trpc/server": "^11.0.1",
@@ -88,6 +89,7 @@
     "rehype-external-links": "^3.0.0",
     "stripe": "^17.7.0",
     "superjson": "^2.2.2",
+    "tldts": "^7.0.8",
     "unique-names-generator": "^4.7.1",
     "viem": "^2.24.2",
     "zod": "3.23.8"

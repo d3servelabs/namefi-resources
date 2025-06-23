@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.0.0-beta.6/schema.json",
   "vcs": {
     "enabled": true,
     "clientKind": "git",
@@ -8,20 +8,17 @@
   },
   "files": {
     "ignoreUnknown": true,
-    "ignore": ["generated/**"],
+    "includes": ["**", "!**/generated/**"],
     "maxSize": 1536000
   },
   "formatter": {
     "enabled": true,
     "indentStyle": "space"
   },
-  "organizeImports": {
-    "enabled": true
-  },
+  "assist": { "actions": { "source": { "organizeImports": "off" } } },
   "linter": {
     "enabled": true,
     "rules": {
-      "all": true,
       "complexity": {
         "noUselessSwitchCase": "warn",
         "noExcessiveCognitiveComplexity": "info",
@@ -30,27 +27,39 @@
       "performance": {
         "noBarrelFile": "info",
         "noReExportAll": "info",
-        "useTopLevelRegex": "info"
+        "useTopLevelRegex": "info",
+        "noNamespaceImport": "info"
       },
       "correctness": {
         "noNodejsModules": "info",
         "useImportExtensions": "off",
-        "noUndeclaredDependencies": "off" // doesn't seem to work properly at the moment, re-enable when fixed
+        "noSwitchDeclarations": "info",
+        "noUndeclaredDependencies": "error"
       },
       "style": {
         "noDefaultExport": "info",
         "useNamingConvention": "info",
         "useFilenamingConvention": "info",
-        "noNamespaceImport": "info",
-        "useSingleCaseStatement": "info"
+        "noParameterAssign": "error",
+        "useAsConstAssertion": "error",
+        "useDefaultParameterLast": "error",
+        "useEnumInitializers": "error",
+        "useSelfClosingElements": "error",
+        "useSingleVarDeclarator": "error",
+        "noUnusedTemplateLiteral": "error",
+        "useNumberNamespace": "error",
+        "noInferrableTypes": "error",
+        "noUselessElse": "error"
       },
       "suspicious": {
         "noExplicitAny": "info",
         "noEmptyBlockStatements": "info",
         "noReactSpecificProps": "off",
-        "noConsoleLog": "info",
         "noConsole": "info",
         "noArrayIndexKey": "info"
+      },
+      "nursery": {
+        "useUniqueElementIds": "off"
       }
     }
   },
@@ -61,14 +70,14 @@
   },
   "overrides": [
     {
-      "include": ["apps/backend/**/*.ts"],
+      "includes": ["**/apps/backend/**/*.ts"],
       "javascript": {
         "globals": ["console", "logger", "createLogger"]
       },
       "linter": {
         "rules": {
           "suspicious": {
-            "noConsoleLog": "warn"
+            "noConsole": { "level": "warn", "options": { "allow": ["log"] } }
           }
         }
       }

@@ -168,7 +168,10 @@ export async function changeRecordSet({
 export async function changeResourceRecordSets({
   zoneId,
   changes,
-}: { zoneId: string; changes: Change[] }) {
+}: {
+  zoneId: string;
+  changes: Change[];
+}) {
   const client = getRoute53Client();
   const input: ChangeResourceRecordSetsCommandInput = {
     ChangeBatch: {
@@ -230,7 +233,9 @@ export async function getChangeDetails({ changeId }: { changeId: string }) {
  */
 export async function enableHostedZoneDNSSECCommand({
   hostedZoneId,
-}: { hostedZoneId: string }) {
+}: {
+  hostedZoneId: string;
+}) {
   const client = getRoute53Client();
   const input: EnableHostedZoneDNSSECCommandInput = {
     // EnableHostedZoneDNSSECRequest
@@ -247,7 +252,9 @@ export async function enableHostedZoneDNSSECCommand({
  */
 export async function disableHostedZoneDNSSECCommand({
   hostedZoneId,
-}: { hostedZoneId: string }) {
+}: {
+  hostedZoneId: string;
+}) {
   const client = getRoute53Client();
   const input: DisableHostedZoneDNSSECCommandInput = {
     HostedZoneId: hostedZoneId, // required
@@ -263,7 +270,9 @@ export async function disableHostedZoneDNSSECCommand({
  */
 export async function getDNSSECCommand({
   hostedZoneId,
-}: { hostedZoneId: string }) {
+}: {
+  hostedZoneId: string;
+}) {
   const client = getRoute53Client();
   const input: GetDNSSECCommandInput = {
     HostedZoneId: hostedZoneId, // required
@@ -308,7 +317,10 @@ export async function createKeySigningKeyCommand({
 export async function activateKeySigningKeyCommand({
   hostedZoneId,
   name,
-}: { hostedZoneId: string; name: string }) {
+}: {
+  hostedZoneId: string;
+  name: string;
+}) {
   const client = getRoute53Client();
   const input: ActivateKeySigningKeyCommandInput = {
     HostedZoneId: hostedZoneId, // required
@@ -326,7 +338,10 @@ export async function activateKeySigningKeyCommand({
 export async function deactivateKeySigningKeyCommand({
   hostedZoneId,
   name,
-}: { hostedZoneId: string; name: string }) {
+}: {
+  hostedZoneId: string;
+  name: string;
+}) {
   const client = getRoute53Client();
   const input: DeactivateKeySigningKeyCommandInput = {
     HostedZoneId: hostedZoneId, // required
@@ -344,7 +359,10 @@ export async function deactivateKeySigningKeyCommand({
 export async function deleteKeySigningKeyCommand({
   hostedZoneId,
   name,
-}: { hostedZoneId: string; name: string }) {
+}: {
+  hostedZoneId: string;
+  name: string;
+}) {
   const client = getRoute53Client();
   const input: DeleteKeySigningKeyCommandInput = {
     HostedZoneId: hostedZoneId, // required

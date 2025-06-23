@@ -30,6 +30,7 @@
   },
   "devDependencies": {
     "@namefi-astra/typescript": "workspace:*",
-    "tsup": "^8.4.0"
+    "tsup": "^8.4.0",
+    "vite-tsconfig-paths": "^5.1.4"
   }
 }

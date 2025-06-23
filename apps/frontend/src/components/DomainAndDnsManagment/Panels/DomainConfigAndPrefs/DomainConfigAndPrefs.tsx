@@ -51,7 +51,9 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 
 export const DomainConfigAndPrefs = ({
   domainName,
-}: { domainName: PunycodeDomainName }) => {
+}: {
+  domainName: PunycodeDomainName;
+}) => {
   const trpc = useTRPC();
   const {
     data: { features: domainSupportedFeatures },
@@ -87,7 +89,7 @@ export const DomainConfigAndPrefs = ({
       <Layout>
         <div
           className="text-center py-12"
-          // biome-ignore lint/security/noDangerouslySetInnerHtml:
+          // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
           dangerouslySetInnerHTML={{
             __html: dnssecManagement.config.message,
           }}
@@ -100,7 +102,9 @@ export const DomainConfigAndPrefs = ({
 
 export const DomainConfigAndPrefsInner = ({
   domainName,
-}: { domainName: PunycodeDomainName }) => {
+}: {
+  domainName: PunycodeDomainName;
+}) => {
   const trpc = useTRPC();
 
   const { data: dnssecDetails, isLoading: isDnssecLoading } = useQuery(

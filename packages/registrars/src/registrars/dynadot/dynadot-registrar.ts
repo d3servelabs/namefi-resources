@@ -1007,7 +1007,7 @@ function parsePriceForDomain(price: string | undefined | null) {
   return (price?.toLowerCase().split(/\s+and\s+/) ?? []).reduce(
     (acc, next) => {
       if (next.includes('price')) {
-        const info = /(\w+) price: ([\d\.]+) in (\w{3})/.exec(next);
+        const info = /(\w+) price: ([\d.]+) in (\w{3})/.exec(next);
         assertNotNil(info, 'Invalid price format');
         acc.prices.push({
           type: info[1] as any,

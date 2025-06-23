@@ -15,7 +15,9 @@ import { enableDnssecWorkflow } from './enable-dnssec.workflow';
  */
 export async function resetNameserversWorkflow({
   domainName,
-}: { domainName: PunycodeDomainName }) {
+}: {
+  domainName: PunycodeDomainName;
+}) {
   const {
     checkIfUsingNamefiNameservers,
     getDefaultNameservers,

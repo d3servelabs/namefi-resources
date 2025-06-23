@@ -1,5 +1,4 @@
-import type { AppRouter } from '@namefi-astra/backend/trpc';
-import type { inferRouterOutputs } from '@trpc/server';
+import type { AppRouterOutput } from './trpc';
 
 export type DeepPartial<T> = T extends object
   ? {
@@ -8,4 +7,4 @@ export type DeepPartial<T> = T extends object
   : T;
 
 export type DomainAvailabilityInfo =
-  inferRouterOutputs<AppRouter>['registry']['getDomainListInfo'][number];
+  AppRouterOutput['registry']['getDomainListInfo'][number];

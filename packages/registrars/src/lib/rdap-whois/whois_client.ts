@@ -40,7 +40,7 @@ async function getLockState(domain: string): Promise<GetLockStateResponse> {
 
   return {
     locked: prohibited,
-    // biome-ignore lint/suspicious/noExplicitAny:
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     status: statusArray as any, //todo convert them to rdap
     isAddPeriod,

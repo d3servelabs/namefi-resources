@@ -221,7 +221,9 @@ export async function pollEppExtendRegistrationStatus({
  */
 export async function getEppExpirationTime({
   normalizedDomainName,
-}: { normalizedDomainName: NamefiNormalizedDomain }): Promise<Date> {
+}: {
+  normalizedDomainName: NamefiNormalizedDomain;
+}): Promise<Date> {
   const domainName = toPunycodeDomainName(normalizedDomainName);
   const registration = await sldRegistrar.getDomainDetails(domainName);
   return new Date(registration.expirationTime);

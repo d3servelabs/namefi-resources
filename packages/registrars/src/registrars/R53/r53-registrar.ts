@@ -672,7 +672,9 @@ export class R53RegistrarService extends AbstractRegistrarService<Registrars> {
 
   async _getTldDomainsPricingFromDomainName({
     domainName,
-  }: { domainName: PunycodeDomainName }): Promise<DomainPrice> {
+  }: {
+    domainName: PunycodeDomainName;
+  }): Promise<DomainPrice> {
     const levels = domainName.split('.'); // use tldts
     const tld = levels.pop();
     if (isNil(tld)) {

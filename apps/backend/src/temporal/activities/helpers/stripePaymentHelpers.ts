@@ -3,7 +3,9 @@ import type Stripe from 'stripe';
 
 export function stripePaymentIntentStatusToPaymentStatus({
   paymentIntentStatus,
-}: { paymentIntentStatus: Stripe.PaymentIntent.Status }): PaymentStatus {
+}: {
+  paymentIntentStatus: Stripe.PaymentIntent.Status;
+}): PaymentStatus {
   switch (paymentIntentStatus) {
     // Intermediate steps
     case 'processing':

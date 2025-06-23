@@ -513,63 +513,6 @@ export default function CartPage() {
     [isAuthenticated, updateCartItem, items, queryClient, trpc],
   );
 
-  const LoadingSkeletons = () => (
-    <div className="container mx-auto py-8 px-8">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        {/* Left Column */}
-        <div className="space-y-4">
-          {/* NFT Wallet Card Skeleton */}
-          <CartCard title="Select NFT Wallet">
-            <div className="flex flex-col gap-4 mt-6">
-              <Skeleton className="h-10 w-full" />
-              <div className="flex items-center gap-2">
-                <Skeleton className="h-6 w-[200px]" />
-                <Skeleton className="h-6 w-6 rounded-full" />
-              </div>
-            </div>
-          </CartCard>
-
-          {/* Cart Items Skeleton */}
-          <CartCard title="In your cart">
-            <div className="flex flex-col gap-6 mt-6">
-              {Array.from({ length: 2 }).map((_, index) => (
-                <div key={index}>
-                  <div className="flex flex-col gap-4">
-                    <Skeleton className="h-7 w-[250px]" />
-                    <div className="flex items-center justify-between">
-                      <Skeleton className="h-8 w-8 rounded-lg" />
-                      <Skeleton className="h-7 w-[100px]" />
-                    </div>
-                  </div>
-                  {index < 1 && (
-                    <div className="my-6">
-                      <Separator />
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </CartCard>
-        </div>
-
-        {/* Right Column */}
-        <div>
-          <CartCard title="Payment Method">
-            <div className="flex flex-col gap-4 mt-6">
-              <div className="flex items-center justify-between">
-                <Skeleton className="h-6 w-[150px]" />
-                <Skeleton className="h-6 w-[100px]" />
-              </div>
-              <Skeleton className="h-10 w-full" />
-              <Skeleton className="h-10 w-full" />
-              <Skeleton className="h-10 w-full" />
-            </div>
-          </CartCard>
-        </div>
-      </div>
-    </div>
-  );
-
   const handleRetryOrder = useCallback(() => {
     setIsErrorDialogOpen(false);
     handleSubmitOrder();
@@ -790,3 +733,60 @@ export default function CartPage() {
     </div>
   );
 }
+
+const LoadingSkeletons = () => (
+  <div className="container mx-auto py-8 px-8">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      {/* Left Column */}
+      <div className="space-y-4">
+        {/* NFT Wallet Card Skeleton */}
+        <CartCard title="Select NFT Wallet">
+          <div className="flex flex-col gap-4 mt-6">
+            <Skeleton className="h-10 w-full" />
+            <div className="flex items-center gap-2">
+              <Skeleton className="h-6 w-[200px]" />
+              <Skeleton className="h-6 w-6 rounded-full" />
+            </div>
+          </div>
+        </CartCard>
+
+        {/* Cart Items Skeleton */}
+        <CartCard title="In your cart">
+          <div className="flex flex-col gap-6 mt-6">
+            {Array.from({ length: 2 }).map((_, index) => (
+              <div key={index}>
+                <div className="flex flex-col gap-4">
+                  <Skeleton className="h-7 w-[250px]" />
+                  <div className="flex items-center justify-between">
+                    <Skeleton className="h-8 w-8 rounded-lg" />
+                    <Skeleton className="h-7 w-[100px]" />
+                  </div>
+                </div>
+                {index < 1 && (
+                  <div className="my-6">
+                    <Separator />
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </CartCard>
+      </div>
+
+      {/* Right Column */}
+      <div>
+        <CartCard title="Payment Method">
+          <div className="flex flex-col gap-4 mt-6">
+            <div className="flex items-center justify-between">
+              <Skeleton className="h-6 w-[150px]" />
+              <Skeleton className="h-6 w-[100px]" />
+            </div>
+            <Skeleton className="h-10 w-full" />
+            <Skeleton className="h-10 w-full" />
+            <Skeleton className="h-10 w-full" />
+          </div>
+        </CartCard>
+      </div>
+    </div>
+  </div>
+);

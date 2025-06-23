@@ -121,7 +121,6 @@ function Carousel({
       <div
         onKeyDownCapture={handleKeyDown}
         className={cn('relative', className)}
-        aria-roledescription="carousel"
         data-slot="carousel"
         {...props}
       >

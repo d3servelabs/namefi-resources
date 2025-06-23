@@ -9,8 +9,8 @@ import {
   notMatchAny,
 } from '@namefi-astra/utils';
 import * as workflow from '@temporalio/workflow';
-import { TEMPORAL_ENUMS, shortRunningOpts } from 'src/temporal/shared';
-import { typedProxyActivities } from 'src/temporal/shared/workflow-helpers';
+import { TEMPORAL_ENUMS, shortRunningOpts } from '../../shared';
+import { typedProxyActivities } from '../../shared/workflow-helpers';
 
 interface SldRegisterOrImportWorkflowInput {
   operationType: 'REGISTER' | 'IMPORT';

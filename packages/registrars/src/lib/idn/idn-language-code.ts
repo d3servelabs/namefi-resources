@@ -14,7 +14,7 @@ const KATAKANA = /[\u30A0-\u30FF]/;
 // const Cyrillic_Phonetic_Extensions = /[\u1D2B\u1D78]/;
 // const Cyrillic_Combining_Half_Marks = /[\uFE2E-\uFE2F]/;
 const ALL_CYRILLIC =
-  // biome-ignore lint/suspicious/noMisleadingCharacterClass:
+  // biome-ignore lint/suspicious/noMisleadingCharacterClass: <explanation>
   /[\u0400-\u04FF\u0500-\u052F\u2DE0-\u2DFF\uA640-\uA69F\u1D2B\u1D78\uFE2E-\uFE2F]/;
 const TURKISH_SPECIAL_CHARS =
   /[\uC4B1\uC3A7\uC59F\uC3B6\uC3BC\uC49F\uC4B0\uC387\uC59E\uC396\uC39C\uC49E]/;

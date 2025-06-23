@@ -89,7 +89,9 @@ export type DomainNameserversFormData = {
 
 export const DnssecPanel = ({
   domainName,
-}: { domainName: PunycodeDomainName }) => {
+}: {
+  domainName: PunycodeDomainName;
+}) => {
   const trpc = useTRPC();
   const {
     data: { features: domainSupportedFeatures },
@@ -128,7 +130,7 @@ export const DnssecPanel = ({
         </CardHeader>
         <div
           className="text-center py-12"
-          // biome-ignore lint/security/noDangerouslySetInnerHtml:
+          // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
           dangerouslySetInnerHTML={{
             __html: dnssecManagement.config.message,
           }}
@@ -141,7 +143,9 @@ export const DnssecPanel = ({
 
 export const DnssecPanelInner = ({
   domainName,
-}: { domainName: PunycodeDomainName }) => {
+}: {
+  domainName: PunycodeDomainName;
+}) => {
   const trpc = useTRPC();
 
   const { data, isLoading } = useQuery(

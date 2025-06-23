@@ -390,9 +390,9 @@ export class RegistrarService extends AbstractRegistrarService {
     }
   }
 
-  async listAllDomains(options?: { registrar?: Registrars }): Promise<
-    WithRegistrar<DomainSummary>[]
-  > {
+  async listAllDomains(options?: {
+    registrar?: Registrars;
+  }): Promise<WithRegistrar<DomainSummary>[]> {
     const registrars = options?.registrar
       ? [options.registrar]
       : this.getAllowedRegistrars();

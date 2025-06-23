@@ -132,7 +132,9 @@ export function getQualifyingDomainNameFromUserIdentifier(
  */
 export async function getQualifyingPromoDomainNamesFromPrivyLinkedAccount({
   privyLinkedAccount,
-}: { privyLinkedAccount: LinkedAccountWithMetadata }) {
+}: {
+  privyLinkedAccount: LinkedAccountWithMetadata;
+}) {
   const qualifyingDomainNames = new Set<string>();
 
   switch (privyLinkedAccount.type) {

@@ -148,11 +148,7 @@ const MainTabs = () => {
   );
 };
 
-export const ComingSoonCard = ({
-  title,
-}: {
-  title: string;
-}) => {
+export const ComingSoonCard = ({ title }: { title: string }) => {
   return (
     <Card className={cn('bg-zinc-900 border-zinc-800')}>
       <CardHeader>

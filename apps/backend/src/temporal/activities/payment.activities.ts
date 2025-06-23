@@ -34,7 +34,10 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
 export async function captureStripePayment({
   amountToCaptureInUsdCents,
   paymentId,
-}: { amountToCaptureInUsdCents: number; paymentId: string }) {
+}: {
+  amountToCaptureInUsdCents: number;
+  paymentId: string;
+}) {
   const { paymentProvider, paymentProviderReferenceId, status } =
     await getPaymentDetails({ paymentId });
 
@@ -102,7 +105,10 @@ export async function createPayment({
 export async function createRefund({
   paymentId,
   amountToRefundInUsdCents,
-}: { paymentId: string; amountToRefundInUsdCents: number }) {
+}: {
+  paymentId: string;
+  amountToRefundInUsdCents: number;
+}) {
   if (amountToRefundInUsdCents < 0) {
     throw new NegativeAmountInUsdCentsError({
       amountInUsdCents: amountToRefundInUsdCents,

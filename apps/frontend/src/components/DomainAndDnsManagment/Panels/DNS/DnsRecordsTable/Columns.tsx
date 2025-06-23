@@ -24,7 +24,9 @@ import { EditableCell } from './EditableCell';
 
 export const SelectColumnHeader = ({
   context,
-}: { context: HeaderContext<DnsRecordSelect, any> }) => (
+}: {
+  context: HeaderContext<DnsRecordSelect, any>;
+}) => (
   <Checkbox
     checked={
       context.table.getIsAllPageRowsSelected() ||
@@ -38,7 +40,9 @@ export const SelectColumnHeader = ({
 );
 export const SelectColumnCell = ({
   context,
-}: { context: CellContext<DnsRecordSelect, any> }) => (
+}: {
+  context: CellContext<DnsRecordSelect, any>;
+}) => (
   <Checkbox
     checked={context.row.getIsSelected()}
     onCheckedChange={(value) => context.row.toggleSelected(!!value)}
@@ -48,7 +52,9 @@ export const SelectColumnCell = ({
 
 export const TypeColumnHeader = ({
   context,
-}: { context: HeaderContext<DnsRecordSelect, any> }) => (
+}: {
+  context: HeaderContext<DnsRecordSelect, any>;
+}) => (
   <div className="flex items-center">
     <Button
       variant="ghost"
@@ -104,7 +110,9 @@ export const TypeColumnCell = ({
 
 export const NameColumnHeader = ({
   context,
-}: { context: HeaderContext<DnsRecordSelect, any> }) => {
+}: {
+  context: HeaderContext<DnsRecordSelect, any>;
+}) => {
   // Memoize the sort handler
   const handleSort = () => {
     context.column.toggleSorting(context.column.getIsSorted() === 'asc');
@@ -184,7 +192,9 @@ export const ValueColumnCell = ({
 
 export const TTLColumnHeader = ({
   context,
-}: { context: HeaderContext<DnsRecordSelect, any> }) => {
+}: {
+  context: HeaderContext<DnsRecordSelect, any>;
+}) => {
   // Memoize the sort handler
   const handleSort = () => {
     context.column.toggleSorting(context.column.getIsSorted() === 'asc');
@@ -247,7 +257,9 @@ export const TTLColumnCell = ({
 
 export const ActionsColumnCell = ({
   context,
-}: { context: CellContext<DnsRecordSelect, any> }) => {
+}: {
+  context: CellContext<DnsRecordSelect, any>;
+}) => {
   const record = context.row.original;
 
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);

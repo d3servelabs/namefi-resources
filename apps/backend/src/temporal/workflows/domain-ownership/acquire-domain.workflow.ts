@@ -5,7 +5,7 @@ import type {
 } from '@namefi-astra/utils';
 import * as workflow from '@temporalio/workflow';
 import { addYears, getUnixTime } from 'date-fns';
-import { typedProxyActivities } from 'src/temporal/shared/workflow-helpers/typed-proxy-activities';
+import { typedProxyActivities } from '../../shared/workflow-helpers/typed-proxy-activities';
 import { getDomainLevels } from '#lib/get-domain-levels';
 import {
   TEMPORAL_ENUMS,

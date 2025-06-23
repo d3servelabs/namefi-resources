@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import regenerate from 'regenerate';
-import codePoints from '../generated/code-points.json' assert { type: 'json' };
+import codePoints from '../generated/code-points.json';
 
 /**
  * Generates a TypeScript regex constant from Unicode code points.
