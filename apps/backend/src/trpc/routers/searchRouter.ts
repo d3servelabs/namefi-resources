@@ -38,6 +38,7 @@ import {
   sldRegistrar,
 } from '#lib/namefi-registry';
 import { authedOrPublicProcedure, createTRPCRouter } from '../base';
+import { toPunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
 
 type Tag = ReturnType<typeof getTags>[number];
 
@@ -168,7 +169,13 @@ export const searchRouter = createTRPCRouter({
           user: ctx.user,
         });
       }
-      const suggestions = await sldRegistrar.getSuggestions(query, 15);
+
+      let punycodeQuery = toPunycodeDomainName(query);
+      if (!punycodeQuery.includes('.')) {
+        //todo move to registrar
+        punycodeQuery = toPunycodeDomainName(`${punycodeQuery}.com`);
+      }
+      const suggestions = await sldRegistrar.getSuggestions(punycodeQuery, 15);
       return getDomainListInfo(
         suggestions.result.map((d) =>
           namefiNormalizedDomainSchema.parse(d.domainName),
