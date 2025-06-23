@@ -651,24 +651,30 @@ export default function CartPage() {
                               <Trash2 className="size-4" />
                             )}
                           </button>
-                          <DurationStepper
-                            value={item.durationInYears}
-                            onChange={(value) =>
-                              handleDurationChange(item.id, value)
-                            }
-                            min={
-                              item.domainAvailabilityInfo
-                                ?.durationValidationInYears?.min ?? 1
-                            }
-                            max={
-                              item.domainAvailabilityInfo
-                                ?.durationValidationInYears?.max ?? 10
-                            }
-                            disabled={
-                              isDisabled || !item.domainAvailabilityInfo
-                            }
-                            className="w-32"
-                          />
+                          {item.type === itemTypeSchema.Values.IMPORT ? (
+                            <div className="w-32 h-10 flex items-center justify-center text-sm text-muted-foreground bg-muted/50 rounded-md">
+                              1 year
+                            </div>
+                          ) : (
+                            <DurationStepper
+                              value={item.durationInYears}
+                              onChange={(value) =>
+                                handleDurationChange(item.id, value)
+                              }
+                              min={
+                                item.domainAvailabilityInfo
+                                  ?.durationValidationInYears?.min ?? 1
+                              }
+                              max={
+                                item.domainAvailabilityInfo
+                                  ?.durationValidationInYears?.max ?? 10
+                              }
+                              disabled={
+                                isDisabled || !item.domainAvailabilityInfo
+                              }
+                              className="w-32"
+                            />
+                          )}
                         </div>
                         <span className="text-xl">
                           {formatAmountInUSD(item.amountInUSDCents, true)}

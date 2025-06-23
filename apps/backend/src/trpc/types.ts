@@ -36,7 +36,7 @@ export type { DomainAvailabilityInfo };
 // TODO: move these to a better location
 /**
  * Checks if a domain is importable (can be transferred/imported)
- * A domain is importable if it's unavailable and has a current owner
+ * A domain is importable if it's unavailable
  * @param domain - Domain availability information
  * @returns true if the domain can be imported
  */
