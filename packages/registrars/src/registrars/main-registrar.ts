@@ -350,8 +350,12 @@ export class RegistrarService extends AbstractRegistrarService {
   async getOperationStatus(
     domainNameLdh: PunycodeDomainName,
     operationId: string,
+    options?: { overrideRegistrar?: Registrars },
   ): Promise<LongRunningOperationResult<any>> {
-    const registrar = await this.getRegistrar(domainNameLdh);
+    const registrar = isNotNil(options?.overrideRegistrar)
+      ? this._getRegistrar(options.overrideRegistrar)
+      : await this.getRegistrar(domainNameLdh);
+
     return registrar
       .getOperationStatus(domainNameLdh, operationId)
       .then(injectRegistrar(registrar.key));

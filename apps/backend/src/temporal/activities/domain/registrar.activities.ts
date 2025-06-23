@@ -131,6 +131,7 @@ export async function sendRegisterOrImportRequestToNamefiRegistrar(
 export async function pollRegisterOrImportDomainOperationStatus(
   normalizedDomainName: NamefiNormalizedDomain,
   registrarOperationId: string,
+  registrarKey: Registrars,
 ): Promise<OperationStatus> {
   const ctx = Context.current();
   const domainName = toPunycodeDomainName(normalizedDomainName);
@@ -142,6 +143,7 @@ export async function pollRegisterOrImportDomainOperationStatus(
   const response = await sldRegistrar.getOperationStatus(
     domainName,
     registrarOperationId,
+    { overrideRegistrar: registrarKey },
   );
 
   if (

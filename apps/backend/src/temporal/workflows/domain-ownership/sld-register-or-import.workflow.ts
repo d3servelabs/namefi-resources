@@ -138,6 +138,7 @@ export async function sldRegisterOrImportWorkflow(
     registrarOperationStatus = await pollRegisterOrImportDomainOperationStatus(
       input.normalizedDomainName,
       registrarOperationId,
+      input.registrarKey,
     );
 
     if (registrarOperationStatus !== OperationStatus.SUCCESSFUL) {
