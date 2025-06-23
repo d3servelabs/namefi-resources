@@ -141,8 +141,7 @@ export async function processOrderWorkflow(
               chainId: orderDetails.nftChainId,
               userId: orderDetails.userId,
               operationType: item.type,
-              // TODO: (sid) Add registrar key
-              registrarKey: '',
+              registrarKey: item.registrar,
             },
           ],
           workflowId: `process-order-item-${item.id}`,
