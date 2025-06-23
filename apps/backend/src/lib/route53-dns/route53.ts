@@ -30,7 +30,7 @@ import {
 } from '@aws-sdk/client-route-53';
 
 import { assertNotNil } from '@namefi-astra/utils';
-import punycode from 'punycode/';
+import punycode from 'punycode';
 import { secrets } from '#lib/env';
 import type { RecordEntity } from '#lib/route53-dns/record';
 
