@@ -269,6 +269,7 @@ const _get3ldDomainListInfo = async (
       },
       currentOwner: nft?.ownerAddress,
       durationValidationInYears: DOMAIN_DURATION_CONFIG,
+      registrarKey: 'namefi',
     } satisfies DomainAvailabilityInfo;
   }
 
