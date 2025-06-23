@@ -22,11 +22,7 @@ import {
 import { cn } from '@/lib/utils';
 import { type AppRouterOutput, useTRPC, useTRPCClient } from '@/utils/trpc';
 import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
-import {
-  useQuery,
-  useQueryClient,
-  useSuspenseQuery,
-} from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Info } from 'lucide-react';
 import { isNil } from 'ramda';
 import { useMemo, useState } from 'react';
@@ -55,9 +51,7 @@ export const DomainConfigAndPrefs = ({
   domainName: PunycodeDomainName;
 }) => {
   const trpc = useTRPC();
-  const {
-    data: { features: domainSupportedFeatures },
-  } = useSuspenseQuery(
+  const { data: domainSupportedFeatures } = useQuery(
     trpc.domainConfig.getDomainSupportedFeatures.queryOptions(
       {
         normalizedDomainName: domainName,
@@ -69,7 +63,7 @@ export const DomainConfigAndPrefs = ({
   );
   const dnssecManagement = useMemo(() => {
     return (
-      domainSupportedFeatures.dnssecManagement ?? {
+      domainSupportedFeatures?.features?.dnssecManagement ?? {
         enabled: false,
         config: {
           showPanel: false,
@@ -78,6 +72,7 @@ export const DomainConfigAndPrefs = ({
       }
     );
   }, [domainSupportedFeatures]);
+
   if (!dnssecManagement.config.showPanel) {
     return false;
   }
@@ -174,11 +169,7 @@ export const DomainConfigAndPrefsInner = ({
     );
   }
 
-  if (
-    isNil(dnssecDetails) ||
-    isNil(domainPreferencesAndConfig) ||
-    isNil(activeNameserversChangeWorkflow)
-  ) {
+  if (isNil(dnssecDetails) || isNil(domainPreferencesAndConfig)) {
     return (
       <Layout>
         <div className="text-center py-12">
@@ -194,7 +185,9 @@ export const DomainConfigAndPrefsInner = ({
       <DomainConfigAndPrefsForm
         domainName={domainName}
         domainPreferencesAndConfig={domainPreferencesAndConfig}
-        activeNameserversChangeWorkflow={activeNameserversChangeWorkflow}
+        activeNameserversChangeWorkflow={
+          activeNameserversChangeWorkflow ?? null
+        }
         dnssecDetails={dnssecDetails}
       />
     </Layout>
