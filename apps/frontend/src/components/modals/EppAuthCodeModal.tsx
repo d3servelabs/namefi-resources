@@ -130,7 +130,7 @@ export const EppAuthCodeModal: FC<EppAuthCodeModalProps> = ({
             disabled={isSubmitting || !eppAuthCode.trim()}
           >
             {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            Continue to Cart
+            Add to Cart
           </Button>
         </DialogFooter>
       </DialogContent>

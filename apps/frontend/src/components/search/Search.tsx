@@ -1,6 +1,5 @@
 'use client';
 
-import { Badge } from '@/components/ui/shadcn/badge';
 import { Button } from '@/components/ui/shadcn/button';
 import { Card, CardContent } from '@/components/ui/shadcn/card';
 import { Input } from '@/components/ui/shadcn/input';
@@ -240,7 +239,7 @@ export const DomainCard: FC<{
         <CardContent className="h-full w-full">
           <div className="flex items-center justify-between h-full w-full">
             <div className="space-y-1 flex-1 min-w-0 mr-4 overflow-hidden">
-              <div className="font-semibold tracking-tight flex items-start gap-2">
+              <div className="font-semibold tracking-tight flex items-center gap-2">
                 <div className="min-w-0 flex-1">
                   <h3 className="line-clamp-2 break-words">
                     <span className="text-3xl text-brand-tertiary">
@@ -251,20 +250,11 @@ export const DomainCard: FC<{
                     </span>
                   </h3>
                 </div>
-                {!domain.availability && (
-                  <Badge className="ml-2 text-xs bg-black/70 text-white shrink-0 mt-2">
-                    {isImportable
-                      ? 'Import Available'
-                      : isNotNil(domain.currentOwner)
-                        ? 'Taken'
-                        : 'Unavailable'}
-                  </Badge>
-                )}
               </div>
               <div className="flex items-center gap-2">
                 <p className="text-xl font-medium line-clamp-1">
                   {isNotNil(priceInUsd)
-                    ? `${formatAmountInUSD(priceInUsd)} USD${isImportable ? ' (Import)' : ''}`
+                    ? `${formatAmountInUSD(priceInUsd)} USD`
                     : ''}
                 </p>
               </div>
