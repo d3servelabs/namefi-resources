@@ -227,7 +227,11 @@ export async function setNameserversForDomain({
   domainName: PunycodeDomainName;
   nameservers: Nameserver[];
 }) {
-  return await sldRegistrar.setNameServers(domainName, nameservers);
+  const domain = toPunycodeDomainName(domainName);
+  const punycodeNameservers = nameservers.map((nameserver) =>
+    toPunycodeFqdn(nameserver),
+  );
+  return await sldRegistrar.setNameServers(domain, punycodeNameservers);
 }
 
 /**
