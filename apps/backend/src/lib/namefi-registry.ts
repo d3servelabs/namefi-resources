@@ -1,10 +1,17 @@
-import { db, orderItemStatusSchema, orderStatusSchema } from '@namefi-astra/db';
+import {
+  db,
+  type namefiNftTable,
+  orderItemStatusSchema,
+  orderItemsTable,
+  orderStatusSchema,
+  ordersTable,
+} from '@namefi-astra/db';
 import { createRegistrarService } from '@namefi-astra/registrars/registrars/main-registrar';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 import { addWeeks, isAfter, subDays } from 'date-fns';
 import { ParseResultType, parseDomain } from 'parse-domain';
-import { isNil, isNotNil } from 'ramda';
+import { isNil } from 'ramda';
 import { config } from '#lib/env';
 import { userQualifiesForDomainNamePromo } from '#lib/userPromo';
 import { getDomainLevels } from './get-domain-levels';
@@ -18,9 +25,12 @@ import { toPunycodeDomainName } from '@namefi-astra/registrars/lib/data/validati
 
 import type { DomainPricingDetails } from '@namefi-astra/registrars/lib/abstract-registrar/index';
 import { resolve } from '@namefi-astra/utils/promises/resolve';
+import { and, eq, gt, inArray, or } from 'drizzle-orm';
 import pMap from 'p-map';
 import { secrets } from '#lib/env';
 import { logger } from '#lib/logger';
+
+export type NamefiNftSelect = typeof namefiNftTable.$inferSelect;
 
 export const DOMAIN_DURATION_CONFIG = {
   min: 1,
@@ -36,6 +46,15 @@ export const sldRegistrar = createRegistrarService({
   DYNADOT_ACCOUNT_ID: secrets.DYNADOT_ACCOUNT_ID,
   DYNADOT_BASE_URL: config.DYNADOT_BASE_URL,
   customLogger: logger,
+});
+
+const generateUnavailableDomainInfo = (domain: NamefiNormalizedDomain) => ({
+  domain,
+  availability: false,
+  pricingDetails: undefined,
+  currentOwner: undefined,
+  registrarKey: undefined,
+  durationValidationInYears: DOMAIN_DURATION_CONFIG,
 });
 
 // biome-ignore lint/suspicious/useAwait: it will be a db query in upcoming updates
@@ -89,195 +108,35 @@ export const getDomainListInfo = async (
   });
 
   // Create a map of domain names to their corresponding NFT records for efficient lookup
-  const nftMap = new Map(nfts.map((nft) => [nft.normalizedDomainName, nft]));
+  const nftMap = new Map(
+    nfts.map((nft) => [nft.normalizedDomainName, nft]),
+  ) as Map<NamefiNormalizedDomain, NamefiNftSelect>;
+
+  //get a map of domains that have pending orders
+  const pendingOrdersMap = await checkIfDomainsHavePendingOrders(domains);
 
   return pMap(
     domains,
     async (domain) => {
-      const unavailableDomainInfo = {
-        domain,
-        availability: false,
-        pricingDetails: undefined,
-        currentOwner: undefined,
-        registrarKey: undefined,
-        durationValidationInYears: DOMAIN_DURATION_CONFIG,
-      };
+      const unavailableDomainInfo = generateUnavailableDomainInfo(domain);
+
       // Parse the domain to extract its components
       const domainParseResult = parseDomain(domain);
       // Return default values for invalid or unsupported domains
-      if (domainParseResult.type !== ParseResultType.Listed) {
+      if (
+        domainParseResult.type !== ParseResultType.Listed ||
+        pendingOrdersMap.get(domain)?.hasPendingOrders
+      ) {
         return unavailableDomainInfo;
       }
 
-      const { parentDomain, levels } = getDomainLevels(domain);
-
-      // Check if the domain is too short
-      if (levels.length < 2) {
-        return unavailableDomainInfo;
-      }
+      const { levels } = getDomainLevels(domain);
 
       if (levels.length === 2) {
-        // Look up the NFT and price information
-        const nft = nftMap.get(domain);
-        if (isNotNil(nft)) {
-          return {
-            domain,
-            availability: false,
-            pricingDetails: undefined,
-            currentOwner: nft.ownerAddress,
-            durationValidationInYears: DOMAIN_DURATION_CONFIG,
-          };
-        }
-        const responseOrError = await resolve(
-          sldRegistrar.searchForDomain(toPunycodeDomainName(domain)),
-        );
-
-        if (responseOrError.failed) {
-          return unavailableDomainInfo;
-        }
-        const response = responseOrError.result;
-
-        const orderItemsWithOrder = await db.query.orderItemsTable.findMany({
-          where: (orderItems, { and, ilike, or, gt, eq }) =>
-            and(
-              ilike(orderItems.normalizedDomainName, domain),
-              or(
-                eq(orderItems.status, orderItemStatusSchema.Enum.PROCESSING),
-                and(
-                  // CREATED should be also constrained by date, since we don't want old unprocessed orders to prevent repurchase
-                  eq(orderItems.status, orderItemStatusSchema.Enum.CREATED),
-                  gt(orderItems.createdAt, subDays(new Date(), 1)), //TODO: this is a temporary constraint, we should find a better way to do this or at least define certain limits for duration of unprocessed orders
-                ),
-              ),
-            ),
-          //TODO: temporary, use a leftjoin or a view instead
-          with: {
-            order: true,
-          },
-        });
-        //TODO: temporary, use a leftjoin or a view instead
-        const orderItems = orderItemsWithOrder.filter((orderItem) => {
-          if (orderItem.status === orderItemStatusSchema.Enum.CREATED) {
-            return (
-              [
-                orderStatusSchema.Enum.PROCESSING,
-                orderStatusSchema.Enum.CREATED,
-              ] as any
-            ).includes(orderItem.order.status);
-          }
-          return true;
-        });
-
-        if (orderItems.length > 0) {
-          return unavailableDomainInfo;
-        }
-
-        return {
-          domain: namefiNormalizedDomainSchema.parse(
-            response.result.domainName,
-          ),
-          availability:
-            response.result.available === DomainAvailability.AVAILABLE,
-          pricingDetails: response.result.price,
-          currentOwner: undefined,
-          registrarKey: response.registrarKey,
-          durationValidationInYears: DOMAIN_DURATION_CONFIG,
-        };
+        return await _getSldDomainListInfo(domain, nftMap);
       }
       if (levels.length === 3) {
-        const prefix = levels[2];
-
-        // Check if the domain is reserved
-        if (isReserved(prefix)) {
-          return unavailableDomainInfo;
-        }
-
-        // Currently only 0x.city is supported
-        if (parentDomain === '0x.city') {
-          const currentPercentage = get0xDotCityPercentageRollout();
-          // we only enable a percentage of subdomain registrations for 0x.city
-          // we use keccak256 to hash the domain and check if the last 4 bytes are less than PERCENT of the total number of subdomains
-          const shouldRollout = hashBasedPercentageRollouted(
-            domain,
-            currentPercentage,
-          );
-
-          let userQualifiesFor0xDotCity = false;
-          if (!shouldRollout) {
-            if (!user?.privyUserId) {
-              return unavailableDomainInfo;
-            }
-            userQualifiesFor0xDotCity = await userQualifiesForDomainNamePromo({
-              normalizedDomainName: domain,
-              user,
-            });
-            if (!userQualifiesFor0xDotCity) {
-              return unavailableDomainInfo;
-            }
-          }
-
-          const orderItemsWithOrder = await db.query.orderItemsTable.findMany({
-            where: (orderItems, { and, ilike, or, gt, eq }) =>
-              and(
-                ilike(orderItems.normalizedDomainName, domain),
-                or(
-                  eq(orderItems.status, orderItemStatusSchema.Enum.PROCESSING),
-                  and(
-                    // CREATED should be also constrained by date, since we don't want old unprocessed orders to prevent repurchase
-                    eq(orderItems.status, orderItemStatusSchema.Enum.CREATED),
-                    gt(orderItems.createdAt, subDays(new Date(), 1)), //TODO: this is a temporary constraint, we should find a better way to do this or at least define certain limits for duration of unprocessed orders
-                  ),
-                ),
-              ),
-            //TODO: temporary, use a leftjoin or a view instead
-            with: {
-              order: true,
-            },
-          });
-          //TODO: temporary, use a leftjoin or a view instead
-          const orderItems = orderItemsWithOrder.filter((orderItem) => {
-            if (orderItem.status === orderItemStatusSchema.Enum.CREATED) {
-              return (
-                [
-                  orderStatusSchema.Enum.PROCESSING,
-                  orderStatusSchema.Enum.CREATED,
-                ] as any
-              ).includes(orderItem.order.status);
-            }
-            return true;
-          });
-
-          if (orderItems.length > 0) {
-            return unavailableDomainInfo;
-          }
-
-          // Look up the NFT and price information
-          const nft = nftMap.get(domain);
-          const isFreeMint = userQualifiesFor0xDotCity;
-          const price = await getSubdomainPriceInUsd(domain, isFreeMint);
-
-          // Return domain information including availability, price, and current owner
-          return {
-            domain,
-            availability: isNil(nft),
-            pricingDetails: {
-              registrationPrice: {
-                type: 'PER_YEAR',
-                price: { amount: price, currency: 'USD' },
-              },
-              renewalPrice: {
-                type: 'PER_YEAR',
-                price: { amount: price, currency: 'USD' },
-              },
-              importPrice: {
-                type: 'PER_YEAR',
-                price: { amount: price, currency: 'USD' },
-              },
-            },
-            currentOwner: nft?.ownerAddress,
-            durationValidationInYears: DOMAIN_DURATION_CONFIG,
-          } satisfies DomainAvailabilityInfo;
-        }
+        return await _get3ldDomainListInfo(domain, nftMap, user);
       }
 
       return unavailableDomainInfo;
@@ -305,4 +164,147 @@ export const get0xDotCityPercentageRollout = () => {
   }
 
   return currentPercentage;
+};
+
+const _getSldDomainListInfo = async (
+  domain: NamefiNormalizedDomain,
+  nftMap: Map<NamefiNormalizedDomain, NamefiNftSelect>,
+) => {
+  const unavailableDomainInfo = generateUnavailableDomainInfo(domain);
+
+  // Look up the NFT and price information
+  const nft = nftMap.get(domain);
+
+  const responseOrError = await resolve(
+    sldRegistrar.searchForDomain(toPunycodeDomainName(domain)),
+  );
+
+  if (responseOrError.failed) {
+    return unavailableDomainInfo;
+  }
+  const response = responseOrError.result;
+
+  return {
+    domain: namefiNormalizedDomainSchema.parse(response.result.domainName),
+    availability: response.result.available === DomainAvailability.AVAILABLE,
+    pricingDetails: response.result.price,
+    currentOwner: nft?.ownerAddress,
+    registrarKey: response.registrarKey,
+    durationValidationInYears: DOMAIN_DURATION_CONFIG,
+  };
+};
+
+const _get3ldDomainListInfo = async (
+  domain: NamefiNormalizedDomain,
+  nftMap: Map<NamefiNormalizedDomain, NamefiNftSelect>,
+  user?: { privyUserId: string } | null,
+) => {
+  const { parentDomain, levels } = getDomainLevels(domain);
+  const unavailableDomainInfo = generateUnavailableDomainInfo(domain);
+  const prefix = levels[2];
+
+  // Check if the domain is reserved
+  if (isReserved(prefix)) {
+    return unavailableDomainInfo;
+  }
+
+  // Currently only 0x.city is supported
+  if (parentDomain === '0x.city') {
+    const currentPercentage = get0xDotCityPercentageRollout();
+    // we only enable a percentage of subdomain registrations for 0x.city
+    // we use keccak256 to hash the domain and check if the last 4 bytes are less than PERCENT of the total number of subdomains
+    const shouldRollout = hashBasedPercentageRollouted(
+      domain,
+      currentPercentage,
+    );
+
+    let userQualifiesFor0xDotCity = false;
+    if (!shouldRollout) {
+      if (!user?.privyUserId) {
+        return unavailableDomainInfo;
+      }
+      userQualifiesFor0xDotCity = await userQualifiesForDomainNamePromo({
+        normalizedDomainName: domain,
+        user,
+      });
+      if (!userQualifiesFor0xDotCity) {
+        return unavailableDomainInfo;
+      }
+    }
+
+    // Look up the NFT and price information
+    const nft = nftMap.get(domain);
+    const isFreeMint = userQualifiesFor0xDotCity;
+    const price = await getSubdomainPriceInUsd(domain, isFreeMint);
+
+    // Return domain information including availability, price, and current owner
+    return {
+      domain,
+      availability: isNil(nft),
+      pricingDetails: {
+        registrationPrice: {
+          type: 'PER_YEAR',
+          price: { amount: price, currency: 'USD' },
+        },
+        renewalPrice: {
+          type: 'PER_YEAR',
+          price: { amount: price, currency: 'USD' },
+        },
+        importPrice: {
+          type: 'PER_YEAR',
+          price: { amount: price, currency: 'USD' },
+        },
+      },
+      currentOwner: nft?.ownerAddress,
+      durationValidationInYears: DOMAIN_DURATION_CONFIG,
+    } satisfies DomainAvailabilityInfo;
+  }
+
+  return unavailableDomainInfo;
+};
+
+/**
+ * Checks if the domains have pending orders
+ * @param domains - Array of domain names to check
+ * @returns Array of domain names that have pending orders
+ */
+const checkIfDomainsHavePendingOrders = async (
+  domains: NamefiNormalizedDomain[],
+) => {
+  const orderItems = await db
+    .select({
+      normalizedDomainName: orderItemsTable.normalizedDomainName,
+    })
+    .from(orderItemsTable)
+    .leftJoin(ordersTable, eq(orderItemsTable.orderId, ordersTable.id))
+    .where(
+      and(
+        inArray(orderItemsTable.normalizedDomainName, domains),
+        and(
+          or(
+            eq(orderItemsTable.status, orderItemStatusSchema.Enum.PROCESSING),
+            and(
+              eq(orderItemsTable.status, orderItemStatusSchema.Enum.CREATED),
+              gt(orderItemsTable.createdAt, subDays(new Date(), 1)), //TODO: this is a temporary constraint, we should find a better way to do this or at least define certain limits for duration of unprocessed orders
+              eq(ordersTable.status, orderStatusSchema.Enum.PROCESSING),
+            ),
+          ),
+        ),
+      ),
+    );
+
+  const pendingOrdersMap = new Map(
+    domains.map((domain) => [domain, { hasPendingOrders: false }]),
+  );
+
+  for (const orderItem of orderItems) {
+    pendingOrdersMap.set(
+      orderItem.normalizedDomainName as NamefiNormalizedDomain,
+      {
+        hasPendingOrders: true,
+      },
+    );
+  }
+
+  return pendingOrdersMap;
 };
