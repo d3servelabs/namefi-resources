@@ -1,19 +1,18 @@
 import { orderStatusSchema } from '@namefi-astra/db/types';
-import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import * as workflow from '@temporalio/workflow';
 import { ApplicationFailure } from '@temporalio/workflow';
 import { resolve } from '../../utils/resolve';
 import { TEMPORAL_ENUMS, TEMPORAL_QUEUES, shortRunningOpts } from '../shared';
 import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';
-import { registerSubdomainWorkflow } from './register-subdomain.workflow';
+import {
+  acquireDomainWorkflow,
+  type AcquireDomainWorkflowInput,
+} from './domain-ownership/acquire-domain.workflow';
 
-export interface ProcessOrderItemWorkflowInput {
-  itemId: string;
+export interface ProcessOrderItemWorkflowInput
+  extends AcquireDomainWorkflowInput {
   orderId: string;
-  normalizedDomainName: NamefiNormalizedDomain;
-  durationInYears: number;
-  nftWalletAddress: `0x${string}`;
-  nftChainId: number;
+  itemId: string;
 }
 
 /**
@@ -24,9 +23,14 @@ export async function processOrderItemWorkflow(
 ): Promise<void> {
   const {
     normalizedDomainName,
-    nftWalletAddress,
-    nftChainId,
+    recipientWalletAddress,
+    chainId,
     durationInYears,
+    operationType,
+    userId,
+    registrarKey,
+    encryptedEppAuthorizationCode,
+    encryptionKeyId,
   } = input;
   const { updateOrderItemStatusOrThrow } = typedProxyActivities({
     temporalEnum: TEMPORAL_ENUMS.DEFAULT,
@@ -37,18 +41,23 @@ export async function processOrderItemWorkflow(
 
   try {
     // Register the domain
-    await workflow.executeChild(registerSubdomainWorkflow, {
+    await workflow.executeChild(acquireDomainWorkflow, {
       args: [
         {
           normalizedDomainName,
-          chainId: nftChainId,
-          toAddress: nftWalletAddress as `0x${string}`,
+          chainId,
+          recipientWalletAddress,
+          operationType,
+          userId,
+          registrarKey,
+          encryptedEppAuthorizationCode,
+          encryptionKeyId,
           // TODO: (sid->sami) Change this if needed to parent domain expiration time
           durationInYears,
         },
       ],
       taskQueue: TEMPORAL_QUEUES.DOMAINS,
-      workflowId: `register-domain-${input.orderId}-${input.itemId}`,
+      workflowId: `acquire-domain-${input.orderId}-${input.itemId}`,
     });
 
     // update orderItem status in db

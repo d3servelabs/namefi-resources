@@ -1,5 +1,8 @@
 import { orderStatusSchema, paymentStatusSchema } from '@namefi-astra/db/types';
-import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import type {
+  ChecksumWalletAddress,
+  NamefiNormalizedDomain,
+} from '@namefi-astra/utils';
 import * as workflow from '@temporalio/workflow';
 import { ApplicationFailure } from '@temporalio/workflow';
 import { resolve } from '../../utils/resolve';
@@ -133,8 +136,13 @@ export async function processOrderWorkflow(
               normalizedDomainName:
                 item.normalizedDomainName as NamefiNormalizedDomain,
               durationInYears: item.durationInYears,
-              nftWalletAddress: orderDetails.nftWalletAddress as `0x${string}`,
-              nftChainId: orderDetails.nftChainId,
+              recipientWalletAddress:
+                orderDetails.nftWalletAddress as ChecksumWalletAddress,
+              chainId: orderDetails.nftChainId,
+              userId: orderDetails.userId,
+              operationType: item.type,
+              // TODO: (sid) Add registrar key
+              registrarKey: '',
             },
           ],
           workflowId: `process-order-item-${item.id}`,

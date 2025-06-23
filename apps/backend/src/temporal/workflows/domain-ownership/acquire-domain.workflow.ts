@@ -16,7 +16,7 @@ import { mintNamefiNFT } from '../mint.workflow';
 import { domainSetupWorkflow } from './domain-setup.workflow';
 import { sldRegisterOrImportWorkflow } from './sld-register-or-import.workflow';
 
-interface AcquireDomainWorkflowInput {
+export interface AcquireDomainWorkflowInput {
   operationType: 'REGISTER' | 'IMPORT';
   userId: string;
   recipientWalletAddress: ChecksumWalletAddress;
