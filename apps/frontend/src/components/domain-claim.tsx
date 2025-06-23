@@ -185,7 +185,7 @@ export const DomainClaim: FC<DomainClaimProps> = ({
     if (canClaim && domainAvailabilityInfo) {
       handleDomainAction({
         domainAvailabilityInfo,
-        durationInYears: 3,
+        durationInYears: 1,
       });
       if (onClaim) {
         onClaim(subdomainValue);

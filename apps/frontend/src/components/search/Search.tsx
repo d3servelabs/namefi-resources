@@ -147,7 +147,7 @@ export const DomainCard: FC<{
     eppAuthorizationCode,
   }: {
     domainAvailabilityInfo: DomainAvailabilityInfo;
-    durationInYears?: number;
+    durationInYears: number;
     eppAuthorizationCode?: string;
   }) => void;
   isAddingToCart: boolean;
@@ -203,7 +203,7 @@ export const DomainCard: FC<{
       // Regular add/remove action
       handleDomainAction({
         domainAvailabilityInfo: domain,
-        durationInYears: 3,
+        durationInYears: 1,
       });
     }
   }, [isImportable, isInCart, handleDomainAction, domain]);
@@ -212,9 +212,9 @@ export const DomainCard: FC<{
     async (eppAuthCode: string) => {
       setIsAddingImport(true);
       try {
-        await handleDomainAction({
+        handleDomainAction({
           domainAvailabilityInfo: domain,
-          durationInYears: 3,
+          durationInYears: 1,
           eppAuthorizationCode: eppAuthCode,
         });
         setIsEppModalOpen(false);
@@ -390,7 +390,7 @@ export const SearchResults: FC<{
     eppAuthorizationCode,
   }: {
     domainAvailabilityInfo: DomainAvailabilityInfo;
-    durationInYears?: number;
+    durationInYears: number;
     eppAuthorizationCode?: string;
   }) => void;
   isAddingToCart: boolean;

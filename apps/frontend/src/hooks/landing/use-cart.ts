@@ -163,11 +163,11 @@ export function useCart() {
   const handleDomainAction = useCallback(
     async ({
       domainAvailabilityInfo,
-      durationInYears = 3,
+      durationInYears,
       eppAuthorizationCode,
     }: {
       domainAvailabilityInfo: DomainAvailabilityInfo;
-      durationInYears?: number;
+      durationInYears: number;
       eppAuthorizationCode?: string;
     }) => {
       // Determine operation type based on domain availability
