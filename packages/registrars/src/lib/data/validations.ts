@@ -311,7 +311,9 @@ export function toPunycodeDomainName(value: string): PunycodeDomainName {
   const result = z
     .string()
     .trim()
-    .transform((value) => punycode.toASCII(value.toLowerCase()))
+    .transform((value) =>
+      punycode.toASCII(value.toLowerCase()).replace(/\.$/g, ''),
+    )
     .parse(value);
   assertPunycodeDomainName(result);
   return result;
