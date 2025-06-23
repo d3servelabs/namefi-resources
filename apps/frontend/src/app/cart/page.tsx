@@ -21,6 +21,7 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/shadcn/alert-dialog';
 import { Button } from '@/components/ui/shadcn/button';
+import { Badge } from '@/components/ui/shadcn/badge';
 import {
   Card,
   CardContent,
@@ -42,11 +43,15 @@ import {
 import { formatAmountInUSD } from '@/utils/number';
 import { useTRPC } from '@/utils/trpc';
 import type { DeepPartial } from '@/utils/types';
-import { createOrderInputSchema } from '@namefi-astra/backend/trpc/types';
+import {
+  createOrderInputSchema,
+  getDomainPricingForOperation,
+} from '@namefi-astra/backend/trpc/types';
 import {
   isNfscPayment,
   isStripePayment,
   paymentProviderSchema,
+  itemTypeSchema,
 } from '@namefi-astra/db/types';
 import {
   computeChargesInUsdOrThrow,
@@ -449,15 +454,18 @@ export default function CartPage() {
 
         if (item?.domainAvailabilityInfo) {
           try {
-            // Calculate optimistic price update
-            if (
-              !item.domainAvailabilityInfo.pricingDetails?.registrationPrice
-            ) {
-              throw new Error('Registration pricing details are unavailable');
+            // Calculate optimistic price update based on item type
+            const pricingDetails = getDomainPricingForOperation(
+              item.domainAvailabilityInfo,
+              item.type,
+            );
+
+            if (!pricingDetails) {
+              throw new Error(`${item.type} pricing details are unavailable`);
             }
 
             const chargeAmountInUsd = computeChargesInUsdOrThrow(
-              item.domainAvailabilityInfo.pricingDetails.registrationPrice,
+              pricingDetails,
               newDuration,
             );
             const optimisticAmount = usdToCents(chargeAmountInUsd);
@@ -617,9 +625,16 @@ export default function CartPage() {
                 {items.map((item, index) => (
                   <div key={item.id}>
                     <div className="flex flex-col gap-4">
-                      <span className="text-xl">
-                        {item.normalizedDomainName}
-                      </span>
+                      <div className="flex items-center gap-2">
+                        <span className="text-xl">
+                          {item.normalizedDomainName}
+                        </span>
+                        {item.type === itemTypeSchema.Values.IMPORT && (
+                          <Badge className="text-xs bg-blue-600/20 text-blue-400 border-blue-400/50">
+                            Import
+                          </Badge>
+                        )}
+                      </div>
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-4">
                           <button

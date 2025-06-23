@@ -37,6 +37,7 @@ import {
   isNormalizedDomainNameAllowedForOriginHostname,
   privyClient,
 } from '../utils';
+import { getDomainPricingForOperation } from '../types';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
 
@@ -417,7 +418,12 @@ async function getChangesIfAnyToCartItems(
           originalItem.normalizedDomainName as NamefiNormalizedDomain
         ];
 
-      if (!domainPricing?.pricingDetails?.registrationPrice) {
+      const pricingDetails = getDomainPricingForOperation(
+        domainPricing,
+        originalItem.type,
+      );
+
+      if (!pricingDetails) {
         throw new TRPCError({
           code: 'BAD_REQUEST',
           message: `Pricing details unavailable for domain: ${originalItem.normalizedDomainName}`,
@@ -425,7 +431,7 @@ async function getChangesIfAnyToCartItems(
       }
 
       const chargeAmountInUsd = computeChargesInUsdOrThrow(
-        domainPricing.pricingDetails.registrationPrice,
+        pricingDetails,
         originalItem.durationInYears,
       );
       let newAmountInUsdCents = usdToCents(chargeAmountInUsd);
@@ -440,7 +446,7 @@ async function getChangesIfAnyToCartItems(
 
         // Recalculate amount with corrected duration
         const correctedChargeAmountInUsd = computeChargesInUsdOrThrow(
-          domainPricing.pricingDetails.registrationPrice,
+          pricingDetails,
           newDurationInYears,
         );
         newAmountInUsdCents = usdToCents(correctedChargeAmountInUsd);

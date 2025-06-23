@@ -11,7 +11,7 @@ import { useDomainFilters } from '@/hooks/landing/use-domain-filters';
 import { useSearch } from '@/hooks/landing/use-search';
 import { config } from '@/lib/env';
 import { createAsyncInterval } from '@/utils/createAsyncInterval';
-import type { DomainAvailabilityInfo } from '@/utils/types';
+import type { DomainAvailabilityInfo } from '@namefi-astra/backend/trpc/types';
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import FloatingCart from '../floating-cart';

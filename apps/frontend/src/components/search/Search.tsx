@@ -27,7 +27,6 @@ import {
   InteractionLoggingEventName,
 } from '@/utils/interaction-logging/events';
 import { formatAmountInUSD } from '@/utils/number';
-import type { DomainAvailabilityInfo } from '@/utils/types';
 import { computeChargesInUsdOrThrow } from '@namefi-astra/registrars/multi-year-pricing';
 import {
   Loader2,
@@ -36,6 +35,7 @@ import {
   Trash,
   User,
   X,
+  Download,
 } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { MotionConfig, useReducedMotion } from 'motion/react';
@@ -47,6 +47,13 @@ import { NamefiButton } from '../namefi-button';
 import { useInteractionLoggers } from '../providers/interactionLoggersProvider';
 import { Placeholder } from './Placeholder';
 import type { SearchComponent } from './types';
+import {
+  isDomainImportable,
+  getDomainPricingForOperation,
+  type DomainAvailabilityInfo,
+} from '@namefi-astra/backend/trpc/types';
+import { itemTypeSchema } from '@namefi-astra/db/types';
+import { EppAuthCodeModal } from '../modals/EppAuthCodeModal';
 
 // Components
 export const SearchHeader: FC<{
@@ -138,9 +145,11 @@ export const DomainCard: FC<{
   handleDomainAction: ({
     domainAvailabilityInfo,
     durationInYears,
+    eppAuthorizationCode,
   }: {
     domainAvailabilityInfo: DomainAvailabilityInfo;
     durationInYears?: number;
+    eppAuthorizationCode?: string;
   }) => void;
   isAddingToCart: boolean;
   isRemovingFromCart: boolean;
@@ -155,6 +164,8 @@ export const DomainCard: FC<{
 }) => {
   const { logEventWithInteractionLoggers } = useInteractionLoggers();
   const router = useRouter();
+  const [isEppModalOpen, setIsEppModalOpen] = useState(false);
+  const [isAddingImport, setIsAddingImport] = useState(false);
 
   const logBeginCheckout = useCallback(() => {
     const beginCheckoutEvent: BeginCheckoutEvent = {
@@ -165,142 +176,192 @@ export const DomainCard: FC<{
   }, [logEventWithInteractionLoggers]);
 
   const isInCart = isDomainInCart(domain.domain);
+  const isImportable = isDomainImportable(domain);
+
+  // Get the appropriate pricing based on whether it's an import or registration
+  const operationType = isImportable
+    ? itemTypeSchema.Values.IMPORT
+    : itemTypeSchema.Values.REGISTER;
+  const pricingDetails = getDomainPricingForOperation(domain, operationType);
 
   const priceInUsd = useMemo(() => {
-    if (!domain.pricingDetails) {
+    if (!pricingDetails) {
       return undefined;
     }
-    return computeChargesInUsdOrThrow(
-      domain.pricingDetails.registrationPrice,
-      1,
-    );
-  }, [domain.pricingDetails]);
+    return computeChargesInUsdOrThrow(pricingDetails, 1);
+  }, [pricingDetails]);
 
   // Split domain into subdomain and parent domain
   const parts = domain.domain.split('.');
   const subdomain = parts[0];
   const parentDomain = parts.slice(1).join('.');
 
+  const handleActionClick = useCallback(() => {
+    if (isImportable && !isInCart) {
+      // Show EPP modal for import
+      setIsEppModalOpen(true);
+    } else {
+      // Regular add/remove action
+      handleDomainAction({
+        domainAvailabilityInfo: domain,
+        durationInYears: 3,
+      });
+    }
+  }, [isImportable, isInCart, handleDomainAction, domain]);
+
+  const handleEppSubmit = useCallback(
+    async (eppAuthCode: string) => {
+      setIsAddingImport(true);
+      try {
+        await handleDomainAction({
+          domainAvailabilityInfo: domain,
+          durationInYears: 3,
+          eppAuthorizationCode: eppAuthCode,
+        });
+        setIsEppModalOpen(false);
+      } catch (error) {
+        // Error will be handled by the modal
+        throw error;
+      } finally {
+        setIsAddingImport(false);
+      }
+    },
+    [handleDomainAction, domain],
+  );
+
   return (
-    <Card
-      className={cn(
-        'bg-white/5 backdrop-blur-lg h-32 transition-all duration-150 p-0 border-[1px] border-white/10',
-        domain.availability ? 'opacity-100' : 'opacity-50',
-      )}
-    >
-      <CardContent className="h-full w-full">
-        <div className="flex items-center justify-between h-full w-full">
-          <div className="space-y-1 flex-1 min-w-0 mr-4 overflow-hidden">
-            <div className="font-semibold tracking-tight flex items-start gap-2">
-              <div className="min-w-0 flex-1">
-                <h3 className="line-clamp-2 break-words">
-                  <span className="text-3xl text-brand-tertiary">
-                    {subdomain}
-                  </span>
-                  <span className="text-2xl text-foreground">
-                    .{parentDomain}
-                  </span>
-                </h3>
+    <>
+      <Card
+        className={cn(
+          'bg-white/5 backdrop-blur-lg h-32 transition-all duration-150 p-0 border-[1px] border-white/10',
+          domain.availability || isImportable ? 'opacity-100' : 'opacity-50',
+        )}
+      >
+        <CardContent className="h-full w-full">
+          <div className="flex items-center justify-between h-full w-full">
+            <div className="space-y-1 flex-1 min-w-0 mr-4 overflow-hidden">
+              <div className="font-semibold tracking-tight flex items-start gap-2">
+                <div className="min-w-0 flex-1">
+                  <h3 className="line-clamp-2 break-words">
+                    <span className="text-3xl text-brand-tertiary">
+                      {subdomain}
+                    </span>
+                    <span className="text-2xl text-foreground">
+                      .{parentDomain}
+                    </span>
+                  </h3>
+                </div>
+                {!domain.availability && (
+                  <Badge className="ml-2 text-xs bg-black/70 text-white shrink-0 mt-2">
+                    {isImportable
+                      ? 'Import Available'
+                      : isNotNil(domain.currentOwner)
+                        ? 'Taken'
+                        : 'Unavailable'}
+                  </Badge>
+                )}
               </div>
-              {!domain.availability && (
-                <Badge className="ml-2 text-xs bg-black/70 text-white shrink-0 mt-2">
-                  {isNotNil(domain.currentOwner) ? 'Taken' : 'Unavailable'}
-                </Badge>
+              <div className="flex items-center gap-2">
+                <p className="text-xl font-medium line-clamp-1">
+                  {isNotNil(priceInUsd)
+                    ? `${formatAmountInUSD(priceInUsd)} USD${isImportable ? ' (Import)' : ''}`
+                    : ''}
+                </p>
+              </div>
+              {!domain.availability && isNotNil(domain.currentOwner) && (
+                <div className="flex items-center text-sm text-muted-foreground">
+                  <User className="mr-1 h-3 w-3 shrink-0" />
+                  <span className="line-clamp-1">
+                    Owner: {domain.currentOwner.substring(0, 6)}...
+                    {domain.currentOwner.substring(
+                      domain.currentOwner.length - 4,
+                    )}
+                  </span>
+                </div>
               )}
             </div>
-            <div className="flex items-center gap-2">
-              <p className="text-xl font-medium line-clamp-1">
-                {isNotNil(priceInUsd)
-                  ? `${formatAmountInUSD(priceInUsd)} USD`
-                  : ''}
-              </p>
-            </div>
-            {!domain.availability && isNotNil(domain.currentOwner) && (
-              <div className="flex items-center text-sm text-muted-foreground">
-                <User className="mr-1 h-3 w-3 shrink-0" />
-                <span className="line-clamp-1">
-                  Owner: {domain.currentOwner.substring(0, 6)}...
-                  {domain.currentOwner.substring(
-                    domain.currentOwner.length - 4,
-                  )}
-                </span>
-              </div>
-            )}
-          </div>
-          {domain.availability && (
-            <TooltipProvider>
-              {isInCart ? (
-                <div className="flex space-x-2 shrink-0">
-                  <Tooltip>
-                    <TooltipTrigger asChild={true}>
-                      <NamefiButton
-                        className="bg-black/40 border-white/10 hover:bg-red-600/80 hover:border-red-400/50 shrink-0"
-                        onClick={() =>
-                          handleDomainAction({
-                            domainAvailabilityInfo: domain,
-                            durationInYears: 3,
-                          })
-                        }
-                        disabled={isRemovingFromCart || isCartLoading}
-                      >
-                        {isRemovingFromCart ? (
-                          <Loader2 className="h-4 w-4 animate-spin" />
-                        ) : (
-                          <Trash className="h-4 w-4 mr-1" />
-                        )}
-                        Remove
-                      </NamefiButton>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      Remove this domain from your cart
-                    </TooltipContent>
-                  </Tooltip>
+            {(domain.availability || isImportable) && (
+              <TooltipProvider>
+                {isInCart ? (
+                  <div className="flex space-x-2 shrink-0">
+                    <Tooltip>
+                      <TooltipTrigger asChild={true}>
+                        <NamefiButton
+                          className="bg-black/40 border-white/10 hover:bg-red-600/80 hover:border-red-400/50 shrink-0"
+                          onClick={handleActionClick}
+                          disabled={isRemovingFromCart || isCartLoading}
+                        >
+                          {isRemovingFromCart ? (
+                            <Loader2 className="h-4 w-4 animate-spin" />
+                          ) : (
+                            <Trash className="h-4 w-4 mr-1" />
+                          )}
+                          Remove
+                        </NamefiButton>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        Remove this domain from your cart
+                      </TooltipContent>
+                    </Tooltip>
 
+                    <Tooltip>
+                      <TooltipTrigger asChild={true}>
+                        <NamefiButton
+                          className="shrink-0"
+                          onClick={() => {
+                            logBeginCheckout();
+                            router.push('/cart');
+                          }}
+                        >
+                          <ShoppingCart className="h-4 w-4 mr-1" />
+                          View Cart
+                        </NamefiButton>
+                      </TooltipTrigger>
+                      <TooltipContent>Go to your cart</TooltipContent>
+                    </Tooltip>
+                  </div>
+                ) : (
                   <Tooltip>
                     <TooltipTrigger asChild={true}>
                       <NamefiButton
                         className="shrink-0"
-                        onClick={() => {
-                          logBeginCheckout();
-                          router.push('/cart');
-                        }}
+                        onClick={handleActionClick}
+                        disabled={
+                          isAddingToCart || isCartLoading || isAddingImport
+                        }
                       >
-                        <ShoppingCart className="h-4 w-4 mr-1" />
-                        View Cart
+                        {isAddingToCart || isAddingImport ? (
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                        ) : isImportable ? (
+                          <Download className="h-4 w-4" />
+                        ) : (
+                          <ShoppingCart className="h-4 w-4" />
+                        )}
+                        {isImportable ? 'Import' : 'Add to cart'}
                       </NamefiButton>
                     </TooltipTrigger>
-                    <TooltipContent>Go to your cart</TooltipContent>
+                    <TooltipContent>
+                      {isImportable
+                        ? 'Import this domain'
+                        : 'Add this domain to your cart'}
+                    </TooltipContent>
                   </Tooltip>
-                </div>
-              ) : (
-                <Tooltip>
-                  <TooltipTrigger asChild={true}>
-                    <NamefiButton
-                      className="shrink-0"
-                      onClick={() =>
-                        handleDomainAction({
-                          domainAvailabilityInfo: domain,
-                          durationInYears: 3,
-                        })
-                      }
-                      disabled={isAddingToCart || isCartLoading}
-                    >
-                      {isAddingToCart ? (
-                        <Loader2 className="h-4 w-4 animate-spin" />
-                      ) : (
-                        <ShoppingCart className="h-4 w-4" />
-                      )}
-                      Add to cart
-                    </NamefiButton>
-                  </TooltipTrigger>
-                  <TooltipContent>Add this domain to your cart</TooltipContent>
-                </Tooltip>
-              )}
-            </TooltipProvider>
-          )}
-        </div>
-      </CardContent>
-    </Card>
+                )}
+              </TooltipProvider>
+            )}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* EPP Auth Code Modal */}
+      <EppAuthCodeModal
+        isOpen={isEppModalOpen}
+        onClose={() => setIsEppModalOpen(false)}
+        onSubmit={handleEppSubmit}
+        domainInfo={domain}
+        isSubmitting={isAddingImport}
+      />
+    </>
   );
 };
 
@@ -336,9 +397,11 @@ export const SearchResults: FC<{
   handleDomainAction: ({
     domainAvailabilityInfo,
     durationInYears,
+    eppAuthorizationCode,
   }: {
     domainAvailabilityInfo: DomainAvailabilityInfo;
     durationInYears?: number;
+    eppAuthorizationCode?: string;
   }) => void;
   isAddingToCart: boolean;
   isRemovingFromCart: boolean;

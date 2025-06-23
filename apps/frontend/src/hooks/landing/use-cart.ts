@@ -14,10 +14,14 @@ import {
   computeChargesInUsdOrThrow,
   usdToCents,
 } from '@namefi-astra/registrars/multi-year-pricing';
+import {
+  isDomainImportable,
+  getDomainPricingForOperation,
+  type DomainAvailabilityInfo,
+} from '@namefi-astra/backend/trpc/types';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useCallback, useEffect, useRef } from 'react';
 import { useLocalStorage } from 'usehooks-ts';
-import type { DomainAvailabilityInfo } from '../../utils/types';
 
 /**
  * Type for cart items stored both in server and localStorage
@@ -159,30 +163,47 @@ export function useCart() {
     async ({
       domainAvailabilityInfo,
       durationInYears = 3,
+      eppAuthorizationCode,
     }: {
       domainAvailabilityInfo: DomainAvailabilityInfo;
       durationInYears?: number;
+      eppAuthorizationCode?: string;
     }) => {
-      // Calculate proper price using multi-year pricing for cart item creation
-      if (!domainAvailabilityInfo.pricingDetails?.registrationPrice) {
-        throw new Error('Registration pricing details are unavailable');
+      // Determine operation type based on domain availability
+      const operationType = isDomainImportable(domainAvailabilityInfo)
+        ? itemTypeSchema.Values.IMPORT
+        : itemTypeSchema.Values.REGISTER;
+
+      // Get appropriate pricing for the operation
+      const pricingDetails = getDomainPricingForOperation(
+        domainAvailabilityInfo,
+        operationType,
+      );
+
+      if (!pricingDetails) {
+        throw new Error(`${operationType} pricing details are unavailable`);
       }
 
       const chargeAmountInUsd = computeChargesInUsdOrThrow(
-        domainAvailabilityInfo.pricingDetails.registrationPrice,
+        pricingDetails,
         durationInYears,
       );
       const calculatedAmount = usdToCents(chargeAmountInUsd);
 
-      const cartItem: Omit<CartItem, 'id'> = {
-        normalizedDomainName: domainAvailabilityInfo.domain,
-        amountInUSDCents: calculatedAmount,
-        durationInYears,
-        createdAt: new Date(),
-        type: itemTypeSchema.Values.REGISTER,
-        encryptionKeyId: null,
-        encryptedEppAuthorizationCode: null,
-      };
+      const cartItem: Omit<CartItem, 'id'> & { eppAuthorizationCode?: string } =
+        {
+          normalizedDomainName: domainAvailabilityInfo.domain,
+          amountInUSDCents: calculatedAmount,
+          durationInYears,
+          createdAt: new Date(),
+          type: operationType,
+          encryptionKeyId: null,
+          encryptedEppAuthorizationCode: null,
+          eppAuthorizationCode:
+            operationType === itemTypeSchema.Values.IMPORT
+              ? eppAuthorizationCode
+              : undefined,
+        };
 
       if (isDomainInCart(domainAvailabilityInfo.domain)) {
         // Remove domain from cart

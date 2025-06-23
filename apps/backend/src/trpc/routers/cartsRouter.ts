@@ -3,6 +3,7 @@ import {
   cartItemUpdateSchema,
   cartItemsTable,
   db,
+  itemTypeSchema,
 } from '@namefi-astra/db';
 import {
   computeChargesInUsdOrThrow,
@@ -14,8 +15,10 @@ import { and, eq, sql } from 'drizzle-orm';
 import { z } from 'zod';
 import { getDomainListInfo } from '#lib/namefi-registry';
 import { userQualifiesForDomainNamePromo } from '#lib/userPromo';
+import { encryptEppAuthCode } from '#lib/epp-code-encryption';
 import { createTRPCRouter, protectedProcedure } from '../base';
 import { isNormalizedDomainNameAllowedForOriginHostname } from '../utils';
+import { getDomainPricingForOperation } from '../types';
 
 export const cartsRouter = createTRPCRouter({
   // Get cart items for the current user
@@ -61,6 +64,12 @@ export const cartsRouter = createTRPCRouter({
           .required()
           .partial({
             metadata: true,
+            encryptionKeyId: true,
+            encryptedEppAuthorizationCode: true,
+          })
+          .extend({
+            // For import items, we accept the plain text EPP code
+            eppAuthorizationCode: z.string().optional(),
           }),
       ),
     )
@@ -93,15 +102,46 @@ export const cartsRouter = createTRPCRouter({
         }
       }
 
-      // Prepare items for insertion with user ID
-      const itemsToInsert = input.map((item) => ({
-        userId: ctx.user.id,
-        amountInUSDCents: item.amountInUSDCents,
-        normalizedDomainName: item.normalizedDomainName,
-        durationInYears: item.durationInYears,
-        type: item.type,
-        metadata: item.metadata || {},
-      }));
+      // Process items for insertion
+      const itemsToInsert = await Promise.all(
+        input.map(async (item) => {
+          const baseItem = {
+            userId: ctx.user.id,
+            amountInUSDCents: item.amountInUSDCents,
+            normalizedDomainName: item.normalizedDomainName,
+            durationInYears: item.durationInYears,
+            type: item.type,
+            metadata: item.metadata || {},
+            encryptionKeyId: item.encryptionKeyId || null,
+            encryptedEppAuthorizationCode:
+              item.encryptedEppAuthorizationCode || null,
+          };
+
+          // For import items, encrypt the EPP authorization code
+          if (
+            item.type === itemTypeSchema.Values.IMPORT &&
+            item.eppAuthorizationCode
+          ) {
+            if (!item.eppAuthorizationCode.trim()) {
+              throw new TRPCError({
+                code: 'BAD_REQUEST',
+                message: 'EPP authorization code is required for import items',
+              });
+            }
+
+            const { encryptedEppAuthorizationCode, encryptionKeyId } =
+              await encryptEppAuthCode(item.eppAuthorizationCode);
+
+            return {
+              ...baseItem,
+              encryptedEppAuthorizationCode,
+              encryptionKeyId,
+            };
+          }
+
+          return baseItem;
+        }),
+      );
 
       // Insert items with conflict handling
       await db
@@ -111,6 +151,10 @@ export const cartsRouter = createTRPCRouter({
           target: [cartItemsTable.userId, cartItemsTable.normalizedDomainName],
           set: {
             amountInUSDCents: sql`excluded.amount_in_usd_cents`,
+            durationInYears: sql`excluded.duration_in_years`,
+            type: sql`excluded.type`,
+            encryptionKeyId: sql`excluded.encryption_key_id`,
+            encryptedEppAuthorizationCode: sql`excluded.encrypted_epp_authorization_code`,
             metadata: sql`excluded.metadata`,
             updatedAt: sql`now()`,
           },
@@ -167,7 +211,12 @@ export const cartsRouter = createTRPCRouter({
         );
 
         const domainInfo = domainInfos[0];
-        if (!domainInfo?.pricingDetails?.registrationPrice) {
+        const pricingDetails = getDomainPricingForOperation(
+          domainInfo,
+          currentItem.type,
+        );
+
+        if (!pricingDetails) {
           throw new TRPCError({
             code: 'BAD_REQUEST',
             message: `Pricing details unavailable for domain: ${currentItem.normalizedDomainName}`,
@@ -175,7 +224,7 @@ export const cartsRouter = createTRPCRouter({
         }
 
         const chargeAmountInUsd = computeChargesInUsdOrThrow(
-          domainInfo.pricingDetails.registrationPrice,
+          pricingDetails,
           input.durationInYears,
         );
         updatedAmountInUsdCents = usdToCents(chargeAmountInUsd);

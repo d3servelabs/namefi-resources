@@ -1,6 +1,6 @@
 import { isNotNil } from 'ramda';
 import { useMemo, useState } from 'react';
-import type { DomainAvailabilityInfo } from '../../utils/types';
+import type { DomainAvailabilityInfo } from '@namefi-astra/backend/trpc/types';
 
 /**
  * Hook for filtering domains based on tab selection

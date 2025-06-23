@@ -3,8 +3,10 @@
 import { StatusBadge } from '@/components/badges/StatusBadge';
 import { CartCard } from '@/components/cart-card';
 import { Button } from '@/components/ui/shadcn/button';
+import { Badge } from '@/components/ui/shadcn/badge';
 import { Separator } from '@/components/ui/shadcn/separator';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
+import { itemTypeSchema } from '@namefi-astra/db/types';
 import {
   Tooltip,
   TooltipContent,
@@ -403,6 +405,11 @@ export default function OrderDetailsPage({
                         <span className="text-xl">
                           {item.normalizedDomainName}
                         </span>
+                        {item.type === itemTypeSchema.Values.IMPORT && (
+                          <Badge className="text-xs bg-blue-600/20 text-blue-400 border-blue-400/50">
+                            Import
+                          </Badge>
+                        )}
                         {item.status ? (
                           <StatusBadge status={item.status} type="order" />
                         ) : (
