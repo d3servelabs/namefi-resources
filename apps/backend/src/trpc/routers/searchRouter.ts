@@ -119,6 +119,7 @@ export const searchRouter = createTRPCRouter({
           pricingDetails: undefined,
           currentOwner: undefined,
           durationValidationInYears: undefined,
+          importable: false,
         } satisfies DomainAvailabilityInfo;
       }
       return availability[0];

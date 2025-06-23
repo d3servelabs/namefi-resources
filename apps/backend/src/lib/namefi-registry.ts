@@ -29,6 +29,7 @@ import { and, eq, gt, inArray, or } from 'drizzle-orm';
 import pMap from 'p-map';
 import { secrets } from '#lib/env';
 import { logger } from '#lib/logger';
+import { computeChargesInUsdOrThrow } from '@namefi-astra/registrars/multi-year-pricing';
 
 export type NamefiNftSelect = typeof namefiNftTable.$inferSelect;
 
@@ -55,6 +56,7 @@ const generateUnavailableDomainInfo = (domain: NamefiNormalizedDomain) => ({
   currentOwner: undefined,
   registrarKey: undefined,
   durationValidationInYears: DOMAIN_DURATION_CONFIG,
+  importable: false,
 });
 
 // biome-ignore lint/suspicious/useAwait: it will be a db query in upcoming updates
@@ -92,6 +94,7 @@ export type DomainAvailabilityInfo = {
     min: number;
     max: number;
   };
+  importable: boolean;
 };
 /**
  * Retrieves information about a list of domain names including their availability, price, and current owner.
@@ -184,10 +187,18 @@ const _getSldDomainListInfo = async (
   }
   const response = responseOrError.result;
 
+  const pricingDetails = response.result.price;
+  const available = response.result.available === DomainAvailability.AVAILABLE;
+  const importable =
+    !available &&
+    isNil(nft) &&
+    computeChargesInUsdOrThrow(pricingDetails.importPrice, 1) > 0;
+
   return {
     domain: namefiNormalizedDomainSchema.parse(response.result.domainName),
-    availability: response.result.available === DomainAvailability.AVAILABLE,
-    pricingDetails: response.result.price,
+    availability: available,
+    importable,
+    pricingDetails,
     currentOwner: nft?.ownerAddress,
     registrarKey: response.registrarKey,
     durationValidationInYears: DOMAIN_DURATION_CONFIG,
@@ -241,6 +252,7 @@ const _get3ldDomainListInfo = async (
     return {
       domain,
       availability: isNil(nft),
+      importable: false,
       pricingDetails: {
         registrationPrice: {
           type: 'PER_YEAR',

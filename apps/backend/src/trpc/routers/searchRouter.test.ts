@@ -25,6 +25,7 @@ describe('Search Router', () => {
         domains.map((domain) => ({
           domain,
           availability: true, // Default to available
+          importable: false,
           pricingDetails: {
             registrationPrice: {
               type: 'PER_YEAR',
