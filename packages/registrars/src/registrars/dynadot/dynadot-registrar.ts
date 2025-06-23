@@ -772,8 +772,19 @@ export class DynadotRegistrarService extends AbstractRegistrarService<Registrars
       domain: domainName,
       ...Object.fromEntries(nameservers.map((name, i) => [`ns${i}`, name])),
     });
-
-    assertNot(responseFailed(response.SetNsResponse), 'Response Failed');
+    if (responseFailed(response.SetNsResponse)) {
+      this.logger.error(
+        {
+          domainName,
+          nameservers,
+          response: response.SetNsResponse,
+        },
+        'Failed to set nameservers',
+      );
+      throw new Error(
+        `Failed to set nameservers for domain, ${domainName}. Response: ${JSON.stringify(response.SetNsResponse)}`,
+      );
+    }
     return {
       type: OperationType.UPDATE_NAMESERVER,
       operationId: generateOperationId(
