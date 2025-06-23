@@ -17,6 +17,7 @@ import { triggerNamefiGptCronJob } from '../activities/triggerNamefiGptCronJob';
 import { triggerUpdateNamefiNftIndex } from '../schedules/update-namefi-nft-index';
 import { TEMPORAL_ENUMS } from '../shared';
 import { createWorker } from './createWorker';
+import { logger } from '#lib/logger';
 
 export let WORKERS: Partial<Record<TEMPORAL_ENUMS, Worker>> | undefined;
 
@@ -29,8 +30,23 @@ export const ACTIVITIES = {
     triggerUpdateNamefiNftIndex,
     triggerNamefiGptCronJob,
     addCategoriesToDomainsWithNoCategories,
-    generalAlertNamefi: async (...args: any[]) => {
-      throw new Error('Not implemented');
+    generalAlertNamefi: async (
+      args: { title: string; extraData: any; message: string } & any,
+    ) => {
+      logger
+        .child({
+          context: '[Temporal] generalAlertNamefi',
+        })
+        .error(args);
+    },
+    criticalAlertNamefi: async (
+      args: { title: string; extraData: any; message: string } & any,
+    ) => {
+      logger
+        .child({
+          context: '[Temporal] criticalAlertNamefi',
+        })
+        .fatal(args);
     },
   },
   [TEMPORAL_ENUMS.MINT]: {
