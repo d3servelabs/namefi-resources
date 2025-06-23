@@ -3,6 +3,7 @@ import { namefiNftTable } from '@namefi-astra/db';
 import { getChain } from '@namefi-astra/utils';
 import BigNumber from 'bignumber.js';
 import { sql } from 'drizzle-orm';
+import { eq } from 'drizzle-orm';
 import pMap from 'p-map';
 import * as R from 'ramda';
 import superjson from 'superjson';
@@ -327,4 +328,12 @@ export const getNftExpirationTimeInSeconds = async (
   });
 
   return Number(expirationTimeFromContract);
+};
+
+export const getNftFromIndexer = async (domainName: string) => {
+  const nft = await db.query.namefiNftTable.findFirst({
+    where: eq(namefiNftTable.normalizedDomainName, domainName),
+  });
+
+  return nft;
 };

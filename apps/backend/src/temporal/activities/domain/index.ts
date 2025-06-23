@@ -4,6 +4,7 @@ import * as DnssecLib from '#lib/domains/dnssec';
 import * as NameserversLib from '#lib/domains/nameservers';
 import { getPoweredByNamefi3PDomains } from '#lib/namefi-registry';
 import { isDomainParked, parkDomain } from '#services/dns/parking';
+import * as DnsActivities from './dns.activities';
 import * as DnssecActivities from './dnssec.activities';
 import * as RegistrarActivities from './registrar.activities';
 
@@ -15,6 +16,7 @@ export const DomainsActivities = {
   ...DnssecLib,
   ...DnssecActivities,
   ...RegistrarActivities,
+  ...DnsActivities,
   getPoweredByNamefi3PDomains,
   getDomainChain,
 };
