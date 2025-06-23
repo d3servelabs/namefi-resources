@@ -67,7 +67,7 @@ export const SearchHeader: FC<{
         {parentDomain}
       </h1>
       <p className="text-4xl text-center text-white font-semibold drop-shadow-xl">
-        {tagline || `Search for a domain on ${parentDomain}`}
+        {tagline || `Search for a domain on ${parentDomain ?? 'All Networks'}`}
       </p>
       {isFirstPartyOrigin && (
         <>
