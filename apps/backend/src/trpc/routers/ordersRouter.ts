@@ -4,6 +4,7 @@ import {
   cartItemsTable,
   db,
   isNfscPayment,
+  itemTypeSchema,
   orderItemsTable,
   ordersTable,
   usersTable,
@@ -31,7 +32,7 @@ import { TEMPORAL_QUEUES } from '../../temporal/shared';
 import { processOrderWorkflow } from '../../temporal/workflows/processOrder.workflow';
 import { resolve } from '../../utils/resolve';
 import { createTRPCRouter, protectedProcedure } from '../base';
-import { createOrderInputSchema } from '../types';
+import { createOrderInputSchema, isDomainImportable } from '../types';
 import {
   getPrivyUserLinkedEthereumChecksumWalletAddresses,
   isNormalizedDomainNameAllowedForOriginHostname,
@@ -61,20 +62,37 @@ export const ordersRouter = createTRPCRouter({
         (item) => item.normalizedDomainName as NamefiNormalizedDomain,
       );
       const domainAvailabilities = await getDomainListInfo(domains, ctx.user);
-      const allDomainsAvailable = domainAvailabilities.every(
-        (availability) => availability.availability,
+
+      // Create a map of domain to cart item for type checking
+      const domainToCartItemMap = new Map(
+        cartItems.map((item) => [item.normalizedDomainName, item]),
       );
+
+      const allDomainsAvailable = domainAvailabilities.every((availability) => {
+        const cartItem = domainToCartItemMap.get(availability.domain);
+        // For import items, we need to check if the domain is importable rather than available
+        return cartItem?.type === itemTypeSchema.Values.IMPORT
+          ? isDomainImportable(availability)
+          : availability.availability;
+      });
 
       // We understand that there is a small chance of race condition here,
       // but we are ok with it. The ultimate guarantee is that when domain is being
       // minted onchain the chain (NFT contract) will reject the transaction
       // if the domain is not available
       if (!allDomainsAvailable) {
+        const unavailableDomains = domainAvailabilities
+          .filter((availability) => {
+            const cartItem = domainToCartItemMap.get(availability.domain);
+            return cartItem?.type === itemTypeSchema.Values.IMPORT
+              ? !isDomainImportable(availability)
+              : !availability.availability;
+          })
+          .map((availability) => availability.domain);
+
         throw new TRPCError({
           code: 'BAD_REQUEST',
-          message: `One or more domains are not available for purchase: ${domainAvailabilities
-            .filter((availability) => !availability.availability)
-            .map((availability) => availability.domain)}`,
+          message: `One or more domains are not available for purchase: ${unavailableDomains.join(', ')}`,
         });
       }
 
@@ -396,7 +414,13 @@ async function getChangesIfAnyToCartItems(
       domainPricingByNormalizedDomainName[
         item.normalizedDomainName as NamefiNormalizedDomain
       ];
-    return domainPricing?.availability ? 'available' : 'unavailable';
+    // Domains are considered "available" for cart purposes if they can be registered OR imported
+    const isAvailableForCart =
+      domainPricing?.availability ||
+      (domainPricing &&
+        item.type === itemTypeSchema.Values.IMPORT &&
+        isDomainImportable(domainPricing));
+    return isAvailableForCart ? 'available' : 'unavailable';
   }, cartItems);
 
   const noLongerAvailableCartItems =
