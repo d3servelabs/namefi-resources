@@ -6,7 +6,7 @@
 
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { recordTypeEnum } from '@namefi-astra/zod-dns';
-import { asc, eq, getTableColumns, sql } from 'drizzle-orm';
+import { asc, eq, getTableColumns, relations, sql } from 'drizzle-orm';
 import {
   bigint,
   boolean,
@@ -607,3 +607,110 @@ export const aiGenerationsTable = pgTable(
     }).onDelete('set null'),
   ],
 );
+
+/**
+ * Hunt system tables
+ */
+export const huntActionEnum = pgEnum('hunt_action', ['UPVOTE', 'SUBMIT']);
+
+export const huntEntityTypeEnum = pgEnum('hunt_entity_type', [
+  'USER',
+  'DOMAIN',
+]);
+
+/**
+ * Hunt edges table
+ * Stores relationships between entities in the hunt system
+ *
+ * Examples:
+ * - USER upvotes DOMAIN: sourceType='USER', sourceId=userId, targetType='DOMAIN', targetId=domainName, action='UPVOTE'
+ * - USER submits DOMAIN: sourceType='USER', sourceId=userId, targetType='DOMAIN', targetId=domainName, action='SUBMIT'
+ * - USER upvotes USER: sourceType='USER', sourceId=userId, targetType='USER', targetId=otherUserId, action='UPVOTE'
+ */
+export const huntEdgesTable = pgTable(
+  'hunt_edges',
+  {
+    ...randomUuid,
+    sourceType: huntEntityTypeEnum('source_type').notNull(),
+    sourceId: text('source_id').notNull(),
+    targetType: huntEntityTypeEnum('target_type').notNull(),
+    targetId: text('target_id').notNull(),
+    action: huntActionEnum('action').notNull(),
+    ...timestamps,
+  },
+  (table) => [
+    // Core index for user-specific queries (e.g., getMySubmittedDomains, checkUpvoteStatus)
+    index('hunt_edges_user_action_idx').on(
+      table.sourceType,
+      table.sourceId,
+      table.action,
+      table.createdAt, // For ordering user's actions by time
+    ),
+    // Core index for domain-specific queries (e.g., domain stats, duplicate submit checks)
+    index('hunt_edges_domain_action_idx').on(
+      table.targetType,
+      table.targetId,
+      table.action,
+      table.createdAt, // For first submit date and last upvote date
+    ),
+    // Composite index for specific user-domain-action lookups (duplicate checks, vote status)
+    index('hunt_edges_user_domain_action_idx').on(
+      table.sourceType,
+      table.sourceId,
+      table.targetType,
+      table.targetId,
+      table.action,
+    ),
+    // Time-based filtering optimization for trending domains
+    index('hunt_edges_time_filter_idx').on(
+      table.targetType,
+      table.action,
+      table.createdAt, // For efficient time range filtering on submit dates
+    ),
+  ],
+);
+
+/**
+ * Domain hunt stats view
+ * Pre-computed statistics for domains in the hunt system
+ * This view aggregates upvote counts and first submit dates for efficient leaderboard queries
+ */
+export const huntDomainStatsView = pgView('hunt_domain_stats_view').as((qb) =>
+  qb
+    .select({
+      domainName: huntEdgesTable.targetId,
+      upvoteCount:
+        sql<number>`COUNT(CASE WHEN ${huntEdgesTable.action} = 'UPVOTE' THEN 1 END)`.as(
+          'upvote_count',
+        ),
+      firstSubmitDate:
+        sql<Date>`MIN(CASE WHEN ${huntEdgesTable.action} = 'SUBMIT' THEN ${huntEdgesTable.createdAt} END)`.as(
+          'first_submit_date',
+        ),
+      lastUpvoteDate:
+        sql<Date>`MAX(CASE WHEN ${huntEdgesTable.action} = 'UPVOTE' THEN ${huntEdgesTable.createdAt} END)`.as(
+          'last_upvote_date',
+        ),
+    })
+    .from(huntEdgesTable)
+    .where(eq(huntEdgesTable.targetType, 'DOMAIN'))
+    .groupBy(huntEdgesTable.targetId),
+);
+
+/**
+ * Relations definitions for hunt system
+ */
+export const huntEdgesRelations = relations(huntEdgesTable, ({ one }) => ({
+  // Relation to users table when source is a user
+  sourceUser: one(usersTable, {
+    fields: [huntEdgesTable.sourceId],
+    references: [usersTable.id],
+    relationName: 'huntEdgeSourceUser',
+  }),
+  // Relation to users table when target is a user
+  targetUser: one(usersTable, {
+    fields: [huntEdgesTable.targetId],
+    references: [usersTable.id],
+    relationName: 'huntEdgeTargetUser',
+  }),
+}));

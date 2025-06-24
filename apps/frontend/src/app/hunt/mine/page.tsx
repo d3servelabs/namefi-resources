@@ -1,0 +1,128 @@
+'use client';
+
+import { Button } from '@/components/ui/shadcn/button';
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from '@/components/ui/shadcn/tabs';
+import { useTRPC } from '@/utils/trpc';
+import { useQuery } from '@tanstack/react-query';
+import { ArrowLeft } from 'lucide-react';
+import Link from 'next/link';
+import { useMemo, useState } from 'react';
+import { PaginationControls } from '../components/PaginationControl';
+import { MySubmittedDomains } from './components/MySubmittedDomains';
+import { MyUpvotedDomains } from './components/MyUpvotedDomains';
+
+const DOMAINS_LIST_PER_PAGE_LIMIT = 20;
+
+type TabKey = 'submitted' | 'upvoted';
+
+export default function MyDomainsPage() {
+  const [submittedPage, setSubmittedPage] = useState(1);
+  const [upvotedPage, setUpvotedPage] = useState(1);
+  const [activeTab, setActiveTab] = useState<TabKey>('upvoted');
+
+  const trpc = useTRPC();
+
+  // Submitted domains query
+  const submittedOffset = (submittedPage - 1) * DOMAINS_LIST_PER_PAGE_LIMIT;
+  const {
+    data: submittedData,
+    isLoading: submittedLoading,
+    isError: submittedError,
+  } = useQuery(
+    trpc.hunt.getMySubmittedDomains.queryOptions({
+      limit: DOMAINS_LIST_PER_PAGE_LIMIT,
+      offset: submittedOffset,
+    }),
+  );
+
+  // Upvoted domains query
+  const upvotedOffset = (upvotedPage - 1) * DOMAINS_LIST_PER_PAGE_LIMIT;
+  const {
+    data: upvotedData,
+    isLoading: upvotedLoading,
+    isError: upvotedError,
+  } = useQuery(
+    trpc.hunt.getMyUpvotedDomains.queryOptions({
+      limit: DOMAINS_LIST_PER_PAGE_LIMIT,
+      offset: upvotedOffset,
+    }),
+  );
+
+  const submittedHasMore = useMemo(
+    () => submittedData?.hasMore ?? false,
+    [submittedData],
+  );
+  const upvotedHasMore = useMemo(
+    () => upvotedData?.hasMore ?? false,
+    [upvotedData],
+  );
+
+  return (
+    <div className="container mx-auto py-8 px-4 sm:px-8">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-4">
+        <div className="flex items-center gap-4">
+          <Link href="/hunt">
+            <Button
+              variant="ghost"
+              size="sm"
+              className="flex items-center gap-2 cursor-pointer"
+            >
+              <ArrowLeft className="h-4 w-4" />
+            </Button>
+          </Link>
+          <h2 className="text-2xl font-bold">My Activity</h2>
+        </div>
+      </div>
+
+      <Tabs
+        value={activeTab}
+        onValueChange={(value) => setActiveTab(value as TabKey)}
+        className="space-y-4"
+      >
+        <TabsList>
+          <TabsTrigger value="upvoted" className="cursor-pointer">
+            Upvoted Domains
+          </TabsTrigger>
+          <TabsTrigger value="submitted" className="cursor-pointer">
+            Submitted Domains
+          </TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="submitted" className="space-y-4">
+          <div className="border border-border shadow-sm rounded-xl bg-white/[0.03]">
+            <MySubmittedDomains
+              domains={submittedData?.items ?? []}
+              isLoading={submittedLoading}
+              isError={submittedError}
+            />
+          </div>
+          <PaginationControls
+            page={submittedPage}
+            hasMore={submittedHasMore}
+            onPageChange={setSubmittedPage}
+          />
+        </TabsContent>
+
+        <TabsContent value="upvoted" className="space-y-4">
+          <div className="border border-border shadow-sm rounded-xl bg-white/[0.03]">
+            <MyUpvotedDomains
+              domains={upvotedData?.items ?? []}
+              isLoading={upvotedLoading}
+              isError={upvotedError}
+            />
+          </div>
+          <PaginationControls
+            page={upvotedPage}
+            hasMore={upvotedHasMore}
+            onPageChange={setUpvotedPage}
+          />
+        </TabsContent>
+      </Tabs>
+    </div>
+  );
+}

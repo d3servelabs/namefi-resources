@@ -218,6 +218,13 @@
       "when": 1750725322653,
       "tag": "0030_uneven_captain_universe",
       "breakpoints": true
+    },
+    {
+      "idx": 31,
+      "version": "7",
+      "when": 1750797609245,
+      "tag": "0031_hard_jackal",
+      "breakpoints": true
     }
   ]
 }
