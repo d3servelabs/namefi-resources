@@ -123,6 +123,29 @@ export const itemTypeEnum = pgEnum('item_type', [
   'IMPORT',
 ] as const);
 
+export const userContactsTable = pgTable('user_contacts', {
+  ...randomUuid,
+  userId: uuid('user_id')
+    .notNull()
+    .references(() => usersTable.id, { onDelete: 'cascade' }),
+  firstName: text('first_name'),
+  lastName: text('last_name'),
+  organizationName: text('organization_name'),
+  phoneNumber: text('phone_number'),
+  phoneNumberVerified: boolean('phone_number_verified'),
+  email: text('email'),
+  emailVerified: boolean('email_verified'),
+  fax: text('fax'),
+  addressLines: text('address_lines'),
+  city: text('city'),
+  contactType: text('contact_type'),
+  countryCode: text('country_code'),
+  state: text('state'),
+  zipCode: text('zip_code'),
+  extraParams: jsonb('extra_params'),
+  ...timestamps,
+});
+
 /**
  * Cart items table
  * Stores individual items in a shopping cart
