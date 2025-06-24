@@ -33,6 +33,7 @@ export const secretsSchema = z.object({
   DYNADOT_PRIVATE_KEY: z.string().optional(),
   DYNADOT_ACCOUNT_ID: z.string().optional(),
   DEFAULT_EPP_CODE_ENCRYPTION_KEY_ID: z.string(),
+  LEGACY_DB_URL: z.string(),
 });
 
 export type SecretsSchema = z.infer<typeof secretsSchema>;

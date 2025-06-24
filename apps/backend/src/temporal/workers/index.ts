@@ -2,6 +2,7 @@ import type { Worker } from '@temporalio/worker';
 import { addCategoriesToDomainsWithNoCategories } from '#lib/clubs-categories';
 import {
   GreetActivities,
+  MigrationActivities,
   MintActivities,
   NotifyActivities,
   OrderActivities,
@@ -24,6 +25,7 @@ export let WORKERS: Partial<Record<TEMPORAL_ENUMS, Worker>> | undefined;
 export const ACTIVITIES = {
   [TEMPORAL_ENUMS.DEFAULT]: {
     ...GreetActivities,
+    ...MigrationActivities,
     ...OrderActivities,
     ...PaymentActivities,
     updateNamefiNftIndex,

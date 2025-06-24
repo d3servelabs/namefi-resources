@@ -17,3 +17,4 @@ export * from './domain-ownership/domain-setup.workflow';
 export * from './domain-ownership/extend-registration.workflow';
 export * from './domain-ownership/sld-register-or-import.workflow';
 export * from './migrations/migrate-zone-to-new-nameservers.workflow';
+export * from './migrate-users.workflow';
