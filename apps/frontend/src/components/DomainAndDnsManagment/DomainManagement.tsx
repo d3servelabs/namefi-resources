@@ -6,6 +6,7 @@ import {
   TabsList,
   TabsTrigger,
 } from '@/components/ui/shadcn/tabs';
+import { useEmailPrompt } from '@/hooks/useEmailPrompt';
 import { useRecentDomains } from '@/hooks/useRecentDomains';
 import { cn } from '@/lib/utils';
 import { useTRPC } from '@/utils/trpc';
@@ -13,10 +14,21 @@ import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/valid
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { AlertTriangle } from 'lucide-react';
 import Link from 'next/link';
-import { type FC, type HTMLAttributes, useMemo } from 'react';
+import {
+  type FC,
+  type HTMLAttributes,
+  useMemo,
+  useState,
+  useEffect,
+} from 'react';
+import { useRouter } from 'next/navigation';
 import { Alert, AlertDescription, AlertTitle } from '../ui/shadcn/alert';
 import { Button } from '../ui/shadcn/button';
 import { Card, CardHeader, CardTitle } from '../ui/shadcn/card';
+import {
+  EmailRequiredModal,
+  DNS_MANAGEMENT_EMAIL_REQUIRED,
+} from '../modals/EmailRequiredModal';
 import { DnsRecordsPanel } from './Panels/DNS/DnsRecordsPanel';
 import { DnssecPanel } from './Panels/DNSSEC/DnssecPanel';
 import { DomainConfigAndPrefs } from './Panels/DomainConfigAndPrefs/DomainConfigAndPrefs';
@@ -30,6 +42,11 @@ export const DomainManagement: FC<DomainManagementProps> = ({
   className,
   ...rest
 }: DomainManagementProps) => {
+  const [currentTab, setCurrentTab] = useState('dns-records');
+  const [showEmailModal, setShowEmailModal] = useState(false);
+  const { hasEmail } = useEmailPrompt();
+  const router = useRouter();
+
   const trpc = useTRPC();
   const { data: currentUserDomains } = useSuspenseQuery(
     trpc.users.getCurrentUserDomains.queryOptions(),
@@ -60,8 +77,38 @@ export const DomainManagement: FC<DomainManagementProps> = ({
     newlyVisitedDomain: domain,
   });
 
+  // Show email modal immediately on page load if user doesn't have email
+  useEffect(() => {
+    if (!hasEmail) {
+      setShowEmailModal(true);
+    }
+  }, [hasEmail]);
+
+  const handleTabChange = (value: string) => {
+    // If user doesn't have email, don't allow tab changes
+    if (!hasEmail) {
+      setShowEmailModal(true);
+      return;
+    }
+    setCurrentTab(value);
+  };
+
+  const handleGoBack = () => {
+    router.back();
+  };
+
   return (
     <div className={cn('', className)} {...rest}>
+      <EmailRequiredModal
+        isOpen={showEmailModal}
+        onOpenChange={setShowEmailModal}
+        title={DNS_MANAGEMENT_EMAIL_REQUIRED.title}
+        description={DNS_MANAGEMENT_EMAIL_REQUIRED.description}
+        actionText={DNS_MANAGEMENT_EMAIL_REQUIRED.actionText}
+        dismissible={false}
+        onGoBack={handleGoBack}
+      />
+
       {isDomainOwnedByCurrentUser ? undefined : (
         <Alert
           variant="default"
@@ -82,7 +129,7 @@ export const DomainManagement: FC<DomainManagementProps> = ({
           <MainTabs />
 
           <TabsContent value="dns-setting">
-            <Tabs defaultValue="dns-records">
+            <Tabs value={currentTab} onValueChange={handleTabChange}>
               <TabsList className="mb-8">
                 <TabsTrigger value="dns-records">DNS Records</TabsTrigger>
                 <TabsTrigger value="dns-management">DNS Management</TabsTrigger>

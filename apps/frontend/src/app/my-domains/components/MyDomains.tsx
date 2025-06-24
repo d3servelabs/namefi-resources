@@ -18,6 +18,7 @@ import {
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
 import { TableBody } from '@/components/ui/shadcn/table';
 import { useAuth } from '@/hooks/useAuth';
+import { useEmailPrompt } from '@/hooks/useEmailPrompt';
 import { config } from '@/lib/env';
 import { cn } from '@/lib/utils';
 import { useTRPC } from '@/utils/trpc';
@@ -25,6 +26,7 @@ import { NAMEFI_NFT_CONTRACT_ADDRESS, getChain } from '@namefi-astra/utils';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { ExternalLink, Search, SearchIcon, Settings } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import {
   type FC,
   type HTMLAttributes,
@@ -32,6 +34,10 @@ import {
   useMemo,
   useState,
 } from 'react';
+import {
+  EmailRequiredModal,
+  DNS_MANAGEMENT_EMAIL_REQUIRED,
+} from '@/components/modals/EmailRequiredModal';
 
 function useGetDomains() {
   const trpc = useTRPC();
@@ -119,6 +125,11 @@ function MyDomainsTable() {
   const domains = useGetDomains();
   const [chainFilter, setChainFilter] = useState<number | undefined>(undefined);
   const [filter, setFilter] = useState('');
+  const [showEmailModal, setShowEmailModal] = useState(false);
+  const [selectedDomain, setSelectedDomain] = useState<string>('');
+  const { hasEmail } = useEmailPrompt();
+  const router = useRouter();
+
   const filteredDomains = useMemo(() => {
     return domains.filter(
       (domain) =>
@@ -133,100 +144,120 @@ function MyDomainsTable() {
     setFilter(e.target.value);
   };
 
+  const handleManageDnsClick = (domainName: string, e: React.MouseEvent) => {
+    e.preventDefault();
+    if (!hasEmail) {
+      setSelectedDomain(domainName);
+      setShowEmailModal(true);
+    } else {
+      router.push(`/domain/${domainName}`);
+    }
+  };
+
   if (domains.length === 0) {
     return <MyDomainsEmptyPlaceholder />;
   }
 
   return (
-    <Card>
-      <CardContent>
-        <div className="flex justify-end mb-4 gap-2">
-          <Select
-            value={chainFilter?.toString() ?? '-1'}
-            onValueChange={(value) =>
-              setChainFilter(
-                !value || value === '-1' ? undefined : Number.parseInt(value),
-              )
-            }
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Select chain" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value={'-1'}>All</SelectItem>
-              {config.ALLOWED_CHAINS.map((chainId) => (
-                <SelectItem key={chainId} value={chainId.toString()}>
-                  {getChain(chainId)?.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          <div className="relative w-64 ">
-            <Search className="absolute left-2 top-2.5 h-4 w-4 text-zinc-500" />
-            <Input
-              placeholder="Search domains..."
-              value={filter ?? ''}
-              onChange={handleFilterChange}
-              className="pl-8"
-            />
+    <>
+      <EmailRequiredModal
+        isOpen={showEmailModal}
+        onOpenChange={setShowEmailModal}
+        title={DNS_MANAGEMENT_EMAIL_REQUIRED.title}
+        description={DNS_MANAGEMENT_EMAIL_REQUIRED.description}
+        actionText={DNS_MANAGEMENT_EMAIL_REQUIRED.actionText}
+      />
+      <Card>
+        <CardContent>
+          <div className="flex justify-end mb-4 gap-2">
+            <Select
+              value={chainFilter?.toString() ?? '-1'}
+              onValueChange={(value) =>
+                setChainFilter(
+                  !value || value === '-1' ? undefined : Number.parseInt(value),
+                )
+              }
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select chain" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value={'-1'}>All</SelectItem>
+                {config.ALLOWED_CHAINS.map((chainId) => (
+                  <SelectItem key={chainId} value={chainId.toString()}>
+                    {getChain(chainId)?.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <div className="relative w-64 ">
+              <Search className="absolute left-2 top-2.5 h-4 w-4 text-zinc-500" />
+              <Input
+                placeholder="Search domains..."
+                value={filter ?? ''}
+                onChange={handleFilterChange}
+                className="pl-8"
+              />
+            </div>
           </div>
-        </div>
-        <Table className="w-full">
-          <Thead>
-            <Tr>
-              <Th>Chain</Th>
-              <Th>Wallet</Th>
-              <Th>Domain Name</Th>
-              <Th>Actions</Th>
-            </Tr>
-          </Thead>
-          <TableBody>
-            {filteredDomains.map((item) => (
-              <Tr key={item.id}>
-                <Td>
-                  <NetworkLogo network={item.chainId} className="w-6 h-6" />
-                </Td>
-                <Td>
-                  <TruncatedTextWithHover maxLength={12}>
-                    {item.ownerAddress}
-                  </TruncatedTextWithHover>
-                </Td>
-                <Td className="font-medium w-full">
-                  <Link
-                    href={`/domain/${item.normalizedDomainName}`}
-                    aria-label={`Settings for ${item.normalizedDomainName}`}
-                  >
-                    {item.normalizedDomainName}
-                  </Link>
-                </Td>
-                <Td className="text-right">
-                  <div className="flex gap-2">
-                    <Button variant="outline" asChild={true}>
-                      <Link
-                        href={`/domain/${item.normalizedDomainName}`}
+          <Table className="w-full">
+            <Thead>
+              <Tr>
+                <Th>Chain</Th>
+                <Th>Wallet</Th>
+                <Th>Domain Name</Th>
+                <Th>Actions</Th>
+              </Tr>
+            </Thead>
+            <TableBody>
+              {filteredDomains.map((item) => (
+                <Tr key={item.id}>
+                  <Td>
+                    <NetworkLogo network={item.chainId} className="w-6 h-6" />
+                  </Td>
+                  <Td>
+                    <TruncatedTextWithHover maxLength={12}>
+                      {item.ownerAddress}
+                    </TruncatedTextWithHover>
+                  </Td>
+                  <Td className="font-medium w-full">
+                    <Link
+                      href={`/domain/${item.normalizedDomainName}`}
+                      aria-label={`Settings for ${item.normalizedDomainName}`}
+                    >
+                      {item.normalizedDomainName}
+                    </Link>
+                  </Td>
+                  <Td className="text-right">
+                    <div className="flex gap-2">
+                      <Button
+                        variant="outline"
+                        onClick={(e) =>
+                          handleManageDnsClick(item.normalizedDomainName, e)
+                        }
                         aria-label={`Settings for ${item.normalizedDomainName}`}
                       >
                         <Settings /> Manage DNS
-                      </Link>
-                    </Button>
-                    <Button variant="outline" asChild={true}>
-                      <Link
-                        href={`https://basescan.org/nft/${NAMEFI_NFT_CONTRACT_ADDRESS}/${item.tokenId ?? ''}`}
-                        aria-label={`View NFT for ${item.normalizedDomainName}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <ExternalLink /> View NFT
-                      </Link>
-                    </Button>
-                  </div>
-                </Td>
-              </Tr>
-            ))}
-          </TableBody>
-        </Table>
-      </CardContent>
-    </Card>
+                      </Button>
+                      <Button variant="outline" asChild={true}>
+                        <Link
+                          href={`https://basescan.org/nft/${NAMEFI_NFT_CONTRACT_ADDRESS}/${item.tokenId ?? ''}`}
+                          aria-label={`View NFT for ${item.normalizedDomainName}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <ExternalLink /> View NFT
+                        </Link>
+                      </Button>
+                    </div>
+                  </Td>
+                </Tr>
+              ))}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
+    </>
   );
 }
 
