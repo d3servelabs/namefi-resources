@@ -436,15 +436,16 @@ export default function CartPage() {
     [isCreateOrderPending, isRedirecting],
   );
 
-  const { mutateAsync: updateCartItem } = useMutation(
-    trpc.carts.updateItem.mutationOptions({
-      onSuccess: () => {
-        queryClient.refetchQueries({
-          queryKey: trpc.carts.getItems.queryKey(),
-        });
-      },
-    }),
-  );
+  const { mutateAsync: updateCartItem, reset: resetUpdateCartItem } =
+    useMutation(
+      trpc.carts.updateItem.mutationOptions({
+        onSuccess: () => {
+          queryClient.refetchQueries({
+            queryKey: trpc.carts.getItems.queryKey(),
+          });
+        },
+      }),
+    );
 
   const handleDurationChange = useCallback(
     async (itemId: string, newDuration: number) => {
@@ -511,14 +512,26 @@ export default function CartPage() {
           }
         }
 
-        // Update on server (this will correct any optimistic calculation errors)
+        resetUpdateCartItem();
+
+        queryClient.cancelQueries({
+          queryKey: trpc.carts.getItems.queryKey(),
+        });
+
         await updateCartItem({
           id: itemId,
           durationInYears: newDuration,
         });
       }
     },
-    [isAuthenticated, updateCartItem, items, queryClient, trpc],
+    [
+      isAuthenticated,
+      updateCartItem,
+      resetUpdateCartItem,
+      items,
+      queryClient,
+      trpc,
+    ],
   );
 
   const handleRetryOrder = useCallback(() => {
