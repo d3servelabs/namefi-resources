@@ -6,6 +6,7 @@ import pino from 'pino';
 import { compose, head, isEmpty, isNil, prop } from 'ramda';
 import type {
   ContactsMap,
+  DnssecAlgorithms,
   DnssecKey,
   DomainContacts,
   DomainPricingDetails,
@@ -19,6 +20,7 @@ import type {
 } from '#lib/abstract-registrar';
 import {
   AbstractRegistrarService,
+  type DnssecDigestType,
   DomainAvailability,
   DomainContactPrivacyEnum,
   DomainOwnershipOperation,
@@ -399,9 +401,11 @@ export class DynadotRegistrarService extends AbstractRegistrarService<Registrars
     }
     const [
       nameservers,
+      dnssecKeys,
       [RegistrantContact, AdminContact, TechContact, BillingContact],
     ] = await Promise.all([
       this.getNameServers(domainName),
+      this.getDelegationSigner(domainName),
       this._getContactList([
         domainInfo.Whois.Registrant.ContactId,
         domainInfo.Whois.Admin.ContactId,
@@ -443,7 +447,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService<Registrars
             ? DomainContactPrivacyEnum.PRIVATE_CONTACT_DATA
             : DomainContactPrivacyEnum.PUBLIC_CONTACT_DATA,
       },
-      dnssecKeys: [],
+      dnssecKeys,
       supportsDnssec: supportsDnssec(domainName),
     };
   }
@@ -561,6 +565,34 @@ export class DynadotRegistrarService extends AbstractRegistrarService<Registrars
     };
   }
 
+  async getDelegationSigner(
+    domainName: PunycodeDomainName,
+  ): Promise<DnssecKey[]> {
+    const response = await this.client.command(DynadotCommand.get_dnssec, {
+      domain_name: punycode.toASCII(domainName),
+    } as any);
+    if (
+      isNil(response?.GetDnssecResponse) ||
+      responseFailed(response.GetDnssecResponse)
+    ) {
+      throw new Error('Response Failed. No DNSSEC keys found.');
+    }
+    return response.GetDnssecResponse.DnssecInfo.map((key) => {
+      const { value: algorithmValue } =
+        /^(?<name>.*)\((?<value>.*)\)$/.exec(key.Algorithm)?.groups ?? {};
+      const algorithm = Number.parseInt(algorithmValue) as DnssecAlgorithms;
+      const { value: digestTypeValue } =
+        /^(?<name>.*)\((?<value>.*)\)$/.exec(key.DigestType)?.groups ?? {};
+      const digestType = Number.parseInt(digestTypeValue) as DnssecDigestType;
+
+      return {
+        keyTag: key.KeyTag,
+        algorithm,
+        digestType,
+        digest: key.Digest,
+      };
+    });
+  }
   async addDelegationSigner(
     domainName: PunycodeDomainName,
     signingAttributes: DnssecKey,

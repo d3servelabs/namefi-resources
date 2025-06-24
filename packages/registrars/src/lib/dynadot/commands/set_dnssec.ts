@@ -47,7 +47,7 @@ export type DynadotSetDnssecCommandOutput = {
   };
 };
 
-enum DynadotDnssecAlgorithms {
+export enum DynadotDnssecAlgorithms {
   'RSA/MD5' = 1,
   'Diffie-Hellman' = 2,
   'DSA/SHA-1' = 3,
@@ -67,14 +67,14 @@ enum DynadotDnssecAlgorithms {
   'Private OID' = 254,
 }
 
-enum DynadotDnssecDigestType {
+export enum DynadotDnssecDigestType {
   'SHA-1' = 1,
   'SHA-256' = 2,
   'GOSTR 34.11-94' = 3,
   'SHA-384' = 4,
 }
 
-enum DynadotDnssecFlags {
+export enum DynadotDnssecFlags {
   ZSK = 256,
   KSK = 257,
 }

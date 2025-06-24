@@ -12,6 +12,7 @@ export enum DynadotCommand {
   get_ns = 'get_ns',
   set_whois = 'set_whois',
   set_dnssec = 'set_dnssec',
+  get_dnssec = 'get_dnssec',
   clear_dnssec = 'clear_dnssec',
   set_clear_domain_setting = 'set_clear_domain_setting',
   set_renew_option = 'set_renew_option',

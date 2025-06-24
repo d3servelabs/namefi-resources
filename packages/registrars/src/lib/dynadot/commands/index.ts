@@ -20,6 +20,10 @@ import type {
   DynadotGetAccountBalanceCommandParams,
 } from './get_account_balance';
 import type {
+  DynadotGetDnssecCommandOutput,
+  DynadotGetDnssecCommandParams,
+} from './get_dnssec';
+import type {
   DynadotGetContactCommandOutput,
   DynadotGetContactCommandParams,
 } from './get_contact';
@@ -131,6 +135,7 @@ export type DynadotCommandsParams = Record<DynadotCommand, unknown> & {
   [DynadotCommand.get_ns]: DynadotGetNsCommandParams;
   [DynadotCommand.set_whois]: DynadotSetWhoisCommandParams;
   [DynadotCommand.set_dnssec]: DynadotSetDnssecCommandParams;
+  [DynadotCommand.get_dnssec]: DynadotGetDnssecCommandParams;
   [DynadotCommand.clear_dnssec]: DynadotClearDnssecCommandParams;
   [DynadotCommand.set_clear_domain_setting]: DynadotSetClearDomainSettingCommandParams;
   [DynadotCommand.set_renew_option]: DynadotSetRenewOptionCommandParams;
@@ -156,6 +161,7 @@ export type DynadotCommandOutput = Record<DynadotCommand, unknown> & {
   [DynadotCommand.get_ns]: DynadotGetNsCommandOutput;
   [DynadotCommand.set_whois]: DynadotSetWhoisCommandOutput;
   [DynadotCommand.set_dnssec]: DynadotSetDnssecCommandOutput;
+  [DynadotCommand.get_dnssec]: DynadotGetDnssecCommandOutput;
   [DynadotCommand.clear_dnssec]: DynadotClearDnssecCommandOutput;
   [DynadotCommand.set_clear_domain_setting]: DynadotSetClearDomainSettingCommandOutput;
   [DynadotCommand.set_renew_option]: DynadotSetRenewOptionCommandOutput;
