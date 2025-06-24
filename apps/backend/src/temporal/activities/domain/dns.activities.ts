@@ -74,7 +74,7 @@ export const determineZoneFlagsFromRecords = async (
   );
 
   const ensOwnerAddress = ensRecords
-    ? /^"?ENS1 dnsname.ens.eth (?<ownerAddress>.*)"?$/.exec(ensRecords.rdata)
+    ? /^"?ENS1 dnsname.ens.eth (?<ownerAddress>.*?)"?$/.exec(ensRecords.rdata)
         ?.groups?.ownerAddress
     : undefined;
   const hasAutoEnsRecords =
@@ -109,8 +109,21 @@ export const determineFinalRecords = async (
   flags: Awaited<ReturnType<typeof determineZoneFlagsFromRecords>>,
   records: DnsRecordInsert[],
 ) => {
+  const recordsWithoutNsAndSoaApexRecords = records.filter((r) => {
+    const isApexRecord = r.name === '@';
+    const type = r.type as string;
+    if (isApexRecord && (type === 'NS' || type === 'SOA')) {
+      return false;
+    }
+    return true;
+  });
+  console.log(
+    `recordsWithoutNsAndSoaApexRecords: ${JSON.stringify(
+      recordsWithoutNsAndSoaApexRecords,
+    )}`,
+  );
   // check if any records are unsupported
-  const hasUnsupportedRecords = records.some(
+  const hasUnsupportedRecords = recordsWithoutNsAndSoaApexRecords.some(
     (r) => !recordTypeEnum.safeParse(r.type).success,
   );
   if (hasUnsupportedRecords) {
@@ -118,7 +131,7 @@ export const determineFinalRecords = async (
       `Unsupported records found in zone ${zoneName}`,
     );
   }
-  const finalRecords = records.filter((r) => {
+  const finalRecords = recordsWithoutNsAndSoaApexRecords.filter((r) => {
     const isApexRecord = r.name === '@';
     if (isApexRecord && r.type === 'TXT') {
       if (
@@ -153,7 +166,7 @@ export const transformRoute53RecordsToAstraRecords = async (
 ): Promise<DnsRecordInsert[]> => {
   return records.flatMap((r) => {
     let recordName = r.Name?.replace(
-      new RegExp(`\.?${zoneName.replace('.', '\\.')}$`),
+      new RegExp(`\\.?${zoneName.replace('.', '\\.')}\\.?`),
       '',
     );
     if (recordName === '') {
