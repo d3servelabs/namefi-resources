@@ -91,6 +91,37 @@ function addTagsToItems<T extends { domainName: string }>(
   }));
 }
 
+const upvote = async (userId: string, domainName: string) => {
+  // Check if user has already upvoted this domain
+  const [existingUpvote] = await db
+    .select()
+    .from(huntEdgesTable)
+    .where(
+      and(
+        eq(huntEdgesTable.sourceType, 'USER'),
+        eq(huntEdgesTable.sourceId, userId),
+        eq(huntEdgesTable.targetType, 'DOMAIN'),
+        eq(huntEdgesTable.targetId, domainName),
+        eq(huntEdgesTable.action, 'UPVOTE'),
+      ),
+    );
+
+  if (existingUpvote) {
+    return { success: true, message: 'Already upvoted' };
+  }
+
+  // Create UPVOTE edge
+  await db.insert(huntEdgesTable).values({
+    sourceType: 'USER',
+    sourceId: userId,
+    targetType: 'DOMAIN',
+    targetId: domainName,
+    action: 'UPVOTE',
+  });
+
+  return { success: true, message: 'Upvoted successfully' };
+};
+
 export const huntRouter = createTRPCRouter({
   /**
    * Submit a domain - Creates a SUBMIT edge between user and domain
@@ -115,10 +146,15 @@ export const huntRouter = createTRPCRouter({
         );
 
       if (existingDomainSubmit) {
-        throw new TRPCError({
-          code: 'CONFLICT',
-          message: 'This domain has already been submitted',
-        });
+        // Upvote the domain
+        await upvote(userId, domainName);
+
+        return {
+          success: true,
+          domainName,
+          submittedAt: existingDomainSubmit.createdAt,
+          message: 'Domain already exists',
+        };
       }
 
       // Create SUBMIT edge
@@ -133,10 +169,14 @@ export const huntRouter = createTRPCRouter({
         })
         .returning();
 
+      // Upvote the domain
+      await upvote(userId, domainName);
+
       return {
         success: true,
         domainName,
         submittedAt: edge.createdAt,
+        message: 'Domain submitted successfully',
       };
     }),
 
@@ -423,35 +463,7 @@ export const huntRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const { domainName } = input;
       const userId = ctx.user.id;
-
-      // Check if user has already upvoted this domain
-      const [existingUpvote] = await db
-        .select()
-        .from(huntEdgesTable)
-        .where(
-          and(
-            eq(huntEdgesTable.sourceType, 'USER'),
-            eq(huntEdgesTable.sourceId, userId),
-            eq(huntEdgesTable.targetType, 'DOMAIN'),
-            eq(huntEdgesTable.targetId, domainName),
-            eq(huntEdgesTable.action, 'UPVOTE'),
-          ),
-        );
-
-      if (existingUpvote) {
-        return { success: true, message: 'Already upvoted' };
-      }
-
-      // Create UPVOTE edge
-      await db.insert(huntEdgesTable).values({
-        sourceType: 'USER',
-        sourceId: userId,
-        targetType: 'DOMAIN',
-        targetId: domainName,
-        action: 'UPVOTE',
-      });
-
-      return { success: true, message: 'Upvoted successfully' };
+      return await upvote(userId, domainName);
     }),
 
   /**

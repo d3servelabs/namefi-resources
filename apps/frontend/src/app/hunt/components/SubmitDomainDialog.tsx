@@ -41,30 +41,34 @@ export const SubmitDomainDialog = ({
 
   const submitDomainMutation = useMutation(
     trpc.hunt.submitDomain.mutationOptions({
-      onSuccess: () => {
+      onSuccess: (data) => {
+        // Invalidate relevant queries since submission now auto-upvotes
         queryClient.invalidateQueries({
           queryKey: trpc.hunt.getTrendingDomains.queryKey(),
         });
         queryClient.invalidateQueries({
           queryKey: trpc.hunt.getMySubmittedDomains.queryKey(),
         });
+        queryClient.invalidateQueries({
+          queryKey: trpc.hunt.getMyUpvotedDomains.queryKey(),
+        });
+
         setIsSubmitDialogOpen(false);
         const currentDomain = domainName.trim();
         setDomainName('');
-        toast.success('Domain submitted successfully!');
+
+        // Show different messages based on whether it's a new submission or existing domain
+        if (data.message === 'Domain already exists') {
+          toast.success('Domain already exists.');
+        } else {
+          toast.success('Domain submitted and upvoted successfully!');
+        }
+
         onSuccess?.();
         router.push(`/hunt/domains/${encodeURIComponent(currentDomain)}`);
       },
       onError: (error) => {
-        const currentDomain = domainName.trim();
         toast.error(error.message || 'Failed to submit domain');
-
-        // If domain already exists, navigate to its detail page
-        if (error.message?.includes('already been submitted')) {
-          setIsSubmitDialogOpen(false);
-          setDomainName('');
-          router.push(`/hunt/domains/${encodeURIComponent(currentDomain)}`);
-        }
       },
     }),
   );

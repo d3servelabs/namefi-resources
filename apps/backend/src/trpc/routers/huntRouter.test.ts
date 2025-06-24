@@ -97,30 +97,82 @@ describe('Hunt Router', () => {
       expect(result).toHaveProperty('success', true);
       expect(result).toHaveProperty('domainName', 'test.domain');
       expect(result).toHaveProperty('submittedAt');
+      expect(result).toHaveProperty('message', 'Domain submitted successfully');
     });
 
-    it('should not allow submitting the same domain twice by the same user', async () => {
+    it('should automatically upvote domain when submitting', async () => {
       await caller.submitDomain({
+        domainName: 'test.domain.auto.upvote',
+      });
+
+      // Check that the submitter has automatically upvoted the domain
+      const upvoteStatus = await caller.checkUpvoteStatus({
+        domainName: 'test.domain.auto.upvote',
+      });
+      expect(upvoteStatus.hasUpvoted).toBe(true);
+      expect(upvoteStatus.upvotedAt).toBeTruthy();
+
+      // Check domain details to confirm upvote count
+      const domainDetail = await caller.getDomainDetail({
+        domainName: 'test.domain.auto.upvote',
+      });
+      expect(domainDetail.upvoteCount).toBe(1);
+      expect(domainDetail.userHasUpvoted).toBe(true);
+    });
+
+    it('should handle resubmission of same domain by same user', async () => {
+      const firstSubmit = await caller.submitDomain({
         domainName: 'test.domain.duplicate',
       });
 
-      await expect(
-        caller.submitDomain({
-          domainName: 'test.domain.duplicate',
-        }),
-      ).rejects.toThrow('This domain has already been submitted');
+      expect(firstSubmit).toHaveProperty('success', true);
+      expect(firstSubmit).toHaveProperty(
+        'message',
+        'Domain submitted successfully',
+      );
+
+      const secondSubmit = await caller.submitDomain({
+        domainName: 'test.domain.duplicate',
+      });
+
+      expect(secondSubmit).toHaveProperty('success', true);
+      expect(secondSubmit).toHaveProperty('message', 'Domain already exists');
+      expect(secondSubmit).toHaveProperty(
+        'domainName',
+        'test.domain.duplicate',
+      );
+      expect(secondSubmit).toHaveProperty('submittedAt');
+      // submittedAt should be the same as first submission
+      expect(secondSubmit.submittedAt).toEqual(firstSubmit.submittedAt);
     });
 
-    it('should not allow different users to submit the same domain', async () => {
-      await caller.submitDomain({
+    it('should handle submission of same domain by different user - adds upvote', async () => {
+      const firstSubmit = await caller.submitDomain({
         domainName: 'test.domain.shared',
       });
 
-      await expect(
-        otherCaller.submitDomain({
-          domainName: 'test.domain.shared',
-        }),
-      ).rejects.toThrow('This domain has already been submitted');
+      expect(firstSubmit).toHaveProperty('success', true);
+      expect(firstSubmit).toHaveProperty(
+        'message',
+        'Domain submitted successfully',
+      );
+
+      const secondSubmit = await otherCaller.submitDomain({
+        domainName: 'test.domain.shared',
+      });
+
+      expect(secondSubmit).toHaveProperty('success', true);
+      expect(secondSubmit).toHaveProperty('message', 'Domain already exists');
+      expect(secondSubmit).toHaveProperty('domainName', 'test.domain.shared');
+      expect(secondSubmit).toHaveProperty('submittedAt');
+      // submittedAt should be the same as first submission
+      expect(secondSubmit.submittedAt).toEqual(firstSubmit.submittedAt);
+
+      // Verify that the second user has upvoted the domain
+      const upvoteStatus = await otherCaller.checkUpvoteStatus({
+        domainName: 'test.domain.shared',
+      });
+      expect(upvoteStatus.hasUpvoted).toBe(true);
     });
 
     it('should delete a domain', async () => {
@@ -274,6 +326,8 @@ describe('Hunt Router', () => {
     beforeEach(async () => {
       // Submit a domain for voting tests
       await caller.submitDomain({ domainName: 'test.domain.for.votes' });
+      // Since submitDomain automatically upvotes, remove the upvote to have a clean state
+      await caller.unvote({ domainName: 'test.domain.for.votes' });
     });
 
     it('should upvote a domain', async () => {
