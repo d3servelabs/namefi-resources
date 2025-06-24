@@ -315,40 +315,42 @@ export const DomainConfigAndPrefsForm = ({
                     Automatically enable ENS for the domain
                   </p>
                 </div>
-                <Switch
-                  id="auto-ens"
-                  className={cn(isPending ? 'animate-pulse cursor-wait' : '')}
-                  checked={domainPreferencesAndConfig?.autoEnsEnabled}
-                  onCheckedChange={handleChange('autoEnsEnabled')}
-                  disabled={
-                    isPending ||
-                    disableAllButtons ||
-                    !isUsingNamefiSigning ||
-                    !dnssecDetails?.supportsDnssec
-                  }
-                />
-                {isUsingNamefiSigning &&
-                dnssecDetails?.supportsDnssec ? undefined : (
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild={true}>
-                        <Info className="h-4 w-4 text-zinc-500 cursor-help" />
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>
-                          AutoENS is not available for this domain. ENS Requires
-                          DNSSEC.
-                          <br />
-                          {dnssecDetails?.supportsDnssec ? (
-                            <p>You need to enable DNSSEC first.</p>
-                          ) : (
-                            <p>And this domain does not support DNSSEC.</p>
-                          )}
-                        </p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                )}
+                <div className="flex items-center gap-2">
+                  {isUsingNamefiSigning &&
+                  dnssecDetails?.supportsDnssec ? undefined : (
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild={true}>
+                          <Info className="h-4 w-4 text-zinc-500 cursor-help" />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>
+                            AutoENS is not available for this domain. ENS
+                            Requires DNSSEC.
+                            <br />
+                            {dnssecDetails?.supportsDnssec ? (
+                              <p>You need to enable DNSSEC first.</p>
+                            ) : (
+                              <p>And this domain does not support DNSSEC.</p>
+                            )}
+                          </p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  )}
+                  <Switch
+                    id="auto-ens"
+                    className={cn(isPending ? 'animate-pulse cursor-wait' : '')}
+                    checked={domainPreferencesAndConfig?.autoEnsEnabled}
+                    onCheckedChange={handleChange('autoEnsEnabled')}
+                    disabled={
+                      isPending ||
+                      disableAllButtons ||
+                      !isUsingNamefiSigning ||
+                      !dnssecDetails?.supportsDnssec
+                    }
+                  />
+                </div>
               </div>
 
               <div className="flex items-center justify-between rounded-2xl bg-zinc-900 border border-zinc-800 p-4">
