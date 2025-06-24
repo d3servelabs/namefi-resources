@@ -49,7 +49,7 @@ export const migrateZoneToNewNameserversWorkflow = async (args: {
   }
 
   const nft = await getNftFromIndexer(args.zoneName);
-  if (!nft) {
+  if (!nft || !nft.ownerAddress) {
     throw new Error(`NFT for ${args.zoneName} not found`);
   }
   const ownerAddress = nft.ownerAddress;

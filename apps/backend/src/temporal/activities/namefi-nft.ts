@@ -334,6 +334,12 @@ export const getNftFromIndexer = async (domainName: string) => {
   const nft = await db.query.namefiNftTable.findFirst({
     where: eq(namefiNftTable.normalizedDomainName, domainName),
   });
+  if (!nft) {
+    return null;
+  }
 
-  return nft;
+  return {
+    ...nft,
+    asOfBlockNumber: nft.asOfBlockNumber.toString(),
+  };
 };
