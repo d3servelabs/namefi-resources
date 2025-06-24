@@ -9,7 +9,6 @@ import {
 import { useCart } from '@/hooks/landing/use-cart';
 import { useDomainFilters } from '@/hooks/landing/use-domain-filters';
 import { useSearch } from '@/hooks/landing/use-search';
-import { config } from '@/lib/env';
 import { useState } from 'react';
 import FloatingCart from '../floating-cart';
 import {
@@ -23,7 +22,7 @@ import {
 export const Search: SearchComponent = ({ originInfo }) => {
   const [parentDomain, setParentDomain] = useState<string | undefined>(() => {
     if (originInfo.isFirstPartyOrigin) {
-      return config.POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES[0];
+      return undefined; // All Networks
     }
 
     if (originInfo.thirdPartyHostname) {
@@ -64,6 +63,7 @@ export const Search: SearchComponent = ({ originInfo }) => {
           parentDomain={parentDomain}
           setParentDomain={setParentDomain}
           isFirstPartyOrigin={originInfo.isFirstPartyOrigin}
+          hideNetworkSelection={true}
         />
         <SearchInput
           query={query}
