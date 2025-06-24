@@ -16,6 +16,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/shadcn/tooltip';
+import { Badge } from '@/components/ui/shadcn/badge';
 import { useCart } from '@/hooks/landing/use-cart';
 import { useDomainFilters } from '@/hooks/landing/use-domain-filters';
 import { useSearch } from '@/hooks/landing/use-search';
@@ -48,6 +49,7 @@ import { Placeholder } from './Placeholder';
 import type { SearchComponent } from './types';
 import {
   isDomainImportable,
+  isDomainUnsupported,
   getDomainPricingForOperation,
   type DomainAvailabilityInfo,
 } from '@namefi-astra/backend/trpc/types';
@@ -176,6 +178,7 @@ export const DomainCard: FC<{
 
   const isInCart = isDomainInCart(domain.domain);
   const isImportable = isDomainImportable(domain);
+  const isUnsupported = isDomainUnsupported(domain);
 
   // Get the appropriate pricing based on whether it's an import or registration
   const operationType = isImportable
@@ -257,6 +260,11 @@ export const DomainCard: FC<{
                     ? `${formatAmountInUSD(priceInUsd)} USD`
                     : ''}
                 </p>
+                {isUnsupported && (
+                  <Badge variant="destructive" className="text-xs">
+                    Unsupported
+                  </Badge>
+                )}
               </div>
               {!domain.availability && isNotNil(domain.currentOwner) && (
                 <div className="flex items-center text-sm text-muted-foreground">

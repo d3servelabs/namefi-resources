@@ -41,7 +41,7 @@ export type { DomainAvailabilityInfo };
  * @returns true if the domain can be imported
  */
 export function isDomainImportable(domain: DomainAvailabilityInfo): boolean {
-  return !domain.availability;
+  return domain.importable;
 }
 
 // TODO: move these to a better location
@@ -53,6 +53,17 @@ export function isDomainImportable(domain: DomainAvailabilityInfo): boolean {
  */
 export function isDomainRegistrable(domain: DomainAvailabilityInfo): boolean {
   return domain.availability === true;
+}
+
+// TODO: move these to a better location
+/**
+ * Checks if a domain is not supported (unavailable and not importable)
+ * A domain is not supported if it's unavailable and not importable
+ * @param domain - Domain availability information
+ * @returns true if the domain is not supported
+ */
+export function isDomainUnsupported(domain: DomainAvailabilityInfo): boolean {
+  return domain.importable === false && domain.availability === false;
 }
 
 // TODO: move these to a better location
