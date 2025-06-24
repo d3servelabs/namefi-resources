@@ -170,6 +170,14 @@ export default function OrderDetailsPage({
                     <Skeleton className="h-4 w-24" />
                   </div>
                 </div>
+                {/* Recipient */}
+                <div className="flex items-center justify-between h-8">
+                  <Skeleton className="h-6 w-24" />
+                  <div className="flex items-center gap-2">
+                    <Skeleton className="h-6 w-32" />
+                    <Skeleton className="h-8 w-8 rounded-md" />
+                  </div>
+                </div>
               </div>
             </CartCard>
           </div>
@@ -382,6 +390,49 @@ export default function OrderDetailsPage({
                             {copiedFields.walletAddress
                               ? 'Copied!'
                               : 'Copy Wallet Address'}
+                          </p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  )}
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between h-8">
+                <span className="font-medium">Recipient:</span>
+                <div className="flex items-center gap-2">
+                  <span className="text-sm text-gray-500">
+                    {order.nftWalletAddress
+                      ? `(${getChain(order.nftChainId)?.name || `Chain ID ${order.nftChainId}`}) ${getShortAddress(order.nftWalletAddress)}`
+                      : '-'}
+                  </span>
+                  {order.nftWalletAddress && (
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild={true}>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8"
+                            onClick={() =>
+                              copyToClipboard(
+                                order.nftWalletAddress,
+                                'recipientWalletAddress',
+                              )
+                            }
+                          >
+                            {copiedFields.recipientWalletAddress ? (
+                              <Check size={16} />
+                            ) : (
+                              <ClipboardCopy size={16} />
+                            )}
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>
+                            {copiedFields.recipientWalletAddress
+                              ? 'Copied!'
+                              : 'Copy Recipient Address'}
                           </p>
                         </TooltipContent>
                       </Tooltip>
