@@ -1,17 +1,36 @@
-import { Pool, neonConfig } from '@neondatabase/serverless';
-import { drizzle } from 'drizzle-orm/neon-serverless';
-import ws from 'ws';
+import type { NeonDatabase } from 'drizzle-orm/neon-serverless';
+import type { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { secrets } from './lib/env';
 import * as relations from './relations';
 import * as schema from './schema';
 
-neonConfig.webSocketConstructor = ws;
+type Schema = typeof schema & typeof relations;
 
-const pool = new Pool({ connectionString: secrets.DATABASE_URL });
+let db: NeonDatabase<Schema> | NodePgDatabase<Schema>;
 
-export const db = drizzle({
-  client: pool,
-  schema: { ...schema, ...relations },
-});
+switch (secrets.DATABASE_DRIVER) {
+  case 'neon': {
+    const { Pool, neonConfig } = await import('@neondatabase/serverless');
+    const { drizzle } = await import('drizzle-orm/neon-serverless');
+    const ws = await import('ws');
 
+    neonConfig.webSocketConstructor = ws.default;
+    const pool = new Pool({ connectionString: secrets.DATABASE_URL });
+    db = drizzle(pool, { schema: { ...schema, ...relations } });
+    break;
+  }
+  case 'pg': {
+    const { Pool } = await import('pg');
+    const { drizzle } = await import('drizzle-orm/node-postgres');
+
+    const pool = new Pool({ connectionString: secrets.DATABASE_URL });
+    db = drizzle(pool, { schema: { ...schema, ...relations } });
+    break;
+  }
+  default: {
+    throw new Error('Invalid database driver');
+  }
+}
+
+export { db };
 export type DB = typeof db;
