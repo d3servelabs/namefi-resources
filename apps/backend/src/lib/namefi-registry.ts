@@ -30,13 +30,9 @@ import pMap from 'p-map';
 import { secrets } from '#lib/env';
 import { logger } from '#lib/logger';
 import { computeChargesInUsdOrThrow } from '@namefi-astra/registrars/multi-year-pricing';
+import { getDomainDurationConstraints } from './domains/domainsDurationConstraints';
 
 export type NamefiNftSelect = typeof namefiNftTable.$inferSelect;
-
-export const DOMAIN_DURATION_CONFIG = {
-  min: 1,
-  max: 10,
-} as const;
 
 export const sldRegistrar = createRegistrarService({
   AWS_REGION: config.AWS_REGION,
@@ -55,7 +51,10 @@ const generateUnavailableDomainInfo = (domain: NamefiNormalizedDomain) => ({
   pricingDetails: undefined,
   currentOwner: undefined,
   registrarKey: undefined,
-  durationValidationInYears: DOMAIN_DURATION_CONFIG,
+  durationValidationInYears: {
+    min: 1,
+    max: 10,
+  },
   importable: false,
 });
 
@@ -194,6 +193,13 @@ const _getSldDomainListInfo = async (
     isNil(nft) &&
     computeChargesInUsdOrThrow(pricingDetails.importPrice, 1) > 0;
 
+  let durationConstraints = { minYears: 1, maxYears: 10 };
+  try {
+    durationConstraints = getDomainDurationConstraints(domain);
+  } catch (error) {
+    logger.error(`Error getting duration constraints for ${domain}: ${error}`);
+  }
+
   return {
     domain: namefiNormalizedDomainSchema.parse(response.result.domainName),
     availability: available,
@@ -201,7 +207,10 @@ const _getSldDomainListInfo = async (
     pricingDetails,
     currentOwner: nft?.ownerAddress,
     registrarKey: response.registrarKey,
-    durationValidationInYears: DOMAIN_DURATION_CONFIG,
+    durationValidationInYears: {
+      min: durationConstraints.minYears,
+      max: durationConstraints.maxYears,
+    },
   };
 };
 
@@ -247,6 +256,14 @@ const _get3ldDomainListInfo = async (
     const nft = nftMap.get(domain);
     const isFreeMint = userQualifiesFor0xDotCity;
     const price = await getSubdomainPriceInUsd(domain, isFreeMint);
+    let durationConstraints = { minYears: 1, maxYears: 10 };
+    try {
+      durationConstraints = getDomainDurationConstraints(domain);
+    } catch (error) {
+      logger.error(
+        `Error getting duration constraints for ${domain}: ${error}`,
+      );
+    }
 
     // Return domain information including availability, price, and current owner
     return {
@@ -268,7 +285,10 @@ const _get3ldDomainListInfo = async (
         },
       },
       currentOwner: nft?.ownerAddress,
-      durationValidationInYears: DOMAIN_DURATION_CONFIG,
+      durationValidationInYears: {
+        min: durationConstraints.minYears,
+        max: durationConstraints.maxYears,
+      },
       registrarKey: 'namefi',
     } satisfies DomainAvailabilityInfo;
   }
