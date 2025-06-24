@@ -80,7 +80,10 @@ export const BrandLogo: ForwardRefExoticComponent<BrandLogoProps> = forwardRef<
             id={`brand-logo-${originInfo.thirdPartyHostname || 'default'}`}
             lottieRef={lottieRef}
             getJson={getJson}
-            style={{ width: logo.width, height: logo.height }}
+            style={{
+              width: 70,
+              height: Math.round((70 / logo.width) * logo.height),
+            }}
             loop={false}
             autoplay={false}
           />
