@@ -3,7 +3,7 @@ import { getTags } from '@namefi/cat';
 import { TRPCError } from '@trpc/server';
 import { type SQL, and, desc, eq, sql } from 'drizzle-orm';
 import { z } from 'zod';
-import { createTRPCRouter, protectedProcedure } from '../base';
+import { createTRPCRouter, protectedProcedure, publicProcedure } from '../base';
 
 // Input schemas
 const submitDomainSchema = z.object({
@@ -285,7 +285,58 @@ export const huntRouter = createTRPCRouter({
     }),
 
   /**
-   * Get trending domains with ranking and filtering
+   * Get trending domains (public) - No authentication required
+   * Returns trending domains without user-specific data
+   */
+  getTrendingDomainsPublic: publicProcedure
+    .input(getTrendingDomainsSchema)
+    .query(async ({ input }) => {
+      const { offset, limit, timeRange } = input;
+
+      // Build the query with time range filter
+      const timeFilter = createTimeRangeFilter(
+        timeRange,
+        huntDomainStatsView.firstSubmitDate,
+      );
+
+      // Get trending domains without user vote status
+      const domains = await db
+        .select({
+          domainName: huntDomainStatsView.domainName,
+          upvoteCount: sql<number>`CAST(${huntDomainStatsView.upvoteCount} AS INTEGER)`,
+          firstSubmitDate: huntDomainStatsView.firstSubmitDate,
+          lastUpvoteDate: huntDomainStatsView.lastUpvoteDate,
+        })
+        .from(huntDomainStatsView)
+        .where(timeFilter)
+        .orderBy(
+          desc(huntDomainStatsView.upvoteCount),
+          desc(huntDomainStatsView.lastUpvoteDate),
+          desc(huntDomainStatsView.firstSubmitDate),
+        )
+        .offset(offset)
+        .limit(limit + 1);
+
+      const hasMore = domains.length > limit;
+      const domainList = domains.slice(0, limit);
+
+      // For public access, all userHasUpvoted should be false
+      const domainsWithoutUserData = domainList.map((domain) => ({
+        ...domain,
+        userHasUpvoted: false,
+      }));
+
+      const items = addTagsToItems(domainsWithoutUserData);
+
+      return {
+        items,
+        hasMore,
+      };
+    }),
+
+  /**
+   * Get trending domains with ranking and filtering (authenticated)
+   * Returns trending domains with user-specific voting data
    */
   getTrendingDomains: protectedProcedure
     .input(getTrendingDomainsSchema)
@@ -653,5 +704,50 @@ export const huntRouter = createTRPCRouter({
         upvotedAt: domainWithTags.userUpvotedAt,
         submittedAt: domainWithTags.userSubmittedAt,
       };
+    }),
+
+  /**
+   * Get domain details (public) - No authentication required
+   * Returns domain details without user-specific data
+   */
+  getDomainDetailPublic: publicProcedure
+    .input(getDomainDetailSchema)
+    .query(async ({ input }) => {
+      const { domainName } = input;
+
+      // Get domain stats
+      const [domainDetail] = await db
+        .select({
+          domainName: huntDomainStatsView.domainName,
+          upvoteCount: sql<number>`CAST(${huntDomainStatsView.upvoteCount} AS INTEGER)`,
+          firstSubmitDate: huntDomainStatsView.firstSubmitDate,
+          lastUpvoteDate: huntDomainStatsView.lastUpvoteDate,
+        })
+        .from(huntDomainStatsView)
+        .where(eq(huntDomainStatsView.domainName, domainName))
+        .limit(1);
+
+      if (!domainDetail) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Domain not found in hunt system',
+        });
+      }
+
+      const enrichedDomain = {
+        ...domainDetail,
+        userHasUpvoted: false,
+        userUpvotedAt: null,
+        isOwner: false,
+        userSubmittedAt: null,
+        hasUpvoted: false,
+        upvotedAt: null,
+        submittedAt: null,
+      };
+
+      // Add tags to the domain
+      const domainWithTags = addTagsToItems([enrichedDomain])[0];
+
+      return domainWithTags;
     }),
 });

@@ -1,7 +1,9 @@
 'use client';
 
+import { AuthGuard } from '@/components/AuthRequiredDialog';
 import { Button } from '@/components/ui/shadcn/button';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/shadcn/tabs';
+import { useAuth } from '@/hooks/useAuth';
 import { type AppRouterInput, useTRPC } from '@/utils/trpc';
 import { useQuery } from '@tanstack/react-query';
 import { PlusIcon, UserIcon } from 'lucide-react';
@@ -18,6 +20,7 @@ type TimeRange = AppRouterInput['hunt']['getTrendingDomains']['timeRange'];
 export const HuntHome = () => {
   const [page, setPage] = useState(1);
   const [timeRange, setTimeRange] = useState<TimeRange>('THIS_WEEK');
+  const { isAuthenticated, isLoading: authLoading } = useAuth();
 
   const handleTimeRangeChange = useCallback((value: string) => {
     setTimeRange(value as TimeRange);
@@ -28,11 +31,17 @@ export const HuntHome = () => {
   const offset = (page - 1) * DOMAINS_LIST_PER_PAGE_LIMIT;
 
   const { data, isLoading, isError } = useQuery(
-    trpc.hunt.getTrendingDomains.queryOptions({
-      limit: DOMAINS_LIST_PER_PAGE_LIMIT,
-      offset,
-      timeRange,
-    }),
+    isAuthenticated
+      ? trpc.hunt.getTrendingDomains.queryOptions({
+          limit: DOMAINS_LIST_PER_PAGE_LIMIT,
+          offset,
+          timeRange,
+        })
+      : trpc.hunt.getTrendingDomainsPublic.queryOptions({
+          limit: DOMAINS_LIST_PER_PAGE_LIMIT,
+          offset,
+          timeRange,
+        }),
   );
 
   const hasMore = useMemo(() => data?.hasMore ?? false, [data]);
@@ -44,23 +53,42 @@ export const HuntHome = () => {
           Domain Hunt
         </h2>
         <div className="flex items-center gap-4">
-          <SubmitDomainDialog>
-            <Button
-              variant="outline"
-              className="flex items-center gap-2 cursor-pointer"
-            >
-              <PlusIcon className="h-4 w-4" />
-              Submit Domain
-            </Button>
-          </SubmitDomainDialog>
-          <Link href="/hunt/mine">
-            <Button
-              variant="outline"
-              className="flex items-center gap-2 cursor-pointer"
-            >
-              <UserIcon className="h-4 w-4" />
-            </Button>
-          </Link>
+          {isAuthenticated ? (
+            <>
+              <SubmitDomainDialog>
+                <Button
+                  variant="outline"
+                  className="flex items-center gap-2 cursor-pointer"
+                >
+                  <PlusIcon className="h-4 w-4" />
+                  Submit Domain
+                </Button>
+              </SubmitDomainDialog>
+              <Link href="/hunt/mine">
+                <Button
+                  variant="outline"
+                  className="flex items-center gap-2 cursor-pointer"
+                >
+                  <UserIcon className="h-4 w-4" />
+                </Button>
+              </Link>
+            </>
+          ) : (
+            <div className="flex items-center gap-4">
+              <AuthGuard
+                title="Sign in to submit domains"
+                description="You need to sign in to submit domains to the hunt. Join the community and share your favorite domains!"
+              >
+                <Button
+                  variant="outline"
+                  className="flex items-center gap-2 cursor-pointer"
+                >
+                  <PlusIcon className="h-4 w-4" />
+                  Submit Domain
+                </Button>
+              </AuthGuard>
+            </div>
+          )}
         </div>
       </div>
 
@@ -84,7 +112,7 @@ export const HuntHome = () => {
         <div className="border border-border shadow-sm rounded-xl bg-white/[0.03]">
           <DomainList
             domains={data?.items ?? []}
-            isLoading={isLoading}
+            isLoading={isLoading || authLoading}
             isError={isError}
           />
         </div>

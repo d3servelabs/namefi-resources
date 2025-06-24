@@ -1,5 +1,6 @@
 'use client';
 
+import { AuthGuard } from '@/components/AuthRequiredDialog';
 import { cn } from '@/lib/utils';
 import { formatNumberWithAbbreviations } from '@/utils/number';
 import { useTRPC } from '@/utils/trpc';
@@ -32,6 +33,7 @@ const VoteButton = ({
   const handleClick = useCallback(
     (event: MouseEvent) => {
       event.preventDefault();
+
       if (voted) {
         onUnvote?.();
       } else {
@@ -40,20 +42,26 @@ const VoteButton = ({
     },
     [voted, onUpvote, onUnvote],
   );
+
   usePendingToast(pending, 'Voting...');
   return (
-    <button
-      type="button"
-      className={cn(
-        'group flex items-center justify-center rounded-full p-2 sm:p-2.5 bg-muted border border-transparent text-muted-foreground cursor-pointer hover:bg-[rgba(72,229,155,0.08)] hover:text-brand-primary hover:border-transparent transition-all duration-200',
-        voted &&
-          'bg-[rgba(72,229,155,0.08)] text-brand-primary border-brand-primary',
-      )}
-      aria-label="Upvote"
-      onClick={handleClick}
+    <AuthGuard
+      title="Sign in to vote"
+      description="You need to sign in to vote for domains. Join the community to discover and vote for the best domains!"
     >
-      <UpvoteIcon className="text-2xl" />
-    </button>
+      <button
+        type="button"
+        className={cn(
+          'group flex items-center justify-center rounded-full p-2 sm:p-2.5 bg-muted border border-transparent text-muted-foreground cursor-pointer hover:bg-[rgba(72,229,155,0.08)] hover:text-brand-primary hover:border-transparent transition-all duration-200',
+          voted &&
+            'bg-[rgba(72,229,155,0.08)] text-brand-primary border-brand-primary',
+        )}
+        aria-label="Upvote"
+        onClick={handleClick}
+      >
+        <UpvoteIcon className="text-2xl" />
+      </button>
+    </AuthGuard>
   );
 };
 
@@ -63,6 +71,16 @@ export const DomainListItem = ({ domain }: { domain: Domain }) => {
 
   const updateDomainInCaches = useCallback(
     (domainName: string, updates: Partial<Domain>) => {
+      queryClient.setQueriesData(
+        { queryKey: trpc.hunt.getTrendingDomainsPublic.queryKey() },
+        (oldData: TrendingDomainsResponse | undefined) =>
+          oldData && {
+            ...oldData,
+            items: oldData.items.map((item: Domain) =>
+              item.domainName === domainName ? { ...item, ...updates } : item,
+            ),
+          },
+      );
       queryClient.setQueriesData(
         { queryKey: trpc.hunt.getTrendingDomains.queryKey() },
         (oldData: TrendingDomainsResponse | undefined) =>

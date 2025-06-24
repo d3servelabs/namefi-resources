@@ -452,4 +452,156 @@ describe('Hunt Router', () => {
       expect(overlap.length).toBe(0);
     });
   });
+
+  describe('Public Endpoints', () => {
+    beforeEach(async () => {
+      // Setup test domains for public endpoint testing
+      await caller.submitDomain({ domainName: 'test.public.domain1' });
+      await caller.submitDomain({ domainName: 'test.public.domain2' });
+      await otherCaller.submitDomain({ domainName: 'test.public.domain3' });
+
+      // Add some upvotes
+      await caller.upvote({ domainName: 'test.public.domain1' });
+      await otherCaller.upvote({ domainName: 'test.public.domain1' });
+      await caller.upvote({ domainName: 'test.public.domain2' });
+    });
+
+    it('should get trending domains without authentication', async () => {
+      // Create a public caller without authentication
+      const publicCaller = huntRouter.createCaller({
+        thirdPartyOriginHostname: null,
+        testUser: null, // No user for public access
+      } as any);
+
+      const result = await publicCaller.getTrendingDomainsPublic({
+        limit: 10,
+        offset: 0,
+        timeRange: 'ANYTIME',
+      });
+
+      expect(result).toHaveProperty('items');
+      expect(result).toHaveProperty('hasMore');
+      expect(Array.isArray(result.items)).toBe(true);
+      expect(result.items.length).toBeGreaterThan(0);
+
+      // Verify that all domains have userHasUpvoted: false for public access
+      for (const item of result.items) {
+        expect(item).toHaveProperty('domainName');
+        expect(item).toHaveProperty('upvoteCount');
+        expect(item).toHaveProperty('firstSubmitDate');
+        expect(item).toHaveProperty('userHasUpvoted', false);
+        expect(item).toHaveProperty('tags');
+        expect(Array.isArray(item.tags)).toBe(true);
+      }
+
+      // Should be sorted by upvote count
+      if (result.items.length > 1) {
+        for (let i = 1; i < result.items.length; i++) {
+          expect(
+            Number(result.items[i - 1].upvoteCount),
+          ).toBeGreaterThanOrEqual(Number(result.items[i].upvoteCount));
+        }
+      }
+    });
+
+    it('should get domain details without authentication', async () => {
+      // Create a public caller without authentication
+      const publicCaller = huntRouter.createCaller({
+        thirdPartyOriginHostname: null,
+        testUser: null, // No user for public access
+      } as any);
+
+      const result = await publicCaller.getDomainDetailPublic({
+        domainName: 'test.public.domain1',
+      });
+
+      // Should contain basic domain information
+      expect(result).toHaveProperty('domainName', 'test.public.domain1');
+      expect(result).toHaveProperty('upvoteCount');
+      expect(result).toHaveProperty('firstSubmitDate');
+      expect(result).toHaveProperty('tags');
+      expect(Array.isArray(result.tags)).toBe(true);
+
+      // User-specific fields should be false/null for public access
+      expect(result).toHaveProperty('userHasUpvoted', false);
+      expect(result).toHaveProperty('userUpvotedAt', null);
+      expect(result).toHaveProperty('isOwner', false);
+      expect(result).toHaveProperty('userSubmittedAt', null);
+      expect(result).toHaveProperty('hasUpvoted', false);
+      expect(result).toHaveProperty('upvotedAt', null);
+      expect(result).toHaveProperty('submittedAt', null);
+    });
+
+    it('should handle non-existent domain in public getDomainDetail', async () => {
+      const publicCaller = huntRouter.createCaller({
+        thirdPartyOriginHostname: null,
+        testUser: null,
+      } as any);
+
+      await expect(
+        publicCaller.getDomainDetailPublic({
+          domainName: 'non.existent.public.domain',
+        }),
+      ).rejects.toThrow('Domain not found in hunt system');
+    });
+
+    it('should filter trending domains by time range in public endpoint', async () => {
+      const publicCaller = huntRouter.createCaller({
+        thirdPartyOriginHostname: null,
+        testUser: null,
+      } as any);
+
+      const allTimeResult = await publicCaller.getTrendingDomainsPublic({
+        limit: 10,
+        offset: 0,
+        timeRange: 'ANYTIME',
+      });
+
+      const thisYearResult = await publicCaller.getTrendingDomainsPublic({
+        limit: 10,
+        offset: 0,
+        timeRange: 'THIS_YEAR',
+      });
+
+      // All time should include at least as many domains as this year
+      expect(allTimeResult.items.length).toBeGreaterThanOrEqual(
+        thisYearResult.items.length,
+      );
+
+      // Both should return valid domain structures
+      for (const item of thisYearResult.items) {
+        expect(item).toHaveProperty('domainName');
+        expect(item).toHaveProperty('upvoteCount');
+        expect(item).toHaveProperty('userHasUpvoted', false);
+      }
+    });
+
+    it('should handle pagination correctly in public trending domains', async () => {
+      const publicCaller = huntRouter.createCaller({
+        thirdPartyOriginHostname: null,
+        testUser: null,
+      } as any);
+
+      const page1 = await publicCaller.getTrendingDomainsPublic({
+        limit: 2,
+        offset: 0,
+        timeRange: 'ANYTIME',
+      });
+
+      const page2 = await publicCaller.getTrendingDomainsPublic({
+        limit: 2,
+        offset: 2,
+        timeRange: 'ANYTIME',
+      });
+
+      expect(page1.items.length).toBeLessThanOrEqual(2);
+      expect(page2.items.length).toBeLessThanOrEqual(2);
+
+      // Items should not overlap
+      const page1Names = page1.items.map((item) => item.domainName);
+      const page2Names = page2.items.map((item) => item.domainName);
+      const overlap = page1Names.filter((name) => page2Names.includes(name));
+      expect(overlap.length).toBe(0);
+    });
+  });
 });

@@ -1,5 +1,6 @@
 'use client';
 
+import { AuthGuard } from '@/components/AuthRequiredDialog';
 import { Badge } from '@/components/ui/shadcn/badge';
 import { Button } from '@/components/ui/shadcn/button';
 import {
@@ -8,6 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/shadcn/card';
+import { useAuth } from '@/hooks/useAuth';
 import { useTRPC } from '@/utils/trpc';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
@@ -32,14 +34,27 @@ export const DomainDetail = ({ domainName }: DomainDetailProps) => {
   const router = useRouter();
   const trpc = useTRPC();
   const queryClient = useQueryClient();
+  const { isAuthenticated, isLoading: authLoading } = useAuth();
 
-  const { data: domainData, isLoading: domainLoading } = useQuery(
-    trpc.hunt.getDomainDetail.queryOptions({
+  const authQuery = useQuery({
+    ...trpc.hunt.getDomainDetail.queryOptions({
       domainName,
     }),
-  );
+    enabled: isAuthenticated,
+  });
 
-  // Vote mutations
+  const publicQuery = useQuery({
+    ...trpc.hunt.getDomainDetailPublic.queryOptions({
+      domainName,
+    }),
+    enabled: !isAuthenticated,
+  });
+
+  const domainData = isAuthenticated ? authQuery.data : publicQuery.data;
+  const domainLoading = isAuthenticated
+    ? authQuery.isLoading
+    : publicQuery.isLoading;
+
   const upvoteMutation = useMutation(
     trpc.hunt.upvote.mutationOptions({
       onSuccess: () => {
@@ -93,7 +108,7 @@ export const DomainDetail = ({ domainName }: DomainDetailProps) => {
   usePendingToast(unvoteMutation.isPending, 'Cancelling vote...');
   usePendingToast(deleteDomainMutation.isPending, 'Deleting domain...');
 
-  if (domainLoading) {
+  if (domainLoading || authLoading) {
     return (
       <div className="container mx-auto py-8 px-4 sm:px-8">
         <div className="max-w-4xl mx-auto">
@@ -139,18 +154,29 @@ export const DomainDetail = ({ domainName }: DomainDetailProps) => {
                 )}
               </div>
               <div className="flex items-center gap-2">
-                <Button
-                  onClick={handleVoteToggle}
-                  disabled={isVoting}
-                  variant={domainData?.userHasUpvoted ? 'default' : 'outline'}
-                  className="flex items-center gap-2 cursor-pointer"
+                <AuthGuard
+                  title="Sign in to vote"
+                  description="You need to sign in to vote for domains. Join the community to discover and vote for the best domains!"
                 >
-                  <TrendingUpIcon className="h-4 w-4" />
-                  {domainData?.userHasUpvoted ? 'Voted' : 'Vote'}
-                  {domainData?.upvoteCount !== undefined && (
-                    <Badge variant="secondary">{domainData.upvoteCount}</Badge>
-                  )}
-                </Button>
+                  <Button
+                    onClick={handleVoteToggle}
+                    disabled={isVoting}
+                    variant={domainData?.userHasUpvoted ? 'default' : 'outline'}
+                    className="flex items-center gap-2 cursor-pointer"
+                  >
+                    <TrendingUpIcon className="h-4 w-4" />
+                    {isAuthenticated
+                      ? domainData?.userHasUpvoted
+                        ? 'Voted'
+                        : 'Vote'
+                      : 'Sign in to vote'}
+                    {domainData?.upvoteCount !== undefined && (
+                      <Badge variant="secondary">
+                        {domainData.upvoteCount}
+                      </Badge>
+                    )}
+                  </Button>
+                </AuthGuard>
               </div>
             </div>
           </CardHeader>

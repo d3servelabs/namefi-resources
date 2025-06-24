@@ -1,5 +1,6 @@
 'use client';
 
+import { AuthRequired } from '@/components/auth-required';
 import { Button } from '@/components/ui/shadcn/button';
 import {
   Tabs,
@@ -7,6 +8,7 @@ import {
   TabsList,
   TabsTrigger,
 } from '@/components/ui/shadcn/tabs';
+import { useAuth } from '@/hooks/useAuth';
 import { useTRPC } from '@/utils/trpc';
 import { useQuery } from '@tanstack/react-query';
 import { ArrowLeft } from 'lucide-react';
@@ -21,6 +23,7 @@ const DOMAINS_LIST_PER_PAGE_LIMIT = 20;
 type TabKey = 'submitted' | 'upvoted';
 
 export default function MyDomainsPage() {
+  const { isAuthenticated, isLoading: authLoading } = useAuth();
   const [submittedPage, setSubmittedPage] = useState(1);
   const [upvotedPage, setUpvotedPage] = useState(1);
   const [activeTab, setActiveTab] = useState<TabKey>('upvoted');
@@ -33,12 +36,13 @@ export default function MyDomainsPage() {
     data: submittedData,
     isLoading: submittedLoading,
     isError: submittedError,
-  } = useQuery(
-    trpc.hunt.getMySubmittedDomains.queryOptions({
+  } = useQuery({
+    ...trpc.hunt.getMySubmittedDomains.queryOptions({
       limit: DOMAINS_LIST_PER_PAGE_LIMIT,
       offset: submittedOffset,
     }),
-  );
+    enabled: isAuthenticated,
+  });
 
   // Upvoted domains query
   const upvotedOffset = (upvotedPage - 1) * DOMAINS_LIST_PER_PAGE_LIMIT;
@@ -46,12 +50,13 @@ export default function MyDomainsPage() {
     data: upvotedData,
     isLoading: upvotedLoading,
     isError: upvotedError,
-  } = useQuery(
-    trpc.hunt.getMyUpvotedDomains.queryOptions({
+  } = useQuery({
+    ...trpc.hunt.getMyUpvotedDomains.queryOptions({
       limit: DOMAINS_LIST_PER_PAGE_LIMIT,
       offset: upvotedOffset,
     }),
-  );
+    enabled: isAuthenticated,
+  });
 
   const submittedHasMore = useMemo(
     () => submittedData?.hasMore ?? false,
@@ -61,6 +66,15 @@ export default function MyDomainsPage() {
     () => upvotedData?.hasMore ?? false,
     [upvotedData],
   );
+
+  if (!(authLoading || isAuthenticated)) {
+    return (
+      <AuthRequired
+        title="Sign in to view your activity"
+        description="Please sign in to see your submitted domains and voting history"
+      />
+    );
+  }
 
   return (
     <div className="container mx-auto py-8 px-4 sm:px-8">
@@ -97,7 +111,7 @@ export default function MyDomainsPage() {
           <div className="border border-border shadow-sm rounded-xl bg-white/[0.03]">
             <MySubmittedDomains
               domains={submittedData?.items ?? []}
-              isLoading={submittedLoading}
+              isLoading={submittedLoading || authLoading}
               isError={submittedError}
             />
           </div>
@@ -112,7 +126,7 @@ export default function MyDomainsPage() {
           <div className="border border-border shadow-sm rounded-xl bg-white/[0.03]">
             <MyUpvotedDomains
               domains={upvotedData?.items ?? []}
-              isLoading={upvotedLoading}
+              isLoading={upvotedLoading || authLoading}
               isError={upvotedError}
             />
           </div>
