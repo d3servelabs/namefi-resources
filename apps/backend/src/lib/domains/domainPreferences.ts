@@ -241,7 +241,9 @@ export const getAnswerForDnsQueryFromPreferences = async (
 
   const preferences = preferencesResponse.result;
   if (
-    (preferences.autoParkEnabled || isNotNil(preferences.forwardTo)) &&
+    (preferences.autoParkEnabled ||
+      (isNotNil(preferences.forwardTo) &&
+        preferences.forwardTo.trim() !== '')) &&
     matchAny(qTypeEnum, RecordType.A, RecordType.AAAA)
   ) {
     //Final Answer RCODE is 0
