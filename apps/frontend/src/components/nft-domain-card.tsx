@@ -53,8 +53,10 @@ export function NftDomainCard({
           </div>
         </div>
         <div className="absolute bottom-0 left-0 right-0 flex flex-col items-start text-white px-3 py-4 bg-gradient-to-t from-black/90 via-black/10 to-transparent">
-          <h2 className="text-2xl font-semibold">{item.subdomain}</h2>
-          <p className="text-md font-semibold">.{item.parentDomain}</p>
+          <h2 className="text-2xl font-semibold break-all">{item.subdomain}</h2>
+          <p className="text-md font-semibold break-all">
+            .{item.parentDomain}
+          </p>
         </div>
       </div>
       <NamefiButton
