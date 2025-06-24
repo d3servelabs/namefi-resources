@@ -4,17 +4,63 @@ import { LogoTab } from '@/components/ai-generation/logo-tab';
 import { MarketingTab } from '@/components/ai-generation/marketing-tab';
 import { TabSelector } from '@/components/ai-generation/tab-selector';
 import { AuthRequired } from '@/components/auth-required';
+import { EmptyPlaceholder } from '@/components/empty-placeholder';
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
 } from '@/components/ui/shadcn/card';
+import { Skeleton } from '@/components/ui/shadcn/skeleton';
 import { useAuth } from '@/hooks/useAuth';
 import { useTRPC } from '@/utils/trpc';
 import { useQuery } from '@tanstack/react-query';
+import { Sparkles } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+
+const LoadingSkeletons = () => (
+  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {Array.from({ length: 6 }).map((_, index) => (
+      <Card
+        key={index}
+        className="cursor-pointer transition-all hover:shadow-lg"
+      >
+        <CardHeader>
+          <Skeleton className="h-6 w-32" />
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-2">
+            <div className="flex justify-between items-center">
+              <Skeleton className="h-4 w-12" />
+              <Skeleton className="h-4 w-6" />
+            </div>
+            <div className="flex justify-between items-center">
+              <Skeleton className="h-4 w-16" />
+              <Skeleton className="h-4 w-6" />
+            </div>
+            <div className="pt-2 border-t">
+              <Skeleton className="h-3 w-24" />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    ))}
+  </div>
+);
+
+const EmptyBrandsPlaceholder = () => (
+  <EmptyPlaceholder>
+    <div className="flex size-20 items-center justify-center rounded-full bg-muted">
+      <Sparkles className="size-10 text-muted-foreground" />
+    </div>
+    <EmptyPlaceholder.Title>No brands found</EmptyPlaceholder.Title>
+    <EmptyPlaceholder.Description>
+      Start generating logos and marketing images for your domains to create
+      your first brand.
+    </EmptyPlaceholder.Description>
+  </EmptyPlaceholder>
+);
 
 export default function AIBrandGeneratorPage() {
   const router = useRouter();
@@ -23,7 +69,11 @@ export default function AIBrandGeneratorPage() {
   const trpc = useTRPC();
 
   // Get all user domains (which represent "brands")
-  const { data: domains = [], refetch: refetchDomains } = useQuery({
+  const {
+    data: domains = [],
+    isLoading: isDomainsLoading,
+    refetch: refetchDomains,
+  } = useQuery({
     ...trpc.ai.getUserDomains.queryOptions(),
     enabled: isAuthenticated,
   });
@@ -68,9 +118,11 @@ export default function AIBrandGeneratorPage() {
       </div>
 
       {/* Existing Domains */}
-      {domains.length > 0 && (
-        <div>
-          <h3 className="text-xl font-semibold mb-4">Your Domains</h3>
+      <div>
+        <h3 className="text-xl font-semibold mb-4">Your Domains</h3>
+        {isDomainsLoading ? (
+          <LoadingSkeletons />
+        ) : domains.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {domains.map((domainInfo) => {
               return (
@@ -118,8 +170,10 @@ export default function AIBrandGeneratorPage() {
               );
             })}
           </div>
-        </div>
-      )}
+        ) : (
+          <EmptyBrandsPlaceholder />
+        )}
+      </div>
     </div>
   );
 }
