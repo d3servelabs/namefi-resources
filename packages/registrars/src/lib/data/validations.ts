@@ -312,7 +312,7 @@ export function toPunycodeDomainName(value: string): PunycodeDomainName {
     .string()
     .trim()
     .transform((value) =>
-      punycode.toASCII(value.toLowerCase()).replace(/\.$/g, ''),
+      punycode.toASCII(value.toLowerCase()).replace(/\.$/, ''),
     )
     .parse(value);
   assertPunycodeDomainName(result);
