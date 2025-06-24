@@ -267,11 +267,6 @@ export const DomainCard: FC<{
                     ? `${formatAmountInUSD(priceInUsd)} USD`
                     : ''}
                 </p>
-                {isUnsupported && (
-                  <Badge variant="destructive" className="text-xs">
-                    Unsupported
-                  </Badge>
-                )}
               </div>
               {!domain.availability && isNotNil(domain.currentOwner) && (
                 <div className="flex items-center text-sm text-muted-foreground">
@@ -285,75 +280,82 @@ export const DomainCard: FC<{
                 </div>
               )}
             </div>
-            {(domain.availability || isImportable) && (
-              <TooltipProvider>
-                {isInCart ? (
-                  <div className="flex space-x-2 shrink-0">
-                    <Tooltip>
-                      <TooltipTrigger asChild={true}>
-                        <NamefiButton
-                          className="bg-black/40 border-white/10 hover:bg-red-600/80 hover:border-red-400/50 shrink-0"
-                          onClick={handleActionClick}
-                          disabled={isRemovingFromCart || isCartLoading}
-                        >
-                          {isRemovingFromCart ? (
-                            <Loader2 className="h-4 w-4 animate-spin" />
-                          ) : (
-                            <Trash className="h-4 w-4 mr-1" />
-                          )}
-                          Remove
-                        </NamefiButton>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        Remove this domain from your cart
-                      </TooltipContent>
-                    </Tooltip>
+            <div className="flex items-center justify-center shrink-0">
+              {isUnsupported && (
+                <Badge variant="destructive" className="text-xs">
+                  Unsupported
+                </Badge>
+              )}
+              {!isUnsupported && (domain.availability || isImportable) && (
+                <TooltipProvider>
+                  {isInCart ? (
+                    <div className="flex space-x-2 shrink-0">
+                      <Tooltip>
+                        <TooltipTrigger asChild={true}>
+                          <NamefiButton
+                            className="bg-black/40 border-white/10 hover:bg-red-600/80 hover:border-red-400/50 shrink-0"
+                            onClick={handleActionClick}
+                            disabled={isRemovingFromCart || isCartLoading}
+                          >
+                            {isRemovingFromCart ? (
+                              <Loader2 className="h-4 w-4 animate-spin" />
+                            ) : (
+                              <Trash className="h-4 w-4 mr-1" />
+                            )}
+                            Remove
+                          </NamefiButton>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          Remove this domain from your cart
+                        </TooltipContent>
+                      </Tooltip>
 
+                      <Tooltip>
+                        <TooltipTrigger asChild={true}>
+                          <NamefiButton
+                            className="shrink-0"
+                            onClick={() => {
+                              logBeginCheckout();
+                              router.push('/cart');
+                            }}
+                          >
+                            <ShoppingCart className="h-4 w-4 mr-1" />
+                            View Cart
+                          </NamefiButton>
+                        </TooltipTrigger>
+                        <TooltipContent>Go to your cart</TooltipContent>
+                      </Tooltip>
+                    </div>
+                  ) : (
                     <Tooltip>
                       <TooltipTrigger asChild={true}>
                         <NamefiButton
                           className="shrink-0"
-                          onClick={() => {
-                            logBeginCheckout();
-                            router.push('/cart');
-                          }}
+                          onClick={handleActionClick}
+                          disabled={
+                            isAddingToCart || isCartLoading || isAddingImport
+                          }
                         >
-                          <ShoppingCart className="h-4 w-4 mr-1" />
-                          View Cart
+                          {isAddingToCart || isAddingImport ? (
+                            <Loader2 className="h-4 w-4 animate-spin" />
+                          ) : isImportable ? (
+                            <Download className="h-4 w-4" />
+                          ) : (
+                            <ShoppingCart className="h-4 w-4" />
+                          )}
+                          {isImportable ? 'Import' : 'Add to cart'}
                         </NamefiButton>
                       </TooltipTrigger>
-                      <TooltipContent>Go to your cart</TooltipContent>
+                      <TooltipContent>
+                        {isImportable
+                          ? 'Import this domain'
+                          : 'Add this domain to your cart'}
+                      </TooltipContent>
                     </Tooltip>
-                  </div>
-                ) : (
-                  <Tooltip>
-                    <TooltipTrigger asChild={true}>
-                      <NamefiButton
-                        className="shrink-0"
-                        onClick={handleActionClick}
-                        disabled={
-                          isAddingToCart || isCartLoading || isAddingImport
-                        }
-                      >
-                        {isAddingToCart || isAddingImport ? (
-                          <Loader2 className="h-4 w-4 animate-spin" />
-                        ) : isImportable ? (
-                          <Download className="h-4 w-4" />
-                        ) : (
-                          <ShoppingCart className="h-4 w-4" />
-                        )}
-                        {isImportable ? 'Import' : 'Add to cart'}
-                      </NamefiButton>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      {isImportable
-                        ? 'Import this domain'
-                        : 'Add this domain to your cart'}
-                    </TooltipContent>
-                  </Tooltip>
-                )}
-              </TooltipProvider>
-            )}
+                  )}
+                </TooltipProvider>
+              )}
+            </div>
           </div>
         </CardContent>
       </Card>
