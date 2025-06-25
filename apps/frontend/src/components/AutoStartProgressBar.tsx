@@ -13,7 +13,7 @@ export type AutoStartProgressBar = {
   finish: () => void;
   reset: () => void;
 };
-const duration = 45;
+const duration = 180;
 export const AutoStartProgressBar = forwardRef<AutoStartProgressBar, any>(
   (_, ref) => {
     const motionValue = useMotionValue(0);
@@ -25,16 +25,11 @@ export const AutoStartProgressBar = forwardRef<AutoStartProgressBar, any>(
     const [scope, animate] = useAnimate();
 
     const init = useCallback(() => {
-      const controls = animate(motionValue, 90, { duration });
-      const jiggle = () => {
-        return animate(motionValue, 75, {
-          duration: 1,
-          onComplete: () => {
-            animate(motionValue, 90, { duration: 10, onComplete: jiggle });
-          },
-        });
-      };
-      controls.then(jiggle);
+      const controls = animate(motionValue, 90, {
+        duration,
+        damping: 30,
+        stiffness: 100,
+      });
       return controls.stop;
     }, [animate, motionValue]);
     // Animate motionValue to the target state whenever it changes
@@ -46,22 +41,37 @@ export const AutoStartProgressBar = forwardRef<AutoStartProgressBar, any>(
       rounded.on('change', setValue);
     }, [rounded]);
 
+    const finish = useCallback(() => {
+      for (const animation of scope.animations) {
+        animation.stop();
+      }
+      const currentValue = motionValue.get();
+      setTimeout(() => {
+        if (currentValue < 70) {
+          animate(motionValue, 80, {
+            duration: 5,
+            damping: 30,
+            stiffness: 100,
+          }).then(() => {
+            animate(motionValue, 100, { duration: 1 });
+          });
+        } else {
+          animate(motionValue, 100, { duration: 1 });
+        }
+      }, 500);
+    }, [animate, motionValue, scope]);
+
+    const reset = useCallback(() => {
+      animate(motionValue, 0, { duration: 0, onComplete: init });
+    }, [animate, motionValue, init]);
+
     useImperativeHandle(
       ref,
       () => ({
-        finish: () => {
-          for (const animation of scope.animations) {
-            animation.stop();
-          }
-          setTimeout(() => {
-            animate(motionValue, 100, { duration: 1 });
-          }, 500);
-        },
-        reset: () => {
-          animate(motionValue, 0, { duration: 1, onComplete: init });
-        },
+        finish,
+        reset,
       }),
-      [scope, motionValue, init, animate],
+      [finish, reset],
     );
 
     return <Progress value={value} />;
