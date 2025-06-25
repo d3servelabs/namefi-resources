@@ -926,6 +926,11 @@ export class DynadotRegistrarService extends AbstractRegistrarService<Registrars
       case OperationType.DOMAIN_CHANGE_LOCK:
       case OperationType.ADD_DNSSEC:
       case OperationType.REMOVE_DNSSEC:
+      case OperationType.ENABLE_AUTORENEW:
+      case OperationType.DISABLE_AUTORENEW:
+      case OperationType.CHANGE_PRIVACY_PROTECTION:
+      case OperationType.UPDATE_DOMAIN_CONTACT:
+      case OperationType.UPDATE_NAMESERVER:
         return Promise.resolve({
           type: operationType,
           operationId,
