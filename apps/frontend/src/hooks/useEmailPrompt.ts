@@ -25,7 +25,7 @@ export function useEmailPrompt(config: EmailPromptConfig = {}) {
         config.description ||
         'We send important notifications via email (including order status updates)',
       actionText: config.actionText || 'Visit Profile',
-      actionHref: config.actionHref || '/profile',
+      actionHref: config.actionHref || '/profile?tab=contact-details',
       toastId: config.toastId || 'missing-email-warning',
       suppressDaysAfterDismissal: config.suppressDaysAfterDismissal || 3,
     }),

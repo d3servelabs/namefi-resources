@@ -1,4 +1,4 @@
-import { db, userUpdateSchema, usersTable } from '@namefi-astra/db';
+import { db, usersTable } from '@namefi-astra/db';
 import {
   NAMEFI_NFT_CONTRACT_ADDRESS,
   namefiNormalizedDomainSchema,
@@ -26,6 +26,11 @@ import {
   getPrivyUserLinkedEthereumChecksumWalletAddresses,
   privyClient,
 } from '../utils';
+import {
+  privyCustomMetadataSchema,
+  privyCustomMetadataToPrivyStorage,
+  privyStorageToPrivyCustomMetadata,
+} from '../types';
 
 if (!secrets.ALCHEMY_API_KEY) {
   throw new Error('Cannot create Ethereum public client');
@@ -63,29 +68,19 @@ export const usersRouter = createTRPCRouter({
     return user;
   }),
 
-  updateUser: protectedProcedure
-    .input(
-      z.object({
-        data: userUpdateSchema.pick({ primaryEmail: true }),
-      }),
-    )
+  updatePrivyCustomMetadata: protectedProcedure
+    .input(privyCustomMetadataSchema)
     .mutation(async ({ input, ctx }) => {
-      const [updatedUser] = await db
-        .update(usersTable)
-        .set({
-          ...input.data,
-        })
-        .where(eq(usersTable.id, ctx.user.id))
-        .returning();
+      const serializedMetadata = privyCustomMetadataToPrivyStorage.parse(input);
 
-      if (!updatedUser) {
-        throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: 'User not found',
-        });
-      }
+      const updatedPrivyUser = await privyClient.setCustomMetadata(
+        ctx.user.privyUserId,
+        serializedMetadata,
+      );
 
-      return updatedUser;
+      return privyStorageToPrivyCustomMetadata.parse(
+        updatedPrivyUser.customMetadata,
+      );
     }),
 
   getUserQualifiesForDomainNamePromo: protectedProcedure

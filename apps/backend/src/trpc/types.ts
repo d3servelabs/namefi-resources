@@ -87,3 +87,44 @@ export function getDomainPricingForOperation(
     ? domain.pricingDetails.importPrice
     : domain.pricingDetails.registrationPrice;
 }
+
+// Note: keeping address subfields optional as suggested by Victor
+export const addressSchema = z.object({
+  street: z.string().optional(),
+  city: z.string().optional(),
+  state: z.string().optional(),
+  zipCode: z.string().optional(),
+  country: z.string().min(2).max(2).optional(), // ISO 3166-1 alpha-2 code
+});
+
+export type Address = z.infer<typeof addressSchema>;
+
+// Schema for the actual data structure we want to work with
+export const privyCustomMetadataSchema = z.object({
+  fullName: z.string().optional(),
+  address: addressSchema.optional(),
+});
+
+export type PrivyCustomMetadata = z.infer<typeof privyCustomMetadataSchema>;
+
+// Storage schema - represents the primitive format stored in Privy
+export const privyStorageSchema = z
+  .object({
+    data: z.string().optional(),
+  })
+  .optional();
+
+export type PrivyStorage = z.infer<typeof privyStorageSchema>;
+
+export const privyCustomMetadataToPrivyStorage =
+  privyCustomMetadataSchema.transform((data) => {
+    return {
+      data: JSON.stringify(data),
+    };
+  });
+
+export const privyStorageToPrivyCustomMetadata = privyStorageSchema.transform(
+  (data) => {
+    return privyCustomMetadataSchema.parse(JSON.parse(data?.data ?? '{}'));
+  },
+);

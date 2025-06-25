@@ -34,7 +34,7 @@ export function EmailRequiredModal({
   title = 'Email Required',
   description = 'You need to add a valid email to your profile to continue.',
   actionText = 'Add Email',
-  actionHref = '/profile',
+  actionHref = '/profile?tab=contact-details',
   dismissible = true,
   onGoBack,
 }: EmailRequiredModalProps) {

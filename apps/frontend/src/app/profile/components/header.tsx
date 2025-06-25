@@ -2,16 +2,12 @@
 
 import { Copy } from '@/components/Copy';
 import { CurrentUserAvatar } from '@/components/UserAvatar';
-import { Button } from '@/components/ui/shadcn/button';
 import { cn } from '@/lib/utils';
 import { FORCED_THEME } from '@/providers/sessions';
 import { shortage } from '@/utils/string';
-import { type User, usePrivy } from '@privy-io/react-auth';
-import { LogOut } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import type { User } from '@privy-io/react-auth';
 import { isNil } from 'ramda';
 import type { FC, HTMLAttributes } from 'react';
-import { toast } from 'sonner';
 import { ThemeDropdown } from './dropdowns/theme-dropdown';
 
 export interface HeaderProps extends HTMLAttributes<HTMLDivElement> {
@@ -23,24 +19,6 @@ export const Header: FC<HeaderProps> = ({
   className,
   ...rest
 }: HeaderProps) => {
-  const router = useRouter();
-
-  const { logout } = usePrivy();
-
-  const handleLogout = async () => {
-    try {
-      await logout();
-      toast('Logged out', {
-        description: 'You have been successfully logged out.',
-      });
-      router.push('/');
-    } catch {
-      toast('Error', {
-        description: 'Failed to log out. Please try again.',
-      });
-    }
-  };
-
   const wallet = user.wallet?.address;
   const email = user.email?.address || user.google?.email;
 
@@ -89,10 +67,6 @@ export const Header: FC<HeaderProps> = ({
 
       <div className="flex items-center gap-2">
         {isNil(FORCED_THEME) && <ThemeDropdown />}
-        <Button variant="destructive" onClick={handleLogout} className="gap-2">
-          <LogOut className="h-4 w-4" />
-          Sign Out
-        </Button>
       </div>
     </div>
   );

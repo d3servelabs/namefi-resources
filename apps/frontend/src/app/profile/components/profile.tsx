@@ -8,14 +8,32 @@ import {
 } from '@/components/ui/shadcn/tabs';
 import { usePrivy } from '@privy-io/react-auth';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import { Accounts } from './accounts';
+import { useEffect, useState, useCallback } from 'react';
+import { SocialAccounts } from './social-accounts';
 import { Footer } from './footer';
 import { Header } from './header';
 import { Wallets } from './wallets';
+import { ContactDetails } from './contact-details';
+import { useQueryState, parseAsStringEnum } from 'nuqs';
+
+enum TabValues {
+  WALLETS = 'wallets',
+  ACCOUNTS = 'accounts',
+  CONTACT_DETAILS = 'contact-details',
+}
+
+const defaultTab = TabValues.ACCOUNTS;
 
 export default function Profile() {
   const router = useRouter();
+  const [activeTab, setActiveTab] = useQueryState(
+    'tab',
+    parseAsStringEnum<TabValues>(Object.values(TabValues))
+      .withOptions({
+        clearOnDefault: false,
+      })
+      .withDefault(defaultTab),
+  );
 
   const { ready, authenticated, user } = usePrivy();
 
@@ -29,6 +47,19 @@ export default function Profile() {
     }
   }, [ready, authenticated, router]);
 
+  useEffect(() => {
+    if (activeTab === defaultTab) {
+      setActiveTab(defaultTab);
+    }
+  }, [activeTab, setActiveTab]);
+
+  const handleTabChange = useCallback(
+    (value: string) => {
+      setActiveTab(value as TabValues);
+    },
+    [setActiveTab],
+  );
+
   if (isLoading || !user) {
     return (
       <div className="flex h-screen items-center justify-center">
@@ -41,18 +72,25 @@ export default function Profile() {
     <div className="w-full gap-8 flex flex-col p-4">
       <Header user={user} />
 
-      <Tabs defaultValue="accounts">
-        <TabsList className="grid w-full grid-cols-2 lg:w-auto">
-          <TabsTrigger value="wallets">Wallets</TabsTrigger>
-          <TabsTrigger value="accounts">Accounts</TabsTrigger>
+      <Tabs value={activeTab.toString()} onValueChange={handleTabChange}>
+        <TabsList className="grid w-full grid-cols-3 lg:w-auto">
+          <TabsTrigger value={TabValues.WALLETS}>Wallets</TabsTrigger>
+          <TabsTrigger value={TabValues.ACCOUNTS}>Accounts</TabsTrigger>
+          <TabsTrigger value={TabValues.CONTACT_DETAILS}>
+            Contact Details
+          </TabsTrigger>
         </TabsList>
 
-        <TabsContent value="wallets" className="mt-6">
+        <TabsContent value={TabValues.WALLETS} className="mt-6">
           <Wallets />
         </TabsContent>
 
-        <TabsContent value="accounts" className="mt-6">
-          <Accounts user={user} />
+        <TabsContent value={TabValues.ACCOUNTS} className="mt-6">
+          <SocialAccounts user={user} />
+        </TabsContent>
+
+        <TabsContent value={TabValues.CONTACT_DETAILS} className="mt-6">
+          <ContactDetails />
         </TabsContent>
       </Tabs>
 

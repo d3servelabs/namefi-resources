@@ -20,7 +20,6 @@ import {
   itemTypeEnum,
   refundsTable,
   usersTable,
-  contactDetailsSchema,
 } from './schema';
 
 // TODO: types are not being exported correctly
@@ -217,6 +216,3 @@ export type OrderItemStatus = z.infer<typeof orderItemStatusSchema>;
 
 export const itemTypeSchema = z.enum(itemTypeEnum.enumValues);
 export type ItemType = z.infer<typeof itemTypeSchema>;
-
-export { contactDetailsSchema };
-export type ContactDetails = z.infer<typeof contactDetailsSchema>;

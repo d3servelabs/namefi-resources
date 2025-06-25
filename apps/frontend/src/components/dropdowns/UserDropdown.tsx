@@ -4,7 +4,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/shadcn/dropdown-menu';
@@ -16,9 +15,7 @@ import { useEmailPrompt } from '@/hooks/useEmailPrompt';
 import { cn } from '@/lib/utils';
 import type { NavItem } from '@/types';
 import { shortage } from '@/utils/string';
-import { useTRPC } from '@/utils/trpc';
 import { type User, useLogin, useLogout } from '@privy-io/react-auth';
-import { useMutation } from '@tanstack/react-query';
 import {
   Loader2Icon,
   LogOutIcon,
@@ -33,7 +30,6 @@ import {
   type HTMLAttributes,
   forwardRef,
   useCallback,
-  useEffect,
 } from 'react';
 import { CurrentUserAvatar } from '../UserAvatar';
 
@@ -53,42 +49,9 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
     const confirm = useConfirm();
     const { clearLocalCart } = useCart();
 
-    const {
-      isLoading,
-      isAuthenticated,
-      privyUser,
-      user: namefiUser,
-    } = useAuth();
+    const { isLoading, isAuthenticated, privyUser } = useAuth();
 
     const { showEmailPrompt } = useEmailPrompt();
-
-    const trpc = useTRPC();
-    const { mutate: updateUser } = useMutation(
-      trpc.users.updateUser.mutationOptions({}),
-    );
-
-    // keep Privy email address and Namefi email address in sync
-    useEffect(() => {
-      if (isLoading || !isAuthenticated) {
-        return;
-      }
-
-      if (!(privyUser && namefiUser)) {
-        return;
-      }
-
-      // add email to db if missing but connected to PrivyUser
-      if (!namefiUser.primaryEmail && privyUser.email?.address) {
-        updateUser({ data: { primaryEmail: privyUser.email.address } });
-        return;
-      }
-
-      // remove email from db if no longer connected to PrivyUser
-      if (namefiUser.primaryEmail && !privyUser.email?.address) {
-        updateUser({ data: { primaryEmail: null } });
-        return;
-      }
-    }, [isAuthenticated, isLoading, namefiUser, privyUser, updateUser]);
 
     const name =
       privyUser?.wallet?.address ||
@@ -172,8 +135,6 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
               </SidebarMenuButton>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-56">
-              <DropdownMenuLabel>Account</DropdownMenuLabel>
-              <DropdownMenuSeparator />
               {ITEMS.map((item) => {
                 const Icon = item.icon;
 
@@ -192,7 +153,7 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
                 className="text-red-500"
               >
                 <LogOutIcon className="mr-2 h-4 w-4" />
-                <span>Disconnect</span>
+                <span>Log Out</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
