@@ -1,5 +1,6 @@
 import {
   type CartItemSelect,
+  type OrderItemInsert,
   type PaymentSelect,
   cartItemsTable,
   db,
@@ -39,6 +40,7 @@ import {
   privyClient,
 } from '../utils';
 import { getDomainPricingForOperation } from '../types';
+import type { Json } from 'drizzle-zod';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
 
@@ -219,15 +221,21 @@ export const ordersRouter = createTRPCRouter({
         const orderItems = await tx
           .insert(orderItemsTable)
           .values(
-            cartItems.map((item) => ({
-              orderId: order.id,
-              normalizedDomainName: item.normalizedDomainName,
-              amountInUSDCents: item.amountInUSDCents,
-              durationInYears: item.durationInYears,
-              type: item.type,
-              registrar: item.registrar,
-              metadata: item.metadata,
-            })),
+            cartItems.map(
+              (item) =>
+                ({
+                  orderId: order.id,
+                  normalizedDomainName: item.normalizedDomainName,
+                  amountInUSDCents: item.amountInUSDCents,
+                  durationInYears: item.durationInYears,
+                  type: item.type,
+                  registrar: item.registrar,
+                  metadata: item.metadata as Json,
+                  encryptionKeyId: item.encryptionKeyId,
+                  encryptedEppAuthorizationCode:
+                    item.encryptedEppAuthorizationCode,
+                }) satisfies OrderItemInsert,
+            ),
           )
           .returning();
 

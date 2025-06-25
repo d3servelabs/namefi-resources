@@ -81,7 +81,22 @@ export const cartsRouter = createTRPCRouter({
         method: 'addItems',
       });
 
-      methodLogger.info({ input }, 'Adding items to cart');
+      methodLogger.info(
+        {
+          input: input.map((item) => ({
+            normalizedDomainName: item.normalizedDomainName,
+            amountInUSDCents: item.amountInUSDCents,
+            durationInYears: item.durationInYears,
+            type: item.type,
+            registrar: item.registrar,
+            encryptionKeyId: item.encryptionKeyId,
+            encryptedEppAuthorizationCode: item.encryptedEppAuthorizationCode,
+            eppAuthorizationCodeLength: item.eppAuthorizationCode?.length,
+            metadata: item.metadata,
+          })),
+        },
+        'Adding items to cart',
+      );
 
       // Check if any items have 0 price and verify they qualify for promos
       const promoItems = input.filter((item) => item.amountInUSDCents === 0);

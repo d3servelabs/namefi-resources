@@ -137,9 +137,10 @@ async function _acquireSldDomain(input: AcquireDomainWorkflowInput) {
     isImport &&
     !(input.encryptedEppAuthorizationCode && input.encryptionKeyId)
   ) {
-    throw new Error(
-      'Authorization code is required for domain import operations',
-    );
+    throw workflow.ApplicationFailure.create({
+      message: 'Authorization code is required for domain import operations',
+      nonRetryable: true,
+    });
   }
 
   let details: Awaited<ReturnType<typeof sldRegisterOrImportWorkflow>>;
