@@ -57,16 +57,18 @@ export function NftWalletCard({
 
   const handleWalletAddressChange = useCallback(
     (value: string) => {
-      onWalletAddressChange(value);
       if (value.length === 0) {
         setError(null);
+        onWalletAddressChange(null);
         return;
       }
       const result = checksumWalletAddressSchema.safeParse(value);
       if (result.success) {
         setError(null);
+        onWalletAddressChange(value);
       } else {
         setError('Invalid wallet address');
+        onWalletAddressChange(null);
       }
     },
     [onWalletAddressChange],
