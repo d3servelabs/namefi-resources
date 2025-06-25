@@ -264,7 +264,7 @@ export const ordersTable = pgTable(
     ...randomUuid,
     userId: uuid('user_id')
       .references(() => usersTable.id, {
-        onDelete: 'set null',
+        onDelete: 'restrict',
       })
       .notNull(),
     status: orderStatusEnum('status').notNull().default('CREATED'),
