@@ -24,6 +24,7 @@ import {
   unique,
   uuid,
 } from 'drizzle-orm/pg-core';
+import { z } from 'zod';
 
 /**
  * Common table columns for timestamp tracking
@@ -106,6 +107,18 @@ export const paymentProviderEnum = pgEnum('payment_provider', [
   'STRIPE',
 ] as const);
 
+export const contactDetailsSchema = z.object({
+  firstName: z.string().min(1).max(100).optional(),
+  lastName: z.string().min(1).max(100).optional(),
+  phoneNumber: z.string().min(1).max(20).optional(),
+  email: z.string().email().optional(),
+  addressLines: z.array(z.string().min(1).max(200)).max(3).default([]),
+  city: z.string().min(1).max(100).optional(),
+  countryCode: z.string().length(2).toUpperCase().optional(), // ISO 3166-1 alpha-2
+  state: z.string().min(1).max(100).optional(),
+  zipCode: z.string().min(1).max(20).optional(),
+});
+
 /**
  * Users table
  * Stores basic user information
@@ -115,6 +128,8 @@ export const usersTable = pgTable('users', {
   primaryEmail: text('primary_email').unique(),
   stripeCustomerId: text('stripe_customer_id').unique(),
   privyUserId: text('privy_user_id').notNull().unique(),
+  contactDetails:
+    jsonb('contact_details').$type<z.infer<typeof contactDetailsSchema>>(),
   ...timestamps,
 });
 

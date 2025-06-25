@@ -233,6 +233,7 @@ describe('getUserQualifiesForDomainNamePromo', () => {
   const baseTestUser = {
     primaryEmail: null,
     stripeCustomerId: null,
+    contactDetails: null,
     createdAt: new Date(),
     updatedAt: new Date(),
   };
@@ -247,6 +248,7 @@ describe('getUserQualifiesForDomainNamePromo', () => {
           ...baseTestUser,
           id: 'testUserWithQualifyingEmail',
           privyUserId: 'testUserWithQualifyingEmail',
+          contactDetails: null,
         },
       } satisfies Omit<
         TrpcContext,
@@ -275,6 +277,7 @@ describe('getUserQualifiesForDomainNamePromo', () => {
           ...baseTestUser,
           id: 'testUserWithQualifyingTwitterHandle',
           privyUserId: 'testUserWithQualifyingTwitterHandle',
+          contactDetails: null,
         },
       } satisfies Omit<
         TrpcContext,
@@ -303,6 +306,7 @@ describe('getUserQualifiesForDomainNamePromo', () => {
           ...baseTestUser,
           id: 'testUserWithQualifyingTwitterName',
           privyUserId: 'testUserWithQualifyingTwitterName',
+          contactDetails: null,
         },
       } satisfies Omit<
         TrpcContext,
@@ -331,6 +335,7 @@ describe('getUserQualifiesForDomainNamePromo', () => {
           ...baseTestUser,
           id: 'testUserWithQualifyingGithubEmail',
           privyUserId: 'testUserWithQualifyingGithubEmail',
+          contactDetails: null,
         },
       } satisfies Omit<
         TrpcContext,
@@ -359,6 +364,7 @@ describe('getUserQualifiesForDomainNamePromo', () => {
           ...baseTestUser,
           id: 'testUserWithQualifyingGithubUsername',
           privyUserId: 'testUserWithQualifyingGithubUsername',
+          contactDetails: null,
         },
       } satisfies Omit<
         TrpcContext,
@@ -387,6 +393,7 @@ describe('getUserQualifiesForDomainNamePromo', () => {
           ...baseTestUser,
           id: 'testUserWithQualifyingGithubName',
           privyUserId: 'testUserWithQualifyingGithubName',
+          contactDetails: null,
         },
       } satisfies Omit<
         TrpcContext,
@@ -415,6 +422,7 @@ describe('getUserQualifiesForDomainNamePromo', () => {
           ...baseTestUser,
           id: 'testUserWithQualifyingEns',
           privyUserId: 'testUserWithQualifyingEns',
+          contactDetails: null,
         },
       } satisfies Omit<
         TrpcContext,
@@ -441,6 +449,7 @@ describe('getUserQualifiesForDomainNamePromo', () => {
           ...baseTestUser,
           id: 'testUserWithoutQualifyingAccount',
           privyUserId: 'testUserWithoutQualifyingAccount',
+          contactDetails: null,
         },
       } satisfies Omit<
         TrpcContext,
@@ -469,6 +478,7 @@ describe('getUserQualifiesForDomainNamePromo', () => {
           ...baseTestUser,
           id: 'testUserWithNoLinkedAccounts',
           privyUserId: 'testUserWithNoLinkedAccounts',
+          contactDetails: null,
         },
       } satisfies Omit<
         TrpcContext,
@@ -560,6 +570,7 @@ describe('getManagerPageEntrypointViewable', () => {
     primaryEmail: 'test-0x-city-owner@d3serve.xyz',
     stripeCustomerId: null,
     privyUserId: 'testUser0xCityOwner',
+    contactDetails: null,
     createdAt: new Date(),
     updatedAt: new Date(),
   };
@@ -604,6 +615,7 @@ describe('getManagerPageEntrypointViewable', () => {
           primaryEmail: null,
           stripeCustomerId: null,
           privyUserId: 'testUserNonParentDomainOwner',
+          contactDetails: null,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -630,6 +642,7 @@ describe('getManagerPageEntrypointViewable', () => {
           primaryEmail: null,
           stripeCustomerId: null,
           privyUserId: 'testUserGetPrivyUserThrowsError',
+          contactDetails: null,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -656,6 +669,7 @@ describe('getManagerPageEntrypointViewable', () => {
           primaryEmail: 'testUser@d3serve.xyz',
           stripeCustomerId: null,
           privyUserId: 'testUserNonParentDomainOwner',
+          contactDetails: null,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -1034,6 +1048,7 @@ describe('getUserQualifyingDomainNamesForPromo', () => {
   const baseTestUser = {
     primaryEmail: null,
     stripeCustomerId: null,
+    contactDetails: null,
     createdAt: new Date(),
     updatedAt: new Date(),
   };
@@ -1335,6 +1350,7 @@ describe('getUserQualifyingDomainNamesForPromo', () => {
           primaryEmail: null,
           stripeCustomerId: null,
           privyUserId: 'testUserWithSolanaWalletOnly',
+          contactDetails: null,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -1361,6 +1377,7 @@ describe('getUserQualifyingDomainNamesForPromo', () => {
           primaryEmail: null,
           stripeCustomerId: null,
           privyUserId: 'testUserGetPrivyUserThrowsError',
+          contactDetails: null,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
