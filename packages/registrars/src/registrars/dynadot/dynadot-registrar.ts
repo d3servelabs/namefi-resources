@@ -590,6 +590,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService<Registrars
         algorithm,
         digestType,
         digest: key.Digest,
+        flags: 257, //TODO @note: dynadot does not support return flags from dnssec keys so it's fixed to 257 (KSK)
       };
     });
   }
