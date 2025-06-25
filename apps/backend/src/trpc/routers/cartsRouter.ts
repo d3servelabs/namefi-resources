@@ -19,6 +19,9 @@ import { encryptEppAuthCode } from '#lib/epp-code-encryption';
 import { createTRPCRouter, protectedProcedure } from '../base';
 import { isNormalizedDomainNameAllowedForOriginHostname } from '../utils';
 import { getDomainPricingForOperation } from '../types';
+import { createLogger } from '#lib/logger';
+
+const _logger = createLogger({ context: 'cartsRouter' });
 
 export const cartsRouter = createTRPCRouter({
   // Get cart items for the current user
@@ -74,6 +77,12 @@ export const cartsRouter = createTRPCRouter({
       ),
     )
     .mutation(async ({ ctx, input }) => {
+      const methodLogger = _logger.child({
+        method: 'addItems',
+      });
+
+      methodLogger.info({ input }, 'Adding items to cart');
+
       // Check if any items have 0 price and verify they qualify for promos
       const promoItems = input.filter((item) => item.amountInUSDCents === 0);
 
@@ -143,6 +152,8 @@ export const cartsRouter = createTRPCRouter({
           return baseItem;
         }),
       );
+
+      methodLogger.info({ itemsToInsert }, 'Items to insert');
 
       // Insert items with conflict handling
       await db
