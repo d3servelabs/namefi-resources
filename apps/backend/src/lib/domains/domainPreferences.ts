@@ -240,10 +240,13 @@ export const getAnswerForDnsQueryFromPreferences = async (
   }
 
   const preferences = preferencesResponse.result;
+  const forwardToTrimmed = preferences.forwardTo?.trim();
+  const forwardTo =
+    isNotNil(forwardToTrimmed) && forwardToTrimmed !== ''
+      ? forwardToTrimmed
+      : null;
   if (
-    (preferences.autoParkEnabled ||
-      (isNotNil(preferences.forwardTo) &&
-        preferences.forwardTo.trim() !== '')) &&
+    (preferences.autoParkEnabled || isNotNil(forwardTo)) &&
     matchAny(qTypeEnum, RecordType.A, RecordType.AAAA)
   ) {
     //Final Answer RCODE is 0
@@ -264,16 +267,16 @@ export const getAnswerForDnsQueryFromPreferences = async (
       result.Answer?.push({
         name: recordName,
         type: dnsRecordTypeCodes.get(RecordType.TXT) as number,
-        TTL: 300,
+        TTL: 60,
         data: `"ENS1 dnsname.ens.eth ${preferences.ownerAddress}"`,
       });
     }
-    if (isNotNil(preferences.forwardTo)) {
+    if (isNotNil(forwardTo)) {
       result.Answer?.push({
         name: recordName,
         type: dnsRecordTypeCodes.get(RecordType.TXT) as number,
-        TTL: 300,
-        data: `"--nfi-redirect=${preferences.forwardTo}"`,
+        TTL: 60,
+        data: `"--nfi-redirect=${forwardTo}"`,
       });
     }
   }

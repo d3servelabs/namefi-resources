@@ -15,13 +15,13 @@ export const PARKED_DOMAIN_RECORDS: z.infer<typeof recordSchema>[] = [
     type: RecordType.A,
     name: '@',
     rdata: '24.199.74.33',
-    ttl: 300,
+    ttl: 60,
   },
   {
     type: RecordType.AAAA,
     name: '@',
     rdata: '2604:a880:4:1d0::417:7000',
-    ttl: 300,
+    ttl: 60,
   },
 ];
 
