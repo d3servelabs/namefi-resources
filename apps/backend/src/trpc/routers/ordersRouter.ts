@@ -657,7 +657,7 @@ function generateSummaryOfCartItemsChanges(
   if (noLongerAvailableCartItems.length > 0) {
     const length = noLongerAvailableCartItems.length;
     summary.push(
-      `${length === 1 ? 'One domain is no longer' : 'multiple domains are'} no longer available for purchase: ${noLongerAvailableCartItems.map((item) => item.normalizedDomainName).join(', ')}`,
+      `${length === 1 ? 'One domain is' : 'multiple domains are'} no longer available for purchase: ${noLongerAvailableCartItems.map((item) => item.normalizedDomainName).join(', ')}`,
     );
   }
   if (priceChangedCartItems.length > 0) {
