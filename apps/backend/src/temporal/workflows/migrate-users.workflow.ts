@@ -1,10 +1,10 @@
 import * as workflow from '@temporalio/workflow';
-import { map, splitEvery } from 'ramda';
+import { forEach, map, splitEvery } from 'ramda';
 import {
   longRunningOpts,
   shortRunningOpts,
 } from '../shared/commonRunningOptions';
-import { TEMPORAL_ENUMS } from '../shared/enums';
+import { TEMPORAL_ENUMS, TEMPORAL_QUEUES } from '../shared/enums';
 import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';
 import type { UserMigrationData } from '../activities/migration.activities';
 
@@ -115,7 +115,7 @@ export async function migrateUsersBatchWorkflow(options?: {
           primaryEmail?: string;
         }) => {
           try {
-            const result = await workflow.startChild(
+            const result = await workflow.executeChild(
               migrateSingleUserWorkflow,
               {
                 args: [
@@ -124,8 +124,8 @@ export async function migrateUsersBatchWorkflow(options?: {
                   user.contactDetails,
                   user.primaryEmail,
                 ],
-                workflowId: `migrate-user-${user.primaryEmail}${user.walletAddresses.join(',')}`,
-                taskQueue: 'default',
+                workflowId: `migrate-user-${user.primaryEmail ?? 'no-email'}-${user.walletAddresses.join('_')}`,
+                taskQueue: TEMPORAL_QUEUES.DEFAULT,
               },
             );
             return result;
@@ -146,28 +146,27 @@ export async function migrateUsersBatchWorkflow(options?: {
       return await Promise.all(batchPromises);
     };
 
+    const processResult = (result: any) => {
+      results.push(result);
+      if (result.success) {
+        successfulMigrations++;
+        workflow.log.info(
+          `Successfully migrated user ${result.walletAddress} via child workflow`,
+        );
+      } else {
+        failedMigrations++;
+        workflow.log.warn(
+          `Failed to migrate user ${result.walletAddress} via child workflow: ${result.error}`,
+        );
+        errors.push(`User ${result.walletAddress}: ${result.error}`);
+      }
+    };
+
     // Process all batches sequentially with delays
     for (let i = 0; i < batches.length; i++) {
       const batchResults = await processBatch(batches[i], i);
 
-      // Process results using Ramda
-      const processResult = (result: any) => {
-        results.push(result);
-        if (result.success) {
-          successfulMigrations++;
-          workflow.log.info(
-            `Successfully migrated user ${result.walletAddress} via child workflow`,
-          );
-        } else {
-          failedMigrations++;
-          workflow.log.warn(
-            `Failed to migrate user ${result.walletAddress} via child workflow: ${result.error}`,
-          );
-          errors.push(`User ${result.walletAddress}: ${result.error}`);
-        }
-      };
-
-      map(processResult, batchResults);
+      forEach(processResult, batchResults);
 
       // Add delay between batches to avoid overwhelming the system
       if (i < batches.length - 1) {
