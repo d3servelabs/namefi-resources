@@ -10,7 +10,7 @@ import { config, secrets } from '#lib/env';
 import { logger } from '#lib/logger';
 import { AutoRenewPreference, User } from '../../lib/legacy/db/schemas';
 import { privyClient } from '../../trpc/utils';
-import { fromPairs, groupBy, isNil, isNotNil } from 'ramda';
+import { fromPairs, groupBy, isNil, isNotNil, uniqBy } from 'ramda';
 import { privyCustomMetadataToPrivyStorage } from '../../trpc/types';
 
 const _logger = logger.child({
@@ -260,6 +260,10 @@ export async function preparePrivyUserAccounts(
     .map((user) => user?.id)
     .filter(isNotNil);
 
+  const existingPrivyUsers = Object.values(existingUserByWallets).filter(
+    isNotNil,
+  );
+
   // Build linked accounts array
   const linkedAccounts: any[] = newWalletAddresses.map((walletAddress) => ({
     type: 'wallet',
@@ -274,6 +278,7 @@ export async function preparePrivyUserAccounts(
     if (existingUserByEmail) {
       _logger.info(`User already exists in Privy for email ${primaryEmail}`);
 
+      existingPrivyUsers.push(existingUserByEmail);
       existingPrivyIds.push(existingUserByEmail.id);
       linkedAccounts.push({
         type: 'email',
@@ -293,8 +298,20 @@ export async function preparePrivyUserAccounts(
   }
   const existingPrivyId = existingPrivyIds[0];
 
-  return {
+  const existingUser = existingPrivyUsers.find(
+    (user) => user.id === existingPrivyId,
+  );
+
+  if (existingUser) {
+    linkedAccounts.push(...(existingUser.linkedAccounts || []));
+  }
+  const distinctLinkedAccounts = uniqBy(
+    (account) => `${account.type}-${account.address}`.toLowerCase(),
     linkedAccounts,
+  );
+
+  return {
+    linkedAccounts: distinctLinkedAccounts,
     existingPrivyId,
   };
 }
