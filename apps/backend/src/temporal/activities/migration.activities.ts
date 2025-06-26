@@ -319,13 +319,29 @@ export async function preparePrivyUserAccounts(
       ),
   );
 
+  const createNewPrivyUser =
+    isNil(existingPrivyId) ||
+    (existingPrivyId && newAccountsToBeLinked.length > 0);
+
   return {
     newAccountsToBeLinked,
     existingLinkedAccounts,
     existingPrivyId,
+    createNewPrivyUser,
   };
 }
 
+export async function deleteExistingPrivyUserActivity(
+  existingPrivyId?: string,
+) {
+  if (!existingPrivyId) {
+    return;
+  }
+  const deletedUser = await privyClient.deleteUser(existingPrivyId);
+  _logger.info(
+    `Deleted existing Privy user for wallet ${existingPrivyId}: ${deletedUser}`,
+  );
+}
 /**
  * Temporal activity to create or find Privy user
  */
@@ -338,29 +354,12 @@ export async function createPrivyUserActivity(
   existingPrivyId?: string;
   newUserCreated: boolean;
 }> {
-  const createNewPrivyUser =
-    isNil(existingPrivyId) ||
-    (existingPrivyId && newAccountsToBeLinked.length > 0);
-  if (!createNewPrivyUser) {
-    return {
-      privyUserId: existingPrivyId,
-      existingPrivyId,
-      newUserCreated: false,
-    };
-  }
   const distinctLinkedAccounts = uniqBy(
     (account) => `${account.type}-${account.address}`.toLowerCase(),
     [...newAccountsToBeLinked, ...existingLinkedAccounts],
   );
 
   try {
-    if (existingPrivyId) {
-      const deletedUser = await privyClient.deleteUser(existingPrivyId);
-      _logger.info(
-        `Deleted existing Privy user for wallet ${existingPrivyId}: ${deletedUser}`,
-      );
-    }
-
     const response = await fetch('https://auth.privy.io/api/v1/users/import', {
       method: 'POST',
       headers: {

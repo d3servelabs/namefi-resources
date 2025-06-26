@@ -244,6 +244,7 @@ export async function migrateSingleUserWorkflow(
     migrateAutoRenewPreferencesActivity,
     preparePrivyUserAccounts,
     getMongoUsersAutoRenewPreferencesActivity,
+    deleteExistingPrivyUserActivity,
   } = typedProxyActivities({
     temporalEnum: TEMPORAL_ENUMS.DEFAULT,
     options: {
@@ -285,13 +286,30 @@ export async function migrateSingleUserWorkflow(
   workflow.log.info(
     `Step 2: Creating/finding Privy user for ${walletAddresses}`,
   );
-  const { newAccountsToBeLinked, existingLinkedAccounts, existingPrivyId } =
-    await preparePrivyUserAccounts(walletAddresses, primaryEmail);
-  const { privyUserId, newUserCreated } = await createPrivyUserActivity(
+  const {
     newAccountsToBeLinked,
     existingLinkedAccounts,
     existingPrivyId,
-  );
+    createNewPrivyUser,
+  } = await preparePrivyUserAccounts(walletAddresses, primaryEmail);
+
+  let privyUserId: string | undefined;
+  let newUserCreated: boolean;
+
+  if (createNewPrivyUser) {
+    await deleteExistingPrivyUserActivity(existingPrivyId);
+
+    const result = await createPrivyUserActivity(
+      newAccountsToBeLinked,
+      existingLinkedAccounts,
+      existingPrivyId,
+    );
+    privyUserId = result.privyUserId;
+    newUserCreated = result.newUserCreated;
+  } else {
+    privyUserId = existingPrivyId;
+    newUserCreated = false;
+  }
   workflow.log.info(`Privy user created/found: ${privyUserId}`);
 
   // Step 3: Create user in PostgreSQL
