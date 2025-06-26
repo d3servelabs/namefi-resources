@@ -7,13 +7,11 @@
   "scripts": {
     "clean": "git clean -xdf .next .turbo node_modules out dist",
     "with-env": "infisical run --token=$INFISICAL_SERVICE_TOKEN -- bun",
-    "typecheck": "tsc --noEmit",
-    "validate:secrets": "bun run with-env src/lib/env/index.ts"
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.830.0",
     "@namefi-astra/env": "workspace:*",
-    "@supabase/supabase-js": "^2.49.8",
     "zod": "3.23.8"
   },
   "devDependencies": {

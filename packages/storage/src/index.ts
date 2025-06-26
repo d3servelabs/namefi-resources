@@ -1,5 +1,4 @@
 import { S3Client } from '@aws-sdk/client-s3';
-import { secrets } from './lib/env';
 
 /**
  * S3 Client Configuration for Supabase Storage
@@ -10,26 +9,34 @@ import { secrets } from './lib/env';
  * @see https://supabase.com/docs/guides/storage/s3/compatibility
  */
 
-export const createS3ClientWithAccessKeys = () => {
-  const {
-    SUPABASE_PROJECT_REF,
-    SUPABASE_S3_ACCESS_KEY_ID,
-    SUPABASE_S3_SECRET_ACCESS_KEY,
-    SUPABASE_S3_REGION,
-  } = secrets;
+interface CreateS3ClientWithAccessKeysParams {
+  AWS_ACCESS_KEY_ID: string;
+  AWS_SECRET_ACCESS_KEY: string;
+  AWS_REGION: string;
+}
 
+export const createS3ClientWithAccessKeys = ({
+  AWS_ACCESS_KEY_ID,
+  AWS_SECRET_ACCESS_KEY,
+  AWS_REGION,
+}: CreateS3ClientWithAccessKeysParams) => {
   return new S3Client({
     forcePathStyle: true,
-    region: SUPABASE_S3_REGION,
-    endpoint: `https://${SUPABASE_PROJECT_REF}.supabase.co/storage/v1/s3`,
+    region: AWS_REGION,
     credentials: {
-      accessKeyId: SUPABASE_S3_ACCESS_KEY_ID,
-      secretAccessKey: SUPABASE_S3_SECRET_ACCESS_KEY,
+      accessKeyId: AWS_ACCESS_KEY_ID,
+      secretAccessKey: AWS_SECRET_ACCESS_KEY,
     },
   });
 };
 
-export const s3Client = createS3ClientWithAccessKeys();
+export type { S3Client } from '@aws-sdk/client-s3';
 
-export const getBucketUrl = (bucketName: string) =>
-  `https://${secrets.SUPABASE_PROJECT_REF}.supabase.co/storage/v1/object/public/${bucketName}`;
+export const getBucketUrl = ({
+  bucketName,
+  bucketRegion,
+}: {
+  bucketName: string;
+  bucketRegion: string;
+}) =>
+  `https://${bucketName}.${bucketRegion}.supabase.co/storage/v1/object/public/${bucketName}`;

@@ -45,11 +45,3 @@ export const MODEL_CONFIGS = {
     },
   } satisfies ImageGenerationConfig,
 } as const;
-
-/**
- * Storage bucket configurations
- */
-export const STORAGE_BUCKETS = {
-  LOGOS: 'generated-logos',
-  MARKETING_IMAGES: 'marketing-images',
-} as const;

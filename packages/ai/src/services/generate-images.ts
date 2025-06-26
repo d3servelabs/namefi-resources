@@ -3,7 +3,8 @@ import {
   type BaseMessageLike,
   type UsageMetadata,
 } from '@langchain/core/messages';
-import { MODEL_CONFIGS, STORAGE_BUCKETS } from '../lib/config/models';
+import type { S3Client } from '@namefi-astra/storage';
+import { MODEL_CONFIGS } from '../lib/config/models';
 import { sanitizeDomainName } from '../lib/utils/domain';
 import {
   createGenerationMessages,
@@ -17,10 +18,7 @@ import {
   addImageOverlays,
   createDefaultOverlayConfig,
 } from '../lib/utils/image-overlay';
-import {
-  enhanceImagePrompt,
-  imageGenerationSystemPrompt,
-} from '../prompts/domain-marketing';
+import { imageGenerationSystemPrompt } from '../prompts/domain-marketing';
 
 interface MarketingConcept {
   style: string;
@@ -97,6 +95,10 @@ export async function generateMarketingImage(
   domain: string,
   marketingConcept: MarketingConcept,
   runId: string,
+  bucketName: string,
+  folder: string,
+  cloudFrontUrl: string,
+  s3Client: S3Client,
   basedOnLogoCallId?: string,
 ): Promise<GeneratedImage | null> {
   console.log(`Generating marketing image for ${domain}`);
@@ -109,15 +111,6 @@ export async function generateMarketingImage(
   );
 
   try {
-    // Create enhanced prompt
-    const enhancedPrompt = enhanceImagePrompt({
-      basePrompt: marketingConcept.prompt,
-      domain,
-      buyerAppeal: marketingConcept.buyerAppeal,
-      style: marketingConcept.style,
-      withLogo: !!basedOnLogoCallId,
-    });
-
     // Create messages for multi-turn or regular generation
     const messages = createMarketingImageMessages(
       'Using the referenced logo, put it on a realistic billboard',
@@ -147,7 +140,7 @@ export async function generateMarketingImage(
     const overlayConfig = createDefaultOverlayConfig(
       domain,
       rawImageBuffer,
-      'https://xlwzxdrkpyaksbwzvcqy.supabase.co/storage/v1/object/public/assets//powered-by-namefi.jpg',
+      'https://xlwzxdrkpyaksbwzvcqy.supabase.co/storage/v1/object/public/assets/powered-by-namefi.jpg',
     );
     const overlayResult = await addImageOverlays(overlayConfig);
 
@@ -169,8 +162,10 @@ export async function generateMarketingImage(
     );
     const uploadResult = await uploadImageToS3(
       finalImageBuffer,
-      filePath,
-      STORAGE_BUCKETS.MARKETING_IMAGES,
+      `${folder}/${filePath}`,
+      bucketName,
+      cloudFrontUrl,
+      s3Client,
       'image/jpeg',
     );
 
@@ -205,6 +200,10 @@ export async function generateMarketingImages(
   domain: string,
   marketingConcepts: MarketingConcept[],
   runId: string,
+  bucketName: string,
+  folder: string,
+  cloudFrontUrl: string,
+  s3Client: S3Client,
   basedOnLogoCallId?: string,
 ): Promise<GeneratedImage[]> {
   // Since we only generate 1 image per call now, take the first concept
@@ -217,6 +216,10 @@ export async function generateMarketingImages(
     domain,
     concept,
     runId,
+    bucketName,
+    folder,
+    cloudFrontUrl,
+    s3Client,
     basedOnLogoCallId,
   );
   return result ? [result] : [];

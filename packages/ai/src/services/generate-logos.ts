@@ -1,5 +1,6 @@
 import type { UsageMetadata } from '@langchain/core/messages';
-import { MODEL_CONFIGS, STORAGE_BUCKETS } from '../lib/config/models';
+import type { S3Client } from '@namefi-astra/storage';
+import { MODEL_CONFIGS } from '../lib/config/models';
 import {
   createGenerationMessages,
   createImageGenerationModel,
@@ -58,6 +59,10 @@ export async function generateLogo(
   brandName: string,
   logoConcept: LogoConceptData,
   runId: string,
+  bucketName: string,
+  folder: string,
+  cloudFrontUrl: string,
+  s3Client: S3Client,
 ): Promise<GeneratedLogo | null> {
   console.log(`Generating logo design for ${brandName}`);
   console.log(`Type: ${logoConcept.type} - Style: ${logoConcept.style}`);
@@ -108,8 +113,10 @@ export async function generateLogo(
     );
     const uploadResult = await uploadImageToS3(
       imageBuffer,
-      filePath,
-      STORAGE_BUCKETS.LOGOS,
+      `${folder}/${filePath}`,
+      bucketName,
+      cloudFrontUrl,
+      s3Client,
     );
 
     if (uploadResult.success && uploadResult.publicUrl) {

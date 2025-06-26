@@ -8,11 +8,19 @@ import {
 } from '@namefi-astra/ai';
 import { db } from '@namefi-astra/db';
 import { aiGenerationsTable } from '@namefi-astra/db/schema';
+import { createS3ClientWithAccessKeys } from '@namefi-astra/storage';
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
 import { and, count, desc, eq, max, sql } from 'drizzle-orm';
 import { z } from 'zod';
+import { config, secrets } from '../../lib/env';
 import { createTRPCRouter, protectedProcedure } from '../base';
+
+const s3Client = createS3ClientWithAccessKeys({
+  AWS_ACCESS_KEY_ID: secrets.AWS_ACCESS_KEY_ID,
+  AWS_SECRET_ACCESS_KEY: secrets.AWS_SECRET_ACCESS_KEY,
+  AWS_REGION: config.AWS_REGION,
+});
 
 const generateLogoInputSchema = z.object({
   brandName: namefiNormalizedDomainSchema,
@@ -47,6 +55,10 @@ export const aiRouter = createTRPCRouter({
           brandName,
           logoConcept.logoConcept,
           runId,
+          config.STORAGE_BUCKET,
+          config.AI_BUCKET_FOLDERS.LOGOS,
+          config.CLOUD_FRONT_URL,
+          s3Client,
         );
 
         if (!generatedLogo) {
@@ -145,6 +157,10 @@ export const aiRouter = createTRPCRouter({
           domain,
           research.marketingConcept,
           runId,
+          config.STORAGE_BUCKET,
+          config.AI_BUCKET_FOLDERS.SOCIAL,
+          config.CLOUD_FRONT_URL,
+          s3Client,
           referenceLogoGenerationExternalId,
         );
 

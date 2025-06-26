@@ -23,6 +23,9 @@ const productionConfig: ConfigInput = {
   DNSSEC_DNSKEY_PUBLIC_RECORD:
     '0x.city. 86400 IN DNSKEY 257 3 13 rsA8XQ32zr8KIj9iZc8uYvuh9+dozZi581+FiQQoCPw+WnAWumIbXqaOoWWgFQAetARJGTheCAAF4EIb/w6WMA==',
   DNSSEC_DNSKEY_KEY_TAG: 43974,
+
+  STORAGE_BUCKET: 'namefi-astra-prod',
+  CLOUD_FRONT_URL: 'https://d37hwq656n7huw.cloudfront.net',
 };
 
 export default productionConfig;

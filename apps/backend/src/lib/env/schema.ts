@@ -93,6 +93,18 @@ export const configSchema = z.object({
   DYNADOT_BASE_URL: z.string().optional(),
   DNSSEC_DNSKEY_PUBLIC_RECORD: z.string(),
   DNSSEC_DNSKEY_KEY_TAG: z.number(),
+
+  STORAGE_BUCKET: z.string().default('namefi-astra-dev'),
+  CLOUD_FRONT_URL: z.string().default('https://d3pajj40uywidf.cloudfront.net'),
+  AI_BUCKET_FOLDERS: z
+    .object({
+      LOGOS: z.string(),
+      SOCIAL: z.string(),
+    })
+    .default({
+      LOGOS: 'ai-logos',
+      SOCIAL: 'ai-social',
+    }),
 });
 
 export type ConfigInput = z.input<typeof configSchema>;

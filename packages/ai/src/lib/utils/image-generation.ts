@@ -6,7 +6,7 @@ import {
   SystemMessage,
 } from '@langchain/core/messages';
 import { ChatOpenAI } from '@langchain/openai';
-import { getBucketUrl, s3Client } from '@namefi-astra/storage';
+import type { S3Client } from '@namefi-astra/storage';
 import type { Responses } from 'openai/resources';
 import { secrets } from '../env';
 
@@ -78,6 +78,8 @@ export async function uploadImageToS3(
   buffer: Buffer,
   filePath: string,
   storageBucket: string,
+  cloudFrontUrl: string,
+  s3Client: S3Client,
   contentType = 'image/png',
 ): Promise<UploadResult> {
   try {
@@ -90,7 +92,7 @@ export async function uploadImageToS3(
       }),
     );
 
-    const publicUrl = `${getBucketUrl(storageBucket)}/${filePath}`;
+    const publicUrl = `${cloudFrontUrl}/${filePath}`;
     return { success: true, publicUrl };
   } catch (error) {
     console.error('Failed to upload to S3:', error);
