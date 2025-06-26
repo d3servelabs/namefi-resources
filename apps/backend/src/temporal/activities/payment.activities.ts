@@ -1,6 +1,7 @@
 import {
   type PaymentProviderDetails,
   type PaymentUpdate,
+  type RefundInsert,
   type RefundUpdate,
   db,
   paymentProviderSchema,
@@ -16,13 +17,11 @@ import { usersService } from '#services/index';
 import {
   CreateNewPaymentFailure,
   CreateNewRefundFailure,
-  MissingNfscPaymentDetailsError,
   MissingPaymentProviderReferenceId,
   NegativeAmountInUsdCentsError,
   NfscPaymentCaptureNotSupportedError,
   PaymentNotFoundError,
   PaymentNotReadyForCaptureError,
-  StripeRefundsNotSupportedError,
   UpdatePaymentFailure,
   UpdateRefundFailure,
 } from '#services/payments/errors';
@@ -115,25 +114,23 @@ export async function createRefund({
     });
   }
 
-  const { paymentProvider, nfscPaymentDetails } = await getPaymentDetails({
+  const { nfscPaymentDetails } = await getPaymentDetails({
     paymentId,
   });
 
-  if (paymentProvider === paymentProviderSchema.Values.STRIPE) {
-    throw new StripeRefundsNotSupportedError();
-  }
-
-  if (!nfscPaymentDetails) {
-    throw new MissingNfscPaymentDetailsError({ paymentId });
-  }
-
-  const newRefundInsertValues = Object.assign({
-    amountInUSDCents: amountToRefundInUsdCents,
-    paymentId,
-    status: 'CREATED',
-    chainId: nfscPaymentDetails.chainId,
-    walletAddress: nfscPaymentDetails.walletAddress,
-  });
+  const newRefundInsertValues: RefundInsert = nfscPaymentDetails
+    ? {
+        amountInUSDCents: amountToRefundInUsdCents,
+        paymentId,
+        status: 'CREATED',
+        chainId: nfscPaymentDetails.chainId,
+        walletAddress: nfscPaymentDetails.walletAddress,
+      }
+    : {
+        amountInUSDCents: amountToRefundInUsdCents,
+        paymentId,
+        status: 'CREATED',
+      };
 
   const [newRefund] = await db
     .insert(refundsTable)
@@ -165,6 +162,24 @@ export async function getPaymentDetails({ paymentId }: { paymentId: string }) {
   }
 
   return payment;
+}
+
+export async function getRefundDetails({ refundId }: { refundId: string }) {
+  const refund = await db.query.refundsTable.findFirst({
+    columns: {
+      amountInUSDCents: true,
+      paymentId: true,
+      paymentProviderReferenceId: true,
+      status: true,
+    },
+    where: eq(refundsTable.id, refundId),
+  });
+
+  if (!refund) {
+    throw new Error(`Could not find Refund with ID: ${refundId}`);
+  }
+
+  return refund;
 }
 
 export async function createStripePaymentIntent({
@@ -214,7 +229,7 @@ export async function createStripePaymentIntent({
   const stripePaymentIntent = await stripe.paymentIntents.create({
     amount: totalAmountInUsdCents,
     currency: 'usd',
-    capture_method: 'manual',
+    capture_method: 'automatic',
     customer: stripeCustomerId,
     confirm: true,
     automatic_payment_methods: {
@@ -226,6 +241,37 @@ export async function createStripePaymentIntent({
   });
 
   return { stripePaymentIntent };
+}
+
+export async function createStripeRefund({
+  amountToRefundInUsdCents,
+  stripePaymentIntentId,
+}: {
+  amountToRefundInUsdCents: number;
+  stripePaymentIntentId: string;
+}) {
+  if (amountToRefundInUsdCents < 0) {
+    throw new NegativeAmountInUsdCentsError({
+      amountInUsdCents: amountToRefundInUsdCents,
+    });
+  }
+
+  const stripeRefund = await stripe.refunds.create({
+    amount: amountToRefundInUsdCents,
+    payment_intent: stripePaymentIntentId,
+  });
+
+  return { stripeRefund };
+}
+
+export async function getStripeRefundStatus({
+  stripeRefundId,
+}: {
+  stripeRefundId: string;
+}) {
+  const refund = await stripe.refunds.retrieve(stripeRefundId);
+
+  return refund.status;
 }
 
 export type UpdatePaymentInput = Pick<
@@ -293,7 +339,10 @@ export async function updateRefund({
 export type PaymentActivities = {
   createPayment: typeof createPayment;
   getPaymentDetails: typeof getPaymentDetails;
+  getRefundDetails: typeof getRefundDetails;
+  getStripeRefundStatus: typeof getStripeRefundStatus;
   createStripePaymentIntent: typeof createStripePaymentIntent;
+  createStripeRefund: typeof createStripeRefund;
   updatePayment: typeof updatePayment;
   createRefund: typeof createRefund;
   updateRefund: typeof updateRefund;

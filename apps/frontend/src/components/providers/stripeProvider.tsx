@@ -45,7 +45,7 @@ export function StripeProvider({
         mode: 'payment',
         currency: 'usd',
         amount: amount,
-        capture_method: 'manual',
+        capture_method: 'automatic',
         appearance,
         customerSessionClientSecret,
       };

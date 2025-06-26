@@ -12,12 +12,12 @@ import {
   type ChargeUserWorkflowInput,
   chargeUserWorkflow,
 } from './chargeUser.workflow';
-import { finalizePaymentWorkflow } from './finalize-payment-workflow';
 import {
   NotificationChannel,
   notifyUserWorkflow,
 } from './notify-user-workflow';
 import { processOrderItemWorkflow } from './processOrderItem.workflow';
+import { refundUserWorkflow } from './refund-user.workflow';
 
 export interface ProcessOrderWorkflowInput {
   orderId: string;
@@ -94,10 +94,7 @@ export async function processOrderWorkflow(
     });
 
     // If payment failed, update order status and exit
-    if (
-      chargeResult.paymentStatus !== paymentStatusSchema.Values.SUCCEEDED &&
-      chargeResult.paymentStatus !== paymentStatusSchema.Values.REQUIRES_CAPTURE
-    ) {
+    if (chargeResult.paymentStatus !== paymentStatusSchema.Values.SUCCEEDED) {
       // set orderItem statuses to CANCELLED in db
       for (const item of orderDetails.items) {
         const [updateStatusError, _res] = await resolve(
@@ -196,24 +193,21 @@ export async function processOrderWorkflow(
       return acc + item.amountInUSDCents;
     }, 0);
 
-    const amountToCapture = succeededItems.reduce((acc, item) => {
-      return acc + item.amountInUSDCents;
-    }, 0);
-
-    await workflow.executeChild(finalizePaymentWorkflow, {
-      args: [
-        {
-          paymentId: orderDetails.paymentId,
-          amountToCaptureInUsdCents: amountToCapture,
-          amountToRefundInUsdCents: amountToRefund,
+    if (amountToRefund > 0) {
+      await workflow.executeChild(refundUserWorkflow, {
+        args: [
+          {
+            paymentId: orderDetails.paymentId,
+            amountToRefundInUsdCents: amountToRefund,
+          },
+        ],
+        workflowId: `refund-user-${orderDetails.paymentId}`,
+        taskQueue: TEMPORAL_QUEUES.DEFAULT,
+        retry: {
+          maximumAttempts: 1,
         },
-      ],
-      workflowId: `finalize-payment-${orderDetails.paymentId}`,
-      taskQueue: TEMPORAL_QUEUES.DEFAULT,
-      retry: {
-        maximumAttempts: 1,
-      },
-    });
+      });
+    }
 
     // MARK: - Notify User if we have their email
     if (orderDetails.user.primaryEmail) {

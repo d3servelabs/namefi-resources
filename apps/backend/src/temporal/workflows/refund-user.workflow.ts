@@ -1,12 +1,13 @@
 import {
-  type PaymentStatus,
   type RefundStatus,
+  paymentProviderSchema,
   paymentStatusSchema,
 } from '@namefi-astra/db/types';
 import * as workflow from '@temporalio/workflow';
 import { TEMPORAL_ENUMS, TEMPORAL_QUEUES, shortRunningOpts } from '../shared';
 import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';
 import { mintNfsc } from './mint.workflow';
+import { RefundStripeWorkflow } from './refund-stripe.workflow';
 
 export type RefundUserWorkflowInput = {
   paymentId: string;
@@ -30,46 +31,83 @@ export async function refundUserWorkflow({
       },
     });
 
-  const { nfscPaymentDetails } = await getPaymentDetails({
-    paymentId,
-  });
+  if (amountToRefundInUsdCents <= 0) {
+    throw workflow.ApplicationFailure.create({
+      message: `Tried to refund user with an invalid amountToRefundInUsdCents (${amountToRefundInUsdCents}). Payment ID: ${paymentId}`,
+      nonRetryable: true,
+    });
+  }
 
-  let refundStatus: PaymentStatus | undefined;
-  let paymentProviderReferenceId: string | undefined;
-
-  const refund = await createRefund({
+  // MARK: Create the Refund in the db
+  const { id: refundId, status } = await createRefund({
     paymentId,
     amountToRefundInUsdCents,
   });
-  const refundId = refund.id;
 
   await updatePayment({
     id: paymentId,
     status: paymentStatusSchema.Values.REFUND_REQUESTED,
   });
 
-  const input = {
-    chainId: nfscPaymentDetails?.chainId as number,
-    account: nfscPaymentDetails?.walletAddress as `0x${string}`,
-    amountInUsd: amountToRefundInUsdCents / 100,
-  };
+  // MARK: Process refund depending on payment provider
+  const { nfscPaymentDetails, paymentProvider } = await getPaymentDetails({
+    paymentId,
+  });
 
-  try {
-    paymentProviderReferenceId = await workflow.executeChild(mintNfsc, {
-      args: [input.chainId, input.account, input.amountInUsd],
-      workflowId: `mint-nfsc-${refundId}`,
-      taskQueue: TEMPORAL_QUEUES.MINT,
-      retry: {
-        maximumAttempts: 1,
-      },
+  let refundStatus = status;
+  let paymentProviderReferenceId: string | undefined;
+
+  if (nfscPaymentDetails) {
+    const input = {
+      chainId: nfscPaymentDetails.chainId,
+      account: nfscPaymentDetails.walletAddress as `0x${string}`,
+      amountInUsd: amountToRefundInUsdCents / 100,
+    };
+
+    try {
+      paymentProviderReferenceId = await workflow.executeChild(mintNfsc, {
+        args: [input.chainId, input.account, input.amountInUsd],
+        workflowId: `mint-nfsc-${refundId}`,
+        taskQueue: TEMPORAL_QUEUES.MINT,
+        retry: {
+          maximumAttempts: 1,
+        },
+      });
+
+      refundStatus = 'SUCCEEDED';
+    } catch (error) {
+      workflow.log.error(
+        `Failed to mint NFSC. workflowId: mint-nfsc-${refundId}, cause: ${JSON.stringify(error)}`,
+      );
+      refundStatus = 'FAILED';
+    }
+  } else if (paymentProvider === paymentProviderSchema.Values.STRIPE) {
+    try {
+      const refundStripeResult = await workflow.executeChild(
+        RefundStripeWorkflow,
+        {
+          args: [{ refundId }],
+          workflowId: `refund-stripe-${refundId}`,
+          taskQueue: TEMPORAL_QUEUES.DEFAULT,
+          retry: {
+            maximumAttempts: 1,
+          },
+        },
+      );
+
+      refundStatus = refundStripeResult.refundStatus;
+      paymentProviderReferenceId =
+        refundStripeResult.paymentProviderReferenceId;
+    } catch (error) {
+      workflow.log.error(
+        `Failed to refund Stripe. workflowId: refund-stripe-${refundId}, cause: ${JSON.stringify(error)}`,
+      );
+      refundStatus = 'FAILED';
+    }
+  } else {
+    throw workflow.ApplicationFailure.create({
+      message: `Unsupported payment provider for refunds. Payment provider: ${paymentProvider}`,
     });
-
-    refundStatus = 'SUCCEEDED';
-  } catch (error) {
-    workflow.log.error(
-      `Failed to mint NFSC. workflowId: charge-stripe-${paymentId}, cause: ${JSON.stringify(error)}`,
-    );
-    refundStatus = 'FAILED';
   }
 
   const updatedRefund = await updateRefund({
