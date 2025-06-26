@@ -6,6 +6,7 @@ import {
 } from '../shared/commonRunningOptions';
 import { TEMPORAL_ENUMS } from '../shared/enums';
 import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';
+import type { UserMigrationData } from '../activities/migration.activities';
 
 /**
  * Temporal workflow for migrating users from MongoDB to PostgreSQL with Privy integration
@@ -91,29 +92,56 @@ export async function migrateUsersBatchWorkflow(options?: {
     const errors: string[] = [];
 
     // Process users in batches using child workflows with Ramda
-    const batches = splitEvery(batchSize, mongoUsers as string[]);
+    const batches = splitEvery(batchSize, mongoUsers);
 
-    const processBatch = async (batch: string[], batchIndex: number) => {
+    const processBatch = async (
+      batch: {
+        walletAddresses: string[];
+        stripeCustomerId?: string;
+        contactDetails?: UserMigrationData['contactDetails'];
+        primaryEmail?: string;
+      }[],
+      batchIndex: number,
+    ) => {
       workflow.log.info(
         `Processing batch ${batchIndex + 1}/${batches.length} with ${batch.length} users`,
       );
 
-      const batchPromises = map(async (walletAddress: string) => {
-        try {
-          const result = await workflow.startChild(migrateSingleUserWorkflow, {
-            args: [walletAddress],
-            workflowId: `migrate-user-${walletAddress}`,
-            taskQueue: 'default',
-          });
-          return result;
-        } catch (error) {
-          return {
-            walletAddress,
-            success: false,
-            error: error instanceof Error ? error.message : 'Unknown error',
-          };
-        }
-      }, batch);
+      const batchPromises = map(
+        async (user: {
+          walletAddresses: string[];
+          stripeCustomerId?: string;
+          contactDetails?: UserMigrationData['contactDetails'];
+          primaryEmail?: string;
+        }) => {
+          try {
+            const result = await workflow.startChild(
+              migrateSingleUserWorkflow,
+              {
+                args: [
+                  user.walletAddresses,
+                  user.stripeCustomerId,
+                  user.contactDetails,
+                  user.primaryEmail,
+                ],
+                workflowId: `migrate-user-${user.primaryEmail}${user.walletAddresses.join(',')}`,
+                taskQueue: 'default',
+              },
+            );
+            return result;
+          } catch (error) {
+            return {
+              walletAddresses: user.walletAddresses,
+              stripeCustomerId: user.stripeCustomerId,
+              contactDetails: user.contactDetails,
+              primaryEmail: user.primaryEmail,
+              success: false,
+              error: error instanceof Error ? error.message : 'Unknown error',
+            };
+          }
+        },
+        batch,
+      );
 
       return await Promise.all(batchPromises);
     };
@@ -194,9 +222,12 @@ export async function migrateUsersBatchWorkflow(options?: {
  * This is the child workflow that handles individual user migrations using individual activities
  */
 export async function migrateSingleUserWorkflow(
-  walletAddress: string,
+  walletAddresses: string[],
+  stripeCustomerId?: string,
+  contactDetails?: UserMigrationData['contactDetails'],
+  primaryEmail?: string,
 ): Promise<{
-  walletAddress: string;
+  walletAddresses: string[];
   success: boolean;
   userId?: string;
   privyUserId?: string;
@@ -208,10 +239,11 @@ export async function migrateSingleUserWorkflow(
 }> {
   // Get reference to activities with custom retry configuration for Privy
   const {
-    getUserDataActivity,
     createPostgresUserActivity,
     migrateContactDetailsActivity,
     migrateAutoRenewPreferencesActivity,
+    preparePrivyUserAccounts,
+    getMongoUsersAutoRenewPreferencesActivity,
   } = typedProxyActivities({
     temporalEnum: TEMPORAL_ENUMS.DEFAULT,
     options: {
@@ -236,72 +268,70 @@ export async function migrateSingleUserWorkflow(
 
   try {
     workflow.log.info(
-      `Starting single user migration workflow for: ${walletAddress}`,
+      `Starting single user migration workflow for: ${walletAddresses}`,
     );
 
     // Step 1: Get user data from MongoDB
-    workflow.log.info(`Step 1: Getting user data for ${walletAddress}`);
-    const userData = await getUserDataActivity(walletAddress);
-
-    if (!userData) {
-      const errorMsg = 'User not found in MongoDB';
-      workflow.log.warn(
-        `Failed to get user data for ${walletAddress}: ${errorMsg}`,
-      );
-      return {
-        walletAddress,
-        success: false,
-        error: errorMsg,
-      };
-    }
+    workflow.log.info(`Step 1: Getting user data for ${walletAddresses}`);
+    const autoRenewPreferences =
+      await getMongoUsersAutoRenewPreferencesActivity(walletAddresses);
 
     workflow.log.info(
-      `Retrieved user data for ${walletAddress}: ${
-        userData.autoRenewPreferences?.length || 0
+      `Retrieved user data for ${walletAddresses}: ${
+        autoRenewPreferences?.length || 0
       } auto-renew preferences`,
     );
 
     // Step 2: Create or find Privy user (with custom retry config)
     workflow.log.info(
-      `Step 2: Creating/finding Privy user for ${walletAddress}`,
+      `Step 2: Creating/finding Privy user for ${walletAddresses}`,
     );
-    const privyUserId = await createPrivyUserActivity(
-      walletAddress,
-      userData.contactDetails?.email,
-      userData.contactDetails?.emailVerified,
+    const { linkedAccounts, existingPrivyId } = await preparePrivyUserAccounts(
+      walletAddresses,
+      primaryEmail,
+    );
+    const { privyUserId, newUserCreated } = await createPrivyUserActivity(
+      linkedAccounts,
+      existingPrivyId,
     );
     workflow.log.info(`Privy user created/found: ${privyUserId}`);
 
     // Step 3: Create user in PostgreSQL
-    workflow.log.info(`Step 3: Creating PostgreSQL user for ${walletAddress}`);
+    workflow.log.info(
+      `Step 3: Creating PostgreSQL user for ${walletAddresses}`,
+    );
     const postgresUserId = await createPostgresUserActivity(
+      newUserCreated,
       privyUserId,
-      userData,
+      existingPrivyId,
+      stripeCustomerId,
     );
     workflow.log.info(`PostgreSQL user created: ${postgresUserId}`);
 
     // Step 4: Migrate contact details
-    workflow.log.info(`Step 4: Migrating contact details for ${walletAddress}`);
+    workflow.log.info(
+      `Step 4: Migrating contact details for ${walletAddresses}`,
+    );
     const contactsMigrated = await migrateContactDetailsActivity(
       postgresUserId,
-      userData.contactDetails,
+      contactDetails,
     );
     workflow.log.info(`Contact details migrated: ${contactsMigrated} records`);
 
     // Step 5: Migrate auto-renew preferences
     workflow.log.info(
-      `Step 5: Migrating auto-renew preferences for ${walletAddress}`,
+      `Step 5: Migrating auto-renew preferences for ${walletAddresses}`,
     );
     const preferencesMigrated = await migrateAutoRenewPreferencesActivity(
       postgresUserId,
-      userData.autoRenewPreferences,
+      autoRenewPreferences,
     );
     workflow.log.info(
       `Auto-renew preferences migrated: ${preferencesMigrated} records`,
     );
 
     workflow.log.info(
-      `Successfully migrated user ${walletAddress} via workflow`,
+      `Successfully migrated user ${walletAddresses} via workflow`,
       {
         privyUserId,
         postgresUserId,
@@ -311,7 +341,7 @@ export async function migrateSingleUserWorkflow(
     );
 
     return {
-      walletAddress,
+      walletAddresses,
       success: true,
       userId: postgresUserId,
       privyUserId,
@@ -321,11 +351,11 @@ export async function migrateSingleUserWorkflow(
       },
     };
   } catch (error: any) {
-    const errorMsg = `Single user migration workflow failed for ${walletAddress}: ${error instanceof Error ? error.message : 'Unknown error'}`;
+    const errorMsg = `Single user migration workflow failed for ${walletAddresses}: ${error instanceof Error ? error.message : 'Unknown error'}`;
     workflow.log.error(errorMsg, error);
 
     return {
-      walletAddress,
+      walletAddresses,
       success: false,
       error: errorMsg,
     };
