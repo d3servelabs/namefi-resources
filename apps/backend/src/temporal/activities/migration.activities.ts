@@ -492,6 +492,13 @@ export async function migrateContactDetailsActivity(
       return 0;
     }
 
+    const user = await db.query.usersTable.findFirst({
+      where: (usersTable, { eq }) => eq(usersTable.id, userId),
+    });
+    if (!user) {
+      throw new Error(`User not found in PostgreSQL: ${userId}`);
+    }
+
     const fullName = [contactDetails.firstName, contactDetails.lastName]
       .filter(isNotNil)
       .join(' ')
@@ -506,7 +513,7 @@ export async function migrateContactDetailsActivity(
         country: contactDetails.countryCode || undefined,
       },
     });
-    await privyClient.setCustomMetadata(userId, serializedMetadata);
+    await privyClient.setCustomMetadata(user.privyUserId, serializedMetadata);
     // Create contact details record
     await db.insert(userContactsTable).values({
       userId,
