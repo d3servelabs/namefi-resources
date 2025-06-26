@@ -14,7 +14,7 @@ export type ChargeStripeWorkflowOutput = {
   paymentIntentStatus: Stripe.PaymentIntent.Status;
 };
 
-export async function ChargeStripeWorkflow({
+export async function chargeStripeWorkflow({
   userId,
   totalAmountInUsdCents,
   confirmationTokenId,

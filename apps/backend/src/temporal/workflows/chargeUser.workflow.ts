@@ -9,7 +9,7 @@ import type { CreateStripePaymentIntentInput } from '#services/stripePayments/ty
 import { stripePaymentIntentStatusToPaymentStatus } from '../activities/helpers/stripePaymentHelpers';
 import { TEMPORAL_ENUMS, TEMPORAL_QUEUES, shortRunningOpts } from '../shared';
 import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';
-import { ChargeStripeWorkflow } from './chargeStripe.workflow';
+import { chargeStripeWorkflow } from './chargeStripe.workflow';
 import { chargeNfscWorkflow } from './mint.workflow';
 
 export const NFSC_PAYMENT_PROVIDERS = paymentProviderEnum.enumValues.filter(
@@ -72,7 +72,7 @@ export async function chargeUserWorkflow({
   if (paymentProvider === paymentProviderSchema.Values.STRIPE) {
     try {
       const { paymentIntentId, paymentIntentStatus } =
-        await workflow.executeChild(ChargeStripeWorkflow, {
+        await workflow.executeChild(chargeStripeWorkflow, {
           args: [
             {
               userId,
