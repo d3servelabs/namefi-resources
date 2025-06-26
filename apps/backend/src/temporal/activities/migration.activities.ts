@@ -12,6 +12,7 @@ import { AutoRenewPreference, User } from '../../lib/legacy/db/schemas';
 import { privyClient } from '../../trpc/utils';
 import { fromPairs, groupBy, isNil, isNotNil, uniqBy } from 'ramda';
 import { privyCustomMetadataToPrivyStorage } from '../../trpc/types';
+import * as workflow from '@temporalio/workflow';
 
 const _logger = logger.child({
   module: 'legacy-users-import',
@@ -294,7 +295,7 @@ export async function preparePrivyUserAccounts(
 
   if (existingPrivyIds.length > 1) {
     // This case won't happen based on investigation of existing data. so it's dismissed instead of increasing the complexity of the code
-    throw new Error(
+    throw new workflow.ApplicationFailure(
       `Multiple users already exist in Privy for wallet ${walletAddresses}`,
     );
   }
@@ -387,7 +388,7 @@ export async function createPrivyUserActivity(
       });
 
       // For 429 and other errors, let Temporal handle retries
-      throw new Error(
+      throw new workflow.ApplicationFailure(
         `Privy API failed: ${response.status} ${response.statusText} - ${errorText}`,
       );
     }
@@ -406,7 +407,9 @@ export async function createPrivyUserActivity(
 
     const error = result.results?.[0]?.error || 'Unknown error';
     _logger.error(`Failed to create Privy user: ${error}`);
-    throw new Error(`Privy user creation failed: ${error}`);
+    throw new workflow.ApplicationFailure(
+      `Privy user creation failed: ${error}`,
+    );
   } catch (error) {
     _logger.error('Failed to create/find Privy user:', error);
     throw error;
@@ -425,13 +428,15 @@ export async function createPostgresUserActivity(
   try {
     if (!newPrivyUserCreated) {
       if (!oldPrivyId) {
-        throw new Error('oldPrivyId is required');
+        throw new workflow.ApplicationFailure('oldPrivyId is required');
       }
       const existingNamefiUser = await db.query.usersTable.findFirst({
         where: (usersTable, { eq }) => eq(usersTable.privyUserId, oldPrivyId),
       });
       if (!existingNamefiUser) {
-        throw new Error(`wrong existingPrivyId provided: ${oldPrivyId}`);
+        throw new workflow.ApplicationFailure(
+          `wrong existingPrivyId provided: ${oldPrivyId}`,
+        );
       }
       return existingNamefiUser.id;
     }
@@ -440,7 +445,7 @@ export async function createPostgresUserActivity(
       `Creating PostgreSQL user for Privy ID: ${newPrivyUserId} ${oldPrivyId ? `replacing existing Privy ID: ${oldPrivyId}` : ''}`,
     );
     if (!newPrivyUserId) {
-      throw new Error('newPrivyUserId is required');
+      throw new workflow.ApplicationFailure('newPrivyUserId is required');
     }
     if (oldPrivyId) {
       _logger.info(`oldPrivyId is the same as privyUserId: ${oldPrivyId}`);
@@ -528,7 +533,9 @@ export async function migrateContactDetailsActivity(
       where: (usersTable, { eq }) => eq(usersTable.id, userId),
     });
     if (!user) {
-      throw new Error(`User not found in PostgreSQL: ${userId}`);
+      throw new workflow.ApplicationFailure(
+        `User not found in PostgreSQL: ${userId}`,
+      );
     }
 
     const fullName = [contactDetails.firstName, contactDetails.lastName]
@@ -703,7 +710,9 @@ export async function validateMigrationPrerequisitesActivity(): Promise<{
     // If we get a 401 or 400, it means the API is reachable but credentials are wrong
     // If we get a 5xx, it means the service is down
     if (response.status >= 500) {
-      throw new Error(`Privy API service error: ${response.status}`);
+      throw new workflow.ApplicationFailure(
+        `Privy API service error: ${response.status}`,
+      );
     }
 
     privyAvailable = true;
