@@ -60,14 +60,13 @@ export async function getMongoUsersActivity(): Promise<
     primaryEmail?: string;
   }[]
 > {
+  const connection = await mongoose.createConnection(MONGODB_URI);
   try {
     _logger.info('Connecting to MongoDB to fetch users...');
 
-    // Connect to MongoDB
-    await mongoose.connect(MONGODB_URI);
-
     // Get all users from MongoDB
-    const mongoUsers = (await User.find({})).map((user) => {
+    const UserModel = connection.model(User.modelName, User.schema);
+    const mongoUsers = (await UserModel.find({})).map((user) => {
       const email = user.contactDetails?.email || undefined;
       const emailVerified = user.contactDetails?.emailVerified || false;
       const primaryEmail = emailVerified ? email : undefined;
@@ -133,24 +132,27 @@ export async function getMongoUsersActivity(): Promise<
 
     _logger.info(`Found ${combinedUsers.length} distinct users in MongoDB`);
 
-    // Disconnect from MongoDB
-    await mongoose.disconnect();
-
     return combinedUsers;
   } catch (error) {
     _logger.error('Failed to get MongoDB users:', error);
     throw error;
+  } finally {
+    await connection.close();
   }
 }
 
 export async function getMongoUsersAutoRenewPreferencesActivity(
   walletAddresses: string[],
 ): Promise<UserMigrationData['autoRenewPreferences']> {
-  await mongoose.connect(MONGODB_URI);
+  const connection = await mongoose.createConnection(MONGODB_URI);
   try {
+    const AutoRenewPreferenceModel = connection.model(
+      AutoRenewPreference.modelName,
+      AutoRenewPreference.schema,
+    );
     const autoRenewPrefs = await Promise.all(
       walletAddresses.map(async (walletAddress) => {
-        const autoRenewPrefs = await AutoRenewPreference.find({
+        const autoRenewPrefs = await AutoRenewPreferenceModel.find({
           _id: { $regex: `^${walletAddress.toLowerCase()}_` },
         });
         return autoRenewPrefs.map((pref: any) => ({
@@ -164,7 +166,7 @@ export async function getMongoUsersAutoRenewPreferencesActivity(
     _logger.error('Failed to get MongoDB auto-renew preferences:', error);
     throw error;
   } finally {
-    await mongoose.disconnect();
+    await connection.close();
   }
 }
 
@@ -174,22 +176,24 @@ export async function getMongoUsersAutoRenewPreferencesActivity(
 export async function getUserDataActivity(
   walletAddress: string,
 ): Promise<UserMigrationData | null> {
+  const connection = await mongoose.createConnection(MONGODB_URI);
   try {
     _logger.info(`Getting user data for wallet: ${walletAddress}`);
 
-    // Connect to MongoDB
-    await mongoose.connect(MONGODB_URI);
-
     // Get user data
-    const user = await User.findById(walletAddress);
+    const UserModel = connection.model(User.modelName, User.schema);
+    const user = await UserModel.findById(walletAddress);
     if (!user) {
       _logger.warn(`User not found in MongoDB: ${walletAddress}`);
-      await mongoose.disconnect();
       return null;
     }
 
     // Get auto-renew preferences for this user
-    const autoRenewPrefs = await AutoRenewPreference.find({
+    const AutoRenewPreferenceModel = connection.model(
+      AutoRenewPreference.modelName,
+      AutoRenewPreference.schema,
+    );
+    const autoRenewPrefs = await AutoRenewPreferenceModel.find({
       _id: { $regex: `^${walletAddress.toLowerCase()}_` },
     });
 
@@ -224,17 +228,15 @@ export async function getUserDataActivity(
       })),
     };
 
-    // Disconnect from MongoDB
-    await mongoose.disconnect();
-
     _logger.info(
       `Retrieved user data for ${walletAddress}: ${userData.autoRenewPreferences.length} auto-renew preferences`,
     );
     return userData;
   } catch (error) {
     _logger.error(`Failed to get user data for ${walletAddress}:`, error);
-    await mongoose.disconnect();
     throw error;
+  } finally {
+    await connection.close();
   }
 }
 
@@ -647,8 +649,8 @@ export async function validateMigrationPrerequisitesActivity(): Promise<{
   try {
     // Test MongoDB connection
     _logger.info('Validating MongoDB connection...');
-    await mongoose.connect(MONGODB_URI);
-    await mongoose.disconnect();
+    const connection = await mongoose.createConnection(MONGODB_URI);
+    await connection.close();
     mongodbAvailable = true;
     _logger.info('MongoDB connection validated successfully');
   } catch (error) {
