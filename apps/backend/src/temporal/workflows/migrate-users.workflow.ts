@@ -130,6 +130,7 @@ export async function migrateUsersBatchWorkflow(options?: {
             );
             return result;
           } catch (error) {
+            workflow.log.error('Failed to migrate user via child workflow');
             return {
               walletAddresses: user.walletAddresses,
               stripeCustomerId: user.stripeCustomerId,
@@ -265,98 +266,82 @@ export async function migrateSingleUserWorkflow(
     },
   });
 
-  try {
-    workflow.log.info(
-      `Starting single user migration workflow for: ${walletAddresses}`,
-    );
+  workflow.log.info(
+    `Starting single user migration workflow for: ${walletAddresses}`,
+  );
 
-    // Step 1: Get user data from MongoDB
-    workflow.log.info(`Step 1: Getting user data for ${walletAddresses}`);
-    const autoRenewPreferences =
-      await getMongoUsersAutoRenewPreferencesActivity(walletAddresses);
+  // Step 1: Get user data from MongoDB
+  workflow.log.info(`Step 1: Getting user data for ${walletAddresses}`);
+  const autoRenewPreferences =
+    await getMongoUsersAutoRenewPreferencesActivity(walletAddresses);
 
-    workflow.log.info(
-      `Retrieved user data for ${walletAddresses}: ${
-        autoRenewPreferences?.length || 0
-      } auto-renew preferences`,
-    );
+  workflow.log.info(
+    `Retrieved user data for ${walletAddresses}: ${
+      autoRenewPreferences?.length || 0
+    } auto-renew preferences`,
+  );
 
-    // Step 2: Create or find Privy user (with custom retry config)
-    workflow.log.info(
-      `Step 2: Creating/finding Privy user for ${walletAddresses}`,
-    );
-    const { linkedAccounts, existingPrivyId } = await preparePrivyUserAccounts(
-      walletAddresses,
-      primaryEmail,
-    );
-    const { privyUserId, newUserCreated } = await createPrivyUserActivity(
-      linkedAccounts,
-      existingPrivyId,
-    );
-    workflow.log.info(`Privy user created/found: ${privyUserId}`);
+  // Step 2: Create or find Privy user (with custom retry config)
+  workflow.log.info(
+    `Step 2: Creating/finding Privy user for ${walletAddresses}`,
+  );
+  const { newAccountsToBeLinked, existingLinkedAccounts, existingPrivyId } =
+    await preparePrivyUserAccounts(walletAddresses, primaryEmail);
+  const { privyUserId, newUserCreated } = await createPrivyUserActivity(
+    newAccountsToBeLinked,
+    existingLinkedAccounts,
+    existingPrivyId,
+  );
+  workflow.log.info(`Privy user created/found: ${privyUserId}`);
 
-    // Step 3: Create user in PostgreSQL
-    workflow.log.info(
-      `Step 3: Creating PostgreSQL user for ${walletAddresses}`,
-    );
-    const postgresUserId = await createPostgresUserActivity(
-      newUserCreated,
+  // Step 3: Create user in PostgreSQL
+  workflow.log.info(`Step 3: Creating PostgreSQL user for ${walletAddresses}`);
+  const postgresUserId = await createPostgresUserActivity(
+    newUserCreated,
+    privyUserId,
+    existingPrivyId,
+    stripeCustomerId,
+  );
+  workflow.log.info(`PostgreSQL user created: ${postgresUserId}`);
+
+  // Step 4: Migrate contact details
+  workflow.log.info(`Step 4: Migrating contact details for ${walletAddresses}`);
+  const contactsMigrated = await migrateContactDetailsActivity(
+    postgresUserId,
+    contactDetails,
+  );
+  workflow.log.info(`Contact details migrated: ${contactsMigrated} records`);
+
+  // Step 5: Migrate auto-renew preferences
+  workflow.log.info(
+    `Step 5: Migrating auto-renew preferences for ${walletAddresses}`,
+  );
+  const preferencesMigrated = await migrateAutoRenewPreferencesActivity(
+    postgresUserId,
+    autoRenewPreferences,
+  );
+  workflow.log.info(
+    `Auto-renew preferences migrated: ${preferencesMigrated} records`,
+  );
+
+  workflow.log.info(
+    `Successfully migrated user ${walletAddresses} via workflow`,
+    {
       privyUserId,
-      existingPrivyId,
-      stripeCustomerId,
-    );
-    workflow.log.info(`PostgreSQL user created: ${postgresUserId}`);
-
-    // Step 4: Migrate contact details
-    workflow.log.info(
-      `Step 4: Migrating contact details for ${walletAddresses}`,
-    );
-    const contactsMigrated = await migrateContactDetailsActivity(
       postgresUserId,
-      contactDetails,
-    );
-    workflow.log.info(`Contact details migrated: ${contactsMigrated} records`);
+      contactsMigrated,
+      preferencesMigrated,
+    },
+  );
 
-    // Step 5: Migrate auto-renew preferences
-    workflow.log.info(
-      `Step 5: Migrating auto-renew preferences for ${walletAddresses}`,
-    );
-    const preferencesMigrated = await migrateAutoRenewPreferencesActivity(
-      postgresUserId,
-      autoRenewPreferences,
-    );
-    workflow.log.info(
-      `Auto-renew preferences migrated: ${preferencesMigrated} records`,
-    );
-
-    workflow.log.info(
-      `Successfully migrated user ${walletAddresses} via workflow`,
-      {
-        privyUserId,
-        postgresUserId,
-        contactsMigrated,
-        preferencesMigrated,
-      },
-    );
-
-    return {
-      walletAddresses,
-      success: true,
-      userId: postgresUserId,
-      privyUserId,
-      details: {
-        contactsMigrated,
-        preferencesMigrated,
-      },
-    };
-  } catch (error: any) {
-    const errorMsg = `Single user migration workflow failed for ${walletAddresses}: ${error instanceof Error ? error.message : 'Unknown error'}`;
-    workflow.log.error(errorMsg, error);
-
-    return {
-      walletAddresses,
-      success: false,
-      error: errorMsg,
-    };
-  }
+  return {
+    walletAddresses,
+    success: true,
+    userId: postgresUserId,
+    privyUserId,
+    details: {
+      contactsMigrated,
+      preferencesMigrated,
+    },
+  };
 }

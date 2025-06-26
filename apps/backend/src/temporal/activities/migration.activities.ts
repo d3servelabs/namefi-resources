@@ -304,16 +304,23 @@ export async function preparePrivyUserAccounts(
     (user) => user.id === existingPrivyId,
   );
 
+  const existingLinkedAccounts: any[] = [];
   if (existingUser) {
-    linkedAccounts.push(...(existingUser.linkedAccounts || []));
+    existingLinkedAccounts.push(...(existingUser.linkedAccounts || []));
   }
-  const distinctLinkedAccounts = uniqBy(
-    (account) => `${account.type}-${account.address}`.toLowerCase(),
-    linkedAccounts,
+  const newAccountsToBeLinked = linkedAccounts.filter(
+    (account) =>
+      !existingLinkedAccounts.some(
+        (existingAccount) =>
+          existingAccount.type === account.type &&
+          existingAccount.address.toLowerCase() ===
+            account.address.toLowerCase(),
+      ),
   );
 
   return {
-    linkedAccounts: distinctLinkedAccounts,
+    newAccountsToBeLinked,
+    existingLinkedAccounts,
     existingPrivyId,
   };
 }
@@ -322,7 +329,8 @@ export async function preparePrivyUserAccounts(
  * Temporal activity to create or find Privy user
  */
 export async function createPrivyUserActivity(
-  linkedAccounts: any[],
+  newAccountsToBeLinked: any[],
+  existingLinkedAccounts: any[],
   existingPrivyId?: string,
 ): Promise<{
   privyUserId: string;
@@ -330,7 +338,8 @@ export async function createPrivyUserActivity(
   newUserCreated: boolean;
 }> {
   const createNewPrivyUser =
-    isNil(existingPrivyId) || (existingPrivyId && linkedAccounts.length > 1);
+    isNil(existingPrivyId) ||
+    (existingPrivyId && newAccountsToBeLinked.length > 0);
   if (!createNewPrivyUser) {
     return {
       privyUserId: existingPrivyId,
@@ -338,6 +347,10 @@ export async function createPrivyUserActivity(
       newUserCreated: false,
     };
   }
+  const distinctLinkedAccounts = uniqBy(
+    (account) => `${account.type}-${account.address}`.toLowerCase(),
+    [...newAccountsToBeLinked, ...existingLinkedAccounts],
+  );
 
   try {
     if (existingPrivyId) {
@@ -359,7 +372,7 @@ export async function createPrivyUserActivity(
       body: JSON.stringify({
         users: [
           {
-            linked_accounts: linkedAccounts,
+            linked_accounts: distinctLinkedAccounts,
           },
         ],
       }),
