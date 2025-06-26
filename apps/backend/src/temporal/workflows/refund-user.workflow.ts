@@ -7,7 +7,7 @@ import * as workflow from '@temporalio/workflow';
 import { TEMPORAL_ENUMS, TEMPORAL_QUEUES, shortRunningOpts } from '../shared';
 import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';
 import { mintNfsc } from './mint.workflow';
-import { RefundStripeWorkflow } from './refund-stripe.workflow';
+import { refundStripeWorkflow } from './refund-stripe.workflow';
 
 export type RefundUserWorkflowInput = {
   paymentId: string;
@@ -84,7 +84,7 @@ export async function refundUserWorkflow({
   } else if (paymentProvider === paymentProviderSchema.Values.STRIPE) {
     try {
       const refundStripeResult = await workflow.executeChild(
-        RefundStripeWorkflow,
+        refundStripeWorkflow,
         {
           args: [{ refundId }],
           workflowId: `refund-stripe-${refundId}`,

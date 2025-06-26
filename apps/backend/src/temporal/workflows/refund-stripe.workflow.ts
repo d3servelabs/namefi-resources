@@ -6,7 +6,7 @@ import * as workflow from '@temporalio/workflow';
 import { stripeRefundStatusToRefundStatus } from '../activities/helpers/stripePaymentHelpers';
 import { TEMPORAL_ENUMS, shortRunningOpts } from '../shared';
 import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';
-import { MonitorStripeRefundStatusWorkflow } from './monitor-stripe-refund-status.workflow';
+import { monitorStripeRefundStatusWorkflow } from './monitor-stripe-refund-status.workflow';
 
 export type RefundStripeWorkflowInput = {
   refundId: string;
@@ -17,7 +17,7 @@ export type RefundStripeWorkflowOutput = {
   refundStatus: RefundStatus;
 };
 
-export async function RefundStripeWorkflow({
+export async function refundStripeWorkflow({
   refundId,
 }: RefundStripeWorkflowInput): Promise<RefundStripeWorkflowOutput> {
   const workflowInfo = workflow.workflowInfo();
@@ -38,7 +38,7 @@ export async function RefundStripeWorkflow({
 
   if (paymentProvider !== paymentProviderSchema.Values.STRIPE) {
     throw workflow.ApplicationFailure.create({
-      message: `RefundStripeWorkflow invoked for a non-Stripe payment (provider: ${paymentProvider})`,
+      message: `refundStripeWorkflow invoked for a non-Stripe payment (provider: ${paymentProvider})`,
     });
   }
 
@@ -57,7 +57,7 @@ export async function RefundStripeWorkflow({
   // MARK: Monitor Stripe Refund Status
   try {
     const { stripeRefundStatus } = await workflow.executeChild(
-      MonitorStripeRefundStatusWorkflow,
+      monitorStripeRefundStatusWorkflow,
       {
         args: [
           {

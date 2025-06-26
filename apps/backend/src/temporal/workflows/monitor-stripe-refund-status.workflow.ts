@@ -39,7 +39,7 @@ export const StripeRefundStatusUpdateSignal = workflow.defineSignal<
   [StripeRefundStatusUpdate]
 >('stripeRefundStatusUpdateSignal');
 
-export async function MonitorStripeRefundStatusWorkflow({
+export async function monitorStripeRefundStatusWorkflow({
   stripeRefundId,
 }: MonitorStripeRefundStatusWorkflowInput): Promise<MonitorStripeRefundStatusWorkflowOutput> {
   const callbackStatusIsFinishedStatus = new workflow.Trigger<boolean>();
