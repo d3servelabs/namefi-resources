@@ -25,7 +25,7 @@ export const LOGO_TYPES = {
     name: 'Wordmark',
     description: 'No icon. Just your name in type.',
     image:
-      'https://images.unsplash.com/photo-1618834451018-0dd0c1ecb10c?w=400&h=400&fit=crop',
+      'https://images.unsplash.com/photo-1562577309-d67db487e6cd?w=400&h=400&fit=crop',
   },
   'letter-mark': {
     id: 'letter-mark',
