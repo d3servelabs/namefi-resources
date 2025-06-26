@@ -19,6 +19,7 @@ export const migrateZoneToNewNameserversWorkflow = async (args: {
     determineFinalRecords,
     fillZoneRecords,
     fillZoneFlags,
+    checkIfUsingLegacyNamefiNameservers,
   } = typedProxyActivities({
     temporalEnum: TEMPORAL_ENUMS.DOMAINS,
     options: {
@@ -83,16 +84,21 @@ export const migrateZoneToNewNameserversWorkflow = async (args: {
   // fill in the flags to the new zone
   await fillZoneFlags(args.zoneName, flags);
 
-  // reset the nameservers to the new zone (and enable DNSSEC if needed)
-  await workflow.executeChild(resetNameserversWorkflow, {
-    args: [
-      {
-        domainName: args.zoneName,
-      },
-    ],
-    taskQueue: TEMPORAL_QUEUES.DOMAINS,
-    workflowId: `reset-nameservers-${args.zoneName}`,
-    workflowIdConflictPolicy: 'USE_EXISTING',
-    workflowIdReusePolicy: 'ALLOW_DUPLICATE',
-  });
+  // check if the zone is using Legacy Namefi nameservers
+  const isUsingLegacyNamefiNameservers =
+    await checkIfUsingLegacyNamefiNameservers(args.zoneName);
+  if (isUsingLegacyNamefiNameservers) {
+    // reset the nameservers to the new zone (and enable DNSSEC if needed)
+    await workflow.executeChild(resetNameserversWorkflow, {
+      args: [
+        {
+          domainName: args.zoneName,
+        },
+      ],
+      taskQueue: TEMPORAL_QUEUES.DOMAINS,
+      workflowId: `reset-nameservers-${args.zoneName}`,
+      workflowIdConflictPolicy: 'USE_EXISTING',
+      workflowIdReusePolicy: 'ALLOW_DUPLICATE',
+    });
+  }
 };

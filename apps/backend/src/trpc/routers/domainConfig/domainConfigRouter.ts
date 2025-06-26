@@ -12,7 +12,7 @@ import {
 } from '#lib/domains/domainPreferences';
 import {
   checkIfUsingNamefiNameservers,
-  checkIfUsingOldNamefiNameservers,
+  checkIfUsingLegacyNamefiNameservers,
   queryActiveNameserversChangeWorkflow,
   submitNameserversChangeWorkflow,
   submitResetNameserversWorkflow,
@@ -171,7 +171,7 @@ export const domainConfigRouter = createTRPCRouter({
           };
         }
         const isUsingOldNamefiNameservers =
-          await checkIfUsingOldNamefiNameservers(input.normalizedDomainName);
+          await checkIfUsingLegacyNamefiNameservers(input.normalizedDomainName);
 
         if (isUsingOldNamefiNameservers) {
           return {

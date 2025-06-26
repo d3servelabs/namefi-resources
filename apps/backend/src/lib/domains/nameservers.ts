@@ -141,7 +141,7 @@ export const checkIfNameserversAreLegacyNamefiNameservers = (
     toPunycodeFqdn('ns1.namefi.io.'),
     toPunycodeFqdn('ns2.namefi.io.'),
   ]);
-  return comparisonResult.isExactMatch;
+  return comparisonResult.isUsingAllExpectedNameservers; // TODO: decide if we want to use the isExactMatch or the isUsingAllExpectedNameservers
 };
 
 /**
@@ -164,7 +164,7 @@ export const checkIfUsingNamefiNameservers = async (
  * @param normalizedDomainName - The normalized domain name to check
  * @returns {Promise<boolean>} - True if the domain is using the legacy Namefi nameservers, false otherwise
  */
-export const checkIfUsingOldNamefiNameservers = async (
+export const checkIfUsingLegacyNamefiNameservers = async (
   normalizedDomainName: NamefiNormalizedDomain,
 ) => {
   const nameservers = await sldRegistrar.getNameServers(
