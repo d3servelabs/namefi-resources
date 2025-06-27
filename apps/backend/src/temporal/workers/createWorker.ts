@@ -67,7 +67,7 @@ export async function createWorker({
       ...workflowOption,
       activities,
       bundlerOptions: {
-        ignoreModules: ['process'],
+        ignoreModules: ['process', 'inspector'],
       },
     });
 

@@ -27,6 +27,22 @@ import {
 } from '#services/payments/errors';
 import { PaymentMethodNotFoundError } from '#services/stripePayments/errors';
 import type { CreateStripePaymentIntentInput } from '#services/stripePayments/types';
+import type { PaymentProvider } from '@namefi-astra/db/types';
+import {
+  CHAINS,
+  checksumWalletAddressSchema,
+  resolveOrFallback,
+  type ChecksumWalletAddress,
+} from '@namefi-astra/utils';
+import { getChain } from '@namefi-astra/utils';
+import { config } from '#lib/env';
+import { isNotNil, isNotEmpty } from 'ramda';
+import { switchCaseOrDefault, resolve } from '@namefi-astra/utils';
+import type { Chain } from 'viem';
+import { logger } from '#lib/logger';
+import { getNfscBalanceInUSD } from './mint.activities';
+import { privyClient } from '../../trpc/utils';
+import type { WalletWithMetadata } from '@privy-io/server-auth';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
 
@@ -336,14 +352,333 @@ export async function updateRefund({
   return updatedRefund;
 }
 
-export type PaymentActivities = {
-  createPayment: typeof createPayment;
-  getPaymentDetails: typeof getPaymentDetails;
-  getRefundDetails: typeof getRefundDetails;
-  getStripeRefundStatus: typeof getStripeRefundStatus;
-  createStripePaymentIntent: typeof createStripePaymentIntent;
-  createStripeRefund: typeof createStripeRefund;
-  updatePayment: typeof updatePayment;
-  createRefund: typeof createRefund;
-  updateRefund: typeof updateRefund;
-};
+export async function getPreferredEvmWalletAddressToBeCharged(
+  userId: string,
+): Promise<ChecksumWalletAddress> {
+  const user = await db.query.usersTable.findFirst({
+    where: (usersTable, { eq }) => eq(usersTable.id, userId),
+  });
+  if (!user) {
+    throw new Error('User not found');
+  }
+  const privyUser = await privyClient.getUser(user.privyUserId);
+  if (!privyUser) {
+    throw new Error('Privy user not found');
+  }
+  const walletAddress = (
+    privyUser.linkedAccounts.find(
+      (account) =>
+        account.type === 'wallet' && account.chainType === 'ethereum',
+    ) as WalletWithMetadata | undefined
+  )?.address;
+  if (!walletAddress) {
+    throw new Error('Wallet address not found');
+  }
+  const result = checksumWalletAddressSchema.safeParse(walletAddress);
+  if (!result.success) {
+    throw new Error('Invalid wallet address');
+  }
+  return result.data;
+}
+
+/**
+ * Determines which payment methods are available based on allowed chains and mock registrar settings
+ *
+ * @returns Array of available NamefiPaymentType payment methods
+ *
+ * The logic:
+ * 1. Checks if live payment methods should be disabled via USE_MOCK_REGISTRARS
+ * 2. Gets allowed chains from config and filters out non-testnet chains if using mocks
+ * 3. Maps each allowed chain to its corresponding NFSC payment method(s)
+ */
+export async function determineAvailablePaymentMethods(
+  amountInUsd: number,
+  userId: string,
+): Promise<{
+  availablePaymentMethods: PaymentProvider[];
+  walletAddressToBeCharged: ChecksumWalletAddress;
+}> {
+  const walletAddressToBeCharged =
+    await getPreferredEvmWalletAddressToBeCharged(userId);
+
+  // Check if we should disable live payment methods (non-testnet chains)
+  const disableLivePaymentMethods = config.DISALLOW_LIVE_PAYMENT_METHODS; // TODO:  true if USE_MOCK_REGISTRARS; Add to global config
+
+  // Get allowed chains and filter out non-testnet chains if using mocks
+  const allowedChains: Chain[] = config.ALLOWED_CHAINS.map((chain) =>
+    getChain(chain),
+  ).filter(
+    (chain) =>
+      isNotNil(chain) && !(!chain.testnet && disableLivePaymentMethods),
+  ) as Chain[];
+
+  // Map each chain to its corresponding NFSC payment method(s)
+  const paymentMethodsFromChains = (
+    await Promise.all(
+      allowedChains.map(async (chain) => {
+        const paymentMethod = switchCaseOrDefault(
+          chain.id,
+          {
+            [CHAINS.base.id]: paymentProviderSchema.Values.NFSC_BASE, // Base chain -> NFSC on Base
+            [CHAINS.mainnet.id]: paymentProviderSchema.Values.NFSC_ETHEREUM, // Mainnet -> NFSC on Ethereum
+            [CHAINS.sepolia.id]:
+              paymentProviderSchema.Values.NFSC_ETHEREUM_SEPOLIA,
+          },
+          null, // Default to null for unhandled chains
+        );
+        if (paymentMethod === null) {
+          return null;
+        }
+        const nfscBalanceInUsd = await getNfscBalanceInUSD(
+          chainIdFromPaymentMethod(paymentMethod),
+          walletAddressToBeCharged,
+        );
+        if (nfscBalanceInUsd >= amountInUsd) {
+          return paymentMethod;
+        }
+        return null;
+      }),
+    )
+  ).filter((paymentMethod) => paymentMethod !== null);
+
+  const stripePreferredPaymentMethodId =
+    await getPreferredPaymentMethodForNamefiUser({ namefiUserId: userId });
+  if (isNotNil(stripePreferredPaymentMethodId)) {
+    return {
+      availablePaymentMethods: [
+        ...paymentMethodsFromChains,
+        paymentProviderSchema.Values.STRIPE,
+      ],
+      walletAddressToBeCharged,
+    };
+  }
+  return {
+    availablePaymentMethods: paymentMethodsFromChains,
+    walletAddressToBeCharged,
+  };
+}
+
+export function chainIdFromPaymentMethod(
+  paymentMethod: PaymentProvider,
+): number {
+  switch (paymentMethod) {
+    case paymentProviderSchema.Values.NFSC_BASE:
+      return CHAINS.base.id;
+    case paymentProviderSchema.Values.NFSC_ETHEREUM:
+      return CHAINS.mainnet.id;
+    case paymentProviderSchema.Values.STRIPE:
+      throw new Error(
+        'STRIPE payment method does not have an associated chain ID',
+      );
+    default:
+      throw new Error(`Invalid payment method: ${paymentMethod}`);
+  }
+}
+
+/**
+ * TODO: Migrated From Legacy Codebase, Review if this is needed
+ *
+ * @param namefiUserId - The ID of the Namefi user
+ * @returns The Stripe customer ID for the Namefi user
+ */
+export async function getStripeCustomerIdOrThrow(
+  namefiUserId: string,
+): Promise<string> {
+  const user = await db.query.usersTable.findFirst({
+    where: (usersTable, { eq }) => eq(usersTable.id, namefiUserId),
+  });
+  logger.info({ user }, 'Retrieved User');
+  if (!user) {
+    throw new Error('User not found');
+  }
+
+  if (!user.stripeCustomerId) {
+    logger.warn('User has no Stripe Customer ID');
+    throw new Error('User has no Stripe Customer ID');
+  }
+
+  return user.stripeCustomerId;
+}
+
+/**
+ * TODO: Migrated From Legacy Codebase, Review if this is needed
+ *
+ * @param namefiUserId - The ID of the Namefi user
+ * @returns The default Stripe payment method for the Namefi user
+ */
+export async function getDefaultStripePaymentMethodForNamefiUserOrThrow({
+  namefiUserId,
+}: {
+  namefiUserId: string;
+}): Promise<Stripe.PaymentMethod | null> {
+  const stripeCustomerIdResponse = await resolve(
+    getStripeCustomerIdOrThrow(namefiUserId),
+  );
+  if (stripeCustomerIdResponse.failed) {
+    logger.error(
+      { namefiUserId, error: stripeCustomerIdResponse.error },
+      'Failed to get Stripe Customer ID',
+    );
+    throw new Error(
+      `Failed to get Stripe Customer ID for user ${namefiUserId}`,
+    );
+  }
+  const stripeCustomerId = stripeCustomerIdResponse.result;
+
+  const customer: Stripe.Customer | Stripe.DeletedCustomer =
+    await stripe.customers.retrieve(stripeCustomerId, {
+      expand: ['invoice_settings.default_payment_method'],
+    });
+  logger.info({ customer }, 'Retrieved Stripe Customer');
+
+  if (customer.deleted) {
+    logger.warn(
+      "Tried to get a deleted Stripe Customer's default payment method",
+    );
+    throw new Error(
+      "Tried to get a deleted Stripe Customer's default payment method",
+    );
+  }
+
+  if (isNotNil(customer.invoice_settings?.default_payment_method)) {
+    return customer.invoice_settings
+      ?.default_payment_method as Stripe.PaymentMethod;
+  }
+
+  return null;
+}
+
+/**
+ * TODO: Migrated From Legacy Codebase, Review if this is needed
+ *
+ * @param namefiUserId - The ID of the Namefi user
+ * @returns The preferred payment method for the Namefi user
+ */
+export async function getPreferredPaymentMethodForNamefiUser({
+  namefiUserId,
+}: {
+  namefiUserId: string;
+}): Promise<StripePaymentMethod | null> {
+  const defaultPaymentMethod: Stripe.PaymentMethod | null =
+    await resolveOrFallback(
+      getDefaultStripePaymentMethodForNamefiUserOrThrow({
+        namefiUserId,
+      }),
+      null,
+    );
+
+  if (
+    isNotNil(defaultPaymentMethod) &&
+    defaultPaymentMethod.type === 'card' &&
+    isNotNil(defaultPaymentMethod.card)
+  ) {
+    return {
+      id: defaultPaymentMethod.id,
+      fingerprint: defaultPaymentMethod.card.fingerprint ?? undefined,
+      type: 'CREDIT_CARD',
+      cardDetails: {
+        brand: defaultPaymentMethod.card.brand,
+        expMonth: defaultPaymentMethod.card.exp_month,
+        expYear: defaultPaymentMethod.card.exp_year,
+        last4: defaultPaymentMethod.card.last4,
+      },
+    };
+  }
+
+  const stripeCustomerId = await resolveOrFallback(
+    getStripeCustomerIdOrThrow(namefiUserId),
+    undefined,
+  );
+  if (isNil(stripeCustomerId)) {
+    return null;
+  }
+
+  const userPaymentMethods = await resolveOrFallback(
+    getStripeCustomerPaymentMethods({
+      stripeCustomerId,
+    }),
+    [] as StripePaymentMethod[],
+  );
+
+  for (const paymentMethod of userPaymentMethods) {
+    if (
+      isNotNil(paymentMethod.cardDetails) &&
+      isNotEmpty(paymentMethod.cardDetails)
+    ) {
+      return paymentMethod;
+    }
+  }
+
+  return null;
+}
+
+/**
+ * TODO: Migrated From Legacy Codebase, Review if this is needed
+ *
+ * @param stripeCustomerId - The ID of the Stripe customer
+ * @returns An array of Stripe payment methods
+ */
+export async function getStripeCustomerPaymentMethods({
+  stripeCustomerId,
+}: {
+  stripeCustomerId: string;
+}): Promise<StripePaymentMethod[]> {
+  const stripeCustomerPaymentMethods =
+    await stripe.customers.listPaymentMethods(stripeCustomerId);
+  return stripeCustomerPaymentMethods.data.map((stripePaymentMethod) => {
+    if (
+      stripePaymentMethod.type === 'card' &&
+      isNotNil(stripePaymentMethod.card)
+    ) {
+      return {
+        id: stripePaymentMethod.id,
+        fingerprint: stripePaymentMethod.card.fingerprint ?? undefined,
+        type: 'CREDIT_CARD',
+        cardDetails: {
+          brand: stripePaymentMethod.card.brand ?? '',
+          expMonth: stripePaymentMethod.card.exp_month,
+          expYear: stripePaymentMethod.card.exp_year,
+          last4: stripePaymentMethod.card.last4,
+        },
+      };
+    }
+    return {
+      id: stripePaymentMethod.id,
+      fingerprint: null,
+      type: 'CREDIT_CARD',
+      cardDetails: null,
+    };
+  });
+}
+
+/**
+ * TODO: Migrated From Legacy Codebase, Review if this is needed
+ * Represents the details of a Stripe credit card payment method
+ *
+ * @property brand - The brand of the credit card
+ * @property expMonth - The expiration month of the credit card
+ * @property expYear - The expiration year of the credit card
+ * @property last4 - The last 4 digits of the credit card number
+ */
+export interface StripeCardDetails {
+  brand: string;
+  expMonth: number;
+  expYear: number;
+  last4: string;
+}
+
+/**
+ * TODO: Migrated From Legacy Codebase, Review if this is needed
+ * Represents a Stripe payment method
+ *
+ * @property id - The ID of the payment method
+ * @property fingerprint - The fingerprint of the payment method
+ * @property type - The type of the payment method
+ * @property cardDetails - The details of the credit card payment method
+ */
+export interface StripePaymentMethod {
+  id: string;
+  fingerprint?: string | null | undefined;
+  type: 'CREDIT_CARD';
+  cardDetails?: StripeCardDetails | null | undefined;
+}

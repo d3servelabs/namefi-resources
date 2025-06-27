@@ -105,6 +105,7 @@ export const configSchema = z.object({
       LOGOS: 'ai-logos',
       SOCIAL: 'ai-social',
     }),
+  DISALLOW_LIVE_PAYMENT_METHODS: z.boolean().optional().default(false),
 });
 
 export type ConfigInput = z.input<typeof configSchema>;
