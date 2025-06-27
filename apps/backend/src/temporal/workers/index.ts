@@ -19,6 +19,7 @@ import { triggerUpdateNamefiNftIndex } from '../schedules/update-namefi-nft-inde
 import { TEMPORAL_ENUMS } from '../shared';
 import { createWorker } from './createWorker';
 import { logger } from '#lib/logger';
+import { db } from '@namefi-astra/db';
 
 export let WORKERS: Partial<Record<TEMPORAL_ENUMS, Worker>> | undefined;
 
@@ -32,6 +33,10 @@ export const ACTIVITIES = {
     triggerUpdateNamefiNftIndex,
     triggerNamefiGptCronJob,
     addCategoriesToDomainsWithNoCategories,
+    getNamefiUsers: async () => {
+      const users = await db.query.usersTable.findMany();
+      return users;
+    },
     generalAlertNamefi: async (
       args: { title: string; extraData: any; message: string } & any,
     ) => {

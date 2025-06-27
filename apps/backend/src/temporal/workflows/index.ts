@@ -20,3 +20,4 @@ export * from './migrations/migrate-zone-to-new-nameservers.workflow';
 export * from './migrate-users.workflow';
 export * from './monitor-stripe-refund-status.workflow';
 export * from './refund-stripe.workflow';
+export * from './autorenew-daily-emails.workflow';

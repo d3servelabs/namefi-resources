@@ -2,6 +2,33 @@ import { db, usersTable } from '@namefi-astra/db';
 import { getSubDomainAndParentDomainFromNormalizedDomainName } from '@namefi-astra/utils';
 import { eq } from 'drizzle-orm';
 import { type SendMailInput, sendMail } from '../../mail/mail-client';
+import { privyClient } from '../../trpc/utils';
+
+export async function maybeGetUserEmail(
+  userId: string,
+): Promise<string | undefined> {
+  const user = await db.query.usersTable.findFirst({
+    where: (users, { eq }) => eq(users.id, userId),
+  });
+  if (!user) {
+    return undefined;
+  }
+  const privyUser = await privyClient.getUserById(user.privyUserId);
+  if (!privyUser) {
+    return undefined;
+  }
+  const primaryEmail = privyUser.email;
+  if (primaryEmail) {
+    return primaryEmail.address;
+  }
+  const linkedAccounts = privyUser.linkedAccounts;
+  for (const linkedAccount of linkedAccounts) {
+    if (linkedAccount.type === 'email') {
+      return linkedAccount.address;
+    }
+  }
+  return undefined;
+}
 
 export async function getUserEmailOrThrow(userId: string) {
   const user = await db.query.usersTable.findFirst({

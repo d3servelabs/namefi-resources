@@ -1,8 +1,5 @@
 import superjson from 'superjson';
-import {
-  createLogger as createLoggerInstance,
-  logger as loggerInstance,
-} from '#lib/logger';
+import { logger as loggerInstance } from '#lib/logger';
 
 const tryOrNull = (fn: (...args: any[]) => any, ...args: any[]) => {
   try {
@@ -64,10 +61,11 @@ global.console = {
     loggerInstance.trace(...consoleArgsToPinoArgs(args)),
 } as unknown as Console;
 
-declare global {
-  var logger: typeof loggerInstance;
-  var createLogger: typeof createLoggerInstance;
-}
+// ! didn't work because of trpc types exports to frontend
+// declare global {
+//   var logger: typeof loggerInstance;
+//   var createLogger: typeof createLoggerInstance;
+// }
 
-global.logger = loggerInstance;
-global.createLogger = createLoggerInstance;
+// global.logger = loggerInstance;
+// global.createLogger = createLoggerInstance;

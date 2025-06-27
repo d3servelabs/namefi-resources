@@ -7,6 +7,14 @@ import { isDomainParked, parkDomain } from '#services/dns/parking';
 import * as DnsActivities from './dns.activities';
 import * as DnssecActivities from './dnssec.activities';
 import * as RegistrarActivities from './registrar.activities';
+import {
+  getRenewPriceByDomain,
+  sendEmailNotificationForRenewFailedToCharge,
+  sendEmailNotificationForRenewResult,
+  sendEmailNotificationForUpcomingRenew,
+  getDomainsUpForRenewal,
+  getUserDomainsWithAutoRenewOptionAndExpirationTime,
+} from './renew.activities';
 
 //TODO: add a check to see if name collision is happening
 export const DomainsActivities = {
@@ -19,6 +27,13 @@ export const DomainsActivities = {
   ...DnsActivities,
   getPoweredByNamefi3PDomains,
   getDomainChain,
+  // Renew activities
+  getRenewPriceByDomain,
+  sendEmailNotificationForRenewFailedToCharge,
+  sendEmailNotificationForRenewResult,
+  sendEmailNotificationForUpcomingRenew,
+  getDomainsUpForRenewal,
+  getUserDomainsWithAutoRenewOptionAndExpirationTime,
 };
 
 export async function getDomainChain(
