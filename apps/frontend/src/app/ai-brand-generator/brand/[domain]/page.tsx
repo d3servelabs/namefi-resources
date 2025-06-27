@@ -188,7 +188,7 @@ export default function BrandDetailPage({ params }: BrandDetailPageProps) {
       gen.input.type === 'logo'
         ? `${gen.input.logoType} ${gen.input.logoStyle}${gen.input.description ? ` - ${gen.input.description}` : ''}`
         : gen.input.description || '',
-    result: gen.output.url,
+    result: gen.url,
     generationCallId: gen.output.externalId,
     createdAt: gen.createdAt.toISOString(),
     metadata:

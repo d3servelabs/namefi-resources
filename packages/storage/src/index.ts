@@ -1,16 +1,30 @@
-import { S3Client } from '@aws-sdk/client-s3';
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
+import { randomUUID } from 'node:crypto';
 
-interface CreateS3ClientWithAccessKeysParams {
+interface CreateS3ClientParams {
   AWS_ACCESS_KEY_ID: string;
   AWS_SECRET_ACCESS_KEY: string;
   AWS_REGION: string;
 }
 
-export const createS3ClientWithAccessKeys = ({
+interface BaseStorageParams {
+  bucketName: string;
+  s3Client: S3Client;
+}
+
+interface BaseCloudFrontParams {
+  cloudfrontDomain: string;
+}
+
+export interface StorageConfig extends BaseStorageParams, BaseCloudFrontParams {
+  baseFolder: string;
+}
+
+export const createS3Client = ({
   AWS_ACCESS_KEY_ID,
   AWS_SECRET_ACCESS_KEY,
   AWS_REGION,
-}: CreateS3ClientWithAccessKeysParams) => {
+}: CreateS3ClientParams) => {
   return new S3Client({
     forcePathStyle: true,
     region: AWS_REGION,
@@ -18,6 +32,81 @@ export const createS3ClientWithAccessKeys = ({
       accessKeyId: AWS_ACCESS_KEY_ID,
       secretAccessKey: AWS_SECRET_ACCESS_KEY,
     },
+  });
+};
+
+export interface UploadFileToS3Params extends BaseStorageParams {
+  fileBuffer: Buffer;
+  contentType: string;
+  fileName?: string;
+  folder?: string;
+}
+
+export interface UploadFileToS3Result {
+  key: string;
+  etag?: string;
+  location: string;
+}
+
+export const uploadFileToS3 = async ({
+  s3Client,
+  bucketName,
+  fileBuffer,
+  fileName,
+  contentType,
+  folder,
+}: UploadFileToS3Params): Promise<UploadFileToS3Result> => {
+  try {
+    const uniqueFileName = randomUUID();
+    const key = folder ? `${folder}/${uniqueFileName}` : uniqueFileName;
+
+    const command = new PutObjectCommand({
+      Bucket: bucketName,
+      Key: key,
+      Body: fileBuffer,
+      ContentType: contentType,
+      Metadata: {
+        ...(fileName && { originalName: fileName }),
+        uploadedAt: new Date().toISOString(),
+      },
+    });
+
+    const result = await s3Client.send(command);
+
+    if (!result.ETag) {
+      throw new Error('Upload failed: No ETag returned');
+    }
+
+    return {
+      key,
+      etag: result.ETag,
+      location: `s3://${bucketName}/${key}`,
+    };
+  } catch (error) {
+    throw new Error(
+      `Failed to upload file to S3: ${error instanceof Error ? error.message : 'Unknown error'}`,
+    );
+  }
+};
+
+export interface GenerateCloudFrontUrlParams extends BaseCloudFrontParams {
+  s3Key: string;
+}
+
+export const generateCloudFrontUrl = ({
+  cloudfrontDomain,
+  s3Key,
+}: GenerateCloudFrontUrlParams): string => {
+  return `https://${cloudfrontDomain}/${s3Key}`;
+};
+
+export const generateUrlFromStoragePath = (
+  storagePath: string,
+  cloudfrontDomain: string,
+): string => {
+  return generateCloudFrontUrl({
+    cloudfrontDomain,
+    s3Key: storagePath,
   });
 };
 

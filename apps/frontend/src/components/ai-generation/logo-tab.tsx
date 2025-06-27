@@ -49,7 +49,7 @@ export function LogoTab({
 
           console.log('Logo generation completed, calling onComplete with:', {
             prompt,
-            url: data.output.url,
+            url: data.url,
             domain: variables.brandName,
             generationCallId: data.output.externalId || '',
             metadata,

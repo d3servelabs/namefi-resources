@@ -1,14 +1,16 @@
 import {
   analyzeDomain,
   analyzeLogoRequirements,
-  createRunId,
   generateLogo,
   generateMarketingImage,
   researchDomain,
 } from '@namefi-astra/ai';
 import { db } from '@namefi-astra/db';
 import { aiGenerationsTable } from '@namefi-astra/db/schema';
-import { createS3ClientWithAccessKeys } from '@namefi-astra/storage';
+import {
+  createS3Client,
+  generateUrlFromStoragePath,
+} from '@namefi-astra/storage';
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
 import { and, count, desc, eq, max, sql } from 'drizzle-orm';
@@ -16,11 +18,17 @@ import { z } from 'zod';
 import { config, secrets } from '../../lib/env';
 import { createTRPCRouter, protectedProcedure } from '../base';
 
-const s3Client = createS3ClientWithAccessKeys({
+const s3Client = createS3Client({
   AWS_ACCESS_KEY_ID: secrets.AWS_ACCESS_KEY_ID,
   AWS_SECRET_ACCESS_KEY: secrets.AWS_SECRET_ACCESS_KEY,
   AWS_REGION: config.AWS_REGION,
 });
+
+const storageConfig = {
+  bucketName: config.STORAGE_BUCKET,
+  cloudfrontDomain: config.CLOUD_FRONT_DOMAIN,
+  s3Client,
+};
 
 const generateLogoInputSchema = z.object({
   brandName: namefiNormalizedDomainSchema,
@@ -50,16 +58,14 @@ export const aiRouter = createTRPCRouter({
         } = await analyzeLogoRequirements(brandName, description, type, style);
 
         // Step 2: Generate logo image
-        const runId = createRunId(brandName);
-        const generatedLogo = await generateLogo(
+        const generatedLogo = await generateLogo({
           brandName,
-          logoConcept.logoConcept,
-          runId,
-          config.STORAGE_BUCKET,
-          config.AI_BUCKET_FOLDERS.LOGOS,
-          config.CLOUD_FRONT_URL,
-          s3Client,
-        );
+          logoConcept: logoConcept.logoConcept,
+          storage: {
+            ...storageConfig,
+            baseFolder: config.AI_BUCKET_FOLDERS.LOGOS,
+          },
+        });
 
         if (!generatedLogo) {
           throw new TRPCError({
@@ -96,14 +102,22 @@ export const aiRouter = createTRPCRouter({
             },
             output: {
               type: 'logo',
-              url: generatedLogo.url,
+              storagePath: generatedLogo.storagePath,
               externalId: generatedLogo.generationCallId,
             },
             tokenUsage: aggregateTokenUsage,
           })
           .returning();
 
-        return generationRecord;
+        const publicUrl = generateUrlFromStoragePath(
+          generatedLogo.storagePath,
+          config.CLOUD_FRONT_DOMAIN,
+        );
+
+        return {
+          ...generationRecord,
+          url: publicUrl,
+        };
       } catch (error) {
         console.error('Logo generation error:', error);
         throw new TRPCError({
@@ -152,17 +166,15 @@ export const aiRouter = createTRPCRouter({
         } = await analyzeDomain(domain, description, searchResults);
 
         // Step 4: Generate single image
-        const runId = createRunId(domain);
-        const generatedImage = await generateMarketingImage(
+        const generatedImage = await generateMarketingImage({
           domain,
-          research.marketingConcept,
-          runId,
-          config.STORAGE_BUCKET,
-          config.AI_BUCKET_FOLDERS.SOCIAL,
-          config.CLOUD_FRONT_URL,
-          s3Client,
-          referenceLogoGenerationExternalId,
-        );
+          marketingConcept: research.marketingConcept,
+          storage: {
+            ...storageConfig,
+            baseFolder: config.AI_BUCKET_FOLDERS.SOCIAL,
+          },
+          basedOnLogoCallId: referenceLogoGenerationExternalId,
+        });
 
         if (!generatedImage) {
           throw new TRPCError({
@@ -197,7 +209,7 @@ export const aiRouter = createTRPCRouter({
             },
             output: {
               type: 'marketing',
-              url: generatedImage.url,
+              storagePath: generatedImage.storagePath,
               externalId: generatedImage.generationCallId,
             },
             tokenUsage: aggregateTokenUsage,
@@ -205,7 +217,15 @@ export const aiRouter = createTRPCRouter({
           })
           .returning();
 
-        return generationRecord;
+        const publicUrl = generateUrlFromStoragePath(
+          generatedImage.storagePath,
+          config.CLOUD_FRONT_DOMAIN,
+        );
+
+        return {
+          ...generationRecord,
+          url: publicUrl,
+        };
       } catch (error) {
         console.error('Marketing image generation error:', error);
         throw new TRPCError({
@@ -224,8 +244,8 @@ export const aiRouter = createTRPCRouter({
         domain: namefiNormalizedDomainSchema,
       }),
     )
-    .query(({ input, ctx }) => {
-      return db
+    .query(async ({ input, ctx }) => {
+      const generations = await db
         .select()
         .from(aiGenerationsTable)
         .where(
@@ -235,6 +255,14 @@ export const aiRouter = createTRPCRouter({
           ),
         )
         .orderBy(desc(aiGenerationsTable.createdAt));
+
+      return generations.map((generation) => ({
+        ...generation,
+        url: generateUrlFromStoragePath(
+          generation.output.storagePath,
+          config.CLOUD_FRONT_DOMAIN,
+        ),
+      }));
     }),
 
   getUserDomains: protectedProcedure.query(async ({ ctx }) => {
@@ -268,8 +296,8 @@ export const aiRouter = createTRPCRouter({
         type: z.enum(['logo', 'marketing']),
       }),
     )
-    .query(({ input, ctx }) => {
-      return db
+    .query(async ({ input, ctx }) => {
+      const generations = await db
         .select()
         .from(aiGenerationsTable)
         .where(
@@ -280,5 +308,13 @@ export const aiRouter = createTRPCRouter({
           ),
         )
         .orderBy(desc(aiGenerationsTable.createdAt));
+
+      return generations.map((generation) => ({
+        ...generation,
+        url: generateUrlFromStoragePath(
+          generation.output.storagePath,
+          config.CLOUD_FRONT_DOMAIN,
+        ),
+      }));
     }),
 });

@@ -95,7 +95,7 @@ export const configSchema = z.object({
   DNSSEC_DNSKEY_KEY_TAG: z.number(),
 
   STORAGE_BUCKET: z.string().default('namefi-astra-dev'),
-  CLOUD_FRONT_URL: z.string().default('https://d3pajj40uywidf.cloudfront.net'),
+  CLOUD_FRONT_DOMAIN: z.string().default('d3pajj40uywidf.cloudfront.net'),
   AI_BUCKET_FOLDERS: z
     .object({
       LOGOS: z.string(),

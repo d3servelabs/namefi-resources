@@ -21,8 +21,3 @@ export interface Generation {
   };
   createdAt: string;
 }
-
-export interface StorageData {
-  brands: Brand[];
-  version: string;
-}

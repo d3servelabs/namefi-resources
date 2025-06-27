@@ -30,9 +30,6 @@ export function MarketingTab({
     trpc.ai.generateMarketingImage.mutationOptions({
       onSuccess: (data, variables) => {
         if (data.output) {
-          // Handle single image response
-          const prompt = `Marketing image for ${variables.domain}${variables.description ? `: ${variables.description}` : ''}${lastMarketingPrompt?.selectedLogoId ? ' (based on logo)' : ''}`;
-
           // Create metadata object with only defined values
           const metadata: {
             description?: string;

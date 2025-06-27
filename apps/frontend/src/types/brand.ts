@@ -25,8 +25,3 @@ export interface Brand {
   updatedAt: string;
   generations: Generation[];
 }
-
-export interface StorageData {
-  brands: Brand[];
-  version: string;
-}

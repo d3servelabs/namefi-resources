@@ -1,69 +1,25 @@
-import type { UsageMetadata } from '@langchain/core/messages';
-import type { S3Client } from '@namefi-astra/storage';
+import { uploadFileToS3, generateCloudFrontUrl } from '@namefi-astra/storage';
+import type { GeneratedLogo, GenerateLogoParams } from '../lib/types';
 import { MODEL_CONFIGS } from '../lib/config/models';
 import {
   createGenerationMessages,
   createImageGenerationModel,
-  createRunId,
   extractImageData,
   generateImageWithTiming,
-  sanitizeForFilename,
-  uploadImageToS3,
 } from '../lib/utils/image-generation';
 import {
   enhanceLogoPrompt,
   logoImageSystemPrompt,
 } from '../prompts/logo-generation';
 
-interface LogoConceptData {
-  type: string;
-  style: string;
-  concept: string;
-  prompt: string;
-}
-
-interface GeneratedLogo {
-  url: string;
-  concept: string;
-  type: string;
-  style: string;
-  storagePath?: string;
-  revisedPrompt?: string;
-  generationCallId?: string;
-  tokenUsage?: UsageMetadata;
-  model: string;
-}
-
-/**
- * Generate file path for logo with improved naming
- */
-function generateLogoFilePath(
-  brandName: string,
-  runId: string,
-  index: number,
-  type: string,
-  style: string,
-): string {
-  const sanitizedBrand = sanitizeForFilename(brandName);
-  const sanitizedType = sanitizeForFilename(type);
-  const sanitizedStyle = sanitizeForFilename(style);
-
-  const fileName = `${sanitizedBrand}-logo-${index}-${sanitizedType}-${sanitizedStyle}.png`;
-  return `${sanitizedBrand}/${runId}/${fileName}`;
-}
-
 /**
  * Generate single logo
  */
 export async function generateLogo(
-  brandName: string,
-  logoConcept: LogoConceptData,
-  runId: string,
-  bucketName: string,
-  folder: string,
-  cloudFrontUrl: string,
-  s3Client: S3Client,
+  params: GenerateLogoParams,
 ): Promise<GeneratedLogo | null> {
+  const { brandName, logoConcept, storage } = params;
+
   console.log(`Generating logo design for ${brandName}`);
   console.log(`Type: ${logoConcept.type} - Style: ${logoConcept.style}`);
   console.log(`Prompt: ${logoConcept.prompt}`);
@@ -104,48 +60,36 @@ export async function generateLogo(
 
     // Convert base64 to buffer and upload
     const imageBuffer = Buffer.from(imageData, 'base64');
-    const filePath = generateLogoFilePath(
-      brandName,
-      runId,
-      1,
-      logoConcept.type,
-      logoConcept.style,
-    );
-    const uploadResult = await uploadImageToS3(
-      imageBuffer,
-      `${folder}/${filePath}`,
-      bucketName,
-      cloudFrontUrl,
-      s3Client,
-    );
 
-    if (uploadResult.success && uploadResult.publicUrl) {
-      console.log(
-        `✅ Generated and saved logo: ${logoConcept.type} - ${logoConcept.style}`,
-      );
-      return {
-        url: uploadResult.publicUrl,
-        concept: logoConcept.concept,
-        type: logoConcept.type,
-        style: logoConcept.style,
-        storagePath: filePath,
-        revisedPrompt,
-        generationCallId,
-        tokenUsage: response.usage_metadata,
-        model: MODEL_CONFIGS.LOGO_GENERATION.toolConfig.model,
-      };
-    }
+    const result = await uploadFileToS3({
+      s3Client: storage.s3Client,
+      bucketName: storage.bucketName,
+      fileBuffer: imageBuffer,
+      contentType: 'image/png',
+      folder: storage.baseFolder,
+    });
 
-    return null;
+    const publicUrl = generateCloudFrontUrl({
+      cloudfrontDomain: storage.cloudfrontDomain,
+      s3Key: result.key,
+    });
+
+    console.log(
+      `✅ Generated and saved logo: ${logoConcept.type} - ${logoConcept.style}`,
+    );
+    return {
+      url: publicUrl,
+      concept: logoConcept.concept,
+      type: logoConcept.type,
+      style: logoConcept.style,
+      storagePath: result.key,
+      revisedPrompt,
+      generationCallId,
+      tokenUsage: response.usage_metadata,
+      model: MODEL_CONFIGS.LOGO_GENERATION.toolConfig.model,
+    };
   } catch (error) {
     console.error('Failed to generate logo:', error);
     return null;
   }
-}
-
-/**
- * Create unique run ID for logo generation
- */
-export function createLogoRunId(brandName: string): string {
-  return createRunId(brandName);
 }

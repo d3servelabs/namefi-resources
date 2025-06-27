@@ -577,12 +577,12 @@ export const aiGenerationsTable = pgTable(
     output: jsonb('output').notNull().$type<
       | {
           type: 'logo';
-          url: string;
+          storagePath: string;
           externalId?: string;
         }
       | {
           type: 'marketing';
-          url: string;
+          storagePath: string;
           externalId?: string;
         }
     >(),

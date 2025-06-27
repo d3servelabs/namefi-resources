@@ -25,7 +25,7 @@ const productionConfig: ConfigInput = {
   DNSSEC_DNSKEY_KEY_TAG: 43974,
 
   STORAGE_BUCKET: 'namefi-astra-prod',
-  CLOUD_FRONT_URL: 'https://d37hwq656n7huw.cloudfront.net',
+  CLOUD_FRONT_DOMAIN: 'd37hwq656n7huw.cloudfront.net',
 };
 
 export default productionConfig;

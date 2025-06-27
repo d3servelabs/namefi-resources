@@ -1,55 +1,21 @@
-import {
-  AIMessage,
-  type BaseMessageLike,
-  type UsageMetadata,
-} from '@langchain/core/messages';
-import type { S3Client } from '@namefi-astra/storage';
+import { AIMessage, type BaseMessageLike } from '@langchain/core/messages';
+import { uploadFileToS3, generateCloudFrontUrl } from '@namefi-astra/storage';
+import type {
+  GeneratedImage,
+  GenerateMarketingImageParams,
+} from '../lib/types';
 import { MODEL_CONFIGS } from '../lib/config/models';
-import { sanitizeDomainName } from '../lib/utils/domain';
 import {
   createGenerationMessages,
   createImageGenerationModel,
-  createRunId,
   extractImageData,
   generateImageWithTiming,
-  uploadImageToS3,
 } from '../lib/utils/image-generation';
 import {
   addImageOverlays,
   createDefaultOverlayConfig,
 } from '../lib/utils/image-overlay';
 import { imageGenerationSystemPrompt } from '../prompts/domain-marketing';
-
-interface MarketingConcept {
-  style: string;
-  buyerAppeal: string;
-  concept: string;
-  prompt: string;
-}
-
-interface GeneratedImage {
-  url: string;
-  prompt: string;
-  style: string;
-  storagePath?: string;
-  revisedPrompt?: string;
-  generationCallId?: string;
-  tokenUsage?: UsageMetadata;
-  model: string;
-}
-
-/**
- * Generate file path for marketing image
- */
-function generateImageFilePath(
-  domain: string,
-  runId: string,
-  index: number,
-  style: string,
-): string {
-  const fileName = `${index}-${style.toLowerCase().replace(/\s+/g, '-')}.png`;
-  return `${runId}/${fileName}`;
-}
 
 /**
  * Create messages for multi-turn or regular generation
@@ -92,15 +58,10 @@ function createMarketingImageMessages(
  * Generate single marketing image
  */
 export async function generateMarketingImage(
-  domain: string,
-  marketingConcept: MarketingConcept,
-  runId: string,
-  bucketName: string,
-  folder: string,
-  cloudFrontUrl: string,
-  s3Client: S3Client,
-  basedOnLogoCallId?: string,
+  params: GenerateMarketingImageParams,
 ): Promise<GeneratedImage | null> {
+  const { domain, marketingConcept, storage, basedOnLogoCallId } = params;
+
   console.log(`Generating marketing image for ${domain}`);
   console.log(`Style: ${marketingConcept.style}`);
   console.log(`Prompt: ${marketingConcept.prompt}`);
@@ -154,36 +115,30 @@ export async function generateMarketingImage(
       finalImageBuffer = rawImageBuffer;
     }
 
-    const filePath = generateImageFilePath(
-      domain,
-      runId,
-      1,
-      marketingConcept.style,
-    );
-    const uploadResult = await uploadImageToS3(
-      finalImageBuffer,
-      `${folder}/${filePath}`,
-      bucketName,
-      cloudFrontUrl,
-      s3Client,
-      'image/jpeg',
-    );
+    const result = await uploadFileToS3({
+      s3Client: storage.s3Client,
+      bucketName: storage.bucketName,
+      fileBuffer: finalImageBuffer,
+      contentType: 'image/jpeg',
+      folder: storage.baseFolder,
+    });
 
-    if (uploadResult.success && uploadResult.publicUrl) {
-      console.log(`✅ Generated and saved: ${marketingConcept.style}`);
-      return {
-        url: uploadResult.publicUrl,
-        prompt: marketingConcept.concept,
-        style: marketingConcept.style,
-        storagePath: filePath,
-        revisedPrompt,
-        generationCallId,
-        tokenUsage: response.usage_metadata,
-        model: MODEL_CONFIGS.MARKETING_IMAGE_GENERATION.toolConfig.model,
-      };
-    }
+    const publicUrl = generateCloudFrontUrl({
+      cloudfrontDomain: storage.cloudfrontDomain,
+      s3Key: result.key,
+    });
 
-    return null;
+    console.log(`✅ Generated and saved: ${marketingConcept.style}`);
+    return {
+      url: publicUrl,
+      prompt: marketingConcept.concept,
+      style: marketingConcept.style,
+      storagePath: result.key,
+      revisedPrompt,
+      generationCallId,
+      tokenUsage: response.usage_metadata,
+      model: MODEL_CONFIGS.MARKETING_IMAGE_GENERATION.toolConfig.model,
+    };
   } catch (error) {
     console.error(
       `Failed to generate image for ${marketingConcept.style}:`,
@@ -191,43 +146,4 @@ export async function generateMarketingImage(
     );
     return null;
   }
-}
-
-/**
- * Generate marketing images (kept for backward compatibility, but now generates only 1)
- */
-export async function generateMarketingImages(
-  domain: string,
-  marketingConcepts: MarketingConcept[],
-  runId: string,
-  bucketName: string,
-  folder: string,
-  cloudFrontUrl: string,
-  s3Client: S3Client,
-  basedOnLogoCallId?: string,
-): Promise<GeneratedImage[]> {
-  // Since we only generate 1 image per call now, take the first concept
-  const concept = marketingConcepts[0];
-  if (!concept) {
-    return [];
-  }
-
-  const result = await generateMarketingImage(
-    domain,
-    concept,
-    runId,
-    bucketName,
-    folder,
-    cloudFrontUrl,
-    s3Client,
-    basedOnLogoCallId,
-  );
-  return result ? [result] : [];
-}
-
-/**
- * Create unique run ID for marketing image generation
- */
-export function createMarketingRunId(domain: string): string {
-  return createRunId(sanitizeDomainName(domain));
 }

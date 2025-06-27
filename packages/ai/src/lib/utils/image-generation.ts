@@ -1,4 +1,3 @@
-import { PutObjectCommand } from '@aws-sdk/client-s3';
 import {
   type AIMessage,
   type BaseMessageLike,
@@ -6,7 +5,6 @@ import {
   SystemMessage,
 } from '@langchain/core/messages';
 import { ChatOpenAI } from '@langchain/openai';
-import type { S3Client } from '@namefi-astra/storage';
 import type { Responses } from 'openai/resources';
 import { secrets } from '../env';
 
@@ -28,12 +26,6 @@ export interface ImageData {
   imageData: string | null;
   revisedPrompt?: string;
   generationCallId?: string;
-}
-
-export interface UploadResult {
-  success: boolean;
-  publicUrl?: string;
-  error?: Error;
 }
 
 /**
@@ -69,38 +61,6 @@ export function extractImageData(response: AIMessage): ImageData {
     imageData: imageOutput.result,
     generationCallId: imageOutput.id,
   };
-}
-
-/**
- * Upload image buffer to S3
- */
-export async function uploadImageToS3(
-  buffer: Buffer,
-  filePath: string,
-  storageBucket: string,
-  cloudFrontUrl: string,
-  s3Client: S3Client,
-  contentType = 'image/png',
-): Promise<UploadResult> {
-  try {
-    await s3Client.send(
-      new PutObjectCommand({
-        Bucket: storageBucket,
-        Key: filePath,
-        Body: buffer,
-        ContentType: contentType,
-      }),
-    );
-
-    const publicUrl = `${cloudFrontUrl}/${filePath}`;
-    return { success: true, publicUrl };
-  } catch (error) {
-    console.error('Failed to upload to S3:', error);
-    return {
-      success: false,
-      error: error instanceof Error ? error : new Error('Unknown S3 error'),
-    };
-  }
 }
 
 /**
