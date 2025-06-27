@@ -60,11 +60,9 @@ function createMarketingImageMessages(
 export async function generateMarketingImage(
   params: GenerateMarketingImageParams,
 ): Promise<GeneratedImage | null> {
-  const { domain, marketingConcept, storage, basedOnLogoCallId } = params;
+  const { domain, storage, basedOnLogoCallId } = params;
 
   console.log(`Generating marketing image for ${domain}`);
-  console.log(`Style: ${marketingConcept.style}`);
-  console.log(`Prompt: ${marketingConcept.prompt}`);
   console.log(`Based on logo call ID: ${basedOnLogoCallId}`);
 
   const imageGenerationModel = createImageGenerationModel(
@@ -89,7 +87,7 @@ export async function generateMarketingImage(
       extractImageData(response);
 
     if (!imageData) {
-      console.error(`No image data received for ${marketingConcept.style}`);
+      console.error(`No image data received for ${domain}`);
       return null;
     }
 
@@ -101,7 +99,7 @@ export async function generateMarketingImage(
     const overlayConfig = createDefaultOverlayConfig(
       domain,
       rawImageBuffer,
-      'https://xlwzxdrkpyaksbwzvcqy.supabase.co/storage/v1/object/public/assets/powered-by-namefi.jpg',
+      'https://xlwzxdrkpyaksbwzvcqy.supabase.co/storage/v1/object/public/assets/created-with-namefi.jpg',
     );
     const overlayResult = await addImageOverlays(overlayConfig);
 
@@ -128,11 +126,9 @@ export async function generateMarketingImage(
       s3Key: result.key,
     });
 
-    console.log(`✅ Generated and saved: ${marketingConcept.style}`);
+    console.log(`✅ Generated and saved: ${domain}`);
     return {
       url: publicUrl,
-      prompt: marketingConcept.concept,
-      style: marketingConcept.style,
       storagePath: result.key,
       revisedPrompt,
       generationCallId,
@@ -140,10 +136,7 @@ export async function generateMarketingImage(
       model: MODEL_CONFIGS.MARKETING_IMAGE_GENERATION.toolConfig.model,
     };
   } catch (error) {
-    console.error(
-      `Failed to generate image for ${marketingConcept.style}:`,
-      error,
-    );
+    console.error(`Failed to generate image for ${domain}:`, error);
     return null;
   }
 }

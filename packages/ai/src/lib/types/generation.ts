@@ -32,10 +32,7 @@ export interface GeneratedLogo extends BaseGeneratedResult {
   style: string;
 }
 
-export interface GeneratedImage extends BaseGeneratedResult {
-  prompt: string;
-  style: string;
-}
+export interface GeneratedImage extends BaseGeneratedResult {}
 
 // Generation parameter interfaces
 export interface BaseGenerationParams {
@@ -49,6 +46,5 @@ export interface GenerateLogoParams extends BaseGenerationParams {
 
 export interface GenerateMarketingImageParams extends BaseGenerationParams {
   domain: string;
-  marketingConcept: MarketingConcept;
   basedOnLogoCallId?: string;
 }

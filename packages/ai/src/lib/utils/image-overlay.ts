@@ -5,15 +5,17 @@ export interface ImageOverlayConfig {
   domain: string;
   imageBuffer: Buffer;
   logoPath?: string;
-  qrCode?: {
-    url: string;
-    size?: number;
-    position?: 'bottom-right' | 'bottom-left' | 'top-right' | 'top-left';
-  };
-  nameFiLogo?: {
-    size?: number;
-    position?: 'bottom-right' | 'bottom-left' | 'top-right' | 'top-left';
-    url: string;
+  footer?: {
+    enabled: boolean;
+    padding?: number;
+    qrCode?: {
+      url: string;
+      size?: number;
+    };
+    nameFiLogo?: {
+      size?: number;
+      url: string;
+    };
   };
 }
 
@@ -22,20 +24,23 @@ export interface OverlayResult {
   processedImage?: Buffer;
   error?: Error;
 }
-
 /**
  * Generate QR code buffer
  */
 async function generateQrCode(url: string, size = 150): Promise<Buffer> {
   try {
+    // Generate QR code with more margin to prevent cropping
+    const qrMargin = 4; // Increased margin
     const qrBuffer = await qrcode.toBuffer(url, {
       width: size,
-      margin: 2,
+      margin: qrMargin,
+      errorCorrectionLevel: 'H', // Medium error correction for better readability
       color: {
         dark: '#000000',
         light: '#FFFFFF',
       },
     });
+
     return qrBuffer;
   } catch (error) {
     throw new Error(`Failed to generate QR code: ${error}`);
@@ -65,116 +70,105 @@ async function loadAndResizeLogo(logoUrl: string, size = 100): Promise<Buffer> {
 }
 
 /**
- * Calculate position coordinates for overlay elements
- */
-function calculatePosition(
-  imageWidth: number,
-  imageHeight: number,
-  elementWidth: number,
-  elementHeight: number,
-  position: 'bottom-right' | 'bottom-left' | 'top-right' | 'top-left',
-  padding = 20,
-): { left: number; top: number } {
-  const positions = {
-    'bottom-right': {
-      left: imageWidth - elementWidth - padding,
-      top: imageHeight - elementHeight - padding,
-    },
-    'bottom-left': {
-      left: padding,
-      top: imageHeight - elementHeight - padding,
-    },
-    'top-right': {
-      left: imageWidth - elementWidth - padding,
-      top: padding,
-    },
-    'top-left': {
-      left: padding,
-      top: padding,
-    },
-  };
-
-  return positions[position];
-}
-
-/**
- * Add overlays to marketing image
+ * Add overlays to marketing image - now creates a footer instead of overlaying
  */
 export async function addImageOverlays(
   config: ImageOverlayConfig,
 ): Promise<OverlayResult> {
   try {
-    let processedImage = sharp(config.imageBuffer);
-    const { width, height } = await processedImage.metadata();
+    const metadata = await sharp(config.imageBuffer).metadata();
+    const width = metadata.width;
+    const height = metadata.height;
 
-    if (!(width && height)) {
+    if (!width || !height) {
       throw new Error('Unable to get image dimensions');
     }
 
-    const overlays: sharp.OverlayOptions[] = [];
+    // If footer is disabled or no logo/QR code is configured, return original image
+    const hasFooterContent = config.footer?.nameFiLogo || config.footer?.qrCode;
+    const footerEnabled = config.footer?.enabled !== false; // Default to true
 
-    // Add QR code if configured
-    if (config.qrCode) {
-      const qrSize = config.qrCode.size || 150;
-      const qrUrl = `${config.qrCode.url}?utm_campaign=jain`;
-      const qrBuffer = await generateQrCode(qrUrl, qrSize);
-
-      const qrPosition = calculatePosition(
-        width,
-        height,
-        qrSize,
-        qrSize,
-        config.qrCode.position || 'bottom-right',
-      );
-
-      overlays.push({
-        input: qrBuffer,
-        left: qrPosition.left,
-        top: qrPosition.top,
-      });
+    if (!footerEnabled || !hasFooterContent) {
+      const finalBuffer = await sharp(config.imageBuffer)
+        .jpeg({ quality: 90 })
+        .toBuffer();
+      return {
+        success: true,
+        processedImage: finalBuffer,
+      };
     }
 
-    // Add NameFi logo if configured
-    if (config.nameFiLogo) {
-      const logoSize = config.nameFiLogo.size || 100;
-      const logoPosition = config.nameFiLogo.position || 'bottom-left';
+    const footerConfig = config.footer || { enabled: true };
+    const horizontalPadding = footerConfig.padding || 20;
+    const verticalPadding = 5; // Further reduced vertical padding
 
-      const logoBuffer = await loadAndResizeLogo(
-        config.nameFiLogo.url,
+    // Load logo if configured - increased default size
+    let logoHeight = 0;
+    let logoBuffer = null;
+    if (footerConfig.nameFiLogo) {
+      const logoSize = footerConfig.nameFiLogo.size || 150; // Increased from 100
+      logoBuffer = await loadAndResizeLogo(
+        footerConfig.nameFiLogo.url,
         logoSize,
       );
-      const { width: logoWidth, height: logoHeight } =
-        await sharp(logoBuffer).metadata();
+      const logoMeta = await sharp(logoBuffer).metadata();
+      logoHeight = logoMeta.height || logoSize;
+    }
 
-      if (!(logoWidth && logoHeight)) {
-        throw new Error('Unable to get logo dimensions');
-      }
+    // Calculate footer height first to ensure everything fits
+    const maxContentHeight = Math.max(logoHeight, 100); // Use logo height or default
+    const footerHeight = maxContentHeight + verticalPadding * 2; // Minimal padding
 
-      const nameFiPosition = calculatePosition(
-        width,
-        height,
-        logoWidth,
-        logoHeight,
-        logoPosition,
-      );
+    // Generate QR code if configured
+    let qrBuffer = null;
+    let qrSize = 0;
+    if (footerConfig.qrCode) {
+      // Increase QR code size for better visibility
+      qrSize = Math.min(maxContentHeight * 0.8, 120); // Max 120px, 80% of logo height
+      const qrUrl = `${footerConfig.qrCode.url}?utm_campaign=jain`;
+      // Generate QR code with better quality settings
+      qrBuffer = await generateQrCode(qrUrl, qrSize);
+    }
 
-      overlays.push({
+    const extendedImage = await sharp(config.imageBuffer)
+      .extend({
+        bottom: footerHeight,
+        background: { r: 255, g: 255, b: 255, alpha: 1 },
+      })
+      .toBuffer();
+
+    // Now add the logo and QR code to the extended image
+    let finalImage = sharp(extendedImage);
+    const composites = [];
+
+    if (logoBuffer) {
+      const logoTop = height + Math.floor((footerHeight - logoHeight) / 2);
+      composites.push({
         input: logoBuffer,
-        left: nameFiPosition.left,
-        top: nameFiPosition.top,
+        left: horizontalPadding,
+        top: logoTop, // Center vertically in footer
       });
     }
 
-    // Apply all overlays
-    if (overlays.length > 0) {
-      processedImage = processedImage.composite(overlays);
+    if (qrBuffer) {
+      const qrLeft = width - qrSize - horizontalPadding;
+      const qrTop = height + Math.floor((footerHeight - qrSize) / 2);
+      composites.push({
+        input: qrBuffer,
+        left: qrLeft,
+        top: qrTop, // Center vertically in footer
+      });
     }
 
-    const finalBuffer = await processedImage.jpeg({ quality: 90 }).toBuffer();
+    if (composites.length > 0) {
+      finalImage = finalImage.composite(composites);
+    }
+
+    const result = await finalImage.jpeg({ quality: 90 }).toBuffer();
 
     return {
       success: true,
-      processedImage: finalBuffer,
+      processedImage: result,
     };
   } catch (error) {
     console.error('Failed to add image overlays:', error);
@@ -187,7 +181,7 @@ export async function addImageOverlays(
 }
 
 /**
- * Default configuration for marketing image overlays
+ * Default configuration for marketing image overlays with footer
  */
 export function createDefaultOverlayConfig(
   domain: string,
@@ -197,15 +191,17 @@ export function createDefaultOverlayConfig(
   return {
     domain,
     imageBuffer,
-    qrCode: {
-      url: `https://${domain}`,
-      size: 150,
-      position: 'bottom-right',
-    },
-    nameFiLogo: {
-      size: 200,
-      position: 'bottom-left',
-      url: nameFiLogoUrl,
+    footer: {
+      enabled: true,
+      padding: 20, // Horizontal padding
+      qrCode: {
+        url: `https://${domain}`,
+        size: 150, // This will be resized to match logo height
+      },
+      nameFiLogo: {
+        size: 150, // Increased logo size for better visibility
+        url: nameFiLogoUrl,
+      },
     },
   };
 }

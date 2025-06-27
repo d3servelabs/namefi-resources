@@ -1,9 +1,7 @@
 import {
-  analyzeDomain,
   analyzeLogoRequirements,
   generateLogo,
   generateMarketingImage,
-  researchDomain,
 } from '@namefi-astra/ai';
 import { db } from '@namefi-astra/db';
 import { aiGenerationsTable } from '@namefi-astra/db/schema';
@@ -155,20 +153,9 @@ export const aiRouter = createTRPCRouter({
           }
         }
 
-        // Step 2: Research the domain
-        const searchResults = await researchDomain(domain, description);
-
-        // Step 3: Analyze domain and generate single marketing concept
-        const {
-          data: research,
-          tokenUsage: researchTokenUsage,
-          model: researchModel,
-        } = await analyzeDomain(domain, description, searchResults);
-
         // Step 4: Generate single image
         const generatedImage = await generateMarketingImage({
           domain,
-          marketingConcept: research.marketingConcept,
           storage: {
             ...storageConfig,
             baseFolder: config.AI_BUCKET_FOLDERS.SOCIAL,
@@ -184,11 +171,6 @@ export const aiRouter = createTRPCRouter({
         }
 
         const aggregateTokenUsage = [
-          {
-            model: researchModel,
-            inputTokens: researchTokenUsage?.input_tokens ?? 0,
-            outputTokens: researchTokenUsage?.output_tokens ?? 0,
-          },
           {
             model: generatedImage.model,
             inputTokens: generatedImage.tokenUsage?.input_tokens ?? 0,
