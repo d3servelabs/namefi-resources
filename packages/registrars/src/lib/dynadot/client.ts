@@ -10,6 +10,7 @@ import { signMessage } from '#lib/sign-message';
 import type { DynadotCommandOutput, DynadotCommandsParams } from './commands';
 import type { DynadotCommand, DynadotResponse } from './common-types';
 import { DynadotBaseErrorMessage } from './common-types';
+import { backOff } from 'exponential-backoff';
 
 export type RetryOptions = {
   maxRetries: number;
@@ -107,32 +108,56 @@ export class Dynadot {
     params: DynadotCommandsParams[T],
     retryOptions = this.retryOptions,
   ): Promise<DynadotCommandOutput[T]> {
-    return retry(async () => {
-      const res: AxiosResponse<DynadotCommandOutput[T]> =
-        await this.instance.get('', {
-          params: {
-            command,
-            ...params,
-          },
-        });
-      if (retryOptions.retryWhenBusy && res.data) {
-        for (const response of Object.values(
-          res.data as Record<string, DynadotResponse>,
-        )) {
-          const responseCode = Number.parseInt(response.ResponseCode);
-          const responseStatus = response.Status;
-          if (
-            (responseCode === -1 &&
-              response.Error ===
-                DynadotBaseErrorMessage.PROCESSING_ANOTHER_REQUEST) ||
-            (responseCode === 5 && responseStatus === 'system_busy')
-          ) {
-            throw new Error('Threads Busy');
+    return backOff(
+      async () => {
+        const res: AxiosResponse<DynadotCommandOutput[T]> =
+          await this.instance.get('', {
+            params: {
+              command,
+              ...params,
+            },
+          });
+
+        if (retryOptions.retryWhenBusy && res?.data) {
+          for (const response of Object.values(
+            res.data as Record<string, DynadotResponse>,
+          )) {
+            const responseCode = Number.parseInt(response.ResponseCode);
+            const responseStatus = response.Status;
+            if (
+              (responseCode === -1 &&
+                response.Error ===
+                  DynadotBaseErrorMessage.PROCESSING_ANOTHER_REQUEST) ||
+              (responseCode === 5 && responseStatus === 'system_busy')
+            ) {
+              throw new Error('Threads Busy');
+            }
           }
         }
-      }
-      return res.data;
-    }, retryOptions).then((d) => d.response);
+        if (res?.status !== 200 || !res?.data) {
+          throw new Error(
+            `Failed to get response from Dynadot: ${res?.statusText} ${res?.status}`,
+          );
+        }
+        return res.data;
+      },
+      {
+        numOfAttempts: retryOptions.maxRetries,
+        retry: (e) => {
+          if (
+            retryOptions.retryWhenBusy &&
+            e instanceof Error &&
+            e.message === 'Threads Busy'
+          ) {
+            return true;
+          }
+          return false;
+        },
+        startingDelay: retryOptions.backoff,
+        timeMultiple: 1,
+        jitter: 'full',
+      },
+    );
   }
 }
 
@@ -140,29 +165,6 @@ type RetryMetadata = {
   tries: number;
   errors: Error[];
 };
-
-async function retry<T>(
-  call: () => Promise<T>,
-  retryOptions: RetryOptions,
-): Promise<{ $metadata: RetryMetadata; response: T }> {
-  const $metadata: RetryMetadata = {
-    tries: 0,
-    errors: [],
-  };
-  do {
-    try {
-      const response = await call();
-      return { $metadata, response };
-    } catch (e: any) {
-      $metadata.errors.push(e);
-    }
-    $metadata.tries++;
-    if (retryOptions.backoff) {
-      await sleep(retryOptions.backoff);
-    }
-  } while ($metadata.tries <= retryOptions.maxRetries);
-  throw new MaxTriesReachedError($metadata);
-}
 
 class MaxTriesReachedError extends Error {
   public readonly $metadata: RetryMetadata;
@@ -181,14 +183,30 @@ function setupLoggers(instance: AxiosInstance, options: LoggingOptions) {
 
   if (options.enabled !== false) {
     const errorLogger = (error: AxiosError) => {
-      let _error = assocPath(['config', 'params', 'key'], '[REDACTED]', error);
-      _error = assocPath(
-        ['config', 'context', 'params', 'key'],
-        '[REDACTED]',
-        _error,
-      );
-      // this should remove it from both request and response object as well since it's cyclic
-      logger.error(_error, 'Request Error');
+      try {
+        let _error = assocPath(
+          ['config', 'params', 'key'],
+          '[REDACTED]',
+          error,
+        );
+        _error = assocPath(
+          ['config', 'context', 'params', 'key'],
+          '[REDACTED]',
+          _error,
+        );
+        // this should remove it from both request and response object as well since it's cyclic
+        logger.error(
+          {
+            status: error.response?.status,
+            statusText: error.response?.statusText,
+            data: error.response?.data,
+          },
+          'Request Error',
+        );
+      } catch (e) {
+        logger.error({ e }, 'Request Error Logger Error');
+      }
+      return error;
     };
     const requestLogger = (req: any) => {
       const params = req.params ?? {};
@@ -230,45 +248,54 @@ function setupLoggers(instance: AxiosInstance, options: LoggingOptions) {
     };
 
     instance.interceptors.request.use((req) => {
-      if (options.blackList?.(req.params)) {
-        return req;
+      try {
+        if (options.blackList?.(req.params)) {
+          return req;
+        }
+        requestLogger(assocPath(['params', 'key'], '[REDACTED]', req));
+      } catch (e) {
+        logger.error({ e }, 'Request Logger Error');
       }
-      requestLogger(assocPath(['params', 'key'], '[REDACTED]', req));
       return req;
     }, errorLogger);
 
     instance.interceptors.response.use((res) => {
-      if (options.blackList?.(res.config.params)) {
-        return res;
-      }
-      for (const response of Object.values(
-        res.data as Record<string, DynadotResponse>,
-      )) {
-        const responseCode = Number.parseInt(response.ResponseCode);
-        const responseStatus = response.Status;
-        if (
-          (!options.allowSystemBusyLog &&
-            responseCode === -1 &&
-            response.Error ===
-              DynadotBaseErrorMessage.PROCESSING_ANOTHER_REQUEST) ||
-          (responseCode === 5 && responseStatus === 'system_busy')
-        ) {
+      try {
+        if (options.blackList?.(res.config.params)) {
           return res;
         }
-      }
-      let _res = assocPath(['config', 'params', 'key'], '[REDACTED]', res);
-      _res = assocPath(
-        ['config', 'context', 'params', 'key'],
-        '[REDACTED]',
-        _res,
-      );
-      const dataText = JSON.stringify(_res.data);
+        for (const response of Object.values(
+          res.data as Record<string, DynadotResponse>,
+        )) {
+          const responseCode = Number.parseInt(response.ResponseCode);
+          const responseStatus = response.Status;
+          if (
+            (!options.allowSystemBusyLog &&
+              responseCode === -1 &&
+              response.Error ===
+                DynadotBaseErrorMessage.PROCESSING_ANOTHER_REQUEST) ||
+            (responseCode === 5 && responseStatus === 'system_busy')
+          ) {
+            return res;
+          }
+        }
+        let _res = assocPath(['config', 'params', 'key'], '[REDACTED]', res);
+        _res = assocPath(
+          ['config', 'context', 'params', 'key'],
+          '[REDACTED]',
+          _res,
+        );
+        const dataText = JSON.stringify(_res.data);
 
-      responseLogger({
-        ..._res,
-        data: dataText.length > 400 ? `${take(400, dataText)}...` : _res.data,
-      });
-      return _res;
+        responseLogger({
+          ..._res,
+          data: dataText.length > 400 ? `${take(400, dataText)}...` : _res.data,
+        });
+        return _res;
+      } catch (e) {
+        logger.error({ e }, 'Response Logger Error');
+      }
+      return res;
     }, errorLogger);
   }
 }
