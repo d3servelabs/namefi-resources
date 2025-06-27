@@ -74,7 +74,10 @@ export async function disassociateDelegationSigner(
         message: 'no-associated-keys',
       });
     }
-    keyId = domain.dnssecKeys[0].id || domain.dnssecKeys[0].publicKey;
+    keyId =
+      domain.dnssecKeys[0].id ||
+      domain.dnssecKeys[0].publicKey ||
+      domain.dnssecKeys[0].keyTag?.toString();
   }
 
   if (isNil(keyId)) {
