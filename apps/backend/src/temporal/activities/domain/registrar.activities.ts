@@ -317,3 +317,7 @@ export async function pollAndExpectExpirationChange({
   }
   return new Date(newExpirationTime).toISOString(); // Returning a string to force the caller to parse date, since it could be affected by serialization
 }
+
+export const listAllDomains = async (
+  ...args: Parameters<typeof sldRegistrar.listAllDomains>
+) => sldRegistrar.listAllDomains(...args);

@@ -7,6 +7,9 @@ import {
 } from '../../shared';
 import { typedProxyActivities } from '../../shared/workflow-helpers';
 import { resetNameserversWorkflow } from '../reset-nameservers.workflow';
+import { isAfter } from 'date-fns';
+import { groupBy, pluck } from 'ramda';
+import pMap from 'p-map';
 
 export const migrateZoneToNewNameserversWorkflow = async (args: {
   zoneName: PunycodeDomainName;
@@ -114,3 +117,82 @@ export const migrateZoneToNewNameserversWorkflow = async (args: {
     });
   }
 };
+
+export async function migrateAllZonesToNewNameserversWorkflow() {
+  const { listAllDomains } = typedProxyActivities({
+    temporalEnum: TEMPORAL_ENUMS.DOMAINS,
+    options: {
+      ...shortRunningOpts,
+    },
+  });
+  const domains = await listAllDomains();
+  workflow.log.info(`Found ${domains.length} domains`);
+
+  /**
+   * We want to migrate domains before they enter the Auto Renew Period or Grace Period
+   * because these are the domains that allow nameservers changes
+   */
+  const { domainsToMigrate, domainsToNotMigrate } = groupBy((domain) => {
+    if (domain.expirationTime && isAfter(domain.expirationTime, new Date())) {
+      return 'domainsToMigrate';
+    }
+    return 'domainsToNotMigrate';
+  }, domains);
+
+  const report = {
+    domainsToMigrate: pluck('domainName', domainsToMigrate ?? []),
+    domainsToNotMigrate: pluck('domainName', domainsToNotMigrate ?? []),
+    executionDate: new Date().toISOString(),
+    successCount: 0,
+    errorCount: 0,
+    successDomains: [] as { normalizedDomainName: string }[],
+    errorDomains: [] as { normalizedDomainName: string; error: Error }[],
+  };
+
+  const results = await pMap(
+    domainsToMigrate ?? [],
+    async (domain) => {
+      try {
+        workflow.log.info(
+          `Migrating zone ${domain.domainName} to new nameservers`,
+        );
+        await workflow.executeChild(migrateZoneToNewNameserversWorkflow, {
+          args: [{ zoneName: domain.domainName }],
+          taskQueue: TEMPORAL_QUEUES.DOMAINS,
+          workflowId: `migrate-zone-to-new-nameservers-${domain.domainName}`,
+          workflowIdConflictPolicy: 'USE_EXISTING',
+          workflowIdReusePolicy: 'ALLOW_DUPLICATE',
+        });
+        return {
+          success: true,
+          normalizedDomainName: domain.domainName,
+        };
+      } catch (error) {
+        return {
+          success: false,
+          normalizedDomainName: domain.domainName,
+          error,
+        };
+      }
+    },
+    { concurrency: 10 },
+  );
+
+  for (const result of results) {
+    if (result.success) {
+      report.successDomains.push({
+        normalizedDomainName: result.normalizedDomainName,
+      });
+    } else {
+      report.errorDomains.push({
+        normalizedDomainName: result.normalizedDomainName,
+        error: result.error as Error,
+      });
+    }
+  }
+
+  report.successCount = report.successDomains.length;
+  report.errorCount = report.errorDomains.length;
+
+  return report;
+}
