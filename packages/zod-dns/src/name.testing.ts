@@ -9,6 +9,64 @@ export const normalizedDomainNamesTestCases = [
     name: '_dmarc.example.com',
     valid: true,
   },
+  // Service names for SRV, TLSA, SVCB records (RFC 2782)
+  {
+    name: '_sip._tcp',
+    valid: true,
+    reason: 'Service name with underscores for SRV records',
+  },
+  {
+    name: '_http._tcp.example.com',
+    valid: true,
+    reason: 'Service name with protocol for SRV records',
+  },
+  {
+    name: '_443._tcp',
+    valid: true,
+    reason: 'TLSA record service name with port number',
+  },
+  {
+    name: '_25._tcp.mail.example.com',
+    valid: true,
+    reason: 'TLSA record for SMTP service',
+  },
+  {
+    name: '_example._tcp',
+    valid: true,
+    reason: 'SVCB record service name',
+  },
+  {
+    name: '_service._protocol.example.com',
+    valid: true,
+    reason: 'Full service record name with domain',
+  },
+  // Underscores in any position should be valid
+  {
+    name: 'prefix._service.example.com',
+    valid: true,
+    reason: 'Underscore in second label should be valid',
+  },
+  {
+    name: 'example._internal._tcp',
+    valid: true,
+    reason: 'Multiple underscores in different labels',
+  },
+  // Single character labels with underscores
+  {
+    name: '_',
+    valid: true,
+    reason: 'Single underscore character is valid',
+  },
+  {
+    name: '_.example.com',
+    valid: true,
+    reason: 'Single underscore as first label',
+  },
+  {
+    name: 'example._',
+    valid: true,
+    reason: 'Single underscore as last label',
+  },
   {
     name: 'example.com',
     valid: true,
@@ -31,10 +89,31 @@ export const normalizedDomainNamesTestCases = [
   },
 ];
 export const nonNormalizedDomainNamesTestCases = [
+  // Note: Underscores are now allowed in any label position for service names
   {
-    name: 'ab._dmarc.example.com',
+    name: 'ab__double.example.com',
     valid: false,
-    reason: 'Domain name contains an underscore but it is not the first label',
+    reason: 'Domain name contains consecutive underscores',
+  },
+  {
+    name: 'example.-invalid.com',
+    valid: false,
+    reason: 'Domain name contains label starting with hyphen',
+  },
+  {
+    name: 'example.invalid-.com',
+    valid: false,
+    reason: 'Domain name contains label ending with hyphen',
+  },
+  {
+    name: '.example.com',
+    valid: false,
+    reason: 'Domain name starts with a dot',
+  },
+  {
+    name: 'example..com',
+    valid: false,
+    reason: 'Domain name contains consecutive dots',
   },
   {
     name: 'Example.com',
@@ -99,5 +178,22 @@ export const fqdnLowercaseTestCases = [
   {
     name: '__dmarc.example.com.',
     valid: false,
+  },
+  // Service names with FQDN format
+  {
+    name: '_sip._tcp.example.com.',
+    valid: true,
+  },
+  {
+    name: '_443._tcp.mail.example.com.',
+    valid: true,
+  },
+  {
+    name: '_example._tcp.',
+    valid: true,
+  },
+  {
+    name: 'service._internal._tcp.example.com.',
+    valid: true,
   },
 ];

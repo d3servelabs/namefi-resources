@@ -13,12 +13,12 @@ export function toASCII(domain: string): string {
  * Regex to validate that a domain name is normalized in Namefi flavor
  * @see https://regex101.com/r/9KIO7z/1
  * - lower case letters, digits, and hyphens, no uppercase letters, no special characters, no spaces
- * - start with a letter or digit unless when it's the first label, it can be an underscore too
+ * - start with a letter, digit, or underscore (underscores allowed for service names like _sip._tcp)
  * - each label can be up to 63 characters
  * - total length can be up to 255 characters
  */
 export const nameRegexString =
-  '[a-z0-9_]([a-z0-9-]{0,61}[a-z0-9])?(\\.[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?)*';
+  '[a-z0-9_]([a-z0-9-]{0,61}[a-z0-9_])?(\\.[a-z0-9_]([a-z0-9-]{0,61}[a-z0-9_])?)*';
 export const nameRegex = new RegExp(`^${nameRegexString}$`);
 export const fqdnLowercaseRegex = new RegExp(`^${nameRegexString}\\.$`);
 export const nameSchema = z
