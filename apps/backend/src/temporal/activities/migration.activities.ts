@@ -433,10 +433,11 @@ export async function createPrivyUserActivity(
  */
 export async function createPostgresUserActivity(
   newPrivyUserCreated: boolean,
-  newPrivyUserId?: string,
+  _newPrivyUserId?: string,
   oldPrivyId?: string,
   _stripeCustomerId?: string,
 ): Promise<string> {
+  let newPrivyUserId = _newPrivyUserId;
   try {
     if (!newPrivyUserCreated) {
       if (!oldPrivyId) {
@@ -445,12 +446,11 @@ export async function createPostgresUserActivity(
       const existingNamefiUser = await db.query.usersTable.findFirst({
         where: (usersTable, { eq }) => eq(usersTable.privyUserId, oldPrivyId),
       });
-      if (!existingNamefiUser) {
-        throw new workflow.ApplicationFailure(
-          `wrong existingPrivyId provided: ${oldPrivyId}`,
-        );
+      if (existingNamefiUser) {
+        return existingNamefiUser.id;
       }
-      return existingNamefiUser.id;
+      // create new user with oldPrivyId if it doesn't exist in the database
+      newPrivyUserId = oldPrivyId;
     }
 
     _logger.info(
