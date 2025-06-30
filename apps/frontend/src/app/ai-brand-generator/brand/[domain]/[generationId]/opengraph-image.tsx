@@ -1,7 +1,8 @@
 /** biome-ignore-all lint/performance/noImgElement: <explanation> */
 import { ImageResponse } from 'next/og';
 import { proxyUnauthenticatedClient } from '@/utils/trpc/server';
-import { secrets } from '@/lib/env';
+import { headers } from 'next/headers';
+import { getOriginFromServerHeaders } from '@/lib/origin';
 
 export const runtime = 'edge';
 
@@ -35,6 +36,8 @@ export default async function Image({
   params: { domain: string; generationId: string };
 }) {
   const { domain, generationId } = params;
+  const headersList = await headers();
+  const origin = getOriginFromServerHeaders(headersList);
 
   try {
     // Fetch the generation data
@@ -79,7 +82,7 @@ export default async function Image({
         <div tw="flex items-center justify-center w-3/4 p-8">
           <img
             src={generation.url}
-            tw="max-w-full max-h-full object-contain rounded-xl"
+            tw="max-w-full max-h-full rounded-xl"
             alt="Generated content"
           />
         </div>
@@ -87,19 +90,15 @@ export default async function Image({
         {/* Right side - QR Code and text */}
         <div tw="flex flex-col items-center justify-center w-1/4 p-8">
           <div tw="flex flex-col items-center text-center">
-            <div tw="text-white text-lg font-medium mb-6 font-roboto-slab">
-              Scan to visit
-            </div>
+            <div tw="text-white text-lg font-medium mb-6">Scan to visit</div>
             <img
               src={qrCodeUrl}
-              tw="w-48 h-48 mb-6 rounded-lg shadow-md"
+              tw="w-48 h-48 mb-6 rounded-lg"
               alt={`QR code for ${domain}`}
             />
-            <div tw="text-white text-xl font-bold mb-6 font-roboto-slab">
-              {domain}
-            </div>
+            <div tw="text-white text-xl font-bold mb-6">{domain}</div>
             <img
-              src={`${secrets.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL}/jain-with-namefi.svg`}
+              src={`${origin}/jain-with-namefi.svg`}
               tw="h-9"
               alt="Just AI'ng with NameFi"
             />
