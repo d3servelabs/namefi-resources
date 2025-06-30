@@ -39,7 +39,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title,
       description,
       metadataBase: new URL(
-        `${secrets.NEXT_PUBLIC_VERCEL_URL}/ai-brand-generator/brand/${domain}/${generationId}`,
+        `${secrets.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL}/ai-brand-generator/brand/${domain}/${generationId}`,
       ),
       openGraph: {
         title,

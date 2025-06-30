@@ -30,7 +30,9 @@ export const configSchema = z.object({
 export type ConfigInput = z.input<typeof configSchema>;
 
 export const secretsSchema = z.object({
-  NEXT_PUBLIC_VERCEL_URL: z.string().transform((val) => `https://${val}`),
+  NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL: z
+    .string()
+    .transform((val) => `https://${val}`),
 });
 
 export type SecretsInput = z.input<typeof secretsSchema>;

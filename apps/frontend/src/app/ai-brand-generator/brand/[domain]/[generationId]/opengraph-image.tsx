@@ -99,7 +99,7 @@ export default async function Image({
               {domain}
             </div>
             <img
-              src={`${secrets.NEXT_PUBLIC_VERCEL_URL}/jain-with-namefi.svg`}
+              src={`${secrets.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL}/jain-with-namefi.svg`}
               tw="h-9"
               alt="Just AI'ng with NameFi"
             />
