@@ -99,7 +99,7 @@ export async function generateMarketingImage(
     const overlayConfig = createDefaultOverlayConfig(
       domain,
       rawImageBuffer,
-      'https://xlwzxdrkpyaksbwzvcqy.supabase.co/storage/v1/object/public/assets/created-with-namefi.jpg',
+      'https://xlwzxdrkpyaksbwzvcqy.supabase.co/storage/v1/object/public/assets//jain-with-namefi.png',
     );
     const overlayResult = await addImageOverlays(overlayConfig);
 
