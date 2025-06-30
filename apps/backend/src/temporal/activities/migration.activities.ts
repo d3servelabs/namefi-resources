@@ -14,6 +14,8 @@ import { fromPairs, groupBy, isNil, isNotNil, uniqBy } from 'ramda';
 import { privyCustomMetadataToPrivyStorage } from '../../trpc/types';
 import * as workflow from '@temporalio/workflow';
 import * as changeKeys from 'change-case/keys';
+// @ts-ignore
+import countryCodeLookup from 'iso-countries-lookup';
 
 const _logger = logger.child({
   module: 'legacy-users-import',
@@ -553,8 +555,13 @@ export async function migrateContactDetailsActivity(
     if (countryCode === 'USA' || countryCode === 'United States') {
       countryCode = 'US';
     }
-    if (countryCode?.length !== 2) {
-      countryCode = undefined;
+    if (countryCode && countryCode.length !== 2) {
+      try {
+        countryCode = countryCodeLookup(countryCode);
+      } catch (error) {
+        countryCode = undefined;
+        _logger.error(`Failed to lookup country code ${countryCode}:`, error);
+      }
     }
     const serializedMetadata = privyCustomMetadataToPrivyStorage.parse({
       fullName: fullName || undefined,
