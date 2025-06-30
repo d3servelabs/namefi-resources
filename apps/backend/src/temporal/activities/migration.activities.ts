@@ -368,7 +368,20 @@ export async function createPrivyUserActivity(
     (account) => `${account.type}-${account.address}`.toLowerCase(),
     [
       ...newAccountsToBeLinked,
-      ...existingLinkedAccounts.map((account) => changeKeys.snakeCase(account)),
+      ...existingLinkedAccounts.map((account) => {
+        const snakeCaseAccount = changeKeys.snakeCase(account) as any;
+        if (
+          snakeCaseAccount.type === 'wallet' &&
+          snakeCaseAccount.address &&
+          snakeCaseAccount.address.length === 42 &&
+          snakeCaseAccount.address.startsWith('0x')
+        ) {
+          snakeCaseAccount.chain_type = 'ethereum';
+        }
+        return {
+          ...snakeCaseAccount,
+        };
+      }),
     ],
   );
 
