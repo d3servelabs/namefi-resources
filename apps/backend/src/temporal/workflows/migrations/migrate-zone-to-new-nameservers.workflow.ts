@@ -20,12 +20,24 @@ export const migrateZoneToNewNameserversWorkflow = async (args: {
     fillZoneRecords,
     fillZoneFlags,
     checkIfUsingLegacyNamefiNameservers,
+    checkIfUsingNamefiNameservers,
   } = typedProxyActivities({
     temporalEnum: TEMPORAL_ENUMS.DOMAINS,
     options: {
       ...shortRunningOpts,
     },
   });
+
+  // check if the zone is using Namefi nameservers
+  const isUsingNamefiNameservers = await checkIfUsingNamefiNameservers(
+    args.zoneName,
+  );
+  if (isUsingNamefiNameservers) {
+    workflow.log.info(
+      `Zone ${args.zoneName} is already using Namefi nameservers, skipping migration`,
+    );
+    return;
+  }
 
   const { getNftFromIndexer } = typedProxyActivities({
     temporalEnum: TEMPORAL_ENUMS.MINT,
