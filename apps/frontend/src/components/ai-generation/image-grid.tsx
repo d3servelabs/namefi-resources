@@ -6,6 +6,7 @@ import { Card, CardContent } from '@/components/ui/shadcn/card';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
 import { Download, Plus } from 'lucide-react';
 import { TwitterIcon, TwitterShareButton } from 'react-share';
+import Link from 'next/link';
 
 export interface GeneratedItem {
   id?: string;
@@ -64,90 +65,104 @@ export function ImageGrid({
     <div className="mt-8">
       <h3 className="text-xl font-semibold mb-4">{title}</h3>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {items.map((item, index) => (
-          <Card key={`${item.url}-${index}`} className="overflow-hidden">
-            <div className="relative aspect-square">
-              <img
-                src={item.url}
-                alt={item.concept || item.prompt || `${title} ${index + 1}`}
-                className="object-cover w-full h-full"
-              />
-            </div>
-            {/* Action buttons below image */}
-            <div className="p-3 border-b border-t flex gap-2 justify-center">
-              <CopyLinkButton link={item.url} />
-              <TwitterShareButton
-                url={item.url}
-                title={`Check out my domain: ${brandDomain || 'example.com'} @namefi_io`}
-              >
+        {items.map((item, index) => {
+          const cardContent = (
+            <Card key={`${item.url}-${index}`} className="overflow-hidden">
+              <div className="relative aspect-square">
+                <img
+                  src={item.url}
+                  alt={item.concept || item.prompt || `${title} ${index + 1}`}
+                  className="object-cover w-full h-full"
+                />
+              </div>
+              {/* Action buttons below image */}
+              <div className="p-3 border-b border-t flex gap-2 justify-center">
+                <CopyLinkButton link={item.url} />
+                <TwitterShareButton
+                  url={item.url}
+                  title={`Check out my domain: ${brandDomain || 'example.com'} @namefi_io`}
+                >
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    size="icon"
+                    className="bg-muted/90"
+                    title="Share on Twitter"
+                  >
+                    <TwitterIcon className="h-4 w-4 rounded" />
+                  </Button>
+                </TwitterShareButton>
                 <Button
                   type="button"
                   variant="secondary"
                   size="icon"
+                  onClick={() => handleDownload(item.url, index)}
                   className="bg-muted/90"
-                  title="Share on Twitter"
+                  title="Download image"
                 >
-                  <TwitterIcon className="h-4 w-4 rounded" />
+                  <Download className="h-4 w-4" />
                 </Button>
-              </TwitterShareButton>
-              <Button
-                type="button"
-                variant="secondary"
-                size="icon"
-                onClick={() => handleDownload(item.url, index)}
-                className="bg-muted/90"
-                title="Download image"
-              >
-                <Download className="h-4 w-4" />
-              </Button>
-            </div>
-            <CardContent className="px-4">
-              <div className="flex flex-wrap gap-2 mb-2">
-                {item.type && (
-                  <span className="text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded">
-                    {item.type}
-                  </span>
-                )}
-                {item.style && (
-                  <span className="text-xs px-2 py-1 bg-purple-100 text-purple-700 rounded">
-                    {item.style}
-                  </span>
-                )}
-                {item.basedOnLogo && (
-                  <span className="text-xs px-2 py-1 bg-green-100 text-green-700 rounded">
-                    Based on logo
-                  </span>
-                )}
               </div>
+              <CardContent className="px-4">
+                <div className="flex flex-wrap gap-2 mb-2">
+                  {item.type && (
+                    <span className="text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded">
+                      {item.type}
+                    </span>
+                  )}
+                  {item.style && (
+                    <span className="text-xs px-2 py-1 bg-purple-100 text-purple-700 rounded">
+                      {item.style}
+                    </span>
+                  )}
+                  {item.basedOnLogo && (
+                    <span className="text-xs px-2 py-1 bg-green-100 text-green-700 rounded">
+                      Based on logo
+                    </span>
+                  )}
+                </div>
 
-              {/* Show logo reference if available */}
-              {item.basedOnLogo && (
-                <div className="mb-3 p-2 bg-gray-50 rounded-lg">
-                  <p className="text-xs text-gray-600 mb-2">Based on:</p>
-                  <div className="flex items-center gap-2">
-                    <img
-                      src={item.basedOnLogo.result}
-                      alt="Referenced logo"
-                      className="w-8 h-8 object-cover rounded"
-                    />
-                    <div className="flex gap-1">
-                      {item.basedOnLogo.metadata?.logoType && (
-                        <span className="text-xs px-1 py-0.5 bg-blue-100 text-blue-700 rounded">
-                          {item.basedOnLogo.metadata.logoType}
-                        </span>
-                      )}
-                      {item.basedOnLogo.metadata?.logoStyle && (
-                        <span className="text-xs px-1 py-0.5 bg-purple-100 text-purple-700 rounded">
-                          {item.basedOnLogo.metadata.logoStyle}
-                        </span>
-                      )}
+                {/* Show logo reference if available */}
+                {item.basedOnLogo && (
+                  <div className="mb-3 p-2 bg-gray-50 rounded-lg">
+                    <p className="text-xs text-gray-600 mb-2">Based on:</p>
+                    <div className="flex items-center gap-2">
+                      <img
+                        src={item.basedOnLogo.result}
+                        alt="Referenced logo"
+                        className="w-8 h-8 object-cover rounded"
+                      />
+                      <div className="flex gap-1">
+                        {item.basedOnLogo.metadata?.logoType && (
+                          <span className="text-xs px-1 py-0.5 bg-blue-100 text-blue-700 rounded">
+                            {item.basedOnLogo.metadata.logoType}
+                          </span>
+                        )}
+                        {item.basedOnLogo.metadata?.logoStyle && (
+                          <span className="text-xs px-1 py-0.5 bg-purple-100 text-purple-700 rounded">
+                            {item.basedOnLogo.metadata.logoStyle}
+                          </span>
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        ))}
+                )}
+              </CardContent>
+            </Card>
+          );
+
+          // Conditionally wrap with Link only if item.id exists
+          return item.id ? (
+            <Link
+              href={`/ai-brand-generator/brand/${brandDomain}/${item.id}`}
+              key={`${item.url}-${index}`}
+            >
+              {cardContent}
+            </Link>
+          ) : (
+            <div key={`${item.url}-${index}`}>{cardContent}</div>
+          );
+        })}
         {isLoading && (
           <Card className="overflow-hidden">
             <Skeleton className="w-full aspect-square mb-2" />

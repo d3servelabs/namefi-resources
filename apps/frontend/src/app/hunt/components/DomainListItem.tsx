@@ -3,10 +3,8 @@
 import { AuthGuard } from '@/components/AuthRequiredDialog';
 import { cn } from '@/lib/utils';
 import { formatNumberWithAbbreviations } from '@/utils/number';
-import { useTRPC } from '@/utils/trpc';
-import type { AppRouter } from '@namefi-astra/backend/trpc';
+import { type AppRouterOutput, useTRPC } from '@/utils/trpc';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import type { inferProcedureOutput } from '@trpc/server';
 import Link from 'next/link';
 import { type MouseEvent, useCallback, useMemo } from 'react';
 import { toast } from 'sonner';
@@ -14,9 +12,7 @@ import { TagsDisplay } from './TagsDisplay';
 import { UpvoteIcon } from './UpvoteIcon';
 import { usePendingToast } from './usePendingToast';
 
-type TrendingDomainsResponse = inferProcedureOutput<
-  AppRouter['hunt']['getTrendingDomains']
->;
+type TrendingDomainsResponse = AppRouterOutput['hunt']['getTrendingDomains'];
 export type Domain = TrendingDomainsResponse['items'][number];
 
 const VoteButton = ({

@@ -2,10 +2,8 @@
 
 import { Button } from '@/components/ui/shadcn/button';
 import { formatNumberWithAbbreviations } from '@/utils/number';
-import { useTRPC } from '@/utils/trpc';
-import type { AppRouter } from '@namefi-astra/backend/trpc';
+import { type AppRouterOutput, useTRPC } from '@/utils/trpc';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import type { inferProcedureOutput } from '@trpc/server';
 import { TrendingDownIcon } from 'lucide-react';
 import Link from 'next/link';
 import { useCallback } from 'react';
@@ -14,9 +12,7 @@ import { DomainItemSkeleton } from '../../components/DomainItemSkeleton';
 import { TagsDisplay } from '../../components/TagsDisplay';
 import { UpvoteIcon } from '../../components/UpvoteIcon';
 
-type MyUpvotedDomainsResponse = inferProcedureOutput<
-  AppRouter['hunt']['getMyUpvotedDomains']
->;
+type MyUpvotedDomainsResponse = AppRouterOutput['hunt']['getMyUpvotedDomains'];
 type MyUpvotedDomain = MyUpvotedDomainsResponse['items'][number];
 
 const MyUpvotedDomainItem = ({ domain }: { domain: MyUpvotedDomain }) => {

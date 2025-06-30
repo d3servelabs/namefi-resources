@@ -32,7 +32,7 @@ if (process.env.NEXT_PUBLIC_DATADOG_LOGS_CLIENT_TOKEN) {
   });
 }
 
-function makeQueryClient() {
+export function makeQueryClient() {
   return new QueryClient({
     defaultOptions: {
       mutations: {

@@ -19,6 +19,7 @@ export const loadConfig = <Output, Def extends ZodTypeDef, Input>(
   const validatedBaseConfig = baseConfigSchema.parse(process.env);
   const envConfigPath = `${options.configPath}/${validatedBaseConfig.ENVIRONMENT}`;
   let envConfig: unknown;
+  console.log(envConfigPath);
   try {
     ({ default: envConfig } = require(envConfigPath));
   } catch (_) {
@@ -27,13 +28,4 @@ export const loadConfig = <Output, Def extends ZodTypeDef, Input>(
   return options.configSchema.parse(envConfig);
 };
 
-export interface LoadSecretsOptions<Z> {
-  secretsSchema: Z;
-}
-
-export const loadSecrets = <Z extends ZodSchema<any>>(
-  options: LoadSecretsOptions<Z>,
-): Z['_output'] => {
-  const validatedSecrets = options.secretsSchema.parse(process.env);
-  return validatedSecrets;
-};
+export { loadSecrets, type LoadSecretsOptions } from './client';

@@ -11,10 +11,6 @@ import {
   extractImageData,
   generateImageWithTiming,
 } from '../lib/utils/image-generation';
-import {
-  addImageOverlays,
-  createDefaultOverlayConfig,
-} from '../lib/utils/image-overlay';
 import { imageGenerationSystemPrompt } from '../prompts/domain-marketing';
 
 /**
@@ -94,29 +90,10 @@ export async function generateMarketingImage(
     // Convert base64 to buffer
     const rawImageBuffer = Buffer.from(imageData, 'base64');
 
-    // Add procedural overlays (NameFi logo and QR code)
-    console.log(`Adding overlays for ${domain}...`);
-    const overlayConfig = createDefaultOverlayConfig(
-      domain,
-      rawImageBuffer,
-      'https://xlwzxdrkpyaksbwzvcqy.supabase.co/storage/v1/object/public/assets//jain-with-namefi.png',
-    );
-    const overlayResult = await addImageOverlays(overlayConfig);
-
-    let finalImageBuffer: Buffer;
-    if (overlayResult.success && overlayResult.processedImage) {
-      console.log('✅ Successfully added overlays');
-      finalImageBuffer = overlayResult.processedImage;
-    } else {
-      console.error('Failed to add overlays, using original image');
-      // Fall back to original image if overlay fails
-      finalImageBuffer = rawImageBuffer;
-    }
-
     const result = await uploadFileToS3({
       s3Client: storage.s3Client,
       bucketName: storage.bucketName,
-      fileBuffer: finalImageBuffer,
+      fileBuffer: rawImageBuffer,
       contentType: 'image/jpeg',
       folder: storage.baseFolder,
     });

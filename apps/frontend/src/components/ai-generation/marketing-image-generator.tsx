@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/shadcn/button';
 import { Card, CardContent } from '@/components/ui/shadcn/card';
 import { Input } from '@/components/ui/shadcn/input';
 import { Textarea } from '@/components/ui/shadcn/textarea';
-import type { Generation } from '@/types/brand';
+import type { Generation } from '@namefi-astra/ai/types';
 import { Check } from 'lucide-react';
 import { useState } from 'react';
 import type { FormEvent } from 'react';

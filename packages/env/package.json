@@ -15,6 +15,7 @@
     "zod": "^3.23.8"
   },
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./client": "./src/client.ts"
   }
 }

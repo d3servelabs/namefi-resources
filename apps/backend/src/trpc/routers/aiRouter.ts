@@ -14,7 +14,7 @@ import { TRPCError } from '@trpc/server';
 import { and, count, desc, eq, max, sql } from 'drizzle-orm';
 import { z } from 'zod';
 import { config, secrets } from '../../lib/env';
-import { createTRPCRouter, protectedProcedure } from '../base';
+import { createTRPCRouter, protectedProcedure, publicProcedure } from '../base';
 
 const s3Client = createS3Client({
   AWS_ACCESS_KEY_ID: secrets.AWS_ACCESS_KEY_ID,
@@ -298,5 +298,22 @@ export const aiRouter = createTRPCRouter({
           config.CLOUD_FRONT_DOMAIN,
         ),
       }));
+    }),
+
+  getGenerationById: publicProcedure
+    .input(z.object({ id: z.string() }))
+    .query(async ({ input }) => {
+      const [generation] = await db
+        .select()
+        .from(aiGenerationsTable)
+        .where(eq(aiGenerationsTable.id, input.id));
+
+      return {
+        ...generation,
+        url: generateUrlFromStoragePath(
+          generation.output.storagePath,
+          config.CLOUD_FRONT_DOMAIN,
+        ),
+      };
     }),
 });

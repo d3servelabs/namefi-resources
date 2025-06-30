@@ -25,7 +25,7 @@ export const MODEL_CONFIGS = {
       model: 'gpt-image-1',
       quality: 'medium',
       size: '1024x1024',
-      output_format: 'webp',
+      output_format: 'png',
       output_compression: 100,
       background: 'transparent',
     },

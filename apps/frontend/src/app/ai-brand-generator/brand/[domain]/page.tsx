@@ -8,7 +8,7 @@ import { EmptyPlaceholder } from '@/components/empty-placeholder';
 import { Button } from '@/components/ui/shadcn/button';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
 import { useAuth } from '@/hooks/useAuth';
-import type { Generation } from '@/types/brand';
+import type { Generation } from '@namefi-astra/ai/types';
 import { useTRPC } from '@/utils/trpc';
 import { useQuery } from '@tanstack/react-query';
 import { ArrowLeft, Sparkles } from 'lucide-react';

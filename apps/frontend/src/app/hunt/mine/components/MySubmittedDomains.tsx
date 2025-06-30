@@ -1,16 +1,14 @@
 'use client';
 
 import { formatNumberWithAbbreviations } from '@/utils/number';
-import type { AppRouter } from '@namefi-astra/backend/trpc';
-import type { inferProcedureOutput } from '@trpc/server';
+import type { AppRouterOutput } from '@/utils/trpc';
 import Link from 'next/link';
 import { DomainItemSkeleton } from '../../components/DomainItemSkeleton';
 import { TagsDisplay } from '../../components/TagsDisplay';
 import { UpvoteIcon } from '../../components/UpvoteIcon';
 
-type MySubmittedDomainsResponse = inferProcedureOutput<
-  AppRouter['hunt']['getMySubmittedDomains']
->;
+type MySubmittedDomainsResponse =
+  AppRouterOutput['hunt']['getMySubmittedDomains'];
 type MyDomain = MySubmittedDomainsResponse['items'][number];
 
 const MySubmittedDomainItem = ({ domain }: { domain: MyDomain }) => (

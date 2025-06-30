@@ -1,4 +1,4 @@
-import type { Generation } from '@/types/brand';
+import type { Generation } from '@namefi-astra/ai/types';
 import { useTRPC } from '@/utils/trpc';
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
