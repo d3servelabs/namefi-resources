@@ -2,7 +2,6 @@
 import { ImageResponse } from 'next/og';
 import { proxyUnauthenticatedClient } from '@/utils/trpc/server';
 import { secrets } from '@/lib/env';
-import qrcode from 'qrcode';
 
 export const runtime = 'edge';
 
@@ -47,7 +46,13 @@ export default async function Image({
     if (!generation) {
       // Fallback design if generation not found
       return new ImageResponse(
-        <div tw="flex flex-col w-full h-full items-center justify-center bg-gradient-to-br from-slate-600 to-slate-800">
+        <div
+          tw="flex flex-col w-full h-full items-center justify-center"
+          style={{
+            background:
+              'radial-gradient(ellipse at top left, #064e3b 0%, #134e4a 30%, #171717 70%)',
+          }}
+        >
           <div tw="flex flex-col items-center text-center text-white">
             <h1 tw="text-6xl font-bold mb-4">{domain}</h1>
             <p tw="text-lg opacity-75 mt-2">Generation not found</p>
@@ -57,18 +62,10 @@ export default async function Image({
       );
     }
 
-    const qrCode = await qrcode.toDataURL(
+    // Use QR code API service that works in edge runtime
+    const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=256x256&data=${encodeURIComponent(
       `https://${domain}?utm_source=namefi&utm_medium=og_image&utm_campaign=jain`,
-      {
-        width: 256,
-        margin: 3,
-        errorCorrectionLevel: 'H',
-        color: {
-          dark: '#171717',
-          light: '#FFFFFF',
-        },
-      },
-    );
+    )}&bgcolor=FFFFFF&color=171717&margin=12&ecc=H`;
 
     return new ImageResponse(
       <div
@@ -94,7 +91,7 @@ export default async function Image({
               Scan to visit
             </div>
             <img
-              src={qrCode}
+              src={qrCodeUrl}
               tw="w-48 h-48 mb-6 rounded-lg shadow-md"
               alt={`QR code for ${domain}`}
             />
@@ -125,7 +122,13 @@ export default async function Image({
 
     // Fallback design for errors
     return new ImageResponse(
-      <div tw="flex flex-col w-full h-full items-center justify-center bg-gradient-to-br from-red-500 to-red-700">
+      <div
+        tw="flex flex-col w-full h-full items-center justify-center"
+        style={{
+          background:
+            'radial-gradient(ellipse at top left, #064e3b 0%, #134e4a 30%, #171717 70%)',
+        }}
+      >
         <div tw="flex flex-col items-center text-center text-white">
           <h1 tw="text-6xl font-bold mb-4">{domain}</h1>
           <p tw="text-lg opacity-75 mt-2">Unable to load</p>
