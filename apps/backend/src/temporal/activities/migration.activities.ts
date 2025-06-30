@@ -13,6 +13,7 @@ import { privyClient } from '../../trpc/utils';
 import { fromPairs, groupBy, isNil, isNotNil, uniqBy } from 'ramda';
 import { privyCustomMetadataToPrivyStorage } from '../../trpc/types';
 import * as workflow from '@temporalio/workflow';
+import * as changeKeys from 'change-case/keys';
 
 const _logger = logger.child({
   module: 'legacy-users-import',
@@ -322,10 +323,17 @@ export async function preparePrivyUserAccounts(
   const createNewPrivyUser =
     isNil(existingPrivyId) ||
     (existingPrivyId && newAccountsToBeLinked.length > 0);
+  const existingLinkedAccountsSnakeCase = existingLinkedAccounts.map(
+    (account) =>
+      changeKeys.snakeCase({
+        type: account.type,
+        address: account.address,
+      }),
+  );
 
   return {
     newAccountsToBeLinked,
-    existingLinkedAccounts,
+    existingLinkedAccounts: existingLinkedAccountsSnakeCase as any[],
     existingPrivyId,
     createNewPrivyUser,
   };
