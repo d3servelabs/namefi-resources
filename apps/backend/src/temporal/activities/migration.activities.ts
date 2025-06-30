@@ -541,6 +541,13 @@ export async function migrateContactDetailsActivity(
       .filter(isNotNil)
       .join(' ')
       .trim();
+    let countryCode = contactDetails.countryCode;
+    if (countryCode === 'USA' || countryCode === 'United States') {
+      countryCode = 'US';
+    }
+    if (countryCode?.length !== 2) {
+      countryCode = undefined;
+    }
     const serializedMetadata = privyCustomMetadataToPrivyStorage.parse({
       fullName: fullName || undefined,
       address: {
@@ -548,7 +555,7 @@ export async function migrateContactDetailsActivity(
         city: contactDetails.city || undefined,
         state: contactDetails.state || undefined,
         zipCode: contactDetails.zipCode || undefined,
-        country: contactDetails.countryCode || undefined,
+        country: countryCode || undefined,
       },
     });
     await privyClient.setCustomMetadata(user.privyUserId, serializedMetadata);
