@@ -366,7 +366,10 @@ export async function createPrivyUserActivity(
 }> {
   const distinctLinkedAccounts = uniqBy(
     (account) => `${account.type}-${account.address}`.toLowerCase(),
-    [...newAccountsToBeLinked, ...existingLinkedAccounts],
+    [
+      ...newAccountsToBeLinked,
+      ...existingLinkedAccounts.map((account) => changeKeys.snakeCase(account)),
+    ],
   );
 
   try {
