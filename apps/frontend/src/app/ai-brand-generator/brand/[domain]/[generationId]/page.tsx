@@ -2,8 +2,7 @@ import type { Metadata } from 'next';
 import { proxyUnauthenticatedClient } from '@/utils/trpc/server';
 import { cache } from 'react';
 import { GenerationDetailsClient } from '@/components/generation-details';
-import { headers } from 'next/headers';
-import { getOriginFromServerHeaders } from '@/lib/origin';
+import { config } from '@/lib/env';
 
 type Props = {
   params: Promise<{ domain: string; generationId: string }>;
@@ -18,8 +17,6 @@ const getGeneration = cache(async (generationId: string) => {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { domain, generationId } = await params;
-  const headersList = await headers();
-  const origin = getOriginFromServerHeaders(headersList);
 
   try {
     const generation = await getGeneration(generationId);
@@ -42,7 +39,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title,
       description,
       metadataBase: new URL(
-        `${origin}/ai-brand-generator/brand/${domain}/${generationId}`,
+        `${config.FIRST_PARTY_DEPLOYMENT_URL}/ai-brand-generator/brand/${domain}/${generationId}`,
       ),
       openGraph: {
         title,

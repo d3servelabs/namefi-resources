@@ -1,8 +1,7 @@
 /** biome-ignore-all lint/performance/noImgElement: <explanation> */
 import { ImageResponse } from 'next/og';
 import { proxyUnauthenticatedClient } from '@/utils/trpc/server';
-import { headers } from 'next/headers';
-import { getOriginFromServerHeaders } from '@/lib/origin';
+import { config } from '@/lib/env';
 
 export const runtime = 'edge';
 
@@ -36,8 +35,6 @@ export default async function Image({
   params: { domain: string; generationId: string };
 }) {
   const { domain, generationId } = params;
-  const headersList = await headers();
-  const origin = getOriginFromServerHeaders(headersList);
 
   try {
     // Fetch the generation data
@@ -98,7 +95,7 @@ export default async function Image({
             />
             <div tw="text-white text-xl font-bold mb-6">{domain}</div>
             <img
-              src={`${origin}/jain-with-namefi.svg`}
+              src={`${config.FIRST_PARTY_DEPLOYMENT_URL}/jain-with-namefi.svg`}
               tw="h-9"
               alt="Just AI'ng with NameFi"
             />
