@@ -456,9 +456,12 @@ export default function OrderDetailsPage({
                         <span className="text-xl">
                           {item.normalizedDomainName}
                         </span>
-                        {item.type === itemTypeSchema.Values.IMPORT && (
+                        {(item.type === itemTypeSchema.Values.IMPORT ||
+                          item.type === itemTypeSchema.Values.RENEW) && (
                           <Badge className="text-xs bg-blue-600/20 text-blue-400 border-blue-400/50">
-                            Import
+                            {item.type === itemTypeSchema.Values.IMPORT
+                              ? 'Import'
+                              : 'Renew'}
                           </Badge>
                         )}
                         {item.status ? (

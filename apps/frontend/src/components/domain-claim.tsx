@@ -186,6 +186,7 @@ export const DomainClaim: FC<DomainClaimProps> = ({
       handleDomainAction({
         domainAvailabilityInfo,
         durationInYears: 1,
+        operationType: 'REGISTER',
       });
       if (onClaim) {
         onClaim(subdomainValue);

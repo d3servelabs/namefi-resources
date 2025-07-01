@@ -16,6 +16,7 @@ import {
 } from '@namefi-astra/registrars/multi-year-pricing';
 import {
   isDomainImportable,
+  isDomainRegistrable,
   getDomainPricingForOperation,
   type DomainAvailabilityInfo,
 } from '@namefi-astra/backend/trpc/types';
@@ -164,16 +165,27 @@ export function useCart() {
     async ({
       domainAvailabilityInfo,
       durationInYears,
+      operationType,
       eppAuthorizationCode,
     }: {
       domainAvailabilityInfo: DomainAvailabilityInfo;
       durationInYears: number;
+      operationType: 'REGISTER' | 'IMPORT' | 'RENEW';
       eppAuthorizationCode?: string;
     }) => {
-      // Determine operation type based on domain availability
-      const operationType = isDomainImportable(domainAvailabilityInfo)
-        ? itemTypeSchema.Values.IMPORT
-        : itemTypeSchema.Values.REGISTER;
+      if (
+        operationType === 'IMPORT' &&
+        !isDomainImportable(domainAvailabilityInfo)
+      ) {
+        throw new Error('Domain is not importable');
+      }
+
+      if (
+        operationType === 'REGISTER' &&
+        !isDomainRegistrable(domainAvailabilityInfo)
+      ) {
+        throw new Error('Domain is not registrable');
+      }
 
       // Get appropriate pricing for the operation
       const pricingDetails = getDomainPricingForOperation(

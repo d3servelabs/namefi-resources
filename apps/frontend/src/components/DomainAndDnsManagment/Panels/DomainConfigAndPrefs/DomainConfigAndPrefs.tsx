@@ -1,7 +1,7 @@
 'use client';
 
 import { AsyncButton } from '@/components/buttons/AsyncButton';
-
+import { useCart } from '@/hooks/landing/use-cart';
 import { Button } from '@/components/ui/shadcn/button';
 import {
   Card,
@@ -206,6 +206,14 @@ export const DomainConfigAndPrefsForm = ({
   dnssecDetails: AppRouterOutput['domainConfig']['dnssec']['getDomainDnssecDetails'];
 }) => {
   const trpc = useTRPC();
+  const { handleDomainAction } = useCart();
+
+  const { data: domainListInfo, isLoading: isDomainInfoLoading } = useQuery(
+    trpc.registry.getDomainListInfo.queryOptions({
+      domains: [domainName],
+    }),
+  );
+  const domainAvailabilityInfo = domainListInfo?.[0];
 
   const [forwardTo, setForwardTo] = useState<string | undefined>(
     domainPreferencesAndConfig?.forwardTo,
@@ -295,16 +303,45 @@ export const DomainConfigAndPrefsForm = ({
                 Automatically renew the domain
               </p>
             </div>
-            <Switch
-              id="auto-renew"
-              className={cn(isPending ? 'animate-pulse cursor-progress' : '')}
-              checked={domainPreferencesAndConfig?.autoRenewEnabled}
-              disabled={disableAllButtons || isPending}
-              onCheckedChange={handleChange('autoRenewEnabled')}
-            />
+            <div className="flex items-center gap-3">
+              <AsyncButton
+                onClick={async () => {
+                  try {
+                    if (!domainAvailabilityInfo) {
+                      throw new Error('Domain availability info not available');
+                    }
+                    await handleDomainAction({
+                      domainAvailabilityInfo,
+                      durationInYears: 1,
+                      operationType: 'RENEW',
+                    });
+                    toast.success('Renewal added to cart successfully');
+                  } catch (error) {
+                    toast.error('Failed to add renewal to cart');
+                    throw error;
+                  }
+                }}
+                disabled={
+                  disableAllButtons ||
+                  isPending ||
+                  isDomainInfoLoading ||
+                  !domainAvailabilityInfo
+                }
+                size="sm"
+              >
+                Renew Now
+              </AsyncButton>
+              <Switch
+                id="auto-renew"
+                className={cn(isPending ? 'animate-pulse cursor-progress' : '')}
+                checked={domainPreferencesAndConfig?.autoRenewEnabled}
+                disabled={disableAllButtons || isPending}
+                onCheckedChange={handleChange('autoRenewEnabled')}
+              />
+            </div>
           </div>
 
-          <div className="invisible">intentional empty div</div>
+          <div />
 
           {dnssecDetails.isUsingNamefiNameservers ? (
             <>

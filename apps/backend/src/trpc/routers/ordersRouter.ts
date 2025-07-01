@@ -73,9 +73,12 @@ export const ordersRouter = createTRPCRouter({
       const allDomainsAvailable = domainAvailabilities.every((availability) => {
         const cartItem = domainToCartItemMap.get(availability.domain);
         // For import items, we need to check if the domain is importable rather than available
+        // For renew items, they are always considered available
         return cartItem?.type === itemTypeSchema.Values.IMPORT
           ? isDomainImportable(availability)
-          : availability.availability;
+          : cartItem?.type === itemTypeSchema.Values.RENEW
+            ? true // RENEW items are always available
+            : availability.availability;
       });
 
       // We understand that there is a small chance of race condition here,
@@ -88,7 +91,9 @@ export const ordersRouter = createTRPCRouter({
             const cartItem = domainToCartItemMap.get(availability.domain);
             return cartItem?.type === itemTypeSchema.Values.IMPORT
               ? !isDomainImportable(availability)
-              : !availability.availability;
+              : cartItem?.type === itemTypeSchema.Values.RENEW
+                ? false // RENEW items are always available, so never unavailable
+                : !availability.availability;
           })
           .map((availability) => availability.domain);
 
@@ -427,7 +432,8 @@ async function getChangesIfAnyToCartItems(
       domainPricing?.availability ||
       (domainPricing &&
         item.type === itemTypeSchema.Values.IMPORT &&
-        isDomainImportable(domainPricing));
+        isDomainImportable(domainPricing)) ||
+      item.type === itemTypeSchema.Values.RENEW; // RENEW items are always available
     return isAvailableForCart ? 'available' : 'unavailable';
   }, cartItems);
 

@@ -153,10 +153,12 @@ export const DomainCard: FC<{
   handleDomainAction: ({
     domainAvailabilityInfo,
     durationInYears,
+    operationType,
     eppAuthorizationCode,
   }: {
     domainAvailabilityInfo: DomainAvailabilityInfo;
     durationInYears: number;
+    operationType: 'REGISTER' | 'IMPORT' | 'RENEW';
     eppAuthorizationCode?: string;
   }) => void;
   isAddingToCart: boolean;
@@ -214,6 +216,7 @@ export const DomainCard: FC<{
       handleDomainAction({
         domainAvailabilityInfo: domain,
         durationInYears: 1,
+        operationType: 'REGISTER',
       });
     }
   }, [isImportable, isInCart, handleDomainAction, domain]);
@@ -225,6 +228,7 @@ export const DomainCard: FC<{
         handleDomainAction({
           domainAvailabilityInfo: domain,
           durationInYears: 1,
+          operationType: 'IMPORT',
           eppAuthorizationCode: eppAuthCode,
         });
         setIsEppModalOpen(false);
@@ -404,10 +408,12 @@ export const SearchResults: FC<{
   handleDomainAction: ({
     domainAvailabilityInfo,
     durationInYears,
+    operationType,
     eppAuthorizationCode,
   }: {
     domainAvailabilityInfo: DomainAvailabilityInfo;
     durationInYears: number;
+    operationType: 'REGISTER' | 'IMPORT' | 'RENEW';
     eppAuthorizationCode?: string;
   }) => void;
   isAddingToCart: boolean;
