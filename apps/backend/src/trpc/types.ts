@@ -77,15 +77,21 @@ export function getDomainPricingForOperation(
   domain: DomainAvailabilityInfo,
   operationType:
     | typeof itemTypeSchema.Values.REGISTER
-    | typeof itemTypeSchema.Values.IMPORT,
+    | typeof itemTypeSchema.Values.IMPORT
+    | typeof itemTypeSchema.Values.RENEW,
 ) {
   if (!domain.pricingDetails) {
     return undefined;
   }
 
-  return operationType === itemTypeSchema.Values.IMPORT
-    ? domain.pricingDetails.importPrice
-    : domain.pricingDetails.registrationPrice;
+  switch (operationType) {
+    case itemTypeSchema.Values.IMPORT:
+      return domain.pricingDetails.importPrice;
+    case itemTypeSchema.Values.RENEW:
+      return domain.pricingDetails.renewalPrice;
+    default:
+      return domain.pricingDetails.registrationPrice;
+  }
 }
 
 // Note: keeping address subfields optional as suggested by Victor

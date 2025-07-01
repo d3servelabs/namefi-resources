@@ -8,15 +8,17 @@ import {
   acquireDomainWorkflow,
   type AcquireDomainWorkflowInput,
 } from './domain-ownership/acquire-domain.workflow';
+import { extendDomainRegistrationWorkflow } from './domain-ownership/extend-registration.workflow';
 
 export interface ProcessOrderItemWorkflowInput
-  extends AcquireDomainWorkflowInput {
+  extends Omit<AcquireDomainWorkflowInput, 'operationType'> {
+  operationType: 'REGISTER' | 'IMPORT' | 'RENEW';
   orderId: string;
   itemId: string;
 }
 
 /**
- * Process a single order item by registering the domain
+ * Process a single order item by registering, importing, or renewing the domain
  */
 export async function processOrderItemWorkflow(
   input: ProcessOrderItemWorkflowInput,
@@ -40,25 +42,41 @@ export async function processOrderItemWorkflow(
   });
 
   try {
-    // Register the domain
-    await workflow.executeChild(acquireDomainWorkflow, {
-      args: [
-        {
-          normalizedDomainName,
-          chainId,
-          recipientWalletAddress,
-          operationType,
-          userId,
-          registrarKey,
-          encryptedEppAuthorizationCode,
-          encryptionKeyId,
-          // TODO: (sid->sami) Change this if needed to parent domain expiration time
-          durationInYears,
-        },
-      ],
-      taskQueue: TEMPORAL_QUEUES.DOMAINS,
-      workflowId: `acquire-domain-${input.orderId}-${input.itemId}`,
-    });
+    if (operationType === 'RENEW') {
+      // Extend/renew the domain registration
+      await workflow.executeChild(extendDomainRegistrationWorkflow, {
+        args: [
+          {
+            ownerAddress: recipientWalletAddress,
+            normalizedDomainName,
+            durationInYears,
+            userId,
+          },
+        ],
+        taskQueue: TEMPORAL_QUEUES.DOMAINS,
+        workflowId: `extend-domain-${input.orderId}-${input.itemId}`,
+      });
+    } else {
+      // Register or import the domain
+      await workflow.executeChild(acquireDomainWorkflow, {
+        args: [
+          {
+            normalizedDomainName,
+            chainId,
+            recipientWalletAddress,
+            operationType,
+            userId,
+            registrarKey,
+            encryptedEppAuthorizationCode,
+            encryptionKeyId,
+            // TODO: (sid->sami) Change this if needed to parent domain expiration time
+            durationInYears,
+          },
+        ],
+        taskQueue: TEMPORAL_QUEUES.DOMAINS,
+        workflowId: `acquire-domain-${input.orderId}-${input.itemId}`,
+      });
+    }
 
     // update orderItem status in db
     const [updateStatusError, _res] = await resolve(

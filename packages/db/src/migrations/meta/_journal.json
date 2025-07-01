@@ -253,6 +253,13 @@
       "when": 1751317516356,
       "tag": "0035_last_fixer",
       "breakpoints": true
+    },
+    {
+      "idx": 36,
+      "version": "7",
+      "when": 1751377973449,
+      "tag": "0036_wild_wolfsbane",
+      "breakpoints": true
     }
   ]
 }

@@ -121,6 +121,7 @@ export const usersTable = pgTable('users', {
 export const itemTypeEnum = pgEnum('item_type', [
   'REGISTER',
   'IMPORT',
+  'RENEW',
 ] as const);
 
 export const userContactsTable = pgTable('user_contacts', {
