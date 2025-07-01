@@ -185,7 +185,8 @@ export const DomainClaim: FC<DomainClaimProps> = ({
     if (canClaim && domainAvailabilityInfo) {
       handleDomainAction({
         domainAvailabilityInfo,
-        durationInYears: 1,
+        durationInYears:
+          domainAvailabilityInfo.durationValidationInYears?.min ?? 1,
         operationType: 'REGISTER',
       });
       if (onClaim) {

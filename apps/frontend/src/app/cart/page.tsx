@@ -670,7 +670,8 @@ export default function CartPage() {
                           {item.type === itemTypeSchema.Values.IMPORT ||
                           item.type === itemTypeSchema.Values.RENEW ? (
                             <div className="w-32 h-10 flex items-center justify-center text-sm text-muted-foreground bg-muted/50 rounded-md">
-                              1 year
+                              {item.durationInYears}{' '}
+                              {item.durationInYears === 1 ? 'year' : 'years'}
                             </div>
                           ) : (
                             <DurationStepper

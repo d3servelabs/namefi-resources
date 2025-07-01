@@ -213,9 +213,10 @@ export const DomainCard: FC<{
       setIsEppModalOpen(true);
     } else {
       // Regular add/remove action
+      const minDuration = domain.durationValidationInYears?.min ?? 1;
       handleDomainAction({
         domainAvailabilityInfo: domain,
-        durationInYears: 1,
+        durationInYears: minDuration,
         operationType: 'REGISTER',
       });
     }
@@ -225,9 +226,10 @@ export const DomainCard: FC<{
     async (eppAuthCode: string) => {
       setIsAddingImport(true);
       try {
+        const minDuration = domain.durationValidationInYears?.min ?? 1;
         handleDomainAction({
           domainAvailabilityInfo: domain,
-          durationInYears: 1,
+          durationInYears: minDuration,
           operationType: 'IMPORT',
           eppAuthorizationCode: eppAuthCode,
         });

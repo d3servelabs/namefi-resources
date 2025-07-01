@@ -565,7 +565,7 @@ async function validateCartItems(userId: string, cartItemIds?: string[]) {
         domainPricingByNormalizedDomainName[
           item.originalItem.normalizedDomainName as NamefiNormalizedDomain
         ];
-      const { min, max } = domainPricing?.durationValidationInYears ?? {
+      const { min, max } = domainPricing.durationValidationInYears ?? {
         min: 1,
         max: 10,
       };
