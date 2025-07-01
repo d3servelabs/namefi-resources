@@ -80,12 +80,13 @@ export default async function Image({
           <img
             src={generation.url}
             tw="max-w-full max-h-full rounded-xl"
+            style={{ objectFit: 'contain' }}
             alt="Generated content"
           />
         </div>
 
         {/* Right side - QR Code and text */}
-        <div tw="flex flex-col items-center justify-center w-1/4 p-8">
+        <div tw="flex flex-col items-center justify-center w-1/4 pr-8">
           <div tw="flex flex-col items-center text-center">
             <div tw="text-white text-lg font-medium mb-6">Scan to visit</div>
             <img
