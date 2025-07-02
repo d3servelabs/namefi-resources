@@ -13,8 +13,9 @@ export async function enableDnssecWorkflow(input: {
     options: {
       startToCloseTimeout: '1 minute',
       retry: {
-        initialInterval: '2 minutes',
-        maximumInterval: '2 minutes',
+        initialInterval: '10 seconds',
+        maximumInterval: '1 minute',
+        backoffCoefficient: 2,
         maximumAttempts: undefined,
       },
     },
@@ -34,10 +35,7 @@ export async function enableDnssecWorkflow(input: {
     setZoneSigningFlag,
   } = standardActivities;
 
-  const {
-    pollDsRecordAssociationStatus,
-    pollNamefiDefaultDsRecordPropagation,
-  } = longRunningActivities;
+  const { pollDsRecordAssociationStatus } = longRunningActivities;
 
   // Check if domain supports DNSSEC
   const {
@@ -67,6 +65,9 @@ export async function enableDnssecWorkflow(input: {
     // TODO: Dissociate other delegation signers
   }
 
+  // Enable zone DNSSEC
+  await setZoneSigningFlag(input.domainName, true);
+
   const registrarOperation = await associateDelegationSignerWithDefaultKey(
     input.domainName,
   );
@@ -83,21 +84,10 @@ export async function enableDnssecWorkflow(input: {
   });
 
   if (matchAny(dsAssociationStatus, 'FAILED', 'ERROR')) {
+    // Disable zone DNSSEC
+    await setZoneSigningFlag(input.domainName, false);
     throw workflow.ApplicationFailure.create({
       message: 'DS record association failed',
     });
   }
-
-  // Wait for DS record propagation
-  const dsPropagationStatus = await pollNamefiDefaultDsRecordPropagation(
-    input.domainName,
-  );
-  if (matchAny(dsPropagationStatus, 'FAILED', 'ERROR')) {
-    throw workflow.ApplicationFailure.create({
-      message: 'DS record propagation failed',
-    });
-  }
-
-  // Enable zone DNSSEC
-  await setZoneSigningFlag(input.domainName, true);
 }
