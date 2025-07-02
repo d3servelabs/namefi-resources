@@ -12,8 +12,7 @@ import {
   sendEmailNotificationForRenewFailedToCharge,
   sendEmailNotificationForRenewResult,
   sendEmailNotificationForUpcomingRenew,
-  getDomainsUpForRenewal,
-  getUserDomainsWithAutoRenewOptionAndExpirationTime,
+  getDomainsUpForRenewalGroupedByOwner,
 } from './renew.activities';
 
 //TODO: add a check to see if name collision is happening
@@ -32,8 +31,7 @@ export const DomainsActivities = {
   sendEmailNotificationForRenewFailedToCharge,
   sendEmailNotificationForRenewResult,
   sendEmailNotificationForUpcomingRenew,
-  getDomainsUpForRenewal,
-  getUserDomainsWithAutoRenewOptionAndExpirationTime,
+  getDomainsUpForRenewalGroupedByOwner,
 };
 
 export async function getDomainChain(

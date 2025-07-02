@@ -9,10 +9,9 @@ import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-act
 import type {
   DomainRenewInfo,
   DomainsUpForRenewalWithUser,
-  getDomainsUpForRenewal,
 } from '../activities/domain/renew.activities';
 import { RenewOption } from '@namefi-astra/registrars/lib/abstract-registrar/index';
-import type { PaymentProvider, UserSelect } from '@namefi-astra/db/types';
+import type { PaymentProvider } from '@namefi-astra/db/types';
 import { sum } from 'ramda';
 import { refundUserWorkflow } from './refund-user.workflow';
 import { RENEW_EARLY_BY_DAYS } from '../../lib/env/consts';
@@ -23,105 +22,112 @@ import {
 } from './charge-user-and-create-payment.workflow';
 import pMap from 'p-map';
 
-const { generalAlertNamefi, getNamefiUsers, createAutoRenewOrder } =
-  typedProxyActivities({
-    temporalEnum: TEMPORAL_ENUMS.DEFAULT,
-    options: shortRunningOpts,
-  });
+const { generalAlertNamefi, createAutoRenewOrder } = typedProxyActivities({
+  temporalEnum: TEMPORAL_ENUMS.DEFAULT,
+  options: shortRunningOpts,
+});
 
 const { maybeGetUserEmail } = typedProxyActivities({
   temporalEnum: TEMPORAL_ENUMS.NOTIFY,
   options: shortRunningOpts,
 });
 
-export async function dailyDomainsUpcomingRenewalsWorkflow() {
-  // Standard activities configuration
-  const { getDomainsUpForRenewal } = typedProxyActivities({
-    temporalEnum: TEMPORAL_ENUMS.DOMAINS,
-    options: {
-      startToCloseTimeout: '5 minute',
-      retry: {
-        initialInterval: '30 seconds',
-        maximumInterval: '10 minutes',
-        backoffCoefficient: 2,
-        maximumAttempts: 5,
-      },
+// Standard activities configuration
+const { getDomainsUpForRenewalGroupedByOwner } = typedProxyActivities({
+  temporalEnum: TEMPORAL_ENUMS.DOMAINS,
+  options: {
+    startToCloseTimeout: '5 minute',
+    retry: {
+      initialInterval: '30 seconds',
+      maximumInterval: '10 minutes',
+      backoffCoefficient: 2,
+      maximumAttempts: 5,
     },
-  });
+  },
+});
 
-  const domainsUpForRenewal = await getDomainsUpForRenewal();
+export async function dailyDomainsUpcomingRenewalsWorkflow({
+  dryRun = false,
+}: {
+  dryRun?: boolean;
+} = {}) {
+  const domainsUpForRenewalGroupedByOwner =
+    await getDomainsUpForRenewalGroupedByOwner();
   workflow.log.info(
-    `Found ${Object.keys(domainsUpForRenewal).length} domains up for renewal`,
+    `Found ${Object.keys(domainsUpForRenewalGroupedByOwner).length} domains up for renewal`,
   );
-
-  const users = await getNamefiUsers();
 
   //Start child workflows for each user to notify and renew
   const results = await pMap(
-    users,
-    async (user) => {
+    Object.keys(domainsUpForRenewalGroupedByOwner),
+    async (userId) => {
       try {
-        await workflow.executeChild(
+        if (!domainsUpForRenewalGroupedByOwner[userId]) {
+          workflow.log.error(
+            `User ${userId} has no domains up for renew, yet we are trying to notify and renew them`,
+          );
+          return { status: 'skipped', userId };
+        }
+        const result = await workflow.executeChild(
           notifyAndRenewDomainsForSingleUserWorkflow,
           {
-            args: [user.id, domainsUpForRenewal],
-            workflowId: `notify-and-renew-domains-${new Date().toISOString()}-${user.id}`,
+            args: [userId, domainsUpForRenewalGroupedByOwner[userId], dryRun],
+            workflowId: `notify-and-renew-domains-${new Date().toISOString()}-${userId}`,
             workflowIdConflictPolicy: 'USE_EXISTING',
             workflowIdReusePolicy: 'ALLOW_DUPLICATE',
             parentClosePolicy: 'ABANDON',
           },
         );
-        return { status: 'fulfilled', user };
+        return { status: 'fulfilled', userId, result };
       } catch (error) {
         workflow.log.error(
-          `Error in notifyAndRenewDomainsForSingleUserWorkflow for user ${user.id}: ${error}`,
+          `Error in notifyAndRenewDomainsForSingleUserWorkflow for user ${userId}: ${error}`,
         );
-        return { status: 'rejected', user, error };
+        return { status: 'rejected', userId, error };
       }
     },
     { concurrency: 10 },
   );
   const successes = results.filter(({ status }) => status === 'fulfilled') as {
     status: 'fulfilled';
-    user: UserSelect;
-    success: number;
+    userId: string;
+    result: Awaited<
+      ReturnType<typeof notifyAndRenewDomainsForSingleUserWorkflow>
+    >;
   }[];
   const failures = results.filter(({ status }) => status === 'rejected') as {
     status: 'rejected';
-    user: UserSelect;
+    userId: string;
     error: Error;
   }[];
 
-  return {
+  const report = {
+    willBeRenewed: successes.reduce(
+      (acc, { result }) => acc + ((result as any)?.count ?? 0),
+      0,
+    ),
     successes,
     failures,
   };
+
+  return report;
 }
 
-const {
-  getRenewPriceByDomain,
-  getUserDomainsWithAutoRenewOptionAndExpirationTime,
-} = typedProxyActivities({
+const { getRenewPriceByDomain } = typedProxyActivities({
   temporalEnum: TEMPORAL_ENUMS.DOMAINS,
   options: shortRunningOpts,
 });
 
-type UserDomainsUpForRenewal = Awaited<
-  ReturnType<typeof getUserDomainsWithAutoRenewOptionAndExpirationTime>
+type UserDomainsUpForRenewal = Exclude<
+  Awaited<ReturnType<typeof getDomainsUpForRenewalGroupedByOwner>>[string],
+  undefined
 >;
 
 export async function notifyAndRenewDomainsForSingleUserWorkflow(
   userId: string,
-  domainsUpForRenewal: Awaited<ReturnType<typeof getDomainsUpForRenewal>>,
+  userDomainsUpForRenewal: UserDomainsUpForRenewal,
+  dryRun: boolean,
 ) {
-  const userDomainsUpForRenewal =
-    await getUserDomainsWithAutoRenewOptionAndExpirationTime(
-      userId,
-      domainsUpForRenewal,
-    );
-
-  const userEmail = await maybeGetUserEmail(userId);
-
   const domainsThatShouldBeRenewed = userDomainsUpForRenewal.filter(
     ({ autoRenewOption, expirationTime }) => {
       const daysToExpiration = differenceInCalendarDays(
@@ -137,11 +143,11 @@ export async function notifyAndRenewDomainsForSingleUserWorkflow(
   );
 
   if (domainsThatShouldBeRenewed.length === 0) {
-    workflow.log.info(
-      `For user ${userId}, ${userEmail} there are no domains up for renew`,
-    );
+    workflow.log.info(`For user ${userId} there are no domains up for renew`);
     return;
   }
+
+  const userEmail = await maybeGetUserEmail(userId);
 
   workflow.log.info(
     `For user ${userId}, ${userEmail} here are domains up for renew: ${JSON.stringify(domainsThatShouldBeRenewed, null, 2)}`,
@@ -159,6 +165,17 @@ export async function notifyAndRenewDomainsForSingleUserWorkflow(
       (domain) => chargeAmountByDomainLdh[domain.normalizedDomainName],
     ),
   );
+
+  if (dryRun) {
+    return {
+      userId,
+      userEmail,
+      domainsThatShouldBeRenewed,
+      chargeAmountByDomainLdh,
+      totalAmountInUsd,
+      count: domainsThatShouldBeRenewed.length,
+    };
+  }
 
   if (userEmail) {
     await _notifyUserForUpcomingRenew(
@@ -276,22 +293,29 @@ export async function notifyAndRenewDomainsForSingleUserWorkflow(
     failures,
   });
 
-  if (!userEmail) {
-    workflow.log.warn(
-      `We are skipping notifying user(userId:${userId}) for renew result because user didn't provide an email`,
-    );
-    return;
-  }
-  await _notifyUserForRenewResult({
+  const report = {
     userId,
-    userEmail,
     successes,
+    userEmail,
     failures,
     refundAmountInUsd,
     paymentMethodCharged: chargeResult.paymentType,
     paymentMethodIdentifier: '', // TODO: Add payment method identifier for stripe
     totalAmountInUsd,
+  };
+
+  if (!userEmail) {
+    workflow.log.warn(
+      `We are skipping notifying user(userId:${userId}) for renew result because user didn't provide an email`,
+    );
+    return report;
+  }
+
+  await _notifyUserForRenewResult({
+    ...report,
+    userEmail,
   });
+  return report;
 }
 
 // #region Notify User

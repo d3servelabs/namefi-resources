@@ -9,7 +9,7 @@ import {
   RenewOption,
 } from '@namefi-astra/registrars/lib/abstract-registrar/index';
 import { differenceInDays } from 'date-fns';
-import { isNotNil, and } from 'ramda';
+import { isNotNil, and, groupBy, prop, pluck } from 'ramda';
 import { sendMail } from '../../../mail/mail-client';
 import {
   db,
@@ -68,7 +68,13 @@ export type DomainsUpForRenewalWithUserWithPrice = {
   userId: string;
 };
 
-export async function getDomainsUpForRenewal() {
+export async function getDomainsUpForRenewal(): Promise<
+  {
+    normalizedDomainName: NamefiNormalizedDomain;
+    expirationTime: Date;
+    registrarKey: string;
+  }[]
+> {
   const domains = await sldRegistrar.listAllDomains();
   const domainsWithUpcomingRenewal = domains.filter((domain) => {
     const daysToExpiration = differenceInDays(
@@ -81,7 +87,193 @@ export async function getDomainsUpForRenewal() {
     );
   });
 
-  return domainsWithUpcomingRenewal;
+  return domainsWithUpcomingRenewal.map((domain) => ({
+    normalizedDomainName: domain.domainName,
+    expirationTime: domain.expirationTime,
+    registrarKey: domain.registrarKey,
+  }));
+}
+
+export async function getUserWithEvmWallets() {
+  const [privyUsers, users] = await Promise.all([
+    privyClient.getUsers(),
+    db.query.usersTable.findMany({
+      columns: {
+        id: true,
+        privyUserId: true,
+      },
+    }),
+  ]);
+
+  const usersPrivyUserIdToNamefiUserIdMap = new Map<string, string>(
+    users.map((user) => [user.privyUserId, user.id]),
+  );
+
+  const usersWithEvmWallets = privyUsers
+    .map((privyUser) => {
+      const wallets = privyUser.linkedAccounts
+        .map((linkedAccount) => {
+          if (
+            linkedAccount.type !== 'wallet' ||
+            linkedAccount.chainType !== 'ethereum'
+          ) {
+            return null;
+          }
+          return linkedAccount.address;
+        })
+        .filter(isNotNil);
+      const userId = usersPrivyUserIdToNamefiUserIdMap.get(privyUser.id);
+      if (!userId) {
+        logger.fatal(
+          { privyUserId: privyUser.id },
+          'User has no namefi user id',
+        );
+        return null;
+      }
+      return {
+        userId,
+        privyUserId: privyUser.id,
+        wallets,
+      };
+    })
+    .filter(isNotNil);
+
+  const walletToUserIdMap = new Map<
+    string,
+    (typeof usersWithEvmWallets)[number]
+  >();
+  for (const user of usersWithEvmWallets) {
+    for (const wallet of user.wallets) {
+      walletToUserIdMap.set(wallet, user);
+    }
+  }
+  return {
+    walletToUserIdMap,
+    usersWithEvmWallets,
+  };
+}
+
+export async function getDomainsUpForRenewalGroupedByOwner() {
+  // Get both wallet-to-user mapping and domains that need renewal
+  const [{ walletToUserIdMap }, domainsUpForRenewal] = await Promise.all([
+    getUserWithEvmWallets(),
+    getDomainsUpForRenewal(),
+  ]);
+
+  // Fetch NFT domain details for all domains up for renewal
+  const nftDomains = await db.query.namefiNftTable.findMany({
+    where: (namefiNftTable, { inArray }) =>
+      inArray(
+        namefiNftTable.normalizedDomainName,
+        domainsUpForRenewal.map((domain) => domain.normalizedDomainName),
+      ),
+    columns: {
+      normalizedDomainName: true,
+      ownerAddress: true,
+      chainId: true,
+    },
+  });
+
+  // Create a map of domain name to NFT domain details for faster lookups
+  const nftDomainsMap = new Map<
+    NamefiNormalizedDomain,
+    (typeof nftDomains)[number]
+  >(
+    nftDomains.map((domain) => [
+      domain.normalizedDomainName as NamefiNormalizedDomain,
+      domain,
+    ]),
+  );
+
+  // Get user preferences for auto-renewal for all relevant domains and users
+  const domainUserPreferencesMap = await _getDomainUserPreferencesMap(
+    pluck('normalizedDomainName', domainsUpForRenewal),
+  );
+
+  // Process each domain to add owner details and auto-renewal preferences
+  const domainsUpForRenewalWithOwnerDetails = domainsUpForRenewal.map(
+    (domain) => {
+      // Get NFT details for this domain
+      const nftDomain = nftDomainsMap.get(domain.normalizedDomainName);
+      if (!nftDomain) {
+        logger.fatal(
+          { domainName: domain.normalizedDomainName },
+          'Domain not found in nftDomains',
+        );
+        return null;
+      }
+
+      // Get user details for the domain owner
+      const user = walletToUserIdMap.get(nftDomain.ownerAddress);
+      if (!user) {
+        logger.fatal(
+          { domainName: domain.normalizedDomainName },
+          'User not found in walletToUserIdMap',
+        );
+        return null;
+      }
+
+      // Determine auto-renewal preference for this domain
+      const domainUserPreferences =
+        domainUserPreferencesMap[domain.normalizedDomainName];
+
+      let autoRenewOption: RenewOption = RenewOption.MANUAL;
+      if (domainUserPreferences && domainUserPreferences.length > 0) {
+        const domainUserPreference = domainUserPreferences.find(
+          (preference) => preference.userId === user.userId,
+        );
+        autoRenewOption = domainUserPreference?.autoRenewEnabled
+          ? RenewOption.AUTOMATIC
+          : RenewOption.MANUAL;
+      }
+
+      // Return complete domain info with owner details and preferences
+      return {
+        normalizedDomainName: domain.normalizedDomainName,
+        walletAddress: nftDomain.ownerAddress as ChecksumWalletAddress,
+        expirationTime: domain.expirationTime,
+        autoRenewOption,
+        chainId: nftDomain.chainId,
+        registrarKey: domain.registrarKey,
+        userId: user.userId,
+        privyUserId: user.privyUserId,
+      } satisfies DomainRenewInfo & {
+        userId: string;
+        privyUserId: string;
+        registrarKey: string;
+      };
+    },
+  );
+
+  // Group all domains by user ID and filter out any null entries
+  return groupBy(
+    prop('userId'),
+    domainsUpForRenewalWithOwnerDetails.filter(isNotNil),
+  );
+}
+
+/**
+ * Get domain user preferences for a set of domains and users
+ * @param domainNames - The domain names to get preferences for
+ * @returns A map of domain name to user preferences
+ */
+async function _getDomainUserPreferencesMap(
+  domainNames: NamefiNormalizedDomain[],
+) {
+  // Get user preferences for auto-renewal for all relevant domains and users
+  const domainUserPreferences = await db
+    .select({
+      normalizedDomainName: domainUserPreferencesTable.normalizedDomainName,
+      autoRenewEnabled: domainUserPreferencesTable.autoRenewEnabled,
+      userId: domainUserPreferencesTable.userId,
+    })
+    .from(domainUserPreferencesTable)
+    .where(
+      inArray(domainUserPreferencesTable.normalizedDomainName, domainNames),
+    );
+
+  // Group preferences by domain name for easier access
+  return groupBy(prop('normalizedDomainName'), domainUserPreferences);
 }
 
 export async function getUserDomainsWithAutoRenewOptionAndExpirationTime(
@@ -91,7 +283,7 @@ export async function getUserDomainsWithAutoRenewOptionAndExpirationTime(
   const domainSummariesMap = new Map<
     NamefiNormalizedDomain,
     (typeof domainSummaries)[number]
-  >(domainSummaries.map((summary) => [summary.domainName, summary]));
+  >(domainSummaries.map((summary) => [summary.normalizedDomainName, summary]));
 
   const userDomains = await _getUserDomainsWithAutoRenewOption(userId);
 
