@@ -2,7 +2,7 @@ import { db } from '@namefi-astra/db';
 import { namefiNftTable } from '@namefi-astra/db';
 import { getChain } from '@namefi-astra/utils';
 import BigNumber from 'bignumber.js';
-import { sql } from 'drizzle-orm';
+import { inArray, sql } from 'drizzle-orm';
 import { eq } from 'drizzle-orm';
 import pMap from 'p-map';
 import * as R from 'ramda';
@@ -342,4 +342,14 @@ export const getNftFromIndexer = async (domainName: string) => {
     ...nft,
     asOfBlockNumber: nft.asOfBlockNumber.toString(),
   };
+};
+
+export const getNftsForWallets = async (walletAddresses: string[]) => {
+  const nfts = await db.query.namefiNftTable.findMany({
+    where: inArray(namefiNftTable.ownerAddress, walletAddresses),
+  });
+  return nfts.map((nft) => ({
+    ...nft,
+    asOfBlockNumber: nft.asOfBlockNumber.toString(),
+  }));
 };

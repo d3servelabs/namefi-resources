@@ -8,7 +8,7 @@ import {
 import { typedProxyActivities } from '../../shared/workflow-helpers';
 import { resetNameserversWorkflow } from '../reset-nameservers.workflow';
 import { isAfter } from 'date-fns';
-import { groupBy, pluck } from 'ramda';
+import { groupBy, pluck, splitEvery } from 'ramda';
 import pMap from 'p-map';
 
 export const migrateZoneToNewNameserversWorkflow = async (args: {
@@ -51,22 +51,24 @@ export const migrateZoneToNewNameserversWorkflow = async (args: {
 
   const zones = await getRoute53ZonesByName(args.zoneName);
   if (!zones || zones.length === 0) {
-    throw new Error(`Zone ${args.zoneName} not found`);
+    throw new workflow.ApplicationFailure(`Zone ${args.zoneName} not found`);
   }
 
   if (zones.length > 1) {
-    throw new Error(`Multiple zones found for ${args.zoneName}`);
+    throw new workflow.ApplicationFailure(
+      `Multiple zones found for ${args.zoneName}`,
+    );
   }
 
   const zone = zones[0];
   const zoneId = zone.Id;
   if (!zoneId) {
-    throw new Error(`Zone ${args.zoneName} has no ID`);
+    throw new workflow.ApplicationFailure(`Zone ${args.zoneName} has no ID`);
   }
 
   const nft = await getNftFromIndexer(args.zoneName);
   if (!nft || !nft.ownerAddress) {
-    throw new Error(`NFT for ${args.zoneName} not found`);
+    throw new workflow.ApplicationFailure(`NFT for ${args.zoneName} not found`);
   }
   const ownerAddress = nft.ownerAddress;
 
@@ -93,9 +95,11 @@ export const migrateZoneToNewNameserversWorkflow = async (args: {
     newRecords,
   );
 
-  // fill in the new records to the new zone
-  await fillZoneRecords(args.zoneName, finalRecords);
-
+  if (finalRecords.length > 0) {
+    // MARK: Fill Records
+    // fill in the new records to the new zone
+    await fillZoneRecords(args.zoneName, finalRecords);
+  }
   // fill in the flags to the new zone
   await fillZoneFlags(args.zoneName, flags);
 
@@ -112,6 +116,7 @@ export const migrateZoneToNewNameserversWorkflow = async (args: {
       ],
       taskQueue: TEMPORAL_QUEUES.DOMAINS,
       workflowId: `reset-nameservers-${args.zoneName}`,
+      parentClosePolicy: 'ABANDON',
       workflowIdConflictPolicy: 'USE_EXISTING',
       workflowIdReusePolicy: 'ALLOW_DUPLICATE',
     });
@@ -147,43 +152,75 @@ export async function migrateAllZonesToNewNameserversWorkflow() {
     errorCount: 0,
     successDomains: [] as { normalizedDomainName: string }[],
     errorDomains: [] as { normalizedDomainName: string; error: Error }[],
+    multipleZonesFound: [] as string[],
   };
 
-  const results = await pMap(
-    domainsToMigrate ?? [],
-    async (domain) => {
-      try {
-        workflow.log.info(
-          `Migrating zone ${domain.domainName} to new nameservers`,
-        );
-        await workflow.executeChild(migrateZoneToNewNameserversWorkflow, {
-          args: [{ zoneName: domain.domainName }],
-          taskQueue: TEMPORAL_QUEUES.DOMAINS,
-          workflowId: `migrate-zone-to-new-nameservers-${domain.domainName}`,
-          workflowIdConflictPolicy: 'USE_EXISTING',
-          workflowIdReusePolicy: 'ALLOW_DUPLICATE',
-        });
-        return {
-          success: true,
-          normalizedDomainName: domain.domainName,
-        };
-      } catch (error) {
-        return {
-          success: false,
-          normalizedDomainName: domain.domainName,
-          error,
-        };
-      }
-    },
-    { concurrency: 10 },
-  );
+  workflow.upsertMemo({
+    domainsToMigrate: pluck('domainName', domainsToMigrate ?? []),
+    domainsToMigrateCount: (domainsToMigrate ?? []).length,
+    domainsToNotMigrateCount: (domainsToNotMigrate ?? []).length,
+    domainsToNotMigrate: pluck('domainName', domainsToNotMigrate ?? []),
+    executionDate: new Date().toISOString(),
+  });
 
+  const batchSize = 10;
+  const batches = splitEvery(batchSize, domainsToMigrate ?? []);
+  const batchResultsPromises: Promise<
+    {
+      success: boolean;
+      normalizedDomainName: string;
+      error?: Error;
+      message?: string;
+    }[]
+  >[] = [];
+  for (let i = 0; i < batches.length; i++) {
+    const batch = batches[i];
+    await workflow.sleep(i === 0 ? 0 : 120_000);
+    const promises = pMap(
+      batch,
+      async (domain) => {
+        try {
+          workflow.log.info(
+            `Migrating zone ${domain.domainName} to new nameservers`,
+          );
+          await workflow.executeChild(migrateZoneToNewNameserversWorkflow, {
+            args: [{ zoneName: domain.domainName }],
+            taskQueue: TEMPORAL_QUEUES.DOMAINS,
+            parentClosePolicy: 'ABANDON',
+            workflowId: `migrate-zone-to-new-nameservers-${domain.domainName}`,
+            workflowIdConflictPolicy: 'USE_EXISTING',
+            workflowIdReusePolicy: 'ALLOW_DUPLICATE',
+          });
+          return {
+            success: true,
+            normalizedDomainName: domain.domainName,
+          };
+        } catch (error) {
+          return {
+            success: false,
+            normalizedDomainName: domain.domainName,
+            message:
+              (error as workflow.ApplicationFailure).failure?.cause?.message ??
+              '',
+            error: error as Error,
+          };
+        }
+      },
+      { concurrency: 10 },
+    );
+    batchResultsPromises.push(promises);
+  }
+
+  const results = (await Promise.all(batchResultsPromises)).flat();
   for (const result of results) {
     if (result.success) {
       report.successDomains.push({
         normalizedDomainName: result.normalizedDomainName,
       });
     } else {
+      if (result.message && result.message.includes('Multiple zones found')) {
+        report.multipleZonesFound.push(result.normalizedDomainName);
+      }
       report.errorDomains.push({
         normalizedDomainName: result.normalizedDomainName,
         error: result.error as Error,

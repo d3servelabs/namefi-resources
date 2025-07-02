@@ -12,6 +12,7 @@ import { DomainsActivities } from '../activities/domain';
 import {
   getNftExpirationTimeInSeconds,
   getNftFromIndexer,
+  getNftsForWallets,
   updateNamefiNftIndex,
 } from '../activities/namefi-nft';
 import { triggerNamefiGptCronJob } from '../activities/triggerNamefiGptCronJob';
@@ -60,6 +61,7 @@ export const ACTIVITIES = {
     ...MintActivities,
     getNftExpirationTimeInSeconds,
     getNftFromIndexer,
+    getNftsForWallets,
   },
   [TEMPORAL_ENUMS.DOMAINS]: DomainsActivities,
   [TEMPORAL_ENUMS.NOTIFY]: {

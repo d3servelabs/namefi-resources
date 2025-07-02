@@ -8,7 +8,7 @@ import {
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { recordTypeEnum } from '@namefi-astra/zod-dns';
 import * as workflow from '@temporalio/workflow';
-import { eq } from 'drizzle-orm';
+import { eq, sql } from 'drizzle-orm';
 import { getZoneRecords, getZonesByName } from '#lib/route53-dns/route53';
 import { PARKED_DOMAIN_RECORDS } from '#services/dns/parking';
 
@@ -194,7 +194,23 @@ export const fillZoneRecords = async (
   zoneName: NamefiNormalizedDomain,
   records: DnsRecordInsert[],
 ) => {
-  await db.insert(dnsRecordsTable).values(records);
+  const existingRecords = await db
+    .select()
+    .from(dnsRecordsTable)
+    .where(eq(dnsRecordsTable.zoneName, zoneName));
+  const existingRecordsMap = new Map(existingRecords.map((r) => [r.name, r]));
+  const newRecords = records.filter(
+    (r) => !existingRecordsMap.has(r.name ?? '@'),
+  );
+  if (newRecords.length === 0) {
+    return;
+  }
+  if (newRecords.length !== records.length) {
+    throw new workflow.ApplicationFailure('zone has existing records');
+  }
+  if (newRecords.length > 0) {
+    await db.insert(dnsRecordsTable).values(newRecords);
+  }
 };
 
 export const fillZoneFlags = async (
@@ -202,11 +218,23 @@ export const fillZoneFlags = async (
   flags: Awaited<ReturnType<typeof determineZoneFlagsFromRecords>>,
 ) => {
   await db
-    .update(domainConfigTable)
-    .set({
+    .insert(domainConfigTable)
+    .values({
+      normalizedDomainName: zoneName,
       autoEnsEnabled: flags.autoEns,
       autoParkEnabled: flags.autoPark,
       forwardTo: flags.forwardTo,
     })
-    .where(eq(domainConfigTable.normalizedDomainName, zoneName));
+    .onConflictDoUpdate({
+      target: [domainConfigTable.normalizedDomainName],
+      set: {
+        autoEnsEnabled: sql.raw(
+          `excluded.${domainConfigTable.autoEnsEnabled.name}`,
+        ),
+        autoParkEnabled: sql.raw(
+          `excluded.${domainConfigTable.autoParkEnabled.name}`,
+        ),
+        forwardTo: sql.raw(`excluded.${domainConfigTable.forwardTo.name}`),
+      },
+    });
 };
