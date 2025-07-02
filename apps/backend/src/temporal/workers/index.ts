@@ -21,6 +21,7 @@ import { TEMPORAL_ENUMS } from '../shared';
 import { createWorker } from './createWorker';
 import { logger } from '#lib/logger';
 import { db } from '@namefi-astra/db';
+import { config } from '#lib/env';
 
 export let WORKERS: Partial<Record<TEMPORAL_ENUMS, Worker>> | undefined;
 
@@ -56,6 +57,7 @@ export const ACTIVITIES = {
         })
         .fatal(args);
     },
+    getConfig: async (key: keyof typeof config) => config[key],
   },
   [TEMPORAL_ENUMS.MINT]: {
     ...MintActivities,

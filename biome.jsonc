@@ -8,7 +8,7 @@
   },
   "files": {
     "ignoreUnknown": true,
-    "includes": ["**", "!**/generated/**"],
+    "includes": ["**", "!**/generated/**", "!temp/**"],
     "maxSize": 1536000
   },
   "formatter": {
