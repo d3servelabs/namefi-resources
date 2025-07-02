@@ -87,7 +87,7 @@ export async function getDomainsUpForRenewal() {
 export async function getUserDomainsWithAutoRenewOptionAndExpirationTime(
   userId: string,
   domainSummaries: Awaited<ReturnType<typeof getDomainsUpForRenewal>>,
-): Promise<DomainRenewInfo[]> {
+): Promise<(DomainRenewInfo & { registrarKey: string })[]> {
   const domainSummariesMap = new Map<
     NamefiNormalizedDomain,
     (typeof domainSummaries)[number]
@@ -102,6 +102,7 @@ export async function getUserDomainsWithAutoRenewOptionAndExpirationTime(
     }
     return {
       ...domain,
+      registrarKey: domainSummary.registrarKey,
       expirationTime: domainSummary.expirationTime,
     };
   });
@@ -251,6 +252,7 @@ export async function sendEmailNotificationForUpcomingRenew(
 }
 
 export async function sendEmailNotificationForRenewResult({
+  userId,
   domainLdhRenewFailed,
   domainLdhRenewSucceeded,
   paymentMethodCharged,
@@ -258,9 +260,9 @@ export async function sendEmailNotificationForRenewResult({
   refundAmountInUsd,
   refundStatus,
   chargedAmountInUsd,
-  userAddress,
   userEmail,
 }: {
+  userId: string;
   domainLdhRenewFailed: string[];
   domainLdhRenewSucceeded: string[];
   paymentMethodCharged: PaymentProvider;
@@ -268,14 +270,12 @@ export async function sendEmailNotificationForRenewResult({
   refundAmountInUsd: number | null | undefined;
   refundStatus: 'SUCCESS' | 'FAILED';
   chargedAmountInUsd: number;
-  userAddress: string;
   userEmail: string;
 }) {
   const populatedTemplate = React.createElement(DomainRenewReport, {
     recipientName: userEmail,
-    recipientWalletAddress: userAddress,
+    recipientUserId: userId,
     recipientEmail: userEmail,
-
     chargedAmountInUsd,
     domainLdhRenewFailed,
     domainLdhRenewSucceeded,
@@ -308,19 +308,18 @@ export async function sendEmailNotificationForRenewResult({
 export async function sendEmailNotificationForRenewFailedToCharge({
   chargeAmountInUsd,
   domainsToRenew,
-  userAddress,
+  userId,
   userEmail,
 }: {
   chargeAmountInUsd: number;
   domainsToRenew: string[];
-  userAddress: string;
+  userId: string;
   userEmail: string;
 }) {
   const populatedTemplate = React.createElement(DomainRenewFailedToCharge, {
     recipientName: userEmail,
-    recipientWalletAddress: userAddress,
+    recipientUserId: userId,
     recipientEmail: userEmail,
-
     chargeAmountInUsd,
     domainsToRenew,
   } satisfies DomainRenewFailedToChargeProps);

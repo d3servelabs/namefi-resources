@@ -11,9 +11,9 @@ import ReactMarkdown from 'react-markdown';
 import { paymentProviderSchema, type PaymentProvider } from '@namefi-astra/db';
 
 export type DomainRenewReportProps = {
+  recipientUserId: string;
   recipientName: string;
   recipientEmail: string;
-  recipientWalletAddress: string;
   chargedAmountInUsd: number;
   paymentMethodCharged: PaymentProvider;
   domainLdhRenewFailed: string[];
@@ -24,9 +24,9 @@ export type DomainRenewReportProps = {
 };
 
 const defaults: DomainRenewReportProps = {
+  recipientUserId: '123',
   recipientName: 'Alice',
   recipientEmail: 'alice@example.com',
-  recipientWalletAddress: '0x1234567890123456789012345678901234567890',
   domainLdhRenewSucceeded: ['test.org'],
   domainLdhRenewFailed: ['example.org', 'example.net'],
   chargedAmountInUsd: 120,
@@ -45,8 +45,8 @@ function abbreviateEvmAddress(address: EvmAddress) {
 
 export const DomainRenewReport = (props: DomainRenewReportProps) => {
   const {
+    recipientUserId,
     recipientName,
-    recipientWalletAddress,
     domainLdhRenewSucceeded,
     domainLdhRenewFailed,
     chargedAmountInUsd,
@@ -56,7 +56,7 @@ export const DomainRenewReport = (props: DomainRenewReportProps) => {
   const messageMarkdown =
     `Hi ${recipientName ?? ''},\n\n` +
     'We performed the renew for the following domains in your account ' +
-    `([${abbreviateEvmAddress(recipientWalletAddress as EvmAddress)}](https://app.namefi.io/owner/${recipientWalletAddress}))` +
+    `(${recipientUserId})` + // TODO: add link to user dashboard
     ` charged ${chargedAmountInUsd.toFixed(2)}` +
     ` of the payment method ${paymentMethodCharged} and here is the result:`;
   return (

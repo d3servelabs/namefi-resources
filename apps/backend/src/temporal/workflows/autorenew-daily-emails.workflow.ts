@@ -170,21 +170,21 @@ export async function notifyAndRenewDomainsForSingleUserWorkflow(
   } catch (_error: unknown) {
     await generalAlertNamefi({
       workflowInfo: workflow.workflowInfo(),
-      message: `Fail to charge user(address:${walletAddressToBeCharged}) for ${totalAmountInUsd}$USD`,
+      message: `Fail to charge user(userId:${userId}) for ${totalAmountInUsd}$USD`,
       level: 'error',
     });
 
     if (userEmail) {
       await _notifyUserForFailedToCharge({
+        userId,
         userEmail,
         domainsToRenew: domainsThatShouldBeRenewed,
         chargeAmountInUsd: totalAmountInUsd,
-        userAddress: walletAddressToBeCharged,
       });
     }
 
     throw workflow.ApplicationFailure.create({
-      message: `Fail to charge user(address:${walletAddressToBeCharged}) for ${totalAmountInUsd}$USD`,
+      message: `Fail to charge user(userId:${userId}) for ${totalAmountInUsd}$USD`,
       nonRetryable: true,
     });
     // stop for this user
@@ -243,11 +243,12 @@ export async function notifyAndRenewDomainsForSingleUserWorkflow(
   }
   if (!userEmail) {
     workflow.log.warn(
-      `We are skipping notifying user ${walletAddressToBeCharged} for renew result because user didn't provide an email`,
+      `We are skipping notifying user ${userId} for renew result because user didn't provide an email`,
     );
     return;
   }
   await _notifyUserForRenewResult({
+    userId,
     userEmail,
     successes,
     failures,
@@ -255,7 +256,6 @@ export async function notifyAndRenewDomainsForSingleUserWorkflow(
     paymentMethodCharged,
     paymentMethodIdentifier: '', // TODO: Add payment method identifier for stripe
     totalAmountInUsd,
-    userAddress: walletAddressToBeCharged,
   });
 }
 
@@ -288,6 +288,7 @@ async function _notifyUserForUpcomingRenew(
  * Notify user for renew result, a wrapper to send email
  */
 async function _notifyUserForRenewResult({
+  userId,
   userEmail,
   successes,
   failures,
@@ -295,8 +296,8 @@ async function _notifyUserForRenewResult({
   paymentMethodCharged,
   paymentMethodIdentifier,
   totalAmountInUsd,
-  userAddress,
 }: {
+  userId: string;
   userEmail: string;
   successes: {
     status: 'fulfilled';
@@ -308,13 +309,13 @@ async function _notifyUserForRenewResult({
   paymentMethodCharged: PaymentProvider;
   paymentMethodIdentifier: string;
   totalAmountInUsd: number;
-  userAddress: string;
 }) {
   const { sendEmailNotificationForRenewResult } = typedProxyActivities({
     temporalEnum: TEMPORAL_ENUMS.DOMAINS,
     options: shortRunningOpts,
   });
   await sendEmailNotificationForRenewResult({
+    userId,
     userEmail,
     domainLdhRenewFailed: failures.map(
       ({ domain }) => domain.normalizedDomainName,
@@ -327,7 +328,6 @@ async function _notifyUserForRenewResult({
     refundAmountInUsd: refundAmountInUsd,
     refundStatus: refundAmountInUsd ? 'SUCCESS' : 'FAILED', // TODO: Add refund status for no refund
     chargedAmountInUsd: totalAmountInUsd,
-    userAddress: userAddress,
   });
 }
 
@@ -335,27 +335,27 @@ async function _notifyUserForRenewResult({
  * Notify user for failed to charge, a wrapper to send email
  */
 async function _notifyUserForFailedToCharge({
+  userId,
   userEmail,
   domainsToRenew,
   chargeAmountInUsd,
-  userAddress,
 }: {
+  userId: string;
   userEmail: string;
   domainsToRenew: DomainRenewInfo[];
   chargeAmountInUsd: number;
-  userAddress: string;
 }) {
   const { sendEmailNotificationForRenewFailedToCharge } = typedProxyActivities({
     temporalEnum: TEMPORAL_ENUMS.DOMAINS,
     options: shortRunningOpts,
   });
   await sendEmailNotificationForRenewFailedToCharge({
+    userId,
     userEmail,
     domainsToRenew: domainsToRenew.map(
       ({ normalizedDomainName }) => normalizedDomainName,
     ),
     chargeAmountInUsd: chargeAmountInUsd,
-    userAddress: userAddress,
   });
 }
 

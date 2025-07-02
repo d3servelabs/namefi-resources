@@ -10,7 +10,7 @@ import ReactMarkdown from 'react-markdown';
 export type DomainRenewFailedToChargeProps = {
   recipientName: string;
   recipientEmail: string;
-  recipientWalletAddress: string;
+  recipientUserId: string;
   domainsToRenew: string[];
   chargeAmountInUsd: number;
 };
@@ -18,7 +18,7 @@ export type DomainRenewFailedToChargeProps = {
 const defaults: DomainRenewFailedToChargeProps = {
   recipientName: 'Alice',
   recipientEmail: 'alice@example.com',
-  recipientWalletAddress: '0x1234567890123456789012345678901234567890',
+  recipientUserId: '123',
   domainsToRenew: ['example.org', 'example.net'],
   chargeAmountInUsd: 120,
 };
@@ -32,17 +32,12 @@ function abbreviateEvmAddress(address: EvmAddress) {
 export const DomainRenewFailedToCharge = (
   props: DomainRenewFailedToChargeProps,
 ) => {
-  const {
-    recipientName,
-    recipientWalletAddress,
-    domainsToRenew,
-    chargeAmountInUsd,
-  } = defaultTo(defaults, isEmpty(props) ? null : props);
+  const { recipientName, recipientUserId, domainsToRenew, chargeAmountInUsd } =
+    defaultTo(defaults, isEmpty(props) ? null : props);
 
   const messageMarkdown =
     `Hi ${recipientName},\n\n` +
-    `In order to renew the following domains in your account ([${abbreviateEvmAddress(recipientWalletAddress as EvmAddress)}]` +
-    `(https://app.namefi.io/owner/${recipientWalletAddress})),` +
+    `In order to renew the following domains in your account (${recipientUserId}),` + // TODO: add link to user dashboard
     ` we attempted to process a payment of \$${chargeAmountInUsd.toFixed(2)} USD,` +
     ' but the payment process was unsuccessful.' +
     ' This is usually due to lack of saved Stripe payment information and no enough available NamefiServiceCredits(NFSC) balance in your crypto account.';
