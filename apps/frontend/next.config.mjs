@@ -52,6 +52,7 @@ const nextConfig = {
     return [
       {
         source: '/b/:path*',
+        permanent: false,
         destination: 'https://namefi.io/r/:path*',
       },
     ];
