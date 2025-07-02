@@ -1,3 +1,7 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
 # Claude Development Preferences
 
 This file contains development preferences and guidelines for Claude when working on this project.
@@ -47,6 +51,72 @@ This file contains development preferences and guidelines for Claude when workin
   - `logger.info({ userId, count }, 'Processing %d items for user %s', count, userId)`
   - `logger.error({ error }, 'Failed to process domain %s', domainName)`
 
+## Development Setup & Commands
+
+### Prerequisites
+
+This project requires:
+- **Node.js**: >=22.13.1 (use nvm to manage versions)
+- **Bun**: Package manager (bun@1.2.7)
+- **Temporal CLI**: For workflow orchestration
+- **Infisical CLI**: For secrets management
+- **Docker**: For containerized services
+
+### Key Development Commands
+
+#### Environment Setup
+```bash
+# Set up Infisical token for secrets
+export INFISICAL_SERVICE_TOKEN=<your-token>
+
+# Start all services (includes backend API, frontend, temporal server & worker, email server)
+bun run dev
+
+# Start only backend API and frontend (minimal setup)
+bun run dev:base
+
+# Individual services
+bun run dev:backend:api      # Backend API server (port 3000)
+bun run dev:frontend         # Frontend (port 5050)
+bun run dev:backend:temporal # Temporal worker
+bun run dev:backend:email    # Email development server (port 3005)
+bun run dev:temporal-server  # Temporal server (port 8233)
+```
+
+#### Code Quality & Testing
+```bash
+# Run all tests
+bun test
+
+# Run tests with coverage
+bun test:coverage
+
+# Run tests in watch mode
+bun test:watch
+
+# TypeScript type checking across all packages
+bun run typecheck
+
+# Code formatting and linting (Biome)
+bun run check        # Check for issues
+bun run check:fix    # Auto-fix issues
+bun run check:unsafe # Auto-fix with unsafe changes
+
+# Comprehensive validation (typecheck, biome, sherif, sgr)
+bun run validate
+
+# Validate environment secrets
+bun run validate:secrets
+```
+
+#### Database Operations
+```bash
+# Located in apps/backend
+bun run db:generate  # Generate database migrations
+bun run db:migrate   # Run migrations
+bun run db:studio    # Open Drizzle Studio
+```
+
 ## Development Workflow
 
 ### Planning & Organization
@@ -59,7 +129,7 @@ This file contains development preferences and guidelines for Claude when workin
 
 - **Read Before Writing**: Always examine existing code before making changes
 - **Preserve Functionality**: Ensure changes don't break existing features
-- **Update Related Files**: When changing core functionality, update tests, documentation, and related code
+- **Update Related Files**: When changing core functionality, update tests, documentation, and related code  
 - **Validate Changes**: Run tests after making changes to ensure nothing breaks
 
 ### Git & Version Control
@@ -68,6 +138,61 @@ This file contains development preferences and guidelines for Claude when workin
 - Include context about why changes were made
 - Follow the existing commit message style in the repository
 - Only commit when explicitly asked by the user
+
+## Project Architecture Overview
+
+### High-Level Structure
+
+This is a **domain registration and management platform** built as a monorepo with:
+
+- **Frontend**: Next.js application with tRPC client
+- **Backend**: Hono server with tRPC API
+- **Database**: PostgreSQL with Drizzle ORM
+- **Workflows**: Temporal for orchestrating complex operations
+- **Blockchain**: NFT-based domain ownership
+
+### Monorepo Organization
+
+```
+apps/
+├── backend/          # Hono server with tRPC API
+└── frontend/         # Next.js application
+
+packages/
+├── db/               # Database schema and Drizzle ORM setup
+├── registrars/       # Domain registrar integrations (R53, Dynadot)
+├── zod-dns/          # DNS record validation schemas
+├── dns-tools/        # DNS utilities (DNSSEC, domain parsing)
+├── ai/               # AI-powered domain suggestions and branding
+├── utils/            # Shared utilities and types
+├── storage/          # File storage abstractions
+└── env/              # Environment configuration
+```
+
+### Core Backend Architecture
+
+#### tRPC API Structure
+The backend exposes a type-safe tRPC API with these main routers:
+
+- **searchRouter**: Domain availability search and suggestions
+- **cartsRouter**: Shopping cart management
+- **ordersRouter**: Order processing and history
+- **paymentsRouter**: Payment processing (Stripe, NFSC tokens)
+- **dnsRecordsRouter**: DNS record CRUD operations
+- **usersRouter**: User profile and domain ownership
+- **registryRouter**: Domain registration operations
+- **domainConfigRouter**: Domain configuration (DNSSEC, nameservers)
+- **huntRouter**: Domain hunting/wishlist features
+- **aiRouter**: AI-powered domain suggestions
+
+#### Temporal Workflows
+Complex operations are orchestrated through Temporal workflows:
+
+- **Domain Registration**: Search → Cart → Payment → Registration → NFT Minting
+- **DNS Management**: Record validation → Update → Propagation
+- **Payment Processing**: Multiple payment methods (Stripe, blockchain)
+- **Auto-Renewal**: Automated domain renewals with payment handling
+- **Migration**: Domain transfers and bulk operations
 
 ## Project-Specific Guidelines
 
@@ -266,3 +391,9 @@ This file contains development preferences and guidelines for Claude when workin
 - When making changes to existing files, minimize reordering to keep git diffs clean and reviewable
 - Prefer creating new files over extensively modifying existing ones for better change tracking
 - Use helper functions within workflows to organize complex logic while maintaining readability
+
+# important-instruction-reminders
+Do what has been asked; nothing more, nothing less.
+NEVER create files unless they're absolutely necessary for achieving your goal.
+ALWAYS prefer editing an existing file to creating a new one.
+NEVER proactively create documentation files (*.md) or README files. Only create documentation files if explicitly requested by the User.
