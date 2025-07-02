@@ -80,11 +80,11 @@ function RenewalDurationStepper({
     );
   }
 
-  // Show error state or fall back to fixed duration
+  // Show error state or fall back to disabled renewal
   if (constraints.error || constraints.maxYears < 1) {
     return (
-      <div className="w-32 h-10 flex items-center justify-center text-sm text-muted-foreground bg-muted/50 rounded-md">
-        {constraints.maxYears < 1 ? 'Cannot renew' : '1 year'}
+      <div className="w-32 h-10 flex items-center justify-center text-sm text-muted-foreground bg-muted/50 rounded-md opacity-50 cursor-not-allowed">
+        Renew now
       </div>
     );
   }
