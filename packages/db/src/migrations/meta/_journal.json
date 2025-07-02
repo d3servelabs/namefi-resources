@@ -260,6 +260,13 @@
       "when": 1751377973449,
       "tag": "0036_wild_wolfsbane",
       "breakpoints": true
+    },
+    {
+      "idx": 37,
+      "version": "7",
+      "when": 1751474839485,
+      "tag": "0037_sticky_spyke",
+      "breakpoints": true
     }
   ]
 }

@@ -261,8 +261,8 @@ export const ordersTable = pgTable(
       .notNull(),
     ...amountInUsdCents,
     totalAmountInUSDCents: integer('total_amount_in_usd_cents').notNull(),
-    nftWalletAddress: text('nft_wallet_address').notNull(),
-    nftChainId: integer('nft_chain_id').notNull(),
+    nftWalletAddress: text('nft_wallet_address'),
+    nftChainId: integer('nft_chain_id'),
     metadata: jsonb('metadata').default({}),
     ...timestamps,
     /**

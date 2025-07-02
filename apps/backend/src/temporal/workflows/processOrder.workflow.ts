@@ -63,12 +63,23 @@ export async function processOrderWorkflow(
   try {
     // MARK: - Get Order Details
     const orderDetails = await getOrderDetailsOrThrow(input.orderId);
+    const nftWalletAddress = orderDetails.nftWalletAddress;
+    const nftChainId = orderDetails.nftChainId;
     if (!orderDetails.items || orderDetails.items.length === 0) {
       await updateOrderStatusOrThrow({
         orderId: input.orderId,
         status: orderStatusSchema.Values.FAILED,
       });
       throw new Error('Order is empty or malformed');
+    }
+    if (!(nftWalletAddress && nftChainId)) {
+      await updateOrderStatusOrThrow({
+        orderId: input.orderId,
+        status: orderStatusSchema.Values.FAILED,
+      });
+      throw new workflow.ApplicationFailure(
+        'Order is missing NFT wallet address or chain ID, this should not happen, please investigate',
+      );
     }
 
     // Update order status to PROCESSING
@@ -124,8 +135,8 @@ export async function processOrderWorkflow(
 
     // MARK: - Process Order Items
     const orderItemResults = await Promise.allSettled(
-      orderDetails.items.map((item) =>
-        workflow.executeChild(processOrderItemWorkflow, {
+      orderDetails.items.map((item) => {
+        return workflow.executeChild(processOrderItemWorkflow, {
           args: [
             {
               itemId: item.id,
@@ -133,11 +144,10 @@ export async function processOrderWorkflow(
               normalizedDomainName:
                 item.normalizedDomainName as NamefiNormalizedDomain,
               durationInYears: item.durationInYears,
-              recipientWalletAddress:
-                orderDetails.nftWalletAddress as ChecksumWalletAddress,
-              chainId: orderDetails.nftChainId,
+              recipientWalletAddress: nftWalletAddress as ChecksumWalletAddress,
+              chainId: nftChainId,
               userId: orderDetails.userId,
-              operationType: item.type,
+              operationType: item.type as 'REGISTER' | 'IMPORT', // Only REGISTER and IMPORT are valid for processOrderItemWorkflow
               registrarKey: item.registrar,
             },
           ],
@@ -146,8 +156,8 @@ export async function processOrderWorkflow(
           retry: {
             maximumAttempts: 1,
           },
-        }),
-      ),
+        });
+      }),
     );
 
     // MARK: - Handle Results

@@ -402,11 +402,11 @@ export default function OrderDetailsPage({
                 <span className="font-medium">Recipient:</span>
                 <div className="flex items-center gap-2">
                   <span className="text-sm text-gray-500">
-                    {order.nftWalletAddress
+                    {!!order.nftWalletAddress && !!order.nftChainId
                       ? `(${getChain(order.nftChainId)?.name || `Chain ID ${order.nftChainId}`}) ${getShortAddress(order.nftWalletAddress)}`
                       : '-'}
                   </span>
-                  {order.nftWalletAddress && (
+                  {!!order.nftWalletAddress && (
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger asChild={true}>
@@ -414,12 +414,16 @@ export default function OrderDetailsPage({
                             variant="ghost"
                             size="icon"
                             className="h-8 w-8"
-                            onClick={() =>
+                            onClick={() => {
+                              const walletAddress = order.nftWalletAddress;
+                              if (!walletAddress) {
+                                return;
+                              }
                               copyToClipboard(
-                                order.nftWalletAddress,
+                                walletAddress,
                                 'recipientWalletAddress',
-                              )
-                            }
+                              );
+                            }}
                           >
                             {copiedFields.recipientWalletAddress ? (
                               <Check size={16} />

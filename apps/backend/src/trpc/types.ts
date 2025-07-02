@@ -70,7 +70,7 @@ export function isDomainUnsupported(domain: DomainAvailabilityInfo): boolean {
 /**
  * Gets the appropriate pricing details for a domain operation
  * @param domain - Domain availability information
- * @param operationType - Either itemTypeSchema.Values.REGISTER or itemTypeSchema.Values.IMPORT
+ * @param operationType - Either itemTypeSchema.Values.REGISTER, itemTypeSchema.Values.IMPORT, or itemTypeSchema.Values.AUTO_RENEW
  * @returns The pricing details for the specified operation
  */
 export function getDomainPricingForOperation(

@@ -1,11 +1,10 @@
 import * as workflow from '@temporalio/workflow';
-import { shortRunningOpts, TEMPORAL_ENUMS, TEMPORAL_QUEUES } from '../shared';
+import { shortRunningOpts, TEMPORAL_ENUMS } from '../shared';
 import {
   extendDomainRegistrationWorkflow,
   type ExtendDomainRegistrationWorkflowOutput,
 } from './domain-ownership/extend-registration.workflow';
 import { differenceInCalendarDays } from 'date-fns';
-import { chargeNfscWorkflow as chargeNfsc, mintNfsc } from './mint.workflow';
 import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';
 import type {
   DomainRenewInfo,
@@ -13,41 +12,29 @@ import type {
   getDomainsUpForRenewal,
 } from '../activities/domain/renew.activities';
 import { RenewOption } from '@namefi-astra/registrars/lib/abstract-registrar/index';
-import {
-  paymentProviderSchema,
-  paymentStatusSchema,
-  type PaymentProvider,
-} from '@namefi-astra/db/types';
-import { CHAINS, type ChecksumWalletAddress } from '@namefi-astra/utils';
+import type { PaymentProvider, UserSelect } from '@namefi-astra/db/types';
 import { sum } from 'ramda';
 import { refundUserWorkflow } from './refund-user.workflow';
-import {
-  autoChargeStripeAndCreatePaymentWorkflow,
-  type AutoChargeStripeWorkflowOutput,
-} from './chargeStripe.workflow';
 import { RENEW_EARLY_BY_DAYS } from '../../lib/env/consts';
+import type { DomainRenewalResult } from '../activities/order.activities';
+import {
+  chargeUserAndCreatePaymentWorkflow,
+  type ChargeUserAndCreatePaymentWorkflowOutput,
+} from './charge-user-and-create-payment.workflow';
+import pMap from 'p-map';
 
-type ChargeUserAndReturnChargePaymentMethodOutput = {
-  paymentType: PaymentProvider;
-  namefiPaymentIntentId?: string;
-};
-
-const { generalAlertNamefi, getNamefiUsers } = typedProxyActivities({
-  temporalEnum: TEMPORAL_ENUMS.DEFAULT,
-  options: shortRunningOpts,
-});
+const { generalAlertNamefi, getNamefiUsers, createAutoRenewOrder } =
+  typedProxyActivities({
+    temporalEnum: TEMPORAL_ENUMS.DEFAULT,
+    options: shortRunningOpts,
+  });
 
 const { maybeGetUserEmail } = typedProxyActivities({
   temporalEnum: TEMPORAL_ENUMS.NOTIFY,
   options: shortRunningOpts,
 });
 
-const { determineAvailablePaymentMethods } = typedProxyActivities({
-  options: shortRunningOpts,
-  temporalEnum: TEMPORAL_ENUMS.DEFAULT,
-});
-
-export async function dailyDomainsUpcomingRenewalsWorkflow(): Promise<void> {
+export async function dailyDomainsUpcomingRenewalsWorkflow() {
   // Standard activities configuration
   const { getDomainsUpForRenewal } = typedProxyActivities({
     temporalEnum: TEMPORAL_ENUMS.DOMAINS,
@@ -70,28 +57,63 @@ export async function dailyDomainsUpcomingRenewalsWorkflow(): Promise<void> {
   const users = await getNamefiUsers();
 
   //Start child workflows for each user to notify and renew
-  await Promise.allSettled(
-    users.map(async (user) =>
-      workflow.executeChild(notifyAndRenewDomainsForSingleUserWorkflow, {
-        args: [user.id, domainsUpForRenewal],
-        workflowId: `notify-and-renew-domains-${new Date().toISOString()}-${user.id}`,
-      }),
-    ),
+  const results = await pMap(
+    users,
+    async (user) => {
+      try {
+        await workflow.executeChild(
+          notifyAndRenewDomainsForSingleUserWorkflow,
+          {
+            args: [user.id, domainsUpForRenewal],
+            workflowId: `notify-and-renew-domains-${new Date().toISOString()}-${user.id}`,
+            workflowIdConflictPolicy: 'USE_EXISTING',
+            workflowIdReusePolicy: 'ALLOW_DUPLICATE',
+            parentClosePolicy: 'ABANDON',
+          },
+        );
+        return { status: 'fulfilled', user };
+      } catch (error) {
+        workflow.log.error(
+          `Error in notifyAndRenewDomainsForSingleUserWorkflow for user ${user.id}: ${error}`,
+        );
+        return { status: 'rejected', user, error };
+      }
+    },
+    { concurrency: 10 },
   );
+  const successes = results.filter(({ status }) => status === 'fulfilled') as {
+    status: 'fulfilled';
+    user: UserSelect;
+    success: number;
+  }[];
+  const failures = results.filter(({ status }) => status === 'rejected') as {
+    status: 'rejected';
+    user: UserSelect;
+    error: Error;
+  }[];
+
+  return {
+    successes,
+    failures,
+  };
 }
+
+const {
+  getRenewPriceByDomain,
+  getUserDomainsWithAutoRenewOptionAndExpirationTime,
+} = typedProxyActivities({
+  temporalEnum: TEMPORAL_ENUMS.DOMAINS,
+  options: shortRunningOpts,
+});
+
+type UserDomainsUpForRenewal = Awaited<
+  ReturnType<typeof getUserDomainsWithAutoRenewOptionAndExpirationTime>
+>;
 
 export async function notifyAndRenewDomainsForSingleUserWorkflow(
   userId: string,
   domainsUpForRenewal: Awaited<ReturnType<typeof getDomainsUpForRenewal>>,
-): Promise<void> {
-  const {
-    getRenewPriceByDomain,
-    getUserDomainsWithAutoRenewOptionAndExpirationTime,
-  } = typedProxyActivities({
-    temporalEnum: TEMPORAL_ENUMS.DOMAINS,
-    options: shortRunningOpts,
-  });
-
+) {
   const userDomainsUpForRenewal =
     await getUserDomainsWithAutoRenewOptionAndExpirationTime(
       userId,
@@ -152,21 +174,22 @@ export async function notifyAndRenewDomainsForSingleUserWorkflow(
       `We are skipping notifying user ${userId} for charge and renew because user didn't provide an email`,
     );
   }
-  const { walletAddressToBeCharged, availablePaymentMethods } =
-    await determineAvailablePaymentMethods(totalAmountInUsd, userId);
-  let paymentMethodCharged: PaymentProvider;
-  let namefiPaymentIntentId: string | undefined;
+
+  let chargeResult: ChargeUserAndCreatePaymentWorkflowOutput;
 
   try {
-    const chargePaymentMethodResult =
-      await chargeUserAndReturnChargePaymentMethod(
-        userId,
-        walletAddressToBeCharged,
-        availablePaymentMethods,
-        totalAmountInUsd,
-      );
-    paymentMethodCharged = chargePaymentMethodResult.paymentType;
-    namefiPaymentIntentId = chargePaymentMethodResult?.namefiPaymentIntentId;
+    chargeResult = await workflow.executeChild(
+      chargeUserAndCreatePaymentWorkflow,
+      {
+        args: [
+          {
+            userId,
+            totalAmountInUsd,
+          },
+        ],
+        workflowId: `charge-user-${new Date().toISOString()}-${userId}-${totalAmountInUsd}$USD`,
+      },
+    );
   } catch (_error: unknown) {
     await generalAlertNamefi({
       workflowInfo: workflow.workflowInfo(),
@@ -216,14 +239,15 @@ export async function notifyAndRenewDomainsForSingleUserWorkflow(
 
   const successes = results.filter(({ status }) => status === 'fulfilled') as {
     status: 'fulfilled';
-    domain: DomainRenewInfo;
+    domain: UserDomainsUpForRenewal[number];
     result: ExtendDomainRegistrationWorkflowOutput;
   }[];
   const failures = results.filter(({ status }) => status === 'rejected') as {
     status: 'rejected';
-    domain: DomainRenewInfo;
+    domain: UserDomainsUpForRenewal[number];
     error: Error;
   }[];
+
   let refundAmountInUsd: number | null = null;
   if (failures.length > 0) {
     refundAmountInUsd = sum(
@@ -232,18 +256,29 @@ export async function notifyAndRenewDomainsForSingleUserWorkflow(
       ),
     );
     if (refundAmountInUsd > 0) {
-      await _performRefund(
-        userId,
-        walletAddressToBeCharged,
-        refundAmountInUsd,
-        paymentMethodCharged,
-        namefiPaymentIntentId,
-      );
+      await workflow.executeChild(refundUserWorkflow, {
+        args: [
+          {
+            paymentId: chargeResult.namefiPaymentIntentId,
+            amountToRefundInUsdCents: refundAmountInUsd * 100,
+          },
+        ],
+        workflowId: `refund-user-${new Date().toISOString()}-${userId}-${refundAmountInUsd}$USD`,
+      });
     }
   }
+  await _createAutoRenewOrderForSingleUser({
+    userId,
+    paymentId: chargeResult.namefiPaymentIntentId,
+    chargeAmountByDomainLdh,
+    totalAmountInUsd,
+    successes,
+    failures,
+  });
+
   if (!userEmail) {
     workflow.log.warn(
-      `We are skipping notifying user ${userId} for renew result because user didn't provide an email`,
+      `We are skipping notifying user(userId:${userId}) for renew result because user didn't provide an email`,
     );
     return;
   }
@@ -253,7 +288,7 @@ export async function notifyAndRenewDomainsForSingleUserWorkflow(
     successes,
     failures,
     refundAmountInUsd,
-    paymentMethodCharged,
+    paymentMethodCharged: chargeResult.paymentType,
     paymentMethodIdentifier: '', // TODO: Add payment method identifier for stripe
     totalAmountInUsd,
   });
@@ -361,184 +396,59 @@ async function _notifyUserForFailedToCharge({
 
 // #endregion Notify User
 
-// #region Payment Methods
-
-/**
- * We will charge user in the default order, currently: Credit Card, NFSC_BASE, NFSC_ETHEREUM
- */
-async function chargeUserAndReturnChargePaymentMethod(
-  userId: string,
-  walletAddressToBeCharged: ChecksumWalletAddress,
-  availablePaymentMethods: PaymentProvider[],
-  totalAmountInUsd: number,
-): Promise<ChargeUserAndReturnChargePaymentMethodOutput> {
-  const chargeMethods = (
-    [
-      {
-        method: paymentProviderSchema.Values.NFSC_ETHEREUM_SEPOLIA,
-        workflow: chargeNfsc,
-        args: [
-          CHAINS.sepolia.id,
-          walletAddressToBeCharged,
-          totalAmountInUsd,
-          'Domain auto-renewal charge',
-          '0x0', // empty bytes
-        ] as Parameters<typeof chargeNfsc>,
-      },
-      {
-        method: paymentProviderSchema.Values.NFSC_BASE,
-        workflow: chargeNfsc,
-        args: [
-          CHAINS.base.id,
-          walletAddressToBeCharged,
-          totalAmountInUsd,
-          'Domain auto-renewal charge',
-          '0x0', // empty bytes
-        ] as Parameters<typeof chargeNfsc>,
-      },
-      {
-        method: paymentProviderSchema.Values.NFSC_ETHEREUM,
-        workflow: chargeNfsc,
-        args: [
-          CHAINS.mainnet.id,
-          walletAddressToBeCharged,
-          totalAmountInUsd,
-          'Domain auto-renewal charge',
-          '0x0', // empty bytes
-        ] as Parameters<typeof chargeNfsc>,
-      },
-      {
-        method: paymentProviderSchema.Values.STRIPE,
-        workflow: autoChargeStripeAndCreatePaymentWorkflow,
-        args: [
-          { userId, totalAmountInUsdCents: totalAmountInUsd * 100 },
-        ] as Parameters<typeof autoChargeStripeAndCreatePaymentWorkflow>,
-      },
-    ] as const
-  ).filter((method) => availablePaymentMethods.includes(method.method));
-
-  if (chargeMethods.length === 0) {
-    throw workflow.ApplicationFailure.create({
-      message: `The user ${walletAddressToBeCharged} has no available payment methods for ${totalAmountInUsd}$USD`,
-      nonRetryable: true,
-    });
-  }
-  for (const chargeMethod of chargeMethods) {
-    try {
-      const result = await workflow.executeChild(chargeMethod.workflow, {
-        args: chargeMethod.args,
-        taskQueue:
-          chargeMethod.method === paymentProviderSchema.Values.STRIPE
-            ? TEMPORAL_QUEUES.DEFAULT
-            : TEMPORAL_QUEUES.MINT,
-        workflowId: `charge-user-${new Date().toISOString()}-${walletAddressToBeCharged}-${totalAmountInUsd}$USD`,
-      });
-      if (chargeMethod.method === paymentProviderSchema.Values.STRIPE) {
-        const autoChargeStripeWorkflowResult =
-          result as AutoChargeStripeWorkflowOutput;
-        if (
-          autoChargeStripeWorkflowResult.paymentStatus ===
-          paymentStatusSchema.Values.SUCCEEDED
-        )
-          return {
-            paymentType: chargeMethod.method,
-            namefiPaymentIntentId: autoChargeStripeWorkflowResult.paymentId,
-          };
-      }
-      return { paymentType: chargeMethod.method };
-    } catch (error) {
-      workflow.log.info(
-        `Failed to charge ${chargeMethod.method} for user ${walletAddressToBeCharged} with ${totalAmountInUsd}$USD`,
-      );
-    }
-  }
-
-  throw workflow.ApplicationFailure.create({
-    message: `We can't charge user ${walletAddressToBeCharged} for ${totalAmountInUsd}$USD after exhausting all methods in ${chargeMethods.map((item) => item.method).join(',')}`,
-    nonRetryable: true,
-  });
-}
-
-async function _performRefund(
-  userId: string,
-  chargingWalletAddress: ChecksumWalletAddress,
-  refundAmountInUsd: number,
-  paymentMethodCharged: PaymentProvider,
-  namefiPaymentIntentId?: string,
-) {
-  if (refundAmountInUsd === 0) {
-    return;
-  }
-
-  const refundMethods = [
-    {
-      method: paymentProviderSchema.Values.STRIPE,
-      workflow: refundUserWorkflow,
-      args: [
-        {
-          paymentId: namefiPaymentIntentId,
-          amountToRefundInUsdCents: refundAmountInUsd * 100,
-        },
-      ] as Parameters<typeof refundUserWorkflow>,
-    },
-    {
-      method: paymentProviderSchema.Values.NFSC_ETHEREUM_SEPOLIA,
-      workflow: mintNfsc,
-      args: [
-        CHAINS.sepolia.id,
-        chargingWalletAddress,
-        refundAmountInUsd,
-      ] as Parameters<typeof mintNfsc>,
-    },
-    {
-      method: paymentProviderSchema.Values.NFSC_BASE,
-      workflow: mintNfsc,
-      args: [
-        CHAINS.base.id,
-        chargingWalletAddress,
-        refundAmountInUsd,
-      ] as Parameters<typeof mintNfsc>,
-    },
-    {
-      method: paymentProviderSchema.Values.NFSC_ETHEREUM,
-      workflow: mintNfsc,
-      args: [
-        CHAINS.mainnet.id,
-        chargingWalletAddress,
-        refundAmountInUsd,
-      ] as Parameters<typeof mintNfsc>,
-    },
-  ] as const;
-  const refundMethod = refundMethods.find(
-    (refundMethod) => paymentMethodCharged === refundMethod.method,
-  );
-  if (!refundMethod) {
-    throw workflow.ApplicationFailure.create({
-      message: `We can't refund user ${chargingWalletAddress} for ${refundAmountInUsd} after exhausting all methods in ${refundMethods.map((item) => item.method).join(',')}`,
-      nonRetryable: true,
-    });
-  }
-
+async function _createAutoRenewOrderForSingleUser({
+  userId,
+  paymentId,
+  chargeAmountByDomainLdh,
+  totalAmountInUsd,
+  successes,
+  failures,
+}: {
+  userId: string;
+  paymentId: string;
+  chargeAmountByDomainLdh: Record<string, number>;
+  totalAmountInUsd: number;
+  successes: {
+    status: 'fulfilled';
+    domain: UserDomainsUpForRenewal[number];
+    result: ExtendDomainRegistrationWorkflowOutput;
+  }[];
+  failures: {
+    status: 'rejected';
+    domain: UserDomainsUpForRenewal[number];
+    error: Error;
+  }[];
+}) {
+  // Create order record for tracking
   try {
-    await workflow.executeChild(refundMethod.workflow, {
-      args: refundMethod.args,
-      taskQueue:
-        refundMethod.method === paymentProviderSchema.Values.STRIPE
-          ? TEMPORAL_QUEUES.DEFAULT
-          : TEMPORAL_QUEUES.MINT,
-      workflowId: `refund-user-${new Date().toISOString()}-${chargingWalletAddress}-${refundAmountInUsd}$USD`,
+    const domainRenewResults: DomainRenewalResult[] = [
+      ...successes.map(({ domain, result }) => ({
+        normalizedDomainName: domain.normalizedDomainName,
+        status: 'SUCCESS' as const,
+        registrarKey: domain.registrarKey,
+        eppOperationStatus: result.eppOperationStatus,
+        txHash: result.txHash,
+        txStatus: result.txStatus,
+        chargeAmountInUsd: chargeAmountByDomainLdh[domain.normalizedDomainName],
+      })),
+      ...failures.map(({ domain, error }) => ({
+        normalizedDomainName: domain.normalizedDomainName,
+        status: 'FAILURE' as const,
+        registrarKey: domain.registrarKey,
+        error,
+        chargeAmountInUsd: chargeAmountByDomainLdh[domain.normalizedDomainName],
+      })),
+    ];
+
+    await createAutoRenewOrder({
+      userId,
+      paymentId,
+      domainRenewResults,
+      totalAmountInUsd,
     });
-    return refundMethod.method;
-  } catch (error) {
-    workflow.log.info(
-      `Failed to refund ${refundMethod.method} for user ${chargingWalletAddress} with ${refundAmountInUsd}$USD`,
+  } catch (orderError) {
+    workflow.log.error(
+      `Failed to create order for user ${userId}: ${orderError}`,
     );
   }
-
-  throw workflow.ApplicationFailure.create({
-    message: `We can't refund user ${chargingWalletAddress} for ${refundAmountInUsd}$USD after exsulated all methods in ${refundMethods.map((item) => item.method).join(',')}`,
-    nonRetryable: true,
-  });
 }
-
-// #endregion Payment Methods
