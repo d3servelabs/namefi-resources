@@ -43,8 +43,16 @@ const nextConfig = {
   async rewrites() {
     return [
       {
+        source: '/r/:path*',
+        destination: 'https://r.namefi.io/r/:path*',
+      },
+    ];
+  },
+  async redirects() {
+    return [
+      {
         source: '/b/:path*',
-        destination: 'https://blog.labs.namefi.io/b/:path*',
+        destination: 'https://namefi.io/r/:path*',
       },
     ];
   },
