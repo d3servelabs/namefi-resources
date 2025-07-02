@@ -23,13 +23,18 @@ export async function refundUserWorkflow({
   paymentId,
   amountToRefundInUsdCents,
 }: RefundUserWorkflowInput): Promise<RefundUserWorkflowOutput> {
-  const { createRefund, getPaymentDetails, updatePayment, updateRefund } =
-    typedProxyActivities({
-      temporalEnum: TEMPORAL_ENUMS.DEFAULT,
-      options: {
-        ...shortRunningOpts,
-      },
-    });
+  const {
+    createRefund,
+    getPaymentDetails,
+    updatePayment,
+    updateRefund,
+    criticalAlertNamefi,
+  } = typedProxyActivities({
+    temporalEnum: TEMPORAL_ENUMS.DEFAULT,
+    options: {
+      ...shortRunningOpts,
+    },
+  });
 
   if (amountToRefundInUsdCents <= 0) {
     throw workflow.ApplicationFailure.create({
@@ -105,8 +110,20 @@ export async function refundUserWorkflow({
       refundStatus = 'FAILED';
     }
   } else {
+    criticalAlertNamefi({
+      workflowInfo: workflow.workflowInfo(),
+      message: `Unsupported payment provider for refunds. Payment provider: ${paymentProvider}`,
+      level: 'fatal',
+    });
     throw workflow.ApplicationFailure.create({
       message: `Unsupported payment provider for refunds. Payment provider: ${paymentProvider}`,
+    });
+  }
+  if (refundStatus === 'FAILED') {
+    criticalAlertNamefi({
+      workflowInfo: workflow.workflowInfo(),
+      message: `Failed to update refund status. Refund ID: ${refundId}`,
+      level: 'fatal',
     });
   }
 

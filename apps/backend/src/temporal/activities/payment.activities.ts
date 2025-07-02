@@ -397,6 +397,7 @@ export async function determineAvailablePaymentMethods(
 ): Promise<{
   availablePaymentMethods: PaymentProvider[];
   walletAddressToBeCharged: ChecksumWalletAddress;
+  stripePreferredPaymentMethodId?: string;
 }> {
   const walletAddressToBeCharged =
     await getPreferredEvmWalletAddressToBeCharged(userId);
@@ -441,15 +442,16 @@ export async function determineAvailablePaymentMethods(
     )
   ).filter((paymentMethod) => paymentMethod !== null);
 
-  const stripePreferredPaymentMethodId =
+  const stripePreferredPaymentMethod =
     await getPreferredPaymentMethodForNamefiUser({ namefiUserId: userId });
-  if (isNotNil(stripePreferredPaymentMethodId)) {
+  if (isNotNil(stripePreferredPaymentMethod)) {
     return {
       availablePaymentMethods: [
         ...paymentMethodsFromChains,
         paymentProviderSchema.Values.STRIPE,
       ],
       walletAddressToBeCharged,
+      stripePreferredPaymentMethodId: stripePreferredPaymentMethod.id,
     };
   }
   return {
