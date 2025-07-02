@@ -72,7 +72,7 @@ function RenewalDurationStepper({
   );
 
   // Show loading state while calculating constraints
-  if (constraints.isLoading) {
+  if (constraints.status === 'loading') {
     return (
       <div className="w-32 h-10 flex items-center justify-center text-sm text-muted-foreground bg-muted/50 rounded-md">
         <Loader2 className="size-4 animate-spin" />
@@ -80,16 +80,34 @@ function RenewalDurationStepper({
     );
   }
 
-  // Show error state or fall back to disabled renewal
-  if (constraints.error || constraints.maxYears < 1) {
+  // Show error state with appropriate message
+  if (constraints.status === 'error') {
+    // Show different text based on the error code
+    const getErrorText = (errorCode: string) => {
+      switch (errorCode) {
+        case 'DOMAIN_EXPIRED':
+          return 'Expired';
+        case 'MAX_REGISTRATION_REACHED':
+          return 'Max period';
+        case 'EXPIRATION_TIME_UNAVAILABLE':
+        case 'DURATION_VALIDATION_MISSING':
+          return 'Data missing';
+        case 'DOMAIN_DETAILS_LOAD_FAILED':
+        case 'AVAILABILITY_INFO_LOAD_FAILED':
+        case 'AVAILABILITY_INFO_UNAVAILABLE':
+          return 'Load failed';
+        default:
+          return 'Cannot renew';
+      }
+    };
+
     return (
       <div className="w-32 h-10 flex items-center justify-center text-sm text-muted-foreground bg-muted/50 rounded-md opacity-50 cursor-not-allowed">
-        Renew now
+        {getErrorText(constraints.errorCode)}
       </div>
     );
   }
 
-  // Show duration stepper with calculated constraints
   return (
     <DurationStepper
       value={item.durationInYears}

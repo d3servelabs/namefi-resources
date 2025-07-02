@@ -4,12 +4,29 @@ import { useTRPC } from '@/utils/trpc';
 import { differenceInYears } from 'date-fns';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 
-export type RenewalDurationConstraints = {
-  minYears: number;
-  maxYears: number;
-  isLoading: boolean;
-  error: string | null;
-};
+export type RenewalErrorCode =
+  | 'DOMAIN_DETAILS_LOAD_FAILED'
+  | 'AVAILABILITY_INFO_LOAD_FAILED'
+  | 'EXPIRATION_TIME_UNAVAILABLE'
+  | 'AVAILABILITY_INFO_UNAVAILABLE'
+  | 'DOMAIN_EXPIRED'
+  | 'MAX_REGISTRATION_REACHED'
+  | 'DURATION_VALIDATION_MISSING';
+
+export type RenewalDurationConstraints =
+  | {
+      status: 'loading';
+    }
+  | {
+      status: 'success';
+      minYears: number;
+      maxYears: number;
+    }
+  | {
+      status: 'error';
+      errorCode: RenewalErrorCode;
+      error: string;
+    };
 
 /**
  * Hook to calculate renewal duration constraints for a domain
@@ -43,24 +60,22 @@ export function useRenewalDurationConstraints(
   return useMemo((): RenewalDurationConstraints => {
     // Handle loading state
     if (isDomainDetailsLoading || isDomainAvailabilityLoading) {
-      return { minYears: 1, maxYears: 1, isLoading: true, error: null };
+      return { status: 'loading' };
     }
 
     // Handle errors
     if (domainDetailsError) {
       return {
-        minYears: 1,
-        maxYears: 1,
-        isLoading: false,
+        status: 'error',
+        errorCode: 'DOMAIN_DETAILS_LOAD_FAILED',
         error: domainDetailsError.message || 'Failed to load domain details',
       };
     }
 
     if (domainAvailabilityError) {
       return {
-        minYears: 1,
-        maxYears: 1,
-        isLoading: false,
+        status: 'error',
+        errorCode: 'AVAILABILITY_INFO_LOAD_FAILED',
         error:
           domainAvailabilityError.message ||
           'Failed to load domain availability info',
@@ -69,19 +84,30 @@ export function useRenewalDurationConstraints(
 
     if (!domainDetails?.expirationTime) {
       return {
-        minYears: 1,
-        maxYears: 1,
-        isLoading: false,
+        status: 'error',
+        errorCode: 'EXPIRATION_TIME_UNAVAILABLE',
         error: 'Domain expiration time not available',
       };
     }
 
     if (!domainAvailabilityInfo) {
       return {
-        minYears: 1,
-        maxYears: 1,
-        isLoading: false,
+        status: 'error',
+        errorCode: 'AVAILABILITY_INFO_UNAVAILABLE',
         error: 'Domain availability info not available',
+      };
+    }
+
+    // Check if domain is already expired
+    const currentDate = new Date();
+    const expirationDate = new Date(domainDetails.expirationTime);
+
+    if (expirationDate <= currentDate) {
+      return {
+        status: 'error',
+        errorCode: 'DOMAIN_EXPIRED',
+        error:
+          'Domain has already expired and cannot be renewed through this interface',
       };
     }
 
@@ -89,16 +115,26 @@ export function useRenewalDurationConstraints(
     // This matches the backend logic in extend-registration.workflow.ts which uses differenceInYears directly
     // and counts only FULL years (ignoring partial years), making renewals more user-friendly
     // For example, if domain expires in 9 years and 1 month, this returns 9 (not 10)
-    const currentDate = new Date();
-    const expirationDate = new Date(domainDetails.expirationTime);
     const activeRegistrationDuration =
       differenceInYears(expirationDate, currentDate) + 1;
 
-    // Use domain availability constraints or defaults
+    // Check for duration validation data
+    if (
+      !domainAvailabilityInfo?.durationValidationInYears?.max ||
+      !domainAvailabilityInfo?.durationValidationInYears?.min
+    ) {
+      return {
+        status: 'error',
+        errorCode: 'DURATION_VALIDATION_MISSING',
+        error: 'Duration validation data is missing for this domain',
+      };
+    }
+
+    // Use domain availability constraints
     const maxAllowedYears =
-      domainAvailabilityInfo?.durationValidationInYears?.max ?? 10;
+      domainAvailabilityInfo.durationValidationInYears.max;
     const minAllowedYears =
-      domainAvailabilityInfo?.durationValidationInYears?.min ?? 1;
+      domainAvailabilityInfo.durationValidationInYears.min;
 
     // Calculate how many more years we can add without exceeding the max
     const maxAdditionalYears = Math.max(
@@ -109,18 +145,16 @@ export function useRenewalDurationConstraints(
     // If we can't add any more years, show error
     if (maxAdditionalYears < 1) {
       return {
-        minYears: 1,
-        maxYears: 1,
-        isLoading: false,
+        status: 'error',
+        errorCode: 'MAX_REGISTRATION_REACHED',
         error: `Domain already at maximum ${maxAllowedYears} year registration`,
       };
     }
 
     return {
+      status: 'success',
       minYears: minAllowedYears,
       maxYears: Math.min(maxAdditionalYears, maxAllowedYears),
-      isLoading: false,
-      error: null,
     };
   }, [
     isDomainDetailsLoading,

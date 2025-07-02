@@ -330,11 +330,18 @@ export const DomainConfigAndPrefsForm = ({
                     if (!domainAvailabilityInfo) {
                       throw new Error('Domain availability info not available');
                     }
-                    if (renewalConstraints.error) {
+
+                    if (renewalConstraints.status === 'error') {
                       throw new Error(renewalConstraints.error);
                     }
 
-                    const durationToUse = renewalConstraints.minYears || 1;
+                    if (renewalConstraints.status === 'loading') {
+                      throw new Error(
+                        'Renewal duration constraints are loading',
+                      );
+                    }
+
+                    const durationToUse = renewalConstraints.minYears;
                     const isCurrentlyInCart = isDomainInCart(domainName);
 
                     await handleDomainAction({
@@ -351,7 +358,7 @@ export const DomainConfigAndPrefsForm = ({
                       );
                     }
                   } catch (error) {
-                    if (renewalConstraints.error) {
+                    if (renewalConstraints.status === 'error') {
                       toast.error(
                         `Failed to update cart: ${renewalConstraints.error}`,
                       );
@@ -366,13 +373,13 @@ export const DomainConfigAndPrefsForm = ({
                   isPending ||
                   isDomainInfoLoading ||
                   isDomainDetailsLoading ||
-                  renewalConstraints.isLoading ||
+                  renewalConstraints.status === 'loading' ||
                   !domainAvailabilityInfo ||
-                  !!renewalConstraints.error
+                  renewalConstraints.status === 'error'
                 }
                 size="sm"
               >
-                {renewalConstraints.isLoading
+                {renewalConstraints.status === 'loading'
                   ? 'Loading...'
                   : isDomainInCart(domainName)
                     ? 'Added to Cart'
