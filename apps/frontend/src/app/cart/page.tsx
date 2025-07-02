@@ -1,7 +1,7 @@
 'use client';
 import { AuthRequired } from '@/components/auth-required';
 import { CartCard } from '@/components/cart-card';
-import { DurationStepper } from '@/components/duration-stepper';
+import { CartItemDurationControl } from '@/components/cart-item-duration-stepper';
 import { NamefiButton } from '@/components/namefi-button';
 import { NftWalletCard } from '@/components/nftWalletCard';
 import { useInteractionLoggers } from '@/components/providers/interactionLoggersProvider';
@@ -667,32 +667,11 @@ export default function CartPage() {
                               <Trash2 className="size-4" />
                             )}
                           </button>
-                          {item.type === itemTypeSchema.Values.IMPORT ||
-                          item.type === itemTypeSchema.Values.RENEW ? (
-                            <div className="w-32 h-10 flex items-center justify-center text-sm text-muted-foreground bg-muted/50 rounded-md">
-                              {item.durationInYears}{' '}
-                              {item.durationInYears === 1 ? 'year' : 'years'}
-                            </div>
-                          ) : (
-                            <DurationStepper
-                              value={item.durationInYears}
-                              onChange={(value) =>
-                                handleDurationChange(item.id, value)
-                              }
-                              min={
-                                item.domainAvailabilityInfo
-                                  ?.durationValidationInYears?.min ?? 1
-                              }
-                              max={
-                                item.domainAvailabilityInfo
-                                  ?.durationValidationInYears?.max ?? 10
-                              }
-                              disabled={
-                                isDisabled || !item.domainAvailabilityInfo
-                              }
-                              className="w-32"
-                            />
-                          )}
+                          <CartItemDurationControl
+                            item={item}
+                            onDurationChange={handleDurationChange}
+                            isDisabled={isDisabled}
+                          />
                         </div>
                         <span className="text-xl">
                           {formatAmountInUSD(item.amountInUSDCents, true)}
