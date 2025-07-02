@@ -21,3 +21,4 @@ export * from './migrate-users.workflow';
 export * from './monitor-stripe-refund-status.workflow';
 export * from './refund-stripe.workflow';
 export * from './autorenew-daily-emails.workflow';
+export * from './charge-user-and-create-payment.workflow';
