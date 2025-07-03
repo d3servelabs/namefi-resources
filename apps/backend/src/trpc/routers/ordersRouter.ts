@@ -41,7 +41,7 @@ import {
 } from '../utils';
 import { getDomainPricingForOperation } from '../types';
 import type { Json } from 'drizzle-zod';
-import { differenceInYears } from 'date-fns';
+import { addDays, differenceInYears } from 'date-fns';
 import { sldRegistrar } from '#lib/namefi-registry';
 import { toPunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
 
@@ -434,7 +434,7 @@ async function getChangesIfAnyToCartItems(
       const expirationTime = domainDetailsMap.get(
         item.normalizedDomainName as NamefiNormalizedDomain,
       );
-      return !expirationTime || expirationTime <= currentDate;
+      return !expirationTime || addDays(expirationTime, 7) <= currentDate; // 7 days grace period TODO(Sami->Sami): use real grace period
     },
   );
 
