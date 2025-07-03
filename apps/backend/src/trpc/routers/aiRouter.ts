@@ -215,7 +215,7 @@ export const aiRouter = createTRPCRouter({
           message:
             error instanceof Error
               ? error.message
-              : 'Failed to generate marketing images',
+              : 'Failed to generate posters',
         });
       }
     }),

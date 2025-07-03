@@ -54,10 +54,12 @@ const EmptyBrandsPlaceholder = () => (
     <div className="flex size-20 items-center justify-center rounded-full bg-muted">
       <Sparkles className="size-10 text-muted-foreground" />
     </div>
-    <EmptyPlaceholder.Title>No brands found</EmptyPlaceholder.Title>
+    <EmptyPlaceholder.Title>
+      You haven't created any brands yet
+    </EmptyPlaceholder.Title>
     <EmptyPlaceholder.Description>
-      Start generating logos and marketing images for your domains to create
-      your first brand.
+      All your generated logos and posters will appear here. Create your first
+      brand to get started!
     </EmptyPlaceholder.Description>
   </EmptyPlaceholder>
 );
@@ -101,7 +103,7 @@ export default function AIBrandGeneratorPage() {
         <div>
           <h2 className="text-2xl font-bold">AI Brand Generator</h2>
           <p className="text-muted-foreground mt-1">
-            Generate logos and marketing images for your brands
+            Create custom logos and posters for your brand
           </p>
         </div>
       </div>
@@ -119,7 +121,7 @@ export default function AIBrandGeneratorPage() {
 
       {/* Existing Domains */}
       <div>
-        <h3 className="text-xl font-semibold mb-4">Your Domains</h3>
+        <h3 className="text-xl font-semibold mb-4">Your brands</h3>
         {isDomainsLoading ? (
           <LoadingSkeletons />
         ) : domains.length > 0 ? (

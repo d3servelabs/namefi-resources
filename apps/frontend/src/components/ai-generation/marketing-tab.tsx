@@ -129,7 +129,7 @@ export function MarketingTab({
       />
       <ImageGrid
         items={allItems}
-        title="Generated Marketing Images"
+        title="Generated Posters"
         isLoading={generateMarketingImageMutation.isPending}
         onGenerateAnother={
           lastMarketingPrompt ? handleGenerateAnotherMarketingImage : undefined

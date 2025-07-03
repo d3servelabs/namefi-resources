@@ -22,7 +22,7 @@ export function TabSelector({ activeTab, onTabChange }: TabSelectorProps) {
         )}
       >
         <Palette className="h-4 w-4" />
-        Logo Generation
+        Logo
       </Button>
       <Button
         variant={activeTab === 'marketing' ? 'default' : 'ghost'}
@@ -34,7 +34,7 @@ export function TabSelector({ activeTab, onTabChange }: TabSelectorProps) {
         )}
       >
         <Sparkles className="h-4 w-4" />
-        Marketing Images
+        Poster
       </Button>
     </div>
   );

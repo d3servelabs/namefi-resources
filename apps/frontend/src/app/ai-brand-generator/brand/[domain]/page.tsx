@@ -106,8 +106,8 @@ const EmptyGenerationsPlaceholder = ({
         No generations found for {domain}
       </EmptyPlaceholder.Title>
       <EmptyPlaceholder.Description>
-        Start creating logos and marketing images for this domain by using the
-        AI generator below, or go back to browse other brands.
+        Start creating logos and posters for this domain by using the AI
+        generator below, or go back to browse other brands.
       </EmptyPlaceholder.Description>
       <Button variant="outline" onClick={onGoBack} className="mt-4">
         <ArrowLeft className="mr-2 h-4 w-4" />
