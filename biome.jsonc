@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.0.0-beta.6/schema.json",
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
   "vcs": {
     "enabled": true,
     "clientKind": "git",
@@ -38,7 +38,63 @@
       },
       "style": {
         "noDefaultExport": "info",
-        "useNamingConvention": "info",
+        "useNamingConvention": {
+          "level": "info",
+          "options": {
+            "requireAscii": true,
+            "conventions": [
+              {
+                "selector": {
+                  "kind": "const",
+                  "scope": "global"
+                },
+                "match": "_{0,2}.*_{0,2}", // _*.*_ is a special pattern for internal consts
+                "formats": ["CONSTANT_CASE", "camelCase"]
+              },
+              {
+                "selector": {
+                  "kind": "objectLiteralProperty"
+                },
+                "match": "_{0,2}.*_{0,2}", // _*.*_ is a special pattern for internal props
+                "formats": [
+                  "camelCase",
+                  "PascalCase", // PascalCase is for aws
+                  "CONSTANT_CASE", // CONSTANT_CASE is for env variables
+                  "snake_case" // snake_case is for dynadot and http clients
+                ]
+              },
+              {
+                "selector": {
+                  "kind": "function",
+                  "scope": "global"
+                },
+                "match": "_?.*",
+                "formats": ["camelCase"]
+              },
+              {
+                "selector": {
+                  "kind": "typeLike",
+                  "scope": "global"
+                },
+                "match": "_{0,2}.*_{0,2}", // _*.*_ is a special pattern for internal types
+                "formats": ["PascalCase"]
+              },
+              {
+                "selector": {
+                  "kind": "typeProperty"
+                },
+                "formats": ["camelCase", "PascalCase"]
+              },
+              {
+                "selector": {
+                  "kind": "enum",
+                  "scope": "global"
+                },
+                "formats": ["PascalCase", "CONSTANT_CASE"]
+              }
+            ]
+          }
+        },
         "useFilenamingConvention": "info",
         "noParameterAssign": "error",
         "useAsConstAssertion": "error",
@@ -78,6 +134,19 @@
         "rules": {
           "suspicious": {
             "noConsole": { "level": "warn", "options": { "allow": ["log"] } }
+          }
+        }
+      }
+    },
+    {
+      "includes": [
+        "**/apps/backend/**/*.tsx",
+        "**/apps/frontend/app/**/page.tsx"
+      ],
+      "linter": {
+        "rules": {
+          "style": {
+            "noDefaultExport": { "level": "off" }
           }
         }
       }
