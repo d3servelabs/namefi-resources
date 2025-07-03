@@ -50,7 +50,9 @@ const normalizedDomain = {
    * - Allows letters, digits, and hyphens
    * - Stores full domain (subdomain.domain.tld)
    */
-  normalizedDomainName: text('normalized_domain_name').notNull(),
+  normalizedDomainName: text('normalized_domain_name')
+    .notNull()
+    .$type<NamefiNormalizedDomain>(),
 };
 
 const randomUuid = {

@@ -1,5 +1,4 @@
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
-import type { AnyPgTable } from 'drizzle-orm/pg-core';
 import {
   createInsertSchema,
   createSelectSchema,
@@ -22,23 +21,6 @@ import {
   usersTable,
 } from './schema';
 
-// TODO: types are not being exported correctly
-/**
- * Utility to create all necessary Zod schemas for a table
- * @param table The Drizzle table to create schemas for
- * @param prefix The prefix to use for the schema names
- * @returns Object containing insert, select, and update schemas
- * @deprecated
- */
-const _createTableSchemas = <T extends AnyPgTable>(
-  table: T,
-  prefix: string,
-) => ({
-  [`${prefix}InsertSchema`]: createInsertSchema(table),
-  [`${prefix}SelectSchema`]: createSelectSchema(table),
-  [`${prefix}UpdateSchema`]: createUpdateSchema(table),
-});
-
 /**
  * Zod schemas for type-safe operations
  */
@@ -46,9 +28,15 @@ export const userInsertSchema = createInsertSchema(usersTable);
 export const userSelectSchema = createSelectSchema(usersTable);
 export const userUpdateSchema = createUpdateSchema(usersTable);
 
-export const cartItemInsertSchema = createInsertSchema(cartItemsTable);
-export const cartItemSelectSchema = createSelectSchema(cartItemsTable);
-export const cartItemUpdateSchema = createUpdateSchema(cartItemsTable);
+export const cartItemInsertSchema = createInsertSchema(cartItemsTable, {
+  normalizedDomainName: namefiNormalizedDomainSchema,
+});
+export const cartItemSelectSchema = createSelectSchema(cartItemsTable, {
+  normalizedDomainName: namefiNormalizedDomainSchema,
+});
+export const cartItemUpdateSchema = createUpdateSchema(cartItemsTable, {
+  normalizedDomainName: namefiNormalizedDomainSchema,
+});
 
 export const paymentInsertSchema = createInsertSchema(paymentsTable);
 export const paymentSelectSchema = createSelectSchema(paymentsTable);
@@ -62,9 +50,15 @@ export const orderInsertSchema = createInsertSchema(ordersTable);
 export const orderSelectSchema = createSelectSchema(ordersTable);
 export const orderUpdateSchema = createUpdateSchema(ordersTable);
 
-export const orderItemInsertSchema = createInsertSchema(orderItemsTable);
-export const orderItemSelectSchema = createSelectSchema(orderItemsTable);
-export const orderItemUpdateSchema = createUpdateSchema(orderItemsTable);
+export const orderItemInsertSchema = createInsertSchema(orderItemsTable, {
+  normalizedDomainName: namefiNormalizedDomainSchema,
+});
+export const orderItemSelectSchema = createSelectSchema(orderItemsTable, {
+  normalizedDomainName: namefiNormalizedDomainSchema,
+});
+export const orderItemUpdateSchema = createUpdateSchema(orderItemsTable, {
+  normalizedDomainName: namefiNormalizedDomainSchema,
+});
 
 /**
  * DNS Record schemas

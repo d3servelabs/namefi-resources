@@ -1,6 +1,6 @@
 import { db } from '@namefi-astra/db';
 import { namefiNftTable } from '@namefi-astra/db';
-import { getChain } from '@namefi-astra/utils';
+import { getChain, type NamefiNormalizedDomain } from '@namefi-astra/utils';
 import BigNumber from 'bignumber.js';
 import { inArray, sql } from 'drizzle-orm';
 import { eq } from 'drizzle-orm';
@@ -19,9 +19,6 @@ import {
 import { base, mainnet } from 'viem/chains';
 import { nftIdFromDomainName } from '#lib/nftHash';
 import { NftAbi, chainsToUrls } from './helpers/contracts';
-
-// Type definition for normalized domain
-type NamefiNormalizedDomain = string;
 
 // Type for domain owner update result
 interface DomainOwnerUpdate {
@@ -330,7 +327,7 @@ export const getNftExpirationTimeInSeconds = async (
   return Number(expirationTimeFromContract);
 };
 
-export const getNftFromIndexer = async (domainName: string) => {
+export const getNftFromIndexer = async (domainName: NamefiNormalizedDomain) => {
   const nft = await db.query.namefiNftTable.findFirst({
     where: eq(namefiNftTable.normalizedDomainName, domainName),
   });

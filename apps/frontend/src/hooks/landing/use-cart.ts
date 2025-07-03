@@ -23,6 +23,7 @@ import {
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useCallback, useEffect, useRef } from 'react';
 import { useLocalStorage } from 'usehooks-ts';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 
 /**
  * Type for cart items stored both in server and localStorage
@@ -95,7 +96,7 @@ export function useCart() {
     });
 
   const removeFromLocalCart = useCallback(
-    (domainName: string) => {
+    (domainName: NamefiNormalizedDomain) => {
       setLocalCartItems((prevItems) =>
         prevItems.filter((item) => item.normalizedDomainName !== domainName),
       );

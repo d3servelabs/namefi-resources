@@ -2,6 +2,7 @@ import { db, usersTable } from '@namefi-astra/db';
 import {
   NAMEFI_NFT_CONTRACT_ADDRESS,
   namefiNormalizedDomainSchema,
+  type NamefiNormalizedDomain,
 } from '@namefi-astra/utils';
 import type { LinkedAccountWithMetadata } from '@privy-io/server-auth';
 import { TRPCError } from '@trpc/server';
@@ -246,10 +247,10 @@ export const usersRouter = createTRPCRouter({
       });
 
       const subdomainNftsMap: Record<
-        string,
+        NamefiNormalizedDomain,
         (typeof issuedSubdomainNfts)[number]
       > = {};
-      const subdomainNftDomainNames: string[] = [];
+      const subdomainNftDomainNames: NamefiNormalizedDomain[] = [];
 
       for (const nft of issuedSubdomainNfts) {
         subdomainNftDomainNames.push(nft.normalizedDomainName);

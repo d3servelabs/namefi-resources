@@ -132,7 +132,8 @@ export const cartsRouter = createTRPCRouter({
           const baseItem = {
             userId: ctx.user.id,
             amountInUSDCents: item.amountInUSDCents,
-            normalizedDomainName: item.normalizedDomainName,
+            normalizedDomainName:
+              item.normalizedDomainName as NamefiNormalizedDomain,
             durationInYears: item.durationInYears,
             type: item.type,
             registrar: item.registrar,
