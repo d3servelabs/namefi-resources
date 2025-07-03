@@ -11,20 +11,32 @@ import {
   usersTable,
 } from '@namefi-astra/db';
 import {
-  computeChargesInUsdOrThrow,
+  computeChargesInUsdFromDomainAvailabilityInfo,
   usdToCents,
 } from '@namefi-astra/registrars/multi-year-pricing';
 import {
   type NamefiNormalizedDomain,
   checksumWalletAddressSchema,
+  switchCase,
 } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
 import { and, desc, eq, inArray } from 'drizzle-orm';
-import { groupBy, indexBy, isNil, prop } from 'ramda';
+import {
+  flatten,
+  groupBy,
+  indexBy,
+  isNil,
+  isNotEmpty,
+  isNotNil,
+  prop,
+} from 'ramda';
 import Stripe from 'stripe';
 import { zeroAddress } from 'viem';
 import { z } from 'zod';
-import { getDomainListInfo } from '#lib/namefi-registry';
+import {
+  getDomainListInfo,
+  type DomainAvailabilityInfo,
+} from '#lib/namefi-registry';
 import { NegativeAmountInUsdCentsError } from '#services/payments/errors';
 import { orderService } from '../../services/orders/orders.service';
 import { createPayment } from '../../temporal/activities/payment.activities';
@@ -39,11 +51,12 @@ import {
   isNormalizedDomainNameAllowedForOriginHostname,
   privyClient,
 } from '../utils';
-import { getDomainPricingForOperation } from '../types';
 import type { Json } from 'drizzle-zod';
-import { addDays, differenceInYears } from 'date-fns';
+import { addDays, differenceInMonths } from 'date-fns';
 import { sldRegistrar } from '#lib/namefi-registry';
 import { toPunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
+import { pluck } from 'ramda';
+import { logger } from '#lib/logger';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
 
@@ -339,6 +352,17 @@ export const ordersRouter = createTRPCRouter({
     }),
 });
 
+type CartItemsGroupedByType = Record<
+  'registerCartItems' | 'importCartItems' | 'renewCartItems',
+  CartItemSelect[]
+>;
+
+type CartItemChange = {
+  changeType: 'noChange' | 'priceChanged' | 'durationChanged';
+  originalItem: CartItemSelect;
+  newItem: CartItemSelect;
+};
+
 /**
  * Returns the changes if any to the cart items
  * @param userId - The user id
@@ -362,318 +386,222 @@ async function getChangesIfAnyToCartItems(
 
   const cartItems = (await db.query.cartItemsTable.findMany({
     where: and(
-      (cartItemIds?.length ?? 0) > 0
-        ? inArray(cartItemsTable.id, cartItemIds ?? [])
+      isNotNil(cartItemIds) && isNotEmpty(cartItemIds)
+        ? inArray(cartItemsTable.id, cartItemIds)
         : undefined,
       eq(cartItemsTable.userId, userId),
     ),
   })) as CartItemSelect[];
-  const domains = cartItems.map(
-    (item) => item.normalizedDomainName as NamefiNormalizedDomain,
-  );
+
+  const domainNames = pluck('normalizedDomainName', cartItems);
+
   const domainAvailabilitiesWithPricing = await getDomainListInfo(
-    domains,
+    domainNames,
     user,
   );
-
-  const renewCartItems = cartItems.filter(
-    (item) => item.type === itemTypeSchema.Values.RENEW,
-  );
-  const domainDetailsMap = new Map<NamefiNormalizedDomain, Date>();
-
-  if (renewCartItems.length > 0) {
-    const [error, domainDetailsResults] = await resolve(
-      Promise.allSettled(
-        renewCartItems.map(async (item: CartItemSelect) => {
-          const domainDetails = await sldRegistrar.getDomainDetails(
-            toPunycodeDomainName(
-              item.normalizedDomainName as NamefiNormalizedDomain,
-            ),
-          );
-          return {
-            domain: item.normalizedDomainName as NamefiNormalizedDomain,
-            expirationTime: domainDetails.expirationTime,
-          };
-        }),
-      ),
-    );
-
-    if (error) {
-      console.error(
-        'Error fetching domain details for renewal validation:',
-        error,
-      );
-    } else {
-      domainDetailsResults.forEach(
-        (
-          result: PromiseSettledResult<{
-            domain: NamefiNormalizedDomain;
-            expirationTime: Date;
-          }>,
-          index: number,
-        ) => {
-          if (result.status === 'fulfilled') {
-            domainDetailsMap.set(
-              result.value.domain,
-              result.value.expirationTime,
-            );
-          } else {
-            console.error(
-              `Failed to fetch domain details for ${renewCartItems[index].normalizedDomainName}:`,
-              result.reason,
-            );
-          }
-        },
-      );
-    }
-  }
-
-  const currentDate = new Date();
-  const allExpiredRenewalCartItems = renewCartItems.filter(
-    (item: CartItemSelect) => {
-      const expirationTime = domainDetailsMap.get(
-        item.normalizedDomainName as NamefiNormalizedDomain,
-      );
-      return !expirationTime || addDays(expirationTime, 7) <= currentDate; // 7 days grace period TODO(Sami->Sami): use real grace period
-    },
-  );
-
-  const domainPricingByNormalizedDomainName = indexBy(
-    (item) => item.domain,
+  const domainPricingByName = indexBy(
+    prop('domain'),
     domainAvailabilitiesWithPricing,
   );
 
-  // Only REGISTER items should go through availability checking
-  // IMPORT and RENEW items have their own specific validation logic
-  const cartItemsForAvailabilityCheck = cartItems.filter((item) => {
-    return item.type === itemTypeSchema.Values.REGISTER;
-  });
-
-  const cartItemsGroupedByAvailability = groupBy((item) => {
-    const domainPricing =
-      domainPricingByNormalizedDomainName[
-        item.normalizedDomainName as NamefiNormalizedDomain
-      ];
-
-    // Only REGISTER items reach this point, so we just check availability
-    const isAvailableForCart = domainPricing?.availability;
-    return isAvailableForCart ? 'available' : 'unavailable';
-  }, cartItemsForAvailabilityCheck);
-
-  // Check IMPORT items separately
-  const importCartItems = cartItems.filter(
-    (item) => item.type === itemTypeSchema.Values.IMPORT,
-  );
-  const unavailableImportItems = importCartItems.filter((item) => {
-    const domainPricing =
-      domainPricingByNormalizedDomainName[
-        item.normalizedDomainName as NamefiNormalizedDomain
-      ];
-    return !domainPricing || !isDomainImportable(domainPricing);
-  });
-  const availableImportItems = importCartItems.filter((item) => {
-    const domainPricing =
-      domainPricingByNormalizedDomainName[
-        item.normalizedDomainName as NamefiNormalizedDomain
-      ];
-    return domainPricing && isDomainImportable(domainPricing);
-  });
-
-  // RENEW items that are not expired and can be renewed further are considered available for processing
-  const currentRenewCartItems = cartItems.filter(
-    (item) => item.type === itemTypeSchema.Values.RENEW,
+  const { registerCartItems, importCartItems, renewCartItems } = groupBy(
+    (item) =>
+      switchCase(item.type, {
+        REGISTER: 'registerCartItems',
+        IMPORT: 'importCartItems',
+        RENEW: 'renewCartItems',
+      }),
+    cartItems,
   );
 
-  const maxRegistrationReachedRenewalItems: CartItemSelect[] = [];
-  const unavailableRenewItems: CartItemSelect[] = [];
+  // Get domain expiration dates for RENEW items, we only need to do this for RENEW items
+  // because we need to know the expiration date to determine if the domain can be renewed further
+  const renewCartItemsExpirationDatesMap = await getDomainsExpirationDatesMap(
+    pluck('normalizedDomainName', renewCartItems ?? []),
+  );
 
-  const availableRenewItems = currentRenewCartItems.filter((item) => {
-    // Skip expired items
-    if (allExpiredRenewalCartItems.includes(item)) {
-      return false;
-    }
-
-    // Check if domain can be renewed further
-    const domainPricing =
-      domainPricingByNormalizedDomainName[
-        item.normalizedDomainName as NamefiNormalizedDomain
-      ];
-    const expirationTime = domainDetailsMap.get(
-      item.normalizedDomainName as NamefiNormalizedDomain,
-    );
-
-    if (expirationTime && domainPricing) {
-      // Missing duration validation is an error - don't use defaults
-      if (!domainPricing.durationValidationInYears?.max) {
-        console.error(
-          `Missing durationValidationInYears.max for domain: ${item.normalizedDomainName}`,
-        );
-        unavailableRenewItems.push(item);
-        return false; // Treat as unavailable due to missing data
-      }
-
-      const currentDate = new Date();
-      const activeRegistrationYears =
-        differenceInYears(expirationTime, currentDate) + 1;
-      const maxAllowedYears = domainPricing.durationValidationInYears.max;
-      const maxAdditionalYears = Math.max(
-        0,
-        maxAllowedYears - activeRegistrationYears,
-      );
-
-      // Domain can't be renewed if no additional years are possible
-      if (maxAdditionalYears <= 0) {
-        maxRegistrationReachedRenewalItems.push(item);
-        return false;
-      }
-
-      return true;
-    }
-
-    console.error(
-      `Cannot determine renewal availability for domain: ${item.normalizedDomainName} - missing expiration time or pricing data`,
-    );
-    unavailableRenewItems.push(item);
-    return false;
-  });
-
-  const noLongerAvailableCartItems = [
-    ...(cartItemsGroupedByAvailability.unavailable ?? []),
-    ...unavailableImportItems,
-    ...unavailableRenewItems,
-  ];
-
-  const stillAvailableCartItems = [
-    ...(cartItemsGroupedByAvailability.available ?? []),
-    ...availableImportItems,
-    ...availableRenewItems,
-  ];
-
-  const priceChangedCartItems: {
-    originalItem: CartItemSelect;
-    newItem: CartItemSelect;
-  }[] = [];
-  const durationValidationChangedCartItems: {
-    originalItem: CartItemSelect;
-    newItem: CartItemSelect;
-  }[] = [];
-
-  const cartItemsWithChangesReflected = stillAvailableCartItems.map(
-    (originalItem) => {
-      const domainPricing =
-        domainPricingByNormalizedDomainName[
-          originalItem.normalizedDomainName as NamefiNormalizedDomain
-        ];
-
-      const pricingDetails = getDomainPricingForOperation(
-        domainPricing,
-        originalItem.type,
-      );
-
-      if (!pricingDetails) {
-        throw new TRPCError({
-          code: 'BAD_REQUEST',
-          message: `Pricing details unavailable for domain: ${originalItem.normalizedDomainName}`,
-        });
-      }
-
-      const chargeAmountInUsd = computeChargesInUsdOrThrow(
-        pricingDetails,
-        originalItem.durationInYears,
-      );
-      let newAmountInUsdCents = usdToCents(chargeAmountInUsd);
-
-      if (!domainPricing?.durationValidationInYears) {
-        throw new TRPCError({
-          code: 'BAD_REQUEST',
-          message: `Missing duration validation data for domain: ${originalItem.normalizedDomainName}`,
-        });
-      }
-
-      let { min, max } = domainPricing.durationValidationInYears;
-
-      // For RENEW items, apply special duration validation based on expiration date
-      if (originalItem.type === itemTypeSchema.Values.RENEW) {
-        const expirationTime = domainDetailsMap.get(
-          originalItem.normalizedDomainName as NamefiNormalizedDomain,
-        );
-
-        console.log('expirationTime', expirationTime?.toISOString());
-
-        if (expirationTime) {
-          const currentDate = new Date();
-          const activeRegistrationYears =
-            differenceInYears(expirationTime, currentDate) + 1;
-
-          // Calculate maximum additional years we can add without exceeding the max
-          const maxAdditionalYears = Math.max(0, max - activeRegistrationYears);
-
-          // If we can't add any more years, this domain can't be renewed further
-          if (maxAdditionalYears <= 0) {
-            // Skip processing this item - it will be filtered out as unavailable
-            return originalItem;
-          }
-
-          // For renewals, minimum is 1 year and maximum is the additional years we can add
-          min = Math.max(1, Math.min(min, maxAdditionalYears));
-          max = Math.min(max, maxAdditionalYears);
-        }
-      }
-
-      let newDurationInYears = originalItem.durationInYears;
-      if (newDurationInYears < min || newDurationInYears > max) {
-        newDurationInYears = Math.min(Math.max(newDurationInYears, min), max);
-
-        // Recalculate amount with corrected duration
-        const correctedChargeAmountInUsd = computeChargesInUsdOrThrow(
-          pricingDetails,
-          newDurationInYears,
-        );
-        newAmountInUsdCents = usdToCents(correctedChargeAmountInUsd);
-
-        durationValidationChangedCartItems.push({
-          originalItem,
-          newItem: {
-            ...originalItem,
-            durationInYears: newDurationInYears,
-            amountInUSDCents: newAmountInUsdCents,
-          },
-        });
-      }
-
-      if (newAmountInUsdCents !== originalItem.amountInUSDCents) {
-        priceChangedCartItems.push({
-          originalItem,
-          newItem: {
-            ...originalItem,
-            amountInUSDCents: newAmountInUsdCents,
-            durationInYears: newDurationInYears,
-          },
-        });
-      }
-
-      return {
-        ...originalItem,
-        amountInUSDCents: newAmountInUsdCents,
-        durationInYears: newDurationInYears,
-      };
+  return determineChangesIfAnyToCartItems(
+    {
+      registerCartItems: registerCartItems ?? [],
+      importCartItems: importCartItems ?? [],
+      renewCartItems: renewCartItems ?? [],
     },
+    domainPricingByName,
+    renewCartItemsExpirationDatesMap,
   );
+}
+
+/**
+ * Returns the changes if any to the cart items
+ * @param user - The user
+ * @param cartItems - The cart items
+ * @returns The changes if any to the cart items
+ */
+async function determineChangesIfAnyToCartItems(
+  cartItemsGroupedByType: CartItemsGroupedByType,
+  domainPricingByName: Record<NamefiNormalizedDomain, DomainAvailabilityInfo>,
+  renewCartItemsExpirationDatesMap: Map<NamefiNormalizedDomain, Date>,
+) {
+  const { registerCartItems, importCartItems, renewCartItems } =
+    cartItemsGroupedByType;
+
+  // Only REGISTER items should go through availability checking
+  const registerItemsByAvailabilityChange =
+    await _getAvailabilityChangesInRegisterCartItems(
+      registerCartItems,
+      domainPricingByName,
+    );
+
+  // IMPORT items have their own specific validation logic
+  const importItemsByAvailabilityChange =
+    await _getAvailabilityChangesInImportCartItems(
+      importCartItems,
+      domainPricingByName,
+    );
+
+  // RENEW items have their own specific validation logic
+  const renewItemsByAvailabilityChange =
+    await _getAvailabilityChangesInRenewCartItems(
+      renewCartItems,
+      domainPricingByName,
+      renewCartItemsExpirationDatesMap,
+    );
+
+  // Combine all unavailable items
+  const noLongerAvailableCartItems = flatten(
+    pluck('noLongerAvailable', [
+      registerItemsByAvailabilityChange,
+      importItemsByAvailabilityChange,
+      renewItemsByAvailabilityChange,
+    ]),
+  );
+
+  // Combine all available items
+  const stillAvailableCartItems = flatten(
+    pluck('stillAvailable', [
+      registerItemsByAvailabilityChange,
+      importItemsByAvailabilityChange,
+      renewItemsByAvailabilityChange,
+    ]),
+  );
+
+  const { priceChangedCartItems, durationChangedCartItems } =
+    _prepareCartItemsWithChangesReflected(
+      stillAvailableCartItems,
+      domainPricingByName,
+      renewCartItemsExpirationDatesMap,
+    );
+
+  const areThereAnyChanges =
+    isNotEmpty(noLongerAvailableCartItems) ||
+    isNotEmpty(priceChangedCartItems) ||
+    isNotEmpty(durationChangedCartItems) ||
+    isNotEmpty(renewItemsByAvailabilityChange.expired) ||
+    isNotEmpty(renewItemsByAvailabilityChange.maxRegistrationReached);
 
   return {
     noLongerAvailableCartItems,
     priceChangedCartItems,
-    durationValidationChangedCartItems,
-    allExpiredRenewalCartItems,
-    maxRegistrationReachedRenewalItems,
-    cartItemsWithChangesReflected,
-    areThereAnyChanges:
-      noLongerAvailableCartItems.length > 0 ||
-      priceChangedCartItems.length > 0 ||
-      durationValidationChangedCartItems.length > 0 ||
-      allExpiredRenewalCartItems.length > 0 ||
-      maxRegistrationReachedRenewalItems.length > 0,
-    domainPricingByNormalizedDomainName,
+    durationChangedCartItems,
+    allExpiredRenewalCartItems: renewItemsByAvailabilityChange.expired,
+    maxRegistrationReachedRenewalItems:
+      renewItemsByAvailabilityChange.maxRegistrationReached,
+    areThereAnyChanges,
+    domainPricingByName,
+  };
+}
+
+async function _getAvailabilityChangesInRenewCartItems(
+  currentRenewCartItems: CartItemSelect[],
+  domainAvailabilitiesByName: Record<
+    NamefiNormalizedDomain,
+    DomainAvailabilityInfo
+  >,
+  renewCartItemsExpirationDatesMap: Map<NamefiNormalizedDomain, Date>,
+) {
+  const {
+    noLongerAvailable = [],
+    stillAvailable = [],
+    expired = [],
+    maxRegistrationReached = [],
+  } = groupBy((item) => {
+    const expirationTime = renewCartItemsExpirationDatesMap.get(
+      item.normalizedDomainName,
+    );
+    // Skip expired item
+    if (!expirationTime || addDays(expirationTime, 7) <= new Date()) {
+      // 7 days grace period TODO(Sami->Sami): use real grace period
+      return 'expired';
+    }
+
+    // Check if domain can be renewed further
+    const domainAvailability =
+      domainAvailabilitiesByName[item.normalizedDomainName];
+
+    // Missing duration validation is an error - don't use defaults
+    if (!domainAvailability?.durationValidationInYears) {
+      logger.error(
+        `Missing durationValidationInYears for domain: ${item.normalizedDomainName}`,
+      );
+      return 'noLongerAvailable'; // Treat as unavailable due to missing data
+    }
+
+    const { min, max } = determineDurationLimitsForRenewItems(expirationTime, {
+      durationValidationInYears: domainAvailability.durationValidationInYears,
+    });
+
+    // Domain can't be renewed if no additional years are possible
+    if (max <= 0) {
+      return 'maxRegistrationReached';
+    }
+    if (min <= 0) {
+      return 'noLongerAvailable';
+    }
+
+    return 'stillAvailable';
+  }, currentRenewCartItems);
+
+  return {
+    noLongerAvailable,
+    stillAvailable,
+    expired,
+    maxRegistrationReached,
+  };
+}
+
+async function _getAvailabilityChangesInRegisterCartItems(
+  currentRegisterCartItems: CartItemSelect[],
+  domainPricingByName: Record<NamefiNormalizedDomain, DomainAvailabilityInfo>,
+) {
+  const { noLongerAvailable = [], stillAvailable = [] } = groupBy((item) => {
+    const domainPricing = domainPricingByName[item.normalizedDomainName];
+
+    // Only REGISTER items reach this point, so we just check availability
+    const isAvailableForCart = domainPricing?.availability;
+    return isAvailableForCart ? 'stillAvailable' : 'noLongerAvailable';
+  }, currentRegisterCartItems);
+  return {
+    noLongerAvailable,
+    stillAvailable,
+  };
+}
+
+async function _getAvailabilityChangesInImportCartItems(
+  currentImportCartItems: CartItemSelect[],
+  domainPricingByName: Record<NamefiNormalizedDomain, DomainAvailabilityInfo>,
+) {
+  const { noLongerAvailable = [], stillAvailable = [] } = groupBy((item) => {
+    const domainPricing = domainPricingByName[item.normalizedDomainName];
+
+    if (domainPricing && isDomainImportable(domainPricing)) {
+      return 'stillAvailable';
+    }
+    return 'noLongerAvailable';
+  }, currentImportCartItems);
+
+  return {
+    noLongerAvailable,
+    stillAvailable,
   };
 }
 
@@ -687,61 +615,61 @@ async function validateCartItems(userId: string, cartItemIds?: string[]) {
   const {
     noLongerAvailableCartItems,
     priceChangedCartItems,
-    durationValidationChangedCartItems,
+    durationChangedCartItems,
     allExpiredRenewalCartItems,
     maxRegistrationReachedRenewalItems,
-    domainPricingByNormalizedDomainName,
+    domainPricingByName,
   } = await getChangesIfAnyToCartItems(userId, cartItemIds);
 
   if (noLongerAvailableCartItems.length > 0) {
     throw new TRPCError({
       code: 'BAD_REQUEST',
-      message: `One or more domains are not available for purchase: ${noLongerAvailableCartItems.map((item) => item.normalizedDomainName).join(', ')}`,
+      message: `One or more domains are not available for purchase: ${pluck('normalizedDomainName', noLongerAvailableCartItems).join(', ')}`,
     });
   }
 
   if (allExpiredRenewalCartItems.length > 0) {
     throw new TRPCError({
       code: 'BAD_REQUEST',
-      message: `The following domains have already expired and cannot be renewed: ${allExpiredRenewalCartItems.map((item) => item.normalizedDomainName).join(', ')}`,
+      message: `The following domains have already expired and cannot be renewed: ${pluck('normalizedDomainName', allExpiredRenewalCartItems).join(', ')}`,
     });
   }
 
   if (maxRegistrationReachedRenewalItems.length > 0) {
     throw new TRPCError({
       code: 'BAD_REQUEST',
-      message: `The following domains are already at maximum registration period and cannot be renewed further: ${maxRegistrationReachedRenewalItems.map((item) => item.normalizedDomainName).join(', ')}`,
+      message: `The following domains are already at maximum registration period and cannot be renewed further: ${pluck('normalizedDomainName', maxRegistrationReachedRenewalItems).join(', ')}`,
     });
   }
 
   if (priceChangedCartItems.length > 0) {
     throw new TRPCError({
       code: 'BAD_REQUEST',
-      message: `Pricing has changed for these domains: ${priceChangedCartItems.map((item) => item.originalItem.normalizedDomainName).join(', ')}`,
+      message: `Pricing has changed for these domains: ${priceChangedCartItems.map(({ originalItem }) => originalItem.normalizedDomainName).join(', ')}`,
     });
   }
 
-  if (durationValidationChangedCartItems.length > 0) {
-    const invalidDomains = durationValidationChangedCartItems.map((item) => {
-      const domainPricing =
-        domainPricingByNormalizedDomainName[
-          item.originalItem.normalizedDomainName as NamefiNormalizedDomain
-        ];
+  if (durationChangedCartItems.length > 0) {
+    const invalidDomains = durationChangedCartItems.map(
+      ({ originalItem, newItem }) => {
+        const domainPricing =
+          domainPricingByName[originalItem.normalizedDomainName];
 
-      if (item.originalItem.type === itemTypeSchema.Values.RENEW) {
-        if (!domainPricing?.durationValidationInYears) {
-          return `${item.originalItem.normalizedDomainName} (duration validation data missing)`;
+        if (originalItem.type === itemTypeSchema.Values.RENEW) {
+          if (!domainPricing?.durationValidationInYears) {
+            return `${originalItem.normalizedDomainName} (duration validation data missing)`;
+          }
+          return `${originalItem.normalizedDomainName} (renewal duration was adjusted from ${originalItem.durationInYears} to ${newItem.durationInYears} years)`;
         }
-        return `${item.originalItem.normalizedDomainName} (renewal duration was adjusted from ${item.originalItem.durationInYears} to ${item.newItem.durationInYears} years)`;
-      }
 
-      // For other item types, show regular duration validation
-      if (!domainPricing?.durationValidationInYears) {
-        return `${item.originalItem.normalizedDomainName} (duration validation data missing)`;
-      }
-      const { min, max } = domainPricing.durationValidationInYears;
-      return `${item.originalItem.normalizedDomainName} (must be between ${min} and ${max} years)`;
-    });
+        // For other item types, show regular duration validation
+        if (!domainPricing?.durationValidationInYears) {
+          return `${originalItem.normalizedDomainName} (duration validation data missing)`;
+        }
+        const { min, max } = domainPricing.durationValidationInYears;
+        return `${originalItem.normalizedDomainName} (must be between ${min} and ${max} years)`;
+      },
+    );
 
     throw new TRPCError({
       code: 'BAD_REQUEST',
@@ -762,7 +690,7 @@ async function reflectChangesInCartItemsIfAnyAndReturnSummary(
   const {
     noLongerAvailableCartItems,
     priceChangedCartItems,
-    durationValidationChangedCartItems,
+    durationChangedCartItems,
     allExpiredRenewalCartItems,
     maxRegistrationReachedRenewalItems,
     areThereAnyChanges,
@@ -773,7 +701,7 @@ async function reflectChangesInCartItemsIfAnyAndReturnSummary(
   const summary = generateSummaryOfCartItemsChanges({
     noLongerAvailableCartItems,
     priceChangedCartItems,
-    durationValidationChangedCartItems,
+    durationChangedCartItems,
     allExpiredRenewalCartItems,
     maxRegistrationReachedRenewalItems,
     areThereAnyChanges,
@@ -824,13 +752,14 @@ async function reflectChangesInCartItemsIfAnyAndReturnSummary(
         }),
       );
     }
-    if (durationValidationChangedCartItems.length > 0) {
+    if (durationChangedCartItems.length > 0) {
       await Promise.all(
-        durationValidationChangedCartItems.map(async (item) => {
+        durationChangedCartItems.map(async (item) => {
           await tx
             .update(cartItemsTable)
             .set({
               durationInYears: item.newItem.durationInYears,
+              amountInUSDCents: item.newItem.amountInUSDCents,
             })
             .where(eq(cartItemsTable.id, item.newItem.id));
         }),
@@ -851,7 +780,7 @@ function generateSummaryOfCartItemsChanges(
     Awaited<ReturnType<typeof getChangesIfAnyToCartItems>>,
     | 'noLongerAvailableCartItems'
     | 'priceChangedCartItems'
-    | 'durationValidationChangedCartItems'
+    | 'durationChangedCartItems'
     | 'allExpiredRenewalCartItems'
     | 'maxRegistrationReachedRenewalItems'
     | 'areThereAnyChanges'
@@ -860,7 +789,7 @@ function generateSummaryOfCartItemsChanges(
   const {
     noLongerAvailableCartItems,
     priceChangedCartItems,
-    durationValidationChangedCartItems,
+    durationChangedCartItems,
     allExpiredRenewalCartItems,
     maxRegistrationReachedRenewalItems,
     areThereAnyChanges,
@@ -905,25 +834,213 @@ function generateSummaryOfCartItemsChanges(
       }
     });
   }
-  if (durationValidationChangedCartItems.length > 0) {
-    const groupByDurationValidationChangedCartItems = groupBy(
+  if (durationChangedCartItems.length > 0) {
+    const groupByDurationChangedCartItems = groupBy(
       (item: { originalItem: CartItemSelect; newItem: CartItemSelect }) =>
         `${item.originalItem.durationInYears}-${item.newItem.durationInYears}`,
-      durationValidationChangedCartItems,
+      durationChangedCartItems,
     );
-    Object.entries(groupByDurationValidationChangedCartItems).forEach(
-      ([_key, items]) => {
-        if (items && items.length > 0) {
-          const fromDurationInYears = items[0].originalItem.durationInYears;
-          const toDurationInYears = items[0].newItem.durationInYears;
-          if (fromDurationInYears != null && toDurationInYears != null) {
-            summary.push(
-              `Duration has changed from ${fromDurationInYears} years to ${toDurationInYears} years for these domains: ${items.map((item) => item.originalItem.normalizedDomainName).join(', ')}`,
-            );
-          }
+    Object.entries(groupByDurationChangedCartItems).forEach(([_key, items]) => {
+      if (items && items.length > 0) {
+        const fromDurationInYears = items[0].originalItem.durationInYears;
+        const toDurationInYears = items[0].newItem.durationInYears;
+        if (fromDurationInYears != null && toDurationInYears != null) {
+          summary.push(
+            `Duration has changed from ${fromDurationInYears} years to ${toDurationInYears} years for these domains: ${items.map((item) => item.originalItem.normalizedDomainName).join(', ')}`,
+          );
         }
-      },
-    );
+      }
+    });
   }
   return summary;
+}
+
+function determineDurationLimitsForRenewItems(
+  expirationTime: Date,
+  domainPricing: { durationValidationInYears: { min: number; max: number } },
+) {
+  const { max, min } = domainPricing.durationValidationInYears;
+  const currentDate = new Date();
+
+  const activeRegistrationYears = Math.round(
+    differenceInMonths(expirationTime, currentDate) / 12,
+  );
+
+  // Calculate maximum additional years we can add without exceeding the max
+  const maxAdditionalYears = Math.max(0, max - activeRegistrationYears);
+
+  // If we can't add any more years, this domain can't be renewed further
+  if (maxAdditionalYears <= 0) {
+    // Skip processing this item - it will be filtered out as unavailable
+  }
+
+  const minimumPossibleRenewalYears = Math.min(min, maxAdditionalYears);
+
+  return {
+    min: minimumPossibleRenewalYears,
+    max: maxAdditionalYears,
+  };
+}
+
+async function getDomainsExpirationDatesMap(
+  domains: NamefiNormalizedDomain[],
+): Promise<Map<NamefiNormalizedDomain, Date>> {
+  if (isNotNil(domains) && isNotEmpty(domains)) {
+    const domainDetailsResults = await Promise.allSettled(
+      domains.map(async (domainName) => {
+        const domainDetails = await sldRegistrar.getDomainDetails(
+          toPunycodeDomainName(domainName),
+        );
+        return {
+          domain: domainName,
+          expirationTime: domainDetails.expirationTime,
+        };
+      }),
+    );
+
+    const rejectedResults = domainDetailsResults.filter(
+      (result) => result.status === 'rejected',
+    );
+    if (rejectedResults.length > 0) {
+      logger.fatal(
+        { rejectedResults, context: 'getDomainsExpirationDatesMap' },
+        'Error fetching domain details for domains',
+      );
+    }
+
+    return new Map(
+      domainDetailsResults
+        .filter((result) => result.status === 'fulfilled')
+        .map((result) => [
+          result.value.domain,
+          new Date(result.value.expirationTime),
+        ]),
+    );
+  }
+  return new Map();
+}
+
+function _prepareCartItemsWithChangesReflected(
+  stillAvailableCartItems: CartItemSelect[],
+  domainPricingByName: Record<NamefiNormalizedDomain, DomainAvailabilityInfo>,
+  renewCartItemsExpirationDatesMap: Map<NamefiNormalizedDomain, Date>,
+) {
+  const changes: CartItemChange[] = stillAvailableCartItems.map(
+    (originalItem) => {
+      const { pricingDetails, durationValidationInYears } =
+        domainPricingByName[originalItem.normalizedDomainName];
+
+      if (!pricingDetails) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: `Pricing details unavailable for domain: ${originalItem.normalizedDomainName}`,
+        });
+      }
+      if (!durationValidationInYears) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: `Missing duration validation data for domain: ${originalItem.normalizedDomainName}`,
+        });
+      }
+
+      const chargeAmountInUsd = computeChargesInUsdFromDomainAvailabilityInfo(
+        { pricingDetails },
+        originalItem.durationInYears,
+        originalItem.type,
+      );
+      let newAmountInUsdCents = usdToCents(chargeAmountInUsd);
+
+      let { min, max } = durationValidationInYears;
+
+      // For RENEW items, apply special duration validation based on expiration date
+      if (originalItem.type === itemTypeSchema.Values.RENEW) {
+        const expirationTime = renewCartItemsExpirationDatesMap.get(
+          originalItem.normalizedDomainName,
+        );
+        if (!expirationTime) {
+          logger.error(
+            `Can't determine expiration time for domain: ${originalItem.normalizedDomainName}, which is RENEW item in stillAvailableCartItems`,
+          );
+          throw new TRPCError({
+            code: 'INTERNAL_SERVER_ERROR',
+            message: `Can't determine expiration time for domain: ${originalItem.normalizedDomainName}, which is RENEW item in stillAvailableCartItems`,
+            cause:
+              'Domain, No Longer Available for Renewal ended up in stillAvailable',
+          });
+        }
+
+        const { min: _min, max: _max } = determineDurationLimitsForRenewItems(
+          expirationTime,
+          { durationValidationInYears },
+        );
+
+        // If we can't add any more years, this domain can't be renewed further
+        if (_max <= 0 || _min <= 0) {
+          throw new TRPCError({
+            code: 'INTERNAL_SERVER_ERROR',
+            message: `Domain ${originalItem.normalizedDomainName} cannot be renewed further`,
+            cause:
+              'Domain, No Longer Available for Renewal ended up in stillAvailable',
+          });
+        }
+        min = _min;
+        max = _max;
+      }
+
+      let newDurationInYears = originalItem.durationInYears;
+      if (newDurationInYears < min || newDurationInYears > max) {
+        newDurationInYears = Math.min(Math.max(newDurationInYears, min), max);
+
+        // Recalculate amount with corrected duration
+        const correctedChargeAmountInUsd =
+          computeChargesInUsdFromDomainAvailabilityInfo(
+            { pricingDetails },
+            newDurationInYears,
+            originalItem.type,
+          );
+        newAmountInUsdCents = usdToCents(correctedChargeAmountInUsd);
+
+        return {
+          changeType: 'durationChanged',
+          originalItem,
+          newItem: {
+            ...originalItem,
+            durationInYears: newDurationInYears,
+            amountInUSDCents: newAmountInUsdCents,
+          },
+        } satisfies CartItemChange;
+      }
+
+      if (newAmountInUsdCents !== originalItem.amountInUSDCents) {
+        return {
+          changeType: 'priceChanged',
+          originalItem,
+          newItem: {
+            ...originalItem,
+            amountInUSDCents: newAmountInUsdCents,
+            durationInYears: newDurationInYears,
+          },
+        } satisfies CartItemChange;
+      }
+      return {
+        changeType: 'noChange',
+        originalItem,
+        newItem: {
+          ...originalItem,
+          durationInYears: newDurationInYears,
+          amountInUSDCents: newAmountInUsdCents,
+        },
+      };
+    },
+  );
+
+  return {
+    cartItemsWithChangesReflected: changes.map((change) => change.newItem),
+    priceChangedCartItems: changes.filter(
+      (change) => change.changeType === 'priceChanged',
+    ),
+    durationChangedCartItems: changes.filter(
+      (change) => change.changeType === 'durationChanged',
+    ),
+  };
 }
