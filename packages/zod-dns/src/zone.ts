@@ -9,6 +9,21 @@ import { z } from 'zod';
 import { nameRegex } from './name';
 import { recordSchema } from './record';
 
+// Helper function to group array items by a key function
+function groupBy<T, K extends string | number | symbol>(
+  array: T[],
+  keyFn: (item: T) => K,
+): Map<K, T[]> {
+  const groups = new Map<K, T[]>();
+  for (const item of array) {
+    const key = keyFn(item);
+    const group = groups.get(key) || [];
+    group.push(item);
+    groups.set(key, group);
+  }
+  return groups;
+}
+
 const zoneBasicSchema = z
   .object({
     // zoneName is the name of the zone, it is the name of the apex record
@@ -58,17 +73,15 @@ export const zoneSchema = zoneBasicSchema
   // Check that there is at most one CNAME record per name
   .refine(
     (data) => {
-      const cnameRecords = data.records.filter(
-        (record) => record.type === 'CNAME',
-      );
-      const cnameNames = new Set();
-      return cnameRecords.every((cnameRecord) => {
-        if (cnameNames.has(cnameRecord.name)) {
+      const recordsByName = groupBy(data.records, (record) => record.name);
+
+      for (const [, records] of recordsByName) {
+        const cnameCount = records.filter((r) => r.type === 'CNAME').length;
+        if (cnameCount > 1) {
           return false;
         }
-        cnameNames.add(cnameRecord.name);
-        return true;
-      });
+      }
+      return true;
     },
     {
       message:
@@ -84,21 +97,87 @@ export const zoneSchema = zoneBasicSchema
    */
   .refine(
     (data) => {
-      const cnameRecords = data.records.filter(
-        (record) => record.type === 'CNAME',
-      );
-      const otherRecords = data.records.filter(
-        (record) => record.type !== 'CNAME',
-      );
-      return cnameRecords.every((cnameRecord) => {
-        return otherRecords.every(
-          (otherRecord) => otherRecord.name !== cnameRecord.name,
-        );
-      });
+      const recordsByName = groupBy(data.records, (record) => record.name);
+
+      for (const [, records] of recordsByName) {
+        const typeSet = new Set(records.map((r) => r.type));
+        if (typeSet.has('CNAME') && typeSet.size > 1) {
+          return false;
+        }
+      }
+      return true;
     },
     {
       message:
         'If a CNAME record exists for a name, no other record type may use that name. Please remove conflicting records.',
+    },
+  )
+  // Check that SOA and NS records are not present at the apex (@ or '')
+  .refine(
+    (data) => {
+      const apexRecords = data.records.filter(
+        (record) => record.name === '@' || record.name === '',
+      );
+      return apexRecords.every(
+        (record) => record.type !== 'SOA' && record.type !== 'NS',
+      );
+    },
+    {
+      message:
+        'SOA and NS records are not allowed at the zone apex (@ or empty name). These records are managed by the DNS provider.',
+    },
+  )
+  // Check that no other records exist for names that have NS records
+  .refine(
+    (data) => {
+      const recordsByName = groupBy(data.records, (record) => record.name);
+
+      for (const [, records] of recordsByName) {
+        const typeSet = new Set(records.map((r) => r.type));
+        if (typeSet.has('NS') && typeSet.size > 1) {
+          return false;
+        }
+      }
+      return true;
+    },
+    {
+      message:
+        'If NS records exist for a name, no other record types may use that name. Please remove conflicting records.',
+    },
+  )
+  // Check that no sub-records exist when parent has NS records
+  .refine(
+    (data) => {
+      const normalizedRecords = data.records.map((record) => ({
+        ...record,
+        name: record.name === '@' ? '' : record.name,
+      }));
+      // Get all NS record names for efficient lookup
+      const nsNames = new Set(
+        normalizedRecords
+          .filter((record) => record.type === 'NS')
+          .map((record) => record.name),
+      );
+
+      // Check each record to see if it's a subdomain of any NS record
+      for (const record of normalizedRecords) {
+        // Skip if this record is itself an NS record
+        if (record.type === 'NS') continue;
+
+        // Check if this record is a subdomain of any NS record
+        for (const nsName of nsNames) {
+          // If NS is not at apex, check if record is a subdomain
+          if (record.name !== '' && record.name.endsWith(`.${nsName}`)) {
+            return false;
+          }
+        }
+      }
+
+      return true;
+    },
+    {
+      message:
+        'Records cannot be created for subdomains when a parent domain has NS records. NS records indicate delegation to another nameserver.',
     },
   );
 

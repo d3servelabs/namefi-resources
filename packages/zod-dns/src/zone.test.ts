@@ -1,11 +1,14 @@
 import { describe, expect, it } from 'vitest';
 import { zoneSchema } from './zone';
 import {
+  apexSoaNsTestCases,
   cnameConflictTestCases,
   duplicateRecordsTestCases,
   invalidRecordNameTestCases,
   invalidZoneNameTestCases,
   multipleCnameTestCases,
+  nsConflictTestCases,
+  nsSubdomainTestCases,
   validZoneTestCases,
 } from './zone.testing';
 
@@ -14,9 +17,6 @@ describe('DNS Zone Validation', () => {
     for (const testCase of validZoneTestCases) {
       it(`should validate ${testCase.description}`, () => {
         const result = zoneSchema.safeParse(testCase);
-        if (!result.success) {
-          console.error('Validation failed with error:', result.error);
-        }
         expect(result.success).toBe(true);
       });
     }
@@ -90,6 +90,60 @@ describe('DNS Zone Validation', () => {
                 'If a CNAME record exists for a name, no other record type may use that name. Please remove conflicting records.',
           );
           expect(hasConflictError).toBe(true);
+        }
+      });
+    }
+  });
+
+  describe('Apex SOA/NS records check', () => {
+    for (const testCase of apexSoaNsTestCases) {
+      it(`should not validate ${testCase.description}`, () => {
+        const result = zoneSchema.safeParse(testCase);
+        expect(result.success).toBe(false);
+        if (!result.success) {
+          const hasError = result.error.issues.some(
+            (issue) =>
+              issue.code === 'custom' &&
+              issue.message ===
+                'SOA and NS records are not allowed at the zone apex (@ or empty name). These records are managed by the DNS provider.',
+          );
+          expect(hasError).toBe(true);
+        }
+      });
+    }
+  });
+
+  describe('NS conflict check', () => {
+    for (const testCase of nsConflictTestCases) {
+      it(`should not validate ${testCase.description}`, () => {
+        const result = zoneSchema.safeParse(testCase);
+        expect(result.success).toBe(false);
+        if (!result.success) {
+          const hasError = result.error.issues.some(
+            (issue) =>
+              issue.code === 'custom' &&
+              issue.message ===
+                'If NS records exist for a name, no other record types may use that name. Please remove conflicting records.',
+          );
+          expect(hasError).toBe(true);
+        }
+      });
+    }
+  });
+
+  describe('NS subdomain check', () => {
+    for (const testCase of nsSubdomainTestCases) {
+      it(`should not validate ${testCase.description}`, () => {
+        const result = zoneSchema.safeParse(testCase);
+        expect(result.success).toBe(false);
+        if (!result.success) {
+          const hasError = result.error.issues.some(
+            (issue) =>
+              issue.code === 'custom' &&
+              issue.message ===
+                'Records cannot be created for subdomains when a parent domain has NS records. NS records indicate delegation to another nameserver.',
+          );
+          expect(hasError).toBe(true);
         }
       });
     }
