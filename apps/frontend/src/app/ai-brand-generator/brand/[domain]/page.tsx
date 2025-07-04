@@ -1,8 +1,6 @@
 'use client';
 
-import { LogoTab } from '@/components/ai-generation/logo-tab';
-import { MarketingTab } from '@/components/ai-generation/marketing-tab';
-import { TabSelector } from '@/components/ai-generation/tab-selector';
+import { AITabs } from '@/components/ai-generation/ai-tabs';
 import { AuthRequired } from '@/components/auth-required';
 import { EmptyPlaceholder } from '@/components/empty-placeholder';
 import { Button } from '@/components/ui/shadcn/button';
@@ -13,7 +11,7 @@ import { useTRPC } from '@/utils/trpc';
 import { useQuery } from '@tanstack/react-query';
 import { ArrowLeft, Sparkles } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { use, useState } from 'react';
+import { use } from 'react';
 
 interface BrandDetailPageProps {
   params: Promise<{ domain: string }>;
@@ -119,7 +117,6 @@ const EmptyGenerationsPlaceholder = ({
 
 export default function BrandDetailPage({ params }: BrandDetailPageProps) {
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState<'logo' | 'marketing'>('logo');
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
   const trpc = useTRPC();
 
@@ -222,23 +219,19 @@ export default function BrandDetailPage({ params }: BrandDetailPageProps) {
 
       {/* Tab Navigation */}
       <div className="max-w-4xl mx-auto">
-        <TabSelector activeTab={activeTab} onTabChange={setActiveTab} />
-
-        {/* Tab Content */}
-        {activeTab === 'logo' ? (
-          <LogoTab
-            existingGenerations={mappedLogoGenerations}
-            brandDomain={domain}
-            onGenerationUpdate={handleGenerationComplete}
-          />
-        ) : (
-          <MarketingTab
-            existingGenerations={mappedMarketingGenerations}
-            brandDomain={domain}
-            onGenerationUpdate={handleGenerationComplete}
-            availableLogos={mappedLogoGenerations}
-          />
-        )}
+        <AITabs
+          onGenerationUpdate={handleGenerationComplete}
+          logoTabProps={{
+            existingGenerations: mappedLogoGenerations,
+            brandDomain: domain,
+          }}
+          posterTabProps={{
+            existingGenerations: mappedMarketingGenerations,
+            brandDomain: domain,
+            availableLogos: mappedLogoGenerations,
+          }}
+          tabSelectorClassName="max-w-md mx-auto"
+        />
       </div>
     </div>
   );

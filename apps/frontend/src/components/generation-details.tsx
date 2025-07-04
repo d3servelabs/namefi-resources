@@ -212,8 +212,7 @@ export function GenerationDetailsClient({
       <div className="flex justify-between items-center mb-6">
         <div>
           <h1 className="text-2xl font-bold">
-            {generation.type === 'logo' ? 'Logo' : 'Marketing Image'} for{' '}
-            {brandName}
+            {generation.type === 'logo' ? 'Logo' : 'Poster'} for {brandName}
           </h1>
           <p className="text-muted-foreground mt-1">{domain}</p>
         </div>

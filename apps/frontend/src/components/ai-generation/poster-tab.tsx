@@ -3,59 +3,46 @@ import { useTRPC } from '@/utils/trpc';
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { type GeneratedItem, ImageGrid } from './image-grid';
-import { MarketingImageGenerator } from './marketing-image-generator';
+import { PosterGenerator } from './poster-generator';
 
-interface MarketingTabProps {
+interface PosterTabProps {
   existingGenerations?: Generation[];
   brandDomain?: string;
   onGenerationUpdate?: () => void; // Callback to refresh generations
   availableLogos?: Generation[]; // Available logo generations for the brand
 }
 
-export function MarketingTab({
+export function PosterTab({
   existingGenerations = [],
   brandDomain,
   onGenerationUpdate,
   availableLogos = [],
-}: MarketingTabProps) {
-  const [lastMarketingPrompt, setLastMarketingPrompt] = useState<{
-    domain: string;
-    description?: string;
-    selectedLogoId?: string;
-  } | null>(null);
+}: PosterTabProps) {
+  const [error, setError] = useState<string | null>(null);
 
   const trpc = useTRPC();
 
-  const generateMarketingImageMutation = useMutation(
-    trpc.ai.generateMarketingImage.mutationOptions({
-      onSuccess: (data, variables) => {
+  const generatePosterMutation = useMutation(
+    trpc.ai.generatePoster.mutationOptions({
+      onSuccess: (data) => {
         if (data.output) {
-          // Create metadata object with only defined values
-          const metadata: {
-            description?: string;
-            basedOnLogoId?: string;
-          } = {};
-
-          if (variables.description) {
-            metadata.description = variables.description;
-          }
-          if (lastMarketingPrompt?.selectedLogoId) {
-            metadata.basedOnLogoId = lastMarketingPrompt.selectedLogoId;
-          }
-
-          // Refresh the generations list
           onGenerationUpdate?.();
         }
+        setError(null);
+      },
+      onError: (error) => {
+        setError(error.message || 'An error occurred');
+        console.error('Error generating marketing image:', error);
       },
     }),
   );
 
-  const handleGenerateMarketingImages = (
+  const handleGeneratePoster = (
     domain: string,
     description?: string,
     selectedLogoId?: string,
   ) => {
-    setLastMarketingPrompt({ domain, description, selectedLogoId });
+    setError(null);
 
     const requestBody: {
       domain: string;
@@ -71,17 +58,7 @@ export function MarketingTab({
       requestBody.referenceLogoGenerationId = selectedLogoId;
     }
 
-    generateMarketingImageMutation.mutate(requestBody);
-  };
-
-  const handleGenerateAnotherMarketingImage = () => {
-    if (lastMarketingPrompt) {
-      handleGenerateMarketingImages(
-        lastMarketingPrompt.domain,
-        lastMarketingPrompt.description,
-        lastMarketingPrompt.selectedLogoId,
-      );
-    }
+    generatePosterMutation.mutate(requestBody);
   };
 
   // Convert existing generations to GeneratedItem format
@@ -116,24 +93,21 @@ export function MarketingTab({
 
   return (
     <>
-      {generateMarketingImageMutation.error && (
+      {error && (
         <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700">
-          {generateMarketingImageMutation.error.message}
+          {error}
         </div>
       )}
-      <MarketingImageGenerator
-        onGenerate={handleGenerateMarketingImages}
-        isLoading={generateMarketingImageMutation.isPending}
+      <PosterGenerator
+        onGenerate={handleGeneratePoster}
+        isLoading={generatePosterMutation.isPending}
         fixedDomain={brandDomain}
         availableLogos={availableLogos}
       />
       <ImageGrid
         items={allItems}
         title="Generated Posters"
-        isLoading={generateMarketingImageMutation.isPending}
-        onGenerateAnother={
-          lastMarketingPrompt ? handleGenerateAnotherMarketingImage : undefined
-        }
+        isLoading={generatePosterMutation.isPending}
         brandDomain={brandDomain}
       />
     </>

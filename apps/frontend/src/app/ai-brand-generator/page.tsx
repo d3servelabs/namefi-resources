@@ -1,8 +1,6 @@
 'use client';
 
-import { LogoTab } from '@/components/ai-generation/logo-tab';
-import { MarketingTab } from '@/components/ai-generation/marketing-tab';
-import { TabSelector } from '@/components/ai-generation/tab-selector';
+import { AITabs } from '@/components/ai-generation/ai-tabs';
 import { AuthRequired } from '@/components/auth-required';
 import { EmptyPlaceholder } from '@/components/empty-placeholder';
 import {
@@ -17,7 +15,7 @@ import { useTRPC } from '@/utils/trpc';
 import { useQuery } from '@tanstack/react-query';
 import { Sparkles } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import Image from 'next/image';
 
 const LoadingSkeletons = () => (
   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -66,7 +64,6 @@ const EmptyBrandsPlaceholder = () => (
 
 export default function AIBrandGeneratorPage() {
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState<'logo' | 'marketing'>('logo');
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
   const trpc = useTRPC();
 
@@ -99,24 +96,26 @@ export default function AIBrandGeneratorPage() {
 
   return (
     <div className="container max-w-4xl mx-auto py-8 px-8">
-      <div className="flex justify-between items-center mb-6">
-        <div>
-          <h2 className="text-2xl font-bold">AI Brand Generator</h2>
-          <p className="text-muted-foreground mt-1">
-            Create custom logos and posters for your brand
-          </p>
-        </div>
+      <div className="flex flex-col justify-center items-center mb-14">
+        <Image
+          src="/powered-by-namefi-jain.svg"
+          alt="Powered by Namefi"
+          className="mb-4"
+          width={141}
+          height={22}
+        />
+        <h2 className="text-2xl font-bold">AI Brand Generator</h2>
+        <p className="text-muted-foreground mt-2">
+          Create custom logos and posters for your brand
+        </p>
       </div>
 
       {/* Generation UI */}
       <div className="mx-auto mb-12">
-        <TabSelector activeTab={activeTab} onTabChange={setActiveTab} />
-
-        {activeTab === 'logo' ? (
-          <LogoTab onGenerationUpdate={handleGenerationComplete} />
-        ) : (
-          <MarketingTab onGenerationUpdate={handleGenerationComplete} />
-        )}
+        <AITabs
+          onGenerationUpdate={handleGenerationComplete}
+          tabSelectorClassName="max-w-md mx-auto"
+        />
       </div>
 
       {/* Existing Domains */}

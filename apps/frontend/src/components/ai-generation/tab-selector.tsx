@@ -7,11 +7,18 @@ import { Palette, Sparkles } from 'lucide-react';
 interface TabSelectorProps {
   activeTab: 'logo' | 'marketing';
   onTabChange: (tab: 'logo' | 'marketing') => void;
+  className?: string;
 }
 
-export function TabSelector({ activeTab, onTabChange }: TabSelectorProps) {
+export function TabSelector({
+  activeTab,
+  onTabChange,
+  className,
+}: TabSelectorProps) {
   return (
-    <div className="flex space-x-1 rounded-lg bg-muted p-1 mb-6">
+    <div
+      className={cn('flex space-x-1 rounded-lg bg-muted p-1 mb-6', className)}
+    >
       <Button
         variant={activeTab === 'logo' ? 'default' : 'ghost'}
         size="sm"

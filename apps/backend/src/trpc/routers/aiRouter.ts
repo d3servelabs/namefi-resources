@@ -126,7 +126,7 @@ export const aiRouter = createTRPCRouter({
       }
     }),
 
-  generateMarketingImage: protectedProcedure
+  generatePoster: protectedProcedure
     .input(generateMarketingImageInputSchema)
     .mutation(async ({ input, ctx }) => {
       try {
@@ -209,7 +209,7 @@ export const aiRouter = createTRPCRouter({
           url: publicUrl,
         };
       } catch (error) {
-        console.error('Marketing image generation error:', error);
+        console.error('Poster generation error:', error);
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message:
