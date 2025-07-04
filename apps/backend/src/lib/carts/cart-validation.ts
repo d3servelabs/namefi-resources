@@ -40,10 +40,13 @@ type CartItemChange = {
 };
 
 /**
- * Returns the changes if any to the cart items
- * @param userId - The user id
- * @param cartItemIds - The cart item ids
- * @returns The changes if any to the cart items
+ * Analyzes cart items to determine if there are any changes in availability, pricing, or duration.
+ * This function validates all cart items against current domain availability and pricing information.
+ *
+ * @param userId - The unique identifier of the user whose cart items to analyze
+ * @param cartItemIds - Optional array of specific cart item IDs to analyze. If not provided, all user's cart items are analyzed
+ * @returns Promise resolving to an object containing categorized changes and availability information
+ * @throws {TRPCError} When user is not found (NOT_FOUND)
  */
 export async function getChangesIfAnyToCartItems(
   userId: string,
@@ -111,10 +114,13 @@ export async function getChangesIfAnyToCartItems(
 }
 
 /**
- * Returns the changes if any to the cart items
- * @param user - The user
- * @param cartItems - The cart items
- * @returns The changes if any to the cart items
+ * Determines changes in cart items by comparing current state with domain availability and pricing data.
+ * This is an internal function that processes grouped cart items and categorizes them based on their availability status.
+ *
+ * @param cartItemsGroupedByType - Cart items grouped by their type (REGISTER, IMPORT, RENEW)
+ * @param domainPricingByName - Domain availability and pricing information indexed by normalized domain name
+ * @param renewCartItemsExpirationDatesMap - Map of domain names to their expiration dates for renewal validation
+ * @returns Object containing categorized cart items and change information
  */
 function _determineChangesIfAnyToCartItems(
   cartItemsGroupedByType: CartItemsGroupedByType,
@@ -190,6 +196,15 @@ function _determineChangesIfAnyToCartItems(
   };
 }
 
+/**
+ * Analyzes renewal cart items to determine their availability status and categorizes them accordingly.
+ * This function checks for expired domains, domains at maximum registration period, and validates renewal eligibility.
+ *
+ * @param currentRenewCartItems - Array of renewal cart items to analyze
+ * @param domainAvailabilitiesByName - Domain availability information indexed by normalized domain name
+ * @param renewCartItemsExpirationDatesMap - Map of domain names to their expiration dates
+ * @returns Object containing categorized renewal cart items (available, unavailable, expired, max registration reached)
+ */
 function _getAvailabilityChangesInRenewCartItems(
   currentRenewCartItems: CartItemSelect[],
   domainAvailabilitiesByName: Record<
@@ -248,6 +263,14 @@ function _getAvailabilityChangesInRenewCartItems(
   };
 }
 
+/**
+ * Analyzes register cart items to determine their availability status.
+ * This function checks if domains are still available for registration.
+ *
+ * @param currentRegisterCartItems - Array of registration cart items to analyze
+ * @param domainPricingByName - Domain availability and pricing information indexed by normalized domain name
+ * @returns Object containing categorized registration cart items (available vs unavailable)
+ */
 function _getAvailabilityChangesInRegisterCartItems(
   currentRegisterCartItems: CartItemSelect[],
   domainPricingByName: Record<NamefiNormalizedDomain, DomainAvailabilityInfo>,
@@ -265,6 +288,14 @@ function _getAvailabilityChangesInRegisterCartItems(
   };
 }
 
+/**
+ * Analyzes import cart items to determine their availability status.
+ * This function checks if domains are still importable based on their current state.
+ *
+ * @param currentImportCartItems - Array of import cart items to analyze
+ * @param domainPricingByName - Domain availability and pricing information indexed by normalized domain name
+ * @returns Object containing categorized import cart items (available vs unavailable)
+ */
 function _getAvailabilityChangesInImportCartItems(
   currentImportCartItems: CartItemSelect[],
   domainPricingByName: Record<NamefiNormalizedDomain, DomainAvailabilityInfo>,
@@ -285,10 +316,17 @@ function _getAvailabilityChangesInImportCartItems(
 }
 
 /**
- * Validates the cart items
- * @param userId - The user id
- * @param cartItemIds - The cart item ids
- * @returns The changes if any to the cart items
+ * Validates cart items and throws errors if any items are invalid or unavailable.
+ * This function performs comprehensive validation including availability, pricing, duration, and expiration checks.
+ *
+ * @param userId - The unique identifier of the user whose cart items to validate
+ * @param cartItemIds - Optional array of specific cart item IDs to validate. If not provided, all user's cart items are validated
+ * @returns Promise that resolves if all items are valid
+ * @throws {TRPCError} When domains are not available for purchase (BAD_REQUEST)
+ * @throws {TRPCError} When domains have expired and cannot be renewed (BAD_REQUEST)
+ * @throws {TRPCError} When domains are at maximum registration period (BAD_REQUEST)
+ * @throws {TRPCError} When pricing has changed for domains (BAD_REQUEST)
+ * @throws {TRPCError} When duration is invalid for domains (BAD_REQUEST)
  */
 export async function validateCartItems(
   userId: string,
@@ -363,9 +401,12 @@ export async function validateCartItems(
 }
 
 /**
- * Reflects the changes in the cart items
- * @param userId - The user id
- * @param cartItemIds - The cart item ids
+ * Reflects changes in cart items by updating or removing them from the database and returns a summary of changes.
+ * This function automatically handles price updates, duration adjustments, and removal of invalid items.
+ *
+ * @param userId - The unique identifier of the user whose cart items to update
+ * @param cartItemIds - Optional array of specific cart item IDs to process. If not provided, all user's cart items are processed
+ * @returns Promise resolving to a summary array of changes made, or undefined if no changes were needed
  */
 export async function reflectChangesInCartItemsIfAnyAndReturnSummary(
   userId: string,
@@ -455,9 +496,11 @@ export async function reflectChangesInCartItemsIfAnyAndReturnSummary(
 }
 
 /**
- * Generates a summary of the cart items changes
- * @param changes - The changes
- * @returns The summary
+ * Generates a human-readable summary of cart item changes.
+ * This function creates descriptive messages for various types of changes that occurred to cart items.
+ *
+ * @param changes - Object containing categorized cart item changes
+ * @returns Array of summary strings describing the changes, or empty array if no changes occurred
  */
 function _generateSummaryOfCartItemsChanges(
   changes: Pick<
@@ -539,6 +582,14 @@ function _generateSummaryOfCartItemsChanges(
   return summary;
 }
 
+/**
+ * Determines the minimum and maximum duration limits for renewal items based on current registration period.
+ * This function calculates how many additional years a domain can be renewed considering the maximum registration limit.
+ *
+ * @param expirationTime - The current expiration date of the domain
+ * @param domainPricing - Object containing duration validation rules (min/max years)
+ * @returns Object with minimum and maximum additional years that can be added to the domain
+ */
 function _determineDurationLimitsForRenewItems(
   expirationTime: Date,
   domainPricing: { durationValidationInYears: { min: number; max: number } },
@@ -561,6 +612,13 @@ function _determineDurationLimitsForRenewItems(
   };
 }
 
+/**
+ * Retrieves expiration dates for multiple domains from the registrar.
+ * This function fetches domain details and extracts expiration dates, handling failures gracefully.
+ *
+ * @param domains - Array of normalized domain names to fetch expiration dates for
+ * @returns Promise resolving to a Map of domain names to their expiration dates
+ */
 async function _getDomainsExpirationDatesMap(
   domains: NamefiNormalizedDomain[],
 ): Promise<Map<NamefiNormalizedDomain, Date>> {
@@ -600,6 +658,18 @@ async function _getDomainsExpirationDatesMap(
   return new Map();
 }
 
+/**
+ * Prepares cart items with updated pricing and duration information, identifying what changes need to be made.
+ * This function recalculates prices and validates durations for all still-available cart items.
+ *
+ * @param stillAvailableCartItems - Array of cart items that are still available for purchase
+ * @param domainPricingByName - Domain availability and pricing information indexed by normalized domain name
+ * @param renewCartItemsExpirationDatesMap - Map of domain names to their expiration dates for renewal validation
+ * @returns Object containing updated cart items and categorized changes (price changes, duration changes)
+ * @throws {TRPCError} When pricing details are unavailable for a domain (BAD_REQUEST)
+ * @throws {TRPCError} When duration validation data is missing (BAD_REQUEST)
+ * @throws {TRPCError} When a renewal item cannot be renewed further (INTERNAL_SERVER_ERROR)
+ */
 function _prepareCartItemsWithChangesReflected(
   stillAvailableCartItems: CartItemSelect[],
   domainPricingByName: Record<NamefiNormalizedDomain, DomainAvailabilityInfo>,
