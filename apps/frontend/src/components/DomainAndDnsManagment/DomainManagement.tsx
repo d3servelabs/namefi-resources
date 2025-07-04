@@ -33,6 +33,7 @@ import { DnsRecordsPanel } from './Panels/DNS/DnsRecordsPanel';
 import { DnssecPanel } from './Panels/DNSSEC/DnssecPanel';
 import { DomainConfigAndPrefs } from './Panels/DomainConfigAndPrefs/DomainConfigAndPrefs';
 import { NameserversPanel } from './Panels/Nameservers/NameserversPanel';
+import { useAuth } from '@/hooks/useAuth';
 export type DomainManagementProps = HTMLAttributes<HTMLDivElement> & {
   domain: string;
 };
@@ -45,6 +46,7 @@ export const DomainManagement: FC<DomainManagementProps> = ({
   const [currentTab, setCurrentTab] = useState('dns-records');
   const [showEmailModal, setShowEmailModal] = useState(false);
   const { hasEmail } = useEmailPrompt();
+  const { isLoading: isAuthLoading } = useAuth();
   const router = useRouter();
 
   const trpc = useTRPC();
@@ -77,12 +79,12 @@ export const DomainManagement: FC<DomainManagementProps> = ({
     newlyVisitedDomain: domain,
   });
 
-  // Show email modal immediately on page load if user doesn't have email
+  // Show email modal only after auth is loaded and user doesn't have email
   useEffect(() => {
-    if (!hasEmail) {
+    if (!isAuthLoading && !hasEmail) {
       setShowEmailModal(true);
     }
-  }, [hasEmail]);
+  }, [hasEmail, isAuthLoading]);
 
   const handleTabChange = (value: string) => {
     // If user doesn't have email, don't allow tab changes
