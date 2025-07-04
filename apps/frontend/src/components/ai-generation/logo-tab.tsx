@@ -1,7 +1,7 @@
 import type { Generation } from '@namefi-astra/ai/types';
 import { useTRPC } from '@/utils/trpc';
 import { useMutation } from '@tanstack/react-query';
-import { useState } from 'react';
+import { toast } from 'sonner';
 import { type GeneratedItem, ImageGrid } from './image-grid';
 import { LogoGenerator } from './logo-generator';
 
@@ -16,8 +16,6 @@ export function LogoTab({
   brandDomain,
   onGenerationUpdate,
 }: LogoTabProps) {
-  const [error, setError] = useState<string | null>(null);
-
   const trpc = useTRPC();
 
   const generateLogoMutation = useMutation(
@@ -26,10 +24,9 @@ export function LogoTab({
         if (data.output) {
           onGenerationUpdate?.();
         }
-        setError(null);
       },
       onError: (error) => {
-        setError(error.message || 'An error occurred');
+        toast.error(error.message || 'An error occurred generating logos');
         console.error('Error generating logo:', error);
       },
     }),
@@ -41,8 +38,6 @@ export function LogoTab({
     style: string,
     description?: string,
   ) => {
-    setError(null);
-
     const payload: {
       brandName: string;
       type: string;
@@ -76,11 +71,6 @@ export function LogoTab({
 
   return (
     <>
-      {error && (
-        <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700">
-          {error}
-        </div>
-      )}
       <LogoGenerator
         onGenerate={handleGenerateLogos}
         isLoading={generateLogoMutation.isPending}
@@ -89,8 +79,8 @@ export function LogoTab({
       <ImageGrid
         items={allItems}
         title="Generated Logos"
-        isLoading={generateLogoMutation.isPending}
         brandDomain={brandDomain}
+        isLoading={generateLogoMutation.isPending}
       />
     </>
   );

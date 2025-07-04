@@ -1,7 +1,7 @@
 import type { Generation } from '@namefi-astra/ai/types';
 import { useTRPC } from '@/utils/trpc';
 import { useMutation } from '@tanstack/react-query';
-import { useState } from 'react';
+import { toast } from 'sonner';
 import { type GeneratedItem, ImageGrid } from './image-grid';
 import { PosterGenerator } from './poster-generator';
 
@@ -18,8 +18,6 @@ export function PosterTab({
   onGenerationUpdate,
   availableLogos = [],
 }: PosterTabProps) {
-  const [error, setError] = useState<string | null>(null);
-
   const trpc = useTRPC();
 
   const generatePosterMutation = useMutation(
@@ -28,10 +26,9 @@ export function PosterTab({
         if (data.output) {
           onGenerationUpdate?.();
         }
-        setError(null);
       },
       onError: (error) => {
-        setError(error.message || 'An error occurred');
+        toast.error(error.message || 'An error occurred generating posters');
         console.error('Error generating marketing image:', error);
       },
     }),
@@ -42,8 +39,6 @@ export function PosterTab({
     description?: string,
     selectedLogoId?: string,
   ) => {
-    setError(null);
-
     const requestBody: {
       domain: string;
       description?: string;
@@ -93,11 +88,6 @@ export function PosterTab({
 
   return (
     <>
-      {error && (
-        <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700">
-          {error}
-        </div>
-      )}
       <PosterGenerator
         onGenerate={handleGeneratePoster}
         isLoading={generatePosterMutation.isPending}
