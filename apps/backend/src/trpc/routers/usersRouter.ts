@@ -7,7 +7,7 @@ import {
 import type { LinkedAccountWithMetadata } from '@privy-io/server-auth';
 import { TRPCError } from '@trpc/server';
 import { eq, sql } from 'drizzle-orm';
-import { isEmpty, isNil, isNotEmpty, isNotNil } from 'ramda';
+import { groupBy, isEmpty, isNil, isNotEmpty, isNotNil, pluck } from 'ramda';
 import { http, createPublicClient } from 'viem';
 import * as chains from 'viem/chains';
 import { z } from 'zod';
@@ -32,6 +32,15 @@ import {
   privyCustomMetadataToPrivyStorage,
   privyStorageToPrivyCustomMetadata,
 } from '../types';
+import { RDAP } from '@namefi-astra/registrars/lib/rdap-whois/rdap_client';
+import { WhoisClient as WHOIS } from '@namefi-astra/registrars/lib/rdap-whois/whois_client';
+import { sldRegistrar } from '#lib/namefi-registry';
+import { toPunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
+import { getDomainLevels } from '#lib/get-domain-levels';
+import { nftIdFromDomainName } from '#lib/nftHash';
+import pMap from 'p-map';
+import { logger } from '#lib/logger';
+import { fromUnixTime, isBefore, subHours } from 'date-fns';
 
 if (!secrets.ALCHEMY_API_KEY) {
   throw new Error('Cannot create Ethereum public client');
@@ -118,49 +127,48 @@ export const usersRouter = createTRPCRouter({
       return [];
     }
 
-    const nfts = await db.query.namefiNftTable.findMany({
-      where: (table, { inArray, and, ilike, gte }) =>
-        and(
-          inArray(
-            table.ownerAddress,
-            privyUserLinkedEthereumChecksumWalletAddresses,
+    const nfts = (
+      await db.query.namefiNftTable.findMany({
+        where: (table, { inArray, and, ilike, gte }) =>
+          and(
+            inArray(
+              table.ownerAddress,
+              privyUserLinkedEthereumChecksumWalletAddresses,
+            ),
+            thirdPartyOriginHostname
+              ? ilike(
+                  table.normalizedDomainName,
+                  `%.${thirdPartyOriginHostname}`,
+                )
+              : undefined,
+            ONLY_SHOW_SUBDOMAINS_FOR_CURRENT_USER
+              ? gte(
+                  sql`array_length(string_to_array(${table.normalizedDomainName}, '.'), 1)`,
+                  3,
+                )
+              : undefined,
           ),
-          thirdPartyOriginHostname
-            ? ilike(table.normalizedDomainName, `%.${thirdPartyOriginHostname}`)
-            : undefined,
-          ONLY_SHOW_SUBDOMAINS_FOR_CURRENT_USER
-            ? gte(
-                sql`array_length(string_to_array(${table.normalizedDomainName}, '.'), 1)`,
-                3,
-              )
-            : undefined,
-        ),
-    });
+      })
+    ).map((nft) => ({
+      ...nft,
+      tokenId: nftIdFromDomainName(nft.normalizedDomainName),
+    }));
 
     try {
-      const latestBlock = await viemBasePublicClient.getBlockNumber();
-      const tokenIdResults = await viemBasePublicClient.multicall({
-        contracts: nfts.map((nft) => ({
-          address: NAMEFI_NFT_CONTRACT_ADDRESS as `0x${string}`,
-          abi: NftAbi,
-          functionName: 'normalizedDomainNameToId',
-          args: [nft.normalizedDomainName],
-          blockNumber: BigInt(latestBlock),
-        })),
-      });
+      const expirationDates = await getDomainsExpirationDates(
+        pluck('normalizedDomainName', nfts),
+      );
 
-      const nftsWithTokenIds = nfts.map((nft, i) => {
-        const result = tokenIdResults[i];
-        const tokenId =
-          result.status === 'success' ? (result.result as string) : undefined;
-        return { ...nft, tokenId };
-      });
-
-      return nftsWithTokenIds;
+      return nfts.map((nft) => ({
+        ...nft,
+        expirationDate: expirationDates[nft.normalizedDomainName],
+      }));
     } catch (error) {
-      console.log('Failed to fetch tokenIds for getCurrentUserDomains:', error);
-      // Return NFTs without tokenIds if multicall fails
-      return nfts.map((nft) => ({ ...nft, tokenId: undefined }));
+      logger.error(
+        { context: 'getCurrentUserDomains', error },
+        'Failed to fetch expiration dates',
+      );
+      return nfts;
     }
   }),
 
@@ -407,3 +415,148 @@ export const usersRouter = createTRPCRouter({
     },
   ),
 });
+
+async function getDomainsExpirationDates(
+  normalizedDomainNames: NamefiNormalizedDomain[],
+): Promise<Record<string, Date | null>> {
+  const groupedDomainNames = groupBy((normalizedDomainName) => {
+    const domainLevels = getDomainLevels(normalizedDomainName);
+    if (domainLevels.levels.length === 2) {
+      return 'sld';
+    }
+    if (domainLevels.levels.length === 3) {
+      return '3ld';
+    }
+    return 'unknown'; // this should never happen but to satisfy typescript
+  }, normalizedDomainNames);
+
+  const sldDomainNames = groupedDomainNames.sld ?? [];
+  const _3ldDomainNames = groupedDomainNames['3ld'] ?? [];
+
+  const unknownDomainNames = groupedDomainNames.unknown ?? [];
+  if (isNotEmpty(unknownDomainNames)) {
+    logger.fatal(
+      { context: 'getDomainsExpirationDates', unknownDomainNames },
+      'Unknown domain levels',
+    );
+  }
+
+  const latestBlock = await viemBasePublicClient.getBlockNumber();
+
+  const [sldExpirationDates, _3ldNftsExpirationDates] = await Promise.all([
+    getSldExpirationDateForDomainList(sldDomainNames),
+    get3ldExpirationDateForDomainList(_3ldDomainNames, latestBlock),
+  ]);
+  return Object.fromEntries([
+    ...sldDomainNames.map((domainName, i) => [
+      domainName,
+      sldExpirationDates[i] ?? null,
+    ]),
+    ..._3ldDomainNames.map((domainName, i) => [
+      domainName,
+      _3ldNftsExpirationDates[i]?.expirationDate,
+    ]),
+    ...unknownDomainNames.map((domainName) => [domainName, null]),
+  ]);
+}
+
+async function get3ldExpirationDateForDomainList(
+  normalizedDomainNames: NamefiNormalizedDomain[],
+  latestBlock: bigint,
+) {
+  const tokenIds = normalizedDomainNames.map(nftIdFromDomainName);
+  const expirationDates = await viemBasePublicClient.multicall({
+    contracts: tokenIds.map((tokenId) => ({
+      address: NAMEFI_NFT_CONTRACT_ADDRESS as `0x${string}`,
+      abi: NftAbi,
+      functionName: 'getExpiration' as const,
+      args: [BigInt(tokenId)],
+      blockNumber: latestBlock,
+    })),
+  });
+
+  return expirationDates.map((result, i) => {
+    if (result.status === 'failure') {
+      return {
+        normalizedDomainName: normalizedDomainNames[i],
+        expirationDate: null,
+        tokenId: tokenIds[i].toString(),
+      };
+    }
+
+    return {
+      normalizedDomainName: normalizedDomainNames[i],
+      expirationDate: fromUnixTime(Number(result.result)),
+      tokenId: tokenIds[i].toString(),
+    };
+  });
+}
+
+async function getSldExpirationDateForDomainList(
+  normalizedDomainNames: NamefiNormalizedDomain[],
+) {
+  const indexedExpirationDates = await db.query.indexedDomainsTable.findMany({
+    where: (table, { inArray }) =>
+      inArray(table.normalizedDomainName, normalizedDomainNames),
+    columns: {
+      normalizedDomainName: true,
+      expirationTime: true,
+      lastIndexedAt: true,
+    },
+  });
+
+  const indexedExpirationDatesMap = new Map<
+    NamefiNormalizedDomain,
+    Date | null
+  >(
+    indexedExpirationDates
+      .filter(
+        (domain) => !isBefore(domain.lastIndexedAt, subHours(new Date(), 3)),
+      )
+      .map((domain) => [
+        domain.normalizedDomainName,
+        domain.expirationTime ? new Date(domain.expirationTime) : null,
+      ]),
+  );
+
+  const expirationDates = await pMap(
+    normalizedDomainNames,
+    (normalizedDomainName) => {
+      const indexedExpirationDate =
+        indexedExpirationDatesMap.get(normalizedDomainName);
+      if (indexedExpirationDate) {
+        return indexedExpirationDate;
+      }
+      return getLiveSldExpirationDate(normalizedDomainName);
+    },
+    { concurrency: 2 }, // 3 from trial run
+  );
+  return expirationDates;
+}
+
+async function getLiveSldExpirationDate(normalizedDomainName: string) {
+  let expirationDate: Date | null = null;
+
+  const rdapResponse = await resolve(RDAP.queryDomain(normalizedDomainName));
+  if (!rdapResponse.failed) {
+    expirationDate = RDAP.getExpiryDateFromRdapResponse(rdapResponse.result);
+  }
+
+  if (isNil(expirationDate)) {
+    const whoisResponse = await resolve(
+      WHOIS.queryDomain(normalizedDomainName),
+    );
+    if (!whoisResponse.failed) {
+      expirationDate = WHOIS.getExpiryDateFromWhoisResponse(
+        whoisResponse.result,
+      );
+    }
+  }
+  if (isNil(expirationDate)) {
+    const domainDetails = await sldRegistrar.getDomainDetails(
+      toPunycodeDomainName(normalizedDomainName),
+    );
+    expirationDate = domainDetails.expirationTime;
+  }
+  return expirationDate;
+}

@@ -19,9 +19,10 @@ export const NftAbi = parseAbi([
   'function unlock(uint256 tokenId, bytes calldata extra) external payable',
   'function unlockByName(string memory domainName) external',
   'function setServiceCreditContract(address addr) public',
+  'function getExpiration(uint256 tokenId) public view returns (uint256)',
+
   // Add Transfer event used for owner tracking
   'event Transfer(address indexed from, address indexed to, uint256 indexed tokenId)',
-  'function getExpiration(uint256 tokenId) public view returns (uint256)',
 ]);
 
 // Parse ABI for the NFSC contract
