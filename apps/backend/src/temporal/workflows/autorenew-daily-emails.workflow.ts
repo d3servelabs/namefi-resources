@@ -22,10 +22,18 @@ import {
 } from './charge-user-and-create-payment.workflow';
 import pMap from 'p-map';
 
-const { generalAlertNamefi, createAutoRenewOrder } = typedProxyActivities({
-  temporalEnum: TEMPORAL_ENUMS.DEFAULT,
-  options: shortRunningOpts,
+const { triggerUpdateDomainIndex } = typedProxyActivities({
+  temporalEnum: TEMPORAL_ENUMS.INDEXERS,
+  options: {
+    ...shortRunningOpts,
+  },
 });
+
+const { generalAlertNamefi, createAutoRenewOrder, criticalAlertNamefi } =
+  typedProxyActivities({
+    temporalEnum: TEMPORAL_ENUMS.DEFAULT,
+    options: shortRunningOpts,
+  });
 
 const { maybeGetUserEmail } = typedProxyActivities({
   temporalEnum: TEMPORAL_ENUMS.NOTIFY,
@@ -88,6 +96,7 @@ export async function dailyDomainsUpcomingRenewalsWorkflow({
     },
     { concurrency: 10 },
   );
+
   const successes = results.filter(({ status }) => status === 'fulfilled') as {
     status: 'fulfilled';
     userId: string;
@@ -101,14 +110,25 @@ export async function dailyDomainsUpcomingRenewalsWorkflow({
     error: Error;
   }[];
 
+  if (failures.length > 0 && !dryRun) {
+    await criticalAlertNamefi({
+      workflowInfo: workflow.workflowInfo(),
+      message: `Fail to notify and renew domains for ${failures.length} user`,
+      userIds: failures.map(({ userId }) => userId),
+      level: 'error',
+    });
+  }
+
   const report = {
-    willBeRenewed: successes.reduce(
-      (acc, { result }) => acc + ((result as any)?.count ?? 0),
-      0,
-    ),
     successes,
     failures,
   };
+
+  try {
+    await triggerUpdateDomainIndex();
+  } catch (error) {
+    workflow.log.error(`Error in triggerUpdateDomainIndex: ${error}`);
+  }
 
   return report;
 }
@@ -222,13 +242,20 @@ export async function notifyAndRenewDomainsForSingleUserWorkflow(
         chargeAmountInUsd: totalAmountInUsd,
       });
     }
-
-    throw workflow.ApplicationFailure.create({
-      message: `Fail to charge user(userId:${userId}) for ${totalAmountInUsd}$USD`,
-      nonRetryable: true,
-    });
     // stop for this user
+    return {
+      userId,
+      userEmail,
+      domainsToRenew: domainsThatShouldBeRenewed.map(
+        ({ normalizedDomainName }) => normalizedDomainName,
+      ),
+      domainToRenewCount: domainsThatShouldBeRenewed.length,
+      totalAmountInUsd,
+      paymentStatus: 'FAILED',
+      message: `Fail to charge user(userId:${userId}) for ${totalAmountInUsd}$USD`,
+    };
   }
+
   const results = await Promise.all(
     /*we are try catching here.*/
     domainsThatShouldBeRenewed.map(async (domain) => {
@@ -244,7 +271,10 @@ export async function notifyAndRenewDomainsForSingleUserWorkflow(
                 userId,
               },
             ],
-            workflowId: `extend-domain-${new Date().toISOString()}-${domain.normalizedDomainName}`,
+            workflowId: `extend-domain-${domain.normalizedDomainName}`,
+            workflowIdReusePolicy: 'ALLOW_DUPLICATE',
+            workflowIdConflictPolicy: 'FAIL',
+            parentClosePolicy: 'REQUEST_CANCEL',
           },
         );
         return { status: 'fulfilled', domain, result };
@@ -295,13 +325,14 @@ export async function notifyAndRenewDomainsForSingleUserWorkflow(
 
   const report = {
     userId,
-    successes,
     userEmail,
     failures,
-    refundAmountInUsd,
+    successes,
+    paymentStatus: 'SUCCEEDED',
     paymentMethodCharged: chargeResult.paymentType,
     paymentMethodIdentifier: '', // TODO: Add payment method identifier for stripe
     totalAmountInUsd,
+    refundAmountInUsd,
   };
 
   if (!userEmail) {
