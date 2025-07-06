@@ -545,6 +545,45 @@ export const aiGenerationTypeEnum = pgEnum('ai_generation_type', [
   'marketing',
 ] as const);
 
+/**
+ * Indexed domains table - stores a cached index of all domains from all registrars
+ * This table is populated by a Temporal workflow that calls listAllDomains on each registrar
+ */
+export const indexedDomainsTable = pgTable(
+  'indexed_domains',
+  {
+    ...randomUuid,
+    normalizedDomainName: text('normalized_domain_name')
+      .notNull()
+      .$type<NamefiNormalizedDomain>(),
+    registrarKey: text('registrar_key').notNull(),
+    expirationTime: timestamp('expiration_time').notNull(),
+    lastIndexedAt: timestamp('last_indexed_at').notNull().defaultNow(),
+    ...timestamps,
+  },
+  (table) => [
+    // Primary lookup indexes
+    index('indexed_domains_domain_name_idx').on(table.normalizedDomainName),
+    index('indexed_domains_registrar_key_idx').on(table.registrarKey),
+    index('indexed_domains_expiration_time_idx').on(table.expirationTime),
+
+    // Composite indexes for common queries
+    index('indexed_domains_registrar_domain_idx').on(
+      table.registrarKey,
+      table.normalizedDomainName,
+    ),
+
+    // Indexing metadata
+    index('indexed_domains_last_indexed_at_idx').on(table.lastIndexedAt),
+
+    // Unique constraint to prevent duplicates
+    unique('indexed_domains_registrar_domain_unique').on(
+      table.registrarKey,
+      table.normalizedDomainName,
+    ),
+  ],
+);
+
 export const aiGenerationsTable = pgTable(
   'ai_generations',
   {

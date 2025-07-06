@@ -1,19 +1,24 @@
+/**
+ * This file contains the schedule for the domain index update workflow.
+ * It is used to update the domain index by fetching all domains from registrars
+ * and inserting them into the database.
+ */
 import { ScheduleOverlapPolicy } from '@temporalio/client';
 import { temporalClient } from '../client';
 import { TEMPORAL_QUEUES } from '../shared';
-import { updateNamefiNftIndexWorkflow } from '../workflows/update-nft-index.workflow';
+import { updateDomainIndexWorkflow } from '../workflows/update-domain-index.workflow';
 
-const WORKFLOW_ID = 'update-namefi-nft-index';
-const workflowType = updateNamefiNftIndexWorkflow;
+const WORKFLOW_ID = 'update-domain-index';
+const workflowType = updateDomainIndexWorkflow;
 
 /**
- * Submit the schedule for the NFT index update workflow
+ * Submit the schedule for the domain index update workflow
  */
-export async function submitScheduleForUpdateNamefiNftIndex() {
+export async function submitScheduleForUpdateDomainIndex() {
   const schedule = await temporalClient.schedule.create({
-    scheduleId: 'update-namefi-nft-index-schedule',
+    scheduleId: 'update-domain-index-schedule',
     spec: {
-      cronExpressions: ['*/5 * * * *'], // every 5 minutes
+      cronExpressions: ['0 * * * *'], // every hour at minute 0
     },
     policies: {
       overlap: ScheduleOverlapPolicy.SKIP, // Critical for debouncing
@@ -31,9 +36,9 @@ export async function submitScheduleForUpdateNamefiNftIndex() {
 /**
  * Trigger the schedule manually
  */
-export async function triggerUpdateNamefiNftIndex() {
+export async function triggerUpdateDomainIndex() {
   const handle = temporalClient.schedule.getHandle(
-    'update-namefi-nft-index-schedule',
+    'update-domain-index-schedule',
   );
   await handle.trigger(ScheduleOverlapPolicy.BUFFER_ONE);
 }
@@ -41,9 +46,9 @@ export async function triggerUpdateNamefiNftIndex() {
 /**
  * Delete the schedule
  */
-export async function deleteScheduleForUpdateNamefiNftIndex() {
+export async function deleteScheduleForUpdateDomainIndex() {
   const schedule = await temporalClient.schedule.getHandle(
-    'update-namefi-nft-index-schedule',
+    'update-domain-index-schedule',
   );
   await schedule.delete();
 }

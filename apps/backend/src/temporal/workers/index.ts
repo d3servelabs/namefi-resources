@@ -22,6 +22,7 @@ import { createWorker } from './createWorker';
 import { logger } from '#lib/logger';
 import { db } from '@namefi-astra/db';
 import { config } from '#lib/env';
+import { IndexersActivities } from '../activities/indexers';
 
 export let WORKERS: Partial<Record<TEMPORAL_ENUMS, Worker>> | undefined;
 
@@ -66,9 +67,8 @@ export const ACTIVITIES = {
     getNftsForWallets,
   },
   [TEMPORAL_ENUMS.DOMAINS]: DomainsActivities,
-  [TEMPORAL_ENUMS.NOTIFY]: {
-    ...NotifyActivities,
-  },
+  [TEMPORAL_ENUMS.NOTIFY]: NotifyActivities,
+  [TEMPORAL_ENUMS.INDEXERS]: IndexersActivities,
 };
 export type ACTIVITIES = typeof ACTIVITIES;
 
@@ -96,6 +96,11 @@ export async function initWorkers() {
       activities: ACTIVITIES[TEMPORAL_ENUMS.NOTIFY],
       temporalEnum: TEMPORAL_ENUMS.NOTIFY,
       logLabel: TEMPORAL_ENUMS.NOTIFY,
+    }),
+    [TEMPORAL_ENUMS.INDEXERS]: await createWorker({
+      activities: ACTIVITIES[TEMPORAL_ENUMS.INDEXERS],
+      temporalEnum: TEMPORAL_ENUMS.INDEXERS,
+      logLabel: TEMPORAL_ENUMS.INDEXERS,
     }),
   };
 }
