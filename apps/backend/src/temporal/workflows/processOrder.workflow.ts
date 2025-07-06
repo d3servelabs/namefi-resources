@@ -19,6 +19,13 @@ import {
 import { processOrderItemWorkflow } from './processOrderItem.workflow';
 import { refundUserWorkflow } from './refund-user.workflow';
 
+const { triggerUpdateDomainIndex } = typedProxyActivities({
+  temporalEnum: TEMPORAL_ENUMS.INDEXERS,
+  options: {
+    ...shortRunningOpts,
+  },
+});
+
 export interface ProcessOrderWorkflowInput {
   orderId: string;
   paymentMetadata: ChargeUserWorkflowInput['metadata'];
@@ -167,6 +174,15 @@ export async function processOrderWorkflow(
     const succeededItems = orderDetails.items.filter(
       (_, index) => orderItemResults[index].status === 'fulfilled',
     );
+
+    // MARK: - trigger update domain index
+    try {
+      await triggerUpdateDomainIndex();
+    } catch (e) {
+      workflow.log.error(
+        `Failed to trigger update domain index for order ${input.orderId}. Error: ${e}`,
+      );
+    }
 
     try {
       if (succeededItems.length > 0) {
