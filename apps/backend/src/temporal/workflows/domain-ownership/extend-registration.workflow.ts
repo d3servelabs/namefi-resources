@@ -6,6 +6,7 @@ import type {
 import * as workflow from '@temporalio/workflow';
 import { addYears, differenceInYears, getUnixTime } from 'date-fns';
 import { typedProxyActivities } from '../../shared/workflow-helpers/typed-proxy-activities';
+import { catchAndAlertLocally } from '../../shared/workflow-helpers/catch-and-alert-locally';
 import { getDomainLevels } from '#lib/get-domain-levels';
 import {
   TEMPORAL_ENUMS,
@@ -33,6 +34,8 @@ export type ExtendDomainRegistrationWorkflowInput = {
   durationInYears: number;
   /** User ID */
   userId: string;
+  /** Whether to update the domain index after extension */
+  updateDomainIndex?: boolean;
 };
 
 const { submitOperationToExtendRegistrationToRegistrar, getEppExpirationTime } =
@@ -43,6 +46,15 @@ const { submitOperationToExtendRegistrationToRegistrar, getEppExpirationTime } =
       retry: {
         maximumAttempts: 1,
       },
+    },
+  });
+
+const { updateDomainIndexRows, triggerUpdateDomainIndex } =
+  typedProxyActivities({
+    temporalEnum: TEMPORAL_ENUMS.INDEXERS,
+    options: {
+      ...shortRunningOpts,
+      startToCloseTimeout: '2m',
     },
   });
 
@@ -90,6 +102,7 @@ export async function extendDomainRegistrationWorkflow({
   normalizedDomainName,
   ownerAddress,
   userId,
+  updateDomainIndex = true,
 }: ExtendDomainRegistrationWorkflowInput): Promise<ExtendDomainRegistrationWorkflowOutput> {
   //#region Activities Defs
   const { getDomainChain, getPoweredByNamefi3PDomains } = typedProxyActivities({
@@ -105,7 +118,7 @@ export async function extendDomainRegistrationWorkflow({
     },
   });
 
-  const { generalAlertNamefi } = typedProxyActivities({
+  const { criticalAlertNamefi } = typedProxyActivities({
     temporalEnum: TEMPORAL_ENUMS.DEFAULT,
     options: {
       ...shortRunningOpts,
@@ -162,9 +175,19 @@ export async function extendDomainRegistrationWorkflow({
       workflowId: `set-expiration-for-namefi-nft-${normalizedDomainName}-${chainId}-${nextExpirationTimeInSeconds}`,
       args: [chainId, normalizedDomainName, nextExpirationTimeInSeconds],
       retry: {
-        maximumAttempts: 1,
+        maximumAttempts: 2,
       },
+      workflowIdReusePolicy: 'ALLOW_DUPLICATE',
+      workflowIdConflictPolicy: 'FAIL',
+      parentClosePolicy: 'REQUEST_CANCEL',
     });
+
+    if (updateDomainIndex) {
+      await _updateDomainIndexAfterExtension({
+        normalizedDomainName,
+        nextExpirationTime,
+      });
+    }
 
     return {
       eppOperationStatus: 'SUCCESS',
@@ -174,7 +197,7 @@ export async function extendDomainRegistrationWorkflow({
   } catch (_error: any) {
     const info = workflow.workflowInfo();
     try {
-      await generalAlertNamefi({
+      await criticalAlertNamefi({
         title: `Workflow Failed (${info.workflowId})`,
         message: 'Extend NFT Expiration Not Successful',
         runId: info.runId,
@@ -186,6 +209,13 @@ export async function extendDomainRegistrationWorkflow({
       workflow.log.error('Failed to send alert', error);
     }
 
+    if (updateDomainIndex) {
+      await _updateDomainIndexAfterExtension({
+        normalizedDomainName,
+        nextExpirationTime,
+      });
+    }
+
     return {
       eppOperationStatus: 'SUCCESS',
       txStatus: 'FAILURE',
@@ -193,12 +223,50 @@ export async function extendDomainRegistrationWorkflow({
   }
 }
 
+async function _updateDomainIndexAfterExtension({
+  normalizedDomainName,
+  nextExpirationTime,
+}: {
+  normalizedDomainName: NamefiNormalizedDomain;
+  nextExpirationTime: string | Date;
+}) {
+  // Update domain index after successful extension
+  await catchAndAlertLocally(
+    () =>
+      updateDomainIndexRows([
+        {
+          domainName: normalizedDomainName,
+          expirationTime: new Date(nextExpirationTime),
+        },
+      ]),
+    {
+      message: 'Failed to update domain index after domain extension',
+      details: {
+        domainName: normalizedDomainName,
+        workflowId: workflow.workflowInfo().workflowId,
+      },
+    },
+  );
+
+  // Trigger full index update after domain extension
+  await catchAndAlertLocally(triggerUpdateDomainIndex, {
+    message:
+      'Failed to trigger full domain index update after domain extension',
+    details: {
+      domainName: normalizedDomainName,
+      workflowId: workflow.workflowInfo().workflowId,
+    },
+  });
+}
+
 async function _extendSldDomainAndReturnNewExpirationTime({
   normalizedDomainName,
   ownerAddress,
   durationInYears,
   chainId,
-}: ExtendDomainRegistrationWorkflowInput & { chainId: number }) {
+}: Exclude<ExtendDomainRegistrationWorkflowInput, 'updateDomainIndex'> & {
+  chainId: number;
+}) {
   const { pollEppExtendRegistrationStatus } = typedProxyActivities({
     temporalEnum: TEMPORAL_ENUMS.DOMAINS,
     options: {
@@ -272,9 +340,9 @@ async function _extend3ldDomainAndReturnNewExpirationTime({
   chainId,
   normalizedDomainName,
   durationInYears,
-}: ExtendDomainRegistrationWorkflowInput & { chainId: number }): Promise<
-  string | Date
-> {
+}: Exclude<ExtendDomainRegistrationWorkflowInput, 'updateDomainIndex'> & {
+  chainId: number;
+}): Promise<string | Date> {
   // TODO: add validation for parent domain
   const { getNftExpirationTimeInSeconds } = typedProxyActivities({
     temporalEnum: TEMPORAL_ENUMS.MINT,
