@@ -163,6 +163,9 @@ export async function processOrderWorkflow(
           retry: {
             maximumAttempts: 1,
           },
+          workflowIdReusePolicy: 'ALLOW_DUPLICATE_FAILED_ONLY',
+          workflowIdConflictPolicy: 'USE_EXISTING',
+          parentClosePolicy: 'REQUEST_CANCEL',
         });
       }),
     );

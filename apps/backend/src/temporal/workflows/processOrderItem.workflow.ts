@@ -54,7 +54,10 @@ export async function processOrderItemWorkflow(
           },
         ],
         taskQueue: TEMPORAL_QUEUES.DOMAINS,
-        workflowId: `extend-domain-${input.orderId}-${input.itemId}`,
+        workflowId: `extend-domain-${normalizedDomainName}`,
+        workflowIdReusePolicy: 'ALLOW_DUPLICATE',
+        workflowIdConflictPolicy: 'FAIL',
+        parentClosePolicy: 'REQUEST_CANCEL',
       });
     } else {
       // Register or import the domain
