@@ -1,8 +1,6 @@
 'use client';
 
 import { AsyncButton } from '@/components/buttons/AsyncButton';
-import { useCart } from '@/hooks/landing/use-cart';
-import { useRenewalDurationConstraints } from '@/hooks/use-renewal-duration-constraints';
 import { Button } from '@/components/ui/shadcn/button';
 import {
   Card,
@@ -207,25 +205,12 @@ export const DomainConfigAndPrefsForm = ({
   dnssecDetails: AppRouterOutput['domainConfig']['dnssec']['getDomainDnssecDetails'];
 }) => {
   const trpc = useTRPC();
-  const { handleDomainAction, isDomainInCart } = useCart();
 
   const { data: domainListInfo, isLoading: isDomainInfoLoading } = useQuery(
     trpc.registry.getDomainListInfo.queryOptions({
       domains: [domainName],
     }),
   );
-  const domainAvailabilityInfo = useMemo(
-    () => domainListInfo?.[0],
-    [domainListInfo],
-  );
-
-  const { data: domainDetails, isLoading: isDomainDetailsLoading } = useQuery(
-    trpc.domainConfig.getDomainDetails.queryOptions({
-      domainName,
-    }),
-  );
-
-  const renewalConstraints = useRenewalDurationConstraints(domainName);
 
   const [forwardTo, setForwardTo] = useState<string | undefined>(
     domainPreferencesAndConfig?.forwardTo,
@@ -308,95 +293,6 @@ export const DomainConfigAndPrefsForm = ({
         />
 
         <div className="grid grid-cols-2 gap-2 w-full">
-          <div className="flex items-center justify-between rounded-2xl bg-zinc-900 border border-zinc-800 p-4">
-            <div className="space-y-0.5">
-              <Label htmlFor="auto-renew">Auto Renew</Label>
-              <p className="text-sm text-muted-foreground">
-                Automatically renew the domain
-              </p>
-              {domainDetails?.expirationTime && !isDomainDetailsLoading ? (
-                <p className="text-xs text-zinc-400">
-                  Expires:{' '}
-                  {new Date(domainDetails.expirationTime).toLocaleDateString()}
-                </p>
-              ) : isDomainDetailsLoading ? (
-                <Skeleton className="h-3 w-24" />
-              ) : null}
-            </div>
-            <div className="flex items-center gap-3">
-              <AsyncButton
-                onClick={async () => {
-                  try {
-                    if (!domainAvailabilityInfo) {
-                      throw new Error('Domain availability info not available');
-                    }
-
-                    if (renewalConstraints.status === 'error') {
-                      throw new Error(renewalConstraints.error);
-                    }
-
-                    if (renewalConstraints.status === 'loading') {
-                      throw new Error(
-                        'Renewal duration constraints are loading',
-                      );
-                    }
-
-                    const durationToUse = renewalConstraints.minYears;
-                    const isCurrentlyInCart = isDomainInCart(domainName);
-
-                    await handleDomainAction({
-                      domainAvailabilityInfo,
-                      durationInYears: durationToUse,
-                      operationType: 'RENEW',
-                    });
-
-                    if (isCurrentlyInCart) {
-                      toast.success('Renewal removed from cart');
-                    } else {
-                      toast.success(
-                        `${durationToUse} year renewal added to cart successfully`,
-                      );
-                    }
-                  } catch (error) {
-                    if (renewalConstraints.status === 'error') {
-                      toast.error(
-                        `Failed to update cart: ${renewalConstraints.error}`,
-                      );
-                    } else {
-                      toast.error('Failed to update cart');
-                    }
-                    throw error;
-                  }
-                }}
-                disabled={
-                  disableAllButtons ||
-                  isPending ||
-                  isDomainInfoLoading ||
-                  isDomainDetailsLoading ||
-                  renewalConstraints.status === 'loading' ||
-                  !domainAvailabilityInfo ||
-                  renewalConstraints.status === 'error'
-                }
-                size="sm"
-              >
-                {renewalConstraints.status === 'loading'
-                  ? 'Loading...'
-                  : isDomainInCart(domainName)
-                    ? 'Added to Cart'
-                    : 'Renew now'}
-              </AsyncButton>
-              <Switch
-                id="auto-renew"
-                className={cn(isPending ? 'animate-pulse cursor-progress' : '')}
-                checked={domainPreferencesAndConfig?.autoRenewEnabled}
-                disabled={disableAllButtons || isPending}
-                onCheckedChange={handleChange('autoRenewEnabled')}
-              />
-            </div>
-          </div>
-
-          <div />
-
           {dnssecDetails.isUsingNamefiNameservers ? (
             <>
               <div className="flex items-center justify-between rounded-2xl bg-zinc-900 border border-zinc-800 p-4">

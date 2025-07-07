@@ -29,6 +29,7 @@ import {
   EmailRequiredModal,
   DNS_MANAGEMENT_EMAIL_REQUIRED,
 } from '../modals/EmailRequiredModal';
+import { DnsOverviewPanel } from './Panels/DNS/DnsOverviewPanel';
 import { DnsRecordsPanel } from './Panels/DNS/DnsRecordsPanel';
 import { DnssecPanel } from './Panels/DNSSEC/DnssecPanel';
 import { DomainConfigAndPrefs } from './Panels/DomainConfigAndPrefs/DomainConfigAndPrefs';
@@ -43,7 +44,7 @@ export const DomainManagement: FC<DomainManagementProps> = ({
   className,
   ...rest
 }: DomainManagementProps) => {
-  const [currentTab, setCurrentTab] = useState('dns-records');
+  const [currentTab, setCurrentTab] = useState('dns-overview');
   const [showEmailModal, setShowEmailModal] = useState(false);
   const { hasEmail } = useEmailPrompt();
   const { isLoading: isAuthLoading } = useAuth();
@@ -133,9 +134,14 @@ export const DomainManagement: FC<DomainManagementProps> = ({
           <TabsContent value="dns-setting">
             <Tabs value={currentTab} onValueChange={handleTabChange}>
               <TabsList className="mb-8">
+                <TabsTrigger value="dns-overview">DNS Overview</TabsTrigger>
                 <TabsTrigger value="dns-records">DNS Records</TabsTrigger>
                 <TabsTrigger value="dns-management">DNS Management</TabsTrigger>
               </TabsList>
+
+              <TabsContent value="dns-overview">
+                <DnsOverviewPanel domain={domain as PunycodeDomainName} />
+              </TabsContent>
 
               <TabsContent value="dns-records">
                 <DnsRecordsPanel domain={domain} />
