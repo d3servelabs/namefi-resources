@@ -58,31 +58,19 @@ type LongRunningOperationResult<T> = WithRegistrar<
 const injectRegistrar = assoc('registrarKey');
 
 export class RegistrarService extends AbstractRegistrarService {
-  key = 'main';
   logger = pino({ name: RegistrarService.name });
   private readonly domainToRegistrar: Map<PunycodeDomainName, Registrars> =
     new Map();
-  private readonly r53Registrar: R53RegistrarService;
-  private readonly dynadot: DynadotRegistrarService;
-  private readonly config: {
-    USE_MOCK_REGISTRARS: boolean;
-  };
+  private readonly registrars: Record<
+    Registrars,
+    AbstractRegistrarService<Registrars>
+  >;
 
   constructor(
-    r53Registrar: R53RegistrarService,
-    dynadot: DynadotRegistrarService,
-    {
-      config,
-    }: {
-      config: {
-        USE_MOCK_REGISTRARS: boolean;
-      };
-    },
+    registrars: Record<Registrars, AbstractRegistrarService<Registrars>>,
   ) {
-    super();
-    this.r53Registrar = r53Registrar;
-    this.dynadot = dynadot;
-    this.config = config;
+    super('main');
+    this.registrars = registrars;
   }
 
   registerDomain(
@@ -207,16 +195,10 @@ export class RegistrarService extends AbstractRegistrarService {
 
   async searchForDomain(
     query: PunycodeDomainName,
-    options?: { overrideRegistrar?: Registrars },
   ): Promise<WithRegistrar<DomainQueryResult>> {
     assertPunycodeDomainName(query);
-    const override =
-      options?.overrideRegistrar ?? this.getOverriddenRegistrar();
-
-    const registrars = isNil(override)
-      ? this.getAllowedRegistrars()
-      : [override];
-    const registrarsList = registrars.map((r) => this._getRegistrar(r));
+    const registrars = this.getAllowedRegistrars();
+    const registrarsList = registrars.map((r) => this.registrars[r]);
 
     const responsesList = await Promise.allSettled(
       registrarsList.map((r) => r.searchForDomain(query)),
@@ -295,9 +277,8 @@ export class RegistrarService extends AbstractRegistrarService {
   ): Promise<WithRegistrar<DomainQueryResult>[]> {
     const fallbackRegistrar = this.getAllowedRegistrars()[0];
 
-    const responsesByRegistrar = await pProps(
-      this._getRegistrarsMap(),
-      (registrar) => registrar.bulkSearch(queries),
+    const responsesByRegistrar = await pProps(this.registrars, (registrar) =>
+      registrar.bulkSearch(queries),
     );
 
     const result = queries.map((query, index) => {
@@ -372,10 +353,7 @@ export class RegistrarService extends AbstractRegistrarService {
   }
 
   getAllowedRegistrars(): Registrars[] {
-    if (this.config.USE_MOCK_REGISTRARS) {
-      return [Registrars.NamefiMock];
-    }
-    return [Registrars.Route53, Registrars.Dynadot];
+    return Object.keys(this.registrars) as Registrars[];
   }
 
   async getSuggestions(
@@ -461,18 +439,12 @@ export class RegistrarService extends AbstractRegistrarService {
     domainName: PunycodeDomainName,
     options?: { registrar?: Registrars },
   ): Promise<DomainPricingDetails> {
-    const registrar = await this.determineRegistrar(
+    const registrarKey = await this.determineRegistrar(
       domainName,
       options?.registrar,
     );
-    switch (registrar) {
-      case Registrars.Route53:
-        return this.r53Registrar.getDomainPriceDetails(domainName);
-      case Registrars.Dynadot:
-        return this.dynadot.getDomainPriceDetails(domainName);
-      default:
-        throw new Error('getDomainPriceDetails: unknown-registrar');
-    }
+
+    return this.registrars[registrarKey].getDomainPriceDetails(domainName);
   }
 
   async listAllDomains(options?: {
@@ -484,7 +456,7 @@ export class RegistrarService extends AbstractRegistrarService {
 
     const domainsLists = await Promise.all(
       registrars.map((registrar) =>
-        this._getRegistrar(registrar).listAllDomains(),
+        this.registrars[registrar].listAllDomains(),
       ),
     );
     const domains = domainsLists.flatMap((list, index) =>
@@ -496,16 +468,6 @@ export class RegistrarService extends AbstractRegistrarService {
     return domains;
   }
 
-  private _getRegistrarsMap(): Record<
-    Registrars,
-    AbstractRegistrarService<Registrars>
-  > {
-    return {
-      [Registrars.Route53]: this.r53Registrar,
-      [Registrars.Dynadot]: this.dynadot,
-    };
-  }
-
   private _getRegistrar(
     registrar: Registrars,
   ): AbstractRegistrarService<Registrars> {
@@ -513,18 +475,7 @@ export class RegistrarService extends AbstractRegistrarService {
     if (!allowedRegistrars.includes(registrar)) {
       throw new Error(`registrar ${registrar} is not allowed`);
     }
-    switch (registrar) {
-      case Registrars.Route53:
-        return this.r53Registrar;
-      case Registrars.Dynadot:
-        return this.dynadot;
-      default:
-        throw new Error('unknown-provider');
-    }
-  }
-
-  private getOverriddenRegistrar(): Registrars | null {
-    return null;
+    return this.registrars[registrar];
   }
 
   // biome-ignore lint/suspicious/useAwait: <explanation>
@@ -537,7 +488,7 @@ export class RegistrarService extends AbstractRegistrarService {
   private async getRegistrar(
     domain: PunycodeDomainName,
   ): Promise<AbstractRegistrarService<Registrars>> {
-    return this._getRegistrar(await this.determineRegistrar(domain));
+    return this.registrars[await this.determineRegistrar(domain)];
   }
 
   private async determineRegistrar(
@@ -562,7 +513,7 @@ export class RegistrarService extends AbstractRegistrarService {
 
     const domainDetailsList = await Promise.allSettled(
       this.getAllowedRegistrars().map(async (registrarKey) => {
-        const registrar = this._getRegistrar(registrarKey);
+        const registrar = this.registrars[registrarKey];
         const domainDetails = await registrar.getDomainDetails(domainName);
         return {
           registrarKey,
@@ -603,16 +554,15 @@ export function createRegistrarService(config: {
   });
 
   const dynadot = new DynadotRegistrarService({
-    DYNADOT_API_KEY: config.DYNADOT_API_KEY,
-    DYNADOT_PRIVATE_KEY: config.DYNADOT_PRIVATE_KEY,
-    DYNADOT_ACCOUNT_ID: config.DYNADOT_ACCOUNT_ID,
-    DYNADOT_BASE_URL: config.DYNADOT_BASE_URL,
+    apiKey: config.DYNADOT_API_KEY,
+    privateKey: config.DYNADOT_PRIVATE_KEY,
+    accountId: config.DYNADOT_ACCOUNT_ID,
+    baseUrl: config.DYNADOT_BASE_URL,
     customLogger: config.customLogger,
   });
 
-  return new RegistrarService(r53Registrar, dynadot, {
-    config: {
-      USE_MOCK_REGISTRARS: config.USE_MOCK_REGISTRARS ?? false,
-    },
+  return new RegistrarService({
+    [Registrars.Route53]: r53Registrar,
+    [Registrars.Dynadot]: dynadot,
   });
 }

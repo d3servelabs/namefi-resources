@@ -79,52 +79,51 @@ import { getTldFromDomainName } from '#lib/get-tld';
 
 const DYNADOT_DOMAIN_REGISTER_CHECK_TIME_WINDOW_IN_MINUTES = 30;
 
-export class DynadotRegistrarService extends AbstractRegistrarService<Registrars> {
-  key = Registrars.Dynadot;
+export class DynadotRegistrarService extends AbstractRegistrarService {
   readonly logger: pino.Logger;
   private readonly client: Dynadot;
 
   constructor(config: {
-    DYNADOT_API_KEY: string;
-    DYNADOT_PRIVATE_KEY?: string;
-    DYNADOT_ACCOUNT_ID?: string;
-    DYNADOT_HTTPS_PROXY_AGENT?: string;
-    DYNADOT_CONFIG_LOG_SYSTEM_BUSY?: boolean;
-    DYNADOT_CONFIG_RETRY_COUNT?: number;
-    DYNADOT_CONFIG_RETRY_WHEN_BUSY?: boolean;
-    DYNADOT_CONFIG_RETRY_BACKOFF?: number;
-    DYNADOT_BASE_URL?: string;
+    apiKey: string;
+    privateKey?: string;
+    accountId?: string;
+    httpsProxyAgent?: string;
+
+    logSystemBusy?: boolean;
+    retryCount?: number;
+    retryWhenBusy?: boolean;
+    retryBackoff?: number;
+
+    baseUrl?: string;
     customLogger?: pino.Logger;
+    overrideKey?: Registrars;
   }) {
-    super();
+    super(config.overrideKey ?? Registrars.Dynadot);
     this.logger =
       config.customLogger ?? pino({ name: DynadotRegistrarService.name });
     this.logger.info('DynadotRegistrarService constructor');
 
     let proxyOptions: ProxyOptions | undefined;
 
-    if (config.DYNADOT_PRIVATE_KEY && config.DYNADOT_ACCOUNT_ID) {
+    if (config.privateKey && config.accountId) {
       proxyOptions = {
         namefiProxy: {
-          privateKey: Buffer.from(
-            config.DYNADOT_PRIVATE_KEY,
-            'base64',
-          ).toString('utf8'),
-          accountId: config.DYNADOT_ACCOUNT_ID,
+          privateKey: Buffer.from(config.privateKey, 'base64').toString('utf8'),
+          accountId: config.accountId,
         },
       };
-    } else if (config.DYNADOT_HTTPS_PROXY_AGENT) {
+    } else if (config.httpsProxyAgent) {
       proxyOptions = {
-        httpsAgent: new HttpsProxyAgent(config.DYNADOT_HTTPS_PROXY_AGENT),
+        httpsAgent: new HttpsProxyAgent(config.httpsProxyAgent),
       };
     }
     this.client = new Dynadot({
-      apiKey: config.DYNADOT_API_KEY,
-      baseUrl: config.DYNADOT_BASE_URL,
+      apiKey: config.apiKey,
+      baseUrl: config.baseUrl,
       loggingOptions: {
         enabled: true,
         prefix: Dynadot.name,
-        allowSystemBusyLog: config.DYNADOT_CONFIG_LOG_SYSTEM_BUSY,
+        allowSystemBusyLog: config.logSystemBusy,
         customLogger: config.customLogger,
         blackList(params: any) {
           return params?.command === DynadotCommand.tld_price;
@@ -132,9 +131,9 @@ export class DynadotRegistrarService extends AbstractRegistrarService<Registrars
       },
       ...(proxyOptions ? { proxyOptions } : {}),
       retryOptions: {
-        maxRetries: config.DYNADOT_CONFIG_RETRY_COUNT ?? 3,
-        retryWhenBusy: config.DYNADOT_CONFIG_RETRY_WHEN_BUSY ?? true,
-        backoff: config.DYNADOT_CONFIG_RETRY_BACKOFF ?? 1000,
+        maxRetries: config.retryCount ?? 3,
+        retryWhenBusy: config.retryWhenBusy ?? true,
+        backoff: config.retryBackoff ?? 1000,
       },
     });
   }
@@ -796,9 +795,9 @@ export class DynadotRegistrarService extends AbstractRegistrarService<Registrars
     >;
 
     const response = await this.client.command(DynadotCommand.search, {
+      ...domains,
       currency: 'USD',
       show_price: '1',
-      ...domains,
     });
 
     assertNot(responseFailed(response.SearchResponse), 'Response Failed');
@@ -870,6 +869,12 @@ export class DynadotRegistrarService extends AbstractRegistrarService<Registrars
       return [];
     }
     queries.forEach(assertPunycodeDomainName);
+    if (queries.length === 0) {
+      return [];
+    }
+    if (queries.length === 1) {
+      return [await this.searchForDomain(queries[0])];
+    }
     const batchSize = 100;
     const batches = splitEvery(batchSize, queries);
     const nonPremiumPrices =

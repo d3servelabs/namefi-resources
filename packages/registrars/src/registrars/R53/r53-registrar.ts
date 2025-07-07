@@ -78,8 +78,7 @@ import {
 } from './helpers';
 import pMap from 'p-map';
 
-export class R53RegistrarService extends AbstractRegistrarService<Registrars> {
-  key = Registrars.Route53;
+export class R53RegistrarService extends AbstractRegistrarService {
   nameservers = [1, 2, 3, 4].map((i) => `ns${i}.namefi.io`);
   client: Route53DomainsClient;
 
@@ -101,7 +100,7 @@ export class R53RegistrarService extends AbstractRegistrarService<Registrars> {
     secretAccessKey: string;
     customLogger?: pino.Logger;
   }) {
-    super();
+    super(Registrars.Route53);
     this.logger = customLogger ?? pino({ name: R53RegistrarService.name });
     this.logger.info('R53RegistrarService constructor');
 

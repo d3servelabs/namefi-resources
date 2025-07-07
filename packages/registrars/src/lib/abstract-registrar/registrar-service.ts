@@ -69,7 +69,15 @@ export type VerifyTransferInAuthCodeOutput = {
 };
 
 export abstract class AbstractRegistrarService<T extends string = string> {
-  abstract readonly key: T;
+  private _key: T;
+
+  constructor(_key: T) {
+    this._key = _key;
+  }
+
+  get key(): T {
+    return this._key;
+  }
 
   //#region DomainImport
 
@@ -127,6 +135,10 @@ export abstract class AbstractRegistrarService<T extends string = string> {
     operation: DomainOwnershipOperation,
     options?: any,
   ): Promise<PricingDetails>;
+
+  abstract getDomainPriceDetails(
+    domainName: PunycodeDomainName,
+  ): Promise<DomainPricingDetails>;
 
   //#region DNSSEC
   abstract addDelegationSigner(
