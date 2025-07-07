@@ -1,5 +1,6 @@
 import {
   db,
+  indexedDomainsTable,
   type namefiNftTable,
   orderItemStatusSchema,
   orderItemsTable,
@@ -43,6 +44,15 @@ export const sldRegistrar = createRegistrarService({
   DYNADOT_ACCOUNT_ID: secrets.DYNADOT_ACCOUNT_ID,
   DYNADOT_BASE_URL: config.DYNADOT_BASE_URL,
   customLogger: logger,
+  getRegistrarKeyForExistingDomain: async (domain: NamefiNormalizedDomain) => {
+    const indexedDomain = await db.query.indexedDomainsTable.findFirst({
+      where: eq(indexedDomainsTable.normalizedDomainName, domain),
+    });
+    if (indexedDomain) {
+      return indexedDomain.registrarKey;
+    }
+    return null;
+  },
 });
 
 const generateUnavailableDomainInfo = (domain: NamefiNormalizedDomain) => ({

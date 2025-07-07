@@ -68,6 +68,9 @@ export class RegistrarService extends AbstractRegistrarService {
 
   constructor(
     registrars: Record<Registrars, AbstractRegistrarService<Registrars>>,
+    private readonly getRegistrarKeyForExistingDomain?: (
+      domain: PunycodeDomainName,
+    ) => Promise<Registrars | null>,
   ) {
     super('main');
     this.registrars = registrars;
@@ -482,6 +485,11 @@ export class RegistrarService extends AbstractRegistrarService {
   async getRegistrarFromDomainName(
     domain: PunycodeDomainName,
   ): Promise<Registrars> {
+    // if the domain is already indexed, use the registrar key from the database
+    const registrarKey = await this.getRegistrarKeyForExistingDomain?.(domain);
+    if (isNotNil(registrarKey)) {
+      return registrarKey;
+    }
     throw new Error('getRegistrarFromDomainName: unknown-registrar');
   }
 
@@ -546,6 +554,9 @@ export function createRegistrarService(config: {
   DYNADOT_ACCOUNT_ID?: string;
   DYNADOT_BASE_URL?: string;
   customLogger?: pino.Logger;
+  getRegistrarKeyForExistingDomain?: (
+    domain: PunycodeDomainName,
+  ) => Promise<Registrars | null>;
 }): RegistrarService {
   const r53Registrar = new R53RegistrarService({
     region: config.AWS_REGION,
@@ -561,8 +572,11 @@ export function createRegistrarService(config: {
     customLogger: config.customLogger,
   });
 
-  return new RegistrarService({
-    [Registrars.Route53]: r53Registrar,
-    [Registrars.Dynadot]: dynadot,
-  });
+  return new RegistrarService(
+    {
+      [Registrars.Route53]: r53Registrar,
+      [Registrars.Dynadot]: dynadot,
+    },
+    config.getRegistrarKeyForExistingDomain,
+  );
 }
