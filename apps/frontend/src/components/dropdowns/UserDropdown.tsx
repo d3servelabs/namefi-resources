@@ -128,9 +128,7 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
                   </span>
                 )}
                 {!collapsed && (
-                  <Button variant="ghost" size="icon">
-                    <MoreHorizontalIcon className="h-5 w-5" />
-                  </Button>
+                  <MoreHorizontalIcon className="h-5 w-5 ml-auto" />
                 )}
               </SidebarMenuButton>
             </DropdownMenuTrigger>
