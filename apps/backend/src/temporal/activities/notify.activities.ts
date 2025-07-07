@@ -1,8 +1,8 @@
 import { db, usersTable } from '@namefi-astra/db';
-import { getSubDomainAndParentDomainFromNormalizedDomainName } from '@namefi-astra/utils';
 import { eq } from 'drizzle-orm';
 import { type SendMailInput, sendMail } from '../../mail/mail-client';
 import { privyClient } from '../../trpc/utils';
+import { config } from '#lib/env';
 
 export async function maybeGetUserEmail(
   userId: string,
@@ -85,28 +85,14 @@ export async function getOrderProcessedEmailContent({
   const hasMultipleSucceededDomains = succeededItems.length > 1;
   const hasMultipleFailedDomains = failedItems.length > 1;
 
-  // TODO(Luis): Add check to validate that the parent domain is an allowed third-party origin
-  const parentDomains = new Set<string>();
+  // TODO: handle other subdomains
+  const isAllThirdPartyDomains = [...succeededItems, ...failedItems].every(
+    (item) => {
+      return item.normalizedDomainName.endsWith('.0x.city');
+    },
+  );
 
-  for (const succeededItem of succeededItems) {
-    const { parentDomain } =
-      getSubDomainAndParentDomainFromNormalizedDomainName(
-        succeededItem.normalizedDomainName,
-      );
-    parentDomains.add(parentDomain);
-  }
-
-  for (const failedItem of failedItems) {
-    const { parentDomain } =
-      getSubDomainAndParentDomainFromNormalizedDomainName(
-        failedItem.normalizedDomainName,
-      );
-    parentDomains.add(parentDomain);
-  }
-  const hostname =
-    parentDomains.size === 1
-      ? [...parentDomains.values()].at(0)
-      : 'poweredby.namefi.io';
+  const hostname = isAllThirdPartyDomains ? '0x.city' : config.APP_URL;
 
   // some succeeded, some failed
   if (hasSucceededItems && hasFailedItems) {
