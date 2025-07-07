@@ -33,7 +33,7 @@ import type {
   DomainRegistration,
   DomainSuggestionsQueryResult,
   DomainSummary,
-  DomainsQueryResult,
+  DomainQueryResult,
   LongRunningOperationResult,
   Nameserver,
   Nameservers,
@@ -76,6 +76,8 @@ import {
   toR53Contact,
   toR53ContactsMap,
 } from './helpers';
+import pMap from 'p-map';
+
 export class R53RegistrarService extends AbstractRegistrarService<Registrars> {
   key = Registrars.Route53;
   nameservers = [1, 2, 3, 4].map((i) => `ns${i}.namefi.io`);
@@ -390,15 +392,13 @@ export class R53RegistrarService extends AbstractRegistrarService<Registrars> {
     };
   }
 
-  async searchForDomain(
-    query: string,
-  ): Promise<DomainsQueryResult<Registrars>> {
+  async searchForDomain(query: PunycodeDomainName): Promise<DomainQueryResult> {
     assertPunycodeDomainName(query);
 
     const [searchResults, price] = await Promise.all([
       this.client.send(
         new CheckDomainAvailabilityCommand({
-          DomainName: punycode.toASCII(query), // required
+          DomainName: query, // required
         }),
       ),
       this._getTldDomainsPricingFromDomainName({
@@ -406,20 +406,26 @@ export class R53RegistrarService extends AbstractRegistrarService<Registrars> {
       }),
     ]);
     return {
-      result: {
-        domainName: query,
-        price: fromR53DomainPrice(price),
-        available:
-          searchResults.Availability === 'AVAILABLE'
-            ? DomainAvailability.AVAILABLE
-            : DomainAvailability.UNAVAILABLE,
-      },
-      suggestions: [],
+      domainName: query,
+      price: fromR53DomainPrice(price),
+      available:
+        searchResults.Availability === 'AVAILABLE'
+          ? DomainAvailability.AVAILABLE
+          : DomainAvailability.UNAVAILABLE,
+      isPremium: false,
     };
   }
 
+  async bulkSearch(
+    queries: PunycodeDomainName[],
+  ): Promise<DomainQueryResult[]> {
+    return pMap(queries, (query) => this.searchForDomain(query), {
+      concurrency: 10,
+    });
+  }
+
   async getSuggestions(
-    query: string,
+    query: PunycodeDomainName,
     suggestionsCount: number,
   ): Promise<DomainSuggestionsQueryResult<Registrars>> {
     assertPunycodeDomainName(query);

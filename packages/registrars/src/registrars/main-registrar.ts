@@ -5,10 +5,13 @@ import {
   flatten,
   isNil,
   isNotNil,
+  map,
   pluck,
   prop,
   uniqBy,
+  toPairs,
   zipObj,
+  filter,
 } from 'ramda';
 import type {
   ContactsMap,
@@ -19,7 +22,7 @@ import type {
   DomainRegistration,
   DomainSuggestionsQueryResult,
   DomainSummary,
-  DomainsQueryResult,
+  DomainQueryResult,
   Nameservers,
   PricingDetails,
   RdapDomainStatus,
@@ -43,6 +46,7 @@ import { supportsDnssec } from '#lib/supports-dnssec';
 import { R53RegistrarService } from './R53/r53-registrar';
 import { DynadotRegistrarService } from './dynadot/dynadot-registrar';
 import { Registrars } from './registrars-keys';
+import pProps from 'p-props';
 
 export type WithRegistrar<T> = T & {
   registrarKey: Registrars;
@@ -204,7 +208,7 @@ export class RegistrarService extends AbstractRegistrarService {
   async searchForDomain(
     query: PunycodeDomainName,
     options?: { overrideRegistrar?: Registrars },
-  ): Promise<WithRegistrar<DomainsQueryResult<Registrars>>> {
+  ): Promise<WithRegistrar<DomainQueryResult>> {
     assertPunycodeDomainName(query);
     const override =
       options?.overrideRegistrar ?? this.getOverriddenRegistrar();
@@ -224,25 +228,25 @@ export class RegistrarService extends AbstractRegistrarService {
         .map(([key, res]) => [
           key,
           res.status === 'fulfilled' ? res.value : null,
-        ]) as [Registrars, DomainsQueryResult<Registrars>][],
+        ]) as [Registrars, DomainQueryResult][],
     );
 
     const isAvailableOnAnyRegistrar = Object.values(responsesByRegistrar).some(
-      (res) => res?.result?.available === DomainAvailability.AVAILABLE,
+      (res) => res?.available === DomainAvailability.AVAILABLE,
     );
     const priceType = isAvailableOnAnyRegistrar
       ? 'registrationPrice'
       : 'importPrice';
 
-    const pricesByRegistrar: Record<Registrars, PricingDetails> =
+    const pricesByRegistrar: Record<Registrars, PricingDetails | null> =
       Object.fromEntries(
         (
           Object.entries(responsesByRegistrar).filter(([_, value]) => {
             try {
-              const { price, available: availability } = value.result;
+              const { price, available: availability } = value;
               const hasPrice =
-                price[priceType]?.price &&
-                computeChargesInUsdOrThrow(price[priceType], 1) > 0;
+                price?.[priceType] &&
+                computeChargesInUsdOrThrow(price![priceType], 1) > 0;
 
               const available = availability === DomainAvailability.AVAILABLE;
               const availableForOperation =
@@ -252,14 +256,14 @@ export class RegistrarService extends AbstractRegistrarService {
               this.logger.error(error);
               return false;
             }
-          }) as [Registrars, DomainsQueryResult<Registrars>][]
-        ).map(([key, value]) => [key, value.result.price[priceType]]),
+          }) as [Registrars, DomainQueryResult][]
+        ).map(([key, value]) => [key, value.price?.[priceType] ?? null]),
       );
 
     const { registrar } = Object.entries(pricesByRegistrar).reduce(
       (prev, [registrar, price]) => {
         try {
-          if (computeChargesInUsdOrThrow(price, 1) < prev.bestPrice) {
+          if (price && computeChargesInUsdOrThrow(price, 1) < prev.bestPrice) {
             return {
               bestPrice: computeChargesInUsdOrThrow(price, 1),
               registrar,
@@ -281,13 +285,90 @@ export class RegistrarService extends AbstractRegistrarService {
     const res = responsesByRegistrar[registrar];
     assertNotNil(res, 'no response from registrar');
     return {
-      result: res.result,
+      ...res,
       registrarKey: registrar,
-      suggestions: uniqBy(
-        prop('domainName'),
-        flatten(pluck('suggestions', Object.values(responsesByRegistrar))),
-      ),
     };
+  }
+
+  async bulkSearch(
+    queries: PunycodeDomainName[],
+  ): Promise<WithRegistrar<DomainQueryResult>[]> {
+    const fallbackRegistrar = this.getAllowedRegistrars()[0];
+
+    const responsesByRegistrar = await pProps(
+      this._getRegistrarsMap(),
+      (registrar) => registrar.bulkSearch(queries),
+    );
+
+    const result = queries.map((query, index) => {
+      // map the registrar to the result
+      const registrarToResult = toPairs(map(prop(index), responsesByRegistrar));
+
+      const isAvailableOnAnyRegistrar = registrarToResult.some(
+        ([_, res]) => res?.available === DomainAvailability.AVAILABLE,
+      );
+
+      const comparePrice = isAvailableOnAnyRegistrar
+        ? 'registrationPrice'
+        : 'importPrice';
+
+      // filter out registrars that don't have a price or the price is not available
+      const filteredRegistrarToResult = filter(([_, res]) => {
+        if (isNil(res) || isNil(res.price) || isNil(res.price[comparePrice])) {
+          return false;
+        }
+        return computeChargesInUsdOrThrow(res.price[comparePrice], 1) > 0;
+      }, registrarToResult);
+
+      // and map the registrar to the price
+      const registrarToPrice = map(
+        ([registrar, res]) => [
+          registrar,
+          computeChargesInUsdOrThrow(res.price![comparePrice], 1),
+        ],
+        filteredRegistrarToResult,
+      ) as [Registrars, number][];
+
+      // find the best price
+      const bestPrice = registrarToPrice.reduce(
+        (prev, [registrar, price]) => {
+          if (price < prev.bestPrice) {
+            return {
+              bestPrice: price,
+              registrar,
+            };
+          }
+          return prev;
+        },
+        {
+          bestPrice: Number.MAX_SAFE_INTEGER,
+          registrar: null as Registrars | null,
+        },
+      );
+
+      // find the result for the best price
+      const chosenResult = registrarToResult.find(
+        ([registrar]) => registrar === bestPrice.registrar,
+      )?.[1];
+
+      // if the best price is not found, return the fallback result
+      if (isNil(bestPrice.registrar) || isNil(chosenResult)) {
+        return {
+          domainName: query,
+          registrarKey: fallbackRegistrar,
+          available: DomainAvailability.UNAVAILABLE,
+          isPremium: false,
+          price: null,
+        };
+      }
+
+      return {
+        ...chosenResult,
+        registrarKey: bestPrice.registrar,
+      };
+    });
+
+    return result;
   }
 
   getAllowedRegistrars(): Registrars[] {
@@ -413,6 +494,16 @@ export class RegistrarService extends AbstractRegistrarService {
       this.domainToRegistrar.set(domain.domainName, domain.registrarKey);
     });
     return domains;
+  }
+
+  private _getRegistrarsMap(): Record<
+    Registrars,
+    AbstractRegistrarService<Registrars>
+  > {
+    return {
+      [Registrars.Route53]: this.r53Registrar,
+      [Registrars.Dynadot]: this.dynadot,
+    };
   }
 
   private _getRegistrar(

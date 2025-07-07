@@ -166,7 +166,12 @@ export abstract class AbstractRegistrarService<T extends string = string> {
   abstract searchForDomain(
     query: string,
     options?: any,
-  ): Promise<DomainsQueryResult<T>>;
+  ): Promise<DomainQueryResult>;
+
+  abstract bulkSearch(
+    queries: string[],
+    options?: any,
+  ): Promise<DomainQueryResult[]>;
 
   abstract getSuggestions(
     query: string,
@@ -218,11 +223,9 @@ export abstract class AbstractRegistrarService<T extends string = string> {
   }
 }
 
-export type DomainsQueryResult<T extends string> = {
-  result: {
-    domainName: PunycodeDomainName;
-    available: DomainAvailability;
-    price: DomainPricingDetails;
-  };
-  suggestions: DomainSuggestion<T>[];
+export type DomainQueryResult = {
+  domainName: PunycodeDomainName;
+  available: DomainAvailability;
+  price: DomainPricingDetails | null | undefined;
+  isPremium: boolean;
 };

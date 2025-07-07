@@ -3,7 +3,17 @@ import { assertNot, assertNotNil, parseJsonOrNull } from '@namefi-astra/utils';
 import { differenceInMinutes } from 'date-fns';
 import { HttpsProxyAgent } from 'https-proxy-agent';
 import pino from 'pino';
-import { compose, head, isEmpty, isNil, prop } from 'ramda';
+import {
+  compose,
+  fromPairs,
+  head,
+  isEmpty,
+  isNil,
+  isNotNil,
+  prop,
+  range,
+  splitEvery,
+} from 'ramda';
 import type {
   ContactsMap,
   DnssecAlgorithms,
@@ -32,7 +42,7 @@ import {
   singleYearPricingTemplate,
 } from '#lib/abstract-registrar';
 import type {
-  DomainsQueryResult,
+  DomainQueryResult,
   LongRunningOperationResult,
   RegisterDomainInput,
   RenewDomainInput,
@@ -65,6 +75,7 @@ import { RDAP } from '#lib/rdap-whois/rdap_client';
 import { supportsDnssec } from '#lib/supports-dnssec';
 import { Registrars } from '../registrars-keys';
 import { fromDynadotContactsMap } from './helpers';
+import { getTldFromDomainName } from '#lib/get-tld';
 
 const DYNADOT_DOMAIN_REGISTER_CHECK_TIME_WINDOW_IN_MINUTES = 30;
 
@@ -147,7 +158,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService<Registrars
       domain: domainName,
       duration: durationInYears,
       language: IdnLanguageCodeISO639_2(domainName),
-      premium: searchRes.result.isPremium ? '1' : undefined,
+      premium: searchRes.isPremium ? '1' : undefined,
     });
 
     assertNot(responseFailed(response.RegisterResponse), 'Response Failed');
@@ -527,7 +538,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService<Registrars
   ): Promise<DomainPricingDetails> {
     assertPunycodeDomainName(domainName);
     const searchRes = await this.searchForDomain(domainName);
-    const pricing = searchRes?.result?.price;
+    const pricing = searchRes?.price;
     assertNotNil(pricing, 'Pricing Not found');
 
     return pricing;
@@ -545,13 +556,13 @@ export class DynadotRegistrarService extends AbstractRegistrarService<Registrars
 
     const registerPrice = Math.ceil(Number.parseFloat(pricing.Price.Register));
     const renewPrice = Math.ceil(Number.parseFloat(pricing.Price.Renew));
-    const prices = new Array(10)
-      .fill(0)
-      .map((_, index) => registerPrice + renewPrice * index);
+    const multiYearRegistrationPrice = range(0, 10).map(
+      (index) => registerPrice + renewPrice * index,
+    );
 
     const registrationPrice =
       renewPrice > registerPrice
-        ? multiYearPricingTemplate(prices)
+        ? multiYearPricingTemplate(multiYearRegistrationPrice)
         : singleYearPricingTemplate(registerPrice);
 
     return {
@@ -563,6 +574,58 @@ export class DynadotRegistrarService extends AbstractRegistrarService<Registrars
         Math.ceil(Number.parseFloat(pricing.Price.Transfer)),
       ),
     };
+  }
+
+  async _bulkGetNonPremiumDomainPriceDetails(
+    domainNames: PunycodeDomainName[],
+    options = { useCachedValue: false },
+  ): Promise<Record<PunycodeDomainName, DomainPricingDetails | null>> {
+    domainNames.forEach(assertPunycodeDomainName);
+
+    const { TldPrice } = await this._getTldPrices(options);
+    assertNotNil(TldPrice, 'Pricing Not found');
+    const pricingMap = fromPairs(TldPrice.map((p) => [p.Tld, p]));
+
+    return fromPairs(
+      domainNames.map((domainName) => {
+        const tld = getTldFromDomainName(domainName);
+        if (isNil(tld)) {
+          return [domainName, null] as [
+            PunycodeDomainName,
+            DomainPricingDetails | null,
+          ];
+        }
+
+        const pricing = pricingMap[`.${tld}`];
+        assertNotNil(pricing, 'Pricing Not found');
+
+        const registerPrice = Math.ceil(
+          Number.parseFloat(pricing.Price.Register),
+        );
+        const renewPrice = Math.ceil(Number.parseFloat(pricing.Price.Renew));
+        const multiYearRegistrationPrice = range(0, 10).map(
+          (index) => registerPrice + renewPrice * index,
+        );
+
+        const registrationPrice =
+          renewPrice > registerPrice
+            ? multiYearPricingTemplate(multiYearRegistrationPrice)
+            : singleYearPricingTemplate(registerPrice);
+
+        return [
+          domainName,
+          {
+            registrationPrice: registrationPrice,
+            renewalPrice: singleYearPricingTemplate(
+              Math.ceil(Number.parseFloat(pricing.Price.Renew)),
+            ),
+            importPrice: singleYearPricingTemplate(
+              Math.ceil(Number.parseFloat(pricing.Price.Transfer)),
+            ),
+          },
+        ] as [PunycodeDomainName, DomainPricingDetails];
+      }),
+    );
   }
 
   async getDelegationSigner(
@@ -651,11 +714,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService<Registrars
     };
   }
 
-  async searchForDomain(
-    query: PunycodeDomainName,
-  ): Promise<
-    DomainsQueryResult<Registrars> & { result: { isPremium?: boolean } }
-  > {
+  async searchForDomain(query: PunycodeDomainName): Promise<DomainQueryResult> {
     assertPunycodeDomainName(query);
 
     const response = await this.client.command(DynadotCommand.search, {
@@ -678,30 +737,26 @@ export class DynadotRegistrarService extends AbstractRegistrarService<Registrars
       (firstSearchResult.Status === 'success' ||
         firstSearchResult.Available === 'yes')
     ) {
-      const parsedPrice = parseDomainPriceString(firstSearchResult.Price);
+      const { isPremium, priceDetails } = parseDomainPriceString(
+        firstSearchResult.Price,
+      );
       let price: DomainPricingDetails = nonPremiumPrices;
 
-      if (parsedPrice.isPremium) {
-        if (
-          !(
-            parsedPrice.priceDetails?.registrationPrice &&
-            parsedPrice.priceDetails?.renewalPrice
-          )
-        ) {
+      if (isPremium) {
+        if (!(priceDetails?.registrationPrice && priceDetails?.renewalPrice)) {
           throw new Error(
             `Price Details not found for premium domain(${firstSearchResult.DomainName})`,
           );
         }
-        const registerPrice =
-          parsedPrice.priceDetails?.registrationPrice?.amount;
-        const renewPrice = parsedPrice.priceDetails?.renewalPrice?.amount;
-        const prices = new Array(10)
-          .fill(0)
-          .map((_, index) => registerPrice + renewPrice * index);
+        const registerPrice = priceDetails?.registrationPrice?.amount;
+        const renewPrice = priceDetails?.renewalPrice?.amount;
+        const multiYearRegistrationPrice = range(0, 10).map(
+          (index) => registerPrice + renewPrice * index,
+        );
 
         const registrationPrice =
           renewPrice > registerPrice
-            ? multiYearPricingTemplate(prices)
+            ? multiYearPricingTemplate(multiYearRegistrationPrice)
             : singleYearPricingTemplate(registerPrice);
         price = {
           registrationPrice: registrationPrice,
@@ -711,28 +766,122 @@ export class DynadotRegistrarService extends AbstractRegistrarService<Registrars
       }
 
       return {
-        result: {
-          domainName: toPunycodeDomainName(firstSearchResult.DomainName),
-          price,
-          isPremium: parsedPrice.isPremium,
-          available:
-            firstSearchResult.Available === 'yes'
-              ? DomainAvailability.AVAILABLE
-              : DomainAvailability.UNAVAILABLE,
-        },
-        suggestions: [],
+        domainName: toPunycodeDomainName(firstSearchResult.DomainName),
+        price,
+        isPremium,
+        available:
+          firstSearchResult.Available === 'yes'
+            ? DomainAvailability.AVAILABLE
+            : DomainAvailability.UNAVAILABLE,
       };
     }
 
     return {
-      result: {
-        domainName: toPunycodeDomainName(query),
-        price: nonPremiumPrices, //todo!! figure out transfer price for premium domains
-        available: DomainAvailability.UNAVAILABLE,
-        isPremium: false,
-      },
-      suggestions: [],
+      domainName: toPunycodeDomainName(query),
+      price: nonPremiumPrices, //todo!! figure out transfer price for premium domains
+      available: DomainAvailability.UNAVAILABLE,
+      isPremium: false,
     };
+  }
+
+  private async _bulkSearchBatch(
+    batch: PunycodeDomainName[],
+    nonPremiumPrices: Record<PunycodeDomainName, DomainPricingDetails | null>,
+  ): Promise<DomainQueryResult[]> {
+    const domains = fromPairs(
+      batch.map((domain, i) => [`domain${i}`, domain]),
+    ) as { domain0: PunycodeDomainName } & Record<
+      `domain${number}`,
+      PunycodeDomainName
+    >;
+
+    const response = await this.client.command(DynadotCommand.search, {
+      currency: 'USD',
+      show_price: '1',
+      ...domains,
+    });
+
+    assertNot(responseFailed(response.SearchResponse), 'Response Failed');
+    const results = response.SearchResponse.SearchResults;
+    return results.map((result) => {
+      const unavailableResult = {
+        domainName: toPunycodeDomainName(result.DomainName),
+        price: null,
+        isPremium: false,
+        available: DomainAvailability.UNAVAILABLE,
+      };
+      if (
+        isNil(result.DomainName) ||
+        (result.Status !== 'success' && result.Available !== 'yes')
+      ) {
+        return unavailableResult;
+      }
+
+      const { isPremium, priceDetails } = parseDomainPriceString(result.Price);
+      let price: DomainPricingDetails | null =
+        nonPremiumPrices[toPunycodeDomainName(result.DomainName)];
+
+      if (isPremium) {
+        const { registrationPrice, renewalPrice } = priceDetails ?? {};
+        if (!registrationPrice || !renewalPrice) {
+          this.logger.error(
+            {
+              method: 'bulkSearch',
+              domainName: result.DomainName,
+              priceDetails,
+            },
+            'Price Details not found for premium domain, returning unavailable result',
+          );
+          return unavailableResult;
+        }
+
+        const registerPrice = registrationPrice.amount;
+        const renewPrice = renewalPrice.amount;
+        const multiYearRegistrationPrice = range(0, 10).map(
+          (index) => registerPrice + renewPrice * index,
+        );
+
+        price = {
+          registrationPrice:
+            renewPrice > registerPrice
+              ? multiYearPricingTemplate(multiYearRegistrationPrice)
+              : singleYearPricingTemplate(registerPrice),
+          renewalPrice: singleYearPricingTemplate(renewPrice),
+          importPrice: singleYearPricingTemplate(Number.NaN),
+        };
+      }
+
+      return {
+        domainName: toPunycodeDomainName(result.DomainName),
+        price,
+        isPremium,
+        available:
+          result.Available === 'yes'
+            ? DomainAvailability.AVAILABLE
+            : DomainAvailability.UNAVAILABLE,
+      };
+    });
+  }
+
+  async bulkSearch(
+    queries: PunycodeDomainName[],
+  ): Promise<DomainQueryResult[]> {
+    if (queries.length === 0) {
+      return [];
+    }
+    queries.forEach(assertPunycodeDomainName);
+    const batchSize = 100;
+    const batches = splitEvery(batchSize, queries);
+    const nonPremiumPrices =
+      await this._bulkGetNonPremiumDomainPriceDetails(queries);
+
+    const results = await Promise.all(
+      batches.map(async (batch) => {
+        return this._bulkSearchBatch(batch, nonPremiumPrices);
+      }),
+    );
+
+    return results.flat();
   }
 
   async getSuggestions(
@@ -741,8 +890,9 @@ export class DynadotRegistrarService extends AbstractRegistrarService<Registrars
   ): Promise<DomainSuggestionsQueryResult<Registrars>> {
     assertPunycodeDomainName(query);
 
-    const res = await this.searchForDomain(query);
-    return { result: res.suggestions };
+    return {
+      result: [],
+    };
   }
 
   updateDomainContacts(

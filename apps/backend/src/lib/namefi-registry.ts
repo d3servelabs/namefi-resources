@@ -11,7 +11,7 @@ import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 import { addWeeks, isAfter, subDays } from 'date-fns';
 import { ParseResultType, parseDomain } from 'parse-domain';
-import { isNil } from 'ramda';
+import { groupBy, isNil } from 'ramda';
 import { config } from '#lib/env';
 import { userQualifiesForDomainNamePromo } from '#lib/userPromo';
 import { getDomainLevels } from './get-domain-levels';
@@ -117,36 +117,51 @@ export const getDomainListInfo = async (
   //get a map of domains that have pending orders
   const pendingOrdersMap = await checkIfDomainsHavePendingOrders(domains);
 
-  return pMap(
-    domains,
-    async (domain) => {
-      const unavailableDomainInfo = generateUnavailableDomainInfo(domain);
+  const { sld = [], _3ld = [] } = groupBy((domain) => {
+    // Parse the domain to extract its components
+    const domainParseResult = parseDomain(domain);
+    // Return default values for invalid or unsupported domains
+    if (
+      domainParseResult.type !== ParseResultType.Listed ||
+      pendingOrdersMap.get(domain)?.hasPendingOrders
+    ) {
+      return 'invalid';
+    }
 
-      // Parse the domain to extract its components
-      const domainParseResult = parseDomain(domain);
-      // Return default values for invalid or unsupported domains
-      if (
-        domainParseResult.type !== ParseResultType.Listed ||
-        pendingOrdersMap.get(domain)?.hasPendingOrders
-      ) {
-        return unavailableDomainInfo;
-      }
+    const { levels } = getDomainLevels(domain);
+    if (levels.length === 2) {
+      return 'sld';
+    }
+    if (levels.length === 3) {
+      return '_3ld';
+    }
 
-      const { levels } = getDomainLevels(domain);
+    return 'invalid';
+  }, domains);
 
-      if (levels.length === 2) {
-        return await _getSldDomainListInfo(domain, nftMap);
-      }
-      if (levels.length === 3) {
-        return await _get3ldDomainListInfo(domain, nftMap, user);
-      }
+  const [sldDomainsResponse, _3ldDomainsResponse] = await Promise.all([
+    _getSldDomainListInfo(sld, nftMap),
+    Promise.all(
+      _3ld.map(
+        async (domain) => await _get3ldDomainListInfo(domain, nftMap, user),
+      ),
+    ),
+  ]);
 
-      return unavailableDomainInfo;
-    },
-    {
-      concurrency: 5,
-    },
+  const sldDomains = new Map(
+    sldDomainsResponse?.map((domain) => [domain.domain, domain]) ?? [],
   );
+  const _3ldDomains = new Map(
+    _3ldDomainsResponse?.map((domain) => [domain.domain, domain]) ?? [],
+  );
+
+  return domains.map((domain) => {
+    const domainInfo = sldDomains.get(domain) || _3ldDomains.get(domain);
+    if (isNil(domainInfo)) {
+      return generateUnavailableDomainInfo(domain);
+    }
+    return domainInfo;
+  });
 };
 
 export const get0xDotCityPercentageRollout = () => {
@@ -169,49 +184,56 @@ export const get0xDotCityPercentageRollout = () => {
 };
 
 const _getSldDomainListInfo = async (
-  domain: NamefiNormalizedDomain,
+  domains: NamefiNormalizedDomain[],
   nftMap: Map<NamefiNormalizedDomain, NamefiNftSelect>,
 ) => {
-  const unavailableDomainInfo = generateUnavailableDomainInfo(domain);
-
-  // Look up the NFT and price information
-  const nft = nftMap.get(domain);
-
   const responseOrError = await resolve(
-    sldRegistrar.searchForDomain(toPunycodeDomainName(domain)),
+    sldRegistrar.bulkSearch(domains.map(toPunycodeDomainName)),
   );
 
   if (responseOrError.failed) {
-    return unavailableDomainInfo;
-  }
-  const response = responseOrError.result;
-
-  const pricingDetails = response.result.price;
-  const available = response.result.available === DomainAvailability.AVAILABLE;
-  const importable =
-    !available &&
-    isNil(nft) &&
-    computeChargesInUsdOrThrow(pricingDetails.importPrice, 1) > 0;
-
-  let durationConstraints = { minYears: 1, maxYears: 10 };
-  try {
-    durationConstraints = getDomainDurationConstraints(domain);
-  } catch (error) {
-    logger.error(`Error getting duration constraints for ${domain}: ${error}`);
+    return domains.map(generateUnavailableDomainInfo);
   }
 
-  return {
-    domain: namefiNormalizedDomainSchema.parse(response.result.domainName),
-    availability: available,
-    importable,
-    pricingDetails,
-    currentOwner: nft?.ownerAddress,
-    registrarKey: response.registrarKey,
-    durationValidationInYears: {
-      min: durationConstraints.minYears,
-      max: durationConstraints.maxYears,
-    },
-  };
+  const responses = responseOrError.result;
+  return responses.map((response) => {
+    const domain = response.domainName;
+
+    // Look up the NFT and price information
+    const nft = nftMap.get(domain);
+
+    const pricingDetails = response.price;
+    if (isNil(pricingDetails)) {
+      return generateUnavailableDomainInfo(domain);
+    }
+    const available = response.available === DomainAvailability.AVAILABLE;
+    const importable =
+      !available &&
+      isNil(nft) &&
+      computeChargesInUsdOrThrow(pricingDetails.importPrice, 1) > 0;
+
+    let durationConstraints = { minYears: 1, maxYears: 10 };
+    try {
+      durationConstraints = getDomainDurationConstraints(domain);
+    } catch (error) {
+      logger.error(
+        `Error getting duration constraints for ${domain}: ${error}`,
+      );
+    }
+
+    return {
+      domain: namefiNormalizedDomainSchema.parse(response.domainName),
+      availability: available,
+      importable,
+      pricingDetails,
+      currentOwner: nft?.ownerAddress,
+      registrarKey: response.registrarKey,
+      durationValidationInYears: {
+        min: durationConstraints.minYears,
+        max: durationConstraints.maxYears,
+      },
+    };
+  });
 };
 
 const _get3ldDomainListInfo = async (
