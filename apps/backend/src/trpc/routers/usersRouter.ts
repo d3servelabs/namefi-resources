@@ -521,15 +521,27 @@ async function getSldExpirationDateForDomainList(
 
   const expirationDates = await pMap(
     normalizedDomainNames,
-    (normalizedDomainName) => {
+    async (normalizedDomainName) => {
       const indexedExpirationDate =
         indexedExpirationDatesMap.get(normalizedDomainName);
       if (indexedExpirationDate) {
         return indexedExpirationDate;
       }
-      return getLiveSldExpirationDate(normalizedDomainName);
+      try {
+        const liveExpirationDate =
+          await getLiveSldExpirationDate(normalizedDomainName);
+        if (isNil(liveExpirationDate)) {
+          return null;
+        }
+        return liveExpirationDate;
+      } catch (error) {
+        logger.error(
+          { context: 'getSldExpirationDateForDomainList', error },
+          'Failed to get live expiration date',
+        );
+        return null;
+      }
     },
-    { concurrency: 2 }, // 3 from trial run
   );
   return expirationDates;
 }
@@ -542,16 +554,6 @@ async function getLiveSldExpirationDate(normalizedDomainName: string) {
     expirationDate = RDAP.getExpiryDateFromRdapResponse(rdapResponse.result);
   }
 
-  if (isNil(expirationDate)) {
-    const whoisResponse = await resolve(
-      WHOIS.queryDomain(normalizedDomainName),
-    );
-    if (!whoisResponse.failed) {
-      expirationDate = WHOIS.getExpiryDateFromWhoisResponse(
-        whoisResponse.result,
-      );
-    }
-  }
   if (isNil(expirationDate)) {
     const domainDetails = await sldRegistrar.getDomainDetails(
       toPunycodeDomainName(normalizedDomainName),
