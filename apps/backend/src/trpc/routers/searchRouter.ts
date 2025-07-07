@@ -39,6 +39,7 @@ import {
 } from '#lib/namefi-registry';
 import { authedOrPublicProcedure, createTRPCRouter } from '../base';
 import { toPunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
+import { getDomainLevels } from '#lib/get-domain-levels';
 
 type Tag = ReturnType<typeof getTags>[number];
 
@@ -90,7 +91,18 @@ export const searchRouter = createTRPCRouter({
           `${sanitizedQuery}.${parentDomain}`,
         );
       } else {
-        domain = namefiNormalizedDomainSchema.parse(query);
+        let trimmedQuery = query
+          .trim()
+          .toLowerCase()
+          .replace(/(^\.|\.$)/g, '')
+          .replace(/[!$_#@+]/g, '');
+
+        domain = namefiNormalizedDomainSchema.parse(trimmedQuery);
+        const { levels } = getDomainLevels(domain);
+        if (levels.length <= 1) {
+          trimmedQuery = trimmedQuery.replace(/\./g, '-'); //if the has dots but no tld, replace dots with dashes
+          domain = namefiNormalizedDomainSchema.parse(`${trimmedQuery}.xyz`);
+        }
       }
       const availability = await getDomainListInfo([domain], ctx.user);
 
