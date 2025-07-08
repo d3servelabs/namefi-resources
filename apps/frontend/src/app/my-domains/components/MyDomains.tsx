@@ -48,13 +48,22 @@ function useGetDomains() {
 
   const domains = useMemo(() => {
     return (
-      data?.map(({ normalizedDomainName, chainId, ownerAddress, tokenId }) => ({
-        id: normalizedDomainName,
-        normalizedDomainName,
-        chainId,
-        ownerAddress,
-        tokenId,
-      })) || []
+      data?.map(
+        ({
+          normalizedDomainName,
+          chainId,
+          ownerAddress,
+          tokenId,
+          expirationDate,
+        }) => ({
+          id: normalizedDomainName,
+          normalizedDomainName,
+          chainId,
+          ownerAddress,
+          tokenId,
+          expirationDate,
+        }),
+      ) || []
     );
   }, [data]);
 
@@ -71,6 +80,7 @@ const LoadingSkeletons: FC = () => (
               <Th>Chain</Th>
               <Th>Wallet</Th>
               <Th>Domain Name</Th>
+              <Th>Expires On</Th>
               <Th>Actions</Th>
             </Tr>
           </Thead>
@@ -83,8 +93,11 @@ const LoadingSkeletons: FC = () => (
                 <Td>
                   <Skeleton className="h-6 w-24" />
                 </Td>
-                <Td className="font-medium w-full">
+                <Td className="font-medium">
                   <Skeleton className="h-6 w-28" />
+                </Td>
+                <Td>
+                  <Skeleton className="h-6 w-24" />
                 </Td>
                 <Td className="text-right">
                   <Skeleton className="h-6 w-32" />
@@ -206,6 +219,7 @@ function MyDomainsTable() {
                 <Th>Chain</Th>
                 <Th>Wallet</Th>
                 <Th>Domain Name</Th>
+                <Th>Expires On</Th>
                 <Th>Actions</Th>
               </Tr>
             </Thead>
@@ -220,13 +234,22 @@ function MyDomainsTable() {
                       {item.ownerAddress}
                     </TruncatedTextWithHover>
                   </Td>
-                  <Td className="font-medium w-full">
+                  <Td className="font-medium">
                     <Link
                       href={`/domain/${item.normalizedDomainName}`}
                       aria-label={`Settings for ${item.normalizedDomainName}`}
                     >
                       {item.normalizedDomainName}
                     </Link>
+                  </Td>
+                  <Td>
+                    {item.expirationDate ? (
+                      <span className="text-sm">
+                        {new Date(item.expirationDate).toLocaleDateString()}
+                      </span>
+                    ) : (
+                      <span className="text-sm text-muted-foreground">-</span>
+                    )}
                   </Td>
                   <Td className="text-right">
                     <div className="flex gap-2">

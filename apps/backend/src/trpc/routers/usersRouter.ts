@@ -152,6 +152,7 @@ export const usersRouter = createTRPCRouter({
     ).map((nft) => ({
       ...nft,
       tokenId: nftIdFromDomainName(nft.normalizedDomainName),
+      expirationDate: null,
     }));
 
     try {
