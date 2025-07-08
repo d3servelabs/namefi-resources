@@ -2,6 +2,7 @@ import * as chains from 'viem/chains';
 import type { ConfigInput } from '../schema';
 
 const localConfig: ConfigInput = {
+  TYPE: 'local',
   BACKEND_URL: 'http://localhost:3000',
   FIRST_PARTY_DEPLOYMENT_URL: 'https://localhost:5050',
   GA_MEASUREMENT_ID: 'G-PHKF9PM32W',

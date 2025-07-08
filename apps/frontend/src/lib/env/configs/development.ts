@@ -2,6 +2,7 @@ import * as chains from 'viem/chains';
 import type { ConfigInput } from '../schema';
 
 const developmentConfig: ConfigInput = {
+  TYPE: 'development',
   BACKEND_URL: 'https://backend.astra.namefi.dev',
   FIRST_PARTY_DEPLOYMENT_URL: 'https://astra.namefi.dev',
   GA_MEASUREMENT_ID: 'G-PHKF9PM32W',

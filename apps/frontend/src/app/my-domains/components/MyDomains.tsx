@@ -4,7 +4,14 @@ import NetworkLogo from '@/components/NetworkLogo';
 import { TruncatedTextWithHover } from '@/components/TruncatedTextWithHover';
 import { AuthRequired } from '@/components/auth-required';
 import { EmptyPlaceholder } from '@/components/empty-placeholder';
-import { Table, Td, Th, Thead, Tr } from '@/components/table';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/shadcn/table';
 import { Button } from '@/components/ui/shadcn/button';
 import { Card, CardContent } from '@/components/ui/shadcn/card';
 import { Input } from '@/components/ui/shadcn/input';
@@ -16,21 +23,41 @@ import {
   SelectValue,
 } from '@/components/ui/shadcn/select';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
-import { TableBody } from '@/components/ui/shadcn/table';
 import { useAuth } from '@/hooks/useAuth';
 import { useEmailPrompt } from '@/hooks/useEmailPrompt';
 import { config } from '@/lib/env';
 import { cn } from '@/lib/utils';
-import { useTRPC } from '@/utils/trpc';
-import { NAMEFI_NFT_CONTRACT_ADDRESS, getChain } from '@namefi-astra/utils';
+import { type AppRouterOutput, useTRPC } from '@/utils/trpc';
+import {
+  NAMEFI_NFT_CONTRACT_ADDRESS,
+  CHAINS,
+  getChain,
+} from '@namefi-astra/utils';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { ExternalLink, Search, SearchIcon, Settings } from 'lucide-react';
+import {
+  type ColumnDef,
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getSortedRowModel,
+  useReactTable,
+} from '@tanstack/react-table';
+import {
+  ChevronDown,
+  ChevronUp,
+  ChevronsUpDown,
+  ExternalLink,
+  Search,
+  SearchIcon,
+  Settings,
+} from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import {
   type FC,
   type HTMLAttributes,
   Suspense,
+  useCallback,
   useMemo,
   useState,
 } from 'react';
@@ -39,73 +66,46 @@ import {
   DNS_MANAGEMENT_EMAIL_REQUIRED,
 } from '@/components/modals/EmailRequiredModal';
 
-function useGetDomains() {
-  const trpc = useTRPC();
-
-  const { data } = useSuspenseQuery(
-    trpc.users.getCurrentUserDomains.queryOptions(),
-  );
-
-  const domains = useMemo(() => {
-    return (
-      data?.map(
-        ({
-          normalizedDomainName,
-          chainId,
-          ownerAddress,
-          tokenId,
-          expirationDate,
-        }) => ({
-          id: normalizedDomainName,
-          normalizedDomainName,
-          chainId,
-          ownerAddress,
-          tokenId,
-          expirationDate,
-        }),
-      ) || []
-    );
-  }, [data]);
-
-  return domains;
-}
+type DomainRow = AppRouterOutput['users']['getCurrentUserDomains'][number];
 
 const LoadingSkeletons: FC = () => (
   <div className="flex flex-col gap-4">
     <Card>
       <CardContent>
-        <Table className="w-full">
-          <Thead>
-            <Tr>
-              <Th>Chain</Th>
-              <Th>Wallet</Th>
-              <Th>Domain Name</Th>
-              <Th>Expires On</Th>
-              <Th>Actions</Th>
-            </Tr>
-          </Thead>
-          <TableBody>
-            {[...new Array(3)].map((_, index) => (
-              <Tr key={index}>
-                <Td>
-                  <Skeleton className="h-6 w-6" />
-                </Td>
-                <Td>
-                  <Skeleton className="h-6 w-24" />
-                </Td>
-                <Td className="font-medium">
-                  <Skeleton className="h-6 w-28" />
-                </Td>
-                <Td>
-                  <Skeleton className="h-6 w-24" />
-                </Td>
-                <Td className="text-right">
-                  <Skeleton className="h-6 w-32" />
-                </Td>
-              </Tr>
-            ))}
-          </TableBody>
-        </Table>
+        <div className="rounded-md border">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="w-[80px]">Chain</TableHead>
+                <TableHead className="w-[140px]">Wallet</TableHead>
+                <TableHead>Domain Name</TableHead>
+                <TableHead className="w-[120px]">Expires On</TableHead>
+                <TableHead className="w-[280px]">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {[...new Array(3)].map((_, index) => (
+                <TableRow key={index}>
+                  <TableCell>
+                    <Skeleton className="h-6 w-6" />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton className="h-6 w-24" />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton className="h-6 w-28" />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton className="h-6 w-24" />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton className="h-6 w-32" />
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
       </CardContent>
     </Card>
   </div>
@@ -135,37 +135,171 @@ const MyDomainsEmptyPlaceholder: FC<HTMLAttributes<HTMLDivElement>> = ({
 };
 
 function MyDomainsTable() {
-  const domains = useGetDomains();
-  const [chainFilter, setChainFilter] = useState<number | undefined>(undefined);
-  const [filter, setFilter] = useState('');
+  const trpc = useTRPC();
+  const { data: domains } = useSuspenseQuery(
+    trpc.users.getCurrentUserDomains.queryOptions(),
+  );
+
   const [showEmailModal, setShowEmailModal] = useState(false);
-  const [selectedDomain, setSelectedDomain] = useState<string>('');
   const { hasEmail } = useEmailPrompt();
   const router = useRouter();
 
-  const filteredDomains = useMemo(() => {
-    return domains.filter(
-      (domain) =>
-        domain.normalizedDomainName
-          .toLowerCase()
-          .includes(filter.toLowerCase()) &&
-        (chainFilter === undefined || domain.chainId === chainFilter),
-    );
-  }, [domains, filter, chainFilter]);
+  const handleManageDnsClick = useCallback(
+    (domainName: string, e: React.MouseEvent) => {
+      e.preventDefault();
+      if (!hasEmail) {
+        setShowEmailModal(true);
+      } else {
+        router.push(`/domain/${domainName}`);
+      }
+    },
+    [hasEmail, router],
+  );
 
-  const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFilter(e.target.value);
-  };
+  const columns: ColumnDef<DomainRow>[] = useMemo(
+    () => [
+      {
+        accessorKey: 'chainId',
+        header: 'Chain',
+        cell: ({ row }) => (
+          <NetworkLogo network={row.getValue('chainId')} className="w-6 h-6" />
+        ),
+        size: 80,
+        enableSorting: false,
+        filterFn: 'equals',
+      },
+      {
+        accessorKey: 'ownerAddress',
+        header: 'Wallet',
+        cell: ({ row }) => (
+          <TruncatedTextWithHover maxLength={12}>
+            {row.getValue('ownerAddress')}
+          </TruncatedTextWithHover>
+        ),
+        size: 140,
+        enableSorting: false,
+      },
+      {
+        accessorKey: 'normalizedDomainName',
+        header: ({ column }) => {
+          return (
+            <Button
+              variant="ghost"
+              onClick={() =>
+                column.toggleSorting(column.getIsSorted() === 'asc')
+              }
+              className="-mx-3 h-auto px-3 py-1 font-medium hover:bg-transparent justify-start"
+            >
+              Domain Name
+              {column.getIsSorted() === 'asc' ? (
+                <ChevronUp className="ml-2 h-4 w-4" />
+              ) : column.getIsSorted() === 'desc' ? (
+                <ChevronDown className="ml-2 h-4 w-4" />
+              ) : (
+                <ChevronsUpDown className="ml-2 h-4 w-4" />
+              )}
+            </Button>
+          );
+        },
+        cell: ({ row }) => (
+          <Link
+            href={`/domain/${row.getValue('normalizedDomainName')}`}
+            aria-label={`Settings for ${row.getValue('normalizedDomainName')}`}
+            className="font-medium hover:underline"
+          >
+            {row.getValue('normalizedDomainName')}
+          </Link>
+        ),
+      },
+      {
+        accessorKey: 'expirationDate',
+        header: ({ column }) => {
+          return (
+            <Button
+              variant="ghost"
+              onClick={() =>
+                column.toggleSorting(column.getIsSorted() === 'asc')
+              }
+              className="-mx-3 h-auto px-3 py-1 font-medium hover:bg-transparent justify-start"
+            >
+              Expires On
+              {column.getIsSorted() === 'asc' ? (
+                <ChevronUp className="ml-2 h-4 w-4" />
+              ) : column.getIsSorted() === 'desc' ? (
+                <ChevronDown className="ml-2 h-4 w-4" />
+              ) : (
+                <ChevronsUpDown className="ml-2 h-4 w-4" />
+              )}
+            </Button>
+          );
+        },
+        cell: ({ row }) => {
+          const expirationDate = row.getValue('expirationDate') as
+            | string
+            | undefined;
+          return expirationDate ? (
+            <span className="text-sm">
+              {new Date(expirationDate).toLocaleDateString()}
+            </span>
+          ) : (
+            <span className="text-sm text-muted-foreground">-</span>
+          );
+        },
+        size: 120,
+        sortingFn: (rowA, rowB) => {
+          const a = rowA.getValue('expirationDate') as string | undefined;
+          const b = rowB.getValue('expirationDate') as string | undefined;
 
-  const handleManageDnsClick = (domainName: string, e: React.MouseEvent) => {
-    e.preventDefault();
-    if (!hasEmail) {
-      setSelectedDomain(domainName);
-      setShowEmailModal(true);
-    } else {
-      router.push(`/domain/${domainName}`);
-    }
-  };
+          if (!a && !b) return 0;
+          if (!a) return 1;
+          if (!b) return -1;
+
+          return new Date(a).getTime() - new Date(b).getTime();
+        },
+      },
+      {
+        id: 'actions',
+        header: 'Actions',
+        cell: ({ row }) => (
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={(e) =>
+                handleManageDnsClick(row.getValue('normalizedDomainName'), e)
+              }
+              aria-label={`Settings for ${row.getValue('normalizedDomainName')}`}
+            >
+              <Settings className="w-4 h-4 mr-1" /> Manage DNS
+            </Button>
+            <Button variant="outline" size="sm" asChild={true}>
+              <Link
+                href={`https://basescan.org/nft/${NAMEFI_NFT_CONTRACT_ADDRESS}/${row.original.tokenId ?? ''}`}
+                aria-label={`View NFT for ${row.getValue('normalizedDomainName')}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <ExternalLink className="w-4 h-4 mr-1" /> View NFT
+              </Link>
+            </Button>
+          </div>
+        ),
+        size: 280,
+        enableSorting: false,
+      },
+    ],
+    [handleManageDnsClick],
+  );
+
+  const table = useReactTable({
+    data: domains,
+    columns,
+    getRowId: (row) => row.normalizedDomainName,
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    columnResizeMode: 'onChange',
+  });
 
   if (domains.length === 0) {
     return <MyDomainsEmptyPlaceholder />;
@@ -184,100 +318,134 @@ function MyDomainsTable() {
         <CardContent>
           <div className="flex justify-end mb-4 gap-2">
             <Select
-              value={chainFilter?.toString() ?? '-1'}
+              value={
+                table.getColumn('chainId')?.getFilterValue()?.toString() ?? '-1'
+              }
               onValueChange={(value) =>
-                setChainFilter(
-                  !value || value === '-1' ? undefined : Number.parseInt(value),
-                )
+                table
+                  .getColumn('chainId')
+                  ?.setFilterValue(
+                    !value || value === '-1'
+                      ? undefined
+                      : Number.parseInt(value),
+                  )
               }
             >
-              <SelectTrigger>
-                <SelectValue placeholder="Select chain" />
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Select chain">
+                  {(() => {
+                    const selectedValue =
+                      table
+                        .getColumn('chainId')
+                        ?.getFilterValue()
+                        ?.toString() ?? '-1';
+                    if (selectedValue === '-1') {
+                      return 'All chains';
+                    }
+                    const chain = getChain(Number.parseInt(selectedValue));
+                    return chain ? (
+                      <div className="flex items-center gap-2">
+                        <NetworkLogo network={chain.id} className="w-4 h-4" />
+                        {chain.name}
+                      </div>
+                    ) : (
+                      'Select chain'
+                    );
+                  })()}
+                </SelectValue>
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value={'-1'}>All</SelectItem>
-                {config.ALLOWED_CHAINS.map((chainId) => (
-                  <SelectItem key={chainId} value={chainId.toString()}>
-                    {getChain(chainId)?.name}
+                <SelectItem value={'-1'}>All chains</SelectItem>
+                {(config.TYPE === 'local' || config.TYPE === 'development') && (
+                  <SelectItem value={CHAINS.sepolia.id.toString()}>
+                    <div className="flex items-center gap-2">
+                      <NetworkLogo
+                        network={CHAINS.sepolia.id}
+                        className="w-4 h-4"
+                      />
+                      {CHAINS.sepolia.name}
+                    </div>
                   </SelectItem>
-                ))}
+                )}
+                <SelectItem value={CHAINS.base.id.toString()}>
+                  <div className="flex items-center gap-2">
+                    <NetworkLogo network={CHAINS.base.id} className="w-4 h-4" />
+                    {CHAINS.base.name}
+                  </div>
+                </SelectItem>
+                <SelectItem value={CHAINS.mainnet.id.toString()}>
+                  <div className="flex items-center gap-2">
+                    <NetworkLogo
+                      network={CHAINS.mainnet.id}
+                      className="w-4 h-4"
+                    />
+                    {CHAINS.mainnet.name}
+                  </div>
+                </SelectItem>
               </SelectContent>
             </Select>
-            <div className="relative w-64 ">
+            <div className="relative w-64">
               <Search className="absolute left-2 top-2.5 h-4 w-4 text-zinc-500" />
               <Input
                 placeholder="Search domains..."
-                value={filter ?? ''}
-                onChange={handleFilterChange}
+                value={table.getState().globalFilter ?? ''}
+                onChange={(e) => table.setGlobalFilter(e.target.value)}
                 className="pl-8"
               />
             </div>
           </div>
-          <Table className="w-full">
-            <Thead>
-              <Tr>
-                <Th>Chain</Th>
-                <Th>Wallet</Th>
-                <Th>Domain Name</Th>
-                <Th>Expires On</Th>
-                <Th>Actions</Th>
-              </Tr>
-            </Thead>
-            <TableBody>
-              {filteredDomains.map((item) => (
-                <Tr key={item.id}>
-                  <Td>
-                    <NetworkLogo network={item.chainId} className="w-6 h-6" />
-                  </Td>
-                  <Td>
-                    <TruncatedTextWithHover maxLength={12}>
-                      {item.ownerAddress}
-                    </TruncatedTextWithHover>
-                  </Td>
-                  <Td className="font-medium">
-                    <Link
-                      href={`/domain/${item.normalizedDomainName}`}
-                      aria-label={`Settings for ${item.normalizedDomainName}`}
-                    >
-                      {item.normalizedDomainName}
-                    </Link>
-                  </Td>
-                  <Td>
-                    {item.expirationDate ? (
-                      <span className="text-sm">
-                        {new Date(item.expirationDate).toLocaleDateString()}
-                      </span>
-                    ) : (
-                      <span className="text-sm text-muted-foreground">-</span>
-                    )}
-                  </Td>
-                  <Td className="text-right">
-                    <div className="flex gap-2">
-                      <Button
-                        variant="outline"
-                        onClick={(e) =>
-                          handleManageDnsClick(item.normalizedDomainName, e)
-                        }
-                        aria-label={`Settings for ${item.normalizedDomainName}`}
+
+          <div className="rounded-md border">
+            <Table style={{ tableLayout: 'fixed' }}>
+              <TableHeader>
+                {table.getHeaderGroups().map((headerGroup) => (
+                  <TableRow key={headerGroup.id}>
+                    {headerGroup.headers.map((header) => (
+                      <TableHead
+                        key={header.id}
+                        style={{ width: header.getSize() }}
                       >
-                        <Settings /> Manage DNS
-                      </Button>
-                      <Button variant="outline" asChild={true}>
-                        <Link
-                          href={`https://basescan.org/nft/${NAMEFI_NFT_CONTRACT_ADDRESS}/${item.tokenId ?? ''}`}
-                          aria-label={`View NFT for ${item.normalizedDomainName}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext(),
+                            )}
+                      </TableHead>
+                    ))}
+                  </TableRow>
+                ))}
+              </TableHeader>
+              <TableBody>
+                {table.getRowModel().rows?.length > 0 ? (
+                  table.getRowModel().rows.map((row) => (
+                    <TableRow key={row.id}>
+                      {row.getVisibleCells().map((cell) => (
+                        <TableCell
+                          key={cell.id}
+                          style={{ width: cell.column.getSize() }}
                         >
-                          <ExternalLink /> View NFT
-                        </Link>
-                      </Button>
-                    </div>
-                  </Td>
-                </Tr>
-              ))}
-            </TableBody>
-          </Table>
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext(),
+                          )}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell
+                      colSpan={columns.length}
+                      className="h-24 text-center"
+                    >
+                      No results.
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </div>
         </CardContent>
       </Card>
     </>
