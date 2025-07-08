@@ -276,15 +276,18 @@ export function useCart() {
           results.forEach((result, index) => {
             logAddToCart({ ...cartItemsToAdd[index], id: result.id });
           });
-        } else {
-          const itemsWithIds = cartItemsToAdd.map((item) => ({
-            ...item,
-            id: crypto.randomUUID(),
-          }));
-          setLocalCartItems((prevItems) => [...prevItems, ...itemsWithIds]);
-          itemsWithIds.forEach((item) => logAddToCart(item));
+          return results;
         }
+
+        const itemsWithIds = cartItemsToAdd.map((item) => ({
+          ...item,
+          id: crypto.randomUUID(),
+        }));
+        setLocalCartItems((prevItems) => [...prevItems, ...itemsWithIds]);
+        itemsWithIds.forEach((item) => logAddToCart(item));
+        return itemsWithIds;
       }
+      return [];
     },
     [
       isDomainInCart,

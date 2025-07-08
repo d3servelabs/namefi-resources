@@ -3,6 +3,7 @@
 import NetworkLogo from '@/components/NetworkLogo';
 import { TruncatedTextWithHover } from '@/components/TruncatedTextWithHover';
 import { AuthRequired } from '@/components/auth-required';
+import { AsyncButton } from '@/components/buttons/AsyncButton';
 import { EmptyPlaceholder } from '@/components/empty-placeholder';
 import {
   Table,
@@ -75,6 +76,41 @@ import {
 } from '@/components/modals/EmailRequiredModal';
 
 type DomainRow = AppRouterOutput['users']['getCurrentUserDomains'][number];
+
+// Wrapper component to maintain button state
+const RenewButton: FC<{
+  domainName: string;
+  expirationDate: Date | null | undefined;
+  onRenew: (domain: {
+    normalizedDomainName: string;
+    expirationDate?: Date | null;
+  }) => Promise<any>;
+  isProcessing: boolean;
+}> = ({ domainName, expirationDate, onRenew, isProcessing }) => {
+  return (
+    <AsyncButton
+      variant="outline"
+      size="sm"
+      onClick={async () => {
+        await onRenew({
+          normalizedDomainName: domainName,
+          expirationDate: expirationDate,
+        });
+      }}
+      isLoading={isProcessing}
+      aria-label={`Renew ${domainName}`}
+      customLoadingContent={
+        <>
+          <Loader2 className="w-4 h-4 mr-1 animate-spin" />
+          Renew
+        </>
+      }
+    >
+      <History className="w-4 h-4 mr-1 scale-x-[-1]" />
+      Renew
+    </AsyncButton>
+  );
+};
 
 const LoadingSkeletons: FC = () => (
   <div className="flex flex-col gap-4">
@@ -156,6 +192,9 @@ function MyDomainsTable() {
 
   const [showEmailModal, setShowEmailModal] = useState(false);
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
+  const [processingDomains, setProcessingDomains] = useState<Set<string>>(
+    new Set(),
+  );
   const { hasEmail } = useEmailPrompt();
   const router = useRouter();
   const canAnimate = useCanAnimate();
@@ -171,6 +210,30 @@ function MyDomainsTable() {
       }
     },
     [hasEmail, router],
+  );
+
+  const handleRenewDomain = useCallback(
+    async (domain: {
+      normalizedDomainName: string;
+      expirationDate?: Date | null;
+    }) => {
+      setProcessingDomains((prev) =>
+        new Set(prev).add(domain.normalizedDomainName),
+      );
+      try {
+        await renewSingleDomain({
+          normalizedDomainName: domain.normalizedDomainName as any,
+          expirationDate: domain.expirationDate,
+        });
+      } finally {
+        setProcessingDomains((prev) => {
+          const newSet = new Set(prev);
+          newSet.delete(domain.normalizedDomainName);
+          return newSet;
+        });
+      }
+    },
+    [renewSingleDomain],
   );
 
   const columns: ColumnDef<DomainRow>[] = useMemo(
@@ -314,25 +377,14 @@ function MyDomainsTable() {
             >
               <Settings className="w-4 h-4 mr-1" /> Manage DNS
             </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={async () => {
-                await renewSingleDomain({
-                  normalizedDomainName: row.getValue('normalizedDomainName'),
-                  expirationDate: row.getValue('expirationDate'),
-                });
-              }}
-              disabled={isProcessing}
-              aria-label={`Renew ${row.getValue('normalizedDomainName')}`}
-            >
-              {isProcessing ? (
-                <Loader2 className="w-4 h-4 mr-1 animate-spin" />
-              ) : (
-                <History className="w-4 h-4 mr-1 scale-x-[-1]" />
+            <RenewButton
+              domainName={row.getValue('normalizedDomainName')}
+              expirationDate={row.getValue('expirationDate')}
+              onRenew={handleRenewDomain}
+              isProcessing={processingDomains.has(
+                row.getValue('normalizedDomainName'),
               )}
-              Renew
-            </Button>
+            />
             <Button variant="outline" size="sm" asChild={true}>
               <Link
                 href={`https://basescan.org/nft/${NAMEFI_NFT_CONTRACT_ADDRESS}/${row.original.tokenId ?? ''}`}
@@ -349,7 +401,7 @@ function MyDomainsTable() {
         enableSorting: false,
       },
     ],
-    [handleManageDnsClick, renewSingleDomain, isProcessing],
+    [handleManageDnsClick, handleRenewDomain, processingDomains],
   );
 
   const table = useReactTable({
@@ -602,7 +654,7 @@ function MyDomainsTable() {
 
                     {/* Actions */}
                     <div className="flex items-center gap-3">
-                      <Button
+                      <AsyncButton
                         onClick={async () => {
                           const selectedDomains = table
                             .getSelectedRowModel()
@@ -611,19 +663,32 @@ function MyDomainsTable() {
                                 row.original.normalizedDomainName,
                               expirationDate: row.original.expirationDate,
                             }));
-                          await renewDomains(selectedDomains);
-                          setRowSelection({});
+
+                          // Mark all selected domains as processing
+                          const selectedDomainNames = selectedDomains.map(
+                            (d) => d.normalizedDomainName,
+                          );
+                          setProcessingDomains(new Set(selectedDomainNames));
+
+                          try {
+                            await renewDomains(selectedDomains);
+                            setRowSelection({});
+                          } finally {
+                            // Clear processing state for all domains
+                            setProcessingDomains(new Set());
+                          }
                         }}
-                        disabled={isProcessing}
                         className="h-10 px-4 gap-2 bg-primary hover:bg-primary/90"
+                        customLoadingContent={
+                          <>
+                            <Loader2 className="w-4 h-4 scale-x-[-1] animate-spin" />
+                            Renew All
+                          </>
+                        }
                       >
-                        {isProcessing ? (
-                          <Loader2 className="w-4 h-4 scale-x-[-1] animate-spin" />
-                        ) : (
-                          <History className="w-4 h-4 scale-x-[-1]" />
-                        )}
+                        <History className="w-4 h-4 scale-x-[-1]" />
                         Renew All
-                      </Button>
+                      </AsyncButton>
 
                       <Button
                         variant="ghost"

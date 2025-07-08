@@ -23,18 +23,24 @@ export type LoadingButtonProps = ComponentPropsWithoutRef<typeof Button> & {
   loadingIcon?: ReactNode;
 };
 
-export const LoadingButton = ({ isLoading, ...props }: LoadingButtonProps) => {
+export const LoadingButton = ({
+  isLoading,
+  customLoadingContent,
+  loadingText,
+  loadingIcon,
+  ...props
+}: LoadingButtonProps) => {
   const loadingContent = useMemo(() => {
-    if (props.customLoadingContent) {
-      return props.customLoadingContent;
+    if (customLoadingContent) {
+      return customLoadingContent;
     }
     return (
       <>
-        {props.loadingIcon ?? <Loader2 className="w-4 h-4 animate-spin" />}{' '}
-        {props.loadingText ?? 'Pending...'}
+        {loadingIcon ?? <Loader2 className="w-4 h-4 animate-spin" />}{' '}
+        {loadingText ?? 'Pending...'}
       </>
     );
-  }, [props.customLoadingContent, props.loadingText, props.loadingIcon]);
+  }, [customLoadingContent, loadingText, loadingIcon]);
 
   return (
     <Button
