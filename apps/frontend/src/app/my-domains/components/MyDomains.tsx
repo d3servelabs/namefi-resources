@@ -68,7 +68,7 @@ import {
   useState,
 } from 'react';
 import { motion, AnimatePresence, MotionConfig } from 'motion/react';
-import NumberFlow, { useCanAnimate } from '@number-flow/react';
+import NumberFlow, { NumberFlowGroup, useCanAnimate } from '@number-flow/react';
 import { Separator } from '@/components/ui/shadcn/separator';
 import {
   EmailRequiredModal,
@@ -210,6 +210,36 @@ function MyDomainsTable() {
       }
     },
     [hasEmail, router],
+  );
+
+  const isThirdPartyHostname = useCallback((domain: string) => {
+    return config.POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES.some((hostname) =>
+      domain.endsWith(hostname),
+    );
+  }, []);
+
+  const canDomainBeRenewed = useCallback(
+    (domain: string, expirationDate?: string | null) => {
+      // Hide renew button for third-party hostnames
+      if (isThirdPartyHostname(domain)) {
+        return false;
+      }
+
+      // Hide renew button if domain has no expiry date
+      if (!expirationDate) {
+        return false;
+      }
+
+      // Hide renew button if domain is already expired
+      const currentDate = new Date();
+      const expiry = new Date(expirationDate);
+      if (expiry <= currentDate) {
+        return false;
+      }
+
+      return true;
+    },
+    [isThirdPartyHostname],
   );
 
   const handleRenewDomain = useCallback(
@@ -367,43 +397,59 @@ function MyDomainsTable() {
       {
         id: 'actions',
         header: 'Actions',
-        cell: ({ row }) => (
-          <div className="flex gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={(e) =>
-                handleManageDnsClick(row.getValue('normalizedDomainName'), e)
-              }
-              aria-label={`Settings for ${row.getValue('normalizedDomainName')}`}
-            >
-              <Settings className="w-4 h-4 mr-1" /> Manage DNS
-            </Button>
-            <RenewButton
-              domainName={row.getValue('normalizedDomainName')}
-              expirationDate={row.getValue('expirationDate')}
-              onRenew={handleRenewDomain}
-              isProcessing={processingDomains.has(
-                row.getValue('normalizedDomainName'),
-              )}
-            />
-            <Button variant="outline" size="sm" asChild={true}>
-              <Link
-                href={`https://basescan.org/nft/${NAMEFI_NFT_CONTRACT_ADDRESS}/${row.original.tokenId ?? ''}`}
-                aria-label={`View NFT for ${row.getValue('normalizedDomainName')}`}
-                target="_blank"
-                rel="noopener noreferrer"
+        cell: ({ row }) => {
+          const domainName = row.getValue('normalizedDomainName') as string;
+          const expirationDate = row.getValue('expirationDate') as
+            | string
+            | null;
+          const showRenewButton = canDomainBeRenewed(
+            domainName,
+            expirationDate,
+          );
+
+          return (
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={(e) => handleManageDnsClick(domainName, e)}
+                aria-label={`Settings for ${domainName}`}
               >
-                <ExternalLink className="w-4 h-4 mr-1" /> View NFT
-              </Link>
-            </Button>
-          </div>
-        ),
+                <Settings className="w-4 h-4 mr-1" /> Manage DNS
+              </Button>
+              {showRenewButton && (
+                <RenewButton
+                  domainName={domainName}
+                  expirationDate={
+                    expirationDate ? new Date(expirationDate) : null
+                  }
+                  onRenew={handleRenewDomain}
+                  isProcessing={processingDomains.has(domainName)}
+                />
+              )}
+              <Button variant="outline" size="sm" asChild={true}>
+                <Link
+                  href={`https://basescan.org/nft/${NAMEFI_NFT_CONTRACT_ADDRESS}/${row.original.tokenId ?? ''}`}
+                  aria-label={`View NFT for ${domainName}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <ExternalLink className="w-4 h-4 mr-1" /> View NFT
+                </Link>
+              </Button>
+            </div>
+          );
+        },
         size: 280,
         enableSorting: false,
       },
     ],
-    [handleManageDnsClick, handleRenewDomain, processingDomains],
+    [
+      handleManageDnsClick,
+      handleRenewDomain,
+      processingDomains,
+      canDomainBeRenewed,
+    ],
   );
 
   const table = useReactTable({
@@ -420,6 +466,22 @@ function MyDomainsTable() {
       rowSelection,
     },
   });
+
+  // Calculate renewable domains count for floating action panel
+  const renewableDomainsCount = useMemo(() => {
+    if (Object.keys(rowSelection).length === 0) return 0;
+    const selectedRows = table.getSelectedRowModel().rows;
+    return selectedRows.filter((row) => {
+      const expirationDateStr =
+        typeof row.original.expirationDate === 'string'
+          ? row.original.expirationDate
+          : row.original.expirationDate?.toISOString() || null;
+      return canDomainBeRenewed(
+        row.original.normalizedDomainName,
+        expirationDateStr,
+      );
+    }).length;
+  }, [rowSelection, table, canDomainBeRenewed]);
 
   if (domains.length === 0) {
     return <MyDomainsEmptyPlaceholder />;
@@ -656,41 +718,91 @@ function MyDomainsTable() {
 
                     {/* Actions */}
                     <div className="flex items-center gap-3">
-                      <AsyncButton
-                        onClick={async () => {
-                          const selectedDomains = table
-                            .getSelectedRowModel()
-                            .rows.map((row) => ({
-                              normalizedDomainName:
-                                row.original.normalizedDomainName,
-                              expirationDate: row.original.expirationDate,
-                            }));
+                      <NumberFlowGroup>
+                        <AsyncButton
+                          onClick={async () => {
+                            const allSelectedDomains = table
+                              .getSelectedRowModel()
+                              .rows.map((row) => ({
+                                normalizedDomainName:
+                                  row.original.normalizedDomainName,
+                                expirationDate: row.original.expirationDate,
+                              }));
 
-                          // Mark all selected domains as processing
-                          const selectedDomainNames = selectedDomains.map(
-                            (d) => d.normalizedDomainName,
-                          );
-                          setProcessingDomains(new Set(selectedDomainNames));
+                            // Filter to only include domains that can be renewed
+                            const renewableDomains = allSelectedDomains.filter(
+                              (domain) => {
+                                const expirationDateStr =
+                                  typeof domain.expirationDate === 'string'
+                                    ? domain.expirationDate
+                                    : domain.expirationDate?.toISOString() ||
+                                      null;
+                                return canDomainBeRenewed(
+                                  domain.normalizedDomainName,
+                                  expirationDateStr,
+                                );
+                              },
+                            );
 
-                          try {
-                            await renewDomains(selectedDomains);
-                            setRowSelection({});
-                          } finally {
-                            // Clear processing state for all domains
-                            setProcessingDomains(new Set());
+                            if (renewableDomains.length === 0) {
+                              return; // No domains can be renewed
+                            }
+
+                            // Mark all renewable domains as processing
+                            const renewableDomainNames = renewableDomains.map(
+                              (d) => d.normalizedDomainName,
+                            );
+                            setProcessingDomains(new Set(renewableDomainNames));
+
+                            try {
+                              await renewDomains(renewableDomains);
+                              setRowSelection({});
+                            } finally {
+                              // Clear processing state for all domains
+                              setProcessingDomains(new Set());
+                            }
+                          }}
+                          className="h-10 px-4 gap-2 bg-primary hover:bg-primary/90"
+                          disabled={renewableDomainsCount === 0}
+                          customLoadingContent={
+                            <>
+                              <Loader2 className="w-4 h-4 animate-spin" />
+                              {renewableDomainsCount ===
+                              Object.keys(rowSelection).length ? (
+                                'Renew All'
+                              ) : (
+                                <NumberFlow
+                                  value={renewableDomainsCount}
+                                  style={
+                                    {
+                                      '--number-flow-char-height': '0.85em',
+                                      '--number-flow-mask-height': '0.3em',
+                                    } as React.CSSProperties
+                                  }
+                                  prefix="Renew "
+                                />
+                              )}
+                            </>
                           }
-                        }}
-                        className="h-10 px-4 gap-2 bg-primary hover:bg-primary/90"
-                        customLoadingContent={
-                          <>
-                            <Loader2 className="w-4 h-4 animate-spin" />
-                            Renew All
-                          </>
-                        }
-                      >
-                        <History className="w-4 h-4 scale-x-[-1]" />
-                        Renew All
-                      </AsyncButton>
+                        >
+                          <History className="w-4 h-4 scale-x-[-1]" />
+                          {renewableDomainsCount ===
+                          Object.keys(rowSelection).length ? (
+                            'Renew All'
+                          ) : (
+                            <NumberFlow
+                              value={renewableDomainsCount}
+                              style={
+                                {
+                                  '--number-flow-char-height': '0.85em',
+                                  '--number-flow-mask-height': '0.3em',
+                                } as React.CSSProperties
+                              }
+                              prefix="Renew "
+                            />
+                          )}
+                        </AsyncButton>
+                      </NumberFlowGroup>
 
                       <Button
                         variant="ghost"
