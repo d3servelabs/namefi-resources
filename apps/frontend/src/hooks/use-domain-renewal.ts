@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import { useTRPCClient } from '@/utils/trpc';
 import { useCart } from '@/hooks/landing/use-cart';
 import { toast } from 'sonner';
@@ -18,13 +18,11 @@ interface DomainWithExpiration {
 export function useDomainRenewal() {
   const trpcClient = useTRPCClient();
   const { handleDomainAction, cartData } = useCart();
-  const [isProcessing, setIsProcessing] = useState(false);
 
   const renewDomains = useCallback(
     async (
       domainsWithExpiration: DomainWithExpiration[],
     ): Promise<RenewalResult[]> => {
-      setIsProcessing(true);
       const results: RenewalResult[] = [];
 
       try {
@@ -57,7 +55,7 @@ export function useDomainRenewal() {
           if (existingCartItem) {
             results.push({
               domain,
-              success: false,
+              success: true,
               reason: 'Already in cart',
             });
             continue;
@@ -139,20 +137,35 @@ export function useDomainRenewal() {
         }
 
         // Show results toasts
-        const successCount = results.filter((r) => r.success).length;
-        const failureCount = results.filter((r) => !r.success).length;
+        const successResults = results.filter((r) => r.success);
+        const failureResults = results.filter((r) => !r.success);
 
-        if (successCount > 0) {
+        // Separate successful results by type
+        const newlyAddedResults = successResults.filter(
+          (r) => r.reason !== 'Already in cart',
+        );
+        const alreadyInCartResults = successResults.filter(
+          (r) => r.reason === 'Already in cart',
+        );
+
+        if (newlyAddedResults.length > 0) {
           toast.success(
-            successCount === 1
+            newlyAddedResults.length === 1
               ? 'Domain added to cart for renewal'
-              : `${successCount} domains added to cart for renewal`,
+              : `${newlyAddedResults.length} domains added to cart for renewal`,
           );
         }
 
-        if (failureCount > 0) {
-          const failedResults = results.filter((r) => !r.success);
-          const groupedByReason = failedResults.reduce(
+        if (alreadyInCartResults.length > 0) {
+          toast.success(
+            alreadyInCartResults.length === 1
+              ? 'Domain already in cart for renewal'
+              : `${alreadyInCartResults.length} domains already in cart for renewal`,
+          );
+        }
+
+        if (failureResults.length > 0) {
+          const groupedByReason = failureResults.reduce(
             (acc, result) => {
               const reason = result.reason || 'Unknown error';
               if (!acc[reason]) {
@@ -188,24 +201,12 @@ export function useDomainRenewal() {
               ? error.message
               : 'Unexpected error occurred',
         }));
-      } finally {
-        setIsProcessing(false);
       }
     },
     [trpcClient, cartData, handleDomainAction],
   );
 
-  const renewSingleDomain = useCallback(
-    async (domainWithExpiration: DomainWithExpiration) => {
-      const results = await renewDomains([domainWithExpiration]);
-      return results[0];
-    },
-    [renewDomains],
-  );
-
   return {
     renewDomains,
-    renewSingleDomain,
-    isProcessing,
   };
 }

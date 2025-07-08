@@ -1,8 +1,7 @@
 'use client';
 
 import { AsyncButton } from '@/components/buttons/AsyncButton';
-import { useCart } from '@/hooks/landing/use-cart';
-import { useRenewalDurationConstraints } from '@/hooks/use-renewal-duration-constraints';
+import { useDomainRenewal } from '@/hooks/use-domain-renewal';
 import {
   Card,
   CardContent,
@@ -14,11 +13,11 @@ import { Skeleton } from '@/components/ui/shadcn/skeleton';
 import { Switch } from '@/components/ui/shadcn/switch';
 import { cn } from '@/lib/utils';
 import { type AppRouterOutput, useTRPC, useTRPCClient } from '@/utils/trpc';
-import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { isNil } from 'ramda';
 import { useMemo, useState } from 'react';
 import { toast } from 'sonner';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 
 type DomainPreferencesAndConfig =
   AppRouterOutput['domainConfig']['getDomainPreferencesAndConfig'];
@@ -26,7 +25,7 @@ type DomainPreferencesAndConfig =
 export const DnsOverviewPanel = ({
   domain,
 }: {
-  domain: PunycodeDomainName;
+  domain: NamefiNormalizedDomain;
 }) => {
   const trpc = useTRPC();
   const trpcClient = useTRPCClient();
@@ -57,35 +56,13 @@ export const DnsOverviewPanel = ({
     ),
   );
 
-  const { data: domainListInfo, isLoading: isDomainInfoLoading } = useQuery(
-    trpc.registry.getDomainListInfo.queryOptions({
-      domains: [domain],
-    }),
-  );
-  const domainAvailabilityInfo = useMemo(
-    () => domainListInfo?.[0],
-    [domainListInfo],
-  );
-
-  const renewalConstraints = useRenewalDurationConstraints(domain);
-
-  const { isDomainInCart, handleDomainAction } = useCart();
+  const { renewDomains } = useDomainRenewal();
 
   const [isPending, setIsPending] = useState(false);
 
   const handleChange =
     (key: keyof DomainPreferencesAndConfig) => async (value: any) => {
       const updatedDomainPreferencesAndConfig = {
-        autoEnsEnabled:
-          key === 'autoEnsEnabled'
-            ? value
-            : domainPreferencesAndConfig?.autoEnsEnabled,
-        autoParkEnabled:
-          key === 'autoParkEnabled'
-            ? value
-            : domainPreferencesAndConfig?.autoParkEnabled,
-        forwardTo:
-          key === 'forwardTo' ? value : domainPreferencesAndConfig?.forwardTo,
         autoRenewEnabled:
           key === 'autoRenewEnabled'
             ? value
@@ -127,22 +104,10 @@ export const DnsOverviewPanel = ({
     };
 
   const disableAllButtons = useMemo(() => {
-    return (
-      isDomainPreferencesAndConfigLoading ||
-      isDomainDetailsLoading ||
-      isDomainInfoLoading
-    );
-  }, [
-    isDomainPreferencesAndConfigLoading,
-    isDomainDetailsLoading,
-    isDomainInfoLoading,
-  ]);
+    return isDomainPreferencesAndConfigLoading || isDomainDetailsLoading;
+  }, [isDomainPreferencesAndConfigLoading, isDomainDetailsLoading]);
 
-  if (
-    isDomainPreferencesAndConfigLoading ||
-    isDomainDetailsLoading ||
-    isDomainInfoLoading
-  ) {
+  if (isDomainPreferencesAndConfigLoading || isDomainDetailsLoading) {
     return (
       <Card className="bg-zinc-900 border-zinc-800">
         <CardHeader>
@@ -161,11 +126,7 @@ export const DnsOverviewPanel = ({
     );
   }
 
-  if (
-    isNil(domainPreferencesAndConfig) ||
-    isNil(domainDetails) ||
-    isNil(domainAvailabilityInfo)
-  ) {
+  if (isNil(domainPreferencesAndConfig) || isNil(domainDetails)) {
     return (
       <Card className="bg-zinc-900 border-zinc-800">
         <CardHeader>
@@ -205,64 +166,27 @@ export const DnsOverviewPanel = ({
             <div className="flex items-center gap-3">
               <AsyncButton
                 onClick={async () => {
-                  try {
-                    if (!domainAvailabilityInfo) {
-                      throw new Error('Domain availability info not available');
-                    }
-
-                    if (renewalConstraints.status === 'error') {
-                      throw new Error(renewalConstraints.error);
-                    }
-
-                    if (renewalConstraints.status === 'loading') {
-                      throw new Error(
-                        'Renewal duration constraints are loading',
-                      );
-                    }
-
-                    const durationToUse = renewalConstraints.minYears;
-                    const isCurrentlyInCart = isDomainInCart(domain);
-
-                    await handleDomainAction({
-                      domainAvailabilityInfo,
-                      durationInYears: durationToUse,
-                      operationType: 'RENEW',
-                    });
-
-                    if (isCurrentlyInCart) {
-                      toast.success('Renewal removed from cart');
-                    } else {
-                      toast.success(
-                        `${durationToUse} year renewal added to cart successfully`,
-                      );
-                    }
-                  } catch (error) {
-                    if (renewalConstraints.status === 'error') {
-                      toast.error(
-                        `Failed to update cart: ${renewalConstraints.error}`,
-                      );
-                    } else {
-                      toast.error('Failed to update cart');
-                    }
-                    throw error;
+                  if (!domainDetails?.expirationTime) {
+                    toast.error('Domain expiration information not available');
+                    return;
                   }
+
+                  await renewDomains([
+                    {
+                      normalizedDomainName: domain,
+                      expirationDate: new Date(domainDetails.expirationTime),
+                    },
+                  ]);
                 }}
                 disabled={
                   disableAllButtons ||
                   isPending ||
-                  isDomainInfoLoading ||
                   isDomainDetailsLoading ||
-                  renewalConstraints.status === 'loading' ||
-                  !domainAvailabilityInfo ||
-                  renewalConstraints.status === 'error'
+                  !domainDetails?.expirationTime
                 }
                 size="sm"
               >
-                {renewalConstraints.status === 'loading'
-                  ? 'Loading...'
-                  : isDomainInCart(domain)
-                    ? 'Added to Cart'
-                    : 'Renew now'}
+                Renew now
               </AsyncButton>
               <Switch
                 id="auto-renew"

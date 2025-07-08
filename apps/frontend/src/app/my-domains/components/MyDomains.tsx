@@ -198,7 +198,7 @@ function MyDomainsTable() {
   const { hasEmail } = useEmailPrompt();
   const router = useRouter();
   const canAnimate = useCanAnimate();
-  const { renewSingleDomain, renewDomains, isProcessing } = useDomainRenewal();
+  const { renewDomains } = useDomainRenewal();
 
   const handleManageDnsClick = useCallback(
     (domainName: string, e: React.MouseEvent) => {
@@ -221,10 +221,12 @@ function MyDomainsTable() {
         new Set(prev).add(domain.normalizedDomainName),
       );
       try {
-        await renewSingleDomain({
-          normalizedDomainName: domain.normalizedDomainName as any,
-          expirationDate: domain.expirationDate,
-        });
+        await renewDomains([
+          {
+            normalizedDomainName: domain.normalizedDomainName as any,
+            expirationDate: domain.expirationDate,
+          },
+        ]);
       } finally {
         setProcessingDomains((prev) => {
           const newSet = new Set(prev);
@@ -233,7 +235,7 @@ function MyDomainsTable() {
         });
       }
     },
-    [renewSingleDomain],
+    [renewDomains],
   );
 
   const columns: ColumnDef<DomainRow>[] = useMemo(
@@ -681,7 +683,7 @@ function MyDomainsTable() {
                         className="h-10 px-4 gap-2 bg-primary hover:bg-primary/90"
                         customLoadingContent={
                           <>
-                            <Loader2 className="w-4 h-4 scale-x-[-1] animate-spin" />
+                            <Loader2 className="w-4 h-4 animate-spin" />
                             Renew All
                           </>
                         }

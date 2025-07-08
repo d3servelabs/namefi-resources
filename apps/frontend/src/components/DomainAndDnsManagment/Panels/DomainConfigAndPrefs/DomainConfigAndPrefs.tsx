@@ -206,12 +206,6 @@ export const DomainConfigAndPrefsForm = ({
 }) => {
   const trpc = useTRPC();
 
-  const { data: domainListInfo, isLoading: isDomainInfoLoading } = useQuery(
-    trpc.registry.getDomainListInfo.queryOptions({
-      domains: [domainName],
-    }),
-  );
-
   const [forwardTo, setForwardTo] = useState<string | undefined>(
     domainPreferencesAndConfig?.forwardTo,
   );
@@ -286,125 +280,121 @@ export const DomainConfigAndPrefsForm = ({
     dnssecDetails.zoneHasActiveDnssec;
 
   return (
-    <>
-      <div className="flex flex-col items-start gap-4">
-        <ActiveNameserversChangeWorkflowBanner
-          activeNameserversChangeWorkflow={activeNameserversChangeWorkflow}
-        />
+    <div className="flex flex-col items-start gap-4">
+      <ActiveNameserversChangeWorkflowBanner
+        activeNameserversChangeWorkflow={activeNameserversChangeWorkflow}
+      />
 
-        <div className="grid grid-cols-2 gap-2 w-full">
-          {dnssecDetails.isUsingNamefiNameservers ? (
-            <>
-              <div className="flex items-center justify-between rounded-2xl bg-zinc-900 border border-zinc-800 p-4">
-                <div className="space-y-0.5">
-                  <Label htmlFor="auto-ens">Auto ENS</Label>
-                  <p className="text-sm text-muted-foreground">
-                    Automatically enable ENS for the domain
-                  </p>
-                </div>
-                <div className="flex items-center gap-2">
-                  {isUsingNamefiSigning &&
-                  dnssecDetails?.supportsDnssec ? undefined : (
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger asChild={true}>
-                          <Info className="h-4 w-4 text-zinc-500 cursor-help" />
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>
-                            AutoENS is not available for this domain. ENS
-                            Requires DNSSEC.
-                            <br />
-                            {dnssecDetails?.supportsDnssec ? (
-                              <p>You need to enable DNSSEC first.</p>
-                            ) : (
-                              <p>And this domain does not support DNSSEC.</p>
-                            )}
-                          </p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  )}
-                  <Switch
-                    id="auto-ens"
-                    className={cn(isPending ? 'animate-pulse cursor-wait' : '')}
-                    checked={domainPreferencesAndConfig?.autoEnsEnabled}
-                    onCheckedChange={handleChange('autoEnsEnabled')}
-                    disabled={
-                      isPending ||
-                      disableAllButtons ||
-                      !isUsingNamefiSigning ||
-                      !dnssecDetails?.supportsDnssec
-                    }
-                  />
-                </div>
+      <div className="grid grid-cols-2 gap-2 w-full">
+        {dnssecDetails.isUsingNamefiNameservers ? (
+          <>
+            <div className="flex items-center justify-between rounded-2xl bg-zinc-900 border border-zinc-800 p-4">
+              <div className="space-y-0.5">
+                <Label htmlFor="auto-ens">Auto ENS</Label>
+                <p className="text-sm text-muted-foreground">
+                  Automatically enable ENS for the domain
+                </p>
               </div>
-
-              <div className="flex items-center justify-between rounded-2xl bg-zinc-900 border border-zinc-800 p-4">
-                <div className="space-y-0.5">
-                  <Label htmlFor="auto-park">Auto Park</Label>
-                  <p className="text-sm text-muted-foreground">
-                    Automatically park the domain
-                  </p>
-                </div>
+              <div className="flex items-center gap-2">
+                {isUsingNamefiSigning &&
+                dnssecDetails?.supportsDnssec ? undefined : (
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild={true}>
+                        <Info className="h-4 w-4 text-zinc-500 cursor-help" />
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>
+                          AutoENS is not available for this domain. ENS Requires
+                          DNSSEC.
+                          <br />
+                          {dnssecDetails?.supportsDnssec ? (
+                            <p>You need to enable DNSSEC first.</p>
+                          ) : (
+                            <p>And this domain does not support DNSSEC.</p>
+                          )}
+                        </p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                )}
                 <Switch
-                  id="auto-park"
-                  className={cn(
-                    isPending ? 'animate-pulse cursor-progress' : '',
-                  )}
-                  checked={domainPreferencesAndConfig?.autoParkEnabled}
-                  onCheckedChange={handleChange('autoParkEnabled')}
-                  disabled={disableAllButtons || isPending}
+                  id="auto-ens"
+                  className={cn(isPending ? 'animate-pulse cursor-wait' : '')}
+                  checked={domainPreferencesAndConfig?.autoEnsEnabled}
+                  onCheckedChange={handleChange('autoEnsEnabled')}
+                  disabled={
+                    isPending ||
+                    disableAllButtons ||
+                    !isUsingNamefiSigning ||
+                    !dnssecDetails?.supportsDnssec
+                  }
                 />
               </div>
-
-              <div className="flex flex-col items-start justify-between col-span-2 rounded-2xl bg-zinc-900 border border-zinc-800 p-4 gap-2">
-                <div className="space-y-0.5">
-                  <Label htmlFor="forward-to">Forward To</Label>
-                  <p className="text-sm text-muted-foreground">
-                    Forward the domain to a different address
-                  </p>
-                </div>
-                <div className="flex items-center gap-2 w-full">
-                  <Input
-                    id="forward-to"
-                    onChange={(e) => setForwardTo(e.target.value)}
-                    value={forwardTo}
-                    disabled={disableAllButtons || isPending}
-                  />
-                  {forwardToChanged ? (
-                    <Button
-                      variant="destructive"
-                      onClick={() =>
-                        setForwardTo(domainPreferencesAndConfig?.forwardTo)
-                      }
-                    >
-                      Cancel
-                    </Button>
-                  ) : undefined}
-                  <AsyncButton
-                    onClick={() => handleChange('forwardTo')(forwardTo)}
-                    disabled={!forwardToChanged}
-                  >
-                    Save
-                  </AsyncButton>
-                </div>
-              </div>
-            </>
-          ) : (
-            <div>
-              <p>Namefi is not managing the nameservers for this domain</p>
             </div>
-          )}
-        </div>
 
-        <div className="text-sm text-zinc-500 mt-4">
-          <p>
-            Changes to DNSSEC are not immediate. It can take up to 24-48 hours
-            to propagate globally.
-          </p>
-        </div>
+            <div className="flex items-center justify-between rounded-2xl bg-zinc-900 border border-zinc-800 p-4">
+              <div className="space-y-0.5">
+                <Label htmlFor="auto-park">Auto Park</Label>
+                <p className="text-sm text-muted-foreground">
+                  Automatically park the domain
+                </p>
+              </div>
+              <Switch
+                id="auto-park"
+                className={cn(isPending ? 'animate-pulse cursor-progress' : '')}
+                checked={domainPreferencesAndConfig?.autoParkEnabled}
+                onCheckedChange={handleChange('autoParkEnabled')}
+                disabled={disableAllButtons || isPending}
+              />
+            </div>
+
+            <div className="flex flex-col items-start justify-between col-span-2 rounded-2xl bg-zinc-900 border border-zinc-800 p-4 gap-2">
+              <div className="space-y-0.5">
+                <Label htmlFor="forward-to">Forward To</Label>
+                <p className="text-sm text-muted-foreground">
+                  Forward the domain to a different address
+                </p>
+              </div>
+              <div className="flex items-center gap-2 w-full">
+                <Input
+                  id="forward-to"
+                  onChange={(e) => setForwardTo(e.target.value)}
+                  value={forwardTo}
+                  disabled={disableAllButtons || isPending}
+                />
+                {forwardToChanged ? (
+                  <Button
+                    variant="destructive"
+                    onClick={() =>
+                      setForwardTo(domainPreferencesAndConfig?.forwardTo)
+                    }
+                  >
+                    Cancel
+                  </Button>
+                ) : undefined}
+                <AsyncButton
+                  onClick={() => handleChange('forwardTo')(forwardTo)}
+                  disabled={!forwardToChanged}
+                >
+                  Save
+                </AsyncButton>
+              </div>
+            </div>
+          </>
+        ) : (
+          <div>
+            <p>Namefi is not managing the nameservers for this domain</p>
+          </div>
+        )}
       </div>
-    </>
+
+      <div className="text-sm text-zinc-500 mt-4">
+        <p>
+          Changes to DNSSEC are not immediate. It can take up to 24-48 hours to
+          propagate globally.
+        </p>
+      </div>
+    </div>
   );
 };
