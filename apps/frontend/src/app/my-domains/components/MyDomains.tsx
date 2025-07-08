@@ -47,6 +47,8 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import {
+  AlertTriangle,
+  AlertCircle,
   ChevronDown,
   ChevronUp,
   ChevronsUpDown,
@@ -67,6 +69,12 @@ import {
   useMemo,
   useState,
 } from 'react';
+import {
+  differenceInDays,
+  differenceInMonths,
+  differenceInYears,
+  isPast,
+} from 'date-fns';
 import { motion, AnimatePresence, MotionConfig } from 'motion/react';
 import NumberFlow, { NumberFlowGroup, useCanAnimate } from '@number-flow/react';
 import { Separator } from '@/components/ui/shadcn/separator';
@@ -76,6 +84,67 @@ import {
 } from '@/components/modals/EmailRequiredModal';
 
 type DomainRow = AppRouterOutput['users']['getCurrentUserDomains'][number];
+
+// Helper function to format expiration date with severity colors
+const formatExpirationDate = (expirationDate: string | undefined) => {
+  if (!expirationDate) {
+    return <span className="text-sm text-muted-foreground">-</span>;
+  }
+
+  const expiry = new Date(expirationDate);
+  const now = new Date();
+  const isExpired = isPast(expiry);
+
+  if (isExpired) {
+    return (
+      <div className="flex items-center gap-1">
+        <AlertTriangle className="w-3 h-3 text-destructive" />
+        <span className="text-sm text-destructive font-medium">Expired</span>
+      </div>
+    );
+  }
+
+  const daysLeft = differenceInDays(expiry, now);
+  const monthsLeft = differenceInMonths(expiry, now);
+  const yearsLeft = differenceInYears(expiry, now);
+
+  let timeText: string;
+  let colorClass: string;
+  let IconComponent: React.ComponentType<{ className?: string }> | null = null;
+
+  if (daysLeft < 30) {
+    timeText = daysLeft === 1 ? '1 day' : `${daysLeft} days`;
+    colorClass = 'text-destructive';
+    IconComponent = AlertTriangle;
+  } else if (monthsLeft < 6) {
+    timeText = monthsLeft === 1 ? '1 month' : `${monthsLeft} months`;
+    colorClass = 'text-orange-500';
+    IconComponent = AlertCircle;
+  } else if (monthsLeft < 12) {
+    timeText = monthsLeft === 1 ? '1 month' : `${monthsLeft} months`;
+    colorClass = 'text-yellow-500';
+    IconComponent = null;
+  } else {
+    const hasExtraMonths = monthsLeft > yearsLeft * 12;
+    const prefix = hasExtraMonths ? '> ' : '';
+    timeText =
+      yearsLeft === 1 ? `${prefix}1 year` : `${prefix}${yearsLeft} years`;
+    colorClass = 'text-green-600';
+    IconComponent = null;
+  }
+
+  return (
+    <div className="flex flex-col gap-1">
+      <span className="text-sm font-medium text-foreground">
+        {expiry.toLocaleDateString()}
+      </span>
+      <div className="flex items-center gap-1">
+        {IconComponent && <IconComponent className={`w-3 h-3 ${colorClass}`} />}
+        <span className={`text-xs ${colorClass}`}>{timeText} left</span>
+      </div>
+    </div>
+  );
+};
 
 // Wrapper component to maintain button state
 const RenewButton: FC<{
@@ -126,7 +195,7 @@ const LoadingSkeletons: FC = () => (
                 <TableHead className="w-[80px]">Chain</TableHead>
                 <TableHead className="w-[140px]">Wallet</TableHead>
                 <TableHead>Domain Name</TableHead>
-                <TableHead className="w-[120px]">Expires On</TableHead>
+                <TableHead className="w-[150px]">Expires On</TableHead>
                 <TableHead className="w-[280px]">Actions</TableHead>
               </TableRow>
             </TableHeader>
@@ -374,15 +443,9 @@ function MyDomainsTable() {
           const expirationDate = row.getValue('expirationDate') as
             | string
             | undefined;
-          return expirationDate ? (
-            <span className="text-sm">
-              {new Date(expirationDate).toLocaleDateString()}
-            </span>
-          ) : (
-            <span className="text-sm text-muted-foreground">-</span>
-          );
+          return formatExpirationDate(expirationDate);
         },
-        size: 120,
+        size: 150,
         sortingFn: (rowA, rowB) => {
           const a = rowA.getValue('expirationDate') as string | undefined;
           const b = rowB.getValue('expirationDate') as string | undefined;
