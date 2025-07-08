@@ -24,8 +24,8 @@ export interface AcquireDomainWorkflowInput {
   normalizedDomainName: NamefiNormalizedDomain;
   durationInYears: number;
   registrarKey: Registrars;
-  encryptedEppAuthorizationCode?: string;
-  encryptionKeyId?: string;
+  encryptedEppAuthorizationCode?: string | null;
+  encryptionKeyId?: string | null;
 }
 
 const { generalAlertNamefi } = typedProxyActivities({

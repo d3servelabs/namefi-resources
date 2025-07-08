@@ -80,8 +80,8 @@ export async function sendRegisterOrImportRequestToNamefiRegistrar(
     normalizedDomainName: NamefiNormalizedDomain;
     durationInYears: number;
     registrarKey: Registrars;
-    encryptionKeyId?: string;
-    encryptedEppAuthorizationCode?: string;
+    encryptionKeyId?: string | null;
+    encryptedEppAuthorizationCode?: string | null;
   },
 ): Promise<LongRunningOperationResult> {
   const isImport = operationType === 'IMPORT';

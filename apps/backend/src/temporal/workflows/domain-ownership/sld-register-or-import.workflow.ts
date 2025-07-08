@@ -20,8 +20,8 @@ interface SldRegisterOrImportWorkflowInput {
   durationInYears: number;
   registrarKey: Registrars;
 
-  encryptionKeyId?: string;
-  encryptedEppAuthorizationCode?: string;
+  encryptionKeyId?: string | null;
+  encryptedEppAuthorizationCode?: string | null;
 }
 
 export async function sldRegisterOrImportWorkflow(

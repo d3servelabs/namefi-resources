@@ -156,6 +156,8 @@ export async function processOrderWorkflow(
               userId: orderDetails.userId,
               operationType: item.type as 'REGISTER' | 'IMPORT', // Only REGISTER and IMPORT are valid for processOrderItemWorkflow
               registrarKey: item.registrar,
+              encryptedEppAuthorizationCode: item.encryptedEppAuthorizationCode,
+              encryptionKeyId: item.encryptionKeyId,
             },
           ],
           workflowId: `process-order-item-${item.id}`,
