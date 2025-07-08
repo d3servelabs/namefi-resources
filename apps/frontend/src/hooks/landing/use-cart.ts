@@ -104,13 +104,18 @@ export function useCart() {
     [setLocalCartItems],
   );
 
-  // Remove cart item by ID
+  // Remove cart item(s) by ID
   const removeItem = useCallback(
-    (itemId: string) => {
+    (itemIds: string | string[]) => {
+      const idsArray = Array.isArray(itemIds) ? itemIds : [itemIds];
+
       if (isAuthenticated) {
-        removeFromCartMutate(itemId);
+        // For now, we'll remove items one by one since the backend doesn't support batch removal
+        idsArray.forEach((id) => removeFromCartMutate(id));
       } else {
-        setLocalCartItems((prev) => prev.filter((item) => item.id !== itemId));
+        setLocalCartItems((prev) =>
+          prev.filter((item) => !idsArray.includes(item.id)),
+        );
       }
     },
     [isAuthenticated, removeFromCartMutate, setLocalCartItems],
@@ -163,49 +168,70 @@ export function useCart() {
   );
 
   const handleDomainAction = useCallback(
-    async ({
-      domainAvailabilityInfo,
-      durationInYears,
-      operationType,
-      eppAuthorizationCode,
-    }: {
-      domainAvailabilityInfo: DomainAvailabilityInfo;
-      durationInYears: number;
-      operationType: 'REGISTER' | 'IMPORT' | 'RENEW';
-      eppAuthorizationCode?: string;
-    }) => {
-      if (
-        operationType === 'IMPORT' &&
-        !isDomainImportable(domainAvailabilityInfo)
-      ) {
-        throw new Error('Domain is not importable');
-      }
+    async (
+      items:
+        | {
+            domainAvailabilityInfo: DomainAvailabilityInfo;
+            durationInYears: number;
+            operationType: 'REGISTER' | 'IMPORT' | 'RENEW';
+            eppAuthorizationCode?: string;
+            toggle?: boolean;
+          }
+        | Array<{
+            domainAvailabilityInfo: DomainAvailabilityInfo;
+            durationInYears: number;
+            operationType: 'REGISTER' | 'IMPORT' | 'RENEW';
+            eppAuthorizationCode?: string;
+            toggle?: boolean;
+          }>,
+    ) => {
+      // Convert single item to array for uniform processing
+      const itemsArray = Array.isArray(items) ? items : [items];
+      const cartItemsToAdd: (Omit<CartItem, 'id'> & {
+        eppAuthorizationCode?: string;
+      })[] = [];
 
-      if (
-        operationType === 'REGISTER' &&
-        !isDomainRegistrable(domainAvailabilityInfo)
-      ) {
-        throw new Error('Domain is not registrable');
-      }
+      for (const item of itemsArray) {
+        const {
+          domainAvailabilityInfo,
+          durationInYears,
+          operationType,
+          eppAuthorizationCode,
+          toggle = true,
+        } = item;
+        if (
+          operationType === 'IMPORT' &&
+          !isDomainImportable(domainAvailabilityInfo)
+        ) {
+          throw new Error('Domain is not importable');
+        }
 
-      // Get appropriate pricing for the operation
-      const pricingDetails = getDomainPricingForOperation(
-        domainAvailabilityInfo,
-        operationType,
-      );
+        if (
+          operationType === 'REGISTER' &&
+          !isDomainRegistrable(domainAvailabilityInfo)
+        ) {
+          throw new Error('Domain is not registrable');
+        }
 
-      if (!pricingDetails) {
-        throw new Error(`${operationType} pricing details are unavailable`);
-      }
+        // Get appropriate pricing for the operation
+        const pricingDetails = getDomainPricingForOperation(
+          domainAvailabilityInfo,
+          operationType,
+        );
 
-      const chargeAmountInUsd = computeChargesInUsdOrThrow(
-        pricingDetails,
-        durationInYears,
-      );
-      const calculatedAmount = usdToCents(chargeAmountInUsd);
+        if (!pricingDetails) {
+          throw new Error(`${operationType} pricing details are unavailable`);
+        }
 
-      const cartItem: Omit<CartItem, 'id'> & { eppAuthorizationCode?: string } =
-        {
+        const chargeAmountInUsd = computeChargesInUsdOrThrow(
+          pricingDetails,
+          durationInYears,
+        );
+        const calculatedAmount = usdToCents(chargeAmountInUsd);
+
+        const cartItem: Omit<CartItem, 'id'> & {
+          eppAuthorizationCode?: string;
+        } = {
           normalizedDomainName: domainAvailabilityInfo.domain,
           amountInUSDCents: calculatedAmount,
           durationInYears,
@@ -221,29 +247,43 @@ export function useCart() {
               : undefined,
         };
 
-      if (isDomainInCart(domainAvailabilityInfo.domain)) {
-        // Remove domain from cart
-        const itemId = getCartItemId(domainAvailabilityInfo.domain);
-        if (itemId) {
-          if (isAuthenticated) {
-            removeFromCartMutate(itemId);
-            logRemoveFromCart({ ...cartItem, id: itemId });
-          } else {
-            removeFromLocalCart(domainAvailabilityInfo.domain);
-            logRemoveFromCart({ ...cartItem, id: itemId });
+        if (isDomainInCart(domainAvailabilityInfo.domain)) {
+          if (!toggle) {
+            // If toggle is false and domain is already in cart, do nothing
+            continue;
           }
+          // Remove domain from cart (toggle behavior)
+          const itemId = getCartItemId(domainAvailabilityInfo.domain);
+          if (itemId) {
+            if (isAuthenticated) {
+              removeFromCartMutate(itemId);
+              logRemoveFromCart({ ...cartItem, id: itemId });
+            } else {
+              removeFromLocalCart(domainAvailabilityInfo.domain);
+              logRemoveFromCart({ ...cartItem, id: itemId });
+            }
+          }
+        } else {
+          // Add to batch
+          cartItemsToAdd.push(cartItem);
         }
-      } else if (isAuthenticated) {
-        // here we should get the id from mutation result
-        const [{ id: itemId }] = await addToCartMutateAsync([cartItem]);
-        logAddToCart({ ...cartItem, id: itemId });
-      } else {
-        const itemId = crypto.randomUUID();
-        setLocalCartItems((prevItems) => [
-          ...prevItems,
-          { ...cartItem, id: itemId },
-        ]);
-        logAddToCart({ ...cartItem, id: itemId });
+      }
+
+      // Batch add all items
+      if (cartItemsToAdd.length > 0) {
+        if (isAuthenticated) {
+          const results = await addToCartMutateAsync(cartItemsToAdd);
+          results.forEach((result, index) => {
+            logAddToCart({ ...cartItemsToAdd[index], id: result.id });
+          });
+        } else {
+          const itemsWithIds = cartItemsToAdd.map((item) => ({
+            ...item,
+            id: crypto.randomUUID(),
+          }));
+          setLocalCartItems((prevItems) => [...prevItems, ...itemsWithIds]);
+          itemsWithIds.forEach((item) => logAddToCart(item));
+        }
       }
     },
     [

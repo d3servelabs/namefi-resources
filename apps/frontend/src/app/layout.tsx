@@ -73,7 +73,7 @@ export default function RootLayout({
 
           <Contexts>
             <OriginBackground />
-            <Toaster />
+            <Toaster expand={true} visibleToasts={3} />
             <SidebarProvider defaultOpen={false}>
               <AppSidebar />
               <Main>{children}</Main>

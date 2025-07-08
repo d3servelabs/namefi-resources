@@ -1,0 +1,211 @@
+import { useCallback, useState } from 'react';
+import { useTRPCClient } from '@/utils/trpc';
+import { useCart } from '@/hooks/landing/use-cart';
+import { toast } from 'sonner';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+
+interface RenewalResult {
+  domain: string;
+  success: boolean;
+  reason?: string;
+}
+
+interface DomainWithExpiration {
+  normalizedDomainName: NamefiNormalizedDomain;
+  expirationDate?: Date | null;
+}
+
+export function useDomainRenewal() {
+  const trpcClient = useTRPCClient();
+  const { handleDomainAction, cartData } = useCart();
+  const [isProcessing, setIsProcessing] = useState(false);
+
+  const renewDomains = useCallback(
+    async (
+      domainsWithExpiration: DomainWithExpiration[],
+    ): Promise<RenewalResult[]> => {
+      setIsProcessing(true);
+      const results: RenewalResult[] = [];
+
+      try {
+        // Extract just the domain names for the API call
+        const domainNames = domainsWithExpiration.map(
+          (d) => d.normalizedDomainName,
+        );
+
+        // Fetch domain availability info for all domains
+        const domainListInfo =
+          await trpcClient.registry.getDomainListInfo.query({
+            domains: domainNames,
+          });
+
+        const itemsToAdd = [];
+        const currentDate = new Date();
+
+        // Process each domain and collect valid items
+        for (let i = 0; i < domainsWithExpiration.length; i++) {
+          const domainData = domainsWithExpiration[i];
+          const domain = domainData.normalizedDomainName;
+          const domainAvailabilityInfo = domainListInfo[i];
+
+          // Check if domain is already in cart as a renewal
+          const existingCartItem = cartData?.find(
+            (item) =>
+              item.normalizedDomainName === domain && item.type === 'RENEW',
+          );
+
+          if (existingCartItem) {
+            results.push({
+              domain,
+              success: false,
+              reason: 'Already in cart',
+            });
+            continue;
+          }
+
+          if (!domainAvailabilityInfo) {
+            results.push({
+              domain,
+              success: false,
+              reason: 'Domain info not available',
+            });
+            continue;
+          }
+
+          // Check if domain is expired using existing expiration date
+          if (domainData.expirationDate) {
+            const expirationDate = new Date(domainData.expirationDate);
+
+            if (expirationDate <= currentDate) {
+              results.push({
+                domain,
+                success: false,
+                reason: 'Domain has already expired',
+              });
+              continue;
+            }
+          }
+
+          // Check for duration validation from domainAvailabilityInfo
+          if (!domainAvailabilityInfo?.durationValidationInYears?.min) {
+            results.push({
+              domain,
+              success: false,
+              reason: 'Duration validation data missing',
+            });
+            continue;
+          }
+
+          const minDurationYears =
+            domainAvailabilityInfo.durationValidationInYears.min;
+
+          // Collect valid items for batch addition
+          itemsToAdd.push({
+            domainAvailabilityInfo,
+            durationInYears: minDurationYears,
+            operationType: 'RENEW' as const,
+            toggle: false,
+            domain, // Keep for results tracking
+          });
+        }
+
+        // Batch add all valid items to cart
+        if (itemsToAdd.length > 0) {
+          try {
+            await handleDomainAction(
+              itemsToAdd.map(({ domain, ...item }) => item),
+            );
+
+            // Mark all as successful
+            itemsToAdd.forEach(({ domain }) => {
+              results.push({
+                domain,
+                success: true,
+              });
+            });
+          } catch (error) {
+            // Mark all as failed
+            itemsToAdd.forEach(({ domain }) => {
+              results.push({
+                domain,
+                success: false,
+                reason:
+                  error instanceof Error
+                    ? error.message
+                    : 'Failed to add to cart',
+              });
+            });
+          }
+        }
+
+        // Show results toasts
+        const successCount = results.filter((r) => r.success).length;
+        const failureCount = results.filter((r) => !r.success).length;
+
+        if (successCount > 0) {
+          toast.success(
+            successCount === 1
+              ? 'Domain added to cart for renewal'
+              : `${successCount} domains added to cart for renewal`,
+          );
+        }
+
+        if (failureCount > 0) {
+          const failedResults = results.filter((r) => !r.success);
+          const groupedByReason = failedResults.reduce(
+            (acc, result) => {
+              const reason = result.reason || 'Unknown error';
+              if (!acc[reason]) {
+                acc[reason] = [];
+              }
+              acc[reason].push(result.domain);
+              return acc;
+            },
+            {} as Record<string, string[]>,
+          );
+
+          const reasonMessages = Object.entries(groupedByReason)
+            .map(([reason, domains]) => `${reason}: ${domains.join(', ')}`)
+            .join('\n');
+
+          toast.warning(
+            `Failed to add domains for renewal:\n${reasonMessages}`,
+          );
+        }
+
+        return results;
+      } catch (error) {
+        toast.error(
+          error instanceof Error
+            ? `Failed to process renewals: ${error.message}`
+            : 'Failed to process renewals',
+        );
+        return domainsWithExpiration.map((domainData) => ({
+          domain: domainData.normalizedDomainName,
+          success: false,
+          reason:
+            error instanceof Error
+              ? error.message
+              : 'Unexpected error occurred',
+        }));
+      } finally {
+        setIsProcessing(false);
+      }
+    },
+    [trpcClient, cartData, handleDomainAction],
+  );
+
+  const renewSingleDomain = useCallback(
+    async (domainWithExpiration: DomainWithExpiration) => {
+      const results = await renewDomains([domainWithExpiration]);
+      return results[0];
+    },
+    [renewDomains],
+  );
+
+  return {
+    renewDomains,
+    renewSingleDomain,
+    isProcessing,
+  };
+}

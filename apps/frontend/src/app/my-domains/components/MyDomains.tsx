@@ -14,6 +14,7 @@ import {
 } from '@/components/ui/shadcn/table';
 import { Button } from '@/components/ui/shadcn/button';
 import { Card, CardContent } from '@/components/ui/shadcn/card';
+import { Checkbox } from '@/components/ui/shadcn/checkbox';
 import { Input } from '@/components/ui/shadcn/input';
 import {
   Select,
@@ -25,6 +26,7 @@ import {
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
 import { useAuth } from '@/hooks/useAuth';
 import { useEmailPrompt } from '@/hooks/useEmailPrompt';
+import { useDomainRenewal } from '@/hooks/use-domain-renewal';
 import { config } from '@/lib/env';
 import { cn } from '@/lib/utils';
 import { type AppRouterOutput, useTRPC } from '@/utils/trpc';
@@ -36,6 +38,7 @@ import {
 import { useSuspenseQuery } from '@tanstack/react-query';
 import {
   type ColumnDef,
+  type RowSelectionState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
@@ -47,6 +50,8 @@ import {
   ChevronUp,
   ChevronsUpDown,
   ExternalLink,
+  History,
+  Loader2,
   Search,
   SearchIcon,
   Settings,
@@ -61,6 +66,9 @@ import {
   useMemo,
   useState,
 } from 'react';
+import { motion, AnimatePresence, MotionConfig } from 'motion/react';
+import NumberFlow, { useCanAnimate } from '@number-flow/react';
+import { Separator } from '@/components/ui/shadcn/separator';
 import {
   EmailRequiredModal,
   DNS_MANAGEMENT_EMAIL_REQUIRED,
@@ -76,6 +84,9 @@ const LoadingSkeletons: FC = () => (
           <Table>
             <TableHeader>
               <TableRow>
+                <TableHead className="w-[50px]">
+                  <Skeleton className="h-4 w-4" />
+                </TableHead>
                 <TableHead className="w-[80px]">Chain</TableHead>
                 <TableHead className="w-[140px]">Wallet</TableHead>
                 <TableHead>Domain Name</TableHead>
@@ -86,6 +97,9 @@ const LoadingSkeletons: FC = () => (
             <TableBody>
               {[...new Array(3)].map((_, index) => (
                 <TableRow key={index}>
+                  <TableCell>
+                    <Skeleton className="h-4 w-4" />
+                  </TableCell>
                   <TableCell>
                     <Skeleton className="h-6 w-6" />
                   </TableCell>
@@ -141,8 +155,11 @@ function MyDomainsTable() {
   );
 
   const [showEmailModal, setShowEmailModal] = useState(false);
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const { hasEmail } = useEmailPrompt();
   const router = useRouter();
+  const canAnimate = useCanAnimate();
+  const { renewSingleDomain, renewDomains, isProcessing } = useDomainRenewal();
 
   const handleManageDnsClick = useCallback(
     (domainName: string, e: React.MouseEvent) => {
@@ -158,6 +175,31 @@ function MyDomainsTable() {
 
   const columns: ColumnDef<DomainRow>[] = useMemo(
     () => [
+      {
+        id: 'select',
+        header: ({ table }) => (
+          <Checkbox
+            checked={
+              table.getIsAllPageRowsSelected() ||
+              (table.getIsSomePageRowsSelected() && 'indeterminate')
+            }
+            onCheckedChange={(value) =>
+              table.toggleAllPageRowsSelected(!!value)
+            }
+            aria-label="Select all"
+          />
+        ),
+        cell: ({ row }) => (
+          <Checkbox
+            checked={row.getIsSelected()}
+            onCheckedChange={(value) => row.toggleSelected(!!value)}
+            aria-label="Select row"
+          />
+        ),
+        size: 50,
+        enableSorting: false,
+        enableHiding: false,
+      },
       {
         accessorKey: 'chainId',
         header: 'Chain',
@@ -272,6 +314,25 @@ function MyDomainsTable() {
             >
               <Settings className="w-4 h-4 mr-1" /> Manage DNS
             </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={async () => {
+                await renewSingleDomain({
+                  normalizedDomainName: row.getValue('normalizedDomainName'),
+                  expirationDate: row.getValue('expirationDate'),
+                });
+              }}
+              disabled={isProcessing}
+              aria-label={`Renew ${row.getValue('normalizedDomainName')}`}
+            >
+              {isProcessing ? (
+                <Loader2 className="w-4 h-4 mr-1 animate-spin" />
+              ) : (
+                <History className="w-4 h-4 mr-1 scale-x-[-1]" />
+              )}
+              Renew
+            </Button>
             <Button variant="outline" size="sm" asChild={true}>
               <Link
                 href={`https://basescan.org/nft/${NAMEFI_NFT_CONTRACT_ADDRESS}/${row.original.tokenId ?? ''}`}
@@ -288,7 +349,7 @@ function MyDomainsTable() {
         enableSorting: false,
       },
     ],
-    [handleManageDnsClick],
+    [handleManageDnsClick, renewSingleDomain, isProcessing],
   );
 
   const table = useReactTable({
@@ -299,6 +360,11 @@ function MyDomainsTable() {
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     columnResizeMode: 'onChange',
+    enableRowSelection: true,
+    onRowSelectionChange: setRowSelection,
+    state: {
+      rowSelection,
+    },
   });
 
   if (domains.length === 0) {
@@ -448,6 +514,133 @@ function MyDomainsTable() {
           </div>
         </CardContent>
       </Card>
+
+      {/* Floating Action Panel */}
+      <AnimatePresence>
+        {Object.keys(rowSelection).length > 0 && (
+          <motion.div
+            initial={{ y: 100, scale: 0.95 }}
+            animate={{ y: 0, scale: 1 }}
+            exit={{ y: 100, scale: 0.95 }}
+            transition={{
+              type: 'spring',
+              damping: 20,
+              stiffness: 300,
+              duration: 0.4,
+            }}
+            layout
+            className="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50"
+          >
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="backdrop-blur-2xl bg-background/30 border border-border/50 rounded-2xl shadow-2xl shadow-black/20"
+              style={{
+                background: 'rgba(255, 255, 255, 0.1)',
+                backdropFilter: 'blur(20px) saturate(180%)',
+                WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+              }}
+            >
+              <div className="px-6 py-4">
+                <MotionConfig
+                  transition={{
+                    layout: canAnimate
+                      ? { duration: 0.9, bounce: 0, type: 'spring' }
+                      : { duration: 0 },
+                  }}
+                >
+                  <div className="flex items-center gap-6">
+                    {/* Selection Count */}
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-primary/20 border border-primary/30 rounded-full flex items-center justify-center">
+                        <NumberFlow
+                          value={Object.keys(rowSelection).length}
+                          className="text-primary font-bold text-sm"
+                          style={
+                            {
+                              '--number-flow-char-height': '0.85em',
+                              '--number-flow-mask-height': '0.3em',
+                            } as React.CSSProperties
+                          }
+                        />
+                      </div>
+                      <div className="flex flex-col">
+                        <div className="flex items-center gap-1">
+                          <span className="font-semibold text-foreground text-sm">
+                            {Object.keys(rowSelection).length === 1
+                              ? 'Domain'
+                              : 'Domains'}
+                          </span>
+                          <span className="font-medium text-muted-foreground text-sm">
+                            selected
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <NumberFlow
+                            value={domains.length}
+                            className="text-xs text-muted-foreground font-medium"
+                            style={
+                              {
+                                '--number-flow-char-height': '0.85em',
+                                '--number-flow-mask-height': '0.3em',
+                              } as React.CSSProperties
+                            }
+                          />
+                          <span className="text-xs text-muted-foreground">
+                            total
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <Separator
+                      orientation="vertical"
+                      className="h-8! bg-foreground/30"
+                    />
+
+                    {/* Actions */}
+                    <div className="flex items-center gap-3">
+                      <Button
+                        onClick={async () => {
+                          const selectedDomains = table
+                            .getSelectedRowModel()
+                            .rows.map((row) => ({
+                              normalizedDomainName:
+                                row.original.normalizedDomainName,
+                              expirationDate: row.original.expirationDate,
+                            }));
+                          await renewDomains(selectedDomains);
+                          setRowSelection({});
+                        }}
+                        disabled={isProcessing}
+                        className="h-10 px-4 gap-2 bg-primary hover:bg-primary/90"
+                      >
+                        {isProcessing ? (
+                          <Loader2 className="w-4 h-4 scale-x-[-1] animate-spin" />
+                        ) : (
+                          <History className="w-4 h-4 scale-x-[-1]" />
+                        )}
+                        Renew All
+                      </Button>
+
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setRowSelection({})}
+                        className="h-10 px-3 text-muted-foreground hover:text-foreground"
+                      >
+                        Clear
+                      </Button>
+                    </div>
+                  </div>
+                </MotionConfig>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }
