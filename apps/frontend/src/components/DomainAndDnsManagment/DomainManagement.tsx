@@ -9,6 +9,7 @@ import {
 import { useEmailPrompt } from '@/hooks/useEmailPrompt';
 import { useRecentDomains } from '@/hooks/useRecentDomains';
 import { cn } from '@/lib/utils';
+import { config } from '@/lib/env';
 import { useTRPC } from '@/utils/trpc';
 import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
 import { useSuspenseQuery } from '@tanstack/react-query';
@@ -44,7 +45,18 @@ export const DomainManagement: FC<DomainManagementProps> = ({
   className,
   ...rest
 }: DomainManagementProps) => {
-  const [currentTab, setCurrentTab] = useState('dns-overview');
+  // Check if domain matches any third-party hostname
+  const isThirdPartyHostname = useMemo(
+    () =>
+      config.POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES.some((hostname) =>
+        domain.endsWith(hostname),
+      ),
+    [domain],
+  );
+
+  // Set default tab based on whether it's a third-party hostname
+  const defaultTab = isThirdPartyHostname ? 'dns-management' : 'dns-overview';
+  const [currentTab, setCurrentTab] = useState(defaultTab);
   const [showEmailModal, setShowEmailModal] = useState(false);
   const { hasEmail } = useEmailPrompt();
   const { isLoading: isAuthLoading } = useAuth();
@@ -134,14 +146,18 @@ export const DomainManagement: FC<DomainManagementProps> = ({
           <TabsContent value="dns-setting">
             <Tabs value={currentTab} onValueChange={handleTabChange}>
               <TabsList className="mb-8">
-                <TabsTrigger value="dns-overview">DNS Overview</TabsTrigger>
+                {!isThirdPartyHostname && (
+                  <TabsTrigger value="dns-overview">DNS Overview</TabsTrigger>
+                )}
                 <TabsTrigger value="dns-records">DNS Records</TabsTrigger>
                 <TabsTrigger value="dns-management">DNS Management</TabsTrigger>
               </TabsList>
 
-              <TabsContent value="dns-overview">
-                <DnsOverviewPanel domain={domain as PunycodeDomainName} />
-              </TabsContent>
+              {!isThirdPartyHostname && (
+                <TabsContent value="dns-overview">
+                  <DnsOverviewPanel domain={domain as PunycodeDomainName} />
+                </TabsContent>
+              )}
 
               <TabsContent value="dns-records">
                 <DnsRecordsPanel domain={domain} />
