@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/shadcn/dropdown-menu';
 import { SidebarMenuButton } from '@/components/ui/shadcn/sidebar';
 import { useConfirm } from '@/contexts';
-import { useCart } from '@/hooks/landing/use-cart';
+import { useCartContext } from '@/providers/cart';
 import { useAuth } from '@/hooks/useAuth';
 import { useEmailPrompt } from '@/hooks/useEmailPrompt';
 import { cn } from '@/lib/utils';
@@ -47,7 +47,7 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
     ref: ForwardedRef<HTMLDivElement>,
   ) {
     const confirm = useConfirm();
-    const { clearLocalCart } = useCart();
+    const { clearLocalCart } = useCartContext();
 
     const { isLoading, isAuthenticated, privyUser } = useAuth();
 

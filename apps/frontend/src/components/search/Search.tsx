@@ -17,7 +17,8 @@ import {
   TooltipTrigger,
 } from '@/components/ui/shadcn/tooltip';
 import { Badge } from '@/components/ui/shadcn/badge';
-import { useCart } from '@/hooks/landing/use-cart';
+import { useCartRow } from '@/hooks/useCartRow';
+import { useCartContext } from '@/providers/cart';
 import { useDomainFilters } from '@/hooks/landing/use-domain-filters';
 import { useSearch } from '@/hooks/landing/use-search';
 import { config } from '@/lib/env';
@@ -148,8 +149,8 @@ export const SearchInput: FC<{
 );
 
 export const DomainCard: FC<{
-  domain: DomainAvailabilityInfo;
-}> = ({ domain }) => {
+  info: DomainAvailabilityInfo;
+}> = ({ info }) => {
   const { logEventWithInteractionLoggers } = useInteractionLoggers();
   const router = useRouter();
   const [isEppModalOpen, setIsEppModalOpen] = useState(false);
@@ -163,17 +164,16 @@ export const DomainCard: FC<{
     logEventWithInteractionLoggers(beginCheckoutEvent);
   }, [logEventWithInteractionLoggers]);
 
-  const { isDomainInCart, addItem, removeItem } = useCart();
-
-  const isInCart = isDomainInCart(domain.domain);
-  const isImportable = isDomainImportable(domain);
-  const isUnsupported = isDomainUnsupported(domain);
+  const domain = info.domain;
+  const { cart, inCart, addingBusy, removingBusy } = useCartRow(domain);
+  const isImportable = isDomainImportable(info);
+  const isUnsupported = isDomainUnsupported(info);
 
   // Get the appropriate pricing based on whether it's an import or registration
   const operationType = isImportable
     ? itemTypeSchema.Values.IMPORT
     : itemTypeSchema.Values.REGISTER;
-  const pricingDetails = getDomainPricingForOperation(domain, operationType);
+  const pricingDetails = getDomainPricingForOperation(info, operationType);
 
   const priceInUsd = useMemo(() => {
     if (!pricingDetails) {
@@ -183,35 +183,33 @@ export const DomainCard: FC<{
   }, [pricingDetails]);
 
   // Split domain into subdomain and parent domain
-  const parts = domain.domain.split('.');
+  const parts = domain.split('.');
   const subdomain = parts[0];
   const parentDomain = parts.slice(1).join('.');
 
-  const handleActionClick = useCallback(async () => {
-    if (isImportable && !isInCart) {
-      // Show EPP modal for import
-      setIsEppModalOpen(true);
-    } else if (!isInCart) {
-      // Regular add action - optimistic update provides immediate feedback
-      const minDuration = domain.durationValidationInYears?.min ?? 1;
-      await addItem({
-        domainAvailabilityInfo: domain,
-        durationInYears: minDuration,
-        operationType: 'REGISTER',
-      });
-    } else {
-      // Regular remove action - optimistic update provides immediate feedback
-      await removeItem([domain.domain]);
-    }
-  }, [isImportable, isInCart, addItem, domain, removeItem]);
+  /* ADD handler --------------------------------------------------------- */
+  const handleAdd = useCallback(async () => {
+    const minDuration = info.durationValidationInYears?.min ?? 1;
+    await cart.addItem({
+      domainAvailabilityInfo: info,
+      durationInYears: minDuration,
+      operationType: 'REGISTER',
+    });
+  }, [cart, info]);
 
+  /* REMOVE handler ------------------------------------------------------ */
+  const handleRemove = useCallback(async () => {
+    await cart.removeItem(domain);
+  }, [cart, domain]);
+
+  /* EPP SUBMIT handler -------------------------------------------------- */
   const handleEppSubmit = useCallback(
     async (eppAuthCode: string) => {
       setIsSubmittingEpp(true);
       try {
-        const minDuration = domain.durationValidationInYears?.min ?? 1;
-        await addItem({
-          domainAvailabilityInfo: domain,
+        const minDuration = info.durationValidationInYears?.min ?? 1;
+        await cart.addItem({
+          domainAvailabilityInfo: info,
           durationInYears: minDuration,
           operationType: 'IMPORT',
           eppAuthorizationCode: eppAuthCode,
@@ -224,7 +222,7 @@ export const DomainCard: FC<{
         setIsSubmittingEpp(false);
       }
     },
-    [addItem, domain],
+    [cart, info],
   );
 
   return (
@@ -232,7 +230,7 @@ export const DomainCard: FC<{
       <Card
         className={cn(
           'bg-white/5 backdrop-blur-lg h-32 transition-all duration-150 p-0 border-[1px] border-white/10',
-          domain.availability || isImportable ? 'opacity-100' : 'opacity-50',
+          info.availability || isImportable ? 'opacity-100' : 'opacity-50',
         )}
       >
         <CardContent className="h-full w-full">
@@ -257,14 +255,12 @@ export const DomainCard: FC<{
                     : ''}
                 </p>
               </div>
-              {!domain.availability && isNotNil(domain.currentOwner) && (
+              {!info.availability && isNotNil(info.currentOwner) && (
                 <div className="flex items-center text-sm text-muted-foreground">
                   <User className="mr-1 h-3 w-3 shrink-0" />
                   <span className="line-clamp-1">
-                    Owner: {domain.currentOwner.substring(0, 6)}...
-                    {domain.currentOwner.substring(
-                      domain.currentOwner.length - 4,
-                    )}
+                    Owner: {info.currentOwner.substring(0, 6)}...
+                    {info.currentOwner.substring(info.currentOwner.length - 4)}
                   </span>
                 </div>
               )}
@@ -275,18 +271,19 @@ export const DomainCard: FC<{
                   Unsupported
                 </Badge>
               )}
-              {!isUnsupported && (domain.availability || isImportable) && (
+              {!isUnsupported && (info.availability || isImportable) && (
                 <TooltipProvider>
-                  {isInCart ? (
+                  {inCart ? (
                     <div className="flex space-x-2 shrink-0">
                       <Tooltip>
                         <TooltipTrigger asChild={true}>
                           <NamefiButton
                             className="bg-black/40 border-white/10 hover:bg-red-600/80 hover:border-red-400/50 shrink-0"
-                            onClick={handleActionClick}
+                            onClick={handleRemove}
+                            disabled={removingBusy}
                           >
                             <Trash className="h-4 w-4 mr-1" />
-                            Remove
+                            {removingBusy ? 'Removing...' : 'Remove'}
                           </NamefiButton>
                         </TooltipTrigger>
                         <TooltipContent>
@@ -302,6 +299,7 @@ export const DomainCard: FC<{
                               logBeginCheckout();
                               router.push('/cart');
                             }}
+                            disabled={removingBusy}
                           >
                             <ShoppingCart className="h-4 w-4 mr-1" />
                             View Cart
@@ -315,14 +313,25 @@ export const DomainCard: FC<{
                       <TooltipTrigger asChild={true}>
                         <NamefiButton
                           className="shrink-0"
-                          onClick={handleActionClick}
+                          onClick={
+                            isImportable
+                              ? () => setIsEppModalOpen(true)
+                              : handleAdd
+                          }
+                          disabled={addingBusy || isSubmittingEpp}
                         >
-                          {isImportable ? (
+                          {addingBusy || isSubmittingEpp ? (
+                            <Loader2 className="h-4 w-4 animate-spin" />
+                          ) : isImportable ? (
                             <Download className="h-4 w-4" />
                           ) : (
                             <ShoppingCart className="h-4 w-4" />
                           )}
-                          {isImportable ? 'Import' : 'Add to cart'}
+                          {addingBusy || isSubmittingEpp
+                            ? 'Adding...'
+                            : isImportable
+                              ? 'Import'
+                              : 'Add to cart'}
                         </NamefiButton>
                       </TooltipTrigger>
                       <TooltipContent>
@@ -344,7 +353,7 @@ export const DomainCard: FC<{
         isOpen={isEppModalOpen}
         onClose={() => setIsEppModalOpen(false)}
         onSubmit={handleEppSubmit}
-        domainInfo={domain}
+        domainInfo={info}
         isSubmitting={isSubmittingEpp}
       />
     </>
@@ -392,7 +401,7 @@ export const SearchResults: FC<{
               <LoadingSkeletons key={`${parentDomain}-loading`} />
             ) : (
               <>
-                {filteredDomains.map((domain) => (
+                {filteredDomains.map((domainInfo) => (
                   <motion.div
                     {...(shouldReduceMotion
                       ? {}
@@ -402,10 +411,10 @@ export const SearchResults: FC<{
                           initial: { y: '100vh', opacity: 0 },
                           transition: { duration: 0.5, ease: 'easeInOut' },
                         })}
-                    key={`${parentDomain}-${domain.domain}-${domain.availability}`}
+                    key={`${parentDomain}-${domainInfo.domain}-${domainInfo.availability}`}
                     layout={true}
                   >
-                    <DomainCard domain={domain} />
+                    <DomainCard info={domainInfo} />
                   </motion.div>
                 ))}
 
@@ -463,12 +472,8 @@ export const Search: SearchComponent = ({ originInfo }) => {
     areSuggestionsLoading,
   } = useSearch(parentDomain);
 
-  const { isDomainInCart } = useCart();
-
-  const { activeTab, setActiveTab, filteredDomains } = useDomainFilters(
-    domains,
-    isDomainInCart,
-  );
+  const { activeTab, setActiveTab, filteredDomains } =
+    useDomainFilters(domains);
 
   if (!parentDomain) {
     // Return loading state or null while origin info is loading

@@ -11,10 +11,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/shadcn/dropdown-menu';
-import {
-  useCart,
-  cartItemsToInteractionLoggingCartItems,
-} from '@/hooks/landing/use-cart';
+import { cartItemsToInteractionLoggingCartItems } from '@/hooks/landing/use-cart';
+import { useCartContext } from '@/providers/cart';
 import { cn } from '@/lib/utils';
 import {
   type BeginCheckoutEvent,
@@ -41,7 +39,7 @@ export const CartDropdown: ForwardRefExoticComponent<CartDropdownProps> =
     ref: ForwardedRef<HTMLDivElement>,
   ) {
     const { logEventWithInteractionLoggers } = useInteractionLoggers();
-    const { cartData: items = [] } = useCart();
+    const { cartData: items = [] } = useCartContext();
 
     const totalAmountInUsdCents = useMemo(
       () => items.reduce((sum, item) => sum + item.amountInUSDCents, 0),

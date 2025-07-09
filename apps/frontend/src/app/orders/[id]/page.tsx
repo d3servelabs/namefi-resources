@@ -16,7 +16,7 @@ import {
 } from '@/components/ui/shadcn/carousel';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
 import { Unauthorized } from '@/components/unauthorized';
-import { useCart } from '@/hooks/landing/use-cart';
+import { useCartContext } from '@/providers/cart';
 import { useAuth } from '@/hooks/useAuth';
 import { formatDate, getShortAddress } from '@/lib/utils';
 import { useTRPC } from '@/utils/trpc';
@@ -51,7 +51,7 @@ export default function OrderPage({ params }: OrderPageProps) {
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
   const trpc = useTRPC();
 
-  const { refetchCart } = useCart();
+  const { refetchCart } = useCartContext();
 
   useEffect(() => {
     refetchCart();

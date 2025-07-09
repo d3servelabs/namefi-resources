@@ -11,6 +11,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { NuqsAdapter } from 'nuqs/adapters/next/app';
 import { type ReactNode, Suspense, useState } from 'react';
 import { ArtifactsProvider } from './artifacts';
+import { CartProvider } from './cart';
 import { ProgressProvider } from './progress';
 import { FORCED_THEME, SessionsProvider } from './sessions';
 import { ThemeProvider } from './theme';
@@ -43,7 +44,7 @@ export const Providers = ({ children }: Readonly<Props>) => {
                         <WagmiProvider config={config}>
                           <UsercentricsProvider>
                             <InteractionLoggersProvider>
-                              {children}
+                              <CartProvider>{children}</CartProvider>
                             </InteractionLoggersProvider>
                           </UsercentricsProvider>
                         </WagmiProvider>

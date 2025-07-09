@@ -1,7 +1,7 @@
 'use client';
 
 import { Input } from '@/components/ui/shadcn/input';
-import { useCart } from '@/hooks/landing/use-cart';
+import { useCartRow } from '@/hooks/useCartRow';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useAuth } from '@/hooks/useAuth';
 import { useTRPC } from '@/utils/trpc';
@@ -64,7 +64,8 @@ export const DomainClaim: FC<DomainClaimProps> = ({
   const trpc = useTRPC();
   const { isAuthenticated } = useAuth();
 
-  const { addItem, isDomainInCart } = useCart();
+  const fullDomainName = `${subdomainValue}.${domain}`;
+  const { cart, inCart } = useCartRow(fullDomainName);
 
   const { data: qualifiesForPromo, isFetching: isQualifiesForPromoFetching } =
     useQuery({
@@ -127,15 +128,13 @@ export const DomainClaim: FC<DomainClaimProps> = ({
       isSubdomainValueValid &&
       domainAvailabilityInfo &&
       qualifiesForPromo &&
-      !isDomainInCart(`${subdomainValue}.${domain}`)
+      !inCart
     );
   }, [
     isSubdomainValueValid,
     domainAvailabilityInfo,
     qualifiesForPromo,
-    isDomainInCart,
-    subdomainValue,
-    domain,
+    inCart,
   ]);
 
   const buttonText = useMemo(() => {
@@ -149,7 +148,7 @@ export const DomainClaim: FC<DomainClaimProps> = ({
         </>
       );
     }
-    if (isDomainInCart(`${subdomainValue}.${domain}`)) {
+    if (inCart) {
       return (
         <>
           <CheckIcon className="w-4 h-4" /> In Cart
@@ -169,9 +168,7 @@ export const DomainClaim: FC<DomainClaimProps> = ({
     isDomainAvailableFetching,
     isProcessing,
     isAuthenticated,
-    isDomainInCart,
-    subdomainValue,
-    domain,
+    inCart,
   ]);
 
   const onInputChange = useCallback(
@@ -187,7 +184,7 @@ export const DomainClaim: FC<DomainClaimProps> = ({
 
     setIsProcessing(true);
     try {
-      await addItem({
+      await cart.addItem({
         domainAvailabilityInfo,
         durationInYears: 1,
         operationType: 'REGISTER',
@@ -196,7 +193,7 @@ export const DomainClaim: FC<DomainClaimProps> = ({
     } finally {
       setIsProcessing(false);
     }
-  }, [domainAvailabilityInfo, canClaim, addItem, onClaim, subdomainValue]);
+  }, [domainAvailabilityInfo, canClaim, cart, onClaim, subdomainValue]);
 
   return (
     <div className="w-full max-w-4xl mx-auto p-16 justify-center items-center">

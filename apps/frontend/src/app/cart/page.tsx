@@ -1,7 +1,7 @@
 'use client';
 import { AuthRequired } from '@/components/auth-required';
 import { CartCard } from '@/components/cart-card';
-import { CartItemDurationControl } from '@/components/cart-item-duration-stepper';
+import { CartItem } from '@/components/cart-item';
 import { NamefiButton } from '@/components/namefi-button';
 import { NftWalletCard } from '@/components/nftWalletCard';
 import { useInteractionLoggers } from '@/components/providers/interactionLoggersProvider';
@@ -21,7 +21,6 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/shadcn/alert-dialog';
 import { Button } from '@/components/ui/shadcn/button';
-import { Badge } from '@/components/ui/shadcn/badge';
 import {
   Card,
   CardContent,
@@ -31,10 +30,8 @@ import {
 } from '@/components/ui/shadcn/card';
 import { Separator } from '@/components/ui/shadcn/separator';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
-import {
-  useCart,
-  cartItemsToInteractionLoggingCartItems,
-} from '@/hooks/landing/use-cart';
+import { cartItemsToInteractionLoggingCartItems } from '@/hooks/landing/use-cart';
+import { useCartContext } from '@/providers/cart';
 import { useAuth } from '@/hooks/useAuth';
 import { config } from '@/lib/env';
 import { cn } from '@/lib/utils';
@@ -43,31 +40,18 @@ import {
   type PurchaseEvent,
   type SubmitOrderFailureEvent,
 } from '@/utils/interaction-logging/events';
-import { formatAmountInUSD } from '@/utils/number';
 import { useTRPC } from '@/utils/trpc';
 import type { DeepPartial } from '@/utils/types';
-import {
-  createOrderInputSchema,
-  getDomainPricingForOperation,
-} from '@namefi-astra/backend/trpc/types';
+import { createOrderInputSchema } from '@namefi-astra/backend/trpc/types';
 import {
   isNfscPayment,
   isStripePayment,
   paymentProviderSchema,
-  itemTypeSchema,
 } from '@namefi-astra/db/types';
-import {
-  computeChargesInUsdOrThrow,
-  usdToCents,
-} from '@namefi-astra/registrars/multi-year-pricing';
-import {
-  CHAINS,
-  type NamefiNormalizedDomain,
-  NFSC_CONTRACT_ADDRESS,
-} from '@namefi-astra/utils';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { CHAINS, NFSC_CONTRACT_ADDRESS } from '@namefi-astra/utils';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import type { inferInput } from '@trpc/tanstack-react-query';
-import { ArchiveX, Loader2, Trash2 } from 'lucide-react';
+import { ArchiveX, Loader2 } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useState } from 'react';
@@ -108,7 +92,7 @@ export default function CartPage() {
 
   const trpc = useTRPC();
 
-  const { cartData: items, isCartLoading, removeItem, refetchCart } = useCart();
+  const { cartData: items, isCartLoading, refetchCart } = useCartContext();
 
   const [cartItemsAreUpToDate, setCartItemsAreUpToDate] = useState(false);
   const [cartItemsAreUpdating, setCartItemsAreUpdating] = useState(false);
@@ -118,8 +102,6 @@ export default function CartPage() {
     useMutation(
       trpc.orders.reflectChangesInCartItemsIfAnyAndReturnSummary.mutationOptions(),
     );
-
-  const queryClient = useQueryClient();
 
   const checkCartItemsForUpdates = useCallback(async () => {
     if (!cartItemsAreUpdating) {
@@ -435,35 +417,6 @@ export default function CartPage() {
     [isCreateOrderPending, isRedirecting],
   );
 
-  const { mutateAsync: updateCartItem, reset: resetUpdateCartItem } =
-    useMutation(
-      trpc.carts.updateItem.mutationOptions({
-        onSuccess: (updatedItems) => {
-          // Merge updated item with existing cache
-          queryClient.setQueryData(
-            trpc.carts.getItems.queryKey(),
-            (oldData) => {
-              if (!oldData) return updatedItems;
-
-              const updatedItemsMap = new Map(
-                updatedItems.map((item) => [item.id, item]),
-              );
-
-              return oldData.map((item) => {
-                const updatedItem = updatedItemsMap.get(item.id);
-                return updatedItem ?? item;
-              });
-            },
-          );
-
-          // Invalidate to ensure data consistency
-          queryClient.invalidateQueries({
-            queryKey: trpc.carts.getItems.queryKey(),
-          });
-        },
-      }),
-    );
-
   const { data: domainAvailabilityInfo } = useQuery({
     ...trpc.registry.getDomainListInfo.queryOptions({
       domains: items?.map((item) => item.normalizedDomainName) ?? [],
@@ -471,118 +424,10 @@ export default function CartPage() {
     enabled: items && items.length > 0,
   });
 
-  const handleDurationChange = useCallback(
-    async (itemId: string, newDuration: number) => {
-      if (isAuthenticated) {
-        // Find the item for optimistic pricing calculation
-        const item = items?.find((i) => i.id === itemId);
-        const itemDomainInfo = domainAvailabilityInfo?.find(
-          (domain) => domain.domain === item?.normalizedDomainName,
-        );
-
-        if (item && itemDomainInfo) {
-          try {
-            // Calculate optimistic price update based on item type
-            const pricingDetails = getDomainPricingForOperation(
-              itemDomainInfo,
-              item.type,
-            );
-
-            if (!pricingDetails) {
-              throw new Error(`${item.type} pricing details are unavailable`);
-            }
-
-            const chargeAmountInUsd = computeChargesInUsdOrThrow(
-              pricingDetails,
-              newDuration,
-            );
-            const optimisticAmount = usdToCents(chargeAmountInUsd);
-
-            // Optimistically update the local state before server call
-            queryClient.setQueryData(
-              trpc.carts.getItems.queryKey(),
-              (oldData) => {
-                if (!oldData) {
-                  return oldData;
-                }
-                return oldData.map((cartItem) =>
-                  cartItem.id === itemId
-                    ? {
-                        ...cartItem,
-                        durationInYears: newDuration,
-                        amountInUSDCents: optimisticAmount,
-                      }
-                    : cartItem,
-                );
-              },
-            );
-          } catch (error) {
-            // If optimistic pricing fails, just update duration
-            console.warn('Failed to calculate optimistic pricing:', error);
-            queryClient.setQueryData(
-              trpc.carts.getItems.queryKey(),
-              (oldData) => {
-                if (!oldData) {
-                  return oldData;
-                }
-                return oldData.map((cartItem) =>
-                  cartItem.id === itemId
-                    ? {
-                        ...cartItem,
-                        durationInYears: newDuration,
-                      }
-                    : cartItem,
-                );
-              },
-            );
-          }
-        }
-
-        resetUpdateCartItem();
-
-        queryClient.cancelQueries({
-          queryKey: trpc.carts.getItems.queryKey(),
-        });
-
-        await updateCartItem({
-          id: itemId,
-          durationInYears: newDuration,
-        });
-      }
-    },
-    [
-      isAuthenticated,
-      updateCartItem,
-      resetUpdateCartItem,
-      items,
-      domainAvailabilityInfo,
-      queryClient,
-      trpc,
-    ],
-  );
-
   const handleRetryOrder = useCallback(() => {
     setIsErrorDialogOpen(false);
     handleSubmitOrder();
   }, [handleSubmitOrder]);
-
-  const [removingItems, setRemovingItems] = useState<Set<string>>(new Set());
-
-  const handleRemoveItem = useCallback(
-    async (domainName: NamefiNormalizedDomain) => {
-      setRemovingItems((prev) => new Set(prev).add(domainName));
-      try {
-        await removeItem([domainName]);
-      } finally {
-        setRemovingItems((prev) => {
-          const newSet = new Set(prev);
-          newSet.delete(domainName);
-          return newSet;
-        });
-      }
-    },
-    [removeItem],
-  );
 
   if (isLoading) {
     return <LoadingSkeletons />;
@@ -681,61 +526,15 @@ export default function CartPage() {
             <CartCard title="In your cart">
               <div className="flex flex-col">
                 {items.map((item, index) => (
-                  <div key={item.id}>
-                    <div className="flex flex-col gap-4">
-                      <div className="flex items-center gap-2">
-                        <span className="text-xl">
-                          {item.normalizedDomainName}
-                        </span>
-                        {(item.type === itemTypeSchema.Values.IMPORT ||
-                          item.type === itemTypeSchema.Values.RENEW) && (
-                          <Badge className="text-xs bg-blue-600/20 text-blue-400 border-blue-400/50">
-                            {item.type === itemTypeSchema.Values.IMPORT
-                              ? 'Import'
-                              : 'Renew'}
-                          </Badge>
-                        )}
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-4">
-                          <button
-                            type="button"
-                            className="p-2 rounded-lg bg-[#27272A] hover:bg-[#3F3F46] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                            onClick={() =>
-                              handleRemoveItem(item.normalizedDomainName)
-                            }
-                            disabled={
-                              isDisabled ||
-                              removingItems.has(item.normalizedDomainName)
-                            }
-                          >
-                            {removingItems.has(item.normalizedDomainName) ? (
-                              <Loader2 className="size-4 animate-spin" />
-                            ) : (
-                              <Trash2 className="size-4" />
-                            )}
-                          </button>
-                          <CartItemDurationControl
-                            item={item}
-                            domainAvailabilityInfo={domainAvailabilityInfo?.find(
-                              (domain) =>
-                                domain.domain === item.normalizedDomainName,
-                            )}
-                            onDurationChange={handleDurationChange}
-                            isDisabled={isDisabled}
-                          />
-                        </div>
-                        <span className="text-xl">
-                          {formatAmountInUSD(item.amountInUSDCents, true)}
-                        </span>
-                      </div>
-                    </div>
-                    {index < items.length - 1 && (
-                      <div className="my-6">
-                        <Separator />
-                      </div>
+                  <CartItem
+                    key={item.id}
+                    item={item}
+                    domainAvailabilityInfo={domainAvailabilityInfo?.find(
+                      (domain) => domain.domain === item.normalizedDomainName,
                     )}
-                  </div>
+                    isDisabled={isDisabled}
+                    showSeparator={index < items.length - 1}
+                  />
                 ))}
               </div>
             </CartCard>

@@ -6,7 +6,6 @@ import {
   TabsList,
   TabsTrigger,
 } from '@/components/ui/shadcn/tabs';
-import { useCart } from '@/hooks/landing/use-cart';
 import { useDomainFilters } from '@/hooks/landing/use-domain-filters';
 import { useSearch } from '@/hooks/landing/use-search';
 import { useState } from 'react';
@@ -39,11 +38,8 @@ export const Search: SearchComponent = ({ originInfo }) => {
     refetch,
     areSuggestionsLoading,
   } = useSearch(parentDomain);
-  const { isDomainInCart } = useCart();
-  const { activeTab, setActiveTab, filteredDomains } = useDomainFilters(
-    domains,
-    isDomainInCart,
-  );
+  const { activeTab, setActiveTab, filteredDomains } =
+    useDomainFilters(domains);
 
   if (!originInfo) {
     // Return loading state or null while origin info is loading

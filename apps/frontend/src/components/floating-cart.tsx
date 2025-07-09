@@ -1,7 +1,5 @@
-import {
-  useCart,
-  cartItemsToInteractionLoggingCartItems,
-} from '@/hooks/landing/use-cart';
+import { cartItemsToInteractionLoggingCartItems } from '@/hooks/landing/use-cart';
+import { useCartContext } from '@/providers/cart';
 import {
   type BeginCheckoutEvent,
   InteractionLoggingEventName,
@@ -13,7 +11,7 @@ import { useInteractionLoggers } from './providers/interactionLoggersProvider';
 import { Button } from './ui/shadcn/button';
 
 const FloatingCart = () => {
-  const { cartData: items } = useCart();
+  const { cartData: items } = useCartContext();
   const { logEventWithInteractionLoggers } = useInteractionLoggers();
   const router = useRouter();
 

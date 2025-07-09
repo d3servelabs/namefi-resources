@@ -6,7 +6,6 @@ import {
   TabsList,
   TabsTrigger,
 } from '@/components/ui/shadcn/tabs';
-import { useCart } from '@/hooks/landing/use-cart';
 import { useDomainFilters } from '@/hooks/landing/use-domain-filters';
 import { useSearch } from '@/hooks/landing/use-search';
 import { config } from '@/lib/env';
@@ -45,12 +44,8 @@ export const Search: SearchComponent = ({ originInfo }) => {
     areSuggestionsLoading,
   } = useSearch(parentDomain);
 
-  const { isDomainInCart } = useCart();
-
-  const { activeTab, setActiveTab, filteredDomains } = useDomainFilters(
-    domains,
-    isDomainInCart,
-  );
+  const { activeTab, setActiveTab, filteredDomains } =
+    useDomainFilters(domains);
 
   const trpc = useTRPC();
 

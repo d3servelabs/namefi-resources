@@ -1,15 +1,14 @@
 import { isNotNil } from 'ramda';
 import { useMemo, useState } from 'react';
 import type { DomainAvailabilityInfo } from '@namefi-astra/backend/trpc/types';
+import { useCartContext } from '@/providers/cart';
 
 /**
  * Hook for filtering domains based on tab selection
  */
-export function useDomainFilters(
-  domains: DomainAvailabilityInfo[],
-  isDomainInCart: (domain: string) => boolean,
-) {
+export function useDomainFilters(domains: DomainAvailabilityInfo[]) {
   const [activeTab, setActiveTab] = useState('all');
+  const { isDomainInCart } = useCartContext();
 
   // Filter domains based on active tab
   const filteredDomains = useMemo(() => {
