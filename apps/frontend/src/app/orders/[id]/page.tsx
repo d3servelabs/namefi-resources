@@ -16,6 +16,7 @@ import {
 } from '@/components/ui/shadcn/carousel';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
 import { Unauthorized } from '@/components/unauthorized';
+import { useCart } from '@/hooks/landing/use-cart';
 import { useAuth } from '@/hooks/useAuth';
 import { formatDate, getShortAddress } from '@/lib/utils';
 import { useTRPC } from '@/utils/trpc';
@@ -24,7 +25,7 @@ import {
   getChain,
   getSubDomainAndParentDomainFromNormalizedDomainName,
 } from '@namefi-astra/utils';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { TRPCClientError } from '@trpc/client';
 import { Loader2 } from 'lucide-react';
 import Link from 'next/link';
@@ -50,14 +51,11 @@ export default function OrderPage({ params }: OrderPageProps) {
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
   const trpc = useTRPC();
 
-  const queryClient = useQueryClient();
-  const cartItemsQueryKey = trpc.carts.getItems.queryKey();
+  const { refetchCart } = useCart();
 
   useEffect(() => {
-    queryClient.invalidateQueries({
-      queryKey: cartItemsQueryKey,
-    });
-  }, [queryClient, cartItemsQueryKey]);
+    refetchCart();
+  }, [refetchCart]);
 
   const {
     data: order,

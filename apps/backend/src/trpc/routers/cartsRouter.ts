@@ -9,7 +9,10 @@ import {
   computeChargesInUsdOrThrow,
   usdToCents,
 } from '@namefi-astra/registrars/multi-year-pricing';
-import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import {
+  namefiNormalizedDomainSchema,
+  type NamefiNormalizedDomain,
+} from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
 import { and, eq, sql } from 'drizzle-orm';
 import { z } from 'zod';
@@ -47,12 +50,12 @@ export const cartsRouter = createTRPCRouter({
             userId: true,
             createdAt: true,
             updatedAt: true,
+            encryptionKeyId: true,
+            encryptedEppAuthorizationCode: true,
           })
           .required()
           .partial({
             metadata: true,
-            encryptionKeyId: true,
-            encryptedEppAuthorizationCode: true,
           })
           .extend({
             // For import items, we accept the plain text EPP code
@@ -73,8 +76,6 @@ export const cartsRouter = createTRPCRouter({
             durationInYears: item.durationInYears,
             type: item.type,
             registrar: item.registrar,
-            encryptionKeyId: item.encryptionKeyId,
-            encryptedEppAuthorizationCode: item.encryptedEppAuthorizationCode,
             eppAuthorizationCodeLength: item.eppAuthorizationCode?.length,
             metadata: item.metadata,
           })),
@@ -116,15 +117,10 @@ export const cartsRouter = createTRPCRouter({
           const baseItem = {
             userId: ctx.user.id,
             amountInUSDCents: item.amountInUSDCents,
-            normalizedDomainName:
-              item.normalizedDomainName as NamefiNormalizedDomain,
+            normalizedDomainName: item.normalizedDomainName,
             durationInYears: item.durationInYears,
             type: item.type,
             registrar: item.registrar,
-            metadata: item.metadata || {},
-            encryptionKeyId: item.encryptionKeyId || null,
-            encryptedEppAuthorizationCode:
-              item.encryptedEppAuthorizationCode || null,
           };
 
           // For import items, encrypt the EPP authorization code
@@ -155,8 +151,8 @@ export const cartsRouter = createTRPCRouter({
 
       methodLogger.info({ itemsToInsert }, 'Items to insert');
 
-      // Insert items with conflict handling
-      await db
+      // Insert items with conflict handling and return the inserted/updated items
+      const insertResult = await db
         .insert(cartItemsTable)
         .values(itemsToInsert)
         .onConflictDoUpdate({
@@ -170,19 +166,14 @@ export const cartsRouter = createTRPCRouter({
             metadata: sql`excluded.metadata`,
             updatedAt: sql`now()`,
           },
-        });
+        })
+        .returning();
 
-      // Return updated cart with items
-      const cartItems = await db.query.cartItemsTable.findMany({
-        where: eq(cartItemsTable.userId, ctx.user.id),
-      });
-
-      const filteredCartItems = filterCartItemsByOrigin(
-        cartItems,
+      // Filter by origin and return the results
+      return filterCartItemsByOrigin(
+        insertResult,
         ctx.thirdPartyOriginHostname,
       );
-
-      return filteredCartItems;
     }),
 
   // Update cart item for the current user
@@ -191,37 +182,48 @@ export const cartsRouter = createTRPCRouter({
       cartItemUpdateSchema
         .pick({
           id: true,
-          amountInUSDCents: true,
           durationInYears: true,
-          metadata: true,
         })
         .required()
         .partial({
-          metadata: true,
-          amountInUSDCents: true,
           durationInYears: true,
-        }),
+        })
+        .extend({
+          eppAuthorizationCode: z.string().optional(),
+        })
+        .refine(
+          (data) =>
+            data.durationInYears !== undefined ||
+            data.eppAuthorizationCode !== undefined,
+          {
+            message:
+              'At least one of durationInYears or eppAuthorizationCode must be provided',
+          },
+        ),
     )
     .mutation(async ({ ctx, input }) => {
-      // If duration is being updated, recalculate the amount using proper pricing
-      let updatedAmountInUsdCents = input.amountInUSDCents;
+      // Fetch current item since we need domain info for calculations
+      const currentItem = await db.query.cartItemsTable.findFirst({
+        where: and(
+          eq(cartItemsTable.id, input.id),
+          eq(cartItemsTable.userId, ctx.user.id),
+        ),
+      });
 
-      if (input.durationInYears && !input.amountInUSDCents) {
-        // Get the current cart item to fetch domain info
-        const currentItem = await db.query.cartItemsTable.findFirst({
-          where: and(
-            eq(cartItemsTable.id, input.id),
-            eq(cartItemsTable.userId, ctx.user.id),
-          ),
+      if (!currentItem) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Cart item not found',
         });
+      }
 
-        if (!currentItem) {
-          throw new TRPCError({
-            code: 'NOT_FOUND',
-            message: 'Cart item not found',
-          });
-        }
+      const updateSet: Partial<typeof cartItemsTable.$inferInsert> = {};
 
+      // If duration is being updated, calculate new price
+      if (
+        input.durationInYears &&
+        input.durationInYears !== currentItem.durationInYears
+      ) {
         const domainInfos = await getDomainListInfo(
           [currentItem.normalizedDomainName as NamefiNormalizedDomain],
           ctx.user,
@@ -244,73 +246,74 @@ export const cartsRouter = createTRPCRouter({
           pricingDetails,
           input.durationInYears,
         );
-        updatedAmountInUsdCents = usdToCents(chargeAmountInUsd);
+
+        updateSet.amountInUSDCents = usdToCents(chargeAmountInUsd);
+        updateSet.durationInYears = input.durationInYears;
       }
 
-      await db
+      // If EPP authorization code is being updated for import items
+      if (
+        currentItem.type === itemTypeSchema.Values.IMPORT &&
+        input.eppAuthorizationCode
+      ) {
+        if (!input.eppAuthorizationCode.trim()) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'EPP authorization code is required for import items',
+          });
+        }
+
+        const { encryptedEppAuthorizationCode, encryptionKeyId } =
+          await encryptEppAuthCode(input.eppAuthorizationCode);
+
+        updateSet.encryptedEppAuthorizationCode = encryptedEppAuthorizationCode;
+        updateSet.encryptionKeyId = encryptionKeyId;
+      }
+
+      // Update and return the updated item
+      const updateResult = await db
         .update(cartItemsTable)
-        .set({
-          amountInUSDCents: updatedAmountInUsdCents,
-          durationInYears: input.durationInYears,
-          metadata: input.metadata,
-        })
+        .set(updateSet)
         .where(
           and(
             eq(cartItemsTable.id, input.id),
             eq(cartItemsTable.userId, ctx.user.id),
           ),
-        );
+        )
+        .returning();
 
-      // Return updated cart with items
-      const cartItems = await db.query.cartItemsTable.findMany({
-        where: eq(cartItemsTable.userId, ctx.user.id),
-      });
+      if (updateResult.length === 0) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Cart item not found or not updated',
+        });
+      }
 
-      const filteredCartItems = filterCartItemsByOrigin(
-        cartItems,
-        ctx.thirdPartyOriginHostname,
-      );
-
-      return filteredCartItems;
+      return updateResult;
     }),
 
   removeItem: protectedProcedure
-    .input(z.array(z.string().uuid()))
+    .input(z.array(namefiNormalizedDomainSchema).min(1))
     .mutation(async ({ ctx, input }) => {
-      if (input.length === 0) {
-        // Return current cart if no items to remove
-        const cartItems = await db.query.cartItemsTable.findMany({
-          where: eq(cartItemsTable.userId, ctx.user.id),
-        });
-        const filteredCartItems = filterCartItemsByOrigin(
-          cartItems,
-          ctx.thirdPartyOriginHostname,
-        );
+      // Delete and return the removed items directly
+      const removedItems = await db
+        .delete(cartItemsTable)
+        .where(
+          and(
+            sql`${cartItemsTable.normalizedDomainName} IN (${sql.join(
+              input.map((domainName) => sql`${domainName}`),
+              sql`, `,
+            )})`,
+            eq(cartItemsTable.userId, ctx.user.id),
+          ),
+        )
+        .returning();
 
-        return filteredCartItems;
-      }
-
-      await db.delete(cartItemsTable).where(
-        and(
-          sql`${cartItemsTable.id} IN (${sql.join(
-            input.map((id) => sql`${id}`),
-            sql`, `,
-          )})`,
-          eq(cartItemsTable.userId, ctx.user.id),
-        ),
-      );
-
-      // Return updated cart with items
-      const cartItems = await db.query.cartItemsTable.findMany({
-        where: eq(cartItemsTable.userId, ctx.user.id),
-      });
-
-      const filteredCartItems = filterCartItemsByOrigin(
-        cartItems,
+      // Filter by origin and return the removed items
+      return filterCartItemsByOrigin(
+        removedItems,
         ctx.thirdPartyOriginHostname,
       );
-
-      return filteredCartItems;
     }),
 
   clear: protectedProcedure.mutation(async ({ ctx }) => {

@@ -153,8 +153,7 @@ export const DomainCard: FC<{
   const { logEventWithInteractionLoggers } = useInteractionLoggers();
   const router = useRouter();
   const [isEppModalOpen, setIsEppModalOpen] = useState(false);
-  const [isAddingImport, setIsAddingImport] = useState(false);
-  const [isProcessing, setIsProcessing] = useState(false);
+  const [isSubmittingEpp, setIsSubmittingEpp] = useState(false);
 
   const logBeginCheckout = useCallback(() => {
     const beginCheckoutEvent: BeginCheckoutEvent = {
@@ -164,7 +163,7 @@ export const DomainCard: FC<{
     logEventWithInteractionLoggers(beginCheckoutEvent);
   }, [logEventWithInteractionLoggers]);
 
-  const { isDomainInCart, handleDomainAction } = useCart();
+  const { isDomainInCart, addItem, removeItem } = useCart();
 
   const isInCart = isDomainInCart(domain.domain);
   const isImportable = isDomainImportable(domain);
@@ -192,28 +191,26 @@ export const DomainCard: FC<{
     if (isImportable && !isInCart) {
       // Show EPP modal for import
       setIsEppModalOpen(true);
+    } else if (!isInCart) {
+      // Regular add action - optimistic update provides immediate feedback
+      const minDuration = domain.durationValidationInYears?.min ?? 1;
+      await addItem({
+        domainAvailabilityInfo: domain,
+        durationInYears: minDuration,
+        operationType: 'REGISTER',
+      });
     } else {
-      // Regular add/remove action
-      setIsProcessing(true);
-      try {
-        const minDuration = domain.durationValidationInYears?.min ?? 1;
-        await handleDomainAction({
-          domainAvailabilityInfo: domain,
-          durationInYears: minDuration,
-          operationType: 'REGISTER',
-        });
-      } finally {
-        setIsProcessing(false);
-      }
+      // Regular remove action - optimistic update provides immediate feedback
+      await removeItem([domain.domain]);
     }
-  }, [isImportable, isInCart, handleDomainAction, domain]);
+  }, [isImportable, isInCart, addItem, domain, removeItem]);
 
   const handleEppSubmit = useCallback(
     async (eppAuthCode: string) => {
-      setIsAddingImport(true);
+      setIsSubmittingEpp(true);
       try {
         const minDuration = domain.durationValidationInYears?.min ?? 1;
-        await handleDomainAction({
+        await addItem({
           domainAvailabilityInfo: domain,
           durationInYears: minDuration,
           operationType: 'IMPORT',
@@ -224,10 +221,10 @@ export const DomainCard: FC<{
         // Error will be handled by the modal
         throw error;
       } finally {
-        setIsAddingImport(false);
+        setIsSubmittingEpp(false);
       }
     },
-    [handleDomainAction, domain],
+    [addItem, domain],
   );
 
   return (
@@ -287,13 +284,8 @@ export const DomainCard: FC<{
                           <NamefiButton
                             className="bg-black/40 border-white/10 hover:bg-red-600/80 hover:border-red-400/50 shrink-0"
                             onClick={handleActionClick}
-                            disabled={isProcessing}
                           >
-                            {isProcessing ? (
-                              <Loader2 className="h-4 w-4 animate-spin" />
-                            ) : (
-                              <Trash className="h-4 w-4 mr-1" />
-                            )}
+                            <Trash className="h-4 w-4 mr-1" />
                             Remove
                           </NamefiButton>
                         </TooltipTrigger>
@@ -324,11 +316,8 @@ export const DomainCard: FC<{
                         <NamefiButton
                           className="shrink-0"
                           onClick={handleActionClick}
-                          disabled={isProcessing || isAddingImport}
                         >
-                          {isProcessing || isAddingImport ? (
-                            <Loader2 className="h-4 w-4 animate-spin" />
-                          ) : isImportable ? (
+                          {isImportable ? (
                             <Download className="h-4 w-4" />
                           ) : (
                             <ShoppingCart className="h-4 w-4" />
@@ -356,7 +345,7 @@ export const DomainCard: FC<{
         onClose={() => setIsEppModalOpen(false)}
         onSubmit={handleEppSubmit}
         domainInfo={domain}
-        isSubmitting={isAddingImport}
+        isSubmitting={isSubmittingEpp}
       />
     </>
   );

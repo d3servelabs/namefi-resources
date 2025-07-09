@@ -60,7 +60,11 @@ import {
   computeChargesInUsdOrThrow,
   usdToCents,
 } from '@namefi-astra/registrars/multi-year-pricing';
-import { CHAINS, NFSC_CONTRACT_ADDRESS } from '@namefi-astra/utils';
+import {
+  CHAINS,
+  type NamefiNormalizedDomain,
+  NFSC_CONTRACT_ADDRESS,
+} from '@namefi-astra/utils';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { inferInput } from '@trpc/tanstack-react-query';
 import { ArchiveX, Loader2, Trash2 } from 'lucide-react';
@@ -104,7 +108,7 @@ export default function CartPage() {
 
   const trpc = useTRPC();
 
-  const { cartData: items, isCartLoading, removeItem } = useCart();
+  const { cartData: items, isCartLoading, removeItem, refetchCart } = useCart();
 
   const [cartItemsAreUpToDate, setCartItemsAreUpToDate] = useState(false);
   const [cartItemsAreUpdating, setCartItemsAreUpdating] = useState(false);
@@ -128,18 +132,15 @@ export default function CartPage() {
         setCartItemsChangesSummary(_cartItemsChangesSummary);
       }
 
-      await queryClient.refetchQueries({
-        queryKey: trpc.carts.getItems.queryKey(),
-      });
+      await refetchCart();
       setCartItemsAreUpdating(false);
       setCartItemsAreUpToDate(true);
     }
   }, [
     reflectChangesInCartItemsIfAnyAndReturnSummary,
     items,
-    queryClient,
     cartItemsAreUpdating,
-    trpc,
+    refetchCart,
   ]);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
@@ -437,8 +438,26 @@ export default function CartPage() {
   const { mutateAsync: updateCartItem, reset: resetUpdateCartItem } =
     useMutation(
       trpc.carts.updateItem.mutationOptions({
-        onSuccess: () => {
-          queryClient.refetchQueries({
+        onSuccess: (updatedItems) => {
+          // Merge updated item with existing cache
+          queryClient.setQueryData(
+            trpc.carts.getItems.queryKey(),
+            (oldData) => {
+              if (!oldData) return updatedItems;
+
+              const updatedItemsMap = new Map(
+                updatedItems.map((item) => [item.id, item]),
+              );
+
+              return oldData.map((item) => {
+                const updatedItem = updatedItemsMap.get(item.id);
+                return updatedItem ?? item;
+              });
+            },
+          );
+
+          // Invalidate to ensure data consistency
+          queryClient.invalidateQueries({
             queryKey: trpc.carts.getItems.queryKey(),
           });
         },
@@ -479,7 +498,7 @@ export default function CartPage() {
             );
             const optimisticAmount = usdToCents(chargeAmountInUsd);
 
-            // Optimistically update the local state
+            // Optimistically update the local state before server call
             queryClient.setQueryData(
               trpc.carts.getItems.queryKey(),
               (oldData) => {
@@ -499,7 +518,6 @@ export default function CartPage() {
             );
           } catch (error) {
             // If optimistic pricing fails, just update duration
-            // The server will provide the correct pricing
             console.warn('Failed to calculate optimistic pricing:', error);
             queryClient.setQueryData(
               trpc.carts.getItems.queryKey(),
@@ -551,14 +569,14 @@ export default function CartPage() {
   const [removingItems, setRemovingItems] = useState<Set<string>>(new Set());
 
   const handleRemoveItem = useCallback(
-    async (itemId: string) => {
-      setRemovingItems((prev) => new Set(prev).add(itemId));
+    async (domainName: NamefiNormalizedDomain) => {
+      setRemovingItems((prev) => new Set(prev).add(domainName));
       try {
-        await removeItem(itemId);
+        await removeItem([domainName]);
       } finally {
         setRemovingItems((prev) => {
           const newSet = new Set(prev);
-          newSet.delete(itemId);
+          newSet.delete(domainName);
           return newSet;
         });
       }
@@ -683,10 +701,15 @@ export default function CartPage() {
                           <button
                             type="button"
                             className="p-2 rounded-lg bg-[#27272A] hover:bg-[#3F3F46] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                            onClick={() => handleRemoveItem(item.id)}
-                            disabled={isDisabled || removingItems.has(item.id)}
+                            onClick={() =>
+                              handleRemoveItem(item.normalizedDomainName)
+                            }
+                            disabled={
+                              isDisabled ||
+                              removingItems.has(item.normalizedDomainName)
+                            }
                           >
-                            {removingItems.has(item.id) ? (
+                            {removingItems.has(item.normalizedDomainName) ? (
                               <Loader2 className="size-4 animate-spin" />
                             ) : (
                               <Trash2 className="size-4" />

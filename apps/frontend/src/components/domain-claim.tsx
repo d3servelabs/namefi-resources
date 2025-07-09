@@ -64,7 +64,7 @@ export const DomainClaim: FC<DomainClaimProps> = ({
   const trpc = useTRPC();
   const { isAuthenticated } = useAuth();
 
-  const { handleDomainAction, isDomainInCart } = useCart();
+  const { addItem, isDomainInCart } = useCart();
 
   const { data: qualifiesForPromo, isFetching: isQualifiesForPromoFetching } =
     useQuery({
@@ -187,7 +187,7 @@ export const DomainClaim: FC<DomainClaimProps> = ({
 
     setIsProcessing(true);
     try {
-      await handleDomainAction({
+      await addItem({
         domainAvailabilityInfo,
         durationInYears: 1,
         operationType: 'REGISTER',
@@ -196,13 +196,7 @@ export const DomainClaim: FC<DomainClaimProps> = ({
     } finally {
       setIsProcessing(false);
     }
-  }, [
-    domainAvailabilityInfo,
-    canClaim,
-    handleDomainAction,
-    onClaim,
-    subdomainValue,
-  ]);
+  }, [domainAvailabilityInfo, canClaim, addItem, onClaim, subdomainValue]);
 
   return (
     <div className="w-full max-w-4xl mx-auto p-16 justify-center items-center">

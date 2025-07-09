@@ -17,7 +17,7 @@ interface DomainWithExpiration {
 
 export function useDomainRenewal() {
   const trpcClient = useTRPCClient();
-  const { handleDomainAction, cartData } = useCart();
+  const { addItem, cartData } = useCart();
 
   const renewDomains = useCallback(
     async (
@@ -110,9 +110,7 @@ export function useDomainRenewal() {
         // Batch add all valid items to cart
         if (itemsToAdd.length > 0) {
           try {
-            await handleDomainAction(
-              itemsToAdd.map(({ domain, ...item }) => item),
-            );
+            await addItem(itemsToAdd.map(({ domain, ...item }) => item));
 
             // Mark all as successful
             itemsToAdd.forEach(({ domain }) => {
@@ -203,7 +201,7 @@ export function useDomainRenewal() {
         }));
       }
     },
-    [trpcClient, cartData, handleDomainAction],
+    [trpcClient, cartData, addItem],
   );
 
   return {

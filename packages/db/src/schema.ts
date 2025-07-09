@@ -24,6 +24,7 @@ import {
   unique,
   uuid,
 } from 'drizzle-orm/pg-core';
+import type { Json } from 'drizzle-zod';
 
 /**
  * Common table columns for timestamp tracking
@@ -167,7 +168,7 @@ export const cartItemsTable = pgTable(
     registrar: text('registrar').notNull(),
     encryptionKeyId: text('encryption_key_id'),
     encryptedEppAuthorizationCode: text('encrypted_epp_authorization_code'),
-    metadata: jsonb('metadata').default({}),
+    metadata: jsonb('metadata').$type<Json>().default({}),
     ...timestamps,
   },
   (table) => [

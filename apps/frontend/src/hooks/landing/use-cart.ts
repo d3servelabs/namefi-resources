@@ -1,468 +1,776 @@
-import { useInteractionLoggers } from '@/components/providers/interactionLoggersProvider';
+import { useCallback, useEffect, useMemo, useReducer, useRef } from 'react';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useLocalStorage } from 'usehooks-ts';
 import { useAuth } from '@/hooks/useAuth';
+import { useInteractionLoggers } from '@/components/providers/interactionLoggersProvider';
+import { InteractionLoggingEventName } from '@/utils/interaction-logging/events';
 import {
-  type AddToCartEvent,
-  InteractionLoggingEventName,
-  type RemoveFromCartEvent,
-} from '@/utils/interaction-logging/events';
-import { useTRPC, type AppRouterOutput } from '@/utils/trpc';
-import {
-  type CartItemSelect as DbCartItem,
-  itemTypeSchema,
-} from '@namefi-astra/db/types';
-import {
-  computeChargesInUsdOrThrow,
-  usdToCents,
-} from '@namefi-astra/registrars/multi-year-pricing';
+  useTRPC,
+  type AppRouterInput,
+  type AppRouterOutput,
+} from '@/utils/trpc';
 import {
   isDomainImportable,
   isDomainRegistrable,
   getDomainPricingForOperation,
   type DomainAvailabilityInfo,
 } from '@namefi-astra/backend/trpc/types';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useCallback, useEffect, useMemo, useRef } from 'react';
-import { useLocalStorage } from 'usehooks-ts';
+import { itemTypeSchema } from '@namefi-astra/db/types';
+import {
+  computeChargesInUsdOrThrow,
+  usdToCents,
+} from '@namefi-astra/registrars/multi-year-pricing';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import { useDebounceCallback } from 'usehooks-ts';
+import { config } from '@/lib/env';
 
-/**
- * Type for enriched cart items returned from the server
- */
-type EnrichedCartItem = AppRouterOutput['carts']['getItems'][number];
+/* -------------------------------------------------------------------------- */
+/*                                TYPE HELPERS                               */
+/* -------------------------------------------------------------------------- */
 
-/**
- * Unified cart item type with common fields from both local and server items
- * This is what all hook functions will return and work with
- */
-export type CartItem = {
-  id: string;
-  normalizedDomainName: string;
-  amountInUSDCents: number;
-  durationInYears: number;
-  createdAt: Date;
-  type: 'REGISTER' | 'IMPORT' | 'RENEW';
-  registrar: string;
-  encryptionKeyId: string | null;
-  encryptedEppAuthorizationCode: string | null;
-  metadata?: unknown;
-  // domainAvailabilityInfo?: DomainAvailabilityInfo;
-};
-
-/**
- * Type for internal storage cart items (used in localStorage)
- */
-type InternalCartItem = Pick<
-  DbCartItem,
-  | 'normalizedDomainName'
-  | 'amountInUSDCents'
-  | 'durationInYears'
-  | 'createdAt'
-  | 'id'
-  | 'encryptionKeyId'
-  | 'encryptedEppAuthorizationCode'
-  | 'type'
-  | 'registrar'
-> &
-  Partial<Pick<DbCartItem, 'metadata'>> & {
-    domainAvailabilityInfo?: DomainAvailabilityInfo;
-  };
-
-/**
- * Type for handleDomainAction parameters
- */
-type HandleDomainActionParams = {
+type ServerReadCartItem = AppRouterOutput['carts']['getItems'][number];
+type ServerWriteCartItem = AppRouterInput['carts']['addItems'][number];
+type ServerUpdateCartItem = AppRouterInput['carts']['updateItem'];
+interface LocalExtras {
+  eppAuthorizationCode?: string;
+}
+export type UnifiedCartItem = ServerReadCartItem & Partial<LocalExtras>;
+type AddToCartParams = {
   domainAvailabilityInfo: DomainAvailabilityInfo;
   durationInYears: number;
   operationType: 'REGISTER' | 'IMPORT' | 'RENEW';
   eppAuthorizationCode?: string;
-  toggle?: boolean;
+};
+type AddToCartFunction = (
+  items: AddToCartParams | AddToCartParams[],
+) => Promise<UnifiedCartItem[]>;
+type UpdateItemParams = {
+  id: string;
+  domainAvailabilityInfo: DomainAvailabilityInfo;
+} & (
+  | { durationInYears: number; eppAuthorizationCode?: string }
+  | { eppAuthorizationCode: string; durationInYears?: number }
+);
+type UpdateItemFunction = (item: UpdateItemParams) => Promise<UnifiedCartItem>;
+/* -------------------------------------------------------------------------- */
+/*                               UTIL CONSTANTS                               */
+/* -------------------------------------------------------------------------- */
+
+const OPT = '__optimistic' as const;
+
+type OptimisticTag = { [OPT]: true };
+type Optimistic<T> = T & OptimisticTag;
+type MaybeOptimistic<T> = T & Partial<OptimisticTag>;
+type MaybeOptimisticUnifiedCartItem = MaybeOptimistic<UnifiedCartItem>;
+type OptimisticUnifiedCartItem = Optimistic<UnifiedCartItem>;
+
+const markOptimistic = (
+  i: ServerWriteCartItem,
+  userId: string,
+): OptimisticUnifiedCartItem => ({
+  ...i,
+  id: crypto.randomUUID(),
+  normalizedDomainName: i.normalizedDomainName as NamefiNormalizedDomain,
+  userId,
+  createdAt: new Date(),
+  updatedAt: new Date(),
+  encryptionKeyId: 'local-encryption-key',
+  encryptedEppAuthorizationCode: 'local-encrypted-epp-authorization-code',
+  metadata: {},
+  [OPT]: true,
+});
+
+const isOptimistic = (i: any): i is OptimisticTag =>
+  i && typeof i === 'object' && OPT in i;
+
+const stripOptimistic = <T extends object>(i: MaybeOptimistic<T>) => {
+  const { [OPT]: _, ...rest } = i;
+  return rest as T;
 };
 
-/**
- * Type for handleDomainAction function
- */
-type HandleDomainActionFunction = (
-  items: HandleDomainActionParams | HandleDomainActionParams[],
-) => Promise<CartItem[]>;
-
-/**
- * Helper function to normalize cart items to the unified CartItem type
- */
-function normalizeCartItems(
-  items: (InternalCartItem | EnrichedCartItem)[],
-): CartItem[] {
-  return items.map((item) => ({
-    id: item.id,
-    normalizedDomainName: item.normalizedDomainName,
-    amountInUSDCents: item.amountInUSDCents,
-    durationInYears: item.durationInYears,
-    createdAt: item.createdAt,
-    type: item.type,
-    registrar: item.registrar,
-    encryptionKeyId: item.encryptionKeyId,
-    encryptedEppAuthorizationCode: item.encryptedEppAuthorizationCode,
-    metadata: item.metadata,
-    // domainAvailabilityInfo: item.domainAvailabilityInfo,
-  }));
-}
+const stripForLocalStorage = <T extends MaybeOptimisticUnifiedCartItem>(
+  i: T,
+) => {
+  const stripped = stripOptimistic(i);
+  return {
+    ...stripped,
+    encryptionKeyId: null,
+    encryptedEppAuthorizationCode: null,
+  };
+};
 
 /**
  * Helper function to convert CartItem array to InteractionLoggingCartItem array
  */
-export function cartItemsToInteractionLoggingCartItems(items: CartItem[]) {
+export function cartItemsToInteractionLoggingCartItems(
+  items: UnifiedCartItem[],
+) {
   return items.map((item) => ({
     amountInUSDCents: item.amountInUSDCents,
-    normalizedDomainName: item.normalizedDomainName as NamefiNormalizedDomain,
+    normalizedDomainName: item.normalizedDomainName,
   }));
 }
 
-/**
- * Hook for managing cart functionality (adding/removing items, checking cart status)
- * Handles both authenticated (server-stored) and unauthenticated (localStorage) carts
- */
+/* -------------------------------------------------------------------------- */
+/*                              BUSY STATE REDUCER                           */
+/* -------------------------------------------------------------------------- */
+
+type BusyKey = string; // usually the cart-item id
+type BusyAction =
+  | { type: 'mark'; key: BusyKey }
+  | { type: 'clear'; key: BusyKey }
+  | { type: 'clearAll' };
+
+function busyReducer(state: Set<BusyKey>, action: BusyAction): Set<BusyKey> {
+  switch (action.type) {
+    case 'mark': {
+      if (state.has(action.key)) return state;
+      const next = new Set(state);
+      next.add(action.key);
+      return next;
+    }
+    case 'clear': {
+      if (!state.has(action.key)) return state;
+      const next = new Set(state);
+      next.delete(action.key);
+      return next;
+    }
+    case 'clearAll':
+      return new Set();
+  }
+}
+
+const domainKey = (domain: string) => `domain:${domain}`;
+
+/* -------------------------------------------------------------------------- */
+/*                                 HOOK BODY                                  */
+/* -------------------------------------------------------------------------- */
+
 export function useCart() {
   const trpc = useTRPC();
-  const queryClient = useQueryClient();
-  const { isAuthenticated } = useAuth();
-  // Ref to track sync status
-  const isSyncing = useRef(false);
+  const { isAuthenticated, user } = useAuth();
   const { logEventWithInteractionLoggers } = useInteractionLoggers();
+  const queryClient = useQueryClient();
 
-  // Local storage cart for non-authenticated users
-  const [localCartItems, setLocalCartItems, clearLocalCart] = useLocalStorage<
-    InternalCartItem[]
-  >('user-cart-items', []);
+  const CartKey = useMemo(() => trpc.carts.getItems.queryKey(), [trpc]);
 
-  // Cart data fetching from server (for authenticated users)
-  const {
-    data: serverCartData,
-    isLoading: isServerCartLoading,
-    refetch: refetchCart,
-  } = useQuery({
+  /* ------------------------- debounce invalidate ------------------------- */
+  const debouncedInvalidate = useDebounceCallback(() => {
+    queryClient.invalidateQueries({
+      queryKey: CartKey,
+      refetchType: 'inactive',
+      exact: true,
+    });
+  }, 300);
+
+  useEffect(() => debouncedInvalidate.cancel, [debouncedInvalidate]);
+
+  const safeInvalidate = useCallback(() => {
+    debouncedInvalidate();
+  }, [debouncedInvalidate]);
+
+  /* ------------------------------ rollback ------------------------------- */
+  const rollback = useCallback(
+    (ctx?: { prev?: UnifiedCartItem[] }) => {
+      if (!ctx?.prev) return;
+      queryClient.setQueryData(CartKey, ctx.prev.map(stripOptimistic));
+      safeInvalidate();
+    },
+    [safeInvalidate, queryClient, CartKey],
+  );
+
+  /* ---------------------------- local storage ---------------------------- */
+  const reviveDates = (item: any) => ({
+    ...item,
+    createdAt: item.createdAt ? new Date(item.createdAt) : undefined,
+    updatedAt: item.updatedAt ? new Date(item.updatedAt) : undefined,
+  });
+
+  const [localCart, setLocalCart, clearLocalCart] = useLocalStorage<
+    UnifiedCartItem[]
+  >('user-cart-items', [], {
+    initializeWithValue: true,
+    deserializer: (value: string) => {
+      const parsed = JSON.parse(value);
+      return Array.isArray(parsed) ? parsed.map(reviveDates) : [];
+    },
+  });
+
+  /* ------------------------------ helpers ------------------------------- */
+  const normalize = useCallback(
+    (items: (ServerReadCartItem | UnifiedCartItem)[]): UnifiedCartItem[] =>
+      items.map((item) => {
+        if (!item.id && config.TYPE !== 'production') {
+          console.error('Cart item without ID', item);
+        }
+
+        return {
+          ...stripOptimistic(item),
+          id: item.id ?? crypto.randomUUID(),
+          userId: item.userId ?? 'anonymous',
+          encryptionKeyId: item.encryptionKeyId ?? null,
+          encryptedEppAuthorizationCode:
+            item.encryptedEppAuthorizationCode ?? null,
+        };
+      }),
+    [],
+  );
+
+  const mergeByDomain = (
+    delta: UnifiedCartItem[],
+    base: UnifiedCartItem[] = [],
+  ) => {
+    const map = new Map(base.map((i) => [i.normalizedDomainName, i]));
+    delta.forEach((i) => map.set(i.normalizedDomainName, i));
+    return [...map.values()];
+  };
+
+  /* ------------------------------ query ---------------------------------- */
+  useEffect(() => {
+    queryClient.setQueryDefaults(CartKey, {
+      staleTime: 5 * 60_000,
+      refetchOnWindowFocus: false,
+      meta: { abortOnUnmount: true },
+    });
+  }, [queryClient, CartKey]);
+
+  const { data: serverData, isLoading: isServerLoading } = useQuery({
     ...trpc.carts.getItems.queryOptions(),
     enabled: isAuthenticated,
   });
 
-  // Determine which cart data to use based on authentication status and normalize it
   const cartData = useMemo(() => {
-    const rawCartData = isAuthenticated ? serverCartData : localCartItems;
-    if (!rawCartData) return undefined;
-
-    let sortedData = rawCartData;
-    if (rawCartData.length > 0 && rawCartData[0].createdAt) {
-      sortedData = rawCartData
+    const src = isAuthenticated ? serverData : localCart;
+    if (!src) return undefined;
+    return normalize(
+      src
         .slice()
         .sort(
           (a, b) =>
-            new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
-        );
-    }
+            (a.createdAt?.getTime() ?? 0) - (b.createdAt?.getTime() ?? 0),
+        ),
+    );
+  }, [isAuthenticated, serverData, localCart, normalize]);
 
-    return normalizeCartItems(sortedData);
-  }, [isAuthenticated, serverCartData, localCartItems]);
+  /* ------------------------ optimistic helpers --------------------------- */
+  // Removed pendingAdds ref - no longer needed with busyIds
+  const addPromiseRef = useRef<Promise<any> | null>(null);
 
-  // Cart mutations for authenticated users
-  const { isPending: isAddingToServerCart, mutateAsync: addToCartMutateAsync } =
-    useMutation({
-      ...trpc.carts.addItems.mutationOptions(),
-      onSuccess: (data) => {
-        // Update the cache with the normalized server response
-        queryClient.setQueryData(trpc.carts.getItems.queryKey(), data);
-      },
-    });
+  /* ----------------------- busy-flag reducer (id-based) -------------------- */
+  const [busyIds, dispatchBusy] = useReducer(busyReducer, new Set<BusyKey>());
 
-  const { mutate: removeFromCartMutate, isPending: isRemovingFromServerCart } =
-    useMutation({
-      ...trpc.carts.removeItem.mutationOptions(),
-      onSuccess: (data) => {
-        // Update the cache with the normalized server response
-        queryClient.setQueryData(trpc.carts.getItems.queryKey(), data);
-      },
-    });
+  const markBusy = useCallback(
+    (key: BusyKey) => dispatchBusy({ type: 'mark', key }),
+    [],
+  );
+  const clearBusy = useCallback(
+    (key: BusyKey) => dispatchBusy({ type: 'clear', key }),
+    [],
+  );
 
-  const {
-    mutateAsync: clearServerCartMutateAsync,
-    isPending: isClearingServerCart,
-  } = useMutation({
-    ...trpc.carts.clear.mutationOptions(),
-    onSuccess: (data) => {
-      // Update the cache with the normalized server response (empty array)
-      queryClient.setQueryData(trpc.carts.getItems.queryKey(), data);
+  const isDomainInCart = useCallback(
+    (d: string) => cartData?.some((i) => i.normalizedDomainName === d) ?? false,
+    [cartData],
+  );
+
+  /* ------------------------------ mutations ------------------------------ */
+
+  const addMutation = useMutation({
+    ...trpc.carts.addItems.mutationOptions(),
+    onMutate: async (payload: ServerWriteCartItem[]) => {
+      await queryClient.cancelQueries({ queryKey: CartKey });
+      const prev = queryClient.getQueryData<UnifiedCartItem[]>(CartKey) ?? [];
+      const optimistic = normalize(
+        payload.map((p) => markOptimistic(p, user?.id ?? 'anonymous')),
+      );
+      queryClient.setQueryData(CartKey, mergeByDomain(optimistic, prev));
+      const touched = payload.map((p) => domainKey(p.normalizedDomainName));
+      return { prev, keys: touched };
+    },
+    onError: (_e, _v, ctx) => rollback(ctx),
+    onSuccess: (server) => {
+      const authoritative = normalize(server);
+      queryClient.setQueryData(CartKey, (old: UnifiedCartItem[] = []) => {
+        const map = new Map(old.map((i) => [i.normalizedDomainName, i]));
+        authoritative.forEach((s) => {
+          const existing = map.get(s.normalizedDomainName);
+          if (existing && isOptimistic(existing))
+            map.set(s.normalizedDomainName, s);
+        });
+        return [...map.values()];
+      });
+      // Clear the domain placeholder keys on success
+      server.forEach((i) => clearBusy(domainKey(i.normalizedDomainName)));
+    },
+    onSettled: (_d, _e, _v, ctx) => {
+      // If the mutation threw an error, clear its busy placeholders
+      ctx?.keys?.forEach(clearBusy);
+      safeInvalidate();
     },
   });
 
-  const removeFromLocalCart = useCallback(
-    (domainName: NamefiNormalizedDomain) => {
-      setLocalCartItems((prevItems) =>
-        prevItems.filter((item) => item.normalizedDomainName !== domainName),
-      );
+  const runAdd = useCallback(
+    (payload: ServerWriteCartItem[]) => {
+      // If it's already running, return the existing promise
+      if (addPromiseRef.current) return addPromiseRef.current;
+
+      addPromiseRef.current = addMutation
+        .mutateAsync(payload)
+        .then((r) => {
+          addPromiseRef.current = null;
+          return r;
+        })
+        .catch((e) => {
+          addPromiseRef.current = null;
+          throw e;
+        });
+
+      return addPromiseRef.current;
     },
-    [setLocalCartItems],
+    [addMutation],
   );
 
-  // Remove cart item(s) by ID - now uses bulk endpoint when appropriate
-  const removeItem = useCallback(
-    (itemIds: string | string[]) => {
-      const idsArray = Array.isArray(itemIds) ? itemIds : [itemIds];
-
-      if (isAuthenticated) {
-        removeFromCartMutate(idsArray);
-      } else {
-        setLocalCartItems((prev) =>
-          prev.filter((item) => !idsArray.includes(item.id)),
+  const removeMutation = useMutation({
+    ...trpc.carts.removeItem.mutationOptions(),
+    onMutate: async (domains: NamefiNormalizedDomain[]) => {
+      // Mark existing items as busy by their IDs and collect them
+      const touchedIds: string[] = [];
+      cartData?.forEach((item) => {
+        if (domains.includes(item.normalizedDomainName) && item.id) {
+          markBusy(item.id);
+          touchedIds.push(item.id);
+        }
+      });
+      await queryClient.cancelQueries({ queryKey: CartKey });
+      const prev = queryClient.getQueryData<UnifiedCartItem[]>(CartKey);
+      // Filter out items by ID to prevent update collisions
+      queryClient.setQueryData(CartKey, (old: UnifiedCartItem[] = []) =>
+        old.filter((c) => !touchedIds.includes(c.id)),
+      );
+      return { prev, keys: touchedIds };
+    },
+    onError: (_e, _v, ctx) => rollback(ctx),
+    onSuccess: (removed) => {
+      const removedSet = new Set(removed.map((i) => i.normalizedDomainName));
+      queryClient.setQueryData(CartKey, (old: UnifiedCartItem[] = []) => {
+        // skip if re‑added optimistically
+        return old.filter(
+          (i) => !(removedSet.has(i.normalizedDomainName) && !isOptimistic(i)),
         );
+      });
+    },
+    onSettled: (_d, _e, _v, ctx) => {
+      // Only clear the specific IDs this mutation touched
+      ctx?.keys?.forEach(clearBusy);
+      safeInvalidate();
+    },
+  });
+
+  const clearMutation = useMutation({
+    mutationFn: trpc.carts.clear.mutationOptions().mutationFn,
+    onMutate: async () => {
+      await queryClient.cancelQueries({ queryKey: CartKey });
+      const prev = queryClient.getQueryData<UnifiedCartItem[]>(CartKey);
+      queryClient.setQueryData(CartKey, []);
+      return { prev };
+    },
+    onError: (_e, _v, ctx) => rollback(ctx),
+    onSettled: safeInvalidate,
+  });
+
+  /* ------------------------------ updateItem ----------------------------- */
+  const buildServerUpdateCartItem = (
+    p: UpdateItemParams,
+  ): ServerUpdateCartItem => {
+    const payload: ServerUpdateCartItem = {
+      id: p.id,
+    };
+
+    if (p.durationInYears !== undefined) {
+      payload.durationInYears = p.durationInYears;
+    }
+
+    if (p.eppAuthorizationCode !== undefined) {
+      payload.eppAuthorizationCode = p.eppAuthorizationCode;
+    }
+
+    return payload;
+  };
+
+  const calculateOptimisticPrice = (
+    p: UpdateItemParams,
+  ): number | undefined => {
+    if (p.durationInYears === undefined) return undefined;
+
+    // Find the existing cart item to get current type
+    const existingItem = cartData?.find((i) => i.id === p.id);
+    if (!existingItem) {
+      throw new Error('Cart item not found');
+    }
+
+    // Skip calculation if duration is the same and no EPP code update
+    if (
+      p.durationInYears === existingItem.durationInYears &&
+      p.eppAuthorizationCode === undefined
+    ) {
+      return undefined; // keep old amount
+    }
+
+    // Calculate pricing based on domain info and duration
+    const pricingDetails = getDomainPricingForOperation(
+      p.domainAvailabilityInfo,
+      existingItem.type,
+    );
+
+    if (!pricingDetails) {
+      throw new Error(`${existingItem.type} pricing details are unavailable`);
+    }
+
+    const chargeAmountInUsd = computeChargesInUsdOrThrow(
+      pricingDetails,
+      p.durationInYears,
+    );
+
+    return usdToCents(chargeAmountInUsd);
+  };
+
+  const updateMutation = useMutation({
+    ...trpc.carts.updateItem.mutationOptions(),
+    onMutate: async (payload: ServerUpdateCartItem) => {
+      await queryClient.cancelQueries({ queryKey: CartKey });
+
+      // remember previous cache
+      const prev = queryClient.getQueryData<UnifiedCartItem[]>(CartKey) ?? [];
+
+      // optimistic patch
+      queryClient.setQueryData(CartKey, (old: UnifiedCartItem[] = []) =>
+        old.map((item) =>
+          item.id === payload.id
+            ? {
+                ...item,
+                ...payload,
+                [OPT]: true,
+              }
+            : item,
+        ),
+      );
+
+      return { prev, id: payload.id };
+    },
+    onError: (_e, _v, ctx) => rollback(ctx),
+    onSuccess: (serverItems, _vars, ctx) => {
+      const authoritative = normalize(serverItems)[0]; // ← server returns `[item]`
+
+      queryClient.setQueryData(CartKey, (old: UnifiedCartItem[] = []) =>
+        old.map((i) => {
+          if (i.id === ctx?.id && isOptimistic(i)) {
+            if (authoritative.updatedAt >= i.updatedAt) {
+              return authoritative;
+            }
+          }
+          return i;
+        }),
+      );
+    },
+    onSettled: safeInvalidate,
+  });
+
+  const updateItem: UpdateItemFunction = async (input) => {
+    markBusy(input.id);
+
+    try {
+      if (isAuthenticated) {
+        const updatePayload = buildServerUpdateCartItem(input);
+        const optimisticPrice = calculateOptimisticPrice(input);
+
+        // If we calculated a price, update the optimistic cache with it
+        if (optimisticPrice !== undefined) {
+          await queryClient.cancelQueries({ queryKey: CartKey });
+
+          queryClient.setQueryData(CartKey, (old: UnifiedCartItem[] = []) =>
+            old.map((item) =>
+              item.id === input.id
+                ? {
+                    ...item,
+                    amountInUSDCents: optimisticPrice,
+                    ...(input.durationInYears !== undefined && {
+                      durationInYears: input.durationInYears,
+                    }),
+                    ...(input.eppAuthorizationCode !== undefined && {
+                      eppAuthorizationCode: input.eppAuthorizationCode,
+                    }),
+                    [OPT]: true,
+                  }
+                : item,
+            ),
+          );
+        }
+
+        const serverResults = await updateMutation.mutateAsync(updatePayload);
+        const normalizedResults = normalize(serverResults);
+        return normalizedResults[0];
       }
-    },
-    [isAuthenticated, removeFromCartMutate, setLocalCartItems],
-  );
 
-  // Helper functions
-  const isDomainInCart = useCallback(
-    (domainName: string) => {
-      return !!cartData?.some(
-        (item) => item.normalizedDomainName === domainName,
-      );
-    },
-    [cartData],
-  );
+      const updatePayload = buildServerUpdateCartItem(input);
+      const optimisticPrice = calculateOptimisticPrice(input);
 
-  const getCartItemId = useCallback(
-    (domainName: string) => {
-      const foundItem = cartData?.find(
-        (item) => item.normalizedDomainName === domainName,
-      );
-      return foundItem?.id;
-    },
-    [cartData],
-  );
-
-  const logAddToCart = useCallback(
-    (cartItem: CartItem) => {
-      const addToCartEvent: AddToCartEvent = {
-        name: InteractionLoggingEventName.AddToCart,
-        properties: {
-          cartItem: {
-            amountInUSDCents: cartItem.amountInUSDCents,
-            normalizedDomainName:
-              cartItem.normalizedDomainName as NamefiNormalizedDomain,
-          },
-        },
+      // For local updates, include the calculated price
+      const localUpdatePayload = {
+        ...updatePayload,
+        ...(optimisticPrice !== undefined && {
+          amountInUSDCents: optimisticPrice,
+        }),
+        ...(input.eppAuthorizationCode !== undefined && {
+          eppAuthorizationCode: input.eppAuthorizationCode,
+        }),
       };
-      logEventWithInteractionLoggers(addToCartEvent);
-    },
-    [logEventWithInteractionLoggers],
-  );
 
-  const logRemoveFromCart = useCallback(
-    (cartItem: CartItem) => {
-      const removeFromCartEvent: RemoveFromCartEvent = {
+      const updatedItem = applyLocalUpdate(stripOptimistic(localUpdatePayload));
+      return updatedItem;
+    } finally {
+      clearBusy(input.id);
+    }
+  };
+
+  /* ------------------------------ addItem -------------------------------- */
+  const buildServerWriteCartItem = (
+    p: AddToCartParams,
+  ): ServerWriteCartItem => {
+    const {
+      domainAvailabilityInfo: info,
+      durationInYears,
+      operationType,
+      eppAuthorizationCode,
+    } = p;
+
+    if (operationType === 'IMPORT' && !isDomainImportable(info))
+      throw new Error('Domain is not importable');
+    if (operationType === 'REGISTER' && !isDomainRegistrable(info))
+      throw new Error('Domain is not registrable');
+    const pricing = getDomainPricingForOperation(info, operationType);
+    if (!pricing) throw new Error('Pricing unavailable');
+
+    return {
+      normalizedDomainName: info.domain,
+      amountInUSDCents: usdToCents(
+        computeChargesInUsdOrThrow(pricing, durationInYears),
+      ),
+      durationInYears,
+      type: operationType,
+      // TODO: (Sid->Sami) add "namefi" in registar and make it required
+      registrar: info.registrarKey || 'namefi',
+      eppAuthorizationCode:
+        operationType === itemTypeSchema.Values.IMPORT
+          ? eppAuthorizationCode
+          : undefined,
+    };
+  };
+
+  const addItem: AddToCartFunction = async (raw) => {
+    const params = Array.isArray(raw) ? raw : [raw];
+    const payload: ServerWriteCartItem[] = [];
+
+    for (const p of params) {
+      const d = p.domainAvailabilityInfo.domain;
+      if (isDomainInCart(d)) continue; // already present
+      if (isDomainBusy(d) || addPromiseRef.current) continue; // already being processed
+
+      markBusy(domainKey(d));
+      try {
+        payload.push(buildServerWriteCartItem(p));
+      } catch (e) {
+        clearBusy(domainKey(d));
+        throw e;
+      }
+    }
+
+    if (!payload.length) return [];
+
+    if (isAuthenticated) {
+      const server = await runAdd(payload);
+      const unified = normalize(server);
+      unified.forEach((c) =>
+        logEventWithInteractionLoggers({
+          name: InteractionLoggingEventName.AddToCart,
+          properties: {
+            cartItem: {
+              amountInUSDCents: c.amountInUSDCents,
+              normalizedDomainName: c.normalizedDomainName,
+            },
+          },
+        }),
+      );
+      return unified;
+    }
+
+    const locals = payload.map((p) => ({
+      ...markOptimistic(p, 'anonymous'),
+      eppAuthorizationCode: p.eppAuthorizationCode,
+    }));
+    setLocalCart((prev) => [...prev, ...locals.map(stripForLocalStorage)]);
+
+    // Local add finishes instantly → clear busy flags
+    payload.forEach((p) => {
+      clearBusy(domainKey(p.normalizedDomainName));
+    });
+
+    return normalize(locals.map(stripForLocalStorage));
+  };
+
+  /* ----------------------------- removeItem ------------------------------ */
+  const removeItem = async (
+    d: NamefiNormalizedDomain | NamefiNormalizedDomain[],
+  ): Promise<UnifiedCartItem[]> => {
+    const list = Array.isArray(d) ? d : [d];
+    if (!list.length) return [];
+
+    // Wait for any pending add operations to complete
+    while (
+      list.some((domain) => isDomainBusy(domain)) &&
+      addPromiseRef.current
+    ) {
+      await addPromiseRef.current;
+    }
+
+    if (isAuthenticated) {
+      // Mark existing items as busy by their IDs
+      const itemsToRemove =
+        cartData?.filter((item) => list.includes(item.normalizedDomainName)) ??
+        [];
+      itemsToRemove.forEach((item) => {
+        if (item.id) markBusy(item.id);
+      });
+
+      try {
+        const removed = await removeMutation.mutateAsync(list);
+        removed.forEach((c) =>
+          logEventWithInteractionLoggers({
+            name: InteractionLoggingEventName.RemoveFromCart,
+            properties: {
+              cartItem: {
+                amountInUSDCents: c.amountInUSDCents,
+                normalizedDomainName: c.normalizedDomainName,
+              },
+            },
+          }),
+        );
+        return normalize(removed);
+      } finally {
+        // Clear pending state
+        itemsToRemove.forEach((item) => {
+          if (item.id) clearBusy(item.id);
+        });
+      }
+    }
+
+    const removedLocal = localCart.filter((i) =>
+      list.includes(i.normalizedDomainName),
+    );
+    setLocalCart((prev) =>
+      prev.filter((i) => !list.includes(i.normalizedDomainName)),
+    );
+    removedLocal.forEach((c) =>
+      logEventWithInteractionLoggers({
         name: InteractionLoggingEventName.RemoveFromCart,
         properties: {
           cartItem: {
-            amountInUSDCents: cartItem.amountInUSDCents,
-            normalizedDomainName:
-              cartItem.normalizedDomainName as NamefiNormalizedDomain,
+            amountInUSDCents: c.amountInUSDCents,
+            normalizedDomainName: c.normalizedDomainName,
           },
         },
-      };
-      logEventWithInteractionLoggers(removeFromCartEvent);
-    },
-    [logEventWithInteractionLoggers],
-  );
+      }),
+    );
+    return normalize(removedLocal);
+  };
 
-  const handleDomainAction = useCallback<HandleDomainActionFunction>(
-    async (items) => {
-      // Convert single item to array for uniform processing
-      const itemsArray = Array.isArray(items) ? items : [items];
-      const cartItemsToAdd: (Omit<InternalCartItem, 'id'> & {
-        eppAuthorizationCode?: string;
-      })[] = [];
-
-      for (const item of itemsArray) {
-        const {
-          domainAvailabilityInfo,
-          durationInYears,
-          operationType,
-          eppAuthorizationCode,
-          toggle = true,
-        } = item;
-        if (
-          operationType === 'IMPORT' &&
-          !isDomainImportable(domainAvailabilityInfo)
-        ) {
-          throw new Error('Domain is not importable');
-        }
-
-        if (
-          operationType === 'REGISTER' &&
-          !isDomainRegistrable(domainAvailabilityInfo)
-        ) {
-          throw new Error('Domain is not registrable');
-        }
-
-        // Get appropriate pricing for the operation
-        const pricingDetails = getDomainPricingForOperation(
-          domainAvailabilityInfo,
-          operationType,
-        );
-
-        if (!pricingDetails) {
-          throw new Error(`${operationType} pricing details are unavailable`);
-        }
-
-        const chargeAmountInUsd = computeChargesInUsdOrThrow(
-          pricingDetails,
-          durationInYears,
-        );
-        const calculatedAmount = usdToCents(chargeAmountInUsd);
-
-        const cartItem: Omit<InternalCartItem, 'id'> & {
-          eppAuthorizationCode?: string;
-        } = {
-          normalizedDomainName: domainAvailabilityInfo.domain,
-          amountInUSDCents: calculatedAmount,
-          durationInYears,
-          createdAt: new Date(),
-          type: operationType,
-          // TODO: (sid->sami) add "namefi" in registar and make it required
-          registrar: domainAvailabilityInfo.registrarKey || 'namefi',
-          encryptionKeyId: null,
-          encryptedEppAuthorizationCode: null,
-          eppAuthorizationCode:
-            operationType === itemTypeSchema.Values.IMPORT
-              ? eppAuthorizationCode
-              : undefined,
-        };
-
-        if (isDomainInCart(domainAvailabilityInfo.domain)) {
-          if (!toggle) {
-            // If toggle is false and domain is already in cart, do nothing
-            continue;
-          }
-          // Remove domain from cart (toggle behavior)
-          const itemId = getCartItemId(domainAvailabilityInfo.domain);
-          if (itemId) {
-            if (isAuthenticated) {
-              removeFromCartMutate([itemId]);
-              logRemoveFromCart({
-                ...cartItem,
-                id: itemId,
-                // domainAvailabilityInfo,
-              });
-            } else {
-              removeFromLocalCart(domainAvailabilityInfo.domain);
-              logRemoveFromCart({
-                ...cartItem,
-                id: itemId,
-                // domainAvailabilityInfo,
-              });
-            }
-          }
-        } else {
-          // Add to batch
-          cartItemsToAdd.push(cartItem);
-        }
-      }
-
-      // Batch add all items
-      if (cartItemsToAdd.length > 0) {
-        if (isAuthenticated) {
-          const results = await addToCartMutateAsync(cartItemsToAdd);
-          const normalizedResults = normalizeCartItems(results);
-          normalizedResults.forEach((result) => {
-            logAddToCart(result);
-          });
-          return normalizedResults;
-        }
-
-        const itemsWithIds = cartItemsToAdd.map((item) => ({
-          ...item,
-          id: crypto.randomUUID(),
-        }));
-        setLocalCartItems((prevItems) => [...prevItems, ...itemsWithIds]);
-        const normalizedLocalResults = normalizeCartItems(itemsWithIds);
-        normalizedLocalResults.forEach((item) => logAddToCart(item));
-        return normalizedLocalResults;
-      }
-      return [];
-    },
-    [
-      isDomainInCart,
-      getCartItemId,
-      removeFromCartMutate,
-      addToCartMutateAsync,
-      isAuthenticated,
-      setLocalCartItems,
-      removeFromLocalCart,
-      logAddToCart,
-      logRemoveFromCart,
-    ],
-  );
-
-  // Sync local cart to server when user authenticates
-  useEffect(() => {
-    const syncLocalCartToServer = async () => {
-      if (
-        !isAuthenticated ||
-        localCartItems.length === 0 ||
-        isSyncing.current
-      ) {
-        return;
-      }
-
-      try {
-        isSyncing.current = true;
-        const backendItems = localCartItems.map(({ id, ...item }) => item);
-        // Only call if there are items to add
-        if (backendItems.length > 0) {
-          await addToCartMutateAsync(backendItems);
-        }
-        clearLocalCart();
-      } catch (error) {
-        console.error('Failed to sync local cart to server:', error);
-        // Don't clear local cart on failure to prevent data loss
-      } finally {
-        isSyncing.current = false;
-      }
-    };
-
-    if (isAuthenticated && localCartItems.length > 0) {
-      syncLocalCartToServer();
-    }
-  }, [isAuthenticated, localCartItems, addToCartMutateAsync, clearLocalCart]);
-
-  // Loading states
-  const isAddingToCart = isAuthenticated ? isAddingToServerCart : false;
-  const isRemovingFromCart = isAuthenticated ? isRemovingFromServerCart : false;
-  const isCartLoading = isAuthenticated ? isServerCartLoading : false;
-  const isClearingCart = isAuthenticated ? isClearingServerCart : false;
-
-  // Unified clear cart function that handles both server and local storage
-  const clearCart = useCallback(async (): Promise<CartItem[]> => {
+  /* ------------------------------- clearCart ----------------------------- */
+  const clearCart = async () => {
     if (isAuthenticated) {
-      // Clear server cart
-      const result = await clearServerCartMutateAsync();
-      return normalizeCartItems(result);
+      await clearMutation.mutateAsync();
+    } else {
+      clearLocalCart();
     }
-    // Clear local storage cart
-    clearLocalCart();
-    return [];
-  }, [isAuthenticated, clearServerCartMutateAsync, clearLocalCart]);
+    return [] as UnifiedCartItem[];
+  };
 
-  const isCartUpdating = useMemo(() => {
-    return isAddingToCart || isRemovingFromCart || isClearingCart;
-  }, [isAddingToCart, isRemovingFromCart, isClearingCart]);
+  const applyLocalUpdate = (
+    updatePayload: ServerUpdateCartItem,
+  ): UnifiedCartItem => {
+    // Find the item first
+    const existingItem = localCart.find((i) => i.id === updatePayload.id);
+    if (!existingItem) {
+      throw new Error('Cart item not found in local storage');
+    }
+
+    // Create updated item immutably, stripping optimistic flag
+    const updatedItem = { ...stripOptimistic(existingItem), ...updatePayload };
+
+    // Update local cart immutably
+    setLocalCart((prev) =>
+      prev.map((i) => (i.id === updatePayload.id ? updatedItem : i)),
+    );
+
+    return updatedItem;
+  };
+
+  /* -------------------------- sync local on login ------------------------ */
+  const syncing = useRef(false);
+  useEffect(() => {
+    if (!isAuthenticated || !localCart.length || syncing.current) return;
+    syncing.current = true;
+    runAdd(localCart.map(stripOptimistic)).finally(() => {
+      clearLocalCart();
+      syncing.current = false;
+    });
+  }, [isAuthenticated, localCart, clearLocalCart, runAdd]);
+
+  /* ------------------------------ helpers ------------------------------- */
+  const getCartItemId = useCallback(
+    (d: string) => cartData?.find((i) => i.normalizedDomainName === d)?.id,
+    [cartData],
+  );
+  const refetchCart = useCallback(
+    () => queryClient.invalidateQueries({ queryKey: CartKey, exact: true }),
+    [queryClient, CartKey],
+  );
+
+  const isDomainBusy = useCallback(
+    (domain: string) => {
+      // 1. placeholder while the row is being optimistically added
+      if (busyIds.has(domainKey(domain))) return true;
+
+      // 2. any existing row with that domain is busy?
+      const maybeIds =
+        cartData
+          ?.filter((i) => i.normalizedDomainName === domain)
+          .map((i) => i.id) ?? [];
+
+      return maybeIds.some((id) => id && busyIds.has(id));
+    },
+    [busyIds, cartData],
+  );
+
+  /* ---------------------------- state flags ------------------------------ */
+  const isCartLoading = isAuthenticated ? isServerLoading : false;
+  const isCartUpdating = isAuthenticated
+    ? addMutation.isPending ||
+      removeMutation.isPending ||
+      clearMutation.isPending ||
+      busyIds.size > 0
+    : false;
 
   return {
     cartData,
     isCartLoading,
     isCartUpdating,
     isDomainInCart,
+    isDomainBusy,
     getCartItemId,
-    handleDomainAction,
-    refetchCart,
-    clearLocalCart,
-    clearCart,
+    addItem,
+    updateItem,
     removeItem,
+    clearCart,
+    clearLocalCart,
+    refetchCart,
   };
 }

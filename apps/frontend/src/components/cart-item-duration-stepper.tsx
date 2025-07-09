@@ -3,7 +3,7 @@ import { useRenewalDurationConstraints } from '@/hooks/use-renewal-duration-cons
 import { itemTypeSchema } from '@namefi-astra/db/types';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { Loader2 } from 'lucide-react';
-import type { CartItem } from '@/hooks/landing/use-cart';
+import type { UnifiedCartItem as CartItem } from '@/hooks/landing/use-cart';
 import type { DomainAvailabilityInfo } from '@namefi-astra/backend/trpc/types';
 
 // Component to handle duration controls for different cart item types
