@@ -10,15 +10,8 @@ import {
   TabsList,
   TabsTrigger,
 } from '@/components/ui/shadcn/tabs';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/shadcn/tooltip';
 import { Badge } from '@/components/ui/shadcn/badge';
 import { useCartRow } from '@/hooks/useCartRow';
-import { useCartContext } from '@/providers/cart';
 import { useDomainFilters } from '@/hooks/landing/use-domain-filters';
 import { useSearch } from '@/hooks/landing/use-search';
 import { config } from '@/lib/env';
@@ -29,15 +22,7 @@ import {
 } from '@/utils/interaction-logging/events';
 import { formatAmountInUSD } from '@/utils/number';
 import { computeChargesInUsdOrThrow } from '@namefi-astra/registrars/multi-year-pricing';
-import {
-  Loader2,
-  SearchIcon,
-  ShoppingCart,
-  Trash,
-  User,
-  X,
-  Download,
-} from 'lucide-react';
+import { Loader2, SearchIcon, User, X } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { MotionConfig, useReducedMotion } from 'motion/react';
 import { useRouter } from 'next/navigation';
@@ -45,6 +30,7 @@ import { isNotNil } from 'ramda';
 import { type FC, useCallback, useMemo, useState } from 'react';
 import FloatingCart from '../floating-cart';
 import { NamefiButton } from '../namefi-button';
+import { AnimatedCartButton } from '../animated-cart-button';
 import { useInteractionLoggers } from '../providers/interactionLoggersProvider';
 import { Placeholder } from './Placeholder';
 import type { SearchComponent } from './types';
@@ -272,76 +258,29 @@ export const DomainCard: FC<{
                 </Badge>
               )}
               {!isUnsupported && (info.availability || isImportable) && (
-                <TooltipProvider>
-                  {inCart ? (
-                    <div className="flex space-x-2 shrink-0">
-                      <Tooltip>
-                        <TooltipTrigger asChild={true}>
-                          <NamefiButton
-                            className="bg-black/40 border-white/10 hover:bg-red-600/80 hover:border-red-400/50 shrink-0"
-                            onClick={handleRemove}
-                            disabled={removingBusy}
-                          >
-                            <Trash className="h-4 w-4 mr-1" />
-                            {removingBusy ? 'Removing...' : 'Remove'}
-                          </NamefiButton>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          Remove this domain from your cart
-                        </TooltipContent>
-                      </Tooltip>
-
-                      <Tooltip>
-                        <TooltipTrigger asChild={true}>
-                          <NamefiButton
-                            className="shrink-0"
-                            onClick={() => {
-                              logBeginCheckout();
-                              router.push('/cart');
-                            }}
-                            disabled={removingBusy}
-                          >
-                            <ShoppingCart className="h-4 w-4 mr-1" />
-                            View Cart
-                          </NamefiButton>
-                        </TooltipTrigger>
-                        <TooltipContent>Go to your cart</TooltipContent>
-                      </Tooltip>
-                    </div>
-                  ) : (
-                    <Tooltip>
-                      <TooltipTrigger asChild={true}>
-                        <NamefiButton
-                          className="shrink-0"
-                          onClick={
-                            isImportable
-                              ? () => setIsEppModalOpen(true)
-                              : handleAdd
-                          }
-                          disabled={addingBusy || isSubmittingEpp}
-                        >
-                          {addingBusy || isSubmittingEpp ? (
-                            <Loader2 className="h-4 w-4 animate-spin" />
-                          ) : isImportable ? (
-                            <Download className="h-4 w-4" />
-                          ) : (
-                            <ShoppingCart className="h-4 w-4" />
-                          )}
-                          {addingBusy || isSubmittingEpp
-                            ? 'Adding...'
-                            : isImportable
-                              ? 'Import'
-                              : 'Add to cart'}
-                        </NamefiButton>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        {isImportable
-                          ? 'Import this domain'
-                          : 'Add this domain to your cart'}
-                      </TooltipContent>
-                    </Tooltip>
-                  )}
-                </TooltipProvider>
+                <AnimatedCartButton
+                  state={
+                    removingBusy
+                      ? 'removing'
+                      : addingBusy || isSubmittingEpp
+                        ? 'adding'
+                        : inCart
+                          ? 'in-cart'
+                          : isImportable
+                            ? 'import'
+                            : 'add-to-cart'
+                  }
+                  onAdd={
+                    isImportable ? () => setIsEppModalOpen(true) : handleAdd
+                  }
+                  onRemove={handleRemove}
+                  onGoToCart={() => {
+                    logBeginCheckout();
+                    router.push('/cart');
+                  }}
+                  showRemoveButton={inCart}
+                  disabled={addingBusy || isSubmittingEpp || removingBusy}
+                />
               )}
             </div>
           </div>

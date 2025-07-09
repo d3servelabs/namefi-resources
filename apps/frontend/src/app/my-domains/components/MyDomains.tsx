@@ -35,6 +35,7 @@ import {
   NAMEFI_NFT_CONTRACT_ADDRESS,
   CHAINS,
   getChain,
+  type NamefiNormalizedDomain,
 } from '@namefi-astra/utils';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import {
@@ -153,7 +154,7 @@ const RenewButton: FC<{
   onRenew: (domain: {
     normalizedDomainName: string;
     expirationDate?: Date | null;
-  }) => Promise<any>;
+  }) => Promise<unknown>;
   isProcessing: boolean;
 }> = ({ domainName, expirationDate, onRenew, isProcessing }) => {
   return (
@@ -200,7 +201,7 @@ const LoadingSkeletons: FC = () => (
               </TableRow>
             </TableHeader>
             <TableBody>
-              {[...new Array(3)].map((_, index) => (
+              {[...new Array(6)].map((_, index) => (
                 <TableRow key={index}>
                   <TableCell>
                     <Skeleton className="h-4 w-4" />
@@ -322,7 +323,8 @@ function MyDomainsTable() {
       try {
         await renewDomains([
           {
-            normalizedDomainName: domain.normalizedDomainName as any,
+            normalizedDomainName:
+              domain.normalizedDomainName as NamefiNormalizedDomain,
             expirationDate: domain.expirationDate,
           },
         ]);

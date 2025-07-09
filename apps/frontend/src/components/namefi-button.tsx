@@ -16,7 +16,7 @@ export function NamefiButton({
   return (
     <Button
       className={cn(
-        'bg-brand-primary text-white hover:bg-brand-primary/90 h-10 rounded-md py-2 px-4 gap-2',
+        'bg-brand-primary text-secondary-foreground hover:bg-brand-primary/90 h-10 rounded-md py-2 px-8 gap-2',
         className,
       )}
       {...props}

@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { useTRPCClient } from '@/utils/trpc';
-import { useCart } from '@/hooks/landing/use-cart';
+import { useCartContext } from '@/providers/cart';
 import { toast } from 'sonner';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 
@@ -17,7 +17,7 @@ interface DomainWithExpiration {
 
 export function useDomainRenewal() {
   const trpcClient = useTRPCClient();
-  const { addItem, cartData } = useCart();
+  const { addItem, cartData } = useCartContext();
 
   const renewDomains = useCallback(
     async (
