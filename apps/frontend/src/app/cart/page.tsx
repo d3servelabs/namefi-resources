@@ -1,10 +1,11 @@
 'use client';
-import { AuthRequired } from '@/components/auth-required';
+import { AuthRequiredCard } from '@/components/selectPaymentMethodCard/selectPaymentMethodCard';
 import { CartCard } from '@/components/cart-card';
 import { CartItem } from '@/components/cart-item';
 import { NamefiButton } from '@/components/namefi-button';
 import { NftWalletCard } from '@/components/nftWalletCard';
 import { useInteractionLoggers } from '@/components/providers/interactionLoggersProvider';
+import { UserDropdown } from '@/components/dropdowns/UserDropdown';
 import {
   NoPaymentMethodRequiredCard,
   SelectPaymentMethodCard,
@@ -54,9 +55,10 @@ import type { inferInput } from '@trpc/tanstack-react-query';
 import { ArchiveX, Loader2 } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useRouter } from 'next/navigation';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { formatUnits } from 'viem';
 import { useBalance } from 'wagmi';
+import { set } from 'ramda';
 
 const DEFAULT_CHAIN_ID = config.ALLOWED_CHAINS.includes(CHAINS.base.id)
   ? CHAINS.base.id
@@ -92,43 +94,39 @@ export default function CartPage() {
 
   const trpc = useTRPC();
 
-  const { cartData: items, isCartLoading, refetchCart } = useCartContext();
+  const {
+    cartData: items,
+    isCartLoading,
+    isCartUpdating,
+    refetchCart,
+  } = useCartContext();
 
-  const [cartItemsAreUpToDate, setCartItemsAreUpToDate] = useState(false);
-  const [cartItemsAreUpdating, setCartItemsAreUpdating] = useState(false);
+  const [
+    isExplicitlyCheckingCartItemsForUpdates,
+    setExplicitlyCheckingCartItemsForUpdates,
+  ] = useState(false);
+
   const [cartItemsChangesSummary, setCartItemsChangesSummary] =
     useState<string[]>();
   const { mutateAsync: reflectChangesInCartItemsIfAnyAndReturnSummary } =
-    useMutation(
-      trpc.orders.reflectChangesInCartItemsIfAnyAndReturnSummary.mutationOptions(),
-    );
+    useMutation({
+      ...trpc.orders.reflectChangesInCartItemsIfAnyAndReturnSummary.mutationOptions(),
+      onSettled: () => {
+        refetchCart();
+      },
+      onError: (err) => console.error('reflectChanges error', err),
+    });
 
   const checkCartItemsForUpdates = useCallback(async () => {
-    if (!cartItemsAreUpdating) {
-      setCartItemsAreUpdating(true);
-      const _cartItemsChangesSummary =
-        await reflectChangesInCartItemsIfAnyAndReturnSummary({
-          cartItemIds: items?.map((item) => item.id),
-        });
-      if (_cartItemsChangesSummary && _cartItemsChangesSummary.length > 0) {
-        setCartItemsChangesSummary(_cartItemsChangesSummary);
-      }
-
-      await refetchCart();
-      setCartItemsAreUpdating(false);
-      setCartItemsAreUpToDate(true);
+    const _cartItemsChangesSummary =
+      await reflectChangesInCartItemsIfAnyAndReturnSummary({
+        cartItemIds: items?.map((item) => item.id),
+      });
+    if (_cartItemsChangesSummary && _cartItemsChangesSummary.length > 0) {
+      setCartItemsChangesSummary(_cartItemsChangesSummary);
     }
-  }, [
-    reflectChangesInCartItemsIfAnyAndReturnSummary,
-    items,
-    cartItemsAreUpdating,
-    refetchCart,
-  ]);
-
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
-  useEffect(() => {
-    checkCartItemsForUpdates();
-  }, []);
+    return _cartItemsChangesSummary;
+  }, [reflectChangesInCartItemsIfAnyAndReturnSummary, items]);
 
   // Show loading skeletons only on initial load – avoid layout shift once the
   // user has pressed the submit button and the page is about to redirect.
@@ -166,6 +164,7 @@ export default function CartPage() {
   const { data: nfscBalanceData, refetch: refetchNfscBalance } = useBalance(
     (() => {
       if (
+        isAuthenticated &&
         checkoutWithCartRequestPaymentMethodDetails?.paymentProviderDetails &&
         isNfscPayment(
           checkoutWithCartRequestPaymentMethodDetails?.paymentProviderDetails,
@@ -190,6 +189,22 @@ export default function CartPage() {
       };
     })(),
   );
+
+  const ranPostAuthTasksRef = useRef(false);
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: run only once after auth
+  useEffect(() => {
+    if (!isAuthenticated) {
+      ranPostAuthTasksRef.current = false;
+      return;
+    }
+
+    if (!ranPostAuthTasksRef.current && !isCartUpdating && !isCartLoading) {
+      ranPostAuthTasksRef.current = true;
+      checkCartItemsForUpdates();
+      refetchNfscBalance();
+    }
+  }, [isAuthenticated, isCartUpdating, isCartLoading]);
 
   const selectedWalletChainNfscBalanceInUsdCents = useMemo(() => {
     if (!nfscBalanceData) {
@@ -324,12 +339,17 @@ export default function CartPage() {
       return 'Select Payment Method to Continue';
     }
 
-    if (isCreateOrderPending || isRedirecting) {
+    if (
+      isCreateOrderPending ||
+      isRedirecting ||
+      isExplicitlyCheckingCartItemsForUpdates
+    ) {
       return 'Processing...';
     }
 
     return 'Submit Order';
   }, [
+    isExplicitlyCheckingCartItemsForUpdates,
     isCreateOrderPending,
     isRedirecting,
     paymentMethodSelected,
@@ -340,9 +360,15 @@ export default function CartPage() {
     return !(
       paymentMethodSelected &&
       selectedNftWalletAddress &&
-      cartItemsAreUpToDate
+      !isCartUpdating &&
+      !isCartLoading
     );
-  }, [paymentMethodSelected, selectedNftWalletAddress, cartItemsAreUpToDate]);
+  }, [
+    paymentMethodSelected,
+    selectedNftWalletAddress,
+    isCartUpdating,
+    isCartLoading,
+  ]);
 
   const logSubmitOrder = useCallback(
     ({ success }: { success: boolean }) => {
@@ -364,7 +390,7 @@ export default function CartPage() {
     [items, logEventWithInteractionLoggers, totalAmountInUsdCents],
   );
 
-  const handleSubmitOrder = useCallback(() => {
+  const handleSubmitOrder = useCallback(async () => {
     if (!items || items.length === 0) {
       throw new Error('Tried to submit order with no cart items.');
     }
@@ -387,6 +413,16 @@ export default function CartPage() {
     }
 
     try {
+      setExplicitlyCheckingCartItemsForUpdates(true);
+
+      const cartItemsChangesSummary = await checkCartItemsForUpdates();
+
+      setExplicitlyCheckingCartItemsForUpdates(false);
+
+      if (cartItemsChangesSummary && cartItemsChangesSummary.length > 0) {
+        return;
+      }
+
       createOrder({
         cartItemIds: items.map((item) => item.id),
         ...validatedPaymentMethodDetails.data,
@@ -399,6 +435,7 @@ export default function CartPage() {
       console.error(error);
     }
   }, [
+    checkCartItemsForUpdates,
     createOrder,
     checkoutWithCartRequestPaymentMethodDetails,
     items,
@@ -413,15 +450,23 @@ export default function CartPage() {
   );
 
   const isDisabled = useMemo(
-    () => isCreateOrderPending || isRedirecting,
-    [isCreateOrderPending, isRedirecting],
+    () =>
+      isCreateOrderPending ||
+      isRedirecting ||
+      isExplicitlyCheckingCartItemsForUpdates,
+    [
+      isCreateOrderPending,
+      isRedirecting,
+      isExplicitlyCheckingCartItemsForUpdates,
+    ],
   );
 
   const { data: domainAvailabilityInfo } = useQuery({
     ...trpc.registry.getDomainListInfo.queryOptions({
       domains: items?.map((item) => item.normalizedDomainName) ?? [],
     }),
-    enabled: items && items.length > 0,
+    enabled: Boolean(items && items.length > 0),
+    placeholderData: (previousData) => previousData,
   });
 
   const handleRetryOrder = useCallback(() => {
@@ -431,10 +476,6 @@ export default function CartPage() {
 
   if (isLoading) {
     return <LoadingSkeletons />;
-  }
-
-  if (!isAuthenticated) {
-    return <AuthRequired />;
   }
 
   return (
@@ -463,48 +504,50 @@ export default function CartPage() {
         </AlertDialogContent>
       </AlertDialog>
 
-      {cartItemsChangesSummary && cartItemsChangesSummary.length > 0 && (
-        <AnimatePresence>
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.5 }}
-            className="container mx-auto py-4"
-          >
-            <Card
-              className={cn(
-                'bg-white/[0.03] border border-white/10 shadow-sm rounded-lg p-6 gap-0',
-              )}
+      {isAuthenticated &&
+        cartItemsChangesSummary &&
+        cartItemsChangesSummary.length > 0 && (
+          <AnimatePresence>
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.5 }}
+              className="container mx-auto py-4"
             >
-              <div className="flex flex-row justify-between pb-2">
-                <CardHeader className="p-0 flex-1">
-                  <CardTitle className="text-xl font-semibold">
-                    Cart Changes
-                  </CardTitle>
-                  <CardDescription>
-                    Some changes were made to your cart.
-                  </CardDescription>
-                </CardHeader>
-                <Button
-                  variant="outline"
-                  onClick={() => setCartItemsChangesSummary(undefined)}
-                >
-                  <ArchiveX className="size-4" /> Dismiss
-                </Button>
-              </div>
+              <Card
+                className={cn(
+                  'bg-white/[0.03] border border-white/10 shadow-sm rounded-lg p-6 gap-0',
+                )}
+              >
+                <div className="flex flex-row justify-between pb-2">
+                  <CardHeader className="p-0 flex-1">
+                    <CardTitle className="text-xl font-semibold">
+                      Cart Changes
+                    </CardTitle>
+                    <CardDescription>
+                      Some changes were made to your cart.
+                    </CardDescription>
+                  </CardHeader>
+                  <Button
+                    variant="outline"
+                    onClick={() => setCartItemsChangesSummary(undefined)}
+                  >
+                    <ArchiveX className="size-4" /> Dismiss
+                  </Button>
+                </div>
 
-              <CardContent className="p-0">
-                <ul className="list-disc list-inside flex flex-col items-start justify-start gap-4 py-4">
-                  {cartItemsChangesSummary.map((change) => (
-                    <li key={change}>{change}</li>
-                  ))}
-                </ul>
-              </CardContent>
-            </Card>
-          </motion.div>
-        </AnimatePresence>
-      )}
+                <CardContent className="p-0">
+                  <ul className="list-disc list-inside flex flex-col items-start justify-start gap-4 py-4">
+                    {cartItemsChangesSummary.map((change) => (
+                      <li key={change}>{change}</li>
+                    ))}
+                  </ul>
+                </CardContent>
+              </Card>
+            </motion.div>
+          </AnimatePresence>
+        )}
 
       {items && items.length > 0 ? (
         <div
@@ -516,11 +559,13 @@ export default function CartPage() {
           {/* Left Column */}
           <div className="space-y-4">
             {/* Receiving Wallet Address Card */}
-            <NftWalletCard
-              onWalletAddressChange={handleNftWalletAddressChange}
-              selectedWalletAddress={selectedNftWalletAddress}
-              disabled={isDisabled}
-            />
+            {isAuthenticated && (
+              <NftWalletCard
+                onWalletAddressChange={handleNftWalletAddressChange}
+                selectedWalletAddress={selectedNftWalletAddress}
+                disabled={isDisabled}
+              />
+            )}
 
             {/* Cart Items Card */}
             <CartCard title="In your cart">
@@ -542,47 +587,58 @@ export default function CartPage() {
 
           {/* Right Column */}
           <div>
-            {cartItemsAreAllPromo ? (
-              <NoPaymentMethodRequiredCard
-                footerButton={
-                  <NamefiButton
-                    variant="default"
-                    className="w-full"
-                    disabled={submitOrderDisabled || isDisabled}
-                    onClick={handleSubmitOrder}
-                    size="lg"
-                  >
-                    {(isCreateOrderPending || isRedirecting) && (
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    )}
-                    {submitButtonText}
-                  </NamefiButton>
-                }
-              />
+            {isAuthenticated ? (
+              cartItemsAreAllPromo ? (
+                <NoPaymentMethodRequiredCard
+                  footerButton={
+                    <NamefiButton
+                      variant="default"
+                      className="w-full"
+                      disabled={submitOrderDisabled || isDisabled}
+                      onClick={handleSubmitOrder}
+                      size="lg"
+                    >
+                      {(isCreateOrderPending ||
+                        isRedirecting ||
+                        isExplicitlyCheckingCartItemsForUpdates) && (
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      )}
+                      {submitButtonText}
+                    </NamefiButton>
+                  }
+                />
+              ) : (
+                <SelectPaymentMethodCard
+                  cartTotalInUsdCents={totalAmountInUsdCents}
+                  onPaymentMethodDetailsChanged={
+                    handlePaymentMethodDetailsChanged
+                  }
+                  onSelectedPaymentMethodChanged={
+                    handleSelectedPaymentMethodChanged
+                  }
+                  disabled={isDisabled}
+                  footerButton={
+                    <NamefiButton
+                      variant="default"
+                      className="w-full"
+                      disabled={submitOrderDisabled || isDisabled}
+                      onClick={handleSubmitOrder}
+                      size="lg"
+                    >
+                      {(isCreateOrderPending ||
+                        isRedirecting ||
+                        isExplicitlyCheckingCartItemsForUpdates) && (
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      )}
+                      {submitButtonText}
+                    </NamefiButton>
+                  }
+                />
+              )
             ) : (
-              <SelectPaymentMethodCard
+              <AuthRequiredCard
                 cartTotalInUsdCents={totalAmountInUsdCents}
-                onPaymentMethodDetailsChanged={
-                  handlePaymentMethodDetailsChanged
-                }
-                onSelectedPaymentMethodChanged={
-                  handleSelectedPaymentMethodChanged
-                }
-                disabled={isDisabled}
-                footerButton={
-                  <NamefiButton
-                    variant="default"
-                    className="w-full"
-                    disabled={submitOrderDisabled || isDisabled}
-                    onClick={handleSubmitOrder}
-                    size="lg"
-                  >
-                    {(isCreateOrderPending || isRedirecting) && (
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    )}
-                    {submitButtonText}
-                  </NamefiButton>
-                }
+                footerButton={<UserDropdown className="w-full" />}
               />
             )}
           </div>

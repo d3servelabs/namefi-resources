@@ -28,7 +28,6 @@ export function CartItem({
   const { cart, inCart, removingBusy, updatingBusy } = useCartRow(
     item.normalizedDomainName,
   );
-  console.log({ item, domainAvailabilityInfo });
 
   const handleDurationChange = useCallback(
     async (itemId: string, newDuration: number) => {

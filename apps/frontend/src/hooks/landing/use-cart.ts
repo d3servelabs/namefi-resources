@@ -88,8 +88,8 @@ const markOptimistic = (
   [OPTIMISTIC]: true,
 });
 
-const isOptimistic = (i: any): i is OptimisticTag =>
-  i && typeof i === 'object' && OPTIMISTIC in i;
+const isOptimistic = (i: unknown): i is OptimisticTag =>
+  Boolean(i && typeof i === 'object' && OPTIMISTIC in i);
 
 export const isPendingDelete = (
   cartRows: UnifiedCartItem[] | undefined,
@@ -176,20 +176,34 @@ export function useCartBusy() {
 /* -------------------------------------------------------------------------- */
 
 export function useCartLocal() {
-  const reviveDates = (item: any) => ({
-    ...item,
-    createdAt: item.createdAt ? new Date(item.createdAt) : undefined,
-    updatedAt: item.updatedAt ? new Date(item.updatedAt) : undefined,
-  });
+  const deserialize = useCallback(
+    (item: any) => ({
+      ...item,
+      createdAt: item.createdAt ? new Date(item.createdAt) : undefined,
+      updatedAt: item.updatedAt ? new Date(item.updatedAt) : undefined,
+    }),
+    [],
+  );
+
+  const serialize = useCallback(
+    (item: UnifiedCartItem) => ({
+      ...item,
+      createdAt: item.createdAt?.toISOString(),
+      updatedAt: item.updatedAt?.toISOString(),
+    }),
+    [],
+  );
 
   const [localCart, setLocalCart, clearLocalCart] = useLocalStorage<
     UnifiedCartItem[]
   >('user-cart-items', [], {
     initializeWithValue: true,
+    serializer: (value: UnifiedCartItem[]) =>
+      JSON.stringify(value.map(serialize)),
     deserializer: (value: string) => {
       try {
         const parsed = JSON.parse(value);
-        return Array.isArray(parsed) ? parsed.map(reviveDates) : [];
+        return Array.isArray(parsed) ? parsed.map(deserialize) : [];
       } catch {
         return [];
       }
@@ -719,7 +733,16 @@ export function useCartOperations(sync: ReturnType<typeof useCartServerSync>) {
               list.includes(item.normalizedDomainName),
             ) ?? [];
           itemsToRemove.forEach((item) => {
-            if (item.id) sync.busy.markBusy(item.id);
+            if (item.id) {
+              sync.busy.markBusy(item.id);
+              sync.queryClient.setQueryData(
+                sync.CartKey,
+                (old: UnifiedCartItem[] = []) =>
+                  old.map((i) =>
+                    i.id === item.id ? { ...i, [PENDING_DELETE]: true } : i,
+                  ),
+              );
+            }
           });
 
           try {

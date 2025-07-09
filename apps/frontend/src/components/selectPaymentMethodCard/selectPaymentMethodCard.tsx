@@ -22,6 +22,7 @@ import { useBalance } from 'wagmi';
 import { SelectChain, SelectWallet } from '../SelectWalletAndChain';
 import { AddPaymentMethodDialog } from '../addPaymentMethod/addPaymentMethodDialog';
 import { Separator } from '../ui/shadcn/separator';
+import { UserDropdown } from '../dropdowns/UserDropdown';
 
 const DEFAULT_PAYMENT_CHAIN_ID = config.ALLOWED_CHAINS.includes(CHAINS.base.id)
   ? CHAINS.base.id
@@ -401,5 +402,30 @@ export function NoPaymentMethodRequiredCard({
       </div>
       <Separator className="my-6" />
     </CartCard>
+  );
+}
+
+export type AuthRequiredCardProps = {
+  footerButton?: ReactNode;
+  cartTotalInUsdCents: number;
+};
+
+export function AuthRequiredCard({
+  footerButton,
+  cartTotalInUsdCents,
+}: AuthRequiredCardProps) {
+  return (
+    <CartCard
+      title="Summary"
+      footer={
+        <div className="flex flex-col gap-4 w-full">
+          <div className="flex items-center justify-between text-xl">
+            <span>Total</span>
+            <span>{formatAmountInUSD(cartTotalInUsdCents, true)} USD</span>
+          </div>
+          {footerButton}
+        </div>
+      }
+    />
   );
 }
