@@ -35,7 +35,7 @@ const requestQuerySchema = z.object({
       }
     })
     .transform(Number)
-    .pipe(z.number().int().min(1).max(255)),
+    .pipe(z.number().int().min(1).max(32769)),
 });
 
 // Define route handler for DNS API endpoint
