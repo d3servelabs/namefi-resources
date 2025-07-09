@@ -22,20 +22,50 @@ import {
 } from 'react';
 import { toast } from 'sonner';
 import { usePendingToast } from './usePendingToast';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import {
+  type NamefiNormalizedDomain,
+  namefiNormalizedDomainSchema,
+} from '@namefi-astra/utils';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 interface SubmitDomainDialogProps {
   children: ReactNode;
   onSuccess?: () => void;
 }
-
+const submitDomainSchema = z.object({
+  domainName: z
+    .string()
+    .refine((val) => val.includes('.'), {
+      message:
+        'Domain name must be a single level domain (e.g. example.com) or higher (e.g. sub.example.com)',
+    })
+    .refine((val) => namefiNormalizedDomainSchema.safeParse(val).success, {
+      message: 'Invalid domain name',
+    }),
+});
 export const SubmitDomainDialog = ({
   children,
   onSuccess,
 }: SubmitDomainDialogProps) => {
   const [isSubmitDialogOpen, setIsSubmitDialogOpen] = useState(false);
-  const [domainName, setDomainName] = useState('');
+  const {
+    register,
+    handleSubmit,
+    reset,
+    watch,
+    formState: { errors },
+  } = useForm<z.infer<typeof submitDomainSchema>>({
+    resolver: zodResolver(submitDomainSchema),
+    defaultValues: {
+      domainName: '' as NamefiNormalizedDomain,
+    },
+    mode: 'onChange',
+  });
   const router = useRouter();
 
+  const domainName = watch('domainName');
   const trpc = useTRPC();
   const queryClient = useQueryClient();
 
@@ -55,7 +85,7 @@ export const SubmitDomainDialog = ({
 
         setIsSubmitDialogOpen(false);
         const currentDomain = domainName.trim();
-        setDomainName('');
+        reset();
 
         // Show different messages based on whether it's a new submission or existing domain
         if (data.message === 'Domain already exists') {
@@ -73,31 +103,32 @@ export const SubmitDomainDialog = ({
     }),
   );
 
-  const handleSubmitDomain = useCallback(() => {
-    if (!domainName.trim()) {
-      toast.error('Please enter a domain name');
-      return;
-    }
-    submitDomainMutation.mutate({ domainName: domainName.trim() });
-  }, [domainName, submitDomainMutation]);
-
-  const handleInputChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    setDomainName(e.target.value);
-  }, []);
+  const handleSubmitDomain = useCallback(
+    (data: z.infer<typeof submitDomainSchema>) => {
+      const domainName = data.domainName;
+      if (!domainName.trim()) {
+        toast.error('Please enter a domain name');
+        return;
+      }
+      submitDomainMutation.mutate({ domainName: domainName.trim() });
+    },
+    [submitDomainMutation],
+  );
 
   const handleInputKeyDown = useCallback(
     (e: KeyboardEvent<HTMLInputElement>) => {
       if (e.key === 'Enter') {
-        handleSubmitDomain();
+        e.preventDefault();
+        handleSubmit(handleSubmitDomain)();
       }
     },
-    [handleSubmitDomain],
+    [handleSubmit, handleSubmitDomain],
   );
 
   const handleCancel = useCallback(() => {
     setIsSubmitDialogOpen(false);
-    setDomainName('');
-  }, []);
+    reset();
+  }, [reset]);
 
   usePendingToast(submitDomainMutation.isPending, 'Submitting domain...');
 
@@ -113,12 +144,17 @@ export const SubmitDomainDialog = ({
             <Label htmlFor="domain-name">Domain Name</Label>
             <Input
               id="domain-name"
-              placeholder="example.com"
-              value={domainName}
-              onChange={handleInputChange}
               onKeyDown={handleInputKeyDown}
+              placeholder="example.com"
+              {...register('domainName')}
             />
+            {errors.domainName && (
+              <p className="text-sm text-red-500">
+                {errors.domainName.message}
+              </p>
+            )}
           </div>
+
           <div className="flex justify-end gap-2">
             <Button
               variant="outline"
@@ -129,7 +165,7 @@ export const SubmitDomainDialog = ({
             </Button>
             <Button
               className="cursor-pointer"
-              onClick={handleSubmitDomain}
+              onClick={handleSubmit(handleSubmitDomain)}
               disabled={submitDomainMutation.isPending}
             >
               {submitDomainMutation.isPending ? 'Submitting...' : 'Submit'}
