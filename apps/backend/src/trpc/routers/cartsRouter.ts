@@ -34,23 +34,7 @@ export const cartsRouter = createTRPCRouter({
       ctx.thirdPartyOriginHostname,
     );
 
-    const domainInfos = await getDomainListInfo(
-      filteredCartItems.map(
-        (item) => item.normalizedDomainName as NamefiNormalizedDomain,
-      ),
-      ctx.user,
-    );
-
-    const domainInfoMap = new Map(
-      domainInfos.map((info) => [info.domain, info]),
-    );
-
-    return filteredCartItems.map((item) => ({
-      ...item,
-      domainAvailabilityInfo: domainInfoMap.get(
-        item.normalizedDomainName as NamefiNormalizedDomain,
-      ),
-    }));
+    return filteredCartItems;
   }),
 
   // Add multiple items to cart for the current user
@@ -193,7 +177,12 @@ export const cartsRouter = createTRPCRouter({
         where: eq(cartItemsTable.userId, ctx.user.id),
       });
 
-      return filterCartItemsByOrigin(cartItems, ctx.thirdPartyOriginHostname);
+      const filteredCartItems = filterCartItemsByOrigin(
+        cartItems,
+        ctx.thirdPartyOriginHostname,
+      );
+
+      return filteredCartItems;
     }),
 
   // Update cart item for the current user
@@ -277,35 +266,58 @@ export const cartsRouter = createTRPCRouter({
         where: eq(cartItemsTable.userId, ctx.user.id),
       });
 
-      return filterCartItemsByOrigin(cartItems, ctx.thirdPartyOriginHostname);
+      const filteredCartItems = filterCartItemsByOrigin(
+        cartItems,
+        ctx.thirdPartyOriginHostname,
+      );
+
+      return filteredCartItems;
     }),
 
-  // Remove item from cart for the current user
   removeItem: protectedProcedure
-    .input(z.string().uuid())
+    .input(z.array(z.string().uuid()))
     .mutation(async ({ ctx, input }) => {
-      await db
-        .delete(cartItemsTable)
-        .where(
-          and(
-            eq(cartItemsTable.id, input),
-            eq(cartItemsTable.userId, ctx.user.id),
-          ),
+      if (input.length === 0) {
+        // Return current cart if no items to remove
+        const cartItems = await db.query.cartItemsTable.findMany({
+          where: eq(cartItemsTable.userId, ctx.user.id),
+        });
+        const filteredCartItems = filterCartItemsByOrigin(
+          cartItems,
+          ctx.thirdPartyOriginHostname,
         );
+
+        return filteredCartItems;
+      }
+
+      await db.delete(cartItemsTable).where(
+        and(
+          sql`${cartItemsTable.id} IN (${sql.join(
+            input.map((id) => sql`${id}`),
+            sql`, `,
+          )})`,
+          eq(cartItemsTable.userId, ctx.user.id),
+        ),
+      );
 
       // Return updated cart with items
       const cartItems = await db.query.cartItemsTable.findMany({
         where: eq(cartItemsTable.userId, ctx.user.id),
       });
 
-      return filterCartItemsByOrigin(cartItems, ctx.thirdPartyOriginHostname);
+      const filteredCartItems = filterCartItemsByOrigin(
+        cartItems,
+        ctx.thirdPartyOriginHostname,
+      );
+
+      return filteredCartItems;
     }),
 
-  // Clear cart (remove all items) for the current user
   clear: protectedProcedure.mutation(async ({ ctx }) => {
     await db
       .delete(cartItemsTable)
       .where(eq(cartItemsTable.userId, ctx.user.id));
+
     return [];
   }),
 });

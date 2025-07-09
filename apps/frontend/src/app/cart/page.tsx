@@ -31,7 +31,10 @@ import {
 } from '@/components/ui/shadcn/card';
 import { Separator } from '@/components/ui/shadcn/separator';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
-import { useCart } from '@/hooks/landing/use-cart';
+import {
+  useCart,
+  cartItemsToInteractionLoggingCartItems,
+} from '@/hooks/landing/use-cart';
 import { useAuth } from '@/hooks/useAuth';
 import { config } from '@/lib/env';
 import { cn } from '@/lib/utils';
@@ -58,7 +61,7 @@ import {
   usdToCents,
 } from '@namefi-astra/registrars/multi-year-pricing';
 import { CHAINS, NFSC_CONTRACT_ADDRESS } from '@namefi-astra/utils';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { inferInput } from '@trpc/tanstack-react-query';
 import { ArchiveX, Loader2, Trash2 } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
@@ -101,12 +104,7 @@ export default function CartPage() {
 
   const trpc = useTRPC();
 
-  const {
-    cartData: items,
-    isCartDataLoading,
-    isRemovingFromCart,
-    removeItem,
-  } = useCart();
+  const { cartData: items, isCartLoading, removeItem } = useCart();
 
   const [cartItemsAreUpToDate, setCartItemsAreUpToDate] = useState(false);
   const [cartItemsAreUpdating, setCartItemsAreUpdating] = useState(false);
@@ -152,8 +150,8 @@ export default function CartPage() {
   // Show loading skeletons only on initial load – avoid layout shift once the
   // user has pressed the submit button and the page is about to redirect.
   const isLoading = useMemo(
-    () => (isAuthLoading || isCartDataLoading) && !isRedirecting,
-    [isAuthLoading, isCartDataLoading, isRedirecting],
+    () => (isAuthLoading || isCartLoading) && !isRedirecting,
+    [isAuthLoading, isCartLoading, isRedirecting],
   );
 
   const totalAmountInUsdCents = useMemo(
@@ -375,7 +373,7 @@ export default function CartPage() {
           : InteractionLoggingEventName.SubmitOrderFailure,
         properties: {
           totalAmountInUsdCents,
-          cartItems: items,
+          cartItems: cartItemsToInteractionLoggingCartItems(items),
         },
       };
       logEventWithInteractionLoggers(interactionLoggingEvent);
@@ -447,17 +445,27 @@ export default function CartPage() {
       }),
     );
 
+  const { data: domainAvailabilityInfo } = useQuery({
+    ...trpc.registry.getDomainListInfo.queryOptions({
+      domains: items?.map((item) => item.normalizedDomainName) ?? [],
+    }),
+    enabled: items && items.length > 0,
+  });
+
   const handleDurationChange = useCallback(
     async (itemId: string, newDuration: number) => {
       if (isAuthenticated) {
         // Find the item for optimistic pricing calculation
         const item = items?.find((i) => i.id === itemId);
+        const itemDomainInfo = domainAvailabilityInfo?.find(
+          (domain) => domain.domain === item?.normalizedDomainName,
+        );
 
-        if (item?.domainAvailabilityInfo) {
+        if (item && itemDomainInfo) {
           try {
             // Calculate optimistic price update based on item type
             const pricingDetails = getDomainPricingForOperation(
-              item.domainAvailabilityInfo,
+              itemDomainInfo,
               item.type,
             );
 
@@ -529,6 +537,7 @@ export default function CartPage() {
       updateCartItem,
       resetUpdateCartItem,
       items,
+      domainAvailabilityInfo,
       queryClient,
       trpc,
     ],
@@ -538,6 +547,24 @@ export default function CartPage() {
     setIsErrorDialogOpen(false);
     handleSubmitOrder();
   }, [handleSubmitOrder]);
+
+  const [removingItems, setRemovingItems] = useState<Set<string>>(new Set());
+
+  const handleRemoveItem = useCallback(
+    async (itemId: string) => {
+      setRemovingItems((prev) => new Set(prev).add(itemId));
+      try {
+        await removeItem(itemId);
+      } finally {
+        setRemovingItems((prev) => {
+          const newSet = new Set(prev);
+          newSet.delete(itemId);
+          return newSet;
+        });
+      }
+    },
+    [removeItem],
+  );
 
   if (isLoading) {
     return <LoadingSkeletons />;
@@ -656,12 +683,10 @@ export default function CartPage() {
                           <button
                             type="button"
                             className="p-2 rounded-lg bg-[#27272A] hover:bg-[#3F3F46] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                            onClick={() => {
-                              removeItem(item.id);
-                            }}
-                            disabled={isDisabled || isRemovingFromCart}
+                            onClick={() => handleRemoveItem(item.id)}
+                            disabled={isDisabled || removingItems.has(item.id)}
                           >
-                            {isRemovingFromCart ? (
+                            {removingItems.has(item.id) ? (
                               <Loader2 className="size-4 animate-spin" />
                             ) : (
                               <Trash2 className="size-4" />
@@ -669,6 +694,10 @@ export default function CartPage() {
                           </button>
                           <CartItemDurationControl
                             item={item}
+                            domainAvailabilityInfo={domainAvailabilityInfo?.find(
+                              (domain) =>
+                                domain.domain === item.normalizedDomainName,
+                            )}
                             onDurationChange={handleDurationChange}
                             isDisabled={isDisabled}
                           />

@@ -149,33 +149,12 @@ export const SearchInput: FC<{
 
 export const DomainCard: FC<{
   domain: DomainAvailabilityInfo;
-  isDomainInCart: (domain: string) => boolean;
-  handleDomainAction: ({
-    domainAvailabilityInfo,
-    durationInYears,
-    operationType,
-    eppAuthorizationCode,
-  }: {
-    domainAvailabilityInfo: DomainAvailabilityInfo;
-    durationInYears: number;
-    operationType: 'REGISTER' | 'IMPORT' | 'RENEW';
-    eppAuthorizationCode?: string;
-  }) => void;
-  isAddingToCart: boolean;
-  isRemovingFromCart: boolean;
-  isCartLoading: boolean;
-}> = ({
-  domain,
-  isDomainInCart,
-  handleDomainAction,
-  isAddingToCart,
-  isRemovingFromCart,
-  isCartLoading,
-}) => {
+}> = ({ domain }) => {
   const { logEventWithInteractionLoggers } = useInteractionLoggers();
   const router = useRouter();
   const [isEppModalOpen, setIsEppModalOpen] = useState(false);
   const [isAddingImport, setIsAddingImport] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const logBeginCheckout = useCallback(() => {
     const beginCheckoutEvent: BeginCheckoutEvent = {
@@ -184,6 +163,8 @@ export const DomainCard: FC<{
     };
     logEventWithInteractionLoggers(beginCheckoutEvent);
   }, [logEventWithInteractionLoggers]);
+
+  const { isDomainInCart, handleDomainAction } = useCart();
 
   const isInCart = isDomainInCart(domain.domain);
   const isImportable = isDomainImportable(domain);
@@ -207,18 +188,23 @@ export const DomainCard: FC<{
   const subdomain = parts[0];
   const parentDomain = parts.slice(1).join('.');
 
-  const handleActionClick = useCallback(() => {
+  const handleActionClick = useCallback(async () => {
     if (isImportable && !isInCart) {
       // Show EPP modal for import
       setIsEppModalOpen(true);
     } else {
       // Regular add/remove action
-      const minDuration = domain.durationValidationInYears?.min ?? 1;
-      handleDomainAction({
-        domainAvailabilityInfo: domain,
-        durationInYears: minDuration,
-        operationType: 'REGISTER',
-      });
+      setIsProcessing(true);
+      try {
+        const minDuration = domain.durationValidationInYears?.min ?? 1;
+        await handleDomainAction({
+          domainAvailabilityInfo: domain,
+          durationInYears: minDuration,
+          operationType: 'REGISTER',
+        });
+      } finally {
+        setIsProcessing(false);
+      }
     }
   }, [isImportable, isInCart, handleDomainAction, domain]);
 
@@ -227,7 +213,7 @@ export const DomainCard: FC<{
       setIsAddingImport(true);
       try {
         const minDuration = domain.durationValidationInYears?.min ?? 1;
-        handleDomainAction({
+        await handleDomainAction({
           domainAvailabilityInfo: domain,
           durationInYears: minDuration,
           operationType: 'IMPORT',
@@ -301,9 +287,9 @@ export const DomainCard: FC<{
                           <NamefiButton
                             className="bg-black/40 border-white/10 hover:bg-red-600/80 hover:border-red-400/50 shrink-0"
                             onClick={handleActionClick}
-                            disabled={isRemovingFromCart || isCartLoading}
+                            disabled={isProcessing}
                           >
-                            {isRemovingFromCart ? (
+                            {isProcessing ? (
                               <Loader2 className="h-4 w-4 animate-spin" />
                             ) : (
                               <Trash className="h-4 w-4 mr-1" />
@@ -338,11 +324,9 @@ export const DomainCard: FC<{
                         <NamefiButton
                           className="shrink-0"
                           onClick={handleActionClick}
-                          disabled={
-                            isAddingToCart || isCartLoading || isAddingImport
-                          }
+                          disabled={isProcessing || isAddingImport}
                         >
-                          {isAddingToCart || isAddingImport ? (
+                          {isProcessing || isAddingImport ? (
                             <Loader2 className="h-4 w-4 animate-spin" />
                           ) : isImportable ? (
                             <Download className="h-4 w-4" />
@@ -406,34 +390,8 @@ export const SearchResults: FC<{
   isLoadingMore: boolean;
   filteredDomains: DomainAvailabilityInfo[];
   query: string;
-  isDomainInCart: (domain: string) => boolean;
-  handleDomainAction: ({
-    domainAvailabilityInfo,
-    durationInYears,
-    operationType,
-    eppAuthorizationCode,
-  }: {
-    domainAvailabilityInfo: DomainAvailabilityInfo;
-    durationInYears: number;
-    operationType: 'REGISTER' | 'IMPORT' | 'RENEW';
-    eppAuthorizationCode?: string;
-  }) => void;
-  isAddingToCart: boolean;
-  isRemovingFromCart: boolean;
-  isCartLoading: boolean;
   parentDomain: string | undefined;
-}> = ({
-  isLoading,
-  isLoadingMore,
-  filteredDomains,
-  query,
-  isDomainInCart,
-  handleDomainAction,
-  isAddingToCart,
-  isRemovingFromCart,
-  isCartLoading,
-  parentDomain,
-}) => {
+}> = ({ isLoading, isLoadingMore, filteredDomains, query, parentDomain }) => {
   const shouldReduceMotion = useReducedMotion();
 
   if (filteredDomains.length > 0 || isLoading || isLoadingMore) {
@@ -458,14 +416,7 @@ export const SearchResults: FC<{
                     key={`${parentDomain}-${domain.domain}-${domain.availability}`}
                     layout={true}
                   >
-                    <DomainCard
-                      domain={domain}
-                      isDomainInCart={isDomainInCart}
-                      handleDomainAction={handleDomainAction}
-                      isAddingToCart={isAddingToCart}
-                      isRemovingFromCart={isRemovingFromCart}
-                      isCartLoading={isCartLoading}
-                    />
+                    <DomainCard domain={domain} />
                   </motion.div>
                 ))}
 
@@ -523,13 +474,7 @@ export const Search: SearchComponent = ({ originInfo }) => {
     areSuggestionsLoading,
   } = useSearch(parentDomain);
 
-  const {
-    isCartDataLoading,
-    isAddingToCart,
-    isRemovingFromCart,
-    isDomainInCart,
-    handleDomainAction,
-  } = useCart();
+  const { isDomainInCart } = useCart();
 
   const { activeTab, setActiveTab, filteredDomains } = useDomainFilters(
     domains,
@@ -601,11 +546,6 @@ export const Search: SearchComponent = ({ originInfo }) => {
                 isLoadingMore={areSuggestionsLoading}
                 filteredDomains={filteredDomains}
                 query={query}
-                isDomainInCart={isDomainInCart}
-                handleDomainAction={handleDomainAction}
-                isAddingToCart={isAddingToCart}
-                isRemovingFromCart={isRemovingFromCart}
-                isCartLoading={isCartDataLoading}
                 parentDomain={parentDomain}
               />
             </TabsContent>

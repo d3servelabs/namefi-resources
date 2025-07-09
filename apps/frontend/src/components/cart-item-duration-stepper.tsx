@@ -3,24 +3,18 @@ import { useRenewalDurationConstraints } from '@/hooks/use-renewal-duration-cons
 import { itemTypeSchema } from '@namefi-astra/db/types';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { Loader2 } from 'lucide-react';
-import type { CartItemSelect } from '@namefi-astra/db/types';
+import type { CartItem } from '@/hooks/landing/use-cart';
 import type { DomainAvailabilityInfo } from '@namefi-astra/backend/trpc/types';
-
-interface CartItemSelectWithDomainAvailabilityInfo
-  extends Omit<CartItemSelect, 'metadata' | 'updatedAt' | 'userId'> {
-  metadata?: unknown;
-  updatedAt?: CartItemSelect['updatedAt'];
-  userId?: CartItemSelect['userId'];
-  domainAvailabilityInfo?: DomainAvailabilityInfo;
-}
 
 // Component to handle duration controls for different cart item types
 export function CartItemDurationControl({
   item,
+  domainAvailabilityInfo,
   onDurationChange,
   isDisabled,
 }: {
-  item: CartItemSelectWithDomainAvailabilityInfo;
+  item: CartItem;
+  domainAvailabilityInfo?: DomainAvailabilityInfo;
   onDurationChange: (itemId: string, newDuration: number) => void;
   isDisabled: boolean;
 }) {
@@ -49,9 +43,9 @@ export function CartItemDurationControl({
     <DurationStepper
       value={item.durationInYears}
       onChange={(value) => onDurationChange(item.id, value)}
-      min={item.domainAvailabilityInfo?.durationValidationInYears?.min ?? 1}
-      max={item.domainAvailabilityInfo?.durationValidationInYears?.max ?? 10}
-      disabled={isDisabled || !item.domainAvailabilityInfo}
+      min={domainAvailabilityInfo?.durationValidationInYears?.min ?? 1}
+      max={domainAvailabilityInfo?.durationValidationInYears?.max ?? 10}
+      disabled={isDisabled || !domainAvailabilityInfo}
       className="w-32"
     />
   );
@@ -63,7 +57,7 @@ function RenewalDurationStepper({
   onDurationChange,
   isDisabled,
 }: {
-  item: CartItemSelectWithDomainAvailabilityInfo;
+  item: CartItem;
   onDurationChange: (itemId: string, newDuration: number) => void;
   isDisabled: boolean;
 }) {

@@ -45,13 +45,7 @@ export const Search: SearchComponent = ({ originInfo }) => {
     areSuggestionsLoading,
   } = useSearch(parentDomain);
 
-  const {
-    isCartDataLoading,
-    isAddingToCart,
-    isRemovingFromCart,
-    isDomainInCart,
-    handleDomainAction,
-  } = useCart();
+  const { isDomainInCart } = useCart();
 
   const { activeTab, setActiveTab, filteredDomains } = useDomainFilters(
     domains,
@@ -151,11 +145,6 @@ export const Search: SearchComponent = ({ originInfo }) => {
                     isLoadingMore={areSuggestionsLoading}
                     filteredDomains={filteredDomains}
                     query={query}
-                    isDomainInCart={isDomainInCart}
-                    handleDomainAction={handleDomainAction}
-                    isAddingToCart={isAddingToCart}
-                    isRemovingFromCart={isRemovingFromCart}
-                    isCartLoading={isCartDataLoading}
                     parentDomain={parentDomain}
                   />
                 </TabsContent>

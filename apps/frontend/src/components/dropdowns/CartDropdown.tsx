@@ -11,7 +11,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/shadcn/dropdown-menu';
-import { useCart } from '@/hooks/landing/use-cart';
+import {
+  useCart,
+  cartItemsToInteractionLoggingCartItems,
+} from '@/hooks/landing/use-cart';
 import { cn } from '@/lib/utils';
 import {
   type BeginCheckoutEvent,
@@ -50,7 +53,7 @@ export const CartDropdown: ForwardRefExoticComponent<CartDropdownProps> =
         name: InteractionLoggingEventName.BeginCheckout,
         properties: {
           totalAmountInUsdCents,
-          cartItems: items,
+          cartItems: cartItemsToInteractionLoggingCartItems(items),
         },
       };
       logEventWithInteractionLoggers(beginCheckoutEvent);

@@ -53,6 +53,7 @@ export const DomainClaim: FC<DomainClaimProps> = ({
   const [subdomainValue, setSubdomainValue] = useState('');
   const [debouncedSubdomainValue, setDebouncedSubdomainValue] =
     useDebounceValue(subdomainValue, 500);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const isMobile = useIsMobile();
 
@@ -63,7 +64,7 @@ export const DomainClaim: FC<DomainClaimProps> = ({
   const trpc = useTRPC();
   const { isAuthenticated } = useAuth();
 
-  const { handleDomainAction, isAddingToCart, isDomainInCart } = useCart();
+  const { handleDomainAction, isDomainInCart } = useCart();
 
   const { data: qualifiesForPromo, isFetching: isQualifiesForPromoFetching } =
     useQuery({
@@ -155,7 +156,7 @@ export const DomainClaim: FC<DomainClaimProps> = ({
         </>
       );
     }
-    if (isAddingToCart) {
+    if (isProcessing) {
       return (
         <>
           <Loader2 className="w-4 h-4 animate-spin" /> Claiming...
@@ -166,7 +167,7 @@ export const DomainClaim: FC<DomainClaimProps> = ({
   }, [
     isQualifiesForPromoFetching,
     isDomainAvailableFetching,
-    isAddingToCart,
+    isProcessing,
     isAuthenticated,
     isDomainInCart,
     subdomainValue,
@@ -181,24 +182,26 @@ export const DomainClaim: FC<DomainClaimProps> = ({
     [setDebouncedSubdomainValue],
   );
 
-  const handleClaim = useCallback(() => {
-    if (canClaim && domainAvailabilityInfo) {
-      handleDomainAction({
+  const handleClaim = useCallback(async () => {
+    if (!domainAvailabilityInfo || !canClaim) return;
+
+    setIsProcessing(true);
+    try {
+      await handleDomainAction({
         domainAvailabilityInfo,
-        durationInYears:
-          domainAvailabilityInfo.durationValidationInYears?.min ?? 1,
+        durationInYears: 1,
         operationType: 'REGISTER',
       });
-      if (onClaim) {
-        onClaim(subdomainValue);
-      }
+      onClaim?.(subdomainValue);
+    } finally {
+      setIsProcessing(false);
     }
   }, [
+    domainAvailabilityInfo,
     canClaim,
     handleDomainAction,
     onClaim,
     subdomainValue,
-    domainAvailabilityInfo,
   ]);
 
   return (

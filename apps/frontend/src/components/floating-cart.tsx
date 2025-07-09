@@ -1,4 +1,7 @@
-import { useCart } from '@/hooks/landing/use-cart';
+import {
+  useCart,
+  cartItemsToInteractionLoggingCartItems,
+} from '@/hooks/landing/use-cart';
 import {
   type BeginCheckoutEvent,
   InteractionLoggingEventName,
@@ -10,7 +13,7 @@ import { useInteractionLoggers } from './providers/interactionLoggersProvider';
 import { Button } from './ui/shadcn/button';
 
 const FloatingCart = () => {
-  const { cartData: items, isCartDataLoading, refetchCart } = useCart();
+  const { cartData: items } = useCart();
   const { logEventWithInteractionLoggers } = useInteractionLoggers();
   const router = useRouter();
 
@@ -24,7 +27,9 @@ const FloatingCart = () => {
       name: InteractionLoggingEventName.BeginCheckout,
       properties: {
         totalAmountInUsdCents,
-        cartItems: items,
+        cartItems: items
+          ? cartItemsToInteractionLoggingCartItems(items)
+          : undefined,
       },
     };
     logEventWithInteractionLoggers(beginCheckoutEvent);
