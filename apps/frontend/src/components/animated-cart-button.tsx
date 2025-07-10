@@ -138,16 +138,7 @@ export const AnimatedCartButton = forwardRef<
         </AnimatePresence>
 
         {/* Main cart button */}
-        <motion.div
-          layout
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{
-            layout: { duration: 0.3, ease: 'easeInOut' },
-            opacity: { duration: 0.2 },
-            scale: { duration: 0.2 },
-          }}
-        >
+        <div className="shrink-0">
           <Button
             ref={ref}
             className={cn(
@@ -165,50 +156,27 @@ export const AnimatedCartButton = forwardRef<
             }
             {...props}
           >
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={state === 'in-cart' ? `${state}-${isHovered}` : state}
-                className="flex items-center gap-2"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.2, ease: 'easeInOut' }}
-              >
-                <motion.div
-                  className="flex items-center justify-center"
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{
-                    opacity: 1,
-                    scale: 1,
-                    rotate: config.spinning ? 360 : 0,
-                  }}
-                  exit={{ opacity: 0, scale: 0.8 }}
-                  transition={{
-                    duration: 0.15,
-                    rotate: config.spinning
-                      ? {
-                          duration: 1,
-                          repeat: Number.POSITIVE_INFINITY,
-                          ease: 'linear',
-                        }
-                      : {},
-                  }}
-                >
+            <div className="flex items-center gap-2">
+              <div className="flex items-center justify-center">
+                {config.spinning ? (
+                  <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{
+                      duration: 1,
+                      repeat: Number.POSITIVE_INFINITY,
+                      ease: 'linear',
+                    }}
+                  >
+                    <DisplayIconComponent className="h-4 w-4" />
+                  </motion.div>
+                ) : (
                   <DisplayIconComponent className="h-4 w-4" />
-                </motion.div>
-                <motion.span
-                  className="whitespace-nowrap"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.15, delay: 0.05 }}
-                >
-                  {displayConfig.text}
-                </motion.span>
-              </motion.div>
-            </AnimatePresence>
+                )}
+              </div>
+              <span className="whitespace-nowrap">{displayConfig.text}</span>
+            </div>
           </Button>
-        </motion.div>
+        </div>
       </div>
     );
   },
