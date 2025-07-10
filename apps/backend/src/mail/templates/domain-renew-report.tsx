@@ -8,7 +8,10 @@ import { GoToDashboard } from '../components/go-to-dashboard';
 import punycode from 'punycode';
 import rehypeExternalLinks from 'rehype-external-links';
 import ReactMarkdown from 'react-markdown';
-import { paymentProviderSchema, type PaymentProvider } from '@namefi-astra/db';
+import {
+  paymentProviderSchema,
+  type PaymentProvider,
+} from '@namefi-astra/db/types';
 
 export type DomainRenewReportProps = {
   recipientUserId: string;

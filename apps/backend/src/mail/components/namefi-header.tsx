@@ -1,16 +1,16 @@
 import { Hr, Img } from '@react-email/components';
 import * as styles from '../styles';
+// biome-ignore lint/correctness/noUnusedImports: required for react-email
+import React from 'react';
 
-// TODO: Replace with a CDN or hosted image URL for production
-export function NamefiHeader() {
+export function NamefiHeader({
+  src = 'https://storage.googleapis.com/namefi-public/namefi-logo.png',
+}: {
+  src?: string;
+}) {
   return (
     <>
-      <Img
-        src={'https://app.namefi.io/android-chrome-192x192.png'}
-        width="49"
-        height="49"
-        alt="D3Serve"
-      />
+      <Img src={src} width="49" height="49" alt="Namefi" />
       <Hr style={styles.hr} />
     </>
   );

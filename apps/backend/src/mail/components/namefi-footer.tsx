@@ -1,5 +1,7 @@
 import { Hr, Link, Text } from '@react-email/components';
 import * as styles from '../styles';
+// biome-ignore lint/correctness/noUnusedImports: required for react-email
+import React from 'react';
 
 export function NamefiFooter() {
   return (
