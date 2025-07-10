@@ -58,13 +58,15 @@ export const Footer: ForwardRefExoticComponent<FooterProps> = forwardRef<
             width={127.38}
             height={24}
           />
-          <span className="text-white text-sm ml-2">© D3SERVE LABS, Inc.</span>
+          <span className="text-secondary-foreground text-sm ml-2">
+            © D3SERVE LABS, Inc.
+          </span>
         </div>
         <div className="flex items-center space-x-4">
           {shouldShowCookieConsentLink && (
             <button
               type="button"
-              className="text-gray-300 hover:text-white text-sm bg-transparent border-0 p-0 cursor-pointer"
+              className="text-gray-300 hover:text-secondary-foreground text-sm bg-transparent border-0 p-0 cursor-pointer"
               aria-label="Open cookie settings dialog"
               onClick={handleClickCookieConsent}
             >
@@ -73,7 +75,7 @@ export const Footer: ForwardRefExoticComponent<FooterProps> = forwardRef<
           )}
           <Link
             href="https://namefi.io/tos"
-            className="text-gray-300 hover:text-white text-sm"
+            className="text-gray-300 hover:text-secondary-foreground text-sm"
           >
             Terms & Conditions
           </Link>

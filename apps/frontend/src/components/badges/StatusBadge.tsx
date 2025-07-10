@@ -33,7 +33,7 @@ export function StatusBadge({ status, type }: StatusBadgeProps) {
       case 'SUCCEEDED':
       case 'COMPLETED':
         return (
-          <Badge className="bg-green-600 text-white hover:bg-green-700">
+          <Badge className="bg-green-600 text-secondary-foreground hover:bg-green-700">
             {status === 'SUCCEEDED' ? 'Succeeded' : 'Completed'}
           </Badge>
         );
@@ -41,7 +41,7 @@ export function StatusBadge({ status, type }: StatusBadgeProps) {
         return (
           <Badge
             variant="destructive"
-            className="bg-red-600 text-white hover:bg-red-700"
+            className="bg-red-600 text-secondary-foreground hover:bg-red-700"
           >
             Failed
           </Badge>

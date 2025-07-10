@@ -496,7 +496,7 @@ export default function CartPage() {
             <AlertDialogCancel>Close</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleRetryOrder}
-              className="bg-brand-primary hover:bg-brand-primary/90 text-white"
+              className="bg-brand-primary hover:bg-brand-primary/90 text-secondary-foreground"
             >
               Try Again
             </AlertDialogAction>

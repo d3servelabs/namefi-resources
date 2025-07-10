@@ -69,7 +69,7 @@ export const DnsRecordsPanel: FC<DnsRecordsPanelProps> = ({
         <AddRecordDropdownMenu onAddRecordClicked={handleAddRecord}>
           <Button
             disabled={!domain}
-            className="bg-brand-primary hover:bg-brand-primary/90 text-white"
+            className="bg-brand-primary hover:bg-brand-primary/90 text-secondary-foreground"
           >
             <Plus className="mr-1 h-4 w-4" /> Add record
           </Button>

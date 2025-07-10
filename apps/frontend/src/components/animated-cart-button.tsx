@@ -53,7 +53,7 @@ const stateConfig = {
   removing: {
     icon: Loader2,
     text: 'Removing...',
-    className: 'bg-secondary text-white',
+    className: 'bg-secondary text-secondary-foreground',
     spinning: true,
   },
 };

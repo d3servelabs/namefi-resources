@@ -59,10 +59,10 @@ export const SearchHeader: FC<{
 }) => {
   return (
     <div className="flex flex-col items-center mt-40 p-4 gap-3">
-      <h1 className="text-8xl font-bold text-white drop-shadow-lg">
+      <h1 className="text-8xl font-bold text-secondary-foreground drop-shadow-lg">
         {parentDomain}
       </h1>
-      <p className="text-4xl text-center text-white font-semibold drop-shadow-xl">
+      <p className="text-4xl text-center text-secondary-foreground font-semibold drop-shadow-xl">
         {tagline || `Search for a domain on ${parentDomain ?? 'All Networks'}`}
       </p>
       {isFirstPartyOrigin && !hideNetworkSelection && (

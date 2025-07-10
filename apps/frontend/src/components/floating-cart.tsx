@@ -51,7 +51,7 @@ const FloatingCart = () => {
       >
         <ShoppingCartIcon className="size-4" />
         View cart
-        <div className="absolute top-0 right-0 translate-x-1/2 -translate-y-1/2 bg-brand-primary text-white text-xs px-2 py-1 rounded-full">
+        <div className="absolute top-0 right-0 translate-x-1/2 -translate-y-1/2 bg-brand-primary text-secondary-foreground text-xs px-2 py-1 rounded-full">
           {items?.length}
         </div>
       </Button>

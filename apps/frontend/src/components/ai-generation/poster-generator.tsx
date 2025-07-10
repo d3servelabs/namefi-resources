@@ -175,7 +175,7 @@ export function PosterGenerator({
                               </span>
                               {!field.value && (
                                 <div className="absolute inset-0 bg-orange-500/20 flex items-center justify-center rounded-lg">
-                                  <Check className="h-8 w-8 text-white bg-orange-500 rounded-full p-1" />
+                                  <Check className="h-8 w-8 text-secondary-foreground bg-orange-500 rounded-full p-1" />
                                 </div>
                               )}
                             </div>
@@ -207,7 +207,7 @@ export function PosterGenerator({
                                 />
                                 {field.value === logo.id && (
                                   <div className="absolute inset-0 bg-orange-500/20 flex items-center justify-center">
-                                    <Check className="h-8 w-8 text-white bg-orange-500 rounded-full p-1" />
+                                    <Check className="h-8 w-8 text-secondary-foreground bg-orange-500 rounded-full p-1" />
                                   </div>
                                 )}
                               </div>

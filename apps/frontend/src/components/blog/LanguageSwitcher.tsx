@@ -19,7 +19,7 @@ export function LanguageSwitcher({
           href={`/${lang}/blog/${slug}`}
           className={`px-3 py-1 rounded ${
             lang === currentLanguage
-              ? 'bg-blue-500 text-white'
+              ? 'bg-blue-500 text-secondary-foreground'
               : 'bg-gray-200 hover:bg-gray-300'
           }`}
         >

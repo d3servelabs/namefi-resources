@@ -136,7 +136,7 @@ export function WalletEditableSelect({
         <p
           className={cn(
             'text-sm mt-1',
-            error ? 'text-red-500' : 'text-white/50',
+            error ? 'text-red-500' : 'text-secondary-foreground/50',
           )}
         >
           {error || helpText}

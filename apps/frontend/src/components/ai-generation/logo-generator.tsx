@@ -230,12 +230,12 @@ export function LogoGenerator({
                                 />
                                 {field.value === key && (
                                   <div className="absolute inset-0 bg-orange-500/20 flex items-center justify-center">
-                                    <Check className="h-8 w-8 text-white bg-orange-500 rounded-full p-1" />
+                                    <Check className="h-8 w-8 text-secondary-foreground bg-orange-500 rounded-full p-1" />
                                   </div>
                                 )}
                                 {key === 'let-ai-choose' && (
                                   <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20 flex items-center justify-center">
-                                    <Sparkles className="h-8 w-8 text-white" />
+                                    <Sparkles className="h-8 w-8 text-secondary-foreground" />
                                   </div>
                                 )}
                               </div>
@@ -289,12 +289,12 @@ export function LogoGenerator({
                                 />
                                 {field.value === key && (
                                   <div className="absolute inset-0 bg-orange-500/20 flex items-center justify-center">
-                                    <Check className="h-8 w-8 text-white bg-orange-500 rounded-full p-1" />
+                                    <Check className="h-8 w-8 text-secondary-foreground bg-orange-500 rounded-full p-1" />
                                   </div>
                                 )}
                                 {key === 'let-ai-choose' && (
                                   <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20 flex items-center justify-center">
-                                    <Sparkles className="h-8 w-8 text-white" />
+                                    <Sparkles className="h-8 w-8 text-secondary-foreground" />
                                   </div>
                                 )}
                               </div>

@@ -54,7 +54,7 @@ export const SidebarItems: FC<SidebarItemsProps> = ({
                     {Icon && <Icon />}
                     <span>{item.title}</span>
                     {item.badge && (
-                      <Badge className="ml-auto text-white bg-brand-primary h-5 w-5 flex items-center justify-center rounded-full p-0">
+                      <Badge className="ml-auto text-secondary-foreground bg-brand-primary h-5 w-5 flex items-center justify-center rounded-full p-0">
                         {item.badge.content}
                       </Badge>
                     )}

@@ -24,8 +24,9 @@ export function TabSelector({
         size="sm"
         onClick={() => onTabChange('logo')}
         className={cn(
-          'flex-1 gap-2',
-          activeTab === 'logo' && 'bg-background shadow-sm text-white',
+          'flex-1 gap-2 hover:bg-transparent hover:text-current',
+          activeTab === 'logo' &&
+            'bg-background shadow-sm text-secondary-foreground hover:bg-background hover:text-secondary-foreground',
         )}
       >
         <Palette className="h-4 w-4" />
@@ -36,8 +37,9 @@ export function TabSelector({
         size="sm"
         onClick={() => onTabChange('marketing')}
         className={cn(
-          'flex-1 gap-2',
-          activeTab === 'marketing' && 'bg-background shadow-sm text-white',
+          'flex-1 gap-2 hover:bg-transparent hover:text-current',
+          activeTab === 'marketing' &&
+            'bg-background shadow-sm text-secondary-foreground hover:bg-background hover:text-secondary-foreground',
         )}
       >
         <Sparkles className="h-4 w-4" />

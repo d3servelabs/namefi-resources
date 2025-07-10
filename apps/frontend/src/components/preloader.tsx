@@ -98,7 +98,7 @@ export const Preloader: FC<PreloaderProps> = forwardRef(
     return (
       <div
         className={cn([
-          'fixed inset-0 z-50 flex items-center justify-center bg-black text-white',
+          'fixed inset-0 z-50 flex items-center justify-center bg-black text-secondary-foreground',
           disabled && 'cursor-not-allowed',
           className,
         ])}

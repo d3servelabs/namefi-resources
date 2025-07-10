@@ -19,7 +19,7 @@ import { Separator } from '../ui/shadcn/separator';
 // Hero Section
 const Hero: FC = () => {
   return (
-    <section className="py-42 text-center text-white">
+    <section className="py-42 text-center text-secondary-foreground">
       <h1 className="text-4xl md:text-5xl font-bold mb-2">
         We are 0xCitizens:
       </h1>
@@ -40,7 +40,7 @@ const Hero: FC = () => {
 const WhatIsSection: FC = () => {
   return (
     <section className="px-14 py-20 flex flex-col lg:flex-row items-center justify-evenly gap-10 gradient-border-top gradient-border-bottom overflow-hidden">
-      <div className="md:w-1/2 text-white flex flex-col gap-6 justify-center">
+      <div className="md:w-1/2 text-secondary-foreground flex flex-col gap-6 justify-center">
         <h2 className="text-5xl text-center lg:text-left font-bold">
           What Is 0x.City
         </h2>
@@ -122,7 +122,7 @@ const WhatIsSection: FC = () => {
 const WhyJoin: FC = () => {
   return (
     <section className="px-14 py-20 flex flex-col items-center gradient-border-bottom">
-      <h2 className="text-5xl font-bold mb-4 text-white text-center">
+      <h2 className="text-5xl font-bold mb-4 text-secondary-foreground text-center">
         Why Join the Movement?
       </h2>
       <p className="text-lg text-muted-foreground text-center mb-12 max-w-4xl">
@@ -136,7 +136,7 @@ const WhyJoin: FC = () => {
             <div className="bg-brand-primary rounded-lg p-2">
               <IdCard className="w-8 h-8" />
             </div>
-            <h3 className="text-xl font-semibold text-white">
+            <h3 className="text-xl font-semibold text-secondary-foreground">
               Registered a name starting with 0x on ENS
             </h3>
           </div>
@@ -147,7 +147,7 @@ const WhyJoin: FC = () => {
             <div className="bg-brand-primary rounded-lg p-2">
               <IdCard className="w-8 h-8" />
             </div>
-            <h3 className="text-xl font-semibold text-white">
+            <h3 className="text-xl font-semibold text-secondary-foreground">
               Using 0x as your digital imprint on Twitter
             </h3>
           </div>
@@ -158,7 +158,7 @@ const WhyJoin: FC = () => {
             <div className="bg-brand-primary rounded-lg p-2">
               <IdCard className="w-8 h-8" />
             </div>
-            <h3 className="text-xl font-semibold text-white">
+            <h3 className="text-xl font-semibold text-secondary-foreground">
               Actively participating and creating in DAOs, NFTs, DeFi
             </h3>
           </div>
@@ -193,7 +193,9 @@ const CitizenCard: FC<CitizenCardProps> = ({
           className="object-cover rounded-md size-30"
         />
         <div className="flex flex-col gap-2 flex-1 items-start justify-start">
-          <h3 className="text-xl font-bold text-white">{title}</h3>
+          <h3 className="text-xl font-bold text-secondary-foreground">
+            {title}
+          </h3>
           <p className="text-muted-foreground">{description}</p>
         </div>
       </div>
@@ -236,10 +238,10 @@ export const WhoAre0xCitizens: FC = () => {
 
   return (
     <section className="py-20 flex flex-col items-center">
-      <h2 className="text-5xl font-bold mb-4 text-white text-center">
+      <h2 className="text-5xl font-bold mb-4 text-secondary-foreground text-center">
         Who Are 0x Citizens?
       </h2>
-      <p className="text-lg text-white text-center mb-12 max-w-4xl">
+      <p className="text-lg text-secondary-foreground text-center mb-12 max-w-4xl">
         Builders, artists, DAO contributors and DeFi degens who:
       </p>
 
@@ -307,7 +309,7 @@ const DomainClaimSection: FC = () => {
 const CommunitySection: FC = () => {
   return (
     <section className="py-20 flex flex-col items-center">
-      <h2 className="text-5xl font-bold mb-4 text-white text-center">
+      <h2 className="text-5xl font-bold mb-4 text-secondary-foreground text-center">
         Join the Community
       </h2>
       <p className="text-lg text-muted-foreground text-center mb-10">
@@ -318,7 +320,7 @@ const CommunitySection: FC = () => {
         <Link
           href="https://x.com/0xDotCity"
           target="_blank"
-          className="flex items-center justify-center bg-black border border-white/20 hover:bg-white/10 text-white p-4 rounded-lg transition-all"
+          className="flex items-center justify-center bg-black border border-white/20 hover:bg-white/10 text-secondary-foreground p-4 rounded-lg transition-all"
         >
           <Image
             src="/assets/social/twitter.svg"
@@ -331,7 +333,7 @@ const CommunitySection: FC = () => {
           href="https://t.me/zeroxdotcity"
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center justify-center bg-black border border-white/20 hover:bg-white/10 text-white p-4 rounded-lg transition-all"
+          className="flex items-center justify-center bg-black border border-white/20 hover:bg-white/10 text-secondary-foreground p-4 rounded-lg transition-all"
         >
           <Image
             src="/assets/social/telegram.svg"

@@ -196,7 +196,7 @@ export function AppSidebar() {
       <SidebarFooter>
         <UserDropdown collapsed={isCollapsed} />
         {!isCollapsed && (
-          <div className="grid grid-cols-2 gap-1 text-xs font-medium text-white/40">
+          <div className="grid grid-cols-2 gap-1 text-xs font-medium text-secondary-foreground/40">
             <div className="flex flex-row gap-1">
               <span>App: {frontendVersion.version}</span>
             </div>

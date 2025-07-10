@@ -175,7 +175,7 @@ export default function NFSCSwapDialog(props: Props) {
                   placeholder={'0'}
                   value={amountPay}
                   onChange={(e) => handlePayChange(e.target.value)}
-                  className="shadow-none pl-0 bg-transparent dark:bg-transparent border-0 text-white text-xl dark:text-xl focus-visible:ring-0 w-1/2"
+                  className="shadow-none pl-0 bg-transparent dark:bg-transparent border-0 text-secondary-foreground text-xl dark:text-xl focus-visible:ring-0 w-1/2"
                 />
                 <div className="flex items-center gap-2 bg-zinc-700 p-2 px-4 rounded-lg">
                   <Image
@@ -183,7 +183,7 @@ export default function NFSCSwapDialog(props: Props) {
                     alt="ETH"
                     width={16}
                     height={16}
-                    className="text-white"
+                    className="text-secondary-foreground"
                   />
                   <span className="font-medium">ETH</span>
                 </div>
@@ -214,7 +214,7 @@ export default function NFSCSwapDialog(props: Props) {
                   placeholder={'0'}
                   readOnly={true}
                   value={displayReceiveAmount()}
-                  className="shadow-none pl-0 bg-transparent dark:bg-transparent border-0 text-white text-xl dark:text-xl focus-visible:ring-0 w-1/2"
+                  className="shadow-none pl-0 bg-transparent dark:bg-transparent border-0 text-secondary-foreground text-xl dark:text-xl focus-visible:ring-0 w-1/2"
                 />
                 <div className="flex items-center bg-zinc-700 gap-2 p-2 px-4 rounded-md">
                   <Image
@@ -258,7 +258,7 @@ export default function NFSCSwapDialog(props: Props) {
             </div>
 
             <Button
-              className="w-full mt-4 items-center bg-brand-primary hover:bg-brand-primary/90 text-white font-medium py-6 rounded-full flex items-center justify-center gap-2"
+              className="w-full mt-4 items-center bg-brand-primary hover:bg-brand-primary/90 text-secondary-foreground font-medium py-6 rounded-full flex items-center justify-center gap-2"
               onClick={handleOnExchange}
               disabled={isButtonDisabled}
             >

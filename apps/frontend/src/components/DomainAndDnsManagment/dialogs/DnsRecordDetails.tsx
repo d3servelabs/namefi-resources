@@ -42,7 +42,7 @@ export function DnsRecordDetails({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[425px] bg-zinc-900 border-zinc-800 text-white">
+      <DialogContent className="sm:max-w-[425px] bg-zinc-900 border-zinc-800 text-secondary-foreground">
         <DialogHeader>
           <DialogTitle>{record.type} Record Details</DialogTitle>
           <DialogDescription className="text-zinc-400">

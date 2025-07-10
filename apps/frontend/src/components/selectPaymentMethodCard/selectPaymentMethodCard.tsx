@@ -313,7 +313,7 @@ export function SelectPaymentMethodCard({
                       <Loader2 className="h-4 w-4 animate-spin" />
                     ) : null
                   ) : (
-                    <span className="text-white/50 text-sm">
+                    <span className="text-secondary-foreground/50 text-sm">
                       {formatAmountInUSD(
                         selectedWalletChainNfscBalanceInUsdCents,
                         true,

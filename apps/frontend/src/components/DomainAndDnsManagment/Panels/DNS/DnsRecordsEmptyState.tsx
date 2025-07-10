@@ -51,7 +51,7 @@ export function DnsRecordsEmptyState({
       {descriptionText}
       <Button
         onClick={handleClick}
-        className="bg-brand-primary-500 hover:bg-brand-primary-600 text-white"
+        className="bg-brand-primary-500 hover:bg-brand-primary-600 text-secondary-foreground"
       >
         {buttonContent}
       </Button>

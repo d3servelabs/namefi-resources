@@ -198,7 +198,9 @@ export const DomainClaim: FC<DomainClaimProps> = ({
   return (
     <div className="w-full max-w-4xl mx-auto p-16 justify-center items-center">
       <div className="flex flex-col items-center justify-center text-center mb-12">
-        <h2 className="text-4xl font-bold text-white mb-2">{title}</h2>
+        <h2 className="text-4xl font-bold text-secondary-foreground mb-2">
+          {title}
+        </h2>
         <p className="text-lg text-gray-300">{subtitle}</p>
         <p className="text-gray-300 mb-2">
           Follow the steps below to see if you qualify

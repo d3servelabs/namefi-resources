@@ -79,7 +79,7 @@ export default function DnsPage() {
           />
           <button
             type="button"
-            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+            className="bg-blue-500 text-secondary-foreground px-4 py-2 rounded-md hover:bg-blue-600"
             onClick={() => dnsRecords.refetch()}
           >
             Load Records
@@ -310,7 +310,7 @@ function EditDnsRecordForm({
         </button>
         <button
           type="submit"
-          className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors disabled:bg-blue-300"
+          className="bg-blue-500 text-secondary-foreground px-4 py-2 rounded-md hover:bg-blue-600 transition-colors disabled:bg-blue-300"
           disabled={updateDnsRecord.isPending}
         >
           {updateDnsRecord.isPending ? 'Updating...' : 'Update Record'}
