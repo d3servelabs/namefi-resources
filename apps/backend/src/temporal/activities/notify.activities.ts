@@ -1,8 +1,18 @@
-import { db, usersTable } from '@namefi-astra/db';
+import { db, usersTable, type PaymentProvider } from '@namefi-astra/db';
 import { eq } from 'drizzle-orm';
 import { type SendMailInput, sendMail } from '../../mail/mail-client';
 import { privyClient } from '../../trpc/utils';
 import { config } from '#lib/env';
+import {
+  ProcessedOrderReport,
+  type ProcessedOrderItem,
+} from '../../mail/templates/processed-order-report';
+import React from 'react';
+import { render } from '@react-email/components';
+import { getDomainLevels } from '#lib/get-domain-levels';
+import { groupBy, map, prop } from 'ramda';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import { getPoweredByNamefi3PDomains } from '#lib/namefi-registry';
 
 export async function maybeGetUserEmail(
   userId: string,
@@ -85,14 +95,10 @@ export async function getOrderProcessedEmailContent({
   const hasMultipleSucceededDomains = succeededItems.length > 1;
   const hasMultipleFailedDomains = failedItems.length > 1;
 
-  // TODO: handle other subdomains
-  const isAllThirdPartyDomains = [...succeededItems, ...failedItems].every(
-    (item) => {
-      return item.normalizedDomainName.endsWith('.0x.city');
-    },
-  );
-
-  const hostname = isAllThirdPartyDomains ? '0x.city' : config.APP_URL;
+  const hostname = await determineHostnameFromCartItems([
+    ...succeededItems,
+    ...failedItems,
+  ]);
 
   // some succeeded, some failed
   if (hasSucceededItems && hasFailedItems) {
@@ -122,8 +128,112 @@ export async function getOrderProcessedEmailContent({
   };
 }
 
+type GetProcessedOrderEmailInput = {
+  orderId: string;
+  recipientName: string;
+  recipientEmail: string;
+  items: ProcessedOrderItem[];
+  chargedAmountInUsd: number;
+  paymentMethodCharged: PaymentProvider;
+  /**
+   * @remarks
+   * This is either the last 4 digits of the card number or the wallet address for crypto payments.
+   */
+  paymentMethodIdentifier: string;
+  refundAmountInUsd?: number;
+  refundStatus?: 'SUCCESS' | 'FAILED' | 'PENDING';
+};
+
+export async function getProcessedOrderEmail({
+  orderId,
+  recipientName,
+  recipientEmail,
+  items,
+  chargedAmountInUsd,
+  paymentMethodCharged,
+  paymentMethodIdentifier,
+  refundAmountInUsd,
+  refundStatus,
+}: GetProcessedOrderEmailInput) {
+  const successfulItems = items.filter((item) => item.status === 'SUCCESS');
+  const failedItems = items.filter((item) => item.status === 'FAILED');
+
+  const hostname = await determineHostnameFromCartItems(items);
+
+  const ctaLink = `https://${hostname}/orders/${orderId}`;
+
+  const subject =
+    failedItems.length > 0 && successfulItems.length > 0
+      ? `[Namefi] Order ${orderId} - Partially Processed`
+      : failedItems.length > 0
+        ? `[Namefi] Order ${orderId} - Processing Failed`
+        : `[Namefi] Order ${orderId} - Successfully Processed`;
+
+  const content = React.createElement(ProcessedOrderReport, {
+    orderId,
+    recipientName,
+    recipientEmail,
+    items,
+    chargedAmountInUsd,
+    paymentMethodCharged,
+    paymentMethodIdentifier,
+    refundAmountInUsd,
+    refundStatus,
+    ctaLink,
+  });
+
+  const html = await render(content);
+  const plainText = await render(content, { plainText: true });
+
+  return {
+    subject,
+    content: { html, plain: plainText },
+  };
+}
+
 export type NotifyActivities = {
   sendEmailOrThrow: typeof sendEmailOrThrow;
   getUserEmailOrThrow: typeof getUserEmailOrThrow;
   getOrderProcessedEmailContent: typeof getOrderProcessedEmailContent;
+  getProcessedOrderEmail: typeof getProcessedOrderEmail;
 };
+
+// Extracted helper (place near the top of the file, e.g. after imports)
+async function determineHostnameFromCartItems(
+  items: { normalizedDomainName: string }[],
+): Promise<string> {
+  const itemsWithLevels = map((item) => {
+    const { levels, parentDomain } = getDomainLevels(
+      item.normalizedDomainName as NamefiNormalizedDomain,
+    );
+    return { item, levels, parentDomain: parentDomain ?? '' };
+  }, items);
+
+  const { thirdLevel = [] } = groupBy(({ levels }) => {
+    if (levels.length === 3) {
+      return 'thirdLevel';
+    }
+    return 'other';
+  }, itemsWithLevels);
+
+  if (thirdLevel.length !== items.length) {
+    return config.APP_URL;
+  }
+
+  const thirdLevelGroupedByParentDomain = groupBy(
+    prop('parentDomain'),
+    thirdLevel,
+  );
+
+  if (Object.keys(thirdLevelGroupedByParentDomain).length === 1) {
+    const parentDomain = Object.keys(thirdLevelGroupedByParentDomain)[0];
+    const poweredByNamefi3pDomains = await getPoweredByNamefi3PDomains();
+    if (
+      poweredByNamefi3pDomains.includes(parentDomain as NamefiNormalizedDomain)
+    ) {
+      return parentDomain;
+    }
+  }
+
+  return config.APP_URL;
+}
