@@ -4,7 +4,12 @@ import type {
   NamefiNormalizedDomain,
 } from '@namefi-astra/utils';
 import * as workflow from '@temporalio/workflow';
-import { addYears, differenceInYears, getUnixTime } from 'date-fns';
+import {
+  addYears,
+  differenceInMonths,
+  fromUnixTime,
+  getUnixTime,
+} from 'date-fns';
 import { typedProxyActivities } from '../../shared/workflow-helpers/typed-proxy-activities';
 import { catchAndAlertLocally } from '../../shared/workflow-helpers/catch-and-alert-locally';
 import { getDomainLevels } from '#lib/get-domain-levels';
@@ -15,6 +20,7 @@ import {
   shortRunningOpts,
 } from '../../shared';
 import { setExpirationForNamefiNft } from '../mint.workflow';
+import { determineDurationLimitsForRenewItems } from '#lib/domains/domainsDurationConstraints';
 
 export type ExtendDomainRegistrationWorkflowOutput = {
   /** Status of the EPP (Extensible Provisioning Protocol) operation - either SUCCESS or FAILURE */
@@ -343,39 +349,50 @@ async function _extend3ldDomainAndReturnNewExpirationTime({
 }: Exclude<ExtendDomainRegistrationWorkflowInput, 'updateDomainIndex'> & {
   chainId: number;
 }): Promise<string | Date> {
-  // TODO: add validation for parent domain
   const { getNftExpirationTimeInSeconds } = typedProxyActivities({
     temporalEnum: TEMPORAL_ENUMS.MINT,
     options: {
       ...shortRunningOpts,
     },
   });
+  const { getDomainDurationConstraints } = typedProxyActivities({
+    temporalEnum: TEMPORAL_ENUMS.DOMAINS,
+    options: {
+      ...shortRunningOpts,
+    },
+  });
+  const { minYears, maxYears } =
+    await getDomainDurationConstraints(normalizedDomainName);
   const nftExpirationTime = await getNftExpirationTimeInSeconds(
     chainId,
     normalizedDomainName,
   );
-  /**
-   * This gets the number of full years until the NFT expires
-   * For example, if the NFT expires in 9 years and 1 month, this will return 9
-   */
-  const numOfFullYearsUntilNftExpiration = differenceInYears(
-    new Date(nftExpirationTime * 1000),
-    new Date(),
-  );
+  const {
+    minimumPossibleRenewalYears,
+    maxAdditionalYears,
+    activeRegistrationYears,
+  } = determineDurationLimitsForRenewItems(fromUnixTime(nftExpirationTime), {
+    minYears,
+    maxYears,
+  });
 
-  if (numOfFullYearsUntilNftExpiration > 9) {
+  if (maxAdditionalYears <= 0) {
     throw workflow.ApplicationFailure.create({
       nonRetryable: true,
-      message:
-        'NFT Registration Duration is currently 10 years, cannot extend registration',
+      message: `NFT Registration Duration is currently ${maxYears} years, cannot extend registration`,
     });
   }
-  if (numOfFullYearsUntilNftExpiration + durationInYears > 10) {
+  if (durationInYears < minimumPossibleRenewalYears) {
     throw workflow.ApplicationFailure.create({
       nonRetryable: true,
-      message:
-        'you are trying to extend the registration for more than 10 years, which is not allowed',
+      message: `you are trying to extend the registration for ${durationInYears} years, which is not allowed. the min additional years is ${minimumPossibleRenewalYears} years. the active registration years are ${activeRegistrationYears} years. the max total years is ${maxYears} years`,
     });
   }
-  return addYears(new Date(nftExpirationTime * 1000), durationInYears);
+  if (durationInYears > maxAdditionalYears) {
+    throw workflow.ApplicationFailure.create({
+      nonRetryable: true,
+      message: `you are trying to extend the registration for ${durationInYears} years, which is not allowed. the max additional years is ${maxAdditionalYears} years. the active registration years are ${activeRegistrationYears} years. the max total years is ${maxYears} years`,
+    });
+  }
+  return addYears(fromUnixTime(nftExpirationTime), durationInYears);
 }

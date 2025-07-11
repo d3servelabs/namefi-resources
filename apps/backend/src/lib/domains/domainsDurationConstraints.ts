@@ -7,9 +7,9 @@ export type DomainDurationConstraints = {
   maxYears: number;
 };
 
-export function getDomainDurationConstraints(
+export async function getDomainDurationConstraints(
   domainName: NamefiNormalizedDomain,
-): DomainDurationConstraints {
+): Promise<DomainDurationConstraints> {
   const { levels, parentDomain } = getDomainLevels(domainName);
 
   if (levels.length === 2) {

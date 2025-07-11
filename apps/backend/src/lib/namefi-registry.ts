@@ -31,6 +31,7 @@ import { secrets } from '#lib/env';
 import { logger } from '#lib/logger';
 import { computeChargesInUsdOrThrow } from '@namefi-astra/registrars/multi-year-pricing';
 import { getDomainDurationConstraints } from './domains/domainsDurationConstraints';
+import pMap from 'p-map';
 
 export type NamefiNftSelect = typeof namefiNftTable.$inferSelect;
 
@@ -205,7 +206,7 @@ const _getSldDomainListInfo = async (
   }
 
   const responses = responseOrError.result;
-  return responses.map((response) => {
+  return pMap(responses, async (response) => {
     const domain = response.domainName;
 
     // Look up the NFT and price information
@@ -223,7 +224,7 @@ const _getSldDomainListInfo = async (
 
     let durationConstraints = { minYears: 1, maxYears: 10 };
     try {
-      durationConstraints = getDomainDurationConstraints(domain);
+      durationConstraints = await getDomainDurationConstraints(domain);
     } catch (error) {
       logger.error(
         `Error getting duration constraints for ${domain}: ${error}`,
@@ -289,7 +290,7 @@ const _get3ldDomainListInfo = async (
     const price = await getSubdomainPriceInUsd(domain, isFreeMint);
     let durationConstraints = { minYears: 1, maxYears: 10 };
     try {
-      durationConstraints = getDomainDurationConstraints(domain);
+      durationConstraints = await getDomainDurationConstraints(domain);
     } catch (error) {
       logger.error(
         `Error getting duration constraints for ${domain}: ${error}`,
