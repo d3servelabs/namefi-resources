@@ -35,8 +35,6 @@ export const Search: SearchComponent = ({ originInfo }) => {
     domains,
   } = useStreamingSearch(parentDomain || undefined);
 
-  console.log({ domains, domainInfos, isLoading, hasData });
-
   if (!originInfo) {
     // Return loading state or null while origin info is loading
     return null;

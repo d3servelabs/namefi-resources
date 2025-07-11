@@ -98,48 +98,12 @@ export function generateDomainSuggestions(
       parentDomain,
     ).map(toPunycodeDomainName);
   } else {
-    // Try to parse as domain to check structure
-    try {
-      const tempDomain = namefiNormalizedDomainSchema.parse(sanitizedQuery);
-      const { levels } = getDomainLevels(tempDomain);
+    const { levels } = getDomainLevels(sanitizedQuery);
 
-      if (levels.length <= 1) {
-        // Check if user provided a TLD (contains a dot) even if not recognized
-        if (sanitizedQuery.includes('.')) {
-          // User provided a TLD (even if not recognized) - prioritize it
-          const userDomain = sanitizedQuery; // Use the complete domain as-is
-          sanitizedQuery.split('.').pop() || ''; // Extract TLD
-
-          // Start with user's complete domain, then add all ranked TLDs
-          domains = [
-            userDomain,
-            ...RANKED_TLDS.map((tld) =>
-              toPunycodeDomainName(`${userDomain.split('.')[0]}.${tld}`),
-            ),
-          ];
-        } else {
-          domains = RANKED_TLDS.map((tld) =>
-            toPunycodeDomainName(`${sanitizedQuery}.${tld}`),
-          );
-        }
-      } else {
-        // User provided a complete domain - prioritize it and add all ranked TLDs
-        const userDomain = sanitizedQuery; // Use the complete domain as-is
-        const userTld = levels[levels.length - 1]; // Get the TLD from the domain
-
-        // Start with user's complete domain, then add all ranked TLDs (excluding user's TLD)
-        const remainingTlds = RANKED_TLDS.filter((tld) => tld !== userTld);
-        domains = [
-          userDomain,
-          ...remainingTlds.map((tld) =>
-            toPunycodeDomainName(`${userDomain.split('.')[0]}.${tld}`),
-          ),
-        ];
-      }
-    } catch (_error) {
-      // Failed to parse, but user might have provided a TLD - check if it contains a dot
+    if (levels.length <= 1) {
+      // Check if user provided a TLD (contains a dot) even if not recognized
       if (sanitizedQuery.includes('.')) {
-        // User provided a TLD (even if invalid) - prioritize it
+        // User provided a TLD (even if not recognized) - prioritize it
         const userDomain = sanitizedQuery; // Use the complete domain as-is
         sanitizedQuery.split('.').pop() || ''; // Extract TLD
 
@@ -155,6 +119,19 @@ export function generateDomainSuggestions(
           toPunycodeDomainName(`${sanitizedQuery}.${tld}`),
         );
       }
+    } else {
+      // levels > 1
+
+      // User provided a complete domain - prioritize it and add all ranked TLDs
+      const validTlds = RANKED_TLDS.filter(
+        (tld) => !sanitizedQuery.endsWith(`.${tld}`),
+      );
+      domains = [
+        sanitizedQuery,
+        ...validTlds.map((tld) =>
+          toPunycodeDomainName(`${sanitizedQuery.split('.')[0]}.${tld}`),
+        ),
+      ];
     }
   }
 
@@ -169,10 +146,18 @@ export function generateDomainSuggestions(
  * @returns Array of domain strings
  */
 function generate3rdLevelDomainSuggestions(
-  query: string,
+  query: PunycodeDomainName,
   parentDomain: string,
 ): string[] {
-  const domain = namefiNormalizedDomainSchema.parse(`${query}.${parentDomain}`);
+  // Remove parent domain from end of query if it exists and replace dots with dashes
+  const sanitizedQuery = (
+    query.endsWith(`.${parentDomain}`)
+      ? query.slice(0, -(parentDomain.length + 1))
+      : query
+  ).replace(/\./g, '-');
+  const domain = namefiNormalizedDomainSchema.parse(
+    `${sanitizedQuery}.${parentDomain}`,
+  );
   const tags = getTags(domain);
 
   let suggestions: string[] = [];
@@ -181,11 +166,14 @@ function generate3rdLevelDomainSuggestions(
 
   for (let round = 0; round < maxRound; round++) {
     const normalizedSuggestions = generateSuggestions(
-      query,
+      sanitizedQuery,
       parentDomain,
       tags,
       round,
-    ).filter((d) => !totalSuggestions.has(d));
+    ).filter(
+      (d) =>
+        !totalSuggestions.has(d) && d !== `${sanitizedQuery}.${parentDomain}`,
+    );
 
     normalizedSuggestions.forEach((d) => totalSuggestions.add(d));
     suggestions.push(...normalizedSuggestions);
@@ -198,10 +186,14 @@ function generate3rdLevelDomainSuggestions(
 
   // Remove duplicates and the original domain
   suggestions = Array.from(new Set(suggestions)).filter(
-    (d) => d.endsWith(`.${parentDomain}`) && d !== `${query}.${parentDomain}`,
+    (d) =>
+      d.endsWith(`.${parentDomain}`) &&
+      d !== `${sanitizedQuery}.${parentDomain}`,
   );
 
-  return suggestions;
+  // Ensure the first suggestion is always the searched query
+  const searchedQuery = `${sanitizedQuery}.${parentDomain}`;
+  return [searchedQuery, ...suggestions];
 }
 
 /**
