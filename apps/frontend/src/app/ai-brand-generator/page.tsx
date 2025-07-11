@@ -68,19 +68,10 @@ export default function AIBrandGeneratorPage() {
   const trpc = useTRPC();
 
   // Get all user domains (which represent "brands")
-  const {
-    data: domains = [],
-    isLoading: isDomainsLoading,
-    refetch: refetchDomains,
-  } = useQuery({
+  const { data: domains = [], isLoading: isDomainsLoading } = useQuery({
     ...trpc.ai.getUserDomains.queryOptions(),
     enabled: isAuthenticated,
   });
-
-  const handleGenerationComplete = () => {
-    // Refetch domains to update the list after a new generation
-    refetchDomains();
-  };
 
   if (isAuthLoading) {
     return (

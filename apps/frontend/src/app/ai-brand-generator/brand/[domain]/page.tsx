@@ -124,19 +124,10 @@ export default function BrandDetailPage({ params }: BrandDetailPageProps) {
   const { domain } = use(params);
 
   // Load generations for this domain
-  const {
-    data: generations = [],
-    isLoading: isGenerationsLoading,
-    refetch: refetchGenerations,
-  } = useQuery({
+  const { data: generations = [], isLoading: isGenerationsLoading } = useQuery({
     ...trpc.ai.getGenerationsByDomain.queryOptions({ domain }),
     enabled: isAuthenticated && !!domain,
   });
-
-  const handleGenerationComplete = () => {
-    // Refetch generations to update the list after a new generation
-    refetchGenerations();
-  };
 
   // Create brand name from domain (e.g., "example.com" -> "Example")
   const brandName = domain

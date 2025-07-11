@@ -40,7 +40,6 @@ export function BaseGenerationTab({
   existingGenerations = [],
   brandDomain,
   generator,
-  isLoading,
   title,
   convertToGeneratedItems,
   availableLogos,
@@ -91,6 +90,7 @@ export function BaseGenerationTab({
         generatedImage={
           !isGenerating && latestGeneration
             ? {
+                id: latestGeneration.id,
                 url: latestGeneration.result,
                 domain: brandDomain || 'example.com',
                 description:

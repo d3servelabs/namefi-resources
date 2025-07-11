@@ -271,6 +271,7 @@ interface GenerationPreviewProps {
   loadingState?: GenerationLoadingState;
   isVisible: boolean;
   generatedImage?: {
+    id: string;
     url: string;
     domain: string;
     description?: string;
@@ -291,6 +292,15 @@ export function GenerationPreview({
   onGeneratePoster,
 }: GenerationPreviewProps) {
   const previewRef = useRef<HTMLDivElement>(null);
+  const [currentUrl, setCurrentUrl] = useState('');
+
+  useEffect(() => {
+    if (generatedImage?.domain) {
+      setCurrentUrl(
+        `${window.location.origin}/ai-brand-generator/brand/${generatedImage?.domain}/${generatedImage?.id}`,
+      );
+    }
+  }, [generatedImage]);
 
   // Smooth scroll into view when generation starts
   useEffect(() => {
@@ -322,10 +332,10 @@ export function GenerationPreview({
   };
 
   const handleCopy = async () => {
-    if (!generatedImage?.url) return;
+    if (!currentUrl) return;
 
     try {
-      await navigator.clipboard.writeText(generatedImage.url);
+      await navigator.clipboard.writeText(currentUrl);
       toast.success('Image URL copied to clipboard', {
         description: 'You can now share this image URL with others',
       });
@@ -385,7 +395,7 @@ export function GenerationPreview({
                           Copy
                         </Button>
                         <TwitterShareButton
-                          url={generatedImage?.url || ''}
+                          url={currentUrl}
                           title={`Check out this AI-generated ${generatedImage?.type?.toLowerCase() || 'image'} for ${generatedImage?.domain} @namefi_io`}
                         >
                           <Button
