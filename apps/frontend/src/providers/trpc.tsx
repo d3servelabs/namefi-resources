@@ -14,8 +14,11 @@ import {
   createTRPCClient,
   httpBatchLink,
   httpLink,
+  httpSubscriptionLink,
+  retryLink,
   splitLink,
 } from '@trpc/client';
+import { EventSourcePolyfill } from 'event-source-polyfill';
 import type React from 'react';
 import { useState } from 'react';
 import superjson from 'superjson';
@@ -92,22 +95,59 @@ export function TrpcProvider({ children }: { children: React.ReactNode }) {
       links: [
         splitLink({
           condition(op) {
-            // check for context property `skipBatch`
-            return op.context.skipBatch === true;
+            // Handle both skipBatch and subscription conditions
+            return op.context.skipBatch === true || op.type === 'subscription';
           },
-          // when condition is true, use normal request
-          true: httpLink({
-            url: `${config.BACKEND_URL}/trpc`,
-            transformer: superjson,
-            async headers() {
-              return {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${(await getAccessToken()) || ''}`,
-              };
-            },
-            fetch(url, options) {
-              return fetch(url, { ...options, credentials: 'include' });
-            },
+          // when condition is true, use appropriate link based on operation type
+          true: splitLink({
+            condition: (op) => op.type === 'subscription',
+            true: [
+              retryLink({
+                retry: (opts) => {
+                  const code = opts.error.data?.code;
+                  if (!code) {
+                    // This shouldn't happen as our httpSubscriptionLink will automatically retry within when there's a non-parsable response
+                    console.error('No error code found, retrying', opts);
+                    return true;
+                  }
+                  if (code === 'UNAUTHORIZED' || code === 'FORBIDDEN') {
+                    console.log('Retrying due to 401/403 error');
+                    return true;
+                  }
+                  return false;
+                },
+              }),
+              httpSubscriptionLink({
+                url: `${config.BACKEND_URL}/trpc`,
+                transformer: superjson,
+                // ponyfill EventSource
+                EventSource: EventSourcePolyfill,
+                // options to pass to the EventSourcePolyfill constructor
+                eventSourceOptions: async () => {
+                  // Get fresh access token for each connection attempt
+                  const token = await getAccessToken();
+                  return {
+                    headers: {
+                      'Content-Type': 'application/json',
+                      Authorization: `Bearer ${token || ''}`,
+                    },
+                  };
+                },
+              }),
+            ],
+            false: httpLink({
+              url: `${config.BACKEND_URL}/trpc`,
+              transformer: superjson,
+              async headers() {
+                return {
+                  'Content-Type': 'application/json',
+                  Authorization: `Bearer ${(await getAccessToken()) || ''}`,
+                };
+              },
+              fetch(url, options) {
+                return fetch(url, { ...options, credentials: 'include' });
+              },
+            }),
           }),
           // when condition is false, use batching
           false: httpBatchLink({

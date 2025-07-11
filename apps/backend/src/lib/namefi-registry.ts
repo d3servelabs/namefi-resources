@@ -27,7 +27,6 @@ import { toPunycodeDomainName } from '@namefi-astra/registrars/lib/data/validati
 import type { DomainPricingDetails } from '@namefi-astra/registrars/lib/abstract-registrar/index';
 import { resolve } from '@namefi-astra/utils/promises/resolve';
 import { and, eq, gt, inArray, or } from 'drizzle-orm';
-import pMap from 'p-map';
 import { secrets } from '#lib/env';
 import { logger } from '#lib/logger';
 import { computeChargesInUsdOrThrow } from '@namefi-astra/registrars/multi-year-pricing';

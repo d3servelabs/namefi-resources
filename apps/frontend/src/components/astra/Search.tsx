@@ -1,13 +1,6 @@
 'use client';
 
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from '@/components/ui/shadcn/tabs';
-import { useDomainFilters } from '@/hooks/landing/use-domain-filters';
-import { useSearch } from '@/hooks/landing/use-search';
+import { useStreamingSearch } from '@/hooks/use-streaming-search';
 import { useState } from 'react';
 import FloatingCart from '../floating-cart';
 import {
@@ -33,13 +26,16 @@ export const Search: SearchComponent = ({ originInfo }) => {
   const {
     query,
     setQuery,
+    runSearch,
+    isLoading,
+    isError,
+    error,
+    hasData,
+    domainInfos,
     domains,
-    isSearchLoading,
-    refetch,
-    areSuggestionsLoading,
-  } = useSearch(parentDomain);
-  const { activeTab, setActiveTab, filteredDomains } =
-    useDomainFilters(domains);
+  } = useStreamingSearch(parentDomain || undefined);
+
+  console.log({ domains, domainInfos, isLoading, hasData });
 
   if (!originInfo) {
     // Return loading state or null while origin info is loading
@@ -58,53 +54,27 @@ export const Search: SearchComponent = ({ originInfo }) => {
         <SearchInput
           query={query}
           setQuery={setQuery}
-          isLoading={isSearchLoading || areSuggestionsLoading}
-          onSearch={() => refetch()}
+          isLoading={isLoading}
+          onSearch={() => runSearch()}
         />
       </div>
 
-      {query.length > 0 && (
+      {query.length > 0 && (isLoading || hasData || isError) && (
         <>
-          <Tabs
-            defaultValue="all"
-            value={activeTab}
-            onValueChange={setActiveTab}
-            className="w-full"
-          >
-            <div className="flex justify-between items-center py-5">
-              <h2 className="text-2xl font-semibold">Search Results</h2>
-              <TabsList className="grid grid-cols-4 backdrop-blur-2xl rounded-md bg-black/50">
-                <TabsTrigger className="py-2 px-3 w-32 rounded-sm" value="all">
-                  All
-                </TabsTrigger>
-                <TabsTrigger
-                  className="py-2 px-3 w-32 rounded-sm"
-                  value="available"
-                >
-                  Available
-                </TabsTrigger>
-                <TabsTrigger
-                  className="py-2 px-3 w-32 rounded-sm"
-                  value="unavailable"
-                >
-                  Unavailable
-                </TabsTrigger>
-                <TabsTrigger className="py-2 px-3 w-32 rounded-sm" value="cart">
-                  In Cart
-                </TabsTrigger>
-              </TabsList>
-            </div>
+          <div className="flex justify-between items-center py-5">
+            <h2 className="text-2xl font-semibold">Search Results</h2>
+          </div>
 
-            <TabsContent value={activeTab} className="mt-4">
-              <SearchResults
-                isLoading={isSearchLoading}
-                isLoadingMore={areSuggestionsLoading}
-                filteredDomains={filteredDomains}
-                query={query}
-                parentDomain={parentDomain}
-              />
-            </TabsContent>
-          </Tabs>
+          <SearchResults
+            isLoading={isLoading}
+            isError={isError}
+            error={error}
+            hasData={hasData}
+            domainInfos={domainInfos}
+            domains={domains}
+            query={query}
+          />
+
           <div className="sticky bottom-5 flex justify-center mt-4 px-4">
             <FloatingCart />
           </div>

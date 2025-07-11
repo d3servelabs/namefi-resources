@@ -1,7 +1,7 @@
 'use client';
 
 import { Input } from '@/components/ui/shadcn/input';
-import { useCartRow } from '@/hooks/useCartRow';
+import { useCartRow } from '@/hooks/use-cart-row';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useAuth } from '@/hooks/useAuth';
 import { useTRPC } from '@/utils/trpc';

@@ -2,12 +2,12 @@ import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import * as namefiRegistry from '#lib/namefi-registry';
 import type { TrpcContext } from '../base';
+import { searchRouter } from './searchRouter';
 import {
   rotateString,
-  searchRouter,
   stringRotatePermutations,
   windowedSubStrings,
-} from './searchRouter';
+} from '#lib/domain-suggestions';
 
 const testUser = {
   privyUserId: '123',
@@ -60,57 +60,52 @@ describe('Search Router', () => {
     testUser,
   } satisfies Omit<TrpcContext, 'db' | 'req' | 'res'> as TrpcContext);
 
-  it('should return search results with suggestions and availability', async () => {
-    // Act: Call the actual search procedure with test input
-    const result = await caller.search({
+  it('should return domain suggestions', async () => {
+    // Act: Call the getDomainSuggestions procedure with test input
+    const result = await caller.getDomainSuggestions({
       query: 'test-domain',
       parentDomain: '0x.city',
     });
 
     // Assert: Check the structure of the response
-    expect(result).toHaveProperty('bulkAvailability');
+    expect(result).toHaveProperty('domains');
+    expect(Array.isArray(result.domains)).toBe(true);
+    expect(result.domains.length).toBeGreaterThan(0);
 
-    // First suggestion should be the trimmed query
-    expect(result.bulkAvailability[0].domain).toBe('test-domain.0x.city');
-
-    // Check bulk availability array has same length as suggestions
-    expect(Array.isArray(result.bulkAvailability)).toBe(true);
-    expect(result.bulkAvailability.length).toBe(1);
-
-    // Check that getDomainListInfo was called with the generated suggestions
-    expect(namefiRegistry.getDomainListInfo).toHaveBeenCalledWith(
-      ['test-domain.0x.city'],
-      testUser,
-    );
-
-    // Check availability items have required structure
-    for (const item of result.bulkAvailability) {
-      expect(item).toHaveProperty('domain');
-      expect(item).toHaveProperty('availability');
-      expect(typeof item.availability).toBe('boolean');
+    // Check that the suggestions include the parent domain
+    for (const domain of result.domains) {
+      expect(domain.endsWith('.0x.city')).toBe(true);
     }
   });
 
   it('should trim invalid characters from the query', async () => {
     // Test with a query containing invalid characters
-    const result = await caller.search({
+    const result = await caller.getDomainSuggestions({
       query: 'test@domain!',
       parentDomain: '0x.city',
     });
 
-    // First suggestion should be trimmed
-    expect(result.bulkAvailability[0].domain).toBe('testdomain.0x.city');
+    // Check that the suggestions are properly sanitized
+    expect(result.domains.length).toBeGreaterThan(0);
+    for (const domain of result.domains) {
+      expect(domain).not.toContain('@');
+      expect(domain).not.toContain('!');
+      expect(domain.endsWith('.0x.city')).toBe(true);
+    }
   });
 
   it('should use the specified parent domain in suggestions', async () => {
     // Test with defi.build parent domain
-    const result = await caller.search({
+    const result = await caller.getDomainSuggestions({
       query: 'test-domain',
       parentDomain: 'defi.build',
     });
 
-    // First suggestion should be the query
-    expect(result.bulkAvailability[0].domain).toBe('test-domain.defi.build');
+    // Check that the suggestions include the correct parent domain
+    expect(result.domains.length).toBeGreaterThan(0);
+    for (const domain of result.domains) {
+      expect(domain.endsWith('.defi.build')).toBe(true);
+    }
   });
 
   it('should generate English word club suggestions', async () => {
@@ -119,11 +114,11 @@ describe('Search Router', () => {
       parentDomain: '0x.city',
     });
 
-    expect(result.length).toBeGreaterThan(0);
+    expect(result.domains.length).toBeGreaterThan(0);
 
     // Check that the suggestions include the parent domain
-    for (const item of result) {
-      expect(item.domain.endsWith('.0x.city')).toBe(true);
+    for (const domain of result.domains) {
+      expect(domain.endsWith('.0x.city')).toBe(true);
     }
   });
 
@@ -133,11 +128,11 @@ describe('Search Router', () => {
       parentDomain: '0x.city',
     });
 
-    expect(result.length).toBeGreaterThan(0);
+    expect(result.domains.length).toBeGreaterThan(0);
 
     // Check that the suggestions include the parent domain
-    for (const item of result) {
-      expect(item.domain.endsWith('.0x.city')).toBe(true);
+    for (const domain of result.domains) {
+      expect(domain.endsWith('.0x.city')).toBe(true);
     }
   });
 });

@@ -1,8 +1,7 @@
-import { type UserSelect, db, usersTable } from '@namefi-astra/db';
+import { type UserSelect, db } from '@namefi-astra/db';
 import { initTRPC } from '@trpc/server';
 import { TRPCError } from '@trpc/server';
 import type { FetchCreateContextFnOptions } from '@trpc/server/adapters/fetch';
-import { eq } from 'drizzle-orm';
 import type { Context } from 'hono';
 import { isNotEmpty } from 'ramda';
 import superjson from 'superjson';
@@ -11,6 +10,7 @@ import { config, secrets } from '#lib/env';
 import { logger } from '#lib/logger';
 import { getPoweredByNamefi3PHostnames } from '#lib/namefi-registry';
 import { privyClient } from './utils';
+import { verifyUserAuthAndGetUser, requireUserAuth } from '#lib/auth';
 
 /**
  * 1. CONTEXT
@@ -120,6 +120,11 @@ export const t = initTRPC.context<TrpcContext>().create({
       },
     };
   },
+  sse: {
+    maxDurationMs: 1_000 * 60 * 5, // 5 minutes
+    ping: { enabled: true, intervalMs: 3_000 },
+    client: { reconnectAfterInactivityMs: 5_000 },
+  },
 });
 
 /**
@@ -188,39 +193,9 @@ export const publicProcedure = t.procedure.use(timingMiddleware);
  */
 export const verifyUserAuthAndCreation = t.middleware<TrpcContextWithUser>(
   async ({ ctx, next }) => {
-    if (ctx.testUser) {
-      return next({
-        ctx: {
-          ...ctx,
-          user: ctx.testUser,
-        },
-      });
-    }
-
-    const authToken = ctx.req.header('Authorization')?.replace('Bearer ', '');
-
-    if (!authToken) {
-      throw new TRPCError({
-        code: 'UNAUTHORIZED',
-      });
-    }
-
     try {
-      const userClaims = await privyClient.verifyAuthToken(authToken);
-      let user = await db.query.usersTable.findFirst({
-        where: eq(usersTable.privyUserId, userClaims.userId),
-      });
-
-      if (!user) {
-        // TODO: handle this via webhook
-        const newUser = await db
-          .insert(usersTable)
-          .values({
-            privyUserId: userClaims.userId,
-          })
-          .returning();
-        user = newUser[0];
-      }
+      const authHeader = ctx.req.header('Authorization');
+      const user = await requireUserAuth(authHeader, ctx.testUser);
 
       return next({
         ctx: {
@@ -245,57 +220,15 @@ export const verifyUserAuthAndCreation = t.middleware<TrpcContextWithUser>(
  */
 export const maybeVerifyUserAuthAndCreation =
   t.middleware<TrpcContextWithUserOrNull>(async ({ ctx, next }) => {
-    if (ctx.testUser) {
-      return next({
-        ctx: {
-          ...ctx,
-          user: ctx.testUser,
-        },
-      });
-    }
+    const authHeader = ctx.req.header('Authorization');
+    const { user } = await verifyUserAuthAndGetUser(authHeader, ctx.testUser);
 
-    const authToken = ctx.req.header('Authorization')?.replace('Bearer ', '');
-
-    if (!authToken) {
-      return next({
-        ctx: {
-          ...ctx,
-          user: null,
-        },
-      });
-    }
-    try {
-      const userClaims = await privyClient.verifyAuthToken(authToken);
-      let user = await db.query.usersTable.findFirst({
-        where: eq(usersTable.privyUserId, userClaims.userId),
-      });
-
-      if (!user) {
-        // TODO: handle this via webhook
-        const newUser = await db
-          .insert(usersTable)
-          .values({
-            privyUserId: userClaims.userId,
-          })
-          .returning();
-        user = newUser[0];
-      }
-
-      return next({
-        ctx: {
-          ...ctx,
-          user,
-        },
-      });
-    } catch (error) {
-      console.error('error', error);
-      return next({
-        ctx: {
-          ...ctx,
-          user: null,
-        },
-      });
-    }
+    return next({
+      ctx: {
+        ...ctx,
+        user,
+      },
+    });
   });
 
 /**

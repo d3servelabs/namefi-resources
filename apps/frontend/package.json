@@ -67,6 +67,7 @@
     "country-data-list": "^1.4.1",
     "date-fns": "^4.1.0",
     "embla-carousel-react": "^8.6.0",
+    "event-source-polyfill": "^1.0.31",
     "glob": "^11.0.3",
     "gray-matter": "^4.0.3",
     "lottie-react": "^2.4.1",
@@ -103,6 +104,7 @@
   "devDependencies": {
     "@namefi-astra/typescript": "workspace:*",
     "@tailwindcss/postcss": "^4",
+    "@types/event-source-polyfill": "^1.0.5",
     "@types/node": "^22.13.14",
     "@types/punycode": "^2.1.4",
     "@types/react": "^19",

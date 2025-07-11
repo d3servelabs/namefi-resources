@@ -4,16 +4,9 @@ import { Button } from '@/components/ui/shadcn/button';
 import { Card, CardContent } from '@/components/ui/shadcn/card';
 import { Input } from '@/components/ui/shadcn/input';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from '@/components/ui/shadcn/tabs';
 import { Badge } from '@/components/ui/shadcn/badge';
-import { useCartRow } from '@/hooks/useCartRow';
-import { useDomainFilters } from '@/hooks/landing/use-domain-filters';
-import { useSearch } from '@/hooks/landing/use-search';
+import { useCartRow } from '@/hooks/use-cart-row';
+import { useStreamingSearch } from '@/hooks/use-streaming-search';
 import { config } from '@/lib/env';
 import { cn } from '@/lib/utils';
 import {
@@ -23,8 +16,6 @@ import {
 import { formatAmountInUSD } from '@/utils/number';
 import { computeChargesInUsdOrThrow } from '@namefi-astra/registrars/multi-year-pricing';
 import { Loader2, SearchIcon, User, X } from 'lucide-react';
-import { AnimatePresence, motion } from 'motion/react';
-import { MotionConfig, useReducedMotion } from 'motion/react';
 import { useRouter } from 'next/navigation';
 import { isNotNil } from 'ramda';
 import { type FC, useCallback, useMemo, useState } from 'react';
@@ -40,8 +31,10 @@ import {
   getDomainPricingForOperation,
   type DomainAvailabilityInfo,
 } from '@namefi-astra/backend/trpc/types';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { itemTypeSchema } from '@namefi-astra/db/types';
 import { EppAuthCodeModal } from '../modals/EppAuthCodeModal';
+import { toUnicodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
 
 // Components
 export const SearchHeader: FC<{
@@ -104,12 +97,22 @@ export const SearchInput: FC<{
     <div className="flex items-center w-full bg-black/30 backdrop-blur-md rounded-lg p-1">
       <div className="relative flex-1 bg-gray-700/80 rounded-md h-12 flex items-center">
         <div className="flex items-center w-full px-3">
-          <SearchIcon className="h-5 w-5 text-gray-400 mr-2 shrink-0" />
+          {isLoading ? (
+            <Loader2 className="h-5 w-5 text-gray-400 mr-2 shrink-0 animate-spin" />
+          ) : (
+            <SearchIcon className="h-5 w-5 text-gray-400 mr-2 shrink-0" />
+          )}
           <Input
             placeholder="Search for a domain..."
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             className="border-0 dark:bg-transparent h-full focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-gray-400 flex-1 md:text-lg shadow-none"
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+                onSearch(); // Trigger immediate search, bypassing debounce
+              }
+            }}
           />
           {query.length > 0 && (
             <Button
@@ -127,6 +130,7 @@ export const SearchInput: FC<{
         disabled={isLoading || query.length === 0}
         onClick={onSearch}
         className="font-semibold rounded-md h-12 ml-1 text-lg w-[128px]"
+        title="Search immediately (bypasses typing delay)"
       >
         {isLoading ? <Loader2 className="h-5 w-5 animate-spin" /> : 'Search'}
       </NamefiButton>
@@ -134,9 +138,11 @@ export const SearchInput: FC<{
   </div>
 );
 
+// Progressive DomainCard that shows skeleton states for missing data
 export const DomainCard: FC<{
-  info: DomainAvailabilityInfo;
-}> = ({ info }) => {
+  info?: DomainAvailabilityInfo;
+  domain?: NamefiNormalizedDomain;
+}> = ({ info, domain }) => {
   const { logEventWithInteractionLoggers } = useInteractionLoggers();
   const router = useRouter();
   const [isEppModalOpen, setIsEppModalOpen] = useState(false);
@@ -150,16 +156,20 @@ export const DomainCard: FC<{
     logEventWithInteractionLoggers(beginCheckoutEvent);
   }, [logEventWithInteractionLoggers]);
 
-  const domain = info.domain;
+  // Only use cart functionality if we have a valid domain name
   const { cart, inCart, addingBusy, removingBusy } = useCartRow(domain);
-  const isImportable = isDomainImportable(info);
-  const isUnsupported = isDomainUnsupported(info);
+
+  // Only calculate these if we have info
+  const isImportable = info ? isDomainImportable(info) : false;
+  const isUnsupported = info ? isDomainUnsupported(info) : false;
 
   // Get the appropriate pricing based on whether it's an import or registration
   const operationType = isImportable
     ? itemTypeSchema.Values.IMPORT
     : itemTypeSchema.Values.REGISTER;
-  const pricingDetails = getDomainPricingForOperation(info, operationType);
+  const pricingDetails = info
+    ? getDomainPricingForOperation(info, operationType)
+    : undefined;
 
   const priceInUsd = useMemo(() => {
     if (!pricingDetails) {
@@ -169,12 +179,13 @@ export const DomainCard: FC<{
   }, [pricingDetails]);
 
   // Split domain into subdomain and parent domain
-  const parts = domain.split('.');
-  const subdomain = parts[0];
-  const parentDomain = parts.slice(1).join('.');
+  const parts = domain?.split('.');
+  const subdomain = parts?.[0];
+  const parentDomain = parts?.slice(1).join('.');
 
   /* ADD handler --------------------------------------------------------- */
   const handleAdd = useCallback(async () => {
+    if (!info) return;
     const minDuration = info.durationValidationInYears?.min ?? 1;
     await cart.addItem({
       domainAvailabilityInfo: info,
@@ -185,12 +196,15 @@ export const DomainCard: FC<{
 
   /* REMOVE handler ------------------------------------------------------ */
   const handleRemove = useCallback(async () => {
-    await cart.removeItem(domain);
+    if (domain) {
+      await cart.removeItem(domain);
+    }
   }, [cart, domain]);
 
   /* EPP SUBMIT handler -------------------------------------------------- */
   const handleEppSubmit = useCallback(
     async (eppAuthCode: string) => {
+      if (!info) return;
       setIsSubmittingEpp(true);
       try {
         const minDuration = info.durationValidationInYears?.min ?? 1;
@@ -211,12 +225,25 @@ export const DomainCard: FC<{
     [cart, info],
   );
 
+  const hasAvailabilityInfo = info !== undefined;
+  // When info is available, all data that CAN be loaded HAS been loaded
+  // Some domains (like unsupported ones) may legitimately not have pricing
+  const shouldShowPricingSkeleton = !hasAvailabilityInfo;
+  const shouldShowActionSkeleton = !hasAvailabilityInfo;
+  const hasOwnerInfo =
+    hasAvailabilityInfo && !info.availability && isNotNil(info.currentOwner);
+  const currentOwner =
+    hasOwnerInfo && info?.currentOwner ? info.currentOwner : '';
+
   return (
     <>
       <Card
         className={cn(
           'bg-white/5 backdrop-blur-lg h-32 transition-all duration-150 p-0 border-[1px] border-white/10',
-          info.availability || isImportable ? 'opacity-100' : 'opacity-50',
+          // Only reduce opacity if we know the domain is unavailable and not importable
+          hasAvailabilityInfo && !info.availability && !isImportable
+            ? 'opacity-60'
+            : 'opacity-100',
         )}
       >
         <CardContent className="h-full w-full">
@@ -224,40 +251,51 @@ export const DomainCard: FC<{
             <div className="space-y-1 flex-1 min-w-0 mr-4 overflow-hidden">
               <div className="font-semibold tracking-tight flex items-center gap-2">
                 <div className="min-w-0 flex-1">
-                  <h3 className="line-clamp-2 break-words">
-                    <span className="text-3xl text-brand-tertiary">
-                      {subdomain}
-                    </span>
-                    <span className="text-2xl text-foreground">
-                      .{parentDomain}
-                    </span>
-                  </h3>
+                  {domain ? (
+                    <h3 className="line-clamp-2 break-words">
+                      {subdomain && (
+                        <span className="text-3xl text-brand-tertiary">
+                          {toUnicodeDomainName(subdomain)}
+                        </span>
+                      )}
+                      {parentDomain && (
+                        <span className="text-2xl text-foreground">
+                          .{toUnicodeDomainName(parentDomain)}
+                        </span>
+                      )}
+                    </h3>
+                  ) : (
+                    <Skeleton className="h-8 w-full max-w-[250px] bg-gray-600/50" />
+                  )}
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <p className="text-xl font-medium line-clamp-1">
-                  {isNotNil(priceInUsd)
-                    ? `${formatAmountInUSD(priceInUsd)} USD`
-                    : ''}
-                </p>
+                {shouldShowPricingSkeleton ? (
+                  <Skeleton className="h-6 w-20 bg-gray-600/50" />
+                ) : isNotNil(priceInUsd) ? (
+                  <p className="text-xl font-medium line-clamp-1">
+                    {`${formatAmountInUSD(priceInUsd)} USD`}
+                  </p>
+                ) : null}
               </div>
-              {!info.availability && isNotNil(info.currentOwner) && (
+              {hasOwnerInfo && (
                 <div className="flex items-center text-sm text-muted-foreground">
                   <User className="mr-1 h-3 w-3 shrink-0" />
                   <span className="line-clamp-1">
-                    Owner: {info.currentOwner.substring(0, 6)}...
-                    {info.currentOwner.substring(info.currentOwner.length - 4)}
+                    Owner: {currentOwner.substring(0, 6)}...
+                    {currentOwner.substring(currentOwner.length - 4)}
                   </span>
                 </div>
               )}
             </div>
             <div className="flex items-center justify-center shrink-0">
-              {isUnsupported && (
+              {shouldShowActionSkeleton ? (
+                <Skeleton className="h-10 w-[120px] rounded-full bg-gray-600/50" />
+              ) : isUnsupported ? (
                 <Badge variant="destructive" className="text-xs">
                   Unsupported
                 </Badge>
-              )}
-              {!isUnsupported && (info.availability || isImportable) && (
+              ) : info.availability || isImportable ? (
                 <AnimatedCartButton
                   state={
                     removingBusy
@@ -281,20 +319,22 @@ export const DomainCard: FC<{
                   showRemoveButton={inCart}
                   disabled={addingBusy || isSubmittingEpp || removingBusy}
                 />
-              )}
+              ) : null}
             </div>
           </div>
         </CardContent>
       </Card>
 
       {/* EPP Auth Code Modal */}
-      <EppAuthCodeModal
-        isOpen={isEppModalOpen}
-        onClose={() => setIsEppModalOpen(false)}
-        onSubmit={handleEppSubmit}
-        domainInfo={info}
-        isSubmitting={isSubmittingEpp}
-      />
+      {hasAvailabilityInfo && (
+        <EppAuthCodeModal
+          isOpen={isEppModalOpen}
+          onClose={() => setIsEppModalOpen(false)}
+          onSubmit={handleEppSubmit}
+          domainInfo={info}
+          isSubmitting={isSubmittingEpp}
+        />
+      )}
     </>
   );
 };
@@ -302,90 +342,68 @@ export const DomainCard: FC<{
 export const LoadingSkeletons: FC = () => (
   <div className="flex flex-col gap-4">
     {Array.from({ length: 5 }).map((_, index) => (
-      <Card
-        key={index}
-        className="bg-white/5 backdrop-blur-lg h-32 transition-all duration-150 p-0 border-[1px] border-white/10"
-      >
-        <CardContent className="h-full w-full">
-          <div className="flex items-center justify-between h-full w-full">
-            <div className="space-y-1 flex-1 min-w-0 mr-4">
-              <Skeleton className="h-8 w-full max-w-[250px]" />
-              <div className="flex items-center gap-2">
-                <Skeleton className="h-6 w-full max-w-[100px]" />
-              </div>
-            </div>
-            <Skeleton className="h-10 w-[120px] rounded-full shrink-0" />
-          </div>
-        </CardContent>
-      </Card>
+      <DomainCard key={`skeleton-${index}`} />
     ))}
   </div>
 );
 
 export const SearchResults: FC<{
   isLoading: boolean;
-  isLoadingMore: boolean;
-  filteredDomains: DomainAvailabilityInfo[];
+  isError: boolean;
+  error?: string;
+  hasData: boolean;
+  domainInfos: Map<NamefiNormalizedDomain, DomainAvailabilityInfo>;
+  domains: NamefiNormalizedDomain[];
   query: string;
-  parentDomain: string | undefined;
-}> = ({ isLoading, isLoadingMore, filteredDomains, query, parentDomain }) => {
-  const shouldReduceMotion = useReducedMotion();
-
-  if (filteredDomains.length > 0 || isLoading || isLoadingMore) {
+}> = ({ isLoading, isError, error, hasData, domainInfos, domains, query }) => {
+  // Show error state
+  if (isError && query.length > 0) {
     return (
-      <MotionConfig reducedMotion="user">
-        <div className="flex flex-col gap-4">
-          <AnimatePresence mode="sync" presenceAffectsLayout={true}>
-            {isLoading ? (
-              <LoadingSkeletons key={`${parentDomain}-loading`} />
-            ) : (
-              <>
-                {filteredDomains.map((domainInfo) => (
-                  <motion.div
-                    {...(shouldReduceMotion
-                      ? {}
-                      : {
-                          exit: { x: '-100vw', opacity: 0 },
-                          animate: { x: 0, y: 0, opacity: 1 },
-                          initial: { y: '100vh', opacity: 0 },
-                          transition: { duration: 0.5, ease: 'easeInOut' },
-                        })}
-                    key={`${parentDomain}-${domainInfo.domain}-${domainInfo.availability}`}
-                    layout={true}
-                  >
-                    <DomainCard info={domainInfo} />
-                  </motion.div>
-                ))}
-
-                {isLoadingMore && (
-                  <LoadingSkeletons key={`${parentDomain}-loading`} />
-                )}
-              </>
-            )}
-          </AnimatePresence>
-        </div>
-      </MotionConfig>
+      <div>
+        <Placeholder
+          title="Search Error"
+          description={
+            error || 'An error occurred while searching. Please try again.'
+          }
+        />
+      </div>
     );
   }
 
-  if (query.length > 0) {
+  // Show loading skeletons when fetching but no data yet
+  if (isLoading && !hasData) {
     return (
-      <AnimatePresence mode="sync" presenceAffectsLayout={true}>
-        <motion.div
-          animate={{ x: 0, opacity: 1 }}
-          initial={{ x: '100vw', opacity: 0 }}
-          transition={{ duration: 0.5, ease: 'easeInOut' }}
-        >
-          <Placeholder
-            title="No domains found"
-            description={`No domains matching "${query}" were found. Try a different search term.`}
-          />
-        </motion.div>
-      </AnimatePresence>
+      <div className="flex flex-col gap-4">
+        <LoadingSkeletons key="initial-loading" />
+      </div>
     );
   }
 
-  // If the query is empty, don't render anything
+  // Show search results with progressive loading
+  if (hasData) {
+    return (
+      <div className="flex flex-col gap-4">
+        {domains.map((domain) => {
+          const info = domainInfos.get(domain);
+          return <DomainCard key={domain} info={info} domain={domain} />;
+        })}
+      </div>
+    );
+  }
+
+  // Show "no results" if we have searched, completed, and have no data
+  if (query.length > 0 && !isLoading && !hasData) {
+    return (
+      <div>
+        <Placeholder
+          title="No domains found"
+          description={`No domains matching "${query}" were found. Try a different search term.`}
+        />
+      </div>
+    );
+  }
+
+  // If idle or empty query, don't render anything
   return null;
 };
 
@@ -405,14 +423,14 @@ export const Search: SearchComponent = ({ originInfo }) => {
   const {
     query,
     setQuery,
+    runSearch,
+    isLoading,
+    isError,
+    error,
+    hasData,
+    domainInfos,
     domains,
-    isSearchLoading,
-    refetch,
-    areSuggestionsLoading,
-  } = useSearch(parentDomain);
-
-  const { activeTab, setActiveTab, filteredDomains } =
-    useDomainFilters(domains);
+  } = useStreamingSearch(parentDomain || undefined);
 
   if (!parentDomain) {
     // Return loading state or null while origin info is loading
@@ -430,59 +448,27 @@ export const Search: SearchComponent = ({ originInfo }) => {
         <SearchInput
           query={query}
           setQuery={setQuery}
-          isLoading={isSearchLoading}
-          onSearch={() => refetch()}
+          isLoading={isLoading}
+          onSearch={() => runSearch()}
         />
       </div>
 
-      {query.length > 0 && (
+      {query.length > 0 && (isLoading || hasData || isError) && (
         <>
-          <Tabs
-            defaultValue="all"
-            value={activeTab}
-            onValueChange={setActiveTab}
-            className="w-full"
-          >
-            <div className="flex justify-between items-center py-5">
-              <h2 className="text-2xl font-semibold">Search Results</h2>
-              <TabsList className="grid grid-cols-4 backdrop-blur-2xl rounded-md bg-black/50">
-                <TabsTrigger className="py-2 px-3 w-32 rounded-sm" value="all">
-                  All
-                </TabsTrigger>
-                <TabsTrigger
-                  className="py-2 px-3 w-32 rounded-sm"
-                  value="available"
-                >
-                  Available
-                </TabsTrigger>
-                <TabsTrigger
-                  className="py-2 px-3 w-32 rounded-sm"
-                  value="taken"
-                >
-                  Taken
-                </TabsTrigger>
-                <TabsTrigger
-                  className="py-2 px-3 w-32 rounded-sm"
-                  value="unavailable"
-                >
-                  Unavailable
-                </TabsTrigger>
-                <TabsTrigger className="py-2 px-3 w-32 rounded-sm" value="cart">
-                  In Cart
-                </TabsTrigger>
-              </TabsList>
-            </div>
+          <div className="flex justify-between items-center py-5">
+            <h2 className="text-2xl font-semibold">Search Results</h2>
+          </div>
 
-            <TabsContent value={activeTab} className="mt-4">
-              <SearchResults
-                isLoading={isSearchLoading}
-                isLoadingMore={areSuggestionsLoading}
-                filteredDomains={filteredDomains}
-                query={query}
-                parentDomain={parentDomain}
-              />
-            </TabsContent>
-          </Tabs>
+          <SearchResults
+            isLoading={isLoading}
+            isError={isError}
+            error={error}
+            hasData={hasData}
+            domainInfos={domainInfos}
+            domains={domains}
+            query={query}
+          />
+
           <div className="sticky bottom-5 flex justify-center mt-4 px-4">
             <FloatingCart />
           </div>

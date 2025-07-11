@@ -1,13 +1,6 @@
 'use client';
 
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from '@/components/ui/shadcn/tabs';
-import { useDomainFilters } from '@/hooks/landing/use-domain-filters';
-import { useSearch } from '@/hooks/landing/use-search';
+import { useStreamingSearch } from '@/hooks/use-streaming-search';
 import { config } from '@/lib/env';
 import { useTRPC } from '@/utils/trpc';
 import { useQuery } from '@tanstack/react-query';
@@ -38,14 +31,14 @@ export const Search: SearchComponent = ({ originInfo }) => {
   const {
     query,
     setQuery,
+    runSearch,
+    isLoading,
+    isError,
+    error,
+    hasData,
+    domainInfos,
     domains,
-    isSearchLoading,
-    refetch,
-    areSuggestionsLoading,
-  } = useSearch(parentDomain);
-
-  const { activeTab, setActiveTab, filteredDomains } =
-    useDomainFilters(domains);
+  } = useStreamingSearch(parentDomain || undefined);
 
   const trpc = useTRPC();
 
@@ -79,8 +72,8 @@ export const Search: SearchComponent = ({ originInfo }) => {
         <SearchInput
           query={query}
           setQuery={setQuery}
-          isLoading={isSearchLoading}
-          onSearch={() => refetch()}
+          isLoading={isLoading}
+          onSearch={() => runSearch()}
         />
         {shouldShowRolloutBanner && (
           <Alert className="w-full max-w-3xl mx-auto bg-gray-700/80">
@@ -95,55 +88,22 @@ export const Search: SearchComponent = ({ originInfo }) => {
       </div>
 
       <div className="-mx-4">
-        {query.length > 0 ? (
+        {query.length > 0 && (isLoading || hasData || isError) ? (
           <>
             <div className="backdrop-blur-3xl bg-black/20 px-4 pb-4 relative">
-              <Tabs
-                defaultValue="all"
-                value={activeTab}
-                onValueChange={setActiveTab}
-                className="w-full"
-              >
-                <div className="flex flex-col md:flex-row justify-between items-center py-5">
-                  <h2 className="text-2xl font-semibold">Search Results</h2>
-                  <TabsList className="grid grid-cols-4 mt-4 md:mt-0 backdrop-blur-2xl rounded-md bg-black/50">
-                    <TabsTrigger
-                      className="py-2 px-3 md:w-32 rounded-sm"
-                      value="all"
-                    >
-                      All
-                    </TabsTrigger>
-                    <TabsTrigger
-                      className="py-2 px-3 md:w-32 rounded-sm"
-                      value="available"
-                    >
-                      Available
-                    </TabsTrigger>
-                    <TabsTrigger
-                      className="py-2 px-3 md:w-32 rounded-sm"
-                      value="unavailable"
-                    >
-                      Unavailable
-                    </TabsTrigger>
-                    <TabsTrigger
-                      className="py-2 px-3 md:w-32 rounded-sm"
-                      value="cart"
-                    >
-                      In Cart
-                    </TabsTrigger>
-                  </TabsList>
-                </div>
+              <div className="flex flex-col md:flex-row justify-between items-center py-5">
+                <h2 className="text-2xl font-semibold">Search Results</h2>
+              </div>
 
-                <TabsContent value={activeTab} className="mt-4">
-                  <SearchResults
-                    isLoading={isSearchLoading}
-                    isLoadingMore={areSuggestionsLoading}
-                    filteredDomains={filteredDomains}
-                    query={query}
-                    parentDomain={parentDomain}
-                  />
-                </TabsContent>
-              </Tabs>
+              <SearchResults
+                isLoading={isLoading}
+                isError={isError}
+                error={error}
+                hasData={hasData}
+                domainInfos={domainInfos}
+                domains={domains}
+                query={query}
+              />
             </div>
             <div className="sticky bottom-5 flex justify-center mt-4 px-4">
               <FloatingCart />

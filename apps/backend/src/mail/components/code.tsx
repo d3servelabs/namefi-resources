@@ -1,6 +1,6 @@
 import { Text } from '@react-email/components';
 // biome-ignore lint/correctness/noUnusedImports: required for react-email
-import React from 'react';
+import type React from 'react';
 
 export function Code(props: {
   className?: string;
