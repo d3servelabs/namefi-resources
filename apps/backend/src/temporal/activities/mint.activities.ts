@@ -1,16 +1,11 @@
 import {
   NAMEFI_NFT_CONTRACT_ADDRESS,
   NFSC_CONTRACT_ADDRESS,
-  getChain,
 } from '@namefi-astra/utils';
 import { Context } from '@temporalio/activity';
 import * as workflow from '@temporalio/workflow';
-import { gcpHsmToAccount } from '@valora/viem-account-hsm-gcp';
 import { BigNumber } from 'bignumber.js';
-import { filter, fromPairs, isNotNil, map } from 'ramda';
 import {
-  http,
-  type Account,
   type Address,
   type EstimateGasErrorType,
   type GetGasPriceErrorType,
@@ -19,25 +14,19 @@ import {
   type PublicClient,
   type SendTransactionErrorType,
   type WaitForTransactionReceiptErrorType,
-  createPublicClient,
-  createWalletClient,
   encodeFunctionData,
   formatUnits,
   getContract,
   parseUnits,
 } from 'viem';
-import { mnemonicToAccount, privateKeyToAccount } from 'viem/accounts';
-import type { Chain } from 'viem/chains';
-import { createNonceManager, jsonRpc } from 'viem/nonce';
-import { config, secrets } from '#lib/env';
 import { nftIdFromDomainName } from '#lib/nftHash';
 import { resolve } from '../../utils/resolve';
-import { NfscAbi, NftAbi, chainsToUrls } from './helpers/contracts';
-
-const ALLOWED_CHAINS: Chain[] = filter(
-  isNotNil,
-  config.ALLOWED_CHAINS.map((chainId) => getChain(chainId) as Chain),
-);
+import { NfscAbi } from '@namefi-astra/utils/abis/nfsc';
+import { NftAbi } from '@namefi-astra/utils/abis/namefi-nft';
+import {
+  getViemPublicClient,
+  getViemWalletClient,
+} from '#lib/crypto/viem-clients';
 
 export type PreparedTxOnlySerializableParams = Omit<
   PrepareTransactionRequestReturnType,
@@ -72,69 +61,6 @@ export type TxSendResult =
 
 const ABSOLUTE_MAX_GAS_PRICE_MULTIPLIER = 1.2;
 
-// Create clients factory
-const createClients = (account: Account) => {
-  const publicClients = fromPairs(
-    map(
-      (chain) => [
-        chain.id,
-        createPublicClient({
-          transport: http(chainsToUrls(chain)),
-          chain,
-        }),
-      ],
-      ALLOWED_CHAINS,
-    ),
-  );
-
-  const walletClients = fromPairs(
-    map(
-      (chain) => [
-        chain.id,
-        createWalletClient({
-          transport: http(chainsToUrls(chain)),
-          account,
-          chain,
-        }),
-      ],
-      ALLOWED_CHAINS,
-    ),
-  );
-
-  return {
-    publicClients,
-    walletClients,
-  };
-};
-
-if (
-  !(
-    secrets.GCP_HSM_KEYRING_RESOURCE_NAME ||
-    secrets.LOCAL_SIGNER_PRIVATE_KEY ||
-    secrets.LOCAL_SIGNER_MNEMONIC
-  )
-) {
-  throw new Error('Signer configuration missing');
-}
-
-const nonceManager = createNonceManager({
-  source: jsonRpc(),
-});
-
-const signerAccount = secrets.GCP_HSM_KEYRING_RESOURCE_NAME
-  ? await gcpHsmToAccount({
-      hsmKeyVersion: secrets.GCP_HSM_KEYRING_RESOURCE_NAME,
-    })
-  : secrets.LOCAL_SIGNER_PRIVATE_KEY
-    ? privateKeyToAccount(secrets.LOCAL_SIGNER_PRIVATE_KEY as `0x${string}`, {
-        nonceManager,
-      })
-    : mnemonicToAccount(secrets.LOCAL_SIGNER_MNEMONIC as string, {
-        nonceManager,
-      });
-
-const clients = createClients(signerAccount);
-
 export const prepareTxToMintNfsc = async (
   chainId: number,
   account: Address,
@@ -147,9 +73,8 @@ export const prepareTxToMintNfsc = async (
 
   const convertedAmount = parseUnits(amountInUsd.toString(), 18);
 
-  const preparedTx = await clients.walletClients[
-    chainId
-  ].prepareTransactionRequest({
+  const walletClient = await getViemWalletClient(chainId);
+  const preparedTx = await walletClient.prepareTransactionRequest({
     chainId,
     to: NFSC_CONTRACT_ADDRESS,
     data: encodeFunctionData({
@@ -185,9 +110,8 @@ export const prepareTxToMintNamefiNft = async (
     `Minting Namefi NFT - chainId: ${chainId}, account: ${account}, domainNameLdh: ${domainNameLdh}, expirationTimeInUnix: ${expirationTimeInUnix}`,
   );
 
-  const preparedTx = await clients.walletClients[
-    chainId
-  ].prepareTransactionRequest({
+  const walletClient = await getViemWalletClient(chainId);
+  const preparedTx = await walletClient.prepareTransactionRequest({
     chainId,
     to: NAMEFI_NFT_CONTRACT_ADDRESS,
     data: encodeFunctionData({
@@ -228,8 +152,8 @@ const _updatePreparedTxParamsBeforeSend = async (
   TxSendResult | { preparedTx: PrepareTransactionRequestReturnType }
 > => {
   const ctx = Context.current();
-  const walletClient = clients.walletClients[chainId];
-  const publicClient = clients.publicClients[chainId];
+  const walletClient = await getViemWalletClient(chainId);
+  const publicClient = getViemPublicClient(chainId);
 
   const preparedTx = {
     ..._preparedTx,
@@ -305,8 +229,8 @@ export const signAndSendTransaction = async (
   gasPriceMultiplier = 1,
 ): Promise<TxSendResult> => {
   const ctx = Context.current();
-  const walletClient = clients.walletClients[chainId];
-  const publicClient = clients.publicClients[chainId];
+  const walletClient = await getViemWalletClient(chainId);
+  const publicClient = getViemPublicClient(chainId);
 
   const result = await _updatePreparedTxParamsBeforeSend(
     _preparedTx,
@@ -413,7 +337,7 @@ export const mintNFSC = async (
 export const getNfscBalanceInUSD = async (
   chainId: number,
   account: Address,
-  publicClient: PublicClient = clients.publicClients[chainId],
+  publicClient: PublicClient = getViemPublicClient(chainId),
 ): Promise<number> => {
   const ctx = Context.current();
   ctx.log.info(
@@ -459,14 +383,13 @@ export async function prepareTxToChargeNfsc(
   ctx.log.info(
     `Charging NFSC - chainId: ${chainId}, chargee: ${chargee}, amountInUsd: ${amountInUsd}`,
   );
+  const walletClient = await getViemWalletClient(chainId);
 
-  const charger = signerAccount.address;
+  const charger = walletClient.account.address;
 
   const convertedAmount = parseUnits(amountInUsd.toString(), 18);
 
-  const preparedTx = await clients.walletClients[
-    chainId
-  ].prepareTransactionRequest({
+  const preparedTx = await walletClient.prepareTransactionRequest({
     chainId,
     to: NFSC_CONTRACT_ADDRESS,
     data: encodeFunctionData({
@@ -499,7 +422,7 @@ export const prepareTxToSetExpirationForNamefiNft = async (
   ctx.log.info(
     `Setting expiration for Namefi NFT - chainId: ${chainId}, tokenId: ${tokenId}, domainNameLdh: ${domainNameLdh}, expirationTimeInUnix: ${expirationTimeInUnix}`,
   );
-  const walletClient = clients.walletClients[chainId];
+  const walletClient = await getViemWalletClient(chainId);
   if (!walletClient) {
     ctx.log.error(`Wallet client not found for chainId: ${chainId}`);
     throw workflow.ApplicationFailure.create({

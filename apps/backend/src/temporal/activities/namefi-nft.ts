@@ -18,7 +18,8 @@ import {
 } from 'viem';
 import { base, mainnet } from 'viem/chains';
 import { nftIdFromDomainName } from '#lib/nftHash';
-import { NftAbi, chainsToUrls } from './helpers/contracts';
+import { NftAbi } from '@namefi-astra/utils/abis/namefi-nft';
+import { chainsToUrls } from '#lib/crypto/rpc-urls';
 
 // Type for domain owner update result
 interface DomainOwnerUpdate {

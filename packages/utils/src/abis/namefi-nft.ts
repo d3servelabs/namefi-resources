@@ -1,0 +1,22 @@
+import { parseAbi } from 'viem';
+
+// Parse ABI for the NFT contract
+export const NftAbi = parseAbi([
+  'function idToNormalizedDomainName(uint256 tokenId) public view returns (string memory)',
+  'function normalizedDomainNameToId(string memory domainName) public pure returns (uint256)',
+  'function safeMintByNameNoCharge(address to, string memory domainName, uint256 expirationTime) external',
+  'function safeMintByNameWithCharge(address to, string memory domainName, uint256 expirationTime, address chargee, bytes memory extraData) external',
+  'function burnByName(string memory domainName) external',
+  'function safeTransferFromByName(address from, address to, string memory domainName) public',
+  'function setBaseURI(string memory baseUriStr) public',
+  'function setExpiration(uint256 tokenId, uint256 expirationTime) public',
+  'function lock(uint256 tokenId, bytes calldata extra) external payable',
+  'function lockByName(string memory domainName) external',
+  'function unlock(uint256 tokenId, bytes calldata extra) external payable',
+  'function unlockByName(string memory domainName) external',
+  'function setServiceCreditContract(address addr) public',
+  'function getExpiration(uint256 tokenId) public view returns (uint256)',
+
+  // Add Transfer event used for owner tracking
+  'event Transfer(address indexed from, address indexed to, uint256 indexed tokenId)',
+]);

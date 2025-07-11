@@ -16,7 +16,7 @@ import {
   getQualifyingPromoDomainNamesFromPrivyLinkedAccount,
   userQualifiesForDomainNamePromo,
 } from '#lib/userPromo';
-import { NftAbi } from '../../temporal/activities/helpers/contracts';
+import { NftAbi } from '@namefi-astra/utils/abis/namefi-nft';
 import { resolve } from '../../utils/resolve';
 import {
   authedOrPublicProcedure,
