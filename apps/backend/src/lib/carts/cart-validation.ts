@@ -23,10 +23,11 @@ import {
 } from 'ramda';
 import type { DomainAvailabilityInfo } from '#lib/namefi-registry';
 import { isDomainImportable } from '../../trpc/types';
-import { addDays, differenceInMonths } from 'date-fns';
+import { addDays } from 'date-fns';
 import { toPunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
 import { pluck } from 'ramda';
 import { logger } from '#lib/logger';
+import { determineDurationLimitsForRenewItems } from '#lib/domains/domainsDurationConstraints';
 
 type CartItemsGroupedByType = Record<
   'registerCartItems' | 'importCartItems' | 'renewCartItems',
@@ -52,9 +53,7 @@ export async function getChangesIfAnyToCartItems(
   userId: string,
   cartItemIds?: string[],
 ) {
-  const { getDomainListInfo, sldRegistrar } = await import(
-    '#lib/namefi-registry'
-  );
+  const { getDomainListInfo } = await import('#lib/namefi-registry');
   const user = await db.query.usersTable.findFirst({
     where: eq(usersTable.id, userId),
   });
@@ -240,9 +239,11 @@ function _getAvailabilityChangesInRenewCartItems(
       return 'noLongerAvailable'; // Treat as unavailable due to missing data
     }
 
-    const { min, max } = _determineDurationLimitsForRenewItems(expirationTime, {
-      durationValidationInYears: domainAvailability.durationValidationInYears,
-    });
+    const { minimumPossibleRenewalYears: min, maxAdditionalYears: max } =
+      determineDurationLimitsForRenewItems(expirationTime, {
+        minYears: domainAvailability.durationValidationInYears.min,
+        maxYears: domainAvailability.durationValidationInYears.max,
+      });
 
     // Domain can't be renewed if no additional years are possible
     if (max <= 0) {
@@ -583,36 +584,6 @@ function _generateSummaryOfCartItemsChanges(
 }
 
 /**
- * Determines the minimum and maximum duration limits for renewal items based on current registration period.
- * This function calculates how many additional years a domain can be renewed considering the maximum registration limit.
- *
- * @param expirationTime - The current expiration date of the domain
- * @param domainPricing - Object containing duration validation rules (min/max years)
- * @returns Object with minimum and maximum additional years that can be added to the domain
- */
-function _determineDurationLimitsForRenewItems(
-  expirationTime: Date,
-  domainPricing: { durationValidationInYears: { min: number; max: number } },
-) {
-  const { max, min } = domainPricing.durationValidationInYears;
-  const currentDate = new Date();
-
-  const activeRegistrationYears = Math.round(
-    differenceInMonths(expirationTime, currentDate) / 12,
-  );
-
-  // Calculate maximum additional years we can add without exceeding the max
-  const maxAdditionalYears = Math.max(0, max - activeRegistrationYears);
-
-  const minimumPossibleRenewalYears = Math.min(min, maxAdditionalYears);
-
-  return {
-    min: minimumPossibleRenewalYears,
-    max: maxAdditionalYears,
-  };
-}
-
-/**
  * Retrieves expiration dates for multiple domains from the registrar.
  * This function fetches domain details and extracts expiration dates, handling failures gracefully.
  *
@@ -719,10 +690,11 @@ function _prepareCartItemsWithChangesReflected(
           });
         }
 
-        const { min: _min, max: _max } = _determineDurationLimitsForRenewItems(
-          expirationTime,
-          { durationValidationInYears },
-        );
+        const { minimumPossibleRenewalYears: _min, maxAdditionalYears: _max } =
+          determineDurationLimitsForRenewItems(expirationTime, {
+            minYears: durationValidationInYears.min,
+            maxYears: durationValidationInYears.max,
+          });
 
         // If we can't add any more years, this domain can't be renewed further
         if (_max <= 0 || _min <= 0) {
@@ -797,7 +769,6 @@ function _prepareCartItemsWithChangesReflected(
 
 // Export private functions for testing
 export const __INTERNAL__ = {
-  _determineDurationLimitsForRenewItems,
   _generateSummaryOfCartItemsChanges,
   _prepareCartItemsWithChangesReflected,
   _getAvailabilityChangesInRegisterCartItems,

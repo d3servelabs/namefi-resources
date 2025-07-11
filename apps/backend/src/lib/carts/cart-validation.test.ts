@@ -10,7 +10,6 @@ import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { __INTERNAL__ } from './cart-validation';
 
 const {
-  _determineDurationLimitsForRenewItems,
   _generateSummaryOfCartItemsChanges,
   _getAvailabilityChangesInRegisterCartItems,
   _getAvailabilityChangesInImportCartItems,
@@ -18,114 +17,6 @@ const {
 } = __INTERNAL__;
 
 describe('cart-validation', () => {
-  describe('_determineDurationLimitsForRenewItems', () => {
-    it('should calculate correct duration limits for domain with years remaining', () => {
-      const expirationTime = addYears(new Date(), 2); // Expires in 2 years
-      const domainPricing = {
-        durationValidationInYears: { min: 1, max: 10 },
-      };
-
-      const result = _determineDurationLimitsForRenewItems(
-        expirationTime,
-        domainPricing,
-      );
-
-      expect(result).toEqual({
-        min: 1,
-        max: 8, // 10 - 2 = 8 years can be added
-      });
-    });
-
-    it('should return max 0 when domain is already at maximum registration', () => {
-      const expirationTime = addYears(new Date(), 10); // Expires in 10 years
-      const domainPricing = {
-        durationValidationInYears: { min: 1, max: 10 },
-      };
-
-      const result = _determineDurationLimitsForRenewItems(
-        expirationTime,
-        domainPricing,
-      );
-
-      expect(result).toEqual({
-        min: 0,
-        max: 0, // 10 - 10 = 0 years can be added
-      });
-    });
-
-    it('should handle domain that exceeds maximum registration', () => {
-      const expirationTime = addYears(new Date(), 12); // Expires in 12 years
-      const domainPricing = {
-        durationValidationInYears: { min: 1, max: 10 },
-      };
-
-      const result = _determineDurationLimitsForRenewItems(
-        expirationTime,
-        domainPricing,
-      );
-
-      expect(result).toEqual({
-        min: 0,
-        max: 0, // Cannot add any more years
-      });
-    });
-
-    it('should handle domain with less than 1 year remaining', () => {
-      const expirationTime = new Date(
-        Date.now() + 6 * 30 * 24 * 60 * 60 * 1000,
-      ); // ~6 months
-      const domainPricing = {
-        durationValidationInYears: { min: 1, max: 10 },
-      };
-
-      const result = _determineDurationLimitsForRenewItems(
-        expirationTime,
-        domainPricing,
-      );
-
-      expect(result).toEqual({
-        min: 1,
-        max: 10, // Can add up to 10 years
-      });
-    });
-
-    it('should handle edge case where min years is higher than available years', () => {
-      const expirationTime = addYears(new Date(), 8); // Expires in 8 years
-      const domainPricing = {
-        durationValidationInYears: { min: 5, max: 10 },
-      };
-
-      const result = _determineDurationLimitsForRenewItems(
-        expirationTime,
-        domainPricing,
-      );
-
-      expect(result).toEqual({
-        min: 2, // min(5, 2) = 2
-        max: 2, // 10 - 8 = 2 years can be added
-      });
-    });
-
-    it('should handle domain with fractional years correctly', () => {
-      const expirationTime = new Date(
-        Date.now() + 18 * 30 * 24 * 60 * 60 * 1000,
-      ); // ~18 months
-      const domainPricing = {
-        durationValidationInYears: { min: 1, max: 10 },
-      };
-
-      const result = _determineDurationLimitsForRenewItems(
-        expirationTime,
-        domainPricing,
-      );
-
-      expect(result).toEqual({
-        min: 1,
-        max: 9, // 10 - 1 (rounded) = 9 years can be added
-      });
-    });
-  });
-
   describe('_generateSummaryOfCartItemsChanges', () => {
     const mockCartItem: CartItemSelect = {
       id: '1',

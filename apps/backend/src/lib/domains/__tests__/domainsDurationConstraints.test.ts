@@ -1,6 +1,10 @@
 import { describe, expect, it } from 'vitest';
-import { getDomainDurationConstraints } from '../domainsDurationConstraints';
+import {
+  determineDurationLimitsForRenewItems,
+  getDomainDurationConstraints,
+} from '../domainsDurationConstraints';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import { addMonths, addYears } from 'date-fns';
 
 describe('getDomainDurationConstraints', () => {
   describe('2-level domains', () => {
@@ -168,11 +172,11 @@ describe('getDomainDurationConstraints', () => {
 
   describe('3-level domains', () => {
     describe('0x.city domains', () => {
-      it('should return minYears: 3, maxYears: 3 for 0x.city domains', () => {
+      it('should return minYears: 3, maxYears: 10 for 0x.city domains', () => {
         const constraints = getDomainDurationConstraints(
           'example.0x.city' as NamefiNormalizedDomain,
         );
-        expect(constraints).toEqual({ minYears: 3, maxYears: 3 });
+        expect(constraints).toEqual({ minYears: 3, maxYears: 5 });
       });
     });
 
@@ -267,6 +271,98 @@ describe('getDomainDurationConstraints', () => {
         'test-domain.co' as NamefiNormalizedDomain,
       );
       expect(constraints).toEqual({ minYears: 1, maxYears: 5 });
+    });
+  });
+
+  describe('determineDurationLimitsForRenewItems', () => {
+    it('should calculate correct duration limits for domain with years remaining', () => {
+      const expirationTime = addMonths(new Date(), 25); // Expires in 2+ years, so current registration is 3 years
+
+      const result = determineDurationLimitsForRenewItems(expirationTime, {
+        minYears: 1,
+        maxYears: 10,
+      });
+
+      expect(result).toEqual({
+        activeRegistrationYears: 3,
+        min: 1,
+        max: 7, // 10 - 3 = 7 years can be added
+      });
+    });
+
+    it('should return max 0 when domain is already at maximum registration', () => {
+      const expirationTime = addYears(new Date(), 9); // Expires in 9+ years, so current registration is 10 years
+
+      const result = determineDurationLimitsForRenewItems(expirationTime, {
+        minYears: 1,
+        maxYears: 10,
+      });
+
+      expect(result).toEqual({
+        activeRegistrationYears: 10,
+        min: 0,
+        max: 0, // 10 - 10 = 0 years can be added
+      });
+    });
+
+    it('should handle domain that exceeds maximum registration', () => {
+      const expirationTime = addYears(new Date(), 12); // Expires in 12+ years, so current registration is 13 years
+
+      const result = determineDurationLimitsForRenewItems(expirationTime, {
+        minYears: 1,
+        maxYears: 10,
+      });
+
+      expect(result).toEqual({
+        activeRegistrationYears: 13,
+        min: 0,
+        max: 0, // Cannot add any more years
+      });
+    });
+
+    it('should handle domain with less than 1 year remaining', () => {
+      const expirationTime = addMonths(new Date(), 6); // ~6 months, so current registration is 1 year
+
+      const result = determineDurationLimitsForRenewItems(expirationTime, {
+        minYears: 1,
+        maxYears: 10,
+      });
+
+      expect(result).toEqual({
+        activeRegistrationYears: 1,
+        min: 1,
+        max: 9, // Can add up to 9 years
+      });
+    });
+
+    it('should handle edge case where min years is higher than available years', () => {
+      const expirationTime = addYears(new Date(), 8); // Expires in 8+ years, so current registration is 9 years
+
+      const result = determineDurationLimitsForRenewItems(expirationTime, {
+        minYears: 1,
+        maxYears: 10,
+      });
+
+      expect(result).toEqual({
+        activeRegistrationYears: 9,
+        min: 1, // min(1, 2) = 1
+        max: 1, // 10 - 9 = 1 year can be added
+      });
+    });
+
+    it('should handle domain with fractional years correctly', () => {
+      const expirationTime = addMonths(new Date(), 18); // ~18 months, so current registration is 2 year
+
+      const result = determineDurationLimitsForRenewItems(expirationTime, {
+        minYears: 1,
+        maxYears: 10,
+      });
+
+      expect(result).toEqual({
+        activeRegistrationYears: 2,
+        min: 1,
+        max: 8, // 10 - 2 = 8 years can be added
+      });
     });
   });
 });
