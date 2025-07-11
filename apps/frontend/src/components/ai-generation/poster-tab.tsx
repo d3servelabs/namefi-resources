@@ -1,105 +1,82 @@
 import type { Generation } from '@namefi-astra/ai/types';
-import { useTRPC } from '@/utils/trpc';
-import { useMutation } from '@tanstack/react-query';
-import { toast } from 'sonner';
-import { type GeneratedItem, ImageGrid } from './image-grid';
-import { PosterGenerator } from './poster-generator';
+import { PosterGenerator, type PosterFormData } from './poster-generator';
+import {
+  BaseGenerationTab,
+  convertPosterGenerations,
+} from './shared/base-generation-tab';
+import {
+  usePosterGeneration,
+  createPosterGenerationPayload,
+} from './shared/generation-hooks';
+import { GenerationProvider } from './shared/generation-context';
+import { useState, useRef } from 'react';
 
 interface PosterTabProps {
   existingGenerations?: Generation[];
+  logoGenerations?: Generation[]; // Available logos for poster generation
   brandDomain?: string;
-  onGenerationUpdate?: () => void; // Callback to refresh generations
-  availableLogos?: Generation[]; // Available logo generations for the brand
 }
 
 export function PosterTab({
   existingGenerations = [],
+  logoGenerations = [],
   brandDomain,
-  onGenerationUpdate,
-  availableLogos = [],
 }: PosterTabProps) {
-  const trpc = useTRPC();
+  const [currentGenParams, setCurrentGenParams] =
+    useState<PosterFormData | null>(null);
+  const lastGenerationParams = useRef<PosterFormData | null>(null);
 
-  const generatePosterMutation = useMutation(
-    trpc.ai.generatePoster.mutationOptions({
-      onSuccess: (data) => {
-        if (data.output) {
-          onGenerationUpdate?.();
-        }
-      },
-      onError: (error) => {
-        toast.error(error.message || 'An error occurred generating posters');
-        console.error('Error generating marketing image:', error);
-      },
-    }),
-  );
+  const generatePosterMutation = usePosterGeneration({
+    domain: brandDomain || '',
+  });
 
-  const handleGeneratePoster = (
-    domain: string,
-    description?: string,
-    selectedLogoId?: string,
-  ) => {
-    const requestBody: {
-      domain: string;
-      description?: string;
-      referenceLogoGenerationId?: string;
-    } = {
-      domain,
-      description,
-    };
-
-    // If a logo is selected, include the logo generation ID for reference
-    if (selectedLogoId) {
-      requestBody.referenceLogoGenerationId = selectedLogoId;
-    }
-
-    generatePosterMutation.mutate(requestBody);
+  const handleGeneratePosters = (data: PosterFormData) => {
+    setCurrentGenParams(data);
+    lastGenerationParams.current = data;
+    const payload = createPosterGenerationPayload(data);
+    generatePosterMutation.mutate(payload);
   };
 
-  // Convert existing generations to GeneratedItem format
-  const existingItems: GeneratedItem[] = existingGenerations.map((gen) => ({
-    id: gen.id,
-    url: gen.result,
-    prompt: gen.prompt,
-    timestamp: new Date(gen.createdAt).toISOString(),
-    basedOnLogo: gen.metadata?.basedOnLogoId
-      ? (() => {
-          const logo = availableLogos.find(
-            (logo) => logo.id === gen.metadata?.basedOnLogoId,
-          );
-          return logo
-            ? {
-                id: logo.id,
-                result: logo.result,
-                metadata: logo.metadata
-                  ? {
-                      logoType: logo.metadata.logoType,
-                      logoStyle: logo.metadata.logoStyle,
-                    }
-                  : undefined,
-              }
-            : undefined;
-        })()
-      : undefined,
-  }));
+  const handleGenerateMore = () => {
+    // Re-use the last generation parameters if available
+    if (lastGenerationParams.current) {
+      handleGeneratePosters(lastGenerationParams.current);
+    }
+  };
 
-  // Combine existing and newly generated items
-  const allItems = [...existingItems];
+  const selectedLogo = logoGenerations.find(
+    (logo) => logo.id === currentGenParams?.selectedLogoId,
+  );
 
   return (
-    <>
-      <PosterGenerator
-        onGenerate={handleGeneratePoster}
-        isLoading={generatePosterMutation.isPending}
-        fixedDomain={brandDomain}
-        availableLogos={availableLogos}
-      />
-      <ImageGrid
-        items={allItems}
-        title="Generated Posters"
-        isLoading={generatePosterMutation.isPending}
+    <GenerationProvider
+      existingGenerations={existingGenerations}
+      brandDomain={brandDomain}
+      mutationIsPending={generatePosterMutation.isPending}
+    >
+      <BaseGenerationTab
+        existingGenerations={existingGenerations}
         brandDomain={brandDomain}
+        generator={
+          <PosterGenerator
+            onGenerate={handleGeneratePosters}
+            isLoading={generatePosterMutation.isPending}
+            fixedDomain={brandDomain}
+            availableLogos={logoGenerations}
+          />
+        }
+        isLoading={generatePosterMutation.isPending}
+        title="Generated Posters"
+        convertToGeneratedItems={convertPosterGenerations}
+        availableLogos={logoGenerations}
+        previewConfig={{
+          description: currentGenParams?.description,
+          category: selectedLogo ? 'Logo-Based' : 'Standalone',
+          type: 'Marketing Poster',
+          style: selectedLogo?.metadata?.logoStyle,
+        }}
+        onGenerateMore={handleGenerateMore}
       />
-    </>
+    </GenerationProvider>
   );
 }

@@ -3,8 +3,7 @@
 import { CopyLinkButton } from '@/components/copy-link-button';
 import { Button } from '@/components/ui/shadcn/button';
 import { Card, CardContent } from '@/components/ui/shadcn/card';
-import { Skeleton } from '@/components/ui/shadcn/skeleton';
-import { Download, Plus } from 'lucide-react';
+import { Download } from 'lucide-react';
 import { TwitterIcon, TwitterShareButton } from 'react-share';
 import Link from 'next/link';
 
@@ -30,7 +29,6 @@ export interface GeneratedItem {
 interface ImageGridProps {
   items: GeneratedItem[];
   title: string;
-  isLoading?: boolean;
   onGenerateAnother?: () => void;
   brandDomain?: string;
 }
@@ -38,7 +36,6 @@ interface ImageGridProps {
 export function ImageGrid({
   items,
   title,
-  isLoading,
   onGenerateAnother,
   brandDomain,
 }: ImageGridProps) {
@@ -59,20 +56,25 @@ export function ImageGrid({
     }
   };
 
-  if (!isLoading && items.length === 0) return null;
+  if (items.length === 0) return null;
 
   return (
     <div className="mt-8">
       <h3 className="text-xl font-semibold mb-4">{title}</h3>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {items.map((item, index) => {
+          // Use stable key based on id if available, fallback to index
+          // This prevents re-rendering all images when new ones are added
+          const itemKey = item.id ? `gen-${item.id}` : `idx-${index}`;
+
           const cardContent = (
-            <Card key={`${item.url}-${index}`} className="overflow-hidden">
+            <Card key={itemKey} className="overflow-hidden">
               <div className="relative aspect-square">
                 <img
                   src={item.url}
                   alt={item.concept || item.prompt || `${title} ${index + 1}`}
                   className="object-cover w-full h-full"
+                  loading="lazy"
                 />
               </div>
               {/* Action buttons below image */}
@@ -131,6 +133,7 @@ export function ImageGrid({
                         src={item.basedOnLogo.result}
                         alt="Referenced logo"
                         className="w-8 h-8 object-cover rounded"
+                        loading="lazy"
                       />
                       <div className="flex gap-1">
                         {item.basedOnLogo.metadata?.logoType && (
@@ -155,34 +158,14 @@ export function ImageGrid({
           return item.id ? (
             <Link
               href={`/ai-brand-generator/brand/${brandDomain}/${item.id}`}
-              key={`${item.url}-${index}`}
+              key={itemKey}
             >
               {cardContent}
             </Link>
           ) : (
-            <div key={`${item.url}-${index}`}>{cardContent}</div>
+            <div key={itemKey}>{cardContent}</div>
           );
         })}
-        {isLoading && (
-          <Card className="overflow-hidden">
-            <Skeleton className="w-full aspect-square mb-2" />
-            <CardContent>
-              <div className="h-4 w-24 bg-gray-200 rounded animate-pulse mb-4" />
-            </CardContent>
-          </Card>
-        )}
-        {!isLoading && items.length > 0 && onGenerateAnother && (
-          <Button
-            type="button"
-            variant="outline"
-            onClick={onGenerateAnother}
-            className="flex flex-col items-center justify-center w-full aspect-square border-2 border-dashed hover:bg-gray-100 transition min-h-[200px] h-full"
-            aria-label="Generate another logo"
-          >
-            <Plus className="w-10 h-10 text-gray-400" />
-            <span className="mt-2 text-gray-500">Generate Another</span>
-          </Button>
-        )}
       </div>
     </div>
   );

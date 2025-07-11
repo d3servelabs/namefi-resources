@@ -1,8 +1,28 @@
+export {
+  LogoGenerator,
+  logoFormSchema,
+  type LogoFormData,
+} from './logo-generator';
+export {
+  PosterGenerator,
+  posterFormSchema,
+  type PosterFormData,
+} from './poster-generator';
 export { LogoTab } from './logo-tab';
 export { PosterTab } from './poster-tab';
 export { TabSelector } from './tab-selector';
-export { LogoGenerator } from './logo-generator';
-export { PosterGenerator } from './poster-generator';
 export { ImageGrid } from './image-grid';
+export { GenerationPreview } from './shared/generation-preview';
 export type { GeneratedItem } from './image-grid';
 export { AITabs } from './ai-tabs';
+
+// Export generation hooks and payload creators
+export {
+  useLogoGeneration,
+  usePosterGeneration,
+  createLogoGenerationPayload,
+  createPosterGenerationPayload,
+} from './shared/generation-hooks';
+
+// Export state management hook
+export { useGenerationState } from './shared/use-generation-state';

@@ -7,8 +7,6 @@ import { LogoTab } from './logo-tab';
 import { PosterTab } from './poster-tab';
 
 interface AITabsProps {
-  // Common props
-  onGenerationUpdate?: () => void;
   className?: string;
 
   // Logo tab specific props
@@ -32,7 +30,6 @@ interface AITabsProps {
 }
 
 export function AITabs({
-  onGenerationUpdate,
   className,
   logoTabProps,
   posterTabProps,
@@ -54,14 +51,12 @@ export function AITabs({
         <LogoTab
           existingGenerations={logoTabProps?.existingGenerations}
           brandDomain={logoTabProps?.brandDomain}
-          onGenerationUpdate={onGenerationUpdate}
         />
       ) : (
         <PosterTab
           existingGenerations={posterTabProps?.existingGenerations}
           brandDomain={posterTabProps?.brandDomain}
-          onGenerationUpdate={onGenerationUpdate}
-          availableLogos={posterTabProps?.availableLogos}
+          logoGenerations={posterTabProps?.availableLogos}
         />
       )}
     </div>

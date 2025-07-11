@@ -220,7 +220,6 @@ export default function BrandDetailPage({ params }: BrandDetailPageProps) {
       {/* Tab Navigation */}
       <div className="max-w-4xl mx-auto">
         <AITabs
-          onGenerationUpdate={handleGenerationComplete}
           logoTabProps={{
             existingGenerations: mappedLogoGenerations,
             brandDomain: domain,

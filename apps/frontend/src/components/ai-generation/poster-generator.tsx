@@ -1,41 +1,32 @@
 'use client';
 
-import { Button } from '@/components/ui/shadcn/button';
 import { Card, CardContent } from '@/components/ui/shadcn/card';
 import {
-  Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from '@/components/ui/shadcn/form';
-import { Input } from '@/components/ui/shadcn/input';
-import { Textarea } from '@/components/ui/shadcn/textarea';
 import type { Generation } from '@namefi-astra/ai/types';
 import { cn } from '@/lib/utils';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
-import { Check, Loader2, Sparkles } from 'lucide-react';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { Check } from 'lucide-react';
 import { z } from 'zod';
-import { NamefiButton } from '../namefi-button';
+import { BaseGenerator, baseFormSchema } from './shared/base-generator';
+import { ControlPanel } from './shared/form-fields';
 
-const posterFormSchema = z.object({
-  domain: namefiNormalizedDomainSchema,
-  description: z.string().optional(),
-  selectedLogoId: z.string().optional(),
+const posterFormSchema = baseFormSchema.extend({
+  selectedLogoId: z.string().uuid(),
 });
 
 type PosterFormData = z.infer<typeof posterFormSchema>;
 
+// Export the schema and type for use in other components
+export { posterFormSchema };
+export type { PosterFormData };
+
 interface PosterGeneratorProps {
-  onGenerate: (
-    domain: string,
-    description?: string,
-    selectedLogoId?: string,
-  ) => void;
+  onGenerate: (data: PosterFormData) => void;
   isLoading?: boolean;
   fixedDomain?: string; // When provided, domain input is hidden and this value is used
   availableLogos?: Generation[]; // Available logo generations for selection
@@ -47,110 +38,71 @@ export function PosterGenerator({
   fixedDomain,
   availableLogos = [],
 }: PosterGeneratorProps) {
-  const [openPanel, setOpenPanel] = useState<null | 'about' | 'logos'>(null);
-
-  const form = useForm<PosterFormData>({
-    resolver: zodResolver(posterFormSchema),
-    defaultValues: {
-      domain: fixedDomain || '',
-      description: '',
-      selectedLogoId: '',
-    },
-  });
-
   const handleSubmit = (data: PosterFormData) => {
-    const domainToUse = fixedDomain || data.domain;
-    if (domainToUse?.trim()) {
-      onGenerate(
-        domainToUse,
-        data.description || undefined,
-        data.selectedLogoId || undefined,
-      );
-    }
+    onGenerate(data);
   };
 
-  const selectedLogoId = form.watch('selectedLogoId');
-  const domainToUse = fixedDomain || form.watch('domain');
-  const selectedLogo = availableLogos.find(
-    (logo) => logo.id === selectedLogoId,
-  );
-
   return (
-    <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(handleSubmit)}
-        className="max-w-6xl mx-auto flex flex-col"
-      >
-        <Card>
-          <CardContent>
-            {/* Domain Input - Hidden when fixedDomain is provided */}
-            {!fixedDomain && (
-              <FormField
-                control={form.control}
-                name="domain"
-                render={({ field }) => (
-                  <FormItem className="mb-6">
-                    <FormControl>
-                      <Input
-                        {...field}
-                        type="text"
-                        placeholder="Enter your domain (e.g., example.com)"
-                        className="w-full h-14 px-6 text-lg rounded-2xl"
-                        required
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            )}
+    <BaseGenerator
+      onSubmit={handleSubmit}
+      isLoading={isLoading}
+      fixedDomain={fixedDomain}
+      formSchema={posterFormSchema}
+      defaultValues={{
+        domain: fixedDomain || '',
+        description: '',
+        selectedLogoId: availableLogos.length > 0 ? availableLogos[0].id : '',
+      }}
+      submitButtonText={
+        availableLogos.length > 0
+          ? 'Generate'
+          : 'Select a brand below or generate a logo'
+      }
+      submitLoadingText="Generating"
+    >
+      {({ form, openPanel, setOpenPanel }) => {
+        const selectedLogoId = form.watch('selectedLogoId');
+        const selectedLogo = availableLogos.find(
+          (logo) => logo.id === selectedLogoId,
+        );
 
-            {/* Fixed Domain Display */}
-            {fixedDomain && (
-              <div className="mb-6">
-                <div className="w-full h-14 px-6 text-lg rounded-2xl border border-gray-200 bg-gray-50 flex items-center text-gray-700">
-                  {fixedDomain}
-                </div>
-              </div>
-            )}
+        const controlButtons: Array<{
+          key: string;
+          label: string;
+          badge?: string;
+          onClick: () => void;
+          isActive: boolean;
+        }> = [];
 
+        // Add logo button only if there are available logos
+        if (availableLogos.length > 0) {
+          controlButtons.push({
+            key: 'logos',
+            label: 'Use Logo',
+            badge: selectedLogo ? 'Selected' : undefined,
+            onClick: () => setOpenPanel(openPanel === 'logos' ? null : 'logos'),
+            isActive: openPanel === 'logos',
+          });
+        }
+
+        controlButtons.push({
+          key: 'description',
+          label: 'Description',
+          onClick: () =>
+            setOpenPanel(openPanel === 'description' ? null : 'description'),
+          isActive: openPanel === 'description',
+        });
+
+        return (
+          <>
             {/* Control Buttons */}
-            <div className="flex flex-wrap gap-4">
-              {availableLogos.length > 0 && (
-                <Button
-                  type="button"
-                  variant={openPanel === 'logos' ? 'default' : 'outline'}
-                  onClick={() =>
-                    setOpenPanel(openPanel === 'logos' ? null : 'logos')
-                  }
-                  className="rounded-full"
-                >
-                  Use Logo
-                  {selectedLogo && (
-                    <span className="ml-2 text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">
-                      Selected
-                    </span>
-                  )}
-                </Button>
-              )}
-
-              <Button
-                type="button"
-                variant={openPanel === 'about' ? 'default' : 'outline'}
-                onClick={() =>
-                  setOpenPanel(openPanel === 'about' ? null : 'about')
-                }
-                className="rounded-full"
-              >
-                Description
-              </Button>
-            </div>
+            <ControlPanel buttons={controlButtons} />
 
             {/* Logo Selection */}
             {openPanel === 'logos' && availableLogos.length > 0 && (
               <FormField
                 control={form.control}
-                name="selectedLogoId"
+                name={'selectedLogoId'}
                 render={({ field }) => (
                   <FormItem className="mt-6">
                     <FormLabel className="text-lg font-semibold">
@@ -158,33 +110,6 @@ export function PosterGenerator({
                     </FormLabel>
                     <FormControl>
                       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                        <Card
-                          className={cn(
-                            'cursor-pointer transition-all hover:shadow-lg',
-                            !field.value && 'ring-2 ring-orange-500',
-                          )}
-                          onClick={() => {
-                            field.onChange('');
-                            setOpenPanel(null);
-                          }}
-                        >
-                          <CardContent className="p-4">
-                            <div className="relative aspect-square mb-3 flex items-center justify-center bg-gray-100 rounded-lg">
-                              <span className="text-gray-500 text-sm">
-                                No Logo
-                              </span>
-                              {!field.value && (
-                                <div className="absolute inset-0 bg-orange-500/20 flex items-center justify-center rounded-lg">
-                                  <Check className="h-8 w-8 text-secondary-foreground bg-orange-500 rounded-full p-1" />
-                                </div>
-                              )}
-                            </div>
-                            <p className="text-sm text-center">
-                              Generate without logo
-                            </p>
-                          </CardContent>
-                        </Card>
-
                         {availableLogos.map((logo) => (
                           <Card
                             key={logo.id}
@@ -233,50 +158,9 @@ export function PosterGenerator({
                 )}
               />
             )}
-
-            {/* Description Field */}
-            {openPanel === 'about' && (
-              <FormField
-                control={form.control}
-                name="description"
-                render={({ field }) => (
-                  <FormItem className="mt-6">
-                    <FormLabel className="text-gray-700 font-medium">
-                      Describe your poster needs (optional)
-                    </FormLabel>
-                    <FormControl>
-                      <Textarea
-                        {...field}
-                        placeholder="Tell us about your poster needs and target audience"
-                        className="w-full resize-none"
-                        rows={4}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            )}
-          </CardContent>
-        </Card>
-        <NamefiButton
-          type="submit"
-          disabled={isLoading || !domainToUse?.trim()}
-          className="self-center mt-8 w-90 text-black"
-        >
-          {isLoading ? (
-            <>
-              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-              Generating
-            </>
-          ) : (
-            <>
-              <Sparkles className="h-4 w-4 mr-2" />
-              Generate
-            </>
-          )}
-        </NamefiButton>
-      </form>
-    </Form>
+          </>
+        );
+      }}
+    </BaseGenerator>
   );
 }

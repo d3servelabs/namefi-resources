@@ -112,10 +112,7 @@ export default function AIBrandGeneratorPage() {
 
       {/* Generation UI */}
       <div className="mx-auto mb-12">
-        <AITabs
-          onGenerationUpdate={handleGenerationComplete}
-          tabSelectorClassName="max-w-md mx-auto"
-        />
+        <AITabs tabSelectorClassName="max-w-md mx-auto" />
       </div>
 
       {/* Existing Domains */}
@@ -148,9 +145,7 @@ export default function AIBrandGeneratorPage() {
                         </span>
                       </div>
                       <div className="flex justify-between items-center">
-                        <span className="text-sm text-green-600">
-                          Marketing:
-                        </span>
+                        <span className="text-sm text-green-600">Posters:</span>
                         <span className="text-sm text-muted-foreground">
                           {domainInfo.marketingCount}
                         </span>
