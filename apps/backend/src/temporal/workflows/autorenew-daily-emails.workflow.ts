@@ -12,7 +12,7 @@ import type {
 } from '../activities/domain/renew.activities';
 import { RenewOption } from '@namefi-astra/registrars/lib/abstract-registrar/index';
 import type { PaymentProvider } from '@namefi-astra/db/types';
-import { sum } from 'ramda';
+import { filter, isNotNil, map, sum } from 'ramda';
 import { refundUserWorkflow } from './refund-user.workflow';
 import { RENEW_EARLY_BY_DAYS } from '../../lib/env/consts';
 import type { DomainRenewalResult } from '../activities/order.activities';
@@ -21,6 +21,7 @@ import {
   type ChargeUserAndCreatePaymentWorkflowOutput,
 } from './charge-user-and-create-payment.workflow';
 import pMap from 'p-map';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 
 const { triggerUpdateDomainIndex } = typedProxyActivities({
   temporalEnum: TEMPORAL_ENUMS.INDEXERS,
@@ -162,18 +163,13 @@ export async function notifyAndRenewDomainsForSingleUserWorkflow(
     },
   );
 
-  if (domainsThatShouldBeRenewed.length === 0) {
-    workflow.log.info(`For user ${userId} there are no domains up for renew`);
-    return;
-  }
-
   const userEmail = await maybeGetUserEmail(userId);
 
   workflow.log.info(
     `For user ${userId}, ${userEmail} here are domains up for renew: ${JSON.stringify(domainsThatShouldBeRenewed, null, 2)}`,
   );
 
-  const chargeAmountByDomainLdh: Record<string, number> =
+  const chargeAmountByDomainLdh: Record<NamefiNormalizedDomain, number> =
     await getRenewPriceByDomain({
       normalizeDomainNameList: userDomainsUpForRenewal.map(
         (domain) => domain.normalizedDomainName,
@@ -210,6 +206,11 @@ export async function notifyAndRenewDomainsForSingleUserWorkflow(
     workflow.log.warn(
       `We are skipping notifying user ${userId} for charge and renew because user didn't provide an email`,
     );
+  }
+
+  if (domainsThatShouldBeRenewed.length === 0) {
+    workflow.log.info(`For user ${userId} there are no domains up for renew`);
+    return;
   }
 
   let chargeResult: ChargeUserAndCreatePaymentWorkflowOutput;

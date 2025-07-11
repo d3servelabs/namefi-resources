@@ -1,15 +1,23 @@
+import { getViemPublicClient } from '#lib/crypto/viem-clients';
 import {
   checksumWalletAddressSchema,
   type ChecksumWalletAddress,
   type NamefiNormalizedDomain,
   resolve,
 } from '@namefi-astra/utils';
-import {
-  DomainOwnershipOperation,
-  RenewOption,
-} from '@namefi-astra/registrars/lib/abstract-registrar/index';
+import { RenewOption } from '@namefi-astra/registrars/lib/abstract-registrar/index';
 import { differenceInDays } from 'date-fns';
-import { isNotNil, and, groupBy, prop, pluck } from 'ramda';
+import {
+  isNotNil,
+  and,
+  groupBy,
+  prop,
+  pluck,
+  toPairs,
+  pipe,
+  toString as toStringR,
+  fromPairs,
+} from 'ramda';
 import { sendMail } from '../../../mail/mail-client';
 import {
   db,
@@ -18,8 +26,6 @@ import {
   type PaymentProvider,
 } from '@namefi-astra/db';
 import { sldRegistrar } from '#lib/namefi-registry';
-import { toPunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
-import { computeChargesInUsdOrThrow } from '@namefi-astra/registrars/lib/multi-year-pricing';
 import React from 'react';
 import { render } from '@react-email/components';
 import {
@@ -43,8 +49,15 @@ import {
   RENEW_EARLY_BY_DAYS,
   SEND_RENEW_REMINDERS_THRESHOLD,
 } from '../../../lib/env/consts';
-import * as workflow from '@temporalio/workflow';
+import { ApplicationFailure } from '@temporalio/workflow';
 import { logger } from '#lib/logger';
+import { getDomainLevels } from '#lib/get-domain-levels';
+import { nftIdFromDomainName } from '#lib/nftHash';
+import { NftAbi } from '@namefi-astra/utils/abis/namefi-nft';
+import { fromUnixTime } from 'date-fns';
+import { NAMEFI_NFT_CONTRACT_ADDRESS } from '@namefi-astra/utils';
+import { getDomainListInfo } from '#lib/namefi-registry';
+import { computeChargesInUsdFromDomainAvailabilityInfo } from '@namefi-astra/registrars/multi-year-pricing';
 
 export type DomainRenewInfo = {
   normalizedDomainName: NamefiNormalizedDomain;
@@ -75,8 +88,9 @@ export async function getDomainsUpForRenewal(): Promise<
     registrarKey: string;
   }[]
 > {
-  const domains = await sldRegistrar.listAllDomains();
-  const domainsWithUpcomingRenewal = domains.filter((domain) => {
+  // Get 2LD domains from registrar
+  const sldDomains = await sldRegistrar.listAllDomains();
+  const sldDomainsWithUpcomingRenewal = sldDomains.filter((domain) => {
     const daysToExpiration = differenceInDays(
       domain.expirationTime,
       new Date(),
@@ -87,11 +101,54 @@ export async function getDomainsUpForRenewal(): Promise<
     );
   });
 
-  return domainsWithUpcomingRenewal.map((domain) => ({
-    normalizedDomainName: domain.domainName,
-    expirationTime: domain.expirationTime,
-    registrarKey: domain.registrarKey,
-  }));
+  // Get 3LD domains from NFT table
+  const allNfts = await db.query.namefiNftTable.findMany({
+    columns: {
+      normalizedDomainName: true,
+      chainId: true,
+    },
+  });
+
+  // Filter for 3LD domains only
+  const _3ldNfts = allNfts.filter((nft) => {
+    const domainLevels = getDomainLevels(nft.normalizedDomainName);
+    return domainLevels.levels.length === 3;
+  });
+
+  // Get expiration dates for 3LD domains
+  const _3ldDomainsWithExpiration =
+    await get3ldExpirationDatesForDomains(_3ldNfts);
+
+  // Filter 3LD domains with upcoming renewal and valid expiration times
+  const _3ldDomainsWithUpcomingRenewal = _3ldDomainsWithExpiration
+    .filter((domain) => {
+      if (!domain.expirationTime) return false;
+      const daysToExpiration = differenceInDays(
+        domain.expirationTime,
+        new Date(),
+      );
+      return (
+        daysToExpiration <= SEND_RENEW_REMINDERS_THRESHOLD &&
+        daysToExpiration >= 0
+      );
+    })
+    .map((domain) => ({
+      normalizedDomainName: domain.normalizedDomainName,
+      expirationTime: domain.expirationTime as Date, // We've already filtered out null values
+      registrarKey: 'namefi-nft' as const,
+    }));
+
+  // Combine 2LD and 3LD domains
+  const allDomainsWithUpcomingRenewal = [
+    ...sldDomainsWithUpcomingRenewal.map((domain) => ({
+      normalizedDomainName: domain.domainName,
+      expirationTime: domain.expirationTime,
+      registrarKey: domain.registrarKey,
+    })),
+    ..._3ldDomainsWithUpcomingRenewal,
+  ];
+
+  return allDomainsWithUpcomingRenewal;
 }
 
 export async function getUserWithEvmWallets() {
@@ -175,7 +232,7 @@ export async function getDomainsUpForRenewalGroupedByOwner() {
   });
 
   // Create a map of domain name to NFT domain details for faster lookups
-  const nftDomainsMap = new Map<
+  const domainNftMap = new Map<
     NamefiNormalizedDomain,
     (typeof nftDomains)[number]
   >(
@@ -194,8 +251,8 @@ export async function getDomainsUpForRenewalGroupedByOwner() {
   const domainsUpForRenewalWithOwnerDetails = domainsUpForRenewal.map(
     (domain) => {
       // Get NFT details for this domain
-      const nftDomain = nftDomainsMap.get(domain.normalizedDomainName);
-      if (!nftDomain) {
+      const domainNft = domainNftMap.get(domain.normalizedDomainName);
+      if (!domainNft) {
         logger.fatal(
           { domainName: domain.normalizedDomainName },
           'Domain not found in nftDomains',
@@ -204,10 +261,13 @@ export async function getDomainsUpForRenewalGroupedByOwner() {
       }
 
       // Get user details for the domain owner
-      const user = walletToUserIdMap.get(nftDomain.ownerAddress);
+      const user = walletToUserIdMap.get(domainNft.ownerAddress);
       if (!user) {
         logger.fatal(
-          { domainName: domain.normalizedDomainName },
+          {
+            domainName: domain.normalizedDomainName,
+            nftDomain: domainNft,
+          },
           'User not found in walletToUserIdMap',
         );
         return null;
@@ -230,10 +290,10 @@ export async function getDomainsUpForRenewalGroupedByOwner() {
       // Return complete domain info with owner details and preferences
       return {
         normalizedDomainName: domain.normalizedDomainName,
-        walletAddress: nftDomain.ownerAddress as ChecksumWalletAddress,
+        walletAddress: domainNft.ownerAddress as ChecksumWalletAddress,
         expirationTime: domain.expirationTime,
         autoRenewOption,
-        chainId: nftDomain.chainId,
+        chainId: domainNft.chainId,
         registrarKey: domain.registrarKey,
         userId: user.userId,
         privyUserId: user.privyUserId,
@@ -318,7 +378,7 @@ async function _getUserDomainsWithAutoRenewOption(
       { privyUserId, userId, error: privyUserResponse.error },
       'Failed to get privy user',
     );
-    throw workflow.ApplicationFailure.create({
+    throw ApplicationFailure.create({
       message: `Failed to get privy user for user ${userId} with privyUserId ${privyUserId}`,
       nonRetryable: true,
       cause: privyUserResponse.error,
@@ -548,17 +608,102 @@ export async function getRenewPriceByDomain({
 }): Promise<Record<NamefiNormalizedDomain, number>> {
   const domainChargeAmounts: Record<NamefiNormalizedDomain, number> = {};
 
-  for (const domainLdh of normalizeDomainNameList) {
-    const renewPricingDetails = await sldRegistrar.getDomainPrice(
-      toPunycodeDomainName(domainLdh),
-      DomainOwnershipOperation.RENEW,
-    );
-    const chargeAmount = await computeChargesInUsdOrThrow(
-      renewPricingDetails,
-      1,
-    );
-    domainChargeAmounts[domainLdh] = chargeAmount;
+  // Use getDomainListInfo to get pricing for all domains at once
+  const domainInfoList = await getDomainListInfo(normalizeDomainNameList);
+
+  for (const domainInfo of domainInfoList) {
+    const { domain, pricingDetails } = domainInfo;
+
+    if (!pricingDetails?.renewalPrice) {
+      // No pricing info available, set to 0
+      throw ApplicationFailure.create({
+        message: `No pricing info available for domain ${domain}`,
+        nonRetryable: true,
+      });
+    }
+
+    try {
+      const chargeAmount = computeChargesInUsdFromDomainAvailabilityInfo(
+        { pricingDetails },
+        1, // 1 year renewal
+        'RENEW',
+      );
+      domainChargeAmounts[domain] = chargeAmount;
+    } catch (error) {
+      logger.warn(`Failed to compute charges for domain ${domain}: ${error}`);
+      throw ApplicationFailure.create({
+        message: `Failed to compute charges for domain ${domain}: ${error}`,
+        nonRetryable: true,
+      });
+    }
   }
 
   return domainChargeAmounts;
+}
+
+/**
+ * Get expiration dates for 3LD domains from the blockchain
+ */
+async function get3ldExpirationDatesForDomains(
+  nfts: {
+    normalizedDomainName: NamefiNormalizedDomain;
+    chainId: number;
+  }[],
+): Promise<
+  {
+    normalizedDomainName: NamefiNormalizedDomain;
+    expirationTime: Date | null;
+  }[]
+> {
+  if (nfts.length === 0) {
+    return [];
+  }
+
+  // Import viem client here to avoid circular dependencies
+  const groupByChainId = groupBy(pipe(prop('chainId'), toStringR), nfts);
+
+  const expirationResultsByChainId = (await Promise.all(
+    toPairs(groupByChainId).map(async ([chainId, domains]) => {
+      if (!domains) {
+        return [];
+      }
+
+      const viemBasePublicClient = getViemPublicClient(Number(chainId));
+      const tokenIds =
+        domains?.map((domain) =>
+          nftIdFromDomainName(domain.normalizedDomainName),
+        ) ?? [];
+      const latestBlock = await viemBasePublicClient.getBlockNumber();
+      const expirationResults = await viemBasePublicClient.multicall({
+        contracts: tokenIds.map((tokenId) => ({
+          address: NAMEFI_NFT_CONTRACT_ADDRESS as `0x${string}`,
+          abi: NftAbi,
+          functionName: 'getExpiration' as const,
+          args: [tokenId],
+          blockNumber: latestBlock,
+        })),
+      });
+
+      return [
+        chainId,
+        fromPairs(
+          expirationResults.map((result, i: number) => [
+            domains[i].normalizedDomainName as NamefiNormalizedDomain,
+            result.status === 'success'
+              ? fromUnixTime(Number(result.result))
+              : null,
+          ]),
+        ),
+      ];
+    }),
+  )) as [string, Record<NamefiNormalizedDomain, Date | null>][];
+
+  const expirationResultsByChainIdMap = fromPairs(expirationResultsByChainId);
+
+  return nfts.map((nft) => ({
+    normalizedDomainName: nft.normalizedDomainName,
+    expirationTime:
+      expirationResultsByChainIdMap[nft.chainId]?.[nft.normalizedDomainName] ??
+      null,
+  }));
 }
