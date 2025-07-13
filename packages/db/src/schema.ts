@@ -714,9 +714,26 @@ export const huntEdgesTable = pgTable(
 );
 
 /**
+ * Pinned domains for hunt system
+ */
+export const huntPinnedDomainsTable = pgTable(
+  'hunt_pinned_domains',
+  {
+    ...randomUuid,
+    domainName: text('domain_name').notNull(),
+    weight: integer('weight').notNull().default(0),
+    ...timestamps,
+  },
+  (table) => [
+    unique('hunt_pinned_domains_domain_unique').on(table.domainName),
+    index('hunt_pinned_domains_weight_idx').on(table.weight),
+  ],
+);
+
+/**
  * Domain hunt stats view
  * Pre-computed statistics for domains in the hunt system
- * This view aggregates upvote counts and first submit dates for efficient leaderboard queries
+ * This view aggregates upvote counts, submit dates, and pinned information for efficient leaderboard queries
  */
 export const huntDomainStatsView = pgView('hunt_domain_stats_view').as((qb) =>
   qb
@@ -734,10 +751,26 @@ export const huntDomainStatsView = pgView('hunt_domain_stats_view').as((qb) =>
         sql<Date>`MAX(CASE WHEN ${huntEdgesTable.action} = 'UPVOTE' THEN ${huntEdgesTable.createdAt} END)`.as(
           'last_upvote_date',
         ),
+      // Use weight for pinned domains, 0 for non-pinned domains (higher weight = higher priority)
+      pinWeight: sql<number>`COALESCE(${huntPinnedDomainsTable.weight}, 0)`.as(
+        'pin_weight',
+      ),
+      isPinned:
+        sql<boolean>`CASE WHEN ${huntPinnedDomainsTable.domainName} IS NOT NULL THEN true ELSE false END`.as(
+          'is_pinned',
+        ),
     })
     .from(huntEdgesTable)
+    .leftJoin(
+      huntPinnedDomainsTable,
+      eq(huntEdgesTable.targetId, huntPinnedDomainsTable.domainName),
+    )
     .where(eq(huntEdgesTable.targetType, 'DOMAIN'))
-    .groupBy(huntEdgesTable.targetId),
+    .groupBy(
+      huntEdgesTable.targetId,
+      huntPinnedDomainsTable.weight,
+      huntPinnedDomainsTable.domainName,
+    ),
 );
 
 /**

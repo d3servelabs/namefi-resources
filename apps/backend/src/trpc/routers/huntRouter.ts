@@ -346,10 +346,12 @@ export const huntRouter = createTRPCRouter({
           upvoteCount: sql<number>`CAST(${huntDomainStatsView.upvoteCount} AS INTEGER)`,
           firstSubmitDate: huntDomainStatsView.firstSubmitDate,
           lastUpvoteDate: huntDomainStatsView.lastUpvoteDate,
+          isPinned: huntDomainStatsView.isPinned,
         })
         .from(huntDomainStatsView)
-        .where(timeFilter)
+        .where(sql`(${huntDomainStatsView.pinWeight} > 0) OR (${timeFilter})`)
         .orderBy(
+          desc(huntDomainStatsView.pinWeight),
           desc(huntDomainStatsView.upvoteCount),
           desc(huntDomainStatsView.lastUpvoteDate),
           desc(huntDomainStatsView.firstSubmitDate),
@@ -397,10 +399,12 @@ export const huntRouter = createTRPCRouter({
           upvoteCount: sql<number>`CAST(${huntDomainStatsView.upvoteCount} AS INTEGER)`,
           firstSubmitDate: huntDomainStatsView.firstSubmitDate,
           lastUpvoteDate: huntDomainStatsView.lastUpvoteDate,
+          isPinned: huntDomainStatsView.isPinned,
         })
         .from(huntDomainStatsView)
-        .where(timeFilter)
+        .where(sql`(${huntDomainStatsView.pinWeight} > 0) OR (${timeFilter})`)
         .orderBy(
+          desc(huntDomainStatsView.pinWeight),
           desc(huntDomainStatsView.upvoteCount),
           desc(huntDomainStatsView.lastUpvoteDate),
           desc(huntDomainStatsView.firstSubmitDate),

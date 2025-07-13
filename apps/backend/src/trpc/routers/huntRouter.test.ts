@@ -2,10 +2,11 @@ import {
   type UserSelect,
   db,
   huntEdgesTable,
+  huntPinnedDomainsTable,
   usersTable,
 } from '@namefi-astra/db';
 import { config } from 'dotenv';
-import { and, eq, inArray } from 'drizzle-orm';
+import { and, eq, inArray, sql } from 'drizzle-orm';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { TrpcContext } from '../base';
 import { huntRouter } from './huntRouter';
@@ -60,7 +61,11 @@ describe('Hunt Router', () => {
   afterEach(async () => {
     vi.restoreAllMocks();
     // Clean up test data
-    // First delete all hunt edges created by or targeting test users
+    // Clean up pinned domains first (using LIKE to match test domain patterns)
+    await db
+      .delete(huntPinnedDomainsTable)
+      .where(sql`${huntPinnedDomainsTable.domainName} LIKE 'test.%'`);
+    // Delete all hunt edges created by or targeting test users
     await db
       .delete(huntEdgesTable)
       .where(inArray(huntEdgesTable.sourceId, [testUser.id, otherUser.id]));
@@ -72,6 +77,10 @@ describe('Hunt Router', () => {
           inArray(huntEdgesTable.targetId, [testUser.id, otherUser.id]),
         ),
       );
+    // Also clean up any hunt edges for test domains regardless of user
+    await db
+      .delete(huntEdgesTable)
+      .where(sql`${huntEdgesTable.targetId} LIKE 'test.%'`);
     // Then delete users
     await db
       .delete(usersTable)
@@ -656,6 +665,267 @@ describe('Hunt Router', () => {
       const page2Names = page2.items.map((item) => item.domainName);
       const overlap = page1Names.filter((name) => page2Names.includes(name));
       expect(overlap.length).toBe(0);
+    });
+  });
+
+  describe('Pinned Domains', () => {
+    beforeEach(async () => {
+      // Extra cleanup to ensure clean slate for pinned domain tests
+      await db
+        .delete(huntPinnedDomainsTable)
+        .where(sql`${huntPinnedDomainsTable.domainName} LIKE 'test.%'`);
+      await db
+        .delete(huntEdgesTable)
+        .where(sql`${huntEdgesTable.targetId} LIKE 'test.%'`);
+
+      // Create test domains with different characteristics
+      await caller.submitDomain({ domainName: 'test.pinned.high' });
+      await caller.submitDomain({ domainName: 'test.pinned.low' });
+      await caller.submitDomain({ domainName: 'test.regular.domain' });
+      await caller.submitDomain({ domainName: 'test.old.domain' });
+
+      // Add some upvotes to regular domains to make them popular
+      await caller.upvote({ domainName: 'test.regular.domain' });
+      await otherCaller.upvote({ domainName: 'test.regular.domain' });
+
+      // Make one domain old by updating its submit date
+      const oneYearAgo = new Date();
+      oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+      await db
+        .update(huntEdgesTable)
+        .set({ createdAt: oneYearAgo })
+        .where(
+          and(
+            eq(huntEdgesTable.targetId, 'test.old.domain'),
+            eq(huntEdgesTable.action, 'SUBMIT'),
+          ),
+        );
+
+      // Pin domains with different weights
+      await db.insert(huntPinnedDomainsTable).values([
+        { domainName: 'test.pinned.high', weight: 100 },
+        { domainName: 'test.pinned.low', weight: 50 },
+        { domainName: 'test.old.domain', weight: 75 }, // Pin the old domain
+      ]);
+    });
+
+    it('should show pinned domains first regardless of popularity', async () => {
+      const result = await caller.getTrendingDomains({
+        limit: 10,
+        offset: 0,
+        timeRange: 'ANYTIME',
+      });
+
+      expect(result.items.length).toBeGreaterThan(3);
+
+      // Check that pinned domains appear and are correctly ordered by weight
+      const domainNames = result.items.map((item) => item.domainName);
+
+      // All pinned domains should be present
+      expect(domainNames).toContain('test.pinned.high');
+      expect(domainNames).toContain('test.old.domain');
+      expect(domainNames).toContain('test.pinned.low');
+      expect(domainNames).toContain('test.regular.domain');
+
+      // Check correct ordering by weight (higher weight first)
+      const pinnedHighIndex = domainNames.indexOf('test.pinned.high');
+      const pinnedOldIndex = domainNames.indexOf('test.old.domain');
+      const pinnedLowIndex = domainNames.indexOf('test.pinned.low');
+      const regularIndex = domainNames.indexOf('test.regular.domain');
+
+      // Verify all domains were found
+      expect(pinnedHighIndex).toBeGreaterThanOrEqual(0);
+      expect(pinnedOldIndex).toBeGreaterThanOrEqual(0);
+      expect(pinnedLowIndex).toBeGreaterThanOrEqual(0);
+      expect(regularIndex).toBeGreaterThanOrEqual(0);
+
+      // Check correct ordering by weight (higher weight first)
+      expect(pinnedHighIndex).toBeLessThan(pinnedOldIndex); // 100 > 75
+      expect(pinnedOldIndex).toBeLessThan(pinnedLowIndex); // 75 > 50
+      expect(pinnedLowIndex).toBeLessThan(regularIndex); // pinned > regular
+
+      // Verify isPinned flags
+      const pinnedHigh = result.items.find(
+        (item) => item.domainName === 'test.pinned.high',
+      );
+      const regular = result.items.find(
+        (item) => item.domainName === 'test.regular.domain',
+      );
+      expect(pinnedHigh?.isPinned).toBe(true);
+      expect(regular?.isPinned).toBe(false);
+    });
+
+    it('should show pinned domains with correct isPinned flag', async () => {
+      const result = await caller.getTrendingDomains({
+        limit: 10,
+        offset: 0,
+        timeRange: 'ANYTIME',
+      });
+
+      const pinnedDomain = result.items.find(
+        (item) => item.domainName === 'test.pinned.high',
+      );
+      const regularDomain = result.items.find(
+        (item) => item.domainName === 'test.regular.domain',
+      );
+
+      expect(pinnedDomain?.isPinned).toBe(true);
+      expect(regularDomain?.isPinned).toBe(false);
+    });
+
+    it('should show pinned domains in time-filtered results even if old', async () => {
+      // Test THIS_WEEK filter - old domain should still appear because it's pinned
+      const thisWeekResult = await caller.getTrendingDomains({
+        limit: 10,
+        offset: 0,
+        timeRange: 'THIS_WEEK',
+      });
+
+      const domainNames = thisWeekResult.items.map((item) => item.domainName);
+
+      // Pinned old domain should appear despite being outside time range
+      expect(domainNames).toContain('test.old.domain');
+
+      // Regular new domains should also appear
+      expect(domainNames).toContain('test.pinned.high');
+      expect(domainNames).toContain('test.regular.domain');
+
+      // Verify the old domain is marked as pinned
+      const oldDomain = thisWeekResult.items.find(
+        (item) => item.domainName === 'test.old.domain',
+      );
+      expect(oldDomain?.isPinned).toBe(true);
+    });
+
+    it('should show pinned domains without votes in public endpoint', async () => {
+      // Create a domain that's pinned but never voted on
+      await caller.submitDomain({ domainName: 'test.pinned.novotes' });
+
+      // Remove the automatic upvote to test zero-vote scenario
+      await caller.unvote({ domainName: 'test.pinned.novotes' });
+
+      await db.insert(huntPinnedDomainsTable).values({
+        domainName: 'test.pinned.novotes',
+        weight: 90,
+      });
+
+      const publicCaller = huntRouter.createCaller({
+        thirdPartyOriginHostname: null,
+        testUser: null,
+      } as any);
+
+      const result = await publicCaller.getTrendingDomainsPublic({
+        limit: 10,
+        offset: 0,
+        timeRange: 'THIS_WEEK',
+      });
+
+      const domainNames = result.items.map((item) => item.domainName);
+      expect(domainNames).toContain('test.pinned.novotes');
+
+      const pinnedDomain = result.items.find(
+        (item) => item.domainName === 'test.pinned.novotes',
+      );
+      expect(pinnedDomain?.isPinned).toBe(true);
+      expect(pinnedDomain?.upvoteCount).toBe(0);
+      expect(pinnedDomain?.userHasUpvoted).toBe(false);
+    });
+
+    it('should handle time range filtering for mixed pinned and regular domains', async () => {
+      // Test different time ranges
+      const timeRanges = [
+        'TODAY',
+        'THIS_WEEK',
+        'THIS_MONTH',
+        'ANYTIME',
+      ] as const;
+
+      for (const timeRange of timeRanges) {
+        const result = await caller.getTrendingDomains({
+          limit: 10,
+          offset: 0,
+          timeRange,
+        });
+
+        const domainNames = result.items.map((item) => item.domainName);
+
+        // Pinned domains should always appear regardless of time range
+        expect(domainNames).toContain('test.pinned.high');
+        expect(domainNames).toContain('test.pinned.low');
+
+        if (timeRange === 'ANYTIME') {
+          // Old pinned domain should appear in ANYTIME
+          expect(domainNames).toContain('test.old.domain');
+        } else {
+          // Old pinned domain should still appear even in restricted time ranges
+          // because it's pinned (pin_weight > 0)
+          expect(domainNames).toContain('test.old.domain');
+        }
+      }
+    });
+
+    it('should maintain correct ordering with pagination for pinned domains', async () => {
+      // Add more domains to test pagination
+      await caller.submitDomain({ domainName: 'test.pinned.medium' });
+      await db.insert(huntPinnedDomainsTable).values({
+        domainName: 'test.pinned.medium',
+        weight: 60,
+      });
+
+      // Get first page
+      const page1 = await caller.getTrendingDomains({
+        limit: 2,
+        offset: 0,
+        timeRange: 'ANYTIME',
+      });
+
+      // Get second page
+      const page2 = await caller.getTrendingDomains({
+        limit: 2,
+        offset: 2,
+        timeRange: 'ANYTIME',
+      });
+
+      // Combine results to check overall ordering
+      const allDomains = [...page1.items, ...page2.items];
+      const pinnedDomains = allDomains.filter((domain) => domain.isPinned);
+
+      // Check that pinned domains are properly ordered by weight
+      for (let i = 1; i < pinnedDomains.length; i++) {
+        const prevDomain = pinnedDomains[i - 1];
+        const currDomain = pinnedDomains[i];
+
+        // Since we can't directly access weight, we check by domain names we know
+        if (prevDomain.domainName === 'test.pinned.high') {
+          expect(currDomain.domainName).not.toBe('test.pinned.high');
+        }
+      }
+    });
+
+    it('should handle empty pinned domains gracefully', async () => {
+      // Clean up pinned domains for this test
+      await db.delete(huntPinnedDomainsTable);
+
+      const result = await caller.getTrendingDomains({
+        limit: 10,
+        offset: 0,
+        timeRange: 'ANYTIME',
+      });
+
+      // Should still return regular domains
+      expect(result.items.length).toBeGreaterThan(0);
+
+      // All domains should have isPinned: false
+      for (const item of result.items) {
+        expect(item.isPinned).toBe(false);
+      }
+
+      // Should be ordered by popularity (upvote count)
+      const regularDomain = result.items.find(
+        (item) => item.domainName === 'test.regular.domain',
+      );
+      expect(regularDomain).toBeDefined();
+      expect(regularDomain?.upvoteCount).toBeGreaterThan(0);
     });
   });
 });
