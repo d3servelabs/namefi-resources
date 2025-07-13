@@ -226,3 +226,5 @@ next-env.d.ts
 .namefi-astra-local-temporal.db
 
 temp/
+
+env/configs/custom.ts

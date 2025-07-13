@@ -30,5 +30,17 @@
   },
   "typescript.enablePromptUseWorkspaceTsdk": true,
   "typescript.tsdk": "node_modules/typescript/lib",
-  "cSpell.words": ["dynadot"]
+  "cSpell.words": [
+    "dynadot",
+    "viem",
+    "NFT",
+    "3ld",
+    "R53",
+    "jain",
+    "sami",
+    "sid",
+    "rotciv",
+    "imas",
+    "dis"
+  ]
 }
