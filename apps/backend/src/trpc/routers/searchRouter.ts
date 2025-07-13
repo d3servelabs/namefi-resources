@@ -91,7 +91,14 @@ export const searchRouter = createTRPCRouter({
 
       const safeFetch = async (names: NamefiNormalizedDomain[]) => {
         if (opts.signal?.aborted) return [];
-        return getDomainListInfo(names, opts.ctx.user);
+        return Promise.race([
+          getDomainListInfo(names, opts.ctx.user),
+          new Promise<DomainAvailabilityInfo[]>((resolve) => {
+            opts.signal?.addEventListener('abort', () => {
+              resolve([]);
+            });
+          }),
+        ]);
       };
 
       const { domains } = opts.input;
