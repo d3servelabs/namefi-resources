@@ -1,6 +1,7 @@
 export const Registrars = {
   Route53: 'route53',
-  Dynadot: 'dynadot',
+  DynadotGdg: 'dynadot',
+  DynadotRegular: 'dynadot_regular',
   NamefiMock: 'namefiMock',
   NamefiInMemoryMock: 'namefiInMemoryMock',
 };

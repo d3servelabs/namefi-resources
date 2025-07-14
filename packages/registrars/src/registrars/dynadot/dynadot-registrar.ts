@@ -113,7 +113,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
     accountType?: 'super_bulk' | 'bulk' | 'regular';
     connection?: Bottleneck.IORedisConnection | Bottleneck.RedisConnection;
   }) {
-    super(config.overrideKey ?? Registrars.Dynadot);
+    super(config.overrideKey ?? Registrars.DynadotGdg);
     this.logger =
       config.customLogger ?? pino({ name: DynadotRegistrarService.name });
     this.logger.info('DynadotRegistrarService constructor');

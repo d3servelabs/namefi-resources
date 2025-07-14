@@ -36,13 +36,18 @@ import pMap from 'p-map';
 export type NamefiNftSelect = typeof namefiNftTable.$inferSelect;
 
 export const sldRegistrar = createRegistrarService({
-  AWS_REGION: config.AWS_REGION,
-  AWS_ACCESS_KEY_ID: secrets.AWS_ACCESS_KEY_ID,
-  AWS_SECRET_ACCESS_KEY: secrets.AWS_SECRET_ACCESS_KEY,
-  DYNADOT_API_KEY: secrets.DYNADOT_API_KEY,
-  DYNADOT_PRIVATE_KEY: secrets.DYNADOT_PRIVATE_KEY,
-  DYNADOT_ACCOUNT_ID: secrets.DYNADOT_ACCOUNT_ID,
-  DYNADOT_BASE_URL: config.DYNADOT_BASE_URL,
+  aws: {
+    region: config.AWS_REGION,
+    accessKeyId: secrets.AWS_ACCESS_KEY_ID,
+    secretAccessKey: secrets.AWS_SECRET_ACCESS_KEY,
+  },
+  dynadot: {
+    gdgApiKey: secrets.DYNADOT_GDG_API_KEY,
+    regularApiKey: secrets.DYNADOT_REGULAR_API_KEY,
+    privateKey: secrets.DYNADOT_PRIVATE_KEY,
+    accountId: secrets.DYNADOT_ACCOUNT_ID,
+    baseUrl: config.DYNADOT_BASE_URL,
+  },
   customLogger: logger,
   getRegistrarKeyForExistingDomain: async (domain: NamefiNormalizedDomain) => {
     const indexedDomain = await db.query.indexedDomainsTable.findFirst({

@@ -1,4 +1,4 @@
-import { assertNotNil, resolve } from '@namefi-astra/utils';
+import { assertNotNil, matchAny, resolve } from '@namefi-astra/utils';
 import pino from 'pino';
 import {
   assoc,
@@ -258,11 +258,36 @@ export class RegistrarService extends AbstractRegistrarService {
     const { registrar } = Object.entries(pricesByRegistrar).reduce(
       (prev, [registrar, price]) => {
         try {
-          if (price && computeChargesInUsdOrThrow(price, 1) < prev.bestPrice) {
-            return {
-              bestPrice: computeChargesInUsdOrThrow(price, 1),
-              registrar,
-            };
+          if (price) {
+            const challengingPrice = computeChargesInUsdOrThrow(price, 1);
+            if (challengingPrice === 0) {
+              return prev;
+            }
+            if (
+              challengingPrice === prev.bestPrice &&
+              matchAny(
+                registrar,
+                Registrars.DynadotGdg,
+                Registrars.DynadotRegular,
+              ) &&
+              matchAny(
+                prev.registrar,
+                Registrars.DynadotGdg,
+                Registrars.DynadotRegular,
+              )
+            ) {
+              // if the price is the same and the registrar is DynadotGdg or DynadotRegular, choose DynadotGdg
+              return {
+                bestPrice: challengingPrice,
+                registrar: Registrars.DynadotGdg,
+              };
+            }
+            if (challengingPrice < prev.bestPrice) {
+              return {
+                bestPrice: challengingPrice,
+                registrar,
+              };
+            }
           }
         } catch (error) {
           this.logger.error(error);
@@ -556,13 +581,18 @@ export class RegistrarService extends AbstractRegistrarService {
 
 export function createRegistrarService(config: {
   USE_MOCK_REGISTRARS?: boolean;
-  AWS_REGION: string;
-  AWS_ACCESS_KEY_ID: string;
-  AWS_SECRET_ACCESS_KEY: string;
-  DYNADOT_API_KEY: string;
-  DYNADOT_PRIVATE_KEY?: string;
-  DYNADOT_ACCOUNT_ID?: string;
-  DYNADOT_BASE_URL?: string;
+  aws: {
+    region: string;
+    accessKeyId: string;
+    secretAccessKey: string;
+  };
+  dynadot: {
+    gdgApiKey: string;
+    regularApiKey: string;
+    privateKey?: string;
+    accountId?: string;
+    baseUrl?: string;
+  };
   customLogger?: pino.Logger;
   getRegistrarKeyForExistingDomain?: (
     domain: PunycodeDomainName,
@@ -581,26 +611,38 @@ export function createRegistrarService(config: {
     : undefined;
 
   const r53Registrar = new R53RegistrarService({
-    region: config.AWS_REGION,
-    accessKeyId: config.AWS_ACCESS_KEY_ID,
-    secretAccessKey: config.AWS_SECRET_ACCESS_KEY,
+    region: config.aws.region,
+    accessKeyId: config.aws.accessKeyId,
+    secretAccessKey: config.aws.secretAccessKey,
     connection,
   });
 
-  const dynadot = new DynadotRegistrarService({
-    apiKey: config.DYNADOT_API_KEY,
-    privateKey: config.DYNADOT_PRIVATE_KEY,
-    accountId: config.DYNADOT_ACCOUNT_ID,
-    baseUrl: config.DYNADOT_BASE_URL,
+  const dynadotGdg = new DynadotRegistrarService({
+    apiKey: config.dynadot.gdgApiKey,
+    privateKey: config.dynadot.privateKey,
+    accountId: config.dynadot.accountId,
+    baseUrl: config.dynadot.baseUrl,
     customLogger: config.customLogger,
     accountType: 'super_bulk',
     connection,
   });
 
+  const dynadotRegular = new DynadotRegistrarService({
+    apiKey: config.dynadot.regularApiKey,
+    privateKey: config.dynadot.privateKey,
+    accountId: config.dynadot.accountId,
+    baseUrl: config.dynadot.baseUrl,
+    customLogger: config.customLogger,
+    accountType: 'bulk',
+    connection,
+    overrideKey: Registrars.DynadotRegular,
+  });
+
   return new RegistrarService(
     {
       [Registrars.Route53]: r53Registrar,
-      [Registrars.Dynadot]: dynadot,
+      [Registrars.DynadotGdg]: dynadotGdg,
+      [Registrars.DynadotRegular]: dynadotRegular,
     },
     config.getRegistrarKeyForExistingDomain,
   );
