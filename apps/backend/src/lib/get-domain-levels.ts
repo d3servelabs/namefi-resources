@@ -14,6 +14,7 @@ export type DomainLevels = {
  *
  * @param normalizedDomainName - The normalized domain name to get the levels of
  * @returns The levels of the domain
+ * @deprecated use analyzeDomainName instead
  */
 export const getDomainLevels = (
   normalizedDomainName: NamefiNormalizedDomain,

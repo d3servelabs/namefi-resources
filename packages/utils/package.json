@@ -19,6 +19,7 @@
     "test:coverage": "bun vitest run --coverage"
   },
   "dependencies": {
+    "parse-domain": "^8.2.2",
     "ramda": "^0.30.1"
   },
   "peerDependencies": {

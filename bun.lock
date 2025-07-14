@@ -325,6 +325,7 @@
       "name": "@namefi-astra/utils",
       "version": "0.0.0",
       "dependencies": {
+        "parse-domain": "^8.2.2",
         "ramda": "^0.30.1",
       },
       "devDependencies": {
