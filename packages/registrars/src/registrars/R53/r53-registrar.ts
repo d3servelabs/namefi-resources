@@ -189,13 +189,18 @@ export class R53RegistrarService extends AbstractRegistrarService {
       },
     });
 
-    this.send = limiter.wrap(this.client.send.bind(this.client));
-    this.cache.on('expired', async () => {
-      this.logger.info('prices cache expired');
-      await this._updatePrices();
-    });
-    this.getAllowedParentDomains().then((tlds) => {
-      this.logger.info({ tlds: tlds.length }, 'R53 allowed parent domains');
+    this.send = this.client.send.bind(this.client);
+    limiter.ready().then(() => {
+      this.logger.info('Limiter ready');
+
+      this.send = limiter.wrap(this.client.send.bind(this.client));
+      this.cache.on('expired', async () => {
+        this.logger.info('prices cache expired');
+        await this._updatePrices();
+      });
+      this.getAllowedParentDomains().then((tlds) => {
+        this.logger.info({ tlds: tlds.length }, 'R53 allowed parent domains');
+      });
     });
   }
 

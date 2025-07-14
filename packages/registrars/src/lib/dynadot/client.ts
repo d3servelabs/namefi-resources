@@ -113,7 +113,7 @@ export class Dynadot {
   private instance: AxiosInstance;
   private retryOptions: RetryOptions;
   private loggingOptions: LoggingOptions;
-  private limiter: Bottleneck;
+  private limiter: Bottleneck | null = null;
 
   constructor({
     apiKey,
@@ -182,7 +182,7 @@ export class Dynadot {
       });
     }
     setupLoggers(this.instance, this.loggingOptions);
-    this.limiter = setupLimiter({
+    const limiter = setupLimiter({
       apiKey,
       requestsPerSecond:
         accountType === 'super_bulk' ? 100 : accountType === 'bulk' ? 10 : 1,
@@ -192,6 +192,10 @@ export class Dynadot {
       retryWhenBusy: this.retryOptions.retryWhenBusy,
       connection,
     });
+    limiter.ready().then(() => {
+      console.log('Limiter ready');
+      this.limiter = limiter;
+    });
   }
 
   async command<T extends DynadotCommand>(
@@ -199,7 +203,7 @@ export class Dynadot {
     params: DynadotCommandsParams[T],
     retryOptions = this.retryOptions,
   ): Promise<DynadotCommandOutput[T]> {
-    return await this.limiter.schedule(async () => {
+    const call = async () => {
       const res: AxiosResponse<DynadotCommandOutput[T]> =
         await this.instance.get('', {
           params: {
@@ -230,7 +234,11 @@ export class Dynadot {
         );
       }
       return res.data;
-    });
+    };
+    if (this.limiter) {
+      return await this.limiter.schedule(call);
+    }
+    return await call();
   }
 }
 
