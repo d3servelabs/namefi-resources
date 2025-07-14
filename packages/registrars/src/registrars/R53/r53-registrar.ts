@@ -17,6 +17,7 @@ import {
   RenewDomainCommand,
   RetrieveDomainAuthCodeCommand,
   Route53DomainsClient,
+  Route53DomainsServiceException,
   TransferDomainCommand,
   UpdateDomainContactCommand,
   UpdateDomainContactPrivacyCommand,
@@ -80,9 +81,55 @@ import {
 import pMap from 'p-map';
 import { getTldFromDomainName } from '#lib/get-tld';
 import NodeCache from '@cacheable/node-cache';
+import Bottleneck from 'bottleneck';
+import { JitterTrng } from 'jittertrng';
+const jitter = new JitterTrng();
+
+let limiter: Bottleneck;
+
+function setupLimiter({
+  connection,
+}: {
+  connection?: Bottleneck.IORedisConnection | Bottleneck.RedisConnection;
+}) {
+  if (limiter) {
+    return limiter;
+  }
+
+  limiter = new Bottleneck({
+    id: 'r53-registrar',
+    reservoir: 5, // initial available tokens
+    reservoirRefreshAmount: 5, // refill 5 tokens...
+    reservoirRefreshInterval: 1000, // ...every 1000 ms (1 second)
+    connection,
+  });
+
+  limiter.on('failed', async (error, jobInfo) => {
+    const id = jobInfo.options.id;
+    console.warn(`[R53_LIMITER] Job ${id} failed: ${error}`);
+    if (jobInfo.retryCount > 3) {
+      console.log('[R53_LIMITER] Job failed too many times, skipping');
+      return;
+    }
+
+    if (error instanceof Route53DomainsServiceException) {
+      if (
+        error.name === 'ThrottlingException' ||
+        error.message.includes('Rate exceeded') ||
+        error.name === 'TimeoutError' ||
+        (error as any).code === 'ETIMEDOUT'
+      ) {
+        const delay = jitter.randomInt(1000, 2000);
+        return delay;
+      }
+      console.log('[R53_LIMITER] R53 error', error);
+    } else {
+      console.log('[R53_LIMITER] Other error', error);
+    }
+  });
+}
 
 export class R53RegistrarService extends AbstractRegistrarService {
-  nameservers = [1, 2, 3, 4].map((i) => `ns${i}.namefi.io`);
   client: Route53DomainsClient;
 
   // In memory cache for prices
@@ -97,22 +144,23 @@ export class R53RegistrarService extends AbstractRegistrarService {
     string,
     NonNullable<ListPricesCommandOutput['Prices']>[number]
   > {
-    return this.cache.get('tld_prices') as Record<
-      string,
-      NonNullable<ListPricesCommandOutput['Prices']>[number]
-    >;
+    return this.cache.get('tld_prices') ?? {};
   }
+
+  send: Route53DomainsClient['send'];
 
   constructor({
     region,
     accessKeyId,
     secretAccessKey,
     customLogger,
+    connection,
   }: {
     region: string;
     accessKeyId: string;
     secretAccessKey: string;
     customLogger?: pino.Logger;
+    connection?: Bottleneck.IORedisConnection | Bottleneck.RedisConnection;
   }) {
     super(Registrars.Route53);
     this.logger = customLogger ?? pino({ name: R53RegistrarService.name });
@@ -132,6 +180,9 @@ export class R53RegistrarService extends AbstractRegistrarService {
     this.getAllowedParentDomains().then((tlds) => {
       this.logger.info({ tlds: tlds.length }, 'R53 allowed parent domains');
     });
+
+    setupLimiter({ connection });
+    this.send = limiter.wrap(this.client.send.bind(this.client));
   }
 
   async getAllowedParentDomains(): Promise<PunycodeDomainName[]> {
@@ -165,7 +216,7 @@ export class R53RegistrarService extends AbstractRegistrarService {
     };
     const command = new RegisterDomainCommand(input);
 
-    const response = await this.client.send(command);
+    const response = await this.send(command);
 
     return {
       operationId: response.OperationId,
@@ -185,7 +236,7 @@ export class R53RegistrarService extends AbstractRegistrarService {
       DurationInYears: args.durationInYears,
       CurrentExpiryYear: args.currentExpirationDate.getFullYear(),
     });
-    const response = await this.client.send(command);
+    const response = await this.send(command);
     return {
       type: OperationType.RENEW_DOMAIN,
       operationId: response.OperationId,
@@ -199,7 +250,7 @@ export class R53RegistrarService extends AbstractRegistrarService {
   ): Promise<LongRunningOperationResult<any>> {
     assertPunycodeDomainName(args.domainName);
 
-    const { domainName, nameservers, authCode } = args;
+    const { domainName, authCode } = args;
     const privacy =
       args.privacy !== DomainContactPrivacyEnum.PUBLIC_CONTACT_DATA;
     const contacts = toR53ContactsMap(args.contacts);
@@ -215,9 +266,8 @@ export class R53RegistrarService extends AbstractRegistrarService {
       PrivacyProtectRegistrantContact: privacy,
       PrivacyProtectTechContact: privacy,
       AuthCode: authCode,
-      Nameservers: this.nameservers.map((Name) => ({ Name })),
     };
-    const response = await this.client.send(new TransferDomainCommand(input));
+    const response = await this.send(new TransferDomainCommand(input));
 
     return {
       type: OperationType.TRANSFER_IN_DOMAIN,
@@ -230,7 +280,7 @@ export class R53RegistrarService extends AbstractRegistrarService {
   async retrieveAuthCode(domainName: PunycodeDomainName): Promise<string> {
     assertPunycodeDomainName(domainName);
 
-    const res = await this.client.send(
+    const res = await this.send(
       new RetrieveDomainAuthCodeCommand({
         DomainName: domainName,
       }),
@@ -245,7 +295,7 @@ export class R53RegistrarService extends AbstractRegistrarService {
   ): Promise<VerifyTransferInAuthCodeOutput> {
     assertPunycodeDomainName(domainName);
 
-    const response = await this.client.send(
+    const response = await this.send(
       new CheckDomainTransferabilityCommand({
         DomainName: domainName,
         AuthCode: authCode,
@@ -270,7 +320,7 @@ export class R53RegistrarService extends AbstractRegistrarService {
   ): Promise<LongRunningOperationResult<any>> {
     assertPunycodeDomainName(domainName);
 
-    const response = await this.client.send(
+    const response = await this.send(
       new EnableDomainTransferLockCommand({
         DomainName: domainName,
       }),
@@ -288,7 +338,7 @@ export class R53RegistrarService extends AbstractRegistrarService {
   ): Promise<LongRunningOperationResult<any>> {
     assertPunycodeDomainName(domainName);
 
-    const response = await this.client.send(
+    const response = await this.send(
       new DisableDomainTransferLockCommand({
         DomainName: domainName,
       }),
@@ -307,7 +357,7 @@ export class R53RegistrarService extends AbstractRegistrarService {
   ): Promise<DomainRegistration> {
     assertPunycodeDomainName(domainName);
 
-    const response = await this.client.send(
+    const response = await this.send(
       new GetDomainDetailCommand({
         DomainName: domainName,
       }),
@@ -327,7 +377,7 @@ export class R53RegistrarService extends AbstractRegistrarService {
     const command = new GetDomainDetailCommand({
       DomainName: domainName, // required
     });
-    const response = await this.client.send(command);
+    const response = await this.send(command);
     assertNotNil(response.StatusList, 'Status list is not available');
     return response.StatusList;
   }
@@ -390,7 +440,7 @@ export class R53RegistrarService extends AbstractRegistrarService {
         PublicKey: signingAttributes.publicKey,
       },
     });
-    const response = await this.client.send(command);
+    const response = await this.send(command);
 
     return {
       type: OperationType.ADD_DNSSEC,
@@ -404,7 +454,7 @@ export class R53RegistrarService extends AbstractRegistrarService {
     domainName: PunycodeDomainName,
     publicKeyOrId: string,
   ): Promise<LongRunningOperationResult<any>> {
-    const response = await this.client.send(
+    const response = await this.send(
       new DisassociateDelegationSignerFromDomainCommand({
         DomainName: domainName,
         Id: publicKeyOrId,
@@ -423,7 +473,7 @@ export class R53RegistrarService extends AbstractRegistrarService {
     assertPunycodeDomainName(query);
 
     const [searchResults, price] = await Promise.all([
-      this.client.send(
+      this.send(
         new CheckDomainAvailabilityCommand({
           DomainName: query, // required
         }),
@@ -526,7 +576,7 @@ export class R53RegistrarService extends AbstractRegistrarService {
         ? toR53Contact(contacts.billingContact)
         : undefined,
     });
-    const response = await this.client.send(command);
+    const response = await this.send(command);
 
     return {
       type: OperationType.UPDATE_DOMAIN_CONTACT,
@@ -551,7 +601,7 @@ export class R53RegistrarService extends AbstractRegistrarService {
   ): Promise<LongRunningOperationResult<any>> {
     assertPunycodeDomainName(domainName);
 
-    const response = await this.client.send(
+    const response = await this.send(
       new UpdateDomainNameserversCommand({
         DomainName: domainName,
         Nameservers: nameservers.map((Name) => ({ Name })),
@@ -581,7 +631,7 @@ export class R53RegistrarService extends AbstractRegistrarService {
     assertPunycodeDomainName(domainName);
 
     //todo!! use detailed status
-    const response = await this.client.send(
+    const response = await this.send(
       new GetOperationDetailCommand({
         OperationId: operationId,
       }),
@@ -612,7 +662,7 @@ export class R53RegistrarService extends AbstractRegistrarService {
       option === RenewOption.AUTOMATIC
         ? new EnableDomainAutoRenewCommand(input)
         : new DisableDomainAutoRenewCommand(input);
-    const response = await this.client.send(command);
+    const response = await this.send(command);
 
     return {
       response,
@@ -649,7 +699,7 @@ export class R53RegistrarService extends AbstractRegistrarService {
         privacy.technicalContact ===
         DomainContactPrivacyEnum.PRIVATE_CONTACT_DATA,
     });
-    const response = await this.client.send(command);
+    const response = await this.send(command);
 
     return {
       response,
@@ -674,7 +724,7 @@ export class R53RegistrarService extends AbstractRegistrarService {
         MaxItems: 100,
       };
       const command = new ListDomainsCommand(input);
-      const response = await this.client.send(command);
+      const response = await this.send(command);
       marker = response.NextPageMarker;
       domains.push(...(response.Domains ?? []));
     } while (marker);
@@ -723,7 +773,7 @@ export class R53RegistrarService extends AbstractRegistrarService {
           Marker: marker,
         };
         const command = new ListPricesCommand(input);
-        const response = await this.client.send(command);
+        const response = await this.send(command);
         marker = response.NextPageMarker;
         prices.push(...(response.Prices ?? []));
       } while (marker);
@@ -756,7 +806,7 @@ export class R53RegistrarService extends AbstractRegistrarService {
     if (this.priceMap[tld]) {
       return this.priceMap[tld];
     }
-    const res = (await this.client.send(new ListPricesCommand({ Tld: tld })))
+    const res = (await this.send(new ListPricesCommand({ Tld: tld })))
       ?.Prices?.[0];
     if (!res) {
       throw new Error(
@@ -779,7 +829,7 @@ export class R53RegistrarService extends AbstractRegistrarService {
       SuggestionCount: input.suggestionsCount || 20, // required
       OnlyAvailable: input.onlyAvailable ?? true, // required
     });
-    const suggestions = await this.client.send(command);
+    const suggestions = await this.send(command);
 
     const finalOutput: GetDomainSuggestionsWithPricesOutput = [];
     for (const { DomainName, Availability } of suggestions?.SuggestionsList ??
@@ -790,9 +840,8 @@ export class R53RegistrarService extends AbstractRegistrarService {
       const [_, tld] = DomainName.split('.');
 
       if (!this.priceMap[tld]) {
-        const res = (
-          await this.client.send(new ListPricesCommand({ Tld: tld }))
-        )?.Prices?.[0];
+        const res = (await this.send(new ListPricesCommand({ Tld: tld })))
+          ?.Prices?.[0];
         if (res) {
           this.priceMap[tld] = res;
         }

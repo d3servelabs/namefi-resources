@@ -47,6 +47,7 @@ import { R53RegistrarService } from './R53/r53-registrar';
 import { DynadotRegistrarService } from './dynadot/dynadot-registrar';
 import { Registrars } from './registrars-keys';
 import pProps from 'p-props';
+import Bottleneck from 'bottleneck';
 
 export type WithRegistrar<T> = T & {
   registrarKey: Registrars;
@@ -566,11 +567,24 @@ export function createRegistrarService(config: {
   getRegistrarKeyForExistingDomain?: (
     domain: PunycodeDomainName,
   ) => Promise<Registrars | null>;
+  redisClientOptions?: Bottleneck.IORedisConnectionOptions['clientOptions'] & {
+    host?: string;
+    port?: number;
+    username?: string;
+    password?: string;
+  };
 }): RegistrarService {
+  const connection = config.redisClientOptions
+    ? new Bottleneck.IORedisConnection({
+        clientOptions: config.redisClientOptions,
+      })
+    : undefined;
+
   const r53Registrar = new R53RegistrarService({
     region: config.AWS_REGION,
     accessKeyId: config.AWS_ACCESS_KEY_ID,
     secretAccessKey: config.AWS_SECRET_ACCESS_KEY,
+    connection,
   });
 
   const dynadot = new DynadotRegistrarService({
@@ -579,6 +593,8 @@ export function createRegistrarService(config: {
     accountId: config.DYNADOT_ACCOUNT_ID,
     baseUrl: config.DYNADOT_BASE_URL,
     customLogger: config.customLogger,
+    accountType: 'super_bulk',
+    connection,
   });
 
   return new RegistrarService(

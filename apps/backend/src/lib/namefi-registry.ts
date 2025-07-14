@@ -53,6 +53,14 @@ export const sldRegistrar = createRegistrarService({
     }
     return null;
   },
+  redisClientOptions: secrets.LIMITER_REDIS_HOST
+    ? {
+        host: secrets.LIMITER_REDIS_HOST,
+        port: secrets.LIMITER_REDIS_PORT,
+        username: secrets.LIMITER_REDIS_USER,
+        password: secrets.LIMITER_REDIS_PASSWORD,
+      }
+    : undefined,
 });
 
 const generateUnavailableDomainInfo = (domain: NamefiNormalizedDomain) => ({

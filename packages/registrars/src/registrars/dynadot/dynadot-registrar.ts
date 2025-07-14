@@ -77,6 +77,8 @@ import { Registrars } from '../registrars-keys';
 import { fromDynadotContactsMap } from './helpers';
 import { getTldFromDomainName } from '#lib/get-tld';
 import NodeCache from '@cacheable/node-cache';
+import pMap from 'p-map';
+import type Bottleneck from 'bottleneck';
 
 const DYNADOT_DOMAIN_REGISTER_CHECK_TIME_WINDOW_IN_MINUTES = 30;
 
@@ -108,6 +110,8 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
     baseUrl?: string;
     customLogger?: pino.Logger;
     overrideKey?: Registrars;
+    accountType?: 'super_bulk' | 'bulk' | 'regular';
+    connection?: Bottleneck.IORedisConnection | Bottleneck.RedisConnection;
   }) {
     super(config.overrideKey ?? Registrars.Dynadot);
     this.logger =
@@ -146,14 +150,23 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
         retryWhenBusy: config.retryWhenBusy ?? true,
         backoff: config.retryBackoff ?? 1000,
       },
-    });
-    this.getAllowedParentDomains().then((tlds) => {
-      this.logger.info({ tlds: tlds.length }, 'Dynadot allowed parent domains');
+      accountType: config.accountType,
+      connection: config.connection,
     });
     this.cache.on('expired', async () => {
       this.logger.info('prices cache expired');
       await this.getTldPrices();
     });
+    this.getAllowedParentDomains()
+      .then((tlds) => {
+        this.logger.info(
+          { tlds: tlds.length },
+          'Dynadot allowed parent domains',
+        );
+      })
+      .catch((error) => {
+        this.logger.error({ error }, 'Error getting allowed parent domains');
+      });
   }
 
   async getAllowedParentDomains(): Promise<PunycodeDomainName[]> {
@@ -879,11 +892,9 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
     const nonPremiumPrices =
       await this._bulkGetNonPremiumDomainPriceDetails(queries);
 
-    const results = await Promise.all(
-      batches.map(async (batch) => {
-        return this._bulkSearchBatch(batch, nonPremiumPrices);
-      }),
-    );
+    const results = await pMap(batches, async (batch) => {
+      return this._bulkSearchBatch(batch, nonPremiumPrices);
+    });
 
     return results.flat();
   }

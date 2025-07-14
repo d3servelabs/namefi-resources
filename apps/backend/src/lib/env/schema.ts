@@ -34,6 +34,11 @@ export const secretsSchema = z.object({
   DYNADOT_ACCOUNT_ID: z.string().optional(),
   DEFAULT_EPP_CODE_ENCRYPTION_KEY_ID: z.string(),
   LEGACY_DB_URL: z.string(),
+  // redis connection for rate limiting
+  LIMITER_REDIS_PASSWORD: z.string().optional(),
+  LIMITER_REDIS_USER: z.string().optional(),
+  LIMITER_REDIS_HOST: z.string().optional(),
+  LIMITER_REDIS_PORT: z.number().optional().default(6379),
 });
 
 export type SecretsSchema = z.infer<typeof secretsSchema>;

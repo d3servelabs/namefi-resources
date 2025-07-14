@@ -10,7 +10,69 @@ import { signMessage } from '#lib/sign-message';
 import type { DynadotCommandOutput, DynadotCommandsParams } from './commands';
 import type { DynadotCommand, DynadotResponse } from './common-types';
 import { DynadotBaseErrorMessage } from './common-types';
-import { backOff } from 'exponential-backoff';
+import Bottleneck from 'bottleneck';
+import crypto from 'crypto';
+import { JitterTrng } from 'jittertrng';
+const jitter = new JitterTrng();
+
+function md5(str: string) {
+  return crypto.createHash('md5').update(str).digest('hex');
+}
+
+const limiters: Record<string, Bottleneck> = {};
+
+function setupLimiter({
+  apiKey,
+  requestsPerSecond = 100,
+  maxRetries = 3,
+  maxDelay = 500,
+  retryDelay = 500,
+  retryWhenBusy = true,
+  connection,
+}: {
+  apiKey: string;
+  requestsPerSecond?: number;
+  maxRetries?: number;
+  maxDelay?: number;
+  retryDelay?: number;
+  retryWhenBusy?: boolean;
+  connection?: Bottleneck.IORedisConnection | Bottleneck.RedisConnection;
+}) {
+  const id = `dynadot-${md5(apiKey)}`;
+  if (!limiters[id]) {
+    console.log(
+      `Setting up limiter for ${id} with ${requestsPerSecond} requests per second`,
+    );
+
+    const limiter = new Bottleneck({
+      id,
+      reservoir: requestsPerSecond, // initial available tokens
+      reservoirRefreshAmount: requestsPerSecond, // refill 5 tokens...
+      reservoirRefreshInterval: 1000, // ...every 1000 ms (1 second)
+      connection,
+    });
+
+    limiter.on('failed', async (error, jobInfo) => {
+      const id = jobInfo.options.id;
+      console.warn(`Job ${id} failed: ${error}`);
+
+      if (
+        retryWhenBusy &&
+        jobInfo.retryCount < maxRetries &&
+        jobInfo.retryCount > 0 &&
+        error instanceof Error &&
+        error.message.includes('Threads Busy')
+      ) {
+        const delay = jitter.randomInt(retryDelay, retryDelay * 1.5);
+        console.log(`Retrying job ${id} in ${delay}ms!`);
+        return delay;
+      }
+    });
+
+    limiters[id] = limiter;
+  }
+  return limiters[id];
+}
 
 export type RetryOptions = {
   maxRetries: number;
@@ -37,6 +99,7 @@ export class Dynadot {
   private instance: AxiosInstance;
   private retryOptions: RetryOptions;
   private loggingOptions: LoggingOptions;
+  private limiter: Bottleneck;
 
   constructor({
     apiKey,
@@ -44,12 +107,16 @@ export class Dynadot {
     loggingOptions,
     proxyOptions,
     baseUrl: _baseUrl,
+    accountType = 'regular',
+    connection,
   }: {
     apiKey: string;
     retryOptions?: RetryOptions;
     loggingOptions?: LoggingOptions;
     proxyOptions?: ProxyOptions;
     baseUrl?: string;
+    accountType?: 'super_bulk' | 'bulk' | 'regular';
+    connection?: Bottleneck.IORedisConnection | Bottleneck.RedisConnection;
   }) {
     const namefiProxy = proxyOptions?.namefiProxy;
     const baseUrl = _baseUrl || 'https://api.dynadot.com/api3.json';
@@ -101,6 +168,16 @@ export class Dynadot {
       });
     }
     setupLoggers(this.instance, this.loggingOptions);
+    this.limiter = setupLimiter({
+      apiKey,
+      requestsPerSecond:
+        accountType === 'super_bulk' ? 100 : accountType === 'bulk' ? 10 : 1,
+      maxRetries: this.retryOptions.maxRetries,
+      maxDelay: this.retryOptions.backoff,
+      retryDelay: this.retryOptions.backoff,
+      retryWhenBusy: this.retryOptions.retryWhenBusy,
+      connection,
+    });
   }
 
   async command<T extends DynadotCommand>(
@@ -108,56 +185,38 @@ export class Dynadot {
     params: DynadotCommandsParams[T],
     retryOptions = this.retryOptions,
   ): Promise<DynadotCommandOutput[T]> {
-    return backOff(
-      async () => {
-        const res: AxiosResponse<DynadotCommandOutput[T]> =
-          await this.instance.get('', {
-            params: {
-              command,
-              ...params,
-            },
-          });
+    return await this.limiter.schedule(async () => {
+      const res: AxiosResponse<DynadotCommandOutput[T]> =
+        await this.instance.get('', {
+          params: {
+            command,
+            ...params,
+          },
+        });
 
-        if (retryOptions.retryWhenBusy && res?.data) {
-          for (const response of Object.values(
-            res.data as Record<string, DynadotResponse>,
-          )) {
-            const responseCode = Number.parseInt(response.ResponseCode);
-            const responseStatus = response.Status;
-            if (
-              (responseCode === -1 &&
-                response.Error ===
-                  DynadotBaseErrorMessage.PROCESSING_ANOTHER_REQUEST) ||
-              (responseCode === 5 && responseStatus === 'system_busy')
-            ) {
-              throw new Error('Threads Busy');
-            }
-          }
-        }
-        if (res?.status !== 200 || !res?.data) {
-          throw new Error(
-            `Failed to get response from Dynadot: ${res?.statusText} ${res?.status}`,
-          );
-        }
-        return res.data;
-      },
-      {
-        numOfAttempts: retryOptions.maxRetries,
-        retry: (e) => {
+      if (retryOptions.retryWhenBusy && res?.data) {
+        for (const response of Object.values(
+          res.data as Record<string, DynadotResponse>,
+        )) {
+          const responseCode = Number.parseInt(response.ResponseCode);
+          const responseStatus = response.Status;
           if (
-            retryOptions.retryWhenBusy &&
-            e instanceof Error &&
-            e.message === 'Threads Busy'
+            (responseCode === -1 &&
+              response.Error ===
+                DynadotBaseErrorMessage.PROCESSING_ANOTHER_REQUEST) ||
+            (responseCode === 5 && responseStatus === 'system_busy')
           ) {
-            return true;
+            throw new Error('Threads Busy');
           }
-          return false;
-        },
-        startingDelay: retryOptions.backoff,
-        timeMultiple: 1,
-        jitter: 'full',
-      },
-    );
+        }
+      }
+      if (res?.status !== 200 || !res?.data) {
+        throw new Error(
+          `Failed to get response from Dynadot: ${res?.statusText} ${res?.status}`,
+        );
+      }
+      return res.data;
+    });
   }
 }
 
