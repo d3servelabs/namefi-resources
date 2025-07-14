@@ -12,6 +12,7 @@ import {
   toPairs,
   zipObj,
   filter,
+  pickBy,
 } from 'ramda';
 import type {
   ContactsMap,
@@ -315,10 +316,32 @@ export class RegistrarService extends AbstractRegistrarService {
   ): Promise<WithRegistrar<DomainQueryResult>[]> {
     const fallbackRegistrar = this.getAllowedRegistrars()[0];
 
-    const responsesByRegistrar = await pProps(this.registrars, (registrar) =>
-      registrar.bulkSearch(queries),
-    );
+    const promises = await pProps(this.registrars, async (registrar) => {
+      try {
+        const res = await registrar.bulkSearch(queries);
+        return res;
+      } catch (error) {
+        this.logger.error(
+          { error, registrar: registrar.key },
+          'error in bulkSearch',
+        );
+      }
+    });
+    const responsesByRegistrar: Record<Registrars, DomainQueryResult[]> =
+      pickBy(isNotNil, promises);
 
+    return this._chooseBestRegistrar(
+      responsesByRegistrar,
+      queries,
+      fallbackRegistrar,
+    );
+  }
+
+  private _chooseBestRegistrar(
+    responsesByRegistrar: Record<Registrars, DomainQueryResult[]>,
+    queries: PunycodeDomainName[],
+    fallbackRegistrar: Registrars,
+  ) {
     const result = queries.map((query, index) => {
       // map the registrar to the result
       const registrarToResult = toPairs(map(prop(index), responsesByRegistrar));
@@ -350,13 +373,24 @@ export class RegistrarService extends AbstractRegistrarService {
 
       // find the best price
       const bestPrice = registrarToPrice.reduce(
-        (prev, [registrar, price]) => {
-          if (price < prev.bestPrice) {
+        (prev, [registrar, challengingPrice]) => {
+          if (challengingPrice < prev.bestPrice) {
             return {
-              bestPrice: price,
+              bestPrice: challengingPrice,
               registrar,
             };
           }
+          if (
+            challengingPrice === prev.bestPrice &&
+            [registrar, prev.registrar].includes(Registrars.DynadotGdg)
+          ) {
+            // if the price is the same then choose DynadotGdg
+            return {
+              bestPrice: challengingPrice,
+              registrar: Registrars.DynadotGdg,
+            };
+          }
+
           return prev;
         },
         {
@@ -386,7 +420,6 @@ export class RegistrarService extends AbstractRegistrarService {
         registrarKey: bestPrice.registrar,
       };
     });
-
     return result;
   }
 
@@ -622,7 +655,9 @@ export function createRegistrarService(config: {
     privateKey: config.dynadot.privateKey,
     accountId: config.dynadot.accountId,
     baseUrl: config.dynadot.baseUrl,
-    customLogger: config.customLogger,
+    customLogger: config.customLogger?.child({
+      registrar: Registrars.DynadotGdg,
+    }),
     accountType: 'super_bulk',
     connection,
   });
@@ -632,7 +667,9 @@ export function createRegistrarService(config: {
     privateKey: config.dynadot.privateKey,
     accountId: config.dynadot.accountId,
     baseUrl: config.dynadot.baseUrl,
-    customLogger: config.customLogger,
+    customLogger: config.customLogger?.child({
+      registrar: Registrars.DynadotRegular,
+    }),
     accountType: 'bulk',
     connection,
     overrideKey: Registrars.DynadotRegular,

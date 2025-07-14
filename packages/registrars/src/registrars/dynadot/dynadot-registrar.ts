@@ -884,9 +884,6 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
     if (queries.length === 0) {
       return [];
     }
-    if (queries.length === 1) {
-      return [await this.searchForDomain(queries[0])];
-    }
     const batchSize = 100;
     const batches = splitEvery(batchSize, queries);
     const nonPremiumPrices =

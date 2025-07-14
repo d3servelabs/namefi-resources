@@ -88,11 +88,14 @@ export const searchRouter = createTRPCRouter({
         return;
       }
 
-      // split the domains into chunks of 3, but keep the first domain alone in the first chunk
-      const chunks = [
-        [domains[0]],
-        ...splitEvery(3 /** chunk size */, drop(1, domains)),
-      ];
+      yield* await getDomainListInfoWithAbortSignal(
+        [domains[0] as NamefiNormalizedDomain],
+        signal,
+        ctx.user,
+      );
+
+      // split the domains into chunks of 3,
+      const chunks = splitEvery(3 /** chunk size */, drop(1, domains));
       const promises = chunks.map((names) =>
         getDomainListInfoWithAbortSignal(names, signal, ctx.user),
       );
