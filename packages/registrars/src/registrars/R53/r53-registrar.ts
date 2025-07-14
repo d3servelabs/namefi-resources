@@ -68,7 +68,7 @@ import type {
   RenewDomainCommandOutput,
   TransferDomainCommandInput,
 } from '@aws-sdk/client-route-53-domains';
-import { indexBy, isNil } from 'ramda';
+import { indexBy, isNil, groupBy } from 'ramda';
 import type { PunycodeDomainName } from '#lib/data/validations';
 import { assertPunycodeDomainName } from '#lib/data/validations';
 import {
@@ -446,9 +446,42 @@ export class R53RegistrarService extends AbstractRegistrarService {
   async bulkSearch(
     queries: PunycodeDomainName[],
   ): Promise<DomainQueryResult[]> {
-    return pMap(queries, (query) => this.searchForDomain(query), {
-      concurrency: 10,
-    });
+    const allowedParentDomains = new Set(await this.getAllowedParentDomains());
+    const { notSupported = [], supported = [] } = groupBy((query) => {
+      const tld = getTldFromDomainName(query);
+      if (isNil(tld) || !allowedParentDomains.has(tld)) {
+        return 'notSupported';
+      }
+      return 'supported';
+    }, queries);
+    const notSupportedResultsMap = new Map(
+      notSupported.map((query) => [
+        query,
+        {
+          domainName: query,
+          price: null,
+          available: DomainAvailability.UNAVAILABLE,
+          isPremium: false,
+        },
+      ]),
+    );
+
+    const supportedResults = await pMap(supported, (query) =>
+      this.searchForDomain(query),
+    );
+    const supportedResultsMap = new Map(
+      supportedResults.map((result) => [result.domainName, result]),
+    );
+    return queries.map(
+      (query) =>
+        notSupportedResultsMap.get(query) ??
+        supportedResultsMap.get(query) ?? {
+          domainName: query,
+          price: null,
+          available: DomainAvailability.UNAVAILABLE,
+          isPremium: false,
+        },
+    );
   }
 
   async getSuggestions(
