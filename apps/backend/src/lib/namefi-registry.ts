@@ -123,27 +123,28 @@ export const getDomainListInfo = async (
   user?: { privyUserId: string } | null,
 ): Promise<DomainAvailabilityInfo[]> => {
   // Query the database for NFTs matching the provided domain names
-  const nfts = await db.query.namefiNftTable.findMany({
-    where: (nft, { inArray }) => inArray(nft.normalizedDomainName, domains),
-  });
+  const [nfts, pendingOrdersMap] = await Promise.all([
+    db.query.namefiNftTable.findMany({
+      where: (nft, { inArray }) => inArray(nft.normalizedDomainName, domains),
+    }),
+    checkIfDomainsHavePendingOrders(domains),
+  ]);
 
   // Create a map of domain names to their corresponding NFT records for efficient lookup
   const nftMap = new Map(
     nfts.map((nft) => [nft.normalizedDomainName, nft]),
   ) as Map<NamefiNormalizedDomain, NamefiNftSelect>;
 
-  //get a map of domains that have pending orders
-  const pendingOrdersMap = await checkIfDomainsHavePendingOrders(domains);
-
   const { sld = [], _3ld = [] } = groupBy((domain) => {
     // Parse the domain to extract its components
     const domainParseResult = parseDomain(domain);
     // Return default values for invalid or unsupported domains
-    if (
-      domainParseResult.type !== ParseResultType.Listed ||
-      pendingOrdersMap.get(domain)?.hasPendingOrders
-    ) {
+    if (domainParseResult.type !== ParseResultType.Listed) {
       return 'invalid';
+    }
+    // if the domain has a pending order, return 'order-pending'
+    if (pendingOrdersMap.get(domain)?.hasPendingOrders) {
+      return 'orderPending';
     }
 
     const { levels } = getDomainLevels(domain);

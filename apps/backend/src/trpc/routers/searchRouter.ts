@@ -11,6 +11,9 @@ import {
 } from '#lib/namefi-registry';
 import { authedOrPublicProcedure, createTRPCRouter } from '../base';
 import { generateDomainSuggestions } from '#lib/domain-suggestions';
+import { drop, splitEvery } from 'ramda';
+import type { UserSelect } from '@namefi-astra/db';
+import { promiseWithAbortSignal } from '@namefi-astra/utils/promises/promiseWithAbortSignal';
 
 export const searchRouter = createTRPCRouter({
   isDomainAvailable: authedOrPublicProcedure
@@ -79,51 +82,41 @@ export const searchRouter = createTRPCRouter({
         domains: z.array(namefiNormalizedDomainSchema).min(1),
       }),
     )
-    .subscription(async function* (opts) {
-      const sleep = (ms: number) =>
-        new Promise<void>((resolve, reject) => {
-          const id = setTimeout(resolve, ms);
-          opts.signal?.addEventListener('abort', () => {
-            clearTimeout(id);
-            reject(new Error('aborted'));
-          });
-        });
+    .subscription(async function* ({ input: { domains }, signal, ctx }) {
+      if (domains.length === 0 || signal?.aborted) {
+        yield* [];
+        return;
+      }
 
-      const safeFetch = async (names: NamefiNormalizedDomain[]) => {
-        if (opts.signal?.aborted) return [];
-        return Promise.race([
-          getDomainListInfo(names, opts.ctx.user),
-          new Promise<DomainAvailabilityInfo[]>((resolve) => {
-            opts.signal?.addEventListener('abort', () => {
-              resolve([]);
-            });
-          }),
-        ]);
-      };
+      // split the domains into chunks of 3, but keep the first domain alone in the first chunk
+      const chunks = [
+        [domains[0]],
+        ...splitEvery(3 /** chunk size */, drop(1, domains)),
+      ];
+      const promises = chunks.map((names) =>
+        getDomainListInfoWithAbortSignal(names, signal, ctx.user),
+      );
 
-      const { domains } = opts.input;
-      const Chunk = 3;
-
-      try {
-        // For single domain queries, process immediately
-        if (domains.length === 1) {
-          for (const info of await safeFetch(domains)) yield info;
-          return;
+      for (const promise of promises) {
+        if (signal?.aborted) break;
+        try {
+          yield* await promise;
+        } catch (error) {
+          logger.error({ error }, 'Search subscription error');
+          throw error;
         }
-
-        for (const info of await safeFetch([domains[0]])) yield info;
-
-        for (let i = 1; i < domains.length; i += Chunk) {
-          if (opts.signal?.aborted) break;
-
-          const chunk = domains.slice(i, i + Chunk);
-          for (const info of await safeFetch(chunk)) yield info;
-
-          if (i + Chunk < domains.length) await sleep(300);
-        }
-      } catch (error) {
-        logger.error('Search subscription error:', error);
-        throw error;
       }
     }),
 });
+
+const getDomainListInfoWithAbortSignal = async (
+  names: NamefiNormalizedDomain[],
+  signal: AbortSignal | undefined | null,
+  user: UserSelect | null,
+) => {
+  return promiseWithAbortSignal(
+    () => getDomainListInfo(names, user),
+    signal,
+    [],
+  );
+};
