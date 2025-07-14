@@ -37,8 +37,16 @@ function setupLimiter({
   connection?: Bottleneck.IORedisConnection | Bottleneck.RedisConnection;
 }) {
   const id = `dynadot-${md5(apiKey)}`;
+  const logger = pino({
+    name: 'DynadotLimiter',
+  }).child({
+    context: {
+      id,
+    },
+  });
+
   if (!limiters[id]) {
-    console.log(
+    logger.info(
       `Setting up limiter for ${id} with ${requestsPerSecond} requests per second`,
     );
 
@@ -52,7 +60,7 @@ function setupLimiter({
 
     limiter.on('failed', async (error, jobInfo) => {
       const id = jobInfo.options.id;
-      console.warn(`Job ${id} failed: ${error}`);
+      logger.warn(`Job ${id} failed: ${error}`);
 
       if (
         retryWhenBusy &&
@@ -62,9 +70,17 @@ function setupLimiter({
         error.message.includes('Threads Busy')
       ) {
         const delay = crypto.randomInt(retryDelay, retryDelay * 1.5);
-        console.log(`Retrying job ${id} in ${delay}ms!`);
+        logger.info(`Retrying job ${id} in ${delay}ms!`);
         return delay;
       }
+    });
+
+    limiter.on('error', (error) => {
+      logger.error({ error }, 'Limiter error');
+    });
+
+    limiter?.connection?.on('error', (error) => {
+      logger.error({ error }, 'Redis connection error');
     });
 
     limiters[id] = limiter;

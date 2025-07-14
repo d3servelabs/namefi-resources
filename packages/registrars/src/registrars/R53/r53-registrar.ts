@@ -91,6 +91,14 @@ function setupLimiter({
 }: {
   connection?: Bottleneck.IORedisConnection | Bottleneck.RedisConnection;
 }) {
+  const logger = pino({
+    name: 'R53Limiter',
+  }).child({
+    context: {
+      id: 'r53-registrar',
+    },
+  });
+
   if (limiter) {
     return limiter;
   }
@@ -105,9 +113,9 @@ function setupLimiter({
 
   limiter.on('failed', async (error, jobInfo) => {
     const id = jobInfo.options.id;
-    console.warn(`[R53_LIMITER] Job ${id} failed: ${error}`);
+    logger.warn(`Job ${id} failed: ${error}`);
     if (jobInfo.retryCount > 3) {
-      console.log('[R53_LIMITER] Job failed too many times, skipping');
+      logger.info('Job failed too many times, skipping');
       return;
     }
 
@@ -121,10 +129,17 @@ function setupLimiter({
         const delay = crypto.randomInt(1000, 2000);
         return delay;
       }
-      console.log('[R53_LIMITER] R53 error', error);
+      logger.warn({ error }, 'R53 error');
     } else {
-      console.log('[R53_LIMITER] Other error', error);
+      logger.warn({ error }, 'Other error');
     }
+  });
+  limiter.on('error', (error) => {
+    logger.error({ error }, 'Limiter error');
+  });
+
+  limiter?.connection?.on('error', (error) => {
+    logger.error({ error }, 'Redis connection error');
   });
 }
 
