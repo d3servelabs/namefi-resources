@@ -12,8 +12,6 @@ import type { DynadotCommand, DynadotResponse } from './common-types';
 import { DynadotBaseErrorMessage } from './common-types';
 import Bottleneck from 'bottleneck';
 import crypto from 'crypto';
-import { JitterTrng } from 'jittertrng';
-const jitter = new JitterTrng();
 
 function md5(str: string) {
   return crypto.createHash('md5').update(str).digest('hex');
@@ -63,7 +61,7 @@ function setupLimiter({
         error instanceof Error &&
         error.message.includes('Threads Busy')
       ) {
-        const delay = jitter.randomInt(retryDelay, retryDelay * 1.5);
+        const delay = crypto.randomInt(retryDelay, retryDelay * 1.5);
         console.log(`Retrying job ${id} in ${delay}ms!`);
         return delay;
       }

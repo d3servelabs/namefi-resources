@@ -82,8 +82,7 @@ import pMap from 'p-map';
 import { getTldFromDomainName } from '#lib/get-tld';
 import NodeCache from '@cacheable/node-cache';
 import Bottleneck from 'bottleneck';
-import { JitterTrng } from 'jittertrng';
-const jitter = new JitterTrng();
+import crypto from 'crypto';
 
 let limiter: Bottleneck;
 
@@ -119,7 +118,7 @@ function setupLimiter({
         error.name === 'TimeoutError' ||
         (error as any).code === 'ETIMEDOUT'
       ) {
-        const delay = jitter.randomInt(1000, 2000);
+        const delay = crypto.randomInt(1000, 2000);
         return delay;
       }
       console.log('[R53_LIMITER] R53 error', error);
@@ -165,6 +164,7 @@ export class R53RegistrarService extends AbstractRegistrarService {
     super(Registrars.Route53);
     this.logger = customLogger ?? pino({ name: R53RegistrarService.name });
     this.logger.info('R53RegistrarService constructor');
+    setupLimiter({ connection });
 
     this.client = new Route53DomainsClient({
       region,
@@ -173,6 +173,8 @@ export class R53RegistrarService extends AbstractRegistrarService {
         secretAccessKey,
       },
     });
+
+    this.send = limiter.wrap(this.client.send.bind(this.client));
     this.cache.on('expired', async () => {
       this.logger.info('prices cache expired');
       await this._updatePrices();
@@ -180,9 +182,6 @@ export class R53RegistrarService extends AbstractRegistrarService {
     this.getAllowedParentDomains().then((tlds) => {
       this.logger.info({ tlds: tlds.length }, 'R53 allowed parent domains');
     });
-
-    setupLimiter({ connection });
-    this.send = limiter.wrap(this.client.send.bind(this.client));
   }
 
   async getAllowedParentDomains(): Promise<PunycodeDomainName[]> {

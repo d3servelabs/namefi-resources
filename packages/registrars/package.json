@@ -31,7 +31,6 @@
     "exponential-backoff": "^3.1.2",
     "https-proxy-agent": "^7.0.6",
     "ioredis": "^5.6.1",
-    "jittertrng": "^0.1.0",
     "jsesc": "^3.1.0",
     "p-all": "^5.0.0",
     "p-map": "^7.0.3",
