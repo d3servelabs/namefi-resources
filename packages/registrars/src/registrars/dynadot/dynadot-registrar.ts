@@ -76,12 +76,23 @@ import { supportsDnssec } from '#lib/supports-dnssec';
 import { Registrars } from '../registrars-keys';
 import { fromDynadotContactsMap } from './helpers';
 import { getTldFromDomainName } from '#lib/get-tld';
+import NodeCache from '@cacheable/node-cache';
 
 const DYNADOT_DOMAIN_REGISTER_CHECK_TIME_WINDOW_IN_MINUTES = 30;
 
 export class DynadotRegistrarService extends AbstractRegistrarService {
   readonly logger: pino.Logger;
   private readonly client: Dynadot;
+
+  cache: NodeCache = new NodeCache({
+    stdTTL: 60 * 60 * 12, // 12 hours in seconds
+    checkperiod: 60 * 60 * 12, // 12 hours in seconds
+    deleteOnExpire: true,
+  });
+
+  private get priceMap() {
+    return this.cache.get<Record<string, DomainPricingDetails>>('tld_prices');
+  }
 
   constructor(config: {
     apiKey: string;
@@ -136,6 +147,19 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
         backoff: config.retryBackoff ?? 1000,
       },
     });
+    this.getAllowedParentDomains().then((tlds) => {
+      this.logger.info({ tlds: tlds.length }, 'Dynadot allowed parent domains');
+    });
+    this.cache.on('expired', async () => {
+      this.logger.info('prices cache expired');
+      await this.getTldPrices();
+    });
+  }
+
+  async getAllowedParentDomains(): Promise<PunycodeDomainName[]> {
+    return this.getTldPrices().then((pricing) =>
+      Object.keys(pricing).map((tld) => toPunycodeDomainName(tld)),
+    );
   }
 
   async registerDomain(
@@ -496,40 +520,58 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
     }
   }
 
-  async _getTldPrices(options = { useCachedValue: false }) {
-    const response = await this.client.command(DynadotCommand.tld_price, {
+  async getTldPrices(options?: {}) {
+    if (this.priceMap) {
+      return this.priceMap;
+    }
+    const commandResults = await this.client.command(DynadotCommand.tld_price, {
       currency: 'USD',
     });
 
-    assertNot(responseFailed(response.TldPriceResponse), 'Response Failed');
-    return response.TldPriceResponse;
-  }
+    assertNot(
+      responseFailed(commandResults.TldPriceResponse),
+      'Response Failed',
+    );
+    const response = commandResults.TldPriceResponse;
 
-  async getTldPrices(options = { useCachedValue: false }) {
-    const response = await this._getTldPrices(options);
     if (response.Currency !== 'USD') {
       throw new Error('Unsupported currency');
     }
-    return Object.fromEntries(
-      response.TldPrice.map((value) => [
-        value.Tld.replace(/^\./, ''),
-        {
-          registrationPrice: singleYearPricingTemplate(
-            Math.ceil(Number.parseFloat(value.Price.Register)),
-          ),
-          renewalPrice: singleYearPricingTemplate(
-            Math.ceil(Number.parseFloat(value.Price.Renew)),
-          ),
-          importPrice: singleYearPricingTemplate(
-            Math.ceil(Number.parseFloat(value.Price.Transfer)),
-          ),
-          changeOwnershipPrice: singleYearPricingTemplate(0),
-          restorationPrice: singleYearPricingTemplate(
-            Math.ceil(Number.parseFloat(value.Price.Restore) * 10),
-          ),
-        } as DomainPricingDetails,
-      ]),
+    const prices = Object.fromEntries(
+      response.TldPrice.map((value) => {
+        const registerPrice = Math.ceil(
+          Number.parseFloat(value.Price.Register),
+        );
+        const renewPrice = Math.ceil(Number.parseFloat(value.Price.Renew));
+        const multiYearRegistrationPrice = range(0, 10).map(
+          (index) => registerPrice + renewPrice * index,
+        );
+
+        const registrationPrice =
+          renewPrice > registerPrice
+            ? multiYearPricingTemplate(multiYearRegistrationPrice)
+            : singleYearPricingTemplate(registerPrice);
+
+        return [
+          value.Tld.replace(/^\./, ''),
+          {
+            registrationPrice: registrationPrice,
+            renewalPrice: singleYearPricingTemplate(
+              Math.ceil(Number.parseFloat(value.Price.Renew)),
+            ),
+            importPrice: singleYearPricingTemplate(
+              Math.ceil(Number.parseFloat(value.Price.Transfer)),
+            ),
+            changeOwnershipPrice: singleYearPricingTemplate(0),
+            restorationPrice: singleYearPricingTemplate(
+              Math.ceil(Number.parseFloat(value.Price.Restore) * 10),
+            ),
+          } as DomainPricingDetails,
+        ];
+      }),
     );
+    this.cache.set('tld_prices', prices);
+    return prices;
   }
 
   async getDomainPriceDetails(
@@ -548,31 +590,17 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
     options = { useCachedValue: false },
   ): Promise<DomainPricingDetails> {
     assertPunycodeDomainName(domainName);
+    const tld = getTldFromDomainName(domainName);
+    if (isNil(tld)) {
+      throw new Error(`could not determine price for ${domainName}`);
+    }
+    const response = await this.getTldPrices(options);
+    const pricing = response[tld];
+    if (isNil(pricing)) {
+      throw new Error(`could not determine price for ${domainName}`);
+    }
 
-    const response = await this._getTldPrices(options);
-    const pricing = response.TldPrice.find((p) => domainName.endsWith(p.Tld));
-    assertNotNil(pricing, 'Pricing Not found');
-
-    const registerPrice = Math.ceil(Number.parseFloat(pricing.Price.Register));
-    const renewPrice = Math.ceil(Number.parseFloat(pricing.Price.Renew));
-    const multiYearRegistrationPrice = range(0, 10).map(
-      (index) => registerPrice + renewPrice * index,
-    );
-
-    const registrationPrice =
-      renewPrice > registerPrice
-        ? multiYearPricingTemplate(multiYearRegistrationPrice)
-        : singleYearPricingTemplate(registerPrice);
-
-    return {
-      registrationPrice: registrationPrice,
-      renewalPrice: singleYearPricingTemplate(
-        Math.ceil(Number.parseFloat(pricing.Price.Renew)),
-      ),
-      importPrice: singleYearPricingTemplate(
-        Math.ceil(Number.parseFloat(pricing.Price.Transfer)),
-      ),
-    };
+    return pricing;
   }
 
   async _bulkGetNonPremiumDomainPriceDetails(
@@ -581,11 +609,8 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
   ): Promise<Record<PunycodeDomainName, DomainPricingDetails | null>> {
     domainNames.forEach(assertPunycodeDomainName);
 
-    const { TldPrice } = await this._getTldPrices(options);
-    assertNotNil(TldPrice, 'Pricing Not found');
-    const pricingMap = fromPairs(TldPrice.map((p) => [p.Tld, p]));
-
-    return fromPairs(
+    const pricingMap = await this.getTldPrices(options);
+    const pricing = fromPairs(
       domainNames.map((domainName) => {
         const tld = getTldFromDomainName(domainName);
         if (isNil(tld)) {
@@ -594,37 +619,11 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
             DomainPricingDetails | null,
           ];
         }
-
-        const pricing = pricingMap[`.${tld}`];
-        assertNotNil(pricing, 'Pricing Not found');
-
-        const registerPrice = Math.ceil(
-          Number.parseFloat(pricing.Price.Register),
-        );
-        const renewPrice = Math.ceil(Number.parseFloat(pricing.Price.Renew));
-        const multiYearRegistrationPrice = range(0, 10).map(
-          (index) => registerPrice + renewPrice * index,
-        );
-
-        const registrationPrice =
-          renewPrice > registerPrice
-            ? multiYearPricingTemplate(multiYearRegistrationPrice)
-            : singleYearPricingTemplate(registerPrice);
-
-        return [
-          domainName,
-          {
-            registrationPrice: registrationPrice,
-            renewalPrice: singleYearPricingTemplate(
-              Math.ceil(Number.parseFloat(pricing.Price.Renew)),
-            ),
-            importPrice: singleYearPricingTemplate(
-              Math.ceil(Number.parseFloat(pricing.Price.Transfer)),
-            ),
-          },
-        ] as [PunycodeDomainName, DomainPricingDetails];
+        return [domainName, pricingMap[tld]];
       }),
     );
+
+    return pricing;
   }
 
   async getDelegationSigner(

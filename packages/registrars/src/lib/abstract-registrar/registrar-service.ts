@@ -119,6 +119,9 @@ export abstract class AbstractRegistrarService<T extends string = string> {
   ): Promise<LongRunningOperationResult>;
 
   //#endregion Locks
+  abstract getAllowedParentDomains(
+    options?: any,
+  ): Promise<PunycodeDomainName[]>;
 
   abstract getDomainDetails(
     domainName: PunycodeDomainName,

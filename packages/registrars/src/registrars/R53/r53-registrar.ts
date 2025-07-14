@@ -61,13 +61,14 @@ import type {
   DomainPrice,
   ListDomainsCommandInput,
   ListDomainsCommandOutput,
+  ListPricesCommandInput,
   ListPricesCommandOutput,
   RegisterDomainCommandInput,
   RegisterDomainCommandOutput,
   RenewDomainCommandOutput,
   TransferDomainCommandInput,
 } from '@aws-sdk/client-route-53-domains';
-import { isNil } from 'ramda';
+import { indexBy, isNil } from 'ramda';
 import type { PunycodeDomainName } from '#lib/data/validations';
 import { assertPunycodeDomainName } from '#lib/data/validations';
 import {
@@ -77,17 +78,30 @@ import {
   toR53ContactsMap,
 } from './helpers';
 import pMap from 'p-map';
+import { getTldFromDomainName } from '#lib/get-tld';
+import NodeCache from '@cacheable/node-cache';
 
 export class R53RegistrarService extends AbstractRegistrarService {
   nameservers = [1, 2, 3, 4].map((i) => `ns${i}.namefi.io`);
   client: Route53DomainsClient;
 
+  // In memory cache for prices
+  cache: NodeCache = new NodeCache({
+    stdTTL: 60 * 60 * 12, // 12 hours in seconds
+    checkperiod: 60 * 60 * 12, // 12 hours in seconds
+    deleteOnExpire: true,
+  });
   readonly logger: pino.Logger;
 
-  priceMap: Record<
-    any,
+  private get priceMap(): Record<
+    string,
     NonNullable<ListPricesCommandOutput['Prices']>[number]
-  > = {};
+  > {
+    return this.cache.get('tld_prices') as Record<
+      string,
+      NonNullable<ListPricesCommandOutput['Prices']>[number]
+    >;
+  }
 
   constructor({
     region,
@@ -111,6 +125,20 @@ export class R53RegistrarService extends AbstractRegistrarService {
         secretAccessKey,
       },
     });
+    this.cache.on('expired', async () => {
+      this.logger.info('prices cache expired');
+      await this._updatePrices();
+    });
+    this.getAllowedParentDomains().then((tlds) => {
+      this.logger.info({ tlds: tlds.length }, 'R53 allowed parent domains');
+    });
+  }
+
+  async getAllowedParentDomains(): Promise<PunycodeDomainName[]> {
+    if (Object.keys(this.priceMap).length === 0) {
+      await this._updatePrices();
+    }
+    return Object.keys(this.priceMap).map((tld) => toPunycodeDomainName(tld));
   }
 
   async registerDomain(
@@ -654,17 +682,24 @@ export class R53RegistrarService extends AbstractRegistrarService {
 
   private async _updatePrices() {
     try {
-      const res = await this.client.send(
-        new ListPricesCommand({ MaxItems: 1000 }),
-      );
-      res.Prices?.forEach((prices) => {
-        if (prices.Name) {
-          this.priceMap[prices.Name] = prices;
-        }
-      });
-      return this.priceMap;
+      let marker: string | undefined;
+      const prices: ListPricesCommandOutput['Prices'] = [];
+      do {
+        const input: ListPricesCommandInput = {
+          MaxItems: 1000,
+          Marker: marker,
+        };
+        const command = new ListPricesCommand(input);
+        const response = await this.client.send(command);
+        marker = response.NextPageMarker;
+        prices.push(...(response.Prices ?? []));
+      } while (marker);
+      const priceMap = indexBy((p) => p.Name, prices);
+      this.cache.set('tld_prices', priceMap);
+      return priceMap;
     } catch (e) {
       this.logger.error(e);
+      throw e;
     }
   }
 
@@ -680,20 +715,22 @@ export class R53RegistrarService extends AbstractRegistrarService {
   }: {
     domainName: PunycodeDomainName;
   }): Promise<DomainPrice> {
-    const levels = domainName.split('.'); // use tldts
-    const tld = levels.pop();
+    const tld = getTldFromDomainName(domainName);
     if (isNil(tld)) {
-      this.logger.error(`could not determine price for ${domainName}`);
       throw new Error(`could not determine price for ${domainName}`);
     }
-    if (!this.priceMap[tld]) {
-      const res = (await this.client.send(new ListPricesCommand({ Tld: tld })))
-        ?.Prices?.[0];
-      if (res) {
-        this.priceMap[tld] = res;
-      }
+
+    if (this.priceMap[tld]) {
+      return this.priceMap[tld];
     }
-    return this.priceMap[tld];
+    const res = (await this.client.send(new ListPricesCommand({ Tld: tld })))
+      ?.Prices?.[0];
+    if (!res) {
+      throw new Error(
+        `could not determine price for ${domainName} with tld ${tld}`,
+      );
+    }
+    return res;
   }
 
   async _getDomainSuggestionsWithPrices(input: {

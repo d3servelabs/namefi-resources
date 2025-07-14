@@ -5,6 +5,42 @@ export type DynadotTldPriceCommandParams = {
    * 	You can decide the currency type and this parameter supported are "USD","CNY", "GBP","EUR","INR","CAD" and so on.If you missed this parameter,we will use the account default currency
    */
   currency?: DynadotCurrency;
+  /**
+   * The number of tlds to return per page
+   */
+  count_per_page?: number;
+  /**
+   * The page index to return
+   */
+  page_index?: number;
+  /**
+   * 1) RankAsc (Default)
+   * 2) RankDesc
+   * 3) NameAsc
+   * 4) NameDesc
+   * 5) SalesAsc
+   * 6) SalesDesc
+   * 7) LaunchDateAsc
+   * 8) LaunchDateDesc
+   * 9) CountAsc
+   * 10) CountDesc
+   * 11) RegistryAsc
+   * 12) RegistryDesc
+   *
+   */
+  sort?:
+    | 'RankAsc'
+    | 'RankDesc'
+    | 'NameAsc'
+    | 'NameDesc'
+    | 'SalesAsc'
+    | 'SalesDesc'
+    | 'LaunchDateAsc'
+    | 'LaunchDateDesc'
+    | 'CountAsc'
+    | 'CountDesc'
+    | 'RegistryAsc'
+    | 'RegistryDesc';
 };
 
 export type DynadotTldPriceCommandOutput = {

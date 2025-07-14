@@ -76,6 +76,15 @@ export class RegistrarService extends AbstractRegistrarService {
     this.registrars = registrars;
   }
 
+  async getAllowedParentDomains(): Promise<PunycodeDomainName[]> {
+    const allowedParentDomains = await Promise.all(
+      this.getAllowedRegistrars().map((registrar) =>
+        this.registrars[registrar].getAllowedParentDomains(),
+      ),
+    );
+    return Array.from(new Set(flatten(allowedParentDomains)));
+  }
+
   registerDomain(
     args: WithRegistrar<RegisterDomainInput>,
   ): Promise<LongRunningOperationResult<any>> {

@@ -1,3 +1,5 @@
+import { fileURLToPath } from 'url';
+
 export const Route53TLDs = [
   'ac',
   'academy',
@@ -775,3 +777,22 @@ export const AVAILABLE_TLDS = new Set(
 );
 
 export const IMPORT_NOT_ALLOWED_TLDS = new Set(['ai']);
+
+function main() {
+  const route53tlDsSet = new Set(Route53TLDs);
+  const dynadotTlDsSet = new Set(DynadotTLDs);
+  const onlyRoute53tlDs = Route53TLDs.filter((tld) => !dynadotTlDsSet.has(tld));
+  const onlyDynadotTlDs = DynadotTLDs.filter((tld) => !route53tlDsSet.has(tld));
+  console.log('onlyRoute53TLDs', onlyRoute53tlDs);
+  console.log('onlyDynadotTLDs', onlyDynadotTlDs);
+  console.log('onlyRoute53TLDs.length', onlyRoute53tlDs.length);
+  console.log('onlyDynadotTLDs.length', onlyDynadotTlDs.length);
+}
+
+// main.mjs or main.js (in ESM mode)
+const __filename = fileURLToPath(import.meta.url);
+const entrypoint = process.argv[1];
+
+if (__filename === entrypoint) {
+  main();
+}
