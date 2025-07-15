@@ -28,9 +28,6 @@ const storageConfig = {
   s3Client,
 };
 
-// Maximum number of AI generations allowed per user per month
-const MAX_GENERATIONS_PER_USER_PER_MONTH = 25;
-
 /**
  * Check if user has reached the maximum number of AI generations for the current month
  * @param userId - The user ID to check
@@ -48,7 +45,7 @@ async function checkUserGenerationLimit(userId: string): Promise<boolean> {
     );
 
   const currentCount = result[0]?.count || 0;
-  return currentCount >= MAX_GENERATIONS_PER_USER_PER_MONTH;
+  return currentCount >= config.MAX_AI_GENERATIONS_PER_USER_PER_MONTH;
 }
 
 const generateLogoInputSchema = z.object({
@@ -74,7 +71,7 @@ export const aiRouter = createTRPCRouter({
         if (hasReachedLimit) {
           throw new TRPCError({
             code: 'FORBIDDEN',
-            message: `You have reached the maximum limit of ${MAX_GENERATIONS_PER_USER_PER_MONTH} AI generations for this month. Please try again next month or contact support for more information.`,
+            message: `You have reached the maximum limit of ${config.MAX_AI_GENERATIONS_PER_USER_PER_MONTH} AI generations for this month. Please try again next month or contact support for more information.`,
           });
         }
 
@@ -167,7 +164,7 @@ export const aiRouter = createTRPCRouter({
         if (hasReachedLimit) {
           throw new TRPCError({
             code: 'FORBIDDEN',
-            message: `You have reached the maximum limit of ${MAX_GENERATIONS_PER_USER_PER_MONTH} AI generations for this month. Please try again next month or contact support for more information.`,
+            message: `You have reached the maximum limit of ${config.MAX_AI_GENERATIONS_PER_USER_PER_MONTH} AI generations for this month. Please try again next month or contact support for more information.`,
           });
         }
 
@@ -372,13 +369,14 @@ export const aiRouter = createTRPCRouter({
     const currentCount = result[0]?.count || 0;
     const remainingGenerations = Math.max(
       0,
-      MAX_GENERATIONS_PER_USER_PER_MONTH - currentCount,
+      config.MAX_AI_GENERATIONS_PER_USER_PER_MONTH - currentCount,
     );
-    const hasReachedLimit = currentCount >= MAX_GENERATIONS_PER_USER_PER_MONTH;
+    const hasReachedLimit =
+      currentCount >= config.MAX_AI_GENERATIONS_PER_USER_PER_MONTH;
 
     return {
       currentCount,
-      maxGenerations: MAX_GENERATIONS_PER_USER_PER_MONTH,
+      maxGenerations: config.MAX_AI_GENERATIONS_PER_USER_PER_MONTH,
       remainingGenerations,
       hasReachedLimit,
     };

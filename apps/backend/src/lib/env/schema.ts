@@ -112,6 +112,10 @@ export const configSchema = z.object({
       SOCIAL: 'ai-social',
     }),
   DISALLOW_LIVE_PAYMENT_METHODS: z.boolean().optional().default(false),
+  /**
+   * Maximum number of AI generations allowed per user per month
+   */
+  MAX_AI_GENERATIONS_PER_USER_PER_MONTH: z.number().default(25),
 });
 
 export type ConfigInput = z.input<typeof configSchema>;
