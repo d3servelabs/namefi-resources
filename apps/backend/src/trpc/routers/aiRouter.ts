@@ -28,6 +28,29 @@ const storageConfig = {
   s3Client,
 };
 
+// Maximum number of AI generations allowed per user per month
+const MAX_GENERATIONS_PER_USER_PER_MONTH = 25;
+
+/**
+ * Check if user has reached the maximum number of AI generations for the current month
+ * @param userId - The user ID to check
+ * @returns Promise<boolean> - true if user has reached the monthly limit, false otherwise
+ */
+async function checkUserGenerationLimit(userId: string): Promise<boolean> {
+  const result = await db
+    .select({ count: count() })
+    .from(aiGenerationsTable)
+    .where(
+      and(
+        eq(aiGenerationsTable.userId, userId),
+        sql`${aiGenerationsTable.createdAt} >= date_trunc('month', now())`,
+      ),
+    );
+
+  const currentCount = result[0]?.count || 0;
+  return currentCount >= MAX_GENERATIONS_PER_USER_PER_MONTH;
+}
+
 const generateLogoInputSchema = z.object({
   brandName: namefiNormalizedDomainSchema,
   description: z.string().optional(),
@@ -46,6 +69,15 @@ export const aiRouter = createTRPCRouter({
     .input(generateLogoInputSchema)
     .mutation(async ({ input, ctx }) => {
       try {
+        // Check user generation limit before proceeding
+        const hasReachedLimit = await checkUserGenerationLimit(ctx.user.id);
+        if (hasReachedLimit) {
+          throw new TRPCError({
+            code: 'FORBIDDEN',
+            message: `You have reached the maximum limit of ${MAX_GENERATIONS_PER_USER_PER_MONTH} AI generations for this month. Please try again next month or contact support for more information.`,
+          });
+        }
+
         const { brandName, description, type, style } = input;
 
         // Step 1: Analyze brand and generate logo concept
@@ -130,6 +162,15 @@ export const aiRouter = createTRPCRouter({
     .input(generateMarketingImageInputSchema)
     .mutation(async ({ input, ctx }) => {
       try {
+        // Check user generation limit before proceeding
+        const hasReachedLimit = await checkUserGenerationLimit(ctx.user.id);
+        if (hasReachedLimit) {
+          throw new TRPCError({
+            code: 'FORBIDDEN',
+            message: `You have reached the maximum limit of ${MAX_GENERATIONS_PER_USER_PER_MONTH} AI generations for this month. Please try again next month or contact support for more information.`,
+          });
+        }
+
         const { domain, description, referenceLogoGenerationId } = input;
 
         // Step 1: Find reference generation if basedOnLogoCallId provided
@@ -316,4 +357,30 @@ export const aiRouter = createTRPCRouter({
         ),
       };
     }),
+
+  getUserGenerationUsage: protectedProcedure.query(async ({ ctx }) => {
+    const result = await db
+      .select({ count: count() })
+      .from(aiGenerationsTable)
+      .where(
+        and(
+          eq(aiGenerationsTable.userId, ctx.user.id),
+          sql`${aiGenerationsTable.createdAt} >= date_trunc('month', now())`,
+        ),
+      );
+
+    const currentCount = result[0]?.count || 0;
+    const remainingGenerations = Math.max(
+      0,
+      MAX_GENERATIONS_PER_USER_PER_MONTH - currentCount,
+    );
+    const hasReachedLimit = currentCount >= MAX_GENERATIONS_PER_USER_PER_MONTH;
+
+    return {
+      currentCount,
+      maxGenerations: MAX_GENERATIONS_PER_USER_PER_MONTH,
+      remainingGenerations,
+      hasReachedLimit,
+    };
+  }),
 });

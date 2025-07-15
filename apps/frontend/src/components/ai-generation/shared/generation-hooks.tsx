@@ -33,6 +33,11 @@ export function useLogoGeneration({ domain }: UseLogoGenerationProps) {
         queryClient.invalidateQueries({
           queryKey: trpc.ai.getUserDomains.queryKey(),
         });
+
+        // Invalidate the usage query to update the generation count
+        queryClient.invalidateQueries({
+          queryKey: trpc.ai.getUserGenerationUsage.queryKey(),
+        });
       },
       onError: (error: any) => {
         const errorMessage =
@@ -72,6 +77,11 @@ export function usePosterGeneration({ domain }: UsePosterGenerationProps) {
         // Also invalidate the user domains query to update counts
         queryClient.invalidateQueries({
           queryKey: trpc.ai.getUserDomains.queryKey(),
+        });
+
+        // Invalidate the usage query to update the generation count
+        queryClient.invalidateQueries({
+          queryKey: trpc.ai.getUserGenerationUsage.queryKey(),
         });
       },
       onError: (error: any) => {

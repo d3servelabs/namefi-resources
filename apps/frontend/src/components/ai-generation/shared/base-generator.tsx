@@ -2,7 +2,6 @@
 
 import { Card, CardContent } from '@/components/ui/shadcn/card';
 import { Form } from '@/components/ui/shadcn/form';
-import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState, type ReactNode } from 'react';
 import {
@@ -15,6 +14,8 @@ import {
 import { z } from 'zod';
 import { DomainField, DescriptionField } from './form-fields';
 import { GenerateSubmitButton } from './submit-button';
+import { useTRPC } from '@/utils/trpc';
+import { useQuery } from '@tanstack/react-query';
 
 // Base form schema with domain and description
 export const baseFormSchema = z.object({
@@ -27,6 +28,7 @@ export type BaseFormData = z.infer<typeof baseFormSchema>;
 interface BaseGeneratorProps<T extends FieldValues & BaseFormData> {
   onSubmit: (data: T) => void;
   isLoading?: boolean;
+  disabled?: boolean;
   fixedDomain?: string;
   formSchema: z.ZodSchema<any>;
   defaultValues: DefaultValues<T>;
@@ -44,6 +46,7 @@ interface BaseGeneratorProps<T extends FieldValues & BaseFormData> {
 export function BaseGenerator<T extends FieldValues & BaseFormData>({
   onSubmit,
   isLoading,
+  disabled,
   fixedDomain,
   formSchema,
   defaultValues,
@@ -53,6 +56,11 @@ export function BaseGenerator<T extends FieldValues & BaseFormData>({
   className = 'max-w-6xl mx-auto flex flex-col',
 }: BaseGeneratorProps<T>) {
   const [openPanel, setOpenPanel] = useState<string | null>(null);
+
+  const trpc = useTRPC();
+  const { data: usageData, isSuccess: isUsageSuccess } = useQuery({
+    ...trpc.ai.getUserGenerationUsage.queryOptions(),
+  });
 
   const form = useForm<T>({
     resolver: zodResolver(formSchema),
@@ -73,6 +81,11 @@ export function BaseGenerator<T extends FieldValues & BaseFormData>({
   };
 
   const domainToUse = fixedDomain || form.watch('domain' as any);
+
+  // Check if user has reached the monthly limit
+  const isLimitReached = usageData?.hasReachedLimit ?? false;
+  const isDisabled =
+    !form.formState.isValid || disabled || isLimitReached || !isUsageSuccess;
 
   return (
     <Form {...form}>
@@ -107,7 +120,7 @@ export function BaseGenerator<T extends FieldValues & BaseFormData>({
         {/* Submit Button */}
         <GenerateSubmitButton
           isLoading={isLoading}
-          disabled={!form.formState.isValid}
+          disabled={isDisabled}
           buttonText={submitButtonText}
           loadingText={submitLoadingText}
         />

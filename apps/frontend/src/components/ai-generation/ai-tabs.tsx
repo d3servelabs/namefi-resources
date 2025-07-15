@@ -5,6 +5,7 @@ import type { Generation } from '@namefi-astra/ai/types';
 import { TabSelector } from './tab-selector';
 import { LogoTab } from './logo-tab';
 import { PosterTab } from './poster-tab';
+import { GenerationUsage } from './generation-usage';
 
 interface AITabsProps {
   className?: string;
@@ -45,8 +46,7 @@ export function AITabs({
         onTabChange={setActiveTab}
         className={tabSelectorClassName}
       />
-
-      {/* Tab Content */}
+      <GenerationUsage className="my-6" />
       {activeTab === 'logo' ? (
         <LogoTab
           existingGenerations={logoTabProps?.existingGenerations}

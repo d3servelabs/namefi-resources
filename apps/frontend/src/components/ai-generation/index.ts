@@ -15,6 +15,7 @@ export { ImageGrid } from './image-grid';
 export { GenerationPreview } from './shared/generation-preview';
 export type { GeneratedItem } from './image-grid';
 export { AITabs } from './ai-tabs';
+export { GenerationUsage } from './generation-usage';
 
 // Export generation hooks and payload creators
 export {
