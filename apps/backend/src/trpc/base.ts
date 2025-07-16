@@ -194,7 +194,7 @@ export const publicProcedure = t.procedure.use(timingMiddleware);
 export const verifyUserAuthAndCreation = t.middleware<TrpcContextWithUser>(
   async ({ ctx, next }) => {
     try {
-      const authHeader = ctx.req.header('Authorization');
+      const authHeader = ctx.req?.header?.('Authorization');
       const user = await requireUserAuth(authHeader, ctx.testUser);
 
       return next({
@@ -220,7 +220,7 @@ export const verifyUserAuthAndCreation = t.middleware<TrpcContextWithUser>(
  */
 export const maybeVerifyUserAuthAndCreation =
   t.middleware<TrpcContextWithUserOrNull>(async ({ ctx, next }) => {
-    const authHeader = ctx.req.header('Authorization');
+    const authHeader = ctx.req?.header?.('Authorization');
     const { user } = await verifyUserAuthAndGetUser(authHeader, ctx.testUser);
 
     return next({
