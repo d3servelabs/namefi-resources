@@ -18,7 +18,7 @@ import { computeChargesInUsdOrThrow } from '@namefi-astra/registrars/multi-year-
 import { Loader2, SearchIcon, User, X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { isNotNil } from 'ramda';
-import { type FC, useCallback, useMemo, useState } from 'react';
+import { type FC, useCallback, useMemo, useState, useRef } from 'react';
 import FloatingCart from '../floating-cart';
 import { NamefiButton } from '../buttons/namefi-button';
 import { AnimatedCartButton } from '../buttons/animated-cart-button';
@@ -92,51 +92,66 @@ export const SearchInput: FC<{
   setQuery: (query: string) => void;
   isLoading: boolean;
   onSearch: () => void;
-}> = ({ query, setQuery, isLoading, onSearch }) => (
-  <div className="flex w-full max-w-3xl mx-auto">
-    <div className="flex items-center w-full bg-black/30 backdrop-blur-md rounded-lg p-1">
-      <div className="relative flex-1 bg-gray-700/80 rounded-md h-12 flex items-center">
-        <div className="flex items-center w-full px-3">
-          {isLoading ? (
-            <Loader2 className="h-5 w-5 text-gray-400 mr-2 shrink-0 animate-spin" />
-          ) : (
-            <SearchIcon className="h-5 w-5 text-gray-400 mr-2 shrink-0" />
-          )}
-          <Input
-            placeholder="Search for a domain..."
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
-            className="border-0 dark:bg-transparent h-full focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-gray-400 flex-1 md:text-lg shadow-none"
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                e.preventDefault();
-                onSearch(); // Trigger immediate search, bypassing debounce
-              }
-            }}
-          />
-          {query.length > 0 && (
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-8 w-8 rounded-md p-0 ml-1 shrink-0"
-              onClick={() => setQuery('')}
-            >
-              <X className="h-5 w-5 text-gray-400" />
-            </Button>
-          )}
+}> = ({ query, setQuery, isLoading, onSearch }) => {
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleSearchClick = useCallback(() => {
+    const trimmedQuery = query.trim();
+    if (trimmedQuery.length === 0) {
+      // If no query, focus the input
+      inputRef.current?.focus();
+    } else {
+      // If has query, search again
+      onSearch();
+    }
+  }, [query, onSearch]);
+
+  return (
+    <div className="flex w-full max-w-3xl mx-auto">
+      <div className="flex items-center w-full bg-black/30 backdrop-blur-md rounded-lg p-1">
+        <div className="relative flex-1 bg-gray-700/80 rounded-md h-12 flex items-center">
+          <div className="flex items-center w-full px-3">
+            {isLoading ? (
+              <Loader2 className="h-5 w-5 text-gray-400 mr-2 shrink-0 animate-spin" />
+            ) : (
+              <SearchIcon className="h-5 w-5 text-gray-400 mr-2 shrink-0" />
+            )}
+            <Input
+              ref={inputRef}
+              placeholder="Search for a domain..."
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              className="border-0 dark:bg-transparent h-full focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-gray-400 flex-1 md:text-lg shadow-none"
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault();
+                  onSearch();
+                }
+              }}
+            />
+            {query.length > 0 && (
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8 rounded-md p-0 ml-1 shrink-0"
+                onClick={() => setQuery('')}
+              >
+                <X className="h-5 w-5 text-gray-400" />
+              </Button>
+            )}
+          </div>
         </div>
+        <NamefiButton
+          onClick={handleSearchClick}
+          className="font-semibold rounded-md h-12 ml-1 text-lg w-[128px]"
+          title="Search"
+        >
+          Search
+        </NamefiButton>
       </div>
-      <NamefiButton
-        disabled={isLoading || query.length === 0}
-        onClick={onSearch}
-        className="font-semibold rounded-md h-12 ml-1 text-lg w-[128px]"
-        title="Search immediately (bypasses typing delay)"
-      >
-        {isLoading ? <Loader2 className="h-5 w-5 animate-spin" /> : 'Search'}
-      </NamefiButton>
     </div>
-  </div>
-);
+  );
+};
 
 // Progressive DomainCard that shows skeleton states for missing data
 export const DomainCard: FC<{
