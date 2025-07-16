@@ -8,7 +8,7 @@ import { itemTypeSchema } from '@namefi-astra/db/types';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { Loader2, Trash2 } from 'lucide-react';
 import { useCartRow } from '@/hooks/use-cart-row';
-import type { UnifiedCartItem } from '@/hooks/landing/use-cart';
+import type { UnifiedCartItem } from '@/hooks/use-cart';
 import type { DomainAvailabilityInfo } from '@namefi-astra/backend/trpc/types';
 import { useCallback } from 'react';
 

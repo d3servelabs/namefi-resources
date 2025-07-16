@@ -7,7 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/shadcn/card';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@/hooks/use-auth';
 import { ShieldAlert } from 'lucide-react';
 import Link from 'next/link';
 

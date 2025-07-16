@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext, useContext, type FC, type ReactNode } from 'react';
-import { useCart, type UseCart } from '@/hooks/landing/use-cart';
+import { useCart, type UseCart } from '@/hooks/use-cart';
 
 export const CartContext = createContext<UseCart | null>(null);
 

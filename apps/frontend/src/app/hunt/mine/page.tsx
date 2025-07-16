@@ -8,15 +8,15 @@ import {
   TabsList,
   TabsTrigger,
 } from '@/components/ui/shadcn/tabs';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@/hooks/use-auth';
 import { useTRPC } from '@/utils/trpc';
 import { useQuery } from '@tanstack/react-query';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { useMemo, useState } from 'react';
-import { PaginationControls } from '../components/PaginationControl';
-import { MySubmittedDomains } from './components/MySubmittedDomains';
-import { MyUpvotedDomains } from './components/MyUpvotedDomains';
+import { PaginationControls } from '@/components/hunt/pagination-control';
+import { MySubmittedDomains } from '@/components/hunt/mine/my-submitted-domains';
+import { MyUpvotedDomains } from '@/components/hunt/mine/my-upvoted-domains';
 
 const DOMAINS_LIST_PER_PAGE_LIMIT = 20;
 

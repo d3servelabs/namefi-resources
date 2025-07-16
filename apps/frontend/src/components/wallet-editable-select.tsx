@@ -13,7 +13,7 @@ import { CHAINS } from '@namefi-astra/utils';
 import type { ChangeEvent, ReactNode } from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useResizeObserver } from 'usehooks-ts';
-import { NetworkLogo } from './NetworkLogo';
+import { NetworkLogo } from './network-logo';
 import { Badge } from './ui/shadcn/badge';
 
 interface WalletEditableSelectProps {

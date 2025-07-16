@@ -1,6 +1,6 @@
 import { useCartContext } from '@/providers/cart';
 import { useMemo } from 'react';
-import { domainKey, isPendingDelete } from './landing/use-cart';
+import { domainKey, isPendingDelete } from './use-cart';
 
 export function useCartRow(domain: string | undefined) {
   const cart = useCartContext();

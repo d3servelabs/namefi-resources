@@ -3,7 +3,7 @@
 import { Input } from '@/components/ui/shadcn/input';
 import { useCartRow } from '@/hooks/use-cart-row';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@/hooks/use-auth';
 import { useTRPC } from '@/utils/trpc';
 import { useQuery } from '@tanstack/react-query';
 import { CheckIcon, Loader2, SearchIcon } from 'lucide-react';
@@ -11,8 +11,8 @@ import Link from 'next/link';
 import { useCallback, useMemo, useState } from 'react';
 import type { ChangeEvent, FC } from 'react';
 import { useDebounceValue } from 'usehooks-ts';
-import { UserDropdown } from './dropdowns/UserDropdown';
-import { NamefiButton } from './namefi-button';
+import { UserDropdown } from './dropdowns/user-dropdown';
+import { NamefiButton } from './buttons/namefi-button';
 import {
   Accordion,
   AccordionContent,

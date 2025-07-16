@@ -1,4 +1,4 @@
-import { DomainManagement } from '@/components/DomainAndDnsManagment/DomainManagement';
+import { DomainManagement } from '@/components/domain-and-dns-managment/domain-management';
 
 type Props = {
   params: Promise<{ domain: string }>;

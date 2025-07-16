@@ -14,7 +14,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/shadcn/tooltip';
 import { Unauthorized } from '@/components/unauthorized';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@/hooks/use-auth';
 import { getShortAddress } from '@/lib/utils';
 import { formatAmountInUSD } from '@/utils/number';
 import { useTRPC } from '@/utils/trpc';

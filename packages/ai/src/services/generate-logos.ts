@@ -18,9 +18,9 @@ import {
 export async function generateLogo(
   params: GenerateLogoParams,
 ): Promise<GeneratedLogo | null> {
-  const { brandName, logoConcept, storage } = params;
+  const { domain, logoConcept, storage } = params;
 
-  console.log(`Generating logo design for ${brandName}`);
+  console.log(`Generating logo design for ${domain}`);
   console.log(`Type: ${logoConcept.type} - Style: ${logoConcept.style}`);
   console.log(`Prompt: ${logoConcept.prompt}`);
 
@@ -32,7 +32,7 @@ export async function generateLogo(
     // Create enhanced prompt
     const enhancedPrompt = enhanceLogoPrompt({
       basePrompt: logoConcept.prompt,
-      brandName,
+      domain,
       logoType: logoConcept.type,
       style: logoConcept.style,
     });

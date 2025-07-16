@@ -1,4 +1,4 @@
-import { cartItemsToInteractionLoggingCartItems } from '@/hooks/landing/use-cart';
+import { cartItemsToInteractionLoggingCartItems } from '@/hooks/use-cart';
 import { useCartContext } from '@/providers/cart';
 import {
   type BeginCheckoutEvent,

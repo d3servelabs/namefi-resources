@@ -16,7 +16,7 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import { headers } from 'next/headers';
 import type { ReactNode } from 'react';
 import './globals.css';
-import DatadogRum from '@/components/DatadogRum';
+import DatadogRum from '@/components/datadog-rum';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 const geistSans = Geist({

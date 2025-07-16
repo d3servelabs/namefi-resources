@@ -1,5 +1,5 @@
 import { LogIn } from 'lucide-react';
-import { UserDropdown } from './dropdowns/UserDropdown';
+import { UserDropdown } from './dropdowns/user-dropdown';
 
 interface AuthRequiredProps {
   title?: string;

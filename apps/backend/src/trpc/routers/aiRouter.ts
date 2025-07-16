@@ -49,7 +49,7 @@ async function checkUserGenerationLimit(userId: string): Promise<boolean> {
 }
 
 const generateLogoInputSchema = z.object({
-  brandName: namefiNormalizedDomainSchema,
+  domain: namefiNormalizedDomainSchema,
   description: z.string().optional(),
   type: z.string().min(1, 'Logo type is required'),
   style: z.string().min(1, 'Logo style is required'),
@@ -75,18 +75,18 @@ export const aiRouter = createTRPCRouter({
           });
         }
 
-        const { brandName, description, type, style } = input;
+        const { domain, description, type, style } = input;
 
         // Step 1: Analyze brand and generate logo concept
         const {
           data: logoConcept,
           tokenUsage: logoConceptTokenUsage,
           model: logoConceptModel,
-        } = await analyzeLogoRequirements(brandName, description, type, style);
+        } = await analyzeLogoRequirements(domain, description, type, style);
 
         // Step 2: Generate logo image
         const generatedLogo = await generateLogo({
-          brandName,
+          domain,
           logoConcept: logoConcept.logoConcept,
           storage: {
             ...storageConfig,
@@ -119,7 +119,7 @@ export const aiRouter = createTRPCRouter({
           .insert(aiGenerationsTable)
           .values({
             userId: ctx.user.id,
-            domain: brandName,
+            domain,
             type: 'logo',
             input: {
               type: 'logo',

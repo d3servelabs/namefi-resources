@@ -1,5 +1,5 @@
 import { Loader2, Sparkles } from 'lucide-react';
-import { NamefiButton } from '../../namefi-button';
+import { NamefiButton } from '../../buttons/namefi-button';
 import { cn } from '@/lib/utils';
 
 interface GenerateSubmitButtonProps {

@@ -1,13 +1,15 @@
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+
 export interface LogoImageParams {
   basePrompt: string;
-  brandName: string;
+  domain: NamefiNormalizedDomain;
   logoType: string;
   style: string;
 }
 
 export const enhanceLogoPrompt = ({
   basePrompt,
-  brandName,
+  domain,
   logoType,
   style,
 }: LogoImageParams) => `${basePrompt}

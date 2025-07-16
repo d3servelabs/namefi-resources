@@ -3,7 +3,7 @@ import { SquareArrowOutUpRightIcon } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { CartCard } from './cart-card';
-import { NamefiButton } from './namefi-button';
+import { NamefiButton } from './buttons/namefi-button';
 
 interface NftDomainCardProps {
   item: {

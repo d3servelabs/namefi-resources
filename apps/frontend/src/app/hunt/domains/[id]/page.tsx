@@ -1,4 +1,4 @@
-import { DomainDetail } from './components/DomainDetail';
+import { DomainDetail } from '@/components/hunt/domains/domain-detail';
 
 interface PageProps {
   params: Promise<{ id: string }>;

@@ -1,4 +1,4 @@
-import ManageDashboard from './components/Manage';
+import ManageDashboard from '../../components/manage';
 
 export default function ManagePage() {
   return (

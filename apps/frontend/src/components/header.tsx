@@ -1,7 +1,7 @@
 'use client';
 
-import { CartDropdown } from '@/components/dropdowns/CartDropdown';
-import { UserDropdown } from '@/components/dropdowns/UserDropdown';
+import { CartDropdown } from '@/components/dropdowns/cart-dropdown';
+import { UserDropdown } from '@/components/dropdowns/user-dropdown';
 import { Separator } from '@/components/ui/shadcn/separator';
 import { SidebarTrigger, useSidebar } from '@/components/ui/shadcn/sidebar';
 import { cn } from '@/lib/utils';

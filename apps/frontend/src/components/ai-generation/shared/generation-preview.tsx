@@ -1,6 +1,6 @@
 'use client';
 
-import { NamefiButton } from '@/components/namefi-button';
+import { NamefiButton } from '@/components/buttons/namefi-button';
 import { Button } from '@/components/ui/shadcn/button';
 import { Card, CardContent } from '@/components/ui/shadcn/card';
 import { Separator } from '@/components/ui/shadcn/separator';

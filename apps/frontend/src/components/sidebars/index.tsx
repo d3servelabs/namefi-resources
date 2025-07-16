@@ -1,8 +1,8 @@
 'use client';
 
-import { BrandLogo } from '@/components/brandLogo';
-import { UserDropdown } from '@/components/dropdowns/UserDropdown';
-import { SidebarItems } from '@/components/sidebars/SidebarItems';
+import { BrandLogo } from '@/components/brand-logo';
+import { UserDropdown } from '@/components/dropdowns/user-dropdown';
+import { SidebarItems } from '@/components/sidebars/sidebar-items';
 import { Label } from '@/components/ui/shadcn/label';
 import {
   Sidebar,
@@ -15,8 +15,8 @@ import {
   SidebarRail,
   useSidebar,
 } from '@/components/ui/shadcn/sidebar';
-import { useAuth } from '@/hooks/useAuth';
-import { useRecentDomains } from '@/hooks/useRecentDomains';
+import { useAuth } from '@/hooks/use-auth';
+import { useRecentDomains } from '@/hooks/use-recent-domains';
 import { cn } from '@/lib/utils';
 import type { NavItem } from '@/types';
 import { useTRPC } from '@/utils/trpc';
@@ -35,7 +35,7 @@ import {
 import { usePathname, useRouter } from 'next/navigation';
 import { type ChangeEvent, useCallback, useMemo, useState } from 'react';
 import { Button } from '../ui/shadcn/button';
-import { SidebarDomains } from './SidebarDomains';
+import { SidebarDomains } from './sidebar-domains';
 
 const ITEMS: NavItem[] = [
   { title: 'Discover', href: '/', icon: Compass },

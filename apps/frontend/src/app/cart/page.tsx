@@ -1,16 +1,16 @@
 'use client';
-import { AuthRequiredCard } from '@/components/selectPaymentMethodCard/selectPaymentMethodCard';
+import { AuthRequiredCard } from '@/components/payment-method/select-payment-method-card';
 import { CartCard } from '@/components/cart-card';
 import { CartItem } from '@/components/cart-item';
-import { NamefiButton } from '@/components/namefi-button';
-import { NftWalletCard } from '@/components/nftWalletCard';
+import { NamefiButton } from '@/components/buttons/namefi-button';
+import { NftWalletCard } from '@/components/nft-wallet-card';
 import { useInteractionLoggers } from '@/components/providers/interactionLoggersProvider';
-import { UserDropdown } from '@/components/dropdowns/UserDropdown';
+import { UserDropdown } from '@/components/dropdowns/user-dropdown';
 import {
   NoPaymentMethodRequiredCard,
   SelectPaymentMethodCard,
   SelectedPaymentMethod,
-} from '@/components/selectPaymentMethodCard/selectPaymentMethodCard';
+} from '@/components/payment-method/select-payment-method-card';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -31,9 +31,9 @@ import {
 } from '@/components/ui/shadcn/card';
 import { Separator } from '@/components/ui/shadcn/separator';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
-import { cartItemsToInteractionLoggingCartItems } from '@/hooks/landing/use-cart';
+import { cartItemsToInteractionLoggingCartItems } from '@/hooks/use-cart';
 import { useCartContext } from '@/providers/cart';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@/hooks/use-auth';
 import { config } from '@/lib/env';
 import { cn } from '@/lib/utils';
 import {

@@ -1,4 +1,4 @@
-import { Search as ZeroxCitySearch } from '@/components/0xcity/Search';
+import { Search as ZeroxCitySearch } from '@/components/0x-city/Search';
 import { Search as AstraSearch } from '@/components/astra/Search';
 import type { OriginConfigMap } from './types';
 

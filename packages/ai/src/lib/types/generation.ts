@@ -1,5 +1,6 @@
 import type { UsageMetadata } from '@langchain/core/messages';
 import type { StorageConfig } from '@namefi-astra/storage';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 
 // Base concept interfaces
 export interface BaseConcept {
@@ -40,11 +41,11 @@ export interface BaseGenerationParams {
 }
 
 export interface GenerateLogoParams extends BaseGenerationParams {
-  brandName: string;
+  domain: NamefiNormalizedDomain;
   logoConcept: LogoConcept;
 }
 
 export interface GenerateMarketingImageParams extends BaseGenerationParams {
-  domain: string;
+  domain: NamefiNormalizedDomain;
   basedOnLogoCallId?: string;
 }

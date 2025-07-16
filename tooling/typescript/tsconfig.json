@@ -5,6 +5,7 @@
     "strict": true,
     "strictNullChecks": true,
     "jsx": "preserve",
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
   }
 }

@@ -12,7 +12,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/shadcn/table';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@/hooks/use-auth';
 import { useTRPC } from '@/utils/trpc';
 import { useQuery } from '@tanstack/react-query';
 import { format } from 'date-fns';

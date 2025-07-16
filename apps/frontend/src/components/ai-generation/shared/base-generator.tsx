@@ -16,10 +16,11 @@ import { DomainField, DescriptionField } from './form-fields';
 import { GenerateSubmitButton } from './submit-button';
 import { useTRPC } from '@/utils/trpc';
 import { useQuery } from '@tanstack/react-query';
+import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 
 // Base form schema with domain and description
 export const baseFormSchema = z.object({
-  domain: z.string().min(1),
+  domain: namefiNormalizedDomainSchema,
   description: z.string().optional(),
 });
 

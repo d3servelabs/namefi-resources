@@ -10,7 +10,7 @@ import {
   CardTitle,
 } from '@/components/ui/shadcn/card';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@/hooks/use-auth';
 import { useTRPC } from '@/utils/trpc';
 import { useQuery } from '@tanstack/react-query';
 import { Sparkles } from 'lucide-react';

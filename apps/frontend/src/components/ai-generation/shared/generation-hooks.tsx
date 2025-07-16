@@ -1,6 +1,7 @@
 import { useTRPC } from '@/utils/trpc';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import type { LogoFormData } from '../logo-generator';
 import type { PosterFormData } from '../poster-generator';
 
@@ -97,12 +98,12 @@ export function usePosterGeneration({ domain }: UsePosterGenerationProps) {
 // Helper functions for generation payloads
 export const createLogoGenerationPayload = (data: LogoFormData) => {
   const payload: {
-    brandName: string;
+    domain: NamefiNormalizedDomain;
     type: string;
     style: string;
     description?: string;
   } = {
-    brandName: data.domain,
+    domain: data.domain,
     type: data.type,
     style: data.style,
   };
