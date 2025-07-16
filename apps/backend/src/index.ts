@@ -99,6 +99,11 @@ serve(
   {
     fetch: app.fetch,
     port: config.PORT,
+    serverOptions: {
+      requestTimeout: 630_000,
+      keepAliveTimeout: 610_000,
+      headersTimeout: 620_000,
+    },
   },
   (info) => {
     console.info('Server is running on port', info.port);

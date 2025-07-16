@@ -121,9 +121,9 @@ export const t = initTRPC.context<TrpcContext>().create({
     };
   },
   sse: {
-    maxDurationMs: 1_000 * 60 * 5, // 5 minutes
-    ping: { enabled: true, intervalMs: 3_000 },
-    client: { reconnectAfterInactivityMs: 5_000 },
+    maxDurationMs: 120_000, // 2 minutes
+    ping: { enabled: true, intervalMs: 30_000 },
+    client: { reconnectAfterInactivityMs: 30_000 },
   },
 });
 

@@ -8,7 +8,7 @@ import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 
 export const useStreamingSearch = (parentDomain?: string) => {
   const [query, setQuery] = useState('');
-  const [debounced] = useDebounceValue(query, 500);
+  const [debounced] = useDebounceValue(query, 200);
   const sanitized = debounced.trim().toLowerCase();
 
   const trpc = useTRPC();
