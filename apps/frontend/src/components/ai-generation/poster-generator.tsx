@@ -8,12 +8,14 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/shadcn/form';
-import type { Generation } from '@namefi-astra/ai/types';
 import { cn } from '@/lib/utils';
 import { Check } from 'lucide-react';
 import { z } from 'zod';
 import { BaseGenerator, baseFormSchema } from './shared/base-generator';
 import { ControlPanel } from './shared/form-fields';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import { useMemo } from 'react';
+import type { Generation } from './shared/types';
 
 const posterFormSchema = baseFormSchema.extend({
   selectedLogoId: z.string().uuid(),
@@ -28,8 +30,10 @@ export type { PosterFormData };
 interface PosterGeneratorProps {
   onGenerate: (data: PosterFormData) => void;
   isLoading?: boolean;
-  fixedDomain?: string; // When provided, domain input is hidden and this value is used
-  availableLogos?: Generation[]; // Available logo generations for selection
+  fixedDomain?: NamefiNormalizedDomain;
+  availableLogos?: Generation[];
+  latestGeneration?: Generation;
+  onGenerateMore?: () => void;
 }
 
 export function PosterGenerator({
@@ -37,28 +41,32 @@ export function PosterGenerator({
   isLoading,
   fixedDomain,
   availableLogos = [],
+  latestGeneration,
+  onGenerateMore,
 }: PosterGeneratorProps) {
-  const handleSubmit = (data: PosterFormData) => {
-    onGenerate(data);
-  };
+  const defaultValues = useMemo(() => {
+    return {
+      domain: fixedDomain || '',
+      description: '',
+      selectedLogoId: availableLogos.length > 0 ? availableLogos[0].id : '',
+    };
+  }, [fixedDomain, availableLogos]);
 
   return (
     <BaseGenerator
-      onSubmit={handleSubmit}
+      onSubmit={onGenerate}
       isLoading={isLoading}
       fixedDomain={fixedDomain}
       formSchema={posterFormSchema}
-      defaultValues={{
-        domain: fixedDomain || '',
-        description: '',
-        selectedLogoId: availableLogos.length > 0 ? availableLogos[0].id : '',
-      }}
+      defaultValues={defaultValues}
       submitButtonText={
         availableLogos.length > 0
           ? 'Generate'
           : 'Select a brand below or generate a logo'
       }
       submitLoadingText="Generating"
+      latestGeneration={latestGeneration}
+      onGenerateMore={onGenerateMore}
     >
       {({ form, openPanel, setOpenPanel }) => {
         const selectedLogoId = form.watch('selectedLogoId');
@@ -126,8 +134,8 @@ export function PosterGenerator({
                             <CardContent className="p-4">
                               <div className="relative aspect-square mb-3 overflow-hidden rounded-lg">
                                 <img
-                                  src={logo.result}
-                                  alt={logo.prompt}
+                                  src={logo.url}
+                                  alt={logo.domain}
                                   className="w-full h-full object-cover"
                                 />
                                 {field.value === logo.id && (
@@ -137,14 +145,14 @@ export function PosterGenerator({
                                 )}
                               </div>
                               <div className="space-y-1">
-                                {logo.metadata?.logoType && (
+                                {logo.input?.type === 'logo' && (
                                   <span className="text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded block text-center">
-                                    {logo.metadata.logoType}
+                                    {logo.input.logoType}
                                   </span>
                                 )}
-                                {logo.metadata?.logoStyle && (
+                                {logo.input?.type === 'logo' && (
                                   <span className="text-xs px-2 py-1 bg-purple-100 text-purple-700 rounded block text-center">
-                                    {logo.metadata.logoStyle}
+                                    {logo.input.logoStyle}
                                   </span>
                                 )}
                               </div>

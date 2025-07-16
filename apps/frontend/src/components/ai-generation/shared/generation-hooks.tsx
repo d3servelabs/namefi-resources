@@ -6,7 +6,7 @@ import type { LogoFormData } from '../logo-generator';
 import type { PosterFormData } from '../poster-generator';
 
 interface UseLogoGenerationProps {
-  domain: string;
+  domain?: NamefiNormalizedDomain;
 }
 
 export function useLogoGeneration({ domain }: UseLogoGenerationProps) {
@@ -51,7 +51,7 @@ export function useLogoGeneration({ domain }: UseLogoGenerationProps) {
 }
 
 interface UsePosterGenerationProps {
-  domain: string;
+  domain?: NamefiNormalizedDomain;
 }
 
 export function usePosterGeneration({ domain }: UsePosterGenerationProps) {
@@ -117,7 +117,7 @@ export const createLogoGenerationPayload = (data: LogoFormData) => {
 
 export const createPosterGenerationPayload = (data: PosterFormData) => {
   const requestBody: {
-    domain: string;
+    domain: NamefiNormalizedDomain;
     description?: string;
     referenceLogoGenerationId?: string;
   } = {

@@ -1,11 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import type { Generation } from '@namefi-astra/ai/types';
 import { TabSelector } from './tab-selector';
 import { LogoTab } from './logo-tab';
 import { PosterTab } from './poster-tab';
 import { GenerationUsage } from './generation-usage';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import type { Generation } from './shared/types';
 
 interface AITabsProps {
   className?: string;
@@ -13,13 +14,13 @@ interface AITabsProps {
   // Logo tab specific props
   logoTabProps?: {
     existingGenerations?: Generation[];
-    brandDomain?: string;
+    brandDomain?: NamefiNormalizedDomain;
   };
 
   // Poster tab specific props
   posterTabProps?: {
     existingGenerations?: Generation[];
-    brandDomain?: string;
+    brandDomain?: NamefiNormalizedDomain;
     availableLogos?: Generation[];
   };
 

@@ -16,14 +16,9 @@ export { GenerationPreview } from './shared/generation-preview';
 export type { GeneratedItem } from './image-grid';
 export { AITabs } from './ai-tabs';
 export { GenerationUsage } from './generation-usage';
-
-// Export generation hooks and payload creators
 export {
   useLogoGeneration,
   usePosterGeneration,
   createLogoGenerationPayload,
   createPosterGenerationPayload,
 } from './shared/generation-hooks';
-
-// Export state management hook
-export { useGenerationState } from './shared/use-generation-state';

@@ -16,7 +16,12 @@ import { DomainField, DescriptionField } from './form-fields';
 import { GenerateSubmitButton } from './submit-button';
 import { useTRPC } from '@/utils/trpc';
 import { useQuery } from '@tanstack/react-query';
-import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
+import {
+  namefiNormalizedDomainSchema,
+  type NamefiNormalizedDomain,
+} from '@namefi-astra/utils';
+import { GenerationPreview } from './generation-preview';
+import type { Generation } from './types';
 
 // Base form schema with domain and description
 export const baseFormSchema = z.object({
@@ -30,7 +35,7 @@ interface BaseGeneratorProps<T extends FieldValues & BaseFormData> {
   onSubmit: (data: T) => void;
   isLoading?: boolean;
   disabled?: boolean;
-  fixedDomain?: string;
+  fixedDomain?: NamefiNormalizedDomain;
   formSchema: z.ZodSchema<any>;
   defaultValues: DefaultValues<T>;
   children?: (props: {
@@ -42,6 +47,8 @@ interface BaseGeneratorProps<T extends FieldValues & BaseFormData> {
   submitButtonText?: string;
   submitLoadingText?: string;
   className?: string;
+  latestGeneration?: Generation;
+  onGenerateMore?: () => void;
 }
 
 export function BaseGenerator<T extends FieldValues & BaseFormData>({
@@ -55,6 +62,8 @@ export function BaseGenerator<T extends FieldValues & BaseFormData>({
   submitButtonText = 'Generate',
   submitLoadingText = 'Generating',
   className = 'max-w-6xl mx-auto flex flex-col',
+  latestGeneration,
+  onGenerateMore,
 }: BaseGeneratorProps<T>) {
   const [openPanel, setOpenPanel] = useState<string | null>(null);
 
@@ -89,43 +98,52 @@ export function BaseGenerator<T extends FieldValues & BaseFormData>({
     !form.formState.isValid || disabled || isLimitReached || !isUsageSuccess;
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className={className}>
-        <Card>
-          <CardContent>
-            {/* Domain Input */}
-            <DomainField
-              control={form.control}
-              name={'domain' as FieldPath<T>}
-              fixedDomain={fixedDomain}
-            />
-
-            {/* Custom content from children */}
-            {children?.({
-              form,
-              openPanel,
-              setOpenPanel,
-              domainToUse: domainToUse as string,
-            })}
-
-            {/* Description Field - Conditional based on openPanel */}
-            {openPanel === 'description' && (
-              <DescriptionField
+    <>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(handleSubmit)} className={className}>
+          <Card>
+            <CardContent>
+              {/* Domain Input */}
+              <DomainField
                 control={form.control}
-                name={'description' as FieldPath<T>}
+                name={'domain' as FieldPath<T>}
+                fixedDomain={fixedDomain}
               />
-            )}
-          </CardContent>
-        </Card>
 
-        {/* Submit Button */}
-        <GenerateSubmitButton
-          isLoading={isLoading}
-          disabled={isDisabled}
-          buttonText={submitButtonText}
-          loadingText={submitLoadingText}
-        />
-      </form>
-    </Form>
+              {/* Custom content from children */}
+              {children?.({
+                form,
+                openPanel,
+                setOpenPanel,
+                domainToUse: domainToUse as string,
+              })}
+
+              {/* Description Field - Conditional based on openPanel */}
+              {openPanel === 'description' && (
+                <DescriptionField
+                  control={form.control}
+                  name={'description' as FieldPath<T>}
+                />
+              )}
+            </CardContent>
+          </Card>
+
+          {/* Submit Button */}
+          <GenerateSubmitButton
+            isLoading={isLoading}
+            disabled={isDisabled}
+            buttonText={submitButtonText}
+            loadingText={submitLoadingText}
+          />
+        </form>
+      </Form>
+      <GenerationPreview
+        isLoading={!!isLoading}
+        loadingState={isLoading ? 'generating' : 'idle'}
+        isVisible={true}
+        generatedImage={latestGeneration}
+        onGenerateMore={onGenerateMore}
+      />
+    </>
   );
 }

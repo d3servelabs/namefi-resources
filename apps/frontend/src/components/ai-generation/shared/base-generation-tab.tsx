@@ -1,12 +1,11 @@
-import type { Generation } from '@namefi-astra/ai/types';
 import { type GeneratedItem, ImageGrid } from '../image-grid';
-import { GenerationPreview } from './generation-preview';
-import { type ReactNode, useState, useEffect } from 'react';
-import { useGenerationContext } from './generation-context';
+import { type ReactNode, useState } from 'react';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import type { Generation } from './types';
 
 interface BaseGenerationTabProps {
   existingGenerations?: Generation[];
-  brandDomain?: string;
+  brandDomain?: NamefiNormalizedDomain;
 
   // Generator component as children
   generator: ReactNode;
@@ -48,22 +47,11 @@ export function BaseGenerationTab({
 }: BaseGenerationTabProps) {
   const [showPreview, setShowPreview] = useState(false);
 
-  // Get generation state from context
-  const { isGenerating, latestGeneration, loadingState } =
-    useGenerationContext();
-
   // Convert existing generations to GeneratedItem format
   const existingItems = convertToGeneratedItems(
     existingGenerations,
     availableLogos,
   );
-
-  // Show preview when generation starts
-  useEffect(() => {
-    if (isGenerating) {
-      setShowPreview(true);
-    }
-  }, [isGenerating]);
 
   const handleGenerateMore = () => {
     // Trigger a new generation using the callback
@@ -82,31 +70,6 @@ export function BaseGenerationTab({
     <>
       {generator}
 
-      {/* Generation Preview */}
-      <GenerationPreview
-        isLoading={isGenerating}
-        loadingState={loadingState}
-        isVisible={showPreview}
-        generatedImage={
-          !isGenerating && latestGeneration
-            ? {
-                id: latestGeneration.id,
-                url: latestGeneration.result,
-                domain: brandDomain || 'example.com',
-                description:
-                  previewConfig?.description || latestGeneration.prompt,
-                type:
-                  previewConfig?.type || latestGeneration.metadata?.logoType,
-                style:
-                  previewConfig?.style || latestGeneration.metadata?.logoStyle,
-                category: previewConfig?.category,
-              }
-            : undefined
-        }
-        onGenerateMore={handleGenerateMore}
-        onGeneratePoster={undefined} // Hide for now
-      />
-
       <ImageGrid
         items={existingItems}
         title={title}
@@ -122,11 +85,10 @@ export const convertLogoGenerations = (
 ): GeneratedItem[] => {
   return generations.map((gen) => ({
     id: gen.id,
-    url: gen.result,
-    prompt: gen.prompt,
+    url: gen.url,
     timestamp: new Date(gen.createdAt).toISOString(),
-    type: gen.metadata?.logoType,
-    style: gen.metadata?.logoStyle,
+    type: gen.type,
+    style: gen.input?.type === 'logo' ? gen.input.logoStyle : undefined,
   }));
 };
 
@@ -136,24 +98,24 @@ export const convertPosterGenerations = (
 ): GeneratedItem[] => {
   return generations.map((gen) => ({
     id: gen.id,
-    url: gen.result,
-    prompt: gen.prompt,
+    url: gen.url,
     timestamp: new Date(gen.createdAt).toISOString(),
-    basedOnLogo: gen.metadata?.basedOnLogoId
+    basedOnLogo: gen.referenceGenerationId
       ? (() => {
           const logo = availableLogos.find(
-            (logo) => logo.id === gen.metadata?.basedOnLogoId,
+            (logo) => logo.id === gen.referenceGenerationId,
           );
           return logo
             ? {
                 id: logo.id,
-                result: logo.result,
-                metadata: logo.metadata
-                  ? {
-                      logoType: logo.metadata.logoType,
-                      logoStyle: logo.metadata.logoStyle,
-                    }
-                  : undefined,
+                result: logo.url,
+                metadata:
+                  logo.input?.type === 'logo'
+                    ? {
+                        logoType: logo.input.logoType,
+                        logoStyle: logo.input.logoStyle,
+                      }
+                    : undefined,
               }
             : undefined;
         })()

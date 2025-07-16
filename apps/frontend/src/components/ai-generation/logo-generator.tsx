@@ -14,6 +14,9 @@ import { Check, Sparkles } from 'lucide-react';
 import { z } from 'zod';
 import { BaseGenerator, baseFormSchema } from './shared/base-generator';
 import { ControlPanel } from './shared/form-fields';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import { useMemo } from 'react';
+import type { Generation } from './shared/types';
 
 const logoFormSchema = baseFormSchema.extend({
   type: z.string().min(1, 'Logo type is required'),
@@ -29,13 +32,17 @@ export type { LogoFormData };
 interface LogoGeneratorProps {
   onGenerate: (data: LogoFormData) => void;
   isLoading?: boolean;
-  fixedDomain?: string; // When provided, domain input is hidden and this value is used
+  fixedDomain?: NamefiNormalizedDomain;
+  latestGeneration?: Generation;
+  onGenerateMore?: () => void;
 }
 
 export function LogoGenerator({
   onGenerate,
   isLoading,
   fixedDomain,
+  latestGeneration,
+  onGenerateMore,
 }: LogoGeneratorProps) {
   const getTypeDisplay = (type: string) => {
     const logoType = LOGO_TYPES[type as keyof typeof LOGO_TYPES];
@@ -47,24 +54,26 @@ export function LogoGenerator({
     return logoStyle ? logoStyle.name : style;
   };
 
-  const handleSubmit = (data: LogoFormData) => {
-    onGenerate(data);
-  };
+  const defaultValues = useMemo(() => {
+    return {
+      domain: fixedDomain || '',
+      type: LOGO_STYLES['let-ai-choose'].id,
+      style: LOGO_STYLES['let-ai-choose'].id,
+      description: '',
+    };
+  }, [fixedDomain]);
 
   return (
     <BaseGenerator
-      onSubmit={handleSubmit}
+      onSubmit={onGenerate}
       isLoading={isLoading}
       fixedDomain={fixedDomain}
       formSchema={logoFormSchema}
-      defaultValues={{
-        domain: fixedDomain || '',
-        type: 'let-ai-choose',
-        style: 'let-ai-choose',
-        description: '',
-      }}
+      defaultValues={defaultValues}
       submitButtonText="Generate"
       submitLoadingText="Generating"
+      latestGeneration={latestGeneration}
+      onGenerateMore={onGenerateMore}
     >
       {({ form, openPanel, setOpenPanel }) => {
         const selectedType = form.watch('type');

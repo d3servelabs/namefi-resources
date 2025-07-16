@@ -10,11 +10,12 @@ import { Input } from '@/components/ui/shadcn/input';
 import { Textarea } from '@/components/ui/shadcn/textarea';
 import { Badge } from '@/components/ui/shadcn/badge';
 import type { Control, FieldPath, FieldValues } from 'react-hook-form';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 
 interface DomainFieldProps<T extends FieldValues> {
   control: Control<T>;
   name: FieldPath<T>;
-  fixedDomain?: string;
+  fixedDomain?: NamefiNormalizedDomain;
   placeholder?: string;
 }
 

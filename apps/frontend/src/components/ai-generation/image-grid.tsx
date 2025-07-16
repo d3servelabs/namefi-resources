@@ -10,8 +10,6 @@ import Link from 'next/link';
 export interface GeneratedItem {
   id?: string;
   url: string;
-  prompt?: string;
-  concept?: string;
   style?: string;
   type?: string;
   timestamp?: string;
@@ -72,7 +70,7 @@ export function ImageGrid({
               <div className="relative aspect-square">
                 <img
                   src={item.url}
-                  alt={item.concept || item.prompt || `${title} ${index + 1}`}
+                  alt={`${title} ${index + 1}`}
                   className="object-cover w-full h-full"
                   loading="lazy"
                 />

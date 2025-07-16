@@ -1,4 +1,3 @@
-import type { Generation } from '@namefi-astra/ai/types';
 import { LogoGenerator, type LogoFormData } from './logo-generator';
 import {
   BaseGenerationTab,
@@ -8,12 +7,13 @@ import {
   useLogoGeneration,
   createLogoGenerationPayload,
 } from './shared/generation-hooks';
-import { GenerationProvider } from './shared/generation-context';
 import { useState, useRef } from 'react';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import type { Generation } from './shared/types';
 
 interface LogoTabProps {
   existingGenerations?: Generation[];
-  brandDomain?: string;
+  brandDomain?: NamefiNormalizedDomain;
 }
 
 export function LogoTab({
@@ -24,52 +24,56 @@ export function LogoTab({
     null,
   );
   const lastGenerationParams = useRef<LogoFormData | null>(null);
+  const [latestGeneration, setLatestGeneration] = useState<Generation | null>(
+    null,
+  );
 
   const generateLogoMutation = useLogoGeneration({
-    domain: brandDomain || '',
+    domain: brandDomain,
   });
 
-  const handleGenerateLogos = (data: LogoFormData) => {
+  const handleGenerateLogo = (data: LogoFormData) => {
     setCurrentGenParams(data);
     lastGenerationParams.current = data;
+    setLatestGeneration(null);
 
     const payload = createLogoGenerationPayload(data);
-    generateLogoMutation.mutate(payload);
+    generateLogoMutation.mutate(payload, {
+      onSuccess: (result) => {
+        setLatestGeneration(result);
+      },
+    });
   };
 
   const handleGenerateMore = () => {
     // Re-use the last generation parameters if available
     if (lastGenerationParams.current) {
-      handleGenerateLogos(lastGenerationParams.current);
+      handleGenerateLogo(lastGenerationParams.current);
     }
   };
 
   return (
-    <GenerationProvider
+    <BaseGenerationTab
       existingGenerations={existingGenerations}
       brandDomain={brandDomain}
-      mutationIsPending={generateLogoMutation.isPending}
-    >
-      <BaseGenerationTab
-        existingGenerations={existingGenerations}
-        brandDomain={brandDomain}
-        generator={
-          <LogoGenerator
-            onGenerate={handleGenerateLogos}
-            isLoading={generateLogoMutation.isPending}
-            fixedDomain={brandDomain}
-          />
-        }
-        isLoading={generateLogoMutation.isPending}
-        title="Generated Logos"
-        convertToGeneratedItems={convertLogoGenerations}
-        previewConfig={{
-          type: currentGenParams?.type,
-          style: currentGenParams?.style,
-          description: currentGenParams?.description,
-        }}
-        onGenerateMore={handleGenerateMore}
-      />
-    </GenerationProvider>
+      generator={
+        <LogoGenerator
+          onGenerate={handleGenerateLogo}
+          isLoading={generateLogoMutation.isPending}
+          fixedDomain={brandDomain}
+          latestGeneration={latestGeneration || undefined}
+          onGenerateMore={handleGenerateMore}
+        />
+      }
+      isLoading={generateLogoMutation.isPending}
+      title="Generated Logos"
+      convertToGeneratedItems={convertLogoGenerations}
+      previewConfig={{
+        type: currentGenParams?.type,
+        style: currentGenParams?.style,
+        description: currentGenParams?.description,
+      }}
+      onGenerateMore={handleGenerateMore}
+    />
   );
 }

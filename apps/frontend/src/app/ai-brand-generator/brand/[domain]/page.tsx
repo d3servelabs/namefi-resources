@@ -6,12 +6,15 @@ import { EmptyPlaceholder } from '@/components/empty-placeholder';
 import { Button } from '@/components/ui/shadcn/button';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
 import { useAuth } from '@/hooks/use-auth';
-import type { Generation } from '@namefi-astra/ai/types';
 import { useTRPC } from '@/utils/trpc';
 import { useQuery } from '@tanstack/react-query';
 import { ArrowLeft, Sparkles } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { use } from 'react';
+import {
+  namefiNormalizedDomainSchema,
+  type NamefiNormalizedDomain,
+} from '@namefi-astra/utils';
 
 interface BrandDetailPageProps {
   params: Promise<{ domain: string }>;
@@ -78,7 +81,7 @@ const EmptyGenerationsPlaceholder = ({
   domain,
   onGoBack,
 }: {
-  domain: string;
+  domain: NamefiNormalizedDomain;
   onGoBack: () => void;
 }) => (
   <div className="container mx-auto py-8 px-8">
@@ -122,6 +125,7 @@ export default function BrandDetailPage({ params }: BrandDetailPageProps) {
 
   // Unwrap the params Promise
   const { domain } = use(params);
+  const normalizedDomain = namefiNormalizedDomainSchema.safeParse(domain);
 
   // Load generations for this domain
   const { data: generations = [], isLoading: isGenerationsLoading } = useQuery({
@@ -135,6 +139,10 @@ export default function BrandDetailPage({ params }: BrandDetailPageProps) {
     .split('-')
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
+
+  if (!normalizedDomain.success) {
+    return <div>Invalid domain</div>;
+  }
 
   if (isAuthLoading) {
     return (
@@ -155,7 +163,7 @@ export default function BrandDetailPage({ params }: BrandDetailPageProps) {
   if (generations.length === 0) {
     return (
       <EmptyGenerationsPlaceholder
-        domain={domain}
+        domain={normalizedDomain.data}
         onGoBack={() => router.push('/ai-brand-generator')}
       />
     );
@@ -166,30 +174,6 @@ export default function BrandDetailPage({ params }: BrandDetailPageProps) {
   const marketingGenerations = generations.filter(
     (g) => g.type === 'marketing',
   );
-
-  // Map tRPC generations to the frontend Generation type
-  const mapGeneration = (gen: (typeof generations)[0]): Generation => ({
-    id: gen.id,
-    brandId: `brand_${domain}`,
-    type: gen.type,
-    prompt:
-      gen.input.type === 'logo'
-        ? `${gen.input.logoType} ${gen.input.logoStyle}${gen.input.description ? ` - ${gen.input.description}` : ''}`
-        : gen.input.description || '',
-    result: gen.url,
-    generationCallId: gen.output.externalId,
-    createdAt: gen.createdAt.toISOString(),
-    metadata:
-      gen.input.type === 'logo'
-        ? {
-            logoStyle: gen.input.logoStyle,
-            logoType: gen.input.logoType,
-          }
-        : undefined,
-  });
-
-  const mappedLogoGenerations = logoGenerations.map(mapGeneration);
-  const mappedMarketingGenerations = marketingGenerations.map(mapGeneration);
 
   return (
     <div className="container max-w-4xl mx-auto py-8 px-8">
@@ -212,13 +196,13 @@ export default function BrandDetailPage({ params }: BrandDetailPageProps) {
       <div className="max-w-4xl mx-auto">
         <AITabs
           logoTabProps={{
-            existingGenerations: mappedLogoGenerations,
-            brandDomain: domain,
+            existingGenerations: logoGenerations,
+            brandDomain: normalizedDomain.data,
           }}
           posterTabProps={{
-            existingGenerations: mappedMarketingGenerations,
-            brandDomain: domain,
-            availableLogos: mappedLogoGenerations,
+            existingGenerations: marketingGenerations,
+            brandDomain: normalizedDomain.data,
+            availableLogos: logoGenerations,
           }}
           tabSelectorClassName="max-w-md mx-auto"
         />

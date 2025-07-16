@@ -10,14 +10,13 @@ import { useEffect, useRef, useState } from 'react';
 import { motion } from 'motion/react';
 import { TwitterIcon, TwitterShareButton } from 'react-share';
 import { toast } from 'sonner';
-import type { GenerationLoadingState } from './use-generation-state';
 
 // Circular progress component with fake loading percentage
 const CircularProgress = ({
   isLoading,
 }: {
   isLoading: boolean;
-  loadingState: GenerationLoadingState;
+  loadingState: 'idle' | 'generating' | 'syncing';
 }) => {
   const [progress, setProgress] = useState(0);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -178,7 +177,7 @@ interface GenerationImageLoaderProps {
   src?: string;
   alt: string;
   isLoading: boolean;
-  loadingState?: GenerationLoadingState;
+  loadingState?: 'idle' | 'generating' | 'syncing';
   className?: string;
 }
 
@@ -268,7 +267,7 @@ const GenerationImageLoader: React.FC<GenerationImageLoaderProps> = ({
 
 interface GenerationPreviewProps {
   isLoading: boolean;
-  loadingState?: GenerationLoadingState;
+  loadingState?: 'idle' | 'generating' | 'syncing';
   isVisible: boolean;
   generatedImage?: {
     id: string;

@@ -1,4 +1,3 @@
-import type { Generation } from '@namefi-astra/ai/types';
 import { PosterGenerator, type PosterFormData } from './poster-generator';
 import {
   BaseGenerationTab,
@@ -8,13 +7,14 @@ import {
   usePosterGeneration,
   createPosterGenerationPayload,
 } from './shared/generation-hooks';
-import { GenerationProvider } from './shared/generation-context';
 import { useState, useRef } from 'react';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import type { Generation } from './shared/types';
 
 interface PosterTabProps {
   existingGenerations?: Generation[];
-  logoGenerations?: Generation[]; // Available logos for poster generation
-  brandDomain?: string;
+  logoGenerations?: Generation[];
+  brandDomain?: NamefiNormalizedDomain;
 }
 
 export function PosterTab({
@@ -25,16 +25,26 @@ export function PosterTab({
   const [currentGenParams, setCurrentGenParams] =
     useState<PosterFormData | null>(null);
   const lastGenerationParams = useRef<PosterFormData | null>(null);
+  const [latestGeneration, setLatestGeneration] = useState<Generation | null>(
+    null,
+  );
 
   const generatePosterMutation = usePosterGeneration({
-    domain: brandDomain || '',
+    domain: brandDomain,
   });
 
   const handleGeneratePosters = (data: PosterFormData) => {
     setCurrentGenParams(data);
     lastGenerationParams.current = data;
+    // Clear previous generation when starting a new one
+    setLatestGeneration(null);
+
     const payload = createPosterGenerationPayload(data);
-    generatePosterMutation.mutate(payload);
+    generatePosterMutation.mutate(payload, {
+      onSuccess: (result) => {
+        setLatestGeneration(result);
+      },
+    });
   };
 
   const handleGenerateMore = () => {
@@ -49,34 +59,33 @@ export function PosterTab({
   );
 
   return (
-    <GenerationProvider
+    <BaseGenerationTab
       existingGenerations={existingGenerations}
       brandDomain={brandDomain}
-      mutationIsPending={generatePosterMutation.isPending}
-    >
-      <BaseGenerationTab
-        existingGenerations={existingGenerations}
-        brandDomain={brandDomain}
-        generator={
-          <PosterGenerator
-            onGenerate={handleGeneratePosters}
-            isLoading={generatePosterMutation.isPending}
-            fixedDomain={brandDomain}
-            availableLogos={logoGenerations}
-          />
-        }
-        isLoading={generatePosterMutation.isPending}
-        title="Generated Posters"
-        convertToGeneratedItems={convertPosterGenerations}
-        availableLogos={logoGenerations}
-        previewConfig={{
-          description: currentGenParams?.description,
-          category: selectedLogo ? 'Logo-Based' : 'Standalone',
-          type: 'Marketing Poster',
-          style: selectedLogo?.metadata?.logoStyle,
-        }}
-        onGenerateMore={handleGenerateMore}
-      />
-    </GenerationProvider>
+      generator={
+        <PosterGenerator
+          onGenerate={handleGeneratePosters}
+          isLoading={generatePosterMutation.isPending}
+          fixedDomain={brandDomain}
+          availableLogos={logoGenerations}
+          latestGeneration={latestGeneration || undefined}
+          onGenerateMore={handleGenerateMore}
+        />
+      }
+      isLoading={generatePosterMutation.isPending}
+      title="Generated Posters"
+      convertToGeneratedItems={convertPosterGenerations}
+      availableLogos={logoGenerations}
+      previewConfig={{
+        description: currentGenParams?.description,
+        category: selectedLogo ? 'Logo-Based' : 'Standalone',
+        type: 'Marketing Poster',
+        style:
+          selectedLogo?.input.type === 'logo'
+            ? selectedLogo.input.logoStyle
+            : undefined,
+      }}
+      onGenerateMore={handleGenerateMore}
+    />
   );
 }
