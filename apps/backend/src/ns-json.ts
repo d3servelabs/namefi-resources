@@ -15,6 +15,10 @@ import { createLogger } from '#lib/logger';
 import { dnsRecordTypeCodes } from './lib/dns/recordTypeCodes';
 import type { DnsResponse, DnsTable } from './lib/dns/types';
 import { getAnswerForDnsQueryFromPreferences } from './lib/domains/domainPreferences';
+import { matchAny } from '@namefi-astra/utils/match';
+import { config } from '#lib/env';
+import { parseDomainName } from '@namefi-astra/utils/parse-domain-name';
+import { getPoweredByNamefi3PDomains } from '#lib/namefi-registry';
 
 const nsJsonRouter = new Hono();
 
@@ -134,6 +138,19 @@ export const getAnswerForDnsQuery = async (
     RCODE: undefined,
     Answer: [],
   };
+
+  const nsAndSoaRecords = await getNsAndSoaRecords(recordName, qTypeEnum);
+  if (isNotNil(nsAndSoaRecords)) {
+    if (isNotNil(nsAndSoaRecords.RCODE)) {
+      return nsAndSoaRecords;
+    }
+    if (
+      isNotNil(nsAndSoaRecords.Answer) &&
+      isNotEmpty(nsAndSoaRecords.Answer)
+    ) {
+      result.Answer = [...(result.Answer ?? []), ...nsAndSoaRecords.Answer];
+    }
+  }
 
   const answerFromPreferences = await getAnswerForDnsQueryFromPreferences(
     recordName,
@@ -271,3 +288,64 @@ export const getAnswerForDnsQueryMock = (
 
   return result;
 };
+
+export async function getNsAndSoaRecords(
+  recordName: NamefiNormalizedDomain,
+  qTypeEnum: RecordType,
+) {
+  const _logger = createLogger({
+    context: 'NS-JSON',
+    query: { name: recordName, type: qTypeEnum },
+  });
+  if (!matchAny(qTypeEnum, 'NS', 'SOA')) {
+    _logger.trace(
+      { recordName, qTypeEnum },
+      'Not returning NS and SOA records',
+    );
+    return null;
+  }
+  const parsedDomainName = parseDomainName(recordName);
+  if (
+    !parsedDomainName.valid ||
+    parsedDomainName.registryType !== 'traditional'
+  ) {
+    return null;
+  }
+  const isPoweredByNamefi = (await getPoweredByNamefi3PDomains()).includes(
+    recordName,
+  );
+  _logger.trace({ isPoweredByNamefi, recordName }, 'Is powered by namefi ?');
+  if (!isPoweredByNamefi) {
+    // if not powered by namefi, check if the domain has a nft hence it should has a zone (ie; NS and SOA records)
+    const nft = await db.query.namefiNftTable.findFirst({
+      where: (t) => and(eq(t.normalizedDomainName, recordName)),
+    });
+    if (!nft) {
+      _logger.trace({ recordName }, 'No NFT found');
+      return null;
+    }
+    _logger.trace({ nft, recordName }, 'NFT found');
+  }
+
+  _logger.trace({ recordName, qTypeEnum }, 'Returning NS and SOA records');
+
+  const nsRecords = config.NAMEFI_ASTRA_NAMESERVERS.map((ns) => ({
+    name: recordName,
+    type: dnsRecordTypeCodes.get('NS') as number,
+    TTL: 300,
+    data: ns,
+  }));
+
+  const soaRecord = {
+    name: recordName,
+    type: dnsRecordTypeCodes.get('SOA') as number,
+    TTL: 300,
+    data: `${config.NAMEFI_ASTRA_NAMESERVERS[0]} ${config.NAMEFI_ASTRA_NAMESERVERS[0].replace(/^.*?\./, 'admin.')} 2023080901 60 30 300 60`,
+  };
+  // for NS, we return the NS records and SOA record
+  // for SOA, we return the SOA record
+  return {
+    RCODE: 0,
+    Answer: [...(qTypeEnum === 'NS' ? nsRecords : []), soaRecord],
+  };
+}
