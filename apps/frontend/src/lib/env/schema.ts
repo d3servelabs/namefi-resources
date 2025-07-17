@@ -27,6 +27,7 @@ export const configSchema = z.object({
   USER_CENTRICS_SETTINGS_ID: z.string(),
   USER_CENTRICS_GOOGLE_ANALYTICS_SERVICE_ID: z.string(),
   ALLOWED_CHAINS: z.number().array().default([]),
+  HUNT_CAMPAIGN_KEYS: z.string().array().default([]),
 });
 
 export type ConfigInput = z.input<typeof configSchema>;

@@ -456,6 +456,7 @@ describe('Hunt Router', () => {
         expect(item).toHaveProperty('upvoteCount');
         expect(item).toHaveProperty('firstSubmitDate');
         expect(item).toHaveProperty('userHasUpvoted');
+        expect(item).toHaveProperty('rank');
         expect(item).toHaveProperty('tags');
         expect(Array.isArray(item.tags)).toBe(true);
       }
@@ -527,6 +528,35 @@ describe('Hunt Router', () => {
       const overlap = page1Names.filter((name) => page2Names.includes(name));
       expect(overlap.length).toBe(0);
     });
+
+    it('should return correct rank values with pagination', async () => {
+      const page1 = await caller.getTrendingDomains({
+        limit: 2,
+        offset: 0,
+        timeRange: 'ANYTIME',
+      });
+
+      const page2 = await caller.getTrendingDomains({
+        limit: 2,
+        offset: 2,
+        timeRange: 'ANYTIME',
+      });
+
+      // Check that ranks are correctly calculated
+      if (page1.items.length > 0) {
+        expect(page1.items[0].rank).toBe(1);
+        if (page1.items.length > 1) {
+          expect(page1.items[1].rank).toBe(2);
+        }
+      }
+
+      if (page2.items.length > 0) {
+        expect(page2.items[0].rank).toBe(3);
+        if (page2.items.length > 1) {
+          expect(page2.items[1].rank).toBe(4);
+        }
+      }
+    });
   });
 
   describe('Public Endpoints', () => {
@@ -566,6 +596,7 @@ describe('Hunt Router', () => {
         expect(item).toHaveProperty('upvoteCount');
         expect(item).toHaveProperty('firstSubmitDate');
         expect(item).toHaveProperty('userHasUpvoted', false);
+        expect(item).toHaveProperty('rank');
         expect(item).toHaveProperty('tags');
         expect(Array.isArray(item.tags)).toBe(true);
       }
@@ -649,6 +680,7 @@ describe('Hunt Router', () => {
         expect(item).toHaveProperty('domainName');
         expect(item).toHaveProperty('upvoteCount');
         expect(item).toHaveProperty('userHasUpvoted', false);
+        expect(item).toHaveProperty('rank');
       }
     });
 
@@ -678,6 +710,40 @@ describe('Hunt Router', () => {
       const page2Names = page2.items.map((item) => item.domainName);
       const overlap = page1Names.filter((name) => page2Names.includes(name));
       expect(overlap.length).toBe(0);
+    });
+
+    it('should return correct rank values with pagination in public endpoint', async () => {
+      const publicCaller = huntRouter.createCaller({
+        thirdPartyOriginHostname: null,
+        testUser: null,
+      } as any);
+
+      const page1 = await publicCaller.getTrendingDomainsPublic({
+        limit: 2,
+        offset: 0,
+        timeRange: 'ANYTIME',
+      });
+
+      const page2 = await publicCaller.getTrendingDomainsPublic({
+        limit: 2,
+        offset: 2,
+        timeRange: 'ANYTIME',
+      });
+
+      // Check that ranks are correctly calculated
+      if (page1.items.length > 0) {
+        expect(page1.items[0].rank).toBe(1);
+        if (page1.items.length > 1) {
+          expect(page1.items[1].rank).toBe(2);
+        }
+      }
+
+      if (page2.items.length > 0) {
+        expect(page2.items[0].rank).toBe(3);
+        if (page2.items.length > 1) {
+          expect(page2.items[1].rank).toBe(4);
+        }
+      }
     });
   });
 

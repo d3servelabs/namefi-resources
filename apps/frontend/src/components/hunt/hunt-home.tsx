@@ -9,7 +9,8 @@ import { useQuery } from '@tanstack/react-query';
 import { PlusIcon, UserIcon } from 'lucide-react';
 import Link from 'next/link';
 import { useCallback, useMemo, useState } from 'react';
-import { DomainList } from './domain-list';
+import { CampaignsSection } from './campaigns-section';
+import { DomainsList } from './domains-list';
 import { PaginationControls } from './pagination-control';
 import { SubmitDomainDialog } from './submit-domain-dialog';
 
@@ -92,35 +93,41 @@ export const HuntHome = () => {
         </div>
       </div>
 
-      <div className="space-y-4">
-        <div className="flex justify-between items-center">
-          <h3 className="text-lg font-bold">Trending Domains</h3>
-          <Tabs value={timeRange} onValueChange={handleTimeRangeChange}>
-            <TabsList>
-              <TabsTrigger value="THIS_WEEK" className="cursor-pointer">
-                This Week
-              </TabsTrigger>
-              <TabsTrigger value="THIS_MONTH" className="cursor-pointer">
-                This Month
-              </TabsTrigger>
-              <TabsTrigger value="ANYTIME" className="cursor-pointer">
-                Anytime
-              </TabsTrigger>
-            </TabsList>
-          </Tabs>
-        </div>
-        <div className="border border-border shadow-sm rounded-xl bg-white/[0.03]">
-          <DomainList
-            domains={data?.items ?? []}
-            isLoading={isLoading || authLoading}
-            isError={isError}
+      <div className="space-y-8">
+        {/* Campaigns Section */}
+        <CampaignsSection />
+
+        {/* Trending Domains Section */}
+        <div className="space-y-4">
+          <div className="flex justify-between items-center">
+            <h3 className="text-lg font-bold">Trending Domains</h3>
+            <Tabs value={timeRange} onValueChange={handleTimeRangeChange}>
+              <TabsList>
+                <TabsTrigger value="THIS_WEEK" className="cursor-pointer">
+                  This Week
+                </TabsTrigger>
+                <TabsTrigger value="THIS_MONTH" className="cursor-pointer">
+                  This Month
+                </TabsTrigger>
+                <TabsTrigger value="ANYTIME" className="cursor-pointer">
+                  Anytime
+                </TabsTrigger>
+              </TabsList>
+            </Tabs>
+          </div>
+          <div className="border border-border shadow-sm rounded-xl bg-white/[0.03]">
+            <DomainsList
+              domains={data?.items ?? []}
+              isLoading={isLoading || authLoading}
+              isError={isError}
+            />
+          </div>
+          <PaginationControls
+            page={page}
+            hasMore={hasMore}
+            onPageChange={setPage}
           />
         </div>
-        <PaginationControls
-          page={page}
-          hasMore={hasMore}
-          onPageChange={setPage}
-        />
       </div>
     </div>
   );

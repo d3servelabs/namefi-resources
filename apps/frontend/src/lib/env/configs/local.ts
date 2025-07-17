@@ -22,6 +22,7 @@ const localConfig: ConfigInput = {
   USER_CENTRICS_SETTINGS_ID: '5UJHpI8CWth59m',
   USER_CENTRICS_GOOGLE_ANALYTICS_SERVICE_ID: 'HkocEodjb7',
   ALLOWED_CHAINS: [chains.sepolia.id],
+  HUNT_CAMPAIGN_KEYS: ['CV-2025-07-16', 'CTA-2025-07-16'],
 };
 
 export default localConfig;

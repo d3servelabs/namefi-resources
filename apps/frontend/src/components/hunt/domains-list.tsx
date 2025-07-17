@@ -1,7 +1,7 @@
 import { DomainItemSkeleton } from './domain-item-skeleton';
-import { type Domain, DomainListItem } from './domain-list-item';
+import { type Domain, DomainsListItem } from './domains-list-item';
 
-export const DomainList = ({
+export const DomainsList = ({
   domains,
   isLoading,
   isError,
@@ -25,7 +25,7 @@ export const DomainList = ({
         </div>
       ) : (
         domains.map((domain) => (
-          <DomainListItem key={domain.domainName} domain={domain} />
+          <DomainsListItem key={domain.domainName} domain={domain} />
         ))
       )}
     </div>

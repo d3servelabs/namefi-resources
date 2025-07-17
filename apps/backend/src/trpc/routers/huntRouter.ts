@@ -582,8 +582,9 @@ export const huntRouter = createTRPCRouter({
       const domainList = domains.slice(0, limit);
 
       // For public access, all userHasUpvoted should be false
-      const domainsWithoutUserData = domainList.map((domain) => ({
+      const domainsWithoutUserData = domainList.map((domain, index) => ({
         ...domain,
+        rank: offset + index + 1,
         userHasUpvoted: false,
       }));
 
@@ -641,8 +642,9 @@ export const huntRouter = createTRPCRouter({
       );
 
       // Combine results with user vote status
-      const domainsWithVotes = domainList.map((domain) => ({
+      const domainsWithVotes = domainList.map((domain, index) => ({
         ...domain,
+        rank: offset + index + 1,
         userHasUpvoted: Boolean(userVotes[domain.domainName]),
       }));
 

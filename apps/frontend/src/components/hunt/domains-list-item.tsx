@@ -13,7 +13,19 @@ import { UpvoteIcon } from './upvote-icon';
 import { usePendingToast } from '../../hooks/use-pending-toast';
 
 type TrendingDomainsResponse = AppRouterOutput['hunt']['getTrendingDomains'];
-export type Domain = TrendingDomainsResponse['items'][number];
+type CampaignResponse = AppRouterOutput['hunt']['getCampaign'];
+export type Domain = {
+  domainName: string;
+  upvoteCount: number;
+  isPinned: boolean;
+  rank?: number;
+  firstSubmitDate?: Date;
+  lastUpvoteDate?: Date;
+  reason?: string | null;
+  awardedAt?: Date;
+  userHasUpvoted?: boolean;
+  tags?: { id: string }[];
+};
 
 const VoteButton = ({
   voted,
@@ -61,7 +73,10 @@ const VoteButton = ({
   );
 };
 
-export const DomainListItem = ({ domain }: { domain: Domain }) => {
+/**
+ * Component for rendering a single domain item in a list.
+ */
+export const DomainsListItem = ({ domain }: { domain: Domain }) => {
   const trpc = useTRPC();
   const queryClient = useQueryClient();
 
@@ -87,11 +102,37 @@ export const DomainListItem = ({ domain }: { domain: Domain }) => {
             ),
           },
       );
+      queryClient.setQueriesData(
+        { queryKey: trpc.hunt.getCampaign.queryKey() },
+        (oldData: CampaignResponse | undefined) =>
+          oldData && {
+            ...oldData,
+            rankings: oldData.rankings.map((item: Domain) =>
+              item.domainName === domainName ? { ...item, ...updates } : item,
+            ),
+          },
+      );
+      queryClient.setQueriesData(
+        { queryKey: trpc.hunt.getCampaignPublic.queryKey() },
+        (oldData: CampaignResponse | undefined) =>
+          oldData && {
+            ...oldData,
+            rankings: oldData.rankings.map((item: Domain) =>
+              item.domainName === domainName ? { ...item, ...updates } : item,
+            ),
+          },
+      );
       queryClient.invalidateQueries({
         queryKey: trpc.hunt.getMySubmittedDomains.queryKey(),
       });
       queryClient.invalidateQueries({
         queryKey: trpc.hunt.getMyUpvotedDomains.queryKey(),
+      });
+      queryClient.invalidateQueries({
+        queryKey: trpc.hunt.getCampaign.queryKey(),
+      });
+      queryClient.invalidateQueries({
+        queryKey: trpc.hunt.getCampaignPublic.queryKey(),
       });
     },
     [queryClient, trpc.hunt],
@@ -147,19 +188,19 @@ export const DomainListItem = ({ domain }: { domain: Domain }) => {
   return (
     <div
       className={
-        'flex items-center gap-4 sm:gap-6 px-4 sm:px-6 py-6 first:rounded-t-xl last:rounded-b-xl hover:bg-accent/30 transition'
+        'flex items-center gap-4 sm:gap-6 pr-4 sm:pr-6 py-6 sm:py-8 first:rounded-t-xl last:rounded-b-xl hover:bg-accent/30 transition'
       }
     >
-      {/* Vote */}
-      <div className="flex flex-col items-center w-12 sm:w-16">
-        <VoteButton
-          voted={domain.userHasUpvoted}
-          pending={upvoteMutation.isPending || unvoteMutation.isPending}
-          onUpvote={handleUpvote}
-          onUnvote={handleUnvote}
-        />
-        <span className="text-base/8 font-bold text-foreground font-mono">
-          {formattedUpvotes}
+      <div className="flex items-center gap-2 w-20 sm:w-24 justify-center border-r border-border px-4 sm:px-6">
+        <span
+          className={cn(
+            'text-lg/8 font-bold text-foreground/40 font-mono italic',
+            domain.rank === 1 && 'text-brand-primary',
+            domain.rank === 2 && 'text-brand-primary/80',
+            domain.rank === 3 && 'text-brand-primary/60',
+          )}
+        >
+          {domain.rank ? (domain.rank < 100 ? `#${domain.rank}` : '99+') : '-'}
         </span>
       </div>
       <div className="flex-1 flex flex-col sm:flex-row">
@@ -173,6 +214,18 @@ export const DomainListItem = ({ domain }: { domain: Domain }) => {
           </Link>
           <TagsDisplay tags={domain.tags || []} limit={4} />
         </div>
+      </div>
+      {/* Vote */}
+      <div className="flex flex-col items-center gap-2 w-12 sm:w-16">
+        <VoteButton
+          voted={domain.userHasUpvoted}
+          pending={upvoteMutation.isPending || unvoteMutation.isPending}
+          onUpvote={handleUpvote}
+          onUnvote={handleUnvote}
+        />
+        <span className="text-base leading-none font-bold text-foreground font-mono">
+          {formattedUpvotes}
+        </span>
       </div>
     </div>
   );
