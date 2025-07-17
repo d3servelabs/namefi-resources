@@ -2,15 +2,17 @@
 
 import { Button, Text, render } from '@react-email/components';
 import { Code } from '../mail/components/code';
-import { NamefiEmailContatiner } from '../mail/components/namefi-email-container';
+import { NamefiEmailContainer } from '../mail/components/namefi-email-container';
 import { getEmailsBaseUrl } from '../mail/consts';
 import { sendMail } from '../mail/mail-client';
 import { button, paragraph } from '../mail/styles';
+// biome-ignore lint/correctness/noUnusedImports: required for react-email
+import React from 'react';
 
 // Start the process
 async function main(): Promise<void> {
   const email = (
-    <NamefiEmailContatiner title={'[Namefi] Test Email'}>
+    <NamefiEmailContainer title={'[Namefi] Test Email'}>
       <Text style={paragraph}> Thank you for using Namefi.</Text>
 
       <Text style={{ ...paragraph, display: 'inline' }}>Your Test</Text>
@@ -25,7 +27,7 @@ async function main(): Promise<void> {
       >
         Go To Test
       </Button>
-    </NamefiEmailContatiner>
+    </NamefiEmailContainer>
   );
   const html = await render(email, { plainText: false, pretty: false });
   const plain = await render(email, { plainText: true, pretty: false });
