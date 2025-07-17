@@ -1,3 +1,4 @@
+// biome-ignore lint/correctness/noUnusedImports: required for react-email
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import rehypeExternalLinks from 'rehype-external-links';

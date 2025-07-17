@@ -23,3 +23,4 @@ export * from './refund-stripe.workflow';
 export * from './autorenew-daily-emails.workflow';
 export * from './charge-user-and-create-payment.workflow';
 export * from './update-domain-index.workflow';
+export * from './domain-ownership/prepare-domain-for-export.workflow';
