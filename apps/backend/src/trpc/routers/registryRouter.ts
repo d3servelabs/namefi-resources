@@ -9,12 +9,14 @@ import { z } from 'zod';
 import {
   get0xDotCityPercentageRollout,
   getDomainListInfo,
+  getPoweredByNamefi3PDomains,
 } from '#lib/namefi-registry';
 import {
   authedOrPublicProcedure,
   createTRPCRouter,
   publicProcedure,
 } from '../base';
+import { TRPCError } from '@trpc/server';
 
 /**
  * Schema for parsing and validating an array of normalized domain names.
@@ -77,15 +79,25 @@ export const registryRouter = createTRPCRouter({
       z.object({
         // The base query string to generate domain suggestions from
         query: z.string(),
-        // Optional array of parent domains, defaults to ["0x.city", "defi.build"]
+        // Optional array of parent domains
         parentDomains: z
-          .enum(['0x.city', 'defi.build'])
-          .array()
+          .array(namefiNormalizedDomainSchema)
           .optional()
-          .default(['0x.city', 'defi.build']),
+          .default([]),
       }),
     )
-    .query(({ input, ctx }) => {
+    .query(async ({ input, ctx }) => {
+      const poweredByNamefi3pDomains = await getPoweredByNamefi3PDomains();
+      const allParentDomainsAreValid = input.parentDomains.every((domain) =>
+        poweredByNamefi3pDomains.includes(domain),
+      );
+
+      if (!allParentDomainsAreValid) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Invalid parent domains',
+        });
+      }
       const domains: string[] = [];
       // Configure the length of generated name combinations
       const generatedNamesLengths = [1, 2];

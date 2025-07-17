@@ -81,15 +81,20 @@ const generateUnavailableDomainInfo = (domain: NamefiNormalizedDomain) => ({
   importable: false,
 });
 
-// biome-ignore lint/suspicious/useAwait: it will be a db query in upcoming updates
-export const getPoweredByNamefi3PHostnames = async () => {
+export const getPoweredByNamefi3PDomains = () => {
   const fromDb: string[] = [];
-  const fromConfig = config.POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES;
-  return Promise.resolve([...fromDb, ...fromConfig]);
+  return Promise.resolve([
+    ...fromDb,
+    '0x.city',
+    'taylor.cv',
+  ] as NamefiNormalizedDomain[]);
 };
 
-export const getPoweredByNamefi3PDomains = () => {
-  return Promise.resolve(['0x.city'] as NamefiNormalizedDomain[]);
+// biome-ignore lint/suspicious/useAwait: it will be a db query in upcoming updates
+export const getPoweredByNamefi3PHostnames = async () => {
+  const directDomains = await getPoweredByNamefi3PDomains();
+  const fromConfig = config.POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES;
+  return Promise.resolve([...directDomains, ...fromConfig]);
 };
 
 // biome-ignore lint/suspicious/useAwait: it will be a db query in upcoming updates
@@ -274,10 +279,12 @@ const _get3ldDomainListInfo = async (
     return unavailableDomainInfo;
   }
 
-  // Currently only 0x.city is supported
-  if (parentDomain === '0x.city') {
+  const poweredByNamefi3pDomains = await getPoweredByNamefi3PDomains();
+  if (
+    poweredByNamefi3pDomains.includes(parentDomain as NamefiNormalizedDomain)
+  ) {
     const currentPercentage = get0xDotCityPercentageRollout();
-    // we only enable a percentage of subdomain registrations for 0x.city
+    // we only enable a percentage of subdomain registrations
     // we use keccak256 to hash the domain and check if the last 4 bytes are less than PERCENT of the total number of subdomains
     const shouldRollout = hashBasedPercentageRollouted(
       domain,

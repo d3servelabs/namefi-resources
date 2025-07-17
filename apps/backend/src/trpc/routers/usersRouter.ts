@@ -301,6 +301,7 @@ export const usersRouter = createTRPCRouter({
       const { user, thirdPartyOriginHostname } = ctx;
 
       if (thirdPartyOriginHostname !== '0x.city') {
+        //promo is only available for 0x.city
         return [];
       }
 

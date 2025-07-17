@@ -1,6 +1,7 @@
 import { getDomainLevels } from '../get-domain-levels';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { differenceInMonths } from 'date-fns';
+import { getPoweredByNamefi3PDomains } from '../namefi-registry';
 
 export type DomainDurationConstraints = {
   minYears: number;
@@ -56,8 +57,13 @@ export async function getDomainDurationConstraints(
     return { minYears: 1, maxYears: 10 };
   }
   if (levels.length === 3) {
-    if (parentDomain !== '0x.city') {
-      throw new Error(`Domain ${domainName} is not a valid 0x.city domain`);
+    const poweredByNamefi3pDomains = await getPoweredByNamefi3PDomains();
+    if (
+      !poweredByNamefi3pDomains.includes(parentDomain as NamefiNormalizedDomain)
+    ) {
+      throw new Error(
+        `Domain ${domainName} is not a valid powered by namefi 3P domain`,
+      );
     }
     return { minYears: 3, maxYears: 5 };
   }
