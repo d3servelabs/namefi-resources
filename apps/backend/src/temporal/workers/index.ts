@@ -10,6 +10,7 @@ import {
 } from '../activities';
 import { DomainsActivities } from '../activities/domain';
 import {
+  getNamefiNftLock,
   getNftExpirationTimeInSeconds,
   getNftFromIndexer,
   getNftsForWallets,
@@ -63,6 +64,7 @@ export const ACTIVITIES = {
   [TEMPORAL_ENUMS.MINT]: {
     ...MintActivities,
     getNftExpirationTimeInSeconds,
+    getNamefiNftLock,
     getNftFromIndexer,
     getNftsForWallets,
   },

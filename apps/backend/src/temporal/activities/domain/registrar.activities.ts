@@ -22,6 +22,8 @@ import { addYears, isSameDay } from 'date-fns';
 import { decryptEppAuthCode } from '#lib/epp-code-encryption';
 import { logger } from '#lib/logger';
 import { sldRegistrar } from '#lib/namefi-registry';
+import { RDAP } from '@namefi-astra/registrars/lib/rdap-whois/rdap_client';
+import { WhoisClient } from '@namefi-astra/registrars/lib/rdap-whois/whois_client';
 
 /**
  * Poll the removal status of the DS record
@@ -321,3 +323,148 @@ export async function pollAndExpectExpirationChange({
 export const listAllDomains = async (
   ...args: Parameters<typeof sldRegistrar.listAllDomains>
 ) => sldRegistrar.listAllDomains(...args);
+
+export async function lockEppDomain(
+  domainNameLdh: PunycodeDomainName,
+): Promise<{
+  status: OperationStatus;
+  operationId: string | null | undefined;
+}> {
+  const res = await sldRegistrar.setDomainLockState(domainNameLdh, true);
+  return {
+    status: res.status,
+    operationId: res.operationId,
+  };
+}
+
+export async function unlockEppDomain(
+  domainNameLdh: PunycodeDomainName,
+): Promise<{
+  status: OperationStatus;
+  operationId: string | null | undefined;
+}> {
+  try {
+    logger.info(`Unlocking EPP domain: ${domainNameLdh}`);
+    const res = await sldRegistrar.setDomainLockState(domainNameLdh, false);
+    logger.info(`Unlocked EPP domain: ${domainNameLdh}`);
+    return {
+      status: res.status,
+      operationId: res.operationId,
+    };
+  } catch (error: any) {
+    logger.error(
+      `Error unlocking EPP domain: ${domainNameLdh}: ${error.message}`,
+      error.stack,
+    );
+    throw error;
+  }
+}
+
+/**
+ * Get the EPP lock state for a domain
+ *
+ * @param domainNameLdh - The domain name to get the EPP lock state for
+ * @returns Promise<GetLockStateResponse> The EPP lock state for the domain
+ */
+export async function getEppLockState(
+  domainNameLdh: PunycodeDomainName,
+): Promise<GetLockStateResponse> {
+  logger.info(`Getting EPP lock state for domain: ${domainNameLdh}`);
+  try {
+    const res = await _getLockStateFromRdapAndWhois(domainNameLdh);
+    logger.info(
+      `Retrieved EPP lock state for domain: ${domainNameLdh}, locked: ${res}`,
+    );
+
+    return res;
+  } catch (error: any) {
+    logger.error(
+      `Error getting EPP lock state for domain: ${domainNameLdh}: ${error.message}`,
+      error.stack,
+    );
+    throw error;
+  }
+}
+
+export async function pollAndExpectEppLockStateChange(
+  domainNameLdh: PunycodeDomainName,
+  newLockState: { locked: boolean },
+): Promise<GetLockStateResponse> {
+  const res = await getEppLockState(domainNameLdh);
+  if (res.locked !== newLockState.locked) {
+    throw workflow.ApplicationFailure.create({
+      message: `EPP lock is still ${res.locked ? 'locked' : 'unlocked'}`,
+      details: [{ res }],
+      nonRetryable: false,
+    });
+  }
+  return res;
+}
+
+export type GetLockStateResponse = {
+  locked: boolean;
+  isAddPeriod: boolean;
+  isTransferPeriod: boolean;
+  status: string[];
+};
+
+async function _getLockStateFromRdapAndWhois(
+  domain: string,
+): Promise<GetLockStateResponse> {
+  // if (USE_MOCK_REGISTRARS) {
+  //   return {
+  //     locked: false,
+  //     isAddPeriod: false,
+  //     isTransferPeriod: false,
+  //     status: [],
+  //   };
+  // }
+  let res: GetLockStateResponse | null = null;
+  const errors: {
+    rdapError?: string;
+    whoisError?: string;
+  } = {};
+
+  const [rdapError, rdapRes] = await resolve(RDAP.getLockState(domain));
+
+  if (rdapError) {
+    errors.rdapError = rdapError.message;
+    logger.error(`getLockState: RDAP failed ${rdapError}`);
+  }
+
+  if (rdapRes) {
+    res = {
+      locked: rdapRes.locked,
+      isAddPeriod: rdapRes.isAddPeriod ?? false,
+      isTransferPeriod: rdapRes.isTransferPeriod ?? false,
+      status: rdapRes.status ?? [],
+    };
+  }
+
+  if (!res) {
+    const [whoisError, whoisRes] = await resolve(
+      WhoisClient.getLockState(domain),
+    );
+    if (whoisError) {
+      errors.whoisError = whoisError.message;
+      logger.error(`getLockState: WHOIS failed ${whoisError}`);
+    }
+    if (whoisRes) {
+      res = {
+        locked: whoisRes.locked,
+        isAddPeriod: whoisRes.isAddPeriod ?? false,
+        isTransferPeriod: whoisRes.isTransferPeriod ?? false,
+        status: whoisRes.status ?? [],
+      };
+    }
+  }
+
+  if (!res) {
+    throw workflow.ApplicationFailure.create({
+      message: 'could not get lock state',
+      details: [{ errors }],
+      nonRetryable: false,
+    });
+  }
+  return res;
+}

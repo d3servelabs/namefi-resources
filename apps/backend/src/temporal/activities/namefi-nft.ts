@@ -328,6 +328,30 @@ export const getNftExpirationTimeInSeconds = async (
   return Number(expirationTimeFromContract);
 };
 
+export const getNamefiNftLock = async (
+  chainId: number,
+  domainName: NamefiNormalizedDomain,
+) => {
+  const chain = getChain(chainId);
+  if (!chain) {
+    throw new Error(`Chain ${chainId} not found`);
+  }
+  const publicClient = createPublicClient({
+    chain,
+    transport: http(chainsToUrls(chain)),
+  });
+  const nftId = nftIdFromDomainName(domainName);
+
+  const isLocked = await publicClient.readContract({
+    address: NAMEFI_NFT_CONTRACT_ADDRESS as `0x${string}`,
+    abi: NftAbi,
+    functionName: 'isLocked',
+    args: [nftId],
+  });
+
+  return isLocked;
+};
+
 export const getNftFromIndexer = async (domainName: NamefiNormalizedDomain) => {
   const nft = await db.query.namefiNftTable.findFirst({
     where: eq(namefiNftTable.normalizedDomainName, domainName),
