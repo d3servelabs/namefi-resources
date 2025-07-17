@@ -49,15 +49,16 @@ export const useSearch = (parentDomain?: string) => {
 
   const importQuery = useMemo(() => {
     if (sanitized.length > 0) {
-      return parseCSVDomains(sanitized);
+      const importQueries = parseCSVDomains(sanitized);
+      return new Map(importQueries.map((query) => [query.domain, query]));
     }
-    return [];
+    return new Map();
   }, [sanitized]);
 
   const domains = useMemo<NamefiNormalizedDomain[]>(
     () =>
       searchMode === SearchMode.IMPORT
-        ? importQuery.map((d) => d.domain)
+        ? Array.from(importQuery.keys())
         : suggestionIsFetching
           ? []
           : suggestionIsSuccess
@@ -79,7 +80,11 @@ export const useSearch = (parentDomain?: string) => {
   // biome-ignore lint/correctness/useExhaustiveDependencies: reset infoMap when domains change
   useEffect(() => setDomainInfo(new Map()), [domains]);
 
-  const { status: availStatus, error: availError } = useSubscription({
+  const {
+    status: availStatus,
+    error: availError,
+    reset: resetAvailStatus,
+  } = useSubscription({
     ...trpc.search.streamDomainAvailability.subscriptionOptions(
       { domains },
       {
@@ -92,8 +97,31 @@ export const useSearch = (parentDomain?: string) => {
 
   const runSearch = useCallback(() => {
     if (query.trim().length === 0) return;
-    refetchSuggestions({ cancelRefetch: true });
-  }, [query, refetchSuggestions]);
+    if (searchMode === SearchMode.REGISTER) {
+      refetchSuggestions({ cancelRefetch: true });
+    } else {
+      setDomainInfo(new Map());
+      resetAvailStatus();
+    }
+  }, [query, refetchSuggestions, searchMode, resetAvailStatus]);
+
+  const isLoading = useMemo(() => {
+    const isRegisterLoading =
+      searchMode === SearchMode.REGISTER && suggestionIsFetching;
+    const isImportLoading =
+      domains.length > 0 &&
+      domainInfo.size < domains.length &&
+      availStatus !== 'error' &&
+      availStatus !== 'idle';
+
+    return isRegisterLoading || isImportLoading;
+  }, [
+    searchMode,
+    suggestionIsFetching,
+    domains.length,
+    domainInfo.size,
+    availStatus,
+  ]);
 
   return {
     query,
@@ -102,7 +130,7 @@ export const useSearch = (parentDomain?: string) => {
     searchMode,
     onSearchModeChange,
     importQuery,
-    isLoading: suggestionIsFetching || domainInfo.size < domains.length,
+    isLoading,
     isError: suggestionIsError || availStatus === 'error',
     error: suggestionIsError
       ? suggestionError instanceof Error

@@ -24,7 +24,11 @@ import { NamefiButton } from '../buttons/namefi-button';
 import { AnimatedCartButton } from '../buttons/animated-cart-button';
 import { useInteractionLoggers } from '../providers/interactionLoggersProvider';
 import { Placeholder } from './placeholder';
-import type { ImportQuery, SearchComponent } from './types';
+import type {
+  ImportQuery,
+  SearchComponent,
+  EppAuthorizationCodesFormData,
+} from './types';
 import {
   isDomainImportable,
   isDomainUnsupported,
@@ -33,10 +37,14 @@ import {
 } from '@namefi-astra/backend/trpc/types';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { itemTypeSchema } from '@namefi-astra/db/types';
-import { EppAuthCodeModal } from '../modals/epp-auth-code-modal';
+
 import { toUnicodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
 import { SearchMode } from './types';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/shadcn/tabs';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { eppAuthorizationCodesFormSchema } from './types';
+import { useEffect } from 'react';
 
 // Components
 export const SearchHeader: FC<{
@@ -124,7 +132,7 @@ export const SearchModeTabs: FC<{
 export const SearchInput: FC<{
   query: string;
   setQuery: (query: string) => void;
-  importQuery: ImportQuery[];
+  importQuery: Map<NamefiNormalizedDomain, ImportQuery>;
   isLoading: boolean;
   onSearch: () => void;
   searchMode: SearchMode;
@@ -193,12 +201,18 @@ export const SearchInput: FC<{
 export const DomainCard: FC<{
   domain?: NamefiNormalizedDomain;
   availabilityInfo?: DomainAvailabilityInfo;
-  importQuery?: ImportQuery;
-}> = ({ domain, availabilityInfo, importQuery }) => {
+  eppAuthorizationCode?: string;
+  onEppCodeChange?: (eppCode: string) => void;
+  isImportMode?: boolean;
+}> = ({
+  domain,
+  availabilityInfo,
+  eppAuthorizationCode,
+  onEppCodeChange,
+  isImportMode,
+}) => {
   const { logEventWithInteractionLoggers } = useInteractionLoggers();
   const router = useRouter();
-  const [isEppModalOpen, setIsEppModalOpen] = useState(false);
-  const [isSubmittingEpp, setIsSubmittingEpp] = useState(false);
 
   const logBeginCheckout = useCallback(() => {
     const beginCheckoutEvent: BeginCheckoutEvent = {
@@ -210,6 +224,18 @@ export const DomainCard: FC<{
 
   // Only use cart functionality if we have a valid domain name
   const { cart, inCart, addingBusy, removingBusy } = useCartRow(domain);
+
+  const cartItem = useMemo(() => {
+    if (!domain || !inCart) return undefined;
+    return cart.cartData?.find((item) => item.normalizedDomainName === domain);
+  }, [cart, domain, inCart]);
+
+  const cartItemEppAuthorizationCode = useMemo(() => {
+    if (!cartItem) return undefined;
+    return (
+      cartItem.eppAuthorizationCode ?? cartItem.encryptedEppAuthorizationCode
+    );
+  }, [cartItem]);
 
   // Only calculate these if we have availabilityInfo
   const isImportable = availabilityInfo
@@ -257,30 +283,26 @@ export const DomainCard: FC<{
     }
   }, [cart, domain]);
 
-  /* EPP SUBMIT handler -------------------------------------------------- */
-  const handleEppSubmit = useCallback(
-    async (eppAuthCode: string) => {
-      if (!availabilityInfo) return;
-      setIsSubmittingEpp(true);
-      try {
-        const minDuration =
-          availabilityInfo.durationValidationInYears?.min ?? 1;
-        await cart.addItem({
-          domainAvailabilityInfo: availabilityInfo,
-          durationInYears: minDuration,
-          operationType: 'IMPORT',
-          eppAuthorizationCode: eppAuthCode,
-        });
-        setIsEppModalOpen(false);
-      } catch (error) {
-        // Error will be handled by the modal
-        throw error;
-      } finally {
-        setIsSubmittingEpp(false);
-      }
-    },
-    [cart, availabilityInfo],
-  );
+  /* IMPORT handler ------------------------------------------------------ */
+  const handleImport = useCallback(async () => {
+    if (!availabilityInfo) return;
+
+    // Check if we have an EPP authorization code from the input
+    const existingEppCode = eppAuthorizationCode;
+
+    if (!existingEppCode || !existingEppCode.trim()) {
+      // No EPP code provided, can't proceed
+      return;
+    }
+
+    const minDuration = availabilityInfo.durationValidationInYears?.min ?? 1;
+    await cart.addItem({
+      domainAvailabilityInfo: availabilityInfo,
+      durationInYears: minDuration,
+      operationType: 'IMPORT',
+      eppAuthorizationCode: existingEppCode,
+    });
+  }, [cart, availabilityInfo, eppAuthorizationCode]);
 
   const hasAvailabilityInfo = availabilityInfo !== undefined;
   // When availabilityInfo is available, all data that CAN be loaded HAS been loaded
@@ -297,106 +319,106 @@ export const DomainCard: FC<{
       : '';
 
   return (
-    <>
-      <Card
-        className={cn(
-          'bg-white/5 backdrop-blur-lg h-32 transition-all duration-150 p-0 border-[1px] border-white/10',
-          // Only reduce opacity if we know the domain is unavailable and not importable
-          hasAvailabilityInfo && !availabilityInfo.availability && !isImportable
-            ? 'opacity-60'
-            : 'opacity-100',
-        )}
-      >
-        <CardContent className="h-full w-full">
-          <div className="flex items-center justify-between h-full w-full">
-            <div className="space-y-1 flex-1 min-w-0 mr-4 overflow-hidden">
-              <div className="font-semibold tracking-tight flex items-center gap-2">
-                <div className="min-w-0 flex-1">
-                  {domain ? (
-                    <h3 className="line-clamp-2 break-words">
-                      {subdomain && (
-                        <span className="text-3xl text-brand-tertiary">
-                          {toUnicodeDomainName(subdomain)}
-                        </span>
-                      )}
-                      {parentDomain && (
-                        <span className="text-2xl text-foreground">
-                          .{toUnicodeDomainName(parentDomain)}
-                        </span>
-                      )}
-                    </h3>
-                  ) : (
-                    <Skeleton className="h-8 w-full max-w-[250px] bg-gray-600/50" />
-                  )}
-                </div>
+    <Card
+      className={cn(
+        'bg-white/5 backdrop-blur-lg h-32 transition-all duration-150 p-0 border-[1px] border-white/10',
+        // Only reduce opacity if we know the domain is unavailable and not importable
+        hasAvailabilityInfo && !availabilityInfo.availability && !isImportable
+          ? 'opacity-60'
+          : 'opacity-100',
+      )}
+    >
+      <CardContent className="h-full w-full">
+        <div className="flex items-center justify-between h-full w-full">
+          <div className="space-y-1 flex-1 min-w-0 mr-4 overflow-hidden">
+            <div className="font-semibold tracking-tight flex items-center gap-2">
+              <div className="min-w-0 flex-1">
+                {domain ? (
+                  <h3 className="line-clamp-2 break-words">
+                    {subdomain && (
+                      <span className="text-3xl text-brand-tertiary">
+                        {toUnicodeDomainName(subdomain)}
+                      </span>
+                    )}
+                    {parentDomain && (
+                      <span className="text-2xl text-foreground">
+                        .{toUnicodeDomainName(parentDomain)}
+                      </span>
+                    )}
+                  </h3>
+                ) : (
+                  <Skeleton className="h-8 w-full max-w-[250px] bg-gray-600/50" />
+                )}
               </div>
-              <div className="flex items-center gap-2">
-                {shouldShowPricingSkeleton ? (
-                  <Skeleton className="h-6 w-20 bg-gray-600/50" />
-                ) : isNotNil(priceInUsd) ? (
-                  <p className="text-xl font-medium line-clamp-1">
-                    {`${formatAmountInUSD(priceInUsd)} USD`}
-                  </p>
-                ) : null}
-              </div>
-              {hasOwnerInfo && (
-                <div className="flex items-center text-sm text-muted-foreground">
-                  <User className="mr-1 h-3 w-3 shrink-0" />
-                  <span className="line-clamp-1">
-                    Owner: {currentOwner.substring(0, 6)}...
-                    {currentOwner.substring(currentOwner.length - 4)}
-                  </span>
-                </div>
-              )}
             </div>
-            <div className="flex items-center justify-center shrink-0">
-              {shouldShowActionSkeleton ? (
-                <Skeleton className="h-10 w-[120px] rounded-full bg-gray-600/50" />
-              ) : isUnsupported ? (
-                <Badge variant="destructive" className="text-xs">
-                  Unsupported
-                </Badge>
-              ) : availabilityInfo.availability || isImportable ? (
-                <AnimatedCartButton
-                  state={
-                    removingBusy
-                      ? 'removing'
-                      : addingBusy || isSubmittingEpp
-                        ? 'adding'
-                        : inCart
-                          ? 'in-cart'
-                          : isImportable
-                            ? 'import'
-                            : 'add-to-cart'
-                  }
-                  onAdd={
-                    isImportable ? () => setIsEppModalOpen(true) : handleAdd
-                  }
-                  onRemove={handleRemove}
-                  onGoToCart={() => {
-                    logBeginCheckout();
-                    router.push('/cart');
-                  }}
-                  showRemoveButton={inCart}
-                  disabled={addingBusy || isSubmittingEpp || removingBusy}
-                />
+            <div className="flex items-center gap-2">
+              {shouldShowPricingSkeleton ? (
+                <Skeleton className="h-6 w-20 bg-gray-600/50" />
+              ) : isNotNil(priceInUsd) ? (
+                <p className="text-xl font-medium line-clamp-1">
+                  {`${formatAmountInUSD(priceInUsd)} USD`}
+                </p>
               ) : null}
             </div>
+            {hasOwnerInfo && (
+              <div className="flex items-center text-sm text-muted-foreground">
+                <User className="mr-1 h-3 w-3 shrink-0" />
+                <span className="line-clamp-1">
+                  Owner: {currentOwner.substring(0, 6)}...
+                  {currentOwner.substring(currentOwner.length - 4)}
+                </span>
+              </div>
+            )}
+            {isImportable && (
+              <div className="flex items-center gap-2 mt-2 w-80">
+                <Input
+                  placeholder="EPP Auth Code"
+                  value={
+                    inCart
+                      ? (cartItemEppAuthorizationCode ?? '')
+                      : (eppAuthorizationCode ?? '')
+                  }
+                  disabled={inCart}
+                  onChange={(e) => onEppCodeChange?.(e.target.value)}
+                  className="h-8 text-sm bg-gray-700/50 border-gray-600"
+                />
+              </div>
+            )}
           </div>
-        </CardContent>
-      </Card>
-
-      {/* EPP Auth Code Modal */}
-      {hasAvailabilityInfo && (
-        <EppAuthCodeModal
-          isOpen={isEppModalOpen}
-          onClose={() => setIsEppModalOpen(false)}
-          onSubmit={handleEppSubmit}
-          domainInfo={availabilityInfo}
-          isSubmitting={isSubmittingEpp}
-        />
-      )}
-    </>
+          <div className="flex items-center justify-center shrink-0">
+            {shouldShowActionSkeleton ? (
+              <Skeleton className="h-10 w-[120px] rounded-full bg-gray-600/50" />
+            ) : isUnsupported ? (
+              <Badge variant="destructive" className="text-xs">
+                Unsupported
+              </Badge>
+            ) : availabilityInfo.availability || isImportable ? (
+              <AnimatedCartButton
+                state={
+                  removingBusy
+                    ? 'removing'
+                    : addingBusy
+                      ? 'adding'
+                      : inCart
+                        ? 'in-cart'
+                        : isImportable
+                          ? 'import'
+                          : 'add-to-cart'
+                }
+                onAdd={isImportable ? handleImport : handleAdd}
+                onRemove={handleRemove}
+                onGoToCart={() => {
+                  logBeginCheckout();
+                  router.push('/cart');
+                }}
+                showRemoveButton={inCart}
+                disabled={addingBusy || removingBusy}
+              />
+            ) : null}
+          </div>
+        </div>
+      </CardContent>
+    </Card>
   );
 };
 
@@ -413,10 +435,12 @@ export const SearchResults: FC<{
   isError: boolean;
   error?: string;
   hasData: boolean;
-  domainInfos: Map<NamefiNormalizedDomain, DomainAvailabilityInfo>;
   domains: NamefiNormalizedDomain[];
-  importQuery: ImportQuery[];
+  domainInfos: Map<NamefiNormalizedDomain, DomainAvailabilityInfo>;
   query: string;
+  eppAuthorizationCodes: Record<string, string | undefined>;
+  onEppCodeChange: (domain: NamefiNormalizedDomain, eppCode: string) => void;
+  searchMode: SearchMode;
 }> = ({
   isLoading,
   isError,
@@ -424,8 +448,10 @@ export const SearchResults: FC<{
   hasData,
   domainInfos,
   domains,
-  importQuery,
   query,
+  eppAuthorizationCodes,
+  onEppCodeChange,
+  searchMode,
 }) => {
   // Show error state
   if (isError && query.length > 0) {
@@ -455,14 +481,15 @@ export const SearchResults: FC<{
     return (
       <div className="flex flex-col gap-4">
         {domains.map((domain) => {
-          const info = domainInfos.get(domain);
-          const importQueryItem = importQuery.find((d) => d.domain === domain);
+          const availabilityInfo = domainInfos.get(domain);
           return (
             <DomainCard
               key={domain}
               domain={domain}
-              availabilityInfo={info}
-              importQuery={importQueryItem}
+              availabilityInfo={availabilityInfo}
+              eppAuthorizationCode={eppAuthorizationCodes[domain]}
+              onEppCodeChange={(eppCode) => onEppCodeChange(domain, eppCode)}
+              isImportMode={searchMode === SearchMode.IMPORT}
             />
           );
         })}
@@ -514,6 +541,72 @@ export const Search: SearchComponent = ({ originInfo }) => {
     domains,
   } = useSearch(parentDomain || undefined);
 
+  // Form for EPP authorization codes
+  const form = useForm<EppAuthorizationCodesFormData>({
+    resolver: zodResolver(eppAuthorizationCodesFormSchema),
+    defaultValues: {
+      eppAuthorizationCodes: {},
+    },
+  });
+
+  const [isBusy, setIsBusy] = useState(false);
+
+  // Initialize form with auth codes from importQuery
+  const initializeEppCodes = useCallback(() => {
+    if (importQuery && importQuery.size > 0) {
+      const initialCodes: Record<string, string> = {};
+      importQuery.forEach((query, domain) => {
+        if (query.eppAuthorizationCode) {
+          initialCodes[domain] = query.eppAuthorizationCode;
+        }
+      });
+      form.reset({ eppAuthorizationCodes: initialCodes });
+    }
+  }, [importQuery, form]);
+
+  // Initialize when importQuery changes
+  useEffect(() => {
+    initializeEppCodes();
+  }, [initializeEppCodes]);
+
+  // Handle EPP authorization code changes
+  const handleEppCodeChange = useCallback(
+    (domain: NamefiNormalizedDomain, eppCode: string) => {
+      form.setValue('eppAuthorizationCodes', {
+        ...form.getValues('eppAuthorizationCodes'),
+        [domain]: eppCode,
+      });
+    },
+    [form],
+  );
+
+  // Get current EPP authorization codes
+  const eppAuthorizationCodes = form.watch('eppAuthorizationCodes');
+
+  // Calculate importable domains for FloatingCart
+  const importableDomains = useMemo(() => {
+    if (searchMode !== SearchMode.IMPORT || !domains || !domainInfos) {
+      return [];
+    }
+
+    return domains
+      .map((domain) => {
+        const availabilityInfo = domainInfos.get(domain);
+        const eppCode = eppAuthorizationCodes[domain];
+
+        if (!availabilityInfo || !eppCode || !eppCode.trim()) return null;
+
+        if (!isDomainImportable(availabilityInfo)) return null;
+
+        return {
+          domain,
+          availabilityInfo,
+          eppAuthorizationCode: eppCode,
+        };
+      })
+      .filter((item): item is NonNullable<typeof item> => item !== null);
+  }, [searchMode, domains, domainInfos, eppAuthorizationCodes]);
+
   if (!parentDomain) {
     // Return loading state or null while origin info is loading
     return null;
@@ -554,12 +647,18 @@ export const Search: SearchComponent = ({ originInfo }) => {
             hasData={hasData}
             domainInfos={domainInfos}
             domains={domains}
-            importQuery={importQuery}
             query={query}
+            eppAuthorizationCodes={eppAuthorizationCodes}
+            onEppCodeChange={handleEppCodeChange}
+            searchMode={searchMode}
           />
 
           <div className="sticky bottom-5 flex justify-center mt-4 px-4">
-            <FloatingCart />
+            <FloatingCart
+              searchMode={searchMode}
+              importableDomains={importableDomains}
+              onBusyChange={setIsBusy}
+            />
           </div>
         </>
       )}
