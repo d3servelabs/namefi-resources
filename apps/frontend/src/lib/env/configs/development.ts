@@ -17,7 +17,7 @@ const developmentConfig: ConfigInput = {
   USER_CENTRICS_SETTINGS_ID: '5UJHpI8CWth59m',
   USER_CENTRICS_GOOGLE_ANALYTICS_SERVICE_ID: 'HkocEodjb7',
   ALLOWED_CHAINS: [chains.sepolia.id, chains.base.id, chains.mainnet.id],
-  HUNT_CAMPAIGN_KEYS: ['CV-2025-07-16', 'CTA-2025-07-16'],
+  HUNT_CAMPAIGN_KEYS: ['cv-2025-07-16', 'cta-2025-07-16'],
 };
 
 export default developmentConfig;
