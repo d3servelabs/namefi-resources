@@ -238,3 +238,43 @@ export async function setExpirationForNamefiNft(
     chainId,
   );
 }
+
+export async function lockNamefiNftByName({
+  chainId,
+  domainName,
+}: {
+  chainId: number;
+  domainName: NamefiNormalizedDomain;
+}): Promise<string> {
+  const { prepareTxToLockNamefiNftByName } = typedProxyActivities({
+    temporalEnum: TEMPORAL_ENUMS.MINT,
+    options: {
+      startToCloseTimeout: '5 seconds',
+      retry: {
+        maximumAttempts: 1,
+      },
+    },
+  });
+
+  const prepareResult: TxPrepareResult = await prepareTxToLockNamefiNftByName(
+    chainId,
+    domainName,
+  );
+
+  if ('error' in prepareResult) {
+    throw new workflow.ApplicationFailure(
+      `Failed to prepare transaction: ${prepareResult.error.message}`,
+    );
+  }
+
+  return await _signAndSendTransactionWithRetry(
+    prepareResult.preparedTx,
+    chainId,
+  );
+}
+lockNamefiNftByName.generateId = (input: {
+  domainName: NamefiNormalizedDomain;
+  chainId: number;
+}) => {
+  return `lock-namefi-nft-${input.chainId}-${input.domainName}`;
+};

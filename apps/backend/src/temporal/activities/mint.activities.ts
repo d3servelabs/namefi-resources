@@ -452,3 +452,43 @@ export const prepareTxToSetExpirationForNamefiNft = async (
     },
   };
 };
+
+export const prepareTxToLockNamefiNftByName = async (
+  chainId: number,
+  domainNameLdh: string,
+): Promise<TxPrepareResult> => {
+  const ctx = Context.current();
+
+  ctx.log.info(
+    `Locking Namefi NFT by name - chainId: ${chainId}, domainNameLdh: ${domainNameLdh}`,
+  );
+  const walletClient = await getViemWalletClient(chainId);
+  if (!walletClient) {
+    ctx.log.error(`Wallet client not found for chainId: ${chainId}`);
+    throw workflow.ApplicationFailure.create({
+      message: `Wallet client not found for chainId: ${chainId}`,
+      nonRetryable: true,
+    });
+  }
+
+  const preparedTx = await walletClient.prepareTransactionRequest({
+    chainId,
+    to: NAMEFI_NFT_CONTRACT_ADDRESS,
+    data: encodeFunctionData({
+      abi: NftAbi,
+      functionName: 'lockByName',
+      args: [domainNameLdh],
+    }),
+  });
+
+  return {
+    preparedTx: {
+      data: preparedTx.data,
+      to: preparedTx.to,
+      type: preparedTx.type,
+      chainId: preparedTx.chainId,
+      from: preparedTx.from,
+      nonce: preparedTx.nonce,
+    },
+  };
+};
