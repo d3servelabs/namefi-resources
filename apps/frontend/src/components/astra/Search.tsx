@@ -121,7 +121,7 @@ export const Search: SearchComponent = ({ originInfo }) => {
 
   return (
     <div className="relative flex gap-4 flex-col">
-      <div className="flex flex-col items-center gap-4">
+      <div className="flex flex-col items-center gap-8">
         <SearchHeader
           parentDomain={parentDomain}
           setParentDomain={setParentDomain}
@@ -132,7 +132,6 @@ export const Search: SearchComponent = ({ originInfo }) => {
           searchMode={searchMode}
           onSearchModeChange={onSearchModeChange}
         />
-
         <SearchInput
           query={query}
           setQuery={setQuery}

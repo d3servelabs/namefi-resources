@@ -54,15 +54,17 @@ export const SearchHeader: FC<{
   isFirstPartyOrigin: boolean;
   tagline?: string;
   hideNetworkSelection?: boolean;
+  className?: string;
 }> = ({
   parentDomain,
   setParentDomain,
   isFirstPartyOrigin,
   tagline,
   hideNetworkSelection = false,
+  className,
 }) => {
   return (
-    <div className="flex flex-col items-center mt-40 p-4 gap-3">
+    <div className={cn('flex flex-col items-center mt-40 gap-3', className)}>
       <h1 className="text-8xl font-bold text-secondary-foreground drop-shadow-lg">
         {parentDomain}
       </h1>
@@ -112,16 +114,16 @@ export const SearchModeTabs: FC<{
       onValueChange={handleValueChange}
       className="w-full max-w-100 h-14 mx-auto"
     >
-      <TabsList className="grid w-full h-full grid-cols-2 bg-black/30 backdrop-blur-md">
+      <TabsList className="grid w-full h-full grid-cols-2 bg-neutral-900 backdrop-blur-md">
         <TabsTrigger
           value={SearchMode.REGISTER}
-          className="h-full data-[state=active]:bg-gray-700/80"
+          className="h-full text-lg font-medium data-[state=active]:bg-background data-[state=inactive]:text-muted-foreground"
         >
           Register
         </TabsTrigger>
         <TabsTrigger
           value={SearchMode.IMPORT}
-          className="h-full data-[state=active]:bg-gray-700/80"
+          className="h-full text-lg font-medium data-[state=active]:bg-background data-[state=inactive]:text-muted-foreground"
         >
           Import
         </TabsTrigger>
@@ -152,16 +154,16 @@ export const SearchInput: FC<{
   }, [query, onSearch]);
 
   return (
-    <div className="flex w-full max-w-3xl mx-auto gap-1 items-center">
-      <div className="flex items-center flex-1 overflow-hidden bg-black/30 backdrop-blur-md rounded-lg p-1">
-        <div className="relative w-full bg-gray-700/80 rounded-md h-12 flex items-center">
+    <div className="flex w-full max-w-3xl mx-auto gap-1 items-center bg-neutral-900 backdrop-blur-lg border border-neutral-800 rounded-lg p-3">
+      <div className="flex items-center flex-1 overflow-hidden rounded-lg">
+        <div className="relative w-full rounded-md h-12 flex items-center">
           <div className="flex items-center w-full px-3">
             {isLoading ? (
-              <Loader2 className="h-5 w-5 text-gray-400 mr-2 shrink-0 animate-spin" />
+              <Loader2 className="h-5 w-5 text-gray-400 shrink-0 animate-spin" />
             ) : searchMode === SearchMode.IMPORT ? (
-              <SearchIcon className="h-5 w-5 text-gray-400 mr-2 shrink-0" />
+              <SearchIcon className="h-5 w-5 text-gray-400 shrink-0" />
             ) : (
-              <SearchIcon className="h-5 w-5 text-gray-400 mr-2 shrink-0" />
+              <SearchIcon className="h-5 w-5 text-gray-400 shrink-0" />
             )}
             <Input
               ref={inputRef}
