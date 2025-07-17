@@ -108,11 +108,14 @@ nsJsonRouter.get('/', async (c) => {
       return c.json(response);
     }
   }
-
-  c.status(404);
-  return c.json({
+  _logger.info({
     error: 'Not Found',
     message: 'No DNS record found for domain',
+  });
+
+  return c.json({
+    RCODE: 0,
+    Answer: [],
   });
 });
 
@@ -336,16 +339,18 @@ export async function getNsAndSoaRecords(
     data: ns,
   }));
 
-  const soaRecord = {
-    name: recordName,
-    type: dnsRecordTypeCodes.get('SOA') as number,
-    TTL: 300,
-    data: `${config.NAMEFI_ASTRA_NAMESERVERS[0]} ${config.NAMEFI_ASTRA_NAMESERVERS[0].replace(/^.*?\./, 'admin.')} 2023080901 60 30 300 60`,
-  };
+  const soaRecord = [
+    {
+      name: recordName,
+      type: dnsRecordTypeCodes.get('SOA') as number,
+      TTL: 300,
+      data: `${config.NAMEFI_ASTRA_NAMESERVERS[0]} ${config.NAMEFI_ASTRA_NAMESERVERS[0].replace(/^.*?\./, 'admin.')} 2023080901 60 30 300 60`,
+    },
+  ];
   // for NS, we return the NS records and SOA record
   // for SOA, we return the SOA record
   return {
     RCODE: 0,
-    Answer: [...(qTypeEnum === 'NS' ? nsRecords : []), soaRecord],
+    Answer: qTypeEnum === 'NS' ? nsRecords : soaRecord,
   };
 }
