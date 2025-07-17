@@ -213,6 +213,7 @@ export const DomainCard: FC<{
 }) => {
   const { logEventWithInteractionLoggers } = useInteractionLoggers();
   const router = useRouter();
+  const eppInputRef = useRef<HTMLInputElement>(null);
 
   const logBeginCheckout = useCallback(() => {
     const beginCheckoutEvent: BeginCheckoutEvent = {
@@ -291,7 +292,8 @@ export const DomainCard: FC<{
     const existingEppCode = eppAuthorizationCode;
 
     if (!existingEppCode || !existingEppCode.trim()) {
-      // No EPP code provided, can't proceed
+      // No EPP code provided, focus the input
+      eppInputRef.current?.focus();
       return;
     }
 
@@ -372,6 +374,7 @@ export const DomainCard: FC<{
             {isImportable && (
               <div className="flex items-center gap-2 mt-2 w-80">
                 <Input
+                  ref={eppInputRef}
                   placeholder="EPP Auth Code"
                   value={
                     inCart
