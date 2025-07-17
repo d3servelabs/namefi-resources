@@ -5,6 +5,7 @@ import { Card, CardContent } from '@/components/ui/shadcn/card';
 import { Input } from '@/components/ui/shadcn/input';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
 import { Badge } from '@/components/ui/shadcn/badge';
+import { PasswordInput } from '@/components/ui/password-input';
 import { useCartRow } from '@/hooks/use-cart-row';
 import { useSearch } from '@/hooks/use-search';
 import { config } from '@/lib/env';
@@ -323,7 +324,7 @@ export const DomainCard: FC<{
   return (
     <Card
       className={cn(
-        'bg-white/5 backdrop-blur-lg h-32 transition-all duration-150 p-0 border-[1px] border-white/10',
+        'bg-white/5 backdrop-blur-lg h-[136px] pt-2 pb-4 transition-all duration-150 p-0 border-[1px] border-white/10',
         // Only reduce opacity if we know the domain is unavailable and not importable
         hasAvailabilityInfo && !availabilityInfo.availability && !isImportable
           ? 'opacity-60'
@@ -373,7 +374,7 @@ export const DomainCard: FC<{
             )}
             {isImportable && (
               <div className="flex items-center gap-2 mt-2 w-80">
-                <Input
+                <PasswordInput
                   ref={eppInputRef}
                   placeholder="EPP Auth Code"
                   value={
