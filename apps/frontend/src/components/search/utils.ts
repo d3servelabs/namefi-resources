@@ -12,7 +12,7 @@ export const parseCSVDomains = (csvText: string): ImportQuery[] => {
     // Has actual newlines
     lines = csvText.trim().split(/[\n\r]+/);
   } else if (csvText.includes(' ')) {
-    // Might be space-separated
+    // Might be space-separated domains (no commas)
     lines = csvText.trim().split(/\s+/);
   } else {
     // Single line

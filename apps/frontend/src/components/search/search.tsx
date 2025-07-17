@@ -19,7 +19,15 @@ import { computeChargesInUsdOrThrow } from '@namefi-astra/registrars/multi-year-
 import { Loader2, SearchIcon, User, X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { isNotNil } from 'ramda';
-import { type FC, useCallback, useMemo, useState, useRef } from 'react';
+import {
+  type FC,
+  useCallback,
+  useMemo,
+  useState,
+  useRef,
+  type ClipboardEvent,
+  type FormEvent,
+} from 'react';
 import FloatingCart from '../floating-cart';
 import { NamefiButton } from '../buttons/namefi-button';
 import { AnimatedCartButton } from '../buttons/animated-cart-button';
@@ -38,7 +46,6 @@ import {
 } from '@namefi-astra/backend/trpc/types';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { itemTypeSchema } from '@namefi-astra/db/types';
-
 import { toUnicodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
 import { SearchMode } from './types';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/shadcn/tabs';
@@ -153,6 +160,37 @@ export const SearchInput: FC<{
     }
   }, [query, onSearch]);
 
+  // Handle raw text with newlines for CSV import
+  const handleRawText = useCallback(
+    (rawText: string) => {
+      // For import mode, preserve newlines to maintain CSV format
+      if (searchMode === SearchMode.IMPORT) {
+        setQuery(rawText);
+      } else {
+        // For register mode, convert newlines to spaces
+        setQuery(rawText.replace(/\n+/g, ' '));
+      }
+    },
+    [searchMode, setQuery],
+  );
+
+  // Intercept paste and input events to handle newlines properly
+  const intercept = useCallback(
+    (e: ClipboardEvent<HTMLInputElement> | FormEvent<HTMLInputElement>) => {
+      e.preventDefault();
+
+      const raw =
+        (e as ClipboardEvent<HTMLInputElement>).clipboardData?.getData(
+          'text',
+        ) ??
+        (e as FormEvent<HTMLInputElement>).currentTarget?.value ??
+        '';
+
+      handleRawText(raw);
+    },
+    [handleRawText],
+  );
+
   return (
     <div className="flex w-full max-w-3xl mx-auto gap-1 items-center bg-neutral-900 backdrop-blur-lg border border-neutral-800 rounded-lg p-3">
       <div className="flex items-center flex-1 overflow-hidden rounded-lg">
@@ -174,6 +212,14 @@ export const SearchInput: FC<{
               }
               value={query}
               onChange={(event) => setQuery(event.target.value)}
+              onPaste={intercept}
+              onKeyDown={(e) => {
+                // Only intercept newline insertion; ordinary keystrokes can proceed
+                if (e.key === 'Enter') {
+                  e.preventDefault();
+                  handleRawText('\n');
+                }
+              }}
               className="border-0 dark:bg-transparent h-full focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-gray-400 flex-1 md:text-lg shadow-none"
             />
             {query.length > 0 && (
