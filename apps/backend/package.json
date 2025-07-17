@@ -9,7 +9,10 @@
   "imports": {
     "#lib/env": "./src/lib/env/index.ts",
     "#lib/*": "./src/lib/*.ts",
-    "#services/*": "./src/services/*.ts"
+    "#services/*": "./src/services/*.ts",
+    "#temporal/*": "./src/temporal/*.ts",
+    "#temporal/shared/*": "./src/temporal/shared/*.ts",
+    "#temporal/shared": "./src/temporal/shared/index.ts"
   },
   "scripts": {
     "clean": "git clean -xdf .next .turbo node_modules out dist",

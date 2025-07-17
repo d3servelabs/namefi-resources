@@ -26,6 +26,14 @@ import {
 import { createTRPCRouter, protectedProcedure } from '../../base';
 import { assertAuthenticatedUserIsDomainOwner } from '../../guards/assert-domain-owner';
 import { domainDnssecRouter } from './domainDnssecRouter';
+import { parseDomainName } from '@namefi-astra/utils/parse-domain-name';
+import { prepareDomainForExportWorkflow } from '#temporal/workflows/domain-ownership/prepare-domain-for-export.workflow';
+import { temporalClient } from '#temporal/client';
+import { TEMPORAL_QUEUES } from '#temporal/shared';
+import { getNamefiNftLock } from '#temporal/activities/namefi-nft';
+import { getEppLockState } from '#temporal/activities/domain/registrar.activities';
+import { getDomainChain } from '#temporal/activities/domain/index';
+import type { WorkflowExecutionStatusName } from '@temporalio/client';
 
 export const domainConfigRouter = createTRPCRouter({
   /**
@@ -284,6 +292,102 @@ export const domainConfigRouter = createTRPCRouter({
         ctx.user.id,
         input.domainPreferencesAndConfig,
       );
+    }),
+
+  requestDomainExport: protectedProcedure
+    .input(
+      z.object({
+        domainName: namefiNormalizedDomainSchema,
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      await assertAuthenticatedUserIsDomainOwner(input.domainName, ctx.user);
+      const parsedDomainName = parseDomainName(input.domainName);
+      if (!parsedDomainName.valid) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Invalid domain name',
+        });
+      }
+      if (parsedDomainName.registryType !== 'traditional') {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Export is only supported for traditional domains',
+        });
+      }
+      await temporalClient.workflow.start(prepareDomainForExportWorkflow, {
+        args: [
+          {
+            domainName: toPunycodeDomainName(input.domainName),
+            userId: ctx.user.id,
+          },
+        ],
+        workflowId: prepareDomainForExportWorkflow.generateId({
+          domainName: toPunycodeDomainName(input.domainName),
+          userId: ctx.user.id,
+        }),
+        taskQueue: TEMPORAL_QUEUES.DOMAINS,
+        workflowIdConflictPolicy: 'USE_EXISTING',
+        workflowIdReusePolicy: 'ALLOW_DUPLICATE',
+      });
+    }),
+
+  getDomainExportDetails: protectedProcedure
+    .input(
+      z.object({
+        domainName: namefiNormalizedDomainSchema,
+      }),
+    )
+    .query(async ({ input, ctx }) => {
+      const user = ctx.user;
+      const domainName = toPunycodeDomainName(input.domainName);
+      await assertAuthenticatedUserIsDomainOwner(input.domainName, ctx.user);
+
+      const parsedDomainName = parseDomainName(input.domainName);
+      if (!parsedDomainName.valid) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Invalid domain name',
+        });
+      }
+      if (parsedDomainName.registryType !== 'traditional') {
+        return {
+          isExportable: false,
+          message: 'Export is only supported for traditional domains',
+        };
+      }
+      let workflowStatus: WorkflowExecutionStatusName | undefined;
+      try {
+        const workflow = await temporalClient.workflow.getHandle(
+          prepareDomainForExportWorkflow.generateId({
+            domainName,
+            userId: user.id,
+          }),
+        );
+        if (workflow) {
+          workflowStatus = (await workflow.describe()).status.name;
+        }
+      } catch (error) {
+        logger.error(error);
+      }
+
+      const chainId = await getDomainChain(domainName);
+      const nftIsLocked = await getNamefiNftLock(chainId, domainName);
+      const eppLock = await getEppLockState(domainName);
+
+      const isExportable = nftIsLocked && !eppLock.locked;
+
+      let authCode: string | undefined;
+      if (isExportable) {
+        authCode = await sldRegistrar.retrieveAuthCode(domainName);
+      }
+
+      return {
+        isExportable,
+        pendingRequestToEnableExport: workflowStatus === 'RUNNING',
+        message: isExportable ? undefined : 'Domain is not exportable',
+        authCode,
+      };
     }),
 
   dnssec: domainDnssecRouter,
