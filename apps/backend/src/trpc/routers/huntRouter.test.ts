@@ -1317,6 +1317,92 @@ describe('Hunt Router', () => {
         expect(page2.hasMore).toBe(false);
         expect(page2.rankings[0].domainName).toBe('test.finished.runner');
       });
+
+      it('should return all campaign domains even if they have no votes', async () => {
+        // Generate unique campaign key
+        const timestamp = Date.now();
+        const testCampaignKey = `TEST-NO-VOTES-${timestamp}`;
+
+        // Create test campaign
+        await db.insert(huntCampaignsTable).values({
+          campaignKey: testCampaignKey,
+          title: 'Test No Votes Campaign',
+          description: 'Test campaign with domains that have no votes',
+          startDate: new Date('2025-07-01'),
+          endDate: new Date('2025-07-31'),
+          status: 'ACTIVE',
+        });
+
+        // Create campaign domains - some will have votes, some won't
+        await db.insert(huntCampaignDomainsTable).values([
+          {
+            campaignKey: testCampaignKey,
+            domainName: 'test.novotes.domain1',
+          },
+          {
+            campaignKey: testCampaignKey,
+            domainName: 'test.novotes.domain2',
+          },
+          {
+            campaignKey: testCampaignKey,
+            domainName: 'test.novotes.domain3',
+          },
+        ]);
+
+        // Only submit and vote for one domain
+        await caller.submitDomain({ domainName: 'test.novotes.domain1' });
+        await otherCaller.upvote({ domainName: 'test.novotes.domain1' });
+
+        // The other two domains are not submitted or voted on at all
+        // They should still appear in campaign results with 0 votes
+
+        const publicCaller = huntRouter.createCaller({
+          thirdPartyOriginHostname: null,
+          testUser: null,
+        } as any);
+
+        const result = await publicCaller.getCampaignPublic({
+          campaignKey: testCampaignKey,
+          offset: 0,
+          limit: 10,
+        });
+
+        expect(result).toHaveProperty('campaign');
+        expect(result).toHaveProperty('rankings');
+        expect(result).toHaveProperty('hasMore', false);
+
+        // All 3 domains should be present in the results
+        expect(result.rankings).toHaveLength(3);
+
+        const domainNames = result.rankings.map((r) => r.domainName);
+        expect(domainNames).toContain('test.novotes.domain1');
+        expect(domainNames).toContain('test.novotes.domain2');
+        expect(domainNames).toContain('test.novotes.domain3');
+
+        // The voted domain should be first with 2 votes
+        expect(result.rankings[0].domainName).toBe('test.novotes.domain1');
+        expect(result.rankings[0].upvoteCount).toBe(2);
+        expect(result.rankings[0].rank).toBe(1);
+
+        // The other two domains should have 0 votes
+        const domain2 = result.rankings.find(
+          (r) => r.domainName === 'test.novotes.domain2',
+        );
+        const domain3 = result.rankings.find(
+          (r) => r.domainName === 'test.novotes.domain3',
+        );
+
+        expect(domain2?.upvoteCount).toBe(0);
+        expect(domain3?.upvoteCount).toBe(0);
+        expect(domain2?.isPinned).toBe(false);
+        expect(domain3?.isPinned).toBe(false);
+        expect(domain2?.userHasUpvoted).toBe(false);
+        expect(domain3?.userHasUpvoted).toBe(false);
+
+        // Check that they have proper rank values
+        expect(result.rankings[1].rank).toBe(2);
+        expect(result.rankings[2].rank).toBe(3);
+      });
     });
 
     describe('Domain Awards', () => {

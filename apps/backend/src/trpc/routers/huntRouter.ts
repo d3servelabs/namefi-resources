@@ -257,34 +257,35 @@ const getCampaignRankings = async (
       .limit(limit + 1);
   } else {
     // Campaign not awarded (DRAFT/ACTIVE/ENDED), return current live rankings
-    const campaignDomains = await db
-      .select({ domainName: huntCampaignDomainsTable.domainName })
+    // Use LEFT JOIN to ensure all campaign domains appear even if they have no votes
+    records = await db
+      .select({
+        domainName: huntCampaignDomainsTable.domainName,
+        upvoteCount: sql<number>`CAST(COALESCE(${huntDomainStatsView.upvoteCount}, 0) AS INTEGER)`,
+        isPinned:
+          sql<boolean>`COALESCE(${huntDomainStatsView.isPinned}, false)`.as(
+            'is_pinned',
+          ),
+      })
       .from(huntCampaignDomainsTable)
-      .where(eq(huntCampaignDomainsTable.campaignKey, campaignKey));
-    const domainNames = campaignDomains.map((d) => d.domainName);
-    records =
-      domainNames.length === 0
-        ? []
-        : await db
-            .select({
-              domainName: huntDomainStatsView.domainName,
-              upvoteCount: sql<number>`CAST(${huntDomainStatsView.upvoteCount} AS INTEGER)`,
-              isPinned: huntDomainStatsView.isPinned,
-            })
-            .from(huntDomainStatsView)
-            .where(
-              sql`${huntDomainStatsView.domainName} IN (${sql.join(
-                domainNames.map((name) => sql`${name}`),
-                sql`, `,
-              )})`,
-            )
-            .orderBy(
-              desc(huntDomainStatsView.upvoteCount),
-              desc(huntDomainStatsView.lastUpvoteDate),
-              desc(huntDomainStatsView.firstSubmitDate),
-            )
-            .offset(offset)
-            .limit(limit + 1);
+      .leftJoin(
+        huntDomainStatsView,
+        eq(huntCampaignDomainsTable.domainName, huntDomainStatsView.domainName),
+      )
+      .where(eq(huntCampaignDomainsTable.campaignKey, campaignKey))
+      .orderBy(
+        desc(
+          sql<number>`CAST(COALESCE(${huntDomainStatsView.upvoteCount}, 0) AS INTEGER)`,
+        ),
+        desc(
+          sql<Date>`COALESCE(${huntDomainStatsView.lastUpvoteDate}, ${huntCampaignDomainsTable.createdAt})`,
+        ),
+        desc(
+          sql<Date>`COALESCE(${huntDomainStatsView.firstSubmitDate}, ${huntCampaignDomainsTable.createdAt})`,
+        ),
+      )
+      .offset(offset)
+      .limit(limit + 1);
   }
 
   hasMore = records.length > limit;
