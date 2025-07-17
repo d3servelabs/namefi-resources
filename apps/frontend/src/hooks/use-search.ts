@@ -12,7 +12,7 @@ export const useSearch = (parentDomain?: string) => {
   const [query, setQuery] = useState('');
   const [searchMode, setSearchMode] = useState<SearchMode>(SearchMode.REGISTER);
   const [debounced] = useDebounceValue(query, 200);
-  const sanitized = debounced.trim().toLowerCase();
+  const sanitized = debounced.trim();
 
   const onSearchModeChange = useCallback((mode: SearchMode) => {
     setSearchMode(mode);
@@ -30,7 +30,7 @@ export const useSearch = (parentDomain?: string) => {
   } = useQuery({
     ...trpc.search.getDomainSuggestions.queryOptions(
       {
-        query: sanitized,
+        query: sanitized.toLowerCase(),
         ...(parentDomain && { parentDomain }),
       },
       {
