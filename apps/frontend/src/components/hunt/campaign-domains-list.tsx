@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '@/hooks/use-auth';
 import { useTRPC } from '@/utils/trpc';
@@ -9,34 +10,36 @@ import { DomainsList } from './domains-list';
 import { PaginationControls } from './pagination-control';
 import { cn } from '@/lib/utils';
 
-const CAMPAIGN_DOMAINS_PER_PAGE_LIMIT = 8;
+const DEFAULT_CAMPAIGN_DOMAINS_PER_PAGE_LIMIT = 10;
 
 interface CampaignDomainsListProps {
   campaignKey: string;
   page: number;
+  limit?: number;
   onPageChange: (page: number) => void;
 }
 
 export const CampaignDomainsList = ({
   campaignKey,
   page,
+  limit = DEFAULT_CAMPAIGN_DOMAINS_PER_PAGE_LIMIT,
   onPageChange,
 }: CampaignDomainsListProps) => {
   const { isAuthenticated } = useAuth();
   const trpc = useTRPC();
-  const offset = (page - 1) * CAMPAIGN_DOMAINS_PER_PAGE_LIMIT;
+  const offset = (page - 1) * limit;
 
   const { data, isLoading, isError } = useQuery(
     isAuthenticated
       ? trpc.hunt.getCampaign.queryOptions({
           campaignKey,
           offset,
-          limit: CAMPAIGN_DOMAINS_PER_PAGE_LIMIT,
+          limit,
         })
       : trpc.hunt.getCampaignPublic.queryOptions({
           campaignKey,
           offset,
-          limit: CAMPAIGN_DOMAINS_PER_PAGE_LIMIT,
+          limit,
         }),
   );
 
@@ -50,8 +53,10 @@ export const CampaignDomainsList = ({
     <div className="space-y-4">
       <div className="flex justify-between items-center">
         <div>
-          <h3 className="text-base font-bold flex items-center gap-2">
-            {data?.campaign?.title || campaignKey}
+          <h3 className="text-lg font-bold flex items-center gap-2">
+            <Link href={`/hunt/campaigns/${campaignKey}`}>
+              {data?.campaign?.title || campaignKey}
+            </Link>
             {data?.campaign?.status && (
               <Badge
                 className={cn(
