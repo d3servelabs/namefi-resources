@@ -5,11 +5,19 @@ import { useSubscription } from '@trpc/tanstack-react-query';
 import { useTRPC } from '@/utils/trpc';
 import type { DomainAvailabilityInfo } from '@namefi-astra/backend/trpc/types';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import { SearchMode } from '@/components/search/types';
+import { parseCSVDomains } from '@/components/search/utils';
 
-export const useStreamingSearch = (parentDomain?: string) => {
+export const useSearch = (parentDomain?: string) => {
   const [query, setQuery] = useState('');
+  const [searchMode, setSearchMode] = useState<SearchMode>(SearchMode.REGISTER);
   const [debounced] = useDebounceValue(query, 200);
   const sanitized = debounced.trim().toLowerCase();
+
+  const onSearchModeChange = useCallback((mode: SearchMode) => {
+    setSearchMode(mode);
+    setQuery('');
+  }, []);
 
   const trpc = useTRPC();
   const {
@@ -31,7 +39,7 @@ export const useStreamingSearch = (parentDomain?: string) => {
         },
       },
     ),
-    enabled: sanitized.length > 0,
+    enabled: sanitized.length > 0 && searchMode === SearchMode.REGISTER,
     refetchOnWindowFocus: false,
     refetchOnMount: false,
     refetchOnReconnect: false,
@@ -39,14 +47,29 @@ export const useStreamingSearch = (parentDomain?: string) => {
     staleTime: Number.POSITIVE_INFINITY,
   });
 
+  const importQuery = useMemo(() => {
+    if (sanitized.length > 0) {
+      return parseCSVDomains(sanitized);
+    }
+    return [];
+  }, [sanitized]);
+
   const domains = useMemo<NamefiNormalizedDomain[]>(
     () =>
-      suggestionIsFetching
-        ? []
-        : suggestionIsSuccess
-          ? suggestionData.domains
-          : [],
-    [suggestionIsFetching, suggestionIsSuccess, suggestionData?.domains],
+      searchMode === SearchMode.IMPORT
+        ? importQuery.map((d) => d.domain)
+        : suggestionIsFetching
+          ? []
+          : suggestionIsSuccess
+            ? suggestionData.domains
+            : [],
+    [
+      suggestionIsFetching,
+      suggestionIsSuccess,
+      suggestionData?.domains,
+      searchMode,
+      importQuery,
+    ],
   );
 
   const [domainInfo, setDomainInfo] = useState<
@@ -76,6 +99,9 @@ export const useStreamingSearch = (parentDomain?: string) => {
     query,
     setQuery,
     runSearch,
+    searchMode,
+    onSearchModeChange,
+    importQuery,
     isLoading: suggestionIsFetching || domainInfo.size < domains.length,
     isError: suggestionIsError || availStatus === 'error',
     error: suggestionIsError

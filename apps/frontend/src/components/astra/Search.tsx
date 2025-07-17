@@ -1,6 +1,6 @@
 'use client';
 
-import { useStreamingSearch } from '@/hooks/use-streaming-search';
+import { useSearch } from '@/hooks/use-search';
 import { useState } from 'react';
 import FloatingCart from '../floating-cart';
 import {
@@ -8,6 +8,7 @@ import {
   SearchHeader,
   SearchInput,
   SearchResults,
+  SearchModeTabs,
 } from '../search';
 
 // Main component
@@ -27,13 +28,16 @@ export const Search: SearchComponent = ({ originInfo }) => {
     query,
     setQuery,
     runSearch,
+    searchMode,
+    onSearchModeChange,
+    importQuery,
     isLoading,
     isError,
     error,
     hasData,
     domainInfos,
     domains,
-  } = useStreamingSearch(parentDomain || undefined);
+  } = useSearch(parentDomain || undefined);
 
   if (!originInfo) {
     // Return loading state or null while origin info is loading
@@ -49,11 +53,18 @@ export const Search: SearchComponent = ({ originInfo }) => {
           isFirstPartyOrigin={originInfo.isFirstPartyOrigin}
           hideNetworkSelection={true}
         />
+        <SearchModeTabs
+          searchMode={searchMode}
+          onSearchModeChange={onSearchModeChange}
+        />
+
         <SearchInput
           query={query}
           setQuery={setQuery}
           isLoading={isLoading}
-          onSearch={() => runSearch()}
+          searchMode={searchMode}
+          importQuery={importQuery}
+          onSearch={runSearch}
         />
       </div>
 
@@ -71,6 +82,7 @@ export const Search: SearchComponent = ({ originInfo }) => {
             domainInfos={domainInfos}
             domains={domains}
             query={query}
+            importQuery={importQuery}
           />
 
           <div className="sticky bottom-5 flex justify-center mt-4 px-4">

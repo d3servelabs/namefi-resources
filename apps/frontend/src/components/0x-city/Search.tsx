@@ -1,6 +1,6 @@
 'use client';
 
-import { useStreamingSearch } from '@/hooks/use-streaming-search';
+import { useSearch } from '@/hooks/use-search';
 import { config } from '@/lib/env';
 import { useTRPC } from '@/utils/trpc';
 import { useQuery } from '@tanstack/react-query';
@@ -32,13 +32,15 @@ export const Search: SearchComponent = ({ originInfo }) => {
     query,
     setQuery,
     runSearch,
+    searchMode,
+    importQuery,
     isLoading,
     isError,
     error,
     hasData,
     domainInfos,
     domains,
-  } = useStreamingSearch(parentDomain || undefined);
+  } = useSearch(parentDomain || undefined);
 
   const trpc = useTRPC();
 
@@ -73,7 +75,9 @@ export const Search: SearchComponent = ({ originInfo }) => {
           query={query}
           setQuery={setQuery}
           isLoading={isLoading}
-          onSearch={() => runSearch()}
+          searchMode={searchMode}
+          importQuery={importQuery}
+          onSearch={runSearch}
         />
         {shouldShowRolloutBanner && (
           <Alert className="w-full max-w-3xl mx-auto bg-gray-700/80">
@@ -103,6 +107,7 @@ export const Search: SearchComponent = ({ originInfo }) => {
                 domainInfos={domainInfos}
                 domains={domains}
                 query={query}
+                importQuery={importQuery}
               />
             </div>
             <div className="sticky bottom-5 flex justify-center mt-4 px-4">

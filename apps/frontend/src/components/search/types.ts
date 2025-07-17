@@ -1,12 +1,17 @@
 import type { OriginInfo } from '@/lib/origin/types';
 import type { FC } from 'react';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 
-/**
- * Type for any search component that can be used as the landing page
- */
 export type SearchComponent = FC<{
-  /**
-   * Origin configuration from the origin system
-   */
   originInfo: OriginInfo;
 }>;
+
+export type ImportQuery = {
+  domain: NamefiNormalizedDomain;
+  eppAuthorizationCode?: string;
+};
+
+export enum SearchMode {
+  REGISTER = 'REGISTER',
+  IMPORT = 'IMPORT',
+}

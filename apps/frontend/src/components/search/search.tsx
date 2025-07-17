@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/shadcn/input';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
 import { Badge } from '@/components/ui/shadcn/badge';
 import { useCartRow } from '@/hooks/use-cart-row';
-import { useStreamingSearch } from '@/hooks/use-streaming-search';
+import { useSearch } from '@/hooks/use-search';
 import { config } from '@/lib/env';
 import { cn } from '@/lib/utils';
 import {
@@ -24,7 +24,7 @@ import { NamefiButton } from '../buttons/namefi-button';
 import { AnimatedCartButton } from '../buttons/animated-cart-button';
 import { useInteractionLoggers } from '../providers/interactionLoggersProvider';
 import { Placeholder } from './placeholder';
-import type { SearchComponent } from './types';
+import type { ImportQuery, SearchComponent } from './types';
 import {
   isDomainImportable,
   isDomainUnsupported,
@@ -35,6 +35,8 @@ import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { itemTypeSchema } from '@namefi-astra/db/types';
 import { EppAuthCodeModal } from '../modals/epp-auth-code-modal';
 import { toUnicodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
+import { SearchMode } from './types';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/shadcn/tabs';
 
 // Components
 export const SearchHeader: FC<{
@@ -87,12 +89,46 @@ export const SearchHeader: FC<{
   );
 };
 
+export const SearchModeTabs: FC<{
+  searchMode: SearchMode;
+  onSearchModeChange: (mode: SearchMode) => void;
+}> = ({ searchMode, onSearchModeChange }) => {
+  const handleValueChange = (value: string) => {
+    onSearchModeChange(value as SearchMode);
+  };
+
+  return (
+    <Tabs
+      value={searchMode}
+      onValueChange={handleValueChange}
+      className="w-full max-w-100 h-14 mx-auto"
+    >
+      <TabsList className="grid w-full h-full grid-cols-2 bg-black/30 backdrop-blur-md">
+        <TabsTrigger
+          value={SearchMode.REGISTER}
+          className="h-full data-[state=active]:bg-gray-700/80"
+        >
+          Register
+        </TabsTrigger>
+        <TabsTrigger
+          value={SearchMode.IMPORT}
+          className="h-full data-[state=active]:bg-gray-700/80"
+        >
+          Import
+        </TabsTrigger>
+      </TabsList>
+    </Tabs>
+  );
+};
+
 export const SearchInput: FC<{
   query: string;
   setQuery: (query: string) => void;
+  importQuery: ImportQuery[];
   isLoading: boolean;
   onSearch: () => void;
-}> = ({ query, setQuery, isLoading, onSearch }) => {
+  searchMode: SearchMode;
+}> = ({ query, setQuery, importQuery, isLoading, searchMode, onSearch }) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleSearchClick = useCallback(() => {
@@ -101,33 +137,33 @@ export const SearchInput: FC<{
       // If no query, focus the input
       inputRef.current?.focus();
     } else {
-      // If has query, search again
+      // Handle search
       onSearch();
     }
   }, [query, onSearch]);
 
   return (
-    <div className="flex w-full max-w-3xl mx-auto">
-      <div className="flex items-center w-full bg-black/30 backdrop-blur-md rounded-lg p-1">
-        <div className="relative flex-1 bg-gray-700/80 rounded-md h-12 flex items-center">
+    <div className="flex w-full max-w-3xl mx-auto gap-1 items-center">
+      <div className="flex items-center flex-1 overflow-hidden bg-black/30 backdrop-blur-md rounded-lg p-1">
+        <div className="relative w-full bg-gray-700/80 rounded-md h-12 flex items-center">
           <div className="flex items-center w-full px-3">
             {isLoading ? (
               <Loader2 className="h-5 w-5 text-gray-400 mr-2 shrink-0 animate-spin" />
+            ) : searchMode === SearchMode.IMPORT ? (
+              <SearchIcon className="h-5 w-5 text-gray-400 mr-2 shrink-0" />
             ) : (
               <SearchIcon className="h-5 w-5 text-gray-400 mr-2 shrink-0" />
             )}
             <Input
               ref={inputRef}
-              placeholder="Search for a domain..."
+              placeholder={
+                searchMode === SearchMode.IMPORT
+                  ? 'Paste CSV to import domains...'
+                  : 'Search for a domain...'
+              }
               value={query}
               onChange={(event) => setQuery(event.target.value)}
               className="border-0 dark:bg-transparent h-full focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-gray-400 flex-1 md:text-lg shadow-none"
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') {
-                  e.preventDefault();
-                  onSearch();
-                }
-              }}
             />
             {query.length > 0 && (
               <Button
@@ -141,23 +177,24 @@ export const SearchInput: FC<{
             )}
           </div>
         </div>
-        <NamefiButton
-          onClick={handleSearchClick}
-          className="font-semibold rounded-md h-12 ml-1 text-lg w-[128px]"
-          title="Search"
-        >
-          Search
-        </NamefiButton>
       </div>
+      <NamefiButton
+        onClick={handleSearchClick}
+        className="not-only:font-semibold rounded-md h-12 text-lg w-[128px] transition-all duration-200 shrink-0"
+        title={searchMode === SearchMode.IMPORT ? 'Import' : 'Search'}
+      >
+        {searchMode === SearchMode.IMPORT ? 'Import' : 'Search'}
+      </NamefiButton>
     </div>
   );
 };
 
 // Progressive DomainCard that shows skeleton states for missing data
 export const DomainCard: FC<{
-  info?: DomainAvailabilityInfo;
   domain?: NamefiNormalizedDomain;
-}> = ({ info, domain }) => {
+  availabilityInfo?: DomainAvailabilityInfo;
+  importQuery?: ImportQuery;
+}> = ({ domain, availabilityInfo, importQuery }) => {
   const { logEventWithInteractionLoggers } = useInteractionLoggers();
   const router = useRouter();
   const [isEppModalOpen, setIsEppModalOpen] = useState(false);
@@ -174,16 +211,20 @@ export const DomainCard: FC<{
   // Only use cart functionality if we have a valid domain name
   const { cart, inCart, addingBusy, removingBusy } = useCartRow(domain);
 
-  // Only calculate these if we have info
-  const isImportable = info ? isDomainImportable(info) : false;
-  const isUnsupported = info ? isDomainUnsupported(info) : false;
+  // Only calculate these if we have availabilityInfo
+  const isImportable = availabilityInfo
+    ? isDomainImportable(availabilityInfo)
+    : false;
+  const isUnsupported = availabilityInfo
+    ? isDomainUnsupported(availabilityInfo)
+    : false;
 
   // Get the appropriate pricing based on whether it's an import or registration
   const operationType = isImportable
     ? itemTypeSchema.Values.IMPORT
     : itemTypeSchema.Values.REGISTER;
-  const pricingDetails = info
-    ? getDomainPricingForOperation(info, operationType)
+  const pricingDetails = availabilityInfo
+    ? getDomainPricingForOperation(availabilityInfo, operationType)
     : undefined;
 
   const priceInUsd = useMemo(() => {
@@ -200,14 +241,14 @@ export const DomainCard: FC<{
 
   /* ADD handler --------------------------------------------------------- */
   const handleAdd = useCallback(async () => {
-    if (!info) return;
-    const minDuration = info.durationValidationInYears?.min ?? 1;
+    if (!availabilityInfo) return;
+    const minDuration = availabilityInfo.durationValidationInYears?.min ?? 1;
     await cart.addItem({
-      domainAvailabilityInfo: info,
+      domainAvailabilityInfo: availabilityInfo,
       durationInYears: minDuration,
       operationType: 'REGISTER',
     });
-  }, [cart, info]);
+  }, [cart, availabilityInfo]);
 
   /* REMOVE handler ------------------------------------------------------ */
   const handleRemove = useCallback(async () => {
@@ -219,12 +260,13 @@ export const DomainCard: FC<{
   /* EPP SUBMIT handler -------------------------------------------------- */
   const handleEppSubmit = useCallback(
     async (eppAuthCode: string) => {
-      if (!info) return;
+      if (!availabilityInfo) return;
       setIsSubmittingEpp(true);
       try {
-        const minDuration = info.durationValidationInYears?.min ?? 1;
+        const minDuration =
+          availabilityInfo.durationValidationInYears?.min ?? 1;
         await cart.addItem({
-          domainAvailabilityInfo: info,
+          domainAvailabilityInfo: availabilityInfo,
           durationInYears: minDuration,
           operationType: 'IMPORT',
           eppAuthorizationCode: eppAuthCode,
@@ -237,18 +279,22 @@ export const DomainCard: FC<{
         setIsSubmittingEpp(false);
       }
     },
-    [cart, info],
+    [cart, availabilityInfo],
   );
 
-  const hasAvailabilityInfo = info !== undefined;
-  // When info is available, all data that CAN be loaded HAS been loaded
+  const hasAvailabilityInfo = availabilityInfo !== undefined;
+  // When availabilityInfo is available, all data that CAN be loaded HAS been loaded
   // Some domains (like unsupported ones) may legitimately not have pricing
   const shouldShowPricingSkeleton = !hasAvailabilityInfo;
   const shouldShowActionSkeleton = !hasAvailabilityInfo;
   const hasOwnerInfo =
-    hasAvailabilityInfo && !info.availability && isNotNil(info.currentOwner);
+    hasAvailabilityInfo &&
+    !availabilityInfo.availability &&
+    isNotNil(availabilityInfo.currentOwner);
   const currentOwner =
-    hasOwnerInfo && info?.currentOwner ? info.currentOwner : '';
+    hasOwnerInfo && availabilityInfo?.currentOwner
+      ? availabilityInfo.currentOwner
+      : '';
 
   return (
     <>
@@ -256,7 +302,7 @@ export const DomainCard: FC<{
         className={cn(
           'bg-white/5 backdrop-blur-lg h-32 transition-all duration-150 p-0 border-[1px] border-white/10',
           // Only reduce opacity if we know the domain is unavailable and not importable
-          hasAvailabilityInfo && !info.availability && !isImportable
+          hasAvailabilityInfo && !availabilityInfo.availability && !isImportable
             ? 'opacity-60'
             : 'opacity-100',
         )}
@@ -310,7 +356,7 @@ export const DomainCard: FC<{
                 <Badge variant="destructive" className="text-xs">
                   Unsupported
                 </Badge>
-              ) : info.availability || isImportable ? (
+              ) : availabilityInfo.availability || isImportable ? (
                 <AnimatedCartButton
                   state={
                     removingBusy
@@ -346,7 +392,7 @@ export const DomainCard: FC<{
           isOpen={isEppModalOpen}
           onClose={() => setIsEppModalOpen(false)}
           onSubmit={handleEppSubmit}
-          domainInfo={info}
+          domainInfo={availabilityInfo}
           isSubmitting={isSubmittingEpp}
         />
       )}
@@ -369,8 +415,18 @@ export const SearchResults: FC<{
   hasData: boolean;
   domainInfos: Map<NamefiNormalizedDomain, DomainAvailabilityInfo>;
   domains: NamefiNormalizedDomain[];
+  importQuery: ImportQuery[];
   query: string;
-}> = ({ isLoading, isError, error, hasData, domainInfos, domains, query }) => {
+}> = ({
+  isLoading,
+  isError,
+  error,
+  hasData,
+  domainInfos,
+  domains,
+  importQuery,
+  query,
+}) => {
   // Show error state
   if (isError && query.length > 0) {
     return (
@@ -400,7 +456,15 @@ export const SearchResults: FC<{
       <div className="flex flex-col gap-4">
         {domains.map((domain) => {
           const info = domainInfos.get(domain);
-          return <DomainCard key={domain} info={info} domain={domain} />;
+          const importQueryItem = importQuery.find((d) => d.domain === domain);
+          return (
+            <DomainCard
+              key={domain}
+              domain={domain}
+              availabilityInfo={info}
+              importQuery={importQueryItem}
+            />
+          );
         })}
       </div>
     );
@@ -439,13 +503,16 @@ export const Search: SearchComponent = ({ originInfo }) => {
     query,
     setQuery,
     runSearch,
+    searchMode,
+    onSearchModeChange,
+    importQuery,
     isLoading,
     isError,
     error,
     hasData,
     domainInfos,
     domains,
-  } = useStreamingSearch(parentDomain || undefined);
+  } = useSearch(parentDomain || undefined);
 
   if (!parentDomain) {
     // Return loading state or null while origin info is loading
@@ -460,11 +527,17 @@ export const Search: SearchComponent = ({ originInfo }) => {
           setParentDomain={setParentDomain}
           isFirstPartyOrigin={originInfo.isFirstPartyOrigin}
         />
+        <SearchModeTabs
+          searchMode={searchMode}
+          onSearchModeChange={onSearchModeChange}
+        />
         <SearchInput
           query={query}
           setQuery={setQuery}
           isLoading={isLoading}
-          onSearch={() => runSearch()}
+          searchMode={searchMode}
+          importQuery={importQuery}
+          onSearch={runSearch}
         />
       </div>
 
@@ -481,6 +554,7 @@ export const Search: SearchComponent = ({ originInfo }) => {
             hasData={hasData}
             domainInfos={domainInfos}
             domains={domains}
+            importQuery={importQuery}
             query={query}
           />
 
@@ -492,5 +566,3 @@ export const Search: SearchComponent = ({ originInfo }) => {
     </div>
   );
 };
-
-Search.displayName = 'Search';
