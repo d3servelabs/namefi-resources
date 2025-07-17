@@ -1,9 +1,37 @@
-import { db, huntDomainStatsView, huntEdgesTable } from '@namefi-astra/db';
+import {
+  db,
+  huntDomainStatsView,
+  huntEdgesTable,
+  huntAwardsTable,
+  huntCampaignsTable,
+  huntCampaignDomainsTable,
+} from '@namefi-astra/db';
 import { getTags } from '@namefi/cat';
 import { TRPCError } from '@trpc/server';
 import { type SQL, and, desc, eq, sql } from 'drizzle-orm';
 import { z } from 'zod';
 import { createTRPCRouter, protectedProcedure, publicProcedure } from '../base';
+
+// Type definitions
+interface CampaignDetails {
+  campaignKey: string;
+  title: string;
+  description: string | null;
+  startDate: Date;
+  endDate: Date;
+  status: string;
+}
+
+interface CampaignRanking {
+  domainName: string;
+  rank: number;
+  upvoteCount: number;
+  reason?: string | null;
+  awardedAt?: Date;
+  isPinned: boolean;
+  userHasUpvoted: boolean;
+  tags: Array<{ id: string }>;
+}
 
 // Input schemas
 const submitDomainSchema = z.object({
@@ -40,13 +68,30 @@ const getDomainDetailSchema = z.object({
   domainName: z.string().min(1),
 });
 
+const getPeriodAwardsSchema = z.object({
+  type: z.enum(['DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY']),
+  periodKey: z.string().min(1),
+  offset: z.number().min(0).default(0),
+  limit: z.number().min(1).max(50).default(20),
+});
+
+const getCampaignSchema = z.object({
+  campaignKey: z.string().min(1),
+  offset: z.number().min(0).default(0),
+  limit: z.number().min(1).max(50).default(20),
+});
+
+const getDomainAwardsSchema = z.object({
+  domainName: z.string().min(1),
+});
+
 /**
  * Create time range filter SQL condition based on time range
  */
-function createTimeRangeFilter(
+const createTimeRangeFilter = (
   timeRange: string,
   dateColumn: SQL.Aliased<Date>,
-) {
+) => {
   // Precompute timestamps to allow index usage
   const now = new Date();
 
@@ -77,19 +122,219 @@ function createTimeRangeFilter(
         message: 'Invalid time range',
       });
   }
-}
+};
 
 /**
  * Helper function to add tags to domain items
  */
-function addTagsToItems<T extends { domainName: string }>(
+const addTagsToItems = <T extends { domainName: string }>(
   items: T[],
-): (T & { tags: Array<{ id: string }> })[] {
+): (T & { tags: Array<{ id: string }> })[] => {
   return items.map((item) => ({
     ...item,
     tags: getTags(item.domainName),
   }));
-}
+};
+
+/**
+ * Helper function to get domain stats
+ */
+const getDomainStats = async (domainNames: string[]) =>
+  db
+    .select({
+      domainName: huntDomainStatsView.domainName,
+      upvoteCount: sql<number>`CAST(${huntDomainStatsView.upvoteCount} AS INTEGER)`,
+    })
+    .from(huntDomainStatsView)
+    .where(
+      sql`${huntDomainStatsView.domainName} IN (${sql.join(
+        domainNames.map((name) => sql`${name}`),
+        sql`, `,
+      )})`,
+    );
+
+/**
+ * Helper function to batch query user's vote status for domains
+ */
+const getUserVoteStatus = async (
+  userId: string,
+  domainNames: string[],
+): Promise<Record<string, boolean>> => {
+  if (domainNames.length === 0) {
+    return {};
+  }
+
+  const userVoteRows = await db
+    .select({
+      targetId: huntEdgesTable.targetId,
+    })
+    .from(huntEdgesTable)
+    .where(
+      and(
+        eq(huntEdgesTable.sourceType, 'USER'),
+        eq(huntEdgesTable.sourceId, userId),
+        eq(huntEdgesTable.targetType, 'DOMAIN'),
+        eq(huntEdgesTable.action, 'UPVOTE'),
+        sql`${huntEdgesTable.targetId} IN (${sql.join(
+          domainNames.map((name) => sql`${name}`),
+          sql`, `,
+        )})`,
+      ),
+    );
+
+  return userVoteRows.reduce(
+    (acc, row) => {
+      acc[row.targetId] = true;
+      return acc;
+    },
+    {} as Record<string, boolean>,
+  );
+};
+
+/**
+ * Helper function to get campaign details
+ */
+const getCampaignDetails = async (campaignKey: string) => {
+  const [campaign] = await db
+    .select({
+      campaignKey: huntCampaignsTable.campaignKey,
+      title: huntCampaignsTable.title,
+      description: huntCampaignsTable.description,
+      startDate: huntCampaignsTable.startDate,
+      endDate: huntCampaignsTable.endDate,
+      status: huntCampaignsTable.status,
+    })
+    .from(huntCampaignsTable)
+    .where(eq(huntCampaignsTable.campaignKey, campaignKey))
+    .limit(1);
+
+  if (!campaign) {
+    throw new TRPCError({
+      code: 'NOT_FOUND',
+      message: 'Campaign not found',
+    });
+  }
+
+  return campaign;
+};
+
+/**
+ * Helper function to get campaign rankings
+ */
+const getCampaignRankings = async (
+  campaignKey: string,
+  campaign: CampaignDetails,
+  offset: number,
+  limit: number,
+  userId?: string,
+) => {
+  let hasMore = false;
+  let records: Array<
+    Omit<CampaignRanking, 'tags' | 'userHasUpvoted' | 'rank'> &
+      Partial<Pick<CampaignRanking, 'rank'>>
+  > = [];
+
+  if (campaign.status === 'AWARDED') {
+    // Campaign ended, return finalized awards
+    records = await db
+      .select({
+        domainName: huntAwardsTable.domainName,
+        rank: huntAwardsTable.rank,
+        upvoteCount: huntAwardsTable.upvoteCount,
+        reason: huntAwardsTable.reason,
+        awardedAt: huntAwardsTable.createdAt,
+        isPinned: sql<boolean>`false`.as('is_pinned'),
+      })
+      .from(huntAwardsTable)
+      .where(
+        and(
+          eq(huntAwardsTable.type, 'CAMPAIGN'),
+          eq(huntAwardsTable.campaignKey, campaignKey),
+        ),
+      )
+      .orderBy(huntAwardsTable.rank)
+      .offset(offset)
+      .limit(limit + 1);
+  } else {
+    // Campaign not awarded (DRAFT/ACTIVE/ENDED), return current live rankings
+    const campaignDomains = await db
+      .select({ domainName: huntCampaignDomainsTable.domainName })
+      .from(huntCampaignDomainsTable)
+      .where(eq(huntCampaignDomainsTable.campaignKey, campaignKey));
+    const domainNames = campaignDomains.map((d) => d.domainName);
+    records =
+      domainNames.length === 0
+        ? []
+        : await db
+            .select({
+              domainName: huntDomainStatsView.domainName,
+              upvoteCount: sql<number>`CAST(${huntDomainStatsView.upvoteCount} AS INTEGER)`,
+              isPinned: huntDomainStatsView.isPinned,
+            })
+            .from(huntDomainStatsView)
+            .where(
+              sql`${huntDomainStatsView.domainName} IN (${sql.join(
+                domainNames.map((name) => sql`${name}`),
+                sql`, `,
+              )})`,
+            )
+            .orderBy(
+              desc(huntDomainStatsView.upvoteCount),
+              desc(huntDomainStatsView.lastUpvoteDate),
+              desc(huntDomainStatsView.firstSubmitDate),
+            )
+            .offset(offset)
+            .limit(limit + 1);
+  }
+
+  hasMore = records.length > limit;
+  records = records.slice(0, limit);
+
+  const userVotes = userId
+    ? await getUserVoteStatus(
+        userId,
+        records.map((d) => d.domainName),
+      )
+    : {};
+
+  const rankings: Array<CampaignRanking> = addTagsToItems(
+    records.map((record, index) => ({
+      ...record,
+      rank: record.rank ?? offset + index + 1,
+      userHasUpvoted: Boolean(userVotes[record.domainName]),
+    })),
+  );
+
+  return {
+    rankings,
+    hasMore,
+  };
+};
+
+/**
+ * Get campaign details and rankings
+ */
+const getCampaign = async ({
+  campaignKey,
+  offset,
+  limit,
+  userId,
+}: {
+  campaignKey: string;
+  offset: number;
+  limit: number;
+  userId?: string;
+}) => {
+  const campaign = await getCampaignDetails(campaignKey);
+  const { rankings, hasMore } = await getCampaignRankings(
+    campaignKey,
+    campaign,
+    offset,
+    limit,
+    userId,
+  );
+  return { campaign, rankings, hasMore };
+};
 
 const upvote = async (userId: string, domainName: string) => {
   // Check if user has already upvoted this domain
@@ -262,57 +507,31 @@ export const huntRouter = createTRPCRouter({
         return { items: [], hasMore: false };
       }
 
-      // Batch get domain stats
+      // Batch get domain stats and user vote status
       const domainNames = domainList.map((d) => d.domainName);
       const [domainStats, userVotes] = await Promise.all([
         // Get stats for these domains
-        db
-          .select({
-            domainName: huntDomainStatsView.domainName,
-            upvoteCount: sql<number>`CAST(${huntDomainStatsView.upvoteCount} AS INTEGER)`,
-            firstSubmitDate: huntDomainStatsView.firstSubmitDate,
-          })
-          .from(huntDomainStatsView)
-          .where(
-            sql`${huntDomainStatsView.domainName} IN (${sql.join(
-              domainNames.map((name) => sql`${name}`),
-              sql`, `,
-            )})`,
-          ),
+        getDomainStats(domainNames),
 
         // Get user's vote status for these domains
-        db
-          .select({
-            targetId: huntEdgesTable.targetId,
-          })
-          .from(huntEdgesTable)
-          .where(
-            and(
-              eq(huntEdgesTable.sourceType, 'USER'),
-              eq(huntEdgesTable.sourceId, userId),
-              eq(huntEdgesTable.targetType, 'DOMAIN'),
-              eq(huntEdgesTable.action, 'UPVOTE'),
-              sql`${huntEdgesTable.targetId} IN (${sql.join(
-                domainNames.map((name) => sql`${name}`),
-                sql`, `,
-              )})`,
-            ),
-          ),
+        getUserVoteStatus(userId, domainNames),
       ]);
 
       // Combine all data
-      const statsMap = new Map(
-        domainStats.map((stat) => [stat.domainName, stat]),
-      );
-      const votesSet = new Set(userVotes.map((vote) => vote.targetId));
+      const statsMap = new Map<
+        string,
+        {
+          domainName: string;
+          upvoteCount: number;
+        }
+      >(domainStats.map((stat) => [stat.domainName, stat]));
       const enrichedDomains = domainList.map((domain) => {
         const stats = statsMap.get(domain.domainName);
         return {
           domainName: domain.domainName,
           submittedAt: domain.submittedAt,
           upvoteCount: stats?.upvoteCount || 0,
-          firstSubmitDate: stats?.firstSubmitDate || domain.submittedAt,
-          userHasUpvoted: votesSet.has(domain.domainName),
+          userHasUpvoted: Boolean(userVotes[domain.domainName]),
         };
       });
 
@@ -416,34 +635,10 @@ export const huntRouter = createTRPCRouter({
       const domainList = domains.slice(0, limit);
 
       // Batch query user's vote status for the returned domains
-      let userVotes: Record<string, boolean> = {};
-      if (domainList.length > 0) {
-        const userVoteRows = await db
-          .select({
-            targetId: huntEdgesTable.targetId,
-          })
-          .from(huntEdgesTable)
-          .where(
-            and(
-              eq(huntEdgesTable.sourceType, 'USER'),
-              eq(huntEdgesTable.sourceId, userId),
-              eq(huntEdgesTable.targetType, 'DOMAIN'),
-              eq(huntEdgesTable.action, 'UPVOTE'),
-              sql`${huntEdgesTable.targetId} IN (${sql.join(
-                domainList.map((d) => sql`${d.domainName}`),
-                sql`, `,
-              )})`,
-            ),
-          );
-
-        userVotes = userVoteRows.reduce(
-          (acc, row) => {
-            acc[row.targetId] = true;
-            return acc;
-          },
-          {} as Record<string, boolean>,
-        );
-      }
+      const userVotes = await getUserVoteStatus(
+        userId,
+        domainList.map((d) => d.domainName),
+      );
 
       // Combine results with user vote status
       const domainsWithVotes = domainList.map((domain) => ({
@@ -579,33 +774,23 @@ export const huntRouter = createTRPCRouter({
         return { items: [], hasMore: false };
       }
 
-      // Get domain stats for upvoted domains
-      const domainNames = domainList.map((d) => d.domainName);
-      const domainStats = await db
-        .select({
-          domainName: huntDomainStatsView.domainName,
-          upvoteCount: sql<number>`CAST(${huntDomainStatsView.upvoteCount} AS INTEGER)`,
-          firstSubmitDate: huntDomainStatsView.firstSubmitDate,
-        })
-        .from(huntDomainStatsView)
-        .where(
-          sql`${huntDomainStatsView.domainName} IN (${sql.join(
-            domainNames.map((name) => sql`${name}`),
-            sql`, `,
-          )})`,
-        );
-
-      // Combine data
-      const statsMap = new Map(
-        domainStats.map((stat) => [stat.domainName, stat]),
+      const domainStats = await getDomainStats(
+        domainList.map((d) => d.domainName),
       );
+
+      const statsMap = new Map<
+        string,
+        {
+          domainName: string;
+          upvoteCount: number;
+        }
+      >(domainStats.map((stat) => [stat.domainName, stat]));
       const enrichedDomains = domainList.map((domain) => {
         const stats = statsMap.get(domain.domainName);
         return {
           domainName: domain.domainName,
           upvotedAt: domain.upvotedAt,
           upvoteCount: stats?.upvoteCount || 0,
-          firstSubmitDate: stats?.firstSubmitDate || domain.upvotedAt,
           userHasUpvoted: true, // Always true for upvoted domains
         };
       });
@@ -765,5 +950,108 @@ export const huntRouter = createTRPCRouter({
       const domainWithTags = addTagsToItems([enrichedDomain])[0];
 
       return domainWithTags;
+    }),
+
+  /**
+   * Get awards for a specific period
+   * Returns finalized award rankings for a specific time period
+   */
+  getPeriodAwards: publicProcedure
+    .input(getPeriodAwardsSchema)
+    .query(async ({ input }) => {
+      const { type, periodKey, offset, limit } = input;
+
+      // Query awards table for the specific period
+      const awards = await db
+        .select({
+          domainName: huntAwardsTable.domainName,
+          rank: huntAwardsTable.rank,
+          upvoteCount: huntAwardsTable.upvoteCount,
+          reason: huntAwardsTable.reason,
+          awardedAt: huntAwardsTable.createdAt,
+          isPinned: sql<boolean>`false`.as('is_pinned'), // Awards are historical, not pinned
+        })
+        .from(huntAwardsTable)
+        .where(
+          and(
+            eq(huntAwardsTable.type, type),
+            eq(huntAwardsTable.periodKey, periodKey),
+          ),
+        )
+        .orderBy(huntAwardsTable.rank)
+        .offset(offset)
+        .limit(limit + 1);
+
+      const hasMore = awards.length > limit;
+      const items = addTagsToItems(
+        awards.slice(0, limit).map((award) => ({
+          ...award,
+          userHasUpvoted: false, // Public access
+        })),
+      );
+
+      return {
+        items,
+        hasMore,
+      };
+    }),
+
+  /**
+   * Get campaign details and rankings (public) - No authentication required
+   * Returns campaign info and either finalized results or current live rankings without user-specific data
+   */
+  getCampaignPublic: publicProcedure
+    .input(getCampaignSchema)
+    .query(async ({ input }) => {
+      const { campaignKey, offset, limit } = input;
+
+      return await getCampaign({
+        campaignKey,
+        offset,
+        limit,
+      });
+    }),
+
+  /**
+   * Get campaign details and rankings (authenticated)
+   * Returns campaign info and either finalized results or current live rankings with user-specific voting data
+   */
+  getCampaign: protectedProcedure
+    .input(getCampaignSchema)
+    .query(async ({ ctx, input }) => {
+      const { campaignKey, offset, limit } = input;
+      const userId = ctx.user.id;
+
+      return await getCampaign({
+        campaignKey,
+        offset,
+        limit,
+        userId,
+      });
+    }),
+
+  /**
+   * Get all awards for a specific domain
+   * Returns all awards won by a specific domain
+   */
+  getDomainAwards: publicProcedure
+    .input(getDomainAwardsSchema)
+    .query(async ({ input }) => {
+      const { domainName } = input;
+
+      return await db
+        .select({
+          id: huntAwardsTable.id,
+          type: huntAwardsTable.type,
+          campaignKey: huntAwardsTable.campaignKey,
+          periodKey: huntAwardsTable.periodKey,
+          rank: huntAwardsTable.rank,
+          reason: huntAwardsTable.reason,
+          upvoteCount: huntAwardsTable.upvoteCount,
+          awardedAt: huntAwardsTable.createdAt,
+        })
+        .from(huntAwardsTable)
+        .where(eq(huntAwardsTable.domainName, domainName))
+        .orderBy(desc(huntAwardsTable.createdAt));
     }),
 });

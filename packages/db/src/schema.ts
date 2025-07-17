@@ -721,12 +721,132 @@ export const huntPinnedDomainsTable = pgTable(
   {
     ...randomUuid,
     domainName: text('domain_name').notNull(),
-    weight: integer('weight').notNull().default(0),
+    weight: integer('weight').notNull().default(100),
     ...timestamps,
   },
   (table) => [
     unique('hunt_pinned_domains_domain_unique').on(table.domainName),
     index('hunt_pinned_domains_weight_idx').on(table.weight),
+  ],
+);
+
+/**
+ * Hunt awards system
+ */
+export const huntAwardTypeEnum = pgEnum('hunt_award_type', [
+  'DAILY',
+  'WEEKLY',
+  'MONTHLY',
+  'YEARLY',
+  'CAMPAIGN',
+]);
+
+export const huntCampaignStatusEnum = pgEnum('hunt_campaign_status', [
+  'DRAFT',
+  'ACTIVE',
+  'ENDED',
+  'AWARDED',
+  'CANCELLED',
+]);
+
+/**
+ * Hunt awards table
+ * Stores finalized award rankings for domains in specific time periods or campaigns
+ * This table serves as a historical record of domain rankings after each award period ends
+ */
+export const huntAwardsTable = pgTable(
+  'hunt_awards',
+  {
+    ...randomUuid,
+    domainName: text('domain_name').notNull(),
+    type: huntAwardTypeEnum('type').notNull(),
+
+    // Campaign key for campaign-type awards (e.g., 'CV-2025', 'CTA-2025')
+    campaignKey: text('campaign_key'),
+
+    // Period key for time-based awards (e.g., 'DAILY-2025-01-01', 'WEEKLY-2025-01', 'MONTHLY-2025-01', 'YEARLY-2025')
+    periodKey: text('period_key'),
+
+    rank: integer('rank').notNull(),
+    reason: text('reason'), // Display text for the award (e.g., "July 8th, 2025")
+    upvoteCount: integer('upvote_count').notNull(), // Snapshot of upvote count at award time
+
+    ...timestamps,
+  },
+  (table) => [
+    // Core indexes for efficient queries
+    index('hunt_awards_domain_idx').on(table.domainName),
+    index('hunt_awards_type_period_idx').on(table.type, table.periodKey),
+    index('hunt_awards_campaign_idx').on(table.campaignKey),
+
+    // Ensure either campaignKey or periodKey is provided
+    check(
+      'hunt_awards_key_check',
+      sql`(${table.campaignKey} IS NOT NULL) OR (${table.periodKey} IS NOT NULL)`,
+    ),
+
+    // Ensure rank is positive
+    check('hunt_awards_rank_positive', sql`${table.rank} > 0`),
+
+    // Ensure upvote count is non-negative
+    check(
+      'hunt_awards_upvote_count_nonnegative',
+      sql`${table.upvoteCount} >= 0`,
+    ),
+  ],
+);
+
+/**
+ * Hunt campaigns table
+ * Stores configuration for campaign-type awards
+ */
+export const huntCampaignsTable = pgTable(
+  'hunt_campaigns',
+  {
+    ...randomUuid,
+    campaignKey: text('campaign_key').notNull().unique(),
+    title: text('title').notNull(),
+    description: text('description'),
+    startDate: timestamp('start_date').notNull(),
+    endDate: timestamp('end_date').notNull(),
+    status: huntCampaignStatusEnum('status').notNull().default('DRAFT'),
+    ...timestamps,
+  },
+  (table) => [
+    index('hunt_campaigns_dates_idx').on(table.startDate, table.endDate),
+    index('hunt_campaigns_status_idx').on(table.status),
+
+    // Ensure end date is after start date
+    check(
+      'hunt_campaigns_dates_valid',
+      sql`${table.endDate} > ${table.startDate}`,
+    ),
+  ],
+);
+
+/**
+ * Hunt campaign domains table
+ * Stores which domains are eligible for specific campaigns
+ */
+export const huntCampaignDomainsTable = pgTable(
+  'hunt_campaign_domains',
+  {
+    ...randomUuid,
+    campaignKey: text('campaign_key')
+      .notNull()
+      .references(() => huntCampaignsTable.campaignKey, {
+        onDelete: 'cascade',
+      }),
+    domainName: text('domain_name').notNull(),
+    ...timestamps,
+  },
+  (table) => [
+    unique('hunt_campaign_domains_unique').on(
+      table.campaignKey,
+      table.domainName,
+    ),
+    index('hunt_campaign_domains_campaign_idx').on(table.campaignKey),
+    index('hunt_campaign_domains_domain_idx').on(table.domainName),
   ],
 );
 

@@ -281,6 +281,13 @@
       "when": 1752148180743,
       "tag": "0039_unusual_power_man",
       "breakpoints": true
+    },
+    {
+      "idx": 40,
+      "version": "7",
+      "when": 1752672913366,
+      "tag": "0040_massive_snowbird",
+      "breakpoints": true
     }
   ]
 }

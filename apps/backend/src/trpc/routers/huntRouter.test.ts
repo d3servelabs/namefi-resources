@@ -3,6 +3,9 @@ import {
   db,
   huntEdgesTable,
   huntPinnedDomainsTable,
+  huntAwardsTable,
+  huntCampaignsTable,
+  huntCampaignDomainsTable,
   usersTable,
 } from '@namefi-astra/db';
 import { config } from 'dotenv';
@@ -61,7 +64,17 @@ describe('Hunt Router', () => {
   afterEach(async () => {
     vi.restoreAllMocks();
     // Clean up test data
-    // Clean up pinned domains first (using LIKE to match test domain patterns)
+    // Clean up awards and campaigns first (using LIKE to match test domain patterns)
+    await db
+      .delete(huntAwardsTable)
+      .where(sql`${huntAwardsTable.domainName} LIKE 'test.%'`);
+    await db
+      .delete(huntCampaignDomainsTable)
+      .where(sql`${huntCampaignDomainsTable.domainName} LIKE 'test.%'`);
+    await db
+      .delete(huntCampaignsTable)
+      .where(sql`${huntCampaignsTable.campaignKey} LIKE 'test-%'`);
+    // Clean up pinned domains (using LIKE to match test domain patterns)
     await db
       .delete(huntPinnedDomainsTable)
       .where(sql`${huntPinnedDomainsTable.domainName} LIKE 'test.%'`);
@@ -926,6 +939,480 @@ describe('Hunt Router', () => {
       );
       expect(regularDomain).toBeDefined();
       expect(regularDomain?.upvoteCount).toBeGreaterThan(0);
+    });
+  });
+
+  describe('Awards System', () => {
+    describe('Period Awards', () => {
+      beforeEach(async () => {
+        // Create test awards for period-based rankings
+        await db.insert(huntAwardsTable).values([
+          {
+            domainName: 'test.winner.weekly',
+            type: 'WEEKLY',
+            periodKey: 'WEEKLY-2025-27',
+            rank: 1,
+            reason: 'July 3rd, 2025',
+            upvoteCount: 100,
+          },
+          {
+            domainName: 'test.winner.weekly2',
+            type: 'WEEKLY',
+            periodKey: 'WEEKLY-2025-27', // Same period key as first award
+            rank: 2,
+            reason: 'July 8th, 2025',
+            upvoteCount: 80,
+          },
+          {
+            domainName: 'test.winner.monthly',
+            type: 'MONTHLY',
+            periodKey: 'MONTHLY-2025-07',
+            rank: 1,
+            reason: 'July 8th, 2025',
+            upvoteCount: 200,
+          },
+        ]);
+      });
+
+      it('should get period awards with correct ordering', async () => {
+        const publicCaller = huntRouter.createCaller({
+          thirdPartyOriginHostname: null,
+          testUser: null,
+        } as any);
+
+        const result = await publicCaller.getPeriodAwards({
+          type: 'WEEKLY',
+          periodKey: 'WEEKLY-2025-27',
+          offset: 0,
+          limit: 10,
+        });
+
+        expect(result).toHaveProperty('items');
+        expect(result).toHaveProperty('hasMore', false);
+        expect(result.items).toHaveLength(2);
+
+        // Check correct ordering by rank
+        expect(result.items[0].domainName).toBe('test.winner.weekly');
+        expect(result.items[0].rank).toBe(1);
+        expect(result.items[0].upvoteCount).toBe(100);
+        expect(result.items[0].reason).toBe('July 3rd, 2025');
+
+        expect(result.items[1].domainName).toBe('test.winner.weekly2');
+        expect(result.items[1].rank).toBe(2);
+        expect(result.items[1].upvoteCount).toBe(80);
+
+        // Check that all items have consistent fields
+        for (const item of result.items) {
+          expect(item).toHaveProperty('domainName');
+          expect(item).toHaveProperty('rank');
+          expect(item).toHaveProperty('upvoteCount');
+          expect(item).toHaveProperty('reason');
+          expect(item).toHaveProperty('awardedAt');
+          expect(item).toHaveProperty('isPinned', false);
+          expect(item).toHaveProperty('userHasUpvoted', false);
+          expect(item).toHaveProperty('tags');
+          expect(Array.isArray(item.tags)).toBe(true);
+        }
+      });
+
+      it('should handle pagination for period awards', async () => {
+        const publicCaller = huntRouter.createCaller({
+          thirdPartyOriginHostname: null,
+          testUser: null,
+        } as any);
+
+        const page1 = await publicCaller.getPeriodAwards({
+          type: 'WEEKLY',
+          periodKey: 'WEEKLY-2025-27',
+          offset: 0,
+          limit: 1,
+        });
+
+        expect(page1.items).toHaveLength(1);
+        expect(page1.hasMore).toBe(true);
+        expect(page1.items[0].domainName).toBe('test.winner.weekly');
+
+        const page2 = await publicCaller.getPeriodAwards({
+          type: 'WEEKLY',
+          periodKey: 'WEEKLY-2025-27',
+          offset: 1,
+          limit: 1,
+        });
+
+        expect(page2.items).toHaveLength(1);
+        expect(page2.hasMore).toBe(false);
+        expect(page2.items[0].domainName).toBe('test.winner.weekly2');
+      });
+
+      it('should return empty results for non-existent period', async () => {
+        const publicCaller = huntRouter.createCaller({
+          thirdPartyOriginHostname: null,
+          testUser: null,
+        } as any);
+
+        const result = await publicCaller.getPeriodAwards({
+          type: 'WEEKLY',
+          periodKey: 'WEEKLY-2025-99',
+          offset: 0,
+          limit: 10,
+        });
+
+        expect(result.items).toHaveLength(0);
+        expect(result.hasMore).toBe(false);
+      });
+    });
+
+    describe('Campaign Awards', () => {
+      let activeCampaignKey: string;
+      let finishedCampaignKey: string;
+
+      beforeEach(async () => {
+        // Generate unique campaign keys for each test run
+        const timestamp = Date.now();
+        activeCampaignKey = `TEST-CV-${timestamp}`;
+        finishedCampaignKey = `TEST-CTA-${timestamp}`;
+
+        // Create test campaign
+        await db.insert(huntCampaignsTable).values([
+          {
+            campaignKey: activeCampaignKey,
+            title: 'Test CV',
+            description: 'Test CV',
+            startDate: new Date('2025-07-01'),
+            endDate: new Date('2025-07-31'),
+            status: 'ACTIVE',
+          },
+          {
+            campaignKey: finishedCampaignKey,
+            title: 'Test CTA',
+            description: 'Test CTA',
+            startDate: new Date('2025-07-01'),
+            endDate: new Date('2025-07-31'),
+            status: 'AWARDED',
+          },
+        ]);
+
+        // Create campaign domains for active campaign
+        await db.insert(huntCampaignDomainsTable).values([
+          {
+            campaignKey: activeCampaignKey,
+            domainName: 'test.cv.domain1',
+          },
+          {
+            campaignKey: activeCampaignKey,
+            domainName: 'test.cv.domain2',
+          },
+        ]);
+
+        // Create domains and votes for active campaign
+        await caller.submitDomain({ domainName: 'test.cv.domain1' });
+        await caller.submitDomain({ domainName: 'test.cv.domain2' });
+        await otherCaller.upvote({ domainName: 'test.cv.domain1' });
+
+        // Create finalized awards for finished campaign
+        await db.insert(huntAwardsTable).values([
+          {
+            domainName: 'test.finished.winner',
+            type: 'CAMPAIGN',
+            campaignKey: finishedCampaignKey,
+            rank: 1,
+            reason: 'July 8th, 2025',
+            upvoteCount: 150,
+          },
+          {
+            domainName: 'test.finished.runner',
+            type: 'CAMPAIGN',
+            campaignKey: finishedCampaignKey,
+            rank: 2,
+            reason: 'July 8th, 2025',
+            upvoteCount: 100,
+          },
+        ]);
+      });
+
+      it('should get active campaign with live rankings', async () => {
+        const publicCaller = huntRouter.createCaller({
+          thirdPartyOriginHostname: null,
+          testUser: null,
+        } as any);
+
+        const result = await publicCaller.getCampaignPublic({
+          campaignKey: activeCampaignKey,
+          offset: 0,
+          limit: 10,
+        });
+
+        expect(result).toHaveProperty('campaign');
+        expect(result).toHaveProperty('rankings');
+        expect(result).toHaveProperty('hasMore', false);
+
+        // Check campaign details
+        expect(result.campaign.campaignKey).toBe(activeCampaignKey);
+        expect(result.campaign.title).toBe('Test CV');
+        expect(result.campaign.status).toBe('ACTIVE');
+
+        // Check live rankings
+        expect(result.rankings).toHaveLength(2);
+
+        // Should be ordered by upvote count (domain1 has more votes)
+        expect(result.rankings[0].domainName).toBe('test.cv.domain1');
+        expect(result.rankings[0].rank).toBe(1);
+        expect(result.rankings[0].upvoteCount).toBe(2); // submitter + otherUser
+
+        expect(result.rankings[1].domainName).toBe('test.cv.domain2');
+        expect(result.rankings[1].rank).toBe(2);
+        expect(result.rankings[1].upvoteCount).toBe(1); // submitter only
+
+        // Check that all items have consistent fields
+        for (const item of result.rankings) {
+          expect(item).toHaveProperty('domainName');
+          expect(item).toHaveProperty('rank');
+          expect(item).toHaveProperty('upvoteCount');
+          expect(item).toHaveProperty('isPinned', false);
+          expect(item).toHaveProperty('userHasUpvoted', false);
+          expect(item).toHaveProperty('tags');
+          expect(Array.isArray(item.tags)).toBe(true);
+        }
+      });
+
+      it('should get finished campaign with finalized awards', async () => {
+        const publicCaller = huntRouter.createCaller({
+          thirdPartyOriginHostname: null,
+          testUser: null,
+        } as any);
+
+        const result = await publicCaller.getCampaignPublic({
+          campaignKey: finishedCampaignKey,
+          offset: 0,
+          limit: 10,
+        });
+
+        expect(result).toHaveProperty('campaign');
+        expect(result).toHaveProperty('rankings');
+        expect(result).toHaveProperty('hasMore', false);
+
+        // Check campaign details
+        expect(result.campaign.campaignKey).toBe(finishedCampaignKey);
+        expect(result.campaign.title).toBe('Test CTA');
+        expect(result.campaign.status).toBe('AWARDED');
+
+        // Check finalized awards
+        expect(result.rankings).toHaveLength(2);
+
+        expect(result.rankings[0].domainName).toBe('test.finished.winner');
+        expect(result.rankings[0].rank).toBe(1);
+        expect(result.rankings[0].upvoteCount).toBe(150);
+        expect(result.rankings[0].reason).toBe('July 8th, 2025');
+
+        expect(result.rankings[1].domainName).toBe('test.finished.runner');
+        expect(result.rankings[1].rank).toBe(2);
+        expect(result.rankings[1].upvoteCount).toBe(100);
+        expect(result.rankings[1].reason).toBe('July 8th, 2025');
+      });
+
+      it('should throw error for non-existent campaign', async () => {
+        const publicCaller = huntRouter.createCaller({
+          thirdPartyOriginHostname: null,
+          testUser: null,
+        } as any);
+
+        await expect(
+          publicCaller.getCampaignPublic({
+            campaignKey: 'non-existent-campaign',
+            offset: 0,
+            limit: 10,
+          }),
+        ).rejects.toThrow('Campaign not found');
+      });
+
+      it('should handle pagination for campaign rankings', async () => {
+        const publicCaller = huntRouter.createCaller({
+          thirdPartyOriginHostname: null,
+          testUser: null,
+        } as any);
+
+        const page1 = await publicCaller.getCampaignPublic({
+          campaignKey: finishedCampaignKey,
+          offset: 0,
+          limit: 1,
+        });
+
+        expect(page1.rankings).toHaveLength(1);
+        expect(page1.hasMore).toBe(true);
+        expect(page1.rankings[0].domainName).toBe('test.finished.winner');
+
+        const page2 = await publicCaller.getCampaignPublic({
+          campaignKey: finishedCampaignKey,
+          offset: 1,
+          limit: 1,
+        });
+
+        expect(page2.rankings).toHaveLength(1);
+        expect(page2.hasMore).toBe(false);
+        expect(page2.rankings[0].domainName).toBe('test.finished.runner');
+      });
+    });
+
+    describe('Domain Awards', () => {
+      let domainCampaignKey1: string;
+      let domainCampaignKey2: string;
+
+      beforeEach(async () => {
+        // Generate unique campaign keys for each test run
+        const timestamp = Date.now();
+        domainCampaignKey1 = `TEST-CV-DOMAIN-${timestamp}`;
+        domainCampaignKey2 = `TEST-CTA-DOMAIN-${timestamp}`;
+
+        // Create test campaigns
+        await db.insert(huntCampaignsTable).values([
+          {
+            campaignKey: domainCampaignKey1,
+            title: 'Test CV',
+            description: 'Test CV',
+            startDate: new Date('2025-01-01'),
+            endDate: new Date('2025-01-31'),
+            status: 'AWARDED',
+          },
+          {
+            campaignKey: domainCampaignKey2,
+            title: 'Test CTA',
+            description: 'Test CTA',
+            startDate: new Date('2025-02-01'),
+            endDate: new Date('2025-02-28'),
+            status: 'AWARDED',
+          },
+        ]);
+
+        // Create multiple awards for a single domain
+        await db.insert(huntAwardsTable).values([
+          {
+            domainName: 'test.winner.domain',
+            type: 'WEEKLY',
+            periodKey: 'WEEKLY-2025-27',
+            rank: 1,
+            reason: 'July 3rd, 2025',
+            upvoteCount: 100,
+          },
+          {
+            domainName: 'test.winner.domain',
+            type: 'MONTHLY',
+            periodKey: 'MONTHLY-2025-07',
+            rank: 2,
+            reason: 'July 8th, 2025',
+            upvoteCount: 200,
+          },
+          {
+            domainName: 'test.winner.domain',
+            type: 'CAMPAIGN',
+            campaignKey: domainCampaignKey1,
+            rank: 1,
+            reason: 'July 8th, 2025',
+            upvoteCount: 150,
+          },
+          {
+            domainName: 'test.winner.domain',
+            type: 'CAMPAIGN',
+            campaignKey: domainCampaignKey2,
+            rank: 3,
+            reason: 'July 8th, 2025',
+            upvoteCount: 120,
+          },
+        ]);
+      });
+
+      it('should get all awards for a domain', async () => {
+        const publicCaller = huntRouter.createCaller({
+          thirdPartyOriginHostname: null,
+          testUser: null,
+        } as any);
+
+        const result = await publicCaller.getDomainAwards({
+          domainName: 'test.winner.domain',
+        });
+
+        // Result should be an array of awards
+        expect(Array.isArray(result)).toBe(true);
+        expect(result).toHaveLength(4);
+
+        // Check that awards are ordered by creation date (newest first)
+        const awardTypes = result.map((award) => award.type);
+        expect(awardTypes).toContain('WEEKLY');
+        expect(awardTypes).toContain('MONTHLY');
+        expect(awardTypes).toContain('CAMPAIGN');
+
+        // Check campaign awards have campaign keys
+        const campaignAwards = result.filter(
+          (award) => award.type === 'CAMPAIGN',
+        );
+        expect(campaignAwards).toHaveLength(2);
+
+        for (const award of campaignAwards) {
+          expect(award).toHaveProperty('campaignKey');
+          expect(award.campaignKey).toBeTruthy();
+        }
+
+        // Check period awards have period keys
+        const periodAwards = result.filter(
+          (award) => award.type !== 'CAMPAIGN',
+        );
+        for (const award of periodAwards) {
+          expect(award).toHaveProperty('periodKey');
+          expect(award.periodKey).toBeTruthy();
+        }
+
+        // Check all awards have required fields
+        for (const award of result) {
+          expect(award).toHaveProperty('id');
+          expect(award).toHaveProperty('type');
+          expect(award).toHaveProperty('rank');
+          expect(award).toHaveProperty('reason');
+          expect(award).toHaveProperty('upvoteCount');
+          expect(award).toHaveProperty('awardedAt');
+        }
+      });
+
+      it('should return empty results for domain with no awards', async () => {
+        const publicCaller = huntRouter.createCaller({
+          thirdPartyOriginHostname: null,
+          testUser: null,
+        } as any);
+
+        const result = await publicCaller.getDomainAwards({
+          domainName: 'test.no.awards.domain',
+        });
+
+        // Result should be an empty array
+        expect(Array.isArray(result)).toBe(true);
+        expect(result).toHaveLength(0);
+      });
+
+      it('should handle domain with only period awards', async () => {
+        // Create a domain with only period-based awards
+        await db.insert(huntAwardsTable).values([
+          {
+            domainName: 'test.period.only.domain',
+            type: 'DAILY',
+            periodKey: 'DAILY-2025-07-15',
+            rank: 1,
+            reason: 'July 15th, 2025',
+            upvoteCount: 50,
+          },
+        ]);
+
+        const publicCaller = huntRouter.createCaller({
+          thirdPartyOriginHostname: null,
+          testUser: null,
+        } as any);
+
+        const result = await publicCaller.getDomainAwards({
+          domainName: 'test.period.only.domain',
+        });
+
+        expect(result).toHaveLength(1);
+        expect(result[0].type).toBe('DAILY');
+        expect(result[0].periodKey).toBe('DAILY-2025-07-15');
+        expect(result[0].campaignKey).toBeNull();
+      });
     });
   });
 });
