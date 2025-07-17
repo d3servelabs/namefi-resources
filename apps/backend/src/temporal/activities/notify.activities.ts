@@ -13,6 +13,10 @@ import { getDomainLevels } from '#lib/get-domain-levels';
 import { groupBy, map, prop } from 'ramda';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { getPoweredByNamefi3PDomains } from '#lib/namefi-registry';
+import { Context } from '@temporalio/activity';
+import { logger } from '#lib/logger';
+import { GeneralStyledNotification } from '../../mail/templates/general-styled-notification';
+import * as workflow from '@temporalio/workflow';
 
 export async function maybeGetUserEmail(
   userId: string,
@@ -236,4 +240,81 @@ async function determineHostnameFromCartItems(
   }
 
   return config.APP_URL;
+}
+
+/**
+ * Sends a styled email notification to a user
+ *
+ * @param userId - The user ID to send notification to
+ * @param messageMarkdown - Content of the message in Markdown format
+ * @param showGoToDashboard - Whether to show a dashboard link
+ * @param title - Email title
+ * @param subject - Optional email subject (defaults to title)
+ * @returns Promise indicating success
+ */
+
+export async function sendStyledEmailNotification({
+  userId,
+  messageMarkdown,
+  showGoToDashboard,
+  title,
+  subject,
+}: {
+  userId: string;
+  messageMarkdown: string;
+  showGoToDashboard: boolean;
+  title: string;
+  subject?: string;
+}) {
+  const ctx = Context.current();
+  try {
+    const userEmail = await maybeGetUserEmail(userId);
+    if (!userEmail) {
+      logger.error(`User ${userId} not found`);
+      return { status: 'FAILED' };
+    }
+    logger.info(`Sending styled email to user ${userId} (${userEmail})`);
+
+    const populatedTemplate = React.createElement(GeneralStyledNotification, {
+      title,
+      messageMarkdown,
+      showGoToDashboard,
+    });
+
+    const html = await render(populatedTemplate, {
+      pretty: false,
+      plainText: false,
+    });
+    const plain = await render(populatedTemplate, {
+      pretty: false,
+      plainText: true,
+    });
+
+    await sendMail({
+      to: [userEmail],
+      bcc: [
+        'customer-email-archive@d3serve.xyz',
+        'sami@d3serve.xyz',
+        'zzn@d3serve.xyz',
+      ],
+      subject: subject || title,
+      content: {
+        html,
+        plain,
+      },
+    });
+
+    ctx.log.info(
+      `Successfully sent styled email to user ${userId} (${userEmail})`,
+    );
+    return { status: 'SUCCESS' };
+  } catch (error: any) {
+    ctx.log.error(
+      `Failed to send styled email to user ${userId}: ${error.message}`,
+      error.stack,
+    );
+    throw new workflow.ApplicationFailure(
+      `Email delivery failed: ${error.message}`,
+    );
+  }
 }
