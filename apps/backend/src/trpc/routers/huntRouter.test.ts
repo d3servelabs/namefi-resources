@@ -69,12 +69,15 @@ describe('Hunt Router', () => {
       .delete(huntAwardsTable)
       .where(sql`${huntAwardsTable.domainName} LIKE 'test.%'`);
     await db
-      .delete(huntCampaignDomainsTable)
-      .where(sql`${huntCampaignDomainsTable.domainName} LIKE 'test.%'`);
-    await db
       .delete(huntCampaignsTable)
-      .where(sql`${huntCampaignsTable.campaignKey} LIKE 'test-%'`);
-    // Clean up pinned domains (using LIKE to match test domain patterns)
+      .where(
+        sql`${huntCampaignsTable.campaignKey} LIKE 'test-%' OR ${huntCampaignsTable.campaignKey} LIKE 'TEST-%'`,
+      );
+    await db
+      .delete(huntAwardsTable)
+      .where(
+        sql`${huntAwardsTable.campaignKey} LIKE 'test-%' OR ${huntAwardsTable.campaignKey} LIKE 'TEST-%'`,
+      );
     await db
       .delete(huntPinnedDomainsTable)
       .where(sql`${huntPinnedDomainsTable.domainName} LIKE 'test.%'`);
