@@ -53,7 +53,7 @@ export function SidebarDomains({ name, domains }: RecentDomainsProps) {
           <SidebarGroupContent>
             <SidebarMenu>
               {domains.map((domain) => {
-                const href = `/domain/${domain}`;
+                const href = `/domains/${domain}`;
 
                 return (
                   <SidebarMenuItem key={domain}>

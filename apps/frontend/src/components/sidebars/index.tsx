@@ -41,7 +41,7 @@ const ITEMS: NavItem[] = [
   { title: 'Discover', href: '/', icon: Compass },
   { title: "Just AI'ng™", href: '/ai-brand-generator', icon: Sparkles },
   { title: 'Hunt', href: '/hunt', icon: TrendingUp },
-  { title: 'My Domains', href: '/my-domains', icon: Globe },
+  { title: 'My Domains', href: '/domains', icon: Globe },
   { title: 'My Orders', href: '/orders', icon: ClipboardList },
   { title: 'My Payment Methods', href: '/payment-methods', icon: CreditCard },
   { title: 'Manage', href: '/manage', icon: PenToolIcon },

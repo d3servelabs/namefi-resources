@@ -276,7 +276,7 @@ function MyDomainsTable() {
       if (!hasEmail) {
         setShowEmailModal(true);
       } else {
-        router.push(`/domain/${domainName}`);
+        router.push(`/domains/${domainName}`);
       }
     },
     [hasEmail, router],
@@ -411,7 +411,7 @@ function MyDomainsTable() {
         },
         cell: ({ row }) => (
           <Link
-            href={`/domain/${row.getValue('normalizedDomainName')}`}
+            href={`/domains/${row.getValue('normalizedDomainName')}`}
             aria-label={`Settings for ${row.getValue('normalizedDomainName')}`}
             className="font-medium hover:underline"
           >

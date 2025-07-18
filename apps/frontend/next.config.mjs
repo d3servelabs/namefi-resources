@@ -46,6 +46,14 @@ const nextConfig = {
         source: '/r/:path*',
         destination: 'https://r.namefi.io/r/:path*',
       },
+      {
+        source: '/my-domains',
+        destination: '/domains',
+      },
+      {
+        source: '/domain/:path*',
+        destination: '/domains/:path*',
+      },
     ];
   },
   async redirects() {
