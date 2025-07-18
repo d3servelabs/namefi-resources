@@ -63,16 +63,10 @@ export const DomainManagement: FC<DomainManagementProps> = ({
   const router = useRouter();
 
   const trpc = useTRPC();
-  const { data: currentUserDomains } = useSuspenseQuery(
-    trpc.users.getCurrentUserDomains.queryOptions(),
-  );
-
-  const isDomainOwnedByCurrentUser = useMemo(
-    () =>
-      currentUserDomains.some(
-        (ownedDomain) => ownedDomain.normalizedDomainName === domain,
-      ),
-    [currentUserDomains, domain],
+  const { data: isDomainOwnedByCurrentUser } = useSuspenseQuery(
+    trpc.users.isDomainOwnedByCurrentUser.queryOptions({
+      normalizedDomainName: domain,
+    }),
   );
 
   const {

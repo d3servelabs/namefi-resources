@@ -13,6 +13,22 @@ export async function assertAuthenticatedUserIsDomainOwner(
   user: UserSelect,
 ): Promise<void> {
   // Verify user has permission to manage DNS records for this domain
+  const isUserDomainOwner = await IsUserDomainOwner(normalizedDomainName, user);
+
+  if (!isUserDomainOwner) {
+    throw new TRPCError({
+      code: 'FORBIDDEN',
+      message:
+        'You do not have permission to manage DNS records for this domain',
+    });
+  }
+}
+
+export async function IsUserDomainOwner(
+  normalizedDomainName: NamefiNormalizedDomain,
+  user: UserSelect,
+) {
+  // Verify user has permission to manage DNS records for this domain
   const nft = await db.query.namefiNftTable.findFirst({
     where: (namefiNft, { eq }) =>
       eq(namefiNft.normalizedDomainName, normalizedDomainName),
@@ -29,11 +45,5 @@ export async function assertAuthenticatedUserIsDomainOwner(
     nft.ownerAddress,
   );
 
-  if (nftOwnerUser?.id !== user.privyUserId) {
-    throw new TRPCError({
-      code: 'FORBIDDEN',
-      message:
-        'You do not have permission to manage DNS records for this domain',
-    });
-  }
+  return nftOwnerUser?.id === user.privyUserId;
 }

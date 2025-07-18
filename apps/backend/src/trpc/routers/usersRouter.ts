@@ -41,6 +41,7 @@ import { nftIdFromDomainName } from '#lib/nftHash';
 import pMap from 'p-map';
 import { logger } from '#lib/logger';
 import { fromUnixTime, isBefore, subHours } from 'date-fns';
+import { IsUserDomainOwner } from '../guards/assert-domain-owner';
 
 if (!secrets.ALCHEMY_API_KEY) {
   throw new Error('Cannot create Ethereum public client');
@@ -172,6 +173,27 @@ export const usersRouter = createTRPCRouter({
       return nfts;
     }
   }),
+
+  isDomainOwnedByCurrentUser: protectedProcedure
+    .input(
+      z.object({
+        normalizedDomainName: namefiNormalizedDomainSchema,
+      }),
+    )
+    .query(async ({ input, ctx }) => {
+      const { user } = ctx;
+      const [error, privyUser] = await resolve(
+        privyClient.getUserById(user.privyUserId),
+      );
+
+      if (error || isNil(privyUser)) {
+        throw new TRPCError({
+          code: 'PRECONDITION_FAILED',
+          message: 'could not find user details',
+        });
+      }
+      return IsUserDomainOwner(input.normalizedDomainName, user);
+    }),
 
   getManagerPageEntrypointViewable: authedOrPublicProcedure.query(
     async ({ ctx }) => {
