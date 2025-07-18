@@ -172,8 +172,9 @@ export const domainConfigRouter = createTRPCRouter({
                 },
               },
               dnssecManagement: {
-                enabled: false,
+                enabled: true,
                 config: {
+                  autoManaged: true,
                   showPanel: true,
                   message: `DNSSEC is automatically managed by Namefi for subdomains of ${parsedDomainName.immediateParentDomain}.`,
                 },

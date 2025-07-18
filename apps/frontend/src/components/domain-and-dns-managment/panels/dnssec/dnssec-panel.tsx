@@ -27,7 +27,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/shadcn/tooltip';
-import { cn } from '@/lib/utils';
 import { type AppRouterOutput, useTRPC } from '@/utils/trpc';
 import type { Nameserver } from '@namefi-astra/registrars/lib/abstract-registrar/data/nameservers';
 import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
@@ -120,14 +119,14 @@ export const DnssecPanel = ({
     return false;
   }
   if (dnssecManagement.enabled) {
+    if (dnssecManagement.config.autoManaged) {
+      return <AutoManagedDnssecPanel />;
+    }
     return <DnssecPanelInner domainName={domainName} />;
   }
   if (dnssecManagement.config.message) {
     return (
-      <Card className={cn('bg-zinc-900 border-zinc-800')}>
-        <CardHeader>
-          <CardTitle>DNSSEC Management</CardTitle>
-        </CardHeader>
+      <Layout>
         <div
           className="text-center py-12"
           // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
@@ -135,7 +134,7 @@ export const DnssecPanel = ({
             __html: dnssecManagement.config.message,
           }}
         />
-      </Card>
+      </Layout>
     );
   }
   return false;
@@ -442,5 +441,28 @@ export const DnssecPanelAction = ({
         </AsyncButton>
       )}
     </div>
+  );
+};
+
+export const AutoManagedDnssecPanel = () => {
+  return (
+    <Layout>
+      <div className="flex flex-col items-start gap-4">
+        <div className="flex items-center gap-2">
+          <p>Namefi is signing records for this domain</p>
+        </div>
+
+        <div className="flex flex-col items-start gap-2">
+          <div className="flex items-center gap-2">
+            <ShieldCheckIcon className="w-6 h-6 text-green-500" />
+            <p>Namefi is the only delegation signer for this domain</p>
+          </div>
+          <div className="flex items-center gap-2">
+            <ShieldCheckIcon className="w-6 h-6 text-green-500" />
+            <p>Zone is signing records for this domain</p>
+          </div>
+        </div>
+      </div>
+    </Layout>
   );
 };
