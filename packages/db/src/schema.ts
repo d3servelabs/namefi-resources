@@ -1254,3 +1254,55 @@ export const freeClaimCampaignLimitsTable = pgTable(
     ),
   ],
 );
+
+export const poweredbyNamefiDomainsTable = pgTable(
+  'poweredby_namefi_domains',
+  {
+    normalizedDomainName: text('normalized_domain_name')
+      .notNull()
+      .$type<NamefiNormalizedDomain>(),
+    additionalAllowedHostnames: text('additional_allowed_hostnames')
+      .notNull()
+      .array()
+      .default([]),
+    additionalReservedNames: text('additional_reserved_names')
+      .notNull()
+      .array()
+      .default([]),
+    durationConstraints: jsonb('duration_constraints').notNull().$type<{
+      minDurationInYears: number;
+      maxDurationInYears: number;
+    }>(),
+    costPerYearInUsdCents: integer('cost_per_year_in_usd_cents').notNull(),
+    metadata: jsonb('metadata').default({}),
+    ownerId: uuid('owner_id'),
+    enabled: boolean('enabled').notNull().default(true),
+    startRolloutAt: timestamp('start_rollout_at'),
+    ...timestamps,
+  },
+  (table) => [
+    primaryKey({ columns: [table.normalizedDomainName] }),
+    foreignKey({
+      columns: [table.ownerId],
+      foreignColumns: [usersTable.id],
+      name: 'poweredby_namefi_domains_owner_id_fk',
+    }).onDelete('set null'),
+    index('poweredby_namefi_domains_enabled_idx').on(table.enabled),
+    index('poweredby_namefi_domains_start_rollout_at_idx').on(
+      table.startRolloutAt,
+    ),
+    index('poweredby_namefi_domains_allowed_hostnames_gin').using(
+      'gin',
+      table.additionalAllowedHostnames,
+    ),
+    check(
+      'pb_namefi_cost_nonnegative',
+      sql`${table.costPerYearInUsdCents} >= 0`,
+    ),
+    check(
+      'pb_namefi_duration_valid',
+      sql`(((${table.durationConstraints}) ->> 'minDurationInYears')::int > 0)  
+            AND (((${table.durationConstraints}) ->> 'maxDurationInYears')::int >= (((${table.durationConstraints}) ->> 'minDurationInYears')::int))`,
+    ),
+  ],
+);

@@ -24,6 +24,7 @@ import {
   domainAiAnalysisTable,
   namefiNftWithAiAnalysisView,
   aiAppraisalDataSchema,
+  poweredbyNamefiDomainsTable,
 } from './schema';
 
 /**
@@ -130,6 +131,25 @@ export const namefiNftWithAiAnalysisSelectSchema = createSelectSchema(
   },
 );
 
+export const poweredbyNamefiDomainInsertSchema = createInsertSchema(
+  poweredbyNamefiDomainsTable,
+  {
+    normalizedDomainName: namefiNormalizedDomainSchema,
+  },
+);
+export const poweredbyNamefiDomainSelectSchema = createSelectSchema(
+  poweredbyNamefiDomainsTable,
+  {
+    normalizedDomainName: namefiNormalizedDomainSchema,
+  },
+);
+export const poweredbyNamefiDomainUpdateSchema = createUpdateSchema(
+  poweredbyNamefiDomainsTable,
+  {
+    normalizedDomainName: namefiNormalizedDomainSchema,
+  },
+);
+
 /**
  * Inferred Zod types for API and validation
  */
@@ -178,6 +198,17 @@ export type DnsRecordUpdate = z.infer<typeof dnsRecordUpdateSchema>;
 export type AiGenerationInsert = z.infer<typeof aiGenerationInsertSchema>;
 export type AiGenerationSelect = z.infer<typeof aiGenerationSelectSchema>;
 export type AiGenerationUpdate = z.infer<typeof aiGenerationUpdateSchema>;
+
+// AI Generation types
+export type PoweredByNamefiDomainInsert = z.infer<
+  typeof poweredbyNamefiDomainInsertSchema
+>;
+export type PoweredByNamefiDomainSelect = z.infer<
+  typeof poweredbyNamefiDomainSelectSchema
+>;
+export type PoweredByNamefiDomainUpdate = z.infer<
+  typeof poweredbyNamefiDomainUpdateSchema
+>;
 
 // Domain AI Analysis types
 export type DomainAiAnalysisInsert = z.infer<

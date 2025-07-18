@@ -82,7 +82,13 @@ const generateUnavailableDomainInfo = (domain: NamefiNormalizedDomain) => ({
 });
 
 export const getPoweredByNamefi3PDomains = async () => {
-  const fromDb: string[] = [];
+  const poweredbyNamefiDomains =
+    await db.query.poweredbyNamefiDomainsTable.findMany();
+  const fromDb: string[] = pluck(
+    'normalizedDomainName',
+    poweredbyNamefiDomains,
+  );
+
   return Array.from(
     new Set([
       ...fromDb,
@@ -114,11 +120,31 @@ export const getPoweredByNamefiDomainFromHostname = async (
   if (Object.values(config.ADDITIONAL_HOSTNAME_MAP).includes(hostname)) {
     return hostname;
   }
+
+  const poweredbyNamefiDomains =
+    await db.query.poweredbyNamefiDomainsTable.findFirst({
+      where: (domain, { inArray }) =>
+        or(
+          inArray(domain.additionalAllowedHostnames, sql`${hostname}`),
+          eq(domain.normalizedDomainName, hostname as NamefiNormalizedDomain),
+        ),
+    });
+
+  return poweredbyNamefiDomains?.normalizedDomainName;
 };
 
 // biome-ignore lint/suspicious/useAwait: it will be a db query in upcoming updates
 export const getPoweredByNamefi3PHostnames = async () => {
-  const fromDb: string[] = [];
+  const poweredbyNamefiDomains =
+    await db.query.poweredbyNamefiDomainsTable.findMany();
+
+  const fromDb = poweredbyNamefiDomains.flatMap((domain) => [
+    ...(domain.additionalAllowedHostnames ?? []),
+    domain.normalizedDomainName,
+    `${domain.normalizedDomainName}.astra.namefi.io`,
+    `${domain.normalizedDomainName}.astra.namefi.dev`,
+  ]);
+
   // both key and value of config.ADDITIONAL_HOSTNAME_MAP are correct hostnames
   const fromConfig = flatten(toPairs(config.ADDITIONAL_HOSTNAME_MAP));
 
