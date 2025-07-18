@@ -11,8 +11,6 @@ import {
   updateDomainPreferencesAndConfig,
 } from '#lib/domains/domainPreferences';
 import {
-  checkIfUsingNamefiNameservers,
-  checkIfUsingLegacyNamefiNameservers,
   queryActiveNameserversChangeWorkflow,
   submitNameserversChangeWorkflow,
   submitResetNameserversWorkflow,
@@ -20,7 +18,6 @@ import {
   checkIfNameserversAreLegacyNamefiNameservers,
 } from '#lib/domains/nameservers';
 import { logger } from '#lib/logger';
-import { getDomainLevels } from '../../../lib/get-domain-levels';
 import {
   getPoweredByNamefi3PDomains,
   sldRegistrar,
@@ -167,8 +164,8 @@ export const domainConfigRouter = createTRPCRouter({
               nameserversManagement: {
                 enabled: false,
                 config: {
-                  showPanel: true,
-                  message: 'Coming Soon ...',
+                  showPanel: false,
+                  message: 'Not Allowed',
                 },
               },
               dnssecManagement: {
