@@ -60,9 +60,9 @@ export const DomainConfigAndPrefs = ({
       },
     ),
   );
-  const dnssecManagement = useMemo(() => {
+  const domainPreferencesManagement = useMemo(() => {
     return (
-      domainSupportedFeatures?.features?.dnssecManagement ?? {
+      domainSupportedFeatures?.features?.domainPreferencesManagement ?? {
         enabled: false,
         config: {
           showPanel: false,
@@ -72,20 +72,20 @@ export const DomainConfigAndPrefs = ({
     );
   }, [domainSupportedFeatures]);
 
-  if (!dnssecManagement.config.showPanel) {
+  if (!domainPreferencesManagement.config.showPanel) {
     return false;
   }
-  if (dnssecManagement.enabled) {
+  if (domainPreferencesManagement.enabled) {
     return <DomainConfigAndPrefsInner domainName={domainName} />;
   }
-  if (dnssecManagement.config.message) {
+  if (domainPreferencesManagement.config.message) {
     return (
       <Layout>
         <div
           className="text-center py-12"
           // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
           dangerouslySetInnerHTML={{
-            __html: dnssecManagement.config.message,
+            __html: domainPreferencesManagement.config.message,
           }}
         />
       </Layout>

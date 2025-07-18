@@ -22,12 +22,16 @@ import { parse as tldtsParse } from 'tldts';
 import { z } from 'zod';
 import { config } from '#lib/env';
 import { logger } from '#lib/logger';
-import { sldRegistrar } from '#lib/namefi-registry';
+import {
+  getPoweredByNamefi3PDomains,
+  sldRegistrar,
+} from '#lib/namefi-registry';
 import { temporalClient } from '../../temporal/client';
 import { TEMPORAL_QUEUES } from '../../temporal/shared';
 import { disableDnssecWorkflow } from '../../temporal/workflows/disable-dnssec.workflow';
 import { enableDnssecWorkflow } from '../../temporal/workflows/enable-dnssec.workflow';
 import { checkIfNameserversAreNamefiNameservers } from './nameservers';
+import { parseDomainName } from '@namefi-astra/utils/parse-domain-name';
 
 util.inspect.defaultOptions.depth = null;
 
@@ -186,6 +190,34 @@ export async function getZoneDnssecSigningConfig(
  * @returns {Promise<DnssecStatusDetails>} - The DNSSEC status details
  */
 export async function getDnssecStatusDetails(domainName: PunycodeDomainName) {
+  const parsedDomainName = parseDomainName(domainName);
+  if (!parsedDomainName.valid) {
+    throw new TRPCError({
+      code: 'BAD_REQUEST',
+      message: 'Invalid domain name',
+    });
+  }
+  if (parsedDomainName.registryType === 'subdomain') {
+    const allowedThirdPartyDomains = await getPoweredByNamefi3PDomains();
+    if (
+      !allowedThirdPartyDomains.includes(parsedDomainName.immediateParentDomain)
+    ) {
+      throw new TRPCError({
+        code: 'BAD_REQUEST',
+        message: 'This domain is not supported',
+      });
+    }
+
+    return {
+      dnssecStatus: 'parent-zone-managed',
+      supportsDnssec: true,
+      hasDelegationSigner: true,
+      isUsingNamefiDelegationSigner: true,
+      zoneHasActiveDnssec: true,
+      isUsingNamefiNameservers: true,
+    };
+  }
+
   const [details, isZoneSigningEnabled, zoneSigningConfig] = await Promise.all([
     sldRegistrar.getDomainDetails(domainName),
     getZoneSigningFlag(domainName),
@@ -208,6 +240,7 @@ export async function getDnssecStatusDetails(domainName: PunycodeDomainName) {
   );
 
   return {
+    dnssecStatus: 'zone-managed',
     supportsDnssec: details.supportsDnssec,
     hasDelegationSigner,
     delegationSigners: details.dnssecKeys,

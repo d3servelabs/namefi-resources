@@ -16,6 +16,8 @@ import {
   queryActiveNameserversChangeWorkflow,
   submitNameserversChangeWorkflow,
   submitResetNameserversWorkflow,
+  checkIfNameserversAreNamefiNameservers,
+  checkIfNameserversAreLegacyNamefiNameservers,
 } from '#lib/domains/nameservers';
 import { logger } from '#lib/logger';
 import { getDomainLevels } from '../../../lib/get-domain-levels';
@@ -135,20 +137,20 @@ export const domainConfigRouter = createTRPCRouter({
         ctx.user,
       );
       try {
-        const domainLevels = getDomainLevels(input.normalizedDomainName);
-        if (domainLevels.levels.length > 3) {
+        const parsedDomainName = parseDomainName(input.normalizedDomainName);
+        if (!parsedDomainName.valid) {
           throw new TRPCError({
             code: 'BAD_REQUEST',
-            message: 'This domain is not supported',
+            message: 'Invalid domain name',
           });
         }
 
-        const isSubDomain = domainLevels.levels.length > 2;
-
-        if (isSubDomain && domainLevels.parentDomain) {
+        if (parsedDomainName.registryType === 'subdomain') {
           const thirdPartyDomains = await getPoweredByNamefi3PDomains();
 
-          if (!thirdPartyDomains.includes(domainLevels.parentDomain)) {
+          if (
+            !thirdPartyDomains.includes(parsedDomainName.immediateParentDomain)
+          ) {
             throw new TRPCError({
               code: 'BAD_REQUEST',
               message: 'This domain is not supported',
@@ -173,14 +175,24 @@ export const domainConfigRouter = createTRPCRouter({
                 enabled: false,
                 config: {
                   showPanel: true,
-                  message: `DNSSEC is automatically managed by Namefi for subdomains of ${domainLevels.parentDomain}.`,
+                  message: `DNSSEC is automatically managed by Namefi for subdomains of ${parsedDomainName.immediateParentDomain}.`,
+                },
+              },
+              domainPreferencesManagement: {
+                enabled: true,
+                config: {
+                  showPanel: true,
                 },
               },
             },
           };
         }
+
+        const nameservers = await sldRegistrar.getNameServers(
+          toPunycodeDomainName(input.normalizedDomainName),
+        );
         const isUsingOldNamefiNameservers =
-          await checkIfUsingLegacyNamefiNameservers(input.normalizedDomainName);
+          await checkIfNameserversAreLegacyNamefiNameservers(nameservers);
 
         if (isUsingOldNamefiNameservers) {
           return {
@@ -216,9 +228,8 @@ export const domainConfigRouter = createTRPCRouter({
           };
         }
 
-        const isUsingNamefiNameservers = await checkIfUsingNamefiNameservers(
-          input.normalizedDomainName,
-        );
+        const isUsingNamefiNameservers =
+          checkIfNameserversAreNamefiNameservers(nameservers);
 
         return {
           features: {
@@ -250,6 +261,15 @@ export const domainConfigRouter = createTRPCRouter({
                 message: isUsingNamefiNameservers
                   ? undefined
                   : 'You are using other nameservers. You need to head to your nameserver provider to manage your dnssec.',
+              },
+            },
+            domainPreferencesManagement: {
+              enabled: isUsingNamefiNameservers,
+              config: {
+                showPanel: true,
+                message: isUsingNamefiNameservers
+                  ? undefined
+                  : 'You are using other nameservers. Domain preferences management is only available when using Namefi nameservers.',
               },
             },
           },

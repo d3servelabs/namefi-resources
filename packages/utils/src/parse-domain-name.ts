@@ -38,10 +38,17 @@ export type ValidDomainParseResult = {
   registryType: 'subdomain' | 'traditional';
   /**
    * The nearest traditional parent domain.
-   * in case of a subdomain, this is the domain that is managed by an icann registry of which the subdomain is a child.
-   * in case of a traditional domain, this is the immediate parent domain.
+   * - in case of a subdomain, this is the domain that is managed by an icann registry of which the subdomain is a child.
+   *   - subdomain.domain.com -> domain.com
+   *   - subdomain.domain.co.uk -> domain.co.uk
+   *   - subsub.subdomain.domain.co.uk -> domain.co.uk
+   * - in case of a traditional domain, this is the immediate parent domain.
+   *   - domain.com -> com
+   *   - domain.co.uk -> co.uk
+   *   - domain.co.za -> co.za
    */
   nearestTraditionalParentDomain: NamefiNormalizedDomain;
+  immediateParentDomain: NamefiNormalizedDomain;
   /**
    * The domain name that was analyzed
    */
@@ -49,6 +56,7 @@ export type ValidDomainParseResult = {
 };
 
 /**
+ * TODO: Account for the case of tld ( since it's parent is '' which is not a valid NamefiNormalizedDomain)
  * Get the levels of a domain
  * This function is used to get the levels of a domain and the parent domain
  * This is helpful to get around the subTLDs like co.uk, co.za, etc., because you can't just split the domain by the dot.
@@ -109,6 +117,9 @@ export const parseDomainName = (
       ? [domainParseResult.domain, ...domainParseResult.topLevelDomains]
       : domainParseResult.topLevelDomains
   ).join('.') as NamefiNormalizedDomain;
+  const immediateParentDomain = labels
+    .slice(1)
+    .join('.') as NamefiNormalizedDomain;
 
   return {
     valid: true,
@@ -116,6 +127,7 @@ export const parseDomainName = (
     level,
     registryType,
     nearestTraditionalParentDomain,
+    immediateParentDomain,
     domain: normalizedDomainName,
   };
 };
