@@ -193,20 +193,23 @@ export const getDomainListInfo = async (
   });
 };
 
-export const get0xDotCityPercentageRollout = () => {
+export const getPercentageRollout = (parentDomain: NamefiNormalizedDomain) => {
   // schedule of percentage
-  const startDate = new Date('2025-05-05');
   let currentPercentage = 0;
-  const today = new Date();
+  if (parentDomain === '0x.city') {
+    const startDate = new Date('2025-05-05');
 
-  if (isAfter(today, addWeeks(startDate, 3))) {
-    currentPercentage = 100;
-  } else if (isAfter(today, addWeeks(startDate, 2))) {
-    currentPercentage = 30;
-  } else if (isAfter(today, addWeeks(startDate, 1))) {
-    currentPercentage = 10;
-  } else {
-    currentPercentage = 1;
+    const today = new Date();
+
+    if (isAfter(today, addWeeks(startDate, 3))) {
+      currentPercentage = 100;
+    } else if (isAfter(today, addWeeks(startDate, 2))) {
+      currentPercentage = 30;
+    } else if (isAfter(today, addWeeks(startDate, 1))) {
+      currentPercentage = 10;
+    } else {
+      currentPercentage = 1;
+    }
   }
 
   return currentPercentage;
@@ -283,7 +286,9 @@ const _get3ldDomainListInfo = async (
   if (
     poweredByNamefi3pDomains.includes(parentDomain as NamefiNormalizedDomain)
   ) {
-    const currentPercentage = get0xDotCityPercentageRollout();
+    const currentPercentage = getPercentageRollout(
+      parentDomain as NamefiNormalizedDomain,
+    );
     // we only enable a percentage of subdomain registrations
     // we use keccak256 to hash the domain and check if the last 4 bytes are less than PERCENT of the total number of subdomains
     const shouldRollout = hashBasedPercentageRollouted(

@@ -1,4 +1,7 @@
-import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
+import {
+  namefiNormalizedDomainSchema,
+  type NamefiNormalizedDomain,
+} from '@namefi-astra/utils';
 import { normalizeDomainName } from '@namefi-astra/zod-dns';
 import {
   adjectives,
@@ -7,7 +10,7 @@ import {
 } from 'unique-names-generator';
 import { z } from 'zod';
 import {
-  get0xDotCityPercentageRollout,
+  getPercentageRollout,
   getDomainListInfo,
   getPoweredByNamefi3PDomains,
 } from '#lib/namefi-registry';
@@ -130,6 +133,6 @@ export const registryRouter = createTRPCRouter({
     }),
 
   get0xDotCityPercentageRollout: publicProcedure.query(async () =>
-    get0xDotCityPercentageRollout(),
+    getPercentageRollout('0x.city' as NamefiNormalizedDomain),
   ),
 });
