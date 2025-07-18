@@ -122,8 +122,7 @@ export async function prepareDomainForExportWorkflow({
     try {
       await sendStyledEmailNotification({
         userId,
-        messageMarkdown: `
-        # Domain is ready for export
+        messageMarkdown: `### Domain is ready for export
 
         Your domain ${domainName} is ready for export. Please go to the dashboard to export it.
       `,
@@ -138,8 +137,7 @@ export async function prepareDomainForExportWorkflow({
     try {
       await sendStyledEmailNotification({
         userId,
-        messageMarkdown: `
-        # Error preparing domain for export
+        messageMarkdown: `### Error preparing domain for export
 
         We encountered an error while preparing your domain ${domainName} for export. Please go to the dashboard to retry.
       `,

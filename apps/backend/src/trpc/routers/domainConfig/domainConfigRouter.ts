@@ -34,6 +34,7 @@ import { getNamefiNftLock } from '#temporal/activities/namefi-nft';
 import { getEppLockState } from '#temporal/activities/domain/registrar.activities';
 import { getDomainChain } from '#temporal/activities/domain/index';
 import type { WorkflowExecutionStatusName } from '@temporalio/client';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 
 export const domainConfigRouter = createTRPCRouter({
   /**
@@ -343,19 +344,14 @@ export const domainConfigRouter = createTRPCRouter({
       const domainName = toPunycodeDomainName(input.domainName);
       await assertAuthenticatedUserIsDomainOwner(input.domainName, ctx.user);
 
-      const parsedDomainName = parseDomainName(input.domainName);
-      if (!parsedDomainName.valid) {
-        throw new TRPCError({
-          code: 'BAD_REQUEST',
-          message: 'Invalid domain name',
-        });
-      }
-      if (parsedDomainName.registryType !== 'traditional') {
+      const supportsExport = await doesDomainSupportExport(domainName);
+      if (!supportsExport) {
         return {
-          isExportable: false,
-          message: 'Export is only supported for traditional domains',
+          supportsExport: false,
+          message: 'Domain does not support export',
         };
       }
+
       let workflowStatus: WorkflowExecutionStatusName | undefined;
       try {
         const workflow = await temporalClient.workflow.getHandle(
@@ -371,24 +367,77 @@ export const domainConfigRouter = createTRPCRouter({
         logger.error(error);
       }
 
-      const chainId = await getDomainChain(domainName);
-      const nftIsLocked = await getNamefiNftLock(chainId, domainName);
-      const eppLock = await getEppLockState(domainName);
-
-      const isExportable = nftIsLocked && !eppLock.locked;
-
-      let authCode: string | undefined;
-      if (isExportable) {
-        authCode = await sldRegistrar.retrieveAuthCode(domainName);
-      }
+      const pendingRequestToEnableExport = workflowStatus === 'RUNNING';
+      const readyToExport =
+        !pendingRequestToEnableExport &&
+        (await areExportConditionsMet(domainName));
 
       return {
-        isExportable,
-        pendingRequestToEnableExport: workflowStatus === 'RUNNING',
-        message: isExportable ? undefined : 'Domain is not exportable',
+        supportsExport,
+        readyToExport,
+        pendingRequestToEnableExport,
+        message: pendingRequestToEnableExport
+          ? 'Domain is being prepared for export'
+          : !readyToExport
+            ? 'Domain is not ready to export'
+            : undefined,
+      };
+    }),
+
+  getAuthCode: protectedProcedure
+    .input(
+      z.object({
+        domainName: namefiNormalizedDomainSchema,
+      }),
+    )
+    .query(async ({ input, ctx }) => {
+      await assertAuthenticatedUserIsDomainOwner(input.domainName, ctx.user);
+      const domainName = toPunycodeDomainName(input.domainName);
+      const supportsExport = await doesDomainSupportExport(domainName);
+      if (!supportsExport) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Domain does not support export',
+        });
+      }
+
+      const readyToExport = await areExportConditionsMet(domainName);
+
+      if (!readyToExport) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Domain is not ready to export',
+        });
+      }
+      const authCode = await sldRegistrar.retrieveAuthCode(domainName);
+      return {
         authCode,
       };
     }),
 
   dnssec: domainDnssecRouter,
 });
+
+const doesDomainSupportExport = async (domainName: NamefiNormalizedDomain) => {
+  const parsedDomainName = parseDomainName(domainName);
+  if (!parsedDomainName.valid) {
+    return false;
+  }
+  if (parsedDomainName.registryType !== 'traditional') {
+    return false;
+  }
+  return true;
+};
+
+const areExportConditionsMet = async (domainName: NamefiNormalizedDomain) => {
+  const [nftIsLocked, eppLock] = await Promise.all([
+    getDomainChain(domainName).then((chainId) =>
+      getNamefiNftLock(chainId, domainName),
+    ),
+    getEppLockState(toPunycodeDomainName(domainName)),
+  ]);
+
+  const readyToExport = nftIsLocked && !eppLock.locked;
+
+  return readyToExport;
+};
