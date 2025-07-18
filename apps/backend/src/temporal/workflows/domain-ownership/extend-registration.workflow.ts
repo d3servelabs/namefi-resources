@@ -4,12 +4,7 @@ import type {
   NamefiNormalizedDomain,
 } from '@namefi-astra/utils';
 import * as workflow from '@temporalio/workflow';
-import {
-  addYears,
-  differenceInMonths,
-  fromUnixTime,
-  getUnixTime,
-} from 'date-fns';
+import { addYears, fromUnixTime, getUnixTime } from 'date-fns';
 import { typedProxyActivities } from '../../shared/workflow-helpers/typed-proxy-activities';
 import { catchAndAlertLocally } from '../../shared/workflow-helpers/catch-and-alert-locally';
 import { getDomainLevels } from '#lib/get-domain-levels';
@@ -20,7 +15,7 @@ import {
   shortRunningOpts,
 } from '../../shared';
 import { setExpirationForNamefiNft } from '../mint.workflow';
-import { determineDurationLimitsForRenewItems } from '#lib/domains/domainsDurationConstraints';
+import { determineDurationLimitsForRenewItems } from '#lib/domains/duration-constraints/determine-renew-duration-limits';
 
 export type ExtendDomainRegistrationWorkflowOutput = {
   /** Status of the EPP (Extensible Provisioning Protocol) operation - either SUCCESS or FAILURE */

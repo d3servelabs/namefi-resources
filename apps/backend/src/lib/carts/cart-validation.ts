@@ -27,7 +27,7 @@ import { addDays } from 'date-fns';
 import { toPunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
 import { pluck } from 'ramda';
 import { logger } from '#lib/logger';
-import { determineDurationLimitsForRenewItems } from '#lib/domains/domainsDurationConstraints';
+import { determineDurationLimitsForRenewItems } from '#lib/domains/duration-constraints/index';
 
 type CartItemsGroupedByType = Record<
   'registerCartItems' | 'importCartItems' | 'renewCartItems',

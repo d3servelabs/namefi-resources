@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   determineDurationLimitsForRenewItems,
   getDomainDurationConstraints,
-} from '../domainsDurationConstraints';
+} from '../duration-constraints';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { addMonths, addYears } from 'date-fns';
 

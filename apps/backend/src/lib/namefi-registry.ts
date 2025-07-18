@@ -30,7 +30,7 @@ import { and, eq, gt, inArray, or } from 'drizzle-orm';
 import { secrets } from '#lib/env';
 import { logger } from '#lib/logger';
 import { computeChargesInUsdOrThrow } from '@namefi-astra/registrars/multi-year-pricing';
-import { getDomainDurationConstraints } from './domains/domainsDurationConstraints';
+import { getDomainDurationConstraints } from './domains/duration-constraints';
 import pMap from 'p-map';
 
 export type NamefiNftSelect = typeof namefiNftTable.$inferSelect;
