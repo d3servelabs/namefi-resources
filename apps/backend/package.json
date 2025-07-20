@@ -32,6 +32,8 @@
     "build": "tsup",
     "build:prod": "NODE_ENV=production tsup",
     "bundle:workflows": "tsx scripts/bundle-workflows.ts",
+    "validate:workflow-exports": "tsx scripts/validate-workflow-exports.ts",
+    "debug:workflows": "tsx scripts/workflow-debug-helper.ts",
     "start": "node dist/index.js",
     "start:bun": "bun dist/index.js",
     "start:temporal": "node dist/temporal/main.temporal.js",

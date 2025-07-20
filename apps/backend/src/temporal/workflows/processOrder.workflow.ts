@@ -15,7 +15,7 @@ import {
 import {
   NotificationChannel,
   notifyUserWorkflow,
-} from './notify-user-workflow';
+} from './notify-user.workflow';
 import { processOrderItemWorkflow } from './processOrderItem.workflow';
 import { refundUserWorkflow } from './refund-user.workflow';
 
