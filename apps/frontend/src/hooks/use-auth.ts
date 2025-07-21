@@ -25,9 +25,9 @@ export function useAuth() {
   }, [privyUser]);
 
   return {
-    isAuthenticated: authenticated && !!userQuery.data?.privyUserId,
+    isAuthenticated: ready && authenticated && !!userQuery.data?.privyUserId,
     isLoading: !ready || userQuery.isLoading,
-    user: authenticated ? userQuery.data : undefined,
+    user: ready && authenticated ? userQuery.data : undefined,
     privyUser: privyUserWithCustomMetadata,
   };
 }
