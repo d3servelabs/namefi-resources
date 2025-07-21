@@ -162,8 +162,8 @@ export function PoweredByNamefiDomainConsumer(props: {
  */
 export function withPoweredByNamefiDomain<T>(
   Component: React.ComponentType<T>,
-) {
-  return function WrappedComponent(
+): React.ComponentType<T & { poweredByNamefiDomain?: string | null }> {
+  function WrappedComponent(
     props: T & { poweredByNamefiDomain?: string | null },
   ) {
     return (
@@ -173,5 +173,7 @@ export function withPoweredByNamefiDomain<T>(
         <Component {...props} />
       </PoweredByNamefiDomainProvider>
     );
-  };
+  }
+  WrappedComponent.displayName = `withPoweredByNamefiDomain(${Component.displayName || Component.name || 'Component'})`;
+  return WrappedComponent;
 }

@@ -8,7 +8,7 @@ import punycode from 'punycode';
 import rehypeExternalLinks from 'rehype-external-links';
 import ReactMarkdown from 'react-markdown';
 import { z } from 'zod';
-import { withPoweredByNamefiDomain } from '../components/powered-by-namefi-url-context';
+import { buildTemplate } from '../components/build-template';
 
 const paymentProviderSchema = z.enum([
   'NFSC_BASE',
@@ -31,8 +31,8 @@ export type DomainRenewReportProps = {
   refundStatus: 'SUCCESS' | 'FAILED';
 };
 
-export const DomainRenewReport = withPoweredByNamefiDomain(
-  (props: DomainRenewReportProps) => {
+export const DomainRenewReport = buildTemplate<DomainRenewReportProps>(
+  (props) => {
     const {
       recipientUserId,
       recipientName,
@@ -132,20 +132,19 @@ export const DomainRenewReport = withPoweredByNamefiDomain(
       </NamefiEmailContainer>
     );
   },
+  {
+    recipientUserId: '123',
+    recipientName: 'Alice',
+    recipientEmail: 'alice@example.com',
+    domainLdhRenewSucceeded: ['test.org'],
+    domainLdhRenewFailed: ['example.org', 'example.net'],
+    chargedAmountInUsd: 120,
+    paymentMethodCharged: paymentProviderSchema.Values.STRIPE,
+    paymentMethodIdentifier: '...7890',
+    refundAmountInUsd: 50,
+    refundStatus: 'SUCCESS',
+  },
 );
-
-(DomainRenewReport as any).PreviewProps = {
-  recipientUserId: '123',
-  recipientName: 'Alice',
-  recipientEmail: 'alice@example.com',
-  domainLdhRenewSucceeded: ['test.org'],
-  domainLdhRenewFailed: ['example.org', 'example.net'],
-  chargedAmountInUsd: 120,
-  paymentMethodCharged: paymentProviderSchema.Values.STRIPE,
-  paymentMethodIdentifier: '...7890',
-  refundAmountInUsd: 50,
-  refundStatus: 'SUCCESS',
-};
 
 // biome-ignore lint/style/noDefaultExport: required for react-email
 export default DomainRenewReport;

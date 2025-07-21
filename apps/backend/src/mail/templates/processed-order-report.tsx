@@ -12,8 +12,8 @@ import { button } from '../styles';
 import {
   addPoweredByNamefiToUrl,
   usePoweredByNamefiDomain,
-  withPoweredByNamefiDomain,
 } from '../components/powered-by-namefi-url-context';
+import { buildTemplate } from '../components/build-template';
 import {
   paymentProviderSchema,
   type PaymentProvider,
@@ -40,8 +40,8 @@ export type ProcessedOrderProps = {
   ctaLink?: string;
 };
 
-export const ProcessedOrderReport = withPoweredByNamefiDomain(
-  (props: ProcessedOrderProps) => {
+export const ProcessedOrderReport = buildTemplate<ProcessedOrderProps>(
+  (props) => {
     const {
       orderId,
       recipientName,
@@ -296,34 +296,32 @@ export const ProcessedOrderReport = withPoweredByNamefiDomain(
       </NamefiEmailContainer>
     );
   },
+  {
+    orderId: 'order-123',
+    recipientName: 'Alice',
+    recipientEmail: 'alice@example.com',
+    items: [
+      {
+        normalizedDomainName: 'test.org',
+        duration: 1,
+        price: 12.99,
+        status: 'SUCCESS',
+      },
+      {
+        normalizedDomainName: 'example.org',
+        duration: 2,
+        price: 25.98,
+        status: 'FAILED',
+        failureReason: 'Domain unavailable',
+      },
+    ],
+    chargedAmountInUsd: 38.97,
+    paymentMethodCharged: paymentProviderSchema.Values.STRIPE,
+    paymentMethodIdentifier: '...7890',
+    refundAmountInUsd: 25.98,
+    refundStatus: 'SUCCESS',
+  },
 );
-
-(ProcessedOrderReport as any).PreviewProps = {
-  orderId: 'order-123',
-  recipientName: 'Alice',
-  recipientEmail: 'alice@example.com',
-  items: [
-    {
-      normalizedDomainName: 'test.org',
-      duration: 1,
-      price: 12.99,
-      status: 'SUCCESS',
-    },
-    {
-      normalizedDomainName: 'example.org',
-      duration: 2,
-      price: 25.98,
-      status: 'FAILED',
-      failureReason: 'Domain unavailable',
-    },
-  ],
-  chargedAmountInUsd: 38.97,
-  paymentMethodCharged: paymentProviderSchema.Values.STRIPE,
-  paymentMethodIdentifier: '...7890',
-  refundAmountInUsd: 25.98,
-  refundStatus: 'SUCCESS',
-  poweredByNamefiDomain: null,
-};
 
 // biome-ignore lint/style/noDefaultExport: required for react-email
 export default ProcessedOrderReport;

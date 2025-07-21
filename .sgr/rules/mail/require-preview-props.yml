@@ -3,17 +3,19 @@ message: "Email templates must define PreviewProps for React Email CLI"
 severity: error
 language: tsx
 rule:
-  pattern: |
-    export const $COMPONENT = $$$;
-  not:
-    precedes:
-      any:
-        - pattern: |
+  all:
+    - pattern: |
+        export const $COMPONENT = $$$;
+    - not:
+        any:
+          - pattern: |
+              export const $COMPONENT = buildTemplate<$$$>($$$);
+          - pattern: |
+              export const $COMPONENT = buildTemplate($$$);
+    - not:
+        precedes:
+          pattern: |
             $COMPONENT.PreviewProps = {
-              $$$
-            };
-        - pattern: |
-            ($COMPONENT as any).PreviewProps = {
               $$$
             };
 note: |

@@ -1,0 +1,29 @@
+id: require-buildTemplate-hoc
+message: "Email components must use buildTemplate HOC"
+severity: error
+language: tsx
+rule:
+  all:
+    - pattern: 'export const $COMPONENT = $$$'
+    - not:
+        any:
+          - pattern: 'export const $COMPONENT = buildTemplate<$$$>($$$)'
+          - pattern: 'export const $COMPONENT = buildTemplate($$$)'
+note: |
+  Use buildTemplate HOC:
+  export const ComponentName = buildTemplate(
+    (props: PropsType) => {
+      // component implementation
+    },
+    {
+      // preview props
+    }
+  );
+
+files:
+  - "apps/backend/src/mail/templates/**/*.tsx"
+
+ignore:
+  - "**/*.test.tsx"
+  - "**/*.spec.tsx"
+  - "**/node_modules/**"
