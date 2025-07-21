@@ -9,22 +9,18 @@ import rehypeExternalLinks from 'rehype-external-links';
 import ReactMarkdown from 'react-markdown';
 import { Button } from '@react-email/components';
 import { button } from '../styles';
-import {
-  addPoweredByNamefiToUrl,
-  usePoweredByNamefiDomain,
-} from '../components/powered-by-namefi-url-context';
+import { usePoweredByNamefiDomain } from '../components/powered-by-namefi-url-context';
 import { buildTemplate } from '../components/build-template';
-import {
-  paymentProviderSchema,
-  type PaymentProvider,
-} from '@namefi-astra/db/types';
+import { NamefiEmailLinks } from '../email-links';
+import pluralize from 'pluralize';
 
 export type ProcessedOrderItem = {
   normalizedDomainName: string;
   duration: number; // in years
   price: number; // in USD
-  status: 'SUCCESS' | 'FAILED';
+  status: 'SUCCEEDED' | 'FAILED' | 'PROCESSING';
   failureReason?: string;
+  type: 'IMPORT' | 'RENEW' | 'REGISTER';
 };
 
 export type ProcessedOrderProps = {
@@ -33,11 +29,12 @@ export type ProcessedOrderProps = {
   recipientEmail: string;
   items: ProcessedOrderItem[];
   chargedAmountInUsd: number;
-  paymentMethodCharged: PaymentProvider;
+  paymentMethodCharged: string;
   paymentMethodIdentifier: string;
-  refundAmountInUsd?: number;
-  refundStatus?: 'SUCCESS' | 'FAILED' | 'PENDING';
-  ctaLink?: string;
+  refund?: {
+    amountInUsd: number;
+    status: 'SUCCEEDED' | 'FAILED' | 'PROCESSING';
+  };
 };
 
 export const ProcessedOrderReport = buildTemplate<ProcessedOrderProps>(
@@ -49,15 +46,36 @@ export const ProcessedOrderReport = buildTemplate<ProcessedOrderProps>(
       chargedAmountInUsd,
       paymentMethodCharged,
       paymentMethodIdentifier,
-      refundAmountInUsd,
-      refundStatus,
-      ctaLink,
+      refund,
     } = props;
 
     const poweredByNamefiDomain = usePoweredByNamefiDomain();
 
-    const successfulItems = items.filter((item) => item.status === 'SUCCESS');
+    const successfulItems = items.filter((item) => item.status === 'SUCCEEDED');
     const failedItems = items.filter((item) => item.status === 'FAILED');
+    const processingItems = items.filter(
+      (item) => item.status === 'PROCESSING',
+    );
+
+    const summary = React.useMemo(() => {
+      const summary = [];
+      if (successfulItems.length > 0) {
+        summary.push(
+          `${successfulItems.length} item${successfulItems.length > 1 ? 's' : ''} processed successfully`,
+        );
+      }
+      if (failedItems.length > 0) {
+        summary.push(
+          `${failedItems.length} item${failedItems.length > 1 ? 's' : ''} failed`,
+        );
+      }
+      if (processingItems.length > 0) {
+        summary.push(
+          `${processingItems.length} item${processingItems.length > 1 ? 's' : ''} are still processing`,
+        );
+      }
+      return `**Order Summary:** ${summary.join(', ')}.`;
+    }, [successfulItems, failedItems, processingItems]);
 
     const messageMarkdown =
       `Hi ${recipientName ?? ''},\n\n` +
@@ -76,105 +94,46 @@ export const ProcessedOrderReport = buildTemplate<ProcessedOrderProps>(
           {messageMarkdown}
         </ReactMarkdown>
 
-        <table
-          style={{
-            borderCollapse: 'collapse',
-            width: '100%',
-            marginTop: '20px',
-          }}
-        >
+        <table style={localStyles.table}>
           <thead>
             <tr>
-              <th
-                style={{
-                  border: '1px #D9D9D9 solid',
-                  padding: '8px',
-                  backgroundColor: '#f5f5f5',
-                  textAlign: 'left',
-                }}
-              >
-                Domain Name
-              </th>
-              <th
-                style={{
-                  border: '1px #D9D9D9 solid',
-                  padding: '8px',
-                  backgroundColor: '#f5f5f5',
-                  textAlign: 'center',
-                }}
-              >
-                Duration
-              </th>
-              <th
-                style={{
-                  border: '1px #D9D9D9 solid',
-                  padding: '8px',
-                  backgroundColor: '#f5f5f5',
-                  textAlign: 'right',
-                }}
-              >
-                Price
-              </th>
-              <th
-                style={{
-                  border: '1px #D9D9D9 solid',
-                  padding: '8px',
-                  backgroundColor: '#f5f5f5',
-                  textAlign: 'center',
-                }}
-              >
-                Status
-              </th>
+              <th style={{ ...localStyles.th, textAlign: 'left' }}>Domain</th>
+              <th style={localStyles.th}>Type</th>
+              <th style={localStyles.th}>Duration</th>
+              <th style={{ ...localStyles.th, textAlign: 'right' }}>Price</th>
+              <th style={localStyles.th}>Status</th>
             </tr>
           </thead>
           <tbody>
             {items.map((item) => (
               <tr key={item.normalizedDomainName}>
-                <td
-                  style={{
-                    border: '1px #D9D9D9 solid',
-                    padding: '8px',
-                    textAlign: 'left',
-                  }}
-                >
-                  {item.normalizedDomainName}{' '}
-                  {punycode.toUnicode(item.normalizedDomainName) ===
-                  item.normalizedDomainName
-                    ? ''
-                    : `(${punycode.toUnicode(item.normalizedDomainName)})`}
+                <td style={{ ...localStyles.td, textAlign: 'left' }}>
+                  {getDomainWithIdn(item.normalizedDomainName)}
                 </td>
-                <td
-                  style={{
-                    border: '1px #D9D9D9 solid',
-                    padding: '8px',
-                    textAlign: 'center',
-                  }}
-                >
-                  {item.duration} year{item.duration > 1 ? 's' : ''}
+                <td style={localStyles.td}>{item.type}</td>
+                <td style={localStyles.td}>
+                  {pluralize('year', item.duration, true)}
                 </td>
-                <td
-                  style={{
-                    border: '1px #D9D9D9 solid',
-                    padding: '8px',
-                    textAlign: 'right',
-                  }}
-                >
+                <td style={{ ...localStyles.td, textAlign: 'right' }}>
                   ${item.price.toFixed(2)}
                 </td>
-                <td
-                  style={{
-                    border: '1px #D9D9D9 solid',
-                    padding: '8px',
-                    textAlign: 'center',
-                  }}
-                >
+                <td style={localStyles.td}>
                   <span
                     style={{
-                      color: item.status === 'SUCCESS' ? 'green' : 'red',
+                      color:
+                        item.status === 'PROCESSING'
+                          ? 'orange'
+                          : item.status === 'SUCCEEDED'
+                            ? 'green'
+                            : 'red',
                       fontWeight: 'bold',
                     }}
                   >
-                    {item.status === 'SUCCESS' ? 'Success' : 'Failed'}
+                    {item.status === 'PROCESSING'
+                      ? 'Processing'
+                      : item.status === 'SUCCEEDED'
+                        ? 'Succeeded'
+                        : 'Failed'}
                   </span>
                   {item.failureReason && (
                     <div
@@ -225,7 +184,7 @@ export const ProcessedOrderReport = buildTemplate<ProcessedOrderProps>(
               ${chargedAmountInUsd.toFixed(2)}
             </span>
           </div>
-          {refundAmountInUsd && refundAmountInUsd > 0 && (
+          {refund && refund.amountInUsd > 0 && (
             <div
               style={{
                 display: 'flex',
@@ -238,14 +197,14 @@ export const ProcessedOrderReport = buildTemplate<ProcessedOrderProps>(
                 style={{
                   fontWeight: 'bold',
                   color:
-                    refundStatus === 'SUCCESS'
+                    refund.status === 'SUCCEEDED'
                       ? 'green'
-                      : refundStatus === 'FAILED'
+                      : refund.status === 'FAILED'
                         ? 'red'
                         : 'orange',
                 }}
               >
-                ${refundAmountInUsd.toFixed(2)} ({refundStatus})
+                ${refund.amountInUsd.toFixed(2)} ({refund.status})
               </span>
             </div>
           )}
@@ -260,11 +219,7 @@ export const ProcessedOrderReport = buildTemplate<ProcessedOrderProps>(
             ],
           ]}
         >
-          {successfulItems.length > 0 && failedItems.length > 0
-            ? `**Order Summary:** ${successfulItems.length} item${successfulItems.length > 1 ? 's' : ''} processed successfully, ${failedItems.length} item${failedItems.length > 1 ? 's' : ''} failed.`
-            : successfulItems.length > 0
-              ? `**Order Summary:** All ${successfulItems.length} item${successfulItems.length > 1 ? 's' : ''} processed successfully!`
-              : `**Order Summary:** All ${failedItems.length} item${failedItems.length > 1 ? 's' : ''} failed to process.`}
+          {summary}
         </ReactMarkdown>
 
         {failedItems.length > 0 && (
@@ -276,22 +231,21 @@ export const ProcessedOrderReport = buildTemplate<ProcessedOrderProps>(
               ],
             ]}
           >
-            {refundAmountInUsd && refundAmountInUsd > 0
-              ? `A refund of $${refundAmountInUsd.toFixed(2)} has been ${refundStatus === 'SUCCESS' ? 'processed' : refundStatus === 'FAILED' ? 'failed' : 'initiated'} to your original payment method. For failed items, please try again or contact support@namefi.io if the problem persists.`
+            {refund && refund.amountInUsd > 0
+              ? `A refund of $${refund.amountInUsd.toFixed(2)} has been ${refund.status === 'SUCCEEDED' ? 'processed' : refund.status === 'FAILED' ? 'failed' : 'initiated'} to your original payment method. For failed items, please try again or contact support@namefi.io if the problem persists.`
               : 'For failed items, please try again or contact support@namefi.io if the problem persists.'}
           </ReactMarkdown>
         )}
-        {ctaLink && (
-          <Button
-            style={button}
-            href={addPoweredByNamefiToUrl(
-              ctaLink,
-              poweredByNamefiDomain ?? null,
-            )}
-          >
-            Check Your Order Details
-          </Button>
-        )}
+
+        <Button
+          style={button}
+          href={NamefiEmailLinks.orderDetails({
+            orderId,
+            poweredByNamefiDomain,
+          })}
+        >
+          Check Your Order Details
+        </Button>
         <GoToDashboard />
       </NamefiEmailContainer>
     );
@@ -305,7 +259,8 @@ export const ProcessedOrderReport = buildTemplate<ProcessedOrderProps>(
         normalizedDomainName: 'test.org',
         duration: 1,
         price: 12.99,
-        status: 'SUCCESS',
+        status: 'SUCCEEDED',
+        type: 'REGISTER',
       },
       {
         normalizedDomainName: 'example.org',
@@ -313,15 +268,59 @@ export const ProcessedOrderReport = buildTemplate<ProcessedOrderProps>(
         price: 25.98,
         status: 'FAILED',
         failureReason: 'Domain unavailable',
+        type: 'REGISTER',
+      },
+      {
+        normalizedDomainName: 'さみ.org',
+        duration: 2,
+        price: 25.98,
+        status: 'SUCCEEDED',
+        type: 'REGISTER',
+      },
+      {
+        normalizedDomainName: 'example2.org',
+        duration: 2,
+        price: 25.98,
+        status: 'PROCESSING',
+        type: 'IMPORT',
       },
     ],
-    chargedAmountInUsd: 38.97,
-    paymentMethodCharged: paymentProviderSchema.Values.STRIPE,
+    chargedAmountInUsd: 25.98 * 3 + 12.99,
+    paymentMethodCharged: 'Credit Card',
     paymentMethodIdentifier: '...7890',
-    refundAmountInUsd: 25.98,
-    refundStatus: 'SUCCESS',
+    refund: {
+      amountInUsd: 25.98,
+      status: 'SUCCEEDED',
+    },
   },
 );
 
 // biome-ignore lint/style/noDefaultExport: required for react-email
 export default ProcessedOrderReport;
+
+const localStyles = {
+  table: {
+    borderCollapse: 'collapse',
+    width: '100%',
+    marginTop: '20px',
+  },
+  td: {
+    border: '1px #D9D9D9 solid',
+    padding: '8px',
+    textAlign: 'center',
+  },
+  th: {
+    border: '1px #D9D9D9 solid',
+    padding: '8px',
+    backgroundColor: '#f5f5f5',
+    textAlign: 'center',
+  },
+} as const;
+
+function getDomainWithIdn(domain: string) {
+  const unicodeDomain = punycode.toUnicode(domain);
+  const punycodeDomain = punycode.toASCII(domain);
+  return unicodeDomain === punycodeDomain
+    ? domain
+    : `${domain} (${punycodeDomain})`;
+}

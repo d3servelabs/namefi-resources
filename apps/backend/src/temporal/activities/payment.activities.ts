@@ -684,3 +684,29 @@ export interface StripePaymentMethod {
   type: 'CREDIT_CARD';
   cardDetails?: StripeCardDetails | null | undefined;
 }
+
+/**
+ * TODO: Migrated From Legacy Codebase, Review if this is needed
+ *
+ * @param namefiUserId - The ID of the Namefi user
+ * @returns The default Stripe payment method for the Namefi user
+ */
+export async function getStripePaymentMethodPublicIdentifier({
+  paymentMethodId,
+}: {
+  paymentMethodId: string;
+}): Promise<string | null> {
+  const stripePaymentMethod =
+    await stripe.paymentMethods.retrieve(paymentMethodId);
+
+  switch (stripePaymentMethod.type) {
+    case 'card':
+      return stripePaymentMethod.card?.last4 ?? null;
+    default:
+      logger.warn(
+        { stripePaymentMethod },
+        'Unsupported Stripe Payment Method Type',
+      );
+      return null;
+  }
+}

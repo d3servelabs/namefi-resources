@@ -2,7 +2,6 @@ import { db, usersTable, type PaymentProvider } from '@namefi-astra/db';
 import { eq } from 'drizzle-orm';
 import { type SendMailInput, sendMail } from '../../mail/mail-client';
 import { privyClient } from '../../trpc/utils';
-import { config } from '#lib/env';
 import {
   ProcessedOrderReport,
   type ProcessedOrderItem,
@@ -17,6 +16,8 @@ import { Context } from '@temporalio/activity';
 import { logger } from '#lib/logger';
 import { GeneralStyledNotification } from '../../mail/templates/general-styled-notification';
 import * as workflow from '@temporalio/workflow';
+import { getStripePaymentMethodPublicIdentifier } from './payment.activities';
+import { resolve } from '@namefi-astra/utils';
 
 export async function maybeGetUserEmail(
   userId: string,
@@ -84,6 +85,9 @@ type GetOrderProcessedEmailContentInput = {
   failedItems: { normalizedDomainName: string }[];
 };
 
+/**
+ * @deprecated
+ */
 export async function getOrderProcessedEmailContent({
   orderId,
   succeededItems,
@@ -111,7 +115,7 @@ export async function getOrderProcessedEmailContent({
         .map((item) => item.normalizedDomainName)
         .join(
           ', ',
-        )}.\nVisit https://${hostname}/orders/${orderId} to see more details.`,
+        )}.\nVisit https://${hostname}/user/orders/${orderId} to see more details.`,
     };
   }
 
@@ -144,8 +148,10 @@ type GetProcessedOrderEmailInput = {
    * This is either the last 4 digits of the card number or the wallet address for crypto payments.
    */
   paymentMethodIdentifier: string;
-  refundAmountInUsd?: number;
-  refundStatus?: 'SUCCESS' | 'FAILED' | 'PENDING';
+  refund?: {
+    amountInUsd: number;
+    status: 'SUCCEEDED' | 'FAILED' | 'PROCESSING';
+  };
 };
 
 export async function getProcessedOrderEmail({
@@ -155,16 +161,13 @@ export async function getProcessedOrderEmail({
   items,
   chargedAmountInUsd,
   paymentMethodCharged,
-  paymentMethodIdentifier,
-  refundAmountInUsd,
-  refundStatus,
+  paymentMethodIdentifier: paymentMethodIdentifierRaw,
+  refund,
 }: GetProcessedOrderEmailInput) {
-  const successfulItems = items.filter((item) => item.status === 'SUCCESS');
+  const successfulItems = items.filter((item) => item.status === 'SUCCEEDED');
   const failedItems = items.filter((item) => item.status === 'FAILED');
 
-  const hostname = await determineHostnameFromCartItems(items);
-
-  const ctaLink = `https://${hostname}/orders/${orderId}`;
+  const poweredByNamefiDomain = await determineHostnameFromCartItems(items);
 
   const subject =
     failedItems.length > 0 && successfulItems.length > 0
@@ -173,17 +176,32 @@ export async function getProcessedOrderEmail({
         ? `[Namefi] Order ${orderId} - Processing Failed`
         : `[Namefi] Order ${orderId} - Successfully Processed`;
 
+  const paymentMethodDisplayName =
+    displayNameForPaymentMethod(paymentMethodCharged);
+  let paymentMethodIdentifier = paymentMethodIdentifierRaw;
+  if (paymentMethodCharged === 'STRIPE') {
+    const [_, last4] = await resolve(
+      getStripePaymentMethodPublicIdentifier({
+        paymentMethodId: paymentMethodIdentifierRaw,
+      }),
+    );
+    if (last4) {
+      paymentMethodIdentifier = `....${last4}`;
+    }
+  } else {
+    paymentMethodIdentifier = abbreviateEvmAddress(paymentMethodIdentifierRaw);
+  }
+
   const content = React.createElement(ProcessedOrderReport, {
     orderId,
     recipientName,
     recipientEmail,
     items,
     chargedAmountInUsd,
-    paymentMethodCharged,
+    paymentMethodCharged: paymentMethodDisplayName,
     paymentMethodIdentifier,
-    refundAmountInUsd,
-    refundStatus,
-    ctaLink,
+    refund,
+    poweredByNamefiDomain,
   });
 
   const html = await render(content);
@@ -195,12 +213,17 @@ export async function getProcessedOrderEmail({
   };
 }
 
-export type NotifyActivities = {
-  sendEmailOrThrow: typeof sendEmailOrThrow;
-  getUserEmailOrThrow: typeof getUserEmailOrThrow;
-  getOrderProcessedEmailContent: typeof getOrderProcessedEmailContent;
-  getProcessedOrderEmail: typeof getProcessedOrderEmail;
-};
+export async function notifyUserOrderProcessed(
+  input: GetProcessedOrderEmailInput,
+) {
+  const { subject, content } = await getProcessedOrderEmail(input);
+
+  await sendEmailOrThrow({
+    to: [input.recipientEmail],
+    subject,
+    content,
+  });
+}
 
 // Extracted helper (place near the top of the file, e.g. after imports)
 async function determineHostnameFromCartItems(
@@ -221,7 +244,7 @@ async function determineHostnameFromCartItems(
   }, itemsWithLevels);
 
   if (thirdLevel.length !== items.length) {
-    return config.APP_URL;
+    return 'namefi.io';
   }
 
   const thirdLevelGroupedByParentDomain = groupBy(
@@ -239,7 +262,7 @@ async function determineHostnameFromCartItems(
     }
   }
 
-  return config.APP_URL;
+  return 'namefi.io';
 }
 
 /**
@@ -317,4 +340,20 @@ export async function sendStyledEmailNotification({
       `Email delivery failed: ${error.message}`,
     );
   }
+}
+
+function displayNameForPaymentMethod(paymentMethod: PaymentProvider) {
+  switch (paymentMethod) {
+    case 'NFSC_BASE':
+      return '$NFSC (Base)';
+    case 'NFSC_ETHEREUM':
+      return '$NFSC (Ethereum)';
+    case 'NFSC_ETHEREUM_SEPOLIA':
+      return '$NFSC (Ethereum Sepolia)';
+    case 'STRIPE':
+      return 'Credit Card';
+  }
+}
+function abbreviateEvmAddress(address: string) {
+  return `${address.slice(0, 6)}...${address.slice(-4)}`;
 }
