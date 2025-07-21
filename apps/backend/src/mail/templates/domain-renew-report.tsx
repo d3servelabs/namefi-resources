@@ -1,6 +1,5 @@
 // This is a combined report for domain renew success and failure
 
-import { defaultTo, isEmpty } from 'ramda';
 // biome-ignore lint/correctness/noUnusedImports: required for react-email
 import React from 'react';
 import { NamefiEmailContainer } from '../components/namefi-email-container';
@@ -32,26 +31,6 @@ export type DomainRenewReportProps = {
   refundStatus: 'SUCCESS' | 'FAILED';
 };
 
-const defaults: DomainRenewReportProps = {
-  recipientUserId: '123',
-  recipientName: 'Alice',
-  recipientEmail: 'alice@example.com',
-  domainLdhRenewSucceeded: ['test.org'],
-  domainLdhRenewFailed: ['example.org', 'example.net'],
-  chargedAmountInUsd: 120,
-  paymentMethodCharged: paymentProviderSchema.Values.STRIPE,
-  paymentMethodIdentifier: '...7890',
-  refundAmountInUsd: 50,
-  refundStatus: 'SUCCESS',
-};
-
-// TODO add length check
-type EvmAddress = `0x${string}`; // TODO add length check
-
-function abbreviateEvmAddress(address: EvmAddress) {
-  return `${address.slice(0, 6)}...${address.slice(-4)}`;
-}
-
 export const DomainRenewReport = withPoweredByNamefiDomain(
   (props: DomainRenewReportProps) => {
     const {
@@ -62,7 +41,7 @@ export const DomainRenewReport = withPoweredByNamefiDomain(
       chargedAmountInUsd,
       refundAmountInUsd,
       paymentMethodCharged,
-    } = defaultTo(defaults, isEmpty(props) ? null : props);
+    } = props;
     const messageMarkdown =
       `Hi ${recipientName ?? ''},\n\n` +
       'We performed the renew for the following domains in your account ' +
@@ -99,19 +78,16 @@ export const DomainRenewReport = withPoweredByNamefiDomain(
           {domainLdhRenewSucceeded.map((domainNameLdh) => (
             <tr key={domainNameLdh}>
               <td
-                className="py-1 px-1"
+                className="py-1 px-1 font-medium"
                 style={{ border: '1px #D9D9D9 solid', textAlign: 'right' }}
               >
-                {domainNameLdh}{' '}
-                {punycode.toUnicode(domainNameLdh) === domainNameLdh
-                  ? ''
-                  : `(${punycode.toUnicode(domainNameLdh)})`}
+                Domain Name
               </td>
               <td
-                className="py-1 px-1"
+                className="py-1 px-1 font-medium"
                 style={{ border: '1px #D9D9D9 solid', textAlign: 'right' }}
               >
-                <span style={{ color: 'green' }}>Success</span>
+                Renew Status
               </td>
             </tr>
           ))}
@@ -154,6 +130,19 @@ export const DomainRenewReport = withPoweredByNamefiDomain(
     );
   },
 );
+
+(DomainRenewReport as any).PreviewProps = {
+  recipientUserId: '123',
+  recipientName: 'Alice',
+  recipientEmail: 'alice@example.com',
+  domainLdhRenewSucceeded: ['test.org'],
+  domainLdhRenewFailed: ['example.org', 'example.net'],
+  chargedAmountInUsd: 120,
+  paymentMethodCharged: paymentProviderSchema.Values.STRIPE,
+  paymentMethodIdentifier: '...7890',
+  refundAmountInUsd: 50,
+  refundStatus: 'SUCCESS',
+};
 
 // biome-ignore lint/style/noDefaultExport: required for react-email
 export default DomainRenewReport;

@@ -1,4 +1,3 @@
-import { defaultTo, isEmpty } from 'ramda';
 // biome-ignore lint/correctness/noUnusedImports: required for react-email
 import React from 'react';
 import { NamefiEmailContainer } from '../components/namefi-email-container';
@@ -17,14 +16,6 @@ export type DomainRenewFailedToChargeProps = {
   chargeAmountInUsd: number;
 };
 
-const defaults: DomainRenewFailedToChargeProps = {
-  recipientName: 'Alice',
-  recipientEmail: 'alice@example.com',
-  recipientUserId: '123',
-  domainsToRenew: ['example.org', 'example.net'],
-  chargeAmountInUsd: 120,
-};
-
 export const DomainRenewFailedToCharge = withPoweredByNamefiDomain(
   (props: DomainRenewFailedToChargeProps) => {
     const {
@@ -32,7 +23,7 @@ export const DomainRenewFailedToCharge = withPoweredByNamefiDomain(
       recipientUserId,
       domainsToRenew,
       chargeAmountInUsd,
-    } = defaultTo(defaults, isEmpty(props) ? null : props);
+    } = props;
 
     const messageMarkdown =
       `Hi ${recipientName},\n\n` +
@@ -109,6 +100,14 @@ If you need any assistance, please contact our support team at support@namefi.io
     );
   },
 );
+
+(DomainRenewFailedToCharge as any).PreviewProps = {
+  recipientName: 'Alice',
+  recipientEmail: 'alice@example.com',
+  recipientUserId: '123',
+  domainsToRenew: ['example.org', 'example.net'],
+  chargeAmountInUsd: 120,
+};
 
 // biome-ignore lint/style/noDefaultExport: required for react-email
 export default DomainRenewFailedToCharge;

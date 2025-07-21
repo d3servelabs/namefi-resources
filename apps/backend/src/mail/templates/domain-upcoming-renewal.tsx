@@ -1,5 +1,5 @@
 import { Button } from '@react-email/components';
-import { defaultTo, isEmpty, isNil } from 'ramda';
+import { isNil } from 'ramda';
 // biome-ignore lint/correctness/noUnusedImports: required for react-email
 import React from 'react';
 import { NamefiEmailContainer } from '../components/namefi-email-container';
@@ -30,91 +30,6 @@ export type DomainUpcomingRenewalProps = {
   last4DigitsOfCreditCardToCharge?: string;
 };
 
-const defaults: DomainUpcomingRenewalProps = {
-  recipientName: 'Alice',
-  recipientEmail: 'alice@example.com',
-  userId: '123',
-  domainsRenewInfo: [
-    {
-      domainNameLdh: 'apple.test',
-      expirationDate: addDays(new Date(), Math.floor(Math.random() * 30)),
-      renewalPrice: {
-        amount: Math.max(10, Math.floor(Math.random() * 100)),
-        currency: 'USD',
-      },
-      autoRenew: true,
-    },
-    {
-      domainNameLdh: 'xn--gtvz22d.xn--0zwm56d', // '苹果.测试', translation of "apple.test" in Chinese
-      expirationDate: addDays(new Date(), Math.floor(Math.random() * 30 + 30)),
-      renewalPrice: {
-        amount: Math.max(10, Math.floor(Math.random() * 100)),
-        currency: 'USD',
-      },
-      autoRenew: true,
-    },
-    {
-      // 'सेब.परीक्षण', translation of "apple.test" in Hindi
-      domainNameLdh: 'xn--p2bx9b.xn--11b2aty0b2c6e',
-      expirationDate: addDays(new Date(), Math.floor(Math.random() * 30 + 30)),
-      renewalPrice: {
-        amount: Math.max(10, Math.floor(Math.random() * 100)),
-        currency: 'USD',
-      },
-      autoRenew: true,
-    },
-    {
-      // 'manzana.prueba', translation of "apple.test" in Spanish
-      domainNameLdh: 'manzana.prueba',
-      expirationDate: addDays(new Date(), Math.floor(Math.random() * 30 + 30)),
-      renewalPrice: {
-        amount: Math.max(10, Math.floor(Math.random() * 100)),
-        currency: 'USD',
-      },
-      autoRenew: true,
-    },
-    {
-      domainNameLdh: 'xn--90ascnx3e.xn--e1aybc', // 'яблуко.тест', translation of "apple.test" in Ukrainian
-      expirationDate: addDays(new Date(), Math.floor(Math.random() * 30 + 30)),
-      renewalPrice: {
-        amount: Math.max(10, Math.floor(Math.random() * 100)),
-        currency: 'USD',
-      },
-      autoRenew: true,
-    },
-    {
-      domainNameLdh: 'xn--90ascmb1h.xn--e1aybc', // 'яблоко.тест', translation of "apple.test" in Russian
-      expirationDate: addDays(new Date(), Math.floor(Math.random() * 30 + 30)),
-      renewalPrice: {
-        amount: Math.max(10, Math.floor(Math.random() * 100)),
-        currency: 'USD',
-      },
-      autoRenew: true,
-    },
-    ...new Array(3).fill(0).map((_, i) => ({
-      domainNameLdh: `namefi-${i.toString().padStart(2, '0')}.test`,
-      expirationDate: addDays(new Date(), -Math.floor(Math.random() * 45)),
-      renewalPrice: {
-        amount: Math.max(30, Math.floor(Math.random() * 100)),
-        currency: 'USD',
-      },
-      autoRenew: Math.random() > 0.5,
-    })),
-    ...new Array(10).fill(0).map((_, i) => ({
-      domainNameLdh: `namefi-${i.toString().padStart(2, '0')}.test`,
-      expirationDate: addDays(new Date(), Math.floor(Math.random() * 30 + 30)),
-      renewalPrice: {
-        amount: Math.max(30, Math.floor(Math.random() * 100)),
-        currency: 'USD',
-      },
-      autoRenew: Math.random() > 0.5,
-    })),
-  ],
-  nextChargeAmount: { amount: 100, currency: 'USD' },
-  nextChargeDate: addDays(new Date(), 5),
-  last4DigitsOfCreditCardToCharge: '1234',
-};
-
 export const DomainUpcomingRenewal = withPoweredByNamefiDomain(
   (props: DomainUpcomingRenewalProps) => {
     const {
@@ -124,7 +39,7 @@ export const DomainUpcomingRenewal = withPoweredByNamefiDomain(
       nextChargeAmount,
       nextChargeDate,
       last4DigitsOfCreditCardToCharge,
-    } = defaultTo(defaults, isEmpty(props) ? null : props);
+    } = props;
     // TODO: implement pages for these links
     const messageMarkdown = `Hi ${recipientName},
 
@@ -325,6 +240,91 @@ The Namefi Team`;
     );
   },
 );
+
+(DomainUpcomingRenewal as any).PreviewProps = {
+  recipientName: 'Alice',
+  recipientEmail: 'alice@example.com',
+  userId: '123',
+  domainsRenewInfo: [
+    {
+      domainNameLdh: 'apple.test',
+      expirationDate: addDays(new Date(), Math.floor(Math.random() * 30)),
+      renewalPrice: {
+        amount: Math.max(10, Math.floor(Math.random() * 100)),
+        currency: 'USD',
+      },
+      autoRenew: true,
+    },
+    {
+      domainNameLdh: 'xn--gtvz22d.xn--0zwm56d', // '苹果.测试', translation of "apple.test" in Chinese
+      expirationDate: addDays(new Date(), Math.floor(Math.random() * 30 + 30)),
+      renewalPrice: {
+        amount: Math.max(10, Math.floor(Math.random() * 100)),
+        currency: 'USD',
+      },
+      autoRenew: true,
+    },
+    {
+      // 'सेब.परीक्षण', translation of "apple.test" in Hindi
+      domainNameLdh: 'xn--p2bx9b.xn--11b2aty0b2c6e',
+      expirationDate: addDays(new Date(), Math.floor(Math.random() * 30 + 30)),
+      renewalPrice: {
+        amount: Math.max(10, Math.floor(Math.random() * 100)),
+        currency: 'USD',
+      },
+      autoRenew: true,
+    },
+    {
+      // 'manzana.prueba', translation of "apple.test" in Spanish
+      domainNameLdh: 'manzana.prueba',
+      expirationDate: addDays(new Date(), Math.floor(Math.random() * 30 + 30)),
+      renewalPrice: {
+        amount: Math.max(10, Math.floor(Math.random() * 100)),
+        currency: 'USD',
+      },
+      autoRenew: true,
+    },
+    {
+      domainNameLdh: 'xn--90ascnx3e.xn--e1aybc', // 'яблуко.тест', translation of "apple.test" in Ukrainian
+      expirationDate: addDays(new Date(), Math.floor(Math.random() * 30 + 30)),
+      renewalPrice: {
+        amount: Math.max(30, Math.floor(Math.random() * 100)),
+        currency: 'USD',
+      },
+      autoRenew: true,
+    },
+    {
+      domainNameLdh: 'xn--90ascmb1h.xn--e1aybc', // 'яблоко.тест', translation of "apple.test" in Russian
+      expirationDate: addDays(new Date(), Math.floor(Math.random() * 30 + 30)),
+      renewalPrice: {
+        amount: Math.max(30, Math.floor(Math.random() * 100)),
+        currency: 'USD',
+      },
+      autoRenew: true,
+    },
+    ...new Array(3).fill(0).map((_, i) => ({
+      domainNameLdh: `namefi-${i.toString().padStart(2, '0')}.test`,
+      expirationDate: addDays(new Date(), -Math.floor(Math.random() * 45)),
+      renewalPrice: {
+        amount: Math.max(30, Math.floor(Math.random() * 100)),
+        currency: 'USD',
+      },
+      autoRenew: Math.random() > 0.5,
+    })),
+    ...new Array(10).fill(0).map((_, i) => ({
+      domainNameLdh: `namefi-${i.toString().padStart(2, '0')}.test`,
+      expirationDate: addDays(new Date(), Math.floor(Math.random() * 30 + 30)),
+      renewalPrice: {
+        amount: Math.max(30, Math.floor(Math.random() * 100)),
+        currency: 'USD',
+      },
+      autoRenew: Math.random() > 0.5,
+    })),
+  ],
+  nextChargeAmount: { amount: 100, currency: 'USD' },
+  nextChargeDate: addDays(new Date(), 5),
+  last4DigitsOfCreditCardToCharge: '1234',
+};
 
 // biome-ignore lint/style/noDefaultExport: required for react-email
 export default DomainUpcomingRenewal;

@@ -1,5 +1,4 @@
 import { Button, Text } from '@react-email/components';
-import { defaultTo, isEmpty } from 'ramda';
 import { Code } from '../components/code';
 import { GoToDashboard } from '../components/go-to-dashboard';
 import { NamefiEmailContainer } from '../components/namefi-email-container';
@@ -15,16 +14,9 @@ import { NamefiEmailLinks } from '../email-links';
 export type RegisteredDomainSuccessfullyProps = {
   domainUnicodeName: string;
 };
-const defaults: RegisteredDomainSuccessfullyProps = {
-  domainUnicodeName: 'namefi.test',
-};
-
 export const RegisteredDomainSuccessfully = withPoweredByNamefiDomain(
   (props: RegisteredDomainSuccessfullyProps) => {
-    const { domainUnicodeName } = defaultTo(
-      defaults,
-      isEmpty(props) ? null : props,
-    );
+    const { domainUnicodeName } = props;
     const poweredByNamefiDomain = usePoweredByNamefiDomain();
 
     return (
@@ -54,6 +46,10 @@ export const RegisteredDomainSuccessfully = withPoweredByNamefiDomain(
     );
   },
 );
+
+(RegisteredDomainSuccessfully as any).PreviewProps = {
+  domainUnicodeName: 'namefi.test',
+};
 
 // biome-ignore lint/style/noDefaultExport: required for react-email
 export default RegisteredDomainSuccessfully;

@@ -1,6 +1,5 @@
 // Order processing report template for successful and failed items
 
-import { defaultTo, isEmpty } from 'ramda';
 // biome-ignore lint/correctness/noUnusedImports: required for react-email
 import React from 'react';
 import { NamefiEmailContainer } from '../components/namefi-email-container';
@@ -41,32 +40,6 @@ export type ProcessedOrderProps = {
   ctaLink?: string;
 };
 
-const defaults: ProcessedOrderProps = {
-  orderId: 'order-123',
-  recipientName: 'Alice',
-  recipientEmail: 'alice@example.com',
-  items: [
-    {
-      normalizedDomainName: 'test.org',
-      duration: 1,
-      price: 12.99,
-      status: 'SUCCESS',
-    },
-    {
-      normalizedDomainName: 'example.org',
-      duration: 2,
-      price: 25.98,
-      status: 'FAILED',
-      failureReason: 'Domain unavailable',
-    },
-  ],
-  chargedAmountInUsd: 38.97,
-  paymentMethodCharged: paymentProviderSchema.Values.STRIPE,
-  paymentMethodIdentifier: '...7890',
-  refundAmountInUsd: 25.98,
-  refundStatus: 'SUCCESS',
-};
-
 export const ProcessedOrderReport = withPoweredByNamefiDomain(
   (props: ProcessedOrderProps) => {
     const {
@@ -79,7 +52,7 @@ export const ProcessedOrderReport = withPoweredByNamefiDomain(
       refundAmountInUsd,
       refundStatus,
       ctaLink,
-    } = defaultTo(defaults, isEmpty(props) ? null : props);
+    } = props;
 
     const poweredByNamefiDomain = usePoweredByNamefiDomain();
 
@@ -324,6 +297,33 @@ export const ProcessedOrderReport = withPoweredByNamefiDomain(
     );
   },
 );
+
+(ProcessedOrderReport as any).PreviewProps = {
+  orderId: 'order-123',
+  recipientName: 'Alice',
+  recipientEmail: 'alice@example.com',
+  items: [
+    {
+      normalizedDomainName: 'test.org',
+      duration: 1,
+      price: 12.99,
+      status: 'SUCCESS',
+    },
+    {
+      normalizedDomainName: 'example.org',
+      duration: 2,
+      price: 25.98,
+      status: 'FAILED',
+      failureReason: 'Domain unavailable',
+    },
+  ],
+  chargedAmountInUsd: 38.97,
+  paymentMethodCharged: paymentProviderSchema.Values.STRIPE,
+  paymentMethodIdentifier: '...7890',
+  refundAmountInUsd: 25.98,
+  refundStatus: 'SUCCESS',
+  poweredByNamefiDomain: null,
+};
 
 // biome-ignore lint/style/noDefaultExport: required for react-email
 export default ProcessedOrderReport;

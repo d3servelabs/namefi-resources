@@ -34,3 +34,13 @@ export const GeneralStyledNotification = withPoweredByNamefiDomain(
     );
   },
 );
+
+(GeneralStyledNotification as any).PreviewProps = {
+  title: 'General Styled Notification',
+  messageMarkdown: 'This is a general styled notification',
+  showGoToDashboard: true,
+  poweredByNamefiDomain: null,
+};
+
+// biome-ignore lint/style/noDefaultExport: required for react-email
+export default GeneralStyledNotification;
