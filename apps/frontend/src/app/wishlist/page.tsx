@@ -8,6 +8,7 @@ import { DomainCard } from '@/components/search/search';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import type { DomainAvailabilityInfo } from '@namefi-astra/backend/trpc/types';
 import { useAuth } from '@/hooks/use-auth';
+import { Skeleton } from '@/components/ui/shadcn/skeleton';
 
 export default function WishlistPage() {
   const { isLoading: isUserLoading } = useAuth();
@@ -53,7 +54,16 @@ export default function WishlistPage() {
 
   return (
     <div className="container mx-auto py-8 px-8">
-      <h1 className="text-3xl font-bold mb-6">My Wishlist</h1>
+      <h1 className="text-3xl font-bold mb-6 flex items-center gap-3">
+        My Wishlist
+        {isWishlistLoading || isUserLoading ? (
+          <Skeleton className="h-7 w-8 rounded-full" />
+        ) : (
+          <span className="inline-flex items-center justify-center text-base font-semibold bg-brand-primary text-white rounded-full h-7 w-8">
+            {wishlistData?.length ?? 0}
+          </span>
+        )}
+      </h1>
       {isLoading ? (
         <div className="flex flex-col gap-4">
           {[...Array(3)].map((_, i) => (

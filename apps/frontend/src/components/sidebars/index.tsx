@@ -17,6 +17,7 @@ import {
 } from '@/components/ui/shadcn/sidebar';
 import { useAuth } from '@/hooks/use-auth';
 import { useRecentDomains } from '@/hooks/use-recent-domains';
+import { useWishlist } from '@/hooks/use-wishlist';
 import { cn } from '@/lib/utils';
 import type { NavItem } from '@/types';
 import { useTRPC } from '@/utils/trpc';
@@ -58,6 +59,9 @@ export function AppSidebar() {
 
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
   const trpc = useTRPC();
+
+  // Move useWishlist to top level
+  const { wishlistData, isWishlistLoading } = useWishlist();
 
   const {
     data,
@@ -117,10 +121,20 @@ export function AppSidebar() {
       if (item.title.toLowerCase() === 'manage') {
         return showManageEntrypoint;
       }
-
       return true;
+    }).map((item) => {
+      if (item.href === '/wishlist') {
+        return {
+          ...item,
+          badge:
+            !(isWishlistLoading || isAuthLoading) && wishlistData
+              ? { content: wishlistData.length }
+              : undefined,
+        };
+      }
+      return item;
     });
-  }, [showManageEntrypoint]);
+  }, [showManageEntrypoint, wishlistData, isWishlistLoading, isAuthLoading]);
 
   const isCollapsed = useMemo(() => state === 'collapsed', [state]);
 
