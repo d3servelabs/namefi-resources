@@ -29,7 +29,7 @@ export const RegisterdDomainSuccessfully = (
       <Text style={paragraph}>Thank you for using Namefi.</Text>
 
       <Text style={{ ...paragraph, display: 'inline' }}>
-        Your newly accquired domain{' '}
+        Your newly acquired domain{' '}
       </Text>
       <Code>{domainUnicodeName}</Code>
       <Text style={{ ...paragraph, display: 'inline' }}>is ready for you</Text>

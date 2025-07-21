@@ -3,8 +3,6 @@ import { config as loadBaseEnv } from 'dotenv';
 import type { ZodSchema, ZodTypeDef } from 'zod';
 import { baseConfigSchema } from './schema';
 
-const moduleRequire = createRequire(import.meta.url);
-
 loadBaseEnv({ override: true });
 
 export interface LoadConfigOptions<Output, Def extends ZodTypeDef, Input> {
@@ -23,6 +21,7 @@ export const loadConfig = <Output, Def extends ZodTypeDef, Input>(
   try {
     ({ default: envConfig } = require(envConfigPath));
   } catch (_) {
+    const moduleRequire = createRequire(import.meta.url);
     ({ default: envConfig } = moduleRequire(envConfigPath));
   }
   return options.configSchema.parse(envConfig);

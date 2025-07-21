@@ -8,12 +8,17 @@ import { GoToDashboard } from '../components/go-to-dashboard';
 import punycode from 'punycode';
 import rehypeExternalLinks from 'rehype-external-links';
 import ReactMarkdown from 'react-markdown';
-import {
-  paymentProviderSchema,
-  type PaymentProvider,
-} from '@namefi-astra/db/types';
 import { Button } from '@react-email/components';
 import { button } from '../styles';
+import { z } from 'zod';
+
+const paymentProviderSchema = z.enum([
+  'NFSC_BASE',
+  'NFSC_ETHEREUM',
+  'NFSC_ETHEREUM_SEPOLIA',
+  'STRIPE',
+]);
+type PaymentProvider = z.infer<typeof paymentProviderSchema>;
 
 export type ProcessedOrderItem = {
   normalizedDomainName: string;
