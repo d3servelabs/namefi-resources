@@ -1,4 +1,5 @@
 import { useWishlistContext } from '@/providers/wishlist';
+import { useMemo } from 'react';
 import {
   wishlistDomainKey,
   isPendingDelete,
@@ -6,30 +7,43 @@ import {
 } from './use-wishlist';
 import { useAuth } from '@/hooks/use-auth';
 
-export function useWishlistRow(domain?: string) {
+interface WishlistRowStatus {
+  wishlist: ReturnType<typeof useWishlistContext>;
+  inWishlist: boolean;
+  addingBusy: boolean;
+  updatingBusy: boolean;
+  removingBusy: boolean;
+}
+
+export function useWishlistRow(domain?: string): WishlistRowStatus {
   const wishlist = useWishlistContext();
   const { user } = useAuth();
   const userId = user?.id ?? GUEST_USER_ID;
 
-  const inWishlist = domain ? wishlist.isDomainWishlisted(domain) : false;
+  const { wishlistData } = wishlist;
 
-  const addingBusy = domain
-    ? wishlist.busy.isBusy(wishlistDomainKey(userId, domain))
-    : false;
+  return useMemo<WishlistRowStatus>(() => {
+    if (!domain) {
+      return {
+        wishlist,
+        inWishlist: false,
+        addingBusy: false,
+        updatingBusy: false,
+        removingBusy: false,
+      };
+    }
 
-  const wishlistItem = domain
-    ? wishlist.wishlistData?.find((i) => i.normalizedDomainName === domain)
-    : undefined;
+    const inWishlist = wishlist.isDomainWishlisted(domain);
+    const addingBusy = wishlist.busy.isBusy(wishlistDomainKey(userId, domain));
+    const row = wishlistData?.find((i) => i.normalizedDomainName === domain);
+    const rowBusy = !!row && wishlist.busy.isBusy(row.id);
 
-  const removingBusy =
-    wishlistItem &&
-    wishlist.busy.isBusy(wishlistItem.id) &&
-    isPendingDelete(wishlistItem);
-
-  const updatingBusy =
-    wishlistItem &&
-    wishlist.busy.isBusy(wishlistItem.id) &&
-    !isPendingDelete(wishlistItem);
-
-  return { wishlist, inWishlist, addingBusy, updatingBusy, removingBusy };
+    return {
+      wishlist,
+      inWishlist,
+      addingBusy,
+      updatingBusy: rowBusy && !isPendingDelete(row),
+      removingBusy: rowBusy && isPendingDelete(row),
+    };
+  }, [domain, wishlistData, userId, wishlist]);
 }

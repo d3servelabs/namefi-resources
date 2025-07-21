@@ -63,7 +63,7 @@ const markOptimistic = (
   userId: string,
 ): OptimisticUnifiedWishlistItem => ({
   ...i,
-  id: deterministicId(i.normalizedDomainName, userId),
+  id: deterministicWishlistId(i.normalizedDomainName, userId),
   userId,
   createdAt: new Date(),
   updatedAt: new Date(),
@@ -92,20 +92,22 @@ const stripForLocalStorage = <T extends MaybeOptimisticUnifiedWishlistItem>(
 };
 
 // Utility to compute the localStorage key
-function getWishlistLocalStorageKey(userId?: string) {
-  return `user-wishlist-domains:${userId ?? GUEST_USER_ID}`;
+function getWishlistLocalStorageKey(
+  userId: string | undefined = GUEST_USER_ID,
+) {
+  return `user-wishlist-domains:${userId}`;
 }
 
 // Deterministic ID generator for wishlist items (browser-safe, simple hash)
-function deterministicId(domain: string, user: string): string {
-  // djb2 hash
-  let hash = 5381;
-  const str = `${user}:${domain}`;
-  for (let i = 0; i < str.length; i++) {
-    hash = (hash << 5) + hash + str.charCodeAt(i);
-  }
-  return `w_${(hash >>> 0).toString(16)}`;
-}
+export const deterministicWishlistId = (
+  domain: string,
+  userId: string = GUEST_USER_ID,
+) =>
+  'w_' +
+  btoa(encodeURIComponent(`${userId}:${domain}`))
+    .replace(/=+$/, '') // drop padding
+    .replace(/\+/g, '-') // URL‑safe
+    .replace(/\//g, '_'); // ─┘
 
 // Helper to ensure a stable ID per item (pure, no mutation)
 const ensureId = <
@@ -116,7 +118,7 @@ const ensureId = <
 ): string => {
   if (i.id) return i.id;
   // Use deterministic ID based on domain and user
-  return deterministicId(i.normalizedDomainName, i.userId ?? userId);
+  return deterministicWishlistId(i.normalizedDomainName, i.userId ?? userId);
 };
 
 // Move normalize to file scope so both hooks can use it

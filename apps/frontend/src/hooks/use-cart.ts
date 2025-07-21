@@ -25,7 +25,6 @@ import {
 } from '@namefi-astra/registrars/multi-year-pricing';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { useDebounceCallback } from 'usehooks-ts';
-import { config } from '@/lib/env';
 
 /* -------------------------------------------------------------------------- */
 /*                         SHARED QUEUE AND TYPES                            */
@@ -35,7 +34,8 @@ export const cartQueue = new PQueue({ concurrency: 1 });
 
 const OPTIMISTIC = '__optimistic' as const;
 const PENDING_DELETE = '__pendingDelete' as const;
-export const domainKey = (domain: string) => `domain:${domain}`;
+export const cartDomainKey = (userId: string, domain: string) =>
+  `${userId}:${domain}`;
 
 export type ServerReadCartItem = AppRouterOutput['carts']['getItems'][number];
 export type ServerWriteCartItem = AppRouterInput['carts']['addItems'][number];
@@ -77,7 +77,7 @@ const markOptimistic = (
   userId: string,
 ): OptimisticUnifiedCartItem => ({
   ...i,
-  id: crypto.randomUUID(),
+  id: deterministicCartId(i.normalizedDomainName, userId),
   normalizedDomainName: i.normalizedDomainName as NamefiNormalizedDomain,
   userId,
   createdAt: new Date(),
@@ -91,14 +91,11 @@ const markOptimistic = (
 const isOptimistic = (i: unknown): i is OptimisticTag =>
   Boolean(i && typeof i === 'object' && OPTIMISTIC in i);
 
-export const isPendingDelete = (
-  cartRows: UnifiedCartItem[] | undefined,
-  id: string | undefined,
-): boolean => {
-  if (!id || !cartRows) return false;
-  const row = cartRows.find((r) => r.id === id);
-  return !!row && PENDING_DELETE in row;
-};
+export function isPendingDelete(
+  row: UnifiedCartItem | PendingDeleteTag | undefined,
+): row is PendingDeleteTag {
+  return !!row && typeof row === 'object' && PENDING_DELETE in row;
+}
 
 const stripOptimistic = <T extends object>(i: MaybeOptimistic<T>) => {
   const { [OPTIMISTIC]: _, ...rest } = i;
@@ -126,6 +123,23 @@ export function cartItemsToInteractionLoggingCartItems(
     amountInUSDCents: item.amountInUSDCents,
     normalizedDomainName: item.normalizedDomainName,
   }));
+}
+
+// --- DETERMINISTIC ID UTILS (copied from wishlist) ---
+export const deterministicCartId = (
+  domain: string,
+  userId: string = GUEST_USER_ID,
+) =>
+  'c_' +
+  btoa(encodeURIComponent(`${userId}:${domain}`))
+    .replace(/=+$/, '') // drop padding
+    .replace(/\+/g, '-') // URL‑safe
+    .replace(/\//g, '_'); // ─┘
+
+export const GUEST_USER_ID = 'guest';
+
+function getCartLocalStorageKey(userId: string | undefined = GUEST_USER_ID) {
+  return `cart-items:${userId}`;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -158,6 +172,8 @@ export function useCartBusy() {
 
   const [busyIds, dispatchBusy] = useReducer(busyReducer, new Set<BusyKey>());
 
+  useEffect(() => () => dispatchBusy({ type: 'clearAll' }), []);
+
   const markBusy = useCallback(
     (key: BusyKey) => dispatchBusy({ type: 'mark', key }),
     [],
@@ -176,6 +192,13 @@ export function useCartBusy() {
 /* -------------------------------------------------------------------------- */
 
 export function useCartLocal() {
+  const { user, isLoading: isUserLoading } = useAuth();
+  const localStorageKey = useMemo(
+    () =>
+      getCartLocalStorageKey(!isUserLoading && user?.id ? user.id : undefined),
+    [user?.id, isUserLoading],
+  );
+
   const deserialize = useCallback(
     (item: any) => ({
       ...item,
@@ -194,9 +217,9 @@ export function useCartLocal() {
     [],
   );
 
-  const [localCart, setLocalCart, clearLocalCart] = useLocalStorage<
+  const [localCart, setLocalCart, clearLocalCartRaw] = useLocalStorage<
     UnifiedCartItem[]
-  >('user-cart-items', [], {
+  >(localStorageKey, [], {
     initializeWithValue: true,
     serializer: (value: UnifiedCartItem[]) =>
       JSON.stringify(value.map(serialize)),
@@ -209,6 +232,25 @@ export function useCartLocal() {
       }
     },
   });
+
+  // Helper to clear both guest and user keys
+  const clearAllLocalCarts = useCallback(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        window.localStorage.removeItem(getCartLocalStorageKey(GUEST_USER_ID));
+        if (user?.id) {
+          window.localStorage.removeItem(getCartLocalStorageKey(user.id));
+        }
+      } catch (err) {
+        console.error('Failed to clear local cart', err);
+      }
+    }
+  }, [user?.id]);
+
+  // Helper to clear only the current key
+  const clearLocalCart = useCallback(() => {
+    clearLocalCartRaw();
+  }, [clearLocalCartRaw]);
 
   const addLocalItems = useCallback(
     (items: UnifiedCartItem[]) => {
@@ -223,7 +265,6 @@ export function useCartLocal() {
       if (!existingItem) {
         throw new Error('Cart item not found in local storage');
       }
-
       const updatedItem = {
         ...stripOptimistic(existingItem),
         ...updatePayload,
@@ -256,6 +297,7 @@ export function useCartLocal() {
       updateLocalItem,
       removeLocalByDomain,
       clearLocalCart,
+      clearAllLocalCarts,
     }),
     [
       localCart,
@@ -263,6 +305,7 @@ export function useCartLocal() {
       updateLocalItem,
       removeLocalByDomain,
       clearLocalCart,
+      clearAllLocalCarts,
     ],
   );
 }
@@ -273,7 +316,7 @@ export function useCartLocal() {
 
 export function useCartServerSync() {
   const trpc = useTRPC();
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated, isLoading: isUserLoading, user } = useAuth();
   const { logEventWithInteractionLoggers } = useInteractionLoggers();
   const queryClient = useQueryClient();
   const busy = useCartBusy();
@@ -306,20 +349,24 @@ export function useCartServerSync() {
   const normalize = useCallback(
     (items: (ServerReadCartItem | UnifiedCartItem)[]): UnifiedCartItem[] =>
       items.map((item) => {
-        if (!item.id && config.TYPE !== 'production') {
-          console.error('Cart item without ID', item);
-        }
-
+        const effectiveUserId =
+          item.userId ??
+          (isAuthenticated && !isUserLoading && user?.id
+            ? user.id
+            : GUEST_USER_ID);
+        const id =
+          item.id ??
+          deterministicCartId(item.normalizedDomainName, effectiveUserId);
         return {
           ...stripOptimistic(item),
-          id: item.id ?? crypto.randomUUID(),
-          userId: item.userId ?? 'anonymous',
+          id,
+          userId: effectiveUserId,
           encryptionKeyId: item.encryptionKeyId ?? null,
           encryptedEppAuthorizationCode:
             item.encryptedEppAuthorizationCode ?? null,
         };
       }),
-    [],
+    [isAuthenticated, isUserLoading, user?.id],
   );
 
   const mergeByDomain = (
@@ -365,7 +412,8 @@ export function useCartServerSync() {
 
   const isDomainBusy = useCallback(
     (domain: string) => {
-      if (busy.isBusy(domainKey(domain))) return true;
+      const currentUserId = user?.id ?? GUEST_USER_ID;
+      if (busy.isBusy(cartDomainKey(currentUserId, domain))) return true;
       const maybeIds =
         cartData
           ?.filter((i) => i.normalizedDomainName === domain)
@@ -373,20 +421,33 @@ export function useCartServerSync() {
 
       return maybeIds.some((id) => id && busy.isBusy(id));
     },
-    [busy, cartData],
+    [busy, cartData, user?.id],
   );
 
   /* ------------------------------ mutations ------------------------------ */
+  const cartRetryPolicy = (failCount: number, err: any) => {
+    const status = err?.data?.httpStatus;
+    return (status === undefined || status >= 500) && failCount < 3;
+  };
+
   const addMutation = useMutation({
-    ...trpc.carts.addItems.mutationOptions(),
+    ...trpc.carts.addItems.mutationOptions({ retry: cartRetryPolicy }),
     onMutate: async (payload: ServerWriteCartItem[]) => {
-      await queryClient.cancelQueries({ queryKey: CartKey });
+      await queryClient.cancelQueries({ queryKey: CartKey, exact: true });
       const prev = queryClient.getQueryData<UnifiedCartItem[]>(CartKey) ?? [];
       const optimistic = normalize(
-        payload.map((p) => markOptimistic(p, user?.id ?? 'anonymous')),
+        payload.map((p) => ({
+          ...markOptimistic(p, user?.id ?? GUEST_USER_ID),
+          id: deterministicCartId(
+            p.normalizedDomainName,
+            user?.id ?? GUEST_USER_ID,
+          ),
+        })),
       );
       queryClient.setQueryData(CartKey, mergeByDomain(optimistic, prev));
-      const touched = payload.map((p) => domainKey(p.normalizedDomainName));
+      const touched = payload.map((p) =>
+        cartDomainKey(user?.id ?? GUEST_USER_ID, p.normalizedDomainName),
+      );
       return { prev, keys: touched };
     },
     onError: (_e, _v, ctx) => {
@@ -402,7 +463,15 @@ export function useCartServerSync() {
           if (existing && isOptimistic(existing))
             map.set(s.normalizedDomainName, s);
         });
-        return [...map.values()];
+        // Remove any remaining optimistic items not returned by the server
+        const authoritativeDomains = new Set(
+          authoritative.map((s) => s.normalizedDomainName),
+        );
+        return [...map.values()].filter(
+          (item) =>
+            !isOptimistic(item) ||
+            authoritativeDomains.has(item.normalizedDomainName),
+        );
       });
       ctx?.keys?.forEach(busy.clearBusy);
     },
@@ -410,8 +479,7 @@ export function useCartServerSync() {
   });
 
   const removeMutation = useMutation({
-    ...trpc.carts.removeItem.mutationOptions(),
-    retry: false, // Disable retry to prevent duplicate issues
+    ...trpc.carts.removeItem.mutationOptions({ retry: cartRetryPolicy }),
     onMutate: async (domains: NamefiNormalizedDomain[]) => {
       const touchedIds: string[] = [];
       cartData?.forEach((item) => {
@@ -420,10 +488,8 @@ export function useCartServerSync() {
           touchedIds.push(item.id);
         }
       });
-      await queryClient.cancelQueries({ queryKey: CartKey });
+      await queryClient.cancelQueries({ queryKey: CartKey, exact: true });
       const prev = queryClient.getQueryData<UnifiedCartItem[]>(CartKey);
-
-      // Mark items as pending delete instead of removing them
       queryClient.setQueryData(CartKey, (old: UnifiedCartItem[] = []) =>
         old.map((item) =>
           touchedIds.includes(item.id)
@@ -451,8 +517,9 @@ export function useCartServerSync() {
 
   const clearMutation = useMutation({
     mutationFn: trpc.carts.clear.mutationOptions().mutationFn,
+    retry: cartRetryPolicy,
     onMutate: async () => {
-      await queryClient.cancelQueries({ queryKey: CartKey });
+      await queryClient.cancelQueries({ queryKey: CartKey, exact: true });
       const prev = queryClient.getQueryData<UnifiedCartItem[]>(CartKey);
       queryClient.setQueryData(CartKey, []);
       return { prev };
@@ -462,9 +529,9 @@ export function useCartServerSync() {
   });
 
   const updateMutation = useMutation({
-    ...trpc.carts.updateItem.mutationOptions(),
+    ...trpc.carts.updateItem.mutationOptions({ retry: cartRetryPolicy }),
     onMutate: async (payload: ServerUpdateCartItem) => {
-      await queryClient.cancelQueries({ queryKey: CartKey });
+      await queryClient.cancelQueries({ queryKey: CartKey, exact: true });
       const prev = queryClient.getQueryData<UnifiedCartItem[]>(CartKey) ?? [];
       queryClient.setQueryData(CartKey, (old: UnifiedCartItem[] = []) =>
         old.map((item) =>
@@ -499,7 +566,14 @@ export function useCartServerSync() {
   /* -------------------------- sync local on login ------------------------ */
   const syncing = useRef(false);
   useEffect(() => {
-    if (!isAuthenticated || !local.localCart.length || syncing.current) return;
+    if (
+      !isAuthenticated ||
+      isUserLoading ||
+      !user?.id ||
+      !local.localCart.length ||
+      syncing.current
+    )
+      return;
     syncing.current = true;
 
     const syncTask = async () => {
@@ -513,31 +587,39 @@ export function useCartServerSync() {
           registrar: i.registrar ?? 'namefi',
           eppAuthorizationCode: i.eppAuthorizationCode,
         }));
-
         if (writes.length) {
           await addMutation.mutateAsync(writes);
         }
-        local.clearLocalCart();
+        local.clearAllLocalCarts();
       } finally {
         syncing.current = false;
       }
     };
-
     cartQueue.add(syncTask);
-  }, [isAuthenticated, local.localCart, local.clearLocalCart, addMutation]);
+    return () => {
+      syncing.current = false;
+    };
+  }, [
+    isAuthenticated,
+    isUserLoading,
+    user,
+    local.localCart,
+    local.clearAllLocalCarts,
+    addMutation,
+  ]);
 
   /* ---------------------------- state flags ------------------------------ */
-  const isCartLoading = isAuthenticated ? isServerLoading : false;
-
-  const isCartUpdating = isAuthenticated
-    ? addMutation.isPending ||
-      removeMutation.isPending ||
-      clearMutation.isPending ||
-      updateMutation.isPending ||
-      busy.busyIds.size > 0 ||
-      cartQueue.size > 0 ||
-      cartQueue.pending > 0
-    : false;
+  const isCartLoading =
+    isAuthenticated && !isUserLoading && user?.id ? isServerLoading : false;
+  const isCartUpdating =
+    isAuthenticated && !isUserLoading && user?.id
+      ? addMutation.isPending ||
+        removeMutation.isPending ||
+        clearMutation.isPending ||
+        updateMutation.isPending ||
+        cartQueue.size > 0 ||
+        cartQueue.pending > 0
+      : false;
 
   return {
     cartData,
@@ -562,14 +644,18 @@ export function useCartServerSync() {
           operationType,
           eppAuthorizationCode,
         } = p;
-
-        if (operationType === 'IMPORT' && !isDomainImportable(info))
+        if (
+          operationType === itemTypeSchema.Values.IMPORT &&
+          !isDomainImportable(info)
+        )
           throw new Error('Domain is not importable');
-        if (operationType === 'REGISTER' && !isDomainRegistrable(info))
+        if (
+          operationType === itemTypeSchema.Values.REGISTER &&
+          !isDomainRegistrable(info)
+        )
           throw new Error('Domain is not registrable');
         const pricing = getDomainPricingForOperation(info, operationType);
         if (!pricing) throw new Error('Pricing unavailable');
-
         return {
           normalizedDomainName: info.domain,
           amountInUSDCents: usdToCents(
@@ -591,15 +677,12 @@ export function useCartServerSync() {
         const payload: ServerUpdateCartItem = {
           id: p.id,
         };
-
         if (p.durationInYears !== undefined) {
           payload.durationInYears = p.durationInYears;
         }
-
         if (p.eppAuthorizationCode !== undefined) {
           payload.eppAuthorizationCode = p.eppAuthorizationCode;
         }
-
         return payload;
       },
       [],
@@ -607,32 +690,26 @@ export function useCartServerSync() {
     calculateOptimisticPrice: useCallback(
       (p: UpdateItemParams): number | undefined => {
         if (p.durationInYears === undefined) return undefined;
-
         const existingItem = cartData?.find((i) => i.id === p.id);
         if (!existingItem) {
           throw new Error('Cart item not found');
         }
-
         if (p.durationInYears === existingItem.durationInYears) {
           return undefined;
         }
-
         const pricingDetails = getDomainPricingForOperation(
           p.domainAvailabilityInfo,
           existingItem.type,
         );
-
         if (!pricingDetails) {
           throw new Error(
             `${existingItem.type} pricing details are unavailable`,
           );
         }
-
         const chargeAmountInUsd = computeChargesInUsdOrThrow(
           pricingDetails,
           p.durationInYears,
         );
-
         return usdToCents(chargeAmountInUsd);
       },
       [cartData],
@@ -646,7 +723,8 @@ export function useCartServerSync() {
 /* -------------------------------------------------------------------------- */
 
 export function useCartOperations(sync: ReturnType<typeof useCartServerSync>) {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, isLoading: isUserLoading, user } = useAuth();
+  const userId = user?.id ?? GUEST_USER_ID;
 
   const addItem = useCallback(
     async (
@@ -655,65 +733,65 @@ export function useCartOperations(sync: ReturnType<typeof useCartServerSync>) {
       const params = Array.isArray(raw) ? raw : [raw];
       const payload: ServerWriteCartItem[] = [];
       const touchedDomains: string[] = [];
-
       try {
         params.forEach((p) => {
           const d = p.domainAvailabilityInfo.domain;
           if (sync.isDomainInCart(d)) return;
           if (sync.isDomainBusy(d)) return;
-
-          sync.busy.markBusy(domainKey(d));
+          sync.busy.markBusy(cartDomainKey(userId, d));
           touchedDomains.push(d);
-
           try {
             payload.push(sync.buildServerWriteCartItem(p));
           } catch (e) {
-            sync.busy.clearBusy(domainKey(d));
+            sync.busy.clearBusy(cartDomainKey(userId, d));
             throw e;
           }
         });
-
         if (!payload.length) return [];
-
         const task = async (): Promise<UnifiedCartItem[]> => {
           try {
-            if (isAuthenticated) {
+            if (isAuthenticated && !isUserLoading && userId !== GUEST_USER_ID) {
               const server = await sync.addMutation.mutateAsync(payload);
               const unified = sync.normalize(server);
-              unified.forEach((c) =>
-                sync.logEventWithInteractionLoggers({
-                  name: InteractionLoggingEventName.AddToCart,
-                  properties: {
-                    cartItem: {
-                      amountInUSDCents: c.amountInUSDCents,
-                      normalizedDomainName: c.normalizedDomainName,
+              if (unified.length) {
+                unified.forEach((item) => {
+                  sync.logEventWithInteractionLoggers({
+                    name: InteractionLoggingEventName.AddToCart,
+                    properties: {
+                      cartItem: {
+                        amountInUSDCents: item.amountInUSDCents,
+                        normalizedDomainName: item.normalizedDomainName,
+                      },
                     },
-                  },
-                }),
-              );
+                  });
+                });
+              }
               return unified;
             }
-
             const locals = payload.map((p) => ({
-              ...markOptimistic(p, 'anonymous'),
+              ...markOptimistic(p, userId),
+              id: deterministicCartId(p.normalizedDomainName, userId),
               eppAuthorizationCode: p.eppAuthorizationCode,
             }));
             sync.local.addLocalItems(locals);
             return sync.normalize(locals.map(stripForLocalStorage));
           } finally {
             payload.forEach((p) => {
-              sync.busy.clearBusy(domainKey(p.normalizedDomainName));
+              sync.busy.clearBusy(
+                cartDomainKey(userId, p.normalizedDomainName),
+              );
             });
           }
         };
-
         return cartQueue.add(task) as Promise<UnifiedCartItem[]>;
       } catch (error) {
-        touchedDomains.forEach((d) => sync.busy.clearBusy(domainKey(d)));
+        touchedDomains.forEach((d) =>
+          sync.busy.clearBusy(cartDomainKey(userId, d)),
+        );
         throw error;
       }
     },
-    [sync, isAuthenticated],
+    [sync, isAuthenticated, isUserLoading, userId],
   );
 
   const removeItem = useCallback(
@@ -722,68 +800,71 @@ export function useCartOperations(sync: ReturnType<typeof useCartServerSync>) {
     ): Promise<UnifiedCartItem[]> => {
       const list = Array.isArray(d) ? d : [d];
       if (!list.length) return [];
-
-      // Wait for all queued operations to complete
-      await cartQueue.onIdle();
-
-      try {
-        if (isAuthenticated) {
-          const itemsToRemove =
-            sync.cartData?.filter((item) =>
-              list.includes(item.normalizedDomainName),
-            ) ?? [];
-          itemsToRemove.forEach((item) => {
-            if (item.id) {
-              sync.busy.markBusy(item.id);
-              sync.queryClient.setQueryData(
-                sync.CartKey,
-                (old: UnifiedCartItem[] = []) =>
-                  old.map((i) =>
-                    i.id === item.id ? { ...i, [PENDING_DELETE]: true } : i,
-                  ),
-              );
+      const task = async (): Promise<UnifiedCartItem[]> => {
+        try {
+          if (isAuthenticated && !isUserLoading && userId !== GUEST_USER_ID) {
+            const itemsToRemove =
+              sync.cartData?.filter((item) =>
+                list.includes(item.normalizedDomainName),
+              ) ?? [];
+            itemsToRemove.forEach((item) => {
+              if (item.id) {
+                sync.busy.markBusy(item.id);
+                sync.queryClient.setQueryData(
+                  sync.CartKey,
+                  (old: UnifiedCartItem[] = []) =>
+                    old.map((i) =>
+                      i.id === item.id ? { ...i, [PENDING_DELETE]: true } : i,
+                    ),
+                );
+              }
+            });
+            try {
+              const removed = await sync.removeMutation.mutateAsync(list);
+              if (removed.length) {
+                removed.forEach((item) => {
+                  sync.logEventWithInteractionLoggers({
+                    name: InteractionLoggingEventName.RemoveFromCart,
+                    properties: {
+                      cartItem: {
+                        amountInUSDCents: item.amountInUSDCents,
+                        normalizedDomainName: item.normalizedDomainName,
+                      },
+                    },
+                  });
+                });
+              }
+              return sync.normalize(removed);
+            } finally {
+              itemsToRemove.forEach((item) => {
+                if (item.id) sync.busy.clearBusy(item.id);
+              });
             }
-          });
-
-          try {
-            const removed = await sync.removeMutation.mutateAsync(list);
-            removed.forEach((c) =>
+          }
+          const removedLocal = sync.local.removeLocalByDomain(list);
+          if (removedLocal.length) {
+            removedLocal.forEach((item) => {
               sync.logEventWithInteractionLoggers({
                 name: InteractionLoggingEventName.RemoveFromCart,
                 properties: {
                   cartItem: {
-                    amountInUSDCents: c.amountInUSDCents,
-                    normalizedDomainName: c.normalizedDomainName,
+                    amountInUSDCents: item.amountInUSDCents,
+                    normalizedDomainName: item.normalizedDomainName,
                   },
                 },
-              }),
-            );
-            return sync.normalize(removed);
-          } finally {
-            itemsToRemove.forEach((item) => {
-              if (item.id) sync.busy.clearBusy(item.id);
+              });
             });
           }
+          return sync.normalize(removedLocal);
+        } finally {
+          list.forEach((domain) =>
+            sync.busy.clearBusy(cartDomainKey(userId, domain)),
+          );
         }
-
-        const removedLocal = sync.local.removeLocalByDomain(list);
-        removedLocal.forEach((c) =>
-          sync.logEventWithInteractionLoggers({
-            name: InteractionLoggingEventName.RemoveFromCart,
-            properties: {
-              cartItem: {
-                amountInUSDCents: c.amountInUSDCents,
-                normalizedDomainName: c.normalizedDomainName,
-              },
-            },
-          }),
-        );
-        return sync.normalize(removedLocal);
-      } finally {
-        list.forEach((domain) => sync.busy.clearBusy(domainKey(domain)));
-      }
+      };
+      return cartQueue.add(task) as Promise<UnifiedCartItem[]>;
     },
-    [sync, isAuthenticated],
+    [sync, isAuthenticated, isUserLoading, userId],
   );
 
   const updateItem = useCallback(
@@ -792,7 +873,7 @@ export function useCartOperations(sync: ReturnType<typeof useCartServerSync>) {
 
       const task = async (): Promise<UnifiedCartItem> => {
         try {
-          if (isAuthenticated) {
+          if (isAuthenticated && !isUserLoading && user?.id) {
             const updatePayload = sync.buildServerUpdateCartItem(input);
             const optimisticPrice = sync.calculateOptimisticPrice(input);
 
@@ -847,23 +928,30 @@ export function useCartOperations(sync: ReturnType<typeof useCartServerSync>) {
         }
       };
 
-      return cartQueue.add(task) as Promise<UnifiedCartItem>;
+      try {
+        const result = await cartQueue.add(task);
+        if (!result) throw new Error('Cart update failed');
+        return result;
+      } catch (err) {
+        sync.busy.clearBusy(input.id);
+        throw err;
+      }
     },
-    [sync, isAuthenticated],
+    [sync, isAuthenticated, isUserLoading, user?.id],
   );
 
   const clearCart = useCallback(async () => {
     const task = async () => {
-      if (isAuthenticated) {
+      if (isAuthenticated && !isUserLoading && user?.id) {
         await sync.clearMutation.mutateAsync();
       } else {
-        sync.local.clearLocalCart();
+        sync.local.clearAllLocalCarts();
       }
       return [] as UnifiedCartItem[];
     };
 
     return cartQueue.add(task) as Promise<UnifiedCartItem[]>;
-  }, [isAuthenticated, sync]);
+  }, [isAuthenticated, isUserLoading, user, sync]);
 
   return {
     addItem,
