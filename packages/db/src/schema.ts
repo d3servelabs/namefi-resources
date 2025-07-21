@@ -910,3 +910,27 @@ export const huntEdgesRelations = relations(huntEdgesTable, ({ one }) => ({
     relationName: 'huntEdgeTargetUser',
   }),
 }));
+
+/**
+ * Wishlisted domains table
+ * Allows users to wishlist domains (userId + normalizedDomainName)
+ */
+export const wishlistedDomainsTable = pgTable(
+  'wishlisted_domains',
+  {
+    ...randomUuid,
+    userId: uuid('user_id')
+      .notNull()
+      .references(() => usersTable.id, { onDelete: 'cascade' }),
+    ...normalizedDomain,
+    ...timestamps,
+  },
+  (table) => [
+    unique('wishlisted_domains_user_domain_unique').on(
+      table.userId,
+      table.normalizedDomainName,
+    ),
+    index('wishlisted_domains_user_id_idx').on(table.userId),
+    index('wishlisted_domains_domain_idx').on(table.normalizedDomainName),
+  ],
+);

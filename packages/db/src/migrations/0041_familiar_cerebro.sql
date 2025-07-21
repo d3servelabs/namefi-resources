@@ -1,0 +1,12 @@
+CREATE TABLE "wishlisted_domains" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"user_id" uuid NOT NULL,
+	"normalized_domain_name" text NOT NULL,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"updated_at" timestamp DEFAULT now() NOT NULL,
+	CONSTRAINT "wishlisted_domains_user_domain_unique" UNIQUE("user_id","normalized_domain_name")
+);
+--> statement-breakpoint
+ALTER TABLE "wishlisted_domains" ADD CONSTRAINT "wishlisted_domains_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+CREATE INDEX "wishlisted_domains_user_id_idx" ON "wishlisted_domains" USING btree ("user_id");--> statement-breakpoint
+CREATE INDEX "wishlisted_domains_domain_idx" ON "wishlisted_domains" USING btree ("normalized_domain_name");

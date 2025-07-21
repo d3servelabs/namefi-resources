@@ -7,6 +7,7 @@ import {
   paymentsTable,
   refundsTable,
   usersTable,
+  wishlistedDomainsTable,
 } from './schema';
 
 // User relations
@@ -14,6 +15,7 @@ export const usersRelations = relations(usersTable, ({ many }) => ({
   cartItems: many(cartItemsTable),
   orders: many(ordersTable),
   aiGenerations: many(aiGenerationsTable),
+  wishlistedDomains: many(wishlistedDomainsTable),
 }));
 
 // Cart items relations
