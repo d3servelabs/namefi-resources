@@ -1,4 +1,4 @@
-import { db, usersTable } from '@namefi-astra/db';
+import { db, usersTable, wishlistedDomainsTable } from '@namefi-astra/db';
 import {
   NAMEFI_NFT_CONTRACT_ADDRESS,
   namefiNormalizedDomainSchema,
@@ -6,7 +6,7 @@ import {
 } from '@namefi-astra/utils';
 import type { LinkedAccountWithMetadata } from '@privy-io/server-auth';
 import { TRPCError } from '@trpc/server';
-import { eq, sql } from 'drizzle-orm';
+import { and, desc, eq, sql, inArray } from 'drizzle-orm';
 import { groupBy, isEmpty, isNil, isNotEmpty, isNotNil, pluck } from 'ramda';
 import { http, createPublicClient } from 'viem';
 import * as chains from 'viem/chains';
@@ -17,7 +17,7 @@ import {
   userQualifiesForDomainNamePromo,
 } from '#lib/userPromo';
 import { NftAbi } from '@namefi-astra/utils/abis/namefi-nft';
-import { resolve } from '../../utils/resolve';
+import { resolve } from '@namefi-astra/utils/promises/resolve';
 import {
   authedOrPublicProcedure,
   createTRPCRouter,
@@ -33,7 +33,6 @@ import {
   privyStorageToPrivyCustomMetadata,
 } from '../types';
 import { RDAP } from '@namefi-astra/registrars/lib/rdap-whois/rdap_client';
-import { WhoisClient as WHOIS } from '@namefi-astra/registrars/lib/rdap-whois/whois_client';
 import { sldRegistrar } from '#lib/namefi-registry';
 import { toPunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
 import { getDomainLevels } from '#lib/get-domain-levels';
@@ -434,6 +433,75 @@ export const usersRouter = createTRPCRouter({
       return results;
     },
   ),
+
+  toggleWishlistDomain: protectedProcedure
+    .input(
+      z.array(
+        z.object({
+          normalizedDomainName: namefiNormalizedDomainSchema,
+          isWishlisted: z.boolean().optional(),
+        }),
+      ),
+    )
+    .mutation(async ({ input, ctx }) => {
+      const { user } = ctx;
+
+      const toAdd = input.filter((item) => item.isWishlisted);
+      const toRemove = input.filter((item) => item.isWishlisted === false);
+
+      const [error] = await resolve(
+        Promise.all([
+          toAdd.length > 0
+            ? db
+                .insert(wishlistedDomainsTable)
+                .values(
+                  toAdd.map((item) => ({
+                    userId: user.id,
+                    normalizedDomainName: item.normalizedDomainName,
+                  })),
+                )
+                .onConflictDoNothing?.()
+            : Promise.resolve(),
+          toRemove.length > 0
+            ? db.delete(wishlistedDomainsTable).where(
+                and(
+                  eq(wishlistedDomainsTable.userId, user.id),
+                  inArray(
+                    wishlistedDomainsTable.normalizedDomainName,
+                    toRemove.map((item) => item.normalizedDomainName),
+                  ),
+                ),
+              )
+            : Promise.resolve(),
+        ]),
+      );
+
+      if (error) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to update wishlist',
+          cause: error,
+        });
+      }
+
+      const wishlistedDomains = await db.query.wishlistedDomainsTable.findMany({
+        where: eq(wishlistedDomainsTable.userId, user.id),
+        orderBy: (table) => [desc(table.createdAt)],
+      });
+
+      return wishlistedDomains;
+    }),
+
+  getWishlistDomains: protectedProcedure.query(async ({ ctx }) => {
+    const { user } = ctx;
+
+    const wishlistedDomains = await db.query.wishlistedDomainsTable.findMany({
+      where: eq(wishlistedDomainsTable.userId, user.id),
+      orderBy: (table) => [desc(table.createdAt)],
+    });
+
+    return wishlistedDomains;
+  }),
 });
 
 async function getDomainsExpirationDates(
