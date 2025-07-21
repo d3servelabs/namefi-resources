@@ -17,6 +17,11 @@ import {
 import { formatAmountInUSD } from '@/utils/number';
 import { computeChargesInUsdOrThrow } from '@namefi-astra/registrars/multi-year-pricing';
 import { Loader2, SearchIcon, User, X } from 'lucide-react';
+import { useWishlistRow } from '@/hooks/use-wishlist-row';
+import {
+  AnimatedWishlistButton,
+  type WishlistButtonState,
+} from '../buttons/animated-wishlist-button';
 import { useRouter } from 'next/navigation';
 import { isNotNil } from 'ramda';
 import {
@@ -275,6 +280,27 @@ export const DomainCard: FC<{
   // Only use cart functionality if we have a valid domain name
   const { cart, inCart, addingBusy, removingBusy } = useCartRow(domain);
 
+  // Wishlist logic
+  const { inWishlist, isBusy: wishlistBusy, wishlist } = useWishlistRow(domain);
+  const wishlistState: WishlistButtonState = wishlistBusy
+    ? inWishlist
+      ? 'removing'
+      : 'adding'
+    : inWishlist
+      ? 'wishlisted'
+      : 'not-wishlisted';
+
+  console.log({ domain, inWishlist, wishlistBusy });
+
+  const handleWishlistToggle = async () => {
+    if (!domain || wishlistBusy) return;
+    if (inWishlist) {
+      await wishlist.removeItem(domain);
+    } else {
+      await wishlist.addItem(domain);
+    }
+  };
+
   const cartItem = useMemo(() => {
     if (!domain || !inCart) return undefined;
     return cart.cartData?.find((item) => item.normalizedDomainName === domain);
@@ -437,7 +463,18 @@ export const DomainCard: FC<{
               </div>
             )}
           </div>
-          <div className="flex items-center justify-center shrink-0">
+          <div className="flex items-center justify-center shrink-0 gap-2">
+            {/* Wishlist Heart Button */}
+            {domain && (
+              <AnimatedWishlistButton
+                state={wishlistState}
+                aria-label={
+                  inWishlist ? 'Remove from wishlist' : 'Add to wishlist'
+                }
+                onToggle={handleWishlistToggle}
+                disabled={wishlistBusy}
+              />
+            )}
             {shouldShowActionSkeleton ? (
               <Skeleton className="h-10 w-[120px] rounded-full bg-gray-600/50" />
             ) : isUnsupported ? (

@@ -20,9 +20,10 @@ const PENDING_DELETE = '__pendingDelete' as const;
 export const wishlistDomainKey = (userId: string, domain: string) =>
   `${userId}:${domain}`;
 export type ServerReadWishlistItem =
-  AppRouterOutput['users']['getWishlistDomains'][number];
+  AppRouterOutput['wishlist']['getWishlistDomains'][number];
 export type ServerWriteWishlistItem =
-  AppRouterInput['users']['toggleWishlistDomain'][number];
+  | AppRouterInput['wishlist']['addToWishlist'][number]
+  | AppRouterInput['wishlist']['removeFromWishlist'][number];
 
 /**
  * Tag for marking an item as pending delete (optimistic UI)
@@ -324,7 +325,7 @@ export function useWishlistServerSync() {
   const local = useWishlistLocal();
 
   const WishlistKey = useMemo(
-    () => trpc.users.getWishlistDomains.queryKey(),
+    () => trpc.wishlist.getWishlistDomains.queryKey(),
     [trpc],
   );
 
@@ -368,7 +369,7 @@ export function useWishlistServerSync() {
   }, [queryClient, WishlistKey]);
 
   const { data: serverData, isLoading: isServerLoading } = useQuery({
-    ...trpc.users.getWishlistDomains.queryOptions(),
+    ...trpc.wishlist.getWishlistDomains.queryOptions(),
     enabled: isAuthenticated && !isUserLoading && !!user?.id,
   });
 
@@ -395,6 +396,8 @@ export function useWishlistServerSync() {
     normalize,
   ]);
 
+  console.log({ wishlistData });
+
   const isDomainWishlisted = useCallback(
     (d: string) =>
       wishlistData?.some((i) => i.normalizedDomainName === d) ?? false,
@@ -416,7 +419,7 @@ export function useWishlistServerSync() {
 
   // Mutations
   const addMutation = useMutation({
-    ...trpc.users.toggleWishlistDomain.mutationOptions(),
+    ...trpc.wishlist.addToWishlist.mutationOptions(),
     retry: (failCount, err) => {
       const status = err?.data?.httpStatus;
       return (status === undefined || status >= 500) && failCount < 3;
@@ -438,25 +441,15 @@ export function useWishlistServerSync() {
       rollback(ctx);
       ctx?.keys?.forEach(busy.clearBusy);
     },
-    onSuccess: (server, _vars, ctx) => {
-      const authoritative = normalize(server);
+    onSuccess: (serverRows, _vars, ctx) => {
+      const authoritative = normalize(serverRows);
       queryClient.setQueryData(
         WishlistKey,
         (old: UnifiedWishlistItem[] = []) => {
-          const map = new Map(old.map((i) => [i.normalizedDomainName, i]));
-          authoritative.forEach((s) => {
-            const existing = map.get(s.normalizedDomainName);
-            if (existing && isOptimistic(existing))
-              map.set(s.normalizedDomainName, s);
-          });
-          // Remove any remaining optimistic items not returned by the server
-          const authoritativeDomains = new Set(
-            authoritative.map((s) => s.normalizedDomainName),
-          );
-          return [...map.values()].filter(
-            (item) =>
-              !isOptimistic(item) ||
-              authoritativeDomains.has(item.normalizedDomainName),
+          const map = new Map(old.map((o) => [o.normalizedDomainName, o]));
+          authoritative.forEach((r) => map.set(r.normalizedDomainName, r));
+          return [...map.values()].map((i) =>
+            isOptimistic(i) ? stripOptimistic(i) : i,
           );
         },
       );
@@ -472,7 +465,7 @@ export function useWishlistServerSync() {
   });
 
   const removeMutation = useMutation({
-    ...trpc.users.toggleWishlistDomain.mutationOptions(),
+    ...trpc.wishlist.removeFromWishlist.mutationOptions(),
     retry: (failCount, err) => {
       const status = err?.data?.httpStatus;
       return (status === undefined || status >= 500) && failCount < 3;
@@ -511,14 +504,7 @@ export function useWishlistServerSync() {
       queryClient.setQueryData(
         WishlistKey,
         (old: UnifiedWishlistItem[] = []) => {
-          return old.filter(
-            (i) =>
-              !(
-                removedSet.has(i.normalizedDomainName) &&
-                !isOptimistic(i) &&
-                !isPendingDelete(i)
-              ),
-          );
+          return old.filter((i) => !removedSet.has(i.normalizedDomainName));
         },
       );
       ctx?.keys?.forEach(busy.clearBusy);
@@ -550,7 +536,6 @@ export function useWishlistServerSync() {
         const writes: ServerWriteWishlistItem[] = local.localWishlist.map(
           (i) => ({
             normalizedDomainName: i.normalizedDomainName,
-            isWishlisted: true,
           }),
         );
         if (writes.length) {
@@ -636,7 +621,7 @@ export function useWishlistOperations(
           if (sync.isDomainBusy(d)) return;
           sync.busy.markBusy(wishlistDomainKey(userId, d));
           touchedDomains.push(d);
-          payload.push({ normalizedDomainName: d, isWishlisted: true });
+          payload.push({ normalizedDomainName: d });
         });
         if (!payload.length) return [];
         const task = async (): Promise<UnifiedWishlistItem[]> => {
@@ -700,7 +685,7 @@ export function useWishlistOperations(
             });
             try {
               const removePayload: ServerWriteWishlistItem[] = list.map(
-                (d) => ({ normalizedDomainName: d, isWishlisted: false }),
+                (d) => ({ normalizedDomainName: d }),
               );
               const removed =
                 await sync.removeMutation.mutateAsync(removePayload);

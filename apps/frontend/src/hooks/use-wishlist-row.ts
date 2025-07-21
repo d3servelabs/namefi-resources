@@ -10,9 +10,7 @@ import { useAuth } from '@/hooks/use-auth';
 interface WishlistRowStatus {
   wishlist: ReturnType<typeof useWishlistContext>;
   inWishlist: boolean;
-  addingBusy: boolean;
-  updatingBusy: boolean;
-  removingBusy: boolean;
+  isBusy: boolean;
 }
 
 export function useWishlistRow(domain?: string): WishlistRowStatus {
@@ -27,9 +25,7 @@ export function useWishlistRow(domain?: string): WishlistRowStatus {
       return {
         wishlist,
         inWishlist: false,
-        addingBusy: false,
-        updatingBusy: false,
-        removingBusy: false,
+        isBusy: false,
       };
     }
 
@@ -41,9 +37,7 @@ export function useWishlistRow(domain?: string): WishlistRowStatus {
     return {
       wishlist,
       inWishlist,
-      addingBusy,
-      updatingBusy: rowBusy && !isPendingDelete(row),
-      removingBusy: rowBusy && isPendingDelete(row),
+      isBusy: addingBusy || (rowBusy && isPendingDelete(row)),
     };
   }, [domain, wishlistData, userId, wishlist]);
 }

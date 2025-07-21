@@ -16,6 +16,7 @@ import { ProgressProvider } from './progress';
 import { FORCED_THEME, SessionsProvider } from './sessions';
 import { ThemeProvider } from './theme';
 import { TrpcProvider } from './trpc';
+import { WishlistProvider } from './wishlist';
 
 type Props = { children: ReactNode };
 
@@ -44,7 +45,9 @@ export const Providers = ({ children }: Readonly<Props>) => {
                         <WagmiProvider config={config}>
                           <UsercentricsProvider>
                             <InteractionLoggersProvider>
-                              <CartProvider>{children}</CartProvider>
+                              <WishlistProvider>
+                                <CartProvider>{children}</CartProvider>
+                              </WishlistProvider>
                             </InteractionLoggersProvider>
                           </UsercentricsProvider>
                         </WagmiProvider>
