@@ -104,12 +104,12 @@ describe('Hunt Router', () => {
   });
 
   const caller = huntRouter.createCaller({
-    thirdPartyOriginHostname: null,
+    poweredByNamefiDomain: null,
     testUser,
   } satisfies Omit<TrpcContext, 'db' | 'req' | 'res'> as TrpcContext);
 
   const otherCaller = huntRouter.createCaller({
-    thirdPartyOriginHostname: null,
+    poweredByNamefiDomain: null,
     testUser: otherUser,
   } satisfies Omit<TrpcContext, 'db' | 'req' | 'res'> as TrpcContext);
 
@@ -578,7 +578,7 @@ describe('Hunt Router', () => {
     it('should get trending domains without authentication', async () => {
       // Create a public caller without authentication
       const publicCaller = huntRouter.createCaller({
-        thirdPartyOriginHostname: null,
+        poweredByNamefiDomain: null,
         testUser: null, // No user for public access
       } as any);
 
@@ -617,7 +617,7 @@ describe('Hunt Router', () => {
     it('should get domain details without authentication', async () => {
       // Create a public caller without authentication
       const publicCaller = huntRouter.createCaller({
-        thirdPartyOriginHostname: null,
+        poweredByNamefiDomain: null,
         testUser: null, // No user for public access
       } as any);
 
@@ -644,7 +644,7 @@ describe('Hunt Router', () => {
 
     it('should handle non-existent domain in public getDomainDetail', async () => {
       const publicCaller = huntRouter.createCaller({
-        thirdPartyOriginHostname: null,
+        poweredByNamefiDomain: null,
         testUser: null,
       } as any);
 
@@ -657,7 +657,7 @@ describe('Hunt Router', () => {
 
     it('should filter trending domains by time range in public endpoint', async () => {
       const publicCaller = huntRouter.createCaller({
-        thirdPartyOriginHostname: null,
+        poweredByNamefiDomain: null,
         testUser: null,
       } as any);
 
@@ -689,7 +689,7 @@ describe('Hunt Router', () => {
 
     it('should handle pagination correctly in public trending domains', async () => {
       const publicCaller = huntRouter.createCaller({
-        thirdPartyOriginHostname: null,
+        poweredByNamefiDomain: null,
         testUser: null,
       } as any);
 
@@ -717,7 +717,7 @@ describe('Hunt Router', () => {
 
     it('should return correct rank values with pagination in public endpoint', async () => {
       const publicCaller = huntRouter.createCaller({
-        thirdPartyOriginHostname: null,
+        poweredByNamefiDomain: null,
         testUser: null,
       } as any);
 
@@ -892,7 +892,7 @@ describe('Hunt Router', () => {
       });
 
       const publicCaller = huntRouter.createCaller({
-        thirdPartyOriginHostname: null,
+        poweredByNamefiDomain: null,
         testUser: null,
       } as any);
 
@@ -1045,7 +1045,7 @@ describe('Hunt Router', () => {
 
       it('should get period awards with correct ordering', async () => {
         const publicCaller = huntRouter.createCaller({
-          thirdPartyOriginHostname: null,
+          poweredByNamefiDomain: null,
           testUser: null,
         } as any);
 
@@ -1086,7 +1086,7 @@ describe('Hunt Router', () => {
 
       it('should handle pagination for period awards', async () => {
         const publicCaller = huntRouter.createCaller({
-          thirdPartyOriginHostname: null,
+          poweredByNamefiDomain: null,
           testUser: null,
         } as any);
 
@@ -1115,7 +1115,7 @@ describe('Hunt Router', () => {
 
       it('should return empty results for non-existent period', async () => {
         const publicCaller = huntRouter.createCaller({
-          thirdPartyOriginHostname: null,
+          poweredByNamefiDomain: null,
           testUser: null,
         } as any);
 
@@ -1201,7 +1201,7 @@ describe('Hunt Router', () => {
 
       it('should get active campaign with live rankings', async () => {
         const publicCaller = huntRouter.createCaller({
-          thirdPartyOriginHostname: null,
+          poweredByNamefiDomain: null,
           testUser: null,
         } as any);
 
@@ -1246,7 +1246,7 @@ describe('Hunt Router', () => {
 
       it('should get finished campaign with finalized awards', async () => {
         const publicCaller = huntRouter.createCaller({
-          thirdPartyOriginHostname: null,
+          poweredByNamefiDomain: null,
           testUser: null,
         } as any);
 
@@ -1281,7 +1281,7 @@ describe('Hunt Router', () => {
 
       it('should throw error for non-existent campaign', async () => {
         const publicCaller = huntRouter.createCaller({
-          thirdPartyOriginHostname: null,
+          poweredByNamefiDomain: null,
           testUser: null,
         } as any);
 
@@ -1296,7 +1296,7 @@ describe('Hunt Router', () => {
 
       it('should handle pagination for campaign rankings', async () => {
         const publicCaller = huntRouter.createCaller({
-          thirdPartyOriginHostname: null,
+          poweredByNamefiDomain: null,
           testUser: null,
         } as any);
 
@@ -1360,7 +1360,7 @@ describe('Hunt Router', () => {
         // They should still appear in campaign results with 0 votes
 
         const publicCaller = huntRouter.createCaller({
-          thirdPartyOriginHostname: null,
+          poweredByNamefiDomain: null,
           testUser: null,
         } as any);
 
@@ -1477,7 +1477,7 @@ describe('Hunt Router', () => {
 
       it('should get all awards for a domain', async () => {
         const publicCaller = huntRouter.createCaller({
-          thirdPartyOriginHostname: null,
+          poweredByNamefiDomain: null,
           testUser: null,
         } as any);
 
@@ -1528,7 +1528,7 @@ describe('Hunt Router', () => {
 
       it('should return empty results for domain with no awards', async () => {
         const publicCaller = huntRouter.createCaller({
-          thirdPartyOriginHostname: null,
+          poweredByNamefiDomain: null,
           testUser: null,
         } as any);
 
@@ -1555,7 +1555,7 @@ describe('Hunt Router', () => {
         ]);
 
         const publicCaller = huntRouter.createCaller({
-          thirdPartyOriginHostname: null,
+          poweredByNamefiDomain: null,
           testUser: null,
         } as any);
 

@@ -9,10 +9,10 @@ const productionConfig: ConfigInput = {
   SMTP_SECURE: true,
   SMTP_HOST: 'email-smtp.us-east-1.amazonaws.com',
   APP_URL: 'astra.namefi.io',
-  NAMEFI_FIRST_PARTY_HOSTNAMES: ['astra.namefi.io'],
-  POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES: ['0x.city', 'poweredby.namefi.io'],
+  NAMEFI_FIRST_PARTY_HOSTNAMES: ['astra.namefi.io', 'poweredby.namefi.io'],
   ADDITIONAL_HOSTNAME_MAP: {
     '0xcity.astra.namefi.io': '0x.city',
+    '0x.city.astra.namefi.io': '0x.city',
   },
   ALLOWED_CHAINS: [chains.mainnet.id, chains.base.id],
   EMAIL_ADDRESS_TO_OWNED_HOSTNAMES_MAP: {

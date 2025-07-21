@@ -9,8 +9,8 @@ import {
 } from '@namefi-astra/db';
 import { checksumWalletAddressSchema } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
-import { and, desc, eq, inArray } from 'drizzle-orm';
-import { isNil } from 'ramda';
+import { and, desc, eq, getTableColumns, ilike, inArray } from 'drizzle-orm';
+import { isNil, isNotNil } from 'ramda';
 import Stripe from 'stripe';
 import { zeroAddress } from 'viem';
 import { z } from 'zod';
@@ -25,7 +25,6 @@ import { createTRPCRouter, protectedProcedure } from '../base';
 import { createOrderInputSchema } from '../types';
 import {
   getPrivyUserLinkedEthereumChecksumWalletAddresses,
-  isNormalizedDomainNameAllowedForOriginHostname,
   privyClient,
 } from '../utils';
 import type { Json } from 'drizzle-zod';
@@ -240,27 +239,31 @@ export const ordersRouter = createTRPCRouter({
       return order;
     }),
 
-  getOrderItems: protectedProcedure.query(async ({ ctx }) => {
-    // TODO: (sid) Consider addding pagination to this query if we start to have a lot of orders
-    const allOrders = await db.query.ordersTable.findMany({
-      where: eq(ordersTable.userId, ctx.user.id),
-      with: {
-        items: true,
-      },
-      orderBy: [desc(ordersTable.createdAt)],
-    });
-
-    return allOrders.flatMap((order) =>
-      order.items.flatMap((item) =>
-        isNormalizedDomainNameAllowedForOriginHostname(
-          item.normalizedDomainName,
-          ctx.thirdPartyOriginHostname,
+  getOrderItems: protectedProcedure.query(
+    async ({ ctx: { user, poweredByNamefiDomain } }) => {
+      // TODO: (sid) Consider addding pagination to this query if we start to have a lot of order
+      const items = await db
+        .select({
+          ...getTableColumns(orderItemsTable),
+        })
+        .from(orderItemsTable)
+        .leftJoin(ordersTable, eq(orderItemsTable.orderId, ordersTable.id))
+        .where(
+          and(
+            eq(ordersTable.userId, user.id),
+            isNotNil(poweredByNamefiDomain)
+              ? ilike(
+                  orderItemsTable.normalizedDomainName,
+                  `%.${poweredByNamefiDomain}`,
+                )
+              : undefined,
+          ),
         )
-          ? [{ ...item, orderId: order.id }]
-          : [],
-      ),
-    );
-  }),
+        .orderBy(desc(ordersTable.createdAt));
+
+      return items;
+    },
+  ),
 
   getOrderPaymentMethodDetails: protectedProcedure
     .input(z.object({ orderId: z.string() }))

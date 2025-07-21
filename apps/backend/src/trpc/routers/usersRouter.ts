@@ -107,7 +107,7 @@ export const usersRouter = createTRPCRouter({
 
   // TODO: add tests for this procedure
   getCurrentUserDomains: protectedProcedure.query(async ({ ctx }) => {
-    const { user, thirdPartyOriginHostname } = ctx;
+    const { user, poweredByNamefiDomain } = ctx;
     const [error, privyUser] = await resolve(
       privyClient.getUserById(user.privyUserId),
     );
@@ -136,11 +136,8 @@ export const usersRouter = createTRPCRouter({
               table.ownerAddress,
               privyUserLinkedEthereumChecksumWalletAddresses,
             ),
-            thirdPartyOriginHostname
-              ? ilike(
-                  table.normalizedDomainName,
-                  `%.${thirdPartyOriginHostname}`,
-                )
+            poweredByNamefiDomain
+              ? ilike(table.normalizedDomainName, `%.${poweredByNamefiDomain}`)
               : undefined,
             ONLY_SHOW_SUBDOMAINS_FOR_CURRENT_USER
               ? gte(
@@ -197,7 +194,7 @@ export const usersRouter = createTRPCRouter({
 
   getManagerPageEntrypointViewable: authedOrPublicProcedure.query(
     async ({ ctx }) => {
-      const { user, thirdPartyOriginHostname } = ctx;
+      const { user, poweredByNamefiDomain } = ctx;
 
       if (!user) {
         return { viewable: false };
@@ -216,8 +213,7 @@ export const usersRouter = createTRPCRouter({
           privyUser.email.address
         ]?.filter(
           (domain) =>
-            isNil(thirdPartyOriginHostname) ||
-            domain === thirdPartyOriginHostname,
+            isNil(poweredByNamefiDomain) || domain === poweredByNamefiDomain,
         ) ?? [];
 
       return { viewable: isNotEmpty(userOwnedParentDomains) };
@@ -226,7 +222,7 @@ export const usersRouter = createTRPCRouter({
 
   getRegisteredSubdomainsForParentDomainOwner: protectedProcedure.query(
     async ({ ctx }) => {
-      const { user, thirdPartyOriginHostname } = ctx;
+      const { user, poweredByNamefiDomain } = ctx;
       const [error, privyUser] = await resolve(
         privyClient.getUserById(user.privyUserId),
       );
@@ -250,9 +246,9 @@ export const usersRouter = createTRPCRouter({
         config.EMAIL_ADDRESS_TO_OWNED_HOSTNAMES_MAP[privyUser.email.address] ??
         [];
 
-      const parentDomains = thirdPartyOriginHostname
+      const parentDomains = poweredByNamefiDomain
         ? userOwnedParentDomains.filter(
-            (domain) => domain === thirdPartyOriginHostname,
+            (domain) => domain === poweredByNamefiDomain,
           )
         : userOwnedParentDomains;
 
@@ -266,8 +262,8 @@ export const usersRouter = createTRPCRouter({
         where: (table, { and, ilike, gte, or }) =>
           and(
             or(
-              ...parentDomains.map((thirdPartyOrigin) =>
-                ilike(table.normalizedDomainName, `%.${thirdPartyOrigin}`),
+              ...parentDomains.map((poweredByNamefiDomain) =>
+                ilike(table.normalizedDomainName, `%.${poweredByNamefiDomain}`),
               ),
             ),
             gte(
@@ -320,9 +316,9 @@ export const usersRouter = createTRPCRouter({
 
   getUserQualifyingDomainNamesForPromo: protectedProcedure.query(
     async ({ ctx }) => {
-      const { user, thirdPartyOriginHostname } = ctx;
+      const { user, poweredByNamefiDomain } = ctx;
 
-      if (thirdPartyOriginHostname !== '0x.city') {
+      if (poweredByNamefiDomain !== '0x.city') {
         //promo is only available for 0x.city
         return [];
       }

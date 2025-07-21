@@ -12,7 +12,7 @@ import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 import { addWeeks, isAfter, subDays } from 'date-fns';
 import { ParseResultType, parseDomain } from 'parse-domain';
-import { groupBy, isNil } from 'ramda';
+import { flatten, groupBy, isNil, toPairs, pluck } from 'ramda';
 import { config } from '#lib/env';
 import { userQualifiesForDomainNamePromo } from '#lib/userPromo';
 import { getDomainLevels } from './get-domain-levels';
@@ -26,7 +26,7 @@ import { toPunycodeDomainName } from '@namefi-astra/registrars/lib/data/validati
 
 import type { DomainPricingDetails } from '@namefi-astra/registrars/lib/abstract-registrar/index';
 import { resolve } from '@namefi-astra/utils/promises/resolve';
-import { and, eq, gt, inArray, or } from 'drizzle-orm';
+import { and, eq, gt, inArray, or, sql } from 'drizzle-orm';
 import { secrets } from '#lib/env';
 import { logger } from '#lib/logger';
 import { computeChargesInUsdOrThrow } from '@namefi-astra/registrars/multi-year-pricing';
@@ -81,20 +81,34 @@ const generateUnavailableDomainInfo = (domain: NamefiNormalizedDomain) => ({
   importable: false,
 });
 
-export const getPoweredByNamefi3PDomains = () => {
+export const getPoweredByNamefi3PDomains = async () => {
   const fromDb: string[] = [];
-  return Promise.resolve([
-    ...fromDb,
-    '0x.city',
-    'taylor.cv',
-  ] as NamefiNormalizedDomain[]);
+  return Array.from(
+    new Set([...fromDb, '0x.city', 'taylor.cv'] as NamefiNormalizedDomain[]),
+  );
+};
+
+export const getPoweredByNamefiDomainFromHostname = async (
+  _hostname: string,
+) => {
+  const hostname = _hostname.toLowerCase().trim();
+
+  const fromConfig = config.ADDITIONAL_HOSTNAME_MAP[hostname];
+  if (fromConfig) {
+    return fromConfig;
+  }
+  if (Object.values(config.ADDITIONAL_HOSTNAME_MAP).includes(hostname)) {
+    return hostname;
+  }
 };
 
 // biome-ignore lint/suspicious/useAwait: it will be a db query in upcoming updates
 export const getPoweredByNamefi3PHostnames = async () => {
-  const directDomains = await getPoweredByNamefi3PDomains();
-  const fromConfig = config.POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES;
-  return Promise.resolve([...directDomains, ...fromConfig]);
+  const fromDb: string[] = [];
+  // both key and value of config.ADDITIONAL_HOSTNAME_MAP are correct hostnames
+  const fromConfig = flatten(toPairs(config.ADDITIONAL_HOSTNAME_MAP));
+
+  return Array.from(new Set([...fromDb, ...fromConfig]));
 };
 
 // biome-ignore lint/suspicious/useAwait: it will be a db query in upcoming updates

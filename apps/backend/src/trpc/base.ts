@@ -8,7 +8,10 @@ import superjson from 'superjson';
 import { ZodError } from 'zod';
 import { config, secrets } from '#lib/env';
 import { logger } from '#lib/logger';
-import { getPoweredByNamefi3PHostnames } from '#lib/namefi-registry';
+import {
+  getPoweredByNamefi3PHostnames,
+  getPoweredByNamefiDomainFromHostname,
+} from '#lib/namefi-registry';
 import { privyClient } from './utils';
 import { verifyUserAuthAndGetUser, requireUserAuth } from '#lib/auth';
 
@@ -26,19 +29,19 @@ import { verifyUserAuthAndGetUser, requireUserAuth } from '#lib/auth';
 export const createContext = async (
   _opts: FetchCreateContextFnOptions,
   c: Context,
-) => {
-  const originText = c.req.header('Origin');
-  let thirdPartyOriginHostname: string | null = null;
-
+): Promise<TrpcContext> => {
   if (config.ALLOW_ALL_ORIGINS) {
     return {
       req: c.req,
       res: c.res,
       db,
-      thirdPartyOriginHostname,
+      poweredByNamefiDomain: null,
       testUser: null,
     };
   }
+
+  const originText = c.req.header('Origin');
+  let poweredByNamefiDomain: string | null = null;
 
   if (originText && isNotEmpty(originText)) {
     try {
@@ -50,21 +53,21 @@ export const createContext = async (
         const allowedThirdPartyHostnames =
           await getPoweredByNamefi3PHostnames();
         // if it's not an allowed parent domain, throw an error
-        if (
-          !(
-            allowedThirdPartyHostnames.includes(origin.hostname) ||
-            allowedThirdPartyHostnames.includes(
-              config.ADDITIONAL_HOSTNAME_MAP[origin.hostname],
-            )
-          )
-        ) {
+        if (!allowedThirdPartyHostnames.includes(origin.hostname)) {
           throw new TRPCError({
             code: 'FORBIDDEN',
             message: 'parent domain not allowed',
           });
         }
-        thirdPartyOriginHostname =
-          config.ADDITIONAL_HOSTNAME_MAP[origin.hostname] ?? origin.hostname;
+        const thirdPartyDomainFromHostname =
+          (await getPoweredByNamefiDomainFromHostname(origin.hostname)) ?? null;
+        poweredByNamefiDomain = thirdPartyDomainFromHostname;
+        if (!thirdPartyDomainFromHostname) {
+          throw new TRPCError({
+            code: 'FORBIDDEN',
+            message: 'parent domain not allowed',
+          });
+        }
       }
     } catch (error) {
       console.error('Error parsing origin', error);
@@ -75,10 +78,7 @@ export const createContext = async (
     req: c.req,
     res: c.res,
     db,
-    /**
-     * The hostname of the selling SLD, it will be null in case it is a Namefi first party origin
-     */
-    thirdPartyOriginHostname,
+    poweredByNamefiDomain,
     /**
      * A test user we can provide to return when verifyUserAuthAndCreation is called from tests
      */
@@ -90,7 +90,10 @@ export type TrpcContext = {
   req: Context['req'];
   res: Context['res'];
   db: typeof db;
-  thirdPartyOriginHostname: string | null;
+  /**
+   * The domain name of the selling SLD, it will be null in case it is a Namefi first party origin
+   */
+  poweredByNamefiDomain: string | null;
   testUser: UserSelect | null;
 };
 

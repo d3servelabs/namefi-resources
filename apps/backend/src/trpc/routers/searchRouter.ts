@@ -44,7 +44,7 @@ export const searchRouter = createTRPCRouter({
 
   getClubsCategoriesWithStats: authedOrPublicProcedure.query(
     async ({ ctx }) => {
-      const parentDomain = ctx.thirdPartyOriginHostname;
+      const parentDomain = ctx.poweredByNamefiDomain;
       const startTime = performance.now();
       const categories = await getClubsCategoriesWithStats(parentDomain);
       const endTime = performance.now();
@@ -68,7 +68,7 @@ export const searchRouter = createTRPCRouter({
     .query(async ({ input, ctx }) => {
       const { query } = input;
       const parentDomain =
-        input.parentDomain ?? ctx.thirdPartyOriginHostname ?? undefined;
+        input.parentDomain ?? ctx.poweredByNamefiDomain ?? undefined;
       const domains = generateDomainSuggestions(query, parentDomain);
       return { domains };
     }),

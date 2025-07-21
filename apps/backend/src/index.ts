@@ -39,12 +39,7 @@ app.use(async (...args) => {
             return null;
           }
 
-          if (
-            allowedHostnames.includes(parsedOrigin.hostname) ||
-            allowedHostnames.includes(
-              config.ADDITIONAL_HOSTNAME_MAP[parsedOrigin.hostname],
-            )
-          ) {
+          if (allowedHostnames.includes(parsedOrigin.hostname)) {
             return origin;
           }
         } catch (error) {

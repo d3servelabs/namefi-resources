@@ -10,10 +10,10 @@ const developmentConfig: ConfigInput = {
   SMTP_HOST: 'smtp.mail.namefi.dev',
   SMTP_SECURE: false,
   APP_URL: 'localhost:3001',
-  NAMEFI_FIRST_PARTY_HOSTNAMES: ['astra.namefi.dev'],
-  POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES: ['0x.city', 'poweredby.namefi.dev'],
+  NAMEFI_FIRST_PARTY_HOSTNAMES: ['astra.namefi.dev', 'poweredby.namefi.dev'],
   ADDITIONAL_HOSTNAME_MAP: {
     '0xcity.astra.namefi.dev': '0x.city',
+    '0x.city.astra.namefi.dev': '0x.city',
   },
   ALLOW_ALL_ORIGINS: true,
   ALLOWED_CHAINS: [chains.sepolia.id, chains.base.id, chains.mainnet.id],

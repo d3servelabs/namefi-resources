@@ -56,7 +56,7 @@ describe('Search Router', () => {
   // Create an actual caller for the router
   // The search router doesn't use context values, so we can use a type assertion
   const caller = searchRouter.createCaller({
-    thirdPartyOriginHostname: null,
+    poweredByNamefiDomain: null,
     testUser,
   } satisfies Omit<TrpcContext, 'db' | 'req' | 'res'> as TrpcContext);
 

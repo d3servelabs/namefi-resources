@@ -242,7 +242,7 @@ describe('getUserQualifiesForDomainNamePromo', () => {
     // Create a caller for the router with testUserWithQualifyingEmail
     const callerWithUserWithQualifyingEmail1 = usersRouter.createCaller(
       {
-        thirdPartyOriginHostname: null,
+        poweredByNamefiDomain: null,
         testUser: {
           ...baseTestUser,
           id: 'testUserWithQualifyingEmail',
@@ -270,7 +270,7 @@ describe('getUserQualifiesForDomainNamePromo', () => {
     // Create a caller for the router with testUserWithQualifyingTwitterHandle
     const callerWithUserWithQualifyingTwitterHandle = usersRouter.createCaller(
       {
-        thirdPartyOriginHostname: null,
+        poweredByNamefiDomain: null,
         testUser: {
           ...baseTestUser,
           id: 'testUserWithQualifyingTwitterHandle',
@@ -298,7 +298,7 @@ describe('getUserQualifiesForDomainNamePromo', () => {
     // Create a caller for the router with testUserWithQualifyingTwitterName
     const callerWithUserWithQualifyingTwitterName = usersRouter.createCaller(
       {
-        thirdPartyOriginHostname: null,
+        poweredByNamefiDomain: null,
         testUser: {
           ...baseTestUser,
           id: 'testUserWithQualifyingTwitterName',
@@ -326,7 +326,7 @@ describe('getUserQualifiesForDomainNamePromo', () => {
     // Create a caller for the router with testUserWithQualifyingGithubEmail
     const callerWithUserWithQualifyingGithubEmail = usersRouter.createCaller(
       {
-        thirdPartyOriginHostname: null,
+        poweredByNamefiDomain: null,
         testUser: {
           ...baseTestUser,
           id: 'testUserWithQualifyingGithubEmail',
@@ -354,7 +354,7 @@ describe('getUserQualifiesForDomainNamePromo', () => {
     // Create a caller for the router with testUserWithQualifyingGithubUsername
     const callerWithUserWithQualifyingGithubUsername = usersRouter.createCaller(
       {
-        thirdPartyOriginHostname: null,
+        poweredByNamefiDomain: null,
         testUser: {
           ...baseTestUser,
           id: 'testUserWithQualifyingGithubUsername',
@@ -382,7 +382,7 @@ describe('getUserQualifiesForDomainNamePromo', () => {
     // Create a caller for the router with testUserWithQualifyingGithubName
     const callerWithUserWithQualifyingGithubName = usersRouter.createCaller(
       {
-        thirdPartyOriginHostname: null,
+        poweredByNamefiDomain: null,
         testUser: {
           ...baseTestUser,
           id: 'testUserWithQualifyingGithubName',
@@ -410,7 +410,7 @@ describe('getUserQualifiesForDomainNamePromo', () => {
     // Create a caller for the router with testUserWithQualifyingEns
     const callerWithUserWithQualifyingEns = usersRouter.createCaller(
       {
-        thirdPartyOriginHostname: null,
+        poweredByNamefiDomain: null,
         testUser: {
           ...baseTestUser,
           id: 'testUserWithQualifyingEns',
@@ -436,7 +436,7 @@ describe('getUserQualifiesForDomainNamePromo', () => {
     // Create a caller for the router with testUserWithoutQualifyingAccount
     const callerWithUserWithoutQualifyingAccount = usersRouter.createCaller(
       {
-        thirdPartyOriginHostname: null,
+        poweredByNamefiDomain: null,
         testUser: {
           ...baseTestUser,
           id: 'testUserWithoutQualifyingAccount',
@@ -464,7 +464,7 @@ describe('getUserQualifiesForDomainNamePromo', () => {
     // Create a caller for the router with testUserWithNoLinkedAccounts
     const callerWithUserWithNoLinkedAccounts = usersRouter.createCaller(
       {
-        thirdPartyOriginHostname: null,
+        poweredByNamefiDomain: null,
         testUser: {
           ...baseTestUser,
           id: 'testUserWithNoLinkedAccounts',
@@ -567,7 +567,7 @@ describe('getManagerPageEntrypointViewable', () => {
   it('should return false for null user', async () => {
     const callerWithNullUser = usersRouter.createCaller(
       {
-        thirdPartyOriginHostname: null,
+        poweredByNamefiDomain: null,
         testUser: null,
         // Mock empty request headers to get a null user in the ctx
         req: {
@@ -598,7 +598,7 @@ describe('getManagerPageEntrypointViewable', () => {
   it('should return false for user with no email address', async () => {
     const callerWithNoEmailAddress = usersRouter.createCaller(
       {
-        thirdPartyOriginHostname: null,
+        poweredByNamefiDomain: null,
         testUser: {
           id: 'testUserNoEmailAddress',
           primaryEmail: null,
@@ -624,7 +624,7 @@ describe('getManagerPageEntrypointViewable', () => {
   it('should return false when getting Privy user throws error', async () => {
     const callerWithGetPrivyUserError = usersRouter.createCaller(
       {
-        thirdPartyOriginHostname: null,
+        poweredByNamefiDomain: null,
         testUser: {
           id: 'testUserGetPrivyUserThrowsError',
           primaryEmail: null,
@@ -650,7 +650,7 @@ describe('getManagerPageEntrypointViewable', () => {
   it('should return false for non-parent-domain-owner', async () => {
     const callerWithNonParentDomainOwner = usersRouter.createCaller(
       {
-        thirdPartyOriginHostname: null,
+        poweredByNamefiDomain: null,
         testUser: {
           id: 'testUserNonParentDomainOwner',
           primaryEmail: 'testUser@d3serve.xyz',
@@ -677,7 +677,7 @@ describe('getManagerPageEntrypointViewable', () => {
     const callerWith0xCityOwnerUserFromDefiBuildOrigin =
       usersRouter.createCaller(
         {
-          thirdPartyOriginHostname: 'defi.build',
+          poweredByNamefiDomain: 'defi.build',
           testUser: testUser0xCityOwner,
         } satisfies Omit<
           TrpcContext,
@@ -696,7 +696,7 @@ describe('getManagerPageEntrypointViewable', () => {
   it('should return true for 0x.city owner from 0x.city origin', async () => {
     const callerWith0xCityOwnerUserFrom0xCityOrigin = usersRouter.createCaller(
       {
-        thirdPartyOriginHostname: '0x.city',
+        poweredByNamefiDomain: '0x.city',
         testUser: testUser0xCityOwner,
       } satisfies Omit<
         TrpcContext,
@@ -716,7 +716,7 @@ describe('getManagerPageEntrypointViewable', () => {
     const callerWith0xCityOwnerUserNoThirdPartyOrigin =
       usersRouter.createCaller(
         {
-          thirdPartyOriginHostname: null,
+          poweredByNamefiDomain: null,
           testUser: testUser0xCityOwner,
         } satisfies Omit<
           TrpcContext,
@@ -1042,7 +1042,7 @@ describe('getUserQualifyingDomainNamesForPromo', () => {
     // Create a caller for the router with testUserWithQualifyingEmail
     const callerWithUserWithQualifyingEmail1 = usersRouter.createCaller(
       {
-        thirdPartyOriginHostname: '0x.city',
+        poweredByNamefiDomain: '0x.city',
         testUser: {
           ...baseTestUser,
           id: 'testUserWithQualifyingEmail',
@@ -1069,7 +1069,7 @@ describe('getUserQualifyingDomainNamesForPromo', () => {
     // Create a caller for the router with testUserWithQualifyingTwitterHandle
     const callerWithUserWithQualifyingTwitterHandle = usersRouter.createCaller(
       {
-        thirdPartyOriginHostname: '0x.city',
+        poweredByNamefiDomain: '0x.city',
         testUser: {
           ...baseTestUser,
           id: 'testUserWithQualifyingTwitterHandle',
@@ -1099,7 +1099,7 @@ describe('getUserQualifyingDomainNamesForPromo', () => {
     // Create a caller for the router with testUserWithQualifyingTwitterName
     const callerWithUserWithQualifyingTwitterName = usersRouter.createCaller(
       {
-        thirdPartyOriginHostname: '0x.city',
+        poweredByNamefiDomain: '0x.city',
         testUser: {
           ...baseTestUser,
           id: 'testUserWithQualifyingTwitterName',
@@ -1129,7 +1129,7 @@ describe('getUserQualifyingDomainNamesForPromo', () => {
     // Create a caller for the router with testUserWithQualifyingGithubEmail
     const callerWithUserWithQualifyingGithubEmail = usersRouter.createCaller(
       {
-        thirdPartyOriginHostname: '0x.city',
+        poweredByNamefiDomain: '0x.city',
         testUser: {
           ...baseTestUser,
           id: 'testUserWithQualifyingGithubEmail',
@@ -1159,7 +1159,7 @@ describe('getUserQualifyingDomainNamesForPromo', () => {
     // Create a caller for the router with testUserWithQualifyingGithubUsername
     const callerWithUserWithQualifyingGithubUsername = usersRouter.createCaller(
       {
-        thirdPartyOriginHostname: '0x.city',
+        poweredByNamefiDomain: '0x.city',
         testUser: {
           ...baseTestUser,
           id: 'testUserWithQualifyingGithubUsername',
@@ -1189,7 +1189,7 @@ describe('getUserQualifyingDomainNamesForPromo', () => {
     // Create a caller for the router with testUserWithQualifyingGithubName
     const callerWithUserWithQualifyingGithubName = usersRouter.createCaller(
       {
-        thirdPartyOriginHostname: '0x.city',
+        poweredByNamefiDomain: '0x.city',
         testUser: {
           ...baseTestUser,
           id: 'testUserWithQualifyingGithubName',
@@ -1219,7 +1219,7 @@ describe('getUserQualifyingDomainNamesForPromo', () => {
     // Create a caller for the router with testUserWithQualifyingEns
     const callerWithUserWithQualifyingEns = usersRouter.createCaller(
       {
-        thirdPartyOriginHostname: '0x.city',
+        poweredByNamefiDomain: '0x.city',
         testUser: {
           ...baseTestUser,
           id: 'testUserWithQualifyingEns',
@@ -1250,7 +1250,7 @@ describe('getUserQualifyingDomainNamesForPromo', () => {
     const callerWithUserWithMultipleQualifyingAccounts =
       usersRouter.createCaller(
         {
-          thirdPartyOriginHostname: '0x.city',
+          poweredByNamefiDomain: '0x.city',
           testUser: {
             ...baseTestUser,
             id: 'testUserWithMultipleQualifyingAccounts',
@@ -1282,7 +1282,7 @@ describe('getUserQualifyingDomainNamesForPromo', () => {
     // Create a caller for the router with testUserWithoutQualifyingAccount
     const callerWithUserWithoutQualifyingAccount = usersRouter.createCaller(
       {
-        thirdPartyOriginHostname: '0x.city',
+        poweredByNamefiDomain: '0x.city',
         testUser: {
           ...baseTestUser,
           id: 'testUserWithoutQualifyingAccount',
@@ -1306,7 +1306,7 @@ describe('getUserQualifyingDomainNamesForPromo', () => {
     // Create a caller for the router with testUserWithNoLinkedAccounts
     const callerWithUserWithNoLinkedAccounts = usersRouter.createCaller(
       {
-        thirdPartyOriginHostname: '0x.city',
+        poweredByNamefiDomain: '0x.city',
         testUser: {
           ...baseTestUser,
           id: 'testUserWithNoLinkedAccounts',
@@ -1329,7 +1329,7 @@ describe('getUserQualifyingDomainNamesForPromo', () => {
   it('should return empty list for testUserWithSolanaWalletOnly', async () => {
     const callerWithUserWithSolanaWalletOnly = usersRouter.createCaller(
       {
-        thirdPartyOriginHostname: '0x.city',
+        poweredByNamefiDomain: '0x.city',
         testUser: {
           id: 'testUserWithSolanaWalletOnly',
           primaryEmail: null,
@@ -1355,7 +1355,7 @@ describe('getUserQualifyingDomainNamesForPromo', () => {
   it('should return empty list when getting Privy user throws error', async () => {
     const callerWithGetPrivyUserError = usersRouter.createCaller(
       {
-        thirdPartyOriginHostname: '0x.city',
+        poweredByNamefiDomain: '0x.city',
         testUser: {
           id: 'testUserGetPrivyUserThrowsError',
           primaryEmail: null,
@@ -1378,10 +1378,10 @@ describe('getUserQualifyingDomainNamesForPromo', () => {
     expect(result).toEqual([]);
   });
 
-  it('should return empty list when thirdPartyOriginHostname is not 0x.city', async () => {
+  it('should return empty list when poweredByNamefiDomain is not 0x.city', async () => {
     const callerWithDifferentHostname = usersRouter.createCaller(
       {
-        thirdPartyOriginHostname: 'different.domain',
+        poweredByNamefiDomain: 'different.domain',
         testUser: {
           ...baseTestUser,
           id: 'testUserWithQualifyingEmail',
@@ -1401,10 +1401,10 @@ describe('getUserQualifyingDomainNamesForPromo', () => {
     expect(result).toEqual([]);
   });
 
-  it('should return empty list when thirdPartyOriginHostname is null', async () => {
+  it('should return empty list when poweredByNamefiDomain is null', async () => {
     const callerWithDifferentHostname = usersRouter.createCaller(
       {
-        thirdPartyOriginHostname: null,
+        poweredByNamefiDomain: null,
         testUser: {
           ...baseTestUser,
           id: 'testUserWithQualifyingEmail',

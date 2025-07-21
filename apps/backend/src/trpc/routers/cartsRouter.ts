@@ -14,31 +14,36 @@ import {
   type NamefiNormalizedDomain,
 } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
-import { and, eq, sql } from 'drizzle-orm';
+import { and, eq, ilike, sql } from 'drizzle-orm';
 import { z } from 'zod';
 import { getDomainListInfo } from '#lib/namefi-registry';
 import { userQualifiesForDomainNamePromo } from '#lib/userPromo';
 import { encryptEppAuthCode } from '#lib/epp-code-encryption';
 import { createTRPCRouter, protectedProcedure } from '../base';
-import { isNormalizedDomainNameAllowedForOriginHostname } from '../utils';
 import { getDomainPricingForOperation } from '../types';
 import { createLogger } from '#lib/logger';
+import { isNotNil } from 'ramda';
 
 const _logger = createLogger({ context: 'cartsRouter' });
 
 export const cartsRouter = createTRPCRouter({
   // Get cart items for the current user
-  getItems: protectedProcedure.query(async ({ ctx }) => {
-    const cartItems = await db.query.cartItemsTable.findMany({
-      where: eq(cartItemsTable.userId, ctx.user.id),
-    });
-    const filteredCartItems = filterCartItemsByOrigin(
-      cartItems,
-      ctx.thirdPartyOriginHostname,
-    );
-
-    return filteredCartItems;
-  }),
+  getItems: protectedProcedure.query(
+    async ({ ctx: { user, poweredByNamefiDomain } }) => {
+      const cartItems = await db.query.cartItemsTable.findMany({
+        where: and(
+          eq(cartItemsTable.userId, user.id),
+          isNotNil(poweredByNamefiDomain)
+            ? ilike(
+                cartItemsTable.normalizedDomainName,
+                `%.${poweredByNamefiDomain}`,
+              )
+            : undefined,
+        ),
+      });
+      return cartItems;
+    },
+  ),
 
   // Add multiple items to cart for the current user
   addItems: protectedProcedure
@@ -169,11 +174,7 @@ export const cartsRouter = createTRPCRouter({
         })
         .returning();
 
-      // Filter by origin and return the results
-      return filterCartItemsByOrigin(
-        insertResult,
-        ctx.thirdPartyOriginHostname,
-      );
+      return insertResult;
     }),
 
   // Update cart item for the current user
@@ -308,12 +309,7 @@ export const cartsRouter = createTRPCRouter({
           ),
         )
         .returning();
-
-      // Filter by origin and return the removed items
-      return filterCartItemsByOrigin(
-        removedItems,
-        ctx.thirdPartyOriginHostname,
-      );
+      return removedItems;
     }),
 
   clear: protectedProcedure.mutation(async ({ ctx }) => {
@@ -324,15 +320,3 @@ export const cartsRouter = createTRPCRouter({
     return [];
   }),
 });
-
-const filterCartItemsByOrigin = (
-  cartItems: (typeof cartItemsTable.$inferSelect)[],
-  originHostname?: string | null,
-) => {
-  return cartItems.filter((item) =>
-    isNormalizedDomainNameAllowedForOriginHostname(
-      item.normalizedDomainName,
-      originHostname,
-    ),
-  );
-};

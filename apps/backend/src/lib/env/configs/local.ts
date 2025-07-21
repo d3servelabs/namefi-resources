@@ -21,10 +21,6 @@ const localConfig: ConfigInput = {
     'namefi.localhost',
     'astra.localhost',
   ],
-  POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES: [
-    '0xcity.localhost',
-    'defibuild.localhost',
-  ],
   ADDITIONAL_HOSTNAME_MAP: {
     '0xcity.localhost': '0x.city',
     'defibuild.localhost': 'defi.build',
