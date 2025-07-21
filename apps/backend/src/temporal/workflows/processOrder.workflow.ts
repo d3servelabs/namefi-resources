@@ -12,15 +12,22 @@ import {
   type ChargeUserWorkflowInput,
   chargeUserWorkflow,
 } from './chargeUser.workflow';
-import {
-  NotificationChannel,
-  notifyUserWorkflow,
-} from './notify-user.workflow';
 import { processOrderItemWorkflow } from './processOrderItem.workflow';
 import { refundUserWorkflow } from './refund-user.workflow';
 
 const { triggerUpdateDomainIndex } = typedProxyActivities({
   temporalEnum: TEMPORAL_ENUMS.INDEXERS,
+  options: {
+    ...shortRunningOpts,
+  },
+});
+
+const {
+  getOrderDetailsOrThrow,
+  updateOrderItemStatusOrThrow,
+  updateOrderStatusOrThrow,
+} = typedProxyActivities({
+  temporalEnum: TEMPORAL_ENUMS.DEFAULT,
   options: {
     ...shortRunningOpts,
   },
@@ -46,25 +53,6 @@ export async function processOrderWorkflow(
 ): Promise<void> {
   workflow.log.info('Processing order', {
     orderId: input.orderId,
-  });
-
-  // MARK: - Activity Setup
-  const {
-    getOrderDetailsOrThrow,
-    updateOrderItemStatusOrThrow,
-    updateOrderStatusOrThrow,
-  } = typedProxyActivities({
-    temporalEnum: TEMPORAL_ENUMS.DEFAULT,
-    options: {
-      ...shortRunningOpts,
-    },
-  });
-
-  const { getOrderProcessedEmailContent } = typedProxyActivities({
-    temporalEnum: TEMPORAL_ENUMS.NOTIFY,
-    options: {
-      ...shortRunningOpts,
-    },
   });
 
   try {
@@ -241,47 +229,12 @@ export async function processOrderWorkflow(
     }
 
     // MARK: - Notify User if we have their email
-    if (orderDetails.user.primaryEmail) {
-      const subject =
-        failedItems.length === 0
-          ? 'Namefi Order Processing Succeeded'
-          : failedItems.length === orderDetails.items.length
-            ? 'Namefi Order Processing Failed'
-            : 'Namefi Order Processing Partially Completed';
 
-      try {
-        const { content } = await getOrderProcessedEmailContent({
-          orderId: input.orderId,
-          succeededItems,
-          failedItems,
-        });
-
-        await workflow.executeChild(notifyUserWorkflow, {
-          args: [
-            {
-              userId: orderDetails.userId,
-              channel: NotificationChannel.EMAIL,
-              payload: {
-                subject,
-                content: {
-                  plain: content,
-                  html: content,
-                },
-              },
-            },
-          ],
-          workflowId: `notify-user-${orderDetails.userId}`,
-          taskQueue: TEMPORAL_QUEUES.NOTIFY,
-          retry: {
-            maximumAttempts: 1,
-          },
-        });
-      } catch (e) {
-        workflow.log.error(
-          `Failed to notify user for order ${input.orderId}. Error: ${e}`,
-        );
-      }
-    }
+    await _notifyUserOrderProcessed(
+      orderDetails,
+      orderItemResults,
+      amountToRefund,
+    );
   } catch (e) {
     // Update order status to FAILED if an exception occurs
     try {
@@ -324,4 +277,76 @@ async function postProcessOrder() {
       );
     }
   });
+}
+
+async function _notifyUserOrderProcessed(
+  orderDetails: Awaited<ReturnType<typeof getOrderDetailsOrThrow>>,
+  orderItemsResults: PromiseSettledResult<void>[],
+  amountToRefund: number,
+) {
+  const { notifyUserOrderProcessed, maybeGetUserEmail } = typedProxyActivities({
+    temporalEnum: TEMPORAL_ENUMS.NOTIFY,
+    options: {
+      ...shortRunningOpts,
+    },
+  });
+  const userEmail = await maybeGetUserEmail(orderDetails.userId);
+  if (!userEmail) {
+    const message = `Failed to notify user for order ${orderDetails.id}. User has no primary email`;
+    workflow.upsertMemo({
+      notifyUserOrderProcessed: {
+        message,
+      },
+    });
+    workflow.log.warn(message);
+    return;
+  }
+  const paymentMethodCharged = orderDetails.payment.paymentProvider;
+  const paymentMethodIdentifier =
+    paymentMethodCharged === 'STRIPE'
+      ? orderDetails.payment.stripePaymentDetails?.paymentMethodId
+      : orderDetails.payment.nfscPaymentDetails?.walletAddress;
+
+  if (!paymentMethodIdentifier) {
+    const message = `Failed to notify user for order ${orderDetails.id}. Payment method identifier is missing`;
+    workflow.upsertMemo({
+      notifyUserOrderProcessed: {
+        message,
+      },
+    });
+    workflow.log.warn(message);
+    return;
+  }
+
+  try {
+    await notifyUserOrderProcessed({
+      orderId: orderDetails.id,
+      recipientName: userEmail,
+      recipientEmail: userEmail,
+      items: orderDetails.items.map((item, index) => ({
+        normalizedDomainName: item.normalizedDomainName,
+        duration: item.durationInYears,
+        price: item.amountInUSDCents,
+        status:
+          orderItemsResults[index].status === 'fulfilled'
+            ? 'SUCCEEDED'
+            : 'FAILED',
+        type: item.type,
+      })),
+      chargedAmountInUsd: orderDetails.amountInUSDCents,
+      paymentMethodCharged,
+      paymentMethodIdentifier,
+      refund:
+        amountToRefund > 0
+          ? {
+              amountInUsd: amountToRefund,
+              status: 'PROCESSING',
+            }
+          : undefined,
+    });
+  } catch (e) {
+    workflow.log.error(
+      `Failed to notify user for order ${orderDetails.id}. Error: ${e}`,
+    );
+  }
 }
