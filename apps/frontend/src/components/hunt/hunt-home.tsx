@@ -21,7 +21,7 @@ type TimeRange = AppRouterInput['hunt']['getTrendingDomains']['timeRange'];
 export const HuntHome = () => {
   const [page, setPage] = useState(1);
   const [timeRange, setTimeRange] = useState<TimeRange>('THIS_WEEK');
-  const { isAuthenticated, isLoading: authLoading } = useAuth();
+  const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
 
   const handleTimeRangeChange = useCallback((value: string) => {
     setTimeRange(value as TimeRange);
@@ -31,8 +31,8 @@ export const HuntHome = () => {
   const trpc = useTRPC();
   const offset = (page - 1) * DOMAINS_LIST_PER_PAGE_LIMIT;
 
-  const { data, isLoading, isError } = useQuery(
-    isAuthenticated
+  const { data, isLoading, isError } = useQuery({
+    ...(isAuthenticated
       ? trpc.hunt.getTrendingDomains.queryOptions({
           limit: DOMAINS_LIST_PER_PAGE_LIMIT,
           offset,
@@ -42,8 +42,9 @@ export const HuntHome = () => {
           limit: DOMAINS_LIST_PER_PAGE_LIMIT,
           offset,
           timeRange,
-        }),
-  );
+        })),
+    enabled: !isAuthLoading,
+  });
 
   const hasMore = useMemo(() => data?.hasMore ?? false, [data]);
 
@@ -118,7 +119,7 @@ export const HuntHome = () => {
           <div className="border border-border shadow-sm rounded-xl bg-white/[0.03]">
             <DomainsList
               domains={data?.items ?? []}
-              isLoading={isLoading || authLoading}
+              isLoading={isLoading || isAuthLoading}
               isError={isError}
             />
           </div>

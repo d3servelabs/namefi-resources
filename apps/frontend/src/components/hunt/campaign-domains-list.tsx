@@ -25,12 +25,12 @@ export const CampaignDomainsList = ({
   limit = DEFAULT_CAMPAIGN_DOMAINS_PER_PAGE_LIMIT,
   onPageChange,
 }: CampaignDomainsListProps) => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
   const trpc = useTRPC();
   const offset = (page - 1) * limit;
 
-  const { data, isLoading, isError } = useQuery(
-    isAuthenticated
+  const { data, isLoading, isError } = useQuery({
+    ...(isAuthenticated
       ? trpc.hunt.getCampaign.queryOptions({
           campaignKey,
           offset,
@@ -40,8 +40,9 @@ export const CampaignDomainsList = ({
           campaignKey,
           offset,
           limit,
-        }),
-  );
+        })),
+    enabled: !isAuthLoading,
+  });
 
   const hasMore = useMemo(() => data?.hasMore ?? false, [data]);
 
@@ -85,7 +86,7 @@ export const CampaignDomainsList = ({
       <div className="border border-border shadow-sm rounded-xl bg-white/[0.03]">
         <DomainsList
           domains={data?.rankings || []}
-          isLoading={isLoading}
+          isLoading={isLoading || isAuthLoading}
           isError={isError}
         />
       </div>
