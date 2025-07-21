@@ -17,7 +17,7 @@ import pluralize from 'pluralize';
 export type ProcessedOrderItem = {
   normalizedDomainName: string;
   duration: number; // in years
-  price: number; // in USD
+  priceInUsdCents: number; // in USD cents
   status: 'SUCCEEDED' | 'FAILED' | 'PROCESSING';
   failureReason?: string;
   type: 'IMPORT' | 'RENEW' | 'REGISTER';
@@ -28,7 +28,7 @@ export type ProcessedOrderProps = {
   recipientName: string;
   recipientEmail: string;
   items: ProcessedOrderItem[];
-  chargedAmountInUsd: number;
+  chargedAmountInUsdCents: number;
   paymentMethodCharged: string;
   paymentMethodIdentifier: string;
   refund?: {
@@ -43,7 +43,7 @@ export const ProcessedOrderReport = buildTemplate<ProcessedOrderProps>(
       orderId,
       recipientName,
       items,
-      chargedAmountInUsd,
+      chargedAmountInUsdCents,
       paymentMethodCharged,
       paymentMethodIdentifier,
       refund,
@@ -115,7 +115,7 @@ export const ProcessedOrderReport = buildTemplate<ProcessedOrderProps>(
                   {pluralize('year', item.duration, true)}
                 </td>
                 <td style={{ ...localStyles.td, textAlign: 'right' }}>
-                  ${item.price.toFixed(2)}
+                  ${(item.priceInUsdCents / 100).toFixed(2)}
                 </td>
                 <td style={localStyles.td}>
                   <span
@@ -181,7 +181,7 @@ export const ProcessedOrderReport = buildTemplate<ProcessedOrderProps>(
               Total Charged ({paymentMethodCharged} {paymentMethodIdentifier}):
             </span>
             <span style={{ fontWeight: 'bold' }}>
-              ${chargedAmountInUsd.toFixed(2)}
+              ${(chargedAmountInUsdCents / 100).toFixed(2)}
             </span>
           </div>
           {refund && refund.amountInUsd > 0 && (
@@ -258,14 +258,14 @@ export const ProcessedOrderReport = buildTemplate<ProcessedOrderProps>(
       {
         normalizedDomainName: 'test.org',
         duration: 1,
-        price: 12.99,
+        priceInUsdCents: 1299,
         status: 'SUCCEEDED',
         type: 'REGISTER',
       },
       {
         normalizedDomainName: 'example.org',
         duration: 2,
-        price: 25.98,
+        priceInUsdCents: 2598,
         status: 'FAILED',
         failureReason: 'Domain unavailable',
         type: 'REGISTER',
@@ -273,19 +273,19 @@ export const ProcessedOrderReport = buildTemplate<ProcessedOrderProps>(
       {
         normalizedDomainName: 'さみ.org',
         duration: 2,
-        price: 25.98,
+        priceInUsdCents: 2598,
         status: 'SUCCEEDED',
         type: 'REGISTER',
       },
       {
         normalizedDomainName: 'example2.org',
         duration: 2,
-        price: 25.98,
+        priceInUsdCents: 2598,
         status: 'PROCESSING',
         type: 'IMPORT',
       },
     ],
-    chargedAmountInUsd: 25.98 * 3 + 12.99,
+    chargedAmountInUsdCents: 2598 * 3 + 1299,
     paymentMethodCharged: 'Credit Card',
     paymentMethodIdentifier: '...7890',
     refund: {

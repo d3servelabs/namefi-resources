@@ -326,14 +326,14 @@ async function _notifyUserOrderProcessed(
       items: orderDetails.items.map((item, index) => ({
         normalizedDomainName: item.normalizedDomainName,
         duration: item.durationInYears,
-        price: item.amountInUSDCents,
+        priceInUsdCents: item.amountInUSDCents,
         status:
           orderItemsResults[index].status === 'fulfilled'
             ? 'SUCCEEDED'
             : 'FAILED',
         type: item.type,
       })),
-      chargedAmountInUsd: orderDetails.amountInUSDCents,
+      chargedAmountInUsdCents: orderDetails.amountInUSDCents,
       paymentMethodCharged,
       paymentMethodIdentifier,
       refund:

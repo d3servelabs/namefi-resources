@@ -141,7 +141,7 @@ type GetProcessedOrderEmailInput = {
   recipientName: string;
   recipientEmail: string;
   items: ProcessedOrderItem[];
-  chargedAmountInUsd: number;
+  chargedAmountInUsdCents: number;
   paymentMethodCharged: PaymentProvider;
   /**
    * @remarks
@@ -159,7 +159,7 @@ export async function getProcessedOrderEmail({
   recipientName,
   recipientEmail,
   items,
-  chargedAmountInUsd,
+  chargedAmountInUsdCents,
   paymentMethodCharged,
   paymentMethodIdentifier: paymentMethodIdentifierRaw,
   refund,
@@ -197,7 +197,7 @@ export async function getProcessedOrderEmail({
     recipientName,
     recipientEmail,
     items,
-    chargedAmountInUsd,
+    chargedAmountInUsdCents,
     paymentMethodCharged: paymentMethodDisplayName,
     paymentMethodIdentifier,
     refund,
