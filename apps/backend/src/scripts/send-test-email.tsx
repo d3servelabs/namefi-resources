@@ -3,15 +3,19 @@
 import { Button, Text, render } from '@react-email/components';
 import { Code } from '../mail/components/code';
 import { NamefiEmailContainer } from '../mail/components/namefi-email-container';
-import { getEmailsBaseUrl } from '../mail/consts';
 import { sendMail } from '../mail/mail-client';
 import { button, paragraph } from '../mail/styles';
 // biome-ignore lint/correctness/noUnusedImports: required for react-email
 import React from 'react';
+import {
+  usePoweredByNamefiDomain,
+  withPoweredByNamefiDomain,
+} from '../mail/components/powered-by-namefi-url-context';
+import { NamefiEmailLinks } from '../mail/email-links';
 
-// Start the process
-async function main(): Promise<void> {
-  const email = (
+const TestEmail = withPoweredByNamefiDomain(() => {
+  const poweredByNamefiDomain = usePoweredByNamefiDomain();
+  return (
     <NamefiEmailContainer title={'[Namefi] Test Email'}>
       <Text style={paragraph}> Thank you for using Namefi.</Text>
 
@@ -23,12 +27,19 @@ async function main(): Promise<void> {
       </Text>
       <Button
         style={button}
-        href={`${getEmailsBaseUrl()}/dashboard/domains/${encodeURIComponent('test01')}`}
+        href={NamefiEmailLinks.domainSettings({
+          domain: 'test01.com',
+          poweredByNamefiDomain,
+        })}
       >
         Go To Test
       </Button>
     </NamefiEmailContainer>
   );
+});
+// Start the process
+async function main(): Promise<void> {
+  const email = <TestEmail poweredByNamefiDomain={'0x.city'} />;
   const html = await render(email, { plainText: false, pretty: false });
   const plain = await render(email, { plainText: true, pretty: false });
   await sendMail({

@@ -10,15 +10,15 @@ import rehypeExternalLinks from 'rehype-external-links';
 import ReactMarkdown from 'react-markdown';
 import { Button } from '@react-email/components';
 import { button } from '../styles';
-import { z } from 'zod';
-
-const paymentProviderSchema = z.enum([
-  'NFSC_BASE',
-  'NFSC_ETHEREUM',
-  'NFSC_ETHEREUM_SEPOLIA',
-  'STRIPE',
-]);
-type PaymentProvider = z.infer<typeof paymentProviderSchema>;
+import {
+  addPoweredByNamefiToUrl,
+  usePoweredByNamefiDomain,
+  withPoweredByNamefiDomain,
+} from '../components/powered-by-namefi-url-context';
+import {
+  paymentProviderSchema,
+  type PaymentProvider,
+} from '@namefi-astra/db/types';
 
 export type ProcessedOrderItem = {
   normalizedDomainName: string;
@@ -67,223 +67,31 @@ const defaults: ProcessedOrderProps = {
   refundStatus: 'SUCCESS',
 };
 
-export const ProcessedOrderReport = (props: ProcessedOrderProps) => {
-  const {
-    orderId,
-    recipientName,
-    items,
-    chargedAmountInUsd,
-    paymentMethodCharged,
-    paymentMethodIdentifier,
-    refundAmountInUsd,
-    refundStatus,
-    ctaLink,
-  } = defaultTo(defaults, isEmpty(props) ? null : props);
+export const ProcessedOrderReport = withPoweredByNamefiDomain(
+  (props: ProcessedOrderProps) => {
+    const {
+      orderId,
+      recipientName,
+      items,
+      chargedAmountInUsd,
+      paymentMethodCharged,
+      paymentMethodIdentifier,
+      refundAmountInUsd,
+      refundStatus,
+      ctaLink,
+    } = defaultTo(defaults, isEmpty(props) ? null : props);
 
-  const successfulItems = items.filter((item) => item.status === 'SUCCESS');
-  const failedItems = items.filter((item) => item.status === 'FAILED');
+    const poweredByNamefiDomain = usePoweredByNamefiDomain();
 
-  const messageMarkdown =
-    `Hi ${recipientName ?? ''},\n\n` +
-    `Your order ${orderId} has been processed. Here are the details:`;
+    const successfulItems = items.filter((item) => item.status === 'SUCCESS');
+    const failedItems = items.filter((item) => item.status === 'FAILED');
 
-  return (
-    <NamefiEmailContainer title="[Namefi] Order Processed Report">
-      <ReactMarkdown
-        rehypePlugins={[
-          [
-            rehypeExternalLinks,
-            { target: '_blank', rel: ['noopener', 'noreferrer'] },
-          ],
-        ]}
-      >
-        {messageMarkdown}
-      </ReactMarkdown>
+    const messageMarkdown =
+      `Hi ${recipientName ?? ''},\n\n` +
+      `Your order ${orderId} has been processed. Here are the details:`;
 
-      <table
-        style={{ borderCollapse: 'collapse', width: '100%', marginTop: '20px' }}
-      >
-        <thead>
-          <tr>
-            <th
-              style={{
-                border: '1px #D9D9D9 solid',
-                padding: '8px',
-                backgroundColor: '#f5f5f5',
-                textAlign: 'left',
-              }}
-            >
-              Domain Name
-            </th>
-            <th
-              style={{
-                border: '1px #D9D9D9 solid',
-                padding: '8px',
-                backgroundColor: '#f5f5f5',
-                textAlign: 'center',
-              }}
-            >
-              Duration
-            </th>
-            <th
-              style={{
-                border: '1px #D9D9D9 solid',
-                padding: '8px',
-                backgroundColor: '#f5f5f5',
-                textAlign: 'right',
-              }}
-            >
-              Price
-            </th>
-            <th
-              style={{
-                border: '1px #D9D9D9 solid',
-                padding: '8px',
-                backgroundColor: '#f5f5f5',
-                textAlign: 'center',
-              }}
-            >
-              Status
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {items.map((item) => (
-            <tr key={item.normalizedDomainName}>
-              <td
-                style={{
-                  border: '1px #D9D9D9 solid',
-                  padding: '8px',
-                  textAlign: 'left',
-                }}
-              >
-                {item.normalizedDomainName}{' '}
-                {punycode.toUnicode(item.normalizedDomainName) ===
-                item.normalizedDomainName
-                  ? ''
-                  : `(${punycode.toUnicode(item.normalizedDomainName)})`}
-              </td>
-              <td
-                style={{
-                  border: '1px #D9D9D9 solid',
-                  padding: '8px',
-                  textAlign: 'center',
-                }}
-              >
-                {item.duration} year{item.duration > 1 ? 's' : ''}
-              </td>
-              <td
-                style={{
-                  border: '1px #D9D9D9 solid',
-                  padding: '8px',
-                  textAlign: 'right',
-                }}
-              >
-                ${item.price.toFixed(2)}
-              </td>
-              <td
-                style={{
-                  border: '1px #D9D9D9 solid',
-                  padding: '8px',
-                  textAlign: 'center',
-                }}
-              >
-                <span
-                  style={{
-                    color: item.status === 'SUCCESS' ? 'green' : 'red',
-                    fontWeight: 'bold',
-                  }}
-                >
-                  {item.status === 'SUCCESS' ? 'Success' : 'Failed'}
-                </span>
-                {item.failureReason && (
-                  <div
-                    style={{
-                      fontSize: '12px',
-                      color: '#666',
-                      marginTop: '4px',
-                    }}
-                  >
-                    {item.failureReason}
-                  </div>
-                )}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
-      {/* Payment Summary */}
-      <div
-        style={{
-          marginTop: '20px',
-          padding: '16px',
-          backgroundColor: '#f9f9f9',
-          border: '1px solid #e0e0e0',
-        }}
-      >
-        <h3
-          style={{ margin: '0 0 12px 0', fontSize: '16px', fontWeight: 'bold' }}
-        >
-          Payment Summary
-        </h3>
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            marginBottom: '8px',
-          }}
-        >
-          <span>
-            Total Charged ({paymentMethodCharged} {paymentMethodIdentifier}):
-          </span>
-          <span style={{ fontWeight: 'bold' }}>
-            ${chargedAmountInUsd.toFixed(2)}
-          </span>
-        </div>
-        {refundAmountInUsd && refundAmountInUsd > 0 && (
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              marginBottom: '8px',
-            }}
-          >
-            <span>Refund Amount:</span>
-            <span
-              style={{
-                fontWeight: 'bold',
-                color:
-                  refundStatus === 'SUCCESS'
-                    ? 'green'
-                    : refundStatus === 'FAILED'
-                      ? 'red'
-                      : 'orange',
-              }}
-            >
-              ${refundAmountInUsd.toFixed(2)} ({refundStatus})
-            </span>
-          </div>
-        )}
-      </div>
-
-      {/* Summary Message */}
-      <ReactMarkdown
-        rehypePlugins={[
-          [
-            rehypeExternalLinks,
-            { target: '_blank', rel: ['noopener', 'noreferrer'] },
-          ],
-        ]}
-      >
-        {successfulItems.length > 0 && failedItems.length > 0
-          ? `**Order Summary:** ${successfulItems.length} item${successfulItems.length > 1 ? 's' : ''} processed successfully, ${failedItems.length} item${failedItems.length > 1 ? 's' : ''} failed.`
-          : successfulItems.length > 0
-            ? `**Order Summary:** All ${successfulItems.length} item${successfulItems.length > 1 ? 's' : ''} processed successfully!`
-            : `**Order Summary:** All ${failedItems.length} item${failedItems.length > 1 ? 's' : ''} failed to process.`}
-      </ReactMarkdown>
-
-      {failedItems.length > 0 && (
+    return (
+      <NamefiEmailContainer title="[Namefi] Order Processed Report">
         <ReactMarkdown
           rehypePlugins={[
             [
@@ -292,20 +100,230 @@ export const ProcessedOrderReport = (props: ProcessedOrderProps) => {
             ],
           ]}
         >
-          {refundAmountInUsd && refundAmountInUsd > 0
-            ? `A refund of $${refundAmountInUsd.toFixed(2)} has been ${refundStatus === 'SUCCESS' ? 'processed' : refundStatus === 'FAILED' ? 'failed' : 'initiated'} to your original payment method. For failed items, please try again or contact support@namefi.io if the problem persists.`
-            : 'For failed items, please try again or contact support@namefi.io if the problem persists.'}
+          {messageMarkdown}
         </ReactMarkdown>
-      )}
-      {ctaLink && (
-        <Button style={button} href={ctaLink}>
-          Check Your Order Details
-        </Button>
-      )}
-      <GoToDashboard />
-    </NamefiEmailContainer>
-  );
-};
+
+        <table
+          style={{
+            borderCollapse: 'collapse',
+            width: '100%',
+            marginTop: '20px',
+          }}
+        >
+          <thead>
+            <tr>
+              <th
+                style={{
+                  border: '1px #D9D9D9 solid',
+                  padding: '8px',
+                  backgroundColor: '#f5f5f5',
+                  textAlign: 'left',
+                }}
+              >
+                Domain Name
+              </th>
+              <th
+                style={{
+                  border: '1px #D9D9D9 solid',
+                  padding: '8px',
+                  backgroundColor: '#f5f5f5',
+                  textAlign: 'center',
+                }}
+              >
+                Duration
+              </th>
+              <th
+                style={{
+                  border: '1px #D9D9D9 solid',
+                  padding: '8px',
+                  backgroundColor: '#f5f5f5',
+                  textAlign: 'right',
+                }}
+              >
+                Price
+              </th>
+              <th
+                style={{
+                  border: '1px #D9D9D9 solid',
+                  padding: '8px',
+                  backgroundColor: '#f5f5f5',
+                  textAlign: 'center',
+                }}
+              >
+                Status
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {items.map((item) => (
+              <tr key={item.normalizedDomainName}>
+                <td
+                  style={{
+                    border: '1px #D9D9D9 solid',
+                    padding: '8px',
+                    textAlign: 'left',
+                  }}
+                >
+                  {item.normalizedDomainName}{' '}
+                  {punycode.toUnicode(item.normalizedDomainName) ===
+                  item.normalizedDomainName
+                    ? ''
+                    : `(${punycode.toUnicode(item.normalizedDomainName)})`}
+                </td>
+                <td
+                  style={{
+                    border: '1px #D9D9D9 solid',
+                    padding: '8px',
+                    textAlign: 'center',
+                  }}
+                >
+                  {item.duration} year{item.duration > 1 ? 's' : ''}
+                </td>
+                <td
+                  style={{
+                    border: '1px #D9D9D9 solid',
+                    padding: '8px',
+                    textAlign: 'right',
+                  }}
+                >
+                  ${item.price.toFixed(2)}
+                </td>
+                <td
+                  style={{
+                    border: '1px #D9D9D9 solid',
+                    padding: '8px',
+                    textAlign: 'center',
+                  }}
+                >
+                  <span
+                    style={{
+                      color: item.status === 'SUCCESS' ? 'green' : 'red',
+                      fontWeight: 'bold',
+                    }}
+                  >
+                    {item.status === 'SUCCESS' ? 'Success' : 'Failed'}
+                  </span>
+                  {item.failureReason && (
+                    <div
+                      style={{
+                        fontSize: '12px',
+                        color: '#666',
+                        marginTop: '4px',
+                      }}
+                    >
+                      {item.failureReason}
+                    </div>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        {/* Payment Summary */}
+        <div
+          style={{
+            marginTop: '20px',
+            padding: '16px',
+            backgroundColor: '#f9f9f9',
+            border: '1px solid #e0e0e0',
+          }}
+        >
+          <h3
+            style={{
+              margin: '0 0 12px 0',
+              fontSize: '16px',
+              fontWeight: 'bold',
+            }}
+          >
+            Payment Summary
+          </h3>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              marginBottom: '8px',
+            }}
+          >
+            <span>
+              Total Charged ({paymentMethodCharged} {paymentMethodIdentifier}):
+            </span>
+            <span style={{ fontWeight: 'bold' }}>
+              ${chargedAmountInUsd.toFixed(2)}
+            </span>
+          </div>
+          {refundAmountInUsd && refundAmountInUsd > 0 && (
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                marginBottom: '8px',
+              }}
+            >
+              <span>Refund Amount:</span>
+              <span
+                style={{
+                  fontWeight: 'bold',
+                  color:
+                    refundStatus === 'SUCCESS'
+                      ? 'green'
+                      : refundStatus === 'FAILED'
+                        ? 'red'
+                        : 'orange',
+                }}
+              >
+                ${refundAmountInUsd.toFixed(2)} ({refundStatus})
+              </span>
+            </div>
+          )}
+        </div>
+
+        {/* Summary Message */}
+        <ReactMarkdown
+          rehypePlugins={[
+            [
+              rehypeExternalLinks,
+              { target: '_blank', rel: ['noopener', 'noreferrer'] },
+            ],
+          ]}
+        >
+          {successfulItems.length > 0 && failedItems.length > 0
+            ? `**Order Summary:** ${successfulItems.length} item${successfulItems.length > 1 ? 's' : ''} processed successfully, ${failedItems.length} item${failedItems.length > 1 ? 's' : ''} failed.`
+            : successfulItems.length > 0
+              ? `**Order Summary:** All ${successfulItems.length} item${successfulItems.length > 1 ? 's' : ''} processed successfully!`
+              : `**Order Summary:** All ${failedItems.length} item${failedItems.length > 1 ? 's' : ''} failed to process.`}
+        </ReactMarkdown>
+
+        {failedItems.length > 0 && (
+          <ReactMarkdown
+            rehypePlugins={[
+              [
+                rehypeExternalLinks,
+                { target: '_blank', rel: ['noopener', 'noreferrer'] },
+              ],
+            ]}
+          >
+            {refundAmountInUsd && refundAmountInUsd > 0
+              ? `A refund of $${refundAmountInUsd.toFixed(2)} has been ${refundStatus === 'SUCCESS' ? 'processed' : refundStatus === 'FAILED' ? 'failed' : 'initiated'} to your original payment method. For failed items, please try again or contact support@namefi.io if the problem persists.`
+              : 'For failed items, please try again or contact support@namefi.io if the problem persists.'}
+          </ReactMarkdown>
+        )}
+        {ctaLink && (
+          <Button
+            style={button}
+            href={addPoweredByNamefiToUrl(
+              ctaLink,
+              poweredByNamefiDomain ?? null,
+            )}
+          >
+            Check Your Order Details
+          </Button>
+        )}
+        <GoToDashboard />
+      </NamefiEmailContainer>
+    );
+  },
+);
 
 // biome-ignore lint/style/noDefaultExport: required for react-email
 export default ProcessedOrderReport;

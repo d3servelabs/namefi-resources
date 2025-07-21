@@ -8,7 +8,7 @@ import React from 'react';
 
 // Import all templates
 import { DomainRenewReport } from '../mail/templates/domain-renew-report';
-import { RegisterdDomainSuccessfully } from '../mail/templates/registered-domain-successfully';
+import { RegisteredDomainSuccessfully } from '../mail/templates/registered-domain-successfully';
 import { ProcessedOrderReport } from '../mail/templates/processed-order-report';
 
 const program = new Command();
@@ -34,7 +34,7 @@ const templates: EmailTemplate[] = [
     name: 'registered-domain-successfully',
     description:
       'Registered Domain Successfully - Domain registration success notification',
-    component: RegisterdDomainSuccessfully,
+    component: RegisteredDomainSuccessfully,
     subject: '[Template Test] Registered Domain Successfully',
   },
   {
