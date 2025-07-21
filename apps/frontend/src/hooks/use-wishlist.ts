@@ -396,8 +396,6 @@ export function useWishlistServerSync() {
     normalize,
   ]);
 
-  console.log({ wishlistData });
-
   const isDomainWishlisted = useCallback(
     (d: string) =>
       wishlistData?.some((i) => i.normalizedDomainName === d) ?? false,

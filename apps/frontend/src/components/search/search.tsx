@@ -290,8 +290,6 @@ export const DomainCard: FC<{
       ? 'wishlisted'
       : 'not-wishlisted';
 
-  console.log({ domain, inWishlist, wishlistBusy });
-
   const handleWishlistToggle = async () => {
     if (!domain || wishlistBusy) return;
     if (inWishlist) {

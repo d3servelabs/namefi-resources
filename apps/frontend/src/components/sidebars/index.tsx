@@ -31,6 +31,7 @@ import {
   Search,
   Sparkles,
   TrendingUp,
+  Heart,
 } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
 import { type ChangeEvent, useCallback, useMemo, useState } from 'react';
@@ -42,6 +43,7 @@ const ITEMS: NavItem[] = [
   { title: "Just AI'ng™", href: '/ai-brand-generator', icon: Sparkles },
   { title: 'Hunt', href: '/hunt', icon: TrendingUp },
   { title: 'My Domains', href: '/domains', icon: Globe },
+  { title: 'My Wishlist', href: '/wishlist', icon: Heart },
   { title: 'My Orders', href: '/orders', icon: ClipboardList },
   { title: 'My Payment Methods', href: '/payment-methods', icon: CreditCard },
   { title: 'Manage', href: '/manage', icon: PenToolIcon },
