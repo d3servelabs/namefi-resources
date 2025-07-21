@@ -1,0 +1,25 @@
+id: require-poweredByNamefiDomain-hook
+message: "Must use usePoweredByNamefiDomain hook in email templates"
+severity: warning
+language: tsx
+rule:
+  pattern: |
+    export const $COMPONENT = (props: $Props) => {
+      $$$BODY
+    };
+  not:
+    inside:
+      pattern: |
+        usePoweredByNamefiDomain($$$)
+note: |
+  Add the hook:
+  const poweredByNamefiDomain = usePoweredByNamefiDomain(props.poweredByNamefiDomain);
+
+files:
+  - "apps/backend/src/mail/**/*.tsx"
+  - "apps/backend/src/mail/**/*.tsx"
+
+ignore:
+  - "**/*.test.tsx"
+  - "**/*.spec.tsx"
+  - "**/node_modules/**" 

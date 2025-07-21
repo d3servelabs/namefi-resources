@@ -47,8 +47,8 @@
     "sherif:fix": "bunx sherif@latest -f",
     "test:ci": "act -j test --container-architecture linux/amd64",
     "test:ci:dry": "act -j test -n",
-    "sgr": "node run-sgr.js scan",
-    "sgr:fix": "node run-sgr.js scan --fix",
+    "sgr": "node run-sgr.js scan *",
+    "sgr:fix": "node run-sgr.js scan --fix *",
     "validate": "concurrently -n 'typecheck,biome,sherif,sgr' -c 'blue.bold,green.bold,yellow.bold,red.bold' \"turbo typecheck\" \"bun check:error\" \"bun sherif\" \"bun sgr\"",
     "validate:secrets": "turbo validate:secrets"
   },

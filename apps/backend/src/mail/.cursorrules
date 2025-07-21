@@ -1,0 +1,301 @@
+# Cursor Rules for Email Template Development
+
+## Email Template Guidelines for Cursor AI
+
+### Context
+You are working in the Namefi email templates directory (`apps/backend/src/mail/`). This contains React Email templates for the Namefi domain registration platform.
+
+### 1. Template Creation Rules
+
+When creating new email templates, ALWAYS follow this exact structure:
+
+```tsx
+// biome-ignore lint/correctness/noUnusedImports: required for react-email
+import React from 'react';
+import { NamefiEmailContainer } from '../components/namefi-email-container';
+import { GoToDashboard } from '../components/go-to-dashboard';
+import { NamefiEmailLinks } from '../email-links';
+import { usePoweredByNamefiDomain } from '../components/powered-by-namefi-url-context';
+
+export type TemplateNameProps = {
+  recipientName: string;
+  recipientEmail: string;
+  poweredByNamefiDomain?: string | null;
+  // Additional props as needed
+};
+
+export const TemplateName = (props: TemplateNameProps) => {
+  const { recipientName, recipientEmail } = props;
+  const poweredByNamefiDomain = usePoweredByNamefiDomain(props.poweredByNamefiDomain);
+
+  return (
+    <NamefiEmailContainer
+      title="[Namefi] Email Subject"
+      poweredByNamefiDomain={poweredByNamefiDomain}
+    >
+      {/* Email content here */}
+      <GoToDashboard />
+    </NamefiEmailContainer>
+  );
+};
+
+// IMPORTANT: PreviewProps must be defined AFTER the component
+TemplateName.PreviewProps = {
+  recipientName: 'Alice',
+  recipientEmail: 'alice@example.com',
+  poweredByNamefiDomain: null,
+};
+
+// biome-ignore lint/style/noDefaultExport: required for react-email
+export default TemplateName;
+```
+
+### 2. Critical Requirements
+
+❌ **NEVER** use the old defaultTo pattern:
+```tsx
+// DON'T DO THIS
+import { defaultTo, isEmpty } from 'ramda';
+const props = defaultTo(defaults, isEmpty(props) ? null : props);
+```
+
+✅ **ALWAYS** use PreviewProps pattern:
+```tsx
+// DO THIS
+TemplateName.PreviewProps = {
+  recipientName: 'Alice',
+  recipientEmail: 'alice@example.com',
+  poweredByNamefiDomain: null,
+};
+```
+
+### 3. PoweredByNamefi Context (MANDATORY)
+
+Every template must include poweredByNamefiDomain support:
+
+1. **In Props Type:**
+   ```tsx
+   export type TemplateProps = {
+     // ... other props
+     poweredByNamefiDomain?: string | null;
+   };
+   ```
+
+2. **Use the Hook:**
+   ```tsx
+   const poweredByNamefiDomain = usePoweredByNamefiDomain(props.poweredByNamefiDomain);
+   ```
+
+3. **Pass to Container:**
+   ```tsx
+   <NamefiEmailContainer poweredByNamefiDomain={poweredByNamefiDomain}>
+   ```
+
+4. **Use for Links:**
+   ```tsx
+   // ✅ Correct
+   const url = NamefiEmailLinks.dashboard({ poweredByNamefiDomain });
+   
+   // ❌ Wrong
+   const url = 'https://app.namefi.io/dashboard';
+   ```
+
+### 4. URL Generation Rules
+
+**Always use NamefiEmailLinks for Namefi URLs:**
+
+```tsx
+// Dashboard
+NamefiEmailLinks.dashboard({ poweredByNamefiDomain })
+
+// Domain settings
+NamefiEmailLinks.domainSettings({ domain: 'example.com', poweredByNamefiDomain })
+
+// Payment methods
+NamefiEmailLinks.paymentMethods({ poweredByNamefiDomain })
+
+// Custom URLs with context
+addPoweredByNamefiToUrl('https://example.com', poweredByNamefiDomain)
+```
+
+### 5. Common Patterns
+
+**Markdown with External Links:**
+```tsx
+<ReactMarkdown
+  rehypePlugins={[
+    [rehypeExternalLinks, { target: '_blank', rel: ['noopener', 'noreferrer'] }],
+  ]}
+>
+  {markdownContent}
+</ReactMarkdown>
+```
+
+**International Domain Names:**
+```tsx
+{punycode.toUnicode(domainName) !== domainName ? (
+  <span>
+    {punycode.toUnicode(domainName)}
+    <br />({domainName})
+  </span>
+) : (
+  domainName
+)}
+```
+
+**Email-Compatible Tables:**
+```tsx
+<table style={{ borderCollapse: 'collapse', width: '100%' }}>
+  <thead>
+    <tr>
+      <th style={{ 
+        border: '1px #D9D9D9 solid', 
+        padding: '8px',
+        backgroundColor: '#f5f5f5' 
+      }}>
+        Header
+      </th>
+    </tr>
+  </thead>
+  <tbody>{/* content */}</tbody>
+</table>
+```
+
+**Action Buttons:**
+```tsx
+<Button
+  style={button}
+  href={NamefiEmailLinks.domainSettings({
+    domain: domainName,
+    poweredByNamefiDomain,
+  })}
+>
+  Button Text
+</Button>
+```
+
+### 6. Required Imports
+
+**Always include for new templates:**
+```tsx
+// biome-ignore lint/correctness/noUnusedImports: required for react-email
+import React from 'react';
+import { NamefiEmailContainer } from '../components/namefi-email-container';
+import { GoToDashboard } from '../components/go-to-dashboard';
+import { NamefiEmailLinks } from '../email-links';
+import { usePoweredByNamefiDomain } from '../components/powered-by-namefi-url-context';
+```
+
+**Conditional imports based on needs:**
+```tsx
+import { Button, Text } from '@react-email/components';
+import ReactMarkdown from 'react-markdown';
+import rehypeExternalLinks from 'rehype-external-links';
+import punycode from 'punycode';
+import { button, paragraph } from '../styles';
+```
+
+### 7. Props Standards
+
+**Every template must include:**
+- `recipientName: string`
+- `recipientEmail: string`
+- `poweredByNamefiDomain?: string | null`
+
+**Additional props should be:**
+- Descriptive and specific
+- Properly typed with TypeScript
+- Included in PreviewProps with realistic data
+
+### 8. Content Guidelines
+
+**Email Structure:**
+- Start with personalized greeting: `Hi ${recipientName},`
+- Use `[Namefi]` prefix in subject lines
+- Include clear calls-to-action
+- End with `<GoToDashboard />` component
+- Add support contact info when relevant
+
+**Accessibility:**
+- Use semantic HTML elements
+- Provide alt text for images
+- Ensure sufficient color contrast
+- Use descriptive link text
+
+### 9. Testing Requirements
+
+Before submitting any template changes:
+
+1. **Type Check:** Run `bun run typecheck` - must pass
+2. **Preview:** Test with `bun run dev:email`
+3. **Links:** Verify all URLs work correctly
+4. **Context:** Test with different `poweredByNamefiDomain` values
+5. **Responsive:** Check mobile compatibility
+
+### 10. File Organization
+
+**Templates Directory Structure:**
+```
+src/mail/
+├── templates/              # Email templates (.tsx files)
+│   ├── domain-renew-*.tsx
+│   ├── registered-*.tsx
+│   └── general-*.tsx
+├── components/             # Reusable email components
+├── email-links.ts         # URL generation utilities
+├── consts.ts             # Email constants
+└── styles.ts             # Shared email styles
+```
+
+**Naming Convention:**
+- Use kebab-case for file names
+- Be descriptive: `domain-renew-failed-to-charge.tsx`
+- Match component name to file name
+
+### 11. Error Prevention
+
+**Common Mistakes to Avoid:**
+1. Using old `defaultTo` pattern instead of `PreviewProps`
+2. Hardcoding URLs instead of using `NamefiEmailLinks`
+3. Missing `poweredByNamefiDomain` context
+4. Defining `PreviewProps` before component declaration
+5. Missing required imports or biome ignores
+6. Not testing across email clients
+7. Forgetting accessibility attributes
+
+### 12. Code Quality
+
+**Standards:**
+- Follow existing code patterns in the codebase
+- Use consistent indentation and spacing
+- Remove unused imports and variables
+- Add helpful comments for complex logic
+- Use descriptive variable names
+- Maintain TypeScript strict typing
+
+### 13. Email Client Compatibility
+
+**Requirements:**
+- Use table-based layouts for complex structures
+- Inline styles when necessary for compatibility
+- Avoid modern CSS features not supported in email clients
+- Test in major email providers (Gmail, Outlook, Apple Mail)
+
+### 14. Context Awareness
+
+When working in this directory:
+- You're building user-facing email communications
+- These templates represent the Namefi brand
+- Email deliverability and compatibility are critical
+- Changes affect real users receiving domain-related notifications
+- Follow white-label patterns for poweredByNamefiDomain
+
+### 15. Documentation
+
+When making changes:
+- Update README.md if adding new patterns
+- Document new components or utilities
+- Include JSDoc comments for complex functions
+- Maintain these cursor rules if patterns evolve
+
+Remember: Email templates are critical for user communication. Always prioritize reliability, accessibility, and brand consistency.

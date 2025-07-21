@@ -1,0 +1,33 @@
+id: require-preview-props
+message: "Email templates must define PreviewProps for React Email CLI"
+severity: error
+language: tsx
+rule:
+  pattern: |
+    export const $COMPONENT = $$$;
+  not:
+    precedes:
+      any:
+        - pattern: |
+            $COMPONENT.PreviewProps = {
+              $$$
+            };
+        - pattern: |
+            ($COMPONENT as any).PreviewProps = {
+              $$$
+            };
+note: |
+  Define PreviewProps after component:
+  Component.PreviewProps = {
+    recipientName: 'Alice',
+    recipientEmail: 'alice@example.com',
+    poweredByNamefiDomain: null,
+  };
+
+files:
+  - "apps/backend/src/mail/templates/**/*.tsx"
+
+ignore:
+  - "**/*.test.tsx"
+  - "**/*.spec.tsx"
+  - "**/node_modules/**" 

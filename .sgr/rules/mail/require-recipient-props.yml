@@ -1,0 +1,33 @@
+id: require-recipient-props
+message: "Email template props should include recipientName and recipientEmail"
+severity: warning
+language: tsx
+rule:
+  pattern: |
+    export type $NAMEProps = {
+      $$$PROPS
+    };
+  not:
+    all:
+      - inside:
+          pattern: |
+            recipientName: string
+      - inside:
+          pattern: |
+            recipientEmail: string
+note: |
+  Add standard recipient props:
+  export type TemplateProps = {
+    recipientName: string;
+    recipientEmail: string;
+    // other props...
+  };
+
+files:
+  - "apps/backend/src/mail/**/*.tsx"
+  - "apps/backend/src/mail/**/*.tsx"
+
+ignore:
+  - "**/*.test.tsx"
+  - "**/*.spec.tsx"
+  - "**/node_modules/**" 

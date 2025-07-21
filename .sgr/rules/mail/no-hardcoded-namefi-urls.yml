@@ -1,0 +1,23 @@
+id: no-hardcoded-namefi-urls
+message: "Use NamefiEmailLinks instead of hardcoded URLs"
+severity: error
+language: tsx
+rule:
+  any:
+    - pattern: '"https://app.namefi.io/dashboard"'
+    - pattern: '"https://app.namefi.io/owner/$_"'
+    - pattern: '"https://app.namefi.io/paymentMethods"'
+    - pattern: '"https://namefi.io/$_"'
+
+note: |
+  Replace with NamefiEmailLinks:
+  NamefiEmailLinks.dashboard({ poweredByNamefiDomain })
+  NamefiEmailLinks.domainSettings({ domain, poweredByNamefiDomain })
+
+files:
+  - "apps/backend/src/mail/**/*.tsx"
+
+ignore:
+  - "**/*.test.tsx"
+  - "**/*.spec.tsx"
+  - "**/node_modules/**" 

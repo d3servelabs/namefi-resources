@@ -1,0 +1,18 @@
+id: no-defaultTo-pattern
+message: "Use PreviewProps pattern instead of defaultTo for email templates"
+severity: error
+language: tsx
+rule:
+  any:
+    - pattern: "import { $$$A defaultTo, $$$B } from 'ramda'"
+note: |
+  Replace with PreviewProps pattern:
+  ComponentName.PreviewProps = { ... };
+
+files:
+  - "apps/backend/src/mail/**/*.tsx"
+
+ignore:
+  - "**/*.test.tsx"
+  - "**/*.spec.tsx"
+  - "**/node_modules/**" 

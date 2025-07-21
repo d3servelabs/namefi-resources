@@ -1,0 +1,237 @@
+# Claude Rules for Email Template Development
+
+## Email Template Development Guidelines
+
+### 1. Template Structure Requirements
+
+**ALWAYS follow this structure for new email templates:**
+
+```tsx
+// Required React import with biome ignore
+// biome-ignore lint/correctness/noUnusedImports: required for react-email
+import React from 'react';
+
+// Core email components (required)
+import { NamefiEmailContainer } from '../components/namefi-email-container';
+import { GoToDashboard } from '../components/go-to-dashboard';
+
+// URL handling (required for all templates)
+import { NamefiEmailLinks } from '../email-links';
+import { usePoweredByNamefiDomain } from '../components/powered-by-namefi-url-context';
+
+// Props type definition
+export type TemplateNameProps = {
+  recipientName: string;
+  recipientEmail: string;
+  poweredByNamefiDomain?: string | null;
+  // ... other specific props
+};
+
+// Component implementation
+export const TemplateName = (props: TemplateNameProps) => {
+  const { recipientName, recipientEmail } = props;
+  const poweredByNamefiDomain = usePoweredByNamefiDomain(props.poweredByNamefiDomain);
+
+  return (
+    <NamefiEmailContainer
+      title="[Namefi] Subject Line"
+      poweredByNamefiDomain={poweredByNamefiDomain}
+    >
+      {/* Content */}
+      <GoToDashboard />
+    </NamefiEmailContainer>
+  );
+};
+
+// PreviewProps MUST be defined AFTER the component
+TemplateName.PreviewProps = {
+  recipientName: 'Alice',
+  recipientEmail: 'alice@example.com',
+  poweredByNamefiDomain: null,
+};
+
+// Required default export with biome ignore
+// biome-ignore lint/style/noDefaultExport: required for react-email
+export default TemplateName;
+```
+
+### 2. PoweredByNamefi URL Context Rules
+
+**MANDATORY for all templates:**
+
+1. **Include in Props**: Every template MUST include `poweredByNamefiDomain?: string | null`
+2. **Use Hook**: Always use `usePoweredByNamefiDomain(props.poweredByNamefiDomain)`
+3. **Pass to Container**: Always pass to `NamefiEmailContainer`
+4. **Use for Links**: Use `NamefiEmailLinks` for all Namefi URLs
+
+**URL Generation Rules:**
+
+```tsx
+// ✅ CORRECT - Use NamefiEmailLinks
+const dashboardUrl = NamefiEmailLinks.dashboard({ poweredByNamefiDomain });
+const domainUrl = NamefiEmailLinks.domainSettings({ domain, poweredByNamefiDomain });
+
+// ❌ INCORRECT - Never hardcode URLs
+const badUrl = 'https://app.namefi.io/dashboard';
+```
+
+### 3. PreviewProps Pattern (CRITICAL)
+
+**NEVER use the old defaultTo pattern:**
+
+```tsx
+// ❌ FORBIDDEN - Old pattern
+import { defaultTo, isEmpty } from 'ramda';
+const defaults = { /* ... */ };
+const props = defaultTo(defaults, isEmpty(props) ? null : props);
+```
+
+**ALWAYS use PreviewProps after component definition:**
+
+```tsx
+// ✅ REQUIRED - New pattern
+TemplateName.PreviewProps = {
+  // Preview data here
+};
+```
+
+### 4. Import Rules
+
+**Required Imports for All Templates:**
+- `React` (with biome ignore)
+- `NamefiEmailContainer`
+- `GoToDashboard` 
+- `NamefiEmailLinks`
+- `usePoweredByNamefiDomain`
+
+**Conditional Imports:**
+- `Button, Text` from '@react-email/components' (when needed)
+- `ReactMarkdown` and `rehypeExternalLinks` (for markdown content)
+- `punycode` (for international domain names)
+- Component styles from '../styles'
+
+### 5. Content and Accessibility Rules
+
+**Email Content Standards:**
+- Start with personalized greeting: `Hi ${recipientName},`
+- Use `[Namefi]` prefix in subject lines
+- Include clear call-to-actions
+- End with support contact when appropriate
+- Use semantic HTML elements
+- Ensure color contrast compliance
+
+**Markdown Configuration:**
+```tsx
+<ReactMarkdown
+  rehypePlugins={[
+    [rehypeExternalLinks, { target: '_blank', rel: ['noopener', 'noreferrer'] }],
+  ]}
+>
+  {content}
+</ReactMarkdown>
+```
+
+### 6. Domain Name Handling
+
+**For International Domains:**
+```tsx
+{punycode.toUnicode(domainName) !== domainName ? (
+  <span>
+    {punycode.toUnicode(domainName)}
+    <br />({domainName})
+  </span>
+) : (
+  domainName
+)}
+```
+
+### 7. Table Styling Rules
+
+**Email-Compatible Tables:**
+```tsx
+<table style={{ borderCollapse: 'collapse', width: '100%' }}>
+  <thead>
+    <tr>
+      <th style={{ 
+        border: '1px #D9D9D9 solid', 
+        padding: '8px',
+        backgroundColor: '#f5f5f5',
+        textAlign: 'left'
+      }}>
+        Header
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    {/* content */}
+  </tbody>
+</table>
+```
+
+### 8. Validation Rules
+
+**Before Creating New Templates:**
+1. Check existing templates for similar patterns
+2. Ensure TypeScript types are properly defined
+3. Include comprehensive PreviewProps with realistic data
+4. Test with `bun run dev:email`
+5. Verify type checking with `bun run typecheck`
+
+**Props Validation:**
+- All templates MUST include `recipientName: string`
+- All templates MUST include `recipientEmail: string`  
+- All templates MUST include `poweredByNamefiDomain?: string | null`
+- Use specific, descriptive prop names
+- Provide complete TypeScript types
+
+### 9. Performance and Compatibility
+
+**Email Client Compatibility:**
+- Use table-based layouts for complex structures
+- Use inline styles when necessary
+- Avoid CSS features not supported in email clients
+- Test across major email providers
+
+**File Organization:**
+- Place templates in `/templates/` directory
+- Use clear, descriptive file names
+- Follow naming convention: `kebab-case.tsx`
+- Export both named and default exports
+
+### 10. Error Prevention Rules
+
+**Common Mistakes to Avoid:**
+1. Using `defaultTo` pattern (use PreviewProps instead)
+2. Hardcoding URLs (use NamefiEmailLinks)
+3. Missing poweredByNamefiDomain context
+4. Defining PreviewProps before component
+5. Missing required imports
+6. Not using semantic HTML
+7. Forgetting accessibility attributes
+
+**Code Quality:**
+- Follow existing code patterns in the codebase
+- Use consistent spacing and indentation
+- Include helpful comments for complex logic
+- Remove unused imports and functions
+- Use descriptive variable names
+
+### 11. Testing Requirements
+
+**Before Submitting:**
+1. Run `bun run typecheck` - must pass
+2. Test in React Email dev server
+3. Verify all links work correctly
+4. Test with different poweredByNamefiDomain values
+5. Ensure PreviewProps render correctly
+6. Check responsive behavior
+
+### 12. Documentation
+
+**When Creating Templates:**
+- Update this documentation if adding new patterns
+- Document any new components or utilities
+- Include examples in README.md
+- Add JSDoc comments for complex functions
+
+Remember: Email templates are critical user-facing components. Follow these rules strictly to ensure consistency, reliability, and maintainability.

@@ -1,0 +1,23 @@
+id: require-poweredByNamefiDomain-prop
+message: "Email template props must include poweredByNamefiDomain?: string | null"
+severity: error
+language: tsx
+rule:
+  pattern: 'export type $NAMEProps = { $$$ }'
+  not:
+    has:
+      pattern: 'poweredByNamefiDomain'
+note: |
+  Add poweredByNamefiDomain to props:
+  export type TemplateProps = {
+    // other props...
+    poweredByNamefiDomain?: string | null;
+  };
+
+files:
+  - "apps/backend/src/mail/**/*.tsx"
+
+ignore:
+  - "**/*.test.tsx"
+  - "**/*.spec.tsx"
+  - "**/node_modules/**" 

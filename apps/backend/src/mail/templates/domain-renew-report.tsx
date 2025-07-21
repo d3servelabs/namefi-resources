@@ -78,16 +78,19 @@ export const DomainRenewReport = withPoweredByNamefiDomain(
           {domainLdhRenewSucceeded.map((domainNameLdh) => (
             <tr key={domainNameLdh}>
               <td
-                className="py-1 px-1 font-medium"
+                className="py-1 px-1"
                 style={{ border: '1px #D9D9D9 solid', textAlign: 'right' }}
               >
-                Domain Name
+                {domainNameLdh}{' '}
+                {punycode.toUnicode(domainNameLdh) === domainNameLdh
+                  ? ''
+                  : `(${punycode.toUnicode(domainNameLdh)})`}
               </td>
               <td
-                className="py-1 px-1 font-medium"
+                className="py-1 px-1"
                 style={{ border: '1px #D9D9D9 solid', textAlign: 'right' }}
               >
-                Renew Status
+                <span style={{ color: 'green' }}>Success</span>
               </td>
             </tr>
           ))}

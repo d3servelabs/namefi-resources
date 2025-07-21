@@ -1,0 +1,18 @@
+id: no-defaultTo-usage
+message: "Use PreviewProps pattern instead of defaultTo in email templates"
+severity: error
+language: tsx
+rule:
+  pattern: |
+    defaultTo($DEFAULTS, isEmpty($PROPS) ? null : $PROPS)
+note: |
+  Remove defaultTo usage and define PreviewProps after component:
+  ComponentName.PreviewProps = { ... };
+
+files:
+  - "apps/backend/src/mail/**/*.tsx"
+
+ignore:
+  - "**/*.test.tsx"
+  - "**/*.spec.tsx"
+  - "**/node_modules/**" 

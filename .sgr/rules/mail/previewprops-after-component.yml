@@ -1,0 +1,20 @@
+id: previewprops-after-component
+message: "PreviewProps must be defined after the component declaration"
+severity: error
+language: tsx
+rule:
+  pattern: '$COMPONENT.PreviewProps = { $$$ }'
+  precedes:
+    pattern: 'export const $COMPONENT = $$$'
+note: |
+  Move PreviewProps after component:
+  export const Component = ...;
+  Component.PreviewProps = { ... };
+
+files:
+  - "apps/backend/src/mail/templates/**/*.tsx"
+
+ignore:
+  - "**/*.test.tsx"
+  - "**/*.spec.tsx"
+  - "**/node_modules/**" 
