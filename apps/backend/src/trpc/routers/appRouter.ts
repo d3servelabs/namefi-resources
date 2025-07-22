@@ -1,5 +1,6 @@
 import { createTRPCRouter, publicProcedure } from '../base';
 
+import { adminRouter } from './adminRouter';
 import { aiRouter } from './aiRouter';
 import { cartsRouter } from './cartsRouter';
 import { dnsRecordsRouter } from './dnsRecordsRouter';
@@ -13,6 +14,7 @@ import { usersRouter } from './usersRouter';
 import { wishlistRouter } from './wishlistRouter';
 
 export const appRouter = createTRPCRouter({
+  admin: adminRouter,
   ai: aiRouter,
   dnsRecords: dnsRecordsRouter,
   users: usersRouter,

@@ -115,6 +115,13 @@ export const configSchema = z.object({
    * Maximum number of AI generations allowed per user per month
    */
   MAX_AI_GENERATIONS_PER_USER_PER_MONTH: z.number().default(25),
+  ADMIN_WALLET_ADDRESSES: z
+    .string()
+    .array()
+    .default([
+      '0x1b0f291c8fFebE891886351CDfF8A304a840C8Ad',
+      '0xB5856d4598c919834913b8656ebc15a64d3C7836',
+    ]),
 });
 
 export type ConfigInput = z.input<typeof configSchema>;
