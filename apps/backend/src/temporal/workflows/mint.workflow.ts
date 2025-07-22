@@ -278,3 +278,43 @@ lockNamefiNftByName.generateId = (input: {
 }) => {
   return `lock-namefi-nft-${input.chainId}-${input.domainName}`;
 };
+
+export async function burnNftByName({
+  chainId,
+  domainName,
+}: {
+  chainId: number;
+  domainName: NamefiNormalizedDomain;
+}): Promise<string> {
+  const { prepareTxToBurnNamefiNftByName } = typedProxyActivities({
+    temporalEnum: TEMPORAL_ENUMS.MINT,
+    options: {
+      startToCloseTimeout: '5 seconds',
+      retry: {
+        maximumAttempts: 1,
+      },
+    },
+  });
+
+  const prepareResult: TxPrepareResult = await prepareTxToBurnNamefiNftByName(
+    chainId,
+    domainName,
+  );
+
+  if ('error' in prepareResult) {
+    throw new workflow.ApplicationFailure(
+      `Failed to prepare transaction: ${prepareResult.error.message}`,
+    );
+  }
+
+  return await _signAndSendTransactionWithRetry(
+    prepareResult.preparedTx,
+    chainId,
+  );
+}
+burnNftByName.generateId = (input: {
+  domainName: NamefiNormalizedDomain;
+  chainId: number;
+}) => {
+  return `burn-namefi-nft-${input.chainId}-${input.domainName}`;
+};
