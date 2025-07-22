@@ -13,10 +13,12 @@ const productionConfig: ConfigInput = {
   ADDITIONAL_HOSTNAME_MAP: {
     '0xcity.astra.namefi.io': '0x.city',
     '0x.city.astra.namefi.io': '0x.city',
+    'taylorcv.astra.namefi.io': 'taylor.cv',
+    'taylor.cv.astra.namefi.io': 'taylor.cv',
   },
   ALLOWED_CHAINS: [chains.mainnet.id, chains.base.id],
   EMAIL_ADDRESS_TO_OWNED_HOSTNAMES_MAP: {
-    'dev-team@d3serve.xyz': ['0x.city'],
+    'dev-team@d3serve.xyz': ['0x.city', 'taylor.cv'],
   },
   NAMEFI_ASTRA_NAMESERVERS: ['ns3.namefi.io.', 'ns4.namefi.io.'],
 

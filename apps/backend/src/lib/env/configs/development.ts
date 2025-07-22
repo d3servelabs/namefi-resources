@@ -14,11 +14,13 @@ const developmentConfig: ConfigInput = {
   ADDITIONAL_HOSTNAME_MAP: {
     '0xcity.astra.namefi.dev': '0x.city',
     '0x.city.astra.namefi.dev': '0x.city',
+    'taylorcv.astra.namefi.dev': 'taylor.cv',
+    'taylor.cv.astra.namefi.dev': 'taylor.cv',
   },
   ALLOW_ALL_ORIGINS: true,
   ALLOWED_CHAINS: [chains.sepolia.id, chains.base.id, chains.mainnet.id],
   EMAIL_ADDRESS_TO_OWNED_HOSTNAMES_MAP: {
-    'dev-team@d3serve.xyz': ['0x.city'],
+    'dev-team@d3serve.xyz': ['0x.city', 'taylor.cv'],
   },
   DNSSEC_DNSKEY_PUBLIC_RECORD:
     'example.com. 3600 IN DNSKEY 257 3 13 g2sb5aS1wJZPanPqAeUzcb6pNM6h9ruKJb2ptCEtppMEBdmvVnS49wATr083ghefNvYN2tl552ICYiNxm2q54w==',
