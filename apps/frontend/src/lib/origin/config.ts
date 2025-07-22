@@ -1,5 +1,6 @@
-import { Search as ZeroxCitySearch } from '@/components/0x-city/Search';
 import { Search as AstraSearch } from '@/components/astra/Search';
+import { Search as ZeroxCitySearch } from '@/components/0x-city/Search';
+import { Search as TaylorCvSearch } from '@/components/taylor-cv/search';
 import type { OriginConfigMap } from './types';
 
 /**
@@ -47,17 +48,42 @@ export const originConfig: OriginConfigMap = {
         component: ZeroxCitySearch,
       },
     },
-    'defi.build': {
+    'taylor.cv': {
       metadata: {
-        title: 'defi.build - Powered by NameFi',
-        description: 'Buy and sell defi.build domains with ease',
+        title: 'taylor.cv - Powered by NameFi',
+        description:
+          'A community namespace for Taylors. Get your personalized subdomain under taylor.cv for your digital CV, portfolio, or link-in-bio.',
         icons: [{ rel: 'icon', url: '/favicon.ico' }],
+        openGraph: {
+          title: 'taylor.cv - Powered by NameFi',
+          description:
+            'A community namespace for Taylors. Get your personalized subdomain under taylor.cv for your digital CV, portfolio, or link-in-bio.',
+          type: 'website',
+          images: [
+            {
+              url: '/assets/taylor-cv/opengraph-image.jpg',
+              width: 1200,
+              height: 630,
+              alt: 'taylor.cv - Your Digital Identity Awaits',
+            },
+          ],
+        },
+        twitter: {
+          card: 'summary_large_image',
+          title: 'taylor.cv - Your Digital Identity Awaits',
+          description:
+            'A community namespace for Taylors. Get your personalized subdomain under taylor.cv for your digital CV, portfolio, or link-in-bio.',
+        },
       },
       logo: {
-        type: 'image',
-        image: '/logos/defi-logo.png',
-        title: 'defi.build',
-        alt: 'defi.build Logo',
+        type: 'lottie',
+        lottie: '/lottie/namefi_to_nfi.json',
+        alt: 'NameFi Logo',
+        width: 80,
+        height: 24,
+      },
+      landingPage: {
+        component: TaylorCvSearch,
       },
     },
   },

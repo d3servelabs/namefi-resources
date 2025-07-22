@@ -47,7 +47,7 @@ export const Footer: ForwardRefExoticComponent<FooterProps> = forwardRef<
   return (
     <footer
       ref={ref}
-      className={cn('w-full bg-transparent py-3 mt-auto', className)}
+      className={cn('w-full bg-transparent py-8 mt-auto', className)}
       {...rest}
     >
       <div className="container mx-auto flex justify-between items-center px-4">

@@ -138,7 +138,7 @@ export const Search: SearchComponent = ({ originInfo }) => {
   }
 
   return (
-    <div className="relative flex gap-4 flex-col">
+    <div className="relative flex gap-4 flex-col p-4">
       <div className="flex flex-col items-center gap-4">
         <SearchHeader
           parentDomain={parentDomain}

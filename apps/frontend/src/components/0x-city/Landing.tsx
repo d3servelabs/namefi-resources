@@ -1,7 +1,7 @@
 'use client';
 
-import { Marquee } from '@/components/magicui/marquee';
-import { OrbitingCircles } from '@/components/magicui/orbiting-circles';
+import { Marquee } from '@/components/ui/magicui/marquee';
+import { OrbitingCircles } from '@/components/ui/magicui/orbiting-circles';
 import { IdCard } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -67,7 +67,7 @@ const WhatIsSection: FC = () => {
         />
         <OrbitingCircles path={true} radius={120} iconSize={72} speed={0.5}>
           <Image
-            src="/assets/orbiting-circles/clip.svg"
+            src="/assets/0x-city/orbiting-circles/clip.svg"
             alt="clip"
             width={72}
             height={72}
@@ -81,19 +81,19 @@ const WhatIsSection: FC = () => {
           speed={0.75}
         >
           <Image
-            src="/assets/orbiting-circles/leaf.svg"
+            src="/assets/0x-city/orbiting-circles/leaf.svg"
             alt="clip"
             width={72}
             height={72}
           />
           <Image
-            src="/assets/orbiting-circles/layers.svg"
+            src="/assets/0x-city/orbiting-circles/layers.svg"
             alt="clip"
             width={72}
             height={72}
           />
           <Image
-            src="/assets/orbiting-circles/eth.svg"
+            src="/assets/0x-city/orbiting-circles/eth.svg"
             alt="clip"
             width={72}
             height={72}
@@ -101,13 +101,13 @@ const WhatIsSection: FC = () => {
         </OrbitingCircles>
         <OrbitingCircles path={true} radius={280} iconSize={72} speed={1}>
           <Image
-            src="/assets/orbiting-circles/cube.svg"
+            src="/assets/0x-city/orbiting-circles/cube.svg"
             alt="clip"
             width={72}
             height={72}
           />
           <Image
-            src="/assets/orbiting-circles/grid.svg"
+            src="/assets/0x-city/orbiting-circles/grid.svg"
             alt="clip"
             width={72}
             height={72}
@@ -210,28 +210,28 @@ export const WhoAre0xCitizens: FC = () => {
       title: 'Blockchain Believer',
       description:
         'Deeply believes in blockchain and decentralized finance(DeFi) as the future, actively participating in related ecosystem building.',
-      imageSrc: '/assets/citizens/believer.png',
+      imageSrc: '/assets/0x-city/citizens/believer.png',
       imageAlt: 'Blockchain Believer',
     },
     {
       title: 'Crypto KOL/Influencer',
       description:
         "Uses the '0x' prefix in social media and identity markers such as Twitter, ENS, email, etc. expressing identification with crypto culture.",
-      imageSrc: '/assets/citizens/influencer.png',
+      imageSrc: '/assets/0x-city/citizens/influencer.png',
       imageAlt: 'Crypto KOL/Influencer',
     },
     {
       title: 'Sovereignty Advocate',
       description:
         'Advocates for open, transparent, permissionless network culture, pursuing financial sovereignty and personal identity autonomy.',
-      imageSrc: '/assets/citizens/advocate.png',
+      imageSrc: '/assets/0x-city/citizens/advocate.png',
       imageAlt: 'Sovereignty Advocate',
     },
     {
       title: 'Technical Specialist',
       description:
         'Has strong technical sensibility for Ethereum smart contracts, blockchain infrastructure, and other crypto native tools.',
-      imageSrc: '/assets/citizens/specialist.png',
+      imageSrc: '/assets/0x-city/citizens/specialist.png',
       imageAlt: 'Technical Specialist',
     },
   ];

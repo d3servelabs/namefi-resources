@@ -5,7 +5,7 @@ import { Card, CardContent } from '@/components/ui/shadcn/card';
 import { Input } from '@/components/ui/shadcn/input';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
 import { Badge } from '@/components/ui/shadcn/badge';
-import { PasswordInput } from '@/components/ui/password-input';
+import { PasswordInput } from '@/components/password-input';
 import { useCartRow } from '@/hooks/use-cart-row';
 import { useSearch } from '@/hooks/use-search';
 import { config } from '@/lib/env';

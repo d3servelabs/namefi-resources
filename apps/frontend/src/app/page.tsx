@@ -19,9 +19,5 @@ export default async function HomePage() {
   const config = getOriginConfig(origin);
   const SearchComponent = config.landingPage?.component || DefaultSearch;
 
-  return (
-    <div className="p-4">
-      <SearchComponent originInfo={originInfo} />
-    </div>
-  );
+  return <SearchComponent originInfo={originInfo} />;
 }

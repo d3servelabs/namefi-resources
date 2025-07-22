@@ -4,7 +4,6 @@ import { Preloader } from '@/components/preloader';
 import { AppSidebar } from '@/components/sidebars';
 import { SidebarProvider } from '@/components/ui/shadcn/sidebar';
 import { Toaster } from '@/components/ui/shadcn/sonner';
-import { Contexts } from '@/contexts';
 import { config } from '@/lib/env';
 import { getOriginConfig, getOriginFromServerHeaders } from '@/lib/origin';
 import { cn } from '@/lib/utils';
@@ -15,9 +14,9 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { headers } from 'next/headers';
 import type { ReactNode } from 'react';
-import './globals.css';
 import DatadogRum from '@/components/datadog-rum';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import './globals.css';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -39,7 +38,10 @@ export async function generateMetadata(): Promise<Metadata> {
   const origin = getOriginFromServerHeaders(headersList);
   const metadata = getOriginConfig(origin).metadata;
 
-  return metadata;
+  return {
+    metadataBase: new URL(origin ?? 'https://astra.namefi.io'),
+    ...metadata,
+  };
 }
 
 export default function RootLayout({
@@ -70,15 +72,12 @@ export default function RootLayout({
         <GoogleAnalytics gaId={config.GA_MEASUREMENT_ID} />
         <Providers>
           <ReactQueryDevtools initialIsOpen={false} />
-
-          <Contexts>
-            <OriginBackground />
-            <Toaster expand={true} visibleToasts={3} />
-            <SidebarProvider defaultOpen={false}>
-              <AppSidebar />
-              <Main>{children}</Main>
-            </SidebarProvider>
-          </Contexts>
+          <OriginBackground />
+          <Toaster expand={true} visibleToasts={3} />
+          <SidebarProvider defaultOpen={false}>
+            <AppSidebar />
+            <Main>{children}</Main>
+          </SidebarProvider>
         </Providers>
       </body>
     </html>

@@ -9,7 +9,7 @@
   "engines": {
     "node": ">=22.13.1"
   },
-  "packageManager": "bun@1.2.7",
+  "packageManager": "bun@1.2.13",
   "devDependencies": {
     "@ast-grep/cli": "^0.18.0",
     "@biomejs/biome": "^2.0.6",
@@ -53,9 +53,19 @@
     "validate:secrets": "turbo validate:secrets"
   },
   "trustedDependencies": [
+    "@ast-grep/cli",
     "@biomejs/biome",
+    "@infisical/cli",
+    "@reown/appkit",
+    "@swc/core",
+    "@tailwindcss/oxide",
+    "@temporalio/core-bridge",
+    "bufferutil",
     "esbuild",
+    "keccak",
     "lefthook",
-    "sharp"
+    "protobufjs",
+    "sharp",
+    "utf-8-validate"
   ]
 }

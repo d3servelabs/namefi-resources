@@ -14,10 +14,10 @@ const localConfig: ConfigInput = {
     'namefi.localhost',
     'astra.localhost',
   ],
-  POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES: ['0x.city', 'defi.build'],
+  POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES: ['0x.city', 'taylor.cv'],
   ADDITIONAL_HOSTNAME_MAP: {
     '0xcity.localhost': '0x.city',
-    'defibuild.localhost': 'defi.build',
+    'taylorcv.localhost': 'taylor.cv',
   },
   USER_CENTRICS_SETTINGS_ID: '5UJHpI8CWth59m',
   USER_CENTRICS_GOOGLE_ANALYTICS_SERVICE_ID: 'HkocEodjb7',

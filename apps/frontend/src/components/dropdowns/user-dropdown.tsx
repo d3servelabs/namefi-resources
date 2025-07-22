@@ -8,7 +8,6 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/shadcn/dropdown-menu';
 import { SidebarMenuButton } from '@/components/ui/shadcn/sidebar';
-import { useConfirm } from '@/contexts';
 import { useCartContext } from '@/providers/cart';
 import { useAuth } from '@/hooks/use-auth';
 import { useEmailPrompt } from '@/hooks/use-email-prompt';
@@ -32,6 +31,17 @@ import {
   useCallback,
 } from 'react';
 import { CurrentUserAvatar } from '../user-avatar';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/shadcn/alert-dialog';
+import { useState } from 'react';
 
 const ITEMS: NavItem[] = [
   { title: 'Profile', href: '/profile', icon: UserIcon },
@@ -46,7 +56,8 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
     { collapsed, className, ...rest }: UserDropdownProps,
     ref: ForwardedRef<HTMLDivElement>,
   ) {
-    const confirm = useConfirm();
+    // Remove useConfirm
+    const [isSignOutDialogOpen, setIsSignOutDialogOpen] = useState(false);
     const { clearLocalCart } = useCartContext();
 
     const { isLoading, isAuthenticated, privyUser } = useAuth();
@@ -83,22 +94,40 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
       });
     }, [login]);
 
-    const handleDisconnect = useCallback(async () => {
-      confirm({
-        title: 'Are you sure you want to sign out?',
-        description:
-          'Are you sure you want to sign out? Any unsaved changes will be lost.',
-        cancelText: 'Cancel',
-        confirmText: 'Sign Out',
-        onConfirm: async () => {
-          await logout();
-        },
-        onCancel: () => {},
-      });
-    }, [logout, confirm]);
+    // Remove handleDisconnect and confirm
+    const handleSignOut = useCallback(async () => {
+      await logout();
+      setIsSignOutDialogOpen(false);
+    }, [logout]);
 
     return (
       <div ref={ref} className={cn('', className)} {...rest}>
+        {/* Sign Out Confirmation Dialog */}
+        <AlertDialog
+          open={isSignOutDialogOpen}
+          onOpenChange={setIsSignOutDialogOpen}
+        >
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>
+                Are you sure you want to sign out?
+              </AlertDialogTitle>
+              <AlertDialogDescription>
+                Are you sure you want to sign out? Any unsaved changes will be
+                lost.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction
+                onClick={handleSignOut}
+                className="text-red-500"
+              >
+                Sign Out
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
         {!isAuthenticated && (
           <Button
             className="w-full"
@@ -147,7 +176,7 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
               })}
               <DropdownMenuSeparator />
               <DropdownMenuItem
-                onClick={handleDisconnect}
+                onClick={() => setIsSignOutDialogOpen(true)}
                 className="text-red-500"
               >
                 <LogOutIcon className="mr-2 h-4 w-4" />

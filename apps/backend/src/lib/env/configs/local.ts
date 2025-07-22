@@ -23,7 +23,6 @@ const localConfig: ConfigInput = {
   ],
   ADDITIONAL_HOSTNAME_MAP: {
     '0xcity.localhost': '0x.city',
-    'defibuild.localhost': 'defi.build',
   },
   ALLOWED_CHAINS: [chains.sepolia.id],
   EMAIL_ADDRESS_TO_OWNED_HOSTNAMES_MAP: {

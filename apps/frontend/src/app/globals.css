@@ -170,14 +170,16 @@
     @apply bg-background text-foreground;
   }
 
-  [data-origin="defi.build"] {
-    --brand-primary: #ffffff;
-  }
-
   [data-origin="0x.city"] {
     --brand-primary: #4f46e5;
     --brand-secondary: #6366f1;
     --brand-tertiary: #818cf8;
+  }
+
+  [data-origin="taylor.cv"] {
+    --brand-primary: #3b82f6;
+    --brand-secondary: #a21caf;
+    --brand-tertiary: #ec4899;
   }
 }
 
