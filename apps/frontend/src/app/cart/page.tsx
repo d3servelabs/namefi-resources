@@ -4,7 +4,7 @@ import { CartCard } from '@/components/cart-card';
 import { CartItem } from '@/components/cart-item';
 import { NamefiButton } from '@/components/buttons/namefi-button';
 import { NftWalletCard } from '@/components/nft-wallet-card';
-import { useInteractionLoggers } from '@/components/providers/interactionLoggersProvider';
+import { useInteractionLoggers } from '@/providers/interactionLoggersProvider';
 import { UserDropdown } from '@/components/dropdowns/user-dropdown';
 import {
   NoPaymentMethodRequiredCard,

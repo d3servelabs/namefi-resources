@@ -3,12 +3,9 @@
 import { Copy } from '@/components/copy';
 import { CurrentUserAvatar } from '@/components/user-avatar';
 import { cn } from '@/lib/utils';
-import { FORCED_THEME } from '@/providers/sessions';
 import { shortage } from '@/utils/string';
 import type { User } from '@privy-io/react-auth';
-import { isNil } from 'ramda';
 import type { FC, HTMLAttributes } from 'react';
-import { ThemeDropdown } from './dropdowns/theme-dropdown';
 
 export interface HeaderProps extends HTMLAttributes<HTMLDivElement> {
   user: User;
@@ -63,10 +60,6 @@ export const Header: FC<HeaderProps> = ({
             {shortage(user.id, 11)}
           </Copy>
         </div>
-      </div>
-
-      <div className="flex items-center gap-2">
-        {isNil(FORCED_THEME) && <ThemeDropdown />}
       </div>
     </div>
   );

@@ -36,7 +36,7 @@ import {
 import FloatingCart from '../floating-cart';
 import { NamefiButton } from '../buttons/namefi-button';
 import { AnimatedCartButton } from '../buttons/animated-cart-button';
-import { useInteractionLoggers } from '../providers/interactionLoggersProvider';
+import { useInteractionLoggers } from '../../providers/interactionLoggersProvider';
 import { Placeholder } from './placeholder';
 import type {
   ImportQuery,

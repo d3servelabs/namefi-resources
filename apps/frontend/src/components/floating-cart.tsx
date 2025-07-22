@@ -7,7 +7,7 @@ import {
 import { ShoppingCartIcon, Plus } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useCallback, useMemo, useState } from 'react';
-import { useInteractionLoggers } from './providers/interactionLoggersProvider';
+import { useInteractionLoggers } from '../providers/interactionLoggersProvider';
 import { Button } from './ui/shadcn/button';
 import type { DomainAvailabilityInfo } from '@namefi-astra/backend/trpc/types';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';

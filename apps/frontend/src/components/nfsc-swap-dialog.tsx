@@ -212,12 +212,7 @@ export default function NFSCSwapDialog(props: Props) {
                   className="shadow-none pl-0 bg-transparent dark:bg-transparent border-0 text-secondary-foreground text-xl dark:text-xl focus-visible:ring-0 w-1/2"
                 />
                 <div className="flex items-center bg-zinc-700 gap-2 p-2 px-4 rounded-md">
-                  <Image
-                    src="/assets/payment/paymentcard.svg"
-                    alt="Swap"
-                    width={24}
-                    height={24}
-                  />
+                  <Image src="/nfsc.svg" alt="Swap" width={24} height={24} />
                   <span className="font-medium">NFSC</span>
                 </div>
               </div>

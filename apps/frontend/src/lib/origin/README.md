@@ -8,7 +8,6 @@ This directory contains the centralized origin-specific configuration system. Th
 - `types.ts` - Type definitions for origin-related configurations
 - `utils.ts` - Utility functions for working with origins
 - `config.ts` - Origin-specific configurations
-- `theme-utils.ts` - Theme-related utilities for setting/getting themes
 
 ## Configuration Structure
 
@@ -55,15 +54,6 @@ Currently, only the following brand-related properties are themed:
 - `--color-brand-tertiary`: Tertiary brand color
 
 All other properties (like background colors, text colors, etc.) remain consistent across themes.
-
-### Theme Utilities
-
-The `theme-utils.ts` file provides functions for working with themes:
-
-- `setTheme(theme)`: Set the current theme by changing the data-theme attribute
-- `getTheme()`: Get the current theme from the data-theme attribute
-- `originToTheme(origin)`: Convert an origin domain to a theme name
-- `getThemeFromOrigin(thirdPartyOrigin)`: Map a third-party origin to its theme name
 
 ## Adding New Origins
 

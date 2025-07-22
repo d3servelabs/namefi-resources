@@ -29,7 +29,7 @@ import {
   useCallback,
   useMemo,
 } from 'react';
-import { useInteractionLoggers } from '../providers/interactionLoggersProvider';
+import { useInteractionLoggers } from '../../providers/interactionLoggersProvider';
 
 export type CartDropdownProps = HTMLAttributes<HTMLDivElement>;
 

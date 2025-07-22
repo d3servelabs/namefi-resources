@@ -1,7 +1,7 @@
 'use client';
 
 import { LazyLottie } from '@/components/lazy-lottie';
-import { useOrigin } from '@/components/providers/originProvider';
+import { useOrigin } from '@/providers/originProvider';
 import { cn } from '@/lib/utils';
 import type { LottieRefCurrentProps } from 'lottie-react';
 import Image from 'next/image';

@@ -7,6 +7,7 @@ import {
 import { getOriginConfig } from '@/lib/origin';
 import type { OriginInfo } from '@/lib/origin/types';
 import { type ReactNode, createContext, useContext, useEffect } from 'react';
+import { useTheme } from 'next-themes';
 
 // Create a discriminated union based on loading state
 type OriginContextType =
@@ -41,6 +42,7 @@ type OriginProviderProps = {
 export function OriginProvider({ children }: OriginProviderProps) {
   const firstPartyState = useIsNamefiFirstPartyOrigin();
   const thirdPartyState = useGetDomainForPoweredByNamefiThirdPartyOrigin();
+  const { setTheme } = useTheme();
 
   // Only consider loaded when both hooks have completed loading
   const isLoading = !(firstPartyState.isLoaded && thirdPartyState.isLoaded);
@@ -60,12 +62,9 @@ export function OriginProvider({ children }: OriginProviderProps) {
   // Set data-origin attribute on body tag when third-party origin is detected
   useEffect(() => {
     if (!isLoading && thirdPartyState.data?.hostname) {
-      document.body.setAttribute('data-origin', thirdPartyState.data.hostname);
-    } else if (!isLoading) {
-      // Remove the attribute if no third-party origin
-      document.body.removeAttribute('data-origin');
+      setTheme(thirdPartyState.data?.hostname);
     }
-  }, [isLoading, thirdPartyState.data?.hostname]);
+  }, [isLoading, thirdPartyState.data?.hostname, setTheme]);
 
   return (
     <OriginContext.Provider value={value}>{children}</OriginContext.Provider>

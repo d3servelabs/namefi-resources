@@ -50,12 +50,7 @@ export default function RootLayout({
   children: ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className="dark h-full"
-      data-theme="namefi"
-      suppressHydrationWarning={true}
-    >
+    <html lang="en" className="dark h-full" suppressHydrationWarning={true}>
       <body
         className={cn(
           geistSans.variable,

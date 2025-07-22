@@ -5,7 +5,7 @@ import { AuthRequired } from '@/components/auth-required';
 import { CartCard } from '@/components/cart-card';
 import { NamefiButton } from '@/components/buttons/namefi-button';
 import { NftDomainCard } from '@/components/nft-domain-card';
-import { useOrigin } from '@/components/providers/originProvider';
+import { useOrigin } from '@/providers/originProvider';
 import { Button } from '@/components/ui/shadcn/button';
 import {
   Carousel,

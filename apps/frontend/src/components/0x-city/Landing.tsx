@@ -13,7 +13,7 @@ import {
   type BeginCheckoutEvent,
   InteractionLoggingEventName,
 } from '@/utils/interaction-logging/events';
-import { useInteractionLoggers } from '../providers/interactionLoggersProvider';
+import { useInteractionLoggers } from '../../providers/interactionLoggersProvider';
 import { Separator } from '../ui/shadcn/separator';
 
 // Hero Section

@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useOrigin } from './providers/originProvider';
+import { useOrigin } from '../providers/originProvider';
 
 const OriginBackground = () => {
   const origin = useOrigin();

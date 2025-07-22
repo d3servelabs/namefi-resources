@@ -5,7 +5,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useLocalStorage } from 'usehooks-ts';
 import PQueue from 'p-queue';
 import { useAuth } from '@/hooks/use-auth';
-import { useInteractionLoggers } from '@/components/providers/interactionLoggersProvider';
+import { useInteractionLoggers } from '@/providers/interactionLoggersProvider';
 import { InteractionLoggingEventName } from '@/utils/interaction-logging/events';
 import {
   useTRPC,
