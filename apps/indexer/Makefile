@@ -7,11 +7,11 @@ REGION := us-central1
 ZONE := us-central1-a
 MODE ?= update
 VERSION := $(shell jq -r '.version' $(current_dir)/package.json)
-DOCKER_TAG := us-central1-docker.pkg.dev/d3serve-labs/namefi-astra/ponder/ponder-indexer:$(VERSION)
-APP_IMAGE := $(DOCKER_TAG)
+export DOCKER_TAG := us-central1-docker.pkg.dev/d3serve-labs/namefi-astra/ponder/ponder-indexer:$(VERSION)
+export APP_IMAGE := $(DOCKER_TAG)
 
 
-.PHONY: deploy clean build
+.PHONY: deploy clean build version app-image
 
 version:
 	@echo $(VERSION)
@@ -27,11 +27,12 @@ build: configure-docker
 	@if docker pull $(DOCKER_TAG); then \
 		echo "Image already exists in registry"; \
 		exit 0; \
+	else \
+		echo "Image does not exist in registry, building and pushing"; \
+		docker build -t $(DOCKER_TAG) -f $(current_dir)/Dockerfile $(current_dir)/../../; \
+		docker push $(DOCKER_TAG); \
+		echo "Image built and pushed"; \
 	fi
-	@echo "Image does not exist in registry, building and pushing"
-	@docker build -t $(DOCKER_TAG) -f $(current_dir)/Dockerfile $(current_dir)/../../ # the build context is the root of the repo
-	@docker push $(DOCKER_TAG)
-	@echo "Image built and pushed"
 
 configure-docker:
 	@gcloud auth configure-docker $(REGION)-docker.pkg.dev
