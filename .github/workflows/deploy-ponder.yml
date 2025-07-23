@@ -1,4 +1,4 @@
-name: Deploy to GCP
+name: Deploy Ponder Indexer
 
 on:
   workflow_dispatch:
@@ -13,7 +13,7 @@ env:
   REGION: us-central1
 jobs:
   build:
-    name: Build and Deploy
+    name: Build and Deploy Ponder Indexer
     runs-on: 'blacksmith-4vcpu-ubuntu-2204'
     permissions:
       contents: read
