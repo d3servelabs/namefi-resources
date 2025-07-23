@@ -1,5 +1,10 @@
 {
+  "extends": "@namefi-astra/typescript",
   "compilerOptions": {
+    // JSX
+    "jsx": "react-jsx",
+    "jsxImportSource": "hono/jsx",
+
     // Type checking
     "strict": true,
     "noUncheckedIndexedAccess": true,
@@ -21,6 +26,6 @@
     // Skip type checking for node modules
     "skipLibCheck": true
   },
-  "include": ["ponder-env.d.ts", "./**/*.ts"],
+  "include": ["ponder-env.d.ts", "./**/*.ts", "./**/*.tsx"],
   "exclude": ["node_modules"]
 }
