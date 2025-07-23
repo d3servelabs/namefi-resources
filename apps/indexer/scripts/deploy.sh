@@ -50,8 +50,7 @@ STARTUP_SCRIPT=$(mktemp)
   echo ""
   cat $BASE_DIR/startup/footer.sh
 } > "$STARTUP_SCRIPT"
-echo "Startup script: $STARTUP_SCRIPT"
-exit 0
+
 
 # ==== GCP Metadata key-value encoding ====
 METADATA="^@^DD_API_KEY=$DD_API_KEY@APP_IMAGE=$APP_IMAGE@DOMAIN=$DOMAIN@EMAIL=$EMAIL"
