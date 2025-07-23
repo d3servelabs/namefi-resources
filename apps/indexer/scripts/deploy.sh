@@ -53,7 +53,7 @@ STARTUP_SCRIPT=$(mktemp)
 
 
 # ==== GCP Metadata key-value encoding ====
-METADATA="^@^DD_API_KEY=$DD_API_KEY@APP_IMAGE=$APP_IMAGE@DOMAIN=$DOMAIN@EMAIL=$EMAIL"
+METADATA="DD_API_KEY=$DD_API_KEY,APP_IMAGE=$APP_IMAGE,DOMAIN=$DOMAIN,EMAIL=$EMAIL"
 
 # ==== Run create or update ====
 if [[ "$ACTION" == "create" ]]; then
@@ -65,12 +65,12 @@ if [[ "$ACTION" == "create" ]]; then
     --tags="$TAGS" \
     --scopes=https://www.googleapis.com/auth/cloud-platform \
     --metadata="$METADATA" \
-    --metadata-from-file startup-script="$STARTUP_SCRIPT"
+    --metadata-from-file=startup-script="$STARTUP_SCRIPT"
 else
   gcloud compute instances set-metadata "$INSTANCE_NAME" \
     --zone="$ZONE" \
     --metadata="$METADATA" \
-    --metadata-from-file startup-script="$STARTUP_SCRIPT"
+    --metadata-from-file=startup-script="$STARTUP_SCRIPT"
   gcloud compute instances reset "$INSTANCE_NAME" --zone="$ZONE"
 fi
 
