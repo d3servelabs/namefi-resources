@@ -1,5 +1,5 @@
 #!/bin/bash
-
+BASE_DIR=$(dirname "$0")
 set -euo pipefail
 
 # Usage: ./deploy.sh create|update
@@ -27,27 +27,31 @@ EMAIL="dev@namefi.io"
 
 STARTUP_SCRIPT=$(mktemp)
 {
-  cat startup/header.sh
+  cat $BASE_DIR/startup/header.sh
   echo ""
   echo "# ==== docker-compose.yml ===="
   echo 'cat > docker-compose.yml <<EOF'
-  cat startup/docker-compose.yml
+  cat $BASE_DIR/startup/docker-compose.yml
   echo 'EOF'
   echo ""
   echo "# ==== nginx conf ===="
   # echo 'cat > nginx/conf.d/app.conf <<EOF'
-  echo 'envsubst '"'"'$DOMAIN'"'"' < /etc/nginx/templates/nginx.conf > /etc/nginx/conf.d/default.conf'
-  cat startup/nginx.conf
+  # cat $BASE_DIR/startup/nginx.conf
+  # echo 'EOF'
+  echo 'envsubst '"'"'$DOMAIN'"'"' <<EOF > nginx/conf.d/app.conf'
+  cat $BASE_DIR/startup/nginx.conf
   echo 'EOF'
   echo ""
   echo "# ==== renew-cert.sh ===="
   echo 'cat > renew-cert.sh <<EOF'
-  cat startup/renew-cert.sh
+  cat $BASE_DIR/startup/renew-cert.sh
   echo 'EOF'
   echo 'chmod +x renew-cert.sh'
   echo ""
-  cat startup/footer.sh
+  cat $BASE_DIR/startup/footer.sh
 } > "$STARTUP_SCRIPT"
+echo "Startup script: $STARTUP_SCRIPT"
+exit 0
 
 # ==== GCP Metadata key-value encoding ====
 METADATA="^@^DD_API_KEY=$DD_API_KEY@APP_IMAGE=$APP_IMAGE@DOMAIN=$DOMAIN@EMAIL=$EMAIL"

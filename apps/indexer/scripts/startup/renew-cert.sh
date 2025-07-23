@@ -2,7 +2,7 @@
 
 cd /opt/my-app || { echo "[!] /opt/my-app not found"; exit 1; }
 
-RENEWED=$(docker compose run --rm certbot renew --dry-run | grep 'No renewals were attempted' || true)
+RENEWED=$(docker compose run --rm certbot renew | grep 'No renewals were attempted' || true)
 
 if [ -z "$RENEWED" ]; then
   echo "[+] Certificate renewed, restarting nginx..."
