@@ -1,0 +1,109 @@
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON
+
+scalar BigInt
+
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+}
+
+type Meta {
+  status: JSON
+}
+
+type Query {
+  domainNft(tokenId: BigInt!, chainId: Float!): DomainNft
+  domainNfts(where: DomainNftFilter, orderBy: String, orderDirection: String, before: String, after: String, limit: Int): DomainNftPage!
+  _meta: Meta
+}
+
+type DomainNft {
+  tokenId: BigInt!
+  domainName: String!
+  expirationDate: BigInt!
+  isLocked: Boolean
+  ownerAddress: String!
+  chainId: Int!
+  lastUpdatedBlock: BigInt!
+  lastUpdatedTimestamp: BigInt!
+}
+
+type DomainNftPage {
+  items: [DomainNft!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+input DomainNftFilter {
+  AND: [DomainNftFilter]
+  OR: [DomainNftFilter]
+  tokenId: BigInt
+  tokenId_not: BigInt
+  tokenId_in: [BigInt]
+  tokenId_not_in: [BigInt]
+  tokenId_gt: BigInt
+  tokenId_lt: BigInt
+  tokenId_gte: BigInt
+  tokenId_lte: BigInt
+  domainName: String
+  domainName_not: String
+  domainName_in: [String]
+  domainName_not_in: [String]
+  domainName_contains: String
+  domainName_not_contains: String
+  domainName_starts_with: String
+  domainName_ends_with: String
+  domainName_not_starts_with: String
+  domainName_not_ends_with: String
+  expirationDate: BigInt
+  expirationDate_not: BigInt
+  expirationDate_in: [BigInt]
+  expirationDate_not_in: [BigInt]
+  expirationDate_gt: BigInt
+  expirationDate_lt: BigInt
+  expirationDate_gte: BigInt
+  expirationDate_lte: BigInt
+  isLocked: Boolean
+  isLocked_not: Boolean
+  isLocked_in: [Boolean]
+  isLocked_not_in: [Boolean]
+  ownerAddress: String
+  ownerAddress_not: String
+  ownerAddress_in: [String]
+  ownerAddress_not_in: [String]
+  ownerAddress_contains: String
+  ownerAddress_not_contains: String
+  ownerAddress_starts_with: String
+  ownerAddress_ends_with: String
+  ownerAddress_not_starts_with: String
+  ownerAddress_not_ends_with: String
+  chainId: Int
+  chainId_not: Int
+  chainId_in: [Int]
+  chainId_not_in: [Int]
+  chainId_gt: Int
+  chainId_lt: Int
+  chainId_gte: Int
+  chainId_lte: Int
+  lastUpdatedBlock: BigInt
+  lastUpdatedBlock_not: BigInt
+  lastUpdatedBlock_in: [BigInt]
+  lastUpdatedBlock_not_in: [BigInt]
+  lastUpdatedBlock_gt: BigInt
+  lastUpdatedBlock_lt: BigInt
+  lastUpdatedBlock_gte: BigInt
+  lastUpdatedBlock_lte: BigInt
+  lastUpdatedTimestamp: BigInt
+  lastUpdatedTimestamp_not: BigInt
+  lastUpdatedTimestamp_in: [BigInt]
+  lastUpdatedTimestamp_not_in: [BigInt]
+  lastUpdatedTimestamp_gt: BigInt
+  lastUpdatedTimestamp_lt: BigInt
+  lastUpdatedTimestamp_gte: BigInt
+  lastUpdatedTimestamp_lte: BigInt
+}

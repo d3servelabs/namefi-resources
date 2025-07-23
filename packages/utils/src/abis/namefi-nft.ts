@@ -19,6 +19,9 @@ export const NftAbi = parseAbi([
   'function isExpired(uint256 tokenId) public view returns (bool)',
   'function isLocked(uint256 tokenId) external view returns (bool)',
 
+  'function extendByNameWithCharge(string memory domainName,uint256 timeToExtend,address chargee,bytes memory extraData) external',
+  'function extendByNameWithChargeAmount(string memory domainName,uint256 timeToExtend,address chargee,uint256 amount,bytes memory extraData) external',
+
   // Add Transfer event used for owner tracking
   'event Transfer(address indexed from, address indexed to, uint256 indexed tokenId)',
   // Add Lock event used for lock tracking
