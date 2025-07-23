@@ -20,6 +20,7 @@ import {
   Globe,
   TrendingUp,
   ArrowDown,
+  Quote,
 } from 'lucide-react';
 import Link from 'next/link';
 import { Marquee } from '@/components/ui/magicui/marquee';
@@ -431,6 +432,172 @@ export const TaylorCVLanding: SearchComponent = () => {
                 Premium domains appreciate in value over time.
               </p>
             </WobbleCard>
+          </div>
+        </div>
+      </section>
+
+      {/* Famous Taylors Section */}
+      <section className="py-24 px-4 relative">
+        <div className="absolute inset-0 bg-slate-950" />
+        <div className="max-w-7xl mx-auto relative z-10">
+          <h2 className="text-5xl md:text-6xl font-extrabold mb-4 text-center tracking-tight">
+            Join the Legacy of{' '}
+            <span className="bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent">
+              Influential Taylors
+            </span>
+          </h2>
+          <p className="text-xl md:text-2xl text-slate-300 mb-20 text-center max-w-3xl mx-auto font-medium">
+            Throughout history, Taylors have made their mark. Now it's time to
+            secure yours.
+          </p>
+          <div className="grid md:grid-cols-3 gap-10 max-w-6xl mx-auto">
+            {/* Taylor Swift */}
+            <Card className="bg-slate-900/80 border-slate-700/60 shadow-xl hover:shadow-2xl transition-shadow duration-200">
+              <CardHeader className="flex flex-row items-center gap-4 pb-2 pt-6 px-6">
+                <div className="w-12 h-12 rounded-full bg-purple-700 flex items-center justify-center shadow-lg">
+                  <Music className="w-7 h-7 text-white" />
+                </div>
+                <div>
+                  <CardTitle className="text-lg text-white font-medium">
+                    Taylor Swift
+                  </CardTitle>
+                  <CardDescription className="text-slate-400 font-normal">
+                    Global Music Icon
+                  </CardDescription>
+                </div>
+              </CardHeader>
+              <CardContent className="pt-2 pb-6 px-6">
+                <div className="mb-4 flex items-start gap-3">
+                  <span className="mt-1">
+                    <Quote className="w-7 h-7 text-purple-400 opacity-80" />
+                  </span>
+                  <span className="italic text-base md:text-lg text-slate-200 font-normal bg-purple-900/30 rounded-xl px-4 py-3 leading-relaxed block">
+                    Personal branding is everything in today's digital world.
+                  </span>
+                </div>
+                <div className="mt-6 text-base font-medium text-purple-300 flex items-center gap-2">
+                  <Star className="w-5 h-5" /> 500M+ followers
+                </div>
+              </CardContent>
+            </Card>
+            {/* Elizabeth Taylor */}
+            <Card className="bg-slate-900/80 border-slate-700/60 shadow-xl hover:shadow-2xl transition-shadow duration-200">
+              <CardHeader className="flex flex-row items-center gap-4 pb-2 pt-6 px-6">
+                <div className="w-12 h-12 rounded-full bg-blue-700 flex items-center justify-center shadow-lg">
+                  <Star className="w-7 h-7 text-white" />
+                </div>
+                <div>
+                  <CardTitle className="text-lg text-white font-medium">
+                    Elizabeth Taylor
+                  </CardTitle>
+                  <CardDescription className="text-slate-400 font-normal">
+                    Hollywood Legend
+                  </CardDescription>
+                </div>
+              </CardHeader>
+              <CardContent className="pt-2 pb-6 px-6">
+                <div className="mb-4 flex items-start gap-3">
+                  <span className="mt-1">
+                    <Quote className="w-7 h-7 text-blue-400 opacity-80" />
+                  </span>
+                  <span className="italic text-base md:text-lg text-slate-200 font-normal bg-blue-900/30 rounded-xl px-4 py-3 leading-relaxed block">
+                    A memorable name opens doors to extraordinary opportunities.
+                  </span>
+                </div>
+                <div className="mt-6 text-base font-medium text-blue-300 flex items-center gap-2">
+                  <Trophy className="w-5 h-5" /> 2x Oscar Winner
+                </div>
+              </CardContent>
+            </Card>
+            {/* Taylor Lautner */}
+            <Card className="bg-slate-900/80 border-slate-700/60 shadow-xl hover:shadow-2xl transition-shadow duration-200">
+              <CardHeader className="flex flex-row items-center gap-4 pb-2 pt-6 px-6">
+                <div className="w-12 h-12 rounded-full bg-violet-700 flex items-center justify-center shadow-lg">
+                  <User className="w-7 h-7 text-white" />
+                </div>
+                <div>
+                  <CardTitle className="text-lg text-white font-medium">
+                    Taylor Lautner
+                  </CardTitle>
+                  <CardDescription className="text-slate-400 font-normal">
+                    Actor & Producer
+                  </CardDescription>
+                </div>
+              </CardHeader>
+              <CardContent className="pt-2 pb-6 px-6">
+                <div className="mb-4 flex items-start gap-3">
+                  <span className="mt-1">
+                    <Quote className="w-7 h-7 text-violet-400 opacity-80" />
+                  </span>
+                  <span className="italic text-base md:text-lg text-slate-200 font-normal bg-violet-900/30 rounded-xl px-4 py-3 leading-relaxed block">
+                    Your domain is your digital identity.
+                  </span>
+                </div>
+                <div className="mt-6 text-base font-medium text-violet-300 flex items-center gap-2">
+                  <Star className="w-5 h-5" /> Teen Choice Awards
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+          <div className="grid md:grid-cols-2 gap-10 max-w-4xl mx-auto mt-10">
+            {/* James Taylor */}
+            <Card className="bg-slate-900/80 border-slate-700/60 shadow-xl hover:shadow-2xl transition-shadow duration-200">
+              <CardHeader className="flex flex-row items-center gap-4 pb-2 pt-6 px-6">
+                <div className="w-12 h-12 rounded-full bg-indigo-700 flex items-center justify-center shadow-lg">
+                  <Trophy className="w-7 h-7 text-white" />
+                </div>
+                <div>
+                  <CardTitle className="text-lg text-white font-medium">
+                    James Taylor
+                  </CardTitle>
+                  <CardDescription className="text-slate-400 font-normal">
+                    Grammy Winner
+                  </CardDescription>
+                </div>
+              </CardHeader>
+              <CardContent className="pt-2 pb-6 px-6">
+                <div className="mb-4 flex items-start gap-3">
+                  <span className="mt-1">
+                    <Quote className="w-7 h-7 text-indigo-400 opacity-80" />
+                  </span>
+                  <span className="italic text-base md:text-lg text-slate-200 font-normal bg-indigo-900/30 rounded-xl px-4 py-3 leading-relaxed block">
+                    The right name becomes timeless.
+                  </span>
+                </div>
+                <div className="mt-6 text-base font-medium text-indigo-300 flex items-center gap-2">
+                  <Star className="w-5 h-5" /> Rock & Roll Hall of Fame
+                </div>
+              </CardContent>
+            </Card>
+            {/* Zachary Taylor */}
+            <Card className="bg-slate-900/80 border-slate-700/60 shadow-xl hover:shadow-2xl transition-shadow duration-200">
+              <CardHeader className="flex flex-row items-center gap-4 pb-2 pt-6 px-6">
+                <div className="w-12 h-12 rounded-full bg-pink-700 flex items-center justify-center shadow-lg">
+                  <Briefcase className="w-7 h-7 text-white" />
+                </div>
+                <div>
+                  <CardTitle className="text-lg text-white font-medium">
+                    Zachary Taylor
+                  </CardTitle>
+                  <CardDescription className="text-slate-400 font-normal">
+                    12th US President
+                  </CardDescription>
+                </div>
+              </CardHeader>
+              <CardContent className="pt-2 pb-6 px-6">
+                <div className="mb-4 flex items-start gap-3">
+                  <span className="mt-1">
+                    <Quote className="w-7 h-7 text-pink-400 opacity-80" />
+                  </span>
+                  <span className="italic text-base md:text-lg text-slate-200 font-normal bg-pink-900/30 rounded-xl px-4 py-3 leading-relaxed block">
+                    Leadership starts with how you present yourself.
+                  </span>
+                </div>
+                <div className="mt-6 text-base font-medium text-pink-300 flex items-center gap-2">
+                  <Star className="w-5 h-5" /> Historical Legacy
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </section>
