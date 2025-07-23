@@ -122,3 +122,120 @@ This indexer operates independently from the main application's existing NFT ind
 ## Deployment
 
 The indexer can be deployed separately from the main application and configured to use the same database with its own schema for data isolation.
+
+# 🛠️ GCP Docker Deployment with SSL, Datadog & Watchtower
+
+This package automates deployment of a containerized app on a GCP Compute Engine VM with:
+
+- 🐳 Docker & Docker Compose  
+- 🐶 Datadog Agent for metrics  
+- 🔐 NGINX reverse proxy + Certbot for SSL  
+- 🔁 Watchtower for auto-updating images  
+- ⏰ Cron-based SSL renewal  
+- ✅ GitHub Actions + Makefile automation
+
+---
+
+## 📁 Directory Structure
+
+```
+.github/workflows/
+    └── deploy-ponder.yml             # GitHub Actions CI trigger
+apps/indexer/
+    ├── Makefile                      # Local CLI interface
+    ├── README.md
+    └── scripts/
+       ├── deploy.sh                  # Main deployment script (create/update)
+       ├── local-test.sh              # Simulate startup locally
+       └── startup/
+           ├── header.sh              # Pre-install, env loading
+           ├── docker-compose.yml     # All services (app, nginx, certbot, datadog, watchtower)
+           ├── nginx.conf             # HTTPS + HTTP->HTTPS redirect
+           ├── renew-cert.sh          # Daily SSL renewal logic
+           └── footer.sh              # Launch stack & setup cron
+```
+
+---
+
+## 🚀 Deployment Instructions
+
+### ▶️ Option 1: Manual CLI
+
+```bash
+# Create instance for the first time:
+make deploy MODE=create
+
+# Update instance with new changes:
+make deploy MODE=update
+
+# Destroy instance:
+make clean
+```
+
+> Make sure you have Docker and GCP SDK (`gcloud`) installed and configured.
+
+---
+
+### ▶️ Option 2: GitHub Actions
+
+1. Commit this folder to your repo  
+2. Set the following GitHub secrets:
+   - `GCP_PROJECT_ID`
+   - `GCP_SA_KEY` (JSON service account key)
+   - `DD_API_KEY`
+3. Trigger the workflow manually from the GitHub UI → Actions → Deploy to GCP
+
+---
+
+## 🌐 Required Metadata (Injected by deploy.sh)
+
+These values are passed as instance metadata:
+
+| Key         | Example                                | Description                      |
+|-------------|----------------------------------------|----------------------------------|
+| `DD_API_KEY`| `abc123...`                            | Your Datadog API key             |
+| `APP_IMAGE` | `ghcr.io/org/app:latest`               | Your Docker image to deploy      |
+| `DOMAIN`    | `yourdomain.com`                       | Domain name for NGINX + certbot  |
+| `EMAIL`     | `you@example.com`                      | Email for Let's Encrypt          |
+
+---
+
+## 🧪 Local Testing
+
+To test the startup scripts **locally** (e.g. before deploying):
+
+```bash
+chmod +x local-test.sh
+./local-test.sh
+```
+
+This simulates what the GCP VM does on first boot.
+
+---
+
+## ✅ What This Stack Gives You
+
+| Feature            | Description                                                       |
+|--------------------|-------------------------------------------------------------------|
+| Docker App         | Runs your app using Docker Compose                                |
+| NGINX Gateway      | HTTPS gateway to your app                                         |
+| Certbot SSL        | Automatic Let's Encrypt setup                                     |
+| Cron Renewal       | Daily SSL renewal via `certbot renew` + `docker restart nginx`   |
+| Datadog Metrics    | Container monitoring and Prometheus scraping                      |
+| Watchtower         | Automatically pulls/restarts containers with new image versions   |
+| GitHub Deploy      | GitHub Actions workflow to deploy from Git                        |
+
+---
+
+## 🧩 Tips
+
+- Make sure your domain has DNS pointed to the GCP VM before provisioning SSL.
+- If you're behind Cloudflare or using CDN, temporarily disable proxy for certbot to work.
+- Watchtower expects images to be tagged with `:latest` or updated digest.
+
+---
+
+Let me know if you want:
+- Terraform version
+- DNS-01 challenge for wildcard certs
+- Systemd version instead of Docker Compose

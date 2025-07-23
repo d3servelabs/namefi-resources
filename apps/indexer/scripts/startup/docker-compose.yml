@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  app:
+    image: ${APP_IMAGE}
+    restart: always
+    expose:
+      - "8080"
+    environment:
+      - DD_ENV=prod
+      - DD_SERVICE=ponder-indexer
+      - DD_VERSION=1.2.3
+      - PORT=8080
+      - PONDER_SCHEMA=indexer
+      - PONDER_LOG_LEVEL=info
+      - DATABASE_URL=${DATABASE_URL}
+      - USE_WEBSOCKETS=${USE_WEBSOCKETS}
+    labels:
+      com.datadoghq.ad.check_names: '["prometheus"]'
+      com.datadoghq.ad.init_configs: '[{}]'
+      com.datadoghq.ad.instances: >
+        [{"prometheus_url":"http://%%host%%:8080/metrics", "namespace":"ponder-indexer", "metrics": ["ponder_*"]}]
+      tags: "env:prod,team:infra,service:ponder-indexer"
+
+  nginx:
+    image: nginx:stable
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./nginx/certbot/conf:/etc/letsencrypt
+      - ./nginx/certbot/www:/var/www/certbot
+    depends_on:
+      - app
+
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - ./nginx/certbot/conf:/etc/letsencrypt
+      - ./nginx/certbot/www:/var/www/certbot
+
+  datadog-agent:
+    image: gcr.io/datadoghq/agent:latest
+    restart: always
+    environment:
+      - DD_API_KEY=${DD_API_KEY}
+      - DD_SITE=us5.datadoghq.com
+      - DD_DOGSTATSD_NON_LOCAL_TRAFFIC=true
+      - DD_CONTAINER_EXCLUDE=name:datadog-agent
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /proc/:/host/proc/:ro
+      - /sys/fs/cgroup:/host/sys/fs/cgroup:ro
+
+  watchtower:
+    image: containrrr/watchtower
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - WATCHTOWER_CLEANUP=true
+      - WATCHTOWER_POLL_INTERVAL=300

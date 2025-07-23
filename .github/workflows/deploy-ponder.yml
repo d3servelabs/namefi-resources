@@ -1,0 +1,42 @@
+name: Deploy to GCP
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'Deployment mode (create or update)'
+        required: true
+        default: 'update'
+
+env:
+  DD_API_KEY: ${{ secrets.INDEXER_DD_API_KEY }}
+  REGION: us-central1
+jobs:
+  build:
+    name: Build and Deploy
+    runs-on: 'blacksmith-4vcpu-ubuntu-2204'
+    permissions:
+      contents: read
+      id-token: write # Required for GCP Workload Identity Federation
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Set up Google Cloud authentication using WIF
+      - name: Google Auth
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
+          service_account: ${{ vars.GCP_WIF_SERVICE_ACCOUNT }}
+
+      # BEGIN - Docker auth and build
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Configure Docker for Artifact Registry
+        run: gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev
+
+      - name: 'Build and Push Container'
+        run: MODE=${{ inputs.mode }} make -f apps/indexer/Makefile deploy
