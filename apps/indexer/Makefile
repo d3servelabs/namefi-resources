@@ -19,8 +19,8 @@ app-image:
 	@echo $(APP_IMAGE)
 
 deploy: build
-	@chmod +x ./scripts/deploy.sh
-	@./scripts/deploy.sh $(MODE)
+	@chmod +x $(current_dir)/scripts/deploy.sh
+	@$(current_dir)/scripts/deploy.sh $(MODE)
 
 build: configure-docker
 	@# this checks if the image exists in the registry and if not, it builds it
