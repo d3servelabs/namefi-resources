@@ -29,7 +29,7 @@ build: configure-docker
 		exit 0; \
 	fi
 	@echo "Image does not exist in registry, building and pushing"
-	@docker build -t $(DOCKER_TAG) -f Dockerfile ../../ # the build context is the root of the repo
+	@docker build -t $(DOCKER_TAG) -f $(current_dir)/Dockerfile $(current_dir)/../../ # the build context is the root of the repo
 	@docker push $(DOCKER_TAG)
 	@echo "Image built and pushed"
 
