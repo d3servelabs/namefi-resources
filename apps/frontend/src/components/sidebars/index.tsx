@@ -145,7 +145,7 @@ export function AppSidebar() {
         <motion.div className="flex flex-col gap-2 w-full" layout>
           <AnimatePresence initial={false}>
             <motion.div layout key="user-dropdown">
-              <UserDropdown />
+              <UserDropdown forceExpanded={false} />
             </motion.div>
             {!isCollapsed && (
               <motion.div

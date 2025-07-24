@@ -85,7 +85,6 @@
     "superjson": "^2.2.2",
     "tailwind-merge": "^3.0.2",
     "usehooks-ts": "^3.1.1",
-    "uuid": "^11.0.4",
     "viem": "^2.24.2",
     "vitest": "^3.1.2",
     "wagmi": "^2.14.15",

@@ -37,6 +37,14 @@ const nextConfig = {
     name: packageJson.name,
     ENVIRONMENT: process.env.ENVIRONMENT,
   },
+  eslint: {
+    // Note: validate is run on CI with build
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    // Note: validate is run on CI with build
+    ignoreBuildErrors: true,
+  },
   devIndicators: {
     position: 'bottom-right',
   },

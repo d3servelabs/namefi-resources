@@ -28,6 +28,7 @@ import {
   type HTMLAttributes,
   forwardRef,
   useCallback,
+  useMemo,
 } from 'react';
 import { CurrentUserAvatar } from '../user-avatar';
 import {
@@ -46,11 +47,13 @@ const ITEMS: NavItem[] = [
   { title: 'Profile', href: '/profile', icon: UserIcon },
 ];
 
-export type UserDropdownProps = HTMLAttributes<HTMLDivElement>;
+export type UserDropdownProps = HTMLAttributes<HTMLDivElement> & {
+  forceExpanded?: boolean;
+};
 
 export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
   forwardRef<HTMLDivElement, UserDropdownProps>(function UserDropdown(
-    { className, ...rest }: UserDropdownProps,
+    { forceExpanded = true, ...rest }: UserDropdownProps,
     ref: ForwardedRef<HTMLDivElement>,
   ) {
     const [isSignOutDialogOpen, setIsSignOutDialogOpen] = useState(false);
@@ -95,8 +98,12 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
       setIsSignOutDialogOpen(false);
     }, [logout]);
 
+    const isExpanded = useMemo(() => {
+      return forceExpanded || sidebarState !== 'collapsed' || isMobile;
+    }, [forceExpanded, sidebarState, isMobile]);
+
     return (
-      <div ref={ref} className={className} {...rest}>
+      <div ref={ref} {...rest}>
         {/* Sign Out Confirmation Dialog */}
         <AlertDialog
           open={isSignOutDialogOpen}
@@ -134,8 +141,7 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
             ) : (
               <WalletIcon className="size-6" />
             )}
-            {sidebarState !== 'collapsed' ||
-              (isMobile && <span>{isLoading ? 'Loading...' : 'Sign In'}</span>)}
+            {isExpanded && <span>{isLoading ? 'Loading...' : 'Sign In'}</span>}
           </Button>
         )}
 
@@ -147,15 +153,14 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
                 className="data-[state=open]:bg-sidebar-accent w-full data-[state=open]:text-sidebar-accent-foreground"
               >
                 <CurrentUserAvatar />
-                {sidebarState !== 'collapsed' ||
-                  (isMobile && (
-                    <>
-                      <span className="text-sm hidden md:block">
-                        {shortage(name, 11)}
-                      </span>
-                      <MoreHorizontalIcon className="h-5 w-5 ml-auto" />
-                    </>
-                  ))}
+                {isExpanded && (
+                  <>
+                    <span className="text-sm hidden md:block">
+                      {shortage(name, 11)}
+                    </span>
+                    <MoreHorizontalIcon className="h-5 w-5 ml-auto" />
+                  </>
+                )}
               </SidebarMenuButton>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-56">
