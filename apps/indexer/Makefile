@@ -10,7 +10,6 @@ VERSION := $(shell jq -r '.version' $(current_dir)/package.json)
 export DOCKER_TAG := us-central1-docker.pkg.dev/d3serve-labs/namefi-astra/ponder/ponder-indexer:$(VERSION)
 export APP_IMAGE := $(DOCKER_TAG)
 
-
 .PHONY: deploy clean build version app-image
 
 version:

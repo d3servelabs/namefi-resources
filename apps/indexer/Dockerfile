@@ -12,7 +12,9 @@ ENV NODE_ENV production
 ENV ENVIRONMENT=production
 
 
-RUN apt-get update && apt-get install -y bash curl
+RUN apt-get update && apt-get install -y bash curl dnsutils && curl -1sLf \
+'https://dl.cloudsmith.io/public/infisical/infisical-cli/setup.deb.sh' | bash \
+&& apt-get update && apt-get install -y infisical
 
 # Stage 2: Use Bun for dependency installation
 FROM oven/bun:1 AS deps
@@ -22,7 +24,7 @@ WORKDIR /app
 COPY . .
 
 # Install dependencies using Bun (faster than npm)
-RUN --mount=type=cache,id=bun,target=/root/.bun/install/cache bun install && bun install
+RUN --mount=type=cache,id=bun,target=/root/.bun/install/cache bun install
 # --frozen-lockfile
 
 
@@ -49,5 +51,5 @@ USER nodejs
 EXPOSE ${PORT}
 
 # Start the application with Node.js
-CMD ["npm", "run", "infisical", "run", "--","npm", "run", "start"] 
+CMD ["infisical", "run", "--","npm", "run", "start"] 
 ## https://infisical.com/docs/integrations/platforms/docker

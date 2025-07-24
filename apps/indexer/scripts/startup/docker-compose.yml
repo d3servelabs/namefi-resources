@@ -6,6 +6,8 @@ services:
     restart: always
     expose:
       - "8080"
+    ports:
+      - "8080:8080"
     environment:
       - DD_ENV=prod
       - DD_SERVICE=ponder-indexer

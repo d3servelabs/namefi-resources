@@ -15,7 +15,7 @@ INSTANCE_NAME="ponder-indexer"
 ZONE="us-central1-a"
 MACHINE_TYPE="e2-medium"
 IMAGE_PROJECT="ubuntu-os-cloud"
-IMAGE_FAMILY="ubuntu-2004-lts"
+IMAGE_FAMILY="ubuntu-2204-lts"
 TAGS="http-server,https-server,prometheus"
 # Guard-rails – fail fast when mandatory vars are absent
 : "${DD_API_KEY:?Environment variable DD_API_KEY is required}"
@@ -24,13 +24,14 @@ DOMAIN="indexer.namefi.io"
 EMAIL="dev@namefi.io"
 
 # ==== Build startup script from templates ====
+export EOF_WITH_QUOTES="'EOF'"
 
 STARTUP_SCRIPT=$(mktemp)
 {
   cat $BASE_DIR/startup/header.sh
   echo ""
   echo "# ==== docker-compose.yml ===="
-  echo 'cat > docker-compose.yml <<EOF'
+  echo 'cat > docker-compose.yml <<'$EOF_WITH_QUOTES
   cat $BASE_DIR/startup/docker-compose.yml
   echo 'EOF'
   echo ""
@@ -38,12 +39,12 @@ STARTUP_SCRIPT=$(mktemp)
   # echo 'cat > nginx/conf.d/app.conf <<EOF'
   # cat $BASE_DIR/startup/nginx.conf
   # echo 'EOF'
-  echo 'envsubst '"'"'$DOMAIN'"'"' <<EOF > nginx/conf.d/app.conf'
+  echo 'envsubst '"'"'$DOMAIN'"'"' <<'$EOF_WITH_QUOTES' > nginx/conf.d/app.conf'
   cat $BASE_DIR/startup/nginx.conf
   echo 'EOF'
   echo ""
   echo "# ==== renew-cert.sh ===="
-  echo 'cat > renew-cert.sh <<EOF'
+  echo 'cat > renew-cert.sh <<'$EOF_WITH_QUOTES
   cat $BASE_DIR/startup/renew-cert.sh
   echo 'EOF'
   echo 'chmod +x renew-cert.sh'
@@ -53,7 +54,7 @@ STARTUP_SCRIPT=$(mktemp)
 
 
 # ==== GCP Metadata key-value encoding ====
-METADATA="DD_API_KEY=$DD_API_KEY,APP_IMAGE=$APP_IMAGE,DOMAIN=$DOMAIN,EMAIL=$EMAIL"
+METADATA="DD_API_KEY=$DD_API_KEY,APP_IMAGE=$APP_IMAGE,DOMAIN=$DOMAIN,EMAIL=$EMAIL,DATABASE_URL=$DATABASE_URL,USE_WEBSOCKETS=$USE_WEBSOCKETS"
 
 # ==== Run create or update ====
 if [[ "$ACTION" == "create" ]]; then
