@@ -24,7 +24,6 @@ auth.get('/signin', (c) => {
   return c.html(<LoginPage error={error} getRequest={true} />);
 });
 
-
 auth.get('/loginz', async (c) => {
   console.log('[login][post]');
   const email = c.req.query('email') as string;
@@ -137,7 +136,7 @@ export const requireAuth = async (c: Context, next: Next) => {
     token = await getSignedCookie(c, secrets.PONDER_COOKIE_SECRET, COOKIE_NAME);
   } catch (error) {
     console.log('[requireAuth] error', error);
-    return c.redirect('/auth/login');
+    return c.redirect('/auth/signin');
   }
 
   const headerToken = c.req.header('Authorization')?.split(' ')[1];
@@ -146,7 +145,7 @@ export const requireAuth = async (c: Context, next: Next) => {
   if (!foundToken) {
     console.log('[requireAuth] no token or header token');
     c.status(401);
-    return c.redirect('/auth/login');
+    return c.redirect('/auth/signin');
   }
 
   try {
@@ -155,7 +154,7 @@ export const requireAuth = async (c: Context, next: Next) => {
     c.set('user', payload);
     await next();
   } catch {
-    return c.redirect('/auth/login');
+    return c.redirect('/auth/signin');
   }
 };
 
