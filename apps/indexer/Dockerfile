@@ -46,13 +46,15 @@ ENV PORT=${PORT:-3000}
 
 COPY --from=deps /app /app
 
-# ponder start updates the config file format for some reason (so it crashes without write permissions)
-RUN chown -R nodejs:nodejs /app
-RUN chmod -R 777 /app/apps/indexer 
 
 # Don't run as root
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nodejs
+
+# ponder start updates the config file format for some reason (so it crashes without write permissions)
+RUN chown -R nodejs:nodejs /app
+RUN chmod -R 777 /app/apps/indexer 
+
 USER nodejs
 
 
