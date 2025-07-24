@@ -17,6 +17,7 @@ services:
       - PONDER_LOG_LEVEL=info
       - DATABASE_URL=${DATABASE_URL}
       - USE_WEBSOCKETS=${USE_WEBSOCKETS}
+      - INFISICAL_TOKEN=${INFISICAL_TOKEN}
     labels:
       com.datadoghq.ad.check_names: '["prometheus"]'
       com.datadoghq.ad.init_configs: '[{}]'

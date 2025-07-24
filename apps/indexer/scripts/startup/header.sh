@@ -8,8 +8,9 @@ env_vars=(
   "APP_IMAGE" 
   "DOMAIN"
   "EMAIL"
-  "DATABASE_URL"
-  "USE_WEBSOCKETS"
+  "INFISICAL_TOKEN"
+#   "DATABASE_URL" 
+#   "USE_WEBSOCKETS"
 )
 
 # Loop through and fetch each variable from metadata

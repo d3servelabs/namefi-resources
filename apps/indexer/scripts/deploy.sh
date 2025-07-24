@@ -68,7 +68,7 @@ if [[ "$ACTION" == "create" ]]; then
     --metadata="$METADATA" \
     --metadata-from-file=startup-script="$STARTUP_SCRIPT"
 else
-  gcloud compute instances set-metadata "$INSTANCE_NAME" \
+  gcloud compute instances add-metadata "$INSTANCE_NAME" \
     --zone="$ZONE" \
     --metadata="$METADATA" \
     --metadata-from-file=startup-script="$STARTUP_SCRIPT"
