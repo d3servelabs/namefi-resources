@@ -5,13 +5,15 @@ import localConfig from './configs/local';
 import productionConfig from './configs/production';
 import testConfig from './configs/test';
 
+const ENVIRONMENT = process.env.ENVIRONMENT || 'production';
+console.log('ENVIRONMENT', ENVIRONMENT);
 export const config = configSchema.parse(
   {
     development: developmentConfig,
     local: localConfig,
     production: productionConfig,
     test: testConfig,
-  }[process.env.ENVIRONMENT || 'test'],
+  }[ENVIRONMENT],
 );
 
 export const secrets = loadSecrets({
