@@ -3,6 +3,8 @@
 # Enable BuildKit support
 # DOCKER_BUILDKIT=1 docker build -t namefi-astra-backend .
 
+# the app doesn't have a build process yet, so we're just basically containerizing the app for deployment 
+
 # Stage 1: Setup base with Node.js 22 Debian Bullseye
 FROM node:jod-bullseye AS base
 WORKDIR /app
@@ -36,11 +38,19 @@ ARG PORT
 ENV PORT=${PORT:-3000}
 
 # Copy package.json and built application
-COPY --from=deps /app/apps/indexer/* /app
+# COPY --from=deps /app/apps/indexer/* /app
 # Copy the infisical secret file
-COPY --from=deps /app/.infisical.json ./.infisical.json
+# COPY --from=deps /app/.infisical.json ./.infisical.json
 # Copy the node_modules
-COPY --from=deps /app/node_modules ./node_modules
+# COPY --from=deps /app/node_modules ./node_modules
+
+COPY --from=deps /app /app
+
+# Don't run as root
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nodejs
+USER nodejs
+
 
 # Don't run as root
 RUN addgroup --system --gid 1001 nodejs
@@ -50,6 +60,9 @@ USER nodejs
 # Default port for the app (can be overridden by setting the PORT environment variable at runtime)
 EXPOSE ${PORT}
 
+WORKDIR /app/apps/indexer
+
 # Start the application with Node.js
 CMD ["infisical", "run", "--","npm", "run", "start"] 
+
 ## https://infisical.com/docs/integrations/platforms/docker
