@@ -9,7 +9,6 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '@/components/ui/shadcn/sidebar';
-import { cn } from '@/lib/utils';
 import type { NavItem } from '@/types';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -22,19 +21,17 @@ export type SidebarItemsProps = HTMLAttributes<HTMLDivElement> & {
 
 export const SidebarItems: FC<SidebarItemsProps> = ({
   items,
-  className,
   ...rest
 }: SidebarItemsProps) => {
   const pathname = usePathname();
   const { isMobile, setOpenMobile } = useSidebar();
 
   return (
-    <SidebarGroup className={cn('', className)} {...rest}>
+    <SidebarGroup {...rest}>
       <SidebarGroupContent>
         <SidebarMenu>
           {items.map((item, index) => {
             const Icon = item.icon;
-
             return (
               <SidebarMenuItem key={`${item.href}-${index}`}>
                 <SidebarMenuButton
@@ -52,7 +49,7 @@ export const SidebarItems: FC<SidebarItemsProps> = ({
                     }}
                   >
                     {Icon && <Icon />}
-                    <span>{item.title}</span>
+                    <span className="whitespace-nowrap">{item.title}</span>
                     {item.badge && (
                       <Badge className="ml-auto text-secondary-foreground bg-brand-primary h-5 w-5 flex items-center justify-center rounded-full p-0">
                         {item.badge.content}

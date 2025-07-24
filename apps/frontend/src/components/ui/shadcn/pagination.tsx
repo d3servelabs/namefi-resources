@@ -1,12 +1,12 @@
+import type * as React from 'react';
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
   MoreHorizontalIcon,
 } from 'lucide-react';
-import type * as React from 'react';
 
-import { type Button, buttonVariants } from '@/components/ui/shadcn/button';
 import { cn } from '@/lib/utils';
+import { type Button, buttonVariants } from '@/components/ui/shadcn/button';
 
 function Pagination({ className, ...props }: React.ComponentProps<'nav'>) {
   return (
@@ -104,7 +104,7 @@ function PaginationEllipsis({
 }: React.ComponentProps<'span'>) {
   return (
     <span
-      aria-hidden={true}
+      aria-hidden
       data-slot="pagination-ellipsis"
       className={cn('flex size-9 items-center justify-center', className)}
       {...props}

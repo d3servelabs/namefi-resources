@@ -255,22 +255,20 @@ export const TaylorCVLanding: SearchComponent = () => {
   return (
     <div className="min-h-screen bg-slate-950 text-white">
       {/* Banner and Hero Container */}
-      <div className="min-h-[calc(100vh-60px)] flex flex-col">
+      <div className="min-h-screen flex flex-col">
         {/* Hero Section */}
         <section className="relative flex-1 py-24 px-4 flex items-center justify-center">
           {/* Full Screen Background Image */}
-          <div className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-[0.18] bg-[url('/assets/taylor-cv/background.jpeg')] bg-opacity-20" />
-          <div className="absolute inset-0 bg-gradient-to-br from-slate-950 to-purple-900 opacity-20" />
-
+          <div className="absolute inset-0 bg-cover bg-center bg-no-repeat bg-[url('/assets/taylor-cv/background.jpeg')] pt-16" />
           <div className="max-w-5xl mx-auto text-center relative z-10">
             <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500/20 to-purple-500/20 border border-blue-500/30 rounded-full px-4 py-1.5 mb-12 backdrop-blur-sm relative">
-              <Sparkles className="w-3 h-3 text-blue-400 relative z-10" />
-              <span className="text-blue-300 font-medium text-xs tracking-wide uppercase relative z-10">
+              <Sparkles className="w-3 h-3 text-purple-400 relative z-10" />
+              <span className="text-purple-300 font-medium text-xs tracking-wide uppercase relative z-10">
                 First surname identity launch
               </span>
             </div>
 
-            <div className="mb-12">
+            <div className="mb-12 px-8">
               <ContainerTextFlip
                 words={['lisa', 'victor', 'jamie', 'dr', 'sami']}
                 interval={2000}
@@ -283,7 +281,7 @@ export const TaylorCVLanding: SearchComponent = () => {
 
             <p className="text-2xl md:text-3xl text-slate-200 mb-12 max-w-4xl mx-auto font-semibold leading-tight">
               Claim your exclusive subdomain under{' '}
-              <span className="text-blue-400 font-bold">taylor.cv</span> —
+              <span className="text-purple-400 font-bold">taylor.cv</span> —
               <br className="hidden md:block" />
               the ultimate digital identity for every Taylor.
             </p>
@@ -709,7 +707,7 @@ export const TaylorCVLanding: SearchComponent = () => {
               taylor.cv
             </span>
           </h2>
-          <p className="text-2xl mb-12 text-blue-100 font-normal leading-relaxed">
+          <p className="text-2xl mb-12 text-purple-100 font-normal leading-relaxed">
             Support the project and help us reach more Taylors worldwide
           </p>
 

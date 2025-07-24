@@ -2,11 +2,18 @@
 
 import Image from 'next/image';
 import { useOrigin } from '../providers/originProvider';
+import { usePathname } from 'next/navigation';
 
 const OriginBackground = () => {
   const origin = useOrigin();
+  const pathname = usePathname();
 
   if (origin.isLoading || !origin.originInfo.config.background) {
+    return null;
+  }
+
+  // Note: only show the background on the landing page
+  if (pathname !== '/') {
     return null;
   }
 

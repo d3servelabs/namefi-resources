@@ -227,10 +227,7 @@ export default function OrderPage({ params }: OrderPageProps) {
 
   if (!(isAuthLoading || isAuthenticated)) {
     return (
-      <AuthRequired
-        title="Sign in required"
-        description="Please sign in to view your order details"
-      />
+      <AuthRequired description="Please sign in to view your order details" />
     );
   }
 

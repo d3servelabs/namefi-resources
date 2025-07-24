@@ -17,8 +17,8 @@ export const originConfig: OriginConfigMap = {
       type: 'lottie',
       lottie: '/lottie/namefi_to_nfi.json',
       alt: 'NameFi Logo',
-      width: 80,
-      height: 24,
+      width: 66,
+      height: 19.8,
     },
     landingPage: {
       component: AstraSearch,
@@ -46,6 +46,7 @@ export const originConfig: OriginConfigMap = {
       },
       landingPage: {
         component: ZeroxCitySearch,
+        headerIsBlurred: true,
       },
     },
     'taylor.cv': {
@@ -79,8 +80,12 @@ export const originConfig: OriginConfigMap = {
         type: 'lottie',
         lottie: '/lottie/namefi_to_nfi.json',
         alt: 'NameFi Logo',
-        width: 80,
-        height: 24,
+        width: 66,
+        height: 19.8,
+      },
+      background: {
+        image: '/assets/taylor-cv/background.jpeg',
+        alt: 'taylor.cv Background',
       },
       landingPage: {
         component: TaylorCvSearch,

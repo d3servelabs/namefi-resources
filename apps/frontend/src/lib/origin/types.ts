@@ -62,6 +62,7 @@ export type AuthLogo = {
 
 export type LandingPage = {
   component?: SearchComponent;
+  headerIsBlurred?: boolean;
 };
 
 /**

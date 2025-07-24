@@ -350,7 +350,7 @@ const CommunitySection: FC = () => {
 // Main Landing Component
 export const Landing: FC = () => {
   return (
-    <div className="flex flex-col mt-40 pb-20 gap-10 bg-gradient-to-b from-black/40 from-[0%] via-black/70 via-[10%] to-black/90 to-[80%] backdrop-blur-3xl">
+    <div className="flex flex-col mt-40 pb-20 gap-10 bg-gradient-to-b from-black/40 from-0% via-black/70 via-10% to-background to-100% backdrop-blur-3xl">
       <Hero />
       <div>
         <WhatIsSection />

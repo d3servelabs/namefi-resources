@@ -11,18 +11,18 @@ export const Main = ({ children }: { children: ReactNode }) => {
   const pathname = usePathname();
 
   return (
-    <SidebarInset
-      className={cn('max-w-full overflow-x-hidden', {
-        'bg-transparent': pathname === '/',
-      })}
-    >
-      <Header
-        className={cn({
-          'bg-transparent': pathname === '/',
-        })}
-      />
-      {children}
-      <Footer />
+    <SidebarInset className="grid grid-cols-1 grid-rows-[auto_1fr_auto] relative overflow-y-auto bg-transparent">
+      <Header className="row-start-1 col-start-1 z-40 pointer-events-auto" />
+      <div
+        className={cn(
+          'row-start-1 col-start-1 z-0',
+          // Note: this is done to allow the landing component to bleed into the header
+          pathname !== '/' && 'pt-16',
+        )}
+      >
+        {children}
+      </div>
+      <Footer className="row-start-3 col-start-1" />
     </SidebarInset>
   );
 };

@@ -3,41 +3,34 @@
 import { BrandLogo } from '@/components/brand-logo';
 import { UserDropdown } from '@/components/dropdowns/user-dropdown';
 import { SidebarItems } from '@/components/sidebars/sidebar-items';
-import { Label } from '@/components/ui/shadcn/label';
 import {
   Sidebar,
+  SidebarHeader,
   SidebarContent,
   SidebarFooter,
   SidebarGroup,
-  SidebarGroupContent,
-  SidebarHeader,
-  SidebarInput,
-  SidebarRail,
   useSidebar,
 } from '@/components/ui/shadcn/sidebar';
+import { SidebarRail } from '@/components/ui/sidebar-rail';
 import { useAuth } from '@/hooks/use-auth';
 import { useRecentDomains } from '@/hooks/use-recent-domains';
 import { useWishlist } from '@/hooks/use-wishlist';
-import { cn } from '@/lib/utils';
 import type { NavItem } from '@/types';
 import { useTRPC } from '@/utils/trpc';
 import { useQuery } from '@tanstack/react-query';
 import {
-  ArrowRight,
   ClipboardList,
   Compass,
   CreditCard,
   Globe,
   PenToolIcon,
-  Search,
   Sparkles,
   TrendingUp,
   Heart,
 } from 'lucide-react';
-import { usePathname, useRouter } from 'next/navigation';
-import { type ChangeEvent, useCallback, useMemo, useState } from 'react';
-import { Button } from '../ui/shadcn/button';
+import { useMemo } from 'react';
 import { SidebarDomains } from './sidebar-domains';
+import { motion, AnimatePresence } from 'motion/react';
 
 const ITEMS: NavItem[] = [
   { title: 'Discover', href: '/', icon: Compass },
@@ -51,11 +44,7 @@ const ITEMS: NavItem[] = [
 ];
 
 export function AppSidebar() {
-  const [search, setSearch] = useState('');
-
   const { state } = useSidebar();
-
-  const pathname = usePathname();
 
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
   const trpc = useTRPC();
@@ -107,13 +96,8 @@ export function AppSidebar() {
   });
 
   const domains = useMemo(
-    () =>
-      recentDomains
-        ?.filter((domain) =>
-          domain.toLowerCase().includes(search.toLowerCase()),
-        )
-        .toReversed() ?? [],
-    [recentDomains, search],
+    () => recentDomains?.toReversed() ?? [],
+    [recentDomains],
   );
 
   const items = useMemo(() => {
@@ -136,93 +120,53 @@ export function AppSidebar() {
     });
   }, [showManageEntrypoint, wishlistData, isWishlistLoading, isAuthLoading]);
 
-  const isCollapsed = useMemo(() => state === 'collapsed', [state]);
-
-  const handleSearch = useCallback((event: ChangeEvent<HTMLInputElement>) => {
-    setSearch(event.target.value);
-  }, []);
-
-  const router = useRouter();
-  const searchForDomain = useCallback(() => {
-    router.push(`/?query=${search}`);
-  }, [search, router]);
+  const isCollapsed = state === 'collapsed';
 
   return (
     <Sidebar
       collapsible="icon"
-      className={cn('border-none!', {
-        '[--sidebar:alpha(var(--color-zinc-600),0.6)] backdrop-blur-3xl':
-          pathname === '/',
-      })}
+      variant="sidebar"
+      className="border-r-0! [&_[data-sidebar=sidebar]]:bg-background/20! [&_[data-sidebar=sidebar]]:backdrop-blur-2xl"
     >
       <SidebarHeader>
-        <SidebarGroup className={cn(isCollapsed && 'px-0.5')}>
-          <div className="flex items-center justify-between py-2">
-            <BrandLogo collapsed={isCollapsed} />
-          </div>
+        <SidebarGroup className="px-0.5 py-2.5">
+          <BrandLogo />
         </SidebarGroup>
-        {!isCollapsed && (
-          <div className="flex items-center flex-row">
-            <SidebarGroup className="py-0">
-              <SidebarGroupContent className="relative">
-                <Label htmlFor="search" className="sr-only">
-                  Search
-                </Label>
-                <SidebarInput
-                  value={search}
-                  onChange={handleSearch}
-                  id="search"
-                  placeholder="Search..."
-                  className="pl-8"
-                  onKeyDown={(event) => {
-                    if (event.key === 'Enter') {
-                      searchForDomain();
-                    }
-                  }}
-                />
-                <Search className="pointer-events-none absolute left-2 top-1/2 size-4 -translate-y-1/2 select-none opacity-50" />
-              </SidebarGroupContent>
-            </SidebarGroup>
-            {search.length > 0 && (
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={searchForDomain}
-                onKeyDown={(event) => {
-                  if (event.key === 'Enter') {
-                    searchForDomain();
-                  }
-                }}
-              >
-                <ArrowRight className="size-4 select-none opacity-50" />
-              </Button>
-            )}
-          </div>
-        )}
       </SidebarHeader>
 
       <SidebarContent>
-        {items.length > 0 && <SidebarItems items={items} />}
-
+        <SidebarItems items={items} />
         {domains.length > 0 && (
           <SidebarDomains name="Recent domains" domains={domains} />
         )}
       </SidebarContent>
 
       <SidebarFooter>
-        <UserDropdown collapsed={isCollapsed} />
-        {!isCollapsed && (
-          <div className="grid grid-cols-2 gap-1 text-xs font-medium text-secondary-foreground/40">
-            <div className="flex flex-row gap-1">
-              <span>App: {frontendVersion.version}</span>
-            </div>
-            <div className="flex flex-row gap-1">
-              <span>API: {backendVersion.data?.version}</span>
-            </div>
-          </div>
-        )}
+        <motion.div className="flex flex-col gap-2 w-full" layout>
+          <AnimatePresence initial={false}>
+            <motion.div layout key="user-dropdown">
+              <UserDropdown />
+            </motion.div>
+            {!isCollapsed && (
+              <motion.div
+                key="sidebar-version-info"
+                className="grid grid-cols-2 gap-1 text-xs font-medium text-secondary-foreground/40"
+              >
+                <div className="flex flex-row px-2 gap-1">
+                  <span className="whitespace-nowrap">
+                    App: {frontendVersion.version}
+                  </span>
+                </div>
+                <div className="flex flex-row gap-1">
+                  <span className="whitespace-nowrap">
+                    API: {backendVersion.data?.version}
+                  </span>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.div>
       </SidebarFooter>
-
       <SidebarRail />
     </Sidebar>
   );

@@ -7,11 +7,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/shadcn/dropdown-menu';
-import { SidebarMenuButton } from '@/components/ui/shadcn/sidebar';
+import { SidebarMenuButton, useSidebar } from '@/components/ui/shadcn/sidebar';
 import { useCartContext } from '@/providers/cart';
 import { useAuth } from '@/hooks/use-auth';
 import { useEmailPrompt } from '@/hooks/use-email-prompt';
-import { cn } from '@/lib/utils';
 import type { NavItem } from '@/types';
 import { shortage } from '@/utils/string';
 import { type User, useLogin, useLogout } from '@privy-io/react-auth';
@@ -47,21 +46,17 @@ const ITEMS: NavItem[] = [
   { title: 'Profile', href: '/profile', icon: UserIcon },
 ];
 
-export type UserDropdownProps = HTMLAttributes<HTMLDivElement> & {
-  collapsed?: boolean;
-};
+export type UserDropdownProps = HTMLAttributes<HTMLDivElement>;
 
 export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
   forwardRef<HTMLDivElement, UserDropdownProps>(function UserDropdown(
-    { collapsed, className, ...rest }: UserDropdownProps,
+    { className, ...rest }: UserDropdownProps,
     ref: ForwardedRef<HTMLDivElement>,
   ) {
-    // Remove useConfirm
     const [isSignOutDialogOpen, setIsSignOutDialogOpen] = useState(false);
+    const { state: sidebarState, isMobile } = useSidebar();
     const { clearLocalCart } = useCartContext();
-
     const { isLoading, isAuthenticated, privyUser } = useAuth();
-
     const { showEmailPrompt } = useEmailPrompt();
 
     const name =
@@ -101,7 +96,7 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
     }, [logout]);
 
     return (
-      <div ref={ref} className={cn('', className)} {...rest}>
+      <div ref={ref} className={className} {...rest}>
         {/* Sign Out Confirmation Dialog */}
         <AlertDialog
           open={isSignOutDialogOpen}
@@ -139,7 +134,8 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
             ) : (
               <WalletIcon className="size-6" />
             )}
-            {!collapsed && <span>{isLoading ? 'Loading...' : 'Sign In'}</span>}
+            {sidebarState !== 'collapsed' ||
+              (isMobile && <span>{isLoading ? 'Loading...' : 'Sign In'}</span>)}
           </Button>
         )}
 
@@ -151,14 +147,15 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
                 className="data-[state=open]:bg-sidebar-accent w-full data-[state=open]:text-sidebar-accent-foreground"
               >
                 <CurrentUserAvatar />
-                {!collapsed && (
-                  <span className="text-sm hidden md:block">
-                    {shortage(name, 11)}
-                  </span>
-                )}
-                {!collapsed && (
-                  <MoreHorizontalIcon className="h-5 w-5 ml-auto" />
-                )}
+                {sidebarState !== 'collapsed' ||
+                  (isMobile && (
+                    <>
+                      <span className="text-sm hidden md:block">
+                        {shortage(name, 11)}
+                      </span>
+                      <MoreHorizontalIcon className="h-5 w-5 ml-auto" />
+                    </>
+                  ))}
               </SidebarMenuButton>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-56">

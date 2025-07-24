@@ -15,28 +15,29 @@ import {
   useEffect,
   useRef,
 } from 'react';
+import { Skeleton } from './ui/shadcn/skeleton';
+import { useSidebar } from './ui/shadcn/sidebar';
 
-export type BrandLogoProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
-  collapsed?: boolean;
-};
+export type BrandLogoProps = AnchorHTMLAttributes<HTMLAnchorElement>;
 
 export const BrandLogo: ForwardRefExoticComponent<BrandLogoProps> = forwardRef<
   HTMLAnchorElement,
   BrandLogoProps
 >(function BrandLogo(
-  { collapsed = false, className, ...rest }: BrandLogoProps,
+  { className, ...rest }: BrandLogoProps,
   ref: ForwardedRef<HTMLAnchorElement>,
 ) {
   const { isLoading, originInfo } = useOrigin();
+  const { state: sidebarState, isMobile } = useSidebar();
   const lottieRef = useRef<LottieRefCurrentProps>(null);
   const logo = isLoading ? null : originInfo.config.logo;
 
   useEffect(() => {
     if (lottieRef.current && logo?.type === 'lottie') {
-      lottieRef.current.setDirection(collapsed ? -1 : 1);
+      lottieRef.current.setDirection(sidebarState === 'collapsed' ? -1 : 1);
       lottieRef.current.play();
     }
-  }, [collapsed, logo]);
+  }, [sidebarState, logo]);
 
   const getJson = useCallback(async () => {
     if (logo?.type === 'lottie') {
@@ -50,10 +51,6 @@ export const BrandLogo: ForwardRefExoticComponent<BrandLogoProps> = forwardRef<
     throw new Error('No Lottie animation data available');
   }, [logo]);
 
-  if (isLoading || !logo) {
-    return null;
-  }
-
   return (
     <Link
       ref={ref}
@@ -64,15 +61,17 @@ export const BrandLogo: ForwardRefExoticComponent<BrandLogoProps> = forwardRef<
       )}
       {...rest}
     >
-      <div className="relative flex shrink-0 items-center justify-center">
-        {logo.type === 'image' ? (
+      <div className="relative flex shrink-0 items-center justify-start h-7">
+        {isLoading || !logo ? (
+          <Skeleton className="rounded-md w-full h-full" />
+        ) : logo.type === 'image' ? (
           <Image
             src={logo.image}
             alt={logo.alt}
             title={logo.title}
-            width={26}
-            height={26}
-            className="rounded-md object-contain h-6.5 w-6.5"
+            width={28}
+            height={28}
+            className="rounded-md object-contain w-full h-full"
             priority={true}
           />
         ) : logo.type === 'lottie' ? (
@@ -81,8 +80,8 @@ export const BrandLogo: ForwardRefExoticComponent<BrandLogoProps> = forwardRef<
             lottieRef={lottieRef}
             getJson={getJson}
             style={{
-              width: 70,
-              height: Math.round((70 / logo.width) * logo.height),
+              width: logo.width,
+              height: logo.height,
             }}
             loop={false}
             autoplay={false}
@@ -90,11 +89,12 @@ export const BrandLogo: ForwardRefExoticComponent<BrandLogoProps> = forwardRef<
         ) : null}
       </div>
 
-      {!collapsed && (
-        <span className="text-xl font-semibold transition-opacity duration-200 ease-in-out">
-          {logo.title}
-        </span>
-      )}
+      {sidebarState !== 'collapsed' ||
+        (isMobile && (
+          <span className="text-xl font-semibold transition-opacity duration-200 ease-in-out">
+            {!logo ? <Skeleton className="h-6 w-24" /> : logo.title}
+          </span>
+        ))}
     </Link>
   );
 });
