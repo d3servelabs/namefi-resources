@@ -29,6 +29,7 @@ import { ContainerTextFlip } from '@/components/ui/aceternity/container-text-fli
 import { WobbleCard } from '@/components/ui/aceternity/wobble-card';
 import { OrbitingCircles } from '@/components/ui/magicui/orbiting-circles';
 import type { LandingComponent } from '@/components/search';
+import { DomainHuntWidget } from './domain-hunt-widget';
 
 const testimonials = [
   {
@@ -279,14 +280,19 @@ export const TaylorCVLanding: LandingComponent = () => {
               <span className="text-6xl md:text-7xl font-bold">.taylor.cv</span>
             </div>
 
-            <p className="text-2xl md:text-3xl text-slate-200 mb-12 max-w-4xl mx-auto font-semibold leading-tight">
+            <p className="text-2xl md:text-3xl text-slate-200 mb-16 max-w-4xl mx-auto font-semibold leading-tight">
               Claim your exclusive subdomain under{' '}
               <span className="text-purple-400 font-bold">taylor.cv</span> —
               <br className="hidden md:block" />
               the ultimate digital identity for every Taylor.
             </p>
 
-            <div className="flex justify-center gap-4 mb-20">
+            {/* Voting Widget */}
+            <div className="flex justify-center mb-16">
+              <DomainHuntWidget />
+            </div>
+
+            <div className="flex justify-center gap-4 mb-10">
               <Button
                 size="lg"
                 className="px-8 py-6"
@@ -305,7 +311,7 @@ export const TaylorCVLanding: LandingComponent = () => {
                   className="px-8 py-6 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white border-0"
                 >
                   <Trophy className="w-5 h-5 mr-1" />
-                  Vote on Namefi Hunt™
+                  View on Namefi Hunt™
                 </Button>
               </Link>
             </div>

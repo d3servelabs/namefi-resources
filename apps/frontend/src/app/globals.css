@@ -124,9 +124,9 @@
 }
 
 .dark[data-theme="taylor.cv"] {
-  --brand-primary: oklch(65.59% 0.2118 354.3);
-  --brand-secondary: oklch(65.59% 0.2118 354.3);
-  --brand-tertiary: oklch(65.59% 0.2118 354.3);
+  --brand-primary: oklch(71.4% 0.203 305.504);
+  --brand-secondary: oklch(71.4% 0.203 305.504);
+  --brand-tertiary: oklch(71.4% 0.203 305.504);
 }
 
 @layer base {
