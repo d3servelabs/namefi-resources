@@ -19,11 +19,19 @@ auth.get('/login', (c) => {
   return c.html(<LoginPage error={error} />);
 });
 
-auth.post('/login', async (c) => {
-  const body = await c.req.parseBody();
-  const email = body['email'] as string;
+auth.get('/signin', (c) => {
+  const error = c.req.query('error');
+  return c.html(<LoginPage error={error} getRequest={true} />);
+});
+
+
+auth.get('/loginz', async (c) => {
+  console.log('[login][post]');
+  const email = c.req.query('email') as string;
+  console.log('[login][post] email', email);
 
   if (!isValidOrgEmail(email)) {
+    console.log('[login][post] email not valid');
     return c.html(<LoginPage error="Only @d3serve.xyz emails allowed" />);
   }
 
@@ -35,7 +43,7 @@ auth.post('/login', async (c) => {
     secrets.PONDER_JWT_SECRET,
   );
   const link = `${config.MAGIC_LINK_BASE_URL}/auth/callback?token=${encodeURIComponent(token)}`;
-
+  console.log('[login][post] sending mail to', email);
   await sendMail({
     to: [email],
     subject: 'Your Namefi Magic Login Link',
@@ -45,6 +53,41 @@ auth.post('/login', async (c) => {
     },
   });
 
+  console.log('[login][post] email sent to', email);
+  return c.html(<EmailSentPage email={email} />);
+});
+
+auth.post('/login', async (c) => {
+  console.log('[login][post]');
+  const body = await c.req.parseBody();
+  console.log('[login][post] body', body);
+  const email = body['email'] as string;
+  console.log('[login][post] email', email);
+
+  if (!isValidOrgEmail(email)) {
+    console.log('[login][post] email not valid');
+    return c.html(<LoginPage error="Only @d3serve.xyz emails allowed" />);
+  }
+
+  const token = await sign(
+    {
+      email,
+      exp: Math.floor(Date.now() / 1000) + 60 * 10, // Token expires in 10 minutes
+    },
+    secrets.PONDER_JWT_SECRET,
+  );
+  const link = `${config.MAGIC_LINK_BASE_URL}/auth/callback?token=${encodeURIComponent(token)}`;
+  console.log('[login][post] sending mail to', email);
+  await sendMail({
+    to: [email],
+    subject: 'Your Namefi Magic Login Link',
+    content: {
+      plain: `Click here to log in: ${link}`,
+      html: `<p><a href="${link}">Click here to log in</a> (expires in 10 minutes)</p>`,
+    },
+  });
+
+  console.log('[login][post] email sent to', email);
   return c.html(<EmailSentPage email={email} />);
 });
 

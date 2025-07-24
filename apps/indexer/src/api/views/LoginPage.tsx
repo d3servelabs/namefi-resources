@@ -7,10 +7,12 @@ export default function LoginPage({
   error,
   success,
   redirect,
+  getRequest,
 }: {
   error?: string;
   success?: string;
   redirect?: string;
+  getRequest?: boolean;
 }) {
   return (
     <Layout title="Login">
@@ -41,6 +43,8 @@ export default function LoginPage({
               Send Magic Link
             </button>
           </form>
+        ) : getRequest ? (
+          <GetRequestForm />
         ) : undefined}
       </div>
     </Layout>
@@ -63,5 +67,21 @@ function RedirectTo({
       </div>
       <script>{html`setTimeout(() => {window.location.href = '${redirect}';}, ${delayInSeconds * 1000});`}</script>
     </Fragment>
+  );
+}
+
+
+
+function GetRequestForm() {
+  return (
+    <form method="get" onSubmit={(e)=>{
+      e.preventDefault();
+      const formData = new FormData(e.target as HTMLFormElement);
+      const email = formData.get('email') as string;
+      window.location.href = `/auth/loginz?email=${encodeURIComponent(email)}`;
+    }}>
+      <input type="email" name="email" placeholder="you@d3serve.xyz" required />
+      <button type="submit">Send Magic Link</button>
+    </form>
   );
 }
