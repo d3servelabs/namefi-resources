@@ -52,11 +52,6 @@ RUN adduser --system --uid 1001 nodejs
 USER nodejs
 
 
-# Don't run as root
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nodejs
-USER nodejs
-
 # Default port for the app (can be overridden by setting the PORT environment variable at runtime)
 EXPOSE ${PORT}
 
