@@ -15,8 +15,13 @@ import { SessionsProvider } from './sessions';
 import { ThemeProvider } from './theme';
 import { TrpcProvider } from './trpc';
 import { WishlistProvider } from './wishlist';
+import type { OriginRuntime } from '@/lib/origin';
 
-export const Providers: FC<PropsWithChildren> = ({ children }) => {
+export const Providers: FC<
+  PropsWithChildren<{
+    originInfo: OriginRuntime;
+  }>
+> = ({ children, originInfo }) => {
   const [config] = useState(() => getWagmiConfig());
   const [queryClient] = useState(() => new QueryClient());
 
@@ -27,10 +32,10 @@ export const Providers: FC<PropsWithChildren> = ({ children }) => {
         attribute="data-theme"
         enableSystem={false}
         disableTransitionOnChange={true}
-        defaultTheme="astra"
+        defaultTheme={originInfo.thirdPartyHostname ?? 'astra'}
         themes={['astra', '0x.city', 'taylor.cv']}
       >
-        <OriginProvider>
+        <OriginProvider originInfo={originInfo}>
           <SessionsProvider>
             <TrpcProvider>
               <NuqsAdapter>

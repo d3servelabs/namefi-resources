@@ -1,23 +1,14 @@
-import { Search as DefaultSearch } from '@/components/search';
-import {
-  getOriginConfig,
-  getOriginFromServerHeaders,
-  getOriginInfo,
-} from '@/lib/origin';
-import { headers } from 'next/headers';
+'use client';
 
-export default async function HomePage() {
-  const headersList = await headers();
-  const origin = getOriginFromServerHeaders(headersList);
+import type { LandingComponent } from '@/components/search';
+import { Search as AstraSearch } from '@/components/astra/Search';
+import { useOrigin } from '@/providers/originProvider';
 
-  // TODO: (sid) - handle the case where the origin is not found
-  if (!origin) {
-    return null;
-  }
+export default function HomePage() {
+  const origin = useOrigin();
 
-  const originInfo = getOriginInfo(origin);
-  const config = getOriginConfig(origin);
-  const SearchComponent = config.landingPage?.component || DefaultSearch;
+  const LandingComponent: LandingComponent =
+    origin.config.landingPage?.component ?? AstraSearch;
 
-  return <SearchComponent originInfo={originInfo} />;
+  return <LandingComponent origin={origin} />;
 }

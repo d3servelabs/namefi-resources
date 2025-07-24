@@ -231,7 +231,7 @@ export default function OrderPage({ params }: OrderPageProps) {
     );
   }
 
-  if (isAuthLoading || isOrderLoading || origin.isLoading) {
+  if (isAuthLoading || isOrderLoading) {
     return (
       <div className="container mx-auto py-8 px-8">
         <div className="max-w-2xl mx-auto text-center">
@@ -317,7 +317,7 @@ export default function OrderPage({ params }: OrderPageProps) {
                   >
                     <NftDomainCard
                       item={item}
-                      origin={origin.originInfo}
+                      origin={origin}
                       isCompleted={isCompletedOrder}
                     />
                   </CarouselItem>
@@ -332,7 +332,7 @@ export default function OrderPage({ params }: OrderPageProps) {
                 <NftDomainCard
                   key={index}
                   item={item}
-                  origin={origin.originInfo}
+                  origin={origin}
                   isCompleted={isCompletedOrder}
                   className="p-4 w-full sm:w-3/4 md:w-1/2 lg:w-1/3 max-w-sm"
                 />
@@ -371,7 +371,7 @@ export default function OrderPage({ params }: OrderPageProps) {
                 >
                   <NftDomainCard
                     item={item}
-                    origin={origin.originInfo}
+                    origin={origin}
                     isCompleted={isCompletedOrder}
                   />
                 </CarouselItem>
@@ -386,7 +386,7 @@ export default function OrderPage({ params }: OrderPageProps) {
               <NftDomainCard
                 key={index}
                 item={item}
-                origin={origin.originInfo}
+                origin={origin}
                 isCompleted={isCompletedOrder}
                 className="p-4 w-full sm:w-3/4 md:w-1/2 lg:w-1/3 max-w-sm"
               />
@@ -399,7 +399,7 @@ export default function OrderPage({ params }: OrderPageProps) {
             <span className="text-muted-foreground">Share on</span>
             <div className="flex gap-4">
               <TwitterShareButton
-                url={`https://${origin.originInfo.thirdPartyHostname}`}
+                url={`https://${origin.thirdPartyHostname}`}
                 title={shareMessage}
               >
                 <Button
@@ -412,7 +412,7 @@ export default function OrderPage({ params }: OrderPageProps) {
               </TwitterShareButton>
 
               <LinkedinShareButton
-                url={`https://${origin.originInfo.thirdPartyHostname}`}
+                url={`https://${origin.thirdPartyHostname}`}
                 title={shareMessage}
               >
                 <Button
@@ -425,7 +425,7 @@ export default function OrderPage({ params }: OrderPageProps) {
               </LinkedinShareButton>
 
               <FacebookShareButton
-                url={`https://${origin.originInfo.thirdPartyHostname}`}
+                url={`https://${origin.thirdPartyHostname}`}
                 title={shareMessage}
               >
                 <Button

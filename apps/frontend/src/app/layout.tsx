@@ -1,18 +1,16 @@
 import { Main } from '@/components/main';
 import OriginBackground from '@/components/origin-background';
-import { Preloader } from '@/components/preloader';
 import { AppSidebar } from '@/components/sidebars';
 import { SidebarProvider } from '@/components/ui/shadcn/sidebar';
 import { Toaster } from '@/components/ui/shadcn/sonner';
 import { config } from '@/lib/env';
-import { getOriginConfig, getOriginFromServerHeaders } from '@/lib/origin';
+import { getOriginRuntime } from '@/lib/origin';
 import { cn } from '@/lib/utils';
 import { Providers } from '@/providers';
 import { GoogleAnalytics } from '@next/third-parties/google';
 import { UsercentricsScript } from '@s-group/react-usercentrics';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
-import { headers } from 'next/headers';
 import type { ReactNode } from 'react';
 import DatadogRum from '@/components/datadog-rum';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
@@ -34,9 +32,8 @@ const geistMono = Geist_Mono({
  * @see https://nextjs.org/docs/app/api-reference/functions/generate-metadata
  */
 export async function generateMetadata(): Promise<Metadata> {
-  const headersList = await headers();
-  const origin = getOriginFromServerHeaders(headersList);
-  const metadata = getOriginConfig(origin).metadata;
+  const { origin, config: originConfig } = await getOriginRuntime();
+  const metadata = originConfig.metadata;
 
   return {
     metadataBase: new URL(origin ?? 'https://astra.namefi.io'),
@@ -44,11 +41,12 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: ReactNode;
 }>) {
+  const originInfo = await getOriginRuntime();
   return (
     <html lang="en" className="dark h-full" suppressHydrationWarning={true}>
       <body
@@ -59,13 +57,12 @@ export default function RootLayout({
         )}
       >
         <DatadogRum />
-        <Preloader />
         <UsercentricsScript
           settingsId={config.USER_CENTRICS_SETTINGS_ID}
           version="preview"
         />
         <GoogleAnalytics gaId={config.GA_MEASUREMENT_ID} />
-        <Providers>
+        <Providers originInfo={originInfo}>
           <ReactQueryDevtools initialIsOpen={false} />
           <OriginBackground />
           <Toaster expand={true} visibleToasts={3} />

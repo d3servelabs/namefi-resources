@@ -28,7 +28,7 @@ import { TestimonialCard } from '@/components/testimonial-card';
 import { ContainerTextFlip } from '@/components/ui/aceternity/container-text-flip';
 import { WobbleCard } from '@/components/ui/aceternity/wobble-card';
 import { OrbitingCircles } from '@/components/ui/magicui/orbiting-circles';
-import type { SearchComponent } from '../search';
+import type { LandingComponent } from '../search';
 
 const testimonials = [
   {
@@ -251,7 +251,7 @@ const Icons = {
   ),
 };
 
-export const TaylorCVLanding: SearchComponent = () => {
+export const TaylorCVLanding: LandingComponent = () => {
   return (
     <div className="min-h-screen bg-slate-950 text-white">
       {/* Banner and Hero Container */}

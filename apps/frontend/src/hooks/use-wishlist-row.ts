@@ -1,3 +1,5 @@
+'use client';
+
 import { useWishlistContext } from '@/providers/wishlist';
 import { useMemo } from 'react';
 import {

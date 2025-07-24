@@ -131,7 +131,7 @@ export function ContactDetails() {
           {/* Contact Methods Section */}
           <div className="relative">
             <Card className="pt-6">
-              <div className="absolute -top-3 left-4 flex items-center gap-2 bg-background px-2 z-10">
+              <div className="absolute -top-3 left-4 flex items-center gap-2 bg-card px-2 z-10">
                 <MessageCircle className="h-4 w-4 text-primary" />
                 <span className="text-sm font-medium text-foreground">
                   Contact Methods
@@ -147,7 +147,7 @@ export function ContactDetails() {
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="relative">
               <Card className="pt-6">
-                <div className="absolute -top-3 left-4 flex items-center gap-2 bg-background px-2 z-10">
+                <div className="absolute -top-3 left-4 flex items-center gap-2 bg-card px-2 z-10">
                   <User className="h-4 w-4 text-primary" />
                   <span className="text-sm font-medium text-foreground">
                     Profile Information

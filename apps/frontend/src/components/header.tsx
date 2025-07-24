@@ -30,7 +30,7 @@ export const Header: ForwardRefExoticComponent<HeaderProps> = forwardRef<
       ref={ref}
       className={cn(
         'sticky lg:static top-0 flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear',
-        origin.originInfo?.config.landingPage?.headerIsBlurred &&
+        origin.config.landingPage?.headerIsBlurred &&
           'backdrop-blur-2xl bg-background/20',
         isMobile && 'px-2',
         className,

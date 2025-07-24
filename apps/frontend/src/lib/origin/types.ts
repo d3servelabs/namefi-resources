@@ -1,4 +1,4 @@
-import type { SearchComponent } from '@/components/search/types';
+import type { LandingComponent } from '@/components/search/types';
 import type { Metadata } from 'next';
 import type { StaticImageData } from 'next/image';
 
@@ -61,7 +61,7 @@ export type AuthLogo = {
 };
 
 export type LandingPage = {
-  component?: SearchComponent;
+  component?: LandingComponent;
   headerIsBlurred?: boolean;
 };
 

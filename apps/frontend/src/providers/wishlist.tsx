@@ -1,3 +1,5 @@
+'use client';
+
 import { createContext, useContext, type FC, type ReactNode } from 'react';
 import { useWishlist, type UseWishlist } from '@/hooks/use-wishlist';
 

@@ -32,7 +32,7 @@ export const Account = ({
   return (
     <div className={cn('space-y-2', className)} {...rest}>
       {showLabel && <Label>{title}</Label>}
-      <div className="flex items-center justify-between rounded-lg border p-3 bg-muted/30">
+      <div className="flex items-center justify-between rounded-lg border p-3 bg-muted/30 min-h-15">
         <div className="flex items-center gap-3">
           <div className="h-5 w-5 text-muted-foreground">{icon}</div>
           <div>

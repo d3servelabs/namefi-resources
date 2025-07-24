@@ -15,7 +15,6 @@ import {
   useEffect,
   useRef,
 } from 'react';
-import { Skeleton } from './ui/shadcn/skeleton';
 import { useSidebar } from './ui/shadcn/sidebar';
 
 export type BrandLogoProps = AnchorHTMLAttributes<HTMLAnchorElement>;
@@ -27,10 +26,10 @@ export const BrandLogo: ForwardRefExoticComponent<BrandLogoProps> = forwardRef<
   { className, ...rest }: BrandLogoProps,
   ref: ForwardedRef<HTMLAnchorElement>,
 ) {
-  const { isLoading, originInfo } = useOrigin();
+  const originInfo = useOrigin();
   const { state: sidebarState, isMobile } = useSidebar();
   const lottieRef = useRef<LottieRefCurrentProps>(null);
-  const logo = isLoading ? null : originInfo.config.logo;
+  const logo = originInfo.config.logo;
 
   useEffect(() => {
     if (lottieRef.current && logo?.type === 'lottie') {
@@ -62,9 +61,7 @@ export const BrandLogo: ForwardRefExoticComponent<BrandLogoProps> = forwardRef<
       {...rest}
     >
       <div className="relative flex shrink-0 items-center justify-start h-7">
-        {isLoading || !logo ? (
-          <Skeleton className="rounded-md w-full h-full" />
-        ) : logo.type === 'image' ? (
+        {logo.type === 'image' ? (
           <Image
             src={logo.image}
             alt={logo.alt}
@@ -92,7 +89,7 @@ export const BrandLogo: ForwardRefExoticComponent<BrandLogoProps> = forwardRef<
       {sidebarState !== 'collapsed' ||
         (isMobile && (
           <span className="text-xl font-semibold transition-opacity duration-200 ease-in-out">
-            {!logo ? <Skeleton className="h-6 w-24" /> : logo.title}
+            {logo.title}
           </span>
         ))}
     </Link>

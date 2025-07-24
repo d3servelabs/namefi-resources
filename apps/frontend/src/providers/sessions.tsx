@@ -25,7 +25,7 @@ export const SessionsProvider: FC<PropsWithChildren> = ({ children }) => {
         appearance: {
           theme: 'dark',
           accentColor: brandPrimary as `#${string}`,
-          logo: origin.originInfo?.config?.authLogo?.image ?? '/logotype.svg',
+          logo: origin.config?.authLogo?.image ?? '/logotype.svg',
         },
         embeddedWallets: {
           createOnLogin: 'off',

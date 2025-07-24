@@ -7,7 +7,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useMemo, useState, useCallback, useEffect } from 'react';
 import FloatingCart from '../floating-cart';
 import {
-  type SearchComponent,
+  type LandingComponent,
   SearchHeader,
   SearchInput,
   SearchResults,
@@ -25,14 +25,14 @@ import { SearchMode } from '../search/types';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 
 // Main component
-export const Search: SearchComponent = ({ originInfo }) => {
+export const Search: LandingComponent = ({ origin }) => {
   const [parentDomain, setParentDomain] = useState<string | undefined>(() => {
-    if (originInfo.isFirstPartyOrigin) {
+    if (origin.isFirstPartyOrigin) {
       return config.POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES[0];
     }
 
-    if (originInfo.thirdPartyHostname) {
-      return originInfo.thirdPartyHostname;
+    if (origin.thirdPartyHostname) {
+      return origin.thirdPartyHostname;
     }
     return undefined;
   });
@@ -143,7 +143,7 @@ export const Search: SearchComponent = ({ originInfo }) => {
         <SearchHeader
           parentDomain={parentDomain}
           setParentDomain={setParentDomain}
-          isFirstPartyOrigin={originInfo.isFirstPartyOrigin}
+          isFirstPartyOrigin={origin.isFirstPartyOrigin}
           tagline="Claim your citizenship for the future world"
         />
         <SearchInput

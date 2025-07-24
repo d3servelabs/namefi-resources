@@ -40,7 +40,7 @@ import { useInteractionLoggers } from '../../providers/interactionLoggersProvide
 import { Placeholder } from './placeholder';
 import type {
   ImportQuery,
-  SearchComponent,
+  LandingComponent,
   EppAuthorizationCodesFormData,
 } from './types';
 import {
@@ -601,14 +601,14 @@ export const SearchResults: FC<{
 };
 
 // Main component
-export const Search: SearchComponent = ({ originInfo }) => {
+export const Search: LandingComponent = ({ origin }) => {
   const [parentDomain, setParentDomain] = useState<string | undefined>(() => {
-    if (originInfo.isFirstPartyOrigin) {
+    if (origin.isFirstPartyOrigin) {
       return config.POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES[0];
     }
 
-    if (originInfo.thirdPartyHostname) {
-      return originInfo.thirdPartyHostname;
+    if (origin.thirdPartyHostname) {
+      return origin.thirdPartyHostname;
     }
     return undefined;
   });
@@ -705,7 +705,7 @@ export const Search: SearchComponent = ({ originInfo }) => {
         <SearchHeader
           parentDomain={parentDomain}
           setParentDomain={setParentDomain}
-          isFirstPartyOrigin={originInfo.isFirstPartyOrigin}
+          isFirstPartyOrigin={origin.isFirstPartyOrigin}
         />
         <SearchModeTabs
           searchMode={searchMode}

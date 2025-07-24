@@ -1,4 +1,4 @@
-import type { OriginInfo } from '@/lib/origin/types';
+import type { OriginRuntime } from '@/lib/origin';
 import type { FC } from 'react';
 import {
   namefiNormalizedDomainSchema,
@@ -6,8 +6,8 @@ import {
 } from '@namefi-astra/utils';
 import { z } from 'zod';
 
-export type SearchComponent = FC<{
-  originInfo: OriginInfo;
+export type LandingComponent = FC<{
+  origin: OriginRuntime;
 }>;
 
 export type ImportQuery = {

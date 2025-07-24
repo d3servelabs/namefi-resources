@@ -8,7 +8,7 @@ const OriginBackground = () => {
   const origin = useOrigin();
   const pathname = usePathname();
 
-  if (origin.isLoading || !origin.originInfo.config.background) {
+  if (!origin.config.background) {
     return null;
   }
 
@@ -20,8 +20,8 @@ const OriginBackground = () => {
   return (
     <div className="fixed inset-0 -z-10">
       <Image
-        src={origin.originInfo.config.background.image}
-        alt={origin.originInfo.config.background.alt}
+        src={origin.config.background.image}
+        alt={origin.config.background.alt}
         fill={true}
         className="object-cover"
         priority={true}

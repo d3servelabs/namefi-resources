@@ -1,20 +1,9 @@
 'use client';
 
-import {
-  useGetDomainForPoweredByNamefiThirdPartyOrigin,
-  useIsNamefiFirstPartyOrigin,
-} from '@/hooks/use-origin-info';
-import { getOriginConfig } from '@/lib/origin';
-import type { OriginInfo } from '@/lib/origin/types';
-import { type ReactNode, createContext, useContext, useEffect } from 'react';
-import { useTheme } from 'next-themes';
+import type { OriginRuntime } from '@/lib/origin';
+import { type PropsWithChildren, createContext, useContext } from 'react';
 
-// Create a discriminated union based on loading state
-type OriginContextType =
-  | { isLoading: true; originInfo?: undefined }
-  | { isLoading: false; originInfo: OriginInfo };
-
-const OriginContext = createContext<OriginContextType | undefined>(undefined);
+const OriginContext = createContext<OriginRuntime | undefined>(undefined);
 
 export function useOrigin() {
   const context = useContext(OriginContext);
@@ -24,49 +13,14 @@ export function useOrigin() {
   return context;
 }
 
-// Helper hook that only returns origin info when it's available
-export function useOriginInfo() {
-  const context = useOrigin();
-  if (context.isLoading) {
-    throw new Error(
-      'Origin info is not available yet. Check isLoading before accessing.',
-    );
-  }
-  return context.originInfo;
-}
+type OriginProviderProps = PropsWithChildren<{
+  originInfo: OriginRuntime;
+}>;
 
-type OriginProviderProps = {
-  children: ReactNode;
-};
-
-export function OriginProvider({ children }: OriginProviderProps) {
-  const firstPartyState = useIsNamefiFirstPartyOrigin();
-  const thirdPartyState = useGetDomainForPoweredByNamefiThirdPartyOrigin();
-  const { setTheme } = useTheme();
-
-  // Only consider loaded when both hooks have completed loading
-  const isLoading = !(firstPartyState.isLoaded && thirdPartyState.isLoaded);
-
-  // Create the value object using the discriminated union pattern
-  const value: OriginContextType = isLoading
-    ? { isLoading: true }
-    : {
-        isLoading: false,
-        originInfo: {
-          isFirstPartyOrigin: firstPartyState.data,
-          thirdPartyHostname: thirdPartyState.data?.hostname,
-          config: getOriginConfig(thirdPartyState.data?.origin),
-        },
-      };
-
-  // Set data-origin attribute on body tag when third-party origin is detected
-  useEffect(() => {
-    if (!isLoading && thirdPartyState.data?.hostname) {
-      setTheme(thirdPartyState.data?.hostname);
-    }
-  }, [isLoading, thirdPartyState.data?.hostname, setTheme]);
-
+export function OriginProvider({ originInfo, children }: OriginProviderProps) {
   return (
-    <OriginContext.Provider value={value}>{children}</OriginContext.Provider>
+    <OriginContext.Provider value={originInfo}>
+      {children}
+    </OriginContext.Provider>
   );
 }

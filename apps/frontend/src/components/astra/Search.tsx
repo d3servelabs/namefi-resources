@@ -4,7 +4,7 @@ import { useSearch } from '@/hooks/use-search';
 import { useState, useCallback, useEffect, useMemo } from 'react';
 import FloatingCart from '../floating-cart';
 import {
-  type SearchComponent,
+  type LandingComponent,
   SearchHeader,
   SearchInput,
   SearchResults,
@@ -21,14 +21,14 @@ import { SearchMode } from '../search/types';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 
 // Main component
-export const Search: SearchComponent = ({ originInfo }) => {
+export const Search: LandingComponent = ({ origin }) => {
   const [parentDomain, setParentDomain] = useState<string | undefined>(() => {
-    if (originInfo.isFirstPartyOrigin) {
+    if (origin.isFirstPartyOrigin) {
       return undefined; // All Networks
     }
 
-    if (originInfo.thirdPartyHostname) {
-      return originInfo.thirdPartyHostname;
+    if (origin.thirdPartyHostname) {
+      return origin.thirdPartyHostname;
     }
     return undefined;
   });
@@ -114,7 +114,7 @@ export const Search: SearchComponent = ({ originInfo }) => {
       .filter((item): item is NonNullable<typeof item> => item !== null);
   }, [searchMode, domains, domainInfos, eppAuthorizationCodes]);
 
-  if (!originInfo) {
+  if (!origin) {
     // Return loading state or null while origin info is loading
     return null;
   }
@@ -125,7 +125,7 @@ export const Search: SearchComponent = ({ originInfo }) => {
         <SearchHeader
           parentDomain={parentDomain}
           setParentDomain={setParentDomain}
-          isFirstPartyOrigin={originInfo.isFirstPartyOrigin}
+          isFirstPartyOrigin={origin.isFirstPartyOrigin}
           hideNetworkSelection={true}
         />
         <SearchModeTabs
