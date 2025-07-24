@@ -1,13 +1,13 @@
 import { cartItemsToInteractionLoggingCartItems } from '@/hooks/use-cart';
-import { useCartContext } from '@/providers/cart';
+import { useCartContext } from '@/components/providers/cart';
 import {
   type BeginCheckoutEvent,
   InteractionLoggingEventName,
-} from '@/utils/interaction-logging/events';
+} from '@/lib/analytics-events';
 import { ShoppingCartIcon, Plus } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useCallback, useMemo, useState } from 'react';
-import { useInteractionLoggers } from '../providers/interactionLoggersProvider';
+import { useInteractionLoggers } from '@/components/providers/analytics';
 import { Button } from './ui/shadcn/button';
 import type { DomainAvailabilityInfo } from '@namefi-astra/backend/trpc/types';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';

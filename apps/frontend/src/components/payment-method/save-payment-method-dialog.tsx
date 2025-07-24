@@ -6,11 +6,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/shadcn/dialog';
-import { useTRPC } from '@/utils/trpc';
+import { useTRPC } from '@/lib/trpc';
 import type { SetupIntent } from '@stripe/stripe-js';
 import { useMutation } from '@tanstack/react-query';
 import { type ReactNode, useEffect, useState } from 'react';
-import { StripeProvider } from '../../providers/stripeProvider';
+import { StripeProvider } from '@/components/providers/stripe';
 import { SavePaymentMethodForm } from './save-payment-method-form';
 
 export interface SavePaymentMethodDialogProps {

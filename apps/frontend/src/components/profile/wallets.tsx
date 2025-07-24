@@ -25,8 +25,8 @@ import {
 } from '@/components/ui/shadcn/tooltip';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useLinkedWallets } from '@/hooks/use-user-wallet-addresses';
-import { cn, getShortAddress } from '@/lib/utils';
-import { shortage } from '@/utils/string';
+import { cn } from '@/lib/cn';
+import { getShortAddress, shortage } from '@/lib/string';
 import { type WalletWithMetadata, usePrivy } from '@privy-io/react-auth';
 import { Copy, ExternalLink, Plus, Trash2, Wallet2 } from 'lucide-react';
 import { type HTMLAttributes, useCallback, useState } from 'react';

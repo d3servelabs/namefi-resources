@@ -11,8 +11,8 @@ import {
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
 import { TableBody } from '@/components/ui/shadcn/table';
 import { useAuth } from '@/hooks/use-auth';
-import { formatAmountInUSD } from '@/utils/number';
-import { useTRPC } from '@/utils/trpc';
+import { formatAmountInUSD } from '@/lib/number';
+import { useTRPC } from '@/lib/trpc';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import type { inferOutput } from '@trpc/tanstack-react-query';
 import { type FC, Suspense, useMemo } from 'react';

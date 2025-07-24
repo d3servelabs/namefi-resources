@@ -6,9 +6,9 @@ import { type ReactNode, useCallback, useMemo, useState } from 'react';
 import { CartCard } from '@/components/cart-card';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/shadcn/radio-group';
 import { config } from '@/lib/env';
-import { cn } from '@/lib/utils';
-import { formatAmountInUSD } from '@/utils/number';
-import type { DeepPartial } from '@/utils/types';
+import { cn } from '@/lib/cn';
+import { formatAmountInUSD } from '@/lib/number';
+import type { DeepPartial } from '@/lib/types/utils';
 import {
   type PaymentProviderDetails,
   isNfscPayment,
@@ -22,7 +22,6 @@ import { useBalance } from 'wagmi';
 import { SelectChain, SelectWallet } from '../select-wallet-and-chain';
 import { AddPaymentMethodDialog } from './add-payment-method-dialog';
 import { Separator } from '../ui/shadcn/separator';
-import { UserDropdown } from '../dropdowns/user-dropdown';
 
 const DEFAULT_PAYMENT_CHAIN_ID = config.ALLOWED_CHAINS.includes(CHAINS.base.id)
   ? CHAINS.base.id

@@ -1,6 +1,6 @@
 'use client';
 
-import { AuthGuard } from '@/components/auth-required-dialog';
+import { AuthGuard } from '@/components/dialogs/auth-required-dialog';
 import { Badge } from '@/components/ui/shadcn/badge';
 import { Button } from '@/components/ui/shadcn/button';
 import {
@@ -10,7 +10,7 @@ import {
   CardTitle,
 } from '@/components/ui/shadcn/card';
 import { useAuth } from '@/hooks/use-auth';
-import { useTRPC } from '@/utils/trpc';
+import { useTRPC } from '@/lib/trpc';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   ArrowLeftIcon,

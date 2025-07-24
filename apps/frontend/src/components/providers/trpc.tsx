@@ -22,7 +22,7 @@ import { EventSourcePolyfill } from 'event-source-polyfill';
 import type React from 'react';
 import { useState } from 'react';
 import superjson from 'superjson';
-import { TRPCProvider } from '../utils/trpc';
+import { TRPCProvider } from '@/lib/trpc';
 
 if (process.env.NEXT_PUBLIC_DATADOG_LOGS_CLIENT_TOKEN) {
   datadogLogs.init({

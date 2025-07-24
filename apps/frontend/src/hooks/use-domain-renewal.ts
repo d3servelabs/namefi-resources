@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
-import { useTRPCClient } from '@/utils/trpc';
-import { useCartContext } from '@/providers/cart';
+import { useTRPCClient } from '@/lib/trpc';
+import { useCartContext } from '@/components/providers/cart';
 import { toast } from 'sonner';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 

@@ -15,7 +15,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/shadcn/popover';
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/cn';
 import { ChevronDown, CheckIcon, Globe } from 'lucide-react';
 import { CircleFlag } from 'react-circle-flags';
 import { countries } from 'country-data-list';

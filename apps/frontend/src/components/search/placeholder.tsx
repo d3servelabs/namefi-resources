@@ -1,7 +1,7 @@
 'use client';
 
 import { EmptyPlaceholder } from '@/components/empty-placeholder';
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/cn';
 import { SearchIcon } from 'lucide-react';
 import type { FC, HTMLAttributes } from 'react';
 

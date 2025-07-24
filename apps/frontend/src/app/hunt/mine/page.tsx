@@ -9,7 +9,7 @@ import {
   TabsTrigger,
 } from '@/components/ui/shadcn/tabs';
 import { useAuth } from '@/hooks/use-auth';
-import { useTRPC } from '@/utils/trpc';
+import { useTRPC } from '@/lib/trpc';
 import { useQuery } from '@tanstack/react-query';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';

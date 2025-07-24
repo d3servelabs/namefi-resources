@@ -13,7 +13,7 @@ import { Input } from '@/components/ui/shadcn/input';
 import { Label } from '@/components/ui/shadcn/label';
 import { CountryDropdown, type Country } from '@/components/country-input';
 import { ContactAccounts } from './contact-accounts';
-import { useTRPC } from '@/utils/trpc';
+import { useTRPC } from '@/lib/trpc';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { Globe, Loader2, Save, MessageCircle, User } from 'lucide-react';

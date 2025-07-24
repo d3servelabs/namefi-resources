@@ -15,8 +15,8 @@ import { SidebarRail } from '@/components/ui/sidebar-rail';
 import { useAuth } from '@/hooks/use-auth';
 import { useRecentDomains } from '@/hooks/use-recent-domains';
 import { useWishlist } from '@/hooks/use-wishlist';
-import type { NavItem } from '@/types';
-import { useTRPC } from '@/utils/trpc';
+import type { NavItem } from '@/lib/types/nav-item';
+import { useTRPC } from '@/lib/trpc';
 import { useQuery } from '@tanstack/react-query';
 import {
   ClipboardList,

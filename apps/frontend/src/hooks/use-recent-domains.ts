@@ -1,4 +1,4 @@
-import { LocalStorageKeys } from '@/utils/localStorageKeys';
+import { LocalStorageKeys } from '@/lib/local-storage-keys';
 import { useEffect, useMemo } from 'react';
 import { useLocalStorage } from 'usehooks-ts';
 import { useAuth } from './use-auth';

@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { useTRPC } from '@/utils/trpc';
+import { useTRPC } from '@/lib/trpc';
 import { differenceInYears } from 'date-fns';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 

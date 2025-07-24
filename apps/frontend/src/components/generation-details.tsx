@@ -11,7 +11,7 @@ import {
   CardTitle,
 } from '@/components/ui/shadcn/card';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
-import { useTRPC } from '@/utils/trpc';
+import { useTRPC } from '@/lib/trpc';
 import { useQuery } from '@tanstack/react-query';
 import {
   ArrowLeft,
@@ -26,7 +26,7 @@ import { useRouter } from 'next/navigation';
 import { TwitterIcon, TwitterShareButton } from 'react-share';
 import { toast } from 'sonner';
 import { useCallback, useEffect, useState } from 'react';
-import type { AppRouterOutput } from '@/utils/trpc';
+import type { AppRouterOutput } from '@/lib/trpc';
 
 type GenerationData = AppRouterOutput['ai']['getGenerationById'];
 

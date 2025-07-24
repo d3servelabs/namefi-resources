@@ -5,13 +5,9 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useLocalStorage } from 'usehooks-ts';
 import PQueue from 'p-queue';
 import { useAuth } from '@/hooks/use-auth';
-import { useInteractionLoggers } from '@/providers/interactionLoggersProvider';
-import { InteractionLoggingEventName } from '@/utils/interaction-logging/events';
-import {
-  useTRPC,
-  type AppRouterInput,
-  type AppRouterOutput,
-} from '@/utils/trpc';
+import { useInteractionLoggers } from '@/components/providers/analytics';
+import { InteractionLoggingEventName } from '@/lib/analytics-events';
+import { useTRPC, type AppRouterInput, type AppRouterOutput } from '@/lib/trpc';
 import {
   isDomainImportable,
   isDomainRegistrable,
@@ -25,6 +21,7 @@ import {
 } from '@namefi-astra/registrars/multi-year-pricing';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { useDebounceCallback } from 'usehooks-ts';
+import { LocalStorageKeys } from '@/lib/local-storage-keys';
 
 /* -------------------------------------------------------------------------- */
 /*                         SHARED QUEUE AND TYPES                            */
@@ -139,7 +136,7 @@ export const deterministicCartId = (
 export const GUEST_USER_ID = 'guest';
 
 function getCartLocalStorageKey(userId: string | undefined = GUEST_USER_ID) {
-  return `cart-items:${userId}`;
+  return `${LocalStorageKeys.ANONYMOUS_CART}:${userId}`;
 }
 
 /* -------------------------------------------------------------------------- */

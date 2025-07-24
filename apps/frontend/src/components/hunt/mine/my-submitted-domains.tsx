@@ -1,7 +1,7 @@
 'use client';
 
-import { formatNumberWithAbbreviations } from '@/utils/number';
-import type { AppRouterOutput } from '@/utils/trpc';
+import { formatNumberWithAbbreviations } from '@/lib/number';
+import type { AppRouterOutput } from '@/lib/trpc';
 import Link from 'next/link';
 import { DomainItemSkeleton } from '../domain-item-skeleton';
 import { TagsDisplay } from '../tags-display';

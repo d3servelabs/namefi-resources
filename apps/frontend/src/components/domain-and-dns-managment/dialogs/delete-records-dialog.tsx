@@ -15,7 +15,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/shadcn/dialog';
 import { ScrollArea } from '@/components/ui/shadcn/scroll-area';
-import { useTRPC } from '@/utils/trpc';
+import { useTRPC } from '@/lib/trpc';
 import type { DnsRecordSelect } from '@namefi-astra/db';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { useMutation, useQueryClient } from '@tanstack/react-query';

@@ -5,7 +5,7 @@ import {
   type InteractionLoggingCartItem,
   type InteractionLoggingEvent,
   InteractionLoggingEventName,
-} from '@/utils/interaction-logging/events';
+} from '@/lib/analytics-events';
 import { sendGAEvent } from '@next/third-parties/google';
 import {
   useHasServiceConsent,

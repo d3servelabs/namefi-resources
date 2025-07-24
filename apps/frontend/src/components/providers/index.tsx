@@ -1,9 +1,9 @@
 'use client';
 
 import { Loading } from '@/components/loading';
-import { InteractionLoggersProvider } from '@/providers/interactionLoggersProvider';
-import { OriginProvider } from '@/providers/originProvider';
-import { getWagmiConfig } from '@/lib/wagmiConfig';
+import { InteractionLoggersProvider } from '@/components/providers/analytics';
+import { OriginProvider } from '@/components/providers/origin';
+import { getWagmiConfig } from '@/lib/wagmi-config';
 import { WagmiProvider } from '@privy-io/wagmi';
 import { UsercentricsProvider } from '@s-group/react-usercentrics';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';

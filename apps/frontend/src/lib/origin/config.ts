@@ -1,6 +1,6 @@
-import { Search as AstraSearch } from '@/components/astra/Search';
-import { Search as ZeroxCitySearch } from '@/components/0x-city/Search';
-import { Search as TaylorCvSearch } from '@/components/taylor-cv/search';
+import { Search as AstraSearch } from '@/pbns/astra/search';
+import { Search as ZeroxCitySearch } from '@/pbns/0x-city/search';
+import { Search as TaylorCvSearch } from '@/pbns/taylor-cv/search';
 import type { OriginConfigMap } from './types';
 
 /**

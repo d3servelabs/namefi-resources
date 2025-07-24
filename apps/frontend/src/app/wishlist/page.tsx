@@ -1,7 +1,7 @@
 'use client';
 
 import { useWishlist } from '@/hooks/use-wishlist';
-import { useTRPC } from '@/utils/trpc';
+import { useTRPC } from '@/lib/trpc';
 import { useSubscription } from '@trpc/tanstack-react-query';
 import { useState, useEffect, useMemo } from 'react';
 import { DomainCard } from '@/components/search/search';

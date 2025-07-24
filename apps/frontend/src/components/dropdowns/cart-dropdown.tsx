@@ -12,13 +12,13 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/shadcn/dropdown-menu';
 import { cartItemsToInteractionLoggingCartItems } from '@/hooks/use-cart';
-import { useCartContext } from '@/providers/cart';
-import { cn } from '@/lib/utils';
+import { useCartContext } from '@/components/providers/cart';
+import { cn } from '@/lib/cn';
 import {
   type BeginCheckoutEvent,
   InteractionLoggingEventName,
-} from '@/utils/interaction-logging/events';
-import { formatAmountInUSD } from '@/utils/number';
+} from '@/lib/analytics-events';
+import { formatAmountInUSD } from '@/lib/number';
 import { ShoppingCart } from 'lucide-react';
 import Link from 'next/link';
 import {
@@ -29,7 +29,7 @@ import {
   useCallback,
   useMemo,
 } from 'react';
-import { useInteractionLoggers } from '../../providers/interactionLoggersProvider';
+import { useInteractionLoggers } from '@/components/providers/analytics';
 
 export type CartDropdownProps = HTMLAttributes<HTMLDivElement>;
 

@@ -1,7 +1,7 @@
 'use client';
 
 import { AuthRequired } from '@/components/auth-required';
-import { StatusBadge } from '@/components/badges/StatusBadge';
+import { StatusBadge } from '@/components/status-badge';
 import { CartCard } from '@/components/cart-card';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
 import {
@@ -13,7 +13,7 @@ import {
   TableRow,
 } from '@/components/ui/shadcn/table';
 import { useAuth } from '@/hooks/use-auth';
-import { useTRPC } from '@/utils/trpc';
+import { useTRPC } from '@/lib/trpc';
 import { useQuery } from '@tanstack/react-query';
 import { format } from 'date-fns';
 import { ExternalLink, PackageX } from 'lucide-react';

@@ -1,10 +1,10 @@
 'use client';
 
-import { AuthGuard } from '@/components/auth-required-dialog';
+import { AuthGuard } from '@/components/dialogs/auth-required-dialog';
 import { Button } from '@/components/ui/shadcn/button';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/shadcn/tabs';
 import { useAuth } from '@/hooks/use-auth';
-import { type AppRouterInput, useTRPC } from '@/utils/trpc';
+import { type AppRouterInput, useTRPC } from '@/lib/trpc';
 import { useQuery } from '@tanstack/react-query';
 import { PlusIcon, UserIcon } from 'lucide-react';
 import Link from 'next/link';

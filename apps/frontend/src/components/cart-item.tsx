@@ -3,7 +3,7 @@
 import { Badge } from '@/components/ui/shadcn/badge';
 import { Separator } from '@/components/ui/shadcn/separator';
 import { CartItemDurationControl } from '@/components/cart-item-duration-stepper';
-import { formatAmountInUSD } from '@/utils/number';
+import { formatAmountInUSD } from '@/lib/number';
 import { itemTypeSchema } from '@namefi-astra/db/types';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { Loader2, Trash2 } from 'lucide-react';

@@ -3,12 +3,12 @@
 import Link from 'next/link';
 import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '@/hooks/use-auth';
-import { useTRPC } from '@/utils/trpc';
+import { useTRPC } from '@/lib/trpc';
 import { Badge } from '@/components/ui/shadcn/badge';
 import { useMemo } from 'react';
 import { DomainsList } from './domains-list';
 import { PaginationControls } from './pagination-control';
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/cn';
 
 const DEFAULT_CAMPAIGN_DOMAINS_PER_PAGE_LIMIT = 10;
 

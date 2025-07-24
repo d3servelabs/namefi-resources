@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDebounceValue } from 'usehooks-ts';
 import { useQuery } from '@tanstack/react-query';
 import { useSubscription } from '@trpc/tanstack-react-query';
-import { useTRPC } from '@/utils/trpc';
+import { useTRPC } from '@/lib/trpc';
 import type { DomainAvailabilityInfo } from '@namefi-astra/backend/trpc/types';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { SearchMode } from '@/components/search/types';

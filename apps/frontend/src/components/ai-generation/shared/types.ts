@@ -1,3 +1,3 @@
-import type { AppRouterOutput } from '@/utils/trpc';
+import type { AppRouterOutput } from '@/lib/trpc';
 
 export type Generation = AppRouterOutput['ai']['getGenerationById'];

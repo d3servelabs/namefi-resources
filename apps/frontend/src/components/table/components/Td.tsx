@@ -1,6 +1,6 @@
 'use client';
 
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/cn';
 import { type TdHTMLAttributes, forwardRef } from 'react';
 import { Consumer, type Context } from '../utils';
 import { TdInner } from './TdInner';

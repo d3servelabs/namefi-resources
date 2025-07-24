@@ -1,6 +1,6 @@
 'use client';
 
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/cn';
 import { usePathname } from 'next/navigation';
 import type { ReactNode } from 'react';
 import { Footer } from './footer';

@@ -4,8 +4,8 @@ import { CartDropdown } from '@/components/dropdowns/cart-dropdown';
 import { UserDropdown } from '@/components/dropdowns/user-dropdown';
 import { Separator } from '@/components/ui/shadcn/separator';
 import { SidebarTrigger, useSidebar } from '@/components/ui/shadcn/sidebar';
-import { cn } from '@/lib/utils';
-import { useOrigin } from '@/providers/originProvider';
+import { cn } from '@/lib/cn';
+import { useOrigin } from '@/components/providers/origin';
 import {
   type ForwardRefExoticComponent,
   type ForwardedRef,

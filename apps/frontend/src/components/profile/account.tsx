@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/shadcn/button';
 import { Label } from '@/components/ui/shadcn/label';
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/cn';
 import { Check } from 'lucide-react';
 import type { HTMLAttributes, ReactNode } from 'react';
 

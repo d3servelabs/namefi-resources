@@ -1,7 +1,7 @@
 'use client';
 import { useAuth } from '@/hooks/use-auth';
-import { cn } from '@/lib/utils';
-import { abbreviation } from '@/utils/string';
+import { cn } from '@/lib/cn';
+import { abbreviation } from '@/lib/string';
 import { generateAvatarURL } from '@cfx-kit/wallet-avatar';
 import { useQuery } from '@tanstack/react-query';
 import type { ComponentProps, ForwardedRef } from 'react';

@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/shadcn/input';
 import { useCartRow } from '@/hooks/use-cart-row';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useAuth } from '@/hooks/use-auth';
-import { useTRPC } from '@/utils/trpc';
+import { useTRPC } from '@/lib/trpc';
 import { useQuery } from '@tanstack/react-query';
 import { CheckIcon, Loader2, SearchIcon } from 'lucide-react';
 import Link from 'next/link';

@@ -9,12 +9,12 @@ import { PasswordInput } from '@/components/password-input';
 import { useCartRow } from '@/hooks/use-cart-row';
 import { useSearch } from '@/hooks/use-search';
 import { config } from '@/lib/env';
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/cn';
 import {
   type BeginCheckoutEvent,
   InteractionLoggingEventName,
-} from '@/utils/interaction-logging/events';
-import { formatAmountInUSD } from '@/utils/number';
+} from '@/lib/analytics-events';
+import { formatAmountInUSD } from '@/lib/number';
 import { computeChargesInUsdOrThrow } from '@namefi-astra/registrars/multi-year-pricing';
 import { Loader2, SearchIcon, User, X } from 'lucide-react';
 import { useWishlistRow } from '@/hooks/use-wishlist-row';
@@ -36,7 +36,7 @@ import {
 import FloatingCart from '../floating-cart';
 import { NamefiButton } from '../buttons/namefi-button';
 import { AnimatedCartButton } from '../buttons/animated-cart-button';
-import { useInteractionLoggers } from '../../providers/interactionLoggersProvider';
+import { useInteractionLoggers } from '@/components/providers/analytics';
 import { Placeholder } from './placeholder';
 import type {
   ImportQuery,

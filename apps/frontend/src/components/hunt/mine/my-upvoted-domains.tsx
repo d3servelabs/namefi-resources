@@ -1,8 +1,8 @@
 'use client';
 
 import { Button } from '@/components/ui/shadcn/button';
-import { formatNumberWithAbbreviations } from '@/utils/number';
-import { type AppRouterOutput, useTRPC } from '@/utils/trpc';
+import { formatNumberWithAbbreviations } from '@/lib/number';
+import { type AppRouterOutput, useTRPC } from '@/lib/trpc';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { TrendingDownIcon } from 'lucide-react';
 import Link from 'next/link';

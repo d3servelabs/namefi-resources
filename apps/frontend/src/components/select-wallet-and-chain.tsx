@@ -1,7 +1,7 @@
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useLinkedWalletAddresses } from '@/hooks/use-user-wallet-addresses';
 import { config } from '@/lib/env';
-import { getShortAddress } from '@/lib/utils';
+import { getShortAddress } from '@/lib/string';
 import { CHAINS, getChain } from '@namefi-astra/utils';
 import { filter, isNotNil } from 'ramda';
 import { useCallback, useState } from 'react';

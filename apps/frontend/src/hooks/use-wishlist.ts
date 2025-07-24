@@ -3,12 +3,9 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useLocalStorage } from 'usehooks-ts';
 import PQueue from 'p-queue';
 import { useAuth } from '@/hooks/use-auth';
-import {
-  useTRPC,
-  type AppRouterInput,
-  type AppRouterOutput,
-} from '@/utils/trpc';
+import { useTRPC, type AppRouterInput, type AppRouterOutput } from '@/lib/trpc';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import { LocalStorageKeys } from '@/lib/local-storage-keys';
 
 /**
  * Shared queue for wishlist operations to ensure sequential updates.
@@ -96,7 +93,7 @@ const stripForLocalStorage = <T extends MaybeOptimisticUnifiedWishlistItem>(
 function getWishlistLocalStorageKey(
   userId: string | undefined = GUEST_USER_ID,
 ) {
-  return `user-wishlist-domains:${userId}`;
+  return `${LocalStorageKeys.ANONYMOUS_WISHLIST}:${userId}`;
 }
 
 // Deterministic ID generator for wishlist items (browser-safe, simple hash)

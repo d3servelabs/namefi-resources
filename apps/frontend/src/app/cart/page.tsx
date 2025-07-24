@@ -4,7 +4,7 @@ import { CartCard } from '@/components/cart-card';
 import { CartItem } from '@/components/cart-item';
 import { NamefiButton } from '@/components/buttons/namefi-button';
 import { NftWalletCard } from '@/components/nft-wallet-card';
-import { useInteractionLoggers } from '@/providers/interactionLoggersProvider';
+import { useInteractionLoggers } from '@/components/providers/analytics';
 import { UserDropdown } from '@/components/dropdowns/user-dropdown';
 import {
   NoPaymentMethodRequiredCard,
@@ -32,17 +32,17 @@ import {
 import { Separator } from '@/components/ui/shadcn/separator';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
 import { cartItemsToInteractionLoggingCartItems } from '@/hooks/use-cart';
-import { useCartContext } from '@/providers/cart';
+import { useCartContext } from '@/components/providers/cart';
 import { useAuth } from '@/hooks/use-auth';
 import { config } from '@/lib/env';
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/cn';
 import {
   InteractionLoggingEventName,
   type PurchaseEvent,
   type SubmitOrderFailureEvent,
-} from '@/utils/interaction-logging/events';
-import { useTRPC } from '@/utils/trpc';
-import type { DeepPartial } from '@/utils/types';
+} from '@/lib/analytics-events';
+import { useTRPC } from '@/lib/trpc';
+import type { DeepPartial } from '@/lib/types/utils';
 import { createOrderInputSchema } from '@namefi-astra/backend/trpc/types';
 import {
   isNfscPayment,

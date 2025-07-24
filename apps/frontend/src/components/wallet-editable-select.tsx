@@ -8,7 +8,8 @@ import {
   SelectTrigger,
 } from '@/components/ui/shadcn/select';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { cn, getShortAddress } from '@/lib/utils';
+import { cn } from '@/lib/cn';
+import { getShortAddress } from '@/lib/string';
 import { CHAINS } from '@namefi-astra/utils';
 import type { ChangeEvent, ReactNode } from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';

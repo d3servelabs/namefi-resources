@@ -11,8 +11,8 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/shadcn/dropdown-menu';
 import { Input } from '@/components/ui/shadcn/input';
-import { cn } from '@/lib/utils';
-import { useTRPC } from '@/utils/trpc';
+import { cn } from '@/lib/cn';
+import { useTRPC } from '@/lib/trpc';
 import type { DnsRecordSelect } from '@namefi-astra/db/types';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { useQuery } from '@tanstack/react-query';

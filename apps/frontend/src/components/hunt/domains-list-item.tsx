@@ -1,9 +1,9 @@
 'use client';
 
-import { AuthGuard } from '@/components/auth-required-dialog';
-import { cn } from '@/lib/utils';
-import { formatNumberWithAbbreviations } from '@/utils/number';
-import { type AppRouterOutput, useTRPC } from '@/utils/trpc';
+import { AuthGuard } from '@/components/dialogs/auth-required-dialog';
+import { cn } from '@/lib/cn';
+import { formatNumberWithAbbreviations } from '@/lib/number';
+import { type AppRouterOutput, useTRPC } from '@/lib/trpc';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
 import { type MouseEvent, useCallback, useMemo } from 'react';

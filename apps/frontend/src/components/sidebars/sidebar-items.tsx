@@ -9,7 +9,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '@/components/ui/shadcn/sidebar';
-import type { NavItem } from '@/types';
+import type { NavItem } from '@/lib/types/nav-item';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import type { FC, HTMLAttributes } from 'react';

@@ -18,8 +18,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/shadcn/tooltip';
-import { cn } from '@/lib/utils';
-import { type AppRouterOutput, useTRPC, useTRPCClient } from '@/utils/trpc';
+import { cn } from '@/lib/cn';
+import { type AppRouterOutput, useTRPC, useTRPCClient } from '@/lib/trpc';
 import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Info } from 'lucide-react';

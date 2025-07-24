@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/cn';
 import type React from 'react';
 
 interface EmptyPlaceholderProps extends React.HTMLAttributes<HTMLDivElement> {}

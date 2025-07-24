@@ -1,4 +1,4 @@
-import type { NavItem } from '@/types';
+import type { NavItem } from '@/lib/types/nav-item';
 
 export function isRouteActive(item: NavItem, pathname: string): boolean {
   if (item.href === pathname) {

@@ -14,7 +14,7 @@ import {
 import { z } from 'zod';
 import { DomainField, DescriptionField } from './form-fields';
 import { GenerateSubmitButton } from './submit-button';
-import { useTRPC } from '@/utils/trpc';
+import { useTRPC } from '@/lib/trpc';
 import { useQuery } from '@tanstack/react-query';
 import {
   namefiNormalizedDomainSchema,

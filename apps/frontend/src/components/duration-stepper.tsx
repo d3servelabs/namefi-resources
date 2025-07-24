@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/shadcn/button';
 import { Input } from '@/components/ui/shadcn/input';
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/cn';
 import { Minus, Plus } from 'lucide-react';
 import {
   type ChangeEvent,

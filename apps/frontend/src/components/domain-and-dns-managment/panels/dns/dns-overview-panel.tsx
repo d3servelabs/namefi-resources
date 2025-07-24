@@ -11,8 +11,8 @@ import {
 import { Label } from '@/components/ui/shadcn/label';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
 import { Switch } from '@/components/ui/shadcn/switch';
-import { cn } from '@/lib/utils';
-import { type AppRouterOutput, useTRPC, useTRPCClient } from '@/utils/trpc';
+import { cn } from '@/lib/cn';
+import { type AppRouterOutput, useTRPC, useTRPCClient } from '@/lib/trpc';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { isNil } from 'ramda';
 import { useMemo, useState } from 'react';

@@ -8,9 +8,9 @@ import {
 } from '@/components/ui/shadcn/tabs';
 import { useEmailPrompt } from '@/hooks/use-email-prompt';
 import { useRecentDomains } from '@/hooks/use-recent-domains';
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/cn';
 import { config } from '@/lib/env';
-import { useTRPC } from '@/utils/trpc';
+import { useTRPC } from '@/lib/trpc';
 import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { AlertTriangle } from 'lucide-react';
@@ -29,7 +29,7 @@ import { Card, CardHeader, CardTitle } from '../ui/shadcn/card';
 import {
   EmailRequiredModal,
   DNS_MANAGEMENT_EMAIL_REQUIRED,
-} from '../modals/email-required-modal';
+} from '../dialogs/email-required-dialog';
 import { DnsOverviewPanel } from './panels/dns/dns-overview-panel';
 import { DnsRecordsPanel } from './panels/dns/dns-records-panel';
 import { DnssecPanel } from './panels/dnssec/dnssec-panel';

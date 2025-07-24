@@ -8,8 +8,8 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/shadcn/form';
-import { LOGO_STYLES, LOGO_TYPES } from '@/lib/types/logo-options';
-import { cn } from '@/lib/utils';
+import { LOGO_STYLES, LOGO_TYPES } from '@/lib/ai-generation-logo-options';
+import { cn } from '@/lib/cn';
 import { Check, Sparkles } from 'lucide-react';
 import { z } from 'zod';
 import { BaseGenerator, baseFormSchema } from './shared/base-generator';

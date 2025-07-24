@@ -2,8 +2,8 @@
 
 import { Copy } from '@/components/copy';
 import { CurrentUserAvatar } from '@/components/user-avatar';
-import { cn } from '@/lib/utils';
-import { shortage } from '@/utils/string';
+import { cn } from '@/lib/cn';
+import { shortage } from '@/lib/string';
 import type { User } from '@privy-io/react-auth';
 import type { FC, HTMLAttributes } from 'react';
 

@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/cn';
 import { CHAINS } from '@namefi-astra/utils';
 import { AlertTriangleIcon } from 'lucide-react';
 import BaseNetwork from '@/components/chains/base-network';

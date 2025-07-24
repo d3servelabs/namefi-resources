@@ -1,6 +1,6 @@
 'use client';
 
-import { useOrigin } from '@/providers/originProvider';
+import { useOrigin } from '@/components/providers/origin';
 import { config } from '@/lib/env';
 import { PrivyProvider } from '@privy-io/react-auth';
 import { useEffect, useState, type FC, type PropsWithChildren } from 'react';

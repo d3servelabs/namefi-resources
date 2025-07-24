@@ -1,14 +1,14 @@
 'use client';
 
 import type { LandingComponent } from '@/components/search';
-import { Search as AstraSearch } from '@/components/astra/Search';
-import { useOrigin } from '@/providers/originProvider';
+import { Search as VanillaSearch } from '@/components/search';
+import { useOrigin } from '@/components/providers/origin';
 
 export default function HomePage() {
   const origin = useOrigin();
 
   const LandingComponent: LandingComponent =
-    origin.config.landingPage?.component ?? AstraSearch;
+    origin.config.landingPage?.component ?? VanillaSearch;
 
   return <LandingComponent origin={origin} />;
 }

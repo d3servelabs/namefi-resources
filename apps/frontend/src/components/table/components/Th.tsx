@@ -1,6 +1,6 @@
 'use client';
 
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/cn';
 import { type ThHTMLAttributes, forwardRef } from 'react';
 import { Consumer, type Context } from '../utils';
 

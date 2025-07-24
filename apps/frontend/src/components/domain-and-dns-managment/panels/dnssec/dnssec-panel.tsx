@@ -27,7 +27,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/shadcn/tooltip';
-import { type AppRouterOutput, useTRPC } from '@/utils/trpc';
+import { type AppRouterOutput, useTRPC } from '@/lib/trpc';
 import type { Nameserver } from '@namefi-astra/registrars/lib/abstract-registrar/data/nameservers';
 import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
 import {

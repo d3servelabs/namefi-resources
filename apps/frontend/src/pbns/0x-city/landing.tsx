@@ -7,14 +7,14 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { type FC, useCallback } from 'react';
-import { DomainClaim } from '../domain-claim';
+import { DomainClaim } from '@/components/domain-claim';
 import './styles.css';
 import {
   type BeginCheckoutEvent,
   InteractionLoggingEventName,
-} from '@/utils/interaction-logging/events';
-import { useInteractionLoggers } from '../../providers/interactionLoggersProvider';
-import { Separator } from '../ui/shadcn/separator';
+} from '@/lib/analytics-events';
+import { useInteractionLoggers } from '@/components/providers/analytics';
+import { Separator } from '@/components/ui/shadcn/separator';
 
 // Hero Section
 const Hero: FC = () => {

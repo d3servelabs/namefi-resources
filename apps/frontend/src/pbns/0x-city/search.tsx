@@ -1,42 +1,30 @@
 'use client';
 
 import { useSearch } from '@/hooks/use-search';
-import { config } from '@/lib/env';
-import { useTRPC } from '@/utils/trpc';
+import { useTRPC } from '@/lib/trpc';
 import { useQuery } from '@tanstack/react-query';
 import { useMemo, useState, useCallback, useEffect } from 'react';
-import FloatingCart from '../floating-cart';
+import FloatingCart from '@/components/floating-cart';
 import {
+  type EppAuthorizationCodesFormData,
   type LandingComponent,
+  SearchMode,
+  eppAuthorizationCodesFormSchema,
   SearchHeader,
   SearchInput,
   SearchResults,
-} from '../search';
-import { Alert, AlertDescription } from '../ui/shadcn/alert';
-import { Landing } from './Landing';
+} from '@/components/search';
+import { Alert, AlertDescription } from '@/components/ui/shadcn/alert';
+import { Landing } from './landing';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import {
-  eppAuthorizationCodesFormSchema,
-  type EppAuthorizationCodesFormData,
-} from '../search/types';
 import { isDomainImportable } from '@namefi-astra/backend/trpc/types';
-import { SearchMode } from '../search/types';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+
+const NO_OP = () => {};
 
 // Main component
 export const Search: LandingComponent = ({ origin }) => {
-  const [parentDomain, setParentDomain] = useState<string | undefined>(() => {
-    if (origin.isFirstPartyOrigin) {
-      return config.POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES[0];
-    }
-
-    if (origin.thirdPartyHostname) {
-      return origin.thirdPartyHostname;
-    }
-    return undefined;
-  });
-
   const {
     query,
     setQuery,
@@ -49,7 +37,7 @@ export const Search: LandingComponent = ({ origin }) => {
     hasData,
     domainInfos,
     domains,
-  } = useSearch(parentDomain || undefined);
+  } = useSearch(origin.thirdPartyHostname || undefined);
 
   const trpc = useTRPC();
 
@@ -132,7 +120,7 @@ export const Search: LandingComponent = ({ origin }) => {
       .filter((item): item is NonNullable<typeof item> => item !== null);
   }, [searchMode, domains, domainInfos, eppAuthorizationCodes]);
 
-  if (!parentDomain) {
+  if (!origin.thirdPartyHostname) {
     // Return loading state or null while origin info is loading
     return null;
   }
@@ -141,9 +129,10 @@ export const Search: LandingComponent = ({ origin }) => {
     <div className="relative flex gap-4 flex-col p-4 pb-0 pt-20">
       <div className="flex flex-col items-center gap-4">
         <SearchHeader
-          parentDomain={parentDomain}
-          setParentDomain={setParentDomain}
-          isFirstPartyOrigin={origin.isFirstPartyOrigin}
+          parentDomain={origin.thirdPartyHostname}
+          hideNetworkSelection={true}
+          setParentDomain={NO_OP}
+          isFirstPartyOrigin={false}
           tagline="Claim your citizenship for the future world"
         />
         <SearchInput

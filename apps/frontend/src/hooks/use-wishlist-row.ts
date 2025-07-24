@@ -1,6 +1,6 @@
 'use client';
 
-import { useWishlistContext } from '@/providers/wishlist';
+import { useWishlistContext } from '@/components/providers/wishlist';
 import { useMemo } from 'react';
 import {
   wishlistDomainKey,

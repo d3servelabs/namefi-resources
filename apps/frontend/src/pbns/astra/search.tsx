@@ -2,37 +2,28 @@
 
 import { useSearch } from '@/hooks/use-search';
 import { useState, useCallback, useEffect, useMemo } from 'react';
-import FloatingCart from '../floating-cart';
+import FloatingCart from '@/components/floating-cart';
 import {
   type LandingComponent,
   SearchHeader,
   SearchInput,
   SearchResults,
   SearchModeTabs,
-} from '../search';
+} from '@/components/search';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
+  SearchMode,
   eppAuthorizationCodesFormSchema,
   type EppAuthorizationCodesFormData,
-} from '../search/types';
+} from '@/components/search';
 import { isDomainImportable } from '@namefi-astra/backend/trpc/types';
-import { SearchMode } from '../search/types';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+
+const NO_OP = () => {};
 
 // Main component
 export const Search: LandingComponent = ({ origin }) => {
-  const [parentDomain, setParentDomain] = useState<string | undefined>(() => {
-    if (origin.isFirstPartyOrigin) {
-      return undefined; // All Networks
-    }
-
-    if (origin.thirdPartyHostname) {
-      return origin.thirdPartyHostname;
-    }
-    return undefined;
-  });
-
   const {
     query,
     setQuery,
@@ -46,7 +37,7 @@ export const Search: LandingComponent = ({ origin }) => {
     hasData,
     domainInfos,
     domains,
-  } = useSearch(parentDomain || undefined);
+  } = useSearch(undefined);
 
   // Form for EPP authorization codes
   const form = useForm<EppAuthorizationCodesFormData>({
@@ -123,9 +114,9 @@ export const Search: LandingComponent = ({ origin }) => {
     <div className="relative flex gap-4 flex-col p-4 pb-0 pt-20">
       <div className="flex flex-col items-center gap-8">
         <SearchHeader
-          parentDomain={parentDomain}
-          setParentDomain={setParentDomain}
-          isFirstPartyOrigin={origin.isFirstPartyOrigin}
+          parentDomain={undefined}
+          setParentDomain={NO_OP}
+          isFirstPartyOrigin={true}
           hideNetworkSelection={true}
         />
         <SearchModeTabs

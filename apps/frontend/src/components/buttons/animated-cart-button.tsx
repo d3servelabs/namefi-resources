@@ -1,6 +1,6 @@
 'use client';
 
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/cn';
 import type { ComponentProps } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Button } from '../ui/shadcn/button';

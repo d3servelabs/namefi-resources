@@ -5,7 +5,7 @@ import { AuthRequired } from '@/components/auth-required';
 import { CartCard } from '@/components/cart-card';
 import { NamefiButton } from '@/components/buttons/namefi-button';
 import { NftDomainCard } from '@/components/nft-domain-card';
-import { useOrigin } from '@/providers/originProvider';
+import { useOrigin } from '@/components/providers/origin';
 import { Button } from '@/components/ui/shadcn/button';
 import {
   Carousel,
@@ -16,10 +16,10 @@ import {
 } from '@/components/ui/shadcn/carousel';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
 import { Unauthorized } from '@/components/unauthorized';
-import { useCartContext } from '@/providers/cart';
+import { useCartContext } from '@/components/providers/cart';
 import { useAuth } from '@/hooks/use-auth';
-import { formatDate, getShortAddress } from '@/lib/utils';
-import { useTRPC } from '@/utils/trpc';
+import { formatDate, getShortAddress } from '@/lib/string';
+import { useTRPC } from '@/lib/trpc';
 import { orderStatusSchema } from '@namefi-astra/db/types';
 import {
   getChain,

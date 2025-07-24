@@ -36,3 +36,28 @@ export const abbreviation = (value: string, last = false): string => {
 
   return parts.map((part) => part[0].toUpperCase()).join('');
 };
+
+export function getShortAddress(address: string) {
+  return address ? `${address.slice(0, 6)}...${address.slice(-4)}` : '';
+}
+
+export function getHostname(url: string): string {
+  try {
+    const urlObj = new URL(url);
+    return urlObj.hostname;
+  } catch (e) {
+    console.error('Error getting hostname', e);
+    return '';
+  }
+}
+
+export function formatDate(date: Date): string {
+  return date.toLocaleString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true,
+  });
+}

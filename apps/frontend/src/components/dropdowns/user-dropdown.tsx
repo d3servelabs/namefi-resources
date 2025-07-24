@@ -8,11 +8,11 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/shadcn/dropdown-menu';
 import { SidebarMenuButton, useSidebar } from '@/components/ui/shadcn/sidebar';
-import { useCartContext } from '@/providers/cart';
+import { useCartContext } from '@/components/providers/cart';
 import { useAuth } from '@/hooks/use-auth';
 import { useEmailPrompt } from '@/hooks/use-email-prompt';
-import type { NavItem } from '@/types';
-import { shortage } from '@/utils/string';
+import type { NavItem } from '@/lib/types/nav-item';
+import { shortage } from '@/lib/string';
 import { type User, useLogin, useLogout } from '@privy-io/react-auth';
 import {
   Loader2Icon,

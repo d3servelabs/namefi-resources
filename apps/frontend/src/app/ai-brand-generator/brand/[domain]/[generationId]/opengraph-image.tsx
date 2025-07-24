@@ -1,6 +1,6 @@
 /** biome-ignore-all lint/performance/noImgElement: <explanation> */
 import { ImageResponse } from 'next/og';
-import { proxyUnauthenticatedClient } from '@/utils/trpc/server';
+import { proxyUnauthenticatedClient } from '@/lib/trpc/server';
 import { config } from '@/lib/env';
 
 export const runtime = 'edge';

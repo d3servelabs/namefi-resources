@@ -1,5 +1,5 @@
 'use client';
-import { useTRPC } from '@/utils/trpc';
+import { useTRPC } from '@/lib/trpc';
 import AdminNftManagement from '../../../components/admin/nft-management';
 import { skipToken, useQuery } from '@tanstack/react-query';
 import { AuthRequired } from '@/components/auth-required';

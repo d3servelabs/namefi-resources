@@ -1,6 +1,6 @@
 'use client';
 
-import { StatusBadge } from '@/components/badges/StatusBadge';
+import { StatusBadge } from '@/components/status-badge';
 import { CartCard } from '@/components/cart-card';
 import { Button } from '@/components/ui/shadcn/button';
 import { Badge } from '@/components/ui/shadcn/badge';
@@ -15,9 +15,9 @@ import {
 } from '@/components/ui/shadcn/tooltip';
 import { Unauthorized } from '@/components/unauthorized';
 import { useAuth } from '@/hooks/use-auth';
-import { getShortAddress } from '@/lib/utils';
-import { formatAmountInUSD } from '@/utils/number';
-import { useTRPC } from '@/utils/trpc';
+import { getShortAddress } from '@/lib/string';
+import { formatAmountInUSD } from '@/lib/number';
+import { useTRPC } from '@/lib/trpc';
 import { getChain } from '@namefi-astra/utils';
 import { useQuery } from '@tanstack/react-query';
 import { TRPCClientError } from '@trpc/client';

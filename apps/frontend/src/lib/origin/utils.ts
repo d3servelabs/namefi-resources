@@ -1,5 +1,5 @@
 import { config } from '@/lib/env';
-import { getHostname } from '@/lib/utils';
+import { getHostname } from '@/lib/string';
 import type { ReadonlyHeaders } from 'next/dist/server/web/spec-extension/adapters/headers';
 import { originConfig } from './config';
 import type { OriginConfig, OriginInfo } from './types';

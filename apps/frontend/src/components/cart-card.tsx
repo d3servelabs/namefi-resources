@@ -8,7 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/shadcn/card';
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/cn';
 import type { ReactNode } from 'react';
 
 interface CartCardProps {

@@ -2,7 +2,7 @@
 import type React from 'react';
 import { useState } from 'react';
 import { motion } from 'motion/react';
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/cn';
 
 export const WobbleCard = ({
   children,

@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from '@/components/ui/shadcn/button';
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/cn';
 import { Palette, Sparkles } from 'lucide-react';
 
 interface TabSelectorProps {

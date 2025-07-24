@@ -34,7 +34,7 @@ import {
 import { Switch } from '@/components/ui/shadcn/switch';
 import { Label } from '@/components/ui/shadcn/label';
 import { useAuth } from '@/hooks/use-auth';
-import { useTRPC } from '@/utils/trpc';
+import { useTRPC } from '@/lib/trpc';
 import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
 import { type FC, useState, useCallback } from 'react';
 import { toast } from 'sonner';

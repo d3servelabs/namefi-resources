@@ -1,4 +1,4 @@
-import { useCartContext } from '@/providers/cart';
+import { useCartContext } from '@/components/providers/cart';
 import { useAuth } from '@/hooks/use-auth';
 import { useMemo } from 'react';
 import { cartDomainKey, isPendingDelete, GUEST_USER_ID } from './use-cart';

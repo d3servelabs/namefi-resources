@@ -1,6 +1,6 @@
 import { Loader2, Sparkles } from 'lucide-react';
 import { NamefiButton } from '../../buttons/namefi-button';
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/cn';
 
 interface GenerateSubmitButtonProps {
   isLoading?: boolean;

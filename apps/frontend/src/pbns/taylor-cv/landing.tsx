@@ -28,7 +28,7 @@ import { TestimonialCard } from '@/components/testimonial-card';
 import { ContainerTextFlip } from '@/components/ui/aceternity/container-text-flip';
 import { WobbleCard } from '@/components/ui/aceternity/wobble-card';
 import { OrbitingCircles } from '@/components/ui/magicui/orbiting-circles';
-import type { LandingComponent } from '../search';
+import type { LandingComponent } from '@/components/search';
 
 const testimonials = [
   {

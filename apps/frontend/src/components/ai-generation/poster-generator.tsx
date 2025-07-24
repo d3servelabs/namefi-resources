@@ -8,7 +8,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/shadcn/form';
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/cn';
 import { Check } from 'lucide-react';
 import { z } from 'zod';
 import { BaseGenerator, baseFormSchema } from './shared/base-generator';

@@ -1,7 +1,7 @@
 'use client';
 
-import { useGoogleAnalyticsInteractionLogger } from '@/hooks/use-google-analytics-interaction-logger';
-import type { InteractionLoggingEvent } from '@/utils/interaction-logging/events';
+import { useGoogleAnalyticsInteractionLogger } from '@/hooks/use-analytics';
+import type { InteractionLoggingEvent } from '@/lib/analytics-events';
 import { type ReactNode, createContext, useCallback, useContext } from 'react';
 
 /**

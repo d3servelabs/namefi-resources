@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { proxyUnauthenticatedClient } from '@/utils/trpc/server';
+import { proxyUnauthenticatedClient } from '@/lib/trpc/server';
 import { cache } from 'react';
 import { GenerationDetailsClient } from '@/components/generation-details';
 import { config } from '@/lib/env';

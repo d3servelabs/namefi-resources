@@ -29,8 +29,8 @@ import { useAuth } from '@/hooks/use-auth';
 import { useEmailPrompt } from '@/hooks/use-email-prompt';
 import { useDomainRenewal } from '@/hooks/use-domain-renewal';
 import { config } from '@/lib/env';
-import { cn } from '@/lib/utils';
-import { type AppRouterOutput, useTRPC } from '@/utils/trpc';
+import { cn } from '@/lib/cn';
+import { type AppRouterOutput, useTRPC } from '@/lib/trpc';
 import {
   NAMEFI_NFT_CONTRACT_ADDRESS,
   CHAINS,
@@ -82,7 +82,7 @@ import { Separator } from '@/components/ui/shadcn/separator';
 import {
   EmailRequiredModal,
   DNS_MANAGEMENT_EMAIL_REQUIRED,
-} from '@/components/modals/email-required-modal';
+} from '@/components/dialogs/email-required-dialog';
 
 type DomainRow = AppRouterOutput['users']['getCurrentUserDomains'][number];
 
