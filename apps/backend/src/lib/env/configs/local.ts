@@ -22,12 +22,12 @@ const localConfig: ConfigInput = {
     'astra.localhost',
   ],
   ADDITIONAL_HOSTNAME_MAP: {
-    '0xcity.localhost': '0x.city',
-    'taylorcv.localhost': 'taylor.cv',
-    'alicv.localhost': 'ali.cv',
-    'licv.localhost': 'li.cv',
-    'mullercv.localhost': 'muller.cv',
-    'kumarcv.localhost': 'kumar.cv',
+    '0x.city.localhost': '0x.city',
+    'taylor.cv.localhost': 'taylor.cv',
+    'ali.cv.localhost': 'ali.cv',
+    'li.cv.localhost': 'li.cv',
+    'muller.cv.localhost': 'muller.cv',
+    'kumar.cv.localhost': 'kumar.cv',
   },
   ALLOWED_CHAINS: [chains.sepolia.id],
   EMAIL_ADDRESS_TO_OWNED_HOSTNAMES_MAP: {
