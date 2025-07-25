@@ -59,7 +59,7 @@ const WhatIsSection: FC = () => {
       />
       <div className="relative flex h-[635] scale-70 lg:scale-100 w-[100vh] md:w-full lg:w-1/2 flex-col items-center justify-center overflow-hidden">
         <Image
-          src="/logos/0x-logo.svg"
+          src="/assets/0x-city/logos/0x-logo.svg"
           alt="0x logo"
           width={120}
           height={120}
