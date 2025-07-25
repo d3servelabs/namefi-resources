@@ -58,7 +58,7 @@ export const Hero = ({
             </span>
           </div>
 
-          <p className="text-lg sm:text-2xl md:text-3xl text-slate-200 mb-12 sm:mb-16 max-w-4xl mx-auto font-semibold leading-tight px-4 sm:px-0">
+          <p className="text-xl sm:text-2xl md:text-3xl text-slate-200 mb-12 sm:mb-16 max-w-4xl mx-auto font-semibold leading-tight px-4 sm:px-0">
             Claim your exclusive subdomain under{' '}
             <span className="text-brand-primary font-bold">{domainName}</span> —
             <br className="hidden md:block" />
@@ -67,13 +67,13 @@ export const Hero = ({
 
           {/* Voting Widget */}
           <div className="flex justify-center mb-12 sm:mb-16 px-4 sm:px-0">
-            {domainHuntWidget}
+            <div className="w-full sm:w-auto">{domainHuntWidget}</div>
           </div>
 
-          <div className="flex flex-col sm:flex-row justify-center gap-4 mb-8 sm:mb-10 px-4 sm:px-0">
+          <div className="flex justify-center gap-4 mb-8 sm:mb-10 px-8 sm:px-0">
             <Button
               size="lg"
-              className="px-6 sm:px-8 py-4 sm:py-6 w-full sm:w-auto"
+              className="px-6 sm:px-8 py-4 sm:py-6"
               onClick={() => {
                 document.getElementById('why-cv-matters')?.scrollIntoView({
                   behavior: 'smooth',
@@ -83,10 +83,10 @@ export const Hero = ({
               <ArrowDown className="w-5 h-5 mr-1" />
               Learn More
             </Button>
-            <Link href={huntUrl} className="w-full sm:w-auto">
+            <Link href={huntUrl}>
               <Button
                 size="lg"
-                className="px-6 sm:px-8 py-4 sm:py-6 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white border-0 w-full sm:w-auto"
+                className="px-6 sm:px-8 py-4 sm:py-6 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white border-0"
               >
                 <Trophy className="w-5 h-5 mr-1" />
                 View on Namefi Hunt™
@@ -94,37 +94,29 @@ export const Hero = ({
             </Link>
           </div>
           <div className="text-center px-4 sm:px-0">
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3">
+            <div className="flex items-center justify-center gap-3">
               <span className="text-slate-400 text-sm tracking-wide">
                 A collaboration of
               </span>
-              <div className="flex items-center gap-2 sm:gap-3">
-                <Link
-                  href="https://ola.cv"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <img
-                    src="/assets/cv/cv-logo.png"
-                    alt=".cv"
-                    className="h-6 w-auto"
-                  />
-                </Link>
-                <span className="text-slate-400 text-sm tracking-wide">
-                  and
-                </span>
-                <Link
-                  href="https://namefi.io"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <img
-                    src="/logotype.svg"
-                    alt="Namefi"
-                    className="h-6 w-auto"
-                  />
-                </Link>
-              </div>
+              <Link
+                href="https://ola.cv"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img
+                  src="/assets/cv/cv-logo.png"
+                  alt=".cv"
+                  className="h-6 w-auto"
+                />
+              </Link>
+              <span className="text-slate-400 text-sm tracking-wide">and</span>
+              <Link
+                href="https://namefi.io"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img src="/logotype.svg" alt="Namefi" className="h-6 w-auto" />
+              </Link>
             </div>
           </div>
         </div>

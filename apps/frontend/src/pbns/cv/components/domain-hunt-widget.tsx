@@ -101,15 +101,15 @@ export const DomainHuntWidget = ({ domainName }: DomainHuntWidgetProps) => {
 
   return (
     <BackgroundGradient
-      containerClassName="p-[3px] max-w-full"
-      className="rounded-[22px] p-4 sm:p-6 transition-all duration-300 w-full md:w-lg lg:w-xl max-w-full [background:linear-gradient(to_bottom,#0f172a,#030712)]"
+      containerClassName="p-[2px] md:p-[3px] max-w-full"
+      className="rounded-[22px] p-4 py-6 sm:p-6 transition-all duration-300 w-full max-w-full md:w-lg lg:w-xl [background:linear-gradient(to_bottom,#0f172a,#030712)]"
     >
-      <div className="flex items-center justify-between gap-3 md:gap-6 max-w-full">
+      <div className="flex items-center justify-between gap-6 md:gap-6 max-w-full">
         {domainLoading || authLoading ? (
           <>
             <div className="flex flex-col gap-3 flex-1 min-w-0">
               <div className="w-32 md:w-48 h-6 md:h-7 bg-slate-600/50 rounded-lg animate-pulse" />
-              <div className="w-24 md:w-40 h-4 bg-slate-600/50 rounded animate-pulse" />
+              <div className="w-24 md:w-40 h-4 bg-slate-600/50 rounded animate-pulse hidden md:block" />
             </div>
             <div className="w-20 md:w-28 h-8 md:h-9 bg-slate-600/50 rounded-lg animate-pulse flex-shrink-0" />
           </>
@@ -150,7 +150,7 @@ export const DomainHuntWidget = ({ domainName }: DomainHuntWidgetProps) => {
                   aria-label="Vote"
                 >
                   <TrendingUp className="h-3 md:h-4 w-3 md:w-4 flex-shrink-0" />
-                  <span className="hidden md:inline">
+                  <span>
                     {isAuthenticated
                       ? domainData?.userHasUpvoted
                         ? 'Voted'
