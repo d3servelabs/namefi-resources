@@ -24,10 +24,21 @@ const localConfig: ConfigInput = {
   ADDITIONAL_HOSTNAME_MAP: {
     '0xcity.localhost': '0x.city',
     'taylorcv.localhost': 'taylor.cv',
+    'alicv.localhost': 'ali.cv',
+    'licv.localhost': 'li.cv',
+    'mullercv.localhost': 'muller.cv',
+    'kumarcv.localhost': 'kumar.cv',
   },
   ALLOWED_CHAINS: [chains.sepolia.id],
   EMAIL_ADDRESS_TO_OWNED_HOSTNAMES_MAP: {
-    'dev-team@d3serve.xyz': ['0x.city', 'taylor.cv'],
+    'dev-team@d3serve.xyz': [
+      '0x.city',
+      'taylor.cv',
+      'ali.cv',
+      'li.cv',
+      'muller.cv',
+      'kumar.cv',
+    ],
   },
   ALLOW_ALL_ORIGINS: true,
   DYNADOT_BASE_URL: 'https://dynadot.namefi.dev/api3.json',

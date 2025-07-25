@@ -10,10 +10,21 @@ const productionConfig: ConfigInput = {
   STRIPE_PUBLISHABLE_KEY:
     'pk_live_51Pqc6fP7AJmUlGkq2dbLhK6JAASyzHwYSmlfdHYobkUlJiqeqAkuKykPEb0wTc57n7sqR2QJjI9TDz65Y7zn69I900f95GY1Al',
   NAMEFI_FIRST_PARTY_HOSTNAMES: ['astra.namefi.io'],
-  POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES: ['0x.city', 'taylor.cv'],
+  POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES: [
+    '0x.city',
+    'taylor.cv',
+    'ali.cv',
+    'li.cv',
+    'muller.cv',
+    'kumar.cv',
+  ],
   ADDITIONAL_HOSTNAME_MAP: {
     '0xcity.astra.namefi.io': '0x.city',
     'taylorcv.astra.namefi.io': 'taylor.cv',
+    'alicv.astra.namefi.io': 'ali.cv',
+    'licv.astra.namefi.io': 'li.cv',
+    'mullercv.astra.namefi.io': 'muller.cv',
+    'kumarcv.astra.namefi.io': 'kumar.cv',
   },
   USER_CENTRICS_SETTINGS_ID: '5UJHpI8CWth59m',
   USER_CENTRICS_GOOGLE_ANALYTICS_SERVICE_ID: 'HkocEodjb7',

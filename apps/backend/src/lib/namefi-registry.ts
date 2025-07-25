@@ -84,7 +84,15 @@ const generateUnavailableDomainInfo = (domain: NamefiNormalizedDomain) => ({
 export const getPoweredByNamefi3PDomains = async () => {
   const fromDb: string[] = [];
   return Array.from(
-    new Set([...fromDb, '0x.city', 'taylor.cv'] as NamefiNormalizedDomain[]),
+    new Set([
+      ...fromDb,
+      '0x.city',
+      'taylor.cv',
+      'ali.cv',
+      'li.cv',
+      'muller.cv',
+      'kumar.cv',
+    ] as NamefiNormalizedDomain[]),
   );
 };
 

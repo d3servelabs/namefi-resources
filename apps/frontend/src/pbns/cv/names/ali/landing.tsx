@@ -1,6 +1,6 @@
 'use client';
 
-import { CVLanding } from '../components';
+import { CVLanding } from '../../components';
 import { landingConfig } from './config';
 import type { LandingComponent } from '@/components/search';
 

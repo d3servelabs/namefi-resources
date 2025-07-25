@@ -33,7 +33,15 @@ export const Providers: FC<
         enableSystem={false}
         disableTransitionOnChange={true}
         defaultTheme={originInfo.thirdPartyHostname ?? 'astra'}
-        themes={['astra', '0x.city', 'taylor.cv']}
+        themes={[
+          'astra',
+          '0x.city',
+          'taylor.cv',
+          'ali.cv',
+          'li.cv',
+          'muller.cv',
+          'kumar.cv',
+        ]}
       >
         <OriginProvider originInfo={originInfo}>
           <SessionsProvider>

@@ -1,6 +1,10 @@
 import { Search as AstraSearch } from '@/pbns/astra/search';
 import { Search as ZeroxCitySearch } from '@/pbns/0x-city/search';
-import { originConfig as taylorOriginConfig } from '@/pbns/cv/taylor';
+import { originConfig as taylorOriginConfig } from '@/pbns/cv/names/taylor';
+import { originConfig as aliOriginConfig } from '@/pbns/cv/names/ali';
+import { originConfig as liOriginConfig } from '@/pbns/cv/names/li';
+import { originConfig as mullerOriginConfig } from '@/pbns/cv/names/muller';
+import { originConfig as kumarOriginConfig } from '@/pbns/cv/names/kumar';
 import type { OriginConfigMap } from './types';
 
 /**
@@ -50,5 +54,9 @@ export const originConfig: OriginConfigMap = {
       },
     },
     'taylor.cv': taylorOriginConfig,
+    'ali.cv': aliOriginConfig,
+    'li.cv': liOriginConfig,
+    'muller.cv': mullerOriginConfig,
+    'kumar.cv': kumarOriginConfig,
   },
 };

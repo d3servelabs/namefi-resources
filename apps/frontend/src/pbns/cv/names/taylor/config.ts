@@ -1,5 +1,5 @@
 import { User, Briefcase, Music, Heart, Star, Trophy } from 'lucide-react';
-import { generateCVConfig } from '../lib/generate-config';
+import { generateCVConfig } from '../../lib/generate-config';
 
 const { landingConfig, originConfigWithoutLanding } = generateCVConfig({
   name: 'taylor',
@@ -13,9 +13,6 @@ const { landingConfig, originConfigWithoutLanding } = generateCVConfig({
       quote: "Personal branding is everything in today's digital world.",
       achievement: '500M+ followers',
       icon: Music,
-      iconColor: 'bg-purple-700',
-      quoteColor: 'text-purple-400',
-      achievementColor: 'text-purple-300',
     },
     {
       name: 'Elizabeth Taylor',
@@ -23,9 +20,6 @@ const { landingConfig, originConfigWithoutLanding } = generateCVConfig({
       quote: 'A memorable name opens doors to extraordinary opportunities.',
       achievement: '2x Oscar Winner',
       icon: Star,
-      iconColor: 'bg-blue-700',
-      quoteColor: 'text-blue-400',
-      achievementColor: 'text-blue-300',
     },
     {
       name: 'Taylor Lautner',
@@ -33,9 +27,6 @@ const { landingConfig, originConfigWithoutLanding } = generateCVConfig({
       quote: 'Your domain is your digital identity.',
       achievement: 'Teen Choice Awards',
       icon: User,
-      iconColor: 'bg-violet-700',
-      quoteColor: 'text-violet-400',
-      achievementColor: 'text-violet-300',
     },
     {
       name: 'James Taylor',
@@ -43,9 +34,6 @@ const { landingConfig, originConfigWithoutLanding } = generateCVConfig({
       quote: 'The right name becomes timeless.',
       achievement: 'Rock & Roll Hall of Fame',
       icon: Trophy,
-      iconColor: 'bg-indigo-700',
-      quoteColor: 'text-indigo-400',
-      achievementColor: 'text-indigo-300',
     },
     {
       name: 'Zachary Taylor',
@@ -53,9 +41,6 @@ const { landingConfig, originConfigWithoutLanding } = generateCVConfig({
       quote: 'Leadership starts with how you present yourself.',
       achievement: 'Historical Legacy',
       icon: Briefcase,
-      iconColor: 'bg-pink-700',
-      quoteColor: 'text-pink-400',
-      achievementColor: 'text-pink-300',
     },
   ],
   exampleProfiles: [
