@@ -19,7 +19,7 @@ import {
 import { z } from 'zod';
 import { temporalClient } from '#temporal/client';
 import { TEMPORAL_QUEUES } from '#temporal/shared/enums';
-import { burnNftByName } from '#temporal/workflows/mint.workflow';
+import { ensureNftIsLockedAndBurnByNftName } from '#temporal/workflows/mint.workflow';
 import { createTRPCRouter, protectedProcedure } from '../base';
 import { getPoweredByNamefi3PDomains } from '#lib/namefi-registry';
 import { parseDomainName } from '@namefi-astra/utils/parse-domain-name';
@@ -313,12 +313,12 @@ export const adminRouter = createTRPCRouter({
 
       // Execute the burn workflow
       try {
-        const workflowId = burnNftByName.generateId({
+        const workflowId = ensureNftIsLockedAndBurnByNftName.generateId({
           domainName: normalizedDomainName,
           chainId,
         });
 
-        await temporalClient.workflow.start(burnNftByName, {
+        await temporalClient.workflow.start(ensureNftIsLockedAndBurnByNftName, {
           args: [{ domainName: normalizedDomainName, chainId }],
           workflowId,
           taskQueue: TEMPORAL_QUEUES.MINT,
@@ -351,7 +351,7 @@ export const adminRouter = createTRPCRouter({
       const { normalizedDomainName, chainId } = input;
 
       try {
-        const workflowId = burnNftByName.generateId({
+        const workflowId = ensureNftIsLockedAndBurnByNftName.generateId({
           domainName: normalizedDomainName,
           chainId,
         });

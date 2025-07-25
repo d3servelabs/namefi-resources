@@ -7,6 +7,7 @@ import type {
 } from '../activities/mint.activities';
 import { TEMPORAL_ENUMS } from '../shared/enums';
 import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';
+import { getNamefiNftLock } from '../activities/namefi-nft';
 
 const TIMEOUT_IN_MS = 120_000;
 const MAX_GAS_PRICE_MULTIPLIER = 1.25;
@@ -286,15 +287,24 @@ export async function burnNftByName({
   chainId: number;
   domainName: NamefiNormalizedDomain;
 }): Promise<string> {
-  const { prepareTxToBurnNamefiNftByName } = typedProxyActivities({
-    temporalEnum: TEMPORAL_ENUMS.MINT,
-    options: {
-      startToCloseTimeout: '5 seconds',
-      retry: {
-        maximumAttempts: 1,
+  const { prepareTxToBurnNamefiNftByName, getNamefiNftLock } =
+    typedProxyActivities({
+      temporalEnum: TEMPORAL_ENUMS.MINT,
+      options: {
+        startToCloseTimeout: '5 seconds',
+        retry: {
+          maximumAttempts: 1,
+        },
       },
-    },
-  });
+    });
+
+  const isLocked = await getNamefiNftLock(chainId, domainName);
+  if (!isLocked) {
+    throw workflow.ApplicationFailure.create({
+      message: `NFT is not locked: ${domainName}, TX will fail`,
+      nonRetryable: true,
+    });
+  }
 
   const prepareResult: TxPrepareResult = await prepareTxToBurnNamefiNftByName(
     chainId,
@@ -313,6 +323,36 @@ export async function burnNftByName({
   );
 }
 burnNftByName.generateId = (input: {
+  domainName: NamefiNormalizedDomain;
+  chainId: number;
+}) => {
+  return `burn-namefi-nft-${input.chainId}-${input.domainName}`;
+};
+
+export async function ensureNftIsLockedAndBurnByNftName({
+  chainId,
+  domainName,
+}: {
+  chainId: number;
+  domainName: NamefiNormalizedDomain;
+}): Promise<string> {
+  const { getNamefiNftLock } = typedProxyActivities({
+    temporalEnum: TEMPORAL_ENUMS.MINT,
+    options: {
+      startToCloseTimeout: '5 seconds',
+      retry: {
+        maximumAttempts: 1,
+      },
+    },
+  });
+  const isLocked = await getNamefiNftLock(chainId, domainName);
+  if (!isLocked) {
+    await lockNamefiNftByName({ chainId, domainName });
+  }
+  return await burnNftByName({ chainId, domainName });
+}
+
+ensureNftIsLockedAndBurnByNftName.generateId = (input: {
   domainName: NamefiNormalizedDomain;
   chainId: number;
 }) => {
