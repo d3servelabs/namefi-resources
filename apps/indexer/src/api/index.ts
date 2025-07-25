@@ -1,15 +1,22 @@
 import { db } from 'ponder:api';
 import schema from 'ponder:schema';
-import { Hono } from 'hono';
+import { type Context, Hono, type Next } from 'hono';
 import { client, graphql } from 'ponder';
 import auth, { requireAuth } from './auth';
 
 const app = new Hono();
 
-app.use('*', async (c, next) => {
+app.use('/sql/*', requireAuth, client({ db, schema }));
+app.use('/graphql', requireAuth, graphql({ db, schema }));
+
+app.use('/', async (c) => c.redirect('/graphql'));
+
+app.route('/auth', auth);
+
+const logRequest = async (c: Context, next: Next) => {
   console.log('--- Incoming Request ---');
-  console.log('Method:', c.req.method);
-  console.log('Path:', c.req.path);
+  console.log('Method:', c.req.raw.method);
+  console.log('Path:', c.req.raw.url);
 
   // Log headers
   c.req.raw.headers.forEach((value, key) => {
@@ -37,13 +44,10 @@ app.use('*', async (c, next) => {
   console.log('------------------------');
 
   await next();
-});
+};
 
-app.use('/sql/*', requireAuth, client({ db, schema }));
-app.use('/graphql', requireAuth, graphql({ db, schema }));
-
-app.use('/', async (c) => c.redirect('/graphql'));
-
-app.route('/auth', auth);
+if (process.env.NODE_ENV === 'development') {
+  app.use('*', logRequest);
+}
 
 export default app;

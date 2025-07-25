@@ -8,7 +8,7 @@
   },
   "scripts": {
     "dev": "ponder dev",
-    "start": "ponder start",
+    "start": "ponder start --log-format json --log-level debug",
     "serve": "ponder serve",
     "force-local": "ENVIRONMENT=local LOG_LEVEL=debug bun",
     "with-env": "infisical run --token=$INFISICAL_SERVICE_TOKEN -- bun"
