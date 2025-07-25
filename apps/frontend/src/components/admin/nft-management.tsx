@@ -199,7 +199,7 @@ function NftManagementContent() {
 
   const formatDate = (date: Date | null) => {
     if (!date) return 'N/A';
-    return date.toLocaleDateString();
+    return new Date(date).toLocaleDateString();
   };
 
   const getExpirationStatus = (domainExpiration: Date | null) => {

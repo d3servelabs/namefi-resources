@@ -17,8 +17,6 @@ import { ensureNftIsLockedAndBurnByNftName } from '#temporal/workflows/mint.work
 import { createTRPCRouter, protectedProcedure } from '../base';
 import { getPoweredByNamefi3PDomains } from '#lib/namefi-registry';
 import { parseDomainName } from '@namefi-astra/utils/parse-domain-name';
-import { filter, isNotNil } from 'ramda';
-import { differenceInDays } from 'date-fns';
 import {
   getPrivyUserLinkedEthereumWalletAddresses,
   privyClient,
@@ -75,8 +73,13 @@ export const adminRouter = createTRPCRouter({
         ...(await getPoweredByNamefi3PDomains()),
         'withharris.club',
         'withtrump.club',
+        'defi.build',
       ];
-      // Build base query with joins to get both NFT and domain expiration data
+
+      // Extract the powered-by-namefi condition to avoid repetition
+      const isPoweredByNamefiCondition = sql<boolean>`array_to_string((string_to_array(${namefiNftOwnersView.normalizedDomainName}, '.'))[2:], '.') = ANY(${sql.raw(`ARRAY[${poweredByNamefiDomains.map((d) => `'${d}'`).join(',')}]`)})`;
+
+      // Build base query with joins and computed fields
       const baseQuery = db
         .select({
           normalizedDomainName: namefiNftOwnersView.normalizedDomainName,
@@ -87,6 +90,37 @@ export const adminRouter = createTRPCRouter({
           domainExpirationTime: indexedDomainsTable.expirationTime,
           registrarKey: indexedDomainsTable.registrarKey,
           lastIndexedAt: indexedDomainsTable.lastIndexedAt,
+          // Computed fields using the extracted condition
+          isPoweredByNamefiDomain: isPoweredByNamefiCondition.as(
+            'is_powered_by_namefi_domain',
+          ),
+          effectiveDomainExpirationTime: sql<Date | null>`
+            CASE 
+              WHEN ${isPoweredByNamefiCondition}
+              THEN ${namefiNftView.expirationTime}
+              ELSE ${indexedDomainsTable.expirationTime}
+            END
+          `.as('effective_domain_expiration_time'),
+          effectiveRegistrarKey: sql<string | null>`
+            CASE 
+              WHEN ${isPoweredByNamefiCondition}
+              THEN 'Powered by Namefi'
+              ELSE ${indexedDomainsTable.registrarKey}
+            END
+          `.as('effective_registrar_key'),
+          canBurn: sql<boolean>`
+            CASE 
+              WHEN ${isPoweredByNamefiCondition}
+              THEN false
+              ELSE (
+                ( ( NOW() - coalesce(${indexedDomainsTable.expirationTime}, NOW()) ) > interval '${sql.raw(MAX_GRACE_PERIOD_DAYS.toString())} days' )
+                OR 
+                ( ( NOW() - ${namefiNftView.expirationTime}) > interval '${sql.raw(MAX_GRACE_PERIOD_DAYS.toString())} days' )
+                OR
+                ${indexedDomainsTable.expirationTime} IS NULL
+              )
+            END
+          `.as('can_burn'),
         })
         .from(namefiNftOwnersView)
         .leftJoin(
@@ -133,10 +167,8 @@ export const adminRouter = createTRPCRouter({
         searchTerm,
         filterBy,
         poweredByNamefiDomains,
+        excludePoweredByNamefiDomains,
       );
-      if (excludePoweredByNamefiDomains) {
-        filters.push(excludeSubdomainsOfParentDomains(poweredByNamefiDomains));
-      }
       const whereClause = filters.length > 0 ? and(...filters) : undefined;
 
       // Apply sorting
@@ -153,55 +185,20 @@ export const adminRouter = createTRPCRouter({
       ]);
 
       const totalCount = countResult[0]?.count ?? 0;
-      // Process results to add canBurn flag and other computed fields
-      const processedResults = filter(
-        isNotNil,
-        results.map((result) => {
-          const parsedDomainName = parseDomainName(result.normalizedDomainName);
-          if (!parsedDomainName.valid) {
-            console.error(
-              `Invalid domain name: ${result.normalizedDomainName}`,
-            );
-            return null;
-          }
 
-          const isPoweredByNamefiDomain = poweredByNamefiDomains.includes(
-            parsedDomainName.immediateParentDomain as NamefiNormalizedDomain,
-          );
-
-          // Use NFT expiration time from database or domain expiration time
-          const nftExpirationTime = result.nftExpirationTime;
-          const domainExpirationTime = isPoweredByNamefiDomain
-            ? nftExpirationTime
-            : result.domainExpirationTime;
-
-          const registrarKey = isPoweredByNamefiDomain
-            ? 'Powered by Namefi'
-            : result.registrarKey;
-
-          const isRegistrarDateBeyondGracePeriod =
-            domainExpirationTime &&
-            differenceInDays(new Date(), domainExpirationTime) >
-              MAX_GRACE_PERIOD_DAYS;
-          const isNftDateBeyondGracePeriod =
-            nftExpirationTime &&
-            differenceInDays(new Date(), nftExpirationTime) >
-              MAX_GRACE_PERIOD_DAYS;
-
-          const canBurn =
-            !isPoweredByNamefiDomain &&
-            (isRegistrarDateBeyondGracePeriod || isNftDateBeyondGracePeriod);
-
-          return {
-            ...result,
-            isPoweredByNamefiDomain,
-            nftExpirationTime,
-            domainExpirationTime,
-            registrarKey,
-            canBurn,
-          };
-        }),
-      );
+      // Map results to include computed fields (already calculated in DB)
+      const processedResults = results.map((result) => ({
+        normalizedDomainName: result.normalizedDomainName,
+        chainId: result.chainId,
+        asOfBlockNumber: result.asOfBlockNumber,
+        ownerAddress: result.ownerAddress,
+        nftExpirationTime: result.nftExpirationTime,
+        domainExpirationTime: result.effectiveDomainExpirationTime,
+        registrarKey: result.effectiveRegistrarKey,
+        lastIndexedAt: result.lastIndexedAt,
+        isPoweredByNamefiDomain: result.isPoweredByNamefiDomain,
+        canBurn: result.canBurn,
+      }));
 
       return {
         data: processedResults,
@@ -361,21 +358,11 @@ export const adminRouter = createTRPCRouter({
   }),
 });
 
-const excludeSubdomainsOfParentDomains = (parentDomains: string[]) => {
-  const delimitedParentDomains = sql.join(
-    parentDomains.map((domain) => sql.raw(`'${domain}'`)),
-    sql.raw(','),
-  );
-  const splitDomain = sql`string_to_array(${namefiNftOwnersView.normalizedDomainName}, '.')::text[]`;
-  const subdomain = sql`array_to_string((${splitDomain})[2:], '.')`;
-
-  return sql`${subdomain} NOT IN (${delimitedParentDomains})`;
-};
-
 function _buildQueryFilters(
   searchTerm: string | undefined,
   filterBy: string,
   poweredByNamefiDomains: string[],
+  excludePoweredByNamefiDomains: boolean,
 ) {
   // Build filters
   const filters = [];
@@ -389,22 +376,33 @@ function _buildQueryFilters(
     );
   }
 
+  // Add powered by namefi exclusion filter
+  if (excludePoweredByNamefiDomains) {
+    const isPoweredByNamefiCondition = sql`array_to_string((string_to_array(${namefiNftOwnersView.normalizedDomainName}, '.'))[2:], '.') = ANY(${sql.raw(`ARRAY[${poweredByNamefiDomains.map((d) => `'${d}'`).join(',')}]`)})`;
+    filters.push(sql`NOT (${isPoweredByNamefiCondition})`);
+  }
+
   if (filterBy === 'expired') {
     filters.push(
-      and(
-        or(
-          // Domain expired
-          sql`${indexedDomainsTable.expirationTime} < NOW()`,
-          isNull(indexedDomainsTable.expirationTime),
-          // NFT expired
-          sql`(${namefiNftView.expirationTime}) < NOW()`,
-        ),
-        excludeSubdomainsOfParentDomains(poweredByNamefiDomains),
+      or(
+        // Domain expired
+        sql`${indexedDomainsTable.expirationTime} < NOW()`,
+        isNull(indexedDomainsTable.expirationTime),
+        // NFT expired
+        sql`${namefiNftView.expirationTime} < NOW()`,
       ),
     );
   } else if (filterBy === 'canBurn') {
+    // For canBurn, we need to check:
+    // 1. Either domain OR NFT is beyond grace period
+    // 2. NOT a powered by namefi domain (they can't be burned)
+    const isPoweredByNamefiCondition = sql`array_to_string((string_to_array(${namefiNftOwnersView.normalizedDomainName}, '.'))[2:], '.') = ANY(${sql.raw(`ARRAY[${poweredByNamefiDomains.map((d) => `'${d}'`).join(',')}]`)})`;
+
     filters.push(
       and(
+        // Not a powered by namefi domain
+        sql`NOT (${isPoweredByNamefiCondition})`,
+        // Either domain or NFT beyond grace period
         or(
           // Domain beyond grace period
           sql`( ( NOW() - coalesce(${indexedDomainsTable.expirationTime}, NOW()) ) > interval '${sql.raw(MAX_GRACE_PERIOD_DAYS.toString())} days')`,
@@ -412,8 +410,6 @@ function _buildQueryFilters(
           // NFT beyond grace period
           sql`( ( NOW() - ${namefiNftView.expirationTime}) > interval '${sql.raw(MAX_GRACE_PERIOD_DAYS.toString())} days')`,
         ),
-        // Exclude powered by namefi domains (can't burn those)
-        excludeSubdomainsOfParentDomains(poweredByNamefiDomains),
       ),
     );
   }
