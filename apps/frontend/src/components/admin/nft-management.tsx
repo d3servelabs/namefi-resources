@@ -33,6 +33,18 @@ import {
 } from '@/components/ui/shadcn/alert-dialog';
 import { Switch } from '@/components/ui/shadcn/switch';
 import { Label } from '@/components/ui/shadcn/label';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/shadcn/accordion';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/shadcn/tooltip';
 import { useAuth } from '@/hooks/use-auth';
 import { useTRPC } from '@/lib/trpc';
 import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
@@ -57,6 +69,11 @@ import {
   Link,
   Eye,
   AlertTriangle,
+  RefreshCw,
+  Wrench,
+  Clock,
+  ChevronDown,
+  ChevronUp,
 } from 'lucide-react';
 
 const LoadingSkeletons: FC = () => (
@@ -87,9 +104,9 @@ function NftManagementContent() {
     'domainName' | 'nftExpiration' | 'domainExpiration' | 'chainId'
   >('domainName');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
-  const [filterBy, setFilterBy] = useState<'all' | 'expired' | 'canBurn'>(
-    'all',
-  );
+  const [filterBy, setFilterBy] = useState<
+    'all' | 'expired' | 'canBurn' | 'dateMismatch'
+  >('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [excludePoweredByNamefiDomains, setExcludePoweredByNamefiDomains] =
     useState(false);
@@ -106,6 +123,12 @@ function NftManagementContent() {
       excludePoweredByNamefiDomains,
     }),
     placeholderData: (previousData) => previousData, // Keep previous data while loading
+  });
+
+  // Query for active burn workflows
+  const { data: activeBurnWorkflows, isLoading: loadingWorkflows } = useQuery({
+    ...trpc.admin.getActiveBurnWorkflows.queryOptions(),
+    refetchInterval: 5000, // Refresh every 5 seconds
   });
 
   // Keep track of the last known pagination info
@@ -135,6 +158,34 @@ function NftManagementContent() {
     }),
   );
 
+  const renewDomainMutation = useMutation(
+    trpc.admin.renewDomain.mutationOptions({
+      onSuccess: () => {
+        toast.success('Domain renewal workflow started');
+        queryClient.invalidateQueries({
+          queryKey: ['admin.getNftsWithExpirationStatus'],
+        });
+      },
+      onError: (error) => {
+        toast.error(`Failed to renew domain: ${error.message}`);
+      },
+    }),
+  );
+
+  const fixNftExpirationMutation = useMutation(
+    trpc.admin.fixNftExpiration.mutationOptions({
+      onSuccess: () => {
+        toast.success('NFT expiration fix workflow started');
+        queryClient.invalidateQueries({
+          queryKey: ['admin.getNftsWithExpirationStatus'],
+        });
+      },
+      onError: (error) => {
+        toast.error(`Failed to fix NFT expiration: ${error.message}`);
+      },
+    }),
+  );
+
   const handleBurnNft = async (
     normalizedDomainName: string,
     chainId: number,
@@ -157,7 +208,7 @@ function NftManagementContent() {
   }, []);
 
   const handleFilterChange = useCallback(
-    (value: 'all' | 'expired' | 'canBurn') => {
+    (value: 'all' | 'expired' | 'canBurn' | 'dateMismatch') => {
       setFilterBy(value);
       setPage(1);
     },
@@ -200,6 +251,56 @@ function NftManagementContent() {
   const formatDate = (date: Date | null) => {
     if (!date) return 'N/A';
     return new Date(date).toLocaleDateString();
+  };
+
+  const isInActiveBurnWorkflow = (domainName: string, chainId: number) => {
+    return (
+      activeBurnWorkflows?.some(
+        (workflow) =>
+          workflow.domainName === domainName && workflow.chainId === chainId,
+      ) ?? false
+    );
+  };
+
+  const handleRenewDomain = async (
+    normalizedDomainName: string,
+    chainId: number,
+  ) => {
+    try {
+      await renewDomainMutation.mutateAsync({
+        normalizedDomainName,
+        chainId,
+      });
+    } catch (error) {
+      // Error handling is done in onError callback
+    }
+  };
+
+  const handleFixNftExpiration = async (
+    normalizedDomainName: string,
+    chainId: number,
+  ) => {
+    try {
+      await fixNftExpirationMutation.mutateAsync({
+        normalizedDomainName,
+        chainId,
+      });
+    } catch (error) {
+      // Error handling is done in onError callback
+    }
+  };
+
+  const getBurnReason = (nft: any) => {
+    if (isInActiveBurnWorkflow(nft.normalizedDomainName, nft.chainId)) {
+      return 'Cannot burn: A burn workflow is already in progress for this domain';
+    }
+    if (nft.isPoweredByNamefiDomain) {
+      return 'Cannot burn: This is a powered-by-namefi domain';
+    }
+    if (!nft.canBurn) {
+      return 'Cannot burn: Domain/NFT is not beyond grace period';
+    }
+    return null;
   };
 
   const getExpirationStatus = (domainExpiration: Date | null) => {
@@ -283,6 +384,12 @@ function NftManagementContent() {
                       <span className="flex items-center gap-2">
                         <Flame className="h-4 w-4" />
                         Can Burn
+                      </span>
+                    </SelectItem>
+                    <SelectItem value="dateMismatch">
+                      <span className="flex items-center gap-2">
+                        <Clock className="h-4 w-4" />
+                        Date Mismatch
                       </span>
                     </SelectItem>
                   </SelectContent>
@@ -404,9 +511,92 @@ function NftManagementContent() {
         </CardContent>
       </Card>
 
+      {/* Active Burn Workflows - Compact View */}
+      <div className="flex items-center gap-4 p-4 bg-muted/30 rounded-lg border">
+        <div className="flex items-center gap-2">
+          <Flame className="h-4 w-4 text-orange-500" />
+          <span className="text-sm font-medium">Active Burn Workflows</span>
+          {loadingWorkflows && <Loader2 className="h-3 w-3 animate-spin" />}
+        </div>
+
+        <div className="flex items-center gap-2">
+          <Badge
+            variant={
+              activeBurnWorkflows && activeBurnWorkflows.length > 0
+                ? 'destructive'
+                : 'secondary'
+            }
+            className="text-xs"
+          >
+            {activeBurnWorkflows ? activeBurnWorkflows.length : 0}
+          </Badge>
+
+          {activeBurnWorkflows && activeBurnWorkflows.length > 0 && (
+            <Accordion type="single" collapsible className="flex-1">
+              <AccordionItem value="workflows" className="border-none">
+                <AccordionTrigger className="text-sm py-0 hover:no-underline">
+                  <span className="text-xs text-muted-foreground">
+                    Click to view details
+                  </span>
+                </AccordionTrigger>
+                <AccordionContent className="pt-4">
+                  <div className="rounded-md border bg-background">
+                    <Table>
+                      <Thead>
+                        <Tr>
+                          <Th className="text-xs">Domain</Th>
+                          <Th className="text-xs">Chain ID</Th>
+                          <Th className="text-xs">Workflow ID</Th>
+                          <Th className="text-xs">Started</Th>
+                          <Th className="text-xs">Status</Th>
+                        </Tr>
+                      </Thead>
+                      <TableBody>
+                        {activeBurnWorkflows.map((workflow) => (
+                          <Tr key={workflow.workflowId}>
+                            <Td className="font-medium text-xs">
+                              <TruncatedTextWithHover maxLength={25}>
+                                {workflow.domainName}
+                              </TruncatedTextWithHover>
+                            </Td>
+                            <Td>
+                              <Badge variant="outline" className="text-xs">
+                                {workflow.chainId}
+                              </Badge>
+                            </Td>
+                            <Td className="font-mono text-xs">
+                              <TruncatedTextWithHover maxLength={15}>
+                                {workflow.workflowId}
+                              </TruncatedTextWithHover>
+                            </Td>
+                            <Td className="text-xs">
+                              {workflow.startTime
+                                ? formatDate(new Date(workflow.startTime))
+                                : 'N/A'}
+                            </Td>
+                            <Td>
+                              <Badge
+                                variant="default"
+                                className="bg-yellow-100 text-yellow-800 text-xs"
+                              >
+                                {workflow.status}
+                              </Badge>
+                            </Td>
+                          </Tr>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          )}
+        </div>
+      </div>
+
       {/* Results Summary */}
       <Card>
-        <CardContent className="pt-6 flex flex-col gap-4">
+        <CardContent className="pt-1 flex flex-col-reverse gap-4">
           {/* NFT Table */}
           <Card>
             <CardHeader>
@@ -452,6 +642,7 @@ function NftManagementContent() {
                         <Th>Domain Status</Th>
                         <Th>NFT Expiration</Th>
                         <Th>Domain Expiration</Th>
+                        <Th>Date Match</Th>
                         <Th>Registrar</Th>
                         <Th>Actions</Th>
                       </Tr>
@@ -492,6 +683,24 @@ function NftManagementContent() {
                             <Td>{formatDate(nft.nftExpirationTime)}</Td>
                             <Td>{formatDate(nft.domainExpirationTime)}</Td>
                             <Td>
+                              {nft.hasDateMismatch ? (
+                                <Badge
+                                  variant="destructive"
+                                  className="flex items-center gap-1"
+                                >
+                                  <AlertTriangle className="h-3 w-3" />
+                                  Mismatch
+                                </Badge>
+                              ) : (
+                                <Badge
+                                  variant="default"
+                                  className="bg-green-100 text-green-800"
+                                >
+                                  Match
+                                </Badge>
+                              )}
+                            </Td>
+                            <Td>
                               {nft.registrarKey ? (
                                 <Badge variant="outline">
                                   {nft.registrarKey}
@@ -503,69 +712,146 @@ function NftManagementContent() {
                               )}
                             </Td>
                             <Td>
-                              {nft.canBurn ? (
-                                <AlertDialog>
-                                  <AlertDialogTrigger asChild>
-                                    <Button
-                                      variant="destructive"
-                                      size="sm"
-                                      disabled={isBurning}
-                                      className="flex items-center gap-1"
-                                    >
-                                      <Flame className="h-3 w-3" />
-                                      {isBurning ? 'Burning...' : 'Burn'}
-                                    </Button>
-                                  </AlertDialogTrigger>
-                                  <AlertDialogContent>
-                                    <AlertDialogHeader>
-                                      <AlertDialogTitle>
-                                        Burn NFT
-                                      </AlertDialogTitle>
-                                      <AlertDialogDescription>
-                                        Are you sure you want to burn the NFT
-                                        for{' '}
-                                        <strong>
-                                          {nft.normalizedDomainName}
-                                        </strong>
-                                        ?
-                                        <br />
-                                        <br />
-                                        This action cannot be undone. The NFT
-                                        will be permanently destroyed.
-                                        <br />
-                                        <br />
-                                        <strong>Domain:</strong>{' '}
-                                        {nft.normalizedDomainName}
-                                        <br />
-                                        <strong>Chain ID:</strong> {nft.chainId}
-                                        <br />
-                                        <strong>Owner:</strong>{' '}
-                                        {nft.ownerAddress}
-                                      </AlertDialogDescription>
-                                    </AlertDialogHeader>
-                                    <AlertDialogFooter>
-                                      <AlertDialogCancel>
-                                        Cancel
-                                      </AlertDialogCancel>
-                                      <AlertDialogAction
-                                        onClick={() =>
-                                          handleBurnNft(
-                                            nft.normalizedDomainName,
-                                            nft.chainId,
-                                          )
-                                        }
-                                        className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                                      >
-                                        Burn NFT
-                                      </AlertDialogAction>
-                                    </AlertDialogFooter>
-                                  </AlertDialogContent>
-                                </AlertDialog>
-                              ) : (
-                                <span className="text-muted-foreground text-sm">
-                                  Cannot burn
-                                </span>
-                              )}
+                              <div className="flex flex-wrap gap-1">
+                                <TooltipProvider>
+                                  {/* Burn Action - Only show if canBurn */}
+                                  {nft.canBurn && (
+                                    <>
+                                      {!isInActiveBurnWorkflow(
+                                        nft.normalizedDomainName,
+                                        nft.chainId,
+                                      ) ? (
+                                        <AlertDialog>
+                                          <AlertDialogTrigger asChild>
+                                            <Button
+                                              variant="destructive"
+                                              size="sm"
+                                              disabled={isBurning}
+                                              className="flex items-center gap-1 text-xs"
+                                            >
+                                              <Flame className="h-3 w-3" />
+                                              {isBurning
+                                                ? 'Burning...'
+                                                : 'Burn'}
+                                            </Button>
+                                          </AlertDialogTrigger>
+                                          <AlertDialogContent>
+                                            <AlertDialogHeader>
+                                              <AlertDialogTitle>
+                                                Burn NFT
+                                              </AlertDialogTitle>
+                                              <AlertDialogDescription>
+                                                Are you sure you want to burn
+                                                the NFT for{' '}
+                                                <strong>
+                                                  {nft.normalizedDomainName}
+                                                </strong>
+                                                ?
+                                                <br />
+                                                <br />
+                                                This action cannot be undone.
+                                                The NFT will be permanently
+                                                destroyed.
+                                                <br />
+                                                <br />
+                                                <strong>Domain:</strong>{' '}
+                                                {nft.normalizedDomainName}
+                                                <br />
+                                                <strong>Chain ID:</strong>{' '}
+                                                {nft.chainId}
+                                                <br />
+                                                <strong>Owner:</strong>{' '}
+                                                {nft.ownerAddress}
+                                              </AlertDialogDescription>
+                                            </AlertDialogHeader>
+                                            <AlertDialogFooter>
+                                              <AlertDialogCancel>
+                                                Cancel
+                                              </AlertDialogCancel>
+                                              <AlertDialogAction
+                                                onClick={() =>
+                                                  handleBurnNft(
+                                                    nft.normalizedDomainName,
+                                                    nft.chainId,
+                                                  )
+                                                }
+                                                className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                                              >
+                                                Burn NFT
+                                              </AlertDialogAction>
+                                            </AlertDialogFooter>
+                                          </AlertDialogContent>
+                                        </AlertDialog>
+                                      ) : (
+                                        <Tooltip>
+                                          <TooltipTrigger asChild>
+                                            <Button
+                                              variant="destructive"
+                                              size="sm"
+                                              disabled
+                                              className="flex items-center gap-1 text-xs"
+                                            >
+                                              <Flame className="h-3 w-3" />
+                                              Burn
+                                            </Button>
+                                          </TooltipTrigger>
+                                          <TooltipContent>
+                                            <p>
+                                              A burn workflow is already in
+                                              progress for this domain
+                                            </p>
+                                          </TooltipContent>
+                                        </Tooltip>
+                                      )}
+                                    </>
+                                  )}
+
+                                  {/* Fix NFT Expiration Action - Only show for date mismatches */}
+                                  {nft.hasDateMismatch && (
+                                    <Tooltip>
+                                      <TooltipTrigger asChild>
+                                        <Button
+                                          variant="outline"
+                                          size="sm"
+                                          disabled
+                                          className="flex items-center gap-1 text-xs"
+                                        >
+                                          <Wrench className="h-3 w-3" />
+                                          Fix
+                                        </Button>
+                                      </TooltipTrigger>
+                                      <TooltipContent>
+                                        <p>
+                                          NFT expiration fix is not yet
+                                          implemented
+                                        </p>
+                                      </TooltipContent>
+                                    </Tooltip>
+                                  )}
+
+                                  {/* Renew Action - Only show for valid domains (not burnable and no date mismatch) */}
+                                  {!nft.canBurn && !nft.hasDateMismatch && (
+                                    <Tooltip>
+                                      <TooltipTrigger asChild>
+                                        <Button
+                                          variant="outline"
+                                          size="sm"
+                                          disabled
+                                          className="flex items-center gap-1 text-xs"
+                                        >
+                                          <RefreshCw className="h-3 w-3" />
+                                          Renew
+                                        </Button>
+                                      </TooltipTrigger>
+                                      <TooltipContent>
+                                        <p>
+                                          Domain renewal is not yet implemented
+                                        </p>
+                                      </TooltipContent>
+                                    </Tooltip>
+                                  )}
+                                </TooltipProvider>
+                              </div>
                             </Td>
                           </Tr>
                         );

@@ -22,6 +22,7 @@ import {
   privyClient,
 } from '../utils';
 import { config } from '#lib/env';
+import { logger } from '#lib/logger';
 
 const MAX_GRACE_PERIOD_DAYS = 45; /* 45 days is the max grace period for any registrar */
 
@@ -52,7 +53,9 @@ export const adminRouter = createTRPCRouter({
           .enum(['domainName', 'nftExpiration', 'domainExpiration', 'chainId'])
           .default('domainName'),
         sortOrder: z.enum(['asc', 'desc']).default('asc'),
-        filterBy: z.enum(['all', 'expired', 'canBurn']).default('all'),
+        filterBy: z
+          .enum(['all', 'expired', 'canBurn', 'dateMismatch'])
+          .default('all'),
         searchTerm: z.string().optional(),
         excludePoweredByNamefiDomains: z.boolean().default(false),
       }),
@@ -121,6 +124,15 @@ export const adminRouter = createTRPCRouter({
               )
             END
           `.as('can_burn'),
+          hasDateMismatch: sql<boolean>`
+            CASE 
+              WHEN ${namefiNftView.expirationTime} IS NULL OR ${indexedDomainsTable.expirationTime} IS NULL
+              THEN false
+              WHEN ${isPoweredByNamefiCondition}
+              THEN false
+              ELSE ABS(EXTRACT(EPOCH FROM (${namefiNftView.expirationTime} - ${indexedDomainsTable.expirationTime}))) > 86400
+            END
+          `.as('has_date_mismatch'),
         })
         .from(namefiNftOwnersView)
         .leftJoin(
@@ -198,6 +210,7 @@ export const adminRouter = createTRPCRouter({
         lastIndexedAt: result.lastIndexedAt,
         isPoweredByNamefiDomain: result.isPoweredByNamefiDomain,
         canBurn: result.canBurn,
+        hasDateMismatch: result.hasDateMismatch,
       }));
 
       return {
@@ -280,13 +293,33 @@ export const adminRouter = createTRPCRouter({
         });
       }
 
+      // Check if there's already an active burn workflow for this domain
+      const workflowId = ensureNftIsLockedAndBurnByNftName.generateId({
+        domainName: normalizedDomainName,
+        chainId,
+      });
+
+      try {
+        const existingWorkflow =
+          await temporalClient.workflow.getHandle(workflowId);
+        const description = await existingWorkflow.describe();
+
+        if (description.status.name === 'RUNNING') {
+          throw new TRPCError({
+            code: 'CONFLICT',
+            message:
+              'Cannot burn NFT: A burn workflow is already in progress for this domain',
+          });
+        }
+      } catch (error) {
+        // Workflow not found, which is fine - we can proceed
+        if (error instanceof Error && !error.message.includes('not found')) {
+          throw error;
+        }
+      }
+
       // Execute the burn workflow
       try {
-        const workflowId = ensureNftIsLockedAndBurnByNftName.generateId({
-          domainName: normalizedDomainName,
-          chainId,
-        });
-
         await temporalClient.workflow.start(ensureNftIsLockedAndBurnByNftName, {
           args: [{ domainName: normalizedDomainName, chainId }],
           workflowId,
@@ -356,6 +389,74 @@ export const adminRouter = createTRPCRouter({
     const isAdmin = user.some((wallet) => adminWallets.has(wallet));
     return isAdmin;
   }),
+
+  getActiveBurnWorkflows: adminProcedure.query(async () => {
+    try {
+      // Get all active burn workflows from Temporal
+      const workflowList = await temporalClient.workflow.list({
+        query: `WorkflowType = "ensureNftIsLockedAndBurnByNftName" AND ExecutionStatus = "Running"`,
+      });
+
+      const activeWorkflows = [];
+      for await (const workflow of workflowList) {
+        try {
+          // Extract domain name and chain ID from workflow ID
+          const workflowIdParts = workflow.workflowId.split('-');
+          const domainName = workflowIdParts.slice(0, -1).join('-');
+          const chainId = Number.parseInt(
+            workflowIdParts[workflowIdParts.length - 1],
+          );
+
+          activeWorkflows.push({
+            workflowId: workflow.workflowId,
+            domainName,
+            chainId,
+            startTime: workflow.startTime,
+            runId: workflow.runId,
+            status: workflow.status?.name || 'Running',
+          });
+        } catch (error) {}
+      }
+
+      return activeWorkflows;
+    } catch (error) {
+      logger.error(
+        { context: 'getActiveBurnWorkflows', error },
+        'Failed to fetch active burn workflows',
+      );
+      return [];
+    }
+  }),
+
+  renewDomain: adminProcedure
+    .input(
+      z.object({
+        normalizedDomainName: namefiNormalizedDomainSchema,
+        chainId: z.number(),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      // TODO: Implement domain renewal workflow
+      throw new TRPCError({
+        code: 'NOT_IMPLEMENTED',
+        message: 'Domain renewal is not yet implemented',
+      });
+    }),
+
+  fixNftExpiration: adminProcedure
+    .input(
+      z.object({
+        normalizedDomainName: namefiNormalizedDomainSchema,
+        chainId: z.number(),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      // TODO: Implement NFT expiration fix workflow
+      throw new TRPCError({
+        code: 'NOT_IMPLEMENTED',
+        message: 'NFT expiration fix is not yet implemented',
+      });
+    }),
 });
 
 function _buildQueryFilters(
@@ -410,6 +511,19 @@ function _buildQueryFilters(
           // NFT beyond grace period
           sql`( ( NOW() - ${namefiNftView.expirationTime}) > interval '${sql.raw(MAX_GRACE_PERIOD_DAYS.toString())} days')`,
         ),
+      ),
+    );
+  } else if (filterBy === 'dateMismatch') {
+    // Filter for domains where NFT and domain expiration dates don't match
+    filters.push(
+      and(
+        // Both dates must exist
+        sql`${namefiNftView.expirationTime} IS NOT NULL`,
+        sql`${indexedDomainsTable.expirationTime} IS NOT NULL`,
+        // Not a powered by namefi domain (they use NFT expiration)
+        sql`NOT (${sql`array_to_string((string_to_array(${namefiNftOwnersView.normalizedDomainName}, '.'))[2:], '.') = ANY(${sql.raw(`ARRAY[${poweredByNamefiDomains.map((d) => `'${d}'`).join(',')}]`)})`})`,
+        // Dates differ by more than 1 day
+        sql`ABS(EXTRACT(EPOCH FROM (${namefiNftView.expirationTime} - ${indexedDomainsTable.expirationTime}))) > 86400`,
       ),
     );
   }
