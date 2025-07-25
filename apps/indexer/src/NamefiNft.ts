@@ -95,9 +95,9 @@ ponder.on('NamefiNft:setup', async ({ context }) => {
   const latestBlock = await publicClient.getBlockNumber();
   const lastIndexedBlockQuery = await db.sql
     .select()
-    .from(schema.DomainNft)
-    .where(eq(schema.DomainNft.chainId, chainId))
-    .orderBy(desc(schema.DomainNft.lastUpdatedBlock))
+    .from(schema.NamefiNft)
+    .where(eq(schema.NamefiNft.chainId, chainId))
+    .orderBy(desc(schema.NamefiNft.lastUpdatedBlock))
     .limit(1)
     .execute();
   const contractSetupBlock =
@@ -206,20 +206,20 @@ ponder.on('NamefiNft:setup', async ({ context }) => {
     isNotNil,
     nftOwnersArray.map(([tokenId, owner], index) => {
       const domainName = domainNames[index]?.result as unknown as string;
-      const expirationDate = expirationDates[index]
+      const expirationTimeInSeconds = expirationDates[index]
         ?.result as unknown as bigint;
       const isLocked = locked[index]?.result as unknown as boolean;
       if (
         !domainName ||
-        !expirationDate ||
+        !expirationTimeInSeconds ||
         isLocked === undefined ||
         isLocked === null
       ) {
         console.log(
           `Skipping domain ${tokenId} for chain ${chainId} from block ${chainIdToStartBlock[chainId]} to block ${toBlock} because it has no domain name or expiration date or is locked`,
           {
-            domainName,
-            expirationDate,
+            normalizedDomainName: domainName,
+            expirationTimeInSeconds: expirationTimeInSeconds,
             isLocked,
           },
         );
@@ -227,8 +227,8 @@ ponder.on('NamefiNft:setup', async ({ context }) => {
       }
       return {
         tokenId,
-        domainName,
-        expirationDate,
+        normalizedDomainName: domainName,
+        expirationTimeInSeconds: expirationTimeInSeconds,
         ownerAddress: owner,
         chainId,
         lastUpdatedBlock: toBlock,
@@ -250,12 +250,12 @@ ponder.on('NamefiNft:setup', async ({ context }) => {
     `Inserting ${data.length} domains for chain ${chainId} from block ${chainIdToStartBlock[chainId]} to block ${toBlock}`,
   );
   await context.db.sql
-    .insert(schema.DomainNft)
+    .insert(schema.NamefiNft)
     .values(data)
     .onConflictDoUpdate({
-      target: [schema.DomainNft.tokenId, schema.DomainNft.chainId],
+      target: [schema.NamefiNft.tokenId, schema.NamefiNft.chainId],
       set: {
-        expirationDate: sql.raw('excluded.expiration_date'),
+        expirationTimeInSeconds: sql.raw('excluded.expiration_time_in_seconds'),
         ownerAddress: sql.raw('excluded.owner_address'),
         lastUpdatedBlock: sql.raw('excluded.last_updated_block'),
         lastUpdatedTimestamp: sql.raw('excluded.last_updated_timestamp'),
@@ -278,7 +278,7 @@ ponder.on('NamefiNft:Transfer', async ({ event, context }) => {
 
   // Handle burning (transfer to zero address)
   if (to === zeroAddress) {
-    await context.db.delete(schema.DomainNft, {
+    await context.db.delete(schema.NamefiNft, {
       tokenId,
       chainId,
     });
@@ -293,7 +293,7 @@ ponder.on('NamefiNft:Transfer', async ({ event, context }) => {
     tokenId,
   );
 
-  const expirationDate = await fetchExpirationDate(
+  const expirationTimeInSeconds = await fetchExpirationDate(
     context.client,
     event.log.address,
     context.contracts.NamefiNft.abi,
@@ -302,11 +302,11 @@ ponder.on('NamefiNft:Transfer', async ({ event, context }) => {
 
   // Create or update domain record
   await context.db
-    .insert(schema.DomainNft)
+    .insert(schema.NamefiNft)
     .values({
       tokenId,
-      domainName: domainName || '',
-      expirationDate: expirationDate || 0n,
+      normalizedDomainName: domainName || '',
+      expirationTimeInSeconds: expirationTimeInSeconds || 0n,
       isLocked: false, // Default to unlocked
       ownerAddress: to,
       chainId,
@@ -314,8 +314,8 @@ ponder.on('NamefiNft:Transfer', async ({ event, context }) => {
       lastUpdatedTimestamp: block.timestamp,
     })
     .onConflictDoUpdate({
-      domainName: domainName || '',
-      expirationDate: expirationDate || 0n,
+      normalizedDomainName: domainName || '',
+      expirationTimeInSeconds: expirationTimeInSeconds || 0n,
       ownerAddress: to,
       lastUpdatedBlock: block.number,
       lastUpdatedTimestamp: block.timestamp,
@@ -351,11 +351,11 @@ ponder.on('NamefiNftAccount:transaction:to', async ({ event, context }) => {
     const [domainName] = args;
     const domains = await context.db.sql
       .select()
-      .from(schema.DomainNft)
+      .from(schema.NamefiNft)
       .where(
         and(
-          eq(schema.DomainNft.domainName, domainName),
-          eq(schema.DomainNft.chainId, chainId),
+          eq(schema.NamefiNft.normalizedDomainName, domainName),
+          eq(schema.NamefiNft.chainId, chainId),
         ),
       )
       .limit(1)
@@ -383,8 +383,8 @@ async function updateExpirationDate(
     functionName: 'getExpiration',
     args: [tokenId],
   });
-  await context.db.update(schema.DomainNft, { tokenId, chainId }).set({
-    expirationDate: expirationTime,
+  await context.db.update(schema.NamefiNft, { tokenId, chainId }).set({
+    expirationTimeInSeconds: expirationTime,
     lastUpdatedBlock: block.number,
     lastUpdatedTimestamp: block.timestamp,
   });
@@ -415,11 +415,11 @@ ponder.on('NamefiNft:Lock', async ({ event, context }) => {
   const chainId = context.chain.id;
   let domainName = '';
   try {
-    const domain = await context.db.find(schema.DomainNft, {
+    const domain = await context.db.find(schema.NamefiNft, {
       tokenId,
       chainId,
     });
-    domainName = domain?.domainName || '';
+    domainName = domain?.normalizedDomainName || '';
   } catch (error) {
     console.error('Error fetching domain name', error);
   }
@@ -430,7 +430,7 @@ ponder.on('NamefiNft:Lock', async ({ event, context }) => {
   });
 
   // Update the lock status
-  await context.db.update(schema.DomainNft, { tokenId, chainId }).set({
+  await context.db.update(schema.NamefiNft, { tokenId, chainId }).set({
     isLocked: true,
     lastUpdatedBlock: block.number,
     lastUpdatedTimestamp: block.timestamp,
@@ -446,11 +446,11 @@ ponder.on('NamefiNft:Unlock', async ({ event, context }) => {
 
   let domainName = '';
   try {
-    const domain = await context.db.find(schema.DomainNft, {
+    const domain = await context.db.find(schema.NamefiNft, {
       tokenId,
       chainId,
     });
-    domainName = domain?.domainName || '';
+    domainName = domain?.normalizedDomainName || '';
   } catch (error) {
     console.error('Error fetching domain name', error);
   }
@@ -461,7 +461,7 @@ ponder.on('NamefiNft:Unlock', async ({ event, context }) => {
   });
 
   // Update the lock status
-  await context.db.update(schema.DomainNft, { tokenId, chainId }).set({
+  await context.db.update(schema.NamefiNft, { tokenId, chainId }).set({
     isLocked: false,
     lastUpdatedBlock: block.number,
     lastUpdatedTimestamp: block.timestamp,
