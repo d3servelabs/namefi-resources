@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@reference "../../app/globals.css";
 
 /* Define reusable gradient border utility */
 @utility gradient-border {

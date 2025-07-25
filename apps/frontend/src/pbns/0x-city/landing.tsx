@@ -8,13 +8,13 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { type FC, useCallback } from 'react';
 import { DomainClaim } from '@/components/domain-claim';
-import './styles.css';
 import {
   type BeginCheckoutEvent,
   InteractionLoggingEventName,
 } from '@/lib/analytics-events';
 import { useInteractionLoggers } from '@/components/providers/analytics';
 import { Separator } from '@/components/ui/shadcn/separator';
+import './styles.css';
 
 // Hero Section
 const Hero: FC = () => {
