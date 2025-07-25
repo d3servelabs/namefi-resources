@@ -1,7 +1,7 @@
 import {
   db,
   indexedDomainsTable,
-  type namefiNftTable,
+  namefiNftOwnersView,
   orderItemStatusSchema,
   orderItemsTable,
   orderStatusSchema,
@@ -33,7 +33,7 @@ import { computeChargesInUsdOrThrow } from '@namefi-astra/registrars/multi-year-
 import { getDomainDurationConstraints } from './domains/duration-constraints';
 import pMap from 'p-map';
 
-export type NamefiNftSelect = typeof namefiNftTable.$inferSelect;
+export type NamefiNftSelect = typeof namefiNftOwnersView.$inferSelect;
 
 export const sldRegistrar = createRegistrarService({
   aws: {
@@ -148,9 +148,10 @@ export const getDomainListInfo = async (
 ): Promise<DomainAvailabilityInfo[]> => {
   // Query the database for NFTs matching the provided domain names
   const [nfts, pendingOrdersMap] = await Promise.all([
-    db.query.namefiNftTable.findMany({
-      where: (nft, { inArray }) => inArray(nft.normalizedDomainName, domains),
-    }),
+    db
+      .select()
+      .from(namefiNftOwnersView)
+      .where(inArray(namefiNftOwnersView.normalizedDomainName, domains)),
     checkIfDomainsHavePendingOrders(domains),
   ]);
 

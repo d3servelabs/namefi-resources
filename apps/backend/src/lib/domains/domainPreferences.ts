@@ -2,7 +2,7 @@ import {
   db,
   domainConfigTable,
   domainUserPreferencesTable,
-  namefiNftTable,
+  namefiNftOwnersView,
   usersTable,
 } from '@namefi-astra/db';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
@@ -130,15 +130,18 @@ type DomainPreferencesAndConfig = {
 export const getDomainPreferencesAndConfig = async (
   domainName: NamefiNormalizedDomain,
 ): Promise<DomainPreferencesAndConfig> => {
-  const [nft, domainConfig] = await Promise.all([
-    db.query.namefiNftTable.findFirst({
-      where: eq(namefiNftTable.normalizedDomainName, domainName),
-    }),
+  const [nftResult, domainConfig] = await Promise.all([
+    db
+      .select()
+      .from(namefiNftOwnersView)
+      .where(eq(namefiNftOwnersView.normalizedDomainName, domainName))
+      .limit(1),
     db.query.domainConfigTable.findFirst({
       where: eq(domainConfigTable.normalizedDomainName, domainName),
     }),
   ]);
 
+  const nft = nftResult[0];
   if (!nft) {
     throw new TRPCError({
       code: 'NOT_FOUND',

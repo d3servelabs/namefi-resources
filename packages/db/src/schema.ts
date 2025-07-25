@@ -934,3 +934,45 @@ export const wishlistedDomainsTable = pgTable(
     index('wishlisted_domains_domain_idx').on(table.normalizedDomainName),
   ],
 );
+
+/**
+ * NamefiNftView - View based on NamefiNft schema from ponder indexer
+ * This view provides a stable interface to query NFT data with dates and metadata
+ * from the ponder indexer, insulating the application from schema changes.
+ *
+ * Note: View is created manually in SQL, this is just the Drizzle type definition.
+ */
+export const namefiNftView = pgView('namefi_nft_view', {
+  tokenId: bigint('token_id', { mode: 'bigint' }).notNull(),
+  normalizedDomainName: text('normalized_domain_name')
+    .notNull()
+    .$type<NamefiNormalizedDomain>(),
+  expirationTimeInSeconds: bigint('expiration_time_in_seconds', {
+    mode: 'bigint',
+  }).notNull(),
+  expirationTime: timestamp('expiration_time').notNull(), // This is the expiration time in UTC derived from expirationTimeInSeconds
+  isLocked: boolean('is_locked').default(false),
+  ownerAddress: text('owner_address').notNull(),
+  chainId: integer('chain_id').notNull(),
+  lastUpdatedBlock: bigint('last_updated_block', { mode: 'bigint' }).notNull(),
+  lastUpdatedTimestamp: bigint('last_updated_timestamp', {
+    mode: 'bigint',
+  }).notNull(),
+}).existing();
+
+/**
+ * NamefiNftOwnersView - Simplified view for owner-based queries
+ * This view provides the essential NFT ownership data that replaces most
+ * namefiNftTable queries, providing a stable interface during schema migrations.
+ * Based on namefiNftView with only the essential columns for ownership queries.
+ *
+ * Note: View is created manually in SQL, this is just the Drizzle type definition.
+ */
+export const namefiNftOwnersView = pgView('namefi_nft_owners_view', {
+  normalizedDomainName: text('normalized_domain_name')
+    .notNull()
+    .$type<NamefiNormalizedDomain>(),
+  chainId: integer('chain_id').notNull(),
+  ownerAddress: text('owner_address').notNull(),
+  asOfBlockNumber: bigint('as_of_block_number', { mode: 'bigint' }).notNull(),
+}).existing();

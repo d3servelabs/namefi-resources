@@ -1,4 +1,4 @@
-import { db, namefiNftTable, indexedDomainsTable } from '@namefi-astra/db';
+import { db, namefiNftOwnersView, indexedDomainsTable } from '@namefi-astra/db';
 import {
   NAMEFI_NFT_CONTRACT_ADDRESS,
   namefiNormalizedDomainSchema,
@@ -89,20 +89,20 @@ export const adminRouter = createTRPCRouter({
       // Build base query
       const baseQuery = db
         .select({
-          normalizedDomainName: namefiNftTable.normalizedDomainName,
-          chainId: namefiNftTable.chainId,
-          asOfBlockNumber: namefiNftTable.asOfBlockNumber,
-          ownerAddress: namefiNftTable.ownerAddress,
+          normalizedDomainName: namefiNftOwnersView.normalizedDomainName,
+          chainId: namefiNftOwnersView.chainId,
+          asOfBlockNumber: namefiNftOwnersView.asOfBlockNumber,
+          ownerAddress: namefiNftOwnersView.ownerAddress,
           nftExpirationTime: sql<Date | null>`null`.as('nft_expiration_time'),
           domainExpirationTime: indexedDomainsTable.expirationTime,
           registrarKey: indexedDomainsTable.registrarKey,
           lastIndexedAt: indexedDomainsTable.lastIndexedAt,
         })
-        .from(namefiNftTable)
+        .from(namefiNftOwnersView)
         .leftJoin(
           indexedDomainsTable,
           eq(
-            namefiNftTable.normalizedDomainName,
+            namefiNftOwnersView.normalizedDomainName,
             indexedDomainsTable.normalizedDomainName,
           ),
         );
@@ -110,11 +110,11 @@ export const adminRouter = createTRPCRouter({
       // Build count query
       const countQuery = db
         .select({ count: sql<number>`COUNT(*)` })
-        .from(namefiNftTable)
+        .from(namefiNftOwnersView)
         .leftJoin(
           indexedDomainsTable,
           eq(
-            namefiNftTable.normalizedDomainName,
+            namefiNftOwnersView.normalizedDomainName,
             indexedDomainsTable.normalizedDomainName,
           ),
         );
@@ -264,14 +264,18 @@ export const adminRouter = createTRPCRouter({
       }
 
       // Verify the NFT exists
-      const nft = await db.query.namefiNftTable.findFirst({
-        where: and(
-          eq(namefiNftTable.normalizedDomainName, normalizedDomainName),
-          eq(namefiNftTable.chainId, chainId),
-        ),
-      });
+      const nft = await db
+        .select()
+        .from(namefiNftOwnersView)
+        .where(
+          and(
+            eq(namefiNftOwnersView.normalizedDomainName, normalizedDomainName),
+            eq(namefiNftOwnersView.chainId, chainId),
+          ),
+        )
+        .limit(1);
 
-      if (!nft) {
+      if (!nft[0]) {
         throw new TRPCError({
           code: 'NOT_FOUND',
           message: 'NFT not found',
@@ -394,7 +398,7 @@ const excludeSubdomainsOfParentDomains = (parentDomains: string[]) => {
     parentDomains.map((domain) => sql.raw(`'${domain}'`)),
     sql.raw(','),
   );
-  const splitDomain = sql`string_to_array(${namefiNftTable.normalizedDomainName}, '.')::text[]`;
+  const splitDomain = sql`string_to_array(${namefiNftOwnersView.normalizedDomainName}, '.')::text[]`;
   const subdomain = sql`array_to_string((${splitDomain})[2:], '.')`;
 
   return sql`${subdomain} NOT IN (${delimitedParentDomains})`;
@@ -411,8 +415,8 @@ function _buildQueryFilters(
   if (searchTerm) {
     filters.push(
       or(
-        sql`${namefiNftTable.normalizedDomainName} ILIKE ${'%' + searchTerm + '%'}`,
-        sql`${namefiNftTable.ownerAddress} ILIKE ${'%' + searchTerm + '%'}`,
+        sql`${namefiNftOwnersView.normalizedDomainName} ILIKE ${'%' + searchTerm + '%'}`,
+        sql`${namefiNftOwnersView.ownerAddress} ILIKE ${'%' + searchTerm + '%'}`,
       ),
     );
   }
@@ -448,8 +452,8 @@ function _buildOrderByClause(sortBy: string, sortOrder: string) {
     case 'domainName':
       orderByClause =
         sortOrder === 'asc'
-          ? asc(namefiNftTable.normalizedDomainName)
-          : desc(namefiNftTable.normalizedDomainName);
+          ? asc(namefiNftOwnersView.normalizedDomainName)
+          : desc(namefiNftOwnersView.normalizedDomainName);
       break;
     case 'domainExpiration':
       orderByClause =
@@ -460,14 +464,14 @@ function _buildOrderByClause(sortBy: string, sortOrder: string) {
     case 'chainId':
       orderByClause =
         sortOrder === 'asc'
-          ? asc(namefiNftTable.chainId)
-          : desc(namefiNftTable.chainId);
+          ? asc(namefiNftOwnersView.chainId)
+          : desc(namefiNftOwnersView.chainId);
       break;
     default:
       orderByClause =
         sortOrder === 'asc'
-          ? asc(namefiNftTable.normalizedDomainName)
-          : desc(namefiNftTable.normalizedDomainName);
+          ? asc(namefiNftOwnersView.normalizedDomainName)
+          : desc(namefiNftOwnersView.normalizedDomainName);
   }
   return orderByClause;
 }

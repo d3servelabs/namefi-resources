@@ -1,4 +1,5 @@
-import { db } from '@namefi-astra/db';
+import { db, namefiNftOwnersView } from '@namefi-astra/db';
+import { eq } from 'drizzle-orm';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import * as DnssecLib from '#lib/domains/dnssec';
 import * as NameserversLib from '#lib/domains/nameservers';
@@ -39,10 +40,13 @@ export const DomainsActivities = {
 export async function getDomainChain(
   normalizedDomainName: NamefiNormalizedDomain,
 ): Promise<number> {
-  const domain = await db.query.namefiNftTable.findFirst({
-    where: (table, { eq }) =>
-      eq(table.normalizedDomainName, normalizedDomainName),
-  });
+  const domainResult = await db
+    .select()
+    .from(namefiNftOwnersView)
+    .where(eq(namefiNftOwnersView.normalizedDomainName, normalizedDomainName))
+    .limit(1);
+
+  const domain = domainResult[0];
 
   if (!domain) {
     throw new Error(`Domain ${normalizedDomainName} not found`);

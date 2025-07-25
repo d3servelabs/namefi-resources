@@ -1,6 +1,6 @@
 import {
   domainTagsTable,
-  namefiNftTable,
+  namefiNftOwnersView,
   orderItemsTable,
   ordersTable,
 } from '@namefi-astra/db';
@@ -24,13 +24,13 @@ type TagDetails = Awaited<ReturnType<typeof getTags>>[number];
 export const checkDomainsWithNoCategories = async () => {
   const domains = await db
     .select({
-      normalizedDomainName: namefiNftTable.normalizedDomainName,
+      normalizedDomainName: namefiNftOwnersView.normalizedDomainName,
     })
-    .from(namefiNftTable)
+    .from(namefiNftOwnersView)
     .leftJoin(
       domainTagsTable,
       eq(
-        namefiNftTable.normalizedDomainName,
+        namefiNftOwnersView.normalizedDomainName,
         domainTagsTable.normalizedDomainName,
       ),
     )
@@ -152,19 +152,19 @@ export const domainTagsWithNftAndOrderItemsCte = db
         ),
         normalizedDomainName: domainTagsTable.normalizedDomainName,
         tag: domainTagsTable.tag,
-        chainId: namefiNftTable.chainId,
-        ownerAddress: namefiNftTable.ownerAddress,
-        asOfBlockNumber: namefiNftTable.asOfBlockNumber,
+        chainId: namefiNftOwnersView.chainId,
+        ownerAddress: namefiNftOwnersView.ownerAddress,
+        asOfBlockNumber: namefiNftOwnersView.asOfBlockNumber,
         orderStatus: sql<string>`orders.status`.as('order_status'),
         orderUserId: sql<string>`orders.user_id`.as('order_user_id'),
         orderPaymentId: sql<string>`orders.payment_id`.as('order_payment_id'),
       })
       .from(domainTagsTable)
       .leftJoin(
-        namefiNftTable,
+        namefiNftOwnersView,
         eq(
           domainTagsTable.normalizedDomainName,
-          namefiNftTable.normalizedDomainName,
+          namefiNftOwnersView.normalizedDomainName,
         ),
       )
       .leftJoin(

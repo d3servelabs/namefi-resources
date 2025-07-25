@@ -1,4 +1,4 @@
-import { db } from '@namefi-astra/db';
+import { db, namefiNftOwnersView } from '@namefi-astra/db';
 import { namefiNftTable } from '@namefi-astra/db';
 import { getChain, type NamefiNormalizedDomain } from '@namefi-astra/utils';
 import BigNumber from 'bignumber.js';
@@ -353,23 +353,29 @@ export const getNamefiNftLock = async (
 };
 
 export const getNftFromIndexer = async (domainName: NamefiNormalizedDomain) => {
-  const nft = await db.query.namefiNftTable.findFirst({
-    where: eq(namefiNftTable.normalizedDomainName, domainName),
-  });
-  if (!nft) {
+  const nft = await db
+    .select()
+    .from(namefiNftOwnersView)
+    .where(eq(namefiNftOwnersView.normalizedDomainName, domainName))
+    .limit(1);
+  if (!nft[0]) {
     return null;
   }
 
   return {
-    ...nft,
-    asOfBlockNumber: nft.asOfBlockNumber.toString(),
+    ...nft[0],
+    asOfBlockNumber: nft[0].asOfBlockNumber.toString(),
   };
 };
 
 export const getNftsForWallets = async (walletAddresses: string[]) => {
-  const nfts = await db.query.namefiNftTable.findMany({
-    where: inArray(namefiNftTable.ownerAddress, walletAddresses),
-  });
+  const nfts = await db
+    .select()
+    .from(namefiNftOwnersView)
+    .where(inArray(namefiNftOwnersView.ownerAddress, walletAddresses));
+  if (nfts.length === 0) {
+    return [];
+  }
   return nfts.map((nft) => ({
     ...nft,
     asOfBlockNumber: nft.asOfBlockNumber.toString(),

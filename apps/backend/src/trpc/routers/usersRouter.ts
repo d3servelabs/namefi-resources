@@ -1,4 +1,9 @@
-import { db, usersTable, wishlistedDomainsTable } from '@namefi-astra/db';
+import {
+  db,
+  usersTable,
+  wishlistedDomainsTable,
+  namefiNftOwnersView,
+} from '@namefi-astra/db';
 import {
   NAMEFI_NFT_CONTRACT_ADDRESS,
   namefiNormalizedDomainSchema,
@@ -6,7 +11,7 @@ import {
 } from '@namefi-astra/utils';
 import type { LinkedAccountWithMetadata } from '@privy-io/server-auth';
 import { TRPCError } from '@trpc/server';
-import { and, desc, eq, sql, inArray } from 'drizzle-orm';
+import { and, desc, eq, sql, inArray, ilike, gte, or } from 'drizzle-orm';
 import { groupBy, isEmpty, isNil, isNotEmpty, isNotNil, pluck } from 'ramda';
 import { http, createPublicClient } from 'viem';
 import * as chains from 'viem/chains';
@@ -127,25 +132,36 @@ export const usersRouter = createTRPCRouter({
       return [];
     }
 
+    const whereConditions = [
+      inArray(
+        namefiNftOwnersView.ownerAddress,
+        privyUserLinkedEthereumChecksumWalletAddresses,
+      ),
+    ];
+
+    if (poweredByNamefiDomain) {
+      whereConditions.push(
+        ilike(
+          namefiNftOwnersView.normalizedDomainName,
+          `%.${poweredByNamefiDomain}`,
+        ),
+      );
+    }
+
+    if (ONLY_SHOW_SUBDOMAINS_FOR_CURRENT_USER) {
+      whereConditions.push(
+        gte(
+          sql`array_length(string_to_array(${namefiNftOwnersView.normalizedDomainName}, '.'), 1)`,
+          3,
+        ),
+      );
+    }
+
     const nfts = (
-      await db.query.namefiNftTable.findMany({
-        where: (table, { inArray, and, ilike, gte }) =>
-          and(
-            inArray(
-              table.ownerAddress,
-              privyUserLinkedEthereumChecksumWalletAddresses,
-            ),
-            poweredByNamefiDomain
-              ? ilike(table.normalizedDomainName, `%.${poweredByNamefiDomain}`)
-              : undefined,
-            ONLY_SHOW_SUBDOMAINS_FOR_CURRENT_USER
-              ? gte(
-                  sql`array_length(string_to_array(${table.normalizedDomainName}, '.'), 1)`,
-                  3,
-                )
-              : undefined,
-          ),
-      })
+      await db
+        .select()
+        .from(namefiNftOwnersView)
+        .where(and(...whereConditions))
     ).map((nft) => ({
       ...nft,
       tokenId: nftIdFromDomainName(nft.normalizedDomainName),
@@ -257,20 +273,25 @@ export const usersRouter = createTRPCRouter({
         });
       }
 
-      const issuedSubdomainNfts = await db.query.namefiNftTable.findMany({
-        where: (table, { and, ilike, gte, or }) =>
+      const issuedSubdomainNfts = await db
+        .select()
+        .from(namefiNftOwnersView)
+        .where(
           and(
             or(
               ...parentDomains.map((poweredByNamefiDomain) =>
-                ilike(table.normalizedDomainName, `%.${poweredByNamefiDomain}`),
+                ilike(
+                  namefiNftOwnersView.normalizedDomainName,
+                  `%.${poweredByNamefiDomain}`,
+                ),
               ),
             ),
             gte(
-              sql`array_length(string_to_array(${table.normalizedDomainName}, '.'), 1)`,
+              sql`array_length(string_to_array(${namefiNftOwnersView.normalizedDomainName}, '.'), 1)`,
               3,
             ),
           ),
-      });
+        );
 
       const subdomainNftsMap: Record<
         NamefiNormalizedDomain,

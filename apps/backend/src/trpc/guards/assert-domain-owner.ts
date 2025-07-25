@@ -1,4 +1,5 @@
-import { type UserSelect, db } from '@namefi-astra/db';
+import { type UserSelect, db, namefiNftOwnersView } from '@namefi-astra/db';
+import { eq } from 'drizzle-orm';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
 import { privyClient } from '../utils';
@@ -29,12 +30,13 @@ export async function IsUserDomainOwner(
   user: UserSelect,
 ) {
   // Verify user has permission to manage DNS records for this domain
-  const nft = await db.query.namefiNftTable.findFirst({
-    where: (namefiNft, { eq }) =>
-      eq(namefiNft.normalizedDomainName, normalizedDomainName),
-  });
+  const nft = await db
+    .select()
+    .from(namefiNftOwnersView)
+    .where(eq(namefiNftOwnersView.normalizedDomainName, normalizedDomainName))
+    .limit(1);
 
-  if (!nft) {
+  if (!nft[0]) {
     throw new TRPCError({
       code: 'NOT_FOUND',
       message: 'Domain NFT not found',
@@ -42,7 +44,7 @@ export async function IsUserDomainOwner(
   }
 
   const nftOwnerUser = await privyClient.getUserByWalletAddress(
-    nft.ownerAddress,
+    nft[0].ownerAddress,
   );
 
   return nftOwnerUser?.id === user.privyUserId;

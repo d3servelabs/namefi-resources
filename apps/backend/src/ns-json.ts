@@ -1,6 +1,6 @@
 // Router for NS JSON
 
-import { db, dnsRecordsTable } from '@namefi-astra/db';
+import { db, dnsRecordsTable, namefiNftOwnersView } from '@namefi-astra/db';
 import {
   type NamefiNormalizedDomain,
   fqdnLowercaseToNamefiNormalizedDomain,
@@ -320,14 +320,16 @@ export async function getNsAndSoaRecords(
   _logger.trace({ isPoweredByNamefi, recordName }, 'Is powered by namefi ?');
   if (!isPoweredByNamefi) {
     // if not powered by namefi, check if the domain has a nft hence it should has a zone (ie; NS and SOA records)
-    const nft = await db.query.namefiNftTable.findFirst({
-      where: (t) => and(eq(t.normalizedDomainName, recordName)),
-    });
-    if (!nft) {
+    const nft = await db
+      .select()
+      .from(namefiNftOwnersView)
+      .where(eq(namefiNftOwnersView.normalizedDomainName, recordName))
+      .limit(1);
+    if (!nft[0]) {
       _logger.trace({ recordName }, 'No NFT found');
       return null;
     }
-    _logger.trace({ nft, recordName }, 'NFT found');
+    _logger.trace({ nft: nft[0], recordName }, 'NFT found');
   }
 
   _logger.trace({ recordName, qTypeEnum }, 'Returning NS and SOA records');
