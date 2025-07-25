@@ -1,21 +1,15 @@
-import { db, namefiNftOwnersView, indexedDomainsTable } from '@namefi-astra/db';
 import {
-  NAMEFI_NFT_CONTRACT_ADDRESS,
+  db,
+  namefiNftOwnersView,
+  namefiNftView,
+  indexedDomainsTable,
+} from '@namefi-astra/db';
+import {
   namefiNormalizedDomainSchema,
   type NamefiNormalizedDomain,
 } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
-import {
-  and,
-  asc,
-  desc,
-  eq,
-  isNull,
-  or,
-  type SQL,
-  sql,
-  type SQLWrapper,
-} from 'drizzle-orm';
+import { and, asc, desc, eq, isNull, or, lt, type SQL, sql } from 'drizzle-orm';
 import { z } from 'zod';
 import { temporalClient } from '#temporal/client';
 import { TEMPORAL_QUEUES } from '#temporal/shared/enums';
@@ -23,12 +17,8 @@ import { ensureNftIsLockedAndBurnByNftName } from '#temporal/workflows/mint.work
 import { createTRPCRouter, protectedProcedure } from '../base';
 import { getPoweredByNamefi3PDomains } from '#lib/namefi-registry';
 import { parseDomainName } from '@namefi-astra/utils/parse-domain-name';
-import { filter, fromPairs, groupBy, pipe, prop, isNotNil } from 'ramda';
-import pProps from 'p-props';
-import { getViemPublicClient } from '#lib/crypto/viem-clients';
-import { NftAbi } from '@namefi-astra/utils/abis/namefi-nft';
-import { nftIdFromDomainName } from '#lib/nftHash';
-import { differenceInDays, fromUnixTime } from 'date-fns';
+import { filter, isNotNil } from 'ramda';
+import { differenceInDays } from 'date-fns';
 import {
   getPrivyUserLinkedEthereumWalletAddresses,
   privyClient,
@@ -86,19 +76,29 @@ export const adminRouter = createTRPCRouter({
         'withharris.club',
         'withtrump.club',
       ];
-      // Build base query
+      // Build base query with joins to get both NFT and domain expiration data
       const baseQuery = db
         .select({
           normalizedDomainName: namefiNftOwnersView.normalizedDomainName,
           chainId: namefiNftOwnersView.chainId,
           asOfBlockNumber: namefiNftOwnersView.asOfBlockNumber,
           ownerAddress: namefiNftOwnersView.ownerAddress,
-          nftExpirationTime: sql<Date | null>`null`.as('nft_expiration_time'),
+          nftExpirationTime: namefiNftView.expirationTime,
           domainExpirationTime: indexedDomainsTable.expirationTime,
           registrarKey: indexedDomainsTable.registrarKey,
           lastIndexedAt: indexedDomainsTable.lastIndexedAt,
         })
         .from(namefiNftOwnersView)
+        .leftJoin(
+          namefiNftView,
+          and(
+            eq(
+              namefiNftOwnersView.normalizedDomainName,
+              namefiNftView.normalizedDomainName,
+            ),
+            eq(namefiNftOwnersView.chainId, namefiNftView.chainId),
+          ),
+        )
         .leftJoin(
           indexedDomainsTable,
           eq(
@@ -107,10 +107,20 @@ export const adminRouter = createTRPCRouter({
           ),
         );
 
-      // Build count query
+      // Build count query with same joins
       const countQuery = db
         .select({ count: sql<number>`COUNT(*)` })
         .from(namefiNftOwnersView)
+        .leftJoin(
+          namefiNftView,
+          and(
+            eq(
+              namefiNftOwnersView.normalizedDomainName,
+              namefiNftView.normalizedDomainName,
+            ),
+            eq(namefiNftOwnersView.chainId, namefiNftView.chainId),
+          ),
+        )
         .leftJoin(
           indexedDomainsTable,
           eq(
@@ -143,47 +153,7 @@ export const adminRouter = createTRPCRouter({
       ]);
 
       const totalCount = countResult[0]?.count ?? 0;
-      const resultByChainId = groupBy((result) => {
-        if (result.chainId) {
-          return result.chainId.toString();
-        }
-        return 'unknown';
-      }, results);
-      const processedResultsByChainId = await pProps(
-        resultByChainId,
-        async (results, chainId) => {
-          if (chainId === 'unknown') {
-            return {};
-          }
-          if (!results) {
-            return {};
-          }
-          const client = getViemPublicClient(Number(chainId));
-          const latestBlock = await client.getBlockNumber();
-          const tokenIds = results.map((result) =>
-            nftIdFromDomainName(result.normalizedDomainName),
-          );
-          const expirationResults = await client.multicall({
-            contracts: tokenIds.map((tokenId) => ({
-              address: NAMEFI_NFT_CONTRACT_ADDRESS as `0x${string}`,
-              abi: NftAbi,
-              functionName: 'getExpiration' as const,
-              args: [tokenId],
-              blockNumber: latestBlock,
-            })),
-          });
-
-          return fromPairs(
-            expirationResults.map((result, index) => [
-              results[index].normalizedDomainName,
-              result.status === 'success'
-                ? fromUnixTime(Number(result.result))
-                : null,
-            ]),
-          );
-        },
-      );
-      // Process results to add canBurn flag
+      // Process results to add canBurn flag and other computed fields
       const processedResults = filter(
         isNotNil,
         results.map((result) => {
@@ -199,10 +169,8 @@ export const adminRouter = createTRPCRouter({
             parsedDomainName.immediateParentDomain as NamefiNormalizedDomain,
           );
 
-          const nftExpirationTime =
-            processedResultsByChainId[result.chainId?.toString()]?.[
-              result.normalizedDomainName
-            ] ?? null;
+          // Use NFT expiration time from database or domain expiration time
+          const nftExpirationTime = result.nftExpirationTime;
           const domainExpirationTime = isPoweredByNamefiDomain
             ? nftExpirationTime
             : result.domainExpirationTime;
@@ -425,8 +393,11 @@ function _buildQueryFilters(
     filters.push(
       and(
         or(
+          // Domain expired
           sql`${indexedDomainsTable.expirationTime} < NOW()`,
           isNull(indexedDomainsTable.expirationTime),
+          // NFT expired
+          sql`(${namefiNftView.expirationTime}) < NOW()`,
         ),
         excludeSubdomainsOfParentDomains(poweredByNamefiDomains),
       ),
@@ -435,9 +406,13 @@ function _buildQueryFilters(
     filters.push(
       and(
         or(
+          // Domain beyond grace period
           sql`( ( NOW() - coalesce(${indexedDomainsTable.expirationTime}, NOW()) ) > interval '${sql.raw(MAX_GRACE_PERIOD_DAYS.toString())} days')`,
           isNull(indexedDomainsTable.expirationTime),
+          // NFT beyond grace period
+          sql`( ( NOW() - ${namefiNftView.expirationTime}) > interval '${sql.raw(MAX_GRACE_PERIOD_DAYS.toString())} days')`,
         ),
+        // Exclude powered by namefi domains (can't burn those)
         excludeSubdomainsOfParentDomains(poweredByNamefiDomains),
       ),
     );
@@ -454,6 +429,12 @@ function _buildOrderByClause(sortBy: string, sortOrder: string) {
         sortOrder === 'asc'
           ? asc(namefiNftOwnersView.normalizedDomainName)
           : desc(namefiNftOwnersView.normalizedDomainName);
+      break;
+    case 'nftExpiration':
+      orderByClause =
+        sortOrder === 'asc'
+          ? sql`${namefiNftView.expirationTime} ASC NULLS LAST`
+          : sql`${namefiNftView.expirationTime} DESC NULLS LAST`;
       break;
     case 'domainExpiration':
       orderByClause =
