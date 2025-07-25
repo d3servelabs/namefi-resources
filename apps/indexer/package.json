@@ -8,9 +8,8 @@
   },
   "scripts": {
     "dev": "ponder dev",
-    "build": "ponder build --schema=indexer",
-    "start": "ponder start --schema=indexer",
-    "serve": "ponder serve --schema=indexer",
+    "start": "ponder start",
+    "serve": "ponder serve",
     "force-local": "ENVIRONMENT=local LOG_LEVEL=debug bun",
     "with-env": "infisical run --token=$INFISICAL_SERVICE_TOKEN -- bun"
   },

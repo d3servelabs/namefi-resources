@@ -24,6 +24,8 @@ services:
       com.datadoghq.ad.instances: >
         [{"prometheus_url":"http://%%host%%:8080/metrics", "namespace":"ponder-indexer", "metrics": ["ponder_*"]}]
       tags: "env:prod,team:infra,service:ponder-indexer"
+      com.datadoghq.ad.logs: '[{"source": "ponder-indexer", "service": "ponder-indexer"}]'
+
 
   nginx:
     image: nginx:stable
