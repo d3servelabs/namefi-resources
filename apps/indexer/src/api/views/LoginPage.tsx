@@ -7,12 +7,10 @@ export default function LoginPage({
   error,
   success,
   redirect,
-  getRequest,
 }: {
   error?: string;
   success?: string;
   redirect?: string;
-  getRequest?: boolean;
 }) {
   return (
     <Layout title="Login">
@@ -28,27 +26,21 @@ export default function LoginPage({
         )}
         {redirect && <RedirectTo redirect={redirect} delayInSeconds={3} />}
         {!success ? (
-          <Fragment>
-            {!getRequest ? (
-              <form method="post" action="/auth/login" className="space-y-4">
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="you@d3serve.xyz"
-                  required
-                  className="w-full px-4 py-3 rounded-lg bg-neutral-800 text-white border border-neutral-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                />
-                <button
-                  type="submit"
-                  className="w-full py-3 bg-indigo-600 hover:bg-indigo-500 rounded-lg font-semibold text-white transition"
-                >
-                  Send Magic Link
-                </button>
-              </form>
-            ) : (
-              <GetRequestForm />
-            )}
-          </Fragment>
+          <form method="post" action="/auth/login" className="space-y-4">
+            <input
+              type="email"
+              name="email"
+              placeholder="you@d3serve.xyz"
+              required
+              className="w-full px-4 py-3 rounded-lg bg-neutral-800 text-white border border-neutral-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+            <button
+              type="submit"
+              className="w-full py-3 bg-indigo-600 hover:bg-indigo-500 rounded-lg font-semibold text-white transition"
+            >
+              Send Magic Link
+            </button>
+          </form>
         ) : undefined}
       </div>
     </Layout>
@@ -71,22 +63,5 @@ function RedirectTo({
       </div>
       <script>{html`setTimeout(() => {window.location.href = '${redirect}';}, ${delayInSeconds * 1000});`}</script>
     </Fragment>
-  );
-}
-
-function GetRequestForm() {
-  return (
-    <form
-      method="get"
-      onSubmit={(e) => {
-        e.preventDefault();
-        const formData = new FormData(e.target as HTMLFormElement);
-        const email = formData.get('email') as string;
-        window.location.href = `/auth/loginz?email=${encodeURIComponent(email)}`;
-      }}
-    >
-      <input type="email" name="email" placeholder="you@d3serve.xyz" required />
-      <button type="submit">Send Magic Link</button>
-    </form>
   );
 }

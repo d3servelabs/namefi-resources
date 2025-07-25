@@ -19,43 +19,6 @@ auth.get('/login', (c) => {
   return c.html(<LoginPage error={error} />);
 });
 
-auth.get('/signin', (c) => {
-  const error = c.req.query('error');
-  return c.html(<LoginPage error={error} getRequest={true} />);
-});
-
-auth.get('/loginz', async (c) => {
-  console.log('[login][post]');
-  const email = c.req.query('email') as string;
-  console.log('[login][post] email', email);
-
-  if (!isValidOrgEmail(email)) {
-    console.log('[login][post] email not valid');
-    return c.html(<LoginPage error="Only @d3serve.xyz emails allowed" />);
-  }
-
-  const token = await sign(
-    {
-      email,
-      exp: Math.floor(Date.now() / 1000) + 60 * 10, // Token expires in 10 minutes
-    },
-    secrets.PONDER_JWT_SECRET,
-  );
-  const link = `${config.MAGIC_LINK_BASE_URL}/auth/callback?token=${encodeURIComponent(token)}`;
-  console.log('[login][post] sending mail to', email);
-  await sendMail({
-    to: [email],
-    subject: 'Your Namefi Magic Login Link',
-    content: {
-      plain: `Click here to log in: ${link}`,
-      html: `<p><a href="${link}">Click here to log in</a> (expires in 10 minutes)</p>`,
-    },
-  });
-
-  console.log('[login][post] email sent to', email);
-  return c.html(<EmailSentPage email={email} />);
-});
-
 auth.post('/login', async (c) => {
   console.log('[login][post]');
   const body = await c.req.parseBody();
@@ -136,7 +99,7 @@ export const requireAuth = async (c: Context, next: Next) => {
     token = await getSignedCookie(c, secrets.PONDER_COOKIE_SECRET, COOKIE_NAME);
   } catch (error) {
     console.log('[requireAuth] error', error);
-    return c.redirect('/auth/signin');
+    return c.redirect('/auth/login');
   }
 
   const headerToken = c.req.header('Authorization')?.split(' ')[1];
@@ -145,7 +108,7 @@ export const requireAuth = async (c: Context, next: Next) => {
   if (!foundToken) {
     console.log('[requireAuth] no token or header token');
     c.status(401);
-    return c.redirect('/auth/signin');
+    return c.redirect('/auth/login');
   }
 
   try {
@@ -154,7 +117,7 @@ export const requireAuth = async (c: Context, next: Next) => {
     c.set('user', payload);
     await next();
   } catch {
-    return c.redirect('/auth/signin');
+    return c.redirect('/auth/login');
   }
 };
 
