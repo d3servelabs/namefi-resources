@@ -25,6 +25,8 @@ import { toast } from 'sonner';
 import { DomainItemSkeleton } from '../domain-item-skeleton';
 import { TagsDisplay } from '../tags-display';
 import { usePendingToast } from '../../../hooks/use-pending-toast';
+import { useInteractionLoggers } from '@/components/providers/analytics';
+import { InteractionLoggingEventName } from '@/lib/analytics-events';
 
 interface DomainDetailProps {
   domainName: string;
@@ -35,6 +37,7 @@ export const DomainDetail = ({ domainName }: DomainDetailProps) => {
   const trpc = useTRPC();
   const queryClient = useQueryClient();
   const { isAuthenticated, isLoading: authLoading } = useAuth();
+  const { logEventWithInteractionLoggers } = useInteractionLoggers();
 
   const authQuery = useQuery({
     ...trpc.hunt.getDomainDetail.queryOptions({
@@ -60,6 +63,13 @@ export const DomainDetail = ({ domainName }: DomainDetailProps) => {
       onSuccess: () => {
         queryClient.invalidateQueries();
         toast.success('Thanks for your vote!');
+        logEventWithInteractionLoggers({
+          name: InteractionLoggingEventName.Vote,
+          properties: {
+            domain_name: domainName,
+            action: 'add',
+          },
+        });
       },
       onError: () => {
         toast.error('Failed to vote. Please try again.');
@@ -72,6 +82,13 @@ export const DomainDetail = ({ domainName }: DomainDetailProps) => {
       onSuccess: () => {
         queryClient.invalidateQueries();
         toast.success('Vote cancelled.');
+        logEventWithInteractionLoggers({
+          name: InteractionLoggingEventName.Vote,
+          properties: {
+            domain_name: domainName,
+            action: 'remove',
+          },
+        });
       },
       onError: () => {
         toast.error('Failed to cancel vote. Please try again.');

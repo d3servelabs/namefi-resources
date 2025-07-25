@@ -11,6 +11,9 @@ export enum InteractionLoggingEventName {
 
   // Checkout Events
   SubmitOrderFailure = 'submit_order_failure',
+
+  // Hunt Events
+  Vote = 'vote',
 }
 
 export type InteractionLoggingCartItem = Pick<
@@ -30,7 +33,8 @@ export type InteractionLoggingEvent =
   | PurchaseEvent
   | RemoveFromCartEvent
   | SearchEvent
-  | SubmitOrderFailureEvent;
+  | SubmitOrderFailureEvent
+  | VoteEvent;
 
 export type AddToCartEvent = {
   name: InteractionLoggingEventName.AddToCart;
@@ -74,5 +78,13 @@ export type SubmitOrderFailureEvent = {
   properties: {
     totalAmountInUsdCents: number;
     cartItems: InteractionLoggingCartItem[];
+  };
+};
+
+export type VoteEvent = {
+  name: InteractionLoggingEventName.Vote;
+  properties: {
+    domain_name: string;
+    action: 'add' | 'remove';
   };
 };

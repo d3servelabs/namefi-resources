@@ -11,6 +11,8 @@ import { toast } from 'sonner';
 import { DomainItemSkeleton } from '../domain-item-skeleton';
 import { TagsDisplay } from '../tags-display';
 import { UpvoteIcon } from '../upvote-icon';
+import { useInteractionLoggers } from '@/components/providers/analytics';
+import { InteractionLoggingEventName } from '@/lib/analytics-events';
 
 type MyUpvotedDomainsResponse = AppRouterOutput['hunt']['getMyUpvotedDomains'];
 type MyUpvotedDomain = MyUpvotedDomainsResponse['items'][number];
@@ -18,6 +20,7 @@ type MyUpvotedDomain = MyUpvotedDomainsResponse['items'][number];
 const MyUpvotedDomainItem = ({ domain }: { domain: MyUpvotedDomain }) => {
   const trpc = useTRPC();
   const queryClient = useQueryClient();
+  const { logEventWithInteractionLoggers } = useInteractionLoggers();
 
   const unvoteMutation = useMutation(
     trpc.hunt.unvote.mutationOptions({
@@ -29,6 +32,13 @@ const MyUpvotedDomainItem = ({ domain }: { domain: MyUpvotedDomain }) => {
           queryKey: trpc.hunt.getTrendingDomains.queryKey(),
         });
         toast.success('Vote removed successfully');
+        logEventWithInteractionLoggers({
+          name: InteractionLoggingEventName.Vote,
+          properties: {
+            domain_name: domain.domainName,
+            action: 'remove',
+          },
+        });
       },
       onError: () => {
         toast.error('Failed to remove vote. Please try again.');

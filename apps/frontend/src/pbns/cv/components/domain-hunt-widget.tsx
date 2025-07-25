@@ -12,6 +12,8 @@ import { TagsDisplay } from '@/components/hunt/tags-display';
 import { cn } from '@/lib/cn';
 import { BackgroundGradient } from '@/components/ui/aceternity/background-gradient';
 import { TrendingUp, Globe } from 'lucide-react';
+import { useInteractionLoggers } from '@/components/providers/analytics';
+import { InteractionLoggingEventName } from '@/lib/analytics-events';
 
 interface DomainHuntWidgetProps {
   /** The domain name to display and vote on */
@@ -22,6 +24,7 @@ export const DomainHuntWidget = ({ domainName }: DomainHuntWidgetProps) => {
   const trpc = useTRPC();
   const queryClient = useQueryClient();
   const { isAuthenticated, isLoading: authLoading } = useAuth();
+  const { logEventWithInteractionLoggers } = useInteractionLoggers();
 
   const authQuery = useQuery({
     ...trpc.hunt.getDomainDetail.queryOptions({
@@ -47,6 +50,13 @@ export const DomainHuntWidget = ({ domainName }: DomainHuntWidgetProps) => {
       onSuccess: () => {
         queryClient.invalidateQueries();
         toast.success('Thanks for your vote!');
+        logEventWithInteractionLoggers({
+          name: InteractionLoggingEventName.Vote,
+          properties: {
+            domain_name: domainName,
+            action: 'add',
+          },
+        });
       },
       onError: () => {
         toast.error('Failed to vote. Please try again.');
@@ -59,6 +69,13 @@ export const DomainHuntWidget = ({ domainName }: DomainHuntWidgetProps) => {
       onSuccess: () => {
         queryClient.invalidateQueries();
         toast.success('Vote cancelled.');
+        logEventWithInteractionLoggers({
+          name: InteractionLoggingEventName.Vote,
+          properties: {
+            domain_name: domainName,
+            action: 'remove',
+          },
+        });
       },
       onError: () => {
         toast.error('Failed to cancel vote. Please try again.');

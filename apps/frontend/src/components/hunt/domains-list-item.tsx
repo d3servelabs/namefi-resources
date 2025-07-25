@@ -11,6 +11,8 @@ import { toast } from 'sonner';
 import { TagsDisplay } from './tags-display';
 import { UpvoteIcon } from './upvote-icon';
 import { usePendingToast } from '../../hooks/use-pending-toast';
+import { useInteractionLoggers } from '@/components/providers/analytics';
+import { InteractionLoggingEventName } from '@/lib/analytics-events';
 
 type TrendingDomainsResponse = AppRouterOutput['hunt']['getTrendingDomains'];
 type CampaignResponse = AppRouterOutput['hunt']['getCampaign'];
@@ -79,6 +81,7 @@ const VoteButton = ({
 export const DomainsListItem = ({ domain }: { domain: Domain }) => {
   const trpc = useTRPC();
   const queryClient = useQueryClient();
+  const { logEventWithInteractionLoggers } = useInteractionLoggers();
 
   const updateDomainInCaches = useCallback(
     (domainName: string, updates: Partial<Domain>) => {
@@ -146,6 +149,13 @@ export const DomainsListItem = ({ domain }: { domain: Domain }) => {
           upvoteCount: domain.upvoteCount + 1,
         });
         toast.success('Thanks for your vote!');
+        logEventWithInteractionLoggers({
+          name: InteractionLoggingEventName.Vote,
+          properties: {
+            domain_name: domain.domainName,
+            action: 'add',
+          },
+        });
       },
       onError: () => {
         toast.error('Failed to vote. Please try again.');
@@ -161,6 +171,13 @@ export const DomainsListItem = ({ domain }: { domain: Domain }) => {
           upvoteCount: Math.max(0, domain.upvoteCount - 1),
         });
         toast.success('Vote cancelled.');
+        logEventWithInteractionLoggers({
+          name: InteractionLoggingEventName.Vote,
+          properties: {
+            domain_name: domain.domainName,
+            action: 'remove',
+          },
+        });
       },
       onError: () => {
         toast.error('Failed to cancel vote. Please try again.');

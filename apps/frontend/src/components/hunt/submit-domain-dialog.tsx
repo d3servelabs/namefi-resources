@@ -28,6 +28,8 @@ import {
   namefiNormalizedDomainSchema,
 } from '@namefi-astra/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useInteractionLoggers } from '@/components/providers/analytics';
+import { InteractionLoggingEventName } from '@/lib/analytics-events';
 
 interface SubmitDomainDialogProps {
   children: ReactNode;
@@ -49,6 +51,7 @@ export const SubmitDomainDialog = ({
   onSuccess,
 }: SubmitDomainDialogProps) => {
   const [isSubmitDialogOpen, setIsSubmitDialogOpen] = useState(false);
+  const { logEventWithInteractionLoggers } = useInteractionLoggers();
   const {
     register,
     handleSubmit,
@@ -91,6 +94,14 @@ export const SubmitDomainDialog = ({
           toast.success('Domain already exists.');
         } else {
           toast.success('Domain submitted and upvoted successfully!');
+          // Track the auto-upvote that happens on domain submission
+          logEventWithInteractionLoggers({
+            name: InteractionLoggingEventName.Vote,
+            properties: {
+              domain_name: currentDomain,
+              action: 'add',
+            },
+          });
         }
 
         onSuccess?.();
