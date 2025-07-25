@@ -7,6 +7,10 @@ on:
         description: 'Deployment mode (create or update)'
         required: true
         default: 'update'
+      instance_name:
+        description: 'Instance name'
+        required: true
+        default: 'ponder-indexer'
 
 env:
   DD_API_KEY: ${{ secrets.INDEXER_DD_API_KEY }}
@@ -39,4 +43,4 @@ jobs:
         run: gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev
 
       - name: 'Build and Push Container'
-        run: MODE=${{ inputs.mode }} make -f apps/indexer/Makefile deploy
+        run: MODE=${{ inputs.mode }} INSTANCE_NAME=${{ inputs.instance_name }} make -f apps/indexer/Makefile deploy

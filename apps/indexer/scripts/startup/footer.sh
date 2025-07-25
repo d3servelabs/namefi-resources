@@ -10,7 +10,7 @@ docker compose up -d
 
 # Add cron job for renewals (skip if already exists)
 (crontab -l 2>/dev/null | grep -q "renew-cert.sh" || \
- (crontab -l 2>/dev/null; echo "30 3 * * * /opt/my-app/renew-cert.sh >> /opt/my-app/renew-cert.log 2>&1")) | crontab -
+ (crontab -l 2>/dev/null; echo "30 3 * * * /opt/ponder/renew-cert.sh >> /opt/ponder/renew-cert.log 2>&1")) | crontab -
 
 touch setup-cert.sh
 echo 'DOMAIN='$DOMAIN > setup-cert.sh

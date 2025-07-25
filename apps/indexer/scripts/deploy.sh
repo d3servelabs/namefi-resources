@@ -11,7 +11,7 @@ if [[ "$ACTION" != "create" && "$ACTION" != "update" ]]; then
 fi
 
 # ==== Configuration ====
-INSTANCE_NAME="ponder-indexer"
+INSTANCE_NAME="${2:-ponder-indexer}"
 ZONE="us-central1-a"
 MACHINE_TYPE="e2-medium"
 IMAGE_PROJECT="ubuntu-os-cloud"

@@ -2,7 +2,7 @@ mkfile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
 current_dir := $(patsubst %/,%,$(dir $(mkfile_path)))
 
 
-INSTANCE_NAME := ponder-indexer
+INSTANCE_NAME ?= ponder-indexer
 REGION := us-central1
 ZONE := us-central1-a
 MODE ?= update
@@ -19,7 +19,7 @@ app-image:
 
 deploy: build
 	@chmod +x $(current_dir)/scripts/deploy.sh
-	@$(current_dir)/scripts/deploy.sh $(MODE)
+	@$(current_dir)/scripts/deploy.sh $(MODE) $(INSTANCE_NAME)
 
 build: configure-docker
 	@# this checks if the image exists in the registry and if not, it builds it

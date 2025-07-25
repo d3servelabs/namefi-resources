@@ -9,6 +9,7 @@ env_vars=(
   "DOMAIN"
   "EMAIL"
   "INFISICAL_TOKEN"
+  "INSTALL_DOCKER"
 #   "DATABASE_URL" 
 #   "USE_WEBSOCKETS"
 )
@@ -25,6 +26,9 @@ for var in "${env_vars[@]}"; do
   echo "$var=$value" >> /etc/environment
 done
 
+INSTALL_DOCKER=${INSTALL_DOCKER:-false}
+
+if [ "$INSTALL_DOCKER" = true ]; then
 # Add Docker's official GPG key:
 apt-get update
 apt-get install -y ca-certificates curl
@@ -42,9 +46,11 @@ apt-get update -y
 
 # Install Docker
 apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+fi
+
 systemctl enable docker && systemctl start docker
 
-mkdir -p /opt/my-app/nginx/conf.d /opt/my-app/nginx/certbot/conf /opt/my-app/nginx/certbot/www
-cd /opt/my-app
+mkdir -p /opt/ponder/nginx/conf.d /opt/ponder/nginx/certbot/conf /opt/ponder/nginx/certbot/www
+cd /opt/ponder
 
 gcloud auth configure-docker us-central1-docker.pkg.dev 

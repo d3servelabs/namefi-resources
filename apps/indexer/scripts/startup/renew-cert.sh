@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd /opt/my-app || { echo "[!] /opt/my-app not found"; exit 1; }
+cd /opt/ponder || { echo "[!] /opt/ponder not found"; exit 1; }
 
 RENEWED=$(docker compose run --rm certbot renew | grep 'No renewals were attempted' || true)
 
