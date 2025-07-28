@@ -13,6 +13,7 @@ const { landingConfig, originConfigWithoutLanding } = generateCVConfig({
       quote: "Personal branding is everything in today's digital world.",
       achievement: '500M+ followers',
       icon: Music,
+      image: '/assets/cv/taylor/famous-people/taylor-swift.png',
     },
     {
       name: 'Elizabeth Taylor',
@@ -20,6 +21,7 @@ const { landingConfig, originConfigWithoutLanding } = generateCVConfig({
       quote: 'A memorable name opens doors to extraordinary opportunities.',
       achievement: '2x Oscar Winner',
       icon: Star,
+      image: '/assets/cv/taylor/famous-people/elizabeth-taylor.png',
     },
     {
       name: 'Taylor Lautner',
@@ -27,6 +29,7 @@ const { landingConfig, originConfigWithoutLanding } = generateCVConfig({
       quote: 'Your domain is your digital identity.',
       achievement: 'Teen Choice Awards',
       icon: User,
+      image: '/assets/cv/taylor/famous-people/taylor-lautner.png',
     },
     {
       name: 'James Taylor',
@@ -34,6 +37,7 @@ const { landingConfig, originConfigWithoutLanding } = generateCVConfig({
       quote: 'The right name becomes timeless.',
       achievement: 'Rock & Roll Hall of Fame',
       icon: Trophy,
+      image: '/assets/cv/taylor/famous-people/james-taylor.png',
     },
     {
       name: 'Zachary Taylor',
@@ -41,6 +45,7 @@ const { landingConfig, originConfigWithoutLanding } = generateCVConfig({
       quote: 'Leadership starts with how you present yourself.',
       achievement: 'Historical Legacy',
       icon: Briefcase,
+      image: '/assets/cv/taylor/famous-people/zachary-taylor.png',
     },
   ],
   exampleProfiles: [

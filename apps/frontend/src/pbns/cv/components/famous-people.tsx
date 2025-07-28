@@ -8,6 +8,7 @@ import {
 import { Quote, ExternalLink } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export interface FamousPerson {
   name: string;
@@ -16,6 +17,7 @@ export interface FamousPerson {
   achievement: string;
   icon: LucideIcon;
   externalUrl?: string;
+  image?: string; // Path to the person's image
 }
 
 interface FamousPeopleProps {
@@ -69,6 +71,54 @@ const PersonCard = ({
   const IconComponent = person.icon;
   const colors = colorSchemes[index % colorSchemes.length];
 
+  // If image is available, use image-focused layout
+  if (person.image) {
+    return (
+      <Card className="bg-slate-900/80 border-slate-700/60 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 overflow-hidden p-0">
+        <div className="relative aspect-square w-full h-full">
+          <Image
+            src={person.image}
+            alt={`${person.name} - ${person.title}`}
+            fill
+            className="object-cover object-top w-full h-full"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 25vw"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/20 to-transparent" />
+
+          {/* Name and title overlay */}
+          <div className="absolute bottom-0 left-0 right-0 p-5 bg-gradient-to-t from-black/80 via-black/40 to-transparent">
+            <div className="space-y-1">
+              <CardTitle className="text-xl md:text-2xl text-white font-bold leading-tight drop-shadow-lg">
+                {person.externalUrl ? (
+                  <Link
+                    href={person.externalUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:underline inline-flex items-center gap-1.5 transition-colors hover:text-blue-200"
+                  >
+                    {person.name}
+                    <ExternalLink className="w-4 h-4 text-slate-300 flex-shrink-0" />
+                  </Link>
+                ) : (
+                  person.name
+                )}
+              </CardTitle>
+              <CardDescription className="text-slate-200 font-medium text-base leading-relaxed">
+                {person.title}
+              </CardDescription>
+              <div className="pt-0.5">
+                <span className="inline-block bg-white/10 backdrop-blur-sm text-white font-semibold text-xs px-2.5 py-0.5 rounded-full border border-white/30">
+                  {person.achievement}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Card>
+    );
+  }
+
+  // Fallback to original layout for people without images
   return (
     <Card className="bg-slate-900/80 border-slate-700/60 shadow-xl hover:shadow-2xl transition-shadow duration-200">
       <CardHeader className="flex flex-row items-center gap-4 pb-2 pt-6 px-6">
@@ -134,18 +184,32 @@ export const FamousPeople = ({ name, famousPeople }: FamousPeopleProps) => {
           Throughout history, {name}s have made their mark. Now it's time to
           secure yours.
         </p>
-        <div className="grid md:grid-cols-3 gap-10 max-w-6xl mx-auto">
-          {famousPeople.slice(0, 3).map((person, index) => (
-            <PersonCard key={index} person={person} index={index} />
-          ))}
-        </div>
-        {famousPeople.length > 3 && (
-          <div className="grid md:grid-cols-2 gap-10 max-w-4xl mx-auto mt-10">
-            {famousPeople.slice(3, 5).map((person, index) => (
-              <PersonCard key={index + 3} person={person} index={index + 3} />
-            ))}
+        <div className="grid grid-cols-1 md:grid-cols-6 gap-10 max-w-6xl mx-auto">
+          {/* First row: 3 cards, each taking 2 columns */}
+          <div className="md:col-span-2">
+            <PersonCard person={famousPeople[0]} index={0} />
           </div>
-        )}
+          <div className="md:col-span-2">
+            <PersonCard person={famousPeople[1]} index={1} />
+          </div>
+          <div className="md:col-span-2">
+            <PersonCard person={famousPeople[2]} index={2} />
+          </div>
+
+          {/* Second row: 2 cards, each taking 2 columns with 1 column gap on each side */}
+          {famousPeople.length > 3 && (
+            <>
+              <div className="md:col-span-1" />
+              <div className="md:col-span-2">
+                <PersonCard person={famousPeople[3]} index={3} />
+              </div>
+              <div className="md:col-span-2">
+                <PersonCard person={famousPeople[4]} index={4} />
+              </div>
+              <div className="md:col-span-1" />
+            </>
+          )}
+        </div>
 
         {/* Legal Disclaimer */}
         <div className="mt-16 pt-8 border-t border-slate-800/50">
