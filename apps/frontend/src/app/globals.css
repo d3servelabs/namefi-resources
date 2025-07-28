@@ -129,25 +129,25 @@
   --brand-tertiary: oklch(71.4% 0.203 305.504);
 }
 
-.dark[data-theme="ali.cv"] {
+[data-theme="ali.cv"] {
   --brand-primary: oklch(71.4% 0.203 305.504);
   --brand-secondary: oklch(71.4% 0.203 305.504);
   --brand-tertiary: oklch(71.4% 0.203 305.504);
 }
 
-.dark[data-theme="li.cv"] {
+[data-theme="li.cv"] {
   --brand-primary: oklch(71.4% 0.203 305.504);
   --brand-secondary: oklch(71.4% 0.203 305.504);
   --brand-tertiary: oklch(71.4% 0.203 305.504);
 }
 
-.dark[data-theme="muller.cv"] {
+[data-theme="muller.cv"] {
   --brand-primary: oklch(71.4% 0.203 305.504);
   --brand-secondary: oklch(71.4% 0.203 305.504);
   --brand-tertiary: oklch(71.4% 0.203 305.504);
 }
 
-.dark[data-theme="kumar.cv"] {
+[data-theme="kumar.cv"] {
   --brand-primary: oklch(71.4% 0.203 305.504);
   --brand-secondary: oklch(71.4% 0.203 305.504);
   --brand-tertiary: oklch(71.4% 0.203 305.504);
