@@ -432,6 +432,98 @@ export const adminRouter = createTRPCRouter({
     }
   }),
 
+  getActiveFixExpirationWorkflows: adminProcedure.query(async () => {
+    try {
+      await temporalClient.connection.ensureConnected();
+      // Get all active fix NFT expiration workflows from Temporal
+      const workflowList = await temporalClient.workflow.list({
+        query: `WorkflowType = "fixNftExpirationWorkflow" AND ExecutionStatus = "Running"`,
+      });
+
+      const activeWorkflows = [];
+      for await (const workflow of workflowList) {
+        try {
+          // Extract domain name and chain ID from workflow ID
+          // Format: admin-fix-nft-expiration-{domainName}-{chainId}-{timestamp}
+          const workflowIdParts = workflow.workflowId.split('-');
+          if (workflowIdParts.length >= 6) {
+            // Skip 'admin', 'fix', 'nft', 'expiration' and take domain name parts
+            const domainEndIndex = workflowIdParts.length - 2; // Exclude chainId and timestamp
+            const domainName = workflowIdParts
+              .slice(4, domainEndIndex)
+              .join('-');
+            const chainId = Number.parseInt(
+              workflowIdParts[workflowIdParts.length - 2],
+            );
+
+            activeWorkflows.push({
+              workflowId: workflow.workflowId,
+              domainName,
+              chainId,
+              startTime: workflow.startTime,
+              runId: workflow.runId,
+              status: workflow.status?.name || 'Running',
+            });
+          }
+        } catch (error) {}
+      }
+
+      return activeWorkflows;
+    } catch (error) {
+      logger.error(
+        { context: 'getActiveFixExpirationWorkflows', error },
+        'Failed to fetch active fix expiration workflows',
+      );
+      return [];
+    }
+  }),
+
+  getActiveExtendRegistrationWorkflows: adminProcedure.query(async () => {
+    try {
+      await temporalClient.connection.ensureConnected();
+      // Get all active extend registration workflows from Temporal
+      const workflowList = await temporalClient.workflow.list({
+        query: `WorkflowType = "extendDomainRegistrationWorkflow" AND ExecutionStatus = "Running"`,
+      });
+
+      const activeWorkflows = [];
+      for await (const workflow of workflowList) {
+        try {
+          // Extract domain name and chain ID from workflow ID
+          // Format: admin-extend-registration-{domainName}-{chainId}-{timestamp}
+          const workflowIdParts = workflow.workflowId.split('-');
+          if (workflowIdParts.length >= 5) {
+            // Skip 'admin', 'extend', 'registration' and take domain name parts
+            const domainEndIndex = workflowIdParts.length - 2; // Exclude chainId and timestamp
+            const domainName = workflowIdParts
+              .slice(3, domainEndIndex)
+              .join('-');
+            const chainId = Number.parseInt(
+              workflowIdParts[workflowIdParts.length - 2],
+            );
+
+            activeWorkflows.push({
+              workflowId: workflow.workflowId,
+              domainName,
+              chainId,
+              startTime: workflow.startTime,
+              runId: workflow.runId,
+              status: workflow.status?.name || 'Running',
+            });
+          }
+        } catch (error) {}
+      }
+
+      return activeWorkflows;
+    } catch (error) {
+      logger.error(
+        { context: 'getActiveExtendRegistrationWorkflows', error },
+        'Failed to fetch active extend registration workflows',
+      );
+      return [];
+    }
+  }),
+
   extendRegistration: adminProcedure
     .input(
       z.object({

@@ -45,6 +45,12 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/shadcn/tooltip';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/shadcn/dialog';
 import { useAuth } from '@/hooks/use-auth';
 import { useTRPC } from '@/lib/trpc';
 import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
@@ -74,6 +80,7 @@ import {
   Clock,
   ChevronDown,
   ChevronUp,
+  CirclePlay,
 } from 'lucide-react';
 
 const LoadingSkeletons: FC = () => (
@@ -111,6 +118,7 @@ function NftManagementContent() {
   const [excludePoweredByNamefiDomains, setExcludePoweredByNamefiDomains] =
     useState(false);
   const [burnInProgress, setBurnInProgress] = useState<Set<string>>(new Set());
+  const [workflowModalOpen, setWorkflowModalOpen] = useState(false);
 
   // Separate state for applied filters vs pending filter changes
   const [appliedFilters, setAppliedFilters] = useState({
@@ -145,9 +153,24 @@ function NftManagementContent() {
     placeholderData: (previousData) => previousData, // Keep previous data while loading
   });
 
-  // Query for active burn workflows
-  const { data: activeBurnWorkflows, isLoading: loadingWorkflows } = useQuery({
-    ...trpc.admin.getActiveBurnWorkflows.queryOptions(),
+  // Query for active workflows
+  const { data: activeBurnWorkflows, isLoading: loadingBurnWorkflows } =
+    useQuery({
+      ...trpc.admin.getActiveBurnWorkflows.queryOptions(),
+      refetchInterval: 5000, // Refresh every 5 seconds
+    });
+
+  const { data: activeFixExpirationWorkflows, isLoading: loadingFixWorkflows } =
+    useQuery({
+      ...trpc.admin.getActiveFixExpirationWorkflows.queryOptions(),
+      refetchInterval: 5000, // Refresh every 5 seconds
+    });
+
+  const {
+    data: activeExtendRegistrationWorkflows,
+    isLoading: loadingExtendWorkflows,
+  } = useQuery({
+    ...trpc.admin.getActiveExtendRegistrationWorkflows.queryOptions(),
     refetchInterval: 5000, // Refresh every 5 seconds
   });
 
@@ -271,6 +294,7 @@ function NftManagementContent() {
     return new Date(date).toLocaleDateString();
   };
 
+  // Helper functions for workflow status
   const isInActiveBurnWorkflow = (domainName: string, chainId: number) => {
     return (
       activeBurnWorkflows?.some(
@@ -279,6 +303,16 @@ function NftManagementContent() {
       ) ?? false
     );
   };
+
+  const getTotalActiveWorkflows = () => {
+    const burnCount = activeBurnWorkflows?.length ?? 0;
+    const fixCount = activeFixExpirationWorkflows?.length ?? 0;
+    const extendCount = activeExtendRegistrationWorkflows?.length ?? 0;
+    return burnCount + fixCount + extendCount;
+  };
+
+  const isWorkflowsLoading =
+    loadingBurnWorkflows || loadingFixWorkflows || loadingExtendWorkflows;
 
   const handleFixNftExpiration = async (
     normalizedDomainName: string,
@@ -306,8 +340,234 @@ function NftManagementContent() {
     );
   };
 
+  // Render the workflows modal
+  const renderWorkflowsModal = () => (
+    <Dialog open={workflowModalOpen} onOpenChange={setWorkflowModalOpen}>
+      <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle className="flex items-center gap-2">
+            <CirclePlay className="h-5 w-5" />
+            Active Workflows ({getTotalActiveWorkflows()})
+          </DialogTitle>
+        </DialogHeader>
+
+        <div className="space-y-4">
+          <Accordion type="multiple" defaultValue={['burn', 'fix', 'extend']}>
+            {/* Burn Workflows */}
+            <AccordionItem value="burn">
+              <AccordionTrigger className="text-left">
+                <div className="flex items-center gap-2">
+                  <Flame className="h-4 w-4 text-red-500" />
+                  <span>Burn NFT Workflows</span>
+                  <Badge variant="secondary" className="ml-2">
+                    {activeBurnWorkflows?.length ?? 0}
+                  </Badge>
+                </div>
+              </AccordionTrigger>
+              <AccordionContent>
+                {activeBurnWorkflows && activeBurnWorkflows.length > 0 ? (
+                  <div className="rounded-md border">
+                    <Table>
+                      <Thead>
+                        <Tr>
+                          <Th className="text-xs">Domain</Th>
+                          <Th className="text-xs">Chain ID</Th>
+                          <Th className="text-xs">Workflow ID</Th>
+                          <Th className="text-xs">Started</Th>
+                          <Th className="text-xs">Status</Th>
+                        </Tr>
+                      </Thead>
+                      <TableBody>
+                        {activeBurnWorkflows.map((workflow) => (
+                          <Tr key={workflow.workflowId}>
+                            <Td className="font-medium text-xs">
+                              <TruncatedTextWithHover maxLength={25}>
+                                {workflow.domainName}
+                              </TruncatedTextWithHover>
+                            </Td>
+                            <Td>
+                              <Badge variant="outline" className="text-xs">
+                                {workflow.chainId}
+                              </Badge>
+                            </Td>
+                            <Td className="font-mono text-xs">
+                              <TruncatedTextWithHover maxLength={15}>
+                                {workflow.workflowId}
+                              </TruncatedTextWithHover>
+                            </Td>
+                            <Td className="text-xs">
+                              {workflow.startTime
+                                ? formatDate(new Date(workflow.startTime))
+                                : 'N/A'}
+                            </Td>
+                            <Td>
+                              <Badge
+                                variant="default"
+                                className="bg-yellow-100 text-yellow-800 text-xs"
+                              >
+                                {workflow.status}
+                              </Badge>
+                            </Td>
+                          </Tr>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+                ) : (
+                  <p className="text-sm text-muted-foreground py-4">
+                    No active burn workflows
+                  </p>
+                )}
+              </AccordionContent>
+            </AccordionItem>
+
+            {/* Fix Expiration Workflows */}
+            <AccordionItem value="fix">
+              <AccordionTrigger className="text-left">
+                <div className="flex items-center gap-2">
+                  <Wrench className="h-4 w-4 text-blue-500" />
+                  <span>Fix NFT Expiration Workflows</span>
+                  <Badge variant="secondary" className="ml-2">
+                    {activeFixExpirationWorkflows?.length ?? 0}
+                  </Badge>
+                </div>
+              </AccordionTrigger>
+              <AccordionContent>
+                {activeFixExpirationWorkflows &&
+                activeFixExpirationWorkflows.length > 0 ? (
+                  <div className="rounded-md border">
+                    <Table>
+                      <Thead>
+                        <Tr>
+                          <Th className="text-xs">Domain</Th>
+                          <Th className="text-xs">Chain ID</Th>
+                          <Th className="text-xs">Workflow ID</Th>
+                          <Th className="text-xs">Started</Th>
+                          <Th className="text-xs">Status</Th>
+                        </Tr>
+                      </Thead>
+                      <TableBody>
+                        {activeFixExpirationWorkflows.map((workflow) => (
+                          <Tr key={workflow.workflowId}>
+                            <Td className="font-medium text-xs">
+                              <TruncatedTextWithHover maxLength={25}>
+                                {workflow.domainName}
+                              </TruncatedTextWithHover>
+                            </Td>
+                            <Td>
+                              <Badge variant="outline" className="text-xs">
+                                {workflow.chainId}
+                              </Badge>
+                            </Td>
+                            <Td className="font-mono text-xs">
+                              <TruncatedTextWithHover maxLength={15}>
+                                {workflow.workflowId}
+                              </TruncatedTextWithHover>
+                            </Td>
+                            <Td className="text-xs">
+                              {workflow.startTime
+                                ? formatDate(new Date(workflow.startTime))
+                                : 'N/A'}
+                            </Td>
+                            <Td>
+                              <Badge
+                                variant="default"
+                                className="bg-blue-100 text-blue-800 text-xs"
+                              >
+                                {workflow.status}
+                              </Badge>
+                            </Td>
+                          </Tr>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+                ) : (
+                  <p className="text-sm text-muted-foreground py-4">
+                    No active fix expiration workflows
+                  </p>
+                )}
+              </AccordionContent>
+            </AccordionItem>
+
+            {/* Extend Registration Workflows */}
+            <AccordionItem value="extend">
+              <AccordionTrigger className="text-left">
+                <div className="flex items-center gap-2">
+                  <Calendar className="h-4 w-4 text-green-500" />
+                  <span>Extend Registration Workflows</span>
+                  <Badge variant="secondary" className="ml-2">
+                    {activeExtendRegistrationWorkflows?.length ?? 0}
+                  </Badge>
+                </div>
+              </AccordionTrigger>
+              <AccordionContent>
+                {activeExtendRegistrationWorkflows &&
+                activeExtendRegistrationWorkflows.length > 0 ? (
+                  <div className="rounded-md border">
+                    <Table>
+                      <Thead>
+                        <Tr>
+                          <Th className="text-xs">Domain</Th>
+                          <Th className="text-xs">Chain ID</Th>
+                          <Th className="text-xs">Workflow ID</Th>
+                          <Th className="text-xs">Started</Th>
+                          <Th className="text-xs">Status</Th>
+                        </Tr>
+                      </Thead>
+                      <TableBody>
+                        {activeExtendRegistrationWorkflows.map((workflow) => (
+                          <Tr key={workflow.workflowId}>
+                            <Td className="font-medium text-xs">
+                              <TruncatedTextWithHover maxLength={25}>
+                                {workflow.domainName}
+                              </TruncatedTextWithHover>
+                            </Td>
+                            <Td>
+                              <Badge variant="outline" className="text-xs">
+                                {workflow.chainId}
+                              </Badge>
+                            </Td>
+                            <Td className="font-mono text-xs">
+                              <TruncatedTextWithHover maxLength={15}>
+                                {workflow.workflowId}
+                              </TruncatedTextWithHover>
+                            </Td>
+                            <Td className="text-xs">
+                              {workflow.startTime
+                                ? formatDate(new Date(workflow.startTime))
+                                : 'N/A'}
+                            </Td>
+                            <Td>
+                              <Badge
+                                variant="default"
+                                className="bg-green-100 text-green-800 text-xs"
+                              >
+                                {workflow.status}
+                              </Badge>
+                            </Td>
+                          </Tr>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+                ) : (
+                  <p className="text-sm text-muted-foreground py-4">
+                    No active extend registration workflows
+                  </p>
+                )}
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+
   return (
     <div className="space-y-6">
+      {renderWorkflowsModal()}
+
       {/* Filters and Search */}
       <Card>
         <CardHeader>
@@ -520,89 +780,6 @@ function NftManagementContent() {
         </CardContent>
       </Card>
 
-      {/* Active Burn Workflows - Compact View */}
-      <div className="flex items-center gap-4 p-4 bg-muted/30 rounded-lg border">
-        <div className="flex items-center gap-2">
-          <Flame className="h-4 w-4 text-orange-500" />
-          <span className="text-sm font-medium">Active Burn Workflows</span>
-          {loadingWorkflows && <Loader2 className="h-3 w-3 animate-spin" />}
-        </div>
-
-        <div className="flex items-center gap-2">
-          <Badge
-            variant={
-              activeBurnWorkflows && activeBurnWorkflows.length > 0
-                ? 'destructive'
-                : 'secondary'
-            }
-            className="text-xs"
-          >
-            {activeBurnWorkflows ? activeBurnWorkflows.length : 0}
-          </Badge>
-
-          {activeBurnWorkflows && activeBurnWorkflows.length > 0 && (
-            <Accordion type="single" collapsible className="flex-1">
-              <AccordionItem value="workflows" className="border-none">
-                <AccordionTrigger className="text-sm py-0 hover:no-underline">
-                  <span className="text-xs text-muted-foreground">
-                    Click to view details
-                  </span>
-                </AccordionTrigger>
-                <AccordionContent className="pt-4">
-                  <div className="rounded-md border bg-background">
-                    <Table>
-                      <Thead>
-                        <Tr>
-                          <Th className="text-xs">Domain</Th>
-                          <Th className="text-xs">Chain ID</Th>
-                          <Th className="text-xs">Workflow ID</Th>
-                          <Th className="text-xs">Started</Th>
-                          <Th className="text-xs">Status</Th>
-                        </Tr>
-                      </Thead>
-                      <TableBody>
-                        {activeBurnWorkflows.map((workflow) => (
-                          <Tr key={workflow.workflowId}>
-                            <Td className="font-medium text-xs">
-                              <TruncatedTextWithHover maxLength={25}>
-                                {workflow.domainName}
-                              </TruncatedTextWithHover>
-                            </Td>
-                            <Td>
-                              <Badge variant="outline" className="text-xs">
-                                {workflow.chainId}
-                              </Badge>
-                            </Td>
-                            <Td className="font-mono text-xs">
-                              <TruncatedTextWithHover maxLength={15}>
-                                {workflow.workflowId}
-                              </TruncatedTextWithHover>
-                            </Td>
-                            <Td className="text-xs">
-                              {workflow.startTime
-                                ? formatDate(new Date(workflow.startTime))
-                                : 'N/A'}
-                            </Td>
-                            <Td>
-                              <Badge
-                                variant="default"
-                                className="bg-yellow-100 text-yellow-800 text-xs"
-                              >
-                                {workflow.status}
-                              </Badge>
-                            </Td>
-                          </Tr>
-                        ))}
-                      </TableBody>
-                    </Table>
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
-          )}
-        </div>
-      </div>
-
       {/* Results Summary */}
       <Card>
         <CardContent className="pt-1 flex flex-col-reverse gap-4">
@@ -616,11 +793,34 @@ function NftManagementContent() {
                     <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
                   )}
                 </CardTitle>
-                {isFetching && (
-                  <div className="text-sm text-muted-foreground">
-                    Loading...
-                  </div>
-                )}
+                <div className="flex items-center gap-2">
+                  {isFetching && (
+                    <div className="text-sm text-muted-foreground">
+                      Loading...
+                    </div>
+                  )}
+                  {/* Active Workflows Button */}
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setWorkflowModalOpen(true)}
+                    className="flex items-center gap-2"
+                    disabled={isWorkflowsLoading}
+                  >
+                    {isWorkflowsLoading ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <CirclePlay className="h-4 w-4" />
+                    )}
+                    <span>Active Workflows</span>
+                    <Badge
+                      variant="secondary"
+                      className={`text-xs ${getTotalActiveWorkflows() > 0 ? 'bg-blue-100 text-blue-800' : ''}`}
+                    >
+                      {getTotalActiveWorkflows()}
+                    </Badge>
+                  </Button>
+                </div>
               </div>
             </CardHeader>
             <CardContent>
@@ -745,10 +945,10 @@ function NftManagementContent() {
                                         <AlertDialog>
                                           <AlertDialogTrigger asChild>
                                             <Button
-                                              variant="destructive"
+                                              variant="secondary"
                                               size="sm"
                                               disabled={isBurning}
-                                              className="flex items-center gap-1 text-xs"
+                                              className="flex items-center gap-1 text-xs border-red-200 text-red-300 hover:bg-red-800/30 bg-red-900/10 hover:text-red-600"
                                             >
                                               <Flame className="h-3 w-3" />
                                               {isBurning
@@ -807,10 +1007,10 @@ function NftManagementContent() {
                                         <Tooltip>
                                           <TooltipTrigger asChild>
                                             <Button
-                                              variant="destructive"
+                                              variant="outline"
                                               size="sm"
                                               disabled
-                                              className="flex items-center gap-1 text-xs"
+                                              className="flex items-center gap-1 text-xs border-red-200 text-red-400 opacity-50"
                                             >
                                               <Flame className="h-3 w-3" />
                                               Burn
