@@ -10,7 +10,7 @@ export const WhyCVMatters = () => {
         <h2 className="text-4xl md:text-5xl font-bold mb-16 text-center tracking-tight">
           Why .cv Matters
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-7xl mx-auto w-full mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto w-full mb-8">
           <WobbleCard containerClassName="bg-purple-900 min-h-[300px]">
             <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mb-6 text-white shadow-lg">
               <Star className="w-8 h-8" />
@@ -37,7 +37,7 @@ export const WhyCVMatters = () => {
             </div>
           </WobbleCard>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-7xl mx-auto w-full">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto w-full">
           <WobbleCard containerClassName="md:col-span-2 bg-emerald-900 min-h-[300px] relative overflow-hidden">
             <div className="max-w-sm">
               <div className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-2xl flex items-center justify-center mb-6 text-white shadow-lg">
