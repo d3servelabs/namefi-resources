@@ -9,6 +9,7 @@ import { Quote, ExternalLink } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { GlowingEffect } from '@/components/ui/aceternity/glowing-effect';
 
 export interface FamousPerson {
   name: string;
@@ -74,8 +75,16 @@ const PersonCard = ({
   // If image is available, use image-focused layout
   if (person.image) {
     return (
-      <Card className="bg-slate-900/80 border-slate-700/60 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 overflow-hidden p-0">
-        <div className="relative aspect-square w-full h-full">
+      <Card className="relative bg-slate-900/80 border-slate-700/60 shadow-xl rounded-2xl p-2">
+        <GlowingEffect
+          spread={40}
+          glow={true}
+          disabled={false}
+          proximity={64}
+          inactiveZone={0.01}
+        />
+
+        <div className="relative aspect-square w-full h-full rounded-lg overflow-hidden">
           <Image
             src={person.image}
             alt={`${person.name} - ${person.title}`}
@@ -184,7 +193,7 @@ export const FamousPeople = ({ name, famousPeople }: FamousPeopleProps) => {
           Throughout history, {name}s have made their mark. Now it's time to
           secure yours.
         </p>
-        <div className="grid grid-cols-1 md:grid-cols-6 gap-10 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-6 gap-8 max-w-6xl mx-auto">
           {/* First row: 3 cards, each taking 2 columns */}
           <div className="md:col-span-2">
             <PersonCard person={famousPeople[0]} index={0} />
