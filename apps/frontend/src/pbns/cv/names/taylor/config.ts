@@ -14,6 +14,7 @@ const { landingConfig, originConfigWithoutLanding } = generateCVConfig({
       achievement: '500M+ followers',
       icon: Music,
       image: '/assets/cv/taylor/famous-people/taylor-swift.png',
+      externalUrl: 'https://en.wikipedia.org/wiki/Taylor_Swift',
     },
     {
       name: 'Elizabeth Taylor',
@@ -22,6 +23,7 @@ const { landingConfig, originConfigWithoutLanding } = generateCVConfig({
       achievement: '2x Oscar Winner',
       icon: Star,
       image: '/assets/cv/taylor/famous-people/elizabeth-taylor.png',
+      externalUrl: 'https://en.wikipedia.org/wiki/Elizabeth_Taylor',
     },
     {
       name: 'Taylor Lautner',
@@ -30,6 +32,7 @@ const { landingConfig, originConfigWithoutLanding } = generateCVConfig({
       achievement: 'Teen Choice Awards',
       icon: User,
       image: '/assets/cv/taylor/famous-people/taylor-lautner.png',
+      externalUrl: 'https://en.wikipedia.org/wiki/Taylor_Lautner',
     },
     {
       name: 'James Taylor',
@@ -38,6 +41,7 @@ const { landingConfig, originConfigWithoutLanding } = generateCVConfig({
       achievement: 'Rock & Roll Hall of Fame',
       icon: Trophy,
       image: '/assets/cv/taylor/famous-people/james-taylor.png',
+      externalUrl: 'https://en.wikipedia.org/wiki/James_Taylor',
     },
     {
       name: 'Zachary Taylor',
@@ -46,6 +50,7 @@ const { landingConfig, originConfigWithoutLanding } = generateCVConfig({
       achievement: 'Historical Legacy',
       icon: Briefcase,
       image: '/assets/cv/taylor/famous-people/zachary-taylor.png',
+      externalUrl: 'https://en.wikipedia.org/wiki/Zachary_Taylor',
     },
   ],
   exampleProfiles: [
