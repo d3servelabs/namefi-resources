@@ -9,8 +9,8 @@ interface WhoCanJoinProps {
 const generateCriteria = (name: string) => [
   `Your first or last name is ${name}`,
   `You know a ${name} (gift it!)`,
-  `You use '${name}' as an online handle, stage name, or guild tag`,
-  `You just love the name ${name} and want a fun personal URL`,
+  `You use ${name} as an online handle, stage name, or guild tag`,
+  `You're building a brand, business, or project with ${name} in the name`,
 ];
 
 export const WhoCanJoin = ({ name }: WhoCanJoinProps) => {

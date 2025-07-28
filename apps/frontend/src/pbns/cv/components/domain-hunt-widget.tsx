@@ -154,8 +154,8 @@ export const DomainHuntWidget = ({ domainName }: DomainHuntWidgetProps) => {
                     {isAuthenticated
                       ? domainData?.userHasUpvoted
                         ? 'Voted'
-                        : 'Vote'
-                      : 'Vote'}
+                        : 'Upvote'
+                      : 'Upvote'}
                   </span>
                   {domainData?.upvoteCount !== undefined && (
                     <Badge className="ml-0.5 md:ml-1 text-xs bg-brand-primary text-primary-foreground px-1.5 md:px-2 py-0.5 flex-shrink-0">

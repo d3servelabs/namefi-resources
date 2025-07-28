@@ -41,7 +41,7 @@ export const Hero = ({
           <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500/20 to-purple-500/20 border border-blue-500/30 rounded-full px-4 py-1.5 mb-8 sm:mb-12 backdrop-blur-sm relative">
             <Sparkles className="w-3 h-3 text-purple-400 relative z-10" />
             <span className="text-purple-300 font-medium text-xs tracking-wide uppercase relative z-10">
-              First surname identity launch
+              First Powered by Namefi™ Launch for .cv
             </span>
           </div>
 
@@ -59,10 +59,11 @@ export const Hero = ({
           </div>
 
           <p className="text-xl sm:text-2xl md:text-3xl text-slate-200 mb-12 sm:mb-16 max-w-4xl mx-auto font-semibold leading-tight px-4 sm:px-0">
-            Claim your exclusive subdomain under{' '}
-            <span className="text-brand-primary font-bold">{domainName}</span> —
+            Help us launch{' '}
+            <span className="text-brand-primary font-bold">{domainName}</span>{' '}
+            by voting to show your interest!
             <br className="hidden md:block" />
-            the ultimate digital identity for every {displayName}.
+            Early supporters get priority access when registration opens.
           </p>
 
           {/* Voting Widget */}
@@ -75,7 +76,7 @@ export const Hero = ({
               size="lg"
               className="px-6 sm:px-8 py-4 sm:py-6"
               onClick={() => {
-                document.getElementById('why-cv-matters')?.scrollIntoView({
+                document.getElementById('famous-people')?.scrollIntoView({
                   behavior: 'smooth',
                 });
               }}

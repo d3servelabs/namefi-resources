@@ -44,8 +44,6 @@ export const CVLanding = ({ config }: { config: CVLandingConfig }) => {
         domainHuntWidget={<DomainHuntWidget domainName={domainName} />}
       />
 
-      <WhyCVMatters />
-
       <FamousPeople name={displayName} famousPeople={config.famousPeople} />
 
       <WhoCanJoin name={displayName} />
@@ -53,6 +51,8 @@ export const CVLanding = ({ config }: { config: CVLandingConfig }) => {
       <ExampleProfiles exampleProfiles={config.exampleProfiles} />
 
       <Testimonials name={displayName} testimonials={config.testimonials} />
+
+      <WhyCVMatters />
 
       <CTA name={config.name} huntUrl={huntUrl} />
     </>

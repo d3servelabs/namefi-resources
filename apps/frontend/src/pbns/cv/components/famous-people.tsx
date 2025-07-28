@@ -5,8 +5,9 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/shadcn/card';
-import { Quote } from 'lucide-react';
+import { Quote, ExternalLink } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
+import Link from 'next/link';
 
 export interface FamousPerson {
   name: string;
@@ -14,6 +15,7 @@ export interface FamousPerson {
   quote: string;
   achievement: string;
   icon: LucideIcon;
+  externalUrl?: string;
 }
 
 interface FamousPeopleProps {
@@ -77,7 +79,19 @@ const PersonCard = ({
         </div>
         <div>
           <CardTitle className="text-lg text-white font-medium">
-            {person.name}
+            {person.externalUrl ? (
+              <Link
+                href={person.externalUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:underline flex items-center gap-1"
+              >
+                {person.name}
+                <ExternalLink className="w-4 h-4 text-slate-400" />
+              </Link>
+            ) : (
+              person.name
+            )}
           </CardTitle>
           <CardDescription className="text-slate-400 font-normal">
             {person.title}
@@ -107,13 +121,13 @@ const PersonCard = ({
 
 export const FamousPeople = ({ name, famousPeople }: FamousPeopleProps) => {
   return (
-    <section className="py-24 px-4 relative">
+    <section id="famous-people" className="py-24 px-4 relative">
       <div className="absolute inset-0 bg-slate-950" />
       <div className="max-w-7xl mx-auto relative z-10">
         <h2 className="text-5xl md:text-6xl font-extrabold mb-4 text-center tracking-tight">
           Join the Legacy of{' '}
           <span className="bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent">
-            Influential {name}s
+            Influential {name}'s
           </span>
         </h2>
         <p className="text-xl md:text-2xl text-slate-300 mb-20 text-center max-w-3xl mx-auto font-medium">
@@ -132,6 +146,24 @@ export const FamousPeople = ({ name, famousPeople }: FamousPeopleProps) => {
             ))}
           </div>
         )}
+
+        {/* Legal Disclaimer */}
+        <div className="mt-16 pt-8 border-t border-slate-800/50">
+          <div className="max-w-4xl mx-auto text-center">
+            <p className="text-xs leading-relaxed text-slate-500 font-light tracking-wide">
+              <strong className="font-medium text-slate-400">
+                Legal Notice:
+              </strong>{' '}
+              All names, likenesses, trademarks, and intellectual property
+              rights of the individuals referenced herein remain the exclusive
+              property of their respective owners or estates. No endorsement,
+              affiliation, or ownership is claimed or implied by Namefi™ or its
+              affiliates unless expressly stated otherwise. The use of such
+              names is solely for illustrative and educational purposes under
+              applicable fair use provisions.
+            </p>
+          </div>
+        </div>
       </div>
     </section>
   );
