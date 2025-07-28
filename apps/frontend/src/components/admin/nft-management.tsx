@@ -105,22 +105,42 @@ function NftManagementContent() {
   >('domainName');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
   const [filterBy, setFilterBy] = useState<
-    'all' | 'expired' | 'canBurn' | 'dateMismatch'
+    'all' | 'expired' | 'canBurn' | 'dateMismatch' | 'missingData'
   >('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [excludePoweredByNamefiDomains, setExcludePoweredByNamefiDomains] =
     useState(false);
   const [burnInProgress, setBurnInProgress] = useState<Set<string>>(new Set());
 
+  // Separate state for applied filters vs pending filter changes
+  const [appliedFilters, setAppliedFilters] = useState({
+    filterBy: 'all' as
+      | 'all'
+      | 'expired'
+      | 'canBurn'
+      | 'dateMismatch'
+      | 'missingData',
+    sortBy: 'domainName' as
+      | 'domainName'
+      | 'nftExpiration'
+      | 'domainExpiration'
+      | 'chainId',
+    sortOrder: 'asc' as 'asc' | 'desc',
+    excludePoweredByNamefiDomains: false,
+    searchTerm: '',
+  });
+  const [hasUnappliedChanges, setHasUnappliedChanges] = useState(false);
+
   const { data, isLoading, isFetching } = useQuery({
     ...trpc.admin.getNftsWithExpirationStatus.queryOptions({
       page,
       limit,
-      sortBy,
-      sortOrder,
-      filterBy,
-      searchTerm: searchTerm || undefined,
-      excludePoweredByNamefiDomains,
+      sortBy: appliedFilters.sortBy,
+      sortOrder: appliedFilters.sortOrder,
+      filterBy: appliedFilters.filterBy,
+      searchTerm: appliedFilters.searchTerm || undefined,
+      excludePoweredByNamefiDomains:
+        appliedFilters.excludePoweredByNamefiDomains,
     }),
     placeholderData: (previousData) => previousData, // Keep previous data while loading
   });
@@ -158,20 +178,6 @@ function NftManagementContent() {
     }),
   );
 
-  const renewDomainMutation = useMutation(
-    trpc.admin.renewDomain.mutationOptions({
-      onSuccess: () => {
-        toast.success('Domain renewal workflow started');
-        queryClient.invalidateQueries({
-          queryKey: ['admin.getNftsWithExpirationStatus'],
-        });
-      },
-      onError: (error) => {
-        toast.error(`Failed to renew domain: ${error.message}`);
-      },
-    }),
-  );
-
   const fixNftExpirationMutation = useMutation(
     trpc.admin.fixNftExpiration.mutationOptions({
       onSuccess: () => {
@@ -198,19 +204,31 @@ function NftManagementContent() {
         normalizedDomainName,
         chainId,
       });
-    } catch (error) {
+    } catch {
       // Error handling is done in onError callback
     }
   };
 
+  const applyFilters = useCallback(() => {
+    setAppliedFilters({
+      filterBy,
+      sortBy,
+      sortOrder,
+      excludePoweredByNamefiDomains,
+      searchTerm,
+    });
+    setPage(1);
+    setHasUnappliedChanges(false);
+  }, [filterBy, sortBy, sortOrder, excludePoweredByNamefiDomains, searchTerm]);
+
   const handleSearch = useCallback(() => {
-    setPage(1); // Reset to first page when searching
-  }, []);
+    applyFilters();
+  }, [applyFilters]);
 
   const handleFilterChange = useCallback(
-    (value: 'all' | 'expired' | 'canBurn' | 'dateMismatch') => {
+    (value: 'all' | 'expired' | 'canBurn' | 'dateMismatch' | 'missingData') => {
       setFilterBy(value);
-      setPage(1);
+      setHasUnappliedChanges(true);
     },
     [],
   );
@@ -220,19 +238,19 @@ function NftManagementContent() {
       value: 'domainName' | 'nftExpiration' | 'domainExpiration' | 'chainId',
     ) => {
       setSortBy(value);
-      setPage(1);
+      setHasUnappliedChanges(true);
     },
     [],
   );
 
   const handleSortOrderChange = useCallback((value: 'asc' | 'desc') => {
     setSortOrder(value);
-    setPage(1);
+    setHasUnappliedChanges(true);
   }, []);
 
   const handleExcludeToggle = useCallback((checked: boolean) => {
     setExcludePoweredByNamefiDomains(checked);
-    setPage(1);
+    setHasUnappliedChanges(true);
   }, []);
 
   const handleLimitChange = useCallback((value: string) => {
@@ -262,20 +280,6 @@ function NftManagementContent() {
     );
   };
 
-  const handleRenewDomain = async (
-    normalizedDomainName: string,
-    chainId: number,
-  ) => {
-    try {
-      await renewDomainMutation.mutateAsync({
-        normalizedDomainName,
-        chainId,
-      });
-    } catch (error) {
-      // Error handling is done in onError callback
-    }
-  };
-
   const handleFixNftExpiration = async (
     normalizedDomainName: string,
     chainId: number,
@@ -285,22 +289,9 @@ function NftManagementContent() {
         normalizedDomainName,
         chainId,
       });
-    } catch (error) {
+    } catch {
       // Error handling is done in onError callback
     }
-  };
-
-  const getBurnReason = (nft: any) => {
-    if (isInActiveBurnWorkflow(nft.normalizedDomainName, nft.chainId)) {
-      return 'Cannot burn: A burn workflow is already in progress for this domain';
-    }
-    if (nft.isPoweredByNamefiDomain) {
-      return 'Cannot burn: This is a powered-by-namefi domain';
-    }
-    if (!nft.canBurn) {
-      return 'Cannot burn: Domain/NFT is not beyond grace period';
-    }
-    return null;
   };
 
   const getExpirationStatus = (domainExpiration: Date | null) => {
@@ -331,21 +322,33 @@ function NftManagementContent() {
               <Input
                 placeholder="Search by domain name or owner address..."
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={(e) => {
+                  setSearchTerm(e.target.value);
+                  setHasUnappliedChanges(true);
+                }}
                 onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
               />
             </div>
             <Button
-              onClick={handleSearch}
-              variant="outline"
+              onClick={applyFilters}
+              variant={hasUnappliedChanges ? 'default' : 'outline'}
               disabled={isFetching}
+              className={
+                hasUnappliedChanges ? 'bg-blue-600 hover:bg-blue-700' : ''
+              }
             >
               {isFetching ? (
                 <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+              ) : hasUnappliedChanges ? (
+                <Filter className="h-4 w-4 mr-2" />
               ) : (
                 <Search className="h-4 w-4 mr-2" />
               )}
-              {isFetching ? 'Searching...' : 'Search'}
+              {isFetching
+                ? 'Loading...'
+                : hasUnappliedChanges
+                  ? 'Apply Filters'
+                  : 'Search'}
             </Button>
           </div>
 
@@ -390,6 +393,12 @@ function NftManagementContent() {
                       <span className="flex items-center gap-2">
                         <Clock className="h-4 w-4" />
                         Date Mismatch
+                      </span>
+                    </SelectItem>
+                    <SelectItem value="missingData">
+                      <span className="flex items-center gap-2">
+                        <AlertTriangle className="h-4 w-4" />
+                        Missing Data
                       </span>
                     </SelectItem>
                   </SelectContent>
@@ -495,7 +504,7 @@ function NftManagementContent() {
           </div>
 
           {/* PoweredByNamefi Toggle - only show for "All NFTs" filter */}
-          {filterBy === 'all' && (
+          {appliedFilters.filterBy === 'all' && (
             <div className="flex items-center space-x-2">
               <Switch
                 id="exclude-powered-by-namefi"
@@ -652,6 +661,12 @@ function NftManagementContent() {
                         const burnKey = `${nft.normalizedDomainName}-${nft.chainId}`;
                         const isBurning = burnInProgress.has(burnKey);
 
+                        // Determine if date mismatch is fixable (both dates exist) or not
+                        const isDateMismatchFixable =
+                          nft.hasDateMismatch &&
+                          nft.nftExpirationTime !== null &&
+                          nft.domainExpirationTime !== null;
+
                         return (
                           <Tr key={burnKey}>
                             <Td className="font-medium">
@@ -684,13 +699,19 @@ function NftManagementContent() {
                             <Td>{formatDate(nft.domainExpirationTime)}</Td>
                             <Td>
                               {nft.hasDateMismatch ? (
-                                <Badge
-                                  variant="destructive"
-                                  className="flex items-center gap-1"
-                                >
-                                  <AlertTriangle className="h-3 w-3" />
-                                  Mismatch
-                                </Badge>
+                                isDateMismatchFixable ? (
+                                  <Badge
+                                    variant="secondary"
+                                    className="flex items-center gap-1 bg-amber-100 text-amber-800 border-amber-200"
+                                  >
+                                    <AlertTriangle className="h-3 w-3" />
+                                    Mismatch
+                                  </Badge>
+                                ) : (
+                                  <Badge variant="destructive">
+                                    Missing Data
+                                  </Badge>
+                                )
                               ) : (
                                 <Badge
                                   variant="default"
@@ -806,28 +827,49 @@ function NftManagementContent() {
                                     </>
                                   )}
 
-                                  {/* Fix NFT Expiration Action - Only show for date mismatches */}
-                                  {nft.hasDateMismatch && (
-                                    <Tooltip>
-                                      <TooltipTrigger asChild>
-                                        <Button
-                                          variant="outline"
-                                          size="sm"
-                                          disabled
-                                          className="flex items-center gap-1 text-xs"
-                                        >
-                                          <Wrench className="h-3 w-3" />
-                                          Fix
-                                        </Button>
-                                      </TooltipTrigger>
-                                      <TooltipContent>
-                                        <p>
-                                          NFT expiration fix is not yet
-                                          implemented
-                                        </p>
-                                      </TooltipContent>
-                                    </Tooltip>
-                                  )}
+                                  {/* Fix NFT Expiration Action - Only show for fixable date mismatches */}
+                                  {nft.hasDateMismatch &&
+                                    (isDateMismatchFixable ? (
+                                      <Button
+                                        variant="outline"
+                                        size="sm"
+                                        onClick={() =>
+                                          handleFixNftExpiration(
+                                            nft.normalizedDomainName,
+                                            nft.chainId,
+                                          )
+                                        }
+                                        disabled={
+                                          fixNftExpirationMutation.isPending
+                                        }
+                                        className="flex items-center gap-1 text-xs"
+                                      >
+                                        <Wrench className="h-3 w-3" />
+                                        {fixNftExpirationMutation.isPending
+                                          ? 'Fixing...'
+                                          : 'Fix'}
+                                      </Button>
+                                    ) : (
+                                      <Tooltip>
+                                        <TooltipTrigger asChild>
+                                          <Button
+                                            variant="outline"
+                                            size="sm"
+                                            disabled
+                                            className="flex items-center gap-1 text-xs"
+                                          >
+                                            <AlertTriangle className="h-3 w-3" />
+                                            Cannot Fix
+                                          </Button>
+                                        </TooltipTrigger>
+                                        <TooltipContent>
+                                          <p>
+                                            Cannot fix: Either NFT or domain
+                                            expiration date is missing
+                                          </p>
+                                        </TooltipContent>
+                                      </Tooltip>
+                                    ))}
 
                                   {/* Renew Action - Only show for valid domains (not burnable and no date mismatch) */}
                                   {!nft.canBurn && !nft.hasDateMismatch && (

@@ -56,7 +56,7 @@ export const adminRouter = createTRPCRouter({
           .default('domainName'),
         sortOrder: z.enum(['asc', 'desc']).default('asc'),
         filterBy: z
-          .enum(['all', 'expired', 'canBurn', 'dateMismatch'])
+          .enum(['all', 'expired', 'canBurn', 'dateMismatch', 'missingData'])
           .default('all'),
         searchTerm: z.string().optional(),
         excludePoweredByNamefiDomains: z.boolean().default(false),
@@ -128,10 +128,10 @@ export const adminRouter = createTRPCRouter({
           `.as('can_burn'),
           hasDateMismatch: sql<boolean>`
             CASE 
-              WHEN ${namefiNftView.expirationTime} IS NULL OR ${indexedDomainsTable.expirationTime} IS NULL
-              THEN false
               WHEN ${isPoweredByNamefiCondition}
               THEN false
+              WHEN ${namefiNftView.expirationTime} IS NULL OR ${indexedDomainsTable.expirationTime} IS NULL
+              THEN true
               ELSE ABS(EXTRACT(EPOCH FROM (${namefiNftView.expirationTime} - ${indexedDomainsTable.expirationTime}))) > 86400
             END
           `.as('has_date_mismatch'),
@@ -355,6 +355,7 @@ export const adminRouter = createTRPCRouter({
       const { normalizedDomainName, chainId } = input;
 
       try {
+        await temporalClient.connection.ensureConnected();
         const workflowId = ensureNftIsLockedAndBurnByNftName.generateId({
           domainName: normalizedDomainName,
           chainId,
@@ -394,6 +395,7 @@ export const adminRouter = createTRPCRouter({
 
   getActiveBurnWorkflows: adminProcedure.query(async () => {
     try {
+      await temporalClient.connection.ensureConnected();
       // Get all active burn workflows from Temporal
       const workflowList = await temporalClient.workflow.list({
         query: `WorkflowType = "ensureNftIsLockedAndBurnByNftName" AND ExecutionStatus = "Running"`,
@@ -429,21 +431,6 @@ export const adminRouter = createTRPCRouter({
       return [];
     }
   }),
-
-  renewDomain: adminProcedure
-    .input(
-      z.object({
-        normalizedDomainName: namefiNormalizedDomainSchema,
-        chainId: z.number(),
-      }),
-    )
-    .mutation(async ({ input }) => {
-      // TODO: Implement domain renewal workflow
-      throw new TRPCError({
-        code: 'NOT_IMPLEMENTED',
-        message: 'Domain renewal is not yet implemented',
-      });
-    }),
 
   extendRegistration: adminProcedure
     .input(
@@ -720,15 +707,40 @@ function _buildQueryFilters(
     );
   } else if (filterBy === 'dateMismatch') {
     // Filter for domains where NFT and domain expiration dates don't match
+    // This includes both cases where dates differ AND where either date is missing
+    const isPoweredByNamefiCondition = sql`array_to_string((string_to_array(${namefiNftOwnersView.normalizedDomainName}, '.'))[2:], '.') = ANY(${sql.raw(`ARRAY[${poweredByNamefiDomains.map((d) => `'${d}'`).join(',')}]`)})`;
+
     filters.push(
       and(
-        // Both dates must exist
-        sql`${namefiNftView.expirationTime} IS NOT NULL`,
-        sql`${indexedDomainsTable.expirationTime} IS NOT NULL`,
         // Not a powered by namefi domain (they use NFT expiration)
-        sql`NOT (${sql`array_to_string((string_to_array(${namefiNftOwnersView.normalizedDomainName}, '.'))[2:], '.') = ANY(${sql.raw(`ARRAY[${poweredByNamefiDomains.map((d) => `'${d}'`).join(',')}]`)})`})`,
-        // Dates differ by more than 1 day
-        sql`ABS(EXTRACT(EPOCH FROM (${namefiNftView.expirationTime} - ${indexedDomainsTable.expirationTime}))) > 86400`,
+        sql`NOT (${isPoweredByNamefiCondition})`,
+        // Either dates are missing OR dates differ by more than 1 day
+        or(
+          // Either date is missing
+          sql`${namefiNftView.expirationTime} IS NULL`,
+          sql`${indexedDomainsTable.expirationTime} IS NULL`,
+          // Or both dates exist but differ by more than 1 day
+          and(
+            sql`${namefiNftView.expirationTime} IS NOT NULL`,
+            sql`${indexedDomainsTable.expirationTime} IS NOT NULL`,
+            sql`ABS(EXTRACT(EPOCH FROM (${namefiNftView.expirationTime} - ${indexedDomainsTable.expirationTime}))) > 86400`,
+          ),
+        ),
+      ),
+    );
+  } else if (filterBy === 'missingData') {
+    // Filter for domains where either NFT or domain expiration data is missing
+    const isPoweredByNamefiCondition = sql`array_to_string((string_to_array(${namefiNftOwnersView.normalizedDomainName}, '.'))[2:], '.') = ANY(${sql.raw(`ARRAY[${poweredByNamefiDomains.map((d) => `'${d}'`).join(',')}]`)})`;
+
+    filters.push(
+      and(
+        // Not a powered by namefi domain (they use NFT expiration)
+        sql`NOT (${isPoweredByNamefiCondition})`,
+        // Either date is missing
+        or(
+          sql`${namefiNftView.expirationTime} IS NULL`,
+          sql`${indexedDomainsTable.expirationTime} IS NULL`,
+        ),
       ),
     );
   }
