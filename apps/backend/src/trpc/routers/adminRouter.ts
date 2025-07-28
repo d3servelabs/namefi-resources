@@ -14,6 +14,8 @@ import { z } from 'zod';
 import { temporalClient } from '#temporal/client';
 import { TEMPORAL_QUEUES } from '#temporal/shared/enums';
 import { ensureNftIsLockedAndBurnByNftName } from '#temporal/workflows/mint.workflow';
+import { extendDomainRegistrationWorkflow } from '#temporal/workflows/domain-ownership/extend-registration.workflow';
+import { fixNftExpirationWorkflow } from '#temporal/workflows/fix-nft-expiration.workflow';
 import { createTRPCRouter, protectedProcedure } from '../base';
 import { getPoweredByNamefi3PDomains } from '#lib/namefi-registry';
 import { parseDomainName } from '@namefi-astra/utils/parse-domain-name';
@@ -443,6 +445,92 @@ export const adminRouter = createTRPCRouter({
       });
     }),
 
+  extendRegistration: adminProcedure
+    .input(
+      z.object({
+        normalizedDomainName: namefiNormalizedDomainSchema,
+        chainId: z.number(),
+        durationInYears: z.number().min(1).max(10),
+        ownerAddress: z.string(),
+        userId: z.string(),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      const {
+        normalizedDomainName,
+        chainId,
+        durationInYears,
+        ownerAddress,
+        userId,
+      } = input;
+
+      // Validate domain name
+      const parsedDomainName = parseDomainName(normalizedDomainName);
+      if (!parsedDomainName.valid) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Invalid domain name',
+        });
+      }
+
+      // Verify the NFT exists
+      const nft = await db
+        .select()
+        .from(namefiNftOwnersView)
+        .where(
+          and(
+            eq(namefiNftOwnersView.normalizedDomainName, normalizedDomainName),
+            eq(namefiNftOwnersView.chainId, chainId),
+          ),
+        )
+        .limit(1);
+
+      if (!nft[0]) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'NFT not found',
+        });
+      }
+
+      // Generate unique workflow ID
+      const workflowId = `admin-extend-registration-${normalizedDomainName}-${chainId}-${Date.now()}`;
+
+      try {
+        // Start the extension workflow
+        await temporalClient.workflow.start(extendDomainRegistrationWorkflow, {
+          args: [
+            {
+              normalizedDomainName,
+              ownerAddress: ownerAddress as any,
+              durationInYears,
+              userId,
+              updateDomainIndex: true,
+            },
+          ],
+          workflowId,
+          taskQueue: TEMPORAL_QUEUES.DEFAULT,
+          workflowIdConflictPolicy: 'USE_EXISTING',
+          workflowIdReusePolicy: 'ALLOW_DUPLICATE',
+        });
+
+        return {
+          success: true,
+          workflowId,
+          message: 'Domain extension workflow started successfully',
+        };
+      } catch (error) {
+        logger.error(
+          { normalizedDomainName, chainId, durationInYears, error },
+          'Failed to start domain extension workflow',
+        );
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to start domain extension workflow',
+          cause: error,
+        });
+      }
+    }),
+
   fixNftExpiration: adminProcedure
     .input(
       z.object({
@@ -451,11 +539,128 @@ export const adminRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ input }) => {
-      // TODO: Implement NFT expiration fix workflow
-      throw new TRPCError({
-        code: 'NOT_IMPLEMENTED',
-        message: 'NFT expiration fix is not yet implemented',
-      });
+      const { normalizedDomainName, chainId } = input;
+
+      // Validate domain name
+      const parsedDomainName = parseDomainName(normalizedDomainName);
+      if (!parsedDomainName.valid) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Invalid domain name',
+        });
+      }
+
+      // Verify the NFT exists
+      const nft = await db
+        .select()
+        .from(namefiNftOwnersView)
+        .where(
+          and(
+            eq(namefiNftOwnersView.normalizedDomainName, normalizedDomainName),
+            eq(namefiNftOwnersView.chainId, chainId),
+          ),
+        )
+        .limit(1);
+
+      if (!nft[0]) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'NFT not found',
+        });
+      }
+
+      // Check if there's actually a date mismatch by querying the computed field
+      const nftWithMismatchInfo = await db
+        .select({
+          hasDateMismatch: sql<boolean>`
+            CASE 
+              WHEN ${namefiNftView.expirationTime} IS NULL OR ${indexedDomainsTable.expirationTime} IS NULL
+              THEN true
+              ELSE ABS(EXTRACT(EPOCH FROM (${namefiNftView.expirationTime} - ${indexedDomainsTable.expirationTime}))) > 86400
+            END
+          `.as('has_date_mismatch'),
+          nftExpirationTime: namefiNftView.expirationTime,
+          domainExpirationTime: indexedDomainsTable.expirationTime,
+        })
+        .from(namefiNftOwnersView)
+        .leftJoin(
+          namefiNftView,
+          and(
+            eq(
+              namefiNftOwnersView.normalizedDomainName,
+              namefiNftView.normalizedDomainName,
+            ),
+            eq(namefiNftOwnersView.chainId, namefiNftView.chainId),
+          ),
+        )
+        .leftJoin(
+          indexedDomainsTable,
+          eq(
+            namefiNftOwnersView.normalizedDomainName,
+            indexedDomainsTable.normalizedDomainName,
+          ),
+        )
+        .where(
+          and(
+            eq(namefiNftOwnersView.normalizedDomainName, normalizedDomainName),
+            eq(namefiNftOwnersView.chainId, chainId),
+          ),
+        )
+        .limit(1);
+
+      if (!nftWithMismatchInfo[0]?.hasDateMismatch) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message:
+            'No date mismatch found. NFT expiration already matches domain expiration.',
+        });
+      }
+
+      // Check if either date is missing - these mismatches cannot be fixed
+      const { nftExpirationTime, domainExpirationTime } =
+        nftWithMismatchInfo[0];
+      if (!nftExpirationTime || !domainExpirationTime) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message:
+            'Cannot fix date mismatch: Either NFT or domain expiration date is missing. This type of mismatch cannot be automatically fixed.',
+        });
+      }
+
+      // Generate unique workflow ID
+      const workflowId = `admin-fix-nft-expiration-${normalizedDomainName}-${chainId}-${Date.now()}`;
+
+      try {
+        // Start the fix NFT expiration workflow
+        await temporalClient.workflow.start(fixNftExpirationWorkflow, {
+          args: [
+            {
+              normalizedDomainName,
+              chainId,
+            },
+          ],
+          workflowId,
+          taskQueue: TEMPORAL_QUEUES.MINT,
+          workflowIdConflictPolicy: 'USE_EXISTING',
+          workflowIdReusePolicy: 'ALLOW_DUPLICATE',
+        });
+
+        return {
+          success: true,
+          workflowId,
+          message: 'NFT expiration fix workflow started successfully',
+        };
+      } catch (error) {
+        logger.error(
+          { normalizedDomainName, chainId, error },
+          'Failed to start NFT expiration fix workflow',
+        );
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to start NFT expiration fix workflow',
+          cause: error,
+        });
+      }
     }),
 });
 
