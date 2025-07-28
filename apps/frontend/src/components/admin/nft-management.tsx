@@ -594,7 +594,7 @@ function NftManagementContent() {
               variant={hasUnappliedChanges ? 'default' : 'outline'}
               disabled={isFetching}
               className={
-                hasUnappliedChanges ? 'bg-blue-600 hover:bg-blue-700' : ''
+                hasUnappliedChanges ? 'bg-primary hover:bg-primary/90' : ''
               }
             >
               {isFetching ? (

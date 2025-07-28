@@ -235,8 +235,25 @@ export const adminRouter = createTRPCRouter({
     )
     .mutation(async ({ input }) => {
       const { normalizedDomainName, chainId } = input;
-      const parsedDomainName = parseDomainName(normalizedDomainName);
+      let parsedDomainName = parseDomainName(normalizedDomainName);
+
+      // If the domain name is a test domain, parse it as a subdomain
+      const parts = normalizedDomainName.split('.');
+      const lastPart = parts.pop();
+      if (!!lastPart && lastPart.startsWith('test')) {
+        parsedDomainName = {
+          valid: true,
+          immediateParentDomain: lastPart as NamefiNormalizedDomain,
+          labels: parts,
+          level: parts.length,
+          registryType: 'subdomain',
+          nearestTraditionalParentDomain: lastPart as NamefiNormalizedDomain,
+          domain: normalizedDomainName,
+        };
+      }
+
       if (!parsedDomainName.valid) {
+        // IF it's not valid and not a test domain, throw an error
         throw new TRPCError({
           code: 'BAD_REQUEST',
           message: 'Invalid domain name',
