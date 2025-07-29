@@ -6,7 +6,7 @@
 
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { recordTypeEnum } from '@namefi-astra/zod-dns';
-import { asc, eq, getTableColumns, relations, sql } from 'drizzle-orm';
+import { asc, eq, getTableColumns, sql } from 'drizzle-orm';
 import {
   bigint,
   boolean,
@@ -892,24 +892,6 @@ export const huntDomainStatsView = pgView('hunt_domain_stats_view').as((qb) =>
       huntPinnedDomainsTable.domainName,
     ),
 );
-
-/**
- * Relations definitions for hunt system
- */
-export const huntEdgesRelations = relations(huntEdgesTable, ({ one }) => ({
-  // Relation to users table when source is a user
-  sourceUser: one(usersTable, {
-    fields: [huntEdgesTable.sourceId],
-    references: [usersTable.id],
-    relationName: 'huntEdgeSourceUser',
-  }),
-  // Relation to users table when target is a user
-  targetUser: one(usersTable, {
-    fields: [huntEdgesTable.targetId],
-    references: [usersTable.id],
-    relationName: 'huntEdgeTargetUser',
-  }),
-}));
 
 /**
  * Wishlisted domains table

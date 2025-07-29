@@ -2,6 +2,7 @@ import { relations } from 'drizzle-orm';
 import {
   aiGenerationsTable,
   cartItemsTable,
+  huntEdgesTable,
   orderItemsTable,
   ordersTable,
   paymentsTable,
@@ -61,6 +62,7 @@ export const refundsRelations = relations(refundsTable, ({ one }) => ({
   }),
 }));
 
+// AI generations relations
 export const aiGenerationsRelations = relations(
   aiGenerationsTable,
   ({ one }) => ({
@@ -70,3 +72,19 @@ export const aiGenerationsRelations = relations(
     }),
   }),
 );
+
+// Hunt relations
+export const huntEdgesRelations = relations(huntEdgesTable, ({ one }) => ({
+  // Relation to users table when source is a user
+  sourceUser: one(usersTable, {
+    fields: [huntEdgesTable.sourceId],
+    references: [usersTable.id],
+    relationName: 'huntEdgeSourceUser',
+  }),
+  // Relation to users table when target is a user
+  targetUser: one(usersTable, {
+    fields: [huntEdgesTable.targetId],
+    references: [usersTable.id],
+    relationName: 'huntEdgeTargetUser',
+  }),
+}));
