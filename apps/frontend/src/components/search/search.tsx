@@ -334,6 +334,17 @@ export const DomainCard: FC<{
     return computeChargesInUsdOrThrow(pricingDetails, 1);
   }, [pricingDetails]);
 
+  // Calculate renewal price for 1 year
+  const renewalPriceInUsd = useMemo(() => {
+    if (!availabilityInfo?.pricingDetails?.renewalPrice) {
+      return undefined;
+    }
+    return computeChargesInUsdOrThrow(
+      availabilityInfo.pricingDetails.renewalPrice,
+      1,
+    );
+  }, [availabilityInfo?.pricingDetails?.renewalPrice]);
+
   // Split domain into subdomain and parent domain
   const parts = domain?.split('.');
   const subdomain = parts?.[0];
@@ -430,9 +441,16 @@ export const DomainCard: FC<{
               {shouldShowPricingSkeleton ? (
                 <Skeleton className="h-6 w-20 bg-gray-600/50" />
               ) : isNotNil(priceInUsd) ? (
-                <p className="text-xl font-medium line-clamp-1">
-                  {`${formatAmountInUSD(priceInUsd)} USD`}
-                </p>
+                <div className="flex items-center gap-3">
+                  <p className="text-xl font-medium line-clamp-1">
+                    {`${formatAmountInUSD(priceInUsd)} USD`}
+                  </p>
+                  {isNotNil(renewalPriceInUsd) && (
+                    <p className="text-sm text-muted-foreground">
+                      renews at {formatAmountInUSD(renewalPriceInUsd)} USD
+                    </p>
+                  )}
+                </div>
               ) : null}
             </div>
             {hasOwnerInfo && (
