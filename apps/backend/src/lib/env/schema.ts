@@ -40,6 +40,11 @@ export const secretsSchema = z.object({
   LIMITER_REDIS_USER: z.string().optional(),
   LIMITER_REDIS_HOST: z.string().optional(),
   LIMITER_REDIS_PORT: z.number().optional().default(6379),
+
+  // Listmonk configuration
+  LISTMONK_BASE_URL: z.string(),
+  LISTMONK_USERNAME: z.string(),
+  LISTMONK_PASSWORD: z.string(),
 });
 
 export type SecretsSchema = z.infer<typeof secretsSchema>;
@@ -115,6 +120,11 @@ export const configSchema = z.object({
    * Maximum number of AI generations allowed per user per month
    */
   MAX_AI_GENERATIONS_PER_USER_PER_MONTH: z.number().default(25),
+
+  /**
+   * Default Listmonk list ID for new subscribers
+   */
+  LISTMONK_NAMEFI_LIST_ID: z.number().default(3), // z.literal(3) causes ts issues
   ADMIN_WALLET_ADDRESSES: z
     .string()
     .array()

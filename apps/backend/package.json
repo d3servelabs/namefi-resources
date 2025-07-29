@@ -72,6 +72,7 @@
     "@valora/viem-account-hsm-gcp": "^1.2.2",
     "axios": "^1.9.0",
     "bignumber.js": "^9.1.2",
+    "bottleneck": "^2.19.5",
     "change-case": "^5.4.4",
     "commander": "^14.0.0",
     "date-fns": "^4.1.0",
