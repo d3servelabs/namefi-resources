@@ -80,6 +80,7 @@
     "dotenv": "^16.4.7",
     "drizzle-orm": "^0.40.1",
     "drizzle-zod": "^0.7.0",
+    "entities": "^6.0.1",
     "hono": "^4.7.5",
     "hono-pino-logger": "^1.0.0",
     "iso-countries-lookup": "^2.0.8",
