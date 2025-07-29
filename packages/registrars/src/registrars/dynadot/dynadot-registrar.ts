@@ -642,6 +642,16 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
   async getDelegationSigner(
     domainName: PunycodeDomainName,
   ): Promise<DnssecKey[]> {
+    if (!supportsDnssec(domainName)) {
+      this.logger.error(
+        {
+          method: 'getDelegationSigner',
+          domainName,
+        },
+        'This domain does not support DNSSEC.',
+      );
+      return [];
+    }
     const response = await this.client.command(DynadotCommand.get_dnssec, {
       domain_name: punycode.toASCII(domainName),
     } as any);
@@ -649,6 +659,21 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
       isNil(response?.GetDnssecResponse) ||
       responseFailed(response.GetDnssecResponse)
     ) {
+      if (
+        response.GetDnssecResponse.Status === 'error' &&
+        response.GetDnssecResponse.Error ===
+          "This domain doesn't support DNSSEC."
+      ) {
+        this.logger.error(
+          {
+            method: 'getDelegationSigner',
+            domainName,
+            response,
+          },
+          'Response Failed. This domain does not support DNSSEC.',
+        );
+        return [];
+      }
       throw new Error('Response Failed. No DNSSEC keys found.');
     }
     return response.GetDnssecResponse.DnssecInfo.map((key) => {

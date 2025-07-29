@@ -14,7 +14,8 @@ export type DynadotGetDnssecCommandParams = {
 export type DynadotGetDnssecCommandOutput = {
   GetDnssecResponse: {
     ResponseCode: DynadotResponseCode;
-    Status: 'success' | string;
+    Status: 'success' | 'error' | string;
+    Error?: string;
 
     DnssecInfo: {
       KeyTag: number;
