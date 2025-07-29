@@ -13,6 +13,8 @@ const { landingConfig, originConfigWithoutLanding } = generateCVConfig({
       quote: 'Make your name a hit that everyone remembers.',
       achievement: 'Platinum Single',
       icon: Music,
+      image: '/assets/cv/muller/famous-people/mae-muller.png',
+      externalUrl: 'https://en.wikipedia.org/wiki/Mae_Muller',
     },
     {
       name: 'Lillian Müller',
@@ -20,6 +22,8 @@ const { landingConfig, originConfigWithoutLanding } = generateCVConfig({
       quote: 'Your name can be your ticket to the spotlight.',
       achievement: 'Playmate of the Year',
       icon: Star,
+      image: '/assets/cv/muller/famous-people/lillian-muller.png',
+      externalUrl: 'https://en.wikipedia.org/wiki/Lillian_Müller',
     },
     {
       name: 'Gerd Müller',
@@ -27,6 +31,8 @@ const { landingConfig, originConfigWithoutLanding } = generateCVConfig({
       quote: 'Legends are remembered by their name and legacy.',
       achievement: "Ballon d'Or Winner",
       icon: User,
+      image: '/assets/cv/muller/famous-people/gerd-muller.png',
+      externalUrl: 'https://en.wikipedia.org/wiki/Gerd_Müller',
     },
     {
       name: 'Thomas Müller',
@@ -34,6 +40,8 @@ const { landingConfig, originConfigWithoutLanding } = generateCVConfig({
       quote: 'Fans cheer for the name on the jersey, so make it count.',
       achievement: 'FIFA World Cup Winner',
       icon: Trophy,
+      image: '/assets/cv/muller/famous-people/thomas-muller.png',
+      externalUrl: 'https://en.wikipedia.org/wiki/Thomas_Müller',
     },
     {
       name: 'H. J. Muller',
@@ -41,6 +49,8 @@ const { landingConfig, originConfigWithoutLanding } = generateCVConfig({
       quote: 'Innovation begins with a name that stands out.',
       achievement: 'Nobel Prize in Medicine',
       icon: Briefcase,
+      image: '/assets/cv/muller/famous-people/h-j-muller.png',
+      externalUrl: 'https://en.wikipedia.org/wiki/Hermann_Joseph_Muller',
     },
   ],
   exampleProfiles: [
