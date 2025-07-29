@@ -9,6 +9,8 @@ reviews:
   poem: false
   auto_review:
     drafts: true
+    base_branches:
+      - ".*"
   path_instructions:
     # Matches all files in all directories - serves as the base ruleset for all code
     - path: "**/*"
@@ -87,7 +89,7 @@ reviews:
     # Matches all package.json files across the repository - dependency management files
     - path: "**/package.json"
       instructions: |
-        When new dependencies are added, verify that they are actually used in the associated code changes and not just speculatively added.
+        When new dependencies are added, verify that they are actually used in the associated code changes and not just speculatively added. Also ensure the lockfile is updated.
   tools:
     ast-grep:
       rule_dirs:
