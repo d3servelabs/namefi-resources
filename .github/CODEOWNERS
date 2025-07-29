@@ -1,5 +1,0 @@
-# This folder requires review from xinbenlv
-# This folder is shared between trpc and temporal
-# Only add code to this folder if it is shared between trpc and temporal
-/apps/backend/src/services/**  @xinbenlv
-
