@@ -1,0 +1,214 @@
+/**
+ * Daily NFT Management Report Workflow
+ *
+ * This workflow generates and sends a comprehensive daily report about
+ * NFT management status including critical issues, metrics, and health scores.
+ *
+ * Scheduled to run daily at 14:00 UTC
+ */
+
+import * as workflow from '@temporalio/workflow';
+import { shortRunningOpts, TEMPORAL_ENUMS } from '../shared';
+import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';
+import { catchAndAlertLocally } from '../shared/workflow-helpers/catch-and-alert-locally';
+
+// Activity proxies for NFT management reporting
+const {
+  collectNftManagementMetrics,
+  formatNftManagementReport,
+  sendNftManagementReportToSlack,
+  sendNftManagementReportEmail,
+} = typedProxyActivities({
+  temporalEnum: TEMPORAL_ENUMS.INDEXERS,
+  options: {
+    ...shortRunningOpts,
+    startToCloseTimeout: '15m', // Allow time for comprehensive data collection
+  },
+});
+
+export interface NftManagementDailyReportWorkflowInput {
+  /**
+   * Whether to force send the report even if no critical issues are found
+   * @default false
+   */
+  forceSend?: boolean;
+
+  /**
+   * Custom report title override
+   */
+  customTitle?: string;
+}
+
+export interface NftManagementDailyReportWorkflowOutput {
+  reportSent: boolean;
+  slackSent: boolean;
+  emailSent: boolean;
+  reportTitle: string;
+  metricsCollected: {
+    totalNfts: number;
+    criticalIssuesCount: number;
+    activeWorkflowsCount: number;
+  };
+  executionTimeMs: number;
+  skippedReason?: string;
+}
+
+/**
+ * Workflow to generate and send daily NFT management report
+ */
+export async function nftManagementDailyReportWorkflow({
+  forceSend = false,
+  customTitle,
+}: NftManagementDailyReportWorkflowInput = {}): Promise<NftManagementDailyReportWorkflowOutput> {
+  const startTime = Date.now();
+
+  workflow.log.info('Starting NFT management daily report workflow', {
+    forceSend,
+    customTitle,
+  });
+
+  try {
+    // Step 1: Collect comprehensive NFT management metrics
+    workflow.log.info('Collecting NFT management metrics');
+    const metrics = await collectNftManagementMetrics();
+
+    const totalCriticalIssues =
+      metrics.criticalIssues.expiredCanBurn +
+      metrics.criticalIssues.missingDataCannotFix +
+      metrics.criticalIssues.longOverdueExpired;
+
+    const totalActiveWorkflows =
+      metrics.activeWorkflows.burnWorkflows +
+      metrics.activeWorkflows.fixExpirationWorkflows +
+      metrics.activeWorkflows.extendRegistrationWorkflows;
+
+    workflow.log.info('NFT metrics collected successfully', {
+      totalNfts: metrics.totalNfts,
+      totalCriticalIssues,
+      totalActiveWorkflows,
+    });
+
+    // Step 2: Format the report
+    workflow.log.info('Formatting NFT management report');
+    const { title: reportTitle, content } =
+      await formatNftManagementReport(metrics);
+
+    const finalTitle = customTitle || reportTitle;
+
+    // Step 3: Decide whether to send the report
+    const shouldSendReport =
+      forceSend ||
+      totalCriticalIssues > 0 ||
+      totalActiveWorkflows > 0 ||
+      metrics.dateMismatchNfts > 0;
+
+    let reportSent = false;
+    let slackSent = false;
+    let emailSent = false;
+    let skippedReason: string | undefined;
+
+    if (shouldSendReport) {
+      // Step 4: Send report to Slack
+      workflow.log.info('Sending NFT management report to Slack', {
+        reportTitle: finalTitle,
+        contentLength: content.length,
+      });
+
+      await catchAndAlertLocally(
+        async () => {
+          await sendNftManagementReportToSlack(finalTitle, content);
+          slackSent = true;
+        },
+        {
+          message: 'Failed to send NFT management report to Slack',
+          details: { reportTitle: finalTitle },
+        },
+      );
+
+      // Step 5: Send report via email
+      workflow.log.info(
+        'Sending NFT management report email to reporting@namefi.io',
+        {
+          reportTitle: finalTitle,
+          contentLength: content.length,
+        },
+      );
+
+      await catchAndAlertLocally(
+        async () => {
+          await sendNftManagementReportEmail(finalTitle, content);
+          emailSent = true;
+        },
+        {
+          message: 'Failed to send NFT management report email',
+          details: { reportTitle: finalTitle },
+        },
+      );
+
+      reportSent = slackSent || emailSent;
+
+      if (reportSent) {
+        workflow.log.info('NFT management report sent successfully', {
+          slackSent,
+          emailSent,
+        });
+      }
+    } else {
+      skippedReason =
+        'No critical issues or active workflows found, report not sent';
+      workflow.log.info('Skipping report send', { reason: skippedReason });
+    }
+
+    const executionTimeMs = Date.now() - startTime;
+
+    const output: NftManagementDailyReportWorkflowOutput = {
+      reportSent,
+      slackSent,
+      emailSent,
+      reportTitle: finalTitle,
+      metricsCollected: {
+        totalNfts: metrics.totalNfts,
+        criticalIssuesCount: totalCriticalIssues,
+        activeWorkflowsCount: totalActiveWorkflows,
+      },
+      executionTimeMs,
+      skippedReason,
+    };
+
+    workflow.log.info('NFT management daily report workflow completed', {
+      output,
+    });
+
+    return output;
+  } catch (error) {
+    const executionTimeMs = Date.now() - startTime;
+
+    workflow.log.error('NFT management daily report workflow failed', {
+      error,
+      executionTimeMs,
+    });
+
+    // Return partial results even on failure
+    return {
+      reportSent: false,
+      slackSent: false,
+      emailSent: false,
+      reportTitle: customTitle || 'NFT Management Report (Failed)',
+      metricsCollected: {
+        totalNfts: 0,
+        criticalIssuesCount: 0,
+        activeWorkflowsCount: 0,
+      },
+      executionTimeMs,
+      skippedReason: `Workflow failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
+    };
+  }
+}
+
+/**
+ * Helper function to generate a unique workflow ID for manual triggers
+ */
+export function generateNftManagementReportWorkflowId(): string {
+  const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+  return `nft-management-daily-report-${timestamp}`;
+}

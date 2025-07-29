@@ -45,6 +45,7 @@ export const secretsSchema = z.object({
   LISTMONK_BASE_URL: z.string(),
   LISTMONK_USERNAME: z.string(),
   LISTMONK_PASSWORD: z.string(),
+  NAMEFI_ASSET_REPORT_SLACK_WEBHOOK_URL: z.string().optional(),
 });
 
 export type SecretsSchema = z.infer<typeof secretsSchema>;

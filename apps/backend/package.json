@@ -43,7 +43,8 @@
     "command:send-test-email": "tsx src/scripts/send-test-email.tsx",
     "command:trigger-nft-updates-workflow": "tsx src/scripts/trigger-nft-updates-workflow.ts",
     "command:trigger-nft-updates-schedule": "tsx src/scripts/trigger-nft-updates-schedule.ts",
-    "command:email-templates": "tsx src/scripts/email-templates-cli.ts"
+    "command:email-templates": "tsx src/scripts/email-templates-cli.ts",
+    "command:setup-nft-report-schedule": "tsx src/scripts/setup-nft-management-report-schedule.ts"
   },
   "dependencies": {
     "@aws-sdk/client-kms": "^3.830.0",

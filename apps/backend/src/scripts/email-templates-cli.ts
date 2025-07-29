@@ -10,6 +10,7 @@ import React from 'react';
 import { DomainRenewReport } from '../mail/templates/domain-renew-report';
 import { RegisteredDomainSuccessfully } from '../mail/templates/registered-domain-successfully';
 import { ProcessedOrderReport } from '../mail/templates/processed-order-report';
+import { NftManagementReport } from '../mail/templates/nft-management-report';
 
 const program = new Command();
 
@@ -43,6 +44,13 @@ const templates: EmailTemplate[] = [
       'Processed Order - Order processing with items, charges, and refunds',
     component: ProcessedOrderReport,
     subject: '[Template Test] Processed Order',
+  },
+  {
+    name: 'nft-management-report',
+    description:
+      'NFT Management Report - Daily comprehensive NFT management metrics and health report',
+    component: NftManagementReport,
+    subject: '[Template Test] NFT Management Daily Report',
   },
 ];
 
