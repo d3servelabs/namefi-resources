@@ -15,7 +15,7 @@ import type { PgTransaction } from 'drizzle-orm/pg-core';
 import { isNotNil, keys, omit, pick } from 'ramda';
 import { PARKED_DOMAIN_RECORDS } from '../../services/dns/parking';
 import { privyClient } from '../../trpc/utils';
-import { dnsRecordTypeCodes } from '../dns/recordTypeCodes';
+import { dnsRecordTypeCodes } from '../dns/record-type-codes';
 import type { DnsResponse } from '../dns/types';
 
 // #region Domain Config

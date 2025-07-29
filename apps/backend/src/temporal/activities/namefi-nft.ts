@@ -17,7 +17,7 @@ import {
   toBytes,
 } from 'viem';
 import { base, mainnet } from 'viem/chains';
-import { nftIdFromDomainName } from '#lib/nftHash';
+import { nftIdFromDomainName } from '#lib/nft-hash';
 import { NftAbi } from '@namefi-astra/utils/abis/namefi-nft';
 import { chainsToUrls } from '#lib/crypto/rpc-urls';
 

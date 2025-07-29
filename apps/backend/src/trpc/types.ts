@@ -5,7 +5,7 @@ import {
 } from '@namefi-astra/db/types';
 
 import { z } from 'zod';
-import { createStripePaymentIntentSchema } from '../services/stripePayments/types';
+import { createStripePaymentIntentSchema } from '../services/stripe-payments/types';
 import type { DomainAvailabilityInfo } from '../lib/namefi-registry';
 
 const paymentMetadataSchema = z

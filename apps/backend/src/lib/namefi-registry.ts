@@ -14,7 +14,7 @@ import { addWeeks, isAfter, subDays } from 'date-fns';
 import { ParseResultType, parseDomain } from 'parse-domain';
 import { flatten, groupBy, isNil, toPairs, pluck } from 'ramda';
 import { config } from '#lib/env';
-import { userQualifiesForDomainNamePromo } from '#lib/userPromo';
+import { userQualifiesForDomainNamePromo } from '#lib/user-promo';
 import { getDomainLevels } from './get-domain-levels';
 import {
   hashBasedPercentageRollouted,

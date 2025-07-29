@@ -20,7 +20,7 @@ import { config, secrets } from '#lib/env';
 import {
   getQualifyingPromoDomainNamesFromPrivyLinkedAccount,
   userQualifiesForDomainNamePromo,
-} from '#lib/userPromo';
+} from '#lib/user-promo';
 import { NftAbi } from '@namefi-astra/utils/abis/namefi-nft';
 import { resolve } from '@namefi-astra/utils/promises/resolve';
 import {
@@ -41,7 +41,7 @@ import { RDAP } from '@namefi-astra/registrars/lib/rdap-whois/rdap_client';
 import { sldRegistrar } from '#lib/namefi-registry';
 import { toPunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
 import { getDomainLevels } from '#lib/get-domain-levels';
-import { nftIdFromDomainName } from '#lib/nftHash';
+import { nftIdFromDomainName } from '#lib/nft-hash';
 import pMap from 'p-map';
 import { logger } from '#lib/logger';
 import { fromUnixTime, isBefore, subHours } from 'date-fns';

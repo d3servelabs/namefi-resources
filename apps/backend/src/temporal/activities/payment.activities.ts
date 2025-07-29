@@ -25,8 +25,8 @@ import {
   UpdatePaymentFailure,
   UpdateRefundFailure,
 } from '#services/payments/errors';
-import { PaymentMethodNotFoundError } from '#services/stripePayments/errors';
-import type { CreateStripePaymentIntentInput } from '#services/stripePayments/types';
+import { PaymentMethodNotFoundError } from '#services/stripe-payments/errors';
+import type { CreateStripePaymentIntentInput } from '#services/stripe-payments/types';
 import type { PaymentProvider } from '@namefi-astra/db/types';
 import {
   CHAINS,

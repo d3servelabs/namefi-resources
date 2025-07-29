@@ -9,7 +9,7 @@ import { z } from 'zod';
 import {
   getDomainPreferencesAndConfig,
   updateDomainPreferencesAndConfig,
-} from '#lib/domains/domainPreferences';
+} from '#lib/domains/domain-preferences';
 import {
   queryActiveNameserversChangeWorkflow,
   submitNameserversChangeWorkflow,

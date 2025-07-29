@@ -4,7 +4,7 @@ import {
   type NamefiNormalizedDomain,
 } from '@namefi-astra/utils';
 import { getDomainLevels } from './get-domain-levels';
-import { RANKED_TLDS } from './tldRank';
+import { RANKED_TLDS } from './tld-rank';
 import { getTags } from '@namefi/cat';
 import {
   adjectives,

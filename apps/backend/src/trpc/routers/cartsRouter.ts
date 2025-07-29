@@ -17,7 +17,7 @@ import { TRPCError } from '@trpc/server';
 import { and, eq, ilike, sql } from 'drizzle-orm';
 import { z } from 'zod';
 import { getDomainListInfo } from '#lib/namefi-registry';
-import { userQualifiesForDomainNamePromo } from '#lib/userPromo';
+import { userQualifiesForDomainNamePromo } from '#lib/user-promo';
 import { encryptEppAuthCode } from '#lib/epp-code-encryption';
 import { createTRPCRouter, protectedProcedure } from '../base';
 import { getDomainPricingForOperation } from '../types';
