@@ -749,8 +749,10 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
       response,
     };
   }
-
-  async searchForDomain(query: PunycodeDomainName): Promise<DomainQueryResult> {
+  //TODO @note: remove this once we have a new search endpoint
+  private async _searchForDomainOld(
+    query: PunycodeDomainName,
+  ): Promise<DomainQueryResult> {
     assertPunycodeDomainName(query);
 
     const response = await this.client.command(DynadotCommand.search, {
@@ -818,6 +820,21 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
       available: DomainAvailability.UNAVAILABLE,
       isPremium: false,
     };
+  }
+
+  async searchForDomain(query: PunycodeDomainName): Promise<DomainQueryResult> {
+    assertPunycodeDomainName(query);
+
+    const results = await this.bulkSearch([query]);
+    if (results.length === 0) {
+      return {
+        domainName: toPunycodeDomainName(query),
+        price: null,
+        isPremium: false,
+        available: DomainAvailability.UNAVAILABLE,
+      };
+    }
+    return results[0];
   }
 
   private async _bulkSearchBatch(
@@ -1220,10 +1237,15 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
         count_per_page: 5000,
         page_index: nextPage,
       });
-      domains.push(...(res.ListDomainInfoResponse.MainDomains ?? []));
+      if (responseFailed(res.ListDomainInfoResponse)) {
+        throw new Error(
+          `Failed to list domains: ${JSON.stringify(res.ListDomainInfoResponse)}`,
+        );
+      }
+      domains.push(...(res.ListDomainInfoResponse?.MainDomains ?? []));
       if (
-        res.ListDomainInfoResponse.ResponseCode !== '1' ||
-        isEmpty(res.ListDomainInfoResponse.MainDomains ?? [])
+        res.ListDomainInfoResponse?.ResponseCode !== '1' ||
+        isEmpty(res.ListDomainInfoResponse?.MainDomains ?? [])
       ) {
         nextPage = null;
       } else {
