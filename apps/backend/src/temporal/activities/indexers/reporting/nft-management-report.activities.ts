@@ -382,20 +382,22 @@ export async function formatNftManagementReport(
     `**Long Overdue (30+ days expired):** ${metrics.criticalIssues.longOverdueExpired.toLocaleString()} domains`,
     '',
     '## 🔄 Active Workflows',
-    `**Total Active:** ${totalActiveWorkflows.toLocaleString()}`,
-    `• Burn Workflows: ${metrics.activeWorkflows.burnWorkflows.toLocaleString()}`,
-    `• Fix Expiration: ${metrics.activeWorkflows.fixExpirationWorkflows.toLocaleString()}`,
-    `• Extend Registration: ${metrics.activeWorkflows.extendRegistrationWorkflows.toLocaleString()}`,
+    `**Total Active:** ${totalActiveWorkflows.toLocaleString()}
+
+- Burn Workflows: ${metrics.activeWorkflows.burnWorkflows.toLocaleString()}
+- Fix Expiration: ${metrics.activeWorkflows.fixExpirationWorkflows.toLocaleString()}
+- Extend Registration: ${metrics.activeWorkflows.extendRegistrationWorkflows.toLocaleString()}`,
     '',
     '## 🏢 Registrar Breakdown',
-    ...Object.entries(metrics.registrarBreakdown)
+    Object.entries(metrics.registrarBreakdown)
       .sort(([, a], [, b]) => b - a)
       .map(
-        ([registrar, count]) => `• **${registrar}:** ${count.toLocaleString()}`,
-      ),
+        ([registrar, count]) => `- **${registrar}:** ${count.toLocaleString()}`,
+      )
+      .join('\n'),
     '',
     '## ⛓️ Chain Distribution',
-    ...Object.entries(metrics.chainBreakdown)
+    Object.entries(metrics.chainBreakdown)
       .sort(([, a], [, b]) => b - a)
       .map(([chainId, count]) => {
         const chainName =
@@ -404,8 +406,9 @@ export async function formatNftManagementReport(
             : chainId === '8453'
               ? 'Base'
               : `Chain ${chainId}`;
-        return `• **${chainName} (${chainId}):** ${count.toLocaleString()}`;
-      }),
+        return `- **${chainName} (${chainId}):** ${count.toLocaleString()}`;
+      })
+      .join('\n'),
     '',
     '## 📈 Health Score',
     `**Overall Health:** ${calculateHealthScore(metrics)}`,
@@ -418,17 +421,17 @@ export async function formatNftManagementReport(
     '**Admin Panel:** Available at /admin/nft-management',
     '',
     '## 📋 Quick Actions Available',
-    '• **Burn expired NFTs** - Use admin panel or API',
-    '• **Fix date mismatches** - Automated workflow available',
-    '• **Extend registrations** - Admin-initiated workflow',
-    '• **Monitor active workflows** - Real-time status in admin panel',
+    `- **Burn expired NFTs** - Use admin panel or API
+- **Fix date mismatches** - Automated workflow available
+- **Extend registrations** - Admin-initiated workflow
+- **Monitor active workflows** - Real-time status in admin panel`,
     '',
     '---',
     '*This report is generated automatically using the comprehensive NFT management system.*',
     '*For detailed analysis, visit the admin panel or review individual NFT records.*',
   ];
 
-  const content = sections.join('\n');
+  const content = sections.join('\n\n');
 
   ctx.log.info('NFT management report formatted successfully');
 
@@ -464,32 +467,32 @@ function generateHealthRecommendations(metrics: ReportMetrics): string {
 
   if (metrics.criticalIssues.expiredCanBurn > 0) {
     recommendations.push(
-      `• **URGENT:** Burn ${metrics.criticalIssues.expiredCanBurn} expired NFTs to free up blockchain space`,
+      `- **URGENT:** Burn ${metrics.criticalIssues.expiredCanBurn} expired NFTs to free up blockchain space`,
     );
   }
 
   if (metrics.criticalIssues.missingDataCannotFix > 0) {
     recommendations.push(
-      `• **REVIEW:** ${metrics.criticalIssues.missingDataCannotFix} NFTs have missing data requiring manual investigation`,
+      `- **REVIEW:** ${metrics.criticalIssues.missingDataCannotFix} NFTs have missing data requiring manual investigation`,
     );
   }
 
   if (metrics.criticalIssues.longOverdueExpired > 0) {
     recommendations.push(
-      `• **CLEANUP:** ${metrics.criticalIssues.longOverdueExpired} domains expired over 30 days ago need immediate attention`,
+      `- **CLEANUP:** ${metrics.criticalIssues.longOverdueExpired} domains expired over 30 days ago need immediate attention`,
     );
   }
 
   if (metrics.dateMismatchNfts - metrics.missingDataNfts > 0) {
     const fixableCount = metrics.dateMismatchNfts - metrics.missingDataNfts;
     recommendations.push(
-      `• **MAINTENANCE:** ${fixableCount} date mismatches can be automatically fixed`,
+      `- **MAINTENANCE:** ${fixableCount} date mismatches can be automatically fixed`,
     );
   }
 
   if (recommendations.length === 0) {
     recommendations.push(
-      '• **EXCELLENT:** No immediate action items identified! 🎉',
+      '- **EXCELLENT:** No immediate action items identified! 🎉',
     );
   }
 

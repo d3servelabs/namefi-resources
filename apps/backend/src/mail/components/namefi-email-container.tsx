@@ -14,13 +14,18 @@ import { NamefiHeader } from './namefi-header';
 // biome-ignore lint/correctness/noUnusedImports: required for react-email
 // biome-ignore lint/style/useImportType: required for react-email
 import React from 'react';
+import { isNotNil } from 'ramda';
 
 export function NamefiEmailContainer({
   title,
   children,
+  footer = 'default',
+  header = 'default',
 }: {
   title: PreviewProps['children'];
   children: React.ReactNode;
+  footer?: React.ReactNode | 'default' | undefined | null | false;
+  header?: React.ReactNode | 'default' | undefined | null | false;
 }) {
   return (
     <Tailwind>
@@ -30,9 +35,11 @@ export function NamefiEmailContainer({
         <Body style={styles.main}>
           <Container style={styles.container}>
             <Section style={styles.box}>
-              <NamefiHeader />
+              {isNotNil(header) &&
+                (header === 'default' ? <NamefiHeader /> : header)}
               {children}
-              <NamefiFooter />
+              {isNotNil(footer) &&
+                (footer === 'default' ? <NamefiFooter /> : footer)}
             </Section>
           </Container>
         </Body>
