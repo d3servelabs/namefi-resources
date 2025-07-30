@@ -131,7 +131,7 @@ export const adminRouter = createTRPCRouter({
               WHEN ${isPoweredByNamefiCondition}
               THEN false
               WHEN ${namefiNftView.expirationTime} IS NULL OR ${indexedDomainsTable.expirationTime} IS NULL
-              THEN true
+              THEN false
               ELSE ABS(EXTRACT(EPOCH FROM (${namefiNftView.expirationTime} - ${indexedDomainsTable.expirationTime}))) > 86400
             END
           `.as('has_date_mismatch'),
@@ -671,7 +671,7 @@ export const adminRouter = createTRPCRouter({
           hasDateMismatch: sql<boolean>`
             CASE 
               WHEN ${namefiNftView.expirationTime} IS NULL OR ${indexedDomainsTable.expirationTime} IS NULL
-              THEN true
+              THEN false
               ELSE ABS(EXTRACT(EPOCH FROM (${namefiNftView.expirationTime} - ${indexedDomainsTable.expirationTime}))) > 86400
             END
           `.as('has_date_mismatch'),

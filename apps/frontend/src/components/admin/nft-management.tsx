@@ -865,9 +865,16 @@ function NftManagementContent() {
                         const burnKey = `${nft.normalizedDomainName}-${nft.chainId}`;
                         const isBurning = burnInProgress.has(burnKey);
 
-                        // Determine if date mismatch is fixable (both dates exist) or not
+                        // Determine missing data vs date mismatch based on domain type
+                        const hasMissingData = nft.isPoweredByNamefiDomain
+                          ? nft.nftExpirationTime === null // For powered by namefi, only NFT date matters
+                          : nft.nftExpirationTime === null ||
+                            nft.domainExpirationTime === null; // For regular domains, both dates required
+
+                        // Date mismatch is only for regular domains where both dates exist but differ
                         const isDateMismatchFixable =
                           nft.hasDateMismatch &&
+                          !nft.isPoweredByNamefiDomain &&
                           nft.nftExpirationTime !== null &&
                           nft.domainExpirationTime !== null;
 
@@ -902,20 +909,18 @@ function NftManagementContent() {
                             <Td>{formatDate(nft.nftExpirationTime)}</Td>
                             <Td>{formatDate(nft.domainExpirationTime)}</Td>
                             <Td>
-                              {nft.hasDateMismatch ? (
-                                isDateMismatchFixable ? (
-                                  <Badge
-                                    variant="secondary"
-                                    className="flex items-center gap-1 bg-amber-100 text-amber-800 border-amber-200"
-                                  >
-                                    <AlertTriangle className="h-3 w-3" />
-                                    Mismatch
-                                  </Badge>
-                                ) : (
-                                  <Badge variant="destructive">
-                                    Missing Data
-                                  </Badge>
-                                )
+                              {hasMissingData ? (
+                                <Badge variant="destructive">
+                                  Missing Data
+                                </Badge>
+                              ) : nft.hasDateMismatch ? (
+                                <Badge
+                                  variant="secondary"
+                                  className="flex items-center gap-1 bg-amber-100 text-amber-800 border-amber-200"
+                                >
+                                  <AlertTriangle className="h-3 w-3" />
+                                  Date Mismatch
+                                </Badge>
                               ) : (
                                 <Badge
                                   variant="default"
@@ -1031,8 +1036,9 @@ function NftManagementContent() {
                                     </>
                                   )}
 
-                                  {/* Fix NFT Expiration Action - Only show for fixable date mismatches */}
+                                  {/* Fix NFT Expiration Action - Only show for fixable date mismatches (not missing data) */}
                                   {nft.hasDateMismatch &&
+                                    !hasMissingData &&
                                     (isDateMismatchFixable ? (
                                       <Button
                                         variant="outline"
@@ -1075,8 +1081,8 @@ function NftManagementContent() {
                                       </Tooltip>
                                     ))}
 
-                                  {/* Renew Action - Only show for valid domains (not burnable and no date mismatch) */}
-                                  {!nft.canBurn && !nft.hasDateMismatch && (
+                                  {/* Renew Action - Only show for valid domains (not burnable and no missing data) */}
+                                  {!nft.canBurn && !hasMissingData && (
                                     <Tooltip>
                                       <TooltipTrigger asChild>
                                         <Button

@@ -122,7 +122,7 @@ export async function collectNftManagementMetrics(): Promise<ReportMetrics> {
             WHEN ${isPoweredByNamefiCondition}
             THEN false
             WHEN ${namefiNftView.expirationTime} IS NULL OR ${indexedDomainsTable.expirationTime} IS NULL
-            THEN true
+            THEN false
             ELSE ABS(EXTRACT(EPOCH FROM (${namefiNftView.expirationTime} - ${indexedDomainsTable.expirationTime}))) > 86400
           END
         `.as('has_date_mismatch'),
@@ -294,12 +294,21 @@ function analyzeNftData(
       }
     }
 
-    if (nft.hasDateMismatch) {
-      metrics.dateMismatchNfts++;
-      // Check if it's missing data (cannot be fixed)
+    // Handle missing data vs date mismatch separately
+    if (nft.isPoweredByNamefiDomain) {
+      // For powered by namefi domains, only check NFT date
+      if (!nft.nftExpirationTime) {
+        metrics.missingDataNfts++;
+        metrics.criticalIssues.missingDataCannotFix++;
+      }
+    } else {
+      // For regular domains, check both dates
       if (!nft.nftExpirationTime || !nft.domainExpirationTime) {
         metrics.missingDataNfts++;
         metrics.criticalIssues.missingDataCannotFix++;
+      } else if (nft.hasDateMismatch) {
+        // Only count as date mismatch if both dates exist but differ
+        metrics.dateMismatchNfts++;
       }
     }
 
@@ -361,27 +370,23 @@ export async function formatNftManagementReport(
     `**Powered by Namefi:** ${metrics.poweredByNamefiDomains.toLocaleString()}`,
     `**Regular Domains:** ${metrics.regularDomains.toLocaleString()}`,
     '',
-
     '## ⚠️ Critical Issues Overview',
     `**Expired Domains:** ${metrics.expiredDomains.toLocaleString()} (${expiredPercentage}%)`,
     `**Can Burn NFTs:** ${metrics.canBurnNfts.toLocaleString()} (${canBurnPercentage}%)`,
     `**Date Mismatches:** ${metrics.dateMismatchNfts.toLocaleString()} (${dateMismatchPercentage}%)`,
     `**Missing Data (Cannot Fix):** ${metrics.missingDataNfts.toLocaleString()}`,
     '',
-
     '## 🔥 Critical Action Items',
     `**Expired & Burnable:** ${metrics.criticalIssues.expiredCanBurn.toLocaleString()} NFTs need immediate burn action`,
     `**Missing Data Issues:** ${metrics.criticalIssues.missingDataCannotFix.toLocaleString()} NFTs cannot be automatically fixed`,
     `**Long Overdue (30+ days expired):** ${metrics.criticalIssues.longOverdueExpired.toLocaleString()} domains`,
     '',
-
     '## 🔄 Active Workflows',
     `**Total Active:** ${totalActiveWorkflows.toLocaleString()}`,
     `• Burn Workflows: ${metrics.activeWorkflows.burnWorkflows.toLocaleString()}`,
     `• Fix Expiration: ${metrics.activeWorkflows.fixExpirationWorkflows.toLocaleString()}`,
     `• Extend Registration: ${metrics.activeWorkflows.extendRegistrationWorkflows.toLocaleString()}`,
     '',
-
     '## 🏢 Registrar Breakdown',
     ...Object.entries(metrics.registrarBreakdown)
       .sort(([, a], [, b]) => b - a)
@@ -389,7 +394,6 @@ export async function formatNftManagementReport(
         ([registrar, count]) => `• **${registrar}:** ${count.toLocaleString()}`,
       ),
     '',
-
     '## ⛓️ Chain Distribution',
     ...Object.entries(metrics.chainBreakdown)
       .sort(([, a], [, b]) => b - a)
@@ -403,7 +407,6 @@ export async function formatNftManagementReport(
         return `• **${chainName} (${chainId}):** ${count.toLocaleString()}`;
       }),
     '',
-
     '## 📈 Health Score',
     `**Overall Health:** ${calculateHealthScore(metrics)}`,
     generateHealthRecommendations(metrics),
@@ -414,14 +417,12 @@ export async function formatNftManagementReport(
     '**Data Source:** Direct database queries (namefiNftOwnersView, indexedDomainsTable)',
     '**Admin Panel:** Available at /admin/nft-management',
     '',
-
     '## 📋 Quick Actions Available',
     '• **Burn expired NFTs** - Use admin panel or API',
     '• **Fix date mismatches** - Automated workflow available',
     '• **Extend registrations** - Admin-initiated workflow',
     '• **Monitor active workflows** - Real-time status in admin panel',
     '',
-
     '---',
     '*This report is generated automatically using the comprehensive NFT management system.*',
     '*For detailed analysis, visit the admin panel or review individual NFT records.*',
