@@ -16,8 +16,11 @@ import { TEMPORAL_QUEUES } from '#temporal/shared/enums';
 import { ensureNftIsLockedAndBurnByNftName } from '#temporal/workflows/mint.workflow';
 import { extendDomainRegistrationWorkflow } from '#temporal/workflows/domain-ownership/extend-registration.workflow';
 import { fixNftExpirationWorkflow } from '#temporal/workflows/fix-nft-expiration.workflow';
-import { createTRPCRouter, protectedProcedure } from '../base';
-import { getPoweredByNamefi3PDomains } from '#lib/namefi-registry';
+import { createTRPCRouter, protectedProcedure, publicProcedure } from '../base';
+import {
+  getPoweredByNamefi3PDomains,
+  sldRegistrar,
+} from '#lib/namefi-registry';
 import { parseDomainName } from '@namefi-astra/utils/parse-domain-name';
 import {
   getPrivyUserLinkedEthereumWalletAddresses,
@@ -26,7 +29,7 @@ import {
 import { config } from '#lib/env';
 import { logger } from '#lib/logger';
 
-const MAX_GRACE_PERIOD_DAYS = 45; /* 45 days is the max grace period for any registrar */
+const MAX_GRACE_PERIOD_DAYS = 90; /* 90 days is the max grace period for any registrar */
 
 async function isUserAdmin(privyUserId: string): Promise<boolean> {
   const privyUser = await privyClient.getUserById(privyUserId);
@@ -765,6 +768,302 @@ export const adminRouter = createTRPCRouter({
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to start NFT expiration fix workflow',
+          cause: error,
+        });
+      }
+    }),
+
+  burnAllExpiredDomains: adminProcedure
+    .input(
+      z.object({
+        safeToBurnOnly: z
+          .literal(true)
+          .describe(
+            'This a confirmation flag to only burn domains that are safe to burn, you cannot burn domains that are not safe to burn',
+          ),
+        dryRun: z.boolean().default(true),
+        maxBurns: z.number().min(1).max(100).default(10),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      const { dryRun, maxBurns } = input;
+
+      logger.info(
+        { dryRun, maxBurns },
+        'Starting burn expired domains operation',
+      );
+
+      try {
+        // Step 1: Get expired domains from registrars
+        const expiredDomains = await sldRegistrar.listExpiredDomains();
+        logger.info(
+          { count: expiredDomains.length },
+          'Found expired domains from registrars',
+        );
+
+        if (expiredDomains.length === 0) {
+          return {
+            success: true,
+            message: 'No expired domains found from registrars',
+            domainsProcessed: 0,
+            burnedDomains: [],
+            skippedDomains: [],
+          };
+        }
+
+        // Step 2: Get powered by namefi domains to exclude them
+        const poweredByNamefiDomains = [
+          ...(await getPoweredByNamefi3PDomains()),
+          'withharris.club',
+          'withtrump.club',
+          'defi.build',
+        ];
+
+        // Step 3: Get NFT data for expired domains to determine burn eligibility
+        const expiredDomainNames = expiredDomains.map((d) => d.domainName);
+        const isPoweredByNamefiCondition = sql<boolean>`array_to_string((string_to_array(${namefiNftOwnersView.normalizedDomainName}, '.'))[2:], '.') = ANY(${sql.raw(`ARRAY[${poweredByNamefiDomains.map((d) => `'${d}'`).join(',')}]`)})`;
+
+        // Build filters to exclude sepolia and test domains (same as reporting)
+        const isSepoliaCondition = sql<boolean>`${namefiNftOwnersView.chainId} = 11155111`;
+        const isTestDomainCondition = sql<boolean>`split_part(${namefiNftOwnersView.normalizedDomainName}, '.', -1) LIKE 'test%'`;
+
+        const nftDataQuery = db
+          .select({
+            normalizedDomainName: namefiNftOwnersView.normalizedDomainName,
+            chainId: namefiNftOwnersView.chainId,
+            ownerAddress: namefiNftOwnersView.ownerAddress,
+            nftExpirationTime: namefiNftView.expirationTime,
+            domainExpirationTime: indexedDomainsTable.expirationTime,
+            registrarKey: indexedDomainsTable.registrarKey,
+            // Computed fields
+            isPoweredByNamefiDomain: isPoweredByNamefiCondition.as(
+              'is_powered_by_namefi_domain',
+            ),
+            canBurn: sql<boolean>`
+              CASE 
+                WHEN ${isPoweredByNamefiCondition}
+                THEN false
+                ELSE (
+                  ( ( NOW() - coalesce(${indexedDomainsTable.expirationTime}, NOW()) ) > interval '${sql.raw(MAX_GRACE_PERIOD_DAYS.toString())} days' )
+                  OR 
+                  ( ( NOW() - ${namefiNftView.expirationTime}) > interval '${sql.raw(MAX_GRACE_PERIOD_DAYS.toString())} days' )
+                )
+              END
+            `.as('can_burn'),
+            hasDateMismatch: sql<boolean>`
+              CASE 
+                WHEN ${isPoweredByNamefiCondition}
+                THEN false
+                WHEN ${namefiNftView.expirationTime} IS NULL OR ${indexedDomainsTable.expirationTime} IS NULL
+                THEN false
+                ELSE ABS(EXTRACT(EPOCH FROM (${namefiNftView.expirationTime} - ${indexedDomainsTable.expirationTime}))) > 86400
+              END
+            `.as('has_date_mismatch'),
+            hasMissingData: sql<boolean>`
+              CASE 
+                WHEN ${isPoweredByNamefiCondition}
+                THEN ${namefiNftView.expirationTime} IS NULL
+                ELSE (${namefiNftView.expirationTime} IS NULL OR ${indexedDomainsTable.expirationTime} IS NULL)
+              END
+            `.as('has_missing_data'),
+          })
+          .from(namefiNftOwnersView)
+          .leftJoin(
+            namefiNftView,
+            and(
+              eq(
+                namefiNftOwnersView.normalizedDomainName,
+                namefiNftView.normalizedDomainName,
+              ),
+              eq(namefiNftOwnersView.chainId, namefiNftView.chainId),
+            ),
+          )
+          .leftJoin(
+            indexedDomainsTable,
+            eq(
+              namefiNftOwnersView.normalizedDomainName,
+              indexedDomainsTable.normalizedDomainName,
+            ),
+          )
+          .where(
+            and(
+              sql`${namefiNftOwnersView.normalizedDomainName} = ANY(${sql.raw(`ARRAY[${expiredDomainNames.map((d) => `'${d}'`).join(',')}]`)})`,
+              sql`NOT ${isSepoliaCondition}`,
+              sql`NOT ${isTestDomainCondition}`,
+            ),
+          );
+
+        const nftData = await nftDataQuery;
+        logger.info(
+          { count: nftData.length },
+          'Found NFT data for expired domains',
+        );
+
+        // Step 4: Filter domains that are safe to burn
+        // Safe to burn: (canBurn OR hasMissingData) AND NOT isPoweredByNamefiDomain
+        const safeToBurnDomains = nftData
+          .filter(
+            (domain) =>
+              !domain.isPoweredByNamefiDomain &&
+              (domain.canBurn || domain.hasMissingData),
+          )
+          .slice(0, maxBurns); // Limit to maxBurns
+
+        const skippedDomains = nftData.filter(
+          (domain) =>
+            domain.isPoweredByNamefiDomain ||
+            (!domain.canBurn && !domain.hasMissingData),
+        );
+
+        logger.info(
+          {
+            safeToBurn: safeToBurnDomains.length,
+            skipped: skippedDomains.length,
+            dryRun,
+          },
+          'Identified domains for burning',
+        );
+
+        if (dryRun) {
+          return {
+            success: true,
+            message: `DRY RUN: Would burn ${safeToBurnDomains.length} domains`,
+            domainsProcessed: nftData.length,
+            burnedDomains: safeToBurnDomains.map((d) => ({
+              normalizedDomainName: d.normalizedDomainName,
+              chainId: d.chainId,
+              reason: d.canBurn
+                ? 'Can burn (beyond grace period)'
+                : 'Missing data',
+              nftExpirationTime: d.nftExpirationTime,
+              domainExpirationTime: d.domainExpirationTime,
+              dryRun: true,
+            })),
+            skippedDomains: skippedDomains.map((d) => ({
+              normalizedDomainName: d.normalizedDomainName,
+              chainId: d.chainId,
+              reason: d.isPoweredByNamefiDomain
+                ? 'Powered by Namefi domain (cannot burn)'
+                : 'Not eligible for burning',
+              nftExpirationTime: d.nftExpirationTime,
+              domainExpirationTime: d.domainExpirationTime,
+            })),
+          };
+        }
+
+        // Step 5: Execute burn operations (if not dry run)
+        const burnResults = [];
+        const burnErrors = [];
+
+        for (const domain of safeToBurnDomains) {
+          try {
+            const workflowId = ensureNftIsLockedAndBurnByNftName.generateId({
+              domainName: domain.normalizedDomainName,
+              chainId: domain.chainId,
+            });
+
+            // Check if there's already an active burn workflow for this domain
+            try {
+              const existingWorkflow =
+                await temporalClient.workflow.getHandle(workflowId);
+              const description = await existingWorkflow.describe();
+
+              if (description.status.name === 'RUNNING') {
+                burnErrors.push({
+                  normalizedDomainName: domain.normalizedDomainName,
+                  chainId: domain.chainId,
+                  error: 'Burn workflow already in progress',
+                  nftExpirationTime: domain.nftExpirationTime,
+                  domainExpirationTime: domain.domainExpirationTime,
+                });
+                continue;
+              }
+            } catch (error) {
+              // Workflow not found, which is fine - we can proceed
+              if (
+                error instanceof Error &&
+                !error.message.includes('not found')
+              ) {
+                throw error;
+              }
+            }
+
+            // Start the burn workflow
+            await temporalClient.workflow.start(
+              ensureNftIsLockedAndBurnByNftName,
+              {
+                args: [
+                  {
+                    domainName: domain.normalizedDomainName,
+                    chainId: domain.chainId,
+                  },
+                ],
+                workflowId,
+                taskQueue: TEMPORAL_QUEUES.MINT,
+                workflowIdConflictPolicy: 'USE_EXISTING',
+                workflowIdReusePolicy: 'ALLOW_DUPLICATE',
+              },
+            );
+
+            burnResults.push({
+              normalizedDomainName: domain.normalizedDomainName,
+              chainId: domain.chainId,
+              workflowId,
+              reason: domain.canBurn
+                ? 'Can burn (beyond grace period)'
+                : 'Missing data',
+              nftExpirationTime: domain.nftExpirationTime,
+              domainExpirationTime: domain.domainExpirationTime,
+              status: 'Started',
+            });
+
+            logger.info(
+              {
+                domain: domain.normalizedDomainName,
+                chainId: domain.chainId,
+                workflowId,
+              },
+              'Started burn workflow for expired domain',
+            );
+          } catch (error) {
+            logger.error(
+              {
+                domain: domain.normalizedDomainName,
+                chainId: domain.chainId,
+                error,
+              },
+              'Failed to start burn workflow',
+            );
+
+            burnErrors.push({
+              normalizedDomainName: domain.normalizedDomainName,
+              chainId: domain.chainId,
+              error: error instanceof Error ? error.message : 'Unknown error',
+              nftExpirationTime: domain.nftExpirationTime,
+              domainExpirationTime: domain.domainExpirationTime,
+            });
+          }
+        }
+
+        return {
+          success: true,
+          message: `Successfully started burn workflows for ${burnResults.length} domains`,
+          domainsProcessed: nftData.length,
+          burnedDomains: burnResults,
+          skippedDomains: skippedDomains.map((d) => ({
+            normalizedDomainName: d.normalizedDomainName,
+            chainId: d.chainId,
+            reason: d.isPoweredByNamefiDomain
+              ? 'Powered by Namefi domain (cannot burn)'
+              : 'Not eligible for burning',
+          })),
+          errors: burnErrors,
+        };
+      } catch (error) {
+        logger.error({ error }, 'Failed to burn expired domains');
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to burn expired domains',
           cause: error,
         });
       }
