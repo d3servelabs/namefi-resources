@@ -58,6 +58,7 @@ const getTrendingDomainsSchema = z.object({
   timeRange: z
     .enum(['TODAY', 'THIS_WEEK', 'THIS_MONTH', 'THIS_YEAR', 'ANYTIME'])
     .default('ANYTIME'),
+  extension: z.string().optional(),
 });
 
 const domainVoteSchema = z.object({
@@ -551,13 +552,26 @@ export const huntRouter = createTRPCRouter({
   getTrendingDomainsPublic: publicProcedure
     .input(getTrendingDomainsSchema)
     .query(async ({ input }) => {
-      const { offset, limit, timeRange } = input;
+      const { offset, limit, timeRange, extension } = input;
 
       // Build the query with time range filter
       const timeFilter = createTimeRangeFilter(
         timeRange,
         huntDomainStatsView.firstSubmitDate,
       );
+
+      // Build extension filter if provided
+      const extensionFilter = extension
+        ? sql`${huntDomainStatsView.domainName} LIKE ${`%.${extension}`}`
+        : undefined;
+
+      // Combine filters
+      const whereConditions = [
+        sql`(${huntDomainStatsView.pinWeight} > 0) OR (${timeFilter})`,
+      ];
+      if (extensionFilter) {
+        whereConditions.push(extensionFilter);
+      }
 
       // Get trending domains without user vote status
       const domains = await db
@@ -569,7 +583,11 @@ export const huntRouter = createTRPCRouter({
           isPinned: huntDomainStatsView.isPinned,
         })
         .from(huntDomainStatsView)
-        .where(sql`(${huntDomainStatsView.pinWeight} > 0) OR (${timeFilter})`)
+        .where(
+          whereConditions.length > 1
+            ? sql`(${whereConditions[0]}) AND (${whereConditions[1]})`
+            : whereConditions[0],
+        )
         .orderBy(
           desc(huntDomainStatsView.pinWeight),
           desc(huntDomainStatsView.upvoteCount),
@@ -604,7 +622,7 @@ export const huntRouter = createTRPCRouter({
   getTrendingDomains: protectedProcedure
     .input(getTrendingDomainsSchema)
     .query(async ({ ctx, input }) => {
-      const { offset, limit, timeRange } = input;
+      const { offset, limit, timeRange, extension } = input;
       const userId = ctx.user.id;
 
       // Build the query with time range filter
@@ -612,6 +630,19 @@ export const huntRouter = createTRPCRouter({
         timeRange,
         huntDomainStatsView.firstSubmitDate,
       );
+
+      // Build extension filter if provided
+      const extensionFilter = extension
+        ? sql`${huntDomainStatsView.domainName} LIKE ${`%.${extension}`}`
+        : undefined;
+
+      // Combine filters
+      const whereConditions = [
+        sql`(${huntDomainStatsView.pinWeight} > 0) OR (${timeFilter})`,
+      ];
+      if (extensionFilter) {
+        whereConditions.push(extensionFilter);
+      }
 
       // Get trending domains without user vote status
       const domains = await db
@@ -623,7 +654,11 @@ export const huntRouter = createTRPCRouter({
           isPinned: huntDomainStatsView.isPinned,
         })
         .from(huntDomainStatsView)
-        .where(sql`(${huntDomainStatsView.pinWeight} > 0) OR (${timeFilter})`)
+        .where(
+          whereConditions.length > 1
+            ? sql`(${whereConditions[0]}) AND (${whereConditions[1]})`
+            : whereConditions[0],
+        )
         .orderBy(
           desc(huntDomainStatsView.pinWeight),
           desc(huntDomainStatsView.upvoteCount),

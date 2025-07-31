@@ -7,6 +7,7 @@ import {
   Testimonials,
   CTA,
   DomainHuntWidget,
+  CVHuntSection,
   type FamousPerson,
   type ExampleProfile,
   type Testimonial,
@@ -43,6 +44,8 @@ export const CVLanding = ({ config }: { config: CVLandingConfig }) => {
         huntUrl={huntUrl}
         domainHuntWidget={<DomainHuntWidget domainName={domainName} />}
       />
+
+      <CVHuntSection name={config.name} />
 
       <FamousPeople name={displayName} famousPeople={config.famousPeople} />
 

@@ -21,7 +21,7 @@ export const Hero = ({
   name,
   rotatingNames,
   backgroundImage,
-  huntUrl,
+  huntUrl: _huntUrl,
   domainHuntWidget,
 }: HeroProps) => {
   // Generate derived values
@@ -62,6 +62,7 @@ export const Hero = ({
             <span className="text-brand-primary font-bold">{domainName}</span>{' '}
             by voting to show your interest!
             <br className="hidden md:block" />
+            <span className="md:hidden"> </span>
             Early supporters get priority access when registration opens.
           </p>
 
@@ -83,15 +84,18 @@ export const Hero = ({
               <ArrowDown className="w-5 h-5 mr-1" />
               Learn More
             </Button>
-            <Link href={huntUrl}>
-              <Button
-                size="lg"
-                className="px-6 sm:px-8 py-4 sm:py-6 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white border-0"
-              >
-                <Trophy className="w-5 h-5 mr-1" />
-                View on Namefi Hunt™
-              </Button>
-            </Link>
+            <Button
+              size="lg"
+              className="px-6 sm:px-8 py-4 sm:py-6 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white border-0"
+              onClick={() => {
+                document.getElementById('cv-hunt')?.scrollIntoView({
+                  behavior: 'smooth',
+                });
+              }}
+            >
+              <Trophy className="w-5 h-5 mr-1" />
+              Join the .cv Hunt
+            </Button>
           </div>
           <div className="text-center px-4 sm:px-0">
             <div className="flex items-center justify-center gap-3">

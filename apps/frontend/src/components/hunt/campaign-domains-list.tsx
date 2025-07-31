@@ -17,6 +17,7 @@ interface CampaignDomainsListProps {
   page: number;
   limit?: number;
   onPageChange: (page: number) => void;
+  showTitle?: boolean;
 }
 
 export const CampaignDomainsList = ({
@@ -24,6 +25,7 @@ export const CampaignDomainsList = ({
   page,
   limit = DEFAULT_CAMPAIGN_DOMAINS_PER_PAGE_LIMIT,
   onPageChange,
+  showTitle = true,
 }: CampaignDomainsListProps) => {
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
   const trpc = useTRPC();
@@ -52,36 +54,38 @@ export const CampaignDomainsList = ({
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-between items-center">
-        <div>
-          <h3 className="text-lg font-bold flex items-center gap-2">
-            <Link href={`/hunt/campaigns/${campaignKey}`}>
-              {data?.campaign?.title || campaignKey}
-            </Link>
-            {data?.campaign?.status && (
-              <Badge
-                className={cn(
-                  'font-medium',
-                  data.campaign.status === 'ACTIVE'
-                    ? 'bg-brand-primary text-primary-foreground italic'
-                    : 'bg-muted text-muted-foreground',
-                )}
-              >
-                {data.campaign.status === 'ACTIVE'
-                  ? 'ongoing!'
-                  : data.campaign.status === 'ENDED'
-                    ? 'ended'
-                    : 'not started yet'}
-              </Badge>
+      {showTitle && (
+        <div className="flex justify-between items-center">
+          <div>
+            <h3 className="text-lg font-bold flex items-center gap-2">
+              <Link href={`/hunt/campaigns/${campaignKey}`}>
+                {data?.campaign?.title || campaignKey}
+              </Link>
+              {data?.campaign?.status && (
+                <Badge
+                  className={cn(
+                    'font-medium',
+                    data.campaign.status === 'ACTIVE'
+                      ? 'bg-brand-primary text-primary-foreground italic'
+                      : 'bg-muted text-muted-foreground',
+                  )}
+                >
+                  {data.campaign.status === 'ACTIVE'
+                    ? 'ongoing!'
+                    : data.campaign.status === 'ENDED'
+                      ? 'ended'
+                      : 'not started yet'}
+                </Badge>
+              )}
+            </h3>
+            {data?.campaign?.description && (
+              <p className="text-sm text-muted-foreground mt-1">
+                {data.campaign.description}
+              </p>
             )}
-          </h3>
-          {data?.campaign?.description && (
-            <p className="text-sm text-muted-foreground mt-1">
-              {data.campaign.description}
-            </p>
-          )}
+          </div>
         </div>
-      </div>
+      )}
 
       <div className="border border-border shadow-sm rounded-xl bg-white/[0.03]">
         <DomainsList

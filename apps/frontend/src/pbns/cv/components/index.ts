@@ -6,6 +6,7 @@ export { ExampleProfiles } from './example-profiles';
 export { Testimonials } from './testimonials';
 export { CTA } from './cta';
 export { DomainHuntWidget } from './domain-hunt-widget';
+export { CVHuntSection } from './cv-hunt-section';
 export { CVLanding } from './landing';
 
 // Export types for external use - these are interfaces, not default exports

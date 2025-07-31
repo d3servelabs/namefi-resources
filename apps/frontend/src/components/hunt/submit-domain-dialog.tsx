@@ -18,6 +18,7 @@ import {
   type ReactNode,
   useCallback,
   useState,
+  useMemo,
 } from 'react';
 import { toast } from 'sonner';
 import { usePendingToast } from '../../hooks/use-pending-toast';
@@ -34,24 +35,39 @@ import { InteractionLoggingEventName } from '@/lib/analytics-events';
 interface SubmitDomainDialogProps {
   children: ReactNode;
   onSuccess?: () => void;
+  extension?: string;
 }
-const submitDomainSchema = z.object({
-  domainName: z
-    .string()
-    .refine((val) => val.includes('.'), {
-      message:
-        'Domain name must be a single level domain (e.g. example.com) or higher (e.g. sub.example.com)',
-    })
-    .refine((val) => namefiNormalizedDomainSchema.safeParse(val).success, {
-      message: 'Invalid domain name',
-    }),
-});
+
+const createSubmitDomainSchema = (extension?: string) =>
+  z.object({
+    domainName: z
+      .string()
+      .refine((val) => val.includes('.'), {
+        message:
+          'Domain name must be a single level domain (e.g. example.com) or higher (e.g. sub.example.com)',
+      })
+      .refine((val) => namefiNormalizedDomainSchema.safeParse(val).success, {
+        message: 'Invalid domain name',
+      })
+      .refine((val) => !extension || val.endsWith(`.${extension}`), {
+        message: extension
+          ? `Domain must end with .${extension}`
+          : 'Invalid domain extension',
+      }),
+  });
 export const SubmitDomainDialog = ({
   children,
   onSuccess,
+  extension,
 }: SubmitDomainDialogProps) => {
   const [isSubmitDialogOpen, setIsSubmitDialogOpen] = useState(false);
   const { logEventWithInteractionLoggers } = useInteractionLoggers();
+
+  const submitDomainSchema = useMemo(
+    () => createSubmitDomainSchema(extension),
+    [extension],
+  );
+
   const {
     register,
     handleSubmit,
@@ -155,7 +171,7 @@ export const SubmitDomainDialog = ({
             <Input
               id="domain-name"
               onKeyDown={handleInputKeyDown}
-              placeholder="example.com"
+              placeholder={extension ? `example.${extension}` : 'example.com'}
               {...register('domainName')}
             />
             {errors.domainName && (
