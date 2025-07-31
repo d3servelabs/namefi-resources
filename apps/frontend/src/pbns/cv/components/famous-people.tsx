@@ -1,12 +1,5 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/shadcn/card';
-import { Quote, ExternalLink } from 'lucide-react';
-import type { LucideIcon } from 'lucide-react';
+import { Card, CardDescription, CardTitle } from '@/components/ui/shadcn/card';
+import { ExternalLink } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { GlowingEffect } from '@/components/ui/aceternity/glowing-effect';
@@ -14,11 +7,9 @@ import { GlowingEffect } from '@/components/ui/aceternity/glowing-effect';
 export interface FamousPerson {
   name: string;
   title: string;
-  quote: string;
   achievement: string;
-  icon: LucideIcon;
-  externalUrl?: string;
-  image?: string; // Path to the person's image
+  externalUrl: string;
+  image: string;
 }
 
 interface FamousPeopleProps {
@@ -28,152 +19,56 @@ interface FamousPeopleProps {
   famousPeople: FamousPerson[];
 }
 
-// Color schemes for different people
-const colorSchemes = [
-  {
-    iconColor: 'bg-purple-700',
-    quoteColor: 'text-purple-400',
-    achievementColor: 'text-purple-300',
-    quoteBgColor: 'bg-purple-400/30',
-  },
-  {
-    iconColor: 'bg-blue-700',
-    quoteColor: 'text-blue-400',
-    achievementColor: 'text-blue-300',
-    quoteBgColor: 'bg-blue-400/30',
-  },
-  {
-    iconColor: 'bg-violet-700',
-    quoteColor: 'text-violet-400',
-    achievementColor: 'text-violet-300',
-    quoteBgColor: 'bg-violet-400/30',
-  },
-  {
-    iconColor: 'bg-indigo-700',
-    quoteColor: 'text-indigo-400',
-    achievementColor: 'text-indigo-300',
-    quoteBgColor: 'bg-indigo-400/30',
-  },
-  {
-    iconColor: 'bg-pink-700',
-    quoteColor: 'text-pink-400',
-    achievementColor: 'text-pink-300',
-    quoteBgColor: 'bg-pink-400/30',
-  },
-];
+const PersonCard = ({ person }: { person: FamousPerson }) => {
+  return (
+    <Card className="relative bg-slate-900/80 border-slate-700/60 shadow-xl rounded-2xl p-2">
+      <GlowingEffect
+        spread={40}
+        glow={true}
+        disabled={false}
+        proximity={64}
+        inactiveZone={0.01}
+      />
 
-const PersonCard = ({
-  person,
-  index,
-}: {
-  person: FamousPerson;
-  index: number;
-}) => {
-  const IconComponent = person.icon;
-  const colors = colorSchemes[index % colorSchemes.length];
-
-  // If image is available, use image-focused layout
-  if (person.image) {
-    return (
-      <Card className="relative bg-slate-900/80 border-slate-700/60 shadow-xl rounded-2xl p-2">
-        <GlowingEffect
-          spread={40}
-          glow={true}
-          disabled={false}
-          proximity={64}
-          inactiveZone={0.01}
+      <div className="relative aspect-square w-full h-full rounded-lg overflow-hidden">
+        <Image
+          src={person.image}
+          alt={`${person.name} - ${person.title}`}
+          fill
+          className="object-cover object-top w-full h-full"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 25vw"
         />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/20 to-transparent" />
 
-        <div className="relative aspect-square w-full h-full rounded-lg overflow-hidden">
-          <Image
-            src={person.image}
-            alt={`${person.name} - ${person.title}`}
-            fill
-            className="object-cover object-top w-full h-full"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 25vw"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/20 to-transparent" />
-
-          {/* Name and title overlay */}
-          <div className="absolute bottom-0 left-0 right-0 p-5 bg-gradient-to-t from-black/80 via-black/40 to-transparent">
-            <div className="space-y-1">
-              <CardTitle className="text-xl md:text-2xl text-white font-bold leading-tight drop-shadow-lg">
-                {person.externalUrl ? (
-                  <Link
-                    href={person.externalUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:underline inline-flex items-center gap-1.5 transition-colors hover:text-blue-200"
-                  >
-                    {person.name}
-                    <ExternalLink className="w-4 h-4 text-slate-300 flex-shrink-0" />
-                  </Link>
-                ) : (
-                  person.name
-                )}
-              </CardTitle>
-              <CardDescription className="text-slate-200 font-medium text-base leading-relaxed">
-                {person.title}
-              </CardDescription>
-              <div className="pt-0.5">
-                <span className="inline-block bg-white/10 backdrop-blur-sm text-white font-semibold text-xs px-2.5 py-0.5 rounded-full border border-white/30">
-                  {person.achievement}
-                </span>
-              </div>
+        {/* Name and title overlay */}
+        <div className="absolute bottom-0 left-0 right-0 p-5 bg-gradient-to-t from-black/80 via-black/40 to-transparent">
+          <div className="space-y-1">
+            <CardTitle className="text-xl md:text-2xl text-white font-bold leading-tight drop-shadow-lg">
+              {person.externalUrl ? (
+                <Link
+                  href={person.externalUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:underline inline-flex items-center gap-1.5 transition-colors hover:text-blue-200"
+                >
+                  {person.name}
+                  <ExternalLink className="w-4 h-4 text-slate-300 flex-shrink-0" />
+                </Link>
+              ) : (
+                person.name
+              )}
+            </CardTitle>
+            <CardDescription className="text-slate-200 font-medium text-base leading-relaxed">
+              {person.title}
+            </CardDescription>
+            <div className="pt-0.5">
+              <span className="inline-block bg-white/10 backdrop-blur-sm text-white font-semibold text-xs px-2.5 py-0.5 rounded-full border border-white/30">
+                {person.achievement}
+              </span>
             </div>
           </div>
         </div>
-      </Card>
-    );
-  }
-
-  // Fallback to original layout for people without images
-  return (
-    <Card className="bg-slate-900/80 border-slate-700/60 shadow-xl hover:shadow-2xl transition-shadow duration-200">
-      <CardHeader className="flex flex-row items-center gap-4 pb-2 pt-6 px-6">
-        <div
-          className={`w-12 h-12 rounded-full ${colors.iconColor} flex items-center justify-center shadow-lg`}
-        >
-          <IconComponent className="w-7 h-7 text-white" />
-        </div>
-        <div>
-          <CardTitle className="text-lg text-white font-medium">
-            {person.externalUrl ? (
-              <Link
-                href={person.externalUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:underline flex items-center gap-1"
-              >
-                {person.name}
-                <ExternalLink className="w-4 h-4 text-slate-400" />
-              </Link>
-            ) : (
-              person.name
-            )}
-          </CardTitle>
-          <CardDescription className="text-slate-400 font-normal">
-            {person.title}
-          </CardDescription>
-        </div>
-      </CardHeader>
-      <CardContent className="pt-2 pb-6 px-6">
-        <div className="mb-4 flex items-start gap-3">
-          <span className="mt-1">
-            <Quote className={`w-7 h-7 ${colors.quoteColor} opacity-80`} />
-          </span>
-          <span
-            className={`italic text-base md:text-lg text-slate-200 font-normal ${colors.quoteBgColor} rounded-xl px-4 py-3 leading-relaxed block`}
-          >
-            {person.quote}
-          </span>
-        </div>
-        <div
-          className={`mt-6 text-base font-medium ${colors.achievementColor} flex items-center gap-2`}
-        >
-          <IconComponent className="w-5 h-5" /> {person.achievement}
-        </div>
-      </CardContent>
+      </div>
     </Card>
   );
 };
@@ -196,13 +91,13 @@ export const FamousPeople = ({ name, famousPeople }: FamousPeopleProps) => {
         <div className="grid grid-cols-1 md:grid-cols-6 gap-8 max-w-6xl mx-auto">
           {/* First row: 3 cards, each taking 2 columns */}
           <div className="md:col-span-2">
-            <PersonCard person={famousPeople[0]} index={0} />
+            <PersonCard person={famousPeople[0]} />
           </div>
           <div className="md:col-span-2">
-            <PersonCard person={famousPeople[1]} index={1} />
+            <PersonCard person={famousPeople[1]} />
           </div>
           <div className="md:col-span-2">
-            <PersonCard person={famousPeople[2]} index={2} />
+            <PersonCard person={famousPeople[2]} />
           </div>
 
           {/* Second row: 2 cards, each taking 2 columns with 1 column gap on each side */}
@@ -210,10 +105,10 @@ export const FamousPeople = ({ name, famousPeople }: FamousPeopleProps) => {
             <>
               <div className="md:col-span-1" />
               <div className="md:col-span-2">
-                <PersonCard person={famousPeople[3]} index={3} />
+                <PersonCard person={famousPeople[3]} />
               </div>
               <div className="md:col-span-2">
-                <PersonCard person={famousPeople[4]} index={4} />
+                <PersonCard person={famousPeople[4]} />
               </div>
               <div className="md:col-span-1" />
             </>
