@@ -677,17 +677,17 @@ export async function sendNftManagementReportEmail(
     const plain = await render(emailTemplate, { plainText: true });
 
     await sendMail({
-      to: ['reporting@namefi.io'],
+      to: ['reports+nft@d3serve.xyz'],
       subject: title,
       content: {
         html,
         plain,
       },
-      from: 'NFT Management System <nft-reports@namefi.io>',
+      from: 'NFT Management System <noreply@d3serve.xyz>',
     });
 
     ctx.log.info(
-      'Successfully sent NFT management report email to reporting@namefi.io',
+      'Successfully sent NFT management report email to reports+nft@d3serve.xyz',
     );
   } catch (error) {
     ctx.log.error('Failed to send NFT management report email', { error });
