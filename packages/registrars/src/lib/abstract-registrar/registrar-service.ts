@@ -225,6 +225,11 @@ export abstract class AbstractRegistrarService<T extends string = string> {
     options?: any,
   ): Promise<RenewOption>;
   abstract listAllDomains(): Promise<DomainSummary[]>;
+  abstract listExpiredDomains(options?: any): Promise<
+    {
+      domainName: PunycodeDomainName;
+    }[]
+  >;
 
   setDomainLockState(
     domainName: PunycodeDomainName,

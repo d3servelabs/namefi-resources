@@ -12,6 +12,7 @@ import {
   GetDomainSuggestionsCommand,
   GetOperationDetailCommand,
   ListDomainsCommand,
+  ListOperationsCommand,
   ListPricesCommand,
   RegisterDomainCommand,
   RenewDomainCommand,
@@ -62,6 +63,8 @@ import type {
   DomainPrice,
   ListDomainsCommandInput,
   ListDomainsCommandOutput,
+  ListOperationsCommandInput,
+  ListOperationsCommandOutput,
   ListPricesCommandInput,
   ListPricesCommandOutput,
   RegisterDomainCommandInput,
@@ -776,6 +779,75 @@ export class R53RegistrarService extends AbstractRegistrarService {
         };
       },
     );
+  }
+
+  async listExpiredDomains(): Promise<
+    {
+      domainName: PunycodeDomainName;
+    }[]
+  > {
+    const expiredOperations: ListOperationsCommandOutput['Operations'] = [];
+    let marker: string | undefined;
+    let pageCount = 0;
+    const maxPages = 1000;
+
+    // Get all EXPIRE_DOMAIN operations to find expired domains
+    do {
+      if (pageCount >= maxPages) {
+        this.logger.warn('Reached maximum page limit for expired domains');
+        break;
+      }
+      try {
+        const input: ListOperationsCommandInput = {
+          SortBy: 'SubmittedDate',
+          SortOrder: 'DESC',
+          Marker: marker,
+          MaxItems: 100,
+          Type: ['EXPIRE_DOMAIN'],
+        };
+        const command = new ListOperationsCommand(input);
+        const response = await this.send(command);
+        marker = response.NextPageMarker;
+        expiredOperations.push(...(response.Operations ?? []));
+        pageCount++;
+      } catch (e) {
+        this.logger.error(
+          { error: e },
+          'Failed to fetch expired domain operations',
+        );
+        throw e;
+      }
+    } while (marker);
+
+    // Extract domain names from the operations and get their details
+    const uniqueDomainNames = new Set<string>();
+    expiredOperations.forEach((operation) => {
+      if (operation.DomainName) {
+        uniqueDomainNames.add(operation.DomainName);
+      }
+    });
+
+    // Get domain details for each expired domain
+    // Convert domain names to punycode format
+    const expiredDomains: {
+      domainName: PunycodeDomainName;
+      expirationTime?: Date;
+    }[] = Array.from(uniqueDomainNames).map((domainName) => ({
+      domainName: toPunycodeDomainName(domainName),
+      // Note: expirationTime could be populated by fetching domain details
+      // or extracting from operation metadata if available
+    }));
+
+    this.logger.info(
+      {
+        totalOperations: expiredOperations.length,
+        uniqueDomains: uniqueDomainNames.size,
+        retrievedDomains: expiredDomains.length,
+      },
+      'Retrieved expired domains using EXPIRE_DOMAIN operations',
+    );
+
+    return expiredDomains;
   }
 
   isOperationDone(status: OperationStatus) {

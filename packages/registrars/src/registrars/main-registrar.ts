@@ -539,6 +539,32 @@ export class RegistrarService extends AbstractRegistrarService {
     return domains;
   }
 
+  async listExpiredDomains(options?: { registrar?: Registrars }): Promise<
+    WithRegistrar<{
+      domainName: PunycodeDomainName;
+    }>[]
+  > {
+    const registrars = options?.registrar
+      ? [options.registrar]
+      : this.getAllowedRegistrars();
+
+    const expiredDomainsLists = await Promise.all(
+      registrars.map((registrar) =>
+        this.registrars[registrar].listExpiredDomains(),
+      ),
+    );
+    const expiredDomains = expiredDomainsLists.flatMap((list, index) =>
+      list.map(injectRegistrar(registrars[index])),
+    );
+
+    // Cache the domain-to-registrar mapping for expired domains too
+    expiredDomains.forEach((domain) => {
+      this.domainToRegistrar.set(domain.domainName, domain.registrarKey);
+    });
+
+    return expiredDomains;
+  }
+
   private _getRegistrar(
     registrar: Registrars,
   ): AbstractRegistrarService<Registrars> {

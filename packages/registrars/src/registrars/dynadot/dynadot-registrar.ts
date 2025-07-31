@@ -1261,6 +1261,30 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
       transferLocked: Locked === 'yes',
     }));
   }
+
+  /**
+   * Lists expired domains for the account
+   * @returns Promise resolving to an array of expired domain summaries
+   * @note Dynadot does not currently provide a dedicated API endpoint for expired domains.
+   *       This method returns an empty array as a placeholder until the API is available.
+   *       When the API becomes available, this method should be updated to call the
+   *       appropriate Dynadot endpoint to filter expired domains.
+   */
+  async listExpiredDomains(): Promise<
+    {
+      domainName: PunycodeDomainName;
+    }[]
+  > {
+    this.logger.warn(
+      'Dynadot does not currently support listing expired domains through API. ' +
+        'Returning empty array. Consider implementing manual filtering from listAllDomains() ' +
+        'or wait for Dynadot to provide this endpoint.',
+    );
+
+    // TODO: Implement when Dynadot provides expired domains endpoint
+    // For now, returning empty array as placeholder
+    return [];
+  }
 }
 
 function parsePriceForDomain(price: string | undefined | null) {
