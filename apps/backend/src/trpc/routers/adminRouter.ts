@@ -16,7 +16,7 @@ import { TEMPORAL_QUEUES } from '#temporal/shared/enums';
 import { ensureNftIsLockedAndBurnByNftName } from '#temporal/workflows/mint.workflow';
 import { extendDomainRegistrationWorkflow } from '#temporal/workflows/domain-ownership/extend-registration.workflow';
 import { fixNftExpirationWorkflow } from '#temporal/workflows/fix-nft-expiration.workflow';
-import { createTRPCRouter, protectedProcedure, publicProcedure } from '../base';
+import { createTRPCRouter, protectedProcedure } from '../base';
 import {
   getPoweredByNamefi3PDomains,
   sldRegistrar,
@@ -30,6 +30,7 @@ import { config } from '#lib/env';
 import { logger } from '#lib/logger';
 
 const MAX_GRACE_PERIOD_DAYS = 90; /* 90 days is the max grace period for any registrar */
+const DATE_MISMATCH_THRESHOLD_SECONDS = 86400;
 
 async function isUserAdmin(privyUserId: string): Promise<boolean> {
   const privyUser = await privyClient.getUserById(privyUserId);
@@ -124,12 +125,12 @@ export const adminRouter = createTRPCRouter({
             CASE 
               WHEN ${isPoweredByNamefiCondition}
               THEN false
+              WHEN ${indexedDomainsTable.expirationTime} IS NULL OR ${namefiNftView.expirationTime} IS NULL
+              THEN true
+              WHEN ABS(EXTRACT(EPOCH FROM (${namefiNftView.expirationTime} - ${indexedDomainsTable.expirationTime}))) > ${DATE_MISMATCH_THRESHOLD_SECONDS}
+              THEN false
               ELSE (
-                ( ( NOW() - coalesce(${indexedDomainsTable.expirationTime}, NOW()) ) > interval '${sql.raw(MAX_GRACE_PERIOD_DAYS.toString())} days' )
-                OR 
-                ( ( NOW() - ${namefiNftView.expirationTime}) > interval '${sql.raw(MAX_GRACE_PERIOD_DAYS.toString())} days' )
-                OR
-                ${indexedDomainsTable.expirationTime} IS NULL
+                ( NOW() - coalesce(${indexedDomainsTable.expirationTime}, ${namefiNftView.expirationTime}) ) > interval '${sql.raw(MAX_GRACE_PERIOD_DAYS.toString())} days'
               )
             END
           `.as('can_burn'),
@@ -139,7 +140,7 @@ export const adminRouter = createTRPCRouter({
               THEN false
               WHEN ${namefiNftView.expirationTime} IS NULL OR ${indexedDomainsTable.expirationTime} IS NULL
               THEN false
-              ELSE ABS(EXTRACT(EPOCH FROM (${namefiNftView.expirationTime} - ${indexedDomainsTable.expirationTime}))) > 86400
+              ELSE ABS(EXTRACT(EPOCH FROM (${namefiNftView.expirationTime} - ${indexedDomainsTable.expirationTime}))) > ${DATE_MISMATCH_THRESHOLD_SECONDS}
             END
           `.as('has_date_mismatch'),
         })
@@ -843,10 +844,12 @@ export const adminRouter = createTRPCRouter({
               CASE 
                 WHEN ${isPoweredByNamefiCondition}
                 THEN false
+                WHEN ${indexedDomainsTable.expirationTime} IS NULL OR ${namefiNftView.expirationTime} IS NULL
+                THEN true
+                WHEN ABS(EXTRACT(EPOCH FROM (${namefiNftView.expirationTime} - ${indexedDomainsTable.expirationTime}))) > ${DATE_MISMATCH_THRESHOLD_SECONDS}
+                THEN false
                 ELSE (
-                  ( ( NOW() - coalesce(${indexedDomainsTable.expirationTime}, NOW()) ) > interval '${sql.raw(MAX_GRACE_PERIOD_DAYS.toString())} days' )
-                  OR 
-                  ( ( NOW() - ${namefiNftView.expirationTime}) > interval '${sql.raw(MAX_GRACE_PERIOD_DAYS.toString())} days' )
+                  ( NOW() - coalesce(${indexedDomainsTable.expirationTime}, ${namefiNftView.expirationTime}) ) > interval '${sql.raw(MAX_GRACE_PERIOD_DAYS.toString())} days'
                 )
               END
             `.as('can_burn'),
@@ -856,7 +859,7 @@ export const adminRouter = createTRPCRouter({
                 THEN false
                 WHEN ${namefiNftView.expirationTime} IS NULL OR ${indexedDomainsTable.expirationTime} IS NULL
                 THEN false
-                ELSE ABS(EXTRACT(EPOCH FROM (${namefiNftView.expirationTime} - ${indexedDomainsTable.expirationTime}))) > 86400
+                ELSE ABS(EXTRACT(EPOCH FROM (${namefiNftView.expirationTime} - ${indexedDomainsTable.expirationTime}))) > ${DATE_MISMATCH_THRESHOLD_SECONDS}
               END
             `.as('has_date_mismatch'),
             hasMissingData: sql<boolean>`
@@ -1106,7 +1109,7 @@ function _buildQueryFilters(
     );
   } else if (filterBy === 'canBurn') {
     // For canBurn, we need to check:
-    // 1. Either domain OR NFT is beyond grace period
+    // 1. Missing data OR (no date mismatch AND beyond grace period)
     // 2. NOT a powered by namefi domain (they can't be burned)
     const isPoweredByNamefiCondition = sql`array_to_string((string_to_array(${namefiNftOwnersView.normalizedDomainName}, '.'))[2:], '.') = ANY(${sql.raw(`ARRAY[${poweredByNamefiDomains.map((d) => `'${d}'`).join(',')}]`)})`;
 
@@ -1114,13 +1117,22 @@ function _buildQueryFilters(
       and(
         // Not a powered by namefi domain
         sql`NOT (${isPoweredByNamefiCondition})`,
-        // Either domain or NFT beyond grace period
+        // Can burn logic: missing data OR (no date mismatch AND beyond grace period)
         or(
-          // Domain beyond grace period
-          sql`( ( NOW() - coalesce(${indexedDomainsTable.expirationTime}, NOW()) ) > interval '${sql.raw(MAX_GRACE_PERIOD_DAYS.toString())} days')`,
-          isNull(indexedDomainsTable.expirationTime),
-          // NFT beyond grace period
-          sql`( ( NOW() - ${namefiNftView.expirationTime}) > interval '${sql.raw(MAX_GRACE_PERIOD_DAYS.toString())} days')`,
+          // Missing data - can burn
+          and(
+            or(
+              isNull(indexedDomainsTable.expirationTime),
+              isNull(namefiNftView.expirationTime),
+            ),
+          ),
+          // No date mismatch AND beyond grace period
+          and(
+            // No significant date mismatch (< 1 day difference)
+            sql`ABS(EXTRACT(EPOCH FROM (${namefiNftView.expirationTime} - ${indexedDomainsTable.expirationTime}))) <= ${DATE_MISMATCH_THRESHOLD_SECONDS}`,
+            // Beyond grace period
+            sql`( NOW() - coalesce(${indexedDomainsTable.expirationTime}, ${namefiNftView.expirationTime}) ) > interval '${sql.raw(MAX_GRACE_PERIOD_DAYS.toString())} days'`,
+          ),
         ),
       ),
     );
@@ -1142,7 +1154,7 @@ function _buildQueryFilters(
           and(
             sql`${namefiNftView.expirationTime} IS NOT NULL`,
             sql`${indexedDomainsTable.expirationTime} IS NOT NULL`,
-            sql`ABS(EXTRACT(EPOCH FROM (${namefiNftView.expirationTime} - ${indexedDomainsTable.expirationTime}))) > 86400`,
+            sql`ABS(EXTRACT(EPOCH FROM (${namefiNftView.expirationTime} - ${indexedDomainsTable.expirationTime}))) > ${DATE_MISMATCH_THRESHOLD_SECONDS}`,
           ),
         ),
       ),
