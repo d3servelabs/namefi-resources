@@ -94,7 +94,7 @@ export const Hero = ({
               }}
             >
               <Trophy className="w-5 h-5 mr-1" />
-              Join the .cv Hunt
+              Join the .cv Namefi Hunt™
             </Button>
           </div>
           <div className="text-center px-4 sm:px-0">
