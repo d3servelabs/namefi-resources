@@ -18,6 +18,7 @@ interface CampaignDomainsListProps {
   limit?: number;
   onPageChange: (page: number) => void;
   showTitle?: boolean;
+  skeletonCount?: number;
 }
 
 export const CampaignDomainsList = ({
@@ -26,6 +27,7 @@ export const CampaignDomainsList = ({
   limit = DEFAULT_CAMPAIGN_DOMAINS_PER_PAGE_LIMIT,
   onPageChange,
   showTitle = true,
+  skeletonCount,
 }: CampaignDomainsListProps) => {
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
   const trpc = useTRPC();
@@ -92,6 +94,7 @@ export const CampaignDomainsList = ({
           domains={data?.rankings || []}
           isLoading={isLoading || isAuthLoading}
           isError={isError}
+          skeletonCount={skeletonCount}
         />
       </div>
 

@@ -35,6 +35,7 @@ import { InteractionLoggingEventName } from '@/lib/analytics-events';
 interface SubmitDomainDialogProps {
   children: ReactNode;
   onSuccess?: () => void;
+  redirectOnSuccess?: boolean;
   extension?: string;
 }
 
@@ -59,6 +60,7 @@ export const SubmitDomainDialog = ({
   children,
   onSuccess,
   extension,
+  redirectOnSuccess = true,
 }: SubmitDomainDialogProps) => {
   const [isSubmitDialogOpen, setIsSubmitDialogOpen] = useState(false);
   const { logEventWithInteractionLoggers } = useInteractionLoggers();
@@ -121,7 +123,9 @@ export const SubmitDomainDialog = ({
         }
 
         onSuccess?.();
-        router.push(`/hunt/domains/${encodeURIComponent(currentDomain)}`);
+        if (redirectOnSuccess) {
+          router.push(`/hunt/domains/${encodeURIComponent(currentDomain)}`);
+        }
       },
       onError: (error) => {
         toast.error(error.message || 'Failed to submit domain');

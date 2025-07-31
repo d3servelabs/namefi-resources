@@ -1,22 +1,18 @@
 'use client';
 
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '@/hooks/use-auth';
 import { useTRPC } from '@/lib/trpc';
 import { Button } from '@/components/ui/shadcn/button';
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/shadcn/tabs';
+import { AuthGuard } from '@/components/dialogs/auth-required-dialog';
 import { DomainsList } from '@/components/hunt/domains-list';
 import { CampaignDomainsList } from '@/components/hunt/campaign-domains-list';
 import { SubmitDomainDialog } from '@/components/hunt/submit-domain-dialog';
-import { PaginationControls } from '@/components/hunt/pagination-control';
-import { config } from '@/lib/env';
 import { Trophy, Target, TrendingUp, Plus } from 'lucide-react';
-import type { AppRouterInput } from '@/lib/trpc';
 
-type TimeRange = AppRouterInput['hunt']['getTrendingDomains']['timeRange'];
-
-const CV_DOMAINS_PER_PAGE_LIMIT = 10;
+const TRENDING_LIMIT = 5;
+const CV_CAMPAIGN_KEY = 'cv-2025-07-16';
 
 interface CVHuntSectionProps {
   /** The name (e.g., "taylor") for generating domain-specific content */
@@ -25,32 +21,15 @@ interface CVHuntSectionProps {
 
 export const CVHuntSection = ({ name: _name }: CVHuntSectionProps) => {
   const [campaignPage, setCampaignPage] = useState(1);
-  const [trendingPage, setTrendingPage] = useState(1);
-  const [timeRange, setTimeRange] = useState<TimeRange>('THIS_WEEK');
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
 
   const trpc = useTRPC();
-  const offset = (trendingPage - 1) * CV_DOMAINS_PER_PAGE_LIMIT;
-
-  // Get CV campaign key from config
-  const cvCampaignKey = useMemo(() => {
-    return config.HUNT_CAMPAIGN_KEYS.find((key) => key.includes('cv'));
-  }, []);
-
-  const handleTimeRangeChange = useCallback((value: string) => {
-    setTimeRange(value as TimeRange);
-    setTrendingPage(1);
-  }, []);
 
   const handleCampaignPageChange = useCallback((newPage: number) => {
     setCampaignPage(newPage);
   }, []);
 
-  const handleTrendingPageChange = useCallback((newPage: number) => {
-    setTrendingPage(newPage);
-  }, []);
-
-  // Fetch trending .cv domains
+  // Fetch trending .cv domains (all time, excluding campaign domains)
   const {
     data: trendingData,
     isLoading: isTrendingLoading,
@@ -58,24 +37,19 @@ export const CVHuntSection = ({ name: _name }: CVHuntSectionProps) => {
   } = useQuery({
     ...(isAuthenticated
       ? trpc.hunt.getTrendingDomains.queryOptions({
-          limit: CV_DOMAINS_PER_PAGE_LIMIT,
-          offset,
-          timeRange,
+          limit: TRENDING_LIMIT,
+          timeRange: 'ANYTIME',
           extension: 'cv',
+          excludeCampaignKey: CV_CAMPAIGN_KEY,
         })
       : trpc.hunt.getTrendingDomainsPublic.queryOptions({
-          limit: CV_DOMAINS_PER_PAGE_LIMIT,
-          offset,
-          timeRange,
+          limit: TRENDING_LIMIT,
+          timeRange: 'ANYTIME',
           extension: 'cv',
+          excludeCampaignKey: CV_CAMPAIGN_KEY,
         })),
     enabled: !isAuthLoading,
   });
-
-  const hasTrendingMore = useMemo(
-    () => trendingData?.hasMore ?? false,
-    [trendingData],
-  );
 
   return (
     <section id="cv-hunt" className="py-20 px-4 relative">
@@ -98,9 +72,10 @@ export const CVHuntSection = ({ name: _name }: CVHuntSectionProps) => {
             or get priority access to purchase one.
           </p>
 
-          <div className="space-y-16 mt-16">
-            {/* CV Campaign Section */}
-            {cvCampaignKey && (
+          {/* Two-column layout for larger screens */}
+          <div className="mt-16">
+            <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 xl:gap-12">
+              {/* CV Campaign Section */}
               <div className="space-y-6">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-blue-500 rounded-2xl flex items-center justify-center text-white shadow-lg">
@@ -116,18 +91,17 @@ export const CVHuntSection = ({ name: _name }: CVHuntSectionProps) => {
                   </div>
                 </div>
                 <CampaignDomainsList
-                  campaignKey={cvCampaignKey}
+                  campaignKey={CV_CAMPAIGN_KEY}
                   page={campaignPage}
                   limit={8}
                   onPageChange={handleCampaignPageChange}
                   showTitle={false}
+                  skeletonCount={5}
                 />
               </div>
-            )}
 
-            {/* Trending .cv Domains Section */}
-            <div className="space-y-6" id="trending-cv-domains">
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              {/* Trending .cv Domains Section */}
+              <div className="space-y-6" id="trending-cv-domains">
                 <div className="flex items-center gap-3">
                   <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-500 rounded-2xl flex items-center justify-center text-white shadow-lg">
                     <TrendingUp className="w-6 h-6" />
@@ -136,82 +110,25 @@ export const CVHuntSection = ({ name: _name }: CVHuntSectionProps) => {
                     <h3 className="text-2xl font-bold text-white text-left">
                       Trending .cv Domains
                     </h3>
-                    <p className="text-slate-400">
-                      Community favorites and rising stars
+                    <p className="text-slate-400 text-left">
+                      All-time community favorites
                     </p>
                   </div>
                 </div>
-                <Tabs value={timeRange} onValueChange={handleTimeRangeChange}>
-                  <TabsList className="bg-slate-800/50 border border-slate-700/50">
-                    <TabsTrigger
-                      value="THIS_WEEK"
-                      className="cursor-pointer text-slate-300 data-[state=active]:text-white"
-                    >
-                      This Week
-                    </TabsTrigger>
-                    <TabsTrigger
-                      value="THIS_MONTH"
-                      className="cursor-pointer text-slate-300 data-[state=active]:text-white"
-                    >
-                      This Month
-                    </TabsTrigger>
-                    <TabsTrigger
-                      value="ANYTIME"
-                      className="cursor-pointer text-slate-300 data-[state=active]:text-white"
-                    >
-                      All Time
-                    </TabsTrigger>
-                  </TabsList>
-                </Tabs>
-              </div>
 
-              <div className="border border-slate-700/50 shadow-xl rounded-2xl bg-slate-900/30 backdrop-blur-xl">
-                {isTrendingLoading || isAuthLoading ? (
-                  // Show skeleton while loading to prevent layout shift
-                  <div className="divide-y divide-slate-700/50">
-                    {Array.from({ length: 5 }).map((_, i) => (
-                      <div key={i} className="p-6 animate-pulse">
-                        <div className="flex items-center gap-4">
-                          <div className="w-16 h-8 bg-slate-700/50 rounded" />
-                          <div className="flex-1">
-                            <div className="h-5 bg-slate-700/50 rounded mb-2 w-3/4" />
-                            <div className="h-4 bg-slate-800/50 rounded w-1/2" />
-                          </div>
-                          <div className="flex flex-col items-center gap-2">
-                            <div className="w-10 h-10 bg-slate-700/50 rounded-full" />
-                            <div className="w-8 h-4 bg-slate-700/50 rounded" />
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                ) : isTrendingError ? (
-                  <div className="p-8 text-center">
-                    <div className="text-red-400 mb-2">
-                      Failed to load trending domains
-                    </div>
-                    <p className="text-slate-500 text-sm">
-                      Please try again later
-                    </p>
-                  </div>
-                ) : (
+                <div className="border border-border shadow-sm rounded-xl bg-white/[0.03]">
                   <DomainsList
                     domains={trendingData?.items ?? []}
-                    isLoading={false}
-                    isError={false}
+                    isLoading={isTrendingLoading || isAuthLoading}
+                    isError={isTrendingError}
+                    skeletonCount={5}
                   />
-                )}
+                </div>
               </div>
-
-              <PaginationControls
-                page={trendingPage}
-                hasMore={hasTrendingMore}
-                onPageChange={handleTrendingPageChange}
-              />
             </div>
 
             {/* Call to Action */}
-            <div className="text-center py-12 border-t border-slate-800/50">
+            <div className="text-center py-12 mt-16 border-t border-slate-800/50">
               <div className="flex items-center justify-center gap-3 mb-4">
                 <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-blue-500 rounded-xl flex items-center justify-center text-white">
                   <Target className="w-5 h-5" />
@@ -228,22 +145,24 @@ export const CVHuntSection = ({ name: _name }: CVHuntSectionProps) => {
                 Claim your space and make it yours.
               </p>
               {/* Prominent Submit Button */}
-              <SubmitDomainDialog
-                extension="cv"
-                onSuccess={() => {
-                  // Scroll to trending section on successful submission
-                  document
-                    .getElementById('trending-cv-domains')
-                    ?.scrollIntoView({
-                      behavior: 'smooth',
-                    });
-                }}
-              >
-                <Button className="px-8 py-6 bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white border-0 font-semibold shadow-lg shadow-purple-500/25">
-                  <Plus className="w-5 h-5 mr-1" />
-                  Submit Your .cv Domain
-                </Button>
-              </SubmitDomainDialog>
+              {isAuthenticated ? (
+                <SubmitDomainDialog extension="cv" redirectOnSuccess={false}>
+                  <Button className="px-8 py-6 bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white border-0 font-semibold shadow-lg shadow-purple-500/25">
+                    <Plus className="w-5 h-5 mr-1" />
+                    Submit Your .cv Domain
+                  </Button>
+                </SubmitDomainDialog>
+              ) : (
+                <AuthGuard
+                  title="Sign in to submit domains"
+                  description="You need to sign in to submit domains to the hunt. Join the community and share your favorite .cv domains!"
+                >
+                  <Button className="px-8 py-6 bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white border-0 font-semibold shadow-lg shadow-purple-500/25">
+                    <Plus className="w-5 h-5 mr-1" />
+                    Submit Your .cv Domain
+                  </Button>
+                </AuthGuard>
+              )}
             </div>
           </div>
         </div>

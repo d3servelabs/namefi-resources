@@ -7,6 +7,7 @@ import {
   huntCampaignDomainsTable,
 } from '@namefi-astra/db';
 import { getTags } from '@namefi/cat';
+import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
 import { type SQL, and, desc, eq, sql } from 'drizzle-orm';
 import { z } from 'zod';
@@ -58,7 +59,8 @@ const getTrendingDomainsSchema = z.object({
   timeRange: z
     .enum(['TODAY', 'THIS_WEEK', 'THIS_MONTH', 'THIS_YEAR', 'ANYTIME'])
     .default('ANYTIME'),
-  extension: z.string().optional(),
+  extension: namefiNormalizedDomainSchema.optional(),
+  excludeCampaignKey: z.string().optional(),
 });
 
 const domainVoteSchema = z.object({
@@ -552,7 +554,7 @@ export const huntRouter = createTRPCRouter({
   getTrendingDomainsPublic: publicProcedure
     .input(getTrendingDomainsSchema)
     .query(async ({ input }) => {
-      const { offset, limit, timeRange, extension } = input;
+      const { offset, limit, timeRange, extension, excludeCampaignKey } = input;
 
       // Build the query with time range filter
       const timeFilter = createTimeRangeFilter(
@@ -560,9 +562,18 @@ export const huntRouter = createTRPCRouter({
         huntDomainStatsView.firstSubmitDate,
       );
 
-      // Build extension filter if provided
+      // Build extension filter if provided (extension is already namefi normalized)
       const extensionFilter = extension
         ? sql`${huntDomainStatsView.domainName} LIKE ${`%.${extension}`}`
+        : undefined;
+
+      // Build campaign exclusion filter if provided
+      const campaignExclusionFilter = excludeCampaignKey
+        ? sql`${huntDomainStatsView.domainName} NOT IN (
+            SELECT ${huntCampaignDomainsTable.domainName}
+            FROM ${huntCampaignDomainsTable}
+            WHERE ${huntCampaignDomainsTable.campaignKey} = ${excludeCampaignKey}
+          )`
         : undefined;
 
       // Combine filters
@@ -571,6 +582,9 @@ export const huntRouter = createTRPCRouter({
       ];
       if (extensionFilter) {
         whereConditions.push(extensionFilter);
+      }
+      if (campaignExclusionFilter) {
+        whereConditions.push(campaignExclusionFilter);
       }
 
       // Get trending domains without user vote status
@@ -584,9 +598,11 @@ export const huntRouter = createTRPCRouter({
         })
         .from(huntDomainStatsView)
         .where(
-          whereConditions.length > 1
-            ? sql`(${whereConditions[0]}) AND (${whereConditions[1]})`
-            : whereConditions[0],
+          whereConditions.length === 1
+            ? whereConditions[0]
+            : whereConditions.reduce((acc, condition, index) =>
+                index === 0 ? condition : sql`${acc} AND ${condition}`,
+              ),
         )
         .orderBy(
           desc(huntDomainStatsView.pinWeight),
@@ -622,7 +638,7 @@ export const huntRouter = createTRPCRouter({
   getTrendingDomains: protectedProcedure
     .input(getTrendingDomainsSchema)
     .query(async ({ ctx, input }) => {
-      const { offset, limit, timeRange, extension } = input;
+      const { offset, limit, timeRange, extension, excludeCampaignKey } = input;
       const userId = ctx.user.id;
 
       // Build the query with time range filter
@@ -631,9 +647,18 @@ export const huntRouter = createTRPCRouter({
         huntDomainStatsView.firstSubmitDate,
       );
 
-      // Build extension filter if provided
+      // Build extension filter if provided (extension is already namefi normalized)
       const extensionFilter = extension
         ? sql`${huntDomainStatsView.domainName} LIKE ${`%.${extension}`}`
+        : undefined;
+
+      // Build campaign exclusion filter if provided
+      const campaignExclusionFilter = excludeCampaignKey
+        ? sql`${huntDomainStatsView.domainName} NOT IN (
+            SELECT ${huntCampaignDomainsTable.domainName}
+            FROM ${huntCampaignDomainsTable}
+            WHERE ${huntCampaignDomainsTable.campaignKey} = ${excludeCampaignKey}
+          )`
         : undefined;
 
       // Combine filters
@@ -642,6 +667,9 @@ export const huntRouter = createTRPCRouter({
       ];
       if (extensionFilter) {
         whereConditions.push(extensionFilter);
+      }
+      if (campaignExclusionFilter) {
+        whereConditions.push(campaignExclusionFilter);
       }
 
       // Get trending domains without user vote status
@@ -655,9 +683,11 @@ export const huntRouter = createTRPCRouter({
         })
         .from(huntDomainStatsView)
         .where(
-          whereConditions.length > 1
-            ? sql`(${whereConditions[0]}) AND (${whereConditions[1]})`
-            : whereConditions[0],
+          whereConditions.length === 1
+            ? whereConditions[0]
+            : whereConditions.reduce((acc, condition, index) =>
+                index === 0 ? condition : sql`${acc} AND ${condition}`,
+              ),
         )
         .orderBy(
           desc(huntDomainStatsView.pinWeight),
