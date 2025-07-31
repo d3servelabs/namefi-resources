@@ -13,6 +13,8 @@ const { landingConfig, originConfigWithoutLanding } = generateCVConfig({
       quote: 'Hit the right note with a name that stands out.',
       achievement: 'Platinum Artist',
       icon: Music,
+      image: '/assets/cv/li/famous-people/lykke-li.png',
+      externalUrl: 'https://en.wikipedia.org/wiki/Lykke_Li',
     },
     {
       name: 'Gong Li',
@@ -20,6 +22,8 @@ const { landingConfig, originConfigWithoutLanding } = generateCVConfig({
       quote: 'A great name shines in every spotlight.',
       achievement: 'Cannes Award Winner',
       icon: Star,
+      image: '/assets/cv/li/famous-people/gong-li.png',
+      externalUrl: 'https://en.wikipedia.org/wiki/Gong_Li',
     },
     {
       name: 'Jet Li',
@@ -27,6 +31,8 @@ const { landingConfig, originConfigWithoutLanding } = generateCVConfig({
       quote: 'A powerful name can pack a punch.',
       achievement: 'Wushu Champion',
       icon: User,
+      image: '/assets/cv/li/famous-people/jet-li.png',
+      externalUrl: 'https://en.wikipedia.org/wiki/Jet_Li',
     },
     {
       name: 'Li Na',
@@ -34,6 +40,8 @@ const { landingConfig, originConfigWithoutLanding } = generateCVConfig({
       quote: 'Own your name and own your game.',
       achievement: '2x Grand Slam Champion',
       icon: Trophy,
+      image: '/assets/cv/li/famous-people/li-na.png',
+      externalUrl: 'https://en.wikipedia.org/wiki/Li_Na',
     },
     {
       name: 'Li Ka-shing',
@@ -41,6 +49,8 @@ const { landingConfig, originConfigWithoutLanding } = generateCVConfig({
       quote: 'The best investment is investing in your name.',
       achievement: "Asia's Richest Man",
       icon: Briefcase,
+      image: '/assets/cv/li/famous-people/li-ka-shing.png',
+      externalUrl: 'https://en.wikipedia.org/wiki/Li_Ka-shing',
     },
   ],
   exampleProfiles: [
