@@ -89,6 +89,28 @@ export const NftManagementReport = buildTemplate<NftManagementReportProps>(
 - **Extend registrations** - Admin-initiated workflow
 - **Monitor active workflows** - Real-time status in admin panel
 
+## 🎯 Critical Domains
+
+**15 domains** require immediate attention:
+
+| Domain | Chain | Issues | Expiration | Registrar | Actions |
+|--------|-------|--------|------------|-----------|---------|
+| expired-example.com | Ethereum | 🔥 Can Burn | Dec 15, 2024 | Dynadot | Burn |
+| old-domain.net | Base | 🔥 Can Burn, 📅 Date Mismatch | Nov 22, 2024 | Route 53 | Burn, Fix Date |
+| missing-data.org | Ethereum | ❓ Missing Data | Unknown | Unknown | Review |
+| stale-nft.io | Base | 📅 Date Mismatch | Jan 10, 2025 | Dynadot | Fix Date |
+| test-domain.example | Ethereum | 🔥 Can Burn | Oct 30, 2024 | Route 53 | Burn |
+| another-expired.com | Ethereum | 🔥 Can Burn | Sep 08, 2024 | Dynadot | Burn |
+| mismatch-domain.io | Base | 📅 Date Mismatch | Feb 14, 2025 | Route 53 | Fix Date |
+| legacy-nft.net | Ethereum | ❓ Missing Data | Unknown | Dynadot | Review |
+| overdue-domain.org | Base | 🔥 Can Burn | Aug 12, 2024 | Route 53 | Burn |
+| broken-sync.com | Ethereum | 📅 Date Mismatch | Mar 05, 2025 | Unknown | Fix Date |
+| abandoned-site.net | Base | 🔥 Can Burn, ❓ Missing Data | Unknown | Dynadot | Burn |
+| expired-project.io | Ethereum | 🔥 Can Burn | Jul 23, 2024 | Route 53 | Burn |
+| data-issue.org | Base | ❓ Missing Data | Jan 18, 2025 | Unknown | Review |
+| critical-burn.com | Ethereum | 🔥 Can Burn | Jun 15, 2024 | Dynadot | Burn |
+| sync-problem.net | Base | 📅 Date Mismatch | Apr 22, 2025 | Route 53 | Fix Date |
+
 ---
 
 *This report is generated automatically using the comprehensive NFT management system.*

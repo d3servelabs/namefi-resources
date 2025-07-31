@@ -44,6 +44,7 @@ export interface ReportMetrics {
     missingDataCannotFix: number;
     longOverdueExpired: number;
   };
+  criticalDomains: DetailedNftData[];
 }
 
 export interface DetailedNftData {
@@ -77,7 +78,11 @@ export async function collectNftManagementMetrics(): Promise<ReportMetrics> {
     // Build the powered-by-namefi condition
     const isPoweredByNamefiCondition = sql<boolean>`array_to_string((string_to_array(${namefiNftOwnersView.normalizedDomainName}, '.'))[2:], '.') = ANY(${sql.raw(`ARRAY[${poweredByNamefiDomains.map((d) => `'${d}'`).join(',')}]`)})`;
 
-    // Fetch all NFT data with computed fields
+    // Build filters to exclude sepolia and test domains
+    const isSepoliaCondition = sql<boolean>`${namefiNftOwnersView.chainId} = 11155111`;
+    const isTestDomainCondition = sql<boolean>`split_part(${namefiNftOwnersView.normalizedDomainName}, '.', -1) LIKE 'test%'`;
+
+    // Fetch all NFT data with computed fields, excluding sepolia and test domains
     const nftDataQuery = db
       .select({
         normalizedDomainName: namefiNftOwnersView.normalizedDomainName,
@@ -144,6 +149,9 @@ export async function collectNftManagementMetrics(): Promise<ReportMetrics> {
           namefiNftOwnersView.normalizedDomainName,
           indexedDomainsTable.normalizedDomainName,
         ),
+      )
+      .where(
+        and(sql`NOT ${isSepoliaCondition}`, sql`NOT ${isTestDomainCondition}`),
       );
 
     const allNftsData = await nftDataQuery;
@@ -261,6 +269,7 @@ function analyzeNftData(
       missingDataCannotFix: 0,
       longOverdueExpired: 0,
     },
+    criticalDomains: [],
   };
 
   const now = new Date();
@@ -286,11 +295,15 @@ function analyzeNftData(
       metrics.expiredDomains++;
     }
 
+    // Check if this domain is critical (has any critical issues)
+    let isCritical = false;
+
     // Action-based categorization
     if (nft.canBurn) {
       metrics.canBurnNfts++;
       if (isExpired) {
         metrics.criticalIssues.expiredCanBurn++;
+        isCritical = true;
       }
     }
 
@@ -300,21 +313,40 @@ function analyzeNftData(
       if (!nft.nftExpirationTime) {
         metrics.missingDataNfts++;
         metrics.criticalIssues.missingDataCannotFix++;
+        isCritical = true;
       }
     } else {
       // For regular domains, check both dates
       if (!nft.nftExpirationTime || !nft.domainExpirationTime) {
         metrics.missingDataNfts++;
         metrics.criticalIssues.missingDataCannotFix++;
+        isCritical = true;
       } else if (nft.hasDateMismatch) {
         // Only count as date mismatch if both dates exist but differ
         metrics.dateMismatchNfts++;
+        isCritical = true;
       }
     }
 
     // Long overdue expired domains (expired more than 30 days ago)
     if (effectiveExpirationTime && effectiveExpirationTime < thirtyDaysAgo) {
       metrics.criticalIssues.longOverdueExpired++;
+      isCritical = true;
+    }
+
+    // Add to critical domains if it has any critical issues
+    if (isCritical) {
+      metrics.criticalDomains.push({
+        normalizedDomainName: nft.normalizedDomainName,
+        chainId: nft.chainId,
+        ownerAddress: nft.ownerAddress,
+        nftExpirationTime: nft.nftExpirationTime,
+        domainExpirationTime: nft.effectiveDomainExpirationTime,
+        registrarKey: nft.effectiveRegistrarKey,
+        isPoweredByNamefiDomain: nft.isPoweredByNamefiDomain,
+        canBurn: nft.canBurn,
+        hasDateMismatch: nft.hasDateMismatch,
+      });
     }
 
     // Registrar breakdown
@@ -426,6 +458,8 @@ export async function formatNftManagementReport(
 - **Extend registrations** - Admin-initiated workflow
 - **Monitor active workflows** - Real-time status in admin panel`,
     '',
+    formatCriticalDomainsTable(metrics.criticalDomains),
+    '',
     '---',
     '*This report is generated automatically using the comprehensive NFT management system.*',
     '*For detailed analysis, visit the admin panel or review individual NFT records.*',
@@ -497,6 +531,73 @@ function generateHealthRecommendations(metrics: ReportMetrics): string {
   }
 
   return recommendations.join('\n');
+}
+
+function formatCriticalDomainsTable(
+  criticalDomains: DetailedNftData[],
+): string {
+  if (criticalDomains.length === 0) {
+    return '## 🎯 Critical Domains\n\n✅ **No critical domains found!** All NFTs are in good health.';
+  }
+
+  // Sort critical domains by severity (can burn first, then by expiration date)
+  const sortedDomains = criticalDomains.sort((a, b) => {
+    // Priority: can burn domains first
+    if (a.canBurn && !b.canBurn) return -1;
+    if (!a.canBurn && b.canBurn) return 1;
+
+    // Then by expiration date (earliest first)
+    const aExpiration = a.domainExpirationTime || new Date(0);
+    const bExpiration = b.domainExpirationTime || new Date(0);
+    return aExpiration.getTime() - bExpiration.getTime();
+  });
+
+  const tableRows = [
+    '| Domain | Chain | Issues | Expiration | Registrar | Actions |',
+    '|--------|-------|--------|------------|-----------|---------|',
+  ];
+
+  for (const domain of sortedDomains) {
+    const chainName =
+      domain.chainId === 1
+        ? 'Ethereum'
+        : domain.chainId === 8453
+          ? 'Base'
+          : `Chain ${domain.chainId}`;
+
+    const issues = [];
+    if (domain.canBurn) issues.push('🔥 Can Burn');
+    if (domain.hasDateMismatch) issues.push('📅 Date Mismatch');
+    if (!domain.nftExpirationTime || !domain.domainExpirationTime)
+      issues.push('❓ Missing Data');
+
+    const expiration = domain.domainExpirationTime
+      ? format(domain.domainExpirationTime, 'MMM dd, yyyy')
+      : 'Unknown';
+
+    const registrar = domain.registrarKey || 'Unknown';
+
+    const actions = [];
+    if (domain.canBurn) actions.push('Burn');
+    if (
+      domain.hasDateMismatch &&
+      domain.nftExpirationTime &&
+      domain.domainExpirationTime
+    )
+      actions.push('Fix Date');
+
+    tableRows.push(
+      `| ${domain.normalizedDomainName} | ${chainName} | ${issues.join(', ')} | ${expiration} | ${registrar} | ${actions.join(', ') || 'Review'} |`,
+    );
+  }
+
+  return [
+    '## 🎯 Critical Domains',
+    '',
+    `**${criticalDomains.length} domains** require immediate attention:`,
+    '',
+    ...tableRows,
+  ].join('\n');
 }
 
 /**

@@ -84,7 +84,11 @@ export const adminRouter = createTRPCRouter({
       // Extract the powered-by-namefi condition to avoid repetition
       const isPoweredByNamefiCondition = sql<boolean>`array_to_string((string_to_array(${namefiNftOwnersView.normalizedDomainName}, '.'))[2:], '.') = ANY(${sql.raw(`ARRAY[${poweredByNamefiDomains.map((d) => `'${d}'`).join(',')}]`)})`;
 
-      // Build base query with joins and computed fields
+      // Build filters to exclude sepolia and test domains (same as reporting)
+      const isSepoliaCondition = sql<boolean>`${namefiNftOwnersView.chainId} = 11155111`;
+      const isTestDomainCondition = sql<boolean>`split_part(${namefiNftOwnersView.normalizedDomainName}, '.', -1) LIKE 'test%'`;
+
+      // Build base query with joins and computed fields, excluding sepolia and test domains
       const baseQuery = db
         .select({
           normalizedDomainName: namefiNftOwnersView.normalizedDomainName,
@@ -155,7 +159,7 @@ export const adminRouter = createTRPCRouter({
           ),
         );
 
-      // Build count query with same joins
+      // Build count query with same joins and filters
       const countQuery = db
         .select({ count: sql<number>`COUNT(*)` })
         .from(namefiNftOwnersView)
@@ -183,7 +187,14 @@ export const adminRouter = createTRPCRouter({
         poweredByNamefiDomains,
         excludePoweredByNamefiDomains,
       );
-      const whereClause = filters.length > 0 ? and(...filters) : undefined;
+
+      // Combine base exclusion filters with additional filters
+      const allFilters = [
+        sql`NOT ${isSepoliaCondition}`,
+        sql`NOT ${isTestDomainCondition}`,
+        ...filters,
+      ];
+      const whereClause = and(...allFilters);
 
       // Apply sorting
       const orderByClause = _buildOrderByClause(sortBy, sortOrder);
@@ -766,7 +777,7 @@ function _buildQueryFilters(
   poweredByNamefiDomains: string[],
   excludePoweredByNamefiDomains: boolean,
 ) {
-  // Build filters
+  // Build filters (base filters for sepolia and test domains are already applied in WHERE clause)
   const filters = [];
 
   if (searchTerm) {
