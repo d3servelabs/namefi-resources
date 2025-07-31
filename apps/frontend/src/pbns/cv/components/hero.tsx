@@ -25,7 +25,6 @@ export const Hero = ({
   domainHuntWidget,
 }: HeroProps) => {
   // Generate derived values
-  const displayName = name.charAt(0).toUpperCase() + name.slice(1);
   const domainName = `${name}.cv`;
 
   return (
