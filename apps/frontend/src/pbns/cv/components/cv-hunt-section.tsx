@@ -90,9 +90,12 @@ export const CVHuntSection = ({ name: _name }: CVHuntSectionProps) => {
             </span>
           </h2>
           <p className="text-xl md:text-2xl text-slate-300 mb-12 text-center max-w-3xl mx-auto font-medium">
-            Discover and vote for the most sought-after .cv domains. Be part of
-            the community shaping the future of professional identity on the
-            web.
+            Vote for .cv domains you'd love to own a subdomain under. When
+            domains you support win or rank high, you could get a chance to{' '}
+            <span className="text-purple-400 font-semibold">
+              claim your free subdomain
+            </span>{' '}
+            or get priority access to purchase one.
           </p>
 
           <div className="space-y-16 mt-16">
