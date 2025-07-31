@@ -5,7 +5,7 @@
  * for the comprehensive NFT management report using direct database queries.
  */
 
-import { format } from 'date-fns';
+import { differenceInSeconds, format } from 'date-fns';
 import { Context } from '@temporalio/activity';
 import {
   db,
@@ -549,7 +549,7 @@ function formatCriticalDomainsTable(
     // Then by expiration date (earliest first)
     const aExpiration = a.domainExpirationTime || new Date(0);
     const bExpiration = b.domainExpirationTime || new Date(0);
-    return aExpiration.getTime() - bExpiration.getTime();
+    return differenceInSeconds(aExpiration, bExpiration);
   });
 
   const tableRows = [
