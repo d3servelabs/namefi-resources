@@ -13,6 +13,8 @@ const { landingConfig, originConfigWithoutLanding } = generateCVConfig({
       quote: 'Own your name, own your stage.',
       achievement: 'Time 100 Honoree',
       icon: Music,
+      image: '/assets/cv/ali/famous-people/ali-wong.png',
+      externalUrl: 'https://en.wikipedia.org/wiki/Ali_Wong',
     },
     {
       name: 'Mahershala Ali',
@@ -20,6 +22,8 @@ const { landingConfig, originConfigWithoutLanding } = generateCVConfig({
       quote: 'Owning your name sets the stage for success.',
       achievement: '2x Oscar Winner',
       icon: Star,
+      image: '/assets/cv/ali/famous-people/mahershala-ali.png',
+      externalUrl: 'https://en.wikipedia.org/wiki/Mahershala_Ali',
     },
     {
       name: 'Ali MacGraw',
@@ -27,6 +31,8 @@ const { landingConfig, originConfigWithoutLanding } = generateCVConfig({
       quote: 'A timeless name leaves a lasting legacy.',
       achievement: 'Oscar Nominee',
       icon: User,
+      image: '/assets/cv/ali/famous-people/ali-macgraw.png',
+      externalUrl: 'https://en.wikipedia.org/wiki/Ali_MacGraw',
     },
     {
       name: 'Muhammad Ali',
@@ -34,13 +40,17 @@ const { landingConfig, originConfigWithoutLanding } = generateCVConfig({
       quote: "A champion's name stands out in every arena.",
       achievement: 'World Heavyweight Champion',
       icon: Trophy,
+      image: '/assets/cv/ali/famous-people/muhammad-ali.png',
+      externalUrl: 'https://en.wikipedia.org/wiki/Muhammad_Ali',
     },
     {
-      name: 'Laila Ali',
-      title: 'Undefeated Champion',
-      quote: 'Carve your own legacy with a powerful name.',
-      achievement: 'Retired Undefeated',
+      name: 'Alireza Firouzja',
+      title: 'Chess Grandmaster',
+      quote: 'Strategic thinking starts with a strong foundation.',
+      achievement: 'World No. 2 Chess Player',
       icon: Briefcase,
+      image: '/assets/cv/ali/famous-people/alireza-firouzja.png',
+      externalUrl: 'https://en.wikipedia.org/wiki/Alireza_Firouzja',
     },
   ],
   exampleProfiles: [
