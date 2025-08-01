@@ -458,7 +458,11 @@ export async function formatNftManagementReport(
 - **Extend registrations** - Admin-initiated workflow
 - **Monitor active workflows** - Real-time status in admin panel`,
     '',
+    '<div id="markdown-table">',
+    '',
     formatCriticalDomainsTable(metrics.criticalDomains),
+    '',
+    '</div>',
     '',
     '---',
     '*This report is generated automatically using the comprehensive NFT management system.*',

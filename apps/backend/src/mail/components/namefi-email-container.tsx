@@ -30,7 +30,37 @@ export function NamefiEmailContainer({
   return (
     <Tailwind>
       <Html>
-        <Head />
+        <Head>
+          <style>
+            {`
+            #markdown-table table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1em;
+}
+
+#markdown-table th,
+#markdown-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+#markdown-table th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+#markdown-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+#markdown-table tr:hover {
+  background-color: #e9e9e9;
+}
+            `}
+          </style>
+        </Head>
         <Preview>{title}</Preview>
         <Body style={styles.main}>
           <Container style={styles.container}>
