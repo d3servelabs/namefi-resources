@@ -60,10 +60,10 @@ export const CVHuntSection = ({ name: _name }: CVHuntSectionProps) => {
           <h2 className="text-5xl md:text-6xl font-extrabold mb-4 text-center tracking-tight">
             Join the{' '}
             <span className="bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent">
-              .cv Hunt
+              .cv Namefi Hunt™
             </span>
           </h2>
-          <p className="text-xl md:text-2xl text-slate-300 mb-12 text-center max-w-3xl mx-auto font-medium">
+          <p className="text-xl md:text-2xl text-slate-300 mb-16 text-center max-w-3xl mx-auto font-medium">
             Vote for .cv domains you'd love to own a subdomain under. When
             domains you support win or rank high, you could get a chance to{' '}
             <span className="text-purple-400 font-semibold">
@@ -93,7 +93,7 @@ export const CVHuntSection = ({ name: _name }: CVHuntSectionProps) => {
                 <CampaignDomainsList
                   campaignKey={CV_CAMPAIGN_KEY}
                   page={campaignPage}
-                  limit={8}
+                  limit={5}
                   onPageChange={handleCampaignPageChange}
                   showTitle={false}
                   skeletonCount={5}
