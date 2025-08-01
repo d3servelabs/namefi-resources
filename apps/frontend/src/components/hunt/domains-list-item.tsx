@@ -2,7 +2,6 @@
 
 import { cn } from '@/lib/cn';
 import { formatNumberWithAbbreviations } from '@/lib/number';
-
 import Link from 'next/link';
 import { type MouseEvent, useCallback, useMemo } from 'react';
 import { TagsDisplay } from './tags-display';
@@ -85,11 +84,7 @@ export const DomainsListItem = ({ domain }: { domain: Domain }) => {
   );
 
   return (
-    <div
-      className={
-        'flex items-center gap-4 sm:gap-6 pr-4 sm:pr-6 py-6 sm:py-8 first:rounded-t-xl last:rounded-b-xl hover:bg-accent/30 transition'
-      }
-    >
+    <div className="flex items-center gap-4 sm:gap-6 pr-4 sm:pr-6 py-6 sm:py-8 first:rounded-t-xl last:rounded-b-xl hover:bg-accent/30 transition-colors">
       <div className="flex items-center gap-2 w-20 sm:w-24 justify-center border-r border-border px-4 sm:px-6">
         <span
           className={cn(
