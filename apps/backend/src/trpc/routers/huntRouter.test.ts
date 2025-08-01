@@ -8,6 +8,7 @@ import {
   huntCampaignDomainsTable,
   usersTable,
 } from '@namefi-astra/db';
+import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 import { config } from 'dotenv';
 import { and, eq, inArray, sql } from 'drizzle-orm';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
@@ -785,9 +786,18 @@ describe('Hunt Router', () => {
 
       // Pin domains with different weights
       await db.insert(huntPinnedDomainsTable).values([
-        { domainName: 'test.pinned.high', weight: 100 },
-        { domainName: 'test.pinned.low', weight: 50 },
-        { domainName: 'test.old.domain', weight: 75 }, // Pin the old domain
+        {
+          domainName: namefiNormalizedDomainSchema.parse('test.pinned.high'),
+          weight: 100,
+        },
+        {
+          domainName: namefiNormalizedDomainSchema.parse('test.pinned.low'),
+          weight: 50,
+        },
+        {
+          domainName: namefiNormalizedDomainSchema.parse('test.old.domain'),
+          weight: 75,
+        }, // Pin the old domain
       ]);
     });
 
@@ -810,10 +820,18 @@ describe('Hunt Router', () => {
       expect(domainNames).toContain('test.regular.domain');
 
       // Check correct ordering by weight (higher weight first)
-      const pinnedHighIndex = domainNames.indexOf('test.pinned.high');
-      const pinnedOldIndex = domainNames.indexOf('test.old.domain');
-      const pinnedLowIndex = domainNames.indexOf('test.pinned.low');
-      const regularIndex = domainNames.indexOf('test.regular.domain');
+      const pinnedHighIndex = domainNames.indexOf(
+        namefiNormalizedDomainSchema.parse('test.pinned.high'),
+      );
+      const pinnedOldIndex = domainNames.indexOf(
+        namefiNormalizedDomainSchema.parse('test.old.domain'),
+      );
+      const pinnedLowIndex = domainNames.indexOf(
+        namefiNormalizedDomainSchema.parse('test.pinned.low'),
+      );
+      const regularIndex = domainNames.indexOf(
+        namefiNormalizedDomainSchema.parse('test.regular.domain'),
+      );
 
       // Verify all domains were found
       expect(pinnedHighIndex).toBeGreaterThanOrEqual(0);
@@ -828,10 +846,14 @@ describe('Hunt Router', () => {
 
       // Verify isPinned flags
       const pinnedHigh = result.items.find(
-        (item) => item.domainName === 'test.pinned.high',
+        (item) =>
+          item.domainName ===
+          namefiNormalizedDomainSchema.parse('test.pinned.high'),
       );
       const regular = result.items.find(
-        (item) => item.domainName === 'test.regular.domain',
+        (item) =>
+          item.domainName ===
+          namefiNormalizedDomainSchema.parse('test.regular.domain'),
       );
       expect(pinnedHigh?.isPinned).toBe(true);
       expect(regular?.isPinned).toBe(false);
@@ -845,10 +867,14 @@ describe('Hunt Router', () => {
       });
 
       const pinnedDomain = result.items.find(
-        (item) => item.domainName === 'test.pinned.high',
+        (item) =>
+          item.domainName ===
+          namefiNormalizedDomainSchema.parse('test.pinned.high'),
       );
       const regularDomain = result.items.find(
-        (item) => item.domainName === 'test.regular.domain',
+        (item) =>
+          item.domainName ===
+          namefiNormalizedDomainSchema.parse('test.regular.domain'),
       );
 
       expect(pinnedDomain?.isPinned).toBe(true);
@@ -874,7 +900,9 @@ describe('Hunt Router', () => {
 
       // Verify the old domain is marked as pinned
       const oldDomain = thisWeekResult.items.find(
-        (item) => item.domainName === 'test.old.domain',
+        (item) =>
+          item.domainName ===
+          namefiNormalizedDomainSchema.parse('test.old.domain'),
       );
       expect(oldDomain?.isPinned).toBe(true);
     });
@@ -887,7 +915,7 @@ describe('Hunt Router', () => {
       await caller.unvote({ domainName: 'test.pinned.novotes' });
 
       await db.insert(huntPinnedDomainsTable).values({
-        domainName: 'test.pinned.novotes',
+        domainName: namefiNormalizedDomainSchema.parse('test.pinned.novotes'),
         weight: 90,
       });
 
@@ -906,7 +934,9 @@ describe('Hunt Router', () => {
       expect(domainNames).toContain('test.pinned.novotes');
 
       const pinnedDomain = result.items.find(
-        (item) => item.domainName === 'test.pinned.novotes',
+        (item) =>
+          item.domainName ===
+          namefiNormalizedDomainSchema.parse('test.pinned.novotes'),
       );
       expect(pinnedDomain?.isPinned).toBe(true);
       expect(pinnedDomain?.upvoteCount).toBe(0);
@@ -950,7 +980,7 @@ describe('Hunt Router', () => {
       // Add more domains to test pagination
       await caller.submitDomain({ domainName: 'test.pinned.medium' });
       await db.insert(huntPinnedDomainsTable).values({
-        domainName: 'test.pinned.medium',
+        domainName: namefiNormalizedDomainSchema.parse('test.pinned.medium'),
         weight: 60,
       });
 
@@ -978,8 +1008,13 @@ describe('Hunt Router', () => {
         const currDomain = pinnedDomains[i];
 
         // Since we can't directly access weight, we check by domain names we know
-        if (prevDomain.domainName === 'test.pinned.high') {
-          expect(currDomain.domainName).not.toBe('test.pinned.high');
+        if (
+          prevDomain.domainName ===
+          namefiNormalizedDomainSchema.parse('test.pinned.high')
+        ) {
+          expect(currDomain.domainName).not.toBe(
+            namefiNormalizedDomainSchema.parse('test.pinned.high'),
+          );
         }
       }
     });
@@ -1004,7 +1039,9 @@ describe('Hunt Router', () => {
 
       // Should be ordered by popularity (upvote count)
       const regularDomain = result.items.find(
-        (item) => item.domainName === 'test.regular.domain',
+        (item) =>
+          item.domainName ===
+          namefiNormalizedDomainSchema.parse('test.regular.domain'),
       );
       expect(regularDomain).toBeDefined();
       expect(regularDomain?.upvoteCount).toBeGreaterThan(0);
@@ -1017,7 +1054,8 @@ describe('Hunt Router', () => {
         // Create test awards for period-based rankings
         await db.insert(huntAwardsTable).values([
           {
-            domainName: 'test.winner.weekly',
+            domainName:
+              namefiNormalizedDomainSchema.parse('test.winner.weekly'),
             type: 'WEEKLY',
             periodKey: 'WEEKLY-2025-27',
             rank: 1,
@@ -1025,7 +1063,9 @@ describe('Hunt Router', () => {
             upvoteCount: 100,
           },
           {
-            domainName: 'test.winner.weekly2',
+            domainName: namefiNormalizedDomainSchema.parse(
+              'test.winner.weekly2',
+            ),
             type: 'WEEKLY',
             periodKey: 'WEEKLY-2025-27', // Same period key as first award
             rank: 2,
@@ -1033,7 +1073,9 @@ describe('Hunt Router', () => {
             upvoteCount: 80,
           },
           {
-            domainName: 'test.winner.monthly',
+            domainName: namefiNormalizedDomainSchema.parse(
+              'test.winner.monthly',
+            ),
             type: 'MONTHLY',
             periodKey: 'MONTHLY-2025-07',
             rank: 1,
@@ -1061,12 +1103,16 @@ describe('Hunt Router', () => {
         expect(result.items).toHaveLength(2);
 
         // Check correct ordering by rank
-        expect(result.items[0].domainName).toBe('test.winner.weekly');
+        expect(result.items[0].domainName).toBe(
+          namefiNormalizedDomainSchema.parse('test.winner.weekly'),
+        );
         expect(result.items[0].rank).toBe(1);
         expect(result.items[0].upvoteCount).toBe(100);
         expect(result.items[0].reason).toBe('July 3rd, 2025');
 
-        expect(result.items[1].domainName).toBe('test.winner.weekly2');
+        expect(result.items[1].domainName).toBe(
+          namefiNormalizedDomainSchema.parse('test.winner.weekly2'),
+        );
         expect(result.items[1].rank).toBe(2);
         expect(result.items[1].upvoteCount).toBe(80);
 
@@ -1099,7 +1145,9 @@ describe('Hunt Router', () => {
 
         expect(page1.items).toHaveLength(1);
         expect(page1.hasMore).toBe(true);
-        expect(page1.items[0].domainName).toBe('test.winner.weekly');
+        expect(page1.items[0].domainName).toBe(
+          namefiNormalizedDomainSchema.parse('test.winner.weekly'),
+        );
 
         const page2 = await publicCaller.getPeriodAwards({
           type: 'WEEKLY',
@@ -1110,7 +1158,9 @@ describe('Hunt Router', () => {
 
         expect(page2.items).toHaveLength(1);
         expect(page2.hasMore).toBe(false);
-        expect(page2.items[0].domainName).toBe('test.winner.weekly2');
+        expect(page2.items[0].domainName).toBe(
+          namefiNormalizedDomainSchema.parse('test.winner.weekly2'),
+        );
       });
 
       it('should return empty results for non-existent period', async () => {
@@ -1165,11 +1215,11 @@ describe('Hunt Router', () => {
         await db.insert(huntCampaignDomainsTable).values([
           {
             campaignKey: activeCampaignKey,
-            domainName: 'test.cv.domain1',
+            domainName: namefiNormalizedDomainSchema.parse('test.cv.domain1'),
           },
           {
             campaignKey: activeCampaignKey,
-            domainName: 'test.cv.domain2',
+            domainName: namefiNormalizedDomainSchema.parse('test.cv.domain2'),
           },
         ]);
 
@@ -1181,7 +1231,9 @@ describe('Hunt Router', () => {
         // Create finalized awards for finished campaign
         await db.insert(huntAwardsTable).values([
           {
-            domainName: 'test.finished.winner',
+            domainName: namefiNormalizedDomainSchema.parse(
+              'test.finished.winner',
+            ),
             type: 'CAMPAIGN',
             campaignKey: finishedCampaignKey,
             rank: 1,
@@ -1189,7 +1241,9 @@ describe('Hunt Router', () => {
             upvoteCount: 150,
           },
           {
-            domainName: 'test.finished.runner',
+            domainName: namefiNormalizedDomainSchema.parse(
+              'test.finished.runner',
+            ),
             type: 'CAMPAIGN',
             campaignKey: finishedCampaignKey,
             rank: 2,
@@ -1224,11 +1278,15 @@ describe('Hunt Router', () => {
         expect(result.rankings).toHaveLength(2);
 
         // Should be ordered by upvote count (domain1 has more votes)
-        expect(result.rankings[0].domainName).toBe('test.cv.domain1');
+        expect(result.rankings[0].domainName).toBe(
+          namefiNormalizedDomainSchema.parse('test.cv.domain1'),
+        );
         expect(result.rankings[0].rank).toBe(1);
         expect(result.rankings[0].upvoteCount).toBe(2); // submitter + otherUser
 
-        expect(result.rankings[1].domainName).toBe('test.cv.domain2');
+        expect(result.rankings[1].domainName).toBe(
+          namefiNormalizedDomainSchema.parse('test.cv.domain2'),
+        );
         expect(result.rankings[1].rank).toBe(2);
         expect(result.rankings[1].upvoteCount).toBe(1); // submitter only
 
@@ -1268,12 +1326,16 @@ describe('Hunt Router', () => {
         // Check finalized awards
         expect(result.rankings).toHaveLength(2);
 
-        expect(result.rankings[0].domainName).toBe('test.finished.winner');
+        expect(result.rankings[0].domainName).toBe(
+          namefiNormalizedDomainSchema.parse('test.finished.winner'),
+        );
         expect(result.rankings[0].rank).toBe(1);
         expect(result.rankings[0].upvoteCount).toBe(150);
         expect(result.rankings[0].reason).toBe('July 8th, 2025');
 
-        expect(result.rankings[1].domainName).toBe('test.finished.runner');
+        expect(result.rankings[1].domainName).toBe(
+          namefiNormalizedDomainSchema.parse('test.finished.runner'),
+        );
         expect(result.rankings[1].rank).toBe(2);
         expect(result.rankings[1].upvoteCount).toBe(100);
         expect(result.rankings[1].reason).toBe('July 8th, 2025');
@@ -1308,7 +1370,9 @@ describe('Hunt Router', () => {
 
         expect(page1.rankings).toHaveLength(1);
         expect(page1.hasMore).toBe(true);
-        expect(page1.rankings[0].domainName).toBe('test.finished.winner');
+        expect(page1.rankings[0].domainName).toBe(
+          namefiNormalizedDomainSchema.parse('test.finished.winner'),
+        );
 
         const page2 = await publicCaller.getCampaignPublic({
           campaignKey: finishedCampaignKey,
@@ -1318,7 +1382,9 @@ describe('Hunt Router', () => {
 
         expect(page2.rankings).toHaveLength(1);
         expect(page2.hasMore).toBe(false);
-        expect(page2.rankings[0].domainName).toBe('test.finished.runner');
+        expect(page2.rankings[0].domainName).toBe(
+          namefiNormalizedDomainSchema.parse('test.finished.runner'),
+        );
       });
 
       it('should return all campaign domains even if they have no votes', async () => {
@@ -1340,15 +1406,21 @@ describe('Hunt Router', () => {
         await db.insert(huntCampaignDomainsTable).values([
           {
             campaignKey: testCampaignKey,
-            domainName: 'test.novotes.domain1',
+            domainName: namefiNormalizedDomainSchema.parse(
+              'test.novotes.domain1',
+            ),
           },
           {
             campaignKey: testCampaignKey,
-            domainName: 'test.novotes.domain2',
+            domainName: namefiNormalizedDomainSchema.parse(
+              'test.novotes.domain2',
+            ),
           },
           {
             campaignKey: testCampaignKey,
-            domainName: 'test.novotes.domain3',
+            domainName: namefiNormalizedDomainSchema.parse(
+              'test.novotes.domain3',
+            ),
           },
         ]);
 
@@ -1383,16 +1455,22 @@ describe('Hunt Router', () => {
         expect(domainNames).toContain('test.novotes.domain3');
 
         // The voted domain should be first with 2 votes
-        expect(result.rankings[0].domainName).toBe('test.novotes.domain1');
+        expect(result.rankings[0].domainName).toBe(
+          namefiNormalizedDomainSchema.parse('test.novotes.domain1'),
+        );
         expect(result.rankings[0].upvoteCount).toBe(2);
         expect(result.rankings[0].rank).toBe(1);
 
         // The other two domains should have 0 votes
         const domain2 = result.rankings.find(
-          (r) => r.domainName === 'test.novotes.domain2',
+          (r) =>
+            r.domainName ===
+            namefiNormalizedDomainSchema.parse('test.novotes.domain2'),
         );
         const domain3 = result.rankings.find(
-          (r) => r.domainName === 'test.novotes.domain3',
+          (r) =>
+            r.domainName ===
+            namefiNormalizedDomainSchema.parse('test.novotes.domain3'),
         );
 
         expect(domain2?.upvoteCount).toBe(0);
@@ -1441,7 +1519,8 @@ describe('Hunt Router', () => {
         // Create multiple awards for a single domain
         await db.insert(huntAwardsTable).values([
           {
-            domainName: 'test.winner.domain',
+            domainName:
+              namefiNormalizedDomainSchema.parse('test.winner.domain'),
             type: 'WEEKLY',
             periodKey: 'WEEKLY-2025-27',
             rank: 1,
@@ -1449,7 +1528,8 @@ describe('Hunt Router', () => {
             upvoteCount: 100,
           },
           {
-            domainName: 'test.winner.domain',
+            domainName:
+              namefiNormalizedDomainSchema.parse('test.winner.domain'),
             type: 'MONTHLY',
             periodKey: 'MONTHLY-2025-07',
             rank: 2,
@@ -1457,7 +1537,8 @@ describe('Hunt Router', () => {
             upvoteCount: 200,
           },
           {
-            domainName: 'test.winner.domain',
+            domainName:
+              namefiNormalizedDomainSchema.parse('test.winner.domain'),
             type: 'CAMPAIGN',
             campaignKey: domainCampaignKey1,
             rank: 1,
@@ -1465,7 +1546,8 @@ describe('Hunt Router', () => {
             upvoteCount: 150,
           },
           {
-            domainName: 'test.winner.domain',
+            domainName:
+              namefiNormalizedDomainSchema.parse('test.winner.domain'),
             type: 'CAMPAIGN',
             campaignKey: domainCampaignKey2,
             rank: 3,
@@ -1482,7 +1564,7 @@ describe('Hunt Router', () => {
         } as any);
 
         const result = await publicCaller.getDomainAwards({
-          domainName: 'test.winner.domain',
+          domainName: namefiNormalizedDomainSchema.parse('test.winner.domain'),
         });
 
         // Result should be an array of awards
@@ -1533,7 +1615,9 @@ describe('Hunt Router', () => {
         } as any);
 
         const result = await publicCaller.getDomainAwards({
-          domainName: 'test.no.awards.domain',
+          domainName: namefiNormalizedDomainSchema.parse(
+            'test.no.awards.domain',
+          ),
         });
 
         // Result should be an empty array
@@ -1545,7 +1629,9 @@ describe('Hunt Router', () => {
         // Create a domain with only period-based awards
         await db.insert(huntAwardsTable).values([
           {
-            domainName: 'test.period.only.domain',
+            domainName: namefiNormalizedDomainSchema.parse(
+              'test.period.only.domain',
+            ),
             type: 'DAILY',
             periodKey: 'DAILY-2025-07-15',
             rank: 1,
@@ -1560,7 +1646,9 @@ describe('Hunt Router', () => {
         } as any);
 
         const result = await publicCaller.getDomainAwards({
-          domainName: 'test.period.only.domain',
+          domainName: namefiNormalizedDomainSchema.parse(
+            'test.period.only.domain',
+          ),
         });
 
         expect(result).toHaveLength(1);

@@ -720,7 +720,7 @@ export const huntPinnedDomainsTable = pgTable(
   'hunt_pinned_domains',
   {
     ...randomUuid,
-    domainName: text('domain_name').notNull(),
+    domainName: text('domain_name').notNull().$type<NamefiNormalizedDomain>(),
     weight: integer('weight').notNull().default(100),
     ...timestamps,
   },
@@ -758,7 +758,7 @@ export const huntAwardsTable = pgTable(
   'hunt_awards',
   {
     ...randomUuid,
-    domainName: text('domain_name').notNull(),
+    domainName: text('domain_name').notNull().$type<NamefiNormalizedDomain>(),
     type: huntAwardTypeEnum('type').notNull(),
 
     // Campaign key for campaign-type awards (e.g., 'CV-2025', 'CTA-2025')
@@ -837,7 +837,7 @@ export const huntCampaignDomainsTable = pgTable(
       .references(() => huntCampaignsTable.campaignKey, {
         onDelete: 'cascade',
       }),
-    domainName: text('domain_name').notNull(),
+    domainName: text('domain_name').notNull().$type<NamefiNormalizedDomain>(),
     ...timestamps,
   },
   (table) => [

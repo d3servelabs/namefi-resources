@@ -8,12 +8,9 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/shadcn/dropdown-menu';
 import { SidebarMenuButton, useSidebar } from '@/components/ui/shadcn/sidebar';
-import { useCartContext } from '@/components/providers/cart';
-import { useAuth } from '@/hooks/use-auth';
-import { useEmailPrompt } from '@/hooks/use-email-prompt';
+import { useAuth, useLogin, useLogout } from '@/hooks/use-auth';
 import type { NavItem } from '@/lib/types/nav-item';
 import { shortage } from '@/lib/string';
-import { type User, useLogin, useLogout } from '@privy-io/react-auth';
 import {
   Loader2Icon,
   LogOutIcon,
@@ -58,9 +55,9 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
   ) {
     const [isSignOutDialogOpen, setIsSignOutDialogOpen] = useState(false);
     const { state: sidebarState, isMobile } = useSidebar();
-    const { clearLocalCart } = useCartContext();
     const { isLoading, isAuthenticated, privyUser } = useAuth();
-    const { showEmailPrompt } = useEmailPrompt();
+    const { login } = useLogin();
+    const { logout } = useLogout();
 
     const name =
       privyUser?.wallet?.address ||
@@ -69,32 +66,12 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
       privyUser?.id ||
       'ME';
 
-    const { login } = useLogin({
-      onComplete: ({ user }: { user: User }) => {
-        // Show warning if user is logged in but has no email associated with their account
-        if (!user.email?.address) {
-          showEmailPrompt();
-        }
-      },
-      onError: () => {},
-    });
-
-    const { logout } = useLogout({
-      onSuccess: () => {
-        // Clear the local cart when the user logs out
-        clearLocalCart();
-      },
-    });
-
     const handleConnect = useCallback(() => {
-      login({
-        loginMethods: ['email', 'wallet'],
-      });
+      login(); // Uses default loginMethods from centralized hook
     }, [login]);
 
-    // Remove handleDisconnect and confirm
     const handleSignOut = useCallback(async () => {
-      await logout();
+      await logout(); // Callbacks are already configured in the hook
       setIsSignOutDialogOpen(false);
     }, [logout]);
 

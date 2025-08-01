@@ -12,6 +12,7 @@ import {
   type ExampleProfile,
   type Testimonial,
 } from './index';
+import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 
 export interface CVLandingConfig {
   /** The name (e.g., "taylor") - will be auto-capitalized for display */
@@ -32,7 +33,7 @@ export const CVLanding = ({ config }: { config: CVLandingConfig }) => {
   // Generate derived values
   const displayName =
     config.name.charAt(0).toUpperCase() + config.name.slice(1);
-  const domainName = `${config.name}.cv`;
+  const domainName = namefiNormalizedDomainSchema.parse(`${config.name}.cv`);
   const huntUrl = `/hunt/domains/${domainName}`;
 
   return (

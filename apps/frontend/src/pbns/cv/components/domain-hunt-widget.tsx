@@ -1,30 +1,28 @@
 'use client';
 
 import { Badge } from '@/components/ui/shadcn/badge';
-import { AuthGuard } from '@/components/dialogs/auth-required-dialog';
+
 import { useAuth } from '@/hooks/use-auth';
 import { useTRPC } from '@/lib/trpc';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { usePendingToast } from '@/hooks/use-pending-toast';
-import { useCallback, useMemo } from 'react';
-import { toast } from 'sonner';
+import { useCallback } from 'react';
 import { TagsDisplay } from '@/components/hunt/tags-display';
 import { cn } from '@/lib/cn';
 import { BackgroundGradient } from '@/components/ui/aceternity/background-gradient';
 import { TrendingUp, Globe } from 'lucide-react';
-import { useInteractionLoggers } from '@/components/providers/analytics';
-import { InteractionLoggingEventName } from '@/lib/analytics-events';
+import { useHuntVoteRow } from '@/hooks/use-hunt-vote-row';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 
 interface DomainHuntWidgetProps {
   /** The domain name to display and vote on */
-  domainName: string;
+  domainName: NamefiNormalizedDomain;
 }
 
 export const DomainHuntWidget = ({ domainName }: DomainHuntWidgetProps) => {
   const trpc = useTRPC();
-  const queryClient = useQueryClient();
   const { isAuthenticated, isLoading: authLoading } = useAuth();
-  const { logEventWithInteractionLoggers } = useInteractionLoggers();
+  const { huntVote, isBusy } = useHuntVoteRow(domainName);
 
   const authQuery = useQuery({
     ...trpc.hunt.getDomainDetail.queryOptions({
@@ -45,59 +43,11 @@ export const DomainHuntWidget = ({ domainName }: DomainHuntWidgetProps) => {
     ? authQuery.isLoading
     : publicQuery.isLoading;
 
-  const upvoteMutation = useMutation(
-    trpc.hunt.upvote.mutationOptions({
-      onSuccess: () => {
-        queryClient.invalidateQueries();
-        toast.success('Thanks for your vote!');
-        logEventWithInteractionLoggers({
-          name: InteractionLoggingEventName.Vote,
-          properties: {
-            domain_name: domainName,
-            action: 'add',
-          },
-        });
-      },
-      onError: () => {
-        toast.error('Failed to vote. Please try again.');
-      },
-    }),
-  );
-
-  const unvoteMutation = useMutation(
-    trpc.hunt.unvote.mutationOptions({
-      onSuccess: () => {
-        queryClient.invalidateQueries();
-        toast.success('Vote cancelled.');
-        logEventWithInteractionLoggers({
-          name: InteractionLoggingEventName.Vote,
-          properties: {
-            domain_name: domainName,
-            action: 'remove',
-          },
-        });
-      },
-      onError: () => {
-        toast.error('Failed to cancel vote. Please try again.');
-      },
-    }),
-  );
-
   const handleVoteToggle = useCallback(() => {
-    if (domainData?.userHasUpvoted) {
-      unvoteMutation.mutate({ domainName });
-    } else {
-      upvoteMutation.mutate({ domainName });
-    }
-  }, [domainData?.userHasUpvoted, upvoteMutation, unvoteMutation, domainName]);
+    huntVote.toggleVote(domainName, domainData?.userHasUpvoted || false);
+  }, [domainData?.userHasUpvoted, huntVote, domainName]);
 
-  const isVoting = useMemo(
-    () => upvoteMutation.isPending || unvoteMutation.isPending,
-    [upvoteMutation.isPending, unvoteMutation.isPending],
-  );
-
-  usePendingToast(upvoteMutation.isPending, 'Voting...');
-  usePendingToast(unvoteMutation.isPending, 'Cancelling vote...');
+  usePendingToast(isBusy, 'Processing vote...');
 
   return (
     <BackgroundGradient
@@ -133,37 +83,26 @@ export const DomainHuntWidget = ({ domainName }: DomainHuntWidgetProps) => {
               )}
             </div>
             <div className="flex items-center flex-shrink-0">
-              <AuthGuard
-                title="Sign in to vote"
-                description="You need to sign in to vote for domains. Join the community to discover and vote for the best domains!"
+              <button
+                type="button"
+                onClick={handleVoteToggle}
+                disabled={isBusy}
+                className={cn(
+                  'group flex items-center gap-1.5 md:gap-2 rounded-lg px-3 md:px-4 py-2 bg-brand-primary/15 border border-transparent text-brand-primary cursor-pointer transition-all duration-200 font-medium text-xs md:text-sm h-8 md:h-9 hover:bg-brand-primary/10',
+                  domainData?.userHasUpvoted &&
+                    'bg-[rgba(72,229,155,0.08)] text-brand-primary border-brand-primary',
+                  isBusy && 'opacity-50 cursor-not-allowed',
+                )}
+                aria-label="Vote"
               >
-                <button
-                  type="button"
-                  onClick={handleVoteToggle}
-                  disabled={isVoting}
-                  className={cn(
-                    'group flex items-center gap-1.5 md:gap-2 rounded-lg px-3 md:px-4 py-2 bg-brand-primary/15 border border-transparent text-brand-primary cursor-pointer transition-all duration-200 font-medium text-xs md:text-sm h-8 md:h-9 hover:bg-brand-primary/10',
-                    domainData?.userHasUpvoted &&
-                      'bg-[rgba(72,229,155,0.08)] text-brand-primary border-brand-primary',
-                    isVoting && 'opacity-50 cursor-not-allowed',
-                  )}
-                  aria-label="Vote"
-                >
-                  <TrendingUp className="h-3 md:h-4 w-3 md:w-4 flex-shrink-0" />
-                  <span>
-                    {isAuthenticated
-                      ? domainData?.userHasUpvoted
-                        ? 'Voted'
-                        : 'Upvote'
-                      : 'Upvote'}
-                  </span>
-                  {domainData?.upvoteCount !== undefined && (
-                    <Badge className="ml-0.5 md:ml-1 text-xs bg-brand-primary text-primary-foreground px-1.5 md:px-2 py-0.5 flex-shrink-0">
-                      {domainData.upvoteCount}
-                    </Badge>
-                  )}
-                </button>
-              </AuthGuard>
+                <TrendingUp className="h-3 md:h-4 w-3 md:w-4 flex-shrink-0" />
+                <span>{domainData?.userHasUpvoted ? 'Voted' : 'Upvote'}</span>
+                {domainData?.upvoteCount !== undefined && (
+                  <Badge className="ml-0.5 md:ml-1 text-xs bg-brand-primary text-primary-foreground px-1.5 md:px-2 py-0.5 flex-shrink-0">
+                    {domainData.upvoteCount}
+                  </Badge>
+                )}
+              </button>
             </div>
           </>
         )}

@@ -1,23 +1,18 @@
 'use client';
 
-import { AuthGuard } from '@/components/dialogs/auth-required-dialog';
 import { cn } from '@/lib/cn';
 import { formatNumberWithAbbreviations } from '@/lib/number';
-import { type AppRouterOutput, useTRPC } from '@/lib/trpc';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+
 import Link from 'next/link';
 import { type MouseEvent, useCallback, useMemo } from 'react';
-import { toast } from 'sonner';
 import { TagsDisplay } from './tags-display';
 import { UpvoteIcon } from './upvote-icon';
 import { usePendingToast } from '../../hooks/use-pending-toast';
-import { useInteractionLoggers } from '@/components/providers/analytics';
-import { InteractionLoggingEventName } from '@/lib/analytics-events';
+import { useHuntVoteRow } from '@/hooks/use-hunt-vote-row';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 
-type TrendingDomainsResponse = AppRouterOutput['hunt']['getTrendingDomains'];
-type CampaignResponse = AppRouterOutput['hunt']['getCampaign'];
 export type Domain = {
-  domainName: string;
+  domainName: NamefiNormalizedDomain;
   upvoteCount: number;
   isPinned: boolean;
   rank?: number;
@@ -55,23 +50,18 @@ const VoteButton = ({
 
   usePendingToast(pending, 'Voting...');
   return (
-    <AuthGuard
-      title="Sign in to vote"
-      description="You need to sign in to vote for domains. Join the community to discover and vote for the best domains!"
+    <button
+      type="button"
+      className={cn(
+        'group flex items-center justify-center rounded-full p-2 sm:p-2.5 bg-muted border border-transparent text-muted-foreground cursor-pointer hover:bg-[rgba(72,229,155,0.08)] hover:text-brand-primary hover:border-transparent transition-all duration-200',
+        voted &&
+          'bg-[rgba(72,229,155,0.08)] text-brand-primary border-brand-primary',
+      )}
+      aria-label="Upvote"
+      onClick={handleClick}
     >
-      <button
-        type="button"
-        className={cn(
-          'group flex items-center justify-center rounded-full p-2 sm:p-2.5 bg-muted border border-transparent text-muted-foreground cursor-pointer hover:bg-[rgba(72,229,155,0.08)] hover:text-brand-primary hover:border-transparent transition-all duration-200',
-          voted &&
-            'bg-[rgba(72,229,155,0.08)] text-brand-primary border-brand-primary',
-        )}
-        aria-label="Upvote"
-        onClick={handleClick}
-      >
-        <UpvoteIcon className="text-2xl" />
-      </button>
-    </AuthGuard>
+      <UpvoteIcon className="text-2xl" />
+    </button>
   );
 };
 
@@ -79,123 +69,15 @@ const VoteButton = ({
  * Component for rendering a single domain item in a list.
  */
 export const DomainsListItem = ({ domain }: { domain: Domain }) => {
-  const trpc = useTRPC();
-  const queryClient = useQueryClient();
-  const { logEventWithInteractionLoggers } = useInteractionLoggers();
-
-  const updateDomainInCaches = useCallback(
-    (domainName: string, updates: Partial<Domain>) => {
-      queryClient.setQueriesData(
-        { queryKey: trpc.hunt.getTrendingDomainsPublic.queryKey() },
-        (oldData: TrendingDomainsResponse | undefined) =>
-          oldData && {
-            ...oldData,
-            items: oldData.items.map((item: Domain) =>
-              item.domainName === domainName ? { ...item, ...updates } : item,
-            ),
-          },
-      );
-      queryClient.setQueriesData(
-        { queryKey: trpc.hunt.getTrendingDomains.queryKey() },
-        (oldData: TrendingDomainsResponse | undefined) =>
-          oldData && {
-            ...oldData,
-            items: oldData.items.map((item: Domain) =>
-              item.domainName === domainName ? { ...item, ...updates } : item,
-            ),
-          },
-      );
-      queryClient.setQueriesData(
-        { queryKey: trpc.hunt.getCampaign.queryKey() },
-        (oldData: CampaignResponse | undefined) =>
-          oldData && {
-            ...oldData,
-            rankings: oldData.rankings.map((item: Domain) =>
-              item.domainName === domainName ? { ...item, ...updates } : item,
-            ),
-          },
-      );
-      queryClient.setQueriesData(
-        { queryKey: trpc.hunt.getCampaignPublic.queryKey() },
-        (oldData: CampaignResponse | undefined) =>
-          oldData && {
-            ...oldData,
-            rankings: oldData.rankings.map((item: Domain) =>
-              item.domainName === domainName ? { ...item, ...updates } : item,
-            ),
-          },
-      );
-      queryClient.invalidateQueries({
-        queryKey: trpc.hunt.getMySubmittedDomains.queryKey(),
-      });
-      queryClient.invalidateQueries({
-        queryKey: trpc.hunt.getMyUpvotedDomains.queryKey(),
-      });
-      queryClient.invalidateQueries({
-        queryKey: trpc.hunt.getCampaign.queryKey(),
-      });
-      queryClient.invalidateQueries({
-        queryKey: trpc.hunt.getCampaignPublic.queryKey(),
-      });
-    },
-    [queryClient, trpc.hunt],
-  );
-
-  const upvoteMutation = useMutation(
-    trpc.hunt.upvote.mutationOptions({
-      onSuccess: () => {
-        updateDomainInCaches(domain.domainName, {
-          userHasUpvoted: true,
-          upvoteCount: domain.upvoteCount + 1,
-        });
-        toast.success('Thanks for your vote!');
-        logEventWithInteractionLoggers({
-          name: InteractionLoggingEventName.Vote,
-          properties: {
-            domain_name: domain.domainName,
-            action: 'add',
-          },
-        });
-      },
-      onError: () => {
-        toast.error('Failed to vote. Please try again.');
-      },
-    }),
-  );
-
-  const unvoteMutation = useMutation(
-    trpc.hunt.unvote.mutationOptions({
-      onSuccess: () => {
-        updateDomainInCaches(domain.domainName, {
-          userHasUpvoted: false,
-          upvoteCount: Math.max(0, domain.upvoteCount - 1),
-        });
-        toast.success('Vote cancelled.');
-        logEventWithInteractionLoggers({
-          name: InteractionLoggingEventName.Vote,
-          properties: {
-            domain_name: domain.domainName,
-            action: 'remove',
-          },
-        });
-      },
-      onError: () => {
-        toast.error('Failed to cancel vote. Please try again.');
-      },
-    }),
-  );
+  const { huntVote, isBusy } = useHuntVoteRow(domain.domainName);
 
   const handleUpvote = useCallback(() => {
-    upvoteMutation.mutate({
-      domainName: domain.domainName,
-    });
-  }, [domain.domainName, upvoteMutation]);
+    huntVote.vote(domain.domainName);
+  }, [domain.domainName, huntVote]);
 
   const handleUnvote = useCallback(() => {
-    unvoteMutation.mutate({
-      domainName: domain.domainName,
-    });
-  }, [domain.domainName, unvoteMutation]);
+    huntVote.unvote(domain.domainName);
+  }, [domain.domainName, huntVote]);
 
   const formattedUpvotes = useMemo(
     () => formatNumberWithAbbreviations(domain.upvoteCount),
@@ -236,7 +118,7 @@ export const DomainsListItem = ({ domain }: { domain: Domain }) => {
       <div className="flex flex-col items-center gap-2 w-12 sm:w-16">
         <VoteButton
           voted={domain.userHasUpvoted}
-          pending={upvoteMutation.isPending || unvoteMutation.isPending}
+          pending={isBusy}
           onUpvote={handleUpvote}
           onUnvote={handleUnvote}
         />

@@ -7,7 +7,10 @@ import {
   huntCampaignDomainsTable,
 } from '@namefi-astra/db';
 import { getTags } from '@namefi/cat';
-import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
+import {
+  namefiNormalizedDomainSchema,
+  type NamefiNormalizedDomain,
+} from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
 import { type SQL, and, desc, eq, sql } from 'drizzle-orm';
 import { z } from 'zod';
@@ -24,7 +27,7 @@ interface CampaignDetails {
 }
 
 interface CampaignRanking {
-  domainName: string;
+  domainName: NamefiNormalizedDomain;
   rank: number;
   upvoteCount: number;
   reason?: string | null;
@@ -36,11 +39,11 @@ interface CampaignRanking {
 
 // Input schemas
 const submitDomainSchema = z.object({
-  domainName: z.string().min(1),
+  domainName: namefiNormalizedDomainSchema,
 });
 
 const removeDomainSchema = z.object({
-  domainName: z.string().min(1),
+  domainName: namefiNormalizedDomainSchema,
 });
 
 const getMySubmittedDomainsSchema = z.object({
@@ -64,11 +67,11 @@ const getTrendingDomainsSchema = z.object({
 });
 
 const domainVoteSchema = z.object({
-  domainName: z.string().min(1),
+  domainName: namefiNormalizedDomainSchema,
 });
 
 const getDomainDetailSchema = z.object({
-  domainName: z.string().min(1),
+  domainName: namefiNormalizedDomainSchema,
 });
 
 const getPeriodAwardsSchema = z.object({
@@ -85,7 +88,7 @@ const getCampaignSchema = z.object({
 });
 
 const getDomainAwardsSchema = z.object({
-  domainName: z.string().min(1),
+  domainName: namefiNormalizedDomainSchema,
 });
 
 /**
@@ -130,7 +133,7 @@ const createTimeRangeFilter = (
 /**
  * Helper function to add tags to domain items
  */
-const addTagsToItems = <T extends { domainName: string }>(
+const addTagsToItems = <T extends { domainName: NamefiNormalizedDomain }>(
   items: T[],
 ): (T & { tags: Array<{ id: string }> })[] => {
   return items.map((item) => ({
@@ -142,7 +145,7 @@ const addTagsToItems = <T extends { domainName: string }>(
 /**
  * Helper function to get domain stats
  */
-const getDomainStats = async (domainNames: string[]) =>
+const getDomainStats = async (domainNames: NamefiNormalizedDomain[]) =>
   db
     .select({
       domainName: huntDomainStatsView.domainName,
@@ -161,7 +164,7 @@ const getDomainStats = async (domainNames: string[]) =>
  */
 const getUserVoteStatus = async (
   userId: string,
-  domainNames: string[],
+  domainNames: NamefiNormalizedDomain[],
 ): Promise<Record<string, boolean>> => {
   if (domainNames.length === 0) {
     return {};
@@ -340,7 +343,7 @@ const getCampaign = async ({
   return { campaign, rankings, hasMore };
 };
 
-const upvote = async (userId: string, domainName: string) => {
+const upvote = async (userId: string, domainName: NamefiNormalizedDomain) => {
   // Check if user has already upvoted this domain
   const [existingUpvote] = await db
     .select()
@@ -369,6 +372,26 @@ const upvote = async (userId: string, domainName: string) => {
   });
 
   return { success: true, message: 'Upvoted successfully' };
+};
+
+/**
+ * Create a Map from domain stats for efficient lookup
+ */
+const createStatsMap = (
+  domainStats: Awaited<ReturnType<typeof getDomainStats>>,
+) => {
+  return new Map<
+    NamefiNormalizedDomain,
+    {
+      domainName: NamefiNormalizedDomain;
+      upvoteCount: number;
+    }
+  >(
+    domainStats.map((stat) => [
+      stat.domainName as NamefiNormalizedDomain,
+      { ...stat, domainName: stat.domainName as NamefiNormalizedDomain },
+    ]),
+  );
 };
 
 export const huntRouter = createTRPCRouter({
@@ -512,7 +535,10 @@ export const huntRouter = createTRPCRouter({
       }
 
       // Batch get domain stats and user vote status
-      const domainNames = domainList.map((d) => d.domainName);
+      const domainNames = domainList.map(
+        (d) => d.domainName as NamefiNormalizedDomain,
+      );
+
       const [domainStats, userVotes] = await Promise.all([
         // Get stats for these domains
         getDomainStats(domainNames),
@@ -522,17 +548,12 @@ export const huntRouter = createTRPCRouter({
       ]);
 
       // Combine all data
-      const statsMap = new Map<
-        string,
-        {
-          domainName: string;
-          upvoteCount: number;
-        }
-      >(domainStats.map((stat) => [stat.domainName, stat]));
+      const statsMap = createStatsMap(domainStats);
       const enrichedDomains = domainList.map((domain) => {
-        const stats = statsMap.get(domain.domainName);
+        const domainName = domain.domainName as NamefiNormalizedDomain;
+        const stats = statsMap.get(domainName);
         return {
-          domainName: domain.domainName,
+          domainName,
           submittedAt: domain.submittedAt,
           upvoteCount: stats?.upvoteCount || 0,
           userHasUpvoted: Boolean(userVotes[domain.domainName]),
@@ -619,6 +640,7 @@ export const huntRouter = createTRPCRouter({
       // For public access, all userHasUpvoted should be false
       const domainsWithoutUserData = domainList.map((domain, index) => ({
         ...domain,
+        domainName: domain.domainName as NamefiNormalizedDomain,
         rank: offset + index + 1,
         userHasUpvoted: false,
       }));
@@ -704,12 +726,13 @@ export const huntRouter = createTRPCRouter({
       // Batch query user's vote status for the returned domains
       const userVotes = await getUserVoteStatus(
         userId,
-        domainList.map((d) => d.domainName),
+        domainList.map((d) => d.domainName as NamefiNormalizedDomain),
       );
 
       // Combine results with user vote status
       const domainsWithVotes = domainList.map((domain, index) => ({
         ...domain,
+        domainName: domain.domainName as NamefiNormalizedDomain,
         rank: offset + index + 1,
         userHasUpvoted: Boolean(userVotes[domain.domainName]),
       }));
@@ -843,20 +866,15 @@ export const huntRouter = createTRPCRouter({
       }
 
       const domainStats = await getDomainStats(
-        domainList.map((d) => d.domainName),
+        domainList.map((d) => d.domainName as NamefiNormalizedDomain),
       );
 
-      const statsMap = new Map<
-        string,
-        {
-          domainName: string;
-          upvoteCount: number;
-        }
-      >(domainStats.map((stat) => [stat.domainName, stat]));
+      const statsMap = createStatsMap(domainStats);
       const enrichedDomains = domainList.map((domain) => {
-        const stats = statsMap.get(domain.domainName);
+        const domainName = domain.domainName as NamefiNormalizedDomain;
+        const stats = statsMap.get(domainName);
         return {
-          domainName: domain.domainName,
+          domainName,
           upvotedAt: domain.upvotedAt,
           upvoteCount: stats?.upvoteCount || 0,
           userHasUpvoted: true, // Always true for upvoted domains
@@ -957,6 +975,7 @@ export const huntRouter = createTRPCRouter({
 
       const enrichedDomain = {
         ...domainDetail,
+        domainName: domainDetail.domainName as NamefiNormalizedDomain,
         userHasUpvoted: Boolean(userUpvote),
         userUpvotedAt: userUpvote?.createdAt || null,
         isOwner: Boolean(userSubmit),
@@ -1005,6 +1024,7 @@ export const huntRouter = createTRPCRouter({
 
       const enrichedDomain = {
         ...domainDetail,
+        domainName: domainDetail.domainName as NamefiNormalizedDomain,
         userHasUpvoted: false,
         userUpvotedAt: null,
         isOwner: false,

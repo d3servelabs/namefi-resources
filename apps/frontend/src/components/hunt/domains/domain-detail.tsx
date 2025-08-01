@@ -1,6 +1,5 @@
 'use client';
 
-import { AuthGuard } from '@/components/dialogs/auth-required-dialog';
 import { Badge } from '@/components/ui/shadcn/badge';
 import { Button } from '@/components/ui/shadcn/button';
 import {
@@ -11,7 +10,7 @@ import {
 } from '@/components/ui/shadcn/card';
 import { useAuth } from '@/hooks/use-auth';
 import { useTRPC } from '@/lib/trpc';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   ArrowLeftIcon,
   ExternalLinkIcon,
@@ -20,24 +19,23 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 import { toast } from 'sonner';
 import { DomainItemSkeleton } from '../domain-item-skeleton';
 import { TagsDisplay } from '../tags-display';
 import { usePendingToast } from '../../../hooks/use-pending-toast';
-import { useInteractionLoggers } from '@/components/providers/analytics';
-import { InteractionLoggingEventName } from '@/lib/analytics-events';
+import { useHuntVoteRow } from '@/hooks/use-hunt-vote-row';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 
 interface DomainDetailProps {
-  domainName: string;
+  domainName: NamefiNormalizedDomain;
 }
 
 export const DomainDetail = ({ domainName }: DomainDetailProps) => {
   const router = useRouter();
   const trpc = useTRPC();
-  const queryClient = useQueryClient();
   const { isAuthenticated, isLoading: authLoading } = useAuth();
-  const { logEventWithInteractionLoggers } = useInteractionLoggers();
+  const { huntVote, isBusy } = useHuntVoteRow(domainName);
 
   const authQuery = useQuery({
     ...trpc.hunt.getDomainDetail.queryOptions({
@@ -58,56 +56,9 @@ export const DomainDetail = ({ domainName }: DomainDetailProps) => {
     ? authQuery.isLoading
     : publicQuery.isLoading;
 
-  const upvoteMutation = useMutation(
-    trpc.hunt.upvote.mutationOptions({
-      onSuccess: () => {
-        queryClient.invalidateQueries();
-        toast.success('Thanks for your vote!');
-        logEventWithInteractionLoggers({
-          name: InteractionLoggingEventName.Vote,
-          properties: {
-            domain_name: domainName,
-            action: 'add',
-          },
-        });
-      },
-      onError: () => {
-        toast.error('Failed to vote. Please try again.');
-      },
-    }),
-  );
-
-  const unvoteMutation = useMutation(
-    trpc.hunt.unvote.mutationOptions({
-      onSuccess: () => {
-        queryClient.invalidateQueries();
-        toast.success('Vote cancelled.');
-        logEventWithInteractionLoggers({
-          name: InteractionLoggingEventName.Vote,
-          properties: {
-            domain_name: domainName,
-            action: 'remove',
-          },
-        });
-      },
-      onError: () => {
-        toast.error('Failed to cancel vote. Please try again.');
-      },
-    }),
-  );
-
   const handleVoteToggle = useCallback(() => {
-    if (domainData?.userHasUpvoted) {
-      unvoteMutation.mutate({ domainName });
-    } else {
-      upvoteMutation.mutate({ domainName });
-    }
-  }, [domainData?.userHasUpvoted, domainName, upvoteMutation, unvoteMutation]);
-
-  const isVoting = useMemo(
-    () => upvoteMutation.isPending || unvoteMutation.isPending,
-    [upvoteMutation.isPending, unvoteMutation.isPending],
-  );
+    huntVote.toggleVote(domainName, domainData?.userHasUpvoted || false);
+  }, [domainData?.userHasUpvoted, domainName, huntVote]);
 
   const deleteDomainMutation = useMutation(
     trpc.hunt.removeDomain.mutationOptions({
@@ -121,8 +72,7 @@ export const DomainDetail = ({ domainName }: DomainDetailProps) => {
     }),
   );
 
-  usePendingToast(upvoteMutation.isPending, 'Voting...');
-  usePendingToast(unvoteMutation.isPending, 'Cancelling vote...');
+  usePendingToast(isBusy, 'Processing vote...');
   usePendingToast(deleteDomainMutation.isPending, 'Deleting domain...');
 
   if (domainLoading || authLoading) {
@@ -171,29 +121,18 @@ export const DomainDetail = ({ domainName }: DomainDetailProps) => {
                 )}
               </div>
               <div className="flex items-center gap-2">
-                <AuthGuard
-                  title="Sign in to vote"
-                  description="You need to sign in to vote for domains. Join the community to discover and vote for the best domains!"
+                <Button
+                  onClick={handleVoteToggle}
+                  disabled={isBusy}
+                  variant={domainData?.userHasUpvoted ? 'default' : 'outline'}
+                  className="flex items-center gap-2 cursor-pointer"
                 >
-                  <Button
-                    onClick={handleVoteToggle}
-                    disabled={isVoting}
-                    variant={domainData?.userHasUpvoted ? 'default' : 'outline'}
-                    className="flex items-center gap-2 cursor-pointer"
-                  >
-                    <TrendingUpIcon className="h-4 w-4" />
-                    {isAuthenticated
-                      ? domainData?.userHasUpvoted
-                        ? 'Voted'
-                        : 'Vote'
-                      : 'Sign in to vote'}
-                    {domainData?.upvoteCount !== undefined && (
-                      <Badge variant="secondary">
-                        {domainData.upvoteCount}
-                      </Badge>
-                    )}
-                  </Button>
-                </AuthGuard>
+                  <TrendingUpIcon className="h-4 w-4" />
+                  {domainData?.userHasUpvoted ? 'Voted' : 'Vote'}
+                  {domainData?.upvoteCount !== undefined && (
+                    <Badge variant="secondary">{domainData.upvoteCount}</Badge>
+                  )}
+                </Button>
               </div>
             </div>
           </CardHeader>

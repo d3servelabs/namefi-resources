@@ -1,4 +1,6 @@
 import { DomainDetail } from '@/components/hunt/domains/domain-detail';
+import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
+import { notFound } from 'next/navigation';
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -6,6 +8,11 @@ interface PageProps {
 
 export default async function Page({ params }: PageProps) {
   const { id } = await params;
-  const domainName = decodeURIComponent(id);
-  return <DomainDetail domainName={domainName} />;
+  const domainName = namefiNormalizedDomainSchema.safeParse(
+    decodeURIComponent(id),
+  );
+  if (!domainName.success) {
+    return notFound();
+  }
+  return <DomainDetail domainName={domainName.data} />;
 }
