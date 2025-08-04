@@ -329,27 +329,25 @@ function NftManagementContent() {
     }
   };
 
-  const getExpirationStatus = (
-    domainExpiration: Date | null,
-    nftExpiration: Date | null,
-  ) => {
+  const getDomainStatus = (domainExpiration: Date | null) => {
     if (!domainExpiration) {
       return <Badge variant="destructive">Not Found</Badge>;
     }
-    return (
-      <div className="flex gap-2 flex-col">
-        {domainExpiration < new Date() ? (
-          <Badge variant="destructive">Domain Expired</Badge>
-        ) : (
-          <Badge variant="default">Domain Active</Badge>
-        )}
-        {nftExpiration &&
-          (nftExpiration < new Date() ? (
-            <Badge variant="destructive">NFT Expired</Badge>
-          ) : (
-            <Badge variant="default">NFT Active</Badge>
-          ))}
-      </div>
+    return domainExpiration < new Date() ? (
+      <Badge variant="destructive">Expired</Badge>
+    ) : (
+      <Badge variant="default">Active</Badge>
+    );
+  };
+
+  const getNftStatus = (nftExpiration: Date | null) => {
+    if (!nftExpiration) {
+      return <Badge variant="secondary">N/A</Badge>;
+    }
+    return nftExpiration < new Date() ? (
+      <Badge variant="destructive">Expired</Badge>
+    ) : (
+      <Badge variant="default">Active</Badge>
     );
   };
 
@@ -866,6 +864,7 @@ function NftManagementContent() {
                         <Th>Chain ID</Th>
                         <Th>Owner Address</Th>
                         <Th>Domain Status</Th>
+                        <Th>NFT Status</Th>
                         <Th>NFT Expiration</Th>
                         <Th>Domain Expiration</Th>
                         <Th>Date Match</Th>
@@ -916,12 +915,8 @@ function NftManagementContent() {
                                 {nft.ownerAddress}
                               </TruncatedTextWithHover>
                             </Td>
-                            <Td>
-                              {getExpirationStatus(
-                                nft.domainExpirationTime,
-                                nft.nftExpirationTime,
-                              )}
-                            </Td>
+                            <Td>{getDomainStatus(nft.domainExpirationTime)}</Td>
+                            <Td>{getNftStatus(nft.nftExpirationTime)}</Td>
                             <Td>{formatDate(nft.nftExpirationTime)}</Td>
                             <Td>{formatDate(nft.domainExpirationTime)}</Td>
                             <Td>
