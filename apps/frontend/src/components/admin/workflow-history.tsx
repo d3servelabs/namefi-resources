@@ -49,6 +49,7 @@ import {
   Flame,
   Wrench,
   RefreshCw,
+  ExternalLink,
 } from 'lucide-react';
 import { format, formatDistanceToNow } from 'date-fns';
 
@@ -99,6 +100,17 @@ function WorkflowHistoryContent() {
   const totalCount = data?.pagination.totalCount;
   const hasNextPage = data?.pagination.hasNextPage ?? false;
   const hasPreviousPage = previousPageTokens.length > 0 || page > 1;
+
+  // Generate Temporal UI link for workflow details
+  const getWorkflowLink = (workflowId: string, runId?: string) => {
+    if (!data?.temporal) return null;
+    const { apiUrl, namespace } = data.temporal;
+    // Convert API URL to UI URL (replace api. with ui. if needed)
+    const uiUrl = apiUrl.includes('localhost')
+      ? 'http://localhost:8233'
+      : 'https://cloud.temporal.io';
+    return `${uiUrl}/namespaces/${namespace}/workflows/${workflowId}${runId ? `/${runId}` : ''}`;
+  };
 
   const handleDaysChange = useCallback((value: '1' | '3' | '7') => {
     setDays(value);
@@ -409,93 +421,113 @@ function WorkflowHistoryContent() {
                   </Tr>
                 </Thead>
                 <TableBody>
-                  {data?.data.map((workflow) => (
-                    <Tr key={workflow.workflowId}>
-                      <Td>
-                        <div className="flex items-center gap-2">
-                          {getWorkflowTypeIcon(workflow.workflowType)}
-                          <span className="text-sm">
-                            {getWorkflowTypeName(workflow.workflowType)}
-                          </span>
-                        </div>
-                      </Td>
-                      <Td className="font-medium">
-                        {workflow.domainName ? (
-                          <TruncatedTextWithHover maxLength={30}>
-                            {workflow.domainName}
-                          </TruncatedTextWithHover>
-                        ) : (
-                          <span className="text-muted-foreground text-sm">
-                            N/A
-                          </span>
-                        )}
-                      </Td>
-                      <Td>
-                        {workflow.chainId ? (
-                          <Badge variant="outline">{workflow.chainId}</Badge>
-                        ) : (
-                          <span className="text-muted-foreground text-sm">
-                            N/A
-                          </span>
-                        )}
-                      </Td>
-                      <Td>{getStatusBadge(workflow.status)}</Td>
-                      <Td className="text-sm">
-                        <TooltipProvider>
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <span className="cursor-help">
-                                {workflow.startTime
-                                  ? formatDistanceToNow(
-                                      new Date(workflow.startTime),
-                                      { addSuffix: true },
-                                    )
-                                  : 'N/A'}
-                              </span>
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              <p>{formatDate(workflow.startTime)}</p>
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
-                      </Td>
-                      <Td className="text-sm">
-                        <div className="flex items-center gap-1">
-                          <Clock className="h-3 w-3 text-muted-foreground" />
-                          {formatDuration(workflow.executionTime)}
-                        </div>
-                      </Td>
-                      <Td className="font-mono text-xs">
-                        <TruncatedTextWithHover maxLength={20}>
-                          {workflow.workflowId}
-                        </TruncatedTextWithHover>
-                      </Td>
-                      <Td>
-                        {workflow.error ? (
+                  {data?.data.map((workflow) => {
+                    const workflowLink = getWorkflowLink(
+                      workflow.workflowId,
+                      workflow.runId,
+                    );
+                    return (
+                      <Tr key={workflow.workflowId}>
+                        <Td>
+                          <div className="flex items-center gap-2">
+                            {getWorkflowTypeIcon(workflow.workflowType)}
+                            <span className="text-sm">
+                              {getWorkflowTypeName(workflow.workflowType)}
+                            </span>
+                          </div>
+                        </Td>
+                        <Td className="font-medium">
+                          {workflow.domainName ? (
+                            <TruncatedTextWithHover maxLength={30}>
+                              {workflow.domainName}
+                            </TruncatedTextWithHover>
+                          ) : (
+                            <span className="text-muted-foreground text-sm">
+                              N/A
+                            </span>
+                          )}
+                        </Td>
+                        <Td>
+                          {workflow.chainId ? (
+                            <Badge variant="outline">{workflow.chainId}</Badge>
+                          ) : (
+                            <span className="text-muted-foreground text-sm">
+                              N/A
+                            </span>
+                          )}
+                        </Td>
+                        <Td>{getStatusBadge(workflow.status)}</Td>
+                        <Td className="text-sm">
                           <TooltipProvider>
                             <Tooltip>
                               <TooltipTrigger asChild>
-                                <Badge
-                                  variant="destructive"
-                                  className="cursor-help"
-                                >
-                                  <AlertCircle className="h-3 w-3 mr-1" />
-                                  Error
-                                </Badge>
+                                <span className="cursor-help">
+                                  {workflow.startTime
+                                    ? formatDistanceToNow(
+                                        new Date(workflow.startTime),
+                                        { addSuffix: true },
+                                      )
+                                    : 'N/A'}
+                                </span>
                               </TooltipTrigger>
-                              <TooltipContent className="max-w-xs">
-                                <p className="text-xs">{workflow.error}</p>
+                              <TooltipContent>
+                                <p>{formatDate(workflow.startTime)}</p>
                               </TooltipContent>
                             </Tooltip>
                           </TooltipProvider>
-                        ) : (
-                          <span className="text-muted-foreground text-sm">
-                            -
-                          </span>
-                        )}
-                      </Td>
-                    </Tr>
-                  ))}
+                        </Td>
+                        <Td className="text-sm">
+                          <div className="flex items-center gap-1">
+                            <Clock className="h-3 w-3 text-muted-foreground" />
+                            {formatDuration(workflow.executionTime)}
+                          </div>
+                        </Td>
+                        <Td className="font-mono text-xs">
+                          {workflowLink ? (
+                            <a
+                              href={workflowLink}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-blue-600 hover:text-blue-800 hover:underline inline-flex items-center gap-1"
+                            >
+                              <TruncatedTextWithHover maxLength={18}>
+                                {workflow.workflowId}
+                              </TruncatedTextWithHover>
+                              <ExternalLink className="h-3 w-3 flex-shrink-0" />
+                            </a>
+                          ) : (
+                            <TruncatedTextWithHover maxLength={20}>
+                              {workflow.workflowId}
+                            </TruncatedTextWithHover>
+                          )}
+                        </Td>
+                        <Td>
+                          {workflow.error ? (
+                            <TooltipProvider>
+                              <Tooltip>
+                                <TooltipTrigger asChild>
+                                  <Badge
+                                    variant="destructive"
+                                    className="cursor-help"
+                                  >
+                                    <AlertCircle className="h-3 w-3 mr-1" />
+                                    Error
+                                  </Badge>
+                                </TooltipTrigger>
+                                <TooltipContent className="max-w-xs">
+                                  <p className="text-xs">{workflow.error}</p>
+                                </TooltipContent>
+                              </Tooltip>
+                            </TooltipProvider>
+                          ) : (
+                            <span className="text-muted-foreground text-sm">
+                              -
+                            </span>
+                          )}
+                        </Td>
+                      </Tr>
+                    );
+                  })}
                 </TableBody>
               </Table>
             </div>
