@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '@/hooks/use-auth';
 import { useTRPC } from '@/lib/trpc';
 import { CampaignCountdown } from './campaign-countdown';
+import { CampaignAnimatedHeroBackground } from './campaign-animated-hero-background';
 import Image from 'next/image';
 
 interface CampaignHeroProps {
@@ -33,16 +34,8 @@ export const CampaignHero = ({ campaignKey }: CampaignHeroProps) => {
   const isActive = campaign?.status === 'ACTIVE';
 
   return (
-    <section className="flex flex-col items-center justify-center gap-8 py-20 relative">
-      <div className="absolute inset-0">
-        <Image
-          src="/assets/hunt/hero-bg-1.png"
-          alt="Hero background"
-          fill
-          className="object-cover"
-          priority
-        />
-      </div>
+    <section className="flex flex-col items-center justify-center gap-8 py-20 relative min-h-[600px]">
+      <CampaignAnimatedHeroBackground />
 
       <div className="flex flex-col items-center justify-center gap-10 relative z-10">
         {campaign?.logoUrl ? (
