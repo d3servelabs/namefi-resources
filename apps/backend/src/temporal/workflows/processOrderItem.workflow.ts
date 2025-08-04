@@ -54,7 +54,12 @@ export async function processOrderItemWorkflow(
           },
         ],
         taskQueue: TEMPORAL_QUEUES.DOMAINS,
-        workflowId: `extend-domain-${normalizedDomainName}`,
+        workflowId: extendDomainRegistrationWorkflow.generateId({
+          ownerAddress: recipientWalletAddress,
+          normalizedDomainName,
+          durationInYears,
+          userId,
+        }),
         workflowIdReusePolicy: 'ALLOW_DUPLICATE',
         workflowIdConflictPolicy: 'FAIL',
         parentClosePolicy: 'REQUEST_CANCEL',

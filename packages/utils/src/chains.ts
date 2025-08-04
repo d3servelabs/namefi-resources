@@ -1,4 +1,4 @@
-import { isNotNil, pick, toPairs, values } from 'ramda';
+import { isNotNil, pick, pluck, toPairs, values } from 'ramda';
 import * as Chains from 'viem/chains';
 
 /**
@@ -16,6 +16,8 @@ export const CHAINS = pick(
  * Map of chain objects indexed by their chain ID for efficient lookups.
  */
 const CHAINS_BY_ID = new Map(values(CHAINS).map((chain) => [chain.id, chain]));
+
+export const CHAINS_IDS = pluck('id', values(Chains)) as number[];
 
 /**
  * Gets a chain object by its chain ID.

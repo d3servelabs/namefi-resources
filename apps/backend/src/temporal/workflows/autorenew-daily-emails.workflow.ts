@@ -272,7 +272,12 @@ export async function notifyAndRenewDomainsForSingleUserWorkflow(
                 userId,
               },
             ],
-            workflowId: `extend-domain-${domain.normalizedDomainName}`,
+            workflowId: extendDomainRegistrationWorkflow.generateId({
+              normalizedDomainName: domain.normalizedDomainName,
+              durationInYears: 1,
+              ownerAddress: domain.walletAddress,
+              userId,
+            }),
             workflowIdReusePolicy: 'ALLOW_DUPLICATE',
             workflowIdConflictPolicy: 'FAIL',
             parentClosePolicy: 'REQUEST_CANCEL',

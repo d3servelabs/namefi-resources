@@ -391,3 +391,19 @@ async function _extend3ldDomainAndReturnNewExpirationTime({
   }
   return addYears(fromUnixTime(nftExpirationTime), durationInYears);
 }
+
+extendDomainRegistrationWorkflow.generateId = (
+  input: ExtendDomainRegistrationWorkflowInput,
+) => {
+  return `extend-domain-[${input.normalizedDomainName}]`;
+};
+
+extendDomainRegistrationWorkflow.attemptParseId = (id: string) => {
+  const parsedWorkflowId = /extend-domain-\[?(?<domainName>.+)\]?/.exec(id);
+  if (parsedWorkflowId) {
+    return {
+      normalizedDomainName: parsedWorkflowId.groups?.domainName || '',
+    };
+  }
+  return null;
+};

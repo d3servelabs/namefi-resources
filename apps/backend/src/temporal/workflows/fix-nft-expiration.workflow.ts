@@ -1,4 +1,4 @@
-import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import { CHAINS_IDS, type NamefiNormalizedDomain } from '@namefi-astra/utils';
 import * as workflow from '@temporalio/workflow';
 import { differenceInHours, getUnixTime } from 'date-fns';
 import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';
@@ -166,3 +166,36 @@ export async function fixNftExpirationWorkflow({
     };
   }
 }
+
+fixNftExpirationWorkflow.generateId = (
+  input: FixNftExpirationWorkflowInput,
+) => {
+  return `fix-nft-expiration-[${input.chainId}]-[${input.normalizedDomainName}]`;
+};
+fixNftExpirationWorkflow.attemptParseId = (id: string) => {
+  //first attempt to parse the id as the known format
+  let output = null;
+  const correctRegex =
+    /(admin-)?fix-nft-expiration-\[(?<chainId>\d+)\]-\[(?<domainName>.+?)\](-(?<timestamp>\d+))?/;
+
+  const otherKnownRegex = [
+    /admin-fix-nft-expiration-(?<domainName>.+?)-(?<chainId>\d+)(-(?<timestamp>\d+))?/,
+  ];
+
+  for (const regex of [correctRegex, ...otherKnownRegex]) {
+    const parsedWorkflowId = regex.exec(id);
+    if (parsedWorkflowId) {
+      const chainId = Number.parseInt(parsedWorkflowId.groups?.chainId || '0');
+      if (!Number.isSafeInteger(chainId) || !CHAINS_IDS.includes(chainId)) {
+        continue;
+      }
+      output = {
+        chainId: Number.parseInt(parsedWorkflowId.groups?.chainId || '0'),
+        normalizedDomainName: parsedWorkflowId.groups?.domainName || '',
+      };
+      break;
+    }
+  }
+
+  return output;
+};

@@ -1,4 +1,4 @@
-import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import { CHAINS_IDS, type NamefiNormalizedDomain } from '@namefi-astra/utils';
 import * as workflow from '@temporalio/workflow';
 import type {
   PreparedTxOnlySerializableParams,
@@ -7,7 +7,6 @@ import type {
 } from '../activities/mint.activities';
 import { TEMPORAL_ENUMS } from '../shared/enums';
 import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';
-import { getNamefiNftLock } from '../activities/namefi-nft';
 
 const TIMEOUT_IN_MS = 120_000;
 const MAX_GAS_PRICE_MULTIPLIER = 1.25;
@@ -356,5 +355,21 @@ ensureNftIsLockedAndBurnByNftName.generateId = (input: {
   domainName: NamefiNormalizedDomain;
   chainId: number;
 }) => {
-  return `burn-namefi-nft-${input.chainId}-${input.domainName}`;
+  return `burn-namefi-nft-[${input.chainId}]-[${input.domainName}]`;
+};
+
+ensureNftIsLockedAndBurnByNftName.attemptParseId = (id: string) => {
+  const parsedWorkflowId =
+    /burn-namefi-nft-\[?(?<chainId>\d+)\]?-\[?(?<domainName>.+)\]?/.exec(id);
+  if (parsedWorkflowId) {
+    const chainId = Number.parseInt(parsedWorkflowId.groups?.chainId || '0');
+    if (!Number.isSafeInteger(chainId) || !CHAINS_IDS.includes(chainId)) {
+      return null;
+    }
+    return {
+      chainId,
+      normalizedDomainName: parsedWorkflowId.groups?.domainName || '',
+    };
+  }
+  return null;
 };
