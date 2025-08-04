@@ -7,3 +7,10 @@
  */
 export const SEND_RENEW_REMINDERS_THRESHOLD = 30;
 export const RENEW_EARLY_BY_DAYS = 15;
+
+export const HUNT_PERIOD_AWARD_LIMITS = {
+  DAILY: 10,
+  WEEKLY: 20,
+  MONTHLY: 50,
+  YEARLY: 100,
+};

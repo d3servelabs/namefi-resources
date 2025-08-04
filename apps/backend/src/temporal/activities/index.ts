@@ -6,3 +6,4 @@ export * as NamefiNftActivities from './namefi-nft';
 export * as OrderActivities from './order.activities';
 export * as NotifyActivities from './notify.activities';
 export * as NftManagementReportActivities from './indexers/reporting/nft-management-report.activities';
+export * as HuntActivities from './hunt.activities';

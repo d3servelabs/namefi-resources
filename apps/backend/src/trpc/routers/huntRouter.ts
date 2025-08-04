@@ -14,7 +14,20 @@ import {
 import { TRPCError } from '@trpc/server';
 import { type SQL, and, desc, eq, sql } from 'drizzle-orm';
 import { z } from 'zod';
-import { createTRPCRouter, protectedProcedure, publicProcedure } from '../base';
+import { secrets } from '#lib/env';
+import {
+  createTRPCRouter,
+  protectedProcedure,
+  publicProcedure,
+  t,
+} from '../base';
+import { temporalClient } from '../../temporal/client';
+import {
+  campaignAwardWorkflow,
+  campaignStatusWorkflow,
+  periodAwardWorkflow,
+} from '../../temporal/workflows';
+import { TEMPORAL_QUEUES } from '../../temporal/shared';
 
 // Type definitions
 interface CampaignDetails {
@@ -393,6 +406,29 @@ const createStatsMap = (
     ]),
   );
 };
+
+/**
+ * Middleware for verifying API key authentication.
+ *
+ * This middleware will verify the API key from the x-api-key header.
+ */
+const verifyApiKey = t.middleware(async ({ ctx, next }) => {
+  const apiKey = ctx.req.header('x-api-key');
+
+  if (apiKey !== secrets.API_AUTH_KEY) {
+    throw new TRPCError({
+      code: 'UNAUTHORIZED',
+      message: 'Invalid API key',
+    });
+  }
+
+  return next();
+});
+
+/**
+ * API key protected procedure
+ */
+const apiKeyProtectedProcedure = publicProcedure.use(verifyApiKey);
 
 export const huntRouter = createTRPCRouter({
   /**
@@ -1141,5 +1177,128 @@ export const huntRouter = createTRPCRouter({
         .from(huntAwardsTable)
         .where(eq(huntAwardsTable.domainName, domainName))
         .orderBy(desc(huntAwardsTable.createdAt));
+    }),
+
+  // ===== Hunt Management =====
+
+  /**
+   * Health check endpoint that returns the status of award schedules.
+   * Returns schedule statuses for monitoring purposes.
+   */
+  getAwardSchedulesHealth: apiKeyProtectedProcedure.query(async () => {
+    const scheduleIds = [
+      'weekly-award-schedule',
+      'monthly-award-schedule',
+      'campaign-award-schedule',
+      'campaign-status-schedule',
+    ];
+
+    const schedules = await Promise.all(
+      scheduleIds.map(async (scheduleId) => {
+        try {
+          const handle = temporalClient.schedule.getHandle(scheduleId);
+          const description = await handle.describe();
+          return {
+            id: scheduleId,
+            state: description.state,
+            info: description.info,
+          };
+        } catch (error) {
+          return {
+            id: scheduleId,
+            state: 'NOT_FOUND',
+            error: error instanceof Error ? error.message : String(error),
+          };
+        }
+      }),
+    );
+
+    const unhealthySchedules = schedules.filter((s) => s.error);
+    const message =
+      unhealthySchedules.length === 0
+        ? 'all award schedules active'
+        : `${schedules.length - unhealthySchedules.length}/${schedules.length} schedules active`;
+
+    return {
+      message,
+      schedules,
+      status: unhealthySchedules.length === 0 ? 'healthy' : 'unhealthy',
+    };
+  }),
+
+  /**
+   * Trigger period award workflow.
+   * Starts a workflow to process awards for a specific time period.
+   */
+  triggerPeriodAward: apiKeyProtectedProcedure
+    .input(
+      z.object({
+        type: z.enum(['DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY']),
+        date: z.string().optional(),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      const { type, date } = input;
+
+      const handle = await temporalClient.workflow.start(periodAwardWorkflow, {
+        taskQueue: TEMPORAL_QUEUES.HUNT,
+        workflowId: `period-award-${type}-${date || 'latest'}-${Date.now()}`,
+        args: [{ type, date }],
+      });
+
+      return {
+        message: `Period award triggered for ${type}${date ? ` period ${date}` : ''}`,
+        workflowId: handle.workflowId,
+      };
+    }),
+
+  /**
+   * Trigger campaign award workflow.
+   * Starts a workflow to process awards for a specific campaign.
+   */
+  triggerCampaignAward: apiKeyProtectedProcedure
+    .input(
+      z.object({
+        campaignKey: z.string().min(1),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      const { campaignKey } = input;
+
+      const handle = await temporalClient.workflow.start(
+        campaignAwardWorkflow,
+        {
+          taskQueue: TEMPORAL_QUEUES.HUNT,
+          workflowId: `campaign-award-${campaignKey}-${Date.now()}`,
+          args: [{ campaignKey }],
+        },
+      );
+
+      return {
+        message: `Campaign award triggered for ${campaignKey}`,
+        workflowId: handle.workflowId,
+      };
+    }),
+
+  /**
+   * Trigger campaign status workflow.
+   * Starts a workflow to update expired ACTIVE campaigns to ENDED status.
+   */
+  triggerCampaignStatus: apiKeyProtectedProcedure
+    .input(z.object({}))
+    .mutation(async () => {
+      const handle = await temporalClient.workflow.start(
+        campaignStatusWorkflow,
+        {
+          taskQueue: TEMPORAL_QUEUES.HUNT,
+          workflowId: `campaign-status-${Date.now()}`,
+          args: [],
+        },
+      );
+
+      return {
+        message: 'Campaign status workflow triggered',
+        workflowId: handle.workflowId,
+      };
     }),
 });

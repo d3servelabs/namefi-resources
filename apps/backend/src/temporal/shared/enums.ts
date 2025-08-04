@@ -4,6 +4,7 @@ export const TEMPORAL_ENUMS = {
   MINT: 'MINT',
   NOTIFY: 'NOTIFY',
   INDEXERS: 'INDEXERS',
+  HUNT: 'HUNT',
 } as const;
 
 export type TEMPORAL_ENUMS =
@@ -35,6 +36,11 @@ export const TEMPORAL_QUEUES = {
    * @property {string} QUEUE - Indexers task queue name
    */
   INDEXERS: 'indexers_task_queue',
+  /**
+   * Hunt system temporal configuration
+   * @property {string} QUEUE - Hunt system task queue name
+   */
+  HUNT: 'hunt_task_queue',
 } as const satisfies Record<TEMPORAL_ENUMS, string>;
 
 export type TEMPORAL_QUEUES =

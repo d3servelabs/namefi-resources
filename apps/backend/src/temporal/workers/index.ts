@@ -7,6 +7,7 @@ import {
   NotifyActivities,
   OrderActivities,
   PaymentActivities,
+  HuntActivities,
 } from '../activities';
 import { DomainsActivities } from '../activities/domain';
 import {
@@ -71,6 +72,7 @@ export const ACTIVITIES = {
   [TEMPORAL_ENUMS.DOMAINS]: DomainsActivities,
   [TEMPORAL_ENUMS.NOTIFY]: NotifyActivities,
   [TEMPORAL_ENUMS.INDEXERS]: IndexersActivities,
+  [TEMPORAL_ENUMS.HUNT]: HuntActivities,
 };
 export type ACTIVITIES = typeof ACTIVITIES;
 
@@ -103,6 +105,11 @@ export async function initWorkers() {
       activities: ACTIVITIES[TEMPORAL_ENUMS.INDEXERS],
       temporalEnum: TEMPORAL_ENUMS.INDEXERS,
       logLabel: TEMPORAL_ENUMS.INDEXERS,
+    }),
+    [TEMPORAL_ENUMS.HUNT]: await createWorker({
+      activities: ACTIVITIES[TEMPORAL_ENUMS.HUNT],
+      temporalEnum: TEMPORAL_ENUMS.HUNT,
+      logLabel: TEMPORAL_ENUMS.HUNT,
     }),
   };
 }
