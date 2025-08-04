@@ -29,6 +29,9 @@ import {
 } from '../../temporal/workflows';
 import { TEMPORAL_QUEUES } from '../../temporal/shared';
 
+// System user ID for automated operations
+const NAMEFI_TEAM_USER_ID = 'NameFi_Team'; // NameFi_Team system user
+
 // Type definitions
 interface CampaignDetails {
   campaignKey: string;
@@ -214,8 +217,11 @@ const getUserVoteStatus = async (
 /**
  * Helper function to get campaign details
  */
-const getCampaignDetails = async (campaignKey: string) => {
-  const [campaign] = await db
+const getCampaignDetails = async (
+  campaignKey: string,
+  tx?: Parameters<Parameters<(typeof db)['transaction']>[0]>[0],
+) => {
+  const [campaign] = await (tx || db)
     .select({
       campaignKey: huntCampaignsTable.campaignKey,
       name: huntCampaignsTable.name,
@@ -1318,5 +1324,331 @@ export const huntRouter = createTRPCRouter({
         message: 'Campaign status workflow triggered',
         workflowId: handle.workflowId,
       };
+    }),
+
+  /**
+   * Create a new campaign.
+   * This is a system-only operation to create a new campaign.
+   */
+  createCampaign: apiKeyProtectedProcedure
+    .input(
+      z.object({
+        campaignKey: z.string().min(1),
+        name: z.string().min(1),
+        title: z.string().min(1),
+        description: z.string().optional(),
+        logoUrl: z.string().optional(),
+        startDate: z.string(),
+        endDate: z.string(),
+        domains: z
+          .array(
+            z.object({
+              domainName: namefiNormalizedDomainSchema,
+              description: z.string().optional(),
+            }),
+          )
+          .optional(),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      const {
+        campaignKey,
+        name,
+        title,
+        description,
+        logoUrl,
+        startDate,
+        endDate,
+        domains,
+      } = input;
+
+      // Validate dates
+      const start = new Date(startDate);
+      const end = new Date(endDate);
+
+      if (start >= end) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Start date must be before end date',
+        });
+      }
+
+      return await db.transaction(async (tx) => {
+        // Check if campaign with the same name already exists
+        const [existingCampaign] = await tx
+          .select()
+          .from(huntCampaignsTable)
+          .where(eq(huntCampaignsTable.name, name));
+        if (existingCampaign) {
+          throw new TRPCError({
+            code: 'CONFLICT',
+            message: 'Campaign with this name already exists',
+          });
+        }
+
+        // Create campaign
+        const [campaign] = await tx
+          .insert(huntCampaignsTable)
+          .values({
+            campaignKey,
+            name,
+            title,
+            description: description || '',
+            logoUrl: logoUrl || '',
+            startDate: start,
+            endDate: end,
+            status: 'DRAFT',
+          })
+          .returning();
+        if (!campaign) {
+          throw new TRPCError({
+            code: 'INTERNAL_SERVER_ERROR',
+            message: 'Failed to create campaign',
+          });
+        }
+
+        let domainsAdded = 0;
+        // Add domains to campaign if provided
+        if (domains && domains.length > 0) {
+          // Insert campaign domains
+          await tx.insert(huntCampaignDomainsTable).values(
+            domains.map(({ domainName, description }) => ({
+              campaignKey: campaign.campaignKey,
+              domainName,
+              description: description || '',
+            })),
+          );
+
+          // Check for existing SUBMIT edges to avoid duplicates
+          const existingEdges = await tx
+            .select()
+            .from(huntEdgesTable)
+            .where(
+              and(
+                eq(huntEdgesTable.targetType, 'DOMAIN'),
+                eq(huntEdgesTable.action, 'SUBMIT'),
+                sql`${huntEdgesTable.targetId} IN (${sql.join(
+                  domains.map(({ domainName }) => sql`${domainName}`),
+                  sql`, `,
+                )})`,
+              ),
+            );
+          const existingDomainNames = new Set(
+            existingEdges.map((edge) => edge.targetId),
+          );
+
+          // Only create edges for domains that don't already have SUBMIT edges
+          const newDomains = domains.filter(
+            ({ domainName }) => !existingDomainNames.has(domainName),
+          );
+          if (newDomains.length > 0) {
+            await tx.insert(huntEdgesTable).values(
+              newDomains.map(({ domainName }) => ({
+                sourceType: 'USER' as const,
+                sourceId: NAMEFI_TEAM_USER_ID,
+                targetType: 'DOMAIN' as const,
+                targetId: domainName,
+                action: 'SUBMIT' as const,
+              })),
+            );
+          }
+          domainsAdded = domains.length;
+        }
+
+        return {
+          campaignKey: campaign.campaignKey,
+          name: campaign.name,
+          title: campaign.title,
+          description: campaign.description,
+          logoUrl: campaign.logoUrl,
+          startDate: campaign.startDate,
+          endDate: campaign.endDate,
+          status: campaign.status,
+          createdAt: campaign.createdAt,
+          domainsAdded,
+        };
+      });
+    }),
+
+  /**
+   * Add domains to an existing campaign.
+   * This is a system-only operation to add domains to a campaign.
+   */
+  addDomainsToCampaign: apiKeyProtectedProcedure
+    .input(
+      z.object({
+        campaignKey: z.string().min(1),
+        domains: z.array(
+          z.object({
+            domainName: namefiNormalizedDomainSchema,
+            description: z.string().optional(),
+          }),
+        ),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      const { campaignKey, domains } = input;
+
+      return await db.transaction(async (tx) => {
+        // Get campaign details to ensure it exists
+        const campaign = await getCampaignDetails(campaignKey, tx);
+        if (!campaign) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'Campaign not found',
+          });
+        }
+
+        // Check if domains already exist in the campaign
+        const existingDomains = await tx
+          .select()
+          .from(huntCampaignDomainsTable)
+          .where(
+            and(
+              eq(huntCampaignDomainsTable.campaignKey, campaignKey),
+              sql`${huntCampaignDomainsTable.domainName} IN (${sql.join(
+                domains.map(({ domainName }) => sql`${domainName}`),
+                sql`, `,
+              )})`,
+            ),
+          );
+        const existingDomainNames = new Set(
+          existingDomains.map((domain) => domain.domainName),
+        );
+
+        // Filter out domains that already exist in the campaign
+        const newDomains = domains.filter(
+          ({ domainName }) => !existingDomainNames.has(domainName),
+        );
+        if (newDomains.length === 0) {
+          return {
+            campaignKey,
+            domains: [],
+            domainsAdded: 0,
+            message: 'All domains are already in this campaign',
+          };
+        }
+
+        // Insert new domain entries
+        await tx.insert(huntCampaignDomainsTable).values(
+          newDomains.map(({ domainName, description }) => ({
+            campaignKey,
+            domainName,
+            description: description || '',
+          })),
+        );
+
+        // Check for existing SUBMIT edges to avoid duplicates
+        const existingEdges = await tx
+          .select()
+          .from(huntEdgesTable)
+          .where(
+            and(
+              eq(huntEdgesTable.targetType, 'DOMAIN'),
+              eq(huntEdgesTable.action, 'SUBMIT'),
+              sql`${huntEdgesTable.targetId} IN (${sql.join(
+                newDomains.map(({ domainName }) => sql`${domainName}`),
+                sql`, `,
+              )})`,
+            ),
+          );
+        const existingEdgeDomainNames = new Set(
+          existingEdges.map((edge) => edge.targetId),
+        );
+
+        // Only create edges for domains that don't already have SUBMIT edges
+        const domainsNeedingEdges = newDomains.filter(
+          ({ domainName }) => !existingEdgeDomainNames.has(domainName),
+        );
+        if (domainsNeedingEdges.length > 0) {
+          await tx.insert(huntEdgesTable).values(
+            domainsNeedingEdges.map(({ domainName }) => ({
+              sourceType: 'USER' as const,
+              sourceId: NAMEFI_TEAM_USER_ID,
+              targetType: 'DOMAIN' as const,
+              targetId: domainName,
+              action: 'SUBMIT' as const,
+            })),
+          );
+        }
+
+        return {
+          campaignKey,
+          domains: newDomains,
+          domainsAdded: newDomains.length,
+          edgesCreated: domainsNeedingEdges.length,
+        };
+      });
+    }),
+
+  /**
+   * Update campaign status.
+   * This is a system-only operation to update campaign status.
+   * Only allows transitions between DRAFT, ACTIVE, and CANCELLED statuses.
+   */
+  updateCampaignStatus: apiKeyProtectedProcedure
+    .input(
+      z.object({
+        campaignKey: z.string().min(1),
+        status: z.enum(['DRAFT', 'ACTIVE', 'CANCELLED']),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      const { campaignKey, status } = input;
+
+      return await db.transaction(async (tx) => {
+        // Get campaign details to ensure it exists
+        const campaign = await getCampaignDetails(campaignKey, tx);
+        if (!campaign) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'Campaign not found',
+          });
+        }
+
+        // Validate status transition
+        const currentStatus = campaign.status;
+        const validTransitions: Record<string, string[]> = {
+          DRAFT: ['ACTIVE', 'CANCELLED'],
+          ACTIVE: ['DRAFT', 'CANCELLED'],
+          CANCELLED: ['DRAFT', 'ACTIVE'],
+        };
+        if (!validTransitions[currentStatus]?.includes(status)) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: `Invalid status transition from ${currentStatus} to ${status}. Valid transitions from ${currentStatus} are: ${validTransitions[currentStatus]?.join(', ')}`,
+          });
+        }
+
+        // Update campaign status
+        const [updatedCampaign] = await tx
+          .update(huntCampaignsTable)
+          .set({
+            status,
+            updatedAt: new Date(),
+          })
+          .where(eq(huntCampaignsTable.campaignKey, campaignKey))
+          .returning();
+        if (!updatedCampaign) {
+          throw new TRPCError({
+            code: 'INTERNAL_SERVER_ERROR',
+            message: 'Failed to update campaign status',
+          });
+        }
+
+        return {
+          campaignKey: updatedCampaign.campaignKey,
+          name: updatedCampaign.name,
+          title: updatedCampaign.title,
+          description: updatedCampaign.description,
+          logoUrl: updatedCampaign.logoUrl,
+          startDate: updatedCampaign.startDate,
+          endDate: updatedCampaign.endDate,
+          status: updatedCampaign.status,
+          createdAt: updatedCampaign.createdAt,
+          updatedAt: updatedCampaign.updatedAt,
+          previousStatus: currentStatus,
+        };
+      });
     }),
 });

@@ -14,6 +14,7 @@ import { and, eq, inArray, sql } from 'drizzle-orm';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { TrpcContext } from '../base';
 import { huntRouter } from './huntRouter';
+import { secrets } from '../../lib/env';
 
 const testUser = {
   id: '550e8400-e29b-41d4-a716-446655440000', // Random UUID
@@ -98,6 +99,21 @@ describe('Hunt Router', () => {
     await db
       .delete(huntEdgesTable)
       .where(sql`${huntEdgesTable.targetId} LIKE 'test.%'`);
+    // Clean up hunt edges created by NameFi_Team for test domains
+    await db
+      .delete(huntEdgesTable)
+      .where(
+        and(
+          eq(huntEdgesTable.sourceId, 'NameFi_Team'),
+          sql`${huntEdgesTable.targetId} LIKE 'test.%'`,
+        ),
+      );
+    // Clean up campaign domains for test campaigns
+    await db
+      .delete(huntCampaignDomainsTable)
+      .where(
+        sql`${huntCampaignDomainsTable.campaignKey} LIKE 'test-%' OR ${huntCampaignDomainsTable.campaignKey} LIKE 'TEST-%'`,
+      );
     // Then delete users
     await db
       .delete(usersTable)
@@ -1670,6 +1686,883 @@ describe('Hunt Router', () => {
         expect(result[0].type).toBe('DAILY');
         expect(result[0].periodKey).toBe('DAILY-2025-07-15');
         expect(result[0].campaignKey).toBeNull();
+      });
+    });
+  });
+
+  describe('Campaign Management', () => {
+    describe('createCampaign', () => {
+      it('should create a new campaign successfully', async () => {
+        const apiCaller = huntRouter.createCaller({
+          poweredByNamefiDomain: null,
+          testUser: null,
+          req: {
+            header: (name: string) => {
+              if (name === 'x-api-key') return secrets.API_AUTH_KEY;
+              return null;
+            },
+          },
+        } as any);
+
+        const result = await apiCaller.createCampaign({
+          campaignKey: 'test-campaign',
+          name: 'Test Campaign',
+          title: 'Test Campaign Title',
+          description: 'Test campaign description',
+          logoUrl: 'https://test.campaign.logo.url',
+          startDate: '2025-01-01T00:00:00Z',
+          endDate: '2025-01-31T23:59:59Z',
+        });
+
+        expect(result).toMatchObject({
+          campaignKey: 'test-campaign',
+          title: 'Test Campaign Title',
+          description: 'Test campaign description',
+          logoUrl: 'https://test.campaign.logo.url',
+          status: 'DRAFT',
+          domainsAdded: 0,
+        });
+        expect(result.campaignKey).toBe('test-campaign');
+        expect(result.startDate).toBeInstanceOf(Date);
+        expect(result.endDate).toBeInstanceOf(Date);
+        expect(result.createdAt).toBeInstanceOf(Date);
+      });
+
+      it('should create a campaign with domains and create SUBMIT edges', async () => {
+        const apiCaller = huntRouter.createCaller({
+          poweredByNamefiDomain: null,
+          testUser: null,
+          req: {
+            header: (name: string) => {
+              if (name === 'x-api-key') return secrets.API_AUTH_KEY;
+              return null;
+            },
+          },
+        } as any);
+
+        const domains = [
+          {
+            domainName: namefiNormalizedDomainSchema.parse(
+              'test.campaign.domain1',
+            ),
+            description: 'Test campaign domain 1 description',
+          },
+          {
+            domainName: namefiNormalizedDomainSchema.parse(
+              'test.campaign.domain2',
+            ),
+            description: 'Test campaign domain 2 description',
+          },
+        ];
+
+        const result = await apiCaller.createCampaign({
+          campaignKey: 'test-campaign-with-domains',
+          name: 'Test Campaign With Domains',
+          title: 'Test Campaign With Domains Title',
+          description: 'Test campaign with domains description',
+          logoUrl: 'https://test.campaign.logo.url',
+          startDate: '2025-01-01T00:00:00Z',
+          endDate: '2025-01-31T23:59:59Z',
+          domains,
+        });
+
+        expect(result).toMatchObject({
+          name: 'Test Campaign With Domains',
+          title: 'Test Campaign With Domains Title',
+          description: 'Test campaign with domains description',
+          logoUrl: 'https://test.campaign.logo.url',
+          status: 'DRAFT',
+          domainsAdded: 2,
+        });
+
+        // Check that campaign domains were created
+        const campaignDomains = await db
+          .select()
+          .from(huntCampaignDomainsTable)
+          .where(eq(huntCampaignDomainsTable.campaignKey, result.campaignKey));
+
+        expect(campaignDomains).toHaveLength(2);
+        expect(campaignDomains.map((d) => d.domainName)).toEqual(
+          domains.map((d) => d.domainName),
+        );
+
+        // Check that SUBMIT edges were created with NameFi_Team as creator
+        const submitEdges = await db
+          .select()
+          .from(huntEdgesTable)
+          .where(
+            and(
+              eq(huntEdgesTable.sourceType, 'USER'),
+              eq(huntEdgesTable.sourceId, 'NameFi_Team'), // NameFi_Team user ID
+              eq(huntEdgesTable.action, 'SUBMIT'),
+              inArray(
+                huntEdgesTable.targetId,
+                domains.map((d) => d.domainName),
+              ),
+            ),
+          );
+
+        expect(submitEdges).toHaveLength(2);
+        expect(submitEdges.map((e) => e.targetId)).toEqual(
+          domains.map((d) => d.domainName),
+        );
+      });
+
+      it('should create a campaign with domains and avoid duplicate SUBMIT edges', async () => {
+        const apiCaller = huntRouter.createCaller({
+          poweredByNamefiDomain: null,
+          testUser: null,
+          req: {
+            header: (name: string) => {
+              if (name === 'x-api-key') return secrets.API_AUTH_KEY;
+              return null;
+            },
+          },
+        } as any);
+
+        const domainName = namefiNormalizedDomainSchema.parse(
+          'test.campaign.existing.edge',
+        );
+
+        // Create a SUBMIT edge for the domain first
+        await db.insert(huntEdgesTable).values({
+          sourceType: 'USER',
+          sourceId: 'NameFi_Team',
+          targetType: 'DOMAIN',
+          targetId: domainName,
+          action: 'SUBMIT',
+        });
+
+        const domains = [
+          {
+            domainName,
+            description: 'Test campaign domain with existing edge',
+          },
+          {
+            domainName: namefiNormalizedDomainSchema.parse(
+              'test.campaign.new.domain',
+            ),
+            description: 'Test campaign domain without existing edge',
+          },
+        ];
+
+        const result = await apiCaller.createCampaign({
+          campaignKey: 'test-campaign-with-existing-edges',
+          name: 'Test Campaign With Existing Edges',
+          title: 'Test Campaign With Existing Edges Title',
+          description: 'Test campaign with existing edges description',
+          logoUrl: 'https://test.campaign.logo.url',
+          startDate: '2025-01-01T00:00:00Z',
+          endDate: '2025-01-31T23:59:59Z',
+          domains,
+        });
+
+        expect(result).toMatchObject({
+          name: 'Test Campaign With Existing Edges',
+          title: 'Test Campaign With Existing Edges Title',
+          description: 'Test campaign with existing edges description',
+          logoUrl: 'https://test.campaign.logo.url',
+          status: 'DRAFT',
+          domainsAdded: 2,
+        });
+
+        // Check that campaign domains were created
+        const campaignDomains = await db
+          .select()
+          .from(huntCampaignDomainsTable)
+          .where(eq(huntCampaignDomainsTable.campaignKey, result.campaignKey));
+
+        expect(campaignDomains).toHaveLength(2);
+        expect(campaignDomains.map((d) => d.domainName)).toEqual(
+          domains.map((d) => d.domainName),
+        );
+
+        // Check that only one new SUBMIT edge was created (for the new domain)
+        const submitEdges = await db
+          .select()
+          .from(huntEdgesTable)
+          .where(
+            and(
+              eq(huntEdgesTable.sourceType, 'USER'),
+              eq(huntEdgesTable.sourceId, 'NameFi_Team'),
+              eq(huntEdgesTable.action, 'SUBMIT'),
+              inArray(
+                huntEdgesTable.targetId,
+                domains.map((d) => d.domainName),
+              ),
+            ),
+          );
+
+        // Should have 2 edges total: 1 existing + 1 new
+        expect(submitEdges).toHaveLength(2);
+
+        // Verify the edges are for the correct domains
+        const edgeDomainNames = submitEdges.map((e) => e.targetId);
+        expect(edgeDomainNames).toContain(domainName);
+        expect(edgeDomainNames).toContain('test.campaign.new.domain');
+      });
+
+      it('should reject campaign with invalid dates', async () => {
+        const apiCaller = huntRouter.createCaller({
+          poweredByNamefiDomain: null,
+          testUser: null,
+          req: {
+            header: (name: string) => {
+              if (name === 'x-api-key') return secrets.API_AUTH_KEY;
+              return null;
+            },
+          },
+        } as any);
+
+        await expect(
+          apiCaller.createCampaign({
+            campaignKey: 'test-campaign',
+            name: 'Test Campaign',
+            title: 'Test Campaign Title',
+            description: 'Test campaign description',
+            logoUrl: 'https://test.campaign.logo.url',
+            startDate: '2025-01-31T23:59:59Z',
+            endDate: '2025-01-01T00:00:00Z', // End date before start date
+          }),
+        ).rejects.toThrow('Start date must be before end date');
+      });
+
+      it('should reject duplicate campaign name', async () => {
+        const apiCaller = huntRouter.createCaller({
+          poweredByNamefiDomain: null,
+          testUser: null,
+          req: {
+            header: (name: string) => {
+              if (name === 'x-api-key') return secrets.API_AUTH_KEY;
+              return null;
+            },
+          },
+        } as any);
+
+        // Create first campaign
+        await apiCaller.createCampaign({
+          campaignKey: 'test-campaign',
+          name: 'Duplicate Test Campaign',
+          title: 'Duplicate Test Campaign Title',
+          description: 'Test campaign description',
+          logoUrl: 'https://test.campaign.logo.url',
+          startDate: '2025-01-01T00:00:00Z',
+          endDate: '2025-01-31T23:59:59Z',
+        });
+
+        // Try to create second campaign with same name
+        await expect(
+          apiCaller.createCampaign({
+            campaignKey: 'test-campaign-2',
+            name: 'Duplicate Test Campaign',
+            title: 'Duplicate Test Campaign Title 2',
+            description: 'Test campaign description 2',
+            startDate: '2025-02-01T00:00:00Z',
+            endDate: '2025-02-28T23:59:59Z',
+          }),
+        ).rejects.toThrow('Campaign with this name already exists');
+      });
+    });
+
+    describe('addDomainsToCampaign', () => {
+      let testCampaignKey: string;
+
+      beforeEach(async () => {
+        // Create a test campaign
+        const [campaign] = await db
+          .insert(huntCampaignsTable)
+          .values({
+            campaignKey: 'test-add-domains-campaign',
+            name: 'Test Add Domains Campaign',
+            title: 'Test Add Domains Campaign Title',
+            description: 'Test campaign for adding domains',
+            logoUrl: 'https://test.campaign.logo.url',
+            startDate: new Date('2025-01-01'),
+            endDate: new Date('2025-01-31'),
+            status: 'DRAFT',
+          })
+          .returning();
+
+        testCampaignKey = campaign.campaignKey;
+      });
+
+      it('should add domains to campaign successfully', async () => {
+        const apiCaller = huntRouter.createCaller({
+          poweredByNamefiDomain: null,
+          testUser: null,
+          req: {
+            header: (name: string) => {
+              if (name === 'x-api-key') return secrets.API_AUTH_KEY;
+              return null;
+            },
+          },
+        } as any);
+
+        const domains = [
+          {
+            domainName: namefiNormalizedDomainSchema.parse('test.add.domain1'),
+            description: 'Test campaign domain 1 description',
+          },
+          {
+            domainName: namefiNormalizedDomainSchema.parse('test.add.domain2'),
+            description: 'Test campaign domain 2 description',
+          },
+        ];
+
+        const result = await apiCaller.addDomainsToCampaign({
+          campaignKey: testCampaignKey,
+          domains,
+        });
+
+        expect(result).toMatchObject({
+          campaignKey: testCampaignKey,
+          domains: domains,
+          domainsAdded: 2,
+          edgesCreated: 2,
+        });
+
+        // Check that campaign domains were created
+        const campaignDomains = await db
+          .select()
+          .from(huntCampaignDomainsTable)
+          .where(eq(huntCampaignDomainsTable.campaignKey, testCampaignKey));
+
+        expect(campaignDomains).toHaveLength(2);
+        expect(campaignDomains.map((d) => d.domainName)).toEqual(
+          domains.map((d) => d.domainName),
+        );
+
+        // Check that SUBMIT edges were created with NameFi_Team as creator
+        const submitEdges = await db
+          .select()
+          .from(huntEdgesTable)
+          .where(
+            and(
+              eq(huntEdgesTable.sourceType, 'USER'),
+              eq(huntEdgesTable.sourceId, 'NameFi_Team'), // NameFi_Team user ID
+              eq(huntEdgesTable.action, 'SUBMIT'),
+              inArray(
+                huntEdgesTable.targetId,
+                domains.map((d) => d.domainName),
+              ),
+            ),
+          );
+
+        expect(submitEdges).toHaveLength(2);
+        expect(submitEdges.map((e) => e.targetId)).toEqual(
+          domains.map((d) => d.domainName),
+        );
+      });
+
+      it('should add only new domains when some domains already exist in campaign', async () => {
+        // Add a domain to the campaign first
+        await db.insert(huntCampaignDomainsTable).values({
+          campaignKey: testCampaignKey,
+          domainName: namefiNormalizedDomainSchema.parse(
+            'test.existing.domain',
+          ),
+          description: 'Test campaign description',
+        });
+
+        const apiCaller = huntRouter.createCaller({
+          poweredByNamefiDomain: null,
+          testUser: null,
+          req: {
+            header: (name: string) => {
+              if (name === 'x-api-key') return secrets.API_AUTH_KEY;
+              return null;
+            },
+          },
+        } as any);
+
+        const domains = [
+          {
+            domainName: namefiNormalizedDomainSchema.parse(
+              'test.existing.domain',
+            ), // Already exists
+            description: 'Test campaign description',
+          },
+          {
+            domainName: namefiNormalizedDomainSchema.parse('test.new.domain'),
+            description: 'Test campaign description',
+          },
+        ];
+
+        const result = await apiCaller.addDomainsToCampaign({
+          campaignKey: testCampaignKey,
+          domains,
+        });
+
+        expect(result).toMatchObject({
+          campaignKey: testCampaignKey,
+          domains: [domains[1]], // Only the new domain
+          domainsAdded: 1,
+          edgesCreated: 1,
+        });
+
+        // Check that only the new domain was added to campaign
+        const campaignDomains = await db
+          .select()
+          .from(huntCampaignDomainsTable)
+          .where(eq(huntCampaignDomainsTable.campaignKey, testCampaignKey));
+
+        expect(campaignDomains).toHaveLength(2); // 1 existing + 1 new
+        expect(campaignDomains.map((d) => d.domainName)).toContain(
+          'test.existing.domain',
+        );
+        expect(campaignDomains.map((d) => d.domainName)).toContain(
+          'test.new.domain',
+        );
+
+        // Check that only one new SUBMIT edge was created
+        const submitEdges = await db
+          .select()
+          .from(huntEdgesTable)
+          .where(
+            and(
+              eq(huntEdgesTable.sourceType, 'USER'),
+              eq(huntEdgesTable.sourceId, 'NameFi_Team'),
+              eq(huntEdgesTable.action, 'SUBMIT'),
+              inArray(
+                huntEdgesTable.targetId,
+                domains.map((d) => d.domainName),
+              ),
+            ),
+          );
+
+        expect(submitEdges).toHaveLength(1);
+        expect(submitEdges[0].targetId).toBe('test.new.domain');
+      });
+
+      it('should return success when all domains already exist in campaign', async () => {
+        // Add domains to the campaign first
+        await db.insert(huntCampaignDomainsTable).values([
+          {
+            campaignKey: testCampaignKey,
+            domainName: namefiNormalizedDomainSchema.parse(
+              'test.existing.domain1',
+            ),
+            description: 'Test campaign description 1',
+          },
+          {
+            campaignKey: testCampaignKey,
+            domainName: namefiNormalizedDomainSchema.parse(
+              'test.existing.domain2',
+            ),
+            description: 'Test campaign description 2',
+          },
+        ]);
+
+        const apiCaller = huntRouter.createCaller({
+          poweredByNamefiDomain: null,
+          testUser: null,
+          req: {
+            header: (name: string) => {
+              if (name === 'x-api-key') return secrets.API_AUTH_KEY;
+              return null;
+            },
+          },
+        } as any);
+
+        const domains = [
+          {
+            domainName: namefiNormalizedDomainSchema.parse(
+              'test.existing.domain1',
+            ), // Already exists
+            description: 'Test campaign description 1',
+          },
+          {
+            domainName: namefiNormalizedDomainSchema.parse(
+              'test.existing.domain2',
+            ), // Already exists
+            description: 'Test campaign description 2',
+          },
+        ];
+
+        const result = await apiCaller.addDomainsToCampaign({
+          campaignKey: testCampaignKey,
+          domains,
+        });
+
+        expect(result).toMatchObject({
+          campaignKey: testCampaignKey,
+          domains: [],
+          domainsAdded: 0,
+          message: 'All domains are already in this campaign',
+        });
+      });
+
+      it('should add domains and avoid duplicate SUBMIT edges', async () => {
+        const domainName = namefiNormalizedDomainSchema.parse(
+          'test.add.existing.edge',
+        );
+
+        // Create a SUBMIT edge for the domain first
+        await db.insert(huntEdgesTable).values({
+          sourceType: 'USER',
+          sourceId: 'NameFi_Team',
+          targetType: 'DOMAIN',
+          targetId: domainName,
+          action: 'SUBMIT',
+        });
+
+        const apiCaller = huntRouter.createCaller({
+          poweredByNamefiDomain: null,
+          testUser: null,
+          req: {
+            header: (name: string) => {
+              if (name === 'x-api-key') return secrets.API_AUTH_KEY;
+              return null;
+            },
+          },
+        } as any);
+
+        const domains = [
+          {
+            domainName,
+            description: 'Test campaign domain with existing edge',
+          },
+          {
+            domainName: namefiNormalizedDomainSchema.parse(
+              'test.add.new.domain',
+            ),
+            description: 'Test campaign domain without existing edge',
+          },
+        ];
+
+        const result = await apiCaller.addDomainsToCampaign({
+          campaignKey: testCampaignKey,
+          domains,
+        });
+
+        expect(result).toMatchObject({
+          campaignKey: testCampaignKey,
+          domains: domains,
+          domainsAdded: 2,
+          edgesCreated: 1, // Only one new edge created
+        });
+
+        // Check that campaign domains were created
+        const campaignDomains = await db
+          .select()
+          .from(huntCampaignDomainsTable)
+          .where(eq(huntCampaignDomainsTable.campaignKey, testCampaignKey));
+
+        expect(campaignDomains).toHaveLength(2);
+        expect(campaignDomains.map((d) => d.domainName)).toEqual(
+          domains.map((d) => d.domainName),
+        );
+
+        // Check that only one new SUBMIT edge was created
+        const submitEdges = await db
+          .select()
+          .from(huntEdgesTable)
+          .where(
+            and(
+              eq(huntEdgesTable.sourceType, 'USER'),
+              eq(huntEdgesTable.sourceId, 'NameFi_Team'),
+              eq(huntEdgesTable.action, 'SUBMIT'),
+              inArray(
+                huntEdgesTable.targetId,
+                domains.map((d) => d.domainName),
+              ),
+            ),
+          );
+
+        // Should have 2 edges total: 1 existing + 1 new
+        expect(submitEdges).toHaveLength(2);
+
+        // Verify the edges are for the correct domains
+        const edgeDomainNames = submitEdges.map((e) => e.targetId);
+        expect(edgeDomainNames).toContain(domainName);
+        expect(edgeDomainNames).toContain('test.add.new.domain');
+      });
+    });
+
+    describe('updateCampaignStatus', () => {
+      let testCampaignKey: string;
+
+      beforeEach(async () => {
+        // Create a test campaign
+        const [campaign] = await db
+          .insert(huntCampaignsTable)
+          .values({
+            campaignKey: 'test-update-status-campaign',
+            name: 'Test Update Status Campaign',
+            title: 'Test Update Status Campaign Title',
+            description: 'Test campaign for updating status',
+            logoUrl: 'https://test.campaign.logo.url',
+            startDate: new Date('2025-01-01'),
+            endDate: new Date('2025-01-31'),
+            status: 'DRAFT',
+          })
+          .returning();
+
+        testCampaignKey = campaign.campaignKey;
+      });
+
+      it('should update campaign status from DRAFT to ACTIVE', async () => {
+        const apiCaller = huntRouter.createCaller({
+          poweredByNamefiDomain: null,
+          testUser: null,
+          req: {
+            header: (name: string) => {
+              if (name === 'x-api-key') return secrets.API_AUTH_KEY;
+              return null;
+            },
+          },
+        } as any);
+
+        const result = await apiCaller.updateCampaignStatus({
+          campaignKey: testCampaignKey,
+          status: 'ACTIVE',
+        });
+
+        expect(result).toMatchObject({
+          campaignKey: testCampaignKey,
+          name: 'Test Update Status Campaign',
+          title: 'Test Update Status Campaign Title',
+          description: 'Test campaign for updating status',
+          logoUrl: 'https://test.campaign.logo.url',
+          status: 'ACTIVE',
+          previousStatus: 'DRAFT',
+        });
+        expect(result.startDate).toBeInstanceOf(Date);
+        expect(result.endDate).toBeInstanceOf(Date);
+        expect(result.createdAt).toBeInstanceOf(Date);
+        expect(result.updatedAt).toBeInstanceOf(Date);
+      });
+
+      it('should update campaign status from DRAFT to CANCELLED', async () => {
+        const apiCaller = huntRouter.createCaller({
+          poweredByNamefiDomain: null,
+          testUser: null,
+          req: {
+            header: (name: string) => {
+              if (name === 'x-api-key') return secrets.API_AUTH_KEY;
+              return null;
+            },
+          },
+        } as any);
+
+        const result = await apiCaller.updateCampaignStatus({
+          campaignKey: testCampaignKey,
+          status: 'CANCELLED',
+        });
+
+        expect(result).toMatchObject({
+          campaignKey: testCampaignKey,
+          status: 'CANCELLED',
+          previousStatus: 'DRAFT',
+        });
+      });
+
+      it('should update campaign status from ACTIVE to DRAFT', async () => {
+        // First update to ACTIVE
+        const apiCaller = huntRouter.createCaller({
+          poweredByNamefiDomain: null,
+          testUser: null,
+          req: {
+            header: (name: string) => {
+              if (name === 'x-api-key') return secrets.API_AUTH_KEY;
+              return null;
+            },
+          },
+        } as any);
+
+        await apiCaller.updateCampaignStatus({
+          campaignKey: testCampaignKey,
+          status: 'ACTIVE',
+        });
+
+        // Then update back to DRAFT
+        const result = await apiCaller.updateCampaignStatus({
+          campaignKey: testCampaignKey,
+          status: 'DRAFT',
+        });
+
+        expect(result).toMatchObject({
+          campaignKey: testCampaignKey,
+          status: 'DRAFT',
+          previousStatus: 'ACTIVE',
+        });
+      });
+
+      it('should update campaign status from ACTIVE to CANCELLED', async () => {
+        // First update to ACTIVE
+        const apiCaller = huntRouter.createCaller({
+          poweredByNamefiDomain: null,
+          testUser: null,
+          req: {
+            header: (name: string) => {
+              if (name === 'x-api-key') return secrets.API_AUTH_KEY;
+              return null;
+            },
+          },
+        } as any);
+
+        await apiCaller.updateCampaignStatus({
+          campaignKey: testCampaignKey,
+          status: 'ACTIVE',
+        });
+
+        // Then update to CANCELLED
+        const result = await apiCaller.updateCampaignStatus({
+          campaignKey: testCampaignKey,
+          status: 'CANCELLED',
+        });
+
+        expect(result).toMatchObject({
+          campaignKey: testCampaignKey,
+          status: 'CANCELLED',
+          previousStatus: 'ACTIVE',
+        });
+      });
+
+      it('should update campaign status from CANCELLED to DRAFT', async () => {
+        // First update to CANCELLED
+        const apiCaller = huntRouter.createCaller({
+          poweredByNamefiDomain: null,
+          testUser: null,
+          req: {
+            header: (name: string) => {
+              if (name === 'x-api-key') return secrets.API_AUTH_KEY;
+              return null;
+            },
+          },
+        } as any);
+
+        await apiCaller.updateCampaignStatus({
+          campaignKey: testCampaignKey,
+          status: 'CANCELLED',
+        });
+
+        // Then update back to DRAFT
+        const result = await apiCaller.updateCampaignStatus({
+          campaignKey: testCampaignKey,
+          status: 'DRAFT',
+        });
+
+        expect(result).toMatchObject({
+          campaignKey: testCampaignKey,
+          status: 'DRAFT',
+          previousStatus: 'CANCELLED',
+        });
+      });
+
+      it('should update campaign status from CANCELLED to ACTIVE', async () => {
+        // First update to CANCELLED
+        const apiCaller = huntRouter.createCaller({
+          poweredByNamefiDomain: null,
+          testUser: null,
+          req: {
+            header: (name: string) => {
+              if (name === 'x-api-key') return secrets.API_AUTH_KEY;
+              return null;
+            },
+          },
+        } as any);
+
+        await apiCaller.updateCampaignStatus({
+          campaignKey: testCampaignKey,
+          status: 'CANCELLED',
+        });
+
+        // Then update to ACTIVE
+        const result = await apiCaller.updateCampaignStatus({
+          campaignKey: testCampaignKey,
+          status: 'ACTIVE',
+        });
+
+        expect(result).toMatchObject({
+          campaignKey: testCampaignKey,
+          status: 'ACTIVE',
+          previousStatus: 'CANCELLED',
+        });
+      });
+
+      it('should reject invalid status transitions', async () => {
+        const apiCaller = huntRouter.createCaller({
+          poweredByNamefiDomain: null,
+          testUser: null,
+          req: {
+            header: (name: string) => {
+              if (name === 'x-api-key') return secrets.API_AUTH_KEY;
+              return null;
+            },
+          },
+        } as any);
+
+        // Test that we can't transition from DRAFT to ACTIVE twice (should stay ACTIVE)
+        await apiCaller.updateCampaignStatus({
+          campaignKey: testCampaignKey,
+          status: 'ACTIVE',
+        });
+
+        // Try to update to ACTIVE again (should be rejected as invalid transition)
+        await expect(
+          apiCaller.updateCampaignStatus({
+            campaignKey: testCampaignKey,
+            status: 'ACTIVE',
+          }),
+        ).rejects.toThrow('Invalid status transition from ACTIVE to ACTIVE');
+
+        // Update to CANCELLED
+        await apiCaller.updateCampaignStatus({
+          campaignKey: testCampaignKey,
+          status: 'CANCELLED',
+        });
+
+        // Try to update to CANCELLED again (should be rejected as invalid transition)
+        await expect(
+          apiCaller.updateCampaignStatus({
+            campaignKey: testCampaignKey,
+            status: 'CANCELLED',
+          }),
+        ).rejects.toThrow(
+          'Invalid status transition from CANCELLED to CANCELLED',
+        );
+      });
+
+      it('should reject non-existent campaign', async () => {
+        const apiCaller = huntRouter.createCaller({
+          poweredByNamefiDomain: null,
+          testUser: null,
+          req: {
+            header: (name: string) => {
+              if (name === 'x-api-key') return secrets.API_AUTH_KEY;
+              return null;
+            },
+          },
+        } as any);
+
+        await expect(
+          apiCaller.updateCampaignStatus({
+            campaignKey: 'non-existent-campaign',
+            status: 'ACTIVE',
+          }),
+        ).rejects.toThrow('Campaign not found');
+      });
+
+      it('should reject invalid status values', async () => {
+        const apiCaller = huntRouter.createCaller({
+          poweredByNamefiDomain: null,
+          testUser: null,
+          req: {
+            header: (name: string) => {
+              if (name === 'x-api-key') return secrets.API_AUTH_KEY;
+              return null;
+            },
+          },
+        } as any);
+
+        // Try to update to an invalid status
+        await expect(
+          apiCaller.updateCampaignStatus({
+            campaignKey: testCampaignKey,
+            status: 'INVALID_STATUS' as any,
+          }),
+        ).rejects.toThrow();
       });
     });
   });
