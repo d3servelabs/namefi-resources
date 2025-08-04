@@ -576,7 +576,7 @@ function formatCriticalDomainsTable(
       issues.push('❓ Missing Data');
 
     const expiration = domain.domainExpirationTime
-      ? format(domain.domainExpirationTime, 'MMM dd, yyyy')
+      ? format(domain.domainExpirationTime, 'MMM do, yyyy')
       : 'Unknown';
 
     const registrar = domain.registrarKey || 'Unknown';

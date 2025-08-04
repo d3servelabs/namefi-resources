@@ -56,6 +56,7 @@ import { useTRPC } from '@/lib/trpc';
 import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
 import { type FC, useState, useCallback } from 'react';
 import { toast } from 'sonner';
+import { format } from 'date-fns';
 import {
   Flame,
   Search,
@@ -291,7 +292,7 @@ function NftManagementContent() {
 
   const formatDate = (date: Date | null) => {
     if (!date) return 'N/A';
-    return new Date(date).toLocaleDateString();
+    return format(new Date(date), 'MMM do, yyyy');
   };
 
   // Helper functions for workflow status
@@ -328,15 +329,27 @@ function NftManagementContent() {
     }
   };
 
-  const getExpirationStatus = (domainExpiration: Date | null) => {
+  const getExpirationStatus = (
+    domainExpiration: Date | null,
+    nftExpiration: Date | null,
+  ) => {
     if (!domainExpiration) {
       return <Badge variant="destructive">Not Found</Badge>;
     }
-    const isExpired = domainExpiration < new Date();
-    return isExpired ? (
-      <Badge variant="destructive">Expired</Badge>
-    ) : (
-      <Badge variant="default">Active</Badge>
+    return (
+      <div className="flex gap-2 flex-col">
+        {domainExpiration < new Date() ? (
+          <Badge variant="destructive">Domain Expired</Badge>
+        ) : (
+          <Badge variant="default">Domain Active</Badge>
+        )}
+        {nftExpiration &&
+          (nftExpiration < new Date() ? (
+            <Badge variant="destructive">NFT Expired</Badge>
+          ) : (
+            <Badge variant="default">NFT Active</Badge>
+          ))}
+      </div>
     );
   };
 
@@ -904,7 +917,10 @@ function NftManagementContent() {
                               </TruncatedTextWithHover>
                             </Td>
                             <Td>
-                              {getExpirationStatus(nft.domainExpirationTime)}
+                              {getExpirationStatus(
+                                nft.domainExpirationTime,
+                                nft.nftExpirationTime,
+                              )}
                             </Td>
                             <Td>{formatDate(nft.nftExpirationTime)}</Td>
                             <Td>{formatDate(nft.domainExpirationTime)}</Td>
