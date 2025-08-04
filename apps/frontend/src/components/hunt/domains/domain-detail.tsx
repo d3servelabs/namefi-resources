@@ -23,6 +23,7 @@ import { useCallback } from 'react';
 import { toast } from 'sonner';
 import { DomainItemSkeleton } from '../domain-item-skeleton';
 import { TagsDisplay } from '../tags-display';
+import { DomainAwards } from '../domain-awards';
 import { usePendingToast } from '../../../hooks/use-pending-toast';
 import { useHuntVoteRow } from '@/hooks/use-hunt-vote-row';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
@@ -137,6 +138,11 @@ export const DomainDetail = ({ domainName }: DomainDetailProps) => {
             </div>
           </CardHeader>
         </Card>
+
+        {/* Awards */}
+        <div className="mb-8">
+          <DomainAwards domainName={domainName} />
+        </div>
 
         {/* Quick Actions */}
         <Card>
