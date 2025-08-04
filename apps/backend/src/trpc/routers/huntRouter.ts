@@ -260,12 +260,12 @@ const getCampaignRankings = async (
   let records: Array<Omit<CampaignRanking, 'tags' | 'userHasUpvoted'>> = [];
 
   if (campaign.status === 'AWARDED') {
-    // Campaign ended, return finalized awards
+    // Campaign ended, return finalized awards with real-time vote counts
     records = await db
       .select({
         domainName: huntAwardsTable.domainName,
         rank: huntAwardsTable.rank,
-        upvoteCount: huntAwardsTable.upvoteCount,
+        upvoteCount: sql<number>`CAST(COALESCE(hunt_domain_stats_view.upvote_count, 0) AS INTEGER)`,
         reason: huntAwardsTable.reason,
         awardedAt: huntAwardsTable.createdAt,
         isPinned: sql<boolean>`false`.as('is_pinned'),
@@ -282,6 +282,10 @@ const getCampaignRankings = async (
           eq(huntCampaignDomainsTable.campaignKey, campaignKey),
         ),
       )
+      .leftJoin(
+        huntDomainStatsView,
+        eq(huntAwardsTable.domainName, huntDomainStatsView.domainName),
+      )
       .where(
         and(
           eq(huntAwardsTable.type, 'CAMPAIGN'),
@@ -297,7 +301,7 @@ const getCampaignRankings = async (
     records = await db
       .select({
         domainName: huntCampaignDomainsTable.domainName,
-        upvoteCount: sql<number>`CAST(COALESCE(${huntDomainStatsView.upvoteCount}, 0) AS INTEGER)`,
+        upvoteCount: sql<number>`CAST(COALESCE(hunt_domain_stats_view.upvote_count, 0) AS INTEGER)`,
         isPinned:
           sql<boolean>`COALESCE(${huntDomainStatsView.isPinned}, false)`.as(
             'is_pinned',
@@ -1115,17 +1119,21 @@ export const huntRouter = createTRPCRouter({
     .query(async ({ input }) => {
       const { type, periodKey, offset, limit } = input;
 
-      // Query awards table for the specific period
+      // Query awards table for the specific period with real-time vote counts
       const awards = await db
         .select({
           domainName: huntAwardsTable.domainName,
           rank: huntAwardsTable.rank,
-          upvoteCount: huntAwardsTable.upvoteCount,
+          upvoteCount: sql<number>`CAST(COALESCE(hunt_domain_stats_view.upvote_count, 0) AS INTEGER)`,
           reason: huntAwardsTable.reason,
           awardedAt: huntAwardsTable.createdAt,
           isPinned: sql<boolean>`false`.as('is_pinned'), // Awards are historical, not pinned
         })
         .from(huntAwardsTable)
+        .leftJoin(
+          huntDomainStatsView,
+          eq(huntAwardsTable.domainName, huntDomainStatsView.domainName),
+        )
         .where(
           and(
             eq(huntAwardsTable.type, type),

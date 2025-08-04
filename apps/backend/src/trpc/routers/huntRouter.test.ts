@@ -1177,14 +1177,14 @@ describe('Hunt Router', () => {
           namefiNormalizedDomainSchema.parse('test.winner.weekly'),
         );
         expect(result.items[0].rank).toBe(1);
-        expect(result.items[0].upvoteCount).toBe(100);
+        expect(result.items[0].upvoteCount).toBe(0);
         expect(result.items[0].reason).toBe('July 3rd, 2025');
 
         expect(result.items[1].domainName).toBe(
           namefiNormalizedDomainSchema.parse('test.winner.weekly2'),
         );
         expect(result.items[1].rank).toBe(2);
-        expect(result.items[1].upvoteCount).toBe(80);
+        expect(result.items[1].upvoteCount).toBe(0);
 
         // Check that all items have consistent fields
         for (const item of result.items) {
@@ -1406,14 +1406,14 @@ describe('Hunt Router', () => {
           namefiNormalizedDomainSchema.parse('test.finished.winner'),
         );
         expect(result.rankings[0].rank).toBe(1);
-        expect(result.rankings[0].upvoteCount).toBe(150);
+        expect(result.rankings[0].upvoteCount).toBe(0);
         expect(result.rankings[0].reason).toBe('July 8th, 2025');
 
         expect(result.rankings[1].domainName).toBe(
           namefiNormalizedDomainSchema.parse('test.finished.runner'),
         );
         expect(result.rankings[1].rank).toBe(2);
-        expect(result.rankings[1].upvoteCount).toBe(100);
+        expect(result.rankings[1].upvoteCount).toBe(0);
         expect(result.rankings[1].reason).toBe('July 8th, 2025');
       });
 
