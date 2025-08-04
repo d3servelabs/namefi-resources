@@ -257,10 +257,7 @@ const getCampaignRankings = async (
   userId?: string,
 ) => {
   let hasMore = false;
-  let records: Array<
-    Omit<CampaignRanking, 'tags' | 'userHasUpvoted' | 'rank'> &
-      Partial<Pick<CampaignRanking, 'rank'>>
-  > = [];
+  let records: Array<Omit<CampaignRanking, 'tags' | 'userHasUpvoted'>> = [];
 
   if (campaign.status === 'AWARDED') {
     // Campaign ended, return finalized awards
@@ -309,6 +306,10 @@ const getCampaignRankings = async (
           sql<string>`COALESCE(${huntCampaignDomainsTable.description}, '')`.as(
             'description',
           ),
+        rank: sql<number>`CAST(RANK() OVER (
+            ORDER BY 
+              COALESCE(${huntDomainStatsView.upvoteCount}, 0) DESC
+          ) AS INTEGER)`.as('rank'),
       })
       .from(huntCampaignDomainsTable)
       .leftJoin(
@@ -342,9 +343,8 @@ const getCampaignRankings = async (
     : {};
 
   const rankings: Array<CampaignRanking> = addTagsToItems(
-    records.map((record, index) => ({
+    records.map((record) => ({
       ...record,
-      rank: record.rank ?? offset + index + 1,
       userHasUpvoted: Boolean(userVotes[record.domainName]),
     })),
   );
@@ -676,6 +676,10 @@ export const huntRouter = createTRPCRouter({
           firstSubmitDate: huntDomainStatsView.firstSubmitDate,
           lastUpvoteDate: huntDomainStatsView.lastUpvoteDate,
           isPinned: huntDomainStatsView.isPinned,
+          rank: sql<number>`CAST(RANK() OVER (
+            ORDER BY 
+              COALESCE(${huntDomainStatsView.upvoteCount}, 0) DESC
+          ) AS INTEGER)`.as('rank'),
         })
         .from(huntDomainStatsView)
         .where(
@@ -698,10 +702,9 @@ export const huntRouter = createTRPCRouter({
       const domainList = domains.slice(0, limit);
 
       // For public access, all userHasUpvoted should be false
-      const domainsWithoutUserData = domainList.map((domain, index) => ({
+      const domainsWithoutUserData = domainList.map((domain) => ({
         ...domain,
         domainName: domain.domainName as NamefiNormalizedDomain,
-        rank: offset + index + 1,
         userHasUpvoted: false,
       }));
 
@@ -762,6 +765,10 @@ export const huntRouter = createTRPCRouter({
           firstSubmitDate: huntDomainStatsView.firstSubmitDate,
           lastUpvoteDate: huntDomainStatsView.lastUpvoteDate,
           isPinned: huntDomainStatsView.isPinned,
+          rank: sql<number>`CAST(RANK() OVER (
+            ORDER BY 
+              COALESCE(${huntDomainStatsView.upvoteCount}, 0) DESC
+          ) AS INTEGER)`.as('rank'),
         })
         .from(huntDomainStatsView)
         .where(
@@ -790,10 +797,9 @@ export const huntRouter = createTRPCRouter({
       );
 
       // Combine results with user vote status
-      const domainsWithVotes = domainList.map((domain, index) => ({
+      const domainsWithVotes = domainList.map((domain) => ({
         ...domain,
         domainName: domain.domainName as NamefiNormalizedDomain,
-        rank: offset + index + 1,
         userHasUpvoted: Boolean(userVotes[domain.domainName]),
       }));
 

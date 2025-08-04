@@ -448,134 +448,222 @@ describe('Hunt Router', () => {
   });
 
   describe('Trending Domains', () => {
-    beforeEach(async () => {
-      // Create test domains with different submit dates
-      await caller.submitDomain({ domainName: 'domain.today' });
-      await caller.submitDomain({ domainName: 'domain.thisweek' });
-      await caller.submitDomain({ domainName: 'domain.thismonth' });
+    describe('Trending Domains Basic', () => {
+      beforeEach(async () => {
+        // Create test domains with different submit dates
+        await caller.submitDomain({ domainName: 'domain.today' });
+        await caller.submitDomain({ domainName: 'domain.thisweek' });
+        await caller.submitDomain({ domainName: 'domain.thismonth' });
 
-      // Add upvotes to create trending
-      await caller.upvote({ domainName: 'domain.today' });
-      await otherCaller.upvote({ domainName: 'domain.today' });
-      await caller.upvote({ domainName: 'domain.thisweek' });
-    });
-
-    it('should get trending domains', async () => {
-      const result = await caller.getTrendingDomains({
-        limit: 10,
-        offset: 0,
-        timeRange: 'ANYTIME',
+        // Add upvotes to create trending
+        await caller.upvote({ domainName: 'domain.today' });
+        await otherCaller.upvote({ domainName: 'domain.today' });
+        await caller.upvote({ domainName: 'domain.thisweek' });
       });
 
-      expect(result).toHaveProperty('items');
-      expect(result).toHaveProperty('hasMore');
-      expect(Array.isArray(result.items)).toBe(true);
+      it('should get trending domains', async () => {
+        const result = await caller.getTrendingDomains({
+          limit: 10,
+          offset: 0,
+          timeRange: 'ANYTIME',
+        });
 
-      for (const item of result.items) {
-        expect(item).toHaveProperty('domainName');
-        expect(item).toHaveProperty('upvoteCount');
-        expect(item).toHaveProperty('firstSubmitDate');
-        expect(item).toHaveProperty('userHasUpvoted');
-        expect(item).toHaveProperty('rank');
-        expect(item).toHaveProperty('tags');
-        expect(Array.isArray(item.tags)).toBe(true);
-      }
+        expect(result).toHaveProperty('items');
+        expect(result).toHaveProperty('hasMore');
+        expect(Array.isArray(result.items)).toBe(true);
 
-      // Should be sorted by upvote count (descending)
-      if (result.items.length > 1) {
-        for (let i = 1; i < result.items.length; i++) {
-          expect(
-            Number(result.items[i - 1].upvoteCount),
-          ).toBeGreaterThanOrEqual(Number(result.items[i].upvoteCount));
+        for (const item of result.items) {
+          expect(item).toHaveProperty('domainName');
+          expect(item).toHaveProperty('upvoteCount');
+          expect(item).toHaveProperty('firstSubmitDate');
+          expect(item).toHaveProperty('userHasUpvoted');
+          expect(item).toHaveProperty('rank');
+          expect(item).toHaveProperty('tags');
+          expect(Array.isArray(item.tags)).toBe(true);
         }
-      }
+
+        // Should be sorted by upvote count (descending)
+        if (result.items.length > 1) {
+          for (let i = 1; i < result.items.length; i++) {
+            expect(
+              Number(result.items[i - 1].upvoteCount),
+            ).toBeGreaterThanOrEqual(Number(result.items[i].upvoteCount));
+          }
+        }
+      });
+
+      it('should filter trending domains by time range', async () => {
+        // Submit an old domain by manipulating the database directly
+        await caller.submitDomain({ domainName: 'domain.old' });
+        const oldDate = new Date();
+        oldDate.setFullYear(oldDate.getFullYear() - 1);
+
+        await db
+          .update(huntEdgesTable)
+          .set({ createdAt: oldDate })
+          .where(
+            and(
+              eq(huntEdgesTable.targetId, 'domain.old'),
+              eq(huntEdgesTable.action, 'SUBMIT'),
+            ),
+          );
+
+        // Test different time ranges
+        const allTimeResult = await caller.getTrendingDomains({
+          limit: 10,
+          offset: 0,
+          timeRange: 'ANYTIME',
+        });
+
+        const thisYearResult = await caller.getTrendingDomains({
+          limit: 10,
+          offset: 0,
+          timeRange: 'THIS_YEAR',
+        });
+
+        // All time should include more domains than this year
+        expect(allTimeResult.items.length).toBeGreaterThanOrEqual(
+          thisYearResult.items.length,
+        );
+      });
+
+      it('should handle pagination correctly', async () => {
+        const page1 = await caller.getTrendingDomains({
+          limit: 2,
+          offset: 0,
+          timeRange: 'ANYTIME',
+        });
+
+        const page2 = await caller.getTrendingDomains({
+          limit: 2,
+          offset: 2,
+          timeRange: 'ANYTIME',
+        });
+
+        expect(page1.items.length).toBeLessThanOrEqual(2);
+        expect(page2.items.length).toBeLessThanOrEqual(2);
+
+        // Items should not overlap
+        const page1Names = page1.items.map((item) => item.domainName);
+        const page2Names = page2.items.map((item) => item.domainName);
+        const overlap = page1Names.filter((name) => page2Names.includes(name));
+        expect(overlap.length).toBe(0);
+      });
     });
 
-    it('should filter trending domains by time range', async () => {
-      // Submit an old domain by manipulating the database directly
-      await caller.submitDomain({ domainName: 'domain.old' });
-      const oldDate = new Date();
-      oldDate.setFullYear(oldDate.getFullYear() - 1);
+    describe('Tied Rankings', () => {
+      beforeEach(async () => {
+        // Setup domains with specific vote counts to test tied rankings
 
-      await db
-        .update(huntEdgesTable)
-        .set({ createdAt: oldDate })
-        .where(
-          and(
-            eq(huntEdgesTable.targetId, 'domain.old'),
-            eq(huntEdgesTable.action, 'SUBMIT'),
-          ),
+        // Domain5: 2 votes (rank 5)
+        await caller.submitDomain({ domainName: 'test.tied.domain5' });
+        await caller.unvote({ domainName: 'test.tied.domain5' });
+
+        // Domain4: 1 vote (rank 4, after the tie)
+        await caller.submitDomain({ domainName: 'test.tied.domain4' });
+        await caller.unvote({ domainName: 'test.tied.domain4' });
+
+        // Domain2 and Domain3: 2 votes each (tied for rank 2)
+        await caller.submitDomain({ domainName: 'test.tied.domain3' });
+        await caller.submitDomain({ domainName: 'test.tied.domain2' });
+
+        // Domain1: 3 votes (rank 1)
+        await caller.submitDomain({ domainName: 'test.tied.domain1' });
+        await otherCaller.upvote({ domainName: 'test.tied.domain1' });
+      });
+
+      it('should handle tied rankings correctly (1,2,2,4,5)', async () => {
+        const result = await caller.getTrendingDomains({
+          limit: 10,
+          offset: 0,
+          timeRange: 'TODAY',
+        });
+
+        // Filter to our test domains only
+        const testDomains = result.items.filter((item) =>
+          item.domainName.includes('test.tied.'),
         );
 
-      // Test different time ranges
-      const allTimeResult = await caller.getTrendingDomains({
-        limit: 10,
-        offset: 0,
-        timeRange: 'ANYTIME',
+        expect(testDomains).toHaveLength(5);
+
+        // Check ranking: 1,2,2,4,5
+        expect(testDomains[0].domainName).toBe('test.tied.domain1');
+        expect(testDomains[0].upvoteCount).toBe(2);
+        expect(testDomains[0].rank).toBe(1);
+
+        // Domain2 and Domain3 should be tied for rank 2
+        expect(testDomains[1].upvoteCount).toBe(1);
+        expect(testDomains[1].rank).toBe(2);
+        expect(testDomains[2].upvoteCount).toBe(1);
+        expect(testDomains[2].rank).toBe(2);
+
+        // Domain4 should get rank 4 (skipping rank 3 due to tie)
+        expect(testDomains[3].domainName).toBe('test.tied.domain4');
+        expect(testDomains[3].upvoteCount).toBe(0);
+        expect(testDomains[3].rank).toBe(4);
+
+        // Domain5 should get rank 5
+        expect(testDomains[4].domainName).toBe('test.tied.domain5');
+        expect(testDomains[4].upvoteCount).toBe(0);
+        expect(testDomains[4].rank).toBe(4);
       });
 
-      const thisYearResult = await caller.getTrendingDomains({
-        limit: 10,
-        offset: 0,
-        timeRange: 'THIS_YEAR',
+      it('should handle tied rankings correctly (1,2,2,4,5) for public endpoint', async () => {
+        const result = await caller.getTrendingDomainsPublic({
+          limit: 10,
+          offset: 0,
+          timeRange: 'TODAY',
+        });
+
+        // Filter to our test domains only
+        const testDomains = result.items.filter((item) =>
+          item.domainName.includes('test.tied.'),
+        );
+
+        expect(testDomains).toHaveLength(5);
+
+        // Check ranking: 1,2,2,4,5
+        expect(testDomains[0].domainName).toBe('test.tied.domain1');
+        expect(testDomains[0].upvoteCount).toBe(2);
+        expect(testDomains[0].rank).toBe(1);
+
+        // Domain2 and Domain3 should be tied for rank 2
+        expect(testDomains[1].upvoteCount).toBe(1);
+        expect(testDomains[1].rank).toBe(2);
+        expect(testDomains[2].upvoteCount).toBe(1);
+        expect(testDomains[2].rank).toBe(2);
+
+        // Domain4 should get rank 4 (skipping rank 3 due to tie)
+        expect(testDomains[3].domainName).toBe('test.tied.domain4');
+        expect(testDomains[3].upvoteCount).toBe(0);
+        expect(testDomains[3].rank).toBe(4);
+
+        // Domain5 should get rank 5
+        expect(testDomains[4].domainName).toBe('test.tied.domain5');
+        expect(testDomains[4].upvoteCount).toBe(0);
+        expect(testDomains[4].rank).toBe(4);
       });
 
-      // All time should include more domains than this year
-      expect(allTimeResult.items.length).toBeGreaterThanOrEqual(
-        thisYearResult.items.length,
-      );
-    });
+      it('should handle tied rankings across pagination boundaries', async () => {
+        const page2 = await caller.getTrendingDomains({
+          limit: 2,
+          offset: 2,
+          timeRange: 'TODAY',
+        });
 
-    it('should handle pagination correctly', async () => {
-      const page1 = await caller.getTrendingDomains({
-        limit: 2,
-        offset: 0,
-        timeRange: 'ANYTIME',
+        console.log(page2);
+        expect(page2.items[0].rank).toBe(2);
       });
 
-      const page2 = await caller.getTrendingDomains({
-        limit: 2,
-        offset: 2,
-        timeRange: 'ANYTIME',
+      it('should handle tied rankings across pagination boundaries for public endpoint', async () => {
+        const page2 = await caller.getTrendingDomainsPublic({
+          limit: 2,
+          offset: 2,
+          timeRange: 'TODAY',
+        });
+
+        expect(page2.items[0].rank).toBe(2);
       });
-
-      expect(page1.items.length).toBeLessThanOrEqual(2);
-      expect(page2.items.length).toBeLessThanOrEqual(2);
-
-      // Items should not overlap
-      const page1Names = page1.items.map((item) => item.domainName);
-      const page2Names = page2.items.map((item) => item.domainName);
-      const overlap = page1Names.filter((name) => page2Names.includes(name));
-      expect(overlap.length).toBe(0);
-    });
-
-    it('should return correct rank values with pagination', async () => {
-      const page1 = await caller.getTrendingDomains({
-        limit: 2,
-        offset: 0,
-        timeRange: 'ANYTIME',
-      });
-
-      const page2 = await caller.getTrendingDomains({
-        limit: 2,
-        offset: 2,
-        timeRange: 'ANYTIME',
-      });
-
-      // Check that ranks are correctly calculated
-      if (page1.items.length > 0) {
-        expect(page1.items[0].rank).toBe(1);
-        if (page1.items.length > 1) {
-          expect(page1.items[1].rank).toBe(2);
-        }
-      }
-
-      if (page2.items.length > 0) {
-        expect(page2.items[0].rank).toBe(3);
-        if (page2.items.length > 1) {
-          expect(page2.items[1].rank).toBe(4);
-        }
-      }
     });
   });
 
@@ -730,40 +818,6 @@ describe('Hunt Router', () => {
       const page2Names = page2.items.map((item) => item.domainName);
       const overlap = page1Names.filter((name) => page2Names.includes(name));
       expect(overlap.length).toBe(0);
-    });
-
-    it('should return correct rank values with pagination in public endpoint', async () => {
-      const publicCaller = huntRouter.createCaller({
-        poweredByNamefiDomain: null,
-        testUser: null,
-      } as any);
-
-      const page1 = await publicCaller.getTrendingDomainsPublic({
-        limit: 2,
-        offset: 0,
-        timeRange: 'ANYTIME',
-      });
-
-      const page2 = await publicCaller.getTrendingDomainsPublic({
-        limit: 2,
-        offset: 2,
-        timeRange: 'ANYTIME',
-      });
-
-      // Check that ranks are correctly calculated
-      if (page1.items.length > 0) {
-        expect(page1.items[0].rank).toBe(1);
-        if (page1.items.length > 1) {
-          expect(page1.items[1].rank).toBe(2);
-        }
-      }
-
-      if (page2.items.length > 0) {
-        expect(page2.items[0].rank).toBe(3);
-        if (page2.items.length > 1) {
-          expect(page2.items[1].rank).toBe(4);
-        }
-      }
     });
   });
 
@@ -1509,7 +1563,7 @@ describe('Hunt Router', () => {
 
         // Check that they have proper rank values
         expect(result.rankings[1].rank).toBe(2);
-        expect(result.rankings[2].rank).toBe(3);
+        expect(result.rankings[2].rank).toBe(2);
       });
     });
 

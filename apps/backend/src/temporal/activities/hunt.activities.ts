@@ -74,6 +74,10 @@ export const getCampaignRankingsForAwarding = async (campaignKey: string) => {
       upvoteCount: sql<number>`CAST(COALESCE(${huntDomainStatsView.upvoteCount}, 0) AS INTEGER)`,
       firstSubmitDate: huntDomainStatsView.firstSubmitDate,
       lastUpvoteDate: huntDomainStatsView.lastUpvoteDate,
+      rank: sql<number>`CAST(RANK() OVER (
+        ORDER BY 
+          COALESCE(${huntDomainStatsView.upvoteCount}, 0) DESC
+      ) AS INTEGER)`.as('rank'),
     })
     .from(huntCampaignDomainsTable)
     .leftJoin(
@@ -168,6 +172,10 @@ export const getPeriodRankingsForAwarding = async (
       upvoteCount: sql<number>`CAST(${huntDomainStatsView.upvoteCount} AS INTEGER)`,
       firstSubmitDate: huntDomainStatsView.firstSubmitDate,
       lastUpvoteDate: huntDomainStatsView.lastUpvoteDate,
+      rank: sql<number>`CAST(RANK() OVER (
+        ORDER BY 
+          ${huntDomainStatsView.upvoteCount} DESC
+      ) AS INTEGER)`.as('rank'),
     })
     .from(huntDomainStatsView)
     .where(
@@ -257,6 +265,7 @@ export const createCampaignAwards = async (
     upvoteCount: number;
     firstSubmitDate: Date | null;
     lastUpvoteDate: Date | null;
+    rank: number;
   }>,
 ): Promise<{
   createdAwards: number;
@@ -292,13 +301,13 @@ export const createCampaignAwards = async (
     `${domainName} was ranked #${rank} of ${campaignTitle} for ${format(campaign[0].endDate, 'MMMM do, yyyy')}`;
 
   // Create awards for all domains in the campaign
-  const awardsToInsert = rankings.map((ranking, index) => ({
+  const awardsToInsert = rankings.map((ranking) => ({
     domainName: ranking.domainName as NamefiNormalizedDomain,
     type: 'CAMPAIGN' as const,
     campaignKey,
     periodKey: null,
-    rank: index + 1,
-    reason: createAwardReason(ranking.domainName, index + 1),
+    rank: ranking.rank,
+    reason: createAwardReason(ranking.domainName, ranking.rank),
     upvoteCount: ranking.upvoteCount,
   }));
 
@@ -324,6 +333,7 @@ export const createPeriodAwards = async (
     upvoteCount: number;
     firstSubmitDate: Date | null;
     lastUpvoteDate: Date | null;
+    rank: number;
   }>,
 ): Promise<{
   createdAwards: number;
@@ -365,13 +375,13 @@ export const createPeriodAwards = async (
   }
 
   // Create awards for top domains
-  const awardsToInsert = rankings.map((ranking, index) => ({
+  const awardsToInsert = rankings.map((ranking) => ({
     domainName: ranking.domainName as NamefiNormalizedDomain,
     type,
     campaignKey: null,
     periodKey,
-    rank: index + 1,
-    reason: `${ranking.domainName} was ranked #${index + 1} of ${awardDate}`,
+    rank: ranking.rank,
+    reason: `${ranking.domainName} was ranked #${ranking.rank} of ${awardDate}`,
     upvoteCount: ranking.upvoteCount,
   }));
 
