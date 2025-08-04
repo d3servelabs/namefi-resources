@@ -3,6 +3,7 @@ import {
   aiGenerationsTable,
   cartItemsTable,
   huntEdgesTable,
+  linkSharesTable,
   orderItemsTable,
   ordersTable,
   paymentsTable,
@@ -17,6 +18,7 @@ export const usersRelations = relations(usersTable, ({ many }) => ({
   orders: many(ordersTable),
   aiGenerations: many(aiGenerationsTable),
   wishlistedDomains: many(wishlistedDomainsTable),
+  linkShares: many(linkSharesTable),
 }));
 
 // Cart items relations
@@ -86,5 +88,13 @@ export const huntEdgesRelations = relations(huntEdgesTable, ({ one }) => ({
     fields: [huntEdgesTable.targetId],
     references: [usersTable.id],
     relationName: 'huntEdgeTargetUser',
+  }),
+}));
+
+// Link shares relations
+export const linkSharesRelations = relations(linkSharesTable, ({ one }) => ({
+  user: one(usersTable, {
+    fields: [linkSharesTable.userId],
+    references: [usersTable.id],
   }),
 }));

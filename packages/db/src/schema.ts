@@ -921,6 +921,52 @@ export const wishlistedDomainsTable = pgTable(
 );
 
 /**
+ * Link shares table
+ * Stores social media share submissions for verification and reward qualification
+ */
+export const linkSharesTable = pgTable(
+  'link_shares',
+  {
+    ...randomUuid,
+    userId: uuid('user_id')
+      .notNull()
+      .references(() => usersTable.id, {
+        onDelete: 'cascade',
+      }),
+    ...normalizedDomain,
+    postUrl: text('post_url').notNull(),
+    sharedUrl: text('shared_url').notNull(),
+    campaignKey: text('campaign_key').references(
+      () => huntCampaignsTable.campaignKey,
+      {
+        onDelete: 'set null',
+      },
+    ),
+    verified: boolean('verified').notNull().default(false),
+    verifiedAt: timestamp('verified_at'),
+    verificationNotes: text('verification_notes'),
+    ...timestamps,
+  },
+  (table) => [
+    unique('link_shares_user_domain_post_unique').on(
+      table.userId,
+      table.normalizedDomainName,
+      table.postUrl,
+    ),
+    index('link_shares_user_domain_idx').on(
+      table.userId,
+      table.normalizedDomainName,
+    ),
+    index('link_shares_domain_recent_idx').on(
+      table.normalizedDomainName,
+      table.createdAt,
+    ),
+    index('link_shares_verification_idx').on(table.verified, table.createdAt),
+    index('link_shares_campaign_idx').on(table.campaignKey),
+  ],
+);
+
+/**
  * NamefiNftView - View based on NamefiNft schema from ponder indexer
  * This view provides a stable interface to query NFT data with dates and metadata
  * from the ponder indexer, insulating the application from schema changes.
