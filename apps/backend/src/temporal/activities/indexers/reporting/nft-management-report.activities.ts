@@ -12,8 +12,10 @@ import {
   namefiNftOwnersView,
   namefiNftView,
   indexedDomainsTable,
+  orderItemsTable,
+  ordersTable,
 } from '@namefi-astra/db';
-import { and, eq, sql } from 'drizzle-orm';
+import { and, eq, sql, gte } from 'drizzle-orm';
 import { temporalClient } from '../../../client';
 import { getPoweredByNamefi3PDomains } from '#lib/namefi-registry';
 import { secrets } from '#lib/env';
@@ -45,6 +47,24 @@ export interface ReportMetrics {
     longOverdueExpired: number;
   };
   criticalDomains: DetailedNftData[];
+  recentOrders: {
+    totalOrderItems: number;
+    totalRevenue: number;
+    ordersByType: Record<string, number>;
+    topDomains: Array<{
+      domain: string;
+      count: number;
+      revenue: number;
+    }>;
+    allOrderItems: Array<{
+      domain: string;
+      type: string;
+      amount: number;
+      createdAt: Date;
+      orderStatus: string;
+      orderId: string;
+    }>;
+  };
 }
 
 export interface DetailedNftData {
@@ -161,8 +181,15 @@ export async function collectNftManagementMetrics(): Promise<ReportMetrics> {
     // Collect workflow metrics
     const workflowMetrics = await collectActiveWorkflowMetrics(ctx);
 
+    // Collect recent order items (last 24 hours)
+    const recentOrdersMetrics = await collectRecentOrdersMetrics(ctx);
+
     // Analyze the collected data
-    const metrics = analyzeNftData(allNftsData, workflowMetrics);
+    const metrics = analyzeNftData(
+      allNftsData,
+      workflowMetrics,
+      recentOrdersMetrics,
+    );
 
     ctx.log.info('NFT metrics collection completed', {
       totalNfts: metrics.totalNfts,
@@ -178,7 +205,109 @@ export async function collectNftManagementMetrics(): Promise<ReportMetrics> {
 }
 
 /**
- * Collect active workflow metrics from Temporal
+ * Collects metrics for order items created in the last 24 hours
+ *
+ * @param ctx - Temporal activity context for logging
+ * @returns Object containing order metrics including totals, breakdowns, and individual items
+ */
+async function collectRecentOrdersMetrics(ctx: Context) {
+  const recentOrdersMetrics = {
+    totalOrderItems: 0,
+    totalRevenue: 0,
+    ordersByType: {} as Record<string, number>,
+    topDomains: [] as Array<{ domain: string; count: number; revenue: number }>,
+    allOrderItems: [] as Array<{
+      domain: string;
+      type: string;
+      amount: number;
+      createdAt: Date;
+      orderStatus: string;
+      orderId: string;
+    }>,
+  };
+
+  try {
+    // Get order items from the last 24 hours
+    const twentyFourHoursAgo = new Date();
+    twentyFourHoursAgo.setHours(twentyFourHoursAgo.getHours() - 24);
+
+    const recentOrderItems = await db
+      .select({
+        normalizedDomainName: orderItemsTable.normalizedDomainName,
+        amountInUSDCents: orderItemsTable.amountInUSDCents,
+        type: orderItemsTable.type,
+        createdAt: orderItemsTable.createdAt,
+        orderStatus: ordersTable.status,
+        orderId: orderItemsTable.orderId,
+      })
+      .from(orderItemsTable)
+      .leftJoin(ordersTable, eq(orderItemsTable.orderId, ordersTable.id))
+      .where(
+        and(
+          gte(orderItemsTable.createdAt, twentyFourHoursAgo),
+          // Only include completed or processing orders
+          sql`${ordersTable.status} IN ('COMPLETED', 'PROCESSING')`,
+        ),
+      );
+
+    ctx.log.info(`Found ${recentOrderItems.length} recent order items`);
+
+    // Analyze the order items
+    const domainStats = new Map<string, { count: number; revenue: number }>();
+
+    for (const item of recentOrderItems) {
+      recentOrdersMetrics.totalOrderItems++;
+      recentOrdersMetrics.totalRevenue += item.amountInUSDCents || 0;
+
+      // Count by type
+      const type = item.type || 'UNKNOWN';
+      recentOrdersMetrics.ordersByType[type] =
+        (recentOrdersMetrics.ordersByType[type] || 0) + 1;
+
+      // Track domain stats
+      if (item.normalizedDomainName) {
+        const existing = domainStats.get(item.normalizedDomainName) || {
+          count: 0,
+          revenue: 0,
+        };
+        domainStats.set(item.normalizedDomainName, {
+          count: existing.count + 1,
+          revenue: existing.revenue + (item.amountInUSDCents || 0),
+        });
+      }
+
+      // Add to allOrderItems array for detailed reporting
+      recentOrdersMetrics.allOrderItems.push({
+        domain: item.normalizedDomainName || 'N/A',
+        type: type,
+        amount: item.amountInUSDCents || 0,
+        createdAt: item.createdAt,
+        orderStatus: item.orderStatus || 'UNKNOWN',
+        orderId: item.orderId || 'N/A',
+      });
+    }
+
+    // Get top 10 domains by order count
+    recentOrdersMetrics.topDomains = Array.from(domainStats.entries())
+      .sort(([, a], [, b]) => b.count - a.count)
+      .slice(0, 10)
+      .map(([domain, stats]) => ({
+        domain,
+        count: stats.count,
+        revenue: stats.revenue,
+      }));
+  } catch (error) {
+    ctx.log.warn('Failed to collect recent orders metrics', { error });
+  }
+
+  return recentOrdersMetrics;
+}
+
+/**
+ * Collects metrics for currently active workflows from Temporal server
+ *
+ * @param ctx - Temporal activity context for logging
+ * @returns Object containing counts of active workflows by type
  */
 async function collectActiveWorkflowMetrics(ctx: Context) {
   const workflowMetrics = {
@@ -242,8 +371,184 @@ interface NftDataQueryResult {
   canBurn: boolean;
   hasDateMismatch: boolean;
 }
+
 /**
- * Analyze NFT data and generate comprehensive metrics
+ * Updates domain type counters based on whether the NFT is a powered-by-namefi domain
+ *
+ * @param nft - The NFT data to categorize
+ * @param metrics - The metrics object to update (WARNING: This object is mutated)
+ */
+function updateDomainTypeCategorization(
+  nft: NftDataQueryResult,
+  metrics: ReportMetrics,
+): void {
+  if (nft.isPoweredByNamefiDomain) {
+    metrics.poweredByNamefiDomains++;
+  } else {
+    metrics.regularDomains++;
+  }
+}
+
+/**
+ * Analyzes domain expiration status and updates expired domain counter
+ *
+ * @param nft - The NFT data containing expiration information
+ * @param metrics - The metrics object to update (WARNING: This object is mutated)
+ * @param now - Current timestamp for expiration comparison
+ * @returns Object containing expiration status and effective expiration time
+ */
+function analyzeAndUpdateExpirationStatus(
+  nft: NftDataQueryResult,
+  metrics: ReportMetrics,
+  now: Date,
+): { isExpired: boolean; effectiveExpirationTime: Date | null } {
+  const effectiveExpirationTime =
+    nft.effectiveDomainExpirationTime || nft.domainExpirationTime;
+  const isExpired = effectiveExpirationTime
+    ? effectiveExpirationTime < now
+    : true;
+
+  if (isExpired) {
+    metrics.expiredDomains++;
+  }
+
+  return { isExpired, effectiveExpirationTime };
+}
+
+/**
+ * Validates NFT data integrity and updates metrics for missing data and date mismatches
+ *
+ * @param nft - The NFT data to validate
+ * @param metrics - The metrics object to update (WARNING: This object is mutated)
+ * @returns True if the NFT has critical data validation issues, false otherwise
+ */
+function validateNftDataAndUpdateMetrics(
+  nft: NftDataQueryResult,
+  metrics: ReportMetrics,
+): boolean {
+  let isCritical = false;
+
+  if (nft.isPoweredByNamefiDomain) {
+    // For powered by namefi domains, only check NFT date
+    if (!nft.nftExpirationTime) {
+      metrics.missingDataNfts++;
+      metrics.criticalIssues.missingDataCannotFix++;
+      isCritical = true;
+    }
+  } else {
+    // For regular domains, check both dates
+    if (!nft.nftExpirationTime || !nft.domainExpirationTime) {
+      metrics.missingDataNfts++;
+      metrics.criticalIssues.missingDataCannotFix++;
+      isCritical = true;
+    } else if (nft.hasDateMismatch) {
+      // Only count as date mismatch if both dates exist but differ
+      metrics.dateMismatchNfts++;
+      isCritical = true;
+    }
+  }
+
+  return isCritical;
+}
+
+/**
+ * Updates registrar and chain distribution breakdowns in metrics
+ *
+ * @param nft - The NFT data containing registrar and chain information
+ * @param metrics - The metrics object to update (WARNING: This object is mutated)
+ */
+function updateRegistrarAndChainBreakdowns(
+  nft: NftDataQueryResult,
+  metrics: ReportMetrics,
+): void {
+  // Registrar breakdown
+  const registrar = nft.effectiveRegistrarKey || 'Unknown';
+  metrics.registrarBreakdown[registrar] =
+    (metrics.registrarBreakdown[registrar] || 0) + 1;
+
+  // Chain breakdown
+  metrics.chainBreakdown[nft.chainId] =
+    (metrics.chainBreakdown[nft.chainId] || 0) + 1;
+}
+
+/**
+ * Analyzes a single NFT record and updates all relevant metrics
+ *
+ * This function performs comprehensive analysis of an NFT including:
+ * - Domain type categorization (powered-by-namefi vs regular)
+ * - Expiration status evaluation
+ * - Burn eligibility assessment
+ * - Data validation and critical issue identification
+ * - Long overdue domain detection
+ * - Critical domain tracking
+ * - Registrar and chain distribution updates
+ *
+ * @param nft - The NFT data to analyze
+ * @param metrics - The metrics object to update (WARNING: This object is mutated extensively)
+ * @param now - Current timestamp for expiration comparison
+ * @param thirtyDaysAgo - Timestamp 30 days ago for long overdue detection
+ */
+function analyzeNftRecordAndUpdateMetrics(
+  nft: NftDataQueryResult,
+  metrics: ReportMetrics,
+  now: Date,
+  thirtyDaysAgo: Date,
+): void {
+  updateDomainTypeCategorization(nft, metrics);
+
+  const { isExpired, effectiveExpirationTime } =
+    analyzeAndUpdateExpirationStatus(nft, metrics, now);
+
+  let isCritical = false;
+
+  // Action-based categorization
+  if (nft.canBurn) {
+    metrics.canBurnNfts++;
+    if (isExpired) {
+      metrics.criticalIssues.expiredCanBurn++;
+      isCritical = true;
+    }
+  }
+
+  // Handle missing data vs date mismatch
+  if (validateNftDataAndUpdateMetrics(nft, metrics)) {
+    isCritical = true;
+  }
+
+  // Long overdue expired domains (expired more than 30 days ago)
+  if (effectiveExpirationTime && effectiveExpirationTime < thirtyDaysAgo) {
+    metrics.criticalIssues.longOverdueExpired++;
+    isCritical = true;
+  }
+
+  // Add to critical domains if it has any critical issues
+  if (isCritical) {
+    metrics.criticalDomains.push({
+      normalizedDomainName: nft.normalizedDomainName,
+      chainId: nft.chainId,
+      ownerAddress: nft.ownerAddress,
+      nftExpirationTime: nft.nftExpirationTime,
+      domainExpirationTime: nft.effectiveDomainExpirationTime,
+      registrarKey: nft.effectiveRegistrarKey,
+      isPoweredByNamefiDomain: nft.isPoweredByNamefiDomain,
+      canBurn: nft.canBurn,
+      hasDateMismatch: nft.hasDateMismatch,
+    });
+  }
+
+  updateRegistrarAndChainBreakdowns(nft, metrics);
+}
+/**
+ * Analyzes NFT data and generates comprehensive metrics for reporting
+ *
+ * This function processes all NFT records and combines them with workflow and order data
+ * to create a complete metrics overview. It categorizes domains, identifies critical issues,
+ * and aggregates data for various breakdowns.
+ *
+ * @param allNftsData - Array of NFT records from database queries
+ * @param activeWorkflows - Current workflow execution counts by type
+ * @param recentOrdersMetrics - Order metrics from the last 24 hours (WARNING: Contains mutated data)
+ * @returns Complete metrics object ready for report formatting
  */
 function analyzeNftData(
   allNftsData: NftDataQueryResult[],
@@ -251,6 +556,20 @@ function analyzeNftData(
     burnWorkflows: number;
     fixExpirationWorkflows: number;
     extendRegistrationWorkflows: number;
+  },
+  recentOrdersMetrics: {
+    totalOrderItems: number;
+    totalRevenue: number;
+    ordersByType: Record<string, number>;
+    topDomains: Array<{ domain: string; count: number; revenue: number }>;
+    allOrderItems: Array<{
+      domain: string;
+      type: string;
+      amount: number;
+      createdAt: Date;
+      orderStatus: string;
+      orderId: string;
+    }>;
   },
 ): ReportMetrics {
   const metrics: ReportMetrics = {
@@ -270,6 +589,7 @@ function analyzeNftData(
       longOverdueExpired: 0,
     },
     criticalDomains: [],
+    recentOrders: recentOrdersMetrics,
   };
 
   const now = new Date();
@@ -277,86 +597,7 @@ function analyzeNftData(
 
   // Analyze each NFT
   for (const nft of allNftsData) {
-    // Basic categorization
-    if (nft.isPoweredByNamefiDomain) {
-      metrics.poweredByNamefiDomains++;
-    } else {
-      metrics.regularDomains++;
-    }
-
-    // Use effective domain expiration time for analysis
-    const effectiveExpirationTime =
-      nft.effectiveDomainExpirationTime || nft.domainExpirationTime;
-    const isExpired = effectiveExpirationTime
-      ? effectiveExpirationTime < now
-      : true;
-
-    if (isExpired) {
-      metrics.expiredDomains++;
-    }
-
-    // Check if this domain is critical (has any critical issues)
-    let isCritical = false;
-
-    // Action-based categorization
-    if (nft.canBurn) {
-      metrics.canBurnNfts++;
-      if (isExpired) {
-        metrics.criticalIssues.expiredCanBurn++;
-        isCritical = true;
-      }
-    }
-
-    // Handle missing data vs date mismatch separately
-    if (nft.isPoweredByNamefiDomain) {
-      // For powered by namefi domains, only check NFT date
-      if (!nft.nftExpirationTime) {
-        metrics.missingDataNfts++;
-        metrics.criticalIssues.missingDataCannotFix++;
-        isCritical = true;
-      }
-    } else {
-      // For regular domains, check both dates
-      if (!nft.nftExpirationTime || !nft.domainExpirationTime) {
-        metrics.missingDataNfts++;
-        metrics.criticalIssues.missingDataCannotFix++;
-        isCritical = true;
-      } else if (nft.hasDateMismatch) {
-        // Only count as date mismatch if both dates exist but differ
-        metrics.dateMismatchNfts++;
-        isCritical = true;
-      }
-    }
-
-    // Long overdue expired domains (expired more than 30 days ago)
-    if (effectiveExpirationTime && effectiveExpirationTime < thirtyDaysAgo) {
-      metrics.criticalIssues.longOverdueExpired++;
-      isCritical = true;
-    }
-
-    // Add to critical domains if it has any critical issues
-    if (isCritical) {
-      metrics.criticalDomains.push({
-        normalizedDomainName: nft.normalizedDomainName,
-        chainId: nft.chainId,
-        ownerAddress: nft.ownerAddress,
-        nftExpirationTime: nft.nftExpirationTime,
-        domainExpirationTime: nft.effectiveDomainExpirationTime,
-        registrarKey: nft.effectiveRegistrarKey,
-        isPoweredByNamefiDomain: nft.isPoweredByNamefiDomain,
-        canBurn: nft.canBurn,
-        hasDateMismatch: nft.hasDateMismatch,
-      });
-    }
-
-    // Registrar breakdown
-    const registrar = nft.effectiveRegistrarKey || 'Unknown';
-    metrics.registrarBreakdown[registrar] =
-      (metrics.registrarBreakdown[registrar] || 0) + 1;
-
-    // Chain breakdown
-    metrics.chainBreakdown[nft.chainId] =
-      (metrics.chainBreakdown[nft.chainId] || 0) + 1;
+    analyzeNftRecordAndUpdateMetrics(nft, metrics, now, thirtyDaysAgo);
   }
 
   return metrics;
@@ -420,6 +661,22 @@ export async function formatNftManagementReport(
 - Fix Expiration: ${metrics.activeWorkflows.fixExpirationWorkflows.toLocaleString()}
 - Extend Registration: ${metrics.activeWorkflows.extendRegistrationWorkflows.toLocaleString()}`,
     '',
+    '## 🛒 Recent Orders (Last 24 Hours)',
+    `**Total Order Items:** ${metrics.recentOrders.totalOrderItems.toLocaleString()}`,
+    `**Total Revenue:** $${(metrics.recentOrders.totalRevenue / 100).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+    '**Orders by Type:**',
+    ...Object.entries(metrics.recentOrders.ordersByType)
+      .sort(([, a], [, b]) => b - a)
+      .map(([type, count]) => `- **${type}:** ${count.toLocaleString()}`),
+    '',
+    '**Top Domains:**',
+    ...metrics.recentOrders.topDomains
+      .slice(0, 5)
+      .map(
+        ({ domain, count, revenue }) =>
+          `- **${domain}:** ${count.toLocaleString()} order${count !== 1 ? 's' : ''} ($${(revenue / 100).toFixed(2)})`,
+      ),
+    '',
     '## 🏢 Registrar Breakdown',
     Object.entries(metrics.registrarBreakdown)
       .sort(([, a], [, b]) => b - a)
@@ -461,6 +718,8 @@ export async function formatNftManagementReport(
     '<div id="markdown-table">',
     '',
     formatCriticalDomainsTable(metrics.criticalDomains),
+    '',
+    formatAllOrderItemsTable(metrics.recentOrders.allOrderItems),
     '',
     '</div>',
     '',
@@ -537,6 +796,118 @@ function generateHealthRecommendations(metrics: ReportMetrics): string {
   return recommendations.join('\n');
 }
 
+/**
+ * Formats all order items from the last 24 hours into a markdown table
+ *
+ * @param allOrderItems - Array of order item data to format
+ * @returns Markdown formatted table section with all order items, or empty state message
+ */
+function formatAllOrderItemsTable(
+  allOrderItems: Array<{
+    domain: string;
+    type: string;
+    amount: number;
+    createdAt: Date;
+    orderStatus: string;
+    orderId: string;
+  }>,
+): string {
+  if (allOrderItems.length === 0) {
+    return '## 📦 All Order Items (Last 24 Hours)\n\n✅ **No order items found in the last 24 hours.**';
+  }
+
+  // Sort order items by creation date (newest first)
+  const sortedItems = allOrderItems.sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+  );
+
+  const tableRows = [
+    '| Domain | Type | Amount | Status | Order ID | Created At |',
+    '|--------|------|--------|--------|----------|------------|',
+  ];
+
+  for (const item of sortedItems) {
+    const amount = `$${(item.amount / 100).toFixed(2)}`;
+    const createdAt = format(new Date(item.createdAt), 'MMM do, HH:mm');
+    const domain =
+      item.domain.length > 25
+        ? `${item.domain.substring(0, 25)}...`
+        : item.domain;
+    const orderId =
+      item.orderId.length > 12
+        ? `${item.orderId.substring(0, 12)}...`
+        : item.orderId;
+
+    tableRows.push(
+      `| ${domain} | ${item.type} | ${amount} | ${item.orderStatus} | ${orderId} | ${createdAt} |`,
+    );
+  }
+
+  return [
+    '## 📦 All Order Items (Last 24 Hours)',
+    '',
+    `**${allOrderItems.length} order items** in the last 24 hours:`,
+    '',
+    ...tableRows,
+  ].join('\n');
+}
+
+/**
+ * Converts a numeric chain ID to a human-readable chain name
+ *
+ * @param chainId - The numeric chain identifier
+ * @returns Human-readable chain name (e.g., "Ethereum", "Base", or "Chain {id}")
+ */
+function getChainName(chainId: number): string {
+  switch (chainId) {
+    case 1:
+      return 'Ethereum';
+    case 8453:
+      return 'Base';
+    default:
+      return `Chain ${chainId}`;
+  }
+}
+
+/**
+ * Generates a list of critical issues for a domain as emoji-prefixed strings
+ *
+ * @param domain - The detailed NFT data to analyze for issues
+ * @returns Array of issue descriptions with emoji prefixes
+ */
+function getCriticalDomainIssues(domain: DetailedNftData): string[] {
+  const issues = [];
+  if (domain.canBurn) issues.push('🔥 Can Burn');
+  if (domain.hasDateMismatch) issues.push('📅 Date Mismatch');
+  if (!domain.nftExpirationTime || !domain.domainExpirationTime)
+    issues.push('❓ Missing Data');
+  return issues;
+}
+
+/**
+ * Determines available remediation actions for a critical domain
+ *
+ * @param domain - The detailed NFT data to analyze for available actions
+ * @returns Array of action names that can be performed on this domain
+ */
+function getCriticalDomainActions(domain: DetailedNftData): string[] {
+  const actions = [];
+  if (domain.canBurn) actions.push('Burn');
+  if (
+    domain.hasDateMismatch &&
+    domain.nftExpirationTime &&
+    domain.domainExpirationTime
+  )
+    actions.push('Fix Date');
+  return actions;
+}
+
+/**
+ * Formats critical domains into a markdown table with severity-based sorting
+ *
+ * @param criticalDomains - Array of critical domain data to format
+ * @returns Markdown formatted table section with critical domains, or success message if none
+ */
 function formatCriticalDomainsTable(
   criticalDomains: DetailedNftData[],
 ): string {
@@ -562,33 +933,15 @@ function formatCriticalDomainsTable(
   ];
 
   for (const domain of sortedDomains) {
-    const chainName =
-      domain.chainId === 1
-        ? 'Ethereum'
-        : domain.chainId === 8453
-          ? 'Base'
-          : `Chain ${domain.chainId}`;
-
-    const issues = [];
-    if (domain.canBurn) issues.push('🔥 Can Burn');
-    if (domain.hasDateMismatch) issues.push('📅 Date Mismatch');
-    if (!domain.nftExpirationTime || !domain.domainExpirationTime)
-      issues.push('❓ Missing Data');
+    const chainName = getChainName(domain.chainId);
+    const issues = getCriticalDomainIssues(domain);
+    const actions = getCriticalDomainActions(domain);
 
     const expiration = domain.domainExpirationTime
       ? format(domain.domainExpirationTime, 'MMM do, yyyy')
       : 'Unknown';
 
     const registrar = domain.registrarKey || 'Unknown';
-
-    const actions = [];
-    if (domain.canBurn) actions.push('Burn');
-    if (
-      domain.hasDateMismatch &&
-      domain.nftExpirationTime &&
-      domain.domainExpirationTime
-    )
-      actions.push('Fix Date');
 
     tableRows.push(
       `| ${domain.normalizedDomainName} | ${chainName} | ${issues.join(', ')} | ${expiration} | ${registrar} | ${actions.join(', ') || 'Review'} |`,
