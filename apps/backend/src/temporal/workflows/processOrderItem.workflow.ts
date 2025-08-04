@@ -8,7 +8,10 @@ import {
   acquireDomainWorkflow,
   type AcquireDomainWorkflowInput,
 } from './domain-ownership/acquire-domain.workflow';
-import { extendDomainRegistrationWorkflow } from './domain-ownership/extend-registration.workflow';
+import {
+  extendDomainRegistrationWorkflow,
+  type ExtendDomainRegistrationWorkflowInput,
+} from './domain-ownership/extend-registration.workflow';
 
 export interface ProcessOrderItemWorkflowInput
   extends Omit<AcquireDomainWorkflowInput, 'operationType'> {
@@ -43,46 +46,41 @@ export async function processOrderItemWorkflow(
 
   try {
     if (operationType === 'RENEW') {
+      const workflowInput: ExtendDomainRegistrationWorkflowInput = {
+        ownerAddress: recipientWalletAddress,
+        normalizedDomainName,
+        durationInYears,
+        userId,
+      };
       // Extend/renew the domain registration
       await workflow.executeChild(extendDomainRegistrationWorkflow, {
-        args: [
-          {
-            ownerAddress: recipientWalletAddress,
-            normalizedDomainName,
-            durationInYears,
-            userId,
-          },
-        ],
+        args: [workflowInput],
         taskQueue: TEMPORAL_QUEUES.DOMAINS,
-        workflowId: extendDomainRegistrationWorkflow.generateId({
-          ownerAddress: recipientWalletAddress,
-          normalizedDomainName,
-          durationInYears,
-          userId,
-        }),
+        workflowId: extendDomainRegistrationWorkflow.generateId(workflowInput),
         workflowIdReusePolicy: 'ALLOW_DUPLICATE',
         workflowIdConflictPolicy: 'FAIL',
         parentClosePolicy: 'REQUEST_CANCEL',
       });
     } else {
+      const workflowInput: AcquireDomainWorkflowInput = {
+        normalizedDomainName,
+        chainId,
+        recipientWalletAddress,
+        operationType,
+        userId,
+        registrarKey,
+        encryptedEppAuthorizationCode,
+        encryptionKeyId,
+        durationInYears,
+      };
       // Register or import the domain
       await workflow.executeChild(acquireDomainWorkflow, {
-        args: [
-          {
-            normalizedDomainName,
-            chainId,
-            recipientWalletAddress,
-            operationType,
-            userId,
-            registrarKey,
-            encryptedEppAuthorizationCode,
-            encryptionKeyId,
-            // TODO: (sid->sami) Change this if needed to parent domain expiration time
-            durationInYears,
-          },
-        ],
+        args: [workflowInput],
         taskQueue: TEMPORAL_QUEUES.DOMAINS,
-        workflowId: `acquire-domain-${input.orderId}-${input.itemId}`,
+        workflowId: acquireDomainWorkflow.generateId(workflowInput),
+        workflowIdReusePolicy: 'ALLOW_DUPLICATE',
+        workflowIdConflictPolicy: 'FAIL',
+        parentClosePolicy: 'REQUEST_CANCEL',
       });
     }
 

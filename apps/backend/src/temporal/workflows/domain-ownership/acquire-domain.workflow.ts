@@ -182,3 +182,17 @@ async function _acquireSldDomain(input: AcquireDomainWorkflowInput) {
     throw error;
   }
 }
+
+acquireDomainWorkflow.generateId = (input: AcquireDomainWorkflowInput) => {
+  return `acquire-domain-[${input.normalizedDomainName}]`;
+};
+
+acquireDomainWorkflow.attemptParseId = (id: string) => {
+  const parsedWorkflowId = /acquire-domain-\[?(?<domainName>.+)\]?/.exec(id);
+  if (parsedWorkflowId) {
+    return {
+      normalizedDomainName: parsedWorkflowId.groups?.domainName || '',
+    };
+  }
+  return null;
+};
