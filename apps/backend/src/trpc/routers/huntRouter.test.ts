@@ -527,6 +527,133 @@ describe('Hunt Router', () => {
         );
       });
 
+      it('should use proper period boundaries for time range filters', async () => {
+        // Create domains with specific dates to test period boundaries
+        const now = new Date();
+
+        // Domain submitted yesterday (should not appear in TODAY)
+        const yesterday = new Date(now);
+        yesterday.setDate(yesterday.getDate() - 1);
+        yesterday.setHours(12, 0, 0, 0); // Noon yesterday
+
+        await caller.submitDomain({ domainName: 'domain.yesterday' });
+        await db
+          .update(huntEdgesTable)
+          .set({ createdAt: yesterday })
+          .where(
+            and(
+              eq(huntEdgesTable.targetId, 'domain.yesterday'),
+              eq(huntEdgesTable.action, 'SUBMIT'),
+            ),
+          );
+
+        // Domain submitted last week (should not appear in THIS_WEEK)
+        const lastWeek = new Date(now);
+        lastWeek.setDate(lastWeek.getDate() - 8); // 8 days ago
+        lastWeek.setHours(12, 0, 0, 0);
+
+        await caller.submitDomain({ domainName: 'domain.lastweek' });
+        await db
+          .update(huntEdgesTable)
+          .set({ createdAt: lastWeek })
+          .where(
+            and(
+              eq(huntEdgesTable.targetId, 'domain.lastweek'),
+              eq(huntEdgesTable.action, 'SUBMIT'),
+            ),
+          );
+
+        // Domain submitted last month (should not appear in THIS_MONTH)
+        const lastMonth = new Date(now);
+        lastMonth.setMonth(lastMonth.getMonth() - 1);
+        lastMonth.setHours(12, 0, 0, 0);
+
+        await caller.submitDomain({ domainName: 'domain.lastmonth' });
+        await db
+          .update(huntEdgesTable)
+          .set({ createdAt: lastMonth })
+          .where(
+            and(
+              eq(huntEdgesTable.targetId, 'domain.lastmonth'),
+              eq(huntEdgesTable.action, 'SUBMIT'),
+            ),
+          );
+
+        // Domain submitted last year (should not appear in THIS_YEAR)
+        const lastYear = new Date(now);
+        lastYear.setFullYear(lastYear.getFullYear() - 1);
+        lastYear.setHours(12, 0, 0, 0);
+
+        await caller.submitDomain({ domainName: 'domain.lastyear' });
+        await db
+          .update(huntEdgesTable)
+          .set({ createdAt: lastYear })
+          .where(
+            and(
+              eq(huntEdgesTable.targetId, 'domain.lastyear'),
+              eq(huntEdgesTable.action, 'SUBMIT'),
+            ),
+          );
+
+        // Test TODAY filter - should not include yesterday's domain
+        const todayResult = await caller.getTrendingDomains({
+          limit: 50,
+          offset: 0,
+          timeRange: 'TODAY',
+        });
+        const todayDomainNames = todayResult.items.map(
+          (item) => item.domainName,
+        );
+        expect(todayDomainNames).not.toContain('domain.yesterday');
+
+        // Test THIS_WEEK filter - should not include last week's domain
+        const thisWeekResult = await caller.getTrendingDomains({
+          limit: 50,
+          offset: 0,
+          timeRange: 'THIS_WEEK',
+        });
+        const thisWeekDomainNames = thisWeekResult.items.map(
+          (item) => item.domainName,
+        );
+        expect(thisWeekDomainNames).not.toContain('domain.lastweek');
+
+        // Test THIS_MONTH filter - should not include last month's domain
+        const thisMonthResult = await caller.getTrendingDomains({
+          limit: 50,
+          offset: 0,
+          timeRange: 'THIS_MONTH',
+        });
+        const thisMonthDomainNames = thisMonthResult.items.map(
+          (item) => item.domainName,
+        );
+        expect(thisMonthDomainNames).not.toContain('domain.lastmonth');
+
+        // Test THIS_YEAR filter - should not include last year's domain
+        const thisYearResult = await caller.getTrendingDomains({
+          limit: 50,
+          offset: 0,
+          timeRange: 'THIS_YEAR',
+        });
+        const thisYearDomainNames = thisYearResult.items.map(
+          (item) => item.domainName,
+        );
+        expect(thisYearDomainNames).not.toContain('domain.lastyear');
+
+        // Test ANYTIME filter - should include all domains
+        const anytimeResult = await caller.getTrendingDomains({
+          limit: 50,
+          offset: 0,
+          timeRange: 'ANYTIME',
+        });
+        const anytimeDomainNames = anytimeResult.items.map(
+          (item) => item.domainName,
+        );
+        expect(anytimeDomainNames).toContain('domain.yesterday');
+        expect(anytimeDomainNames).toContain('domain.lastweek');
+        expect(anytimeDomainNames).toContain('domain.lastmonth');
+        expect(anytimeDomainNames).toContain('domain.lastyear');
+      });
+
       it('should handle pagination correctly', async () => {
         const page1 = await caller.getTrendingDomains({
           limit: 2,

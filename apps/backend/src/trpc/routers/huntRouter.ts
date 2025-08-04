@@ -12,8 +12,9 @@ import {
   type NamefiNormalizedDomain,
 } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
-import { type SQL, and, desc, eq, sql } from 'drizzle-orm';
+import { type SQL, and, desc, eq, sql, gte } from 'drizzle-orm';
 import { z } from 'zod';
+import { startOfDay, startOfWeek, startOfMonth, startOfYear } from 'date-fns';
 import { secrets } from '#lib/env';
 import {
   createTRPCRouter,
@@ -120,22 +121,16 @@ const createTimeRangeFilter = (
 
   switch (timeRange) {
     case 'TODAY': {
-      const oneDayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
-      return sql`${dateColumn} >= ${oneDayAgo}`;
+      return gte(dateColumn, startOfDay(now));
     }
     case 'THIS_WEEK': {
-      const oneWeekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-      return sql`${dateColumn} >= ${oneWeekAgo}`;
+      return gte(dateColumn, startOfWeek(now, { weekStartsOn: 1 }));
     }
     case 'THIS_MONTH': {
-      const oneMonthAgo = new Date(now);
-      oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
-      return sql`${dateColumn} >= ${oneMonthAgo}`;
+      return gte(dateColumn, startOfMonth(now));
     }
     case 'THIS_YEAR': {
-      const oneYearAgo = new Date(now);
-      oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
-      return sql`${dateColumn} >= ${oneYearAgo}`;
+      return gte(dateColumn, startOfYear(now));
     }
     case 'ANYTIME':
       return sql`1 = 1`;
