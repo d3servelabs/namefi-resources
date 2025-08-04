@@ -805,8 +805,10 @@ export const huntCampaignsTable = pgTable(
   {
     ...randomUuid,
     campaignKey: text('campaign_key').notNull().unique(),
-    title: text('title').notNull(),
-    description: text('description'),
+    name: text('name').notNull().default(''),
+    title: text('title').notNull().default(''),
+    description: text('description').notNull().default(''),
+    logoUrl: text('logo_url').notNull().default(''),
     startDate: timestamp('start_date').notNull(),
     endDate: timestamp('end_date').notNull(),
     status: huntCampaignStatusEnum('status').notNull().default('DRAFT'),
@@ -838,6 +840,7 @@ export const huntCampaignDomainsTable = pgTable(
         onDelete: 'cascade',
       }),
     domainName: text('domain_name').notNull().$type<NamefiNormalizedDomain>(),
+    description: text('description').notNull().default(''),
     ...timestamps,
   },
   (table) => [

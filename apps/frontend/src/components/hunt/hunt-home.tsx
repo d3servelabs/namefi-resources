@@ -13,6 +13,7 @@ import { HomeCampaignsSection } from './home-campaigns-section';
 import { DomainsList } from './domains-list';
 import { PaginationControls } from './pagination-control';
 import { SubmitDomainDialog } from './submit-domain-dialog';
+import { HeaderTabs } from './header-tabs';
 
 const DOMAINS_LIST_PER_PAGE_LIMIT = 20;
 
@@ -49,85 +50,85 @@ export const HuntHome = () => {
   const hasMore = useMemo(() => data?.hasMore ?? false, [data]);
 
   return (
-    <div className="container mx-auto py-8 px-4 sm:px-8">
-      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-4">
-        <h2 className="text-2xl font-bold flex items-center gap-2">
-          Domain Hunt
-        </h2>
-        <div className="flex items-center gap-4">
-          {isAuthenticated ? (
-            <>
-              <SubmitDomainDialog>
-                <Button
-                  variant="outline"
-                  className="flex items-center gap-2 cursor-pointer"
+    <div className="flex flex-col ">
+      <HeaderTabs activeTab="all" />
+      <div className="container mx-auto py-8 px-4 sm:px-8">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-4">
+          <h2 className="text-2xl font-bold flex items-center gap-2">
+            Domain Hunt
+          </h2>
+          <div className="flex items-center gap-4">
+            {isAuthenticated ? (
+              <>
+                <SubmitDomainDialog>
+                  <Button
+                    variant="outline"
+                    className="flex items-center gap-2 cursor-pointer"
+                  >
+                    <PlusIcon className="h-4 w-4" />
+                    Submit Domain
+                  </Button>
+                </SubmitDomainDialog>
+                <Link href="/hunt/mine">
+                  <Button
+                    variant="outline"
+                    className="flex items-center gap-2 cursor-pointer"
+                  >
+                    <UserIcon className="h-4 w-4" />
+                  </Button>
+                </Link>
+              </>
+            ) : (
+              <div className="flex items-center gap-4">
+                <AuthGuard
+                  title="Sign in to submit domains"
+                  description="You need to sign in to submit domains to the hunt. Join the community and share your favorite domains!"
                 >
-                  <PlusIcon className="h-4 w-4" />
-                  Submit Domain
-                </Button>
-              </SubmitDomainDialog>
-              <Link href="/hunt/mine">
-                <Button
-                  variant="outline"
-                  className="flex items-center gap-2 cursor-pointer"
-                >
-                  <UserIcon className="h-4 w-4" />
-                </Button>
-              </Link>
-            </>
-          ) : (
-            <div className="flex items-center gap-4">
-              <AuthGuard
-                title="Sign in to submit domains"
-                description="You need to sign in to submit domains to the hunt. Join the community and share your favorite domains!"
-              >
-                <Button
-                  variant="outline"
-                  className="flex items-center gap-2 cursor-pointer"
-                >
-                  <PlusIcon className="h-4 w-4" />
-                  Submit Domain
-                </Button>
-              </AuthGuard>
-            </div>
-          )}
-        </div>
-      </div>
-
-      <div className="space-y-8">
-        {/* Campaigns Section */}
-        <HomeCampaignsSection />
-
-        {/* Trending Domains Section */}
-        <div className="space-y-4">
-          <div className="flex justify-between items-center">
-            <h3 className="text-lg font-bold">Trending Domains</h3>
-            <Tabs value={timeRange} onValueChange={handleTimeRangeChange}>
-              <TabsList>
-                <TabsTrigger value="THIS_WEEK" className="cursor-pointer">
-                  This Week
-                </TabsTrigger>
-                <TabsTrigger value="THIS_MONTH" className="cursor-pointer">
-                  This Month
-                </TabsTrigger>
-                <TabsTrigger value="ANYTIME" className="cursor-pointer">
-                  Anytime
-                </TabsTrigger>
-              </TabsList>
-            </Tabs>
+                  <Button
+                    variant="outline"
+                    className="flex items-center gap-2 cursor-pointer"
+                  >
+                    <PlusIcon className="h-4 w-4" />
+                    Submit Domain
+                  </Button>
+                </AuthGuard>
+              </div>
+            )}
           </div>
-          <div className="border border-border shadow-sm rounded-xl bg-white/[0.03]">
-            <DomainsList
-              domains={data?.items ?? []}
-              isLoading={isLoading || isAuthLoading}
-              isError={isError}
+        </div>
+
+        <div className="space-y-8">
+          <HomeCampaignsSection />
+          <div className="space-y-4">
+            <div className="flex justify-between items-center">
+              <h3 className="text-lg font-bold">Trending Domains</h3>
+              <Tabs value={timeRange} onValueChange={handleTimeRangeChange}>
+                <TabsList>
+                  <TabsTrigger value="THIS_WEEK" className="cursor-pointer">
+                    This Week
+                  </TabsTrigger>
+                  <TabsTrigger value="THIS_MONTH" className="cursor-pointer">
+                    This Month
+                  </TabsTrigger>
+                  <TabsTrigger value="ANYTIME" className="cursor-pointer">
+                    Anytime
+                  </TabsTrigger>
+                </TabsList>
+              </Tabs>
+            </div>
+            <div className="border border-border shadow-sm rounded-xl bg-white/[0.03]">
+              <DomainsList
+                domains={data?.items ?? []}
+                isLoading={isLoading || isAuthLoading}
+                isError={isError}
+              />
+            </div>
+            <PaginationControls
+              page={page}
+              hasMore={hasMore}
+              onPageChange={setPage}
             />
           </div>
-          <PaginationControls
-            page={page}
-            hasMore={hasMore}
-            onPageChange={setPage}
-          />
         </div>
       </div>
     </div>

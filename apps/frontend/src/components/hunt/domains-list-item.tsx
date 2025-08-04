@@ -21,6 +21,7 @@ export type Domain = {
   awardedAt?: Date;
   userHasUpvoted?: boolean;
   tags?: { id: string }[];
+  description?: string;
 };
 
 const VoteButton = ({
@@ -64,24 +65,35 @@ const VoteButton = ({
   );
 };
 
+export const useHuntDomainVoteActions = (domain: Domain) => {
+  const { huntVote, isBusy: pending } = useHuntVoteRow(domain.domainName);
+
+  const upvote = useCallback(() => {
+    huntVote.vote(domain.domainName);
+  }, [domain.domainName, huntVote]);
+
+  const unvote = useCallback(() => {
+    huntVote.unvote(domain.domainName);
+  }, [domain.domainName, huntVote]);
+
+  const count = useMemo(
+    () => formatNumberWithAbbreviations(domain.upvoteCount),
+    [domain.upvoteCount],
+  );
+
+  return {
+    upvote,
+    unvote,
+    count,
+    pending,
+  };
+};
+
 /**
  * Component for rendering a single domain item in a list.
  */
 export const DomainsListItem = ({ domain }: { domain: Domain }) => {
-  const { huntVote, isBusy } = useHuntVoteRow(domain.domainName);
-
-  const handleUpvote = useCallback(() => {
-    huntVote.vote(domain.domainName);
-  }, [domain.domainName, huntVote]);
-
-  const handleUnvote = useCallback(() => {
-    huntVote.unvote(domain.domainName);
-  }, [domain.domainName, huntVote]);
-
-  const formattedUpvotes = useMemo(
-    () => formatNumberWithAbbreviations(domain.upvoteCount),
-    [domain.upvoteCount],
-  );
+  const { upvote, unvote, count, pending } = useHuntDomainVoteActions(domain);
 
   return (
     <div className="flex items-center gap-4 sm:gap-6 pr-4 sm:pr-6 py-6 sm:py-8 first:rounded-t-xl last:rounded-b-xl hover:bg-accent/30 transition-colors">
@@ -113,12 +125,12 @@ export const DomainsListItem = ({ domain }: { domain: Domain }) => {
       <div className="flex flex-col items-center gap-2 w-12 sm:w-16">
         <VoteButton
           voted={domain.userHasUpvoted}
-          pending={isBusy}
-          onUpvote={handleUpvote}
-          onUnvote={handleUnvote}
+          pending={pending}
+          onUpvote={upvote}
+          onUnvote={unvote}
         />
         <span className="text-base leading-none font-bold text-foreground font-mono">
-          {formattedUpvotes}
+          {count}
         </span>
       </div>
     </div>

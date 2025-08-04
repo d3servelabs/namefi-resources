@@ -1195,16 +1195,20 @@ describe('Hunt Router', () => {
         await db.insert(huntCampaignsTable).values([
           {
             campaignKey: activeCampaignKey,
+            name: 'Test CV',
             title: 'Test CV',
             description: 'Test CV',
+            logoUrl: 'https://test.cv.logo.url',
             startDate: new Date('2025-07-01'),
             endDate: new Date('2025-07-31'),
             status: 'ACTIVE',
           },
           {
             campaignKey: finishedCampaignKey,
+            name: 'Test CTA',
             title: 'Test CTA',
             description: 'Test CTA',
+            logoUrl: 'https://test.cta.logo.url',
             startDate: new Date('2025-07-01'),
             endDate: new Date('2025-07-31'),
             status: 'AWARDED',
@@ -1216,10 +1220,12 @@ describe('Hunt Router', () => {
           {
             campaignKey: activeCampaignKey,
             domainName: namefiNormalizedDomainSchema.parse('test.cv.domain1'),
+            description: 'Test CV domain 1',
           },
           {
             campaignKey: activeCampaignKey,
             domainName: namefiNormalizedDomainSchema.parse('test.cv.domain2'),
+            description: 'Test CV domain 2',
           },
         ]);
 
@@ -1395,8 +1401,10 @@ describe('Hunt Router', () => {
         // Create test campaign
         await db.insert(huntCampaignsTable).values({
           campaignKey: testCampaignKey,
+          name: 'Test No Votes Campaign',
           title: 'Test No Votes Campaign',
           description: 'Test campaign with domains that have no votes',
+          logoUrl: 'https://test.novotes.logo.url',
           startDate: new Date('2025-07-01'),
           endDate: new Date('2025-07-31'),
           status: 'ACTIVE',
@@ -1409,18 +1417,21 @@ describe('Hunt Router', () => {
             domainName: namefiNormalizedDomainSchema.parse(
               'test.novotes.domain1',
             ),
+            description: 'Test domain 1',
           },
           {
             campaignKey: testCampaignKey,
             domainName: namefiNormalizedDomainSchema.parse(
               'test.novotes.domain2',
             ),
+            description: 'Test domain 2',
           },
           {
             campaignKey: testCampaignKey,
             domainName: namefiNormalizedDomainSchema.parse(
               'test.novotes.domain3',
             ),
+            description: 'Test domain 3',
           },
         ]);
 
@@ -1500,16 +1511,20 @@ describe('Hunt Router', () => {
         await db.insert(huntCampaignsTable).values([
           {
             campaignKey: domainCampaignKey1,
+            name: 'Test CV',
             title: 'Test CV',
             description: 'Test CV',
+            logoUrl: 'https://test.cv.logo.url',
             startDate: new Date('2025-01-01'),
             endDate: new Date('2025-01-31'),
             status: 'AWARDED',
           },
           {
             campaignKey: domainCampaignKey2,
+            name: 'Test CTA',
             title: 'Test CTA',
             description: 'Test CTA',
+            logoUrl: 'https://test.cta.logo.url',
             startDate: new Date('2025-02-01'),
             endDate: new Date('2025-02-28'),
             status: 'AWARDED',

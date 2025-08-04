@@ -1,11 +1,13 @@
 'use client';
 
 import { use } from 'react';
-import { CampaignDomainsList } from '@/components/hunt/campaign-domains-list';
-import { Button } from '@/components/ui/shadcn/button';
-import { ArrowLeft } from 'lucide-react';
-import Link from 'next/link';
 import { useState } from 'react';
+import { HeaderTabs } from '@/components/hunt/header-tabs';
+import { CampaignHero } from '@/components/hunt/campaign/campaign-hero';
+import { CampaignDomainsList } from '@/components/hunt/campaign/campaign-domains-list';
+import { CampaignWhyVote } from '@/components/hunt/campaign/campaign-why-vote';
+import { CampaignCommunity } from '@/components/hunt/campaign/campaign-community';
+import { CampaignHowItWorks } from '@/components/hunt/campaign/campaign-how-it-works';
 
 interface CampaignPageProps {
   params: Promise<{
@@ -18,22 +20,20 @@ export default function CampaignPage({ params }: CampaignPageProps) {
   const { 'campaign-key': campaignKey } = use(params);
 
   return (
-    <div className="container mx-auto py-8 px-8">
-      <div className="flex items-center gap-4 mb-6">
-        <Link href="/hunt">
-          <Button variant="ghost" size="sm">
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Hunt
-          </Button>
-        </Link>
-      </div>
+    <div className="min-h-screen flex flex-col">
+      <HeaderTabs activeTab={campaignKey} />
+      <div className="flex flex-col gap-4 bg-black">
+        <CampaignHero campaignKey={campaignKey} />
+        <CampaignHowItWorks />
+        <CampaignDomainsList
+          campaignKey={campaignKey}
+          page={page}
+          onPageChange={setPage}
+        />
 
-      <CampaignDomainsList
-        campaignKey={campaignKey}
-        page={page}
-        limit={10}
-        onPageChange={setPage}
-      />
+        <CampaignWhyVote />
+        <CampaignCommunity />
+      </div>
     </div>
   );
 }

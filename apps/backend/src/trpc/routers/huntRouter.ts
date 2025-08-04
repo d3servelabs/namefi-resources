@@ -48,6 +48,7 @@ interface CampaignRanking {
   isPinned: boolean;
   userHasUpvoted: boolean;
   tags: Array<{ id: string }>;
+  description: string;
 }
 
 // Input schemas
@@ -217,8 +218,10 @@ const getCampaignDetails = async (campaignKey: string) => {
   const [campaign] = await db
     .select({
       campaignKey: huntCampaignsTable.campaignKey,
+      name: huntCampaignsTable.name,
       title: huntCampaignsTable.title,
       description: huntCampaignsTable.description,
+      logoUrl: huntCampaignsTable.logoUrl,
       startDate: huntCampaignsTable.startDate,
       endDate: huntCampaignsTable.endDate,
       status: huntCampaignsTable.status,
@@ -263,8 +266,19 @@ const getCampaignRankings = async (
         reason: huntAwardsTable.reason,
         awardedAt: huntAwardsTable.createdAt,
         isPinned: sql<boolean>`false`.as('is_pinned'),
+        description:
+          sql<string>`COALESCE(${huntCampaignDomainsTable.description}, '')`.as(
+            'description',
+          ),
       })
       .from(huntAwardsTable)
+      .leftJoin(
+        huntCampaignDomainsTable,
+        and(
+          eq(huntAwardsTable.domainName, huntCampaignDomainsTable.domainName),
+          eq(huntCampaignDomainsTable.campaignKey, campaignKey),
+        ),
+      )
       .where(
         and(
           eq(huntAwardsTable.type, 'CAMPAIGN'),
@@ -284,6 +298,10 @@ const getCampaignRankings = async (
         isPinned:
           sql<boolean>`COALESCE(${huntDomainStatsView.isPinned}, false)`.as(
             'is_pinned',
+          ),
+        description:
+          sql<string>`COALESCE(${huntCampaignDomainsTable.description}, '')`.as(
+            'description',
           ),
       })
       .from(huntCampaignDomainsTable)
