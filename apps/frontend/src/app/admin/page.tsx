@@ -7,7 +7,15 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/shadcn/card';
-import { Mail, Settings, Users, BarChart3, Shield, Coins } from 'lucide-react';
+import {
+  Mail,
+  Settings,
+  Users,
+  BarChart3,
+  Shield,
+  Coins,
+  History,
+} from 'lucide-react';
 
 export default withAdminGuard(function AdminPage() {
   return (
@@ -34,6 +42,26 @@ export default withAdminGuard(function AdminPage() {
             <CardContent>
               <p className="text-sm text-muted-foreground">
                 Manage NFTs, digital assets, and blockchain-related operations.
+              </p>
+            </CardContent>
+          </Card>
+        </Link>
+
+        {/* Workflow History */}
+        <Link href="/admin/workflow-history" className="group">
+          <Card className="h-full transition-all hover:shadow-md hover:bg-muted/50">
+            <CardHeader className="pb-3">
+              <div className="flex items-center space-x-3">
+                <div className="p-2 rounded-lg bg-purple-100 text-purple-600 group-hover:bg-purple-200 transition-colors">
+                  <History className="h-5 w-5" />
+                </div>
+                <CardTitle className="text-lg">Workflow History</CardTitle>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground">
+                View and track all admin-initiated workflows and their execution
+                status.
               </p>
             </CardContent>
           </Card>

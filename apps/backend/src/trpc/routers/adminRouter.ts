@@ -5,6 +5,7 @@ import {
   indexedDomainsTable,
 } from '@namefi-astra/db';
 import {
+  CHAINS,
   namefiNormalizedDomainSchema,
   type NamefiNormalizedDomain,
 } from '@namefi-astra/utils';
@@ -28,6 +29,45 @@ import {
 } from '../utils';
 import { config } from '#lib/env';
 import { logger } from '#lib/logger';
+
+/**
+ * Convert protobuf WorkflowExecutionStatus enum to readable string
+ */
+function getWorkflowStatusString(status: any): string {
+  if (typeof status === 'string') return status;
+
+  // Handle protobuf enum values
+  switch (status) {
+    case 0:
+    case 'WORKFLOW_EXECUTION_STATUS_UNSPECIFIED':
+      return 'UNSPECIFIED';
+    case 1:
+    case 'WORKFLOW_EXECUTION_STATUS_RUNNING':
+      return 'RUNNING';
+    case 2:
+    case 'WORKFLOW_EXECUTION_STATUS_COMPLETED':
+      return 'COMPLETED';
+    case 3:
+    case 'WORKFLOW_EXECUTION_STATUS_FAILED':
+      return 'FAILED';
+    case 4:
+    case 'WORKFLOW_EXECUTION_STATUS_CANCELED':
+      return 'CANCELLED';
+    case 5:
+    case 'WORKFLOW_EXECUTION_STATUS_TERMINATED':
+      return 'TERMINATED';
+    case 6:
+    case 'WORKFLOW_EXECUTION_STATUS_CONTINUED_AS_NEW':
+      return 'CONTINUED_AS_NEW';
+    case 7:
+    case 'WORKFLOW_EXECUTION_STATUS_TIMED_OUT':
+      return 'TIMED_OUT';
+    default:
+      return status?.toString() || 'Unknown';
+  }
+}
+import { getDomainChain } from '#temporal/activities/domain/index';
+import { pluck, values } from 'ramda';
 
 const MAX_GRACE_PERIOD_DAYS = 90; /* 90 days is the max grace period for any registrar */
 const DATE_MISMATCH_THRESHOLD_SECONDS = 86400;
@@ -604,7 +644,13 @@ export const adminRouter = createTRPCRouter({
       }
 
       // Generate unique workflow ID
-      const workflowId = `admin-extend-registration-${normalizedDomainName}-${chainId}-${Date.now()}`;
+      const workflowId = extendDomainRegistrationWorkflow.generateId({
+        normalizedDomainName,
+        ownerAddress: ownerAddress as any,
+        durationInYears,
+        userId,
+        updateDomainIndex: true,
+      });
 
       try {
         // Start the extension workflow
@@ -739,7 +785,10 @@ export const adminRouter = createTRPCRouter({
       }
 
       // Generate unique workflow ID
-      const workflowId = `admin-fix-nft-expiration-${normalizedDomainName}-${chainId}-${Date.now()}`;
+      const workflowId = fixNftExpirationWorkflow.generateId({
+        normalizedDomainName,
+        chainId,
+      });
 
       try {
         // Start the fix NFT expiration workflow
@@ -769,6 +818,216 @@ export const adminRouter = createTRPCRouter({
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to start NFT expiration fix workflow',
+          cause: error,
+        });
+      }
+    }),
+
+  getWorkflowHistory: adminProcedure
+    .input(
+      z.object({
+        days: z.enum(['1', '3', '7']).default('7'),
+        page: z.number().min(1).default(1),
+        limit: z.number().min(1).max(100).default(20),
+        workflowType: z.enum(['all', 'burn', 'fix', 'extend']).default('all'),
+        nextPageToken: z.string().optional(),
+      }),
+    )
+    .query(async ({ input }) => {
+      const { days, page, limit, workflowType, nextPageToken } = input;
+
+      try {
+        await temporalClient.connection.ensureConnected();
+
+        // Calculate the date range
+        const startTime = new Date();
+        startTime.setDate(startTime.getDate() - Number.parseInt(days));
+
+        // Build workflow type filter query
+        const workflowTypeFilters = [];
+        if (workflowType === 'all' || workflowType === 'burn') {
+          workflowTypeFilters.push(
+            'WorkflowType = "ensureNftIsLockedAndBurnByNftName"',
+          );
+        }
+        if (workflowType === 'all' || workflowType === 'fix') {
+          workflowTypeFilters.push('WorkflowType = "fixNftExpirationWorkflow"');
+        }
+        if (workflowType === 'all' || workflowType === 'extend') {
+          workflowTypeFilters.push(
+            'WorkflowType = "extendDomainRegistrationWorkflow"',
+          );
+        }
+
+        const workflowTypeQuery =
+          workflowTypeFilters.length > 1
+            ? `(${workflowTypeFilters.join(' OR ')})`
+            : workflowTypeFilters[0];
+
+        // Query for workflows started in the last N days
+        const query = `${workflowTypeQuery} AND StartTime > "${startTime.toISOString()}"`;
+
+        // Use Temporal's WorkflowService for proper pagination with nextPageToken support
+        // This provides efficient server-side pagination without manual iteration
+        const listRequest: any = {
+          namespace: config.TEMPORAL_NAMESPACE,
+          pageSize: limit,
+          query: query,
+        };
+
+        // Convert nextPageToken string to Uint8Array if provided
+        if (nextPageToken) {
+          listRequest.nextPageToken = new TextEncoder().encode(nextPageToken);
+        }
+
+        const workflowListResponse =
+          await temporalClient.workflowService.listWorkflowExecutions(
+            listRequest,
+          );
+
+        const workflows = [];
+
+        // Process workflows from the response
+        for (const workflowExecution of workflowListResponse.executions || []) {
+          try {
+            const execution = workflowExecution.execution;
+            const workflowType = workflowExecution.type;
+            const status = workflowExecution.status;
+            const startTime = workflowExecution.startTime;
+            const closeTime = workflowExecution.closeTime;
+            // Convert protobuf status enum to string
+            const statusString = getWorkflowStatusString(status);
+
+            const workflowData = {
+              workflowId: execution?.workflowId || 'Unknown',
+              workflowType: workflowType?.name || 'Unknown',
+              status: statusString,
+              startTime: startTime?.seconds
+                ? new Date(Number(startTime.seconds) * 1000)
+                : null,
+              closeTime: closeTime?.seconds
+                ? new Date(Number(closeTime.seconds) * 1000)
+                : null,
+              runId: execution?.runId || 'Unknown',
+              executionTime:
+                closeTime?.seconds && startTime?.seconds
+                  ? (Number(closeTime.seconds) - Number(startTime.seconds)) *
+                    1000
+                  : null,
+              domainName: null as string | null,
+              chainId: null as number | null,
+              error: null as string | null,
+            };
+            const workflowsByType = {
+              ensureNftIsLockedAndBurnByNftName,
+              fixNftExpirationWorkflow,
+              extendDomainRegistrationWorkflow,
+            };
+
+            // Extract domain information from workflow ID based on type
+            const workflowTypeName =
+              workflowType?.name as keyof typeof workflowsByType;
+            if (workflowTypeName && workflowsByType[workflowTypeName]) {
+              const parsedWorkflowId = workflowsByType[
+                workflowTypeName
+              ].attemptParseId(workflowData.workflowId);
+              if (parsedWorkflowId) {
+                workflowData.domainName = parsedWorkflowId.normalizedDomainName;
+                workflowData.chainId = (parsedWorkflowId as any).chainId;
+              }
+            }
+
+            // If workflow failed, try to get error details
+            if (
+              workflowData.status === 'FAILED' ||
+              workflowData.status === 'TERMINATED'
+            ) {
+              try {
+                const handle = await temporalClient.workflow.getHandle(
+                  workflowData.workflowId,
+                  workflowData.runId,
+                );
+                try {
+                  await handle.result();
+                } catch (workflowError) {
+                  workflowData.error =
+                    workflowError instanceof Error
+                      ? workflowError.message
+                      : 'Unknown error';
+                }
+              } catch {
+                // Ignore errors when trying to get workflow result
+              }
+            }
+
+            workflows.push(workflowData);
+          } catch (error) {
+            // Log error but continue processing other workflows
+            logger.error(
+              { workflowId: workflowExecution.execution?.workflowId, error },
+              'Failed to process workflow',
+            );
+          }
+        }
+
+        // Extract nextPageToken from response for proper cursor-based pagination
+        // Convert Uint8Array back to string for client use
+        const rawNextPageToken = (workflowListResponse as any).nextPageToken;
+        let responseNextPageToken: string | undefined;
+
+        if (rawNextPageToken && rawNextPageToken.length > 0) {
+          try {
+            // Ensure we have a valid buffer before decoding
+            const buffer =
+              rawNextPageToken instanceof Uint8Array
+                ? rawNextPageToken
+                : new Uint8Array(rawNextPageToken);
+            responseNextPageToken = new TextDecoder().decode(buffer);
+          } catch (error) {
+            logger.warn('Failed to decode nextPageToken', {
+              error,
+              rawToken: rawNextPageToken,
+            });
+            responseNextPageToken = undefined;
+          }
+        }
+
+        // Get accurate total count using Temporal's countWorkflowExecutions API
+        let totalCount: number | undefined;
+        try {
+          const countResponse =
+            await temporalClient.workflowService.countWorkflowExecutions({
+              namespace: config.TEMPORAL_NAMESPACE,
+              query: query,
+            });
+          totalCount = Number(countResponse.count) || 0;
+        } catch (countError) {
+          logger.error('Failed to get workflow count from Temporal', {
+            countError,
+          });
+          totalCount = undefined; // Let UI handle the unknown count case
+        }
+
+        return {
+          data: workflows,
+          pagination: {
+            page: nextPageToken ? undefined : page, // Page numbers are less meaningful with cursor pagination
+            limit,
+            totalCount,
+            totalPages: totalCount ? Math.ceil(totalCount / limit) : undefined,
+            nextPageToken: responseNextPageToken, // Include token for subsequent requests
+            hasNextPage: Boolean(responseNextPageToken), // Convenience flag
+          },
+          temporal: {
+            apiUrl: config.TEMPORAL_API_URL,
+            namespace: config.TEMPORAL_NAMESPACE,
+          },
+        };
+      } catch (error) {
+        logger.error({ error }, 'Failed to fetch workflow history');
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to fetch workflow history',
           cause: error,
         });
       }
