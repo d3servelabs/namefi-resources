@@ -2,11 +2,11 @@
 
 import { useMemo } from 'react';
 import { useAuth } from '@/hooks/use-auth';
-import { useHuntVote } from './use-hunt-vote';
+import { useHuntVoteOperations, type UseHuntVote } from './use-hunt-vote';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 
 export interface HuntVoteRowStatus {
-  huntVote: ReturnType<typeof useHuntVote>;
+  huntVote: UseHuntVote;
   isBusy: boolean;
   canVote: boolean;
 }
@@ -17,9 +17,31 @@ export interface HuntVoteRowStatus {
  */
 export function useHuntVoteRow(
   domain?: NamefiNormalizedDomain,
+  options?: { onVoteSuccess?: (domainName: NamefiNormalizedDomain) => void },
 ): HuntVoteRowStatus {
-  const huntVote = useHuntVote();
+  const huntVoteOperations = useHuntVoteOperations(options);
   const { isAuthenticated } = useAuth();
+
+  const huntVote = useMemo(
+    () => ({
+      vote: huntVoteOperations.vote,
+      unvote: huntVoteOperations.unvote,
+      toggleVote: huntVoteOperations.toggleVote,
+      isDomainBusy: huntVoteOperations.isDomainBusy,
+      isVoting: huntVoteOperations.isVoting,
+      isUnvoting: huntVoteOperations.isUnvoting,
+      busy: huntVoteOperations.busy,
+    }),
+    [
+      huntVoteOperations.vote,
+      huntVoteOperations.unvote,
+      huntVoteOperations.toggleVote,
+      huntVoteOperations.isDomainBusy,
+      huntVoteOperations.isVoting,
+      huntVoteOperations.isUnvoting,
+      huntVoteOperations.busy,
+    ],
+  );
 
   return useMemo<HuntVoteRowStatus>(() => {
     if (!domain) {

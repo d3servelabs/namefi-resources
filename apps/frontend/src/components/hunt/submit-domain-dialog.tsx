@@ -116,7 +116,7 @@ export const SubmitDomainDialog = ({
           logEventWithInteractionLoggers({
             name: InteractionLoggingEventName.Vote,
             properties: {
-              domain_name: currentDomain,
+              domainName: currentDomain,
               action: 'add',
             },
           });

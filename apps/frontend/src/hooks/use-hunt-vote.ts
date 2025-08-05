@@ -66,7 +66,9 @@ export function useHuntVoteBusy() {
 /*                           HUNT VOTE OPERATIONS                            */
 /* -------------------------------------------------------------------------- */
 
-export function useHuntVoteOperations() {
+export function useHuntVoteOperations(options?: {
+  onVoteSuccess?: (domainName: NamefiNormalizedDomain) => void;
+}) {
   const trpc = useTRPC();
   const { isAuthenticated, user } = useAuth();
   const { logEventWithInteractionLoggers } = useInteractionLoggers();
@@ -271,10 +273,13 @@ export function useHuntVoteOperations() {
       logEventWithInteractionLoggers({
         name: InteractionLoggingEventName.Vote,
         properties: {
-          domain_name: variables.domainName,
+          domainName: variables.domainName,
           action: 'add',
         },
       });
+
+      // Call onVoteSuccess callback if provided
+      options?.onVoteSuccess?.(variables.domainName as NamefiNormalizedDomain);
     },
     onSettled: (_data, _error, _variables) => {
       // Invalidate and refetch specific queries to ensure data consistency
@@ -343,7 +348,7 @@ export function useHuntVoteOperations() {
       logEventWithInteractionLoggers({
         name: InteractionLoggingEventName.Vote,
         properties: {
-          domain_name: variables.domainName,
+          domainName: variables.domainName,
           action: 'remove',
         },
       });

@@ -14,6 +14,9 @@ export enum InteractionLoggingEventName {
 
   // Hunt Events
   Vote = 'vote',
+  ShareDialogOpened = 'share_dialog_opened',
+  ShareCompleted = 'share_completed',
+  ShareConversion = 'share_conversion', // vote from shared link
 }
 
 export type InteractionLoggingCartItem = Pick<
@@ -34,7 +37,10 @@ export type InteractionLoggingEvent =
   | RemoveFromCartEvent
   | SearchEvent
   | SubmitOrderFailureEvent
-  | VoteEvent;
+  | VoteEvent
+  | ShareDialogOpenedEvent
+  | ShareCompletedEvent
+  | ShareConversionEvent;
 
 export type AddToCartEvent = {
   name: InteractionLoggingEventName.AddToCart;
@@ -84,7 +90,35 @@ export type SubmitOrderFailureEvent = {
 export type VoteEvent = {
   name: InteractionLoggingEventName.Vote;
   properties: {
-    domain_name: string;
+    domainName: string;
     action: 'add' | 'remove';
+  };
+};
+
+export type ShareDialogOpenedEvent = {
+  name: InteractionLoggingEventName.ShareDialogOpened;
+  properties: {
+    domainName: string;
+    campaignKey?: string;
+    trigger: 'vote_success' | 'manual';
+  };
+};
+
+export type ShareCompletedEvent = {
+  name: InteractionLoggingEventName.ShareCompleted;
+  properties: {
+    domainName: string;
+    campaignKey?: string;
+    sharedUrl: string;
+    postUrl: string;
+  };
+};
+
+export type ShareConversionEvent = {
+  name: InteractionLoggingEventName.ShareConversion;
+  properties: {
+    domainName: string;
+    campaignKey?: string;
+    referrerUrl?: string;
   };
 };

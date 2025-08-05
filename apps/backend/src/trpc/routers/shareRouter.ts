@@ -8,30 +8,13 @@ import { createTRPCRouter, protectedProcedure } from '../base';
 const submitShareSchema = z.object({
   normalizedDomainName: namefiNormalizedDomainSchema,
   postUrl: z.string().url('Invalid post URL'),
+  sharedUrl: z.string().url('Invalid shared URL'),
   campaignKey: z.string().optional(),
 });
 
 const hasUserSharedSchema = z.object({
   normalizedDomainName: namefiNormalizedDomainSchema,
 });
-
-// Helper function to build share URL using request origin
-function buildShareUrl(
-  domainName: string,
-  origin: string,
-  campaignKey?: string,
-): string {
-  const params = new URLSearchParams({
-    utm_source: 'twitter',
-    utm_medium: 'share',
-    utm_campaign: campaignKey || 'cv_hunt',
-    utm_content: domainName,
-  });
-
-  // Use the origin from the request to build the URL
-  const baseUrl = origin.endsWith('/') ? origin.slice(0, -1) : origin;
-  return `${baseUrl}/cv/${domainName}?${params.toString()}`;
-}
 
 export const shareRouter = createTRPCRouter({
   /**
@@ -40,20 +23,7 @@ export const shareRouter = createTRPCRouter({
   submitShare: protectedProcedure
     .input(submitShareSchema)
     .mutation(async ({ input, ctx }) => {
-      const { normalizedDomainName, postUrl, campaignKey } = input;
-
-      // Get origin from request headers
-      const origin =
-        ctx.req.header('Origin') ||
-        ctx.req.header('Referer') ||
-        'https://namefi.io';
-
-      // Generate standard shared URL using request origin
-      const sharedUrl = buildShareUrl(
-        normalizedDomainName,
-        origin,
-        campaignKey,
-      );
+      const { normalizedDomainName, postUrl, sharedUrl, campaignKey } = input;
 
       const [share] = await db
         .insert(linkSharesTable)
@@ -91,6 +61,7 @@ export const shareRouter = createTRPCRouter({
       return {
         hasShared: !!share,
         shareDate: share?.createdAt || null,
+        sharedUrl: share?.sharedUrl || null,
       };
     }),
 });

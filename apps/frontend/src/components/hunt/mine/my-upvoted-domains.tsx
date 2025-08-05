@@ -35,7 +35,7 @@ const MyUpvotedDomainItem = ({ domain }: { domain: MyUpvotedDomain }) => {
         logEventWithInteractionLoggers({
           name: InteractionLoggingEventName.Vote,
           properties: {
-            domain_name: domain.domainName,
+            domainName: domain.domainName,
             action: 'remove',
           },
         });
