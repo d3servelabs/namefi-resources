@@ -8,7 +8,16 @@
   },
   "files": {
     "ignoreUnknown": true,
-    "includes": ["**", "!**/generated/**", "!temp/**"],
+    "includes": [
+      "**",
+      "!temp/**",
+      "!**/generated/**",
+      "!**/node_modules/**",
+      "!**/.next/**",
+      "!**/out/**",
+      "!**/.vercel/**",
+      "!**/.turbo/**"
+    ],
     "maxSize": 1536000
   },
   "formatter": {
