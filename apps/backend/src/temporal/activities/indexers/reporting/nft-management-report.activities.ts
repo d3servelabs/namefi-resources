@@ -703,11 +703,12 @@ export async function formatNftManagementReport(
     '## ⛓️ Chain Distribution',
     Object.entries(metrics.chainBreakdown)
       .sort(([, a], [, b]) => b - a)
-      .map(([chainId, count]) => {
+      .map(([_chainId, count]) => {
+        const chainId = Number.parseInt(_chainId);
         const chainName =
-          chainId === '1'
+          chainId === 1
             ? 'Ethereum'
-            : chainId === '8453'
+            : chainId === 8453
               ? 'Base'
               : `Chain ${chainId}`;
         return `- **${chainName} (${chainId}):** ${count.toLocaleString()}`;
@@ -722,7 +723,7 @@ export async function formatNftManagementReport(
     '## 🛠️ System Information',
     `**Report Generated:** ${new Date().toISOString()}`,
     '**Data Source:** Direct database queries (namefiNftOwnersView, indexedDomainsTable)',
-    '**Admin Panel:** Available at /admin/nft-management',
+    '**Admin Panel:** Available at https://astra.namefi.io/admin/nft-management',
     '',
     '## 📋 Quick Actions Available',
     `- **Burn expired NFTs** - Use admin panel or API
