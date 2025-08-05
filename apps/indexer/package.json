@@ -9,20 +9,29 @@
   "scripts": {
     "dev": "ponder dev",
     "start": "ponder start --log-format json --log-level debug",
+    "start:with-schema": "./scripts/start-with-schema.sh",
     "serve": "ponder serve",
     "force-local": "ENVIRONMENT=local LOG_LEVEL=debug bun",
-    "with-env": "infisical run --token=$INFISICAL_SERVICE_TOKEN -- bun"
+    "with-env": "infisical run --token=$INFISICAL_SERVICE_TOKEN -- bun",
+    "generate-schema": "npx tsx src/generate-schema.ts",
+    "migrate-schema": "npx tsx src/migrate-schema.ts",
+    "migrate-schema:dry-run": "DRY_RUN=true npx tsx src/migrate-schema.ts"
   },
   "dependencies": {
+    "@date-fns/tz": "^1.3.1",
+    "@date-fns/utc": "^2.1.1",
     "@namefi-astra/env": "workspace:*",
     "@namefi-astra/utils": "workspace:*",
     "@ponder/utils": "^0.2.9",
+    "date-fns": "^4.1.0",
     "drizzle-orm": "^0.40.1",
     "hono": "^4.7.5",
     "jose": "^6.0.12",
     "nodemailer": "^6.10.0",
+    "pg": "^8.15.6",
     "ponder": "^0.11.30",
     "ramda": "^0.30.1",
+    "tsx": "^4.19.3",
     "undici": "^7.12.0",
     "viem": "^2.24.2",
     "zod": "3.23.8"
@@ -30,6 +39,7 @@
   "devDependencies": {
     "@namefi-astra/typescript": "workspace:*",
     "@types/node": "^22.13.14",
+    "@types/pg": "^8.11.10",
     "drizzle-kit": "^0.30.6",
     "typescript": "^5.8.2"
   },

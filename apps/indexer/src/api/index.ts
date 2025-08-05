@@ -9,6 +9,76 @@ const app = new Hono();
 app.use('/sql/*', requireAuth, client({ db, schema }));
 app.use('/graphql', requireAuth, graphql({ db, schema }));
 
+// Health check function (shared between endpoints)
+const healthCheck = async (c: any) => {
+  try {
+    // Check if we can query the database and if tables exist
+    // This is a simple check - we try to query the NamefiNft table
+    const result = await db.execute(`
+      SELECT EXISTS (
+        SELECT FROM information_schema.tables 
+        WHERE table_schema = current_schema() 
+        AND table_name = 'NamefiNft'
+      ) as table_exists
+    `);
+
+    const tableExists = result.rows[0]?.table_exists;
+
+    if (tableExists) {
+      // Table exists, now check if it has data (indicates sync is working)
+      const countResult = await db.execute(
+        'SELECT COUNT(*) as count FROM "NamefiNft"',
+      );
+      const count = Number.parseInt(
+        (countResult.rows[0]?.count as string) || '0',
+      );
+
+      // If we have data, consider it ready
+      return c.text(count > 0 ? 'OK' : 'SYNCING');
+    }
+    return c.text('SYNCING');
+  } catch (error) {
+    console.error('Health check error:', error);
+    return c.text('SYNCING');
+  }
+};
+
+// Health check endpoints
+app.get('/readyz', healthCheck);
+
+// Schema information endpoint
+app.get('/schema', async (c) => {
+  try {
+    const result = await db.execute('SELECT current_schema() as schema_name');
+    let schemaName = result.rows[0]?.schema_name as string;
+    let source = 'database';
+
+    // If database returns 'public', use the one from process.env instead
+    if (schemaName === 'public') {
+      const envSchema = process.env.DATABASE_SCHEMA;
+      console.log('Schema endpoint details:', {
+        databaseSchema: schemaName,
+        envSchema: envSchema,
+        usingEnvSchema: !!envSchema,
+      });
+
+      if (envSchema) {
+        schemaName = envSchema;
+        source = 'environment';
+      }
+    }
+
+    return c.json({
+      currentSchema: schemaName,
+      source: source,
+      timestamp: new Date().toISOString(),
+    });
+  } catch (error) {
+    console.error('Schema endpoint error:', error);
+    return c.json({ error: 'Unable to determine current schema' }, 500);
+  }
+});
+
 app.use('/', async (c) => c.redirect('/graphql'));
 
 app.route('/auth', auth);

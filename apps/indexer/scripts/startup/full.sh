@@ -59,7 +59,7 @@ services:
       - DD_SERVICE=ponder-indexer
       - DD_VERSION=1.2.3
       - PORT=8080
-      - PONDER_SCHEMA=indexer
+      - DATABASE_SCHEMA=indexer
       - PONDER_LOG_LEVEL=info
       - DATABASE_URL=${DATABASE_URL}
       - USE_WEBSOCKETS=${USE_WEBSOCKETS}

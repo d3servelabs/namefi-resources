@@ -12,6 +12,7 @@ export const secretsSchema = z.object({
   PONDER_COOKIE_SECRET: z.string(),
   SMTP_USERNAME: z.string(),
   SMTP_PASSWORD: z.string(),
+  BASE_SCHEMA: z.string().optional().default('indexer'),
 });
 
 export type SecretsSchema = z.infer<typeof secretsSchema>;

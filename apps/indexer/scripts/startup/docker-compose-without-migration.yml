@@ -26,20 +26,6 @@ services:
       tags: "env:prod,team:infra,service:ponder-indexer"
       com.datadoghq.ad.logs: '[{"source": "ponder-indexer", "service": "ponder-indexer"}]'
 
-  # Migration job - runs once and exits
-  migration:
-    image: ${APP_IMAGE}
-    restart: "no"  # Don't restart - run once and exit
-    environment:
-      - DATABASE_URL=${DATABASE_URL}
-      - READY_ENDPOINT=http://app:8080/ready
-      - INFISICAL_TOKEN=${INFISICAL_TOKEN}
-    command: ["infisical", "run", "--", "npm", "run", "migrate-schema"]
-    depends_on:
-      - app
-    labels:
-      tags: "env:prod,team:infra,service:ponder-migration"
-      com.datadoghq.ad.logs: '[{"source": "ponder-migration", "service": "ponder-migration"}]'
 
   nginx:
     image: nginx:stable

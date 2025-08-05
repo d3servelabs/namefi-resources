@@ -63,7 +63,7 @@ EXPOSE ${PORT}
 
 WORKDIR /app/apps/indexer
 
-# Start the application with Node.js
-CMD ["infisical", "run", "--","npm", "run", "start"] 
+# Start the application with schema generation
+CMD ["infisical", "run", "--", "./scripts/start-with-schema.sh"] 
 
 ## https://infisical.com/docs/integrations/platforms/docker

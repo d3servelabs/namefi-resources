@@ -4,18 +4,37 @@ A Ponder.sh-based indexer for the Namefi NFT contract that tracks domain ownersh
 
 ## Overview
 
-This indexer monitors the Namefi NFT contract (`0x0000000000cf80e7cf8fa4480907f692177f8e06`) and maintains a separate database schema (`indexer`) to track:
+This indexer monitors the Namefi NFT contract (`0x0000000000cf80e7cf8fa4480907f692177f8e06`) and maintains timestamped database schemas for zero-downtime deployments. It tracks:
 
 - NFT transfers and ownership changes
 - Domain name to token ID mappings
 - Owner statistics and activity
 - Token metadata and expiration updates
 
+## Schema Management & Zero-Downtime Deployments
+
+The indexer uses **timestamped schemas** (`${BASE_SCHEMA}_YYYYMMDDHHMM`) for each deployment, enabling zero-downtime updates:
+
+### Timestamped Schema Examples
+- `indexer_202501041530` (January 4, 2025 at 15:30)
+- `indexer_202501041600` (January 4, 2025 at 16:00)
+
+### Migration Process
+1. **New deployment** creates fresh timestamped schema
+2. **Indexer syncs** data in isolation  
+3. **Views automatically migrate** once indexer is ready
+4. **Zero downtime** - old schema remains until migration complete
+
+### API Endpoints
+- **`/ready`** - Health check for migration scripts
+- **`/readyz`** - Alternative health check (Kubernetes-style)
+- **`/schema`** - Returns current schema info with fallback logic
+
 ## Architecture
 
 ### Database Schema
 
-The indexer uses a separate `indexer` schema in the same PostgreSQL database as the main application, with a single simplified table:
+The indexer uses timestamped schemas (e.g., `indexer_202501041530`) in the same PostgreSQL database as the main application, with a single simplified table:
 
 - **NftDomain**: Contains all essential domain information:
   - `tokenId`: The NFT token ID
@@ -56,6 +75,20 @@ Required environment variables:
 ```bash
 ALCHEMY_API_KEY=your_alchemy_api_key
 DATABASE_URL=postgresql://user:password@localhost:5432/database
+BASE_SCHEMA=indexer  # Optional: defaults to "indexer"
+DATABASE_SCHEMA=indexer_202501041530  # Auto-generated timestamped schema
+```
+
+### Schema Generation
+
+The indexer automatically generates timestamped schemas on startup:
+
+```bash
+# Generate schema before startup
+npm run generate-schema
+
+# Start with automatic schema generation  
+npm run start:with-schema
 ```
 
 ### Networks
@@ -71,44 +104,66 @@ The indexer is configured to work with:
 
 1. Install dependencies:
 ```bash
-bun install
+npm install
 ```
 
 2. Start the development server:
 ```bash
-bun run dev
+npm run dev
 ```
 
 ### Production
 
-1. Build the indexer:
+1. Start with timestamped schema generation:
 ```bash
-bun run build
+npm run start:with-schema
 ```
 
-2. Start the production server:
+2. Run schema migration (separate process):
 ```bash
-bun run start
+npm run migrate-schema
+```
+
+### Migration Scripts
+
+```bash
+# Run schema migration after indexer is ready
+npm run migrate-schema
+
+# Dry-run migration (preview changes)
+npm run migrate-schema:dry-run
+
+# Generate timestamped schema manually
+npm run generate-schema
 ```
 
 ## Data Access
 
-The indexed data is stored in the `indexer` schema and can be queried directly or through Ponder's built-in GraphQL API:
+The indexed data is stored in timestamped schemas and accessed through stable views that automatically point to the latest schema:
 
+### GraphQL API
 ```bash
 # Access GraphQL playground
-bun run serve
+npm run serve
 # Navigate to http://localhost:42069/graphql
 ```
 
+### Database Views
+- **`namefi_nft_view`** - Complete NFT data with expiration dates
+- **`namefi_nft_owners_view`** - Simplified ownership data
+
+Views automatically migrate to new schemas during deployments for zero-downtime access.
+
 ## Key Features
 
+- **Zero-Downtime Deployments**: Timestamped schemas with automatic view migration
 - **Real-time Indexing**: Processes events as they occur on-chain
 - **Multi-chain Support**: Indexes both Ethereum and Base networks
 - **Domain Resolution**: Automatically fetches domain names from token IDs
 - **Owner Analytics**: Tracks ownership statistics and activity
 - **Burn Handling**: Properly handles token burning and ownership removal
 - **Error Resilience**: Graceful handling of contract call failures
+- **Health Monitoring**: Built-in health checks and schema endpoints
 
 ## Integration with Main App
 
@@ -121,7 +176,57 @@ This indexer operates independently from the main application's existing NFT ind
 
 ## Deployment
 
-The indexer can be deployed separately from the main application and configured to use the same database with its own schema for data isolation.
+### Docker Deployment with Migration
+
+The indexer supports zero-downtime deployments using Docker Compose with separate migration containers:
+
+```yaml
+services:
+  app:
+    image: ${APP_IMAGE}
+    restart: always
+    command: ["./scripts/start-with-schema.sh"]
+    
+  # Migration job - runs once and exits
+  migration:
+    image: ${APP_IMAGE}
+    restart: "no"  # Don't restart after completion
+    command: ["infisical", "run", "--", "npm", "run", "migrate-schema"]
+    depends_on:
+      - app
+```
+
+### Deployment Process
+
+1. **Main indexer starts** with new timestamped schema
+2. **Migration container starts** after main indexer  
+3. **Migration waits** for `/ready` endpoint to return "OK"
+4. **Views migrate** automatically to new schema
+5. **Migration container exits** cleanly
+6. **Zero downtime** achieved
+
+### Manual Deployment
+
+```bash
+# 1. Deploy new indexer
+docker run -d indexer:latest npm run start:with-schema
+
+# 2. Wait for ready status  
+curl http://indexer:8080/ready  # Wait for "OK"
+
+# 3. Run migration
+docker run --rm indexer:latest npm run migrate-schema
+```
+
+### Migration Documentation
+
+For detailed information about the schema migration system, see [SCHEMA_MIGRATION.md](./SCHEMA_MIGRATION.md):
+
+- Environment variables and configuration
+- API endpoint details (`/ready`, `/readyz`, `/schema`)
+- Migration script usage and troubleshooting
+- Database view management
+- Deployment workflow examples
 
 # 🛠️ GCP Docker Deployment with SSL, Datadog & Watchtower
 
