@@ -36,6 +36,7 @@ export const Hero = ({
           className="absolute inset-0 bg-cover bg-center bg-no-repeat pt-16"
           style={{ backgroundImage: `url('${backgroundImage}')` }}
         />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-slate-900" />
         <div className="max-w-5xl mx-auto text-center relative z-10 w-full">
           <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500/20 to-purple-500/20 border border-blue-500/30 rounded-full px-4 py-1.5 mb-8 sm:mb-12 backdrop-blur-sm relative">
             <Sparkles className="w-3 h-3 text-purple-400 relative z-10" />

@@ -1,10 +1,10 @@
-import { User, Briefcase, Music, Heart, Star, Trophy } from 'lucide-react';
+import { User, Briefcase, Music, Heart } from 'lucide-react';
 import { generateCVConfig } from '../../lib/generate-config';
 
 const { landingConfig, originConfigWithoutLanding } = generateCVConfig({
   name: 'li',
   rotatingNames: ['mei', 'alex', 'lucy', 'dr', 'wei'],
-  backgroundImage: '/assets/cv/li/background.jpeg',
+  backgroundImage: '/assets/cv/li/background.png',
   openGraphImage: '/assets/cv/li/opengraph-image.jpg',
   famousPeople: [
     {
