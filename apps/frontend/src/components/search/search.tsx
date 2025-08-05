@@ -58,6 +58,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { eppAuthorizationCodesFormSchema } from './types';
 import { useEffect } from 'react';
+import { useSearchFromQuery } from '@/hooks/use-search-from-query';
 
 // Components
 export const SearchHeader: FC<{
@@ -645,6 +646,9 @@ export const Search: LandingComponent = ({ origin }) => {
     domainInfos,
     domains,
   } = useSearch(parentDomain || undefined);
+
+  // Handle initial search from query parameters
+  useSearchFromQuery(setQuery, runSearch);
 
   // Form for EPP authorization codes
   const form = useForm<EppAuthorizationCodesFormData>({

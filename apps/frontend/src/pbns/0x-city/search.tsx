@@ -20,6 +20,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { isDomainImportable } from '@namefi-astra/backend/trpc/types';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import { useSearchFromQuery } from '@/hooks/use-search-from-query';
 
 const NO_OP = () => {};
 
@@ -38,6 +39,9 @@ export const Search: LandingComponent = ({ origin }) => {
     domainInfos,
     domains,
   } = useSearch(origin.thirdPartyHostname || undefined);
+
+  // Handle initial search from query parameters
+  useSearchFromQuery(setQuery, runSearch);
 
   const trpc = useTRPC();
 
