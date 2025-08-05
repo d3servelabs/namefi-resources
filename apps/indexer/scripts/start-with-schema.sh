@@ -21,4 +21,4 @@ fi
 
 # Start the indexer with the generated schema
 echo "Starting Ponder indexer..."
-exec ponder start --log-format json --log-level debug
+exec npm run start
