@@ -5,7 +5,7 @@
  * for the comprehensive NFT management report using direct database queries.
  */
 
-import { differenceInSeconds, format } from 'date-fns';
+import { differenceInSeconds, format, subHours } from 'date-fns';
 import { Context } from '@temporalio/activity';
 import {
   db,
@@ -228,8 +228,7 @@ async function collectRecentOrdersMetrics(ctx: Context) {
 
   try {
     // Get order items from the last 24 hours
-    const twentyFourHoursAgo = new Date();
-    twentyFourHoursAgo.setHours(twentyFourHoursAgo.getHours() - 24);
+    const twentyFourHoursAgo = subHours(new Date(), 24);
 
     const recentOrderItems = await db
       .select({
@@ -304,10 +303,13 @@ async function collectRecentOrdersMetrics(ctx: Context) {
 }
 
 /**
- * Collects metrics for currently active workflows from Temporal server
+ * Collects metrics for workflows that ran in the last 24 hours from Temporal server
+ *
+ * This replaces the previous active workflow metrics to provide a report of what actually
+ * happened in the last day rather than what's currently running.
  *
  * @param ctx - Temporal activity context for logging
- * @returns Object containing counts of active workflows by type
+ * @returns Object containing counts of workflows that executed in the last 24 hours by type
  */
 async function collectActiveWorkflowMetrics(ctx: Context) {
   const workflowMetrics = {
@@ -319,9 +321,13 @@ async function collectActiveWorkflowMetrics(ctx: Context) {
   try {
     await temporalClient.connection.ensureConnected();
 
-    // Get active burn workflows
+    // Calculate 24 hours ago timestamp for query filter
+    const twentyFourHoursAgo = subHours(new Date(), 24);
+    const startTimeFilter = twentyFourHoursAgo.toISOString();
+
+    // Get burn workflows from last 24 hours (any status - completed, failed, running)
     const burnWorkflowList = temporalClient.workflow.list({
-      query: `WorkflowType = "ensureNftIsLockedAndBurnByNftName" AND ExecutionStatus = "Running"`,
+      query: `WorkflowType = "ensureNftIsLockedAndBurnByNftName" AND StartTime >= "${startTimeFilter}"`,
     });
 
     let burnCount = 0;
@@ -330,9 +336,9 @@ async function collectActiveWorkflowMetrics(ctx: Context) {
     }
     workflowMetrics.burnWorkflows = burnCount;
 
-    // Get active fix expiration workflows
+    // Get fix expiration workflows from last 24 hours
     const fixWorkflowList = temporalClient.workflow.list({
-      query: `WorkflowType = "fixNftExpirationWorkflow" AND ExecutionStatus = "Running"`,
+      query: `WorkflowType = "fixNftExpirationWorkflow" AND StartTime >= "${startTimeFilter}"`,
     });
 
     let fixCount = 0;
@@ -341,9 +347,9 @@ async function collectActiveWorkflowMetrics(ctx: Context) {
     }
     workflowMetrics.fixExpirationWorkflows = fixCount;
 
-    // Get active extend registration workflows
+    // Get extend registration workflows from last 24 hours
     const extendWorkflowList = temporalClient.workflow.list({
-      query: `WorkflowType = "extendDomainRegistrationWorkflow" AND ExecutionStatus = "Running"`,
+      query: `WorkflowType = "extendDomainRegistrationWorkflow" AND StartTime >= "${startTimeFilter}"`,
     });
 
     let extendCount = 0;
@@ -351,8 +357,17 @@ async function collectActiveWorkflowMetrics(ctx: Context) {
       extendCount++;
     }
     workflowMetrics.extendRegistrationWorkflows = extendCount;
+
+    ctx.log.info('Collected workflow metrics for last 24 hours', {
+      burnWorkflows: burnCount,
+      fixExpirationWorkflows: fixCount,
+      extendRegistrationWorkflows: extendCount,
+      startTimeFilter,
+    });
   } catch (error) {
-    ctx.log.warn('Failed to collect workflow metrics', { error });
+    ctx.log.warn('Failed to collect workflow metrics for last 24 hours', {
+      error,
+    });
   }
 
   return workflowMetrics;
@@ -618,7 +633,7 @@ export async function formatNftManagementReport(
   const reportDate = format(new Date(), 'yyyy-MM-dd');
   const title = `${reportDate} Comprehensive NFT Management Report`;
 
-  const totalActiveWorkflows =
+  const totalRecentWorkflows =
     metrics.activeWorkflows.burnWorkflows +
     metrics.activeWorkflows.fixExpirationWorkflows +
     metrics.activeWorkflows.extendRegistrationWorkflows;
@@ -654,8 +669,8 @@ export async function formatNftManagementReport(
     `**Missing Data Issues:** ${metrics.criticalIssues.missingDataCannotFix.toLocaleString()} NFTs cannot be automatically fixed`,
     `**Long Overdue (30+ days expired):** ${metrics.criticalIssues.longOverdueExpired.toLocaleString()} domains`,
     '',
-    '## 🔄 Active Workflows',
-    `**Total Active:** ${totalActiveWorkflows.toLocaleString()}
+    '## 🔄 Workflows (Last 24 Hours)',
+    `**Total Workflows:** ${totalRecentWorkflows.toLocaleString()}
 
 - Burn Workflows: ${metrics.activeWorkflows.burnWorkflows.toLocaleString()}
 - Fix Expiration: ${metrics.activeWorkflows.fixExpirationWorkflows.toLocaleString()}
@@ -713,7 +728,7 @@ export async function formatNftManagementReport(
     `- **Burn expired NFTs** - Use admin panel or API
 - **Fix date mismatches** - Automated workflow available
 - **Extend registrations** - Admin-initiated workflow
-- **Monitor active workflows** - Real-time status in admin panel`,
+- **View workflow history** - Recent workflow activity in admin panel`,
     '',
     '<div id="markdown-table">',
     '',

@@ -77,7 +77,7 @@ export async function nftManagementDailyReportWorkflow({
       metrics.criticalIssues.missingDataCannotFix +
       metrics.criticalIssues.longOverdueExpired;
 
-    const totalActiveWorkflows =
+    const totalRecentWorkflows =
       metrics.activeWorkflows.burnWorkflows +
       metrics.activeWorkflows.fixExpirationWorkflows +
       metrics.activeWorkflows.extendRegistrationWorkflows;
@@ -85,7 +85,7 @@ export async function nftManagementDailyReportWorkflow({
     workflow.log.info('NFT metrics collected successfully', {
       totalNfts: metrics.totalNfts,
       totalCriticalIssues,
-      totalActiveWorkflows,
+      totalRecentWorkflows,
     });
 
     // Step 2: Format the report
@@ -99,7 +99,7 @@ export async function nftManagementDailyReportWorkflow({
     const shouldSendReport =
       forceSend ||
       totalCriticalIssues > 0 ||
-      totalActiveWorkflows > 0 ||
+      totalRecentWorkflows > 0 ||
       metrics.dateMismatchNfts > 0;
 
     let reportSent = false;
@@ -155,7 +155,7 @@ export async function nftManagementDailyReportWorkflow({
       }
     } else {
       skippedReason =
-        'No critical issues or active workflows found, report not sent';
+        'No critical issues or recent workflows found, report not sent';
       workflow.log.info('Skipping report send', { reason: skippedReason });
     }
 
@@ -169,7 +169,7 @@ export async function nftManagementDailyReportWorkflow({
       metricsCollected: {
         totalNfts: metrics.totalNfts,
         criticalIssuesCount: totalCriticalIssues,
-        activeWorkflowsCount: totalActiveWorkflows,
+        activeWorkflowsCount: totalRecentWorkflows,
       },
       executionTimeMs,
       skippedReason,
