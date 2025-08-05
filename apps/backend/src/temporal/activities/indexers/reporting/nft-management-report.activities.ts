@@ -9,7 +9,6 @@ import { differenceInSeconds, format, subHours } from 'date-fns';
 import { Context } from '@temporalio/activity';
 import {
   db,
-  namefiNftOwnersView,
   namefiNftView,
   indexedDomainsTable,
   orderItemsTable,
@@ -96,18 +95,18 @@ export async function collectNftManagementMetrics(): Promise<ReportMetrics> {
     ];
 
     // Build the powered-by-namefi condition
-    const isPoweredByNamefiCondition = sql<boolean>`array_to_string((string_to_array(${namefiNftOwnersView.normalizedDomainName}, '.'))[2:], '.') = ANY(${sql.raw(`ARRAY[${poweredByNamefiDomains.map((d) => `'${d}'`).join(',')}]`)})`;
+    const isPoweredByNamefiCondition = sql<boolean>`array_to_string((string_to_array(${namefiNftView.normalizedDomainName}, '.'))[2:], '.') = ANY(${sql.raw(`ARRAY[${poweredByNamefiDomains.map((d) => `'${d}'`).join(',')}]`)})`;
 
     // Build filters to exclude sepolia and test domains
-    const isSepoliaCondition = sql<boolean>`${namefiNftOwnersView.chainId} = 11155111`;
-    const isTestDomainCondition = sql<boolean>`split_part(${namefiNftOwnersView.normalizedDomainName}, '.', -1) LIKE 'test%'`;
+    const isSepoliaCondition = sql<boolean>`${namefiNftView.chainId} = 11155111`;
+    const isTestDomainCondition = sql<boolean>`split_part(${namefiNftView.normalizedDomainName}, '.', -1) LIKE 'test%'`;
 
     // Fetch all NFT data with computed fields, excluding sepolia and test domains
     const nftDataQuery = db
       .select({
-        normalizedDomainName: namefiNftOwnersView.normalizedDomainName,
-        chainId: namefiNftOwnersView.chainId,
-        ownerAddress: namefiNftOwnersView.ownerAddress,
+        normalizedDomainName: namefiNftView.normalizedDomainName,
+        chainId: namefiNftView.chainId,
+        ownerAddress: namefiNftView.ownerAddress,
         nftExpirationTime: namefiNftView.expirationTime,
         domainExpirationTime: indexedDomainsTable.expirationTime,
         registrarKey: indexedDomainsTable.registrarKey,
@@ -152,21 +151,11 @@ export async function collectNftManagementMetrics(): Promise<ReportMetrics> {
           END
         `.as('has_date_mismatch'),
       })
-      .from(namefiNftOwnersView)
-      .leftJoin(
-        namefiNftView,
-        and(
-          eq(
-            namefiNftOwnersView.normalizedDomainName,
-            namefiNftView.normalizedDomainName,
-          ),
-          eq(namefiNftOwnersView.chainId, namefiNftView.chainId),
-        ),
-      )
+      .from(namefiNftView)
       .leftJoin(
         indexedDomainsTable,
         eq(
-          namefiNftOwnersView.normalizedDomainName,
+          namefiNftView.normalizedDomainName,
           indexedDomainsTable.normalizedDomainName,
         ),
       )
