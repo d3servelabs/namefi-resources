@@ -1357,13 +1357,21 @@ function _buildQueryFilters(
   }
 
   if (filterBy === 'expired') {
+    // Exclude powered-by-namefi domains from expired count (consistent with reporting logic)
+    const isPoweredByNamefiCondition = sql`array_to_string((string_to_array(${namefiNftOwnersView.normalizedDomainName}, '.'))[2:], '.') = ANY(${sql.raw(`ARRAY[${poweredByNamefiDomains.map((d) => `'${d}'`).join(',')}]`)})`;
+
     filters.push(
-      or(
-        // Domain expired
-        sql`${indexedDomainsTable.expirationTime} < NOW()`,
-        isNull(indexedDomainsTable.expirationTime),
-        // NFT expired
-        sql`${namefiNftView.expirationTime} < NOW()`,
+      and(
+        // Not a powered by namefi domain
+        sql`NOT (${isPoweredByNamefiCondition})`,
+        // Expired condition
+        or(
+          // Domain expired
+          sql`${indexedDomainsTable.expirationTime} < NOW()`,
+          isNull(indexedDomainsTable.expirationTime),
+          // NFT expired
+          sql`${namefiNftView.expirationTime} < NOW()`,
+        ),
       ),
     );
   } else if (filterBy === 'canBurn') {
