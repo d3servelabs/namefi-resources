@@ -7,17 +7,20 @@ import {
 import { DomainItemSkeleton } from './domain-item-skeleton';
 import { type Domain, DomainsListItem } from './domains-list-item';
 import { useAnimatedList } from '@/hooks/use-animated-list';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 
 export const DomainsList = ({
   domains,
   isLoading,
   isError,
   skeletonCount = 1,
+  onVoteSuccess,
 }: {
   domains: Domain[];
   isLoading?: boolean;
   isError?: boolean;
   skeletonCount?: number;
+  onVoteSuccess?: (domainName: NamefiNormalizedDomain) => void;
 }) => {
   const shouldReduceMotion = useReducedMotion();
 
@@ -28,6 +31,7 @@ export const DomainsList = ({
     getItemStyle,
     isItemReordering,
     onLayoutAnimationComplete,
+    getItemKey,
   } = useAnimatedList(domains, {
     reduceMotion: shouldReduceMotion ?? false,
     staggerDelay: 0.08,
@@ -68,8 +72,8 @@ export const DomainsList = ({
           <AnimatePresence mode="popLayout">
             {domains.map((domain) => (
               <motion.div
-                key={domain.domainName}
-                layoutId={`domain-${domain.domainName}`}
+                key={getItemKey(domain.domainName)}
+                layoutId={getItemKey(domain.domainName)}
                 variants={itemVariants}
                 initial="hidden"
                 animate="show"
@@ -80,7 +84,10 @@ export const DomainsList = ({
                 className={isItemReordering(domain.domainName) ? 'z-10' : ''}
                 onLayoutAnimationComplete={onLayoutAnimationComplete}
               >
-                <DomainsListItem domain={domain} />
+                <DomainsListItem
+                  domain={domain}
+                  onVoteSuccess={onVoteSuccess}
+                />
               </motion.div>
             ))}
           </AnimatePresence>

@@ -1,0 +1,240 @@
+'use client';
+
+import { Button } from '@/components/ui/shadcn/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from '@/components/ui/shadcn/dialog';
+import { Input } from '@/components/ui/shadcn/input';
+import { Label } from '@/components/ui/shadcn/label';
+import { Badge } from '@/components/ui/shadcn/badge';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useState, useCallback, useMemo } from 'react';
+import { toast } from 'sonner';
+import { usePendingToast } from '@/hooks/use-pending-toast';
+import { Twitter, ExternalLink, Copy, CheckCircle } from 'lucide-react';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+
+const shareFormSchema = z.object({
+  postUrl: z.string().url('Please enter a valid Twitter/X post URL'),
+});
+
+type ShareFormData = z.infer<typeof shareFormSchema>;
+
+interface TwitterShareDialogProps {
+  isOpen: boolean;
+  onClose: () => void;
+  domainName: NamefiNormalizedDomain | null;
+  shareUrl: string | null;
+  hasShared: boolean;
+  isCheckingStatus: boolean;
+  isSubmitting: boolean;
+  onSubmit: (postUrl: string) => Promise<void>;
+  trackShares?: boolean; // Whether to show tracking-related UI
+}
+
+export function TwitterShareDialog({
+  isOpen,
+  onClose,
+  domainName,
+  shareUrl,
+  hasShared,
+  isCheckingStatus,
+  isSubmitting,
+  onSubmit,
+  trackShares = true,
+}: TwitterShareDialogProps) {
+  const [hasCopied, setHasCopied] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isValid },
+  } = useForm<ShareFormData>({
+    resolver: zodResolver(shareFormSchema),
+    mode: 'onChange',
+  });
+
+  // Generate Twitter intent URL
+  const twitterIntentUrl = useMemo(() => {
+    if (!shareUrl || !domainName) return null;
+
+    const tweetText = `Check out ${domainName} - discovered on the .cv domain hunt! 🔥`;
+    const params = new URLSearchParams({
+      text: tweetText,
+      url: shareUrl,
+      hashtags: 'CVDomains,DomainHunt,Web3',
+    });
+
+    return `https://twitter.com/intent/tweet?${params.toString()}`;
+  }, [shareUrl, domainName]);
+
+  // Copy share URL to clipboard
+  const handleCopyUrl = useCallback(async () => {
+    if (!shareUrl) return;
+
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      setHasCopied(true);
+      toast.success('Share URL copied to clipboard!');
+      setTimeout(() => setHasCopied(false), 2000);
+    } catch {
+      toast.error('Failed to copy URL');
+    }
+  }, [shareUrl]);
+
+  // Handle form submission
+  const handleFormSubmit = useCallback(
+    async (data: ShareFormData) => {
+      try {
+        await onSubmit(data.postUrl);
+        reset();
+      } catch {
+        // Error handling is done in the hook
+      }
+    },
+    [onSubmit, reset],
+  );
+
+  // Handle dialog close
+  const handleClose = useCallback(() => {
+    reset();
+    setHasCopied(false);
+    onClose();
+  }, [reset, onClose]);
+
+  // Handle open Twitter intent
+  const handleOpenTwitter = useCallback(() => {
+    if (twitterIntentUrl) {
+      window.open(twitterIntentUrl, '_blank', 'width=600,height=400');
+    }
+  }, [twitterIntentUrl]);
+
+  usePendingToast(isSubmitting, 'Recording your share...');
+
+  if (!domainName || !shareUrl) return null;
+
+  return (
+    <Dialog open={isOpen} onOpenChange={handleClose}>
+      <DialogContent className="sm:max-w-[500px]">
+        <DialogHeader>
+          <DialogTitle className="flex items-center gap-2">
+            <Twitter className="h-5 w-5 text-blue-500" />
+            Share {domainName}
+          </DialogTitle>
+          <DialogDescription>
+            Share this domain on Twitter/X to help others discover it
+            {trackShares ? ' and earn rewards!' : '!'}
+          </DialogDescription>
+        </DialogHeader>
+
+        <div className="space-y-6">
+          {/* Share URL Display */}
+          <div className="space-y-2">
+            <Label>Share URL</Label>
+            <div className="flex items-center gap-2">
+              <Input value={shareUrl} readOnly className="font-mono text-sm" />
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleCopyUrl}
+                className="shrink-0"
+              >
+                {hasCopied ? (
+                  <CheckCircle className="h-4 w-4 text-green-500" />
+                ) : (
+                  <Copy className="h-4 w-4" />
+                )}
+              </Button>
+            </div>
+          </div>
+
+          {/* Quick Tweet Button */}
+          <div className="space-y-2">
+            <Label>Quick Share</Label>
+            <Button
+              onClick={handleOpenTwitter}
+              disabled={!twitterIntentUrl}
+              className="w-full bg-blue-500 hover:bg-blue-600 text-white"
+            >
+              <Twitter className="h-4 w-4 mr-2" />
+              Tweet about {domainName}
+              <ExternalLink className="h-4 w-4 ml-2" />
+            </Button>
+            <p className="text-xs text-muted-foreground">
+              Opens Twitter/X with a pre-filled tweet including your share URL
+            </p>
+          </div>
+
+          {/* Status Badge - only show if tracking is enabled */}
+          {trackShares && hasShared && (
+            <div className="flex items-center justify-center">
+              <Badge
+                variant="secondary"
+                className="text-green-600 bg-green-50 border-green-200"
+              >
+                <CheckCircle className="h-3 w-3 mr-1" />
+                Already shared
+              </Badge>
+            </div>
+          )}
+
+          {/* Form for manual URL submission - only show if tracking is enabled and not already shared */}
+          {trackShares && !hasShared && (
+            <div className="space-y-4 border-t pt-4">
+              <div className="space-y-2">
+                <Label htmlFor="post-url">
+                  Twitter/X Post URL <span className="text-red-500">*</span>
+                </Label>
+                <Input
+                  id="post-url"
+                  placeholder="https://twitter.com/username/status/1234567890"
+                  {...register('postUrl')}
+                />
+                {errors.postUrl && (
+                  <p className="text-sm text-red-500">
+                    {errors.postUrl.message}
+                  </p>
+                )}
+                <p className="text-xs text-muted-foreground">
+                  Paste the URL of your tweet after sharing to earn rewards
+                </p>
+              </div>
+
+              <div className="flex justify-end gap-2">
+                <Button
+                  variant="outline"
+                  onClick={handleClose}
+                  disabled={isSubmitting}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  onClick={handleSubmit(handleFormSubmit)}
+                  disabled={!isValid || isSubmitting || isCheckingStatus}
+                >
+                  {isSubmitting ? 'Recording...' : 'Record Share'}
+                </Button>
+              </div>
+            </div>
+          )}
+
+          {/* Close button - show if tracking is disabled or if already shared */}
+          {(!trackShares || hasShared) && (
+            <div className="flex justify-end">
+              <Button variant="outline" onClick={handleClose}>
+                Close
+              </Button>
+            </div>
+          )}
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}

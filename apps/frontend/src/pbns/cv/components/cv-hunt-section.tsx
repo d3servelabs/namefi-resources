@@ -9,6 +9,8 @@ import { AuthGuard } from '@/components/dialogs/auth-required-dialog';
 import { DomainsList } from '@/components/hunt/domains-list';
 import { CampaignDomainsList } from '@/components/hunt/campaign-domains-list';
 import { SubmitDomainDialog } from '@/components/hunt/submit-domain-dialog';
+import { TwitterShareDialog } from '@/components/hunt/twitter-share-dialog';
+import { useHuntShareDialog } from '@/hooks/use-hunt-share-dialog';
 import { Trophy, Target, TrendingUp, Plus } from 'lucide-react';
 
 const TRENDING_LIMIT = 5;
@@ -24,6 +26,13 @@ export const CVHuntSection = ({ name: _name }: CVHuntSectionProps) => {
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
 
   const trpc = useTRPC();
+
+  // Initialize share dialog for .cv domains
+  const shareDialog = useHuntShareDialog({
+    enabled: true,
+    allowedExtensions: ['.cv'],
+    campaignKey: CV_CAMPAIGN_KEY,
+  });
 
   const handleCampaignPageChange = useCallback((newPage: number) => {
     setCampaignPage(newPage);
@@ -97,6 +106,7 @@ export const CVHuntSection = ({ name: _name }: CVHuntSectionProps) => {
                   onPageChange={handleCampaignPageChange}
                   showTitle={false}
                   skeletonCount={5}
+                  onVoteSuccess={shareDialog.onVoteSuccess}
                 />
               </div>
 
@@ -122,6 +132,7 @@ export const CVHuntSection = ({ name: _name }: CVHuntSectionProps) => {
                     isLoading={isTrendingLoading || isAuthLoading}
                     isError={isTrendingError}
                     skeletonCount={5}
+                    onVoteSuccess={shareDialog.onVoteSuccess}
                   />
                 </div>
               </div>
@@ -167,6 +178,19 @@ export const CVHuntSection = ({ name: _name }: CVHuntSectionProps) => {
           </div>
         </div>
       </div>
+
+      {/* Twitter Share Dialog */}
+      <TwitterShareDialog
+        isOpen={shareDialog.isOpen}
+        onClose={shareDialog.closeDialog}
+        domainName={shareDialog.currentDomain}
+        shareUrl={shareDialog.shareUrl}
+        hasShared={shareDialog.hasShared}
+        isCheckingStatus={shareDialog.isCheckingStatus}
+        isSubmitting={shareDialog.isSubmitting}
+        onSubmit={shareDialog.submitShare}
+        trackShares={true} // CV domains track shares for rewards
+      />
     </section>
   );
 };

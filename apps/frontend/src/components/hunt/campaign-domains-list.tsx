@@ -9,6 +9,7 @@ import { useMemo } from 'react';
 import { DomainsList } from './domains-list';
 import { PaginationControls } from './pagination-control';
 import { cn } from '@/lib/cn';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 
 const DEFAULT_CAMPAIGN_DOMAINS_PER_PAGE_LIMIT = 10;
 
@@ -19,6 +20,7 @@ interface CampaignDomainsListProps {
   onPageChange: (page: number) => void;
   showTitle?: boolean;
   skeletonCount?: number;
+  onVoteSuccess?: (domainName: NamefiNormalizedDomain) => void;
 }
 
 export const CampaignDomainsList = ({
@@ -28,6 +30,7 @@ export const CampaignDomainsList = ({
   onPageChange,
   showTitle = true,
   skeletonCount,
+  onVoteSuccess,
 }: CampaignDomainsListProps) => {
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
   const trpc = useTRPC();
@@ -95,6 +98,7 @@ export const CampaignDomainsList = ({
           isLoading={isLoading || isAuthLoading}
           isError={isError}
           skeletonCount={skeletonCount}
+          onVoteSuccess={onVoteSuccess}
         />
       </div>
 

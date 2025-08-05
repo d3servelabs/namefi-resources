@@ -12,7 +12,7 @@ function buildShareUrl(domainName: string, campaignKey?: string): string {
   const params = new URLSearchParams({
     utm_source: 'twitter',
     utm_medium: 'share',
-    utm_campaign: campaignKey || 'cv_hunt',
+    ...(campaignKey && { utm_campaign: campaignKey }),
     utm_content: domainName,
   });
 
@@ -20,8 +20,8 @@ function buildShareUrl(domainName: string, campaignKey?: string): string {
   const origin =
     typeof window !== 'undefined'
       ? window.location.origin
-      : 'https://namefi.io';
-  return `${origin}/cv/${domainName}?${params.toString()}`;
+      : 'https://astra.namefi.io';
+  return `${origin}?${params.toString()}`;
 }
 
 interface ShareConfig {
@@ -36,6 +36,9 @@ interface ShareConfig {
 
   // Current campaign key for context
   campaignKey?: string;
+
+  // Whether to track shares in database (default: true)
+  trackShares?: boolean;
 }
 
 interface UseHuntShareDialogReturn {
@@ -85,6 +88,7 @@ export function useHuntShareDialog(
       allowedExtensions: config.allowedExtensions ?? [],
       allowedCampaignKeys: config.allowedCampaignKeys ?? [],
       campaignKey: config.campaignKey,
+      trackShares: config.trackShares ?? true,
     }),
     [config],
   );
@@ -116,12 +120,12 @@ export function useHuntShareDialog(
     [finalConfig],
   );
 
-  // Get share status for current domain
+  // Get share status for current domain (only if tracking is enabled)
   const { data: shareStatusData, isLoading: isCheckingStatus } = useQuery({
     ...trpc.share.hasUserShared.queryOptions({
       normalizedDomainName: currentDomain ?? '',
     }),
-    enabled: !!currentDomain && isAuthenticated,
+    enabled: !!currentDomain && isAuthenticated && finalConfig.trackShares,
     staleTime: 30000, // Cache for 30s for snappy UI
   });
 
@@ -148,8 +152,8 @@ export function useHuntShareDialog(
         },
       });
 
-      // Invalidate share status to show updated state
-      if (currentDomain) {
+      // Invalidate share status to show updated state (only if tracking)
+      if (currentDomain && finalConfig.trackShares) {
         queryClient.invalidateQueries({
           queryKey: trpc.share.hasUserShared.queryKey({
             normalizedDomainName: currentDomain,
@@ -212,19 +216,42 @@ export function useHuntShareDialog(
     [isEligible, finalConfig.campaignKey, logEventWithInteractionLoggers],
   );
 
-  // Submit share
+  // Submit share (only if tracking is enabled)
   const submitShare = useCallback(
     async (postUrl: string) => {
       if (!currentDomain || !shareUrl) return;
 
-      await submitShareMutation.mutateAsync({
-        normalizedDomainName: currentDomain,
-        postUrl,
-        sharedUrl: shareUrl,
-        campaignKey: finalConfig.campaignKey,
-      });
+      if (finalConfig.trackShares) {
+        await submitShareMutation.mutateAsync({
+          normalizedDomainName: currentDomain,
+          postUrl,
+          sharedUrl: shareUrl,
+          campaignKey: finalConfig.campaignKey,
+        });
+      } else {
+        // Just track the GA event and close dialog
+        logEventWithInteractionLoggers({
+          name: InteractionLoggingEventName.ShareCompleted,
+          properties: {
+            domainName: currentDomain,
+            campaignKey: finalConfig.campaignKey,
+            sharedUrl: shareUrl,
+            postUrl: postUrl,
+          },
+        });
+        closeDialog();
+        toast.success('Thanks for sharing!');
+      }
     },
-    [currentDomain, shareUrl, finalConfig.campaignKey, submitShareMutation],
+    [
+      currentDomain,
+      shareUrl,
+      finalConfig.campaignKey,
+      finalConfig.trackShares,
+      submitShareMutation,
+      logEventWithInteractionLoggers,
+      closeDialog,
+    ],
   );
 
   return {

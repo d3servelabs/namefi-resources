@@ -7,6 +7,7 @@ import { AuthGuard } from '@/components/dialogs/auth-required-dialog';
 import { cn } from '@/lib/cn';
 import { usePendingToast } from '@/hooks/use-pending-toast';
 import { type Domain, useHuntDomainVoteActions } from '../domains-list-item';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 
 interface Tag {
   id: string;
@@ -90,10 +91,17 @@ const VoteButton = ({
 
 interface CampaignDomainItemProps {
   domain: Domain;
+  onVoteSuccess?: (domainName: NamefiNormalizedDomain) => void;
 }
 
-export const CampaignDomainItem = ({ domain }: CampaignDomainItemProps) => {
-  const { upvote, unvote, count, pending } = useHuntDomainVoteActions(domain);
+export const CampaignDomainItem = ({
+  domain,
+  onVoteSuccess,
+}: CampaignDomainItemProps) => {
+  const { upvote, unvote, count, pending } = useHuntDomainVoteActions({
+    domain,
+    onVoteSuccess,
+  });
 
   return (
     <Link href={`/hunt/domains/${domain.domainName}`}>

@@ -65,8 +65,16 @@ const VoteButton = ({
   );
 };
 
-export const useHuntDomainVoteActions = (domain: Domain) => {
-  const { huntVote, isBusy: pending } = useHuntVoteRow(domain.domainName);
+export const useHuntDomainVoteActions = ({
+  domain,
+  onVoteSuccess,
+}: {
+  domain: Domain;
+  onVoteSuccess?: (domainName: NamefiNormalizedDomain) => void;
+}) => {
+  const { huntVote, isBusy: pending } = useHuntVoteRow(domain.domainName, {
+    onVoteSuccess,
+  });
 
   const upvote = useCallback(() => {
     huntVote.vote(domain.domainName);
@@ -92,8 +100,17 @@ export const useHuntDomainVoteActions = (domain: Domain) => {
 /**
  * Component for rendering a single domain item in a list.
  */
-export const DomainsListItem = ({ domain }: { domain: Domain }) => {
-  const { upvote, unvote, count, pending } = useHuntDomainVoteActions(domain);
+export const DomainsListItem = ({
+  domain,
+  onVoteSuccess,
+}: {
+  domain: Domain;
+  onVoteSuccess?: (domainName: NamefiNormalizedDomain) => void;
+}) => {
+  const { upvote, unvote, count, pending } = useHuntDomainVoteActions({
+    domain,
+    onVoteSuccess,
+  });
 
   return (
     <div className="flex items-center gap-4 sm:gap-6 pr-4 sm:pr-6 py-6 sm:py-8 first:rounded-t-xl last:rounded-b-xl hover:bg-accent/30 transition-colors">

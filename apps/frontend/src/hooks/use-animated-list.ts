@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useMemo } from 'react';
+import { useEffect, useRef, useState, useMemo, useId } from 'react';
 import type { Domain } from '@/components/hunt/domains-list-item';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 
@@ -26,6 +26,9 @@ export function useAnimatedList(
     layoutDuration = 0.8,
     reduceMotion = false,
   } = options;
+
+  // Generate unique ID for this list instance to prevent cross-contamination
+  const listId = useId();
 
   const prevItemsRef = useRef<Domain[]>([]);
   const [reorderingItems, setReorderingItems] = useState<
@@ -137,6 +140,10 @@ export function useAnimatedList(
     setReorderingItems(new Set());
   };
 
+  // Generate unique key for each item to prevent cross-contamination between lists
+  const getItemKey = (domainName: NamefiNormalizedDomain) =>
+    `${listId}-${domainName}`;
+
   return {
     containerVariants,
     itemVariants,
@@ -145,6 +152,7 @@ export function useAnimatedList(
     isItemReordering,
     isItemNew,
     onLayoutAnimationComplete,
+    getItemKey,
     itemChanges,
     reorderingItems: Array.from(reorderingItems),
   };
