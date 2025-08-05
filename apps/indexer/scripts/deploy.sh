@@ -33,6 +33,7 @@ STARTUP_SCRIPT=$(mktemp)
   echo "# ==== docker-compose.yml ===="
   echo 'cat > docker-compose.yml <<'$EOF_WITH_QUOTES
   cat $BASE_DIR/startup/docker-compose.yml
+  echo ""
   echo 'EOF'
   echo ""
   echo "# ==== nginx conf ===="
