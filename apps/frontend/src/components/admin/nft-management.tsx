@@ -358,7 +358,7 @@ function NftManagementContent() {
       onOpenChange={setWorkflowModalOpen}
       modal={true}
     >
-      <DialogContent className="max-w-screen-xl max-h-[80vh] overflow-y-auto">
+      <DialogContent className="max-w-[95vw] max-h-[80vh] overflow-y-auto w-full">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <CirclePlay className="h-5 w-5" />
@@ -381,15 +381,15 @@ function NftManagementContent() {
               </AccordionTrigger>
               <AccordionContent>
                 {activeBurnWorkflows && activeBurnWorkflows.length > 0 ? (
-                  <div className="rounded-md border">
-                    <Table>
+                  <div className="rounded-md border overflow-x-auto">
+                    <Table className="min-w-full">
                       <Thead>
                         <Tr>
-                          <Th className="text-xs">Domain</Th>
-                          <Th className="text-xs">Chain ID</Th>
-                          <Th className="text-xs">Workflow ID</Th>
-                          <Th className="text-xs">Started</Th>
-                          <Th className="text-xs">Status</Th>
+                          <Th className="text-xs w-[35%]">Domain</Th>
+                          <Th className="text-xs w-[10%]">Chain ID</Th>
+                          <Th className="text-xs w-[25%]">Workflow ID</Th>
+                          <Th className="text-xs w-[20%]">Started</Th>
+                          <Th className="text-xs w-[10%]">Status</Th>
                         </Tr>
                       </Thead>
                       <TableBody>
@@ -450,15 +450,15 @@ function NftManagementContent() {
               <AccordionContent>
                 {activeFixExpirationWorkflows &&
                 activeFixExpirationWorkflows.length > 0 ? (
-                  <div className="rounded-md border">
-                    <Table>
+                  <div className="rounded-md border overflow-x-auto">
+                    <Table className="min-w-full">
                       <Thead>
                         <Tr>
-                          <Th className="text-xs">Domain</Th>
-                          <Th className="text-xs">Chain ID</Th>
-                          <Th className="text-xs">Workflow ID</Th>
-                          <Th className="text-xs">Started</Th>
-                          <Th className="text-xs">Status</Th>
+                          <Th className="text-xs w-[35%]">Domain</Th>
+                          <Th className="text-xs w-[10%]">Chain ID</Th>
+                          <Th className="text-xs w-[25%]">Workflow ID</Th>
+                          <Th className="text-xs w-[20%]">Started</Th>
+                          <Th className="text-xs w-[10%]">Status</Th>
                         </Tr>
                       </Thead>
                       <TableBody>
@@ -519,15 +519,15 @@ function NftManagementContent() {
               <AccordionContent>
                 {activeExtendRegistrationWorkflows &&
                 activeExtendRegistrationWorkflows.length > 0 ? (
-                  <div className="rounded-md border">
-                    <Table>
+                  <div className="rounded-md border overflow-x-auto">
+                    <Table className="min-w-full">
                       <Thead>
                         <Tr>
-                          <Th className="text-xs">Domain</Th>
-                          <Th className="text-xs">Chain ID</Th>
-                          <Th className="text-xs">Workflow ID</Th>
-                          <Th className="text-xs">Started</Th>
-                          <Th className="text-xs">Status</Th>
+                          <Th className="text-xs w-[35%]">Domain</Th>
+                          <Th className="text-xs w-[10%]">Chain ID</Th>
+                          <Th className="text-xs w-[25%]">Workflow ID</Th>
+                          <Th className="text-xs w-[20%]">Started</Th>
+                          <Th className="text-xs w-[10%]">Status</Th>
                         </Tr>
                       </Thead>
                       <TableBody>

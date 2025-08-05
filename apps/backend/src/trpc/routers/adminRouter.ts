@@ -477,15 +477,17 @@ export const adminRouter = createTRPCRouter({
       for await (const workflow of workflowList) {
         try {
           // Extract domain name and chain ID from workflow ID
-          const workflowIdParts = workflow.workflowId.split('-');
-          const domainName = workflowIdParts.slice(0, -1).join('-');
-          const chainId = Number.parseInt(
-            workflowIdParts[workflowIdParts.length - 1],
+          const parsedId = ensureNftIsLockedAndBurnByNftName.attemptParseId(
+            workflow.workflowId,
           );
+          if (!parsedId) {
+            continue;
+          }
+          const { normalizedDomainName, chainId } = parsedId;
 
           activeWorkflows.push({
             workflowId: workflow.workflowId,
-            domainName,
+            domainName: normalizedDomainName,
             chainId,
             startTime: workflow.startTime,
             runId: workflow.runId,
@@ -517,26 +519,22 @@ export const adminRouter = createTRPCRouter({
         try {
           // Extract domain name and chain ID from workflow ID
           // Format: admin-fix-nft-expiration-{domainName}-{chainId}-{timestamp}
-          const workflowIdParts = workflow.workflowId.split('-');
-          if (workflowIdParts.length >= 6) {
-            // Skip 'admin', 'fix', 'nft', 'expiration' and take domain name parts
-            const domainEndIndex = workflowIdParts.length - 2; // Exclude chainId and timestamp
-            const domainName = workflowIdParts
-              .slice(4, domainEndIndex)
-              .join('-');
-            const chainId = Number.parseInt(
-              workflowIdParts[workflowIdParts.length - 2],
-            );
-
-            activeWorkflows.push({
-              workflowId: workflow.workflowId,
-              domainName,
-              chainId,
-              startTime: workflow.startTime,
-              runId: workflow.runId,
-              status: workflow.status?.name || 'Running',
-            });
+          const parsedId = fixNftExpirationWorkflow.attemptParseId(
+            workflow.workflowId,
+          );
+          if (!parsedId) {
+            continue;
           }
+          const { normalizedDomainName, chainId } = parsedId;
+
+          activeWorkflows.push({
+            workflowId: workflow.workflowId,
+            domainName: normalizedDomainName,
+            chainId,
+            startTime: workflow.startTime,
+            runId: workflow.runId,
+            status: workflow.status?.name || 'Running',
+          });
         } catch (error) {}
       }
 
@@ -563,26 +561,22 @@ export const adminRouter = createTRPCRouter({
         try {
           // Extract domain name and chain ID from workflow ID
           // Format: admin-extend-registration-{domainName}-{chainId}-{timestamp}
-          const workflowIdParts = workflow.workflowId.split('-');
-          if (workflowIdParts.length >= 5) {
-            // Skip 'admin', 'extend', 'registration' and take domain name parts
-            const domainEndIndex = workflowIdParts.length - 2; // Exclude chainId and timestamp
-            const domainName = workflowIdParts
-              .slice(3, domainEndIndex)
-              .join('-');
-            const chainId = Number.parseInt(
-              workflowIdParts[workflowIdParts.length - 2],
-            );
-
-            activeWorkflows.push({
-              workflowId: workflow.workflowId,
-              domainName,
-              chainId,
-              startTime: workflow.startTime,
-              runId: workflow.runId,
-              status: workflow.status?.name || 'Running',
-            });
+          const parsedId = extendDomainRegistrationWorkflow.attemptParseId(
+            workflow.workflowId,
+          );
+          if (!parsedId) {
+            continue;
           }
+          const { normalizedDomainName } = parsedId;
+
+          activeWorkflows.push({
+            workflowId: workflow.workflowId,
+            domainName: normalizedDomainName,
+            chainId: await getDomainChain(normalizedDomainName as any),
+            startTime: workflow.startTime,
+            runId: workflow.runId,
+            status: workflow.status?.name || 'Running',
+          });
         } catch (error) {}
       }
 
