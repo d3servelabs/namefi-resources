@@ -10,6 +10,7 @@ import { ordersRouter } from './ordersRouter';
 import { paymentsRouter } from './paymentsRouter';
 import { registryRouter } from './registryRouter';
 import { searchRouter } from './searchRouter';
+import { shareRouter } from './shareRouter';
 import { usersRouter } from './usersRouter';
 import { wishlistRouter } from './wishlistRouter';
 
@@ -25,6 +26,7 @@ export const appRouter = createTRPCRouter({
   orders: ordersRouter,
   domainConfig: domainConfigRouter,
   hunt: huntRouter,
+  share: shareRouter,
   wishlist: wishlistRouter,
 
   version: publicProcedure.query(() => {
