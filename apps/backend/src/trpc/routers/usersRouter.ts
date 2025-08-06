@@ -3,6 +3,7 @@ import {
   usersTable,
   wishlistedDomainsTable,
   namefiNftOwnersView,
+  namefiNftView,
 } from '@namefi-astra/db';
 import {
   NAMEFI_NFT_CONTRACT_ADDRESS,
@@ -12,7 +13,16 @@ import {
 import type { LinkedAccountWithMetadata } from '@privy-io/server-auth';
 import { TRPCError } from '@trpc/server';
 import { and, desc, eq, sql, inArray, ilike, gte, or } from 'drizzle-orm';
-import { groupBy, isEmpty, isNil, isNotEmpty, isNotNil, pluck } from 'ramda';
+import {
+  groupBy,
+  indexBy,
+  isEmpty,
+  isNil,
+  isNotEmpty,
+  isNotNil,
+  pluck,
+  prop,
+} from 'ramda';
 import { http, createPublicClient } from 'viem';
 import * as chains from 'viem/chains';
 import { z } from 'zod';
@@ -169,7 +179,7 @@ export const usersRouter = createTRPCRouter({
     }));
 
     try {
-      const expirationDates = await getDomainsExpirationDates(
+      const expirationDates = await getDomainsExpirationDatesFromIndex(
         pluck('normalizedDomainName', nfts),
       );
 
@@ -180,7 +190,7 @@ export const usersRouter = createTRPCRouter({
     } catch (error) {
       logger.error(
         { context: 'getCurrentUserDomains', error },
-        'Failed to fetch expiration dates',
+        'Failed to fetch expiration dates from index',
       );
       return nfts;
     }
@@ -456,7 +466,7 @@ export const usersRouter = createTRPCRouter({
   ),
 });
 
-async function getDomainsExpirationDates(
+async function getDomainsExpirationDatesFromIndex(
   normalizedDomainNames: NamefiNormalizedDomain[],
 ): Promise<Record<string, Date | null>> {
   const groupedDomainNames = groupBy((normalizedDomainName) => {
@@ -481,12 +491,11 @@ async function getDomainsExpirationDates(
     );
   }
 
-  const latestBlock = await viemBasePublicClient.getBlockNumber();
-
   const [sldExpirationDates, _3ldNftsExpirationDates] = await Promise.all([
     getSldExpirationDateForDomainList(sldDomainNames),
-    get3ldExpirationDateForDomainList(_3ldDomainNames, latestBlock),
+    get3ldExpirationDateForDomainListFromIndex(_3ldDomainNames),
   ]);
+
   return Object.fromEntries([
     ...sldDomainNames.map((domainName, i) => [
       domainName,
@@ -500,7 +509,32 @@ async function getDomainsExpirationDates(
   ]);
 }
 
-async function get3ldExpirationDateForDomainList(
+async function get3ldExpirationDateForDomainListFromIndex(
+  normalizedDomainNames: NamefiNormalizedDomain[],
+) {
+  const nfts = await db
+    .select({
+      tokenId: namefiNftView.tokenId,
+      normalizedDomainName: namefiNftView.normalizedDomainName,
+      expirationTime: namefiNftView.expirationTime,
+      chainId: namefiNftView.chainId,
+    })
+    .from(namefiNftView)
+    .where(inArray(namefiNftView.normalizedDomainName, normalizedDomainNames));
+  const nftsByDomainName = indexBy(prop('normalizedDomainName'), nfts);
+
+  return normalizedDomainNames.map((domainName) => {
+    const nft = nftsByDomainName[domainName];
+    return {
+      normalizedDomainName: domainName,
+      expirationDate: nft?.expirationTime,
+      tokenId: nft?.tokenId?.toString(),
+      chainId: nft?.chainId,
+    };
+  });
+}
+
+async function get3ldExpirationDateForDomainListFromContract(
   normalizedDomainNames: NamefiNormalizedDomain[],
   latestBlock: bigint,
 ) {
