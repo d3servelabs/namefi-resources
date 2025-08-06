@@ -40,8 +40,7 @@
     "@namefi-astra/typescript": "workspace:*",
     "@types/node": "^22.13.14",
     "@types/pg": "^8.11.10",
-    "drizzle-kit": "^0.30.6",
-    "typescript": "^5.8.2"
+    "drizzle-kit": "^0.30.6"
   },
   "engines": {
     "node": ">=18.14"

@@ -17,7 +17,7 @@
     "@vitest/coverage-v8": "^3.1.2",
     "concurrently": "^9.1.2",
     "lefthook": "^1.11.6",
-    "turbo": "^2.4.4",
+    "turbo": "^2.5.5",
     "vitest": "^3.1.2",
     "wait-on": "^8.0.3"
   },
