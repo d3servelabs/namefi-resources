@@ -4,6 +4,7 @@ services:
   app:
     image: ${APP_IMAGE}
     restart: always
+    command: ["infisical", "run", "--", "DATABASE_URL=${DATABASE_URL}","./scripts/start-with-schema.sh"] 
     expose:
       - "8080"
     ports:
@@ -34,7 +35,7 @@ services:
       - DATABASE_URL=${DATABASE_URL}
       - READY_ENDPOINT=http://app:8080/ready
       - INFISICAL_TOKEN=${INFISICAL_TOKEN}
-    command: ["infisical", "run", "--", "npm", "run", "migrate-schema"]
+    command: ["infisical", "run", "--", "DATABASE_URL=${DATABASE_URL}", "npm", "run", "migrate-schema"]
     depends_on:
       - app
     labels:
