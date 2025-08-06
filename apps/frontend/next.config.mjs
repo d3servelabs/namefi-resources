@@ -14,12 +14,6 @@ const { config: appConfig } = await jiti.import('./src/lib/env/load');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  transpilePackages: [
-    '@namefi-astra/env',
-    '@namefi-astra/zod-dns',
-    '@namefi-astra/backend',
-    '@namefi-astra/db',
-  ],
   compiler: {
     define: {
       'process.env.LOADED_CONFIG': JSON.stringify(appConfig),
@@ -31,6 +25,9 @@ const nextConfig = {
         ),
       ),
     },
+  },
+  experimental: {
+    authInterrupts: true,
   },
   env: {
     version: packageJson.version,
@@ -48,6 +45,7 @@ const nextConfig = {
   devIndicators: {
     position: 'bottom-right',
   },
+  poweredByHeader: false,
   async rewrites() {
     return [
       {
