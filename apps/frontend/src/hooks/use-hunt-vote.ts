@@ -119,129 +119,6 @@ export function useHuntVoteOperations(options?: {
 
   const userId = user?.id ?? 'guest';
 
-  // Helper to update domain data across all relevant queries
-  const updateDomainInCaches = useCallback(
-    (
-      domainName: NamefiNormalizedDomain,
-      updates: { userHasUpvoted: boolean; upvoteCount: number },
-    ) => {
-      // Update trending domains (paginated)
-      queryClient.setQueriesData(
-        { queryKey: trpc.hunt.getTrendingDomains.queryKey() },
-        (oldData: any) => {
-          if (!oldData?.pages) return oldData;
-          return {
-            ...oldData,
-            pages: oldData.pages.map((page: any) => ({
-              ...page,
-              items:
-                page.items?.map((item: any) =>
-                  item.domainName === domainName
-                    ? { ...item, ...updates }
-                    : item,
-                ) || page.items,
-            })),
-          };
-        },
-      );
-
-      // Update trending domains public (paginated)
-      queryClient.setQueriesData(
-        { queryKey: trpc.hunt.getTrendingDomainsPublic.queryKey() },
-        (oldData: any) => {
-          if (!oldData?.pages) return oldData;
-          return {
-            ...oldData,
-            pages: oldData.pages.map((page: any) => ({
-              ...page,
-              items:
-                page.items?.map((item: any) =>
-                  item.domainName === domainName
-                    ? { ...item, ...updates }
-                    : item,
-                ) || page.items,
-            })),
-          };
-        },
-      );
-
-      // Update campaign data (has rankings array)
-      queryClient.setQueriesData(
-        { queryKey: trpc.hunt.getCampaign.queryKey() },
-        (oldData: any) => {
-          if (!oldData?.rankings) return oldData;
-          return {
-            ...oldData,
-            rankings: oldData.rankings.map((item: any) =>
-              item.domainName === domainName ? { ...item, ...updates } : item,
-            ),
-          };
-        },
-      );
-
-      // Update campaign public data (has rankings array)
-      queryClient.setQueriesData(
-        { queryKey: trpc.hunt.getCampaignPublic.queryKey() },
-        (oldData: any) => {
-          if (!oldData?.rankings) return oldData;
-          return {
-            ...oldData,
-            rankings: oldData.rankings.map((item: any) =>
-              item.domainName === domainName ? { ...item, ...updates } : item,
-            ),
-          };
-        },
-      );
-
-      // Update my submitted domains (array)
-      queryClient.setQueriesData(
-        { queryKey: trpc.hunt.getMySubmittedDomains.queryKey() },
-        (oldData: any) => {
-          if (!Array.isArray(oldData)) return oldData;
-          return oldData.map((item: any) =>
-            item.domainName === domainName ? { ...item, ...updates } : item,
-          );
-        },
-      );
-
-      // Update my upvoted domains (array)
-      queryClient.setQueriesData(
-        { queryKey: trpc.hunt.getMyUpvotedDomains.queryKey() },
-        (oldData: any) => {
-          if (!Array.isArray(oldData)) return oldData;
-          return oldData.map((item: any) =>
-            item.domainName === domainName ? { ...item, ...updates } : item,
-          );
-        },
-      );
-
-      // Update domain detail (single object)
-      queryClient.setQueriesData(
-        { queryKey: trpc.hunt.getDomainDetail.queryKey({ domainName }) },
-        (oldData: any) => {
-          if (!oldData || oldData.domainName !== domainName) return oldData;
-          return { ...oldData, ...updates };
-        },
-      );
-
-      // Update domain detail public (single object)
-      queryClient.setQueriesData(
-        { queryKey: trpc.hunt.getDomainDetailPublic.queryKey({ domainName }) },
-        (oldData: any) => {
-          if (!oldData || oldData.domainName !== domainName) return oldData;
-          return { ...oldData, ...updates };
-        },
-      );
-
-      // Invalidate my upvoted domains to ensure consistency
-      queryClient.invalidateQueries({
-        queryKey: trpc.hunt.getMyUpvotedDomains.queryKey(),
-        refetchType: 'inactive',
-      });
-    },
-    [queryClient, trpc.hunt],
-  );
-
   const voteRetryPolicy = (failCount: number, err: any) => {
     const status = err?.data?.httpStatus;
     return (status === undefined || status >= 500) && failCount < 3;
@@ -419,14 +296,12 @@ export function useHuntVoteOperations(options?: {
   const vote = useCallback(
     async (domainName: NamefiNormalizedDomain): Promise<void> => {
       if (!isAuthenticated) {
-        // Remember what they wanted to vote on (no optimistic update)
+        // Remember what they wanted to vote on
         pendingVoteRef.current = { domainName };
-
-        login(); // Uses callbacks configured in the hook
+        login();
         return;
       }
-
-      // Normal authenticated flow with optimistic update
+      // Normal authenticated flow
       return executeVote(domainName);
     },
     [isAuthenticated, executeVote, login],
@@ -461,8 +336,7 @@ export function useHuntVoteOperations(options?: {
           'Cannot unvote when not authenticated - user must have voted first',
         );
       }
-
-      // Normal authenticated flow with optimistic update
+      // Normal authenticated flow
       return executeUnvote(domainName);
     },
     [isAuthenticated, executeUnvote],
