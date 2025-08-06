@@ -4,7 +4,7 @@ import { generateCVConfig } from '../../lib/generate-config';
 const { landingConfig, originConfigWithoutLanding } = generateCVConfig({
   name: 'ali',
   rotatingNames: ['sara', 'omar', 'alex', 'dr', 'fatima'],
-  backgroundImage: '/assets/cv/ali/background.jpeg',
+  backgroundImage: '/assets/cv/ali/background.png',
   openGraphImage: '/assets/cv/ali/opengraph-image.jpg',
   famousPeople: [
     {
