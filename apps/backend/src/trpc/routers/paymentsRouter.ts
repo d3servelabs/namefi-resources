@@ -3,8 +3,9 @@ import { eq } from 'drizzle-orm';
 import Stripe from 'stripe';
 import { z } from 'zod';
 import { createTRPCRouter, protectedProcedure } from '../base';
+import { secrets } from '../../lib/env';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
+const stripe = new Stripe(secrets.STRIPE_SECRET_KEY);
 
 export const paymentsRouter = createTRPCRouter({
   createCustomerSession: protectedProcedure.mutation(async ({ ctx }) => {

@@ -32,8 +32,9 @@ import {
   reflectChangesInCartItemsIfAnyAndReturnSummary,
   validateCartItems,
 } from '#lib/carts/cart-validation';
+import { secrets } from '../../lib/env';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
+const stripe = new Stripe(secrets.STRIPE_SECRET_KEY);
 
 export const ordersRouter = createTRPCRouter({
   createOrder: protectedProcedure

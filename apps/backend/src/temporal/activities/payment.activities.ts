@@ -35,7 +35,7 @@ import {
   type ChecksumWalletAddress,
 } from '@namefi-astra/utils';
 import { getChain } from '@namefi-astra/utils';
-import { config } from '#lib/env';
+import { config, secrets } from '#lib/env';
 import { isNotNil, isNotEmpty } from 'ramda';
 import { switchCaseOrDefault, resolve } from '@namefi-astra/utils';
 import type { Chain } from 'viem';
@@ -44,7 +44,7 @@ import { getNfscBalanceInUSD } from './mint.activities';
 import { privyClient } from '../../trpc/utils';
 import type { WalletWithMetadata } from '@privy-io/server-auth';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
+const stripe = new Stripe(secrets.STRIPE_SECRET_KEY);
 
 export async function captureStripePayment({
   amountToCaptureInUsdCents,
