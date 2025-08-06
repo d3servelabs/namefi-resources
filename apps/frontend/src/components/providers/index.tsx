@@ -26,7 +26,7 @@ export const Providers: FC<
   const [queryClient] = useState(() => new QueryClient());
 
   return (
-    <Suspense fallback={<Loading />}>
+    <Suspense fallback={<Loading fullscreen={true} />}>
       <ThemeProvider
         storageKey="theme"
         attribute="data-theme"
