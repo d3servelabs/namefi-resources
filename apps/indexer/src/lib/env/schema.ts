@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const secretsSchema = z.object({
+const _baseSecretsSchema = z.object({
   DATABASE_URL: z.string().url(),
   ALCHEMY_API_KEY: z.string(),
   USE_WEBSOCKETS: z
@@ -14,6 +14,15 @@ export const secretsSchema = z.object({
   SMTP_PASSWORD: z.string(),
   BASE_SCHEMA: z.string().optional().default('indexer'),
 });
+
+export const secretsSchema = _baseSecretsSchema
+  .extend({
+    DATABASE_OVERRIDE_URL: z.string().url().optional(),
+  })
+  .transform((secrets) => ({
+    ...secrets,
+    DATABASE_URL: secrets.DATABASE_OVERRIDE_URL || secrets.DATABASE_URL,
+  }));
 
 export type SecretsSchema = z.infer<typeof secretsSchema>;
 
