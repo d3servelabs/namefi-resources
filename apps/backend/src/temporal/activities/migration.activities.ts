@@ -4,18 +4,22 @@ import {
   userContactsTable,
   usersTable,
 } from '@namefi-astra/db/schema';
-import { and, eq } from 'drizzle-orm';
+import { and, eq, isNotNull } from 'drizzle-orm';
 import mongoose from 'mongoose';
 import { config, secrets } from '#lib/env';
 import { logger } from '#lib/logger';
 import { AutoRenewPreference, User } from '../../lib/legacy/db/schemas';
 import { privyClient } from '../../trpc/utils';
+import type { User as PrivyUser } from '@privy-io/server-auth';
 import { fromPairs, groupBy, isNil, isNotNil, uniqBy } from 'ramda';
 import { privyCustomMetadataToPrivyStorage } from '../../trpc/types';
 import * as workflow from '@temporalio/workflow';
 import * as changeKeys from 'change-case/keys';
 // @ts-ignore
 import countryCodeLookup from 'iso-countries-lookup';
+type LinkedAccountInput = Parameters<
+  typeof privyClient.importUser
+>[0]['linkedAccounts'];
 
 const _logger = logger.child({
   module: 'legacy-users-import',
@@ -769,6 +773,295 @@ export async function validateMigrationPrerequisitesActivity(): Promise<{
     privyAvailable,
     errors,
   };
+}
+
+/**
+ * Get all user contacts with verified emails
+ */
+export async function getUserContactsWithVerifiedEmailsActivity(): Promise<
+  Array<{
+    userId: string;
+    email: string;
+    privyUserId: string;
+  }>
+> {
+  try {
+    _logger.info('Getting user contacts with verified emails...');
+
+    const userContactsWithVerifiedEmails = await db
+      .select({
+        userId: userContactsTable.userId,
+        email: userContactsTable.email,
+        privyUserId: usersTable.privyUserId,
+      })
+      .from(userContactsTable)
+      .innerJoin(usersTable, eq(userContactsTable.userId, usersTable.id))
+      .where(
+        and(
+          eq(userContactsTable.emailVerified, true),
+          isNotNull(userContactsTable.email),
+        ),
+      );
+
+    _logger.info(
+      `Found ${userContactsWithVerifiedEmails.length} user contacts with verified emails`,
+    );
+
+    return userContactsWithVerifiedEmails.filter(
+      (contact): contact is typeof contact & { email: string } =>
+        Boolean(contact.email),
+    );
+  } catch (error) {
+    _logger.error('Failed to get user contacts with verified emails:', error);
+    throw error;
+  }
+}
+
+/**
+ * Check if Privy user has the given email in their linked accounts
+ */
+export async function checkPrivyUserEmailLinkingActivity(
+  privyUserId: string,
+  email: string,
+): Promise<{
+  hasEmailLinked: boolean;
+  needsRecreation: boolean;
+  emailLinkedToAnotherAccount: boolean;
+  hasDifferentEmailLinked: boolean;
+  existingLinkedEmail?: string;
+  existingPrivyUser?: PrivyUser;
+}> {
+  try {
+    _logger.info(
+      `Checking email linking for Privy user ${privyUserId} with email ${email}`,
+    );
+
+    // Get the Privy user
+    const privyUser = await privyClient.getUserById(privyUserId);
+    if (!privyUser) {
+      _logger.warn(`Privy user not found: ${privyUserId}`);
+      return {
+        hasEmailLinked: false,
+        needsRecreation: true,
+        emailLinkedToAnotherAccount: false,
+        hasDifferentEmailLinked: false,
+      };
+    }
+
+    // Check if the target email is linked to this user
+    const hasEmailLinked = privyUser.linkedAccounts.some(
+      (account) => account.type === 'email' && account.address === email,
+    );
+
+    if (hasEmailLinked) {
+      _logger.info(
+        `Email ${email} is already linked to Privy user ${privyUserId}`,
+      );
+      return {
+        hasEmailLinked: true,
+        needsRecreation: false,
+        emailLinkedToAnotherAccount: false,
+        hasDifferentEmailLinked: false,
+        existingPrivyUser: privyUser,
+      };
+    }
+
+    // Check if this user already has a different email linked
+    const existingEmailAccounts = privyUser.linkedAccounts.filter(
+      (account) => account.type === 'email',
+    );
+
+    if (existingEmailAccounts.length > 0) {
+      const existingLinkedEmail = existingEmailAccounts[0].address;
+      _logger.warn(
+        `Privy user ${privyUserId} already has a different email linked: ${existingLinkedEmail}, cannot add ${email}`,
+      );
+      return {
+        hasEmailLinked: false,
+        needsRecreation: false, // Can't recreate with 2 emails
+        emailLinkedToAnotherAccount: false,
+        hasDifferentEmailLinked: true,
+        existingLinkedEmail,
+        existingPrivyUser: privyUser,
+      };
+    }
+
+    // Check if target email is linked to another user
+    const existingUserByEmail = await privyClient.getUserByEmail(email);
+    const emailLinkedToAnotherAccount =
+      existingUserByEmail && existingUserByEmail.id !== privyUserId;
+
+    if (emailLinkedToAnotherAccount) {
+      _logger.warn(
+        `Email ${email} is linked to another Privy user: ${existingUserByEmail?.id}`,
+      );
+      return {
+        hasEmailLinked: false,
+        needsRecreation: false, // Can't recreate if email is taken
+        emailLinkedToAnotherAccount: true,
+        hasDifferentEmailLinked: false,
+        existingPrivyUser: privyUser,
+      };
+    }
+
+    _logger.info(
+      `Email ${email} is not linked to Privy user ${privyUserId} and is available for linking`,
+    );
+    return {
+      hasEmailLinked: false,
+      needsRecreation: true,
+      emailLinkedToAnotherAccount: false,
+      hasDifferentEmailLinked: false,
+      existingPrivyUser: privyUser,
+    };
+  } catch (error) {
+    _logger.error(
+      `Failed to check email linking for Privy user ${privyUserId}:`,
+      error,
+    );
+    throw error;
+  }
+}
+
+/**
+ * Delete Privy user account (destructive operation)
+ */
+export async function deletePrivyUserActivity(privyUserId: string): Promise<{
+  success: boolean;
+  error?: string;
+}> {
+  try {
+    _logger.info(`Deleting Privy user: ${privyUserId}`);
+
+    await privyClient.deleteUser(privyUserId);
+    _logger.info(`Successfully deleted Privy user: ${privyUserId}`);
+
+    return {
+      success: true,
+    };
+  } catch (error) {
+    const errorMessage =
+      error instanceof Error ? error.message : 'Unknown error';
+    _logger.error(`Failed to delete Privy user ${privyUserId}:`, error);
+    return {
+      success: false,
+      error: errorMessage,
+    };
+  }
+}
+
+/**
+ * Create new Privy user with email included (non-destructive operation)
+ */
+export async function createPrivyUserWithEmailActivity(
+  existingPrivyUser: PrivyUser,
+  email: string,
+): Promise<{
+  success: boolean;
+  newPrivyUserId?: string;
+  error?: string;
+}> {
+  try {
+    _logger.info(
+      `Creating new Privy user with email ${email} (replacing ${existingPrivyUser.id})`,
+    );
+
+    // Get all existing linked accounts
+    const existingLinkedAccounts = existingPrivyUser.linkedAccounts || [];
+
+    // Add the email account
+    const allLinkedAccounts: LinkedAccountInput = [
+      ...existingLinkedAccounts.map((account) => {
+        if (account.type === 'wallet') {
+          return {
+            type: account.type,
+            address: account.address,
+            chainType: account.chainType || 'ethereum',
+          };
+        }
+        if (account.type === 'email') {
+          return {
+            type: account.type,
+            address: account.address,
+          };
+        }
+        return account;
+      }),
+      {
+        type: 'email',
+        address: email,
+      },
+    ];
+    const customMetadata = {
+      ...(existingPrivyUser.customMetadata || {}),
+    };
+
+    const newPrivyUser = await privyClient.importUser({
+      linkedAccounts: allLinkedAccounts,
+      createEthereumSmartWallet: false,
+      createEmbeddedWallet: false,
+      createEthereumWallet: false,
+      createSolanaWallet: false,
+      customMetadata,
+    });
+
+    if (newPrivyUser?.id) {
+      const newPrivyUserId = newPrivyUser.id;
+      _logger.info(
+        `Successfully created new Privy user: ${newPrivyUserId} with email ${email}`,
+      );
+      return {
+        success: true,
+        newPrivyUserId,
+      };
+    }
+
+    _logger.error('Failed to create new Privy user: No user ID returned');
+    return {
+      success: false,
+      error: 'Privy user creation failed: No user ID returned',
+    };
+  } catch (error) {
+    const errorMessage =
+      error instanceof Error ? error.message : 'Unknown error';
+    _logger.error(
+      `Failed to create new Privy user for ${existingPrivyUser.id}:`,
+      error,
+    );
+    return {
+      success: false,
+      error: errorMessage,
+    };
+  }
+}
+
+/**
+ * Update user's Privy user ID in the database
+ */
+export async function updateUserPrivyIdActivity(
+  userId: string,
+  newPrivyUserId: string,
+): Promise<void> {
+  try {
+    _logger.info(
+      `Updating user ${userId} with new Privy user ID: ${newPrivyUserId}`,
+    );
+
+    await db
+      .update(usersTable)
+      .set({ privyUserId: newPrivyUserId })
+      .where(eq(usersTable.id, userId));
+
+    _logger.info(
+      `Successfully updated user ${userId} with new Privy user ID: ${newPrivyUserId}`,
+    );
+  } catch (error) {
+    _logger.error(
+      `Failed to update user ${userId} with new Privy user ID:`,
+      error,
+    );
+    throw error;
+  }
 }
 
 /**

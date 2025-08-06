@@ -36,7 +36,6 @@ export async function migrateUsersBatchWorkflow(options?: {
   // Get reference to activities
   const {
     validateMigrationPrerequisitesActivity: validatePrerequisitesShort,
-    generateMigrationReportActivity: generateMigrationReport,
     getMongoUsersActivity: getMongoUsers,
   } = typedProxyActivities({
     temporalEnum: TEMPORAL_ENUMS.DEFAULT,
@@ -44,6 +43,14 @@ export async function migrateUsersBatchWorkflow(options?: {
       ...longRunningOpts,
     },
   });
+
+  const { generateMigrationReportActivity: generateMigrationReport } =
+    typedProxyActivities({
+      temporalEnum: TEMPORAL_ENUMS.DEFAULT,
+      options: {
+        ...longRunningOpts,
+      },
+    });
 
   try {
     // Step 1: Validate prerequisites (optional)
@@ -213,6 +220,348 @@ export async function migrateUsersBatchWorkflow(options?: {
         timestamp: new Date().toISOString(),
         successRate: 0,
       },
+    };
+  }
+}
+
+/**
+ * Child workflow to recreate a single Privy user with email (destructive operations)
+ */
+export async function recreatePrivyUserWithEmailWorkflow(
+  existingPrivyUser: any,
+  email: string,
+  userId: string,
+): Promise<{
+  success: boolean;
+  newPrivyUserId?: string;
+  error?: string;
+}> {
+  const {
+    deletePrivyUserActivity,
+    createPrivyUserWithEmailActivity,
+    updateUserPrivyIdActivity,
+  } = typedProxyActivities({
+    temporalEnum: TEMPORAL_ENUMS.DEFAULT,
+    options: {
+      ...longRunningOpts,
+    },
+  });
+
+  try {
+    workflow.log.info(`Starting Privy user recreation for user ${userId}`);
+
+    // Step 1: Delete existing Privy user (destructive)
+    const deleteResult = await deletePrivyUserActivity(existingPrivyUser.id);
+    if (!deleteResult.success) {
+      return {
+        success: false,
+        error: `Failed to delete existing user: ${deleteResult.error}`,
+      };
+    }
+
+    // Step 2: Create new Privy user with email (non-destructive, can be retried)
+    const createResult = await createPrivyUserWithEmailActivity(
+      existingPrivyUser,
+      email,
+    );
+    if (!createResult.success || !createResult.newPrivyUserId) {
+      return {
+        success: false,
+        error: `Failed to create new user: ${createResult.error}`,
+      };
+    }
+
+    // Step 3: Update database with new Privy user ID (non-destructive, can be retried)
+    await updateUserPrivyIdActivity(userId, createResult.newPrivyUserId);
+
+    workflow.log.info(
+      `Successfully recreated Privy user for ${userId}: ${createResult.newPrivyUserId}`,
+    );
+    return {
+      success: true,
+      newPrivyUserId: createResult.newPrivyUserId,
+    };
+  } catch (error) {
+    const errorMessage =
+      error instanceof Error ? error.message : 'Unknown error';
+    workflow.log.error(`Failed to recreate Privy user for ${userId}:`, {
+      errorMessage,
+      error,
+    });
+    return {
+      success: false,
+      error: errorMessage,
+    };
+  }
+}
+
+/**
+ * Workflow to fix email linking for users with verified emails
+ */
+export async function fixUserEmailLinkingWorkflow(options?: {
+  dryRun?: boolean;
+}): Promise<{
+  success: boolean;
+  totalUsersChecked: number;
+  usersNeedingFix: number;
+  usersFixed: number;
+  usersFailed: number;
+  errors: string[];
+  dryRun: boolean;
+  usersWhoWouldBeFixed?: Array<{
+    userId: string;
+    email: string;
+    privyUserId: string;
+    reason: string;
+  }>;
+  usersCantBeFixed?: Array<{
+    userId: string;
+    email: string;
+    privyUserId: string;
+    reason: string;
+    details?: string;
+  }>;
+}> {
+  const {
+    getUserContactsWithVerifiedEmailsActivity,
+    checkPrivyUserEmailLinkingActivity,
+  } = typedProxyActivities({
+    temporalEnum: TEMPORAL_ENUMS.DEFAULT,
+    options: {
+      ...longRunningOpts,
+    },
+  });
+
+  const isDryRun = options?.dryRun || false;
+
+  try {
+    workflow.log.info(
+      `Starting email linking fix workflow (${isDryRun ? 'DRY RUN' : 'LIVE RUN'})...`,
+    );
+
+    // Step 1: Get all user contacts with verified emails
+    const userContactsWithEmails =
+      await getUserContactsWithVerifiedEmailsActivity();
+    workflow.log.info(
+      `Found ${userContactsWithEmails.length} users with verified emails`,
+    );
+
+    if (userContactsWithEmails.length === 0) {
+      return {
+        success: true,
+        totalUsersChecked: 0,
+        usersNeedingFix: 0,
+        usersFixed: 0,
+        usersFailed: 0,
+        errors: [],
+        dryRun: isDryRun,
+        usersWhoWouldBeFixed: [],
+        usersCantBeFixed: [],
+      };
+    }
+
+    let usersNeedingFix = 0;
+    let usersFixed = 0;
+    let usersFailed = 0;
+    const errors: string[] = [];
+    const usersRequiringRecreation: Array<{
+      userId: string;
+      email: string;
+      privyUserId: string;
+      existingPrivyUser: any;
+    }> = [];
+    const usersWhoWouldBeFixed: Array<{
+      userId: string;
+      email: string;
+      privyUserId: string;
+      reason: string;
+    }> = [];
+    const usersCantBeFixed: Array<{
+      userId: string;
+      email: string;
+      privyUserId: string;
+      reason: string;
+      details?: string;
+    }> = [];
+
+    // Step 2: Check each user's email linking status
+    for (const userContact of userContactsWithEmails) {
+      try {
+        workflow.log.info(
+          `Checking email linking for user ${userContact.userId} with email ${userContact.email}`,
+        );
+
+        const linkingStatus = await checkPrivyUserEmailLinkingActivity(
+          userContact.privyUserId,
+          userContact.email,
+        );
+
+        if (linkingStatus.hasEmailLinked) {
+          workflow.log.info(
+            `User ${userContact.userId} already has email linked correctly`,
+          );
+          continue;
+        }
+
+        if (linkingStatus.emailLinkedToAnotherAccount) {
+          const errorMsg = `Email ${userContact.email} is linked to another Privy account for user ${userContact.userId}`;
+          workflow.log.warn(errorMsg);
+          errors.push(errorMsg);
+          usersFailed++;
+          usersCantBeFixed.push({
+            userId: userContact.userId,
+            email: userContact.email,
+            privyUserId: userContact.privyUserId,
+            reason: 'Email linked to another account',
+            details: errorMsg,
+          });
+          continue;
+        }
+
+        if (linkingStatus.hasDifferentEmailLinked) {
+          const errorMsg = `User ${userContact.userId} already has a different email linked (${linkingStatus.existingLinkedEmail}), cannot add ${userContact.email}`;
+          workflow.log.warn(errorMsg);
+          errors.push(errorMsg);
+          usersFailed++;
+          usersCantBeFixed.push({
+            userId: userContact.userId,
+            email: userContact.email,
+            privyUserId: userContact.privyUserId,
+            reason: 'Different email already linked',
+            details: `Already has: ${linkingStatus.existingLinkedEmail}`,
+          });
+          continue;
+        }
+
+        if (linkingStatus.needsRecreation && linkingStatus.existingPrivyUser) {
+          usersNeedingFix++;
+          usersRequiringRecreation.push({
+            userId: userContact.userId,
+            email: userContact.email,
+            privyUserId: userContact.privyUserId,
+            existingPrivyUser: linkingStatus.existingPrivyUser,
+          });
+          usersWhoWouldBeFixed.push({
+            userId: userContact.userId,
+            email: userContact.email,
+            privyUserId: userContact.privyUserId,
+            reason: 'Email not linked to Privy account',
+          });
+          workflow.log.info(
+            `User ${userContact.userId} needs Privy account recreation with email`,
+          );
+        }
+      } catch (error) {
+        const errorMsg = `Failed to check email linking for user ${userContact.userId}: ${error instanceof Error ? error.message : 'Unknown error'}`;
+        workflow.log.error(errorMsg);
+        errors.push(errorMsg);
+        usersFailed++;
+      }
+    }
+
+    workflow.log.info(
+      `Found ${usersNeedingFix} users needing email linking fix`,
+    );
+
+    if (isDryRun) {
+      workflow.log.info('DRY RUN: Skipping actual Privy account recreation');
+      workflow.log.info(`Would fix ${usersNeedingFix} users:`, {
+        usersWhoWouldBeFixed: usersWhoWouldBeFixed.map(
+          (u) => `${u.userId} (${u.email}): ${u.reason}`,
+        ),
+      });
+      workflow.log.info(`Cannot fix ${usersCantBeFixed.length} users:`, {
+        usersCantBeFixed: usersCantBeFixed.map(
+          (u) => `${u.userId} (${u.email}): ${u.reason} - ${u.details}`,
+        ),
+      });
+
+      return {
+        success: true,
+        totalUsersChecked: userContactsWithEmails.length,
+        usersNeedingFix,
+        usersFixed: 0, // No actual fixes in dry run
+        usersFailed,
+        errors,
+        dryRun: true,
+        usersWhoWouldBeFixed,
+        usersCantBeFixed,
+      };
+    }
+
+    // Step 3: Recreate Privy accounts for users needing fix using child workflows (LIVE RUN only)
+    for (const userInfo of usersRequiringRecreation) {
+      try {
+        workflow.log.info(
+          `Starting child workflow to recreate Privy account for user ${userInfo.userId} with email ${userInfo.email}`,
+        );
+
+        // Use child workflow for destructive operations
+        const recreationResult = await workflow.executeChild(
+          recreatePrivyUserWithEmailWorkflow,
+          {
+            args: [userInfo.existingPrivyUser, userInfo.email, userInfo.userId],
+            workflowId: `recreate-privy-user-${userInfo.userId}-${Date.now()}`,
+            taskQueue: TEMPORAL_QUEUES.DEFAULT,
+          },
+        );
+
+        if (recreationResult.success && recreationResult.newPrivyUserId) {
+          usersFixed++;
+          workflow.log.info(
+            `Successfully fixed email linking for user ${userInfo.userId} (new Privy ID: ${recreationResult.newPrivyUserId})`,
+          );
+        } else {
+          const errorMsg = `Failed to recreate Privy account for user ${userInfo.userId}: ${recreationResult.error}`;
+          workflow.log.error(errorMsg);
+          errors.push(errorMsg);
+          usersFailed++;
+        }
+      } catch (error) {
+        const errorMsg = `Failed to fix email linking for user ${userInfo.userId}: ${error instanceof Error ? error.message : 'Unknown error'}`;
+        workflow.log.error(errorMsg);
+        errors.push(errorMsg);
+        usersFailed++;
+      }
+
+      // Add delay between recreations to avoid rate limiting
+      if (
+        usersRequiringRecreation.indexOf(userInfo) <
+        usersRequiringRecreation.length - 1
+      ) {
+        workflow.log.info('Waiting 10 seconds before next recreation...');
+        await workflow.sleep('10 seconds');
+      }
+    }
+
+    const finalResult = {
+      success: usersFailed === 0,
+      totalUsersChecked: userContactsWithEmails.length,
+      usersNeedingFix,
+      usersFixed,
+      usersFailed,
+      errors,
+      dryRun: false,
+      usersWhoWouldBeFixed: undefined, // Not needed for live run
+      usersCantBeFixed: undefined, // Not needed for live run
+    };
+
+    workflow.log.info('Email linking fix workflow completed', finalResult);
+    return finalResult;
+  } catch (error) {
+    const errorMsg = `Email linking fix workflow failed: ${error instanceof Error ? error.message : 'Unknown error'}`;
+    workflow.log.error(errorMsg);
+
+    return {
+      success: false,
+      totalUsersChecked: 0,
+      usersNeedingFix: 0,
+      usersFixed: 0,
+      usersFailed: 0,
+      errors: [errorMsg],
+      dryRun: isDryRun,
+      usersWhoWouldBeFixed: [],
+      usersCantBeFixed: [],
     };
   }
 }
