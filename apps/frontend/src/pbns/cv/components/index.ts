@@ -8,6 +8,7 @@ export { CTA } from './cta';
 export { DomainHuntWidget } from './domain-hunt-widget';
 export { CVHuntSection } from './cv-hunt-section';
 export { CVLanding } from './landing';
+export { AnimatedSection, AnimatedChild } from './animated-section';
 
 // Export types for external use - these are interfaces, not default exports
 export type { FamousPerson } from './famous-people';
