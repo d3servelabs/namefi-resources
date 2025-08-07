@@ -1,4 +1,4 @@
-import PaymentMethodsManager from '../../components/payment-method/payment-methods-manager';
+import PaymentMethodsManager from '@/components/payment-method/payment-methods-manager';
 
 export default function PaymentMethodsPage() {
   return (

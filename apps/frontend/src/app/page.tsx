@@ -1,14 +1,12 @@
-'use client';
-
 import type { LandingComponent } from '@/components/search';
 import { Search as VanillaSearch } from '@/components/search';
-import { useOrigin } from '@/components/providers/origin';
+import { getOriginRuntime } from '@/lib/origin';
 
-export default function HomePage() {
-  const origin = useOrigin();
+export default async function HomePage() {
+  const originInfo = await getOriginRuntime();
 
   const LandingComponent: LandingComponent =
-    origin.config.landingPage?.component ?? VanillaSearch;
+    originInfo.config.landingPage?.component ?? VanillaSearch;
 
-  return <LandingComponent origin={origin} />;
+  return <LandingComponent origin={originInfo} />;
 }
