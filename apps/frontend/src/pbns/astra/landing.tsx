@@ -24,7 +24,7 @@ import { useSearchFromQuery } from '@/hooks/use-search-from-query';
 const NO_OP = () => {};
 
 // Main component
-export const Search: LandingComponent = ({ origin }) => {
+export const Landing: LandingComponent = ({ origin }) => {
   const {
     query,
     setQuery,
@@ -169,4 +169,4 @@ export const Search: LandingComponent = ({ origin }) => {
   );
 };
 
-Search.displayName = 'AstraSearch';
+Landing.displayName = 'AstraLanding';

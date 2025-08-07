@@ -104,19 +104,19 @@ const variants = {
   },
 };
 
-// Smooth, liquid-like transition settings
+// Snappy, responsive transition settings
 const getTransition = (
   duration: number,
   delay: number,
   customEase?: number[],
 ) => ({
   type: 'spring',
-  damping: 30,
-  stiffness: 100,
-  mass: 1.2,
+  damping: 25,
+  stiffness: 150, // Increased for snappier response
+  mass: 0.8, // Reduced for quicker acceleration
   duration,
   delay,
-  ease: customEase || [0.43, 0.13, 0.23, 0.96], // Ultra-smooth ease-out-expo curve
+  ease: customEase || [0.25, 0.46, 0.45, 0.94], // Snappier ease-out-quart curve
 });
 
 export const AnimatedSection = ({

@@ -1,5 +1,5 @@
-import { Search as AstraSearch } from '@/pbns/astra/search';
-import { Search as ZeroxCitySearch } from '@/pbns/0x-city/search';
+import { Landing as AstraLanding } from '@/pbns/astra/landing';
+import { Landing as ZeroxCityLanding } from '@/pbns/0x-city/landing';
 import { originConfig as taylorOriginConfig } from '@/pbns/cv/names/taylor';
 import { originConfig as aliOriginConfig } from '@/pbns/cv/names/ali';
 import { originConfig as liOriginConfig } from '@/pbns/cv/names/li';
@@ -25,7 +25,7 @@ export const originConfig: OriginConfigMap = {
       height: 19.8,
     },
     landingPage: {
-      component: AstraSearch,
+      component: AstraLanding,
     },
   },
   thirdParty: {
@@ -49,7 +49,7 @@ export const originConfig: OriginConfigMap = {
         alt: '0x.city Background',
       },
       landingPage: {
-        component: ZeroxCitySearch,
+        component: ZeroxCityLanding,
         headerIsBlurred: true,
       },
     },

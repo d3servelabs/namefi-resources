@@ -79,13 +79,13 @@ export const DomainHuntWidget = ({ domainName }: DomainHuntWidgetProps) => {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  transition={{ duration: 0.3 }}
+                  transition={{ duration: 0.2 }}
                 >
                   <motion.div
                     className="w-16 h-3 bg-slate-600/30 rounded-full"
                     animate={{ opacity: [0.3, 0.6, 0.3] }}
                     transition={{
-                      duration: 1.5,
+                      duration: 1.2,
                       repeat: Number.POSITIVE_INFINITY,
                       ease: 'easeInOut',
                     }}
@@ -94,10 +94,10 @@ export const DomainHuntWidget = ({ domainName }: DomainHuntWidgetProps) => {
                     className="w-12 h-3 bg-slate-600/30 rounded-full"
                     animate={{ opacity: [0.3, 0.6, 0.3] }}
                     transition={{
-                      duration: 1.5,
+                      duration: 1.2,
                       repeat: Number.POSITIVE_INFINITY,
                       ease: 'easeInOut',
-                      delay: 0.2,
+                      delay: 0.15,
                     }}
                   />
                 </motion.div>
@@ -108,7 +108,10 @@ export const DomainHuntWidget = ({ domainName }: DomainHuntWidgetProps) => {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+                  transition={{
+                    duration: 0.25,
+                    ease: [0.25, 0.46, 0.45, 0.94],
+                  }}
                 >
                   {domainData?.tags && domainData.tags.length > 0 && (
                     <TagsDisplay
@@ -136,12 +139,12 @@ export const DomainHuntWidget = ({ domainName }: DomainHuntWidgetProps) => {
             aria-label={isLoading ? 'Loading vote data...' : 'Vote'}
             layout
             transition={{
-              duration: 0.6,
+              duration: 0.35,
               ease: [0.25, 0.46, 0.45, 0.94],
               layout: {
                 type: 'spring',
-                damping: 25,
-                stiffness: 200,
+                damping: 22,
+                stiffness: 250,
               },
             }}
           >
@@ -161,7 +164,7 @@ export const DomainHuntWidget = ({ domainName }: DomainHuntWidgetProps) => {
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{
-                  duration: 0.5,
+                  duration: 0.3,
                   ease: [0.25, 0.46, 0.45, 0.94],
                 }}
               >
