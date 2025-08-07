@@ -92,6 +92,11 @@ export const getPoweredByNamefi3PDomains = async () => {
       'li.cv',
       'muller.cv',
       'kumar.cv',
+      'starts.today',
+      'ends.today',
+      'promos.today',
+      'available.today',
+      'onsale.now',
     ] as NamefiNormalizedDomain[]),
   );
 };
