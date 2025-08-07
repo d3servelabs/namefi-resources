@@ -27,21 +27,19 @@ async function waitForReady(
   while (Date.now() - startTime < maxWaitMs) {
     try {
       const response = await fetch(endpoint);
-      const status = await response.text();
+      const status = await response.status;
 
-      console.log(`Health check status: ${status}`);
-
-      if (status === 'OK') {
+      if (status === 200) {
         console.log('Service is ready!');
         return;
       }
 
-      // Wait 5 seconds before checking again
-      await new Promise((resolve) => setTimeout(resolve, 5000));
+      console.log('Service is not ready yet. Retrying in 5 seconds...');
     } catch (error) {
-      console.log(`Health check failed: ${error}. Retrying...`);
-      await new Promise((resolve) => setTimeout(resolve, 5000));
+      console.log(`Health check failed: ${error}. Retrying in 5 seconds...`);
     }
+    // Wait 5 seconds before checking again
+    await new Promise((resolve) => setTimeout(resolve, 5000));
   }
 
   throw new Error(
@@ -127,6 +125,7 @@ async function main() {
     const readyEndpoint =
       process.env.READY_ENDPOINT || 'http://localhost:42069/ready';
     const isDryRun = process.env.DRY_RUN === 'true';
+    await waitForReady(readyEndpoint, 30);
 
     // Get current schema from the API
     const currentSchema = await getCurrentSchema(readyEndpoint);
