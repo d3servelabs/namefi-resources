@@ -316,6 +316,13 @@
       "when": 1754315129031,
       "tag": "0044_abnormal_puff_adder",
       "breakpoints": true
+    },
+    {
+      "idx": 45,
+      "version": "7",
+      "when": 1754613572459,
+      "tag": "0045_indexed_onchain_data_schemas",
+      "breakpoints": true
     }
   ]
 }

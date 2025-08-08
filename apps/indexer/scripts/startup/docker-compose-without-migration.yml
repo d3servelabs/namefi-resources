@@ -26,7 +26,6 @@ services:
       tags: "env:prod,team:infra,service:ponder-indexer"
       com.datadoghq.ad.logs: '[{"source": "ponder-indexer", "service": "ponder-indexer"}]'
 
-
   nginx:
     image: nginx:stable
     restart: always

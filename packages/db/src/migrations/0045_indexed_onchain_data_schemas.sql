@@ -1,3 +1,25 @@
+CREATE SCHEMA IF NOT EXISTS indexed_onchain_data;
+
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM pg_views WHERE viewname = 'NamefiNft' and schemaname = 'indexed_onchain_data') THEN
+        CREATE VIEW indexed_onchain_data."NamefiNft" AS
+        SELECT
+          1::numeric(78,0) AS token_id,
+          'test.example' AS normalized_domain_name,
+          1733683200::numeric(78,0) AS expiration_time_in_seconds,
+          false AS is_locked,
+          '0x0000000000000000000000000000000000000000' AS owner_address,
+          1 AS chain_id,
+          1::numeric(78,0) AS last_updated_block,
+          1::numeric(78,0) AS last_updated_timestamp;
+    ELSE 
+      RAISE NOTICE 'indexed_onchain_data."NamefiNft" Already exists, skipping...';
+    END IF;
+END $$;
+
+
+
 -- Create database views for NFT data from ponder indexer
 -- This provides a stable interface that insulates the application from schema changes
 -- NamefiNftView - Complete NFT data with dates and metadata

@@ -32,7 +32,7 @@ STARTUP_SCRIPT=$(mktemp)
   echo ""
   echo "# ==== docker-compose.yml ===="
   echo 'cat > docker-compose.yml <<'$EOF_WITH_QUOTES
-  cat $BASE_DIR/startup/docker-compose.yml
+  cat $BASE_DIR/startup/docker-compose-without-migration.yml
   echo ""
   echo 'EOF'
   echo ""
