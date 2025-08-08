@@ -55,22 +55,51 @@ async function migrateSchema(options: MigrationOptions): Promise<void> {
     connectionString: secrets.DATABASE_URL,
   });
 
-  try {
-    await client.connect();
-    console.log('Connected to database');
+  process.on('SIGINT', async () => {
+    console.log('SIGINT signal received, shutting down...');
+    await client.end();
+    process.exit(130);
+  });
 
+  process.on('SIGTERM', async () => {
+    console.log('SIGTERM signal received, shutting down...');
+    await client.end();
+    process.exit(143);
+  });
+
+  try {
     // First wait for the service to be ready
     await waitForReady(options.readyEndpoint, options.maxWaitMinutes);
+
+    await client.connect();
+    console.log('Connected to database');
 
     // Execute the schema migration
     console.log(
       `Migrating views from schema "${options.oldSchema}" to "${options.newSchema}"...`,
     );
 
-    const result = await client.query(
-      'CALL rewrite_views_with_new_schema($1, $2, $3)',
-      [options.oldSchema, options.newSchema, options.isDryRun || false],
-    );
+    // Run transactional steps as separate statements to avoid leaving the connection in a failed state
+    try {
+      await client.query('BEGIN');
+      await client.query(
+        "CALL create_constant_function('current_indexer_schema', 'TEXT', $1)",
+        [options.newSchema],
+      );
+      await client.query('CALL rewrite_views_with_new_schema($1, $2, $3)', [
+        options.oldSchema,
+        options.newSchema,
+        options.isDryRun || false,
+      ]);
+      await client.query('COMMIT');
+    } catch (txError) {
+      try {
+        await client.query('ROLLBACK');
+      } catch (rollbackError) {
+        console.error('Rollback failed:', rollbackError);
+      }
+      throw txError;
+    }
 
     console.log('Schema migration completed successfully');
   } catch (error) {
@@ -84,7 +113,7 @@ async function migrateSchema(options: MigrationOptions): Promise<void> {
 /**
  * Get the current schema from the indexer API
  */
-async function getCurrentSchema(endpoint: string): Promise<string> {
+async function getActiveSchema(endpoint: string): Promise<string> {
   const schemaEndpoint = endpoint.replace('/ready', '/schema');
 
   try {
@@ -108,13 +137,39 @@ async function getCurrentSchema(endpoint: string): Promise<string> {
   }
 }
 
-/**
- * Extract the base schema name from a timestamped schema
- */
-function getBaseSchema(timestampedSchema: string): string {
-  // Extract base schema by removing the timestamp suffix (_YYYYMMDDHHMM)
-  const match = timestampedSchema.match(/^(.+)_\d{12}$/);
-  return match?.[1] ?? timestampedSchema;
+async function getExistingSchema(): Promise<string> {
+  const client = new Client({
+    connectionString: secrets.DATABASE_URL,
+  });
+
+  process.on('SIGINT', async () => {
+    console.log('SIGINT signal received, shutting down...');
+    await client.end();
+    process.exit(130);
+  });
+
+  process.on('SIGTERM', async () => {
+    console.log('SIGTERM signal received, shutting down...');
+    await client.end();
+    process.exit(143);
+  });
+
+  try {
+    await client.connect();
+    const result = await client.query('SELECT current_indexer_schema()');
+    if (
+      !result.rows ||
+      result.rows.length === 0 ||
+      !result.rows[0].current_indexer_schema
+    ) {
+      throw new Error(
+        'Unable to retrieve current indexer schema from database',
+      );
+    }
+    return result.rows[0].current_indexer_schema;
+  } finally {
+    await client.end();
+  }
 }
 
 /**
@@ -128,28 +183,23 @@ async function main() {
     await waitForReady(readyEndpoint, 30);
 
     // Get current schema from the API
-    const currentSchema = await getCurrentSchema(readyEndpoint);
-    const baseSchema = getBaseSchema(currentSchema);
-
-    // For this implementation, we assume the old schema is the base schema
-    // In production, you might want to query the database to find the actual old schema
-    const oldSchema = baseSchema;
-    const newSchema = currentSchema;
+    const activeSchema = await getActiveSchema(readyEndpoint);
+    const existingSchema = await getExistingSchema();
 
     console.log('Migration configuration:');
-    console.log(`  Old schema: ${oldSchema}`);
-    console.log(`  New schema: ${newSchema}`);
+    console.log(`  Old schema: ${existingSchema}`);
+    console.log(`  New schema: ${activeSchema}`);
     console.log(`  Ready endpoint: ${readyEndpoint}`);
     console.log(`  Dry run: ${isDryRun}`);
 
-    if (oldSchema === newSchema) {
+    if (existingSchema === activeSchema) {
       console.log('Old and new schema are the same, skipping migration');
       return;
     }
 
     await migrateSchema({
-      oldSchema,
-      newSchema,
+      oldSchema: existingSchema,
+      newSchema: activeSchema,
       readyEndpoint,
       maxWaitMinutes: 30,
       isDryRun,
