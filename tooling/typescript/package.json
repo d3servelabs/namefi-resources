@@ -2,7 +2,7 @@
   "name": "@namefi-astra/typescript",
   "type": "module",
   "private": true,
-  "dependencies": {
+  "devDependencies": {
     "typescript": "^5.9.2"
   },
   "exports": {

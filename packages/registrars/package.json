@@ -11,8 +11,6 @@
   },
   "scripts": {
     "clean": "git clean -xdf .next .turbo node_modules out dist",
-    "check": "biome check",
-    "check:fix": "biome check --write",
     "typecheck": "tsc --noEmit",
     "scrape:all": "bun src/lib/idn/scripts/scrape.ts",
     "scrape:by-language-codes": "bun src/lib/idn/scripts/scrape-by-language-codes.ts",

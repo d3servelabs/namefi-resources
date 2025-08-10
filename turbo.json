@@ -2,12 +2,6 @@
   "$schema": "https://turbo.build/schema.json",
   "ui": "tui",
   "tasks": {
-    "check:fix": {
-      "dependsOn": ["^check:fix"]
-    },
-    "check": {
-      "dependsOn": ["^check"]
-    },
     "typecheck": {
       "dependsOn": ["^typecheck"]
     },

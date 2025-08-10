@@ -376,7 +376,7 @@
     },
     "tooling/typescript": {
       "name": "@namefi-astra/typescript",
-      "dependencies": {
+      "devDependencies": {
         "typescript": "^5.9.2",
       },
     },

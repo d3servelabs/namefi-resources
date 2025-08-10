@@ -40,7 +40,6 @@
         "noNamespaceImport": "info"
       },
       "correctness": {
-        "noNodejsModules": "info",
         "useImportExtensions": "off",
         "noSwitchDeclarations": "info",
         "noUndeclaredDependencies": "error"
@@ -119,12 +118,7 @@
       "suspicious": {
         "noExplicitAny": "info",
         "noEmptyBlockStatements": "info",
-        "noReactSpecificProps": "off",
-        "noConsole": "info",
-        "noArrayIndexKey": "info"
-      },
-      "nursery": {
-        "useUniqueElementIds": "off"
+        "noConsole": "info"
       }
     }
   },
@@ -132,33 +126,5 @@
     "formatter": {
       "quoteStyle": "single"
     }
-  },
-  "overrides": [
-    {
-      "includes": ["**/apps/backend/**/*.ts"],
-      "javascript": {
-        "globals": ["console", "logger", "createLogger"]
-      },
-      "linter": {
-        "rules": {
-          "suspicious": {
-            "noConsole": { "level": "warn", "options": { "allow": ["log"] } }
-          }
-        }
-      }
-    },
-    {
-      "includes": [
-        "**/apps/backend/**/*.tsx",
-        "**/apps/frontend/app/**/page.tsx"
-      ],
-      "linter": {
-        "rules": {
-          "style": {
-            "noDefaultExport": { "level": "off" }
-          }
-        }
-      }
-    }
-  ]
+  }
 }

@@ -7,8 +7,6 @@
   "type": "module",
   "scripts": {
     "clean": "git clean -xdf .next .turbo node_modules out dist",
-    "check": "biome check",
-    "check:fix": "biome check --write",
     "typecheck": "tsc --noEmit",
     "test": "vitest --run",
     "test:coverage": "bun vitest run --coverage",
