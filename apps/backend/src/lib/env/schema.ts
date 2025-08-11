@@ -46,6 +46,10 @@ export const secretsSchema = z.object({
   LISTMONK_USERNAME: z.string(),
   LISTMONK_PASSWORD: z.string(),
   NAMEFI_ASSET_REPORT_SLACK_WEBHOOK_URL: z.string().optional(),
+
+  // Google Analytics 4 configuration
+  GA4_PROPERTY_ID: z.string().optional(),
+  GA4_KEY_FILE_PATH: z.string().optional(),
 });
 
 export type SecretsSchema = z.infer<typeof secretsSchema>;
