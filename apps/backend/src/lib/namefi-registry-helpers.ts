@@ -43,7 +43,10 @@ export const hashBasedPercentageRollouted = (
  * @param domain - The domain name to check
  * @returns boolean - True if the domain is reserved for widely used brand names
  */
-export const isReserved = (domain: NamefiNormalizedDomain) => {
+export const isReservedKeyword = (keyword: string) => {
+  if (keyword.includes('namefi')) {
+    return true;
+  }
   const reservedCommonPrefixes = [
     'academy',
     'account',
@@ -388,5 +391,5 @@ export const isReserved = (domain: NamefiNormalizedDomain) => {
     ...reservedCommonPrefixes,
     ...reservedForWidelyUsedBrandNames,
     ...reservedSubdomainsForBlockchainProjects,
-  ]).has(domain);
+  ]).has(keyword);
 };

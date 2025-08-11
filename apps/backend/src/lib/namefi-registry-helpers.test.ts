@@ -3,7 +3,7 @@ import { keccak256, toBytes } from 'viem';
 import { describe, expect, it } from 'vitest';
 import {
   hashBasedPercentageRollouted,
-  isReserved,
+  isReservedKeyword,
 } from './namefi-registry-helpers';
 
 /**
@@ -208,7 +208,7 @@ describe('isReserved', () => {
     it(`should return true for sub domains that would look like a company typical official site: ${domain}`, () => {
       const prefix = domain.split('.')[0];
       expect(
-        isReserved(prefix as NamefiNormalizedDomain),
+        isReservedKeyword(prefix as NamefiNormalizedDomain),
         `Expected in the "${domain}", the prefix "${prefix}" should be reserved`,
       ).toBe(true);
     });
@@ -226,7 +226,7 @@ describe('isReserved', () => {
     ];
 
     reservedDomains.forEach((domain) => {
-      expect(isReserved(domain as NamefiNormalizedDomain)).toBe(true);
+      expect(isReservedKeyword(domain as NamefiNormalizedDomain)).toBe(true);
     });
   });
 
@@ -243,7 +243,7 @@ describe('isReserved', () => {
     ];
 
     blockchainReservedDomains.forEach((domain) => {
-      expect(isReserved(domain as NamefiNormalizedDomain)).toBe(true);
+      expect(isReservedKeyword(domain as NamefiNormalizedDomain)).toBe(true);
     });
   });
 });

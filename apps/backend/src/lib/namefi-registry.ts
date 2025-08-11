@@ -18,7 +18,7 @@ import { userQualifiesForDomainNamePromo } from '#lib/user-promo';
 import { getDomainLevels } from './get-domain-levels';
 import {
   hashBasedPercentageRollouted,
-  isReserved,
+  isReservedKeyword,
 } from './namefi-registry-helpers';
 
 import { DomainAvailability } from '@namefi-astra/registrars/lib/abstract-registrar/data/domain-availability';
@@ -186,6 +186,13 @@ export const getDomainListInfo = async (
     }
 
     const { levels } = getDomainLevels(domain);
+    if (levels.length !== 2 && levels.length !== 3) {
+      return 'invalid';
+    }
+    const lastLevel = levels[levels.length - 1];
+    if (lastLevel.includes('namefi')) {
+      return 'unavailable';
+    }
     if (levels.length === 2) {
       return 'sld';
     }
@@ -306,7 +313,7 @@ const _get3ldDomainListInfo = async (
   const prefix = levels[2];
 
   // Check if the domain is reserved
-  if (isReserved(prefix)) {
+  if (isReservedKeyword(prefix)) {
     return unavailableDomainInfo;
   }
 
