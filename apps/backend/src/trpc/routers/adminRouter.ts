@@ -294,7 +294,7 @@ export const adminRouter = createTRPCRouter({
 
       // If the domain name is a test domain, parse it as a subdomain
       const parts = normalizedDomainName.split('.');
-      const lastPart = parts.pop();
+      const lastPart = parts[parts.length - 1] as NamefiNormalizedDomain;
       if (!!lastPart && lastPart.startsWith('test')) {
         parsedDomainName = {
           valid: true,
@@ -304,6 +304,10 @@ export const adminRouter = createTRPCRouter({
           registryType: 'subdomain',
           nearestTraditionalParentDomain: lastPart as NamefiNormalizedDomain,
           domain: normalizedDomainName,
+          publicSuffix: lastPart as NamefiNormalizedDomain,
+          publicSuffixPlusOne: parts
+            .slice(-2)
+            .join('.') as NamefiNormalizedDomain,
         };
       }
 

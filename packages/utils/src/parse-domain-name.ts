@@ -46,6 +46,7 @@ export type ValidDomainParseResult = {
    *   - domain.com -> com
    *   - domain.co.uk -> co.uk
    *   - domain.co.za -> co.za
+   * @deprecated use publicSuffixPlusOne instead
    */
   nearestTraditionalParentDomain: NamefiNormalizedDomain;
   immediateParentDomain: NamefiNormalizedDomain;
@@ -53,6 +54,22 @@ export type ValidDomainParseResult = {
    * The domain name that was analyzed
    */
   domain: NamefiNormalizedDomain;
+
+  /**
+   * The public suffix of the domain (ie; the tld or the sld that are considered to be the public suffix (ie; the domain that is managed by an icann registry))
+   * @example 'com'
+   * @example 'co.uk'
+   * @example 'co.za'
+   */
+  publicSuffix: string;
+
+  /**
+   * The public suffix of the domain plus an extra label (ie; the sld/3ld)
+   * @example 'example.com'
+   * @example 'example.co.uk'
+   * @example 'example.co.za'
+   */
+  publicSuffixPlusOne: string;
 };
 
 /**
@@ -121,6 +138,12 @@ export const parseDomainName = (
     .slice(1)
     .join('.') as NamefiNormalizedDomain;
 
+  const publicSuffix = domainParseResult.topLevelDomains.join('.');
+  const publicSuffixPlusOne = [
+    domainParseResult.domain,
+    ...domainParseResult.topLevelDomains,
+  ].join('.');
+
   return {
     valid: true,
     labels,
@@ -129,5 +152,7 @@ export const parseDomainName = (
     nearestTraditionalParentDomain,
     immediateParentDomain,
     domain: normalizedDomainName,
+    publicSuffix,
+    publicSuffixPlusOne,
   };
 };
