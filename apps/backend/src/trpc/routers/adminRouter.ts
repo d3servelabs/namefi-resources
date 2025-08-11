@@ -17,7 +17,7 @@ import { TEMPORAL_QUEUES } from '#temporal/shared/enums';
 import { ensureNftIsLockedAndBurnByNftName } from '#temporal/workflows/mint.workflow';
 import { extendDomainRegistrationWorkflow } from '#temporal/workflows/domain-ownership/extend-registration.workflow';
 import { fixNftExpirationWorkflow } from '#temporal/workflows/fix-nft-expiration.workflow';
-import { createTRPCRouter, protectedProcedure } from '../base';
+import { adminProcedure, createTRPCRouter, protectedProcedure } from '../base';
 import {
   getPoweredByNamefi3PDomains,
   sldRegistrar,
@@ -29,6 +29,7 @@ import {
 } from '../utils';
 import { config } from '#lib/env';
 import { logger } from '#lib/logger';
+import { getDomainChain } from '#temporal/activities/domain/index';
 
 /**
  * Convert protobuf WorkflowExecutionStatus enum to readable string
@@ -66,28 +67,9 @@ function getWorkflowStatusString(status: any): string {
       return status?.toString() || 'Unknown';
   }
 }
-import { getDomainChain } from '#temporal/activities/domain/index';
-import { pluck, values } from 'ramda';
 
 const MAX_GRACE_PERIOD_DAYS = 90; /* 90 days is the max grace period for any registrar */
 const DATE_MISMATCH_THRESHOLD_SECONDS = 86400;
-
-async function isUserAdmin(privyUserId: string): Promise<boolean> {
-  const privyUser = await privyClient.getUserById(privyUserId);
-  const user = getPrivyUserLinkedEthereumWalletAddresses({ privyUser });
-  const adminWallets = new Set(config.ADMIN_WALLET_ADDRESSES);
-  return user.some((wallet) => adminWallets.has(wallet));
-}
-const adminProcedure = protectedProcedure.use(async ({ ctx, next }) => {
-  const isAdmin = await isUserAdmin(ctx.user.privyUserId);
-  if (!isAdmin) {
-    throw new TRPCError({
-      code: 'UNAUTHORIZED',
-      message: 'user is not an admin',
-    });
-  }
-  return next({ ctx });
-});
 
 export const adminRouter = createTRPCRouter({
   getNftsWithExpirationStatus: adminProcedure

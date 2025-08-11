@@ -6,6 +6,7 @@ import { PrivyClient, type User } from '@privy-io/server-auth';
 import { isNotNil } from 'ramda';
 import { config, secrets } from '#lib/env';
 import { getPoweredByNamefiDomainFromHostname } from '#lib/namefi-registry';
+import { logger } from '#lib/logger';
 
 export const privyClient = new PrivyClient(
   config.PRIVY_APP_ID,
@@ -71,4 +72,26 @@ export function getPrivyUserLinkedEthereumChecksumWalletAddresses({
     );
 
   return privyUserLinkedChecksumWalletAddresses;
+}
+
+export async function isUserAdmin(privyUserId: string): Promise<boolean> {
+  try {
+    const privyUser = await privyClient.getUserById(privyUserId);
+    if (!privyUser) return false;
+    const userWallets = getPrivyUserLinkedEthereumWalletAddresses({
+      privyUser,
+    }).map((a) => a.toLowerCase());
+    if (userWallets.length === 0) return false;
+    const adminWallets = new Set(
+      (config.ADMIN_WALLET_ADDRESSES ?? []).map((a) => a.toLowerCase()),
+    );
+    return userWallets.some((wallet) => adminWallets.has(wallet));
+  } catch (error) {
+    logger.error(
+      { error, privyUserId },
+      'isUserAdmin failed for %s',
+      privyUserId,
+    );
+    return false; // fail closed
+  }
 }

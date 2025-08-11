@@ -12,7 +12,7 @@ import {
   getPoweredByNamefi3PHostnames,
   getPoweredByNamefiDomainFromHostname,
 } from '#lib/namefi-registry';
-import { privyClient } from './utils';
+import { isUserAdmin, privyClient } from './utils';
 import { verifyUserAuthAndGetUser, requireUserAuth } from '#lib/auth';
 
 /**
@@ -255,6 +255,24 @@ export const authedOrPublicProcedure = publicProcedure.use(
 export const protectedProcedure = publicProcedure
   .use(timingMiddleware)
   .use(verifyUserAuthAndCreation);
+
+/**
+ * Admin procedure
+ *
+ * This is the piece we will use to build new queries and mutations on our tRPC API. It will
+ * guarantee that a user querying is authenticated, and that we can access user's data.
+ */
+
+export const adminProcedure = protectedProcedure.use(async ({ ctx, next }) => {
+  const isAdmin = await isUserAdmin(ctx.user.privyUserId);
+  if (!isAdmin) {
+    throw new TRPCError({
+      code: 'UNAUTHORIZED',
+      message: 'user is not an admin',
+    });
+  }
+  return next({ ctx });
+});
 
 /**
  * Middleware for verifying the payload of a privy webhook.
