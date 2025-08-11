@@ -111,29 +111,25 @@ export default withAdminGuard(function AdminPage() {
           </CardContent>
         </Card>
 
-        {/* Analytics - Disabled */}
-        <Card className="h-full opacity-50 cursor-not-allowed">
-          <CardHeader className="pb-3">
-            <div className="flex items-center space-x-3">
-              <div className="p-2 rounded-lg bg-gray-100 text-gray-400">
-                <BarChart3 className="h-5 w-5" />
+        {/* Analytics */}
+        <Link href="/admin/analytics" className="group">
+          <Card className="h-full transition-all hover:shadow-md hover:bg-muted/50">
+            <CardHeader className="pb-3">
+              <div className="flex items-center space-x-3">
+                <div className="p-2 rounded-lg bg-green-100 text-green-600 group-hover:bg-green-200 transition-colors">
+                  <BarChart3 className="h-5 w-5" />
+                </div>
+                <CardTitle className="text-lg">Analytics</CardTitle>
               </div>
-              <div>
-                <CardTitle className="text-lg text-muted-foreground">
-                  Analytics
-                </CardTitle>
-                <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded-full">
-                  Coming Soon
-                </span>
-              </div>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-muted-foreground">
-              View system analytics, user engagement, and performance metrics.
-            </p>
-          </CardContent>
-        </Card>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground">
+                View DNS analytics, query metrics, and comprehensive system
+                insights.
+              </p>
+            </CardContent>
+          </Card>
+        </Link>
 
         {/* Security - Disabled */}
         <Card className="h-full opacity-50 cursor-not-allowed">
