@@ -77,48 +77,6 @@
         rotate(calc((var(--angle) * -1deg) - 360deg));
     }
   }
-
-  --animate-first: moveVertical 30s ease infinite;
-  --animate-second: moveInCircle 20s reverse infinite;
-  --animate-third: moveInCircle 40s linear infinite;
-  --animate-fourth: moveHorizontal 40s ease infinite;
-  --animate-fifth: moveInCircle 20s ease infinite;
-
-  @keyframes moveHorizontal {
-    0% {
-      transform: translateX(-50%) translateY(-10%);
-    }
-    50% {
-      transform: translateX(50%) translateY(10%);
-    }
-    100% {
-      transform: translateX(-50%) translateY(-10%);
-    }
-  }
-
-  @keyframes moveInCircle {
-    0% {
-      transform: rotate(0deg);
-    }
-    50% {
-      transform: rotate(180deg);
-    }
-    100% {
-      transform: rotate(360deg);
-    }
-  }
-
-  @keyframes moveVertical {
-    0% {
-      transform: translateY(-50%);
-    }
-    50% {
-      transform: translateY(50%);
-    }
-    100% {
-      transform: translateY(-50%);
-    }
-  }
 }
 
 :root {
@@ -165,61 +123,14 @@
   --brand-tertiary: oklch(68.01% 0.1583 276.9);
 }
 
-[data-theme="taylor.cv"] {
+[data-theme$=".cv"] {
   --brand-primary: oklch(71.4% 0.203 305.504);
   --brand-secondary: oklch(71.4% 0.203 305.504);
   --brand-tertiary: oklch(71.4% 0.203 305.504);
 }
 
-[data-theme="ali.cv"] {
-  --brand-primary: oklch(71.4% 0.203 305.504);
-  --brand-secondary: oklch(71.4% 0.203 305.504);
-  --brand-tertiary: oklch(71.4% 0.203 305.504);
-}
-
-[data-theme="li.cv"] {
-  --brand-primary: oklch(71.4% 0.203 305.504);
-  --brand-secondary: oklch(71.4% 0.203 305.504);
-  --brand-tertiary: oklch(71.4% 0.203 305.504);
-}
-
-[data-theme="muller.cv"] {
-  --brand-primary: oklch(71.4% 0.203 305.504);
-  --brand-secondary: oklch(71.4% 0.203 305.504);
-  --brand-tertiary: oklch(71.4% 0.203 305.504);
-}
-
-[data-theme="kumar.cv"] {
-  --brand-primary: oklch(71.4% 0.203 305.504);
-  --brand-secondary: oklch(71.4% 0.203 305.504);
-  --brand-tertiary: oklch(71.4% 0.203 305.504);
-}
-
-[data-theme="starts.today"] {
-  --brand-primary: oklch(71.4% 0.203 305.504);
-  --brand-secondary: oklch(71.4% 0.203 305.504);
-  --brand-tertiary: oklch(71.4% 0.203 305.504);
-}
-
-[data-theme="ends.today"] {
-  --brand-primary: oklch(71.4% 0.203 305.504);
-  --brand-secondary: oklch(71.4% 0.203 305.504);
-  --brand-tertiary: oklch(71.4% 0.203 305.504);
-}
-
-[data-theme="promos.today"] {
-  --brand-primary: oklch(71.4% 0.203 305.504);
-  --brand-secondary: oklch(71.4% 0.203 305.504);
-  --brand-tertiary: oklch(71.4% 0.203 305.504);
-}
-
-[data-theme="available.today"] {
-  --brand-primary: oklch(71.4% 0.203 305.504);
-  --brand-secondary: oklch(71.4% 0.203 305.504);
-  --brand-tertiary: oklch(71.4% 0.203 305.504);
-}
-
-[data-theme="onsale.now"] {
+[data-theme$=".today"],
+[data-theme$=".now"] {
   --brand-primary: oklch(71.4% 0.203 305.504);
   --brand-secondary: oklch(71.4% 0.203 305.504);
   --brand-tertiary: oklch(71.4% 0.203 305.504);
