@@ -12,6 +12,7 @@ import { getPoweredByNamefi3PHostnames } from '#lib/namefi-registry';
 import { dnssecRouter } from './dnssec';
 import { config, secrets } from './lib/env';
 import { nsJsonRouter } from './ns-json';
+import { trackingRouter } from './routers/tracking';
 import { webhooksRouter } from './routers/webhooks';
 import { createContext } from './trpc';
 import { appRouter } from './trpc/routers/appRouter';
@@ -65,6 +66,7 @@ app.use(
 );
 
 app.route('v1/ns-json', nsJsonRouter);
+app.route('v1/dns/tracking', trackingRouter);
 app.route('v1/dnssec', dnssecRouter);
 app.route('/webhooks', webhooksRouter);
 
