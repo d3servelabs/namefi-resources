@@ -105,29 +105,20 @@ const variants = {
 };
 
 // Snappy, responsive transition settings
-const getTransition = (
-  duration: number,
-  delay: number,
-  customEase?: number[],
-) => ({
+const getTransition = () => ({
   type: 'spring',
   damping: 25,
-  stiffness: 150, // Increased for snappier response
-  mass: 0.8, // Reduced for quicker acceleration
-  duration,
-  delay,
-  ease: customEase || [0.25, 0.46, 0.45, 0.94], // Snappier ease-out-quart curve
+  stiffness: 150,
+  mass: 0.8,
 });
 
 export const AnimatedSection = ({
   children,
   delay = 0,
-  duration = 0.8,
   triggerOnScroll = true,
   variant = 'fade-up',
   staggerChildren,
   className,
-  customEase,
 }: AnimatedSectionProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, {
@@ -150,11 +141,11 @@ export const AnimatedSection = ({
           ...variants[variant].visible,
           transition: staggerChildren
             ? {
-                ...getTransition(duration, delay, customEase),
+                ...getTransition(),
                 staggerChildren,
                 delayChildren: delay,
               }
-            : getTransition(duration, delay, customEase),
+            : getTransition(),
         },
       }}
     >
@@ -168,9 +159,6 @@ export const AnimatedChild = ({
   children,
   className,
   variant = 'fade-up',
-  duration = 0.6,
-  delay = 0,
-  customEase,
 }: {
   children: ReactNode;
   className?: string;
@@ -193,7 +181,7 @@ export const AnimatedChild = ({
         hidden: variants[variant].hidden,
         visible: {
           ...variants[variant].visible,
-          transition: getTransition(duration, delay, customEase),
+          transition: getTransition(),
         },
       }}
     >

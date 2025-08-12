@@ -6,6 +6,11 @@ import { originConfig as aliCvConfig } from '@/pbns/cv/names/ali';
 import { originConfig as liCvConfig } from '@/pbns/cv/names/li';
 import { originConfig as mullerCvConfig } from '@/pbns/cv/names/muller';
 import { originConfig as kumarCvConfig } from '@/pbns/cv/names/kumar';
+import { originConfig as startsTodayConfig } from '@/pbns/bespoke/domains/starts-today';
+import { originConfig as endsTodayConfig } from '@/pbns/bespoke/domains/ends-today';
+import { originConfig as promosTodayConfig } from '@/pbns/bespoke/domains/promos-today';
+import { originConfig as availableTodayConfig } from '@/pbns/bespoke/domains/available-today';
+import { originConfig as onsaleNowConfig } from '@/pbns/bespoke/domains/onsale-now';
 
 /**
  * Consolidated origin-specific configuration
@@ -19,5 +24,10 @@ export const originConfig: OriginConfigMap = {
     'li.cv': liCvConfig,
     'muller.cv': mullerCvConfig,
     'kumar.cv': kumarCvConfig,
+    'starts.today': startsTodayConfig,
+    'ends.today': endsTodayConfig,
+    'promos.today': promosTodayConfig,
+    'available.today': availableTodayConfig,
+    'onsale.now': onsaleNowConfig,
   },
 };

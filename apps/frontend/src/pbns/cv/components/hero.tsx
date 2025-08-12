@@ -5,6 +5,8 @@ import { Sparkles, ArrowDown, Trophy } from 'lucide-react';
 import Link from 'next/link';
 import { AnimatedSection, AnimatedChild } from './animated-section';
 import { motion } from 'motion/react';
+import { DomainHuntWidget } from '@/pbns/bespoke/components/domain-hunt-widget';
+import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 
 interface HeroProps {
   /** The main name/domain (e.g., "taylor") */
@@ -15,8 +17,6 @@ interface HeroProps {
   backgroundImage: string;
   /** Hunt domain URL for the "View on Namefi Hunt™" button */
   huntUrl: string;
-  /** Domain hunt widget component */
-  domainHuntWidget: ReactNode;
 }
 
 export const Hero = ({
@@ -24,10 +24,10 @@ export const Hero = ({
   rotatingNames,
   backgroundImage,
   huntUrl: _huntUrl,
-  domainHuntWidget,
 }: HeroProps) => {
   // Generate derived values
   const domainName = `${name}.cv`;
+  const normalizedDomainName = namefiNormalizedDomainSchema.parse(domainName);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -104,7 +104,9 @@ export const Hero = ({
             customEase={[0.25, 0.46, 0.45, 0.94]}
           >
             <div className="flex justify-center mb-12 sm:mb-16 px-4 sm:px-0">
-              <div className="w-full sm:w-auto">{domainHuntWidget}</div>
+              <div className="w-full sm:w-auto">
+                <DomainHuntWidget domainName={normalizedDomainName} />
+              </div>
             </div>
           </AnimatedChild>
 

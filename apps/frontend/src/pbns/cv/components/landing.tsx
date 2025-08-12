@@ -43,7 +43,6 @@ export const CVLanding = ({ config }: { config: CVLandingConfig }) => {
         rotatingNames={config.rotatingNames}
         backgroundImage={config.backgroundImage}
         huntUrl={huntUrl}
-        domainHuntWidget={<DomainHuntWidget domainName={domainName} />}
       />
 
       <CVHuntSection name={config.name} />
