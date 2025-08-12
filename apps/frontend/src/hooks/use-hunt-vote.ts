@@ -296,6 +296,15 @@ export function useHuntVoteOperations(options?: {
   const vote = useCallback(
     async (domainName: NamefiNormalizedDomain): Promise<void> => {
       if (!isAuthenticated) {
+        // Track unauthenticated vote attempt for funnel analysis
+        logEventWithInteractionLoggers({
+          name: InteractionLoggingEventName.Vote,
+          properties: {
+            domainName,
+            action: 'attempt_unauthenticated',
+          },
+        });
+
         // Remember what they wanted to vote on
         pendingVoteRef.current = { domainName };
         login();
@@ -304,7 +313,7 @@ export function useHuntVoteOperations(options?: {
       // Normal authenticated flow
       return executeVote(domainName);
     },
-    [isAuthenticated, executeVote, login],
+    [isAuthenticated, executeVote, login, logEventWithInteractionLoggers],
   );
 
   // Internal function to execute unvote (only called when authenticated)

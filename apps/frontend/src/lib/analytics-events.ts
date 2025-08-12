@@ -91,7 +91,7 @@ export type VoteEvent = {
   name: InteractionLoggingEventName.Vote;
   properties: {
     domainName: string;
-    action: 'add' | 'remove';
+    action: 'add' | 'remove' | 'attempt_unauthenticated';
   };
 };
 
