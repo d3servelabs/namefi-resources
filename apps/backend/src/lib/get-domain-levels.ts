@@ -1,6 +1,7 @@
 import { ParseResultType, parseDomain } from 'parse-domain';
 
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import { reverse } from 'ramda';
 
 export type DomainLevels = {
   levels: NamefiNormalizedDomain[];
@@ -28,11 +29,11 @@ export const getDomainLevels = (
     };
   }
 
-  const levels = [
+  const levels = reverse([
     ...domainParseResult.subDomains,
     domainParseResult.domain,
     domainParseResult.topLevelDomains.join('.'),
-  ] as NamefiNormalizedDomain[];
+  ]) as NamefiNormalizedDomain[];
 
   if (levels.length === 2) {
     return {
