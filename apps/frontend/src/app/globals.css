@@ -153,6 +153,36 @@
   --brand-tertiary: oklch(71.4% 0.203 305.504);
 }
 
+[data-theme="starts.today"] {
+  --brand-primary: oklch(71.4% 0.203 305.504);
+  --brand-secondary: oklch(71.4% 0.203 305.504);
+  --brand-tertiary: oklch(71.4% 0.203 305.504);
+}
+
+[data-theme="ends.today"] {
+  --brand-primary: oklch(71.4% 0.203 305.504);
+  --brand-secondary: oklch(71.4% 0.203 305.504);
+  --brand-tertiary: oklch(71.4% 0.203 305.504);
+}
+
+[data-theme="promos.today"] {
+  --brand-primary: oklch(71.4% 0.203 305.504);
+  --brand-secondary: oklch(71.4% 0.203 305.504);
+  --brand-tertiary: oklch(71.4% 0.203 305.504);
+}
+
+[data-theme="available.today"] {
+  --brand-primary: oklch(71.4% 0.203 305.504);
+  --brand-secondary: oklch(71.4% 0.203 305.504);
+  --brand-tertiary: oklch(71.4% 0.203 305.504);
+}
+
+[data-theme="onsale.now"] {
+  --brand-primary: oklch(71.4% 0.203 305.504);
+  --brand-secondary: oklch(71.4% 0.203 305.504);
+  --brand-tertiary: oklch(71.4% 0.203 305.504);
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
