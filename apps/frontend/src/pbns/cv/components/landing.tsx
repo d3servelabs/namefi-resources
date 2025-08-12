@@ -6,7 +6,6 @@ import {
   ExampleProfiles,
   Testimonials,
   CTA,
-  DomainHuntWidget,
   CVHuntSection,
   type FamousPerson,
   type ExampleProfile,

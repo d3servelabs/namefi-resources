@@ -1,11 +1,10 @@
-import type { ReactNode } from 'react';
 import { Button } from '@/components/ui/shadcn/button';
 import { ContainerTextFlip } from '@/components/ui/aceternity/container-text-flip';
 import { Sparkles, ArrowDown, Trophy } from 'lucide-react';
 import Link from 'next/link';
 import { AnimatedSection, AnimatedChild } from './animated-section';
 import { motion } from 'motion/react';
-import { DomainHuntWidget } from '@/pbns/bespoke/components/domain-hunt-widget';
+import { DomainHuntWidget } from '@/pbns/cv/components/domain-hunt-widget';
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 
 interface HeroProps {
