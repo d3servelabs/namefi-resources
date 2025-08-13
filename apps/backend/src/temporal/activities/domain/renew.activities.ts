@@ -58,6 +58,7 @@ import { fromUnixTime } from 'date-fns';
 import { NAMEFI_NFT_CONTRACT_ADDRESS } from '@namefi-astra/utils';
 import { getDomainListInfo } from '#lib/namefi-registry';
 import { computeChargesInUsdFromDomainAvailabilityInfo } from '@namefi-astra/registrars/multi-year-pricing';
+import { config } from '#lib/env';
 
 export type DomainRenewInfo = {
   normalizedDomainName: NamefiNormalizedDomain;
@@ -88,6 +89,18 @@ export async function getDomainsUpForRenewal(): Promise<
     registrarKey: string;
   }[]
 > {
+  // Get 3LD domains from NFT table
+  const allNfts = await db
+    .select({
+      normalizedDomainName: namefiNftOwnersView.normalizedDomainName,
+      chainId: namefiNftOwnersView.chainId,
+    })
+    .from(namefiNftOwnersView)
+    .where(inArray(namefiNftOwnersView.chainId, config.ALLOWED_CHAINS));
+  const allNftsMap = new Map<NamefiNormalizedDomain, number>(
+    allNfts.map((nft) => [nft.normalizedDomainName, nft.chainId]),
+  );
+
   // Get 2LD domains from registrar
   const sldDomains = await sldRegistrar.listAllDomains();
   const sldDomainsWithUpcomingRenewal = sldDomains.filter((domain) => {
@@ -96,18 +109,11 @@ export async function getDomainsUpForRenewal(): Promise<
       new Date(),
     );
     return (
+      allNftsMap.has(domain.domainName) && // Only include domains that are on an allowed chain and has NFT
       daysToExpiration <= SEND_RENEW_REMINDERS_THRESHOLD &&
       daysToExpiration >= 0
     );
   });
-
-  // Get 3LD domains from NFT table
-  const allNfts = await db
-    .select({
-      normalizedDomainName: namefiNftOwnersView.normalizedDomainName,
-      chainId: namefiNftOwnersView.chainId,
-    })
-    .from(namefiNftOwnersView);
 
   // Filter for 3LD domains only
   const _3ldNfts = allNfts.filter((nft) => {
