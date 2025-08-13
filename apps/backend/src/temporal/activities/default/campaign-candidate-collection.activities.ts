@@ -21,7 +21,7 @@ export type Candidate = {
   sharedUrl?: string;
 };
 
-const logger = createLogger({ name: 'candidate-collection' });
+const logger = createLogger({ module: 'campaign-candidate-collection' });
 
 /**
  * Collect candidates from hunt upvotes for campaign

@@ -5,7 +5,7 @@ import { eq } from 'drizzle-orm';
 import { CHAINS, NAMEFI_NFT_CONTRACT_ADDRESS } from '@namefi-astra/utils';
 import { pad, toHex } from 'viem';
 
-const logger = createLogger({ name: 'nft-marketplace-activities' });
+const logger = createLogger({ module: 'nft-marketplace-activities' });
 
 /**
  * Update marketplace for a single domain and clear dirty flag

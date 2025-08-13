@@ -5,7 +5,7 @@ import { secrets } from '../../lib/env';
 import { createLogger } from '#lib/logger';
 import { dnsRcodes } from '../../lib/dns/rcodes';
 
-const logger = createLogger({ context: 'analyticsRouter' });
+const logger = createLogger({ module: 'analytics-router' });
 
 // Helper function to create dimension filters
 function createDimensionFilters(input: {

@@ -14,7 +14,7 @@ import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import type { Registrars } from '@namefi-astra/registrars/registrars/registrars-keys';
 import { createLogger } from '#lib/logger';
 
-const logger = createLogger({ name: 'domain-index-activities' });
+const logger = createLogger({ module: 'domain-index-activities' });
 
 /**
  * Activity to update the domain index by fetching all domains from registrars

@@ -1,9 +1,9 @@
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import { getPublicTweet, type PublicTweet } from './get-public-tweet';
-import { logger as rootLogger } from '#lib/logger';
+import { createLogger } from '#lib/logger';
 
-const logger = rootLogger.child({ context: 'validateTweet' });
+const logger = createLogger({ module: 'validate-tweet' });
 
 // A PublicTweet that has been validated by our verifier
 export type ValidatedPublicTweet = PublicTweet & {

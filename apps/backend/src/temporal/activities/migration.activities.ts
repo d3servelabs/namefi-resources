@@ -7,7 +7,7 @@ import {
 import { and, eq, isNotNull } from 'drizzle-orm';
 import mongoose from 'mongoose';
 import { config, secrets } from '#lib/env';
-import { logger } from '#lib/logger';
+import { createLogger } from '#lib/logger';
 import { AutoRenewPreference, User } from '../../lib/legacy/db/schemas';
 import { privyClient } from '../../trpc/utils';
 import type { User as PrivyUser } from '@privy-io/server-auth';
@@ -21,9 +21,7 @@ type LinkedAccountInput = Parameters<
   typeof privyClient.importUser
 >[0]['linkedAccounts'];
 
-const _logger = logger.child({
-  module: 'legacy-users-import',
-});
+const _logger = createLogger({ module: 'legacy-users-import-activities' });
 
 // MongoDB connection
 const MONGODB_URI = secrets.LEGACY_DB_URL;

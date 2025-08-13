@@ -8,7 +8,7 @@ import { temporalClient } from '../client';
 import { createLogger } from '#lib/logger';
 import type { ScheduleConfig, ScheduleStatus, NamefiSchedule } from './types';
 import type { Workflow } from '@temporalio/workflow';
-import type { Logger } from 'pino';
+import type { Logger } from '#lib/logger';
 
 export abstract class BaseSchedule<T extends Workflow = Workflow>
   implements NamefiSchedule<T>
@@ -16,7 +16,7 @@ export abstract class BaseSchedule<T extends Workflow = Workflow>
   protected logger: Logger;
 
   constructor(public config: ScheduleConfig<T>) {
-    this.logger = createLogger({ name: `schedule-${config.scheduleId}` });
+    this.logger = createLogger({ module: `schedule-${config.scheduleId}` });
   }
 
   /**
@@ -75,12 +75,14 @@ export abstract class BaseSchedule<T extends Workflow = Workflow>
         },
       });
 
-      this.logger.info({
-        message: 'Schedule created successfully',
-        scheduleId: this.config.scheduleId,
-        name: this.config.name,
-        cronExpressions: this.config.cronExpressions,
-      });
+      this.logger.info(
+        {
+          scheduleId: this.config.scheduleId,
+          name: this.config.name,
+          cronExpressions: this.config.cronExpressions,
+        },
+        'Schedule created successfully',
+      );
     } catch (error) {
       this.logger.error(error, 'Failed to create schedule');
       throw error;
@@ -97,11 +99,13 @@ export abstract class BaseSchedule<T extends Workflow = Workflow>
       const handle = temporalClient.schedule.getHandle(this.config.scheduleId);
       await handle.trigger(overlapPolicy);
 
-      this.logger.info({
-        message: 'Schedule triggered manually',
-        scheduleId: this.config.scheduleId,
-        overlapPolicy,
-      });
+      this.logger.info(
+        {
+          scheduleId: this.config.scheduleId,
+          overlapPolicy,
+        },
+        'Schedule triggered manually',
+      );
     } catch (error) {
       this.logger.error(error, 'Failed to trigger schedule');
       throw error;
@@ -131,11 +135,13 @@ export abstract class BaseSchedule<T extends Workflow = Workflow>
       // Update local config
       Object.assign(this.config, updates);
 
-      this.logger.info({
-        message: 'Schedule updated successfully',
-        scheduleId: this.config.scheduleId,
-        updates,
-      });
+      this.logger.info(
+        {
+          scheduleId: this.config.scheduleId,
+          updates,
+        },
+        'Schedule updated successfully',
+      );
     } catch (error) {
       this.logger.error(error, 'Failed to update schedule');
       throw error;
@@ -150,11 +156,13 @@ export abstract class BaseSchedule<T extends Workflow = Workflow>
       const handle = temporalClient.schedule.getHandle(this.config.scheduleId);
       await handle.pause(reason);
 
-      this.logger.info({
-        message: 'Schedule paused',
-        scheduleId: this.config.scheduleId,
-        reason,
-      });
+      this.logger.info(
+        {
+          scheduleId: this.config.scheduleId,
+          reason,
+        },
+        'Schedule paused',
+      );
     } catch (error) {
       this.logger.error(error, 'Failed to pause schedule');
       throw error;
@@ -169,11 +177,13 @@ export abstract class BaseSchedule<T extends Workflow = Workflow>
       const handle = temporalClient.schedule.getHandle(this.config.scheduleId);
       await handle.unpause(reason);
 
-      this.logger.info({
-        message: 'Schedule unpaused',
-        scheduleId: this.config.scheduleId,
-        reason,
-      });
+      this.logger.info(
+        {
+          scheduleId: this.config.scheduleId,
+          reason,
+        },
+        'Schedule unpaused',
+      );
     } catch (error) {
       this.logger.error(error, 'Failed to unpause schedule');
       throw error;
@@ -219,10 +229,12 @@ export abstract class BaseSchedule<T extends Workflow = Workflow>
       const handle = temporalClient.schedule.getHandle(this.config.scheduleId);
       await handle.delete();
 
-      this.logger.info({
-        message: 'Schedule deleted',
-        scheduleId: this.config.scheduleId,
-      });
+      this.logger.info(
+        {
+          scheduleId: this.config.scheduleId,
+        },
+        'Schedule deleted',
+      );
     } catch (error) {
       this.logger.error(error, 'Failed to delete schedule');
       throw error;

@@ -15,7 +15,7 @@ import { sql } from 'drizzle-orm';
 import type { DomainAiAnalysisInsert } from '@namefi-astra/db/types';
 import { nftIdFromDomainName } from '#lib/nft-hash';
 
-const logger = createLogger({ name: 'mongo-ai-migration-activities' });
+const logger = createLogger({ module: 'mongo-ai-migration-activities' });
 
 interface MongoNamefiDocument {
   _id?: any;

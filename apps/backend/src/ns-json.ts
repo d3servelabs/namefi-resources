@@ -22,6 +22,8 @@ import { getPoweredByNamefi3PDomains } from '#lib/namefi-registry';
 
 const nsJsonRouter = new Hono();
 
+const _logger = createLogger({ context: 'NS-JSON' });
+
 nsJsonRouter.get('/healthz', (c) => c.json({ message: 'OK' }));
 
 const USE_MOCK_DNS_TABLE = false;
@@ -48,7 +50,7 @@ const requestQuerySchema = z.object({
 // curl -X GET 'http://localhost:3000/v1/ns-json?name=example.com.&type=1' # Mocked response
 // curl -X GET 'http://localhost:3000/v1/ns-json?name=test.com.&type=1' # Response from Astra DB
 nsJsonRouter.get('/', async (c) => {
-  const _logger = createLogger({ context: 'NS-JSON', query: c.req.query() });
+  _logger.assign({ query: c.req.query() });
   // get qname and qtype from query params
 
   const requestQueryResult = requestQuerySchema.safeParse(c.req.query());
@@ -122,7 +124,7 @@ nsJsonRouter.get('/', async (c) => {
 // fallback route when not captured
 // biome-ignore lint/suspicious/useAwait: to be added
 nsJsonRouter.use('/*', async (c) => {
-  const _logger = createLogger({ context: 'NS-JSON', query: c.req.query() });
+  _logger.assign({ query: c.req.query() });
   _logger.error(`Unhandled request: ${c.req.method} ${c.req.url}`);
   c.status(404);
   return c.json({
@@ -251,25 +253,12 @@ export const getAnswerForDnsQueryMock = (
   if (!qtype) {
     return null;
   }
-  const _logger = createLogger({
-    context: 'NS-JSON',
-    query: {
-      name: qname,
-      type: qtype,
-    },
-  });
+  _logger.assign({ query: { name: qname, type: qtype } });
   const record = mockDnsTable[qname]?.[qtype];
   if (!record) {
     return null;
   }
-  _logger.info(
-    {
-      qname: qname,
-      qtype: qtype,
-      foundRecord: record,
-    },
-    `Found DNS record ${qname} ${qtype}`,
-  );
+  _logger.info({ foundRecord: record }, `Found DNS record ${qname} ${qtype}`);
 
   const result: DnsResponse = {
     RCODE: 0,
@@ -296,10 +285,7 @@ export async function getNsAndSoaRecords(
   recordName: NamefiNormalizedDomain,
   qTypeEnum: RecordType,
 ) {
-  const _logger = createLogger({
-    context: 'NS-JSON',
-    query: { name: recordName, type: qTypeEnum },
-  });
+  _logger.assign({ query: { name: recordName, type: qTypeEnum } });
   if (!matchAny(qTypeEnum, 'NS', 'SOA')) {
     _logger.trace(
       { recordName, qTypeEnum },

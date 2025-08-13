@@ -51,20 +51,24 @@ export const ACTIVITIES = {
     generalAlertNamefi: async (
       args: { title: string; extraData: any; message: string } & any,
     ) => {
-      logger
-        .child({
+      logger.error(
+        {
           context: '[Temporal] generalAlertNamefi',
-        })
-        .error(args);
+          ...args,
+        },
+        'generalAlertNamefi',
+      );
     },
     criticalAlertNamefi: async (
       args: { title: string; extraData: any; message: string } & any,
     ) => {
-      logger
-        .child({
+      logger.fatal(
+        {
           context: '[Temporal] criticalAlertNamefi',
-        })
-        .fatal(args);
+          ...args,
+        },
+        'criticalAlertNamefi',
+      );
     },
     getConfig: async (key: keyof typeof config) => config[key],
     ...FreeClaimActivities,

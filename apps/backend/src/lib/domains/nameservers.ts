@@ -8,7 +8,7 @@ import {
 } from '@namefi-astra/registrars/lib/data/validations';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { config } from '#lib/env';
-import { logger } from '#lib/logger';
+import { createLogger } from '#lib/logger';
 import { sldRegistrar } from '#lib/namefi-registry';
 import { temporalClient } from '../../temporal/client';
 import { TEMPORAL_QUEUES } from '../../temporal/shared';
@@ -17,9 +17,7 @@ import {
   resetNameserversWorkflow,
 } from '../../temporal/workflows';
 
-const _logger = logger.child({
-  service: 'DomainsDnssecService',
-});
+const _logger = createLogger({ module: 'domains-nameservers' });
 
 /**
  * The result of comparing arrays of nameservers to expected nameservers

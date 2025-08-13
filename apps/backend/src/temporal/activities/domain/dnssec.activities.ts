@@ -11,16 +11,14 @@ import {
   getDefaultNameservers,
   getPropagatedNameservers,
 } from '#lib/domains/nameservers';
-import { logger } from '#lib/logger';
+import { createLogger } from '#lib/logger';
 
 export interface DisableDnssecInput {
   domainName: PunycodeDomainName;
   userAddress: ChecksumWalletAddress;
 }
 
-const _logger = logger.child({
-  service: 'DnssecActivities',
-});
+const _logger = createLogger({ module: 'dnssec-activities' });
 
 /**
  * Poll the removal status of the DS record

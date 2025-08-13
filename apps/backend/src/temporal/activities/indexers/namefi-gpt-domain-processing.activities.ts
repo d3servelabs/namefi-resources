@@ -14,7 +14,7 @@ import { eq, or, isNull, inArray, not, and } from 'drizzle-orm';
 import type { DomainAiAnalysisInsert } from '@namefi-astra/db/types';
 import { TEST_CHAINS, type NamefiNormalizedDomain } from '@namefi-astra/utils';
 
-const logger = createLogger({ name: 'ai-analysis-activities' });
+const logger = createLogger({ module: 'namefi-gpt-domain-processing' });
 
 /**
  * Get all domains that need AI processing

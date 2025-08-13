@@ -20,7 +20,7 @@ import type {
 } from '../temporal/workflows/migration/mongo-ai-migration.workflow';
 import { fileURLToPath } from 'node:url';
 
-const logger = createLogger({ name: 'migrate-mongo-ai-data-script' });
+const logger = createLogger({ module: 'migrate-mongo-ai-data' });
 
 interface ScriptOptions {
   dryRun: boolean;

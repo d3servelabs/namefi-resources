@@ -17,7 +17,7 @@ async function getOpenAiClient(): Promise<OpenAi> {
   return openaiClient;
 }
 
-const logger = createLogger({ name: 'ai-domain-analysis' });
+const logger = createLogger({ module: 'ai-domain-analysis' });
 export const NAMEFI_GPT_VERSION = '3.0.0'; // This is the version of the namefi_gpt from 3.0.0 (when we migrated from mongo) and above. !change this when modifying the model.
 export const GPT_MODEL = 'gpt-4-turbo';
 

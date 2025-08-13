@@ -17,7 +17,7 @@ import { sendMail } from '../../../mail/mail-client';
 import { FreeClaimsNotification } from '../../../mail/templates/free-claims-notification';
 import { maybeGetUserEmail } from '../notify.activities';
 
-const logger = createLogger({ name: 'ox-city-grant-claims-activities' });
+const logger = createLogger({ module: 'campaign-grant-claims' });
 
 export type GrantClaimAtomicInput = {
   campaignKey: CampaignKey;

@@ -1,6 +1,6 @@
-import { logger as rootLogger } from '#lib/logger';
+import { createLogger } from '#lib/logger';
 
-export const logger = rootLogger.child({
+export const logger = createLogger({
   module: 'hunt-helpers',
 });
 

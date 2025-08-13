@@ -17,6 +17,8 @@ import { webhooksRouter } from './routers/webhooks';
 import { createContext } from './trpc';
 import { appRouter } from './trpc/routers/appRouter';
 import { validateAndCreateSearchAttributes } from '#temporal/operator/search-attributes';
+import { randomBytes } from 'node:crypto';
+import { getConnInfo } from '@hono/node-server/conninfo';
 
 const app = new Hono();
 const logger = createLogger({ module: 'index', context: 'Main' });
@@ -58,7 +60,18 @@ app.use(async (...args) => {
   })(...args);
 });
 app.use(prettyJSON());
-app.use(pinoLoggerHono(logger));
+app.use(async (c, next) => {
+  const requestId = c.req.header('x-request-id') ?? genRequestId();
+  const connInfo = getConnInfo(c);
+  logger.assign({
+    ip: connInfo.remote.address ?? 'unknown',
+    connInfo,
+    requestId,
+  });
+  return next();
+});
+// app.use(pinoLoggerHono(logger as any));
+
 app.use(
   '/trpc/*',
   trpcServer({
@@ -134,5 +147,8 @@ async function main() {
     },
   );
 }
-
 main();
+
+function genRequestId() {
+  return `${Date.now().toString()}-${randomBytes(8).toString('base64url')}`;
+}

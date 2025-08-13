@@ -15,13 +15,13 @@ import {
   getDnssecStatusDetails,
 } from '#lib/domains/dnssec';
 
-import { logger } from '#lib/logger';
+import { createLogger, logger } from '#lib/logger';
 
 import { TRPCError } from '@trpc/server';
 import { createTRPCRouter, protectedProcedure } from '../../base';
 import { assertAuthenticatedUserIsDomainOwner } from '../../guards/assert-domain-owner';
 
-const _logger = logger.child({ module: 'domainDnssecRouter' });
+const _logger = createLogger({ module: 'domain-dnssec-router' });
 
 export const domainDnssecRouter = createTRPCRouter({
   /**
@@ -34,21 +34,18 @@ export const domainDnssecRouter = createTRPCRouter({
       }),
     )
     .query(async ({ input, ctx }) => {
-      const methodLogger = _logger.child({ method: 'getDomainDnssecDetails' });
-      methodLogger.info(
-        { domainName: input.domainName },
-        'Getting DNSSEC details for domain',
-      );
+      _logger.assign({
+        method: 'getDomainDnssecDetails',
+        domainName: input.domainName,
+      });
+      _logger.info('Getting DNSSEC details for domain');
 
       await assertAuthenticatedUserIsDomainOwner(input.domainName, ctx.user);
       const dnssecStatusDetails = await getDnssecStatusDetails(
         toPunycodeDomainName(input.domainName),
       );
 
-      methodLogger.info(
-        { domainName: input.domainName },
-        'Successfully retrieved DNSSEC details',
-      );
+      _logger.info('Successfully retrieved DNSSEC details');
       return dnssecStatusDetails;
     }),
 
@@ -58,19 +55,13 @@ export const domainDnssecRouter = createTRPCRouter({
   enableDnssec: protectedProcedure
     .input(z.object({ domainName: namefiNormalizedDomainSchema }))
     .mutation(async ({ input, ctx }) => {
-      const methodLogger = _logger.child({ method: 'enableDnssec' });
-      methodLogger.info(
-        { domainName: input.domainName },
-        'Enabling DNSSEC for domain',
-      );
+      _logger.assign({ method: 'enableDnssec', domainName: input.domainName });
+      _logger.info('Enabling DNSSEC for domain');
 
       await assertAuthenticatedUserIsDomainOwner(input.domainName, ctx.user);
       await enableAutoDnssecForDomain(toPunycodeDomainName(input.domainName));
 
-      methodLogger.info(
-        { domainName: input.domainName },
-        'Successfully enabled DNSSEC',
-      );
+      _logger.info('Successfully enabled DNSSEC');
     }),
 
   /**
@@ -79,11 +70,8 @@ export const domainDnssecRouter = createTRPCRouter({
   disableDnssec: protectedProcedure
     .input(z.object({ domainName: namefiNormalizedDomainSchema }))
     .mutation(async ({ input, ctx }) => {
-      const methodLogger = _logger.child({ method: 'disableDnssec' });
-      methodLogger.info(
-        { domainName: input.domainName },
-        'Disabling DNSSEC for domain',
-      );
+      _logger.assign({ method: 'disableDnssec', domainName: input.domainName });
+      _logger.info('Disabling DNSSEC for domain');
 
       await assertAuthenticatedUserIsDomainOwner(input.domainName, ctx.user);
       await disableDnssecForDomain(
@@ -91,10 +79,7 @@ export const domainDnssecRouter = createTRPCRouter({
         ctx.user.id,
       );
 
-      methodLogger.info(
-        { domainName: input.domainName },
-        'Successfully disabled DNSSEC',
-      );
+      _logger.info('Successfully disabled DNSSEC');
     }),
 
   /**
@@ -115,17 +100,13 @@ export const domainDnssecRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ input, ctx }) => {
-      const methodLogger = _logger.child({
+      _logger.assign({
         method: 'associateDelegationSigner',
+        domainName: input.domainName,
+        algorithm: input.signingConfig.algorithm,
+        keyTag: input.signingConfig.keyTag,
       });
-      methodLogger.info(
-        {
-          domainName: input.domainName,
-          algorithm: input.signingConfig.algorithm,
-          keyTag: input.signingConfig.keyTag,
-        },
-        'Associating delegation signer with domain',
-      );
+      _logger.info('Associating delegation signer with domain');
 
       await assertAuthenticatedUserIsDomainOwner(input.domainName, ctx.user);
       await associateDelegationSigner(
@@ -133,14 +114,7 @@ export const domainDnssecRouter = createTRPCRouter({
         input.signingConfig,
       );
 
-      methodLogger.info(
-        {
-          domainName: input.domainName,
-          algorithm: input.signingConfig.algorithm,
-          keyTag: input.signingConfig.keyTag,
-        },
-        'Successfully associated delegation signer',
-      );
+      _logger.info('Successfully associated delegation signer');
     }),
 
   /**

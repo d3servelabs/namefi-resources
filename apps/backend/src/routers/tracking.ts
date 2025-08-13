@@ -20,6 +20,7 @@ import { parseDomainName } from '@namefi-astra/utils/parse-domain-name';
 import { toPunycodeFqdn } from '@namefi-astra/registrars/lib/data/validations';
 
 const trackingRouter = new Hono();
+const _logger = createLogger({ context: 'TRACKING' });
 
 const requestQuerySchema = z.object({
   name: z
@@ -31,7 +32,7 @@ const requestQuerySchema = z.object({
 trackingRouter.get('/healthz', (c) => c.json({ message: 'OK' }));
 
 trackingRouter.get('/', async (c) => {
-  const _logger = createLogger({ context: 'TRACKING', query: c.req.query() });
+  _logger.assign({ query: c.req.query() });
 
   const parsedQuery = requestQuerySchema.safeParse(c.req.query());
   if (!parsedQuery.success) {

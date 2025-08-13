@@ -9,6 +9,8 @@ import { createLogger } from '#lib/logger';
 
 const dnssecRouter = new Hono();
 
+const _logger = createLogger({ context: 'DNSSEC' });
+
 dnssecRouter.get('/healthz', (c) => c.json({ message: 'OK' }));
 
 interface DnssecResponse {
@@ -20,7 +22,7 @@ interface DnssecResponse {
 //
 // biome-ignore lint/suspicious/useAwait: <explanation>
 dnssecRouter.get('/', async (c) => {
-  const _logger = createLogger({ context: 'DNSSEC', query: c.req.query() });
+  _logger.assign({ query: c.req.query() });
   _logger.info('Received request');
 
   const qnameResult = fqdnLowercaseSchema.safeParse(c.req.query('name'));
@@ -69,7 +71,7 @@ dnssecRouter.get('/', async (c) => {
 // fallback route when not captured
 // biome-ignore lint/suspicious/useAwait: to be added
 dnssecRouter.use('/*', async (c) => {
-  const _logger = createLogger({ context: 'DNSSEC', query: c.req.query() });
+  _logger.assign({ query: c.req.query() });
   _logger.error(`Unhandled request: ${c.req.method} ${c.req.url}`);
   c.status(404);
   return c.json({

@@ -48,7 +48,7 @@ export const sldRegistrar = createRegistrarService({
     accountId: secrets.DYNADOT_ACCOUNT_ID,
     baseUrl: config.DYNADOT_BASE_URL,
   },
-  customLogger: logger,
+  customLogger: logger as any,
   getRegistrarKeyForExistingDomain: async (domain: NamefiNormalizedDomain) => {
     const indexedDomain = await db.query.indexedDomainsTable.findFirst({
       where: eq(indexedDomainsTable.normalizedDomainName, domain),

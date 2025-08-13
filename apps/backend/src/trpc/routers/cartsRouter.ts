@@ -28,7 +28,7 @@ import {
   checkItemClaimEligibility,
 } from '#temporal/activities/free-claim.activities';
 
-const _logger = createLogger({ context: 'cartsRouter' });
+const _logger = createLogger({ module: 'carts-router' });
 
 export const cartsRouter = createTRPCRouter({
   // Get cart items for the current user
@@ -94,11 +94,9 @@ export const cartsRouter = createTRPCRouter({
       ),
     )
     .mutation(async ({ ctx, input }) => {
-      const methodLogger = _logger.child({
-        method: 'addItems',
-      });
+      _logger.assign({ method: 'addItems' });
 
-      methodLogger.info(
+      _logger.info(
         {
           input: input.map((item) => ({
             normalizedDomainName: item.normalizedDomainName,
@@ -178,8 +176,6 @@ export const cartsRouter = createTRPCRouter({
           return baseItem;
         }),
       );
-
-      methodLogger.info({ itemsToInsert }, 'Items to insert');
 
       // Insert items with conflict handling and return the inserted/updated items
       const insertResult = await db

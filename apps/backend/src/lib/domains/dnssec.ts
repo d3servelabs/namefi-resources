@@ -21,7 +21,7 @@ import { isEmpty, isNil, isNotEmpty, isNotNil } from 'ramda';
 import { parse as tldtsParse } from 'tldts';
 import { z } from 'zod';
 import { config } from '#lib/env';
-import { logger } from '#lib/logger';
+import { createLogger } from '#lib/logger';
 import {
   getPoweredByNamefi3PDomains,
   sldRegistrar,
@@ -37,9 +37,7 @@ util.inspect.defaultOptions.depth = null;
 
 const execAsync = promisify(exec);
 
-const _logger = logger.child({
-  service: 'DomainsDnssecService',
-});
+const _logger = createLogger({ module: 'domains-dnssec' });
 
 // #region Delegation Signer
 export async function associateDelegationSigner(
@@ -262,16 +260,13 @@ export async function enableAutoDnssecForDomain(
   domainName: PunycodeDomainName,
   userId?: string,
 ) {
-  const trail: any = {
+  _logger.assign({
     operation: 'ENABLE_DNSSEC',
     actor: userId ? `user:${userId}` : 'system',
     domainName,
-  };
+  });
 
-  _logger.debug(
-    trail,
-    `Submitting Request to enable DNSSEC for domain ${domainName}`,
-  );
+  _logger.debug(`Submitting Request to enable DNSSEC for domain ${domainName}`);
 
   try {
     await temporalClient.workflow.start(enableDnssecWorkflow, {
@@ -285,10 +280,10 @@ export async function enableAutoDnssecForDomain(
       ],
     });
 
-    _logger.debug(trail, 'EnableDnssec Temporal Workflow Started Successfully');
+    _logger.debug('EnableDnssec Temporal Workflow Started Successfully');
   } catch (error) {
-    _logger.fatal(trail, 'EnableDnssec Temporal Workflow Start Failed');
-    _logger.error('Temporal Error', error);
+    _logger.fatal('EnableDnssec Temporal Workflow Start Failed');
+    _logger.error({ error }, 'Temporal Error');
     throw error;
   }
 }
@@ -347,14 +342,13 @@ export async function disableDnssecForDomain(
   domainName: PunycodeDomainName,
   userId?: string,
 ) {
-  const trail: any = {
+  _logger.assign({
     operation: 'REMOVE_DNSSEC',
     actor: userId ? `user:${userId}` : 'system',
     domainName,
-  };
+  });
 
   _logger.debug(
-    trail,
     `Submitting Request to disable DNSSEC for domain ${domainName}`,
   );
 
@@ -370,12 +364,9 @@ export async function disableDnssecForDomain(
       ],
     });
 
-    _logger.debug(
-      trail,
-      'DisableDnssec Temporal Workflow Started Successfully',
-    );
+    _logger.debug('DisableDnssec Temporal Workflow Started Successfully');
   } catch (error) {
-    _logger.fatal(trail, 'DisableDnssec Temporal Workflow Start Failed');
+    _logger.fatal('DisableDnssec Temporal Workflow Start Failed');
     _logger.error('Temporal Error', error);
     throw error;
   }

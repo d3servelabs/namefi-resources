@@ -1,8 +1,24 @@
+/** biome-ignore-all lint/suspicious/noExplicitAny: pino types are not strictly typed */
+import { AsyncLocalStorage } from 'node:async_hooks';
 import * as _inspector from 'node:inspector';
 import pino, { type DestinationStream } from 'pino';
 import pinoPretty from 'pino-pretty';
 import { dropWhile, isNotNil, mergeDeepRight, pickBy } from 'ramda';
 import superjson from 'superjson';
+
+const _extraBindingsStore = new AsyncLocalStorage<Record<string, any>>();
+
+/**
+ * Binds the log data to the logger.
+ * @param bindings - The bindings to bind to the logger.
+ */
+function _bindLogData(bindings: Record<string, any>) {
+  const currentBindings = _extraBindingsStore.getStore();
+  _extraBindingsStore.enterWith({
+    ...(currentBindings ?? {}),
+    ...bindings,
+  });
+}
 
 Error.stackTraceLimit = 100;
 
@@ -11,12 +27,19 @@ if (process.env.INSPECTOR_PORT) {
   inspector.open(Number(process.env.INSPECTOR_PORT));
 }
 
-export const logger = pino(
+type _Logger = pino.Logger & {
+  assign: (bindings: Record<string, any>) => void;
+};
+
+export type Logger = Omit<_Logger, 'child'>;
+
+const _logger = pino(
   {
     level: process.env.LOG_LEVEL || 'trace',
     mixin(obj: any, level: number, logger: any) {
+      const bindings = _extraBindingsStore.getStore() ?? {};
       const error = (obj.error as Error) ?? (obj.err as Error);
-      const extras: Record<string, any> = { err: undefined };
+      const extras: Record<string, any> = { err: undefined, ...bindings };
       if (error) {
         extras.error = {
           ...error,
@@ -69,7 +92,7 @@ export const logger = pino(
     },
   },
   pino.multistream(getStreams()),
-);
+) as _Logger;
 
 type StreamsArray = Parameters<typeof pino.multistream>[0];
 function getStreams(): StreamsArray {
@@ -128,4 +151,22 @@ function getStreams(): StreamsArray {
   return streams;
 }
 
-export const createLogger = logger.child.bind(logger);
+_logger.assign = _bindLogData;
+
+/**
+ * !!IMPORTANT!! don't add async bindings to this function, use the `assign` method instead
+ * because it could leek context if it's called outside of a request;
+ * Creates a new logger with the given bindings.
+ * @param localBindings - The bindings to bind to the logger.
+ * @returns The new logger.
+ */
+export const createLogger = (localBindings: Record<string, any> = {}) => {
+  const child = _logger.child({
+    ...localBindings,
+  }) as unknown as Logger;
+
+  child.assign = _bindLogData.bind(child);
+  return child;
+};
+
+export const logger = _logger as Logger;
