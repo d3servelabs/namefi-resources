@@ -2,7 +2,7 @@ import { db, linkSharesTable } from '@namefi-astra/db';
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 import { and, eq } from 'drizzle-orm';
 import { z } from 'zod';
-import { createTRPCRouter, protectedProcedure } from '../base';
+import { createTRPCRouter, protectedProcedure, publicProcedure } from '../base';
 
 // Input schemas
 const submitShareSchema = z.object({
@@ -18,7 +18,7 @@ const hasUserSharedSchema = z.object({
 
 export const shareRouter = createTRPCRouter({
   /**
-   * Submit a social media share
+   * Submit a social media share (authenticated)
    */
   submitShare: protectedProcedure
     .input(submitShareSchema)
@@ -29,6 +29,32 @@ export const shareRouter = createTRPCRouter({
         .insert(linkSharesTable)
         .values({
           userId: ctx.user.id,
+          normalizedDomainName,
+          postUrl,
+          sharedUrl,
+          campaignKey: campaignKey || null,
+        })
+        .returning();
+
+      return {
+        id: share.id,
+        sharedUrl,
+        success: true,
+      };
+    }),
+
+  /**
+   * Submit a social media share (anonymous)
+   */
+  submitShareAnonymous: publicProcedure
+    .input(submitShareSchema)
+    .mutation(async ({ input }) => {
+      const { normalizedDomainName, postUrl, sharedUrl, campaignKey } = input;
+
+      const [share] = await db
+        .insert(linkSharesTable)
+        .values({
+          userId: null, // Anonymous share
           normalizedDomainName,
           postUrl,
           sharedUrl,

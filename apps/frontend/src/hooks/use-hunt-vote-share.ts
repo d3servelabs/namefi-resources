@@ -24,7 +24,7 @@ function buildShareUrl(domainName: string, campaignKey?: string): string {
   return `${origin}?${params.toString()}`;
 }
 
-interface ShareConfig {
+export interface ShareConfig {
   // Enable/disable sharing entirely
   enabled?: boolean;
 
@@ -41,37 +41,7 @@ interface ShareConfig {
   trackShares?: boolean;
 }
 
-interface UseHuntShareDialogReturn {
-  // Dialog state
-  isOpen: boolean;
-  currentDomain: NamefiNormalizedDomain | null;
-
-  // Actions (snappy UI focused)
-  openDialog: (domainName: NamefiNormalizedDomain) => void;
-  closeDialog: () => void;
-
-  // Vote integration
-  onVoteSuccess: (domainName: NamefiNormalizedDomain) => void;
-
-  // Share eligibility
-  isEligible: (
-    domainName: NamefiNormalizedDomain,
-    campaignKey?: string,
-  ) => boolean;
-
-  // Share status & submission
-  hasShared: boolean;
-  isCheckingStatus: boolean;
-  submitShare: (postUrl: string) => Promise<void>;
-  isSubmitting: boolean;
-
-  // Generated share URL (for UI display)
-  shareUrl: string | null;
-}
-
-export function useHuntShareDialog(
-  config: ShareConfig = {},
-): UseHuntShareDialogReturn {
+export function useHuntShareDialog(config: ShareConfig = {}) {
   const trpc = useTRPC();
   const queryClient = useQueryClient();
   const { isAuthenticated } = useAuth();
@@ -137,7 +107,7 @@ export function useHuntShareDialog(
     return buildShareUrl(currentDomain, finalConfig.campaignKey);
   }, [currentDomain, finalConfig.campaignKey]);
 
-  // Submit share mutation
+  // Submit share mutation (authenticated)
   const submitShareMutation = useMutation({
     ...trpc.share.submitShare.mutationOptions(),
     onSuccess: (data, variables) => {
@@ -160,6 +130,30 @@ export function useHuntShareDialog(
           }),
         });
       }
+
+      // Close dialog and show success
+      closeDialog();
+      toast.success('Share recorded successfully!');
+    },
+    onError: (error) => {
+      toast.error(`Failed to record share: ${error.message}`);
+    },
+  });
+
+  // Submit share mutation (anonymous)
+  const submitShareAnonymousMutation = useMutation({
+    ...trpc.share.submitShareAnonymous.mutationOptions(),
+    onSuccess: (data, variables) => {
+      // Track completion event
+      logEventWithInteractionLoggers({
+        name: InteractionLoggingEventName.ShareCompleted,
+        properties: {
+          domainName: currentDomain ?? '',
+          campaignKey: finalConfig.campaignKey,
+          sharedUrl: data.sharedUrl,
+          postUrl: variables.postUrl,
+        },
+      });
 
       // Close dialog and show success
       closeDialog();
@@ -216,18 +210,29 @@ export function useHuntShareDialog(
     [isEligible, finalConfig.campaignKey, logEventWithInteractionLoggers],
   );
 
-  // Submit share (only if tracking is enabled)
+  // Submit share (supports both authenticated and anonymous)
   const submitShare = useCallback(
     async (postUrl: string) => {
       if (!currentDomain || !shareUrl) return;
 
       if (finalConfig.trackShares) {
-        await submitShareMutation.mutateAsync({
-          normalizedDomainName: currentDomain,
-          postUrl,
-          sharedUrl: shareUrl,
-          campaignKey: finalConfig.campaignKey,
-        });
+        if (isAuthenticated) {
+          // Use authenticated endpoint
+          await submitShareMutation.mutateAsync({
+            normalizedDomainName: currentDomain,
+            postUrl,
+            sharedUrl: shareUrl,
+            campaignKey: finalConfig.campaignKey,
+          });
+        } else {
+          // Use anonymous endpoint
+          await submitShareAnonymousMutation.mutateAsync({
+            normalizedDomainName: currentDomain,
+            postUrl,
+            sharedUrl: shareUrl,
+            campaignKey: finalConfig.campaignKey,
+          });
+        }
       } else {
         // Just track the GA event and close dialog
         logEventWithInteractionLoggers({
@@ -248,7 +253,9 @@ export function useHuntShareDialog(
       shareUrl,
       finalConfig.campaignKey,
       finalConfig.trackShares,
+      isAuthenticated,
       submitShareMutation,
+      submitShareAnonymousMutation,
       logEventWithInteractionLoggers,
       closeDialog,
     ],
@@ -262,6 +269,7 @@ export function useHuntShareDialog(
     // Actions
     openDialog,
     closeDialog,
+    onClose: closeDialog,
 
     // Vote integration
     onVoteSuccess,
@@ -273,11 +281,16 @@ export function useHuntShareDialog(
     hasShared,
     isCheckingStatus,
     submitShare,
-    isSubmitting: submitShareMutation.isPending,
+    onSubmit: submitShare,
+    isSubmitting:
+      submitShareMutation.isPending || submitShareAnonymousMutation.isPending,
 
     // Share URL
     shareUrl,
   };
 }
 
-export type UseHuntShareDialog = ReturnType<typeof useHuntShareDialog>;
+export const defaultShareConfig: ShareConfig = {
+  enabled: true,
+  trackShares: true,
+};

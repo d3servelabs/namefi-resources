@@ -2,63 +2,89 @@
 
 import { useMemo } from 'react';
 import { useAuth } from '@/hooks/use-auth';
-import { useHuntVoteOperations, type UseHuntVote } from './use-hunt-vote';
+import { useHuntVote, type HuntVoteOptions } from './use-hunt-vote';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import { defaultShareConfig } from './use-hunt-vote-share';
 
-export interface HuntVoteRowStatus {
-  huntVote: UseHuntVote;
-  isBusy: boolean;
-  canVote: boolean;
+export interface HuntVoteRowOptions extends HuntVoteOptions {
+  domain?: NamefiNormalizedDomain;
 }
 
 /**
  * Hook for managing voting state for a specific domain row
  * Similar to useCartRow and useWishlistRow patterns
  */
-export function useHuntVoteRow(
-  domain?: NamefiNormalizedDomain,
-  options?: { onVoteSuccess?: (domainName: NamefiNormalizedDomain) => void },
-): HuntVoteRowStatus {
-  const huntVoteOperations = useHuntVoteOperations(options);
+export function useHuntVoteRow({ domain, ...options }: HuntVoteRowOptions) {
+  const huntVote = useHuntVote({
+    ...options,
+    shareConfig: {
+      ...defaultShareConfig,
+      ...options.shareConfig,
+    },
+  });
   const { isAuthenticated } = useAuth();
 
-  const huntVote = useMemo(
+  const huntVoteRow = useMemo(
     () => ({
-      vote: huntVoteOperations.vote,
-      unvote: huntVoteOperations.unvote,
-      toggleVote: huntVoteOperations.toggleVote,
-      isDomainBusy: huntVoteOperations.isDomainBusy,
-      isVoting: huntVoteOperations.isVoting,
-      isUnvoting: huntVoteOperations.isUnvoting,
-      busy: huntVoteOperations.busy,
+      upvote: huntVote.upvote,
+      unvote: huntVote.unvote,
+      toggleVote: huntVote.toggleVote,
+      isVotePending: huntVote.isVotePending,
+      busy: huntVote.busy,
+      choiceDialog: huntVote.choiceDialog,
+      shareDialog: huntVote.shareDialog,
     }),
     [
-      huntVoteOperations.vote,
-      huntVoteOperations.unvote,
-      huntVoteOperations.toggleVote,
-      huntVoteOperations.isDomainBusy,
-      huntVoteOperations.isVoting,
-      huntVoteOperations.isUnvoting,
-      huntVoteOperations.busy,
+      huntVote.upvote,
+      huntVote.unvote,
+      huntVote.toggleVote,
+      huntVote.isVotePending,
+      huntVote.busy,
+      huntVote.choiceDialog,
+      huntVote.shareDialog,
     ],
   );
 
-  return useMemo<HuntVoteRowStatus>(() => {
+  return useMemo(() => {
+    const canVote = isAuthenticated;
+    const toggleVote = async (currentlyVoted: boolean) => {
+      if (!domain) {
+        throw new Error('Domain should be provided');
+      }
+      await huntVoteRow.toggleVote(domain, currentlyVoted);
+    };
+    const upvote = () => {
+      if (!domain) {
+        throw new Error('Domain should be provided');
+      }
+      huntVoteRow.upvote(domain);
+    };
+    const unvote = () => {
+      if (!domain) {
+        throw new Error('Domain should be provided');
+      }
+      huntVoteRow.unvote(domain);
+    };
+
+    const isVotePending = domain ? huntVoteRow.isVotePending(domain) : false;
+
     if (!domain) {
       return {
-        huntVote,
-        isBusy: false,
-        canVote: isAuthenticated,
+        ...huntVoteRow,
+        upvote,
+        unvote,
+        toggleVote,
+        isVotePending,
+        canVote,
       };
     }
-
-    const isBusy = huntVote.isDomainBusy(domain);
-    const canVote = isAuthenticated;
-
     return {
-      huntVote,
-      isBusy,
+      ...huntVoteRow,
+      upvote,
+      unvote,
+      toggleVote,
+      isVotePending,
       canVote,
     };
-  }, [domain, huntVote, isAuthenticated]);
+  }, [domain, huntVoteRow, isAuthenticated]);
 }

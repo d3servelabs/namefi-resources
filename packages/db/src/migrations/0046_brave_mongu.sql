@@ -1,0 +1,1 @@
+ALTER TABLE "link_shares" ALTER COLUMN "user_id" DROP NOT NULL;

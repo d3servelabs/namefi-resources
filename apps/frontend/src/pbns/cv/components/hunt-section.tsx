@@ -10,7 +10,8 @@ import { DomainsList } from '@/components/hunt/domains-list';
 import { CampaignDomainsList } from '@/components/hunt/campaign-domains-list';
 import { SubmitDomainDialog } from '@/components/hunt/submit-domain-dialog';
 import { TwitterShareDialog } from '@/components/hunt/twitter-share-dialog';
-import { useHuntShareDialog } from '@/hooks/use-hunt-share-dialog';
+import { useHuntVote } from '@/hooks/use-hunt-vote';
+import { VoteOrShareChoiceDialog } from '@/components/dialogs/vote-or-share-choice-dialog';
 import { Trophy, Target, TrendingUp, Plus } from 'lucide-react';
 
 const TRENDING_LIMIT = 5;
@@ -27,12 +28,7 @@ export const CVHuntSection = ({ name: _name }: CVHuntSectionProps) => {
 
   const trpc = useTRPC();
 
-  // Initialize share dialog for .cv domains
-  const shareDialog = useHuntShareDialog({
-    enabled: true,
-    allowedExtensions: ['.cv'],
-    campaignKey: CV_CAMPAIGN_KEY,
-  });
+  const vote = useHuntVote();
 
   const handleCampaignPageChange = useCallback((newPage: number) => {
     setCampaignPage(newPage);
@@ -106,7 +102,9 @@ export const CVHuntSection = ({ name: _name }: CVHuntSectionProps) => {
                   onPageChange={handleCampaignPageChange}
                   showTitle={false}
                   skeletonCount={5}
-                  onVoteSuccess={shareDialog.onVoteSuccess}
+                  upvote={vote.upvote}
+                  unvote={vote.unvote}
+                  isVotePending={vote.isVotePending}
                 />
               </div>
 
@@ -132,7 +130,9 @@ export const CVHuntSection = ({ name: _name }: CVHuntSectionProps) => {
                     isLoading={isTrendingLoading || isAuthLoading}
                     isError={isTrendingError}
                     skeletonCount={5}
-                    onVoteSuccess={shareDialog.onVoteSuccess}
+                    upvote={vote.upvote}
+                    unvote={vote.unvote}
+                    isVotePending={vote.isVotePending}
                   />
                 </div>
               </div>
@@ -179,16 +179,25 @@ export const CVHuntSection = ({ name: _name }: CVHuntSectionProps) => {
         </div>
       </div>
 
+      {/* Vote or Share Choice Dialog */}
+      <VoteOrShareChoiceDialog
+        isOpen={vote.choiceDialog.isOpen}
+        onClose={vote.choiceDialog.onClose}
+        domainName={vote.choiceDialog.currentDomain}
+        onChooseLogin={vote.choiceDialog.onChooseLogin}
+        onChooseShare={vote.choiceDialog.onChooseShare}
+      />
+
       {/* Twitter Share Dialog */}
       <TwitterShareDialog
-        isOpen={shareDialog.isOpen}
-        onClose={shareDialog.closeDialog}
-        domainName={shareDialog.currentDomain}
-        shareUrl={shareDialog.shareUrl}
-        hasShared={shareDialog.hasShared}
-        isCheckingStatus={shareDialog.isCheckingStatus}
-        isSubmitting={shareDialog.isSubmitting}
-        onSubmit={shareDialog.submitShare}
+        isOpen={vote.shareDialog.isOpen}
+        onClose={vote.shareDialog.onClose}
+        domainName={vote.shareDialog.currentDomain}
+        shareUrl={vote.shareDialog.shareUrl}
+        hasShared={vote.shareDialog.hasShared}
+        isCheckingStatus={vote.shareDialog.isCheckingStatus}
+        isSubmitting={vote.shareDialog.isSubmitting}
+        onSubmit={vote.shareDialog.onSubmit}
         trackShares={true} // CV domains track shares for rewards
       />
     </section>

@@ -111,7 +111,9 @@ export function TrpcProvider({ children }: { children: React.ReactNode }) {
                     return true;
                   }
                   if (code === 'UNAUTHORIZED' || code === 'FORBIDDEN') {
-                    console.log('Retrying due to 401/403 error');
+                    console.warn(
+                      'Retrying 401/403 error - this will be removed soon',
+                    );
                     return true;
                   }
                   return false;

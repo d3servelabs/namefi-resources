@@ -6,7 +6,7 @@ export { ExampleProfiles } from './example-profiles';
 export { Testimonials } from './testimonials';
 export { CTA } from './cta';
 export { DomainHuntWidget } from './domain-hunt-widget';
-export { CVHuntSection } from './cv-hunt-section';
+export { CVHuntSection } from './hunt-section';
 export { CVLanding } from './landing';
 export { AnimatedSection, AnimatedChild } from './animated-section';
 

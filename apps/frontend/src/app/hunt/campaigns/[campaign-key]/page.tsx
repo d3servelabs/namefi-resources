@@ -30,7 +30,6 @@ export default function CampaignPage({ params }: CampaignPageProps) {
           page={page}
           onPageChange={setPage}
         />
-
         <CampaignWhyVote />
         <CampaignCommunity />
       </div>

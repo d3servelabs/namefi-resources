@@ -323,6 +323,13 @@
       "when": 1754613572459,
       "tag": "0045_indexed_onchain_data_schemas",
       "breakpoints": true
+    },
+    {
+      "idx": 46,
+      "version": "7",
+      "when": 1755088525999,
+      "tag": "0046_brave_mongu",
+      "breakpoints": true
     }
   ]
 }

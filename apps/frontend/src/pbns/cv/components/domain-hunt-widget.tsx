@@ -10,30 +10,30 @@ import { TagsDisplay } from '@/components/hunt/tags-display';
 import { cn } from '@/lib/cn';
 import { BackgroundGradient } from '@/components/ui/aceternity/background-gradient';
 import { TrendingUp, Globe } from 'lucide-react';
-import { useHuntVoteRow } from '@/hooks/use-hunt-vote-row';
-import { useHuntShareDialog } from '@/hooks/use-hunt-share-dialog';
+import {
+  type HuntVoteRowOptions,
+  useHuntVoteRow,
+} from '@/hooks/use-hunt-vote-row';
 import { TwitterShareDialog } from '@/components/hunt/twitter-share-dialog';
+import { VoteOrShareChoiceDialog } from '@/components/dialogs/vote-or-share-choice-dialog';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { motion, AnimatePresence } from 'motion/react';
 import NumberFlow from '@number-flow/react';
 
-interface DomainHuntWidgetProps {
+interface DomainHuntWidgetProps extends Omit<HuntVoteRowOptions, 'domain'> {
   /** The domain name to display and vote on */
   domainName: NamefiNormalizedDomain;
 }
 
-export const DomainHuntWidget = ({ domainName }: DomainHuntWidgetProps) => {
+export const DomainHuntWidget = ({
+  domainName,
+  shareConfig,
+}: DomainHuntWidgetProps) => {
   const trpc = useTRPC();
   const { isAuthenticated, isLoading: authLoading } = useAuth();
-  const shareDialog = useHuntShareDialog({
-    enabled: true,
-    allowedExtensions: ['.cv'],
-    campaignKey: 'cv-2025-07-16',
-  });
-
-  const { huntVote, isBusy } = useHuntVoteRow(domainName, {
-    onVoteSuccess: shareDialog.onVoteSuccess,
-  });
+  // Row vote hook for individual domain (widget context)
+  const { toggleVote, isVotePending, choiceDialog, shareDialog } =
+    useHuntVoteRow({ domain: domainName, shareConfig });
 
   const authQuery = useQuery({
     ...trpc.hunt.getDomainDetail.queryOptions({
@@ -55,10 +55,10 @@ export const DomainHuntWidget = ({ domainName }: DomainHuntWidgetProps) => {
     : publicQuery.isLoading;
 
   const handleVoteToggle = useCallback(() => {
-    huntVote.toggleVote(domainName, domainData?.userHasUpvoted || false);
-  }, [domainData?.userHasUpvoted, huntVote, domainName]);
+    toggleVote(domainData?.userHasUpvoted || false);
+  }, [toggleVote, domainData?.userHasUpvoted]);
 
-  usePendingToast(isBusy, 'Processing vote...');
+  usePendingToast(isVotePending, 'Processing vote...');
 
   const isLoading = domainLoading || authLoading;
 
@@ -140,10 +140,10 @@ export const DomainHuntWidget = ({ domainName }: DomainHuntWidgetProps) => {
           <motion.button
             type="button"
             onClick={handleVoteToggle}
-            disabled={isLoading || isBusy}
+            disabled={isLoading || isVotePending}
             className={cn(
               'group flex items-center gap-1.5 md:gap-2 rounded-lg px-3 md:px-4 py-2 font-medium text-xs md:text-sm h-8 md:h-9 text-brand-primary cursor-pointer bg-brand-primary/15 hover:bg-brand-primary/10 transition-colors duration-200',
-              (isLoading || isBusy) && 'opacity-80 cursor-not-allowed',
+              (isLoading || isVotePending) && 'opacity-80 cursor-not-allowed',
             )}
             aria-label={isLoading ? 'Loading vote data...' : 'Vote'}
             layout
@@ -194,16 +194,27 @@ export const DomainHuntWidget = ({ domainName }: DomainHuntWidgetProps) => {
           </motion.button>
         </div>
       </div>
+
+      {/* Vote or Share Choice Dialog */}
+      <VoteOrShareChoiceDialog
+        isOpen={choiceDialog.isOpen}
+        onClose={choiceDialog.onClose}
+        domainName={choiceDialog.currentDomain || domainName}
+        onChooseLogin={choiceDialog.onChooseLogin}
+        onChooseShare={choiceDialog.onChooseShare}
+      />
+
+      {/* Twitter Share Dialog */}
       <TwitterShareDialog
         isOpen={shareDialog.isOpen}
-        onClose={shareDialog.closeDialog}
+        onClose={shareDialog.onClose}
         domainName={shareDialog.currentDomain}
         shareUrl={shareDialog.shareUrl}
         hasShared={shareDialog.hasShared}
         isCheckingStatus={shareDialog.isCheckingStatus}
         isSubmitting={shareDialog.isSubmitting}
-        onSubmit={shareDialog.submitShare}
-        trackShares={true}
+        onSubmit={shareDialog.onSubmit}
+        trackShares={true} // .cv domains track shares for rewards
       />
     </BackgroundGradient>
   );

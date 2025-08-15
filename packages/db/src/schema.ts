@@ -928,11 +928,9 @@ export const linkSharesTable = pgTable(
   'link_shares',
   {
     ...randomUuid,
-    userId: uuid('user_id')
-      .notNull()
-      .references(() => usersTable.id, {
-        onDelete: 'cascade',
-      }),
+    userId: uuid('user_id').references(() => usersTable.id, {
+      onDelete: 'cascade',
+    }),
     ...normalizedDomain,
     postUrl: text('post_url').notNull(),
     sharedUrl: text('shared_url').notNull(),
@@ -948,6 +946,8 @@ export const linkSharesTable = pgTable(
     ...timestamps,
   },
   (table) => [
+    // Note: Unique constraint only applies to non-null user_id values
+    // Anonymous shares (null user_id) can have duplicates
     unique('link_shares_user_domain_post_unique').on(
       table.userId,
       table.normalizedDomainName,

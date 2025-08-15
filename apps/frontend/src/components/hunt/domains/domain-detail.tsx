@@ -25,18 +25,27 @@ import { DomainItemSkeleton } from '../domain-item-skeleton';
 import { TagsDisplay } from '../tags-display';
 import { DomainAwards } from '../domain-awards';
 import { usePendingToast } from '../../../hooks/use-pending-toast';
-import { useHuntVoteRow } from '@/hooks/use-hunt-vote-row';
+import {
+  type HuntVoteRowOptions,
+  useHuntVoteRow,
+} from '@/hooks/use-hunt-vote-row';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 
-interface DomainDetailProps {
+interface DomainDetailProps extends Omit<HuntVoteRowOptions, 'domain'> {
   domainName: NamefiNormalizedDomain;
 }
 
-export const DomainDetail = ({ domainName }: DomainDetailProps) => {
+export const DomainDetail = ({
+  domainName,
+  shareConfig,
+}: DomainDetailProps) => {
   const router = useRouter();
   const trpc = useTRPC();
   const { isAuthenticated, isLoading: authLoading } = useAuth();
-  const { huntVote, isBusy } = useHuntVoteRow(domainName);
+  const { toggleVote, isVotePending } = useHuntVoteRow({
+    domain: domainName,
+    shareConfig,
+  });
 
   const authQuery = useQuery({
     ...trpc.hunt.getDomainDetail.queryOptions({
@@ -58,8 +67,8 @@ export const DomainDetail = ({ domainName }: DomainDetailProps) => {
     : publicQuery.isLoading;
 
   const handleVoteToggle = useCallback(() => {
-    huntVote.toggleVote(domainName, domainData?.userHasUpvoted || false);
-  }, [domainData?.userHasUpvoted, domainName, huntVote]);
+    toggleVote(domainData?.userHasUpvoted || false);
+  }, [domainData?.userHasUpvoted, toggleVote]);
 
   const deleteDomainMutation = useMutation(
     trpc.hunt.removeDomain.mutationOptions({
@@ -73,7 +82,7 @@ export const DomainDetail = ({ domainName }: DomainDetailProps) => {
     }),
   );
 
-  usePendingToast(isBusy, 'Processing vote...');
+  usePendingToast(isVotePending, 'Processing vote...');
   usePendingToast(deleteDomainMutation.isPending, 'Deleting domain...');
 
   if (domainLoading || authLoading) {
@@ -124,7 +133,7 @@ export const DomainDetail = ({ domainName }: DomainDetailProps) => {
               <div className="flex items-center gap-2">
                 <Button
                   onClick={handleVoteToggle}
-                  disabled={isBusy}
+                  disabled={isVotePending}
                   variant={domainData?.userHasUpvoted ? 'default' : 'outline'}
                   className="flex items-center gap-2 cursor-pointer"
                 >

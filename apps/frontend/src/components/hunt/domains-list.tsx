@@ -5,23 +5,29 @@ import {
   useReducedMotion,
 } from 'motion/react';
 import { DomainItemSkeleton } from './domain-item-skeleton';
-import { type Domain, DomainsListItem } from './domains-list-item';
+import {
+  type Domain,
+  DomainsListItem,
+  type DomainsListItemProps,
+} from './domains-list-item';
 import { useAnimatedList } from '@/hooks/use-animated-list';
-import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+
+export interface DomainsListProps extends Omit<DomainsListItemProps, 'domain'> {
+  domains: Domain[];
+  isLoading?: boolean;
+  isError?: boolean;
+  skeletonCount?: number;
+}
 
 export const DomainsList = ({
   domains,
   isLoading,
   isError,
   skeletonCount = 1,
-  onVoteSuccess,
-}: {
-  domains: Domain[];
-  isLoading?: boolean;
-  isError?: boolean;
-  skeletonCount?: number;
-  onVoteSuccess?: (domainName: NamefiNormalizedDomain) => void;
-}) => {
+  upvote,
+  unvote,
+  isVotePending,
+}: DomainsListProps) => {
   const shouldReduceMotion = useReducedMotion();
 
   const {
@@ -86,7 +92,9 @@ export const DomainsList = ({
               >
                 <DomainsListItem
                   domain={domain}
-                  onVoteSuccess={onVoteSuccess}
+                  upvote={upvote}
+                  unvote={unvote}
+                  isVotePending={isVotePending}
                 />
               </motion.div>
             ))}

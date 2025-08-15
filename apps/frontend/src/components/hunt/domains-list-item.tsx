@@ -7,7 +7,7 @@ import { type MouseEvent, useCallback, useMemo } from 'react';
 import { TagsDisplay } from './tags-display';
 import { UpvoteIcon } from './upvote-icon';
 import { usePendingToast } from '../../hooks/use-pending-toast';
-import { useHuntVoteRow } from '@/hooks/use-hunt-vote-row';
+import type { UseHuntVote } from '@/hooks/use-hunt-vote';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 
 export type Domain = {
@@ -65,51 +65,33 @@ const VoteButton = ({
   );
 };
 
-export const useHuntDomainVoteActions = ({
-  domain,
-  onVoteSuccess,
-}: {
-  domain: Domain;
-  onVoteSuccess?: (domainName: NamefiNormalizedDomain) => void;
-}) => {
-  const { huntVote, isBusy: pending } = useHuntVoteRow(domain.domainName, {
-    onVoteSuccess,
-  });
-
-  const upvote = useCallback(() => {
-    huntVote.vote(domain.domainName);
-  }, [domain.domainName, huntVote]);
-
-  const unvote = useCallback(() => {
-    huntVote.unvote(domain.domainName);
-  }, [domain.domainName, huntVote]);
-
+export const useHuntVoteCount = ({ domain }: { domain: Domain }) => {
   const count = useMemo(
     () => formatNumberWithAbbreviations(domain.upvoteCount),
     [domain.upvoteCount],
   );
 
   return {
-    upvote,
-    unvote,
     count,
-    pending,
   };
 };
+
+export interface DomainsListItemProps
+  extends Pick<UseHuntVote, 'upvote' | 'unvote' | 'isVotePending'> {
+  domain: Domain;
+}
 
 /**
  * Component for rendering a single domain item in a list.
  */
 export const DomainsListItem = ({
   domain,
-  onVoteSuccess,
-}: {
-  domain: Domain;
-  onVoteSuccess?: (domainName: NamefiNormalizedDomain) => void;
-}) => {
-  const { upvote, unvote, count, pending } = useHuntDomainVoteActions({
+  upvote,
+  unvote,
+  isVotePending,
+}: DomainsListItemProps) => {
+  const { count } = useHuntVoteCount({
     domain,
-    onVoteSuccess,
   });
 
   return (
@@ -142,9 +124,9 @@ export const DomainsListItem = ({
       <div className="flex flex-col items-center gap-2 w-12 sm:w-16">
         <VoteButton
           voted={domain.userHasUpvoted}
-          pending={pending}
-          onUpvote={upvote}
-          onUnvote={unvote}
+          pending={isVotePending(domain.domainName)}
+          onUpvote={() => upvote(domain.domainName)}
+          onUnvote={() => unvote(domain.domainName)}
         />
         <span className="text-base leading-none font-bold text-foreground font-mono">
           {count}

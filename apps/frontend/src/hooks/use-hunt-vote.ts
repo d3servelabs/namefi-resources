@@ -1,14 +1,19 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useReducer, useRef } from 'react';
+import { useCallback, useMemo, useReducer } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useAuth, useLogin } from '@/hooks/use-auth';
+import { useAuth } from '@/hooks/use-auth';
 import { useInteractionLoggers } from '@/components/providers/analytics';
 import { InteractionLoggingEventName } from '@/lib/analytics-events';
 import { useTRPC, type AppRouterInput } from '@/lib/trpc';
 import { toast } from 'sonner';
-
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import { useHuntVoteChoice } from './use-hunt-vote-choice';
+import {
+  defaultShareConfig,
+  useHuntShareDialog,
+  type ShareConfig,
+} from './use-hunt-vote-share';
 
 export const huntVoteDomainKey = (
   userId: string,
@@ -28,42 +33,53 @@ export function useHuntVoteBusy() {
     | { type: 'clear'; key: BusyKey }
     | { type: 'clearAll' };
 
-  function busyReducer(state: Set<BusyKey>, action: BusyAction): Set<BusyKey> {
-    switch (action.type) {
-      case 'mark': {
-        const next = new Set(state);
-        next.add(action.key);
-        return next;
+  const [busySet, dispatch] = useReducer(
+    (state: Set<BusyKey>, action: BusyAction): Set<BusyKey> => {
+      switch (action.type) {
+        case 'mark':
+          return new Set([...state, action.key]);
+        case 'clear': {
+          const newSet = new Set(state);
+          newSet.delete(action.key);
+          return newSet;
+        }
+        case 'clearAll':
+          return new Set();
+        default:
+          return state;
       }
-      case 'clear': {
-        const next = new Set(state);
-        next.delete(action.key);
-        return next;
-      }
-      case 'clearAll':
-        return new Set();
-    }
-  }
-
-  const [busyIds, dispatchBusy] = useReducer(busyReducer, new Set<BusyKey>());
-
-  useEffect(() => () => dispatchBusy({ type: 'clearAll' }), []);
-
-  const markBusy = useCallback(
-    (key: BusyKey) => dispatchBusy({ type: 'mark', key }),
-    [],
+    },
+    new Set<BusyKey>(),
   );
-  const clearBusy = useCallback(
-    (key: BusyKey) => dispatchBusy({ type: 'clear', key }),
-    [],
-  );
-  const isBusy = useCallback((key: BusyKey) => busyIds.has(key), [busyIds]);
 
-  return { busyIds, markBusy, clearBusy, isBusy };
+  const isBusy = useCallback((key: BusyKey) => busySet.has(key), [busySet]);
+
+  const markBusy = useCallback((key: BusyKey) => {
+    dispatch({ type: 'mark', key });
+  }, []);
+
+  const clearBusy = useCallback((key: BusyKey) => {
+    dispatch({ type: 'clear', key });
+  }, []);
+
+  const clearAll = useCallback(() => {
+    dispatch({ type: 'clearAll' });
+  }, []);
+
+  return useMemo(
+    () => ({
+      isBusy,
+      markBusy,
+      clearBusy,
+      clearAll,
+      busy: busySet,
+    }),
+    [isBusy, markBusy, clearBusy, clearAll, busySet],
+  );
 }
 
 /* -------------------------------------------------------------------------- */
-/*                           HUNT VOTE OPERATIONS                            */
+/*                           OPERATIONS HOOK                                 */
 /* -------------------------------------------------------------------------- */
 
 export function useHuntVoteOperations(options?: {
@@ -74,48 +90,6 @@ export function useHuntVoteOperations(options?: {
   const { logEventWithInteractionLoggers } = useInteractionLoggers();
   const queryClient = useQueryClient();
   const busy = useHuntVoteBusy();
-
-  // Simple in-memory pending vote (cleared on page refresh/navigation)
-  // Only 'vote' actions can be pending since unvote requires prior authentication
-  const pendingVoteRef = useRef<{
-    domainName: NamefiNormalizedDomain;
-  } | null>(null);
-
-  const { login } = useLogin({
-    onComplete: async () => {
-      // Invalidate all hunt-related queries to refresh with authenticated user data
-      // This ensures we get the user's actual voting state, not the guest state
-      await queryClient.invalidateQueries({
-        queryKey: trpc.hunt.getTrendingDomains.queryKey(),
-        refetchType: 'active',
-      });
-      await queryClient.invalidateQueries({
-        queryKey: trpc.hunt.getCampaign.queryKey(),
-        refetchType: 'active',
-      });
-      await queryClient.invalidateQueries({
-        queryKey: trpc.hunt.getDomainDetail.queryKey(),
-        refetchType: 'active',
-      });
-
-      // Execute pending vote after successful login and data refresh
-      if (pendingVoteRef.current) {
-        const { domainName: pendingDomain } = pendingVoteRef.current;
-        pendingVoteRef.current = null; // Clear immediately
-
-        try {
-          await executeVote(pendingDomain);
-          toast.success('Vote cast successfully!');
-        } catch (_error) {}
-      }
-    },
-    onError: (error: string) => {
-      if (error === 'user_exited_auth_flow') {
-        // user did not want to login
-        pendingVoteRef.current = null;
-      }
-    },
-  });
 
   const userId = user?.id ?? 'guest';
 
@@ -296,24 +270,12 @@ export function useHuntVoteOperations(options?: {
   const vote = useCallback(
     async (domainName: NamefiNormalizedDomain): Promise<void> => {
       if (!isAuthenticated) {
-        // Track unauthenticated vote attempt for funnel analysis
-        logEventWithInteractionLoggers({
-          name: InteractionLoggingEventName.Vote,
-          properties: {
-            domainName,
-            action: 'attempt_unauthenticated',
-          },
-        });
-
-        // Remember what they wanted to vote on
-        pendingVoteRef.current = { domainName };
-        login();
-        return;
+        throw new Error('User must be authenticated to vote');
       }
       // Normal authenticated flow
       return executeVote(domainName);
     },
-    [isAuthenticated, executeVote, login, logEventWithInteractionLoggers],
+    [isAuthenticated, executeVote],
   );
 
   // Internal function to execute unvote (only called when authenticated)
@@ -364,7 +326,7 @@ export function useHuntVoteOperations(options?: {
     [vote, unvote],
   );
 
-  const isDomainBusy = useCallback(
+  const isVotePending = useCallback(
     (domainName: NamefiNormalizedDomain) => {
       const busyKey = huntVoteDomainKey(userId, domainName);
       return busy.isBusy(busyKey);
@@ -386,7 +348,7 @@ export function useHuntVoteOperations(options?: {
     vote,
     unvote,
     toggleVote,
-    isDomainBusy,
+    isVotePending,
     isVoting,
     isUnvoting,
     busy,
@@ -395,21 +357,98 @@ export function useHuntVoteOperations(options?: {
   };
 }
 
+export interface HuntVoteOptions {
+  shareConfig?: ShareConfig;
+}
+
 /* -------------------------------------------------------------------------- */
 /*                               FACADE HOOK                                 */
 /* -------------------------------------------------------------------------- */
+export function useHuntVote(
+  options: HuntVoteOptions = { shareConfig: defaultShareConfig },
+) {
+  const { isAuthenticated } = useAuth();
+  const { logEventWithInteractionLoggers } = useInteractionLoggers();
+  const shareDialog = useHuntShareDialog(options?.shareConfig);
+  const choiceDialog = useHuntVoteChoice({
+    onShare: shareDialog.openDialog,
+    onLoginSuccess: async (domain) => {
+      await vote(domain);
+    },
+  });
+  const operations = useHuntVoteOperations({
+    onVoteSuccess: shareDialog.onVoteSuccess,
+  });
 
-export function useHuntVote() {
-  const operations = useHuntVoteOperations();
+  // Facade vote function that handles authentication internally
+  const vote = useCallback(
+    async (domain: NamefiNormalizedDomain): Promise<void> => {
+      if (!isAuthenticated) {
+        // Track unauthenticated attempt for analytics
+        logEventWithInteractionLoggers({
+          name: InteractionLoggingEventName.Vote,
+          properties: {
+            domainName: domain,
+            action: 'attempt_unauthenticated',
+          },
+        });
+
+        // Show choice dialog internally - no external callbacks needed!
+        choiceDialog.showChoiceDialog(domain);
+        return;
+      }
+
+      // User is authenticated - execute vote normally
+      await operations.vote(domain);
+    },
+    [
+      isAuthenticated,
+      operations.vote,
+      logEventWithInteractionLoggers,
+      choiceDialog,
+    ],
+  );
+
+  const toggleVote = useCallback(
+    async (
+      domain: NamefiNormalizedDomain,
+      currentlyVoted: boolean,
+    ): Promise<void> => {
+      if (currentlyVoted) {
+        await operations.unvote(domain);
+      } else {
+        await vote(domain);
+      }
+    },
+    [vote, operations.unvote],
+  );
 
   return {
-    vote: operations.vote,
+    upvote: vote,
     unvote: operations.unvote,
-    toggleVote: operations.toggleVote,
-    isDomainBusy: operations.isDomainBusy,
+    toggleVote,
+    isVotePending: operations.isVotePending,
     isVoting: operations.isVoting,
     isUnvoting: operations.isUnvoting,
     busy: operations.busy,
+    choiceDialog: {
+      isOpen: choiceDialog.isOpen,
+      currentDomain: choiceDialog.currentDomain,
+      onClose: choiceDialog.onClose,
+      onChooseLogin: choiceDialog.onChooseLogin,
+      onChooseShare: choiceDialog.onChooseShare,
+    },
+    shareDialog: {
+      isOpen: shareDialog.isOpen,
+      currentDomain: shareDialog.currentDomain,
+      shareUrl: shareDialog.shareUrl,
+      hasShared: shareDialog.hasShared,
+      isCheckingStatus: shareDialog.isCheckingStatus,
+      isSubmitting: shareDialog.isSubmitting,
+      onClose: shareDialog.closeDialog,
+      onSubmit: shareDialog.submitShare,
+      onVoteSuccess: shareDialog.onVoteSuccess,
+    },
   };
 }
 

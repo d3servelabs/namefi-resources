@@ -6,8 +6,8 @@ import { ArrowBigUpIcon } from 'lucide-react';
 import { AuthGuard } from '@/components/dialogs/auth-required-dialog';
 import { cn } from '@/lib/cn';
 import { usePendingToast } from '@/hooks/use-pending-toast';
-import { type Domain, useHuntDomainVoteActions } from '../domains-list-item';
-import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import { type Domain, useHuntVoteCount } from '../domains-list-item';
+import { useHuntVoteRow } from '@/hooks/use-hunt-vote-row';
 
 interface Tag {
   id: string;
@@ -91,16 +91,14 @@ const VoteButton = ({
 
 interface CampaignDomainItemProps {
   domain: Domain;
-  onVoteSuccess?: (domainName: NamefiNormalizedDomain) => void;
 }
 
-export const CampaignDomainItem = ({
-  domain,
-  onVoteSuccess,
-}: CampaignDomainItemProps) => {
-  const { upvote, unvote, count, pending } = useHuntDomainVoteActions({
+export const CampaignDomainItem = ({ domain }: CampaignDomainItemProps) => {
+  const { upvote, unvote, isVotePending } = useHuntVoteRow({
+    domain: domain.domainName,
+  });
+  const { count } = useHuntVoteCount({
     domain,
-    onVoteSuccess,
   });
 
   return (
@@ -140,7 +138,7 @@ export const CampaignDomainItem = ({
         <div className="flex flex-col items-center gap-2">
           <VoteButton
             voted={domain.userHasUpvoted}
-            pending={pending}
+            pending={isVotePending}
             onUpvote={upvote}
             onUnvote={unvote}
             count={count}

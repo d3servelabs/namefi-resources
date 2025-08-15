@@ -39,7 +39,6 @@ export default function NFSCSwapDialog(props: Props) {
     useGetNfscExchangeRate();
   const { writeContractAsync: exchangeNfsc, isPending } = useBuyNfsc({
     onSuccess: () => {
-      console.log('NFSCSwap done');
       toast.success('Successfully Swapped', {
         description: `You have successfully swapped ${amountPay} ETH to ${displayReceiveAmount()} NFSC`,
       });

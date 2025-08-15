@@ -11,8 +11,10 @@ export default async function Page({ params }: PageProps) {
   const domainName = namefiNormalizedDomainSchema.safeParse(
     decodeURIComponent(id),
   );
+
   if (!domainName.success) {
     return notFound();
   }
+
   return <DomainDetail domainName={domainName.data} />;
 }
