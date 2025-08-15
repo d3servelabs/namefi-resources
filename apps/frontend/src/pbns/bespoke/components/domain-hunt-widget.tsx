@@ -11,6 +11,8 @@ import { TagsDisplay } from '@/components/hunt/tags-display';
 import { cn } from '@/lib/cn';
 import { TrendingUp, Globe } from 'lucide-react';
 import { useHuntVoteRow } from '@/hooks/use-hunt-vote-row';
+import { useHuntShareDialog } from '@/hooks/use-hunt-share-dialog';
+import { TwitterShareDialog } from '@/components/hunt/twitter-share-dialog';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { motion, AnimatePresence } from 'motion/react';
 import NumberFlow from '@number-flow/react';
@@ -23,7 +25,16 @@ interface DomainHuntWidgetProps {
 export const DomainHuntWidget = ({ domainName }: DomainHuntWidgetProps) => {
   const trpc = useTRPC();
   const { isAuthenticated, isLoading: authLoading } = useAuth();
-  const { huntVote, isBusy } = useHuntVoteRow(domainName);
+  // Initialize share dialog for bespoke domains (allow all extensions)
+  const shareDialog = useHuntShareDialog({
+    enabled: true,
+    allowedExtensions: [], // Allow all extensions for bespoke domains
+    campaignKey: 'cta-2025-07-16',
+  });
+
+  const { huntVote, isBusy } = useHuntVoteRow(domainName, {
+    onVoteSuccess: shareDialog.onVoteSuccess,
+  });
 
   const authQuery = useQuery({
     ...trpc.hunt.getDomainDetail.queryOptions({
@@ -183,6 +194,19 @@ export const DomainHuntWidget = ({ domainName }: DomainHuntWidgetProps) => {
           </div>
         </div>
       </div>
+
+      {/* Twitter Share Dialog */}
+      <TwitterShareDialog
+        isOpen={shareDialog.isOpen}
+        onClose={shareDialog.closeDialog}
+        domainName={shareDialog.currentDomain}
+        shareUrl={shareDialog.shareUrl}
+        hasShared={shareDialog.hasShared}
+        isCheckingStatus={shareDialog.isCheckingStatus}
+        isSubmitting={shareDialog.isSubmitting}
+        onSubmit={shareDialog.submitShare}
+        trackShares={true}
+      />
     </div>
   );
 };

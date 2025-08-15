@@ -1,7 +1,6 @@
 'use client';
 
 import { Badge } from '@/components/ui/shadcn/badge';
-
 import { useAuth } from '@/hooks/use-auth';
 import { useTRPC } from '@/lib/trpc';
 import { useQuery } from '@tanstack/react-query';
@@ -12,6 +11,8 @@ import { cn } from '@/lib/cn';
 import { BackgroundGradient } from '@/components/ui/aceternity/background-gradient';
 import { TrendingUp, Globe } from 'lucide-react';
 import { useHuntVoteRow } from '@/hooks/use-hunt-vote-row';
+import { useHuntShareDialog } from '@/hooks/use-hunt-share-dialog';
+import { TwitterShareDialog } from '@/components/hunt/twitter-share-dialog';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { motion, AnimatePresence } from 'motion/react';
 import NumberFlow from '@number-flow/react';
@@ -24,7 +25,15 @@ interface DomainHuntWidgetProps {
 export const DomainHuntWidget = ({ domainName }: DomainHuntWidgetProps) => {
   const trpc = useTRPC();
   const { isAuthenticated, isLoading: authLoading } = useAuth();
-  const { huntVote, isBusy } = useHuntVoteRow(domainName);
+  const shareDialog = useHuntShareDialog({
+    enabled: true,
+    allowedExtensions: ['.cv'],
+    campaignKey: 'cv-2025-07-16',
+  });
+
+  const { huntVote, isBusy } = useHuntVoteRow(domainName, {
+    onVoteSuccess: shareDialog.onVoteSuccess,
+  });
 
   const authQuery = useQuery({
     ...trpc.hunt.getDomainDetail.queryOptions({
@@ -185,6 +194,17 @@ export const DomainHuntWidget = ({ domainName }: DomainHuntWidgetProps) => {
           </motion.button>
         </div>
       </div>
+      <TwitterShareDialog
+        isOpen={shareDialog.isOpen}
+        onClose={shareDialog.closeDialog}
+        domainName={shareDialog.currentDomain}
+        shareUrl={shareDialog.shareUrl}
+        hasShared={shareDialog.hasShared}
+        isCheckingStatus={shareDialog.isCheckingStatus}
+        isSubmitting={shareDialog.isSubmitting}
+        onSubmit={shareDialog.submitShare}
+        trackShares={true}
+      />
     </BackgroundGradient>
   );
 };
