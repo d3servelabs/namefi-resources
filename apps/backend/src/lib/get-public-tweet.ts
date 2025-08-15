@@ -1,5 +1,5 @@
 import Bottleneck from 'bottleneck';
-import LruCache from 'mnemonist/lru-cache';
+import { LRUCache } from 'mnemonist';
 import { decode as decodeEntities } from 'entities';
 import { z } from 'zod';
 
@@ -43,7 +43,7 @@ const SWR_MS = 10 * 60 * 1000; // serve-stale-while-revalidate window
 
 /* ---------- LRU cache ---------- */
 type CacheEntry = { value: PublicPost; expires: number; swrExpires: number };
-const cache = new LruCache<string, CacheEntry>(CACHE_CAPACITY);
+const cache = new LRUCache<string, CacheEntry>(CACHE_CAPACITY);
 
 // Coalesce concurrent fetches for the same ID
 const inflight = new Map<string, Promise<PublicPost>>();

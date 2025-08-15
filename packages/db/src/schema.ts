@@ -946,13 +946,8 @@ export const linkSharesTable = pgTable(
     ...timestamps,
   },
   (table) => [
-    // Note: Unique constraint only applies to non-null user_id values
-    // Anonymous shares (null user_id) can have duplicates
-    unique('link_shares_user_domain_post_unique').on(
-      table.userId,
-      table.normalizedDomainName,
-      table.postUrl,
-    ),
+    // Globally unique post URLs - each link can only be shared once
+    unique('link_shares_post_url_unique').on(table.postUrl),
     index('link_shares_user_domain_idx').on(
       table.userId,
       table.normalizedDomainName,
