@@ -38,6 +38,8 @@ export const Landing: LandingComponent = ({ origin }) => {
     hasData,
     domainInfos,
     domains,
+    freeClaimEligibility,
+    refetchFreeClaimEligibility,
   } = useSearch(origin.thirdPartyHostname || undefined);
 
   // Handle initial search from query parameters
@@ -178,6 +180,8 @@ export const Landing: LandingComponent = ({ origin }) => {
                 eppAuthorizationCodes={eppAuthorizationCodes}
                 onEppCodeChange={handleEppCodeChange}
                 searchMode={searchMode}
+                freeClaimEligibility={freeClaimEligibility}
+                onFreeClaimSuccess={refetchFreeClaimEligibility}
               />
             </div>
             <div className="sticky bottom-5 flex justify-center mt-4 px-4">

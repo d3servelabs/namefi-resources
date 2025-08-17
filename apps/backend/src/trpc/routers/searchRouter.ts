@@ -9,11 +9,19 @@ import {
   type DomainAvailabilityInfo,
   getDomainListInfo,
 } from '#lib/namefi-registry';
-import { authedOrPublicProcedure, createTRPCRouter } from '../base';
+import {
+  authedOrPublicProcedure,
+  createTRPCRouter,
+  protectedProcedure,
+} from '../base';
 import { generateDomainSuggestions } from '#lib/domain-suggestions';
 import { drop, splitEvery } from 'ramda';
 import type { UserSelect } from '@namefi-astra/db';
 import { promiseWithAbortSignal } from '@namefi-astra/utils/promises/promiseWithAbortSignal';
+import {
+  getUserUnusedClaims,
+  checkItemClaimEligibility,
+} from '#temporal/activities/free-claim.activities';
 
 export const searchRouter = createTRPCRouter({
   isDomainAvailable: authedOrPublicProcedure
@@ -109,6 +117,41 @@ export const searchRouter = createTRPCRouter({
           throw error;
         }
       }
+    }),
+
+  checkFreeClaimEligibility: protectedProcedure
+    .input(
+      z.object({
+        domains: z
+          .array(namefiNormalizedDomainSchema)
+          .min(1)
+          .describe('Array of domains to check for free claim eligibility'),
+      }),
+    )
+    .query(async ({ input, ctx }) => {
+      const { domains } = input;
+      const { user } = ctx;
+
+      // Get all unused claims for this user
+      const unusedClaims = await getUserUnusedClaims(user.id);
+
+      // Check eligibility for each domain
+      const eligibilityResults = domains.map((domain) => {
+        const eligibility = checkItemClaimEligibility(domain, unusedClaims);
+
+        return {
+          domain,
+          eligible: eligibility.length > 0,
+          eligibility: eligibility.map((claim) => ({
+            groupOrCampaignKey: claim.groupOrCampaignKey,
+            claimsAvailable: claim.claimsAvailable,
+            hasExactMatch: claim.exactMatchClaims.length > 0,
+            hasParentMatch: claim.parentMatchClaims.length > 0,
+          })),
+        };
+      });
+
+      return eligibilityResults;
     }),
 });
 

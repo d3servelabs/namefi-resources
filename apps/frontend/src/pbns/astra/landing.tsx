@@ -38,6 +38,8 @@ export const Landing: LandingComponent = ({ origin }) => {
     hasData,
     domainInfos,
     domains,
+    freeClaimEligibility,
+    refetchFreeClaimEligibility,
   } = useSearch(undefined);
 
   // Handle initial search from query parameters
@@ -154,6 +156,8 @@ export const Landing: LandingComponent = ({ origin }) => {
             eppAuthorizationCodes={eppAuthorizationCodes}
             onEppCodeChange={handleEppCodeChange}
             searchMode={searchMode}
+            freeClaimEligibility={freeClaimEligibility}
+            onFreeClaimSuccess={refetchFreeClaimEligibility}
           />
 
           <div className="sticky bottom-5 flex justify-center mt-4 px-4">

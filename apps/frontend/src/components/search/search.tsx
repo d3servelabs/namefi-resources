@@ -16,7 +16,7 @@ import {
 } from '@/lib/analytics-events';
 import { formatAmountInUSD } from '@/lib/number';
 import { computeChargesInUsdOrThrow } from '@namefi-astra/registrars/multi-year-pricing';
-import { Loader2, SearchIcon, User, X } from 'lucide-react';
+import { Loader2, SearchIcon, User, X, Gift } from 'lucide-react';
 import { useWishlistRow } from '@/hooks/use-wishlist-row';
 import {
   AnimatedWishlistButton,
@@ -38,6 +38,10 @@ import { NamefiButton } from '../buttons/namefi-button';
 import { AnimatedCartButton } from '../buttons/animated-cart-button';
 import { useInteractionLoggers } from '@/components/providers/analytics';
 import { Placeholder } from './placeholder';
+import { useMutation } from '@tanstack/react-query';
+import { useTRPC } from '@/lib/trpc';
+import { toast } from 'sonner';
+import { useUserWalletAddresses } from '@/hooks/use-user-wallet-addresses';
 import type {
   ImportQuery,
   LandingComponent,
@@ -259,16 +263,45 @@ export const DomainCard: FC<{
   eppAuthorizationCode?: string;
   onEppCodeChange?: (eppCode: string) => void;
   isImportMode?: boolean;
+  freeClaimEligibility?: {
+    domain: string;
+    eligible: boolean;
+    eligibility: Array<{
+      groupOrCampaignKey: string;
+      claimsAvailable: number;
+      hasExactMatch: boolean;
+      hasParentMatch: boolean;
+    }>;
+  };
+  onFreeClaimSuccess?: () => void;
 }> = ({
   domain,
   availabilityInfo,
   eppAuthorizationCode,
   onEppCodeChange,
   isImportMode,
+  freeClaimEligibility,
+  onFreeClaimSuccess,
 }) => {
   const { logEventWithInteractionLoggers } = useInteractionLoggers();
   const router = useRouter();
   const eppInputRef = useRef<HTMLInputElement>(null);
+  const trpc = useTRPC();
+  const { userWalletAddresses } = useUserWalletAddresses();
+
+  // Free claim mutation
+  const claimMutation = useMutation({
+    ...trpc.freeClaims.processClaim.mutationOptions(),
+    onSuccess: () => {
+      toast.success(
+        'Free claim submitted successfully! Processing will begin shortly.',
+      );
+      onFreeClaimSuccess?.();
+    },
+    onError: (error) => {
+      toast.error(`Failed to submit claim: ${error.message}`);
+    },
+  });
 
   const logBeginCheckout = useCallback(() => {
     const beginCheckoutEvent: BeginCheckoutEvent = {
@@ -391,6 +424,39 @@ export const DomainCard: FC<{
     });
   }, [cart, availabilityInfo, eppAuthorizationCode]);
 
+  /* CLAIM handler ------------------------------------------------------- */
+  const handleClaim = useCallback(async () => {
+    if (!domain || !freeClaimEligibility?.eligible || !availabilityInfo) return;
+
+    // Use the first available wallet address, or show error if none
+    const recipientWalletAddress = userWalletAddresses[0];
+    if (!recipientWalletAddress) {
+      toast.error('No wallet address found. Please connect a wallet.');
+      return;
+    }
+
+    const minDuration = availabilityInfo.durationValidationInYears?.min ?? 1;
+    const registrarKey = availabilityInfo.registrarKey || 'namefi';
+    const chainId = 8453; // Base chain ID
+
+    // The backend will automatically find and use the best available claim
+    const claimPayload = {
+      normalizedDomainName: domain,
+      recipientWalletAddress,
+      chainId,
+      durationInYears: minDuration,
+      registrarKey,
+    };
+
+    claimMutation.mutate(claimPayload);
+  }, [
+    domain,
+    freeClaimEligibility,
+    availabilityInfo,
+    userWalletAddresses,
+    claimMutation,
+  ]);
+
   const hasAvailabilityInfo = availabilityInfo !== undefined;
   // When availabilityInfo is available, all data that CAN be loaded HAS been loaded
   // Some domains (like unsupported ones) may legitimately not have pricing
@@ -498,6 +564,24 @@ export const DomainCard: FC<{
               <Badge variant="destructive" className="text-xs">
                 Unsupported
               </Badge>
+            ) : availabilityInfo.availability &&
+              freeClaimEligibility?.eligible ? (
+              <NamefiButton
+                onClick={handleClaim}
+                disabled={claimMutation.isPending}
+              >
+                {claimMutation.isPending ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    Claiming...
+                  </>
+                ) : (
+                  <>
+                    <Gift className="h-4 w-4" />
+                    Free Claim
+                  </>
+                )}
+              </NamefiButton>
             ) : availabilityInfo.availability || isImportable ? (
               <AnimatedCartButton
                 state={
@@ -547,6 +631,17 @@ export const SearchResults: FC<{
   eppAuthorizationCodes: Record<string, string | undefined>;
   onEppCodeChange: (domain: NamefiNormalizedDomain, eppCode: string) => void;
   searchMode: SearchMode;
+  freeClaimEligibility?: Array<{
+    domain: string;
+    eligible: boolean;
+    eligibility: Array<{
+      groupOrCampaignKey: string;
+      claimsAvailable: number;
+      hasExactMatch: boolean;
+      hasParentMatch: boolean;
+    }>;
+  }>;
+  onFreeClaimSuccess?: () => void;
 }> = ({
   isLoading,
   isError,
@@ -558,6 +653,8 @@ export const SearchResults: FC<{
   eppAuthorizationCodes,
   onEppCodeChange,
   searchMode,
+  freeClaimEligibility,
+  onFreeClaimSuccess,
 }) => {
   // Show error state
   if (isError && query.length > 0) {
@@ -588,6 +685,9 @@ export const SearchResults: FC<{
       <div className="flex flex-col gap-4">
         {domains.map((domain) => {
           const availabilityInfo = domainInfos.get(domain);
+          const claimEligibility = freeClaimEligibility?.find(
+            (e) => e.domain === domain,
+          );
           return (
             <DomainCard
               key={domain}
@@ -596,6 +696,8 @@ export const SearchResults: FC<{
               eppAuthorizationCode={eppAuthorizationCodes[domain]}
               onEppCodeChange={(eppCode) => onEppCodeChange(domain, eppCode)}
               isImportMode={searchMode === SearchMode.IMPORT}
+              freeClaimEligibility={claimEligibility}
+              onFreeClaimSuccess={onFreeClaimSuccess}
             />
           );
         })}
@@ -645,6 +747,8 @@ export const Search: LandingComponent = ({ origin }) => {
     hasData,
     domainInfos,
     domains,
+    freeClaimEligibility,
+    refetchFreeClaimEligibility,
   } = useSearch(parentDomain || undefined);
 
   // Handle initial search from query parameters
@@ -760,6 +864,8 @@ export const Search: LandingComponent = ({ origin }) => {
             eppAuthorizationCodes={eppAuthorizationCodes}
             onEppCodeChange={handleEppCodeChange}
             searchMode={searchMode}
+            freeClaimEligibility={freeClaimEligibility}
+            onFreeClaimSuccess={refetchFreeClaimEligibility}
           />
 
           <div className="sticky bottom-5 flex justify-center mt-4 px-4">

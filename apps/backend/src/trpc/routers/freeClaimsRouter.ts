@@ -139,7 +139,7 @@ export const freeClaimsRouter = createTRPCRouter({
             taskQueue: TEMPORAL_QUEUES.DOMAINS,
             workflowId: processFreeClaimWorkflow.generateId(workflowInput),
             workflowIdReusePolicy: 'ALLOW_DUPLICATE_FAILED_ONLY',
-            workflowIdConflictPolicy: 'USE_EXISTING',
+            workflowIdConflictPolicy: 'FAIL',
             searchAttributes: {
               userId: [user.id],
               domainName: [normalizedDomainName],

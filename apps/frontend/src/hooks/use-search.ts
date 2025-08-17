@@ -7,12 +7,14 @@ import type { DomainAvailabilityInfo } from '@namefi-astra/backend/trpc/types';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { SearchMode } from '@/components/search/types';
 import { parseCSVDomains } from '@/components/search/utils';
+import { useAuth } from './use-auth';
 
 export const useSearch = (parentDomain?: string) => {
   const [query, setQuery] = useState('');
   const [searchMode, setSearchMode] = useState<SearchMode>(SearchMode.REGISTER);
   const [debounced] = useDebounceValue(query, 200);
   const sanitized = debounced.trim();
+  const { isAuthenticated } = useAuth();
 
   const onSearchModeChange = useCallback((mode: SearchMode) => {
     setSearchMode(mode);
@@ -80,6 +82,19 @@ export const useSearch = (parentDomain?: string) => {
   // biome-ignore lint/correctness/useExhaustiveDependencies: reset infoMap when domains change
   useEffect(() => setDomainInfo(new Map()), [domains]);
 
+  // Free claim eligibility check for authenticated users
+  const { data: freeClaimEligibility, refetch: refetchFreeClaimEligibility } =
+    useQuery({
+      ...trpc.search.checkFreeClaimEligibility.queryOptions({
+        domains,
+      }),
+      enabled: isAuthenticated && domains.length > 0,
+      refetchOnWindowFocus: true,
+      refetchOnMount: true,
+      refetchOnReconnect: true,
+      refetchInterval: 5000, // 5 seconds
+    });
+
   const {
     status: availStatus,
     error: availError,
@@ -144,5 +159,7 @@ export const useSearch = (parentDomain?: string) => {
     domains,
     domainInfos: domainInfo,
     hasData: domains.length > 0,
+    freeClaimEligibility,
+    refetchFreeClaimEligibility,
   } as const;
 };
