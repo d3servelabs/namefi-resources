@@ -27,7 +27,7 @@ export const getOrderItemIdQuery = defineQuery<string | undefined>(
   'getOrderItemId',
 );
 export const getErrorQuery = defineQuery<string | undefined>('getError');
-export const getWorkflowStateQuery = defineQuery<{
+export type FreeClaimWorkflowState = {
   currentStep: string;
   claimId?: string;
   claimValidation?: string;
@@ -35,8 +35,24 @@ export const getWorkflowStateQuery = defineQuery<{
   orderItemId?: string;
   error?: string;
   input: ProcessFreeClaimWorkflowInput;
-}>('getWorkflowState');
+};
 
+export const getWorkflowStateQuery =
+  defineQuery<FreeClaimWorkflowState>('getWorkflowState');
+
+export type FreeClaimWorkflowMemo = {
+  freeClaim: {
+    domainName: NamefiNormalizedDomain;
+    userId: string;
+    chainId: number;
+    durationInYears: number;
+    registrarKey: string;
+    recipientWallet: ChecksumWalletAddress;
+    description: string;
+    claimId?: string;
+    claimValidation?: string;
+  };
+};
 export interface ProcessFreeClaimWorkflowInput {
   userId: string;
   normalizedDomainName: NamefiNormalizedDomain;
@@ -72,10 +88,9 @@ export async function processFreeClaimWorkflow(
       durationInYears,
       registrarKey,
       recipientWallet: recipientWalletAddress,
-      workflowType: 'FREE_CLAIM_PROCESSING',
       description: `Processing free claim for ${normalizedDomainName}`,
     },
-  });
+  } satisfies FreeClaimWorkflowMemo);
 
   // Set search attributes for easy querying
   workflow.upsertSearchAttributes({
@@ -159,13 +174,14 @@ export async function processFreeClaimWorkflow(
     claimId = claimValidationResult.claimId;
     claimValidation = 'success';
     currentStep = 'claim_validated';
+    const memo = (workflow.workflowInfo().memo ?? {}) as FreeClaimWorkflowMemo;
     workflow.upsertMemo({
       freeClaim: {
-        ...(workflow.workflowInfo().memo?.freeClaim || {}),
+        ...memo.freeClaim,
         claimId,
         claimValidation,
       },
-    });
+    } satisfies FreeClaimWorkflowMemo);
 
     // Step 2: Create order and order item for the claim (with $0 amount)
     currentStep = 'creating_order';

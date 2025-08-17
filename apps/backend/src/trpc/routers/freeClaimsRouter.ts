@@ -13,6 +13,7 @@ import {
 } from '../../temporal/activities/free-claim.activities';
 import { createTRPCRouter, protectedProcedure } from '../base';
 import { createLogger } from '#lib/logger';
+import type { FreeClaimWorkflowMemo } from '../../temporal/workflows/free-claim.workflow';
 
 const logger = createLogger({ context: 'freeClaimsRouter' });
 
@@ -167,6 +168,149 @@ export const freeClaimsRouter = createTRPCRouter({
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to start claim processing',
+        });
+      }
+    }),
+  /**
+   * Get the status of a free claim workflow
+   */
+  getDomainClaimStatus: protectedProcedure
+    .input(
+      z.object({
+        domainName: namefiNormalizedDomainSchema,
+        claimId: z.string().optional(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const { user } = ctx;
+      const { domainName, claimId } = input;
+
+      try {
+        const workflows = await temporalClient.workflow.list({
+          query: `domainName='${domainName}' AND userId='${user.id}' AND workflowType='processFreeClaimWorkflow'`,
+        });
+        let workflowId = null;
+        for await (const workflow of workflows) {
+          const memo = workflow.memo as FreeClaimWorkflowMemo | undefined;
+          if (claimId && memo?.freeClaim?.claimId === claimId) {
+            workflowId = workflow.workflowId;
+            break;
+          }
+          if (!claimId) {
+            workflowId = workflow.workflowId;
+            break;
+          }
+        }
+
+        if (!workflowId) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'Workflow not found',
+          });
+        }
+
+        const handle = temporalClient.workflow.getHandle(workflowId);
+        const description = await handle.describe();
+        let result = null;
+        let workflowState = null;
+
+        if (description.status.name === 'COMPLETED') {
+          result = await handle.result();
+        }
+
+        // Query the workflow for detailed state information
+        if (
+          description.status.name === 'RUNNING' ||
+          description.status.name === 'COMPLETED'
+        ) {
+          try {
+            workflowState = await handle.query('getWorkflowState');
+          } catch (queryError) {
+            // If query fails, just log it and continue
+            logger.warn(
+              { queryError, workflowId },
+              'Failed to query workflow state',
+            );
+          }
+        }
+
+        return {
+          status: description.status.name,
+          result,
+          workflowState,
+          startTime: description.startTime,
+          closeTime: description.closeTime,
+        };
+      } catch (error) {
+        if (error instanceof TRPCError) {
+          throw error;
+        }
+        logger.error(
+          { error, userId: user.id, domainName, claimId },
+          'Error getting free claim workflow status',
+        );
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Workflow not found or inaccessible',
+        });
+      }
+    }),
+
+  /**
+   * Search for free claim workflows by user ID or domain name
+   */
+  searchWorkflows: protectedProcedure
+    .input(
+      z.object({
+        domainName: namefiNormalizedDomainSchema.optional(),
+        groupOrCampaignKey: z.string().optional(),
+        limit: z.number().int().min(1).max(100).default(50),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const { user } = ctx;
+      const { domainName, groupOrCampaignKey, limit } = input;
+
+      try {
+        // Build search query
+        const searchQuery = [
+          `workflowType='processFreeClaimWorkflow'`,
+          `userId='${user.id}'`,
+        ];
+
+        if (domainName) {
+          searchQuery.push(`domainName='${domainName}'`);
+        }
+
+        const workflows = temporalClient.workflow.list({
+          query: searchQuery.join(' AND '),
+        });
+
+        const workflowSummaries = [];
+        let count = 0;
+        for await (const workflow of workflows) {
+          if (count >= limit) break;
+
+          workflowSummaries.push({
+            workflowId: workflow.workflowId,
+            workflowType: workflow.type,
+            status: workflow.status.name,
+            startTime: workflow.startTime,
+            closeTime: workflow.closeTime,
+            searchAttributes: workflow.searchAttributes,
+          });
+          count++;
+        }
+
+        return workflowSummaries;
+      } catch (error) {
+        logger.error(
+          { error, userId: user.id, domainName, groupOrCampaignKey },
+          'Error searching free claim workflows',
+        );
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to search workflows',
         });
       }
     }),
