@@ -7,7 +7,7 @@ import { Hono } from 'hono';
 import { pinoLogger as pinoLoggerHono } from 'hono-pino-logger';
 import { cors } from 'hono/cors';
 import { prettyJSON } from 'hono/pretty-json';
-import { logger } from '#lib/logger';
+import { createLogger } from '#lib/logger';
 import { getPoweredByNamefi3PHostnames } from '#lib/namefi-registry';
 import { dnssecRouter } from './dnssec';
 import { config, secrets } from './lib/env';
@@ -16,8 +16,10 @@ import { trackingRouter } from './routers/tracking';
 import { webhooksRouter } from './routers/webhooks';
 import { createContext } from './trpc';
 import { appRouter } from './trpc/routers/appRouter';
+import { validateAndCreateSearchAttributes } from '#temporal/operator/search-attributes';
 
 const app = new Hono();
+const logger = createLogger({ module: 'index', context: 'Main' });
 
 app.use(async (...args) => {
   const allowedHostnames: string[] = [
@@ -44,7 +46,7 @@ app.use(async (...args) => {
             return origin;
           }
         } catch (error) {
-          console.error('Error parsing origin', error);
+          logger.error(error, 'Error parsing origin');
           return null;
         }
       }
@@ -92,17 +94,42 @@ app.get('/secretsfi', (c) => {
   });
 });
 
-serve(
-  {
-    fetch: app.fetch,
-    port: config.PORT,
-    serverOptions: {
-      requestTimeout: 630_000,
-      keepAliveTimeout: 610_000,
-      headersTimeout: 620_000,
+async function main() {
+  try {
+    const searchAttributesValidated = await validateAndCreateSearchAttributes();
+    if (!searchAttributesValidated) {
+      logger.error('Temporal search attributes validation failed');
+      throw new Error('Temporal search attributes validation failed');
+    }
+    logger.info('Temporal search attributes validated and created');
+  } catch (error) {
+    if (!['local', 'custom'].includes(process.env.ENVIRONMENT ?? '')) {
+      logger.error(
+        'Error validating and creating temporal search attributes',
+        error,
+      );
+      throw error;
+    }
+    logger.warn(
+      'Error validating and creating temporal search attributes',
+      error,
+    );
+  }
+
+  serve(
+    {
+      fetch: app.fetch,
+      port: config.PORT,
+      serverOptions: {
+        requestTimeout: 630_000,
+        keepAliveTimeout: 610_000,
+        headersTimeout: 620_000,
+      },
     },
-  },
-  (info) => {
-    console.info('Server is running on port', info.port);
-  },
-);
+    (info) => {
+      logger.info(`Server is running on port ${info.port}`);
+    },
+  );
+}
+
+main();
