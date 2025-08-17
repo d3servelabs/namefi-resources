@@ -6,7 +6,8 @@ on:
   pull_request:
 
 env:
-  ENVIRONEMNT: test 
+  ENVIRONMENT: test 
+  NODE_OPTIONS: --max-old-space-size=4096
 
 jobs:
   validate:
