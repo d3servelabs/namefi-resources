@@ -291,7 +291,7 @@ export const DomainCard: FC<{
 
   // Free claim mutation
   const claimMutation = useMutation({
-    ...trpc.freeClaims.processClaim.mutationOptions(),
+    ...trpc.freeClaims.processClaimWithTransaction.mutationOptions(),
     onSuccess: (result) => {
       toast.success('Domain claimed successfully!');
       onFreeClaimSuccess?.();

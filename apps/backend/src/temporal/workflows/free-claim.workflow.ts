@@ -60,6 +60,19 @@ export interface ProcessFreeClaimWorkflowInput {
   chainId: number;
   durationInYears: number;
   registrarKey: string;
+  claimId?: string; // Optional claimId for pre-created claims
+  orderId?: string; // Optional orderId when claim and order are already created
+  orderItemId?: string; // Optional orderItemId when claim and order are already created
+}
+
+// Shared state interface for private functions
+interface WorkflowState {
+  claimId: string | undefined;
+  claimValidation: string | undefined;
+  orderId: string | undefined;
+  orderItemId: string | undefined;
+  currentStep: string;
+  error: string | undefined;
 }
 
 /**
@@ -77,6 +90,9 @@ export async function processFreeClaimWorkflow(
     chainId,
     durationInYears,
     registrarKey,
+    claimId: inputClaimId,
+    orderId: inputOrderId,
+    orderItemId: inputOrderItemId,
   } = input;
 
   // Set workflow memo with contextual information
@@ -101,6 +117,7 @@ export async function processFreeClaimWorkflow(
   const {
     updateOrderAndItemStatusOrThrow,
     validateAndUseClaim,
+    validateClaimAndOrder,
     createClaimOrder,
     revertClaim,
     updateClaimRecord,
@@ -124,26 +141,29 @@ export async function processFreeClaimWorkflow(
     normalizedDomainName,
   });
 
-  let claimId: string | undefined;
-  let claimValidation: string | undefined;
-  let orderId: string | undefined;
-  let orderItemId: string | undefined;
-  let currentStep = 'initializing';
-  let error: string | undefined;
+  // Create shared state object for private functions
+  const state: WorkflowState = {
+    claimId: inputClaimId,
+    claimValidation: inputClaimId ? 'success' : undefined,
+    orderId: inputOrderId,
+    orderItemId: inputOrderItemId,
+    currentStep: 'initializing',
+    error: undefined,
+  };
 
   // Set up query handlers to expose workflow state
-  workflow.setHandler(getCurrentStepQuery, () => currentStep);
-  workflow.setHandler(getClaimIdQuery, () => claimId);
-  workflow.setHandler(getClaimValidationQuery, () => claimValidation);
-  workflow.setHandler(getOrderIdQuery, () => orderId);
-  workflow.setHandler(getOrderItemIdQuery, () => orderItemId);
-  workflow.setHandler(getErrorQuery, () => error);
+  workflow.setHandler(getCurrentStepQuery, () => state.currentStep);
+  workflow.setHandler(getClaimIdQuery, () => state.claimId);
+  workflow.setHandler(getClaimValidationQuery, () => state.claimValidation);
+  workflow.setHandler(getOrderIdQuery, () => state.orderId);
+  workflow.setHandler(getOrderItemIdQuery, () => state.orderItemId);
+  workflow.setHandler(getErrorQuery, () => state.error);
   workflow.setHandler(getWorkflowStateQuery, () => ({
-    currentStep,
-    claimId,
-    orderId,
-    orderItemId,
-    error,
+    currentStep: state.currentStep,
+    claimId: state.claimId,
+    orderId: state.orderId,
+    orderItemId: state.orderItemId,
+    error: state.error,
     input: {
       userId,
       normalizedDomainName,
@@ -155,59 +175,33 @@ export async function processFreeClaimWorkflow(
   }));
 
   try {
-    // Step 1: Atomically validate and mark the claim as used
-    currentStep = 'validating_claim';
-    const claimValidationResult = await validateAndUseClaim({
-      userId,
-      normalizedDomainName,
-    });
+    // Check if we're starting with a pre-existing claim and order
+    if (inputClaimId && inputOrderId && inputOrderItemId) {
+      const result = await _processExistingClaim(input, state, {
+        validateClaimAndOrder,
+      });
 
-    if (!claimValidationResult.success) {
-      currentStep = 'claim_validation_failed';
-      claimValidation = 'failed';
-      error = claimValidationResult.reason || 'Claim validation failed';
-      return {
-        success: false,
-      };
+      if (!result.success) {
+        return {
+          success: false,
+        };
+      }
+    } else {
+      const result = await _processNewClaim(input, state, {
+        validateAndUseClaim,
+        createClaimOrder,
+        updateClaimRecord,
+      });
+
+      if (!result.success) {
+        return {
+          success: false,
+        };
+      }
     }
 
-    claimId = claimValidationResult.claimId;
-    claimValidation = 'success';
-    currentStep = 'claim_validated';
-    const memo = (workflow.workflowInfo().memo ?? {}) as FreeClaimWorkflowMemo;
-    workflow.upsertMemo({
-      freeClaim: {
-        ...memo.freeClaim,
-        claimId,
-        claimValidation,
-      },
-    } satisfies FreeClaimWorkflowMemo);
-
-    // Step 2: Create order and order item for the claim (with $0 amount)
-    currentStep = 'creating_order';
-    const orderResult = await createClaimOrder({
-      userId,
-      normalizedDomainName,
-      durationInYears,
-      registrarKey,
-      recipientWalletAddress,
-      chainId,
-      claimId,
-    });
-
-    orderId = orderResult.orderId;
-    orderItemId = orderResult.orderItemId;
-    currentStep = 'order_created';
-
-    // Update the claim record with the order item ID
-    currentStep = 'updating_claim_record';
-    await updateClaimRecord({
-      claimId,
-      orderItemId,
-    });
-
     // Step 3: Process the domain acquisition
-    currentStep = 'acquiring_domain';
+    state.currentStep = 'acquiring_domain';
     const acquireDomainInput: AcquireDomainWorkflowInput = {
       normalizedDomainName,
       chainId,
@@ -227,67 +221,72 @@ export async function processFreeClaimWorkflow(
       parentClosePolicy: 'REQUEST_CANCEL',
     });
 
-    currentStep = 'domain_acquired';
+    state.currentStep = 'domain_acquired';
 
     // Step 4: Update order and order item status to succeeded atomically
-    currentStep = 'updating_order_status';
-    if (orderItemId && orderId) {
+    state.currentStep = 'updating_order_status';
+    if (state.orderItemId && state.orderId) {
       await updateOrderAndItemStatusOrThrow({
-        orderId,
-        orderItemId,
+        orderId: state.orderId,
+        orderItemId: state.orderItemId,
         status: orderStatusSchema.Values.SUCCEEDED,
       });
     }
 
     // Step 5: Mark claim as completed (CLAIMED status)
-    currentStep = 'marking_claim_completed';
+    state.currentStep = 'marking_claim_completed';
+    if (!state.claimId) {
+      throw new Error(
+        'ClaimId is undefined when trying to mark claim as completed',
+      );
+    }
     await markClaimAsCompleted({
-      claimId,
+      claimId: state.claimId,
     });
 
     // Step 6: Trigger domain index update
-    currentStep = 'updating_domain_index';
+    state.currentStep = 'updating_domain_index';
     try {
       await triggerUpdateDomainIndex();
     } catch (e) {
       workflow.log.error(
-        `Failed to trigger update domain index for claim ${claimId}. Error: ${e}`,
+        `Failed to trigger update domain index for claim ${state.claimId}. Error: ${e}`,
       );
     }
 
-    currentStep = 'completed';
+    state.currentStep = 'completed';
 
     workflow.log.info('Free claim processed successfully', {
       userId,
       normalizedDomainName,
-      orderId,
-      orderItemId,
+      orderId: state.orderId,
+      orderItemId: state.orderItemId,
     });
 
     return {
       success: true,
-      orderId,
-      orderItemId,
+      orderId: state.orderId,
+      orderItemId: state.orderItemId,
     };
   } catch (e) {
-    currentStep = 'failed';
-    error = e instanceof Error ? e.message : String(e);
+    state.currentStep = 'failed';
+    state.error = e instanceof Error ? e.message : String(e);
 
     workflow.log.error(
-      `Failed to process free claim for user ${userId}, domain ${normalizedDomainName}: ${error}`,
+      `Failed to process free claim for user ${userId}, domain ${normalizedDomainName}: ${state.error}`,
     );
 
     // Revert the claim if it was marked as used
-    if (claimId) {
+    if (state.claimId) {
       const [revertError] = await resolve(
         revertClaim({
-          claimId,
+          claimId: state.claimId,
         }),
       );
 
       if (revertError) {
         workflow.log.error(
-          `Failed to revert free claim ${claimId}: ${
+          `Failed to revert free claim ${state.claimId}: ${
             revertError instanceof Error
               ? revertError.message
               : String(revertError)
@@ -297,18 +296,18 @@ export async function processFreeClaimWorkflow(
     }
 
     // Update order and order item status to failed atomically if they were created
-    if (orderItemId && orderId) {
+    if (state.orderItemId && state.orderId) {
       const [updateStatusError] = await resolve(
         updateOrderAndItemStatusOrThrow({
-          orderId,
-          orderItemId,
+          orderId: state.orderId,
+          orderItemId: state.orderItemId,
           status: orderStatusSchema.Values.FAILED,
         }),
       );
 
       if (updateStatusError) {
         workflow.log.error(
-          `Failed to update order ${orderId} and order item ${orderItemId} status to FAILED: ${
+          `Failed to update order ${state.orderId} and order item ${state.orderItemId} status to FAILED: ${
             updateStatusError instanceof Error
               ? updateStatusError.message
               : String(updateStatusError)
@@ -342,3 +341,133 @@ processFreeClaimWorkflow.attemptParseId = (id: string) => {
   }
   return null;
 };
+
+/**
+ * Private function to handle pre-existing claim and order validation
+ */
+async function _processExistingClaim(
+  input: ProcessFreeClaimWorkflowInput,
+  state: WorkflowState,
+  activities: any,
+): Promise<{ success: boolean; reason?: string }> {
+  const {
+    normalizedDomainName,
+    claimId: inputClaimId,
+    orderId: inputOrderId,
+    orderItemId: inputOrderItemId,
+  } = input;
+  const { validateClaimAndOrder } = activities;
+
+  if (!inputClaimId) {
+    throw new workflow.ApplicationFailure(
+      'ClaimId is undefined when trying to validate existing claim and order',
+    );
+  }
+
+  // Step 1: Validate the existing claim and order
+  state.currentStep = 'validating_existing_claim_and_order';
+  const claimValidationResult = await validateClaimAndOrder({
+    claimId: inputClaimId,
+    normalizedDomainName,
+    orderId: inputOrderId,
+    orderItemId: inputOrderItemId,
+  });
+
+  if (!claimValidationResult.success) {
+    state.currentStep = 'claim_validation_failed';
+    state.claimValidation = 'failed';
+    state.error = claimValidationResult.reason || 'Claim validation failed';
+    return {
+      success: false,
+      reason: state.error,
+    };
+  }
+
+  state.currentStep = 'existing_claim_and_order_validated';
+  const memo = (workflow.workflowInfo().memo ?? {}) as FreeClaimWorkflowMemo;
+  workflow.upsertMemo({
+    freeClaim: {
+      ...memo.freeClaim,
+      claimId: state.claimId,
+      claimValidation: state.claimValidation,
+      orderId: state.orderId,
+      orderItemId: state.orderItemId,
+    },
+  });
+
+  return { success: true };
+}
+
+/**
+ * Private function to handle new claim validation and order creation
+ */
+async function _processNewClaim(
+  input: ProcessFreeClaimWorkflowInput,
+  state: WorkflowState,
+  activities: any,
+): Promise<{ success: boolean; reason?: string }> {
+  const {
+    userId,
+    normalizedDomainName,
+    durationInYears,
+    registrarKey,
+    recipientWalletAddress,
+    chainId,
+  } = input;
+  const { validateAndUseClaim, createClaimOrder, updateClaimRecord } =
+    activities;
+
+  // Step 1: Atomically validate and mark the claim as used
+  state.currentStep = 'validating_claim';
+  const claimValidationResult = await validateAndUseClaim({
+    userId,
+    normalizedDomainName,
+  });
+
+  if (!claimValidationResult.success) {
+    state.currentStep = 'claim_validation_failed';
+    state.claimValidation = 'failed';
+    state.error = claimValidationResult.reason || 'Claim validation failed';
+    return {
+      success: false,
+      reason: state.error,
+    };
+  }
+
+  state.claimId = claimValidationResult.claimId;
+  state.claimValidation = 'success';
+  state.currentStep = 'claim_validated';
+  const memo = (workflow.workflowInfo().memo ?? {}) as FreeClaimWorkflowMemo;
+  workflow.upsertMemo({
+    freeClaim: {
+      ...memo.freeClaim,
+      claimId: state.claimId,
+      claimValidation: state.claimValidation,
+    },
+  });
+
+  // Step 2: Create order and order item for the claim (with $0 amount)
+  state.currentStep = 'creating_order';
+  const orderResult = await createClaimOrder({
+    userId,
+    normalizedDomainName,
+    durationInYears,
+    registrarKey,
+    recipientWalletAddress,
+    chainId,
+    claimId: state.claimId,
+  });
+
+  state.orderId = orderResult.orderId;
+  state.orderItemId = orderResult.orderItemId;
+  state.currentStep = 'order_created';
+
+  // Update the claim record with the order item ID
+  state.currentStep = 'updating_claim_record';
+  await updateClaimRecord({
+    claimId: state.claimId,
+    orderItemId: state.orderItemId,
+  });
+
+  return { success: true };
+}

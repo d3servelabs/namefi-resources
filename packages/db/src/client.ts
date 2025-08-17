@@ -34,3 +34,23 @@ switch (secrets.DATABASE_DRIVER) {
 
 export { db };
 export type DB = typeof db;
+
+type TransactionConfig = Parameters<typeof db.transaction>[1];
+
+/**
+ * Execute a function within a database transaction if none is already active
+ * If a transaction context is passed, uses that instead of creating a new one
+ */
+export async function $withTransaction<T>(
+  callback: (tx: DB) => Promise<T>,
+  config?: TransactionConfig,
+  existingTx?: DB,
+): Promise<T> {
+  if (existingTx) {
+    // Use the existing transaction
+    return callback(existingTx);
+  }
+
+  // Create a new transaction
+  return db.transaction(callback, config);
+}

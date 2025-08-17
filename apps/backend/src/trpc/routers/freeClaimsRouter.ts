@@ -11,9 +11,11 @@ import {
   checkAnyClaimEligibility,
   checkClaimEligibility,
 } from '../../temporal/activities/free-claim.activities';
+import { validateAndCreateClaimOrder } from '../../temporal/activities/free-claim.activities';
 import { createTRPCRouter, protectedProcedure } from '../base';
 import { createLogger } from '#lib/logger';
 import type { FreeClaimWorkflowMemo } from '../../temporal/workflows/free-claim.workflow';
+import { $withTransaction } from '@namefi-astra/db';
 
 const logger = createLogger({ context: 'freeClaimsRouter' });
 
@@ -66,7 +68,7 @@ export const freeClaimsRouter = createTRPCRouter({
         normalizedDomainName: namefiNormalizedDomainSchema,
         recipientWalletAddress: checksumWalletAddressSchema,
         chainId: z.number().int().positive(),
-        durationInYears: z.number().int().min(1).max(10),
+        durationInYears: z.number().int().min(1).max(1),
         registrarKey: z.string().min(1),
       }),
     )
@@ -385,6 +387,146 @@ export const freeClaimsRouter = createTRPCRouter({
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to search workflows',
+        });
+      }
+    }),
+
+  /**
+   * Process a free claim with transaction - validates claim and creates order in a single transaction,
+   * then starts workflow with the claimId and orderIds
+   */
+  processClaimWithTransaction: protectedProcedure
+    .input(
+      z.object({
+        normalizedDomainName: namefiNormalizedDomainSchema,
+        recipientWalletAddress: checksumWalletAddressSchema,
+        chainId: z.number().int().positive(),
+        registrarKey: z.string().min(1),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { user } = ctx;
+      const {
+        normalizedDomainName,
+        recipientWalletAddress,
+        chainId,
+        registrarKey,
+      } = input;
+
+      const durationInYears = 1;
+      logger.info(
+        {
+          userId: user.id,
+          normalizedDomainName,
+          recipientWalletAddress,
+          chainId,
+          durationInYears,
+          registrarKey,
+        },
+        'Processing free claim with transaction',
+      );
+
+      try {
+        const result = await $withTransaction(
+          async (tx) => {
+            // Step 1: Validate and create claim order using composed activities
+            const transactionResult = await validateAndCreateClaimOrder({
+              userId: user.id,
+              normalizedDomainName,
+              durationInYears,
+              registrarKey,
+              recipientWalletAddress,
+              chainId,
+              tx,
+            });
+
+            const { orderId, orderItemId, claimId } = transactionResult;
+
+            logger.info(
+              {
+                claimId,
+                orderId,
+                orderItemId,
+                userId: user.id,
+                normalizedDomainName,
+              },
+              'Claim validation and order creation completed, starting workflow',
+            );
+
+            // Step 2: Start the workflow with the pre-created claim and order IDs
+            const workflowInput = {
+              userId: user.id,
+              normalizedDomainName,
+              recipientWalletAddress,
+              chainId,
+              durationInYears,
+              registrarKey,
+              claimId,
+              orderId,
+              orderItemId,
+            };
+
+            const handle = await temporalClient.workflow.start(
+              processFreeClaimWorkflow,
+              {
+                args: [workflowInput],
+                taskQueue: TEMPORAL_QUEUES.DOMAINS,
+                workflowId: processFreeClaimWorkflow.generateId(workflowInput),
+                workflowIdReusePolicy: 'ALLOW_DUPLICATE_FAILED_ONLY',
+                workflowIdConflictPolicy: 'FAIL',
+                searchAttributes: {
+                  userId: [user.id],
+                  domainName: [normalizedDomainName],
+                },
+              },
+            );
+            // Return immediately with the IDs - don't wait for workflow completion
+            return {
+              success: true,
+              workflowId: handle.workflowId,
+              claimId,
+              orderId,
+              orderItemId,
+              message: 'Free claim processing started',
+            };
+          },
+          {
+            isolationLevel: 'serializable',
+            deferrable: false,
+          },
+        );
+
+        logger.info(
+          result,
+          'Free claim workflow started with pre-created claim and order',
+        );
+
+        return result;
+      } catch (error) {
+        logger.error(
+          { error, userId: user.id, normalizedDomainName },
+          'Error processing free claim with transaction',
+        );
+
+        // Map common errors to user-friendly messages
+        if (error instanceof Error) {
+          if (error.message.includes('No eligible claim found')) {
+            throw new TRPCError({
+              code: 'FORBIDDEN',
+              message: 'No eligible claims found for this domain',
+            });
+          }
+          if (error.message.includes('Claim has expired')) {
+            throw new TRPCError({
+              code: 'FORBIDDEN',
+              message: 'Your claim for this domain has expired',
+            });
+          }
+        }
+
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to process free claim',
         });
       }
     }),
