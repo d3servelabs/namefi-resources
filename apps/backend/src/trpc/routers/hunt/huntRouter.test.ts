@@ -12,9 +12,10 @@ import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 import { config } from 'dotenv';
 import { and, eq, inArray, sql } from 'drizzle-orm';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import type { TrpcContext } from '../base';
+import type { TrpcContext } from '../../base';
 import { huntRouter } from './huntRouter';
-import { secrets } from '../../lib/env';
+import { secrets } from '../../../lib/env';
+import { getUserUpvoteStatus } from '../../../services/hunt/domain.service';
 
 const testUser = {
   id: '550e8400-e29b-41d4-a716-446655440000', // Random UUID
@@ -148,11 +149,12 @@ describe('Hunt Router', () => {
       });
 
       // Check that the submitter has automatically upvoted the domain
-      const upvoteStatus = await caller.checkUpvoteStatus({
-        domainName: 'test.domain.auto.upvote',
-      });
-      expect(upvoteStatus.hasUpvoted).toBe(true);
-      expect(upvoteStatus.upvotedAt).toBeTruthy();
+      const upvoteStatus = await getUserUpvoteStatus(
+        [namefiNormalizedDomainSchema.parse('test.domain.auto.upvote')],
+        testUser.id,
+      );
+      expect(upvoteStatus['test.domain.auto.upvote']?.hasUpvoted).toBe(true);
+      expect(upvoteStatus['test.domain.auto.upvote']?.upvotedAt).toBeTruthy();
 
       // Check domain details to confirm upvote count
       const domainDetail = await caller.getDomainDetail({
@@ -211,10 +213,11 @@ describe('Hunt Router', () => {
       expect(secondSubmit.submittedAt).toEqual(firstSubmit.submittedAt);
 
       // Verify that the second user has upvoted the domain
-      const upvoteStatus = await otherCaller.checkUpvoteStatus({
-        domainName: 'test.domain.shared',
-      });
-      expect(upvoteStatus.hasUpvoted).toBe(true);
+      const upvoteStatus = await getUserUpvoteStatus(
+        [namefiNormalizedDomainSchema.parse('test.domain.shared')],
+        otherUser.id,
+      );
+      expect(upvoteStatus['test.domain.shared']?.hasUpvoted).toBe(true);
     });
 
     it('should delete a domain', async () => {
@@ -346,13 +349,8 @@ describe('Hunt Router', () => {
       expect(Array.isArray(result.tags)).toBe(true);
 
       // User's interaction status
-      expect(result).toHaveProperty('hasUpvoted', true);
-      expect(result).toHaveProperty('isOwner', true);
-      expect(result).toHaveProperty('upvotedAt');
-      expect(result).toHaveProperty('submittedAt');
-
-      // Backward compatibility
       expect(result).toHaveProperty('userHasUpvoted', true);
+      expect(result).toHaveProperty('userIsOwner', true);
       expect(result).toHaveProperty('userUpvotedAt');
       expect(result).toHaveProperty('userSubmittedAt');
     });
@@ -383,10 +381,11 @@ describe('Hunt Router', () => {
       });
 
       // Verify the upvote was recorded
-      const status = await caller.checkUpvoteStatus({
-        domainName: 'test.domain.for.votes',
-      });
-      expect(status.hasUpvoted).toBe(true);
+      const status = await getUserUpvoteStatus(
+        [namefiNormalizedDomainSchema.parse('test.domain.for.votes')],
+        testUser.id,
+      );
+      expect(status['test.domain.for.votes']?.hasUpvoted).toBe(true);
     });
 
     it('should not create duplicate upvotes', async () => {
@@ -417,10 +416,11 @@ describe('Hunt Router', () => {
       });
 
       // Verify the upvote was removed
-      const status = await caller.checkUpvoteStatus({
-        domainName: 'test.domain.for.votes',
-      });
-      expect(status.hasUpvoted).toBe(false);
+      const status = await getUserUpvoteStatus(
+        [namefiNormalizedDomainSchema.parse('test.domain.for.votes')],
+        testUser.id,
+      );
+      expect(status['test.domain.for.votes']?.hasUpvoted).toBe(false);
     });
 
     it('should throw error when removing non-existent upvote', async () => {
@@ -431,19 +431,21 @@ describe('Hunt Router', () => {
 
     it('should check upvote status correctly', async () => {
       // Initially no upvote
-      let status = await caller.checkUpvoteStatus({
-        domainName: 'test.domain.for.votes',
-      });
-      expect(status.hasUpvoted).toBe(false);
-      expect(status.upvotedAt).toBeNull();
+      let status = await getUserUpvoteStatus(
+        [namefiNormalizedDomainSchema.parse('test.domain.for.votes')],
+        testUser.id,
+      );
+      expect(status['test.domain.for.votes']?.hasUpvoted).toBe(false);
+      expect(status['test.domain.for.votes']?.upvotedAt).toBeNull();
 
       // After upvote
       await caller.upvote({ domainName: 'test.domain.for.votes' });
-      status = await caller.checkUpvoteStatus({
-        domainName: 'test.domain.for.votes',
-      });
-      expect(status.hasUpvoted).toBe(true);
-      expect(status.upvotedAt).toBeTruthy();
+      status = await getUserUpvoteStatus(
+        [namefiNormalizedDomainSchema.parse('test.domain.for.votes')],
+        testUser.id,
+      );
+      expect(status['test.domain.for.votes']?.hasUpvoted).toBe(true);
+      expect(status['test.domain.for.votes']?.upvotedAt).toBeTruthy();
     });
   });
 
@@ -778,7 +780,6 @@ describe('Hunt Router', () => {
           timeRange: 'TODAY',
         });
 
-        console.log(page2);
         expect(page2.items[0].rank).toBe(2);
       });
 
@@ -867,11 +868,8 @@ describe('Hunt Router', () => {
       // User-specific fields should be false/null for public access
       expect(result).toHaveProperty('userHasUpvoted', false);
       expect(result).toHaveProperty('userUpvotedAt', null);
-      expect(result).toHaveProperty('isOwner', false);
+      expect(result).toHaveProperty('userIsOwner', false);
       expect(result).toHaveProperty('userSubmittedAt', null);
-      expect(result).toHaveProperty('hasUpvoted', false);
-      expect(result).toHaveProperty('upvotedAt', null);
-      expect(result).toHaveProperty('submittedAt', null);
     });
 
     it('should handle non-existent domain in public getDomainDetail', async () => {

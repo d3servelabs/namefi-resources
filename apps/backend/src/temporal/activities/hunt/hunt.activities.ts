@@ -18,22 +18,20 @@ import {
 } from 'date-fns';
 import { assert } from '@namefi-astra/utils/assert';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
-import { logger } from '#lib/logger';
-
-const _logger = logger.child({
-  module: 'hunt-activities',
-});
-
-const DAILY_PERIOD_KEY_REGEX = /^\d{4}-\d{2}-\d{2}$/;
-const WEEKLY_PERIOD_KEY_REGEX = /^\d{4}-\d{2}-\d{2}$/;
-const MONTHLY_PERIOD_KEY_REGEX = /^\d{4}-\d{2}$/;
-const YEARLY_PERIOD_KEY_REGEX = /^\d{4}$/;
+import {
+  logger,
+  DAILY_PERIOD_KEY_REGEX,
+  WEEKLY_PERIOD_KEY_REGEX,
+  MONTHLY_PERIOD_KEY_REGEX,
+  YEARLY_PERIOD_KEY_REGEX,
+} from './helpers';
+import type { HuntPeriodAwardType } from '../../../services/hunt/schema';
 
 /**
  * Activity to get campaigns that have ended but not been awarded yet
  */
 export const getEndedCampaignsForAwarding = async () => {
-  _logger.info('Fetching ended campaigns for awarding');
+  logger.info('Fetching ended campaigns for awarding');
 
   const now = new Date();
 
@@ -54,7 +52,7 @@ export const getEndedCampaignsForAwarding = async () => {
       ),
     );
 
-  _logger.info(
+  logger.info(
     { campaignCount: endedCampaigns.length },
     'Found ended campaigns',
   );
@@ -66,7 +64,7 @@ export const getEndedCampaignsForAwarding = async () => {
  * Activity to get campaign rankings for awarding
  */
 export const getCampaignRankingsForAwarding = async (campaignKey: string) => {
-  _logger.info({ campaignKey }, 'Fetching campaign rankings for awarding');
+  logger.info({ campaignKey }, 'Fetching campaign rankings for awarding');
   // Get all domains in the campaign with their current upvote counts
   const rankings = await db
     .select({
@@ -97,7 +95,7 @@ export const getCampaignRankingsForAwarding = async (campaignKey: string) => {
       ),
     );
 
-  _logger.info(
+  logger.info(
     { campaignKey, rankingCount: rankings.length },
     'Retrieved campaign rankings',
   );
@@ -108,11 +106,11 @@ export const getCampaignRankingsForAwarding = async (campaignKey: string) => {
  * Activity to get period rankings for awarding (daily, weekly, monthly, yearly)
  */
 export const getPeriodRankingsForAwarding = async (
-  type: 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'YEARLY',
+  type: HuntPeriodAwardType,
   periodKey: string,
   limit: number,
 ) => {
-  _logger.info(
+  logger.info(
     { type, periodKey, limit },
     'Fetching period rankings for awarding',
   );
@@ -191,7 +189,7 @@ export const getPeriodRankingsForAwarding = async (
     )
     .limit(limit);
 
-  _logger.info(
+  logger.info(
     { type, periodKey, rankingCount: rankings.length },
     'Retrieved period rankings',
   );
@@ -203,10 +201,10 @@ export const getPeriodRankingsForAwarding = async (
  * Activity to check if period awards already exist
  */
 export const checkPeriodAwardsExist = async (
-  type: 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'YEARLY',
+  type: HuntPeriodAwardType,
   periodKey: string,
 ) => {
-  _logger.info({ type, periodKey }, 'Checking if period awards exist');
+  logger.info({ type, periodKey }, 'Checking if period awards exist');
   const existingAwards = await db
     .select({ id: huntAwardsTable.id })
     .from(huntAwardsTable)
@@ -218,7 +216,7 @@ export const checkPeriodAwardsExist = async (
     )
     .limit(1);
   const exists = existingAwards.length > 0;
-  _logger.info(
+  logger.info(
     { type, periodKey, exists },
     'Period awards existence check complete',
   );
@@ -231,7 +229,7 @@ export const checkPeriodAwardsExist = async (
  * Activity to check if campaign awards already exist
  */
 export const checkCampaignAwardsExist = async (campaignKey: string) => {
-  _logger.info({ campaignKey }, 'Checking if campaign awards exist');
+  logger.info({ campaignKey }, 'Checking if campaign awards exist');
   const existingAwards = await db
     .select({ id: huntAwardsTable.id })
     .from(huntAwardsTable)
@@ -243,7 +241,7 @@ export const checkCampaignAwardsExist = async (campaignKey: string) => {
     )
     .limit(1);
 
-  _logger.info(
+  logger.info(
     { campaignKey, existingAwardsCount: existingAwards.length },
     'Campaign awards existence check complete',
   );
@@ -271,12 +269,12 @@ export const createCampaignAwards = async (
   createdAwards: number;
   message: string;
 }> => {
-  _logger.info(
+  logger.info(
     { campaignKey, campaignTitle, rankingCount: rankings.length },
     'Creating campaign awards',
   );
   if (rankings.length === 0) {
-    _logger.info({ campaignKey }, 'No domains to award for campaign');
+    logger.info({ campaignKey }, 'No domains to award for campaign');
     return {
       createdAwards: 0,
       message: 'No domains to award',
@@ -339,12 +337,12 @@ export const createPeriodAwards = async (
   createdAwards: number;
   message: string;
 }> => {
-  _logger.info(
+  logger.info(
     { type, periodKey, rankingCount: rankings.length },
     'Creating period awards',
   );
   if (rankings.length === 0) {
-    _logger.info({ type, periodKey }, 'No domains to award for period');
+    logger.info({ type, periodKey }, 'No domains to award for period');
     return {
       createdAwards: 0,
       message: 'No domains to award',
@@ -405,7 +403,7 @@ export const updateCampaignStatusToAwarded = async (
   success: boolean;
   message: string;
 }> => {
-  _logger.info({ campaignKey }, 'Updating campaign status to AWARDED');
+  logger.info({ campaignKey }, 'Updating campaign status to AWARDED');
   const result = await db
     .update(huntCampaignsTable)
     .set({ status: 'AWARDED' })
@@ -418,7 +416,7 @@ export const updateCampaignStatusToAwarded = async (
     );
   }
 
-  _logger.info({ campaignKey }, 'Campaign status updated to AWARDED');
+  logger.info({ campaignKey }, 'Campaign status updated to AWARDED');
 
   return {
     success: true,
@@ -430,7 +428,7 @@ export const updateCampaignStatusToAwarded = async (
  * Activity to update expired ACTIVE campaigns to ENDED status
  */
 export const updateExpiredActiveCampaignsToEnded = async () => {
-  _logger.info('Updating expired active campaigns to ended status');
+  logger.info('Updating expired active campaigns to ended status');
   const now = new Date();
 
   const result = await db
@@ -448,7 +446,7 @@ export const updateExpiredActiveCampaignsToEnded = async () => {
       endDate: huntCampaignsTable.endDate,
     });
 
-  _logger.info(
+  logger.info(
     { updatedCount: result.length, campaigns: result },
     'Updated expired campaigns',
   );
@@ -464,7 +462,7 @@ export const updateExpiredActiveCampaignsToEnded = async () => {
  * Activity to check if a campaign has already been awarded
  */
 export const checkCampaignAwardedStatus = async (campaignKey: string) => {
-  _logger.info({ campaignKey }, 'Checking campaign awarded status');
+  logger.info({ campaignKey }, 'Checking campaign awarded status');
   const campaign = await db
     .select({ status: huntCampaignsTable.status })
     .from(huntCampaignsTable)
@@ -475,7 +473,7 @@ export const checkCampaignAwardedStatus = async (campaignKey: string) => {
     throw new Error(`Campaign ${campaignKey} not found`);
   }
 
-  _logger.info(
+  logger.info(
     { campaignKey, status: campaign[0].status },
     'Campaign awarded status retrieved',
   );
@@ -490,7 +488,7 @@ export const checkCampaignAwardedStatus = async (campaignKey: string) => {
  * Activity to get campaign details
  */
 export const getCampaignDetails = async (campaignKey: string) => {
-  _logger.info({ campaignKey }, 'Fetching campaign details');
+  logger.info({ campaignKey }, 'Fetching campaign details');
   const campaign = await db
     .select({
       campaignKey: huntCampaignsTable.campaignKey,
@@ -508,7 +506,7 @@ export const getCampaignDetails = async (campaignKey: string) => {
     throw new Error(`Campaign ${campaignKey} not found`);
   }
 
-  _logger.info({ campaignKey }, 'Campaign details retrieved');
+  logger.info({ campaignKey }, 'Campaign details retrieved');
 
   return campaign[0];
 };
@@ -517,10 +515,10 @@ export const getCampaignDetails = async (campaignKey: string) => {
  * Activity to generate period key for a given date
  */
 export const generatePeriodKey = async (
-  type: 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'YEARLY',
+  type: HuntPeriodAwardType,
   date: Date,
 ) => {
-  _logger.info({ type, date }, 'Generating period key');
+  logger.info({ type, date }, 'Generating period key');
   switch (type) {
     case 'DAILY': {
       return format(date, 'yyyy-MM-dd');
@@ -544,10 +542,8 @@ export const generatePeriodKey = async (
 /**
  * Activity to generate period key for the previous period
  */
-export const generateLatestPeriodKey = async (
-  type: 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'YEARLY',
-) => {
-  _logger.info({ type }, 'Generating latest period key');
+export const generateLatestPeriodKey = async (type: HuntPeriodAwardType) => {
+  logger.info({ type }, 'Generating latest period key');
   const now = new Date();
 
   switch (type) {

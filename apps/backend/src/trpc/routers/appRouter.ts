@@ -6,7 +6,7 @@ import { analyticsRouter } from './analyticsRouter';
 import { cartsRouter } from './cartsRouter';
 import { dnsRecordsRouter } from './dnsRecordsRouter';
 import { domainConfigRouter } from './domainConfig/domainConfigRouter';
-import { huntRouter } from './huntRouter';
+import { huntRouter } from './hunt/huntRouter';
 import { ordersRouter } from './ordersRouter';
 import { paymentsRouter } from './paymentsRouter';
 import { registryRouter } from './registryRouter';
