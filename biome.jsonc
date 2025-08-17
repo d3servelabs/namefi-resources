@@ -16,7 +16,8 @@
       "!**/.next/**",
       "!**/out/**",
       "!**/.vercel/**",
-      "!**/.turbo/**"
+      "!**/.turbo/**",
+      "!**/db/src/migrations/**"
     ],
     "maxSize": 1536000
   },
