@@ -19,6 +19,8 @@ import {
   itemTypeEnum,
   refundsTable,
   usersTable,
+  freeClaimsTable,
+  freeClaimClaimingStatusEnum,
 } from './schema';
 
 /**
@@ -60,6 +62,21 @@ export const orderItemUpdateSchema = createUpdateSchema(orderItemsTable, {
   normalizedDomainName: namefiNormalizedDomainSchema,
 });
 
+export const freeClaimInsertSchema = createInsertSchema(freeClaimsTable, {
+  exactDomainName: namefiNormalizedDomainSchema.nullable().optional(),
+  parentDomain: namefiNormalizedDomainSchema.nullable().optional(),
+  claimedDomainName: namefiNormalizedDomainSchema.nullable().optional(),
+});
+export const freeClaimSelectSchema = createSelectSchema(freeClaimsTable, {
+  exactDomainName: namefiNormalizedDomainSchema.nullable().optional(),
+  parentDomain: namefiNormalizedDomainSchema.nullable().optional(),
+  claimedDomainName: namefiNormalizedDomainSchema.nullable().optional(),
+});
+export const freeClaimUpdateSchema = createUpdateSchema(freeClaimsTable, {
+  exactDomainName: namefiNormalizedDomainSchema.nullable().optional(),
+  parentDomain: namefiNormalizedDomainSchema.nullable().optional(),
+  claimedDomainName: namefiNormalizedDomainSchema.nullable().optional(),
+});
 /**
  * DNS Record schemas
  */
@@ -93,6 +110,11 @@ export type UserUpdate = z.infer<typeof userUpdateSchema>;
 export type CartItemInsert = z.infer<typeof cartItemInsertSchema>;
 export type CartItemSelect = z.infer<typeof cartItemSelectSchema>;
 export type CartItemUpdate = z.infer<typeof cartItemUpdateSchema>;
+
+// FreeClaim types
+export type FreeClaimInsert = z.infer<typeof freeClaimInsertSchema>;
+export type FreeClaimSelect = z.infer<typeof freeClaimSelectSchema>;
+export type FreeClaimUpdate = z.infer<typeof freeClaimUpdateSchema>;
 
 // Payment types
 export type PaymentInsert = z.infer<typeof paymentInsertSchema>;
@@ -136,6 +158,12 @@ export const refundStatusSchema = z.enum(refundStatusEnum.enumValues);
 export type RefundStatus = z.infer<typeof refundStatusSchema>;
 export const orderStatusSchema = z.enum(orderStatusEnum.enumValues);
 export type OrderStatus = z.infer<typeof orderStatusSchema>;
+export const freeClaimClaimingStatusSchema = z.enum(
+  freeClaimClaimingStatusEnum.enumValues,
+);
+export type FreeClaimClaimingStatus = z.infer<
+  typeof freeClaimClaimingStatusSchema
+>;
 
 export type NfscPaymentDetails = Exclude<
   z.infer<typeof paymentInsertSchema.shape.nfscPaymentDetails>,

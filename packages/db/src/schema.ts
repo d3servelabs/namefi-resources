@@ -897,6 +897,128 @@ export const huntDomainStatsView = pgView('hunt_domain_stats_view').as((qb) =>
 );
 
 /**
+ * Free claims table
+ * Stores rows that determine whether users qualify for free domain claims
+ * Each row can only be used once and is atomic to prevent concurrency issues
+ */
+export const freeClaimClaimingStatusEnum = pgEnum(
+  'free_claim_claiming_status',
+  ['IDLE', 'CLAIMING', 'CLAIMED'],
+);
+
+export const freeClaimsTable = pgTable(
+  'free_claims',
+  {
+    ...randomUuid,
+    userId: uuid('user_id')
+      .notNull()
+      .references(() => usersTable.id, { onDelete: 'cascade' }),
+    /**
+     * Identifier for categorizing free claims - can be either a group or campaign key.
+     *
+     * This field serves two purposes:
+     *
+     * **For campaign-based claims**: Should match the `campaignKey` from hunt_campaigns table
+     * to maintain consistency with existing campaign infrastructure.
+     *
+     * **For non-campaign claims**: Acts as a group identifier for categorizing
+     * different types of free domain allocations.
+     *
+     * @example
+     * ```typescript
+     * // Campaign-based claim (matches hunt_campaigns.campaign_key)
+     * groupOrCampaignKey: "CV-2025"
+     *
+     * // Group identifier (non-campaign allocations)
+     * groupOrCampaignKey: "early-adopter-2024"
+     * groupOrCampaignKey: "referral-bonus"
+     * groupOrCampaignKey: "hackathon-winner"
+     * ```
+     */
+    groupOrCampaignKey: text('group_or_campaign_key').notNull(),
+    /**
+     * Human-readable reason or description for this specific claim.
+     *
+     * This provides dynamic, user-facing text that explains why the user
+     * received this particular free claim. Can be used for display purposes
+     * in UI, notifications, or claim history.
+     *
+     * @example
+     * ```typescript
+     * reason: "Early adopter reward for joining in 2024"
+     * reason: "Referral bonus for bringing 5+ friends"
+     * reason: "Community contributor recognition"
+     * reason: "Hackathon winner prize - 1st place"
+     * reason: "CV 2025 campaign participation"
+     * ```
+     */
+    reason: text('reason'),
+    // Exact domain name that can be claimed (if specified)
+    exactDomainName: text('exact_domain_name').$type<NamefiNormalizedDomain>(),
+    // Parent domain for which child domains can be claimed (if specified)
+    parentDomain: text('parent_domain').$type<NamefiNormalizedDomain>(),
+    expirationDate: timestamp('expiration_date'),
+    // Reference to the order item created when this claim is used
+    orderItemId: uuid('order_item_id').references(() => orderItemsTable.id, {
+      onDelete: 'set null',
+    }),
+    // Status of the claim
+    claimingStatus: freeClaimClaimingStatusEnum('claiming_status')
+      .notNull()
+      .default('IDLE'),
+    /**
+     * The domain name that was claimed, this is set when the claim is used and in case of exact match, it is equal to the exactDomainName
+     */
+    claimedDomainName: text(
+      'claimed_domain_name',
+    ).$type<NamefiNormalizedDomain>(),
+    claimedAt: timestamp('claimed_at'),
+    // Metadata for the claim
+    metadata: jsonb('metadata').default({}).$type<any>(),
+    ...timestamps,
+  },
+  (table) => [
+    // Primary lookup indexes
+    index('free_claims_user_claim_idx').on(
+      table.userId,
+      table.groupOrCampaignKey,
+    ),
+    index('free_claims_expiration_idx').on(table.expirationDate),
+    index('free_claims_claiming_status_idx').on(table.claimingStatus),
+
+    // Domain-specific indexes
+    index('free_claims_exact_domain_idx').on(table.exactDomainName),
+    index('free_claims_parent_domain_idx').on(table.parentDomain),
+
+    // Composite indexes for claim validation
+    index('free_claims_user_domain_status_idx').on(
+      table.userId,
+      table.exactDomainName,
+      table.parentDomain,
+      table.claimingStatus,
+      table.expirationDate,
+    ),
+
+    // State invariants: If CLAIMED, claimedDomainName and claimedAt must be present
+    check(
+      'free_claims_claimed_consistency',
+      sql`(${table.claimingStatus} != 'CLAIMED') OR (${table.claimedDomainName} IS NOT NULL AND ${table.claimedAt} IS NOT NULL)`,
+    ),
+    // Ensure either exactDomainName or parentDomain is provided
+    check(
+      'free_claims_domain_check',
+      sql`(${table.exactDomainName} IS NOT NULL) OR (${table.parentDomain} IS NOT NULL)`, //todo use xor here (add implementation for xor)
+    ),
+    // user can only have one claim for a given domain in a given groupOrCampaignKey
+    unique('free_claims_user_domain_unique').on(
+      table.userId,
+      table.groupOrCampaignKey,
+      table.exactDomainName,
+    ),
+  ],
+);
+
+/**
  * Wishlisted domains table
  * Allows users to wishlist domains (userId + normalizedDomainName)
  */
