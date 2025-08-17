@@ -3,11 +3,14 @@ import {
   namefiNftOwnersView,
   namefiNftView,
   indexedDomainsTable,
+  freeClaimsTable,
+  usersTable,
 } from '@namefi-astra/db';
 import {
   CHAINS,
   namefiNormalizedDomainSchema,
   type NamefiNormalizedDomain,
+  checksumWalletAddressSchema,
 } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
 import { and, asc, desc, eq, isNull, or, lt, type SQL, sql } from 'drizzle-orm';
@@ -30,7 +33,10 @@ import {
 import { config } from '#lib/env';
 import { logger } from '#lib/logger';
 import { getDomainChain } from '#temporal/activities/domain/index';
-
+import { getViemPublicClient } from '#lib/crypto/viem-clients';
+import { pluck, values } from 'ramda';
+import { type Chain, createPublicClient, http } from 'viem';
+import { chainsToUrls } from '#lib/crypto/rpc-urls';
 /**
  * Convert protobuf WorkflowExecutionStatus enum to readable string
  */
@@ -1013,6 +1019,534 @@ export const adminRouter = createTRPCRouter({
       }
     }),
 
+  // Free Claims Management
+  getFreeClaimsWithPagination: adminProcedure
+    .input(
+      z.object({
+        page: z.number().min(1).default(1),
+        limit: z.number().min(1).max(100).default(20),
+        sortBy: z
+          .enum([
+            'groupOrCampaignKey',
+            'reason',
+            'exactDomainName',
+            'parentDomain',
+            'expirationDate',
+            'createdAt',
+          ])
+          .default('createdAt'),
+        sortOrder: z.enum(['asc', 'desc']).default('desc'),
+        searchTerm: z.string().optional(),
+        status: z.enum(['all', 'IDLE', 'CLAIMING', 'CLAIMED']).default('all'),
+      }),
+    )
+    .query(async ({ input }) => {
+      const { page, limit, sortBy, sortOrder, searchTerm, status } = input;
+      const offset = (page - 1) * limit;
+
+      // Build base query
+      const baseQuery = db.select().from(freeClaimsTable);
+      const baseCountQuery = db
+        .select({ count: sql<number>`COUNT(*)` })
+        .from(freeClaimsTable);
+
+      // Build filters
+      const filters = [];
+
+      if (searchTerm) {
+        filters.push(
+          or(
+            sql`${freeClaimsTable.groupOrCampaignKey} ILIKE ${'%' + searchTerm + '%'}`,
+            sql`${freeClaimsTable.reason} ILIKE ${'%' + searchTerm + '%'}`,
+            sql`${freeClaimsTable.exactDomainName} ILIKE ${'%' + searchTerm + '%'}`,
+            sql`${freeClaimsTable.parentDomain} ILIKE ${'%' + searchTerm + '%'}`,
+          ),
+        );
+      }
+
+      if (status !== 'all') {
+        filters.push(eq(freeClaimsTable.claimingStatus, status));
+      }
+
+      const whereClause = filters.length > 0 ? and(...filters) : undefined;
+
+      const query = whereClause ? baseQuery.where(whereClause) : baseQuery;
+      const countQuery = whereClause
+        ? baseCountQuery.where(whereClause)
+        : baseCountQuery;
+
+      // Apply sorting
+      let orderByClause: SQL<unknown>;
+      switch (sortBy) {
+        case 'groupOrCampaignKey':
+          orderByClause =
+            sortOrder === 'asc'
+              ? asc(freeClaimsTable.groupOrCampaignKey)
+              : desc(freeClaimsTable.groupOrCampaignKey);
+          break;
+        case 'reason':
+          orderByClause =
+            sortOrder === 'asc'
+              ? asc(freeClaimsTable.reason)
+              : desc(freeClaimsTable.reason);
+          break;
+        case 'exactDomainName':
+          orderByClause =
+            sortOrder === 'asc'
+              ? sql`${freeClaimsTable.exactDomainName} ASC NULLS LAST`
+              : sql`${freeClaimsTable.exactDomainName} DESC NULLS LAST`;
+          break;
+        case 'parentDomain':
+          orderByClause =
+            sortOrder === 'asc'
+              ? sql`${freeClaimsTable.parentDomain} ASC NULLS LAST`
+              : sql`${freeClaimsTable.parentDomain} DESC NULLS LAST`;
+          break;
+        case 'expirationDate':
+          orderByClause =
+            sortOrder === 'asc'
+              ? sql`${freeClaimsTable.expirationDate} ASC NULLS LAST`
+              : sql`${freeClaimsTable.expirationDate} DESC NULLS LAST`;
+          break;
+        case 'createdAt':
+        default:
+          orderByClause =
+            sortOrder === 'asc'
+              ? asc(freeClaimsTable.createdAt)
+              : desc(freeClaimsTable.createdAt);
+          break;
+      }
+
+      // Execute queries
+      const [results, countResult] = await Promise.all([
+        query.orderBy(orderByClause).limit(limit).offset(offset),
+        countQuery,
+      ]);
+
+      const totalCount = countResult[0]?.count ?? 0;
+
+      return {
+        data: results,
+        pagination: {
+          page,
+          limit,
+          totalCount,
+          totalPages: Math.ceil(totalCount / limit),
+        },
+      };
+    }),
+
+  createFreeClaim: adminProcedure
+    .input(
+      z
+        .object({
+          userId: z.string().uuid(),
+          groupOrCampaignKey: z.string().min(1),
+          reason: z.string().min(1),
+          exactDomainName: namefiNormalizedDomainSchema.optional(),
+          parentDomain: namefiNormalizedDomainSchema.optional(),
+          expirationDate: z.date().optional(),
+        })
+        .refine((data) => data.exactDomainName || data.parentDomain, {
+          message: 'Either exactDomainName or parentDomain must be provided',
+          path: ['exactDomainName', 'parentDomain'],
+        })
+        .refine((data) => !(data.exactDomainName && data.parentDomain), {
+          message: 'Cannot specify both exactDomainName and parentDomain',
+          path: ['exactDomainName', 'parentDomain'],
+        }),
+    )
+    .mutation(async ({ input }) => {
+      const {
+        userId,
+        groupOrCampaignKey,
+        reason,
+        exactDomainName,
+        parentDomain,
+        expirationDate,
+      } = input;
+
+      try {
+        const newClaim = await db
+          .insert(freeClaimsTable)
+          .values({
+            userId,
+            groupOrCampaignKey,
+            reason: reason || null,
+            exactDomainName: exactDomainName || null,
+            parentDomain: parentDomain || null,
+            expirationDate: expirationDate || null,
+            claimingStatus: 'IDLE',
+            createdAt: new Date(),
+            updatedAt: new Date(),
+          })
+          .returning();
+
+        return {
+          success: true,
+          claim: newClaim[0],
+        };
+      } catch (error) {
+        logger.error({ error, input }, 'Failed to create free claim');
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to create free claim',
+        });
+      }
+    }),
+
+  updateFreeClaim: adminProcedure
+    .input(
+      z.object({
+        id: z.string().uuid(),
+        groupOrCampaignKey: z.string().min(1).optional(),
+        reason: z.string().min(1).optional(),
+        exactDomainName: namefiNormalizedDomainSchema.optional(),
+        parentDomain: namefiNormalizedDomainSchema.optional(),
+        expirationDate: z.date().optional(),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      const { id, ...updateData } = input;
+
+      try {
+        const updatedClaim = await db.transaction(async (tx) => {
+          // First, select and lock the claim to ensure it's IDLE
+          const existingClaim = await tx
+            .select()
+            .from(freeClaimsTable)
+            .where(eq(freeClaimsTable.id, id))
+            .for('update')
+            .limit(1);
+
+          if (existingClaim.length === 0) {
+            throw new TRPCError({
+              code: 'NOT_FOUND',
+              message: 'Free claim not found',
+            });
+          }
+
+          const claim = existingClaim[0];
+
+          // Only allow updates if the claim is IDLE
+          if (claim.claimingStatus !== 'IDLE') {
+            throw new TRPCError({
+              code: 'CONFLICT',
+              message: `Cannot update claim: current status is ${claim.claimingStatus}. Only IDLE claims can be updated.`,
+            });
+          }
+
+          // Perform the update
+          const updated = await tx
+            .update(freeClaimsTable)
+            .set({
+              ...updateData,
+              updatedAt: new Date(),
+            })
+            .where(eq(freeClaimsTable.id, id))
+            .returning();
+
+          return updated[0];
+        });
+
+        return {
+          success: true,
+          claim: updatedClaim,
+        };
+      } catch (error) {
+        if (error instanceof TRPCError) {
+          throw error;
+        }
+        logger.error({ error, input }, 'Failed to update free claim');
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to update free claim',
+        });
+      }
+    }),
+
+  deleteFreeClaim: adminProcedure
+    .input(
+      z.object({
+        id: z.string().uuid(),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      const { id } = input;
+
+      try {
+        const deletedClaim = await db.transaction(async (tx) => {
+          // First, select and lock the claim to ensure it's IDLE
+          const existingClaim = await tx
+            .select()
+            .from(freeClaimsTable)
+            .where(eq(freeClaimsTable.id, id))
+            .for('update')
+            .limit(1);
+
+          if (existingClaim.length === 0) {
+            throw new TRPCError({
+              code: 'NOT_FOUND',
+              message: 'Free claim not found',
+            });
+          }
+
+          const claim = existingClaim[0];
+
+          // Only allow deletion if the claim is IDLE
+          if (claim.claimingStatus !== 'IDLE') {
+            throw new TRPCError({
+              code: 'CONFLICT',
+              message: `Cannot delete claim: current status is ${claim.claimingStatus}. Only IDLE claims can be deleted.`,
+            });
+          }
+
+          // Perform the deletion
+          const deleted = await tx
+            .delete(freeClaimsTable)
+            .where(eq(freeClaimsTable.id, id))
+            .returning();
+
+          return deleted[0];
+        });
+
+        return {
+          success: true,
+          claim: deletedClaim,
+        };
+      } catch (error) {
+        if (error instanceof TRPCError) {
+          throw error;
+        }
+        logger.error({ error, input }, 'Failed to delete free claim');
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to delete free claim',
+        });
+      }
+    }),
+
+  searchUsers: adminProcedure
+    .input(
+      z.object({
+        searchTerm: z.string().min(1).max(100),
+        limit: z.number().min(1).max(50).default(10),
+      }),
+    )
+    .query(async ({ input }) => {
+      const { searchTerm, limit } = input;
+
+      try {
+        // Helper function to get user details from database
+        const getUserFromDatabase = async (privyUserId: string) => {
+          const user = await db.query.usersTable.findFirst({
+            where: eq(usersTable.privyUserId, privyUserId),
+            columns: {
+              id: true,
+              privyUserId: true,
+              primaryEmail: true,
+            },
+          });
+          return user;
+        };
+
+        // Helper function to format user response
+        const formatUserResponse = async (privyUser: any, dbUser?: any) => {
+          const walletAddresses = getPrivyUserLinkedEthereumWalletAddresses({
+            privyUser,
+          });
+
+          return {
+            id: dbUser?.id || null,
+            privyUserId: privyUser.id,
+            primaryEmail:
+              dbUser?.primaryEmail || privyUser.email?.address || null,
+            walletAddresses,
+            displayName: privyUser.email?.address?.split('@')[0] || null,
+          };
+        };
+
+        // Determine search type and resolve to privyUserId or userUuid
+        const trimmedSearchTerm = searchTerm.trim();
+        let privyUser = null;
+        let searchResults: any[] = [];
+
+        // Check if it's a UUID (our user ID format)
+        const uuidValidation = z.string().uuid().safeParse(trimmedSearchTerm);
+        if (uuidValidation.success) {
+          // Search by user UUID in our database
+          const dbUser = await db.query.usersTable.findFirst({
+            where: eq(usersTable.id, trimmedSearchTerm),
+            columns: {
+              id: true,
+              privyUserId: true,
+              primaryEmail: true,
+            },
+          });
+
+          if (dbUser) {
+            try {
+              privyUser = await privyClient.getUserById(dbUser.privyUserId);
+              if (privyUser) {
+                searchResults.push(await formatUserResponse(privyUser, dbUser));
+              }
+            } catch (error) {
+              logger.warn(
+                { userId: dbUser.id, privyUserId: dbUser.privyUserId, error },
+                'Failed to fetch Privy user by ID',
+              );
+            }
+          }
+        }
+        // Check if it's a Privy user ID (starts with 'did:privy:')
+        else if (trimmedSearchTerm.startsWith('did:privy:')) {
+          try {
+            privyUser = await privyClient.getUserById(trimmedSearchTerm);
+            if (privyUser) {
+              const dbUser = await getUserFromDatabase(privyUser.id);
+              searchResults.push(await formatUserResponse(privyUser, dbUser));
+            }
+          } catch (error) {
+            logger.warn(
+              { privyUserId: trimmedSearchTerm, error },
+              'Failed to fetch Privy user by Privy ID',
+            );
+          }
+        }
+        // Check if it's a wallet address
+        else {
+          const walletValidation =
+            checksumWalletAddressSchema.safeParse(trimmedSearchTerm);
+          if (walletValidation.success) {
+            try {
+              privyUser = await privyClient.getUserByWalletAddress(
+                walletValidation.data,
+              );
+              if (privyUser) {
+                const dbUser = await getUserFromDatabase(privyUser.id);
+                searchResults.push(await formatUserResponse(privyUser, dbUser));
+              }
+            } catch (error) {
+              logger.warn(
+                { walletAddress: trimmedSearchTerm, error },
+                'Failed to fetch Privy user by wallet address',
+              );
+            }
+          }
+          // Check if it's an email address
+          else {
+            const emailValidation = z
+              .string()
+              .email()
+              .safeParse(trimmedSearchTerm);
+            if (emailValidation.success) {
+              try {
+                privyUser = await privyClient.getUserByEmail(trimmedSearchTerm);
+                if (privyUser) {
+                  const dbUser = await getUserFromDatabase(privyUser.id);
+                  searchResults.push(
+                    await formatUserResponse(privyUser, dbUser),
+                  );
+                }
+              } catch (error) {
+                logger.warn(
+                  { email: trimmedSearchTerm, error },
+                  'Failed to fetch Privy user by email',
+                );
+              }
+            }
+            // Check if it looks like a domain (potential ENS name)
+            else if (
+              trimmedSearchTerm.includes('.') &&
+              !trimmedSearchTerm.includes('@')
+            ) {
+              try {
+                const resolvedAddress =
+                  await resolveENSToWallet(trimmedSearchTerm);
+                if (resolvedAddress) {
+                  privyUser =
+                    await privyClient.getUserByWalletAddress(resolvedAddress);
+                  if (privyUser) {
+                    const dbUser = await getUserFromDatabase(privyUser.id);
+                    searchResults.push(
+                      await formatUserResponse(privyUser, dbUser),
+                    );
+                  }
+                }
+              } catch (error) {
+                logger.warn(
+                  { ensName: trimmedSearchTerm, error },
+                  'Failed to resolve ENS and fetch user',
+                );
+              }
+            }
+            // If none of the above, search our database for partial email matches
+            else {
+              const dbUsers = await db
+                .select({
+                  id: usersTable.id,
+                  privyUserId: usersTable.privyUserId,
+                  primaryEmail: usersTable.primaryEmail,
+                })
+                .from(usersTable)
+                .where(
+                  usersTable.primaryEmail
+                    ? sql`${usersTable.primaryEmail} ILIKE ${`%${trimmedSearchTerm}%`}`
+                    : sql`false`,
+                )
+                .limit(limit);
+
+              // Get Privy details for each found user
+              const userDetails = await Promise.allSettled(
+                dbUsers.map(async (dbUser) => {
+                  try {
+                    const privyUser = await privyClient.getUserById(
+                      dbUser.privyUserId,
+                    );
+                    return await formatUserResponse(privyUser, dbUser);
+                  } catch (error) {
+                    logger.warn(
+                      {
+                        userId: dbUser.id,
+                        privyUserId: dbUser.privyUserId,
+                        error,
+                      },
+                      'Failed to fetch Privy user details for partial search',
+                    );
+                    return {
+                      id: dbUser.id,
+                      privyUserId: dbUser.privyUserId,
+                      primaryEmail: dbUser.primaryEmail,
+                      walletAddresses: [],
+                      displayName: null,
+                    };
+                  }
+                }),
+              );
+
+              searchResults = userDetails
+                .filter(
+                  (result): result is PromiseFulfilledResult<any> =>
+                    result.status === 'fulfilled',
+                )
+                .map((result) => result.value);
+            }
+          }
+        }
+
+        // Filter out users without a database record (only show users in our system)
+        const validResults = searchResults.filter((user) => user.id !== null);
+
+        return validResults.slice(0, limit);
+      } catch (error) {
+        logger.error({ error, searchTerm }, 'Failed to search users');
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to search users',
+        });
+      }
+    }),
+
   burnAllExpiredDomains: adminProcedure
     .input(
       z.object({
@@ -1461,3 +1995,19 @@ function _buildOrderByClause(sortBy: string, sortOrder: string) {
   }
   return orderByClause;
 }
+
+// Helper to resolve ENS name to wallet address
+const resolveENSToWallet = async (ensName: string): Promise<string | null> => {
+  try {
+    // Use Ethereum mainnet (chainId 1) for ENS resolution
+    const publicClient = createPublicClient({
+      transport: http(chainsToUrls(CHAINS.mainnet)),
+      chain: CHAINS.mainnet,
+    });
+    const address = await publicClient.getEnsAddress({ name: ensName });
+    return address;
+  } catch (error) {
+    logger.warn({ ensName, error }, 'Failed to resolve ENS name');
+    return null;
+  }
+};

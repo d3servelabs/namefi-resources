@@ -15,6 +15,7 @@ import {
   Shield,
   Coins,
   History,
+  Gift,
 } from 'lucide-react';
 
 export default withAdminGuard(function AdminPage() {
@@ -62,6 +63,25 @@ export default withAdminGuard(function AdminPage() {
               <p className="text-sm text-muted-foreground">
                 View and track all admin-initiated workflows and their execution
                 status.
+              </p>
+            </CardContent>
+          </Card>
+        </Link>
+
+        {/* Free Claims Management */}
+        <Link href="/admin/free-claims" className="group">
+          <Card className="h-full transition-all hover:shadow-md hover:bg-muted/50">
+            <CardHeader className="pb-3">
+              <div className="flex items-center space-x-3">
+                <div className="p-2 rounded-lg bg-green-100 text-green-600 group-hover:bg-green-200 transition-colors">
+                  <Gift className="h-5 w-5" />
+                </div>
+                <CardTitle className="text-lg">Free Claims</CardTitle>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground">
+                Manage free domain claims for campaigns and special promotions.
               </p>
             </CardContent>
           </Card>
