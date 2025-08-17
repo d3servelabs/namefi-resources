@@ -15,6 +15,7 @@ import {
 import { mintNamefiNFT } from '../mint.workflow';
 import { domainSetupWorkflow } from './domain-setup.workflow';
 import { sldRegisterOrImportWorkflow } from './sld-register-or-import.workflow';
+import { resolve } from '../../../utils/resolve';
 
 export interface AcquireDomainWorkflowInput {
   operationType: 'REGISTER' | 'IMPORT';
@@ -28,7 +29,7 @@ export interface AcquireDomainWorkflowInput {
   encryptionKeyId?: string | null;
 }
 
-const { generalAlertNamefi } = typedProxyActivities({
+const { generalAlertNamefi, criticalAlertNamefi } = typedProxyActivities({
   temporalEnum: TEMPORAL_ENUMS.DEFAULT,
   options: {
     ...shortRunningOpts,
@@ -57,12 +58,12 @@ export async function acquireDomainWorkflow(
   const { levels, parentDomain } = getDomainLevels(input.normalizedDomainName);
 
   let expirationTimeInSeconds: number;
+  let failOnMintingError = false;
   if (levels.length === 2) {
     const details = await _acquireSldDomain(input);
-    expirationTimeInSeconds = Math.floor(
-      new Date(details.expirationTime).getTime() / 1000,
-    );
+    expirationTimeInSeconds = getUnixTime(details.expirationTime);
   } else if (levels.length === 3) {
+    failOnMintingError = true; // Subdomains require NFT minting to be successful
     const allowedParentDomains = await getPoweredByNamefi3PDomains();
     if (
       !(
@@ -85,8 +86,8 @@ export async function acquireDomainWorkflow(
     });
   }
 
-  try {
-    await Promise.all([
+  const results = await Promise.all([
+    resolve(
       workflow.executeChild(mintNamefiNFT, {
         taskQueue: TEMPORAL_QUEUES.MINT,
         args: [
@@ -99,7 +100,8 @@ export async function acquireDomainWorkflow(
         ],
         workflowId: `mint-namefi-nft-${input.normalizedDomainName}`,
       }),
-      // TODO: different workflow for sld and 3ld
+    ),
+    resolve(
       workflow.startChild(domainSetupWorkflow, {
         taskQueue: TEMPORAL_QUEUES.DOMAINS,
         args: [
@@ -113,19 +115,37 @@ export async function acquireDomainWorkflow(
         ],
         workflowId: `domain-setup-${input.normalizedDomainName}`,
       }),
-    ]);
-  } catch (error: any) {
-    workflow.log.error(error);
+    ),
+  ]);
 
-    const info = workflow.workflowInfo();
+  const errors = results
+    .filter(({ failed }) => failed)
+    .map(({ error }) => error);
+  const mintingError = results[0].error;
 
-    await generalAlertNamefi({
+  const info = workflow.workflowInfo();
+
+  if (errors.length > 0) {
+    await criticalAlertNamefi({
       title: `Workflow Failed (${info.workflowId})`,
       message: `Post Domain ${input.operationType} And Import Not Successful`,
       runId: info.runId,
       operation: 'DOMAIN_REGISTER_AND_IMPORT',
       input,
-      error,
+      errors,
+    });
+  }
+
+  // For subdomains, NFT minting is critical - if it fails, the entire workflow should fail
+  // For traditional domains, minting failure can be handled gracefully as domain registration still succeeded
+  if (failOnMintingError && mintingError) {
+    workflow.log.error(
+      `Subdomain ${input.normalizedDomainName} acquisition failed - minting is critical for subdomains`,
+    );
+    throw workflow.ApplicationFailure.create({
+      message: `Failed to acquire subdomain ${input.normalizedDomainName}: NFT minting is required but failed`,
+      nonRetryable: true,
+      cause: mintingError,
     });
   }
 }
