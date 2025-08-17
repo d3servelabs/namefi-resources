@@ -8,7 +8,7 @@ import {
   orderStatusSchema,
   type OrderItemInsert,
 } from '@namefi-astra/db';
-import { eq } from 'drizzle-orm';
+import { eq, and } from 'drizzle-orm';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { logger } from '#lib/logger';
 
@@ -60,11 +60,70 @@ export async function updateOrderStatusOrThrow({
   return updatedOrder;
 }
 
+/**
+ * Updates both order and order item status atomically
+ * Used for single item special orders like free claims where both statuses should be synchronized
+ */
+export async function updateOrderAndItemStatusOrThrow({
+  orderId,
+  orderItemId,
+  status,
+}: {
+  orderId: string;
+  orderItemId: string;
+  status: OrderStatus;
+}) {
+  // Use a transaction to ensure both updates happen atomically
+  const result = await db.transaction(async (tx) => {
+    // Update order status
+    const [updatedOrder] = await tx
+      .update(ordersTable)
+      .set({ status })
+      .where(eq(ordersTable.id, orderId))
+      .returning();
+
+    if (!updatedOrder) {
+      throw new Error(`Order not found with id ${orderId}`);
+    }
+
+    // Update order item status
+    const [updatedOrderItem] = await tx
+      .update(orderItemsTable)
+      .set({ status })
+      .where(
+        and(
+          eq(orderItemsTable.id, orderItemId),
+          eq(orderItemsTable.orderId, orderId),
+        ),
+      )
+      .returning();
+
+    if (!updatedOrderItem) {
+      throw new Error(`OrderItem not found with id ${orderItemId}`);
+    }
+    return {
+      order: updatedOrder,
+      orderItem: updatedOrderItem,
+    };
+  });
+
+  logger.info(
+    { orderId, orderItemId, status },
+    'Updated both order %s and order item %s to status %s',
+    orderId,
+    orderItemId,
+    status,
+  );
+
+  return result;
+}
+
 // Export activities as a namespace for easier import in workflow
 export type OrderActivities = {
   getOrderDetailsOrThrow: typeof getOrderDetailsOrThrow;
   updateOrderItemStatusOrThrow: typeof updateOrderItemStatusOrThrow;
   updateOrderStatusOrThrow: typeof updateOrderStatusOrThrow;
+  updateOrderAndItemStatusOrThrow: typeof updateOrderAndItemStatusOrThrow;
 };
 
 export type DomainRenewalResult = {

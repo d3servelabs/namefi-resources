@@ -8,6 +8,7 @@ import {
   OrderActivities,
   PaymentActivities,
   HuntActivities,
+  FreeClaimActivities,
 } from '../activities';
 import { DomainsActivities } from '../activities/domain';
 import {
@@ -61,6 +62,7 @@ export const ACTIVITIES = {
         .fatal(args);
     },
     getConfig: async (key: keyof typeof config) => config[key],
+    ...FreeClaimActivities,
   },
   [TEMPORAL_ENUMS.MINT]: {
     ...MintActivities,

@@ -30,3 +30,4 @@ export * from './nft-management-daily-report.workflow';
 export * from './hunt/campaign-award.workflow';
 export * from './hunt/campaign-status.workflow';
 export * from './hunt/period-award.workflow';
+export * from './free-claim.workflow';
