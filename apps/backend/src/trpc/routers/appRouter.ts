@@ -1,5 +1,5 @@
 import { createTRPCRouter, publicProcedure } from '../base';
-
+import { freeClaimsRouter } from './freeClaimsRouter';
 import { adminRouter } from './adminRouter';
 import { aiRouter } from './aiRouter';
 import { analyticsRouter } from './analyticsRouter';
@@ -18,6 +18,7 @@ import { wishlistRouter } from './wishlistRouter';
 export const appRouter = createTRPCRouter({
   admin: adminRouter,
   ai: aiRouter,
+  freeClaims: freeClaimsRouter,
   analytics: analyticsRouter,
   dnsRecords: dnsRecordsRouter,
   users: usersRouter,
