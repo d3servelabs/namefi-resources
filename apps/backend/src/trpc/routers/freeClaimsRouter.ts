@@ -121,7 +121,7 @@ export const freeClaimsRouter = createTRPCRouter({
         });
       }
 
-      // Start the free claim workflow
+      // Start the free claim workflow and wait for completion
       try {
         const workflowInput = {
           userId: user.id,
@@ -153,21 +153,95 @@ export const freeClaimsRouter = createTRPCRouter({
             userId: user.id,
             normalizedDomainName,
           },
-          'Free claim workflow started',
+          'Free claim workflow started, waiting for completion',
         );
 
-        return {
-          workflowId: handle.workflowId,
-          message: 'Free claim processing started',
-        };
-      } catch (error) {
+        // Wait for the workflow to complete
+        const workflowResult = await handle.result();
+
+        if (workflowResult.success) {
+          logger.info(
+            {
+              workflowId: handle.workflowId,
+              userId: user.id,
+              normalizedDomainName,
+              orderId: workflowResult.orderId,
+              orderItemId: workflowResult.orderItemId,
+            },
+            'Free claim processed successfully',
+          );
+
+          return {
+            success: true,
+            workflowId: handle.workflowId,
+            orderId: workflowResult.orderId,
+            orderItemId: workflowResult.orderItemId,
+            message: 'Domain claimed successfully',
+          };
+        }
+        // This shouldn't happen as the workflow throws on failure,
+        // but handle it just in case
         logger.error(
-          { error, userId: user.id, normalizedDomainName },
-          'Error starting free claim workflow',
+          {
+            workflowId: handle.workflowId,
+            userId: user.id,
+            normalizedDomainName,
+          },
+          'Free claim workflow completed but reported failure',
         );
+
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
-          message: 'Failed to start claim processing',
+          message: 'Free claim processing failed',
+        });
+      } catch (error) {
+        // Check if this is a workflow execution error
+        if (error && typeof error === 'object' && 'message' in error) {
+          const errorMessage = String(error.message);
+
+          // Extract meaningful error messages from workflow failures
+          if (errorMessage.includes('Process Free Claim Failed:')) {
+            const actualError = errorMessage.replace(
+              'Process Free Claim Failed: ',
+              '',
+            );
+
+            // Map common error scenarios to user-friendly messages
+            if (actualError.includes('No eligible claims found')) {
+              throw new TRPCError({
+                code: 'FORBIDDEN',
+                message: 'No eligible claims found for this domain',
+              });
+            }
+            if (actualError.includes('Claim validation failed')) {
+              throw new TRPCError({
+                code: 'FORBIDDEN',
+                message: 'Unable to validate your claim for this domain',
+              });
+            }
+            if (actualError.includes('domain not available')) {
+              throw new TRPCError({
+                code: 'BAD_REQUEST',
+                message: 'Domain is no longer available for registration',
+              });
+            }
+            // Generic workflow execution error
+            throw new TRPCError({
+              code: 'INTERNAL_SERVER_ERROR',
+              message: `Free claim processing failed: ${actualError}`,
+            });
+          }
+        }
+
+        // Unknown error type
+        logger.error(
+          { error, userId: user.id, normalizedDomainName },
+          'Unknown error processing free claim',
+        );
+
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to process free claim',
         });
       }
     }),

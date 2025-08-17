@@ -292,14 +292,17 @@ export const DomainCard: FC<{
   // Free claim mutation
   const claimMutation = useMutation({
     ...trpc.freeClaims.processClaim.mutationOptions(),
-    onSuccess: () => {
-      toast.success(
-        'Free claim submitted successfully! Processing will begin shortly.',
-      );
+    onSuccess: (result) => {
+      toast.success('Domain claimed successfully!');
       onFreeClaimSuccess?.();
+
+      // Redirect to order page if orderId is available
+      if (result.orderId) {
+        router.push(`/orders/${result.orderId}`);
+      }
     },
     onError: (error) => {
-      toast.error(`Failed to submit claim: ${error.message}`);
+      toast.error(`Failed to claim domain: ${error.message}`);
     },
   });
 
