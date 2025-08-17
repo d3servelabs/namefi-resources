@@ -23,6 +23,10 @@ import { createTRPCRouter, protectedProcedure } from '../base';
 import { getDomainPricingForOperation } from '../types';
 import { createLogger } from '#lib/logger';
 import { isNotNil } from 'ramda';
+import {
+  getUserUnusedClaims,
+  checkItemClaimEligibility,
+} from '#temporal/activities/free-claim.activities';
 
 const _logger = createLogger({ context: 'cartsRouter' });
 
@@ -41,7 +45,28 @@ export const cartsRouter = createTRPCRouter({
             : undefined,
         ),
       });
-      return cartItems;
+
+      // Get all unused claims for the user once
+      const unusedClaims = await getUserUnusedClaims(user.id);
+
+      type CartItemWithClaims = (typeof cartItems)[number] & {
+        claims?: ReturnType<typeof checkItemClaimEligibility>;
+      };
+
+      // Check each cart item against the unused claims
+      const cartItemsWithClaims = cartItems.map((item) => {
+        const itemEligibleClaims = checkItemClaimEligibility(
+          item.normalizedDomainName as NamefiNormalizedDomain,
+          unusedClaims,
+        );
+
+        return {
+          ...item,
+          claims: itemEligibleClaims,
+        } as CartItemWithClaims;
+      });
+
+      return cartItemsWithClaims;
     },
   ),
 

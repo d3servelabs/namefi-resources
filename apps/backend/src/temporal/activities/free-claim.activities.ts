@@ -4,6 +4,7 @@ import {
   orderItemsTable,
   ordersTable,
   paymentsTable,
+  type FreeClaimSelect,
 } from '@namefi-astra/db';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { and, eq, gte, isNull, or, sql } from 'drizzle-orm';
@@ -612,4 +613,112 @@ export async function checkAnyClaimEligibility(input: {
     eligible: true,
     claimsAvailable: eligibleClaims.length,
   };
+}
+
+/**
+ * Get all available (IDLE) claims for a user
+ */
+export async function getUserUnusedClaims(userId: string) {
+  const availableClaims = await db.query.freeClaimsTable.findMany({
+    where: and(
+      eq(freeClaimsTable.userId, userId),
+      eq(freeClaimsTable.claimingStatus, 'IDLE'), // Only include IDLE claims
+      or(
+        gte(freeClaimsTable.expirationDate, new Date()),
+        isNull(freeClaimsTable.expirationDate),
+      ),
+    ),
+  });
+
+  return availableClaims as FreeClaimSelect[];
+}
+
+type CheckItemClaimEligibilityOutput = {
+  /**
+   * The group or campaign key that the claim belongs to
+   */
+  groupOrCampaignKey: string;
+  claimsAvailable: number;
+  /**
+   * Claims that match the exact domain name
+   */
+  exactMatchClaims: FreeClaimSelect[];
+  /**
+   * Claims that match the parent domain name
+   */
+  parentMatchClaims: FreeClaimSelect[];
+};
+
+/**
+ * Check if a specific cart item is eligible for any of the user's unused claims
+ * Exact domain claims take precedence over parent domain claims
+ */
+export function checkItemClaimEligibility(
+  normalizedDomainName: NamefiNormalizedDomain,
+  unusedClaims: FreeClaimSelect[],
+): CheckItemClaimEligibilityOutput[] {
+  // Separate exact and parent domain matches
+  const exactMatches: typeof unusedClaims = [];
+  const parentMatches: typeof unusedClaims = [];
+
+  for (const claim of unusedClaims) {
+    // Check for exact domain match
+    if (claim.exactDomainName === normalizedDomainName) {
+      exactMatches.push(claim);
+    }
+    // Check for parent domain match (only if no exact match for this claim)
+    else if (
+      claim.parentDomain &&
+      claim.exactDomainName === null &&
+      normalizedDomainName.endsWith(`.${claim.parentDomain}`)
+    ) {
+      parentMatches.push(claim);
+    }
+  }
+
+  // Group claims by key, prioritizing exact matches
+  const claimsMap = new Map<
+    string,
+    { exactMatches: FreeClaimSelect[]; parentMatches: FreeClaimSelect[] }
+  >();
+
+  // Process exact matches first
+  for (const claim of exactMatches) {
+    const existing = claimsMap.get(claim.groupOrCampaignKey) || {
+      exactMatches: [],
+      parentMatches: [],
+    };
+    existing.exactMatches.push(claim);
+    claimsMap.set(claim.groupOrCampaignKey, existing);
+  }
+
+  // Process parent matches only if no exact match exists for that key
+  for (const claim of parentMatches) {
+    const existing = claimsMap.get(claim.groupOrCampaignKey) || {
+      exactMatches: [],
+      parentMatches: [],
+    };
+    // Only count parent matches if there are no exact matches for this key
+    if (existing.exactMatches.length === 0) {
+      existing.parentMatches.push(claim);
+      claimsMap.set(claim.groupOrCampaignKey, existing);
+    }
+  }
+
+  // Convert to the expected format
+  const eligibleClaims = [];
+  for (const [groupOrCampaignKey, counts] of claimsMap.entries()) {
+    const totalAvailable =
+      counts.exactMatches.length + counts.parentMatches.length;
+    if (totalAvailable > 0) {
+      eligibleClaims.push({
+        groupOrCampaignKey,
+        claimsAvailable: totalAvailable,
+        exactMatchClaims: counts.exactMatches,
+        parentMatchClaims: counts.parentMatches,
+      });
+    }
+  }
+
+  return eligibleClaims;
 }
