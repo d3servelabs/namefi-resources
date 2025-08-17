@@ -95,25 +95,28 @@ app.get('/secretsfi', (c) => {
 });
 
 async function main() {
-  try {
-    const searchAttributesValidated = await validateAndCreateSearchAttributes();
-    if (!searchAttributesValidated) {
-      logger.error('Temporal search attributes validation failed');
-      throw new Error('Temporal search attributes validation failed');
-    }
-    logger.info('Temporal search attributes validated and created');
-  } catch (error) {
-    if (!['local', 'custom'].includes(process.env.ENVIRONMENT ?? '')) {
-      logger.error(
+  if (config.AUTO_CREATE_TEMPORAL_SEARCH_ATTRIBUTES) {
+    try {
+      const searchAttributesValidated =
+        await validateAndCreateSearchAttributes();
+      if (!searchAttributesValidated) {
+        logger.error('Temporal search attributes validation failed');
+        throw new Error('Temporal search attributes validation failed');
+      }
+      logger.info('Temporal search attributes validated and created');
+    } catch (error) {
+      if (config.REQUIRE_TEMPORAL_SEARCH_ATTRIBUTES_VALIDATION) {
+        logger.error(
+          'Error validating and creating temporal search attributes',
+          error,
+        );
+        throw error;
+      }
+      logger.warn(
         'Error validating and creating temporal search attributes',
         error,
       );
-      throw error;
     }
-    logger.warn(
-      'Error validating and creating temporal search attributes',
-      error,
-    );
   }
 
   serve(

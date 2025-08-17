@@ -91,6 +91,15 @@ export async function checkMissingAttributes(): Promise<string[]> {
 
     return missingAttributes;
   } catch (error) {
+    try {
+      logger.error(
+        Buffer.from(
+          JSON.parse(JSON.stringify(error)).metadata[
+            'grpc-status-details-bin'
+          ][0] as Buffer,
+        ).toString(),
+      );
+    } catch {}
     logger.error(error, 'Error listing search attributes');
     throw error;
   } finally {

@@ -137,6 +137,8 @@ export const configSchema = z.object({
       '0x1b0f291c8fFebE891886351CDfF8A304a840C8Ad',
       '0xB5856d4598c919834913b8656ebc15a64d3C7836',
     ]),
+  AUTO_CREATE_TEMPORAL_SEARCH_ATTRIBUTES: z.boolean().default(false),
+  REQUIRE_TEMPORAL_SEARCH_ATTRIBUTES_VALIDATION: z.boolean().default(false),
 });
 
 export type ConfigInput = z.input<typeof configSchema>;
