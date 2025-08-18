@@ -50,6 +50,9 @@ export const secretsSchema = z.object({
   // Google Analytics 4 configuration
   GA4_PROPERTY_ID: z.string().optional(),
   GA4_KEY_FILE_PATH: z.string().optional(),
+
+  VISION_API_KEY: z.string(),
+  OPENSEA_API_KEY: z.string(),
 });
 
 export type SecretsSchema = z.infer<typeof secretsSchema>;
@@ -139,6 +142,8 @@ export const configSchema = z.object({
     ]),
   AUTO_CREATE_TEMPORAL_SEARCH_ATTRIBUTES: z.boolean().default(false),
   REQUIRE_TEMPORAL_SEARCH_ATTRIBUTES_VALIDATION: z.boolean().default(false),
+
+  VISION_API_URL: z.string().url().default('https://api.vision.io'),
 });
 
 export type ConfigInput = z.input<typeof configSchema>;
