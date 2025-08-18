@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/performance/noReExportAll: expected */
 export * from './chargeStripe.workflow';
 export * from './hello-world.workflow';
 export * from './mint.workflow';
@@ -31,3 +32,4 @@ export * from './hunt/campaign-award.workflow';
 export * from './hunt/campaign-status.workflow';
 export * from './hunt/period-award.workflow';
 export * from './free-claim.workflow';
+export * from './namefi-gpt-domain-processing.workflow';

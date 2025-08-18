@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/performance/noNamespaceImport: expected */
 import { db, namefiNftOwnersView } from '@namefi-astra/db';
 import { eq } from 'drizzle-orm';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';

@@ -18,6 +18,8 @@ async function getOpenAiClient(): Promise<OpenAi> {
 }
 
 const logger = createLogger({ name: 'ai-domain-analysis' });
+export const NAMEFI_GPT_VERSION = '3.0.0'; // This is the version of the namefi_gpt from 3.0.0 (when we migrated from mongo) and above. !change this when modifying the model.
+export const GPT_MODEL = 'gpt-4-turbo';
 
 export async function getImageGenerationPrompt(
   unicodeDomainName: string,
@@ -31,7 +33,7 @@ export async function getImageGenerationPrompt(
       You are the best prompt engineer for stable diffusion of FLUX, and you will be given a single domain name. You will help draft a prompt to be used to generate an advertising image for that domain. The images will feature the domain name, decorated not as simple text, but as part of a piece of art, a product, or styled in such a way that the text is created by small items relevant to that image. You will begin by generating 5 candidate prompts that match the requirements above. Each prompt will include a brief interpretation of the possible meaning of the input domain name and will direct the image generator to display the exact spelling of the domain name and in prominent location and size, integrated with other elements in the image. You will rate each of the prompt candidates from 0-10 based on their attractiveness and how likely they are to make the audience want to buy the domain. Finally, you will select and state the best prompt candidate. Input: ${unicodeDomainName}`,
       },
     ],
-    model: 'gpt-4o',
+    model: GPT_MODEL,
   });
 
   return completion?.choices[0]?.message?.content || '';
@@ -68,7 +70,7 @@ Now prepare the output as followed format:
 Now output only the answer about why this domain is worth buying, don't show intermediate steps at all, please.`,
       },
     ],
-    model: 'gpt-4-turbo',
+    model: GPT_MODEL,
   });
 
   return completion?.choices[0]?.message?.content || '';
@@ -123,7 +125,7 @@ please output in json without any format and style.
 `,
       },
     ],
-    model: 'gpt-4o',
+    model: GPT_MODEL,
   });
 
   const rawResponse = completion?.choices[0]?.message?.content;
