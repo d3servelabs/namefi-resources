@@ -6,6 +6,9 @@ import { AnimatedSection, AnimatedChild } from './animated-section';
 import { motion } from 'motion/react';
 import { DomainHuntWidget } from '@/pbns/cv/components/domain-hunt-widget';
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
+import { SearchInput, type SearchMode } from '@/components/search';
+import type { ImportQuery } from '@/components/search/types';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 
 interface HeroProps {
   /** The main name/domain (e.g., "taylor") */
@@ -16,6 +19,18 @@ interface HeroProps {
   backgroundImage: string;
   /** Hunt domain URL for the "View on Namefi Hunt™" button */
   huntUrl: string;
+  /** Whether search is enabled */
+  searchEnabled?: boolean;
+  /** Search props when search is enabled */
+  searchProps?: {
+    query: string;
+    setQuery: (query: string) => void;
+    runSearch: () => void;
+    isLoading: boolean;
+    searchMode: SearchMode;
+    importQuery: Map<NamefiNormalizedDomain, ImportQuery>;
+    hasSearchResults?: boolean;
+  };
 }
 
 export const Hero = ({
@@ -23,6 +38,8 @@ export const Hero = ({
   rotatingNames,
   backgroundImage,
   huntUrl: _huntUrl,
+  searchEnabled = false,
+  searchProps,
 }: HeroProps) => {
   // Generate derived values
   const domainName = `${name}.cv`;
@@ -85,83 +102,120 @@ export const Hero = ({
             duration={0.6}
             customEase={[0.25, 0.46, 0.45, 0.94]}
           >
-            <p className="text-xl sm:text-2xl md:text-3xl text-slate-200 mb-12 sm:mb-16 max-w-4xl mx-auto font-semibold leading-tight px-4 sm:px-0">
-              Help us launch{' '}
-              <span className="text-brand-primary font-bold">{domainName}</span>{' '}
-              by voting to show your interest!
-              <br className="hidden md:block" />
-              <span className="md:hidden"> </span>
-              Early supporters get priority access when registration opens.
+            <p
+              className={`text-xl sm:text-2xl md:text-3xl text-slate-200 ${searchEnabled ? 'mb-8 sm:mb-10' : 'mb-12 sm:mb-16'} max-w-4xl mx-auto font-semibold leading-tight px-4 sm:px-0`}
+            >
+              {searchEnabled ? (
+                <>
+                  Search available{' '}
+                  <span className="text-brand-primary font-bold">
+                    {name}.cv subdomains.
+                  </span>
+                </>
+              ) : (
+                <>
+                  Help us launch{' '}
+                  <span className="text-brand-primary font-bold">
+                    {domainName}
+                  </span>{' '}
+                  by voting to show your interest!
+                  <br className="hidden md:block" />
+                  <span className="md:hidden"> </span>
+                  Early supporters get priority access when registration opens.
+                </>
+              )}
             </p>
           </AnimatedChild>
 
-          {/* Voting Widget */}
+          {/* Search or Voting Widget */}
           <AnimatedChild
             delay={0.45}
             variant="scale-fade-gentle"
             duration={0.55}
             customEase={[0.25, 0.46, 0.45, 0.94]}
           >
-            <div className="flex justify-center mb-12 sm:mb-16 px-4 sm:px-0">
-              <div className="w-full sm:w-auto">
-                <DomainHuntWidget domainName={normalizedDomainName} />
-              </div>
+            <div className="flex flex-col items-center gap-4 mb-12 sm:mb-16 px-4 sm:px-0">
+              {searchEnabled && searchProps ? (
+                <div className="w-full max-w-3xl">
+                  <SearchInput
+                    query={searchProps.query}
+                    setQuery={searchProps.setQuery}
+                    isLoading={searchProps.isLoading}
+                    searchMode={searchProps.searchMode}
+                    importQuery={searchProps.importQuery}
+                    onSearch={searchProps.runSearch}
+                    parentDomain={normalizedDomainName}
+                  />
+                </div>
+              ) : (
+                <div className="w-full sm:w-auto">
+                  <DomainHuntWidget domainName={normalizedDomainName} />
+                </div>
+              )}
             </div>
           </AnimatedChild>
 
-          <AnimatedChild
-            delay={0.55}
-            variant="fade-up-gentle"
-            duration={0.5}
-            customEase={[0.25, 0.46, 0.45, 0.94]}
-          >
-            <div className="flex justify-center gap-4 mb-8 sm:mb-10 px-8 sm:px-0">
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{
-                  delay: 0.6,
-                  duration: 0.45,
-                  ease: [0.25, 0.46, 0.45, 0.94],
-                }}
+          {!searchEnabled && (
+            <>
+              <AnimatedChild
+                delay={0.55}
+                variant="fade-up-gentle"
+                duration={0.5}
+                customEase={[0.25, 0.46, 0.45, 0.94]}
               >
-                <Button
-                  size="lg"
-                  className="px-6 sm:px-8 py-4 sm:py-6"
-                  onClick={() => {
-                    document.getElementById('famous-people')?.scrollIntoView({
-                      behavior: 'smooth',
-                    });
-                  }}
+                <div
+                  className={`flex justify-center gap-4 mb-8 sm:mb-10 px-8 sm:px-0 ${searchEnabled && searchProps?.hasSearchResults ? 'invisible' : ''}`}
                 >
-                  <ArrowDown className="w-5 h-5 mr-1" />
-                  Learn More
-                </Button>
-              </motion.div>
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{
-                  delay: 0.65,
-                  duration: 0.45,
-                  ease: [0.25, 0.46, 0.45, 0.94],
-                }}
-              >
-                <Button
-                  size="lg"
-                  className="px-6 sm:px-8 py-4 sm:py-6 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white border-0"
-                  onClick={() => {
-                    document.getElementById('cv-hunt')?.scrollIntoView({
-                      behavior: 'smooth',
-                    });
-                  }}
-                >
-                  <Trophy className="w-5 h-5 mr-1" />
-                  Join the .cv Namefi Hunt™
-                </Button>
-              </motion.div>
-            </div>
-          </AnimatedChild>
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{
+                      delay: 0.6,
+                      duration: 0.45,
+                      ease: [0.25, 0.46, 0.45, 0.94],
+                    }}
+                  >
+                    <Button
+                      size="lg"
+                      className="px-6 sm:px-8 py-4 sm:py-6"
+                      onClick={() => {
+                        document
+                          .getElementById('famous-people')
+                          ?.scrollIntoView({
+                            behavior: 'smooth',
+                          });
+                      }}
+                    >
+                      <ArrowDown className="w-5 h-5 mr-1" />
+                      Learn More
+                    </Button>
+                  </motion.div>
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{
+                      delay: 0.65,
+                      duration: 0.45,
+                      ease: [0.25, 0.46, 0.45, 0.94],
+                    }}
+                  >
+                    <Button
+                      size="lg"
+                      className="px-6 sm:px-8 py-4 sm:py-6 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white border-0"
+                      onClick={() => {
+                        document.getElementById('cv-hunt')?.scrollIntoView({
+                          behavior: 'smooth',
+                        });
+                      }}
+                    >
+                      <Trophy className="w-5 h-5 mr-1" />
+                      Join the .cv Namefi Hunt™
+                    </Button>
+                  </motion.div>
+                </div>
+              </AnimatedChild>
+            </>
+          )}
 
           <AnimatedChild
             delay={0.7}
@@ -169,7 +223,9 @@ export const Hero = ({
             duration={0.45}
             customEase={[0.25, 0.46, 0.45, 0.94]}
           >
-            <div className="text-center px-4 sm:px-0">
+            <div
+              className={`text-center px-4 sm:px-0 ${searchEnabled && searchProps?.hasSearchResults ? 'invisible' : ''}`}
+            >
               <div className="flex items-center justify-center gap-3">
                 <motion.span
                   className="text-slate-400 text-sm tracking-wide"
