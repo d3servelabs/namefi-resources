@@ -10,12 +10,14 @@ import { asc, eq, getTableColumns, sql } from 'drizzle-orm';
 import {
   bigint,
   boolean,
+  numeric,
   check,
   foreignKey,
   index,
   integer,
   jsonb,
   pgEnum,
+  pgSchema,
   pgTable,
   pgView,
   primaryKey,
@@ -1101,12 +1103,105 @@ export const namefiNftView = pgView('namefi_nft_view', {
   expirationTime: timestamp('expiration_time').notNull(), // This is the expiration time in UTC derived from expirationTimeInSeconds
   isLocked: boolean('is_locked').default(false),
   ownerAddress: text('owner_address').notNull(),
-  chainId: integer('chain_id').notNull(),
+  chainId: integer('chain_id').notNull(), //todo change to bigint
   lastUpdatedBlock: bigint('last_updated_block', { mode: 'bigint' }).notNull(),
   lastUpdatedTimestamp: bigint('last_updated_timestamp', {
     mode: 'bigint',
   }).notNull(),
 }).existing();
+
+/**
+ * AI Analysis System Schema and Tables
+ * Domain analysis data including explanations, appraisals, and Unicode processing
+ */
+export const namefiAiSchema = pgSchema('namefi_ai');
+
+/**
+ * Zod schemas for AI-related data structures
+ */
+
+import { z } from 'zod';
+
+// Schema for the inner appraisal object that gets stored in the database
+export const aiAppraisalDataSchema = z.object({
+  valueUpperRange: z.number(),
+  valueLowerRange: z.number(),
+  report: z.string(), // Markdown-formatted detailed report
+});
+
+export type AiAppraisalData = z.infer<typeof aiAppraisalDataSchema>;
+
+/**
+ * AI Collection table - stores AI-generated content for domains
+ * This complements the existing aiGenerationsTable which handles image generation
+ */
+export const domainAiAnalysisTable = namefiAiSchema.table(
+  'domain_ai_analysis',
+  {
+    tokenId: numeric('token_id', { precision: 78, scale: 0 }).primaryKey(),
+    explain: text('explain'),
+    appraisal: jsonb('appraisal').$type<AiAppraisalData>(),
+    namefiGptVersion: text('namefi_gpt_version'),
+    normalizedDomainName: text('normalized_domain_name')
+      .notNull()
+      .$type<NamefiNormalizedDomain>()
+      .unique(),
+    dirty: boolean('dirty').default(false),
+    ...timestamps,
+  },
+  (table) => [
+    // Index for finding domains that need processing
+    index('domain_ai_analysis_dirty_idx')
+      .on(table.dirty)
+      .where(sql`${table.dirty} = TRUE`),
+    index('domain_ai_analysis_updated_at_idx').on(table.updatedAt),
+    // Indexes for finding domains missing specific content
+    index('domain_ai_analysis_explain_null_idx')
+      .on(table.tokenId)
+      .where(sql`${table.explain} IS NULL`),
+    index('domain_ai_analysis_appraisal_null_idx')
+      .on(table.tokenId)
+      .where(sql`${table.appraisal} IS NULL`),
+  ],
+);
+
+/**
+ * AI View - combines namefi_nft_view with namefi_ai.domain_ai_analysis
+ * This view provides a unified interface for accessing both NFT and AI analysis data
+ */
+export const namefiNftWithAiAnalysisView = pgView(
+  'namefi_nft_with_ai_analysis_view',
+).as((qb) =>
+  qb
+    .select({
+      // NFT data from namefi_nft_view
+      tokenId: namefiNftView.tokenId,
+      normalizedDomainName: namefiNftView.normalizedDomainName,
+      expirationTimeInSeconds: namefiNftView.expirationTimeInSeconds,
+      expirationTime: namefiNftView.expirationTime,
+      isLocked: namefiNftView.isLocked,
+      ownerAddress: namefiNftView.ownerAddress,
+      chainId: namefiNftView.chainId,
+      lastUpdatedBlock: namefiNftView.lastUpdatedBlock,
+      lastUpdatedTimestamp: namefiNftView.lastUpdatedTimestamp,
+      // AI analysis data from namefi_ai.ai_collection (LEFT JOIN to include NFTs without AI data)
+      explain: domainAiAnalysisTable.explain,
+      appraisal: domainAiAnalysisTable.appraisal,
+      namefiGptVersion: domainAiAnalysisTable.namefiGptVersion,
+      dirty: domainAiAnalysisTable.dirty,
+      aiAnalysisCreatedAt: sql<Date>`${domainAiAnalysisTable.createdAt}`.as(
+        'ai_analysis_created_at',
+      ),
+      aiAnalysisUpdatedAt: sql<Date>`${domainAiAnalysisTable.updatedAt}`.as(
+        'ai_analysis_updated_at',
+      ),
+    })
+    .from(namefiNftView)
+    .leftJoin(
+      domainAiAnalysisTable,
+      eq(namefiNftView.tokenId, domainAiAnalysisTable.tokenId),
+    ),
+);
 
 /**
  * NamefiNftOwnersView - Simplified view for owner-based queries

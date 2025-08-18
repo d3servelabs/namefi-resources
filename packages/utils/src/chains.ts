@@ -27,3 +27,7 @@ export const CHAINS_IDS = pluck('id', values(Chains)) as number[];
 export function getChain(chainId: number) {
   return CHAINS_BY_ID.get(chainId as any);
 }
+
+export const TEST_CHAINS = Object.values(CHAINS).filter(
+  (chain) => chain.testnet,
+);

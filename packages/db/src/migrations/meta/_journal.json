@@ -351,6 +351,13 @@
       "when": 1755527161600,
       "tag": "0049_material_microchip",
       "breakpoints": true
+    },
+    {
+      "idx": 50,
+      "version": "7",
+      "when": 1755532630291,
+      "tag": "0050_polite_fenris",
+      "breakpoints": true
     }
   ]
 }

@@ -21,6 +21,9 @@ import {
   usersTable,
   freeClaimsTable,
   freeClaimClaimingStatusEnum,
+  domainAiAnalysisTable,
+  namefiNftWithAiAnalysisView,
+  aiAppraisalDataSchema,
 } from './schema';
 
 /**
@@ -97,6 +100,36 @@ export const aiGenerationInsertSchema = createInsertSchema(aiGenerationsTable);
 export const aiGenerationSelectSchema = createSelectSchema(aiGenerationsTable);
 export const aiGenerationUpdateSchema = createUpdateSchema(aiGenerationsTable);
 
+export const domainAiAnalysisInsertSchema = createInsertSchema(
+  domainAiAnalysisTable,
+  {
+    normalizedDomainName: namefiNormalizedDomainSchema,
+    appraisal: aiAppraisalDataSchema.optional().nullable(),
+  },
+);
+export const domainAiAnalysisSelectSchema = createSelectSchema(
+  domainAiAnalysisTable,
+  {
+    normalizedDomainName: namefiNormalizedDomainSchema,
+    appraisal: aiAppraisalDataSchema.optional().nullable(),
+  },
+);
+export const domainAiAnalysisUpdateSchema = createUpdateSchema(
+  domainAiAnalysisTable,
+  {
+    normalizedDomainName: namefiNormalizedDomainSchema,
+    appraisal: aiAppraisalDataSchema.optional().nullable(),
+  },
+);
+
+export const namefiNftWithAiAnalysisSelectSchema = createSelectSchema(
+  namefiNftWithAiAnalysisView,
+  {
+    normalizedDomainName: namefiNormalizedDomainSchema,
+    appraisal: aiAppraisalDataSchema.optional().nullable(),
+  },
+);
+
 /**
  * Inferred Zod types for API and validation
  */
@@ -145,6 +178,22 @@ export type DnsRecordUpdate = z.infer<typeof dnsRecordUpdateSchema>;
 export type AiGenerationInsert = z.infer<typeof aiGenerationInsertSchema>;
 export type AiGenerationSelect = z.infer<typeof aiGenerationSelectSchema>;
 export type AiGenerationUpdate = z.infer<typeof aiGenerationUpdateSchema>;
+
+// Domain AI Analysis types
+export type DomainAiAnalysisInsert = z.infer<
+  typeof domainAiAnalysisInsertSchema
+>;
+export type DomainAiAnalysisSelect = z.infer<
+  typeof domainAiAnalysisSelectSchema
+>;
+export type DomainAiAnalysisUpdate = z.infer<
+  typeof domainAiAnalysisUpdateSchema
+>;
+
+// Namefi Nft With Ai Analysis types
+export type NamefiNftWithAiAnalysisSelect = z.infer<
+  typeof namefiNftWithAiAnalysisSelectSchema
+>;
 
 /**
  * Enum types from pgEnums
