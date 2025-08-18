@@ -1,7 +1,14 @@
 import { getTags } from '@namefi/cat';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
-import { startOfDay, startOfMonth, startOfWeek, startOfYear } from 'date-fns';
+import {
+  startOfDay,
+  startOfMonth,
+  startOfWeek,
+  startOfYear,
+  parseISO,
+  isValid,
+} from 'date-fns';
 import { gte, type SQL, sql } from 'drizzle-orm';
 import type { TrendingDomainTimeRange } from './schema';
 
@@ -70,4 +77,75 @@ export const createStatsMap = (
       { ...stat, domainName: stat.domainName as NamefiNormalizedDomain },
     ]),
   );
+};
+
+export const parseAndValidateCampaignDates = ({
+  startDate,
+  endDate,
+  campaign,
+}: {
+  startDate?: string;
+  endDate?: string;
+  campaign: { startDate: Date; endDate: Date };
+}) => {
+  // Validate dates if provided
+  let start: Date | undefined;
+  let end: Date | undefined;
+
+  if (startDate !== undefined) {
+    const parsed = parseISO(startDate);
+    if (!isValid(parsed)) {
+      throw new TRPCError({
+        code: 'BAD_REQUEST',
+        message: 'Invalid date format for startDate',
+      });
+    }
+    start = parsed;
+  }
+  if (endDate !== undefined) {
+    const parsed = parseISO(endDate);
+    if (!isValid(parsed)) {
+      throw new TRPCError({
+        code: 'BAD_REQUEST',
+        message: 'Invalid date format for endDate',
+      });
+    }
+    end = parsed;
+  }
+
+  // If both dates are provided, validate that start is before end
+  if (start && end && start >= end) {
+    throw new TRPCError({
+      code: 'BAD_REQUEST',
+      message: 'Start date must be before end date',
+    });
+  }
+
+  // If only one date is provided, validate against existing date
+  if (start && !end && start >= campaign.endDate) {
+    throw new TRPCError({
+      code: 'BAD_REQUEST',
+      message: 'Start date must be before existing end date',
+    });
+  }
+  if (end && !start && campaign.startDate >= end) {
+    throw new TRPCError({
+      code: 'BAD_REQUEST',
+      message: 'End date must be after existing start date',
+    });
+  }
+
+  return { start, end };
+};
+
+/**
+ * Create an object with only defined values, excluding undefined properties
+ * Useful for building update payloads where fields are optional
+ */
+export const removeUndefinedProperties = <T extends Record<string, unknown>>(
+  obj: T,
+): Partial<T> => {
+  return Object.fromEntries(
+    Object.entries(obj).filter(([_, value]) => value !== undefined),
+  ) as Partial<T>;
 };

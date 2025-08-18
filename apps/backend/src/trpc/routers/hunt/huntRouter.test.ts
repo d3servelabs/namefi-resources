@@ -2708,5 +2708,158 @@ describe('Hunt Router', () => {
         ).rejects.toThrow();
       });
     });
+
+    describe('updateCampaign', () => {
+      let testCampaignKey: string;
+
+      beforeEach(async () => {
+        // Create a test campaign
+        const [campaign] = await db
+          .insert(huntCampaignsTable)
+          .values({
+            campaignKey: 'test-update-campaign',
+            name: 'Test Update Campaign',
+            title: 'Test Update Campaign Title',
+            description: 'Test campaign for updating details',
+            logoUrl: 'https://test.campaign.logo.url',
+            startDate: new Date('2025-01-01'),
+            endDate: new Date('2025-01-31'),
+            status: 'DRAFT',
+          })
+          .returning();
+
+        testCampaignKey = campaign.campaignKey;
+      });
+
+      it('should update campaign name and title', async () => {
+        const apiCaller = huntRouter.createCaller({
+          poweredByNamefiDomain: null,
+          testUser: null,
+          req: {
+            header: (name: string) => {
+              if (name === 'x-api-key') return secrets.API_AUTH_KEY;
+              return null;
+            },
+          },
+        } as any);
+
+        const result = await apiCaller.updateCampaign({
+          campaignKey: testCampaignKey,
+          name: 'Updated Test Campaign',
+          title: 'Updated Test Campaign Title',
+        });
+
+        expect(result).toMatchObject({
+          campaignKey: testCampaignKey,
+          name: 'Updated Test Campaign',
+          title: 'Updated Test Campaign Title',
+          description: 'Test campaign for updating details',
+          logoUrl: 'https://test.campaign.logo.url',
+          status: 'DRAFT',
+        });
+        expect(result.startDate).toBeInstanceOf(Date);
+        expect(result.endDate).toBeInstanceOf(Date);
+        expect(result.createdAt).toBeInstanceOf(Date);
+        expect(result.updatedAt).toBeInstanceOf(Date);
+      });
+
+      it('should update campaign description and logoUrl', async () => {
+        const apiCaller = huntRouter.createCaller({
+          poweredByNamefiDomain: null,
+          testUser: null,
+          req: {
+            header: (name: string) => {
+              if (name === 'x-api-key') return secrets.API_AUTH_KEY;
+              return null;
+            },
+          },
+        } as any);
+
+        const result = await apiCaller.updateCampaign({
+          campaignKey: testCampaignKey,
+          description: 'Updated description',
+          logoUrl: 'https://updated.logo.url',
+        });
+
+        expect(result).toMatchObject({
+          campaignKey: testCampaignKey,
+          name: 'Test Update Campaign',
+          title: 'Test Update Campaign Title',
+          description: 'Updated description',
+          logoUrl: 'https://updated.logo.url',
+          status: 'DRAFT',
+        });
+      });
+
+      it('should update campaign dates', async () => {
+        const apiCaller = huntRouter.createCaller({
+          poweredByNamefiDomain: null,
+          testUser: null,
+          req: {
+            header: (name: string) => {
+              if (name === 'x-api-key') return secrets.API_AUTH_KEY;
+              return null;
+            },
+          },
+        } as any);
+
+        const result = await apiCaller.updateCampaign({
+          campaignKey: testCampaignKey,
+          startDate: '2025-02-01T00:00:00.000Z',
+          endDate: '2025-02-28T23:59:59.999Z',
+        });
+
+        expect(result).toMatchObject({
+          campaignKey: testCampaignKey,
+          name: 'Test Update Campaign',
+          title: 'Test Update Campaign Title',
+          status: 'DRAFT',
+        });
+        expect(result.startDate).toEqual(new Date('2025-02-01T00:00:00.000Z'));
+        expect(result.endDate).toEqual(new Date('2025-02-28T23:59:59.999Z'));
+      });
+
+      it('should reject update with invalid dates', async () => {
+        const apiCaller = huntRouter.createCaller({
+          poweredByNamefiDomain: null,
+          testUser: null,
+          req: {
+            header: (name: string) => {
+              if (name === 'x-api-key') return secrets.API_AUTH_KEY;
+              return null;
+            },
+          },
+        } as any);
+
+        // Try to update with end date before start date
+        await expect(
+          apiCaller.updateCampaign({
+            campaignKey: testCampaignKey,
+            startDate: '2025-01-15T00:00:00.000Z',
+            endDate: '2025-01-10T00:00:00.000Z',
+          }),
+        ).rejects.toThrow('Start date must be before end date');
+      });
+
+      it('should reject non-existent campaign', async () => {
+        const apiCaller = huntRouter.createCaller({
+          poweredByNamefiDomain: null,
+          testUser: null,
+          req: {
+            header: (name: string) => {
+              if (name === 'x-api-key') return secrets.API_AUTH_KEY;
+              return null;
+            },
+          },
+        } as any);
+
+        await expect(
+          apiCaller.updateCampaign({
+            campaignKey: 'non-existent-campaign',
+            name: 'Updated Name',
+          }),
+        ).rejects.toThrow('Campaign not found');
+      });
+    });
   });
 });

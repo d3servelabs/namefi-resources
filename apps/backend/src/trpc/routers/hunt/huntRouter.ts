@@ -28,6 +28,7 @@ import {
   createCampaign,
   addDomainsToCampaign,
   updateCampaignStatus,
+  updateCampaign,
 } from '../../../services/hunt/campaign.service';
 import {
   getPeriodAwards,
@@ -441,5 +442,41 @@ export const huntRouter = createTRPCRouter({
     .mutation(async ({ input }) => {
       const { campaignKey, status } = input;
       return await updateCampaignStatus({ campaignKey, status });
+    }),
+
+  /**
+   * Update campaign information.
+   * This is a system-only operation to update campaign details.
+   */
+  updateCampaign: apiKeyProtectedProcedure
+    .input(
+      z.object({
+        campaignKey: z.string().min(1),
+        name: z.string().min(1).optional(),
+        title: z.string().min(1).optional(),
+        description: z.string().optional(),
+        logoUrl: z.string().optional(),
+        startDate: z.string().optional(),
+        endDate: z.string().optional(),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      const {
+        campaignKey,
+        name,
+        title,
+        description,
+        logoUrl,
+        startDate,
+        endDate,
+      } = input;
+      return await updateCampaign(campaignKey, {
+        name,
+        title,
+        description,
+        logoUrl,
+        startDate,
+        endDate,
+      });
     }),
 });

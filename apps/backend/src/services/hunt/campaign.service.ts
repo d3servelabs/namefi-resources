@@ -10,7 +10,11 @@ import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
 import { and, desc, eq, sql } from 'drizzle-orm';
 import { getUserUpvoteStatus } from './domain.service';
-import { addTagsToItems } from './helpers';
+import {
+  addTagsToItems,
+  parseAndValidateCampaignDates,
+  removeUndefinedProperties,
+} from './helpers';
 import { NAMEFI_TEAM_USER_ID } from './schema';
 
 // Type definitions
@@ -487,5 +491,77 @@ export const updateCampaignStatus = async ({
       createdAt: updatedCampaign.createdAt,
       updatedAt: updatedCampaign.updatedAt,
       previousStatus: currentStatus,
+    };
+  });
+
+/**
+ * Update campaign information.
+ */
+export const updateCampaign = async (
+  campaignKey: string,
+  {
+    name,
+    title,
+    description,
+    logoUrl,
+    startDate,
+    endDate,
+  }: {
+    name?: string;
+    title?: string;
+    description?: string;
+    logoUrl?: string;
+    startDate?: string;
+    endDate?: string;
+  },
+) =>
+  db.transaction(async (tx) => {
+    const campaign = await getCampaignDetails(campaignKey, tx);
+    if (!campaign) {
+      throw new TRPCError({
+        code: 'BAD_REQUEST',
+        message: 'Campaign not found',
+      });
+    }
+
+    const { start, end } = parseAndValidateCampaignDates({
+      startDate,
+      endDate,
+      campaign,
+    });
+
+    const [updatedCampaign] = await tx
+      .update(huntCampaignsTable)
+      .set(
+        removeUndefinedProperties({
+          name,
+          title,
+          description,
+          logoUrl,
+          startDate: start,
+          endDate: end,
+          updatedAt: new Date(),
+        }),
+      )
+      .where(eq(huntCampaignsTable.campaignKey, campaignKey))
+      .returning();
+    if (!updatedCampaign) {
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'Failed to update campaign',
+      });
+    }
+
+    return {
+      campaignKey: updatedCampaign.campaignKey,
+      name: updatedCampaign.name,
+      title: updatedCampaign.title,
+      description: updatedCampaign.description,
+      logoUrl: updatedCampaign.logoUrl,
+      startDate: updatedCampaign.startDate,
+      endDate: updatedCampaign.endDate,
+      status: updatedCampaign.status,
+      createdAt: updatedCampaign.createdAt,
+      updatedAt: updatedCampaign.updatedAt,
     };
   });
