@@ -2,7 +2,7 @@
 
 import { motion } from 'motion/react';
 import { useMemo } from 'react';
-import styles from './campaign-animated-hero-background.module.css';
+import styles from './default-hero-background.module.css';
 
 const generateParticles = (count: number) => {
   return Array.from({ length: count }, (_, i) => ({
@@ -34,7 +34,7 @@ const generateLightBeams = (count: number) => {
   });
 };
 
-export const CampaignAnimatedHeroBackground = () => {
+export const DefaultHeroBackground = () => {
   const particles = useMemo(() => generateParticles(42), []);
   const lightBeams = useMemo(() => generateLightBeams(6), []);
 

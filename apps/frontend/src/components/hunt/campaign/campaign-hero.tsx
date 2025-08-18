@@ -4,8 +4,9 @@ import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '@/hooks/use-auth';
 import { useTRPC } from '@/lib/trpc';
 import { CampaignCountdown } from './campaign-countdown';
-import { CampaignAnimatedHeroBackground } from './campaign-animated-hero-background';
 import Image from 'next/image';
+import { DefaultHeroBackground } from './hero-background/default-hero-background';
+import { AwardedHeroBackground } from './hero-background/awarded-hero-background';
 
 interface CampaignHeroProps {
   campaignKey: string;
@@ -31,13 +32,27 @@ export const CampaignHero = ({ campaignKey }: CampaignHeroProps) => {
   });
 
   const campaign = data?.campaign;
+  const rankings = data?.rankings;
   const isActive = campaign?.status === 'ACTIVE';
+  const isAwarded = campaign?.status === 'AWARDED';
 
   return (
     <section className="flex flex-col items-center justify-center gap-8 py-20 relative min-h-[600px]">
-      <CampaignAnimatedHeroBackground />
+      {campaign ? (
+        isAwarded ? (
+          <AwardedHeroBackground />
+        ) : (
+          <DefaultHeroBackground />
+        )
+      ) : null}
 
       <div className="flex flex-col items-center justify-center gap-10 relative z-10">
+        {isAwarded && (
+          <h1 className="text-center text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-2">
+            Congratulations!
+          </h1>
+        )}
+
         {campaign?.logoUrl ? (
           <Image
             src={campaign?.logoUrl}
@@ -52,10 +67,23 @@ export const CampaignHero = ({ campaignKey }: CampaignHeroProps) => {
 
         <div className="text-center">
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-2">
-            {campaign?.title}
+            {isAwarded ? (
+              <>
+                <span className="text-blue-500">
+                  {rankings?.[0]?.domainName}
+                </span>{' '}
+                is the winner
+              </>
+            ) : (
+              campaign?.title
+            )}
           </h1>
           <p className="text-lg sm:text-xl text-white/50">
-            {campaign?.description}
+            {campaign
+              ? isActive
+                ? campaign?.description
+                : 'Thank you for voting - winners will receive an email with subdomain claim details.'
+              : null}
           </p>
         </div>
 
