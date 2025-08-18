@@ -2,6 +2,7 @@ import * as _inspector from 'node:inspector';
 import pino, { type DestinationStream } from 'pino';
 import pinoPretty from 'pino-pretty';
 import { dropWhile, isNotNil, mergeDeepRight, pickBy } from 'ramda';
+import superjson from 'superjson';
 
 Error.stackTraceLimit = 100;
 
@@ -28,11 +29,20 @@ export const logger = pino(
 
       return extras;
     },
-    mixinMergeStrategy(mergeObject, mixinObject: any) {
-      return pickBy(
-        (value) => isNotNil(value),
-        mergeDeepRight(mergeObject, mixinObject),
-      );
+    mixinMergeStrategy(_mergeObject, _mixinObject: any) {
+      const mergeObject = superjson.serialize(_mergeObject ?? {})
+        .json as object;
+      const mixinObject = superjson.serialize(_mixinObject ?? {})
+        .json as object;
+
+      let merged: any;
+      try {
+        merged = mergeDeepRight(mergeObject, mixinObject);
+      } catch {
+        process.stderr.write('Error merging objects in logger');
+        merged = { ...(mergeObject ?? {}), ...(mixinObject ?? {}) };
+      }
+      return pickBy((value) => isNotNil(value), merged);
     },
     hooks: {
       logMethod(args, method, level) {
