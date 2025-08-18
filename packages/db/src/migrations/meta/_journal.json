@@ -344,6 +344,13 @@
       "when": 1755457248023,
       "tag": "0048_icy_meltdown",
       "breakpoints": true
+    },
+    {
+      "idx": 49,
+      "version": "7",
+      "when": 1755527161600,
+      "tag": "0049_material_microchip",
+      "breakpoints": true
     }
   ]
 }
