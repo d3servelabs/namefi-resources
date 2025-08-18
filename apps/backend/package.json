@@ -45,7 +45,9 @@
     "command:trigger-nft-updates-schedule": "tsx src/scripts/trigger-nft-updates-schedule.ts",
     "command:email-templates": "tsx src/scripts/email-templates-cli.ts",
     "command:setup-nft-report-schedule": "tsx src/scripts/setup-nft-management-report-schedule.ts",
-    "command:analytics": "tsx src/scripts/analytics-cli.ts"
+    "command:analytics": "tsx src/scripts/analytics-cli.ts",
+    "command:migrate-mongo-ai-data": "tsx src/scripts/migrate-mongo-ai-data.ts",
+    "command:migrate-mongo-ai-data-standalone": "tsx src/lib/legacy/namefi-gpt/migrate-from-mongo-original.ts"
   },
   "dependencies": {
     "@aws-sdk/client-kms": "^3.830.0",
