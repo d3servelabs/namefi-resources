@@ -12,6 +12,7 @@ import {
   useIsInitialized,
 } from '@s-group/react-usercentrics';
 import { useCallback, useMemo } from 'react';
+import { useOrigin } from '@/components/providers/origin';
 
 const GA_MEASUREMENT_ID = config.GA_MEASUREMENT_ID;
 const USER_CENTRICS_GOOGLE_ANALYTICS_SERVICE_ID =
@@ -85,6 +86,7 @@ export function useGoogleAnalyticsInteractionLogger() {
   const googleAnalyticsConsentGiven = useHasServiceConsent(
     USER_CENTRICS_GOOGLE_ANALYTICS_SERVICE_ID,
   );
+  const originInfo = useOrigin();
 
   const enabled = useMemo(() => {
     return (
@@ -101,13 +103,20 @@ export function useGoogleAnalyticsInteractionLogger() {
       }
 
       const transformedEvent = transformEvent(event);
-      sendGAEvent(
-        'event',
-        transformedEvent.name,
-        transformedEvent.properties ?? {},
-      );
+
+      // Add origin information to all events
+      const eventProperties = {
+        ...transformedEvent.properties,
+        // Custom dimensions for origin tracking
+        origin_type: originInfo.isFirstPartyOrigin
+          ? 'first_party'
+          : 'third_party',
+        origin_domain: originInfo.thirdPartyHostname || 'astra',
+      };
+
+      sendGAEvent('event', transformedEvent.name, eventProperties);
     },
-    [enabled],
+    [enabled, originInfo],
   );
 
   return {
