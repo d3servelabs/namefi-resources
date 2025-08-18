@@ -239,18 +239,6 @@ export const createCampaign = async ({
   }
 
   return await db.transaction(async (tx) => {
-    // Check if campaign with the same name already exists
-    const [existingCampaign] = await tx
-      .select()
-      .from(huntCampaignsTable)
-      .where(eq(huntCampaignsTable.name, name));
-    if (existingCampaign) {
-      throw new TRPCError({
-        code: 'CONFLICT',
-        message: 'Campaign with this name already exists',
-      });
-    }
-
     // Create campaign
     const [campaign] = await tx
       .insert(huntCampaignsTable)

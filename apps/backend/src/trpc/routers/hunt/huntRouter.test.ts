@@ -2105,42 +2105,6 @@ describe('Hunt Router', () => {
           }),
         ).rejects.toThrow('Start date must be before end date');
       });
-
-      it('should reject duplicate campaign name', async () => {
-        const apiCaller = huntRouter.createCaller({
-          poweredByNamefiDomain: null,
-          testUser: null,
-          req: {
-            header: (name: string) => {
-              if (name === 'x-api-key') return secrets.API_AUTH_KEY;
-              return null;
-            },
-          },
-        } as any);
-
-        // Create first campaign
-        await apiCaller.createCampaign({
-          campaignKey: 'test-campaign',
-          name: 'Duplicate Test Campaign',
-          title: 'Duplicate Test Campaign Title',
-          description: 'Test campaign description',
-          logoUrl: 'https://test.campaign.logo.url',
-          startDate: '2025-01-01T00:00:00Z',
-          endDate: '2025-01-31T23:59:59Z',
-        });
-
-        // Try to create second campaign with same name
-        await expect(
-          apiCaller.createCampaign({
-            campaignKey: 'test-campaign-2',
-            name: 'Duplicate Test Campaign',
-            title: 'Duplicate Test Campaign Title 2',
-            description: 'Test campaign description 2',
-            startDate: '2025-02-01T00:00:00Z',
-            endDate: '2025-02-28T23:59:59Z',
-          }),
-        ).rejects.toThrow('Campaign with this name already exists');
-      });
     });
 
     describe('addDomainsToCampaign', () => {
