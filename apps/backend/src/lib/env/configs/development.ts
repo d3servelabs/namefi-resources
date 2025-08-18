@@ -22,7 +22,7 @@ const developmentConfig: ConfigInput = {
     'ends.today.astra.namefi.dev': 'ends.today',
     'promos.today.astra.namefi.dev': 'promos.today',
     'available.today.astra.namefi.dev': 'available.today',
-    'onsale.now.astra.namefi.dev': 'onsale.now',
+    'discounts.today.astra.namefi.dev': 'discounts.today',
   },
   ALLOW_ALL_ORIGINS: true,
   ALLOWED_CHAINS: [chains.sepolia.id, chains.base.id, chains.mainnet.id],
@@ -38,7 +38,7 @@ const developmentConfig: ConfigInput = {
       'ends.today',
       'promos.today',
       'available.today',
-      'onsale.now',
+      'discounts.today',
     ],
   },
   DNSSEC_DNSKEY_PUBLIC_RECORD:

@@ -21,7 +21,7 @@ const productionConfig: ConfigInput = {
     'ends.today.astra.namefi.io': 'ends.today',
     'promos.today.astra.namefi.io': 'promos.today',
     'available.today.astra.namefi.io': 'available.today',
-    'onsale.now.astra.namefi.io': 'onsale.now',
+    'discounts.today.astra.namefi.io': 'discounts.today',
   },
   ALLOWED_CHAINS: [chains.mainnet.id, chains.base.id],
   EMAIL_ADDRESS_TO_OWNED_HOSTNAMES_MAP: {
@@ -36,7 +36,7 @@ const productionConfig: ConfigInput = {
       'ends.today',
       'promos.today',
       'available.today',
-      'onsale.now',
+      'discounts.today',
     ],
   },
   NAMEFI_ASTRA_NAMESERVERS: ['ns3.namefi.io.', 'ns4.namefi.io.'],

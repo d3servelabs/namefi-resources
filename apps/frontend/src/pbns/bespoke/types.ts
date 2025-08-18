@@ -30,7 +30,7 @@ export interface BespokeStatistic {
 }
 
 export interface BespokeLandingConfig {
-  /** The domain name (e.g., "starts.today", "onsale.now") */
+  /** The domain name (e.g., "starts.today", "discounts.today") */
   domainName: string;
   /** Array of rotating example subdomains for the hero */
   rotatingSubdomains: string[];

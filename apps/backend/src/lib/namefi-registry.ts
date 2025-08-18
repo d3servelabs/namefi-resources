@@ -96,7 +96,7 @@ export const getPoweredByNamefi3PDomains = async () => {
       'ends.today',
       'promos.today',
       'available.today',
-      'onsale.now',
+      'discounts.today',
     ] as NamefiNormalizedDomain[]),
   );
 };

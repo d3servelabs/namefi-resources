@@ -45,7 +45,7 @@ export const Providers: FC<
           'ends.today',
           'promos.today',
           'available.today',
-          'onsale.now',
+          'discounts.today',
         ]}
       >
         <OriginProvider originInfo={originInfo}>

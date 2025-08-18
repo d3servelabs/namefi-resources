@@ -10,7 +10,7 @@ import { originConfig as startsTodayConfig } from '@/pbns/bespoke/domains/starts
 import { originConfig as endsTodayConfig } from '@/pbns/bespoke/domains/ends-today';
 import { originConfig as promosTodayConfig } from '@/pbns/bespoke/domains/promos-today';
 import { originConfig as availableTodayConfig } from '@/pbns/bespoke/domains/available-today';
-import { originConfig as onsaleNowConfig } from '@/pbns/bespoke/domains/onsale-now';
+import { originConfig as discountsTodayConfig } from '@/pbns/bespoke/domains/discounts-today';
 
 /**
  * Consolidated origin-specific configuration
@@ -28,6 +28,6 @@ export const originConfig: OriginConfigMap = {
     'ends.today': endsTodayConfig,
     'promos.today': promosTodayConfig,
     'available.today': availableTodayConfig,
-    'onsale.now': onsaleNowConfig,
+    'discounts.today': discountsTodayConfig,
   },
 };

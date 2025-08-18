@@ -21,7 +21,7 @@ const developmentConfig: ConfigInput = {
     'ends.today',
     'promos.today',
     'available.today',
-    'onsale.now',
+    'discounts.today',
   ],
   ADDITIONAL_HOSTNAME_MAP: {
     '0x.city.astra.namefi.dev': '0x.city',
@@ -34,7 +34,7 @@ const developmentConfig: ConfigInput = {
     'ends.today.astra.namefi.dev': 'ends.today',
     'promos.today.astra.namefi.dev': 'promos.today',
     'available.today.astra.namefi.dev': 'available.today',
-    'onsale.now.astra.namefi.dev': 'onsale.now',
+    'discounts.today.astra.namefi.dev': 'discounts.today',
   },
   USER_CENTRICS_SETTINGS_ID: '5UJHpI8CWth59m',
   USER_CENTRICS_GOOGLE_ANALYTICS_SERVICE_ID: 'HkocEodjb7',

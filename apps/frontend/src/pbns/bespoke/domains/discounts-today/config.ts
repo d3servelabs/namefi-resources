@@ -2,7 +2,7 @@ import { generateBespokeConfig } from '@/pbns/bespoke/lib/generate-config';
 
 export const { landingConfig, originConfigWithoutLanding } =
   generateBespokeConfig({
-    domainName: 'onsale.now',
+    domainName: 'discounts.today',
     rotatingSubdomains: [
       'flash',
       'mega',
@@ -15,25 +15,25 @@ export const { landingConfig, originConfigWithoutLanding } =
       'outlet',
       'limited',
     ],
-    openGraphImage: '/og/onsale-now.jpg',
+    openGraphImage: '/og/discounts-today.jpg',
     testimonials: [
       {
         quote:
-          'The .now extension creates unmatched urgency. Our flash.onsale.now sales sell out in minutes!',
+          'The .now extension creates unmatched urgency. Our flash.discounts.today sales sell out in minutes!',
         author: 'Maria Rodriguez',
         handle: 'Fashion Retailer CEO',
         rating: 5,
       },
       {
         quote:
-          'Best domain investment ever. The psychological impact of "onsale.now" is incredible.',
+          'Best domain investment ever. The psychological impact of "discounts.today" is incredible.',
         author: 'David Kim',
         handle: '@ecommercepro',
         rating: 5,
       },
       {
         quote:
-          'Our conversion rate exploded with deals.onsale.now - customers act immediately!',
+          'Our conversion rate exploded with deals.discounts.today - customers act immediately!',
         author: 'Sarah Johnson',
         handle: 'Digital Marketing Lead',
         rating: 5,
@@ -47,7 +47,7 @@ export const { landingConfig, originConfigWithoutLanding } =
       },
       {
         quote:
-          'Live.onsale.now transformed our live shopping events. Engagement up 400%!',
+          'Live.discounts.today transformed our live shopping events. Engagement up 400%!',
         author: 'Rachel Green',
         handle: 'Live Commerce Manager',
         rating: 5,

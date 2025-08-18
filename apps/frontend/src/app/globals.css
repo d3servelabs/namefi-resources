@@ -129,8 +129,7 @@
   --brand-tertiary: oklch(71.4% 0.203 305.504);
 }
 
-[data-theme$=".today"],
-[data-theme$=".now"] {
+[data-theme$=".today"] {
   --brand-primary: oklch(71.4% 0.203 305.504);
   --brand-secondary: oklch(71.4% 0.203 305.504);
   --brand-tertiary: oklch(71.4% 0.203 305.504);

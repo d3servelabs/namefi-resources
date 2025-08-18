@@ -32,7 +32,7 @@ const localConfig: ConfigInput = {
     'ends.today.localhost': 'ends.today',
     'promos.today.localhost': 'promos.today',
     'available.today.localhost': 'available.today',
-    'onsale.now.localhost': 'onsale.now',
+    'discounts.today.localhost': 'discounts.today',
   },
   ALLOWED_CHAINS: [chains.sepolia.id],
   EMAIL_ADDRESS_TO_OWNED_HOSTNAMES_MAP: {
@@ -47,7 +47,7 @@ const localConfig: ConfigInput = {
       'ends.today',
       'promos.today',
       'available.today',
-      'onsale.now',
+      'discounts.today',
     ],
   },
   ALLOW_ALL_ORIGINS: true,

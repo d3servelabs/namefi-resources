@@ -25,7 +25,7 @@ const localConfig: ConfigInput = {
     'ends.today',
     'promos.today',
     'available.today',
-    'onsale.now',
+    'discounts.today',
   ],
   ADDITIONAL_HOSTNAME_MAP: {
     '0x.city.localhost': '0x.city',
@@ -38,7 +38,7 @@ const localConfig: ConfigInput = {
     'ends.today.localhost': 'ends.today',
     'promos.today.localhost': 'promos.today',
     'available.today.localhost': 'available.today',
-    'onsale.now.localhost': 'onsale.now',
+    'discounts.today.localhost': 'discounts.today',
   },
   USER_CENTRICS_SETTINGS_ID: '5UJHpI8CWth59m',
   USER_CENTRICS_GOOGLE_ANALYTICS_SERVICE_ID: 'HkocEodjb7',
