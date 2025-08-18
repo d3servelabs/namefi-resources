@@ -130,9 +130,9 @@
 }
 
 [data-theme$=".today"] {
-  --brand-primary: oklch(71.4% 0.203 305.504);
-  --brand-secondary: oklch(71.4% 0.203 305.504);
-  --brand-tertiary: oklch(71.4% 0.203 305.504);
+  --brand-primary: oklch(78.9% 0.154 211.53);
+  --brand-secondary: oklch(78.9% 0.154 211.53);
+  --brand-tertiary: oklch(78.9% 0.154 211.53);
 }
 
 @layer base {
