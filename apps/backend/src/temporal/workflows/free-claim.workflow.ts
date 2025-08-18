@@ -129,12 +129,13 @@ export async function processFreeClaimWorkflow(
     },
   });
 
-  const { triggerUpdateDomainIndex } = typedProxyActivities({
-    temporalEnum: TEMPORAL_ENUMS.INDEXERS,
-    options: {
-      ...shortRunningOpts,
-    },
-  });
+  const { triggerUpdateDomainIndex, triggerGenerateAndUpdateDataForDomains } =
+    typedProxyActivities({
+      temporalEnum: TEMPORAL_ENUMS.INDEXERS,
+      options: {
+        ...shortRunningOpts,
+      },
+    });
 
   workflow.log.info('Processing free claim', {
     userId,
@@ -247,7 +248,10 @@ export async function processFreeClaimWorkflow(
     // Step 6: Trigger domain index update
     state.currentStep = 'updating_domain_index';
     try {
-      await triggerUpdateDomainIndex();
+      await Promise.all([
+        triggerUpdateDomainIndex(),
+        triggerGenerateAndUpdateDataForDomains(),
+      ]);
     } catch (e) {
       workflow.log.error(
         `Failed to trigger update domain index for claim ${state.claimId}. Error: ${e}`,

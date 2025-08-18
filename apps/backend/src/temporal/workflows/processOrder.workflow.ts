@@ -257,17 +257,16 @@ export async function processOrderWorkflow(
 }
 
 async function postProcessOrder() {
-  const { triggerNamefiGptCronJob, triggerUpdateNamefiNftIndex } =
-    typedProxyActivities({
-      temporalEnum: TEMPORAL_ENUMS.DEFAULT,
-      options: {
-        ...shortRunningOpts,
-      },
-    });
+  const { triggerGenerateAndUpdateDataForDomains } = typedProxyActivities({
+    temporalEnum: TEMPORAL_ENUMS.INDEXERS,
+    options: {
+      ...shortRunningOpts,
+    },
+  });
 
   const results = await Promise.allSettled([
-    triggerNamefiGptCronJob(),
-    triggerUpdateNamefiNftIndex(),
+    triggerGenerateAndUpdateDataForDomains(),
+    triggerUpdateDomainIndex(),
   ]);
 
   results.forEach((result, index) => {
