@@ -33,3 +33,4 @@ export * from './hunt/campaign-status.workflow';
 export * from './hunt/period-award.workflow';
 export * from './free-claim.workflow';
 export * from './namefi-gpt-domain-processing.workflow';
+export * from './refresh-nft-marketplaces.workflow';
