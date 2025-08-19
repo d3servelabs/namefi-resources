@@ -16,9 +16,11 @@ import { createTRPCRouter, protectedProcedure } from '../base';
 import { createLogger } from '#lib/logger';
 import type { FreeClaimWorkflowMemo } from '../../temporal/workflows/free-claim.workflow';
 import { $withTransaction, db, freeClaimsTable } from '@namefi-astra/db';
-import { countDistinct, eq } from 'drizzle-orm';
+import { eq } from 'drizzle-orm';
 import { isAfter } from 'date-fns';
-import { groupBy, pipe, map } from 'ramda';
+import { groupBy, isNotNil } from 'ramda';
+import type { FreeClaimSelect } from '@namefi-astra/db';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 
 const logger = createLogger({ context: 'freeClaimsRouter' });
 
@@ -534,16 +536,18 @@ export const freeClaimsRouter = createTRPCRouter({
   getUserClaims: protectedProcedure.query(async ({ ctx }) => {
     const { user } = ctx;
 
-    const claims = await db.query.freeClaimsTable.findMany({
+    const claims: FreeClaimSelect[] = await db.query.freeClaimsTable.findMany({
       where: eq(freeClaimsTable.userId, user.id),
     });
 
     const now = new Date();
 
-    const claimsWithStatus = claims.map((claim) => ({
-      ...claim,
-      isExpired: claim.expirationDate && isAfter(now, claim.expirationDate),
-    }));
+    const claimsWithStatus: (FreeClaimSelect & { isExpired: boolean })[] =
+      claims.map((claim) => ({
+        ...claim,
+        isExpired:
+          isNotNil(claim.expirationDate) && isAfter(now, claim.expirationDate),
+      }));
 
     const getGroupKey = (claim: (typeof claimsWithStatus)[0]) =>
       claim.parentDomain
@@ -559,7 +563,6 @@ export const freeClaimsRouter = createTRPCRouter({
       const parentDomain = claims[0].parentDomain;
       const reason = claims[0].reason;
       const groupOrCampaignKey = claims[0].groupOrCampaignKey;
-      const type = parentDomain ? 'parentDomain' : 'exactDomain';
 
       const availableClaims = claims.filter(
         (claim) => !claim.isExpired && claim.claimingStatus === 'IDLE',
@@ -570,9 +573,9 @@ export const freeClaimsRouter = createTRPCRouter({
       const unclaimedClaims = claims.filter(
         (claim) => !claim.isExpired && claim.claimingStatus !== 'IDLE',
       );
-      if (type === 'parentDomain') {
+      if (parentDomain) {
         return {
-          type: 'parentDomain' as const,
+          type: 'campaignParentDomain' as const,
           groupOrCampaignKey,
           parentDomain,
           reason,
@@ -583,12 +586,31 @@ export const freeClaimsRouter = createTRPCRouter({
             unclaimed: unclaimedClaims.length,
           },
           claims,
-        };
+        } satisfies GetUserClaimsResponse;
       }
       return {
-        type: 'exactDomain' as const,
+        type: 'singleExactDomain' as const,
         claim: claims[0],
-      };
+      } satisfies GetUserClaimsResponse;
     });
   }),
 });
+
+type GetUserClaimsResponse =
+  | {
+      type: 'campaignParentDomain';
+      groupOrCampaignKey: string;
+      parentDomain: NamefiNormalizedDomain;
+      reason: string | null;
+      counts: {
+        total: number;
+        available: number;
+        expired: number;
+        unclaimed: number;
+      };
+      claims: (FreeClaimSelect & { isExpired: boolean })[];
+    }
+  | {
+      type: 'singleExactDomain';
+      claim: FreeClaimSelect & { isExpired: boolean };
+    };
