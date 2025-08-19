@@ -36,3 +36,4 @@ export * from './namefi-gpt-domain-processing.workflow';
 export * from './refresh-nft-marketplaces.workflow';
 export * from './migration/mongo-ai-migration.workflow';
 export * from './generate-and-update-data-for-domains.workflow';
+export * from './email-subscription-sync.workflow';

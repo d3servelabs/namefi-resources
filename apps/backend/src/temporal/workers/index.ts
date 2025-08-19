@@ -26,11 +26,13 @@ import { logger } from '#lib/logger';
 import { db } from '@namefi-astra/db';
 import { config } from '#lib/env';
 import { IndexersActivities } from '../activities/indexers';
+import { defaultTaskQueueActivities } from '../activities/default';
 
 export let WORKERS: Partial<Record<TEMPORAL_ENUMS, Worker>> | undefined;
 
 export const ACTIVITIES = {
   [TEMPORAL_ENUMS.DEFAULT]: {
+    ...defaultTaskQueueActivities,
     ...GreetActivities,
     ...MigrationActivities,
     ...OrderActivities,
