@@ -56,6 +56,7 @@ import pMap from 'p-map';
 import { logger } from '#lib/logger';
 import { fromUnixTime, isBefore, subHours } from 'date-fns';
 import { IsUserDomainOwner } from '../guards/assert-domain-owner';
+import { syncSingleUserToListmonkActivity } from '../../temporal/activities/default/email-subscription-sync.activities';
 
 if (!secrets.ALCHEMY_API_KEY) {
   throw new Error('Cannot create Ethereum public client');
@@ -464,6 +465,52 @@ export const usersRouter = createTRPCRouter({
       return results;
     },
   ),
+
+  doesUserSubscribeToEmails: protectedProcedure.query(async ({ ctx }) => {
+    const user = await db.query.usersTable.findFirst({
+      where: eq(usersTable.id, ctx.user.id),
+      columns: {
+        subscribeToEmails: true,
+      },
+    });
+
+    if (!user) {
+      throw new TRPCError({
+        code: 'NOT_FOUND',
+        message: 'User not found',
+      });
+    }
+
+    return user.subscribeToEmails;
+  }),
+
+  setSubscribeToEmails: protectedProcedure
+    .input(z.object({ optIn: z.boolean() }))
+    .mutation(async ({ input, ctx }) => {
+      // Update the user's opt-in status
+      await db
+        .update(usersTable)
+        .set({ subscribeToEmails: input.optIn })
+        .where(eq(usersTable.id, ctx.user.id));
+
+      // Sync this user to Listmonk directly
+      try {
+        await syncSingleUserToListmonkActivity(ctx.user.id);
+
+        logger.info(
+          { userId: ctx.user.id, optIn: input.optIn },
+          'Successfully synced user to Listmonk after opt-in change',
+        );
+      } catch (error) {
+        logger.error(
+          { error, userId: ctx.user.id, optIn: input.optIn },
+          `Failed to sync user to Listmonk after opt-${input.optIn ? 'in' : 'out'} change`,
+        );
+        // Don't throw error since the opt-in status was already updated successfully
+      }
+
+      return { success: true, optIn: input.optIn };
+    }),
 });
 
 async function getDomainsExpirationDatesFromIndex(

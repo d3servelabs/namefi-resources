@@ -13,6 +13,7 @@ import { Input } from '@/components/ui/shadcn/input';
 import { Label } from '@/components/ui/shadcn/label';
 import { CountryDropdown, type Country } from '@/components/country-input';
 import { ContactAccounts } from './contact-accounts';
+import { EmailSubscriptionSettings } from './email-subscription-settings';
 import { useTRPC } from '@/lib/trpc';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
@@ -141,6 +142,10 @@ export function ContactDetails() {
                 <ContactAccounts />
               </CardContent>
             </Card>
+          </div>
+          {/* Email Subscription Settings Section */}
+          <div className="space-y-12 mt-12">
+            <EmailSubscriptionSettings hasEmail={!!privyUser?.email?.address} />
           </div>
 
           {/* Profile Information Section */}
