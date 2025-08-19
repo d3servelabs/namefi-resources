@@ -17,6 +17,19 @@ interface CartItemProps {
   domainAvailabilityInfo?: DomainAvailabilityInfo;
   isDisabled: boolean;
   showSeparator: boolean;
+  /**
+   * When true, render even if the item is not currently in the cart.
+   * Useful for pages that want the identical UI without affecting the cart.
+   */
+  forceRender?: boolean;
+  /**
+   * When true, hide destructive controls and disable edits.
+   */
+  readOnly?: boolean;
+  /**
+   * When provided, overrides the displayed amount while keeping layout identical.
+   */
+  overrideAmountInUSDCents?: number;
 }
 
 export function CartItem({
@@ -24,6 +37,9 @@ export function CartItem({
   domainAvailabilityInfo,
   isDisabled,
   showSeparator,
+  forceRender,
+  readOnly,
+  overrideAmountInUSDCents,
 }: CartItemProps) {
   const { cart, inCart, removingBusy, updatingBusy } = useCartRow(
     item.normalizedDomainName,
@@ -53,7 +69,7 @@ export function CartItem({
     [cart.removeItem],
   );
 
-  if (!inCart) {
+  if (!inCart && !forceRender) {
     return null;
   }
 
@@ -71,27 +87,32 @@ export function CartItem({
         </div>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <button
-              type="button"
-              className="p-2 rounded-lg bg-[#27272A] hover:bg-[#3F3F46] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-              onClick={() => handleRemoveItem(item.normalizedDomainName)}
-              disabled={isDisabled || removingBusy}
-            >
-              {removingBusy ? (
-                <Loader2 className="size-4 animate-spin" />
-              ) : (
-                <Trash2 className="size-4" />
-              )}
-            </button>
+            {!readOnly ? (
+              <button
+                type="button"
+                className="p-2 rounded-lg bg-[#27272A] hover:bg-[#3F3F46] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                onClick={() => handleRemoveItem(item.normalizedDomainName)}
+                disabled={isDisabled || removingBusy}
+              >
+                {removingBusy ? (
+                  <Loader2 className="size-4 animate-spin" />
+                ) : (
+                  <Trash2 className="size-4" />
+                )}
+              </button>
+            ) : null}
             <CartItemDurationControl
               item={item}
               domainAvailabilityInfo={domainAvailabilityInfo}
               onDurationChange={handleDurationChange}
-              isDisabled={isDisabled || updatingBusy}
+              isDisabled={isDisabled || updatingBusy || !!readOnly}
             />
           </div>
           <span className="text-xl">
-            {formatAmountInUSD(item.amountInUSDCents, true)}
+            {formatAmountInUSD(
+              overrideAmountInUSDCents ?? item.amountInUSDCents,
+              true,
+            )}
           </span>
         </div>
       </div>

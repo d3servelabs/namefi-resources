@@ -38,10 +38,6 @@ import { NamefiButton } from '../buttons/namefi-button';
 import { AnimatedCartButton } from '../buttons/animated-cart-button';
 import { useInteractionLoggers } from '@/components/providers/analytics';
 import { Placeholder } from './placeholder';
-import { useMutation } from '@tanstack/react-query';
-import { useTRPC } from '@/lib/trpc';
-import { toast } from 'sonner';
-import { useUserWalletAddresses } from '@/hooks/use-user-wallet-addresses';
 import type {
   ImportQuery,
   LandingComponent,
@@ -273,7 +269,6 @@ export const DomainCard: FC<{
       hasParentMatch: boolean;
     }>;
   };
-  onFreeClaimSuccess?: () => void;
 }> = ({
   domain,
   availabilityInfo,
@@ -281,30 +276,10 @@ export const DomainCard: FC<{
   onEppCodeChange,
   isImportMode,
   freeClaimEligibility,
-  onFreeClaimSuccess,
 }) => {
   const { logEventWithInteractionLoggers } = useInteractionLoggers();
   const router = useRouter();
   const eppInputRef = useRef<HTMLInputElement>(null);
-  const trpc = useTRPC();
-  const { userWalletAddresses } = useUserWalletAddresses();
-
-  // Free claim mutation
-  const claimMutation = useMutation({
-    ...trpc.freeClaims.processClaimWithTransaction.mutationOptions(),
-    onSuccess: (result) => {
-      toast.success('Domain claimed successfully!');
-      onFreeClaimSuccess?.();
-
-      // Redirect to order page if orderId is available
-      if (result.orderId) {
-        router.push(`/orders/${result.orderId}`);
-      }
-    },
-    onError: (error) => {
-      toast.error(`Failed to claim domain: ${error.message}`);
-    },
-  });
 
   const logBeginCheckout = useCallback(() => {
     const beginCheckoutEvent: BeginCheckoutEvent = {
@@ -427,38 +402,11 @@ export const DomainCard: FC<{
     });
   }, [cart, availabilityInfo, eppAuthorizationCode]);
 
-  /* CLAIM handler ------------------------------------------------------- */
-  const handleClaim = useCallback(async () => {
-    if (!domain || !freeClaimEligibility?.eligible || !availabilityInfo) return;
-
-    // Use the first available wallet address, or show error if none
-    const recipientWalletAddress = userWalletAddresses[0];
-    if (!recipientWalletAddress) {
-      toast.error('No wallet address found. Please connect a wallet.');
-      return;
-    }
-
-    const minDuration = availabilityInfo.durationValidationInYears?.min ?? 1;
-    const registrarKey = availabilityInfo.registrarKey || 'namefi';
-    const chainId = 8453; // Base chain ID
-
-    // The backend will automatically find and use the best available claim
-    const claimPayload = {
-      normalizedDomainName: domain,
-      recipientWalletAddress,
-      chainId,
-      durationInYears: minDuration,
-      registrarKey,
-    };
-
-    claimMutation.mutate(claimPayload);
-  }, [
-    domain,
-    freeClaimEligibility,
-    availabilityInfo,
-    userWalletAddresses,
-    claimMutation,
-  ]);
+  const goToClaimPage = useCallback(() => {
+    if (!domain) return;
+    logBeginCheckout();
+    router.push(`/claim/${domain}`);
+  }, [domain, logBeginCheckout, router]);
 
   const hasAvailabilityInfo = availabilityInfo !== undefined;
   // When availabilityInfo is available, all data that CAN be loaded HAS been loaded
@@ -569,21 +517,9 @@ export const DomainCard: FC<{
               </Badge>
             ) : availabilityInfo.availability &&
               freeClaimEligibility?.eligible ? (
-              <NamefiButton
-                onClick={handleClaim}
-                disabled={claimMutation.isPending}
-              >
-                {claimMutation.isPending ? (
-                  <>
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                    Claiming...
-                  </>
-                ) : (
-                  <>
-                    <Gift className="h-4 w-4" />
-                    Free Claim
-                  </>
-                )}
+              <NamefiButton onClick={goToClaimPage}>
+                <Gift className="h-4 w-4" />
+                Free Claim
               </NamefiButton>
             ) : availabilityInfo.availability || isImportable ? (
               <AnimatedCartButton
@@ -644,7 +580,6 @@ export const SearchResults: FC<{
       hasParentMatch: boolean;
     }>;
   }>;
-  onFreeClaimSuccess?: () => void;
 }> = ({
   isLoading,
   isError,
@@ -657,7 +592,6 @@ export const SearchResults: FC<{
   onEppCodeChange,
   searchMode,
   freeClaimEligibility,
-  onFreeClaimSuccess,
 }) => {
   // Show error state
   if (isError && query.length > 0) {
@@ -700,7 +634,6 @@ export const SearchResults: FC<{
               onEppCodeChange={(eppCode) => onEppCodeChange(domain, eppCode)}
               isImportMode={searchMode === SearchMode.IMPORT}
               freeClaimEligibility={claimEligibility}
-              onFreeClaimSuccess={onFreeClaimSuccess}
             />
           );
         })}
@@ -751,7 +684,6 @@ export const Search: LandingComponent = ({ origin }) => {
     domainInfos,
     domains,
     freeClaimEligibility,
-    refetchFreeClaimEligibility,
   } = useSearch(parentDomain || undefined);
 
   // Handle initial search from query parameters
@@ -868,7 +800,6 @@ export const Search: LandingComponent = ({ origin }) => {
             onEppCodeChange={handleEppCodeChange}
             searchMode={searchMode}
             freeClaimEligibility={freeClaimEligibility}
-            onFreeClaimSuccess={refetchFreeClaimEligibility}
           />
 
           <div className="sticky bottom-5 flex justify-center mt-4 px-4">

@@ -89,10 +89,6 @@ export const useSearch = (parentDomain?: string) => {
         domains,
       }),
       enabled: isAuthenticated && domains.length > 0,
-      refetchOnWindowFocus: true,
-      refetchOnMount: true,
-      refetchOnReconnect: true,
-      refetchInterval: 5000, // 5 seconds
     });
 
   const {

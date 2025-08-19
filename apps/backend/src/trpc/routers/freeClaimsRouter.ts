@@ -67,7 +67,6 @@ export const freeClaimsRouter = createTRPCRouter({
       z.object({
         normalizedDomainName: namefiNormalizedDomainSchema,
         recipientWalletAddress: checksumWalletAddressSchema,
-        chainId: z.number().int().positive(),
         durationInYears: z.number().int().min(1).max(1),
         registrarKey: z.string().min(1),
       }),
@@ -77,10 +76,11 @@ export const freeClaimsRouter = createTRPCRouter({
       const {
         normalizedDomainName,
         recipientWalletAddress,
-        chainId,
         durationInYears,
         registrarKey,
       } = input;
+
+      const chainId = 8453; // Base chain ID
 
       logger.info(
         {
@@ -400,18 +400,15 @@ export const freeClaimsRouter = createTRPCRouter({
       z.object({
         normalizedDomainName: namefiNormalizedDomainSchema,
         recipientWalletAddress: checksumWalletAddressSchema,
-        chainId: z.number().int().positive(),
         registrarKey: z.string().min(1),
       }),
     )
     .mutation(async ({ ctx, input }) => {
       const { user } = ctx;
-      const {
-        normalizedDomainName,
-        recipientWalletAddress,
-        chainId,
-        registrarKey,
-      } = input;
+      const { normalizedDomainName, recipientWalletAddress, registrarKey } =
+        input;
+
+      const chainId = 8453; // Base chain ID
 
       const durationInYears = 1;
       logger.info(
