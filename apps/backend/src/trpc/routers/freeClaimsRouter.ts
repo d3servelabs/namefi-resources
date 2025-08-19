@@ -15,7 +15,10 @@ import { validateAndCreateClaimOrder } from '../../temporal/activities/free-clai
 import { createTRPCRouter, protectedProcedure } from '../base';
 import { createLogger } from '#lib/logger';
 import type { FreeClaimWorkflowMemo } from '../../temporal/workflows/free-claim.workflow';
-import { $withTransaction } from '@namefi-astra/db';
+import { $withTransaction, db, freeClaimsTable } from '@namefi-astra/db';
+import { countDistinct, eq } from 'drizzle-orm';
+import { isAfter } from 'date-fns';
+import { groupBy, pipe, map } from 'ramda';
 
 const logger = createLogger({ context: 'freeClaimsRouter' });
 
@@ -527,4 +530,65 @@ export const freeClaimsRouter = createTRPCRouter({
         });
       }
     }),
+
+  getUserClaims: protectedProcedure.query(async ({ ctx }) => {
+    const { user } = ctx;
+
+    const claims = await db.query.freeClaimsTable.findMany({
+      where: eq(freeClaimsTable.userId, user.id),
+    });
+
+    const now = new Date();
+
+    const claimsWithStatus = claims.map((claim) => ({
+      ...claim,
+      isExpired: claim.expirationDate && isAfter(now, claim.expirationDate),
+    }));
+
+    const getGroupKey = (claim: (typeof claimsWithStatus)[0]) =>
+      claim.parentDomain
+        ? `${claim.groupOrCampaignKey}_${claim.parentDomain}`
+        : claim.id;
+
+    const grouped = groupBy(getGroupKey, claimsWithStatus);
+
+    return Object.values(grouped).map((claims) => {
+      if (!claims || !claims[0]) {
+        return null;
+      }
+      const parentDomain = claims[0].parentDomain;
+      const reason = claims[0].reason;
+      const groupOrCampaignKey = claims[0].groupOrCampaignKey;
+      const type = parentDomain ? 'parentDomain' : 'exactDomain';
+
+      const availableClaims = claims.filter(
+        (claim) => !claim.isExpired && claim.claimingStatus === 'IDLE',
+      );
+      const expiredClaims = claims.filter(
+        (claim) => claim.isExpired && claim.claimingStatus === 'IDLE',
+      );
+      const unclaimedClaims = claims.filter(
+        (claim) => !claim.isExpired && claim.claimingStatus !== 'IDLE',
+      );
+      if (type === 'parentDomain') {
+        return {
+          type: 'parentDomain' as const,
+          groupOrCampaignKey,
+          parentDomain,
+          reason,
+          counts: {
+            total: claims.length,
+            available: availableClaims.length,
+            expired: expiredClaims.length,
+            unclaimed: unclaimedClaims.length,
+          },
+          claims,
+        };
+      }
+      return {
+        type: 'exactDomain' as const,
+        claim: claims[0],
+      };
+    });
+  }),
 });
