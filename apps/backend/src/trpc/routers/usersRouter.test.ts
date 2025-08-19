@@ -235,6 +235,7 @@ describe('getUserQualifiesForDomainNamePromo', () => {
     stripeCustomerId: null,
     createdAt: new Date(),
     updatedAt: new Date(),
+    subscribeToEmails: true,
   };
   const testNormalizedDomainName = 'netizen1.0x.city';
 
@@ -562,6 +563,7 @@ describe('getManagerPageEntrypointViewable', () => {
     privyUserId: 'testUser0xCityOwner',
     createdAt: new Date(),
     updatedAt: new Date(),
+    subscribeToEmails: true,
   };
 
   it('should return false for null user', async () => {
@@ -606,6 +608,7 @@ describe('getManagerPageEntrypointViewable', () => {
           privyUserId: 'testUserNonParentDomainOwner',
           createdAt: new Date(),
           updatedAt: new Date(),
+          subscribeToEmails: true,
         },
       } satisfies Omit<
         TrpcContext,
@@ -632,6 +635,7 @@ describe('getManagerPageEntrypointViewable', () => {
           privyUserId: 'testUserGetPrivyUserThrowsError',
           createdAt: new Date(),
           updatedAt: new Date(),
+          subscribeToEmails: true,
         },
       } satisfies Omit<
         TrpcContext,
@@ -658,6 +662,7 @@ describe('getManagerPageEntrypointViewable', () => {
           privyUserId: 'testUserNonParentDomainOwner',
           createdAt: new Date(),
           updatedAt: new Date(),
+          subscribeToEmails: true,
         },
       } satisfies Omit<
         TrpcContext,
@@ -1047,6 +1052,7 @@ describe('getUserQualifyingDomainNamesForPromo', () => {
           ...baseTestUser,
           id: 'testUserWithQualifyingEmail',
           privyUserId: 'testUserWithQualifyingEmail',
+          subscribeToEmails: true,
         },
       } satisfies Omit<
         TrpcContext,
@@ -1074,6 +1080,7 @@ describe('getUserQualifyingDomainNamesForPromo', () => {
           ...baseTestUser,
           id: 'testUserWithQualifyingTwitterHandle',
           privyUserId: 'testUserWithQualifyingTwitterHandle',
+          subscribeToEmails: true,
         },
       } satisfies Omit<
         TrpcContext,
@@ -1104,6 +1111,7 @@ describe('getUserQualifyingDomainNamesForPromo', () => {
           ...baseTestUser,
           id: 'testUserWithQualifyingTwitterName',
           privyUserId: 'testUserWithQualifyingTwitterName',
+          subscribeToEmails: true,
         },
       } satisfies Omit<
         TrpcContext,
@@ -1134,6 +1142,7 @@ describe('getUserQualifyingDomainNamesForPromo', () => {
           ...baseTestUser,
           id: 'testUserWithQualifyingGithubEmail',
           privyUserId: 'testUserWithQualifyingGithubEmail',
+          subscribeToEmails: true,
         },
       } satisfies Omit<
         TrpcContext,
@@ -1164,6 +1173,7 @@ describe('getUserQualifyingDomainNamesForPromo', () => {
           ...baseTestUser,
           id: 'testUserWithQualifyingGithubUsername',
           privyUserId: 'testUserWithQualifyingGithubUsername',
+          subscribeToEmails: true,
         },
       } satisfies Omit<
         TrpcContext,
@@ -1194,6 +1204,7 @@ describe('getUserQualifyingDomainNamesForPromo', () => {
           ...baseTestUser,
           id: 'testUserWithQualifyingGithubName',
           privyUserId: 'testUserWithQualifyingGithubName',
+          subscribeToEmails: true,
         },
       } satisfies Omit<
         TrpcContext,
@@ -1224,6 +1235,7 @@ describe('getUserQualifyingDomainNamesForPromo', () => {
           ...baseTestUser,
           id: 'testUserWithQualifyingEns',
           privyUserId: 'testUserWithQualifyingEns',
+          subscribeToEmails: true,
         },
       } satisfies Omit<
         TrpcContext,
@@ -1255,6 +1267,7 @@ describe('getUserQualifyingDomainNamesForPromo', () => {
             ...baseTestUser,
             id: 'testUserWithMultipleQualifyingAccounts',
             privyUserId: 'testUserWithMultipleQualifyingAccounts',
+            subscribeToEmails: true,
           },
         } satisfies Omit<
           TrpcContext,
@@ -1287,6 +1300,7 @@ describe('getUserQualifyingDomainNamesForPromo', () => {
           ...baseTestUser,
           id: 'testUserWithoutQualifyingAccount',
           privyUserId: 'testUserWithoutQualifyingAccount',
+          subscribeToEmails: true,
         },
       } satisfies Omit<
         TrpcContext,
@@ -1311,6 +1325,7 @@ describe('getUserQualifyingDomainNamesForPromo', () => {
           ...baseTestUser,
           id: 'testUserWithNoLinkedAccounts',
           privyUserId: 'testUserWithNoLinkedAccounts',
+          subscribeToEmails: true,
         },
       } satisfies Omit<
         TrpcContext,
@@ -1337,6 +1352,7 @@ describe('getUserQualifyingDomainNamesForPromo', () => {
           privyUserId: 'testUserWithSolanaWalletOnly',
           createdAt: new Date(),
           updatedAt: new Date(),
+          subscribeToEmails: true,
         },
       } satisfies Omit<
         TrpcContext,
@@ -1363,6 +1379,7 @@ describe('getUserQualifyingDomainNamesForPromo', () => {
           privyUserId: 'testUserGetPrivyUserThrowsError',
           createdAt: new Date(),
           updatedAt: new Date(),
+          subscribeToEmails: true,
         },
       } satisfies Omit<
         TrpcContext,
@@ -1386,6 +1403,7 @@ describe('getUserQualifyingDomainNamesForPromo', () => {
           ...baseTestUser,
           id: 'testUserWithQualifyingEmail',
           privyUserId: 'testUserWithQualifyingEmail',
+          subscribeToEmails: true,
         },
       } satisfies Omit<
         TrpcContext,
@@ -1409,6 +1427,7 @@ describe('getUserQualifyingDomainNamesForPromo', () => {
           ...baseTestUser,
           id: 'testUserWithQualifyingEmail',
           privyUserId: 'testUserWithQualifyingEmail',
+          subscribeToEmails: true,
         },
       } satisfies Omit<
         TrpcContext,

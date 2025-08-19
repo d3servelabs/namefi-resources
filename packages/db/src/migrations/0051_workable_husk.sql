@@ -1,0 +1,1 @@
+ALTER TABLE "users" ADD COLUMN "subscribe_to_emails" boolean DEFAULT true NOT NULL;

@@ -120,6 +120,7 @@ export const usersTable = pgTable('users', {
   primaryEmail: text('primary_email').unique(),
   stripeCustomerId: text('stripe_customer_id').unique(),
   privyUserId: text('privy_user_id').notNull().unique(),
+  subscribeToEmails: boolean('subscribe_to_emails').notNull().default(true),
   ...timestamps,
 });
 
