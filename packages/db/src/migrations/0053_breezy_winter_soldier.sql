@@ -1,0 +1,1 @@
+ALTER TABLE "link_shares" ALTER COLUMN "external_identifier" SET NOT NULL;

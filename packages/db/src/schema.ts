@@ -1058,7 +1058,7 @@ export const linkSharesTable = pgTable(
     userId: uuid('user_id').references(() => usersTable.id, {
       onDelete: 'cascade',
     }),
-    externalIdentifier: text('external_identifier'),
+    externalIdentifier: text('external_identifier').notNull(),
     type: linkType('type').notNull(),
     ...normalizedDomain,
     postUrl: text('post_url').notNull(),
