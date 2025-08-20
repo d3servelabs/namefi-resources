@@ -4,7 +4,10 @@ import { and, eq } from 'drizzle-orm';
 import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import { createTRPCRouter, protectedProcedure, publicProcedure } from '../base';
-import { validateTweet } from '../../lib/twitter/validate-tweet';
+import {
+  validateTweet,
+  type ValidatedPublicTweet,
+} from '../../lib/twitter/validate-tweet';
 
 // Input schemas
 const submitShareSchema = z.object({
@@ -30,8 +33,9 @@ export const shareRouter = createTRPCRouter({
       const { normalizedDomainName, postUrl, sharedUrl, campaignKey } = input;
 
       // Validate the tweet content and URL
+      let validatedTweet: ValidatedPublicTweet;
       try {
-        await validateTweet({
+        validatedTweet = await validateTweet({
           postUrl,
           sharedUrl,
           requiredHashtags: ['#namefi'],
@@ -49,10 +53,12 @@ export const shareRouter = createTRPCRouter({
           .insert(linkSharesTable)
           .values({
             userId: ctx.user.id,
+            type: 'twitter',
             normalizedDomainName,
             postUrl,
             sharedUrl,
             campaignKey: campaignKey || null,
+            externalIdentifier: validatedTweet.author.username,
           })
           .returning();
 
@@ -78,8 +84,9 @@ export const shareRouter = createTRPCRouter({
       const { normalizedDomainName, postUrl, sharedUrl, campaignKey } = input;
 
       // Enforce content rules: must contain sharedUrl and #namefi hashtag
+      let validatedTweet: ValidatedPublicTweet;
       try {
-        await validateTweet({
+        validatedTweet = await validateTweet({
           postUrl,
           sharedUrl,
           requiredHashtags: ['#namefi'],
@@ -97,10 +104,12 @@ export const shareRouter = createTRPCRouter({
           .insert(linkSharesTable)
           .values({
             userId: null, // Anonymous share
+            type: 'twitter',
             normalizedDomainName,
             postUrl,
             sharedUrl,
             campaignKey: campaignKey || null,
+            externalIdentifier: validatedTweet.author.username,
           })
           .returning();
 

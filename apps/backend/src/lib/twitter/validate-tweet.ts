@@ -4,9 +4,9 @@ import { z } from 'zod';
 import { getPublicTweet, type PublicTweet } from './get-public-tweet';
 
 // A PublicTweet that has been validated by our verifier
-export type VerifiedPublicTweet = PublicTweet & {
+export type ValidatedPublicTweet = PublicTweet & {
   readonly __brand: {
-    readonly verifiedPublicTweet: true;
+    readonly validatedPublicTweet: true;
   };
 };
 
@@ -72,7 +72,7 @@ export type ValidateTweetArgs = z.infer<typeof validateTweetArgsSchema>;
 
 export async function validateTweet(
   args: ValidateTweetArgs,
-): Promise<VerifiedPublicTweet> {
+): Promise<ValidatedPublicTweet> {
   const parsed = validateTweetArgsSchema.safeParse(args);
   if (!parsed.success) {
     throw new TRPCError({ code: 'BAD_REQUEST', message: 'Invalid input.' });
@@ -162,5 +162,5 @@ export async function validateTweet(
     });
   }
 
-  return post as VerifiedPublicTweet;
+  return post as ValidatedPublicTweet;
 }

@@ -1045,6 +1045,8 @@ export const wishlistedDomainsTable = pgTable(
   ],
 );
 
+export const linkType = pgEnum('link_type', ['twitter']);
+
 /**
  * Link shares table
  * Stores social media share submissions for verification and reward qualification
@@ -1056,6 +1058,8 @@ export const linkSharesTable = pgTable(
     userId: uuid('user_id').references(() => usersTable.id, {
       onDelete: 'cascade',
     }),
+    externalIdentifier: text('external_identifier'),
+    type: linkType('type').notNull(),
     ...normalizedDomain,
     postUrl: text('post_url').notNull(),
     sharedUrl: text('shared_url').notNull(),
@@ -1065,6 +1069,7 @@ export const linkSharesTable = pgTable(
         onDelete: 'set null',
       },
     ),
+    metadata: jsonb('metadata').default({}).$type<Json>(),
     verified: boolean('verified').notNull().default(false),
     verifiedAt: timestamp('verified_at'),
     verificationNotes: text('verification_notes'),
