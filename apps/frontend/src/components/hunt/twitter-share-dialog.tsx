@@ -119,9 +119,6 @@ export function TwitterShareDialog({
           type: 'server',
           message: errorMessage,
         });
-
-        // Also show toast for visibility
-        toast.error(errorMessage);
       }
     },
     [onSubmit, reset, setError],

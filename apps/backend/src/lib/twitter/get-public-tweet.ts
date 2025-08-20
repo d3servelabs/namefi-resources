@@ -6,18 +6,20 @@ import { z } from 'zod';
 /* ---------- Types & schema ---------- */
 const OEmbed = z.object({
   html: z.string(),
-  author_name: z.string().optional(),
-  author_url: z.string().optional(),
+  author_name: z.string(),
+  author_url: z.string(),
   cache_age: z.string().optional(),
-  url: z.string().optional(),
+  url: z.string(),
 });
 
-export type PublicPost = {
+export type PublicTweet = {
   text: string;
   rawHtml: string;
-  author?: { name?: string; url?: string };
+  author: { name: string; url: string; username: string };
   cacheTtlSeconds?: number;
-  canonicalUrl?: string;
+  canonicalUrl: string;
+  links: string[]; // unresolved links extracted from oEmbed HTML
+  hashtags: Array<{ tag: string; url: string; baseUrl: string }>; // extracted from oEmbed HTML
 };
 
 /* ---------- Config ---------- */
@@ -42,11 +44,11 @@ const MAX_TTL_MS = 24 * 60 * 60 * 1000; // clamp very large cache_age
 const SWR_MS = 10 * 60 * 1000; // serve-stale-while-revalidate window
 
 /* ---------- LRU cache ---------- */
-type CacheEntry = { value: PublicPost; expires: number; swrExpires: number };
+type CacheEntry = { value: PublicTweet; expires: number; swrExpires: number };
 const cache = new LRUCache<string, CacheEntry>(CACHE_CAPACITY);
 
 // Coalesce concurrent fetches for the same ID
-const inflight = new Map<string, Promise<PublicPost>>();
+const inflight = new Map<string, Promise<PublicTweet>>();
 
 /* ---------- Utils ---------- */
 const STATUS_ID_REGEX = /status\/(\d{5,30})/;
@@ -78,6 +80,58 @@ function extractTextFromOEmbedHtml(html: string) {
   return decodeEntities(inner).trim();
 }
 
+function extractLinksFromOEmbedHtml(html: string): string[] {
+  const hrefs: string[] = [];
+  const hrefRegex = /<a [^>]*href="([^"]+)"[^>]*>/gi;
+  const expandedRegex = /data-expanded-url="([^"]+)"/gi;
+
+  let match: RegExpExecArray | null = hrefRegex.exec(html);
+  while (match !== null) {
+    if (match[1]) hrefs.push(match[1]);
+    match = hrefRegex.exec(html);
+  }
+
+  match = expandedRegex.exec(html);
+  while (match !== null) {
+    if (match[1]) hrefs.push(match[1]);
+    match = expandedRegex.exec(html);
+  }
+
+  return Array.from(new Set(hrefs));
+}
+
+function extractUsernameFromAuthorUrl(authorUrl: string): string {
+  const u = new URL(authorUrl);
+  const parts = u.pathname.split('/').filter(Boolean);
+  return parts[0];
+}
+
+function extractHashtagsFromOEmbedHtml(html: string): Array<{
+  tag: string;
+  url: string;
+  baseUrl: string;
+}> {
+  const results: Array<{ tag: string; url: string; baseUrl: string }> = [];
+  const hashtagAnchorRegex =
+    /<a [^>]*href="([^"]*(?:twitter|x)\.com\/hashtag\/[^"\s]+)"[^>]*>(#[^<\s]+)<\/a>/gi;
+  let m: RegExpExecArray | null = hashtagAnchorRegex.exec(html);
+  while (m !== null) {
+    const url = m[1] ?? '';
+    const tag = m[2] ?? '';
+    let baseUrl = url;
+    try {
+      const u = new URL(url);
+      u.search = '';
+      baseUrl = u.toString();
+    } catch {
+      // keep as-is if URL parsing fails
+    }
+    results.push({ tag, url, baseUrl });
+    m = hashtagAnchorRegex.exec(html);
+  }
+  return results;
+}
+
 async function fetchOEmbed(postUrl: string) {
   const qs = new URLSearchParams({
     url: postUrl,
@@ -92,14 +146,20 @@ async function fetchOEmbed(postUrl: string) {
   return OEmbed.parse(await res.json());
 }
 
-async function refresh(id: string, urlOrId: string): Promise<PublicPost> {
+async function refresh(id: string, urlOrId: string): Promise<PublicTweet> {
   const postUrl = toPostUrl(urlOrId);
   const data = await fetchOEmbed(postUrl);
 
-  const value: PublicPost = {
+  const value: PublicTweet = {
     text: extractTextFromOEmbedHtml(data.html),
     rawHtml: data.html,
-    author: { name: data.author_name, url: data.author_url },
+    links: extractLinksFromOEmbedHtml(data.html),
+    hashtags: extractHashtagsFromOEmbedHtml(data.html),
+    author: {
+      name: data.author_name,
+      url: data.author_url,
+      username: `@${extractUsernameFromAuthorUrl(data.author_url)}`,
+    },
     cacheTtlSeconds: data.cache_age
       ? Number.parseInt(data.cache_age, 10)
       : undefined,
@@ -122,7 +182,7 @@ async function refresh(id: string, urlOrId: string): Promise<PublicPost> {
 }
 
 /* ---------- Public API ---------- */
-export async function getPublicTweet(urlOrId: string): Promise<PublicPost> {
+export async function getPublicTweet(urlOrId: string): Promise<PublicTweet> {
   const id = extractId(urlOrId);
   const now = Date.now();
 
