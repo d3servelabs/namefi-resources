@@ -92,6 +92,7 @@ export const getPoweredByNamefi3PDomains = async () => {
       'li.cv',
       'muller.cv',
       'kumar.cv',
+      'victor.cv',
       'starts.today',
       'ends.today',
       'promos.today',
