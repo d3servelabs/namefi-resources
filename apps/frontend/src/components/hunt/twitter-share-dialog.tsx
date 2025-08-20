@@ -11,6 +11,14 @@ import {
 import { Input } from '@/components/ui/shadcn/input';
 import { Label } from '@/components/ui/shadcn/label';
 import { Badge } from '@/components/ui/shadcn/badge';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/shadcn/form';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -51,15 +59,20 @@ export function TwitterShareDialog({
 }: TwitterShareDialogProps) {
   const [hasCopied, setHasCopied] = useState(false);
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors, isValid },
-  } = useForm<ShareFormData>({
+  const form = useForm<ShareFormData>({
     resolver: zodResolver(shareFormSchema),
     mode: 'onChange',
+    defaultValues: {
+      postUrl: '',
+    },
   });
+
+  const {
+    handleSubmit,
+    reset,
+    setError,
+    formState: { errors, isValid },
+  } = form;
 
   // Generate Twitter intent URL
   const twitterIntentUrl = useMemo(() => {
@@ -95,11 +108,23 @@ export function TwitterShareDialog({
       try {
         await onSubmit(data.postUrl);
         reset();
-      } catch {
-        // Error handling is done in the hook
+      } catch (error) {
+        // Set server error on the form field
+        const errorMessage =
+          error instanceof Error
+            ? error.message
+            : 'Failed to record your share. Please try again.';
+
+        setError('postUrl', {
+          type: 'server',
+          message: errorMessage,
+        });
+
+        // Also show toast for visibility
+        toast.error(errorMessage);
       }
     },
-    [onSubmit, reset],
+    [onSubmit, reset, setError],
   );
 
   // Handle dialog close
@@ -188,40 +213,58 @@ export function TwitterShareDialog({
           {/* Form for manual URL submission - only show if tracking is enabled and not already shared */}
           {trackShares && !hasShared && (
             <div className="space-y-4 border-t pt-4">
-              <div className="space-y-2">
-                <Label htmlFor="post-url">
-                  Twitter/X Post URL <span className="text-red-500">*</span>
-                </Label>
-                <Input
-                  id="post-url"
-                  placeholder="https://twitter.com/username/status/1234567890"
-                  {...register('postUrl')}
-                />
-                {errors.postUrl && (
-                  <p className="text-sm text-red-500">
-                    {errors.postUrl.message}
-                  </p>
-                )}
-                <p className="text-xs text-muted-foreground">
-                  Paste the URL of your tweet after sharing to earn rewards
-                </p>
-              </div>
+              <Form {...form}>
+                <form
+                  onSubmit={handleSubmit(handleFormSubmit)}
+                  className="space-y-4"
+                >
+                  <FormField
+                    control={form.control}
+                    name="postUrl"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          Twitter/X Post URL{' '}
+                          <span className="text-red-500">*</span>
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder="https://twitter.com/username/status/1234567890"
+                            {...field}
+                            className={
+                              errors.postUrl
+                                ? 'border-red-500 focus-visible:ring-red-500'
+                                : ''
+                            }
+                          />
+                        </FormControl>
+                        <FormMessage />
+                        <p className="text-xs text-muted-foreground">
+                          Paste the URL of your tweet after sharing to earn
+                          rewards
+                        </p>
+                      </FormItem>
+                    )}
+                  />
 
-              <div className="flex justify-end gap-2">
-                <Button
-                  variant="outline"
-                  onClick={handleClose}
-                  disabled={isSubmitting}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  onClick={handleSubmit(handleFormSubmit)}
-                  disabled={!isValid || isSubmitting || isCheckingStatus}
-                >
-                  {isSubmitting ? 'Recording...' : 'Record Share'}
-                </Button>
-              </div>
+                  <div className="flex justify-end gap-2">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={handleClose}
+                      disabled={isSubmitting}
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      type="submit"
+                      disabled={!isValid || isSubmitting || isCheckingStatus}
+                    >
+                      {isSubmitting ? 'Recording...' : 'Record Share'}
+                    </Button>
+                  </div>
+                </form>
+              </Form>
             </div>
           )}
 
