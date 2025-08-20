@@ -9,6 +9,7 @@ import {
   PaymentActivities,
   HuntActivities,
   FreeClaimActivities,
+  LinkSharesExternalIdentifierMigrationActivities,
 } from '../activities';
 import { DomainsActivities } from '../activities/domain';
 import {
@@ -35,6 +36,7 @@ export const ACTIVITIES = {
     ...defaultTaskQueueActivities,
     ...GreetActivities,
     ...MigrationActivities,
+    ...LinkSharesExternalIdentifierMigrationActivities,
     ...OrderActivities,
     ...PaymentActivities,
     updateNamefiNftIndex,
