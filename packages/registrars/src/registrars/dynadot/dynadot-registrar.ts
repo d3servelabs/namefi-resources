@@ -79,6 +79,7 @@ import { getTldFromDomainName } from '#lib/get-tld';
 import NodeCache from '@cacheable/node-cache';
 import pMap from 'p-map';
 import type Bottleneck from 'bottleneck';
+import { parseDomainName } from '@namefi-astra/utils/parse-domain-name';
 
 const DYNADOT_DOMAIN_REGISTER_CHECK_TIME_WINDOW_IN_MINUTES = 30;
 
@@ -853,16 +854,28 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
       currency: 'USD',
       show_price: '1',
     });
-
+    const allowedParentDomains = await this.getAllowedParentDomains();
     assertNot(responseFailed(response.SearchResponse), 'Response Failed');
     const results = response.SearchResponse.SearchResults;
     return results.map((result) => {
+      const domainName = toPunycodeDomainName(result.DomainName);
+      const parsedResult = parseDomainName(domainName);
       const unavailableResult = {
         domainName: toPunycodeDomainName(result.DomainName),
         price: null,
         isPremium: false,
         available: DomainAvailability.UNAVAILABLE,
       };
+
+      if (
+        !parsedResult.valid ||
+        !allowedParentDomains.includes(
+          parsedResult.publicSuffix as PunycodeDomainName,
+        )
+      ) {
+        return unavailableResult; // the performance for this can be improved by moving outside the bulkSearch request to dynadot but this is for a hotfix
+      }
+
       if (
         isNil(result.DomainName) ||
         (result.Status !== 'success' && result.Available !== 'yes')
