@@ -517,7 +517,10 @@ export const DomainCard: FC<{
               </Badge>
             ) : availabilityInfo.availability &&
               freeClaimEligibility?.eligible ? (
-              <NamefiButton onClick={goToClaimPage}>
+              <NamefiButton
+                onClick={goToClaimPage}
+                className="bg-brand-primary text-primary-foreground hover:bg-brand-primary/90"
+              >
                 <Gift className="h-4 w-4" />
                 Free Claim
               </NamefiButton>

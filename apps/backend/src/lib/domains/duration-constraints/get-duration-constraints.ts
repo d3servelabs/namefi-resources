@@ -60,7 +60,7 @@ export async function getDomainDurationConstraints(
         `Domain ${domainName} is not a valid powered by namefi 3P domain`,
       );
     }
-    return { minYears: 3, maxYears: 5 };
+    return { minYears: 1, maxYears: 4 };
   }
 
   throw new Error(`Domain ${domainName} is not a valid domain`);
