@@ -82,7 +82,7 @@ export function TwitterShareDialog({
     const params = new URLSearchParams({
       text: tweetText,
       url: shareUrl,
-      hashtags: 'CVDomains,DomainHunt,Web3',
+      hashtags: 'Namefi,CVDomains',
     });
 
     return `https://twitter.com/intent/tweet?${params.toString()}`;
