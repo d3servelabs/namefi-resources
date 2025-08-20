@@ -1,7 +1,9 @@
 import { TRPCError } from '@trpc/server';
-import Bottleneck from 'bottleneck';
 import { z } from 'zod';
 import { getPublicTweet, type PublicTweet } from './get-public-tweet';
+import { logger as rootLogger } from '#lib/logger';
+
+const logger = rootLogger.child({ context: 'validateTweet' });
 
 // A PublicTweet that has been validated by our verifier
 export type ValidatedPublicTweet = PublicTweet & {
@@ -52,9 +54,31 @@ async function resolvePotentialShortUrl(input: string): Promise<string> {
   }
 }
 
-const resolveLimiter = new Bottleneck({ maxConcurrent: 5, minTime: 50 });
-const resolveWithLimiter = (url: string) =>
-  resolveLimiter.schedule(() => resolvePotentialShortUrl(url));
+function normalizeUrlForComparison(input: string): string {
+  try {
+    const u = new URL(input);
+    // Normalize host case and strip default ports
+    u.hostname = u.hostname.toLowerCase();
+    if (
+      (u.protocol === 'https:' && u.port === '443') ||
+      (u.protocol === 'http:' && u.port === '80')
+    ) {
+      u.port = '';
+    }
+    // Ensure stable query parameter ordering
+    if (u.search) {
+      const entries = Array.from(u.searchParams.entries()).sort(
+        ([ak, av], [bk, bv]) => ak.localeCompare(bk) || av.localeCompare(bv),
+      );
+      const sp = new URLSearchParams();
+      for (const [k, v] of entries) sp.append(k, v);
+      u.search = sp.toString();
+    }
+    return u.toString();
+  } catch {
+    return input.trim();
+  }
+}
 
 const validateTweetArgsSchema = z.object({
   postUrl: z.string().url('Invalid post URL'),
@@ -97,12 +121,18 @@ export async function validateTweet(
     });
   }
 
-  // Prepare hashtag expectations
+  // Prepare hashtag expectations (support twitter.com and x.com)
   const expectedHashtagPrefixes = (requiredHashtags || [])
     .map((t) => t.trim())
     .filter(Boolean)
     .map((tag) => (tag.startsWith('#') ? tag.slice(1) : tag))
-    .map((bare) => `https://twitter.com/hashtag/${bare.toLowerCase()}`);
+    .flatMap((bare) => {
+      const lower = bare.toLowerCase();
+      return [
+        `https://twitter.com/hashtag/${lower}`,
+        `https://x.com/hashtag/${lower}`,
+      ];
+    });
 
   // Optional author validation
   if (expectedUsername) {
@@ -116,7 +146,18 @@ export async function validateTweet(
     }
   }
 
+  const normalizedSharedUrl = normalizeUrlForComparison(sharedUrl);
   const rawLinks = Array.isArray(post.links) ? post.links : [];
+  logger.info(
+    {
+      postUrl,
+      sharedUrl,
+      normalizedSharedUrl,
+      rawLinkCount: rawLinks.length,
+      rawLinks,
+    },
+    'Tweet raw links extracted',
+  );
   if (rawLinks.length === 0) {
     throw new TRPCError({
       code: 'BAD_REQUEST',
@@ -129,12 +170,36 @@ export async function validateTweet(
   const batchSize = 5;
 
   const checkResolved = (resolved: string) => {
-    if (!linkMatched && resolved === sharedUrl) linkMatched = true;
-    if (remainingHashtags.size > 0) {
-      const lower = resolved.toLowerCase();
-      for (const prefix of Array.from(remainingHashtags)) {
-        if (lower.startsWith(prefix)) remainingHashtags.delete(prefix);
+    const normalized = normalizeUrlForComparison(resolved);
+    if (!linkMatched && normalized === normalizedSharedUrl) linkMatched = true;
+  };
+
+  const checkHashtag = (urlStr: string) => {
+    try {
+      const u = new URL(urlStr);
+      const host = u.hostname.toLowerCase();
+      if (!(host.endsWith('twitter.com') || host.endsWith('x.com')))
+        return false;
+      const parts = u.pathname.split('/').filter(Boolean);
+      if (parts.length < 2 || parts[0] !== 'hashtag') return false;
+      const tag = parts[1]?.toLowerCase();
+      if (!tag) return false;
+      const baseCandidates = [
+        `https://twitter.com/hashtag/${tag}`,
+        `https://x.com/hashtag/${tag}`,
+      ];
+      let matched = false;
+      for (const base of baseCandidates) {
+        if (remainingHashtags.has(base)) {
+          remainingHashtags.delete(base);
+          matched = true;
+        }
       }
+      if (matched)
+        logger.debug({ url: urlStr, tag }, 'Matched hashtag without resolving');
+      return matched;
+    } catch {
+      return false;
     }
   };
 
@@ -143,7 +208,19 @@ export async function validateTweet(
     const batch = rawLinks.slice(i, i + batchSize);
     const tasks = batch.map(async (l) => {
       if (linkMatched && remainingHashtags.size === 0) return;
-      const resolved = await resolveWithLimiter(l);
+      // Hashtag links are matched directly; no network resolution
+      if (checkHashtag(l)) return;
+      // Only resolve t.co short links; otherwise use as-is
+      try {
+        const u = new URL(l);
+        if (u.hostname.toLowerCase() !== 't.co') {
+          checkResolved(l);
+          return;
+        }
+      } catch {}
+
+      const resolved = await resolvePotentialShortUrl(l);
+      logger.debug({ original: l, resolved }, 'Resolved tweet link');
       checkResolved(resolved);
     });
     await Promise.allSettled(tasks);

@@ -21,8 +21,6 @@ const hasUserSharedSchema = z.object({
   normalizedDomainName: namefiNormalizedDomainSchema,
 });
 
-// No separate verify function; rely on validateTweet for all checks
-
 export const shareRouter = createTRPCRouter({
   /**
    * Submit a social media share (authenticated)
