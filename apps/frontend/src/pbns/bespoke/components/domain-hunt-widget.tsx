@@ -9,7 +9,7 @@ import { usePendingToast } from '@/hooks/use-pending-toast';
 import { useCallback } from 'react';
 import { TagsDisplay } from '@/components/hunt/tags-display';
 import { cn } from '@/lib/cn';
-import { TrendingUp, Globe } from 'lucide-react';
+import { TrendingUp, Globe, Share2 } from 'lucide-react';
 import {
   type HuntVoteRowOptions,
   useHuntVoteRow,
@@ -57,6 +57,10 @@ export const DomainHuntWidget = ({
   const handleVoteToggle = useCallback(() => {
     toggleVote(domainData?.userHasUpvoted || false);
   }, [toggleVote, domainData?.userHasUpvoted]);
+
+  const handleShareClick = useCallback(() => {
+    shareDialog.openDialog(domainName);
+  }, [shareDialog, domainName]);
 
   usePendingToast(isVotePending, 'Processing vote...');
 
@@ -133,8 +137,8 @@ export const DomainHuntWidget = ({
             </div>
           </div>
 
-          {/* Vote button - persistent with animated states */}
-          <div className="flex items-center flex-shrink-0">
+          {/* Vote and Share buttons - persistent with animated states */}
+          <div className="flex items-center gap-2 flex-shrink-0">
             <motion.button
               type="button"
               onClick={handleVoteToggle}
@@ -189,6 +193,30 @@ export const DomainHuntWidget = ({
                   </Badge>
                 </motion.div>
               ) : null}
+            </motion.button>
+
+            {/* Share button */}
+            <motion.button
+              type="button"
+              onClick={handleShareClick}
+              disabled={isLoading}
+              className={cn(
+                'group flex items-center justify-center rounded-lg p-2 font-medium text-xs md:text-sm h-8 md:h-9 w-8 md:w-9 text-slate-400 cursor-pointer bg-slate-700/20 hover:bg-slate-600/30 hover:text-slate-300 transition-colors duration-200',
+                isLoading && 'opacity-80 cursor-not-allowed',
+              )}
+              aria-label="Share"
+              layout
+              transition={{
+                duration: 0.35,
+                ease: [0.25, 0.46, 0.45, 0.94],
+                layout: {
+                  type: 'spring',
+                  damping: 22,
+                  stiffness: 250,
+                },
+              }}
+            >
+              <Share2 className="h-3 md:h-4 w-3 md:w-4 flex-shrink-0" />
             </motion.button>
           </div>
         </div>
