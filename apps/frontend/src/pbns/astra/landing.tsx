@@ -76,6 +76,16 @@ export const Landing: LandingComponent = ({ origin }) => {
     }
   }, [importQuery, form]);
 
+  const enhancedOnSearchModeChange = useCallback(
+    (mode: SearchMode) => {
+      onSearchModeChange(mode);
+      if (mode === SearchMode.IMPORT) {
+        setParentDomain(undefined);
+      }
+    },
+    [onSearchModeChange],
+  );
+
   // Initialize when importQuery changes
   useEffect(() => {
     initializeEppCodes();
@@ -87,8 +97,10 @@ export const Landing: LandingComponent = ({ origin }) => {
   }, [registerSetParentDomain]);
 
   useEffect(() => {
-    registerSetSearchMode((mode) => onSearchModeChange(mode as SearchMode));
-  }, [registerSetSearchMode, onSearchModeChange]);
+    registerSetSearchMode((mode) =>
+      enhancedOnSearchModeChange(mode as SearchMode),
+    );
+  }, [registerSetSearchMode, enhancedOnSearchModeChange]);
 
   // Check for pending guidance after navigation
   useEffect(() => {
@@ -155,7 +167,7 @@ export const Landing: LandingComponent = ({ origin }) => {
         />
         <SearchModeTabs
           searchMode={searchMode}
-          onSearchModeChange={onSearchModeChange}
+          onSearchModeChange={enhancedOnSearchModeChange}
         />
         <SearchInput
           query={query}
