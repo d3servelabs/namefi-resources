@@ -15,7 +15,7 @@ export const { landingConfig, originConfigWithoutLanding } =
       'launch',
       'beta',
     ],
-    openGraphImage: '/og/starts-today.jpg',
+    openGraphImage: '/assets/bespoke/starts-today/opengraph-image.png',
     testimonials: [
       {
         quote:

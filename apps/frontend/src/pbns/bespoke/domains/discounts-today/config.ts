@@ -15,7 +15,7 @@ export const { landingConfig, originConfigWithoutLanding } =
       'outlet',
       'limited',
     ],
-    openGraphImage: '/og/discounts-today.jpg',
+    openGraphImage: '/assets/bespoke/discounts-today/opengraph-image.png',
     testimonials: [
       {
         quote:

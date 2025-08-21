@@ -15,7 +15,7 @@ export const { landingConfig, originConfigWithoutLanding } =
       'auction',
       'campaign',
     ],
-    openGraphImage: '/og/ends-today.jpg',
+    openGraphImage: '/assets/bespoke/ends-today/opengraph-image.png',
     testimonials: [
       {
         quote:

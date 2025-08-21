@@ -15,7 +15,7 @@ export const { landingConfig, originConfigWithoutLanding } =
       'weekend',
       'clearance',
     ],
-    openGraphImage: '/og/promos-today.jpg',
+    openGraphImage: '/assets/bespoke/promos-today/opengraph-image.png',
     testimonials: [
       {
         quote:

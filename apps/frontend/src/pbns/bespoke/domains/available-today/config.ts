@@ -15,7 +15,7 @@ export const { landingConfig, originConfigWithoutLanding } =
       'support',
       'delivery',
     ],
-    openGraphImage: '/og/available-today.jpg',
+    openGraphImage: '/assets/bespoke/available-today/opengraph-image.png',
     testimonials: [
       {
         quote:
