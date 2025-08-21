@@ -39,6 +39,7 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/shadcn/alert-dialog';
 import { useState } from 'react';
+import { AnimatePresence, motion } from 'motion/react';
 
 const ITEMS: NavItem[] = [
   { title: 'Profile', href: '/profile', icon: UserIcon },
@@ -107,63 +108,151 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
-        {!isAuthenticated && (
-          <Button
-            className="w-full"
-            disabled={isLoading}
-            onClick={handleConnect}
-          >
-            {isLoading ? (
-              <Loader2Icon className="animate-spin size-6" />
-            ) : (
-              <WalletIcon className="size-6" />
-            )}
-            {isExpanded && <span>{isLoading ? 'Loading...' : 'Sign In'}</span>}
-          </Button>
-        )}
+        <AnimatePresence initial={false} mode="popLayout">
+          {isLoading && (
+            <motion.div
+              key="user-loading"
+              initial={{ opacity: 0, y: -12 }}
+              animate={{
+                opacity: 1,
+                y: 0,
+                transition: { duration: 0.28, ease: 'easeOut' },
+              }}
+              exit={{
+                opacity: 0,
+                y: -12,
+                transition: { duration: 0.2, ease: 'easeIn' },
+              }}
+              layout
+            >
+              <Button className="w-full" disabled={true}>
+                <Loader2Icon className="animate-spin size-6" />
+                {isExpanded && <span>Loading...</span>}
+              </Button>
+            </motion.div>
+          )}
 
-        {isAuthenticated && (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild={true}>
-              <SidebarMenuButton
-                size="lg"
-                className="data-[state=open]:bg-sidebar-accent w-full data-[state=open]:text-sidebar-accent-foreground"
-              >
-                <CurrentUserAvatar />
-                {isExpanded && (
-                  <>
-                    <span className="text-sm hidden md:block">
-                      {shortage(name, 11)}
-                    </span>
-                    <MoreHorizontalIcon className="h-5 w-5 ml-auto" />
-                  </>
-                )}
-              </SidebarMenuButton>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56">
-              {ITEMS.map((item) => {
-                const Icon = item.icon;
+          {!isLoading && !isAuthenticated && (
+            <motion.div
+              key="user-signedout"
+              initial={{ opacity: 0, y: -12 }}
+              animate={{
+                opacity: 1,
+                y: 0,
+                transition: { duration: 0.3, ease: 'easeOut' },
+              }}
+              exit={{
+                opacity: 0,
+                y: -12,
+                transition: { duration: 0.22, ease: 'easeIn' },
+              }}
+              layout
+            >
+              <Button className="w-full" onClick={handleConnect}>
+                <WalletIcon className="size-6" />
+                {isExpanded && <span>Sign In</span>}
+              </Button>
+            </motion.div>
+          )}
 
-                return (
-                  <DropdownMenuItem key={item.href} asChild={true}>
-                    <Link href={item.href}>
-                      {Icon && <Icon className="mr-2 h-4 w-4" />}
-                      <span>{item.title}</span>
-                    </Link>
+          {!isLoading && isAuthenticated && (
+            <motion.div
+              key="user-authed"
+              initial={{ opacity: 0, y: -12 }}
+              animate={{
+                opacity: 1,
+                y: 0,
+                transition: { duration: 0.32, ease: 'easeOut' },
+              }}
+              exit={{
+                opacity: 0,
+                y: -12,
+                transition: { duration: 0.22, ease: 'easeIn' },
+              }}
+              layout
+            >
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild={true}>
+                  <SidebarMenuButton
+                    size="lg"
+                    className="w-full backdrop-blur-xl bg-transparent hover:bg-sidebar-accent hover:backdrop-blur-none data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+                  >
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{
+                        opacity: 1,
+                        y: 0,
+                        transition: { duration: 0.28, ease: 'easeOut' },
+                      }}
+                      className="shrink-0"
+                      layout
+                    >
+                      <CurrentUserAvatar />
+                    </motion.div>
+                    {isExpanded && (
+                      <>
+                        <motion.span
+                          className="text-sm hidden md:block"
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{
+                            opacity: 1,
+                            y: 0,
+                            transition: {
+                              duration: 0.24,
+                              ease: 'easeOut',
+                              delay: 0.03,
+                            },
+                          }}
+                          layout
+                        >
+                          {shortage(name, 11)}
+                        </motion.span>
+                        <motion.span
+                          className="ml-auto"
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{
+                            opacity: 1,
+                            y: 0,
+                            transition: {
+                              duration: 0.24,
+                              ease: 'easeOut',
+                              delay: 0.05,
+                            },
+                          }}
+                          layout
+                        >
+                          <MoreHorizontalIcon className="h-5 w-5" />
+                        </motion.span>
+                      </>
+                    )}
+                  </SidebarMenuButton>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56">
+                  {ITEMS.map((item) => {
+                    const Icon = item.icon;
+
+                    return (
+                      <DropdownMenuItem key={item.href} asChild={true}>
+                        <Link href={item.href}>
+                          {Icon && <Icon className="mr-2 h-4 w-4" />}
+                          <span>{item.title}</span>
+                        </Link>
+                      </DropdownMenuItem>
+                    );
+                  })}
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    onClick={() => setIsSignOutDialogOpen(true)}
+                    className="text-red-500"
+                  >
+                    <LogOutIcon className="mr-2 h-4 w-4" />
+                    <span>Log Out</span>
                   </DropdownMenuItem>
-                );
-              })}
-              <DropdownMenuSeparator />
-              <DropdownMenuItem
-                onClick={() => setIsSignOutDialogOpen(true)}
-                className="text-red-500"
-              >
-                <LogOutIcon className="mr-2 h-4 w-4" />
-                <span>Log Out</span>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        )}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     );
   });
