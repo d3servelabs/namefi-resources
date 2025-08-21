@@ -21,10 +21,12 @@ import { isDomainImportable } from '@namefi-astra/backend/trpc/types';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { useSearchFromQuery } from '@/hooks/use-search-from-query';
 
-const NO_OP = () => {};
-
 // Main component
 export const Landing: LandingComponent = ({ origin }) => {
+  const [parentDomain, setParentDomain] = useState<string | undefined>(
+    undefined,
+  );
+
   const {
     query,
     setQuery,
@@ -39,7 +41,7 @@ export const Landing: LandingComponent = ({ origin }) => {
     domainInfos,
     domains,
     freeClaimEligibility,
-  } = useSearch(undefined);
+  } = useSearch(parentDomain);
 
   // Handle initial search from query parameters
   useSearchFromQuery(setQuery, runSearch);
@@ -119,8 +121,8 @@ export const Landing: LandingComponent = ({ origin }) => {
     <div className="relative flex gap-4 flex-col p-4 pb-0 pt-20">
       <div className="flex flex-col items-center gap-8">
         <SearchHeader
-          parentDomain={undefined}
-          setParentDomain={NO_OP}
+          parentDomain={parentDomain}
+          setParentDomain={setParentDomain}
           isFirstPartyOrigin={true}
           hideNetworkSelection={true}
         />
@@ -135,6 +137,9 @@ export const Landing: LandingComponent = ({ origin }) => {
           searchMode={searchMode}
           importQuery={importQuery}
           onSearch={runSearch}
+          parentDomain={parentDomain}
+          isFirstPartyOrigin={true}
+          onClearParentDomain={() => setParentDomain(undefined)}
         />
       </div>
 

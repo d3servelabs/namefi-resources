@@ -54,11 +54,13 @@ import { itemTypeSchema } from '@namefi-astra/db/types';
 import { toUnicodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
 import { SearchMode } from './types';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/shadcn/tabs';
+import { Separator } from '@/components/ui/shadcn/separator';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { eppAuthorizationCodesFormSchema } from './types';
 import { useEffect } from 'react';
 import { useSearchFromQuery } from '@/hooks/use-search-from-query';
+import { AnimatePresence, motion } from 'motion/react';
 
 // Components
 export const SearchHeader: FC<{
@@ -78,36 +80,35 @@ export const SearchHeader: FC<{
 }) => {
   return (
     <div className={cn('flex flex-col items-center mt-40 gap-3', className)}>
-      <h1 className="text-8xl font-bold text-secondary-foreground drop-shadow-lg">
-        {parentDomain}
-      </h1>
       <p className="text-4xl text-center text-secondary-foreground font-semibold drop-shadow-xl">
-        {tagline || `Search for a domain on ${parentDomain ?? 'All Networks'}`}
+        {tagline || `Search for a domain on ${parentDomain ?? 'all networks'}`}
       </p>
       {isFirstPartyOrigin && !hideNetworkSelection && (
-        <>
-          <span className="text-sm font-medium">Network:</span>
-          <Button
-            key="main"
-            variant={parentDomain === undefined ? 'default' : 'outline'}
-            size="sm"
-            onClick={() => setParentDomain(undefined)}
-            className="h-8 px-3"
-          >
-            All Networks
-          </Button>
-          {config.POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES.map((origin) => (
+        <div className="flex gap-2 p-3 pr-0 items-center bg-neutral-900 backdrop-blur-md rounded-lg">
+          Network:
+          <div className="flex items-center gap-2 mx-auto w-full max-w-md overflow-x-auto">
             <Button
-              key={origin}
-              variant={parentDomain === origin ? 'default' : 'outline'}
+              key="main"
+              variant={parentDomain === undefined ? 'default' : 'outline'}
               size="sm"
-              onClick={() => setParentDomain(origin)}
+              onClick={() => setParentDomain(undefined)}
               className="h-8 px-3"
             >
-              {origin}
+              All
             </Button>
-          ))}
-        </>
+            {config.POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES.map((origin) => (
+              <Button
+                key={origin}
+                variant={parentDomain === origin ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => setParentDomain(origin)}
+                className="h-8 px-3"
+              >
+                {origin}
+              </Button>
+            ))}
+          </div>
+        </div>
       )}
     </div>
   );
@@ -152,7 +153,20 @@ export const SearchInput: FC<{
   isLoading: boolean;
   onSearch: () => void;
   searchMode: SearchMode;
-}> = ({ query, setQuery, importQuery, isLoading, searchMode, onSearch }) => {
+  parentDomain: string | undefined;
+  onClearParentDomain?: () => void;
+  isFirstPartyOrigin?: boolean;
+}> = ({
+  query,
+  setQuery,
+  importQuery,
+  isLoading,
+  searchMode,
+  onSearch,
+  parentDomain,
+  onClearParentDomain,
+  isFirstPartyOrigin,
+}) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleSearchClick = useCallback(() => {
@@ -201,7 +215,7 @@ export const SearchInput: FC<{
     <div className="flex w-full max-w-3xl mx-auto gap-1 items-center bg-neutral-900 backdrop-blur-lg border border-neutral-800 rounded-lg p-3">
       <div className="flex items-center flex-1 overflow-hidden rounded-lg">
         <div className="relative w-full rounded-md h-12 flex items-center">
-          <div className="flex items-center w-full px-3">
+          <div className="flex items-center w-full h-full px-3">
             {isLoading ? (
               <Loader2 className="h-5 w-5 text-gray-400 shrink-0 animate-spin" />
             ) : searchMode === SearchMode.IMPORT ? (
@@ -238,6 +252,81 @@ export const SearchInput: FC<{
                 <X className="h-5 w-5 text-gray-400" />
               </Button>
             )}
+            {isFirstPartyOrigin &&
+              searchMode === SearchMode.REGISTER &&
+              parentDomain && (
+                <div className="mx-2 h-full flex items-stretch">
+                  <Separator
+                    orientation="vertical"
+                    className="bg-neutral-800"
+                  />
+                </div>
+              )}
+            <AnimatePresence initial={false} mode="popLayout">
+              {isFirstPartyOrigin &&
+                searchMode === SearchMode.REGISTER &&
+                parentDomain && (
+                  <motion.div
+                    key="parent-domain-pill"
+                    initial={{ opacity: 0, x: 16 }}
+                    animate={{
+                      opacity: 1,
+                      x: 0,
+                      transition: { duration: 0.22, ease: 'easeOut' },
+                    }}
+                    exit={{
+                      opacity: 0,
+                      x: 16,
+                      transition: { duration: 0.18, ease: 'easeIn' },
+                    }}
+                    className="flex items-center"
+                    layout
+                    transition={{
+                      layout: {
+                        type: 'tween',
+                        duration: 0.22,
+                        ease: 'easeOut',
+                      },
+                    }}
+                  >
+                    <div className="relative">
+                      <Badge
+                        variant="secondary"
+                        className="h-8 px-3 py-0.5 text-sm flex items-center"
+                      >
+                        <AnimatePresence initial={false} mode="wait">
+                          <motion.span
+                            key={parentDomain}
+                            initial={{ opacity: 0 }}
+                            animate={{
+                              opacity: 1,
+                              transition: { duration: 0.15, ease: 'easeOut' },
+                            }}
+                            exit={{
+                              opacity: 0,
+                              transition: { duration: 0.12, ease: 'easeIn' },
+                            }}
+                            className="max-w-[200px] truncate whitespace-nowrap"
+                          >
+                            .{parentDomain}
+                          </motion.span>
+                        </AnimatePresence>
+                      </Badge>
+                      {onClearParentDomain && (
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          aria-label="Clear parent domain"
+                          onClick={onClearParentDomain}
+                          className="absolute -top-2 -right-2 size-5 rounded-full bg-neutral-800 border cursor-pointer border-neutral-700 flex items-center justify-center hover:bg-neutral-700!"
+                        >
+                          <X className="size-3" />
+                        </Button>
+                      )}
+                    </div>
+                  </motion.div>
+                )}
+            </AnimatePresence>
           </div>
         </div>
       </div>
@@ -782,6 +871,9 @@ export const Search: LandingComponent = ({ origin }) => {
           searchMode={searchMode}
           importQuery={importQuery}
           onSearch={runSearch}
+          parentDomain={parentDomain}
+          onClearParentDomain={() => setParentDomain(undefined)}
+          isFirstPartyOrigin={origin.isFirstPartyOrigin}
         />
       </div>
 

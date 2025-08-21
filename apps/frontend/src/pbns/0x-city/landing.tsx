@@ -147,6 +147,7 @@ export const Landing: LandingComponent = ({ origin }) => {
           searchMode={searchMode}
           importQuery={importQuery}
           onSearch={runSearch}
+          parentDomain={origin.thirdPartyHostname}
         />
         {shouldShowRolloutBanner && (
           <Alert className="w-full max-w-3xl mx-auto bg-gray-700/80">
