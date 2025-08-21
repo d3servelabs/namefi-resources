@@ -22,11 +22,13 @@ import Link from 'next/link';
 import { useFreeMintsGuidance } from '@/components/providers/free-mints-guidance';
 import { Button } from '@/components/ui/shadcn/button';
 import { Badge } from '@/components/ui/shadcn/badge';
+import { useRouter } from 'next/navigation';
 
 export function FreeMintsDropdown({ className }: { className?: string }) {
   const { isAuthenticated } = useAuth();
   const trpc = useTRPC();
   const { startCampaignSearch } = useFreeMintsGuidance();
+  const router = useRouter();
 
   const claimsQuery = useQuery({
     ...trpc.freeClaims.getUserClaims.queryOptions(),
@@ -129,7 +131,13 @@ export function FreeMintsDropdown({ className }: { className?: string }) {
               <DropdownMenuSeparator />
               <DropdownMenuGroup>
                 {singles.map((s) => (
-                  <DropdownMenuItem key={s.id} className="flex justify-between">
+                  <DropdownMenuItem
+                    key={s.id}
+                    className="flex justify-between"
+                    onClick={() =>
+                      router.push(`/claim/${encodeURIComponent(s.domain)}`)
+                    }
+                  >
                     <span className="truncate">{s.domain}</span>
                     <Button
                       asChild={true}
@@ -148,10 +156,10 @@ export function FreeMintsDropdown({ className }: { className?: string }) {
                   <DropdownMenuItem
                     key={`${c.key}-${c.parentDomain}`}
                     className="flex justify-between"
+                    onClick={() => startCampaignSearch(c.parentDomain)}
                   >
                     <span className="truncate">{c.parentDomain}</span>
                     <Button
-                      asChild={true}
                       size="sm"
                       className="shrink-0 bg-brand-primary hover:bg-brand-primary/90 text-secondary-foreground"
                       onClick={() => startCampaignSearch(c.parentDomain)}

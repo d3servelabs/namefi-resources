@@ -49,6 +49,7 @@ export function FreeMintsGuidanceProvider({ children }: PropsWithChildren) {
   const guidanceStarterRef = useRef<
     ((parentDomain: string) => void) | undefined
   >(undefined);
+  const pendingFocusRef = useRef<boolean>(false);
 
   const registerSetParentDomain = useCallback(
     (handler: SetParentDomainHandler) => {
@@ -60,6 +61,11 @@ export function FreeMintsGuidanceProvider({ children }: PropsWithChildren) {
   const registerFocusSearchInput = useCallback(
     (handler: FocusSearchInputHandler) => {
       focusSearchInputRef.current = handler;
+      // Check if there's a pending focus request
+      if (pendingFocusRef.current) {
+        setTimeout(() => handler(), 0);
+        pendingFocusRef.current = false;
+      }
     },
     [],
   );
@@ -74,8 +80,14 @@ export function FreeMintsGuidanceProvider({ children }: PropsWithChildren) {
 
   const focusSearchInput = useCallback<FocusSearchInputHandler>(() => {
     const handler = focusSearchInputRef.current;
-    if (!handler) return;
-    requestAnimationFrame(() => handler());
+    if (!handler) {
+      // Set pending flag instead of returning
+      pendingFocusRef.current = true;
+      return;
+    }
+    // Clear the flag since we're executing immediately
+    pendingFocusRef.current = false;
+    setTimeout(() => handler(), 0);
   }, []);
 
   const setPendingFreeMintsSearch = useCallback((parentDomain: string) => {
