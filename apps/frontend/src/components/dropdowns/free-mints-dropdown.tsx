@@ -19,12 +19,14 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/shadcn/dropdown-menu';
 import Link from 'next/link';
+import { useFreeMintsGuidance } from '@/components/providers/free-mints-guidance';
 import { Button } from '@/components/ui/shadcn/button';
 import { Badge } from '@/components/ui/shadcn/badge';
 
 export function FreeMintsDropdown({ className }: { className?: string }) {
   const { isAuthenticated } = useAuth();
   const trpc = useTRPC();
+  const { startCampaignSearch } = useFreeMintsGuidance();
 
   const claimsQuery = useQuery({
     ...trpc.freeClaims.getUserClaims.queryOptions(),
@@ -152,12 +154,11 @@ export function FreeMintsDropdown({ className }: { className?: string }) {
                       asChild={true}
                       size="sm"
                       className="shrink-0 bg-brand-primary hover:bg-brand-primary/90 text-secondary-foreground"
+                      onClick={() => startCampaignSearch(c.parentDomain)}
                     >
-                      <Link href="/free-claims">
-                        <span className="inline-flex items-center gap-1">
-                          Claim
-                        </span>
-                      </Link>
+                      <span className="inline-flex items-center gap-1">
+                        Claim
+                      </span>
                     </Button>
                   </DropdownMenuItem>
                 ))}

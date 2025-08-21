@@ -61,6 +61,7 @@ import { eppAuthorizationCodesFormSchema } from './types';
 import { useEffect } from 'react';
 import { useSearchFromQuery } from '@/hooks/use-search-from-query';
 import { AnimatePresence, motion } from 'motion/react';
+import { useFreeMintsGuidance } from '@/components/providers/free-mints-guidance';
 
 // Components
 export const SearchHeader: FC<{
@@ -168,6 +169,7 @@ export const SearchInput: FC<{
   isFirstPartyOrigin,
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
+  const { registerFocusSearchInput } = useFreeMintsGuidance();
 
   const handleSearchClick = useCallback(() => {
     const trimmedQuery = query.trim();
@@ -193,6 +195,10 @@ export const SearchInput: FC<{
     },
     [searchMode, setQuery],
   );
+  // Expose focus method for other components (e.g., free mint claim)
+  useEffect(() => {
+    registerFocusSearchInput(() => inputRef.current?.focus());
+  }, [registerFocusSearchInput]);
 
   // Intercept paste and input events to handle newlines properly
   const intercept = useCallback(

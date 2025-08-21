@@ -20,12 +20,19 @@ import {
 import { isDomainImportable } from '@namefi-astra/backend/trpc/types';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { useSearchFromQuery } from '@/hooks/use-search-from-query';
+import { useFreeMintsGuidance } from '@/components/providers/free-mints-guidance';
 
 // Main component
 export const Landing: LandingComponent = ({ origin }) => {
   const [parentDomain, setParentDomain] = useState<string | undefined>(
     undefined,
   );
+  const {
+    registerSetParentDomain,
+    registerSetSearchMode,
+    consumePendingFreeMintsSearch,
+    startFreeMintsSearchGuidance,
+  } = useFreeMintsGuidance();
 
   const {
     query,
@@ -73,6 +80,26 @@ export const Landing: LandingComponent = ({ origin }) => {
   useEffect(() => {
     initializeEppCodes();
   }, [initializeEppCodes]);
+
+  // Register setters so other components can update via context
+  useEffect(() => {
+    registerSetParentDomain(setParentDomain);
+  }, [registerSetParentDomain]);
+
+  useEffect(() => {
+    registerSetSearchMode((mode) => onSearchModeChange(mode as SearchMode));
+  }, [registerSetSearchMode, onSearchModeChange]);
+
+  // Check for pending guidance after navigation
+  useEffect(() => {
+    const pending = consumePendingFreeMintsSearch();
+    if (pending) {
+      // Small delay to ensure all handlers are registered
+      setTimeout(() => {
+        startFreeMintsSearchGuidance(pending);
+      }, 0);
+    }
+  }, [consumePendingFreeMintsSearch, startFreeMintsSearchGuidance]);
 
   // Handle EPP authorization code changes
   const handleEppCodeChange = useCallback(

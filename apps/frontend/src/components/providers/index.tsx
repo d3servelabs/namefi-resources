@@ -15,6 +15,7 @@ import { SessionsProvider } from './sessions';
 import { ThemeProvider } from './theme';
 import { TrpcProvider } from './trpc';
 import { WishlistProvider } from './wishlist';
+import { FreeMintsGuidanceProvider } from './free-mints-guidance';
 import type { OriginRuntime } from '@/lib/origin';
 
 export const Providers: FC<
@@ -58,7 +59,11 @@ export const Providers: FC<
                       <UsercentricsProvider>
                         <InteractionLoggersProvider>
                           <WishlistProvider>
-                            <CartProvider>{children}</CartProvider>
+                            <CartProvider>
+                              <FreeMintsGuidanceProvider>
+                                {children}
+                              </FreeMintsGuidanceProvider>
+                            </CartProvider>
                           </WishlistProvider>
                         </InteractionLoggersProvider>
                       </UsercentricsProvider>
