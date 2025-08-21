@@ -21,23 +21,18 @@ import {
 import { formatAmountInUSD } from '@/lib/number';
 import { ShoppingCart } from 'lucide-react';
 import Link from 'next/link';
-import {
-  type ForwardRefExoticComponent,
-  type ForwardedRef,
-  type HTMLAttributes,
-  forwardRef,
-  useCallback,
-  useMemo,
-} from 'react';
+import { forwardRef, useCallback, useMemo } from 'react';
 import { useInteractionLoggers } from '@/components/providers/analytics';
+import { motion, type HTMLMotionProps, AnimatePresence } from 'motion/react';
+import NumberFlow from '@number-flow/react';
 
-export type CartDropdownProps = HTMLAttributes<HTMLDivElement>;
+const MotionButton = motion(Button);
+const MotionBadge = motion(Badge);
 
-export const CartDropdown: ForwardRefExoticComponent<CartDropdownProps> =
-  forwardRef<HTMLDivElement, CartDropdownProps>(function v(
-    { className, ...rest }: CartDropdownProps,
-    ref: ForwardedRef<HTMLDivElement>,
-  ) {
+export type CartDropdownProps = Omit<HTMLMotionProps<'div'>, 'ref'>;
+
+export const CartDropdown = forwardRef<HTMLDivElement, CartDropdownProps>(
+  function v({ className, ...rest }: CartDropdownProps, ref) {
     const { logEventWithInteractionLoggers } = useInteractionLoggers();
     const { cartData: items = [] } = useCartContext();
 
@@ -60,20 +55,27 @@ export const CartDropdown: ForwardRefExoticComponent<CartDropdownProps> =
     const isCartEmpty = items.length === 0;
 
     return (
-      <div ref={ref} className={cn('', className)} {...rest}>
+      <motion.div ref={ref} className={cn('', className)} {...rest} layout>
         <DropdownMenu>
           <DropdownMenuTrigger asChild={true}>
-            <Button variant="ghost" size="icon" className="relative">
+            <MotionButton className="relative size-9 text-secondary-foreground backdrop-blur-xl bg-transparent hover:bg-sidebar-accent hover:backdrop-blur-none">
               <ShoppingCart className="h-5 w-5" />
-              {items.length > 0 && (
-                <Badge
-                  className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 text-xs"
-                  variant="destructive"
-                >
-                  {items.length}
-                </Badge>
-              )}
-            </Button>
+              <AnimatePresence initial={false} mode="popLayout">
+                {items.length > 0 && (
+                  <MotionBadge
+                    key="cart-badge"
+                    className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 
+                    text-xs"
+                    variant="destructive"
+                    initial={{ opacity: 0, scale: 0.9, y: -6 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.9, y: -6 }}
+                  >
+                    <NumberFlow value={items.length} />
+                  </MotionBadge>
+                )}
+              </AnimatePresence>
+            </MotionButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-56" align="end">
             <DropdownMenuLabel>My Cart</DropdownMenuLabel>
@@ -115,8 +117,9 @@ export const CartDropdown: ForwardRefExoticComponent<CartDropdownProps> =
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-      </div>
+      </motion.div>
     );
-  });
+  },
+);
 
 CartDropdown.displayName = 'CartDropdown';

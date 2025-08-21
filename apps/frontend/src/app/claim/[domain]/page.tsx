@@ -9,7 +9,7 @@ import { cn } from '@/lib/cn';
 import { useTRPC } from '@/lib/trpc';
 import type { DomainAvailabilityInfo } from '@namefi-astra/backend/trpc/types';
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { AlertTriangle, ArrowLeft, Loader2 } from 'lucide-react';
 import { useRouter, useParams } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useState, useRef } from 'react';
@@ -31,6 +31,7 @@ export default function ClaimPage() {
   const normalizedDomainName = parsed.success ? parsed.data : null;
 
   const trpc = useTRPC();
+  const queryClient = useQueryClient();
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
   const hasFiredConfettiRef = useRef(false);
   const { userWalletAddresses } = useUserWalletAddresses();
@@ -87,6 +88,9 @@ export default function ClaimPage() {
     ...trpc.freeClaims.processClaimWithTransaction.mutationOptions({
       onSuccess: (result) => {
         toast.success('Domain claimed successfully!');
+        queryClient.invalidateQueries({
+          queryKey: trpc.freeClaims.getUserClaims.queryKey(),
+        });
         if (result.orderId) {
           router.push(`/orders/${result.orderId}`);
         }

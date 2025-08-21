@@ -3,9 +3,11 @@
 import { CartDropdown } from '@/components/dropdowns/cart-dropdown';
 import { UserDropdown } from '@/components/dropdowns/user-dropdown';
 import { Separator } from '@/components/ui/shadcn/separator';
+import { FreeMintsDropdown } from '@/components/dropdowns/free-mints-dropdown';
 import { SidebarTrigger, useSidebar } from '@/components/ui/shadcn/sidebar';
 import { cn } from '@/lib/cn';
 import { useOrigin } from '@/components/providers/origin';
+import { motion } from 'motion/react';
 import {
   type ForwardRefExoticComponent,
   type ForwardedRef,
@@ -44,18 +46,27 @@ export const Header: ForwardRefExoticComponent<HeaderProps> = forwardRef<
           className="data-[orientation=vertical]:h-4"
         />
       )}
-      <div
+      <motion.div
         className={cn(
           'w-full items-center gap-4 flex px-4',
           isMobile ? 'justify-end' : 'justify-between',
         )}
+        layout
+        layoutRoot
       >
         <SidebarTrigger className="hidden md:flex -ml-1" />
-        <div className="flex items-center gap-4">
-          <CartDropdown />
-          <UserDropdown />
-        </div>
-      </div>
+        <motion.div className="flex items-center gap-3 sm:gap-4" layout>
+          <motion.div layout>
+            <CartDropdown />
+          </motion.div>
+          <motion.div layout>
+            <FreeMintsDropdown className="inline-flex" />
+          </motion.div>
+          <motion.div layout>
+            <UserDropdown />
+          </motion.div>
+        </motion.div>
+      </motion.div>
     </header>
   );
 });
