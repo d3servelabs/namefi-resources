@@ -56,12 +56,8 @@ export const Header: ForwardRefExoticComponent<HeaderProps> = forwardRef<
       >
         <SidebarTrigger className="hidden md:flex -ml-1" />
         <motion.div className="flex items-center gap-3 sm:gap-4" layout>
-          <motion.div layout>
-            <CartDropdown />
-          </motion.div>
-          <motion.div layout>
-            <FreeMintsDropdown className="inline-flex" />
-          </motion.div>
+          <CartDropdown />
+          <FreeMintsDropdown />
           <motion.div layout>
             <UserDropdown />
           </motion.div>
