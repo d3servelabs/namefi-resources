@@ -231,7 +231,7 @@ export async function getAllNewTweetShareCandidates(
                   ),
                   eq(
                     sql`free_claims.metadata->>'sourceId'`,
-                    linkSharesTable.id,
+                    sql`${linkSharesTable.id}::text`,
                   ),
                 ),
               ),

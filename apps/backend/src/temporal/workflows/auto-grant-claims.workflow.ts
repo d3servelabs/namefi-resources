@@ -47,6 +47,7 @@ export type AutoGrantClaimsWorkflowInput = {
   sources: ('UPVOTE' | 'SHARE')[];
   parentDomain: NamefiNormalizedDomain;
   votingTargetDomain?: NamefiNormalizedDomain;
+  sharingTargetDomain?: NamefiNormalizedDomain;
   notifyUsers?: boolean;
   expirationDate?: Date;
 };
@@ -62,6 +63,7 @@ export async function autoGrantClaimsWorkflow(
     sources,
     parentDomain,
     votingTargetDomain,
+    sharingTargetDomain,
     notifyUsers = true,
     expirationDate,
   } = input;
@@ -69,6 +71,8 @@ export async function autoGrantClaimsWorkflow(
   log.info('Starting auto grant claims workflow', {
     campaignKey,
     sources,
+    votingTargetDomain,
+    sharingTargetDomain,
     notifyUsers,
   });
 
@@ -90,7 +94,7 @@ export async function autoGrantClaimsWorkflow(
         candidates = await getAllNewTweetShareCandidates(
           campaignKey,
           parentDomain,
-          votingTargetDomain,
+          sharingTargetDomain,
         );
         log.info(`Collected ${candidates.length} new tweet share candidates`);
       }
@@ -129,6 +133,7 @@ export async function autoGrantClaimsWorkflow(
   let skipped = 0;
   const errors: Array<{ userId: string; reason: string }> = [];
   const userGrantCounts: Record<string, number> = {};
+  const userGrantedClaimIds: Record<string, string[]> = {};
 
   // Process each candidate
   for (const candidate of allCandidates) {
@@ -149,15 +154,22 @@ export async function autoGrantClaimsWorkflow(
 
       const result = await grantClaimAtomic(grantInput);
 
-      if (result.granted) {
+      if (result.granted && result.claimId) {
         granted++;
         userGrantCounts[candidate.userId] =
           (userGrantCounts[candidate.userId] || 0) + 1;
+
+        // Track the granted claim ID for this user
+        if (!userGrantedClaimIds[candidate.userId]) {
+          userGrantedClaimIds[candidate.userId] = [];
+        }
+        userGrantedClaimIds[candidate.userId].push(result.claimId);
 
         log.info('Claim granted successfully', {
           userId: candidate.userId,
           source: candidate.source,
           sourceId: candidate.sourceId,
+          claimId: result.claimId,
         });
       } else {
         skipped++;
@@ -197,6 +209,8 @@ export async function autoGrantClaimsWorkflow(
         userId,
         grantedCount,
         campaignKey,
+        parentDomain,
+        grantedClaimIds: userGrantedClaimIds[userId] || [],
       }));
 
       await sendNotifications(userBatches);

@@ -1,11 +1,21 @@
-import { freeClaimsTable, $withTransaction } from '@namefi-astra/db';
-import { sql } from 'drizzle-orm';
+import {
+  freeClaimsTable,
+  $withTransaction,
+  db,
+  huntCampaignsTable,
+} from '@namefi-astra/db';
+import { sql, inArray, eq, and } from 'drizzle-orm';
 import { createLogger } from '#lib/logger';
 import type {
   CampaignKey,
   CandidateSource,
 } from './campaign-candidate-collection.activities';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import React from 'react';
+import { render } from '@react-email/components';
+import { sendMail } from '../../../mail/mail-client';
+import { FreeClaimsNotification } from '../../../mail/templates/free-claims-notification';
+import { maybeGetUserEmail } from '../notify.activities';
 
 const logger = createLogger({ name: 'ox-city-grant-claims-activities' });
 
@@ -27,12 +37,15 @@ export type GrantClaimAtomicInput = {
 export type GrantClaimAtomicResult = {
   granted: boolean;
   reason?: string;
+  claimId?: string;
 };
 
 export type UserNotificationBatch = {
   userId: string;
   grantedCount: number;
   campaignKey: CampaignKey;
+  parentDomain: NamefiNormalizedDomain;
+  grantedClaimIds: string[];
 };
 
 /**
@@ -91,7 +104,9 @@ export async function grantClaimAtomic(
             parentDomain,
             claimingStatus: 'IDLE',
             reason,
-            expirationDate,
+            expirationDate: expirationDate
+              ? new Date(expirationDate)
+              : undefined,
             metadata: {
               source,
               sourceId,
@@ -180,21 +195,130 @@ export async function sendNotifications(
     'Starting notification sending for claim grants',
   );
 
-  // TODO: Implement actual email notification logic
-  // This would integrate with your existing email system
+  if (userBatches.length === 0) {
+    logger.info('No users to notify');
+    return;
+  }
+
+  // Get campaign details
+  const campaignKeys = [
+    ...new Set(userBatches.map((batch) => batch.campaignKey)),
+  ];
+
+  const campaigns = await db
+    .select({
+      campaignKey: huntCampaignsTable.campaignKey,
+      name: huntCampaignsTable.name,
+    })
+    .from(huntCampaignsTable)
+    .where(inArray(huntCampaignsTable.campaignKey, campaignKeys));
+
+  const campaignNameMap = new Map(
+    campaigns.map((campaign) => [campaign.campaignKey, campaign.name]),
+  );
 
   for (const batch of userBatches) {
+    // Get only the specific claims that were just granted
+    if (batch.grantedClaimIds.length === 0) {
+      logger.warn(
+        { userId: batch.userId, campaignKey: batch.campaignKey },
+        'No grantedClaimIds provided in batch; skipping notification',
+      );
+      continue;
+    }
     try {
+      // Get user email from Privy
+      const userEmail = await maybeGetUserEmail(batch.userId);
+      if (!userEmail) {
+        logger.warn(
+          { userId: batch.userId },
+          'User email not found, skipping notification',
+        );
+        continue;
+      }
+
+      const campaignName =
+        campaignNameMap.get(batch.campaignKey) || batch.campaignKey;
+
+      // Get only the specific claims that were just granted
+      const userClaims = await db
+        .select({
+          id: freeClaimsTable.id,
+          reason: freeClaimsTable.reason,
+          expirationDate: freeClaimsTable.expirationDate,
+          metadata: freeClaimsTable.metadata,
+        })
+        .from(freeClaimsTable)
+        .where(
+          and(
+            inArray(freeClaimsTable.id, batch.grantedClaimIds),
+            eq(freeClaimsTable.userId, batch.userId),
+            eq(freeClaimsTable.groupOrCampaignKey, batch.campaignKey),
+          ),
+        );
+
+      if (userClaims.length === 0) {
+        logger.warn(
+          {
+            userId: batch.userId,
+            campaignKey: batch.campaignKey,
+            grantedClaimIds: batch.grantedClaimIds,
+          },
+          'No granted claims found for user, skipping notification',
+        );
+        continue;
+      }
+
+      // Format claims for email template
+      const claimsGranted = userClaims.map((claim) => {
+        const metadata = claim.metadata as Record<string, unknown> | null;
+        return {
+          source: (metadata?.source ?? 'UNKNOWN') as
+            | 'UPVOTE'
+            | 'SHARE'
+            | 'UNKNOWN',
+          sourceId: (metadata?.sourceId ?? claim.id) as string,
+          domainName: metadata?.domainName as string | undefined,
+          reason: claim.reason || 'Free claim granted',
+          expirationDate: claim.expirationDate
+            ? new Date(claim.expirationDate).toISOString()
+            : undefined,
+        };
+      });
+
+      // Create email content using template
+      const emailTemplate = React.createElement(FreeClaimsNotification, {
+        recipientName: '', // Could get from user profile if available
+        campaignKey: batch.campaignKey,
+        campaignName,
+        parentDomain: batch.parentDomain,
+        claimsGranted,
+        totalClaimsGranted: batch.grantedCount,
+      });
+
+      const html = await render(emailTemplate, { pretty: false });
+      const plainText = await render(emailTemplate, { plainText: true });
+
+      const subject = `[Namefi] Free Claims Granted - ${campaignName}`;
+
+      await sendMail({
+        to: [userEmail],
+        bcc: ['customer-email-archive@d3serve.xyz'],
+        subject,
+        content: {
+          html,
+          plain: plainText,
+        },
+      });
+
       logger.info(
         {
           userId: batch.userId,
           grantedCount: batch.grantedCount,
           campaignKey: batch.campaignKey,
         },
-        'Would send notification email to user',
+        'Successfully sent notification email to user',
       );
-
-      // TODO Placeholder for actual email sending logic:
     } catch (error) {
       logger.warn(
         {
