@@ -29,10 +29,15 @@ import NumberFlow from '@number-flow/react';
 const MotionButton = motion(Button);
 const MotionBadge = motion(Badge);
 
-export type CartDropdownProps = Omit<HTMLMotionProps<'div'>, 'ref'>;
+export type CartDropdownProps = Omit<HTMLMotionProps<'div'>, 'ref'> & {
+  disableBackdropBlur?: boolean;
+};
 
 export const CartDropdown = forwardRef<HTMLDivElement, CartDropdownProps>(
-  function v({ className, ...rest }: CartDropdownProps, ref) {
+  function v(
+    { className, disableBackdropBlur = false, ...rest }: CartDropdownProps,
+    ref,
+  ) {
     const { logEventWithInteractionLoggers } = useInteractionLoggers();
     const { cartData: items = [] } = useCartContext();
 
@@ -58,7 +63,12 @@ export const CartDropdown = forwardRef<HTMLDivElement, CartDropdownProps>(
       <motion.div ref={ref} className={cn('', className)} {...rest} layout>
         <DropdownMenu>
           <DropdownMenuTrigger asChild={true}>
-            <MotionButton className="relative size-9 text-secondary-foreground backdrop-blur-xl bg-transparent hover:bg-sidebar-accent hover:backdrop-blur-none">
+            <MotionButton
+              className={cn(
+                'relative size-9 text-secondary-foreground bg-transparent shadow-none hover:bg-sidebar-accent hover:backdrop-blur-none',
+                !disableBackdropBlur && 'backdrop-blur-xl',
+              )}
+            >
               <ShoppingCart className="h-5 w-5" />
               <AnimatePresence initial={false} mode="popLayout">
                 {items.length > 0 && (

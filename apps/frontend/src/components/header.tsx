@@ -56,10 +56,16 @@ export const Header: ForwardRefExoticComponent<HeaderProps> = forwardRef<
       >
         <SidebarTrigger className="hidden md:flex -ml-1" />
         <motion.div className="flex items-center gap-3 sm:gap-4" layout>
-          <CartDropdown />
-          <FreeMintsDropdown />
+          <CartDropdown
+            disableBackdropBlur={origin.config.landingPage?.headerIsBlurred}
+          />
+          <FreeMintsDropdown
+            disableBackdropBlur={origin.config.landingPage?.headerIsBlurred}
+          />
           <motion.div layout>
-            <UserDropdown />
+            <UserDropdown
+              disableBackdropBlur={origin.config.landingPage?.headerIsBlurred}
+            />
           </motion.div>
         </motion.div>
       </motion.div>

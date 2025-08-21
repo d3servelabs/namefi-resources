@@ -40,6 +40,7 @@ import {
 } from '@/components/ui/shadcn/alert-dialog';
 import { useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
+import { cn } from '@/lib/cn';
 
 const ITEMS: NavItem[] = [
   { title: 'Profile', href: '/profile', icon: UserIcon },
@@ -47,11 +48,16 @@ const ITEMS: NavItem[] = [
 
 export type UserDropdownProps = HTMLAttributes<HTMLDivElement> & {
   forceExpanded?: boolean;
+  disableBackdropBlur?: boolean;
 };
 
 export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
   forwardRef<HTMLDivElement, UserDropdownProps>(function UserDropdown(
-    { forceExpanded = true, ...rest }: UserDropdownProps,
+    {
+      forceExpanded = true,
+      disableBackdropBlur = false,
+      ...rest
+    }: UserDropdownProps,
     ref: ForwardedRef<HTMLDivElement>,
   ) {
     const [isSignOutDialogOpen, setIsSignOutDialogOpen] = useState(false);
@@ -175,7 +181,10 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
                 <DropdownMenuTrigger asChild={true}>
                   <SidebarMenuButton
                     size="lg"
-                    className="w-full backdrop-blur-xl bg-transparent hover:bg-sidebar-accent hover:backdrop-blur-none data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+                    className={cn(
+                      'w-full bg-transparent hover:bg-sidebar-accent hover:backdrop-blur-none data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground',
+                      !disableBackdropBlur && 'backdrop-blur-xl',
+                    )}
                   >
                     <motion.div
                       initial={{ opacity: 0, y: -10 }}

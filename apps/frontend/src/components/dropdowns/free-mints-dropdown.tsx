@@ -24,7 +24,13 @@ import { Button } from '@/components/ui/shadcn/button';
 import { Badge } from '@/components/ui/shadcn/badge';
 import { useRouter } from 'next/navigation';
 
-export function FreeMintsDropdown({ className }: { className?: string }) {
+export function FreeMintsDropdown({
+  className,
+  disableBackdropBlur = false,
+}: {
+  className?: string;
+  disableBackdropBlur?: boolean;
+}) {
   const { isAuthenticated } = useAuth();
   const trpc = useTRPC();
   const { startCampaignSearch } = useFreeMintsGuidance();
@@ -109,7 +115,10 @@ export function FreeMintsDropdown({ className }: { className?: string }) {
             <DropdownMenuTrigger asChild={true}>
               <div className="relative">
                 <ShinyButton
-                  className="relative h-9 text-secondary-foreground hover:bg-sidebar-accent hover:backdrop-blur-none"
+                  className={cn(
+                    'relative h-9 text-secondary-foreground hover:bg-sidebar-accent shadow-none hover:backdrop-blur-none',
+                    disableBackdropBlur && 'backdrop-blur-none',
+                  )}
                   aria-label={`You have ${availableCount} free ${availableCount === 1 ? 'mint' : 'mints'} available`}
                 >
                   <span className="flex items-center gap-2">
