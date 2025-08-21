@@ -379,6 +379,20 @@
       "when": 1755717409774,
       "tag": "0053_breezy_winter_soldier",
       "breakpoints": true
+    },
+    {
+      "idx": 54,
+      "version": "7",
+      "when": 1755769275860,
+      "tag": "0054_icy_ozymandias",
+      "breakpoints": true
+    },
+    {
+      "idx": 55,
+      "version": "7",
+      "when": 1755769346032,
+      "tag": "0055_add_triggers_and_dynamic_checks_using_free_claim_campaign_limits",
+      "breakpoints": true
     }
   ]
 }

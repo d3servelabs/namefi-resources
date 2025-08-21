@@ -1225,3 +1225,32 @@ export const namefiNftOwnersView = pgView('namefi_nft_owners_view', {
   ownerAddress: text('owner_address').notNull(),
   asOfBlockNumber: bigint('as_of_block_number', { mode: 'bigint' }).notNull(),
 }).existing();
+
+/**
+ * Campaign limits table for controlling free claim grants per campaign
+ * This provides database-level limit enforcement since we can't use unique constraints
+ * due to variable per-campaign limits. Supports source-specific limits within campaigns.
+ */
+export const freeClaimCampaignLimitsTable = pgTable(
+  'free_claim_campaign_limits',
+  {
+    id: uuid('id').default(sql`gen_random_uuid()`).primaryKey(),
+    campaignKey: text('campaign_key').notNull(),
+    parentDomain: text('parent_domain')
+      .notNull()
+      .$type<NamefiNormalizedDomain>(),
+    source: text('source'), // NULL = applies to all sources combinedy, otherwise specific source
+    maxClaimsPerUser: integer('max_claims_per_user'),
+    startDate: timestamp('start_date'),
+    endDate: timestamp('end_date'),
+    ...timestamps,
+  },
+  (table) => [
+    // Unique constraint: one limit rule per (campaign, domain, source) combination
+    unique('unique_campaign_domain_source').on(
+      table.campaignKey,
+      table.parentDomain,
+      table.source,
+    ),
+  ],
+);
