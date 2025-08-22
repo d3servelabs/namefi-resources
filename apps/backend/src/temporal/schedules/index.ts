@@ -9,16 +9,21 @@ import type { NamefiSchedule } from './types';
 
 // Import all schedule instances
 import { updateDomainIndexSchedule } from './update-domain-index';
+
 import { createLogger } from '#lib/logger';
 
-// TODO: Import other schedules following the same pattern
-// import { emailSubscriptionSyncSchedule } from './email-subscription-sync';
-// import { nftManagementDailyReportSchedule } from './nft-management-daily-report';
-// import { updateNamefiNftIndexSchedule } from './update-namefi-nft-index';
-// import { generateAndUpdateDataForDomainsSchedule } from './generate-and-update-data-for-domains';
-// import { campaignAwardSchedule } from './hunt/campaign-award';
-// import { campaignStatusSchedule } from './hunt/campaign-status';
-// import { periodAwardSchedule } from './hunt/period-award';
+import { emailSubscriptionSyncSchedule } from './email-subscription-sync';
+import { nftManagementDailyReportSchedule } from './nft-management-daily-report';
+import { updateNamefiNftIndexSchedule } from './update-namefi-nft-index';
+import { generateAndUpdateDataForDomainsSchedule } from './generate-and-update-data-for-domains';
+import { campaignAwardSchedule } from './hunt/campaign-award';
+import { campaignStatusSchedule } from './hunt/campaign-status';
+import {
+  dailyAwardSchedule,
+  weeklyAwardSchedule,
+  monthlyAwardSchedule,
+  yearlyAwardSchedule,
+} from './hunt/period-award';
 
 const logger = createLogger({ name: 'schedules' });
 
@@ -28,7 +33,20 @@ const logger = createLogger({ name: 'schedules' });
  */
 export const SCHEDULE_REGISTRY: Record<string, NamefiSchedule<any>> = {
   [updateDomainIndexSchedule.config.scheduleId]: updateDomainIndexSchedule,
-  // TODO: Add other schedules as they are updated to follow the new pattern
+  [emailSubscriptionSyncSchedule.config.scheduleId]:
+    emailSubscriptionSyncSchedule,
+  [nftManagementDailyReportSchedule.config.scheduleId]:
+    nftManagementDailyReportSchedule,
+  [updateNamefiNftIndexSchedule.config.scheduleId]:
+    updateNamefiNftIndexSchedule,
+  [generateAndUpdateDataForDomainsSchedule.config.scheduleId]:
+    generateAndUpdateDataForDomainsSchedule,
+  [campaignAwardSchedule.config.scheduleId]: campaignAwardSchedule,
+  [campaignStatusSchedule.config.scheduleId]: campaignStatusSchedule,
+  [dailyAwardSchedule.config.scheduleId]: dailyAwardSchedule,
+  [weeklyAwardSchedule.config.scheduleId]: weeklyAwardSchedule,
+  [monthlyAwardSchedule.config.scheduleId]: monthlyAwardSchedule,
+  [yearlyAwardSchedule.config.scheduleId]: yearlyAwardSchedule,
 };
 
 /**
@@ -122,20 +140,67 @@ export async function getAllScheduleStatuses() {
 
 // Export individual schedules for backward compatibility and direct access
 export { updateDomainIndexSchedule };
+export { emailSubscriptionSyncSchedule };
+export { nftManagementDailyReportSchedule };
+export { updateNamefiNftIndexSchedule };
+export { generateAndUpdateDataForDomainsSchedule };
+export { campaignAwardSchedule };
+export { campaignStatusSchedule };
+export {
+  dailyAwardSchedule,
+  weeklyAwardSchedule,
+  monthlyAwardSchedule,
+  yearlyAwardSchedule,
+};
 
-// Export legacy functions (these should be updated over time to use the new pattern)
+// Export legacy functions for backward compatibility
 export {
   submitScheduleForUpdateDomainIndex,
   triggerUpdateDomainIndex,
   deleteScheduleForUpdateDomainIndex,
 } from './update-domain-index';
 
-// TODO: Export other legacy functions as schedules are updated
-// export {
-//   submitScheduleForEmailSubscriptionSync,
-//   triggerEmailSubscriptionSync,
-//   deleteScheduleForEmailSubscriptionSync,
-// } from './email-subscription-sync';
+export {
+  submitScheduleForEmailSubscriptionSync,
+  triggerEmailSubscriptionSync,
+  deleteScheduleForEmailSubscriptionSync,
+} from './email-subscription-sync';
+
+export {
+  submitScheduleForNftManagementDailyReport,
+  triggerNftManagementDailyReport,
+  updateNftManagementDailyReportSchedule,
+  pauseNftManagementDailyReportSchedule,
+  unpauseNftManagementDailyReportSchedule,
+  getNftManagementDailyReportScheduleStatus,
+  deleteNftManagementDailyReportSchedule,
+} from './nft-management-daily-report';
+
+export {
+  submitScheduleForUpdateNamefiNftIndex,
+  triggerUpdateNamefiNftIndex,
+  deleteScheduleForUpdateNamefiNftIndex,
+} from './update-namefi-nft-index';
+
+export {
+  submitScheduleForGenerateAndUpdateDataForDomains,
+  triggerGenerateAndUpdateDataForDomains,
+  deleteScheduleForGenerateAndUpdateDataForDomains,
+  pauseScheduleForGenerateAndUpdateDataForDomains,
+  resumeScheduleForGenerateAndUpdateDataForDomains,
+} from './generate-and-update-data-for-domains';
+
+export { submitScheduleForCampaignAward } from './hunt/campaign-award';
+
+export { submitScheduleForCampaignStatus } from './hunt/campaign-status';
+
+export {
+  submitScheduleForDailyAward,
+  submitScheduleForWeeklyAward,
+  submitScheduleForMonthlyAward,
+  submitScheduleForYearlyAward,
+  submitAllPeriodAwardSchedules,
+} from './hunt/period-award';
 
 // Export types for use in admin interfaces
 export type { NamefiSchedule, ScheduleConfig, ScheduleStatus } from './types';

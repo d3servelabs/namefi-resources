@@ -1,115 +1,101 @@
+/**
+ * Schedules for Period Award workflow
+ * Awards top domains for different time periods (daily, weekly, monthly, yearly)
+ */
+
 import { ScheduleOverlapPolicy } from '@temporalio/client';
-import { temporalClient } from '../../client';
-import { TEMPORAL_QUEUES } from '../../shared';
+import { BaseSchedule } from '../base-schedule';
 import { periodAwardWorkflow } from '../../workflows/hunt/period-award.workflow';
+import type { ScheduleConfig } from '../types';
+import { TEMPORAL_QUEUES } from '../../shared';
 
-const WORKFLOW_ID = 'period-award';
-const workflowType = periodAwardWorkflow;
+const PeriodAwardSchedule = BaseSchedule.forWorkflowType(periodAwardWorkflow);
 
-/**
- * Submit the schedule for the daily award workflow
- * Runs every day at 00:05 to award the previous day's top domains
- */
+// Daily Award Schedule
+const dailyAwardConfig: ScheduleConfig<typeof periodAwardWorkflow> = {
+  scheduleId: 'daily-award-schedule',
+  workflowId: 'period-award-daily',
+  name: 'Daily Period Award',
+  description: 'Awards top domains from the previous day',
+  cronExpressions: ['5 0 * * *'], // every day at 00:05
+  taskQueue: TEMPORAL_QUEUES.HUNT,
+  overlapPolicy: ScheduleOverlapPolicy.SKIP,
+  args: [{ type: 'DAILY' }],
+  owner: 'hunt-team',
+  category: 'hunt',
+};
+
+export const dailyAwardSchedule = new PeriodAwardSchedule(dailyAwardConfig);
+
+// Weekly Award Schedule
+const weeklyAwardConfig: ScheduleConfig<typeof periodAwardWorkflow> = {
+  scheduleId: 'weekly-award-schedule',
+  workflowId: 'period-award-weekly',
+  name: 'Weekly Period Award',
+  description: 'Awards top domains from the previous week',
+  cronExpressions: ['10 0 * * 1'], // every Monday at 00:10
+  taskQueue: TEMPORAL_QUEUES.HUNT,
+  overlapPolicy: ScheduleOverlapPolicy.SKIP,
+  args: [{ type: 'WEEKLY' }],
+  owner: 'hunt-team',
+  category: 'hunt',
+};
+
+export const weeklyAwardSchedule = new PeriodAwardSchedule(weeklyAwardConfig);
+
+// Monthly Award Schedule
+const monthlyAwardConfig: ScheduleConfig<typeof periodAwardWorkflow> = {
+  scheduleId: 'monthly-award-schedule',
+  workflowId: 'period-award-monthly',
+  name: 'Monthly Period Award',
+  description: 'Awards top domains from the previous month',
+  cronExpressions: ['15 0 1 * *'], // 1st of every month at 00:15
+  taskQueue: TEMPORAL_QUEUES.HUNT,
+  overlapPolicy: ScheduleOverlapPolicy.SKIP,
+  args: [{ type: 'MONTHLY' }],
+  owner: 'hunt-team',
+  category: 'hunt',
+};
+
+export const monthlyAwardSchedule = new PeriodAwardSchedule(monthlyAwardConfig);
+
+// Yearly Award Schedule
+const yearlyAwardConfig: ScheduleConfig<typeof periodAwardWorkflow> = {
+  scheduleId: 'yearly-award-schedule',
+  workflowId: 'period-award-yearly',
+  name: 'Yearly Period Award',
+  description: 'Awards top domains from the previous year',
+  cronExpressions: ['20 0 1 1 *'], // January 1st at 00:20
+  taskQueue: TEMPORAL_QUEUES.HUNT,
+  overlapPolicy: ScheduleOverlapPolicy.SKIP,
+  args: [{ type: 'YEARLY' }],
+  owner: 'hunt-team',
+  category: 'hunt',
+};
+
+export const yearlyAwardSchedule = new PeriodAwardSchedule(yearlyAwardConfig);
+
+// Legacy functions for backward compatibility
 export const submitScheduleForDailyAward = async () => {
-  const schedule = await temporalClient.schedule.create({
-    scheduleId: 'daily-award-schedule',
-    spec: {
-      cronExpressions: ['5 0 * * *'], // every day at 00:05
-    },
-    policies: {
-      overlap: ScheduleOverlapPolicy.SKIP, // Skip if previous run is still executing
-    },
-    action: {
-      type: 'startWorkflow',
-      workflowType,
-      taskQueue: TEMPORAL_QUEUES.HUNT,
-      workflowId: `${WORKFLOW_ID}-daily`,
-      args: [{ type: 'DAILY' }], // Award daily period
-    },
-  });
-  console.log('Daily award schedule created', schedule);
+  return await dailyAwardSchedule.submit();
 };
 
-/**
- * Submit the schedule for the weekly award workflow
- * Runs every Monday at 00:10 to award the previous week's top domains
- */
 export const submitScheduleForWeeklyAward = async () => {
-  const schedule = await temporalClient.schedule.create({
-    scheduleId: 'weekly-award-schedule',
-    spec: {
-      cronExpressions: ['10 0 * * 1'], // every Monday at 00:10
-    },
-    policies: {
-      overlap: ScheduleOverlapPolicy.SKIP, // Skip if previous run is still executing
-    },
-    action: {
-      type: 'startWorkflow',
-      workflowType,
-      taskQueue: TEMPORAL_QUEUES.HUNT,
-      workflowId: `${WORKFLOW_ID}-weekly`,
-      args: [{ type: 'WEEKLY' }], // Award weekly period
-    },
-  });
-  console.log('Weekly award schedule created', schedule);
+  return await weeklyAwardSchedule.submit();
 };
 
-/**
- * Submit the schedule for the monthly award workflow
- * Runs on the 1st of every month at 00:15 to award the previous month's top domains
- */
 export const submitScheduleForMonthlyAward = async () => {
-  const schedule = await temporalClient.schedule.create({
-    scheduleId: 'monthly-award-schedule',
-    spec: {
-      cronExpressions: ['15 0 1 * *'], // 1st of every month at 00:15
-    },
-    policies: {
-      overlap: ScheduleOverlapPolicy.SKIP, // Skip if previous run is still executing
-    },
-    action: {
-      type: 'startWorkflow',
-      workflowType,
-      taskQueue: TEMPORAL_QUEUES.HUNT,
-      workflowId: `${WORKFLOW_ID}-monthly`,
-      args: [{ type: 'MONTHLY' }], // Award monthly period
-    },
-  });
-  console.log('Monthly award schedule created', schedule);
+  return await monthlyAwardSchedule.submit();
 };
 
-/**
- * Submit the schedule for the yearly award workflow
- * Runs on January 1st at 00:20 to award the previous year's top domains
- */
 export const submitScheduleForYearlyAward = async () => {
-  const schedule = await temporalClient.schedule.create({
-    scheduleId: 'yearly-award-schedule',
-    spec: {
-      cronExpressions: ['20 0 1 1 *'], // January 1st at 00:20
-    },
-    policies: {
-      overlap: ScheduleOverlapPolicy.SKIP, // Skip if previous run is still executing
-    },
-    action: {
-      type: 'startWorkflow',
-      workflowType,
-      taskQueue: TEMPORAL_QUEUES.HUNT,
-      workflowId: `${WORKFLOW_ID}-yearly`,
-      args: [{ type: 'YEARLY' }], // Award yearly period
-    },
-  });
-  console.log('Yearly award schedule created', schedule);
+  return await yearlyAwardSchedule.submit();
 };
 
-/**
- * Submit all period award schedules
- */
 export const submitAllPeriodAwardSchedules = async () => {
   await Promise.all([
     // We are not awarding daily or yearly periods at the moment.
     submitScheduleForWeeklyAward(),
     submitScheduleForMonthlyAward(),
   ]);
-  console.log('All period award schedules created');
 };

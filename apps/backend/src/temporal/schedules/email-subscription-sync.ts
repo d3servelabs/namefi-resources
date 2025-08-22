@@ -1,53 +1,44 @@
 /**
- * This file contains the schedule for the email subscription sync workflow.
- * It is used to regularly sync users to the email service based on their opt-in preferences.
+ * Schedule for Email Subscription Sync workflow
+ * Regularly syncs users to the email service based on their opt-in preferences
  */
+
 import { ScheduleOverlapPolicy } from '@temporalio/client';
-import { temporalClient } from '../client';
-import { TEMPORAL_QUEUES } from '../shared';
+import { BaseSchedule } from './base-schedule';
 import { syncUsersToEmailSubscriptionWorkflow } from '../workflows/email-subscription-sync.workflow';
+import type { ScheduleConfig } from './types';
+import { TEMPORAL_QUEUES } from '../shared';
 
-const WORKFLOW_ID = 'email-subscription-sync';
-const workflowType = syncUsersToEmailSubscriptionWorkflow;
+const EmailSubscriptionSyncSchedule = BaseSchedule.forWorkflowType(
+  syncUsersToEmailSubscriptionWorkflow,
+);
 
-/**
- * Submit the schedule for the email subscription sync workflow
- */
+const config: ScheduleConfig<typeof syncUsersToEmailSubscriptionWorkflow> = {
+  scheduleId: 'email-subscription-sync-schedule',
+  workflowId: 'email-subscription-sync',
+  name: 'Email Subscription Sync',
+  description:
+    'Regularly syncs users to the email service based on their opt-in preferences',
+  cronExpressions: ['0 8,20 * * *'], // every day at 8 AM and 8 PM
+  taskQueue: TEMPORAL_QUEUES.INDEXERS,
+  overlapPolicy: ScheduleOverlapPolicy.SKIP, // Critical for debouncing
+  owner: 'platform',
+  category: 'notification',
+};
+
+export const emailSubscriptionSyncSchedule = new EmailSubscriptionSyncSchedule(
+  config,
+);
+
+// Legacy functions for backward compatibility
 export async function submitScheduleForEmailSubscriptionSync() {
-  const schedule = await temporalClient.schedule.create({
-    scheduleId: 'email-subscription-sync-schedule',
-    spec: {
-      cronExpressions: ['0 8,20 * * *'], // every day at 8 AM and 8 PM
-    },
-    policies: {
-      overlap: ScheduleOverlapPolicy.SKIP, // Critical for debouncing
-    },
-    action: {
-      type: 'startWorkflow',
-      workflowType,
-      taskQueue: TEMPORAL_QUEUES.INDEXERS,
-      workflowId: WORKFLOW_ID, // Unique identifier
-    },
-  });
-  console.log('Email subscription sync schedule created', schedule);
+  return await emailSubscriptionSyncSchedule.submit();
 }
 
-/**
- * Trigger the schedule manually
- */
 export async function triggerEmailSubscriptionSync() {
-  const handle = temporalClient.schedule.getHandle(
-    'email-subscription-sync-schedule',
-  );
-  await handle.trigger(ScheduleOverlapPolicy.BUFFER_ONE);
+  return await emailSubscriptionSyncSchedule.trigger();
 }
 
-/**
- * Delete the schedule
- */
 export async function deleteScheduleForEmailSubscriptionSync() {
-  const schedule = await temporalClient.schedule.getHandle(
-    'email-subscription-sync-schedule',
-  );
-  await schedule.delete();
+  return await emailSubscriptionSyncSchedule.delete();
 }

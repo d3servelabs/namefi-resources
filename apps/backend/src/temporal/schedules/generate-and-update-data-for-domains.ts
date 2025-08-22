@@ -1,80 +1,55 @@
 /**
- * This file contains the schedule for the generate and update data for domains workflow.
- * It runs a combined workflow that:
+ * Schedule for Generate and Update Data for Domains workflow
+ * Runs a combined workflow that:
  * 1. Adds categories to domains with no categories
  * 2. Processes domains with AI analysis
  * 3. Updates marketplace data for dirty domains
  */
+
 import { ScheduleOverlapPolicy } from '@temporalio/client';
-import { temporalClient } from '../client';
-import { TEMPORAL_QUEUES } from '../shared';
+import { BaseSchedule } from './base-schedule';
 import { generateAndUpdateDataForDomainsWorkflow } from '../workflows/generate-and-update-data-for-domains.workflow';
+import type { ScheduleConfig } from './types';
+import { TEMPORAL_QUEUES } from '../shared';
 
-const WORKFLOW_ID = 'generate-and-update-data-for-domains';
-const workflowType = generateAndUpdateDataForDomainsWorkflow;
+const GenerateAndUpdateDataForDomainsSchedule = BaseSchedule.forWorkflowType(
+  generateAndUpdateDataForDomainsWorkflow,
+);
 
-/**
- * Submit the schedule for the generate and update data for domains workflow
- */
+const config: ScheduleConfig<typeof generateAndUpdateDataForDomainsWorkflow> = {
+  scheduleId: 'generate-and-update-data-for-domains-schedule',
+  workflowId: 'generate-and-update-data-for-domains',
+  name: 'Generate and Update Data for Domains',
+  description:
+    'Combines category assignment, AI analysis, and marketplace data updates for domains',
+  cronExpressions: ['0 * * * *'], // every hour at minute 0
+  taskQueue: TEMPORAL_QUEUES.INDEXERS,
+  overlapPolicy: ScheduleOverlapPolicy.SKIP, // Critical for debouncing - prevents overlapping runs
+  args: [{}],
+  owner: 'data-team',
+  category: 'indexer',
+};
+
+export const generateAndUpdateDataForDomainsSchedule =
+  new GenerateAndUpdateDataForDomainsSchedule(config);
+
+// Legacy functions for backward compatibility
 export async function submitScheduleForGenerateAndUpdateDataForDomains() {
-  const schedule = await temporalClient.schedule.create({
-    scheduleId: 'generate-and-update-data-for-domains-schedule',
-    spec: {
-      cronExpressions: ['0 * * * *'], // every hour at minute 0
-    },
-    policies: {
-      overlap: ScheduleOverlapPolicy.SKIP, // Critical for debouncing - prevents overlapping runs
-    },
-    action: {
-      type: 'startWorkflow',
-      workflowType,
-      taskQueue: TEMPORAL_QUEUES.INDEXERS,
-      workflowId: WORKFLOW_ID, // Unique identifier
-      args: [{}],
-    },
-  });
-  console.log(
-    'Generate and update data for domains schedule created',
-    schedule,
-  );
+  return await generateAndUpdateDataForDomainsSchedule.submit();
 }
 
-/**
- * Trigger the schedule manually
- */
 export async function triggerGenerateAndUpdateDataForDomains() {
-  const handle = temporalClient.schedule.getHandle(
-    'generate-and-update-data-for-domains-schedule',
-  );
-  await handle.trigger(ScheduleOverlapPolicy.BUFFER_ONE);
+  return await generateAndUpdateDataForDomainsSchedule.trigger();
 }
 
-/**
- * Delete the schedule
- */
 export async function deleteScheduleForGenerateAndUpdateDataForDomains() {
-  const schedule = await temporalClient.schedule.getHandle(
-    'generate-and-update-data-for-domains-schedule',
-  );
-  await schedule.delete();
+  return await generateAndUpdateDataForDomainsSchedule.delete();
 }
 
-/**
- * Pause the schedule
- */
 export async function pauseScheduleForGenerateAndUpdateDataForDomains() {
-  const handle = temporalClient.schedule.getHandle(
-    'generate-and-update-data-for-domains-schedule',
-  );
-  await handle.pause();
+  return await generateAndUpdateDataForDomainsSchedule.pause();
 }
 
-/**
- * Resume the schedule
- */
 export async function resumeScheduleForGenerateAndUpdateDataForDomains() {
-  const handle = temporalClient.schedule.getHandle(
-    'generate-and-update-data-for-domains-schedule',
-  );
-  return handle.unpause();
+  return await generateAndUpdateDataForDomainsSchedule.unpause();
 }

@@ -1,32 +1,34 @@
-import { ScheduleOverlapPolicy } from '@temporalio/client';
-import { temporalClient } from '../../client';
-import { TEMPORAL_QUEUES } from '../../shared';
-import { campaignAwardWorkflow } from '../../workflows/hunt/campaign-award.workflow';
-
-const WORKFLOW_ID = 'campaign-award';
-const SCHEDULE_ID = 'campaign-award-schedule';
-const workflowType = campaignAwardWorkflow;
-
 /**
- * Submit the schedule for the campaign award workflow
+ * Schedule for Campaign Award workflow
  * Runs every hour to check for campaigns that need to be awarded
  */
+
+import { ScheduleOverlapPolicy } from '@temporalio/client';
+import { BaseSchedule } from '../base-schedule';
+import { campaignAwardWorkflow } from '../../workflows/hunt/campaign-award.workflow';
+import type { ScheduleConfig } from '../types';
+import { TEMPORAL_QUEUES } from '../../shared';
+
+const CampaignAwardSchedule = BaseSchedule.forWorkflowType(
+  campaignAwardWorkflow,
+);
+
+const config: ScheduleConfig<typeof campaignAwardWorkflow> = {
+  scheduleId: 'campaign-award-schedule',
+  workflowId: 'campaign-award',
+  name: 'Campaign Award',
+  description: 'Checks for campaigns that need to be awarded every hour',
+  cronExpressions: ['5 * * * *'], // every hour at minute 5
+  taskQueue: TEMPORAL_QUEUES.HUNT,
+  overlapPolicy: ScheduleOverlapPolicy.SKIP, // Skip if previous run is still executing
+  args: [{}], // No specific campaign, process all ended campaigns
+  owner: 'hunt-team',
+  category: 'hunt',
+};
+
+export const campaignAwardSchedule = new CampaignAwardSchedule(config);
+
+// Legacy functions for backward compatibility
 export const submitScheduleForCampaignAward = async () => {
-  const schedule = await temporalClient.schedule.create({
-    scheduleId: SCHEDULE_ID,
-    spec: {
-      cronExpressions: ['5 * * * *'], // every hour at minute 5
-    },
-    policies: {
-      overlap: ScheduleOverlapPolicy.SKIP, // Skip if previous run is still executing
-    },
-    action: {
-      type: 'startWorkflow',
-      workflowType,
-      taskQueue: TEMPORAL_QUEUES.HUNT,
-      workflowId: WORKFLOW_ID,
-      args: [{}], // No specific campaign, process all ended campaigns
-    },
-  });
-  console.log('Campaign award schedule created', schedule);
+  return await campaignAwardSchedule.submit();
 };

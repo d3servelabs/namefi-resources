@@ -1,49 +1,44 @@
+/**
+ * Schedule for Update Namefi NFT Index workflow
+ * Updates the NFT index every 5 minutes to keep track of minted domains
+ */
+
 import { ScheduleOverlapPolicy } from '@temporalio/client';
-import { temporalClient } from '../client';
-import { TEMPORAL_QUEUES } from '../shared';
+import { BaseSchedule } from './base-schedule';
 import { updateNamefiNftIndexWorkflow } from '../workflows/update-nft-index.workflow';
+import type { ScheduleConfig } from './types';
+import { TEMPORAL_QUEUES } from '../shared';
 
-const WORKFLOW_ID = 'update-namefi-nft-index';
-const workflowType = updateNamefiNftIndexWorkflow;
+const UpdateNamefiNftIndexSchedule = BaseSchedule.forWorkflowType(
+  updateNamefiNftIndexWorkflow,
+);
 
-/**
- * Submit the schedule for the NFT index update workflow
- */
+const config: ScheduleConfig<typeof updateNamefiNftIndexWorkflow> = {
+  scheduleId: 'update-namefi-nft-index-schedule',
+  workflowId: 'update-namefi-nft-index',
+  name: 'Update Namefi NFT Index',
+  description:
+    'Updates the NFT index every 5 minutes to keep track of minted domains',
+  cronExpressions: ['*/5 * * * *'], // every 5 minutes
+  taskQueue: TEMPORAL_QUEUES.INDEXERS,
+  overlapPolicy: ScheduleOverlapPolicy.SKIP, // Critical for debouncing
+  owner: 'nft-team',
+  category: 'indexer',
+};
+
+export const updateNamefiNftIndexSchedule = new UpdateNamefiNftIndexSchedule(
+  config,
+);
+
+// Legacy functions for backward compatibility
 export async function submitScheduleForUpdateNamefiNftIndex() {
-  const schedule = await temporalClient.schedule.create({
-    scheduleId: 'update-namefi-nft-index-schedule',
-    spec: {
-      cronExpressions: ['*/5 * * * *'], // every 5 minutes
-    },
-    policies: {
-      overlap: ScheduleOverlapPolicy.SKIP, // Critical for debouncing
-    },
-    action: {
-      type: 'startWorkflow',
-      workflowType,
-      taskQueue: TEMPORAL_QUEUES.INDEXERS,
-      workflowId: WORKFLOW_ID, // Unique identifier
-    },
-  });
-  console.log('Schedule created', schedule);
+  return await updateNamefiNftIndexSchedule.submit();
 }
 
-/**
- * Trigger the schedule manually
- */
 export async function triggerUpdateNamefiNftIndex() {
-  const handle = temporalClient.schedule.getHandle(
-    'update-namefi-nft-index-schedule',
-  );
-  await handle.trigger(ScheduleOverlapPolicy.BUFFER_ONE);
+  return await updateNamefiNftIndexSchedule.trigger();
 }
 
-/**
- * Delete the schedule
- */
 export async function deleteScheduleForUpdateNamefiNftIndex() {
-  const schedule = await temporalClient.schedule.getHandle(
-    'update-namefi-nft-index-schedule',
-  );
-  await schedule.delete();
+  return await updateNamefiNftIndexSchedule.delete();
 }
