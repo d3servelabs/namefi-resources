@@ -30,6 +30,20 @@ export function Spotlight({
   const rafRef = useRef<number | null>(null);
   const lastBoxRef = useRef<SpotlightBox | null>(null);
 
+  // Track viewport for the outer path
+  const [vw, setVw] = useState(0);
+  const [vh, setVh] = useState(0);
+
+  useLayoutEffect(() => {
+    const updateViewport = () => {
+      setVw(window.innerWidth);
+      setVh(window.innerHeight);
+    };
+    updateViewport();
+    window.addEventListener('resize', updateViewport);
+    return () => window.removeEventListener('resize', updateViewport);
+  }, []);
+
   // Update spotlight position when target element changes or moves
   useLayoutEffect(() => {
     const updateSpotlightPosition = () => {
@@ -103,81 +117,87 @@ export function Spotlight({
     };
   }, [visible, target, padding]);
 
-  // Close spotlight on any key press or click outside
+  // Close spotlight on any key press or any click
   useEffect(() => {
     if (!visible) return;
 
-    const handleClose = () => {
-      // Delay to allow the target to receive the event first
+    const handleKeyDown = () => {
       setTimeout(() => onClose?.(), 0);
     };
 
-    document.addEventListener('keydown', handleClose);
-    document.addEventListener('pointerdown', handleClose, true);
+    const onAnyPointer = () => setTimeout(() => onClose?.(), 0);
+
+    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('pointerdown', onAnyPointer, true);
 
     return () => {
-      document.removeEventListener('keydown', handleClose);
-      document.removeEventListener('pointerdown', handleClose, true);
+      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('pointerdown', onAnyPointer, true);
     };
   }, [visible, onClose]);
 
   // Don't render during SSR
   if (typeof document === 'undefined') return null;
 
-  const overlayStyle =
-    'fixed bg-black/70 backdrop-blur-sm pointer-events-auto border-0 p-0 outline-none';
-
-  const handleCloseClick = () => onClose?.();
-
   return createPortal(
     <AnimatePresence>
-      {visible && box && (
+      {visible && box && vw && vh && (
         <motion.div
           key="spotlight-overlay"
           className="fixed inset-0 z-[9990] pointer-events-none"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
+          aria-hidden="true"
         >
-          {/* Dimmed overlay areas - clicking any of these closes the spotlight */}
+          {/* 1) SVG mask def */}
+          <svg
+            width="0"
+            height="0"
+            style={{ position: 'absolute' }}
+            role="presentation"
+            aria-hidden="true"
+          >
+            <defs>
+              <mask
+                id="spot-mask"
+                maskUnits="userSpaceOnUse"
+                x="0"
+                y="0"
+                width={vw}
+                height={vh}
+              >
+                <rect x="0" y="0" width={vw} height={vh} fill="white" />
+                <rect
+                  x={box.x}
+                  y={box.y}
+                  width={box.w}
+                  height={box.h}
+                  rx={radius}
+                  ry={radius}
+                  fill="black"
+                />
+              </mask>
+            </defs>
+          </svg>
 
-          {/* Top curtain */}
-          <button
-            type="button"
-            onClick={handleCloseClick}
-            className={overlayStyle}
-            style={{ left: 0, right: 0, top: 0, height: box.y }}
-            aria-label="Close spotlight"
+          {/* 2) Visual overlay ONLY (no hit-testing) */}
+          <div
+            className="fixed inset-0 pointer-events-none"
+            style={{
+              WebkitMask: 'url(#spot-mask)',
+              mask: 'url(#spot-mask)',
+              backdropFilter: 'blur(8px)',
+              WebkitBackdropFilter: 'blur(8px)',
+              background: 'rgba(0,0,0,0.7)',
+              width: '100dvw',
+              height: '100dvh',
+              willChange: 'backdrop-filter, -webkit-backdrop-filter, mask',
+              contain: 'paint',
+            }}
           />
 
-          {/* Left curtain */}
-          <button
-            type="button"
-            onClick={handleCloseClick}
-            className={overlayStyle}
-            style={{ left: 0, top: box.y, width: box.x, height: box.h }}
-            aria-label="Close spotlight"
-          />
-
-          {/* Right curtain */}
-          <button
-            type="button"
-            onClick={handleCloseClick}
-            className={overlayStyle}
-            style={{ left: box.x + box.w, right: 0, top: box.y, height: box.h }}
-            aria-label="Close spotlight"
-          />
-
-          {/* Bottom curtain */}
-          <button
-            type="button"
-            onClick={handleCloseClick}
-            className={overlayStyle}
-            style={{ left: 0, right: 0, top: box.y + box.h, bottom: 0 }}
-            aria-label="Close spotlight"
-          />
-
-          {/* Decorative border around highlighted element */}
+          {/* 4) Optional decorative ring (no events) */}
           <div
             className="fixed pointer-events-none"
             style={{
