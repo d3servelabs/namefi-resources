@@ -24,6 +24,7 @@ import {
   monthlyAwardSchedule,
   yearlyAwardSchedule,
 } from './hunt/period-award';
+import { zeroXCityPromo2025Schedule } from './campaigns/0xcity-promo-2025';
 
 const logger = createLogger({ name: 'schedules' });
 
@@ -105,6 +106,7 @@ export const SCHEDULE_REGISTRY: Record<string, NamefiSchedule<any>> = {
   [weeklyAwardSchedule.config.scheduleId]: weeklyAwardSchedule,
   [monthlyAwardSchedule.config.scheduleId]: monthlyAwardSchedule,
   [yearlyAwardSchedule.config.scheduleId]: yearlyAwardSchedule,
+  [zeroXCityPromo2025Schedule.config.scheduleId]: zeroXCityPromo2025Schedule,
 };
 
 /**
