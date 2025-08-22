@@ -40,7 +40,7 @@ const ITEMS: NavItem[] = [
   { title: 'My Domains', href: '/domains', icon: Globe },
   { title: 'My Wishlist', href: '/wishlist', icon: Heart },
   { title: 'My Orders', href: '/orders', icon: ClipboardList },
-  { title: 'My Free Claims', href: '/free-claims', icon: Gift },
+  { title: 'My Free Mints', href: '/free-mints', icon: Gift },
   { title: 'My Payment Methods', href: '/payment-methods', icon: CreditCard },
   { title: 'Manage', href: '/manage', icon: PenToolIcon },
 ];

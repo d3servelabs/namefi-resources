@@ -27,6 +27,9 @@ import {
 import { format } from 'date-fns';
 import { CheckCircle, Clock, Gift, Loader2 } from 'lucide-react';
 import { useMemo } from 'react';
+import { Button } from '@/components/ui/shadcn/button';
+import Link from 'next/link';
+import { useFreeMintsGuidance } from '@/components/providers/free-mints-guidance';
 
 type GetUserClaimsResponse = AppRouterOutput['freeClaims']['getUserClaims'];
 
@@ -43,36 +46,73 @@ type ClaimRow = {
   createdAt: Date;
 };
 
-function StatusPill({
-  status,
-  expired,
-}: {
-  status: ClaimRow['claimingStatus'];
-  expired: boolean;
-}) {
-  if (status === 'IDLE') {
+function ClaimButton({ row }: { row: ClaimRow }) {
+  const { claimingStatus, isExpired, domain, type, parentDomain } = row;
+  const { startCampaignSearch } = useFreeMintsGuidance();
+
+  // Show different states based on claim status
+  if (claimingStatus === 'CLAIMED') {
     return (
-      <Badge variant="secondary" className="flex items-center gap-1">
-        <Clock className="h-3 w-3" />
-        {expired ? 'Expired' : 'Available'}
+      <Badge
+        variant="outline"
+        className="flex items-center gap-1 h-8 px-3 text-brand-primary"
+      >
+        <CheckCircle className="h-3 w-3" />
+        Claimed{' '}
+        <span className="bg-muted px-1 py-0.5 rounded text-xs">{domain}</span>
       </Badge>
     );
   }
-  if (status === 'CLAIMING') {
+
+  if (claimingStatus === 'CLAIMING') {
     return (
-      <Badge variant="default" className="flex items-center gap-1">
+      <Badge variant="default" className="flex items-center gap-1 h-8 px-3">
         <Loader2 className="h-3 w-3 animate-spin" />
         In Progress
       </Badge>
     );
   }
+
+  if (isExpired) {
+    return (
+      <Badge variant="secondary" className="flex items-center gap-1 h-8 px-3">
+        <Clock className="h-3 w-3" />
+        Expired
+      </Badge>
+    );
+  }
+
+  // For single exact domain claims, navigate to claim page
+  if (type === 'single') {
+    return (
+      <Button
+        asChild={true}
+        size="sm"
+        className="shrink-0 bg-brand-primary hover:bg-brand-primary/90 text-secondary-foreground"
+      >
+        <Link href={`/claim/${encodeURIComponent(domain)}`}>Claim</Link>
+      </Button>
+    );
+  }
+
+  // For campaign claims, start campaign search
+  if (type === 'campaign' && parentDomain) {
+    return (
+      <Button
+        size="sm"
+        className="shrink-0 bg-brand-primary hover:bg-brand-primary/90 text-secondary-foreground"
+        onClick={() => startCampaignSearch(String(parentDomain))}
+      >
+        Claim
+      </Button>
+    );
+  }
+
+  // Fallback for unavailable claims
   return (
-    <Badge
-      variant="outline"
-      className="flex items-center gap-1 border-green-200 text-green-700"
-    >
-      <CheckCircle className="h-3 w-3" />
-      Claimed
+    <Badge variant="secondary" className="flex items-center gap-1 h-8 px-3">
+      <Clock className="h-3 w-3" />
+      Unavailable
     </Badge>
   );
 }
@@ -135,38 +175,34 @@ export default function FreeClaimsPage() {
   const columns = useMemo<ColumnDef<ClaimRow>[]>(
     () => [
       {
-        id: 'type',
-        header: 'Type',
-        accessorFn: (row) => (row.type === 'single' ? 'Single' : 'Campaign'),
-        cell: ({ getValue }) => (
-          <span className="text-xs text-muted-foreground">
-            {getValue<string>()}
-          </span>
-        ),
-        enableSorting: true,
-      },
-      {
-        id: 'domain',
-        header: 'Domain',
-        accessorKey: 'domain',
-        enableSorting: true,
-      },
-      {
-        id: 'parentDomain',
-        header: 'Parent Domain',
-        accessorKey: 'parentDomain',
-        cell: ({ getValue }) => (
-          <span className="text-muted-foreground">
-            {getValue<NamefiNormalizedDomain | null>() || '-'}
-          </span>
-        ),
-        enableSorting: true,
-      },
-      {
-        id: 'campaign',
-        header: 'Campaign',
-        accessorKey: 'groupOrCampaignKey',
-        enableSorting: true,
+        id: 'claimable',
+        header: 'What You Can Claim',
+        cell: ({ row }) => {
+          const { type, domain, parentDomain } = row.original;
+
+          if (type === 'single') {
+            return (
+              <span className="font-medium bg-muted px-2 py-1 rounded">
+                {domain}
+              </span>
+            );
+          }
+
+          if (type === 'campaign' && parentDomain) {
+            return (
+              <span>
+                Any{' '}
+                <span className="font-medium bg-muted px-2 py-1 rounded">
+                  {String(parentDomain)}
+                </span>{' '}
+                subdomain
+              </span>
+            );
+          }
+
+          return <span className="text-muted-foreground">-</span>;
+        },
+        enableSorting: false,
       },
       {
         id: 'reason',
@@ -179,16 +215,6 @@ export default function FreeClaimsPage() {
           >
             {getValue<string | null>() || '-'}
           </span>
-        ),
-      },
-      {
-        id: 'status',
-        header: 'Status',
-        cell: ({ row }) => (
-          <StatusPill
-            status={row.original.claimingStatus}
-            expired={row.original.isExpired}
-          />
         ),
       },
       {
@@ -205,12 +231,18 @@ export default function FreeClaimsPage() {
       },
       {
         id: 'createdAt',
-        header: 'Created',
+        header: 'Awarded On',
         accessorFn: (row) => new Date(row.createdAt),
         cell: ({ getValue }) => (
           <span>{format(getValue<Date>(), 'MMM d, yyyy')}</span>
         ),
         sortingFn: 'datetime',
+      },
+      {
+        id: 'actions',
+        header: 'Actions',
+        cell: ({ row }) => <ClaimButton row={row.original} />,
+        enableSorting: false,
       },
     ],
     [],
@@ -232,25 +264,22 @@ export default function FreeClaimsPage() {
 
   return (
     <div className="container mx-auto py-8 px-8">
-      <CartCard title="My Free Claims">
+      <CartCard title="My Free Mints">
         {isLoading ? (
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Type</TableHead>
-                <TableHead>Domain</TableHead>
-                <TableHead>Parent Domain</TableHead>
-                <TableHead>Campaign</TableHead>
+                <TableHead>What You Can Mint</TableHead>
                 <TableHead>Reason</TableHead>
-                <TableHead>Status</TableHead>
                 <TableHead>Expires</TableHead>
                 <TableHead>Created</TableHead>
+                <TableHead>Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {[...new Array(5)].map((_, index) => (
                 <TableRow key={index}>
-                  {[...new Array(8)].map((__, idx) => (
+                  {[...new Array(5)].map((__, idx) => (
                     <TableCell key={idx}>
                       <Skeleton className="h-5 w-[140px]" />
                     </TableCell>
