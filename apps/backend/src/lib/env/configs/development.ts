@@ -25,7 +25,7 @@ const developmentConfig: ConfigInput = {
     'available.today.astra.namefi.dev': 'available.today',
     'discounts.today.astra.namefi.dev': 'discounts.today',
   },
-  ALLOW_ALL_ORIGINS: true,
+  ALLOW_ALL_ORIGINS: false,
   ALLOWED_CHAINS: [chains.sepolia.id, chains.base.id, chains.mainnet.id],
   EMAIL_ADDRESS_TO_OWNED_HOSTNAMES_MAP: {
     'dev-team@d3serve.xyz': [
