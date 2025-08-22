@@ -36,10 +36,7 @@ function ClaimButton({ row }: { row: FreeMint }) {
   // Show different states based on claim status
   if (claimingStatus === 'CLAIMED') {
     return (
-      <Badge
-        variant="outline"
-        className="flex items-center gap-1 h-8 px-3 text-brand-primary"
-      >
+      <Badge variant="outline" className="flex items-center gap-1 h-8 px-3">
         <CheckCircle className="h-3 w-3" />
         Claimed{' '}
         <span className="bg-muted px-1 py-0.5 rounded text-xs">{domain}</span>
@@ -114,7 +111,7 @@ export default function FreeClaimsPage() {
     () => [
       {
         id: 'claimable',
-        header: 'What You Can Claim',
+        header: 'What You Can Mint',
         cell: ({ row }) => {
           const { type, domain, parentDomain } = row.original;
 
