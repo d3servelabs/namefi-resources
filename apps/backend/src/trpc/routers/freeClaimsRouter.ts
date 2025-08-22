@@ -16,7 +16,7 @@ import { createTRPCRouter, protectedProcedure } from '../base';
 import { createLogger } from '#lib/logger';
 import type { FreeClaimWorkflowMemo } from '../../temporal/workflows/free-claim.workflow';
 import { $withTransaction, db, freeClaimsTable } from '@namefi-astra/db';
-import { eq } from 'drizzle-orm';
+import { eq, ilike, or, type SQL } from 'drizzle-orm';
 import { isAfter } from 'date-fns';
 import { groupBy, isNotNil } from 'ramda';
 import type { FreeClaimSelect } from '@namefi-astra/db';
@@ -534,10 +534,29 @@ export const freeClaimsRouter = createTRPCRouter({
     }),
 
   getUserClaims: protectedProcedure.query(async ({ ctx }) => {
-    const { user } = ctx;
+    const { user, poweredByNamefiDomain } = ctx;
+
+    const where: SQL[] = [eq(freeClaimsTable.userId, user.id)];
+
+    if (poweredByNamefiDomain) {
+      const condition = or(
+        eq(
+          freeClaimsTable.parentDomain,
+          poweredByNamefiDomain as NamefiNormalizedDomain,
+        ),
+        ilike(freeClaimsTable.parentDomain, `%.${poweredByNamefiDomain}`),
+      );
+      if (!condition) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: "Server Can't Query Data",
+        });
+      }
+      where.push(condition);
+    }
 
     const claims: FreeClaimSelect[] = await db.query.freeClaimsTable.findMany({
-      where: eq(freeClaimsTable.userId, user.id),
+      where: (_, { and }) => and(...where),
     });
 
     const now = new Date();
