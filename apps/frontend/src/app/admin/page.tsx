@@ -16,6 +16,7 @@ import {
   Coins,
   History,
   Gift,
+  Clock,
 } from 'lucide-react';
 
 export default withAdminGuard(function AdminPage() {
@@ -63,6 +64,26 @@ export default withAdminGuard(function AdminPage() {
               <p className="text-sm text-muted-foreground">
                 View and track all admin-initiated workflows and their execution
                 status.
+              </p>
+            </CardContent>
+          </Card>
+        </Link>
+
+        {/* Schedules Management */}
+        <Link href="/admin/schedules" className="group">
+          <Card className="h-full transition-all hover:shadow-md hover:bg-muted/50">
+            <CardHeader className="pb-3">
+              <div className="flex items-center space-x-3">
+                <div className="p-2 rounded-lg bg-blue-100 text-blue-600 group-hover:bg-blue-200 transition-colors">
+                  <Clock className="h-5 w-5" />
+                </div>
+                <CardTitle className="text-lg">Schedules</CardTitle>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground">
+                Manage and monitor Temporal workflow schedules and automated
+                tasks.
               </p>
             </CardContent>
           </Card>

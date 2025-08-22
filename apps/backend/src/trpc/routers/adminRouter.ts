@@ -33,10 +33,9 @@ import {
 import { config } from '#lib/env';
 import { logger } from '#lib/logger';
 import { getDomainChain } from '#temporal/activities/domain/index';
-import { getViemPublicClient } from '#lib/crypto/viem-clients';
-import { pluck, values } from 'ramda';
 import { type Chain, createPublicClient, http } from 'viem';
 import { chainsToUrls } from '#lib/crypto/rpc-urls';
+import { schedulesRouter } from './admin/schedulesRouter';
 /**
  * Convert protobuf WorkflowExecutionStatus enum to readable string
  */
@@ -1844,6 +1843,9 @@ export const adminRouter = createTRPCRouter({
         });
       }
     }),
+
+  // Subrouters
+  schedules: schedulesRouter,
 });
 
 function _buildQueryFilters(
