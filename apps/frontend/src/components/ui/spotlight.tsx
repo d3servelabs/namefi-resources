@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useLayoutEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { AnimatePresence, motion } from 'motion/react';
 
@@ -27,6 +27,8 @@ export function Spotlight({
   radius = 12,
 }: SpotlightProps) {
   const [box, setBox] = useState<SpotlightBox | null>(null);
+  const rafRef = useRef<number | null>(null);
+  const lastBoxRef = useRef<SpotlightBox | null>(null);
 
   // Update spotlight position when target element changes or moves
   useLayoutEffect(() => {
@@ -63,6 +65,43 @@ export function Spotlight({
       window.removeEventListener('resize', updateSpotlightPosition);
     };
   }, [target, padding]);
+
+  // Continuously track position while visible to catch layout translations (e.g., sidebar animations)
+  useEffect(() => {
+    if (!visible || !target) return;
+
+    const tick = () => {
+      const rect = target.getBoundingClientRect();
+      const nextBox: SpotlightBox = {
+        x: Math.max(0, rect.left - padding),
+        y: Math.max(0, rect.top - padding),
+        w: rect.width + padding * 2,
+        h: rect.height + padding * 2,
+      };
+
+      const prev = lastBoxRef.current;
+      // Update only when there is a meaningful change to avoid needless re-renders
+      if (
+        !prev ||
+        Math.abs(prev.x - nextBox.x) > 0.5 ||
+        Math.abs(prev.y - nextBox.y) > 0.5 ||
+        Math.abs(prev.w - nextBox.w) > 0.5 ||
+        Math.abs(prev.h - nextBox.h) > 0.5
+      ) {
+        lastBoxRef.current = nextBox;
+        setBox(nextBox);
+      }
+
+      rafRef.current = requestAnimationFrame(tick);
+    };
+
+    rafRef.current = requestAnimationFrame(tick);
+
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
+    };
+  }, [visible, target, padding]);
 
   // Close spotlight on any key press or click outside
   useEffect(() => {
