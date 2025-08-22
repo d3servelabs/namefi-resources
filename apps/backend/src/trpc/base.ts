@@ -99,7 +99,12 @@ export const createContext = async (
       throw error;
     }
   }
-
+  // Assign tRPC-specific context to logger for request identification
+  logger.assign({
+    isTrpc: true,
+    trpcProceduresInfo: _opts.info,
+    poweredByNamefiDomain: poweredByNamefiDomain,
+  });
   return {
     req: c.req,
     res: c.res,
@@ -185,6 +190,9 @@ export const createTRPCRouter = t.router;
  */
 const timingMiddleware = t.middleware(async ({ next, path }) => {
   performance.mark('requestStart-trpc');
+  logger.assign({
+    procedurePath: path,
+  });
 
   const result = await next();
   performance.mark('requestEnd-trpc');
@@ -194,6 +202,7 @@ const timingMiddleware = t.middleware(async ({ next, path }) => {
     'requestStart-trpc',
     'requestEnd-trpc',
   );
+
   logger.trace(
     {
       context: 'TRPC',
@@ -213,7 +222,14 @@ const timingMiddleware = t.middleware(async ({ next, path }) => {
  * guarantee that a user querying is authorized, but we can still access user session data if they
  * are logged in.
  */
-export const publicProcedure = t.procedure.use(timingMiddleware);
+export const publicProcedure = t.procedure
+  .use(timingMiddleware)
+  .use(async ({ ctx, next }) => {
+    logger.assign({
+      procedureType: 'publicProcedure',
+    });
+    return next({ ctx });
+  });
 
 /**
  * Middleware for verifying a user's privy authentication token and creating a user if they don't exist.
@@ -224,8 +240,16 @@ export const verifyUserAuthAndCreation = t.middleware<TrpcContextWithUser>(
   async ({ ctx, next }) => {
     try {
       const authHeader = ctx.req?.header?.('Authorization');
-      const user = await requireUserAuth(authHeader, ctx.testUser);
+      const { user, sessionId } = await requireUserAuth(
+        authHeader,
+        ctx.testUser,
+      );
 
+      logger.assign({
+        userId: user?.id,
+        privyUserId: user?.privyUserId,
+        sessionId,
+      });
       return next({
         ctx: {
           ...ctx,
@@ -250,8 +274,15 @@ export const verifyUserAuthAndCreation = t.middleware<TrpcContextWithUser>(
 export const maybeVerifyUserAuthAndCreation =
   t.middleware<TrpcContextWithUserOrNull>(async ({ ctx, next }) => {
     const authHeader = ctx.req?.header?.('Authorization');
-    const { user } = await verifyUserAuthAndGetUser(authHeader, ctx.testUser);
-
+    const { user, sessionId } = await verifyUserAuthAndGetUser(
+      authHeader,
+      ctx.testUser,
+    );
+    logger.assign({
+      userId: user?.id,
+      privyUserId: user?.privyUserId,
+      sessionId,
+    });
     return next({
       ctx: {
         ...ctx,
@@ -268,9 +299,14 @@ export const maybeVerifyUserAuthAndCreation =
  * if so it will verify the user's authentication token and add the user to the context.
  * If the user is not authenticated, it will add a null user to the context.
  */
-export const authedOrPublicProcedure = publicProcedure.use(
-  maybeVerifyUserAuthAndCreation,
-);
+export const authedOrPublicProcedure = publicProcedure
+  .use(maybeVerifyUserAuthAndCreation)
+  .use(async ({ ctx, next }) => {
+    logger.assign({
+      procedureType: 'authedOrPublicProcedure',
+    });
+    return next({ ctx });
+  });
 
 /**
  * Protected procedure
@@ -279,8 +315,13 @@ export const authedOrPublicProcedure = publicProcedure.use(
  * guarantee that a user querying is authenticated, and that we can access user's data.
  */
 export const protectedProcedure = publicProcedure
-  .use(timingMiddleware)
-  .use(verifyUserAuthAndCreation);
+  .use(verifyUserAuthAndCreation)
+  .use(async ({ ctx, next }) => {
+    logger.assign({
+      procedureType: 'protectedProcedure',
+    });
+    return next({ ctx });
+  });
 
 /**
  * Admin procedure
@@ -291,6 +332,10 @@ export const protectedProcedure = publicProcedure
 
 export const adminProcedure = protectedProcedure.use(async ({ ctx, next }) => {
   const isAdmin = await isUserAdmin(ctx.user.privyUserId);
+  logger.assign({
+    procedureType: 'adminProcedure',
+    isAdmin,
+  });
   if (!isAdmin) {
     throw new TRPCError({
       code: 'UNAUTHORIZED',
@@ -350,6 +395,6 @@ export const verifyPrivyWebhookPayload = t.middleware(async ({ ctx, next }) => {
  * This is the piece we will use to build new webhook handlers on our tRPC API. It will
  * guarantee that a webhook querying is authenticated, and that we can access webhook's data.
  */
-export const protectedWebhookProcedure = publicProcedure
-  .use(timingMiddleware)
-  .use(verifyPrivyWebhookPayload);
+export const protectedWebhookProcedure = publicProcedure.use(
+  verifyPrivyWebhookPayload,
+);

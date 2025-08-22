@@ -1,6 +1,7 @@
 import { type UserSelect, db, usersTable } from '@namefi-astra/db';
 import { eq } from 'drizzle-orm';
 import { privyClient } from '../trpc/utils';
+import { logger } from './logger';
 
 /**
  * Shared authentication utility for verifying Privy auth tokens
@@ -9,6 +10,7 @@ import { privyClient } from '../trpc/utils';
 
 export interface AuthResult {
   user: UserSelect | null;
+  sessionId: string | null;
   error?: string;
 }
 
@@ -27,12 +29,12 @@ export async function verifyUserAuthAndGetUser(
 ): Promise<AuthResult> {
   // Return test user if provided (for testing environments)
   if (testUser) {
-    return { user: testUser };
+    return { user: testUser, sessionId: null };
   }
 
   // Extract token from Authorization header
   if (!authHeader?.startsWith('Bearer ')) {
-    return { user: null };
+    return { user: null, sessionId: null };
   }
 
   const authToken = authHeader.replace('Bearer ', '');
@@ -58,11 +60,12 @@ export async function verifyUserAuthAndGetUser(
       user = newUser[0];
     }
 
-    return { user };
+    return { user, sessionId: userClaims.sessionId ?? null };
   } catch (error) {
     // Return null user with error info for debugging
     return {
       user: null,
+      sessionId: null,
       error: error instanceof Error ? error.message : 'Authentication failed',
     };
   }
@@ -80,9 +83,9 @@ export async function verifyUserAuthAndGetUser(
 export async function requireUserAuth(
   authHeader?: string,
   testUser?: UserSelect | null,
-): Promise<UserSelect> {
+): Promise<{ user: UserSelect; sessionId: string | null }> {
   if (testUser) {
-    return testUser;
+    return { user: testUser, sessionId: null };
   }
 
   if (!authHeader?.startsWith('Bearer ')) {
@@ -95,5 +98,8 @@ export async function requireUserAuth(
     throw new Error(result.error || 'Authentication failed');
   }
 
-  return result.user;
+  return {
+    user: result.user,
+    sessionId: result.sessionId,
+  };
 }

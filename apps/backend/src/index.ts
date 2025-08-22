@@ -150,5 +150,5 @@ async function main() {
 main();
 
 function genRequestId() {
-  return `${Date.now().toString()}-${randomBytes(8).toString('base64url')}`;
+  return `${Date.now().toString()}-${randomBytes(12).toString('base64url')}`;
 }
