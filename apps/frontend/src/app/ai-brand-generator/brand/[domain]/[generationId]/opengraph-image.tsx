@@ -102,7 +102,7 @@ export default async function Image({
             <img
               src={`${config.FIRST_PARTY_DEPLOYMENT_URL}/jain-with-namefi.svg`}
               tw="h-9"
-              alt="Just AI'ng with NameFi"
+              alt="Just AI'ng with Namefi"
             />
           </div>
         </div>

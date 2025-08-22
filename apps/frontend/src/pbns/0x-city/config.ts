@@ -3,7 +3,7 @@ import { Landing } from './landing';
 
 export const originConfig: OriginConfig = {
   metadata: {
-    title: '0x.city - Powered by NameFi',
+    title: '0x.city - Powered by Namefi',
     description: 'Buy and sell 0x.city domains with ease',
     icons: [{ rel: 'icon', url: '/assets/0x-city/favicon.ico' }],
   },

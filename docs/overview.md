@@ -1,4 +1,4 @@
-# NameFi Astra Documentation
+# Namefi Astra Documentation
 
 ## Table of Contents
 - [Introduction](#introduction)
@@ -21,9 +21,9 @@
 
 ## Introduction
 
-NameFi Astra is a domain name registration and management platform that combines traditional domain registration with blockchain technology. The platform allows users to search for available domains, purchase them using either traditional payment methods (credit cards via Stripe) or cryptocurrency (NFSC tokens), and manage their DNS records.
+Namefi Astra is a domain name registration and management platform that combines traditional domain registration with blockchain technology. The platform allows users to search for available domains, purchase them using either traditional payment methods (credit cards via Stripe) or cryptocurrency (NFSC tokens), and manage their DNS records.
 
-The unique aspect of NameFi Astra is that domain ownership is represented as NFTs (Non-Fungible Tokens) on the blockchain, providing verifiable ownership records. The platform serves both individual users looking to register domains and third-party platforms that want to integrate with NameFi's domain registration capabilities through a "Powered by NameFi" model.
+The unique aspect of Namefi Astra is that domain ownership is represented as NFTs (Non-Fungible Tokens) on the blockchain, providing verifiable ownership records. The platform serves both individual users looking to register domains and third-party platforms that want to integrate with Namefi's domain registration capabilities through a "Powered by Namefi" model.
 
 ### Key Capabilities
 
@@ -35,7 +35,7 @@ The unique aspect of NameFi Astra is that domain ownership is represented as NFT
 
 ## Architecture Overview
 
-NameFi Astra is structured as a monorepo using Bun as the package manager. The architecture follows a modern web application pattern with a clear separation between frontend and backend components.
+Namefi Astra is structured as a monorepo using Bun as the package manager. The architecture follows a modern web application pattern with a clear separation between frontend and backend components.
 
 ### High-Level Architecture
 
@@ -74,7 +74,7 @@ The architecture consists of the following main components:
 
 ## Project Structure
 
-NameFi Astra is organized as a monorepo with the following structure:
+Namefi Astra is organized as a monorepo with the following structure:
 
 ```
 namefi-astra/
@@ -536,7 +536,7 @@ export const dnsRecordsRouter = createTRPCRouter({
 
 ### Payment Processing
 
-NameFi Astra supports multiple payment methods:
+Namefi Astra supports multiple payment methods:
 
 1. **Credit Card Payments**: Processed through Stripe
 2. **Cryptocurrency Payments**: Using NFSC tokens
@@ -564,7 +564,7 @@ export const paymentsRouter = createTRPCRouter({
 
 ### Multi-Tenant Architecture
 
-NameFi Astra is designed as a white-label application for parent domain owners to issue subdomains under their parent domain. This enables community building, governance, and monetization for communities, KOLs, and clubs.
+Namefi Astra is designed as a white-label application for parent domain owners to issue subdomains under their parent domain. This enables community building, governance, and monetization for communities, KOLs, and clubs.
 
 #### Multi-Tenant Implementation
 
@@ -795,7 +795,7 @@ bun run validate
 
 | Term | Description | Code Reference |
 |------|-------------|----------------|
-| **NameFi Astra** | The name of the platform for domain registration with blockchain integration | `@namefi-astra/*` |
+| **Namefi Astra** | The name of the platform for domain registration with blockchain integration | `@namefi-astra/*` |
 | **NFSC** | Namefi Service Credit, a token used for payments within the platform | `packages/utils/src/contract-addresses.ts` |
 | **Namefi NFT** | Non-fungible token representing domain ownership on the blockchain | `packages/utils/src/contract-addresses.ts` |
 | **NamefiNormalizedDomain** | Type for standardized domain name format (lowercase FQDN without terminating dot) | `packages/db/src/schema.ts` |

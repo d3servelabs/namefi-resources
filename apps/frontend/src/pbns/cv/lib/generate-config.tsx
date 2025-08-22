@@ -53,11 +53,11 @@ export function generateCVConfig(input: CVConfigInput): CVConfigOutput {
 
   const originConfigWithoutLanding: Omit<OriginConfig, 'landingPage'> = {
     metadata: {
-      title: `${domainName} - Powered by NameFi`,
+      title: `${domainName} - Powered by Namefi`,
       description,
       icons: [{ rel: 'icon', url: '/favicon.ico' }],
       openGraph: {
-        title: `${domainName} - Powered by NameFi`,
+        title: `${domainName} - Powered by Namefi`,
         description,
         type: 'website',
         images: [
@@ -78,7 +78,7 @@ export function generateCVConfig(input: CVConfigInput): CVConfigOutput {
     logo: {
       type: 'lottie',
       lottie: '/lottie/namefi_to_nfi.json',
-      alt: 'NameFi Logo',
+      alt: 'Namefi Logo',
       width: 66,
       height: 19.8,
     },

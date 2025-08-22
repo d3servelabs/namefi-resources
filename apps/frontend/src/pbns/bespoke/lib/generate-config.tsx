@@ -14,32 +14,35 @@ export function generateBespokeConfig(
 ): BespokeConfigOutput {
   const originConfigWithoutLanding: Omit<OriginConfig, 'landingPage'> = {
     metadata: {
-      title: `${input.domainName} - Powered by NameFi`,
-      description: 'Bespoke domain for your business',
+      title: `${input.domainName} - Powered by Namefi`,
+      description:
+        'Premium call-to-action domain designed for maximum conversion rates and marketing campaign success',
       icons: [{ rel: 'icon', url: '/favicon.ico' }],
       openGraph: {
-        title: `${input.domainName} - Your Digital Identity`,
-        description: 'Bespoke domain for your business',
+        title: `${input.domainName} - Powered by Namefi`,
+        description:
+          'High-converting call-to-action domain perfect for campaigns, landing pages, and driving results',
         type: 'website',
         images: [
           {
             url: input.openGraphImage,
             width: 1200,
             height: 630,
-            alt: `${input.domainName} - Powered by NameFi`,
+            alt: `${input.domainName} - Powered by Namefi`,
           },
         ],
       },
       twitter: {
         card: 'summary_large_image',
-        title: `${input.domainName} - Your Digital Identity`,
-        description: 'Bespoke domain for your business',
+        title: `${input.domainName} - Powered by Namefi`,
+        description:
+          'High-converting call-to-action domain perfect for campaigns, landing pages, and driving results',
       },
     },
     logo: {
       type: 'lottie',
       lottie: '/lottie/namefi_to_nfi.json',
-      alt: 'NameFi Logo',
+      alt: 'Namefi Logo',
       width: 66,
       height: 19.8,
     },
