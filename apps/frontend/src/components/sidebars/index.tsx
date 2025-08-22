@@ -15,6 +15,7 @@ import { SidebarRail } from '@/components/ui/sidebar-rail';
 import { useAuth } from '@/hooks/use-auth';
 import { useRecentDomains } from '@/hooks/use-recent-domains';
 import { useWishlist } from '@/hooks/use-wishlist';
+import { useFreeMints } from '@/hooks/use-free-mints';
 import type { NavItem } from '@/lib/types/nav-item';
 import { useTRPC } from '@/lib/trpc';
 import { useQuery } from '@tanstack/react-query';
@@ -53,6 +54,12 @@ export function AppSidebar() {
 
   // Move useWishlist to top level
   const { wishlistData, isWishlistLoading } = useWishlist();
+
+  // Free mints data
+  const {
+    availableCount: availableFreeMintsCount,
+    isLoading: isFreeMintsLoading,
+  } = useFreeMints();
 
   const {
     data,
@@ -118,9 +125,26 @@ export function AppSidebar() {
               : undefined,
         };
       }
+      if (item.href === '/free-mints') {
+        return {
+          ...item,
+          badge:
+            !(isFreeMintsLoading || isAuthLoading) &&
+            availableFreeMintsCount > 0
+              ? { content: availableFreeMintsCount }
+              : undefined,
+        };
+      }
       return item;
     });
-  }, [showManageEntrypoint, wishlistData, isWishlistLoading, isAuthLoading]);
+  }, [
+    showManageEntrypoint,
+    wishlistData,
+    isWishlistLoading,
+    isAuthLoading,
+    isFreeMintsLoading,
+    availableFreeMintsCount,
+  ]);
 
   const isCollapsed = state === 'collapsed';
 

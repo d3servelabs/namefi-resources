@@ -1,10 +1,9 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { Gift } from 'lucide-react';
-import { useTRPC } from '@/lib/trpc';
-import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '@/hooks/use-auth';
+import { useFreeMints, type FreeMint } from '@/hooks/use-free-mints';
 import { cn } from '@/lib/cn';
 import { AnimatePresence, motion } from 'motion/react';
 import NumberFlow from '@number-flow/react';
@@ -32,66 +31,32 @@ export function FreeMintsDropdown({
   disableBackdropBlur?: boolean;
 }) {
   const { isAuthenticated } = useAuth();
-  const trpc = useTRPC();
   const { startCampaignSearch } = useFreeMintsGuidance();
   const router = useRouter();
 
-  const claimsQuery = useQuery({
-    ...trpc.freeClaims.getUserClaims.queryOptions(),
-    enabled: isAuthenticated,
+  const { availableCount, freeMints } = useFreeMints({
     staleTime: 60_000,
     refetchOnWindowFocus: false,
   });
 
-  const { availableCount, singles, campaigns } = useMemo(() => {
-    const data = claimsQuery.data;
-    let count = 0;
-    const singleClaims: Array<{
-      id: string;
-      domain: string;
-      isExpired: boolean;
-      claimingStatus: 'IDLE' | 'CLAIMING' | 'CLAIMED';
-    }> = [];
-    const campaignClaims: Array<{
-      key: string;
-      parentDomain: string;
-      available: number;
-    }> = [];
-    if (data) {
-      for (const item of data) {
-        if (!item) continue;
-        if (item.type === 'singleExactDomain') {
-          const c = item.claim;
-          const domain = c.exactDomainName ?? c.claimedDomainName;
-          const isClaimable = !c.isExpired && c.claimingStatus === 'IDLE';
-          if (domain && isClaimable) {
-            singleClaims.push({
-              id: c.id,
-              domain,
-              isExpired: c.isExpired,
-              claimingStatus: c.claimingStatus,
-            });
-          }
-          if (isClaimable) count += 1;
-        } else if (item.type === 'campaignParentDomain') {
-          const available = item.counts.available;
-          if (available > 0) {
-            campaignClaims.push({
-              key: item.groupOrCampaignKey,
-              parentDomain: String(item.parentDomain),
-              available,
-            });
-            count += available;
-          }
-        }
+  // Filter for available free mints only
+  const availableFreeMints = useMemo(() => {
+    return freeMints.filter(
+      (item) => !item.isExpired && item.claimingStatus === 'IDLE',
+    );
+  }, [freeMints]);
+
+  // Handle claim action
+  const handleClaimAction = useCallback(
+    (freeMint: FreeMint) => {
+      if (freeMint.type === 'single') {
+        router.push(`/claim/${encodeURIComponent(freeMint.domain)}`);
+      } else if (freeMint.type === 'campaign' && freeMint.parentDomain) {
+        startCampaignSearch(freeMint.parentDomain);
       }
-    }
-    return {
-      availableCount: count,
-      singles: singleClaims,
-      campaigns: campaignClaims,
-    };
-  }, [claimsQuery.data]);
+    },
+    [startCampaignSearch, router],
+  );
 
   return (
     <AnimatePresence initial={false} mode="popLayout">
@@ -140,46 +105,31 @@ export function FreeMintsDropdown({
               <DropdownMenuLabel>Free Mints</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuGroup>
-                {singles.map((s) => (
+                {availableFreeMints.map((freeMint) => (
                   <DropdownMenuItem
-                    key={s.id}
+                    key={freeMint.id}
                     className="flex justify-between"
-                    onClick={() =>
-                      router.push(`/claim/${encodeURIComponent(s.domain)}`)
-                    }
-                  >
-                    <span className="truncate">
-                      <span className="font-medium bg-muted px-1.5 py-0.5 rounded text-sm">
-                        {s.domain}
-                      </span>
-                    </span>
-                    <Button
-                      asChild={true}
-                      size="sm"
-                      className="shrink-0 bg-brand-primary hover:bg-brand-primary/90 text-secondary-foreground"
-                    >
-                      <Link href={`/claim/${encodeURIComponent(s.domain)}`}>
-                        Claim
-                      </Link>
-                    </Button>
-                  </DropdownMenuItem>
-                ))}
-                {campaigns.map((c) => (
-                  <DropdownMenuItem
-                    key={`${c.key}-${c.parentDomain}`}
-                    className="flex justify-between"
-                    onClick={() => startCampaignSearch(c.parentDomain)}
+                    onClick={() => handleClaimAction(freeMint)}
                   >
                     <span className="truncate text-sm">
-                      Any{' '}
-                      <span className="font-medium bg-muted px-1.5 py-0.5 rounded">
-                        .{c.parentDomain}
-                      </span>
+                      {freeMint.type === 'single' ? (
+                        <span className="font-medium bg-muted px-1.5 py-0.5 rounded">
+                          {freeMint.domain}
+                        </span>
+                      ) : freeMint.type === 'campaign' &&
+                        freeMint.parentDomain ? (
+                        <>
+                          Any{' '}
+                          <span className="font-medium bg-muted px-1.5 py-0.5 rounded">
+                            .{freeMint.parentDomain}
+                          </span>
+                        </>
+                      ) : null}
                     </span>
                     <Button
                       size="sm"
                       className="shrink-0 bg-brand-primary hover:bg-brand-primary/90 text-secondary-foreground"
-                      onClick={() => startCampaignSearch(c.parentDomain)}
+                      onClick={() => handleClaimAction(freeMint)}
                     >
                       Claim
                     </Button>

@@ -14,9 +14,7 @@ import {
 import { Badge } from '@/components/ui/shadcn/badge';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
 import { useAuth } from '@/hooks/use-auth';
-import { type AppRouterOutput, useTRPC } from '@/lib/trpc';
-import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
-import { useQuery } from '@tanstack/react-query';
+import { useFreeMints, type FreeMint } from '@/hooks/use-free-mints';
 import {
   type ColumnDef,
   flexRender,
@@ -31,22 +29,7 @@ import { Button } from '@/components/ui/shadcn/button';
 import Link from 'next/link';
 import { useFreeMintsGuidance } from '@/components/providers/free-mints-guidance';
 
-type GetUserClaimsResponse = AppRouterOutput['freeClaims']['getUserClaims'];
-
-type ClaimRow = {
-  id: string;
-  type: 'single' | 'campaign';
-  groupOrCampaignKey: string;
-  domain: string;
-  parentDomain: NamefiNormalizedDomain | null;
-  reason: string | null;
-  claimingStatus: 'IDLE' | 'CLAIMING' | 'CLAIMED';
-  isExpired: boolean;
-  expirationDate: Date | null;
-  createdAt: Date;
-};
-
-function ClaimButton({ row }: { row: ClaimRow }) {
+function ClaimButton({ row }: { row: FreeMint }) {
   const { claimingStatus, isExpired, domain, type, parentDomain } = row;
   const { startCampaignSearch } = useFreeMintsGuidance();
 
@@ -119,60 +102,15 @@ function ClaimButton({ row }: { row: ClaimRow }) {
 
 export default function FreeClaimsPage() {
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
-  const trpc = useTRPC();
 
-  const claimsQuery = useQuery({
-    ...trpc.freeClaims.getUserClaims.queryOptions(),
-    enabled: isAuthenticated,
-  });
+  const { freeMints: rows, isLoading: isFreeMintsLoading } = useFreeMints();
 
   const isLoading = useMemo(
-    () => isAuthLoading || claimsQuery.isLoading,
-    [isAuthLoading, claimsQuery.isLoading],
+    () => isAuthLoading || isFreeMintsLoading,
+    [isAuthLoading, isFreeMintsLoading],
   );
 
-  const rows: ClaimRow[] = useMemo(() => {
-    const data: GetUserClaimsResponse | undefined = claimsQuery.data;
-    if (!data) return [];
-
-    const flattened: ClaimRow[] = [];
-    for (const item of data) {
-      if (!item) continue;
-      if (item.type === 'singleExactDomain') {
-        const c = item.claim;
-        flattened.push({
-          id: c.id,
-          type: 'single',
-          groupOrCampaignKey: c.groupOrCampaignKey,
-          domain: c.exactDomainName ?? c.claimedDomainName ?? '-',
-          parentDomain: c.parentDomain ?? null,
-          reason: c.reason,
-          claimingStatus: c.claimingStatus,
-          isExpired: c.isExpired,
-          expirationDate: c.expirationDate,
-          createdAt: c.createdAt,
-        });
-      } else if (item.type === 'campaignParentDomain') {
-        for (const c of item.claims) {
-          flattened.push({
-            id: c.id,
-            type: 'campaign',
-            groupOrCampaignKey: item.groupOrCampaignKey,
-            domain: c.exactDomainName ?? c.claimedDomainName ?? '-',
-            parentDomain: item.parentDomain,
-            reason: c.reason ?? item.reason,
-            claimingStatus: c.claimingStatus,
-            isExpired: c.isExpired,
-            expirationDate: c.expirationDate,
-            createdAt: c.createdAt,
-          });
-        }
-      }
-    }
-    return flattened;
-  }, [claimsQuery.data]);
-
-  const columns = useMemo<ColumnDef<ClaimRow>[]>(
+  const columns = useMemo<ColumnDef<FreeMint>[]>(
     () => [
       {
         id: 'claimable',
