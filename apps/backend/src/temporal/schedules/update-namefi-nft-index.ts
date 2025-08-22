@@ -19,6 +19,7 @@ const config: ScheduleConfig<typeof updateNamefiNftIndexWorkflow> = {
   name: 'Update Namefi NFT Index',
   description:
     'Updates the NFT index every 5 minutes to keep track of minted domains',
+  groupId: 'nft-indexing',
   cronExpressions: ['*/5 * * * *'], // every 5 minutes
   taskQueue: TEMPORAL_QUEUES.INDEXERS,
   overlapPolicy: ScheduleOverlapPolicy.SKIP, // Critical for debouncing

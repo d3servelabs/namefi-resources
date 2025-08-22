@@ -70,6 +70,10 @@ export default function SchedulesPage() {
     refetchInterval: 30000,
   });
 
+  const { data: scheduleGroups = [], isLoading: groupsLoading } = useQuery({
+    ...trpc.admin.schedules.getAllScheduleGroups.queryOptions(),
+  });
+
   const submitScheduleMutation = useMutation({
     ...trpc.admin.schedules.submitSchedule.mutationOptions(),
     onSuccess: (data) => {
@@ -146,14 +150,14 @@ export default function SchedulesPage() {
     };
   });
 
-  // Group schedules by category
+  // Group schedules by category for tabs
   const categories = [...new Set(schedules.map((s) => s.config.category))];
   const filteredSchedules =
     activeTab === 'all'
       ? schedulesWithStatus
       : schedulesWithStatus.filter((s) => s.config.category === activeTab);
 
-  const isLoading = schedulesLoading || statusesLoading;
+  const isLoading = schedulesLoading || statusesLoading || groupsLoading;
 
   return (
     <div className="container mx-auto py-8">
@@ -219,46 +223,131 @@ export default function SchedulesPage() {
               ))}
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredSchedules.map((schedule) => (
-                <ScheduleCard
-                  key={schedule.config.scheduleId}
-                  scheduleStatus={schedule.status}
-                  scheduleConfig={schedule.config}
-                  onSubmit={() =>
-                    submitScheduleMutation.mutate({
-                      scheduleId: schedule.config.scheduleId,
-                    })
-                  }
-                  onTrigger={() =>
-                    triggerScheduleMutation.mutate({
-                      scheduleId: schedule.config.scheduleId,
-                    })
-                  }
-                  onPause={() =>
-                    pauseScheduleMutation.mutate({
-                      scheduleId: schedule.config.scheduleId,
-                    })
-                  }
-                  onUnpause={() =>
-                    unpauseScheduleMutation.mutate({
-                      scheduleId: schedule.config.scheduleId,
-                    })
-                  }
-                  onDelete={() =>
-                    deleteScheduleMutation.mutate({
-                      scheduleId: schedule.config.scheduleId,
-                    })
-                  }
-                  isLoading={
-                    submitScheduleMutation.isPending ||
-                    triggerScheduleMutation.isPending ||
-                    pauseScheduleMutation.isPending ||
-                    unpauseScheduleMutation.isPending ||
-                    deleteScheduleMutation.isPending
-                  }
-                />
-              ))}
+            <div className="space-y-8">
+              {activeTab === 'all'
+                ? scheduleGroups.map((group) => {
+                    const groupSchedules = schedulesWithStatus.filter(
+                      (s) => s.config.groupId === group.groupId,
+                    );
+                    return (
+                      <div key={group.groupId} className="space-y-4">
+                        <div className="flex items-center space-x-4">
+                          <h2 className="text-xl font-semibold">
+                            {group.name}
+                          </h2>
+                          <div className="flex-1 h-px bg-border" />
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                          {groupSchedules.map((schedule) => (
+                            <ScheduleCard
+                              key={schedule.config.scheduleId}
+                              scheduleStatus={schedule.status}
+                              scheduleConfig={schedule.config}
+                              onSubmit={() =>
+                                submitScheduleMutation.mutate({
+                                  scheduleId: schedule.config.scheduleId,
+                                })
+                              }
+                              onTrigger={() =>
+                                triggerScheduleMutation.mutate({
+                                  scheduleId: schedule.config.scheduleId,
+                                })
+                              }
+                              onPause={() =>
+                                pauseScheduleMutation.mutate({
+                                  scheduleId: schedule.config.scheduleId,
+                                })
+                              }
+                              onUnpause={() =>
+                                unpauseScheduleMutation.mutate({
+                                  scheduleId: schedule.config.scheduleId,
+                                })
+                              }
+                              onDelete={() =>
+                                deleteScheduleMutation.mutate({
+                                  scheduleId: schedule.config.scheduleId,
+                                })
+                              }
+                              isLoading={
+                                submitScheduleMutation.isPending ||
+                                triggerScheduleMutation.isPending ||
+                                pauseScheduleMutation.isPending ||
+                                unpauseScheduleMutation.isPending ||
+                                deleteScheduleMutation.isPending
+                              }
+                            />
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  })
+                : (() => {
+                    // Group filtered schedules by their groupId
+                    const groupsInCategory = [
+                      ...new Set(
+                        filteredSchedules.map((s) => s.config.groupId),
+                      ),
+                    ];
+                    return groupsInCategory.map((groupId) => {
+                      const group = scheduleGroups.find(
+                        (g) => g.groupId === groupId,
+                      );
+                      const groupSchedules = filteredSchedules.filter(
+                        (s) => s.config.groupId === groupId,
+                      );
+                      return (
+                        <div key={groupId} className="space-y-4">
+                          <div className="flex items-center space-x-4">
+                            <h2 className="text-xl font-semibold">
+                              {group?.name || groupId}
+                            </h2>
+                            <div className="flex-1 h-px bg-border" />
+                          </div>
+                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {groupSchedules.map((schedule) => (
+                              <ScheduleCard
+                                key={schedule.config.scheduleId}
+                                scheduleStatus={schedule.status}
+                                scheduleConfig={schedule.config}
+                                onSubmit={() =>
+                                  submitScheduleMutation.mutate({
+                                    scheduleId: schedule.config.scheduleId,
+                                  })
+                                }
+                                onTrigger={() =>
+                                  triggerScheduleMutation.mutate({
+                                    scheduleId: schedule.config.scheduleId,
+                                  })
+                                }
+                                onPause={() =>
+                                  pauseScheduleMutation.mutate({
+                                    scheduleId: schedule.config.scheduleId,
+                                  })
+                                }
+                                onUnpause={() =>
+                                  unpauseScheduleMutation.mutate({
+                                    scheduleId: schedule.config.scheduleId,
+                                  })
+                                }
+                                onDelete={() =>
+                                  deleteScheduleMutation.mutate({
+                                    scheduleId: schedule.config.scheduleId,
+                                  })
+                                }
+                                isLoading={
+                                  submitScheduleMutation.isPending ||
+                                  triggerScheduleMutation.isPending ||
+                                  pauseScheduleMutation.isPending ||
+                                  unpauseScheduleMutation.isPending ||
+                                  deleteScheduleMutation.isPending
+                                }
+                              />
+                            ))}
+                          </div>
+                        </div>
+                      );
+                    });
+                  })()}
             </div>
           )}
 

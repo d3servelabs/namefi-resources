@@ -18,6 +18,7 @@ const config: ScheduleConfig<typeof campaignStatusWorkflow> = {
   workflowId: 'campaign-status',
   name: 'Campaign Status',
   description: 'Checks for campaigns that need status updates every 15 minutes',
+  groupId: 'hunt-campaigns',
   cronExpressions: ['*/15 * * * *'], // every 15 minutes
   taskQueue: TEMPORAL_QUEUES.HUNT,
   overlapPolicy: ScheduleOverlapPolicy.SKIP, // Skip if previous run is still executing

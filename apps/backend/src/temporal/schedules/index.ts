@@ -5,7 +5,7 @@
  * through admin dashboards and automated tools.
  */
 
-import type { NamefiSchedule } from './types';
+import type { NamefiSchedule, ScheduleGroup } from './types';
 
 // Import all schedule instances
 import { updateDomainIndexSchedule } from './update-domain-index';
@@ -26,6 +26,64 @@ import {
 } from './hunt/period-award';
 
 const logger = createLogger({ name: 'schedules' });
+
+/**
+ * Registry of schedule groups for organizing related schedules
+ * Key is the group ID, value is the group configuration
+ */
+export const SCHEDULE_GROUP_REGISTRY: Record<string, ScheduleGroup> = {
+  'domain-indexing': {
+    groupId: 'domain-indexing',
+    name: 'Domain Indexing',
+    description:
+      'Schedules that index and update domain data from various sources',
+    category: 'indexer',
+    priority: 1,
+  },
+  'nft-indexing': {
+    groupId: 'nft-indexing',
+    name: 'NFT Indexing',
+    description: 'Schedules that track and index NFT-related domain data',
+    category: 'indexer',
+    priority: 2,
+  },
+  'data-processing': {
+    groupId: 'data-processing',
+    name: 'Data Processing',
+    description:
+      'Schedules that enhance domains with AI analysis and categorization',
+    category: 'indexer',
+    priority: 3,
+  },
+  'hunt-campaigns': {
+    groupId: 'hunt-campaigns',
+    name: 'Hunt Campaigns',
+    description: 'Schedules that manage campaign status and awards',
+    category: 'hunt',
+    priority: 1,
+  },
+  'period-awards': {
+    groupId: 'period-awards',
+    name: 'Period Awards',
+    description: 'Schedules that award top domains for different time periods',
+    category: 'hunt',
+    priority: 2,
+  },
+  'user-notifications': {
+    groupId: 'user-notifications',
+    name: 'User Notifications',
+    description: 'Schedules that sync user preferences and send notifications',
+    category: 'notification',
+    priority: 1,
+  },
+  'system-reports': {
+    groupId: 'system-reports',
+    name: 'System Reports',
+    description: 'Schedules that generate system health and monitoring reports',
+    category: 'reporting',
+    priority: 1,
+  },
+};
 
 /**
  * Registry of all schedules in the system
@@ -116,6 +174,40 @@ export async function submitAllSchedules(): Promise<void> {
 }
 
 /**
+ * Get schedule group by ID, with fallback to a default group
+ */
+export function getScheduleGroup(groupId: string | undefined): ScheduleGroup {
+  if (!groupId || !SCHEDULE_GROUP_REGISTRY[groupId]) {
+    return {
+      groupId: 'ungrouped',
+      name: 'Other Schedules',
+      description: 'Individual schedules not part of a specific group',
+      category: 'maintenance',
+      priority: 999,
+    };
+  }
+
+  return SCHEDULE_GROUP_REGISTRY[groupId];
+}
+
+/**
+ * Get all schedule groups, sorted by priority
+ */
+export function getAllRegisteredScheduleGroups(): ScheduleGroup[] {
+  const groups = Object.values(SCHEDULE_GROUP_REGISTRY);
+  return groups.sort((a, b) => (a.priority || 999) - (b.priority || 999));
+}
+
+/**
+ * Get schedules by group ID
+ */
+export function getSchedulesByGroup(groupId?: string): NamefiSchedule<any>[] {
+  return getAllSchedules().filter(
+    (schedule) => schedule.config.groupId === groupId,
+  );
+}
+
+/**
  * Get status of all schedules
  */
 export async function getAllScheduleStatuses() {
@@ -203,4 +295,9 @@ export {
 } from './hunt/period-award';
 
 // Export types for use in admin interfaces
-export type { NamefiSchedule, ScheduleConfig, ScheduleStatus } from './types';
+export type {
+  NamefiSchedule,
+  ScheduleConfig,
+  ScheduleStatus,
+  ScheduleGroup,
+} from './types';

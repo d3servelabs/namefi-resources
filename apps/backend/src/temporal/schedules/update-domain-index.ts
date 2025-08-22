@@ -19,6 +19,7 @@ const config: ScheduleConfig<typeof updateDomainIndexWorkflow> = {
   name: 'Domain Index Update',
   description:
     'Updates the domain index by fetching all domains from registrars and inserting them into the database',
+  groupId: 'domain-indexing',
   cronExpressions: ['0 * * * *'], // every hour at minute 0
   taskQueue: TEMPORAL_QUEUES.INDEXERS,
   overlapPolicy: ScheduleOverlapPolicy.SKIP,

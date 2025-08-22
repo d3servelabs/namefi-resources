@@ -20,6 +20,7 @@ const config: ScheduleConfig<typeof nftManagementDailyReportWorkflow> = {
   name: 'NFT Management Daily Report',
   description:
     'Daily NFT management report providing insights into NFT health and critical issues',
+  groupId: 'system-reports',
   cronExpressions: ['0 14 * * *'], // Run daily at 14:00 UTC (2:00 PM UTC)
   taskQueue: TEMPORAL_QUEUES.INDEXERS,
   overlapPolicy: ScheduleOverlapPolicy.SKIP, // Skip if previous execution is still running

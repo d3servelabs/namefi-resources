@@ -18,6 +18,7 @@ const config: ScheduleConfig<typeof campaignAwardWorkflow> = {
   workflowId: 'campaign-award',
   name: 'Campaign Award',
   description: 'Checks for campaigns that need to be awarded every hour',
+  groupId: 'hunt-campaigns',
   cronExpressions: ['5 * * * *'], // every hour at minute 5
   taskQueue: TEMPORAL_QUEUES.HUNT,
   overlapPolicy: ScheduleOverlapPolicy.SKIP, // Skip if previous run is still executing

@@ -6,6 +6,9 @@ import {
   SCHEDULE_REGISTRY,
   getAllSchedules,
   getAllScheduleStatuses,
+  getAllRegisteredScheduleGroups,
+  getSchedulesByGroup,
+  getScheduleGroup,
 } from '../../../temporal/schedules';
 
 export const schedulesRouter = createTRPCRouter({
@@ -275,6 +278,60 @@ export const schedulesRouter = createTRPCRouter({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to get schedule status',
           cause: error,
+        });
+      }
+    }),
+
+  getAllScheduleGroups: adminProcedure.query(async () => {
+    try {
+      return getAllRegisteredScheduleGroups();
+    } catch (error) {
+      logger.error({ error }, 'Failed to get schedule groups');
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'Failed to retrieve schedule groups',
+      });
+    }
+  }),
+
+  getSchedulesByGroup: adminProcedure
+    .input(
+      z.object({
+        groupId: z.string().optional(),
+      }),
+    )
+    .query(async ({ input }) => {
+      try {
+        return getSchedulesByGroup(input.groupId);
+      } catch (error) {
+        logger.error(
+          { error, groupId: input.groupId },
+          'Failed to get schedules by group',
+        );
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to retrieve schedules by group',
+        });
+      }
+    }),
+
+  getScheduleGroup: adminProcedure
+    .input(
+      z.object({
+        groupId: z.string().optional(),
+      }),
+    )
+    .query(async ({ input }) => {
+      try {
+        return getScheduleGroup(input.groupId);
+      } catch (error) {
+        logger.error(
+          { error, groupId: input.groupId },
+          'Failed to get schedule group',
+        );
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to retrieve schedule group',
         });
       }
     }),

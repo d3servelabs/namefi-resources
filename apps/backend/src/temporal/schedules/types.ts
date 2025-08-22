@@ -15,6 +15,8 @@ export interface ScheduleConfig<T extends Workflow> {
   name: string;
   /** Description of what this schedule does */
   description: string;
+  /** Group identifier for related schedules (optional) */
+  groupId?: string;
   /** Cron expressions for when to run */
   cronExpressions: string[];
   /** Task queue to execute on */
@@ -77,4 +79,17 @@ export interface NamefiSchedule<T extends Workflow>
   extends ScheduleOperations<T> {
   /** Schedule configuration */
   config: ScheduleConfig<T>;
+}
+
+export interface ScheduleGroup {
+  /** Unique group identifier */
+  groupId: string;
+  /** Display name for the group */
+  name: string;
+  /** Description of what this group contains */
+  description: string;
+  /** Category this group belongs to */
+  category: 'indexer' | 'reporting' | 'notification' | 'hunt' | 'maintenance';
+  /** Priority for display ordering (lower = higher priority) */
+  priority?: number;
 }

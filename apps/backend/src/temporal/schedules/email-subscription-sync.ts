@@ -19,6 +19,7 @@ const config: ScheduleConfig<typeof syncUsersToEmailSubscriptionWorkflow> = {
   name: 'Email Subscription Sync',
   description:
     'Regularly syncs users to the email service based on their opt-in preferences',
+  groupId: 'user-notifications',
   cronExpressions: ['0 8,20 * * *'], // every day at 8 AM and 8 PM
   taskQueue: TEMPORAL_QUEUES.INDEXERS,
   overlapPolicy: ScheduleOverlapPolicy.SKIP, // Critical for debouncing

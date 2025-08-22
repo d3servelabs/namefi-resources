@@ -22,6 +22,7 @@ const config: ScheduleConfig<typeof generateAndUpdateDataForDomainsWorkflow> = {
   name: 'Generate and Update Data for Domains',
   description:
     'Combines category assignment, AI analysis, and marketplace data updates for domains',
+  groupId: 'data-processing',
   cronExpressions: ['0 * * * *'], // every hour at minute 0
   taskQueue: TEMPORAL_QUEUES.INDEXERS,
   overlapPolicy: ScheduleOverlapPolicy.SKIP, // Critical for debouncing - prevents overlapping runs

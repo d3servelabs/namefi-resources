@@ -17,6 +17,7 @@ const dailyAwardConfig: ScheduleConfig<typeof periodAwardWorkflow> = {
   workflowId: 'period-award-daily',
   name: 'Daily Period Award',
   description: 'Awards top domains from the previous day',
+  groupId: 'period-awards',
   cronExpressions: ['5 0 * * *'], // every day at 00:05
   taskQueue: TEMPORAL_QUEUES.HUNT,
   overlapPolicy: ScheduleOverlapPolicy.SKIP,
@@ -33,6 +34,7 @@ const weeklyAwardConfig: ScheduleConfig<typeof periodAwardWorkflow> = {
   workflowId: 'period-award-weekly',
   name: 'Weekly Period Award',
   description: 'Awards top domains from the previous week',
+  groupId: 'period-awards',
   cronExpressions: ['10 0 * * 1'], // every Monday at 00:10
   taskQueue: TEMPORAL_QUEUES.HUNT,
   overlapPolicy: ScheduleOverlapPolicy.SKIP,
@@ -49,6 +51,7 @@ const monthlyAwardConfig: ScheduleConfig<typeof periodAwardWorkflow> = {
   workflowId: 'period-award-monthly',
   name: 'Monthly Period Award',
   description: 'Awards top domains from the previous month',
+  groupId: 'period-awards',
   cronExpressions: ['15 0 1 * *'], // 1st of every month at 00:15
   taskQueue: TEMPORAL_QUEUES.HUNT,
   overlapPolicy: ScheduleOverlapPolicy.SKIP,
@@ -65,6 +68,7 @@ const yearlyAwardConfig: ScheduleConfig<typeof periodAwardWorkflow> = {
   workflowId: 'period-award-yearly',
   name: 'Yearly Period Award',
   description: 'Awards top domains from the previous year',
+  groupId: 'period-awards',
   cronExpressions: ['20 0 1 1 *'], // January 1st at 00:20
   taskQueue: TEMPORAL_QUEUES.HUNT,
   overlapPolicy: ScheduleOverlapPolicy.SKIP,
