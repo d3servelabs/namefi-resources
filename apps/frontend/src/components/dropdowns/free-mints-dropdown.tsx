@@ -115,6 +115,7 @@ export function FreeMintsDropdown({
             <DropdownMenuTrigger asChild={true}>
               <div className="relative">
                 <ShinyButton
+                  variant="ghost"
                   className={cn(
                     'relative h-9 text-secondary-foreground hover:bg-sidebar-accent shadow-none hover:backdrop-blur-none',
                     disableBackdropBlur && 'backdrop-blur-none',

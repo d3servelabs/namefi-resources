@@ -21,6 +21,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { isDomainImportable } from '@namefi-astra/backend/trpc/types';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { useSearchFromQuery } from '@/hooks/use-search-from-query';
+import { useFreeMintsGuidance } from '@/components/providers/free-mints-guidance';
 
 const NO_OP = () => {};
 
@@ -124,6 +125,17 @@ export const Landing: LandingComponent = ({ origin }) => {
       })
       .filter((item): item is NonNullable<typeof item> => item !== null);
   }, [searchMode, domains, domainInfos, eppAuthorizationCodes]);
+
+  const { consumePendingFreeMintsSearch, startFreeMintsSearchGuidance } =
+    useFreeMintsGuidance();
+
+  // Check for pending guidance after navigation
+  useEffect(() => {
+    const pending = consumePendingFreeMintsSearch();
+    if (pending) {
+      startFreeMintsSearchGuidance(pending);
+    }
+  }, [consumePendingFreeMintsSearch, startFreeMintsSearchGuidance]);
 
   if (!origin.thirdPartyHostname) {
     // Return loading state or null while origin info is loading

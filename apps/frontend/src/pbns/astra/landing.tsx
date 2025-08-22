@@ -106,10 +106,7 @@ export const Landing: LandingComponent = ({ origin }) => {
   useEffect(() => {
     const pending = consumePendingFreeMintsSearch();
     if (pending) {
-      // Small delay to ensure all handlers are registered
-      setTimeout(() => {
-        startFreeMintsSearchGuidance(pending);
-      }, 0);
+      startFreeMintsSearchGuidance(pending);
     }
   }, [consumePendingFreeMintsSearch, startFreeMintsSearchGuidance]);
 

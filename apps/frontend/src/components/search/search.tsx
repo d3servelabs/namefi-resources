@@ -5,9 +5,13 @@ import { Card, CardContent } from '@/components/ui/shadcn/card';
 import { Input } from '@/components/ui/shadcn/input';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
 import { Badge } from '@/components/ui/shadcn/badge';
+import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from '@/components/ui/shadcn/tooltip';
 import { PasswordInput } from '@/components/password-input';
 import { useCartRow } from '@/hooks/use-cart-row';
-import { useSearch } from '@/hooks/use-search';
 import { config } from '@/lib/env';
 import { cn } from '@/lib/cn';
 import {
@@ -28,21 +32,16 @@ import {
   type FC,
   useCallback,
   useMemo,
-  useState,
   useRef,
+  useState,
   type ClipboardEvent,
   type FormEvent,
 } from 'react';
-import FloatingCart from '../floating-cart';
 import { NamefiButton } from '../buttons/namefi-button';
 import { AnimatedCartButton } from '../buttons/animated-cart-button';
 import { useInteractionLoggers } from '@/components/providers/analytics';
 import { Placeholder } from './placeholder';
-import type {
-  ImportQuery,
-  LandingComponent,
-  EppAuthorizationCodesFormData,
-} from './types';
+import type { ImportQuery } from './types';
 import {
   isDomainImportable,
   isDomainUnsupported,
@@ -55,13 +54,10 @@ import { toUnicodeDomainName } from '@namefi-astra/registrars/lib/data/validatio
 import { SearchMode } from './types';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/shadcn/tabs';
 import { Separator } from '@/components/ui/shadcn/separator';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { eppAuthorizationCodesFormSchema } from './types';
 import { useEffect } from 'react';
-import { useSearchFromQuery } from '@/hooks/use-search-from-query';
 import { AnimatePresence, motion } from 'motion/react';
 import { useFreeMintsGuidance } from '@/components/providers/free-mints-guidance';
+import { Spotlight } from '@/components/ui/spotlight';
 
 // Components
 export const SearchHeader: FC<{
@@ -169,7 +165,28 @@ export const SearchInput: FC<{
   isFirstPartyOrigin,
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const { registerFocusSearchInput } = useFreeMintsGuidance();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { registerFocusSearchInput, registerFreeMintsGuidanceStarter } =
+    useFreeMintsGuidance();
+  const [isFreeMintGuidanceVisible, setIsFreeMintGuidanceVisible] =
+    useState(false);
+
+  const displayFreeMintTooltip = useCallback(() => {
+    setIsFreeMintGuidanceVisible(true);
+    // Auto-hide tooltip after 3 seconds
+    setTimeout(() => {
+      setIsFreeMintGuidanceVisible(false);
+    }, 3000);
+  }, []);
+
+  useEffect(() => {
+    registerFreeMintsGuidanceStarter(displayFreeMintTooltip);
+  }, [registerFreeMintsGuidanceStarter, displayFreeMintTooltip]);
+
+  const clearParentDomainAndDismissFreeMintGuidance = useCallback(() => {
+    setIsFreeMintGuidanceVisible(false);
+    onClearParentDomain?.();
+  }, [onClearParentDomain]);
 
   const handleSearchClick = useCallback(() => {
     const trimmedQuery = query.trim();
@@ -218,132 +235,167 @@ export const SearchInput: FC<{
   );
 
   return (
-    <div className="flex w-full max-w-3xl mx-auto gap-1 items-center bg-neutral-900 backdrop-blur-lg border border-neutral-800 rounded-lg p-3">
-      <div className="flex items-center flex-1 overflow-hidden rounded-lg">
-        <div className="relative w-full rounded-md h-12 flex items-center">
-          <div className="flex items-center w-full h-full px-3">
-            {isLoading ? (
-              <Loader2 className="h-5 w-5 text-gray-400 shrink-0 animate-spin" />
-            ) : searchMode === SearchMode.IMPORT ? (
-              <SearchIcon className="h-5 w-5 text-gray-400 shrink-0" />
-            ) : (
-              <SearchIcon className="h-5 w-5 text-gray-400 shrink-0" />
-            )}
-            <Input
-              ref={inputRef}
-              placeholder={
-                searchMode === SearchMode.IMPORT
-                  ? 'Paste CSV to import domains...'
-                  : 'Search for a domain...'
-              }
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-              onPaste={intercept}
-              onKeyDown={(e) => {
-                // Only intercept newline insertion; ordinary keystrokes can proceed
-                if (e.key === 'Enter') {
-                  e.preventDefault();
-                  handleRawText('\n');
-                }
-              }}
-              className="border-0 dark:bg-transparent h-full focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-gray-400 flex-1 md:text-lg shadow-none"
-            />
-            {query.length > 0 && (
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-8 w-8 rounded-md p-0 ml-1 shrink-0"
-                onClick={() => setQuery('')}
-              >
-                <X className="h-5 w-5 text-gray-400" />
-              </Button>
-            )}
-            {isFirstPartyOrigin &&
-              searchMode === SearchMode.REGISTER &&
-              parentDomain && (
-                <div className="mx-2 h-full flex items-stretch">
-                  <Separator
-                    orientation="vertical"
-                    className="bg-neutral-800"
+    <>
+      <Tooltip open={isFreeMintGuidanceVisible}>
+        <TooltipTrigger asChild>
+          <div
+            ref={containerRef}
+            className="flex w-full max-w-3xl mx-auto gap-1 items-center bg-neutral-900 backdrop-blur-lg border border-neutral-800 rounded-lg p-3"
+          >
+            <div className="flex items-center flex-1 overflow-hidden rounded-lg">
+              <div className="relative w-full rounded-md h-12 flex items-center">
+                <div className="flex items-center w-full h-full px-3">
+                  {isLoading ? (
+                    <Loader2 className="h-5 w-5 text-gray-400 shrink-0 animate-spin" />
+                  ) : searchMode === SearchMode.IMPORT ? (
+                    <SearchIcon className="h-5 w-5 text-gray-400 shrink-0" />
+                  ) : (
+                    <SearchIcon className="h-5 w-5 text-gray-400 shrink-0" />
+                  )}
+                  <Input
+                    ref={inputRef}
+                    name="search-input"
+                    placeholder={
+                      searchMode === SearchMode.IMPORT
+                        ? 'Paste CSV to import domains...'
+                        : 'Search for a domain...'
+                    }
+                    value={query}
+                    onChange={(event) => setQuery(event.target.value)}
+                    onPaste={intercept}
+                    onKeyDown={(e) => {
+                      // Only intercept newline insertion; ordinary keystrokes can proceed
+                      if (e.key === 'Enter') {
+                        e.preventDefault();
+                        handleRawText('\n');
+                      }
+                    }}
+                    className="border-0 dark:bg-transparent h-full focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-gray-400 flex-1 md:text-lg shadow-none"
                   />
-                </div>
-              )}
-            <AnimatePresence initial={false} mode="popLayout">
-              {isFirstPartyOrigin &&
-                searchMode === SearchMode.REGISTER &&
-                parentDomain && (
-                  <motion.div
-                    key="parent-domain-pill"
-                    initial={{ opacity: 0, x: 16 }}
-                    animate={{
-                      opacity: 1,
-                      x: 0,
-                      transition: { duration: 0.22, ease: 'easeOut' },
-                    }}
-                    exit={{
-                      opacity: 0,
-                      x: 16,
-                      transition: { duration: 0.18, ease: 'easeIn' },
-                    }}
-                    className="flex items-center"
-                    layout
-                    transition={{
-                      layout: {
-                        type: 'tween',
-                        duration: 0.22,
-                        ease: 'easeOut',
-                      },
-                    }}
-                  >
-                    <div className="relative">
-                      <Badge
-                        variant="secondary"
-                        className="h-8 px-3 py-0.5 text-sm flex items-center"
-                      >
-                        <AnimatePresence initial={false} mode="wait">
-                          <motion.span
-                            key={parentDomain}
-                            initial={{ opacity: 0 }}
-                            animate={{
-                              opacity: 1,
-                              transition: { duration: 0.15, ease: 'easeOut' },
-                            }}
-                            exit={{
-                              opacity: 0,
-                              transition: { duration: 0.12, ease: 'easeIn' },
-                            }}
-                            className="max-w-[200px] truncate whitespace-nowrap"
-                          >
-                            .{parentDomain}
-                          </motion.span>
-                        </AnimatePresence>
-                      </Badge>
-                      {onClearParentDomain && (
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          aria-label="Clear parent domain"
-                          onClick={onClearParentDomain}
-                          className="absolute -top-2 -right-2 size-5 rounded-full bg-neutral-800 border cursor-pointer border-neutral-700 flex items-center justify-center hover:bg-neutral-700!"
+                  {query.length > 0 && (
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8 rounded-md p-0 ml-1 shrink-0"
+                      onClick={() => setQuery('')}
+                    >
+                      <X className="h-5 w-5 text-gray-400" />
+                    </Button>
+                  )}
+                  {isFirstPartyOrigin &&
+                    searchMode === SearchMode.REGISTER &&
+                    parentDomain && (
+                      <div className="mx-2 h-full flex items-stretch">
+                        <Separator
+                          orientation="vertical"
+                          className="bg-neutral-800"
+                        />
+                      </div>
+                    )}
+                  <AnimatePresence initial={false} mode="popLayout">
+                    {isFirstPartyOrigin &&
+                      searchMode === SearchMode.REGISTER &&
+                      parentDomain && (
+                        <motion.div
+                          key="parent-domain-pill"
+                          initial={{ opacity: 0, x: 16 }}
+                          animate={{
+                            opacity: 1,
+                            x: 0,
+                            transition: { duration: 0.22, ease: 'easeOut' },
+                          }}
+                          exit={{
+                            opacity: 0,
+                            x: 16,
+                            transition: { duration: 0.18, ease: 'easeIn' },
+                          }}
+                          className="flex items-center"
+                          layout
+                          transition={{
+                            layout: {
+                              type: 'tween',
+                              duration: 0.22,
+                              ease: 'easeOut',
+                            },
+                          }}
                         >
-                          <X className="size-3" />
-                        </Button>
+                          <div className="relative">
+                            <Badge
+                              variant="secondary"
+                              className="h-8 px-3 py-0.5 text-sm flex items-center"
+                            >
+                              <AnimatePresence initial={false} mode="wait">
+                                <motion.span
+                                  key={parentDomain}
+                                  initial={{ opacity: 0 }}
+                                  animate={{
+                                    opacity: 1,
+                                    transition: {
+                                      duration: 0.15,
+                                      ease: 'easeOut',
+                                    },
+                                  }}
+                                  exit={{
+                                    opacity: 0,
+                                    transition: {
+                                      duration: 0.12,
+                                      ease: 'easeIn',
+                                    },
+                                  }}
+                                  className="max-w-[200px] truncate whitespace-nowrap"
+                                >
+                                  .{parentDomain}
+                                </motion.span>
+                              </AnimatePresence>
+                            </Badge>
+                            {onClearParentDomain && (
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                aria-label="Clear parent domain"
+                                onClick={
+                                  clearParentDomainAndDismissFreeMintGuidance
+                                }
+                                className="absolute -top-2 -right-2 size-5 rounded-full bg-neutral-800 border cursor-pointer border-neutral-700 flex items-center justify-center hover:bg-neutral-700!"
+                              >
+                                <X className="size-3" />
+                              </Button>
+                            )}
+                          </div>
+                        </motion.div>
                       )}
-                    </div>
-                  </motion.div>
-                )}
-            </AnimatePresence>
+                  </AnimatePresence>
+                </div>
+              </div>
+            </div>
+            <NamefiButton
+              onClick={handleSearchClick}
+              className="not-only:font-semibold rounded-md h-12 text-lg w-[128px] transition-all duration-200 shrink-0"
+              title={searchMode === SearchMode.IMPORT ? 'Import' : 'Search'}
+            >
+              {searchMode === SearchMode.IMPORT ? 'Import' : 'Search'}
+            </NamefiButton>
           </div>
-        </div>
-      </div>
-      <NamefiButton
-        onClick={handleSearchClick}
-        className="not-only:font-semibold rounded-md h-12 text-lg w-[128px] transition-all duration-200 shrink-0"
-        title={searchMode === SearchMode.IMPORT ? 'Import' : 'Search'}
-      >
-        {searchMode === SearchMode.IMPORT ? 'Import' : 'Search'}
-      </NamefiButton>
-    </div>
+        </TooltipTrigger>
+        <TooltipContent
+          side="bottom"
+          align="center"
+          sideOffset={10}
+          className="max-w-xs text-wrap text-center text-sm p-2 z-[10000]"
+        >
+          <p>
+            Search for available{' '}
+            {parentDomain ? `subdomains under ${parentDomain}` : 'domains'} and
+            claim them for free!
+          </p>
+        </TooltipContent>
+      </Tooltip>
+      <Spotlight
+        target={containerRef.current}
+        visible={isFreeMintGuidanceVisible}
+        onClose={() => setIsFreeMintGuidanceVisible(false)}
+      />
+    </>
   );
 };
 
@@ -753,165 +805,4 @@ export const SearchResults: FC<{
 
   // If idle or empty query, don't render anything
   return null;
-};
-
-// Main component
-export const Search: LandingComponent = ({ origin }) => {
-  const [parentDomain, setParentDomain] = useState<string | undefined>(() => {
-    if (origin.isFirstPartyOrigin) {
-      return config.POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES[0];
-    }
-
-    if (origin.thirdPartyHostname) {
-      return origin.thirdPartyHostname;
-    }
-    return undefined;
-  });
-
-  const {
-    query,
-    setQuery,
-    runSearch,
-    searchMode,
-    onSearchModeChange,
-    importQuery,
-    isLoading,
-    isError,
-    error,
-    hasData,
-    domainInfos,
-    domains,
-    freeClaimEligibility,
-  } = useSearch(parentDomain || undefined);
-
-  // Handle initial search from query parameters
-  useSearchFromQuery(setQuery, runSearch);
-
-  // Form for EPP authorization codes
-  const form = useForm<EppAuthorizationCodesFormData>({
-    resolver: zodResolver(eppAuthorizationCodesFormSchema),
-    defaultValues: {
-      eppAuthorizationCodes: {},
-    },
-  });
-
-  const [isBusy, setIsBusy] = useState(false);
-
-  // Initialize form with auth codes from importQuery
-  const initializeEppCodes = useCallback(() => {
-    if (importQuery && importQuery.size > 0) {
-      const initialCodes: Record<string, string> = {};
-      importQuery.forEach((query, domain) => {
-        if (query.eppAuthorizationCode) {
-          initialCodes[domain] = query.eppAuthorizationCode;
-        }
-      });
-      form.reset({ eppAuthorizationCodes: initialCodes });
-    }
-  }, [importQuery, form]);
-
-  // Initialize when importQuery changes
-  useEffect(() => {
-    initializeEppCodes();
-  }, [initializeEppCodes]);
-
-  // Handle EPP authorization code changes
-  const handleEppCodeChange = useCallback(
-    (domain: NamefiNormalizedDomain, eppCode: string) => {
-      form.setValue('eppAuthorizationCodes', {
-        ...form.getValues('eppAuthorizationCodes'),
-        [domain]: eppCode,
-      });
-    },
-    [form],
-  );
-
-  // Get current EPP authorization codes
-  const eppAuthorizationCodes = form.watch('eppAuthorizationCodes');
-
-  // Calculate importable domains for FloatingCart
-  const importableDomains = useMemo(() => {
-    if (searchMode !== SearchMode.IMPORT || !domains || !domainInfos) {
-      return [];
-    }
-
-    return domains
-      .map((domain) => {
-        const availabilityInfo = domainInfos.get(domain);
-        const eppCode = eppAuthorizationCodes[domain];
-
-        if (!availabilityInfo || !eppCode || !eppCode.trim()) return null;
-
-        if (!isDomainImportable(availabilityInfo)) return null;
-
-        return {
-          domain,
-          availabilityInfo,
-          eppAuthorizationCode: eppCode,
-        };
-      })
-      .filter((item): item is NonNullable<typeof item> => item !== null);
-  }, [searchMode, domains, domainInfos, eppAuthorizationCodes]);
-
-  if (!parentDomain) {
-    // Return loading state or null while origin info is loading
-    return null;
-  }
-
-  return (
-    <div className="relative flex gap-4 flex-col">
-      <div className="flex flex-col items-center gap-4">
-        <SearchHeader
-          parentDomain={parentDomain}
-          setParentDomain={setParentDomain}
-          isFirstPartyOrigin={origin.isFirstPartyOrigin}
-        />
-        <SearchModeTabs
-          searchMode={searchMode}
-          onSearchModeChange={onSearchModeChange}
-        />
-        <SearchInput
-          query={query}
-          setQuery={setQuery}
-          isLoading={isLoading}
-          searchMode={searchMode}
-          importQuery={importQuery}
-          onSearch={runSearch}
-          parentDomain={parentDomain}
-          onClearParentDomain={() => setParentDomain(undefined)}
-          isFirstPartyOrigin={origin.isFirstPartyOrigin}
-        />
-      </div>
-
-      {query.length > 0 && (isLoading || hasData || isError) && (
-        <>
-          <div className="flex justify-between items-center py-5">
-            <h2 className="text-2xl font-semibold">Search Results</h2>
-          </div>
-
-          <SearchResults
-            isLoading={isLoading}
-            isError={isError}
-            error={error}
-            hasData={hasData}
-            domainInfos={domainInfos}
-            domains={domains}
-            query={query}
-            eppAuthorizationCodes={eppAuthorizationCodes}
-            onEppCodeChange={handleEppCodeChange}
-            searchMode={searchMode}
-            freeClaimEligibility={freeClaimEligibility}
-          />
-
-          <div className="sticky bottom-5 flex justify-center mt-4 px-4">
-            <FloatingCart
-              searchMode={searchMode}
-              importableDomains={importableDomains}
-              onBusyChange={setIsBusy}
-            />
-          </div>
-        </>
-      )}
-    </div>
-  );
 };
