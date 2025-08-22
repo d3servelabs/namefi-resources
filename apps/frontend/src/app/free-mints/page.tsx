@@ -101,7 +101,7 @@ function ClaimButton({ row }: { row: ClaimRow }) {
       <Button
         size="sm"
         className="shrink-0 bg-brand-primary hover:bg-brand-primary/90 text-secondary-foreground"
-        onClick={() => startCampaignSearch(String(parentDomain))}
+        onClick={() => startCampaignSearch(parentDomain)}
       >
         Claim
       </Button>
