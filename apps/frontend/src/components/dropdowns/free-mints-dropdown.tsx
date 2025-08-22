@@ -186,6 +186,12 @@ export function FreeMintsDropdown({
                   </DropdownMenuItem>
                 ))}
               </DropdownMenuGroup>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem asChild={true}>
+                <Button className="w-full" variant="default" asChild={true}>
+                  <Link href="/free-mints">View All Free Mints</Link>
+                </Button>
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </motion.div>
