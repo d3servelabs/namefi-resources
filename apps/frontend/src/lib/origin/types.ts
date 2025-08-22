@@ -56,8 +56,9 @@ export type Logo = ImageLogo | LottieLogo;
 /**
  * Privy auth logo configuration
  */
-export type AuthLogo = {
+export type PbnLogo = {
   image: string;
+  monoImage?: string;
 };
 
 export type LandingPage = {
@@ -71,7 +72,7 @@ export type LandingPage = {
 export type OriginConfig = {
   metadata: Metadata;
   logo: Logo;
-  authLogo?: AuthLogo;
+  pbnLogo?: PbnLogo;
   background?: Background;
   landingPage?: LandingPage;
 };

@@ -28,7 +28,7 @@ export const SessionsProvider: FC<PropsWithChildren> = ({ children }) => {
           accentColor: toHex(brandPrimary) as `#${string}`,
           logo: (
             <img
-              src={origin.config?.authLogo?.image ?? '/logotype.svg'}
+              src={origin.config?.pbnLogo?.image ?? '/logotype.svg'}
               alt={origin.config?.logo.alt}
               width={180}
             />

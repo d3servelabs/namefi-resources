@@ -45,8 +45,9 @@ export function generateBespokeConfig(
       alt: 'Bespoke Logo',
       title: 'Bespoke',
     },
-    authLogo: {
+    pbnLogo: {
       image: '/assets/bespoke/logos/bespoke-powered-by-namefi.svg',
+      monoImage: '/assets/bespoke/logos/bespoke-powered-by-namefi-mono.svg',
     },
     // Background is handled by the landing component itself
   };

@@ -13,8 +13,9 @@ export const originConfig: OriginConfig = {
     title: '0x.city',
     alt: '0x.city Logo',
   },
-  authLogo: {
+  pbnLogo: {
     image: '/assets/0x-city/logos/0xcity-powered-by-namefi.svg',
+    monoImage: '/assets/0x-city/logos/0xcity-powered-by-namefi-mono.svg',
   },
   background: {
     image: '/assets/0x-city/background.png',

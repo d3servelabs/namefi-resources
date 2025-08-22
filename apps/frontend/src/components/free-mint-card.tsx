@@ -7,6 +7,7 @@ import { useFreeMintsGuidance } from '@/components/providers/free-mints-guidance
 import { CometCard } from '@/components/ui/aceternity/comet-card';
 import type { FreeMint } from '@/hooks/use-free-mints';
 import { useRouter } from 'next/navigation';
+import { originConfig } from '@/lib/origin/config';
 
 export interface FreeMintCardProps {
   claim: FreeMint;
@@ -24,6 +25,12 @@ export function FreeMintCard({ claim }: FreeMintCardProps) {
     }
     return domain;
   }, [type, domain]);
+
+  const pbnLogo = useMemo(() => {
+    return (
+      originConfig.thirdParty[apex]?.pbnLogo?.monoImage ?? '/logotype-mono.svg'
+    );
+  }, [apex]);
 
   const handleClaim = () => {
     if (type === 'single') {
@@ -86,12 +93,11 @@ export function FreeMintCard({ claim }: FreeMintCardProps) {
           {/* Content grid with consistent gutters */}
           <div className="relative h-full grid grid-rows-[auto,1fr,auto] p-3.5 lg:p-6 text-white">
             {/* Header: white logo, flush to same right inset as CTA */}
-            <span
-              className="h-[32px] w-[99px] bg-white/70 justify-self-end backdrop-blur-3xl"
-              style={{
-                WebkitMask: 'url(/logotype.svg) no-repeat center / contain',
-                mask: 'url(/logotype.svg) no-repeat center / contain',
-              }}
+            <img
+              className="justify-self-end opacity-90"
+              src={pbnLogo}
+              alt="Powered by Namefi"
+              width={120}
             />
 
             <div className="space-y-3 sm:space-y-2 lg:space-y-6 self-end">

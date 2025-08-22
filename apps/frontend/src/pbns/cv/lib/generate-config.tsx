@@ -81,8 +81,9 @@ export function generateCVConfig(input: CVConfigInput): CVConfigOutput {
       alt: 'CV Logo',
       title: 'CV',
     },
-    authLogo: {
+    pbnLogo: {
       image: '/assets/cv/logos/cv-powered-by-namefi.png',
+      monoImage: '/assets/cv/logos/cv-powered-by-namefi-mono.png',
     },
     background: {
       image: input.backgroundImage,
