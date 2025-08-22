@@ -94,10 +94,10 @@ export function FreeMintCard({ claim }: FreeMintCardProps) {
           <div className="relative h-full grid grid-rows-[auto,1fr,auto] p-3.5 lg:p-6 text-white">
             {/* Header: white logo, flush to same right inset as CTA */}
             <img
-              className="justify-self-end opacity-90"
+              className="justify-self-end opacity-80"
               src={pbnLogo}
               alt="Powered by Namefi"
-              width={120}
+              width={110}
             />
 
             <div className="space-y-3 sm:space-y-2 lg:space-y-6 self-end">
