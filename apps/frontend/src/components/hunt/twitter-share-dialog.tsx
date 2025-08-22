@@ -78,11 +78,11 @@ export function TwitterShareDialog({
   const twitterIntentUrl = useMemo(() => {
     if (!shareUrl || !domainName) return null;
 
-    const tweetText = `Check out ${domainName} - discovered on the .cv domain hunt! 🔥`;
+    const tweetText = `Check out ${domainName} — discovered on Namefi Hunt! 🔥`;
     const params = new URLSearchParams({
       text: tweetText,
       url: shareUrl,
-      hashtags: 'Namefi,CVDomains',
+      hashtags: 'Namefi,DomainHunt',
     });
 
     return `https://twitter.com/intent/tweet?${params.toString()}`;
