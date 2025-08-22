@@ -148,16 +148,18 @@ export function FreeMintsDropdown({
                       router.push(`/claim/${encodeURIComponent(s.domain)}`)
                     }
                   >
-                    <span className="truncate">{s.domain}</span>
+                    <span className="truncate">
+                      <span className="font-medium bg-muted px-1.5 py-0.5 rounded text-sm">
+                        {s.domain}
+                      </span>
+                    </span>
                     <Button
                       asChild={true}
                       size="sm"
                       className="shrink-0 bg-brand-primary hover:bg-brand-primary/90 text-secondary-foreground"
                     >
                       <Link href={`/claim/${encodeURIComponent(s.domain)}`}>
-                        <span className="inline-flex items-center gap-1">
-                          Claim
-                        </span>
+                        Claim
                       </Link>
                     </Button>
                   </DropdownMenuItem>
@@ -168,15 +170,18 @@ export function FreeMintsDropdown({
                     className="flex justify-between"
                     onClick={() => startCampaignSearch(c.parentDomain)}
                   >
-                    <span className="truncate">{c.parentDomain}</span>
+                    <span className="truncate text-sm">
+                      Any{' '}
+                      <span className="font-medium bg-muted px-1.5 py-0.5 rounded">
+                        .{c.parentDomain}
+                      </span>
+                    </span>
                     <Button
                       size="sm"
                       className="shrink-0 bg-brand-primary hover:bg-brand-primary/90 text-secondary-foreground"
                       onClick={() => startCampaignSearch(c.parentDomain)}
                     >
-                      <span className="inline-flex items-center gap-1">
-                        Claim
-                      </span>
+                      Claim
                     </Button>
                   </DropdownMenuItem>
                 ))}
