@@ -113,16 +113,9 @@ export function FreeMintsDropdown({
                   >
                     <span className="truncate text-sm">
                       {freeMint.type === 'single' ? (
-                        <span className="font-medium bg-muted px-1.5 py-0.5 rounded">
-                          {freeMint.domain}
-                        </span>
+                        <>{freeMint.domain}</>
                       ) : freeMint.type === 'campaign' ? (
-                        <>
-                          Any{' '}
-                          <span className="font-medium bg-muted px-1.5 py-0.5 rounded">
-                            .{freeMint.domain}
-                          </span>
-                        </>
+                        <>Any .{freeMint.domain}</>
                       ) : null}
                     </span>
                     <Button
