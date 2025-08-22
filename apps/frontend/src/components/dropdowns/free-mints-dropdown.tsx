@@ -51,8 +51,8 @@ export function FreeMintsDropdown({
     (freeMint: FreeMint) => {
       if (freeMint.type === 'single') {
         router.push(`/claim/${encodeURIComponent(freeMint.domain)}`);
-      } else if (freeMint.type === 'campaign' && freeMint.parentDomain) {
-        startCampaignSearch(freeMint.parentDomain);
+      } else if (freeMint.type === 'campaign') {
+        startCampaignSearch(freeMint.domain);
       }
     },
     [startCampaignSearch, router],
@@ -116,12 +116,11 @@ export function FreeMintsDropdown({
                         <span className="font-medium bg-muted px-1.5 py-0.5 rounded">
                           {freeMint.domain}
                         </span>
-                      ) : freeMint.type === 'campaign' &&
-                        freeMint.parentDomain ? (
+                      ) : freeMint.type === 'campaign' ? (
                         <>
                           Any{' '}
                           <span className="font-medium bg-muted px-1.5 py-0.5 rounded">
-                            .{freeMint.parentDomain}
+                            .{freeMint.domain}
                           </span>
                         </>
                       ) : null}

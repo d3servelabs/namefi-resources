@@ -12,12 +12,13 @@ export type FreeMint = {
   id: string;
   type: 'single' | 'campaign';
   groupOrCampaignKey: string;
-  domain: string;
-  parentDomain: NamefiNormalizedDomain | null;
+  domain: NamefiNormalizedDomain;
   reason: string | null;
   claimingStatus: 'IDLE' | 'CLAIMING' | 'CLAIMED';
   isExpired: boolean;
   expirationDate: Date | null;
+  claimedAt: Date | null;
+  claimedDomainName?: NamefiNormalizedDomain | null;
   createdAt: Date;
 };
 
@@ -56,23 +57,26 @@ export function useFreeMints(options: UseFreeMintsOptions = {}) {
       if (!item) continue;
       if (item.type === 'singleExactDomain') {
         const c = item.claim;
-        const row: FreeMint = {
-          id: c.id,
-          type: 'single',
-          groupOrCampaignKey: c.groupOrCampaignKey,
-          domain: c.exactDomainName ?? c.claimedDomainName ?? '-',
-          parentDomain: c.parentDomain ?? null,
-          reason: c.reason,
-          claimingStatus: c.claimingStatus,
-          isExpired: c.isExpired,
-          expirationDate: c.expirationDate,
-          createdAt: c.createdAt,
-        };
-        flattened.push(row);
+        if (c.exactDomainName) {
+          const row: FreeMint = {
+            id: c.id,
+            type: 'single',
+            groupOrCampaignKey: c.groupOrCampaignKey,
+            domain: c.exactDomainName,
+            reason: c.reason,
+            claimingStatus: c.claimingStatus,
+            isExpired: c.isExpired,
+            expirationDate: c.expirationDate,
+            claimedAt: c.claimedAt ?? null,
+            claimedDomainName: c.claimedDomainName ?? null,
+            createdAt: c.createdAt,
+          };
+          flattened.push(row);
 
-        // Count if available
-        if (!row.isExpired && row.claimingStatus === 'IDLE') {
-          availableCountVar += 1;
+          // Count if available
+          if (!row.isExpired && row.claimingStatus === 'IDLE') {
+            availableCountVar += 1;
+          }
         }
       } else if (item.type === 'campaignParentDomain') {
         for (const c of item.claims) {
@@ -80,12 +84,13 @@ export function useFreeMints(options: UseFreeMintsOptions = {}) {
             id: c.id,
             type: 'campaign',
             groupOrCampaignKey: item.groupOrCampaignKey,
-            domain: c.exactDomainName ?? c.claimedDomainName ?? '-',
-            parentDomain: item.parentDomain,
+            domain: item.parentDomain,
             reason: c.reason ?? item.reason,
             claimingStatus: c.claimingStatus,
             isExpired: c.isExpired,
             expirationDate: c.expirationDate,
+            claimedAt: c.claimedAt ?? null,
+            claimedDomainName: c.claimedDomainName ?? null,
             createdAt: c.createdAt,
           };
           flattened.push(row);

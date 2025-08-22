@@ -1,7 +1,6 @@
 'use client';
 
 import { AuthRequired } from '@/components/auth-required';
-import { CartCard } from '@/components/cart-card';
 import { EmptyPlaceholder } from '@/components/empty-placeholder';
 import {
   Table,
@@ -23,79 +22,9 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { format } from 'date-fns';
-import { CheckCircle, Clock, Gift, Loader2 } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { useMemo } from 'react';
-import { Button } from '@/components/ui/shadcn/button';
-import Link from 'next/link';
-import { useFreeMintsGuidance } from '@/components/providers/free-mints-guidance';
-
-function ClaimButton({ row }: { row: FreeMint }) {
-  const { claimingStatus, isExpired, domain, type, parentDomain } = row;
-  const { startCampaignSearch } = useFreeMintsGuidance();
-
-  // Show different states based on claim status
-  if (claimingStatus === 'CLAIMED') {
-    return (
-      <Badge variant="outline" className="flex items-center gap-1 h-8 px-3">
-        <CheckCircle className="h-3 w-3" />
-        Claimed{' '}
-        <span className="bg-muted px-1 py-0.5 rounded text-xs">{domain}</span>
-      </Badge>
-    );
-  }
-
-  if (claimingStatus === 'CLAIMING') {
-    return (
-      <Badge variant="default" className="flex items-center gap-1 h-8 px-3">
-        <Loader2 className="h-3 w-3 animate-spin" />
-        In Progress
-      </Badge>
-    );
-  }
-
-  if (isExpired) {
-    return (
-      <Badge variant="secondary" className="flex items-center gap-1 h-8 px-3">
-        <Clock className="h-3 w-3" />
-        Expired
-      </Badge>
-    );
-  }
-
-  // For single exact domain claims, navigate to claim page
-  if (type === 'single') {
-    return (
-      <Button
-        asChild={true}
-        size="sm"
-        className="shrink-0 bg-brand-primary hover:bg-brand-primary/90 text-secondary-foreground"
-      >
-        <Link href={`/claim/${encodeURIComponent(domain)}`}>Claim</Link>
-      </Button>
-    );
-  }
-
-  // For campaign claims, start campaign search
-  if (type === 'campaign' && parentDomain) {
-    return (
-      <Button
-        size="sm"
-        className="shrink-0 bg-brand-primary hover:bg-brand-primary/90 text-secondary-foreground"
-        onClick={() => startCampaignSearch(parentDomain)}
-      >
-        Claim
-      </Button>
-    );
-  }
-
-  // Fallback for unavailable claims
-  return (
-    <Badge variant="secondary" className="flex items-center gap-1 h-8 px-3">
-      <Clock className="h-3 w-3" />
-      Unavailable
-    </Badge>
-  );
-}
+import { FreeMintCard } from '@/components/free-mint-card';
 
 export default function FreeClaimsPage() {
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
@@ -107,14 +36,29 @@ export default function FreeClaimsPage() {
     [isAuthLoading, isFreeMintsLoading],
   );
 
+  const { activeClaims, inactiveClaims } = useMemo(() => {
+    const active: FreeMint[] = [];
+    const inactive: FreeMint[] = [];
+
+    for (const mint of rows) {
+      if (!mint.isExpired && mint.claimingStatus === 'IDLE') {
+        active.push(mint);
+      } else {
+        inactive.push(mint);
+      }
+    }
+
+    return { activeClaims: active, inactiveClaims: inactive };
+  }, [rows]);
+
   const columns = useMemo<ColumnDef<FreeMint>[]>(
     () => [
+      // Item
       {
-        id: 'claimable',
-        header: 'What You Can Mint',
+        id: 'item',
+        header: 'Item',
         cell: ({ row }) => {
-          const { type, domain, parentDomain } = row.original;
-
+          const { type, domain } = row.original;
           if (type === 'single') {
             return (
               <span className="font-medium bg-muted px-2 py-1 rounded">
@@ -122,48 +66,22 @@ export default function FreeClaimsPage() {
               </span>
             );
           }
-
-          if (type === 'campaign' && parentDomain) {
+          if (type === 'campaign') {
             return (
               <span>
                 Any{' '}
                 <span className="font-medium bg-muted px-2 py-1 rounded">
-                  {String(parentDomain)}
+                  {domain}
                 </span>{' '}
                 subdomain
               </span>
             );
           }
-
           return <span className="text-muted-foreground">-</span>;
         },
         enableSorting: false,
       },
-      {
-        id: 'reason',
-        header: 'Reason',
-        accessorKey: 'reason',
-        cell: ({ getValue }) => (
-          <span
-            className="truncate block max-w-[360px]"
-            title={getValue<string | null>() || ''}
-          >
-            {getValue<string | null>() || '-'}
-          </span>
-        ),
-      },
-      {
-        id: 'expires',
-        header: 'Expires',
-        cell: ({ row }) =>
-          row.original.expirationDate ? (
-            <span>
-              {format(new Date(row.original.expirationDate), 'MMM d, yyyy')}
-            </span>
-          ) : (
-            <span className="text-muted-foreground">Never</span>
-          ),
-      },
+      // Awarded On
       {
         id: 'createdAt',
         header: 'Awarded On',
@@ -173,18 +91,80 @@ export default function FreeClaimsPage() {
         ),
         sortingFn: 'datetime',
       },
+      // Valid Until
       {
-        id: 'actions',
-        header: 'Actions',
-        cell: ({ row }) => <ClaimButton row={row.original} />,
-        enableSorting: false,
+        id: 'expires',
+        header: 'Valid Until',
+        cell: ({ row }) =>
+          row.original.expirationDate ? (
+            <span>
+              {format(new Date(row.original.expirationDate), 'MMM d, yyyy')}
+            </span>
+          ) : (
+            <span className="text-muted-foreground">∞</span>
+          ),
+      },
+      // Status
+      {
+        id: 'status',
+        header: 'Status',
+        cell: ({ row }) => {
+          const { claimingStatus, isExpired } = row.original;
+          if (claimingStatus === 'CLAIMED') {
+            return (
+              <Badge
+                variant="outline"
+                className="text-green-500 border-green-500/40"
+              >
+                Claimed
+              </Badge>
+            );
+          }
+          if (claimingStatus === 'CLAIMING') {
+            return (
+              <Badge variant="default">
+                <Loader2 className="h-3 w-3 mr-1 animate-spin" /> In Progress
+              </Badge>
+            );
+          }
+          if (isExpired) {
+            return <Badge variant="destructive">Expired</Badge>;
+          }
+          return <Badge variant="secondary">Available</Badge>;
+        },
+      },
+      // Claimed Domain
+      {
+        id: 'claimedDomain',
+        header: 'Claimed Domain',
+        cell: ({ row }) =>
+          row.original.claimedDomainName ? (
+            <span className="font-medium bg-muted px-2 py-1 rounded">
+              {row.original.claimedDomainName}
+            </span>
+          ) : (
+            <span className="text-muted-foreground">-</span>
+          ),
+      },
+      // Claimed On
+      {
+        id: 'claimedAt',
+        header: 'Claimed On',
+        cell: ({ row }) =>
+          row.original.claimedAt ? (
+            <span>
+              {format(new Date(row.original.claimedAt), 'MMM d, yyyy')}
+            </span>
+          ) : (
+            <span className="text-muted-foreground">—</span>
+          ),
       },
     ],
     [],
   );
 
   const table = useReactTable({
-    data: rows,
+    data: inactiveClaims,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
@@ -199,77 +179,129 @@ export default function FreeClaimsPage() {
 
   return (
     <div className="container mx-auto py-8 px-8">
-      <CartCard title="My Free Mints">
-        {isLoading ? (
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>What You Can Mint</TableHead>
-                <TableHead>Reason</TableHead>
-                <TableHead>Expires</TableHead>
-                <TableHead>Created</TableHead>
-                <TableHead>Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {[...new Array(5)].map((_, index) => (
-                <TableRow key={index}>
-                  {[...new Array(5)].map((__, idx) => (
-                    <TableCell key={idx}>
-                      <Skeleton className="h-5 w-[140px]" />
-                    </TableCell>
-                  ))}
-                </TableRow>
+      {/* Page Header */}
+      <h1 className="mb-10 text-3xl md:text-4xl font-bold tracking-tight">
+        My Free Mints
+      </h1>
+
+      {isLoading ? (
+        <div className="space-y-8">
+          {/* Loading state for active claims section */}
+          <div className="space-y-3">
+            <h2 className="text-xl md:text-2xl font-semibold">
+              Available Claims
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {[...new Array(2)].map((_, index) => (
+                <div key={index} className="rounded-2xl border p-6 space-y-4">
+                  <Skeleton className="h-6 w-32" />
+                  <Skeleton className="h-4 w-48" />
+                  <Skeleton className="h-4 w-24" />
+                  <Skeleton className="h-10 w-20" />
+                </div>
               ))}
-            </TableBody>
-          </Table>
-        ) : rows.length > 0 ? (
-          <div className="rounded-md border">
-            <Table>
-              <TableHeader>
-                {table.getHeaderGroups().map((headerGroup) => (
-                  <TableRow key={headerGroup.id}>
-                    {headerGroup.headers.map((header) => (
-                      <TableHead key={header.id}>
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext(),
-                            )}
-                      </TableHead>
-                    ))}
-                  </TableRow>
-                ))}
-              </TableHeader>
-              <TableBody>
-                {table.getRowModel().rows.map((row) => (
-                  <TableRow key={row.id}>
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext(),
-                        )}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
-        ) : (
-          <EmptyPlaceholder>
-            <div className="bg-muted rounded-full p-4 mb-4">
-              <Gift className="h-8 w-8 text-muted-foreground" />
             </div>
-            <EmptyPlaceholder.Title>No Free Claims Yet</EmptyPlaceholder.Title>
-            <EmptyPlaceholder.Description>
-              When you receive free claim opportunities, they will appear here.
-            </EmptyPlaceholder.Description>
-          </EmptyPlaceholder>
-        )}
-      </CartCard>
+          </div>
+
+          {/* Loading state for table section */}
+          <div className="space-y-3">
+            <h2 className="text-xl md:text-2xl font-semibold">Claim History</h2>
+            <div className="rounded-md border">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Item</TableHead>
+                    <TableHead>Awarded On</TableHead>
+                    <TableHead>Valid Until</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>Claimed Domain</TableHead>
+                    <TableHead>Claimed On</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {[...new Array(3)].map((_, index) => (
+                    <TableRow key={index}>
+                      {[...new Array(6)].map((__, idx) => (
+                        <TableCell key={idx}>
+                          <Skeleton className="h-5 w-[140px]" />
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div className="space-y-8">
+          {/* Active Claims Section */}
+          {activeClaims.length > 0 && (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {activeClaims.map((claim) => (
+                <FreeMintCard key={claim.id} claim={claim} />
+              ))}
+            </div>
+          )}
+
+          {/* Inactive Claims Table Section */}
+          <div className="space-y-6">
+            <h2 className="text-xl md:text-2xl font-semibold">History</h2>
+            {inactiveClaims.length > 0 ? (
+              <div className="rounded-md border">
+                <Table>
+                  <TableHeader>
+                    {table.getHeaderGroups().map((headerGroup) => (
+                      <TableRow key={headerGroup.id}>
+                        {headerGroup.headers.map((header) => (
+                          <TableHead key={header.id}>
+                            {header.isPlaceholder
+                              ? null
+                              : flexRender(
+                                  header.column.columnDef.header,
+                                  header.getContext(),
+                                )}
+                          </TableHead>
+                        ))}
+                      </TableRow>
+                    ))}
+                  </TableHeader>
+                  <TableBody>
+                    {table.getRowModel().rows.map((row) => (
+                      <TableRow key={row.id}>
+                        {row.getVisibleCells().map((cell) => (
+                          <TableCell key={cell.id}>
+                            {flexRender(
+                              cell.column.columnDef.cell,
+                              cell.getContext(),
+                            )}
+                          </TableCell>
+                        ))}
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            ) : (
+              <p className="text-muted-foreground text-center py-8">
+                No claim history yet.
+              </p>
+            )}
+          </div>
+
+          {/* Empty state when no claims at all */}
+          {activeClaims.length === 0 && inactiveClaims.length === 0 && (
+            <EmptyPlaceholder>
+              <div className="bg-muted rounded-full p-4 mb-4" />
+              <EmptyPlaceholder.Title>No Free Mints Yet</EmptyPlaceholder.Title>
+              <EmptyPlaceholder.Description>
+                When you receive free claim opportunities, they will appear
+                here.
+              </EmptyPlaceholder.Description>
+            </EmptyPlaceholder>
+          )}
+        </div>
+      )}
     </div>
   );
 }
