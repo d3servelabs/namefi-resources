@@ -190,7 +190,7 @@ export const Hero = ({
                     rel="noopener noreferrer"
                   >
                     <img
-                      src="/assets/cv/cv-logo.png"
+                      src="/assets/cv/logos/cv-logo.png"
                       alt=".cv"
                       className="h-6 w-auto"
                     />

@@ -40,11 +40,13 @@ export function generateBespokeConfig(
       },
     },
     logo: {
-      type: 'lottie',
-      lottie: '/lottie/namefi_to_nfi.json',
-      alt: 'Namefi Logo',
-      width: 66,
-      height: 19.8,
+      type: 'image',
+      image: '/assets/bespoke/logos/bespoke-logo.svg',
+      alt: 'Bespoke Logo',
+      title: 'Bespoke',
+    },
+    authLogo: {
+      image: '/assets/bespoke/logos/bespoke-powered-by-namefi.svg',
     },
     // Background is handled by the landing component itself
   };

@@ -76,11 +76,13 @@ export function generateCVConfig(input: CVConfigInput): CVConfigOutput {
       },
     },
     logo: {
-      type: 'lottie',
-      lottie: '/lottie/namefi_to_nfi.json',
-      alt: 'Namefi Logo',
-      width: 66,
-      height: 19.8,
+      type: 'image',
+      image: '/assets/cv/logos/cv-logo.png',
+      alt: 'CV Logo',
+      title: 'CV',
+    },
+    authLogo: {
+      image: '/assets/cv/logos/cv-powered-by-namefi.png',
     },
     background: {
       image: input.backgroundImage,
