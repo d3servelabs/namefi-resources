@@ -3,7 +3,7 @@ import { initTRPC } from '@trpc/server';
 import { TRPCError } from '@trpc/server';
 import type { FetchCreateContextFnOptions } from '@trpc/server/adapters/fetch';
 import type { Context } from 'hono';
-import { isNotEmpty } from 'ramda';
+import { isNil, isEmpty } from 'ramda';
 import superjson from 'superjson';
 import { ZodError } from 'zod';
 import { config, secrets } from '#lib/env';
@@ -14,6 +14,63 @@ import {
 } from '#lib/namefi-registry';
 import { isUserAdmin, privyClient } from './utils';
 import { verifyUserAuthAndGetUser, requireUserAuth } from '#lib/auth';
+
+/**
+ * Get the powered by namefi (pbn) domain from the origin.
+ * If the origin is not a powered by namefi domain, throw an error.
+ * If the origin is a powered by namefi domain, return the domain.
+ * If the origin is not a powered by namefi domain, check if it's an allowed parent domain.
+ * If it's not an allowed parent domain, throw an error.
+ *
+ * @param originText - The origin text to get the powered by namefi domain from.
+ * @returns The powered by namefi domain.
+ * @throws {TRPCError} If the origin is not a powered by namefi domain, or if it's not an allowed parent domain.
+ */
+export async function getPbnDomainFromOriginOrThrow(
+  originText: string | undefined | null,
+) {
+  if (isNil(originText) || isEmpty(originText)) {
+    throw new TRPCError({
+      code: 'FORBIDDEN',
+      message: 'Origin is required',
+    });
+  }
+
+  let origin: URL;
+  try {
+    // parse origin url
+    origin = new URL(originText);
+  } catch (error) {
+    throw new TRPCError({
+      code: 'FORBIDDEN',
+      message: 'Error parsing origin',
+      cause: error,
+    });
+  }
+
+  // if it's not our own domain, check if it's an allowed parent domain
+  if (config.NAMEFI_FIRST_PARTY_HOSTNAMES?.includes(origin.hostname)) {
+    return origin.hostname;
+  }
+  // if it's not our own domain, check if it's an allowed parent domain
+  const allowedThirdPartyHostnames = await getPoweredByNamefi3PHostnames();
+  // if it's not an allowed parent domain, throw an error
+  if (!allowedThirdPartyHostnames.includes(origin.hostname)) {
+    throw new TRPCError({
+      code: 'FORBIDDEN',
+      message: 'parent domain not allowed',
+    });
+  }
+  const thirdPartyDomainFromHostname =
+    await getPoweredByNamefiDomainFromHostname(origin.hostname);
+  if (!thirdPartyDomainFromHostname) {
+    throw new TRPCError({
+      code: 'FORBIDDEN',
+      message: 'parent domain not allowed',
+    });
+  }
+  return thirdPartyDomainFromHostname;
+}
 
 /**
  * 1. CONTEXT
@@ -30,47 +87,16 @@ export const createContext = async (
   _opts: FetchCreateContextFnOptions,
   c: Context,
 ): Promise<TrpcContext> => {
-  if (config.ALLOW_ALL_ORIGINS) {
-    return {
-      req: c.req,
-      res: c.res,
-      db,
-      poweredByNamefiDomain: null,
-      testUser: null,
-    };
-  }
-
   const originText = c.req.header('Origin');
+
   let poweredByNamefiDomain: string | null = null;
 
-  if (originText && isNotEmpty(originText)) {
-    try {
-      // parse origin url
-      const origin = new URL(originText);
-
-      // if it's not our own domain, check if it's an allowed parent domain
-      if (!config.NAMEFI_FIRST_PARTY_HOSTNAMES?.includes(origin.hostname)) {
-        const allowedThirdPartyHostnames =
-          await getPoweredByNamefi3PHostnames();
-        // if it's not an allowed parent domain, throw an error
-        if (!allowedThirdPartyHostnames.includes(origin.hostname)) {
-          throw new TRPCError({
-            code: 'FORBIDDEN',
-            message: 'parent domain not allowed',
-          });
-        }
-        const thirdPartyDomainFromHostname =
-          (await getPoweredByNamefiDomainFromHostname(origin.hostname)) ?? null;
-        poweredByNamefiDomain = thirdPartyDomainFromHostname;
-        if (!thirdPartyDomainFromHostname) {
-          throw new TRPCError({
-            code: 'FORBIDDEN',
-            message: 'parent domain not allowed',
-          });
-        }
-      }
-    } catch (error) {
-      console.error('Error parsing origin', error);
+  try {
+    poweredByNamefiDomain = await getPbnDomainFromOriginOrThrow(originText);
+  } catch (error) {
+    logger.error(error, 'Error determining powered by namefi domain');
+    if (!config.ALLOW_ALL_ORIGINS) {
+      throw error;
     }
   }
 
