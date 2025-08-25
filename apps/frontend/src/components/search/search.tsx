@@ -58,7 +58,6 @@ import { useEffect } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useFreeMintsGuidance } from '@/components/providers/free-mints-guidance';
 import { Spotlight } from '@/components/ui/spotlight';
-import { parseDomainName } from '@namefi-astra/utils/parse-domain-name';
 
 // Components
 export const SearchHeader: FC<{
@@ -506,11 +505,9 @@ export const DomainCard: FC<{
   }, [availabilityInfo?.pricingDetails?.renewalPrice]);
 
   // Split domain into subdomain and parent domain
-  const result = domain ? parseDomainName(domain) : undefined;
-  const parentDomain = result?.valid ? result.publicSuffixPlusOne : undefined;
-  const subdomain = result?.valid
-    ? domain?.split(`.${parentDomain}`)[0]
-    : undefined;
+  const parts = domain?.split('.');
+  const subdomain = parts?.[0];
+  const parentDomain = parts?.slice(1).join('.');
 
   /* ADD handler --------------------------------------------------------- */
   const handleAdd = useCallback(async () => {

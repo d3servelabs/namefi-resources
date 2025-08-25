@@ -239,7 +239,7 @@ export default function FreeClaimsPage() {
           {activeClaims.length > 0 && (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {activeClaims.map((claim) => (
-                <FreeMintCard key={claim.id} data={claim} />
+                <FreeMintCard key={claim.id} claim={claim} />
               ))}
             </div>
           )}
