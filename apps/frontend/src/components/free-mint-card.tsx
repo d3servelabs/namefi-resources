@@ -99,7 +99,7 @@ export function FreeMintCard({ data }: FreeMintCardProps) {
           <div className="relative h-full grid grid-rows-[auto,1fr,auto] p-3.5 lg:p-6 text-white">
             {/* Header: white logo as mask with backdrop blur, flush to same right inset as CTA */}
             <div
-              className="justify-self-end w-[110px] h-[32px] backdrop-blur-3xl bg-white/70"
+              className="justify-self-end w-[110px] backdrop-blur-3xl bg-white/70"
               style={{
                 maskImage: `url(${pbnLogo})`,
                 maskSize: 'contain',
@@ -127,7 +127,7 @@ export function FreeMintCard({ data }: FreeMintCardProps) {
                     className="text-[10px] uppercase tracking-[.28em] text-white/70"
                     style={deboss}
                   >
-                    Awarded
+                    Issued
                   </div>
                   <time
                     className="font-mono text-sm tracking-widest"

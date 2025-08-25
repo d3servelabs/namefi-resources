@@ -81,10 +81,10 @@ export default function FreeClaimsPage() {
         },
         enableSorting: false,
       },
-      // Awarded On
+      // Issued On
       {
         id: 'createdAt',
-        header: 'Awarded On',
+        header: 'Issued On',
         accessorFn: (row) => new Date(row.createdAt),
         cell: ({ getValue }) => (
           <span>{format(getValue<Date>(), 'MMM d, yyyy')}</span>
@@ -211,7 +211,7 @@ export default function FreeClaimsPage() {
                 <TableHeader>
                   <TableRow>
                     <TableHead>Item</TableHead>
-                    <TableHead>Awarded On</TableHead>
+                    <TableHead>Issued On</TableHead>
                     <TableHead>Valid Until</TableHead>
                     <TableHead>Status</TableHead>
                     <TableHead>Claimed Domain</TableHead>
