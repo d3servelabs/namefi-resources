@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { format } from 'date-fns';
 import { Button } from '@/components/ui/shadcn/button';
 import { useFreeMintsGuidance } from '@/components/providers/free-mints-guidance';
@@ -8,23 +8,28 @@ import { CometCard } from '@/components/ui/aceternity/comet-card';
 import type { FreeMint } from '@/hooks/use-free-mints';
 import { useRouter } from 'next/navigation';
 import { originConfig } from '@/lib/origin/config';
+import { parseDomainName } from '@namefi-astra/utils/parse-domain-name';
 
 export interface FreeMintCardProps {
-  claim: FreeMint;
+  data: FreeMint;
 }
 
-export function FreeMintCard({ claim }: FreeMintCardProps) {
-  const { type, domain, expirationDate, createdAt } = claim;
+export function FreeMintCard({ data }: FreeMintCardProps) {
+  const { type, domain, expirationDate, createdAt } = data;
   const { startCampaignSearch } = useFreeMintsGuidance();
   const router = useRouter();
 
   const apex = useMemo(() => {
     if (type === 'single') {
-      const p = domain.split('.');
-      return p.slice(-2).join('.');
+      const result = parseDomainName(domain);
+      return result.valid ? result.publicSuffixPlusOne : 'astra';
     }
     return domain;
   }, [type, domain]);
+
+  const theme = useMemo(() => {
+    return originConfig.thirdParty[apex] ? apex : 'astra';
+  }, [apex]);
 
   const pbnLogo = useMemo(() => {
     return (
@@ -32,13 +37,13 @@ export function FreeMintCard({ claim }: FreeMintCardProps) {
     );
   }, [apex]);
 
-  const handleClaim = () => {
+  const handleClaim = useCallback(() => {
     if (type === 'single') {
       router.push(`/claim/${encodeURIComponent(domain)}`);
     } else if (type === 'campaign') {
       startCampaignSearch(domain);
     }
-  };
+  }, [type, domain, startCampaignSearch, router]);
 
   // Typography relief
   const raised: React.CSSProperties = {
@@ -50,7 +55,7 @@ export function FreeMintCard({ claim }: FreeMintCardProps) {
   };
 
   return (
-    <div data-theme={apex || 'default'} className="flex flex-col items-center">
+    <div data-theme={theme} className="flex flex-col items-center">
       <CometCard rotateDepth={8} translateDepth={16} className="w-full">
         <div className="relative aspect-[85.6/53.98] overflow-hidden rounded-2xl">
           {/* Dark metallic base */}
