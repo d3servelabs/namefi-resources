@@ -97,12 +97,21 @@ export function FreeMintCard({ data }: FreeMintCardProps) {
 
           {/* Content grid with consistent gutters */}
           <div className="relative h-full grid grid-rows-[auto,1fr,auto] p-3.5 lg:p-6 text-white">
-            {/* Header: white logo, flush to same right inset as CTA */}
-            <img
-              className="justify-self-end opacity-80"
-              src={pbnLogo}
-              alt="Powered by Namefi"
-              width={110}
+            {/* Header: white logo as mask with backdrop blur, flush to same right inset as CTA */}
+            <div
+              className="justify-self-end w-[110px] h-[32px] backdrop-blur-3xl bg-white/70"
+              style={{
+                maskImage: `url(${pbnLogo})`,
+                maskSize: 'contain',
+                maskRepeat: 'no-repeat',
+                maskPosition: 'center',
+                WebkitMaskImage: `url(${pbnLogo})`,
+                WebkitMaskSize: 'contain',
+                WebkitMaskRepeat: 'no-repeat',
+                WebkitMaskPosition: 'center',
+              }}
+              role="img"
+              aria-label="Powered by Namefi"
             />
 
             <div className="space-y-3 sm:space-y-2 lg:space-y-6 self-end">

@@ -83,7 +83,7 @@ export function generateCVConfig(input: CVConfigInput): CVConfigOutput {
     },
     pbnLogo: {
       image: '/assets/cv/logos/cv-powered-by-namefi.png',
-      monoImage: '/assets/cv/logos/cv-powered-by-namefi-mono.png',
+      monoImage: '/assets/cv/logos/cv-powered-by-namefi-mono.svg',
     },
     background: {
       image: input.backgroundImage,
