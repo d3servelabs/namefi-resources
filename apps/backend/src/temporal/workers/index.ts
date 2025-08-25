@@ -1,4 +1,9 @@
-import type { Worker } from '@temporalio/worker';
+import {
+  Runtime,
+  type LogLevel,
+  type Worker,
+  type Logger as TemporalLogger,
+} from '@temporalio/worker';
 import { addCategoriesToDomainsWithNoCategories } from '#lib/clubs-categories';
 import {
   GreetActivities,
@@ -24,7 +29,7 @@ import { triggerNamefiGptCronJob } from '../activities/triggerNamefiGptCronJob';
 import { triggerUpdateNamefiNftIndex } from '../schedules/update-namefi-nft-index';
 import { TEMPORAL_ENUMS } from '../shared';
 import { createWorker } from './createWorker';
-import { logger } from '#lib/logger';
+import { createLogger, logger } from '#lib/logger';
 import { db } from '@namefi-astra/db';
 import { config } from '#lib/env';
 import { IndexersActivities } from '../activities/indexers';
@@ -89,6 +94,8 @@ export const ACTIVITIES = {
 export type ACTIVITIES = typeof ACTIVITIES;
 
 export async function initWorkers() {
+  const temporalRuntimeLogger = getTemporalLogger();
+  Runtime.install({ logger: temporalRuntimeLogger });
   WORKERS = {
     [TEMPORAL_ENUMS.DEFAULT]: await createWorker({
       activities: ACTIVITIES[TEMPORAL_ENUMS.DEFAULT],
@@ -124,4 +131,43 @@ export async function initWorkers() {
       logLabel: TEMPORAL_ENUMS.HUNT,
     }),
   };
+}
+
+function getTemporalLogger(): TemporalLogger {
+  const pinoTemporal = createLogger({ component: 'temporal-worker' });
+  // Support the SDK's logger via an adapter that preserves levels
+  const temporalRuntimeLogger = {
+    log(level: LogLevel, message: string, meta?: Record<string, unknown>) {
+      switch (level) {
+        case 'TRACE':
+          return pinoTemporal.trace(meta, message);
+        case 'DEBUG':
+          return pinoTemporal.debug(meta, message);
+        case 'WARN':
+          return pinoTemporal.warn(meta, message);
+        case 'ERROR':
+          return pinoTemporal.error(meta, message);
+        case 'INFO':
+          return pinoTemporal.info(meta, message);
+        default:
+          return pinoTemporal.info(meta, message);
+      }
+    },
+    trace(message: string, meta?: Record<string, unknown>) {
+      return pinoTemporal.trace(meta, message);
+    },
+    debug(message: string, meta?: Record<string, unknown>) {
+      return pinoTemporal.debug(meta, message);
+    },
+    info(message: string, meta?: Record<string, unknown>) {
+      return pinoTemporal.info(meta, message);
+    },
+    warn(message: string, meta?: Record<string, unknown>) {
+      return pinoTemporal.warn(meta, message);
+    },
+    error(message: string, meta?: Record<string, unknown>) {
+      return pinoTemporal.error(meta, message);
+    },
+  } satisfies TemporalLogger;
+  return temporalRuntimeLogger;
 }

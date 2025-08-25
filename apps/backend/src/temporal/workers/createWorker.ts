@@ -7,6 +7,7 @@ import {
 } from '@temporalio/worker';
 import { isNotNil } from 'ramda';
 import { config, secrets } from '#lib/env';
+import { createLogger } from '#lib/logger';
 import { type TEMPORAL_ENUMS, TEMPORAL_QUEUES } from '../shared/enums';
 
 export async function createWorker({
@@ -24,7 +25,15 @@ export async function createWorker({
     'activities' | 'namespace' | 'taskQueue'
   >;
 }) {
-  console.log(`[${logLabel}]: Creating Worker`);
+  // Create worker-specific logger with context
+  const workerLogger = createLogger({
+    component: 'temporal-worker',
+    workerType: temporalEnum,
+    taskQueue: TEMPORAL_QUEUES[temporalEnum],
+    logLabel: logLabel || temporalEnum,
+  });
+
+  workerLogger.info('Creating Worker');
 
   const workflowOption =
     process.env.NODE_ENV === 'production'
@@ -41,7 +50,7 @@ export async function createWorker({
         };
 
   let connection: NativeConnection | undefined;
-  console.log(`[${logLabel}]: Creating Connection`);
+  workerLogger.info('Creating Connection');
   try {
     // Step 1: Establish a connection with Temporal server.
     const connectionConfig: NativeConnectionOptions = {
@@ -57,12 +66,17 @@ export async function createWorker({
     }
     connection = await NativeConnection.connect(connectionConfig);
 
-    console.log(`[${logLabel}]: Connected to ${config.TEMPORAL_API_URL}`);
+    workerLogger.info('Connected to Temporal server', {
+      url: config.TEMPORAL_API_URL,
+      namespace: config.TEMPORAL_NAMESPACE,
+    });
+
     // Step 2: Register Workflows and Activities with the Worker.
     const worker = await Worker.create({
       ...(extraWorkerOptions || {}),
       connection,
       namespace: config.TEMPORAL_NAMESPACE,
+
       taskQueue: TEMPORAL_QUEUES[temporalEnum],
       ...workflowOption,
       activities,
@@ -73,14 +87,21 @@ export async function createWorker({
 
     // Step 3: Start accepting tasks on the Task Queue specified in TASK_QUEUE_NAME
     worker.run().finally(async () => {
+      workerLogger.info('Worker shutdown initiated');
       await connection?.close();
     });
-    console.log(`[${logLabel}]: Started worker!`);
+
+    workerLogger.info('Worker started successfully', {
+      taskQueue: TEMPORAL_QUEUES[temporalEnum],
+    });
 
     return worker;
   } catch (e) {
-    console.error(`[${logLabel}]: Worker Connection Failed error`);
-    console.error(e);
+    workerLogger.error('Worker Connection Failed', {
+      error: e,
+      temporalUrl: config.TEMPORAL_API_URL,
+      namespace: config.TEMPORAL_NAMESPACE,
+    });
     if (isNotNil(connection)) {
       await connection.close();
     }

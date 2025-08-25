@@ -2,8 +2,6 @@ import { Connection, Client as TemporalClient } from '@temporalio/client';
 import { createLogger } from '#lib/logger';
 import { config, secrets } from '#lib/env';
 
-const logger = createLogger({ module: 'temporal/client', context: 'Temporal' });
-
 const apiKey = secrets.TEMPORAL_API_KEY;
 const authOptions = apiKey
   ? {
@@ -27,6 +25,11 @@ export const temporalClient = new TemporalClient({
 
 export const createTemporalEphemeralConnection =
   async (): Promise<Connection> => {
+    const logger = createLogger({
+      module: 'temporal/client',
+      context: 'Temporal',
+    });
+
     logger.info('Creating temporal ephemeral connection');
     const connection = await Connection.connect({
       ...authOptions,
