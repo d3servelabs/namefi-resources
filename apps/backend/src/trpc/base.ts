@@ -48,9 +48,9 @@ export async function getPbnDomainFromOriginOrThrow(
     });
   }
 
-  // if it's not our own domain, check if it's an allowed parent domain
+  //if it's our own domain, return null
   if (config.NAMEFI_FIRST_PARTY_HOSTNAMES?.includes(origin.hostname)) {
-    return origin.hostname;
+    return null;
   }
   // if it's not our own domain, check if it's an allowed parent domain
   const allowedThirdPartyHostnames = await getPoweredByNamefi3PHostnames();
