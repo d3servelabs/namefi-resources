@@ -19,9 +19,21 @@ import {
   TabsTrigger,
 } from '@/components/ui/shadcn/tabs';
 import { toast } from 'sonner';
-import { Play, Pause, Trash2, RefreshCw, Clock } from 'lucide-react';
+import {
+  Play,
+  Pause,
+  Trash2,
+  RefreshCw,
+  Clock,
+  ArchiveRestoreIcon,
+} from 'lucide-react';
 import { cn } from '@/lib/cn';
 import { range } from 'ramda';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/shadcn/tooltip';
 
 type ScheduleConfig =
   AppRouterOutput['admin']['schedules']['getAllSchedules'][number]['config'];
@@ -398,15 +410,22 @@ function ScheduleActions({
   return (
     <div className="flex items-center space-x-2 pt-4 border-t">
       {needsSetup ? (
-        <Button
-          size="sm"
-          onClick={onSubmit}
-          disabled={isLoading}
-          className="flex-1"
-        >
-          <Play className="h-3 w-3 mr-1" />
-          Setup Schedule
-        </Button>
+        <Tooltip>
+          <TooltipTrigger>
+            <Button
+              size="sm"
+              onClick={onSubmit}
+              disabled={isLoading}
+              className="flex-1"
+            >
+              <ArchiveRestoreIcon className="h-3 w-3 mr-1" />
+              Setup Schedule
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>
+            This schedule needs to be configured on the Temporal server
+          </TooltipContent>
+        </Tooltip>
       ) : hasStatus ? (
         <>
           <Button

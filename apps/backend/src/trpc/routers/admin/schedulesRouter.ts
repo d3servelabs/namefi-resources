@@ -269,9 +269,9 @@ export const schedulesRouter = createTRPCRouter({
       }
       try {
         return schedule.getStatus();
-      } catch (error) {
-        logger.error(
-          { error, scheduleId: input.scheduleId },
+      } catch (error: any) {
+        logger.warn(
+          { error: error?.message, scheduleId: input.scheduleId },
           'Failed to get schedule status',
         );
         throw new TRPCError({
