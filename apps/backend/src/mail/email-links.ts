@@ -19,6 +19,7 @@ export const NamefiEmailLinks = withPoweredByNamefiDomain({
   orderDetails: (args: { orderId: string }) =>
     `https://namefi.io/m/user/orders/${args.orderId}`,
   paymentMethods: () => 'https://namefi.io/m/user/payment-methods',
+  emailSubscription: () => 'https://namefi.io/m/user/email/subscription',
 } as const);
 
 /**

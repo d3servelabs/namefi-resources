@@ -2,8 +2,11 @@ import { Hr, Link, Text } from '@react-email/components';
 import * as styles from '../styles';
 // biome-ignore lint/correctness/noUnusedImports: required for react-email
 import React from 'react';
+import { NamefiEmailLinks } from '../email-links';
+import { usePoweredByNamefiDomain } from './powered-by-namefi-url-context';
 
 export function NamefiFooter() {
+  const poweredByNamefiDomain = usePoweredByNamefiDomain();
   return (
     <>
       <Hr style={styles.hr} />
@@ -18,9 +21,12 @@ export function NamefiFooter() {
       </Text>
       <Text style={styles.paragraph}>— The D3Serve team</Text>
       <Hr style={styles.hr} />
-      <Text style={styles.footer}>
-        You can easily unsubscribe by removing the email from contact details
-      </Text>
+      <Link
+        style={styles.anchor}
+        href={NamefiEmailLinks.emailSubscription({ poweredByNamefiDomain })}
+      >
+        Click here to unsubscribe or manage your email preferences
+      </Link>
     </>
   );
 }
