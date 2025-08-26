@@ -19,8 +19,14 @@ import { appRouter } from './trpc/routers/appRouter';
 import { validateAndCreateSearchAttributes } from '#temporal/operator/search-attributes';
 import { randomBytes } from 'node:crypto';
 import { getConnInfo } from '@hono/node-server/conninfo';
+import type { ConnInfo } from 'hono/conninfo';
 
-const app = new Hono();
+type HonoVariables = {
+  requestId: string;
+  connInfo: ConnInfo;
+};
+
+const app = new Hono<{ Variables: HonoVariables }>();
 const logger = createLogger({ module: 'index', context: 'Main' });
 
 app.use(async (...args) => {
@@ -63,6 +69,8 @@ app.use(prettyJSON());
 app.use(async (c, next) => {
   const requestId = c.req.header('x-request-id') ?? genRequestId();
   const connInfo = getConnInfo(c);
+  c.set('requestId', requestId);
+  c.set('connInfo', connInfo);
   logger.assign({
     ip: connInfo.remote.address ?? 'unknown',
     connInfo,

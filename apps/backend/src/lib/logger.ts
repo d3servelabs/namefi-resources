@@ -8,6 +8,9 @@ import superjson from 'superjson';
 
 const _extraBindingsStore = new AsyncLocalStorage<Record<string, any>>();
 
+// Import execution context from the dedicated module
+import { getExecutionContext } from './execution-context/context';
+
 /**
  * Binds the log data to the logger.
  * @param bindings - The bindings to bind to the logger.
@@ -38,8 +41,18 @@ const _logger = pino(
     level: process.env.LOG_LEVEL || 'trace',
     mixin(obj: any, level: number, logger: any) {
       const bindings = _extraBindingsStore.getStore() ?? {};
+      const executionContext = getExecutionContext();
       const error = (obj.error as Error) ?? (obj.err as Error);
       const extras: Record<string, any> = { err: undefined, ...bindings };
+
+      // Add execution context to logs
+      if (executionContext) {
+        extras.executionContext = removeNestedKeys(
+          '$metadata',
+          executionContext,
+        );
+      }
+
       if (error) {
         extras.error = {
           ...error,
@@ -170,3 +183,29 @@ export const createLogger = (localBindings: Record<string, any> = {}) => {
 };
 
 export const logger = _logger as Logger;
+
+function removeNestedKeys(_key: string, obj: object): object {
+  if (Array.isArray(obj)) {
+    return obj.map((item) => removeNestedKeys(_key, item));
+  }
+
+  if (typeof obj !== 'object' || obj === null) {
+    return obj;
+  }
+
+  const entries = Object.entries(obj);
+  return Object.fromEntries(
+    entries.map(([key, value]) => {
+      if (key === _key) {
+        return [key, undefined];
+      }
+      if (Array.isArray(value)) {
+        return [key, value.map((item) => removeNestedKeys(_key, item))];
+      }
+      if (typeof value === 'object' && value !== null) {
+        return [key, removeNestedKeys(_key, value)];
+      }
+      return [key, value];
+    }),
+  );
+}

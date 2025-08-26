@@ -3,11 +3,16 @@ import { initTRPC } from '@trpc/server';
 import { TRPCError } from '@trpc/server';
 import type { FetchCreateContextFnOptions } from '@trpc/server/adapters/fetch';
 import type { Context } from 'hono';
+import type { ConnInfo } from 'hono/conninfo';
 import { isNil, isEmpty } from 'ramda';
 import superjson from 'superjson';
 import { ZodError } from 'zod';
 import { config, secrets } from '#lib/env';
 import { logger } from '#lib/logger';
+import {
+  setExecutionContext,
+  createUserContext,
+} from '#lib/execution-context/context';
 import {
   getPoweredByNamefi3PHostnames,
   getPoweredByNamefiDomainFromHostname,
@@ -114,6 +119,10 @@ export const createContext = async (
      * A test user we can provide to return when verifyUserAuthAndCreation is called from tests
      */
     testUser: null as UserSelect | null,
+    honoVars: c.var as {
+      requestId: string;
+      connInfo: ConnInfo;
+    },
   } satisfies TrpcContext;
 };
 
@@ -126,6 +135,10 @@ export type TrpcContext = {
    */
   poweredByNamefiDomain: string | null;
   testUser: UserSelect | null;
+  honoVars?: {
+    requestId: string;
+    connInfo: ConnInfo;
+  };
 };
 
 export type TrpcContextWithUser = TrpcContext & {
@@ -189,19 +202,16 @@ export const createTRPCRouter = t.router;
  * network latency that would occur in production but not in local development.
  */
 const timingMiddleware = t.middleware(async ({ next, path }) => {
-  performance.mark('requestStart-trpc');
-  logger.assign({
-    procedurePath: path,
-  });
+  const uid = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+  const startMark = `trpc:${path}:start:${uid}`;
+  const endMark = `trpc:${path}:end:${uid}`;
+  const measureName = `trpc:${path}:measure:${uid}`;
+  performance.mark(startMark);
 
   const result = await next();
-  performance.mark('requestEnd-trpc');
+  performance.mark(endMark);
 
-  const measure = performance.measure(
-    'request-trpc',
-    'requestStart-trpc',
-    'requestEnd-trpc',
-  );
+  const measure = performance.measure(measureName, startMark, endMark);
 
   logger.trace(
     {
@@ -212,6 +222,9 @@ const timingMiddleware = t.middleware(async ({ next, path }) => {
     `[TRPC][TIMING] ${path} took ${Math.round(measure.duration)}ms to execute`,
   );
 
+  performance.clearMarks(startMark);
+  performance.clearMarks(endMark);
+  performance.clearMeasures(measureName);
   return result;
 });
 
@@ -250,6 +263,16 @@ export const verifyUserAuthAndCreation = t.middleware<TrpcContextWithUser>(
         privyUserId: user?.privyUserId,
         sessionId,
       });
+
+      setExecutionContext(
+        createUserContext({
+          userId: user.id,
+          sessionId: sessionId ?? undefined,
+          privyUserId: user.privyUserId,
+          requestId: ctx.honoVars?.requestId,
+        }),
+      );
+
       return next({
         ctx: {
           ...ctx,
@@ -283,6 +306,17 @@ export const maybeVerifyUserAuthAndCreation =
       privyUserId: user?.privyUserId,
       sessionId,
     });
+    // Set execution context for user requests
+
+    setExecutionContext(
+      createUserContext({
+        userId: user?.id,
+        sessionId: sessionId ?? undefined,
+        privyUserId: user?.privyUserId,
+        requestId: ctx.honoVars?.requestId,
+      }),
+    );
+
     return next({
       ctx: {
         ...ctx,

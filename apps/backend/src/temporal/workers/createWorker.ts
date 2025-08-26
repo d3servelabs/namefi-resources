@@ -9,6 +9,7 @@ import { isNotNil } from 'ramda';
 import { config, secrets } from '#lib/env';
 import { createLogger } from '#lib/logger';
 import { type TEMPORAL_ENUMS, TEMPORAL_QUEUES } from '../shared/enums';
+import { wrapActivities } from '#lib/execution-context/temporal/wrappers';
 
 export async function createWorker({
   activities,
@@ -79,7 +80,7 @@ export async function createWorker({
 
       taskQueue: TEMPORAL_QUEUES[temporalEnum],
       ...workflowOption,
-      activities,
+      activities: wrapActivities(activities),
       bundlerOptions: {
         ignoreModules: ['process', 'inspector'],
       },
@@ -91,16 +92,18 @@ export async function createWorker({
       await connection?.close();
     });
 
-    workerLogger.info('Worker started successfully', {
+    workerLogger.info({
       taskQueue: TEMPORAL_QUEUES[temporalEnum],
+      message: 'Worker started successfully',
     });
 
     return worker;
   } catch (e) {
-    workerLogger.error('Worker Connection Failed', {
+    workerLogger.error({
       error: e,
       temporalUrl: config.TEMPORAL_API_URL,
       namespace: config.TEMPORAL_NAMESPACE,
+      message: 'Worker Connection Failed',
     });
     if (isNotNil(connection)) {
       await connection.close();
