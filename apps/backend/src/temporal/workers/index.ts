@@ -9,6 +9,7 @@ import {
   PaymentActivities,
   HuntActivities,
   FreeClaimActivities,
+  FreeClaimsCorrectionActivities,
   LinkSharesExternalIdentifierMigrationActivities,
 } from '../activities';
 import { DomainsActivities } from '../activities/domain';
@@ -67,6 +68,7 @@ export const ACTIVITIES = {
     },
     getConfig: async (key: keyof typeof config) => config[key],
     ...FreeClaimActivities,
+    ...FreeClaimsCorrectionActivities,
   },
   [TEMPORAL_ENUMS.MINT]: {
     ...MintActivities,

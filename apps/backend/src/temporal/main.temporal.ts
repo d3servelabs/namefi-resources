@@ -10,6 +10,10 @@ import { logger } from 'hono/logger';
 import { prettyJSON } from 'hono/pretty-json';
 import { config, secrets } from '#lib/env';
 import workersRouter from './workers.router';
+import { temporalClient } from './client';
+import { freeClaimsCorrectionWorkflow } from './workflows/free-claims-correction.workflow';
+import { TEMPORAL_ENUMS } from './shared';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 
 async function main() {
   await initWorkers();
@@ -52,6 +56,17 @@ async function main() {
       console.info('Server is running on port', info.port);
     },
   );
+  // await temporalClient.workflow.start(freeClaimsCorrectionWorkflow, {
+  //   workflowId: 'free-claims-correction-workflow',
+  //   taskQueue: TEMPORAL_QUEUES.DEFAULT,
+  //   args: [{
+  //     campaignKey: '0xcity-promo-2025',
+  //     incorrectParentDomain: '0xcity.com' as NamefiNormalizedDomain,
+  //     correctParentDomain: '0x.city' as NamefiNormalizedDomain,
+  //     campaignName: '0x.city 2025 Promotion',
+  //   }],
+  // });
+  console.log('Workflow started');
 }
 
 main();

@@ -9,4 +9,5 @@ export * as NotifyActivities from './notify.activities';
 export * as NftManagementReportActivities from './indexers/reporting/nft-management-report.activities';
 export * as HuntActivities from './hunt/hunt.activities';
 export * as FreeClaimActivities from './free-claim.activities';
+export * as FreeClaimsCorrectionActivities from './free-claims-correction.activities';
 export * as LinkSharesExternalIdentifierMigrationActivities from './migration/link-shares-external-identifier-migration.activities';
