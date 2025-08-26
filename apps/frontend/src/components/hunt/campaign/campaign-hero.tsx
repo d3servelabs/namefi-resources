@@ -7,6 +7,7 @@ import { CampaignCountdown } from './campaign-countdown';
 import Image from 'next/image';
 import { DefaultHeroBackground } from './hero-background/default-hero-background';
 import { AwardedHeroBackground } from './hero-background/awarded-hero-background';
+import { NFTDomain } from '@/components/nft-domain';
 
 interface CampaignHeroProps {
   campaignKey: string;
@@ -35,6 +36,7 @@ export const CampaignHero = ({ campaignKey }: CampaignHeroProps) => {
   const rankings = data?.rankings;
   const isActive = campaign?.status === 'ACTIVE';
   const isAwarded = campaign?.status === 'AWARDED';
+  const winnerDomainName = rankings?.[0]?.domainName;
 
   return (
     <section className="flex flex-col items-center justify-center gap-8 py-20 relative min-h-[600px]">
@@ -53,7 +55,17 @@ export const CampaignHero = ({ campaignKey }: CampaignHeroProps) => {
           </h1>
         )}
 
-        {campaign?.logoUrl ? (
+        {isAwarded && winnerDomainName ? (
+          <div className="flex justify-center mt-8">
+            <div className="w-40">
+              <NFTDomain
+                domainName={winnerDomainName}
+                origin={winnerDomainName ?? ''}
+                className="backdrop-blur-lg"
+              />
+            </div>
+          </div>
+        ) : campaign?.logoUrl ? (
           <Image
             src={campaign?.logoUrl}
             alt="Campaign Icon"

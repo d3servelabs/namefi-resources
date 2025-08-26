@@ -3,13 +3,11 @@ import { getHostname } from '@/lib/string';
 import type { ReadonlyHeaders } from 'next/dist/server/web/spec-extension/adapters/headers';
 import { originConfig } from './config';
 import type { OriginConfig, OriginInfo } from './types';
-import { headers } from 'next/headers';
-import { cache } from 'react';
 
 /**
  * Get the host from server-side headers
  */
-function getOriginFromServerHeaders(
+export function getOriginFromServerHeaders(
   headersList: ReadonlyHeaders,
 ): string | null {
   try {
@@ -26,7 +24,7 @@ function getOriginFromServerHeaders(
 /**
  * Checks if the provided origin is a NameFI first-party origin
  */
-function isNamefiFirstPartyOrigin(origin: string): boolean {
+export function isNamefiFirstPartyOrigin(origin: string): boolean {
   const hostname = getHostname(origin);
   return config.NAMEFI_FIRST_PARTY_HOSTNAMES.includes(hostname);
 }
@@ -35,7 +33,7 @@ function isNamefiFirstPartyOrigin(origin: string): boolean {
  * Gets the domain for a powered-by-NameFI third-party origin
  * Returns null when there is no third-party origin
  */
-function getDomainForPoweredByNamefiThirdPartyOrigin(
+export function getDomainForPoweredByNamefiThirdPartyOrigin(
   origin: string,
 ): string | null {
   const hostname = getHostname(origin);
@@ -64,7 +62,7 @@ function getOriginConfig(origin: string | null): OriginConfig {
   return originConfig.firstParty;
 }
 
-function getOriginInfo(origin: string): OriginInfo {
+export const getOriginInfo = (origin: string): OriginInfo => {
   const isFirstPartyOrigin = isNamefiFirstPartyOrigin(origin);
   const hostname = getHostname(origin);
   const processedHostname = isFirstPartyOrigin
@@ -76,19 +74,4 @@ function getOriginInfo(origin: string): OriginInfo {
     thirdPartyHostname: processedHostname,
     config: getOriginConfig(origin),
   };
-}
-
-export const getOriginRuntime = cache(async () => {
-  const headersList = await headers();
-  const origin = getOriginFromServerHeaders(headersList);
-  const info: OriginInfo = origin
-    ? getOriginInfo(origin)
-    : {
-        isFirstPartyOrigin: true,
-        thirdPartyHostname: null,
-        config: originConfig.firstParty,
-      };
-  return { origin, ...info };
-});
-
-export type OriginRuntime = Awaited<ReturnType<typeof getOriginRuntime>>;
+};
