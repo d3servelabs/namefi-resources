@@ -99,6 +99,7 @@
     "parse-domain": "^8.2.2",
     "pg": "^8.15.6",
     "pino": "^9.6.0",
+    "pino-opentelemetry-transport": "^1.0.1",
     "pino-pretty": "^13.0.0",
     "pluralize": "^8.0.0",
     "ramda": "^0.30.1",

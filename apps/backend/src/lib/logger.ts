@@ -68,45 +68,64 @@ export const logger = pino(
       },
     },
   },
-  pino.multistream([
-    ...(process.env.NODE_ENV === 'production'
-      ? [{ level: 'trace', stream: pino.destination() }]
-      : [
-          {
-            level: 'trace',
-            stream: pinoPretty({
-              colorize: true,
-              minimumLevel: 'trace',
-              singleLine: true,
-              colorizeObjects: true,
-              ignore: 'pid,hostname,device',
-            }),
-          },
-          {
-            level: 'trace',
-            stream: {
-              write(msg) {
-                try {
-                  const obj = JSON.parse(msg);
-                  if (inspector.url()) {
-                    if (obj.level < 30) {
-                      inspector.console.debug(obj);
-                    } else if (obj.level >= 50) {
-                      inspector.console.error(obj);
-                    } else if (obj.level >= 40) {
-                      inspector.console.warn(obj);
-                    } else {
-                      inspector.console.log(obj);
-                    }
-                  }
-                } catch (error) {
-                  console.error(error);
-                }
-              },
-            } satisfies DestinationStream,
-          },
-        ]),
-  ]),
+  pino.multistream(getStreams()),
 );
+
+type StreamsArray = Parameters<typeof pino.multistream>[0];
+function getStreams(): StreamsArray {
+  const streams: StreamsArray = [];
+  if (process.env.NODE_ENV === 'production') {
+    streams.push({ level: 'trace', stream: pino.destination() });
+  } else {
+    streams.push(
+      {
+        level: 'trace',
+        stream: pinoPretty({
+          colorize: true,
+          minimumLevel: 'trace',
+          singleLine: true,
+          colorizeObjects: true,
+          ignore: 'pid,hostname,device',
+        }),
+      },
+      {
+        level: 'trace',
+        stream: {
+          write(msg) {
+            try {
+              const obj = JSON.parse(msg);
+              if (inspector.url()) {
+                if (obj.level < 30) {
+                  inspector.console.debug(obj);
+                } else if (obj.level >= 50) {
+                  inspector.console.error(obj);
+                } else if (obj.level >= 40) {
+                  inspector.console.warn(obj);
+                } else {
+                  inspector.console.log(obj);
+                }
+              }
+            } catch (error) {
+              console.error(error);
+            }
+          },
+        } satisfies DestinationStream,
+      },
+    );
+  }
+  if (process.env.OTEL_EXPORTER_OTLP_LOGS_ENDPOINT) {
+    const otlpTransport = pino.transport({
+      target: 'pino-opentelemetry-transport',
+    });
+    streams.push({
+      level: 'trace',
+      stream: otlpTransport,
+    });
+    otlpTransport.on('ready', () => {
+      console.log('OTLP transport ready');
+    });
+  }
+  return streams;
+}
 
 export const createLogger = logger.child.bind(logger);
