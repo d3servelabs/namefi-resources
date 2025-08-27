@@ -45,8 +45,8 @@ export async function updateMarketplaceForDomain(
     );
 
     // Clear dirty flag atomically
-    await db.transaction(async () => {
-      await db
+    await db.transaction(async (tx) => {
+      await tx
         .update(domainAiAnalysisTable)
         .set({ dirty: false })
         .where(eq(domainAiAnalysisTable.tokenId, tokenId));
@@ -88,7 +88,7 @@ const openseaMarketplace: Marketplace = {
   },
 };
 
-const visionMarketplace: Marketplace = {
+const _visionMarketplace: Marketplace = {
   name: 'vision',
   supportedChains: [CHAINS.mainnet.id, CHAINS.base.id],
   updateNft: async (tokenId: string, _chainId: number) => {
@@ -101,7 +101,7 @@ const visionMarketplace: Marketplace = {
   },
 };
 
-const marketplaces: Marketplace[] = [openseaMarketplace, visionMarketplace];
+const marketplaces: Marketplace[] = [openseaMarketplace];
 
 const getMarketplacesForChain = (chainId: number): Marketplace[] => {
   return marketplaces.filter((marketplace) =>
