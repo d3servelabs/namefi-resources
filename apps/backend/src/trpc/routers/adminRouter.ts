@@ -36,6 +36,7 @@ import { getDomainChain } from '#temporal/activities/domain/index';
 import { type Chain, createPublicClient, http } from 'viem';
 import { chainsToUrls } from '#lib/crypto/rpc-urls';
 import { schedulesRouter } from './admin/schedulesRouter';
+import { poweredByNamefiRouter } from './admin/poweredByNamefiRouter';
 /**
  * Convert protobuf WorkflowExecutionStatus enum to readable string
  */
@@ -1846,6 +1847,7 @@ export const adminRouter = createTRPCRouter({
 
   // Subrouters
   schedules: schedulesRouter,
+  poweredByNamefi: poweredByNamefiRouter,
 });
 
 function _buildQueryFilters(

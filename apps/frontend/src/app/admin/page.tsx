@@ -108,6 +108,25 @@ export default withAdminGuard(function AdminPage() {
           </Card>
         </Link>
 
+        {/* Powered by Namefi Domains */}
+        <Link href="/admin/powered-by-namefi" className="group">
+          <Card className="h-full transition-all hover:shadow-md hover:bg-muted/50">
+            <CardHeader className="pb-3">
+              <div className="flex items-center space-x-3">
+                <div className="p-2 rounded-lg bg-indigo-100 text-indigo-600 group-hover:bg-indigo-200 transition-colors">
+                  <Settings className="h-5 w-5" />
+                </div>
+                <CardTitle className="text-lg">Powered by Namefi</CardTitle>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground">
+                Manage third-party domains with Vercel, DNS, and GCloud setup.
+              </p>
+            </CardContent>
+          </Card>
+        </Link>
+
         {/* Email Templates - Disabled */}
         <Link href="/admin/emails/templates" className="group">
           <Card className="h-full opacity-50 cursor-not-allowed">

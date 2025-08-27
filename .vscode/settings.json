@@ -42,6 +42,8 @@
     "rsuite",
     "sami",
     "sid",
-    "viem"
+    "viem",
+    "rdata",
+    "rrdata"
   ]
 }
