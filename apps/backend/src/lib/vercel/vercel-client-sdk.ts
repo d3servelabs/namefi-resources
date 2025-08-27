@@ -1,0 +1,229 @@
+import { Vercel } from '@vercel/sdk';
+import { logger } from '#lib/logger';
+import { secrets } from '#lib/env';
+import { toPunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
+import type { GetProjectDomainResponseBody } from '@vercel/sdk/models/getprojectdomainop';
+import type { AddProjectDomainResponseBody } from '@vercel/sdk/models/addprojectdomainop';
+import type { GetDomainConfigResponseBody } from '@vercel/sdk/models/getdomainconfigop.js';
+
+export interface VercelDomain {
+  name: string;
+  verified: boolean;
+  verification: Array<{
+    type: string;
+    domain: string;
+    value: string;
+    reason: string;
+  }>;
+  projectId?: string;
+}
+
+export interface DomainConfiguration {
+  isAnycast: boolean;
+  expectedRecords: Array<{
+    type: 'A' | 'CNAME';
+    name: string;
+    value: string;
+  }>;
+  verificationRecords: Array<{
+    type: string;
+    domain: string;
+    value: string;
+  }>;
+}
+
+const VERCEL_ANYCAST = {
+  CNAME: 'cname.vercel-dns.com.',
+  A: '76.76.21.21',
+};
+
+export class VercelClientSDK {
+  private readonly vercel: Vercel;
+  private readonly teamId?: string;
+
+  constructor(apiToken: string, teamId?: string) {
+    this.vercel = new Vercel({
+      bearerToken: apiToken,
+    });
+    this.teamId = teamId;
+  }
+
+  async getProject() {}
+
+  async getProjectDomain(
+    projectIdOrName: string,
+    domainName: string,
+  ): Promise<GetProjectDomainResponseBody> {
+    const domain = await this.vercel.projects.getProjectDomain({
+      idOrName: projectIdOrName,
+      teamId: this.teamId,
+      domain: domainName,
+    });
+    return domain;
+  }
+
+  /**
+   * Add domain to project
+   */
+  async addDomainToProject(
+    projectId: string,
+    domain: string,
+    customEnvironmentId?: string,
+  ): Promise<AddProjectDomainResponseBody> {
+    try {
+      const result = await this.vercel.projects.addProjectDomain({
+        idOrName: projectId,
+        teamId: this.teamId,
+        requestBody: {
+          name: domain,
+          customEnvironmentId,
+        },
+      });
+
+      return result;
+    } catch (error) {
+      logger.error(
+        { error, projectId, domain },
+        'Failed to add domain to Vercel project',
+      );
+      throw error;
+    }
+  }
+
+  /**
+   * Get domains for a project with pagination support
+   */
+  async getProjectDomains(
+    projectIdOrName: string,
+  ): Promise<GetProjectDomainResponseBody[]> {
+    try {
+      let allDomains: GetProjectDomainResponseBody[] = [];
+      let next: number | null = null;
+
+      do {
+        const response = await this.vercel.projects.getProjectDomains({
+          idOrName: projectIdOrName,
+          teamId: this.teamId,
+          limit: 100,
+          ...(next && { since: next }),
+        });
+
+        allDomains = [...allDomains, ...response.domains];
+        next = response.pagination?.next;
+      } while (next);
+
+      return allDomains;
+    } catch (error) {
+      logger.error(
+        { error, projectIdOrName },
+        'Failed to get Vercel project domains',
+      );
+      return [];
+    }
+  }
+
+  /**
+   * Check if domain is configured in project
+   */
+  async isDomainInProject(projectId: string, domain: string): Promise<boolean> {
+    try {
+      const domains = await this.getProjectDomains(projectId);
+      return domains.some(
+        (d) => toPunycodeDomainName(d.name) === toPunycodeDomainName(domain),
+      );
+    } catch (error) {
+      logger.error(
+        { error, projectId, domain },
+        'Failed to check if domain is in project',
+      );
+      return false;
+    }
+  }
+
+  /**
+   * Remove domain from project
+   */
+  async removeDomainFromProject(
+    projectId: string,
+    domain: string,
+  ): Promise<void> {
+    try {
+      await this.vercel.projects.removeProjectDomain({
+        idOrName: projectId,
+        domain,
+        teamId: this.teamId,
+      });
+    } catch (error) {
+      logger.error(
+        { error, projectId, domain },
+        'Failed to remove domain from Vercel project',
+      );
+      throw error;
+    }
+  }
+
+  async getDomainConfiguration(
+    domain: string,
+  ): Promise<GetDomainConfigResponseBody> {
+    const domainConfig = await this.vercel.domains.getDomainConfig({
+      domain,
+    });
+    return domainConfig;
+  }
+
+  /**
+   * Analyze domain configuration to determine if it uses anycast values
+   */
+  analyzeDomainConfiguration(
+    domain: GetProjectDomainResponseBody,
+  ): DomainConfiguration {
+    const isAnycast = domain.verification?.some(
+      (v) =>
+        (v.type === 'CNAME' && v.value === VERCEL_ANYCAST.CNAME) ||
+        (v.type === 'A' && v.value === VERCEL_ANYCAST.A),
+    );
+
+    const expectedRecords: Array<{
+      type: 'A' | 'CNAME';
+      name: string;
+      value: string;
+    }> = [];
+
+    if (isAnycast) {
+      // Anycast domains should have CNAME to cname.vercel-dns.com
+      expectedRecords.push({
+        type: 'CNAME',
+        name: domain.name,
+        value: VERCEL_ANYCAST.CNAME,
+      });
+    } else {
+      // Custom IP domains should have A record with Vercel IP
+      const aRecord = domain.verification?.find((v) => v.type === 'A');
+      if (aRecord) {
+        expectedRecords.push({
+          type: 'A',
+          name: domain.name,
+          value: aRecord.value,
+        });
+      }
+    }
+
+    return {
+      isAnycast: isAnycast || false,
+      expectedRecords,
+      verificationRecords: domain.verification || [],
+    };
+  }
+}
+
+// Factory function to create Vercel client with environment configuration
+export function createVercelClientSDK(): VercelClientSDK {
+  const apiToken = secrets.VERCEL_API_TOKEN;
+  const teamId = secrets.VERCEL_TEAM_ID;
+
+  if (!apiToken) {
+    throw new Error('VERCEL_API_TOKEN is required');
+  }
+
+  return new VercelClientSDK(apiToken, teamId);
+}

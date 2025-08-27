@@ -52,6 +52,13 @@ export const secretsSchema = z.object({
   GA4_KEY_FILE_PATH: z.string().optional(),
 
   VISION_API_KEY: z.string(),
+
+  // Vercel API configuration
+  VERCEL_API_TOKEN: z.string().optional(),
+  VERCEL_TEAM_ID: z.string().optional(),
+
+  // Google Cloud DNS configuration (uses existing Google credentials)
+  GOOGLE_CLOUD_PROJECT_ID: z.string().optional(),
   OPENSEA_API_KEY: z.string(),
 });
 
@@ -144,6 +151,13 @@ export const configSchema = z.object({
   REQUIRE_TEMPORAL_SEARCH_ATTRIBUTES_VALIDATION: z.boolean().default(false),
 
   VISION_API_URL: z.string().url().default('https://api.vision.io'),
+
+  VERCEL_TEAM_SLUG: z.string().default('d3servelabs'),
+  VERCEL_PROJECT_SLUG: z.string().default('namefi-astra'),
+  VERCEL_PROJECT_ID: z.string().default('prj_s5UsB8zN2BL3tRhGZfwSIUKvyGfV'),
+  NAMEFI_IO_ZONE: z.string().default('namefi-io'),
+  NAMEFI_DEV_ZONE: z.string().default('namefi-dev'),
+  VERCEL_DEV_ENV_ID: z.string().default('env_zTZy6lGe9uNCkFYgd4FbfDETzoHO'),
 });
 
 export type ConfigInput = z.input<typeof configSchema>;
