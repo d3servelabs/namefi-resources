@@ -6,7 +6,12 @@ import React from 'react';
 import { render } from '@react-email/components';
 import { sendMail } from '../../mail/mail-client';
 import { FreeClaimsCorrection } from '../../mail/templates/free-claims-correction';
-import { getUserEmailOrThrow } from './notify.activities';
+import pluralize from 'pluralize';
+import { privyClient } from '../../trpc/utils';
+import {
+  privyStorageToPrivyCustomMetadata,
+  type PrivyCustomMetadata,
+} from '../../trpc/types';
 
 const logger = createLogger({ context: 'free-claims-correction-activities' });
 
@@ -83,17 +88,35 @@ export async function sendFreeClaimsCorrectionEmail(
 
   try {
     // Get user email
-    const userEmail = await getUserEmailOrThrow(userId);
-
-    // Get user name from contacts (use email as fallback)
-    const userContact = await db.query.userContactsTable.findFirst({
-      where: (contacts, { eq }) => eq(contacts.userId, userId),
+    const user = await db.query.usersTable.findFirst({
+      where: (users, { eq }) => eq(users.id, userId),
+      columns: {
+        privyUserId: true,
+      },
     });
 
-    const recipientName =
-      userContact?.firstName && userContact?.lastName
-        ? `${userContact.firstName} ${userContact.lastName}`
-        : userEmail.split('@')[0];
+    if (!user) {
+      throw new Error(`User not found: ${userId}`);
+    }
+    if (!user.privyUserId) {
+      throw new Error(`User ${userId} missing privyUserId`);
+    }
+    const privyUser = await privyClient.getUserById(user.privyUserId);
+    const userEmail = privyUser.email?.address;
+    if (!userEmail) {
+      throw new Error('User has no email');
+    }
+    const parsedMetadata = privyStorageToPrivyCustomMetadata.safeParse(
+      privyUser.customMetadata,
+    );
+
+    let recipientName: string = userEmail.split('@')[0];
+    if (parsedMetadata.success) {
+      const metadata: PrivyCustomMetadata = parsedMetadata.data;
+      if (metadata.fullName) {
+        recipientName = metadata.fullName;
+      }
+    }
 
     // Render the email template
     const emailContent = React.createElement(FreeClaimsCorrection, {
@@ -117,12 +140,8 @@ export async function sendFreeClaimsCorrectionEmail(
     // Send the email
     await sendMail({
       to: [userEmail],
-      bcc: [
-        'customer-email-archive@d3serve.xyz',
-        'sami@d3serve.xyz',
-        'zzn@d3serve.xyz',
-      ],
-      subject: `[Namefi] CORRECTION - Free Claims for ${correctParentDomain} - ${campaignName}`,
+      bcc: ['customer-email-archive@d3serve.xyz', 'dev-team@d3serve.xyz'],
+      subject: `[Namefi] Correction - You have ${totalClaimsGranted} free ${pluralize('claim', totalClaimsGranted, false)} for ${correctParentDomain}`,
       content: {
         html,
         plain: plainText,
@@ -131,7 +150,7 @@ export async function sendFreeClaimsCorrectionEmail(
 
     logger.info('Free claims correction email sent successfully', {
       userId,
-      userEmail,
+      email: userEmail,
       campaignKey,
     });
   } catch (error) {
