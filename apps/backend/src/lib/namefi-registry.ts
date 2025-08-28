@@ -6,11 +6,13 @@ import {
   orderItemsTable,
   orderStatusSchema,
   ordersTable,
+  type PoweredByNamefiDomainInsert,
+  type PoweredByNamefiDomainSelect,
 } from '@namefi-astra/db';
 import { createRegistrarService } from '@namefi-astra/registrars/registrars/main-registrar';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
-import { addWeeks, isAfter, subDays } from 'date-fns';
+import { subDays } from 'date-fns';
 import { ParseResultType, parseDomain } from 'parse-domain';
 import { flatten, groupBy, isNil, toPairs, pluck } from 'ramda';
 import { config } from '#lib/env';
@@ -18,7 +20,7 @@ import { userQualifiesForDomainNamePromo } from '#lib/user-promo';
 import { getDomainLevels } from './get-domain-levels';
 import {
   hashBasedPercentageRollouted,
-  isReservedKeyword,
+  isReservedKeywordForParentDomain,
 } from './namefi-registry-helpers';
 
 import { DomainAvailability } from '@namefi-astra/registrars/lib/abstract-registrar/data/domain-availability';
@@ -81,31 +83,80 @@ const generateUnavailableDomainInfo = (domain: NamefiNormalizedDomain) => ({
   importable: false,
 });
 
-export const getPoweredByNamefi3PDomains = async () => {
+const HARDCODED_3P_DOMAINS_NAMES = [
+  '0x.city',
+  'taylor.cv',
+  'ali.cv',
+  'li.cv',
+  'muller.cv',
+  'kumar.cv',
+  'victor.cv',
+  'starts.today',
+  'ends.today',
+  'promos.today',
+  'available.today',
+  'discounts.today',
+] as NamefiNormalizedDomain[];
+
+const HARDCODED_3P_DOMAINS = HARDCODED_3P_DOMAINS_NAMES.map(
+  (domain) =>
+    ({
+      normalizedDomainName: domain,
+      startRolloutAt: domain === '0x.city' ? subDays(new Date(), 1) : null,
+      costPerYearInUsdCents: 500,
+      enabled: domain === '0x.city',
+      additionalAllowedHostnames: [],
+      durationConstraints: {
+        minDurationInYears: 1,
+        maxDurationInYears: 1,
+      },
+      additionalReservedNames: [],
+      ownerId: null,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      metadata: {},
+    }) satisfies PoweredByNamefiDomainSelect,
+);
+
+export const getPoweredByNamefi3PDomainsDetails = async () => {
   const poweredbyNamefiDomains =
     await db.query.poweredbyNamefiDomainsTable.findMany();
+  const namesFromDb: string[] = pluck(
+    'normalizedDomainName',
+    poweredbyNamefiDomains,
+  );
+  const fromConfig = HARDCODED_3P_DOMAINS.filter(
+    (domain) => !namesFromDb.includes(domain.normalizedDomainName),
+  );
+  return [...poweredbyNamefiDomains, ...fromConfig];
+};
+
+export const getSinglePoweredByNamefi3PDomainsDetails = async (
+  normalizeDomainName: NamefiNormalizedDomain,
+) => {
+  const fromDb = await db.query.poweredbyNamefiDomainsTable.findFirst({
+    where: (table, { eq }) =>
+      eq(table.normalizedDomainName, normalizeDomainName),
+  });
+
+  if (fromDb) {
+    return fromDb;
+  }
+
+  const fromConfig = HARDCODED_3P_DOMAINS.find(
+    (domain) => domain.normalizedDomainName === normalizeDomainName,
+  );
+  return fromConfig ?? null;
+};
+
+export const getPoweredByNamefi3PDomains = async () => {
+  const poweredbyNamefiDomains = await getPoweredByNamefi3PDomainsDetails();
   const fromDb: string[] = pluck(
     'normalizedDomainName',
     poweredbyNamefiDomains,
   );
 
-  return Array.from(
-    new Set([
-      ...fromDb,
-      '0x.city',
-      'taylor.cv',
-      'ali.cv',
-      'li.cv',
-      'muller.cv',
-      'kumar.cv',
-      'victor.cv',
-      'starts.today',
-      'ends.today',
-      'promos.today',
-      'available.today',
-      'discounts.today',
-    ] as NamefiNormalizedDomain[]),
-  );
+  return Array.from(new Set(fromDb as NamefiNormalizedDomain[]));
 };
 
 export const getPoweredByNamefiDomainFromHostname = async (
@@ -123,20 +174,22 @@ export const getPoweredByNamefiDomainFromHostname = async (
 
   const poweredbyNamefiDomains =
     await db.query.poweredbyNamefiDomainsTable.findFirst({
-      where: (domain, { inArray }) =>
-        or(
-          inArray(domain.additionalAllowedHostnames, sql`${hostname}`),
-          eq(domain.normalizedDomainName, hostname as NamefiNormalizedDomain),
+      where: (domain, { and, or, eq }) =>
+        and(
+          or(
+            sql<boolean>`${hostname} = ANY(${domain.additionalAllowedHostnames})`,
+            eq(domain.normalizedDomainName, hostname as NamefiNormalizedDomain),
+          ),
+          eq(domain.enabled, true),
         ),
+      columns: { normalizedDomainName: true },
     });
 
   return poweredbyNamefiDomains?.normalizedDomainName;
 };
 
-// biome-ignore lint/suspicious/useAwait: it will be a db query in upcoming updates
 export const getPoweredByNamefi3PHostnames = async () => {
-  const poweredbyNamefiDomains =
-    await db.query.poweredbyNamefiDomainsTable.findMany();
+  const poweredbyNamefiDomains = await getPoweredByNamefi3PDomainsDetails();
 
   const fromDb = poweredbyNamefiDomains.flatMap((domain) => [
     ...(domain.additionalAllowedHostnames ?? []),
@@ -151,12 +204,35 @@ export const getPoweredByNamefi3PHostnames = async () => {
   return Array.from(new Set([...fromDb, ...fromConfig]));
 };
 
-// biome-ignore lint/suspicious/useAwait: it will be a db query in upcoming updates
 export const getSubdomainPriceInUsd = async (
-  _subdomain: string, // not using this
+  _subdomain: NamefiNormalizedDomain,
   isFreeMint: boolean,
 ) => {
-  return isFreeMint ? 0 : 5;
+  if (isFreeMint) return 0;
+  const { parentDomain, levels } = getDomainLevels(_subdomain);
+  // Validate that this is actually a subdomain (3LD)
+  if (levels?.length !== 3) {
+    logger.warn(
+      `getSubdomainPriceInUsd called with non-3LD domain: ${_subdomain}`,
+    );
+    return null;
+  }
+  if (!parentDomain) {
+    logger.warn(
+      `getSubdomainPriceInUsd cannot determine parent domain for subdomain ${_subdomain}`,
+    );
+    return null;
+  }
+  const poweredbyNamefiDomain =
+    await getSinglePoweredByNamefi3PDomainsDetails(parentDomain);
+  if (
+    !poweredbyNamefiDomain ||
+    poweredbyNamefiDomain.enabled === false ||
+    isNil(poweredbyNamefiDomain.costPerYearInUsdCents)
+  ) {
+    return null;
+  }
+  return poweredbyNamefiDomain.costPerYearInUsdCents / 100;
 };
 
 export type DomainAvailabilityInfo = {
@@ -255,28 +331,6 @@ export const getDomainListInfo = async (
   });
 };
 
-export const getPercentageRollout = (parentDomain: NamefiNormalizedDomain) => {
-  // schedule of percentage
-  let currentPercentage = 0;
-  if (parentDomain === '0x.city') {
-    const startDate = new Date('2025-05-05');
-
-    const today = new Date();
-
-    if (isAfter(today, addWeeks(startDate, 3))) {
-      currentPercentage = 100;
-    } else if (isAfter(today, addWeeks(startDate, 2))) {
-      currentPercentage = 30;
-    } else if (isAfter(today, addWeeks(startDate, 1))) {
-      currentPercentage = 10;
-    } else {
-      currentPercentage = 1;
-    }
-  }
-
-  return currentPercentage;
-};
-
 const _getSldDomainListInfo = async (
   domains: NamefiNormalizedDomain[],
   nftMap: Map<NamefiNormalizedDomain, NamefiNftSelect>,
@@ -339,81 +393,89 @@ const _get3ldDomainListInfo = async (
   const unavailableDomainInfo = generateUnavailableDomainInfo(domain);
   const prefix = levels[2];
 
-  // Check if the domain is reserved
-  if (isReservedKeyword(prefix)) {
+  if (!parentDomain) {
     return unavailableDomainInfo;
   }
 
-  const poweredByNamefi3pDomains = await getPoweredByNamefi3PDomains();
-  if (
-    poweredByNamefi3pDomains.includes(parentDomain as NamefiNormalizedDomain)
-  ) {
-    const currentPercentage = getPercentageRollout(
-      parentDomain as NamefiNormalizedDomain,
-    );
-    // we only enable a percentage of subdomain registrations
-    // we use keccak256 to hash the domain and check if the last 4 bytes are less than PERCENT of the total number of subdomains
-    const shouldRollout = hashBasedPercentageRollouted(
-      domain,
-      currentPercentage,
-    );
+  const poweredByNamefiDomain =
+    await getSinglePoweredByNamefi3PDomainsDetails(parentDomain);
 
-    let userQualifiesFor0xDotCity = false;
-    if (!shouldRollout) {
-      if (!user?.privyUserId) {
-        return unavailableDomainInfo;
-      }
-      userQualifiesFor0xDotCity = await userQualifiesForDomainNamePromo({
-        normalizedDomainName: domain,
-        user,
-      });
-      if (!userQualifiesFor0xDotCity) {
-        return unavailableDomainInfo;
-      }
-    }
-
-    // Look up the NFT and price information
-    const nft = nftMap.get(domain);
-    const isFreeMint = userQualifiesFor0xDotCity;
-    const price = await getSubdomainPriceInUsd(domain, isFreeMint);
-    let durationConstraints = { minYears: 1, maxYears: 10 };
-    try {
-      durationConstraints = await getDomainDurationConstraints(domain);
-    } catch (error) {
-      logger.error(
-        `Error getting duration constraints for ${domain}: ${error}`,
-      );
-    }
-
-    // Return domain information including availability, price, and current owner
-    return {
-      domain,
-      availability: isNil(nft),
-      importable: false,
-      pricingDetails: {
-        registrationPrice: {
-          type: 'PER_YEAR',
-          price: { amount: price, currency: 'USD' },
-        },
-        renewalPrice: {
-          type: 'PER_YEAR',
-          price: { amount: price, currency: 'USD' },
-        },
-        importPrice: {
-          type: 'PER_YEAR',
-          price: { amount: price, currency: 'USD' },
-        },
-      },
-      currentOwner: nft?.ownerAddress,
-      durationValidationInYears: {
-        min: durationConstraints.minYears,
-        max: durationConstraints.maxYears,
-      },
-      registrarKey: 'namefi',
-    } satisfies DomainAvailabilityInfo;
+  if (isNil(poweredByNamefiDomain) || poweredByNamefiDomain.enabled === false) {
+    return unavailableDomainInfo;
   }
 
-  return unavailableDomainInfo;
+  // Check if the domain is reserved
+  if (await isReservedKeywordForParentDomain(parentDomain, prefix)) {
+    return unavailableDomainInfo;
+  }
+
+  const startDate = poweredByNamefiDomain.startRolloutAt
+    ? new Date(poweredByNamefiDomain.startRolloutAt)
+    : null;
+  const currentPercentage = startDate && startDate < new Date() ? 100 : 0;
+
+  // we only enable a percentage of subdomain registrations
+  // we use keccak256 to hash the domain and check if the last 4 bytes are less than PERCENT of the total number of subdomains
+  const shouldRollout = hashBasedPercentageRollouted(domain, currentPercentage);
+
+  if (!shouldRollout && parentDomain !== '0x.city') {
+    return unavailableDomainInfo;
+  }
+
+  let isFreeMint = false;
+  if (!shouldRollout && parentDomain === '0x.city') {
+    if (!user?.privyUserId) {
+      return unavailableDomainInfo;
+    }
+    const userQualifiesFor0xDotCity = await userQualifiesForDomainNamePromo({
+      normalizedDomainName: domain,
+      user,
+    });
+    if (!userQualifiesFor0xDotCity) {
+      return unavailableDomainInfo;
+    }
+    isFreeMint = userQualifiesFor0xDotCity;
+  }
+
+  // Look up the NFT and price information
+  const nft = nftMap.get(domain);
+  const price = await getSubdomainPriceInUsd(domain, isFreeMint);
+  if (isNil(price)) {
+    return unavailableDomainInfo;
+  }
+  let durationConstraints = { minYears: 1, maxYears: 10 };
+  try {
+    durationConstraints = await getDomainDurationConstraints(domain);
+  } catch (error) {
+    logger.error(`Error getting duration constraints for ${domain}: ${error}`);
+  }
+
+  // Return domain information including availability, price, and current owner
+  return {
+    domain,
+    availability: isNil(nft),
+    importable: false,
+    pricingDetails: {
+      registrationPrice: {
+        type: 'PER_YEAR',
+        price: { amount: price, currency: 'USD' },
+      },
+      renewalPrice: {
+        type: 'PER_YEAR',
+        price: { amount: price, currency: 'USD' },
+      },
+      importPrice: {
+        type: 'PER_YEAR',
+        price: { amount: price, currency: 'USD' },
+      },
+    },
+    currentOwner: nft?.ownerAddress,
+    durationValidationInYears: {
+      min: durationConstraints.minYears,
+      max: durationConstraints.maxYears,
+    },
+    registrarKey: 'namefi',
+  } satisfies DomainAvailabilityInfo;
 };
 
 /**

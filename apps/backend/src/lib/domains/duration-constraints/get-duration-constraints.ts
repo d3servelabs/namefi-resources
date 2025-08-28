@@ -1,7 +1,7 @@
 import { getDomainLevels } from '../../get-domain-levels';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
-import { getPoweredByNamefi3PDomains } from '../../namefi-registry';
 import type { DomainDurationConstraints } from './types';
+import { db } from '@namefi-astra/db';
 
 export async function getDomainDurationConstraints(
   domainName: NamefiNormalizedDomain,
@@ -52,15 +52,25 @@ export async function getDomainDurationConstraints(
     return { minYears: 1, maxYears: 10 };
   }
   if (levels.length === 3) {
-    const poweredByNamefi3pDomains = await getPoweredByNamefi3PDomains();
-    if (
-      !poweredByNamefi3pDomains.includes(parentDomain as NamefiNormalizedDomain)
-    ) {
+    if (!parentDomain) {
       throw new Error(
         `Domain ${domainName} is not a valid powered by namefi 3P domain`,
       );
     }
-    return { minYears: 1, maxYears: 4 };
+    const record = await db.query.poweredbyNamefiDomainsTable.findFirst({
+      where: (table, { eq }) =>
+        eq(table.normalizedDomainName, parentDomain as NamefiNormalizedDomain),
+    });
+    if (!record || record.enabled === false) {
+      throw new Error(
+        `Domain ${domainName} is not a valid powered by namefi 3P domain`,
+      );
+    }
+    const { durationConstraints } = record;
+    return {
+      minYears: durationConstraints.minDurationInYears,
+      maxYears: durationConstraints.maxDurationInYears,
+    } satisfies DomainDurationConstraints;
   }
 
   throw new Error(`Domain ${domainName} is not a valid domain`);

@@ -10,7 +10,6 @@ import {
 } from 'unique-names-generator';
 import { z } from 'zod';
 import {
-  getPercentageRollout,
   getDomainListInfo,
   getPoweredByNamefi3PDomains,
 } from '#lib/namefi-registry';
@@ -132,7 +131,5 @@ export const registryRouter = createTRPCRouter({
       return getDomainListInfo(normalizeDomains, ctx.user);
     }),
 
-  get0xDotCityPercentageRollout: publicProcedure.query(async () =>
-    getPercentageRollout('0x.city' as NamefiNormalizedDomain),
-  ),
+  get0xDotCityPercentageRollout: publicProcedure.query(async () => 100),
 });

@@ -31,16 +31,17 @@
   "typescript.enablePromptUseWorkspaceTsdk": true,
   "typescript.tsdk": "node_modules/typescript/lib",
   "cSpell.words": [
-    "dynadot",
-    "viem",
-    "NFT",
     "3ld",
-    "R53",
+    "dis",
+    "dynadot",
+    "imas",
     "jain",
+    "NFT",
+    "R53",
+    "rotciv",
+    "rsuite",
     "sami",
     "sid",
-    "rotciv",
-    "imas",
-    "dis"
+    "viem"
   ]
 }
