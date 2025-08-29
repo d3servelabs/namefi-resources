@@ -1,0 +1,38 @@
+/* Core palette variables to ensure primary matches our brand */
+.rs-theme-dark {
+  --rs-gray-0: oklch(from var(--background) 1 c h);
+  --rs-gray-50: oklch(from var(--background) 0.85 c h);
+  --rs-gray-100: oklch(from var(--background) 0.8 c h);
+  --rs-gray-200: oklch(from var(--background) 0.75 c h);
+  --rs-gray-300: oklch(from var(--background) 0.7 c h);
+  --rs-gray-400: oklch(from var(--background) 0.65 c h);
+  --rs-gray-500: oklch(from var(--background) 0.5 c h);
+  --rs-gray-600: oklch(from var(--background) 0.4 c h);
+  --rs-gray-700: oklch(from var(--background) 0.3 c h);
+  --rs-gray-800: oklch(from var(--background) 0.25 c h);
+  --rs-gray-900: oklch(from var(--background) 0.15 c h);
+
+  --rs-primary-0: oklch(from var(--brand-primary) 1 c h);
+  --rs-primary-50: oklch(from var(--brand-primary) clamp(0, l + 0.25, 1) c h);
+  --rs-primary-100: oklch(from var(--brand-primary) clamp(0, l + 0.2, 1) c h);
+  --rs-primary-200: oklch(from var(--brand-primary) clamp(0, l + 0.15, 1) c h);
+  --rs-primary-300: oklch(from var(--brand-primary) clamp(0, l + 0.1, 1) c h);
+  --rs-primary-400: oklch(from var(--brand-primary) clamp(0, l + 0.05, 1) c h);
+  --rs-primary-500: oklch(from var(--brand-primary) clamp(0, l, 1) c h);
+  --rs-primary-600: oklch(from var(--brand-primary) clamp(0, l - 0.05, 1) c h);
+  --rs-primary-700: oklch(from var(--brand-primary) clamp(0, l - 0.1, 1) c h);
+  --rs-primary-800: oklch(from var(--brand-primary) clamp(0, l - 0.15, 1) c h);
+  --rs-primary-900: oklch(from var(--brand-primary) clamp(0, l - 0.2, 1) c h);
+
+  --rs-color-red: #f44336;
+  --rs-color-orange: #fa8900;
+  --rs-color-yellow: #ffb300;
+  --rs-color-green: #4caf50;
+  --rs-color-cyan: #00bcd4;
+  --rs-color-blue: #2196f3;
+  --rs-color-violet: #673ab7;
+}
+
+.rs-theme-dark input:focus {
+  --tw-ring-color: #fff0 !important;
+}

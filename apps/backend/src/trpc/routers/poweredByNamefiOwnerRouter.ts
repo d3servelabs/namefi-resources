@@ -8,6 +8,7 @@ import {
 import {
   db,
   freeClaimsTable,
+  type PoweredByNamefiDomainSelect,
   orderItemsTable,
   ordersTable,
   poweredbyNamefiDomainsTable,
@@ -53,7 +54,7 @@ export const poweredByNamefiOwnerRouter = createTRPCRouter({
       .from(poweredbyNamefiDomainsTable)
       .where(eq(poweredbyNamefiDomainsTable.ownerId, ctx.user.id))
       .orderBy(desc(poweredbyNamefiDomainsTable.updatedAt));
-    return domains;
+    return domains as PoweredByNamefiDomainSelect[];
   }),
 
   // Update a domain (no creation)

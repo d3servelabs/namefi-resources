@@ -1,6 +1,10 @@
 'use client';
 import { Pie } from 'react-chartjs-2';
 
+/**
+ * !!Important!!
+ * Chart.js components need to be registered in the parent component.
+ */
 export function RevenuePie({
   data,
   totalInUsdCents,

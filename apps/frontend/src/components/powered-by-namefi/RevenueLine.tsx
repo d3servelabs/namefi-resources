@@ -1,30 +1,37 @@
 'use client';
-import { Bar } from 'react-chartjs-2';
+import { Line } from 'react-chartjs-2';
 
 /**
  * !!Important!!
  * Chart.js components need to be registered in the parent component.
  */
-export function RevenueBar({
+export function RevenueLine({
   data,
 }: {
   data: {
     labels: string[];
-    datasets: { label: string; data: number[]; backgroundColor: string[] }[];
+    datasets: {
+      label: string;
+      data: number[];
+      borderColor: string;
+      backgroundColor: string;
+      fill: boolean;
+      tension: number;
+    }[];
   } | null;
 }) {
   return data ? (
-    <div className="h-80">
-      <Bar
+    <div className="h-64">
+      <Line
         data={data}
         options={{
-          indexAxis: 'y',
           responsive: true,
           maintainAspectRatio: false,
           scales: {
-            x: {
+            y: {
               beginAtZero: true,
               ticks: {
+                maxTicksLimit: 10,
                 callback: (value) => `${Number(value).toFixed(2)}$USD`,
               },
             },
@@ -32,10 +39,9 @@ export function RevenueBar({
           plugins: {
             tooltip: {
               callbacks: {
-                label: (ctx) => `${(ctx.parsed.x as number).toFixed(2)}$USD`,
+                label: (ctx) => `${(ctx.parsed.y as number).toFixed(2)}$USD`,
               },
             },
-            legend: { display: false },
           },
         }}
       />
