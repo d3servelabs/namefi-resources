@@ -1,4 +1,8 @@
-import { type UserSelect, db } from '@namefi-astra/db';
+import {
+  type UserSelect,
+  db,
+  poweredbyNamefiDomainsTable,
+} from '@namefi-astra/db';
 import { initTRPC } from '@trpc/server';
 import { TRPCError } from '@trpc/server';
 import type { FetchCreateContextFnOptions } from '@trpc/server/adapters/fetch';
@@ -18,6 +22,7 @@ import {
   getPoweredByNamefiDomainFromHostname,
 } from '#lib/namefi-registry';
 import { isUserAdmin, privyClient } from './utils';
+import { eq, sql } from 'drizzle-orm';
 import { verifyUserAuthAndGetUser, requireUserAuth } from '#lib/auth';
 
 /**
@@ -99,7 +104,7 @@ export const createContext = async (
   try {
     poweredByNamefiDomain = await getPbnDomainFromOriginOrThrow(originText);
   } catch (error) {
-    logger.error(error, 'Error determining powered by namefi domain');
+    logger.trace(error, 'Error determining powered by namefi domain');
     if (!config.ALLOW_ALL_ORIGINS) {
       throw error;
     }
@@ -378,6 +383,26 @@ export const adminProcedure = protectedProcedure.use(async ({ ctx, next }) => {
   }
   return next({ ctx });
 });
+
+/**
+ * Owner procedure for Powered-by-Namefi domains
+ * Ensures the authed user owns at least one powered by namefi domain
+ */
+export const poweredByNamefiOwnerProcedure = protectedProcedure.use(
+  async ({ ctx, next }) => {
+    const [{ count }] = await ctx.db
+      .select({ count: sql<number>`COUNT(*)` })
+      .from(poweredbyNamefiDomainsTable)
+      .where(eq(poweredbyNamefiDomainsTable.ownerId, ctx.user.id));
+    if (!count) {
+      throw new TRPCError({
+        code: 'UNAUTHORIZED',
+        message: 'user is not a Powered-by-Namefi owner',
+      });
+    }
+    return next({ ctx });
+  },
+);
 
 /**
  * Middleware for verifying the payload of a privy webhook.
