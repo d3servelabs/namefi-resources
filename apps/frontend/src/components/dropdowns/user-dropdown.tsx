@@ -41,8 +41,10 @@ import {
 import { useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { cn } from '@/lib/cn';
+import { useTRPC } from '@/lib/trpc';
+import { useQuery } from '@tanstack/react-query';
 
-const ITEMS: NavItem[] = [
+const BASE_ITEMS: NavItem[] = [
   { title: 'Profile', href: '/profile', icon: UserIcon },
 ];
 
@@ -81,6 +83,24 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
       await logout(); // Callbacks are already configured in the hook
       setIsSignOutDialogOpen(false);
     }, [logout]);
+    const trpc = useTRPC();
+    const pbnOwnerQuery = useQuery(
+      trpc.pbnOwner.isUserAPoweredByNamefiOwner.queryOptions(undefined, {
+        enabled: isAuthenticated,
+      }),
+    );
+
+    const items: NavItem[] = useMemo(() => {
+      const out: NavItem[] = [...BASE_ITEMS];
+      if (pbnOwnerQuery.data?.isOwner) {
+        out.unshift({
+          title: 'Powered Domains',
+          href: '/powered-by-namefi/admin',
+          icon: WalletIcon,
+        });
+      }
+      return out;
+    }, [pbnOwnerQuery.data?.isOwner]);
 
     const isExpanded = useMemo(() => {
       return forceExpanded || sidebarState !== 'collapsed' || isMobile;
@@ -237,7 +257,7 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
                   </SidebarMenuButton>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-56">
-                  {ITEMS.map((item) => {
+                  {items.map((item) => {
                     const Icon = item.icon;
 
                     return (

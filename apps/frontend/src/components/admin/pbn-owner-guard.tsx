@@ -7,27 +7,50 @@ import { AuthRequired } from '@/components/auth-required';
 import { useAuth } from '@/hooks/use-auth';
 import { Alert, AlertDescription } from '@/components/ui/shadcn/alert';
 import { Loader2, ShieldAlert } from 'lucide-react';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import { isNotNil } from 'ramda';
 
-interface AdminGuardProps {
+interface PbnOwnerGuardProps {
   children: ReactNode;
   loadingMessage?: string;
   accessDeniedMessage?: string;
+  pbnDomain?: NamefiNormalizedDomain;
 }
 
-export function AdminGuard({
+export function PbnOwnerGuard({
   children,
-  loadingMessage = 'Verifying admin access...',
-  accessDeniedMessage = 'You are not an admin',
-}: AdminGuardProps) {
+  loadingMessage = 'Verifying Powered by Namefi access...',
+  accessDeniedMessage = 'You do not have access to this domain',
+  pbnDomain,
+}: PbnOwnerGuardProps) {
   const trpc = useTRPC();
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
+  const checkDomain = isNotNil(pbnDomain);
 
-  const { data, isLoading, error } = useQuery(
-    trpc.admin.isUserAdmin.queryOptions(void 0, { enabled: isAuthenticated }),
+  const isAnOwnerQuery = useQuery(
+    trpc.pbnOwner.isUserAPoweredByNamefiOwner.queryOptions(void 0, {
+      enabled: isAuthenticated,
+    }),
   );
 
+  const isAnOwner = !isAnOwnerQuery.error && isAnOwnerQuery.data?.isOwner;
+  const isCorrectOwnerQuery = useQuery(
+    trpc.pbnOwner.isUserOwnerOf.queryOptions(
+      pbnDomain ? { normalizedDomainName: pbnDomain } : skipToken,
+      {
+        enabled: isAuthenticated && checkDomain && isAnOwnerQuery.data?.isOwner,
+      },
+    ),
+  );
+  const isCorrectOwner =
+    !isCorrectOwnerQuery.error && isCorrectOwnerQuery.data?.isOwner;
+
   // Show loading state
-  if (isAuthLoading || isLoading) {
+  if (
+    isAuthLoading ||
+    isAnOwnerQuery.isLoading ||
+    (checkDomain && isCorrectOwnerQuery.isLoading)
+  ) {
     return (
       <div className="flex items-center justify-center min-h-[50vh]">
         <div className="flex items-center space-x-3">
@@ -44,14 +67,29 @@ export function AdminGuard({
   }
 
   // Show access denied if not admin
-  if (error || !data) {
+  if (!isAnOwner) {
     return (
       <div className="container mx-auto p-6">
         <div className="flex items-center justify-center min-h-[50vh]">
           <Alert variant="destructive" className="max-w-md">
             <ShieldAlert className="h-4 w-4" />
             <AlertDescription className="text-base">
-              {error?.message || accessDeniedMessage}
+              {isAnOwnerQuery.error?.message || accessDeniedMessage}
+            </AlertDescription>
+          </Alert>
+        </div>
+      </div>
+    );
+  }
+
+  if (checkDomain && !isCorrectOwner) {
+    return (
+      <div className="container mx-auto p-6">
+        <div className="flex items-center justify-center min-h-[50vh]">
+          <Alert variant="destructive" className="max-w-md">
+            <ShieldAlert className="h-4 w-4" />
+            <AlertDescription className="text-base">
+              {isCorrectOwnerQuery.error?.message || accessDeniedMessage}
             </AlertDescription>
           </Alert>
         </div>
@@ -64,28 +102,28 @@ export function AdminGuard({
 }
 
 // Higher-Order Component version for easier usage
-export function withAdminGuard<P extends object>(
+export function withPbnOwnerGuard<P extends object>(
   Component: React.ComponentType<P>,
   options?: {
     loadingMessage?: string;
     accessDeniedMessage?: string;
   },
 ) {
-  function AdminGuardedComponent(props: P) {
+  function PbnOwnerGuardedComponent(props: P) {
     return (
-      <AdminGuard
+      <PbnOwnerGuard
         loadingMessage={options?.loadingMessage}
         accessDeniedMessage={options?.accessDeniedMessage}
       >
         <Component {...props} />
-      </AdminGuard>
+      </PbnOwnerGuard>
     );
   }
 
   // Set display name for better debugging
-  AdminGuardedComponent.displayName = `withAdminGuard(${Component.displayName || Component.name})`;
+  PbnOwnerGuardedComponent.displayName = `withPbnOwnerGuard(${Component.displayName || Component.name})`;
 
-  return AdminGuardedComponent;
+  return PbnOwnerGuardedComponent;
 }
 
 /**
