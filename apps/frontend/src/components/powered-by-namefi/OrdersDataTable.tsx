@@ -5,6 +5,7 @@ import {
   getCoreRowModel,
   getSortedRowModel,
   getFilteredRowModel,
+  getPaginationRowModel,
   useReactTable,
   type SortingState,
   type ColumnFiltersState,
@@ -20,6 +21,10 @@ import {
   SelectValue,
 } from '@/components/ui/shadcn/select';
 import NetworkLogo from '@/components/network-logo';
+import { TablePageSelector } from '@/components/table/table-page-selector';
+import { TablePageSizeSelector } from '@/components/table/table-page-size-selector';
+import { usePagination } from '@/hooks/use-pagination';
+import { useEffect } from 'react';
 
 export type OrdersDataRow = {
   id: string;
@@ -42,6 +47,12 @@ export function OrdersDataTable({ items }: { items: OrdersDataRow[] }) {
   });
   const [search, setSearch] = useState('');
   const [status, setStatus] = useState<string>('ALL');
+
+  // Pagination state
+  const pagination = usePagination({
+    defaultPageSize: 10,
+    maxPageSize: 100,
+  });
 
   const columns = useMemo<ColumnDef<OrdersDataRow>[]>(
     () => [
@@ -132,14 +143,46 @@ export function OrdersDataTable({ items }: { items: OrdersDataRow[] }) {
   const table = useReactTable({
     data: items ?? [],
     columns,
-    state: { sorting, columnFilters, columnVisibility },
+    state: {
+      sorting,
+      columnFilters,
+      columnVisibility,
+      pagination: {
+        pageIndex: pagination.pageIndex,
+        pageSize: pagination.pageSize,
+      },
+    },
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
+    onPaginationChange: (updater) => {
+      const newState =
+        typeof updater === 'function'
+          ? updater(table.getState().pagination)
+          : updater;
+      pagination.setPageIndex(newState.pageIndex);
+      pagination.setPageSize(newState.pageSize);
+    },
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    manualPagination: false,
   });
+
+  // Update page count when data changes
+  const totalRows = table.getFilteredRowModel().rows.length;
+  useEffect(() => {
+    const calculatedPageCount = Math.ceil(totalRows / pagination.pageSize);
+    if (calculatedPageCount !== pagination.pageCount) {
+      pagination.setPageCount(calculatedPageCount);
+    }
+  }, [
+    totalRows,
+    pagination.pageSize,
+    pagination.pageCount,
+    pagination.setPageCount,
+  ]);
 
   return (
     <div className="overflow-x-auto">
@@ -212,6 +255,26 @@ export function OrdersDataTable({ items }: { items: OrdersDataRow[] }) {
           ))}
         </tbody>
       </table>
+
+      {/* Pagination Controls */}
+      <div className="flex items-center justify-between mt-4">
+        <div className="flex items-center gap-4">
+          <TablePageSizeSelector
+            pageSize={pagination.pageSize}
+            onPageSizeChange={(size) => {
+              pagination.handlePageSizeChange(size);
+            }}
+          />
+          <span className="text-sm text-zinc-500">
+            Showing {table.getRowModel().rows.length} of {totalRows} results
+          </span>
+        </div>
+        <TablePageSelector
+          pageIndex={pagination.pageIndex}
+          setPageIndex={pagination.setPageIndex}
+          pageCount={pagination.pageCount}
+        />
+      </div>
     </div>
   );
 }
