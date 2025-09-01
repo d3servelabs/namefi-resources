@@ -3,8 +3,7 @@ import { generateCVConfig } from '../../lib/generate-config';
 
 const { landingConfig, originConfigWithoutLanding } = generateCVConfig({
   name: 'victor',
-  rotatingNames: ['maria', 'viktor', 'javier', 'dr', 'alex'],
-  // Using existing shared assets as placeholders until dedicated assets are added
+  rotatingNames: ['maria', 'jamie', 'javier', 'dr', 'alex'],
   backgroundImage: '/assets/cv/victor/background.png',
   openGraphImage: '/assets/cv/victor/opengraph-image.jpg',
   famousPeople: [
