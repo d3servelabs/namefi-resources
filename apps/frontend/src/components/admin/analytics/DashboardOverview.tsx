@@ -542,7 +542,7 @@ function CountriesChart({
       ),
       datasets: [
         {
-          label: 'Queries by Country',
+          label: 'Queries by Country/Region',
           data: rows.map((row: any) =>
             Number.parseInt(row.metricValues?.[0]?.value || '0'),
           ),

@@ -90,7 +90,7 @@ export class GA4AnalyticsClient {
       },
       {
         parameterName: 'country',
-        displayName: 'Client Country',
+        displayName: 'Client Country/Region',
         description: 'Country code of the DNS query client',
         scope: 'EVENT' as const,
       },

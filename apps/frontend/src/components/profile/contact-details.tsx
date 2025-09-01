@@ -253,7 +253,7 @@ export function ContactDetails() {
                             </div>
 
                             <div className="space-y-2">
-                              <Label htmlFor="country">Country</Label>
+                              <Label htmlFor="country">Country/Region</Label>
                               <CountryDropdown
                                 defaultValue={field.value?.country}
                                 onChange={(country?: Country) => {
@@ -262,7 +262,7 @@ export function ContactDetails() {
                                     country: country?.alpha2,
                                   });
                                 }}
-                                placeholder="Select country"
+                                placeholder="Select country/region"
                               />
                             </div>
                           </div>
