@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useMemo, useCallback } from 'react';
 import { format } from 'date-fns';
 import { Button } from '@/components/ui/shadcn/button';
 import { useFreeMintsGuidance } from '@/components/providers/free-mints-guidance';
@@ -10,11 +10,11 @@ import { useRouter } from 'next/navigation';
 import { originConfig } from '@/lib/origin/config';
 
 export interface FreeMintCardProps {
-  claim: FreeMint;
+  data: FreeMint;
 }
 
-export function FreeMintCard({ claim }: FreeMintCardProps) {
-  const { type, domain, expirationDate, createdAt } = claim;
+export function FreeMintCard({ data }: FreeMintCardProps) {
+  const { type, domain, expirationDate, createdAt } = data;
   const { startCampaignSearch } = useFreeMintsGuidance();
   const router = useRouter();
 
@@ -26,19 +26,23 @@ export function FreeMintCard({ claim }: FreeMintCardProps) {
     return domain;
   }, [type, domain]);
 
+  const theme = useMemo(() => {
+    return originConfig.thirdParty[apex] ? apex : 'astra';
+  }, [apex]);
+
   const pbnLogo = useMemo(() => {
     return (
       originConfig.thirdParty[apex]?.pbnLogo?.monoImage ?? '/logotype-mono.svg'
     );
   }, [apex]);
 
-  const handleClaim = () => {
+  const handleClaim = useCallback(() => {
     if (type === 'single') {
       router.push(`/claim/${encodeURIComponent(domain)}`);
     } else if (type === 'campaign') {
       startCampaignSearch(domain);
     }
-  };
+  }, [type, domain, startCampaignSearch, router]);
 
   // Typography relief
   const raised: React.CSSProperties = {
@@ -50,7 +54,7 @@ export function FreeMintCard({ claim }: FreeMintCardProps) {
   };
 
   return (
-    <div data-theme={apex || 'default'} className="flex flex-col items-center">
+    <div data-theme={theme} className="flex flex-col items-center">
       <CometCard rotateDepth={8} translateDepth={16} className="w-full">
         <div className="relative aspect-[85.6/53.98] overflow-hidden rounded-2xl">
           {/* Dark metallic base */}
