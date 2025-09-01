@@ -107,13 +107,34 @@ export function OrdersDataTable({ items }: { items: OrdersDataRow[] }) {
       {
         id: 'promoGroupOrCampaignKey',
         header: 'Promo',
-        accessorKey: 'promoGroupOrCampaignKey',
+        accessorFn: (row) => {
+          const promoGroupOrCampaignKey = row.promoGroupOrCampaignKey ?? '';
+          const promoReason = row.promoReason ?? '';
+          if (promoGroupOrCampaignKey && promoReason) {
+            return `${promoGroupOrCampaignKey} - (${promoReason})`;
+          }
+          return promoGroupOrCampaignKey || promoReason || '-';
+        },
         filterFn: 'includesString',
-      },
-      {
-        id: 'promoReason',
-        header: 'Reason',
-        accessorKey: 'promoReason',
+        cell({ row }) {
+          const promoGroupOrCampaignKey =
+            row.original.promoGroupOrCampaignKey ?? '';
+          const promoReason = row.original.promoReason ?? '';
+
+          return (
+            <div className="text-md font-semibold text-gray-100/85">
+              {promoGroupOrCampaignKey}
+              {!!promoReason && (
+                <>
+                  <br />
+                  <span className="text-xs text-muted-foreground font-normal">
+                    ({promoReason})
+                  </span>
+                </>
+              )}
+            </div>
+          );
+        },
       },
       // Hidden computed column for combined search across domain and promo
       {
