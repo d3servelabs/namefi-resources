@@ -1,8 +1,8 @@
 'use client';
 
-import type { ReactNode } from 'react';
+import { useMemo, type ReactNode } from 'react';
 import { useTRPC } from '@/lib/trpc';
-import { skipToken, useQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { AuthRequired } from '@/components/auth-required';
 import { useAuth } from '@/hooks/use-auth';
 import { Alert, AlertDescription } from '@/components/ui/shadcn/alert';
@@ -34,22 +34,26 @@ export function PbnOwnerGuard({
   );
 
   const isAnOwner = !isAnOwnerQuery.error && isAnOwnerQuery.data?.isOwner;
-  const isCorrectOwnerQuery = useQuery(
-    trpc.pbnOwner.isUserOwnerOf.queryOptions(
-      pbnDomain ? { normalizedDomainName: pbnDomain } : skipToken,
-      {
-        enabled: isAuthenticated && checkDomain && isAnOwnerQuery.data?.isOwner,
-      },
-    ),
+  const ownerDomainsQuery = useQuery(
+    trpc.pbnOwner.listOwnedDomains.queryOptions(void 0, {
+      enabled: isAuthenticated && checkDomain && isAnOwnerQuery.data?.isOwner,
+    }),
   );
-  const isCorrectOwner =
-    !isCorrectOwnerQuery.error && isCorrectOwnerQuery.data?.isOwner;
+
+  const isCorrectOwner = useMemo(() => {
+    if (ownerDomainsQuery.error || !ownerDomainsQuery.data || !pbnDomain)
+      return false;
+    const ownedDomains = ownerDomainsQuery.data.map(
+      (domain) => domain.normalizedDomainName,
+    );
+    return ownedDomains.includes(pbnDomain);
+  }, [ownerDomainsQuery.error, ownerDomainsQuery.data, pbnDomain]);
 
   // Show loading state
   if (
     isAuthLoading ||
     isAnOwnerQuery.isLoading ||
-    (checkDomain && isCorrectOwnerQuery.isLoading)
+    (checkDomain && ownerDomainsQuery.isLoading)
   ) {
     return (
       <div className="flex items-center justify-center min-h-[50vh]">
@@ -89,7 +93,7 @@ export function PbnOwnerGuard({
           <Alert variant="destructive" className="max-w-md">
             <ShieldAlert className="h-4 w-4" />
             <AlertDescription className="text-base">
-              {isCorrectOwnerQuery.error?.message || accessDeniedMessage}
+              {ownerDomainsQuery.error?.message || accessDeniedMessage}
             </AlertDescription>
           </Alert>
         </div>
@@ -132,18 +136,20 @@ export function withPbnOwnerGuard<P extends object>(
  * // Method 1: Wrapper component
  * export default function MyAdminPage() {
  *   return (
- *     <AdminGuard>
- *       <MyAdminContent />
- *     </AdminGuard>
+ *     <>
+ *       <PbnOwnerGuard>
+ *         <MyAdminContent />
+ *       </PbnOwnerGuard>
+ *     </>
  *   );
  * }
  *
  * // Method 2: HOC pattern
- * const MyAdminPage = withAdminGuard(MyAdminContent);
+ * const MyAdminPage = withPbnOwnerGuard(MyAdminContent);
  * export default MyAdminPage;
  *
  * // Method 3: With custom messages
- * const MyAdminPage = withAdminGuard(MyAdminContent, {
+ * const MyAdminPage = withPbnOwnerGuard(MyAdminContent, {
  *   loadingMessage: "Loading admin panel...",
  *   accessDeniedMessage: "Admin access required for this feature"
  * });
