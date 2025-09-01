@@ -1,5 +1,6 @@
 'use client';
 import { Line } from 'react-chartjs-2';
+import { cn } from '@/lib/cn';
 
 /**
  * !!Important!!
@@ -7,7 +8,9 @@ import { Line } from 'react-chartjs-2';
  */
 export function RevenueLine({
   data,
+  className,
 }: {
+  className?: string;
   data: {
     labels: string[];
     datasets: {
@@ -21,7 +24,7 @@ export function RevenueLine({
   } | null;
 }) {
   return data ? (
-    <div className="h-64">
+    <div className={cn('h-64', className)}>
       <Line
         data={data}
         options={{

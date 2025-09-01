@@ -206,10 +206,10 @@ function Overview({ domain }: { domain: NamefiNormalizedDomain }) {
       normalizedDomainName: domain,
     }),
   );
-  const fourteenDaysAgo = useMemo(() => subDays(new Date(), 14), []);
-  const [interval, setInterval] = useState<'day' | 'week' | 'month'>('day');
+  const _10WeeksAgo = useMemo(() => subDays(new Date(), 70), []);
+  const [interval, setInterval] = useState<'day' | 'week' | 'month'>('week');
   const [dateRange, setDateRange] = useState({
-    startDate: fourteenDaysAgo.toISOString(),
+    startDate: _10WeeksAgo.toISOString(),
     endDate: new Date().toISOString(),
   });
   const revenueQuery = useQuery(
@@ -234,6 +234,11 @@ function Overview({ domain }: { domain: NamefiNormalizedDomain }) {
       yLabels.push(step * i);
     }
 
+    const computedStyle = getComputedStyle(document.documentElement);
+    const borderColor = computedStyle
+      .getPropertyValue('--brand-primary')
+      .trim();
+
     return {
       labels: points.map((p) => {
         const d = new Date(p.bucket as any);
@@ -246,8 +251,8 @@ function Overview({ domain }: { domain: NamefiNormalizedDomain }) {
         {
           label: 'Revenue (USD)',
           data: points.map((p) => (p.amountInUsdCents ?? 0) / 100),
-          borderColor: 'rgb(59,130,246)',
-          backgroundColor: 'rgba(59,130,246,0.2)',
+          borderColor,
+          backgroundColor: '#7f7f7f',
           fill: true,
           tension: 0.3,
         },
@@ -299,12 +304,12 @@ function Overview({ domain }: { domain: NamefiNormalizedDomain }) {
                 }
               >
                 <SelectTrigger className="w-36">
-                  <SelectValue placeholder="Interval" />
+                  <SelectValue placeholder="Group By" defaultValue="week" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="day">Day</SelectItem>
-                  <SelectItem value="week">Week</SelectItem>
-                  <SelectItem value="month">Month</SelectItem>
+                  <SelectItem value="day">Daily</SelectItem>
+                  <SelectItem value="week">Weekly</SelectItem>
+                  <SelectItem value="month">Monthly</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -312,14 +317,17 @@ function Overview({ domain }: { domain: NamefiNormalizedDomain }) {
         </CardHeader>
         <CardContent>
           {revenueQuery.isLoading ? (
-            <Skeleton className="h-64 w-full" />
+            <Skeleton className="h-96 w-full" />
           ) : (
             <>
-              <div className="text-2xl font-semibold mb-3">
+              <div className="text-xl font-semibold mb-3">
                 {((revenueQuery.data?.totalInUsdCents ?? 0) / 100).toFixed(2)}{' '}
-                total
+                $USD{' '}
+                <div className="text-sm text-muted-foreground">
+                  (During selected time range)
+                </div>
               </div>
-              <RevenueLine data={revenueLineData} />
+              <RevenueLine data={revenueLineData} className="h-96" />
             </>
           )}
         </CardContent>
