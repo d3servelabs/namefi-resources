@@ -4,6 +4,7 @@ import Link from 'next/link';
 
 export function DomainTable({
   domains,
+  revenueByDomain,
 }: {
   domains: Array<{
     normalizedDomainName: string;
@@ -14,7 +15,18 @@ export function DomainTable({
       maxDurationInYears: number;
     } | null;
   }>;
+  revenueByDomain?: Array<{
+    normalizedDomainName: string;
+    amountInUsdCents: number;
+  }>;
 }) {
+  // Helper function to get revenue for a domain
+  const getRevenueForDomain = (domainName: string) => {
+    const revenue = revenueByDomain?.find(
+      (r) => r.normalizedDomainName === domainName,
+    );
+    return revenue ? (revenue.amountInUsdCents / 100).toFixed(2) : '0.00';
+  };
   return (
     <div className="overflow-x-auto">
       <table className="w-full text-sm">
@@ -23,6 +35,7 @@ export function DomainTable({
             <th className="py-2">Domain</th>
             <th className="py-2">Active</th>
             <th className="py-2">Price (USD)</th>
+            <th className="py-2">Total Revenue (USD)</th>
             <th className="py-2">Min Years</th>
             <th className="py-2">Max Years</th>
             <th className="py-2">Action</th>
@@ -41,6 +54,9 @@ export function DomainTable({
               <td className="py-2">{d.enabled ? 'Yes' : 'No'}</td>
               <td className="py-2">
                 {((d.costPerYearInUsdCents ?? 0) / 100).toFixed(2)}
+              </td>
+              <td className="py-2">
+                ${getRevenueForDomain(d.normalizedDomainName)}
               </td>
               <td className="py-2">
                 {d.durationConstraints?.minDurationInYears ?? 1}

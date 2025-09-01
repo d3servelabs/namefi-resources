@@ -83,7 +83,10 @@ function PoweredByNamefiOwnerDashboard() {
             {domainsQuery.isLoading ? (
               <DomainTableSkeleton />
             ) : (
-              <DomainTable domains={(domainsQuery.data as any) ?? []} />
+              <DomainTable
+                domains={(domainsQuery.data as any) ?? []}
+                revenueByDomain={revenueByDomainQuery.data?.byDomain}
+              />
             )}
           </CardContent>
         </Card>
