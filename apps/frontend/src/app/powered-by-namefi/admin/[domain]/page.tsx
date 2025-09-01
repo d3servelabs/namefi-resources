@@ -15,7 +15,8 @@ import { RecentOrdersList } from '@/components/powered-by-namefi/RecentOrdersLis
 import { useQueryClient } from '@tanstack/react-query';
 import { DomainDetailsCard } from '@/components/powered-by-namefi/DomainDetailsCard';
 import { EditDomainDialog } from '@/components/powered-by-namefi/EditDomainDialog';
-import { useState } from 'react';
+import { ReservedWordsManager } from '@/components/powered-by-namefi/ReservedWordsManager';
+import { useCallback, useState } from 'react';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
 import {
   Chart as ChartJs,
@@ -40,6 +41,31 @@ import {
 import { RsuiteRangePicker } from '@/components/powered-by-namefi/RsuiteRangePicker';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { PbnOwnerGuard } from '@/components/admin/pbn-owner-guard';
+import { parseAsStringEnum, useQueryState } from 'nuqs';
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from '@/components/ui/shadcn/tabs';
+import { OrdersTableSkeleton } from '@/components/powered-by-namefi/OrdersTableSkeleton';
+import { OrdersDataTable } from '@/components/powered-by-namefi/OrdersDataTable';
+import {
+  BreadcrumbList,
+  BreadcrumbLink,
+  BreadcrumbSeparator,
+  BreadcrumbItem,
+  BreadcrumbPage,
+  Breadcrumb,
+} from '@/components/ui/shadcn/breadcrumb';
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/shadcn/dropdown-menu';
+import { ChevronDownIcon } from 'lucide-react';
 
 ChartJs.register(
   CategoryScale,
@@ -50,6 +76,12 @@ ChartJs.register(
   Legend,
   Title,
 );
+enum TabValues {
+  OVERVIEW = 'overview',
+  RESERVED_WORDS = 'reserved-words',
+  ORDERS = 'orders',
+}
+const DEFAULT_TAB = TabValues.OVERVIEW;
 
 export default function PoweredByNamefiDomainDetailsPage() {
   const params = useParams<{ domain: string }>();
@@ -63,8 +95,105 @@ export default function PoweredByNamefiDomainDetailsPage() {
 }
 
 function InnerPage({ domain }: { domain: NamefiNormalizedDomain }) {
+  const [activeTab, setActiveTab] = useQueryState(
+    'tab',
+    parseAsStringEnum<TabValues>(Object.values(TabValues))
+      .withOptions({
+        clearOnDefault: false,
+      })
+      .withDefault(DEFAULT_TAB),
+  );
+
+  const handleTabChange = useCallback(
+    (value: string) => {
+      setActiveTab(value as TabValues);
+    },
+    [setActiveTab],
+  );
+
+  return (
+    <div className="container mx-auto px-x">
+      <PbnDomainBreadcrumb domain={domain} activeTab={activeTab} />
+
+      <Tabs value={activeTab.toString()} onValueChange={handleTabChange}>
+        <TabsList className="grid w-full grid-cols-3 lg:w-auto">
+          <TabsTrigger value={TabValues.OVERVIEW}>Overview</TabsTrigger>
+          <TabsTrigger value={TabValues.RESERVED_WORDS}>
+            Reserved Domains Management
+          </TabsTrigger>
+          <TabsTrigger value={TabValues.ORDERS}>Orders Details</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value={TabValues.OVERVIEW} className="mt-6">
+          <Overview domain={domain} />
+        </TabsContent>
+
+        <TabsContent value={TabValues.RESERVED_WORDS} className="mt-6">
+          <ReservedWordsManager domain={domain} />
+        </TabsContent>
+
+        <TabsContent value={TabValues.ORDERS} className="mt-6">
+          <OrderDetails domain={domain} />
+        </TabsContent>
+      </Tabs>
+    </div>
+  );
+}
+
+function PbnDomainBreadcrumb({
+  domain,
+  activeTab,
+}: {
+  domain: NamefiNormalizedDomain;
+  activeTab: TabValues;
+}) {
   const trpc = useTRPC();
   const domainsQuery = useQuery(trpc.pbnOwner.listOwnedDomains.queryOptions());
+
+  return (
+    <Breadcrumb className="font-semibold text-2xl mb-6 mt-1">
+      <BreadcrumbList>
+        <BreadcrumbItem>
+          <BreadcrumbLink asChild>
+            <Link href="/">Home</Link>
+          </BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator />
+        <BreadcrumbItem>
+          <BreadcrumbLink asChild>
+            <Link href="/powered-by-namefi/admin">Domains</Link>
+          </BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator />
+        <BreadcrumbItem>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <BreadcrumbPage className="flex gap-1 font-semibold">
+                {domain} <ChevronDownIcon className="w-5 h-5 pt-1" />
+              </BreadcrumbPage>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start">
+              {domainsQuery.data?.map((domain) => (
+                <DropdownMenuItem key={domain.normalizedDomainName} asChild>
+                  <Link
+                    href={`/powered-by-namefi/admin/${domain.normalizedDomainName}?tab=${activeTab}`}
+                  >
+                    {domain.normalizedDomainName}
+                  </Link>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </BreadcrumbItem>
+      </BreadcrumbList>
+    </Breadcrumb>
+  );
+}
+
+function Overview({ domain }: { domain: NamefiNormalizedDomain }) {
+  const trpc = useTRPC();
+  const domainsQuery = useQuery(trpc.pbnOwner.listOwnedDomains.queryOptions());
+
   const selected = domainsQuery.data?.find(
     (d) => d.normalizedDomainName === domain,
   );
@@ -128,10 +257,6 @@ function InnerPage({ domain }: { domain: NamefiNormalizedDomain }) {
 
   return (
     <div className="container mx-auto p-6 space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold">{domain}</h1>
-      </div>
-
       {domainsQuery.isLoading ? (
         <Skeleton className="h-44 w-full" />
       ) : (
@@ -205,9 +330,7 @@ function InnerPage({ domain }: { domain: NamefiNormalizedDomain }) {
           <div className="flex items-center justify-between">
             <CardTitle>Recent Orders (SUCCEEDED)</CardTitle>
             <Button asChild variant="outline" size="sm">
-              <Link href={`/powered-by-namefi/admin/${domain}/orders`}>
-                View All
-              </Link>
+              <Link href={'?tab=orders'}>View All</Link>
             </Button>
           </div>
         </CardHeader>
@@ -220,6 +343,34 @@ function InnerPage({ domain }: { domain: NamefiNormalizedDomain }) {
             </div>
           ) : (
             <RecentOrdersList items={(ordersQuery.data?.data as any) ?? []} />
+          )}
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
+function OrderDetails({ domain }: { domain: string }) {
+  const trpc = useTRPC();
+  const ordersQuery = useQuery(
+    trpc.pbnOwner.orderItemsHistory.queryOptions({
+      page: 1,
+      limit: 100,
+      normalizedDomainName: domain,
+    }),
+  );
+
+  return (
+    <div className="container mx-auto p-6">
+      <Card>
+        <CardHeader>
+          <CardTitle>All Orders for {domain}</CardTitle>
+        </CardHeader>
+        <CardContent>
+          {ordersQuery.isLoading ? (
+            <OrdersTableSkeleton />
+          ) : (
+            <OrdersDataTable items={(ordersQuery.data?.data as any) ?? []} />
           )}
         </CardContent>
       </Card>

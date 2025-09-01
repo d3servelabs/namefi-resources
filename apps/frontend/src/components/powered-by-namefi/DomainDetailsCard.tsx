@@ -21,6 +21,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTRPC } from '@/lib/trpc';
 import type { PoweredByNamefiDomainSelect } from '@namefi-astra/db';
 import { toast } from 'sonner';
+import { isNotNil } from 'ramda';
 
 export function DomainDetailsCard({
   domain,
@@ -130,14 +131,15 @@ export function DomainDetailsCard({
             label="Created"
             value={new Date(domain.createdAt).toLocaleString()}
           />
-          <Detail
-            label="Additional Hostnames"
-            value={(domain.additionalAllowedHostnames ?? []).join(', ') || '—'}
-          />
-          <Detail
-            label="Additional Reserved"
-            value={(domain.additionalReservedNames ?? []).join(', ') || '—'}
-          />
+          {isNotNil(domain.additionalAllowedHostnames) &&
+            domain.additionalAllowedHostnames.length > 0 && (
+              <Detail
+                label="Additional Hostnames"
+                value={
+                  (domain.additionalAllowedHostnames ?? []).join(', ') || '—'
+                }
+              />
+            )}
         </div>
       </CardContent>
     </Card>

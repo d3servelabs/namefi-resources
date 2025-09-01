@@ -9,6 +9,7 @@ import {
   db,
   freeClaimsTable,
   type PoweredByNamefiDomainSelect,
+  namefiNftView,
   orderItemsTable,
   ordersTable,
   poweredbyNamefiDomainsTable,
@@ -18,6 +19,7 @@ import { isNil, sum } from 'ramda';
 import { logger } from '#lib/logger';
 import { TRPCError } from '@trpc/server';
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
+import { isReservedKeyword } from '#lib/namefi-registry-helpers';
 
 export const poweredByNamefiOwnerRouter = createTRPCRouter({
   // For topBar visibility
@@ -343,5 +345,535 @@ export const poweredByNamefiOwnerRouter = createTRPCRouter({
 
       const totalInUsdCents = sum(results.map((r) => r.amountInUsdCents ?? 0));
       return { totalInUsdCents, byDomain: results };
+    }),
+
+  // Reserved words management
+  getReservedWords: poweredByNamefiOwnerProcedure
+    .input(z.object({ normalizedDomainName: z.string() }))
+    .query(async ({ ctx, input }) => {
+      // Get the domain record
+      const domainRecord =
+        await ctx.db.query.poweredbyNamefiDomainsTable.findFirst({
+          where: and(
+            eq(
+              poweredbyNamefiDomainsTable.normalizedDomainName,
+              input.normalizedDomainName as any,
+            ),
+            eq(poweredbyNamefiDomainsTable.ownerId, ctx.user.id),
+          ),
+        });
+
+      if (!domainRecord) {
+        throw new Error('Domain not found or access denied');
+      }
+
+      // Get fixed reserved words from the helper
+      const fixedReservedWords = Array.from(
+        new Set(
+          [
+            'academy',
+            'account',
+            'admin',
+            'affiliate',
+            'alpha',
+            'analytics',
+            'api-docs',
+            'api',
+            'app',
+            'archive',
+            'assets',
+            'auth',
+            'backup',
+            'benefits',
+            'beta',
+            'billing',
+            'blog',
+            'careers',
+            'cd',
+            'cdn',
+            'chat',
+            'ci',
+            'cloud',
+            'community',
+            'connect',
+            'dashboard',
+            'demo',
+            'dev',
+            'developer',
+            'discover',
+            'docker',
+            'docs',
+            'download',
+            'email',
+            'engineering',
+            'events',
+            'explore',
+            'forum',
+            'git',
+            'help',
+            'hr',
+            'internal',
+            'intranet',
+            'investor',
+            'invoice',
+            'jobs',
+            'kubernetes',
+            'labs',
+            'learn',
+            'legacy',
+            'legal',
+            'locations',
+            'login',
+            'logs',
+            'm',
+            'mail',
+            'maps',
+            'marketing',
+            'media',
+            'metrics',
+            'mobile',
+            'monitor',
+            'myaccount',
+            'network',
+            'news',
+            'partners',
+            'payments',
+            'payroll',
+            'portal',
+            'preferences',
+            'press',
+            'profile',
+            'qa',
+            'repo',
+            'research',
+            'reseller',
+            'sales',
+            'sandbox',
+            'search',
+            'secure',
+            'security',
+            'settings',
+            'shop',
+            'ssl',
+            'sso',
+            'staging',
+            'static',
+            'status-page',
+            'status',
+            'storage',
+            'store',
+            'subscriptions',
+            'support',
+            'test',
+            'university',
+            'upload',
+            'uptime',
+            'vault',
+            'webmail',
+            'www',
+            'about',
+            'abuse',
+            'advertise',
+            'annualreport',
+            'apps',
+            'ask',
+            'atm',
+            'banker',
+            'bankers',
+            'banking',
+            'blockchain',
+            'broker',
+            'brokers',
+            'cannabis',
+            'checking',
+            'compare',
+            'contact',
+            'corporate',
+            'credit',
+            'crypto',
+            'customer',
+            'cybersecurity',
+            'directory',
+            'dns',
+            'domain',
+            'domains',
+            'emergency',
+            'eula',
+            'finance',
+            'financial',
+            'financing',
+            'find',
+            'fintech',
+            'foreign',
+            'fraud',
+            'ftld',
+            'ftp',
+            'hire',
+            'imap',
+            'information',
+            'international',
+            'internet',
+            'lend',
+            'loan',
+            'loans',
+            'locate',
+            'logout',
+            'manage',
+            'mortgage',
+            'mx',
+            'ns',
+            'offer',
+            'offers',
+            'online',
+            'pay',
+            'pop',
+            'pop3',
+            'privacy',
+            'rankings',
+            'ratings',
+            'registrar',
+            'registrars',
+            'registries',
+            'registry',
+            'regulators',
+            'retail',
+            'savings',
+            'smtp',
+            'terms',
+            'tos',
+            'virtual',
+            'wallet',
+            'canary',
+            'release',
+            'prod',
+            'law',
+            'lawyer',
+            'esq',
+            'lawfirm',
+            'court',
+            'judge',
+            'justice',
+            'tribunal',
+            'notary',
+            'barrister',
+            'solicitor',
+            'advocate',
+            'protection',
+            'probono',
+            'legal-aid',
+            'legal-advice',
+            'regulation',
+            'compliance',
+            'trademark',
+            'patent',
+            'copyright',
+            'litigation',
+            'arbitration',
+            'mediation',
+            'case',
+            'counsel',
+            'jurisdiction',
+            'business',
+            'corp',
+            'corporation',
+            'inc',
+            'company',
+            'ltd',
+            'llc',
+            'group',
+            'firm',
+            'money',
+            'creditcard',
+            'cash',
+            'bank',
+            'money',
+            'credit',
+            'creditcard',
+            'cash',
+            'bank',
+            'banking',
+            'google',
+            'facebook',
+            'twitter',
+            'instagram',
+            'linkedin',
+            'youtube',
+            'tiktok',
+            'pinterest',
+            'reddit',
+            'tumblr',
+            'wordpress',
+            'wix',
+            'shopify',
+            'ebay',
+            'aliexpress',
+            'walmart',
+            'target',
+            'bestbuy',
+            'apple',
+            'microsoft',
+          ].filter(
+            (word) => word.includes('namefi') || isReservedKeyword(word),
+          ),
+        ),
+      );
+
+      return {
+        fixedReservedWords,
+        editableReservedWords: domainRecord.additionalReservedNames,
+      };
+    }),
+
+  validateReservedWords: poweredByNamefiOwnerProcedure
+    .input(
+      z.object({
+        normalizedDomainName: z.string(),
+        words: z.array(z.string()),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const { normalizedDomainName, words } = input;
+
+      // Check if domain exists and user owns it
+      const domainRecord =
+        await ctx.db.query.poweredbyNamefiDomainsTable.findFirst({
+          where: and(
+            eq(
+              poweredbyNamefiDomainsTable.normalizedDomainName,
+              normalizedDomainName as any,
+            ),
+            eq(poweredbyNamefiDomainsTable.ownerId, ctx.user.id),
+          ),
+        });
+
+      if (!domainRecord) {
+        throw new Error('Domain not found or access denied');
+      }
+
+      const validationResults = await Promise.all(
+        words.map(async (word) => {
+          const sanitizedWord = word.toLowerCase().trim();
+
+          // Check if word is already in fixed reserved words
+          if (isReservedKeyword(sanitizedWord)) {
+            return {
+              word: sanitizedWord,
+              isValid: false,
+              reason: 'Word is in fixed reserved words list',
+            };
+          }
+
+          // Check if word already exists as a domain
+          const existingDomain = await ctx.db
+            .select()
+            .from(namefiNftView)
+            .where(
+              eq(
+                namefiNftView.normalizedDomainName,
+                `${sanitizedWord}.${normalizedDomainName}` as any,
+              ),
+            )
+            .limit(1);
+
+          if (existingDomain.length > 0) {
+            return {
+              word: sanitizedWord,
+              isValid: false,
+              reason: 'Word already exists as a registered domain',
+            };
+          }
+
+          // Check if word is already in editable reserved words
+          const currentReservedWords =
+            domainRecord.additionalReservedNames ?? [];
+          if (currentReservedWords.includes(sanitizedWord)) {
+            return {
+              word: sanitizedWord,
+              isValid: false,
+              reason: 'Word is already in reserved words list',
+            };
+          }
+
+          return {
+            word: sanitizedWord,
+            isValid: true,
+            reason: null,
+          };
+        }),
+      );
+
+      return { validationResults };
+    }),
+
+  addReservedWords: poweredByNamefiOwnerProcedure
+    .input(
+      z.object({
+        normalizedDomainName: z.string(),
+        words: z.array(z.string()),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { normalizedDomainName, words } = input;
+
+      // Check if domain exists and user owns it
+      const domainRecord =
+        await ctx.db.query.poweredbyNamefiDomainsTable.findFirst({
+          where: and(
+            eq(
+              poweredbyNamefiDomainsTable.normalizedDomainName,
+              normalizedDomainName as any,
+            ),
+            eq(poweredbyNamefiDomainsTable.ownerId, ctx.user.id),
+          ),
+        });
+
+      if (!domainRecord) {
+        throw new Error('Domain not found or access denied');
+      }
+
+      // Validate words
+      const validationResults = await Promise.all(
+        words.map(async (word) => {
+          const sanitizedWord = word.toLowerCase().trim();
+
+          // Check if word is already in fixed reserved words
+          if (isReservedKeyword(sanitizedWord)) {
+            return {
+              word: sanitizedWord,
+              isValid: false,
+              reason: 'Word is in fixed reserved words list',
+            };
+          }
+
+          // Check if word already exists as a domain
+          const existingDomain = await ctx.db
+            .select()
+            .from(namefiNftView)
+            .where(
+              eq(
+                namefiNftView.normalizedDomainName,
+                `${sanitizedWord}.${normalizedDomainName}` as any,
+              ),
+            )
+            .limit(1);
+
+          if (existingDomain.length > 0) {
+            return {
+              word: sanitizedWord,
+              isValid: false,
+              reason: 'Word already exists as a registered domain',
+            };
+          }
+
+          // Check if word is already in editable reserved words
+          const currentReservedWords =
+            domainRecord.additionalReservedNames ?? [];
+          if (currentReservedWords.includes(sanitizedWord)) {
+            return {
+              word: sanitizedWord,
+              isValid: false,
+              reason: 'Word is already in reserved words list',
+            };
+          }
+
+          return {
+            word: sanitizedWord,
+            isValid: true,
+            reason: null,
+          };
+        }),
+      );
+
+      const invalidWords = validationResults.filter(
+        (result) => !result.isValid,
+      );
+      if (invalidWords.length > 0) {
+        throw new Error(
+          `Invalid words: ${invalidWords.map((w: any) => `${w.word} (${w.reason})`).join(', ')}`,
+        );
+      }
+
+      // Sanitize words
+      const sanitizedWords = words.map((word) => word.toLowerCase().trim());
+
+      // Add new words to existing list
+      const currentReservedWords = domainRecord.additionalReservedNames ?? [];
+      const updatedReservedWords = Array.from(
+        new Set([...currentReservedWords, ...sanitizedWords]),
+      );
+
+      // Update the domain
+      await ctx.db
+        .update(poweredbyNamefiDomainsTable)
+        .set({
+          additionalReservedNames: updatedReservedWords,
+          updatedAt: new Date(),
+        })
+        .where(
+          and(
+            eq(
+              poweredbyNamefiDomainsTable.normalizedDomainName,
+              normalizedDomainName as any,
+            ),
+            eq(poweredbyNamefiDomainsTable.ownerId, ctx.user.id),
+          ),
+        );
+
+      return { success: true, addedWords: sanitizedWords };
+    }),
+
+  removeReservedWords: poweredByNamefiOwnerProcedure
+    .input(
+      z.object({
+        normalizedDomainName: z.string(),
+        words: z.array(z.string()),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { normalizedDomainName, words } = input;
+
+      // Get current reserved words
+      const domainRecord =
+        await ctx.db.query.poweredbyNamefiDomainsTable.findFirst({
+          where: and(
+            eq(
+              poweredbyNamefiDomainsTable.normalizedDomainName,
+              normalizedDomainName as any,
+            ),
+            eq(poweredbyNamefiDomainsTable.ownerId, ctx.user.id),
+          ),
+        });
+
+      if (!domainRecord) {
+        throw new Error('Domain not found or access denied');
+      }
+
+      // Remove specified words
+      const wordsToRemove = new Set(
+        words.map((word) => word.toLowerCase().trim()),
+      );
+      const currentReservedWords = domainRecord.additionalReservedNames ?? [];
+      const updatedReservedWords = currentReservedWords.filter(
+        (word) => !wordsToRemove.has(word),
+      );
+
+      // Update the domain
+      await ctx.db
+        .update(poweredbyNamefiDomainsTable)
+        .set({
+          additionalReservedNames: updatedReservedWords,
+          updatedAt: new Date(),
+        })
+        .where(
+          and(
+            eq(
+              poweredbyNamefiDomainsTable.normalizedDomainName,
+              normalizedDomainName as any,
+            ),
+            eq(poweredbyNamefiDomainsTable.ownerId, ctx.user.id),
+          ),
+        );
+
+      return { success: true, removedWords: words };
     }),
 });
