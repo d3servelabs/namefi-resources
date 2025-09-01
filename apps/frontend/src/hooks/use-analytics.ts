@@ -75,6 +75,16 @@ function transformEvent(event: InteractionLoggingEvent) {
         },
       };
     }
+    case InteractionLoggingEventName.Vote: {
+      const { domainName, action } = event.properties;
+      return {
+        name: event.name,
+        properties: {
+          action,
+          domain_name: domainName,
+        },
+      };
+    }
     default:
       return event;
   }
