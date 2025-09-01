@@ -23,6 +23,8 @@ import type { PoweredByNamefiDomainSelect } from '@namefi-astra/db';
 import { toast } from 'sonner';
 import { isNotNil } from 'ramda';
 
+const ALLOW_EDIT = false;
+
 export function DomainDetailsCard({
   domain,
   onOpenEdit,
@@ -57,48 +59,52 @@ export function DomainDetailsCard({
   return (
     <Card>
       <CardHeader className="flex items-center justify-between flex-row">
-        <CardTitle className="text-lg">{domain.normalizedDomainName}</CardTitle>
-        <div className="flex items-center gap-2">
-          <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <Button
-                variant={domain.enabled ? 'secondary' : 'default'}
-                size="sm"
-              >
-                {domain.enabled ? (
-                  <PauseIcon className="h-4 w-4 mr-1" />
-                ) : (
-                  <CheckIcon className="h-4 w-4 mr-1" />
-                )}
-                {domain.enabled ? 'Disable' : 'Enable'}
-              </Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>
-                  Confirm {domain.enabled ? 'Disable' : 'Enable'}
-                </AlertDialogTitle>
-                <AlertDialogDescription>
-                  Are you sure you want to{' '}
-                  {domain.enabled ? 'disable' : 'enable'} this Powered-by-Namefi
-                  domain?
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction
-                  onClick={onConfirmToggle}
-                  disabled={toggleMutation.isPending}
+        <CardTitle className="text-lg">
+          Domain Details ({domain.normalizedDomainName})
+        </CardTitle>
+        {ALLOW_EDIT && (
+          <div className="flex items-center gap-2">
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button
+                  variant={domain.enabled ? 'secondary' : 'default'}
+                  size="sm"
                 >
-                  Confirm
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
-          <Button size="sm" onClick={onOpenEdit}>
-            Edit
-          </Button>
-        </div>
+                  {domain.enabled ? (
+                    <PauseIcon className="h-4 w-4 mr-1" />
+                  ) : (
+                    <CheckIcon className="h-4 w-4 mr-1" />
+                  )}
+                  {domain.enabled ? 'Disable' : 'Enable'}
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>
+                    Confirm {domain.enabled ? 'Disable' : 'Enable'}
+                  </AlertDialogTitle>
+                  <AlertDialogDescription>
+                    Are you sure you want to{' '}
+                    {domain.enabled ? 'disable' : 'enable'} this
+                    Powered-by-Namefi domain?
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction
+                    onClick={onConfirmToggle}
+                    disabled={toggleMutation.isPending}
+                  >
+                    Confirm
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+            <Button size="sm" onClick={onOpenEdit}>
+              Edit
+            </Button>
+          </div>
+        )}
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
