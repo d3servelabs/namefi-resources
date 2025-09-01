@@ -173,10 +173,10 @@ export const SearchInput: FC<{
 
   const displayFreeMintTooltip = useCallback(() => {
     setIsFreeMintGuidanceVisible(true);
-    // Auto-hide tooltip after 3 seconds
+    // Auto-hide tooltip after 5 seconds
     setTimeout(() => {
       setIsFreeMintGuidanceVisible(false);
-    }, 3000);
+    }, 5000);
   }, []);
 
   useEffect(() => {
