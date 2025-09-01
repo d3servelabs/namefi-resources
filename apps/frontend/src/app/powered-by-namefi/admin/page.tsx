@@ -1,15 +1,12 @@
 'use client';
 import { useTRPC } from '@/lib/trpc';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import {
   Card,
   CardHeader,
   CardTitle,
   CardContent,
 } from '@/components/ui/shadcn/card';
-import { Button } from '@/components/ui/shadcn/button';
-import { Input } from '@/components/ui/shadcn/input';
-import { Label } from '@/components/ui/shadcn/label';
 import { useMemo } from 'react';
 import { DomainTable } from '@/components/powered-by-namefi/DomainTable';
 import { RevenuePie } from '@/components/powered-by-namefi/RevenuePie';
@@ -41,10 +38,10 @@ ChartJs.register(
   Title,
 );
 import { withPbnOwnerGuard } from '@/components/admin/pbn-owner-guard';
+import { keccak256 } from 'viem';
 
 function PoweredByNamefiOwnerDashboard() {
   const trpc = useTRPC();
-  const qc = useQueryClient();
 
   const domainsQuery = useQuery(trpc.pbnOwner.listOwnedDomains.queryOptions());
 
@@ -61,7 +58,9 @@ function PoweredByNamefiOwnerDashboard() {
         {
           label: 'Revenue (USD)',
           data: rows.map((r) => (r.amountInUsdCents ?? 0) / 100),
-          backgroundColor: rows.map((_, i) => `hsl(${(i * 47) % 360} 70% 55%)`),
+          backgroundColor: rows.map((r) =>
+            deterministicColorFromDomainNameHash(r.normalizedDomainName),
+          ),
         },
       ],
     };
@@ -72,7 +71,7 @@ function PoweredByNamefiOwnerDashboard() {
   return (
     <div className="container mx-auto p-6 space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold">Powered-by-Namefi Owner</h1>
+        <h1 className="text-2xl font-semibold">Powered by Namefi Dashboard</h1>
       </div>
 
       <div className="grid grid-cols-1 gap-6">
@@ -126,3 +125,15 @@ function PoweredByNamefiOwnerDashboard() {
 }
 
 export default withPbnOwnerGuard(PoweredByNamefiOwnerDashboard);
+
+function deterministicColorFromDomainNameHash(domain: string): string {
+  const sourceBytes = new TextEncoder().encode(domain);
+
+  const hashValue = keccak256(sourceBytes);
+  const h = BigInt(hashValue) & BigInt(0xfffff);
+  console.log(`Hash value for domain ${domain}:`, h, hashValue);
+
+  const selected = Number(h % BigInt(360));
+
+  return `hsl(${selected}, 45%, 50%)`;
+}

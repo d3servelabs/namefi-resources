@@ -21,30 +21,39 @@ export function DomainTable({
         <thead className="text-left text-muted-foreground">
           <tr>
             <th className="py-2">Domain</th>
-            <th className="py-2">Enabled</th>
+            <th className="py-2">Active</th>
             <th className="py-2">Price (USD)</th>
-            <th className="py-2">Min-Max Years</th>
+            <th className="py-2">Min Years</th>
+            <th className="py-2">Max Years</th>
             <th className="py-2">Action</th>
           </tr>
         </thead>
         <tbody>
           {domains?.map((d) => (
             <tr key={d.normalizedDomainName} className="border-t">
-              <td className="py-2 font-medium">{d.normalizedDomainName}</td>
+              <td className="py-2 font-medium">
+                <Link
+                  href={`/powered-by-namefi/admin/${d.normalizedDomainName}`}
+                >
+                  {d.normalizedDomainName}
+                </Link>
+              </td>
               <td className="py-2">{d.enabled ? 'Yes' : 'No'}</td>
               <td className="py-2">
                 {((d.costPerYearInUsdCents ?? 0) / 100).toFixed(2)}
               </td>
               <td className="py-2">
-                {d.durationConstraints?.minDurationInYears ?? 1}-
+                {d.durationConstraints?.minDurationInYears ?? 1}
+              </td>
+              <td className="py-2">
                 {d.durationConstraints?.maxDurationInYears ?? 1}
               </td>
               <td className="py-2">
-                <Button size="sm" asChild>
+                <Button size="sm" asChild variant={'secondary'}>
                   <Link
                     href={`/powered-by-namefi/admin/${d.normalizedDomainName}`}
                   >
-                    View
+                    View Details
                   </Link>
                 </Button>
               </td>

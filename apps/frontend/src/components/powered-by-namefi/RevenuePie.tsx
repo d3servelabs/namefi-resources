@@ -27,6 +27,7 @@ export function RevenuePie({
             options={{
               responsive: true,
               maintainAspectRatio: false,
+              borderColor: '#CCCCCCAA',
               plugins: {
                 tooltip: {
                   callbacks: {

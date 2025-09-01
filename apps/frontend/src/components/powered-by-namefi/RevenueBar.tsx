@@ -21,6 +21,7 @@ export function RevenueBar({
           indexAxis: 'y',
           responsive: true,
           maintainAspectRatio: false,
+          ...({ borderRadius: 24 } as any), //typescript issue
           scales: {
             x: {
               beginAtZero: true,
