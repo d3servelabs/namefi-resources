@@ -933,8 +933,8 @@ function formatCriticalDomainsTable(
   });
 
   const tableRows = [
-    '| Domain | Chain | Issues | Expiration | Registrar | Actions |',
-    '|--------|-------|--------|------------|-----------|---------|',
+    '| Domain | Chain | Issues | Domain Expiration | NFT Expiration | Registrar | Actions |',
+    '|--------|-------|--------|-------------------|----------------|-----------|---------|',
   ];
 
   for (const domain of sortedDomains) {
@@ -942,14 +942,18 @@ function formatCriticalDomainsTable(
     const issues = getCriticalDomainIssues(domain);
     const actions = getCriticalDomainActions(domain);
 
-    const expiration = domain.domainExpirationTime
+    const domainExpiration = domain.domainExpirationTime
       ? format(domain.domainExpirationTime, 'MMM do, yyyy')
+      : 'Unknown';
+
+    const nftExpiration = domain.nftExpirationTime
+      ? format(domain.nftExpirationTime, 'MMM do, yyyy')
       : 'Unknown';
 
     const registrar = domain.registrarKey || 'Unknown';
 
     tableRows.push(
-      `| ${domain.normalizedDomainName} | ${chainName} | ${issues.join(', ')} | ${expiration} | ${registrar} | ${actions.join(', ') || 'Review'} |`,
+      `| ${domain.normalizedDomainName} | ${chainName} | ${issues.join(', ')} | ${domainExpiration} | ${nftExpiration} | ${registrar} | ${actions.join(', ') || 'Review'} |`,
     );
   }
 
