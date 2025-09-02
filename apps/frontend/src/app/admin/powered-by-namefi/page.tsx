@@ -35,6 +35,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/shadcn/dialog';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/shadcn/dropdown-menu';
 import { Badge } from '@/components/ui/shadcn/badge';
 import {
   Form,
@@ -59,10 +66,14 @@ import {
   ChevronRight,
   Loader2,
   X,
+  Play,
+  Pause,
+  Edit,
+  MoreHorizontal,
 } from 'lucide-react';
 import { useTRPC } from '@/lib/trpc';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { formatDistanceToNow } from 'date-fns';
+import { formatDistanceToNow, format } from 'date-fns';
 import { toast } from 'sonner';
 import type { AppRouterOutput } from '@/lib/trpc';
 import { AsyncButton } from '@/components/buttons/async-button';
@@ -117,6 +128,8 @@ type Domain = {
   costPerYearInUsdCents: number;
   metadata: unknown;
   ownerId: string | null;
+  enabled: boolean;
+  startRolloutAt: Date | null;
   createdAt: Date;
   updatedAt: Date;
 };
@@ -150,7 +163,11 @@ const StatusBadge = ({
     : isSetup
       ? 'default'
       : ('destructive' as const);
-  const text = isPending ? 'Pending' : isSetup ? 'Setup' : 'Not Setup';
+  const text = isPending
+    ? 'Pending'
+    : isSetup
+      ? 'Configured'
+      : 'Not Configured';
 
   return <Badge variant={variant}>{text}</Badge>;
 };
@@ -166,6 +183,8 @@ export default withAdminGuard(function PoweredByNamefiDomainsPage() {
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
   const [selectedDomain, setSelectedDomain] = useState<string | null>(null);
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+  const [editingDomain, setEditingDomain] = useState<Domain | null>(null);
+  const [isEditCostDialogOpen, setIsEditCostDialogOpen] = useState(false);
 
   // Fetch domains
   const {
@@ -214,7 +233,7 @@ export default withAdminGuard(function PoweredByNamefiDomainsPage() {
       refetchStatus();
     },
     onError: (error) => {
-      toast.error(`Setup failed: ${error.message}`);
+      toast.error(`Configuration failed: ${error.message}`);
     },
   });
 
@@ -225,7 +244,7 @@ export default withAdminGuard(function PoweredByNamefiDomainsPage() {
       refetchStatus();
     },
     onError: (error) => {
-      toast.error(`Setup failed: ${error.message}`);
+      toast.error(`Configuration failed: ${error.message}`);
     },
   });
 
@@ -236,7 +255,41 @@ export default withAdminGuard(function PoweredByNamefiDomainsPage() {
       refetchStatus();
     },
     onError: (error) => {
-      toast.error(`Setup failed: ${error.message}`);
+      toast.error(`Configuration failed: ${error.message}`);
+    },
+  });
+
+  // New mutations for domain actions
+  const toggleDomainStatusMutation = useMutation({
+    ...trpc.admin.poweredByNamefi.togglePoweredByNamefiDomainStatus.mutationOptions(),
+    onSuccess: (data) => {
+      toast.success(data.message);
+      refetchDomains();
+    },
+    onError: (error) => {
+      toast.error(`Failed to toggle domain status: ${error.message}`);
+    },
+  });
+
+  const startRolloutMutation = useMutation({
+    ...trpc.admin.poweredByNamefi.startPoweredByNamefiDomainRollout.mutationOptions(),
+    onSuccess: (data) => {
+      toast.success(data.message);
+      refetchDomains();
+    },
+    onError: (error) => {
+      toast.error(`Failed to start rollout: ${error.message}`);
+    },
+  });
+
+  const updateCostAndDurationMutation = useMutation({
+    ...trpc.admin.poweredByNamefi.updatePoweredByNamefiDomainCostAndDuration.mutationOptions(),
+    onSuccess: (data) => {
+      toast.success(data.message);
+      refetchDomains();
+    },
+    onError: (error) => {
+      toast.error(`Failed to update cost and duration: ${error.message}`);
     },
   });
 
@@ -358,7 +411,11 @@ export default withAdminGuard(function PoweredByNamefiDomainsPage() {
                         <ArrowUpDown className="ml-2 h-4 w-4" />
                       </Button>
                     </TableHead>
+                    <TableHead>Status</TableHead>
                     <TableHead>Cost/Year</TableHead>
+                    <TableHead>Min Years</TableHead>
+                    <TableHead>Max Years</TableHead>
+                    <TableHead>Rollout Started</TableHead>
                     <TableHead>
                       <Button
                         variant="ghost"
@@ -375,13 +432,13 @@ export default withAdminGuard(function PoweredByNamefiDomainsPage() {
                 <TableBody>
                   {isLoadingDomains ? (
                     <TableRow>
-                      <TableCell colSpan={5} className="text-center py-8">
+                      <TableCell colSpan={9} className="text-center py-8">
                         Loading domains...
                       </TableCell>
                     </TableRow>
                   ) : domains.length === 0 ? (
                     <TableRow>
-                      <TableCell colSpan={5} className="text-center py-8">
+                      <TableCell colSpan={9} className="text-center py-8">
                         No domains found.
                       </TableCell>
                     </TableRow>
@@ -393,7 +450,47 @@ export default withAdminGuard(function PoweredByNamefiDomainsPage() {
                         </TableCell>
 
                         <TableCell>
+                          <Badge
+                            variant={domain.enabled ? 'default' : 'secondary'}
+                          >
+                            {domain.enabled ? 'Enabled' : 'Disabled'}
+                          </Badge>
+                        </TableCell>
+
+                        <TableCell>
                           ${(domain.costPerYearInUsdCents / 100).toFixed(2)}
+                        </TableCell>
+
+                        <TableCell>
+                          {domain.durationConstraints.minDurationInYears}
+                        </TableCell>
+
+                        <TableCell>
+                          {domain.durationConstraints.maxDurationInYears}
+                        </TableCell>
+                        <TableCell>
+                          {domain.startRolloutAt ? (
+                            <div className="text-sm">
+                              <div>
+                                {format(
+                                  new Date(domain.startRolloutAt),
+                                  'MMM dd, yyyy',
+                                )}
+                              </div>
+                              <div className="text-muted-foreground">
+                                {formatDistanceToNow(
+                                  new Date(domain.startRolloutAt),
+                                  {
+                                    addSuffix: true,
+                                  },
+                                )}
+                              </div>
+                            </div>
+                          ) : (
+                            <span className="text-muted-foreground">
+                              Not started
+                            </span>
+                          )}
                         </TableCell>
                         <TableCell>
                           {formatDistanceToNow(new Date(domain.createdAt), {
@@ -402,49 +499,123 @@ export default withAdminGuard(function PoweredByNamefiDomainsPage() {
                         </TableCell>
                         <TableCell>
                           <div className="flex items-center space-x-2">
-                            <Dialog>
-                              <DialogTrigger asChild>
-                                <Button
-                                  variant="outline"
-                                  size="sm"
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <Button variant="ghost" size="sm">
+                                  <MoreHorizontal className="h-4 w-4" />
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent align="end">
+                                {/* Enable/Disable Toggle */}
+                                <DropdownMenuItem
                                   onClick={() =>
-                                    setSelectedDomain(
-                                      domain.normalizedDomainName,
+                                    toggleDomainStatusMutation.mutate({
+                                      normalizedDomainName:
+                                        domain.normalizedDomainName,
+                                      enabled: !domain.enabled,
+                                    })
+                                  }
+                                  disabled={
+                                    toggleDomainStatusMutation.isPending
+                                  }
+                                >
+                                  {domain.enabled ? (
+                                    <>
+                                      <Pause className="h-4 w-4 mr-2" />
+                                      Disable
+                                    </>
+                                  ) : (
+                                    <>
+                                      <Play className="h-4 w-4 mr-2" />
+                                      Enable
+                                    </>
+                                  )}
+                                </DropdownMenuItem>
+
+                                {/* Start Rollout (only if not started) */}
+                                {!domain.startRolloutAt && (
+                                  <DropdownMenuItem
+                                    onClick={() =>
+                                      startRolloutMutation.mutate({
+                                        normalizedDomainName:
+                                          domain.normalizedDomainName,
+                                      })
+                                    }
+                                    disabled={startRolloutMutation.isPending}
+                                  >
+                                    <Play className="h-4 w-4 mr-2" />
+                                    Start Rollout
+                                  </DropdownMenuItem>
+                                )}
+
+                                <DropdownMenuSeparator />
+
+                                {/* Edit Cost and Duration */}
+                                <DropdownMenuItem
+                                  onClick={() => {
+                                    setEditingDomain(domain);
+                                    setIsEditCostDialogOpen(true);
+                                  }}
+                                >
+                                  <Edit className="h-4 w-4 mr-2" />
+                                  Edit Cost & Duration
+                                </DropdownMenuItem>
+
+                                <DropdownMenuSeparator />
+
+                                {/* Configuration Dialog */}
+                                <Dialog>
+                                  <DialogTrigger asChild>
+                                    <DropdownMenuItem
+                                      onSelect={(e) => e.preventDefault()}
+                                      onClick={() =>
+                                        setSelectedDomain(
+                                          domain.normalizedDomainName,
+                                        )
+                                      }
+                                    >
+                                      <Settings className="h-4 w-4 mr-2" />
+                                      DNS Configuration
+                                    </DropdownMenuItem>
+                                  </DialogTrigger>
+                                  <DialogContent className="!max-w-screen-xl w-full">
+                                    <DialogHeader>
+                                      <DialogTitle>
+                                        Configuration Status:{' '}
+                                        {domain.normalizedDomainName}
+                                      </DialogTitle>
+                                    </DialogHeader>
+                                    <div className="w-full space-y-6 max-h-[80vh] overflow-y-auto">
+                                      {isLoadingStatus ? (
+                                        <div className="text-center py-8">
+                                          Loading setup status...
+                                        </div>
+                                      ) : domainStatus?.setupStatus &&
+                                        domainStatus.setupStatus.length > 0 ? (
+                                        <SetupStatusDisplay
+                                          setupStatus={
+                                            domainStatus.setupStatus[0]
+                                          }
+                                        />
+                                      ) : null}
+                                    </div>
+                                  </DialogContent>
+                                </Dialog>
+
+                                {/* Visit Domain */}
+                                <DropdownMenuItem
+                                  onClick={() =>
+                                    window.open(
+                                      `https://${domain.normalizedDomainName}`,
+                                      '_blank',
                                     )
                                   }
                                 >
-                                  <Settings className="h-4 w-4 mr-1" />
-                                  Configuration
-                                </Button>
-                              </DialogTrigger>
-                              <DialogContent className="!max-w-screen-xl w-full">
-                                <DialogHeader>
-                                  <DialogTitle>
-                                    Setup Status: {domain.normalizedDomainName}
-                                  </DialogTitle>
-                                </DialogHeader>
-                                <div className="w-full space-y-6 max-h-[80vh] overflow-y-auto">
-                                  {isLoadingStatus ? (
-                                    <div className="text-center py-8">
-                                      Loading setup status...
-                                    </div>
-                                  ) : domainStatus?.setupStatus &&
-                                    domainStatus.setupStatus.length > 0 ? (
-                                    <SetupStatusDisplay
-                                      setupStatus={domainStatus.setupStatus[0]}
-                                    />
-                                  ) : null}
-                                </div>
-                              </DialogContent>
-                            </Dialog>
-                            <Button variant="outline" size="sm">
-                              <ExternalLink
-                                className="h-4 w-4 mr-1"
-                                href={`https://${domain.normalizedDomainName}`}
-                                target="_blank"
-                              />
-                              Visit
-                            </Button>
+                                  <ExternalLink className="h-4 w-4 mr-2" />
+                                  Visit Domain
+                                </DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
                           </div>
                         </TableCell>
                       </TableRow>
@@ -490,6 +661,33 @@ export default withAdminGuard(function PoweredByNamefiDomainsPage() {
           </div>
         </CardContent>
       </Card>
+
+      {/* Edit Cost & Duration Dialog */}
+      <Dialog
+        open={isEditCostDialogOpen}
+        onOpenChange={setIsEditCostDialogOpen}
+      >
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>Edit Cost & Duration</DialogTitle>
+          </DialogHeader>
+          {editingDomain && (
+            <EditCostAndDurationForm
+              domain={editingDomain}
+              onSubmit={async (data) => {
+                await updateCostAndDurationMutation.mutateAsync({
+                  normalizedDomainName: editingDomain.normalizedDomainName,
+                  costPerYearInUsdCents: data.costPerYearInUsdCents,
+                  durationConstraints: data.durationConstraints,
+                });
+                setIsEditCostDialogOpen(false);
+                setEditingDomain(null);
+              }}
+              isLoading={updateCostAndDurationMutation.isPending}
+            />
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 });
@@ -771,7 +969,9 @@ function CreateDomainForm({
 
         {/* Setup Options */}
         <div className="space-y-4">
-          <h3 className="text-lg font-medium">Automatic Setup Options</h3>
+          <h3 className="text-lg font-medium">
+            Automatic Configuration Options
+          </h3>
           <p className="text-sm text-muted-foreground">
             Select which components to set up automatically after creating the
             domain.
@@ -789,7 +989,7 @@ function CreateDomainForm({
                   />
                 </FormControl>
                 <div className="space-y-1 leading-none">
-                  <FormLabel>Setup Vercel Project & DNS A Record</FormLabel>
+                  <FormLabel>Configure Vercel Project & DNS A Record</FormLabel>
                   <FormDescription>
                     Add domain to d3servelabs/namefi-astra project and create
                     DNS A record
@@ -831,7 +1031,7 @@ function CreateDomainForm({
                 </FormControl>
                 <div className="space-y-1 leading-none">
                   <FormLabel>
-                    Setup {form.watch('normalizedDomainName') || '<domain>'}
+                    Configure {form.watch('normalizedDomainName') || '<domain>'}
                     .astra.namefi.io
                   </FormLabel>
                   <FormDescription>
@@ -855,7 +1055,7 @@ function CreateDomainForm({
                 </FormControl>
                 <div className="space-y-1 leading-none">
                   <FormLabel>
-                    Setup {form.watch('normalizedDomainName') || '<domain>'}
+                    Configure {form.watch('normalizedDomainName') || '<domain>'}
                     .astra.namefi.dev
                   </FormLabel>
                   <FormDescription>
@@ -870,6 +1070,123 @@ function CreateDomainForm({
         <div className="flex justify-end space-x-2 pt-4 border-t">
           <Button type="submit" disabled={isLoading} className="min-w-[120px]">
             {isLoading ? 'Creating...' : 'Create Domain'}
+          </Button>
+        </div>
+      </form>
+    </Form>
+  );
+}
+
+// Form component for editing cost and duration constraints
+function EditCostAndDurationForm({
+  domain,
+  onSubmit,
+  isLoading = false,
+}: {
+  domain: Domain;
+  onSubmit: (data: {
+    costPerYearInUsdCents: number;
+    durationConstraints: {
+      minDurationInYears: number;
+      maxDurationInYears: number;
+    };
+  }) => Promise<void>;
+  isLoading?: boolean;
+}) {
+  const form = useForm({
+    resolver: zodResolver(
+      z.object({
+        costPerYearInUsdCents: z.number().min(0),
+        durationConstraints: z
+          .object({
+            minDurationInYears: z.number().min(1),
+            maxDurationInYears: z.number().min(1),
+          })
+          .refine(
+            (data) => data.minDurationInYears <= data.maxDurationInYears,
+            {
+              message:
+                'Min duration must be less than or equal to max duration',
+              path: ['durationConstraints'],
+            },
+          ),
+      }),
+    ),
+    defaultValues: {
+      costPerYearInUsdCents: domain.costPerYearInUsdCents,
+      durationConstraints: domain.durationConstraints,
+    },
+  });
+
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <FormField
+          control={form.control}
+          name="costPerYearInUsdCents"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Cost per Year (USD Cents)</FormLabel>
+              <FormControl>
+                <Input
+                  type="number"
+                  min="0"
+                  placeholder="500 for $5.00"
+                  {...field}
+                  onChange={(e) => field.onChange(Number(e.target.value))}
+                />
+              </FormControl>
+              <FormDescription>
+                Cost in cents (e.g., 500 = $5.00)
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <div className="grid grid-cols-2 gap-4">
+          <FormField
+            control={form.control}
+            name="durationConstraints.minDurationInYears"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Min Duration (Years)</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    min="1"
+                    {...field}
+                    onChange={(e) => field.onChange(Number(e.target.value))}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="durationConstraints.maxDurationInYears"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Max Duration (Years)</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    min="1"
+                    {...field}
+                    onChange={(e) => field.onChange(Number(e.target.value))}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
+        <div className="flex justify-end space-x-2 pt-4">
+          <Button type="submit" disabled={isLoading}>
+            {isLoading ? 'Updating...' : 'Update'}
           </Button>
         </div>
       </form>
@@ -941,7 +1258,7 @@ function SetupStatusDisplay({ setupStatus }: { setupStatus: SetupStatus }) {
       <Card>
         <CardHeader>
           <div className="flex items-center justify-between">
-            <CardTitle className="text-lg">Apex Domain Setup</CardTitle>
+            <CardTitle className="text-lg">Apex Domain Configuration</CardTitle>
             <StatusBadge isSetup={apexFullySetup} />
           </div>
         </CardHeader>
@@ -962,7 +1279,7 @@ function SetupStatusDisplay({ setupStatus }: { setupStatus: SetupStatus }) {
                   {setupStatus.apexDomain.vercelIsSetup &&
                   setupStatus.apexDomain.vercelIsVerified
                     ? 'Verified'
-                    : 'Not Setup'}
+                    : 'Not Configured'}
                 </span>
               </div>
             </div>
@@ -980,9 +1297,14 @@ function SetupStatusDisplay({ setupStatus }: { setupStatus: SetupStatus }) {
                 <div className="text-sm">
                   <span className="font-medium">Expected Records:</span>
                   <div className="text-muted-foreground">
-                    {setupStatus.apexDomain.expectedRecords
-                      .map((r) => `A ${r.value}`)
-                      .join(', ')}
+                    {setupStatus.apexDomain.expectedRecords.map((r) => (
+                      <Record
+                        type={'A'}
+                        name={'@'}
+                        value={r.value}
+                        key={`expected-record-${r.value}`}
+                      />
+                    ))}
                   </div>
                 </div>
               )}
@@ -998,7 +1320,7 @@ function SetupStatusDisplay({ setupStatus }: { setupStatus: SetupStatus }) {
                 <span className="text-sm capitalize">
                   {setupStatus.apexDomain.recordsAreSetup
                     ? 'Configured'
-                    : 'Not Setup'}
+                    : 'Not Configured'}
                 </span>
               </div>
             </div>
@@ -1007,9 +1329,14 @@ function SetupStatusDisplay({ setupStatus }: { setupStatus: SetupStatus }) {
                 <div className="text-sm">
                   <span className="font-medium">Current Records:</span>
                   <div className="text-muted-foreground">
-                    {setupStatus.apexDomain.records
-                      .map((r) => `${r.type} ${r.name} ${r.rdata}`)
-                      .join(', ')}
+                    {setupStatus.apexDomain.records.map((r) => (
+                      <Record
+                        type={r.type}
+                        name={r.name}
+                        value={r.rdata}
+                        key={`current-record-${r.type}-${r.name}-${r.rdata}`}
+                      />
+                    ))}
                   </div>
                 </div>
               )}
@@ -1026,7 +1353,7 @@ function SetupStatusDisplay({ setupStatus }: { setupStatus: SetupStatus }) {
               })
             }
           >
-            {apexFullySetup ? 'Already Setup' : 'Setup Apex Domain'}
+            {apexFullySetup ? 'Already Configured' : 'Configure Apex Domain'}
           </AsyncButton>
         </CardContent>
       </Card>
@@ -1053,7 +1380,7 @@ function SetupStatusDisplay({ setupStatus }: { setupStatus: SetupStatus }) {
               <div className="flex items-center space-x-2">
                 <StatusIcon isSetup={ioFullySetup} />
                 <span className="text-sm capitalize">
-                  {ioFullySetup ? 'Configured' : 'Not Setup'}
+                  {ioFullySetup ? 'Configured' : 'Not Configured'}
                 </span>
               </div>
             </div>
@@ -1065,9 +1392,14 @@ function SetupStatusDisplay({ setupStatus }: { setupStatus: SetupStatus }) {
                 <div className="text-sm">
                   <span className="font-medium">Current Records:</span>
                   <div className="text-muted-foreground">
-                    {setupStatus.namefiIoSubdomain.records
-                      .map((r) => `${r.type} ${r.name} ${r.rdata}`)
-                      .join(', ')}
+                    {setupStatus.namefiIoSubdomain.records.map((r) => (
+                      <Record
+                        type={r.type}
+                        name={r.name}
+                        value={r.rdata}
+                        key={`current-record-${r.type}-${r.name}-${r.rdata}`}
+                      />
+                    ))}
                   </div>
                 </div>
               )}
@@ -1084,7 +1416,9 @@ function SetupStatusDisplay({ setupStatus }: { setupStatus: SetupStatus }) {
               })
             }
           >
-            {ioFullySetup ? 'Already Setup' : 'Setup Namefi.io Subdomain'}
+            {ioFullySetup
+              ? 'Already Configured'
+              : 'Configure Namefi.io Subdomain'}
           </AsyncButton>
         </CardContent>
       </Card>
@@ -1110,7 +1444,7 @@ function SetupStatusDisplay({ setupStatus }: { setupStatus: SetupStatus }) {
               <div className="flex items-center space-x-2">
                 <StatusIcon isSetup={devFullySetup} />
                 <span className="text-sm capitalize">
-                  {devFullySetup ? 'Configured' : 'Not Setup'}
+                  {devFullySetup ? 'Configured' : 'Not Configured'}
                 </span>
               </div>
             </div>
@@ -1122,9 +1456,14 @@ function SetupStatusDisplay({ setupStatus }: { setupStatus: SetupStatus }) {
                 <div className="text-sm">
                   <span className="font-medium">Current Records:</span>
                   <div className="text-muted-foreground">
-                    {setupStatus.namefiDevSubdomain.records
-                      .map((r) => `${r.type} ${r.name} ${r.rdata}`)
-                      .join(', ')}
+                    {setupStatus.namefiDevSubdomain.records.map((r) => (
+                      <Record
+                        type={r.type}
+                        name={r.name}
+                        value={r.rdata}
+                        key={`current-record-${r.type}-${r.name}-${r.rdata}`}
+                      />
+                    ))}
                   </div>
                 </div>
               )}
@@ -1141,7 +1480,9 @@ function SetupStatusDisplay({ setupStatus }: { setupStatus: SetupStatus }) {
               })
             }
           >
-            {devFullySetup ? 'Already Setup' : 'Setup Namefi.dev Subdomain'}
+            {devFullySetup
+              ? 'Already Configured'
+              : 'Configure Namefi.dev Subdomain'}
           </AsyncButton>
         </CardContent>
       </Card>
@@ -1149,7 +1490,7 @@ function SetupStatusDisplay({ setupStatus }: { setupStatus: SetupStatus }) {
       {/* Section 4: Summary */}
       <Card className="col-span-2">
         <CardHeader>
-          <CardTitle className="text-lg">Setup Summary</CardTitle>
+          <CardTitle className="text-lg">Configuration Summary</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
@@ -1193,5 +1534,31 @@ function SetupStatusDisplay({ setupStatus }: { setupStatus: SetupStatus }) {
         </CardContent>
       </Card>
     </div>
+  );
+}
+
+function Record({
+  type,
+  name,
+  value,
+}: {
+  type: string;
+  name: string;
+  value: string[] | string;
+}) {
+  const valueString = Array.isArray(value) ? value : [value];
+  return (
+    <pre className="text-md font-semibold text-gray-200 border-1 border-brand-primary/50 rounded-md px-2 py-1 my-1 w-min space-x-[6ch] ">
+      <span className="align-top">{type}</span>
+      <span className="align-top">{name}</span>
+      <span className="inline-block align-top">
+        {valueString.map((v) => (
+          <>
+            <span key={v}>{v}</span>
+            <br />
+          </>
+        ))}
+      </span>
+    </pre>
   );
 }

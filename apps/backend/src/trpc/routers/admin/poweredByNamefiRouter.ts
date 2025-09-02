@@ -654,7 +654,7 @@ export const poweredByNamefiRouter = createTRPCRouter({
         const vercelClient = createVercelClientSDK();
 
         // Check if domain is already configured
-        let [_, vercelDomain] = await resolve(
+        let [_err, vercelDomain] = await resolve(
           vercelClient.getProjectDomain(
             config.VERCEL_PROJECT_ID,
             normalizedDomainName,
@@ -746,7 +746,7 @@ export const poweredByNamefiRouter = createTRPCRouter({
           const vercelClient = createVercelClientSDK();
 
           // Check if domain is already configured
-          let [_, vercelDomain] = await resolve(
+          let [_err, vercelDomain] = await resolve(
             vercelClient.getProjectDomain(
               config.VERCEL_PROJECT_ID,
               `${normalizedDomainName}.astra.namefi.io`,
@@ -832,7 +832,7 @@ export const poweredByNamefiRouter = createTRPCRouter({
           const vercelClient = createVercelClientSDK();
 
           // Check if domain is already configured
-          let [err, vercelDomain] = await resolve(
+          let [_err, vercelDomain] = await resolve(
             vercelClient.getProjectDomain(
               config.VERCEL_PROJECT_ID,
               `${normalizedDomainName}.astra.namefi.dev`,
@@ -896,6 +896,164 @@ export const poweredByNamefiRouter = createTRPCRouter({
             message: 'Failed to setup namefi.dev subdomain',
           });
         }
+      }
+    }),
+
+  // Toggle enable/disable status of a powered by namefi domain
+  togglePoweredByNamefiDomainStatus: adminProcedure
+    .input(
+      z.object({
+        normalizedDomainName: namefiNormalizedDomainSchema,
+        enabled: z.boolean(),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      const { normalizedDomainName, enabled } = input;
+
+      try {
+        const updatedDomain = await db
+          .update(poweredbyNamefiDomainsTable)
+          .set({
+            enabled,
+            updatedAt: new Date(),
+          })
+          .where(
+            eq(
+              poweredbyNamefiDomainsTable.normalizedDomainName,
+              normalizedDomainName,
+            ),
+          )
+          .returning();
+
+        if (updatedDomain.length === 0) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'Powered by Namefi domain not found',
+          });
+        }
+
+        return {
+          success: true,
+          domain: updatedDomain[0],
+          message: `Domain ${enabled ? 'enabled' : 'disabled'} successfully`,
+        };
+      } catch (error) {
+        logger.error('Error toggling domain status:', error);
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to toggle domain status',
+        });
+      }
+    }),
+
+  // Start rollout for a powered by namefi domain
+  startPoweredByNamefiDomainRollout: adminProcedure
+    .input(
+      z.object({
+        normalizedDomainName: namefiNormalizedDomainSchema,
+      }),
+    )
+    .mutation(async ({ input }) => {
+      const { normalizedDomainName } = input;
+
+      try {
+        const updatedDomain = await db
+          .update(poweredbyNamefiDomainsTable)
+          .set({
+            startRolloutAt: new Date(),
+            updatedAt: new Date(),
+          })
+          .where(
+            eq(
+              poweredbyNamefiDomainsTable.normalizedDomainName,
+              normalizedDomainName,
+            ),
+          )
+          .returning();
+
+        if (updatedDomain.length === 0) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'Powered by Namefi domain not found',
+          });
+        }
+
+        return {
+          success: true,
+          domain: updatedDomain[0],
+          message: 'Domain rollout started successfully',
+        };
+      } catch (error) {
+        logger.error('Error starting domain rollout:', error);
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to start domain rollout',
+        });
+      }
+    }),
+
+  // Update cost and duration constraints for a powered by namefi domain
+  updatePoweredByNamefiDomainCostAndDuration: adminProcedure
+    .input(
+      z.object({
+        normalizedDomainName: namefiNormalizedDomainSchema,
+        costPerYearInUsdCents: z.number().min(0),
+        durationConstraints: z
+          .object({
+            minDurationInYears: z.number().min(1),
+            maxDurationInYears: z.number().min(1),
+          })
+          .refine(
+            (data) => data.minDurationInYears <= data.maxDurationInYears,
+            {
+              message:
+                'Min duration must be less than or equal to max duration',
+              path: ['durationConstraints'],
+            },
+          ),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      const {
+        normalizedDomainName,
+        costPerYearInUsdCents,
+        durationConstraints,
+      } = input;
+
+      try {
+        const updatedDomain = await db
+          .update(poweredbyNamefiDomainsTable)
+          .set({
+            costPerYearInUsdCents,
+            durationConstraints,
+            updatedAt: new Date(),
+          })
+          .where(
+            eq(
+              poweredbyNamefiDomainsTable.normalizedDomainName,
+              normalizedDomainName,
+            ),
+          )
+          .returning();
+
+        if (updatedDomain.length === 0) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'Powered by Namefi domain not found',
+          });
+        }
+
+        return {
+          success: true,
+          domain: updatedDomain[0],
+          message: 'Domain cost and duration updated successfully',
+        };
+      } catch (error) {
+        logger.error('Error updating domain cost and duration:', error);
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to update domain cost and duration',
+        });
       }
     }),
 });
