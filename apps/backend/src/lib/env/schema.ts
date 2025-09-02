@@ -60,6 +60,7 @@ export const secretsSchema = z.object({
   // Google Cloud DNS configuration (uses existing Google credentials)
   GOOGLE_CLOUD_PROJECT_ID: z.string().optional(),
   OPENSEA_API_KEY: z.string(),
+  AVAILABILITY_API_AUTH_KEY: z.string(),
 });
 
 export type SecretsSchema = z.infer<typeof secretsSchema>;

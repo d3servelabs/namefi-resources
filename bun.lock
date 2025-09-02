@@ -59,6 +59,7 @@
         "entities": "^6.0.1",
         "hono": "^4.7.5",
         "hono-pino-logger": "^1.0.0",
+        "hono-rate-limiter": "^0.4.2",
         "iso-countries-lookup": "^2.0.8",
         "limiter": "^2.1.0",
         "mnemonist": "^0.40.3",
@@ -2475,6 +2476,8 @@
     "hono": ["hono@4.8.4", "", {}, "sha512-KOIBp1+iUs0HrKztM4EHiB2UtzZDTBihDtOF5K6+WaJjCPeaW4Q92R8j63jOhvJI5+tZSMuKD9REVEXXY9illg=="],
 
     "hono-pino-logger": ["hono-pino-logger@1.0.0", "", { "dependencies": { "pino": "^8.20.0" }, "peerDependencies": { "hono": ">=4.*" } }, "sha512-h3gkcJ2N/Ptn48WcSdgg+Hjo8VSpoEZN2C8Ln75Hb99sqwmlha7tVXinf8ory/tMUiLfPe8hZ/iJqpIxFinduQ=="],
+
+    "hono-rate-limiter": ["hono-rate-limiter@0.4.2", "", { "peerDependencies": { "hono": "^4.1.1" } }, "sha512-AAtFqgADyrmbDijcRTT/HJfwqfvhalya2Zo+MgfdrMPas3zSMD8SU03cv+ZsYwRU1swv7zgVt0shwN059yzhjw=="],
 
     "hookified": ["hookified@1.10.0", "", {}, "sha512-dJw0492Iddsj56U1JsSTm9E/0B/29a1AuoSLRAte8vQg/kaTGF3IgjEWT8c8yG4cC10+HisE1x5QAwR0Xwc+DA=="],
 
