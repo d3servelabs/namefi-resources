@@ -1,12 +1,7 @@
 'use client';
 
 import { cn } from '@/lib/cn';
-import {
-  showSecondLayer,
-  useHasUserInteracted,
-  useIsFailed,
-  useIsInitialized,
-} from '@s-group/react-usercentrics';
+import { useCookieConsent } from '@/components/providers/cookie-consent';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
@@ -14,8 +9,6 @@ import {
   type ForwardedRef,
   type HTMLAttributes,
   forwardRef,
-  useCallback,
-  useMemo,
 } from 'react';
 
 export type FooterProps = HTMLAttributes<HTMLDivElement>;
@@ -27,22 +20,7 @@ export const Footer: ForwardRefExoticComponent<FooterProps> = forwardRef<
   { className, children, ...rest }: FooterProps,
   ref: ForwardedRef<HTMLDivElement>,
 ) {
-  const usercentricsInitialized = useIsInitialized();
-  const userCentricsFailed = useIsFailed();
-  const userHasInteracted = useHasUserInteracted();
-
-  const shouldShowCookieConsentLink = useMemo(
-    () => usercentricsInitialized && !userCentricsFailed && userHasInteracted,
-    [userCentricsFailed, usercentricsInitialized, userHasInteracted],
-  );
-
-  const handleClickCookieConsent = useCallback(async () => {
-    if (!shouldShowCookieConsentLink) {
-      return;
-    }
-
-    await showSecondLayer();
-  }, [shouldShowCookieConsentLink]);
+  const { openConsent } = useCookieConsent();
 
   return (
     <footer
@@ -63,16 +41,15 @@ export const Footer: ForwardRefExoticComponent<FooterProps> = forwardRef<
           </span>
         </div>
         <div className="flex items-center space-x-4">
-          {shouldShowCookieConsentLink && (
-            <button
-              type="button"
-              className="text-gray-300 hover:text-secondary-foreground text-sm bg-transparent border-0 p-0 cursor-pointer"
-              aria-label="Open cookie settings dialog"
-              onClick={handleClickCookieConsent}
-            >
-              Cookie Settings
-            </button>
-          )}
+          <button
+            type="button"
+            className="text-gray-300 hover:text-secondary-foreground text-sm bg-transparent border-0 p-0 cursor-pointer"
+            aria-label="Open cookie settings dialog"
+            onClick={openConsent}
+          >
+            Cookie Settings
+          </button>
+
           <Link
             href="https://namefi.io/tos"
             className="text-gray-300 hover:text-secondary-foreground text-sm"

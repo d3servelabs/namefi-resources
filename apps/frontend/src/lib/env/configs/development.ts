@@ -38,8 +38,6 @@ const developmentConfig: ConfigInput = {
     'available.today.astra.namefi.dev': 'available.today',
     'discounts.today.astra.namefi.dev': 'discounts.today',
   },
-  USER_CENTRICS_SETTINGS_ID: '5UJHpI8CWth59m',
-  USER_CENTRICS_GOOGLE_ANALYTICS_SERVICE_ID: 'HkocEodjb7',
   ALLOWED_CHAINS: [chains.sepolia.id, chains.base.id, chains.mainnet.id],
   HUNT_CAMPAIGN_KEYS: ['cv-2025-07-16', 'cta-2025-07-16'],
 };

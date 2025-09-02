@@ -1,22 +1,12 @@
 'use client';
 
-import { config } from '@/lib/env';
 import {
   type InteractionLoggingCartItem,
   type InteractionLoggingEvent,
   InteractionLoggingEventName,
 } from '@/lib/analytics-events';
+import { useCallback } from 'react';
 import { sendGAEvent } from '@next/third-parties/google';
-import {
-  useHasServiceConsent,
-  useIsInitialized,
-} from '@s-group/react-usercentrics';
-import { useCallback, useMemo } from 'react';
-import { useOrigin } from '@/components/providers/origin';
-
-const GA_MEASUREMENT_ID = config.GA_MEASUREMENT_ID;
-const USER_CENTRICS_GOOGLE_ANALYTICS_SERVICE_ID =
-  config.USER_CENTRICS_GOOGLE_ANALYTICS_SERVICE_ID;
 
 // From Google Analytics documentation
 type Item = { item_name: string; item_id: string; price: number };
@@ -28,7 +18,7 @@ function interactionLoggingCartItemToGoogleAnalyticsItem(
     item_id: cartItem.normalizedDomainName,
     item_name: cartItem.normalizedDomainName,
     price: cartItem.amountInUSDCents / 100,
-  } as Item;
+  } satisfies Item;
 }
 
 function transformEvent(event: InteractionLoggingEvent) {
@@ -90,47 +80,13 @@ function transformEvent(event: InteractionLoggingEvent) {
   }
 }
 
-// hook that calls GoogleAnalytics event logging function if analytics cookie consent is given
 export function useGoogleAnalyticsInteractionLogger() {
-  const usercentricsInitialized = useIsInitialized();
-  const googleAnalyticsConsentGiven = useHasServiceConsent(
-    USER_CENTRICS_GOOGLE_ANALYTICS_SERVICE_ID,
-  );
-  const originInfo = useOrigin();
-
-  const enabled = useMemo(() => {
-    return (
-      GA_MEASUREMENT_ID &&
-      usercentricsInitialized &&
-      googleAnalyticsConsentGiven
-    );
-  }, [googleAnalyticsConsentGiven, usercentricsInitialized]);
-
-  const logEvent = useCallback(
-    (event: InteractionLoggingEvent) => {
-      if (!enabled) {
-        return;
-      }
-
-      const transformedEvent = transformEvent(event);
-
-      // Add origin information to all events
-      const eventProperties = {
-        ...transformedEvent.properties,
-        // Custom dimensions for origin tracking
-        origin_type: originInfo.isFirstPartyOrigin
-          ? 'first_party'
-          : 'third_party',
-        origin_domain: originInfo.thirdPartyHostname || 'astra',
-      };
-
-      sendGAEvent('event', transformedEvent.name, eventProperties);
-    },
-    [enabled, originInfo],
-  );
+  const logEvent = useCallback((event: InteractionLoggingEvent) => {
+    const transformedEvent = transformEvent(event);
+    sendGAEvent('event', transformedEvent.name, transformedEvent.properties);
+  }, []);
 
   return {
-    enabled,
     logEvent,
   };
 }

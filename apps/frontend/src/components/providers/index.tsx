@@ -5,7 +5,7 @@ import { InteractionLoggersProvider } from '@/components/providers/analytics';
 import { OriginProvider } from '@/components/providers/origin';
 import { getWagmiConfig } from '@/lib/wagmi-config';
 import { WagmiProvider } from '@privy-io/wagmi';
-import { UsercentricsProvider } from '@s-group/react-usercentrics';
+import { CookieConsentProvider } from '@/components/providers/cookie-consent';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { NuqsAdapter } from 'nuqs/adapters/next/app';
 import { type PropsWithChildren, type FC, Suspense, useState } from 'react';
@@ -56,7 +56,7 @@ export const Providers: FC<
                 <ProgressProvider>
                   <QueryClientProvider client={queryClient}>
                     <WagmiProvider config={config}>
-                      <UsercentricsProvider>
+                      <CookieConsentProvider>
                         <InteractionLoggersProvider>
                           <WishlistProvider>
                             <CartProvider>
@@ -66,7 +66,7 @@ export const Providers: FC<
                             </CartProvider>
                           </WishlistProvider>
                         </InteractionLoggersProvider>
-                      </UsercentricsProvider>
+                      </CookieConsentProvider>
                     </WagmiProvider>
                   </QueryClientProvider>
                 </ProgressProvider>

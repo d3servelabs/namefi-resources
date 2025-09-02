@@ -3,12 +3,10 @@ import OriginBackground from '@/components/origin-background';
 import { AppSidebar } from '@/components/sidebars';
 import { SidebarProvider } from '@/components/ui/shadcn/sidebar';
 import { Toaster } from '@/components/ui/shadcn/sonner';
-import { config } from '@/lib/env';
 import { getOriginRuntime } from '@/lib/origin';
 import { cn } from '@/lib/cn';
 import { Providers } from '@/components/providers';
-import { GoogleAnalytics } from '@next/third-parties/google';
-import { UsercentricsScript } from '@s-group/react-usercentrics';
+import { GoogleAnalyticsCookieConsentGated } from '@/components/ga';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import type { ReactNode } from 'react';
@@ -57,12 +55,8 @@ export default async function RootLayout({
         )}
       >
         <DatadogRum />
-        <UsercentricsScript
-          settingsId={config.USER_CENTRICS_SETTINGS_ID}
-          version="preview"
-        />
-        <GoogleAnalytics gaId={config.GA_MEASUREMENT_ID} />
         <Providers originInfo={originInfo}>
+          <GoogleAnalyticsCookieConsentGated />
           <ReactQueryDevtools initialIsOpen={false} />
           <OriginBackground />
           <Toaster expand={true} visibleToasts={3} />
