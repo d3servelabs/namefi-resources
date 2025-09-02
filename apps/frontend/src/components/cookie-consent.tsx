@@ -41,6 +41,7 @@ export const CookieConsent = forwardRef<HTMLDivElement, CookieConsentProps>(
             href="https://namefi.io/tos"
             className="underline underline-offset-4 text-primary"
             target="_blank"
+            rel="noreferrer noopener"
           >
             Terms & Conditions
           </Link>
@@ -171,7 +172,6 @@ export const CookieConsent = forwardRef<HTMLDivElement, CookieConsentProps>(
                   className="text-xs h-7"
                 >
                   Decline
-                  <span className="sr-only sm:hidden">Decline</span>
                 </Button>
                 <Button
                   onClick={handleAccept}
@@ -179,7 +179,6 @@ export const CookieConsent = forwardRef<HTMLDivElement, CookieConsentProps>(
                   className="text-xs h-7"
                 >
                   Accept
-                  <span className="sr-only sm:hidden">Accept</span>
                 </Button>
               </div>
             </CardContent>

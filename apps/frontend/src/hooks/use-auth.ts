@@ -1,4 +1,4 @@
-import { useTRPC } from '@/lib/trpc';
+import { useTRPC, useTRPCClient } from '@/lib/trpc';
 import {
   usePrivy,
   useLogin as usePrivyLogin,
@@ -10,6 +10,7 @@ import { useMemo } from 'react';
 import { privyStorageToPrivyCustomMetadata } from '@namefi-astra/backend/trpc/types';
 import { useEmailPrompt } from './use-email-prompt';
 import { useCartContext } from '@/components/providers/cart';
+import { config } from '@/lib/env';
 
 type LoginCallbacks = Parameters<typeof usePrivyLogin>[0];
 type LogoutCallbacks = Parameters<typeof usePrivyLogout>[0];
@@ -42,43 +43,49 @@ export function useAuth() {
   };
 }
 
-// Centralized login hook with configurable defaults
 export function useLogin(callbacks?: LoginCallbacks) {
   const { showEmailPrompt } = useEmailPrompt();
+  const trpcClient = useTRPCClient();
 
-  // Memoize the combined callbacks to call both default and user-supplied
   const combinedCallbacks = useMemo(() => {
     const loginCallbacks: LoginCallbacks = {
-      onComplete: (params) => {
-        // Always call default callback first
+      onComplete: async (params) => {
         if (!params.user.email?.address) {
           showEmailPrompt();
         }
-        // Then call user-supplied callback if provided
+
+        try {
+          const userData = await trpcClient.users.getUser.query();
+          if (userData?.id) {
+            window.gtag?.('config', config.GA_MEASUREMENT_ID, {
+              user_id: userData.id,
+              update: true,
+            });
+          }
+        } catch {
+          // Do nothing
+        }
+
         if (callbacks?.onComplete) {
           callbacks.onComplete(params);
         }
       },
       onError: (error) => {
-        // Always call default callback first
-        console.error('Login error:', error);
-        // Then call user-supplied callback if provided
         if (callbacks?.onError) {
           callbacks.onError(error);
         }
       },
     };
     return loginCallbacks;
-  }, [showEmailPrompt, callbacks]);
+  }, [showEmailPrompt, callbacks, trpcClient]);
 
   const { login: privyLogin } = usePrivyLogin(combinedCallbacks);
 
-  // Memoize the returned login function
   const login = useMemo(() => {
     return (options?: LoginModalOptions) => {
       privyLogin({
-        loginMethods: ['email', 'wallet'], // Default login methods
-        ...options, // Allow override
+        loginMethods: ['email', 'wallet'],
+        ...options,
       });
     };
   }, [privyLogin]);
@@ -86,17 +93,19 @@ export function useLogin(callbacks?: LoginCallbacks) {
   return { login };
 }
 
-// Centralized logout hook with configurable defaults
 export function useLogout(callbacks?: LogoutCallbacks) {
   const { clearLocalCart } = useCartContext();
 
-  // Memoize the combined callbacks to call both default and user-supplied
   const combinedCallbacks = useMemo(
     () => ({
       onSuccess: () => {
-        // Always call default callback first
         clearLocalCart();
-        // Then call user-supplied callback if provided
+
+        window.gtag?.('config', config.GA_MEASUREMENT_ID, {
+          user_id: null,
+          update: true,
+        });
+
         callbacks?.onSuccess?.();
       },
     }),

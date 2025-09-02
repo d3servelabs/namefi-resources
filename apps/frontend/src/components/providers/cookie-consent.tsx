@@ -11,10 +11,13 @@ import {
 } from 'react';
 import { CookieConsent } from '@/components/cookie-consent';
 import { AnimatePresence } from 'motion/react';
+import Cookies from 'js-cookie';
 
 export type ConsentState = 'accepted' | 'declined' | 'unknown';
 
 const COOKIE_NAME = 'cookie-consent';
+const ACCEPT_MAX_AGE_DAYS = 3650;
+const DECLINE_MAX_AGE_DAYS = 365;
 
 export interface CookieConsentContextValue {
   consent: ConsentState;
@@ -28,15 +31,8 @@ const CookieConsentContext = createContext<
 >(undefined);
 
 function getCookie(name: string): string | undefined {
-  if (typeof document === 'undefined') return undefined;
-  const cookies = document.cookie ? document.cookie.split(';') : [];
-  for (const raw of cookies) {
-    const [key, ...rest] = raw.trim().split('=');
-    if (decodeURIComponent(key) === name) {
-      return decodeURIComponent(rest.join('='));
-    }
-  }
-  return undefined;
+  if (typeof window === 'undefined') return undefined;
+  return Cookies.get(name);
 }
 
 function setCookie(
@@ -44,15 +40,13 @@ function setCookie(
   value: string,
   { maxAgeDays = 365 }: { maxAgeDays?: number } = {},
 ): void {
-  const maxAge = Math.floor(maxAgeDays * 24 * 60 * 60);
-  const parts = [
-    `${encodeURIComponent(name)}=${encodeURIComponent(value)}`,
-    'path=/',
-    `Max-Age=${maxAge}`,
-    'SameSite=Lax',
-  ];
-  // biome-ignore lint: using document.cookie as a fallback for browsers without Cookie Store API
-  document.cookie = parts.join('; ');
+  if (typeof window === 'undefined') return;
+  Cookies.set(name, value, {
+    path: '/',
+    sameSite: 'lax',
+    expires: maxAgeDays,
+    secure: window.location?.protocol === 'https:',
+  });
 }
 
 export function CookieConsentProvider({ children }: PropsWithChildren) {
@@ -71,38 +65,13 @@ export function CookieConsentProvider({ children }: PropsWithChildren) {
   }, []);
 
   const accept = useCallback(() => {
-    // Prefer Cookie Store API when available
-    const cookieStore =
-      (typeof window !== 'undefined' && (window as any).cookieStore) ||
-      undefined;
-    if (cookieStore?.set) {
-      void cookieStore.set({
-        name: COOKIE_NAME,
-        value: 'accepted',
-        path: '/',
-        sameSite: 'lax',
-      });
-    } else {
-      setCookie(COOKIE_NAME, 'accepted', { maxAgeDays: 3650 });
-    }
+    setCookie(COOKIE_NAME, 'accepted', { maxAgeDays: ACCEPT_MAX_AGE_DAYS });
     setConsent('accepted');
     setVisible(false);
   }, []);
 
   const decline = useCallback(() => {
-    const cookieStore =
-      (typeof window !== 'undefined' && (window as any).cookieStore) ||
-      undefined;
-    if (cookieStore?.set) {
-      void cookieStore.set({
-        name: COOKIE_NAME,
-        value: 'declined',
-        path: '/',
-        sameSite: 'lax',
-      });
-    } else {
-      setCookie(COOKIE_NAME, 'declined', { maxAgeDays: 365 });
-    }
+    setCookie(COOKIE_NAME, 'declined', { maxAgeDays: DECLINE_MAX_AGE_DAYS });
     setConsent('declined');
     setVisible(false);
   }, []);
