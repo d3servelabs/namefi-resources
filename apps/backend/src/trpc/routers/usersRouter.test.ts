@@ -407,7 +407,6 @@ describe('getUserQualifiesForDomainNamePromo', () => {
           privyUserId: 'testUserWithQualifyingEns',
         },
       } satisfies LocalTrpcContext as TrpcContext,
-
       {},
     );
 
@@ -431,7 +430,6 @@ describe('getUserQualifiesForDomainNamePromo', () => {
           privyUserId: 'testUserWithoutQualifyingAccount',
         },
       } satisfies LocalTrpcContext as TrpcContext,
-
       {},
     );
 
