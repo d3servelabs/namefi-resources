@@ -1,0 +1,28 @@
+# Namefi Astra Availability API - HTTP Client
+
+@baseUrl = http://localhost:3001
+@authToken = {{AVAILABILITY_API_AUTH_KEY}}
+@domain = available.today
+
+### GET single domain availability (with Authorization for higher rate limits)
+GET {{baseUrl}}/v1/availability?domain={{domain}}
+Authorization: Bearer {{authToken}}
+Accept: application/json
+
+### GET single domain availability (no Authorization; lower rate limits)
+GET {{baseUrl}}/v1/availability?domain={{domain}}
+Accept: application/json
+
+### POST bulk domain availability
+POST {{baseUrl}}/v1/availability/bulk
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "domains": [
+    "available.today",
+    "ends.today",
+    "promos.today"
+  ]
+}
