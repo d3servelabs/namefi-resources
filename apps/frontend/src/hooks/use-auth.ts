@@ -11,6 +11,7 @@ import { privyStorageToPrivyCustomMetadata } from '@namefi-astra/backend/trpc/ty
 import { useEmailPrompt } from './use-email-prompt';
 import { useCartContext } from '@/components/providers/cart';
 import { config } from '@/lib/env';
+import { useCookieConsent } from '@/components/providers/cookie-consent';
 
 type LoginCallbacks = Parameters<typeof usePrivyLogin>[0];
 type LogoutCallbacks = Parameters<typeof usePrivyLogout>[0];
@@ -45,6 +46,7 @@ export function useAuth() {
 
 export function useLogin(callbacks?: LoginCallbacks) {
   const { showEmailPrompt } = useEmailPrompt();
+  const { consent } = useCookieConsent();
   const trpcClient = useTRPCClient();
 
   const combinedCallbacks = useMemo(() => {
@@ -54,16 +56,18 @@ export function useLogin(callbacks?: LoginCallbacks) {
           showEmailPrompt();
         }
 
-        try {
-          const userData = await trpcClient.users.getUser.query();
-          if (userData?.id) {
-            window.gtag?.('config', config.GA_MEASUREMENT_ID, {
-              user_id: userData.id,
-              update: true,
-            });
+        if (consent === 'accepted') {
+          try {
+            const userData = await trpcClient.users.getUser.query();
+            if (userData?.id) {
+              window.gtag?.('config', config.GA_MEASUREMENT_ID, {
+                user_id: userData.id,
+                update: true,
+              });
+            }
+          } catch {
+            // Do nothing
           }
-        } catch {
-          // Do nothing
         }
 
         if (callbacks?.onComplete) {
@@ -77,7 +81,7 @@ export function useLogin(callbacks?: LoginCallbacks) {
       },
     };
     return loginCallbacks;
-  }, [showEmailPrompt, callbacks, trpcClient]);
+  }, [showEmailPrompt, callbacks, trpcClient, consent]);
 
   const { login: privyLogin } = usePrivyLogin(combinedCallbacks);
 
@@ -95,21 +99,24 @@ export function useLogin(callbacks?: LoginCallbacks) {
 
 export function useLogout(callbacks?: LogoutCallbacks) {
   const { clearLocalCart } = useCartContext();
+  const { consent } = useCookieConsent();
 
   const combinedCallbacks = useMemo(
     () => ({
       onSuccess: () => {
         clearLocalCart();
 
-        window.gtag?.('config', config.GA_MEASUREMENT_ID, {
-          user_id: null,
-          update: true,
-        });
+        if (consent === 'accepted') {
+          window.gtag?.('config', config.GA_MEASUREMENT_ID, {
+            user_id: null,
+            update: true,
+          });
+        }
 
         callbacks?.onSuccess?.();
       },
     }),
-    [clearLocalCart, callbacks],
+    [clearLocalCart, callbacks, consent],
   );
 
   const { logout } = usePrivyLogout(combinedCallbacks);
