@@ -449,6 +449,7 @@ export function useHuntVote(
       onSubmit: shareDialog.submitShare,
       onVoteSuccess: shareDialog.onVoteSuccess,
       openDialog: shareDialog.openDialog,
+      campaignKey: shareDialog.campaignKey,
     },
   };
 }

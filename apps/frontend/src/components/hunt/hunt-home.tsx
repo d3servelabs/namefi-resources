@@ -165,6 +165,7 @@ export const HuntHome = () => {
         isSubmitting={vote.shareDialog.isSubmitting}
         onSubmit={vote.shareDialog.onSubmit}
         trackShares={true}
+        campaignKey={vote.shareDialog.campaignKey}
       />
     </>
   );

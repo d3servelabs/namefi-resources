@@ -113,7 +113,7 @@ export function useHuntShareDialog(config: ShareConfig = {}) {
     onSuccess: (data, variables) => {
       // Track completion event
       logEventWithInteractionLoggers({
-        name: InteractionLoggingEventName.ShareCompleted,
+        name: InteractionLoggingEventName.ShareRecorded,
         properties: {
           domainName: currentDomain ?? '',
           campaignKey: finalConfig.campaignKey,
@@ -146,7 +146,7 @@ export function useHuntShareDialog(config: ShareConfig = {}) {
     onSuccess: (data, variables) => {
       // Track completion event
       logEventWithInteractionLoggers({
-        name: InteractionLoggingEventName.ShareCompleted,
+        name: InteractionLoggingEventName.ShareRecorded,
         properties: {
           domainName: currentDomain ?? '',
           campaignKey: finalConfig.campaignKey,
@@ -236,7 +236,7 @@ export function useHuntShareDialog(config: ShareConfig = {}) {
       } else {
         // Just track the GA event and close dialog
         logEventWithInteractionLoggers({
-          name: InteractionLoggingEventName.ShareCompleted,
+          name: InteractionLoggingEventName.ShareRecorded,
           properties: {
             domainName: currentDomain,
             campaignKey: finalConfig.campaignKey,
@@ -287,6 +287,9 @@ export function useHuntShareDialog(config: ShareConfig = {}) {
 
     // Share URL
     shareUrl,
+
+    // Campaign key
+    campaignKey: finalConfig.campaignKey,
   };
 }
 

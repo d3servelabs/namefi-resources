@@ -167,6 +167,7 @@ export const CampaignDomainItem = ({ domain }: CampaignDomainItemProps) => {
         isSubmitting={shareDialog.isSubmitting}
         onSubmit={shareDialog.onSubmit}
         trackShares={true}
+        campaignKey={shareDialog.campaignKey}
       />
     </>
   );

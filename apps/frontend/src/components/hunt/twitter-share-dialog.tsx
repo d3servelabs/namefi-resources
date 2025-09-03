@@ -27,6 +27,8 @@ import { toast } from 'sonner';
 import { usePendingToast } from '@/hooks/use-pending-toast';
 import { Twitter, ExternalLink, Copy, CheckCircle } from 'lucide-react';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import { useInteractionLoggers } from '@/components/providers/analytics';
+import { InteractionLoggingEventName } from '@/lib/analytics-events';
 
 const shareFormSchema = z.object({
   postUrl: z.string().url('Please enter a valid Twitter/X post URL'),
@@ -44,6 +46,7 @@ interface TwitterShareDialogProps {
   isSubmitting: boolean;
   onSubmit: (postUrl: string) => Promise<void>;
   trackShares?: boolean; // Whether to show tracking-related UI
+  campaignKey?: string; // Campaign key for analytics tracking
 }
 
 export function TwitterShareDialog({
@@ -56,8 +59,10 @@ export function TwitterShareDialog({
   isSubmitting,
   onSubmit,
   trackShares = true,
+  campaignKey,
 }: TwitterShareDialogProps) {
   const [hasCopied, setHasCopied] = useState(false);
+  const { logEventWithInteractionLoggers } = useInteractionLoggers();
 
   const form = useForm<ShareFormData>({
     resolver: zodResolver(shareFormSchema),
@@ -90,17 +95,28 @@ export function TwitterShareDialog({
 
   // Copy share URL to clipboard
   const handleCopyUrl = useCallback(async () => {
-    if (!shareUrl) return;
+    if (!shareUrl || !domainName) return;
 
     try {
       await navigator.clipboard.writeText(shareUrl);
       setHasCopied(true);
       toast.success('Share URL copied to clipboard!');
       setTimeout(() => setHasCopied(false), 2000);
+
+      // Track copy intent
+      logEventWithInteractionLoggers({
+        name: InteractionLoggingEventName.ShareIntent,
+        properties: {
+          domainName,
+          campaignKey,
+          trigger: 'copy_button',
+          sharedUrl: shareUrl,
+        },
+      });
     } catch {
       toast.error('Failed to copy URL');
     }
-  }, [shareUrl]);
+  }, [shareUrl, domainName, campaignKey, logEventWithInteractionLoggers]);
 
   // Handle form submission
   const handleFormSubmit = useCallback(
@@ -133,10 +149,27 @@ export function TwitterShareDialog({
 
   // Handle open Twitter intent
   const handleOpenTwitter = useCallback(() => {
-    if (twitterIntentUrl) {
+    if (twitterIntentUrl && shareUrl && domainName) {
       window.open(twitterIntentUrl, '_blank', 'width=600,height=400');
+
+      // Track tweet intent
+      logEventWithInteractionLoggers({
+        name: InteractionLoggingEventName.ShareIntent,
+        properties: {
+          domainName,
+          campaignKey,
+          trigger: 'tweet_button',
+          sharedUrl: shareUrl,
+        },
+      });
     }
-  }, [twitterIntentUrl]);
+  }, [
+    twitterIntentUrl,
+    shareUrl,
+    domainName,
+    campaignKey,
+    logEventWithInteractionLoggers,
+  ]);
 
   usePendingToast(isSubmitting, 'Recording your share...');
 

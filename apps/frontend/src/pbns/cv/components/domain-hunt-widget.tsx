@@ -243,6 +243,7 @@ export const DomainHuntWidget = ({
         isSubmitting={shareDialog.isSubmitting}
         onSubmit={shareDialog.onSubmit}
         trackShares={true} // .cv domains track shares for rewards
+        campaignKey={shareDialog.campaignKey}
       />
     </BackgroundGradient>
   );

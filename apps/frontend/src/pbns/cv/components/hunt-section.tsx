@@ -199,6 +199,7 @@ export const CVHuntSection = ({ name: _name }: CVHuntSectionProps) => {
         isSubmitting={vote.shareDialog.isSubmitting}
         onSubmit={vote.shareDialog.onSubmit}
         trackShares={true} // CV domains track shares for rewards
+        campaignKey={vote.shareDialog.campaignKey}
       />
     </section>
   );
