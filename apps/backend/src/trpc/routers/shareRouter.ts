@@ -57,6 +57,8 @@ export const shareRouter = createTRPCRouter({
             sharedUrl,
             campaignKey: campaignKey || null,
             externalIdentifier: validatedTweet.author.username,
+            verified: true,
+            verifiedAt: new Date(),
           })
           .returning();
 
@@ -108,6 +110,8 @@ export const shareRouter = createTRPCRouter({
             sharedUrl,
             campaignKey: campaignKey || null,
             externalIdentifier: validatedTweet.author.username,
+            verified: true,
+            verifiedAt: new Date(),
           })
           .returning();
 

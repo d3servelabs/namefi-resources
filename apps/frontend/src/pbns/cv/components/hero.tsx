@@ -9,6 +9,7 @@ import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 import { SearchInput, type SearchMode } from '@/components/search';
 import type { ImportQuery } from '@/components/search/types';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import { HUNT_CAMPAIGN_KEYS } from '@/lib/hunt-campaign-keys';
 
 interface HeroProps {
   /** The main name/domain (e.g., "taylor") */
@@ -149,7 +150,14 @@ export const Hero = ({
                 </div>
               ) : (
                 <div className="w-full sm:w-auto">
-                  <DomainHuntWidget domainName={normalizedDomainName} />
+                  <DomainHuntWidget
+                    domainName={normalizedDomainName}
+                    shareConfig={{
+                      enabled: true,
+                      trackShares: true,
+                      campaignKeyResolver: () => HUNT_CAMPAIGN_KEYS.CV,
+                    }}
+                  />
                 </div>
               )}
             </div>

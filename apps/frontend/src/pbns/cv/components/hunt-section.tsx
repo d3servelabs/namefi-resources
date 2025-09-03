@@ -13,9 +13,9 @@ import { TwitterShareDialog } from '@/components/hunt/twitter-share-dialog';
 import { useHuntVote } from '@/hooks/use-hunt-vote';
 import { VoteOrShareChoiceDialog } from '@/components/dialogs/vote-or-share-choice-dialog';
 import { Trophy, Target, TrendingUp, Plus } from 'lucide-react';
+import { HUNT_CAMPAIGN_KEYS } from '@/lib/hunt-campaign-keys';
 
 const TRENDING_LIMIT = 5;
-const CV_CAMPAIGN_KEY = 'cv-2025-07-16';
 
 interface CVHuntSectionProps {
   /** The name (e.g., "taylor") for generating domain-specific content */
@@ -28,7 +28,13 @@ export const CVHuntSection = ({ name: _name }: CVHuntSectionProps) => {
 
   const trpc = useTRPC();
 
-  const vote = useHuntVote();
+  const vote = useHuntVote({
+    shareConfig: {
+      enabled: true,
+      trackShares: true,
+      campaignKeyResolver: () => HUNT_CAMPAIGN_KEYS.CV,
+    },
+  });
 
   const handleCampaignPageChange = useCallback((newPage: number) => {
     setCampaignPage(newPage);
@@ -45,13 +51,13 @@ export const CVHuntSection = ({ name: _name }: CVHuntSectionProps) => {
           limit: TRENDING_LIMIT,
           timeRange: 'ANYTIME',
           extension: 'cv',
-          excludeCampaignKey: CV_CAMPAIGN_KEY,
+          excludeCampaignKey: HUNT_CAMPAIGN_KEYS.CV,
         })
       : trpc.hunt.getTrendingDomainsPublic.queryOptions({
           limit: TRENDING_LIMIT,
           timeRange: 'ANYTIME',
           extension: 'cv',
-          excludeCampaignKey: CV_CAMPAIGN_KEY,
+          excludeCampaignKey: HUNT_CAMPAIGN_KEYS.CV,
         })),
     enabled: !isAuthLoading,
   });
@@ -96,7 +102,7 @@ export const CVHuntSection = ({ name: _name }: CVHuntSectionProps) => {
                   </div>
                 </div>
                 <CampaignDomainsList
-                  campaignKey={CV_CAMPAIGN_KEY}
+                  campaignKey={HUNT_CAMPAIGN_KEYS.CV}
                   page={campaignPage}
                   limit={5}
                   onPageChange={handleCampaignPageChange}

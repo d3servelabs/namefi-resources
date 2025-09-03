@@ -88,12 +88,21 @@ const VoteButton = ({
 
 interface CampaignDomainItemProps {
   domain: Domain;
+  campaignKey: string;
 }
 
-export const CampaignDomainItem = ({ domain }: CampaignDomainItemProps) => {
+export const CampaignDomainItem = ({
+  domain,
+  campaignKey,
+}: CampaignDomainItemProps) => {
   const { upvote, unvote, isVotePending, choiceDialog, shareDialog } =
     useHuntVoteRow({
       domain: domain.domainName,
+      shareConfig: {
+        enabled: true,
+        trackShares: true,
+        campaignKeyResolver: () => campaignKey,
+      },
     });
   const { count } = useHuntVoteCount({
     domain,

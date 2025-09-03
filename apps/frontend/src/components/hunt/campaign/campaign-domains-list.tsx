@@ -91,7 +91,11 @@ export const CampaignDomainsList = ({
           ) : (
             <>
               {data?.rankings.map((domain) => (
-                <CampaignDomainItem key={domain.domainName} domain={domain} />
+                <CampaignDomainItem
+                  key={domain.domainName}
+                  domain={domain}
+                  campaignKey={campaignKey}
+                />
               ))}
 
               <div className="h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent" />

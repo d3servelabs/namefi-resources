@@ -103,11 +103,7 @@ export const HuntHome = () => {
           </div>
 
           <div className="space-y-8">
-            <HomeCampaignsSection
-              upvote={vote.upvote}
-              unvote={vote.unvote}
-              isVotePending={vote.isVotePending}
-            />
+            <HomeCampaignsSection />
             <div className="space-y-4">
               <div className="flex justify-between items-center">
                 <h3 className="text-lg font-bold">Trending Domains</h3>

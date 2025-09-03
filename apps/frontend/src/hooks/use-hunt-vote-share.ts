@@ -1,8 +1,9 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useEffect } from 'react';
 import { toast } from 'sonner';
 import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { useTRPC } from '@/lib/trpc';
+import { HUNT_CAMPAIGN_KEYS } from '@/lib/hunt-campaign-keys';
 import { InteractionLoggingEventName } from '@/lib/analytics-events';
 import { useInteractionLoggers } from '@/components/providers/analytics';
 import { useAuth } from '@/hooks/use-auth';
@@ -34,8 +35,11 @@ export interface ShareConfig {
   // Enable sharing for specific campaign keys
   allowedCampaignKeys?: string[];
 
-  // Current campaign key for context
-  campaignKey?: string;
+  // Procedural resolver to derive campaign key for a domain
+  // Return string or null/undefined when no campaign applies. May be async.
+  campaignKeyResolver?: (
+    domain: NamefiNormalizedDomain,
+  ) => string | null | undefined | Promise<string | null | undefined>;
 
   // Whether to track shares in database (default: true)
   trackShares?: boolean;
@@ -50,6 +54,9 @@ export function useHuntShareDialog(config: ShareConfig = {}) {
   const [isOpen, setIsOpen] = useState(false);
   const [currentDomain, setCurrentDomain] =
     useState<NamefiNormalizedDomain | null>(null);
+  const [resolvedCampaignKey, setResolvedCampaignKey] = useState<
+    string | undefined
+  >(undefined);
 
   // Memoize config with defaults
   const finalConfig = useMemo(
@@ -57,11 +64,33 @@ export function useHuntShareDialog(config: ShareConfig = {}) {
       enabled: config.enabled ?? false,
       allowedExtensions: config.allowedExtensions ?? [],
       allowedCampaignKeys: config.allowedCampaignKeys ?? [],
-      campaignKey: config.campaignKey,
+      campaignKeyResolver: config.campaignKeyResolver,
       trackShares: config.trackShares ?? true,
     }),
     [config],
   );
+
+  // Resolve campaign key procedurally for current domain when needed
+  useEffect(() => {
+    let isActive = true;
+    const resolve = async () => {
+      // If no domain or no resolver, clear resolved state
+      if (!currentDomain || !finalConfig.campaignKeyResolver) {
+        if (isActive) setResolvedCampaignKey(undefined);
+        return;
+      }
+      try {
+        const maybeKey = await finalConfig.campaignKeyResolver(currentDomain);
+        if (isActive) setResolvedCampaignKey(maybeKey ?? undefined);
+      } catch {
+        if (isActive) setResolvedCampaignKey(undefined);
+      }
+    };
+    resolve();
+    return () => {
+      isActive = false;
+    };
+  }, [currentDomain, finalConfig.campaignKeyResolver]);
 
   // Check share eligibility
   const isEligible = useCallback(
@@ -104,8 +133,8 @@ export function useHuntShareDialog(config: ShareConfig = {}) {
   // Generate share URL on frontend for consistency
   const shareUrl = useMemo(() => {
     if (!currentDomain) return null;
-    return buildShareUrl(currentDomain, finalConfig.campaignKey);
-  }, [currentDomain, finalConfig.campaignKey]);
+    return buildShareUrl(currentDomain, resolvedCampaignKey);
+  }, [currentDomain, resolvedCampaignKey]);
 
   // Submit share mutation (authenticated)
   const submitShareMutation = useMutation({
@@ -116,7 +145,7 @@ export function useHuntShareDialog(config: ShareConfig = {}) {
         name: InteractionLoggingEventName.ShareRecorded,
         properties: {
           domainName: currentDomain ?? '',
-          campaignKey: finalConfig.campaignKey,
+          campaignKey: resolvedCampaignKey,
           sharedUrl: data.sharedUrl,
           postUrl: variables.postUrl,
         },
@@ -149,7 +178,7 @@ export function useHuntShareDialog(config: ShareConfig = {}) {
         name: InteractionLoggingEventName.ShareRecorded,
         properties: {
           domainName: currentDomain ?? '',
-          campaignKey: finalConfig.campaignKey,
+          campaignKey: resolvedCampaignKey,
           sharedUrl: data.sharedUrl,
           postUrl: variables.postUrl,
         },
@@ -175,12 +204,12 @@ export function useHuntShareDialog(config: ShareConfig = {}) {
         name: InteractionLoggingEventName.ShareDialogOpened,
         properties: {
           domainName: domainName,
-          campaignKey: finalConfig.campaignKey,
+          campaignKey: resolvedCampaignKey,
           trigger: 'manual',
         },
       });
     },
-    [finalConfig.campaignKey, logEventWithInteractionLoggers],
+    [resolvedCampaignKey, logEventWithInteractionLoggers],
   );
 
   const closeDialog = useCallback(() => {
@@ -192,7 +221,7 @@ export function useHuntShareDialog(config: ShareConfig = {}) {
   const onVoteSuccess = useCallback(
     (domainName: NamefiNormalizedDomain) => {
       // Only show dialog if sharing is eligible and user hasn't shared yet
-      if (isEligible(domainName, finalConfig.campaignKey)) {
+      if (isEligible(domainName, resolvedCampaignKey)) {
         setCurrentDomain(domainName);
         setIsOpen(true);
 
@@ -201,13 +230,13 @@ export function useHuntShareDialog(config: ShareConfig = {}) {
           name: InteractionLoggingEventName.ShareDialogOpened,
           properties: {
             domainName: domainName,
-            campaignKey: finalConfig.campaignKey,
+            campaignKey: resolvedCampaignKey,
             trigger: 'vote_success',
           },
         });
       }
     },
-    [isEligible, finalConfig.campaignKey, logEventWithInteractionLoggers],
+    [isEligible, resolvedCampaignKey, logEventWithInteractionLoggers],
   );
 
   // Submit share (supports both authenticated and anonymous)
@@ -222,7 +251,7 @@ export function useHuntShareDialog(config: ShareConfig = {}) {
             normalizedDomainName: currentDomain,
             postUrl,
             sharedUrl: shareUrl,
-            campaignKey: finalConfig.campaignKey,
+            campaignKey: resolvedCampaignKey,
           });
         } else {
           // Use anonymous endpoint
@@ -230,7 +259,7 @@ export function useHuntShareDialog(config: ShareConfig = {}) {
             normalizedDomainName: currentDomain,
             postUrl,
             sharedUrl: shareUrl,
-            campaignKey: finalConfig.campaignKey,
+            campaignKey: resolvedCampaignKey,
           });
         }
       } else {
@@ -239,7 +268,7 @@ export function useHuntShareDialog(config: ShareConfig = {}) {
           name: InteractionLoggingEventName.ShareRecorded,
           properties: {
             domainName: currentDomain,
-            campaignKey: finalConfig.campaignKey,
+            campaignKey: resolvedCampaignKey,
             sharedUrl: shareUrl,
             postUrl: postUrl,
           },
@@ -251,7 +280,7 @@ export function useHuntShareDialog(config: ShareConfig = {}) {
     [
       currentDomain,
       shareUrl,
-      finalConfig.campaignKey,
+      resolvedCampaignKey,
       finalConfig.trackShares,
       isAuthenticated,
       submitShareMutation,
@@ -289,11 +318,17 @@ export function useHuntShareDialog(config: ShareConfig = {}) {
     shareUrl,
 
     // Campaign key
-    campaignKey: finalConfig.campaignKey,
+    campaignKey: resolvedCampaignKey,
   };
 }
 
 export const defaultShareConfig: ShareConfig = {
   enabled: true,
   trackShares: true,
+  campaignKeyResolver: (domain) => {
+    const lower = domain.toLowerCase();
+    if (lower.endsWith('.cv')) return HUNT_CAMPAIGN_KEYS.CV;
+    if (lower.endsWith('.today')) return HUNT_CAMPAIGN_KEYS.CTA;
+    return undefined;
+  },
 };

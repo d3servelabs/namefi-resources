@@ -7,6 +7,7 @@ import { cn } from '@/lib/cn';
 import { ContainerTextFlip } from '@/components/ui/aceternity/container-text-flip';
 import { DomainHuntWidget } from './domain-hunt-widget';
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
+import { HUNT_CAMPAIGN_KEYS } from '@/lib/hunt-campaign-keys';
 
 export interface ConversionNotification {
   id: number;
@@ -136,7 +137,14 @@ export default function ConversionHero({
             {/* Domain Hunt Widget */}
             <div className="flex justify-center lg:justify-start mb-10">
               <div className="max-w-lg sm:w-auto">
-                <DomainHuntWidget domainName={normalizedDomainName} />
+                <DomainHuntWidget
+                  domainName={normalizedDomainName}
+                  shareConfig={{
+                    enabled: true,
+                    trackShares: true,
+                    campaignKeyResolver: () => HUNT_CAMPAIGN_KEYS.CTA,
+                  }}
+                />
               </div>
             </div>
 

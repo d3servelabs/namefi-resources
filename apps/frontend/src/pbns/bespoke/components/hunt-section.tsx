@@ -13,8 +13,8 @@ import { TwitterShareDialog } from '@/components/hunt/twitter-share-dialog';
 import { useHuntVote } from '@/hooks/use-hunt-vote';
 import { VoteOrShareChoiceDialog } from '@/components/dialogs/vote-or-share-choice-dialog';
 import { Trophy, Target, TrendingUp, Plus } from 'lucide-react';
+import { HUNT_CAMPAIGN_KEYS } from '@/lib/hunt-campaign-keys';
 
-const CAMPAIGN_KEY = 'cta-2025-07-16';
 const TRENDING_LIMIT = 5;
 
 interface BespokeHuntSectionProps {
@@ -33,7 +33,13 @@ export const BespokeHuntSection = ({
 
   const trpc = useTRPC();
 
-  const vote = useHuntVote();
+  const vote = useHuntVote({
+    shareConfig: {
+      enabled: true,
+      trackShares: true,
+      campaignKeyResolver: () => HUNT_CAMPAIGN_KEYS.CTA,
+    },
+  });
 
   const handleCampaignPageChange = useCallback((newPage: number) => {
     setCampaignPage(newPage);
@@ -50,13 +56,13 @@ export const BespokeHuntSection = ({
           limit: TRENDING_LIMIT,
           timeRange: 'ANYTIME',
           extension: domainExtension,
-          excludeCampaignKey: CAMPAIGN_KEY,
+          excludeCampaignKey: HUNT_CAMPAIGN_KEYS.CTA,
         })
       : trpc.hunt.getTrendingDomainsPublic.queryOptions({
           limit: TRENDING_LIMIT,
           timeRange: 'ANYTIME',
           extension: domainExtension,
-          excludeCampaignKey: CAMPAIGN_KEY,
+          excludeCampaignKey: HUNT_CAMPAIGN_KEYS.CTA,
         })),
     enabled: !isAuthLoading,
   });
@@ -102,7 +108,7 @@ export const BespokeHuntSection = ({
                   </div>
                 </div>
                 <CampaignDomainsList
-                  campaignKey={CAMPAIGN_KEY}
+                  campaignKey={HUNT_CAMPAIGN_KEYS.CTA}
                   page={campaignPage}
                   limit={5}
                   onPageChange={handleCampaignPageChange}

@@ -396,13 +396,25 @@ export function useHuntVote(
         });
 
         // Store pre-auth signal for later augmentation
-        addSignal({
-          type: 'unauthenticated_vote_attempt',
-          data: {
-            domainName: domain,
-            campaignKey: options?.shareConfig?.campaignKey,
-          },
-        });
+        try {
+          const resolvedKey = options?.shareConfig?.campaignKeyResolver
+            ? await options.shareConfig.campaignKeyResolver(domain)
+            : undefined;
+          addSignal({
+            type: 'unauthenticated_vote_attempt',
+            data: {
+              domainName: domain,
+              campaignKey: resolvedKey ?? undefined,
+            },
+          });
+        } catch {
+          addSignal({
+            type: 'unauthenticated_vote_attempt',
+            data: {
+              domainName: domain,
+            },
+          });
+        }
 
         // Show choice dialog internally - no external callbacks needed!
         choiceDialog.showChoiceDialog(domain);
@@ -418,7 +430,7 @@ export function useHuntVote(
       logEventWithInteractionLoggers,
       choiceDialog,
       addSignal,
-      options?.shareConfig?.campaignKey,
+      options?.shareConfig?.campaignKeyResolver,
     ],
   );
 

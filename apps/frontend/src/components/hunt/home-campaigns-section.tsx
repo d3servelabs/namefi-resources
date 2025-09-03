@@ -2,17 +2,11 @@
 
 import { config } from '@/lib/env';
 import { useCallback, useState, useMemo } from 'react';
-import { CampaignDomainsList } from './campaign-domains-list';
-import type { UseHuntVote } from '@/hooks/use-hunt-vote';
+import { CampaignDomainsList } from '@/components/hunt/campaign/campaign-domains-list';
 
-export interface HomeCampaignsSectionProps
-  extends Pick<UseHuntVote, 'upvote' | 'unvote' | 'isVotePending'> {}
+export type HomeCampaignsSectionProps = Record<string, never>;
 
-export const HomeCampaignsSection = ({
-  upvote,
-  unvote,
-  isVotePending,
-}: HomeCampaignsSectionProps) => {
+export const HomeCampaignsSection = (_props: HomeCampaignsSectionProps) => {
   const [page, setPage] = useState(1);
 
   const randomCampaignKey = useMemo(() => {
@@ -40,9 +34,6 @@ export const HomeCampaignsSection = ({
         page={page}
         limit={5}
         onPageChange={handlePageChange}
-        upvote={upvote}
-        unvote={unvote}
-        isVotePending={isVotePending}
       />
     </div>
   );
