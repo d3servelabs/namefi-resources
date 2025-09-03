@@ -24,102 +24,102 @@ export type InteractionLoggingCartItem = Pick<
   'amountInUSDCents' | 'normalizedDomainName'
 >;
 
-/*
- * Before adding a new event name, see if GoogleAnalytics has a recommended event that covers that need first.
- * Recommended events automatically update predefined dimensions and metrics, but must follow the format specified
- * in the docs. You may need to use the transformEvent inside useGoogleAnalytics to match this format.
- * https://support.google.com/analytics/answer/9267735?hl=en
- */
+// Base event structure
+type BaseEvent<
+  TName extends InteractionLoggingEventName,
+  TProps = undefined,
+  TAug = undefined,
+> = {
+  name: TName;
+  properties: TProps;
+  augmentation?: TAug;
+};
+
 export type InteractionLoggingEvent =
-  | AddToCartEvent
-  | BeginCheckoutEvent
-  | PurchaseEvent
-  | RemoveFromCartEvent
-  | SearchEvent
-  | SubmitOrderFailureEvent
-  | VoteEvent
-  | ShareDialogOpenedEvent
-  | ShareIntentEvent
-  | ShareRecordedEvent;
+  | BaseEvent<
+      InteractionLoggingEventName.AddToCart,
+      { cartItem: InteractionLoggingCartItem }
+    >
+  | BaseEvent<
+      InteractionLoggingEventName.RemoveFromCart,
+      { cartItem: InteractionLoggingCartItem }
+    >
+  | BaseEvent<
+      InteractionLoggingEventName.BeginCheckout,
+      {
+        totalAmountInUsdCents?: number;
+        cartItems?: InteractionLoggingCartItem[];
+      }
+    >
+  | BaseEvent<
+      InteractionLoggingEventName.Purchase,
+      {
+        totalAmountInUsdCents: number;
+        cartItems: InteractionLoggingCartItem[];
+      }
+    >
+  | BaseEvent<
+      InteractionLoggingEventName.SubmitOrderFailure,
+      {
+        totalAmountInUsdCents: number;
+        cartItems: InteractionLoggingCartItem[];
+      }
+    >
+  | BaseEvent<InteractionLoggingEventName.Search, { search_term: string }>
+  | BaseEvent<
+      InteractionLoggingEventName.Vote,
+      {
+        domainName: string;
+        action: 'add' | 'remove' | 'attempt_unauthenticated';
+      },
+      {
+        had_unauth_vote_attempt: boolean;
+        attempt_domains: string[];
+      }
+    >
+  | BaseEvent<
+      InteractionLoggingEventName.ShareDialogOpened,
+      {
+        domainName: string;
+        campaignKey?: string;
+        trigger: 'vote_success' | 'manual';
+      }
+    >
+  | BaseEvent<
+      InteractionLoggingEventName.ShareIntent,
+      {
+        domainName: string;
+        campaignKey?: string;
+        trigger: 'tweet_button' | 'copy_button';
+        sharedUrl: string;
+      }
+    >
+  | BaseEvent<
+      InteractionLoggingEventName.ShareRecorded,
+      {
+        domainName: string;
+        campaignKey?: string;
+        sharedUrl: string;
+        postUrl: string;
+      }
+    >;
 
-export type AddToCartEvent = {
-  name: InteractionLoggingEventName.AddToCart;
-  properties: {
-    cartItem: InteractionLoggingCartItem;
-  };
-};
+// Event with only name and augmentation (no properties)
+export type InteractionLoggingEventAugmentation = Pick<
+  InteractionLoggingEvent,
+  'name' | 'augmentation'
+>;
 
-export type BeginCheckoutEvent = {
-  name: InteractionLoggingEventName.BeginCheckout;
-  properties: {
-    totalAmountInUsdCents?: number;
-    cartItems?: InteractionLoggingCartItem[];
-  };
-};
+// Extract augmentation type for a specific event name
+export type AugmentationFor<T extends InteractionLoggingEventName> = Extract<
+  InteractionLoggingEvent,
+  { name: T }
+> extends { augmentation?: infer A }
+  ? A
+  : never;
 
-export type PurchaseEvent = {
-  name: InteractionLoggingEventName.Purchase;
-  properties: {
-    totalAmountInUsdCents: number;
-    cartItems: InteractionLoggingCartItem[];
-  };
-};
-
-export type RemoveFromCartEvent = {
-  name: InteractionLoggingEventName.RemoveFromCart;
-  properties: {
-    cartItem: InteractionLoggingCartItem;
-  };
-};
-
-export type SearchEvent = {
-  name: InteractionLoggingEventName.Search;
-  properties: {
-    search_term: string;
-  };
-};
-
-export type SubmitOrderFailureEvent = {
-  name: InteractionLoggingEventName.SubmitOrderFailure;
-  properties: {
-    totalAmountInUsdCents: number;
-    cartItems: InteractionLoggingCartItem[];
-  };
-};
-
-export type VoteEvent = {
-  name: InteractionLoggingEventName.Vote;
-  properties: {
-    domainName: string;
-    action: 'add' | 'remove' | 'attempt_unauthenticated';
-  };
-};
-
-export type ShareDialogOpenedEvent = {
-  name: InteractionLoggingEventName.ShareDialogOpened;
-  properties: {
-    domainName: string;
-    campaignKey?: string;
-    trigger: 'vote_success' | 'manual';
-  };
-};
-
-export type ShareIntentEvent = {
-  name: InteractionLoggingEventName.ShareIntent;
-  properties: {
-    domainName: string;
-    campaignKey?: string;
-    trigger: 'tweet_button' | 'copy_button';
-    sharedUrl: string;
-  };
-};
-
-export type ShareRecordedEvent = {
-  name: InteractionLoggingEventName.ShareRecorded;
-  properties: {
-    domainName: string;
-    campaignKey?: string;
-    sharedUrl: string;
-    postUrl: string;
-  };
-};
+// Extract partial event (name + augmentation) for a specific event name
+export type PartialEventFor<T extends InteractionLoggingEventName> = Extract<
+  InteractionLoggingEventAugmentation,
+  { name: T }
+>;

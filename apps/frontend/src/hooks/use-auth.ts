@@ -12,6 +12,7 @@ import { useEmailPrompt } from './use-email-prompt';
 import { useCartContext } from '@/components/providers/cart';
 import { config } from '@/lib/env';
 import { useCookieConsent } from '@/components/providers/cookie-consent';
+import { usePreAuthSignals } from '@/components/providers/pre-auth-signals';
 
 type LoginCallbacks = Parameters<typeof usePrivyLogin>[0];
 type LogoutCallbacks = Parameters<typeof usePrivyLogout>[0];
@@ -48,6 +49,7 @@ export function useLogin(callbacks?: LoginCallbacks) {
   const { showEmailPrompt } = useEmailPrompt();
   const { consent } = useCookieConsent();
   const trpcClient = useTRPCClient();
+  const { stagePreAuthAugmentations } = usePreAuthSignals();
 
   const combinedCallbacks = useMemo(() => {
     const loginCallbacks: LoginCallbacks = {
@@ -70,6 +72,9 @@ export function useLogin(callbacks?: LoginCallbacks) {
           }
         }
 
+        // Stage any one-time augmentations derived from pre-auth signals
+        stagePreAuthAugmentations();
+
         if (callbacks?.onComplete) {
           callbacks.onComplete(params);
         }
@@ -81,7 +86,13 @@ export function useLogin(callbacks?: LoginCallbacks) {
       },
     };
     return loginCallbacks;
-  }, [showEmailPrompt, callbacks, trpcClient, consent]);
+  }, [
+    showEmailPrompt,
+    callbacks,
+    trpcClient,
+    consent,
+    stagePreAuthAugmentations,
+  ]);
 
   const { login: privyLogin } = usePrivyLogin(combinedCallbacks);
 

@@ -14,10 +14,7 @@ import { PasswordInput } from '@/components/password-input';
 import { useCartRow } from '@/hooks/use-cart-row';
 import { config } from '@/lib/env';
 import { cn } from '@/lib/cn';
-import {
-  type BeginCheckoutEvent,
-  InteractionLoggingEventName,
-} from '@/lib/analytics-events';
+import { InteractionLoggingEventName } from '@/lib/analytics-events';
 import { formatAmountInUSD } from '@/lib/number';
 import { computeChargesInUsdOrThrow } from '@namefi-astra/registrars/multi-year-pricing';
 import { Loader2, SearchIcon, User, X, Gift } from 'lucide-react';
@@ -429,11 +426,10 @@ export const DomainCard: FC<{
   const eppInputRef = useRef<HTMLInputElement>(null);
 
   const logBeginCheckout = useCallback(() => {
-    const beginCheckoutEvent: BeginCheckoutEvent = {
+    logEventWithInteractionLoggers({
       name: InteractionLoggingEventName.BeginCheckout,
       properties: {},
-    };
-    logEventWithInteractionLoggers(beginCheckoutEvent);
+    });
   }, [logEventWithInteractionLoggers]);
 
   // Only use cart functionality if we have a valid domain name

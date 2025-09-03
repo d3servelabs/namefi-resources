@@ -6,6 +6,7 @@ import {
   InteractionLoggingEventName,
 } from '@/lib/analytics-events';
 import { useCallback } from 'react';
+import { usePreAuthSignals } from '@/components/providers/pre-auth-signals';
 
 // From Google Analytics documentation
 type Item = { item_name: string; item_id: string; price: number };
@@ -20,7 +21,12 @@ function interactionLoggingCartItemToGoogleAnalyticsItem(
   } satisfies Item;
 }
 
-function transformEvent(event: InteractionLoggingEvent) {
+type TransformedEvent = {
+  name: InteractionLoggingEventName;
+  properties: Record<string, unknown>;
+};
+
+function transformEvent(event: InteractionLoggingEvent): TransformedEvent {
   switch (event.name) {
     case InteractionLoggingEventName.AddToCart: // fallthrough
     case InteractionLoggingEventName.RemoveFromCart: {
@@ -65,12 +71,17 @@ function transformEvent(event: InteractionLoggingEvent) {
       };
     }
     case InteractionLoggingEventName.Vote: {
-      const { domainName, action } = event.properties;
+      const {
+        properties: { domainName, action },
+        augmentation: { had_unauth_vote_attempt, attempt_domains } = {},
+      } = event;
       return {
         name: event.name,
         properties: {
           action,
           domain_name: domainName,
+          had_unauth_vote_attempt,
+          attempt_domains,
         },
       };
     }
@@ -109,17 +120,54 @@ function transformEvent(event: InteractionLoggingEvent) {
         },
       };
     }
-    default:
+    case InteractionLoggingEventName.Search: {
+      const { search_term } = event.properties;
+      return {
+        name: event.name,
+        properties: {
+          search_term,
+        },
+      };
+    }
+    default: {
       return event;
+    }
   }
 }
 
 export function useGoogleAnalyticsInteractionLogger() {
-  const logEvent = useCallback((event: InteractionLoggingEvent) => {
-    const transformedEvent = transformEvent(event);
-    if (typeof window === 'undefined') return;
-    window.gtag?.('event', transformedEvent.name, transformedEvent.properties);
-  }, []);
+  const { consumeAugmentation } = usePreAuthSignals();
+
+  const logEvent = useCallback(
+    (event: InteractionLoggingEvent) => {
+      if (typeof window === 'undefined') return;
+
+      // Try to get augmentation for this event
+      const partialEvent = consumeAugmentation(event.name);
+
+      const eventWithAugmentation = {
+        ...event,
+        ...(partialEvent?.augmentation
+          ? {
+              augmentation: {
+                ...event.augmentation,
+                ...partialEvent.augmentation,
+              },
+            }
+          : {}),
+      } as InteractionLoggingEvent;
+
+      // Transform to GA format
+      const transformedEvent = transformEvent(eventWithAugmentation);
+
+      window.gtag?.(
+        'event',
+        transformedEvent.name,
+        transformedEvent.properties,
+      );
+    },
+    [consumeAugmentation],
+  );
 
   return {
     logEvent,

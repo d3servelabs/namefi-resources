@@ -11,12 +11,13 @@ import { NuqsAdapter } from 'nuqs/adapters/next/app';
 import { type PropsWithChildren, type FC, Suspense, useState } from 'react';
 import { CartProvider } from './cart';
 import { ProgressProvider } from './progress';
-import { SessionsProvider } from './sessions';
+import { SessionsProvider } from './privy';
 import { ThemeProvider } from './theme';
 import { TrpcProvider } from './trpc';
 import { WishlistProvider } from './wishlist';
 import { FreeMintsGuidanceProvider } from './free-mints-guidance';
 import type { OriginRuntime } from '@/lib/origin';
+import { PreAuthSignalsProvider } from '@/components/providers/pre-auth-signals';
 
 export const Providers: FC<
   PropsWithChildren<{
@@ -57,15 +58,17 @@ export const Providers: FC<
                   <QueryClientProvider client={queryClient}>
                     <WagmiProvider config={config}>
                       <CookieConsentProvider>
-                        <InteractionLoggersProvider>
-                          <WishlistProvider>
-                            <CartProvider>
-                              <FreeMintsGuidanceProvider>
-                                {children}
-                              </FreeMintsGuidanceProvider>
-                            </CartProvider>
-                          </WishlistProvider>
-                        </InteractionLoggersProvider>
+                        <PreAuthSignalsProvider>
+                          <InteractionLoggersProvider>
+                            <WishlistProvider>
+                              <CartProvider>
+                                <FreeMintsGuidanceProvider>
+                                  {children}
+                                </FreeMintsGuidanceProvider>
+                              </CartProvider>
+                            </WishlistProvider>
+                          </InteractionLoggersProvider>
+                        </PreAuthSignalsProvider>
                       </CookieConsentProvider>
                     </WagmiProvider>
                   </QueryClientProvider>

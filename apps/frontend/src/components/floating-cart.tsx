@@ -1,9 +1,6 @@
 import { cartItemsToInteractionLoggingCartItems } from '@/hooks/use-cart';
 import { useCartContext } from '@/components/providers/cart';
-import {
-  type BeginCheckoutEvent,
-  InteractionLoggingEventName,
-} from '@/lib/analytics-events';
+import { InteractionLoggingEventName } from '@/lib/analytics-events';
 import { ShoppingCartIcon, Plus } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useCallback, useMemo, useState } from 'react';
@@ -51,7 +48,7 @@ const FloatingCart = ({
   }, [importableDomains, items]);
 
   const logBeginCheckout = useCallback(() => {
-    const beginCheckoutEvent: BeginCheckoutEvent = {
+    logEventWithInteractionLoggers({
       name: InteractionLoggingEventName.BeginCheckout,
       properties: {
         totalAmountInUsdCents,
@@ -59,8 +56,7 @@ const FloatingCart = ({
           ? cartItemsToInteractionLoggingCartItems(items)
           : undefined,
       },
-    };
-    logEventWithInteractionLoggers(beginCheckoutEvent);
+    });
   }, [items, logEventWithInteractionLoggers, totalAmountInUsdCents]);
 
   // Add all valid domains to cart

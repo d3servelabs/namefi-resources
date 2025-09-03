@@ -14,6 +14,7 @@ import {
   useHuntShareDialog,
   type ShareConfig,
 } from './use-hunt-vote-share';
+import { usePreAuthSignals } from '@/components/providers/pre-auth-signals';
 
 export const huntVoteDomainKey = (
   userId: string,
@@ -369,6 +370,7 @@ export function useHuntVote(
 ) {
   const { isAuthenticated } = useAuth();
   const { logEventWithInteractionLoggers } = useInteractionLoggers();
+  const { addSignal } = usePreAuthSignals();
   const shareDialog = useHuntShareDialog(options?.shareConfig);
   const choiceDialog = useHuntVoteChoice({
     onShare: shareDialog.openDialog,
@@ -393,6 +395,15 @@ export function useHuntVote(
           },
         });
 
+        // Store pre-auth signal for later augmentation
+        addSignal({
+          type: 'unauthenticated_vote_attempt',
+          data: {
+            domainName: domain,
+            campaignKey: options?.shareConfig?.campaignKey,
+          },
+        });
+
         // Show choice dialog internally - no external callbacks needed!
         choiceDialog.showChoiceDialog(domain);
         return;
@@ -406,6 +417,8 @@ export function useHuntVote(
       operations.vote,
       logEventWithInteractionLoggers,
       choiceDialog,
+      addSignal,
+      options?.shareConfig?.campaignKey,
     ],
   );
 

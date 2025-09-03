@@ -36,11 +36,7 @@ import { useCartContext } from '@/components/providers/cart';
 import { useAuth } from '@/hooks/use-auth';
 import { config } from '@/lib/env';
 import { cn } from '@/lib/cn';
-import {
-  InteractionLoggingEventName,
-  type PurchaseEvent,
-  type SubmitOrderFailureEvent,
-} from '@/lib/analytics-events';
+import { InteractionLoggingEventName } from '@/lib/analytics-events';
 import { useTRPC } from '@/lib/trpc';
 import type { DeepPartial } from '@/lib/types/utils';
 import { createOrderInputSchema } from '@namefi-astra/backend/trpc/types';
@@ -58,7 +54,6 @@ import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { formatUnits } from 'viem';
 import { useBalance } from 'wagmi';
-import { set } from 'ramda';
 
 const DEFAULT_CHAIN_ID = config.ALLOWED_CHAINS.includes(CHAINS.base.id)
   ? CHAINS.base.id
@@ -376,7 +371,7 @@ export default function CartPage() {
         return;
       }
 
-      const interactionLoggingEvent: PurchaseEvent | SubmitOrderFailureEvent = {
+      logEventWithInteractionLoggers({
         name: success
           ? InteractionLoggingEventName.Purchase
           : InteractionLoggingEventName.SubmitOrderFailure,
@@ -384,8 +379,7 @@ export default function CartPage() {
           totalAmountInUsdCents,
           cartItems: cartItemsToInteractionLoggingCartItems(items),
         },
-      };
-      logEventWithInteractionLoggers(interactionLoggingEvent);
+      });
     },
     [items, logEventWithInteractionLoggers, totalAmountInUsdCents],
   );

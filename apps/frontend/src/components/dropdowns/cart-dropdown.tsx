@@ -14,10 +14,7 @@ import {
 import { cartItemsToInteractionLoggingCartItems } from '@/hooks/use-cart';
 import { useCartContext } from '@/components/providers/cart';
 import { cn } from '@/lib/cn';
-import {
-  type BeginCheckoutEvent,
-  InteractionLoggingEventName,
-} from '@/lib/analytics-events';
+import { InteractionLoggingEventName } from '@/lib/analytics-events';
 import { formatAmountInUSD } from '@/lib/number';
 import { ShoppingCart } from 'lucide-react';
 import Link from 'next/link';
@@ -47,14 +44,13 @@ export const CartDropdown = forwardRef<HTMLDivElement, CartDropdownProps>(
     );
 
     const logBeginCheckout = useCallback(() => {
-      const beginCheckoutEvent: BeginCheckoutEvent = {
+      logEventWithInteractionLoggers({
         name: InteractionLoggingEventName.BeginCheckout,
         properties: {
           totalAmountInUsdCents,
           cartItems: cartItemsToInteractionLoggingCartItems(items),
         },
-      };
-      logEventWithInteractionLoggers(beginCheckoutEvent);
+      });
     }, [items, logEventWithInteractionLoggers, totalAmountInUsdCents]);
 
     const isCartEmpty = items.length === 0;
