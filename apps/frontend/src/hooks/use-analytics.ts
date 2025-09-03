@@ -75,6 +75,29 @@ function transformEvent(event: InteractionLoggingEvent) {
         },
       };
     }
+    case InteractionLoggingEventName.ShareDialogOpened: {
+      const { domainName, campaignKey, trigger } = event.properties;
+      return {
+        name: event.name,
+        properties: {
+          domain_name: domainName,
+          campaign_key: campaignKey,
+          trigger,
+        },
+      };
+    }
+    case InteractionLoggingEventName.ShareCompleted: {
+      const { domainName, campaignKey, sharedUrl, postUrl } = event.properties;
+      return {
+        name: event.name,
+        properties: {
+          domain_name: domainName,
+          campaign_key: campaignKey,
+          shared_url: sharedUrl,
+          post_url: postUrl,
+        },
+      };
+    }
     default:
       return event;
   }

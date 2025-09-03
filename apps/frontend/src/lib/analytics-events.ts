@@ -16,7 +16,6 @@ export enum InteractionLoggingEventName {
   Vote = 'vote',
   ShareDialogOpened = 'share_dialog_opened',
   ShareCompleted = 'share_completed',
-  ShareConversion = 'share_conversion', // vote from shared link
 }
 
 export type InteractionLoggingCartItem = Pick<
@@ -39,8 +38,7 @@ export type InteractionLoggingEvent =
   | SubmitOrderFailureEvent
   | VoteEvent
   | ShareDialogOpenedEvent
-  | ShareCompletedEvent
-  | ShareConversionEvent;
+  | ShareCompletedEvent;
 
 export type AddToCartEvent = {
   name: InteractionLoggingEventName.AddToCart;
@@ -111,14 +109,5 @@ export type ShareCompletedEvent = {
     campaignKey?: string;
     sharedUrl: string;
     postUrl: string;
-  };
-};
-
-export type ShareConversionEvent = {
-  name: InteractionLoggingEventName.ShareConversion;
-  properties: {
-    domainName: string;
-    campaignKey?: string;
-    referrerUrl?: string;
   };
 };
