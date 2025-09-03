@@ -20,7 +20,12 @@ import { TEMPORAL_QUEUES } from '#temporal/shared/enums';
 import { ensureNftIsLockedAndBurnByNftName } from '#temporal/workflows/mint.workflow';
 import { extendDomainRegistrationWorkflow } from '#temporal/workflows/domain-ownership/extend-registration.workflow';
 import { fixNftExpirationWorkflow } from '#temporal/workflows/fix-nft-expiration.workflow';
-import { adminProcedure, createTRPCRouter, protectedProcedure } from '../base';
+import {
+  adminProcedure,
+  auditedAdminProcedure,
+  createTRPCRouter,
+  protectedProcedure,
+} from '../base';
 import {
   getPoweredByNamefi3PDomains,
   sldRegistrar,
@@ -37,6 +42,7 @@ import { type Chain, createPublicClient, http } from 'viem';
 import { chainsToUrls } from '#lib/crypto/rpc-urls';
 import { schedulesRouter } from './admin/schedulesRouter';
 import { poweredByNamefiRouter } from './admin/poweredByNamefiRouter';
+import { ResourceType } from '#lib/auditor';
 /**
  * Convert protobuf WorkflowExecutionStatus enum to readable string
  */
@@ -269,7 +275,15 @@ export const adminRouter = createTRPCRouter({
       };
     }),
 
-  burnNft: adminProcedure
+  burnNft: auditedAdminProcedure(({ ctx, input, auditActorExtraInfo }) => ({
+    actorType: 'admin',
+    actorId: ctx.user.id,
+    actorExtraInfo: auditActorExtraInfo,
+    resourceType: 'domain',
+    resourceId: input.normalizedDomainName,
+    action: 'start_burn_nft_workflow',
+    extraInput: input,
+  }))
     .input(
       z.object({
         normalizedDomainName: namefiNormalizedDomainSchema,
@@ -582,7 +596,17 @@ export const adminRouter = createTRPCRouter({
     }
   }),
 
-  extendRegistration: adminProcedure
+  extendRegistration: auditedAdminProcedure(
+    ({ ctx, input, auditActorExtraInfo }) => ({
+      actorType: 'admin',
+      actorId: ctx.user.id,
+      actorExtraInfo: auditActorExtraInfo,
+      resourceType: 'domain',
+      resourceId: input.normalizedDomainName,
+      action: 'start_extend_registration_workflow',
+      extraInput: input,
+    }),
+  )
     .input(
       z.object({
         normalizedDomainName: namefiNormalizedDomainSchema,
@@ -674,7 +698,17 @@ export const adminRouter = createTRPCRouter({
       }
     }),
 
-  fixNftExpiration: adminProcedure
+  fixNftExpiration: auditedAdminProcedure(
+    ({ ctx, input, auditActorExtraInfo }) => ({
+      actorType: 'admin',
+      actorId: ctx.user.id,
+      actorExtraInfo: auditActorExtraInfo,
+      resourceType: 'domain',
+      resourceId: input.normalizedDomainName,
+      action: 'start_fix_nft_expiration_workflow',
+      extraInput: input,
+    }),
+  )
     .input(
       z.object({
         normalizedDomainName: namefiNormalizedDomainSchema,
@@ -1136,7 +1170,17 @@ export const adminRouter = createTRPCRouter({
       };
     }),
 
-  createFreeClaim: adminProcedure
+  createFreeClaim: auditedAdminProcedure(
+    ({ ctx, input, auditActorExtraInfo }) => ({
+      actorType: 'admin',
+      actorId: ctx.user.id,
+      actorExtraInfo: auditActorExtraInfo,
+      resourceType: 'user',
+      resourceId: input.userId,
+      action: 'grant_free_claim',
+      extraInput: input,
+    }),
+  )
     .input(
       z
         .object({
@@ -1195,7 +1239,17 @@ export const adminRouter = createTRPCRouter({
       }
     }),
 
-  updateFreeClaim: adminProcedure
+  updateFreeClaim: auditedAdminProcedure(
+    ({ ctx, input, auditActorExtraInfo }) => ({
+      actorType: 'admin',
+      actorId: ctx.user.id,
+      actorExtraInfo: auditActorExtraInfo,
+      resourceType: ResourceType.FREE_CLAIM,
+      resourceId: input.id,
+      action: 'update_free_claim',
+      extraInput: input,
+    }),
+  )
     .input(
       z.object({
         id: z.string().uuid(),
@@ -1265,7 +1319,17 @@ export const adminRouter = createTRPCRouter({
       }
     }),
 
-  deleteFreeClaim: adminProcedure
+  deleteFreeClaim: auditedAdminProcedure(
+    ({ ctx, input, auditActorExtraInfo }) => ({
+      actorType: 'admin',
+      actorId: ctx.user.id,
+      actorExtraInfo: auditActorExtraInfo,
+      resourceType: ResourceType.FREE_CLAIM,
+      resourceId: input.id,
+      action: 'revoke_free_claim',
+      extraInput: input,
+    }),
+  )
     .input(
       z.object({
         id: z.string().uuid(),
@@ -1547,7 +1611,17 @@ export const adminRouter = createTRPCRouter({
       }
     }),
 
-  burnAllExpiredDomains: adminProcedure
+  burnAllExpiredDomains: auditedAdminProcedure(
+    ({ ctx, input, auditActorExtraInfo }) => ({
+      actorType: 'admin',
+      actorId: ctx.user.id,
+      actorExtraInfo: auditActorExtraInfo,
+      resourceType: 'domain',
+      resourceId: '',
+      action: 'start_burn_all_expired_domains_workflow',
+      extraInput: input,
+    }),
+  )
     .input(
       z.object({
         safeToBurnOnly: z

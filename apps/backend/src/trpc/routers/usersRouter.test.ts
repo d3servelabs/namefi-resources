@@ -9,6 +9,13 @@ import type { TrpcContext } from '../base';
 import { privyClient } from '../utils';
 import { usersRouter, viemEthereumPublicClient } from './usersRouter';
 
+type LocalTrpcContextWithReq = Omit<
+  TrpcContext,
+  'db' | 'res' | 'sessionId' | 'honoVars'
+>;
+
+type LocalTrpcContext = Omit<LocalTrpcContextWithReq, 'req'>;
+
 describe('getUserQualifiesForDomainNamePromo', () => {
   // TODO(Luis): consider refactoring mocking
 
@@ -249,10 +256,7 @@ describe('getUserQualifiesForDomainNamePromo', () => {
           id: 'testUserWithQualifyingEmail',
           privyUserId: 'testUserWithQualifyingEmail',
         },
-      } satisfies Omit<
-        TrpcContext,
-        'user' | 'db' | 'req' | 'res'
-      > as TrpcContext,
+      } satisfies LocalTrpcContext as TrpcContext,
       {},
     );
 
@@ -277,10 +281,7 @@ describe('getUserQualifiesForDomainNamePromo', () => {
           id: 'testUserWithQualifyingTwitterHandle',
           privyUserId: 'testUserWithQualifyingTwitterHandle',
         },
-      } satisfies Omit<
-        TrpcContext,
-        'user' | 'db' | 'req' | 'res'
-      > as TrpcContext,
+      } satisfies LocalTrpcContext as TrpcContext,
       {},
     );
 
@@ -305,10 +306,7 @@ describe('getUserQualifiesForDomainNamePromo', () => {
           id: 'testUserWithQualifyingTwitterName',
           privyUserId: 'testUserWithQualifyingTwitterName',
         },
-      } satisfies Omit<
-        TrpcContext,
-        'user' | 'db' | 'req' | 'res'
-      > as TrpcContext,
+      } satisfies LocalTrpcContext as TrpcContext,
       {},
     );
 
@@ -333,10 +331,7 @@ describe('getUserQualifiesForDomainNamePromo', () => {
           id: 'testUserWithQualifyingGithubEmail',
           privyUserId: 'testUserWithQualifyingGithubEmail',
         },
-      } satisfies Omit<
-        TrpcContext,
-        'user' | 'db' | 'req' | 'res'
-      > as TrpcContext,
+      } satisfies LocalTrpcContext as TrpcContext,
       {},
     );
 
@@ -361,10 +356,7 @@ describe('getUserQualifiesForDomainNamePromo', () => {
           id: 'testUserWithQualifyingGithubUsername',
           privyUserId: 'testUserWithQualifyingGithubUsername',
         },
-      } satisfies Omit<
-        TrpcContext,
-        'user' | 'db' | 'req' | 'res'
-      > as TrpcContext,
+      } satisfies LocalTrpcContext as TrpcContext,
       {},
     );
 
@@ -389,10 +381,7 @@ describe('getUserQualifiesForDomainNamePromo', () => {
           id: 'testUserWithQualifyingGithubName',
           privyUserId: 'testUserWithQualifyingGithubName',
         },
-      } satisfies Omit<
-        TrpcContext,
-        'user' | 'db' | 'req' | 'res'
-      > as TrpcContext,
+      } satisfies LocalTrpcContext as TrpcContext,
       {},
     );
 
@@ -417,10 +406,8 @@ describe('getUserQualifiesForDomainNamePromo', () => {
           id: 'testUserWithQualifyingEns',
           privyUserId: 'testUserWithQualifyingEns',
         },
-      } satisfies Omit<
-        TrpcContext,
-        'user' | 'db' | 'req' | 'res'
-      > as TrpcContext,
+      } satisfies LocalTrpcContext as TrpcContext,
+
       {},
     );
 
@@ -443,10 +430,8 @@ describe('getUserQualifiesForDomainNamePromo', () => {
           id: 'testUserWithoutQualifyingAccount',
           privyUserId: 'testUserWithoutQualifyingAccount',
         },
-      } satisfies Omit<
-        TrpcContext,
-        'user' | 'db' | 'req' | 'res'
-      > as TrpcContext,
+      } satisfies LocalTrpcContext as TrpcContext,
+
       {},
     );
 
@@ -471,10 +456,7 @@ describe('getUserQualifiesForDomainNamePromo', () => {
           id: 'testUserWithNoLinkedAccounts',
           privyUserId: 'testUserWithNoLinkedAccounts',
         },
-      } satisfies Omit<
-        TrpcContext,
-        'user' | 'db' | 'req' | 'res'
-      > as TrpcContext,
+      } satisfies LocalTrpcContext as TrpcContext,
       {},
     );
 
@@ -584,10 +566,7 @@ describe('getManagerPageEntrypointViewable', () => {
             (): Record<string, string>;
           },
         } satisfies Pick<HonoRequest, 'header'> as unknown as HonoRequest,
-      } satisfies Omit<
-        TrpcContext,
-        'user' | 'db' | 'res'
-      > as unknown as TrpcContext,
+      } satisfies LocalTrpcContextWithReq as TrpcContext,
       {},
     );
 
@@ -610,10 +589,7 @@ describe('getManagerPageEntrypointViewable', () => {
           updatedAt: new Date(),
           subscribeToEmails: true,
         },
-      } satisfies Omit<
-        TrpcContext,
-        'user' | 'db' | 'req' | 'res'
-      > as TrpcContext,
+      } satisfies LocalTrpcContext as TrpcContext,
       {},
     );
 
@@ -637,10 +613,7 @@ describe('getManagerPageEntrypointViewable', () => {
           updatedAt: new Date(),
           subscribeToEmails: true,
         },
-      } satisfies Omit<
-        TrpcContext,
-        'user' | 'db' | 'req' | 'res'
-      > as TrpcContext,
+      } satisfies LocalTrpcContext as TrpcContext,
       {},
     );
 
@@ -664,10 +637,7 @@ describe('getManagerPageEntrypointViewable', () => {
           updatedAt: new Date(),
           subscribeToEmails: true,
         },
-      } satisfies Omit<
-        TrpcContext,
-        'user' | 'db' | 'req' | 'res'
-      > as TrpcContext,
+      } satisfies LocalTrpcContext as TrpcContext,
       {},
     );
 
@@ -684,10 +654,7 @@ describe('getManagerPageEntrypointViewable', () => {
         {
           poweredByNamefiDomain: 'defi.build',
           testUser: testUser0xCityOwner,
-        } satisfies Omit<
-          TrpcContext,
-          'user' | 'db' | 'req' | 'res'
-        > as TrpcContext,
+        } satisfies LocalTrpcContext as TrpcContext,
         {},
       );
 
@@ -703,10 +670,7 @@ describe('getManagerPageEntrypointViewable', () => {
       {
         poweredByNamefiDomain: '0x.city',
         testUser: testUser0xCityOwner,
-      } satisfies Omit<
-        TrpcContext,
-        'user' | 'db' | 'req' | 'res'
-      > as TrpcContext,
+      } satisfies LocalTrpcContext as TrpcContext,
       {},
     );
 
@@ -723,10 +687,7 @@ describe('getManagerPageEntrypointViewable', () => {
         {
           poweredByNamefiDomain: null,
           testUser: testUser0xCityOwner,
-        } satisfies Omit<
-          TrpcContext,
-          'user' | 'db' | 'req' | 'res'
-        > as TrpcContext,
+        } satisfies LocalTrpcContext as TrpcContext,
         {},
       );
 
@@ -1054,10 +1015,7 @@ describe('getUserQualifyingDomainNamesForPromo', () => {
           privyUserId: 'testUserWithQualifyingEmail',
           subscribeToEmails: true,
         },
-      } satisfies Omit<
-        TrpcContext,
-        'user' | 'db' | 'req' | 'res'
-      > as TrpcContext,
+      } satisfies LocalTrpcContext as TrpcContext,
       {},
     );
 
@@ -1082,10 +1040,7 @@ describe('getUserQualifyingDomainNamesForPromo', () => {
           privyUserId: 'testUserWithQualifyingTwitterHandle',
           subscribeToEmails: true,
         },
-      } satisfies Omit<
-        TrpcContext,
-        'user' | 'db' | 'req' | 'res'
-      > as TrpcContext,
+      } satisfies LocalTrpcContext as TrpcContext,
       {},
     );
 
@@ -1113,10 +1068,7 @@ describe('getUserQualifyingDomainNamesForPromo', () => {
           privyUserId: 'testUserWithQualifyingTwitterName',
           subscribeToEmails: true,
         },
-      } satisfies Omit<
-        TrpcContext,
-        'user' | 'db' | 'req' | 'res'
-      > as TrpcContext,
+      } satisfies LocalTrpcContext as TrpcContext,
       {},
     );
 
@@ -1144,10 +1096,7 @@ describe('getUserQualifyingDomainNamesForPromo', () => {
           privyUserId: 'testUserWithQualifyingGithubEmail',
           subscribeToEmails: true,
         },
-      } satisfies Omit<
-        TrpcContext,
-        'user' | 'db' | 'req' | 'res'
-      > as TrpcContext,
+      } satisfies LocalTrpcContext as TrpcContext,
       {},
     );
 
@@ -1175,10 +1124,7 @@ describe('getUserQualifyingDomainNamesForPromo', () => {
           privyUserId: 'testUserWithQualifyingGithubUsername',
           subscribeToEmails: true,
         },
-      } satisfies Omit<
-        TrpcContext,
-        'user' | 'db' | 'req' | 'res'
-      > as TrpcContext,
+      } satisfies LocalTrpcContext as TrpcContext,
       {},
     );
 
@@ -1206,10 +1152,7 @@ describe('getUserQualifyingDomainNamesForPromo', () => {
           privyUserId: 'testUserWithQualifyingGithubName',
           subscribeToEmails: true,
         },
-      } satisfies Omit<
-        TrpcContext,
-        'user' | 'db' | 'req' | 'res'
-      > as TrpcContext,
+      } satisfies LocalTrpcContext as TrpcContext,
       {},
     );
 
@@ -1237,10 +1180,7 @@ describe('getUserQualifyingDomainNamesForPromo', () => {
           privyUserId: 'testUserWithQualifyingEns',
           subscribeToEmails: true,
         },
-      } satisfies Omit<
-        TrpcContext,
-        'user' | 'db' | 'req' | 'res'
-      > as TrpcContext,
+      } satisfies LocalTrpcContext as TrpcContext,
       {},
     );
 
@@ -1269,10 +1209,7 @@ describe('getUserQualifyingDomainNamesForPromo', () => {
             privyUserId: 'testUserWithMultipleQualifyingAccounts',
             subscribeToEmails: true,
           },
-        } satisfies Omit<
-          TrpcContext,
-          'user' | 'db' | 'req' | 'res'
-        > as TrpcContext,
+        } satisfies LocalTrpcContext as TrpcContext,
         {},
       );
 
@@ -1302,10 +1239,7 @@ describe('getUserQualifyingDomainNamesForPromo', () => {
           privyUserId: 'testUserWithoutQualifyingAccount',
           subscribeToEmails: true,
         },
-      } satisfies Omit<
-        TrpcContext,
-        'user' | 'db' | 'req' | 'res'
-      > as TrpcContext,
+      } satisfies LocalTrpcContext as TrpcContext,
       {},
     );
 
@@ -1327,10 +1261,7 @@ describe('getUserQualifyingDomainNamesForPromo', () => {
           privyUserId: 'testUserWithNoLinkedAccounts',
           subscribeToEmails: true,
         },
-      } satisfies Omit<
-        TrpcContext,
-        'user' | 'db' | 'req' | 'res'
-      > as TrpcContext,
+      } satisfies LocalTrpcContext as TrpcContext,
       {},
     );
 
@@ -1354,10 +1285,7 @@ describe('getUserQualifyingDomainNamesForPromo', () => {
           updatedAt: new Date(),
           subscribeToEmails: true,
         },
-      } satisfies Omit<
-        TrpcContext,
-        'user' | 'db' | 'req' | 'res'
-      > as TrpcContext,
+      } satisfies LocalTrpcContext as TrpcContext,
       {},
     );
 
@@ -1381,10 +1309,7 @@ describe('getUserQualifyingDomainNamesForPromo', () => {
           updatedAt: new Date(),
           subscribeToEmails: true,
         },
-      } satisfies Omit<
-        TrpcContext,
-        'user' | 'db' | 'req' | 'res'
-      > as TrpcContext,
+      } satisfies LocalTrpcContext as TrpcContext,
       {},
     );
 
@@ -1405,10 +1330,7 @@ describe('getUserQualifyingDomainNamesForPromo', () => {
           privyUserId: 'testUserWithQualifyingEmail',
           subscribeToEmails: true,
         },
-      } satisfies Omit<
-        TrpcContext,
-        'user' | 'db' | 'req' | 'res'
-      > as TrpcContext,
+      } satisfies LocalTrpcContext as TrpcContext,
       {},
     );
 
@@ -1429,10 +1351,7 @@ describe('getUserQualifyingDomainNamesForPromo', () => {
           privyUserId: 'testUserWithQualifyingEmail',
           subscribeToEmails: true,
         },
-      } satisfies Omit<
-        TrpcContext,
-        'user' | 'db' | 'req' | 'res'
-      > as TrpcContext,
+      } satisfies LocalTrpcContext as TrpcContext,
       {},
     );
 

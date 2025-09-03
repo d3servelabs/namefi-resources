@@ -1,7 +1,11 @@
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import { logger } from '#lib/logger';
-import { adminProcedure, createTRPCRouter } from '../../base';
+import {
+  adminProcedure,
+  auditedAdminProcedure,
+  createTRPCRouter,
+} from '../../base';
 import {
   SCHEDULE_REGISTRY,
   getAllSchedules,
@@ -69,7 +73,17 @@ export const schedulesRouter = createTRPCRouter({
       }
     }),
 
-  submitSchedule: adminProcedure
+  submitSchedule: auditedAdminProcedure(
+    ({ ctx, input, auditActorExtraInfo }) => ({
+      actorType: 'admin',
+      actorId: ctx.user.id,
+      actorExtraInfo: auditActorExtraInfo,
+      resourceType: 'scheduled_workflow',
+      resourceId: input.scheduleId,
+      action: 'submit',
+      extraInput: input,
+    }),
+  )
     .input(
       z.object({
         scheduleId: z.string().min(1),
@@ -106,7 +120,17 @@ export const schedulesRouter = createTRPCRouter({
       }
     }),
 
-  triggerSchedule: adminProcedure
+  triggerSchedule: auditedAdminProcedure(
+    ({ ctx, input, auditActorExtraInfo }) => ({
+      actorType: 'admin',
+      actorId: ctx.user.id,
+      actorExtraInfo: auditActorExtraInfo,
+      resourceType: 'scheduled_workflow',
+      resourceId: input.scheduleId,
+      action: 'trigger',
+      extraInput: input,
+    }),
+  )
     .input(
       z.object({
         scheduleId: z.string().min(1),
@@ -143,7 +167,17 @@ export const schedulesRouter = createTRPCRouter({
       }
     }),
 
-  pauseSchedule: adminProcedure
+  pauseSchedule: auditedAdminProcedure(
+    ({ ctx, input, auditActorExtraInfo }) => ({
+      actorType: 'admin',
+      actorId: ctx.user.id,
+      actorExtraInfo: auditActorExtraInfo,
+      resourceType: 'scheduled_workflow',
+      resourceId: input.scheduleId,
+      action: 'pause',
+      extraInput: input,
+    }),
+  )
     .input(
       z.object({
         scheduleId: z.string().min(1),
@@ -179,7 +213,17 @@ export const schedulesRouter = createTRPCRouter({
       }
     }),
 
-  unpauseSchedule: adminProcedure
+  unpauseSchedule: auditedAdminProcedure(
+    ({ ctx, input, auditActorExtraInfo }) => ({
+      actorType: 'admin',
+      actorId: ctx.user.id,
+      actorExtraInfo: auditActorExtraInfo,
+      resourceType: 'scheduled_workflow',
+      resourceId: input.scheduleId,
+      action: 'unpause',
+      extraInput: input,
+    }),
+  )
     .input(
       z.object({
         scheduleId: z.string().min(1),
@@ -215,7 +259,17 @@ export const schedulesRouter = createTRPCRouter({
       }
     }),
 
-  deleteSchedule: adminProcedure
+  deleteSchedule: auditedAdminProcedure(
+    ({ ctx, input, auditActorExtraInfo }) => ({
+      actorType: 'admin',
+      actorId: ctx.user.id,
+      actorExtraInfo: auditActorExtraInfo,
+      resourceType: 'scheduled_workflow',
+      resourceId: input.scheduleId,
+      action: 'delete',
+      extraInput: input,
+    }),
+  )
     .input(
       z.object({
         scheduleId: z.string().min(1),

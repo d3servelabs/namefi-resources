@@ -27,6 +27,11 @@ const otherUser = {
   privyUserId: 'test-privy-user-id-1',
 } as UserSelect;
 
+type LocalTrpcContext = Omit<
+  TrpcContext,
+  'db' | 'req' | 'res' | 'sessionId' | 'honoVars'
+>;
+
 config({ path: '.env.test' });
 
 describe('Hunt Router', () => {
@@ -124,12 +129,12 @@ describe('Hunt Router', () => {
   const caller = huntRouter.createCaller({
     poweredByNamefiDomain: null,
     testUser,
-  } satisfies Omit<TrpcContext, 'db' | 'req' | 'res'> as TrpcContext);
+  } satisfies LocalTrpcContext as TrpcContext);
 
   const otherCaller = huntRouter.createCaller({
     poweredByNamefiDomain: null,
     testUser: otherUser,
-  } satisfies Omit<TrpcContext, 'db' | 'req' | 'res'> as TrpcContext);
+  } satisfies LocalTrpcContext as TrpcContext);
 
   describe('Domain Submit Operations', () => {
     it('should submit a new domain', async () => {

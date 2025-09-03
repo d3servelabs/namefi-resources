@@ -24,6 +24,12 @@ import {
 import { isUserAdmin, privyClient } from './utils';
 import { eq, sql } from 'drizzle-orm';
 import { verifyUserAuthAndGetUser, requireUserAuth } from '#lib/auth';
+import {
+  audit,
+  createAuditRecord,
+  type CreateAuditRecordParams,
+  type AuditActorExtraInfo,
+} from '#lib/auditor';
 
 /**
  * Get the powered by namefi (pbn) domain from the origin.
@@ -124,6 +130,7 @@ export const createContext = async (
      * A test user we can provide to return when verifyUserAuthAndCreation is called from tests
      */
     testUser: null as UserSelect | null,
+    sessionId: null as string | null,
     honoVars: c.var as {
       requestId: string;
       connInfo: ConnInfo;
@@ -140,6 +147,7 @@ export type TrpcContext = {
    */
   poweredByNamefiDomain: string | null;
   testUser: UserSelect | null;
+  sessionId?: string | null;
   honoVars?: {
     requestId: string;
     connInfo: ConnInfo;
@@ -282,6 +290,7 @@ export const verifyUserAuthAndCreation = t.middleware<TrpcContextWithUser>(
         ctx: {
           ...ctx,
           user,
+          sessionId,
         },
       });
     } catch (error) {
@@ -326,6 +335,7 @@ export const maybeVerifyUserAuthAndCreation =
       ctx: {
         ...ctx,
         user,
+        sessionId,
       },
     });
   });
@@ -364,16 +374,13 @@ export const protectedProcedure = publicProcedure
 
 /**
  * Admin procedure
- *
- * This is the piece we will use to build new queries and mutations on our tRPC API. It will
- * guarantee that a user querying is authenticated, and that we can access user's data.
  */
-
 export const adminProcedure = protectedProcedure.use(async ({ ctx, next }) => {
   const isAdmin = await isUserAdmin(ctx.user.privyUserId);
   logger.assign({
     procedureType: 'adminProcedure',
     isAdmin,
+    audit: true,
   });
   if (!isAdmin) {
     throw new TRPCError({
@@ -383,6 +390,69 @@ export const adminProcedure = protectedProcedure.use(async ({ ctx, next }) => {
   }
   return next({ ctx });
 });
+
+/**
+ * Audited Admin procedure
+ */
+export const auditedAdminProcedure = (
+  params:
+    | CreateAuditRecordParams
+    | (({
+        ctx,
+        input,
+        meta,
+        auditActorExtraInfo,
+      }: {
+        ctx: TrpcContextWithUser;
+        input: any;
+        meta?: object;
+        auditActorExtraInfo: AuditActorExtraInfo;
+      }) => CreateAuditRecordParams),
+) =>
+  protectedProcedure.use(async ({ ctx, next, meta, getRawInput }) => {
+    const input = await getRawInput();
+    const isAdmin = await isUserAdmin(ctx.user.privyUserId);
+    logger.assign({
+      procedureType: 'adminProcedure',
+      isAdmin,
+      audit: true,
+    });
+    if (!isAdmin) {
+      throw new TRPCError({
+        code: 'UNAUTHORIZED',
+        message: 'user is not an admin',
+      });
+    }
+    const start = performance.now();
+    const result = await next({ ctx });
+
+    try {
+      const auditActorExtraInfo: AuditActorExtraInfo = {
+        ipAddress: ctx.honoVars?.connInfo.remote.address || '',
+        ipAddressType: ctx.honoVars?.connInfo.remote.addressType || 'unknown',
+        userAgent: ctx.req.header('user-agent') || '',
+        referer: ctx.req.header('referer') || '',
+        url: ctx.req.url,
+        method: ctx.req.method,
+        requestId: ctx.honoVars?.requestId || '',
+        sessionId: ctx.sessionId || '',
+        userId: ctx.user.id || '',
+        statusCode: ctx.res.status,
+        responseTimeInMs: performance.now() - start,
+        type: 'user',
+      };
+      audit(
+        createAuditRecord(
+          typeof params === 'function'
+            ? params({ ctx, input, meta, auditActorExtraInfo })
+            : params,
+        ),
+      );
+    } catch (error) {
+      logger.fatal({ error, userId: ctx.user.id }, 'Error auditing procedure');
+    }
+    return result;
+  });
 
 /**
  * Owner procedure for Powered-by-Namefi domains

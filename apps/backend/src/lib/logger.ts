@@ -66,11 +66,18 @@ const _logger = pino(
       return extras;
     },
     mixinMergeStrategy(_mergeObject, _mixinObject: any) {
-      const mergeObject = superjson.serialize(_mergeObject ?? {})
-        .json as object;
-      const mixinObject = superjson.serialize(_mixinObject ?? {})
-        .json as object;
+      const mergeObject = superjson.serialize(_mergeObject ?? {}).json as any;
+      const mixinObject = superjson.serialize(_mixinObject ?? {}).json as any;
 
+      if (mergeObject.audit_record) {
+        return {
+          ...mergeObject,
+          metadata: {
+            ...(mergeObject.metadata ?? {}),
+            ...mixinObject,
+          },
+        };
+      }
       let merged: any;
       try {
         merged = mergeDeepRight(mergeObject, mixinObject);

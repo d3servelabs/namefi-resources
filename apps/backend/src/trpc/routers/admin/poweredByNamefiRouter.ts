@@ -14,7 +14,11 @@ import {
 import { TRPCError } from '@trpc/server';
 import { and, asc, desc, eq, sql, type SQL } from 'drizzle-orm';
 import { z } from 'zod';
-import { adminProcedure, createTRPCRouter } from '../../base';
+import {
+  adminProcedure,
+  auditedAdminProcedure,
+  createTRPCRouter,
+} from '../../base';
 import { logger } from '#lib/logger';
 import { createVercelClientSDK } from '#lib/vercel/vercel-client-sdk';
 import type { GetDomainConfigResponseBody } from '@vercel/sdk/models/getdomainconfigop';
@@ -427,7 +431,17 @@ export const poweredByNamefiRouter = createTRPCRouter({
     }),
 
   // Create a new poweredByNamefi domain
-  createPoweredByNamefiDomain: adminProcedure
+  createPoweredByNamefiDomain: auditedAdminProcedure(
+    ({ ctx, input, auditActorExtraInfo }) => ({
+      actorType: 'admin',
+      actorId: ctx.user.id,
+      actorExtraInfo: auditActorExtraInfo,
+      resourceType: 'pbn_domain',
+      resourceId: input.normalizedDomainName,
+      action: 'create_domain',
+      extraInput: input,
+    }),
+  )
     .input(
       z.object({
         normalizedDomainName: namefiNormalizedDomainSchema,
@@ -502,7 +516,17 @@ export const poweredByNamefiRouter = createTRPCRouter({
     }),
 
   // Update an existing poweredByNamefi domain
-  updatePoweredByNamefiDomain: adminProcedure
+  updatePoweredByNamefiDomain: auditedAdminProcedure(
+    ({ ctx, input, auditActorExtraInfo }) => ({
+      actorType: 'admin',
+      actorId: ctx.user.id,
+      actorExtraInfo: auditActorExtraInfo,
+      resourceType: 'pbn_domain',
+      resourceId: input.normalizedDomainName,
+      action: 'update_domain',
+      extraInput: input,
+    }),
+  )
     .input(
       z.object({
         normalizedDomainName: namefiNormalizedDomainSchema,
@@ -597,7 +621,17 @@ export const poweredByNamefiRouter = createTRPCRouter({
     }),
 
   // Delete a poweredByNamefi domain
-  deletePoweredByNamefiDomain: adminProcedure
+  deletePoweredByNamefiDomain: auditedAdminProcedure(
+    ({ ctx, input, auditActorExtraInfo }) => ({
+      actorType: 'admin',
+      actorId: ctx.user.id,
+      actorExtraInfo: auditActorExtraInfo,
+      resourceType: 'pbn_domain',
+      resourceId: input.normalizedDomainName,
+      action: 'delete_domain',
+      extraInput: input,
+    }),
+  )
     .input(
       z.object({
         normalizedDomainName: namefiNormalizedDomainSchema,
@@ -641,7 +675,17 @@ export const poweredByNamefiRouter = createTRPCRouter({
     }),
 
   // Setup Vercel and DNS method (for backwards compatibility)
-  setupVercelAndDns: adminProcedure
+  setupVercelAndDns: auditedAdminProcedure(
+    ({ ctx, input, auditActorExtraInfo }) => ({
+      actorType: 'admin',
+      actorId: ctx.user.id,
+      actorExtraInfo: auditActorExtraInfo,
+      resourceType: 'pbn_domain',
+      resourceId: input.normalizedDomainName,
+      action: 'setup_vercel_dns',
+      extraInput: input,
+    }),
+  )
     .input(
       z.object({
         normalizedDomainName: namefiNormalizedDomainSchema,
@@ -727,7 +771,17 @@ export const poweredByNamefiRouter = createTRPCRouter({
     }),
 
   // Setup subdomain method (for backwards compatibility)
-  setupNamefiIoSubdomain: adminProcedure
+  setupNamefiIoSubdomain: auditedAdminProcedure(
+    ({ ctx, input, auditActorExtraInfo }) => ({
+      actorType: 'admin',
+      actorId: ctx.user.id,
+      actorExtraInfo: auditActorExtraInfo,
+      resourceType: 'pbn_domain',
+      resourceId: input.normalizedDomainName,
+      action: 'setup_namefi_io_subdomain',
+      extraInput: input,
+    }),
+  )
     .input(
       z.object({
         normalizedDomainName: namefiNormalizedDomainSchema,
@@ -813,7 +867,17 @@ export const poweredByNamefiRouter = createTRPCRouter({
     }),
 
   // Setup namefi.dev subdomain method (for backwards compatibility)
-  setupNamefiDevSubdomain: adminProcedure
+  setupNamefiDevSubdomain: auditedAdminProcedure(
+    ({ ctx, input, auditActorExtraInfo }) => ({
+      actorType: 'admin',
+      actorId: ctx.user.id,
+      actorExtraInfo: auditActorExtraInfo,
+      resourceType: 'pbn_domain',
+      resourceId: input.normalizedDomainName,
+      action: 'setup_namefi_dev_subdomain',
+      extraInput: input,
+    }),
+  )
     .input(
       z.object({
         normalizedDomainName: namefiNormalizedDomainSchema,
@@ -900,7 +964,17 @@ export const poweredByNamefiRouter = createTRPCRouter({
     }),
 
   // Toggle enable/disable status of a powered by namefi domain
-  togglePoweredByNamefiDomainStatus: adminProcedure
+  togglePoweredByNamefiDomainStatus: auditedAdminProcedure(
+    ({ ctx, input, auditActorExtraInfo }) => ({
+      actorType: 'admin',
+      actorId: ctx.user.id,
+      actorExtraInfo: auditActorExtraInfo,
+      resourceType: 'pbn_domain',
+      resourceId: input.normalizedDomainName,
+      action: input.enabled ? 'enable' : 'disable',
+      extraInput: input,
+    }),
+  )
     .input(
       z.object({
         normalizedDomainName: namefiNormalizedDomainSchema,
@@ -947,7 +1021,17 @@ export const poweredByNamefiRouter = createTRPCRouter({
     }),
 
   // Start rollout for a powered by namefi domain
-  startPoweredByNamefiDomainRollout: adminProcedure
+  startPoweredByNamefiDomainRollout: auditedAdminProcedure(
+    ({ ctx, input, auditActorExtraInfo }) => ({
+      actorType: 'admin',
+      actorId: ctx.user.id,
+      actorExtraInfo: auditActorExtraInfo,
+      resourceType: 'pbn_domain',
+      resourceId: input.normalizedDomainName,
+      action: 'start_domain_rollout',
+      extraInput: input,
+    }),
+  )
     .input(
       z.object({
         normalizedDomainName: namefiNormalizedDomainSchema,
@@ -993,7 +1077,17 @@ export const poweredByNamefiRouter = createTRPCRouter({
     }),
 
   // Update cost and duration constraints for a powered by namefi domain
-  updatePoweredByNamefiDomainCostAndDuration: adminProcedure
+  updatePoweredByNamefiDomainCostAndDuration: auditedAdminProcedure(
+    ({ ctx, input, auditActorExtraInfo }) => ({
+      actorType: 'admin',
+      actorId: ctx.user.id,
+      actorExtraInfo: auditActorExtraInfo,
+      resourceType: 'pbn_domain',
+      resourceId: input?.normalizedDomainName ?? '',
+      action: 'update_cost_and_duration',
+      extraInput: input,
+    }),
+  )
     .input(
       z.object({
         normalizedDomainName: namefiNormalizedDomainSchema,
