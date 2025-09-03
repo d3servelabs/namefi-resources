@@ -74,9 +74,7 @@ export const CartDropdown = forwardRef<HTMLDivElement, CartDropdownProps>(
                 {items.length > 0 && (
                   <MotionBadge
                     key="cart-badge"
-                    className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 
-                    text-xs"
-                    variant="destructive"
+                    className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 text-xs bg-brand-primary text-secondary-foreground"
                     initial={{ opacity: 0, scale: 0.9, y: -6 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.9, y: -6 }}
