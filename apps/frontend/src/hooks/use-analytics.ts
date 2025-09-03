@@ -6,7 +6,6 @@ import {
   InteractionLoggingEventName,
 } from '@/lib/analytics-events';
 import { useCallback } from 'react';
-import { sendGAEvent } from '@next/third-parties/google';
 
 // From Google Analytics documentation
 type Item = { item_name: string; item_id: string; price: number };
@@ -118,7 +117,8 @@ function transformEvent(event: InteractionLoggingEvent) {
 export function useGoogleAnalyticsInteractionLogger() {
   const logEvent = useCallback((event: InteractionLoggingEvent) => {
     const transformedEvent = transformEvent(event);
-    sendGAEvent('event', transformedEvent.name, transformedEvent.properties);
+    if (typeof window === 'undefined') return;
+    window.gtag?.('event', transformedEvent.name, transformedEvent.properties);
   }, []);
 
   return {
