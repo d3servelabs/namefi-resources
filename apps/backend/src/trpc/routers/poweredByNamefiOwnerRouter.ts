@@ -58,8 +58,13 @@ export const poweredByNamefiOwnerRouter = createTRPCRouter({
     }),
 
   getAnalyticsDashboardOverview: poweredByNamefiOwnerProcedure
-    .input(getDashboardOverviewInputSchema)
+    .input(
+      getDashboardOverviewInputSchema.extend({
+        publicSuffixPlusOne: namefiNormalizedDomainSchema,
+      }),
+    )
     .query(async ({ ctx, input }) => {
+      await assertOwnerOfDomain(input.publicSuffixPlusOne, ctx.user.id);
       return getDashboardOverview(input);
     }),
 
