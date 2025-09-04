@@ -21,7 +21,9 @@ import {
   getPoweredByNamefi3PHostnames,
   getPoweredByNamefiDomainFromHostname,
 } from '#lib/namefi-registry';
-import { isUserAdmin, privyClient } from './utils';
+import { canUserAccessAdminPanel, privyClient } from './utils';
+import { userPermissionsTable, db as appDb } from '@namefi-astra/db';
+import type { Permission } from '@namefi-astra/utils';
 import { eq, sql } from 'drizzle-orm';
 import { verifyUserAuthAndGetUser, requireUserAuth } from '#lib/auth';
 import {
@@ -125,6 +127,11 @@ export const createContext = async (
     req: c.req,
     res: c.res,
     db,
+    /**
+     * Cached list of the current user's permissions for this request lifecycle.
+     * Populated in protected middleware when user is known.
+     */
+    userPermissions: [],
     poweredByNamefiDomain,
     /**
      * A test user we can provide to return when verifyUserAuthAndCreation is called from tests
@@ -146,6 +153,10 @@ export type TrpcContext = {
    * The domain name of the selling SLD, it will be null in case it is a Namefi first party origin
    */
   poweredByNamefiDomain: string | null;
+  /**
+   * ABAC permissions granted to current user (fetched lazily in middleware)
+   */
+  userPermissions?: Permission[];
   testUser: UserSelect | null;
   sessionId?: string | null;
   honoVars?: {
@@ -160,6 +171,17 @@ export type TrpcContextWithUser = TrpcContext & {
 export type TrpcContextWithUserOrNull = TrpcContext & {
   user: UserSelect | null;
 };
+
+// Server-side permission helpers
+export function ctxHasPermission(ctx: TrpcContext, permission: Permission) {
+  return ctx.userPermissions?.includes(permission) ?? false;
+}
+
+export function ctxRequirePermission(ctx: TrpcContext, permission: Permission) {
+  if (!ctxHasPermission(ctx, permission)) {
+    throw new TRPCError({ code: 'FORBIDDEN', message: 'Missing permission' });
+  }
+}
 
 /**
  * 2. INITIALIZATION
@@ -286,11 +308,21 @@ export const verifyUserAuthAndCreation = t.middleware<TrpcContextWithUser>(
         }),
       );
 
+      // Load user permissions for this request
+      const permissionsRows = await appDb
+        .select({ permission: userPermissionsTable.permission })
+        .from(userPermissionsTable)
+        .where(eq(userPermissionsTable.userId, user.id));
+      const userPermissions = permissionsRows.map(
+        (r) => r.permission as Permission,
+      );
+
       return next({
         ctx: {
           ...ctx,
           user,
           sessionId,
+          userPermissions,
         },
       });
     } catch (error) {
@@ -330,12 +362,22 @@ export const maybeVerifyUserAuthAndCreation =
         requestId: ctx.honoVars?.requestId,
       }),
     );
+    // Load user permissions if user exists
+    let userPermissions: Permission[] = [];
+    if (user) {
+      const permissionsRows = await appDb
+        .select({ permission: userPermissionsTable.permission })
+        .from(userPermissionsTable)
+        .where(eq(userPermissionsTable.userId, user.id));
+      userPermissions = permissionsRows.map((r) => r.permission as Permission);
+    }
 
     return next({
       ctx: {
         ...ctx,
         user,
         sessionId,
+        userPermissions,
       },
     });
   });
@@ -385,7 +427,7 @@ export const protectedProcedure = $publicProcedure
  * Admin procedure
  */
 export const adminProcedure = protectedProcedure.use(async ({ ctx, next }) => {
-  const isAdmin = await isUserAdmin(ctx.user.privyUserId);
+  const isAdmin = await canUserAccessAdminPanel(ctx.user);
   logger.assign({
     procedureType: 'adminProcedure',
     isAdmin,
@@ -420,7 +462,7 @@ export const auditedAdminProcedure = (
 ) =>
   protectedProcedure.use(async ({ ctx, next, meta, getRawInput }) => {
     const input = await getRawInput();
-    const isAdmin = await isUserAdmin(ctx.user.privyUserId);
+    const isAdmin = await canUserAccessAdminPanel(ctx.user);
     logger.assign({
       procedureType: 'adminProcedure',
       isAdmin,

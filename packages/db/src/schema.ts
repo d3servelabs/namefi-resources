@@ -27,6 +27,7 @@ import {
   uuid,
 } from 'drizzle-orm/pg-core';
 import type { Json } from 'drizzle-zod';
+import type { Permission } from '@namefi-astra/utils';
 
 /**
  * Common table columns for timestamp tracking
@@ -1225,6 +1226,46 @@ export const namefiNftOwnersView = pgView('namefi_nft_owners_view', {
   ownerAddress: text('owner_address').notNull(),
   asOfBlockNumber: bigint('as_of_block_number', { mode: 'bigint' }).notNull(),
 }).existing();
+
+/**
+ * Hidden configuration schema to store app-level configuration state
+ */
+export const appConfigSchema = pgSchema('__config');
+
+/**
+ * User permissions mapping table stored under hidden schema __config
+ *
+ * - Stores per-user granted permissions as plain text strings
+ * - The authoritative list of permissions is maintained in TypeScript enum `Permission`
+ * - Database uses a composite primary key (user_id, permission)
+ */
+export const userPermissionsTable = appConfigSchema.table(
+  'user_permissions',
+  {
+    userId: uuid('user_id')
+      .notNull()
+      .references(() => usersTable.id, { onDelete: 'cascade' }),
+    /**
+     * using a multi row structure for each user is simpler than arrays when it comes to constraints and indexing
+     * and it's easier to query for a single user's permission, and at the same time it's easier to query for all users with a given permission.
+     * also atomicity is easier to maintain when using a multi row structure.
+     *
+     * and since this table is for internal use only, it's not likely to get big enough and if we decide to create a permissions system we won't be using this table.
+     *
+     */
+    permission: text('permission').notNull().$type<Permission>(),
+    createdAt: timestamp('created_at').notNull().defaultNow(),
+    updatedAt: timestamp('updated_at')
+      .notNull()
+      .defaultNow()
+      .$onUpdate(() => new Date()),
+  },
+  (table) => [
+    primaryKey({ columns: [table.userId, table.permission] }),
+    index('user_permissions_user_id_idx').on(table.userId),
+    index('user_permissions_permission_idx').on(table.permission),
+  ],
+);
 
 /**
  * Campaign limits table for controlling free claim grants per campaign

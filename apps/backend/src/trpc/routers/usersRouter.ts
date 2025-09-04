@@ -38,6 +38,7 @@ import {
   createTRPCRouter,
   protectedProcedure,
 } from '../base';
+import type { Permission } from '@namefi-astra/utils';
 import {
   getPrivyUserLinkedEthereumChecksumWalletAddresses,
   privyClient,
@@ -92,6 +93,10 @@ export const usersRouter = createTRPCRouter({
     }
 
     return user;
+  }),
+
+  getMyPermissions: protectedProcedure.query(async ({ ctx }) => {
+    return (ctx.userPermissions ?? []) as Permission[];
   }),
 
   updatePrivyCustomMetadata: protectedProcedure

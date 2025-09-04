@@ -42,7 +42,9 @@ import { type Chain, createPublicClient, http } from 'viem';
 import { chainsToUrls } from '#lib/crypto/rpc-urls';
 import { schedulesRouter } from './admin/schedulesRouter';
 import { poweredByNamefiRouter } from './admin/poweredByNamefiRouter';
+import { permissionsRouter } from './admin/permissionsRouter';
 import { ResourceType } from '#lib/auditor';
+import { canUserAccessAdminPanel } from '../utils';
 /**
  * Convert protobuf WorkflowExecutionStatus enum to readable string
  */
@@ -462,13 +464,7 @@ export const adminRouter = createTRPCRouter({
     }),
 
   isUserAdmin: protectedProcedure.query(async ({ ctx }) => {
-    const privyUser = await privyClient.getUser(ctx.user.privyUserId);
-    const user = await getPrivyUserLinkedEthereumWalletAddresses({
-      privyUser,
-    });
-    const adminWallets = new Set(config.ADMIN_WALLET_ADDRESSES);
-    const isAdmin = user.some((wallet) => adminWallets.has(wallet));
-    return isAdmin;
+    return await canUserAccessAdminPanel(ctx.user);
   }),
 
   getActiveBurnWorkflows: adminProcedure.query(async () => {
@@ -1922,6 +1918,7 @@ export const adminRouter = createTRPCRouter({
   // Subrouters
   schedules: schedulesRouter,
   poweredByNamefi: poweredByNamefiRouter,
+  permissions: permissionsRouter,
 });
 
 function _buildQueryFilters(
