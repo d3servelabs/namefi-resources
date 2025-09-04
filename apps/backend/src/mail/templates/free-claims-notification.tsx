@@ -6,8 +6,8 @@ import { NamefiEmailContainer } from '../components/namefi-email-container';
 import { GoToDashboard } from '../components/go-to-dashboard';
 import rehypeExternalLinks from 'rehype-external-links';
 import ReactMarkdown from 'react-markdown';
-import { Button } from '@react-email/components';
-import { button } from '../styles';
+import { Button, Link } from '@react-email/components';
+import { button, anchor } from '../styles';
 import { usePoweredByNamefiDomain } from '../components/powered-by-namefi-url-context';
 import { buildTemplate } from '../components/build-template';
 import { NamefiEmailLinks } from '../email-links';
@@ -50,19 +50,19 @@ export const FreeClaimsNotification =
 
       const messageMarkdown =
         `Hi ${recipientName ?? ''},\n\n` +
-        `Great news! You've been granted **${pluralize('free claim', totalClaimsGranted, true)}** for **${parentDomain}** domains as part of our "**${campaignName}**".\n\n` +
+        `Great news! You've been granted **${pluralize('free claim', totalClaimsGranted, true)}** for **${parentDomain}** domains as part of our "**${campaignName}**" campaign.\n\n` +
         `**Here's what you earned:**`;
 
       const claimSummary = React.useMemo(() => {
         const summary: string[] = [];
         if (upvoteClaims.length > 0) {
           summary.push(
-            `• ${upvoteClaims.length} ${pluralize('claim', upvoteClaims.length)} for upvoting domains`,
+            `- ${upvoteClaims.length} ${pluralize('claim', upvoteClaims.length)} for upvoting domains`,
           );
         }
         if (shareClaims.length > 0) {
           summary.push(
-            `• ${shareClaims.length} ${pluralize('claim', shareClaims.length)} for sharing tweets about ${parentDomain}`,
+            `- ${shareClaims.length} ${pluralize('claim', shareClaims.length)} for sharing tweets about ${parentDomain}`,
           );
         }
         return summary.join('\n');
@@ -81,7 +81,7 @@ export const FreeClaimsNotification =
 
       return (
         <NamefiEmailContainer
-          title={`[Namefi] Free Claims Granted - ${campaignName}`}
+          title={`[Namefi] You've been granted ${totalClaimsGranted} free claims for ${parentDomain}`}
         >
           <ReactMarkdown
             rehypePlugins={[
@@ -201,9 +201,12 @@ export const FreeClaimsNotification =
                 { target: '_blank', rel: ['noopener', 'noreferrer'] },
               ],
             ]}
+            components={{
+              a: (props) => <Link style={anchor} {...props} />,
+            }}
           >
             {`**How to use your free ${pluralize('claim', totalClaimsGranted)}:**\n\n` +
-              `1. Go to your dashboard and look for the "Free Claims" section\n` +
+              `1. Go to your dashboard and look for the ["My Free Mints"](${NamefiEmailLinks.freeMints({ poweredByNamefiDomain })}) In  the side menu\n` +
               `2. Choose any available **${parentDomain}** domain\n` +
               '3. Complete the registration process at no cost!\n' +
               expirationMarkdown}
@@ -211,7 +214,7 @@ export const FreeClaimsNotification =
 
           <Button
             style={button}
-            href={NamefiEmailLinks.dashboard({
+            href={NamefiEmailLinks.freeMints({
               poweredByNamefiDomain,
             })}
           >
@@ -232,7 +235,7 @@ export const FreeClaimsNotification =
           source: 'UPVOTE',
           sourceId: 'upvote-123',
           domainName: 'example.0x.city',
-          reason: 'Upvoted domain in Hunt (0x.city)',
+          reason: 'Upvoted domain in Namefi Hunt (0x.city)',
         },
         {
           source: 'SHARE',

@@ -89,8 +89,8 @@ export async function grantClaimAtomic(
         // 3. Generate reason text based on source
         // Note: Database trigger will enforce limits, so we don't need app-level counting
         const reasonMap = {
-          UPVOTE: `Upvoted domain in Hunt (${campaignKey} promo)`,
-          SHARE: `Shared tweet about ${parentDomain} (${campaignKey} promo)`,
+          UPVOTE: 'Upvoted domain in Namefi Hunt',
+          SHARE: `Shared tweet about ${parentDomain}`,
         };
 
         const reason = input.reason ?? reasonMap[source];
@@ -286,20 +286,22 @@ export async function sendNotifications(
         };
       });
 
+      const totalClaimsGranted = batch.grantedCount;
+      const parentDomain = batch.parentDomain;
       // Create email content using template
       const emailTemplate = React.createElement(FreeClaimsNotification, {
         recipientName: '', // Could get from user profile if available
         campaignKey: batch.campaignKey,
         campaignName,
-        parentDomain: batch.parentDomain,
+        parentDomain,
         claimsGranted,
-        totalClaimsGranted: batch.grantedCount,
+        totalClaimsGranted,
       });
 
       const html = await render(emailTemplate, { pretty: false });
       const plainText = await render(emailTemplate, { plainText: true });
 
-      const subject = `[Namefi] Free Claims Granted - ${campaignName}`;
+      const subject = `[Namefi] You've been granted ${totalClaimsGranted} free claims for ${parentDomain}`;
 
       await sendMail({
         to: [userEmail],
