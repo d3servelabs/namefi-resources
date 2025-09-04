@@ -379,6 +379,15 @@ export const hashBasedPercentageRollouted = (
   return last4BytesNumber < (16 ** 4 * percentage) / 100;
 };
 
+const _systemReservedKeywords = new Set([
+  ...reservedCommonPrefixes,
+  ...reservedForWidelyUsedBrandNames,
+  ...reservedSubdomainsForBlockchainProjects,
+]);
+
+export const getSystemReservedKeywords = () => {
+  return new Set(_systemReservedKeywords);
+};
 /**
  * Determines if a domain name is reserved for widely used brand names.
  *
@@ -394,11 +403,7 @@ export const isReservedKeyword = (keyword: string) => {
     return true;
   }
 
-  return new Set([
-    ...reservedCommonPrefixes,
-    ...reservedForWidelyUsedBrandNames,
-    ...reservedSubdomainsForBlockchainProjects,
-  ]).has(keyword);
+  return getSystemReservedKeywords().has(keyword);
 };
 
 /**

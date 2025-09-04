@@ -47,6 +47,14 @@ interface DashboardOverviewProps {
     startDate: string;
     endDate: string;
   };
+  visibility?: {
+    publicSuffixPie?: boolean;
+    responseCodePie?: boolean;
+    queryTypeBar?: boolean;
+    hourlyVolumeLine?: boolean;
+    cacheHitRatio?: boolean;
+    dnssecStats?: boolean;
+  };
 }
 
 export default function DashboardOverview({
@@ -54,7 +62,16 @@ export default function DashboardOverview({
   isLoading,
   isFetching = false,
   dateRange,
+  visibility = {},
 }: DashboardOverviewProps) {
+  const {
+    publicSuffixPie = true,
+    responseCodePie = true,
+    queryTypeBar = true,
+    hourlyVolumeLine = true,
+    cacheHitRatio = true,
+    dnssecStats = true,
+  } = visibility;
   // Prepare chart data
   const topDomainsChart = useMemo(() => {
     if (!data?.topDomains?.rows) return null;
@@ -371,76 +388,8 @@ export default function DashboardOverview({
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      {/* Top Domains */}
-      {topDomainsChart && (
-        <Card className="relative">
-          {isFetching && (
-            <div className="absolute inset-0 bg-background/80 backdrop-blur-sm z-10 rounded-lg flex items-center justify-center">
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Loader2Icon className="h-4 w-4 animate-spin" />
-                Updating chart...
-              </div>
-            </div>
-          )}
-          <CardHeader>
-            <CardTitle>Top DNS Domains</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="h-[32rem]">
-              <Bar data={topDomainsChart} options={barChartOptions} />
-            </div>
-          </CardContent>
-        </Card>
-      )}
-
-      {/* Response Codes */}
-      {responseCodeChart && (
-        <Card className="relative">
-          {isFetching && (
-            <div className="absolute inset-0 bg-background/80 backdrop-blur-sm z-10 rounded-lg flex items-center justify-center">
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Loader2Icon className="h-4 w-4 animate-spin" />
-                Updating chart...
-              </div>
-            </div>
-          )}
-          <CardHeader>
-            <CardTitle>Response Codes</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Pie data={responseCodeChart} options={pieChartOptions} />
-          </CardContent>
-        </Card>
-      )}
-
-      {/* Query Types */}
-      {queryTypeChart && (
-        <Card>
-          <CardHeader>
-            <CardTitle>Query Types</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="h-96">
-              <Bar data={queryTypeChart} options={barChartOptions} />
-            </div>
-          </CardContent>
-        </Card>
-      )}
-
-      {/* Public Suffixes */}
-      {publicSuffixChart && (
-        <Card>
-          <CardHeader>
-            <CardTitle>Top Public Suffixes</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Pie data={publicSuffixChart} options={pieChartOptions} />
-          </CardContent>
-        </Card>
-      )}
-
       {/* Hourly Volume */}
-      {hourlyVolumeChart && (
+      {hourlyVolumeLine && hourlyVolumeChart && (
         <Card className="lg:col-span-2 relative">
           {isFetching && (
             <div className="absolute inset-0 bg-background/80 backdrop-blur-sm z-10 rounded-lg flex items-center justify-center">
@@ -456,6 +405,78 @@ export default function DashboardOverview({
           <CardContent>
             <div className="h-80">
               <Line data={hourlyVolumeChart} options={lineChartOptions} />
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Top Domains */}
+      {topDomainsChart && (
+        <Card className="relative">
+          {isFetching && (
+            <div className="absolute inset-0 bg-background/80 backdrop-blur-sm z-10 rounded-lg flex items-center justify-center">
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <Loader2Icon className="h-4 w-4 animate-spin" />
+                Updating chart...
+              </div>
+            </div>
+          )}
+          <CardHeader>
+            <CardTitle>Top DNS Domains</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="h-[30rem] overflow-y-auto">
+              <Bar data={topDomainsChart} options={barChartOptions} />
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Response Codes */}
+      {responseCodePie && responseCodeChart && (
+        <Card className="relative">
+          {isFetching && (
+            <div className="absolute inset-0 bg-background/80 backdrop-blur-sm z-10 rounded-lg flex items-center justify-center">
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <Loader2Icon className="h-4 w-4 animate-spin" />
+                Updating chart...
+              </div>
+            </div>
+          )}
+          <CardHeader>
+            <CardTitle>Response Codes</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="h-[30rem] overflow-y-auto w-full flex items-center justify-center">
+              <Pie data={responseCodeChart} options={pieChartOptions} />
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Query Types */}
+      {queryTypeBar && queryTypeChart && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Query Types</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="h-[30rem] overflow-y-auto w-full flex items-center justify-center">
+              <Bar data={queryTypeChart} options={barChartOptions} />
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Public Suffixes */}
+      {publicSuffixPie && publicSuffixChart && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Top Public Suffixes</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="h-[30rem] overflow-y-auto w-full flex items-center justify-center">
+              <Pie data={publicSuffixChart} options={pieChartOptions} />
             </div>
           </CardContent>
         </Card>

@@ -159,152 +159,155 @@ const dateRangeSchema = z.object({
   endDate: gaDateToken.default('today'),
 });
 
-const dashboardInputSchema = z.object({
+export const getDashboardOverviewInputSchema = z.object({
   startDate: gaDateToken,
   endDate: gaDateToken,
   publicSuffix: z.string().optional(),
   publicSuffixPlusOne: z.string().optional(),
 });
+export async function getDashboardOverview(
+  input: z.infer<typeof getDashboardOverviewInputSchema>,
+) {
+  const client = createClient();
+  const dateRange: DateRange = {
+    startDate: input.startDate,
+    endDate: input.endDate,
+  };
+
+  logger.info(
+    {
+      dateRange,
+      publicSuffix: input.publicSuffix,
+      publicSuffixPlusOne: input.publicSuffixPlusOne,
+    },
+    'Getting dashboard overview',
+  );
+
+  const dimensionFilter = createDimensionFilters(input);
+  try {
+    // Use runReport method directly
+    const [
+      topDomains,
+      queriesByResponseCode,
+      queriesByType,
+      cacheHitRatio,
+      topClientIps,
+      dnssecStats,
+      hourlyVolume,
+      dailyVolume,
+      publicSuffix,
+      publicSuffixPlusOne,
+    ] = await Promise.all([
+      // Top domains
+      client['runReport']({
+        dateRanges: [dateRange],
+        metrics: [{ name: 'eventCount' }],
+        dimensions: [{ name: 'customEvent:domain' }],
+        dimensionFilter,
+        orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }],
+        limit: 20,
+      }),
+      // Queries by response code
+      client['runReport']({
+        dateRanges: [dateRange],
+        metrics: [{ name: 'eventCount' }],
+        dimensions: [{ name: 'customEvent:rcode' }],
+        dimensionFilter,
+        orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }],
+      }),
+      // Queries by type
+      client['runReport']({
+        dateRanges: [dateRange],
+        metrics: [{ name: 'eventCount' }],
+        dimensions: [{ name: 'customEvent:query_type' }],
+        dimensionFilter,
+        orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }],
+      }),
+      // Cache hit ratio
+      client['runReport']({
+        dateRanges: [dateRange],
+        metrics: [{ name: 'eventCount' }],
+        dimensions: [{ name: 'customEvent:cache_hit' }],
+        dimensionFilter,
+      }),
+      // Top client IPs
+      client['runReport']({
+        dateRanges: [dateRange],
+        metrics: [{ name: 'eventCount' }],
+        dimensions: [{ name: 'customEvent:client_ip' }],
+        dimensionFilter,
+        orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }],
+        limit: 15,
+      }),
+      // DNSSEC stats
+      client['runReport']({
+        dateRanges: [dateRange],
+        metrics: [{ name: 'eventCount' }],
+        dimensions: [{ name: 'customEvent:dnssec' }],
+        dimensionFilter,
+      }),
+      // Hourly volume
+      client['runReport']({
+        dateRanges: [dateRange],
+        metrics: [{ name: 'eventCount' }],
+        dimensions: [{ name: 'dateHour' }],
+        dimensionFilter,
+        orderBys: [{ dimension: { dimensionName: 'dateHour' }, desc: false }],
+      }),
+      // Daily volume
+      client['runReport']({
+        dateRanges: [dateRange],
+        metrics: [{ name: 'eventCount' }],
+        dimensions: [{ name: 'date' }],
+        dimensionFilter,
+        orderBys: [{ dimension: { dimensionName: 'date' }, desc: false }],
+      }),
+      // Public suffix
+      client['runReport']({
+        dateRanges: [dateRange],
+        metrics: [{ name: 'eventCount' }],
+        dimensions: [{ name: 'customEvent:public_suffix' }],
+        dimensionFilter,
+        orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }],
+        limit: 10,
+      }),
+      // Public suffix plus one
+      client['runReport']({
+        dateRanges: [dateRange],
+        metrics: [{ name: 'eventCount' }],
+        dimensions: [{ name: 'customEvent:public_suffix_plus_one' }],
+        dimensionFilter,
+        orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }],
+        limit: 10,
+      }),
+    ]);
+
+    return {
+      topDomains,
+      queriesByResponseCode: mapRcodesToNames(queriesByResponseCode),
+      queriesByType,
+      cacheHitRatio,
+      topClientIps,
+      dnssecStats: mapDnssecStatus(dnssecStats),
+      hourlyVolume,
+      dailyVolume,
+      publicSuffix,
+      publicSuffixPlusOne,
+    };
+  } catch (error) {
+    logger.error({ error }, 'Error getting dashboard overview');
+    throw error;
+  }
+}
 
 export const analyticsRouter = createTRPCRouter({
   /**
    * Get comprehensive dashboard overview
    */
   getDashboardOverview: adminProcedure
-    .input(dashboardInputSchema)
+    .input(getDashboardOverviewInputSchema)
     .query(async ({ input }) => {
-      const client = createClient();
-      const dateRange: DateRange = {
-        startDate: input.startDate,
-        endDate: input.endDate,
-      };
-
-      logger.info(
-        {
-          dateRange,
-          publicSuffix: input.publicSuffix,
-          publicSuffixPlusOne: input.publicSuffixPlusOne,
-        },
-        'Getting dashboard overview',
-      );
-
-      const dimensionFilter = createDimensionFilters(input);
-      try {
-        // Use runReport method directly
-        const [
-          topDomains,
-          queriesByResponseCode,
-          queriesByType,
-          cacheHitRatio,
-          topClientIps,
-          dnssecStats,
-          hourlyVolume,
-          dailyVolume,
-          publicSuffix,
-          publicSuffixPlusOne,
-        ] = await Promise.all([
-          // Top domains
-          client['runReport']({
-            dateRanges: [dateRange],
-            metrics: [{ name: 'eventCount' }],
-            dimensions: [{ name: 'customEvent:domain' }],
-            dimensionFilter,
-            orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }],
-            limit: 20,
-          }),
-          // Queries by response code
-          client['runReport']({
-            dateRanges: [dateRange],
-            metrics: [{ name: 'eventCount' }],
-            dimensions: [{ name: 'customEvent:rcode' }],
-            dimensionFilter,
-            orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }],
-          }),
-          // Queries by type
-          client['runReport']({
-            dateRanges: [dateRange],
-            metrics: [{ name: 'eventCount' }],
-            dimensions: [{ name: 'customEvent:query_type' }],
-            dimensionFilter,
-            orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }],
-          }),
-          // Cache hit ratio
-          client['runReport']({
-            dateRanges: [dateRange],
-            metrics: [{ name: 'eventCount' }],
-            dimensions: [{ name: 'customEvent:cache_hit' }],
-            dimensionFilter,
-          }),
-          // Top client IPs
-          client['runReport']({
-            dateRanges: [dateRange],
-            metrics: [{ name: 'eventCount' }],
-            dimensions: [{ name: 'customEvent:client_ip' }],
-            dimensionFilter,
-            orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }],
-            limit: 15,
-          }),
-          // DNSSEC stats
-          client['runReport']({
-            dateRanges: [dateRange],
-            metrics: [{ name: 'eventCount' }],
-            dimensions: [{ name: 'customEvent:dnssec' }],
-            dimensionFilter,
-          }),
-          // Hourly volume
-          client['runReport']({
-            dateRanges: [dateRange],
-            metrics: [{ name: 'eventCount' }],
-            dimensions: [{ name: 'dateHour' }],
-            dimensionFilter,
-            orderBys: [
-              { dimension: { dimensionName: 'dateHour' }, desc: false },
-            ],
-          }),
-          // Daily volume
-          client['runReport']({
-            dateRanges: [dateRange],
-            metrics: [{ name: 'eventCount' }],
-            dimensions: [{ name: 'date' }],
-            dimensionFilter,
-            orderBys: [{ dimension: { dimensionName: 'date' }, desc: false }],
-          }),
-          // Public suffix
-          client['runReport']({
-            dateRanges: [dateRange],
-            metrics: [{ name: 'eventCount' }],
-            dimensions: [{ name: 'customEvent:public_suffix' }],
-            dimensionFilter,
-            orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }],
-            limit: 10,
-          }),
-          // Public suffix plus one
-          client['runReport']({
-            dateRanges: [dateRange],
-            metrics: [{ name: 'eventCount' }],
-            dimensions: [{ name: 'customEvent:public_suffix_plus_one' }],
-            dimensionFilter,
-            orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }],
-            limit: 10,
-          }),
-        ]);
-
-        return {
-          topDomains,
-          queriesByResponseCode: mapRcodesToNames(queriesByResponseCode),
-          queriesByType,
-          cacheHitRatio,
-          topClientIps,
-          dnssecStats: mapDnssecStatus(dnssecStats),
-          hourlyVolume,
-          dailyVolume,
-          publicSuffix,
-          publicSuffixPlusOne,
-        };
-      } catch (error) {
-        logger.error({ error }, 'Error getting dashboard overview');
-        throw error;
-      }
+      return getDashboardOverview(input);
     }),
 
   /**

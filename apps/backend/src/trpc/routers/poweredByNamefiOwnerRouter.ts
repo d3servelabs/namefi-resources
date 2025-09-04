@@ -18,8 +18,16 @@ import { subDays } from 'date-fns';
 import { isNil, sum } from 'ramda';
 import { logger } from '#lib/logger';
 import { TRPCError } from '@trpc/server';
-import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
+import {
+  namefiNormalizedDomainSchema,
+  type NamefiNormalizedDomain,
+} from '@namefi-astra/utils';
 import { isReservedKeyword } from '#lib/namefi-registry-helpers';
+import {
+  getDashboardOverviewInputSchema,
+  getDashboardOverview,
+} from './analyticsRouter';
+import { getSystemReservedKeywords } from '#lib/namefi-registry-helpers';
 
 export const poweredByNamefiOwnerRouter = createTRPCRouter({
   // For topBar visibility
@@ -47,6 +55,12 @@ export const poweredByNamefiOwnerRouter = createTRPCRouter({
       }
 
       return { isOwner: record.ownerId === ctx.user.id };
+    }),
+
+  getAnalyticsDashboardOverview: poweredByNamefiOwnerProcedure
+    .input(getDashboardOverviewInputSchema)
+    .query(async ({ ctx, input }) => {
+      return getDashboardOverview(input);
     }),
 
   // List domains owned by the user
@@ -189,7 +203,7 @@ export const poweredByNamefiOwnerRouter = createTRPCRouter({
       z.object({
         from: z.date().optional(),
         to: z.date().optional(),
-        normalizedDomainName: z.string().optional(),
+        normalizedDomainName: namefiNormalizedDomainSchema.optional(),
         interval: z.enum(['day', 'week', 'month']).default('day'),
       }),
     )
@@ -349,8 +363,10 @@ export const poweredByNamefiOwnerRouter = createTRPCRouter({
 
   // Reserved words management
   getReservedWords: poweredByNamefiOwnerProcedure
-    .input(z.object({ normalizedDomainName: z.string() }))
+    .input(z.object({ normalizedDomainName: namefiNormalizedDomainSchema }))
     .query(async ({ ctx, input }) => {
+      await assertOwnerOfDomain(input.normalizedDomainName, ctx.user.id);
+
       // Get the domain record
       const domainRecord =
         await ctx.db.query.poweredbyNamefiDomainsTable.findFirst({
@@ -368,255 +384,7 @@ export const poweredByNamefiOwnerRouter = createTRPCRouter({
       }
 
       // Get fixed reserved words from the helper
-      const fixedReservedWords = Array.from(
-        new Set(
-          [
-            'academy',
-            'account',
-            'admin',
-            'affiliate',
-            'alpha',
-            'analytics',
-            'api-docs',
-            'api',
-            'app',
-            'archive',
-            'assets',
-            'auth',
-            'backup',
-            'benefits',
-            'beta',
-            'billing',
-            'blog',
-            'careers',
-            'cd',
-            'cdn',
-            'chat',
-            'ci',
-            'cloud',
-            'community',
-            'connect',
-            'dashboard',
-            'demo',
-            'dev',
-            'developer',
-            'discover',
-            'docker',
-            'docs',
-            'download',
-            'email',
-            'engineering',
-            'events',
-            'explore',
-            'forum',
-            'git',
-            'help',
-            'hr',
-            'internal',
-            'intranet',
-            'investor',
-            'invoice',
-            'jobs',
-            'kubernetes',
-            'labs',
-            'learn',
-            'legacy',
-            'legal',
-            'locations',
-            'login',
-            'logs',
-            'm',
-            'mail',
-            'maps',
-            'marketing',
-            'media',
-            'metrics',
-            'mobile',
-            'monitor',
-            'myaccount',
-            'network',
-            'news',
-            'partners',
-            'payments',
-            'payroll',
-            'portal',
-            'preferences',
-            'press',
-            'profile',
-            'qa',
-            'repo',
-            'research',
-            'reseller',
-            'sales',
-            'sandbox',
-            'search',
-            'secure',
-            'security',
-            'settings',
-            'shop',
-            'ssl',
-            'sso',
-            'staging',
-            'static',
-            'status-page',
-            'status',
-            'storage',
-            'store',
-            'subscriptions',
-            'support',
-            'test',
-            'university',
-            'upload',
-            'uptime',
-            'vault',
-            'webmail',
-            'www',
-            'about',
-            'abuse',
-            'advertise',
-            'annualreport',
-            'apps',
-            'ask',
-            'atm',
-            'banker',
-            'bankers',
-            'banking',
-            'blockchain',
-            'broker',
-            'brokers',
-            'cannabis',
-            'checking',
-            'compare',
-            'contact',
-            'corporate',
-            'credit',
-            'crypto',
-            'customer',
-            'cybersecurity',
-            'directory',
-            'dns',
-            'domain',
-            'domains',
-            'emergency',
-            'eula',
-            'finance',
-            'financial',
-            'financing',
-            'find',
-            'fintech',
-            'foreign',
-            'fraud',
-            'ftld',
-            'ftp',
-            'hire',
-            'imap',
-            'information',
-            'international',
-            'internet',
-            'lend',
-            'loan',
-            'loans',
-            'locate',
-            'logout',
-            'manage',
-            'mortgage',
-            'mx',
-            'ns',
-            'offer',
-            'offers',
-            'online',
-            'pay',
-            'pop',
-            'pop3',
-            'privacy',
-            'rankings',
-            'ratings',
-            'registrar',
-            'registrars',
-            'registries',
-            'registry',
-            'regulators',
-            'retail',
-            'savings',
-            'smtp',
-            'terms',
-            'tos',
-            'virtual',
-            'wallet',
-            'canary',
-            'release',
-            'prod',
-            'law',
-            'lawyer',
-            'esq',
-            'lawfirm',
-            'court',
-            'judge',
-            'justice',
-            'tribunal',
-            'notary',
-            'barrister',
-            'solicitor',
-            'advocate',
-            'protection',
-            'probono',
-            'legal-aid',
-            'legal-advice',
-            'regulation',
-            'compliance',
-            'trademark',
-            'patent',
-            'copyright',
-            'litigation',
-            'arbitration',
-            'mediation',
-            'case',
-            'counsel',
-            'jurisdiction',
-            'business',
-            'corp',
-            'corporation',
-            'inc',
-            'company',
-            'ltd',
-            'llc',
-            'group',
-            'firm',
-            'money',
-            'creditcard',
-            'cash',
-            'bank',
-            'money',
-            'credit',
-            'creditcard',
-            'cash',
-            'bank',
-            'banking',
-            'google',
-            'facebook',
-            'twitter',
-            'instagram',
-            'linkedin',
-            'youtube',
-            'tiktok',
-            'pinterest',
-            'reddit',
-            'tumblr',
-            'wordpress',
-            'wix',
-            'shopify',
-            'ebay',
-            'aliexpress',
-            'walmart',
-            'target',
-            'bestbuy',
-            'apple',
-            'microsoft',
-          ].filter(
-            (word) => word.includes('namefi') || isReservedKeyword(word),
-          ),
-        ),
-      );
+      const fixedReservedWords = Array.from(getSystemReservedKeywords());
 
       return {
         fixedReservedWords,
@@ -627,12 +395,14 @@ export const poweredByNamefiOwnerRouter = createTRPCRouter({
   validateReservedWords: poweredByNamefiOwnerProcedure
     .input(
       z.object({
-        normalizedDomainName: z.string(),
+        normalizedDomainName: namefiNormalizedDomainSchema,
         words: z.array(z.string()),
       }),
     )
     .query(async ({ ctx, input }) => {
       const { normalizedDomainName, words } = input;
+
+      await assertOwnerOfDomain(normalizedDomainName, ctx.user.id);
 
       // Check if domain exists and user owns it
       const domainRecord =
@@ -708,12 +478,14 @@ export const poweredByNamefiOwnerRouter = createTRPCRouter({
   addReservedWords: poweredByNamefiOwnerProcedure
     .input(
       z.object({
-        normalizedDomainName: z.string(),
+        normalizedDomainName: namefiNormalizedDomainSchema,
         words: z.array(z.string()),
       }),
     )
     .mutation(async ({ ctx, input }) => {
       const { normalizedDomainName, words } = input;
+
+      await assertOwnerOfDomain(normalizedDomainName, ctx.user.id);
 
       // Check if domain exists and user owns it
       const domainRecord =
@@ -825,12 +597,14 @@ export const poweredByNamefiOwnerRouter = createTRPCRouter({
   removeReservedWords: poweredByNamefiOwnerProcedure
     .input(
       z.object({
-        normalizedDomainName: z.string(),
+        normalizedDomainName: namefiNormalizedDomainSchema,
         words: z.array(z.string()),
       }),
     )
     .mutation(async ({ ctx, input }) => {
       const { normalizedDomainName, words } = input;
+
+      await assertOwnerOfDomain(normalizedDomainName, ctx.user.id);
 
       // Get current reserved words
       const domainRecord =
@@ -877,3 +651,30 @@ export const poweredByNamefiOwnerRouter = createTRPCRouter({
       return { success: true, removedWords: words };
     }),
 });
+
+export async function assertOwnerOfDomain(
+  normalizedDomainName: NamefiNormalizedDomain,
+  userId: string,
+) {
+  if (!(await isOwnerOfDomain(normalizedDomainName, userId))) {
+    throw new TRPCError({
+      code: 'UNAUTHORIZED',
+      message: 'You are not the owner of this domain',
+    });
+  }
+}
+async function isOwnerOfDomain(
+  normalizedDomainName: NamefiNormalizedDomain,
+  userId: string,
+) {
+  const domain = await db.query.poweredbyNamefiDomainsTable.findFirst({
+    where: and(
+      eq(
+        poweredbyNamefiDomainsTable.normalizedDomainName,
+        normalizedDomainName,
+      ),
+      eq(poweredbyNamefiDomainsTable.ownerId, userId),
+    ),
+  });
+  return !!domain;
+}

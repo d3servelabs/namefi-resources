@@ -12,7 +12,6 @@ import {
 import { Button } from '@/components/ui/shadcn/button';
 import { RevenueLine } from '@/components/powered-by-namefi/RevenueLine';
 import { RecentOrdersList } from '@/components/powered-by-namefi/RecentOrdersList';
-import { useQueryClient } from '@tanstack/react-query';
 import { DomainDetailsCard } from '@/components/powered-by-namefi/DomainDetailsCard';
 import { EditDomainDialog } from '@/components/powered-by-namefi/EditDomainDialog';
 import { ReservedWordsManager } from '@/components/powered-by-namefi/ReservedWordsManager';
@@ -66,6 +65,15 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/shadcn/dropdown-menu';
 import { ChevronDownIcon } from 'lucide-react';
+import DashboardOverview from '@/components/admin/analytics/DashboardOverview';
+import {
+  RefreshCwIcon,
+  TrendingUpIcon,
+  PieChartIcon,
+  BarChart3Icon,
+  GlobeIcon,
+  Loader2Icon,
+} from 'lucide-react';
 
 ChartJs.register(
   CategoryScale,
@@ -76,10 +84,12 @@ ChartJs.register(
   Legend,
   Title,
 );
+const SKELETON_KEYS = ['one', 'two', 'three', 'four', 'five'];
 enum TabValues {
   OVERVIEW = 'overview',
   RESERVED_WORDS = 'reserved-words',
   ORDERS = 'orders',
+  ANALYTICS = 'analytics',
 }
 const DEFAULT_TAB = TabValues.OVERVIEW;
 
@@ -116,12 +126,13 @@ function InnerPage({ domain }: { domain: NamefiNormalizedDomain }) {
       <PbnDomainBreadcrumb domain={domain} activeTab={activeTab} />
 
       <Tabs value={activeTab.toString()} onValueChange={handleTabChange}>
-        <TabsList className="grid w-full grid-cols-3 lg:w-auto">
+        <TabsList className="grid w-full grid-cols-4 lg:w-auto">
           <TabsTrigger value={TabValues.OVERVIEW}>Overview</TabsTrigger>
           <TabsTrigger value={TabValues.RESERVED_WORDS}>
             Reserved Domains Management
           </TabsTrigger>
           <TabsTrigger value={TabValues.ORDERS}>Orders Details</TabsTrigger>
+          <TabsTrigger value={TabValues.ANALYTICS}>Analytics</TabsTrigger>
         </TabsList>
 
         <TabsContent value={TabValues.OVERVIEW} className="mt-6">
@@ -134,6 +145,10 @@ function InnerPage({ domain }: { domain: NamefiNormalizedDomain }) {
 
         <TabsContent value={TabValues.ORDERS} className="mt-6">
           <OrderDetails domain={domain} />
+        </TabsContent>
+
+        <TabsContent value={TabValues.ANALYTICS} className="mt-6">
+          <DomainAnalytics domain={domain} />
         </TabsContent>
       </Tabs>
     </div>
@@ -345,8 +360,8 @@ function Overview({ domain }: { domain: NamefiNormalizedDomain }) {
         <CardContent>
           {ordersQuery.isLoading ? (
             <div className="space-y-2">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <Skeleton key={i} className="h-12 w-full" />
+              {SKELETON_KEYS.map((key) => (
+                <Skeleton key={key} className="h-12 w-full" />
               ))}
             </div>
           ) : (
@@ -382,6 +397,193 @@ function OrderDetails({ domain }: { domain: string }) {
           )}
         </CardContent>
       </Card>
+    </div>
+  );
+}
+
+function DomainAnalytics({ domain }: { domain: NamefiNormalizedDomain }) {
+  const trpc = useTRPC();
+  const [dateRange, setDateRange] = useState<[Date, Date]>([
+    subDays(new Date(), 7),
+    new Date(),
+  ]);
+
+  const toYmd = (d: Date) => {
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
+  const startDateStr = toYmd(dateRange[0]);
+  const endDateStr = toYmd(dateRange[1]);
+
+  const {
+    data: dashboardData,
+    refetch: refetchDashboard,
+    isLoading,
+    isFetching,
+  } = useQuery({
+    ...trpc.pbnOwner.getAnalyticsDashboardOverview.queryOptions({
+      startDate: startDateStr,
+      endDate: endDateStr,
+      publicSuffixPlusOne: domain,
+    }),
+    placeholderData: (previousData) => previousData,
+  });
+
+  const handleDateRangeChange = (value: [Date, Date]) => {
+    setDateRange(value);
+  };
+
+  const handleRefresh = () => {
+    refetchDashboard();
+  };
+
+  return (
+    <div className="container mx-auto p-6 space-y-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+          <h2 className="text-2xl font-bold text-foreground">
+            Analytics for {domain}
+          </h2>
+          <p className="text-muted-foreground mt-1">
+            Prefiltered to this domain
+          </p>
+        </div>
+        <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+          <RsuiteRangePicker
+            value={dateRange}
+            onChange={handleDateRangeChange}
+          />
+          <Button
+            onClick={handleRefresh}
+            variant="outline"
+            size="sm"
+            disabled={isFetching}
+          >
+            {isFetching ? (
+              <Loader2Icon className="h-4 w-4 mr-2 animate-spin" />
+            ) : (
+              <RefreshCwIcon className="h-4 w-4 mr-2" />
+            )}
+            {isFetching ? 'Refreshing...' : 'Refresh'}
+          </Button>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <Card className="relative">
+          {isFetching && (
+            <div className="absolute inset-0 bg-background/60 backdrop-blur-sm z-10 rounded-lg flex items-center justify-center">
+              <Loader2Icon className="h-4 w-4 animate-spin text-muted-foreground" />
+            </div>
+          )}
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Queries</CardTitle>
+            <TrendingUpIcon className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">
+              {dashboardData?.dailyVolume?.rows
+                ?.reduce(
+                  (sum: number, row: any) =>
+                    sum + Number.parseInt(row.metricValues?.[0]?.value || '0'),
+                  0,
+                )
+                ?.toLocaleString() || '0'}
+            </div>
+            <p className="text-xs text-muted-foreground">Selected period</p>
+          </CardContent>
+        </Card>
+
+        <Card className="relative">
+          {isFetching && (
+            <div className="absolute inset-0 bg-background/60 backdrop-blur-sm z-10 rounded-lg flex items-center justify-center">
+              <Loader2Icon className="h-4 w-4 animate-spin text-muted-foreground" />
+            </div>
+          )}
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">
+              Unique Domains
+            </CardTitle>
+            <GlobeIcon className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">
+              {dashboardData?.topDomains?.rows?.length?.toLocaleString() || '0'}
+            </div>
+            <p className="text-xs text-muted-foreground">
+              Different domains queried
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card className="relative">
+          {isFetching && (
+            <div className="absolute inset-0 bg-background/60 backdrop-blur-sm z-10 rounded-lg flex items-center justify-center">
+              <Loader2Icon className="h-4 w-4 animate-spin text-muted-foreground" />
+            </div>
+          )}
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">
+              Cache Hit Rate
+            </CardTitle>
+            <PieChartIcon className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">
+              {(() => {
+                const cacheData = dashboardData?.cacheHitRatio?.rows;
+                if (!cacheData || cacheData.length === 0) return 'N/A';
+                const hits =
+                  cacheData.find(
+                    (row: any) => row.dimensionValues?.[0]?.value === 'true',
+                  )?.metricValues?.[0]?.value || 0;
+                const total = cacheData.reduce(
+                  (sum: number, row: any) =>
+                    sum + Number.parseInt(row.metricValues?.[0]?.value || '0'),
+                  0,
+                );
+                return total > 0
+                  ? `${((Number.parseInt(hits.toString()) / total) * 100).toFixed(1)}%`
+                  : 'N/A';
+              })()}
+            </div>
+            <p className="text-xs text-muted-foreground">
+              Queries served from cache
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card className="relative">
+          {isFetching && (
+            <div className="absolute inset-0 bg-background/60 backdrop-blur-sm z-10 rounded-lg flex items-center justify-center">
+              <Loader2Icon className="h-4 w-4 animate-spin text-muted-foreground" />
+            </div>
+          )}
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Client IPs</CardTitle>
+            <BarChart3Icon className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">
+              {dashboardData?.topClientIps?.rows?.length || 0}
+            </div>
+            <p className="text-xs text-muted-foreground">Unique client IPs</p>
+          </CardContent>
+        </Card>
+      </div>
+
+      <DashboardOverview
+        data={dashboardData}
+        isLoading={isLoading}
+        isFetching={isFetching}
+        dateRange={{ startDate: startDateStr, endDate: endDateStr }}
+        visibility={{
+          publicSuffixPie: false,
+        }}
+      />
     </div>
   );
 }
