@@ -17,6 +17,7 @@ import {
   MoreHorizontalIcon,
   UserIcon,
   WalletIcon,
+  Settings as SettingsIcon,
 } from 'lucide-react';
 import Link from 'next/link';
 import {
@@ -43,6 +44,8 @@ import { AnimatePresence, motion } from 'motion/react';
 import { cn } from '@/lib/cn';
 import { useTRPC } from '@/lib/trpc';
 import { useQuery } from '@tanstack/react-query';
+import { Permission } from '@namefi-astra/utils';
+import { useHasPermissions } from '@/components/access/PermissionGate';
 
 const BASE_ITEMS: NavItem[] = [
   { title: 'Profile', href: '/profile', icon: UserIcon },
@@ -89,9 +92,20 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
         enabled: isAuthenticated,
       }),
     );
+    const { hasPermissions: canViewAdminDashboard } = useHasPermissions(
+      [Permission.VIEW_ADMIN_DASHBOARD],
+      'every',
+    );
 
     const items: NavItem[] = useMemo(() => {
       const out: NavItem[] = [...BASE_ITEMS];
+      if (canViewAdminDashboard) {
+        out.unshift({
+          title: 'Admin Dashboard',
+          href: '/admin',
+          icon: SettingsIcon,
+        });
+      }
       if (pbnOwnerQuery.data?.isOwner) {
         out.unshift({
           title: 'Powered Domains',
@@ -100,7 +114,7 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
         });
       }
       return out;
-    }, [pbnOwnerQuery.data?.isOwner]);
+    }, [canViewAdminDashboard, pbnOwnerQuery.data?.isOwner]);
 
     const isExpanded = useMemo(() => {
       return forceExpanded || sidebarState !== 'collapsed' || isMobile;
