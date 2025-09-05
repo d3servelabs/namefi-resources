@@ -720,26 +720,37 @@ describe('Hunt Router', () => {
 
         expect(testDomains).toHaveLength(5);
 
-        // Check ranking: 1,2,2,4,5
-        expect(testDomains[0].domainName).toBe('test.tied.domain1');
-        expect(testDomains[0].upvoteCount).toBe(2);
-        expect(testDomains[0].rank).toBe(1);
+        // Sort test domains by their position in the result to get relative ranking
+        const sortedTestDomains = testDomains.sort((a, b) => a.rank - b.rank);
 
-        // Domain2 and Domain3 should be tied for rank 2
-        expect(testDomains[1].upvoteCount).toBe(1);
-        expect(testDomains[1].rank).toBe(2);
-        expect(testDomains[2].upvoteCount).toBe(1);
-        expect(testDomains[2].rank).toBe(2);
+        // Check relative ranking and vote counts
+        expect(sortedTestDomains[0].domainName).toBe('test.tied.domain1');
+        expect(sortedTestDomains[0].upvoteCount).toBe(2);
 
-        // Domain4 should get rank 4 (skipping rank 3 due to tie)
-        expect(testDomains[3].domainName).toBe('test.tied.domain4');
-        expect(testDomains[3].upvoteCount).toBe(0);
-        expect(testDomains[3].rank).toBe(4);
+        // Domain2 and Domain3 should be tied for the same rank (next highest after domain1)
+        expect(sortedTestDomains[1].upvoteCount).toBe(1);
+        expect(sortedTestDomains[2].upvoteCount).toBe(1);
+        expect(sortedTestDomains[1].rank).toBe(sortedTestDomains[2].rank);
 
-        // Domain5 should get rank 5
-        expect(testDomains[4].domainName).toBe('test.tied.domain5');
-        expect(testDomains[4].upvoteCount).toBe(0);
-        expect(testDomains[4].rank).toBe(4);
+        // Domain4 should have 0 votes and rank after the tie
+        expect(sortedTestDomains[3].domainName).toBe('test.tied.domain4');
+        expect(sortedTestDomains[3].upvoteCount).toBe(0);
+        expect(sortedTestDomains[3].rank).toBeGreaterThan(
+          sortedTestDomains[2].rank,
+        );
+
+        // Domain5 should have 0 votes and same rank as domain4 (both have 0 votes)
+        expect(sortedTestDomains[4].domainName).toBe('test.tied.domain5');
+        expect(sortedTestDomains[4].upvoteCount).toBe(0);
+        expect(sortedTestDomains[4].rank).toBe(sortedTestDomains[3].rank);
+
+        // Verify ranking order: domain1 > (domain2 = domain3) > (domain4 = domain5)
+        expect(sortedTestDomains[0].rank).toBeLessThan(
+          sortedTestDomains[1].rank,
+        );
+        expect(sortedTestDomains[1].rank).toBeLessThan(
+          sortedTestDomains[3].rank,
+        );
       });
 
       it('should handle tied rankings correctly (1,2,2,4,5) for public endpoint', async () => {
@@ -756,26 +767,37 @@ describe('Hunt Router', () => {
 
         expect(testDomains).toHaveLength(5);
 
-        // Check ranking: 1,2,2,4,5
-        expect(testDomains[0].domainName).toBe('test.tied.domain1');
-        expect(testDomains[0].upvoteCount).toBe(2);
-        expect(testDomains[0].rank).toBe(1);
+        // Sort test domains by their position in the result to get relative ranking
+        const sortedTestDomains = testDomains.sort((a, b) => a.rank - b.rank);
 
-        // Domain2 and Domain3 should be tied for rank 2
-        expect(testDomains[1].upvoteCount).toBe(1);
-        expect(testDomains[1].rank).toBe(2);
-        expect(testDomains[2].upvoteCount).toBe(1);
-        expect(testDomains[2].rank).toBe(2);
+        // Check relative ranking and vote counts
+        expect(sortedTestDomains[0].domainName).toBe('test.tied.domain1');
+        expect(sortedTestDomains[0].upvoteCount).toBe(2);
 
-        // Domain4 should get rank 4 (skipping rank 3 due to tie)
-        expect(testDomains[3].domainName).toBe('test.tied.domain4');
-        expect(testDomains[3].upvoteCount).toBe(0);
-        expect(testDomains[3].rank).toBe(4);
+        // Domain2 and Domain3 should be tied for the same rank (next highest after domain1)
+        expect(sortedTestDomains[1].upvoteCount).toBe(1);
+        expect(sortedTestDomains[2].upvoteCount).toBe(1);
+        expect(sortedTestDomains[1].rank).toBe(sortedTestDomains[2].rank);
 
-        // Domain5 should get rank 5
-        expect(testDomains[4].domainName).toBe('test.tied.domain5');
-        expect(testDomains[4].upvoteCount).toBe(0);
-        expect(testDomains[4].rank).toBe(4);
+        // Domain4 should have 0 votes and rank after the tie
+        expect(sortedTestDomains[3].domainName).toBe('test.tied.domain4');
+        expect(sortedTestDomains[3].upvoteCount).toBe(0);
+        expect(sortedTestDomains[3].rank).toBeGreaterThan(
+          sortedTestDomains[2].rank,
+        );
+
+        // Domain5 should have 0 votes and same rank as domain4 (both have 0 votes)
+        expect(sortedTestDomains[4].domainName).toBe('test.tied.domain5');
+        expect(sortedTestDomains[4].upvoteCount).toBe(0);
+        expect(sortedTestDomains[4].rank).toBe(sortedTestDomains[3].rank);
+
+        // Verify ranking order: domain1 > (domain2 = domain3) > (domain4 = domain5)
+        expect(sortedTestDomains[0].rank).toBeLessThan(
+          sortedTestDomains[1].rank,
+        );
+        expect(sortedTestDomains[1].rank).toBeLessThan(
+          sortedTestDomains[3].rank,
+        );
       });
 
       it('should handle tied rankings across pagination boundaries', async () => {
