@@ -9,6 +9,8 @@ export const trendingDomainTimeRangeEnum = z.enum([
   'THIS_WEEK',
   'THIS_MONTH',
   'THIS_YEAR',
+  'LAST_7_DAYS',
+  'LAST_30_DAYS',
   'ANYTIME',
 ]);
 export type TrendingDomainTimeRange =

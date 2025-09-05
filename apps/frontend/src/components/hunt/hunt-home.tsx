@@ -107,11 +107,14 @@ export const HuntHome = () => {
                 <h3 className="text-lg font-bold">Trending Domains</h3>
                 <Tabs value={timeRange} onValueChange={handleTimeRangeChange}>
                   <TabsList>
-                    <TabsTrigger value="THIS_WEEK" className="cursor-pointer">
-                      This Week
+                    <TabsTrigger value="LAST_7_DAYS" className="cursor-pointer">
+                      Last 7 Days
                     </TabsTrigger>
-                    <TabsTrigger value="THIS_MONTH" className="cursor-pointer">
-                      This Month
+                    <TabsTrigger
+                      value="LAST_30_DAYS"
+                      className="cursor-pointer"
+                    >
+                      Last 30 Days
                     </TabsTrigger>
                     <TabsTrigger value="ANYTIME" className="cursor-pointer">
                       Anytime

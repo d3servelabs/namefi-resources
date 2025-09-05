@@ -8,6 +8,7 @@ import {
   startOfYear,
   parseISO,
   isValid,
+  subDays,
 } from 'date-fns';
 import { gte, type SQL, sql } from 'drizzle-orm';
 import type { TrendingDomainTimeRange } from './schema';
@@ -34,6 +35,12 @@ export const createTimeRangeFilter = (
     }
     case 'THIS_YEAR': {
       return gte(dateColumn, startOfYear(now));
+    }
+    case 'LAST_7_DAYS': {
+      return gte(dateColumn, subDays(now, 7));
+    }
+    case 'LAST_30_DAYS': {
+      return gte(dateColumn, subDays(now, 30));
     }
     case 'ANYTIME':
       return sql`1 = 1`;
