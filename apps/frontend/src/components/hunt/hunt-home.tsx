@@ -9,7 +9,6 @@ import { useQuery } from '@tanstack/react-query';
 import { PlusIcon, UserIcon } from 'lucide-react';
 import Link from 'next/link';
 import { useCallback, useMemo, useState } from 'react';
-import { HomeCampaignsSection } from './home-campaigns-section';
 import { DomainsList } from './domains-list';
 import { PaginationControls } from './pagination-control';
 import { SubmitDomainDialog } from './submit-domain-dialog';
@@ -103,7 +102,6 @@ export const HuntHome = () => {
           </div>
 
           <div className="space-y-8">
-            <HomeCampaignsSection />
             <div className="space-y-4">
               <div className="flex justify-between items-center">
                 <h3 className="text-lg font-bold">Trending Domains</h3>
