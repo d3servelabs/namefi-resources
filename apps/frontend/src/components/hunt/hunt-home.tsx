@@ -23,7 +23,7 @@ type TimeRange = AppRouterInput['hunt']['getTrendingDomains']['timeRange'];
 
 export const HuntHome = () => {
   const [page, setPage] = useState(1);
-  const [timeRange, setTimeRange] = useState<TimeRange>('THIS_WEEK');
+  const [timeRange, setTimeRange] = useState<TimeRange>('ANYTIME');
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
   const vote = useHuntVote();
 
