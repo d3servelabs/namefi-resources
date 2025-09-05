@@ -59,7 +59,8 @@ export function GoogleAnalyticsCookieConsentGated() {
             allow_google_signals: false,
             allow_ad_personalization_signals: false,
             origin_type: '${originInfo.isFirstPartyOrigin ? 'first_party' : 'third_party'}',
-            origin_domain: '${originInfo.thirdPartyHostname || 'astra'}'
+            origin_domain: '${originInfo.thirdPartyHostname || 'astra'}',
+            debug_mode: ${config.TYPE === 'development'},
           });
         `}
       </Script>
