@@ -23,7 +23,7 @@ import {
 } from '#lib/namefi-registry';
 import { canUserAccessAdminPanel, privyClient } from './utils';
 import { userPermissionsTable, db as appDb } from '@namefi-astra/db';
-import type { Permission } from '@namefi-astra/utils';
+import { Permission } from '@namefi-astra/utils';
 import { eq, sql } from 'drizzle-orm';
 import { verifyUserAuthAndGetUser, requireUserAuth } from '#lib/auth';
 import {
@@ -443,6 +443,60 @@ export const adminProcedure = protectedProcedure.use(async ({ ctx, next }) => {
 });
 
 /**
+ * Permission middleware builder for admin routes
+ * - Allows SUPER_ADMIN to bypass specific checks
+ * - Supports 'every' (default) or 'some' mode for multiple permissions
+ */
+function buildPermissionMiddleware(
+  required: Permission | Permission[],
+  options?: { mode?: 'every' | 'some' },
+) {
+  const requiredList = Array.isArray(required) ? required : [required];
+  const mode = options?.mode ?? 'every';
+  return t.middleware(async ({ ctx, next }) => {
+    const userPerms = new Set(ctx.userPermissions ?? []);
+    // SUPER_ADMIN bypass
+    if (userPerms.has(Permission.SUPER_ADMIN)) {
+      return next({ ctx });
+    }
+    const hasAll = requiredList.every((p) => userPerms.has(p));
+    const hasSome = requiredList.some((p) => userPerms.has(p));
+    const allowed = mode === 'every' ? hasAll : hasSome;
+    if (!allowed) {
+      throw new TRPCError({
+        code: 'FORBIDDEN',
+        message: 'Missing required permission',
+      });
+    }
+    return next({ ctx });
+  });
+}
+
+/**
+ * Higher-order helper to attach required permissions to any procedure builder.
+ * Example: withRequiredPermissions(adminProcedure, Permission.READ_ANALYTICS)
+ */
+export function withRequiredPermissions<
+  TProc extends {
+    use: (mw: ReturnType<typeof t.middleware>) => any;
+  },
+>(
+  procedure: TProc,
+  required: Permission | Permission[],
+  options?: { mode?: 'every' | 'some' },
+): ReturnType<TProc['use']> {
+  return procedure.use(buildPermissionMiddleware(required, options));
+}
+
+/**
+ * Admin procedure that also enforces specific permissions
+ */
+export const adminProcedureWithPermissions = (
+  required: Permission | Permission[],
+  options?: { mode?: 'every' | 'some' },
+) => adminProcedure.use(buildPermissionMiddleware(required, options));
+
+/**
  * Audited Admin procedure
  */
 export const auditedAdminProcedure = (
@@ -504,6 +558,25 @@ export const auditedAdminProcedure = (
     }
     return result;
   });
+
+/**
+ * Audited admin procedure that also enforces specific permissions
+ */
+export const auditedAdminProcedureWithPermissions = (
+  required: Permission | Permission[],
+  params:
+    | CreateAuditRecordParams
+    | ((args: {
+        ctx: TrpcContextWithUser;
+        input: any;
+        meta?: object;
+        auditActorExtraInfo: AuditActorExtraInfo;
+      }) => CreateAuditRecordParams),
+  options?: { mode?: 'every' | 'some' },
+) =>
+  auditedAdminProcedure(params).use(
+    buildPermissionMiddleware(required, options),
+  );
 
 /**
  * Owner procedure for Powered-by-Namefi domains

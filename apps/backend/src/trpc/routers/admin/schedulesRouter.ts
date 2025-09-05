@@ -2,10 +2,11 @@ import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import { logger } from '#lib/logger';
 import {
-  adminProcedure,
-  auditedAdminProcedure,
+  adminProcedureWithPermissions,
+  auditedAdminProcedureWithPermissions,
   createTRPCRouter,
 } from '../../base';
+import { Permission } from '@namefi-astra/utils';
 import {
   SCHEDULE_REGISTRY,
   getAllSchedules,
@@ -16,7 +17,9 @@ import {
 } from '../../../temporal/schedules';
 
 export const schedulesRouter = createTRPCRouter({
-  getAllSchedules: adminProcedure.query(async () => {
+  getAllSchedules: adminProcedureWithPermissions(
+    Permission.READ_SCHEDULES,
+  ).query(async () => {
     try {
       return getAllSchedules().map((schedule) => {
         return {
@@ -32,7 +35,9 @@ export const schedulesRouter = createTRPCRouter({
     }
   }),
 
-  getScheduleStatuses: adminProcedure.query(async () => {
+  getScheduleStatuses: adminProcedureWithPermissions(
+    Permission.READ_SCHEDULES,
+  ).query(async () => {
     try {
       return await getAllScheduleStatuses();
     } catch (error) {
@@ -44,7 +49,9 @@ export const schedulesRouter = createTRPCRouter({
     }
   }),
 
-  getSchedulesByCategory: adminProcedure
+  getSchedulesByCategory: adminProcedureWithPermissions(
+    Permission.READ_SCHEDULES,
+  )
     .input(
       z.object({
         category: z.string().min(1),
@@ -73,7 +80,8 @@ export const schedulesRouter = createTRPCRouter({
       }
     }),
 
-  submitSchedule: auditedAdminProcedure(
+  submitSchedule: auditedAdminProcedureWithPermissions(
+    Permission.WRITE_SCHEDULES,
     ({ ctx, input, auditActorExtraInfo }) => ({
       actorType: 'admin',
       actorId: ctx.user.id,
@@ -120,7 +128,8 @@ export const schedulesRouter = createTRPCRouter({
       }
     }),
 
-  triggerSchedule: auditedAdminProcedure(
+  triggerSchedule: auditedAdminProcedureWithPermissions(
+    Permission.WRITE_SCHEDULES,
     ({ ctx, input, auditActorExtraInfo }) => ({
       actorType: 'admin',
       actorId: ctx.user.id,
@@ -167,7 +176,8 @@ export const schedulesRouter = createTRPCRouter({
       }
     }),
 
-  pauseSchedule: auditedAdminProcedure(
+  pauseSchedule: auditedAdminProcedureWithPermissions(
+    Permission.WRITE_SCHEDULES,
     ({ ctx, input, auditActorExtraInfo }) => ({
       actorType: 'admin',
       actorId: ctx.user.id,
@@ -213,7 +223,8 @@ export const schedulesRouter = createTRPCRouter({
       }
     }),
 
-  unpauseSchedule: auditedAdminProcedure(
+  unpauseSchedule: auditedAdminProcedureWithPermissions(
+    Permission.WRITE_SCHEDULES,
     ({ ctx, input, auditActorExtraInfo }) => ({
       actorType: 'admin',
       actorId: ctx.user.id,
@@ -259,7 +270,8 @@ export const schedulesRouter = createTRPCRouter({
       }
     }),
 
-  deleteSchedule: auditedAdminProcedure(
+  deleteSchedule: auditedAdminProcedureWithPermissions(
+    Permission.WRITE_SCHEDULES,
     ({ ctx, input, auditActorExtraInfo }) => ({
       actorType: 'admin',
       actorId: ctx.user.id,
@@ -306,7 +318,7 @@ export const schedulesRouter = createTRPCRouter({
       }
     }),
 
-  getScheduleStatus: adminProcedure
+  getScheduleStatus: adminProcedureWithPermissions(Permission.READ_SCHEDULES)
     .input(
       z.object({
         scheduleId: z.string().min(1),
@@ -336,7 +348,9 @@ export const schedulesRouter = createTRPCRouter({
       }
     }),
 
-  getAllScheduleGroups: adminProcedure.query(async () => {
+  getAllScheduleGroups: adminProcedureWithPermissions(
+    Permission.READ_SCHEDULES,
+  ).query(async () => {
     try {
       return getAllRegisteredScheduleGroups();
     } catch (error) {
@@ -348,7 +362,7 @@ export const schedulesRouter = createTRPCRouter({
     }
   }),
 
-  getSchedulesByGroup: adminProcedure
+  getSchedulesByGroup: adminProcedureWithPermissions(Permission.READ_SCHEDULES)
     .input(
       z.object({
         groupId: z.string().optional(),
@@ -369,7 +383,7 @@ export const schedulesRouter = createTRPCRouter({
       }
     }),
 
-  getScheduleGroup: adminProcedure
+  getScheduleGroup: adminProcedureWithPermissions(Permission.READ_SCHEDULES)
     .input(
       z.object({
         groupId: z.string().optional(),

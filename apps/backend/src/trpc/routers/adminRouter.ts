@@ -11,6 +11,7 @@ import {
   namefiNormalizedDomainSchema,
   type NamefiNormalizedDomain,
   checksumWalletAddressSchema,
+  Permission,
 } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
 import { and, asc, desc, eq, isNull, or, lt, type SQL, sql } from 'drizzle-orm';
@@ -21,8 +22,8 @@ import { ensureNftIsLockedAndBurnByNftName } from '#temporal/workflows/mint.work
 import { extendDomainRegistrationWorkflow } from '#temporal/workflows/domain-ownership/extend-registration.workflow';
 import { fixNftExpirationWorkflow } from '#temporal/workflows/fix-nft-expiration.workflow';
 import {
-  adminProcedure,
-  auditedAdminProcedure,
+  adminProcedureWithPermissions,
+  auditedAdminProcedureWithPermissions,
   createTRPCRouter,
   protectedProcedure,
 } from '../base';
@@ -86,7 +87,9 @@ const MAX_GRACE_PERIOD_DAYS = 90; /* 90 days is the max grace period for any reg
 const DATE_MISMATCH_THRESHOLD_SECONDS = 86400;
 
 export const adminRouter = createTRPCRouter({
-  getNftsWithExpirationStatus: adminProcedure
+  getNftsWithExpirationStatus: adminProcedureWithPermissions(
+    Permission.READ_NFT,
+  )
     .input(
       z.object({
         page: z.number().min(1).default(1),
@@ -277,15 +280,18 @@ export const adminRouter = createTRPCRouter({
       };
     }),
 
-  burnNft: auditedAdminProcedure(({ ctx, input, auditActorExtraInfo }) => ({
-    actorType: 'admin',
-    actorId: ctx.user.id,
-    actorExtraInfo: auditActorExtraInfo,
-    resourceType: 'domain',
-    resourceId: input.normalizedDomainName,
-    action: 'start_burn_nft_workflow',
-    extraInput: input,
-  }))
+  burnNft: auditedAdminProcedureWithPermissions(
+    Permission.WRITE_NFT,
+    ({ ctx, input, auditActorExtraInfo }) => ({
+      actorType: 'admin',
+      actorId: ctx.user.id,
+      actorExtraInfo: auditActorExtraInfo,
+      resourceType: 'domain',
+      resourceId: input.normalizedDomainName,
+      action: 'start_burn_nft_workflow',
+      extraInput: input,
+    }),
+  )
     .input(
       z.object({
         normalizedDomainName: namefiNormalizedDomainSchema,
@@ -424,7 +430,7 @@ export const adminRouter = createTRPCRouter({
       }
     }),
 
-  getBurnWorkflowStatus: adminProcedure
+  getBurnWorkflowStatus: adminProcedureWithPermissions(Permission.READ_NFT)
     .input(
       z.object({
         normalizedDomainName: namefiNormalizedDomainSchema,
@@ -467,7 +473,9 @@ export const adminRouter = createTRPCRouter({
     return await canUserAccessAdminPanel(ctx.user);
   }),
 
-  getActiveBurnWorkflows: adminProcedure.query(async () => {
+  getActiveBurnWorkflows: adminProcedureWithPermissions(
+    Permission.READ_NFT,
+  ).query(async () => {
     try {
       await temporalClient.connection.ensureConnected();
       // Get all active burn workflows from Temporal
@@ -508,7 +516,9 @@ export const adminRouter = createTRPCRouter({
     }
   }),
 
-  getActiveFixExpirationWorkflows: adminProcedure.query(async () => {
+  getActiveFixExpirationWorkflows: adminProcedureWithPermissions(
+    Permission.READ_NFT,
+  ).query(async () => {
     try {
       await temporalClient.connection.ensureConnected();
       // Get all active fix NFT expiration workflows from Temporal
@@ -550,7 +560,9 @@ export const adminRouter = createTRPCRouter({
     }
   }),
 
-  getActiveExtendRegistrationWorkflows: adminProcedure.query(async () => {
+  getActiveExtendRegistrationWorkflows: adminProcedureWithPermissions(
+    Permission.READ_NFT,
+  ).query(async () => {
     try {
       await temporalClient.connection.ensureConnected();
       // Get all active extend registration workflows from Temporal
@@ -592,7 +604,8 @@ export const adminRouter = createTRPCRouter({
     }
   }),
 
-  extendRegistration: auditedAdminProcedure(
+  extendRegistration: auditedAdminProcedureWithPermissions(
+    Permission.WRITE_NFT,
     ({ ctx, input, auditActorExtraInfo }) => ({
       actorType: 'admin',
       actorId: ctx.user.id,
@@ -694,7 +707,8 @@ export const adminRouter = createTRPCRouter({
       }
     }),
 
-  fixNftExpiration: auditedAdminProcedure(
+  fixNftExpiration: auditedAdminProcedureWithPermissions(
+    Permission.WRITE_NFT,
     ({ ctx, input, auditActorExtraInfo }) => ({
       actorType: 'admin',
       actorId: ctx.user.id,
@@ -839,7 +853,7 @@ export const adminRouter = createTRPCRouter({
       }
     }),
 
-  getWorkflowHistory: adminProcedure
+  getWorkflowHistory: adminProcedureWithPermissions(Permission.READ_NFT)
     .input(
       z.object({
         days: z.enum(['1', '3', '7']).default('7'),
@@ -1050,7 +1064,9 @@ export const adminRouter = createTRPCRouter({
     }),
 
   // Free Claims Management
-  getFreeClaimsWithPagination: adminProcedure
+  getFreeClaimsWithPagination: adminProcedureWithPermissions(
+    Permission.READ_FREE_CLAIMS,
+  )
     .input(
       z.object({
         page: z.number().min(1).default(1),
@@ -1166,7 +1182,8 @@ export const adminRouter = createTRPCRouter({
       };
     }),
 
-  createFreeClaim: auditedAdminProcedure(
+  createFreeClaim: auditedAdminProcedureWithPermissions(
+    Permission.WRITE_FREE_CLAIMS,
     ({ ctx, input, auditActorExtraInfo }) => ({
       actorType: 'admin',
       actorId: ctx.user.id,
@@ -1235,7 +1252,8 @@ export const adminRouter = createTRPCRouter({
       }
     }),
 
-  updateFreeClaim: auditedAdminProcedure(
+  updateFreeClaim: auditedAdminProcedureWithPermissions(
+    Permission.WRITE_FREE_CLAIMS,
     ({ ctx, input, auditActorExtraInfo }) => ({
       actorType: 'admin',
       actorId: ctx.user.id,
@@ -1315,7 +1333,8 @@ export const adminRouter = createTRPCRouter({
       }
     }),
 
-  deleteFreeClaim: auditedAdminProcedure(
+  deleteFreeClaim: auditedAdminProcedureWithPermissions(
+    Permission.WRITE_FREE_CLAIMS,
     ({ ctx, input, auditActorExtraInfo }) => ({
       actorType: 'admin',
       actorId: ctx.user.id,
@@ -1386,7 +1405,7 @@ export const adminRouter = createTRPCRouter({
       }
     }),
 
-  searchUsers: adminProcedure
+  searchUsers: adminProcedureWithPermissions(Permission.READ_USERS)
     .input(
       z.object({
         searchTerm: z.string().min(1).max(100),
@@ -1607,7 +1626,8 @@ export const adminRouter = createTRPCRouter({
       }
     }),
 
-  burnAllExpiredDomains: auditedAdminProcedure(
+  burnAllExpiredDomains: auditedAdminProcedureWithPermissions(
+    Permission.WRITE_NFT,
     ({ ctx, input, auditActorExtraInfo }) => ({
       actorType: 'admin',
       actorId: ctx.user.id,

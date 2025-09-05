@@ -1,5 +1,6 @@
 import { z } from 'zod';
-import { adminProcedure, createTRPCRouter } from '../base';
+import { adminProcedureWithPermissions, createTRPCRouter } from '../base';
+import { Permission } from '@namefi-astra/utils';
 import { createGA4Client, type DateRange } from '../../lib/analytics_client';
 import { secrets } from '../../lib/env';
 import { createLogger } from '#lib/logger';
@@ -304,7 +305,7 @@ export const analyticsRouter = createTRPCRouter({
   /**
    * Get comprehensive dashboard overview
    */
-  getDashboardOverview: adminProcedure
+  getDashboardOverview: adminProcedureWithPermissions(Permission.READ_ANALYTICS)
     .input(getDashboardOverviewInputSchema)
     .query(async ({ input }) => {
       return getDashboardOverview(input);
@@ -313,7 +314,7 @@ export const analyticsRouter = createTRPCRouter({
   /**
    * Get queries by public suffix
    */
-  getByPublicSuffix: adminProcedure
+  getByPublicSuffix: adminProcedureWithPermissions(Permission.READ_ANALYTICS)
     .input(
       z.object({
         limit: z.number().min(1).max(1000).default(50),
@@ -333,7 +334,9 @@ export const analyticsRouter = createTRPCRouter({
   /**
    * Get queries by public suffix plus one
    */
-  getByPublicSuffixPlusOne: adminProcedure
+  getByPublicSuffixPlusOne: adminProcedureWithPermissions(
+    Permission.READ_ANALYTICS,
+  )
     .input(
       z.object({
         limit: z.number().min(1).max(1000).default(50),

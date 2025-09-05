@@ -15,10 +15,11 @@ import { TRPCError } from '@trpc/server';
 import { and, asc, desc, eq, sql, type SQL } from 'drizzle-orm';
 import { z } from 'zod';
 import {
-  adminProcedure,
-  auditedAdminProcedure,
+  adminProcedureWithPermissions,
+  auditedAdminProcedureWithPermissions,
   createTRPCRouter,
 } from '../../base';
+import { Permission } from '@namefi-astra/utils';
 import { logger } from '#lib/logger';
 import { createVercelClientSDK } from '#lib/vercel/vercel-client-sdk';
 import type { GetDomainConfigResponseBody } from '@vercel/sdk/models/getdomainconfigop';
@@ -309,7 +310,7 @@ function generateRecommendations(validation: DomainValidation): string[] {
 
 export const poweredByNamefiRouter = createTRPCRouter({
   // Get paginated list of poweredByNamefi domains
-  getPoweredByNamefiDomains: adminProcedure
+  getPoweredByNamefiDomains: adminProcedureWithPermissions(Permission.READ_PBN)
     .input(
       z.object({
         page: z.number().min(1).default(1),
@@ -395,7 +396,9 @@ export const poweredByNamefiRouter = createTRPCRouter({
     }),
 
   // Get comprehensive status of a specific poweredByNamefi domain
-  getPoweredByNamefiDomainStatus: adminProcedure
+  getPoweredByNamefiDomainStatus: adminProcedureWithPermissions(
+    Permission.READ_PBN,
+  )
     .input(
       z.object({
         normalizedDomainName: namefiNormalizedDomainSchema,
@@ -431,7 +434,8 @@ export const poweredByNamefiRouter = createTRPCRouter({
     }),
 
   // Create a new poweredByNamefi domain
-  createPoweredByNamefiDomain: auditedAdminProcedure(
+  createPoweredByNamefiDomain: auditedAdminProcedureWithPermissions(
+    Permission.WRITE_PBN,
     ({ ctx, input, auditActorExtraInfo }) => ({
       actorType: 'admin',
       actorId: ctx.user.id,
@@ -516,7 +520,8 @@ export const poweredByNamefiRouter = createTRPCRouter({
     }),
 
   // Update an existing poweredByNamefi domain
-  updatePoweredByNamefiDomain: auditedAdminProcedure(
+  updatePoweredByNamefiDomain: auditedAdminProcedureWithPermissions(
+    Permission.WRITE_PBN,
     ({ ctx, input, auditActorExtraInfo }) => ({
       actorType: 'admin',
       actorId: ctx.user.id,
@@ -621,7 +626,8 @@ export const poweredByNamefiRouter = createTRPCRouter({
     }),
 
   // Delete a poweredByNamefi domain
-  deletePoweredByNamefiDomain: auditedAdminProcedure(
+  deletePoweredByNamefiDomain: auditedAdminProcedureWithPermissions(
+    Permission.WRITE_PBN,
     ({ ctx, input, auditActorExtraInfo }) => ({
       actorType: 'admin',
       actorId: ctx.user.id,
@@ -675,7 +681,8 @@ export const poweredByNamefiRouter = createTRPCRouter({
     }),
 
   // Setup Vercel and DNS method (for backwards compatibility)
-  setupVercelAndDns: auditedAdminProcedure(
+  setupVercelAndDns: auditedAdminProcedureWithPermissions(
+    Permission.WRITE_PBN,
     ({ ctx, input, auditActorExtraInfo }) => ({
       actorType: 'admin',
       actorId: ctx.user.id,
@@ -771,7 +778,8 @@ export const poweredByNamefiRouter = createTRPCRouter({
     }),
 
   // Setup subdomain method (for backwards compatibility)
-  setupNamefiIoSubdomain: auditedAdminProcedure(
+  setupNamefiIoSubdomain: auditedAdminProcedureWithPermissions(
+    Permission.WRITE_PBN,
     ({ ctx, input, auditActorExtraInfo }) => ({
       actorType: 'admin',
       actorId: ctx.user.id,
@@ -867,7 +875,8 @@ export const poweredByNamefiRouter = createTRPCRouter({
     }),
 
   // Setup namefi.dev subdomain method (for backwards compatibility)
-  setupNamefiDevSubdomain: auditedAdminProcedure(
+  setupNamefiDevSubdomain: auditedAdminProcedureWithPermissions(
+    Permission.WRITE_PBN,
     ({ ctx, input, auditActorExtraInfo }) => ({
       actorType: 'admin',
       actorId: ctx.user.id,
@@ -964,7 +973,8 @@ export const poweredByNamefiRouter = createTRPCRouter({
     }),
 
   // Toggle enable/disable status of a powered by namefi domain
-  togglePoweredByNamefiDomainStatus: auditedAdminProcedure(
+  togglePoweredByNamefiDomainStatus: auditedAdminProcedureWithPermissions(
+    Permission.WRITE_PBN,
     ({ ctx, input, auditActorExtraInfo }) => ({
       actorType: 'admin',
       actorId: ctx.user.id,
@@ -1021,7 +1031,8 @@ export const poweredByNamefiRouter = createTRPCRouter({
     }),
 
   // Start rollout for a powered by namefi domain
-  startPoweredByNamefiDomainRollout: auditedAdminProcedure(
+  startPoweredByNamefiDomainRollout: auditedAdminProcedureWithPermissions(
+    Permission.WRITE_PBN,
     ({ ctx, input, auditActorExtraInfo }) => ({
       actorType: 'admin',
       actorId: ctx.user.id,
@@ -1077,77 +1088,79 @@ export const poweredByNamefiRouter = createTRPCRouter({
     }),
 
   // Update cost and duration constraints for a powered by namefi domain
-  updatePoweredByNamefiDomainCostAndDuration: auditedAdminProcedure(
-    ({ ctx, input, auditActorExtraInfo }) => ({
-      actorType: 'admin',
-      actorId: ctx.user.id,
-      actorExtraInfo: auditActorExtraInfo,
-      resourceType: 'pbn_domain',
-      resourceId: input?.normalizedDomainName ?? '',
-      action: 'update_cost_and_duration',
-      extraInput: input,
-    }),
-  )
-    .input(
-      z.object({
-        normalizedDomainName: namefiNormalizedDomainSchema,
-        costPerYearInUsdCents: z.number().min(0),
-        durationConstraints: z
-          .object({
-            minDurationInYears: z.number().min(1),
-            maxDurationInYears: z.number().min(1),
-          })
-          .refine(
-            (data) => data.minDurationInYears <= data.maxDurationInYears,
-            {
-              message:
-                'Min duration must be less than or equal to max duration',
-              path: ['durationConstraints'],
-            },
-          ),
+  updatePoweredByNamefiDomainCostAndDuration:
+    auditedAdminProcedureWithPermissions(
+      Permission.WRITE_PBN,
+      ({ ctx, input, auditActorExtraInfo }) => ({
+        actorType: 'admin',
+        actorId: ctx.user.id,
+        actorExtraInfo: auditActorExtraInfo,
+        resourceType: 'pbn_domain',
+        resourceId: input?.normalizedDomainName ?? '',
+        action: 'update_cost_and_duration',
+        extraInput: input,
       }),
     )
-    .mutation(async ({ input }) => {
-      const {
-        normalizedDomainName,
-        costPerYearInUsdCents,
-        durationConstraints,
-      } = input;
-
-      try {
-        const updatedDomain = await db
-          .update(poweredbyNamefiDomainsTable)
-          .set({
-            costPerYearInUsdCents,
-            durationConstraints,
-            updatedAt: new Date(),
-          })
-          .where(
-            eq(
-              poweredbyNamefiDomainsTable.normalizedDomainName,
-              normalizedDomainName,
+      .input(
+        z.object({
+          normalizedDomainName: namefiNormalizedDomainSchema,
+          costPerYearInUsdCents: z.number().min(0),
+          durationConstraints: z
+            .object({
+              minDurationInYears: z.number().min(1),
+              maxDurationInYears: z.number().min(1),
+            })
+            .refine(
+              (data) => data.minDurationInYears <= data.maxDurationInYears,
+              {
+                message:
+                  'Min duration must be less than or equal to max duration',
+                path: ['durationConstraints'],
+              },
             ),
-          )
-          .returning();
+        }),
+      )
+      .mutation(async ({ input }) => {
+        const {
+          normalizedDomainName,
+          costPerYearInUsdCents,
+          durationConstraints,
+        } = input;
 
-        if (updatedDomain.length === 0) {
+        try {
+          const updatedDomain = await db
+            .update(poweredbyNamefiDomainsTable)
+            .set({
+              costPerYearInUsdCents,
+              durationConstraints,
+              updatedAt: new Date(),
+            })
+            .where(
+              eq(
+                poweredbyNamefiDomainsTable.normalizedDomainName,
+                normalizedDomainName,
+              ),
+            )
+            .returning();
+
+          if (updatedDomain.length === 0) {
+            throw new TRPCError({
+              code: 'NOT_FOUND',
+              message: 'Powered by Namefi domain not found',
+            });
+          }
+
+          return {
+            success: true,
+            domain: updatedDomain[0],
+            message: 'Domain cost and duration updated successfully',
+          };
+        } catch (error) {
+          logger.error('Error updating domain cost and duration:', error);
           throw new TRPCError({
-            code: 'NOT_FOUND',
-            message: 'Powered by Namefi domain not found',
+            code: 'INTERNAL_SERVER_ERROR',
+            message: 'Failed to update domain cost and duration',
           });
         }
-
-        return {
-          success: true,
-          domain: updatedDomain[0],
-          message: 'Domain cost and duration updated successfully',
-        };
-      } catch (error) {
-        logger.error('Error updating domain cost and duration:', error);
-        throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR',
-          message: 'Failed to update domain cost and duration',
-        });
-      }
-    }),
+      }),
 });

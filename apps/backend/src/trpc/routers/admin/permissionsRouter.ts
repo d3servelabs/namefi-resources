@@ -3,7 +3,8 @@ import { and, eq, inArray } from 'drizzle-orm';
 import {
   auditedAdminProcedure,
   createTRPCRouter,
-  protectedProcedure,
+  adminProcedure,
+  withRequiredPermissions,
 } from '../../base';
 import { db, usersTable, userPermissionsTable } from '@namefi-astra/db';
 import { TRPCError } from '@trpc/server';
@@ -16,7 +17,10 @@ const permissionEnum = z.nativeEnum(Permission);
 
 export const permissionsRouter = createTRPCRouter({
   // List users who have any permissions
-  listUsersWithPermissions: protectedProcedure.query(async () => {
+  listUsersWithPermissions: withRequiredPermissions(
+    adminProcedure,
+    Permission.READ_PERMISSIONS,
+  ).query(async () => {
     const rows = await db
       .select({
         userId: userPermissionsTable.userId,
@@ -48,13 +52,19 @@ export const permissionsRouter = createTRPCRouter({
   }),
 
   // List all permissions enum values (TS-defined)
-  listAvailablePermissions: protectedProcedure.query(() => {
+  listAvailablePermissions: withRequiredPermissions(
+    adminProcedure,
+    Permission.READ_PERMISSIONS,
+  ).query(() => {
     // Only return visible permissions for UI
     return getVisiblePermissions();
   }),
 
   // Get a user's permissions
-  getUserPermissions: protectedProcedure
+  getUserPermissions: withRequiredPermissions(
+    adminProcedure,
+    Permission.READ_PERMISSIONS,
+  )
     .input(z.object({ userId: z.string().uuid() }))
     .query(async ({ input }) => {
       const rows = await db
@@ -65,8 +75,8 @@ export const permissionsRouter = createTRPCRouter({
     }),
 
   // Grant a set of permissions to a user (idempotent)
-  grantPermissions: auditedAdminProcedure(
-    ({ ctx, input, auditActorExtraInfo }) => ({
+  grantPermissions: withRequiredPermissions(
+    auditedAdminProcedure(({ ctx, input, auditActorExtraInfo }) => ({
       actorType: 'admin',
       actorId: ctx.user.id,
       actorExtraInfo: auditActorExtraInfo,
@@ -74,7 +84,8 @@ export const permissionsRouter = createTRPCRouter({
       resourceId: input.userId,
       action: 'grant_permissions',
       extraInput: input,
-    }),
+    })),
+    Permission.WRITE_PERMISSIONS,
   )
     .input(
       z.object({
@@ -124,8 +135,8 @@ export const permissionsRouter = createTRPCRouter({
     }),
 
   // Revoke a set of permissions from a user
-  revokePermissions: auditedAdminProcedure(
-    ({ ctx, input, auditActorExtraInfo }) => ({
+  revokePermissions: withRequiredPermissions(
+    auditedAdminProcedure(({ ctx, input, auditActorExtraInfo }) => ({
       actorType: 'admin',
       actorId: ctx.user.id,
       actorExtraInfo: auditActorExtraInfo,
@@ -133,7 +144,8 @@ export const permissionsRouter = createTRPCRouter({
       resourceId: input.userId,
       action: 'revoke_permissions',
       extraInput: input,
-    }),
+    })),
+    Permission.WRITE_PERMISSIONS,
   )
     .input(
       z.object({
@@ -166,8 +178,8 @@ export const permissionsRouter = createTRPCRouter({
       return rows.map((r) => r.permission as Permission);
     }),
   // Delete all permissions for a user (including hidden)
-  deleteUserPermissions: auditedAdminProcedure(
-    ({ ctx, input, auditActorExtraInfo }) => ({
+  deleteUserPermissions: withRequiredPermissions(
+    auditedAdminProcedure(({ ctx, input, auditActorExtraInfo }) => ({
       actorType: 'admin',
       actorId: ctx.user.id,
       actorExtraInfo: auditActorExtraInfo,
@@ -175,7 +187,8 @@ export const permissionsRouter = createTRPCRouter({
       resourceId: input.userId,
       action: 'delete_user_permissions',
       extraInput: input,
-    }),
+    })),
+    Permission.WRITE_PERMISSIONS,
   )
     .input(z.object({ userId: z.string().uuid() }))
     .mutation(async ({ input }) => {
