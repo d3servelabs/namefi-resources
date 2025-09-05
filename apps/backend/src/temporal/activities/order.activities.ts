@@ -186,7 +186,6 @@ export async function createAutoRenewOrder({
       paymentId,
       status: orderStatus,
       amountInUSDCents: totalAmountInUsd * 100,
-      totalAmountInUSDCents: totalAmountInUsd * 100,
       metadata: {
         autoRenew: true,
         renewalSummary: {

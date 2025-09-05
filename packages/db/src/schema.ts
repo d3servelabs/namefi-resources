@@ -267,23 +267,13 @@ export const ordersTable = pgTable(
       })
       .notNull(),
     ...amountInUsdCents,
-    totalAmountInUSDCents: integer('total_amount_in_usd_cents').notNull(),
     nftWalletAddress: text('nft_wallet_address'),
     nftChainId: integer('nft_chain_id'),
     metadata: jsonb('metadata').default({}),
     ...timestamps,
-    /**
-     * Future features:
-     * - taxInUSDCents: integer("tax_in_usd_cents").notNull(),
-     * - discountInUSDCents: integer("discount_in_usd_cents").notNull(),
-     */
   },
   (table) => [
     check('amount_in_usd_cents_nonnegative', sql`amount_in_usd_cents >= 0`),
-    check(
-      'total_amount_in_usd_cents_nonnegative',
-      sql`total_amount_in_usd_cents >= 0`,
-    ),
     index('orders_user_id_idx').on(table.userId),
     index('orders_payment_id_idx').on(table.paymentId),
     index('orders_status_idx').on(table.status),

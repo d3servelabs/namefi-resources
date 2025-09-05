@@ -498,7 +498,7 @@ export default function OrderDetailsPage({
               <div className="flex items-center justify-between pt-4">
                 <span className="text-xl font-medium">Total</span>
                 <span className="text-xl font-bold">
-                  {formatAmountInUSD(order.totalAmountInUSDCents, true)}
+                  {formatAmountInUSD(order.amountInUSDCents, true)}
                 </span>
               </div>
             </div>

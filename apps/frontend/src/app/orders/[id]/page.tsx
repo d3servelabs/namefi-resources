@@ -451,7 +451,7 @@ export default function OrderPage({ params }: OrderPageProps) {
             </div>
             <div className="flex justify-between items-center">
               <span className="text-muted-foreground">Grand total</span>
-              <span>${order.totalAmountInUSDCents / 100} USD</span>
+              <span>${order.amountInUSDCents / 100} USD</span>
             </div>
             <div className="flex justify-between items-center">
               <span className="text-muted-foreground">Payment</span>

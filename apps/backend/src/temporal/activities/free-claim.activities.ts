@@ -399,7 +399,6 @@ export async function createClaimOrder(
           userId,
           paymentId: payment.id,
           amountInUSDCents: 0,
-          totalAmountInUSDCents: 0,
           nftWalletAddress: recipientWalletAddress,
           nftChainId: chainId,
           status: 'PROCESSING',

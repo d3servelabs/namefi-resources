@@ -162,7 +162,6 @@ export const ordersRouter = createTRPCRouter({
           .insert(ordersTable)
           .values({
             amountInUSDCents: totalAmountInUsdCents,
-            totalAmountInUSDCents: totalAmountInUsdCents,
             userId: ctx.user.id,
             paymentId: payment.id,
             nftWalletAddress: input.nftMetadata.nftWalletAddress,
