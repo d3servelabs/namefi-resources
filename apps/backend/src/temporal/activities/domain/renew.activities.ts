@@ -89,7 +89,11 @@ export async function getDomainsUpForRenewal(): Promise<
     registrarKey: string;
   }[]
 > {
+  logger.assign({ component: 'getDomainsUpForRenewal' });
+  logger.info('Starting getDomainsUpForRenewal');
+
   // Get 3LD domains from NFT table
+  logger.debug('Fetching NFTs from database');
   const allNfts = await db
     .select({
       normalizedDomainName: namefiNftOwnersView.normalizedDomainName,
@@ -97,12 +101,17 @@ export async function getDomainsUpForRenewal(): Promise<
     })
     .from(namefiNftOwnersView)
     .where(inArray(namefiNftOwnersView.chainId, config.ALLOWED_CHAINS));
+  logger.debug({ nftCount: allNfts.length }, 'Found NFTs');
+
   const allNftsMap = new Map<NamefiNormalizedDomain, number>(
     allNfts.map((nft) => [nft.normalizedDomainName, nft.chainId]),
   );
 
   // Get 2LD domains from registrar
+  logger.debug('Fetching 2LD domains from registrar');
   const sldDomains = await sldRegistrar.listAllDomains();
+  logger.debug({ sldCount: sldDomains.length }, 'Found SLD domains');
+
   const sldDomainsWithUpcomingRenewal = sldDomains.filter((domain) => {
     const daysToExpiration = differenceInDays(
       domain.expirationTime,
@@ -114,16 +123,26 @@ export async function getDomainsUpForRenewal(): Promise<
       daysToExpiration >= 0
     );
   });
+  logger.debug(
+    { count: sldDomainsWithUpcomingRenewal.length },
+    'Found SLD domains with upcoming renewal',
+  );
 
   // Filter for 3LD domains only
   const _3ldNfts = allNfts.filter((nft) => {
     const domainLevels = getDomainLevels(nft.normalizedDomainName);
     return domainLevels.levels.length === 3;
   });
+  logger.debug({ count: _3ldNfts.length }, 'Found 3LD NFTs');
 
   // Get expiration dates for 3LD domains
+  logger.debug('Fetching expiration dates for 3LD domains');
   const _3ldDomainsWithExpiration =
     await get3ldExpirationDatesForDomains(_3ldNfts);
+  logger.debug(
+    { count: _3ldDomainsWithExpiration.length },
+    'Found 3LD domains with expiration dates',
+  );
 
   // Filter 3LD domains with upcoming renewal and valid expiration times
   const _3ldDomainsWithUpcomingRenewal = _3ldDomainsWithExpiration
@@ -143,6 +162,10 @@ export async function getDomainsUpForRenewal(): Promise<
       expirationTime: domain.expirationTime as Date, // We've already filtered out null values
       registrarKey: 'namefi-nft' as const,
     }));
+  logger.debug(
+    { count: _3ldDomainsWithUpcomingRenewal.length },
+    'Found 3LD domains with upcoming renewal',
+  );
 
   // Combine 2LD and 3LD domains
   const allDomainsWithUpcomingRenewal = [
@@ -154,10 +177,17 @@ export async function getDomainsUpForRenewal(): Promise<
     ..._3ldDomainsWithUpcomingRenewal,
   ];
 
+  logger.info(
+    { count: allDomainsWithUpcomingRenewal.length },
+    'Completed getDomainsUpForRenewal',
+  );
   return allDomainsWithUpcomingRenewal;
 }
 
 export async function getUserWithEvmWallets() {
+  logger.assign({ component: 'getUserWithEvmWallets' });
+  logger.info('Starting getUserWithEvmWallets');
+
   const [privyUsers, users] = await Promise.all([
     privyClient.getUsers(),
     db.query.usersTable.findMany({
@@ -168,8 +198,18 @@ export async function getUserWithEvmWallets() {
     }),
   ]);
 
+  logger.debug(
+    { privyUsersCount: privyUsers.length, namefiUsersCount: users.length },
+    'Fetched users from Privy and database',
+  );
+
   const usersPrivyUserIdToNamefiUserIdMap = new Map<string, string>(
     users.map((user) => [user.privyUserId, user.id]),
+  );
+
+  logger.debug(
+    { mappedUsersCount: usersPrivyUserIdToNamefiUserIdMap.size },
+    'Created user ID mapping',
   );
 
   const usersWithEvmWallets = privyUsers
@@ -185,6 +225,12 @@ export async function getUserWithEvmWallets() {
           return linkedAccount.address;
         })
         .filter(isNotNil);
+
+      logger.debug(
+        { privyUserId: privyUser.id, walletsCount: wallets.length },
+        'Processing user wallets',
+      );
+
       const userId = usersPrivyUserIdToNamefiUserIdMap.get(privyUser.id);
       if (!userId) {
         logger.fatal(
@@ -201,6 +247,11 @@ export async function getUserWithEvmWallets() {
     })
     .filter(isNotNil);
 
+  logger.debug(
+    { usersWithWalletsCount: usersWithEvmWallets.length },
+    'Filtered users with EVM wallets',
+  );
+
   const walletToUserIdMap = new Map<
     string,
     (typeof usersWithEvmWallets)[number]
@@ -210,6 +261,13 @@ export async function getUserWithEvmWallets() {
       walletToUserIdMap.set(wallet, user);
     }
   }
+
+  logger.debug(
+    { totalWalletMappings: walletToUserIdMap.size },
+    'Created wallet to user mapping',
+  );
+
+  logger.info('Completed getUserWithEvmWallets');
   return {
     walletToUserIdMap,
     usersWithEvmWallets,
