@@ -45,10 +45,11 @@ const { maybeGetUserEmail } = typedProxyActivities({
 const { getDomainsUpForRenewalGroupedByOwner } = typedProxyActivities({
   temporalEnum: TEMPORAL_ENUMS.DOMAINS,
   options: {
+    scheduleToStartTimeout: '1 minute',
     startToCloseTimeout: '10 minutes',
     retry: {
       initialInterval: '30 seconds',
-      maximumInterval: '10 minutes',
+      maximumInterval: '2 minutes',
       backoffCoefficient: 2,
       maximumAttempts: 5,
     },
@@ -60,6 +61,9 @@ export async function dailyDomainsUpcomingRenewalsWorkflow({
 }: {
   dryRun?: boolean;
 } = {}) {
+  workflow.log.info(
+    `Starting daily domains upcoming renewals workflow, ${dryRun ? 'dryRun' : 'live'}`,
+  );
   const domainsUpForRenewalGroupedByOwner =
     await getDomainsUpForRenewalGroupedByOwner();
   workflow.log.info(

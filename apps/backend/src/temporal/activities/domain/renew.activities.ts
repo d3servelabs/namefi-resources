@@ -217,12 +217,14 @@ export async function getUserWithEvmWallets() {
 }
 
 export async function getDomainsUpForRenewalGroupedByOwner() {
+  logger.info('Getting domains up for renewal grouped by owner');
   // Get both wallet-to-user mapping and domains that need renewal
   const [{ walletToUserIdMap }, domainsUpForRenewal] = await Promise.all([
     getUserWithEvmWallets(),
     getDomainsUpForRenewal(),
   ]);
 
+  logger.info(`Found ${domainsUpForRenewal.length} domains up for renewal`);
   // Fetch NFT domain details for all domains up for renewal
   const nftDomains = await db
     .select({
@@ -237,6 +239,8 @@ export async function getDomainsUpForRenewalGroupedByOwner() {
         domainsUpForRenewal.map((domain) => domain.normalizedDomainName),
       ),
     );
+
+  logger.info(`Found ${nftDomains.length} NFT domains up for renewal`);
 
   // Create a map of domain name to NFT domain details for faster lookups
   const domainNftMap = new Map<
@@ -313,10 +317,14 @@ export async function getDomainsUpForRenewalGroupedByOwner() {
   );
 
   // Group all domains by user ID and filter out any null entries
-  return groupBy(
+  const domainsUpForRenewalWithOwnerDetailsGroupedByUser = groupBy(
     prop('userId'),
     domainsUpForRenewalWithOwnerDetails.filter(isNotNil),
   );
+  logger.info(
+    `Found ${Object.keys(domainsUpForRenewalWithOwnerDetailsGroupedByUser).length} owners with domains up for renewal`,
+  );
+  return domainsUpForRenewalWithOwnerDetailsGroupedByUser;
 }
 
 /**
