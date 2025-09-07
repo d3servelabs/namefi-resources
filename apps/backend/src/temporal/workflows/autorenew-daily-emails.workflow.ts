@@ -45,7 +45,7 @@ const { maybeGetUserEmail } = typedProxyActivities({
 const { getDomainsUpForRenewalGroupedByOwner } = typedProxyActivities({
   temporalEnum: TEMPORAL_ENUMS.DOMAINS,
   options: {
-    startToCloseTimeout: '5 minute',
+    startToCloseTimeout: '10 minutes',
     retry: {
       initialInterval: '30 seconds',
       maximumInterval: '10 minutes',
