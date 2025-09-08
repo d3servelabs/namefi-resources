@@ -46,6 +46,19 @@ const nextConfig = {
     position: 'bottom-right',
   },
   poweredByHeader: false,
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'X-Frame-Options',
+            value: 'DENY',
+          },
+        ],
+      },
+    ];
+  },
   async rewrites() {
     return [
       {
