@@ -188,15 +188,21 @@ export async function getUserWithEvmWallets() {
   logger.assign({ component: 'getUserWithEvmWallets' });
   logger.info('Starting getUserWithEvmWallets');
 
-  const [privyUsers, users] = await Promise.all([
-    privyClient.getUsers(),
-    db.query.usersTable.findMany({
-      columns: {
-        id: true,
-        privyUserId: true,
-      },
-    }),
-  ]);
+  logger.debug('Fetching users from database');
+  const users = await db.query.usersTable.findMany({
+    columns: {
+      id: true,
+      privyUserId: true,
+    },
+  });
+  logger.debug({ usersCount: users.length }, 'Fetched users from database');
+
+  logger.debug('Fetching users from Privy');
+  const privyUsers = await privyClient.getUsers();
+  logger.debug(
+    { privyUsersCount: privyUsers.length },
+    'Fetched users from Privy',
+  );
 
   logger.debug(
     { privyUsersCount: privyUsers.length, namefiUsersCount: users.length },
@@ -277,13 +283,23 @@ export async function getUserWithEvmWallets() {
 export async function getDomainsUpForRenewalGroupedByOwner() {
   logger.info('Getting domains up for renewal grouped by owner');
   // Get both wallet-to-user mapping and domains that need renewal
-  const [{ walletToUserIdMap }, domainsUpForRenewal] = await Promise.all([
-    getUserWithEvmWallets(),
-    getDomainsUpForRenewal(),
-  ]);
+  logger.debug('Fetching domains up for renewal');
+  const domainsUpForRenewal = await getDomainsUpForRenewal();
+  logger.debug(
+    { domainsUpForRenewalCount: domainsUpForRenewal.length },
+    'Fetched domains up for renewal',
+  );
+
+  logger.debug('Fetching wallet to user mapping');
+  const { walletToUserIdMap } = await getUserWithEvmWallets();
+  logger.debug(
+    { walletToUserIdMapCount: walletToUserIdMap.size },
+    'Fetched wallet to user mapping',
+  );
 
   logger.info(`Found ${domainsUpForRenewal.length} domains up for renewal`);
   // Fetch NFT domain details for all domains up for renewal
+  logger.debug('Fetching NFT domain details for all domains up for renewal');
   const nftDomains = await db
     .select({
       normalizedDomainName: namefiNftOwnersView.normalizedDomainName,
