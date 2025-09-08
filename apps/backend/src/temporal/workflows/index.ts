@@ -40,3 +40,4 @@ export * from './email-subscription-sync.workflow';
 export * from './migration/link-shares-external-identifier-migration.workflow';
 export * from './auto-grant-claims.workflow';
 export * from './free-claims-correction.workflow';
+export * from './link-shares-validation.workflow';

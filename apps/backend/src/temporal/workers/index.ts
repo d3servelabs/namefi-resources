@@ -16,6 +16,7 @@ import {
   FreeClaimActivities,
   FreeClaimsCorrectionActivities,
   LinkSharesExternalIdentifierMigrationActivities,
+  TwitterLinkSharesValidationActivities,
 } from '../activities';
 import { DomainsActivities } from '../activities/domain';
 import {
@@ -43,6 +44,7 @@ export const ACTIVITIES = {
     ...GreetActivities,
     ...MigrationActivities,
     ...LinkSharesExternalIdentifierMigrationActivities,
+    ...TwitterLinkSharesValidationActivities,
     ...OrderActivities,
     ...PaymentActivities,
     updateNamefiNftIndex,
