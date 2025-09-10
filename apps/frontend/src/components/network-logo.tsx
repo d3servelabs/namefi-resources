@@ -26,7 +26,7 @@ export const NetworkLogo = ({
       className={cn(
         'w-12 h-12',
         'aspect-square rounded-full text-center bg-brand-dark',
-        testnet && 'opacity-50',
+        testnet && 'grayscale',
         props.className,
       )}
     >
