@@ -6,12 +6,12 @@
   "scripts": {
     "clean": "git clean -xdf .next .turbo node_modules out dist",
     "force-local": "ENVIRONMENT=local bun",
-    "dev": "bun run force-local next dev --turbopack --port 5050",
+    "dev": "ENVIRONMENT=local bun run next dev --turbopack --port 5050",
     "with-env": "infisical run --token=$INFISICAL_SERVICE_TOKEN -- bun",
     "build": "next build",
     "start": "next start",
     "typecheck": "tsc --noEmit",
-    "validate:secrets": "bun run with-env src/lib/env/load.ts"
+    "validate:secrets": "bun run src/lib/env/validate.ts"
   },
   "dependencies": {
     "@bprogress/next": "^3.2.12",
