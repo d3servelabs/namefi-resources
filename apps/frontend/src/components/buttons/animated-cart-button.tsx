@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Button } from '../ui/shadcn/button';
 import { forwardRef, useState } from 'react';
 import { Loader2, ShoppingCart, Check, Download, Trash } from 'lucide-react';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 type CartButtonState =
   | 'add-to-cart'
@@ -76,6 +77,8 @@ export const AnimatedCartButton = forwardRef<
   ) => {
     const [isHovered, setIsHovered] = useState(false);
 
+    const isMobile = useIsMobile();
+
     const config = stateConfig[state];
 
     // Override config for in-cart hover state
@@ -142,10 +145,11 @@ export const AnimatedCartButton = forwardRef<
           <Button
             ref={ref}
             className={cn(
-              'shrink-0 w-44 transition-all duration-300 disabled:opacity-100',
+              'shrink-0 md:w-44 transition-all duration-300 disabled:opacity-100',
               config.className,
               className,
             )}
+            size={isMobile ? 'icon' : 'default'}
             onClick={handleClick}
             disabled={isDisabled}
             onMouseEnter={
@@ -173,7 +177,9 @@ export const AnimatedCartButton = forwardRef<
                   <DisplayIconComponent className="h-4 w-4" />
                 )}
               </div>
-              <span className="whitespace-nowrap">{displayConfig.text}</span>
+              <span className="whitespace-nowrap hidden md:block">
+                {displayConfig.text}
+              </span>
             </div>
           </Button>
         </div>
