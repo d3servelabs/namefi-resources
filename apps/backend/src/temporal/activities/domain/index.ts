@@ -17,6 +17,7 @@ import {
   sendEmailNotificationForUpcomingRenew,
   getDomainsUpForRenewalGroupedByOwner,
 } from './renew.activities';
+import * as DisableAutoRenewalActivities from './disable-auto-renewal.activities';
 
 //TODO: add a check to see if name collision is happening
 export const DomainsActivities = {
@@ -36,6 +37,8 @@ export const DomainsActivities = {
   sendEmailNotificationForUpcomingRenew,
   getDomainsUpForRenewalGroupedByOwner,
   getDomainDurationConstraints,
+  // Auto-renewal disabling activities
+  ...DisableAutoRenewalActivities,
 };
 
 export async function getDomainChain(

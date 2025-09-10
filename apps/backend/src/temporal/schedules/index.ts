@@ -25,6 +25,13 @@ import {
   yearlyAwardSchedule,
 } from './hunt/period-award';
 import { zeroXCityPromo2025Schedule } from './campaigns/0xcity-promo-2025';
+import {
+  weeklyDisableAutoRenewalSchedule,
+  weeklyDisableAutoRenewalDryRunSchedule,
+  weeklyDisableAutoRenewalRoute53Schedule,
+  weeklyDisableAutoRenewalDynadotGdgSchedule,
+  weeklyDisableAutoRenewalDynadotRegularSchedule,
+} from './weekly-disable-auto-renewal';
 
 const logger = createLogger({ name: 'schedules' });
 
@@ -84,7 +91,16 @@ export const SCHEDULE_GROUP_REGISTRY: Record<string, ScheduleGroup> = {
     category: 'reporting',
     priority: 1,
   },
+  'domain-maintenance': {
+    groupId: 'domain-maintenance',
+    name: 'Domain Maintenance',
+    description: 'Schedules that perform regular maintenance tasks on domains',
+    category: 'maintenance',
+    priority: 1,
+  },
 };
+
+// Weekly auto-renewal schedules are already created as instances in their module
 
 /**
  * Registry of all schedules in the system
@@ -107,6 +123,16 @@ export const SCHEDULE_REGISTRY: Record<string, NamefiSchedule<any>> = {
   [monthlyAwardSchedule.config.scheduleId]: monthlyAwardSchedule,
   [yearlyAwardSchedule.config.scheduleId]: yearlyAwardSchedule,
   [zeroXCityPromo2025Schedule.config.scheduleId]: zeroXCityPromo2025Schedule,
+  [weeklyDisableAutoRenewalSchedule.config.scheduleId]:
+    weeklyDisableAutoRenewalSchedule,
+  [weeklyDisableAutoRenewalDryRunSchedule.config.scheduleId]:
+    weeklyDisableAutoRenewalDryRunSchedule,
+  [weeklyDisableAutoRenewalRoute53Schedule.config.scheduleId]:
+    weeklyDisableAutoRenewalRoute53Schedule,
+  [weeklyDisableAutoRenewalDynadotGdgSchedule.config.scheduleId]:
+    weeklyDisableAutoRenewalDynadotGdgSchedule,
+  [weeklyDisableAutoRenewalDynadotRegularSchedule.config.scheduleId]:
+    weeklyDisableAutoRenewalDynadotRegularSchedule,
 };
 
 /**
@@ -245,6 +271,13 @@ export {
   weeklyAwardSchedule,
   monthlyAwardSchedule,
   yearlyAwardSchedule,
+};
+export {
+  weeklyDisableAutoRenewalSchedule,
+  weeklyDisableAutoRenewalDryRunSchedule,
+  weeklyDisableAutoRenewalRoute53Schedule,
+  weeklyDisableAutoRenewalDynadotGdgSchedule,
+  weeklyDisableAutoRenewalDynadotRegularSchedule,
 };
 
 // Export legacy functions for backward compatibility
