@@ -20,7 +20,7 @@ jobs:
           bun-version-file: ".bun-version"
 
       - name: Install dependencies
-        run: bun install && bun install # this is intentional because of an issue with bun linking binaries and infisical
+        run: bun install # && bun install # this is intentional because of an issue with bun linking binaries and infisical #infisical-clean
 
       - name: Validate workflow exports
         run: |
@@ -41,7 +41,7 @@ jobs:
           bun-version-file: ".bun-version"
 
       - name: Install dependencies
-        run: bun install && bun install # this is intentional because of an issue with bun linking binaries and infisical
+        run: bun install # && bun install # this is intentional because of an issue with bun linking binaries and infisical #infisical-clean
 
       - name: Test main workflow bundle
         run: |
@@ -63,7 +63,7 @@ jobs:
           bun-version-file: ".bun-version"
 
       - name: Install dependencies
-        run: bun install && bun install # this is intentional because of an issue with bun linking binaries and infisical
+        run: bun install # && bun install # this is intentional because of an issue with bun linking binaries and infisical #infisical-clean
 
       - name: TypeScript check - Backend
         run: |

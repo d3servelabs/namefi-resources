@@ -10,12 +10,13 @@ WORKDIR /app
 # Set to production environment
 ENV NODE_ENV production
 ENV ENVIRONMENT=production
-ENV NODE_OPTIONS="--max-old-space-size=4096"
+ENV NODE_OPTIONS="--max-old-space-size=2048"
 
 
-RUN apt-get update && apt-get install -y bash curl dnsutils && curl -1sLf \
-'https://dl.cloudsmith.io/public/infisical/infisical-cli/setup.deb.sh' | bash \
-&& apt-get update && apt-get install -y infisical
+RUN apt-get update && apt-get install -y bash curl dnsutils
+# RUN curl -1sLf \
+# 'https://dl.cloudsmith.io/public/infisical/infisical-cli/setup.deb.sh' | bash \
+# && apt-get update && apt-get install -y infisical
 
 # Stage 2: Use Bun for dependency installation
 FROM oven/bun:1 AS deps
@@ -63,5 +64,5 @@ USER nodejs
 EXPOSE 3000
 
 # Start the application with Node.js
-CMD ["infisical", "run", "--","node", "dist/index.js"] 
+CMD ["node", "dist/index.js"] 
 ## https://infisical.com/docs/integrations/platforms/docker
