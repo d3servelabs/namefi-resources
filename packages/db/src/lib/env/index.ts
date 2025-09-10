@@ -1,4 +1,3 @@
-import '@namefi-astra/env/preload';
 import { loadSecrets } from '@namefi-astra/env';
 import { secretsSchema } from './schema';
 

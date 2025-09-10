@@ -20,6 +20,7 @@
     ".": "./src/index.ts",
     "./client": "./src/client.ts",
     "./preload": "./src/preload.ts",
+    "./preload-sync": "./src/preload-sync.ts",
     "./infisical": "./src/infisical.ts"
   }
 }

@@ -21,6 +21,39 @@ interface LoadInfisicalParams {
  * Fetches Infisical secrets and merges them into process.env if not already present.
  * Non-fatal on error; writes minimal diagnostics to stderr.
  */
+export async function fetchInfisicalSecrets(
+  params: Omit<LoadInfisicalParams, 'allowEnvPassthrough'>,
+) {
+  try {
+    const { InfisicalSDK } = await import('@infisical/sdk');
+    const sdk = new InfisicalSDK();
+    sdk.auth().accessToken(params.token);
+
+    const secrets = await sdk.secrets().listSecretsWithImports({
+      projectId: params.projectId ?? '',
+      environment: params.environmentSlug ?? '',
+      secretPath: params.secretsPath ?? '/',
+    });
+
+    const output: Record<string, string> = {};
+    for (const { secretKey, secretValue } of secrets) {
+      if (!secretKey || isNil(secretValue)) continue;
+      output[secretKey] = secretValue;
+    }
+    return output;
+  } catch (e) {
+    process.stderr.write(
+      `Infisical SDK failed to load secrets (non-fatal): ${
+        e instanceof Error ? e.message : String(e)
+      }\n`,
+    );
+  }
+}
+
+/**
+ * Fetches Infisical secrets and merges them into process.env if not already present.
+ * Non-fatal on error; writes minimal diagnostics to stderr.
+ */
 export async function fetchAndMergeInfisicalSecrets(
   params: LoadInfisicalParams,
 ) {
@@ -67,6 +100,23 @@ export async function loadInfisicalSecretsIfConfigured(options?: {
     environmentSlug: process.env.INFISICAL_ENVIRONMENT,
     secretsPath: process.env.INFISICAL_SECRETS_PATH || '/',
     allowEnvPassthrough: options?.allowEnvPassthrough ?? true,
+  });
+}
+
+/**
+ * Orchestrates loading Infisical secrets using only INFISICAL_TOKEN and
+ * optionally provided project/environment/path variables.
+ */
+export async function fetchInfisicalSecretsIfConfigured() {
+  const token =
+    process.env.INFISICAL_SERVICE_TOKEN || process.env.INFISICAL_TOKEN;
+  if (!token) return;
+
+  return fetchInfisicalSecrets({
+    token,
+    projectId: process.env.INFISICAL_PROJECT_ID,
+    environmentSlug: process.env.INFISICAL_ENVIRONMENT,
+    secretsPath: process.env.INFISICAL_SECRETS_PATH || '/',
   });
 }
 

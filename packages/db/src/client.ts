@@ -1,3 +1,4 @@
+import '@namefi-astra/env/preload';
 import type { NeonDatabase } from 'drizzle-orm/neon-serverless';
 import type { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { secrets } from './lib/env';
