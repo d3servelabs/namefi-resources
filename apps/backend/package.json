@@ -47,7 +47,9 @@
     "command:setup-nft-report-schedule": "tsx src/scripts/setup-nft-management-report-schedule.ts",
     "command:analytics": "tsx src/scripts/analytics-cli.ts",
     "command:migrate-mongo-ai-data": "tsx src/scripts/migrate-mongo-ai-data.ts",
-    "command:migrate-mongo-ai-data-standalone": "tsx src/lib/legacy/namefi-gpt/migrate-from-mongo-original.ts"
+    "command:migrate-mongo-ai-data-standalone": "tsx src/lib/legacy/namefi-gpt/migrate-from-mongo-original.ts",
+    "command:disable-auto-renewal": "tsx src/scripts/disable-auto-renewal.ts",
+    "command:test-disable-auto-renewal": "tsx src/scripts/test-disable-auto-renewal.ts"
   },
   "dependencies": {
     "@aws-sdk/client-kms": "^3.830.0",
