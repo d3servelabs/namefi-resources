@@ -424,6 +424,15 @@ export const DomainCard: FC<{
   const { logEventWithInteractionLoggers } = useInteractionLoggers();
   const router = useRouter();
   const eppInputRef = useRef<HTMLInputElement>(null);
+  const [showImportUi, setShowImportUi] = useState<boolean>(
+    Boolean(isImportMode),
+  );
+
+  useEffect(() => {
+    if (isImportMode) {
+      setShowImportUi(true);
+    }
+  }, [isImportMode]);
 
   const logBeginCheckout = useCallback(() => {
     logEventWithInteractionLoggers({
@@ -575,7 +584,7 @@ export const DomainCard: FC<{
           : 'opacity-100',
       )}
     >
-      <CardContent className="h-full w-full">
+      <CardContent className="h-full w-full px-4 md:px-6">
         <div className="flex items-center justify-between h-full w-full">
           <div className="space-y-1 flex-1 min-w-0 mr-4 overflow-hidden">
             <div className="font-semibold tracking-tight flex items-center gap-2">
@@ -608,12 +617,21 @@ export const DomainCard: FC<{
                   </p>
                   {isNotNil(renewalPriceInUsd) && (
                     <p className="text-xs md:text-sm text-muted-foreground">
-                      renews at {formatAmountInUSD(renewalPriceInUsd)} USD
+                      renews at {formatAmountInUSD(renewalPriceInUsd)}
                     </p>
                   )}
                 </div>
               ) : null}
             </div>
+            {isImportable && !showImportUi && (
+              <Button
+                onClick={() => setShowImportUi(true)}
+                variant="link"
+                className="text-sm underline text-primary hover:opacity-80 p-0 bg-transparent"
+              >
+                Own this domain?
+              </Button>
+            )}
             {hasOwnerInfo && (
               <div className="flex items-center text-sm text-muted-foreground">
                 <User className="mr-1 h-3 w-3 shrink-0" />
@@ -623,7 +641,7 @@ export const DomainCard: FC<{
                 </span>
               </div>
             )}
-            {isImportable && (
+            {isImportable && showImportUi && (
               <div className="flex items-center gap-2 mt-2 w-full md:w-80">
                 <PasswordInput
                   ref={eppInputRef}
@@ -658,6 +676,10 @@ export const DomainCard: FC<{
               <Badge variant="destructive" className="text-xs">
                 Unsupported
               </Badge>
+            ) : isImportable && !showImportUi ? (
+              <Badge variant="destructive" className="text-xs">
+                Taken
+              </Badge>
             ) : availabilityInfo.availability &&
               freeClaimEligibility?.eligible ? (
               <NamefiButton
@@ -667,7 +689,8 @@ export const DomainCard: FC<{
                 <Gift className="h-4 w-4" />
                 Free Claim
               </NamefiButton>
-            ) : availabilityInfo.availability || isImportable ? (
+            ) : availabilityInfo.availability ||
+              (isImportable && showImportUi) ? (
               <AnimatedCartButton
                 state={
                   removingBusy
@@ -676,7 +699,7 @@ export const DomainCard: FC<{
                       ? 'adding'
                       : inCart
                         ? 'in-cart'
-                        : isImportable
+                        : isImportable && showImportUi
                           ? 'import'
                           : 'add-to-cart'
                 }
