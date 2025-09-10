@@ -1,8 +1,5 @@
-import {
-  analyzeLogoRequirements,
-  generateLogo,
-  generateMarketingImage,
-} from '@namefi-astra/ai';
+import { config, secrets } from '#lib/env';
+
 import { db } from '@namefi-astra/db';
 import { aiGenerationsTable } from '@namefi-astra/db/schema';
 import {
@@ -13,8 +10,9 @@ import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
 import { and, count, desc, eq, max, sql } from 'drizzle-orm';
 import { z } from 'zod';
-import { config, secrets } from '../../lib/env';
 import { createTRPCRouter, protectedProcedure, publicProcedure } from '../base';
+const { analyzeLogoRequirements, generateLogo, generateMarketingImage } =
+  await import('@namefi-astra/ai');
 
 const s3Client = createS3Client({
   AWS_ACCESS_KEY_ID: secrets.AWS_ACCESS_KEY_ID,

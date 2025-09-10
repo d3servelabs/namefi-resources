@@ -6,6 +6,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@infisical/sdk": "^4.0.4",
     "dotenv": "^16.4.7"
   },
   "devDependencies": {
@@ -16,6 +17,8 @@
   },
   "exports": {
     ".": "./src/index.ts",
-    "./client": "./src/client.ts"
+    "./client": "./src/client.ts",
+    "./preload": "./src/preload.ts",
+    "./infisical": "./src/infisical.ts"
   }
 }

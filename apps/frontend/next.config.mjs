@@ -9,6 +9,12 @@ import packageJson from './package.json' with { type: 'json' };
 /** @type {import('jiti').Jiti} */
 const jiti = createJiti(import.meta.url, { tryNative: false });
 
+/** @type {{ loadInfisicalSecretsIfConfigured: import('@namefi-astra/env/infisical').loadInfisicalSecretsIfConfigured }} */
+const { loadInfisicalSecretsIfConfigured } = await jiti.import(
+  '@namefi-astra/env/infisical',
+);
+await loadInfisicalSecretsIfConfigured({ allowEnvPassthrough: true });
+
 /** @type {{ config: import('./src/lib/env/schema').Config }} */
 const { config: appConfig } = await jiti.import('./src/lib/env/load');
 

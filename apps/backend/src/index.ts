@@ -1,5 +1,7 @@
 // this needs to be the first import
+import { config, secrets } from './lib/env';
 import '../global';
+
 // other imports
 import { serve } from '@hono/node-server';
 import { trpcServer } from '@hono/trpc-server'; // Deno 'npm:@hono/trpc-server'
@@ -10,7 +12,6 @@ import { prettyJSON } from 'hono/pretty-json';
 import { createLogger } from '#lib/logger';
 import { getPoweredByNamefi3PHostnames } from '#lib/namefi-registry';
 import { dnssecRouter } from './dnssec';
-import { config, secrets } from './lib/env';
 import { nsJsonRouter } from './ns-json';
 import { trackingRouter } from './routers/tracking';
 import { webhooksRouter } from './routers/webhooks';

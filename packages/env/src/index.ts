@@ -27,3 +27,7 @@ export const loadConfig = <Output, Def extends ZodTypeDef, Input>(
 };
 
 export { loadSecrets, type LoadSecretsOptions } from './client';
+export {
+  fetchAndMergeInfisicalSecrets,
+  loadInfisicalSecretsIfConfigured,
+} from './infisical';
