@@ -14,9 +14,10 @@ ENV NODE_ENV production
 ENV ENVIRONMENT=production
 
 
-RUN apt-get update && apt-get install -y bash curl dnsutils && curl -1sLf \
-'https://dl.cloudsmith.io/public/infisical/infisical-cli/setup.deb.sh' | bash \
-&& apt-get update && apt-get install -y infisical
+RUN apt-get update && apt-get install -y bash curl dnsutils
+
+# RUN curl -1sLf 'https://dl.cloudsmith.io/public/infisical/infisical-cli/setup.deb.sh' | bash \
+# && apt-get update && apt-get install -y infisical
 
 # Stage 2: Use Bun for dependency installation
 FROM oven/bun:1 AS deps
@@ -64,6 +65,6 @@ EXPOSE ${PORT}
 WORKDIR /app/apps/indexer
 
 # Start the application with schema generation
-CMD ["infisical", "run", "--", "./scripts/start-with-schema.sh"] 
+CMD ["npm", "run", "start"] 
 
 ## https://infisical.com/docs/integrations/platforms/docker
