@@ -583,12 +583,12 @@ export const DomainCard: FC<{
                 {domain ? (
                   <h3 className="line-clamp-2 break-words">
                     {subdomain && (
-                      <span className="text-3xl text-brand-tertiary">
+                      <span className="text-2xl md:text-3xl text-brand-tertiary">
                         {toUnicodeDomainName(subdomain)}
                       </span>
                     )}
                     {parentDomain && (
-                      <span className="text-2xl text-foreground">
+                      <span className="text-xl md:text-2xl text-foreground">
                         .{toUnicodeDomainName(parentDomain)}
                       </span>
                     )}
@@ -603,11 +603,11 @@ export const DomainCard: FC<{
                 <Skeleton className="h-6 w-20 bg-gray-600/50" />
               ) : isNotNil(priceInUsd) ? (
                 <div className="flex items-center gap-3">
-                  <p className="text-xl font-medium line-clamp-1">
+                  <p className="text-sm md:text-xl shrink-0 font-medium line-clamp-1">
                     {`${formatAmountInUSD(priceInUsd)} USD`}
                   </p>
                   {isNotNil(renewalPriceInUsd) && (
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-xs md:text-sm text-muted-foreground">
                       renews at {formatAmountInUSD(renewalPriceInUsd)} USD
                     </p>
                   )}
@@ -624,7 +624,7 @@ export const DomainCard: FC<{
               </div>
             )}
             {isImportable && (
-              <div className="flex items-center gap-2 mt-2 w-80">
+              <div className="flex items-center gap-2 mt-2 w-full md:w-80">
                 <PasswordInput
                   ref={eppInputRef}
                   placeholder="EPP Auth Code"
@@ -635,7 +635,7 @@ export const DomainCard: FC<{
                   }
                   disabled={inCart}
                   onChange={(e) => onEppCodeChange?.(e.target.value)}
-                  className="h-8 text-sm bg-gray-700/50 border-gray-600"
+                  className="h-8 text-xs md:text-sm bg-gray-700/50 border-gray-600"
                 />
               </div>
             )}
