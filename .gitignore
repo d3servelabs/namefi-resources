@@ -226,6 +226,7 @@ yarn-error.log*
 
 temp/
 
-env/configs/custom.ts
+**/env/configs/custom.ts
 
 settings.local.json
+.COMMITMSG*
