@@ -243,6 +243,7 @@ export const DomainHuntWidget = ({
         onSubmit={shareDialog.onSubmit}
         trackShares={true} // bespoke domains track shares for rewards
         campaignKey={shareDialog.campaignKey}
+        featureKey="hunt"
       />
     </div>
   );

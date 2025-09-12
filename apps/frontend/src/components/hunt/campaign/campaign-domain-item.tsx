@@ -177,6 +177,7 @@ export const CampaignDomainItem = ({
         onSubmit={shareDialog.onSubmit}
         trackShares={true}
         campaignKey={shareDialog.campaignKey}
+        featureKey="hunt"
       />
     </>
   );

@@ -4,7 +4,7 @@ import { useMemo } from 'react';
 import { useAuth } from '@/hooks/use-auth';
 import { useHuntVote, type HuntVoteOptions } from './use-hunt-vote';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
-import { defaultShareConfig } from './use-hunt-vote-share';
+import { defaultShareConfig } from './use-twitter-share';
 
 export interface HuntVoteRowOptions extends HuntVoteOptions {
   domain?: NamefiNormalizedDomain;

@@ -43,9 +43,11 @@ export interface ShareConfig {
 
   // Whether to track shares in database (default: true)
   trackShares?: boolean;
+  // Feature key for analytics attribution (e.g., 'hunt', 'ai_generation')
+  featureKey?: string;
 }
 
-export function useHuntShareDialog(config: ShareConfig = {}) {
+export function useShareDialog(config: ShareConfig = {}) {
   const trpc = useTRPC();
   const queryClient = useQueryClient();
   const { isAuthenticated } = useAuth();
@@ -66,6 +68,7 @@ export function useHuntShareDialog(config: ShareConfig = {}) {
       allowedCampaignKeys: config.allowedCampaignKeys ?? [],
       campaignKeyResolver: config.campaignKeyResolver,
       trackShares: config.trackShares ?? true,
+      featureKey: config.featureKey ?? 'hunt',
     }),
     [config],
   );
@@ -146,6 +149,7 @@ export function useHuntShareDialog(config: ShareConfig = {}) {
         properties: {
           domainName: currentDomain ?? '',
           campaignKey: resolvedCampaignKey,
+          featureKey: finalConfig.featureKey,
           sharedUrl: data.sharedUrl,
           postUrl: variables.postUrl,
         },
@@ -179,6 +183,7 @@ export function useHuntShareDialog(config: ShareConfig = {}) {
         properties: {
           domainName: currentDomain ?? '',
           campaignKey: resolvedCampaignKey,
+          featureKey: finalConfig.featureKey,
           sharedUrl: data.sharedUrl,
           postUrl: variables.postUrl,
         },
@@ -205,11 +210,16 @@ export function useHuntShareDialog(config: ShareConfig = {}) {
         properties: {
           domainName: domainName,
           campaignKey: resolvedCampaignKey,
+          featureKey: finalConfig.featureKey,
           trigger: 'manual',
         },
       });
     },
-    [resolvedCampaignKey, logEventWithInteractionLoggers],
+    [
+      resolvedCampaignKey,
+      finalConfig.featureKey,
+      logEventWithInteractionLoggers,
+    ],
   );
 
   const closeDialog = useCallback(() => {
@@ -231,12 +241,18 @@ export function useHuntShareDialog(config: ShareConfig = {}) {
           properties: {
             domainName: domainName,
             campaignKey: resolvedCampaignKey,
+            featureKey: finalConfig.featureKey,
             trigger: 'vote_success',
           },
         });
       }
     },
-    [isEligible, resolvedCampaignKey, logEventWithInteractionLoggers],
+    [
+      isEligible,
+      resolvedCampaignKey,
+      finalConfig.featureKey,
+      logEventWithInteractionLoggers,
+    ],
   );
 
   // Submit share (supports both authenticated and anonymous)
@@ -269,6 +285,7 @@ export function useHuntShareDialog(config: ShareConfig = {}) {
           properties: {
             domainName: currentDomain,
             campaignKey: resolvedCampaignKey,
+            featureKey: finalConfig.featureKey,
             sharedUrl: shareUrl,
             postUrl: postUrl,
           },
@@ -282,6 +299,7 @@ export function useHuntShareDialog(config: ShareConfig = {}) {
       shareUrl,
       resolvedCampaignKey,
       finalConfig.trackShares,
+      finalConfig.featureKey,
       isAuthenticated,
       submitShareMutation,
       submitShareAnonymousMutation,
@@ -325,6 +343,7 @@ export function useHuntShareDialog(config: ShareConfig = {}) {
 export const defaultShareConfig: ShareConfig = {
   enabled: true,
   trackShares: true,
+  featureKey: 'hunt',
   campaignKeyResolver: (domain) => {
     const lower = domain.toLowerCase();
     if (lower.endsWith('.cv')) return HUNT_CAMPAIGN_KEYS.CV;

@@ -82,6 +82,7 @@ export type InteractionLoggingEvent =
       {
         domainName: string;
         campaignKey?: string;
+        featureKey?: string;
         trigger: 'vote_success' | 'manual';
       }
     >
@@ -90,6 +91,7 @@ export type InteractionLoggingEvent =
       {
         domainName: string;
         campaignKey?: string;
+        featureKey?: string;
         trigger: 'tweet_button' | 'copy_button';
         sharedUrl: string;
       }
@@ -99,6 +101,7 @@ export type InteractionLoggingEvent =
       {
         domainName: string;
         campaignKey?: string;
+        featureKey?: string;
         sharedUrl: string;
         postUrl: string;
       }

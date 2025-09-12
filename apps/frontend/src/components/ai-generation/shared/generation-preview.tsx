@@ -8,7 +8,9 @@ import { Skeleton } from '@/components/ui/shadcn/skeleton';
 import { Download, Copy, RefreshCw, Sparkles } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { motion } from 'motion/react';
-import { TwitterIcon, TwitterShareButton } from 'react-share';
+import { TwitterIcon } from 'react-share';
+import { TwitterShareDialog } from '@/components/hunt/twitter-share-dialog';
+import { defaultShareConfig, useShareDialog } from '@/hooks/use-twitter-share';
 import { toast } from 'sonner';
 
 // Circular progress component with fake loading percentage
@@ -292,6 +294,15 @@ export function GenerationPreview({
 }: GenerationPreviewProps) {
   const previewRef = useRef<HTMLDivElement>(null);
   const [currentUrl, setCurrentUrl] = useState('');
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  // Reuse share dialog with AI featureKey
+  const shareDialog = useShareDialog({
+    ...defaultShareConfig,
+    enabled: true,
+    trackShares: false,
+    featureKey: 'ai_generation',
+  });
 
   useEffect(() => {
     if (generatedImage?.domain) {
@@ -346,6 +357,13 @@ export function GenerationPreview({
     }
   };
 
+  const openShareDialog = () => {
+    if (!generatedImage?.domain) return;
+    // Prime the dialog state
+    shareDialog.openDialog(generatedImage.domain as any);
+    setIsDialogOpen(true);
+  };
+
   if (!isVisible || (!isLoading && !generatedImage?.url)) return null;
 
   return (
@@ -393,20 +411,16 @@ export function GenerationPreview({
                           <Copy className="w-4 h-4 mr-1" />
                           Copy
                         </Button>
-                        <TwitterShareButton
-                          url={currentUrl}
-                          title={`Check out this AI-generated ${generatedImage?.type?.toLowerCase() || 'image'} for ${generatedImage?.domain} @namefi_io`}
+                        <Button
+                          variant="secondary"
+                          className="flex-1"
+                          title="Share on Twitter"
+                          disabled={!generatedImage?.url}
+                          onClick={openShareDialog}
                         >
-                          <Button
-                            variant="secondary"
-                            className="flex-1"
-                            title="Share on Twitter"
-                            disabled={!generatedImage?.url}
-                          >
-                            <TwitterIcon className="w-4 h-4 mr-1 rounded" />
-                            Twitter
-                          </Button>
-                        </TwitterShareButton>
+                          <TwitterIcon className="w-4 h-4 mr-1 rounded" />
+                          Twitter
+                        </Button>
                       </>
                     )}
                   </div>
@@ -512,6 +526,23 @@ export function GenerationPreview({
           </CardContent>
         </Card>
       </div>
+      {/* Shared Twitter dialog for AI Generation with featureKey */}
+      <TwitterShareDialog
+        isOpen={isDialogOpen && !!shareDialog.isOpen}
+        onClose={() => {
+          setIsDialogOpen(false);
+          shareDialog.onClose();
+        }}
+        domainName={generatedImage?.domain as any}
+        shareUrl={currentUrl}
+        hasShared={false}
+        isCheckingStatus={false}
+        isSubmitting={false}
+        onSubmit={async () => {}}
+        trackShares={false}
+        campaignKey={undefined}
+        featureKey="ai_generation"
+      />
     </div>
   );
 }

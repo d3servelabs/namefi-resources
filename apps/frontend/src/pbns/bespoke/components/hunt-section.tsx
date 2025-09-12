@@ -218,6 +218,7 @@ export const BespokeHuntSection = ({
         onSubmit={vote.shareDialog.onSubmit}
         trackShares={true} // Bespoke domains track shares for rewards
         campaignKey={vote.shareDialog.campaignKey}
+        featureKey="hunt"
       />
     </section>
   );

@@ -47,6 +47,7 @@ interface TwitterShareDialogProps {
   onSubmit: (postUrl: string) => Promise<void>;
   trackShares?: boolean; // Whether to show tracking-related UI
   campaignKey?: string; // Campaign key for analytics tracking
+  featureKey: string; // Feature identifier for analytics source
 }
 
 export function TwitterShareDialog({
@@ -60,6 +61,7 @@ export function TwitterShareDialog({
   onSubmit,
   trackShares = true,
   campaignKey,
+  featureKey,
 }: TwitterShareDialogProps) {
   const [hasCopied, setHasCopied] = useState(false);
   const { logEventWithInteractionLoggers } = useInteractionLoggers();
@@ -109,6 +111,7 @@ export function TwitterShareDialog({
         properties: {
           domainName,
           campaignKey,
+          featureKey,
           trigger: 'copy_button',
           sharedUrl: shareUrl,
         },
@@ -116,7 +119,13 @@ export function TwitterShareDialog({
     } catch {
       toast.error('Failed to copy URL');
     }
-  }, [shareUrl, domainName, campaignKey, logEventWithInteractionLoggers]);
+  }, [
+    shareUrl,
+    domainName,
+    campaignKey,
+    featureKey,
+    logEventWithInteractionLoggers,
+  ]);
 
   // Handle form submission
   const handleFormSubmit = useCallback(
@@ -158,6 +167,7 @@ export function TwitterShareDialog({
         properties: {
           domainName,
           campaignKey,
+          featureKey,
           trigger: 'tweet_button',
           sharedUrl: shareUrl,
         },
@@ -168,6 +178,7 @@ export function TwitterShareDialog({
     shareUrl,
     domainName,
     campaignKey,
+    featureKey,
     logEventWithInteractionLoggers,
   ]);
 

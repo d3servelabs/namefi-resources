@@ -23,7 +23,9 @@ import {
   Type,
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { TwitterIcon, TwitterShareButton } from 'react-share';
+import { TwitterIcon } from 'react-share';
+import { TwitterShareDialog } from '@/components/hunt/twitter-share-dialog';
+import { defaultShareConfig, useShareDialog } from '@/hooks/use-twitter-share';
 import { toast } from 'sonner';
 import { useCallback, useEffect, useState } from 'react';
 import type { AppRouterOutput } from '@/lib/trpc';
@@ -117,6 +119,13 @@ export function GenerationDetailsClient({
   const router = useRouter();
   const trpc = useTRPC();
   const [currentUrl, setCurrentUrl] = useState('');
+  const shareDialog = useShareDialog({
+    ...defaultShareConfig,
+    enabled: true,
+    trackShares: false,
+    featureKey: 'ai_generation',
+  });
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   useEffect(() => {
     setCurrentUrl(window.location.href);
@@ -207,199 +216,217 @@ export function GenerationDetailsClient({
   }
 
   return (
-    <div className="container max-w-4xl mx-auto py-8 px-8">
-      {/* Header */}
-      <div className="flex justify-between items-center mb-6">
-        <div>
-          <h1 className="text-2xl font-bold">
-            {generation.type === 'logo' ? 'Logo' : 'Poster'} for {brandName}
-          </h1>
-          <p className="text-muted-foreground mt-1">{domain}</p>
-        </div>
-        <Button variant="outline" onClick={handleGoBack}>
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          Back to Brand
-        </Button>
-      </div>
-
-      {/* Main Content */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Image Display */}
-        <div className="lg:col-span-2">
-          <Card>
-            <CardContent className="p-0">
-              <div className="relative aspect-square">
-                <img
-                  src={generation.url}
-                  alt={`AI-generated ${generation.type} for ${domain}`}
-                  className="w-full h-full object-contain rounded-lg"
-                />
-              </div>
-            </CardContent>
-          </Card>
+    <>
+      <div className="container max-w-4xl mx-auto py-8 px-8">
+        {/* Header */}
+        <div className="flex justify-between items-center mb-6">
+          <div>
+            <h1 className="text-2xl font-bold">
+              {generation.type === 'logo' ? 'Logo' : 'Poster'} for {brandName}
+            </h1>
+            <p className="text-muted-foreground mt-1">{domain}</p>
+          </div>
+          <Button variant="outline" onClick={handleGoBack}>
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Back to Brand
+          </Button>
         </div>
 
-        {/* Details Panel */}
-        <div className="space-y-6">
-          {/* Actions */}
-          <div className="space-y-3">
-            <div className="flex flex-col gap-2">
-              <Button onClick={handleDownload} className="w-full">
-                <Download className="mr-2 h-4 w-4" />
-                Download
-              </Button>
-              <div className="grid grid-cols-2 gap-2">
-                <TwitterShareButton
-                  url={currentUrl}
-                  title={`Check out this AI-generated ${generation?.type} for ${domain} @namefi_io`}
-                >
+        {/* Main Content */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Image Display */}
+          <div className="lg:col-span-2">
+            <Card>
+              <CardContent className="p-0">
+                <div className="relative aspect-square">
+                  <img
+                    src={generation.url}
+                    alt={`AI-generated ${generation.type} for ${domain}`}
+                    className="w-full h-full object-contain rounded-lg"
+                  />
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Details Panel */}
+          <div className="space-y-6">
+            {/* Actions */}
+            <div className="space-y-3">
+              <div className="flex flex-col gap-2">
+                <Button onClick={handleDownload} className="w-full">
+                  <Download className="mr-2 h-4 w-4" />
+                  Download
+                </Button>
+                <div className="grid grid-cols-2 gap-2">
                   <Button
                     variant="outline"
                     className="w-full"
                     title="Share on Twitter"
+                    onClick={() => {
+                      shareDialog.openDialog(domain as any);
+                      setIsDialogOpen(true);
+                    }}
                   >
                     <TwitterIcon className="mr-2 h-4 w-4 rounded" />
                     Twitter
                   </Button>
-                </TwitterShareButton>
-                <Button
-                  variant="outline"
-                  onClick={handleCopyLink}
-                  title="Copy link"
-                >
-                  <Copy className="mr-2 h-4 w-4" />
-                  Copy Link
-                </Button>
+                  <Button
+                    variant="outline"
+                    onClick={handleCopyLink}
+                    title="Copy link"
+                  >
+                    <Copy className="mr-2 h-4 w-4" />
+                    Copy Link
+                  </Button>
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* Generation Details */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Sparkles className="h-5 w-5" />
-                Details
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex items-center gap-2">
-                <Type className="h-4 w-4 text-muted-foreground" />
-                <span className="text-sm">Type:</span>
-                <Badge variant="secondary" className="capitalize">
-                  {generation.type}
-                </Badge>
-              </div>
-
-              <div className="flex items-start gap-2">
-                <Calendar className="h-4 w-4 text-muted-foreground mt-0.5" />
-                <div className="flex-1">
-                  <span className="text-sm">Created:</span>
-                  <p className="text-xs text-muted-foreground">
-                    {new Date(generation.createdAt).toLocaleDateString(
-                      undefined,
-                      {
-                        weekday: 'long',
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric',
-                      },
-                    )}{' '}
-                    at{' '}
-                    {new Date(generation.createdAt).toLocaleTimeString(
-                      undefined,
-                      {
-                        hour: 'numeric',
-                        minute: '2-digit',
-                        hour12: true,
-                      },
-                    )}
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Logo-specific Metadata */}
-          {generation.type === 'logo' && generation.input.type === 'logo' && (
+            {/* Generation Details */}
             <Card>
               <CardHeader>
-                <CardTitle>Logo Properties</CardTitle>
+                <CardTitle className="flex items-center gap-2">
+                  <Sparkles className="h-5 w-5" />
+                  Details
+                </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-3">
-                <div>
-                  <span className="text-sm font-medium">Style:</span>
-                  <Badge variant="outline" className="ml-2 capitalize">
-                    {generation.input.logoStyle}
+              <CardContent className="space-y-4">
+                <div className="flex items-center gap-2">
+                  <Type className="h-4 w-4 text-muted-foreground" />
+                  <span className="text-sm">Type:</span>
+                  <Badge variant="secondary" className="capitalize">
+                    {generation.type}
                   </Badge>
                 </div>
-                <div>
-                  <span className="text-sm font-medium">Type:</span>
-                  <Badge variant="outline" className="ml-2 capitalize">
-                    {generation.input.logoType}
-                  </Badge>
+
+                <div className="flex items-start gap-2">
+                  <Calendar className="h-4 w-4 text-muted-foreground mt-0.5" />
+                  <div className="flex-1">
+                    <span className="text-sm">Created:</span>
+                    <p className="text-xs text-muted-foreground">
+                      {new Date(generation.createdAt).toLocaleDateString(
+                        undefined,
+                        {
+                          weekday: 'long',
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric',
+                        },
+                      )}{' '}
+                      at{' '}
+                      {new Date(generation.createdAt).toLocaleTimeString(
+                        undefined,
+                        {
+                          hour: 'numeric',
+                          minute: '2-digit',
+                          hour12: true,
+                        },
+                      )}
+                    </p>
+                  </div>
                 </div>
               </CardContent>
             </Card>
-          )}
 
-          {/* Marketing-specific Metadata */}
-          {generation.type === 'marketing' &&
-            generation.input.type === 'marketing' &&
-            generation.referenceGenerationId && (
+            {/* Logo-specific Metadata */}
+            {generation.type === 'logo' && generation.input.type === 'logo' && (
               <Card>
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <ImageIcon className="h-5 w-5" />
-                    Logo Used
-                  </CardTitle>
+                  <CardTitle>Logo Properties</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4">
-                  {isReferenceLoading ? (
-                    <div className="space-y-3">
-                      <Skeleton className="h-4 w-24" />
-                      <Skeleton className="w-full aspect-square rounded-lg" />
-                      <Skeleton className="h-4 w-32" />
-                    </div>
-                  ) : referenceGeneration ? (
-                    <>
-                      <div className="relative w-full aspect-square bg-muted rounded-lg overflow-hidden">
-                        <img
-                          src={referenceGeneration.url}
-                          alt="Logo used for marketing generation"
-                          className="w-full h-full object-contain"
-                        />
-                      </div>
-
-                      <div className="pt-2 border-t">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() =>
-                            router.push(
-                              `/ai-brand-generator/brand/${domain}/${generation.referenceGenerationId}`,
-                            )
-                          }
-                          className="text-xs"
-                        >
-                          View Logo Details
-                        </Button>
-                      </div>
-                    </>
-                  ) : referenceError ? (
-                    <div className="text-sm text-muted-foreground">
-                      Failed to load logo details
-                    </div>
-                  ) : (
-                    <div className="text-sm text-muted-foreground">
-                      No logo reference found
-                    </div>
-                  )}
+                <CardContent className="space-y-3">
+                  <div>
+                    <span className="text-sm font-medium">Style:</span>
+                    <Badge variant="outline" className="ml-2 capitalize">
+                      {generation.input.logoStyle}
+                    </Badge>
+                  </div>
+                  <div>
+                    <span className="text-sm font-medium">Type:</span>
+                    <Badge variant="outline" className="ml-2 capitalize">
+                      {generation.input.logoType}
+                    </Badge>
+                  </div>
                 </CardContent>
               </Card>
             )}
+
+            {/* Marketing-specific Metadata */}
+            {generation.type === 'marketing' &&
+              generation.input.type === 'marketing' &&
+              generation.referenceGenerationId && (
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <ImageIcon className="h-5 w-5" />
+                      Logo Used
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    {isReferenceLoading ? (
+                      <div className="space-y-3">
+                        <Skeleton className="h-4 w-24" />
+                        <Skeleton className="w-full aspect-square rounded-lg" />
+                        <Skeleton className="h-4 w-32" />
+                      </div>
+                    ) : referenceGeneration ? (
+                      <>
+                        <div className="relative w-full aspect-square bg-muted rounded-lg overflow-hidden">
+                          <img
+                            src={referenceGeneration.url}
+                            alt="Logo used for marketing generation"
+                            className="w-full h-full object-contain"
+                          />
+                        </div>
+
+                        <div className="pt-2 border-t">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() =>
+                              router.push(
+                                `/ai-brand-generator/brand/${domain}/${generation.referenceGenerationId}`,
+                              )
+                            }
+                            className="text-xs"
+                          >
+                            View Logo Details
+                          </Button>
+                        </div>
+                      </>
+                    ) : referenceError ? (
+                      <div className="text-sm text-muted-foreground">
+                        Failed to load logo details
+                      </div>
+                    ) : (
+                      <div className="text-sm text-muted-foreground">
+                        No logo reference found
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              )}
+          </div>
         </div>
       </div>
-    </div>
+      {/* Shared Twitter dialog for AI Generation */}
+      <TwitterShareDialog
+        isOpen={isDialogOpen && !!shareDialog.isOpen}
+        onClose={() => {
+          setIsDialogOpen(false);
+          shareDialog.onClose();
+        }}
+        domainName={domain as any}
+        shareUrl={currentUrl}
+        hasShared={false}
+        isCheckingStatus={false}
+        isSubmitting={false}
+        onSubmit={async () => {}}
+        trackShares={false}
+        campaignKey={undefined}
+        featureKey="ai_generation"
+      />
+    </>
   );
 }

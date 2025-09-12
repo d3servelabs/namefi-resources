@@ -86,35 +86,40 @@ function transformEvent(event: InteractionLoggingEvent): TransformedEvent {
       };
     }
     case InteractionLoggingEventName.ShareDialogOpened: {
-      const { domainName, campaignKey, trigger } = event.properties;
+      const { domainName, campaignKey, featureKey, trigger } = event.properties;
       return {
         name: event.name,
         properties: {
           domain_name: domainName,
           campaign_key: campaignKey,
+          feature_key: featureKey,
           trigger,
         },
       };
     }
     case InteractionLoggingEventName.ShareIntent: {
-      const { domainName, campaignKey, sharedUrl, trigger } = event.properties;
+      const { domainName, campaignKey, featureKey, sharedUrl, trigger } =
+        event.properties;
       return {
         name: event.name,
         properties: {
           domain_name: domainName,
           campaign_key: campaignKey,
+          feature_key: featureKey,
           shared_url: sharedUrl,
           trigger,
         },
       };
     }
     case InteractionLoggingEventName.ShareRecorded: {
-      const { domainName, campaignKey, sharedUrl, postUrl } = event.properties;
+      const { domainName, campaignKey, featureKey, sharedUrl, postUrl } =
+        event.properties;
       return {
         name: event.name,
         properties: {
           domain_name: domainName,
           campaign_key: campaignKey,
+          feature_key: featureKey,
           shared_url: sharedUrl,
           post_url: postUrl,
         },

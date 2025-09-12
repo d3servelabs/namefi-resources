@@ -26,7 +26,18 @@ export function CopyLinkButton({ link }: CopyLinkButtonProps) {
       type="button"
       variant="secondary"
       size="icon"
-      onClick={handleCopy}
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        void handleCopy();
+      }}
+      onMouseDown={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+      }}
+      onKeyDown={(e) => {
+        e.stopPropagation();
+      }}
       className="bg-muted/90"
       title={copied ? 'Copied!' : 'Copy link'}
     >
