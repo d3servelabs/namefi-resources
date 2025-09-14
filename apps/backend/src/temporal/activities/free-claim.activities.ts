@@ -11,6 +11,7 @@ import { and, eq, gte, isNull, or, sql } from 'drizzle-orm';
 import { zeroAddress } from 'viem';
 import { createLogger } from '#lib/logger';
 import { $withTransaction } from '@namefi-astra/db';
+import { orderService } from '../../services/orders/orders.service';
 
 const logger = createLogger({ context: 'free-claim-activities' });
 
@@ -392,10 +393,9 @@ export async function createClaimOrder(
         })
         .returning();
 
-      // Create the order
-      const [order] = await tx
-        .insert(ordersTable)
-        .values({
+      // Create the order via write service (within tx context)
+      const created = await orderService.createOrderWithExistingSinglePayment(
+        {
           userId,
           paymentId: payment.id,
           amountInUSDCents: 0,
@@ -407,27 +407,29 @@ export async function createClaimOrder(
             groupOrCampaignKey,
             claimId,
           },
-        })
-        .returning();
-
-      // Create the order item
-      const [orderItem] = await tx
-        .insert(orderItemsTable)
-        .values({
-          orderId: order.id,
-          normalizedDomainName,
-          amountInUSDCents: 0,
-          durationInYears,
-          type: 'REGISTER',
-          registrar: registrarKey,
-          status: 'PROCESSING',
-          metadata: {
-            freeClaim: true,
-            groupOrCampaignKey,
-            claimId,
-          },
-        })
-        .returning();
+          items: [
+            {
+              normalizedDomainName,
+              amountInUSDCents: 0,
+              durationInYears,
+              type: 'REGISTER',
+              registrar: registrarKey,
+              status: 'PROCESSING',
+              metadata: {
+                freeClaim: true,
+                groupOrCampaignKey,
+                claimId,
+              },
+            },
+          ],
+        },
+        { tx },
+      );
+      const order = { id: created.id } as const;
+      const orderItem = created.items[0];
+      if (created.items.length !== 1 || !orderItem) {
+        throw new Error('Expected 1 order item');
+      }
 
       logger.info(
         {

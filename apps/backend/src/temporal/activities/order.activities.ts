@@ -1,12 +1,14 @@
 import type { OrderStatus } from '@namefi-astra/db/types';
-import { orderService } from '#services/orders/orders.service';
+import {
+  orderService,
+  type CreateOrderItemInput,
+} from '#services/orders/orders.service';
 import {
   db,
   ordersTable,
   orderItemsTable,
   paymentsTable,
   orderStatusSchema,
-  type OrderItemInsert,
 } from '@namefi-astra/db';
 import { eq, and } from 'drizzle-orm';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
@@ -178,38 +180,10 @@ export async function createAutoRenewOrder({
       : failureCount > 0
         ? orderStatusSchema.Values.PARTIALLY_COMPLETED
         : orderStatusSchema.Values.SUCCEEDED;
-  // Create the order
-  const [order] = await db
-    .insert(ordersTable)
-    .values({
-      userId,
-      paymentId,
-      status: orderStatus,
-      amountInUSDCents: totalAmountInUsd * 100,
-      metadata: {
-        autoRenew: true,
-        renewalSummary: {
-          successCount,
-          failureCount,
-          totalAttempted: domainRenewResults.length,
-        },
-      },
-    })
-    .returning({ id: ordersTable.id });
-
-  logger.info(
-    { orderId: order.id, successCount, failureCount },
-    'Created auto-renew order %s with %d successes and %d failures',
-    order.id,
-    successCount,
-    failureCount,
-  );
-
   // Create order items for each domain renewal result
   const orderItems = domainRenewResults.map(
     (result) =>
       ({
-        orderId: order.id,
         normalizedDomainName: result.normalizedDomainName,
         amountInUSDCents: result.chargeAmountInUsd * 100,
         durationInYears: 1,
@@ -234,19 +208,38 @@ export async function createAutoRenewOrder({
               : undefined,
           },
         },
-      }) satisfies OrderItemInsert,
+      }) satisfies CreateOrderItemInput,
   );
 
-  if (orderItems.length > 0) {
-    await db.insert(orderItemsTable).values(orderItems);
+  // Create the order using storage-agnostic service
+  const created = await orderService.createOrderWithExistingSinglePayment({
+    userId,
+    paymentId,
+    status: orderStatus,
+    amountInUSDCents: Math.round(totalAmountInUsd * 100),
+    metadata: {
+      autoRenew: true,
+      renewalSummary: {
+        successCount,
+        failureCount,
+        totalAttempted: domainRenewResults.length,
+      },
+    },
+    items: orderItems.map((item) => ({
+      ...item,
+      amountInUSDCents: Math.round(item.amountInUSDCents),
+    })),
+  });
 
-    logger.info(
-      { orderId: order.id, itemCount: orderItems.length },
-      'Created %d order items for auto-renew order %s',
-      orderItems.length,
-      order.id,
-    );
-  }
+  const order = { id: created.id } as const;
+
+  logger.info(
+    { orderId: order.id, successCount, failureCount },
+    'Created auto-renew order %s with %d successes and %d failures',
+    order.id,
+    successCount,
+    failureCount,
+  );
 
   return { orderId: order.id };
 }

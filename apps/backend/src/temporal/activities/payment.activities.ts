@@ -43,6 +43,7 @@ import { logger } from '#lib/logger';
 import { getNfscBalanceInUSD } from './mint.activities';
 import { privyClient } from '../../trpc/utils';
 import type { WalletWithMetadata } from '@privy-io/server-auth';
+import { $withTransaction } from '@namefi-astra/db';
 
 const stripe = new Stripe(secrets.STRIPE_SECRET_KEY);
 
@@ -79,42 +80,51 @@ export async function captureStripePayment({
   return { capturedStripePaymentIntent };
 }
 
-export async function createPayment({
-  amountInUsdCents,
-  paymentProviderDetails,
-}: {
-  amountInUsdCents: number;
-  paymentProviderDetails: PaymentProviderDetails;
-}) {
-  if (amountInUsdCents < 0) {
-    throw new NegativeAmountInUsdCentsError({ amountInUsdCents });
-  }
+export async function createPayment(
+  {
+    amountInUsdCents,
+    paymentProviderDetails,
+  }: {
+    amountInUsdCents: number;
+    paymentProviderDetails: PaymentProviderDetails;
+  },
+  { tx }: { tx?: typeof db } = {},
+) {
+  return $withTransaction(
+    async (tx) => {
+      if (amountInUsdCents < 0) {
+        throw new NegativeAmountInUsdCentsError({ amountInUsdCents });
+      }
 
-  const newPaymentInsertValues = Object.assign(
-    {
-      amountInUSDCents: amountInUsdCents,
-      paymentProvider: paymentProviderDetails.paymentProvider,
-    },
-    paymentProviderDetails.paymentProvider === 'STRIPE'
-      ? {
-          stripePaymentDetails: paymentProviderDetails.stripePaymentDetails,
-        }
-      : {
-          nfscPaymentDetails: paymentProviderDetails.nfscPaymentDetails,
+      const newPaymentInsertValues = Object.assign(
+        {
+          amountInUSDCents: amountInUsdCents,
+          paymentProvider: paymentProviderDetails.paymentProvider,
         },
-    { status: paymentStatusSchema.Values.CREATED },
+        paymentProviderDetails.paymentProvider === 'STRIPE'
+          ? {
+              stripePaymentDetails: paymentProviderDetails.stripePaymentDetails,
+            }
+          : {
+              nfscPaymentDetails: paymentProviderDetails.nfscPaymentDetails,
+            },
+        { status: paymentStatusSchema.Values.CREATED },
+      );
+
+      const [newPayment] = await tx
+        .insert(paymentsTable)
+        .values(newPaymentInsertValues)
+        .returning();
+
+      if (isNil(newPayment)) {
+        throw new CreateNewPaymentFailure();
+      }
+
+      return newPayment;
+    },
+    { deferrable: true, isolationLevel: 'serializable' },
+    tx,
   );
-
-  const [newPayment] = await db
-    .insert(paymentsTable)
-    .values(newPaymentInsertValues)
-    .returning();
-
-  if (isNil(newPayment)) {
-    throw new CreateNewPaymentFailure();
-  }
-
-  return newPayment;
 }
 
 export async function createRefund({
