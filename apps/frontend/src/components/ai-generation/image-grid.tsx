@@ -7,7 +7,10 @@ import { Card, CardContent } from '@/components/ui/shadcn/card';
 import { Download } from 'lucide-react';
 import { TwitterIcon } from 'react-share';
 import { TwitterShareDialog } from '@/components/hunt/twitter-share-dialog';
-import { defaultShareConfig, useShareDialog } from '@/hooks/use-twitter-share';
+import {
+  defaultShareConfig,
+  useTwitterShareDialog,
+} from '@/hooks/use-twitter-share';
 import { useRouter } from 'next/navigation';
 
 export interface GeneratedItem {
@@ -40,7 +43,7 @@ export function ImageGrid({
   onGenerateAnother: _onGenerateAnother,
   brandDomain,
 }: ImageGridProps) {
-  const shareDialog = useShareDialog({
+  const shareDialog = useTwitterShareDialog({
     ...defaultShareConfig,
     enabled: true,
     trackShares: false,

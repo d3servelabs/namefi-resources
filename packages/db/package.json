@@ -22,7 +22,7 @@
     "@namefi-astra/zod-dns": "workspace:*",
     "bufferutil": "^4.0.9",
     "ws": "^8.18.1",
-    "zod": "3.23.8"
+    "zod": "3.25.32"
   },
   "devDependencies": {
     "@namefi-astra/typescript": "workspace:*",

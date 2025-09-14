@@ -1,6 +1,9 @@
 import { uploadFileToS3, generateCloudFrontUrl } from '@namefi-astra/storage';
 import type { GeneratedLogo, GenerateLogoParams } from '../lib/types';
-import { MODEL_CONFIGS } from '../lib/config/models';
+import {
+  GEMINI_IMAGE_CONFIG,
+  OPENAI_LOGO_IMAGE_CONFIG,
+} from '../lib/config/models';
 import {
   createGenerationMessages,
   createImageGenerationModel,
@@ -25,7 +28,9 @@ export async function generateLogo(
   console.log(`Prompt: ${logoConcept.prompt}`);
 
   const imageGenerationModel = createImageGenerationModel(
-    MODEL_CONFIGS.LOGO_GENERATION,
+    params.model === 'gpt-image-1'
+      ? OPENAI_LOGO_IMAGE_CONFIG
+      : GEMINI_IMAGE_CONFIG,
   );
 
   try {
@@ -35,6 +40,7 @@ export async function generateLogo(
       domain,
       logoType: logoConcept.type,
       style: logoConcept.style,
+      model: params.model,
     });
 
     // Generate logo
@@ -48,8 +54,10 @@ export async function generateLogo(
     );
 
     // Extract image data
-    const { imageData, revisedPrompt, generationCallId } =
-      extractImageData(response);
+    const { imageData, generationCallId } = extractImageData(
+      response,
+      params.model,
+    );
 
     if (!imageData) {
       console.error(
@@ -83,10 +91,9 @@ export async function generateLogo(
       type: logoConcept.type,
       style: logoConcept.style,
       storagePath: result.key,
-      revisedPrompt,
       generationCallId,
       tokenUsage: response.usage_metadata,
-      model: MODEL_CONFIGS.LOGO_GENERATION.toolConfig.model,
+      model: params.model,
     };
   } catch (error) {
     console.error('Failed to generate logo:', error);

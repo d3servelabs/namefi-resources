@@ -4,7 +4,10 @@ import type {
   GeneratedImage,
   GenerateMarketingImageParams,
 } from '../lib/types';
-import { MODEL_CONFIGS } from '../lib/config/models';
+import {
+  GEMINI_IMAGE_CONFIG,
+  OPENAI_MARKETING_IMAGE_CONFIG,
+} from '../lib/config/models';
 import {
   createGenerationMessages,
   createImageGenerationModel,
@@ -16,7 +19,7 @@ import { imageGenerationSystemPrompt } from '../prompts/domain-marketing';
 /**
  * Create messages for multi-turn or regular generation
  */
-function createMarketingImageMessages(
+function createMarketingImageMessagesOpenAI(
   enhancedPrompt: string,
   basedOnLogoCallId?: string,
 ): BaseMessageLike[] {
@@ -34,7 +37,6 @@ function createMarketingImageMessages(
     messages.push(
       new AIMessage({
         content: '',
-        // biome-ignore lint/style/useNamingConvention: langchain uses snake_case
         response_metadata: {
           output: [
             {
@@ -50,27 +52,67 @@ function createMarketingImageMessages(
   return messages;
 }
 
+function createMarketingImageMessagesGemini(
+  enhancedPrompt: string,
+  basedOnLogoPublicUrl?: string,
+): BaseMessageLike[] {
+  const messages: BaseMessageLike[] = [
+    ...createGenerationMessages(
+      imageGenerationSystemPrompt,
+      basedOnLogoPublicUrl
+        ? `Generate a marketing image based on the referenced logo. Use this prompt: ${enhancedPrompt}`
+        : `Generate a marketing image with this prompt: ${enhancedPrompt}`,
+    ),
+  ];
+
+  if (basedOnLogoPublicUrl) {
+    messages.push(
+      new AIMessage({
+        content: '',
+      }),
+    );
+  }
+
+  console.error(messages);
+
+  return messages;
+}
+
 /**
  * Generate single marketing image
  */
 export async function generateMarketingImage(
   params: GenerateMarketingImageParams,
 ): Promise<GeneratedImage | null> {
-  const { domain, storage, basedOnLogoCallId } = params;
+  const { domain, storage, basedOnLogoCallId, basedOnLogoPublicUrl } = params;
 
   console.log(`Generating marketing image for ${domain}`);
-  console.log(`Based on logo call ID: ${basedOnLogoCallId}`);
+  console.log(
+    basedOnLogoCallId
+      ? `Based on logo call ID: ${basedOnLogoCallId}`
+      : basedOnLogoPublicUrl
+        ? `Based on logo public URL: ${basedOnLogoPublicUrl}`
+        : '',
+  );
 
   const imageGenerationModel = createImageGenerationModel(
-    MODEL_CONFIGS.MARKETING_IMAGE_GENERATION,
+    params.model === 'gpt-image-1'
+      ? OPENAI_MARKETING_IMAGE_CONFIG
+      : GEMINI_IMAGE_CONFIG,
   );
 
   try {
     // Create messages for multi-turn or regular generation
-    const messages = createMarketingImageMessages(
-      'Using the referenced logo, put it on a realistic billboard',
-      basedOnLogoCallId,
-    );
+    const messages =
+      params.model === 'gpt-image-1'
+        ? createMarketingImageMessagesOpenAI(
+            'Using the referenced logo, put it on a realistic billboard',
+            basedOnLogoCallId,
+          )
+        : createMarketingImageMessagesGemini(
+            'Using the referenced logo, put it on a realistic billboard',
+            basedOnLogoPublicUrl,
+          );
 
     // Generate image
     const response = await generateImageWithTiming(
@@ -79,8 +121,10 @@ export async function generateMarketingImage(
     );
 
     // Extract image data
-    const { imageData, revisedPrompt, generationCallId } =
-      extractImageData(response);
+    const { imageData, generationCallId } = extractImageData(
+      response,
+      params.model,
+    );
 
     if (!imageData) {
       console.error(`No image data received for ${domain}`);
@@ -107,10 +151,9 @@ export async function generateMarketingImage(
     return {
       url: publicUrl,
       storagePath: result.key,
-      revisedPrompt,
       generationCallId,
       tokenUsage: response.usage_metadata,
-      model: MODEL_CONFIGS.MARKETING_IMAGE_GENERATION.toolConfig.model,
+      model: params.model,
     };
   } catch (error) {
     console.error(`Failed to generate image for ${domain}:`, error);

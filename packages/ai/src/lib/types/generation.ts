@@ -2,6 +2,8 @@ import type { UsageMetadata } from '@langchain/core/messages';
 import type { StorageConfig } from '@namefi-astra/storage';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 
+export type Model = 'gpt-image-1' | 'gemini-2.5-flash-image-preview';
+
 // Base concept interfaces
 export interface BaseConcept {
   style: string;
@@ -21,7 +23,6 @@ export interface MarketingConcept extends BaseConcept {
 export interface BaseGeneratedResult {
   url: string;
   storagePath: string;
-  revisedPrompt?: string;
   generationCallId?: string;
   tokenUsage?: UsageMetadata;
   model: string;
@@ -43,9 +44,12 @@ export interface BaseGenerationParams {
 export interface GenerateLogoParams extends BaseGenerationParams {
   domain: NamefiNormalizedDomain;
   logoConcept: LogoConcept;
+  model: Model;
 }
 
 export interface GenerateMarketingImageParams extends BaseGenerationParams {
   domain: NamefiNormalizedDomain;
   basedOnLogoCallId?: string;
+  basedOnLogoPublicUrl?: string;
+  model: Model;
 }

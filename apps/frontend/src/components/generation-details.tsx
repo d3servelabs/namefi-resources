@@ -25,7 +25,10 @@ import {
 import { useRouter } from 'next/navigation';
 import { TwitterIcon } from 'react-share';
 import { TwitterShareDialog } from '@/components/hunt/twitter-share-dialog';
-import { defaultShareConfig, useShareDialog } from '@/hooks/use-twitter-share';
+import {
+  defaultShareConfig,
+  useTwitterShareDialog,
+} from '@/hooks/use-twitter-share';
 import { toast } from 'sonner';
 import { useCallback, useEffect, useState } from 'react';
 import type { AppRouterOutput } from '@/lib/trpc';
@@ -119,7 +122,7 @@ export function GenerationDetailsClient({
   const router = useRouter();
   const trpc = useTRPC();
   const [currentUrl, setCurrentUrl] = useState('');
-  const shareDialog = useShareDialog({
+  const shareDialog = useTwitterShareDialog({
     ...defaultShareConfig,
     enabled: true,
     trackShares: false,

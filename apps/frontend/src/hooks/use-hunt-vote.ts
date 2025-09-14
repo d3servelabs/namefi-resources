@@ -11,7 +11,7 @@ import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { useHuntVoteChoice } from './use-hunt-vote-choice';
 import {
   defaultShareConfig,
-  useShareDialog,
+  useTwitterShareDialog,
   type ShareConfig,
 } from './use-twitter-share';
 import { usePreAuthSignals } from '@/components/providers/pre-auth-signals';
@@ -371,7 +371,7 @@ export function useHuntVote(
   const { isAuthenticated } = useAuth();
   const { logEventWithInteractionLoggers } = useInteractionLoggers();
   const { addSignal } = usePreAuthSignals();
-  const shareDialog = useShareDialog(options?.shareConfig);
+  const shareDialog = useTwitterShareDialog(options?.shareConfig);
   const choiceDialog = useHuntVoteChoice({
     onShare: shareDialog.openDialog,
     onLoginSuccess: async (domain) => {

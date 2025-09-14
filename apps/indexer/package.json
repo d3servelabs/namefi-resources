@@ -34,7 +34,7 @@
     "tsx": "^4.19.3",
     "undici": "^7.12.0",
     "viem": "^2.24.2",
-    "zod": "3.23.8"
+    "zod": "3.25.32"
   },
   "devDependencies": {
     "@namefi-astra/typescript": "workspace:*",

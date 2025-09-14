@@ -2,6 +2,7 @@ import {
   HumanMessage,
   SystemMessage,
   type UsageMetadata,
+  type BaseMessageLike,
 } from '@langchain/core/messages';
 import { ChatOpenAI } from '@langchain/openai';
 import type { z } from 'zod';
@@ -29,6 +30,13 @@ export type AnalysisResult<T> = {
   model: string;
 };
 
+type MinimalStructuredModel = {
+  invoke: (messages: BaseMessageLike[]) => Promise<{
+    parsed?: unknown;
+    raw?: { usage_metadata?: UsageMetadata } | unknown;
+  }>;
+};
+
 /**
  * Perform structured analysis using a schema
  */
@@ -39,10 +47,18 @@ export async function performStructuredAnalysis<T>(
   systemPrompt: string,
   userPrompt: string,
 ): Promise<AnalysisResult<T>> {
-  const structuredModel = model.withStructuredOutput(schema, {
+  // TODO (sid): Fix these types once zod is upgraded
+  const typedModel = model as unknown as {
+    withStructuredOutput: (
+      schema: unknown,
+      options: { name: string; includeRaw: boolean },
+    ) => unknown;
+  };
+
+  const structuredModel = typedModel.withStructuredOutput(schema as unknown, {
     name: schemaName,
     includeRaw: true,
-  });
+  }) as MinimalStructuredModel;
 
   const result = await structuredModel.invoke([
     new SystemMessage(systemPrompt),
@@ -51,8 +67,8 @@ export async function performStructuredAnalysis<T>(
 
   return {
     data: result.parsed as T,
-    // @ts-expect-error - TODO: fix this type mismatch
-    tokenUsage: result.raw.usage_metadata as UsageMetadata,
+    tokenUsage: (result.raw as { usage_metadata?: UsageMetadata } | undefined)
+      ?.usage_metadata,
     model: model.model,
   };
 }

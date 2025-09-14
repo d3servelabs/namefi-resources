@@ -10,7 +10,10 @@ import { useEffect, useRef, useState } from 'react';
 import { motion } from 'motion/react';
 import { TwitterIcon } from 'react-share';
 import { TwitterShareDialog } from '@/components/hunt/twitter-share-dialog';
-import { defaultShareConfig, useShareDialog } from '@/hooks/use-twitter-share';
+import {
+  defaultShareConfig,
+  useTwitterShareDialog,
+} from '@/hooks/use-twitter-share';
 import { toast } from 'sonner';
 
 // Circular progress component with fake loading percentage
@@ -297,7 +300,7 @@ export function GenerationPreview({
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   // Reuse share dialog with AI featureKey
-  const shareDialog = useShareDialog({
+  const shareDialog = useTwitterShareDialog({
     ...defaultShareConfig,
     enabled: true,
     trackShares: false,

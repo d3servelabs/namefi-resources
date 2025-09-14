@@ -51,12 +51,18 @@ const generateLogoInputSchema = z.object({
   description: z.string().optional(),
   type: z.string().min(1, 'Logo type is required'),
   style: z.string().min(1, 'Logo style is required'),
+  model: z
+    .enum(['gpt-image-1', 'gemini-2.5-flash-image-preview'])
+    .default('gpt-image-1'),
 });
 
 const generateMarketingImageInputSchema = z.object({
   domain: namefiNormalizedDomainSchema,
   description: z.string().optional(),
   referenceLogoGenerationId: z.string().optional(),
+  model: z
+    .enum(['gpt-image-1', 'gemini-2.5-flash-image-preview'])
+    .default('gpt-image-1'),
 });
 
 export const aiRouter = createTRPCRouter({
@@ -73,7 +79,7 @@ export const aiRouter = createTRPCRouter({
           });
         }
 
-        const { domain, description, type, style } = input;
+        const { domain, description, type, style, model } = input;
 
         // Step 1: Analyze brand and generate logo concept
         const {
@@ -90,6 +96,7 @@ export const aiRouter = createTRPCRouter({
             ...storageConfig,
             baseFolder: config.AI_BUCKET_FOLDERS.LOGOS,
           },
+          model,
         });
 
         if (!generatedLogo) {
@@ -166,10 +173,11 @@ export const aiRouter = createTRPCRouter({
           });
         }
 
-        const { domain, description, referenceLogoGenerationId } = input;
+        const { domain, description, referenceLogoGenerationId, model } = input;
 
         // Step 1: Find reference generation if basedOnLogoCallId provided
         let referenceLogoGenerationExternalId: string | undefined;
+        let referenceLogoPublicUrl: string | undefined;
         if (referenceLogoGenerationId) {
           const referenceLogoGeneration = await db
             .select()
@@ -186,6 +194,10 @@ export const aiRouter = createTRPCRouter({
           if (referenceLogoGeneration) {
             referenceLogoGenerationExternalId =
               referenceLogoGeneration.output.externalId;
+            referenceLogoPublicUrl = generateUrlFromStoragePath(
+              referenceLogoGeneration.output.storagePath,
+              config.CLOUD_FRONT_DOMAIN,
+            );
           }
         }
 
@@ -197,6 +209,8 @@ export const aiRouter = createTRPCRouter({
             baseFolder: config.AI_BUCKET_FOLDERS.SOCIAL,
           },
           basedOnLogoCallId: referenceLogoGenerationExternalId,
+          basedOnLogoPublicUrl: referenceLogoPublicUrl,
+          model,
         });
 
         if (!generatedImage) {

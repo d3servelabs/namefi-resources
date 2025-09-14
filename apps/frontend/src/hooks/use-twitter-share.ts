@@ -47,7 +47,7 @@ export interface ShareConfig {
   featureKey?: string;
 }
 
-export function useShareDialog(config: ShareConfig = {}) {
+export function useTwitterShareDialog(config: ShareConfig = {}) {
   const trpc = useTRPC();
   const queryClient = useQueryClient();
   const { isAuthenticated } = useAuth();
@@ -343,7 +343,6 @@ export function useShareDialog(config: ShareConfig = {}) {
 export const defaultShareConfig: ShareConfig = {
   enabled: true,
   trackShares: true,
-  featureKey: 'hunt',
   campaignKeyResolver: (domain) => {
     const lower = domain.toLowerCase();
     if (lower.endsWith('.cv')) return HUNT_CAMPAIGN_KEYS.CV;
