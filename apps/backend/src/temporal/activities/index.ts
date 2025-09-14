@@ -12,3 +12,4 @@ export * as FreeClaimActivities from './free-claim.activities';
 export * as FreeClaimsCorrectionActivities from './free-claims-correction.activities';
 export * as LinkSharesExternalIdentifierMigrationActivities from './migration/link-shares-external-identifier-migration.activities';
 export * as TwitterLinkSharesValidationActivities from './link-shares-validation.activities';
+export * as LogoGenerationActivities from './logo-generation.activities';

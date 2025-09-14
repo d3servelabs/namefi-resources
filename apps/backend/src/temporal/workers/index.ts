@@ -35,6 +35,7 @@ import { db } from '@namefi-astra/db';
 import { config } from '#lib/env';
 import { IndexersActivities } from '../activities/indexers';
 import { defaultTaskQueueActivities } from '../activities/default';
+import { LogoGenerationActivities } from '../activities';
 
 export let WORKERS: Partial<Record<TEMPORAL_ENUMS, Worker>> | undefined;
 
@@ -47,6 +48,7 @@ export const ACTIVITIES = {
     ...TwitterLinkSharesValidationActivities,
     ...OrderActivities,
     ...PaymentActivities,
+    ...LogoGenerationActivities,
     updateNamefiNftIndex,
     triggerUpdateNamefiNftIndex,
     triggerNamefiGptCronJob,
