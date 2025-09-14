@@ -1,7 +1,10 @@
 import { config, secrets } from '#lib/env';
 
 import { db } from '@namefi-astra/db';
-import { aiGenerationsTable } from '@namefi-astra/db/schema';
+import {
+  aiGenerationsTable,
+  internalAiGenerationsTable,
+} from '@namefi-astra/db/schema';
 import {
   createS3Client,
   generateUrlFromStoragePath,
@@ -365,6 +368,37 @@ export const aiRouter = createTRPCRouter({
           config.CLOUD_FRONT_DOMAIN,
         ),
       };
+    }),
+
+  getInternalGenerationsByDomain: publicProcedure
+    .input(
+      z.object({
+        domain: namefiNormalizedDomainSchema,
+      }),
+    )
+    .query(async ({ input }) => {
+      const rows = await db
+        .select({
+          id: internalAiGenerationsTable.id,
+          domain: internalAiGenerationsTable.domain,
+          type: internalAiGenerationsTable.type,
+          createdAt: internalAiGenerationsTable.createdAt,
+          output: internalAiGenerationsTable.output,
+        })
+        .from(internalAiGenerationsTable)
+        .where(eq(internalAiGenerationsTable.domain, input.domain))
+        .orderBy(desc(internalAiGenerationsTable.createdAt));
+
+      return rows.map((row) => ({
+        id: row.id,
+        domain: row.domain,
+        type: row.type,
+        createdAt: row.createdAt,
+        url: generateUrlFromStoragePath(
+          row.output.storagePath,
+          config.CLOUD_FRONT_DOMAIN,
+        ),
+      }));
     }),
 
   getUserGenerationUsage: protectedProcedure.query(async ({ ctx }) => {
