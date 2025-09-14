@@ -197,6 +197,8 @@ export const paymentsTable = pgTable(
     status: paymentStatusEnum('status').notNull().default('CREATED'),
     paymentProvider: paymentProviderEnum('payment_provider').notNull(),
     paymentProviderReferenceId: text('payment_provider_reference_id'),
+    // Stage 3: one-to-many (orders -> payments). FK will be added via SQL migration to avoid circular init.
+    orderId: uuid('order_id'),
     nfscPaymentDetails: jsonb('nfsc_payment_details').$type<{
       chainId: number;
       walletAddress: string;
@@ -209,6 +211,11 @@ export const paymentsTable = pgTable(
   (table) => [
     check('amount_in_usd_cents_nonnegative', sql`amount_in_usd_cents >= 0`),
     index('payments_status_idx').on(table.status),
+    index('payments_order_id_idx').on(table.orderId),
+    foreignKey({
+      columns: [table.orderId],
+      foreignColumns: [ordersTable.id],
+    }).onDelete('restrict'),
     unique('payments_provider_reference_unique').on(
       table.paymentProviderReferenceId,
     ),
@@ -261,11 +268,6 @@ export const ordersTable = pgTable(
       })
       .notNull(),
     status: orderStatusEnum('status').notNull().default('CREATED'),
-    paymentId: uuid('payment_id')
-      .references(() => paymentsTable.id, {
-        onDelete: 'restrict',
-      })
-      .notNull(),
     ...amountInUsdCents,
     nftWalletAddress: text('nft_wallet_address'),
     nftChainId: integer('nft_chain_id'),
@@ -275,9 +277,7 @@ export const ordersTable = pgTable(
   (table) => [
     check('amount_in_usd_cents_nonnegative', sql`amount_in_usd_cents >= 0`),
     index('orders_user_id_idx').on(table.userId),
-    index('orders_payment_id_idx').on(table.paymentId),
     index('orders_status_idx').on(table.status),
-    unique('orders_payment_id_unique').on(table.paymentId),
   ],
 );
 
@@ -309,6 +309,13 @@ export const orderItemsTable = pgTable(
     index('order_items_status_idx').on(table.status),
   ],
 );
+
+/**
+ * Order payments join table (Stage 3)
+ * Links orders to multiple payments; isPrimary marks the primary payment.
+ * Note: Deferrable constraints (unique on payment_id, etc.) will be applied via raw SQL migrations.
+ */
+// order_payments join table removed in favor of payments.order_id one-to-many
 
 export const recordTypePgEnum = pgEnum(
   'record_type_enum',
@@ -455,7 +462,7 @@ export const domainTagsWithNftAndOrderItemsView = pgView(
       ...getTableColumns(orderItemsTable),
       orderStatus: sql<string>`orders.status`.as('order_status'),
       orderUserId: sql<string>`orders.user_id`.as('order_user_id'),
-      orderPaymentId: sql<string>`orders.payment_id`.as('order_payment_id'),
+      // orderPaymentId removed in Stage 3 (orders.payment_id dropped)
     })
     .from(domainTagsTable)
     .leftJoin(

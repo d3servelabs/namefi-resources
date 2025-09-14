@@ -270,14 +270,14 @@ export const ordersRouter = createTRPCRouter({
         },
       });
 
-      if (!payment) {
+      if (!payment || !payment.order) {
         throw new TRPCError({
           code: 'NOT_FOUND',
           message: 'Payment not found',
         });
       }
-
-      if (payment.order?.userId !== user.id) {
+      // TODO userId should be present in the payment table
+      if (payment.order.userId !== user.id) {
         throw new TRPCError({
           code: 'UNAUTHORIZED',
           message: 'You are not authorized to access this payment',

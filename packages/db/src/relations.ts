@@ -35,11 +35,8 @@ export const ordersRelations = relations(ordersTable, ({ one, many }) => ({
     fields: [ordersTable.userId],
     references: [usersTable.id],
   }),
-  payment: one(paymentsTable, {
-    fields: [ordersTable.paymentId],
-    references: [paymentsTable.id],
-  }),
   items: many(orderItemsTable),
+  payments: many(paymentsTable),
 }));
 
 // Order items relations
@@ -52,7 +49,10 @@ export const orderItemsRelations = relations(orderItemsTable, ({ one }) => ({
 
 // Payment relations
 export const paymentsRelations = relations(paymentsTable, ({ one, many }) => ({
-  order: one(ordersTable),
+  order: one(ordersTable, {
+    fields: [paymentsTable.orderId],
+    references: [ordersTable.id],
+  }),
   refunds: many(refundsTable),
 }));
 

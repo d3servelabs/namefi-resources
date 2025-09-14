@@ -5,14 +5,14 @@ import {
   orderItemsTable,
   $withTransaction,
 } from '@namefi-astra/db';
-import { eq } from 'drizzle-orm';
+import { eq, inArray } from 'drizzle-orm';
 import { OrderNotFoundError } from './errors';
 import type {
   OrderItemSelect,
   PaymentSelect,
   UserSelect,
 } from '@namefi-astra/db';
-import { omit } from 'ramda';
+import { indexBy, omit, prop } from 'ramda';
 import type { OrderItemInsert, OrderInsert } from '@namefi-astra/db';
 
 type OrderRow = typeof ordersTable.$inferSelect;
@@ -32,6 +32,7 @@ export async function getOrderDetailsOrThrow(
     with: {
       items: true,
       user: true,
+      payments: true,
     },
   });
 
@@ -39,18 +40,10 @@ export async function getOrderDetailsOrThrow(
     throw new OrderNotFoundError({ orderId });
   }
 
-  const payments: PaymentSelect[] = [];
-  if (orderWithDetails.paymentId) {
-    const p = await db.query.paymentsTable.findFirst({
-      where: eq(paymentsTable.id, orderWithDetails.paymentId),
-    });
-    if (p) payments.push(p);
-  }
-
-  const { items, user, ...order } = orderWithDetails;
+  const { items, user, payments, ...order } = orderWithDetails;
   return {
     order,
-    payments,
+    payments: payments as PaymentSelect[],
     items: items as OrderItemSelect[],
     user: user as UserSelect,
   };
@@ -71,7 +64,7 @@ export type CreateOrderItemInput = Omit<
 
 export type CreateOrderWithExistingMultiplePaymentsInput = Omit<
   OrderInsert,
-  'id' | 'createdAt' | 'updatedAt' | 'paymentId'
+  'id' | 'createdAt' | 'updatedAt'
 > & {
   paymentIds: string[];
   items: CreateOrderItemInput[];
@@ -90,7 +83,6 @@ export async function createOrderWithExistingMultiplePayments(
   amountInUSDCents: number;
   nftWalletAddress: string | null;
   nftChainId: number | null;
-  paymentId: string | null;
   items: OrderItemSelect[];
 }> {
   if (!paymentIds.length) {
@@ -103,19 +95,16 @@ export async function createOrderWithExistingMultiplePayments(
   return $withTransaction(
     async (tx) => {
       // Load and validate payments (within tx)
-      const payments = await Promise.all(
-        paymentIds.map(async (pid) => {
-          const p = await tx.query.paymentsTable.findFirst({
-            where: eq(paymentsTable.id, pid),
-          });
-          if (!p) throw new Error(`Payment not found: ${pid}`);
-          return p as PaymentSelect;
-        }),
-      );
+      const payments = await tx.query.paymentsTable.findMany({
+        where: inArray(paymentsTable.id, paymentIds),
+      });
 
-      // Prefer STRIPE as primary if present (forward-compatible with refund priority)
-      const primaryPayment =
-        payments.find((p) => p.paymentProvider === 'STRIPE') ?? payments[0]!;
+      if (paymentIds.length !== payments.length) {
+        throw new Error('Some payments not found');
+      }
+      if (payments.some((p) => p.orderId)) {
+        throw new Error('Some payments are already linked to an order');
+      }
 
       const totalAmountFromItems = items.reduce(
         (acc, it) => acc + (it.amountInUSDCents ?? 0),
@@ -139,7 +128,6 @@ export async function createOrderWithExistingMultiplePayments(
         .insert(ordersTable)
         .values({
           ...orderInsert,
-          paymentId: primaryPayment.id,
         })
         .returning();
 
@@ -153,7 +141,12 @@ export async function createOrderWithExistingMultiplePayments(
         )
         .returning();
 
-      // Note: Additional payments beyond primary are intentionally ignored in Stage 2 (no join table yet)
+      // Link provided payments to this order (one-to-many via payments.orderId)
+      await tx
+        .update(paymentsTable)
+        .set({ orderId: order.id })
+        .where(inArray(paymentsTable.id, paymentIds));
+
       return { ...order, items: insertedItems as OrderItemSelect[] };
     },
     { deferrable: true, isolationLevel: 'serializable' },
