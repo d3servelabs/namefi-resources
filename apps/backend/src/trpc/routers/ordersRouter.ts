@@ -6,6 +6,7 @@ import {
   isNfscPayment,
   orderItemsTable,
   ordersTable,
+  paymentsTable,
 } from '@namefi-astra/db';
 import { checksumWalletAddressSchema } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
@@ -33,8 +34,26 @@ import {
   validateCartItems,
 } from '#lib/carts/cart-validation';
 import { secrets } from '../../lib/env';
+import pMap from 'p-map';
 
 const stripe = new Stripe(secrets.STRIPE_SECRET_KEY);
+type PaymentMethodDetailsOnChain = {
+  paymentId: string;
+  isOnChainPayment: true;
+  txHash?: string | null;
+  chainId: number;
+  walletAddress: string;
+};
+type PaymentMethodDetailsOffChain = {
+  paymentId: string;
+  isOnChainPayment: false;
+  brand?: string;
+  last4?: string;
+};
+
+type PaymentMethodDetails =
+  | PaymentMethodDetailsOnChain
+  | PaymentMethodDetailsOffChain;
 
 export const ordersRouter = createTRPCRouter({
   createOrder: protectedProcedure
@@ -229,14 +248,14 @@ export const ordersRouter = createTRPCRouter({
     .input(z.object({ orderId: z.string() }))
     .query(async ({ ctx, input }) => {
       const { orderId } = input;
-      const order = await orderService.getOrderDetailsOrThrow(orderId);
-      if (order.userId !== ctx.user.id) {
+      const data = await orderService.getOrderDetailsOrThrow(orderId);
+      if (data.order.userId !== ctx.user.id) {
         throw new TRPCError({
           code: 'UNAUTHORIZED',
           message: 'You are not authorized to access this order',
         });
       }
-      return order;
+      return data;
     }),
 
   getOrderItems: protectedProcedure.query(
@@ -265,24 +284,107 @@ export const ordersRouter = createTRPCRouter({
     },
   ),
 
-  getOrderPaymentMethodDetails: protectedProcedure
+  getOrderPaymentMethodsDetails: protectedProcedure
     .input(z.object({ orderId: z.string() }))
-    .query(async ({ ctx, input }) => {
+    .query(async ({ ctx, input }): Promise<PaymentMethodDetails[]> => {
       const { user } = ctx;
       const { orderId } = input;
 
-      const { userId, payment } =
+      const { order, payments } =
         await orderService.getOrderDetailsOrThrow(orderId);
 
-      if (userId !== user.id) {
+      if (order.userId !== user.id) {
         throw new TRPCError({
           code: 'UNAUTHORIZED',
           message: 'You are not authorized to access this order',
         });
       }
+      if (!payments.length) {
+        return [];
+      }
+      const res = await pMap(
+        payments,
+        async (payment): Promise<PaymentMethodDetails> => {
+          if (isNfscPayment(payment)) {
+            return {
+              paymentId: payment.id,
+              isOnChainPayment: true,
+              txHash: payment.paymentProviderReferenceId,
+              chainId: payment.nfscPaymentDetails.chainId,
+              walletAddress: payment.nfscPaymentDetails.walletAddress,
+            };
+          }
+
+          if (isNil(payment.paymentProviderReferenceId)) {
+            return {
+              paymentId: payment.id,
+              isOnChainPayment: false,
+              brand: undefined,
+              last4: undefined,
+            };
+          }
+
+          const stripePaymentIntent = await stripe.paymentIntents.retrieve(
+            payment.paymentProviderReferenceId,
+            { expand: ['payment_method'] },
+          );
+
+          if (isNil(stripePaymentIntent.payment_method)) {
+            throw new TRPCError({
+              code: 'NOT_FOUND',
+              message:
+                'payment information missing, Namefi Payment ID: ' +
+                payment.id +
+                ' Stripe Payment Intent ID: ' +
+                payment.paymentProviderReferenceId,
+            });
+          }
+
+          const paymentMethod =
+            stripePaymentIntent.payment_method as Stripe.PaymentMethod;
+
+          return {
+            paymentId: payment.id,
+            isOnChainPayment: false,
+            brand: paymentMethod.card?.brand,
+            last4: paymentMethod.card?.last4,
+          };
+        },
+      );
+
+      return res;
+    }),
+
+  getPaymentMethodDetails: protectedProcedure
+    .input(z.object({ paymentId: z.string() }))
+    .query(async ({ ctx, input }): Promise<PaymentMethodDetails> => {
+      const { user } = ctx;
+      const { paymentId } = input;
+
+      const payment = await db.query.paymentsTable.findFirst({
+        where: eq(paymentsTable.id, paymentId),
+        with: {
+          order: true,
+        },
+      });
+
+      if (!payment) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Payment not found',
+        });
+      }
+
+      if (payment.order?.userId !== user.id) {
+        throw new TRPCError({
+          code: 'UNAUTHORIZED',
+          message: 'You are not authorized to access this payment',
+        });
+      }
 
       if (isNfscPayment(payment)) {
         return {
+          paymentId: payment.id,
           isOnChainPayment: true,
           txHash: payment.paymentProviderReferenceId,
           chainId: payment.nfscPaymentDetails.chainId,
@@ -292,6 +394,7 @@ export const ordersRouter = createTRPCRouter({
 
       if (isNil(payment.paymentProviderReferenceId)) {
         return {
+          paymentId: payment.id,
           isOnChainPayment: false,
           brand: undefined,
           last4: undefined,
@@ -306,7 +409,11 @@ export const ordersRouter = createTRPCRouter({
       if (isNil(stripePaymentIntent.payment_method)) {
         throw new TRPCError({
           code: 'NOT_FOUND',
-          message: 'payment information missing',
+          message:
+            'payment information missing, Namefi Payment ID: ' +
+            payment.id +
+            ' Stripe Payment Intent ID: ' +
+            payment.paymentProviderReferenceId,
         });
       }
 
@@ -314,6 +421,7 @@ export const ordersRouter = createTRPCRouter({
         stripePaymentIntent.payment_method as Stripe.PaymentMethod;
 
       return {
+        paymentId: payment.id,
         isOnChainPayment: false,
         brand: paymentMethod.card?.brand,
         last4: paymentMethod.card?.last4,

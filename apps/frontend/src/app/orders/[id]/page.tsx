@@ -19,8 +19,8 @@ import { Unauthorized } from '@/components/unauthorized';
 import { useCartContext } from '@/components/providers/cart';
 import { useAuth } from '@/hooks/use-auth';
 import { formatDate, getShortAddress } from '@/lib/string';
-import { useTRPC } from '@/lib/trpc';
-import { orderStatusSchema } from '@namefi-astra/db/types';
+import { type AppRouterOutput, useTRPC } from '@/lib/trpc';
+import { orderStatusSchema, type PaymentSelect } from '@namefi-astra/db/types';
 import {
   getChain,
   getSubDomainAndParentDomainFromNormalizedDomainName,
@@ -40,6 +40,7 @@ import {
   TwitterShareButton,
 } from 'react-share';
 import { useDebounceValue } from 'usehooks-ts';
+import { StatusBadge } from '@/components/status-badge';
 
 interface OrderPageProps {
   params: Promise<{ id: string }>;
@@ -58,14 +59,14 @@ export default function OrderPage({ params }: OrderPageProps) {
   }, [refetchCart]);
 
   const {
-    data: order,
+    data: orderDetails,
     isLoading: isOrderLoading,
     error,
   } = useQuery({
     ...trpc.orders.getOrder.queryOptions({ orderId: id }),
     enabled: !!id && isAuthenticated,
     refetchInterval: (query) => {
-      const currentStatus = query.state.data?.status;
+      const currentStatus = query.state.data?.order?.status;
 
       if (
         !currentStatus ||
@@ -90,26 +91,7 @@ export default function OrderPage({ params }: OrderPageProps) {
       return true;
     },
   });
-
-  const {
-    data: paymentMethodDetails,
-    isLoading: arePaymentMethodDetailsLoading,
-  } = useQuery({
-    ...trpc.orders.getOrderPaymentMethodDetails.queryOptions({ orderId: id }),
-    enabled: !!id && isAuthenticated,
-    retry(failureCount, error) {
-      if (failureCount >= 3) {
-        return false;
-      }
-      if (
-        error instanceof TRPCClientError &&
-        error.data?.code === 'UNAUTHORIZED'
-      ) {
-        return false;
-      }
-      return true;
-    },
-  });
+  const { order, payments = [], items } = orderDetails ?? {};
 
   const isFailedOrder = useMemo(() => {
     return (
@@ -132,10 +114,10 @@ export default function OrderPage({ params }: OrderPageProps) {
   }, [isFailedOrder, id, router]);
 
   const orderItems = useMemo(() => {
-    if (!order?.items) {
+    if (!items) {
       return [];
     }
-    return order.items
+    return items
       .filter(
         (item) =>
           item.status !== orderStatusSchema.Values.FAILED &&
@@ -152,7 +134,7 @@ export default function OrderPage({ params }: OrderPageProps) {
           fullDomain: item.normalizedDomainName,
         };
       });
-  }, [order?.items]);
+  }, [items]);
 
   const origin = useOrigin();
 
@@ -170,43 +152,6 @@ export default function OrderPage({ params }: OrderPageProps) {
       ? `Great I've just got ${domainList} from 0x.city (#PoweredByNamefi), come check it out!`
       : `Great I've just got ${orderItems[0].fullDomain} from 0x.city (#PoweredByNamefi), come check it out`;
   }, [orderItems]);
-
-  const isCreditCardPayment = useMemo(
-    () => order?.payment?.paymentProvider === 'STRIPE',
-    [order?.payment?.paymentProvider],
-  );
-
-  const creditCardPreviewText = useMemo(() => {
-    if (
-      !isCreditCardPayment ||
-      arePaymentMethodDetailsLoading ||
-      !paymentMethodDetails
-    ) {
-      return '-';
-    }
-
-    if (!(paymentMethodDetails.brand && paymentMethodDetails.last4)) {
-      return 'Credit Card';
-    }
-
-    return `${paymentMethodDetails.brand.toLocaleUpperCase()}(${paymentMethodDetails.last4})`;
-  }, [
-    arePaymentMethodDetailsLoading,
-    isCreditCardPayment,
-    paymentMethodDetails,
-  ]);
-
-  const onChainPaymentPreviewText = useMemo(() => {
-    if (isCreditCardPayment) {
-      return '';
-    }
-
-    if (!order?.payment.nfscPaymentDetails) {
-      return '-';
-    }
-
-    return `(${getChain(order.payment.nfscPaymentDetails.chainId)?.name}) ${getShortAddress(order.payment.nfscPaymentDetails.walletAddress)}`;
-  }, [isCreditCardPayment, order?.payment]);
 
   const progressBarRef = useRef<AutoStartProgressBar>(null);
 
@@ -276,7 +221,7 @@ export default function OrderPage({ params }: OrderPageProps) {
       <Unauthorized description="You are not authorized to view this order." />
     );
   }
-  if (!order) {
+  if (!orderDetails || !order) {
     return (
       <div className="container mx-auto py-8 px-8">
         <div className="max-w-2xl mx-auto">
@@ -453,17 +398,11 @@ export default function OrderPage({ params }: OrderPageProps) {
               <span className="text-muted-foreground">Grand total</span>
               <span>${order.amountInUSDCents / 100} USD</span>
             </div>
-            <div className="flex justify-between items-center">
-              <span className="text-muted-foreground">Payment</span>
-              {isCreditCardPayment ? (
-                isAuthLoading || arePaymentMethodDetailsLoading ? (
-                  <Loader2 className="animate-spin" />
-                ) : (
-                  <span>{creditCardPreviewText}</span>
-                )
-              ) : (
-                <span>{onChainPaymentPreviewText}</span>
-              )}
+            <div className="flex justify-between items-start">
+              <span className="text-muted-foreground">
+                Payments ({payments.length === 1 ? 'Single' : 'Multiple'})
+              </span>
+              <PaymentMethodsDetails orderId={id} payments={payments} />
             </div>
           </div>
         </CartCard>
@@ -481,6 +420,137 @@ export default function OrderPage({ params }: OrderPageProps) {
           </NamefiButton>
         </div>
       </div>
+    </div>
+  );
+}
+
+function PaymentMethodsDetails({
+  orderId,
+  payments,
+}: {
+  orderId: string;
+  payments: PaymentSelect[];
+}) {
+  const trpc = useTRPC();
+  const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
+
+  const { data: paymentMethods, isLoading: arePaymentMethodDetailsLoading } =
+    useQuery({
+      ...trpc.orders.getOrderPaymentMethodsDetails.queryOptions({ orderId }),
+      enabled: !!orderId && isAuthenticated,
+      retry(failureCount, error) {
+        if (failureCount >= 3) {
+          return false;
+        }
+        if (
+          error instanceof TRPCClientError &&
+          error.data?.code === 'UNAUTHORIZED'
+        ) {
+          return false;
+        }
+        return true;
+      },
+    });
+
+  const paymentMethodDetailsMap = useMemo(() => {
+    return new Map(
+      paymentMethods?.map((payment) => [payment.paymentId, payment]) ?? [],
+    );
+  }, [paymentMethods]);
+
+  if (arePaymentMethodDetailsLoading || isAuthLoading) {
+    return <Loader2 className="animate-spin" />;
+  }
+
+  if (!paymentMethodDetailsMap) {
+    return null;
+  }
+
+  return (
+    <div className="flex flex-col gap-2">
+      {payments.map((payment) => (
+        <SinglePaymentMethodDetails
+          key={payment.id}
+          payment={payment}
+          paymentMethodDetails={
+            paymentMethodDetailsMap.get(payment.id) ?? {
+              paymentId: payment.id,
+              isOnChainPayment: false,
+              brand: undefined,
+              last4: undefined,
+            }
+          }
+        />
+      ))}
+    </div>
+  );
+}
+
+type PaymentMethodDetails =
+  AppRouterOutput['orders']['getOrderPaymentMethodsDetails'][number];
+
+export function SinglePaymentMethodDetails({
+  payment,
+  paymentMethodDetails,
+}: {
+  payment: PaymentSelect;
+  paymentMethodDetails: PaymentMethodDetails;
+}) {
+  const isCreditCardPayment = useMemo(
+    () => payment.paymentProvider === 'STRIPE',
+    [payment.paymentProvider],
+  );
+  const primaryPaymentMethod = paymentMethodDetails;
+  const creditCardPreviewText = useMemo(() => {
+    if (!isCreditCardPayment || !primaryPaymentMethod) {
+      return '-';
+    }
+
+    if (
+      !(
+        !primaryPaymentMethod.isOnChainPayment &&
+        primaryPaymentMethod.brand &&
+        primaryPaymentMethod.last4
+      )
+    ) {
+      return 'Credit Card';
+    }
+
+    return `${primaryPaymentMethod.brand.toLocaleUpperCase()}(${primaryPaymentMethod.last4})`;
+  }, [isCreditCardPayment, primaryPaymentMethod]);
+
+  const onChainPaymentPreviewText = useMemo(() => {
+    if (isCreditCardPayment) {
+      return '';
+    }
+
+    if (!payment.nfscPaymentDetails) {
+      return '-';
+    }
+
+    const chain = getChain(payment.nfscPaymentDetails.chainId);
+    const chainName =
+      chain?.name || `Chain ID ${payment.nfscPaymentDetails.chainId}`;
+    return `(${chainName}) ${getShortAddress(payment.nfscPaymentDetails.walletAddress)}`;
+  }, [isCreditCardPayment, payment.nfscPaymentDetails]);
+
+  return (
+    <div className="flex flex-row gap-2 items-center">
+      {isCreditCardPayment ? (
+        <span className="font-medium text-muted-foreground text-sm">
+          {creditCardPreviewText}
+        </span>
+      ) : (
+        <span className="font-medium text-muted-foreground text-sm">
+          {onChainPaymentPreviewText}
+        </span>
+      )}
+      {payment.status && (
+        <div className="scale-90">
+          <StatusBadge status={payment.status} type="payment" />
+        </div>
+      )}
+      ${payment.amountInUSDCents / 100} {isCreditCardPayment ? 'USD' : 'NFSC'}
     </div>
   );
 }

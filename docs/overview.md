@@ -461,7 +461,7 @@ The domain registration process involves several steps:
 1. **Domain Search**: Users search for available domains
 2. **Cart Management**: Users add domains to their cart
 3. **Checkout**: Users select payment method and complete purchase
-4. **Order Processing**: System processes payment and registers domains
+4. **Order Processing**: System processes payment(s) and registers domains
 5. **NFT Minting**: System mints NFTs representing domain ownership
 
 #### Domain Search Implementation

@@ -58,8 +58,8 @@ export async function processOrderWorkflow(
   try {
     // MARK: - Get Order Details
     const orderDetails = await getOrderDetailsOrThrow(input.orderId);
-    const nftWalletAddress = orderDetails.nftWalletAddress;
-    const nftChainId = orderDetails.nftChainId;
+    const nftWalletAddress = orderDetails.order.nftWalletAddress;
+    const nftChainId = orderDetails.order.nftChainId;
     if (!orderDetails.items || orderDetails.items.length === 0) {
       await updateOrderStatusOrThrow({
         orderId: input.orderId,
@@ -84,15 +84,23 @@ export async function processOrderWorkflow(
     });
 
     // Charge the user for the order
+    const primaryPaymentId = orderDetails.payments[0]?.id;
+    if (!primaryPaymentId) {
+      await updateOrderStatusOrThrow({
+        orderId: input.orderId,
+        status: orderStatusSchema.Values.FAILED,
+      });
+      throw new workflow.ApplicationFailure('No payment found');
+    }
     const chargeResult = await workflow.executeChild(chargeUserWorkflow, {
       args: [
         {
-          userId: orderDetails.userId,
-          paymentId: orderDetails.paymentId,
+          userId: orderDetails.order.userId,
+          paymentId: primaryPaymentId,
           metadata: input.paymentMetadata,
         },
       ],
-      workflowId: `charge-user-${orderDetails.paymentId}`,
+      workflowId: `charge-user-${primaryPaymentId}`,
       taskQueue: TEMPORAL_QUEUES.DEFAULT,
       retry: {
         maximumAttempts: 1,
@@ -141,7 +149,7 @@ export async function processOrderWorkflow(
               durationInYears: item.durationInYears,
               recipientWalletAddress: nftWalletAddress as ChecksumWalletAddress,
               chainId: nftChainId,
-              userId: orderDetails.userId,
+              userId: orderDetails.order.userId,
               operationType: item.type as 'REGISTER' | 'IMPORT', // Only REGISTER and IMPORT are valid for processOrderItemWorkflow
               registrarKey: item.registrar,
               encryptedEppAuthorizationCode: item.encryptedEppAuthorizationCode,
@@ -216,11 +224,11 @@ export async function processOrderWorkflow(
       await workflow.executeChild(refundUserWorkflow, {
         args: [
           {
-            paymentId: orderDetails.paymentId,
+            paymentId: primaryPaymentId,
             amountToRefundInUsdCents: amountToRefund,
           },
         ],
-        workflowId: `refund-user-${orderDetails.paymentId}`,
+        workflowId: `refund-user-${primaryPaymentId}`,
         taskQueue: TEMPORAL_QUEUES.DEFAULT,
         retry: {
           maximumAttempts: 1,
@@ -289,9 +297,9 @@ async function _notifyUserOrderProcessed(
       ...shortRunningOpts,
     },
   });
-  const userEmail = await maybeGetUserEmail(orderDetails.userId);
+  const userEmail = await maybeGetUserEmail(orderDetails.order.userId);
   if (!userEmail) {
-    const message = `Failed to notify user for order ${orderDetails.id}. User has no primary email`;
+    const message = `Failed to notify user for order ${orderDetails.order.id}. User has no primary email`;
     workflow.upsertMemo({
       notifyUserOrderProcessed: {
         message,
@@ -300,14 +308,14 @@ async function _notifyUserOrderProcessed(
     workflow.log.warn(message);
     return;
   }
-  const paymentMethodCharged = orderDetails.payment.paymentProvider;
+  const paymentMethodCharged = orderDetails.payments[0]?.paymentProvider;
   const paymentMethodIdentifier =
     paymentMethodCharged === 'STRIPE'
-      ? orderDetails.payment.stripePaymentDetails?.paymentMethodId
-      : orderDetails.payment.nfscPaymentDetails?.walletAddress;
+      ? orderDetails.payments[0]?.stripePaymentDetails?.paymentMethodId
+      : orderDetails.payments[0]?.nfscPaymentDetails?.walletAddress;
 
   if (!paymentMethodIdentifier) {
-    const message = `Failed to notify user for order ${orderDetails.id}. Payment method identifier is missing`;
+    const message = `Failed to notify user for order ${orderDetails.order.id}. Payment method identifier is missing`;
     workflow.upsertMemo({
       notifyUserOrderProcessed: {
         message,
@@ -319,7 +327,7 @@ async function _notifyUserOrderProcessed(
 
   try {
     await notifyUserOrderProcessed({
-      orderId: orderDetails.id,
+      orderId: orderDetails.order.id,
       recipientName: userEmail,
       recipientEmail: userEmail,
       items: orderDetails.items.map((item, index) => ({
@@ -332,7 +340,7 @@ async function _notifyUserOrderProcessed(
             : 'FAILED',
         type: item.type,
       })),
-      chargedAmountInUsdCents: orderDetails.amountInUSDCents,
+      chargedAmountInUsdCents: orderDetails.order.amountInUSDCents,
       paymentMethodCharged,
       paymentMethodIdentifier,
       refund:
@@ -345,7 +353,7 @@ async function _notifyUserOrderProcessed(
     });
   } catch (e) {
     workflow.log.error(
-      `Failed to notify user for order ${orderDetails.id}. Error: ${e}`,
+      `Failed to notify user for order ${orderDetails.order.id}. Error: ${e}`,
     );
   }
 }

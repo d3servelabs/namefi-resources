@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/shadcn/button';
 import { Badge } from '@/components/ui/shadcn/badge';
 import { Separator } from '@/components/ui/shadcn/separator';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
-import { itemTypeSchema } from '@namefi-astra/db/types';
+import { itemTypeSchema, type PaymentSelect } from '@namefi-astra/db/types';
 import {
   Tooltip,
   TooltipContent,
@@ -33,13 +33,21 @@ export default function OrderDetailsPage({
 }) {
   const { id } = use(params);
   const router = useRouter();
+
   const [copiedFields, setCopiedFields] = useState<Record<string, boolean>>({});
 
-  const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
+  const copyToClipboard = (text: string, field: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedFields((prev) => ({ ...prev, [field]: true }));
+
+    setTimeout(() => {
+      setCopiedFields((prev) => ({ ...prev, [field]: false }));
+    }, 2000);
+  };
   const trpc = useTRPC();
 
   const {
-    data: order,
+    data: orderDetails,
     isLoading,
     error,
   } = useQuery({
@@ -58,75 +66,7 @@ export default function OrderDetailsPage({
       return true;
     },
   });
-
-  const {
-    data: paymentMethodDetails,
-    isLoading: arePaymentMethodDetailsLoading,
-  } = useQuery({
-    ...trpc.orders.getOrderPaymentMethodDetails.queryOptions({ orderId: id }),
-    enabled: !!id && isAuthenticated,
-    retry(failureCount, error) {
-      if (failureCount >= 3) {
-        return false;
-      }
-      if (
-        error instanceof TRPCClientError &&
-        error.data?.code === 'UNAUTHORIZED'
-      ) {
-        return false;
-      }
-      return true;
-    },
-  });
-
-  const isCreditCardPayment = useMemo(
-    () => order?.payment?.paymentProvider === 'STRIPE',
-    [order?.payment?.paymentProvider],
-  );
-
-  const creditCardPreviewText = useMemo(() => {
-    if (
-      !isCreditCardPayment ||
-      arePaymentMethodDetailsLoading ||
-      !paymentMethodDetails
-    ) {
-      return '-';
-    }
-
-    if (!(paymentMethodDetails.brand && paymentMethodDetails.last4)) {
-      return 'Credit Card';
-    }
-
-    return `${paymentMethodDetails.brand.toLocaleUpperCase()}(${paymentMethodDetails.last4})`;
-  }, [
-    arePaymentMethodDetailsLoading,
-    isCreditCardPayment,
-    paymentMethodDetails,
-  ]);
-
-  const onChainPaymentPreviewText = useMemo(() => {
-    if (isCreditCardPayment) {
-      return '';
-    }
-
-    if (!order?.payment?.nfscPaymentDetails) {
-      return '-';
-    }
-
-    const chain = getChain(order.payment.nfscPaymentDetails.chainId);
-    const chainName =
-      chain?.name || `Chain ID ${order.payment.nfscPaymentDetails.chainId}`;
-    return `(${chainName}) ${getShortAddress(order.payment.nfscPaymentDetails.walletAddress)}`;
-  }, [isCreditCardPayment, order?.payment]);
-
-  const copyToClipboard = (text: string, field: string) => {
-    navigator.clipboard.writeText(text);
-    setCopiedFields((prev) => ({ ...prev, [field]: true }));
-
-    setTimeout(() => {
-      setCopiedFields((prev) => ({ ...prev, [field]: false }));
-    }, 2000);
-  };
+  const { order, payments = [], items } = orderDetails ?? {};
 
   if (isLoading) {
     return (
@@ -244,6 +184,7 @@ export default function OrderDetailsPage({
       </div>
     );
   }
+  const singlePayment = payments.length === 1;
 
   return (
     <div className="container mx-auto py-8 px-8">
@@ -300,105 +241,6 @@ export default function OrderDetailsPage({
               </div>
 
               <div className="flex items-center justify-between h-8">
-                <span className="font-medium">Payment ID:</span>
-                <div className="flex items-center gap-2">
-                  <span className="text-sm text-gray-500">
-                    {order.paymentId}
-                  </span>
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild={true}>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-8 w-8"
-                          onClick={() =>
-                            copyToClipboard(order.paymentId, 'paymentId')
-                          }
-                        >
-                          {copiedFields.paymentId ? (
-                            <Check size={16} />
-                          ) : (
-                            <ClipboardCopy size={16} />
-                          )}
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>
-                          {copiedFields.paymentId
-                            ? 'Copied!'
-                            : 'Copy Payment ID'}
-                        </p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                </div>
-              </div>
-
-              <div className="flex items-center justify-between h-8">
-                <span className="font-medium">Payment Status:</span>
-                <div className="flex items-center">
-                  {order.payment?.status ? (
-                    <StatusBadge status={order.payment.status} type="payment" />
-                  ) : (
-                    <span>-</span>
-                  )}
-                </div>
-              </div>
-
-              <div className="flex items-center justify-between h-8">
-                <span className="font-medium">Payment:</span>
-                <div className="flex items-center gap-2">
-                  {isCreditCardPayment ? (
-                    isAuthLoading || arePaymentMethodDetailsLoading ? (
-                      <Loader2 className="animate-spin" />
-                    ) : (
-                      <span className="text-sm text-gray-500">
-                        {creditCardPreviewText}
-                      </span>
-                    )
-                  ) : (
-                    <span className="text-sm text-gray-500">
-                      {onChainPaymentPreviewText}
-                    </span>
-                  )}
-                  {!isCreditCardPayment && (
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger asChild={true}>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="h-8 w-8"
-                            onClick={() =>
-                              copyToClipboard(
-                                order.payment?.nfscPaymentDetails
-                                  ?.walletAddress ?? '',
-                                'walletAddress',
-                              )
-                            }
-                          >
-                            {copiedFields.walletAddress ? (
-                              <Check size={16} />
-                            ) : (
-                              <ClipboardCopy size={16} />
-                            )}
-                          </Button>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>
-                            {copiedFields.walletAddress
-                              ? 'Copied!'
-                              : 'Copy Wallet Address'}
-                          </p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  )}
-                </div>
-              </div>
-
-              <div className="flex items-center justify-between h-8">
                 <span className="font-medium">Recipient:</span>
                 <div className="flex items-center gap-2">
                   <span className="text-sm text-gray-500">
@@ -446,13 +288,40 @@ export default function OrderDetailsPage({
               </div>
             </div>
           </CartCard>
+
+          <CartCard
+            title="Order Payments"
+            description={singlePayment ? 'Single Payment' : 'Multiple Payments'}
+          >
+            <div className="flex flex-col gap-2 mt-6">
+              {payments.map((payment, index) => (
+                <>
+                  {!singlePayment && (
+                    <div className="-ml-1 text-sm font-medium text-muted-foreground">
+                      Payment {index + 1}
+                    </div>
+                  )}
+                  <PaymentMethodDetails
+                    key={payment.id}
+                    paymentId={payment.id}
+                    payment={payment}
+                  />
+                  {!singlePayment && index < payments.length - 1 && (
+                    <div className="my-2">
+                      <Separator />
+                    </div>
+                  )}
+                </>
+              ))}
+            </div>
+          </CartCard>
         </div>
 
         {/* Right Column - Order Items */}
         <div className="h-fit">
           <CartCard title="Order Items">
             <div className="flex flex-col mt-6">
-              {order.items.map((item, index) => (
+              {items?.map((item, index) => (
                 <div key={item.id}>
                   <div className="flex flex-col gap-2">
                     <div className="flex items-center justify-between">
@@ -485,7 +354,7 @@ export default function OrderDetailsPage({
                       </div>
                     </div>
                   </div>
-                  {index < order.items.length - 1 && (
+                  {index < (items?.length ?? 0) - 1 && (
                     <div className="my-6">
                       <Separator />
                     </div>
@@ -503,6 +372,192 @@ export default function OrderDetailsPage({
               </div>
             </div>
           </CartCard>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function PaymentMethodDetails({
+  paymentId,
+  payment,
+}: {
+  paymentId: string;
+  payment: PaymentSelect;
+}) {
+  const [copiedFields, setCopiedFields] = useState<Record<string, boolean>>({});
+
+  const copyToClipboard = (text: string, field: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedFields((prev) => ({ ...prev, [field]: true }));
+
+    setTimeout(() => {
+      setCopiedFields((prev) => ({ ...prev, [field]: false }));
+    }, 2000);
+  };
+  const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
+  const trpc = useTRPC();
+  const {
+    data: paymentMethodDetails = {
+      isOnChainPayment: false,
+      brand: undefined,
+      last4: undefined,
+    },
+    isLoading: arePaymentMethodDetailsLoading,
+  } = useQuery({
+    ...trpc.orders.getPaymentMethodDetails.queryOptions({ paymentId }),
+    enabled: !!paymentId && isAuthenticated,
+    retry(failureCount, error) {
+      if (failureCount >= 3) {
+        return false;
+      }
+      if (
+        error instanceof TRPCClientError &&
+        error.data?.code === 'UNAUTHORIZED'
+      ) {
+        return false;
+      }
+      return true;
+    },
+  });
+
+  const isCreditCardPayment = useMemo(
+    () => payment.paymentProvider === 'STRIPE',
+    [payment.paymentProvider],
+  );
+
+  const creditCardPreviewText = useMemo(() => {
+    if (
+      !isCreditCardPayment ||
+      arePaymentMethodDetailsLoading ||
+      !paymentMethodDetails
+    ) {
+      return '-';
+    }
+
+    if (
+      !(
+        !paymentMethodDetails.isOnChainPayment &&
+        paymentMethodDetails.brand &&
+        paymentMethodDetails.last4
+      )
+    ) {
+      return 'Credit Card';
+    }
+
+    return `${paymentMethodDetails.brand.toLocaleUpperCase()}(${paymentMethodDetails.last4})`;
+  }, [
+    arePaymentMethodDetailsLoading,
+    isCreditCardPayment,
+    paymentMethodDetails,
+  ]);
+
+  const onChainPaymentPreviewText = useMemo(() => {
+    if (isCreditCardPayment) {
+      return '';
+    }
+
+    if (!payment.nfscPaymentDetails) {
+      return '-';
+    }
+
+    const chain = getChain(payment.nfscPaymentDetails.chainId);
+    const chainName =
+      chain?.name || `Chain ID ${payment.nfscPaymentDetails.chainId}`;
+    return `(${chainName}) ${getShortAddress(payment.nfscPaymentDetails.walletAddress)}`;
+  }, [isCreditCardPayment, payment.nfscPaymentDetails]);
+
+  return (
+    <div>
+      <div className="flex items-center justify-between h-8">
+        <span className="font-medium">Payment ID:</span>
+        <div className="flex items-center gap-2">
+          <span className="text-sm text-gray-500">{payment.id}</span>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild={true}>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-8 w-8"
+                  onClick={() => copyToClipboard(payment.id ?? '', 'paymentId')}
+                >
+                  {copiedFields.paymentId ? (
+                    <Check size={16} />
+                  ) : (
+                    <ClipboardCopy size={16} />
+                  )}
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>{copiedFields.paymentId ? 'Copied!' : 'Copy Payment ID'}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </div>
+      </div>
+
+      <div className="flex items-center justify-between h-8">
+        <span className="font-medium">Payment Status:</span>
+        <div className="flex items-center">
+          {payment.status ? (
+            <StatusBadge status={payment.status} type="payment" />
+          ) : (
+            <span>-</span>
+          )}
+        </div>
+      </div>
+
+      <div className="flex items-center justify-between h-8">
+        <span className="font-medium">
+          {isCreditCardPayment ? 'Payment Method' : 'Wallet Address'}
+        </span>
+        <div className="flex items-center gap-2">
+          {isCreditCardPayment ? (
+            isAuthLoading || arePaymentMethodDetailsLoading ? (
+              <Loader2 className="animate-spin" />
+            ) : (
+              <span className="text-sm text-gray-500">
+                {creditCardPreviewText}
+              </span>
+            )
+          ) : (
+            <span className="text-sm text-gray-500">
+              {onChainPaymentPreviewText}
+            </span>
+          )}
+          {!isCreditCardPayment && (
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild={true}>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-8 w-8"
+                    onClick={() =>
+                      copyToClipboard(
+                        payment.nfscPaymentDetails?.walletAddress ?? '',
+                        'walletAddress',
+                      )
+                    }
+                  >
+                    {copiedFields.walletAddress ? (
+                      <Check size={16} />
+                    ) : (
+                      <ClipboardCopy size={16} />
+                    )}
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>
+                    {copiedFields.walletAddress
+                      ? 'Copied!'
+                      : 'Copy Wallet Address'}
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          )}
         </div>
       </div>
     </div>
