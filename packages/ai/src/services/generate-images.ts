@@ -1,4 +1,8 @@
-import { AIMessage, type BaseMessageLike } from '@langchain/core/messages';
+import {
+  AIMessage,
+  HumanMessage,
+  type BaseMessageLike,
+} from '@langchain/core/messages';
 import { uploadFileToS3, generateCloudFrontUrl } from '@namefi-astra/storage';
 import type {
   GeneratedImage,
@@ -13,6 +17,7 @@ import {
   createImageGenerationModel,
   extractImageData,
   generateImageWithTiming,
+  fetchImageAsDataUrl,
 } from '../lib/utils/image-generation';
 import { imageGenerationSystemPrompt } from '../prompts/domain-marketing';
 
@@ -52,10 +57,10 @@ function createMarketingImageMessagesOpenAI(
   return messages;
 }
 
-function createMarketingImageMessagesGemini(
+async function createMarketingImageMessagesGemini(
   enhancedPrompt: string,
   basedOnLogoPublicUrl?: string,
-): BaseMessageLike[] {
+): Promise<BaseMessageLike[]> {
   const messages: BaseMessageLike[] = [
     ...createGenerationMessages(
       imageGenerationSystemPrompt,
@@ -66,14 +71,17 @@ function createMarketingImageMessagesGemini(
   ];
 
   if (basedOnLogoPublicUrl) {
+    const dataUrl = await fetchImageAsDataUrl(basedOnLogoPublicUrl);
     messages.push(
-      new AIMessage({
-        content: '',
+      new HumanMessage({
+        content: [
+          // Provide the prompt context alongside the image as Gemini multimodal content
+          { type: 'text', text: 'Here is the reference logo image to use.' },
+          { type: 'image_url', image_url: dataUrl },
+        ],
       }),
     );
   }
-
-  console.error(messages);
 
   return messages;
 }
@@ -109,7 +117,7 @@ export async function generateMarketingImage(
             'Using the referenced logo, put it on a realistic billboard',
             basedOnLogoCallId,
           )
-        : createMarketingImageMessagesGemini(
+        : await createMarketingImageMessagesGemini(
             'Using the referenced logo, put it on a realistic billboard',
             basedOnLogoPublicUrl,
           );

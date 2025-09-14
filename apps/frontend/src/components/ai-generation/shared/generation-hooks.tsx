@@ -4,6 +4,7 @@ import { toast } from 'sonner';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import type { LogoFormData } from '../logo-generator';
 import type { PosterFormData } from '../poster-generator';
+import type { Model } from '@namefi-astra/ai';
 
 interface UseLogoGenerationProps {
   domain?: NamefiNormalizedDomain;
@@ -102,10 +103,12 @@ export const createLogoGenerationPayload = (data: LogoFormData) => {
     type: string;
     style: string;
     description?: string;
+    model: Model;
   } = {
     domain: data.domain,
     type: data.type,
     style: data.style,
+    model: data.model as Model,
   };
 
   if (data.description) {
@@ -120,9 +123,11 @@ export const createPosterGenerationPayload = (data: PosterFormData) => {
     domain: NamefiNormalizedDomain;
     description?: string;
     referenceLogoGenerationId?: string;
+    model: Model;
   } = {
     domain: data.domain,
     description: data.description,
+    model: data.model as Model,
   };
 
   // If a logo is selected, include the logo generation ID for reference

@@ -17,10 +17,21 @@ import { ControlPanel } from './shared/form-fields';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { useMemo } from 'react';
 import type { Generation } from './shared/types';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/shadcn/select';
+import type { Model } from '@namefi-astra/ai';
 
 const logoFormSchema = baseFormSchema.extend({
   type: z.string().min(1, 'Logo type is required'),
   style: z.string().min(1, 'Logo style is required'),
+  model: z
+    .enum(['gpt-image-1', 'gemini-2.5-flash-image-preview'])
+    .default('gemini-2.5-flash-image-preview'),
 });
 
 type LogoFormData = z.infer<typeof logoFormSchema>;
@@ -54,12 +65,16 @@ export function LogoGenerator({
     return logoStyle ? logoStyle.name : style;
   };
 
+  const getModelDisplay = (model: Model) =>
+    model === 'gemini-2.5-flash-image-preview' ? 'Gemini' : 'OpenAI';
+
   const defaultValues = useMemo(() => {
     return {
       domain: fixedDomain || '',
       type: LOGO_STYLES['let-ai-choose'].id,
       style: LOGO_STYLES['let-ai-choose'].id,
       description: '',
+      model: 'gemini-2.5-flash-image-preview' as Model,
     };
   }, [fixedDomain]);
 
@@ -78,6 +93,7 @@ export function LogoGenerator({
       {({ form, openPanel, setOpenPanel }) => {
         const selectedType = form.watch('type');
         const selectedStyle = form.watch('style');
+        const selectedModel = form.watch('model');
 
         return (
           <>
@@ -103,6 +119,16 @@ export function LogoGenerator({
                   onClick: () =>
                     setOpenPanel(openPanel === 'style' ? null : 'style'),
                   isActive: openPanel === 'style',
+                },
+                {
+                  key: 'model',
+                  label: 'Model',
+                  badge: selectedModel
+                    ? getModelDisplay(selectedModel)
+                    : undefined,
+                  onClick: () =>
+                    setOpenPanel(openPanel === 'model' ? null : 'model'),
+                  isActive: openPanel === 'model',
                 },
                 {
                   key: 'description',
@@ -227,6 +253,41 @@ export function LogoGenerator({
                           </Card>
                         ))}
                       </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
+
+            {/* Model Selection */}
+            {openPanel === 'model' && (
+              <FormField
+                control={form.control}
+                name={'model'}
+                render={({ field }) => (
+                  <FormItem className="mt-6">
+                    <FormLabel className="text-lg font-semibold">
+                      Choose a model
+                    </FormLabel>
+                    <FormControl>
+                      <Select
+                        value={field.value}
+                        onValueChange={(val) => {
+                          field.onChange(val as Model);
+                          setOpenPanel(null);
+                        }}
+                      >
+                        <SelectTrigger className="w-full max-w-sm">
+                          <SelectValue placeholder="Select a model" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="gemini-2.5-flash-image-preview">
+                            Gemini
+                          </SelectItem>
+                          <SelectItem value="gpt-image-1">OpenAI</SelectItem>
+                        </SelectContent>
+                      </Select>
                     </FormControl>
                     <FormMessage />
                   </FormItem>

@@ -16,9 +16,20 @@ import { ControlPanel } from './shared/form-fields';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { useMemo } from 'react';
 import type { Generation } from './shared/types';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/shadcn/select';
+import type { Model } from '@namefi-astra/ai';
 
 const posterFormSchema = baseFormSchema.extend({
   selectedLogoId: z.string().uuid(),
+  model: z
+    .enum(['gpt-image-1', 'gemini-2.5-flash-image-preview'])
+    .default('gemini-2.5-flash-image-preview'),
 });
 
 type PosterFormData = z.infer<typeof posterFormSchema>;
@@ -49,6 +60,7 @@ export function PosterGenerator({
       domain: fixedDomain || '',
       description: '',
       selectedLogoId: availableLogos.length > 0 ? availableLogos[0].id : '',
+      model: 'gemini-2.5-flash-image-preview' as Model,
     };
   }, [fixedDomain, availableLogos]);
 
@@ -99,6 +111,18 @@ export function PosterGenerator({
           onClick: () =>
             setOpenPanel(openPanel === 'description' ? null : 'description'),
           isActive: openPanel === 'description',
+        });
+
+        const selectedModel = form.watch('model');
+        controlButtons.push({
+          key: 'model',
+          label: 'Model',
+          badge:
+            selectedModel === 'gemini-2.5-flash-image-preview'
+              ? 'Gemini'
+              : 'OpenAI',
+          onClick: () => setOpenPanel(openPanel === 'model' ? null : 'model'),
+          isActive: openPanel === 'model',
         });
 
         return (
@@ -160,6 +184,41 @@ export function PosterGenerator({
                           </Card>
                         ))}
                       </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
+
+            {/* Model Selection */}
+            {openPanel === 'model' && (
+              <FormField
+                control={form.control}
+                name={'model'}
+                render={({ field }) => (
+                  <FormItem className="mt-6">
+                    <FormLabel className="text-lg font-semibold">
+                      Choose a model
+                    </FormLabel>
+                    <FormControl>
+                      <Select
+                        value={field.value}
+                        onValueChange={(val) => {
+                          field.onChange(val as Model);
+                          setOpenPanel(null);
+                        }}
+                      >
+                        <SelectTrigger className="w-full max-w-sm">
+                          <SelectValue placeholder="Select a model" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="gemini-2.5-flash-image-preview">
+                            Gemini
+                          </SelectItem>
+                          <SelectItem value="gpt-image-1">OpenAI</SelectItem>
+                        </SelectContent>
+                      </Select>
                     </FormControl>
                     <FormMessage />
                   </FormItem>

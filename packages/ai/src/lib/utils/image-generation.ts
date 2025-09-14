@@ -67,7 +67,6 @@ export function createImageGenerationModel(config: ImageGenerationConfig) {
  * Extract image data from AI response
  */
 export function extractImageData(response: AIMessage, model: Model): ImageData {
-  console.log('response', Object.keys(response));
   if (!response.lc_kwargs?.content) {
     console.error('No tool outputs found in response');
     return { imageData: null };
@@ -75,7 +74,7 @@ export function extractImageData(response: AIMessage, model: Model): ImageData {
 
   if (model === 'gpt-image-1') {
     const imageOutput = (
-      response.lc_kwargs?.content as Responses.ResponseOutputItem[]
+      response.additional_kwargs?.tool_outputs as Responses.ResponseOutputItem[]
     ).find((output) => output.type === 'image_generation_call');
     if (!imageOutput?.result) {
       console.error('No image data found in tool outputs');
@@ -151,4 +150,22 @@ export function createRunId(prefix: string): string {
   const sanitizedPrefix = sanitizeForFilename(prefix);
   const timestamp = Date.now();
   return `${sanitizedPrefix}-${timestamp}`;
+}
+
+/**
+ * Fetch an image from a public URL and return a data URL string
+ * with the appropriate MIME type and base64-encoded payload.
+ */
+export async function fetchImageAsDataUrl(url: string): Promise<string> {
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(
+      `Failed to fetch image: ${response.status} ${response.statusText}`,
+    );
+  }
+
+  const contentType = response.headers.get('content-type') || 'image/jpeg';
+  const arrayBuffer = await response.arrayBuffer();
+  const base64 = Buffer.from(arrayBuffer).toString('base64');
+  return `data:${contentType};base64,${base64}`;
 }

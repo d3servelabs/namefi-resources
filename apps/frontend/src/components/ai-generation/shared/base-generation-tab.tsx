@@ -29,6 +29,7 @@ interface BaseGenerationTabProps {
     style?: string;
     category?: string;
     description?: string;
+    model?: string;
   };
 
   // Callback to trigger new generation
