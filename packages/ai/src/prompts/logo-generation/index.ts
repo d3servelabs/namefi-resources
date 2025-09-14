@@ -1,8 +1,7 @@
-export { logoGenerationSystemPrompt } from './system-prompt';
 export { logoAnalysisUserPrompt } from './user-prompt';
 export {
   enhanceLogoPrompt,
-  logoGenerationSystemPrompt as logoImageSystemPrompt,
+  logoGenerationSystemPrompt,
 } from './image-generation-prompt';
 
 export type { LogoAnalysisParams } from './user-prompt';

@@ -1,5 +1,5 @@
 import {
-  type AIMessage,
+  AIMessage,
   type BaseMessageLike,
   HumanMessage,
   SystemMessage,
@@ -10,6 +10,7 @@ import type { Responses } from 'openai/resources';
 import type { Part } from '@google/genai';
 import { secrets } from '../env';
 import type { Model } from '../types';
+import { resolveImageSystemPrompt, type ImageTask } from '../config';
 
 export interface OpenAIToolConfig {
   type: 'image_generation';
@@ -50,15 +51,17 @@ export interface ImageData {
  */
 export function createImageGenerationModel(config: ImageGenerationConfig) {
   if (config.type === 'openai') {
+    const openaiCfg = config as OpenAIImageGenerationConfig;
     return new ChatOpenAI({
-      model: config.model,
-      temperature: config.temperature,
+      model: openaiCfg.model,
+      temperature: openaiCfg.temperature,
       apiKey: secrets.OPENAI_API_KEY,
-    }).bindTools([config.toolConfig]);
+    }).bindTools([openaiCfg.toolConfig]);
   }
+  const geminiCfg = config as GeminiImageGenerationConfig;
   return new ChatGoogleGenerativeAI({
-    model: config.model,
-    temperature: config.temperature,
+    model: geminiCfg.model,
+    temperature: geminiCfg.temperature,
     apiKey: secrets.GEMINI_API_KEY,
   });
 }
@@ -131,6 +134,47 @@ export function createGenerationMessages(
   userPrompt: string,
 ): BaseMessageLike[] {
   return [new SystemMessage(systemPrompt), new HumanMessage(userPrompt)];
+}
+
+/**
+ * Unified image message builder with model-based system prompt and optional references.
+ */
+export function buildImageGenerationMessages(params: {
+  model: Model;
+  task: ImageTask;
+  userPrompt: string;
+  basedOnLogoCallId?: string; // OpenAI tool-call reference
+  basedOnLogoPublicUrl?: string; // Gemini inline image URL (future use)
+}): BaseMessageLike[] {
+  const systemPrompt = resolveImageSystemPrompt(params.model, params.task);
+  const userInstruction =
+    params.basedOnLogoCallId || params.basedOnLogoPublicUrl
+      ? `Generate an image based on the provided reference. Use this prompt: ${params.userPrompt}`
+      : `Generate an image with this prompt: ${params.userPrompt}`;
+
+  const messages: BaseMessageLike[] = [
+    new SystemMessage(systemPrompt),
+    new HumanMessage(userInstruction),
+  ];
+
+  if (params.model === 'gpt-image-1' && params.basedOnLogoCallId) {
+    messages.push(
+      new AIMessage({
+        content: '',
+        response_metadata: {
+          output: [
+            {
+              type: 'image_generation_call',
+              id: params.basedOnLogoCallId,
+            },
+          ],
+        },
+      }),
+    );
+  }
+
+  // For Gemini, currently we just include the system and user messages. Inline image parts can be added when needed.
+  return messages;
 }
 
 /**

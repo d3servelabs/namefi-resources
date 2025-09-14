@@ -5,15 +5,12 @@ import {
   OPENAI_LOGO_IMAGE_CONFIG,
 } from '../lib/config/models';
 import {
-  createGenerationMessages,
+  buildImageGenerationMessages,
   createImageGenerationModel,
   extractImageData,
   generateImageWithTiming,
 } from '../lib/utils/image-generation';
-import {
-  enhanceLogoPrompt,
-  logoImageSystemPrompt,
-} from '../prompts/logo-generation';
+import { enhanceLogoPrompt } from '../prompts/logo-generation';
 
 /**
  * Generate single logo
@@ -44,10 +41,11 @@ export async function generateLogo(
     });
 
     // Generate logo
-    const messages = createGenerationMessages(
-      logoImageSystemPrompt,
-      `Generate a logo with this prompt: ${enhancedPrompt}`,
-    );
+    const messages = buildImageGenerationMessages({
+      model: params.model,
+      task: 'logo',
+      userPrompt: enhancedPrompt,
+    });
     const response = await generateImageWithTiming(
       imageGenerationModel,
       messages,

@@ -1,8 +1,4 @@
-import {
-  AIMessage,
-  HumanMessage,
-  type BaseMessageLike,
-} from '@langchain/core/messages';
+import { HumanMessage } from '@langchain/core/messages';
 import { uploadFileToS3, generateCloudFrontUrl } from '@namefi-astra/storage';
 import type {
   GeneratedImage,
@@ -13,78 +9,12 @@ import {
   OPENAI_MARKETING_IMAGE_CONFIG,
 } from '../lib/config/models';
 import {
-  createGenerationMessages,
+  buildImageGenerationMessages,
   createImageGenerationModel,
   extractImageData,
   generateImageWithTiming,
   fetchImageAsDataUrl,
 } from '../lib/utils/image-generation';
-import { imageGenerationSystemPrompt } from '../prompts/domain-marketing';
-
-/**
- * Create messages for multi-turn or regular generation
- */
-function createMarketingImageMessagesOpenAI(
-  enhancedPrompt: string,
-  basedOnLogoCallId?: string,
-): BaseMessageLike[] {
-  const messages: BaseMessageLike[] = [
-    ...createGenerationMessages(
-      imageGenerationSystemPrompt,
-      basedOnLogoCallId
-        ? `Generate a marketing image based on the referenced logo. Use this prompt: ${enhancedPrompt}`
-        : `Generate a marketing image with this prompt: ${enhancedPrompt}`,
-    ),
-  ];
-
-  if (basedOnLogoCallId) {
-    // Multi-turn generation: reference the logo
-    messages.push(
-      new AIMessage({
-        content: '',
-        response_metadata: {
-          output: [
-            {
-              type: 'image_generation_call',
-              id: basedOnLogoCallId,
-            },
-          ],
-        },
-      }),
-    );
-  }
-
-  return messages;
-}
-
-async function createMarketingImageMessagesGemini(
-  enhancedPrompt: string,
-  basedOnLogoPublicUrl?: string,
-): Promise<BaseMessageLike[]> {
-  const messages: BaseMessageLike[] = [
-    ...createGenerationMessages(
-      imageGenerationSystemPrompt,
-      basedOnLogoPublicUrl
-        ? `Generate a marketing image based on the referenced logo. Use this prompt: ${enhancedPrompt}`
-        : `Generate a marketing image with this prompt: ${enhancedPrompt}`,
-    ),
-  ];
-
-  if (basedOnLogoPublicUrl) {
-    const dataUrl = await fetchImageAsDataUrl(basedOnLogoPublicUrl);
-    messages.push(
-      new HumanMessage({
-        content: [
-          // Provide the prompt context alongside the image as Gemini multimodal content
-          { type: 'text', text: 'Here is the reference logo image to use.' },
-          { type: 'image_url', image_url: dataUrl },
-        ],
-      }),
-    );
-  }
-
-  return messages;
-}
 
 /**
  * Generate single marketing image
@@ -110,17 +40,30 @@ export async function generateMarketingImage(
   );
 
   try {
-    // Create messages for multi-turn or regular generation
-    const messages =
-      params.model === 'gpt-image-1'
-        ? createMarketingImageMessagesOpenAI(
-            'Using the referenced logo, put it on a realistic billboard',
-            basedOnLogoCallId,
-          )
-        : await createMarketingImageMessagesGemini(
-            'Using the referenced logo, put it on a realistic billboard',
-            basedOnLogoPublicUrl,
-          );
+    // Create messages using unified builder
+    const messages = buildImageGenerationMessages({
+      model: params.model,
+      task: 'marketing',
+      userPrompt: 'Using the referenced logo, put it on a realistic billboard',
+      basedOnLogoCallId,
+      basedOnLogoPublicUrl,
+    });
+
+    // For Gemini, append inline image if a public URL reference is provided
+    if (
+      params.model === 'gemini-2.5-flash-image-preview' &&
+      basedOnLogoPublicUrl
+    ) {
+      const dataUrl = await fetchImageAsDataUrl(basedOnLogoPublicUrl);
+      messages.push(
+        new HumanMessage({
+          content: [
+            { type: 'text', text: 'Here is the reference logo image to use.' },
+            { type: 'image_url', image_url: dataUrl },
+          ],
+        }),
+      );
+    }
 
     // Generate image
     const response = await generateImageWithTiming(
