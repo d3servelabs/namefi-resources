@@ -37,7 +37,7 @@ import { useAuth } from '@/hooks/use-auth';
 import { config } from '@/lib/env';
 import { cn } from '@/lib/cn';
 import { InteractionLoggingEventName } from '@/lib/analytics-events';
-import { useTRPC } from '@/lib/trpc';
+import { type AppRouterInput, useTRPC } from '@/lib/trpc';
 import type { DeepPartial } from '@/lib/types/utils';
 import { createOrderInputSchema } from '@namefi-astra/backend/trpc/types';
 import {
@@ -54,7 +54,13 @@ import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { formatUnits } from 'viem';
 import { useBalance } from 'wagmi';
+import { MultiPaymentHints } from '@/components/payment-method/multi-payment-hints';
+import {
+  MultiPaymentCard,
+  type MultiPaymentSelectionChange,
+} from '@/components/payment-method/multi-payment-card';
 
+type CreateOrderV2Input = AppRouterInput['orders']['createOrderV2'];
 const DEFAULT_CHAIN_ID = config.ALLOWED_CHAINS.includes(CHAINS.base.id)
   ? CHAINS.base.id
   : CHAINS.sepolia.id;
@@ -156,6 +162,23 @@ export default function CartPage() {
     }),
   });
 
+  // Stage 5: multi-payment createOrderV2
+  const { mutate: createOrderV2, isPending: isCreateOrderV2Pending } =
+    useMutation({
+      ...trpc.orders.createOrderV2.mutationOptions({
+        onSuccess: (data) => {
+          setIsRedirecting(true);
+          logSubmitOrder({ success: true });
+          router.push(`/orders/${data.id}`);
+        },
+        onError: (error) => {
+          logSubmitOrder({ success: false });
+          setErrorMessage(error.message);
+          setIsErrorDialogOpen(true);
+        },
+      }),
+    });
+
   const { data: nfscBalanceData, refetch: refetchNfscBalance } = useBalance(
     (() => {
       if (
@@ -226,6 +249,53 @@ export default function CartPage() {
     totalAmountInUsdCents,
   ]);
 
+  // Stage 5: multi-payment state and computed amounts
+  type MultiPaymentState = {
+    enabled: boolean;
+    includeNfsc: boolean;
+    includeStripe: boolean;
+    stripeConfirmationTokenId: string | null;
+    payments: CreateOrderV2Input['payments'];
+    isValid: boolean;
+  };
+  const initialNfscWalletAddress = useMemo(() => {
+    const { paymentProviderDetails = {} } =
+      checkoutWithCartRequestPaymentMethodDetails ?? {};
+    if (
+      'nfscPaymentDetails' in paymentProviderDetails &&
+      paymentProviderDetails.nfscPaymentDetails?.chainId
+    ) {
+      return paymentProviderDetails.nfscPaymentDetails.walletAddress;
+    }
+    return null;
+  }, [checkoutWithCartRequestPaymentMethodDetails]);
+  const multiPaymentDefaultChainId = useMemo(() => {
+    const { paymentProviderDetails = {} } =
+      checkoutWithCartRequestPaymentMethodDetails ?? {};
+    if (
+      'nfscPaymentDetails' in paymentProviderDetails &&
+      paymentProviderDetails.nfscPaymentDetails?.chainId
+    ) {
+      return paymentProviderDetails.nfscPaymentDetails.chainId;
+    }
+    return DEFAULT_CHAIN_ID;
+  }, [checkoutWithCartRequestPaymentMethodDetails]);
+  const [multiPayment, setMultiPayment] = useState<MultiPaymentState>({
+    enabled: false,
+    includeNfsc: false,
+    includeStripe: false,
+    stripeConfirmationTokenId: null as string | null,
+    payments: [] as CreateOrderV2Input['payments'],
+    isValid: false,
+  });
+  const nfscMaxUsableInUsdCents = useMemo(() => {
+    if (!selectedWalletChainNfscBalanceInUsdCents) return 0;
+    return Math.min(
+      Number(selectedWalletChainNfscBalanceInUsdCents),
+      totalAmountInUsdCents,
+    );
+  }, [selectedWalletChainNfscBalanceInUsdCents, totalAmountInUsdCents]);
+
   const handlePaymentMethodDetailsChanged = useCallback(
     (
       paymentMethodDetails: DeepPartial<
@@ -283,6 +353,22 @@ export default function CartPage() {
   ]);
 
   const paymentMethodSelected = useMemo(() => {
+    if (multiPayment.enabled) {
+      const nfscAmount = multiPayment.includeNfsc ? nfscMaxUsableInUsdCents : 0;
+      const stripeAmount = multiPayment.includeStripe
+        ? Math.max(totalAmountInUsdCents - nfscAmount, 0)
+        : 0;
+      const totalsEqual = nfscAmount + stripeAmount === totalAmountInUsdCents;
+      const hasStripeOk =
+        !multiPayment.includeStripe || !!multiPayment.stripeConfirmationTokenId;
+      const hasNfscOk = !multiPayment.includeNfsc || !!selectedNftWalletAddress;
+      return (
+        (multiPayment.includeNfsc || multiPayment.includeStripe) &&
+        totalsEqual &&
+        hasStripeOk &&
+        hasNfscOk
+      );
+    }
     switch (selectedPaymentMethod) {
       case SelectedPaymentMethod.NFSC: {
         if (
@@ -323,6 +409,10 @@ export default function CartPage() {
     checkoutWithCartRequestPaymentMethodDetails,
     hasSufficientBalance,
     selectedPaymentMethod,
+    multiPayment,
+    nfscMaxUsableInUsdCents,
+    selectedNftWalletAddress,
+    totalAmountInUsdCents,
   ]);
 
   const submitButtonText = useMemo(() => {
@@ -336,6 +426,7 @@ export default function CartPage() {
 
     if (
       isCreateOrderPending ||
+      isCreateOrderV2Pending ||
       isRedirecting ||
       isExplicitlyCheckingCartItemsForUpdates
     ) {
@@ -346,23 +437,26 @@ export default function CartPage() {
   }, [
     isExplicitlyCheckingCartItemsForUpdates,
     isCreateOrderPending,
+    isCreateOrderV2Pending,
     isRedirecting,
     paymentMethodSelected,
     selectedNftWalletAddress,
   ]);
 
   const submitOrderDisabled = useMemo(() => {
-    return !(
-      paymentMethodSelected &&
-      selectedNftWalletAddress &&
-      !isCartUpdating &&
-      !isCartLoading
-    );
+    if (isCartUpdating || isCartLoading) {
+      return true;
+    }
+    if (multiPayment.enabled) {
+      return !multiPayment.isValid;
+    }
+    return !(paymentMethodSelected && selectedNftWalletAddress);
   }, [
     paymentMethodSelected,
     selectedNftWalletAddress,
     isCartUpdating,
     isCartLoading,
+    multiPayment,
   ]);
 
   const logSubmitOrder = useCallback(
@@ -394,10 +488,7 @@ export default function CartPage() {
     }
 
     const validatedPaymentMethodDetails = createOrderInputSchema
-      .pick({
-        paymentProviderDetails: true,
-        paymentMetadata: true,
-      })
+      .pick({ paymentProviderDetails: true, paymentMetadata: true })
       .safeParse(checkoutWithCartRequestPaymentMethodDetails);
 
     if (!validatedPaymentMethodDetails.success) {
@@ -417,6 +508,21 @@ export default function CartPage() {
         return;
       }
 
+      if (multiPayment.enabled) {
+        if (!multiPayment.isValid) return;
+        const payments = multiPayment.payments;
+
+        createOrderV2({
+          cartItemIds: items.map((item) => item.id),
+          payments,
+          nftMetadata: {
+            nftWalletAddress: selectedNftWalletAddress,
+            nftChainId: DEFAULT_CHAIN_ID,
+          },
+        });
+        return;
+      }
+
       createOrder({
         cartItemIds: items.map((item) => item.id),
         ...validatedPaymentMethodDetails.data,
@@ -431,10 +537,22 @@ export default function CartPage() {
   }, [
     checkCartItemsForUpdates,
     createOrder,
+    createOrderV2,
+    multiPayment,
     checkoutWithCartRequestPaymentMethodDetails,
     items,
     selectedNftWalletAddress,
   ]);
+
+  const handleMultiPaymentSelectionChange = useCallback(
+    (newData: MultiPaymentSelectionChange) => {
+      setMultiPayment((s) => ({
+        ...s,
+        ...newData,
+      }));
+    },
+    [],
+  );
 
   const handleNftWalletAddressChange = useCallback(
     (walletAddress: string | null) => {
@@ -601,32 +719,70 @@ export default function CartPage() {
                     </NamefiButton>
                   }
                 />
+              ) : !multiPayment.enabled ? (
+                <>
+                  <SelectPaymentMethodCard
+                    cartTotalInUsdCents={totalAmountInUsdCents}
+                    onPaymentMethodDetailsChanged={
+                      handlePaymentMethodDetailsChanged
+                    }
+                    onSelectedPaymentMethodChanged={
+                      handleSelectedPaymentMethodChanged
+                    }
+                    disabled={isDisabled}
+                    footerButton={
+                      <NamefiButton
+                        variant="default"
+                        className="w-full"
+                        disabled={submitOrderDisabled || isDisabled}
+                        onClick={handleSubmitOrder}
+                        size="lg"
+                      >
+                        {(isCreateOrderPending ||
+                          isCreateOrderV2Pending ||
+                          isRedirecting ||
+                          isExplicitlyCheckingCartItemsForUpdates) && (
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        )}
+                        {submitButtonText}
+                      </NamefiButton>
+                    }
+                  />
+                  <MultiPaymentHints
+                    selectedPaymentMethod={selectedPaymentMethod}
+                    selectedWalletChainNfscBalanceInUsdCents={
+                      selectedWalletChainNfscBalanceInUsdCents
+                    }
+                    totalAmountInUsdCents={totalAmountInUsdCents}
+                    onUseMultiPayment={() => {
+                      setMultiPayment((s) => ({
+                        ...s,
+                        enabled: true,
+                        includeNfsc: true,
+                        includeStripe: true,
+                      }));
+                    }}
+                  />
+                </>
               ) : (
-                <SelectPaymentMethodCard
-                  cartTotalInUsdCents={totalAmountInUsdCents}
-                  onPaymentMethodDetailsChanged={
-                    handlePaymentMethodDetailsChanged
+                <MultiPaymentCard
+                  isDisabled={isDisabled}
+                  isProcessing={
+                    isCreateOrderPending ||
+                    isCreateOrderV2Pending ||
+                    isRedirecting ||
+                    isExplicitlyCheckingCartItemsForUpdates
                   }
-                  onSelectedPaymentMethodChanged={
-                    handleSelectedPaymentMethodChanged
-                  }
-                  disabled={isDisabled}
-                  footerButton={
-                    <NamefiButton
-                      variant="default"
-                      className="w-full"
-                      disabled={submitOrderDisabled || isDisabled}
-                      onClick={handleSubmitOrder}
-                      size="lg"
-                    >
-                      {(isCreateOrderPending ||
-                        isRedirecting ||
-                        isExplicitlyCheckingCartItemsForUpdates) && (
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      )}
-                      {submitButtonText}
-                    </NamefiButton>
-                  }
+                  submitOrderDisabled={submitOrderDisabled}
+                  submitButtonText={submitButtonText}
+                  totalAmountInUsdCents={totalAmountInUsdCents}
+                  nfscMaxUsableInUsdCents={nfscMaxUsableInUsdCents}
+                  initialIncludeNfsc={multiPayment.includeNfsc}
+                  initialIncludeStripe={multiPayment.includeStripe}
+                  initialNfscWalletAddress={initialNfscWalletAddress}
+                  initialNfscChainId={multiPaymentDefaultChainId}
+                  onSelectionChange={handleMultiPaymentSelectionChange}
+                  onSubmit={handleSubmitOrder}
                 />
               )
             ) : (
@@ -673,7 +829,7 @@ const LoadingSkeletons = () => (
         <CartCard title="In your cart">
           <div className="flex flex-col gap-6 mt-6">
             {Array.from({ length: 2 }).map((_, index) => (
-              <div key={index}>
+              <div key={`cart-item-${index + 1}`}>
                 <div className="flex flex-col gap-4">
                   <Skeleton className="h-7 w-[250px]" />
                   <div className="flex items-center justify-between">

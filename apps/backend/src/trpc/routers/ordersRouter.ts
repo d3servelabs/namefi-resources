@@ -1,4 +1,5 @@
 import {
+  type NfscPaymentProviderDetails,
   type OrderItemInsert,
   type PaymentProviderDetails,
   type PaymentSelect,
@@ -26,9 +27,10 @@ import { createPayment } from '../../temporal/activities/payment.activities';
 import { temporalClient } from '../../temporal/client';
 import { TEMPORAL_QUEUES } from '../../temporal/shared';
 import { processOrderWorkflow } from '../../temporal/workflows/processOrder.workflow';
+import type { ChargeUserWorkflowInput } from '../../temporal/workflows/chargeUser.workflow';
 import { resolve } from '../../utils/resolve';
 import { createTRPCRouter, protectedProcedure } from '../base';
-import { createOrderInputSchema } from '../types';
+import { createOrderInputSchema, createOrderV2InputSchema } from '../types';
 import {
   getPrivyUserLinkedEthereumChecksumWalletAddresses,
   privyClient,
@@ -188,6 +190,150 @@ export const ordersRouter = createTRPCRouter({
       return items;
     },
   ),
+
+  // Stage 5: Multi-payment createOrderV2
+  createOrderV2: protectedProcedure
+    .input(createOrderV2InputSchema)
+    .mutation(async ({ ctx, input }) => {
+      const { cartItemIds, payments, nftMetadata } = input;
+
+      const [error, privyUser] = await resolve(
+        privyClient.getUserById(ctx.user.privyUserId),
+      );
+      if (error || isNil(privyUser)) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Could not find user details',
+        });
+      }
+
+      const cartItems = await db.query.cartItemsTable.findMany({
+        where: and(
+          inArray(cartItemsTable.id, cartItemIds),
+          eq(cartItemsTable.userId, ctx.user.id),
+        ),
+      });
+
+      await validateCartItems(ctx.user.id, cartItemIds);
+
+      if (cartItems.length !== cartItemIds.length) {
+        throw new TRPCError({ code: 'BAD_REQUEST' });
+      }
+
+      const totalAmountInUsdCents = sum(pluck('amountInUSDCents', cartItems));
+      const inputPaymentsTotal = sum(pluck('amountInUsdCents', payments));
+      if (inputPaymentsTotal !== totalAmountInUsdCents) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: `Payments total (${inputPaymentsTotal}) does not match cart total (${totalAmountInUsdCents})`,
+        });
+      }
+
+      const userWallets = new Set(
+        getPrivyUserLinkedEthereumChecksumWalletAddresses({
+          privyUser,
+        }),
+      );
+      const nfscPayments = payments
+        .map((p) => p.paymentProviderDetails)
+        .filter((p) => isNfscPayment(p)) as NfscPaymentProviderDetails[];
+
+      for (const p of nfscPayments) {
+        const validWalletAddress = checksumWalletAddressSchema.safeParse(
+          p.nfscPaymentDetails.walletAddress,
+        );
+        if (!validWalletAddress.success) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message:
+              'NFSC payment walletAddress is not a valid Ethereum wallet address',
+          });
+        }
+        if (!userWallets.has(validWalletAddress.data)) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'NFSC payment walletAddress is not linked to the user',
+          });
+        }
+      }
+
+      return await db.transaction(async (tx) => {
+        // 1) Create payments first, capturing each paymentId
+        const createdPayments: PaymentSelect[] = [];
+        for (const p of payments) {
+          const created = await createPayment(
+            {
+              amountInUsdCents: p.amountInUsdCents,
+              paymentProviderDetails: p.paymentProviderDetails,
+            },
+            { tx },
+          );
+          createdPayments.push(created);
+        }
+
+        // 2) Create order linked to multiple payments (guarded linking inside service)
+        const order =
+          await orderService.createOrderWithExistingMultiplePayments(
+            {
+              amountInUSDCents: totalAmountInUsdCents,
+              userId: ctx.user.id,
+              paymentIds: createdPayments.map((p) => p.id),
+              nftWalletAddress: nftMetadata.nftWalletAddress,
+              nftChainId: nftMetadata.nftChainId,
+              items: cartItems.map(
+                (item) =>
+                  ({
+                    normalizedDomainName: item.normalizedDomainName,
+                    amountInUSDCents: item.amountInUSDCents,
+                    durationInYears: item.durationInYears,
+                    type: item.type,
+                    registrar: item.registrar,
+                    metadata: item.metadata as Json,
+                    encryptionKeyId: item.encryptionKeyId ?? undefined,
+                    encryptedEppAuthorizationCode:
+                      item.encryptedEppAuthorizationCode ?? undefined,
+                  }) satisfies CreateOrderItemInput,
+              ),
+            },
+            { tx },
+          );
+
+        // 3) Delete used cart items
+        await _removeCartItems(ctx.user.id, cartItemIds, { tx });
+
+        // 4) Build per-payment metadata map and start workflow
+        const paymentsMetadata = createdPayments.reduce<{
+          [paymentId: string]: ChargeUserWorkflowInput['metadata'] | undefined;
+        }>((acc, p, i) => {
+          acc[p.id] = payments[i]?.paymentMetadata as
+            | ChargeUserWorkflowInput['metadata']
+            | undefined;
+          return acc;
+        }, {});
+
+        try {
+          await temporalClient.workflow.start(processOrderWorkflow, {
+            args: [
+              {
+                orderId: order.id,
+                paymentsMetadata,
+              },
+            ],
+            taskQueue: TEMPORAL_QUEUES.DOMAINS,
+            workflowId: `process-order-${order.id}`,
+          });
+        } catch (error) {
+          logger.error({ error }, 'Could not start process order workflow');
+          throw new TRPCError({
+            code: 'INTERNAL_SERVER_ERROR',
+            message:
+              'Could not initiate the order, please contact support if the issue persists',
+          });
+        }
+
+        return order;
+      });
+    }),
 
   getOrderPaymentMethodsDetails: protectedProcedure
     .input(z.object({ orderId: z.string() }))

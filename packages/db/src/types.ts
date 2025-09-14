@@ -318,7 +318,15 @@ export type PaymentProviderDetails = z.infer<
  * @returns Narrowed type with Stripe payment details if applicable
  */
 export function isStripePayment(
-  details: unknown,
+  details:
+    | {
+        paymentProvider: (typeof paymentProviderSchema.options)[number];
+        stripePaymentDetails?: z.infer<typeof stripePaymentDetailsSchema>;
+        nfscPaymentDetails?: z.infer<
+          typeof paymentInsertSchema.shape.nfscPaymentDetails
+        >;
+      }
+    | unknown,
 ): details is StripePaymentProviderDetails {
   return stripePaymentProviderDetailsSchema.safeParse(details).success;
 }
@@ -329,7 +337,15 @@ export function isStripePayment(
  * @returns Narrowed type with NFSC payment details if applicable
  */
 export function isNfscPayment(
-  details: unknown,
+  details:
+    | {
+        paymentProvider: (typeof paymentProviderSchema.options)[number];
+        stripePaymentDetails?: z.infer<typeof stripePaymentDetailsSchema>;
+        nfscPaymentDetails?: z.infer<
+          typeof paymentInsertSchema.shape.nfscPaymentDetails
+        >;
+      }
+    | unknown,
 ): details is NfscPaymentProviderDetails {
   return nfscPaymentProviderDetailsSchema.safeParse(details).success;
 }

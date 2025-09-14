@@ -54,8 +54,13 @@ Notes
 *Summary*: This is the final stage, the user now will be able to checkout a single cart with multiple payments.
 
 - Routers:
-  - Extend order create input to accept multiple payment intents/ids.
-  - Validate ownership and constraints for each provided payment.
+  - Introduce `orders.createOrderV2` with `payments[]` (amountInUsdCents, paymentProviderDetails, optional paymentMetadata).
+  - Validate: sum(payments.amountInUsdCents) === cart total; ownership of NFSC wallet; Stripe confirmation token per payment when applicable.
+  - Start `processOrderWorkflow` with a typed `paymentsMetadata` map keyed by paymentId.
 - Frontend:
-  - Update checkout flow to collect multiple payments when needed (e.g., split payments).
-  - Display multi-payment status during and after checkout.
+  - Cart supports multi-payment mode with hints:
+    - If balance < total: hint to add credit card for remaining amount.
+    - If paying by card and balance > 0: hint to use balance for partial coverage.
+  - Simple list UI to add/remove NFSC and Stripe entries; enforce totals equality before submit.
+  - Submit via `orders.createOrderV2` with `payments[]` and per-payment metadata (e.g., Stripe confirmationTokenId).
+  - Order details already array-first from Stage 1; UI surfaces multiple payments.

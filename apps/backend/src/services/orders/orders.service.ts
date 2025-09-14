@@ -88,9 +88,6 @@ export async function createOrderWithExistingMultiplePayments(
   if (!paymentIds.length) {
     throw new Error('At least one paymentId is required');
   }
-  if (paymentIds.length > 1) {
-    throw new Error('Multiple paymentIds are not supported yet');
-  }
 
   return $withTransaction(
     async (tx) => {

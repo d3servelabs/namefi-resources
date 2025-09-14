@@ -30,6 +30,44 @@ export const createOrderInputSchema = z.object({
 
 export type CreateOrderInput = z.infer<typeof createOrderInputSchema>;
 
+// Stage 5: Multi-payment order creation (V2)
+export const createOrderV2InputSchema = z.object({
+  cartItemIds: z.array(z.string()).min(1, 'At least one cart item is required'),
+  payments: z
+    .array(
+      z.object({
+        amountInUsdCents: z
+          .number()
+          .int()
+          .positive('Payment amount must be positive'),
+        paymentProviderDetails: paymentProviderDetailsSchema,
+        paymentMetadata: paymentMetadataSchema.optional(),
+      }),
+    )
+    .min(1)
+    .superRefine((payments, ctx) => {
+      for (const [idx, p] of payments.entries()) {
+        const provider = (p.paymentProviderDetails as any)?.paymentProvider;
+        // Enforce Stripe minimum $1.00
+        if (typeof provider === 'string' && provider === 'STRIPE') {
+          if (p.amountInUsdCents < 100) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.too_small,
+              minimum: 100,
+              type: 'number',
+              inclusive: true,
+              path: [idx, 'amountInUsdCents'],
+              message: 'Stripe charge must be at least 100 cents',
+            });
+          }
+        }
+      }
+    }),
+  nftMetadata: nftMetadataSchema,
+});
+
+export type CreateOrderV2Input = z.infer<typeof createOrderV2InputSchema>;
+
 // Re-export the DomainAvailabilityInfo type for convenience
 export type { DomainAvailabilityInfo };
 
