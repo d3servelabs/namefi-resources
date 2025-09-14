@@ -7,6 +7,7 @@ import {
 import { z } from 'zod';
 import {
   aiGenerationsTable,
+  internalAiGenerationsTable,
   cartItemsTable,
   dnsRecordsTable,
   orderItemsTable,
@@ -100,6 +101,16 @@ export const dnsRecordUpdateSchema = createUpdateSchema(dnsRecordsTable, {
 export const aiGenerationInsertSchema = createInsertSchema(aiGenerationsTable);
 export const aiGenerationSelectSchema = createSelectSchema(aiGenerationsTable);
 export const aiGenerationUpdateSchema = createUpdateSchema(aiGenerationsTable);
+
+export const aiInternalGenerationInsertSchema = createInsertSchema(
+  internalAiGenerationsTable,
+);
+export const aiInternalGenerationSelectSchema = createSelectSchema(
+  internalAiGenerationsTable,
+);
+export const aiInternalGenerationUpdateSchema = createUpdateSchema(
+  internalAiGenerationsTable,
+);
 
 export const domainAiAnalysisInsertSchema = createInsertSchema(
   domainAiAnalysisTable,
@@ -198,6 +209,16 @@ export type DnsRecordUpdate = z.infer<typeof dnsRecordUpdateSchema>;
 export type AiGenerationInsert = z.infer<typeof aiGenerationInsertSchema>;
 export type AiGenerationSelect = z.infer<typeof aiGenerationSelectSchema>;
 export type AiGenerationUpdate = z.infer<typeof aiGenerationUpdateSchema>;
+
+export type AiInternalGenerationInsert = z.infer<
+  typeof aiInternalGenerationInsertSchema
+>;
+export type AiInternalGenerationSelect = z.infer<
+  typeof aiInternalGenerationSelectSchema
+>;
+export type AiInternalGenerationUpdate = z.infer<
+  typeof aiInternalGenerationUpdateSchema
+>;
 
 // AI Generation types
 export type PoweredByNamefiDomainInsert = z.infer<

@@ -646,6 +646,69 @@ export const aiGenerationsTable = pgTable(
 );
 
 /**
+ * Internal AI generations table
+ * Stores AI-generated assets created by background jobs (non user-facing)
+ * Mirrors the public aiGenerationsTable shape but without user linkage, for operational pipelines.
+ */
+export const internalAiGenerationsTable = pgTable(
+  'internal_ai_generations',
+  {
+    ...randomUuid,
+    domain: text('domain').notNull().$type<NamefiNormalizedDomain>(),
+    type: aiGenerationTypeEnum('type').notNull(),
+    // Optional grouping identifier to associate a batch run across many domains
+    batchId: text('batch_id'),
+    // Model/provider params used for this generation (e.g., model id, temperature)
+    params: jsonb('params').$type<{
+      model: string;
+      [key: string]: unknown;
+    }>(),
+    // Aggregate token usage across steps (e.g., analysis + image gen)
+    tokenUsage: jsonb('token_usage')
+      .$type<
+        Array<{
+          model: string;
+          inputTokens: number;
+          outputTokens: number;
+        }>
+      >()
+      .notNull()
+      .default([]),
+    input: jsonb('input').notNull().$type<
+      | {
+          type: 'logo';
+          logoType: string;
+          logoStyle: string;
+          description?: string;
+        }
+      | {
+          type: 'marketing';
+          description?: string;
+        }
+    >(),
+    output: jsonb('output').notNull().$type<
+      | {
+          type: 'logo';
+          storagePath: string;
+          externalId?: string;
+        }
+      | {
+          type: 'marketing';
+          storagePath: string;
+          externalId?: string;
+        }
+    >(),
+    metadata: jsonb('metadata').default({}),
+    ...timestamps,
+  },
+  (table) => [
+    index('ai_internal_generations_domain_idx').on(table.domain),
+    index('ai_internal_generations_type_idx').on(table.type),
+    index('ai_internal_generations_batch_id_idx').on(table.batchId),
+  ],
+);
+
+/**
  * Hunt system tables
  */
 export const huntActionEnum = pgEnum('hunt_action', ['UPVOTE', 'SUBMIT']);
