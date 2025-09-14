@@ -47,11 +47,5 @@ export async function $withTransaction<T>(
   config?: TransactionConfig,
   existingTx?: DB,
 ): Promise<T> {
-  if (existingTx) {
-    // Use the existing transaction
-    return callback(existingTx);
-  }
-
-  // Create a new transaction
-  return db.transaction(callback, config);
+  return (existingTx ?? db).transaction(callback, config);
 }
