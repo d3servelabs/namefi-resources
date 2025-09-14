@@ -5,7 +5,7 @@ import {
   orderItemsTable,
   $withTransaction,
 } from '@namefi-astra/db';
-import { eq, inArray } from 'drizzle-orm';
+import { and, eq, inArray, isNull } from 'drizzle-orm';
 import { OrderNotFoundError } from './errors';
 import type {
   OrderItemSelect,
@@ -142,10 +142,21 @@ export async function createOrderWithExistingMultiplePayments(
         .returning();
 
       // Link provided payments to this order (one-to-many via payments.orderId)
-      await tx
+      // Guard against reusing a payment: only link payments that are not already linked
+      const updated = await tx
         .update(paymentsTable)
         .set({ orderId: order.id })
-        .where(inArray(paymentsTable.id, paymentIds));
+        .where(
+          and(
+            inArray(paymentsTable.id, paymentIds),
+            isNull(paymentsTable.orderId),
+          ),
+        )
+        .returning({ id: paymentsTable.id });
+
+      if (updated.length !== paymentIds.length) {
+        throw new Error('One or more payments are already linked to an order');
+      }
 
       return { ...order, items: insertedItems as OrderItemSelect[] };
     },

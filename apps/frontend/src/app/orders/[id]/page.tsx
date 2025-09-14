@@ -467,7 +467,7 @@ function PaymentMethodsDetails({
   }
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 items-end">
       {payments.map((payment) => (
         <SinglePaymentMethodDetails
           key={payment.id}
@@ -550,7 +550,10 @@ export function SinglePaymentMethodDetails({
           <StatusBadge status={payment.status} type="payment" />
         </div>
       )}
-      ${payment.amountInUSDCents / 100} {isCreditCardPayment ? 'USD' : 'NFSC'}
+      <span className="w-[8ch] text-end whitespace-pre">
+        ${payment.amountInUSDCents / 100}{' '}
+        {isCreditCardPayment ? '  USD' : 'NFSC'}
+      </span>
     </div>
   );
 }

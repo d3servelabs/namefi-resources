@@ -123,12 +123,15 @@ export const ordersRouter = createTRPCRouter({
         // Delete cart items that were used to create the order
         await _removeCartItems(ctx.user.id, cartItemIds, { tx });
 
+        const paymentsMetadata = {
+          [payment.id]: input.paymentMetadata,
+        };
         try {
           await temporalClient.workflow.start(processOrderWorkflow, {
             args: [
               {
                 orderId: order.id,
-                paymentMetadata: input.paymentMetadata,
+                paymentsMetadata,
               },
             ],
             taskQueue: TEMPORAL_QUEUES.DOMAINS,

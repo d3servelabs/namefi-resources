@@ -8,12 +8,10 @@ import { ApplicationFailure } from '@temporalio/workflow';
 import { resolve } from '../../utils/resolve';
 import { TEMPORAL_ENUMS, TEMPORAL_QUEUES, shortRunningOpts } from '../shared';
 import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';
-import {
-  type ChargeUserWorkflowInput,
-  chargeUserWorkflow,
-} from './chargeUser.workflow';
+import type { ChargeUserWorkflowInput } from './chargeUser.workflow';
 import { processOrderItemWorkflow } from './processOrderItem.workflow';
-import { refundUserWorkflow } from './refund-user.workflow';
+import { multiChargeWorkflow } from './multi-charge.workflow';
+import { multiRefundWorkflow } from './multi-refund.workflow';
 
 const { triggerUpdateDomainIndex } = typedProxyActivities({
   temporalEnum: TEMPORAL_ENUMS.INDEXERS,
@@ -35,7 +33,9 @@ const {
 
 export interface ProcessOrderWorkflowInput {
   orderId: string;
-  paymentMetadata: ChargeUserWorkflowInput['metadata'];
+  paymentsMetadata: {
+    [paymentId: string]: ChargeUserWorkflowInput['metadata'] | undefined;
+  };
 }
 
 /**
@@ -83,33 +83,33 @@ export async function processOrderWorkflow(
       status: orderStatusSchema.Values.PROCESSING,
     });
 
-    // Charge the user for the order
-    const primaryPaymentId = orderDetails.payments[0]?.id;
-    if (!primaryPaymentId) {
+    // Charge the user for the order (multi-payment)
+    if (orderDetails.payments.length === 0) {
       await updateOrderStatusOrThrow({
         orderId: input.orderId,
         status: orderStatusSchema.Values.FAILED,
       });
       throw new workflow.ApplicationFailure('No payment found');
     }
-    const chargeResult = await workflow.executeChild(chargeUserWorkflow, {
-      args: [
-        {
-          userId: orderDetails.order.userId,
-          paymentId: primaryPaymentId,
-          metadata: input.paymentMetadata,
-        },
-      ],
-      workflowId: `charge-user-${primaryPaymentId}`,
-      taskQueue: TEMPORAL_QUEUES.DEFAULT,
-      retry: {
-        maximumAttempts: 1,
-      },
-    });
-
-    // If payment failed, update order status and exit
-    if (chargeResult.paymentStatus !== paymentStatusSchema.Values.SUCCEEDED) {
-      // set orderItem statuses to CANCELLED in db
+    try {
+      await workflow.executeChild(multiChargeWorkflow, {
+        args: [
+          {
+            orderId: input.orderId,
+            userId: orderDetails.order.userId,
+            paymentsData: orderDetails.payments.map((p) => ({
+              paymentId: p.id,
+              amountInUSDCents: p.amountInUSDCents,
+              metadata: input.paymentsMetadata[p.id],
+            })),
+          },
+        ],
+        workflowId: `multi-charge-order-[${input.orderId}]`,
+        taskQueue: TEMPORAL_QUEUES.DEFAULT,
+        retry: { maximumAttempts: 1 },
+      });
+    } catch (e) {
+      // set orderItem statuses to CANCELLED in db and fail order
       for (const item of orderDetails.items) {
         const [updateStatusError, _res] = await resolve(
           updateOrderItemStatusOrThrow({
@@ -117,7 +117,6 @@ export async function processOrderWorkflow(
             status: orderStatusSchema.Values.CANCELLED,
           }),
         );
-
         if (updateStatusError) {
           workflow.log.error(
             `Failed to update orderItem ${item.id} status to ${orderStatusSchema.Values.CANCELLED}: ${
@@ -128,12 +127,11 @@ export async function processOrderWorkflow(
           );
         }
       }
-
       await updateOrderStatusOrThrow({
         orderId: input.orderId,
         status: orderStatusSchema.Values.FAILED,
       });
-      throw new Error('Payment failed');
+      throw e instanceof Error ? e : new Error(String(e));
     }
 
     // MARK: - Process Order Items
@@ -156,7 +154,7 @@ export async function processOrderWorkflow(
               encryptionKeyId: item.encryptionKeyId,
             },
           ],
-          workflowId: `process-order-item-${item.id}`,
+          workflowId: `process-order-item-[${item.id}]`,
           taskQueue: TEMPORAL_QUEUES.DEFAULT,
           retry: {
             maximumAttempts: 1,
@@ -221,18 +219,20 @@ export async function processOrderWorkflow(
     }, 0);
 
     if (amountToRefund > 0) {
-      await workflow.executeChild(refundUserWorkflow, {
+      await workflow.executeChild(multiRefundWorkflow, {
         args: [
           {
-            paymentId: primaryPaymentId,
+            orderId: input.orderId,
+            paymentIds: orderDetails.payments.map((p) => p.id),
             amountToRefundInUsdCents: amountToRefund,
           },
         ],
-        workflowId: `refund-user-${primaryPaymentId}`,
+        workflowId: `multi-refund-order-[${input.orderId}]`,
         taskQueue: TEMPORAL_QUEUES.DEFAULT,
-        retry: {
-          maximumAttempts: 1,
-        },
+        retry: { maximumAttempts: 1 },
+        workflowIdReusePolicy: 'ALLOW_DUPLICATE_FAILED_ONLY',
+        workflowIdConflictPolicy: 'USE_EXISTING',
+        parentClosePolicy: 'REQUEST_CANCEL',
       });
     }
 
@@ -308,11 +308,22 @@ async function _notifyUserOrderProcessed(
     workflow.log.warn(message);
     return;
   }
-  const paymentMethodCharged = orderDetails.payments[0]?.paymentProvider;
+  // Prefer a user-relevant payment for notifications (Stripe first)
+  const priority = [
+    'STRIPE',
+    'NFSC_ETHEREUM_SEPOLIA',
+    'NFSC_BASE',
+    'NFSC_ETHEREUM',
+  ];
+  const chosenPayment = [...orderDetails.payments].sort(
+    (a, b) =>
+      priority.indexOf(a.paymentProvider) - priority.indexOf(b.paymentProvider),
+  )[0];
+  const paymentMethodCharged = chosenPayment?.paymentProvider;
   const paymentMethodIdentifier =
     paymentMethodCharged === 'STRIPE'
-      ? orderDetails.payments[0]?.stripePaymentDetails?.paymentMethodId
-      : orderDetails.payments[0]?.nfscPaymentDetails?.walletAddress;
+      ? chosenPayment?.stripePaymentDetails?.paymentMethodId
+      : chosenPayment?.nfscPaymentDetails?.walletAddress;
 
   if (!paymentMethodIdentifier) {
     const message = `Failed to notify user for order ${orderDetails.order.id}. Payment method identifier is missing`;

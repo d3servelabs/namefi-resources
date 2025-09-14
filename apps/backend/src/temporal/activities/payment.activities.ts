@@ -10,8 +10,8 @@ import {
   refundsTable,
   usersTable,
 } from '@namefi-astra/db';
-import { eq } from 'drizzle-orm';
-import { isNil } from 'ramda';
+import { eq, inArray } from 'drizzle-orm';
+import { isNil, indexBy, prop } from 'ramda';
 import Stripe from 'stripe';
 import { usersService } from '#services/index';
 import {
@@ -44,6 +44,7 @@ import { getNfscBalanceInUSD } from './mint.activities';
 import { privyClient } from '../../trpc/utils';
 import type { WalletWithMetadata } from '@privy-io/server-auth';
 import { $withTransaction } from '@namefi-astra/db';
+import { ApplicationFailure } from '@temporalio/common';
 
 const stripe = new Stripe(secrets.STRIPE_SECRET_KEY);
 
@@ -188,6 +189,36 @@ export async function getPaymentDetails({ paymentId }: { paymentId: string }) {
   }
 
   return payment;
+}
+
+export async function getMultiplePaymentsDetails(input: {
+  paymentIds: string[];
+}) {
+  const paymentIds = Array.from(new Set(input.paymentIds));
+  if (paymentIds.length === 0) {
+    return {};
+  }
+  const payments = await db.query.paymentsTable.findMany({
+    columns: {
+      id: true,
+      amountInUSDCents: true,
+      status: true,
+      paymentProvider: true,
+      paymentProviderReferenceId: true,
+      nfscPaymentDetails: true,
+      stripePaymentDetails: true,
+    },
+    where: inArray(paymentsTable.id, paymentIds),
+  });
+
+  if (!payments.length || payments.length !== paymentIds.length) {
+    throw ApplicationFailure.create({
+      message: 'Some payments not found',
+      details: [{ paymentIds }],
+    });
+  }
+
+  return indexBy(prop('id'), payments);
 }
 
 export async function getRefundDetails({ refundId }: { refundId: string }) {

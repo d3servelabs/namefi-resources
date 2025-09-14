@@ -43,3 +43,5 @@ export * from './free-claims-correction.workflow';
 export * from './link-shares-validation.workflow';
 export * from './weekly-disable-auto-renewal.workflow';
 export * from './logo-generation.workflow';
+export * from './multi-charge.workflow';
+export * from './multi-refund.workflow';
