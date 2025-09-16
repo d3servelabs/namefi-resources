@@ -8,6 +8,7 @@ import { isNotNil } from 'ramda';
 
 const ALCHEMY_API_KEY = secrets.ALCHEMY_API_KEY;
 const DEV = false;
+const LISTEN_TO_ACCOUNTS = false;
 const NAMEFI_NFT_CONTRACT_ADDRESS =
   '0x0000000000cf80e7cf8fa4480907f692177f8e06';
 
@@ -57,22 +58,7 @@ export default createConfig({
     base: getChainConfig(base, { pollingIntervalMs: 0.5 * MINUTE_MS }),
     sepolia: getChainConfig(sepolia, { pollingIntervalMs: 5 * MINUTE_MS }),
   },
-  accounts: {
-    NamefiNftAccount: {
-      address: NAMEFI_NFT_CONTRACT_ADDRESS,
-      chain: {
-        mainnet: {
-          startBlock: 'latest',
-        },
-        base: {
-          startBlock: 'latest',
-        },
-        sepolia: {
-          startBlock: 'latest',
-        },
-      },
-    },
-  },
+  accounts: getAccounts(),
   contracts: {
     NamefiNft: {
       abi: NftAbi,
@@ -91,3 +77,26 @@ export default createConfig({
     },
   },
 });
+
+type AccountsConfig = Parameters<typeof createConfig>[0]['accounts'];
+function getAccounts(): AccountsConfig {
+  if (!LISTEN_TO_ACCOUNTS) {
+    return undefined;
+  }
+  return {
+    NamefiNftAccount: {
+      address: NAMEFI_NFT_CONTRACT_ADDRESS,
+      chain: {
+        mainnet: {
+          startBlock: 'latest',
+        },
+        base: {
+          startBlock: 'latest',
+        },
+        sepolia: {
+          startBlock: 'latest',
+        },
+      },
+    },
+  };
+}

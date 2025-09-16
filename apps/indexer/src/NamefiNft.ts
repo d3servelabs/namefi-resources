@@ -1,12 +1,6 @@
 import { ponder } from 'ponder:registry';
 import schema from 'ponder:schema';
-import {
-  type Chain,
-  createPublicClient,
-  decodeFunctionData,
-  http,
-  zeroAddress,
-} from 'viem';
+import { type Chain, createPublicClient, http, zeroAddress } from 'viem';
 import { mainnet, base, sepolia } from 'viem/chains';
 import { filter, isNil, isNotNil } from 'ramda';
 import { and, desc, eq, sql } from 'ponder';
@@ -322,91 +316,22 @@ ponder.on('NamefiNft:Transfer', async ({ event, context }) => {
     });
 });
 
-ponder.on('NamefiNftAccount:transaction:to', async ({ event, context }) => {
-  const { transaction, block } = event;
-  const chainId = (context.chain as any).id;
-  const { to, from, value, input } = transaction;
-  const { functionName, args } = decodeFunctionData({
-    abi: context.contracts.NamefiNft.abi,
-    data: input,
-  });
-  console.log('Transaction', {
-    to,
-    from,
-    value,
-    functionName,
-    args,
-    chainId,
-  });
+ponder.on('NamefiNft:ExpirationChanged', async ({ event, context }) => {
+  const {
+    block,
+    args: { tokenId, newExpirationTime },
+  } = event;
+  const chainId = context.chain.id;
 
-  if (functionName === 'setExpiration') {
-    const [tokenId, expirationTime] = args;
-    await updateExpirationDate(context, tokenId, block, chainId);
-    return;
-  }
-  if (
-    functionName === 'extendByNameWithCharge' ||
-    functionName === 'extendByNameWithChargeAmount'
-  ) {
-    const [domainName] = args;
-    const domains = await context.db.sql
-      .select()
-      .from(schema.NamefiNft)
-      .where(
-        and(
-          eq(schema.NamefiNft.normalizedDomainName, domainName),
-          eq(schema.NamefiNft.chainId, chainId),
-        ),
-      )
-      .limit(1)
-      .execute();
-    const domain = domains[0];
-    if (!domain) {
-      console.log('Domain not found', { domainName, chainId });
-      return;
-    }
-
-    await updateExpirationDate(context, domain.tokenId, block, chainId);
-    return;
-  }
-});
-
-async function updateExpirationDate(
-  context: any,
-  tokenId: bigint,
-  block: any,
-  chainId: number,
-) {
-  const expirationTime = await context.client.readContract({
-    address: context.contracts.NamefiNft.address,
-    abi: context.contracts.NamefiNft.abi,
-    functionName: 'getExpiration',
-    args: [tokenId],
-  });
   await context.db.update(schema.NamefiNft, { tokenId, chainId }).set({
-    expirationTimeInSeconds: expirationTime,
+    expirationTimeInSeconds: newExpirationTime,
     lastUpdatedBlock: block.number,
     lastUpdatedTimestamp: block.timestamp,
   });
-}
-
-// // Expiration updates - important for tracking domain lifecycle
-// ponder.on('NamefiNft.setExpiration()', async ({ event, context }) => {
-//   const {
-//     block,
-//     args: [tokenId, expirationTime],
-//   } = event;
-//   const chainId = context.chain.id;
-
-//   // Update the expiration date in the domain record
-//   await context.db.update(schema.DomainNft, { tokenId, chainId }).set({
-//     expirationDate: expirationTime,
-//     lastUpdatedBlock: block.number,
-//     lastUpdatedTimestamp: block.timestamp,
-//   });
-// });
+});
 
 // Lock/Unlock handlers - now tracking lock status
+
 ponder.on('NamefiNft:Lock', async ({ event, context }) => {
   const {
     block,
