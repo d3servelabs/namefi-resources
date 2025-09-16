@@ -27,4 +27,7 @@ export const NftAbi = parseAbi([
   // Add Lock event used for lock tracking
   'event Lock(uint256 indexed tokenId, bytes extra)',
   'event Unlock(uint256 indexed tokenId, bytes extra)',
+
+  // Add ExpirationChanged event used for expiration tracking
+  'event ExpirationChanged(uint256 indexed tokenId, uint256 newExpirationTime)',
 ]);
