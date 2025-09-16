@@ -616,6 +616,12 @@ export const aiGenerationsTable = pgTable(
       | {
           type: 'marketing';
           description?: string;
+          collateralType:
+            | 'billboard'
+            | 't_shirt'
+            | 'coffee_mug'
+            | 'cap'
+            | 'hoodie';
         }
     >(),
     output: jsonb('output').notNull().$type<
@@ -691,6 +697,12 @@ export const internalAiGenerationsTable = pgTable(
       | {
           type: 'marketing';
           description?: string;
+          collateralType:
+            | 'billboard'
+            | 't_shirt'
+            | 'coffee_mug'
+            | 'cap'
+            | 'hoodie';
         }
     >(),
     output: jsonb('output').notNull().$type<

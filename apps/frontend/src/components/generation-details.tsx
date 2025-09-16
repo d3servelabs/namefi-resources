@@ -1,4 +1,4 @@
-/** biome-ignore-all lint/performance/noImgElement: <explanation> */
+/** biome-ignore-all lint/performance/noImgElement: using plain img for controlled rendering of remote URLs */
 'use client';
 
 import { EmptyPlaceholder } from '@/components/empty-placeholder';
@@ -302,6 +302,30 @@ export function GenerationDetailsClient({
                     {generation.type}
                   </Badge>
                 </div>
+
+                {generation.type === 'marketing' &&
+                  generation.input.type === 'marketing' &&
+                  (generation as any).input?.collateralType && (
+                    <div className="flex items-center gap-2">
+                      <Type className="h-4 w-4 text-muted-foreground" />
+                      <span className="text-sm">Collateral:</span>
+                      <Badge variant="secondary" className="capitalize">
+                        {(() => {
+                          const map: Record<string, string> = {
+                            billboard: 'Billboard',
+                            t_shirt: 'T-Shirt',
+                            coffee_mug: 'Coffee Mug',
+                            cap: 'Cap',
+                            hoodie: 'Hoodie',
+                          };
+                          const key = String(
+                            (generation as any).input.collateralType,
+                          );
+                          return map[key] ?? key;
+                        })()}
+                      </Badge>
+                    </div>
+                  )}
 
                 <div className="flex items-start gap-2">
                   <Calendar className="h-4 w-4 text-muted-foreground mt-0.5" />

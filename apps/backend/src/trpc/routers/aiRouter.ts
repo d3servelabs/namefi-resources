@@ -14,6 +14,8 @@ import { TRPCError } from '@trpc/server';
 import { and, count, desc, eq, max, sql } from 'drizzle-orm';
 import { z } from 'zod';
 import { createTRPCRouter, protectedProcedure, publicProcedure } from '../base';
+import { createLogger } from '#lib/logger';
+const logger = createLogger({ module: 'ai-router' });
 const { analyzeLogoRequirements, generateLogo, generateMarketingImage } =
   await import('@namefi-astra/ai');
 
@@ -63,6 +65,13 @@ const generateMarketingImageInputSchema = z.object({
   domain: namefiNormalizedDomainSchema,
   description: z.string().optional(),
   referenceLogoGenerationId: z.string().optional(),
+  collateralType: z.enum([
+    'billboard',
+    't_shirt',
+    'coffee_mug',
+    'cap',
+    'hoodie',
+  ]),
   model: z
     .enum(['gpt-image-1', 'gemini-2.5-flash-image-preview'])
     .default('gpt-image-1'),
@@ -154,7 +163,7 @@ export const aiRouter = createTRPCRouter({
           url: publicUrl,
         };
       } catch (error) {
-        console.error('Logo generation error:', error);
+        logger.error({ error }, 'Logo generation error');
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message:
@@ -176,7 +185,13 @@ export const aiRouter = createTRPCRouter({
           });
         }
 
-        const { domain, description, referenceLogoGenerationId, model } = input;
+        const {
+          domain,
+          description,
+          referenceLogoGenerationId,
+          model,
+          collateralType,
+        } = input;
 
         // Step 1: Find reference generation if basedOnLogoCallId provided
         let referenceLogoGenerationExternalId: string | undefined;
@@ -214,6 +229,7 @@ export const aiRouter = createTRPCRouter({
           basedOnLogoCallId: referenceLogoGenerationExternalId,
           basedOnLogoPublicUrl: referenceLogoPublicUrl,
           model,
+          collateralType,
         });
 
         if (!generatedImage) {
@@ -241,6 +257,7 @@ export const aiRouter = createTRPCRouter({
             input: {
               type: 'marketing',
               description,
+              collateralType,
             },
             output: {
               type: 'marketing',
@@ -262,7 +279,7 @@ export const aiRouter = createTRPCRouter({
           url: publicUrl,
         };
       } catch (error) {
-        console.error('Poster generation error:', error);
+        logger.error({ error }, 'Poster generation error');
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message:

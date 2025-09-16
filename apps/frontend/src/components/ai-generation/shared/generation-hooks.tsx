@@ -124,10 +124,12 @@ export const createPosterGenerationPayload = (data: PosterFormData) => {
     description?: string;
     referenceLogoGenerationId?: string;
     model: Model;
+    collateralType: 'billboard' | 't_shirt' | 'coffee_mug' | 'cap' | 'hoodie';
   } = {
     domain: data.domain,
     description: data.description,
     model: data.model as Model,
+    collateralType: data.collateralType,
   };
 
   // If a logo is selected, include the logo generation ID for reference

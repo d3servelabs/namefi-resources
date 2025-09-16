@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/performance/noImgElement: using plain img for grid thumbnails and simplicity */
 'use client';
 
 import { Card, CardContent } from '@/components/ui/shadcn/card';
@@ -24,9 +25,25 @@ import {
   SelectValue,
 } from '@/components/ui/shadcn/select';
 import type { Model } from '@namefi-astra/ai';
-
+const collateralLabels: Record<
+  'billboard' | 't_shirt' | 'coffee_mug' | 'cap' | 'hoodie',
+  string
+> = {
+  billboard: 'Billboard',
+  t_shirt: 'T-Shirt',
+  coffee_mug: 'Coffee Mug',
+  cap: 'Cap',
+  hoodie: 'Hoodie',
+};
 const posterFormSchema = baseFormSchema.extend({
   selectedLogoId: z.string().uuid(),
+  collateralType: z.enum([
+    'billboard',
+    't_shirt',
+    'coffee_mug',
+    'cap',
+    'hoodie',
+  ]),
   model: z
     .enum(['gpt-image-1', 'gemini-2.5-flash-image-preview'])
     .default('gemini-2.5-flash-image-preview'),
@@ -60,6 +77,7 @@ export function PosterGenerator({
       domain: fixedDomain || '',
       description: '',
       selectedLogoId: availableLogos.length > 0 ? availableLogos[0].id : '',
+      collateralType: 'billboard' as const,
       model: 'gemini-2.5-flash-image-preview' as Model,
     };
   }, [fixedDomain, availableLogos]);
@@ -114,6 +132,7 @@ export function PosterGenerator({
         });
 
         const selectedModel = form.watch('model');
+        const selectedCollateral = form.watch('collateralType');
         controlButtons.push({
           key: 'model',
           label: 'Model',
@@ -123,6 +142,17 @@ export function PosterGenerator({
               : 'OpenAI',
           onClick: () => setOpenPanel(openPanel === 'model' ? null : 'model'),
           isActive: openPanel === 'model',
+        });
+
+        controlButtons.push({
+          key: 'collateral',
+          label: 'Collateral',
+          badge:
+            (selectedCollateral && collateralLabels[selectedCollateral]) ||
+            undefined,
+          onClick: () =>
+            setOpenPanel(openPanel === 'collateral' ? null : 'collateral'),
+          isActive: openPanel === 'collateral',
         });
 
         return (
@@ -217,6 +247,42 @@ export function PosterGenerator({
                             Gemini
                           </SelectItem>
                           <SelectItem value="gpt-image-1">OpenAI</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
+
+            {/* Collateral Selection */}
+            {openPanel === 'collateral' && (
+              <FormField
+                control={form.control}
+                name={'collateralType'}
+                render={({ field }) => (
+                  <FormItem className="mt-6">
+                    <FormLabel className="text-lg font-semibold">
+                      Choose collateral type
+                    </FormLabel>
+                    <FormControl>
+                      <Select
+                        value={field.value}
+                        onValueChange={(val) => {
+                          field.onChange(val);
+                          setOpenPanel(null);
+                        }}
+                      >
+                        <SelectTrigger className="w-full max-w-sm">
+                          <SelectValue placeholder="Select collateral" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="billboard">Billboard</SelectItem>
+                          <SelectItem value="t_shirt">T-Shirt</SelectItem>
+                          <SelectItem value="coffee_mug">Coffee Mug</SelectItem>
+                          <SelectItem value="cap">Cap</SelectItem>
+                          <SelectItem value="hoodie">Hoodie</SelectItem>
                         </SelectContent>
                       </Select>
                     </FormControl>

@@ -41,6 +41,14 @@ export interface BaseGenerationParams {
   storage: StorageConfig;
 }
 
+// Marketing collateral types supported by UI and prompt builder
+export type MarketingCollateralType =
+  | 'billboard'
+  | 't_shirt'
+  | 'coffee_mug'
+  | 'cap'
+  | 'hoodie';
+
 export interface GenerateLogoParams extends BaseGenerationParams {
   domain: NamefiNormalizedDomain;
   logoConcept: LogoConcept;
@@ -52,4 +60,5 @@ export interface GenerateMarketingImageParams extends BaseGenerationParams {
   basedOnLogoCallId?: string;
   basedOnLogoPublicUrl?: string;
   model: Model;
+  collateralType: MarketingCollateralType;
 }

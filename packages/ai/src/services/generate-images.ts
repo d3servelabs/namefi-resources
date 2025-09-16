@@ -22,7 +22,13 @@ import {
 export async function generateMarketingImage(
   params: GenerateMarketingImageParams,
 ): Promise<GeneratedImage | null> {
-  const { domain, storage, basedOnLogoCallId, basedOnLogoPublicUrl } = params;
+  const {
+    domain,
+    storage,
+    basedOnLogoCallId,
+    basedOnLogoPublicUrl,
+    collateralType,
+  } = params;
 
   console.log(`Generating marketing image for ${domain}`);
   console.log(
@@ -41,10 +47,24 @@ export async function generateMarketingImage(
 
   try {
     // Create messages using unified builder
+    const userPromptByCollateral: Record<string, string> = {
+      billboard:
+        'Using the referenced logo, place it prominently on a realistic outdoor billboard with natural lighting. Emphasize scale and street context.',
+      t_shirt:
+        'Using the referenced logo, print it on a high-quality cotton T-shirt mockup. Show realistic fabric folds and natural lighting.',
+      coffee_mug:
+        'Using the referenced logo, print it on a ceramic coffee mug. Use a simple studio scene with soft shadows.',
+      cap: 'Using the referenced logo, embroider or print it on a baseball cap. Show texture and stitching details.',
+      hoodie:
+        'Using the referenced logo, print it on a hoodie. Show fabric texture and a lifestyle or studio shot.',
+    };
+
     const messages = buildImageGenerationMessages({
       model: params.model,
       task: 'marketing',
-      userPrompt: 'Using the referenced logo, put it on a realistic billboard',
+      userPrompt:
+        userPromptByCollateral[collateralType] ||
+        'Using the referenced logo, place it on a realistic product mockup.',
       basedOnLogoCallId,
       basedOnLogoPublicUrl,
     });
