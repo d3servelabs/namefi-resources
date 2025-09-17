@@ -129,7 +129,10 @@ ponder.on('NamefiNft:setup', async ({ context }) => {
     `Indexing NamefiNft for chain ${chainId} from block ${chainIdToStartBlock[chainId]} to block ${toBlock} `,
   );
 
-  const nftOwners = new Map<bigint, string>();
+  const nftToOwners = new Map<
+    bigint,
+    { ownerAddress: `0x${string}`; blockNumber: bigint }
+  >();
 
   let i = 0;
   for (const batch of batchRanges) {
@@ -150,53 +153,59 @@ ponder.on('NamefiNft:setup', async ({ context }) => {
     for (const event of events) {
       const {
         args: { to, tokenId },
+        blockNumber,
       } = event;
       if (!to || !tokenId) {
         continue;
       }
       if (to === zeroAddress) {
-        nftOwners.delete(tokenId);
+        nftToOwners.delete(tokenId);
       } else {
-        nftOwners.set(tokenId, to);
+        nftToOwners.set(tokenId, {
+          ownerAddress: to,
+          blockNumber: blockNumber,
+        });
       }
     }
     i++;
   }
   console.log(
-    `Found ${nftOwners.size} unique NFT owners for chain ${chainId} from block ${chainIdToStartBlock[chainId]} to block ${toBlock}`,
+    `Found ${nftToOwners.size} NFTs for chain ${chainId} from block ${chainIdToStartBlock[chainId]} to block ${toBlock}`,
   );
-  const nftOwnersArray = Array.from(nftOwners.entries());
+  const nftToOwnersArray = Array.from(nftToOwners.entries());
   const expirationDates = await publicClient.multicall({
-    contracts: nftOwnersArray.map(([tokenId]) => ({
+    contracts: nftToOwnersArray.map(([tokenId]) => ({
       address: contracts.NamefiNft.address,
       abi: contracts.NamefiNft.abi,
       functionName: 'getExpiration',
       args: [tokenId],
-      blockNumber: toBlock,
+      blockNumber: toBlock, // from latest block
     })),
   });
   const domainNames = await publicClient.multicall({
-    contracts: nftOwnersArray.map(([tokenId]) => ({
-      address: contracts.NamefiNft.address,
-      abi: contracts.NamefiNft.abi,
-      functionName: 'idToNormalizedDomainName',
-      args: [tokenId],
-      blockNumber: toBlock,
-    })),
+    contracts: nftToOwnersArray.map(
+      ([tokenId, { ownerAddress, blockNumber }]) => ({
+        address: contracts.NamefiNft.address,
+        abi: contracts.NamefiNft.abi,
+        functionName: 'idToNormalizedDomainName',
+        args: [tokenId],
+        blockNumber: blockNumber, // idToNormalizedDomainName doesn't work with expired domains so you need to get historic data
+      }),
+    ),
   });
   const locked = await publicClient.multicall({
-    contracts: nftOwnersArray.map(([tokenId]) => ({
+    contracts: nftToOwnersArray.map(([tokenId]) => ({
       address: contracts.NamefiNft.address,
       abi: contracts.NamefiNft.abi,
       functionName: 'isLocked',
       args: [tokenId],
-      blockNumber: toBlock,
+      blockNumber: toBlock, // from latest block
     })),
   });
 
   const data = filter(
     isNotNil,
-    nftOwnersArray.map(([tokenId, owner], index) => {
+    nftToOwnersArray.map(([tokenId, { ownerAddress, blockNumber }], index) => {
       const domainName = domainNames[index]?.result as unknown as string;
       const expirationTimeInSeconds = expirationDates[index]
         ?.result as unknown as bigint;
@@ -221,7 +230,7 @@ ponder.on('NamefiNft:setup', async ({ context }) => {
         tokenId,
         normalizedDomainName: domainName,
         expirationTimeInSeconds: expirationTimeInSeconds,
-        ownerAddress: owner,
+        ownerAddress,
         chainId,
         lastUpdatedBlock: toBlock,
         lastUpdatedTimestamp: BigInt(Date.now()),
