@@ -123,9 +123,7 @@ ponder.on('NamefiNft:setup', async ({ context }) => {
     }
   }
   const batchSize = 10_000_000n;
-  const batchCount = BigInt(
-    Math.max(1, Math.ceil(Number((toBlock - fromBlock) / batchSize))),
-  );
+  const batchRanges = getBatchRanges(fromBlock, toBlock, batchSize);
 
   console.log(
     `Indexing NamefiNft for chain ${chainId} from block ${chainIdToStartBlock[chainId]} to block ${toBlock} `,
@@ -133,22 +131,21 @@ ponder.on('NamefiNft:setup', async ({ context }) => {
 
   const nftOwners = new Map<bigint, string>();
 
-  for (let i = 0; i < Number(batchCount); i++) {
-    console.log(`Processing batch ${i} of ${batchCount} for chain ${chainId}`);
-    const batchStart =
-      BigInt(i) * batchSize + (chainIdToStartBlock[chainId] ?? 0n);
-    const batchEnd = BigInt(
-      Math.min(Number(batchStart + batchSize), Number(toBlock)),
+  let i = 0;
+  for (const batch of batchRanges) {
+    console.log(
+      `Processing batch ${i + 1} of ${batchRanges.length} for chain ${chainId}`,
     );
+
     const events = await publicClient.getContractEvents({
       address: contracts.NamefiNft.address,
       abi: contracts.NamefiNft.abi,
       eventName: 'Transfer',
-      fromBlock: batchStart,
-      toBlock: batchEnd,
+      fromBlock: batch.start,
+      toBlock: batch.end,
     });
     console.log(
-      `Found ${events.length} events for chain ${chainId} from block ${batchStart} to block ${batchEnd}`,
+      `Found ${events.length} events for chain ${chainId} from block ${batch.start} to block ${batch.end}`,
     );
     for (const event of events) {
       const {
@@ -163,6 +160,7 @@ ponder.on('NamefiNft:setup', async ({ context }) => {
         nftOwners.set(tokenId, to);
       }
     }
+    i++;
   }
   console.log(
     `Found ${nftOwners.size} unique NFT owners for chain ${chainId} from block ${chainIdToStartBlock[chainId]} to block ${toBlock}`,
@@ -429,3 +427,28 @@ ponder.on('NamefiNft:Unlock', async ({ event, context }) => {
  * This DRY approach ensures we don't duplicate logic and rely on Ponder's automatic
  * event detection from internal contract calls.
  */
+
+function getBatchRanges(
+  fromBlock: bigint,
+  toBlock: bigint,
+  batchSize: bigint,
+): { start: bigint; end: bigint }[] {
+  const batchRanges: { start: bigint; end: bigint }[] = [];
+  while (true) {
+    const previousRangeEnd = batchRanges[batchRanges.length - 1]?.end;
+    const batchStart: bigint = isNotNil(previousRangeEnd)
+      ? previousRangeEnd + 1n
+      : fromBlock;
+    const virtualBatchEnd = batchStart + batchSize;
+    const actualBatchEnd =
+      virtualBatchEnd > toBlock ? toBlock : virtualBatchEnd;
+    batchRanges.push({
+      start: batchStart,
+      end: actualBatchEnd,
+    });
+    if (actualBatchEnd >= toBlock) {
+      break;
+    }
+  }
+  return batchRanges;
+}
