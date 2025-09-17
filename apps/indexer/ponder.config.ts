@@ -54,9 +54,18 @@ export default createConfig({
         connectionString: DATABASE_URL,
       },
   chains: {
-    mainnet: getChainConfig(mainnet, { pollingIntervalMs: MINUTE_MS }),
-    base: getChainConfig(base, { pollingIntervalMs: 0.5 * MINUTE_MS }),
-    sepolia: getChainConfig(sepolia, { pollingIntervalMs: 5 * MINUTE_MS }),
+    mainnet: getChainConfig(mainnet, {
+      pollingIntervalMs: MINUTE_MS,
+      useWebsockets: secrets.USE_WEBSOCKETS,
+    }),
+    base: getChainConfig(base, {
+      pollingIntervalMs: 0.5 * MINUTE_MS,
+      useWebsockets: secrets.USE_WEBSOCKETS,
+    }),
+    sepolia: getChainConfig(sepolia, {
+      pollingIntervalMs: 5 * MINUTE_MS,
+      useWebsockets: secrets.USE_WEBSOCKETS,
+    }),
   },
   accounts: getAccounts(),
   contracts: {
