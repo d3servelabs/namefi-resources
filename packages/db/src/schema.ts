@@ -624,7 +624,8 @@ export const aiGenerationsTable = pgTable(
             | 'hoodie'
             | 'pizza_box'
             | 'medal'
-            | 'flag';
+            | 'flag'
+            | 'let_ai_choose';
         }
     >(),
     output: jsonb('output').notNull().$type<
@@ -632,11 +633,22 @@ export const aiGenerationsTable = pgTable(
           type: 'logo';
           storagePath: string;
           externalId?: string;
+          logoType?: string;
+          logoStyle?: string;
         }
       | {
           type: 'marketing';
           storagePath: string;
           externalId?: string;
+          collateralType:
+            | 'billboard'
+            | 't_shirt'
+            | 'coffee_mug'
+            | 'cap'
+            | 'hoodie'
+            | 'pizza_box'
+            | 'medal'
+            | 'flag';
         }
     >(),
     metadata: jsonb('metadata').default({}),
@@ -708,7 +720,8 @@ export const internalAiGenerationsTable = pgTable(
             | 'hoodie'
             | 'pizza_box'
             | 'medal'
-            | 'flag';
+            | 'flag'
+            | 'let_ai_choose';
         }
     >(),
     output: jsonb('output').notNull().$type<
@@ -716,11 +729,22 @@ export const internalAiGenerationsTable = pgTable(
           type: 'logo';
           storagePath: string;
           externalId?: string;
+          logoType?: string;
+          logoStyle?: string;
         }
       | {
           type: 'marketing';
           storagePath: string;
           externalId?: string;
+          collateralType:
+            | 'billboard'
+            | 't_shirt'
+            | 'coffee_mug'
+            | 'cap'
+            | 'hoodie'
+            | 'pizza_box'
+            | 'medal'
+            | 'flag';
         }
     >(),
     metadata: jsonb('metadata').default({}),

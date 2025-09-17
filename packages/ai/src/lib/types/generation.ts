@@ -64,4 +64,5 @@ export interface GenerateMarketingImageParams extends BaseGenerationParams {
   basedOnLogoPublicUrl?: string;
   model: Model;
   collateralType: MarketingCollateralType;
+  rewrittenPrompt: string;
 }

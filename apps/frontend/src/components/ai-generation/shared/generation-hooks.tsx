@@ -124,7 +124,7 @@ export const createPosterGenerationPayload = (data: PosterFormData) => {
     description?: string;
     referenceLogoGenerationId?: string;
     model: Model;
-    collateralType: MarketingCollateralType;
+    collateralType: MarketingCollateralType | 'let_ai_choose';
   } = {
     domain: data.domain,
     description: data.description,

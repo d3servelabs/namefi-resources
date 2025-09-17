@@ -26,7 +26,10 @@ import {
 } from '@/components/ui/shadcn/select';
 import type { Model, MarketingCollateralType } from '@namefi-astra/ai';
 
-export const collateralLabels: Record<MarketingCollateralType, string> = {
+export const collateralLabels: Record<
+  MarketingCollateralType | 'let_ai_choose',
+  string
+> = {
   billboard: 'Billboard',
   t_shirt: 'T-Shirt',
   coffee_mug: 'Coffee Mug',
@@ -35,20 +38,26 @@ export const collateralLabels: Record<MarketingCollateralType, string> = {
   pizza_box: 'Pizza Box',
   medal: 'Medal',
   flag: 'Flag',
+  let_ai_choose: 'Let AI choose',
 };
 
 const posterFormSchema = baseFormSchema.extend({
   selectedLogoId: z.string().uuid(),
-  collateralType: z.enum([
-    'billboard',
-    't_shirt',
-    'coffee_mug',
-    'cap',
-    'hoodie',
-    'pizza_box',
-    'medal',
-    'flag',
-  ]),
+  collateralType: z
+    .union([
+      z.enum([
+        'billboard',
+        't_shirt',
+        'coffee_mug',
+        'cap',
+        'hoodie',
+        'pizza_box',
+        'medal',
+        'flag',
+      ]),
+      z.literal('let_ai_choose'),
+    ])
+    .default('let_ai_choose'),
   model: z
     .enum(['gpt-image-1', 'gemini-2.5-flash-image-preview'])
     .default('gemini-2.5-flash-image-preview'),
@@ -82,7 +91,7 @@ export function PosterGenerator({
       domain: fixedDomain || '',
       description: '',
       selectedLogoId: availableLogos.length > 0 ? availableLogos[0].id : '',
-      collateralType: 'billboard' as const,
+      collateralType: 'let_ai_choose' as const,
       model: 'gemini-2.5-flash-image-preview' as Model,
     };
   }, [fixedDomain, availableLogos]);
@@ -283,6 +292,9 @@ export function PosterGenerator({
                           <SelectValue placeholder="Select collateral" />
                         </SelectTrigger>
                         <SelectContent>
+                          <SelectItem value="let_ai_choose">
+                            Let AI choose
+                          </SelectItem>
                           <SelectItem value="billboard">Billboard</SelectItem>
                           <SelectItem value="t_shirt">T-Shirt</SelectItem>
                           <SelectItem value="coffee_mug">Coffee Mug</SelectItem>

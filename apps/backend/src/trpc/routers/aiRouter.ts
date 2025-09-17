@@ -16,8 +16,13 @@ import { z } from 'zod';
 import { createTRPCRouter, protectedProcedure, publicProcedure } from '../base';
 import { createLogger } from '#lib/logger';
 const logger = createLogger({ module: 'ai-router' });
-const { analyzeLogoRequirements, generateLogo, generateMarketingImage } =
-  await import('@namefi-astra/ai');
+import {
+  analyzeLogoRequirements,
+  generateLogo,
+  generateMarketingImage,
+  analyzeCollateralRequirements,
+} from '@namefi-astra/ai';
+import type { MarketingCollateralType } from '@namefi-astra/ai';
 
 const s3Client = createS3Client({
   AWS_ACCESS_KEY_ID: secrets.AWS_ACCESS_KEY_ID,
@@ -65,16 +70,21 @@ const generateMarketingImageInputSchema = z.object({
   domain: namefiNormalizedDomainSchema,
   description: z.string().optional(),
   referenceLogoGenerationId: z.string().optional(),
-  collateralType: z.enum([
-    'billboard',
-    't_shirt',
-    'coffee_mug',
-    'cap',
-    'hoodie',
-    'pizza_box',
-    'medal',
-    'flag',
-  ]),
+  collateralType: z
+    .union([
+      z.enum([
+        'billboard',
+        't_shirt',
+        'coffee_mug',
+        'cap',
+        'hoodie',
+        'pizza_box',
+        'medal',
+        'flag',
+      ]),
+      z.literal('let_ai_choose'),
+    ])
+    .default('let_ai_choose'),
   model: z
     .enum(['gpt-image-1', 'gemini-2.5-flash-image-preview'])
     .default('gpt-image-1'),
@@ -151,6 +161,8 @@ export const aiRouter = createTRPCRouter({
               type: 'logo',
               storagePath: generatedLogo.storagePath,
               externalId: generatedLogo.generationCallId,
+              logoType: logoConcept.logoConcept.type,
+              logoStyle: logoConcept.logoConcept.style,
             },
             tokenUsage: aggregateTokenUsage,
           })
@@ -222,7 +234,39 @@ export const aiRouter = createTRPCRouter({
           }
         }
 
-        // Step 4: Generate single image
+        // Step 4: Choose collateral via AI if requested, else use provided type
+        let resolvedCollateralType: MarketingCollateralType;
+
+        let rewrittenPrompt: string | undefined;
+
+        if (collateralType === 'let_ai_choose') {
+          const analysis = await analyzeCollateralRequirements(
+            domain,
+            description,
+            1,
+          );
+          const pick = analysis.data.picks[0];
+          resolvedCollateralType = pick.collateralType;
+          // Include user's description context if provided
+          rewrittenPrompt = description
+            ? `${pick.prompt}\n\nBrand details: ${description}`
+            : pick.prompt;
+        } else {
+          resolvedCollateralType = collateralType;
+          // Even when user picks a specific type, generate a rewritten prompt via analysis
+          const analysis = await analyzeCollateralRequirements(
+            domain,
+            description,
+            1,
+            [resolvedCollateralType],
+          );
+          const pick = analysis.data.picks[0];
+          rewrittenPrompt = description
+            ? `${pick.prompt}\n\nBrand details: ${description}`
+            : pick.prompt;
+        }
+
+        // Step 5: Generate single image
         const generatedImage = await generateMarketingImage({
           domain,
           storage: {
@@ -232,7 +276,8 @@ export const aiRouter = createTRPCRouter({
           basedOnLogoCallId: referenceLogoGenerationExternalId,
           basedOnLogoPublicUrl: referenceLogoPublicUrl,
           model,
-          collateralType,
+          collateralType: resolvedCollateralType,
+          rewrittenPrompt,
         });
 
         if (!generatedImage) {
@@ -250,7 +295,7 @@ export const aiRouter = createTRPCRouter({
           },
         ];
 
-        // Step 5: Create generation record only after successful generation
+        // Step 6: Create generation record only after successful generation
         const [generationRecord] = await db
           .insert(aiGenerationsTable)
           .values({
@@ -266,6 +311,7 @@ export const aiRouter = createTRPCRouter({
               type: 'marketing',
               storagePath: generatedImage.storagePath,
               externalId: generatedImage.generationCallId,
+              collateralType: resolvedCollateralType,
             },
             tokenUsage: aggregateTokenUsage,
             referenceGenerationId: referenceLogoGenerationId,

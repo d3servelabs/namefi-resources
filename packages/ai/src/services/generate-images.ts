@@ -3,7 +3,6 @@ import { uploadFileToS3, generateCloudFrontUrl } from '@namefi-astra/storage';
 import type {
   GeneratedImage,
   GenerateMarketingImageParams,
-  MarketingCollateralType,
 } from '../lib/types';
 import {
   GEMINI_IMAGE_CONFIG,
@@ -23,13 +22,7 @@ import {
 export async function generateMarketingImage(
   params: GenerateMarketingImageParams,
 ): Promise<GeneratedImage | null> {
-  const {
-    domain,
-    storage,
-    basedOnLogoCallId,
-    basedOnLogoPublicUrl,
-    collateralType,
-  } = params;
+  const { domain, storage, basedOnLogoCallId, basedOnLogoPublicUrl } = params;
 
   console.log(`Generating marketing image for ${domain}`);
   console.log(
@@ -47,30 +40,10 @@ export async function generateMarketingImage(
   );
 
   try {
-    // Create messages using unified builder
-    const userPromptByCollateral: Record<MarketingCollateralType, string> = {
-      billboard:
-        'Using the referenced logo, place it prominently on a realistic outdoor billboard with natural lighting. Emphasize scale and street context.',
-      t_shirt:
-        'Using the referenced logo, print it on a high-quality cotton T-shirt mockup. Show realistic fabric folds and natural lighting.',
-      coffee_mug:
-        'Using the referenced logo, print it on a ceramic coffee mug. Use a simple studio scene with soft shadows.',
-      cap: 'Using the referenced logo, embroider or print it on a baseball cap. Show texture and stitching details.',
-      hoodie:
-        'Using the referenced logo, print it on a hoodie. Show fabric texture and a lifestyle or studio shot.',
-      pizza_box:
-        'Using the referenced logo, print it on a cardboard pizza box. Show a realistic pizza box with subtle grease marks and delivery context or a studio tabletop scene.',
-      medal:
-        'Using the referenced logo, engrave or emboss it on a metallic medal with a ribbon. Emphasize reflective metal, depth, and award presentation.',
-      flag: 'Using the referenced logo, print it on a fabric flag waving outdoors. Emphasize fabric motion, stitching, and natural outdoor lighting.',
-    };
-
     const messages = buildImageGenerationMessages({
       model: params.model,
       task: 'marketing',
-      userPrompt:
-        userPromptByCollateral[collateralType] ||
-        'Using the referenced logo, place it on a realistic product mockup.',
+      userPrompt: params.rewrittenPrompt,
       basedOnLogoCallId,
       basedOnLogoPublicUrl,
     });
