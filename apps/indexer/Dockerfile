@@ -11,7 +11,6 @@ WORKDIR /app
 
 # Set to production environment
 ENV NODE_ENV production
-ENV ENVIRONMENT=production
 
 
 RUN apt-get update && apt-get install -y bash curl dnsutils

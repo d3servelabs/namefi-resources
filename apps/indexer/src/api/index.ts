@@ -3,6 +3,7 @@ import schema from 'ponder:schema';
 import { type Context, Hono, type Next } from 'hono';
 import { client, graphql } from 'ponder';
 import auth, { requireAuth } from './auth';
+import { config } from '../lib/env';
 
 const app = new Hono();
 
@@ -72,6 +73,19 @@ app.get('/schema', async (c) => {
       currentSchema: schemaName,
       source: source,
       timestamp: new Date().toISOString(),
+    });
+  } catch (error) {
+    console.error('Schema endpoint error:', error);
+    return c.json({ error: 'Unable to determine current schema' }, 500);
+  }
+});
+
+// Schema information endpoint
+app.get('/configz', async (c) => {
+  try {
+    return c.json({
+      ENVIRONMENT: process.env.ENVIRONMENT,
+      config,
     });
   } catch (error) {
     console.error('Schema endpoint error:', error);
