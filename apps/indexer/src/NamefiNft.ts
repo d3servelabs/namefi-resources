@@ -323,11 +323,21 @@ ponder.on('NamefiNft:ExpirationChanged', async ({ event, context }) => {
   } = event;
   const chainId = context.chain.id;
 
-  await context.db.update(schema.NamefiNft, { tokenId, chainId }).set({
-    expirationTimeInSeconds: newExpirationTime,
-    lastUpdatedBlock: block.number,
-    lastUpdatedTimestamp: block.timestamp,
-  });
+  try {
+    await context.db.update(schema.NamefiNft, { tokenId, chainId }).set({
+      expirationTimeInSeconds: newExpirationTime,
+      lastUpdatedBlock: block.number,
+      lastUpdatedTimestamp: block.timestamp,
+    });
+  } catch (error) {
+    console.error('Error updating expiration time', {
+      tokenId: tokenId.toString(),
+      chainId,
+      newExpirationTime: newExpirationTime.toString(),
+      error,
+    });
+    throw error;
+  }
 });
 
 // Lock/Unlock handlers - now tracking lock status

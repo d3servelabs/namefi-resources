@@ -20,7 +20,13 @@ TAGS="http-server,https-server,prometheus"
 # Guard-rails – fail fast when mandatory vars are absent
 : "${DD_API_KEY:?Environment variable DD_API_KEY is required}"
 : "${APP_IMAGE:?Environment variable APP_IMAGE is required}"
+
+if [[ "$INSTANCE_NAME" == "ponder-indexer-prod" ]]; then
 DOMAIN="indexer.namefi.io"
+else
+DOMAIN="indexer.namefi.dev"
+fi
+
 EMAIL="dev@namefi.io"
 
 # ==== Build startup script from templates ====
