@@ -24,17 +24,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/shadcn/select';
-import type { Model } from '@namefi-astra/ai';
-const collateralLabels: Record<
-  'billboard' | 't_shirt' | 'coffee_mug' | 'cap' | 'hoodie',
-  string
-> = {
+import type { Model, MarketingCollateralType } from '@namefi-astra/ai';
+
+export const collateralLabels: Record<MarketingCollateralType, string> = {
   billboard: 'Billboard',
   t_shirt: 'T-Shirt',
   coffee_mug: 'Coffee Mug',
   cap: 'Cap',
   hoodie: 'Hoodie',
+  pizza_box: 'Pizza Box',
+  medal: 'Medal',
+  flag: 'Flag',
 };
+
 const posterFormSchema = baseFormSchema.extend({
   selectedLogoId: z.string().uuid(),
   collateralType: z.enum([
@@ -43,6 +45,9 @@ const posterFormSchema = baseFormSchema.extend({
     'coffee_mug',
     'cap',
     'hoodie',
+    'pizza_box',
+    'medal',
+    'flag',
   ]),
   model: z
     .enum(['gpt-image-1', 'gemini-2.5-flash-image-preview'])
@@ -283,6 +288,9 @@ export function PosterGenerator({
                           <SelectItem value="coffee_mug">Coffee Mug</SelectItem>
                           <SelectItem value="cap">Cap</SelectItem>
                           <SelectItem value="hoodie">Hoodie</SelectItem>
+                          <SelectItem value="pizza_box">Pizza Box</SelectItem>
+                          <SelectItem value="medal">Medal</SelectItem>
+                          <SelectItem value="flag">Flag</SelectItem>
                         </SelectContent>
                       </Select>
                     </FormControl>

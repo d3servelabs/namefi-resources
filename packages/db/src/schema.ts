@@ -621,7 +621,10 @@ export const aiGenerationsTable = pgTable(
             | 't_shirt'
             | 'coffee_mug'
             | 'cap'
-            | 'hoodie';
+            | 'hoodie'
+            | 'pizza_box'
+            | 'medal'
+            | 'flag';
         }
     >(),
     output: jsonb('output').notNull().$type<
@@ -702,7 +705,10 @@ export const internalAiGenerationsTable = pgTable(
             | 't_shirt'
             | 'coffee_mug'
             | 'cap'
-            | 'hoodie';
+            | 'hoodie'
+            | 'pizza_box'
+            | 'medal'
+            | 'flag';
         }
     >(),
     output: jsonb('output').notNull().$type<

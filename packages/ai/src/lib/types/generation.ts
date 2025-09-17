@@ -47,7 +47,10 @@ export type MarketingCollateralType =
   | 't_shirt'
   | 'coffee_mug'
   | 'cap'
-  | 'hoodie';
+  | 'hoodie'
+  | 'pizza_box'
+  | 'medal'
+  | 'flag';
 
 export interface GenerateLogoParams extends BaseGenerationParams {
   domain: NamefiNormalizedDomain;

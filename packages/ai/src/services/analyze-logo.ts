@@ -64,7 +64,7 @@ const logoConceptSchema = z.object({
     ),
 });
 
-export type LogoConcept = z.infer<typeof logoConceptSchema>;
+type LogoConcept = z.infer<typeof logoConceptSchema>;
 
 export function analyzeLogoRequirements(
   brandName: string,

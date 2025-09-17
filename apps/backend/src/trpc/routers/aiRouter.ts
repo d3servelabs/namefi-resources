@@ -71,6 +71,9 @@ const generateMarketingImageInputSchema = z.object({
     'coffee_mug',
     'cap',
     'hoodie',
+    'pizza_box',
+    'medal',
+    'flag',
   ]),
   model: z
     .enum(['gpt-image-1', 'gemini-2.5-flash-image-preview'])

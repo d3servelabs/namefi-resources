@@ -3,6 +3,7 @@ import { uploadFileToS3, generateCloudFrontUrl } from '@namefi-astra/storage';
 import type {
   GeneratedImage,
   GenerateMarketingImageParams,
+  MarketingCollateralType,
 } from '../lib/types';
 import {
   GEMINI_IMAGE_CONFIG,
@@ -47,7 +48,7 @@ export async function generateMarketingImage(
 
   try {
     // Create messages using unified builder
-    const userPromptByCollateral: Record<string, string> = {
+    const userPromptByCollateral: Record<MarketingCollateralType, string> = {
       billboard:
         'Using the referenced logo, place it prominently on a realistic outdoor billboard with natural lighting. Emphasize scale and street context.',
       t_shirt:
@@ -57,6 +58,11 @@ export async function generateMarketingImage(
       cap: 'Using the referenced logo, embroider or print it on a baseball cap. Show texture and stitching details.',
       hoodie:
         'Using the referenced logo, print it on a hoodie. Show fabric texture and a lifestyle or studio shot.',
+      pizza_box:
+        'Using the referenced logo, print it on a cardboard pizza box. Show a realistic pizza box with subtle grease marks and delivery context or a studio tabletop scene.',
+      medal:
+        'Using the referenced logo, engrave or emboss it on a metallic medal with a ribbon. Emphasize reflective metal, depth, and award presentation.',
+      flag: 'Using the referenced logo, print it on a fabric flag waving outdoors. Emphasize fabric motion, stitching, and natural outdoor lighting.',
     };
 
     const messages = buildImageGenerationMessages({

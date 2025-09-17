@@ -4,7 +4,7 @@ import { toast } from 'sonner';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import type { LogoFormData } from '../logo-generator';
 import type { PosterFormData } from '../poster-generator';
-import type { Model } from '@namefi-astra/ai';
+import type { Model, MarketingCollateralType } from '@namefi-astra/ai';
 
 interface UseLogoGenerationProps {
   domain?: NamefiNormalizedDomain;
@@ -124,7 +124,7 @@ export const createPosterGenerationPayload = (data: PosterFormData) => {
     description?: string;
     referenceLogoGenerationId?: string;
     model: Model;
-    collateralType: 'billboard' | 't_shirt' | 'coffee_mug' | 'cap' | 'hoodie';
+    collateralType: MarketingCollateralType;
   } = {
     domain: data.domain,
     description: data.description,
