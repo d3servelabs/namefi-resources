@@ -25,9 +25,11 @@ import {
   timestamp,
   unique,
   uuid,
+  uniqueIndex,
 } from 'drizzle-orm/pg-core';
 import type { Json } from 'drizzle-zod';
 import type { Permission } from '@namefi-astra/utils';
+import { z } from 'zod';
 
 /**
  * Common table columns for timestamp tracking
@@ -1229,8 +1231,6 @@ export const namefiAiSchema = pgSchema('namefi_ai');
  * Zod schemas for AI-related data structures
  */
 
-import { z } from 'zod';
-
 // Schema for the inner appraisal object that gets stored in the database
 export const aiAppraisalDataSchema = z.object({
   valueUpperRange: z.number(),
@@ -1446,6 +1446,123 @@ export const poweredbyNamefiDomainsTable = pgTable(
       'pb_namefi_duration_valid',
       sql`(((${table.durationConstraints}) ->> 'minDurationInYears')::int > 0)  
             AND (((${table.durationConstraints}) ->> 'maxDurationInYears')::int >= (((${table.durationConstraints}) ->> 'minDurationInYears')::int))`,
+    ),
+  ],
+);
+
+/**
+ * Reservation status enum for PBN issuance reservations
+ */
+export const reservationStatusEnum = pgEnum('pbn_issuance_reservation_status', [
+  'CREATED',
+  'CANCELLED',
+]);
+
+/**
+ * PBN Issuance Reservations table - unified system for gifts and internal reservations
+ * Replaces gift_free_claims with more flexible reservation system
+ */
+export const pbnIssuanceReservationsTable = pgTable(
+  'pbn_issuance_reservations',
+  {
+    ...randomUuid,
+    pbnDomain: text('pbn_domain')
+      .notNull()
+      .$type<NamefiNormalizedDomain>()
+      .references(() => poweredbyNamefiDomainsTable.normalizedDomainName, {
+        onDelete: 'cascade',
+      }),
+    recipientEmail: text('recipient_email'),
+    recipientUserId: uuid('recipient_user_id').references(() => usersTable.id, {
+      onDelete: 'set null',
+    }),
+    exactDomainName: text('exact_domain_name').$type<NamefiNormalizedDomain>(),
+    parentDomain: text('parent_domain').$type<NamefiNormalizedDomain>(),
+    reason: text('reason'),
+
+    // Behavior flags
+    issueFreeClaim: boolean('issue_free_claim').notNull().default(false),
+    reserveHold: boolean('reserve_hold').notNull().default(true),
+
+    // Creator of the reservation (PBN owner or admin)
+    creatorId: uuid('creator_id')
+      .notNull()
+      .references(() => usersTable.id, {
+        onDelete: 'cascade',
+      }),
+    personalMessage: text('personal_message'),
+
+    // Status and metadata
+    reservationExpirationDate: timestamp('reservation_expiration_date'),
+    freeClaimExpirationDate: timestamp('free_claim_expiration_date'),
+    status: reservationStatusEnum('status').notNull().default('CREATED'),
+    claimedAt: timestamp('claimed_at'),
+    freeClaimId: uuid('free_claim_id').references(() => freeClaimsTable.id, {
+      onDelete: 'set null',
+    }),
+    metadata: jsonb('metadata').default({}).$type<{
+      sendEmail?: boolean;
+      emailSent?: boolean;
+      emailSentAt?: string;
+      source?: 'GIFT' | 'INTERNAL_RESERVATION' | 'ADMIN_GRANT';
+      internalReason?: string;
+      adminUserId?: string;
+      [key: string]: any;
+    }>(),
+    ...timestamps,
+  },
+  (table) => [
+    // Indexes
+    index('pbn_reservations_recipient_user_idx').on(table.recipientUserId),
+    index('pbn_reservations_pbn_domain_idx').on(table.pbnDomain),
+    index('pbn_reservations_status_idx').on(table.status),
+    index('pbn_reservations_reservation_expiration_idx').on(
+      table.reservationExpirationDate,
+    ),
+    index('pbn_reservations_parent_domain_idx').on(table.parentDomain),
+    index('pbn_reservations_creator_idx').on(table.creatorId),
+
+    // Composite indexes
+    index('pbn_reservations_recipient_status_idx').on(
+      table.recipientEmail,
+      table.status,
+    ),
+    index('pbn_reservations_creator_status_idx').on(
+      table.creatorId,
+      table.status,
+    ),
+
+    // !! there's a trigger that calls pbn_validate_hold_before_insert
+    // Constraints
+    // At least one behavior: cannot be neither
+    check(
+      'pbn_reservations_behavior_at_least_one',
+      sql`${table.reserveHold} OR ${table.issueFreeClaim}`,
+    ),
+    // Holding is only allowed on exact (never on parent)
+    check(
+      'pbn_reservations_hold_on_exact_only',
+      sql`(NOT ${table.reserveHold}) OR (${table.exactDomainName} IS NOT NULL AND ${table.parentDomain} IS NULL)`,
+    ),
+    // Parent domain allowed only when issuing a free-claim
+    check(
+      'pbn_reservations_parent_only_with_free_claim',
+      sql`(${table.parentDomain} IS NULL) OR ${table.issueFreeClaim}`,
+    ),
+    // Provide either exactDomainName or parentDomain
+    check(
+      'pbn_reservations_exact_domain_xor_parent_domain',
+      sql`(${table.exactDomainName} IS NULL) <> (${table.parentDomain} IS NULL)`,
+    ),
+    // Reservation expiration only relevant when reserve hold is true
+    check(
+      'pbn_reservations_expiration_when_no_hold_null',
+      sql`${table.reserveHold} OR ${table.reservationExpirationDate} IS NULL`,
+    ),
+    // Free-claim expiration only when issuing free-claim
+    check(
+      'pbn_reservations_free_claim_expiration_only_when_issuing',
+      sql`${table.issueFreeClaim} OR ${table.freeClaimExpirationDate} IS NULL`,
     ),
   ],
 );

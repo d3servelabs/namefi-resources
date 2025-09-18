@@ -26,6 +26,8 @@ import {
   namefiNftWithAiAnalysisView,
   aiAppraisalDataSchema,
   poweredbyNamefiDomainsTable,
+  pbnIssuanceReservationsTable,
+  reservationStatusEnum,
 } from './schema';
 
 /**
@@ -229,6 +231,42 @@ export type PoweredByNamefiDomainSelect = z.infer<
 >;
 export type PoweredByNamefiDomainUpdate = z.infer<
   typeof poweredbyNamefiDomainUpdateSchema
+>;
+
+// PBN Issuance Reservations schemas
+export const pbnIssuanceReservationInsertSchema = createInsertSchema(
+  pbnIssuanceReservationsTable,
+  {
+    pbnDomain: namefiNormalizedDomainSchema,
+    exactDomainName: namefiNormalizedDomainSchema.optional(),
+    parentDomain: namefiNormalizedDomainSchema.optional(),
+  },
+);
+export const pbnIssuanceReservationSelectSchema = createSelectSchema(
+  pbnIssuanceReservationsTable,
+  {
+    pbnDomain: namefiNormalizedDomainSchema,
+    exactDomainName: namefiNormalizedDomainSchema.optional(),
+    parentDomain: namefiNormalizedDomainSchema.optional(),
+  },
+);
+export const pbnIssuanceReservationUpdateSchema = createUpdateSchema(
+  pbnIssuanceReservationsTable,
+  {
+    pbnDomain: namefiNormalizedDomainSchema,
+    exactDomainName: namefiNormalizedDomainSchema.optional(),
+    parentDomain: namefiNormalizedDomainSchema.optional(),
+  },
+);
+
+export type PbnIssuanceReservationInsert = z.infer<
+  typeof pbnIssuanceReservationInsertSchema
+>;
+export type PbnIssuanceReservationSelect = z.infer<
+  typeof pbnIssuanceReservationSelectSchema
+>;
+export type PbnIssuanceReservationUpdate = z.infer<
+  typeof pbnIssuanceReservationUpdateSchema
 >;
 
 // Domain AI Analysis types
