@@ -1,6 +1,5 @@
 import {
   type NfscPaymentProviderDetails,
-  type OrderItemInsert,
   type PaymentProviderDetails,
   type PaymentSelect,
   type UserSelect,
@@ -10,6 +9,7 @@ import {
   orderItemsTable,
   ordersTable,
   paymentsTable,
+  refundsTable,
 } from '@namefi-astra/db';
 import { checksumWalletAddressSchema } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
@@ -477,6 +477,56 @@ export const ordersRouter = createTRPCRouter({
         brand: paymentMethod.card?.brand,
         last4: paymentMethod.card?.last4,
       };
+    }),
+
+  // Get refunds for a given payment (amounts and provider reference ids)
+  getPaymentRefunds: protectedProcedure
+    .input(z.object({ paymentId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const { user } = ctx;
+      const { paymentId } = input;
+
+      const payment = await db.query.paymentsTable.findFirst({
+        where: eq(paymentsTable.id, paymentId),
+        with: { order: true },
+      });
+
+      if (!payment || !payment.order) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Payment not found',
+        });
+      }
+      if (payment.order.userId !== user.id) {
+        throw new TRPCError({
+          code: 'UNAUTHORIZED',
+          message: 'You are not authorized to access this payment',
+        });
+      }
+
+      const refunds = await db.query.refundsTable.findMany({
+        columns: {
+          id: true,
+          amountInUSDCents: true,
+          status: true,
+          paymentProviderReferenceId: true,
+          chainId: true,
+          walletAddress: true,
+          createdAt: true,
+        },
+        where: eq(refundsTable.paymentId, paymentId),
+        orderBy: [desc(refundsTable.createdAt)],
+      });
+
+      return refunds.map((r) => ({
+        refundId: r.id,
+        amountInUSDCents: r.amountInUSDCents,
+        status: r.status,
+        txHash: r.paymentProviderReferenceId,
+        chainId: r.chainId,
+        walletAddress: r.walletAddress,
+        createdAt: r.createdAt,
+      }));
     }),
 
   reflectChangesInCartItemsIfAnyAndReturnSummary: protectedProcedure

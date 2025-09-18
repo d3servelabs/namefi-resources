@@ -3,7 +3,6 @@
 import { StatusBadge } from '@/components/status-badge';
 import { CartCard } from '@/components/cart-card';
 import { Button } from '@/components/ui/shadcn/button';
-import { Badge } from '@/components/ui/shadcn/badge';
 import { Separator } from '@/components/ui/shadcn/separator';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
 import { itemTypeSchema, type PaymentSelect } from '@namefi-astra/db/types';
@@ -89,17 +88,6 @@ export default function OrderDetailsPage({
     null,
   );
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
-  const technicalDetails = useMemo(
-    () =>
-      order
-        ? {
-            order,
-            payments,
-            items,
-          }
-        : undefined,
-    [order, payments, items],
-  );
 
   function humanizeItemType(t: string | null | undefined): string {
     switch (t) {
@@ -419,7 +407,7 @@ export default function OrderDetailsPage({
                 label="Total Amount"
                 value={formatAmountInUSD(order.amountInUSDCents, true)}
                 field="orderAmount"
-                onCopy={(t) =>
+                onCopy={() =>
                   navigator.clipboard.writeText(String(order.amountInUSDCents))
                 }
               />
@@ -461,7 +449,7 @@ export default function OrderDetailsPage({
                 label="# Payments"
                 value={payments.length}
                 field="orderPaymentsCount"
-                onCopy={(t) =>
+                onCopy={() =>
                   navigator.clipboard.writeText(String(payments.length))
                 }
               />
@@ -469,7 +457,7 @@ export default function OrderDetailsPage({
                 label="# Items"
                 value={items?.length ?? 0}
                 field="orderItemsCount"
-                onCopy={(t) =>
+                onCopy={() =>
                   navigator.clipboard.writeText(String(items?.length ?? 0))
                 }
               />
@@ -493,200 +481,6 @@ export default function OrderDetailsPage({
         items={items}
         onOpenChange={setSelectedItemId}
       />
-    </div>
-  );
-}
-
-function PaymentMethodDetails({
-  paymentId,
-  payment,
-}: {
-  paymentId: string;
-  payment: PaymentSelect;
-}) {
-  const [copiedFields, setCopiedFields] = useState<Record<string, boolean>>({});
-
-  const copyToClipboard = (text: string, field: string) => {
-    navigator.clipboard.writeText(text);
-    setCopiedFields((prev) => ({ ...prev, [field]: true }));
-
-    setTimeout(() => {
-      setCopiedFields((prev) => ({ ...prev, [field]: false }));
-    }, 2000);
-  };
-  const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
-  const trpc = useTRPC();
-  const {
-    data: paymentMethodDetails = {
-      isOnChainPayment: false,
-      brand: undefined,
-      last4: undefined,
-    },
-    isLoading: arePaymentMethodDetailsLoading,
-  } = useQuery({
-    ...trpc.orders.getPaymentMethodDetails.queryOptions({ paymentId }),
-    enabled: !!paymentId && isAuthenticated,
-    retry(failureCount, error) {
-      if (failureCount >= 3) {
-        return false;
-      }
-      if (
-        error instanceof TRPCClientError &&
-        error.data?.code === 'UNAUTHORIZED'
-      ) {
-        return false;
-      }
-      return true;
-    },
-  });
-
-  const isCreditCardPayment = useMemo(
-    () => payment.paymentProvider === 'STRIPE',
-    [payment.paymentProvider],
-  );
-
-  const creditCardPreviewText = useMemo(() => {
-    if (
-      !isCreditCardPayment ||
-      arePaymentMethodDetailsLoading ||
-      !paymentMethodDetails
-    ) {
-      return '-';
-    }
-
-    if (
-      !(
-        !paymentMethodDetails.isOnChainPayment &&
-        paymentMethodDetails.brand &&
-        paymentMethodDetails.last4
-      )
-    ) {
-      return 'Credit Card';
-    }
-
-    return `${paymentMethodDetails.brand.toLocaleUpperCase()}(${paymentMethodDetails.last4})`;
-  }, [
-    arePaymentMethodDetailsLoading,
-    isCreditCardPayment,
-    paymentMethodDetails,
-  ]);
-
-  const onChainPaymentPreviewText = useMemo(() => {
-    if (isCreditCardPayment) {
-      return '';
-    }
-
-    if (!payment.nfscPaymentDetails) {
-      return '-';
-    }
-
-    const chain = getChain(payment.nfscPaymentDetails.chainId);
-    const chainName =
-      chain?.name || `Chain ID ${payment.nfscPaymentDetails.chainId}`;
-    return `(${chainName}) ${getShortAddress(payment.nfscPaymentDetails.walletAddress)}`;
-  }, [isCreditCardPayment, payment.nfscPaymentDetails]);
-
-  function getShortId(id: string, start = 6, end = 4): string {
-    if (!id) return '-';
-    if (id.length <= start + end) return id;
-    return `${id.slice(0, start)}…${id.slice(-end)}`;
-  }
-
-  return (
-    <div>
-      <div className="flex items-center justify-between h-8">
-        <span className="font-medium">Payment ID:</span>
-        <div className="flex items-center gap-2">
-          <span className="text-sm text-gray-500">
-            {getShortId(payment.id)}
-          </span>
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild={true}>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-8 w-8"
-                  onClick={() => copyToClipboard(payment.id ?? '', 'paymentId')}
-                >
-                  {copiedFields.paymentId ? (
-                    <Check size={16} />
-                  ) : (
-                    <ClipboardCopy size={16} />
-                  )}
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>{copiedFields.paymentId ? 'Copied!' : 'Copy Payment ID'}</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        </div>
-      </div>
-
-      <div className="flex items-center justify-between h-8">
-        <span className="font-medium">Payment Status:</span>
-        <div className="flex items-center">
-          {payment.status ? (
-            <StatusBadge status={payment.status} type="payment" />
-          ) : (
-            <span>-</span>
-          )}
-        </div>
-      </div>
-
-      <div className="flex items-center justify-between h-8">
-        <span className="font-medium">
-          {isCreditCardPayment ? 'Payment Method' : 'Wallet Address'}
-        </span>
-        <div className="flex items-center gap-2">
-          {isCreditCardPayment ? (
-            isAuthLoading || arePaymentMethodDetailsLoading ? (
-              <Loader2 className="animate-spin" />
-            ) : (
-              <span className="text-sm text-gray-500">
-                {creditCardPreviewText}
-              </span>
-            )
-          ) : (
-            <span className="text-sm text-gray-500">
-              {onChainPaymentPreviewText}
-            </span>
-          )}
-          {!isCreditCardPayment && (
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild={true}>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-8 w-8"
-                    onClick={() =>
-                      copyToClipboard(
-                        payment.nfscPaymentDetails?.walletAddress ?? '',
-                        'walletAddress',
-                      )
-                    }
-                  >
-                    {copiedFields.walletAddress ? (
-                      <Check size={16} />
-                    ) : (
-                      <ClipboardCopy size={16} />
-                    )}
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>
-                    {copiedFields.walletAddress
-                      ? 'Copied!'
-                      : 'Copy Wallet Address'}
-                  </p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          )}
-        </div>
-      </div>
     </div>
   );
 }
@@ -820,6 +614,13 @@ function PaymentDetailsModal({
     enabled: !!paymentId && isAuthenticated,
   });
 
+  const { data: refunds = [], isLoading: refundsLoading } = useQuery({
+    ...trpc.orders.getPaymentRefunds.queryOptions({
+      paymentId: paymentId ?? '',
+    }),
+    enabled: !!paymentId && isAuthenticated,
+  });
+
   return (
     <AlertDialog open={!!paymentId} onOpenChange={() => onOpenChange(null)}>
       <AlertDialogContent className="!max-w-2xl !w-full">
@@ -906,6 +707,94 @@ function PaymentDetailsModal({
                   onCopy={(t) => navigator.clipboard.writeText(t)}
                 />
               </>
+            )}
+
+            {/* Refunds section */}
+            <div className="my-2">
+              <Separator className="opacity-50" />
+            </div>
+            <div className="font-medium mb-2">Refunds</div>
+            {refundsLoading ? (
+              <div className="flex items-center gap-2 text-sm">
+                <Loader2 className="animate-spin" /> Loading refunds…
+              </div>
+            ) : refunds.length === 0 ? (
+              <div className="text-sm text-muted-foreground">No refunds</div>
+            ) : (
+              <div className="flex flex-col gap-2">
+                {refunds.map((r, idx) => (
+                  <div
+                    key={r.refundId ?? idx}
+                    className="rounded-lg border border-white/10 bg-white/[0.02] p-3"
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-muted-foreground">
+                        Refund {idx + 1}
+                      </span>
+                      <StatusBadge status={r.status} type="payment" />
+                    </div>
+                    <div className="mt-2">
+                      <InfoRow
+                        label="Amount"
+                        value={formatAmountInUSD(r.amountInUSDCents, true)}
+                        field={`refundAmount-${idx}`}
+                        onCopy={() =>
+                          navigator.clipboard.writeText(
+                            String(r.amountInUSDCents),
+                          )
+                        }
+                      />
+                      <div className="flex items-center justify-between gap-3 py-1">
+                        <span className="text-sm text-muted-foreground">
+                          Network
+                        </span>
+                        <div className="flex items-center gap-2">
+                          {!!r.chainId && (
+                            <NetworkLogo
+                              className="size-4"
+                              network={r.chainId}
+                            />
+                          )}
+                          <span className="text-sm break-all">
+                            {r.chainId
+                              ? getChain(r.chainId)?.name ||
+                                `Chain ID ${r.chainId}`
+                              : '-'}
+                          </span>
+                          {r.chainId && (
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-7 w-7"
+                              onClick={() =>
+                                navigator.clipboard.writeText(String(r.chainId))
+                              }
+                            >
+                              <ClipboardCopy size={14} />
+                            </Button>
+                          )}
+                        </div>
+                      </div>
+                      <InfoRow
+                        label="Refund Tx Hash"
+                        value={r.txHash ? getShortId(r.txHash, 20, 20) : '-'}
+                        field={`refundTxHash-${idx}`}
+                        onCopy={() =>
+                          navigator.clipboard.writeText(r.txHash ?? '')
+                        }
+                      />
+                      {r.walletAddress && (
+                        <InfoRow
+                          label="Wallet"
+                          value={r.walletAddress}
+                          field={`refundWallet-${idx}`}
+                          onCopy={(t) => navigator.clipboard.writeText(t)}
+                        />
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
             )}
           </div>
         ) : null}

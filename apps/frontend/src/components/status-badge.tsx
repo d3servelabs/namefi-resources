@@ -73,13 +73,13 @@ export function StatusBadge({ status, type }: StatusBadgeProps) {
             Pending
           </Badge>
         );
-      case 'REFUND_REQUESTED':
+      case 'REFUND_REQUESTED': //TODO: change to refunded
         return (
           <Badge
             variant="outline"
             className="border-purple-300 bg-purple-50 text-purple-800 hover:bg-purple-100"
           >
-            Refund Requested
+            Refunded
           </Badge>
         );
       case 'REQUIRES_CAPTURE':
