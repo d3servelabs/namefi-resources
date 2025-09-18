@@ -22,9 +22,26 @@ import { getChain } from '@namefi-astra/utils';
 import { useQuery } from '@tanstack/react-query';
 import { TRPCClientError } from '@trpc/client';
 import { format } from 'date-fns';
-import { Check, ClipboardCopy, Loader2 } from 'lucide-react';
+import { Check, ClipboardCopy, Loader2, Info } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { use, useMemo, useState } from 'react';
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogCancel,
+} from '@/components/ui/shadcn/alert-dialog';
+import { NetworkLogo } from '@/components/network-logo';
+import type { OrderItemSelect } from '@namefi-astra/db';
+
+function getShortId(id: string, start = 6, end = 4): string {
+  if (!id) return '-';
+  if (id.length <= start + end) return id;
+  return `${id.slice(0, start)}…${id.slice(-end)}`;
+}
 
 export default function OrderDetailsPage({
   params,
@@ -67,6 +84,35 @@ export default function OrderDetailsPage({
     },
   });
   const { order, payments = [], items } = orderDetails ?? {};
+  const [isTechModalOpen, setIsTechModalOpen] = useState(false);
+  const [selectedPaymentId, setSelectedPaymentId] = useState<string | null>(
+    null,
+  );
+  const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
+  const technicalDetails = useMemo(
+    () =>
+      order
+        ? {
+            order,
+            payments,
+            items,
+          }
+        : undefined,
+    [order, payments, items],
+  );
+
+  function humanizeItemType(t: string | null | undefined): string {
+    switch (t) {
+      case itemTypeSchema.Values.REGISTER:
+        return 'Register';
+      case itemTypeSchema.Values.IMPORT:
+        return 'Import';
+      case itemTypeSchema.Values.RENEW:
+        return 'Renew';
+      default:
+        return t ?? '-';
+    }
+  }
 
   if (isLoading) {
     return (
@@ -189,18 +235,21 @@ export default function OrderDetailsPage({
   return (
     <div className="container mx-auto py-8 px-8">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        {/* Left Column - Order Information */}
+        {/* Left Column - Order + Payments */}
         <div className="space-y-4">
-          <CartCard
-            title="Order Information"
-            description={`Placed on ${format(
-              new Date(order.createdAt),
-              'MMM d, yyyy h:mm a',
-            )}`}
-          >
-            <div className="flex flex-col gap-4 mt-6">
+          <CartCard title="Order" className="relative">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="absolute top-6 right-6 h-8 w-8"
+              onClick={() => setIsTechModalOpen(true)}
+              title="View order details"
+            >
+              <Info size={16} />
+            </Button>
+            <div className="relative flex flex-col gap-1 mt-2">
               <div className="flex items-center justify-between h-8">
-                <span className="font-medium">Order Status:</span>
+                <span className="font-medium">Status</span>
                 <div className="flex items-center">
                   {order.status ? (
                     <StatusBadge status={order.status} type="order" />
@@ -209,43 +258,25 @@ export default function OrderDetailsPage({
                   )}
                 </div>
               </div>
-
               <div className="flex items-center justify-between h-8">
-                <span className="font-medium">Order ID:</span>
-                <div className="flex items-center gap-2">
-                  <span className="text-sm text-gray-500">{order.id}</span>
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild={true}>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-8 w-8"
-                          onClick={() => copyToClipboard(order.id, 'orderId')}
-                        >
-                          {copiedFields.orderId ? (
-                            <Check size={16} />
-                          ) : (
-                            <ClipboardCopy size={16} />
-                          )}
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>
-                          {copiedFields.orderId ? 'Copied!' : 'Copy Order ID'}
-                        </p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                </div>
+                <span className="font-medium">Placed At</span>
+                <span className="text-sm text-gray-500">
+                  {format(new Date(order.createdAt), 'MMM d, yyyy h:mm a')}
+                </span>
               </div>
 
               <div className="flex items-center justify-between h-8">
-                <span className="font-medium">Recipient:</span>
+                <span className="font-medium">NFT Wallet</span>
                 <div className="flex items-center gap-2">
+                  {!!order.nftChainId && (
+                    <NetworkLogo
+                      className="size-4"
+                      network={order.nftChainId}
+                    />
+                  )}
                   <span className="text-sm text-gray-500">
-                    {!!order.nftWalletAddress && !!order.nftChainId
-                      ? `(${getChain(order.nftChainId)?.name || `Chain ID ${order.nftChainId}`}) ${getShortAddress(order.nftWalletAddress)}`
+                    {order.nftWalletAddress
+                      ? getShortAddress(order.nftWalletAddress)
                       : '-'}
                   </span>
                   {!!order.nftWalletAddress && (
@@ -258,9 +289,7 @@ export default function OrderDetailsPage({
                             className="h-8 w-8"
                             onClick={() => {
                               const walletAddress = order.nftWalletAddress;
-                              if (!walletAddress) {
-                                return;
-                              }
+                              if (!walletAddress) return;
                               copyToClipboard(
                                 walletAddress,
                                 'recipientWalletAddress',
@@ -278,7 +307,7 @@ export default function OrderDetailsPage({
                           <p>
                             {copiedFields.recipientWalletAddress
                               ? 'Copied!'
-                              : 'Copy Recipient Address'}
+                              : 'Copy Wallet Address'}
                           </p>
                         </TooltipContent>
                       </Tooltip>
@@ -286,33 +315,23 @@ export default function OrderDetailsPage({
                   )}
                 </div>
               </div>
-            </div>
-          </CartCard>
 
-          <CartCard
-            title="Order Payments"
-            description={singlePayment ? 'Single Payment' : 'Multiple Payments'}
-          >
-            <div className="flex flex-col gap-2 mt-6">
-              {payments.map((payment, index) => (
-                <>
-                  {!singlePayment && (
-                    <div className="-ml-1 text-sm font-medium text-muted-foreground">
-                      Payment {index + 1}
-                    </div>
-                  )}
-                  <PaymentMethodDetails
+              <div className="my-2">
+                <Separator className="opacity-50" />
+              </div>
+              <div className="font-medium mb-2">Payments</div>
+
+              <div className="flex flex-col gap-3">
+                {payments.map((payment, index) => (
+                  <PaymentSummaryCard
                     key={payment.id}
-                    paymentId={payment.id}
                     payment={payment}
+                    index={index}
+                    singlePayment={singlePayment}
+                    onClick={() => setSelectedPaymentId(payment.id)}
                   />
-                  {!singlePayment && index < payments.length - 1 && (
-                    <div className="my-2">
-                      <Separator />
-                    </div>
-                  )}
-                </>
-              ))}
+                ))}
+              </div>
             </div>
           </CartCard>
         </div>
@@ -320,60 +339,160 @@ export default function OrderDetailsPage({
         {/* Right Column - Order Items */}
         <div className="h-fit">
           <CartCard title="Order Items">
-            <div className="flex flex-col mt-6">
-              {items?.map((item, index) => (
-                <div key={item.id}>
-                  <div className="flex flex-col gap-2">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <span className="text-xl">
-                          {item.normalizedDomainName}
-                        </span>
-                        {(item.type === itemTypeSchema.Values.IMPORT ||
-                          item.type === itemTypeSchema.Values.RENEW) && (
-                          <Badge className="text-xs bg-blue-600/20 text-blue-400 border-blue-400/50">
-                            {item.type === itemTypeSchema.Values.IMPORT
-                              ? 'Import'
-                              : 'Renew'}
-                          </Badge>
-                        )}
-                        {item.status ? (
-                          <StatusBadge status={item.status} type="order" />
-                        ) : (
-                          <span>-</span>
-                        )}
-                      </div>
-                      <div className="flex flex-col items-end gap-1">
-                        <span className="text-xl">
-                          {formatAmountInUSD(item.amountInUSDCents, true)}
-                        </span>
-                        <span className="text-sm text-gray-500">
-                          {item.durationInYears} year
-                          {item.durationInYears > 1 ? 's' : ''}
-                        </span>
-                      </div>
+            <div className="flex flex-col gap-3 mt-6">
+              {items?.map((item) => (
+                <button
+                  type="button"
+                  key={item.id}
+                  onClick={() => setSelectedItemId(item.id)}
+                  className="text-left rounded-lg border border-white/10 bg-white/[0.02] p-4 hover:bg-white/[0.06] transition-colors"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="text-base font-medium break-all">
+                      {item.normalizedDomainName}
+                    </span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs px-2 py-0.5 rounded border border-blue-400/30 bg-blue-500/10 text-blue-300">
+                        {humanizeItemType(item.type)}
+                      </span>
+                      {item.status ? (
+                        <StatusBadge status={item.status} type="order" />
+                      ) : (
+                        <span>-</span>
+                      )}
                     </div>
                   </div>
-                  {index < (items?.length ?? 0) - 1 && (
-                    <div className="my-6">
-                      <Separator />
+                  <div className="mt-2 text-sm">
+                    <div className="flex items-center justify-between">
+                      <span className="text-muted-foreground">Amount</span>
+                      <span className="font-medium">
+                        {formatAmountInUSD(item.amountInUSDCents, true)}
+                      </span>
                     </div>
-                  )}
-                </div>
+                  </div>
+                </button>
               ))}
-              <div className="mt-6">
-                <Separator />
-              </div>
-              <div className="flex items-center justify-between pt-4">
-                <span className="text-xl font-medium">Total</span>
-                <span className="text-xl font-bold">
-                  {formatAmountInUSD(order.amountInUSDCents, true)}
-                </span>
-              </div>
+            </div>
+            <div className="mt-6">
+              <Separator />
+            </div>
+            <div className="flex items-center justify-between pt-4">
+              <span className="text-xl font-medium">Total</span>
+              <span className="text-xl font-bold">
+                {formatAmountInUSD(order.amountInUSDCents, true)}
+              </span>
             </div>
           </CartCard>
         </div>
       </div>
+
+      {/* Technical Details Modal */}
+      <AlertDialog open={isTechModalOpen} onOpenChange={setIsTechModalOpen}>
+        <AlertDialogContent className="max-w-2xl">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Order details</AlertDialogTitle>
+            <AlertDialogDescription>
+              Copy any field by clicking the copy icon.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          {order ? (
+            <div className="mt-2">
+              <InfoRow
+                label="Order ID"
+                value={order.id}
+                field="orderId-full"
+                onCopy={(t) => navigator.clipboard.writeText(t)}
+              />
+              <InfoRow
+                label="Status"
+                value={order.status}
+                field="orderStatus"
+                onCopy={(t) => navigator.clipboard.writeText(t)}
+              />
+              <InfoRow
+                label="Placed At"
+                value={format(new Date(order.createdAt), 'MMM d, yyyy h:mm a')}
+                field="orderPlacedAt"
+                onCopy={(t) => navigator.clipboard.writeText(t)}
+              />
+              <InfoRow
+                label="Total Amount"
+                value={formatAmountInUSD(order.amountInUSDCents, true)}
+                field="orderAmount"
+                onCopy={(t) =>
+                  navigator.clipboard.writeText(String(order.amountInUSDCents))
+                }
+              />
+              <InfoRow
+                label="NFT Wallet"
+                value={order.nftWalletAddress}
+                field="orderWallet"
+                onCopy={(t) => navigator.clipboard.writeText(t)}
+              />
+              <div className="flex items-center justify-between gap-3 py-1">
+                <span className="text-sm text-muted-foreground">Network</span>
+                <div className="flex items-center gap-2">
+                  {!!order.nftChainId && (
+                    <NetworkLogo
+                      className="size-4"
+                      network={order.nftChainId}
+                    />
+                  )}
+                  <span className="text-sm break-all">
+                    {order.nftChainId
+                      ? getChain(order.nftChainId)?.name ||
+                        `Chain ID ${order.nftChainId}`
+                      : '-'}
+                  </span>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-7 w-7"
+                    onClick={() =>
+                      order.nftChainId &&
+                      navigator.clipboard.writeText(String(order.nftChainId))
+                    }
+                  >
+                    <ClipboardCopy size={14} />
+                  </Button>
+                </div>
+              </div>
+              <InfoRow
+                label="# Payments"
+                value={payments.length}
+                field="orderPaymentsCount"
+                onCopy={(t) =>
+                  navigator.clipboard.writeText(String(payments.length))
+                }
+              />
+              <InfoRow
+                label="# Items"
+                value={items?.length ?? 0}
+                field="orderItemsCount"
+                onCopy={(t) =>
+                  navigator.clipboard.writeText(String(items?.length ?? 0))
+                }
+              />
+            </div>
+          ) : null}
+          <AlertDialogFooter>
+            <AlertDialogCancel>Close</AlertDialogCancel>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Payment Details Modal */}
+      <PaymentDetailsModal
+        paymentId={selectedPaymentId}
+        onOpenChange={setSelectedPaymentId}
+      />
+
+      {/* Item Details Modal */}
+      <ItemDetailsModal
+        itemId={selectedItemId}
+        items={items}
+        onOpenChange={setSelectedItemId}
+      />
     </div>
   );
 }
@@ -467,12 +586,20 @@ function PaymentMethodDetails({
     return `(${chainName}) ${getShortAddress(payment.nfscPaymentDetails.walletAddress)}`;
   }, [isCreditCardPayment, payment.nfscPaymentDetails]);
 
+  function getShortId(id: string, start = 6, end = 4): string {
+    if (!id) return '-';
+    if (id.length <= start + end) return id;
+    return `${id.slice(0, start)}…${id.slice(-end)}`;
+  }
+
   return (
     <div>
       <div className="flex items-center justify-between h-8">
         <span className="font-medium">Payment ID:</span>
         <div className="flex items-center gap-2">
-          <span className="text-sm text-gray-500">{payment.id}</span>
+          <span className="text-sm text-gray-500">
+            {getShortId(payment.id)}
+          </span>
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild={true}>
@@ -561,5 +688,297 @@ function PaymentMethodDetails({
         </div>
       </div>
     </div>
+  );
+}
+
+function PaymentSummaryCard({
+  payment,
+  index,
+  singlePayment,
+  onClick,
+}: {
+  payment: PaymentSelect;
+  index: number;
+  singlePayment: boolean;
+  onClick: () => void;
+}) {
+  const trpc = useTRPC();
+  const { isAuthenticated } = useAuth();
+  const { data: method = { isOnChainPayment: false as const }, isLoading } =
+    useQuery({
+      ...trpc.orders.getPaymentMethodDetails.queryOptions({
+        paymentId: payment.id,
+      }),
+      enabled: !!payment.id && isAuthenticated,
+    });
+
+  const rightLabel = useMemo(() => {
+    if (isLoading) return '…';
+    if (!method) return '-';
+    if (method.isOnChainPayment) {
+      return 'walletAddress' in method && method.walletAddress
+        ? getShortAddress(method.walletAddress)
+        : '-';
+    }
+    return 'last4' in method && method.last4
+      ? `•••• ${method.last4}`
+      : 'Credit Card';
+  }, [isLoading, method]);
+
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="text-left rounded-lg border border-white/10 bg-white/[0.02] p-4 hover:bg-white/[0.06] transition-colors"
+    >
+      <div className="flex items-center justify-between">
+        <div className="text-sm text-muted-foreground">
+          {!singlePayment ? `Payment ${index + 1}` : 'Payment'}
+        </div>
+        <StatusBadge status={payment.status} type="payment" />
+      </div>
+      <div className="mt-2 text-sm">
+        <div className="flex items-center justify-between gap-3">
+          <span className="text-muted-foreground">Method</span>
+          <span className="font-medium flex items-center gap-2">
+            {payment.paymentProvider === 'STRIPE' ? (
+              <>Credit Card</>
+            ) : (
+              <>
+                {!!payment.nfscPaymentDetails?.chainId && (
+                  <NetworkLogo
+                    className="size-4"
+                    network={payment.nfscPaymentDetails.chainId}
+                  />
+                )}
+                NFSC
+              </>
+            )}
+          </span>
+        </div>
+        <div className="flex items-center justify-between">
+          <span className="text-muted-foreground">Amount</span>
+          <span className="font-medium">
+            {formatAmountInUSD(payment.amountInUSDCents, true)}
+          </span>
+        </div>
+        <div className="flex items-center justify-between">
+          <span className="text-muted-foreground">
+            {method?.isOnChainPayment ? 'Wallet' : 'Card'}
+          </span>
+          <span className="font-mono text-xs">{rightLabel}</span>
+        </div>
+      </div>
+    </button>
+  );
+}
+
+function InfoRow({
+  label,
+  value,
+  field,
+  onCopy,
+}: {
+  label: string;
+  value: string | number | null | undefined;
+  field: string;
+  onCopy: (text: string, field: string) => void;
+}) {
+  const display = value ?? '-';
+  return (
+    <div className="flex items-center justify-between gap-3 py-1">
+      <span className="text-sm text-muted-foreground">{label}</span>
+      <div className="flex items-center gap-2">
+        <span className="text-sm break-all">{display}</span>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="h-7 w-7"
+          onClick={() => onCopy(String(display), field)}
+        >
+          <ClipboardCopy size={14} />
+        </Button>
+      </div>
+    </div>
+  );
+}
+
+function PaymentDetailsModal({
+  paymentId,
+  onOpenChange,
+}: {
+  paymentId: string | null;
+  onOpenChange: (id: string | null) => void;
+}) {
+  const { isAuthenticated } = useAuth();
+  const trpc = useTRPC();
+  const { data: payment, isLoading } = useQuery({
+    ...trpc.orders.getPaymentMethodDetails.queryOptions({
+      // Reuse existing endpoint to fetch method details
+      paymentId: paymentId ?? '',
+    }),
+    enabled: !!paymentId && isAuthenticated,
+  });
+
+  return (
+    <AlertDialog open={!!paymentId} onOpenChange={() => onOpenChange(null)}>
+      <AlertDialogContent className="!max-w-2xl !w-full">
+        <AlertDialogHeader>
+          <AlertDialogTitle>Payment details</AlertDialogTitle>
+          <AlertDialogDescription>
+            Copy any field by clicking the copy icon.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        {isLoading ? (
+          <div className="flex items-center gap-2 text-sm">
+            <Loader2 className="animate-spin" /> Loading…
+          </div>
+        ) : payment ? (
+          <div className="mt-2 !w-full">
+            <InfoRow
+              label="Payment ID"
+              value={paymentId ?? ''}
+              field="modalPaymentId"
+              onCopy={(t) => navigator.clipboard.writeText(t)}
+            />
+            <InfoRow
+              label="Type"
+              value={payment.isOnChainPayment ? 'On-chain' : 'Card'}
+              field="modalPaymentType"
+              onCopy={(t) => navigator.clipboard.writeText(t)}
+            />
+            {payment.isOnChainPayment ? (
+              <>
+                <InfoRow
+                  label="Wallet"
+                  value={payment.walletAddress}
+                  field="walletAddress"
+                  onCopy={(t) => navigator.clipboard.writeText(t)}
+                />
+                <div className="flex items-center justify-between gap-3 py-1">
+                  <span className="text-sm text-muted-foreground">Network</span>
+                  <div className="flex items-center gap-2">
+                    {!!payment.chainId && (
+                      <NetworkLogo
+                        className="size-4"
+                        network={payment.chainId}
+                      />
+                    )}
+                    <span className="text-sm break-all">
+                      {getChain(payment.chainId as number)?.name ||
+                        `Chain ID ${payment.chainId}`}
+                    </span>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-7 w-7"
+                      onClick={() =>
+                        navigator.clipboard.writeText(String(payment.chainId))
+                      }
+                    >
+                      <ClipboardCopy size={14} />
+                    </Button>
+                  </div>
+                </div>
+                <InfoRow
+                  label="Tx Hash"
+                  value={
+                    payment.txHash ? getShortId(payment.txHash, 20, 20) : '-'
+                  }
+                  field="txHash"
+                  onCopy={() =>
+                    navigator.clipboard.writeText(payment.txHash ?? '')
+                  }
+                />
+              </>
+            ) : (
+              <>
+                <InfoRow
+                  label="Brand"
+                  value={payment.brand ?? '-'}
+                  field="brand"
+                  onCopy={(t) => navigator.clipboard.writeText(t)}
+                />
+                <InfoRow
+                  label="Last4"
+                  value={payment.last4 ?? '-'}
+                  field="last4"
+                  onCopy={(t) => navigator.clipboard.writeText(t)}
+                />
+              </>
+            )}
+          </div>
+        ) : null}
+        <AlertDialogFooter>
+          <AlertDialogCancel>Close</AlertDialogCancel>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+}
+
+function ItemDetailsModal({
+  itemId,
+  items,
+  onOpenChange,
+}: {
+  itemId: string | null;
+  items: OrderItemSelect[] | undefined;
+  onOpenChange: (id: string | null) => void;
+}) {
+  const item = items?.find((it: OrderItemSelect) => it.id === itemId);
+  return (
+    <AlertDialog open={!!itemId} onOpenChange={() => onOpenChange(null)}>
+      <AlertDialogContent className="max-w-xl">
+        <AlertDialogHeader>
+          <AlertDialogTitle>Item details</AlertDialogTitle>
+          <AlertDialogDescription>
+            Copy any field by clicking the copy icon.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        {item ? (
+          <div className="mt-2">
+            <InfoRow
+              label="Domain"
+              value={item.normalizedDomainName}
+              field="domain"
+              onCopy={(t) => navigator.clipboard.writeText(t)}
+            />
+            <InfoRow
+              label="Type"
+              value={item.type}
+              field="type"
+              onCopy={(t) => navigator.clipboard.writeText(t)}
+            />
+            <InfoRow
+              label="Amount"
+              value={formatAmountInUSD(item.amountInUSDCents, true)}
+              field="amount"
+              onCopy={(t) => navigator.clipboard.writeText(t)}
+            />
+            <InfoRow
+              label="Duration"
+              value={`${item.durationInYears} year${
+                item.durationInYears > 1 ? 's' : ''
+              }`}
+              field="duration"
+              onCopy={(t) => navigator.clipboard.writeText(t)}
+            />
+            {/* Registrar intentionally hidden per request */}
+            {item.encryptionKeyId && (
+              <InfoRow
+                label="Encryption Key ID"
+                value={item.encryptionKeyId}
+                field="encryptionKeyId"
+                onCopy={(t) => navigator.clipboard.writeText(t)}
+              />
+            )}
+          </div>
+        ) : null}
+        <AlertDialogFooter>
+          <AlertDialogCancel>Close</AlertDialogCancel>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 }
