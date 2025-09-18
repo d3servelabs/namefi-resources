@@ -1,6 +1,7 @@
 'use client';
 import { useTRPC } from '@/lib/trpc';
 import { useQuery } from '@tanstack/react-query';
+import Link from 'next/link';
 import {
   Card,
   CardHeader,
@@ -13,6 +14,7 @@ import { RevenuePie } from '@/components/powered-by-namefi/RevenuePie';
 import { RevenueBar } from '@/components/powered-by-namefi/RevenueBar';
 import { DomainTableSkeleton } from '@/components/powered-by-namefi/DomainTableSkeleton';
 import { RevenueSkeleton } from '@/components/powered-by-namefi/RevenueSkeleton';
+import { Gift, BarChart3, Settings } from 'lucide-react';
 import {
   Chart as ChartJs,
   CategoryScale,
@@ -72,6 +74,59 @@ function PoweredByNamefiOwnerDashboard() {
     <div className="container mx-auto p-6 space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold">Powered by Namefi Dashboard</h1>
+      </div>
+
+      {/* Quick Actions */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <Link href="/powered-by-namefi/admin/gifts">
+          <Card className="hover:shadow-md transition-shadow cursor-pointer">
+            <CardContent className="p-4">
+              <div className="flex items-center space-x-3">
+                <div className="p-2 rounded-lg bg-blue-100 text-blue-600">
+                  <Gift className="h-5 w-5" />
+                </div>
+                <div>
+                  <h3 className="font-medium">Gift Management</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Send domain gifts to users
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </Link>
+
+        <Card className="hover:shadow-md transition-shadow cursor-pointer">
+          <CardContent className="p-4">
+            <div className="flex items-center space-x-3">
+              <div className="p-2 rounded-lg bg-green-100 text-green-600">
+                <BarChart3 className="h-5 w-5" />
+              </div>
+              <div>
+                <h3 className="font-medium">Analytics</h3>
+                <p className="text-sm text-muted-foreground">
+                  View detailed analytics
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="hover:shadow-md transition-shadow cursor-pointer">
+          <CardContent className="p-4">
+            <div className="flex items-center space-x-3">
+              <div className="p-2 rounded-lg bg-purple-100 text-purple-600">
+                <Settings className="h-5 w-5" />
+              </div>
+              <div>
+                <h3 className="font-medium">Settings</h3>
+                <p className="text-sm text-muted-foreground">
+                  Configure domain settings
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
 
       <div className="grid grid-cols-1 gap-6">
