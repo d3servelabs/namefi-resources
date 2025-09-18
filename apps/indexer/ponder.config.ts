@@ -1,7 +1,7 @@
+import { secrets } from './src/lib/env';
 import { createConfig } from 'ponder';
 import { NftAbi } from '@namefi-astra/utils/abis/namefi-nft';
 import { base, type Chain, mainnet, sepolia } from 'viem/chains';
-import { secrets } from './src/lib/env';
 import { switchCaseOrDefault } from '@namefi-astra/utils/match';
 import type { ChainConfig } from 'ponder';
 import { isNotNil } from 'ramda';

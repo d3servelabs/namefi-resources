@@ -30,7 +30,14 @@ export const configSchema = z.object({
   SMTP_PORT: z.number(),
   SMTP_HOST: z.string(),
   SMTP_SECURE: z.boolean(),
-  MAGIC_LINK_BASE_URL: z.string().url().default('https://indexer.namefi.io'),
+  MAGIC_LINK_BASE_URL: z
+    .string()
+    .url()
+    .default(
+      process.env.ENVIRONMENT === 'development'
+        ? 'https://indexer.namefi.dev'
+        : 'https://indexer.namefi.io',
+    ),
 });
 
 export type ConfigInput = z.input<typeof configSchema>;

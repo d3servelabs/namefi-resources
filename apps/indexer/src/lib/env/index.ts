@@ -1,5 +1,4 @@
 import '@namefi-astra/env/preload';
-import { loadSecrets } from '@namefi-astra/env';
 import { configSchema, secretsSchema } from './schema';
 import developmentConfig from './configs/development';
 import localConfig from './configs/local';
@@ -8,6 +7,7 @@ import testConfig from './configs/test';
 
 const ENVIRONMENT = process.env.ENVIRONMENT || 'production';
 console.log('ENVIRONMENT', ENVIRONMENT);
+
 export const config = configSchema.parse(
   {
     development: developmentConfig,
@@ -16,7 +16,4 @@ export const config = configSchema.parse(
     test: testConfig,
   }[ENVIRONMENT],
 );
-
-export const secrets = loadSecrets({
-  secretsSchema,
-});
+export const secrets = secretsSchema.parse(process.env);
