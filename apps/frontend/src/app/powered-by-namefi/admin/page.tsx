@@ -76,59 +76,6 @@ function PoweredByNamefiOwnerDashboard() {
         <h1 className="text-2xl font-semibold">Powered by Namefi Dashboard</h1>
       </div>
 
-      {/* Quick Actions */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Link href="/powered-by-namefi/admin/gifts">
-          <Card className="hover:shadow-md transition-shadow cursor-pointer">
-            <CardContent className="p-4">
-              <div className="flex items-center space-x-3">
-                <div className="p-2 rounded-lg bg-blue-100 text-blue-600">
-                  <Gift className="h-5 w-5" />
-                </div>
-                <div>
-                  <h3 className="font-medium">Gift Management</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Send domain gifts to users
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </Link>
-
-        <Card className="hover:shadow-md transition-shadow cursor-pointer">
-          <CardContent className="p-4">
-            <div className="flex items-center space-x-3">
-              <div className="p-2 rounded-lg bg-green-100 text-green-600">
-                <BarChart3 className="h-5 w-5" />
-              </div>
-              <div>
-                <h3 className="font-medium">Analytics</h3>
-                <p className="text-sm text-muted-foreground">
-                  View detailed analytics
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="hover:shadow-md transition-shadow cursor-pointer">
-          <CardContent className="p-4">
-            <div className="flex items-center space-x-3">
-              <div className="p-2 rounded-lg bg-purple-100 text-purple-600">
-                <Settings className="h-5 w-5" />
-              </div>
-              <div>
-                <h3 className="font-medium">Settings</h3>
-                <p className="text-sm text-muted-foreground">
-                  Configure domain settings
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
       <div className="grid grid-cols-1 gap-6">
         <Card className="lg:col-span-1">
           <CardHeader>
@@ -194,4 +141,60 @@ function deterministicColorFromDomainNameHash(domain: string): string {
   const selected = Number(h % BigInt(360));
 
   return `hsl(${selected}, 45%, 50%)`;
+}
+
+function QuickActions() {
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <Link href="/powered-by-namefi/admin/gifts">
+        <Card className="hover:shadow-md transition-shadow cursor-pointer">
+          <CardContent className="p-4">
+            <div className="flex items-center space-x-3">
+              <div className="p-2 rounded-lg bg-blue-100 text-blue-600">
+                <Gift className="h-5 w-5" />
+              </div>
+              <div>
+                <h3 className="font-medium">Gift Management</h3>
+                <p className="text-sm text-muted-foreground">
+                  Send domain gifts to users
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </Link>
+
+      <Card className="hover:shadow-md transition-shadow cursor-pointer">
+        <CardContent className="p-4">
+          <div className="flex items-center space-x-3">
+            <div className="p-2 rounded-lg bg-green-100 text-green-600">
+              <BarChart3 className="h-5 w-5" />
+            </div>
+            <div>
+              <h3 className="font-medium">Analytics</h3>
+              <p className="text-sm text-muted-foreground">
+                View detailed analytics
+              </p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card className="hover:shadow-md transition-shadow cursor-pointer">
+        <CardContent className="p-4">
+          <div className="flex items-center space-x-3">
+            <div className="p-2 rounded-lg bg-purple-100 text-purple-600">
+              <Settings className="h-5 w-5" />
+            </div>
+            <div>
+              <h3 className="font-medium">Settings</h3>
+              <p className="text-sm text-muted-foreground">
+                Configure domain settings
+              </p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
 }

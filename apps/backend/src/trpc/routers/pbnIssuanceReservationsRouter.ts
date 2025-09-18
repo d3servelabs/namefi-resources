@@ -121,6 +121,7 @@ export const pbnIssuanceReservationsRouter = createTRPCRouter({
       z.object({
         status: z.enum(['CREATED', 'CANCELLED']).optional(),
         issueFreeClaim: z.boolean().optional(),
+        pbnDomain: namefiNormalizedDomainSchema.optional(),
       }),
     )
     .query(async ({ ctx, input }) => {
@@ -133,6 +134,11 @@ export const pbnIssuanceReservationsRouter = createTRPCRouter({
         conditions.push(
           eq(pbnIssuanceReservationsTable.issueFreeClaim, input.issueFreeClaim),
         );
+      if (input.pbnDomain) {
+        conditions.push(
+          eq(pbnIssuanceReservationsTable.pbnDomain, input.pbnDomain as any),
+        );
+      }
 
       const rows = await db
         .select()

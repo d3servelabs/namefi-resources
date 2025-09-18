@@ -41,11 +41,9 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/shadcn/alert-dialog';
-// import { GiftDetailsDialog } from '@/components/gifts/gift-details-dialog';
 import { format } from 'date-fns';
 import { toast } from 'sonner';
 import { range } from 'ramda';
-// import type { GiftFreeClaimSelect } from '@namefi-astra/db';
 
 type UiStatus = 'SENT' | 'CLAIMED' | 'EXPIRED' | 'CANCELLED';
 
@@ -58,7 +56,11 @@ const sanitizeErrorMessage = (error: unknown): string => {
   return 'An unexpected error occurred';
 };
 
-function GiftsManagementPage() {
+export function GiftsManagementPage({
+  forcedPbnDomain,
+}: {
+  forcedPbnDomain?: string;
+}) {
   const [selectedStatus, setSelectedStatus] = useState<UiStatus | 'ALL'>('ALL');
   const [createDialogOpen, setCreateDialogOpen] = useState(false);
   const [cancelDialogOpen, setCancelDialogOpen] = useState(false);
@@ -80,8 +82,8 @@ function GiftsManagementPage() {
         : undefined;
   const reservationsQuery = useQuery(
     trpc.pbnReservations.listByCreator.queryOptions({
-      issueFreeClaim: true, // gifts-like reservations only
       status: backendStatus,
+      pbnDomain: forcedPbnDomain,
     }),
   );
 
@@ -137,20 +139,21 @@ function GiftsManagementPage() {
         <div className="flex items-center space-x-3">
           <Gift className="h-8 w-8 text-primary" />
           <div>
-            <h1 className="text-2xl font-semibold">Gift Reservations</h1>
+            <h1 className="text-2xl font-semibold">Gift And Reservations</h1>
             <p className="text-muted-foreground">
-              Manage gift-like reservations for your Powered by Namefi domains
+              Manage domain reservations and gifts for your Powered by Namefi
+              domains
             </p>
           </div>
         </div>
         <div className="flex items-center gap-2">
           <Button onClick={() => setCreateDialogOpen(true)}>
             <Plus className="h-4 w-4 mr-2" />
-            Create Gift Reservation
+            Create Gift/Reservation
           </Button>
           <Button variant="outline" onClick={() => setMultiDialogOpen(true)}>
             <Users className="h-4 w-4 mr-2" />
-            Bulk Gift
+            Bulk Gifts/Reservations
           </Button>
         </div>
       </div>
@@ -160,9 +163,7 @@ function GiftsManagementPage() {
         <Card>
           <CardContent className="p-4">
             <div className="text-2xl font-bold">{stats.total}</div>
-            <p className="text-xs text-muted-foreground">
-              Total Gift Reservations
-            </p>
+            <p className="text-xs text-muted-foreground">Total Gifts</p>
           </CardContent>
         </Card>
         <Card>
@@ -187,7 +188,7 @@ function GiftsManagementPage() {
       <Card>
         <CardHeader>
           <div className="flex items-center justify-between">
-            <CardTitle>Your Reservations</CardTitle>
+            <CardTitle>Your Gifts</CardTitle>
             <Select
               value={selectedStatus}
               onValueChange={(value) =>
@@ -234,7 +235,7 @@ function GiftsManagementPage() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Domain</TableHead>
+                  {!forcedPbnDomain && <TableHead>Domain</TableHead>}
                   <TableHead>Recipient</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead>Issue Free-Claim</TableHead>
@@ -247,18 +248,20 @@ function GiftsManagementPage() {
               <TableBody>
                 {reservations.map((r) => (
                   <TableRow key={r.id}>
-                    <TableCell className="font-medium">
-                      <div>
-                        {r.exactDomainName || (
-                          <span className="text-muted-foreground">
-                            *.{r.parentDomain}
-                          </span>
-                        )}
-                      </div>
-                      <div className="text-xs text-muted-foreground">
-                        on {r.pbnDomain}
-                      </div>
-                    </TableCell>
+                    {!forcedPbnDomain && (
+                      <TableCell className="font-medium">
+                        <div>
+                          {r.exactDomainName || (
+                            <span className="text-muted-foreground">
+                              *.{r.parentDomain}
+                            </span>
+                          )}
+                        </div>
+                        <div className="text-xs text-muted-foreground">
+                          on {r.pbnDomain}
+                        </div>
+                      </TableCell>
+                    )}
                     <TableCell>
                       <div className="flex items-center space-x-2">
                         <Mail className="h-3 w-3" />
@@ -330,6 +333,7 @@ function GiftsManagementPage() {
       <CreateGiftDialog
         open={createDialogOpen}
         onOpenChange={setCreateDialogOpen}
+        pbnDomain={forcedPbnDomain}
         onSuccess={async () => {
           await queryClient.refetchQueries({
             queryKey: trpc.pbnReservations.listByCreator.queryKey(),
@@ -340,6 +344,8 @@ function GiftsManagementPage() {
       <MultiGiftDialog
         open={multiDialogOpen}
         onOpenChange={setMultiDialogOpen}
+        pbnDomain={forcedPbnDomain}
+        // domain is forced inside the dialog via table logic
         onSuccess={async () => {
           await queryClient.refetchQueries({
             queryKey: trpc.pbnReservations.listByCreator.queryKey(),
@@ -360,9 +366,13 @@ function GiftsManagementPage() {
             <AlertDialogAction
               onClick={async () => {
                 if (!reservationToCancel) return;
-                await cancelReservationMutation.mutateAsync({
-                  reservationId: reservationToCancel,
-                });
+                try {
+                  await cancelReservationMutation.mutateAsync({
+                    reservationId: reservationToCancel,
+                  });
+                } catch (error: any) {
+                  toast.error(`Failed to cancel reservation: ${error.message}`);
+                }
                 setCancelDialogOpen(false);
               }}
             >

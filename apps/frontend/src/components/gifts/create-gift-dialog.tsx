@@ -38,6 +38,7 @@ import { format, addDays } from 'date-fns';
 import { NaturalLanguageDatePicker } from '@/components/date-picker/natural-language-date-picker';
 import { toast } from 'sonner';
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
+import { da } from 'date-fns/locale';
 
 const createGiftSchema = z
   .object({
@@ -49,17 +50,23 @@ const createGiftSchema = z
     reserveHold: z.boolean().optional(),
     reason: z.string().optional(),
     personalMessage: z.string().optional(),
-    expirationDate: z.date({
-      required_error: 'Please select an expiration date',
-    }),
+    expirationDate: z.date().optional().nullable(),
   })
   .superRefine((data, ctx) => {
-    if (data.giftType === 'exact' && !data.exactDomainName) {
-      ctx.addIssue({
-        code: 'custom',
-        path: ['exactDomainName'],
-        message: 'Exact domain is required',
-      });
+    if (data.giftType === 'exact') {
+      if (!data.exactDomainName) {
+        ctx.addIssue({
+          code: 'custom',
+          path: ['exactDomainName'],
+          message: 'Exact domain is required',
+        });
+      } else if (!data.exactDomainName.endsWith(data.pbnDomain)) {
+        ctx.addIssue({
+          code: 'custom',
+          path: ['exactDomainName'],
+          message: `Exact domain must end with "${data.pbnDomain}" domain`,
+        });
+      }
     }
     if (data.giftType === 'parent' && !data.parentDomain) {
       ctx.addIssue({
@@ -76,30 +83,36 @@ interface CreateGiftDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onSuccess?: () => void;
+  pbnDomain?: string;
 }
 
 export function CreateGiftDialog({
   open,
   onOpenChange,
   onSuccess,
+  pbnDomain: forcedPbnDomain,
 }: CreateGiftDialogProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const trpc = useTRPC();
 
   // Fetch user's PBN domains
-  const domainsQuery = useQuery(trpc.pbnOwner.listOwnedDomains.queryOptions());
+  const domainsQuery = useQuery(
+    trpc.pbnOwner.listOwnedDomains.queryOptions(void 0, {
+      enabled: !forcedPbnDomain,
+    }),
+  );
 
   const form = useForm<CreateGiftForm>({
     resolver: zodResolver(createGiftSchema),
     defaultValues: {
+      pbnDomain: forcedPbnDomain,
       giftType: 'exact',
       reserveHold: true,
-      expirationDate: addDays(new Date(), 30), // Default to 30 days from now
+      expirationDate: null,
     },
   });
 
   const giftType = form.watch('giftType');
-  const reserveHold = form.watch('reserveHold');
   const [expirationDisplay, setExpirationDisplay] = useState<string>(() => {
     const d = form.getValues('expirationDate');
     return d ? format(d, 'MMMM dd, yyyy') : '';
@@ -131,15 +144,15 @@ export function CreateGiftDialog({
     const isParent = data.giftType === 'parent';
     const reserveHold = !isParent && !!data.reserveHold;
     createGiftMutation.mutate({
-      pbnDomain: data.pbnDomain,
+      pbnDomain: forcedPbnDomain ?? data.pbnDomain,
       recipientEmail: data.recipientEmail,
       exactDomainName: !isParent ? data.exactDomainName : undefined,
-      parentDomain: isParent ? data.pbnDomain : undefined,
+      parentDomain: isParent ? (forcedPbnDomain ?? data.pbnDomain) : undefined,
       reason: data.reason,
       personalMessage: data.personalMessage,
       issueFreeClaim: true,
       reserveHold: reserveHold,
-      freeClaimExpirationDate: isParent ? data.expirationDate : null,
+      freeClaimExpirationDate: data.expirationDate,
       reservationExpirationDate: reserveHold ? data.expirationDate : null,
       sendEmail: true,
     });
@@ -164,27 +177,35 @@ export function CreateGiftDialog({
                 <FormItem>
                   <FormLabel>Your Domain</FormLabel>
                   <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
+                    onValueChange={forcedPbnDomain ? () => {} : field.onChange}
+                    defaultValue={forcedPbnDomain ?? field.value}
                   >
                     <FormControl>
-                      <SelectTrigger>
+                      <SelectTrigger disabled={!!forcedPbnDomain}>
                         <SelectValue placeholder="Select a domain you own" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {domains.map((domain) => (
-                        <SelectItem
-                          key={domain.normalizedDomainName}
-                          value={domain.normalizedDomainName}
-                        >
-                          {domain.normalizedDomainName}
+                      {forcedPbnDomain ? (
+                        <SelectItem value={forcedPbnDomain}>
+                          {forcedPbnDomain}
                         </SelectItem>
-                      ))}
+                      ) : (
+                        domains.map((domain) => (
+                          <SelectItem
+                            key={domain.normalizedDomainName}
+                            value={domain.normalizedDomainName}
+                          >
+                            {domain.normalizedDomainName}
+                          </SelectItem>
+                        ))
+                      )}
                     </SelectContent>
                   </Select>
                   <FormDescription>
-                    Select the Powered by Namefi domain you want to gift from
+                    {forcedPbnDomain
+                      ? 'Domain is fixed for this page'
+                      : 'Select the Powered by Namefi domain you want to gift from'}
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -248,7 +269,10 @@ export function CreateGiftDialog({
                   <FormItem>
                     <FormLabel>Exact Domain Name</FormLabel>
                     <FormControl>
-                      <Input placeholder="alice.yourdomain.com" {...field} />
+                      <Input
+                        placeholder={`alice.${forcedPbnDomain ?? form.getValues('pbnDomain')}`}
+                        {...field}
+                      />
                     </FormControl>
                     <FormDescription>
                       The specific domain name to gift

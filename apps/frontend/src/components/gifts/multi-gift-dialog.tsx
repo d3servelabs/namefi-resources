@@ -49,24 +49,28 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/shadcn/table';
+import React from 'react';
 
 type Props = {
   open: boolean;
   onOpenChange: (v: boolean) => void;
   onSuccess?: () => void;
+  pbnDomain?: string;
 };
 const emailRegex = /[^@\s]+@[^@\s]+\.[^@\s]+/;
 type Mode = 'parent' | 'exact';
 
-export function MultiGiftDialog({ open, onOpenChange, onSuccess }: Props) {
+export function MultiGiftDialog({
+  open,
+  onOpenChange,
+  onSuccess,
+  pbnDomain: forcedPbnDomain,
+}: Props) {
   const trpc = useTRPC();
   const [mode, setMode] = useState<Mode>('parent');
   const [csv, setCsv] = useState('');
-  const [expiration, setExpiration] = useState(
-    format(addDays(new Date(), 30), 'yyyy-MM-dd'),
-  );
-  const [expirationDisplay, setExpirationDisplay] = useState<string>('');
-  const [pbnDomain, setPbnDomain] = useState<string>('');
+
+  const [pbnDomain, setPbnDomain] = useState<string>(forcedPbnDomain ?? '');
   const [reserveHold, setReserveHold] = useState<boolean>(true);
   const [sendEmail, setSendEmail] = useState<boolean>(true);
   const [skipBadRows, setSkipBadRows] = useState<boolean>(false);
@@ -77,11 +81,23 @@ export function MultiGiftDialog({ open, onOpenChange, onSuccess }: Props) {
     Array<{ email: string; exact?: string; count?: number }>
   >([{ email: '', exact: '', count: 1 }]);
 
+  const [expiration, setExpiration] = useState<Date | undefined>();
+  const [$expirationDisplay, setExpirationDisplay] = useState<
+    string | undefined
+  >();
+  const expirationDisplay = useMemo(() => {
+    return $expirationDisplay || (expiration ? expiration.toISOString() : '');
+  }, [$expirationDisplay, expiration]);
+
   const domainsQuery = useQuery(
     trpc.pbnOwner.listOwnedDomains.queryOptions(void 0, {
-      enabled: open,
+      enabled: open && !forcedPbnDomain,
     }),
   );
+
+  React.useEffect(() => {
+    if (forcedPbnDomain) setPbnDomain(forcedPbnDomain);
+  }, [forcedPbnDomain]);
 
   const appendCsvToTable = () => {
     const lines = csv
@@ -230,13 +246,12 @@ export function MultiGiftDialog({ open, onOpenChange, onSuccess }: Props) {
   );
   const disabled =
     !pbnDomain ||
-    !expiration ||
     tableRows.length === 0 ||
     (skipBadRows ? !anyValid : !allValid);
 
   const handleSubmit = async () => {
     if (disabled) return;
-    const expDate = new Date(expiration);
+    const expDate = expiration ? new Date(expiration) : undefined;
     const toCreate = annotatedRows.filter((r) =>
       skipBadRows ? !r.isInvalid && !r.isDup : true,
     );
@@ -291,19 +306,28 @@ export function MultiGiftDialog({ open, onOpenChange, onSuccess }: Props) {
               <Label className="text-sm font-medium" htmlFor="bulk-domain">
                 Your Domain
               </Label>
-              <Select value={pbnDomain} onValueChange={setPbnDomain}>
-                <SelectTrigger id="bulk-domain">
+              <Select
+                value={pbnDomain}
+                onValueChange={forcedPbnDomain ? () => {} : setPbnDomain}
+              >
+                <SelectTrigger id="bulk-domain" disabled={!!forcedPbnDomain}>
                   <SelectValue placeholder="Select a domain you own" />
                 </SelectTrigger>
                 <SelectContent>
-                  {(domainsQuery.data || []).map((d: any) => (
-                    <SelectItem
-                      key={d.normalizedDomainName}
-                      value={d.normalizedDomainName}
-                    >
-                      {d.normalizedDomainName}
+                  {forcedPbnDomain ? (
+                    <SelectItem value={forcedPbnDomain}>
+                      {forcedPbnDomain}
                     </SelectItem>
-                  ))}
+                  ) : (
+                    (domainsQuery.data || []).map((d: any) => (
+                      <SelectItem
+                        key={d.normalizedDomainName}
+                        value={d.normalizedDomainName}
+                      >
+                        {d.normalizedDomainName}
+                      </SelectItem>
+                    ))
+                  )}
                 </SelectContent>
               </Select>
             </div>
@@ -328,12 +352,12 @@ export function MultiGiftDialog({ open, onOpenChange, onSuccess }: Props) {
               <NaturalLanguageDatePicker
                 value={{
                   display: expirationDisplay,
-                  date: expiration ? new Date(expiration) : undefined,
+                  date: expiration,
                 }}
                 onChange={(v) => {
                   setExpirationDisplay(v.display ?? '');
                   if (v.date) {
-                    setExpiration(format(v.date, 'yyyy-MM-dd'));
+                    setExpiration(v.date);
                   }
                 }}
                 hideLabel
@@ -618,68 +642,95 @@ export function MultiGiftDialog({ open, onOpenChange, onSuccess }: Props) {
           </div>
         </div>
       </DialogContent>
-      <AlertDialog open={confirmOpen} onOpenChange={setConfirmOpen}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Confirm Bulk Gifts</AlertDialogTitle>
-            <AlertDialogDescription>
-              You are about to create{' '}
-              <strong>
-                {mode === 'parent'
-                  ? annotatedRows.reduce(
-                      (n: number, r: any) => n + (r.count ?? 1),
-                      0,
-                    )
-                  : tableRows.length}
-              </strong>{' '}
-              gift
-              {(mode === 'parent'
+      <ConfirmDialog
+        open={confirmOpen}
+        onOpenChange={setConfirmOpen}
+        onSubmit={handleSubmit}
+        mode={mode}
+        annotatedRows={annotatedRows}
+        tableRows={tableRows}
+      />
+    </Dialog>
+  );
+}
+
+function ConfirmDialog({
+  open,
+  onOpenChange,
+  onSubmit,
+  mode,
+  annotatedRows,
+  tableRows,
+}: {
+  open: boolean;
+  onOpenChange: (v: boolean) => void;
+  onSubmit: () => void;
+  mode: Mode;
+  annotatedRows: any[];
+  tableRows: any[];
+}) {
+  return (
+    <AlertDialog open={open} onOpenChange={onOpenChange}>
+      <AlertDialogContent className="!max-w-[700px] !w-full overflow-y-auto">
+        <AlertDialogHeader>
+          <AlertDialogTitle>Confirm Bulk Gifts</AlertDialogTitle>
+          <AlertDialogDescription>
+            You are about to create{' '}
+            <strong>
+              {mode === 'parent'
                 ? annotatedRows.reduce(
                     (n: number, r: any) => n + (r.count ?? 1),
                     0,
                   )
-                : tableRows.length) === 1
-                ? ''
-                : 's'}
-              . Review the entries below.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <div className="border rounded max-h-72 overflow-auto">
-            <div className="grid grid-cols-2 gap-2 p-2 text-xs font-medium bg-muted">
-              <div>Email</div>
-              <div>{mode === 'parent' ? 'Count' : 'Subdomain'}</div>
-            </div>
-            <div className="divide-y">
-              {annotatedRows.slice(0, 300).map((r: any, idx) => (
-                <div
-                  key={`${r.email}-${r.exact}-${r.count}`}
-                  className="grid grid-cols-2 gap-2 p-2 text-sm items-center"
-                >
-                  <div className="truncate flex items-center gap-2">
-                    {r.isDup && <Badge variant="outline">Duplicate</Badge>}
-                    {!emailRegex.test(r.email) && (
-                      <Badge variant="outline">Invalid</Badge>
-                    )}
-                    {r.email}
-                  </div>
-                  <div className="truncate flex items-center gap-2">
-                    {mode === 'parent' ? (r.count ?? 1) : r.exact || '—'}
-                    {mode === 'exact' && !r.exact && (
-                      <Badge variant="outline">Missing</Badge>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
+                : tableRows.length}
+            </strong>{' '}
+            gift
+            {(mode === 'parent'
+              ? annotatedRows.reduce(
+                  (n: number, r: any) => n + (r.count ?? 1),
+                  0,
+                )
+              : tableRows.length) === 1
+              ? ''
+              : 's'}
+            . Review the entries below.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <div className="border rounded max-h-72 overflow-auto">
+          <div className="grid grid-cols-2 gap-2 p-2 text-xs font-medium bg-muted">
+            <div>Email</div>
+            <div>{mode === 'parent' ? 'Count' : 'Subdomain'}</div>
           </div>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Back</AlertDialogCancel>
-            <AlertDialogAction onClick={handleSubmit}>
-              Confirm & Create
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-    </Dialog>
+          <div className="divide-y">
+            {annotatedRows.slice(0, 300).map((r: any, idx) => (
+              <div
+                key={`${r.email}-${r.exact}-${r.count}`}
+                className="grid grid-cols-2 gap-2 p-2 text-sm items-center"
+              >
+                <div className="truncate flex items-center gap-2">
+                  {r.isDup && <Badge variant="outline">Duplicate</Badge>}
+                  {!emailRegex.test(r.email) && (
+                    <Badge variant="outline">Invalid</Badge>
+                  )}
+                  {r.email}
+                </div>
+                <div className="truncate flex items-center gap-2">
+                  {mode === 'parent' ? (r.count ?? 1) : r.exact || '—'}
+                  {mode === 'exact' && !r.exact && (
+                    <Badge variant="outline">Missing</Badge>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Back</AlertDialogCancel>
+          <AlertDialogAction onClick={onSubmit}>
+            Confirm & Create
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 }
