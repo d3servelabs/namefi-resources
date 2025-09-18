@@ -56,7 +56,7 @@ export const InternalReservationNotification =
         `${greeting},\n\n` +
         '🔒 **A name has been reserved for you!**\n\n' +
         `A free claim for ${nameText} has been reserved for your account.\n\n` +
-        (reason ? `**Reason:** ${escape(reason)}\n\n` : '') +
+        (reason ? `**Purpose:** ${escape(reason)}\n\n` : '') +
         expirationMessage;
 
       return (
@@ -144,10 +144,7 @@ export const InternalReservationNotification =
           </Button>
 
           <div style={{ marginTop: '20px', fontSize: '12px', color: '#666' }}>
-            <p>
-              This email was sent to {recipientEmail}. This reservation was made
-              internally by the Namefi team.
-            </p>
+            <p>This email was sent to {recipientEmail}.</p>
           </div>
 
           <GoToDashboard />

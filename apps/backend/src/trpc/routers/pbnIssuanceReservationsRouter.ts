@@ -186,4 +186,59 @@ export const pbnIssuanceReservationsRouter = createTRPCRouter({
       );
       return { success: true };
     }),
+
+  createBulk: poweredByNamefiOwnerProcedure
+    .input(
+      z.object({
+        pbnDomain: namefiNormalizedDomainSchema,
+        items: z
+          .array(
+            z
+              .object({
+                recipientEmail: z.string().email(),
+                exactDomainName: namefiNormalizedDomainSchema.optional(),
+                parentDomain: namefiNormalizedDomainSchema.optional(),
+                reason: z.string().optional(),
+                personalMessage: z.string().optional(),
+                issueFreeClaim: z.boolean().optional(),
+                reserveHold: z.boolean().optional(),
+                reservationExpirationDate: z.date().nullable().optional(),
+                freeClaimExpirationDate: z.date().nullable().optional(),
+              })
+              .refine((v) => v.exactDomainName || v.parentDomain, {
+                message:
+                  'Either exactDomainName or parentDomain must be provided',
+                path: ['exactDomainName'],
+              })
+              .refine((v) => !(v.reserveHold && !v.exactDomainName), {
+                message: 'reserveHold requires exactDomainName',
+                path: ['reserveHold'],
+              }),
+          )
+          .min(1),
+        sendEmail: z.boolean().optional(),
+        metadata: z.record(z.any()).optional(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      try {
+        const result =
+          await PbnIssuanceReservationsActivities.createReservationsBulk({
+            pbnDomain: input.pbnDomain as NamefiNormalizedDomain,
+            creatorId: ctx.user.id,
+            items: input.items as any,
+            sendEmail: input.sendEmail ?? true,
+            metadata: input.metadata ?? {},
+          });
+        return result;
+      } catch (error) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message:
+            error instanceof Error
+              ? error.message
+              : 'Failed to create bulk reservations',
+        });
+      }
+    }),
 });

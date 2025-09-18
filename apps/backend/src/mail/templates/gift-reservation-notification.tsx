@@ -22,7 +22,12 @@ export type GiftReservationNotificationProps = {
   parentDomain?: string;
   reason?: string;
   personalMessage?: string;
-  expirationDate?: string | null | undefined;
+  // Gift claim expiration (free-claim). When present, informs the recipient when the gift expires
+  freeClaimExpirationDate?: string | null | undefined;
+  // Reservation hold expiration (only when the gift is also reserved/held)
+  reservedExpirationDate?: string | null | undefined;
+  // Explicitly indicate if this is a gift (vs. reserved-only). If omitted, inferred from freeClaimExpirationDate
+  isGift?: boolean;
 };
 
 export const GiftReservationNotification =
@@ -32,11 +37,14 @@ export const GiftReservationNotification =
         recipientName,
         recipientEmail,
         gifterName,
+        pbnDomain,
         exactDomainName,
         parentDomain,
         reason,
         personalMessage,
-        expirationDate,
+        freeClaimExpirationDate,
+        reservedExpirationDate,
+        isGift,
       } = props;
 
       const poweredByNamefiDomain = usePoweredByNamefiDomain();
@@ -50,25 +58,55 @@ export const GiftReservationNotification =
       const greeting = recipientName
         ? `Hi ${escape(recipientName)}`
         : 'Hi there';
-      const expirationMessage = expirationDate
-        ? `**Important:** This gift expires on **${formatExpirationDate(
-            expirationDate,
-          )}**. Simply sign in to your Namefi account to claim it!`
-        : '';
+      const gift = isGift ?? Boolean(freeClaimExpirationDate);
+      const reserved = Boolean(reservedExpirationDate && exactDomainName);
+      const expirationMessage = gift
+        ? freeClaimExpirationDate
+          ? `**Important:** This gift expires on **${formatExpirationDate(
+              freeClaimExpirationDate,
+            )}**. Simply sign in to your Namefi account to claim it!`
+          : ''
+        : reservedExpirationDate
+          ? `**Important:** This reservation expires on **${formatExpirationDate(
+              reservedExpirationDate,
+            )}**. Sign in to your Namefi account to claim it!`
+          : '';
+
+      const reservedMessage =
+        gift && reserved
+          ? `\n\n🔒 We've also reserved **${toUnicode(
+              exactDomainName as string,
+            )}** for you until **${formatExpirationDate(
+              reservedExpirationDate as string,
+            )}** so no one else can take it before you claim.`
+          : '';
+
+      const headline = gift
+        ? "🎉 **You've received a gift!**"
+        : '🔒 **A name has been reserved for you!**';
+
+      const intro = gift
+        ? `**${escape(gifterName)}** has gifted you a free claim for ${nameText}.`
+        : `A free claim for ${nameText} has been reserved for your account.`;
 
       const messageMarkdown =
         `${greeting},\n\n` +
-        `🎉 **You've received a gift!**\n\n` +
-        `**${escape(gifterName)}** has gifted you a free claim for ${nameText}.\n\n` +
+        `${headline}\n\n` +
+        `${intro}\n\n` +
         (reason ? `**Reason:** ${escape(reason)}\n\n` : '') +
-        (personalMessage
+        (gift && personalMessage
           ? `**Personal message from ${escape(gifterName)}:**\n> ${escape(personalMessage)}\n\n`
           : '') +
-        expirationMessage;
+        expirationMessage +
+        reservedMessage;
 
       return (
         <NamefiEmailContainer
-          title={`[Namefi] ${gifterName} has gifted you a free name claim!`}
+          title={
+            gift
+              ? `[Namefi] ${gifterName} has gifted you a free name claim!`
+              : `[Namefi] A name has been reserved for you on ${poweredByNamefiDomain || pbnDomain}`
+          }
         >
           <ReactMarkdown
             rehypePlugins={[
@@ -99,12 +137,14 @@ export const GiftReservationNotification =
                 color: '#0ea5e9',
               }}
             >
-              🎁 Gift Details
+              {gift ? '🎁 Gift Details' : '🔒 Reservation Details'}
             </h3>
             <div style={{ fontSize: '14px', lineHeight: '1.5' }}>
-              <div>
-                <strong>From:</strong> {gifterName}
-              </div>
+              {gift && (
+                <div>
+                  <strong>From:</strong> {gifterName}
+                </div>
+              )}
               {exactDomainName && (
                 <div>
                   <strong>Your name:</strong> {toUnicode(exactDomainName)}
@@ -116,10 +156,16 @@ export const GiftReservationNotification =
                   {toUnicode(parentDomain)}
                 </div>
               )}
-              {expirationDate && (
+              {freeClaimExpirationDate && (
                 <div>
                   <strong>Expires:</strong>{' '}
-                  {formatExpirationDate(expirationDate)}
+                  {formatExpirationDate(freeClaimExpirationDate)}
+                </div>
+              )}
+              {reservedExpirationDate && (
+                <div>
+                  <strong>Reservation held until:</strong>{' '}
+                  {formatExpirationDate(reservedExpirationDate)}
                 </div>
               )}
             </div>
@@ -136,11 +182,11 @@ export const GiftReservationNotification =
               a: (props) => <Link style={anchor} {...props} />,
             }}
           >
-            {'**How to claim your gift:**\n\n' +
+            {`${gift ? '**How to claim your gift:**' : '**How to claim your reserved name:**'}\n\n` +
               `1. Sign in to your Namefi account (or create one if you don't have one)\n` +
-              `2. Your gift will automatically appear in your [My Free Mints](${NamefiEmailLinks.freeMints({ poweredByNamefiDomain })})\n` +
+              `2. Your ${gift ? 'gift' : 'reservation'} will automatically appear in your [My Free Mints](${NamefiEmailLinks.freeMints({ poweredByNamefiDomain })})\n` +
               '3. Use your free claim to register your domain\n\n' +
-              `That's it! No need to click any buttons - your gift will be waiting for you when you sign in.`}
+              `That's it! No need to click any buttons - it will be waiting for you when you sign in.`}
           </ReactMarkdown>
 
           <Button
@@ -170,7 +216,7 @@ export const GiftReservationNotification =
       reason: 'Welcome gift for joining our community',
       personalMessage:
         'Welcome to our community! I hope you enjoy using this domain.',
-      expirationDate: new Date(
+      freeClaimExpirationDate: new Date(
         Date.now() + 30 * 24 * 60 * 60 * 1000,
       ).toISOString(),
     },
