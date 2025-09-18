@@ -13,3 +13,4 @@ export * as FreeClaimsCorrectionActivities from './free-claims-correction.activi
 export * as LinkSharesExternalIdentifierMigrationActivities from './migration/link-shares-external-identifier-migration.activities';
 export * as TwitterLinkSharesValidationActivities from './link-shares-validation.activities';
 export * as LogoGenerationActivities from './logo-generation.activities';
+export * as PbnIssuanceReservationsActivities from './pbn-issuance-reservations.activities';

@@ -15,6 +15,7 @@ import {
   HuntActivities,
   FreeClaimActivities,
   FreeClaimsCorrectionActivities,
+  PbnIssuanceReservationsActivities,
   LinkSharesExternalIdentifierMigrationActivities,
   TwitterLinkSharesValidationActivities,
 } from '../activities';
@@ -82,6 +83,7 @@ export const ACTIVITIES = {
     getConfig: async (key: keyof typeof config) => config[key],
     ...FreeClaimActivities,
     ...FreeClaimsCorrectionActivities,
+    ...PbnIssuanceReservationsActivities,
   },
   [TEMPORAL_ENUMS.MINT]: {
     ...MintActivities,
