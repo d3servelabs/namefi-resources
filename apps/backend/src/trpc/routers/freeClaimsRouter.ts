@@ -11,9 +11,11 @@ import {
   checkAnyClaimEligibility,
   checkClaimEligibility,
 } from '../../temporal/activities/free-claim.activities';
+import { processReservationsForUser } from '../../temporal/activities/pbn-issuance-reservations.activities';
 import { validateAndCreateClaimOrder } from '../../temporal/activities/free-claim.activities';
 import { createTRPCRouter, protectedProcedure } from '../base';
 import { createLogger } from '#lib/logger';
+import { privyClient } from '../utils';
 import type { FreeClaimWorkflowMemo } from '../../temporal/workflows/free-claim.workflow';
 import { $withTransaction, db, freeClaimsTable } from '@namefi-astra/db';
 import { eq, ilike, or, type SQL } from 'drizzle-orm';
@@ -535,6 +537,37 @@ export const freeClaimsRouter = createTRPCRouter({
 
   getUserClaims: protectedProcedure.query(async ({ ctx }) => {
     const { user, poweredByNamefiDomain } = ctx;
+
+    // Handle pending gifts for this user before fetching claims
+    try {
+      const privyUser = await privyClient.getUser(user.privyUserId);
+      const userEmail = privyUser?.linkedAccounts?.find(
+        (account) => account.type === 'email',
+      )?.address;
+
+      if (userEmail) {
+        const giftResult = await processReservationsForUser({
+          userId: user.id,
+          userEmail,
+        });
+
+        if (giftResult.freeClaimsCreated > 0) {
+          logger.info(
+            {
+              userId: user.id,
+              freeClaimsCreated: giftResult.freeClaimsCreated,
+            },
+            'Created free claims from pending reservations',
+          );
+        }
+      }
+    } catch (error) {
+      logger.error(
+        { error, userId: user.id },
+        'Failed to handle pending reservations',
+      );
+      // Don't throw - gift processing failure shouldn't prevent free claims fetch
+    }
 
     const where: SQL[] = [eq(freeClaimsTable.userId, user.id)];
 

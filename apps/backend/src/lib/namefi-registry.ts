@@ -1,12 +1,13 @@
 import {
   db,
+  pbnIssuanceReservationsTable,
   indexedDomainsTable,
   namefiNftOwnersView,
   orderItemStatusSchema,
   orderItemsTable,
   orderStatusSchema,
   ordersTable,
-  type PoweredByNamefiDomainInsert,
+  usersTable,
   type PoweredByNamefiDomainSelect,
 } from '@namefi-astra/db';
 import { createRegistrarService } from '@namefi-astra/registrars/registrars/main-registrar';
@@ -28,12 +29,13 @@ import { toPunycodeDomainName } from '@namefi-astra/registrars/lib/data/validati
 
 import type { DomainPricingDetails } from '@namefi-astra/registrars/lib/abstract-registrar/index';
 import { resolve } from '@namefi-astra/utils/promises/resolve';
-import { and, eq, gt, inArray, or, sql } from 'drizzle-orm';
+import { and, eq, gt, inArray, isNull, or, sql, ne } from 'drizzle-orm';
 import { secrets } from '#lib/env';
 import { logger } from '#lib/logger';
 import { computeChargesInUsdOrThrow } from '@namefi-astra/registrars/multi-year-pricing';
 import { getDomainDurationConstraints } from './domains/duration-constraints';
 import pMap from 'p-map';
+import { maybeGetUserEmail } from '#temporal/activities/notify.activities';
 
 export type NamefiNftSelect = typeof namefiNftOwnersView.$inferSelect;
 
@@ -263,12 +265,13 @@ export const getDomainListInfo = async (
   user?: { privyUserId: string } | null,
 ): Promise<DomainAvailabilityInfo[]> => {
   // Query the database for NFTs matching the provided domain names
-  const [nfts, pendingOrdersMap] = await Promise.all([
+  const [nfts, pendingOrdersMap, reservedDomainsMap] = await Promise.all([
     db
       .select()
       .from(namefiNftOwnersView)
       .where(inArray(namefiNftOwnersView.normalizedDomainName, domains)),
     checkIfDomainsHavePendingOrders(domains),
+    checkIfDomainsAreReserved(domains, user),
   ]);
 
   // Create a map of domain names to their corresponding NFT records for efficient lookup
@@ -286,6 +289,10 @@ export const getDomainListInfo = async (
     // if the domain has a pending order, return 'order-pending'
     if (pendingOrdersMap.get(domain)?.hasPendingOrders) {
       return 'orderPending';
+    }
+    // if the domain is reserved to a different user (exact domain match), return 'unavailable'
+    if (reservedDomainsMap.get(domain)?.isReservedToDifferentUser) {
+      return 'unavailable';
     }
 
     const { levels } = getDomainLevels(domain);
@@ -522,4 +529,80 @@ const checkIfDomainsHavePendingOrders = async (
   }
 
   return pendingOrdersMap;
+};
+
+/**
+ * Checks if the domains are reserved (exact domain matches only)
+ * Excludes gifts intended for the current user
+ * @param domains - Array of domain names to check
+ * @param user - Current user (if any) to exclude their reservations from unavailable list
+ * @returns Map of domain names to reservation status
+ */
+const checkIfDomainsAreReserved = async (
+  domains: NamefiNormalizedDomain[],
+  user?: { privyUserId: string } | null,
+) => {
+  // Build base conditions for reservations that block availability
+  const conditions = [
+    inArray(pbnIssuanceReservationsTable.exactDomainName, domains),
+    eq(pbnIssuanceReservationsTable.status, 'CREATED'),
+    eq(pbnIssuanceReservationsTable.reserveHold, true),
+    or(
+      isNull(pbnIssuanceReservationsTable.reservationExpirationDate),
+      gt(pbnIssuanceReservationsTable.reservationExpirationDate, new Date()),
+    ),
+  ];
+
+  // If user is provided, exclude reservations intended for this user
+  if (user?.privyUserId) {
+    const currentUser = await db
+      .select({ id: usersTable.id })
+      .from(usersTable)
+      .where(eq(usersTable.privyUserId, user.privyUserId))
+      .limit(1);
+
+    if (currentUser.length > 0) {
+      // Get the current user's email to check against email-based reservations
+      const email = await maybeGetUserEmail(currentUser[0].id);
+
+      // Exclude reservations that are intended for the current user by adding conditions that filter out:
+      // 1. Reservations with no recipient user ID but matching the current user's email
+      // 2. Reservations with a recipient user ID that matches the current user
+      conditions.push(
+        or(
+          // Case 1: Email-based reservations (no recipient user ID set)
+          and(
+            isNull(pbnIssuanceReservationsTable.recipientUserId),
+            // Only add email condition if we have an email for the user
+            email
+              ? ne(pbnIssuanceReservationsTable.recipientEmail, email)
+              : undefined,
+          ),
+          // Case 2: User ID-based reservations
+          ne(pbnIssuanceReservationsTable.recipientUserId, currentUser[0].id),
+        ),
+      );
+    }
+  }
+
+  const reservedDomains = await db
+    .select({
+      exactDomainName: pbnIssuanceReservationsTable.exactDomainName,
+    })
+    .from(pbnIssuanceReservationsTable)
+    .where(and(...conditions));
+
+  const reservedDomainsMap = new Map(
+    domains.map((domain) => [domain, { isReservedToDifferentUser: false }]),
+  );
+
+  for (const reservedDomain of reservedDomains) {
+    if (reservedDomain.exactDomainName) {
+      reservedDomainsMap.set(reservedDomain.exactDomainName, {
+        isReservedToDifferentUser: true,
+      });
+    }
+  }
+
+  return reservedDomainsMap;
 };
