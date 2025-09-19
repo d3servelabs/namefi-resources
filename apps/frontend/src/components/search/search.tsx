@@ -264,7 +264,13 @@ export const SearchInput: FC<{
                       // Only intercept newline insertion; ordinary keystrokes can proceed
                       if (e.key === 'Enter') {
                         e.preventDefault();
-                        handleRawText('\n');
+                        if (searchMode === SearchMode.IMPORT) {
+                          // In import mode, Enter inserts a newline to support CSV-like multiline input
+                          handleRawText('\n');
+                        } else {
+                          // In register mode, Enter should trigger a search instead of clearing the input
+                          handleSearchClick();
+                        }
                       }
                     }}
                     className="border-0 dark:bg-transparent h-full focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-gray-400 flex-1 md:text-lg shadow-none"
