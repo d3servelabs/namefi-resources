@@ -16,6 +16,8 @@ export interface GenerateLogosWorkflowInput {
   logoStyle?: string;
   // correlation id
   batchId?: string;
+  // if true, only generate for domains that don't already have a logo
+  skipExisting?: boolean;
 }
 
 export interface GenerateLogosWorkflowResult {
@@ -37,6 +39,7 @@ export async function generateLogosForAliveNftsWorkflow(
     logoType,
     logoStyle,
     batchId,
+    skipExisting = false,
   } = input;
 
   const { listAliveNftDomains, generateLogosForDomains } = typedProxyActivities(
@@ -66,7 +69,11 @@ export async function generateLogosForAliveNftsWorkflow(
   while (true) {
     if (maxPages !== undefined && page >= maxPages) break;
 
-    const domains = await listAliveNftDomains({ limit: pageSize, offset });
+    const domains = await listAliveNftDomains({
+      limit: pageSize,
+      offset,
+      skipExisting,
+    });
     if (!domains.length) break;
 
     const { processed, successes, failures } = await generateLogosForDomains({

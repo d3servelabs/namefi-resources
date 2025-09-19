@@ -1,4 +1,4 @@
-import { and, gt } from 'drizzle-orm';
+import { and, gt, sql } from 'drizzle-orm';
 import {
   db,
   internalAiGenerationsTable,
@@ -24,16 +24,26 @@ export interface GenerateLogosForDomainsParams {
 export interface ListAliveNftDomainsParams {
   limit?: number;
   offset?: number;
+  skipExisting?: boolean; // if true, only list domains without an existing internal logo
 }
 
 export async function listAliveNftDomains({
   limit = 500,
   offset = 0,
+  skipExisting = false,
 }: ListAliveNftDomainsParams = {}): Promise<NamefiNormalizedDomain[]> {
+  const baseWhere = gt(namefiNftView.expirationTime, new Date());
+  const whereClause = skipExisting
+    ? and(
+        baseWhere,
+        sql`NOT EXISTS (SELECT 1 FROM ${internalAiGenerationsTable} AS i WHERE i.domain = ${namefiNftView.normalizedDomainName} AND i.type = 'logo')`,
+      )
+    : baseWhere;
+
   const rows = await db
     .select({ domain: namefiNftView.normalizedDomainName })
     .from(namefiNftView)
-    .where(and(gt(namefiNftView.expirationTime, new Date())))
+    .where(whereClause)
     .limit(limit)
     .offset(offset);
   return rows.map((r) => r.domain);
