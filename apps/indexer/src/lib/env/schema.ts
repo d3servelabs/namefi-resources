@@ -17,7 +17,12 @@ const _baseSecretsSchema = z.object({
 
 export const secretsSchema = _baseSecretsSchema
   .extend({
-    DATABASE_OVERRIDE_URL: z.string().url().optional(),
+    DATABASE_OVERRIDE_URL: z
+      .string()
+      .trim()
+      .optional()
+      .transform((data) => (data ? data : undefined)) // change falsy to undefined
+      .pipe(z.string().url().optional()),
   })
   .transform((secrets) => ({
     ...secrets,
