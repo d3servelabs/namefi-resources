@@ -32,6 +32,7 @@ import {
   type CreateAuditRecordParams,
   type AuditActorExtraInfo,
 } from '#lib/auditor';
+import { timingSafeEqual } from 'crypto';
 
 /**
  * Get the powered by namefi (pbn) domain from the origin.
@@ -90,6 +91,59 @@ export async function getPbnDomainFromOriginOrThrow(
   return thirdPartyDomainFromHostname;
 }
 
+type ValidateApiKeyAndGetDetailsResult =
+  | { valid: false }
+  | {
+      valid: true;
+      details: {
+        forceMapToPbnDomain: string | null;
+        permissions: Permission[];
+      };
+    };
+
+/**
+ * Validate the API key and get the details.
+ *
+ * The API key is validated against the API_AUTH_KEY environment variable.
+ * If the API key is valid, the details are returned.
+ * If the API key is invalid, the result is returned with valid set to false.
+ *
+ * The details are returned with the following properties:
+ * - forceMapToPbnDomain: The powered by namefi domain to map to.
+ * - permissions: The permissions granted to the API key.
+ *
+ * The permissions are currently hardcoded to [Permission.READ_ANALYTICS].
+ *
+ * The forceMapToPbnDomain is currently set to null.
+ *
+ *
+ * @param apiKeyFromHeader - The API key from the header.
+ * @returns The result of the validation.
+ */
+async function validateApiKeyAndGetDetails(
+  apiKeyFromHeader: string | undefined | null,
+): Promise<ValidateApiKeyAndGetDetailsResult> {
+  if (
+    !apiKeyFromHeader ||
+    !timingSafeEqual(
+      Buffer.from(apiKeyFromHeader),
+      Buffer.from(secrets.API_AUTH_KEY),
+    )
+  ) {
+    return {
+      valid: false,
+    };
+  }
+
+  return {
+    valid: true,
+    details: {
+      forceMapToPbnDomain: null,
+      permissions: [Permission.READ_ANALYTICS],
+    },
+  };
+}
+
 /**
  * 1. CONTEXT
  *
@@ -106,23 +160,45 @@ export const createContext = async (
   c: Context,
 ): Promise<TrpcContext> => {
   const originText = c.req.header('Origin');
+  const apiKeyFromHeader = c.req.header('x-api-key') || null;
 
   let poweredByNamefiDomain: string | null = null;
+  let result: ValidateApiKeyAndGetDetailsResult;
+  let originBypassedByApiKey = false;
+  let userPermissions: Permission[] = [];
+  if (apiKeyFromHeader) {
+    result = await validateApiKeyAndGetDetails(apiKeyFromHeader);
 
-  try {
-    poweredByNamefiDomain = await getPbnDomainFromOriginOrThrow(originText);
-  } catch (error) {
-    logger.trace(error, 'Error determining powered by namefi domain');
-    if (!config.ALLOW_ALL_ORIGINS) {
-      throw error;
+    if (!result.valid) {
+      throw new TRPCError({
+        code: 'FORBIDDEN',
+        message: 'Invalid API key',
+      });
+    }
+    originBypassedByApiKey = true;
+    poweredByNamefiDomain = result.details.forceMapToPbnDomain;
+    userPermissions = result.details.permissions;
+  }
+
+  if (!poweredByNamefiDomain) {
+    try {
+      poweredByNamefiDomain = await getPbnDomainFromOriginOrThrow(originText);
+    } catch (error) {
+      logger.trace(error, 'Error determining powered by namefi domain');
+      if (!config.ALLOW_ALL_ORIGINS && !originBypassedByApiKey) {
+        throw error;
+      }
     }
   }
+
   // Assign tRPC-specific context to logger for request identification
   logger.assign({
     isTrpc: true,
     trpcProceduresInfo: _opts.info,
     poweredByNamefiDomain: poweredByNamefiDomain,
+    originBypassedByApiKey,
   });
+
   return {
     req: c.req,
     res: c.res,
@@ -131,7 +207,7 @@ export const createContext = async (
      * Cached list of the current user's permissions for this request lifecycle.
      * Populated in protected middleware when user is known.
      */
-    userPermissions: [],
+    userPermissions,
     poweredByNamefiDomain,
     /**
      * A test user we can provide to return when verifyUserAuthAndCreation is called from tests
@@ -326,7 +402,7 @@ export const verifyUserAuthAndCreation = t.middleware<TrpcContextWithUser>(
         },
       });
     } catch (error) {
-      console.error('error', error);
+      logger.error({ error }, 'Error verifying user auth and creation');
       throw new TRPCError({
         code: 'UNAUTHORIZED',
       });
