@@ -25,7 +25,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Review PR
-        timeout-minutes: 15
+        timeout-minutes: 20
         env:
           LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
           LLM_MODEL: ${{ vars.OPENHANDS_LLM_MODEL }}
@@ -34,6 +34,14 @@ jobs:
           REVIEW_BOT_GITHUB_PR_NUMBER: ${{ github.event.pull_request.number || inputs.pr_number }}
           WORKSPACE_BASE: ${{ github.workspace }}
         run: |
+          mkdir -p "$WORKSPACE_BASE/.openhands"
+          PROMPT_FILE="$WORKSPACE_BASE/.openhands/PROMPT.md"
+          if [ ! -f "$PROMPT_FILE" ]; then
+            echo "PROMPT.md not found at $PROMPT_FILE" >&2
+            exit 1
+          fi
+          PROMPT_CONTENT=$(envsubst '$REVIEW_BOT_GITHUB_PR_NUMBER $REVIEW_BOT_GITHUB_REPO' < "$PROMPT_FILE")
+
           docker run --rm -i \
             --pull=always \
             -e SANDBOX_RUNTIME_CONTAINER_IMAGE=docker.all-hands.dev/all-hands-ai/runtime:0.56-nikolaik \
@@ -43,10 +51,12 @@ jobs:
             -e LOG_ALL_EVENTS=true \
             -e GITHUB_TOKEN=$REVIEW_BOT_GITHUB_TOKEN \
             -e SANDBOX_ENV_GITHUB_TOKEN=$REVIEW_BOT_GITHUB_TOKEN \
+            -e REVIEW_BOT_GITHUB_REPO=$REVIEW_BOT_GITHUB_REPO \
+            -e REVIEW_BOT_GITHUB_PR_NUMBER=$REVIEW_BOT_GITHUB_PR_NUMBER \
             -v $WORKSPACE_BASE:/opt/workspace_base \
             -v /var/run/docker.sock:/var/run/docker.sock \
             -v $WORKSPACE_BASE/.openhands:/.openhands \
             --add-host host.docker.internal:host-gateway \
             --name openhands-app-$(date +%Y%m%d%H%M%S) \
             docker.all-hands.dev/all-hands-ai/openhands:0.56 \
-            python -m openhands.core.main --selected-repo $REVIEW_BOT_GITHUB_REPO -t "Verify GITHUB_TOKEN is set in the environment. Then for PR $REVIEW_BOT_GITHUB_PR_NUMBER perform the following:\n\n1) Analyze only the latest code changes and identify substantive issues (bugs, security, performance, API misuse, regressions). Prefer high-signal over volume.\n\n2) Provide concise, actionable fixes where necessary.\n\n3) Post exactly ONE summary comment on the PR, starting with the marker <!-- openhands-review --> and the heading OpenHands Review Summary. If a previous summary with this marker exists, UPDATE it instead of creating a new one.\n\n4) Add line-level comments only for issues that require code changes. DO NOT post positive-only or congratulatory comments. Limit to at most 5 new line-level comments per run. Before posting, read existing bot comments and SKIP duplicates.\n\n5) Ensure idempotency: re-runs must not duplicate comments. Always update the existing summary and only add new line comments if they don't already exist.\n\n6) Approve the PR only if no high or medium severity issues remain; otherwise, leave review comments without approval.\n\nUse the GITHUB_TOKEN with GitHub REST API to read/update the summary comment and post only deduplicated, necessary feedback."
+            python -m openhands.core.main --selected-repo "$REVIEW_BOT_GITHUB_REPO" -t "$PROMPT_CONTENT"
