@@ -1,10 +1,16 @@
 import { z } from 'zod';
-import { adminProcedureWithPermissions, createTRPCRouter } from '../base';
-import { Permission } from '@namefi-astra/utils';
+import {
+  adminProcedureWithPermissions,
+  createTRPCRouter,
+  publicProcedure,
+  withRequiredPermissions,
+} from '../base';
+import { namefiNormalizedDomainSchema, Permission } from '@namefi-astra/utils';
 import { createGA4Client, type DateRange } from '../../lib/analytics_client';
 import { secrets } from '../../lib/env';
 import { createLogger } from '#lib/logger';
 import { dnsRcodes } from '../../lib/dns/rcodes';
+import { parseDnsAnalyticsReportData } from '#lib/analytics-parser';
 
 const logger = createLogger({ module: 'analytics-router' });
 
@@ -208,7 +214,7 @@ export async function getDashboardOverview(
       publicSuffixPlusOne,
     ] = await Promise.all([
       // Top domains
-      client['runReport']({
+      client.runReport({
         dateRanges: [dateRange],
         metrics: [{ name: 'eventCount' }],
         dimensions: [{ name: 'customEvent:domain' }],
@@ -217,7 +223,7 @@ export async function getDashboardOverview(
         limit: 20,
       }),
       // Queries by response code
-      client['runReport']({
+      client.runReport({
         dateRanges: [dateRange],
         metrics: [{ name: 'eventCount' }],
         dimensions: [{ name: 'customEvent:rcode' }],
@@ -225,7 +231,7 @@ export async function getDashboardOverview(
         orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }],
       }),
       // Queries by type
-      client['runReport']({
+      client.runReport({
         dateRanges: [dateRange],
         metrics: [{ name: 'eventCount' }],
         dimensions: [{ name: 'customEvent:query_type' }],
@@ -233,14 +239,14 @@ export async function getDashboardOverview(
         orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }],
       }),
       // Cache hit ratio
-      client['runReport']({
+      client.runReport({
         dateRanges: [dateRange],
         metrics: [{ name: 'eventCount' }],
         dimensions: [{ name: 'customEvent:cache_hit' }],
         dimensionFilter,
       }),
       // Top client IPs
-      client['runReport']({
+      client.runReport({
         dateRanges: [dateRange],
         metrics: [{ name: 'eventCount' }],
         dimensions: [{ name: 'customEvent:client_ip' }],
@@ -249,14 +255,14 @@ export async function getDashboardOverview(
         limit: 15,
       }),
       // DNSSEC stats
-      client['runReport']({
+      client.runReport({
         dateRanges: [dateRange],
         metrics: [{ name: 'eventCount' }],
         dimensions: [{ name: 'customEvent:dnssec' }],
         dimensionFilter,
       }),
       // Hourly volume
-      client['runReport']({
+      client.runReport({
         dateRanges: [dateRange],
         metrics: [{ name: 'eventCount' }],
         dimensions: [{ name: 'dateHour' }],
@@ -264,7 +270,7 @@ export async function getDashboardOverview(
         orderBys: [{ dimension: { dimensionName: 'dateHour' }, desc: false }],
       }),
       // Daily volume
-      client['runReport']({
+      client.runReport({
         dateRanges: [dateRange],
         metrics: [{ name: 'eventCount' }],
         dimensions: [{ name: 'date' }],
@@ -272,7 +278,7 @@ export async function getDashboardOverview(
         orderBys: [{ dimension: { dimensionName: 'date' }, desc: false }],
       }),
       // Public suffix
-      client['runReport']({
+      client.runReport({
         dateRanges: [dateRange],
         metrics: [{ name: 'eventCount' }],
         dimensions: [{ name: 'customEvent:public_suffix' }],
@@ -281,7 +287,7 @@ export async function getDashboardOverview(
         limit: 10,
       }),
       // Public suffix plus one
-      client['runReport']({
+      client.runReport({
         dateRanges: [dateRange],
         metrics: [{ name: 'eventCount' }],
         dimensions: [{ name: 'customEvent:public_suffix_plus_one' }],
@@ -309,10 +315,19 @@ export async function getDashboardOverview(
   }
 }
 
+const trailingDotRegex = /\.?$/;
+// Remove trailing dot from domain name
+function removeTrailingDot(domainName: string) {
+  return domainName.replace(trailingDotRegex, '');
+}
+
 // Build FULL_REGEXP for record/host name that matches optional subdomains of a domain
 function buildRecordNameRegex(domainName: string) {
-  const escaped = domainName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  return `^(?:.*\\.)?${escaped}$`;
+  const normalized = namefiNormalizedDomainSchema.parse(
+    removeTrailingDot(domainName),
+  );
+  const escaped = normalized.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return `^(?:.*\\.)?${escaped}\.?$`;
 }
 
 export const getFullReportByRecordNameInputSchema = z.object({
@@ -355,7 +370,7 @@ export async function getFullReportByRecordName(
       publicSuffix,
       publicSuffixPlusOne,
     ] = await Promise.all([
-      client['runReport']({
+      client.runReport({
         dateRanges: [dateRange],
         metrics: [{ name: 'eventCount' }],
         dimensions: [{ name: 'customEvent:domain' }],
@@ -363,27 +378,27 @@ export async function getFullReportByRecordName(
         orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }],
         limit: 20,
       }),
-      client['runReport']({
+      client.runReport({
         dateRanges: [dateRange],
         metrics: [{ name: 'eventCount' }],
         dimensions: [{ name: 'customEvent:rcode' }],
         dimensionFilter,
         orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }],
       }),
-      client['runReport']({
+      client.runReport({
         dateRanges: [dateRange],
         metrics: [{ name: 'eventCount' }],
         dimensions: [{ name: 'customEvent:query_type' }],
         dimensionFilter,
         orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }],
       }),
-      client['runReport']({
+      client.runReport({
         dateRanges: [dateRange],
         metrics: [{ name: 'eventCount' }],
         dimensions: [{ name: 'customEvent:cache_hit' }],
         dimensionFilter,
       }),
-      client['runReport']({
+      client.runReport({
         dateRanges: [dateRange],
         metrics: [{ name: 'eventCount' }],
         dimensions: [{ name: 'customEvent:client_ip' }],
@@ -391,27 +406,27 @@ export async function getFullReportByRecordName(
         orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }],
         limit: 15,
       }),
-      client['runReport']({
+      client.runReport({
         dateRanges: [dateRange],
         metrics: [{ name: 'eventCount' }],
         dimensions: [{ name: 'customEvent:dnssec' }],
         dimensionFilter,
       }),
-      client['runReport']({
+      client.runReport({
         dateRanges: [dateRange],
         metrics: [{ name: 'eventCount' }],
         dimensions: [{ name: 'dateHour' }],
         dimensionFilter,
         orderBys: [{ dimension: { dimensionName: 'dateHour' }, desc: false }],
       }),
-      client['runReport']({
+      client.runReport({
         dateRanges: [dateRange],
         metrics: [{ name: 'eventCount' }],
         dimensions: [{ name: 'date' }],
         dimensionFilter,
         orderBys: [{ dimension: { dimensionName: 'date' }, desc: false }],
       }),
-      client['runReport']({
+      client.runReport({
         dateRanges: [dateRange],
         metrics: [{ name: 'eventCount' }],
         dimensions: [{ name: 'customEvent:public_suffix' }],
@@ -419,7 +434,7 @@ export async function getFullReportByRecordName(
         orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }],
         limit: 10,
       }),
-      client['runReport']({
+      client.runReport({
         dateRanges: [dateRange],
         metrics: [{ name: 'eventCount' }],
         dimensions: [{ name: 'customEvent:public_suffix_plus_one' }],
@@ -508,5 +523,19 @@ export const analyticsRouter = createTRPCRouter({
     .input(getFullReportByRecordNameInputSchema)
     .query(async ({ input }) => {
       return getFullReportByRecordName(input);
+    }),
+
+  /**
+   * Get full report filtered by record name and public suffix
+   */
+  getParsedReportByRecordName: withRequiredPermissions(publicProcedure, [
+    Permission.READ_ANALYTICS,
+  ])
+    .input(getFullReportByRecordNameInputSchema)
+    .query(async ({ input }) => {
+      const report = await getFullReportByRecordName(input);
+      return parseDnsAnalyticsReportData(report, {
+        includeIpDetails: false,
+      });
     }),
 });

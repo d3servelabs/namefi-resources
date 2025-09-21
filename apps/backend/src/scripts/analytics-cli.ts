@@ -27,6 +27,11 @@ import {
   type AnalyticsConfig,
 } from '../lib/analytics_client';
 import { secrets } from '../lib/env';
+import { parseDnsAnalyticsReportData } from '../lib/analytics-parser';
+import {
+  getDashboardOverview,
+  getFullReportByRecordName,
+} from '../trpc/routers/analyticsRouter';
 
 const program = new Command();
 
@@ -569,6 +574,125 @@ program
   .command('all')
   .description('Execute all analytics methods with default parameters')
   .action(executeAllMethods);
+
+// Example: Demonstrate backend parsing helper
+program
+  .command('example:parsed-report')
+  .description(
+    'Example that fetches dashboard/full report and parses it to a frontend-friendly shape',
+  )
+  .option(
+    '--startDate <startDate>',
+    'Start date (YYYY-MM-DD or relative)',
+    '7daysAgo',
+  )
+  .option('--endDate <endDate>', 'End date (YYYY-MM-DD or relative)', 'today')
+  .option(
+    '--domain <domain>',
+    'Optional domain to filter by (uses full report)',
+  )
+  .option(
+    '--includeIps',
+    'Include top client IPs table in the output summary',
+    false,
+  )
+  .action(
+    async (opts: {
+      startDate: string;
+      endDate: string;
+      domain?: string;
+      includeIps?: boolean;
+    }) => {
+      try {
+        const dateRange: DateRange = {
+          startDate: opts.startDate,
+          endDate: opts.endDate,
+        };
+
+        const raw = opts.domain
+          ? await getFullReportByRecordName({
+              ...dateRange,
+              domainName: opts.domain,
+            })
+          : await getDashboardOverview({ ...dateRange });
+
+        const parsed = parseDnsAnalyticsReportData(raw as any);
+
+        // Print concise summary
+        console.log('\nParsed DNS Analytics Summary');
+        console.log('============================');
+        console.log(
+          `Total Queries: ${parsed.summary.totalQueries.toLocaleString()}`,
+        );
+        console.log(
+          `Unique Domains: ${parsed.summary.uniqueDomains.toLocaleString()}`,
+        );
+        console.log(
+          `Unique Client IPs: ${parsed.summary.uniqueClientIps.toLocaleString()}`,
+        );
+        console.log(
+          `Cache Hit Rate: ${parsed.summary.cacheHitRatePercent == null ? 'N/A' : parsed.summary.cacheHitRatePercent.toFixed(1) + '%'} `,
+        );
+
+        // Top 10 domains
+        const topDomains = parsed.topDomains.slice(0, 10);
+        if (topDomains.length) {
+          console.log('\nTop Domains:');
+          console.table(
+            topDomains.map((d, i) => ({
+              '#': i + 1,
+              domain: d.domain,
+              count: d.count,
+            })),
+          );
+        }
+
+        // Response codes
+        const rcodes = parsed.queriesByResponseCode.slice(0, 10);
+        if (rcodes.length) {
+          console.log('\nQueries by Response Code:');
+          console.table(
+            rcodes.map((r) => ({ rcode: r.rcode, count: r.count })),
+          );
+        }
+
+        // Daily volume
+        const daily = parsed.dailyVolume.slice(0, 10);
+        if (daily.length) {
+          console.log('\nDaily Volume (first 10):');
+          console.table(daily.map((d) => ({ date: d.date, count: d.count })));
+        }
+
+        // Optional: Top Client IPs
+        if (opts.includeIps) {
+          const ips = parsed.topClientIps.slice(0, 10);
+          if (ips.length) {
+            console.log('\nTop Client IPs:');
+            console.table(
+              ips.map((i, idx) => ({ '#': idx + 1, ip: i.ip, count: i.count })),
+            );
+          }
+        }
+
+        // Public suffix
+        const suffixes = parsed.publicSuffix.slice(0, 10);
+        if (suffixes.length) {
+          console.log('\nPublic Suffix:');
+          console.table(
+            suffixes.map((s) => ({
+              publicSuffix: s.publicSuffix,
+              count: s.count,
+            })),
+          );
+        }
+
+        console.log('\nDone.');
+      } catch (error) {
+        console.error('Error running parsed-report example:', error);
+        process.exitCode = 1;
+      }
+    },
+  );
 
 // Default to interactive mode if no command is provided
 if (process.argv.length === 2) {

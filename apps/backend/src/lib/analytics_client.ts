@@ -32,7 +32,7 @@ export class GA4AnalyticsClient {
     });
   }
 
-  private async runReport(
+  async runReport(
     request: protos.google.analytics.data.v1beta.IRunReportRequest,
   ): Promise<RunReportResponse> {
     const [response] = await this.client.runReport({
