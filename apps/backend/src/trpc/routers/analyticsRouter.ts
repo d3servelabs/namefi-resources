@@ -12,6 +12,7 @@ const logger = createLogger({ module: 'analytics-router' });
 function createDimensionFilters(input: {
   publicSuffix?: string;
   publicSuffixPlusOne?: string;
+  domainRegex?: string;
 }) {
   const filters: any[] = [
     {
@@ -31,6 +32,13 @@ function createDimensionFilters(input: {
     filters.push({
       fieldName: 'customEvent:public_suffix_plus_one',
       stringFilter: { matchType: 'EXACT', value: input.publicSuffixPlusOne },
+    });
+  }
+
+  if (input.domainRegex) {
+    filters.push({
+      fieldName: 'customEvent:domain',
+      stringFilter: { matchType: 'FULL_REGEXP', value: input.domainRegex },
     });
   }
 
@@ -301,6 +309,144 @@ export async function getDashboardOverview(
   }
 }
 
+// Build FULL_REGEXP for record/host name that matches optional subdomains of a domain
+function buildRecordNameRegex(domainName: string) {
+  const escaped = domainName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return `^(?:.*\\.)?${escaped}$`;
+}
+
+export const getFullReportByRecordNameInputSchema = z.object({
+  startDate: gaDateToken,
+  endDate: gaDateToken,
+  domainName: z.string().min(1),
+});
+
+export async function getFullReportByRecordName(
+  input: z.infer<typeof getFullReportByRecordNameInputSchema>,
+) {
+  const client = createClient();
+  const dateRange: DateRange = {
+    startDate: input.startDate,
+    endDate: input.endDate,
+  };
+
+  const domainRegex = buildRecordNameRegex(input.domainName);
+
+  logger.info(
+    {
+      dateRange,
+      domainName: input.domainName,
+      domainRegex,
+    },
+    'Getting full report by record name',
+  );
+
+  const dimensionFilter = createDimensionFilters({ domainRegex });
+  try {
+    const [
+      topDomains,
+      queriesByResponseCode,
+      queriesByType,
+      cacheHitRatio,
+      topClientIps,
+      dnssecStats,
+      hourlyVolume,
+      dailyVolume,
+      publicSuffix,
+      publicSuffixPlusOne,
+    ] = await Promise.all([
+      client['runReport']({
+        dateRanges: [dateRange],
+        metrics: [{ name: 'eventCount' }],
+        dimensions: [{ name: 'customEvent:domain' }],
+        dimensionFilter,
+        orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }],
+        limit: 20,
+      }),
+      client['runReport']({
+        dateRanges: [dateRange],
+        metrics: [{ name: 'eventCount' }],
+        dimensions: [{ name: 'customEvent:rcode' }],
+        dimensionFilter,
+        orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }],
+      }),
+      client['runReport']({
+        dateRanges: [dateRange],
+        metrics: [{ name: 'eventCount' }],
+        dimensions: [{ name: 'customEvent:query_type' }],
+        dimensionFilter,
+        orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }],
+      }),
+      client['runReport']({
+        dateRanges: [dateRange],
+        metrics: [{ name: 'eventCount' }],
+        dimensions: [{ name: 'customEvent:cache_hit' }],
+        dimensionFilter,
+      }),
+      client['runReport']({
+        dateRanges: [dateRange],
+        metrics: [{ name: 'eventCount' }],
+        dimensions: [{ name: 'customEvent:client_ip' }],
+        dimensionFilter,
+        orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }],
+        limit: 15,
+      }),
+      client['runReport']({
+        dateRanges: [dateRange],
+        metrics: [{ name: 'eventCount' }],
+        dimensions: [{ name: 'customEvent:dnssec' }],
+        dimensionFilter,
+      }),
+      client['runReport']({
+        dateRanges: [dateRange],
+        metrics: [{ name: 'eventCount' }],
+        dimensions: [{ name: 'dateHour' }],
+        dimensionFilter,
+        orderBys: [{ dimension: { dimensionName: 'dateHour' }, desc: false }],
+      }),
+      client['runReport']({
+        dateRanges: [dateRange],
+        metrics: [{ name: 'eventCount' }],
+        dimensions: [{ name: 'date' }],
+        dimensionFilter,
+        orderBys: [{ dimension: { dimensionName: 'date' }, desc: false }],
+      }),
+      client['runReport']({
+        dateRanges: [dateRange],
+        metrics: [{ name: 'eventCount' }],
+        dimensions: [{ name: 'customEvent:public_suffix' }],
+        dimensionFilter,
+        orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }],
+        limit: 10,
+      }),
+      client['runReport']({
+        dateRanges: [dateRange],
+        metrics: [{ name: 'eventCount' }],
+        dimensions: [{ name: 'customEvent:public_suffix_plus_one' }],
+        dimensionFilter,
+        orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }],
+        limit: 10,
+      }),
+    ]);
+
+    return {
+      topDomains,
+      queriesByResponseCode: mapRcodesToNames(queriesByResponseCode),
+      queriesByType,
+      cacheHitRatio,
+      topClientIps,
+      dnssecStats: mapDnssecStatus(dnssecStats),
+      hourlyVolume,
+      dailyVolume,
+      publicSuffix,
+      publicSuffixPlusOne,
+    };
+  } catch (error) {
+    logger.error({ error }, 'Error getting full report by record name');
+    throw error;
+  }
+}
+
 export const analyticsRouter = createTRPCRouter({
   /**
    * Get comprehensive dashboard overview
@@ -351,5 +497,16 @@ export const analyticsRouter = createTRPCRouter({
       };
 
       return client.getByPublicSuffixPlusOne(dateRange, input.limit);
+    }),
+
+  /**
+   * Get full report filtered by record name (domain and subdomains)
+   */
+  getFullReportByRecordName: adminProcedureWithPermissions(
+    Permission.READ_ANALYTICS,
+  )
+    .input(getFullReportByRecordNameInputSchema)
+    .query(async ({ input }) => {
+      return getFullReportByRecordName(input);
     }),
 });
