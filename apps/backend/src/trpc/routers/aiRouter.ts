@@ -11,7 +11,7 @@ import {
 } from '@namefi-astra/storage';
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
-import { and, count, desc, eq, max, sql } from 'drizzle-orm';
+import { and, count, desc, eq, max, sql, inArray } from 'drizzle-orm';
 import { z } from 'zod';
 import { createTRPCRouter, protectedProcedure, publicProcedure } from '../base';
 import { createLogger } from '#lib/logger';
@@ -465,6 +465,46 @@ export const aiRouter = createTRPCRouter({
           config.CLOUD_FRONT_DOMAIN,
         ),
       }));
+    }),
+
+  getInternalGenerationsByDomains: publicProcedure
+    .input(
+      z.object({
+        domains: z.array(namefiNormalizedDomainSchema).min(1),
+      }),
+    )
+    .query(async ({ input }) => {
+      const rows = await db
+        .select({
+          id: internalAiGenerationsTable.id,
+          domain: internalAiGenerationsTable.domain,
+          type: internalAiGenerationsTable.type,
+          createdAt: internalAiGenerationsTable.createdAt,
+          output: internalAiGenerationsTable.output,
+        })
+        .from(internalAiGenerationsTable)
+        .where(inArray(internalAiGenerationsTable.domain, input.domains))
+        .orderBy(desc(internalAiGenerationsTable.createdAt));
+
+      const domainToRows: Record<
+        string,
+        Array<{ id: string; type: string; createdAt: Date; url: string }>
+      > = {};
+      for (const row of rows) {
+        const url = generateUrlFromStoragePath(
+          row.output.storagePath,
+          config.CLOUD_FRONT_DOMAIN,
+        );
+        if (!domainToRows[row.domain]) domainToRows[row.domain] = [];
+        domainToRows[row.domain].push({
+          id: row.id,
+          type: row.type,
+          createdAt: row.createdAt,
+          url,
+        });
+      }
+
+      return domainToRows;
     }),
 
   getUserGenerationUsage: protectedProcedure.query(async ({ ctx }) => {
