@@ -16,6 +16,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Sparkles } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import { AIOnboardingOneShot } from '@/components/ai-generation/onboarding-one-shot';
 
 const LoadingSkeletons = () => (
   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -73,6 +74,12 @@ export default function AIBrandGeneratorPage() {
     enabled: isAuthenticated,
   });
 
+  // Get usage to detect first-time users
+  const { data: usage } = useQuery({
+    ...trpc.ai.getUserGenerationUsage.queryOptions(),
+    enabled: isAuthenticated,
+  });
+
   if (isAuthLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -101,10 +108,16 @@ export default function AIBrandGeneratorPage() {
         </p>
       </div>
 
-      {/* Generation UI */}
-      <div className="mx-auto mb-12">
-        <AITabs tabSelectorClassName="max-w-md mx-auto" />
-      </div>
+      {/* Onboarding for first-time users */}
+      {usage && usage.currentCount === 0 ? (
+        <div className="mx-auto mb-12">
+          <AIOnboardingOneShot />
+        </div>
+      ) : (
+        <div className="mx-auto mb-12">
+          <AITabs tabSelectorClassName="max-w-md mx-auto" />
+        </div>
+      )}
 
       {/* Existing Domains */}
       <div>
