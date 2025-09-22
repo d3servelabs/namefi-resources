@@ -1,4 +1,4 @@
-import { orderStatusSchema, paymentStatusSchema } from '@namefi-astra/db/types';
+import { orderStatusSchema } from '@namefi-astra/db/types';
 import type {
   ChecksumWalletAddress,
   NamefiNormalizedDomain,
@@ -7,6 +7,7 @@ import * as workflow from '@temporalio/workflow';
 import { ApplicationFailure } from '@temporalio/workflow';
 import { resolve } from '../../utils/resolve';
 import { TEMPORAL_ENUMS, TEMPORAL_QUEUES, shortRunningOpts } from '../shared';
+import { generateLogosForAliveNftsWorkflow } from './logo-generation.workflow';
 import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';
 import type { ChargeUserWorkflowInput } from './chargeUser.workflow';
 import { processOrderItemWorkflow } from './processOrderItem.workflow';
@@ -186,6 +187,24 @@ export async function processOrderWorkflow(
     try {
       if (succeededItems.length > 0) {
         await postProcessOrder();
+        // Trigger logo generation for purchased domains using explicit list
+        const purchasedDomains = succeededItems.map(
+          (item) => item.normalizedDomainName,
+        );
+        if (purchasedDomains.length > 0) {
+          await workflow.executeChild(generateLogosForAliveNftsWorkflow, {
+            args: [
+              {
+                model: 'gpt-image-1',
+                domains: purchasedDomains,
+              },
+            ],
+            workflowId: `logo-gen-after-order-[${input.orderId}]`,
+            taskQueue: TEMPORAL_QUEUES.DEFAULT,
+            retry: { maximumAttempts: 1 },
+            parentClosePolicy: 'ABANDON',
+          });
+        }
       }
     } catch (e) {
       workflow.log.error(

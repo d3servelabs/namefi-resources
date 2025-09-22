@@ -1,10 +1,13 @@
 import * as workflow from '@temporalio/workflow';
 import { TEMPORAL_ENUMS } from '../shared/enums';
 import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 
 export interface GenerateLogosWorkflowInput {
   // model provider selection
   model: 'gpt-image-1' | 'gemini-2.5-flash-image-preview';
+  // optional explicit domains to process; if provided, skip DB pagination
+  domains?: NamefiNormalizedDomain[];
   // batching and rate limiting
   pageSize?: number; // per page domains
   startOffset?: number; // start from offset for resumption
@@ -31,6 +34,7 @@ export async function generateLogosForAliveNftsWorkflow(
 ): Promise<GenerateLogosWorkflowResult> {
   const {
     model,
+    domains: explicitDomains,
     pageSize = 200,
     startOffset = 0,
     maxPages,
@@ -64,8 +68,25 @@ export async function generateLogosForAliveNftsWorkflow(
   let totalSuccesses = 0;
   let totalFailures = 0;
 
-  // Paginate until no more domains or maxPages reached
-  // Add small delay between pages to respect provider rate limits at scale
+  // If explicit domains provided, process them directly and return
+  if (explicitDomains && explicitDomains.length > 0) {
+    const { processed, successes, failures } = await generateLogosForDomains({
+      domains: explicitDomains,
+      model,
+      concurrency: perPageConcurrency,
+      description,
+      logoType,
+      logoStyle,
+      batchId,
+    });
+    return {
+      totalProcessed: processed,
+      totalSuccesses: successes,
+      totalFailures: failures,
+    };
+  }
+
+  // Paginate until no more domains or maxPages reached; small delay per page
   while (true) {
     if (maxPages !== undefined && page >= maxPages) break;
 
