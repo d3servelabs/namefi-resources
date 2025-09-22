@@ -439,7 +439,7 @@ export const maybeVerifyUserAuthAndCreation =
       }),
     );
     // Load user permissions if user exists
-    let userPermissions: Permission[] = [];
+    let userPermissions: Permission[] = ctx.userPermissions ?? [];
     if (user) {
       const permissionsRows = await appDb
         .select({ permission: userPermissionsTable.permission })
