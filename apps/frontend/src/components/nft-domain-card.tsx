@@ -1,4 +1,5 @@
 import type { OriginInfo } from '@/lib/origin';
+import { originConfig } from '@/lib/origin/config';
 import { SquareArrowOutUpRightIcon } from 'lucide-react';
 import Link from 'next/link';
 import { CartCard } from './cart-card';
@@ -22,12 +23,23 @@ export function NftDomainCard({
   isCompleted,
   className,
 }: NftDomainCardProps) {
+  // Determine apex domain and origin-based config, mirroring FreeMintCard logic
+  const apex = item.parentDomain;
+  const thirdPartyCfg = originConfig.thirdParty[apex];
+  const computedOrigin: OriginInfo = thirdPartyCfg
+    ? {
+        isFirstPartyOrigin: false,
+        thirdPartyHostname: apex,
+        config: thirdPartyCfg,
+      }
+    : origin;
+
   return (
     <CartCard className={className ?? 'p-4'}>
       <NFTDomain
         subdomain={item.subdomain}
         parentDomain={item.parentDomain}
-        origin={origin}
+        origin={computedOrigin}
       />
       <NamefiButton
         variant="ghost"
