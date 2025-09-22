@@ -50,7 +50,8 @@ export type MarketingCollateralType =
   | 'hoodie'
   | 'pizza_box'
   | 'medal'
-  | 'flag';
+  | 'flag'
+  | 'vehicle';
 
 export interface GenerateLogoParams extends BaseGenerationParams {
   domain: NamefiNormalizedDomain;

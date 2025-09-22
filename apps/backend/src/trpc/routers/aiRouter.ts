@@ -81,6 +81,7 @@ const generateMarketingImageInputSchema = z.object({
         'pizza_box',
         'medal',
         'flag',
+        'vehicle',
       ]),
       z.literal('let_ai_choose'),
     ])

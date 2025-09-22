@@ -19,6 +19,7 @@ const collateralPickSchema = z.object({
       'pizza_box',
       'medal',
       'flag',
+      'vehicle',
     ])
     .describe('One of the supported collateral types'),
   prompt: z
@@ -67,6 +68,7 @@ export function analyzeCollateralRequirements(
         'pizza_box',
         'medal',
         'flag',
+        'vehicle',
       ].join(', ');
 
   const system = `You are a marketing creative director. Choose the most effective marketing collateral type(s) for showcasing a brand's logo.
@@ -83,6 +85,7 @@ RULES:
 - Return exactly the number of unique picks requested (default 1), unless fewer make sense based on explicit constraints
 - Do not repeat collateral types
 - Craft a generation-ready prompt per pick that explicitly references the chosen collateral type and key scene details
+- If collateral is vehicle, choose any domain-appropriate vehicle (e.g., bicycle, motorcycle, scooter, skateboard, delivery van, bus, taxi, truck, construction equipment, train, tram, boat, ship, drone, aircraft, race car) and describe photorealistic logo/livery placement (door, hood/bonnet, side panel, fairing, fuselage, hull, etc.) and where appropriate include the domain name as decals. Consider reflections, paint/wrap texture, curves and bodywork, perspective, motion blur (if moving), and realistic environment.
 `;
 
   const user = `Brand: ${brandName}

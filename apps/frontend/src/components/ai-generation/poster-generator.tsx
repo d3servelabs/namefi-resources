@@ -38,6 +38,7 @@ export const collateralLabels: Record<
   pizza_box: 'Pizza Box',
   medal: 'Medal',
   flag: 'Flag',
+  vehicle: 'Vehicle',
   let_ai_choose: 'Let AI choose',
 };
 
@@ -54,6 +55,7 @@ const posterFormSchema = baseFormSchema.extend({
         'pizza_box',
         'medal',
         'flag',
+        'vehicle',
       ]),
       z.literal('let_ai_choose'),
     ])
@@ -303,6 +305,7 @@ export function PosterGenerator({
                           <SelectItem value="pizza_box">Pizza Box</SelectItem>
                           <SelectItem value="medal">Medal</SelectItem>
                           <SelectItem value="flag">Flag</SelectItem>
+                          <SelectItem value="vehicle">Vehicle</SelectItem>
                         </SelectContent>
                       </Select>
                     </FormControl>

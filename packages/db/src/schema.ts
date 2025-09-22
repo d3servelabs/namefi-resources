@@ -627,6 +627,7 @@ export const aiGenerationsTable = pgTable(
             | 'pizza_box'
             | 'medal'
             | 'flag'
+            | 'vehicle'
             | 'let_ai_choose';
         }
     >(),
@@ -650,7 +651,8 @@ export const aiGenerationsTable = pgTable(
             | 'hoodie'
             | 'pizza_box'
             | 'medal'
-            | 'flag';
+            | 'flag'
+            | 'vehicle';
         }
     >(),
     metadata: jsonb('metadata').default({}),
