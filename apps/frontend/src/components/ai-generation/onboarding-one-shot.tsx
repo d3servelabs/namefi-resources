@@ -40,7 +40,11 @@ type OnboardingFormData = BaseFormData;
 
 type StepState = 'idle' | 'generating_logo' | 'generating_marketing' | 'done';
 
-export function AIOnboardingOneShot() {
+export function AIOnboardingOneShot({
+  onFinishAction,
+}: {
+  onFinishAction?: () => void;
+}) {
   const router = useRouter();
 
   const [step, setStep] = useState<StepState>('idle');
@@ -112,7 +116,7 @@ export function AIOnboardingOneShot() {
       type: 'let-ai-choose',
       style: 'let-ai-choose',
       description: values.description || undefined,
-      model: 'gemini-2.5-flash-image-preview' as const,
+      model: 'gpt-image-1' as const,
     };
     const logo = await logoMutation.mutateAsync(logoPayload).catch(() => null);
     if (!logo) {
@@ -246,7 +250,7 @@ export function AIOnboardingOneShot() {
             />
           </svg>
           <div className="absolute inset-0 flex items-center justify-center">
-            <span className="text-lg font-semibold text-gray-900 select-none">
+            <span className="text-lg font-semibold text-white select-none">
               {Math.round(progress)}%
             </span>
           </div>
@@ -257,7 +261,7 @@ export function AIOnboardingOneShot() {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -10 }}
           transition={{ duration: 0.3 }}
-          className="text-sm text-gray-600 text-center"
+          className="text-sm text-gray-300 text-center"
         >
           {messages[messageIndex]}
         </motion.p>
@@ -310,7 +314,7 @@ export function AIOnboardingOneShot() {
   };
 
   return (
-    <div className="mx-auto max-w-3xl">
+    <div className="w-full">
       <Card>
         <CardHeader>
           <CardTitle>Start with one-click brand setup</CardTitle>
@@ -360,10 +364,10 @@ export function AIOnboardingOneShot() {
               {/* Logo column - visible once generation starts */}
               <div>
                 <div className="text-sm font-medium mb-2">Logo</div>
-                <div className="relative aspect-square rounded-lg overflow-hidden bg-gray-100">
+                <div className="relative aspect-square rounded-lg overflow-hidden bg-gray-800">
                   {(step === 'generating_logo' && logoMutation.isPending) ||
                   (!logoGen?.url && step !== 'done') ? (
-                    <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="absolute inset-0 flex items-center justify-center bg-gray-700 z-10">
                       <CircularProgress isLoading={true} />
                     </div>
                   ) : null}
@@ -405,11 +409,11 @@ export function AIOnboardingOneShot() {
                   <div className="text-sm font-medium mb-2">
                     Marketing image
                   </div>
-                  <div className="relative aspect-square rounded-lg overflow-hidden bg-gray-100">
+                  <div className="relative aspect-square rounded-lg overflow-hidden bg-gray-800">
                     {(step === 'generating_marketing' &&
                       posterMutation.isPending) ||
                     (!marketingGen?.url && step !== 'done') ? (
-                      <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="absolute inset-0 flex items-center justify-center bg-gray-700 z-10">
                         <CircularProgress isLoading={true} />
                       </div>
                     ) : null}
@@ -451,17 +455,18 @@ export function AIOnboardingOneShot() {
 
           {step === 'done' && (
             <div className="mt-6 flex flex-col sm:flex-row gap-3">
-              <NamefiButton
+              <Button
+                variant="secondary"
                 onClick={goToBrand}
-                className="flex-1 text-white hover:bg-gray-800"
+                className="flex-1 text-white"
               >
                 Go to brand page
-              </NamefiButton>
+              </Button>
               <NamefiButton
-                onClick={() => router.push('/ai-brand-generator')}
-                className="flex-1 text-white hover:bg-gray-800"
+                onClick={onFinishAction}
+                className="flex-1 text-white"
               >
-                Open full generator
+                Finish onboarding
               </NamefiButton>
             </div>
           )}

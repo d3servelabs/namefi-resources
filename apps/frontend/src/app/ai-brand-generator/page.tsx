@@ -16,6 +16,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Sparkles } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import { useLocalStorage } from 'usehooks-ts';
 import { AIOnboardingOneShot } from '@/components/ai-generation/onboarding-one-shot';
 
 const LoadingSkeletons = () => (
@@ -80,6 +81,12 @@ export default function AIBrandGeneratorPage() {
     enabled: isAuthenticated,
   });
 
+  // Onboarding completion (persisted)
+  const [finishedOnboarding, setFinishedOnboarding] = useLocalStorage<boolean>(
+    'ai_onboarding_complete',
+    false,
+  );
+
   if (isAuthLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -108,14 +115,16 @@ export default function AIBrandGeneratorPage() {
         </p>
       </div>
 
-      {/* Onboarding for first-time users */}
-      {usage && usage.currentCount === 0 ? (
+      {/* Onboarding gating: regular UI only after >1 generations AND user finishes onboarding */}
+      {usage && finishedOnboarding && usage.currentCount > 1 ? (
         <div className="mx-auto mb-12">
-          <AIOnboardingOneShot />
+          <AITabs tabSelectorClassName="max-w-md mx-auto" />
         </div>
       ) : (
         <div className="mx-auto mb-12">
-          <AITabs tabSelectorClassName="max-w-md mx-auto" />
+          <AIOnboardingOneShot
+            onFinishAction={() => setFinishedOnboarding(true)}
+          />
         </div>
       )}
 
