@@ -304,18 +304,28 @@ export function GenerationDetailsClient({
                   </Badge>
                 </div>
 
-                {generation.type === 'marketing' &&
-                  generation.input.type === 'marketing' &&
-                  generation.input.collateralType && (
-                    <div className="flex items-center gap-2">
-                      <Type className="h-4 w-4 text-muted-foreground" />
-                      <span className="text-sm">Collateral:</span>
-                      <Badge variant="secondary" className="capitalize">
-                        {collateralLabels[generation.input.collateralType] ??
-                          generation.input.collateralType}
-                      </Badge>
-                    </div>
-                  )}
+                {generation.type === 'marketing' && (
+                  <div className="flex items-center gap-2">
+                    <Type className="h-4 w-4 text-muted-foreground" />
+                    <span className="text-sm">Collateral:</span>
+                    <Badge variant="secondary" className="capitalize">
+                      {(() => {
+                        const key =
+                          (generation.output?.type === 'marketing'
+                            ? generation.output.collateralType
+                            : undefined) ??
+                          (generation.input?.type === 'marketing'
+                            ? generation.input.collateralType
+                            : undefined);
+                        return key
+                          ? (collateralLabels[
+                              key as keyof typeof collateralLabels
+                            ] ?? key)
+                          : 'Unknown';
+                      })()}
+                    </Badge>
+                  </div>
+                )}
 
                 <div className="flex items-start gap-2">
                   <Calendar className="h-4 w-4 text-muted-foreground mt-0.5" />
@@ -347,7 +357,7 @@ export function GenerationDetailsClient({
             </Card>
 
             {/* Logo-specific Metadata */}
-            {generation.type === 'logo' && generation.input.type === 'logo' && (
+            {generation.type === 'logo' && (
               <Card>
                 <CardHeader>
                   <CardTitle>Logo Properties</CardTitle>
@@ -356,13 +366,23 @@ export function GenerationDetailsClient({
                   <div>
                     <span className="text-sm font-medium">Style:</span>
                     <Badge variant="outline" className="ml-2 capitalize">
-                      {generation.input.logoStyle}
+                      {(generation.output?.type === 'logo'
+                        ? generation.output.logoStyle
+                        : undefined) ??
+                        (generation.input?.type === 'logo'
+                          ? generation.input.logoStyle
+                          : undefined)}
                     </Badge>
                   </div>
                   <div>
                     <span className="text-sm font-medium">Type:</span>
                     <Badge variant="outline" className="ml-2 capitalize">
-                      {generation.input.logoType}
+                      {(generation.output?.type === 'logo'
+                        ? generation.output.logoType
+                        : undefined) ??
+                        (generation.input?.type === 'logo'
+                          ? generation.input.logoType
+                          : undefined)}
                     </Badge>
                   </div>
                 </CardContent>

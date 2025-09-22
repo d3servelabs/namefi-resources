@@ -1,5 +1,5 @@
 import { type GeneratedItem, ImageGrid } from '../image-grid';
-import { type ReactNode, useState } from 'react';
+import type { ReactNode } from 'react';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import type { Generation } from './types';
 
@@ -43,24 +43,14 @@ export function BaseGenerationTab({
   title,
   convertToGeneratedItems,
   availableLogos,
-  previewConfig,
-  onGenerateMore,
 }: BaseGenerationTabProps) {
-  const [showPreview, setShowPreview] = useState(false);
-
   // Convert existing generations to GeneratedItem format
   const existingItems = convertToGeneratedItems(
     existingGenerations,
     availableLogos,
   );
 
-  const handleGenerateMore = () => {
-    // Trigger a new generation using the callback
-    if (onGenerateMore) {
-      onGenerateMore();
-      setShowPreview(true);
-    }
-  };
+  // no-op
 
   // TODO: (sid) Implement navigate to poster tab
   // const handleGeneratePoster = () => {
@@ -88,8 +78,13 @@ export const convertLogoGenerations = (
     id: gen.id,
     url: gen.url,
     timestamp: new Date(gen.createdAt).toISOString(),
-    type: gen.type,
-    style: gen.input?.type === 'logo' ? gen.input.logoStyle : undefined,
+    // Use resolved values from output when available (AI-chosen)
+    type:
+      (gen.output?.type === 'logo' ? gen.output.logoType : undefined) ||
+      (gen.input?.type === 'logo' ? gen.input.logoType : undefined),
+    style:
+      (gen.output?.type === 'logo' ? gen.output.logoStyle : undefined) ||
+      (gen.input?.type === 'logo' ? gen.input.logoStyle : undefined),
   }));
 };
 
@@ -101,6 +96,17 @@ export const convertPosterGenerations = (
     id: gen.id,
     url: gen.url,
     timestamp: new Date(gen.createdAt).toISOString(),
+    // Show resolved collateral type when available
+    type: (() => {
+      const key =
+        (gen.output?.type === 'marketing'
+          ? gen.output.collateralType
+          : undefined) ||
+        (gen.input?.type === 'marketing'
+          ? gen.input.collateralType
+          : undefined);
+      return key ?? undefined;
+    })(),
     basedOnLogo: gen.referenceGenerationId
       ? (() => {
           const logo = availableLogos.find(
@@ -113,10 +119,29 @@ export const convertPosterGenerations = (
                 metadata:
                   logo.input?.type === 'logo'
                     ? {
-                        logoType: logo.input.logoType,
-                        logoStyle: logo.input.logoStyle,
+                        // Prefer output values if present
+                        logoType:
+                          (logo.output?.type === 'logo'
+                            ? logo.output.logoType
+                            : undefined) || logo.input.logoType,
+                        logoStyle:
+                          (logo.output?.type === 'logo'
+                            ? logo.output.logoStyle
+                            : undefined) || logo.input.logoStyle,
                       }
-                    : undefined,
+                    : (() => {
+                        const lt =
+                          logo.output?.type === 'logo'
+                            ? logo.output.logoType
+                            : undefined;
+                        const ls =
+                          logo.output?.type === 'logo'
+                            ? logo.output.logoStyle
+                            : undefined;
+                        return lt || ls
+                          ? { logoType: lt, logoStyle: ls }
+                          : undefined;
+                      })(),
               }
             : undefined;
         })()
