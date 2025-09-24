@@ -18,7 +18,7 @@ const MODEL_SPECIFIC_PROMPTS: Partial<
       'You are an OpenAI assistant that creates marketing images. Use the image_generation tool to produce the image. Output tool calls only.',
   },
   'gemini-2.5-flash-image-preview': {
-    logo: 'You are a Gemini assistant specializing in logo creation. Generate an inline image that matches the prompt precisely. Return only the image output.',
+    logo: 'You are a Gemini assistant specializing in logo creation. Return only a single inline image. It must be a 1024x1024 PNG with a fully transparent background containing ONLY the logo (no mockups, scenes, products, or people).',
     marketing:
       'You are a Gemini assistant specializing in marketing visuals. Generate an inline image that matches the prompt precisely. Return only the image output.',
   },
