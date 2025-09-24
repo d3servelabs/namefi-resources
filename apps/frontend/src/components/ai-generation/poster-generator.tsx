@@ -15,7 +15,9 @@ import { z } from 'zod';
 import { BaseGenerator, baseFormSchema } from './shared/base-generator';
 import { ControlPanel } from './shared/form-fields';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
+import { Switch } from '@/components/ui/shadcn/switch';
+import { Label } from '@/components/ui/shadcn/label';
 import type { Generation } from './shared/types';
 import {
   Select,
@@ -73,6 +75,7 @@ export function PosterGenerator({
   latestGeneration,
   onGenerateMore,
 }: PosterGeneratorProps) {
+  const [showAdvanced, setShowAdvanced] = useState(false);
   const defaultValues = useMemo(() => {
     return {
       domain: fixedDomain || '',
@@ -158,8 +161,24 @@ export function PosterGenerator({
 
         return (
           <>
+            <div className="flex justify-end items-center gap-2">
+              <Label htmlFor="poster-advanced" className="text-xs">
+                Advanced options
+              </Label>
+              <Switch
+                id="poster-advanced"
+                checked={showAdvanced}
+                onCheckedChange={setShowAdvanced}
+              />
+            </div>
             {/* Control Buttons */}
-            <ControlPanel buttons={controlButtons} />
+            <ControlPanel
+              buttons={controlButtons.filter((b) => {
+                // Only show Logo and Description by default; others behind advanced
+                if (b.key === 'logos' || b.key === 'description') return true;
+                return showAdvanced;
+              })}
+            />
 
             {/* Logo Selection */}
             {openPanel === 'logos' && availableLogos.length > 0 && (
@@ -223,7 +242,7 @@ export function PosterGenerator({
             )}
 
             {/* Model Selection */}
-            {openPanel === 'model' && (
+            {showAdvanced && openPanel === 'model' && (
               <FormField
                 control={form.control}
                 name={'model'}
@@ -258,7 +277,7 @@ export function PosterGenerator({
             )}
 
             {/* Collateral Selection */}
-            {openPanel === 'collateral' && (
+            {showAdvanced && openPanel === 'collateral' && (
               <FormField
                 control={form.control}
                 name={'collateralType'}

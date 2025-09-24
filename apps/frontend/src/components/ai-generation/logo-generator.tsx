@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/performance/noImgElement: using <img> for tile previews */
 'use client';
 
 import { Card, CardContent } from '@/components/ui/shadcn/card';
@@ -15,7 +16,7 @@ import { z } from 'zod';
 import { BaseGenerator, baseFormSchema } from './shared/base-generator';
 import { ControlPanel } from './shared/form-fields';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import type { Generation } from './shared/types';
 import {
   Select,
@@ -25,6 +26,8 @@ import {
   SelectValue,
 } from '@/components/ui/shadcn/select';
 import type { Model } from '@namefi-astra/ai';
+import { Switch } from '@/components/ui/shadcn/switch';
+import { Label } from '@/components/ui/shadcn/label';
 
 const logoFormSchema = baseFormSchema.extend({
   type: z.string().min(1, 'Logo type is required'),
@@ -55,6 +58,7 @@ export function LogoGenerator({
   latestGeneration,
   onGenerateMore,
 }: LogoGeneratorProps) {
+  const [showAdvanced, setShowAdvanced] = useState(false);
   const getTypeDisplay = (type: string) => {
     const logoType = LOGO_TYPES[type as keyof typeof LOGO_TYPES];
     return logoType ? logoType.name : type;
@@ -97,39 +101,61 @@ export function LogoGenerator({
 
         return (
           <>
+            <div className="flex justify-end items-center gap-2">
+              <Label htmlFor="logo-advanced" className="text-xs">
+                Advanced options
+              </Label>
+              <Switch
+                id="logo-advanced"
+                checked={showAdvanced}
+                onCheckedChange={setShowAdvanced}
+              />
+            </div>
             {/* Control Buttons */}
             <ControlPanel
               buttons={[
-                {
-                  key: 'type',
-                  label: 'Type',
-                  badge: selectedType
-                    ? getTypeDisplay(selectedType)
-                    : undefined,
-                  onClick: () =>
-                    setOpenPanel(openPanel === 'type' ? null : 'type'),
-                  isActive: openPanel === 'type',
-                },
-                {
-                  key: 'style',
-                  label: 'Style',
-                  badge: selectedStyle
-                    ? getStyleDisplay(selectedStyle)
-                    : undefined,
-                  onClick: () =>
-                    setOpenPanel(openPanel === 'style' ? null : 'style'),
-                  isActive: openPanel === 'style',
-                },
-                {
-                  key: 'model',
-                  label: 'Model',
-                  badge: selectedModel
-                    ? getModelDisplay(selectedModel)
-                    : undefined,
-                  onClick: () =>
-                    setOpenPanel(openPanel === 'model' ? null : 'model'),
-                  isActive: openPanel === 'model',
-                },
+                ...(showAdvanced
+                  ? [
+                      {
+                        key: 'type',
+                        label: 'Type',
+                        badge: selectedType
+                          ? getTypeDisplay(selectedType)
+                          : undefined,
+                        onClick: () =>
+                          setOpenPanel(openPanel === 'type' ? null : 'type'),
+                        isActive: openPanel === 'type',
+                      },
+                    ]
+                  : []),
+                ...(showAdvanced
+                  ? [
+                      {
+                        key: 'style',
+                        label: 'Style',
+                        badge: selectedStyle
+                          ? getStyleDisplay(selectedStyle)
+                          : undefined,
+                        onClick: () =>
+                          setOpenPanel(openPanel === 'style' ? null : 'style'),
+                        isActive: openPanel === 'style',
+                      },
+                    ]
+                  : []),
+                ...(showAdvanced
+                  ? [
+                      {
+                        key: 'model',
+                        label: 'Model',
+                        badge: selectedModel
+                          ? getModelDisplay(selectedModel)
+                          : undefined,
+                        onClick: () =>
+                          setOpenPanel(openPanel === 'model' ? null : 'model'),
+                        isActive: openPanel === 'model',
+                      },
+                    ]
+                  : []),
                 {
                   key: 'description',
                   label: 'Brand Vision',
@@ -143,7 +169,7 @@ export function LogoGenerator({
             />
 
             {/* Type Selection Tiles */}
-            {openPanel === 'type' && (
+            {showAdvanced && openPanel === 'type' && (
               <FormField
                 control={form.control}
                 name={'type'}
@@ -202,7 +228,7 @@ export function LogoGenerator({
             )}
 
             {/* Style Selection Tiles */}
-            {openPanel === 'style' && (
+            {showAdvanced && openPanel === 'style' && (
               <FormField
                 control={form.control}
                 name={'style'}
@@ -261,7 +287,7 @@ export function LogoGenerator({
             )}
 
             {/* Model Selection */}
-            {openPanel === 'model' && (
+            {showAdvanced && openPanel === 'model' && (
               <FormField
                 control={form.control}
                 name={'model'}
