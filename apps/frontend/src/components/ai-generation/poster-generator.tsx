@@ -163,7 +163,7 @@ export function PosterGenerator({
           <>
             <div className="flex justify-end items-center gap-2">
               <Label htmlFor="poster-advanced" className="text-xs">
-                Advanced options
+                Advanced
               </Label>
               <Switch
                 id="poster-advanced"

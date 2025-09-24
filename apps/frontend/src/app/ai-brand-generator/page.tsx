@@ -173,6 +173,44 @@ export default function AIBrandGeneratorPage() {
                             : 'N/A'}
                         </p>
                       </div>
+                      {Array.isArray(domainInfo.previewGenerations) &&
+                        domainInfo.previewGenerations.length > 0 && (
+                          <div className="pt-2 border-t">
+                            <div className="flex gap-2">
+                              {(
+                                domainInfo.previewGenerations as Array<{
+                                  id: string;
+                                  url: string;
+                                }>
+                              )
+                                .slice(0, 3)
+                                .map((g) => (
+                                  <div
+                                    key={g.id}
+                                    className="relative w-14 h-14 rounded-md overflow-hidden bg-black/5"
+                                  >
+                                    <img
+                                      src={g.url}
+                                      alt="preview"
+                                      width={56}
+                                      height={56}
+                                      className="object-cover"
+                                    />
+                                  </div>
+                                ))}
+                              {domainInfo.logoCount +
+                                domainInfo.marketingCount >
+                                domainInfo.previewGenerations.length && (
+                                <div className="w-14 h-14 rounded-md bg-black/5 flex items-center justify-center text-xs text-muted-foreground">
+                                  +
+                                  {domainInfo.logoCount +
+                                    domainInfo.marketingCount -
+                                    domainInfo.previewGenerations.length}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        )}
                     </div>
                   </CardContent>
                 </Card>

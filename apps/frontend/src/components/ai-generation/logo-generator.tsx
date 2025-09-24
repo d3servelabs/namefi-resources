@@ -103,7 +103,7 @@ export function LogoGenerator({
           <>
             <div className="flex justify-end items-center gap-2">
               <Label htmlFor="logo-advanced" className="text-xs">
-                Advanced options
+                Advanced
               </Label>
               <Switch
                 id="logo-advanced"

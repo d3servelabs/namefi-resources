@@ -11,7 +11,7 @@ import {
 } from '@namefi-astra/storage';
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
-import { and, count, desc, eq, max, sql, inArray } from 'drizzle-orm';
+import { and, count, desc, eq, inArray, max, sql } from 'drizzle-orm';
 import { z } from 'zod';
 import { createTRPCRouter, protectedProcedure, publicProcedure } from '../base';
 import { createLogger } from '#lib/logger';
@@ -78,7 +78,7 @@ const generateMarketingImageInputSchema = z.object({
     .default('let_ai_choose'),
   model: z
     .enum(['gpt-image-1', 'gemini-2.5-flash-image-preview'])
-    .default('gpt-image-1'),
+    .default('gemini-2.5-flash-image-preview'),
 });
 
 export const aiRouter = createTRPCRouter({
@@ -378,7 +378,57 @@ export const aiRouter = createTRPCRouter({
       .groupBy(aiGenerationsTable.domain)
       .orderBy(desc(latestGenerationAlias));
 
-    return domains;
+    // Single additional query for previews using a window function, then group in memory
+    const previewRows = await db.execute(
+      sql`SELECT id, domain, type, created_at, output
+            FROM (
+              SELECT
+                id,
+                domain,
+                type,
+                created_at,
+                output,
+                ROW_NUMBER() OVER (PARTITION BY domain ORDER BY created_at DESC) AS rn
+              FROM ai_generations
+              WHERE user_id = ${ctx.user.id}
+            ) ranked
+            WHERE rn <= 3;`,
+    );
+
+    const previewRowSchema = z.object({
+      id: z.string().uuid(),
+      domain: namefiNormalizedDomainSchema,
+      type: z.enum(['logo', 'marketing']),
+      created_at: z.coerce.date(),
+      output: z.object({ storagePath: z.string() }),
+    });
+    const parsedPreviewRows = previewRowSchema.array().parse(previewRows.rows);
+
+    type PreviewGeneration = {
+      id: string;
+      type: 'logo' | 'marketing';
+      createdAt: Date;
+      url: string;
+    };
+    const previewsByDomain = new Map<string, PreviewGeneration[]>();
+    for (const r of parsedPreviewRows) {
+      const list = previewsByDomain.get(r.domain) ?? [];
+      list.push({
+        id: r.id,
+        type: r.type,
+        createdAt: r.created_at,
+        url: generateUrlFromStoragePath(
+          r.output.storagePath,
+          config.CLOUD_FRONT_DOMAIN,
+        ),
+      });
+      previewsByDomain.set(r.domain, list);
+    }
+
+    return domains.map((d) => ({
+      ...d,
+      previewGenerations: previewsByDomain.get(d.domain) ?? [],
+    }));
   }),
 
   getGenerationsByType: protectedProcedure
