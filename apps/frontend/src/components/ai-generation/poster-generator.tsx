@@ -219,16 +219,18 @@ export function PosterGenerator({
                                 )}
                               </div>
                               <div className="space-y-1">
-                                {logo.input?.type === 'logo' && (
-                                  <span className="text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded block text-center">
-                                    {logo.input.logoType}
-                                  </span>
-                                )}
-                                {logo.input?.type === 'logo' && (
-                                  <span className="text-xs px-2 py-1 bg-purple-100 text-purple-700 rounded block text-center">
-                                    {logo.input.logoStyle}
-                                  </span>
-                                )}
+                                {logo.output?.type === 'logo' &&
+                                  logo.output.logoType && (
+                                    <span className="text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded block text-center">
+                                      {logo.output.logoType}
+                                    </span>
+                                  )}
+                                {logo.output?.type === 'logo' &&
+                                  logo.output.logoStyle && (
+                                    <span className="text-xs px-2 py-1 bg-purple-100 text-purple-700 rounded block text-center">
+                                      {logo.output.logoStyle}
+                                    </span>
+                                  )}
                               </div>
                             </CardContent>
                           </Card>

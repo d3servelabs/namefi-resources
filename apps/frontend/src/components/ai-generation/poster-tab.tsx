@@ -81,8 +81,8 @@ export function PosterTab({
         category: selectedLogo ? 'Logo-Based' : 'Standalone',
         type: 'Marketing Poster',
         style:
-          selectedLogo?.input.type === 'logo'
-            ? selectedLogo.input.logoStyle
+          selectedLogo?.output.type === 'logo'
+            ? selectedLogo.output.logoStyle
             : undefined,
         model: currentGenParams?.model,
       }}

@@ -79,12 +79,8 @@ export const convertLogoGenerations = (
     url: gen.url,
     timestamp: new Date(gen.createdAt).toISOString(),
     // Use resolved values from output when available (AI-chosen)
-    type:
-      (gen.output?.type === 'logo' ? gen.output.logoType : undefined) ||
-      (gen.input?.type === 'logo' ? gen.input.logoType : undefined),
-    style:
-      (gen.output?.type === 'logo' ? gen.output.logoStyle : undefined) ||
-      (gen.input?.type === 'logo' ? gen.input.logoStyle : undefined),
+    type: gen.output?.type === 'logo' ? gen.output.logoType : undefined,
+    style: gen.output?.type === 'logo' ? gen.output.logoStyle : undefined,
   }));
 };
 
@@ -99,12 +95,9 @@ export const convertPosterGenerations = (
     // Show resolved collateral type when available
     type: (() => {
       const key =
-        (gen.output?.type === 'marketing'
+        gen.output?.type === 'marketing'
           ? gen.output.collateralType
-          : undefined) ||
-        (gen.input?.type === 'marketing'
-          ? gen.input.collateralType
-          : undefined);
+          : undefined;
       return key ?? undefined;
     })(),
     basedOnLogo: gen.referenceGenerationId
@@ -117,31 +110,13 @@ export const convertPosterGenerations = (
                 id: logo.id,
                 result: logo.url,
                 metadata:
-                  logo.input?.type === 'logo'
+                  logo.output?.type === 'logo'
                     ? {
                         // Prefer output values if present
-                        logoType:
-                          (logo.output?.type === 'logo'
-                            ? logo.output.logoType
-                            : undefined) || logo.input.logoType,
-                        logoStyle:
-                          (logo.output?.type === 'logo'
-                            ? logo.output.logoStyle
-                            : undefined) || logo.input.logoStyle,
+                        logoType: logo.output.logoType,
+                        logoStyle: logo.output.logoStyle,
                       }
-                    : (() => {
-                        const lt =
-                          logo.output?.type === 'logo'
-                            ? logo.output.logoType
-                            : undefined;
-                        const ls =
-                          logo.output?.type === 'logo'
-                            ? logo.output.logoStyle
-                            : undefined;
-                        return lt || ls
-                          ? { logoType: lt, logoStyle: ls }
-                          : undefined;
-                      })(),
+                    : undefined,
               }
             : undefined;
         })()

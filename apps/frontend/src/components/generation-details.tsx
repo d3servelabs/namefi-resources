@@ -311,12 +311,9 @@ export function GenerationDetailsClient({
                     <Badge variant="secondary" className="capitalize">
                       {(() => {
                         const key =
-                          (generation.output?.type === 'marketing'
+                          generation.output?.type === 'marketing'
                             ? generation.output.collateralType
-                            : undefined) ??
-                          (generation.input?.type === 'marketing'
-                            ? generation.input.collateralType
-                            : undefined);
+                            : undefined;
                         return key
                           ? (collateralLabels[
                               key as keyof typeof collateralLabels
@@ -377,12 +374,9 @@ export function GenerationDetailsClient({
                   <div>
                     <span className="text-sm font-medium">Type:</span>
                     <Badge variant="outline" className="ml-2 capitalize">
-                      {(generation.output?.type === 'logo'
+                      {generation.output?.type === 'logo'
                         ? generation.output.logoType
-                        : undefined) ??
-                        (generation.input?.type === 'logo'
-                          ? generation.input.logoType
-                          : undefined)}
+                        : undefined}
                     </Badge>
                   </div>
                 </CardContent>
