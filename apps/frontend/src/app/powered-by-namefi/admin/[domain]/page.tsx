@@ -538,7 +538,7 @@ function DomainAnalytics({ domain }: { domain: NamefiNormalizedDomain }) {
                 if (!cacheData || cacheData.length === 0) return 'N/A';
                 const hits =
                   cacheData.find(
-                    (row: any) => row.dimensionValues?.[0]?.value === 'true',
+                    (row: any) => row.dimensionValues?.[0]?.value === '1',
                   )?.metricValues?.[0]?.value || 0;
                 const total = cacheData.reduce(
                   (sum: number, row: any) =>

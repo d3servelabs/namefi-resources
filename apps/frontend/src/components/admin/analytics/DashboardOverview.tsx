@@ -491,7 +491,7 @@ export default function DashboardOverview({
           <div>
             <h4 className="font-medium mb-2">Cache Hit Ratio</h4>
             {data.cacheHitRatio?.rows?.map((row: any, index: number) => {
-              const isHit = row.dimensionValues?.[0]?.value === 'true';
+              const isHit = row.dimensionValues?.[0]?.value === '1';
               const count = Number.parseInt(
                 row.metricValues?.[0]?.value || '0',
               );
