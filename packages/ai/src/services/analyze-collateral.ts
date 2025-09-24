@@ -10,17 +10,7 @@ import type { MarketingCollateralType } from '../lib/types';
 // Schema for collateral analysis with optional multiple picks
 const collateralPickSchema = z.object({
   collateralType: z
-    .enum([
-      'billboard',
-      't_shirt',
-      'coffee_mug',
-      'cap',
-      'hoodie',
-      'pizza_box',
-      'medal',
-      'flag',
-      'vehicle',
-    ])
+    .enum(['billboard', 'apparel', 'vehicle', 'product'])
     .describe('One of the supported collateral types'),
   prompt: z
     .string()
@@ -59,17 +49,7 @@ export function analyzeCollateralRequirements(
 
   const available = allowedTypes
     ? allowedTypes.join(', ')
-    : [
-        'billboard',
-        't_shirt',
-        'coffee_mug',
-        'cap',
-        'hoodie',
-        'pizza_box',
-        'medal',
-        'flag',
-        'vehicle',
-      ].join(', ');
+    : ['billboard', 'apparel', 'vehicle', 'product'].join(', ');
 
   const system = `You are a marketing creative director. Choose the most effective marketing collateral type(s) for showcasing a brand's logo.
 
@@ -85,7 +65,9 @@ RULES:
 - Return exactly the number of unique picks requested (default 1), unless fewer make sense based on explicit constraints
 - Do not repeat collateral types
 - Craft a generation-ready prompt per pick that explicitly references the chosen collateral type and key scene details
-- If collateral is vehicle, choose any domain-appropriate vehicle (e.g., bicycle, motorcycle, scooter, skateboard, delivery van, bus, taxi, truck, construction equipment, train, tram, boat, ship, drone, aircraft, race car) and describe photorealistic logo/livery placement (door, hood/bonnet, side panel, fairing, fuselage, hull, etc.) and where appropriate include the domain name as decals. Consider reflections, paint/wrap texture, curves and bodywork, perspective, motion blur (if moving), and realistic environment.
+- If collateral is vehicle, compose scenes involving cars or commercial vehicles (sedan, SUV, van) with photorealistic logo placement on the vehicle body (door, hood, side panel) and, where appropriate, include the domain name as livery or decal. Consider reflections, paint texture, curves, and perspective.
+- If collateral is apparel, compose scenes involving a physical product (e.g., t-shirt, hoodie, cap etc.) with photorealistic logo placement on the product. Consider reflections, paint texture, and perspective.
+- If collateral is product, compose scenes involving a physical product (e.g., coffee mug, television, pizza box, sports equipment etc.) with photorealistic logo placement on the product. Consider reflections, paint texture, and perspective.
 `;
 
   const user = `Brand: ${brandName}

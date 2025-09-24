@@ -31,14 +31,9 @@ export const collateralLabels: Record<
   string
 > = {
   billboard: 'Billboard',
-  t_shirt: 'T-Shirt',
-  coffee_mug: 'Coffee Mug',
-  cap: 'Cap',
-  hoodie: 'Hoodie',
-  pizza_box: 'Pizza Box',
-  medal: 'Medal',
-  flag: 'Flag',
+  apparel: 'Apparel',
   vehicle: 'Vehicle',
+  product: 'Product',
   let_ai_choose: 'Let AI choose',
 };
 
@@ -46,17 +41,7 @@ const posterFormSchema = baseFormSchema.extend({
   selectedLogoId: z.string().uuid(),
   collateralType: z
     .union([
-      z.enum([
-        'billboard',
-        't_shirt',
-        'coffee_mug',
-        'cap',
-        'hoodie',
-        'pizza_box',
-        'medal',
-        'flag',
-        'vehicle',
-      ]),
+      z.enum(['billboard', 'apparel', 'vehicle', 'product']),
       z.literal('let_ai_choose'),
     ])
     .default('let_ai_choose'),
@@ -298,14 +283,9 @@ export function PosterGenerator({
                             Let AI choose
                           </SelectItem>
                           <SelectItem value="billboard">Billboard</SelectItem>
-                          <SelectItem value="t_shirt">T-Shirt</SelectItem>
-                          <SelectItem value="coffee_mug">Coffee Mug</SelectItem>
-                          <SelectItem value="cap">Cap</SelectItem>
-                          <SelectItem value="hoodie">Hoodie</SelectItem>
-                          <SelectItem value="pizza_box">Pizza Box</SelectItem>
-                          <SelectItem value="medal">Medal</SelectItem>
-                          <SelectItem value="flag">Flag</SelectItem>
+                          <SelectItem value="apparel">Apparel</SelectItem>
                           <SelectItem value="vehicle">Vehicle</SelectItem>
+                          <SelectItem value="product">Product</SelectItem>
                         </SelectContent>
                       </Select>
                     </FormControl>

@@ -620,14 +620,9 @@ export const aiGenerationsTable = pgTable(
           description?: string;
           collateralType:
             | 'billboard'
-            | 't_shirt'
-            | 'coffee_mug'
-            | 'cap'
-            | 'hoodie'
-            | 'pizza_box'
-            | 'medal'
-            | 'flag'
+            | 'apparel'
             | 'vehicle'
+            | 'product'
             | 'let_ai_choose';
         }
     >(),
@@ -645,14 +640,10 @@ export const aiGenerationsTable = pgTable(
           externalId?: string;
           collateralType:
             | 'billboard'
-            | 't_shirt'
-            | 'coffee_mug'
-            | 'cap'
-            | 'hoodie'
-            | 'pizza_box'
-            | 'medal'
-            | 'flag'
-            | 'vehicle';
+            | 'apparel'
+            | 'vehicle'
+            | 'product'
+            | 'let_ai_choose';
         }
     >(),
     metadata: jsonb('metadata').default({}),
@@ -718,13 +709,9 @@ export const internalAiGenerationsTable = pgTable(
           description?: string;
           collateralType:
             | 'billboard'
-            | 't_shirt'
-            | 'coffee_mug'
-            | 'cap'
-            | 'hoodie'
-            | 'pizza_box'
-            | 'medal'
-            | 'flag'
+            | 'apparel'
+            | 'vehicle'
+            | 'product'
             | 'let_ai_choose';
         }
     >(),
@@ -740,15 +727,7 @@ export const internalAiGenerationsTable = pgTable(
           type: 'marketing';
           storagePath: string;
           externalId?: string;
-          collateralType:
-            | 'billboard'
-            | 't_shirt'
-            | 'coffee_mug'
-            | 'cap'
-            | 'hoodie'
-            | 'pizza_box'
-            | 'medal'
-            | 'flag';
+          collateralType: 'billboard' | 'apparel' | 'vehicle' | 'product';
         }
     >(),
     metadata: jsonb('metadata').default({}),

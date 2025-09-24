@@ -84,7 +84,7 @@ export function PosterTab({
           selectedLogo?.input.type === 'logo'
             ? selectedLogo.input.logoStyle
             : undefined,
-        model: (currentGenParams as any)?.model,
+        model: currentGenParams?.model,
       }}
       onGenerateMore={handleGenerateMore}
     />

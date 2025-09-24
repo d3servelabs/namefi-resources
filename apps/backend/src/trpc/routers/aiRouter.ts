@@ -72,17 +72,7 @@ const generateMarketingImageInputSchema = z.object({
   referenceLogoGenerationId: z.string().optional(),
   collateralType: z
     .union([
-      z.enum([
-        'billboard',
-        't_shirt',
-        'coffee_mug',
-        'cap',
-        'hoodie',
-        'pizza_box',
-        'medal',
-        'flag',
-        'vehicle',
-      ]),
+      z.enum(['billboard', 'apparel', 'vehicle', 'product']),
       z.literal('let_ai_choose'),
     ])
     .default('let_ai_choose'),

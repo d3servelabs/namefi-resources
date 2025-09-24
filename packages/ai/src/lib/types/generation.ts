@@ -44,14 +44,9 @@ export interface BaseGenerationParams {
 // Marketing collateral types supported by UI and prompt builder
 export type MarketingCollateralType =
   | 'billboard'
-  | 't_shirt'
-  | 'coffee_mug'
-  | 'cap'
-  | 'hoodie'
-  | 'pizza_box'
-  | 'medal'
-  | 'flag'
-  | 'vehicle';
+  | 'apparel'
+  | 'vehicle'
+  | 'product';
 
 export interface GenerateLogoParams extends BaseGenerationParams {
   domain: NamefiNormalizedDomain;
