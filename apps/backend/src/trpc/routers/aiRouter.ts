@@ -468,6 +468,13 @@ export const aiRouter = createTRPCRouter({
         .from(aiGenerationsTable)
         .where(eq(aiGenerationsTable.id, input.id));
 
+      if (!generation) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Generation not found',
+        });
+      }
+
       return {
         ...generation,
         url: generateUrlFromStoragePath(
