@@ -123,8 +123,8 @@ type ValidateApiKeyAndGetDetailsResult =
 async function validateApiKeyAndGetDetails(
   apiKeyFromHeader: string | undefined | null,
 ): Promise<ValidateApiKeyAndGetDetailsResult> {
-  logger.debug('apiKeyFromHeader', apiKeyFromHeader);
-  logger.debug('secrets.API_AUTH_KEY', secrets.API_AUTH_KEY);
+  logger.debug(`apiKeyFromHeader ${apiKeyFromHeader}`);
+  logger.debug(`secrets.API_AUTH_KEY ${secrets.API_AUTH_KEY}`);
   if (
     !apiKeyFromHeader ||
     !timingSafeEqual(
