@@ -2,7 +2,7 @@ import type { ZodSchema } from 'zod';
 
 export interface LoadSecretsOptions<Z> {
   secretsSchema: Z;
-  secrets?: Record<string, string>;
+  secrets?: Record<string, string | undefined>;
 }
 
 export const loadSecrets = <Z extends ZodSchema<any>>(

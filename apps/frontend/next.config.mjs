@@ -23,7 +23,7 @@ const nextConfig = {
   compiler: {
     define: {
       'process.env.LOADED_CONFIG': JSON.stringify(appConfig),
-      'process.env.LOADED_SECRETS': JSON.stringify(
+      'process.env.LOADED_CLIENT_SIDE_ENV': JSON.stringify(
         Object.fromEntries(
           Object.entries(process.env).filter(([key]) =>
             key.startsWith('NEXT_PUBLIC_'),

@@ -27,6 +27,12 @@ export const configSchema = z.object({
 
 export type ConfigInput = z.input<typeof configSchema>;
 
-export const secretsSchema = z.object({});
+export const serverSideSecretsSchema = z.object({
+  API_AUTH_KEY: z.string(),
+});
 
-export type SecretsInput = z.input<typeof secretsSchema>;
+export type SecretsInput = z.input<typeof serverSideSecretsSchema>;
+
+export const clientSideEnvSchema = z.object({});
+
+export type ClientSideEnvInput = z.input<typeof clientSideEnvSchema>;
