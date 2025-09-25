@@ -34,7 +34,7 @@ const logoFormSchema = baseFormSchema.extend({
   style: z.string().min(1, 'Logo style is required'),
   model: z
     .enum(['gpt-image-1', 'gemini-2.5-flash-image-preview'])
-    .default('gemini-2.5-flash-image-preview'),
+    .default('gpt-image-1'),
 });
 
 type LogoFormData = z.infer<typeof logoFormSchema>;
