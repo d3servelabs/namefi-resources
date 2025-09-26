@@ -460,6 +460,46 @@ export const aiRouter = createTRPCRouter({
       }));
     }),
 
+  getFeaturedAndRecentGenerations: publicProcedure.query(async () => {
+    const selectFields = {
+      id: aiGenerationsTable.id,
+      domain: aiGenerationsTable.domain,
+      type: aiGenerationsTable.type,
+      createdAt: aiGenerationsTable.createdAt,
+      output: aiGenerationsTable.output,
+    };
+
+    const [featuredRows, recentRows] = await Promise.all([
+      db
+        .select(selectFields)
+        .from(aiGenerationsTable)
+        .where(eq(aiGenerationsTable.featured, true))
+        .orderBy(desc(aiGenerationsTable.createdAt)),
+      db
+        .select(selectFields)
+        .from(aiGenerationsTable)
+        .orderBy(desc(aiGenerationsTable.createdAt))
+        .limit(50),
+    ]);
+
+    const mapRows = (rows: typeof featuredRows) =>
+      rows.map((row) => ({
+        id: row.id,
+        domain: row.domain,
+        type: row.type,
+        createdAt: row.createdAt,
+        url: generateUrlFromStoragePath(
+          row.output.storagePath,
+          config.CLOUD_FRONT_DOMAIN,
+        ),
+      }));
+
+    return {
+      featured: mapRows(featuredRows),
+      recent: mapRows(recentRows),
+    };
+  }),
+
   getGenerationById: publicProcedure
     .input(z.object({ id: z.string() }))
     .query(async ({ input }) => {

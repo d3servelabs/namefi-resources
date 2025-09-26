@@ -14,6 +14,7 @@ import { useAuth } from '@/hooks/use-auth';
 import { useTRPC } from '@/lib/trpc';
 import { useQuery } from '@tanstack/react-query';
 import { Sparkles } from 'lucide-react';
+import { useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { useLocalStorage } from 'usehooks-ts';
@@ -49,6 +50,20 @@ const LoadingSkeletons = () => (
   </div>
 );
 
+const ShowcaseSkeleton = () => (
+  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {Array.from({ length: 6 }).map((_, index) => (
+      <Card key={index} className="overflow-hidden">
+        <div className="aspect-square bg-muted animate-pulse" />
+        <CardContent className="py-4 space-y-2">
+          <Skeleton className="h-4 w-32" />
+          <Skeleton className="h-4 w-24" />
+        </CardContent>
+      </Card>
+    ))}
+  </div>
+);
+
 const EmptyBrandsPlaceholder = () => (
   <EmptyPlaceholder>
     <div className="flex size-20 items-center justify-center rounded-full bg-muted">
@@ -75,6 +90,11 @@ export default function AIBrandGeneratorPage() {
     enabled: isAuthenticated,
   });
 
+  const { data: featuredAndRecent, isLoading: isFeaturedAndRecentLoading } =
+    useQuery({
+      ...trpc.ai.getFeaturedAndRecentGenerations.queryOptions(),
+    });
+
   // Get usage to detect first-time users
   const { data: usage } = useQuery({
     ...trpc.ai.getUserGenerationUsage.queryOptions(),
@@ -86,6 +106,26 @@ export default function AIBrandGeneratorPage() {
     'ai_onboarding_complete',
     false,
   );
+
+  const showcaseGenerations = useMemo(() => {
+    if (!featuredAndRecent) return [];
+    const seen = new Set<string>();
+    const ordered: NonNullable<typeof featuredAndRecent>['featured'] = [];
+
+    for (const generation of featuredAndRecent.featured ?? []) {
+      if (seen.has(generation.id)) continue;
+      ordered.push(generation);
+      seen.add(generation.id);
+    }
+
+    for (const generation of featuredAndRecent.recent ?? []) {
+      if (seen.has(generation.id)) continue;
+      ordered.push(generation);
+      seen.add(generation.id);
+    }
+
+    return ordered;
+  }, [featuredAndRecent]);
 
   if (isAuthLoading) {
     return (
@@ -219,6 +259,40 @@ export default function AIBrandGeneratorPage() {
           </div>
         ) : (
           <EmptyBrandsPlaceholder />
+        )}
+      </div>
+
+      <div className="mt-16">
+        <h3 className="text-xl font-semibold mb-4">Trending inspirations</h3>
+        {isFeaturedAndRecentLoading ? (
+          <ShowcaseSkeleton />
+        ) : showcaseGenerations.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {showcaseGenerations.map((generation) => (
+              <Card key={generation.id} className="overflow-hidden">
+                <div className="relative aspect-square bg-muted">
+                  <img
+                    src={generation.url}
+                    alt={generation.domain}
+                    className="object-cover w-full h-full"
+                    loading="lazy"
+                  />
+                </div>
+                <CardContent className="py-4">
+                  <p className="text-sm font-medium truncate">
+                    {generation.domain}
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-1 uppercase tracking-wide">
+                    {generation.type}
+                  </p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        ) : (
+          <p className="text-sm text-muted-foreground">
+            No public generations to showcase yet. Check back soon!
+          </p>
         )}
       </div>
     </div>
