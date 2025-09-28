@@ -45,7 +45,171 @@ import { schedulesRouter } from './admin/schedulesRouter';
 import { poweredByNamefiRouter } from './admin/poweredByNamefiRouter';
 import { permissionsRouter } from './admin/permissionsRouter';
 import { ResourceType } from '#lib/auditor';
-import { canUserAccessAdminPanel } from '../utils';
+import {
+  canUserAccessAdminPanel,
+  getAllUsersThatCanAccessAdminPanel,
+} from '../utils';
+
+// Simple in-memory cache for Privy user metadata
+const PRIVY_CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes
+const privyUserCache = new Map<string, { value: any; expiresAt: number }>();
+const allPrivyUsersCache: { value: any[]; expiresAt: number } = {
+  value: [],
+  expiresAt: 0,
+};
+
+async function getPrivyUserCached(privyUserId: string): Promise<any | null> {
+  try {
+    const now = Date.now();
+    const key = `privy:${privyUserId}`;
+    const cached = privyUserCache.get(key);
+    if (cached && cached.expiresAt > now) {
+      return cached.value;
+    }
+    const user = await privyClient.getUserById(privyUserId);
+    privyUserCache.set(key, {
+      value: user,
+      expiresAt: now + PRIVY_CACHE_TTL_MS,
+    });
+    return user;
+  } catch (error) {
+    logger.warn(
+      { privyUserId, error },
+      'Failed to fetch Privy user; continuing',
+    );
+    return null;
+  }
+}
+
+async function getAllPrivyUsersCached(): Promise<any[]> {
+  const now = Date.now();
+  if (allPrivyUsersCache.value.length && allPrivyUsersCache.expiresAt > now) {
+    return allPrivyUsersCache.value;
+  }
+  try {
+    const users = await privyClient.getUsers();
+    allPrivyUsersCache.value = users;
+    allPrivyUsersCache.expiresAt = now + PRIVY_CACHE_TTL_MS;
+    return users;
+  } catch (error) {
+    logger.error({ error }, 'Failed to fetch all Privy users');
+    return [];
+  }
+}
+
+function escapeSqlLiteral(input: string): string {
+  return input.replace(/'/g, "''");
+}
+
+async function buildSimplifiedPrivyUsers(): Promise<
+  Array<{
+    privyUserId: string;
+    email: string;
+    displayName: string;
+    wallets: string[];
+  }>
+> {
+  const allPrivy = await getAllPrivyUsersCached();
+  return allPrivy.map((p: any) => {
+    const wallets: string[] = (p.linkedAccounts || [])
+      .filter(
+        (la: any) => la?.type === 'wallet' && la?.chainType === 'ethereum',
+      )
+      .map((la: any) => String(la.address || '').toLowerCase())
+      .filter(Boolean);
+    const email = String(p.email?.address || '').toLowerCase();
+    const displayName = email ? email.split('@')[0] : '';
+    const mainWallet = String(p.wallet?.address || '').toLowerCase();
+    if (mainWallet && !wallets.includes(mainWallet)) wallets.push(mainWallet);
+    return {
+      privyUserId: String(p.id || ''),
+      email,
+      displayName,
+      wallets,
+    };
+  });
+}
+
+function buildPrivyValuesSQL(
+  simplified: Array<{
+    privyUserId: string;
+    email: string;
+    displayName: string;
+    wallets: string[];
+  }>,
+): string {
+  const valuesRows = simplified.map((u) => {
+    const walletsArray = u.wallets.length
+      ? `ARRAY[${u.wallets.map((w) => `'${escapeSqlLiteral(w)}'`).join(',')}]`
+      : 'ARRAY[]::text[]';
+    return `('${escapeSqlLiteral(u.privyUserId)}','${escapeSqlLiteral(u.email)}','${escapeSqlLiteral(
+      u.displayName,
+    )}', ${walletsArray})`;
+  });
+  return valuesRows.length
+    ? valuesRows.join(',')
+    : `('','','', ARRAY[]::text[])`;
+}
+
+function buildPrivySearchWhereClause(
+  term: string,
+  resolvedWallet: string | null,
+): string {
+  if (resolvedWallet) {
+    return `EXISTS (SELECT 1 FROM unnest(p.wallets) w WHERE w = '${escapeSqlLiteral(resolvedWallet)}')`;
+  }
+  const likeTerm = `%${escapeSqlLiteral(term)}%`;
+  return `(
+    p.email ILIKE '${likeTerm}' OR
+    p.display_name ILIKE '${likeTerm}' OR
+    p.privy_user_id ILIKE '${likeTerm}' OR
+    EXISTS (SELECT 1 FROM unnest(p.wallets) w WHERE w ILIKE '${likeTerm}')
+  )`;
+}
+
+type PrivyJoinedUserRow = {
+  id: string;
+  privy_user_id: string;
+  created_at?: Date;
+  updated_at?: Date;
+  primary_email: string | null;
+  display_name: string | null;
+  wallets: string[] | null;
+};
+
+function buildPrivyUsersListQueries(
+  valuesSql: string,
+  whereClause: string,
+  pageSize: number,
+  offset: number,
+) {
+  const itemsQuery = sql`
+WITH privy_data (privy_user_id, email, display_name, wallets) AS (
+  VALUES ${sql.raw(valuesSql)}
+)
+SELECT u.id, u.privy_user_id, u.created_at, u.updated_at,
+       COALESCE(u.primary_email, p.email) as primary_email,
+       p.display_name, p.wallets
+FROM ${usersTable} as u
+JOIN privy_data p ON p.privy_user_id = u.privy_user_id
+WHERE ${sql.raw(whereClause)}
+ORDER BY u.created_at DESC
+LIMIT ${pageSize}
+OFFSET ${offset}
+  `;
+
+  const countQuery = sql`
+WITH privy_data (privy_user_id, email, display_name, wallets) AS (
+  VALUES ${sql.raw(valuesSql)}
+)
+SELECT COUNT(*)::int as count
+FROM ${usersTable} as u
+JOIN privy_data p ON p.privy_user_id = u.privy_user_id
+WHERE ${sql.raw(whereClause)}
+  `;
+
+  return { itemsQuery, countQuery };
+}
 /**
  * Convert protobuf WorkflowExecutionStatus enum to readable string
  */
@@ -1624,6 +1788,131 @@ export const adminRouter = createTRPCRouter({
           message: 'Failed to search users',
         });
       }
+    }),
+
+  listUsers: adminProcedureWithPermissions(Permission.READ_USERS)
+    .input(
+      z.object({
+        page: z.number().min(1).default(1),
+        pageSize: z.number().min(1).max(100).default(25),
+        searchTerm: z.string().optional(),
+      }),
+    )
+    .query(async ({ input }) => {
+      const { page, pageSize, searchTerm } = input;
+      const offset = (page - 1) * pageSize;
+
+      // Fetch admin users once to avoid per-user checks
+      const adminIdsSet = await getAllUsersThatCanAccessAdminPanel();
+
+      const term = (searchTerm ?? '').trim().toLowerCase();
+      // If searchTerm provided, use CTE with cached Privy users then filter via WHERE
+      if (term.length > 0) {
+        let resolvedWallet: string | null = null;
+        if (term.includes('.') && !term.includes('@')) {
+          try {
+            const addr = await resolveENSToWallet(searchTerm!);
+            if (addr) resolvedWallet = addr.toLowerCase();
+          } catch {}
+        }
+
+        const simplified = await buildSimplifiedPrivyUsers();
+        const valuesSql = buildPrivyValuesSQL(simplified);
+        const whereClause = buildPrivySearchWhereClause(term, resolvedWallet);
+
+        const { itemsQuery, countQuery } = buildPrivyUsersListQueries(
+          valuesSql,
+          whereClause,
+          pageSize,
+          offset,
+        );
+
+        const [itemsRows, countRows] = await Promise.all([
+          (db as any).execute(itemsQuery) as Promise<{
+            rows: Array<{
+              id: string;
+              privy_user_id: string;
+              created_at: Date;
+              updated_at: Date;
+              primary_email: string | null;
+              display_name: string | null;
+              wallets: string[] | null;
+            }>;
+          }>,
+          (db as any).execute(countQuery) as Promise<{
+            rows: Array<{ count: number }>;
+          }>,
+        ]);
+
+        const items = (itemsRows.rows || []).map((r) => ({
+          id: r.id,
+          privyUserId: r.privy_user_id,
+          primaryEmail: r.primary_email,
+          createdAt: r.created_at,
+          updatedAt: r.updated_at,
+          isAdmin: adminIdsSet.has(r.id),
+          displayName: r.display_name,
+          walletAddresses: r.wallets ?? [],
+        }));
+
+        const total = countRows.rows?.[0]?.count ?? 0;
+        return {
+          items,
+          page,
+          pageSize,
+          total,
+          totalPages: Math.ceil(total / pageSize),
+        };
+      }
+
+      // No search term: default paginated list with lightweight per-row Privy metadata
+      const [rows, countRow] = await Promise.all([
+        db.query.usersTable.findMany({
+          orderBy: (t, { desc }) => [desc(t.createdAt)],
+          limit: pageSize,
+          offset,
+          columns: {
+            id: true,
+            privyUserId: true,
+            createdAt: true,
+            updatedAt: true,
+          },
+        }),
+        db.select({ count: sql<number>`COUNT(*)` }).from(usersTable),
+      ]);
+
+      const items = await Promise.all(
+        rows.map(async (u) => {
+          const privy = u.privyUserId
+            ? await getPrivyUserCached(u.privyUserId)
+            : null;
+          const walletAddresses = privy
+            ? getPrivyUserLinkedEthereumWalletAddresses({ privyUser: privy })
+            : [];
+          const displayName = privy?.email?.address?.split?.('@')?.[0] ?? null;
+          const primaryEmail = privy?.email?.address ?? null;
+          const isAdmin = adminIdsSet.has(u.id);
+          return {
+            id: u.id,
+            privyUserId: u.privyUserId,
+            primaryEmail,
+            createdAt: u.createdAt,
+            updatedAt: u.updatedAt,
+            isAdmin,
+            displayName,
+            walletAddresses,
+          };
+        }),
+      );
+
+      const total = countRow[0]?.count ?? 0;
+      return {
+        items,
+        page,
+        pageSize,
+        total,
+        totalPages: Math.ceil(total / pageSize),
+      };
     }),
 
   burnAllExpiredDomains: auditedAdminProcedureWithPermissions(

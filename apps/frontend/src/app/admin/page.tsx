@@ -206,29 +206,27 @@ export default withAdminGuard(function AdminPage() {
           </Card>
         </Link>
 
-        {/* User Management - Disabled */}
-        <Card className="h-full opacity-50 cursor-not-allowed">
-          <CardHeader className="pb-3">
-            <div className="flex items-center space-x-3">
-              <div className="p-2 rounded-lg bg-gray-100 text-gray-400">
-                <Users className="h-5 w-5" />
-              </div>
-              <div>
-                <CardTitle className="text-lg text-muted-foreground">
-                  User Management
-                </CardTitle>
-                <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded-full">
-                  Coming Soon
-                </span>
-              </div>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-muted-foreground">
-              Manage user accounts, permissions, and access controls.
-            </p>
-          </CardContent>
-        </Card>
+        {/* Users */}
+        <PermissionGate permissions={[Permission.READ_USERS]}>
+          <Link href="/admin/users" className="group">
+            <Card className="h-full transition-all hover:shadow-md hover:bg-muted/50">
+              <CardHeader className="pb-3">
+                <div className="flex items-center space-x-3">
+                  <div className="p-2 rounded-lg bg-gray-100 text-gray-700 group-hover:bg-gray-200 transition-colors">
+                    <Users className="h-5 w-5" />
+                  </div>
+                  <CardTitle className="text-lg">Users</CardTitle>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground">
+                  Browse users, view details, search by email, wallets, ENS, and
+                  impersonate when allowed.
+                </p>
+              </CardContent>
+            </Card>
+          </Link>
+        </PermissionGate>
 
         {/* Analytics */}
         <PermissionGate permissions={[Permission.READ_ANALYTICS]}>
