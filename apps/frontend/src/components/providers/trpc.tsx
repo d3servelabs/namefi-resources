@@ -127,12 +127,9 @@ export function TrpcProvider({ children }: { children: React.ReactNode }) {
                 // options to pass to the EventSourcePolyfill constructor
                 eventSourceOptions: async () => {
                   // Get fresh access token for each connection attempt
-                  const token = await getAccessToken();
+                  const headers = await getHeaders();
                   return {
-                    headers: {
-                      'Content-Type': 'application/json',
-                      Authorization: `Bearer ${token || ''}`,
-                    },
+                    headers,
                   };
                 },
               }),
@@ -140,12 +137,7 @@ export function TrpcProvider({ children }: { children: React.ReactNode }) {
             false: httpLink({
               url: `${config.BACKEND_URL}/trpc`,
               transformer: superjson,
-              async headers() {
-                return {
-                  'Content-Type': 'application/json',
-                  Authorization: `Bearer ${(await getAccessToken()) || ''}`,
-                };
-              },
+              headers: getHeaders,
               fetch(url, options) {
                 return fetch(url, { ...options, credentials: 'include' });
               },
@@ -155,12 +147,7 @@ export function TrpcProvider({ children }: { children: React.ReactNode }) {
           false: httpBatchLink({
             url: `${config.BACKEND_URL}/trpc`,
             transformer: superjson,
-            async headers() {
-              return {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${(await getAccessToken()) || ''}`,
-              };
-            },
+            headers: getHeaders,
             fetch(url, options) {
               return fetch(url, { ...options, credentials: 'include' });
             },
@@ -176,4 +163,12 @@ export function TrpcProvider({ children }: { children: React.ReactNode }) {
       </TRPCProvider>
     </QueryClientProvider>
   );
+}
+
+async function getHeaders() {
+  const token = await getAccessToken();
+  return {
+    'Content-Type': 'application/json',
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+  };
 }
