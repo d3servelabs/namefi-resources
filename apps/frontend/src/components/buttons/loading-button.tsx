@@ -36,11 +36,11 @@ export const LoadingButton = ({
     }
     return (
       <>
-        {loadingIcon ?? <Loader2 className="w-4 h-4 animate-spin" />}{' '}
-        {loadingText ?? 'Pending...'}
+        {loadingIcon ?? <Loader2 className="w-4 h-4 animate-spin" />}
+        {props.size !== 'icon' ? ` ${loadingText ?? 'Pending...'}` : false}
       </>
     );
-  }, [customLoadingContent, loadingText, loadingIcon]);
+  }, [customLoadingContent, loadingText, loadingIcon, props.size]);
 
   return (
     <Button
