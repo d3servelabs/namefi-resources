@@ -113,3 +113,17 @@ export async function canUserAccessAdminPanel({
     return false; // fail closed
   }
 }
+
+/**
+ * Returns a Set of user IDs who have at least one permission row,
+ * i.e., users who can access the admin panel.
+ */
+export async function getAllUsersThatCanAccessAdminPanel(): Promise<
+  Set<string>
+> {
+  const rows = await db
+    .select({ userId: userPermissionsTable.userId })
+    .from(userPermissionsTable)
+    .groupBy(userPermissionsTable.userId);
+  return new Set(rows.map((r) => r.userId));
+}

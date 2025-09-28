@@ -63,7 +63,7 @@ app.use(async (...args) => {
       return null; // Block other origins
     },
     allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
-    allowHeaders: ['Content-Type', 'Authorization'],
+    allowHeaders: ['Content-Type', 'Authorization', 'x-api-key'],
     credentials: true, // Allow cookies if needed
   })(...args);
 });

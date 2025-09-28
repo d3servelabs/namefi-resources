@@ -2,11 +2,12 @@ import {
   type UserSelect,
   db,
   poweredbyNamefiDomainsTable,
+  usersTable,
 } from '@namefi-astra/db';
 import { initTRPC } from '@trpc/server';
 import { TRPCError } from '@trpc/server';
 import type { FetchCreateContextFnOptions } from '@trpc/server/adapters/fetch';
-import type { Context } from 'hono';
+import type { Context as HonoContext } from 'hono';
 import type { ConnInfo } from 'hono/conninfo';
 import { isNil, isEmpty } from 'ramda';
 import superjson from 'superjson';
@@ -33,6 +34,7 @@ import {
   type AuditActorExtraInfo,
 } from '#lib/auditor';
 import { timingSafeEqual } from 'crypto';
+import { getSignedCookie } from 'hono/cookie';
 
 /**
  * Get the powered by namefi (pbn) domain from the origin.
@@ -157,7 +159,7 @@ async function validateApiKeyAndGetDetails(
  */
 export const createContext = async (
   _opts: FetchCreateContextFnOptions,
-  c: Context,
+  c: HonoContext,
 ): Promise<TrpcContext> => {
   const originText = c.req.header('Origin');
   const apiKeyFromHeader = c.req.header('x-api-key') || null;
@@ -202,6 +204,7 @@ export const createContext = async (
   return {
     req: c.req,
     res: c.res,
+    honoCtx: c,
     db,
     /**
      * Cached list of the current user's permissions for this request lifecycle.
@@ -222,8 +225,9 @@ export const createContext = async (
 };
 
 export type TrpcContext = {
-  req: Context['req'];
-  res: Context['res'];
+  req: HonoContext['req'];
+  res: HonoContext['res'];
+  honoCtx?: HonoContext;
   db: typeof db;
   /**
    * The domain name of the selling SLD, it will be null in case it is a Namefi first party origin
@@ -238,6 +242,13 @@ export type TrpcContext = {
   honoVars?: {
     requestId: string;
     connInfo: ConnInfo;
+  };
+  /**
+   * Impersonation metadata for this request if applicable
+   */
+  impersonation?: {
+    actorUserId: string;
+    targetUserId: string;
   };
 };
 
@@ -305,6 +316,26 @@ export const createCallerFactory = t.createCallerFactory;
  * @see https://trpc.io/docs/router
  */
 export const createTRPCRouter = t.router;
+
+/**
+ * Helper to read impersonation target strictly from cookie.
+ * Returns a normalized lowercase user id or null if not present.
+ */
+async function readImpersonationTargetUserId(
+  ctx: TrpcContext,
+): Promise<string | null> {
+  try {
+    const cookieVal = await getSignedCookie(
+      ctx.honoCtx as HonoContext,
+      'impersonate-user-id',
+      secrets.COOKIE_SECRET,
+    );
+    const raw = cookieVal?.toString()?.trim();
+    return raw ? raw.toLowerCase() : null;
+  } catch {
+    return null;
+  }
+}
 
 /**
  * Middleware for timing procedure execution and adding an artificial delay in development.
@@ -375,15 +406,6 @@ export const verifyUserAuthAndCreation = t.middleware<TrpcContextWithUser>(
         sessionId,
       });
 
-      setExecutionContext(
-        createUserContext({
-          userId: user.id,
-          sessionId: sessionId ?? undefined,
-          privyUserId: user.privyUserId,
-          requestId: ctx.honoVars?.requestId,
-        }),
-      );
-
       // Load user permissions for this request
       const permissionsRows = await appDb
         .select({ permission: userPermissionsTable.permission })
@@ -393,12 +415,64 @@ export const verifyUserAuthAndCreation = t.middleware<TrpcContextWithUser>(
         (r) => r.permission as Permission,
       );
 
+      // Apply impersonation if token is present and caller has permission
+      const impersonateUserId = await readImpersonationTargetUserId(ctx);
+
+      let effectiveUser = user;
+      let impersonation:
+        | { actorUserId: string; targetUserId: string }
+        | undefined;
+      if (impersonateUserId && impersonateUserId !== user.id) {
+        if (!userPermissions.includes(Permission.IMPERSONATE_USERS) && user) {
+          throw new TRPCError({
+            code: 'FORBIDDEN',
+            message: 'Missing permission to impersonate user',
+          });
+        }
+
+        const targetUser = await appDb.query.usersTable.findFirst({
+          where: eq(usersTable.id, impersonateUserId),
+        });
+        if (!targetUser) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'Target user not found',
+          });
+        }
+        // Do not allow impersonating other admins
+        const targetIsAdmin = await canUserAccessAdminPanel(targetUser);
+        if (targetIsAdmin) {
+          throw new TRPCError({
+            code: 'FORBIDDEN',
+            message: 'Cannot impersonate an admin user',
+          });
+        }
+        effectiveUser = targetUser;
+        impersonation = { actorUserId: user.id, targetUserId: targetUser.id };
+        logger.assign({
+          impersonating: true,
+          actorUserId: user.id,
+          targetUserId: targetUser.id,
+        });
+      }
+
+      // Set execution context using the effective user (impersonated or original)
+      setExecutionContext(
+        createUserContext({
+          userId: effectiveUser.id,
+          sessionId: sessionId ?? undefined,
+          privyUserId: effectiveUser.privyUserId,
+          requestId: ctx.honoVars?.requestId,
+        }),
+      );
+
       return next({
         ctx: {
           ...ctx,
-          user,
+          user: effectiveUser,
           sessionId,
           userPermissions,
+          impersonation,
         },
       });
     } catch (error) {
@@ -440,20 +514,62 @@ export const maybeVerifyUserAuthAndCreation =
     );
     // Load user permissions if user exists
     let userPermissions: Permission[] = ctx.userPermissions ?? [];
+    let effectiveUser = user ?? null;
+    let impersonation:
+      | { actorUserId: string; targetUserId: string }
+      | undefined;
     if (user) {
       const permissionsRows = await appDb
         .select({ permission: userPermissionsTable.permission })
         .from(userPermissionsTable)
         .where(eq(userPermissionsTable.userId, user.id));
       userPermissions = permissionsRows.map((r) => r.permission as Permission);
+
+      // Apply impersonation if token is present and caller has permission
+      const impersonateUserId = await readImpersonationTargetUserId(ctx);
+      if (
+        impersonateUserId &&
+        impersonateUserId !== user.id &&
+        userPermissions.includes(Permission.IMPERSONATE_USERS)
+      ) {
+        const targetUser = await appDb.query.usersTable.findFirst({
+          where: eq(usersTable.id, impersonateUserId),
+        });
+        if (targetUser) {
+          // Do not allow impersonating other admins
+          const targetIsAdmin = await canUserAccessAdminPanel(targetUser);
+          if (targetIsAdmin) {
+            throw new TRPCError({
+              code: 'FORBIDDEN',
+              message: 'Cannot impersonate an admin user',
+            });
+          }
+          effectiveUser = targetUser;
+          impersonation = { actorUserId: user.id, targetUserId: targetUser.id };
+          logger.assign({
+            impersonating: true,
+            actorUserId: user.id,
+            targetUserId: targetUser.id,
+          });
+          setExecutionContext(
+            createUserContext({
+              userId: targetUser.id,
+              sessionId: sessionId ?? undefined,
+              privyUserId: targetUser.privyUserId,
+              requestId: ctx.honoVars?.requestId,
+            }),
+          );
+        }
+      }
     }
 
     return next({
       ctx: {
         ...ctx,
-        user,
+        user: effectiveUser,
         sessionId,
         userPermissions,
+        impersonation,
       },
     });
   });
@@ -622,6 +738,13 @@ export const auditedAdminProcedure = (
         responseTimeInMs: performance.now() - start,
         type: 'user',
       };
+      // Attach impersonation context to logger for downstream processing/auditing (non-breaking)
+      if (ctx.impersonation) {
+        logger.assign({
+          auditActorUserId: ctx.impersonation.actorUserId,
+          auditImpersonatedUserId: ctx.impersonation.targetUserId,
+        });
+      }
       audit(
         createAuditRecord(
           typeof params === 'function'

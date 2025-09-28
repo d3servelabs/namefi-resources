@@ -1,7 +1,6 @@
 import {
   db,
   usersTable,
-  wishlistedDomainsTable,
   namefiNftOwnersView,
   namefiNftView,
 } from '@namefi-astra/db';
@@ -37,12 +36,14 @@ import {
   authedOrPublicProcedure,
   createTRPCRouter,
   protectedProcedure,
+  auditedAdminProcedureWithPermissions,
 } from '../base';
-import type { Permission } from '@namefi-astra/utils';
+import { Permission } from '@namefi-astra/utils';
 import {
   getPrivyUserLinkedEthereumChecksumWalletAddresses,
   privyClient,
 } from '../utils';
+import { canUserAccessAdminPanel } from '../utils';
 import {
   privyCustomMetadataSchema,
   privyCustomMetadataToPrivyStorage,
@@ -58,6 +59,8 @@ import { logger } from '#lib/logger';
 import { fromUnixTime, isBefore, subHours } from 'date-fns';
 import { IsUserDomainOwner } from '../guards/assert-domain-owner';
 import { syncSingleUserToListmonkActivity } from '../../temporal/activities/default/email-subscription-sync.activities';
+import { audit, createAuditRecord } from '#lib/auditor';
+import { deleteCookie, setSignedCookie } from 'hono/cookie';
 
 if (!secrets.ALCHEMY_API_KEY) {
   throw new Error('Cannot create Ethereum public client');
@@ -80,6 +83,156 @@ export const viemEthereumPublicClient = createPublicClient({
 });
 
 export const usersRouter = createTRPCRouter({
+  getImpersonationStatus: protectedProcedure.query(async ({ ctx }) => {
+    if (ctx.impersonation) {
+      return {
+        impersonating: true as const,
+        actorUserId: ctx.impersonation.actorUserId,
+        targetUserId: ctx.impersonation.targetUserId,
+        effectiveUser: ctx.user,
+      };
+    }
+    return {
+      impersonating: false as const,
+      actorUserId: ctx.user.id,
+      targetUserId: null as null,
+      effectiveUser: ctx.user,
+    };
+  }),
+  impersonateUser: auditedAdminProcedureWithPermissions(
+    Permission.IMPERSONATE_USERS,
+    ({ ctx, input, auditActorExtraInfo }) => ({
+      actorType: 'user',
+      actorId: ctx.user.id,
+      resourceType: 'user',
+      resourceId: input.targetUserId,
+      action: 'impersonate_start',
+      extraInput: { ...input, auditActorExtraInfo },
+    }),
+  )
+    .input(z.object({ targetUserId: z.string().uuid() }))
+    .mutation(async ({ ctx, input }) => {
+      // Validate target user exists
+      const target = await db.query.usersTable.findFirst({
+        where: eq(usersTable.id, input.targetUserId),
+      });
+      if (!target) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Target user not found',
+        });
+      }
+      // Forbid impersonating admins
+      const targetIsAdmin = await canUserAccessAdminPanel(target);
+      if (targetIsAdmin) {
+        throw new TRPCError({
+          code: 'FORBIDDEN',
+          message: 'Cannot impersonate an admin user',
+        });
+      }
+      // Set cookie via Hono context (HttpOnly so client JS can't modify)
+      try {
+        const url = new URL(ctx.req.url);
+        const forwardedProto = ctx.req.header('x-forwarded-proto');
+        const secure =
+          forwardedProto?.toLowerCase?.() === 'https' ||
+          url.protocol === 'https:';
+        await setSignedCookie(
+          ctx.honoCtx as any,
+          'impersonate-user-id',
+          input.targetUserId,
+          secrets.COOKIE_SECRET,
+          {
+            httpOnly: true,
+            sameSite: 'Lax',
+            secure,
+            path: '/',
+            maxAge: 60 * 60 * 2, // 2 hours
+          },
+        );
+      } catch (error) {
+        logger.error(
+          { error, actorUserId: ctx.user.id, targetUserId: input.targetUserId },
+          'Failed to set impersonation cookie',
+        );
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to start impersonation',
+        });
+      }
+      return { ok: true as const };
+    }),
+
+  stopImpersonating: protectedProcedure.mutation(async ({ ctx }) => {
+    // Determine the original actor (not the effective impersonated user)
+    const actorUserId = ctx.impersonation?.actorUserId ?? ctx.user.id;
+    const originalUser = await db.query.usersTable.findFirst({
+      where: eq(usersTable.id, actorUserId),
+      columns: { id: true, privyUserId: true },
+    });
+    if (!originalUser) {
+      throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Actor not found' });
+    }
+
+    // Check original user's admin access and permissions
+    const isAdmin = await canUserAccessAdminPanel(originalUser);
+    const hasImpersonatePerm = (ctx.userPermissions ?? []).includes(
+      Permission.IMPERSONATE_USERS,
+    );
+    if (!isAdmin || !hasImpersonatePerm) {
+      throw new TRPCError({ code: 'FORBIDDEN', message: 'Not allowed' });
+    }
+
+    // Clear cookie via Hono context
+    try {
+      const url = new URL(ctx.req.url);
+      const forwardedProto = ctx.req.header('x-forwarded-proto');
+      const secure =
+        forwardedProto?.toLowerCase?.() === 'https' ||
+        url.protocol === 'https:';
+      deleteCookie(ctx.honoCtx as any, 'impersonate-user-id', {
+        path: '/',
+        secure,
+      });
+    } catch (error) {
+      logger.error(
+        { error, actorUserId: ctx.user.id },
+        'Failed to delete impersonation cookie',
+      );
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'Failed to stop impersonation',
+      });
+    }
+
+    // Manual audit (actor is original admin, resource is the previously impersonated target if present)
+    try {
+      audit(
+        createAuditRecord({
+          actorType: 'user',
+          actorId: originalUser.id,
+          resourceType: 'user',
+          resourceId: ctx.impersonation?.targetUserId ?? originalUser.id,
+          action: 'impersonate_stop',
+          extraInput: {
+            requestId: ctx.honoVars?.requestId,
+            sessionId: ctx.sessionId,
+          },
+        }),
+      );
+    } catch (error) {
+      logger.error(
+        { error, actorUserId: ctx.user.id },
+        'Failed to create audit record',
+      );
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'Failed to stop impersonation',
+      });
+    }
+
+    return { ok: true as const };
+  }),
   getUser: protectedProcedure.query(async ({ ctx }) => {
     const user = await db.query.usersTable.findFirst({
       where: eq(usersTable.id, ctx.user.id),

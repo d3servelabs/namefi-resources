@@ -28,6 +28,7 @@ export enum Permission {
 
   READ_USERS = 'USERS;;READ',
   WRITE_USERS = 'USERS;;WRITE',
+  IMPERSONATE_USERS = 'USERS;;IMPERSONATE',
   /**
    * Hidden permission - not shown in UI lists, auto-added to ensure at least one row exists for an admin user
    */
