@@ -236,7 +236,7 @@ export function ReservedWordsManager({ domain }: ReservedWordsManagerProps) {
     return (
       <Card>
         <CardHeader>
-          <CardTitle>Reserved Words Management</CardTitle>
+          <CardTitle>Protected Words Management</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="animate-pulse space-y-4">
@@ -259,11 +259,11 @@ export function ReservedWordsManager({ domain }: ReservedWordsManagerProps) {
     return (
       <Card>
         <CardHeader>
-          <CardTitle>Reserved Words Management</CardTitle>
+          <CardTitle>Protected Words Management</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="text-red-600">
-            Error loading reserved words: {reservedWordsQuery.error.message}
+            Error loading protected words: {reservedWordsQuery.error.message}
           </div>
         </CardContent>
       </Card>
@@ -309,7 +309,7 @@ export function ReservedWordsManager({ domain }: ReservedWordsManagerProps) {
     <Card>
       <CardHeader>
         <div className="flex items-center justify-between">
-          <CardTitle>Reserved Words Management</CardTitle>
+          <CardTitle>Protected Words Management</CardTitle>
           <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
             <DialogTrigger asChild>
               <Button>
@@ -319,11 +319,11 @@ export function ReservedWordsManager({ domain }: ReservedWordsManagerProps) {
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
-                <DialogTitle>Add Reserved Words</DialogTitle>
+                <DialogTitle>Add Protected Words</DialogTitle>
               </DialogHeader>
               <div className="space-y-4">
                 <div>
-                  <Label htmlFor="words-input">Words to Reserve</Label>
+                  <Label htmlFor="words-input">Words to Protect</Label>
                   <Textarea
                     id="words-input"
                     placeholder="Enter words separated by commas, spaces, or newlines&#10;Example: admin, dashboard, api, support"
@@ -426,7 +426,7 @@ export function ReservedWordsManager({ domain }: ReservedWordsManagerProps) {
         <div>
           <div className="flex items-center justify-between mb-3">
             <div>
-              <h3 className="text-lg font-semibold">Reserved Words</h3>
+              <h3 className="text-lg font-semibold">Protected Words</h3>
               <p className="text-sm text-gray-600">
                 All words that cannot be registered as subdomains under your
                 domain.

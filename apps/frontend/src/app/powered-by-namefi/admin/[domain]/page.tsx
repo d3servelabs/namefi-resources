@@ -129,7 +129,7 @@ function InnerPage({ domain }: { domain: NamefiNormalizedDomain }) {
         <TabsList className="grid w-full grid-cols-4 lg:w-auto">
           <TabsTrigger value={TabValues.OVERVIEW}>Overview</TabsTrigger>
           <TabsTrigger value={TabValues.RESERVED_WORDS}>
-            Reserved Domains Management
+            Protected Words Management
           </TabsTrigger>
           <TabsTrigger value={TabValues.ORDERS}>Orders Details</TabsTrigger>
           <TabsTrigger value={TabValues.ANALYTICS}>Analytics</TabsTrigger>
