@@ -449,6 +449,13 @@
       "when": 1758785743296,
       "tag": "0063_true_salo",
       "breakpoints": true
+    },
+    {
+      "idx": 64,
+      "version": "7",
+      "when": 1758837381537,
+      "tag": "0064_symmetric_domain_locks_for_reservations_and_free_claims",
+      "breakpoints": true
     }
   ]
 }
