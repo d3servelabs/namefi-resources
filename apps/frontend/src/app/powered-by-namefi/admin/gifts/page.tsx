@@ -117,7 +117,7 @@ export function GiftsManagementPage({
       EXPIRED: 'destructive',
       CANCELLED: 'outline',
     };
-    const label = status === 'CLAIMED' ? 'Claimed' : status;
+    const label = status === 'CLAIMED' ? 'Recieved' : status;
     return <Badge variant={variant[status]}>{label}</Badge>;
   };
 
@@ -235,10 +235,10 @@ export function GiftsManagementPage({
             <Table>
               <TableHeader>
                 <TableRow>
-                  {!forcedPbnDomain && <TableHead>Domain</TableHead>}
+                  <TableHead>Domain</TableHead>
                   <TableHead>Recipient</TableHead>
                   <TableHead>Status</TableHead>
-                  <TableHead>Issue Free-Claim</TableHead>
+                  <TableHead>Reserved</TableHead>
                   <TableHead>Free-claim Exp.</TableHead>
                   <TableHead>Reservation Exp.</TableHead>
                   <TableHead>Created</TableHead>
@@ -248,20 +248,20 @@ export function GiftsManagementPage({
               <TableBody>
                 {reservations.map((r) => (
                   <TableRow key={r.id}>
-                    {!forcedPbnDomain && (
-                      <TableCell className="font-medium">
-                        <div>
-                          {r.exactDomainName || (
-                            <span className="text-muted-foreground">
-                              *.{r.parentDomain}
-                            </span>
-                          )}
-                        </div>
+                    <TableCell className="font-medium">
+                      <div>
+                        {r.exactDomainName || (
+                          <span className="text-muted-foreground">
+                            *.{r.parentDomain}
+                          </span>
+                        )}
+                      </div>
+                      {!forcedPbnDomain && (
                         <div className="text-xs text-muted-foreground">
                           on {r.pbnDomain}
                         </div>
-                      </TableCell>
-                    )}
+                      )}
+                    </TableCell>
                     <TableCell>
                       <div className="flex items-center space-x-2">
                         <Mail className="h-3 w-3" />
@@ -272,10 +272,8 @@ export function GiftsManagementPage({
                     </TableCell>
                     <TableCell>{getStatusBadge(r.uiStatus)}</TableCell>
                     <TableCell>
-                      <Badge
-                        variant={r.issueFreeClaim ? 'secondary' : 'outline'}
-                      >
-                        {r.issueFreeClaim ? 'Yes' : 'No'}
+                      <Badge variant={r.isActiveHold ? 'secondary' : 'outline'}>
+                        {r.isActiveHold ? 'Yes' : 'No'}
                       </Badge>
                     </TableCell>
                     <TableCell>
