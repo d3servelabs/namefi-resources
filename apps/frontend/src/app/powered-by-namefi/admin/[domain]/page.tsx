@@ -73,6 +73,7 @@ import {
   BarChart3Icon,
   GlobeIcon,
   Loader2Icon,
+  GiftIcon,
 } from 'lucide-react';
 
 ChartJs.register(
@@ -277,6 +278,14 @@ function Overview({ domain }: { domain: NamefiNormalizedDomain }) {
 
   return (
     <div className="container mx-auto p-6 space-y-6">
+      <div className="flex justify-end">
+        <Button asChild variant="outline" size="sm">
+          <Link href={`/powered-by-namefi/admin/${domain}/gifts`}>
+            <GiftIcon className="w-4 h-4 mr-2" /> Manage Gifts & Reservations
+          </Link>
+        </Button>
+      </div>
+
       {domainsQuery.isLoading ? (
         <Skeleton className="h-44 w-full" />
       ) : (
