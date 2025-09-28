@@ -13,6 +13,7 @@ import type { ReactNode } from 'react';
 import DatadogRum from '@/components/datadog-rum';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import './globals.css';
+import ImpersonationBanner from '@/components/ImpersonationBanner';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -64,6 +65,7 @@ export default async function RootLayout({
             <AppSidebar />
             <Main>{children}</Main>
           </SidebarProvider>
+          <ImpersonationBanner />
         </Providers>
       </body>
     </html>
