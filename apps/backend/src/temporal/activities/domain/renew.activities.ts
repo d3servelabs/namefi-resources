@@ -6,17 +6,20 @@ import {
   resolve,
 } from '@namefi-astra/utils';
 import { RenewOption } from '@namefi-astra/registrars/lib/abstract-registrar/index';
-import { differenceInDays } from 'date-fns';
+import { differenceInDays, isBefore, subHours } from 'date-fns';
 import {
   isNotNil,
   and,
   groupBy,
   prop,
+  indexBy,
   pluck,
   toPairs,
   pipe,
   toString as toStringR,
   fromPairs,
+  isNil,
+  isNotEmpty,
 } from 'ramda';
 import { sendMail } from '../../../mail/mail-client';
 import {
@@ -59,6 +62,12 @@ import { NAMEFI_NFT_CONTRACT_ADDRESS } from '@namefi-astra/utils';
 import { getDomainListInfo } from '#lib/namefi-registry';
 import { computeChargesInUsdFromDomainAvailabilityInfo } from '@namefi-astra/registrars/multi-year-pricing';
 import { config } from '#lib/env';
+import { TEMPORAL_QUEUES } from '../../../temporal/shared/enums';
+import { temporalClient } from '../../../temporal/client';
+import { toPunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
+import pMap from 'p-map';
+import { namefiNftView } from '@namefi-astra/db';
+import { RDAP } from '@namefi-astra/registrars/lib/rdap-whois/rdap_client';
 
 export type DomainRenewInfo = {
   normalizedDomainName: NamefiNormalizedDomain;
@@ -796,3 +805,212 @@ async function get3ldExpirationDatesForDomains(
       null,
   }));
 }
+
+/**
+ * Queries the active renewal workflow for a domain
+ * @param domainName - The domain name to query the active renewal workflow for
+ * @returns {Promise<{workflowId: string, runId: string, workflowType: string, status: string} | null>} - The active renewal workflow for the domain
+ */
+export async function maybeQueryActiveRenewalWorkflow(
+  domainName: NamefiNormalizedDomain,
+) {
+  try {
+    const workflows = await temporalClient.workflow.list({
+      query: `TaskQueue = '${TEMPORAL_QUEUES.DOMAINS}' AND ExecutionStatus = 'Running' AND (WorkflowId = 'extend-domain-${domainName}')`,
+    });
+
+    for await (const workflow of workflows) {
+      const status = await workflow.status;
+      if (status.name === 'RUNNING') {
+        return {
+          workflowId: workflow.workflowId,
+          runId: workflow.runId,
+          workflowType: workflow.type,
+          status: status.name,
+        };
+      }
+    }
+  } catch (error) {
+    logger.error(
+      { domainName, error },
+      'Failed to query active renewal workflow',
+    );
+  }
+  return null;
+}
+
+// #region Get Expiration Dates
+
+export async function getDomainsExpirationDatesFromIndex(
+  normalizedDomainNames: NamefiNormalizedDomain[],
+): Promise<Record<string, Date | null>> {
+  const groupedDomainNames = groupBy((normalizedDomainName) => {
+    const domainLevels = getDomainLevels(normalizedDomainName);
+    if (domainLevels.levels.length === 2) {
+      return 'sld';
+    }
+    if (domainLevels.levels.length === 3) {
+      return '3ld';
+    }
+    return 'unknown'; // this should never happen but to satisfy typescript
+  }, normalizedDomainNames);
+
+  const sldDomainNames = groupedDomainNames.sld ?? [];
+  const _3ldDomainNames = groupedDomainNames['3ld'] ?? [];
+
+  const unknownDomainNames = groupedDomainNames.unknown ?? [];
+  if (isNotEmpty(unknownDomainNames)) {
+    logger.fatal(
+      { context: 'getDomainsExpirationDates', unknownDomainNames },
+      'Unknown domain levels',
+    );
+  }
+
+  const [sldExpirationDates, _3ldNftsExpirationDates] = await Promise.all([
+    getSldExpirationDateForDomainList(sldDomainNames),
+    get3ldExpirationDateForDomainListFromIndex(_3ldDomainNames),
+  ]);
+
+  return Object.fromEntries([
+    ...sldDomainNames.map((domainName, i) => [
+      domainName,
+      sldExpirationDates[i] ?? null,
+    ]),
+    ..._3ldDomainNames.map((domainName, i) => [
+      domainName,
+      _3ldNftsExpirationDates[i]?.expirationDate,
+    ]),
+    ...unknownDomainNames.map((domainName) => [domainName, null]),
+  ]);
+}
+
+export async function get3ldExpirationDateForDomainListFromIndex(
+  normalizedDomainNames: NamefiNormalizedDomain[],
+) {
+  const nfts = await db
+    .select({
+      tokenId: namefiNftView.tokenId,
+      normalizedDomainName: namefiNftView.normalizedDomainName,
+      expirationTime: namefiNftView.expirationTime,
+      chainId: namefiNftView.chainId,
+    })
+    .from(namefiNftView)
+    .where(inArray(namefiNftView.normalizedDomainName, normalizedDomainNames));
+  const nftsByDomainName = indexBy(prop('normalizedDomainName'), nfts);
+
+  return normalizedDomainNames.map((domainName) => {
+    const nft = nftsByDomainName[domainName];
+    return {
+      normalizedDomainName: domainName,
+      expirationDate: nft?.expirationTime,
+      tokenId: nft?.tokenId?.toString(),
+      chainId: nft?.chainId,
+    };
+  });
+}
+
+export async function get3ldExpirationDateForDomainListFromContract(
+  normalizedDomainNames: NamefiNormalizedDomain[],
+  latestBlock: bigint,
+  chainId: number,
+) {
+  const tokenIds = normalizedDomainNames.map(nftIdFromDomainName);
+  const expirationDates = await getViemPublicClient(chainId).multicall({
+    contracts: tokenIds.map((tokenId) => ({
+      address: NAMEFI_NFT_CONTRACT_ADDRESS as `0x${string}`,
+      abi: NftAbi,
+      functionName: 'getExpiration' as const,
+      args: [BigInt(tokenId)],
+      blockNumber: latestBlock,
+    })),
+  });
+
+  return expirationDates.map((result, i) => {
+    if (result.status === 'failure') {
+      return {
+        normalizedDomainName: normalizedDomainNames[i],
+        expirationDate: null,
+        tokenId: tokenIds[i].toString(),
+      };
+    }
+
+    return {
+      normalizedDomainName: normalizedDomainNames[i],
+      expirationDate: fromUnixTime(Number(result.result)),
+      tokenId: tokenIds[i].toString(),
+    };
+  });
+}
+
+export async function getSldExpirationDateForDomainList(
+  normalizedDomainNames: NamefiNormalizedDomain[],
+) {
+  const indexedExpirationDates = await db.query.indexedDomainsTable.findMany({
+    where: (table, { inArray }) =>
+      inArray(table.normalizedDomainName, normalizedDomainNames),
+    columns: {
+      normalizedDomainName: true,
+      expirationTime: true,
+      lastIndexedAt: true,
+    },
+  });
+
+  const indexedExpirationDatesMap = new Map<
+    NamefiNormalizedDomain,
+    Date | null
+  >(
+    indexedExpirationDates
+      .filter(
+        (domain) => !isBefore(domain.lastIndexedAt, subHours(new Date(), 3)),
+      )
+      .map((domain) => [
+        domain.normalizedDomainName,
+        domain.expirationTime ? new Date(domain.expirationTime) : null,
+      ]),
+  );
+
+  const expirationDates = await pMap(
+    normalizedDomainNames,
+    async (normalizedDomainName) => {
+      const indexedExpirationDate =
+        indexedExpirationDatesMap.get(normalizedDomainName);
+      if (indexedExpirationDate) {
+        return indexedExpirationDate;
+      }
+      try {
+        const liveExpirationDate =
+          await getLiveSldExpirationDate(normalizedDomainName);
+        if (isNil(liveExpirationDate)) {
+          return null;
+        }
+        return liveExpirationDate;
+      } catch (error) {
+        logger.error(
+          { context: 'getSldExpirationDateForDomainList', error },
+          'Failed to get live expiration date',
+        );
+        return null;
+      }
+    },
+  );
+  return expirationDates;
+}
+
+export async function getLiveSldExpirationDate(normalizedDomainName: string) {
+  let expirationDate: Date | null = null;
+
+  const rdapResponse = await resolve(RDAP.queryDomain(normalizedDomainName));
+  if (!rdapResponse.failed) {
+    expirationDate = RDAP.getExpiryDateFromRdapResponse(rdapResponse.result);
+  }
+
+  if (isNil(expirationDate)) {
+    const domainDetails = await sldRegistrar.getDomainDetails(
+      toPunycodeDomainName(normalizedDomainName),
+    );
+    expirationDate = domainDetails.expirationTime;
+  }
+  return expirationDate;
+}
+
+// #endregion

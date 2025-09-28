@@ -19,6 +19,7 @@ import {
 } from '#lib/domains/nameservers';
 import { logger } from '#lib/logger';
 import {
+  getDomainListInfo,
   getPoweredByNamefi3PDomains,
   sldRegistrar,
 } from '../../../lib/namefi-registry';
@@ -34,6 +35,11 @@ import { getEppLockState } from '#temporal/activities/domain/registrar.activitie
 import { getDomainChain } from '#temporal/activities/domain/index';
 import type { WorkflowExecutionStatusName } from '@temporalio/client';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import { determineDurationLimitsForRenewItems } from '#lib/domains/duration-constraints/determine-renew-duration-limits';
+import {
+  getDomainsExpirationDatesFromIndex,
+  maybeQueryActiveRenewalWorkflow,
+} from '../../../temporal/activities/domain/renew.activities';
 
 export const domainConfigRouter = createTRPCRouter({
   /**
@@ -51,6 +57,88 @@ export const domainConfigRouter = createTRPCRouter({
         toPunycodeDomainName(input.domainName),
       );
       return domainDetails;
+    }),
+
+  getDomainRenewalDetails: protectedProcedure
+    .input(
+      z.object({
+        normalizedDomainName: namefiNormalizedDomainSchema,
+      }),
+    )
+    .query(async ({ input, ctx }) => {
+      await assertAuthenticatedUserIsDomainOwner(
+        input.normalizedDomainName,
+        ctx.user,
+      );
+      const [workflow, domainListInfo, { autoRenewEnabled }, expirationDates] =
+        await Promise.all([
+          maybeQueryActiveRenewalWorkflow(input.normalizedDomainName),
+          getDomainListInfo([input.normalizedDomainName]),
+          getDomainPreferencesAndConfig(input.normalizedDomainName),
+          getDomainsExpirationDatesFromIndex([input.normalizedDomainName]), // TODO: use getLiveExpirationDate when implemented
+        ]);
+
+      const domainInfo = domainListInfo?.[0];
+      if (!domainInfo) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Domain not found' });
+      }
+      const durationValidationInYears = domainInfo.durationValidationInYears;
+
+      if (!durationValidationInYears) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Domain duration validation in years not found',
+        });
+      }
+      const domainPricingDetails = domainInfo.pricingDetails;
+      if (!domainPricingDetails) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Domain pricing details not found',
+        });
+      }
+
+      const expirationTime =
+        expirationDates[input.normalizedDomainName] ?? null;
+      if (!expirationTime) {
+        logger.error(
+          { domainName: input.normalizedDomainName },
+          'No expiration date found for domain',
+        );
+        return {
+          autoRenewEnabled: false,
+          renewable: false,
+          domainPricingDetails,
+          expirationDate: null,
+          maxAdditionalYears: 0,
+          minimumPossibleRenewalYears: 0,
+          activeRegistrationYears: 0,
+          pendingRenewalRequest: !!workflow,
+        };
+      }
+
+      const minRegistrationYears = durationValidationInYears.min;
+      const maxRegistrationYears = durationValidationInYears.max;
+
+      const {
+        maxAdditionalYears,
+        minimumPossibleRenewalYears,
+        activeRegistrationYears,
+      } = determineDurationLimitsForRenewItems(expirationTime, {
+        minYears: minRegistrationYears,
+        maxYears: maxRegistrationYears,
+      });
+
+      return {
+        autoRenewEnabled,
+        domainPricingDetails: domainPricingDetails,
+        expirationDate: expirationTime,
+        maxAdditionalYears,
+        minimumPossibleRenewalYears,
+        activeRegistrationYears,
+        renewable: maxAdditionalYears > 0,
+        pendingRenewalRequest: !!workflow,
+      };
     }),
 
   /**
