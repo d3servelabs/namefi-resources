@@ -304,6 +304,28 @@ export const t = initTRPC.context<TrpcContext>().create({
 export const createCallerFactory = t.createCallerFactory;
 
 /**
+ * Global guard: Prevent non-whitelisted mutations during impersonation.
+ */
+const IMPERSONATION_ALLOWED_MUTATIONS = new Set<string>([
+  'users.stopImpersonating',
+  'carts.addItems',
+]);
+
+const impersonationMutationGuard = t.middleware(
+  async ({ ctx, next, path, type }) => {
+    if (type === 'mutation' && ctx?.impersonation) {
+      if (!IMPERSONATION_ALLOWED_MUTATIONS.has(path)) {
+        throw new TRPCError({
+          code: 'FORBIDDEN',
+          message: 'Mutations are disabled while impersonating',
+        });
+      }
+    }
+    return next({ ctx });
+  },
+);
+
+/**
  * 3. ROUTER & PROCEDURES
  *
  * These are the pieces we will use to build our tRPC API. We should import these a lot in the
@@ -584,6 +606,7 @@ export const maybeVerifyUserAuthAndCreation =
  */
 export const authedOrPublicProcedure = $publicProcedure
   .use(maybeVerifyUserAuthAndCreation)
+  .use(impersonationMutationGuard)
   .use(async ({ ctx, next }) => {
     logger.assign({
       procedureType: 'authedOrPublicProcedure',
@@ -608,6 +631,7 @@ export const publicProcedure = authedOrPublicProcedure;
  */
 export const protectedProcedure = $publicProcedure
   .use(verifyUserAuthAndCreation)
+  .use(impersonationMutationGuard)
   .use(async ({ ctx, next }) => {
     logger.assign({
       procedureType: 'protectedProcedure',
