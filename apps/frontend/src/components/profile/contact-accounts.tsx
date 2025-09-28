@@ -13,13 +13,19 @@ interface ContactAccountsProps {
 
 export function ContactAccounts({ className = '' }: ContactAccountsProps) {
   const { linkEmail, linkPhone } = usePrivy();
-  const { privyUser } = useAuth();
+  const { privyUser, isImpersonating } = useAuth();
 
   // Get email and phone from Privy linked accounts
   const currentEmail = privyUser?.email?.address || '';
   const currentPhone = privyUser?.phone?.number || '';
 
   const handleLinkEmail = useCallback(() => {
+    if (isImpersonating) {
+      alert(
+        'You are impersonating a user, so you cannot link an email address',
+      );
+      return;
+    }
     try {
       linkEmail();
     } catch (error) {
@@ -27,9 +33,13 @@ export function ContactAccounts({ className = '' }: ContactAccountsProps) {
         description: `Please try again. ${error instanceof Error ? error.message : 'Unknown error'}`,
       });
     }
-  }, [linkEmail]);
+  }, [linkEmail, isImpersonating]);
 
   const handleLinkPhone = useCallback(() => {
+    if (isImpersonating) {
+      alert('You are impersonating a user, so you cannot link a phone number');
+      return;
+    }
     try {
       linkPhone();
     } catch (error) {
@@ -37,7 +47,7 @@ export function ContactAccounts({ className = '' }: ContactAccountsProps) {
         description: `Please try again. ${error instanceof Error ? error.message : 'Unknown error'}`,
       });
     }
-  }, [linkPhone]);
+  }, [linkPhone, isImpersonating]);
 
   return (
     <div className={`grid gap-4 md:grid-cols-2 ${className}`}>

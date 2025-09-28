@@ -31,6 +31,7 @@ import { type WalletWithMetadata, usePrivy } from '@privy-io/react-auth';
 import { Copy, ExternalLink, Plus, Trash2, Wallet2 } from 'lucide-react';
 import { type HTMLAttributes, useCallback, useState } from 'react';
 import { toast } from 'sonner';
+import { useAuth } from '@/hooks/use-auth';
 
 const getWalletIcon = (type: string) => {
   switch (type.toLowerCase()) {
@@ -55,7 +56,8 @@ export const Wallets = ({ className, ...rest }: WalletsProps) => {
   const [walletToUnlink, setWalletToUnlink] = useState<string | null>(null);
   const isMobile = useIsMobile();
 
-  const { user, linkWallet, unlinkWallet } = usePrivy();
+  const { linkWallet, unlinkWallet } = usePrivy();
+  const { privyUser: user, isImpersonating } = useAuth();
   const { linkedWallets } = useLinkedWallets();
 
   const isFirstConnectedWallet = useCallback(
@@ -70,15 +72,23 @@ export const Wallets = ({ className, ...rest }: WalletsProps) => {
   );
 
   const handleLinkWallet = useCallback(() => {
+    if (isImpersonating) {
+      alert('You are impersonating a user, so you cannot link a wallet');
+      return;
+    }
     linkWallet();
-  }, [linkWallet]);
+  }, [linkWallet, isImpersonating]);
 
   const handleUnlinkWalletButtonClick = useCallback(
     (wallet: WalletWithMetadata) => {
+      if (isImpersonating) {
+        alert('You are impersonating a user, so you cannot unlink a wallet');
+        return;
+      }
       setWalletToUnlink(wallet.address);
       setIsUnlinkWalletDialogOpen(true);
     },
-    [],
+    [isImpersonating],
   );
 
   const handleUnlinkWalletConfirm = useCallback(

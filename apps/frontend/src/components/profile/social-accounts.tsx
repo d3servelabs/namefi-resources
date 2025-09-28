@@ -22,12 +22,14 @@ import { useCallback, useState } from 'react';
 import { TwitterIcon } from 'react-share';
 import { toast } from 'sonner';
 import { Account } from './account';
+import { useAuth } from '@/hooks/use-auth';
 
 export interface SocialAccountsProps {
   user: User;
 }
 
 export const SocialAccounts = ({ user }: SocialAccountsProps) => {
+  const { isImpersonating } = useAuth();
   const [isUnlinkGitHubDialogOpen, setIsUnlinkGitHubDialogOpen] =
     useState(false);
 
@@ -36,6 +38,12 @@ export const SocialAccounts = ({ user }: SocialAccountsProps) => {
   const { linkGithub, linkTwitter, unlinkGithub, unlinkTwitter } = usePrivy();
 
   const handleLinkGitHub = useCallback(() => {
+    if (isImpersonating) {
+      alert(
+        'You are impersonating a user, so you cannot link a GitHub account',
+      );
+      return;
+    }
     try {
       linkGithub();
     } catch (error) {
@@ -43,10 +51,16 @@ export const SocialAccounts = ({ user }: SocialAccountsProps) => {
         description: `Please try again. ${error instanceof Error ? error.message : 'Unknown error'}`,
       });
     }
-  }, [linkGithub]);
+  }, [linkGithub, isImpersonating]);
 
   const handleUnlinkGitHub = useCallback(
     async (subject: string) => {
+      if (isImpersonating) {
+        alert(
+          'You are impersonating a user, so you cannot unlink a GitHub account',
+        );
+        return;
+      }
       if (!subject) {
         setIsUnlinkGitHubDialogOpen(false);
         return;
@@ -65,10 +79,16 @@ export const SocialAccounts = ({ user }: SocialAccountsProps) => {
         });
       }
     },
-    [unlinkGithub],
+    [unlinkGithub, isImpersonating],
   );
 
   const handleLinkTwitter = useCallback(() => {
+    if (isImpersonating) {
+      alert(
+        'You are impersonating a user, so you cannot link a Twitter account',
+      );
+      return;
+    }
     try {
       linkTwitter();
     } catch (error) {
@@ -76,10 +96,16 @@ export const SocialAccounts = ({ user }: SocialAccountsProps) => {
         description: `Please try again. ${error instanceof Error ? error.message : 'Unknown error'}`,
       });
     }
-  }, [linkTwitter]);
+  }, [linkTwitter, isImpersonating]);
 
   const handleUnlinkTwitter = useCallback(
     async (subject: string) => {
+      if (isImpersonating) {
+        alert(
+          'You are impersonating a user, so you cannot unlink a Twitter account',
+        );
+        return;
+      }
       if (!subject) {
         setIsUnlinkTwitterDialogOpen(false);
         return;
@@ -98,7 +124,7 @@ export const SocialAccounts = ({ user }: SocialAccountsProps) => {
         });
       }
     },
-    [unlinkTwitter],
+    [unlinkTwitter, isImpersonating],
   );
 
   return (

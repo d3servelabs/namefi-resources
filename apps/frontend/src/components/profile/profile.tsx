@@ -6,7 +6,6 @@ import {
   TabsList,
   TabsTrigger,
 } from '@/components/ui/shadcn/tabs';
-import { usePrivy } from '@privy-io/react-auth';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState, useCallback } from 'react';
 import { SocialAccounts } from './social-accounts';
@@ -15,6 +14,7 @@ import { Header } from './header';
 import { Wallets } from './wallets';
 import { ContactDetails } from './contact-details';
 import { useQueryState, parseAsStringEnum } from 'nuqs';
+import { useAuth } from '@/hooks/use-auth';
 
 enum TabValues {
   WALLETS = 'wallets',
@@ -35,7 +35,11 @@ export default function Profile() {
       .withDefault(defaultTab),
   );
 
-  const { ready, authenticated, user } = usePrivy();
+  const {
+    rawPrivyUser: user,
+    ready,
+    isAuthenticated: authenticated,
+  } = useAuth();
 
   const [isLoading, setIsLoading] = useState(true);
 

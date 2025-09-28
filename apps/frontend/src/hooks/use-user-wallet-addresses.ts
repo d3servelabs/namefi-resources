@@ -1,4 +1,5 @@
-import { usePrivy, useWallets } from '@privy-io/react-auth';
+import { useWallets } from '@privy-io/react-auth';
+import { useAuth } from './use-auth';
 import { useMemo } from 'react';
 
 /**
@@ -44,7 +45,11 @@ export function useLinkedWalletAddresses() {
  * Hook to get a user's LinkedWallets from Privy. Currently, we only support Ethereum wallets
  */
 export function useLinkedWallets() {
-  const { user: privyUser, ready: privyUserReady, authenticated } = usePrivy();
+  const {
+    privyUser,
+    isLoading: privyUserReady,
+    isAuthenticated: authenticated,
+  } = useAuth();
 
   const linkedWalletsReady = useMemo(() => {
     return privyUserReady && authenticated && privyUser;

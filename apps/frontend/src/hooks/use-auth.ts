@@ -4,6 +4,7 @@ import {
   useLogin as usePrivyLogin,
   useLogout as usePrivyLogout,
   type LoginModalOptions,
+  type User as PrivyUser,
 } from '@privy-io/react-auth';
 import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
@@ -18,7 +19,7 @@ type LoginCallbacks = Parameters<typeof usePrivyLogin>[0];
 type LogoutCallbacks = Parameters<typeof usePrivyLogout>[0];
 
 export function useAuth() {
-  const { authenticated, ready, user: privyUser } = usePrivy();
+  const { authenticated, ready, user: originalPrivyUser } = usePrivy();
 
   const trpc = useTRPC();
 
@@ -27,6 +28,21 @@ export function useAuth() {
       enabled: authenticated,
     }),
   );
+
+  const impersonation = useQuery(
+    trpc.users.getImpersonationStatus.queryOptions(undefined, {
+      enabled: authenticated,
+      staleTime: 15_000,
+      refetchInterval: 30_000,
+    }),
+  );
+
+  const impersonationTargetPrivyUser = impersonation.data?.impersonating
+    ? impersonation.data.targetPrivyUser
+    : null;
+  const privyUser: PrivyUser | null = impersonationTargetPrivyUser
+    ? (impersonationTargetPrivyUser as unknown as PrivyUser)
+    : (originalPrivyUser as unknown as PrivyUser);
 
   const privyUserWithCustomMetadata = useMemo(() => {
     return {
@@ -38,10 +54,17 @@ export function useAuth() {
   }, [privyUser]);
 
   return {
+    ready,
     isAuthenticated: ready && authenticated && !!userQuery.data?.privyUserId,
-    isLoading: !ready || userQuery.isLoading,
+    isImpersonating: Boolean(impersonation.data?.impersonating),
+    isLoading: !ready || userQuery.isLoading || impersonation.isLoading,
     user: ready && authenticated ? userQuery.data : undefined,
     privyUser: privyUserWithCustomMetadata,
+    rawPrivyUser: privyUser,
+    impersonation: {
+      originalPrivyUser,
+      targetPrivyUser: impersonationTargetPrivyUser,
+    },
   };
 }
 

@@ -9,7 +9,10 @@ import {
   namefiNormalizedDomainSchema,
   type NamefiNormalizedDomain,
 } from '@namefi-astra/utils';
-import type { LinkedAccountWithMetadata } from '@privy-io/server-auth';
+import type {
+  LinkedAccountWithMetadata,
+  User as PrivyUser,
+} from '@privy-io/server-auth';
 import { TRPCError } from '@trpc/server';
 import { and, desc, eq, sql, inArray, ilike, gte, or } from 'drizzle-orm';
 import {
@@ -82,13 +85,86 @@ export const viemEthereumPublicClient = createPublicClient({
   ),
 });
 
+type ImpersonationProfile = {
+  id: string;
+  privyUserId: string;
+  primaryEmail: string | null;
+  displayName: string | null;
+  walletAddresses: string[];
+  mainWalletAddress: string | null;
+};
+const _buildProfileForImpersonation = async (
+  userId: string,
+): Promise<ImpersonationProfile | null> => {
+  const dbUser = await db.query.usersTable.findFirst({
+    where: eq(usersTable.id, userId),
+  });
+  if (!dbUser) return null;
+  let displayName: string | null = null;
+  let primaryEmail: string | null = null;
+  let walletAddresses: string[] = [];
+  let mainWalletAddress: string | null = null;
+  try {
+    const privyUser = await privyClient.getUserById(dbUser.privyUserId);
+    primaryEmail = privyUser?.email?.address ?? null;
+    const custom = privyStorageToPrivyCustomMetadata.parse(
+      privyUser?.customMetadata,
+    );
+    const fullName = custom?.fullName;
+    displayName =
+      fullName || (primaryEmail ? primaryEmail.split('@')[0] : null) || null;
+    walletAddresses = getPrivyUserLinkedEthereumChecksumWalletAddresses({
+      privyUser,
+    });
+    mainWalletAddress = walletAddresses[0] ?? null;
+  } catch (error) {
+    logger.error(
+      { error, context: '_buildProfileForImpersonation', userId },
+      'Failed to enrich impersonation profile from Privy for %s',
+      userId,
+    );
+  }
+  return {
+    id: dbUser.id,
+    privyUserId: dbUser.privyUserId,
+    primaryEmail,
+    displayName,
+    walletAddresses,
+    mainWalletAddress,
+  };
+};
 export const usersRouter = createTRPCRouter({
   getImpersonationStatus: protectedProcedure.query(async ({ ctx }) => {
     if (ctx.impersonation) {
+      const actor = await _buildProfileForImpersonation(
+        ctx.impersonation.actorUserId,
+      );
+      const target = await _buildProfileForImpersonation(
+        ctx.impersonation.targetUserId,
+      );
+      let targetPrivyUser: PrivyUser | null = null;
+      try {
+        if (target?.privyUserId) {
+          targetPrivyUser = await privyClient.getUserById(target.privyUserId);
+        }
+      } catch (error) {
+        logger.error(
+          {
+            error,
+            context: 'getImpersonationStatus:loadTargetPrivyUser',
+            actorUserId: ctx.impersonation.actorUserId,
+            targetUserId: ctx.impersonation.targetUserId,
+          },
+          'Failed to load/redact target Privy user for impersonation',
+        );
+      }
       return {
         impersonating: true as const,
         actorUserId: ctx.impersonation.actorUserId,
         targetUserId: ctx.impersonation.targetUserId,
+        actor,
+        target,
+        targetPrivyUser,
         effectiveUser: ctx.user,
       };
     }
@@ -96,6 +172,9 @@ export const usersRouter = createTRPCRouter({
       impersonating: false as const,
       actorUserId: ctx.user.id,
       targetUserId: null as null,
+      actor: null as null,
+      target: null as null,
+      targetPrivyUser: null as null,
       effectiveUser: ctx.user,
     };
   }),
