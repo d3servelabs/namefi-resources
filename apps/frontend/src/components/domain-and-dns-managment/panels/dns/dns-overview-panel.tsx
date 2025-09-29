@@ -13,12 +13,23 @@ import { Skeleton } from '@/components/ui/shadcn/skeleton';
 import { Switch } from '@/components/ui/shadcn/switch';
 import { cn } from '@/lib/cn';
 import { type AppRouterOutput, useTRPC, useTRPCClient } from '@/lib/trpc';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  useQuery,
+  useQueryClient,
+  useSuspenseQuery,
+} from '@tanstack/react-query';
 import { isNil } from 'ramda';
 import { useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
-import { Copy, Info, ExternalLink, Loader2 } from 'lucide-react';
+import {
+  Copy,
+  Info,
+  ExternalLink,
+  Loader2,
+  Terminal,
+  AlertOctagon,
+} from 'lucide-react';
 import {
   Tooltip,
   TooltipContent,
@@ -26,6 +37,11 @@ import {
   TooltipTrigger,
 } from '@/components/ui/shadcn/tooltip';
 import { Button } from '@/components/ui/shadcn/button';
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from '@/components/ui/shadcn/alert';
 
 type DomainPreferencesAndConfig =
   AppRouterOutput['domainConfig']['getDomainPreferencesAndConfig'];
@@ -34,6 +50,78 @@ export const DnsOverviewPanel = ({
   domain,
 }: {
   domain: NamefiNormalizedDomain;
+}) => {
+  const trpc = useTRPC();
+  const {
+    data: {
+      features: domainSupportedFeatures,
+      isInLateRenewalPeriod,
+      isInGraceRestorationPeriod,
+      canAttemptRenewal,
+    },
+  } = useSuspenseQuery(
+    trpc.domainConfig.getDomainSupportedFeatures.queryOptions(
+      {
+        normalizedDomainName: domain,
+      },
+      {
+        refetchInterval: 10000,
+      },
+    ),
+  );
+
+  return (
+    <Card className="bg-zinc-900 border-zinc-800">
+      <CardHeader>
+        <CardTitle>Domain Overview</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="grid grid-cols-2 gap-2 w-full">
+          {(isInLateRenewalPeriod || isInGraceRestorationPeriod) &&
+            (canAttemptRenewal ? (
+              <Alert variant="warning" className="col-span-2">
+                <AlertOctagon />
+                <AlertTitle>Domain Expired</AlertTitle>
+                <AlertDescription>
+                  Your domain has expired. You can still submit a request to
+                  renew the domain and it might go through depending on the
+                  TLD(.com, .org, ...)
+                </AlertDescription>
+              </Alert>
+            ) : (
+              <Alert variant="warning" className="col-span-2">
+                <AlertOctagon />
+                <AlertTitle>Domain Expired</AlertTitle>
+                <AlertDescription>
+                  Your domain has expired. You can contact support to check if
+                  it can be restored (this might not be possible for all
+                  TLDs(.com, .org, ...))
+                </AlertDescription>
+              </Alert>
+            ))}
+
+          {canAttemptRenewal &&
+            (isInLateRenewalPeriod || isInGraceRestorationPeriod ? (
+              <ManualRenewalSection domain={domain} disabled={false} />
+            ) : (
+              <DomainRenewalSection domain={domain} disabled={false} />
+            ))}
+
+          {domainSupportedFeatures?.domainExport?.enabled && (
+            <DomainExportSection domain={domain} disabled={false} />
+          )}
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
+
+export const DomainRenewalSection = ({
+  domain,
+  disabled,
+}: {
+  domain: NamefiNormalizedDomain;
+  disabled: boolean;
 }) => {
   const trpc = useTRPC();
   const trpcClient = useTRPCClient();
@@ -64,35 +152,13 @@ export const DnsOverviewPanel = ({
     ),
   );
 
-  const { data: domainExportDetails, isLoading: isDomainExportDetailsLoading } =
-    useQuery(
-      trpc.domainConfig.getDomainExportDetails.queryOptions(
-        {
-          domainName: domain,
-        },
-        {
-          refetchInterval: 8_000,
-        },
-      ),
+  const disableAllButtons = useMemo(() => {
+    return (
+      isDomainPreferencesAndConfigLoading || isDomainDetailsLoading || disabled
     );
-
-  const [fetchAuthCode, setFetchAuthCode] = useState(false);
-  const { data: authCode, isLoading: isAuthCodeLoading } = useQuery(
-    trpc.domainConfig.getAuthCode.queryOptions(
-      {
-        domainName: domain,
-      },
-      {
-        enabled: fetchAuthCode && domainExportDetails?.readyToExport,
-        refetchInterval: false,
-      },
-    ),
-  );
-
-  const { renewDomains } = useDomainRenewal();
+  }, [isDomainPreferencesAndConfigLoading, isDomainDetailsLoading, disabled]);
 
   const [isPending, setIsPending] = useState(false);
-  const [isRequestingExport, setIsRequestingExport] = useState(false);
 
   const handleChange =
     (key: keyof DomainPreferencesAndConfig) => async (value: any) => {
@@ -137,6 +203,172 @@ export const DnsOverviewPanel = ({
       }
     };
 
+  if (isDomainPreferencesAndConfigLoading || isDomainDetailsLoading) {
+    return (
+      <div className="flex items-center flex-col rounded-2xl bg-zinc-900 border border-zinc-800 p-4 gap-1">
+        <Skeleton className="h-4 w-full" />
+        <Skeleton className="h-6 w-full" />
+      </div>
+    );
+  }
+  return (
+    <div className="flex items-center justify-between rounded-2xl bg-zinc-900 border border-zinc-800 p-4">
+      <div className="space-y-0.5">
+        <Label htmlFor="auto-renew">Auto Renew</Label>
+        <p className="text-sm text-muted-foreground">
+          Automatically renew the domain
+        </p>
+        {domainDetails?.expirationTime && !isDomainDetailsLoading ? (
+          <p className="text-xs text-zinc-400">
+            Expires:{' '}
+            {new Date(domainDetails.expirationTime).toLocaleDateString()}
+          </p>
+        ) : isDomainDetailsLoading ? (
+          <Skeleton className="h-3 w-24" />
+        ) : null}
+      </div>
+      <div className="flex items-center gap-3">
+        <RenewDomainButton
+          domain={domain}
+          disabled={disableAllButtons}
+          isPending={isPending}
+        />
+        <Switch
+          id="auto-renew"
+          className={cn(isPending ? 'animate-pulse cursor-progress' : '')}
+          checked={domainPreferencesAndConfig?.autoRenewEnabled}
+          disabled={disableAllButtons || isPending}
+          onCheckedChange={handleChange('autoRenewEnabled')}
+        />
+      </div>
+    </div>
+  );
+};
+
+export const ManualRenewalSection = ({
+  domain,
+  disabled,
+}: {
+  domain: NamefiNormalizedDomain;
+  disabled: boolean;
+}) => {
+  const trpc = useTRPC();
+
+  const { data: domainDetails, isLoading: isDomainDetailsLoading } = useQuery(
+    trpc.domainConfig.getDomainDetails.queryOptions(
+      {
+        domainName: domain,
+      },
+      {
+        refetchInterval: 8_000,
+      },
+    ),
+  );
+
+  const disableAllButtons = useMemo(() => {
+    return isDomainDetailsLoading || disabled;
+  }, [isDomainDetailsLoading, disabled]);
+
+  if (isDomainDetailsLoading) {
+    return (
+      <div className="flex items-center flex-col rounded-2xl bg-zinc-900 border border-zinc-800 p-4 gap-1">
+        <Skeleton className="h-4 w-full" />
+        <Skeleton className="h-6 w-full" />
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex items-center justify-between rounded-2xl bg-zinc-900 border border-zinc-800 p-4">
+      <div className="space-y-0.5">
+        <Label htmlFor="manual-renew">Manual Renew</Label>
+        <p className="text-sm text-muted-foreground">
+          Renew the domain manually
+        </p>
+        {domainDetails?.expirationTime && !isDomainDetailsLoading ? (
+          <p className="text-xs text-zinc-400">
+            Expires:{' '}
+            {new Date(domainDetails.expirationTime).toLocaleDateString()}
+          </p>
+        ) : isDomainDetailsLoading ? (
+          <Skeleton className="h-3 w-24" />
+        ) : null}
+      </div>
+      <div className="flex items-center gap-3">
+        <RenewDomainButton
+          domain={domain}
+          disabled={disableAllButtons}
+          isPending={false}
+        />
+      </div>
+    </div>
+  );
+};
+
+export const RenewDomainButton = ({
+  domain,
+  disabled,
+  isPending,
+}: {
+  domain: NamefiNormalizedDomain;
+  disabled: boolean;
+  isPending: boolean;
+}) => {
+  const trpc = useTRPC();
+  const { renewDomains } = useDomainRenewal();
+
+  const { data: domainDetails, isLoading: isDomainDetailsLoading } = useQuery(
+    trpc.domainConfig.getDomainDetails.queryOptions(
+      {
+        domainName: domain,
+      },
+      {
+        refetchInterval: 8_000,
+      },
+    ),
+  );
+
+  return (
+    <AsyncButton
+      onClick={async () => {
+        if (!domainDetails?.expirationTime) {
+          toast.error('Domain expiration information not available');
+          return;
+        }
+
+        await renewDomains([
+          {
+            normalizedDomainName: domain,
+            expirationDate: new Date(domainDetails.expirationTime),
+          },
+        ]);
+      }}
+      disabled={
+        disabled ||
+        isPending ||
+        isDomainDetailsLoading ||
+        !domainDetails?.expirationTime
+      }
+      size="sm"
+    >
+      Renew now
+    </AsyncButton>
+  );
+};
+
+export const DomainExportSection = ({
+  domain,
+  disabled,
+}: {
+  domain: NamefiNormalizedDomain;
+  disabled: boolean;
+}) => {
+  const trpc = useTRPC();
+  const trpcClient = useTRPCClient();
+  const queryClient = useQueryClient();
+
+  const [isRequestingExport, setIsRequestingExport] = useState(false);
+
   const handleRequestExport = async () => {
     try {
       setIsRequestingExport(true);
@@ -167,198 +399,127 @@ export const DnsOverviewPanel = ({
     }
   };
 
-  const disableAllButtons = useMemo(() => {
-    return isDomainPreferencesAndConfigLoading || isDomainDetailsLoading;
-  }, [isDomainPreferencesAndConfigLoading, isDomainDetailsLoading]);
+  const { data: domainExportDetails, isLoading: isDomainExportDetailsLoading } =
+    useQuery(
+      trpc.domainConfig.getDomainExportDetails.queryOptions(
+        {
+          domainName: domain,
+        },
+        {
+          refetchInterval: 8_000,
+        },
+      ),
+    );
 
-  if (
-    isDomainPreferencesAndConfigLoading ||
-    isDomainDetailsLoading ||
-    isDomainExportDetailsLoading
-  ) {
+  const [fetchAuthCode, setFetchAuthCode] = useState(false);
+  const { data: authCode, isLoading: isAuthCodeLoading } = useQuery(
+    trpc.domainConfig.getAuthCode.queryOptions(
+      {
+        domainName: domain,
+      },
+      {
+        enabled: fetchAuthCode && domainExportDetails?.readyToExport,
+        refetchInterval: false,
+      },
+    ),
+  );
+  if (isDomainExportDetailsLoading) {
     return (
-      <Card className="bg-zinc-900 border-zinc-800">
-        <CardHeader>
-          <CardTitle>DNS Overview</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-2 gap-2 w-full">
-            <div className="flex items-center flex-col rounded-2xl bg-zinc-900 border border-zinc-800 p-4 gap-1">
-              <Skeleton className="h-4 w-full" />
-              <Skeleton className="h-6 w-full" />
-            </div>
-            <div className="flex items-center flex-col rounded-2xl bg-zinc-900 border border-zinc-800 p-4 gap-1">
-              <Skeleton className="h-4 w-full" />
-              <Skeleton className="h-6 w-full" />
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+      <div className="flex items-center flex-col rounded-2xl bg-zinc-900 border border-zinc-800 p-4 gap-1">
+        <Skeleton className="h-4 w-full" />
+        <Skeleton className="h-6 w-full" />
+      </div>
     );
   }
 
-  if (
-    isNil(domainPreferencesAndConfig) ||
-    isNil(domainDetails) ||
-    isNil(domainExportDetails)
-  ) {
+  if (isNil(domainExportDetails)) {
     return (
-      <Card className="bg-zinc-900 border-zinc-800">
-        <CardHeader>
-          <CardTitle>DNS Overview</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="text-center py-12">
-            Something went wrong! Please try again later.
-          </div>
-        </CardContent>
-      </Card>
+      <div className="text-center py-12">
+        Something went wrong with fetching domain export details! Please try
+        again later.
+      </div>
     );
   }
 
   return (
-    <Card className="bg-zinc-900 border-zinc-800">
-      <CardHeader>
-        <CardTitle>DNS Overview</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="grid grid-cols-2 gap-2 w-full">
-          <div className="flex items-center justify-between rounded-2xl bg-zinc-900 border border-zinc-800 p-4">
-            <div className="space-y-0.5">
-              <Label htmlFor="auto-renew">Auto Renew</Label>
-              <p className="text-sm text-muted-foreground">
-                Automatically renew the domain
-              </p>
-              {domainDetails?.expirationTime && !isDomainDetailsLoading ? (
-                <p className="text-xs text-zinc-400">
-                  Expires:{' '}
-                  {new Date(domainDetails.expirationTime).toLocaleDateString()}
-                </p>
-              ) : isDomainDetailsLoading ? (
-                <Skeleton className="h-3 w-24" />
-              ) : null}
-            </div>
-            <div className="flex items-center gap-3">
-              <AsyncButton
-                onClick={async () => {
-                  if (!domainDetails?.expirationTime) {
-                    toast.error('Domain expiration information not available');
-                    return;
-                  }
-
-                  await renewDomains([
-                    {
-                      normalizedDomainName: domain,
-                      expirationDate: new Date(domainDetails.expirationTime),
-                    },
-                  ]);
-                }}
-                disabled={
-                  disableAllButtons ||
-                  isPending ||
-                  isDomainDetailsLoading ||
-                  !domainDetails?.expirationTime
-                }
-                size="sm"
-              >
-                Renew now
-              </AsyncButton>
-              <Switch
-                id="auto-renew"
-                className={cn(isPending ? 'animate-pulse cursor-progress' : '')}
-                checked={domainPreferencesAndConfig?.autoRenewEnabled}
-                disabled={disableAllButtons || isPending}
-                onCheckedChange={handleChange('autoRenewEnabled')}
-              />
-            </div>
-          </div>
-
-          {/* Domain Export Section */}
-          <div className="flex items-center justify-between rounded-2xl bg-zinc-900 border border-zinc-800 p-4">
-            <div className="space-y-0.5">
-              <div className="flex items-center gap-2">
-                <Label htmlFor="domain-export">Domain Export</Label>
-                {!domainExportDetails.supportsExport && (
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Info className="h-4 w-4 text-zinc-500 cursor-help" />
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>{domainExportDetails.message}</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                )}
-              </div>
-              <p className="text-sm text-muted-foreground">
-                Export domain to another registrar
-              </p>
-            </div>
-            <div className="flex items-center gap-2">
-              {!domainExportDetails.supportsExport ? (
-                <Button disabled size="sm" variant="secondary">
-                  <ExternalLink className="h-4 w-4 mr-2" />
-                  Export Unavailable
-                </Button>
-              ) : domainExportDetails.pendingRequestToEnableExport ? (
-                <Button disabled>
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                  <span>Enable Export Request Pending...</span>
-                </Button>
-              ) : domainExportDetails.readyToExport ? (
-                <div className="flex items-center gap-2">
-                  {authCode?.authCode ? (
-                    <>
-                      <div className="flex items-center gap-2 px-3 py-1 bg-zinc-800 rounded border text-sm font-mono">
-                        <span className="text-green-400">
-                          {authCode.authCode}
-                        </span>
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          onClick={handleCopyAuthCode}
-                          className="h-6 w-6 p-0"
-                        >
-                          <Copy className="h-3 w-3" />
-                        </Button>
-                      </div>
-                    </>
-                  ) : (
-                    <Button
-                      size="sm"
-                      onClick={async () => {
-                        setFetchAuthCode(true);
-                      }}
-                      disabled={isAuthCodeLoading}
-                    >
-                      {isAuthCodeLoading ? (
-                        <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                      ) : (
-                        <ExternalLink className="h-4 w-4 mr-2" />
-                      )}
-                      Get Auth Code
-                    </Button>
-                  )}
-                </div>
-              ) : (
-                <AsyncButton
-                  onClick={handleRequestExport}
-                  disabled={disableAllButtons || isRequestingExport}
-                  loadingText="Requesting Export..."
-                  loadingIcon={
-                    <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                  }
-                  size="sm"
-                >
-                  <ExternalLink className="h-4 w-4 mr-2" />
-                  Request Export
-                </AsyncButton>
-              )}
-            </div>
-          </div>
+    <div className="flex items-center justify-between rounded-2xl bg-zinc-900 border border-zinc-800 p-4">
+      <div className="space-y-0.5">
+        <div className="flex items-center gap-2">
+          <Label htmlFor="domain-export">Domain Export</Label>
+          {!domainExportDetails.supportsExport && (
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Info className="h-4 w-4 text-zinc-500 cursor-help" />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{domainExportDetails.message}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          )}
         </div>
-      </CardContent>
-    </Card>
+        <p className="text-sm text-muted-foreground">
+          Export domain to another registrar
+        </p>
+      </div>
+      <div className="flex items-center gap-2">
+        {!domainExportDetails.supportsExport ? (
+          <Button disabled size="sm" variant="secondary">
+            <ExternalLink className="h-4 w-4 mr-2" />
+            Export Unavailable
+          </Button>
+        ) : domainExportDetails.pendingRequestToEnableExport ? (
+          <Button disabled>
+            <Loader2 className="h-4 w-4 animate-spin" />
+            <span>Enable Export Request Pending...</span>
+          </Button>
+        ) : domainExportDetails.readyToExport ? (
+          <div className="flex items-center gap-2">
+            {authCode?.authCode ? (
+              <>
+                <div className="flex items-center gap-2 px-3 py-1 bg-zinc-800 rounded border text-sm font-mono">
+                  <span className="text-green-400">{authCode.authCode}</span>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={handleCopyAuthCode}
+                    className="h-6 w-6 p-0"
+                  >
+                    <Copy className="h-3 w-3" />
+                  </Button>
+                </div>
+              </>
+            ) : (
+              <Button
+                size="sm"
+                onClick={async () => {
+                  setFetchAuthCode(true);
+                }}
+                disabled={isAuthCodeLoading}
+              >
+                {isAuthCodeLoading ? (
+                  <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                ) : (
+                  <ExternalLink className="h-4 w-4 mr-2" />
+                )}
+                Get Auth Code
+              </Button>
+            )}
+          </div>
+        ) : (
+          <AsyncButton
+            onClick={handleRequestExport}
+            disabled={disabled || isRequestingExport}
+            loadingText="Requesting Export..."
+            loadingIcon={<Loader2 className="h-4 w-4 animate-spin mr-2" />}
+            size="sm"
+          >
+            <ExternalLink className="h-4 w-4 mr-2" />
+            Request Export
+          </AsyncButton>
+        )}
+      </div>
+    </div>
   );
 };

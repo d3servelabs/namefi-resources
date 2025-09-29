@@ -46,7 +46,7 @@ export const DomainManagement: FC<DomainManagementProps> = ({
   ...rest
 }: DomainManagementProps) => {
   // Check if domain matches any third-party hostname
-  const isThirdPartyHostname = useMemo(
+  const isPbn = useMemo(
     () =>
       config.POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES.some((hostname) =>
         domain.endsWith(hostname),
@@ -55,7 +55,7 @@ export const DomainManagement: FC<DomainManagementProps> = ({
   );
 
   // Set default tab based on whether it's a third-party hostname
-  const defaultTab = isThirdPartyHostname ? 'dns-management' : 'dns-overview';
+  const defaultTab = isPbn ? 'dns-management' : 'dns-overview';
   const [currentTab, setCurrentTab] = useState(defaultTab);
   const [showEmailModal, setShowEmailModal] = useState(false);
   const { hasEmail } = useEmailPrompt();
@@ -105,7 +105,22 @@ export const DomainManagement: FC<DomainManagementProps> = ({
   const handleGoBack = () => {
     router.back();
   };
+  const showDnsTable =
+    domainSupportedFeatures?.dnsManagement?.enabled &&
+    domainSupportedFeatures?.dnsManagement?.config.showPanel;
 
+  const showNameservers =
+    domainSupportedFeatures?.nameserversManagement?.enabled &&
+    domainSupportedFeatures?.nameserversManagement?.config.showPanel;
+  const showDnssec =
+    domainSupportedFeatures?.dnssecManagement?.enabled &&
+    domainSupportedFeatures?.dnssecManagement?.config.showPanel;
+  const showDomainPreferences =
+    domainSupportedFeatures?.domainPreferencesManagement?.enabled &&
+    domainSupportedFeatures?.domainPreferencesManagement?.config.showPanel;
+
+  const showDnsManagement =
+    showNameservers || showDnssec || showDomainPreferences;
   return (
     <div className={cn('', className)} {...rest}>
       <EmailRequiredModal
@@ -140,33 +155,46 @@ export const DomainManagement: FC<DomainManagementProps> = ({
           <TabsContent value="dns-setting">
             <Tabs value={currentTab} onValueChange={handleTabChange}>
               <TabsList className="mb-8">
-                {!isThirdPartyHostname && (
+                {!isPbn && (
                   <TabsTrigger value="dns-overview">DNS Overview</TabsTrigger>
                 )}
-                <TabsTrigger value="dns-records">DNS Records</TabsTrigger>
-                <TabsTrigger value="dns-management">DNS Management</TabsTrigger>
+
+                {showDnsTable && (
+                  <TabsTrigger value="dns-records">DNS Records</TabsTrigger>
+                )}
+                {showDnsManagement && (
+                  <TabsTrigger value="dns-management">
+                    DNS Management
+                  </TabsTrigger>
+                )}
               </TabsList>
 
-              {!isThirdPartyHostname && (
+              {!isPbn && (
                 <TabsContent value="dns-overview">
                   <DnsOverviewPanel domain={domain as PunycodeDomainName} />
                 </TabsContent>
               )}
 
-              <TabsContent value="dns-records">
-                <DnsRecordsPanel domain={domain} />
-              </TabsContent>
+              {showDnsTable && (
+                <TabsContent value="dns-records">
+                  <DnsRecordsPanel domain={domain} />
+                </TabsContent>
+              )}
 
-              <TabsContent value="dns-management">
-                <div className="flex flex-col gap-4">
-                  <NameserversPanel domainName={domain as PunycodeDomainName} />
+              {showDnsManagement && (
+                <TabsContent value="dns-management">
+                  <div className="flex flex-col gap-4">
+                    <NameserversPanel
+                      domainName={domain as PunycodeDomainName}
+                    />
 
-                  <DnssecPanel domainName={domain as PunycodeDomainName} />
-                  <DomainConfigAndPrefs
-                    domainName={domain as PunycodeDomainName}
-                  />
-                </div>
-              </TabsContent>
+                    <DnssecPanel domainName={domain as PunycodeDomainName} />
+                    <DomainConfigAndPrefs
+                      domainName={domain as PunycodeDomainName}
+                    />
+                  </div>
+                </TabsContent>
+              )}
             </Tabs>
           </TabsContent>
         </Tabs>
