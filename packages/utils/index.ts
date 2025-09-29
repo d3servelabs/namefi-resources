@@ -8,3 +8,4 @@ export * from './src/promises/resolve';
 export * from './src/safe-parse-json';
 export * from './src/assert';
 export * from './src/permissions';
+export * from './src/domain-dates';
