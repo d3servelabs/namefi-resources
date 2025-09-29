@@ -3,6 +3,7 @@ import { useTRPCClient } from '@/lib/trpc';
 import { useCartContext } from '@/components/providers/cart';
 import { toast } from 'sonner';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import { isDomainAssumedBeyondLateRenewalPeriod } from '@namefi-astra/utils';
 
 interface RenewalResult {
   domain: string;
@@ -74,11 +75,11 @@ export function useDomainRenewal() {
           if (domainData.expirationDate) {
             const expirationDate = new Date(domainData.expirationDate);
 
-            if (expirationDate <= currentDate) {
+            if (isDomainAssumedBeyondLateRenewalPeriod(expirationDate)) {
               results.push({
                 domain,
                 success: false,
-                reason: 'Domain has already expired',
+                reason: 'Domain is beyond the 30-day renewal grace period',
               });
               continue;
             }

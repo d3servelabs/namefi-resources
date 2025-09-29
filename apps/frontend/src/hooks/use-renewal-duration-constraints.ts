@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useTRPC } from '@/lib/trpc';
 import { differenceInYears } from 'date-fns';
+import { isDomainAssumedBeyondLateRenewalPeriod } from '@namefi-astra/utils';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 
 export type RenewalErrorCode =
@@ -102,12 +103,12 @@ export function useRenewalDurationConstraints(
     const currentDate = new Date();
     const expirationDate = new Date(domainDetails.expirationTime);
 
-    if (expirationDate <= currentDate) {
+    if (isDomainAssumedBeyondLateRenewalPeriod(expirationDate)) {
       return {
         status: 'error',
         errorCode: 'DOMAIN_EXPIRED',
         error:
-          'Domain has already expired and cannot be renewed through this interface',
+          'Domain is beyond the 30-day renewal grace period and cannot be renewed through this interface',
       };
     }
 

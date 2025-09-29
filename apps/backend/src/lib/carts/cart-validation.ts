@@ -9,7 +9,11 @@ import {
   computeChargesInUsdFromDomainAvailabilityInfo,
   usdToCents,
 } from '@namefi-astra/registrars/multi-year-pricing';
-import { type NamefiNormalizedDomain, switchCase } from '@namefi-astra/utils';
+import {
+  isDomainAssumedBeyondLateRenewalPeriod,
+  type NamefiNormalizedDomain,
+  switchCase,
+} from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
 import { and, eq, inArray } from 'drizzle-orm';
 import {
@@ -23,7 +27,6 @@ import {
 } from 'ramda';
 import type { DomainAvailabilityInfo } from '#lib/namefi-registry';
 import { isDomainImportable } from '../../trpc/types';
-import { addDays } from 'date-fns';
 import { toPunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
 import { pluck } from 'ramda';
 import { logger } from '#lib/logger';
@@ -221,9 +224,12 @@ function _getAvailabilityChangesInRenewCartItems(
     const expirationTime = renewCartItemsExpirationDatesMap.get(
       item.normalizedDomainName,
     );
-    // Skip expired item
-    if (!expirationTime || addDays(expirationTime, 7) <= new Date()) {
-      // 7 days grace period TODO(Sami->Sami): use real grace period
+    // Skip expired item beyond grace period
+    if (
+      !expirationTime ||
+      isDomainAssumedBeyondLateRenewalPeriod(expirationTime)
+    ) {
+      // 30 days grace period TODO(Sami->Sami): use real grace period
       return 'expired';
     }
 

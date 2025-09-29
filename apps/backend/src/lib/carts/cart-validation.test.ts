@@ -444,8 +444,8 @@ describe('cart-validation', () => {
         },
       } as any;
 
-      // Domain expired 10 days ago (beyond 7-day grace period)
-      const expiredDate = new Date(Date.now() - 10 * 24 * 60 * 60 * 1000);
+      // Domain expired 40 days ago (beyond 30-day grace period)
+      const expiredDate = new Date(Date.now() - 40 * 24 * 60 * 60 * 1000);
       const expirationMap = new Map([
         ['example.com' as NamefiNormalizedDomain, expiredDate],
       ]);

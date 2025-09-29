@@ -3,7 +3,12 @@ import {
   toPunycodeFqdn,
 } from '@namefi-astra/registrars/lib/data/validations';
 import { punycodeFqdnSchema } from '@namefi-astra/registrars/lib/data/validations';
-import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
+import {
+  isDomainExpirationDatePassed,
+  isDomainAssumedInLateRenewalPeriod,
+  isDomainAssumedInGraceRestorationPeriod,
+  namefiNormalizedDomainSchema,
+} from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import {
@@ -40,6 +45,8 @@ import {
   getDomainsExpirationDatesFromIndex,
   maybeQueryActiveRenewalWorkflow,
 } from '../../../temporal/activities/domain/renew.activities';
+import { differenceInDays, isBefore } from 'date-fns';
+import { resolve } from '@namefi-astra/utils';
 
 export const domainConfigRouter = createTRPCRouter({
   /**
@@ -270,13 +277,92 @@ export const domainConfigRouter = createTRPCRouter({
                   showPanel: true,
                 },
               },
+              domainExport: {
+                enabled: false,
+                config: {
+                  showPanel: false,
+                  message: 'Domain export is not available for subdomains.',
+                },
+              },
             },
           };
         }
 
-        const nameservers = await sldRegistrar.getNameServers(
-          toPunycodeDomainName(input.normalizedDomainName),
+        const expirationDate = (
+          await getDomainsExpirationDatesFromIndex([input.normalizedDomainName])
+        )[input.normalizedDomainName];
+
+        const isExpired = isDomainExpirationDatePassed(expirationDate);
+        const isInLateRenewalPeriod =
+          isDomainAssumedInLateRenewalPeriod(expirationDate);
+        const isInGraceRestorationPeriod =
+          isDomainAssumedInGraceRestorationPeriod(expirationDate);
+
+        const [error, nameservers] = await resolve(
+          sldRegistrar.getNameServers(
+            toPunycodeDomainName(input.normalizedDomainName),
+          ),
         );
+        if (error) {
+          if (isInLateRenewalPeriod || isInGraceRestorationPeriod) {
+            return {
+              canAttemptRenewal: false,
+              isInLateRenewalPeriod,
+              isInGraceRestorationPeriod,
+              features: {
+                domainManagement: {
+                  enabled: true,
+                  config: {
+                    showPanel: true,
+                    message:
+                      'You are in the late renewal period or grace restoration period. You can still manage your domain but some features are disabled.',
+                  },
+                },
+                dnsManagement: {
+                  enabled: false,
+                  config: {
+                    showPanel: false,
+                    message:
+                      'DNS management is not available in the late renewal period or grace restoration period.',
+                  },
+                },
+                nameserversManagement: {
+                  enabled: false,
+                  config: {
+                    showPanel: false,
+                    message:
+                      'Nameservers management is not available in the late renewal period or grace restoration period.',
+                  },
+                },
+                dnssecManagement: {
+                  enabled: false,
+                  config: {
+                    showPanel: false,
+                    message:
+                      'DNSSEC management is not available in the late renewal period or grace restoration period.',
+                  },
+                },
+                domainPreferencesManagement: {
+                  enabled: false,
+                  config: {
+                    showPanel: false,
+                    message:
+                      'Domain preferences management is not available in the late renewal period or grace restoration period.',
+                  },
+                },
+                domainExport: {
+                  enabled: false,
+                  config: {
+                    showPanel: false,
+                    message:
+                      'Domain export is not available in the late renewal period or grace restoration period.',
+                  },
+                },
+              },
+            };
+          }
+          throw error;
+        }
         const isUsingOldNamefiNameservers =
           await checkIfNameserversAreLegacyNamefiNameservers(nameservers);
 
@@ -317,7 +403,11 @@ export const domainConfigRouter = createTRPCRouter({
         const isUsingNamefiNameservers =
           checkIfNameserversAreNamefiNameservers(nameservers);
 
+        const disableAllFeatures = isExpired;
         return {
+          canAttemptRenewal: true,
+          isInLateRenewalPeriod,
+          isInGraceRestorationPeriod,
           features: {
             domainManagement: {
               enabled: true,
@@ -326,36 +416,42 @@ export const domainConfigRouter = createTRPCRouter({
               },
             },
             dnsManagement: {
-              enabled: isUsingNamefiNameservers,
+              enabled: isUsingNamefiNameservers && !disableAllFeatures,
               config: {
-                showPanel: true,
+                showPanel: true && !disableAllFeatures,
                 message: isUsingNamefiNameservers
                   ? undefined
                   : 'You are using other nameservers. You need to head to your nameserver provider to manage your domain.',
               },
             },
             nameserversManagement: {
-              enabled: true,
+              enabled: true && !disableAllFeatures,
               config: {
-                showPanel: true,
+                showPanel: true && !disableAllFeatures,
               },
             },
             dnssecManagement: {
-              enabled: isUsingNamefiNameservers,
+              enabled: isUsingNamefiNameservers && !disableAllFeatures,
               config: {
-                showPanel: true,
+                showPanel: true && !disableAllFeatures,
                 message: isUsingNamefiNameservers
                   ? undefined
                   : 'You are using other nameservers. You need to head to your nameserver provider to manage your dnssec.',
               },
             },
             domainPreferencesManagement: {
-              enabled: isUsingNamefiNameservers,
+              enabled: isUsingNamefiNameservers && !disableAllFeatures,
               config: {
-                showPanel: true,
+                showPanel: true && !disableAllFeatures,
                 message: isUsingNamefiNameservers
                   ? undefined
                   : 'You are using other nameservers. Domain preferences management is only available when using Namefi nameservers.',
+              },
+            },
+            domainExport: {
+              enabled: true && !disableAllFeatures,
+              config: {
+                showPanel: true && !disableAllFeatures,
               },
             },
           },
