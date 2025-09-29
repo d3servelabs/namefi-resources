@@ -34,7 +34,7 @@ import {
   type AuditActorExtraInfo,
 } from '#lib/auditor';
 import { timingSafeEqual } from 'crypto';
-import { getSignedCookie } from 'hono/cookie';
+import { getCookie } from 'hono/cookie';
 
 /**
  * Get the powered by namefi (pbn) domain from the origin.
@@ -347,10 +347,9 @@ async function readImpersonationTargetUserId(
   ctx: TrpcContext,
 ): Promise<string | null> {
   try {
-    const cookieVal = await getSignedCookie(
+    const cookieVal = await getCookie(
       ctx.honoCtx as HonoContext,
       'impersonate-user-id',
-      secrets.COOKIE_SECRET,
     );
     const raw = cookieVal?.toString()?.trim();
     return raw ? raw.toLowerCase() : null;

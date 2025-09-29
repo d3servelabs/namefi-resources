@@ -57,7 +57,7 @@ import { logger } from '#lib/logger';
 import { IsUserDomainOwner } from '../guards/assert-domain-owner';
 import { syncSingleUserToListmonkActivity } from '../../temporal/activities/default/email-subscription-sync.activities';
 import { audit, createAuditRecord } from '#lib/auditor';
-import { deleteCookie, setSignedCookie } from 'hono/cookie';
+import { deleteCookie, setCookie } from 'hono/cookie';
 import { getDomainsExpirationDatesFromIndex } from '../../temporal/activities/domain/renew.activities';
 
 if (!secrets.ALCHEMY_API_KEY) {
@@ -211,17 +211,15 @@ export const usersRouter = createTRPCRouter({
         const secure =
           forwardedProto?.toLowerCase?.() === 'https' ||
           url.protocol === 'https:';
-        await setSignedCookie(
+        await setCookie(
           ctx.honoCtx as any,
           'impersonate-user-id',
           input.targetUserId,
-          secrets.COOKIE_SECRET,
           {
             httpOnly: true,
             sameSite: 'Lax',
             secure,
             path: '/',
-            maxAge: 60 * 60 * 2, // 2 hours
           },
         );
       } catch (error) {
