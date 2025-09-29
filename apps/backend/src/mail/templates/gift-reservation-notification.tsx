@@ -12,6 +12,7 @@ import { usePoweredByNamefiDomain } from '../components/powered-by-namefi-url-co
 import { buildTemplate } from '../components/build-template';
 import { NamefiEmailLinks } from '../email-links';
 import { toUnicode } from 'punycode';
+import rehypeSanitize from 'rehype-sanitize';
 
 export type GiftReservationNotificationProps = {
   recipientName?: string;
@@ -55,9 +56,7 @@ export const GiftReservationNotification =
           ? `a name you can choose from **${toUnicode(parentDomain)}**`
           : 'a name';
 
-      const greeting = recipientName
-        ? `Hi ${escape(recipientName)}`
-        : 'Hi there';
+      const greeting = recipientName ? `Hi ${recipientName}` : 'Hi there';
       const gift = isGift ?? Boolean(freeClaimExpirationDate);
       const reserved = Boolean(reservedExpirationDate && exactDomainName);
       const expirationMessage = gift
@@ -86,16 +85,16 @@ export const GiftReservationNotification =
         : '🔒 **A name has been reserved for you!**';
 
       const intro = gift
-        ? `**${escape(gifterName)}** has gifted you a free claim for ${nameText}.`
+        ? `**${gifterName}** has gifted you a free domain for ${nameText}.`
         : `A free claim for ${nameText} has been reserved for your account.`;
 
       const messageMarkdown =
         `${greeting},\n\n` +
         `${headline}\n\n` +
         `${intro}\n\n` +
-        (reason ? `**Reason:** ${escape(reason)}\n\n` : '') +
+        (reason ? `**Reason:** ${reason}\n\n` : '') +
         (gift && personalMessage
-          ? `**Personal message from ${escape(gifterName)}:**\n> ${escape(personalMessage)}\n\n`
+          ? `**Personal message from ${gifterName}:**\n> ${personalMessage}\n\n`
           : '') +
         expirationMessage +
         reservedMessage;
@@ -104,7 +103,7 @@ export const GiftReservationNotification =
         <NamefiEmailContainer
           title={
             gift
-              ? `[Namefi] ${gifterName} has gifted you a free name claim!`
+              ? `[Namefi] ${gifterName} has gifted you a free domain!`
               : `[Namefi] A name has been reserved for you on ${poweredByNamefiDomain || pbnDomain}`
           }
         >
@@ -177,6 +176,7 @@ export const GiftReservationNotification =
                 rehypeExternalLinks,
                 { target: '_blank', rel: ['noopener', 'noreferrer'] },
               ],
+              [rehypeSanitize],
             ]}
             components={{
               a: (props) => <Link style={anchor} {...props} />,
