@@ -47,7 +47,7 @@ export function useLinkedWalletAddresses() {
 export function useLinkedWallets() {
   const {
     privyUser,
-    isLoading: privyUserReady,
+    ready: privyUserReady,
     isAuthenticated: authenticated,
   } = useAuth();
 
