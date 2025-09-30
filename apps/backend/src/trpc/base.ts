@@ -801,6 +801,92 @@ export const auditedAdminProcedureWithPermissions = (
   );
 
 /**
+ * Generic audit wrapper for any procedure (public/protected/authedOrPublic).
+ * Use this for non-admin mutations so we capture consistent audit logs.
+ */
+export const withAudit = <
+  Input = any,
+  Output = any,
+  TProc extends typeof protectedProcedure = typeof protectedProcedure,
+>(
+  procedure: TProc,
+  params?:
+    | CreateAuditRecordParams
+    | ((args: {
+        ctx: TrpcContextWithUser;
+        input: Input;
+        meta?: object;
+        auditActorExtraInfo: AuditActorExtraInfo;
+        path?: string;
+        result?: Output;
+      }) => CreateAuditRecordParams),
+) =>
+  procedure.use(
+    t.middleware<TrpcContextWithUser>(
+      async ({ ctx: _ctx, next, meta, getRawInput, path }) => {
+        const ctx = _ctx as TrpcContextWithUser;
+        const input = await getRawInput();
+        const start = performance.now();
+        const result = await next({ ctx });
+
+        try {
+          const auditActorExtraInfo: AuditActorExtraInfo = {
+            ipAddress: ctx.honoVars?.connInfo.remote.address || '',
+            ipAddressType:
+              ctx.honoVars?.connInfo.remote.addressType || 'unknown',
+            userAgent: ctx.req.header('user-agent') || '',
+            referer: ctx.req.header('referer') || '',
+            url: ctx.req.url || '',
+            method: ctx.req.method || '',
+            requestId: ctx.honoVars?.requestId || '',
+            sessionId: ctx.sessionId || '',
+            userId: ctx.user?.id || '',
+            statusCode: ctx.res.status,
+            responseTimeInMs: performance.now() - start,
+            type: 'user',
+          };
+
+          // Attach impersonation context when available (non-breaking)
+          if (ctx.impersonation) {
+            logger.assign({
+              auditActorUserId: ctx.impersonation.actorUserId,
+              auditImpersonatedUserId: ctx.impersonation.targetUserId,
+            });
+          }
+
+          const record: CreateAuditRecordParams =
+            typeof params === 'function'
+              ? params({
+                  ctx,
+                  input: input as Input,
+                  meta,
+                  auditActorExtraInfo,
+                  path,
+                  result: result as Output,
+                })
+              : (params ?? {
+                  actorType: 'user',
+                  actorId: ctx.user?.id || 'anonymous',
+                  actorExtraInfo: auditActorExtraInfo,
+                  resourceType: 'other',
+                  resourceId: '',
+                  action: String(path || 'unknown_mutation'),
+                  extraInput: input,
+                });
+
+          audit(createAuditRecord(record));
+        } catch (error) {
+          logger.fatal(
+            { error, userId: (ctx as any)?.user?.id },
+            'Error auditing procedure',
+          );
+        }
+        return result;
+      },
+    ),
+  );
+
+/**
  * Owner procedure for Powered-by-Namefi domains
  * Ensures the authed user owns at least one powered by namefi domain
  */

@@ -39,6 +39,12 @@ export const ResourceType = {
   SCHEDULED_WORKFLOW: 'scheduled_workflow',
   PBN_DOMAIN: 'pbn_domain',
   FREE_CLAIM: 'free_domain_claim',
+  CART: 'cart',
+  CART_ITEM: 'cart_item',
+  ORDER_ITEM: 'order_item',
+  DNS_RECORD: 'dns_record',
+  PAYMENT_METHOD: 'payment_method',
+  LINK_SHARE: 'link_share',
   OTHER: 'other',
 } as const;
 
