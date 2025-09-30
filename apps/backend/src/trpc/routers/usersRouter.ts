@@ -38,6 +38,7 @@ import {
   createTRPCRouter,
   protectedProcedure,
   auditedAdminProcedureWithPermissions,
+  withAudit,
 } from '../base';
 import { Permission } from '@namefi-astra/utils';
 import {
@@ -324,9 +325,32 @@ export const usersRouter = createTRPCRouter({
     return (ctx.userPermissions ?? []) as Permission[];
   }),
 
-  updatePrivyCustomMetadata: protectedProcedure
+  updatePrivyCustomMetadata: withAudit(
+    protectedProcedure,
+    ({
+      ctx,
+      input,
+      auditActorExtraInfo,
+      path,
+      meta,
+    }: {
+      ctx: any;
+      input: any;
+      auditActorExtraInfo: any;
+      path?: string;
+      meta?: object;
+    }) => ({
+      actorType: 'user',
+      actorId: ctx.user?.id || 'unknown',
+      actorExtraInfo: auditActorExtraInfo,
+      resourceType: 'user',
+      resourceId: ctx.user?.id || 'unknown',
+      action: 'update_privy_metadata',
+      extraInput: input,
+    }),
+  )
     .input(privyCustomMetadataSchema)
-    .mutation(async ({ input, ctx }) => {
+    .mutation(async ({ input, ctx }: any) => {
       const serializedMetadata = privyCustomMetadataToPrivyStorage.parse(input);
 
       const updatedPrivyUser = await privyClient.setCustomMetadata(
@@ -714,9 +738,32 @@ export const usersRouter = createTRPCRouter({
     return user.subscribeToEmails;
   }),
 
-  setSubscribeToEmails: protectedProcedure
+  setSubscribeToEmails: withAudit(
+    protectedProcedure,
+    ({
+      ctx,
+      input,
+      auditActorExtraInfo,
+      path,
+      meta,
+    }: {
+      ctx: any;
+      input: any;
+      auditActorExtraInfo: any;
+      path?: string;
+      meta?: object;
+    }) => ({
+      actorType: 'user',
+      actorId: ctx.user?.id || 'unknown',
+      actorExtraInfo: auditActorExtraInfo,
+      resourceType: 'user',
+      resourceId: ctx.user?.id || 'unknown',
+      action: input.optIn ? 'subscribe_to_emails' : 'unsubscribe_from_emails',
+      extraInput: input,
+    }),
+  )
     .input(z.object({ optIn: z.boolean() }))
-    .mutation(async ({ input, ctx }) => {
+    .mutation(async ({ input, ctx }: any) => {
       // Update the user's opt-in status
       await db
         .update(usersTable)

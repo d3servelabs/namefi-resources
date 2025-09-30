@@ -1,9 +1,17 @@
 import { z } from 'zod';
-import { createTRPCRouter, poweredByNamefiOwnerProcedure } from '../base';
+import {
+  createTRPCRouter,
+  poweredByNamefiOwnerProcedure,
+  withAudit,
+} from '../base';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
-import * as PbnIssuanceReservationsActivities from '#temporal/activities/pbn-issuance-reservations.activities';
+import {
+  createReservation,
+  createReservationsBulk,
+  cancelReservation,
+} from '#temporal/activities/pbn-issuance-reservations.activities';
 import { db, pbnIssuanceReservationsTable } from '@namefi-astra/db';
 import { and, desc, eq } from 'drizzle-orm';
 
@@ -80,30 +88,40 @@ const createReservationInputSchema = z
   });
 
 export const pbnIssuanceReservationsRouter = createTRPCRouter({
-  create: poweredByNamefiOwnerProcedure
+  create: withAudit(
+    poweredByNamefiOwnerProcedure,
+    ({ ctx, input, auditActorExtraInfo }) => ({
+      actorType: 'user',
+      actorId: ctx.user?.id || 'unknown',
+      actorExtraInfo: auditActorExtraInfo,
+      resourceType: 'pbn_domain',
+      resourceId: input.pbnDomain,
+      action: 'issue_reservation_gift',
+      extraInput: input,
+    }),
+  )
     .input(createReservationInputSchema)
     .mutation(async ({ ctx, input }) => {
       try {
-        const result =
-          await PbnIssuanceReservationsActivities.createReservation({
-            pbnDomain: input.pbnDomain,
-            recipientEmail: input.recipientEmail,
-            exactDomainName: input.exactDomainName as
-              | NamefiNormalizedDomain
-              | undefined,
-            parentDomain: input.parentDomain as
-              | NamefiNormalizedDomain
-              | undefined,
-            reason: input.reason,
-            issueFreeClaim: input.issueFreeClaim,
-            reserveHold: input.reserveHold,
-            reservationExpirationDate: input.reservationExpirationDate ?? null,
-            freeClaimExpirationDate: input.freeClaimExpirationDate ?? null,
-            creatorId: ctx.user.id,
-            personalMessage: input.personalMessage,
-            sendEmail: input.sendEmail,
-            metadata: {},
-          });
+        const result = await createReservation({
+          pbnDomain: input.pbnDomain,
+          recipientEmail: input.recipientEmail,
+          exactDomainName: input.exactDomainName as
+            | NamefiNormalizedDomain
+            | undefined,
+          parentDomain: input.parentDomain as
+            | NamefiNormalizedDomain
+            | undefined,
+          reason: input.reason,
+          issueFreeClaim: input.issueFreeClaim,
+          reserveHold: input.reserveHold,
+          reservationExpirationDate: input.reservationExpirationDate ?? null,
+          freeClaimExpirationDate: input.freeClaimExpirationDate ?? null,
+          creatorId: ctx.user.id,
+          personalMessage: input.personalMessage,
+          sendEmail: input.sendEmail,
+          metadata: {},
+        });
         return result;
       } catch (error) {
         throw new TRPCError({
@@ -165,12 +183,26 @@ export const pbnIssuanceReservationsRouter = createTRPCRouter({
       }));
     }),
 
-  cancel: poweredByNamefiOwnerProcedure
+  cancel: withAudit(
+    poweredByNamefiOwnerProcedure,
+    ({ ctx, input, auditActorExtraInfo, result }) => ({
+      actorType: 'user',
+      actorId: ctx.user?.id || 'unknown',
+      actorExtraInfo: auditActorExtraInfo,
+      resourceType: 'pbn_domain',
+      resourceId: result.pbnDomain,
+      action: 'cancel_reservation_gift',
+      extraInput: input,
+    }),
+  )
     .input(z.object({ reservationId: z.string().uuid() }))
     .mutation(async ({ ctx, input }) => {
       // ensure ownership
-      const record = await db
-        .select({ id: pbnIssuanceReservationsTable.id })
+      const records = await db
+        .select({
+          id: pbnIssuanceReservationsTable.id,
+          pbnDomain: pbnIssuanceReservationsTable.pbnDomain,
+        })
         .from(pbnIssuanceReservationsTable)
         .where(
           and(
@@ -180,20 +212,34 @@ export const pbnIssuanceReservationsRouter = createTRPCRouter({
           ),
         )
         .limit(1);
-      if (record.length === 0)
+      const record = records[0];
+
+      if (records.length === 0 || !record)
         throw new TRPCError({
           code: 'NOT_FOUND',
           message: 'Reservation not found',
         });
 
-      await PbnIssuanceReservationsActivities.cancelReservation(
-        input.reservationId,
-        ctx.user.id,
-      );
-      return { success: true };
+      await cancelReservation(input.reservationId, ctx.user.id);
+      return {
+        success: true,
+        reservationId: input.reservationId,
+        pbnDomain: record.pbnDomain,
+      };
     }),
 
-  createBulk: poweredByNamefiOwnerProcedure
+  createBulk: withAudit(
+    poweredByNamefiOwnerProcedure,
+    ({ ctx, input, auditActorExtraInfo }) => ({
+      actorType: 'user',
+      actorId: ctx.user?.id || 'unknown',
+      actorExtraInfo: auditActorExtraInfo,
+      resourceType: 'pbn_domain',
+      resourceId: input.pbnDomain,
+      action: 'issue_bulk_reservation_gifts',
+      extraInput: input,
+    }),
+  )
     .input(
       z.object({
         pbnDomain: namefiNormalizedDomainSchema,
@@ -228,14 +274,13 @@ export const pbnIssuanceReservationsRouter = createTRPCRouter({
     )
     .mutation(async ({ ctx, input }) => {
       try {
-        const result =
-          await PbnIssuanceReservationsActivities.createReservationsBulk({
-            pbnDomain: input.pbnDomain as NamefiNormalizedDomain,
-            creatorId: ctx.user.id,
-            items: input.items as any,
-            sendEmail: input.sendEmail ?? true,
-            metadata: input.metadata ?? {},
-          });
+        const result = await createReservationsBulk({
+          pbnDomain: input.pbnDomain as NamefiNormalizedDomain,
+          creatorId: ctx.user.id,
+          items: input.items as any,
+          sendEmail: input.sendEmail ?? true,
+          metadata: input.metadata ?? {},
+        });
         return result;
       } catch (error) {
         throw new TRPCError({

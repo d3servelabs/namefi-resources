@@ -2,7 +2,7 @@ import { db, usersTable } from '@namefi-astra/db';
 import { eq } from 'drizzle-orm';
 import Stripe from 'stripe';
 import { z } from 'zod';
-import { createTRPCRouter, protectedProcedure } from '../base';
+import { createTRPCRouter, protectedProcedure, withAudit } from '../base';
 import { secrets } from '../../lib/env';
 
 const stripe = new Stripe(secrets.STRIPE_SECRET_KEY);
@@ -95,7 +95,18 @@ export const paymentsRouter = createTRPCRouter({
     };
   }),
 
-  deletePaymentMethod: protectedProcedure
+  deletePaymentMethod: withAudit(
+    protectedProcedure,
+    ({ ctx, input, auditActorExtraInfo }) => ({
+      actorType: 'user',
+      actorId: ctx.user?.id || 'unknown',
+      actorExtraInfo: auditActorExtraInfo,
+      resourceType: 'payment_method',
+      resourceId: input.paymentMethodId || '',
+      action: 'delete',
+      extraInput: input,
+    }),
+  )
     .input(
       z.object({
         paymentMethodId: z.string(),

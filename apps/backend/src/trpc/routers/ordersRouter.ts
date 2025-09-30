@@ -29,7 +29,7 @@ import { TEMPORAL_QUEUES } from '../../temporal/shared';
 import { processOrderWorkflow } from '../../temporal/workflows/processOrder.workflow';
 import type { ChargeUserWorkflowInput } from '../../temporal/workflows/chargeUser.workflow';
 import { resolve } from '../../utils/resolve';
-import { createTRPCRouter, protectedProcedure } from '../base';
+import { createTRPCRouter, protectedProcedure, withAudit } from '../base';
 import { createOrderInputSchema, createOrderV2InputSchema } from '../types';
 import {
   getPrivyUserLinkedEthereumChecksumWalletAddresses,
@@ -64,7 +64,18 @@ type PaymentMethodDetails =
   | PaymentMethodDetailsOffChain;
 
 export const ordersRouter = createTRPCRouter({
-  createOrder: protectedProcedure
+  createOrder: withAudit(
+    protectedProcedure,
+    ({ ctx, input, auditActorExtraInfo, result }) => ({
+      actorType: 'user',
+      actorId: (ctx as any).user?.id || 'unknown',
+      actorExtraInfo: auditActorExtraInfo,
+      resourceType: 'order',
+      resourceId: result.id || '',
+      action: 'create',
+      extraInput: input,
+    }),
+  )
     .input(createOrderInputSchema)
     .mutation(async ({ ctx, input }) => {
       const { user } = ctx;
@@ -192,7 +203,18 @@ export const ordersRouter = createTRPCRouter({
   ),
 
   // Stage 5: Multi-payment createOrderV2
-  createOrderV2: protectedProcedure
+  createOrderV2: withAudit(
+    protectedProcedure,
+    ({ ctx, input, auditActorExtraInfo, result }) => ({
+      actorType: 'user',
+      actorId: (ctx as any).user?.id || 'unknown',
+      actorExtraInfo: auditActorExtraInfo,
+      resourceType: 'order',
+      resourceId: result.id || '',
+      action: 'create',
+      extraInput: input,
+    }),
+  )
     .input(createOrderV2InputSchema)
     .mutation(async ({ ctx, input }) => {
       const { cartItemIds, payments, nftMetadata } = input;
@@ -529,7 +551,18 @@ export const ordersRouter = createTRPCRouter({
       }));
     }),
 
-  reflectChangesInCartItemsIfAnyAndReturnSummary: protectedProcedure
+  reflectChangesInCartItemsIfAnyAndReturnSummary: withAudit(
+    protectedProcedure,
+    ({ ctx, input, auditActorExtraInfo }: any) => ({
+      actorType: 'user',
+      actorId: ctx.user?.id || 'unknown',
+      actorExtraInfo: auditActorExtraInfo,
+      resourceType: 'user',
+      resourceId: ctx.user?.id || 'unknown',
+      action: 'refresh_cart_items',
+      extraInput: input,
+    }),
+  )
     .input(z.object({ cartItemIds: z.array(z.string()).optional() }))
     .mutation(({ ctx, input }) => {
       const { cartItemIds } = input;

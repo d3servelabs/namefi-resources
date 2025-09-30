@@ -19,7 +19,7 @@ import { z } from 'zod';
 import { getDomainListInfo } from '#lib/namefi-registry';
 import { userQualifiesForDomainNamePromo } from '#lib/user-promo';
 import { encryptEppAuthCode } from '#lib/epp-code-encryption';
-import { createTRPCRouter, protectedProcedure } from '../base';
+import { createTRPCRouter, protectedProcedure, withAudit } from '../base';
 import { getDomainPricingForOperation } from '../types';
 import { createLogger } from '#lib/logger';
 import { isNotNil } from 'ramda';
@@ -71,7 +71,18 @@ export const cartsRouter = createTRPCRouter({
   ),
 
   // Add multiple items to cart for the current user
-  addItems: protectedProcedure
+  addItems: withAudit(
+    protectedProcedure,
+    ({ ctx, input, auditActorExtraInfo, result }) => ({
+      actorType: 'user',
+      actorId: ctx.user?.id || 'unknown',
+      actorExtraInfo: auditActorExtraInfo,
+      resourceType: 'cart_item',
+      resourceId: result[0]?.id || '',
+      action: 'create',
+      extraInput: input,
+    }),
+  )
     .input(
       z.array(
         cartItemInsertSchema
@@ -199,7 +210,18 @@ export const cartsRouter = createTRPCRouter({
     }),
 
   // Update cart item for the current user
-  updateItem: protectedProcedure
+  updateItem: withAudit(
+    protectedProcedure,
+    ({ ctx, input, auditActorExtraInfo }) => ({
+      actorType: 'user',
+      actorId: ctx.user?.id || 'unknown',
+      actorExtraInfo: auditActorExtraInfo,
+      resourceType: 'cart_item',
+      resourceId: input.id || '',
+      action: 'update',
+      extraInput: input,
+    }),
+  )
     .input(
       cartItemUpdateSchema
         .pick({
@@ -314,7 +336,18 @@ export const cartsRouter = createTRPCRouter({
       return updateResult;
     }),
 
-  removeItem: protectedProcedure
+  removeItem: withAudit(
+    protectedProcedure,
+    ({ ctx, input, auditActorExtraInfo }) => ({
+      actorType: 'user',
+      actorId: ctx.user?.id || 'unknown',
+      actorExtraInfo: auditActorExtraInfo,
+      resourceType: 'cart_item',
+      resourceId: input.id || '',
+      action: 'delete',
+      extraInput: input,
+    }),
+  )
     .input(z.array(namefiNormalizedDomainSchema).min(1))
     .mutation(async ({ ctx, input }) => {
       // Delete and return the removed items directly

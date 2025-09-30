@@ -3,7 +3,12 @@ import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 import { and, eq } from 'drizzle-orm';
 import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
-import { createTRPCRouter, protectedProcedure, publicProcedure } from '../base';
+import {
+  createTRPCRouter,
+  protectedProcedure,
+  publicProcedure,
+  withAudit,
+} from '../base';
 import {
   validateTweet,
   type ValidatedPublicTweet,
@@ -25,7 +30,18 @@ export const shareRouter = createTRPCRouter({
   /**
    * Submit a social media share (authenticated)
    */
-  submitShare: protectedProcedure
+  submitShare: withAudit(
+    protectedProcedure,
+    ({ ctx, input, auditActorExtraInfo, result }) => ({
+      actorType: 'user',
+      actorId: ctx.user?.id || 'unknown',
+      actorExtraInfo: auditActorExtraInfo,
+      resourceType: 'link_share',
+      resourceId: result?.id || '',
+      action: 'create',
+      extraInput: input,
+    }),
+  )
     .input(submitShareSchema)
     .mutation(async ({ input, ctx }) => {
       const { normalizedDomainName, postUrl, sharedUrl, campaignKey } = input;
