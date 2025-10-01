@@ -431,6 +431,43 @@ export const aiRouter = createTRPCRouter({
     }));
   }),
 
+  getUserGenerationsFiltered: protectedProcedure
+    .input(
+      z.object({
+        types: z
+          .array(z.enum(['logo', 'marketing']))
+          .min(1)
+          .default(['logo', 'marketing']),
+        domains: z.array(namefiNormalizedDomainSchema).optional(),
+        limit: z.number().int().min(1).max(200).default(100),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const whereConds = [eq(aiGenerationsTable.userId, ctx.user.id)];
+
+      if (input.types && input.types.length > 0) {
+        whereConds.push(inArray(aiGenerationsTable.type, input.types));
+      }
+      if (input.domains && input.domains.length > 0) {
+        whereConds.push(inArray(aiGenerationsTable.domain, input.domains));
+      }
+
+      const rows = await db
+        .select()
+        .from(aiGenerationsTable)
+        .where(and(...whereConds))
+        .orderBy(desc(aiGenerationsTable.createdAt))
+        .limit(input.limit);
+
+      return rows.map((generation) => ({
+        ...generation,
+        url: generateUrlFromStoragePath(
+          generation.output.storagePath,
+          config.CLOUD_FRONT_DOMAIN,
+        ),
+      }));
+    }),
+
   getGenerationsByType: protectedProcedure
     .input(
       z.object({

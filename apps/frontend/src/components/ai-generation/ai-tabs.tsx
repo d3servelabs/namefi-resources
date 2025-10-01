@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { cn } from '@/lib/cn';
 import { TabSelector } from './tab-selector';
 import { LogoTab } from './logo-tab';
 import { PosterTab } from './poster-tab';
@@ -41,7 +42,8 @@ export function AITabs({
   const [activeTab, setActiveTab] = useState<'logo' | 'marketing'>(initialTab);
 
   return (
-    <div className={className}>
+    <div className={cn(className, 'w-full')}>
+      {/* full width within column */}
       <TabSelector
         activeTab={activeTab}
         onTabChange={setActiveTab}

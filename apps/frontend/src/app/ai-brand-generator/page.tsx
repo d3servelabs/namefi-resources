@@ -2,53 +2,18 @@
 
 import { AITabs } from '@/components/ai-generation/ai-tabs';
 import { AuthRequired } from '@/components/auth-required';
-import { EmptyPlaceholder } from '@/components/empty-placeholder';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/shadcn/card';
-import { Skeleton } from '@/components/ui/shadcn/skeleton';
 import { useAuth } from '@/hooks/use-auth';
 import { useTRPC } from '@/lib/trpc';
 import { useQuery } from '@tanstack/react-query';
-import { Sparkles } from 'lucide-react';
 import { useMemo } from 'react';
-import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { useLocalStorage } from 'usehooks-ts';
 import { AIOnboardingOneShot } from '@/components/ai-generation/onboarding-one-shot';
+import { GenerationsColumn } from '@/components/ai-generation/generations-column';
+import { Skeleton } from '@/components/ui/shadcn/skeleton';
+import { Card, CardContent } from '@/components/ui/shadcn/card';
 
-const LoadingSkeletons = () => (
-  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    {Array.from({ length: 6 }).map((_, index) => (
-      <Card
-        key={index}
-        className="cursor-pointer transition-all hover:shadow-lg"
-      >
-        <CardHeader>
-          <Skeleton className="h-6 w-32" />
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-2">
-            <div className="flex justify-between items-center">
-              <Skeleton className="h-4 w-12" />
-              <Skeleton className="h-4 w-6" />
-            </div>
-            <div className="flex justify-between items-center">
-              <Skeleton className="h-4 w-16" />
-              <Skeleton className="h-4 w-6" />
-            </div>
-            <div className="pt-2 border-t">
-              <Skeleton className="h-3 w-24" />
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-    ))}
-  </div>
-);
+// removed old LoadingSkeletons
 
 const ShowcaseSkeleton = () => (
   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -64,23 +29,8 @@ const ShowcaseSkeleton = () => (
   </div>
 );
 
-const EmptyBrandsPlaceholder = () => (
-  <EmptyPlaceholder>
-    <div className="flex size-20 items-center justify-center rounded-full bg-muted">
-      <Sparkles className="size-10 text-muted-foreground" />
-    </div>
-    <EmptyPlaceholder.Title>
-      You haven't created any brands yet
-    </EmptyPlaceholder.Title>
-    <EmptyPlaceholder.Description>
-      All your generated logos and posters will appear here. Create your first
-      brand to get started!
-    </EmptyPlaceholder.Description>
-  </EmptyPlaceholder>
-);
-
 export default function AIBrandGeneratorPage() {
-  const router = useRouter();
+  // const router = useRouter();
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
   const trpc = useTRPC();
 
@@ -96,7 +46,7 @@ export default function AIBrandGeneratorPage() {
     });
 
   // Get usage to detect first-time users
-  const { data: usage } = useQuery({
+  const { data: usage, isLoading: isUsageLoading } = useQuery({
     ...trpc.ai.getUserGenerationUsage.queryOptions(),
     enabled: isAuthenticated,
   });
@@ -127,20 +77,51 @@ export default function AIBrandGeneratorPage() {
     return ordered;
   }, [featuredAndRecent]);
 
-  if (isAuthLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-lg">Loading...</div>
+  const renderPageSkeleton = () => (
+    <div className="container max-w-7xl mx-auto py-8 px-8">
+      {/* Header shows immediately */}
+      <div className="flex flex-col justify-center items-center mb-14">
+        <Image
+          src="/powered-by-namefi-jain.svg"
+          alt="Powered by Namefi"
+          className="mb-4"
+          width={141}
+          height={22}
+        />
+        <h2 className="text-2xl font-bold">AI Brand Generator</h2>
+        <p className="text-muted-foreground mt-2">
+          Create custom logos and posters for your brand
+        </p>
       </div>
-    );
+      {/* Content skeletons */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+        <div className="space-y-4">
+          <Skeleton className="h-10 w-full" />
+          <Skeleton className="h-48 w-full" />
+        </div>
+        <div className="space-y-3">
+          <div className="grid grid-cols-2 gap-3">
+            {Array.from({ length: 8 }).map((_, i) => (
+              <Skeleton key={i} className="h-32 w-full rounded-md" />
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  if (isAuthLoading) {
+    return renderPageSkeleton();
   }
 
   if (!isAuthenticated) {
     return <AuthRequired />;
   }
 
+  const isInitialLoading = isDomainsLoading || isUsageLoading;
+
   return (
-    <div className="container max-w-4xl mx-auto py-8 px-8">
+    <div className="container max-w-7xl mx-auto py-8 px-8">
       <div className="flex flex-col justify-center items-center mb-14">
         <Image
           src="/powered-by-namefi-jain.svg"
@@ -155,111 +136,28 @@ export default function AIBrandGeneratorPage() {
         </p>
       </div>
 
-      {/* Onboarding gating: regular UI only after >1 generations AND user finishes onboarding */}
-      {usage && finishedOnboarding && usage.currentCount > 1 ? (
-        <div className="mx-auto mb-12">
-          <AITabs tabSelectorClassName="max-w-md mx-auto" />
+      {/* Main Content - 2 Column Layout */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+        {/* Left Column - Generator */}
+        <div className="space-y-6">
+          {isInitialLoading ? (
+            <>
+              <Skeleton className="h-10 w-full" />
+              <Skeleton className="h-48 w-full" />
+            </>
+          ) : usage && finishedOnboarding && usage.currentCount > 1 ? (
+            <AITabs tabSelectorClassName="max-w-md" />
+          ) : (
+            <AIOnboardingOneShot
+              onFinishAction={() => setFinishedOnboarding(true)}
+            />
+          )}
         </div>
-      ) : (
-        <div className="mx-auto mb-12">
-          <AIOnboardingOneShot
-            onFinishAction={() => setFinishedOnboarding(true)}
-          />
-        </div>
-      )}
 
-      {/* Existing Domains */}
-      <div>
-        <h3 className="text-xl font-semibold mb-4">Your brands</h3>
-        {isDomainsLoading ? (
-          <LoadingSkeletons />
-        ) : domains.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {domains.map((domainInfo) => {
-              return (
-                <Card
-                  key={domainInfo.domain}
-                  className="cursor-pointer transition-all hover:shadow-lg"
-                  onClick={() =>
-                    router.push(
-                      `/ai-brand-generator/brand/${domainInfo.domain}`,
-                    )
-                  }
-                >
-                  <CardHeader>
-                    <CardTitle>{domainInfo.domain}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-2">
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm text-blue-600">Logos:</span>
-                        <span className="text-sm text-muted-foreground">
-                          {domainInfo.logoCount}
-                        </span>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm text-green-600">Posters:</span>
-                        <span className="text-sm text-muted-foreground">
-                          {domainInfo.marketingCount}
-                        </span>
-                      </div>
-                      <div className="pt-2 border-t">
-                        <p className="text-xs text-muted-foreground">
-                          Latest:{' '}
-                          {domainInfo.latestGeneration
-                            ? new Date(
-                                domainInfo.latestGeneration,
-                              ).toLocaleDateString()
-                            : 'N/A'}
-                        </p>
-                      </div>
-                      {Array.isArray(domainInfo.previewGenerations) &&
-                        domainInfo.previewGenerations.length > 0 && (
-                          <div className="pt-2 border-t">
-                            <div className="flex gap-2">
-                              {(
-                                domainInfo.previewGenerations as Array<{
-                                  id: string;
-                                  url: string;
-                                }>
-                              )
-                                .slice(0, 3)
-                                .map((g) => (
-                                  <div
-                                    key={g.id}
-                                    className="relative w-14 h-14 rounded-md overflow-hidden bg-black/5"
-                                  >
-                                    <img
-                                      src={g.url}
-                                      alt="preview"
-                                      width={56}
-                                      height={56}
-                                      className="object-cover"
-                                    />
-                                  </div>
-                                ))}
-                              {domainInfo.logoCount +
-                                domainInfo.marketingCount >
-                                domainInfo.previewGenerations.length && (
-                                <div className="w-14 h-14 rounded-md bg-black/5 flex items-center justify-center text-xs text-muted-foreground">
-                                  +
-                                  {domainInfo.logoCount +
-                                    domainInfo.marketingCount -
-                                    domainInfo.previewGenerations.length}
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                        )}
-                    </div>
-                  </CardContent>
-                </Card>
-              );
-            })}
-          </div>
-        ) : (
-          <EmptyBrandsPlaceholder />
-        )}
+        {/* Right Column - Generations Gallery */}
+        <div className="space-y-6">
+          <GenerationsColumn domains={domains} isLoading={isInitialLoading} />
+        </div>
       </div>
 
       <div className="mt-16">

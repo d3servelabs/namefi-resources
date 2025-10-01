@@ -30,6 +30,10 @@ interface MarqueeProps extends ComponentPropsWithoutRef<'div'> {
    * @default 4
    */
   repeat?: number;
+  /**
+   * External pause control for coordinated pause across multiple marquees
+   */
+  paused?: boolean;
 }
 
 export function Marquee({
@@ -39,6 +43,7 @@ export function Marquee({
   children,
   vertical = false,
   repeat = 4,
+  paused = false,
   ...props
 }: MarqueeProps) {
   return (
@@ -52,18 +57,22 @@ export function Marquee({
         },
         className,
       )}
+      data-paused={paused ? 'true' : 'false'}
     >
       {Array(repeat)
         .fill(0)
         .map((_, i) => (
           <div
             key={i}
-            className={cn('flex shrink-0 justify-around [gap:var(--gap)]', {
-              'animate-marquee flex-row': !vertical,
-              'animate-marquee-vertical flex-col': vertical,
-              'group-hover:[animation-play-state:paused]': pauseOnHover,
-              '[animation-direction:reverse]': reverse,
-            })}
+            className={cn(
+              'flex shrink-0 justify-around [gap:var(--gap)] data-[paused=true]:[animation-play-state:paused]',
+              {
+                'animate-marquee flex-row': !vertical,
+                'animate-marquee-vertical flex-col': vertical,
+                'group-hover:[animation-play-state:paused]': pauseOnHover,
+                '[animation-direction:reverse]': reverse,
+              },
+            )}
           >
             {children}
           </div>
