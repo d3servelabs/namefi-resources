@@ -34,7 +34,7 @@ export default function AIBrandGeneratorPage() {
   );
 
   const renderPageSkeleton = () => (
-    <div className="container max-w-7xl mx-auto py-8 px-8">
+    <div className="container max-w-full mx-auto py-8 px-8">
       {/* Header shows immediately */}
       <div className="flex flex-col justify-center items-center mb-14">
         <Image
@@ -50,7 +50,7 @@ export default function AIBrandGeneratorPage() {
         </p>
       </div>
       {/* Content skeletons */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-12">
         <div className="space-y-4">
           <Skeleton className="h-10 w-full" />
           <Skeleton className="h-48 w-full" />
@@ -77,25 +77,25 @@ export default function AIBrandGeneratorPage() {
   const isInitialLoading = isDomainsLoading || isUsageLoading;
 
   return (
-    <div className="container max-w-7xl mx-auto py-8 px-8">
-      <div className="flex flex-col justify-center items-center mb-14">
-        <Image
-          src="/powered-by-namefi-jain.svg"
-          alt="Powered by Namefi"
-          className="mb-4"
-          width={141}
-          height={22}
-        />
-        <h2 className="text-2xl font-bold">AI Brand Generator</h2>
-        <p className="text-muted-foreground mt-2">
-          Create custom logos and posters for your brand
-        </p>
-      </div>
-
+    <div className="container max-w-full mx-auto py-8 px-8">
       {/* Main Content - 2 Column Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-12">
         {/* Left Column - Generator */}
         <div className="space-y-6">
+          {/* Page header moved to left column to align right column at top */}
+          <div className="mb-6 flex flex-col items-center text-center">
+            <Image
+              src="/powered-by-namefi-jain.svg"
+              alt="Powered by Namefi"
+              className="mb-3"
+              width={141}
+              height={22}
+            />
+            <h2 className="text-2xl font-bold">AI Brand Generator</h2>
+            <p className="text-muted-foreground mt-2">
+              Create custom logos and posters for your brand
+            </p>
+          </div>
           {isInitialLoading ? (
             <>
               <Skeleton className="h-10 w-full" />
