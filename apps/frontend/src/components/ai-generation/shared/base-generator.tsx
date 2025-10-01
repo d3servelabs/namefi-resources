@@ -3,7 +3,7 @@
 import { Card, CardContent } from '@/components/ui/shadcn/card';
 import { Form } from '@/components/ui/shadcn/form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState, type ReactNode } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import {
   useForm,
   type UseFormReturn,
@@ -49,6 +49,11 @@ interface BaseGeneratorProps<T extends FieldValues & BaseFormData> {
   className?: string;
   latestGeneration?: Generation;
   onGenerateMore?: () => void;
+  domainPlaceholder?: string;
+  domainSelectOnly?: boolean;
+  domainOnlyDomainsWithLogos?: boolean;
+  onDomainChange?: (domain: string) => void;
+  onFormReady?: (form: UseFormReturn<T>) => void;
 }
 
 export function BaseGenerator<T extends FieldValues & BaseFormData>({
@@ -64,6 +69,11 @@ export function BaseGenerator<T extends FieldValues & BaseFormData>({
   className = 'max-w-6xl mx-auto flex flex-col',
   latestGeneration,
   onGenerateMore,
+  domainPlaceholder,
+  domainSelectOnly = false,
+  domainOnlyDomainsWithLogos = false,
+  onDomainChange,
+  onFormReady,
 }: BaseGeneratorProps<T>) {
   const [openPanel, setOpenPanel] = useState<string | null>(null);
 
@@ -80,6 +90,10 @@ export function BaseGenerator<T extends FieldValues & BaseFormData>({
     } as DefaultValues<T>,
   });
 
+  useEffect(() => {
+    if (onFormReady) onFormReady(form);
+  }, [onFormReady, form]);
+
   const handleSubmit = (data: T) => {
     const domainToUse = fixedDomain || data.domain;
     if (domainToUse?.trim()) {
@@ -91,6 +105,12 @@ export function BaseGenerator<T extends FieldValues & BaseFormData>({
   };
 
   const domainToUse = fixedDomain || form.watch('domain' as any);
+
+  useEffect(() => {
+    if (onDomainChange && typeof domainToUse === 'string') {
+      onDomainChange(domainToUse);
+    }
+  }, [onDomainChange, domainToUse]);
 
   // Check if user has reached the monthly limit
   const isLimitReached = usageData?.hasReachedLimit ?? false;
@@ -108,6 +128,9 @@ export function BaseGenerator<T extends FieldValues & BaseFormData>({
                 control={form.control}
                 name={'domain' as FieldPath<T>}
                 fixedDomain={fixedDomain}
+                placeholder={domainPlaceholder}
+                selectOnly={domainSelectOnly}
+                onlyDomainsWithLogos={domainOnlyDomainsWithLogos}
               />
 
               {/* Custom content from children */}

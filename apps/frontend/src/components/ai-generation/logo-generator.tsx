@@ -78,7 +78,7 @@ export function LogoGenerator({
       type: LOGO_STYLES['let-ai-choose'].id,
       style: LOGO_STYLES['let-ai-choose'].id,
       description: '',
-      model: 'gemini-2.5-flash-image-preview' as Model,
+      model: 'gpt-image-1' as Model,
     };
   }, [fixedDomain]);
 
@@ -89,6 +89,8 @@ export function LogoGenerator({
       fixedDomain={fixedDomain}
       formSchema={logoFormSchema}
       defaultValues={defaultValues}
+      domainPlaceholder="Select or enter your brand domain"
+      domainSelectOnly={false}
       submitButtonText="Generate"
       submitLoadingText="Generating"
       latestGeneration={latestGeneration}

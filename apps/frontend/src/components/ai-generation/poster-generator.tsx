@@ -16,6 +16,8 @@ import { BaseGenerator, baseFormSchema } from './shared/base-generator';
 import { ControlPanel } from './shared/form-fields';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { useMemo, useState } from 'react';
+import { useTRPC } from '@/lib/trpc';
+import { useQuery } from '@tanstack/react-query';
 import { Switch } from '@/components/ui/shadcn/switch';
 import { Label } from '@/components/ui/shadcn/label';
 import type { Generation } from './shared/types';
@@ -75,16 +77,38 @@ export function PosterGenerator({
   latestGeneration,
   onGenerateMore,
 }: PosterGeneratorProps) {
+  const [selectedDomain, setSelectedDomain] = useState<string>('');
   const [showAdvanced, setShowAdvanced] = useState(false);
+  const trpc = useTRPC();
   const defaultValues = useMemo(() => {
     return {
       domain: fixedDomain || '',
       description: '',
-      selectedLogoId: availableLogos.length > 0 ? availableLogos[0].id : '',
+      selectedLogoId: '',
       collateralType: 'let_ai_choose' as const,
       model: 'gemini-2.5-flash-image-preview' as Model,
     };
-  }, [fixedDomain, availableLogos]);
+  }, [fixedDomain]);
+
+  const { data: domainLogos = [] } = useQuery({
+    ...trpc.ai.getGenerationsByType.queryOptions({
+      domain: selectedDomain as any,
+      type: 'logo',
+    }),
+    enabled: !!selectedDomain,
+    staleTime: 10_000,
+  });
+
+  const logosToShow = useMemo<Generation[]>(() => {
+    if (selectedDomain) {
+      const fallback = availableLogos.filter(
+        (l) => l.domain === selectedDomain,
+      );
+      const fetched = (domainLogos as unknown as Generation[]) || [];
+      return fetched.length > 0 ? fetched : fallback;
+    }
+    return availableLogos;
+  }, [selectedDomain, domainLogos, availableLogos]);
 
   return (
     <BaseGenerator
@@ -93,19 +117,68 @@ export function PosterGenerator({
       fixedDomain={fixedDomain}
       formSchema={posterFormSchema}
       defaultValues={defaultValues}
-      submitButtonText={
-        availableLogos.length > 0
-          ? 'Generate'
-          : 'Select a brand below or generate a logo'
-      }
+      domainPlaceholder="Select your brand domain (required)"
+      domainSelectOnly={true}
+      domainOnlyDomainsWithLogos={true}
+      onDomainChange={(d) => setSelectedDomain(d)}
+      onFormReady={(form) => {
+        const logos = (logosToShow as Generation[]) || [];
+        if (logos.length > 0) {
+          form.setValue('selectedLogoId', logos[0].id);
+        }
+      }}
+      submitButtonText={logosToShow.length > 0 ? 'Generate' : 'Select a brand'}
       submitLoadingText="Generating"
       latestGeneration={latestGeneration}
       onGenerateMore={onGenerateMore}
     >
       {({ form, openPanel, setOpenPanel }) => {
         const selectedLogoId = form.watch('selectedLogoId');
-        const selectedLogo = availableLogos.find(
-          (logo) => logo.id === selectedLogoId,
+        const selectedLogo = (logosToShow as Generation[]).find(
+          (logo: Generation) => logo.id === selectedLogoId,
+        );
+        const logosForPanel: Generation[] = logosToShow as Generation[];
+
+        const renderLogoCard = (logo: Generation) => (
+          <Card
+            key={logo.id}
+            className={cn(
+              'cursor-pointer transition-all hover:shadow-lg',
+              form.getValues('selectedLogoId') === logo.id &&
+                'ring-2 ring-orange-500',
+            )}
+            onClick={() => {
+              form.setValue('selectedLogoId', logo.id);
+              setOpenPanel(null);
+            }}
+          >
+            <CardContent className="p-4">
+              <div className="relative aspect-square mb-3 overflow-hidden rounded-lg">
+                <img
+                  src={logo.url}
+                  alt={logo.domain}
+                  className="w-full h-full object-cover"
+                />
+                {form.getValues('selectedLogoId') === logo.id && (
+                  <div className="absolute inset-0 bg-orange-500/20 flex items-center justify-center">
+                    <Check className="h-8 w-8 text-secondary-foreground bg-orange-500 rounded-full p-1" />
+                  </div>
+                )}
+              </div>
+              <div className="space-y-1">
+                {logo.output?.type === 'logo' && logo.output.logoType && (
+                  <span className="text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded block text-center">
+                    {logo.output.logoType}
+                  </span>
+                )}
+                {logo.output?.type === 'logo' && logo.output.logoStyle && (
+                  <span className="text-xs px-2 py-1 bg-purple-100 text-purple-700 rounded block text-center">
+                    {logo.output.logoStyle}
+                  </span>
+                )}
+              </div>
+            </CardContent>
+          </Card>
         );
 
         const controlButtons: Array<{
@@ -116,8 +189,8 @@ export function PosterGenerator({
           isActive: boolean;
         }> = [];
 
-        // Add logo button only if there are available logos
-        if (availableLogos.length > 0) {
+        // Add logo button only if there are logos to pick for current selection
+        if (logosToShow.length > 0) {
           controlButtons.push({
             key: 'logos',
             label: 'Use Logo',
@@ -175,66 +248,25 @@ export function PosterGenerator({
             <ControlPanel
               buttons={controlButtons.filter((b) => {
                 // Only show Logo and Description by default; others behind advanced
-                if (b.key === 'logos' || b.key === 'description') return true;
+                if (b.key === 'logos') return logosToShow.length > 0;
+                if (b.key === 'description') return true;
                 return showAdvanced;
               })}
             />
 
             {/* Logo Selection */}
-            {openPanel === 'logos' && availableLogos.length > 0 && (
+            {openPanel === 'logos' && logosForPanel.length > 0 && (
               <FormField
                 control={form.control}
                 name={'selectedLogoId'}
-                render={({ field }) => (
+                render={() => (
                   <FormItem className="mt-6">
                     <FormLabel className="text-lg font-semibold">
                       Choose a logo to base your poster on
                     </FormLabel>
                     <FormControl>
                       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                        {availableLogos.map((logo) => (
-                          <Card
-                            key={logo.id}
-                            className={cn(
-                              'cursor-pointer transition-all hover:shadow-lg',
-                              field.value === logo.id &&
-                                'ring-2 ring-orange-500',
-                            )}
-                            onClick={() => {
-                              field.onChange(logo.id);
-                              setOpenPanel(null);
-                            }}
-                          >
-                            <CardContent className="p-4">
-                              <div className="relative aspect-square mb-3 overflow-hidden rounded-lg">
-                                <img
-                                  src={logo.url}
-                                  alt={logo.domain}
-                                  className="w-full h-full object-cover"
-                                />
-                                {field.value === logo.id && (
-                                  <div className="absolute inset-0 bg-orange-500/20 flex items-center justify-center">
-                                    <Check className="h-8 w-8 text-secondary-foreground bg-orange-500 rounded-full p-1" />
-                                  </div>
-                                )}
-                              </div>
-                              <div className="space-y-1">
-                                {logo.output?.type === 'logo' &&
-                                  logo.output.logoType && (
-                                    <span className="text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded block text-center">
-                                      {logo.output.logoType}
-                                    </span>
-                                  )}
-                                {logo.output?.type === 'logo' &&
-                                  logo.output.logoStyle && (
-                                    <span className="text-xs px-2 py-1 bg-purple-100 text-purple-700 rounded block text-center">
-                                      {logo.output.logoStyle}
-                                    </span>
-                                  )}
-                              </div>
-                            </CardContent>
-                          </Card>
-                        ))}
+                        {logosForPanel.map(renderLogoCard)}
                       </div>
                     </FormControl>
                     <FormMessage />

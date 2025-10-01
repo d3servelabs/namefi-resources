@@ -31,7 +31,7 @@ export const OPENAI_LOGO_IMAGE_CONFIG = {
     size: '1024x1024',
     output_format: 'png',
     output_compression: 100,
-    background: 'transparent',
+    background: 'opaque',
   },
 } satisfies OpenAIImageGenerationConfig;
 

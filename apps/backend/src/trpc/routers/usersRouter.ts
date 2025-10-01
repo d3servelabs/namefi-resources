@@ -1,9 +1,4 @@
-import {
-  db,
-  usersTable,
-  namefiNftOwnersView,
-  namefiNftView,
-} from '@namefi-astra/db';
+import { db, usersTable, namefiNftOwnersView } from '@namefi-astra/db';
 import {
   namefiNormalizedDomainSchema,
   type NamefiNormalizedDomain,
@@ -13,17 +8,8 @@ import type {
   User as PrivyUser,
 } from '@privy-io/server-auth';
 import { TRPCError } from '@trpc/server';
-import { and, desc, eq, sql, inArray, ilike, gte, or } from 'drizzle-orm';
-import {
-  groupBy,
-  indexBy,
-  isEmpty,
-  isNil,
-  isNotEmpty,
-  isNotNil,
-  pluck,
-  prop,
-} from 'ramda';
+import { and, eq, sql, inArray, ilike, gte, or } from 'drizzle-orm';
+import { isEmpty, isNil, isNotEmpty, isNotNil, pluck } from 'ramda';
 import { http, createPublicClient } from 'viem';
 import * as chains from 'viem/chains';
 import { z } from 'zod';

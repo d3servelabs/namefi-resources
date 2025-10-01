@@ -17,7 +17,10 @@ export function TabSelector({
 }: TabSelectorProps) {
   return (
     <div
-      className={cn('flex space-x-1 rounded-lg bg-muted p-1 mb-6', className)}
+      className={cn(
+        'flex space-x-1 rounded-lg bg-muted p-1 mb-6 max-w-full',
+        className,
+      )}
     >
       <Button
         variant={activeTab === 'logo' ? 'default' : 'ghost'}

@@ -9,14 +9,28 @@ import {
 import { Input } from '@/components/ui/shadcn/input';
 import { Textarea } from '@/components/ui/shadcn/textarea';
 import { Badge } from '@/components/ui/shadcn/badge';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+} from '@/components/ui/shadcn/select';
+import { useTRPC } from '@/lib/trpc';
+import { useQuery } from '@tanstack/react-query';
+import { useAuth } from '@/hooks/use-auth';
+import { useResizeObserver } from 'usehooks-ts';
+import { useCallback, useMemo, useRef } from 'react';
+import { cn } from '@/lib/cn';
 import type { Control, FieldPath, FieldValues } from 'react-hook-form';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 
-interface DomainFieldProps<T extends FieldValues> {
+export interface DomainFieldProps<T extends FieldValues> {
   control: Control<T>;
   name: FieldPath<T>;
   fixedDomain?: NamefiNormalizedDomain;
   placeholder?: string;
+  selectOnly?: boolean;
+  onlyDomainsWithLogos?: boolean;
 }
 
 export function DomainField<T extends FieldValues>({
@@ -24,6 +38,8 @@ export function DomainField<T extends FieldValues>({
   name,
   fixedDomain,
   placeholder = 'Enter your domain (e.g., example.com)',
+  selectOnly = false,
+  onlyDomainsWithLogos = false,
 }: DomainFieldProps<T>) {
   if (fixedDomain) {
     return (
@@ -40,20 +56,146 @@ export function DomainField<T extends FieldValues>({
       control={control}
       name={name}
       render={({ field }) => (
-        <FormItem className="mb-6">
-          <FormControl>
-            <Input
-              {...field}
-              type="text"
-              placeholder={placeholder}
-              className="w-full h-14 px-6 text-lg rounded-2xl"
-              required
-            />
-          </FormControl>
-          <FormMessage />
-        </FormItem>
+        <DomainFieldWithSuggestions
+          value={(field.value as string) ?? ''}
+          onChange={field.onChange}
+          onBlur={field.onBlur}
+          name={field.name}
+          placeholder={placeholder}
+          selectOnly={selectOnly}
+          onlyDomainsWithLogos={onlyDomainsWithLogos}
+          required
+        />
       )}
     />
+  );
+}
+
+function DomainFieldWithSuggestions({
+  value,
+  onChange,
+  onBlur,
+  name,
+  placeholder,
+  required,
+  selectOnly = false,
+  onlyDomainsWithLogos = false,
+}: {
+  value: string;
+  onChange: (value: string) => void;
+  onBlur: () => void;
+  name: string;
+  placeholder: string;
+  required?: boolean;
+  selectOnly?: boolean;
+  onlyDomainsWithLogos?: boolean;
+}) {
+  const trpc = useTRPC();
+  const { isAuthenticated } = useAuth();
+
+  const { data: userDomains } = useQuery({
+    ...trpc.users.getCurrentUserDomains.queryOptions(),
+    enabled: isAuthenticated,
+    staleTime: 60_000,
+  });
+
+  const { data: generationDomains } = useQuery({
+    ...trpc.ai.getUserDomains.queryOptions(),
+    enabled: isAuthenticated,
+    staleTime: 60_000,
+  });
+
+  const domainOptions = useMemo(() => {
+    if (onlyDomainsWithLogos) {
+      const generatedWithLogos = (generationDomains ?? [])
+        .filter((d: any) => (d.logoCount ?? 0) > 0)
+        .map((d: any) => d.domain);
+      const seen = new Set<string>();
+      return generatedWithLogos.filter((d) => {
+        if (seen.has(d)) return false;
+        seen.add(d);
+        return true;
+      });
+    }
+    const owned = (userDomains ?? []).map((d) => d.normalizedDomainName);
+    const generated = (generationDomains ?? []).map((d: any) => d.domain);
+    const list = [...owned, ...generated];
+    // Deduplicate while preserving order
+    const seen = new Set<string>();
+    return list.filter((d) => {
+      if (seen.has(d)) return false;
+      seen.add(d);
+      return true;
+    });
+  }, [userDomains, generationDomains, onlyDomainsWithLogos]);
+
+  const inputRef = useRef<HTMLInputElement>(null);
+  const { width = 0 } = useResizeObserver({
+    // @ts-ignore - upstream lib typing issue
+    ref: inputRef,
+    box: 'border-box',
+  });
+
+  const handleInputChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (selectOnly) return;
+      onChange(e.target.value);
+    },
+    [onChange, selectOnly],
+  );
+
+  const handleSelectChange = useCallback(
+    (newValue: string) => {
+      onChange(newValue);
+    },
+    [onChange],
+  );
+
+  // Recent suggestion pills removed per request; keeping dropdown only
+
+  return (
+    <FormItem className="mb-6">
+      <FormControl>
+        <div className="relative">
+          <Input
+            name={name}
+            value={value}
+            onChange={handleInputChange}
+            onBlur={onBlur}
+            type="text"
+            placeholder={placeholder}
+            ref={inputRef}
+            className={cn(
+              'w-full h-14 px-6 text-lg rounded-2xl',
+              domainOptions.length > 0 && 'pr-10',
+            )}
+            required={required}
+            disabled={selectOnly}
+          />
+          {domainOptions.length > 0 && (
+            <Select value="" onValueChange={handleSelectChange}>
+              <SelectTrigger className="absolute right-3 top-1/2 -translate-y-1/2 border-none dark:bg-transparent" />
+              <SelectContent
+                align="end"
+                alignOffset={-12}
+                position="popper"
+                side="bottom"
+                sideOffset={10}
+                style={{ width: width ? `${width}px` : undefined }}
+              >
+                {domainOptions.map((domain) => (
+                  <SelectItem key={domain} value={domain}>
+                    {domain}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          )}
+        </div>
+      </FormControl>
+
+      <FormMessage />
+    </FormItem>
   );
 }
 
