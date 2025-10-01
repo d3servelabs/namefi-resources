@@ -17,6 +17,7 @@ import {
   History,
   Gift,
   Clock,
+  FileText,
 } from 'lucide-react';
 import { Permission } from '@namefi-astra/utils';
 import { PermissionGate } from '@/components/access/PermissionGate';
@@ -244,6 +245,27 @@ export default withAdminGuard(function AdminPage() {
                 <p className="text-sm text-muted-foreground">
                   View DNS analytics, query metrics, and comprehensive system
                   insights.
+                </p>
+              </CardContent>
+            </Card>
+          </Link>
+        </PermissionGate>
+
+        <PermissionGate permissions={[Permission.READ_AUDIT_LOGS]}>
+          {/* Audit Logs */}
+          <Link href="/admin/audit-logs" className="group">
+            <Card className="h-full transition-all hover:shadow-md hover:bg-muted/50">
+              <CardHeader className="pb-3">
+                <div className="flex items-center space-x-3">
+                  <div className="p-2 rounded-lg bg-slate-100 text-slate-700 group-hover:bg-slate-200 transition-colors">
+                    <FileText className="h-5 w-5" />
+                  </div>
+                  <CardTitle className="text-lg">Audit Logs</CardTitle>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground">
+                  Track and review all system audit records and user activities.
                 </p>
               </CardContent>
             </Card>
