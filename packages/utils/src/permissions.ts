@@ -32,6 +32,9 @@ export enum Permission {
 
   READ_AUDIT_LOGS = 'AUDIT_LOGS;;READ',
 
+  MINT_NFSC = 'NFSC;;MINT',
+  BURN_NFSC = 'NFSC;;BURN',
+
   /**
    * Hidden permission - not shown in UI lists, auto-added to ensure at least one row exists for an admin user
    */

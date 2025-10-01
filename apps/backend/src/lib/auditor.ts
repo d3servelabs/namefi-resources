@@ -45,6 +45,7 @@ export const ResourceType = {
   DNS_RECORD: 'dns_record',
   PAYMENT_METHOD: 'payment_method',
   LINK_SHARE: 'link_share',
+  NFSC: 'nfsc',
   OTHER: 'other',
 } as const;
 

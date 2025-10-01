@@ -136,6 +136,30 @@ export default withAdminGuard(function AdminPage() {
           </Link>
         </PermissionGate>
 
+        {/* NFSC Management */}
+        <PermissionGate
+          permissions={[Permission.MINT_NFSC, Permission.BURN_NFSC]}
+          permissionsMode="some"
+        >
+          <Link href="/admin/nfsc" className="group">
+            <Card className="h-full transition-all hover:shadow-md hover:bg-muted/50">
+              <CardHeader className="pb-3">
+                <div className="flex items-center space-x-3">
+                  <div className="p-2 rounded-lg bg-teal-100 text-teal-600 group-hover:bg-teal-200 transition-colors">
+                    <Coins className="h-5 w-5" />
+                  </div>
+                  <CardTitle className="text-lg">NFSC Tokens</CardTitle>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground">
+                  Mint and manage NFSC tokens for users and campaigns.
+                </p>
+              </CardContent>
+            </Card>
+          </Link>
+        </PermissionGate>
+
         {/* Powered by Namefi Domains */}
         <PermissionGate
           permissions={[Permission.READ_PBN, Permission.WRITE_PBN]}

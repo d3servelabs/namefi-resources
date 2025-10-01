@@ -44,6 +44,7 @@ import { chainsToUrls } from '#lib/crypto/rpc-urls';
 import { schedulesRouter } from './admin/schedulesRouter';
 import { poweredByNamefiRouter } from './admin/poweredByNamefiRouter';
 import { permissionsRouter } from './admin/permissionsRouter';
+import { nfscRouter } from './admin/nfscRouter';
 import { ResourceType } from '#lib/auditor';
 import {
   canUserAccessAdminPanel,
@@ -2228,6 +2229,7 @@ export const adminRouter = createTRPCRouter({
   schedules: schedulesRouter,
   poweredByNamefi: poweredByNamefiRouter,
   permissions: permissionsRouter,
+  nfsc: nfscRouter,
 });
 
 function _buildQueryFilters(
