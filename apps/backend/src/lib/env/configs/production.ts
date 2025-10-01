@@ -49,6 +49,7 @@ const productionConfig: ConfigInput = {
 
   STORAGE_BUCKET: 'namefi-astra-prod',
   CLOUD_FRONT_DOMAIN: 'd37hwq656n7huw.cloudfront.net',
+  BIGQUERY_AUDIT_SERVICE_NAMES: ['namefi-astra-api-prod'],
 };
 
 export default productionConfig;

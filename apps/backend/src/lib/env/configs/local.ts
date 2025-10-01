@@ -61,6 +61,8 @@ const localConfig: ConfigInput = {
   MAX_AI_GENERATIONS_PER_USER_PER_MONTH: 200,
   AUTO_CREATE_TEMPORAL_SEARCH_ATTRIBUTES: true,
   REQUIRE_TEMPORAL_SEARCH_ATTRIBUTES_VALIDATION: false,
+
+  BIGQUERY_AUDIT_SERVICE_NAMES: ['namefi-astra-api-local'],
 };
 
 export default localConfig;

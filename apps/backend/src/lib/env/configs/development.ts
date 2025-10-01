@@ -47,6 +47,7 @@ const developmentConfig: ConfigInput = {
     'example.com. 3600 IN DNSKEY 257 3 13 g2sb5aS1wJZPanPqAeUzcb6pNM6h9ruKJb2ptCEtppMEBdmvVnS49wATr083ghefNvYN2tl552ICYiNxm2q54w==',
   DNSSEC_DNSKEY_KEY_TAG: 22005,
   MAX_AI_GENERATIONS_PER_USER_PER_MONTH: 100,
+  BIGQUERY_AUDIT_SERVICE_NAMES: ['namefi-astra-api-dev'],
 };
 
 export default developmentConfig;

@@ -51,6 +51,14 @@ export const secretsSchema = z.object({
   GA4_PROPERTY_ID: z.string().optional(),
   GA4_KEY_FILE_PATH: z.string().optional(),
 
+  // BigQuery configuration
+  BIGQUERY_PROJECT_ID: z.string(),
+  BIGQUERY_KEY_FILE_PATH: z.string(),
+
+  // BigQuery Audit Logs configuration (defaults to BIGQUERY_* when not provided)
+  BIGQUERY_AUDIT_DATASET_ID: z.string(),
+  BIGQUERY_AUDIT_TABLE_ID: z.string(),
+
   VISION_API_KEY: z.string(),
 
   // Vercel API configuration
@@ -161,6 +169,13 @@ export const configSchema = z.object({
   NAMEFI_IO_ZONE: z.string().default('namefi-io'),
   NAMEFI_DEV_ZONE: z.string().default('namefi-dev'),
   VERCEL_DEV_ENV_ID: z.string().default('env_zTZy6lGe9uNCkFYgd4FbfDETzoHO'),
+
+  BIGQUERY_AUDIT_SERVICE_NAMES: z
+    .string()
+    .array()
+    .optional()
+    .describe('List of service names to filter audit logs by environment')
+    .default([]),
 });
 
 export type ConfigInput = z.input<typeof configSchema>;
