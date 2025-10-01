@@ -97,7 +97,7 @@ export function ImageGrid({
                   <CopyLinkButton
                     link={
                       item.id && brandDomain
-                        ? `${window.location.origin}/ai-brand-generator/brand/${brandDomain}/${item.id}`
+                        ? `${window.location.origin}/ai-brand-generator/${item.id}`
                         : item.url
                     }
                   />
@@ -112,7 +112,7 @@ export function ImageGrid({
                       e.stopPropagation();
                       const detailUrl =
                         item.id && brandDomain
-                          ? `${window.location.origin}/ai-brand-generator/brand/${brandDomain}/${item.id}`
+                          ? `${window.location.origin}/ai-brand-generator/${item.id}`
                           : item.url;
                       shareDialog.openDialog(
                         (brandDomain || 'example.com') as any,
@@ -198,9 +198,7 @@ export function ImageGrid({
                 className="cursor-pointer"
                 onClick={() => {
                   if (item.id && brandDomain) {
-                    router.push(
-                      `/ai-brand-generator/brand/${brandDomain}/${item.id}`,
-                    );
+                    router.push(`/ai-brand-generator/${item.id}`);
                   }
                 }}
                 onKeyDown={(e) => {
@@ -210,9 +208,7 @@ export function ImageGrid({
                     brandDomain
                   ) {
                     e.preventDefault();
-                    router.push(
-                      `/ai-brand-generator/brand/${brandDomain}/${item.id}`,
-                    );
+                    router.push(`/ai-brand-generator/${item.id}`);
                   }
                 }}
               >

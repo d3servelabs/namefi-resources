@@ -310,7 +310,7 @@ export function GenerationPreview({
   useEffect(() => {
     if (generatedImage?.domain) {
       setCurrentUrl(
-        `${window.location.origin}/ai-brand-generator/brand/${generatedImage?.domain}/${generatedImage?.id}`,
+        `${window.location.origin}/ai-brand-generator/${generatedImage?.id}`,
       );
     }
   }, [generatedImage]);

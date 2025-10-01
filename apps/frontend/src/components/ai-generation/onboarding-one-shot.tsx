@@ -146,15 +146,6 @@ export function AIOnboardingOneShot({
     setStep('done');
   };
 
-  const goToBrand = () => {
-    const targetDomain = (logoGen?.domain || marketingGen?.domain) as
-      | string
-      | undefined;
-    if (targetDomain) {
-      router.push(`/ai-brand-generator/brand/${targetDomain}`);
-    }
-  };
-
   // Shared Twitter dialog (match regular flow)
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [shareDomain, setShareDomain] = useState<string | undefined>(undefined);
@@ -272,7 +263,7 @@ export function AIOnboardingOneShot({
   const computeShareUrl = (gen?: Generation | null) => {
     if (!gen?.id || !gen?.domain) return '';
     if (typeof window === 'undefined') return '';
-    return `${window.location.origin}/ai-brand-generator/brand/${gen.domain}/${gen.id}`;
+    return `${window.location.origin}/ai-brand-generator/${gen.id}`;
   };
 
   const handleDownload = async (gen?: Generation | null) => {
@@ -455,13 +446,6 @@ export function AIOnboardingOneShot({
 
           {step === 'done' && (
             <div className="mt-6 flex flex-col sm:flex-row gap-3">
-              <Button
-                variant="secondary"
-                onClick={goToBrand}
-                className="flex-1 text-white"
-              >
-                Go to brand page
-              </Button>
               <NamefiButton
                 onClick={onFinishAction}
                 className="flex-1 text-white"

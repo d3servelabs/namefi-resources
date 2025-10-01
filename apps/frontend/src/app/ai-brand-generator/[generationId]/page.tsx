@@ -5,7 +5,7 @@ import { GenerationDetailsClient } from '@/components/generation-details';
 import { config } from '@/lib/env';
 
 type Props = {
-  params: Promise<{ domain: string; generationId: string }>;
+  params: Promise<{ generationId: string }>;
 };
 
 // Cache the generation query to avoid duplicate API calls
@@ -16,30 +16,26 @@ const getGeneration = cache(async (generationId: string) => {
 });
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { domain, generationId } = await params;
+  const { generationId } = await params;
 
   try {
     const generation = await getGeneration(generationId);
 
-    if (!generation) {
-      return {
-        title: `AI Generation for ${domain}`,
-        description: `View AI-generated brand assets for ${domain}`,
-      };
-    }
-
-    // Create metadata based on the generation data
-    const title = `AI-generated ${generation.type} image for ${domain}`;
-    const description =
-      generation.type === 'logo'
-        ? `AI-generated logo design for ${domain}. Created with advanced AI technology to help establish your brand identity with professional logo design.`
-        : `AI-generated marketing image for ${domain}. Professional marketing visuals created with artificial intelligence to enhance your brand presence and promotional materials.`;
+    const hasGeneration = !!generation;
+    const title = hasGeneration
+      ? `AI-generated ${generation.type} image for ${generation.domain}`
+      : 'AI Brand Generation';
+    const description = hasGeneration
+      ? generation.type === 'logo'
+        ? `AI-generated logo design for ${generation.domain}. Created with advanced AI technology to help establish your brand identity with professional logo design.`
+        : `AI-generated marketing image for ${generation.domain}. Professional marketing visuals created with artificial intelligence to enhance your brand presence and promotional materials.`
+      : 'View AI-generated brand assets.';
 
     return {
       title,
       description,
       metadataBase: new URL(
-        `${config.FIRST_PARTY_DEPLOYMENT_URL}/ai-brand-generator/brand/${domain}/${generationId}`,
+        `${config.FIRST_PARTY_DEPLOYMENT_URL}/ai-brand-generator/${generationId}`,
       ),
       openGraph: {
         title,
@@ -75,21 +71,30 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     console.error('Error fetching generation metadata:', error);
     // Fallback metadata if the API call fails
     return {
-      title: `AI Generation for ${domain}`,
-      description: `View AI-generated brand assets for ${domain}`,
+      title: 'AI Brand Generation',
+      description: 'View AI-generated brand assets.',
     };
   }
 }
 
 export default async function GenerationPage({ params }: Props) {
-  const { domain, generationId } = await params;
+  const { generationId } = await params;
 
   try {
     const generation = await getGeneration(generationId);
+    if (!generation) {
+      return (
+        <GenerationDetailsClient
+          domain=""
+          generationId={generationId}
+          error="Generation not found"
+        />
+      );
+    }
 
     return (
       <GenerationDetailsClient
-        domain={domain}
+        domain={generation.domain ?? ''}
         generationId={generationId}
         initialGeneration={generation}
       />
@@ -98,7 +103,7 @@ export default async function GenerationPage({ params }: Props) {
     console.error('Error fetching generation:', error);
     return (
       <GenerationDetailsClient
-        domain={domain}
+        domain=""
         generationId={generationId}
         error="Failed to load generation"
       />

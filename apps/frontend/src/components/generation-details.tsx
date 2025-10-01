@@ -108,7 +108,7 @@ const ErrorPlaceholder = ({
       </EmptyPlaceholder.Description>
       <Button variant="outline" onClick={onGoBack} className="mt-4">
         <ArrowLeft className="mr-2 h-4 w-4" />
-        Go back to brand
+        Go back
       </Button>
     </EmptyPlaceholder>
   </div>
@@ -162,8 +162,8 @@ export function GenerationDetailsClient({
   });
 
   const handleGoBack = useCallback(() => {
-    router.push(`/ai-brand-generator/brand/${domain}`);
-  }, [domain, router]);
+    router.push('/ai-brand-generator');
+  }, [router]);
 
   const handleDownload = useCallback(async () => {
     if (!generation?.url) return;
@@ -232,7 +232,7 @@ export function GenerationDetailsClient({
           </div>
           <Button variant="outline" onClick={handleGoBack}>
             <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Brand
+            Back to Generator
           </Button>
         </div>
 
@@ -417,7 +417,7 @@ export function GenerationDetailsClient({
                             size="sm"
                             onClick={() =>
                               router.push(
-                                `/ai-brand-generator/brand/${domain}/${generation.referenceGenerationId}`,
+                                `/ai-brand-generator/${generation.referenceGenerationId}`,
                               )
                             }
                             className="text-xs"

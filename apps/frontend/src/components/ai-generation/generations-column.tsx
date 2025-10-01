@@ -299,15 +299,11 @@ export function GenerationsColumn({
                     <div
                       key={item.id}
                       onClick={() =>
-                        router.push(
-                          `/ai-brand-generator/brand/${item.domain}/${item.id}`,
-                        )
+                        router.push(`/ai-brand-generator/${item.id}`)
                       }
                       onKeyDown={(e) => {
                         if (e.key === 'Enter') {
-                          router.push(
-                            `/ai-brand-generator/brand/${item.domain}/${item.id}`,
-                          );
+                          router.push(`/ai-brand-generator/${item.id}`);
                         }
                       }}
                       className="relative block overflow-hidden rounded-xl bg-muted/30 border border-border/40 shadow-xs transition hover:shadow-md hover:border-border aspect-[1/1] group cursor-pointer"
@@ -332,7 +328,7 @@ export function GenerationsColumn({
                             onClick={(e) => {
                               e.stopPropagation();
                               e.preventDefault();
-                              const url = `${window.location.origin}/ai-brand-generator/brand/${item.domain}/${item.id}`;
+                              const url = `${window.location.origin}/ai-brand-generator/${item.id}`;
                               void navigator.clipboard
                                 .writeText(url)
                                 .then(() =>
@@ -357,7 +353,7 @@ export function GenerationsColumn({
                             onClick={(e) => {
                               e.stopPropagation();
                               e.preventDefault();
-                              const url = `${window.location.origin}/ai-brand-generator/brand/${item.domain}/${item.id}`;
+                              const url = `${window.location.origin}/ai-brand-generator/${item.id}`;
                               setShareUrl(url);
                               setShareDomain(item.domain);
                               shareDialog.openDialog(item.domain as any);
@@ -409,15 +405,11 @@ export function GenerationsColumn({
                   <div
                     key={item.id}
                     onClick={() =>
-                      router.push(
-                        `/ai-brand-generator/brand/${item.domain}/${item.id}`,
-                      )
+                      router.push(`/ai-brand-generator/${item.id}`)
                     }
                     onKeyDown={(e) => {
                       if (e.key === 'Enter') {
-                        router.push(
-                          `/ai-brand-generator/brand/${item.domain}/${item.id}`,
-                        );
+                        router.push(`/ai-brand-generator/${item.id}`);
                       }
                     }}
                     className="relative block overflow-hidden rounded-xl bg-muted/30 border border-border/40 shadow-xs transition hover:shadow-md hover:border-border aspect-[1/1] group cursor-pointer"
@@ -442,7 +434,7 @@ export function GenerationsColumn({
                           onClick={(e) => {
                             e.stopPropagation();
                             e.preventDefault();
-                            const url = `${window.location.origin}/ai-brand-generator/brand/${item.domain}/${item.id}`;
+                            const url = `${window.location.origin}/ai-brand-generator/${item.id}`;
                             void navigator.clipboard
                               .writeText(url)
                               .then(() =>
@@ -467,7 +459,7 @@ export function GenerationsColumn({
                           onClick={(e) => {
                             e.stopPropagation();
                             e.preventDefault();
-                            const url = `${window.location.origin}/ai-brand-generator/brand/${item.domain}/${item.id}`;
+                            const url = `${window.location.origin}/ai-brand-generator/${item.id}`;
                             setShareUrl(url);
                             setShareDomain(item.domain);
                             shareDialog.openDialog(item.domain as any);
