@@ -122,38 +122,31 @@ function PageHeader() {
 
 function LeftColumnSkeleton() {
   return (
-    <div className="space-y-6 w-full">
+    <div className="space-y-4 w-full">
       <Card>
-        <CardContent className="p-5">
+        <CardContent className="p-4 py-0">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <Skeleton className="h-5 w-5 rounded-full" />
-              <div className="space-y-2">
-                <Skeleton className="h-4 w-32" />
-                <Skeleton className="h-3 w-40" />
+              <div className="space-y-1.5">
+                <Skeleton className="h-4 w-28" />
+                <Skeleton className="h-3 w-24" />
               </div>
             </div>
-            <Skeleton className="h-6 w-20 rounded-full" />
+            <Skeleton className="h-5 w-16 rounded-full" />
           </div>
         </CardContent>
       </Card>
 
-      <Card>
-        <CardContent className="p-6 space-y-6">
-          <div className="space-y-4">
-            <Skeleton className="h-10 w-full" />
-            <div className="flex items-center justify-end gap-3">
-              <Skeleton className="h-4 w-16" />
-              <Skeleton className="h-4 w-8 rounded" />
+      <Card className="py-0">
+        <CardContent className="space-y-4 p-5">
+          <Skeleton className="h-11 w-full rounded-xl" />
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <Skeleton className="h-9 w-28 rounded-full" />
+            <div className="flex items-center gap-2">
+              <Skeleton className="h-5 w-10 rounded-full" />
             </div>
-            <div className="flex flex-wrap gap-3">
-              {Array.from({ length: 3 }).map((_, i) => (
-                <Skeleton key={i} className="h-9 w-28 rounded-full" />
-              ))}
-            </div>
-            <Skeleton className="h-24 w-full rounded-lg" />
           </div>
-          <Skeleton className="h-11 w-full rounded-lg" />
         </CardContent>
       </Card>
     </div>
