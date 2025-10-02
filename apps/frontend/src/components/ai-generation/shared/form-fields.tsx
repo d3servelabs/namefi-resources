@@ -251,12 +251,13 @@ interface ControlPanelProps {
 
 export function ControlPanel({ buttons, className }: ControlPanelProps) {
   return (
-    <div className={`flex flex-wrap gap-4 ${className || ''}`}>
+    <div className={`flex flex-wrap gap-3 ${className || ''}`}>
       {buttons.map((button) => (
         <Button
           key={button.key}
           type="button"
           variant={button.isActive ? 'default' : 'outline'}
+          size="sm"
           onClick={button.onClick}
           className="rounded-full"
         >

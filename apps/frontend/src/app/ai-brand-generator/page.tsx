@@ -9,7 +9,10 @@ import Image from 'next/image';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useLocalStorage } from 'usehooks-ts';
 import { AIOnboardingOneShot } from '@/components/ai-generation/onboarding-one-shot';
-import { GenerationsColumn } from '@/components/ai-generation/generations-column';
+import {
+  GenerationsColumn,
+  GenerationsColumnSkeleton,
+} from '@/components/ai-generation/generations-column';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
 import { Card, CardContent } from '@/components/ui/shadcn/card';
 import { PosterFlowProvider } from '@/components/ai-generation/poster-flow-context';
@@ -43,14 +46,14 @@ export default function AIBrandGeneratorPage() {
     return (
       <PosterFlowProvider>
         <PosterFlowInitializer />
-        <div className="container max-w-full mx-auto py-8 px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-12">
-            <div className="space-y-6">
+        <div className="container max-w-full mx-auto py-8 px-8 lg:flex lg:flex-col lg:h-[calc(100vh-10rem)] lg:max-h-[calc(100vh-10rem)] lg:min-h-0 lg:overflow-hidden lg:py-6">
+          <div className="grid grid-cols-1 gap-10 mb-12 flex-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:min-h-0 lg:overflow-hidden lg:mb-0">
+            <div className="flex flex-col space-y-6 lg:min-h-0 lg:overflow-auto">
               <PageHeader />
               <LeftColumnSkeleton />
             </div>
-            <div className="space-y-6">
-              <GallerySkeleton />
+            <div className="flex flex-col space-y-6 lg:h-full lg:min-h-0 lg:overflow-hidden">
+              <GenerationsColumnSkeleton className="flex-1" />
             </div>
           </div>
         </div>
@@ -67,11 +70,11 @@ export default function AIBrandGeneratorPage() {
   return (
     <PosterFlowProvider>
       <PosterFlowInitializer />
-      <div className="container max-w-full mx-auto py-8 px-8">
+      <div className="container max-w-full mx-auto py-8 px-8 lg:flex lg:flex-col lg:h-[calc(100vh-10rem)] lg:max-h-[calc(100vh-10rem)] lg:min-h-0 lg:overflow-hidden lg:py-6">
         {/* Main Content - 2 Column Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-12">
+        <div className="grid grid-cols-1 gap-10 mb-12 flex-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:min-h-0 lg:overflow-hidden lg:mb-0">
           {/* Left Column - Generator */}
-          <div className="space-y-6">
+          <div className="flex flex-col space-y-6 lg:min-h-0 lg:overflow-auto">
             {/* Page header moved to left column to align right column at top */}
             <PageHeader />
             {isInitialLoading ? (
@@ -86,11 +89,11 @@ export default function AIBrandGeneratorPage() {
           </div>
 
           {/* Right Column - Generations Gallery */}
-          <div className="space-y-6">
+          <div className="flex flex-col space-y-6 lg:h-full lg:min-h-0 lg:overflow-hidden">
             {isInitialLoading ? (
-              <GallerySkeleton />
+              <GenerationsColumnSkeleton className="flex-1" />
             ) : (
-              <GenerationsColumn domains={domains} />
+              <GenerationsColumn domains={domains} className="flex-1" />
             )}
           </div>
         </div>
@@ -151,35 +154,6 @@ function LeftColumnSkeleton() {
             <Skeleton className="h-24 w-full rounded-lg" />
           </div>
           <Skeleton className="h-11 w-full rounded-lg" />
-        </CardContent>
-      </Card>
-    </div>
-  );
-}
-
-function GallerySkeleton() {
-  return (
-    <div className="space-y-4">
-      <div className="flex flex-wrap items-center gap-3 justify-between">
-        <div className="flex gap-2">
-          <Skeleton className="h-9 w-24 rounded-full" />
-          <Skeleton className="h-9 w-28 rounded-full" />
-        </div>
-        <div className="flex gap-2">
-          <Skeleton className="h-8 w-40 rounded-lg" />
-          <Skeleton className="h-8 w-40 rounded-lg" />
-        </div>
-      </div>
-      <Card className="border-border/50 bg-card">
-        <CardContent className="p-4">
-          <div className="grid grid-cols-2 gap-4">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <Skeleton
-                key={i}
-                className="aspect-square w-full rounded-xl bg-muted/40"
-              />
-            ))}
-          </div>
         </CardContent>
       </Card>
     </div>

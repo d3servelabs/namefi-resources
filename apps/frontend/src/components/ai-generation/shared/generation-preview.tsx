@@ -6,7 +6,7 @@ import { Card, CardContent } from '@/components/ui/shadcn/card';
 import { Separator } from '@/components/ui/shadcn/separator';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
 import { Download, Copy, RefreshCw, Sparkles } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { motion } from 'motion/react';
 import { TwitterIcon } from 'react-share';
 import { TwitterShareDialog } from '@/components/hunt/twitter-share-dialog';
@@ -15,6 +15,7 @@ import {
   useTwitterShareDialog,
 } from '@/hooks/use-twitter-share';
 import { toast } from 'sonner';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 // Circular progress component with fake loading percentage
 const CircularProgress = ({
@@ -298,6 +299,7 @@ export function GenerationPreview({
   const previewRef = useRef<HTMLDivElement>(null);
   const [currentUrl, setCurrentUrl] = useState('');
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const isMobile = useIsMobile();
 
   // Reuse share dialog with AI featureKey
   const shareDialog = useTwitterShareDialog({
@@ -366,6 +368,16 @@ export function GenerationPreview({
     shareDialog.openDialog(generatedImage.domain as any);
     setIsDialogOpen(true);
   };
+
+  const handlePosterClick = useCallback(() => {
+    if (!onGeneratePoster) return;
+    onGeneratePoster();
+    if (isMobile) {
+      setTimeout(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }, 100);
+    }
+  }, [onGeneratePoster, isMobile]);
 
   if (!isVisible || (!isLoading && !generatedImage?.url)) return null;
 
@@ -514,7 +526,7 @@ export function GenerationPreview({
                         <Button
                           variant="secondary"
                           className="w-full"
-                          onClick={onGeneratePoster}
+                          onClick={handlePosterClick}
                           disabled={!onGeneratePoster}
                         >
                           <Sparkles className="w-4 h-4 mr-1" />

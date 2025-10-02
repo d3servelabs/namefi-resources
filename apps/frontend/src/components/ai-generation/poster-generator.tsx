@@ -121,6 +121,7 @@ export function PosterGenerator({
       form.setValue('selectedLogoId', initialSelectedLogoId, {
         shouldDirty: false,
         shouldTouch: false,
+        shouldValidate: true,
       });
     }
   }, [initialSelectedLogoId]);
@@ -134,6 +135,7 @@ export function PosterGenerator({
       form.setValue('selectedLogoId', logos[0].id, {
         shouldDirty: false,
         shouldTouch: false,
+        shouldValidate: true,
       });
     }
   }, [logosToShow]);
@@ -153,9 +155,17 @@ export function PosterGenerator({
         formRef.current = form;
         const logos = (logosToShow as Generation[]) || [];
         if (initialSelectedLogoId) {
-          form.setValue('selectedLogoId', initialSelectedLogoId);
+          form.setValue('selectedLogoId', initialSelectedLogoId, {
+            shouldDirty: false,
+            shouldTouch: false,
+            shouldValidate: true,
+          });
         } else if (logos.length > 0) {
-          form.setValue('selectedLogoId', logos[0].id);
+          form.setValue('selectedLogoId', logos[0].id, {
+            shouldDirty: false,
+            shouldTouch: false,
+            shouldValidate: true,
+          });
         }
       }}
       submitButtonText={logosToShow.length > 0 ? 'Generate' : 'Select a brand'}
@@ -265,25 +275,29 @@ export function PosterGenerator({
 
         return (
           <>
-            <div className="flex justify-end items-center gap-2">
-              <Label htmlFor="poster-advanced" className="text-xs">
-                Advanced
-              </Label>
-              <Switch
-                id="poster-advanced"
-                checked={showAdvanced}
-                onCheckedChange={setShowAdvanced}
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <ControlPanel
+                className="flex-1"
+                buttons={controlButtons.filter((b) => {
+                  if (b.key === 'logos') return logosToShow.length > 0;
+                  if (b.key === 'description') return true;
+                  return showAdvanced;
+                })}
               />
+              <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                <Label
+                  htmlFor="poster-advanced"
+                  className="text-xs font-medium"
+                >
+                  Advanced
+                </Label>
+                <Switch
+                  id="poster-advanced"
+                  checked={showAdvanced}
+                  onCheckedChange={setShowAdvanced}
+                />
+              </div>
             </div>
-            {/* Control Buttons */}
-            <ControlPanel
-              buttons={controlButtons.filter((b) => {
-                // Only show Logo and Description by default; others behind advanced
-                if (b.key === 'logos') return logosToShow.length > 0;
-                if (b.key === 'description') return true;
-                return showAdvanced;
-              })}
-            />
 
             {/* Logo Selection */}
             {openPanel === 'logos' && logosForPanel.length > 0 && (

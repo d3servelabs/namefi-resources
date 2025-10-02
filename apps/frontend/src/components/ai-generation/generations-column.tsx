@@ -26,7 +26,12 @@ import {
   CommandList,
 } from '@/components/ui/shadcn/command';
 import { useTRPC, type AppRouterOutput } from '@/lib/trpc';
-import { ChevronsUpDown, Check, Image as ImageIcon } from 'lucide-react';
+import {
+  Building2,
+  ChevronsUpDown,
+  Check,
+  Image as ImageIcon,
+} from 'lucide-react';
 import { cn } from '@/lib/cn';
 import { useQuery } from '@tanstack/react-query';
 import { TwitterShareDialog } from '@/components/hunt/twitter-share-dialog';
@@ -50,11 +55,12 @@ export type DomainPreview = {
 
 interface GenerationsColumnProps {
   domains: DomainPreview[];
+  className?: string;
 }
 
-const GallerySkeletonGrid = () => (
-  <div className="space-y-3 py-4 px-4">
-    <div className="grid grid-cols-2 gap-3">
+const GallerySkeletonGrid = ({ className }: { className?: string }) => (
+  <div className={cn('py-4 px-4', className)}>
+    <div className="grid grid-cols-2 gap-4">
       {Array.from({ length: 6 }).map((_, i) => (
         <Skeleton
           key={i}
@@ -65,7 +71,10 @@ const GallerySkeletonGrid = () => (
   </div>
 );
 
-export function GenerationsColumn({ domains }: GenerationsColumnProps) {
+export function GenerationsColumn({
+  domains,
+  className,
+}: GenerationsColumnProps) {
   const trpc = useTRPC();
   const router = useRouter();
   const shareDialog = useTwitterShareDialog({
@@ -197,7 +206,7 @@ export function GenerationsColumn({ domains }: GenerationsColumnProps) {
 
   // Header row above the card: tabs + filters in a single horizontal row
   const headerRow = (
-    <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+    <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
       <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as any)}>
         <TabsList>
           {shouldShowYoursTab && (
@@ -217,17 +226,23 @@ export function GenerationsColumn({ domains }: GenerationsColumnProps) {
                 size="sm"
                 role="combobox"
                 aria-expanded={false}
-                className="h-8 w-56 justify-between rounded-lg border border-border/50 bg-muted/30 hover:bg-muted/50 px-3"
+                className="h-9 w-56 justify-between rounded-lg border border-border/50 bg-muted/30 px-3 text-sm font-medium"
               >
-                {selectedBrands.length > 0
-                  ? `${selectedBrands.length} selected`
-                  : 'Brands'}
+                <span className="flex items-center gap-2">
+                  <Building2 className="h-4 w-4 text-muted-foreground" />
+                  {selectedBrands.length > 0
+                    ? `${selectedBrands.length} selected`
+                    : 'Brands'}
+                </span>
                 <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-64 p-0" align="end">
-              <Command>
-                <CommandInput placeholder="Search brand..." />
+              <Command className="rounded-lg border border-border bg-popover text-popover-foreground">
+                <CommandInput
+                  placeholder="Search brand..."
+                  className="px-3 py-2 text-sm focus-visible:ring-0 focus-visible:ring-offset-0"
+                />
                 <CommandList>
                   <CommandEmpty>No brands found.</CommandEmpty>
                   <CommandGroup>
@@ -268,9 +283,9 @@ export function GenerationsColumn({ domains }: GenerationsColumnProps) {
               setTypeFilter(v as 'all' | 'logo' | 'marketing')
             }
           >
-            <SelectTrigger className="h-8 w-56 justify-between rounded-lg border border-border/50! bg-muted/30 hover:bg-muted/50 px-3">
+            <SelectTrigger className="h-9 w-48 justify-between rounded-lg border border-border/50 bg-muted/30 px-3 text-sm font-medium">
               <div className="flex items-center gap-2">
-                <ImageIcon className="size-4 opacity-60" />
+                <ImageIcon className="size-4 text-muted-foreground" />
                 <SelectValue />
               </div>
             </SelectTrigger>
@@ -287,23 +302,132 @@ export function GenerationsColumn({ domains }: GenerationsColumnProps) {
 
   // Otherwise, show tabs: Yours (with filters) and Featured (no filters)
   return (
-    <>
+    <div className={cn('flex h-full min-h-0 flex-col', className)}>
       {headerRow}
-      <Card className="border-border/50 bg-card py-0">
-        <CardContent className="px-0">
+      <Card className="flex-1 border-border/50 bg-card py-0 flex flex-col min-h-0">
+        <CardContent className="px-0 flex-1 flex flex-col min-h-0">
           {activeTab === 'yours' ? (
             isFilteredLoading ? (
-              <GallerySkeletonGrid />
+              <GallerySkeletonGrid className="flex-1" />
             ) : galleryItems.length === 0 ? (
-              <div>
-                <div className="text-sm text-muted-foreground mb-4">
-                  Generate a logo or poster to see it appear here.
-                </div>
+              <div className="flex-1 px-4 py-6 text-sm text-muted-foreground">
+                Generate a logo or poster to see it appear here.
               </div>
             ) : (
-              <div className="h-[700px] overflow-y-auto">
+              <div className="flex-1 overflow-hidden">
+                <div className="h-full overflow-y-auto">
+                  <div className="grid grid-cols-2 gap-4 py-4 px-4">
+                    {galleryItems.map((item) => (
+                      // biome-ignore lint/a11y/noStaticElementInteractions: <explanation>
+                      <div
+                        key={item.id}
+                        onClick={() =>
+                          router.push(`/ai-brand-generator/${item.id}`)
+                        }
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') {
+                            router.push(`/ai-brand-generator/${item.id}`);
+                          }
+                        }}
+                        className="relative block overflow-hidden rounded-xl bg-muted/30 border border-border/40 shadow-xs transition hover:shadow-md hover:border-border aspect-[1/1] group cursor-pointer"
+                      >
+                        <img
+                          src={item.url}
+                          alt={item.domain}
+                          className="w-full h-full object-cover"
+                          loading="lazy"
+                        />
+                        {/* Full overlay */}
+                        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity bg-black/60" />
+                        <div className="absolute inset-0 p-3 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-between">
+                          <div className="text-sm font-semibold text-white drop-shadow-sm">
+                            {item.domain}
+                          </div>
+                          <div className="flex items-center gap-2 justify-end flex-wrap">
+                            {item.type === 'logo' && item.generation && (
+                              <Button
+                                size="sm"
+                                className="h-8 rounded-full bg-primary text-primary-foreground hover:bg-primary/90"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  e.preventDefault();
+                                  openPoster(item.generation as PosterSource);
+                                }}
+                              >
+                                Create Poster
+                              </Button>
+                            )}
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="h-8 rounded-full border-border/50 bg-background/60 hover:bg-background/80 text-foreground"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                e.preventDefault();
+                                const url = `${window.location.origin}/ai-brand-generator/${item.id}`;
+                                void navigator.clipboard
+                                  .writeText(url)
+                                  .then(() =>
+                                    toast('Link copied to clipboard', {
+                                      description:
+                                        'You can now share this generation with others',
+                                    }),
+                                  )
+                                  .catch(() =>
+                                    toast.error('Failed to copy link', {
+                                      description: 'Please try again',
+                                    }),
+                                  );
+                              }}
+                            >
+                              Copy
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="h-8 rounded-full border-border/50 bg-background/60 hover:bg-background/80 text-foreground"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                e.preventDefault();
+                                const url = `${window.location.origin}/ai-brand-generator/${item.id}`;
+                                setShareUrl(url);
+                                setShareDomain(item.domain);
+                                shareDialog.openDialog(item.domain as any);
+                                setIsDialogOpen(true);
+                              }}
+                            >
+                              Tweet
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="h-8 rounded-full border-border/50 bg-background/60 hover:bg-background/80 text-foreground"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                e.preventDefault();
+                                void downloadImage(
+                                  item.url,
+                                  `${item.domain}-${item.id}.png`,
+                                );
+                              }}
+                            >
+                              Download
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )
+          ) : isFeaturedLoading ? (
+            <GallerySkeletonGrid className="flex-1" />
+          ) : (
+            <div className="flex-1 overflow-hidden">
+              <div className="h-full overflow-y-auto">
                 <div className="grid grid-cols-2 gap-4 py-4 px-4">
-                  {galleryItems.map((item) => (
+                  {combinedFeaturedItems.map((item) => (
                     // biome-ignore lint/a11y/noStaticElementInteractions: <explanation>
                     <div
                       key={item.id}
@@ -329,20 +453,7 @@ export function GenerationsColumn({ domains }: GenerationsColumnProps) {
                         <div className="text-sm font-semibold text-white drop-shadow-sm">
                           {item.domain}
                         </div>
-                        <div className="flex items-center gap-2 justify-end flex-wrap">
-                          {item.type === 'logo' && item.generation && (
-                            <Button
-                              size="sm"
-                              className="h-8 rounded-full bg-primary text-primary-foreground hover:bg-primary/90"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                e.preventDefault();
-                                openPoster(item.generation as PosterSource);
-                              }}
-                            >
-                              Create Poster
-                            </Button>
-                          )}
+                        <div className="flex items-center gap-2 justify-end">
                           <Button
                             size="sm"
                             variant="outline"
@@ -405,100 +516,6 @@ export function GenerationsColumn({ domains }: GenerationsColumnProps) {
                   ))}
                 </div>
               </div>
-            )
-          ) : isFeaturedLoading ? (
-            <GallerySkeletonGrid />
-          ) : (
-            <div className="lg:h-[700px] h-[640px] overflow-y-auto">
-              <div className="grid grid-cols-2 gap-4 py-4 px-4">
-                {combinedFeaturedItems.map((item) => (
-                  // biome-ignore lint/a11y/noStaticElementInteractions: <explanation>
-                  <div
-                    key={item.id}
-                    onClick={() =>
-                      router.push(`/ai-brand-generator/${item.id}`)
-                    }
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter') {
-                        router.push(`/ai-brand-generator/${item.id}`);
-                      }
-                    }}
-                    className="relative block overflow-hidden rounded-xl bg-muted/30 border border-border/40 shadow-xs transition hover:shadow-md hover:border-border aspect-[1/1] group cursor-pointer"
-                  >
-                    <img
-                      src={item.url}
-                      alt={item.domain}
-                      className="w-full h-full object-cover"
-                      loading="lazy"
-                    />
-                    {/* Full overlay */}
-                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity bg-black/60" />
-                    <div className="absolute inset-0 p-3 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-between">
-                      <div className="text-sm font-semibold text-white drop-shadow-sm">
-                        {item.domain}
-                      </div>
-                      <div className="flex items-center gap-2 justify-end">
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          className="h-8 rounded-full border-border/50 bg-background/60 hover:bg-background/80 text-foreground"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            e.preventDefault();
-                            const url = `${window.location.origin}/ai-brand-generator/${item.id}`;
-                            void navigator.clipboard
-                              .writeText(url)
-                              .then(() =>
-                                toast('Link copied to clipboard', {
-                                  description:
-                                    'You can now share this generation with others',
-                                }),
-                              )
-                              .catch(() =>
-                                toast.error('Failed to copy link', {
-                                  description: 'Please try again',
-                                }),
-                              );
-                          }}
-                        >
-                          Copy
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          className="h-8 rounded-full border-border/50 bg-background/60 hover:bg-background/80 text-foreground"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            e.preventDefault();
-                            const url = `${window.location.origin}/ai-brand-generator/${item.id}`;
-                            setShareUrl(url);
-                            setShareDomain(item.domain);
-                            shareDialog.openDialog(item.domain as any);
-                            setIsDialogOpen(true);
-                          }}
-                        >
-                          Tweet
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          className="h-8 rounded-full border-border/50 bg-background/60 hover:bg-background/80 text-foreground"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            e.preventDefault();
-                            void downloadImage(
-                              item.url,
-                              `${item.domain}-${item.id}.png`,
-                            );
-                          }}
-                        >
-                          Download
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
             </div>
           )}
         </CardContent>
@@ -520,6 +537,38 @@ export function GenerationsColumn({ domains }: GenerationsColumnProps) {
         campaignKey={undefined}
         featureKey="ai_generation"
       />
-    </>
+    </div>
+  );
+}
+
+export function GenerationsColumnSkeleton({
+  className,
+}: {
+  className?: string;
+}) {
+  return (
+    <div className={cn('flex h-full min-h-0 flex-col', className)}>
+      <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+        <Tabs value="yours" className="opacity-60 pointer-events-none">
+          <TabsList>
+            <TabsTrigger value="yours">Your Generations</TabsTrigger>
+            <TabsTrigger value="featured">Featured</TabsTrigger>
+          </TabsList>
+        </Tabs>
+        <div className="flex items-center gap-2.5">
+          <Skeleton className="h-9 w-56 rounded-lg" />
+          <Skeleton className="h-9 w-48 rounded-lg" />
+        </div>
+      </div>
+      <Card className="flex-1 border-border/50 bg-card py-0 flex flex-col min-h-0">
+        <CardContent className="px-0 flex-1 flex flex-col min-h-0">
+          <div className="flex-1 overflow-hidden">
+            <div className="h-full overflow-y-auto">
+              <GallerySkeletonGrid />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
   );
 }

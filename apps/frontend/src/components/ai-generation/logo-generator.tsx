@@ -106,72 +106,78 @@ export function LogoGenerator({
 
         return (
           <>
-            <div className="flex justify-end items-center gap-2">
-              <Label htmlFor="logo-advanced" className="text-xs">
-                Advanced
-              </Label>
-              <Switch
-                id="logo-advanced"
-                checked={showAdvanced}
-                onCheckedChange={setShowAdvanced}
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <ControlPanel
+                className="flex-1"
+                buttons={[
+                  ...(showAdvanced
+                    ? [
+                        {
+                          key: 'type',
+                          label: 'Type',
+                          badge: selectedType
+                            ? getTypeDisplay(selectedType)
+                            : undefined,
+                          onClick: () =>
+                            setOpenPanel(openPanel === 'type' ? null : 'type'),
+                          isActive: openPanel === 'type',
+                        },
+                      ]
+                    : []),
+                  ...(showAdvanced
+                    ? [
+                        {
+                          key: 'style',
+                          label: 'Style',
+                          badge: selectedStyle
+                            ? getStyleDisplay(selectedStyle)
+                            : undefined,
+                          onClick: () =>
+                            setOpenPanel(
+                              openPanel === 'style' ? null : 'style',
+                            ),
+                          isActive: openPanel === 'style',
+                        },
+                      ]
+                    : []),
+                  ...(showAdvanced
+                    ? [
+                        {
+                          key: 'model',
+                          label: 'Model',
+                          badge: selectedModel
+                            ? getModelDisplay(selectedModel)
+                            : undefined,
+                          onClick: () =>
+                            setOpenPanel(
+                              openPanel === 'model' ? null : 'model',
+                            ),
+                          isActive: openPanel === 'model',
+                        },
+                      ]
+                    : []),
+                  {
+                    key: 'description',
+                    label: 'Brand Vision',
+                    onClick: () =>
+                      setOpenPanel(
+                        openPanel === 'description' ? null : 'description',
+                      ),
+                    isActive: openPanel === 'description',
+                  },
+                ]}
               />
+              <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                <Label htmlFor="logo-advanced" className="text-xs font-medium">
+                  Advanced
+                </Label>
+                <Switch
+                  id="logo-advanced"
+                  checked={showAdvanced}
+                  onCheckedChange={setShowAdvanced}
+                />
+              </div>
             </div>
-            {/* Control Buttons */}
-            <ControlPanel
-              buttons={[
-                ...(showAdvanced
-                  ? [
-                      {
-                        key: 'type',
-                        label: 'Type',
-                        badge: selectedType
-                          ? getTypeDisplay(selectedType)
-                          : undefined,
-                        onClick: () =>
-                          setOpenPanel(openPanel === 'type' ? null : 'type'),
-                        isActive: openPanel === 'type',
-                      },
-                    ]
-                  : []),
-                ...(showAdvanced
-                  ? [
-                      {
-                        key: 'style',
-                        label: 'Style',
-                        badge: selectedStyle
-                          ? getStyleDisplay(selectedStyle)
-                          : undefined,
-                        onClick: () =>
-                          setOpenPanel(openPanel === 'style' ? null : 'style'),
-                        isActive: openPanel === 'style',
-                      },
-                    ]
-                  : []),
-                ...(showAdvanced
-                  ? [
-                      {
-                        key: 'model',
-                        label: 'Model',
-                        badge: selectedModel
-                          ? getModelDisplay(selectedModel)
-                          : undefined,
-                        onClick: () =>
-                          setOpenPanel(openPanel === 'model' ? null : 'model'),
-                        isActive: openPanel === 'model',
-                      },
-                    ]
-                  : []),
-                {
-                  key: 'description',
-                  label: 'Brand Vision',
-                  onClick: () =>
-                    setOpenPanel(
-                      openPanel === 'description' ? null : 'description',
-                    ),
-                  isActive: openPanel === 'description',
-                },
-              ]}
-            />
 
             {/* Type Selection Tiles */}
             {showAdvanced && openPanel === 'type' && (
