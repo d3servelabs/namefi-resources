@@ -50,13 +50,22 @@ export type DomainPreview = {
 
 interface GenerationsColumnProps {
   domains: DomainPreview[];
-  isLoading: boolean;
 }
 
-export function GenerationsColumn({
-  domains,
-  isLoading,
-}: GenerationsColumnProps) {
+const GallerySkeletonGrid = () => (
+  <div className="space-y-3 py-4 px-4">
+    <div className="grid grid-cols-2 gap-3">
+      {Array.from({ length: 6 }).map((_, i) => (
+        <Skeleton
+          key={i}
+          className="aspect-[1/1] w-full rounded-xl bg-muted/40"
+        />
+      ))}
+    </div>
+  </div>
+);
+
+export function GenerationsColumn({ domains }: GenerationsColumnProps) {
   const trpc = useTRPC();
   const router = useRouter();
   const shareDialog = useTwitterShareDialog({
@@ -283,28 +292,12 @@ export function GenerationsColumn({
       <Card className="border-border/50 bg-card py-0">
         <CardContent className="px-0">
           {activeTab === 'yours' ? (
-            isLoading || isFilteredLoading ? (
-              <div className="space-y-3">
-                <div className="grid grid-cols-2 gap-3 pr-1">
-                  {Array.from({ length: 8 }).map((_, i) => (
-                    <div
-                      key={i}
-                      className="relative overflow-hidden rounded-xl bg-muted/30 border border-border/40 aspect-[1/1]"
-                    >
-                      <Skeleton className="w-full h-full" />
-                    </div>
-                  ))}
-                </div>
-              </div>
+            isFilteredLoading ? (
+              <GallerySkeletonGrid />
             ) : galleryItems.length === 0 ? (
               <div>
                 <div className="text-sm text-muted-foreground mb-4">
                   Generate a logo or poster to see it appear here.
-                </div>
-                <div className="grid grid-cols-2 gap-3">
-                  {Array.from({ length: 8 }).map((_, i) => (
-                    <Skeleton key={i} className="h-36 w-full rounded-xl" />
-                  ))}
                 </div>
               </div>
             ) : (
@@ -414,18 +407,7 @@ export function GenerationsColumn({
               </div>
             )
           ) : isFeaturedLoading ? (
-            <div className="space-y-3">
-              <div className="grid grid-cols-2 gap-4 py-4 px-4">
-                {Array.from({ length: 8 }).map((_, i) => (
-                  <div
-                    key={i}
-                    className="relative overflow-hidden rounded-xl bg-muted/30 border border-border/40 aspect-[1/1]"
-                  >
-                    <Skeleton className="w-full h-full" />
-                  </div>
-                ))}
-              </div>
-            </div>
+            <GallerySkeletonGrid />
           ) : (
             <div className="lg:h-[700px] h-[640px] overflow-y-auto">
               <div className="grid grid-cols-2 gap-4 py-4 px-4">

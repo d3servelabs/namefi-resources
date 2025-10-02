@@ -11,6 +11,7 @@ import { useLocalStorage } from 'usehooks-ts';
 import { AIOnboardingOneShot } from '@/components/ai-generation/onboarding-one-shot';
 import { GenerationsColumn } from '@/components/ai-generation/generations-column';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
+import { Card, CardContent } from '@/components/ui/shadcn/card';
 import { PosterFlowProvider } from '@/components/ai-generation/poster-flow-context';
 import { usePosterFlow } from '@/components/ai-generation/poster-flow-context';
 import type { PosterSource } from '@/components/ai-generation/poster-flow-context';
@@ -38,41 +39,23 @@ export default function AIBrandGeneratorPage() {
     false,
   );
 
-  const renderPageSkeleton = () => (
-    <div className="container max-w-full mx-auto py-8 px-8">
-      {/* Header shows immediately */}
-      <div className="flex flex-col justify-center items-center mb-14">
-        <Image
-          src="/powered-by-namefi-jain.svg"
-          alt="Powered by Namefi"
-          className="mb-4"
-          width={141}
-          height={22}
-        />
-        <h2 className="text-2xl font-bold">AI Brand Generator</h2>
-        <p className="text-muted-foreground mt-2">
-          Create custom logos and posters for your brand
-        </p>
-      </div>
-      {/* Content skeletons */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-12">
-        <div className="space-y-4">
-          <Skeleton className="h-10 w-full" />
-          <Skeleton className="h-48 w-full" />
-        </div>
-        <div className="space-y-3">
-          <div className="grid grid-cols-2 gap-3">
-            {Array.from({ length: 8 }).map((_, i) => (
-              <Skeleton key={i} className="h-32 w-full rounded-md" />
-            ))}
+  if (isAuthLoading) {
+    return (
+      <PosterFlowProvider>
+        <PosterFlowInitializer />
+        <div className="container max-w-full mx-auto py-8 px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-12">
+            <div className="space-y-6">
+              <PageHeader />
+              <LeftColumnSkeleton />
+            </div>
+            <div className="space-y-6">
+              <GallerySkeleton />
+            </div>
           </div>
         </div>
-      </div>
-    </div>
-  );
-
-  if (isAuthLoading) {
-    return renderPageSkeleton();
+      </PosterFlowProvider>
+    );
   }
 
   if (!isAuthenticated) {
@@ -90,24 +73,9 @@ export default function AIBrandGeneratorPage() {
           {/* Left Column - Generator */}
           <div className="space-y-6">
             {/* Page header moved to left column to align right column at top */}
-            <div className="mb-6 flex flex-col items-center text-center">
-              <Image
-                src="/powered-by-namefi-jain.svg"
-                alt="Powered by Namefi"
-                className="mb-3"
-                width={141}
-                height={22}
-              />
-              <h2 className="text-2xl font-bold">AI Brand Generator</h2>
-              <p className="text-muted-foreground mt-2">
-                Create custom logos and posters for your brand
-              </p>
-            </div>
+            <PageHeader />
             {isInitialLoading ? (
-              <>
-                <Skeleton className="h-10 w-full" />
-                <Skeleton className="h-48 w-full" />
-              </>
+              <LeftColumnSkeleton />
             ) : usage && finishedOnboarding && usage.currentCount > 1 ? (
               <AITabs />
             ) : (
@@ -119,11 +87,102 @@ export default function AIBrandGeneratorPage() {
 
           {/* Right Column - Generations Gallery */}
           <div className="space-y-6">
-            <GenerationsColumn domains={domains} isLoading={isInitialLoading} />
+            {isInitialLoading ? (
+              <GallerySkeleton />
+            ) : (
+              <GenerationsColumn domains={domains} />
+            )}
           </div>
         </div>
       </div>
     </PosterFlowProvider>
+  );
+}
+
+function PageHeader() {
+  return (
+    <div className="mb-6 flex flex-col items-center text-center">
+      <Image
+        src="/powered-by-namefi-jain.svg"
+        alt="Powered by Namefi"
+        className="mb-3"
+        width={141}
+        height={22}
+      />
+      <h2 className="text-2xl font-bold">AI Brand Generator</h2>
+      <p className="text-muted-foreground mt-2">
+        Create custom logos and posters for your brand
+      </p>
+    </div>
+  );
+}
+
+function LeftColumnSkeleton() {
+  return (
+    <div className="space-y-6 w-full">
+      <Card>
+        <CardContent className="p-5">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <Skeleton className="h-5 w-5 rounded-full" />
+              <div className="space-y-2">
+                <Skeleton className="h-4 w-32" />
+                <Skeleton className="h-3 w-40" />
+              </div>
+            </div>
+            <Skeleton className="h-6 w-20 rounded-full" />
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardContent className="p-6 space-y-6">
+          <div className="space-y-4">
+            <Skeleton className="h-10 w-full" />
+            <div className="flex items-center justify-end gap-3">
+              <Skeleton className="h-4 w-16" />
+              <Skeleton className="h-4 w-8 rounded" />
+            </div>
+            <div className="flex flex-wrap gap-3">
+              {Array.from({ length: 3 }).map((_, i) => (
+                <Skeleton key={i} className="h-9 w-28 rounded-full" />
+              ))}
+            </div>
+            <Skeleton className="h-24 w-full rounded-lg" />
+          </div>
+          <Skeleton className="h-11 w-full rounded-lg" />
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
+function GallerySkeleton() {
+  return (
+    <div className="space-y-4">
+      <div className="flex flex-wrap items-center gap-3 justify-between">
+        <div className="flex gap-2">
+          <Skeleton className="h-9 w-24 rounded-full" />
+          <Skeleton className="h-9 w-28 rounded-full" />
+        </div>
+        <div className="flex gap-2">
+          <Skeleton className="h-8 w-40 rounded-lg" />
+          <Skeleton className="h-8 w-40 rounded-lg" />
+        </div>
+      </div>
+      <Card className="border-border/50 bg-card">
+        <CardContent className="p-4">
+          <div className="grid grid-cols-2 gap-4">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <Skeleton
+                key={i}
+                className="aspect-square w-full rounded-xl bg-muted/40"
+              />
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+    </div>
   );
 }
 
