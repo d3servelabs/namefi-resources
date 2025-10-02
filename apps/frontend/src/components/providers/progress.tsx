@@ -15,6 +15,7 @@ export const ProgressProvider = ({
         color="var(--color-brand-primary)"
         options={{ showSpinner: false }}
         shallowRouting
+        disableSameURL
       />
       {children}
     </>

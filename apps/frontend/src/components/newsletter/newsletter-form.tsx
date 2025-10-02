@@ -1,0 +1,317 @@
+'use client';
+
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { Button } from '@/components/ui/shadcn/button';
+import { Input } from '@/components/ui/shadcn/input';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/shadcn/form';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/shadcn/card';
+import { useTRPC } from '@/lib/trpc';
+import { toast } from 'sonner';
+import { Mail, CheckCircle2, X } from 'lucide-react';
+import { useMutation } from '@tanstack/react-query';
+import { useQueryState } from 'nuqs';
+
+const newsletterFormSchema = z.object({
+  email: z.string().email('Please enter a valid email address'),
+  name: z.string().optional(),
+});
+
+type NewsletterFormData = z.infer<typeof newsletterFormSchema>;
+
+interface NewsletterFormProps {
+  /**
+   * Source identifier for analytics (e.g., 'namefi-home', 'namefi-park', 'newsletter-page')
+   */
+  from: string;
+  /**
+   * Optional title for the form
+   */
+  title?: string;
+  /**
+   * Optional description for the form
+   */
+  description?: string;
+  /**
+   * Whether to show the name field
+   */
+  showNameField?: boolean;
+  /**
+   * Variant of the form
+   */
+  variant?: 'default' | 'minimal';
+  /**
+   * Additional custom attributes to store with the subscriber
+   */
+  attributes?: Record<string, unknown>;
+  /**
+   * Whether to show the close button (X) in the top-left corner
+   */
+  showCloseButton?: boolean;
+  /**
+   * Callback function when the close button is clicked
+   */
+  onClose?: () => void;
+}
+
+export function NewsletterForm({
+  from,
+  title = 'Stay Updated',
+  description = 'Subscribe to our newsletter for the latest updates and announcements.',
+  showNameField = true,
+  variant = 'default',
+  attributes,
+  showCloseButton = false,
+  onClose,
+}: NewsletterFormProps) {
+  const [isSuccess, setIsSuccess] = useState(false);
+  const trpc = useTRPC();
+
+  const form = useForm<NewsletterFormData>({
+    resolver: zodResolver(newsletterFormSchema),
+    mode: 'onChange',
+    reValidateMode: 'onChange',
+    defaultValues: {
+      email: '',
+      name: '',
+    },
+  });
+
+  const subscribeMutation = useMutation(
+    trpc.newsletter.subscribe.mutationOptions({
+      onSuccess: (data) => {
+        setIsSuccess(true);
+        form.reset();
+        toast.success('Subscribed!', {
+          description: data.message,
+        });
+        setTimeout(() => {
+          setIsSuccess(false);
+          onClose?.();
+        }, 5000);
+      },
+      onError: (error) => {
+        if (error.message.includes('already subscribed')) {
+          toast.info('Already Subscribed', {
+            description: "You're already on our mailing list!",
+          });
+        } else {
+          toast.error('Subscription Failed', {
+            description: error.message || 'Please try again later.',
+          });
+        }
+      },
+    }),
+  );
+
+  const onSubmit = (data: NewsletterFormData) => {
+    subscribeMutation.mutate({
+      email: data.email,
+      name: data.name || undefined,
+      from,
+      attributes,
+    });
+  };
+
+  if (isSuccess) {
+    return (
+      <Card className="w-full max-w-2xl mx-auto relative">
+        {showCloseButton && onClose && (
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={onClose}
+            className="absolute -top-2 -left-2 z-10 h-8 w-8 rounded-full bg-background/80 backdrop-blur-sm hover:bg-background border border-border shadow-lg"
+            aria-label="Close newsletter form"
+          >
+            <X className="h-4 w-4" />
+          </Button>
+        )}
+        <CardContent className="pt-6">
+          <div className="flex flex-col items-center justify-center text-center space-y-4 py-8">
+            <CheckCircle2 className="w-16 h-16 text-green-500" />
+            <div className="space-y-2">
+              <h3 className="text-xl font-semibold">Thanks for subscribing!</h3>
+              <p className="text-muted-foreground">
+                Please check your email to confirm your subscription.
+              </p>
+            </div>
+            <Button
+              variant="outline"
+              onClick={() => setIsSuccess(false)}
+              className="mt-4"
+            >
+              Subscribe with another email
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (variant === 'minimal') {
+    return (
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="flex flex-col sm:flex-row gap-2 w-full max-w-md mx-auto"
+        >
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem className="flex-1">
+                <FormControl>
+                  <Input
+                    placeholder="Enter your email"
+                    type="email"
+                    {...field}
+                    disabled={subscribeMutation.isPending}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button
+            type="submit"
+            disabled={subscribeMutation.isPending || !form.formState.isValid}
+            className="shrink-0"
+          >
+            {subscribeMutation.isPending ? (
+              'Subscribing...'
+            ) : (
+              <>
+                <Mail className="w-4 h-4 mr-2" />
+                Subscribe
+              </>
+            )}
+          </Button>
+        </form>
+      </Form>
+    );
+  }
+
+  return (
+    <Card className="w-full max-w-2xl mx-auto relative">
+      {showCloseButton && onClose && (
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={onClose}
+          className="absolute -top-2 -left-2 z-10 h-8 w-8 rounded-full bg-background/80 backdrop-blur-sm hover:bg-background border border-border shadow-lg"
+          aria-label="Close newsletter form"
+        >
+          <X className="h-4 w-4" />
+        </Button>
+      )}
+      <CardHeader>
+        <CardTitle>{title}</CardTitle>
+        {description && <CardDescription>{description}</CardDescription>}
+      </CardHeader>
+      <CardContent>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            {showNameField && (
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Name (optional)</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Your name"
+                        {...field}
+                        disabled={subscribeMutation.isPending}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
+
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="your@email.com"
+                      type="email"
+                      {...field}
+                      disabled={subscribeMutation.isPending}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <Button
+              type="submit"
+              className="w-full"
+              disabled={subscribeMutation.isPending || !form.formState.isValid}
+            >
+              {subscribeMutation.isPending ? (
+                'Subscribing...'
+              ) : (
+                <>
+                  <Mail className="w-4 h-4 mr-2" />
+                  Subscribe to Newsletter
+                </>
+              )}
+            </Button>
+          </form>
+        </Form>
+      </CardContent>
+    </Card>
+  );
+}
+
+export const NewsletterFormWithSearchQuery = (props: NewsletterFormProps) => {
+  const [fromSearchQuery] = useQueryState('from', {
+    defaultValue: 'namefi-astra/newsletter-page',
+  });
+  const [attributesSearchQuery] = useQueryState<Record<string, unknown>>(
+    'attributes',
+    {
+      parse: (value) => {
+        try {
+          return JSON.parse(value);
+        } catch {
+          return {};
+        }
+      },
+      serialize: (value) => {
+        return JSON.stringify(value);
+      },
+      defaultValue: {},
+    },
+  );
+  return (
+    <NewsletterForm
+      {...props}
+      from={fromSearchQuery}
+      attributes={attributesSearchQuery}
+    />
+  );
+};

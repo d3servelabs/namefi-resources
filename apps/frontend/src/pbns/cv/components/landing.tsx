@@ -1,3 +1,5 @@
+'use client';
+
 import {
   Hero,
   WhyCVMatters,
@@ -12,7 +14,8 @@ import {
   type Testimonial,
 } from './index';
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
+import { useInView, motion, AnimatePresence } from 'motion/react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useQueryState, parseAsBoolean } from 'nuqs';
@@ -26,6 +29,7 @@ import {
   SearchResults,
 } from '@/components/search';
 import { isDomainImportable } from '@namefi-astra/backend/trpc/types';
+import { NewsletterForm } from '@/components/newsletter/newsletter-form';
 
 export interface CVLandingConfig {
   /** The name (e.g., "taylor") - will be auto-capitalized for display */
@@ -43,6 +47,27 @@ export interface CVLandingConfig {
 }
 
 export const CVLanding = ({ config }: { config: CVLandingConfig }) => {
+  const newsletterRef = useRef<HTMLDivElement>(null);
+  const [isNewsletterVisible, setNewsletterVisible] = useQueryState(
+    'newsletter',
+    parseAsBoolean.withDefault(false),
+  );
+
+  // Use InView to automatically scroll to newsletter when visible
+  const isInView = useInView(newsletterRef, {
+    once: false,
+    margin: '-20% 0px -20% 0px',
+  });
+
+  // Scroll to newsletter when it becomes visible
+  useEffect(() => {
+    if (isNewsletterVisible && newsletterRef.current && !isInView) {
+      newsletterRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+      });
+    }
+  }, [isNewsletterVisible, isInView]);
   const [searchEnabled] = useQueryState(
     'search',
     parseAsBoolean.withDefault(false),
@@ -67,7 +92,6 @@ export const CVLanding = ({ config }: { config: CVLandingConfig }) => {
     domainInfos,
     domains,
     freeClaimEligibility,
-    refetchFreeClaimEligibility,
   } = useSearch(`${config.name}.cv`); // Filter for .cv domains
 
   // Handle initial search from query parameters
@@ -216,6 +240,35 @@ export const CVLanding = ({ config }: { config: CVLandingConfig }) => {
           <CTA name={config.name} huntUrl={huntUrl} />
         </>
       )}
+
+      {/* Newsletter Subscription Section - Hidden by default, shown via footer link */}
+      <AnimatePresence mode="wait">
+        {isNewsletterVisible && (
+          <motion.div
+            ref={newsletterRef}
+            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+            transition={{
+              duration: 0.4,
+              ease: [0.25, 0.46, 0.45, 0.94],
+            }}
+            className="mt-16 mb-8 px-4 flex justify-center"
+          >
+            <div className="w-full max-w-screen-xl">
+              <NewsletterForm
+                from={`${config.name}-cv`}
+                title="Stay in the Loop"
+                description={`Get the latest updates on ${config.name}.cv domain releases, features, and announcements.`}
+                showNameField={true}
+                variant="default"
+                showCloseButton={true}
+                onClose={() => setNewsletterVisible(false)}
+              />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 };

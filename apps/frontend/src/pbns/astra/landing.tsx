@@ -1,7 +1,8 @@
 'use client';
 
 import { useSearch } from '@/hooks/use-search';
-import { useState, useCallback, useEffect, useMemo } from 'react';
+import { useState, useCallback, useEffect, useMemo, useRef } from 'react';
+import { useInView, motion, AnimatePresence } from 'motion/react';
 import FloatingCart from '@/components/floating-cart';
 import {
   type LandingComponent,
@@ -21,18 +22,42 @@ import { isDomainImportable } from '@namefi-astra/backend/trpc/types';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { useSearchFromQuery } from '@/hooks/use-search-from-query';
 import { useFreeMintsGuidance } from '@/components/providers/free-mints-guidance';
+import { NewsletterForm } from '@/components/newsletter/newsletter-form';
+import { useQueryState, parseAsBoolean } from 'nuqs';
 
 // Main component
 export const Landing: LandingComponent = ({ origin }) => {
   const [parentDomain, setParentDomain] = useState<string | undefined>(
     undefined,
   );
+  const newsletterRef = useRef<HTMLDivElement>(null);
+  const [isNewsletterVisible, setNewsletterVisible] = useQueryState(
+    'newsletter',
+    parseAsBoolean.withDefault(false),
+  );
+
+  // Use InView to automatically scroll to newsletter when visible
+  const isInView = useInView(newsletterRef, {
+    once: false,
+    margin: '-20% 0px -20% 0px',
+  });
+
   const {
     registerSetParentDomain,
     registerSetSearchMode,
     consumePendingFreeMintsSearch,
     startFreeMintsSearchGuidance,
   } = useFreeMintsGuidance();
+
+  // Scroll to newsletter when it becomes visible
+  useEffect(() => {
+    if (isNewsletterVisible && newsletterRef.current && !isInView) {
+      newsletterRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+      });
+    }
+  }, [isNewsletterVisible, isInView]);
 
   const {
     query,
@@ -60,8 +85,6 @@ export const Landing: LandingComponent = ({ origin }) => {
       eppAuthorizationCodes: {},
     },
   });
-
-  const [isBusy, setIsBusy] = useState(false);
 
   // Initialize form with auth codes from importQuery
   const initializeEppCodes = useCallback(() => {
@@ -203,11 +226,39 @@ export const Landing: LandingComponent = ({ origin }) => {
             <FloatingCart
               searchMode={searchMode}
               importableDomains={importableDomains}
-              onBusyChange={setIsBusy}
             />
           </div>
         </>
       )}
+
+      {/* Newsletter Subscription Section - Hidden by default, shown via footer link */}
+      <AnimatePresence mode="wait">
+        {isNewsletterVisible && (
+          <motion.div
+            ref={newsletterRef}
+            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+            transition={{
+              duration: 0.4,
+              ease: [0.25, 0.46, 0.45, 0.94],
+            }}
+            className="mt-16 mb-8 px-4 flex justify-center"
+          >
+            <div className="w-full max-w-screen-xl">
+              <NewsletterForm
+                from="namefi-home"
+                title="Stay in the Loop"
+                description="Get the latest updates on domain releases, features, and announcements."
+                showNameField={true}
+                variant="default"
+                showCloseButton={true}
+                onClose={() => setNewsletterVisible(false)}
+              />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
