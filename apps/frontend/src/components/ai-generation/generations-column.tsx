@@ -40,6 +40,13 @@ import {
   useTwitterShareDialog,
 } from '@/hooks/use-twitter-share';
 import { toast } from 'sonner';
+import {
+  ArrowUpRight,
+  Copy as CopyIcon,
+  Download as DownloadIcon,
+  Sparkles,
+  Twitter,
+} from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { usePosterFlow } from './poster-flow-context';
 import type { PosterSource } from './poster-flow-context';
@@ -338,29 +345,49 @@ export function GenerationsColumn({
                           loading="lazy"
                         />
                         {/* Full overlay */}
-                        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity bg-black/60" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                         <div className="absolute inset-0 p-3 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-between">
-                          <div className="text-sm font-semibold text-white drop-shadow-sm">
-                            {item.domain}
+                          <div className="flex items-start justify-between gap-3 text-white">
+                            <div>
+                              <div className="text-xs font-semibold uppercase tracking-wide text-white/90">
+                                {item.type === 'marketing' ? 'Poster' : 'Logo'}
+                              </div>
+                              <div className="text-sm font-semibold drop-shadow-md">
+                                {item.domain}
+                              </div>
+                            </div>
+                            <Button
+                              size="icon"
+                              variant="ghost"
+                              className="h-9 w-9 rounded-full bg-black/65 text-white shadow-lg transition hover:bg-black"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                e.preventDefault();
+                                router.push(`/ai-brand-generator/${item.id}`);
+                              }}
+                            >
+                              <ArrowUpRight className="h-4 w-4" />
+                            </Button>
                           </div>
                           <div className="flex items-center gap-2 justify-end flex-wrap">
                             {item.type === 'logo' && item.generation && (
                               <Button
                                 size="sm"
-                                className="h-8 rounded-full bg-primary text-primary-foreground hover:bg-primary/90"
+                                className="h-9 rounded-full bg-primary text-primary-foreground hover:bg-primary/80 gap-2 shadow-md transition"
                                 onClick={(e) => {
                                   e.stopPropagation();
                                   e.preventDefault();
                                   openPoster(item.generation as PosterSource);
                                 }}
                               >
+                                <Sparkles className="h-4 w-4" />
                                 Create Poster
                               </Button>
                             )}
                             <Button
                               size="sm"
                               variant="outline"
-                              className="h-8 rounded-full border-border/50 bg-background/60 hover:bg-background/80 text-foreground"
+                              className="h-9 rounded-full border-border/30 bg-white/20 backdrop-blur text-white shadow transition hover:bg-white/30"
                               onClick={(e) => {
                                 e.stopPropagation();
                                 e.preventDefault();
@@ -380,12 +407,13 @@ export function GenerationsColumn({
                                   );
                               }}
                             >
+                              <CopyIcon className="h-4 w-4 mr-1" />
                               Copy
                             </Button>
                             <Button
                               size="sm"
                               variant="outline"
-                              className="h-8 rounded-full border-border/50 bg-background/60 hover:bg-background/80 text-foreground"
+                              className="h-9 rounded-full border-border/30 bg-white/20 backdrop-blur text-white shadow transition hover:bg-white/30"
                               onClick={(e) => {
                                 e.stopPropagation();
                                 e.preventDefault();
@@ -396,12 +424,13 @@ export function GenerationsColumn({
                                 setIsDialogOpen(true);
                               }}
                             >
+                              <Twitter className="h-4 w-4 mr-1" />
                               Tweet
                             </Button>
                             <Button
                               size="sm"
                               variant="outline"
-                              className="h-8 rounded-full border-border/50 bg-background/60 hover:bg-background/80 text-foreground"
+                              className="h-9 rounded-full border-border/30 bg-white/20 backdrop-blur text-white shadow transition hover:bg-white/30"
                               onClick={(e) => {
                                 e.stopPropagation();
                                 e.preventDefault();
@@ -411,6 +440,7 @@ export function GenerationsColumn({
                                 );
                               }}
                             >
+                              <DownloadIcon className="h-4 w-4 mr-1" />
                               Download
                             </Button>
                           </div>
