@@ -17,7 +17,8 @@
       "!**/out/**",
       "!**/.vercel/**",
       "!**/.turbo/**",
-      "!**/db/src/migrations/**"
+      "!**/db/src/migrations/**",
+      "!**/apps/listmonk/**"
     ],
     "maxSize": 1536000
   },

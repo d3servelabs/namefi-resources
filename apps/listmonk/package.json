@@ -1,0 +1,8 @@
+{
+  "name": "@namefi-astra/listmonk",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "clean": "git clean -xdf .next .turbo node_modules out dist"
+  }
+}
