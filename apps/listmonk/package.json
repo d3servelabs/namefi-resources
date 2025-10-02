@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "clean": "git clean -xdf .next .turbo node_modules out dist",
-    "sync:static": "./sync-static-to-gcs.sh"
+    "sync:static": "./sync-static-to-gcs.sh",
+    "docker:build": "docker build -t us-central1-docker.pkg.dev/d3serve-labs/apps/listmonk:latest .",
+    "docker:push": "docker push us-central1-docker.pkg.dev/d3serve-labs/apps/listmonk:latest"
   }
 }

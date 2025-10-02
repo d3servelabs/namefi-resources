@@ -1,0 +1,160 @@
+name: Deploy Listmonk to Cloud Run
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'apps/listmonk/**'
+  workflow_dispatch:
+    inputs:
+      sync_static:
+        description: 'Force sync static files to GCS'
+        required: false
+        default: false
+        type: boolean
+
+env:
+  PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
+  REGION: ${{ vars.GCP_REGION || 'us-central1' }}
+  ARTIFACT_REGISTRY: ${{ vars.GCP_ARTIFACT_REGISTRY || 'us-central1-docker.pkg.dev/d3serve-labs/apps' }}
+  IMAGE_NAME: listmonk
+  SERVICE_NAME: listmonk
+
+jobs:
+  # Check if static files have changed
+  check-static-changes:
+    name: Check Static Files Changes
+    runs-on: ubuntu-latest
+    outputs:
+      static_changed: ${{ steps.check_changes.outputs.static_changed }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Check for changes in static directory
+        id: check_changes
+        run: |
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ] && [ "${{ github.event.inputs.sync_static }}" == "true" ]; then
+            echo "Force sync enabled via workflow dispatch"
+            echo "static_changed=true" >> $GITHUB_OUTPUT
+          else
+            # Check if static files changed in the last commit
+            if git diff --name-only "${{ github.event.before }}" "${{ github.sha }}" | grep -q "^apps/listmonk/static/"; then
+              echo "Static files have changed"
+              echo "static_changed=true" >> $GITHUB_OUTPUT
+            else
+              echo "No changes in static files"
+              echo "static_changed=false" >> $GITHUB_OUTPUT
+            fi
+          fi
+
+  # Build and push Docker image
+  build:
+    name: Build and Push Docker Image
+    runs-on: blacksmith-4vcpu-ubuntu-2204
+    permissions:
+      contents: read
+      id-token: write
+    outputs:
+      image_tag: ${{ steps.set_image_tag.outputs.image_tag }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set image tag
+        id: set_image_tag
+        run: |
+          IMAGE_TAG="${{ env.ARTIFACT_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}"
+          echo "image_tag=${IMAGE_TAG}" >> $GITHUB_OUTPUT
+          echo "Image will be tagged as: ${IMAGE_TAG}"
+
+      # Set up Google Cloud authentication using Workload Identity Federation
+      - name: Google Auth
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
+          service_account: ${{ vars.GCP_WIF_SERVICE_ACCOUNT }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Configure Docker for Artifact Registry
+        run: gcloud auth configure-docker us-central1-docker.pkg.dev
+
+      - name: Build and Push Container
+        working-directory: apps/listmonk
+        run: |
+          IMAGE_TAG="${{ steps.set_image_tag.outputs.image_tag }}"
+          docker build --tag "${IMAGE_TAG}" .
+          docker push "${IMAGE_TAG}"
+          echo "✅ Successfully pushed image: ${IMAGE_TAG}"
+
+  # Sync static files to GCS if changed
+  sync-static:
+    name: Sync Static Files to GCS
+    needs: [check-static-changes]
+    if: needs.check-static-changes.outputs.static_changed == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Set up Google Cloud authentication
+      - name: Google Auth
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
+          service_account: ${{ vars.GCP_WIF_SERVICE_ACCOUNT }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Sync static files to GCS
+        working-directory: apps/listmonk
+        run: |
+          chmod +x ./sync-static-to-gcs.sh
+          ./sync-static-to-gcs.sh
+
+  # Deploy to Cloud Run
+  deploy:
+    name: Deploy to Cloud Run
+    needs: [build, sync-static]
+    if: always() && needs.build.result == 'success' && (needs.sync-static.result == 'success' || needs.sync-static.result == 'skipped')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      # Set up Google Cloud authentication
+      - name: Google Auth
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
+          service_account: ${{ vars.GCP_WIF_SERVICE_ACCOUNT }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Deploy to Cloud Run
+        id: deploy
+        uses: google-github-actions/deploy-cloudrun@v2
+        with:
+          service: ${{ env.SERVICE_NAME }}
+          region: ${{ env.REGION }}
+          project_id: ${{ env.PROJECT_ID }}
+          image: ${{ needs.build.outputs.image_tag }}
+
+      - name: Show Output
+        run: |
+          echo "✅ Successfully deployed to Cloud Run"
+          echo "Service URL: ${{ steps.deploy.outputs.url }}"
+
