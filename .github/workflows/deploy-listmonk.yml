@@ -42,8 +42,10 @@ jobs:
             echo "static_changed=true" >> $GITHUB_OUTPUT
           else
             # Check if static files changed in the last commit
-            if git diff --name-only "${{ github.event.before }}" "${{ github.sha }}" | grep -q "^apps/listmonk/static/"; then
-              echo "Static files have changed"
+            echo "Checking for changes in static files from ${{ github.event.before }} to ${{ github.sha }}"
+            CHANGED_FILES=$(git diff --name-only "${{ github.event.before }}" "${{ github.sha }}" | grep -E "^apps/listmonk/static/" || true)
+            if [ -n "$CHANGED_FILES" ]; then
+                echo "Static files have changed"
               echo "static_changed=true" >> $GITHUB_OUTPUT
             else
               echo "No changes in static files"
