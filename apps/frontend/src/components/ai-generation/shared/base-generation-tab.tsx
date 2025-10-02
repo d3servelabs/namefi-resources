@@ -1,5 +1,5 @@
 import { type GeneratedItem, ImageGrid } from '../image-grid';
-import type { ReactNode } from 'react';
+import { useMemo, type ReactNode } from 'react';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import type { Generation } from './types';
 
@@ -34,6 +34,7 @@ interface BaseGenerationTabProps {
 
   // Callback to trigger new generation
   onGenerateMore?: () => void;
+  onPosterRequest?: (generation: Generation) => void;
 }
 
 export function BaseGenerationTab({
@@ -43,12 +44,39 @@ export function BaseGenerationTab({
   title,
   convertToGeneratedItems,
   availableLogos,
+  onPosterRequest,
 }: BaseGenerationTabProps) {
   // Convert existing generations to GeneratedItem format
   const existingItems = convertToGeneratedItems(
     existingGenerations,
     availableLogos,
   );
+
+  const generationMap = useMemo(() => {
+    const map = new Map<string, Generation>();
+    for (const generation of existingGenerations) {
+      if (generation?.id) {
+        map.set(generation.id, generation);
+      }
+    }
+    return map;
+  }, [existingGenerations]);
+
+  const handleCreatePoster =
+    onPosterRequest && existingGenerations.length > 0
+      ? (item: GeneratedItem) => {
+          if (!item.id || item.kind !== 'logo') return;
+          const generation = generationMap.get(item.id);
+          if (!generation) return;
+          if (
+            generation.type !== 'logo' &&
+            generation.output?.type !== 'logo'
+          ) {
+            return;
+          }
+          onPosterRequest(generation);
+        }
+      : undefined;
 
   // no-op
 
@@ -65,6 +93,7 @@ export function BaseGenerationTab({
         items={existingItems}
         title={title}
         brandDomain={brandDomain}
+        onCreatePoster={handleCreatePoster}
       />
     </>
   );
@@ -81,6 +110,8 @@ export const convertLogoGenerations = (
     // Use resolved values from output when available (AI-chosen)
     type: gen.output?.type === 'logo' ? gen.output.logoType : undefined,
     style: gen.output?.type === 'logo' ? gen.output.logoStyle : undefined,
+    kind: 'logo',
+    domain: gen.domain,
   }));
 };
 
@@ -92,6 +123,8 @@ export const convertPosterGenerations = (
     id: gen.id,
     url: gen.url,
     timestamp: new Date(gen.createdAt).toISOString(),
+    kind: 'marketing',
+    domain: gen.domain,
     // Show resolved collateral type when available
     type: (() => {
       const key =

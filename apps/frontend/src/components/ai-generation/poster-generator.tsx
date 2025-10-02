@@ -15,12 +15,13 @@ import { z } from 'zod';
 import { BaseGenerator, baseFormSchema } from './shared/base-generator';
 import { ControlPanel } from './shared/form-fields';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTRPC } from '@/lib/trpc';
 import { useQuery } from '@tanstack/react-query';
 import { Switch } from '@/components/ui/shadcn/switch';
 import { Label } from '@/components/ui/shadcn/label';
 import type { Generation } from './shared/types';
+import type { UseFormReturn } from 'react-hook-form';
 import {
   Select,
   SelectContent,
@@ -67,6 +68,7 @@ interface PosterGeneratorProps {
   availableLogos?: Generation[];
   latestGeneration?: Generation;
   onGenerateMore?: () => void;
+  initialSelectedLogoId?: string;
 }
 
 export function PosterGenerator({
@@ -76,10 +78,12 @@ export function PosterGenerator({
   availableLogos = [],
   latestGeneration,
   onGenerateMore,
+  initialSelectedLogoId,
 }: PosterGeneratorProps) {
   const [selectedDomain, setSelectedDomain] = useState<string>('');
   const [showAdvanced, setShowAdvanced] = useState(false);
   const trpc = useTRPC();
+  const formRef = useRef<UseFormReturn<PosterFormData> | null>(null);
   const defaultValues = useMemo(() => {
     return {
       domain: fixedDomain || '',
@@ -110,6 +114,30 @@ export function PosterGenerator({
     return availableLogos;
   }, [selectedDomain, domainLogos, availableLogos]);
 
+  useEffect(() => {
+    const form = formRef.current;
+    if (!form) return;
+    if (initialSelectedLogoId) {
+      form.setValue('selectedLogoId', initialSelectedLogoId, {
+        shouldDirty: false,
+        shouldTouch: false,
+      });
+    }
+  }, [initialSelectedLogoId]);
+
+  useEffect(() => {
+    const form = formRef.current;
+    if (!form) return;
+    const logos = (logosToShow as Generation[]) || [];
+    const currentId = form.getValues('selectedLogoId');
+    if (!currentId && logos.length > 0) {
+      form.setValue('selectedLogoId', logos[0].id, {
+        shouldDirty: false,
+        shouldTouch: false,
+      });
+    }
+  }, [logosToShow]);
+
   return (
     <BaseGenerator
       onSubmit={onGenerate}
@@ -122,8 +150,11 @@ export function PosterGenerator({
       domainOnlyDomainsWithLogos={true}
       onDomainChange={(d) => setSelectedDomain(d)}
       onFormReady={(form) => {
+        formRef.current = form;
         const logos = (logosToShow as Generation[]) || [];
-        if (logos.length > 0) {
+        if (initialSelectedLogoId) {
+          form.setValue('selectedLogoId', initialSelectedLogoId);
+        } else if (logos.length > 0) {
           form.setValue('selectedLogoId', logos[0].id);
         }
       }}

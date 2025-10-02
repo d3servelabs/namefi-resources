@@ -28,6 +28,8 @@ export interface GeneratedItem {
       logoStyle?: string;
     };
   };
+  kind?: 'logo' | 'marketing';
+  domain?: string;
 }
 
 interface ImageGridProps {
@@ -35,6 +37,7 @@ interface ImageGridProps {
   title: string;
   onGenerateAnother?: () => void;
   brandDomain?: string;
+  onCreatePoster?: (item: GeneratedItem) => void;
 }
 
 export function ImageGrid({
@@ -42,6 +45,7 @@ export function ImageGrid({
   title,
   onGenerateAnother: _onGenerateAnother,
   brandDomain,
+  onCreatePoster,
 }: ImageGridProps) {
   const shareDialog = useTwitterShareDialog({
     ...defaultShareConfig,
@@ -101,6 +105,20 @@ export function ImageGrid({
                         : item.url
                     }
                   />
+                  {onCreatePoster && item.kind === 'logo' && item.id && (
+                    <Button
+                      type="button"
+                      size="sm"
+                      className="h-9 px-4 rounded-full bg-primary text-primary-foreground hover:bg-primary/90"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        onCreatePoster(item);
+                      }}
+                    >
+                      Create Poster
+                    </Button>
+                  )}
                   <Button
                     type="button"
                     variant="secondary"

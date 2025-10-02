@@ -36,6 +36,8 @@ import {
 } from '@/hooks/use-twitter-share';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
+import { usePosterFlow } from './poster-flow-context';
+import type { PosterSource } from './poster-flow-context';
 
 type Preview = { id: string; url: string };
 export type DomainPreview = {
@@ -66,6 +68,7 @@ export function GenerationsColumn({
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [shareUrl, setShareUrl] = useState('');
   const [shareDomain, setShareDomain] = useState<string>('');
+  const { openPoster } = usePosterFlow();
 
   const downloadImage = async (url: string, filename: string) => {
     try {
@@ -121,16 +124,29 @@ export function GenerationsColumn({
   type UserGen = AppRouterOutput['ai']['getUserGenerationsFiltered'][number];
   const filteredArray = (filtered as unknown as UserGen[]) ?? [];
 
-  const galleryItems = useMemo(() => {
+  type GalleryItem = {
+    id: string;
+    url: string;
+    domain: string;
+    type?: 'logo' | 'marketing';
+    generation?: UserGen;
+  };
+
+  const galleryItems = useMemo<GalleryItem[]>(() => {
     if (filteredArray.length > 0) {
       return filteredArray.map((g) => ({
         id: g.id,
         url: g.url,
         domain: g.domain,
+        type: g.type,
+        generation: g,
       }));
     }
     return domains.flatMap((d) =>
-      (d.previewGenerations ?? []).map((p) => ({ ...p, domain: d.domain })),
+      (d.previewGenerations ?? []).map((p) => ({
+        ...p,
+        domain: d.domain,
+      })),
     );
   }, [filteredArray, domains]);
 
@@ -320,7 +336,20 @@ export function GenerationsColumn({
                         <div className="text-sm font-semibold text-white drop-shadow-sm">
                           {item.domain}
                         </div>
-                        <div className="flex items-center gap-2 justify-end">
+                        <div className="flex items-center gap-2 justify-end flex-wrap">
+                          {item.type === 'logo' && item.generation && (
+                            <Button
+                              size="sm"
+                              className="h-8 rounded-full bg-primary text-primary-foreground hover:bg-primary/90"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                e.preventDefault();
+                                openPoster(item.generation as PosterSource);
+                              }}
+                            >
+                              Create Poster
+                            </Button>
+                          )}
                           <Button
                             size="sm"
                             variant="outline"

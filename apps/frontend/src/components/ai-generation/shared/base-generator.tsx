@@ -54,6 +54,7 @@ interface BaseGeneratorProps<T extends FieldValues & BaseFormData> {
   domainOnlyDomainsWithLogos?: boolean;
   onDomainChange?: (domain: string) => void;
   onFormReady?: (form: UseFormReturn<T>) => void;
+  onPosterRequest?: (generation: Generation) => void;
 }
 
 export function BaseGenerator<T extends FieldValues & BaseFormData>({
@@ -74,6 +75,7 @@ export function BaseGenerator<T extends FieldValues & BaseFormData>({
   domainOnlyDomainsWithLogos = false,
   onDomainChange,
   onFormReady,
+  onPosterRequest,
 }: BaseGeneratorProps<T>) {
   const [openPanel, setOpenPanel] = useState<string | null>(null);
 
@@ -166,6 +168,14 @@ export function BaseGenerator<T extends FieldValues & BaseFormData>({
         isVisible={true}
         generatedImage={latestGeneration}
         onGenerateMore={onGenerateMore}
+        onGeneratePoster={
+          onPosterRequest &&
+          latestGeneration &&
+          (latestGeneration.type === 'logo' ||
+            latestGeneration.output?.type === 'logo')
+            ? () => onPosterRequest(latestGeneration)
+            : undefined
+        }
       />
     </>
   );

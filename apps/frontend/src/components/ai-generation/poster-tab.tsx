@@ -1,3 +1,6 @@
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { ArrowLeft } from 'lucide-react';
+import { Button } from '@/components/ui/shadcn/button';
 import { PosterGenerator, type PosterFormData } from './poster-generator';
 import {
   BaseGenerationTab,
@@ -7,21 +10,31 @@ import {
   usePosterGeneration,
   createPosterGenerationPayload,
 } from './shared/generation-hooks';
-import { useState, useRef } from 'react';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import type { Generation } from './shared/types';
+import type { PosterSource } from './poster-flow-context';
 
 interface PosterTabProps {
   existingGenerations?: Generation[];
   logoGenerations?: Generation[];
   brandDomain?: NamefiNormalizedDomain;
+  focusedLogo?: PosterSource;
+  onDismiss?: () => void;
 }
 
 export function PosterTab({
   existingGenerations = [],
   logoGenerations = [],
   brandDomain,
+  focusedLogo,
+  onDismiss,
 }: PosterTabProps) {
+  const [domainOverride, setDomainOverride] = useState<
+    NamefiNormalizedDomain | undefined
+  >(brandDomain ?? (focusedLogo?.domain as NamefiNormalizedDomain | undefined));
+  const [focusedLogoId, setFocusedLogoId] = useState<string | null>(
+    focusedLogo?.id ?? null,
+  );
   const [currentGenParams, setCurrentGenParams] =
     useState<PosterFormData | null>(null);
   const lastGenerationParams = useRef<PosterFormData | null>(null);
@@ -29,9 +42,33 @@ export function PosterTab({
     null,
   );
 
+  const effectiveDomain = domainOverride;
+
+  useEffect(() => {
+    const nextDomain = brandDomain ?? focusedLogo?.domain;
+    if (nextDomain && nextDomain !== domainOverride) {
+      setDomainOverride(nextDomain as NamefiNormalizedDomain);
+    }
+  }, [brandDomain, focusedLogo?.domain, domainOverride]);
+
+  useEffect(() => {
+    if (focusedLogo?.id) {
+      setFocusedLogoId(focusedLogo.id);
+    }
+  }, [focusedLogo?.id]);
+
   const generatePosterMutation = usePosterGeneration({
-    domain: brandDomain,
+    domain: effectiveDomain,
   });
+
+  const logosWithFocus = useMemo(() => {
+    if (!focusedLogo) return logoGenerations;
+    const alreadyIncludes = logoGenerations.some(
+      (g) => g.id === focusedLogo.id,
+    );
+    if (alreadyIncludes) return logoGenerations;
+    return [...logoGenerations, focusedLogo as Generation];
+  }, [logoGenerations, focusedLogo]);
 
   const handleGeneratePosters = (data: PosterFormData) => {
     setCurrentGenParams(data);
@@ -54,39 +91,65 @@ export function PosterTab({
     }
   };
 
-  const selectedLogo = logoGenerations.find(
-    (logo) => logo.id === currentGenParams?.selectedLogoId,
-  );
+  const selectedLogo = logosWithFocus.find((logo) => {
+    const target = currentGenParams?.selectedLogoId || focusedLogoId;
+    return logo.id === target;
+  });
 
   return (
-    <BaseGenerationTab
-      existingGenerations={existingGenerations}
-      brandDomain={brandDomain}
-      generator={
-        <PosterGenerator
-          onGenerate={handleGeneratePosters}
-          isLoading={generatePosterMutation.isPending}
-          fixedDomain={brandDomain}
-          availableLogos={logoGenerations}
-          latestGeneration={latestGeneration || undefined}
-          onGenerateMore={handleGenerateMore}
-        />
-      }
-      isLoading={generatePosterMutation.isPending}
-      title="Generated Posters"
-      convertToGeneratedItems={convertPosterGenerations}
-      availableLogos={logoGenerations}
-      previewConfig={{
-        description: currentGenParams?.description,
-        category: selectedLogo ? 'Logo-Based' : 'Standalone',
-        type: 'Marketing Poster',
-        style:
-          selectedLogo?.output.type === 'logo'
-            ? selectedLogo.output.logoStyle
-            : undefined,
-        model: currentGenParams?.model,
-      }}
-      onGenerateMore={handleGenerateMore}
-    />
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-xl font-semibold">Poster Generator</h2>
+          {focusedLogo?.domain && (
+            <p className="text-sm text-muted-foreground">
+              Using brand {focusedLogo.domain}
+            </p>
+          )}
+        </div>
+        {onDismiss && (
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onDismiss}
+            className="gap-2"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Back to logos
+          </Button>
+        )}
+      </div>
+
+      <BaseGenerationTab
+        existingGenerations={existingGenerations}
+        brandDomain={effectiveDomain}
+        generator={
+          <PosterGenerator
+            onGenerate={handleGeneratePosters}
+            isLoading={generatePosterMutation.isPending}
+            fixedDomain={effectiveDomain}
+            availableLogos={logosWithFocus}
+            latestGeneration={latestGeneration || undefined}
+            onGenerateMore={handleGenerateMore}
+            initialSelectedLogoId={focusedLogoId ?? undefined}
+          />
+        }
+        isLoading={generatePosterMutation.isPending}
+        title="Generated Posters"
+        convertToGeneratedItems={convertPosterGenerations}
+        availableLogos={logosWithFocus}
+        previewConfig={{
+          description: currentGenParams?.description,
+          category: selectedLogo ? 'Logo-Based' : 'Standalone',
+          type: 'Marketing Poster',
+          style:
+            selectedLogo?.output?.type === 'logo'
+              ? selectedLogo.output.logoStyle
+              : undefined,
+          model: currentGenParams?.model,
+        }}
+        onGenerateMore={handleGenerateMore}
+      />
+    </div>
   );
 }

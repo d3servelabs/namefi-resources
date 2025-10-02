@@ -49,6 +49,7 @@ interface LogoGeneratorProps {
   fixedDomain?: NamefiNormalizedDomain;
   latestGeneration?: Generation;
   onGenerateMore?: () => void;
+  onPosterRequest?: (generation: Generation) => void;
 }
 
 export function LogoGenerator({
@@ -57,6 +58,7 @@ export function LogoGenerator({
   fixedDomain,
   latestGeneration,
   onGenerateMore,
+  onPosterRequest,
 }: LogoGeneratorProps) {
   const [showAdvanced, setShowAdvanced] = useState(false);
   const getTypeDisplay = (type: string) => {
@@ -95,6 +97,7 @@ export function LogoGenerator({
       submitLoadingText="Generating"
       latestGeneration={latestGeneration}
       onGenerateMore={onGenerateMore}
+      onPosterRequest={onPosterRequest}
     >
       {({ form, openPanel, setOpenPanel }) => {
         const selectedType = form.watch('type');

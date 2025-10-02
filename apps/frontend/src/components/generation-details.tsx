@@ -199,6 +199,15 @@ export function GenerationDetailsClient({
     }
   }, [currentUrl]);
 
+  const handleCreatePoster = useCallback(() => {
+    if (generation?.type !== 'logo') return;
+    if (!generation?.id || !generation?.domain) return;
+    const params = new URLSearchParams();
+    params.set('poster', generation.id);
+    params.set('posterDomain', generation.domain);
+    router.push(`/ai-brand-generator?${params.toString()}`);
+  }, [generation?.domain, generation?.id, generation?.type, router]);
+
   // Create brand name from domain
   const brandName = domain
     ?.split('.')[0]
@@ -257,6 +266,15 @@ export function GenerationDetailsClient({
           <div className="space-y-6">
             {/* Actions */}
             <div className="space-y-3">
+              {generation.type === 'logo' && (
+                <Button
+                  className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
+                  onClick={handleCreatePoster}
+                >
+                  <Sparkles className="mr-2 h-4 w-4" />
+                  Create Poster
+                </Button>
+              )}
               <div className="flex flex-col gap-2">
                 <Button onClick={handleDownload} className="w-full">
                   <Download className="mr-2 h-4 w-4" />

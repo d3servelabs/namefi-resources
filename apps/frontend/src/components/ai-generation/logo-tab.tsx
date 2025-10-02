@@ -10,6 +10,7 @@ import {
 import { useState, useRef } from 'react';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import type { Generation } from './shared/types';
+import { usePosterFlow } from './poster-flow-context';
 
 interface LogoTabProps {
   existingGenerations?: Generation[];
@@ -31,6 +32,7 @@ export function LogoTab({
   const generateLogoMutation = useLogoGeneration({
     domain: brandDomain,
   });
+  const { openPoster } = usePosterFlow();
 
   const handleGenerateLogo = (data: LogoFormData) => {
     setCurrentGenParams(data);
@@ -63,6 +65,11 @@ export function LogoTab({
           fixedDomain={brandDomain}
           latestGeneration={latestGeneration || undefined}
           onGenerateMore={handleGenerateMore}
+          onPosterRequest={(generation) => {
+            if (generation && generation.type === 'logo') {
+              openPoster(generation);
+            }
+          }}
         />
       }
       isLoading={generateLogoMutation.isPending}
@@ -75,6 +82,7 @@ export function LogoTab({
         model: (currentGenParams as any)?.model,
       }}
       onGenerateMore={handleGenerateMore}
+      onPosterRequest={openPoster}
     />
   );
 }
