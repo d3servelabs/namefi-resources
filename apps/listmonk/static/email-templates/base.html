@@ -7,6 +7,41 @@
         <base target="_blank">
 
         <style>
+            :root {
+                /* Color System - matching Namefi Astra design */
+                --background: oklch(0.145 0 0);
+                --foreground: oklch(0.985 0 0);
+                --card: oklch(0.205 0 0);
+                --card-foreground: oklch(0.985 0 0);
+                --primary: oklch(0.922 0 0);
+                --primary-foreground: oklch(0.205 0 0);
+                --secondary: oklch(0.269 0 0);
+                --secondary-foreground: oklch(0.985 0 0);
+                --muted: oklch(0.269 0 0);
+                --muted-foreground: oklch(0.708 0 0);
+                --accent: oklch(0.269 0 0);
+                --accent-foreground: oklch(0.985 0 0);
+                --destructive: oklch(0.704 0.191 22.216);
+                --border: oklch(1 0 0 / 10%);
+                --input: oklch(1 0 0 / 15%);
+                --ring: oklch(0.556 0 0);
+                --brand-primary: #4ade80; /* fallback */  
+                --brand-primary: oklch(75.85% 0.1804 155.5); /* modern browsers */ 
+                --brand-primary-hover: oklch(65.85% 0.1804 155.5);
+                --brand-primary-foreground: oklch(0.205 0 0);
+                --brand-secondary: oklch(75.85% 0.1804 155.5);
+                --brand-tertiary: oklch(75.85% 0.1804 155.5);
+                --radius: 0.65rem;
+              
+                /* Typography */
+                --font-sans:
+                  -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
+                  Arial, sans-serif;
+                --font-mono:
+                  ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco, Consolas, monospace;
+              }
+
+              
             body {
                 background-color: #F0F1F3;
                 font-family: 'Helvetica Neue', 'Segoe UI', Helvetica, sans-serif;
@@ -21,13 +56,13 @@
                 padding: 30px;
                 max-width: 525px;
                 margin: 0 auto;
-                border-radius: 5px;
+                border-radius: var(--radius);
             }
 
             .header {
-                border-bottom: 1px solid #eee;
-                padding-bottom: 15px;
-                margin-bottom: 15px;
+                border-bottom: 1px solid var(--ring);
+                padding-bottom: 1rem;
+                margin-bottom: 1rem;
             }
 
             .footer {
@@ -35,25 +70,28 @@
                 font-size: 12px;
                 color: #888;
             }
-                .footer a {
-                    color: #888;
-                }
+            .footer a {
+                color: var(--brand-primary);
+            }
+            .footer a:hover {
+                color: var(--brand-primary-hover);
+            }
 
             .gutter {
                 padding: 30px;
             }
             .button {
-                background: #0055d4;
+                background: var(--brand-primary);
                 color: #fff !important;
                 display: inline-block;
-                border-radius: 3px;
-                padding: 10px 30px;
+                border-radius: var(--radius);
+                padding: 0.5rem 1rem;
                 text-align: center;
                 text-decoration: none;
                 font-weight: bold;
             }
             .button:hover {
-                background: #222;
+                background: var(--brand-primary-hover);
                 color: #fff;
             }
             img {
@@ -61,17 +99,17 @@
             }
 
             a {
-                color: #0055d4;
+                color: var(--brand-primary);
             }
                 a:hover {
-                    color: #111;
+                    color: var(--brand-primary-hover);
                 }
             @media screen and (max-width: 600px) {
                 .wrap {
                     max-width: auto;
                 }
                 .gutter {
-                    padding: 10px;
+                    padding: 0.5rem;
                 }
             }
         </style>
@@ -90,7 +128,6 @@
     </div>
     
     <div class="footer">
-        <p>{{ L.T "public.poweredBy" }} <a href="https://listmonk.app" target="_blank" rel="noreferrer">listmonk</a></p>
     </div>
     <div class="gutter">&nbsp;</div>
 </body>

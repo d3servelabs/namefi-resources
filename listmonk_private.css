@@ -1,0 +1,826 @@
+/**
+ * Listmonk Admin Interface Custom Styles
+ *
+ * This stylesheet customizes Listmonk's admin interface to match the
+ * Namefi Astra design system. The admin interface is built with Buefy/Bulma
+ * and Vue.js, so these styles override the default Bulma styles.
+ *
+ * Usage:
+ * 1. For self-hosted: Add to admin template via custom static directory
+ * 2. For Docker: Mount as volume and reference in admin template
+ * 3. Build custom frontend with these styles integrated
+ *
+ * Note: Some styles may require !important to override Bulma specificity
+ */
+
+:root {
+  /* Color System - matching Namefi Astra design */
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --success: oklch(0.696 0.17 162.48);
+  --warning: oklch(0.769 0.188 70.08);
+  --info: oklch(0.488 0.243 264.376);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --brand-primary: oklch(75.85% 0.1804 155.5);
+  --brand-secondary: oklch(75.85% 0.1804 155.5);
+  --brand-tertiary: oklch(75.85% 0.1804 155.5);
+  --radius: 0.65rem;
+
+  /* Typography */
+  --font-sans:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial, sans-serif;
+  --font-mono:
+    ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco, Consolas, monospace;
+
+  /* Sidebar */
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-hover: oklch(0.269 0 0);
+}
+
+/* Global Overrides */
+html {
+  background-color: var(--background) !important;
+  font-size: 16px;
+}
+
+body {
+  font-family: var(--font-sans) !important;
+  background-color: var(--background) !important;
+  color: var(--foreground) !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#app {
+  background-color: var(--background) !important;
+}
+#app .main {
+  background-color: var(--background) !important;
+}
+
+/* Override Bulma's default colors */
+.has-background-white,
+.has-background-light {
+  background-color: var(--card) !important;
+}
+
+.has-text-dark,
+.has-text-black {
+  color: var(--foreground) !important;
+}
+
+.has-text-grey,
+.has-text-grey-dark {
+  color: var(--muted-foreground) !important;
+}
+
+/* Sidebar Navigation */
+.menu,
+.sidebar,
+aside.menu {
+  background-color: var(--sidebar) !important;
+  color: var(--sidebar-foreground) !important;
+  border-right: 1px solid var(--sidebar-border);
+}
+
+.menu-list a,
+.menu-list li a {
+  color: var(--sidebar-foreground) !important;
+  border-radius: calc(var(--radius) - 4px);
+  transition: all 0.2s ease;
+}
+
+.menu-list a:hover,
+.menu-list li a:hover {
+  background-color: var(--sidebar-hover) !important;
+  color: var(--brand-primary) !important;
+}
+
+.menu-list a.is-active,
+.menu-list li a.is-active {
+  background-color: var(--brand-primary) !important;
+  color: var(--background) !important;
+  font-weight: 600;
+}
+
+.menu-label {
+  color: var(--muted-foreground) !important;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+}
+
+/* Top Navigation Bar */
+.navbar,
+nav.navbar {
+  background-color: var(--card) !important;
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.5);
+}
+
+.navbar-item,
+.navbar-link {
+  color: var(--foreground) !important;
+}
+
+.navbar-item:hover,
+.navbar-link:hover {
+  background-color: var(--accent) !important;
+  color: var(--brand-primary) !important;
+}
+
+.navbar-dropdown {
+  background-color: var(--card) !important;
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) - 2px);
+  box-shadow:
+    0 2px 4px 0 rgba(0, 0, 0, 0.5),
+    0 1px 2px -1px rgba(0, 0, 0, 0.4);
+}
+
+.navbar-dropdown .navbar-item {
+  color: var(--foreground) !important;
+}
+
+.navbar-dropdown .navbar-item:hover {
+  background-color: var(--accent) !important;
+}
+
+/* Buttons */
+.button {
+  border-radius: calc(var(--radius) - 2px) !important;
+  font-weight: 500 !important;
+  transition: all 0.2s ease !important;
+  border: none !important;
+}
+
+.button:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    0 4px 8px 0 rgba(0, 0, 0, 0.5),
+    0 2px 4px -1px rgba(0, 0, 0, 0.4);
+}
+
+.button.is-primary {
+  background-color: var(--brand-primary) !important;
+  color: var(--background) !important;
+}
+
+.button.is-primary:hover {
+  opacity: 0.9;
+}
+
+.button.is-info {
+  background-color: var(--info) !important;
+  color: white !important;
+}
+
+.button.is-success {
+  background-color: var(--success) !important;
+  color: white !important;
+}
+
+.button.is-warning {
+  background-color: var(--warning) !important;
+  color: var(--background) !important;
+}
+
+.button.is-danger {
+  background-color: var(--destructive) !important;
+  color: white !important;
+}
+
+.button.is-light {
+  background-color: var(--secondary) !important;
+  color: var(--secondary-foreground) !important;
+}
+
+.button.is-dark {
+  background-color: var(--accent) !important;
+  color: var(--accent-foreground) !important;
+}
+
+/* Form Elements */
+.input,
+.textarea,
+.select select {
+  background-color: var(--background) !important;
+  border-color: var(--input) !important;
+  color: var(--foreground) !important;
+  border-radius: calc(var(--radius) - 2px) !important;
+  transition: all 0.2s ease;
+}
+
+.input:focus,
+.textarea:focus,
+.select select:focus {
+  border-color: var(--brand-primary) !important;
+  box-shadow: 0 0 0 3px oklch(75.85% 0.1804 155.5 / 0.1) !important;
+}
+
+.input::placeholder,
+.textarea::placeholder {
+  color: var(--muted-foreground) !important;
+  opacity: 0.6;
+}
+
+/* Fix autofill styles - prevent bright background */
+.input:-webkit-autofill,
+.input:-webkit-autofill:hover,
+.input:-webkit-autofill:focus,
+.input:-webkit-autofill:active,
+.textarea:-webkit-autofill,
+.textarea:-webkit-autofill:hover,
+.textarea:-webkit-autofill:focus,
+.textarea:-webkit-autofill:active,
+.select select:-webkit-autofill,
+.select select:-webkit-autofill:hover,
+.select select:-webkit-autofill:focus,
+.select select:-webkit-autofill:active {
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: var(--foreground) !important;
+  transition: background-color 5000s ease-in-out 0s !important;
+  box-shadow: inset 0 0 20px 20px var(--background) !important;
+  border: 1px solid var(--input) !important;
+}
+
+.label {
+  color: var(--foreground) !important;
+  font-weight: 500;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.help {
+  color: var(--muted-foreground) !important;
+  font-size: 0.875rem;
+}
+
+.control.has-icons-left .icon,
+.control.has-icons-right .icon {
+  color: var(--muted-foreground) !important;
+}
+
+/* Checkbox and Radio */
+.checkbox input[type="checkbox"],
+.radio input[type="radio"] {
+  accent-color: var(--brand-primary);
+}
+
+.checkbox,
+.radio {
+  color: var(--foreground) !important;
+}
+
+.checkbox:hover,
+.radio:hover {
+  color: var(--brand-primary) !important;
+}
+
+/* Cards & Panels */
+.card,
+.box,
+.panel {
+  background-color: var(--card) !important;
+  border-radius: var(--radius) !important;
+  box-shadow:
+    0 1px 3px 0 rgba(0, 0, 0, 0.5),
+    0 1px 2px -1px rgba(0, 0, 0, 0.4) !important;
+  border: 1px solid var(--border);
+}
+
+.card-header,
+.panel-heading {
+  background-color: var(--muted) !important;
+  color: var(--foreground) !important;
+  border-bottom: 1px solid var(--border);
+  border-radius: var(--radius) var(--radius) 0 0 !important;
+  font-weight: 600;
+}
+
+.card-content,
+.panel-block {
+  color: var(--foreground) !important;
+}
+
+.card-footer {
+  border-top: 1px solid var(--border);
+  background-color: var(--muted) !important;
+}
+
+.card-footer-item {
+  color: var(--foreground) !important;
+}
+
+.card-footer-item:hover {
+  background-color: var(--accent) !important;
+  color: var(--brand-primary) !important;
+}
+
+/* Tables */
+.table {
+  background-color: var(--card) !important;
+  color: var(--foreground) !important;
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.table thead th,
+.table thead td {
+  background-color: var(--muted) !important;
+  color: var(--foreground) !important;
+  border-color: var(--border) !important;
+  font-weight: 600;
+}
+
+.table tbody tr {
+  background-color: var(--card) !important;
+  color: var(--foreground) !important;
+  transition: background-color 0.2s ease;
+}
+
+.table tbody tr:hover {
+  background-color: var(--accent) !important;
+}
+
+.table td,
+.table th {
+  border-color: var(--border) !important;
+  color: var(--foreground) !important;
+}
+
+.table.is-striped tbody tr:nth-child(even) {
+  background-color: var(--muted) !important;
+}
+
+/* Tabs */
+.tabs {
+  border-bottom-color: var(--border) !important;
+}
+
+.tabs li a {
+  color: var(--muted-foreground) !important;
+  border-bottom-color: transparent !important;
+  transition: all 0.2s ease;
+}
+
+.tabs li a:hover {
+  color: var(--brand-primary) !important;
+  border-bottom-color: var(--brand-primary) !important;
+}
+
+.tabs li.is-active a {
+  color: var(--brand-primary) !important;
+  border-bottom-color: var(--brand-primary) !important;
+  font-weight: 600;
+}
+
+/* Modal */
+.modal-background {
+  background-color: rgba(0, 0, 0, 0.75) !important;
+}
+
+.modal-card,
+.modal-content {
+  background-color: var(--card) !important;
+  border-radius: var(--radius) !important;
+  border: 1px solid var(--border);
+}
+
+.modal-card-head,
+.modal-card-foot {
+  background-color: var(--muted) !important;
+  border-color: var(--border) !important;
+}
+
+.modal-card-title {
+  color: var(--foreground) !important;
+}
+
+.modal-card-body {
+  background-color: var(--card) !important;
+  color: var(--foreground) !important;
+}
+
+.delete,
+.modal-close {
+  background-color: var(--muted) !important;
+}
+
+.delete:hover,
+.modal-close:hover {
+  background-color: var(--destructive) !important;
+}
+
+/* Notifications & Messages */
+.notification {
+  background-color: var(--card) !important;
+  color: var(--foreground) !important;
+  border-radius: calc(var(--radius) - 2px) !important;
+  border-left: 4px solid;
+}
+
+.notification.is-primary {
+  background-color: oklch(75.85% 0.1804 155.5 / 0.1) !important;
+  border-left-color: var(--brand-primary);
+  color: var(--brand-primary) !important;
+}
+
+.notification.is-info {
+  background-color: oklch(0.488 0.243 264.376 / 0.1) !important;
+  border-left-color: var(--info);
+  color: var(--info) !important;
+}
+
+.notification.is-success {
+  background-color: oklch(0.696 0.17 162.48 / 0.1) !important;
+  border-left-color: var(--success);
+  color: var(--success) !important;
+}
+
+.notification.is-warning {
+  background-color: oklch(0.769 0.188 70.08 / 0.1) !important;
+  border-left-color: var(--warning);
+  color: var(--warning) !important;
+}
+
+.notification.is-danger {
+  background-color: oklch(0.704 0.191 22.216 / 0.1) !important;
+  border-left-color: var(--destructive);
+  color: var(--destructive) !important;
+}
+
+.message {
+  background-color: var(--card) !important;
+  border-radius: var(--radius) !important;
+  border: 1px solid var(--border);
+}
+
+.message-header {
+  background-color: var(--brand-primary) !important;
+  color: var(--background) !important;
+  border-radius: var(--radius) var(--radius) 0 0 !important;
+  font-weight: 600;
+}
+
+.message-body {
+  background-color: var(--card) !important;
+  color: var(--foreground) !important;
+  border-color: var(--border) !important;
+}
+
+/* Tags & Badges */
+.tag,
+.badge {
+  background-color: var(--secondary) !important;
+  color: var(--secondary-foreground) !important;
+  border-radius: calc(var(--radius) - 4px) !important;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.tag.is-primary {
+  background-color: var(--brand-primary) !important;
+  color: var(--background) !important;
+}
+
+.tag.is-info {
+  background-color: var(--info) !important;
+  color: white !important;
+}
+
+.tag.is-success {
+  background-color: var(--success) !important;
+  color: white !important;
+}
+
+.tag.is-warning {
+  background-color: var(--warning) !important;
+  color: var(--background) !important;
+}
+
+.tag.is-danger {
+  background-color: var(--destructive) !important;
+  color: white !important;
+}
+
+/* Pagination */
+.pagination {
+  margin-top: 1.5rem;
+}
+
+.pagination-link,
+.pagination-previous,
+.pagination-next {
+  background-color: var(--card) !important;
+  border-color: var(--border) !important;
+  color: var(--foreground) !important;
+  border-radius: calc(var(--radius) - 4px) !important;
+  transition: all 0.2s ease;
+}
+
+.pagination-link:hover,
+.pagination-previous:hover,
+.pagination-next:hover {
+  background-color: var(--accent) !important;
+  border-color: var(--brand-primary) !important;
+  color: var(--brand-primary) !important;
+}
+
+.pagination-link.is-current {
+  background-color: var(--brand-primary) !important;
+  border-color: var(--brand-primary) !important;
+  color: var(--background) !important;
+  font-weight: 600;
+}
+
+/* Dropdown */
+.dropdown-menu {
+  background-color: var(--card) !important;
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) - 2px) !important;
+  box-shadow:
+    0 2px 4px 0 rgba(0, 0, 0, 0.5),
+    0 1px 2px -1px rgba(0, 0, 0, 0.4);
+}
+
+.dropdown-item {
+  color: var(--foreground) !important;
+  transition: background-color 0.2s ease;
+}
+
+.dropdown-item:hover {
+  background-color: var(--accent) !important;
+  color: var(--brand-primary) !important;
+}
+
+.dropdown-divider {
+  background-color: var(--border) !important;
+}
+
+/* Breadcrumb */
+.breadcrumb {
+  background-color: transparent !important;
+}
+
+.breadcrumb a {
+  color: var(--muted-foreground) !important;
+}
+
+.breadcrumb a:hover {
+  color: var(--brand-primary) !important;
+}
+
+.breadcrumb li.is-active a {
+  color: var(--foreground) !important;
+  font-weight: 600;
+}
+
+/* Progress Bar */
+.progress {
+  background-color: var(--muted) !important;
+  border-radius: calc(var(--radius) - 4px) !important;
+}
+
+.progress::-webkit-progress-bar {
+  background-color: var(--muted) !important;
+}
+
+.progress::-webkit-progress-value {
+  background-color: var(--brand-primary) !important;
+}
+
+.progress::-moz-progress-bar {
+  background-color: var(--brand-primary) !important;
+}
+
+/* Content Area */
+.section {
+  background-color: var(--background) !important;
+  padding: 2rem 1.5rem;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.content {
+  color: var(--foreground) !important;
+}
+
+.content h1,
+.content h2,
+.content h3,
+.content h4,
+.content h5,
+.content h6 {
+  color: var(--foreground) !important;
+  font-weight: 600;
+}
+
+.content a {
+  color: var(--brand-primary) !important;
+}
+
+.content a:hover {
+  opacity: 0.8;
+}
+
+/* Loading Spinner */
+.loader,
+.is-loading::after {
+  border-color: var(--border) !important;
+  border-top-color: var(--brand-primary) !important;
+  border-right-color: var(--brand-primary) !important;
+}
+
+/* Hero Section */
+.hero {
+  background-color: var(--card) !important;
+}
+
+.hero.is-primary {
+  background: linear-gradient(
+    135deg,
+    var(--brand-primary) 0%,
+    var(--brand-secondary) 100%
+  ) !important;
+}
+
+.hero-body {
+  padding: 3rem 1.5rem;
+}
+
+.title,
+.subtitle {
+  color: var(--foreground) !important;
+}
+
+/* Footer */
+.footer {
+  background-color: var(--card) !important;
+  color: var(--muted-foreground) !important;
+  border-top: 1px solid var(--border);
+}
+
+/* Code & Pre */
+code,
+pre {
+  background-color: var(--muted) !important;
+  color: var(--foreground) !important;
+  font-family: var(--font-mono) !important;
+  border-radius: calc(var(--radius) - 4px) !important;
+}
+
+pre code {
+  background-color: transparent !important;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--muted);
+  border-radius: 6px;
+  border: 2px solid var(--background);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--brand-primary);
+}
+
+/* Selection */
+::selection {
+  background-color: var(--brand-primary);
+  color: var(--background);
+}
+
+::-moz-selection {
+  background-color: var(--brand-primary);
+  color: var(--background);
+}
+
+/* Responsive Adjustments */
+@media screen and (max-width: 768px) {
+  .section {
+    padding: 1.5rem 1rem;
+  }
+
+  .card,
+  .box {
+    margin-bottom: 1rem;
+  }
+
+  .table {
+    font-size: 0.875rem;
+  }
+}
+
+/* Custom Classes for Enhanced UI */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.status-badge.active {
+  background-color: oklch(0.696 0.17 162.48 / 0.2);
+  color: var(--success);
+}
+
+.status-badge.paused {
+  background-color: oklch(0.769 0.188 70.08 / 0.2);
+  color: var(--warning);
+}
+
+.status-badge.inactive {
+  background-color: var(--muted);
+  color: var(--muted-foreground);
+}
+
+/* Stats Cards */
+.stat-card {
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  transition: all 0.2s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 4px 8px 0 rgba(0, 0, 0, 0.5),
+    0 2px 4px -1px rgba(0, 0, 0, 0.4);
+  border-color: var(--brand-primary);
+}
+
+.stat-card .stat-label {
+  color: var(--muted-foreground);
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.stat-card .stat-value {
+  color: var(--foreground);
+  font-size: 2rem;
+  font-weight: 700;
+  margin-top: 0.5rem;
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 3rem 1.5rem;
+  color: var(--muted-foreground);
+}
+
+.empty-state .icon {
+  font-size: 3rem;
+  opacity: 0.5;
+  margin-bottom: 1rem;
+}
+
+.empty-state .title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.empty-state .description {
+  font-size: 0.875rem;
+  margin-bottom: 1.5rem;
+}

@@ -1,0 +1,601 @@
+/**
+ * Listmonk Public Pages Custom Styles
+ *
+ * This stylesheet customizes Listmonk's public-facing pages (subscription forms,
+ * confirmation pages, unsubscribe pages) to match the Namefi Astra design system.
+ *
+ * Usage:
+ * 1. Copy the Listmonk static directory: cp -r /path/to/listmonk/static ./custom-static
+ * 2. Add this CSS to your public templates in /static/public/templates/
+ * 3. Run Listmonk with: ./listmonk --static-dir=./custom-static
+ */
+
+:root {
+  /* Color System - matching Namefi Astra design */
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --brand-primary: oklch(75.85% 0.1804 155.5);
+  --brand-secondary: oklch(75.85% 0.1804 155.5);
+  --brand-tertiary: oklch(75.85% 0.1804 155.5);
+  --radius: 0.65rem;
+
+  /* Typography */
+  --font-sans:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial, sans-serif;
+  --font-mono:
+    ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco, Consolas, monospace;
+}
+
+footer {
+  display: none;
+}
+
+#capture_chrome {
+  display: none;
+}
+
+/* Base Styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-shadow: none !important;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--background);
+  color: var(--foreground);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* Container & Layout */
+.container,
+.wrap {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+  background-color: var(--background);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+}
+
+.content {
+  background-color: var(--card);
+  border-radius: var(--radius);
+  padding: 2rem;
+  box-shadow:
+    0 1px 3px 0 rgba(0, 0, 0, 0.5),
+    0 1px 2px -1px rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border);
+}
+
+/* Typography */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--foreground);
+  font-weight: 600;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+h1 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+h3 {
+  font-size: 1.25rem;
+}
+
+p {
+  margin-bottom: 1rem;
+  color: var(--foreground);
+}
+
+a {
+  color: var(--brand-primary);
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+a:hover {
+  opacity: 0.8;
+  color: var(--brand-primary);
+  text-decoration: underline;
+}
+
+/* Form Elements */
+label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: var(--foreground);
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="tel"],
+textarea,
+select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  font-family: var(--font-sans);
+  background-color: var(--background);
+  color: var(--foreground);
+  border: 1px solid var(--input);
+  border-radius: calc(var(--radius) - 2px);
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="tel"]:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--brand-primary);
+  box-shadow: 0 0 0 3px oklch(75.85% 0.1804 155.5 / 0.1);
+}
+
+input[type="text"]:disabled,
+input[type="email"]:disabled,
+input[type="password"]:disabled,
+input[type="tel"]:disabled,
+textarea:disabled,
+select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Fix autofill styles - prevent bright background */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+textarea:-webkit-autofill:active,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus,
+select:-webkit-autofill:active {
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: var(--foreground);
+  transition: background-color 5000s ease-in-out 0s;
+  box-shadow: inset 0 0 20px 20px var(--background);
+  border: 1px solid var(--input);
+}
+
+textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+/* Checkbox and Radio */
+input[type="checkbox"],
+input[type="radio"] {
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-right: 0.5rem;
+  accent-color: var(--brand-primary);
+  cursor: pointer;
+}
+
+.checkbox-group,
+.radio-group {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.checkbox-group label,
+.radio-group label {
+  display: inline;
+  margin-bottom: 0;
+  margin-left: 0.5rem;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: normal;
+  cursor: pointer;
+}
+
+/* Buttons */
+button,
+input[type="submit"],
+.button,
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  font-family: var(--font-sans);
+  background-color: var(--brand-primary);
+  color: var(--background);
+  border: none;
+  border-radius: calc(var(--radius) - 2px);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  white-space: nowrap;
+  outline: none;
+}
+
+button:hover,
+input[type="submit"]:hover,
+.button:hover,
+.btn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+button:active,
+input[type="submit"]:active,
+.button:active,
+.btn:active {
+  transform: translateY(0);
+}
+
+button:disabled,
+input[type="submit"]:disabled,
+.button:disabled,
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Secondary Button */
+.button.secondary,
+.btn-secondary {
+  background-color: var(--secondary);
+  color: var(--secondary-foreground);
+}
+
+/* Outline Button */
+.button.outline,
+.button-outline,
+.button.button-outline,
+input[type="button"].button-outline,
+input[type="submit"].button-outline,
+.btn-outline {
+  background-color: transparent;
+  color: var(--brand-primary);
+  border: 1px solid var(--brand-primary);
+}
+
+.button.outline:hover,
+.button-outline:hover,
+.button.button-outline:hover,
+input[type="button"].button-outline:hover,
+input[type="submit"].button-outline:hover,
+.btn-outline:hover {
+  background-color: oklch(75.85% 0.1804 155.5 / 0.1);
+}
+
+/* Destructive Button */
+.button.destructive,
+.btn-destructive,
+.button-destructive {
+  background-color: var(--destructive);
+  color: white;
+}
+
+/* Form Groups */
+.form-group,
+.field {
+  margin-bottom: 1.5rem;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+/* Messages & Alerts */
+.message,
+.alert,
+.notice,
+.error,
+.success {
+  padding: 1rem;
+  border-radius: calc(var(--radius) - 2px);
+  margin-bottom: 1.5rem;
+  border-left: 4px solid;
+}
+
+.message.info,
+.alert.info,
+.notice {
+  background-color: oklch(0.488 0.243 264.376 / 0.1);
+  border-left-color: oklch(0.488 0.243 264.376);
+  color: oklch(0.488 0.243 264.376);
+}
+
+.message.success,
+.alert.success,
+.success {
+  background-color: oklch(0.696 0.17 162.48 / 0.1);
+  border-left-color: oklch(0.696 0.17 162.48);
+  color: oklch(0.696 0.17 162.48);
+}
+
+.message.error,
+.alert.error,
+.error {
+  background-color: oklch(0.704 0.191 22.216 / 0.1);
+  border-left-color: var(--destructive);
+  color: var(--destructive);
+}
+
+.message.warning,
+.alert.warning {
+  background-color: oklch(0.769 0.188 70.08 / 0.1);
+  border-left-color: oklch(0.769 0.188 70.08);
+  color: oklch(0.769 0.188 70.08);
+}
+
+/* Lists */
+.list,
+.list-group {
+  list-style: none;
+  padding: 0;
+}
+
+.list-item,
+.list-group-item {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border);
+  background-color: var(--card);
+}
+
+.list-item:last-child,
+.list-group-item:last-child {
+  border-bottom: none;
+}
+
+.list-item:hover,
+.list-group-item:hover {
+  background-color: var(--accent);
+}
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1.5rem;
+}
+
+th,
+td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+th {
+  font-weight: 600;
+  color: var(--foreground);
+  background-color: var(--muted);
+}
+
+tr:hover {
+  background-color: var(--accent);
+}
+
+/* Subscription Form Specific */
+.subscription-form {
+  background-color: var(--card);
+  padding: 2rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+}
+
+.subscription-form h2 {
+  color: var(--foreground);
+  margin-bottom: 1.5rem;
+}
+
+.subscription-form .description {
+  color: var(--muted-foreground);
+  margin-bottom: 1.5rem;
+}
+
+/* Preferences & List Selection */
+.list-selection {
+  margin-bottom: 1.5rem;
+}
+
+.list-selection h3 {
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.list-checkbox {
+  display: block;
+  margin-bottom: 0.75rem;
+  padding: 0.75rem;
+  background-color: var(--accent);
+  border-radius: calc(var(--radius) - 4px);
+  transition: background-color 0.2s ease;
+}
+
+.list-checkbox:hover {
+  background-color: var(--muted);
+}
+
+.list-checkbox input[type="checkbox"] {
+  margin-right: 0.75rem;
+}
+
+.list-checkbox label {
+  display: inline;
+  margin: 0;
+  font-weight: 400;
+  cursor: pointer;
+}
+
+/* Footer */
+.footer {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  color: var(--muted-foreground);
+  font-size: 0.875rem;
+}
+
+.footer a {
+  color: var(--brand-primary);
+  margin: 0 0.5rem;
+}
+
+/* Loading States */
+.loading {
+  display: inline-block;
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 2px solid var(--border);
+  border-top-color: var(--brand-primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Utility Classes */
+.text-center {
+  text-align: center;
+}
+
+.text-muted {
+  color: var(--muted-foreground);
+}
+
+.text-small {
+  font-size: 0.875rem;
+}
+
+.mb-1 {
+  margin-bottom: 0.5rem;
+}
+
+.mb-2 {
+  margin-bottom: 1rem;
+}
+
+.mb-3 {
+  margin-bottom: 1.5rem;
+}
+
+.mt-1 {
+  margin-top: 0.5rem;
+}
+
+.mt-2 {
+  margin-top: 1rem;
+}
+
+.mt-3 {
+  margin-top: 1.5rem;
+}
+
+/* Responsive Design */
+@media (max-width: 640px) {
+  .container,
+  .wrap {
+    padding: 1.5rem 1rem;
+  }
+
+  .content,
+  .subscription-form {
+    padding: 1.5rem;
+  }
+
+  h1 {
+    font-size: 1.75rem;
+  }
+
+  h2 {
+    font-size: 1.25rem;
+  }
+
+  button,
+  input[type="submit"],
+  .button,
+  .btn {
+    width: 100%;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Print Styles */
+@media print {
+  body {
+    background-color: white;
+    color: black;
+  }
+
+  .content {
+    box-shadow: none;
+    border: 1px solid #ddd;
+  }
+
+  button,
+  input[type="submit"],
+  .button,
+  .btn {
+    display: none;
+  }
+}
