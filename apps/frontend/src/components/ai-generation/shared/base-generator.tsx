@@ -23,9 +23,15 @@ import {
 import type { Generation } from './types';
 import { toast } from 'sonner';
 
+const domainInputSchema = z
+  .string()
+  .trim()
+  .transform((val) => val.toLowerCase())
+  .pipe(namefiNormalizedDomainSchema);
+
 // Base form schema with domain and description
 export const baseFormSchema = z.object({
-  domain: namefiNormalizedDomainSchema,
+  domain: domainInputSchema,
   description: z.string().optional(),
 });
 
@@ -113,12 +119,11 @@ export function BaseGenerator<T extends FieldValues & BaseFormData>({
 
   const handleSubmit = (data: T) => {
     const domainToUse = fixedDomain || data.domain;
-    if (domainToUse?.trim()) {
-      onSubmit({
-        ...data,
-        domain: domainToUse,
-      });
-    }
+
+    onSubmit({
+      ...data,
+      domain: domainToUse,
+    });
   };
 
   const domainToUse = fixedDomain || form.watch('domain' as FieldPath<T>);

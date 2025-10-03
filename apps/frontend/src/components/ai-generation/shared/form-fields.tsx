@@ -151,8 +151,6 @@ function DomainFieldWithSuggestions({
     [onChange],
   );
 
-  // Recent suggestion pills removed per request; keeping dropdown only
-
   return (
     <FormItem className="mb-6">
       <FormControl>
