@@ -23,8 +23,8 @@ import { useInteractionLoggers } from '@/components/providers/analytics';
 import { motion, type HTMLMotionProps, AnimatePresence } from 'motion/react';
 import NumberFlow from '@number-flow/react';
 
-const MotionButton = motion(Button);
-const MotionBadge = motion(Badge);
+const MotionButton = motion.create(Button);
+const MotionBadge = motion.create(Badge);
 
 export type CartDropdownProps = Omit<HTMLMotionProps<'div'>, 'ref'> & {
   disableBackdropBlur?: boolean;

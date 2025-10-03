@@ -14,7 +14,7 @@ const overlayAnimation = {
   },
 };
 
-const MotionButton = motion(Button);
+const MotionButton = motion.create(Button);
 
 export type ShinyButtonProps = ButtonProps & MotionProps;
 
