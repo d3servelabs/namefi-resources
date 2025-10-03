@@ -67,14 +67,11 @@ export function BaseGenerator<T extends FieldValues & BaseFormData>({
   submitButtonText = 'Generate',
   submitLoadingText = 'Generating',
   className = 'max-w-6xl mx-auto flex flex-col',
-  latestGeneration,
-  onGenerateMore,
   domainPlaceholder,
   domainSelectOnly = false,
   domainOnlyDomainsWithLogos = false,
   onDomainChange,
   onFormReady,
-  onPosterRequest,
 }: BaseGeneratorProps<T>) {
   const [openPanel, setOpenPanel] = useState<string | null>(null);
 
@@ -119,48 +116,46 @@ export function BaseGenerator<T extends FieldValues & BaseFormData>({
     !form.formState.isValid || disabled || isLimitReached || !isUsageSuccess;
 
   return (
-    <>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(handleSubmit)} className={className}>
-          <Card>
-            <CardContent>
-              {/* Domain Input */}
-              <DomainField
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(handleSubmit)} className={className}>
+        <Card>
+          <CardContent>
+            {/* Domain Input */}
+            <DomainField
+              control={form.control}
+              name={'domain' as FieldPath<T>}
+              fixedDomain={fixedDomain}
+              placeholder={domainPlaceholder}
+              selectOnly={domainSelectOnly}
+              onlyDomainsWithLogos={domainOnlyDomainsWithLogos}
+            />
+
+            {/* Custom content from children */}
+            {children?.({
+              form,
+              openPanel,
+              setOpenPanel,
+              domainToUse: domainToUse as string,
+            })}
+
+            {/* Description Field - Conditional based on openPanel */}
+            {openPanel === 'description' && (
+              <DescriptionField
                 control={form.control}
-                name={'domain' as FieldPath<T>}
-                fixedDomain={fixedDomain}
-                placeholder={domainPlaceholder}
-                selectOnly={domainSelectOnly}
-                onlyDomainsWithLogos={domainOnlyDomainsWithLogos}
+                name={'description' as FieldPath<T>}
               />
+            )}
+          </CardContent>
+        </Card>
 
-              {/* Custom content from children */}
-              {children?.({
-                form,
-                openPanel,
-                setOpenPanel,
-                domainToUse: domainToUse as string,
-              })}
-
-              {/* Description Field - Conditional based on openPanel */}
-              {openPanel === 'description' && (
-                <DescriptionField
-                  control={form.control}
-                  name={'description' as FieldPath<T>}
-                />
-              )}
-            </CardContent>
-          </Card>
-
-          {/* Submit Button */}
-          <GenerateSubmitButton
-            isLoading={isLoading}
-            disabled={isDisabled}
-            buttonText={submitButtonText}
-            loadingText={submitLoadingText}
-          />
-        </form>
-      </Form>
-    </>
+        {/* Submit Button */}
+        <GenerateSubmitButton
+          isLoading={isLoading}
+          disabled={isDisabled}
+          buttonText={submitButtonText}
+          loadingText={submitLoadingText}
+        />
+      </form>
+    </Form>
   );
 }

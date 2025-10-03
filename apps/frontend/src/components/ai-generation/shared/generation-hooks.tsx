@@ -30,7 +30,7 @@ export function useLogoGeneration({ domain }: UseLogoGenerationProps) {
         });
         return { pendingId } as { pendingId?: string };
       },
-      onSuccess: (data, variables, context) => {
+      onSuccess: (data, _variables, context) => {
         if (context?.pendingId) {
           resolvePendingItem(context.pendingId, data);
         }
@@ -66,7 +66,7 @@ export function useLogoGeneration({ domain }: UseLogoGenerationProps) {
           queryKey: trpc.ai.getUserGenerationUsage.queryKey(),
         });
       },
-      onError: (error: any, _variables, context) => {
+      onError: (error, _variables, context) => {
         if (context?.pendingId) {
           removePendingItem(context.pendingId);
         }
@@ -100,7 +100,7 @@ export function usePosterGeneration({ domain }: UsePosterGenerationProps) {
         });
         return { pendingId } as { pendingId?: string };
       },
-      onSuccess: (data, variables, context) => {
+      onSuccess: (data, _variables, context) => {
         if (context?.pendingId) {
           resolvePendingItem(context.pendingId, data);
         }
@@ -136,7 +136,7 @@ export function usePosterGeneration({ domain }: UsePosterGenerationProps) {
           queryKey: trpc.ai.getUserGenerationUsage.queryKey(),
         });
       },
-      onError: (error: any, _variables, context) => {
+      onError: (error, _variables, context) => {
         if (context?.pendingId) {
           removePendingItem(context.pendingId);
         }

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Card, CardContent } from '@/components/ui/shadcn/card';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
 import { Button } from '@/components/ui/shadcn/button';
@@ -80,6 +80,49 @@ const GallerySkeletonGrid = ({ className }: { className?: string }) => (
   </div>
 );
 
+const PROGRESS_DURATION_MS = 40_000;
+const FINISH_DURATION_MS = 900;
+
+const PROGRESS_MESSAGES = [
+  { threshold: 0, text: 'Gathering inspiration for your brand...' },
+  { threshold: 10, text: 'Sketching first strokes and silhouettes...' },
+  { threshold: 25, text: 'Blending colors, styles, and fonts...' },
+  { threshold: 45, text: 'Adding character and signature details...' },
+  { threshold: 65, text: 'Refining lighting and balance...' },
+  { threshold: 80, text: 'Polishing highlights and textures...' },
+  { threshold: 92, text: 'Framing the final reveal...' },
+  { threshold: 99, text: 'Almost ready—hang tight!' },
+];
+
+const smoothstep = (t: number) =>
+  t <= 0 ? 0 : t >= 1 ? 1 : t * t * (3 - 2 * t);
+
+const easeOutCubic = (t: number) =>
+  t <= 0 ? 0 : t >= 1 ? 1 : 1 - (1 - t) ** 3;
+
+const computePendingProgress = (elapsedMs: number) => {
+  if (elapsedMs <= 0) return 0;
+  const normalized = elapsedMs / PROGRESS_DURATION_MS;
+
+  if (normalized <= 1) {
+    const eased = smoothstep(normalized);
+    return Math.min(95, eased * 92 + normalized * 3);
+  }
+
+  const extra = normalized - 1;
+  const tail = 95 + (1 - Math.exp(-extra * 0.5)) * 4;
+  return Math.min(99.2, tail);
+};
+
+const getProgressMessage = (value: number) => {
+  for (let i = PROGRESS_MESSAGES.length - 1; i >= 0; i -= 1) {
+    if (value >= PROGRESS_MESSAGES[i]?.threshold) {
+      return PROGRESS_MESSAGES[i]?.text;
+    }
+  }
+  return PROGRESS_MESSAGES[0]?.text ?? '';
+};
+
 export function GenerationsColumn({
   domains,
   className,
@@ -87,6 +130,16 @@ export function GenerationsColumn({
   const trpc = useTRPC();
   const router = useRouter();
   const { pendingItems, removePendingItem } = useGalleryPending();
+  const [pendingProgress, setPendingProgress] = useState<
+    Record<string, number>
+  >({});
+  const pendingProgressRef = useRef<Record<string, number>>({});
+  const [finishingItems, setFinishingItems] = useState<
+    Record<string, { startTime: number; startValue: number }>
+  >({});
+  const finishingItemsRef = useRef<
+    Record<string, { startTime: number; startValue: number }>
+  >({});
   const shareDialog = useTwitterShareDialog({
     ...defaultShareConfig,
     enabled: true,
@@ -119,6 +172,7 @@ export function GenerationsColumn({
   const [typeFilter, setTypeFilter] = useState<'all' | 'logo' | 'marketing'>(
     'all',
   );
+  const previousPendingCountRef = useRef(0);
   const [activeTab, setActiveTab] = useState<'yours' | 'featured'>('yours');
 
   const typesForQuery: Array<'logo' | 'marketing'> =
@@ -175,6 +229,9 @@ export function GenerationsColumn({
         seenGenerationIds.add(generationId);
       }
 
+      const progressValue = pendingProgress[item.id] ?? 0;
+      const isReady = generation && progressValue >= 100;
+
       items.push({
         id: generationId ?? item.id,
         pendingId: item.id,
@@ -182,7 +239,7 @@ export function GenerationsColumn({
         type: generation?.type ?? item.type,
         url: generation?.url,
         generation: generation ?? undefined,
-        status: generation ? 'ready' : 'pending',
+        status: isReady ? 'ready' : 'pending',
         startedAt: item.startedAt,
         source: 'pending',
       });
@@ -220,7 +277,17 @@ export function GenerationsColumn({
     }
 
     return items;
-  }, [pendingItems, filteredArray, domains]);
+  }, [pendingItems, filteredArray, domains, pendingProgress]);
+
+  const filteredGalleryItems = useMemo(() => {
+    const brandSet = selectedBrands.length > 0 ? new Set(selectedBrands) : null;
+    return galleryItems.filter((item) => {
+      const matchesBrand = !brandSet || brandSet.has(item.domain);
+      const matchesType =
+        typeFilter === 'all' || (item.type && item.type === typeFilter);
+      return matchesBrand && matchesType;
+    });
+  }, [galleryItems, selectedBrands, typeFilter]);
 
   type FeaturedRecent =
     AppRouterOutput['ai']['getFeaturedAndRecentGenerations'];
@@ -252,6 +319,131 @@ export function GenerationsColumn({
     isFilteredFetching;
 
   useEffect(() => {
+    const previousCount = previousPendingCountRef.current;
+    const currentCount = pendingItems.length;
+    if (currentCount > previousCount) {
+      setSelectedBrands([]);
+      setTypeFilter('all');
+      setActiveTab('yours');
+    }
+    previousPendingCountRef.current = currentCount;
+  }, [pendingItems.length]);
+
+  useEffect(() => {
+    pendingProgressRef.current = pendingProgress;
+  }, [pendingProgress]);
+
+  useEffect(() => {
+    finishingItemsRef.current = finishingItems;
+  }, [finishingItems]);
+
+  useEffect(() => {
+    if (pendingItems.length === 0) {
+      setPendingProgress({});
+      setFinishingItems({});
+      return undefined;
+    }
+
+    const updateFinishingTargets = () => {
+      const now = Date.now();
+      setFinishingItems((prev) => {
+        let next = prev;
+        let changed = false;
+
+        for (const pending of pendingItems) {
+          if (pending.generation && !next[pending.id]) {
+            if (!changed) next = { ...next };
+            const currentProgress =
+              pendingProgressRef.current[pending.id] ??
+              computePendingProgress(now - pending.startedAt);
+            next[pending.id] = {
+              startTime: now,
+              startValue: Math.min(99, currentProgress),
+            };
+            changed = true;
+          }
+        }
+
+        for (const id of Object.keys(next)) {
+          const stillFinishing = pendingItems.some(
+            (item) => item.id === id && item.generation,
+          );
+          if (!stillFinishing) {
+            if (!changed) next = { ...next };
+            delete next[id];
+            changed = true;
+          }
+        }
+
+        return changed ? next : prev;
+      });
+    };
+
+    const runProgressUpdate = () => {
+      const now = Date.now();
+      const finishedIds: string[] = [];
+
+      setPendingProgress((prev) => {
+        const next: Record<string, number> = {};
+
+        for (const pending of pendingItems) {
+          const baseProgress = computePendingProgress(now - pending.startedAt);
+          const prevProgress = prev[pending.id] ?? 0;
+          const finishing = finishingItemsRef.current[pending.id];
+
+          let progress = Math.max(baseProgress, prevProgress);
+
+          if (finishing) {
+            const elapsedFinish = now - finishing.startTime;
+            const t = Math.min(1, elapsedFinish / FINISH_DURATION_MS);
+            const eased = easeOutCubic(t);
+            progress = Math.max(
+              progress,
+              finishing.startValue + (100 - finishing.startValue) * eased,
+            );
+
+            if (t >= 1) {
+              progress = 100;
+              finishedIds.push(pending.id);
+            }
+          }
+
+          next[pending.id] = Math.min(100, progress);
+        }
+
+        return next;
+      });
+
+      if (finishedIds.length > 0) {
+        setFinishingItems((prev) => {
+          let next = prev;
+          let changed = false;
+          for (const id of finishedIds) {
+            if (next[id]) {
+              if (!changed) next = { ...next };
+              delete next[id];
+              changed = true;
+            }
+          }
+          return changed ? next : prev;
+        });
+      }
+    };
+
+    updateFinishingTargets();
+    runProgressUpdate();
+
+    const interval = window.setInterval(() => {
+      updateFinishingTargets();
+      runProgressUpdate();
+    }, 120);
+
+    return () => {
+      window.clearInterval(interval);
+    };
+  }, [pendingItems]);
+
+  useEffect(() => {
     // Avoid auto-switching away from "Your Generations" while a refetch is in progress
     if (
       !hasUserGenerations &&
@@ -281,12 +473,14 @@ export function GenerationsColumn({
     for (const item of pendingItems) {
       const resolvedId = item.generation?.id;
       if (!resolvedId) continue;
+      const progressValue = pendingProgress[item.id] ?? 0;
+      if (progressValue < 100) continue;
       const existsInResults = filteredArray.some((g) => g.id === resolvedId);
       if (existsInResults) {
         removePendingItem(item.id);
       }
     }
-  }, [pendingItems, filteredArray, removePendingItem]);
+  }, [pendingItems, filteredArray, removePendingItem, pendingProgress]);
 
   // Header row above the card: tabs + filters in a single horizontal row
   const headerRow = (
@@ -393,7 +587,7 @@ export function GenerationsColumn({
           {activeTab === 'yours' ? (
             isFilteredLoading ? (
               <GallerySkeletonGrid className="flex-1" />
-            ) : galleryItems.length === 0 ? (
+            ) : filteredGalleryItems.length === 0 ? (
               <div className="flex-1 px-4 py-6 text-sm text-muted-foreground">
                 Generate a logo or poster to see it appear here.
               </div>
@@ -401,23 +595,39 @@ export function GenerationsColumn({
               <div className="flex-1 overflow-hidden">
                 <div className="h-full overflow-y-auto">
                   <div className="grid grid-cols-2 gap-4 py-4 px-4">
-                    {galleryItems.map((item) => {
+                    {filteredGalleryItems.map((item) => {
                       if (item.status === 'pending') {
+                        const pendingId = item.pendingId ?? item.id;
+                        const progressValue =
+                          pendingProgress[pendingId] ??
+                          computePendingProgress(
+                            Date.now() - (item.startedAt ?? Date.now()),
+                          );
+                        const progressPercent = Math.max(
+                          0,
+                          Math.min(100, Math.round(progressValue)),
+                        );
+                        const progressMessage =
+                          getProgressMessage(progressPercent);
                         return (
                           <div
                             key={item.id}
                             className="relative flex aspect-[1/1] items-center justify-center overflow-hidden rounded-xl border border-border/40 bg-muted/30 shadow-xs"
                           >
                             <div className="absolute inset-0 animate-pulse bg-gradient-to-br from-muted/60 via-muted/30 to-muted/60" />
-                            <div className="relative z-10 flex flex-col items-center gap-2 px-3 text-center">
+                            <div className="relative z-10 flex flex-col items-center gap-3 px-4 text-center">
                               <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
-                              <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                              <div className="text-lg font-semibold text-foreground">
+                                {progressPercent}%
+                              </div>
+                              <div className="text-xs text-muted-foreground leading-relaxed">
+                                {progressMessage}
+                              </div>
+                              <div className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground/80">
                                 {item.type === 'marketing'
                                   ? 'Generating Poster'
-                                  : 'Generating Logo'}
-                              </div>
-                              <div className="text-xs text-muted-foreground/80">
-                                {item.domain}
+                                  : 'Generating Logo'}{' '}
+                                · {item.domain}
                               </div>
                             </div>
                           </div>

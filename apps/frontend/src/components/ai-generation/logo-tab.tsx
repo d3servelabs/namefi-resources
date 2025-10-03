@@ -79,7 +79,7 @@ export function LogoTab({
         type: currentGenParams?.type,
         style: currentGenParams?.style,
         description: currentGenParams?.description,
-        model: (currentGenParams as any)?.model,
+        model: currentGenParams?.model,
       }}
       onGenerateMore={handleGenerateMore}
       onPosterRequest={openPoster}

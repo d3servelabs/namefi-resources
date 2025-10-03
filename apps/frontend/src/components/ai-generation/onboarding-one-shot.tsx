@@ -227,7 +227,7 @@ export function AIOnboardingOneShot({
               stroke="#10b981"
               fill="transparent"
               strokeWidth={strokeWidth}
-              strokeDasharray={circumference + ' ' + circumference}
+              strokeDasharray={`${circumference} ${circumference}`}
               style={{
                 strokeDashoffset,
                 transition: 'stroke-dashoffset 0.3s ease',

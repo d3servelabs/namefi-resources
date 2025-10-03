@@ -89,6 +89,7 @@ export function ImageGrid({
             const cardContent = (
               <Card key={itemKey} className="overflow-hidden">
                 <div className="relative aspect-square">
+                  {/** biome-ignore lint/performance/noImgElement: <explanation> */}
                   <img
                     src={item.url}
                     alt={`${title} ${index + 1}`}
@@ -183,6 +184,7 @@ export function ImageGrid({
                     <div className="mb-3 p-2 bg-gray-50 rounded-lg">
                       <p className="text-xs text-gray-600 mb-2">Based on:</p>
                       <div className="flex items-center gap-2">
+                        {/** biome-ignore lint/performance/noImgElement: <explanation> */}
                         <img
                           src={item.basedOnLogo.result}
                           alt="Referenced logo"

@@ -149,7 +149,7 @@ const CircularProgress = ({
             stroke="#10b981"
             fill="transparent"
             strokeWidth={strokeWidth}
-            strokeDasharray={circumference + ' ' + circumference}
+            strokeDasharray={`${circumference} ${circumference}`}
             style={{
               strokeDashoffset,
               transition: 'stroke-dashoffset 0.3s ease',
@@ -259,6 +259,7 @@ const GenerationImageLoader: React.FC<GenerationImageLoaderProps> = ({
           transition={{ duration: 0.5 }}
           className="absolute inset-0 bg-white"
         >
+          {/** biome-ignore lint/performance/noImgElement: <explanation> */}
           <img
             key={displaySrc}
             src={displaySrc}

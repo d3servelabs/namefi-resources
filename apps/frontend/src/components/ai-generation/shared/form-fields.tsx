@@ -108,8 +108,8 @@ function DomainFieldWithSuggestions({
   const domainOptions = useMemo(() => {
     if (onlyDomainsWithLogos) {
       const generatedWithLogos = (generationDomains ?? [])
-        .filter((d: any) => (d.logoCount ?? 0) > 0)
-        .map((d: any) => d.domain);
+        .filter((d) => (d.logoCount ?? 0) > 0)
+        .map((d) => d.domain);
       const seen = new Set<string>();
       return generatedWithLogos.filter((d) => {
         if (seen.has(d)) return false;
@@ -118,7 +118,7 @@ function DomainFieldWithSuggestions({
       });
     }
     const owned = (userDomains ?? []).map((d) => d.normalizedDomainName);
-    const generated = (generationDomains ?? []).map((d: any) => d.domain);
+    const generated = (generationDomains ?? []).map((d) => d.domain);
     const list = [...owned, ...generated];
     // Deduplicate while preserving order
     const seen = new Set<string>();

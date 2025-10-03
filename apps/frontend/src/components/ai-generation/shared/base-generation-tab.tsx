@@ -78,13 +78,6 @@ export function BaseGenerationTab({
         }
       : undefined;
 
-  // no-op
-
-  // TODO: (sid) Implement navigate to poster tab
-  // const handleGeneratePoster = () => {
-  //   // This would switch to poster tab or trigger poster generation
-  // };
-
   return (
     <>
       {generator}
