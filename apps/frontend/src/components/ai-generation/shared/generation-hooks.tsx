@@ -1,3 +1,5 @@
+'use client';
+
 import { useTRPC } from '@/lib/trpc';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
@@ -5,6 +7,7 @@ import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import type { LogoFormData } from '../logo-generator';
 import type { PosterFormData } from '../poster-generator';
 import type { Model, MarketingCollateralType } from '@namefi-astra/ai';
+import { useGalleryPending } from '../gallery-pending-context';
 
 interface UseLogoGenerationProps {
   domain?: NamefiNormalizedDomain;
@@ -13,10 +16,24 @@ interface UseLogoGenerationProps {
 export function useLogoGeneration({ domain }: UseLogoGenerationProps) {
   const trpc = useTRPC();
   const queryClient = useQueryClient();
+  const { addPendingItem, removePendingItem, resolvePendingItem } =
+    useGalleryPending();
 
   return useMutation(
     trpc.ai.generateLogo.mutationOptions({
-      onSuccess: (data) => {
+      onMutate: async (variables) => {
+        const pendingDomain = variables.domain ?? domain;
+        if (!pendingDomain) return {};
+        const pendingId = addPendingItem({
+          domain: pendingDomain,
+          type: 'logo',
+        });
+        return { pendingId } as { pendingId?: string };
+      },
+      onSuccess: (data, variables, context) => {
+        if (context?.pendingId) {
+          resolvePendingItem(context.pendingId, data);
+        }
         // Update the cache with the new generation
         queryClient.setQueryData(
           trpc.ai.getGenerationsByDomain.queryKey({ domain }),
@@ -31,6 +48,14 @@ export function useLogoGeneration({ domain }: UseLogoGenerationProps) {
           queryKey: trpc.ai.getGenerationsByDomain.queryKey({ domain }),
         });
 
+        queryClient.invalidateQueries({
+          predicate: (query) =>
+            Array.isArray(query.queryKey) &&
+            query.queryKey[0] === 'ai' &&
+            query.queryKey[1] === 'getUserGenerationsFiltered',
+          refetchType: 'active',
+        });
+
         // Also invalidate the user domains query to update counts
         queryClient.invalidateQueries({
           queryKey: trpc.ai.getUserDomains.queryKey(),
@@ -41,7 +66,10 @@ export function useLogoGeneration({ domain }: UseLogoGenerationProps) {
           queryKey: trpc.ai.getUserGenerationUsage.queryKey(),
         });
       },
-      onError: (error: any) => {
+      onError: (error: any, _variables, context) => {
+        if (context?.pendingId) {
+          removePendingItem(context.pendingId);
+        }
         const errorMessage =
           error.message || 'An error occurred generating logos';
         toast.error(errorMessage);
@@ -58,10 +86,24 @@ interface UsePosterGenerationProps {
 export function usePosterGeneration({ domain }: UsePosterGenerationProps) {
   const trpc = useTRPC();
   const queryClient = useQueryClient();
+  const { addPendingItem, removePendingItem, resolvePendingItem } =
+    useGalleryPending();
 
   return useMutation(
     trpc.ai.generatePoster.mutationOptions({
-      onSuccess: (data) => {
+      onMutate: async (variables) => {
+        const pendingDomain = variables.domain ?? domain;
+        if (!pendingDomain) return {};
+        const pendingId = addPendingItem({
+          domain: pendingDomain,
+          type: 'marketing',
+        });
+        return { pendingId } as { pendingId?: string };
+      },
+      onSuccess: (data, variables, context) => {
+        if (context?.pendingId) {
+          resolvePendingItem(context.pendingId, data);
+        }
         // Update the cache with the new generation
         queryClient.setQueryData(
           trpc.ai.getGenerationsByDomain.queryKey({ domain }),
@@ -76,6 +118,14 @@ export function usePosterGeneration({ domain }: UsePosterGenerationProps) {
           queryKey: trpc.ai.getGenerationsByDomain.queryKey({ domain }),
         });
 
+        queryClient.invalidateQueries({
+          predicate: (query) =>
+            Array.isArray(query.queryKey) &&
+            query.queryKey[0] === 'ai' &&
+            query.queryKey[1] === 'getUserGenerationsFiltered',
+          refetchType: 'active',
+        });
+
         // Also invalidate the user domains query to update counts
         queryClient.invalidateQueries({
           queryKey: trpc.ai.getUserDomains.queryKey(),
@@ -86,7 +136,10 @@ export function usePosterGeneration({ domain }: UsePosterGenerationProps) {
           queryKey: trpc.ai.getUserGenerationUsage.queryKey(),
         });
       },
-      onError: (error: any) => {
+      onError: (error: any, _variables, context) => {
+        if (context?.pendingId) {
+          removePendingItem(context.pendingId);
+        }
         const errorMessage =
           error.message || 'An error occurred generating posters';
         toast.error(errorMessage);

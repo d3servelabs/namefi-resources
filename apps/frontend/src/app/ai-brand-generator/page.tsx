@@ -18,6 +18,7 @@ import { Card, CardContent } from '@/components/ui/shadcn/card';
 import { PosterFlowProvider } from '@/components/ai-generation/poster-flow-context';
 import { usePosterFlow } from '@/components/ai-generation/poster-flow-context';
 import type { PosterSource } from '@/components/ai-generation/poster-flow-context';
+import { GalleryPendingProvider } from '@/components/ai-generation/gallery-pending-context';
 import { useEffect, useRef } from 'react';
 
 export default function AIBrandGeneratorPage() {
@@ -44,20 +45,22 @@ export default function AIBrandGeneratorPage() {
 
   if (isAuthLoading) {
     return (
-      <PosterFlowProvider>
-        <PosterFlowInitializer />
-        <div className="container max-w-full mx-auto py-8 px-8 lg:flex lg:flex-col lg:h-[calc(100vh-10rem)] lg:max-h-[calc(100vh-10rem)] lg:min-h-0 lg:overflow-hidden lg:py-6">
-          <div className="grid grid-cols-1 gap-10 mb-12 flex-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:min-h-0 lg:overflow-hidden lg:mb-0">
-            <div className="flex flex-col space-y-6 lg:min-h-0 lg:overflow-auto">
-              <PageHeader />
-              <LeftColumnSkeleton />
-            </div>
-            <div className="flex flex-col space-y-6 lg:h-full lg:min-h-0 lg:overflow-hidden">
-              <GenerationsColumnSkeleton className="flex-1" />
+      <GalleryPendingProvider>
+        <PosterFlowProvider>
+          <PosterFlowInitializer />
+          <div className="container max-w-full mx-auto py-8 px-8 lg:flex lg:flex-col lg:h-[calc(100vh-10rem)] lg:max-h-[calc(100vh-10rem)] lg:min-h-0 lg:overflow-hidden lg:py-6">
+            <div className="grid grid-cols-1 gap-10 mb-12 flex-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:min-h-0 lg:overflow-hidden lg:mb-0">
+              <div className="flex flex-col space-y-6 lg:min-h-0 lg:overflow-auto">
+                <PageHeader />
+                <LeftColumnSkeleton />
+              </div>
+              <div className="flex flex-col space-y-6 lg:h-full lg:min-h-0 lg:overflow-hidden">
+                <GenerationsColumnSkeleton className="flex-1" />
+              </div>
             </div>
           </div>
-        </div>
-      </PosterFlowProvider>
+        </PosterFlowProvider>
+      </GalleryPendingProvider>
     );
   }
 
@@ -68,37 +71,39 @@ export default function AIBrandGeneratorPage() {
   const isInitialLoading = isDomainsLoading || isUsageLoading;
 
   return (
-    <PosterFlowProvider>
-      <PosterFlowInitializer />
-      <div className="container max-w-full mx-auto py-8 px-8 lg:flex lg:flex-col lg:h-[calc(100vh-10rem)] lg:max-h-[calc(100vh-10rem)] lg:min-h-0 lg:overflow-hidden lg:py-6">
-        {/* Main Content - 2 Column Layout */}
-        <div className="grid grid-cols-1 gap-10 mb-12 flex-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:min-h-0 lg:overflow-hidden lg:mb-0">
-          {/* Left Column - Generator */}
-          <div className="flex flex-col space-y-6 lg:min-h-0 lg:overflow-auto">
-            {/* Page header moved to left column to align right column at top */}
-            <PageHeader />
-            {isInitialLoading ? (
-              <LeftColumnSkeleton />
-            ) : usage && finishedOnboarding && usage.currentCount > 1 ? (
-              <AITabs />
-            ) : (
-              <AIOnboardingOneShot
-                onFinishAction={() => setFinishedOnboarding(true)}
-              />
-            )}
-          </div>
+    <GalleryPendingProvider>
+      <PosterFlowProvider>
+        <PosterFlowInitializer />
+        <div className="container max-w-full mx-auto py-8 px-8 lg:flex lg:flex-col lg:h-[calc(100vh-10rem)] lg:max-h-[calc(100vh-10rem)] lg:min-h-0 lg:overflow-hidden lg:py-6">
+          {/* Main Content - 2 Column Layout */}
+          <div className="grid grid-cols-1 gap-10 mb-12 flex-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:min-h-0 lg:overflow-hidden lg:mb-0">
+            {/* Left Column - Generator */}
+            <div className="flex flex-col space-y-6 lg:min-h-0 lg:overflow-auto">
+              {/* Page header moved to left column to align right column at top */}
+              <PageHeader />
+              {isInitialLoading ? (
+                <LeftColumnSkeleton />
+              ) : usage && finishedOnboarding && usage.currentCount > 1 ? (
+                <AITabs />
+              ) : (
+                <AIOnboardingOneShot
+                  onFinishAction={() => setFinishedOnboarding(true)}
+                />
+              )}
+            </div>
 
-          {/* Right Column - Generations Gallery */}
-          <div className="flex flex-col space-y-6 lg:h-full lg:min-h-0 lg:overflow-hidden">
-            {isInitialLoading ? (
-              <GenerationsColumnSkeleton className="flex-1" />
-            ) : (
-              <GenerationsColumn domains={domains} className="flex-1" />
-            )}
+            {/* Right Column - Generations Gallery */}
+            <div className="flex flex-col space-y-6 lg:h-full lg:min-h-0 lg:overflow-hidden">
+              {isInitialLoading ? (
+                <GenerationsColumnSkeleton className="flex-1" />
+              ) : (
+                <GenerationsColumn domains={domains} className="flex-1" />
+              )}
+            </div>
           </div>
         </div>
-      </div>
-    </PosterFlowProvider>
+      </PosterFlowProvider>
+    </GalleryPendingProvider>
   );
 }
 

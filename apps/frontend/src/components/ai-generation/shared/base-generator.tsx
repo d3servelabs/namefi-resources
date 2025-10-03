@@ -20,7 +20,6 @@ import {
   namefiNormalizedDomainSchema,
   type NamefiNormalizedDomain,
 } from '@namefi-astra/utils';
-import { GenerationPreview } from './generation-preview';
 import type { Generation } from './types';
 
 // Base form schema with domain and description
@@ -162,21 +161,6 @@ export function BaseGenerator<T extends FieldValues & BaseFormData>({
           />
         </form>
       </Form>
-      <GenerationPreview
-        isLoading={!!isLoading}
-        loadingState={isLoading ? 'generating' : 'idle'}
-        isVisible={true}
-        generatedImage={latestGeneration}
-        onGenerateMore={onGenerateMore}
-        onGeneratePoster={
-          onPosterRequest &&
-          latestGeneration &&
-          (latestGeneration.type === 'logo' ||
-            latestGeneration.output?.type === 'logo')
-            ? () => onPosterRequest(latestGeneration)
-            : undefined
-        }
-      />
     </>
   );
 }

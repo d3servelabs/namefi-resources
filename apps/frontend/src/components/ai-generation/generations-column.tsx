@@ -31,6 +31,7 @@ import {
   ChevronsUpDown,
   Check,
   Image as ImageIcon,
+  Loader2,
 } from 'lucide-react';
 import { cn } from '@/lib/cn';
 import { useQuery } from '@tanstack/react-query';
@@ -50,8 +51,9 @@ import {
 import { useRouter } from 'next/navigation';
 import { usePosterFlow } from './poster-flow-context';
 import type { PosterSource } from './poster-flow-context';
+import { useGalleryPending } from './gallery-pending-context';
 
-type Preview = { id: string; url: string };
+type Preview = { id: string; url: string; type?: 'logo' | 'marketing' };
 export type DomainPreview = {
   domain: string;
   latestGeneration?: Date | string | null;
@@ -84,6 +86,7 @@ export function GenerationsColumn({
 }: GenerationsColumnProps) {
   const trpc = useTRPC();
   const router = useRouter();
+  const { pendingItems, removePendingItem } = useGalleryPending();
   const shareDialog = useTwitterShareDialog({
     ...defaultShareConfig,
     enabled: true,
@@ -151,29 +154,73 @@ export function GenerationsColumn({
 
   type GalleryItem = {
     id: string;
-    url: string;
+    pendingId?: string;
+    url?: string;
     domain: string;
     type?: 'logo' | 'marketing';
     generation?: UserGen;
+    status: 'pending' | 'ready' | 'preview';
+    startedAt?: number;
+    source: 'pending' | 'query' | 'preview';
   };
 
   const galleryItems = useMemo<GalleryItem[]>(() => {
-    if (filteredArray.length > 0) {
-      return filteredArray.map((g) => ({
-        id: g.id,
-        url: g.url,
-        domain: g.domain,
-        type: g.type,
-        generation: g,
-      }));
+    const seenGenerationIds = new Set<string>();
+    const items: GalleryItem[] = [];
+
+    for (const item of pendingItems) {
+      const generation = item.generation;
+      const generationId = generation?.id;
+      if (generationId) {
+        seenGenerationIds.add(generationId);
+      }
+
+      items.push({
+        id: generationId ?? item.id,
+        pendingId: item.id,
+        domain: generation?.domain ?? item.domain,
+        type: generation?.type ?? item.type,
+        url: generation?.url,
+        generation: generation ?? undefined,
+        status: generation ? 'ready' : 'pending',
+        startedAt: item.startedAt,
+        source: 'pending',
+      });
     }
-    return domains.flatMap((d) =>
-      (d.previewGenerations ?? []).map((p) => ({
-        ...p,
-        domain: d.domain,
-      })),
-    );
-  }, [filteredArray, domains]);
+
+    if (filteredArray.length > 0) {
+      for (const g of filteredArray) {
+        if (seenGenerationIds.has(g.id)) continue;
+        items.push({
+          id: g.id,
+          domain: g.domain,
+          type: g.type,
+          url: g.url,
+          generation: g,
+          status: 'ready',
+          source: 'query',
+        });
+        seenGenerationIds.add(g.id);
+      }
+    } else {
+      for (const d of domains) {
+        for (const p of d.previewGenerations ?? []) {
+          if (seenGenerationIds.has(p.id)) continue;
+          items.push({
+            id: p.id,
+            domain: d.domain,
+            type: p.type,
+            url: p.url,
+            status: 'preview',
+            source: 'preview',
+          });
+          seenGenerationIds.add(p.id);
+        }
+      }
+    }
+
+    return items;
+  }, [pendingItems, filteredArray, domains]);
 
   type FeaturedRecent =
     AppRouterOutput['ai']['getFeaturedAndRecentGenerations'];
@@ -197,19 +244,49 @@ export function GenerationsColumn({
   }, [featuredAndRecent]);
 
   const hasUserGenerations = filteredArray.length > 0;
+  const hasPendingGenerations = pendingItems.length > 0;
   const shouldShowYoursTab =
-    hasUserGenerations || isFilteredLoading || isFilteredFetching;
+    hasUserGenerations ||
+    hasPendingGenerations ||
+    isFilteredLoading ||
+    isFilteredFetching;
 
   useEffect(() => {
     // Avoid auto-switching away from "Your Generations" while a refetch is in progress
     if (
       !hasUserGenerations &&
+      !hasPendingGenerations &&
       activeTab === 'yours' &&
       !(isFilteredLoading || isFilteredFetching)
     ) {
       setActiveTab('featured');
     }
-  }, [hasUserGenerations, activeTab, isFilteredLoading, isFilteredFetching]);
+  }, [
+    hasUserGenerations,
+    hasPendingGenerations,
+    activeTab,
+    isFilteredLoading,
+    isFilteredFetching,
+  ]);
+
+  useEffect(() => {
+    if (pendingItems.length > 0) {
+      setActiveTab('yours');
+    }
+  }, [pendingItems.length]);
+
+  useEffect(() => {
+    if (pendingItems.length === 0) return;
+
+    for (const item of pendingItems) {
+      const resolvedId = item.generation?.id;
+      if (!resolvedId) continue;
+      const existsInResults = filteredArray.some((g) => g.id === resolvedId);
+      if (existsInResults) {
+        removePendingItem(item.id);
+      }
+    }
+  }, [pendingItems, filteredArray, removePendingItem]);
 
   // Header row above the card: tabs + filters in a single horizontal row
   const headerRow = (
@@ -324,129 +401,164 @@ export function GenerationsColumn({
               <div className="flex-1 overflow-hidden">
                 <div className="h-full overflow-y-auto">
                   <div className="grid grid-cols-2 gap-4 py-4 px-4">
-                    {galleryItems.map((item) => (
-                      // biome-ignore lint/a11y/noStaticElementInteractions: <explanation>
-                      <div
-                        key={item.id}
-                        onClick={() =>
-                          router.push(`/ai-brand-generator/${item.id}`)
-                        }
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter') {
-                            router.push(`/ai-brand-generator/${item.id}`);
-                          }
-                        }}
-                        className="relative block overflow-hidden rounded-xl bg-muted/30 border border-border/40 shadow-xs transition hover:shadow-md hover:border-border aspect-[1/1] group cursor-pointer"
-                      >
-                        <img
-                          src={item.url}
-                          alt={item.domain}
-                          className="w-full h-full object-cover"
-                          loading="lazy"
-                        />
-                        {/* Full overlay */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                        <div className="absolute inset-0 p-3 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-between">
-                          <div className="flex items-start justify-between gap-3 text-white">
-                            <div>
-                              <div className="text-xs font-semibold uppercase tracking-wide text-white/90">
-                                {item.type === 'marketing' ? 'Poster' : 'Logo'}
+                    {galleryItems.map((item) => {
+                      if (item.status === 'pending') {
+                        return (
+                          <div
+                            key={item.id}
+                            className="relative flex aspect-[1/1] items-center justify-center overflow-hidden rounded-xl border border-border/40 bg-muted/30 shadow-xs"
+                          >
+                            <div className="absolute inset-0 animate-pulse bg-gradient-to-br from-muted/60 via-muted/30 to-muted/60" />
+                            <div className="relative z-10 flex flex-col items-center gap-2 px-3 text-center">
+                              <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+                              <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                                {item.type === 'marketing'
+                                  ? 'Generating Poster'
+                                  : 'Generating Logo'}
                               </div>
-                              <div className="text-sm font-semibold drop-shadow-md">
+                              <div className="text-xs text-muted-foreground/80">
                                 {item.domain}
                               </div>
                             </div>
-                            <Button
-                              size="icon"
-                              variant="ghost"
-                              className="h-9 w-9 rounded-full bg-black/65 text-white shadow-lg transition hover:bg-black"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                e.preventDefault();
-                                router.push(`/ai-brand-generator/${item.id}`);
-                              }}
-                            >
-                              <ArrowUpRight className="h-4 w-4" />
-                            </Button>
                           </div>
-                          <div className="flex items-center gap-2 justify-end flex-wrap">
-                            {item.type === 'logo' && item.generation && (
+                        );
+                      }
+
+                      return (
+                        // biome-ignore lint/a11y/noStaticElementInteractions: existing pattern for clickable card
+                        <div
+                          key={item.id}
+                          onClick={() =>
+                            router.push(`/ai-brand-generator/${item.id}`)
+                          }
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                              router.push(`/ai-brand-generator/${item.id}`);
+                            }
+                          }}
+                          className="relative block overflow-hidden rounded-xl bg-muted/30 border border-border/40 shadow-xs transition hover:shadow-md hover:border-border aspect-[1/1] group cursor-pointer"
+                        >
+                          {item.url ? (
+                            <img
+                              src={item.url}
+                              alt={item.domain}
+                              className="w-full h-full object-cover"
+                              loading="lazy"
+                            />
+                          ) : (
+                            <div className="flex h-full w-full items-center justify-center bg-muted/30 text-xs text-muted-foreground">
+                              Preview Unavailable
+                            </div>
+                          )}
+                          {/* Full overlay */}
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                          <div className="absolute inset-0 p-3 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-between">
+                            <div className="flex items-start justify-between gap-3 text-white">
+                              <div>
+                                <div className="text-xs font-semibold uppercase tracking-wide text-white/90">
+                                  {item.type === 'marketing'
+                                    ? 'Poster'
+                                    : 'Logo'}
+                                </div>
+                                <div className="text-sm font-semibold drop-shadow-md">
+                                  {item.domain}
+                                </div>
+                              </div>
                               <Button
-                                size="sm"
-                                className="h-9 rounded-full bg-primary text-primary-foreground hover:bg-primary/80 gap-2 shadow-md transition"
+                                size="icon"
+                                variant="ghost"
+                                className="h-9 w-9 rounded-full bg-black/65 text-white shadow-lg transition hover:bg-black"
                                 onClick={(e) => {
                                   e.stopPropagation();
                                   e.preventDefault();
-                                  openPoster(item.generation as PosterSource);
+                                  router.push(`/ai-brand-generator/${item.id}`);
                                 }}
                               >
-                                <Sparkles className="h-4 w-4" />
-                                Create Poster
+                                <ArrowUpRight className="h-4 w-4" />
                               </Button>
-                            )}
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              className="h-9 rounded-full border-border/30 bg-white/20 backdrop-blur text-white shadow transition hover:bg-white/30"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                e.preventDefault();
-                                const url = `${window.location.origin}/ai-brand-generator/${item.id}`;
-                                void navigator.clipboard
-                                  .writeText(url)
-                                  .then(() =>
-                                    toast('Link copied to clipboard', {
-                                      description:
-                                        'You can now share this generation with others',
-                                    }),
-                                  )
-                                  .catch(() =>
-                                    toast.error('Failed to copy link', {
-                                      description: 'Please try again',
-                                    }),
+                            </div>
+                            <div className="flex items-center gap-2 justify-end flex-wrap">
+                              {item.type === 'logo' && item.generation && (
+                                <Button
+                                  size="sm"
+                                  className="h-9 rounded-full bg-primary text-primary-foreground hover:bg-primary/80 gap-2 shadow-md transition"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    e.preventDefault();
+                                    openPoster(item.generation as PosterSource);
+                                  }}
+                                >
+                                  <Sparkles className="h-4 w-4" />
+                                  Create Poster
+                                </Button>
+                              )}
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                className="h-9 rounded-full border-border/30 bg-white/20 backdrop-blur text-white shadow transition hover:bg-white/30"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  e.preventDefault();
+                                  const url = `${window.location.origin}/ai-brand-generator/${item.id}`;
+                                  void navigator.clipboard
+                                    .writeText(url)
+                                    .then(() =>
+                                      toast('Link copied to clipboard', {
+                                        description:
+                                          'You can now share this generation with others',
+                                      }),
+                                    )
+                                    .catch(() =>
+                                      toast.error('Failed to copy link', {
+                                        description: 'Please try again',
+                                      }),
+                                    );
+                                }}
+                              >
+                                <CopyIcon className="h-4 w-4 mr-1" />
+                                Copy
+                              </Button>
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                className="h-9 rounded-full border-border/30 bg-white/20 backdrop-blur text-white shadow transition hover:bg-white/30"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  e.preventDefault();
+                                  const url = `${window.location.origin}/ai-brand-generator/${item.id}`;
+                                  setShareUrl(url);
+                                  setShareDomain(item.domain);
+                                  shareDialog.openDialog(item.domain as any);
+                                  setIsDialogOpen(true);
+                                }}
+                              >
+                                <Twitter className="h-4 w-4 mr-1" />
+                                Tweet
+                              </Button>
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                className="h-9 rounded-full border-border/30 bg-white/20 backdrop-blur text-white shadow transition hover:bg-white/30"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  e.preventDefault();
+                                  if (!item.url) {
+                                    return;
+                                  }
+                                  void downloadImage(
+                                    item.url,
+                                    `${item.domain}-${item.id}.png`,
                                   );
-                              }}
-                            >
-                              <CopyIcon className="h-4 w-4 mr-1" />
-                              Copy
-                            </Button>
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              className="h-9 rounded-full border-border/30 bg-white/20 backdrop-blur text-white shadow transition hover:bg-white/30"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                e.preventDefault();
-                                const url = `${window.location.origin}/ai-brand-generator/${item.id}`;
-                                setShareUrl(url);
-                                setShareDomain(item.domain);
-                                shareDialog.openDialog(item.domain as any);
-                                setIsDialogOpen(true);
-                              }}
-                            >
-                              <Twitter className="h-4 w-4 mr-1" />
-                              Tweet
-                            </Button>
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              className="h-9 rounded-full border-border/30 bg-white/20 backdrop-blur text-white shadow transition hover:bg-white/30"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                e.preventDefault();
-                                void downloadImage(
-                                  item.url,
-                                  `${item.domain}-${item.id}.png`,
-                                );
-                              }}
-                            >
-                              <DownloadIcon className="h-4 w-4 mr-1" />
-                              Download
-                            </Button>
+                                }}
+                              >
+                                <DownloadIcon className="h-4 w-4 mr-1" />
+                                Download
+                              </Button>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 </div>
               </div>

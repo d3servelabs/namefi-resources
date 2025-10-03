@@ -11,7 +11,6 @@ import { Form } from '@/components/ui/shadcn/form';
 import { NamefiButton } from '@/components/buttons/namefi-button';
 import { Button } from '@/components/ui/shadcn/button';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation';
 import { useState, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import type { FieldValues } from 'react-hook-form';
@@ -45,8 +44,6 @@ export function AIOnboardingOneShot({
 }: {
   onFinishAction?: () => void;
 }) {
-  const router = useRouter();
-
   const [step, setStep] = useState<StepState>('idle');
   const [logoGen, setLogoGen] = useState<Generation | null>(null);
   const [marketingGen, setMarketingGen] = useState<Generation | null>(null);
