@@ -29,7 +29,7 @@ import {
 } from '@/components/ui/shadcn/command';
 import {
   Building2,
-  ChevronsUpDown,
+  ChevronDown,
   Check,
   Image as ImageIcon,
   Loader2,
@@ -403,7 +403,7 @@ function GalleryHeader({
                 size="sm"
                 role="combobox"
                 aria-expanded={false}
-                className="h-9 w-56 justify-between rounded-lg border border-border/50 bg-muted/30 px-3 text-sm font-medium"
+                className="h-9 w-56 justify-between rounded-lg bg-muted/30 px-3 text-sm font-medium"
               >
                 <span className="flex items-center gap-2">
                   <Building2 className="h-4 w-4 text-muted-foreground" />
@@ -411,14 +411,14 @@ function GalleryHeader({
                     ? `${selectedBrands.length} selected`
                     : 'Brands'}
                 </span>
-                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                <ChevronDown className="ml-2 h-4 w-4 shrink-0 text-muted-foreground opacity-50" />
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-64 p-0" align="end">
-              <Command className="rounded-lg border border-border bg-popover text-popover-foreground">
+              <Command className="rounded-lg bg-popover text-popover-foreground">
                 <CommandInput
                   placeholder="Search brand..."
-                  className="px-3 py-2 text-sm focus-visible:ring-0 focus-visible:ring-offset-0"
+                  className="px-3 py-2 text-sm focus-visible:ring-transparent border-none"
                 />
                 <CommandList>
                   <CommandEmpty>No brands found.</CommandEmpty>
@@ -455,7 +455,7 @@ function GalleryHeader({
               onTypeChange(value as GalleryFilters['type'])
             }
           >
-            <SelectTrigger className="h-9 w-48 justify-between rounded-lg border border-border/50 bg-muted/30 px-3 text-sm font-medium">
+            <SelectTrigger className="h-9 w-48 justify-between rounded-lg bg-muted/30 px-3 text-sm font-medium">
               <div className="flex items-center gap-2">
                 <ImageIcon className="size-4 text-muted-foreground" />
                 <SelectValue />
