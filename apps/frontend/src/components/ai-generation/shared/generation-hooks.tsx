@@ -30,13 +30,15 @@ export function useLogoGeneration({ domain }: UseLogoGenerationProps) {
         });
         return { pendingId } as { pendingId?: string };
       },
-      onSuccess: (data, _variables, context) => {
+      onSuccess: (data, variables, context) => {
         if (context?.pendingId) {
           resolvePendingItem(context.pendingId, data);
         }
+        const targetDomain = data?.domain ?? variables?.domain ?? domain;
+
         // Update the cache with the new generation
         queryClient.setQueryData(
-          trpc.ai.getGenerationsByDomain.queryKey({ domain }),
+          trpc.ai.getGenerationsByDomain.queryKey({ domain: targetDomain }),
           (old) => {
             if (!old) return [data];
             return [...old, data];
@@ -45,7 +47,9 @@ export function useLogoGeneration({ domain }: UseLogoGenerationProps) {
 
         // Invalidate to ensure we have the latest data
         queryClient.invalidateQueries({
-          queryKey: trpc.ai.getGenerationsByDomain.queryKey({ domain }),
+          queryKey: trpc.ai.getGenerationsByDomain.queryKey({
+            domain: targetDomain,
+          }),
         });
 
         queryClient.invalidateQueries({
@@ -73,7 +77,6 @@ export function useLogoGeneration({ domain }: UseLogoGenerationProps) {
         const errorMessage =
           error.message || 'An error occurred generating logos';
         toast.error(errorMessage);
-        console.error('Error generating logo:', error);
       },
     }),
   );
@@ -100,13 +103,17 @@ export function usePosterGeneration({ domain }: UsePosterGenerationProps) {
         });
         return { pendingId } as { pendingId?: string };
       },
-      onSuccess: (data, _variables, context) => {
+      onSuccess: (data, variables, context) => {
         if (context?.pendingId) {
           resolvePendingItem(context.pendingId, data);
         }
+        const targetDomain =
+          data?.domain ??
+          (variables as { domain?: NamefiNormalizedDomain })?.domain ??
+          domain;
         // Update the cache with the new generation
         queryClient.setQueryData(
-          trpc.ai.getGenerationsByDomain.queryKey({ domain }),
+          trpc.ai.getGenerationsByDomain.queryKey({ domain: targetDomain }),
           (old) => {
             if (!old) return [data];
             return [...old, data];
@@ -115,7 +122,9 @@ export function usePosterGeneration({ domain }: UsePosterGenerationProps) {
 
         // Invalidate to ensure we have the latest data
         queryClient.invalidateQueries({
-          queryKey: trpc.ai.getGenerationsByDomain.queryKey({ domain }),
+          queryKey: trpc.ai.getGenerationsByDomain.queryKey({
+            domain: targetDomain,
+          }),
         });
 
         queryClient.invalidateQueries({
@@ -143,7 +152,6 @@ export function usePosterGeneration({ domain }: UsePosterGenerationProps) {
         const errorMessage =
           error.message || 'An error occurred generating posters';
         toast.error(errorMessage);
-        console.error('Error generating marketing image:', error);
       },
     }),
   );

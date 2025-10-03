@@ -21,9 +21,6 @@ export function LogoTab({
   existingGenerations = [],
   brandDomain,
 }: LogoTabProps) {
-  const [currentGenParams, setCurrentGenParams] = useState<LogoFormData | null>(
-    null,
-  );
   const lastGenerationParams = useRef<LogoFormData | null>(null);
   const [latestGeneration, setLatestGeneration] = useState<Generation | null>(
     null,
@@ -35,7 +32,6 @@ export function LogoTab({
   const { openPoster } = usePosterFlow();
 
   const handleGenerateLogo = (data: LogoFormData) => {
-    setCurrentGenParams(data);
     lastGenerationParams.current = data;
     setLatestGeneration(null);
 
@@ -72,16 +68,8 @@ export function LogoTab({
           }}
         />
       }
-      isLoading={generateLogoMutation.isPending}
       title="Generated Logos"
       convertToGeneratedItems={convertLogoGenerations}
-      previewConfig={{
-        type: currentGenParams?.type,
-        style: currentGenParams?.style,
-        description: currentGenParams?.description,
-        model: currentGenParams?.model,
-      }}
-      onGenerateMore={handleGenerateMore}
       onPosterRequest={openPoster}
     />
   );

@@ -10,9 +10,6 @@ interface BaseGenerationTabProps {
   // Generator component as children
   generator: ReactNode;
 
-  // Mutation state
-  isLoading: boolean;
-
   // Title and conversion logic
   title: string;
   convertToGeneratedItems: (
@@ -22,18 +19,6 @@ interface BaseGenerationTabProps {
 
   // Optional additional data for the conversion
   availableLogos?: Generation[];
-
-  // Preview configuration
-  previewConfig?: {
-    type?: string;
-    style?: string;
-    category?: string;
-    description?: string;
-    model?: string;
-  };
-
-  // Callback to trigger new generation
-  onGenerateMore?: () => void;
   onPosterRequest?: (generation: Generation) => void;
 }
 

@@ -35,8 +35,6 @@ export function PosterTab({
   const [focusedLogoId, setFocusedLogoId] = useState<string | null>(
     focusedLogo?.id ?? null,
   );
-  const [currentGenParams, setCurrentGenParams] =
-    useState<PosterFormData | null>(null);
   const lastGenerationParams = useRef<PosterFormData | null>(null);
   const [latestGeneration, setLatestGeneration] = useState<Generation | null>(
     null,
@@ -71,7 +69,6 @@ export function PosterTab({
   }, [logoGenerations, focusedLogo]);
 
   const handleGeneratePosters = (data: PosterFormData) => {
-    setCurrentGenParams(data);
     lastGenerationParams.current = data;
     // Clear previous generation when starting a new one
     setLatestGeneration(null);
@@ -90,11 +87,6 @@ export function PosterTab({
       handleGeneratePosters(lastGenerationParams.current);
     }
   };
-
-  const selectedLogo = logosWithFocus.find((logo) => {
-    const target = currentGenParams?.selectedLogoId || focusedLogoId;
-    return logo.id === target;
-  });
 
   return (
     <div className="space-y-4">
@@ -134,21 +126,9 @@ export function PosterTab({
             initialSelectedLogoId={focusedLogoId ?? undefined}
           />
         }
-        isLoading={generatePosterMutation.isPending}
         title="Generated Posters"
         convertToGeneratedItems={convertPosterGenerations}
         availableLogos={logosWithFocus}
-        previewConfig={{
-          description: currentGenParams?.description,
-          category: selectedLogo ? 'Logo-Based' : 'Standalone',
-          type: 'Marketing Poster',
-          style:
-            selectedLogo?.output?.type === 'logo'
-              ? selectedLogo.output.logoStyle
-              : undefined,
-          model: currentGenParams?.model,
-        }}
-        onGenerateMore={handleGenerateMore}
       />
     </div>
   );

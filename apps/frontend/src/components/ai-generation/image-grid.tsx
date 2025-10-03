@@ -1,17 +1,22 @@
 'use client';
 
 import { useState } from 'react';
-import { CopyLinkButton } from '@/components/copy-link-button';
-import { Button } from '@/components/ui/shadcn/button';
 import { Card, CardContent } from '@/components/ui/shadcn/card';
-import { Download } from 'lucide-react';
-import { TwitterIcon } from 'react-share';
 import { TwitterShareDialog } from '@/components/hunt/twitter-share-dialog';
 import {
   defaultShareConfig,
   useTwitterShareDialog,
 } from '@/hooks/use-twitter-share';
 import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import {
+  buildDownloadFilename,
+  copyGenerationLink,
+  downloadGenerationAsset,
+  resolveGenerationLink,
+} from './shared/generation-actions';
+import { GenerationActionButtons } from './shared/generation-action-buttons';
 
 export interface GeneratedItem {
   id?: string;
@@ -29,14 +34,14 @@ export interface GeneratedItem {
     };
   };
   kind?: 'logo' | 'marketing';
-  domain?: string;
+  domain?: NamefiNormalizedDomain;
 }
 
 interface ImageGridProps {
   items: GeneratedItem[];
   title: string;
   onGenerateAnother?: () => void;
-  brandDomain?: string;
+  brandDomain?: NamefiNormalizedDomain;
   onCreatePoster?: (item: GeneratedItem) => void;
 }
 
@@ -56,24 +61,24 @@ export function ImageGrid({
   const [dialogState, setDialogState] = useState<{
     open: boolean;
     url?: string;
-    domain?: string;
+    domain?: NamefiNormalizedDomain;
   }>({ open: false });
   const router = useRouter();
-  const handleDownload = async (url: string, index: number) => {
-    try {
-      const response = await fetch(url);
-      const blob = await response.blob();
-      const downloadUrl = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = downloadUrl;
-      link.download = `${title.toLowerCase().replace(/\s+/g, '-')}-${index + 1}.png`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(downloadUrl);
-    } catch (error) {
-      console.error('Download failed:', error);
+  const handleOpenShare = (
+    item: GeneratedItem,
+    domainOverride?: NamefiNormalizedDomain,
+  ) => {
+    const link = resolveGenerationLink({ id: item.id, fallbackUrl: item.url });
+    const domain = domainOverride ?? item.domain;
+    if (!link || !domain) {
+      toast.error('Unable to share', {
+        description:
+          'A shareable link or domain was not found for this generation.',
+      });
+      return;
     }
+    shareDialog.openDialog(domain);
+    setDialogState({ open: true, url: link, domain });
   };
 
   if (items.length === 0) return null;
@@ -89,7 +94,7 @@ export function ImageGrid({
             const cardContent = (
               <Card key={itemKey} className="overflow-hidden">
                 <div className="relative aspect-square">
-                  {/** biome-ignore lint/performance/noImgElement: <explanation> */}
+                  {/** biome-ignore lint/performance/noImgElement: using plain img keeps square thumbnail layout lightweight */}
                   <img
                     src={item.url}
                     alt={`${title} ${index + 1}`}
@@ -98,67 +103,46 @@ export function ImageGrid({
                   />
                 </div>
                 {/* Action buttons below image */}
-                <div className="p-3 border-b border-t flex gap-2 justify-center">
-                  <CopyLinkButton
-                    link={
-                      item.id && brandDomain
-                        ? `${window.location.origin}/ai-brand-generator/${item.id}`
-                        : item.url
+                <div className="p-3 border-b border-t flex justify-center">
+                  <GenerationActionButtons
+                    appearance="grid"
+                    posterAction={
+                      onCreatePoster && item.kind === 'logo' && item.id
+                        ? {
+                            label: 'Create Poster',
+                            onClick: (event) => {
+                              event.preventDefault();
+                              event.stopPropagation();
+                              onCreatePoster(item);
+                            },
+                            disabled: false,
+                          }
+                        : undefined
                     }
-                  />
-                  {onCreatePoster && item.kind === 'logo' && item.id && (
-                    <Button
-                      type="button"
-                      size="sm"
-                      className="h-9 px-4 rounded-full bg-primary text-primary-foreground hover:bg-primary/90"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        onCreatePoster(item);
-                      }}
-                    >
-                      Create Poster
-                    </Button>
-                  )}
-                  <Button
-                    type="button"
-                    variant="secondary"
-                    size="icon"
-                    className="bg-muted/90"
-                    title="Share on Twitter"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      const detailUrl =
-                        item.id && brandDomain
-                          ? `${window.location.origin}/ai-brand-generator/${item.id}`
-                          : item.url;
-                      shareDialog.openDialog(
-                        (brandDomain || 'example.com') as any,
-                      );
-                      setDialogState({
-                        open: true,
-                        url: detailUrl,
-                        domain: brandDomain || undefined,
+                    onCopy={(event) => {
+                      event.preventDefault();
+                      event.stopPropagation();
+                      void copyGenerationLink({
+                        id: item.id,
+                        fallbackUrl: item.url,
                       });
                     }}
-                  >
-                    <TwitterIcon className="h-4 w-4 rounded" />
-                  </Button>
-                  <Button
-                    type="button"
-                    variant="secondary"
-                    size="icon"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      void handleDownload(item.url, index);
+                    onShare={(event) => {
+                      event.preventDefault();
+                      event.stopPropagation();
+                      handleOpenShare(item, brandDomain);
                     }}
-                    className="bg-muted/90"
-                    title="Download image"
-                  >
-                    <Download className="h-4 w-4" />
-                  </Button>
+                    onDownload={(event) => {
+                      event.preventDefault();
+                      event.stopPropagation();
+                      void downloadGenerationAsset({
+                        url: item.url,
+                        filename: buildDownloadFilename(
+                          `${title}-${index + 1}`,
+                        ),
+                      });
+                    }}
+                  />
                 </div>
                 <CardContent className="px-4">
                   <div className="flex flex-wrap gap-2 mb-2">
@@ -184,7 +168,7 @@ export function ImageGrid({
                     <div className="mb-3 p-2 bg-gray-50 rounded-lg">
                       <p className="text-xs text-gray-600 mb-2">Based on:</p>
                       <div className="flex items-center gap-2">
-                        {/** biome-ignore lint/performance/noImgElement: <explanation> */}
+                        {/** biome-ignore lint/performance/noImgElement: referencing original logo image directly */}
                         <img
                           src={item.basedOnLogo.result}
                           alt="Referenced logo"
@@ -210,23 +194,21 @@ export function ImageGrid({
               </Card>
             );
 
-            // Navigable card via onClick; buttons inside stop propagation
             return (
-              // biome-ignore lint/a11y/noStaticElementInteractions: <explanation>
+              // biome-ignore lint/a11y/useSemanticElements: wrapping buttons prevents nesting interactive elements
               <div
                 key={itemKey}
+                role="button"
+                tabIndex={0}
+                aria-label={`View generation ${index + 1}`}
                 className="cursor-pointer"
                 onClick={() => {
-                  if (item.id && brandDomain) {
+                  if (item.id) {
                     router.push(`/ai-brand-generator/${item.id}`);
                   }
                 }}
                 onKeyDown={(e) => {
-                  if (
-                    (e.key === 'Enter' || e.key === ' ') &&
-                    item.id &&
-                    brandDomain
-                  ) {
+                  if ((e.key === 'Enter' || e.key === ' ') && item.id) {
                     e.preventDefault();
                     router.push(`/ai-brand-generator/${item.id}`);
                   }
@@ -244,12 +226,14 @@ export function ImageGrid({
           setDialogState({ open: false });
           shareDialog.onClose();
         }}
-        domainName={(dialogState.domain || brandDomain || 'example.com') as any}
+        domainName={dialogState.domain ?? brandDomain ?? null}
         shareUrl={dialogState.url || ''}
         hasShared={false}
         isCheckingStatus={false}
         isSubmitting={false}
-        onSubmit={async () => {}}
+        onSubmit={async () => {
+          /* no-op: external share flow handles submission */
+        }}
         trackShares={false}
         campaignKey={undefined}
         featureKey="ai_generation"

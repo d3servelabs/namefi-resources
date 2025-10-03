@@ -14,8 +14,14 @@ import {
   defaultShareConfig,
   useTwitterShareDialog,
 } from '@/hooks/use-twitter-share';
-import { toast } from 'sonner';
 import { useIsMobile } from '@/hooks/use-mobile';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import {
+  buildDownloadFilename,
+  copyGenerationLink,
+  downloadGenerationAsset,
+  resolveGenerationLink,
+} from './generation-actions';
 
 // Circular progress component with fake loading percentage
 const CircularProgress = ({
@@ -259,7 +265,7 @@ const GenerationImageLoader: React.FC<GenerationImageLoaderProps> = ({
           transition={{ duration: 0.5 }}
           className="absolute inset-0 bg-white"
         >
-          {/** biome-ignore lint/performance/noImgElement: <explanation> */}
+          {/** biome-ignore lint/performance/noImgElement: ensures smooth crossfade between generated previews */}
           <img
             key={displaySrc}
             src={displaySrc}
@@ -289,6 +295,7 @@ interface GenerationPreviewProps {
   onGeneratePoster?: () => void;
 }
 
+// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: UI flow handles multiple rendering branches for loading, success, and actions
 export function GenerationPreview({
   isLoading,
   loadingState = 'idle',
@@ -311,11 +318,11 @@ export function GenerationPreview({
   });
 
   useEffect(() => {
-    if (generatedImage?.domain) {
-      setCurrentUrl(
-        `${window.location.origin}/ai-brand-generator/${generatedImage?.id}`,
-      );
-    }
+    const link = resolveGenerationLink({
+      id: generatedImage?.id,
+      fallbackUrl: generatedImage?.url,
+    });
+    setCurrentUrl(link ?? '');
   }, [generatedImage]);
 
   // Smooth scroll into view when generation starts
@@ -331,42 +338,35 @@ export function GenerationPreview({
   const handleDownload = async () => {
     if (!generatedImage?.url) return;
 
-    try {
-      const response = await fetch(generatedImage.url);
-      const blob = await response.blob();
-      const downloadUrl = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = downloadUrl;
-      link.download = `${generatedImage.domain}-generated.png`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(downloadUrl);
-    } catch (error) {
-      console.error('Download failed:', error);
-    }
+    const base = generatedImage.id
+      ? `${generatedImage.domain}-${generatedImage.id}`
+      : `${generatedImage.domain}-generated`;
+
+    await downloadGenerationAsset({
+      url: generatedImage.url,
+      filename: buildDownloadFilename(base),
+      errorMessage: 'Failed to download image',
+      errorDescription: 'Please try again',
+    });
   };
 
   const handleCopy = async () => {
-    if (!currentUrl) return;
+    if (!generatedImage) return;
 
-    try {
-      await navigator.clipboard.writeText(currentUrl);
-      toast.success('Image URL copied to clipboard', {
-        description: 'You can now share this image URL with others',
-      });
-    } catch (error) {
-      console.error('Failed to copy image URL:', error);
-      toast.error('Failed to copy image URL', {
-        description: 'Please try again',
-      });
-    }
+    await copyGenerationLink({
+      id: generatedImage.id,
+      fallbackUrl: generatedImage.url,
+      successMessage: 'Image URL copied to clipboard',
+      successDescription: 'You can now share this image URL with others',
+      errorMessage: 'Failed to copy image URL',
+      errorDescription: 'Please try again',
+    });
   };
 
   const openShareDialog = () => {
     if (!generatedImage?.domain) return;
-    // Prime the dialog state
-    shareDialog.openDialog(generatedImage.domain as any);
+    const domain = generatedImage.domain as NamefiNormalizedDomain;
+    shareDialog.openDialog(domain);
     setIsDialogOpen(true);
   };
 
@@ -549,12 +549,18 @@ export function GenerationPreview({
           setIsDialogOpen(false);
           shareDialog.onClose();
         }}
-        domainName={generatedImage?.domain as any}
+        domainName={
+          generatedImage?.domain
+            ? (generatedImage.domain as NamefiNormalizedDomain)
+            : null
+        }
         shareUrl={currentUrl}
         hasShared={false}
         isCheckingStatus={false}
         isSubmitting={false}
-        onSubmit={async () => {}}
+        onSubmit={async () => {
+          /* no-op: analytics handled elsewhere */
+        }}
         trackShares={false}
         campaignKey={undefined}
         featureKey="ai_generation"

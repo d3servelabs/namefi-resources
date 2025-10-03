@@ -36,12 +36,9 @@ export function AITabs({
       {isPosterVisible ? (
         <PosterTab
           existingGenerations={posterTabProps?.existingGenerations}
-          brandDomain={
-            posterTabProps?.brandDomain ||
-            (selectedLogo?.domain as NamefiNormalizedDomain | undefined)
-          }
+          brandDomain={posterTabProps?.brandDomain ?? selectedLogo?.domain}
           logoGenerations={posterTabProps?.availableLogos}
-          focusedLogo={selectedLogo || undefined}
+          focusedLogo={selectedLogo ?? undefined}
           onDismiss={closePoster}
         />
       ) : (

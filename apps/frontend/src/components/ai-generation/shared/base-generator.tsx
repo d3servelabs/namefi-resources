@@ -3,7 +3,7 @@
 import { Card, CardContent } from '@/components/ui/shadcn/card';
 import { Form } from '@/components/ui/shadcn/form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useEffect, useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import {
   useForm,
   type UseFormReturn,
@@ -11,7 +11,7 @@ import {
   type DefaultValues,
   type FieldPath,
 } from 'react-hook-form';
-import { z } from 'zod';
+import { z, type ZodTypeDef } from 'zod';
 import { DomainField, DescriptionField } from './form-fields';
 import { GenerateSubmitButton } from './submit-button';
 import { useTRPC } from '@/lib/trpc';
@@ -21,6 +21,7 @@ import {
   type NamefiNormalizedDomain,
 } from '@namefi-astra/utils';
 import type { Generation } from './types';
+import { toast } from 'sonner';
 
 // Base form schema with domain and description
 export const baseFormSchema = z.object({
@@ -35,7 +36,7 @@ interface BaseGeneratorProps<T extends FieldValues & BaseFormData> {
   isLoading?: boolean;
   disabled?: boolean;
   fixedDomain?: NamefiNormalizedDomain;
-  formSchema: z.ZodSchema<any>;
+  formSchema: z.ZodType<T, ZodTypeDef, unknown>;
   defaultValues: DefaultValues<T>;
   children?: (props: {
     form: UseFormReturn<T>;
@@ -76,9 +77,15 @@ export function BaseGenerator<T extends FieldValues & BaseFormData>({
   const [openPanel, setOpenPanel] = useState<string | null>(null);
 
   const trpc = useTRPC();
-  const { data: usageData, isSuccess: isUsageSuccess } = useQuery({
+  const {
+    data: usageData,
+    isLoading: isUsageLoading,
+    isError: isUsageError,
+  } = useQuery({
     ...trpc.ai.getUserGenerationUsage.queryOptions(),
   });
+
+  const usageErrorNotifiedRef = useRef(false);
 
   const form = useForm<T>({
     resolver: zodResolver(formSchema),
@@ -86,7 +93,19 @@ export function BaseGenerator<T extends FieldValues & BaseFormData>({
       ...defaultValues,
       domain: fixedDomain || defaultValues.domain,
     } as DefaultValues<T>,
+    mode: 'onChange',
+    reValidateMode: 'onChange',
   });
+
+  useEffect(() => {
+    if (isUsageError && !usageErrorNotifiedRef.current) {
+      usageErrorNotifiedRef.current = true;
+      toast.error('Unable to check AI usage limits', {
+        description:
+          'We could not verify your remaining credits, but you can still try generating assets.',
+      });
+    }
+  }, [isUsageError]);
 
   useEffect(() => {
     if (onFormReady) onFormReady(form);
@@ -102,7 +121,7 @@ export function BaseGenerator<T extends FieldValues & BaseFormData>({
     }
   };
 
-  const domainToUse = fixedDomain || form.watch('domain' as any);
+  const domainToUse = fixedDomain || form.watch('domain' as FieldPath<T>);
 
   useEffect(() => {
     if (onDomainChange && typeof domainToUse === 'string') {
@@ -113,7 +132,7 @@ export function BaseGenerator<T extends FieldValues & BaseFormData>({
   // Check if user has reached the monthly limit
   const isLimitReached = usageData?.hasReachedLimit ?? false;
   const isDisabled =
-    !form.formState.isValid || disabled || isLimitReached || !isUsageSuccess;
+    !form.formState.isValid || disabled || isLimitReached || isUsageLoading;
 
   return (
     <Form {...form}>

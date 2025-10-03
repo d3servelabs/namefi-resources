@@ -96,7 +96,7 @@ export function PosterGenerator({
 
   const { data: domainLogos = [] } = useQuery({
     ...trpc.ai.getGenerationsByType.queryOptions({
-      domain: selectedDomain as any,
+      domain: selectedDomain as NamefiNormalizedDomain,
       type: 'logo',
     }),
     enabled: !!selectedDomain,
@@ -131,13 +131,16 @@ export function PosterGenerator({
     if (!form) return;
     const logos = (logosToShow as Generation[]) || [];
     const currentId = form.getValues('selectedLogoId');
-    if (!currentId && logos.length > 0) {
-      form.setValue('selectedLogoId', logos[0].id, {
-        shouldDirty: false,
-        shouldTouch: false,
-        shouldValidate: true,
-      });
-    }
+    const currentExists = logos.some((logo) => logo.id === currentId);
+
+    if (currentExists) return;
+
+    const nextId = logos[0]?.id ?? '';
+    form.setValue('selectedLogoId', nextId, {
+      shouldDirty: false,
+      shouldTouch: false,
+      shouldValidate: true,
+    });
   }, [logosToShow]);
 
   return (
