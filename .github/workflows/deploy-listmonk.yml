@@ -13,6 +13,11 @@ on:
         required: false
         default: false
         type: boolean
+      force_docker_build:
+        description: 'Force build docker image'
+        required: false
+        default: false
+        type: boolean
 
 env:
   PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
@@ -41,9 +46,15 @@ jobs:
             echo "Force sync enabled via workflow dispatch"
             echo "static_changed=true" >> $GITHUB_OUTPUT
           else
+            BASE_SHA="${{ github.event.before }}"
+            if [ -z "$BASE_SHA" ] || [ "$BASE_SHA" = "0000000000000000000000000000000000000000" ]; then
+              echo "No base commit detected (manual dispatch or new branch); defaulting to rebuild the static files."
+              echo "static_changed=true" >> $GITHUB_OUTPUT
+              exit 0
+            fi
             # Check if static files changed in the last commit
-            echo "Checking for changes in static files from ${{ github.event.before }} to ${{ github.sha }}"
-            CHANGED_FILES=$(git diff --name-only "${{ github.event.before }}" "${{ github.sha }}" | grep -E "^apps/listmonk/static/" || true)
+            echo "Checking for changes in static files from ${BASE_SHA} to ${{ github.sha }}"
+            CHANGED_FILES=$(git diff --name-only "${BASE_SHA}" "${{ github.sha }}" | grep -E "^apps/listmonk/static/" || true)
             if [ -n "$CHANGED_FILES" ]; then
                 echo "Static files have changed"
               echo "static_changed=true" >> $GITHUB_OUTPUT
@@ -53,10 +64,48 @@ jobs:
             fi
           fi
 
+  # Check if docker related files have changed
+  check-docker-changes:
+    name: Check Docker Changes
+    runs-on: ubuntu-latest
+    outputs:
+      docker_changed: ${{ steps.check_changes.outputs.docker_changed }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Check for changes in docker related files
+        id: check_changes
+        run: |
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ] && [ "${{ github.event.inputs.force_docker_build }}" == "true" ]; then
+            echo "Force sync enabled via workflow dispatch"
+            echo "docker_changed=true" >> $GITHUB_OUTPUT
+          else
+            BASE_SHA="${{ github.event.before }}"  
+            if [ -z "$BASE_SHA" ] || [ "$BASE_SHA" = "0000000000000000000000000000000000000000" ]; then  
+              echo "No base commit detected (manual dispatch or new branch); defaulting to rebuild the Docker image."  
+              echo "docker_changed=true" >> $GITHUB_OUTPUT  
+              exit 0  
+            fi  
+            echo "Checking for changes in docker related files from ${BASE_SHA} to ${{ github.sha }}"
+            CHANGED_FILES=$(git diff --name-only "${BASE_SHA}" "${{ github.sha }}" | grep -E "^apps/listmonk/(Dockerfile|startup.sh|package.json)" || true)
+            if [ -n "$CHANGED_FILES" ]; then
+                echo "Docker related files have changed"
+              echo "docker_changed=true" >> $GITHUB_OUTPUT
+            else
+              echo "No changes in docker related files"
+              echo "docker_changed=false" >> $GITHUB_OUTPUT
+            fi
+          fi
+  
   # Build and push Docker image
   build:
     name: Build and Push Docker Image
     runs-on: blacksmith-4vcpu-ubuntu-2204
+    needs: [check-docker-changes]
+    if: needs.check-docker-changes.outputs.docker_changed == 'true'
     permissions:
       contents: read
       id-token: write
