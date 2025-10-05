@@ -10,7 +10,7 @@ export const useSearchFromQuery = (
   runSearch: () => void,
 ) => {
   const [queryParam, setQueryParam] = useQueryState(
-    'q',
+    'query',
     parseAsString.withOptions({
       clearOnDefault: true,
     }),
