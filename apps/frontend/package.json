@@ -58,6 +58,7 @@
     "@trpc/server": "^11.4.4",
     "@trpc/tanstack-react-query": "^11.4.4",
     "@uiw/react-json-view": "^2.0.0-alpha.39",
+    "altcha": "^2.2.4",
     "canvas-confetti": "^1.9.3",
     "chart.js": "^4.5.0",
     "chrono-node": "^2.8.4",

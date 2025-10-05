@@ -115,6 +115,16 @@
   --brand-primary: oklch(75.85% 0.1804 155.5);
   --brand-secondary: oklch(75.85% 0.1804 155.5);
   --brand-tertiary: oklch(75.85% 0.1804 155.5);
+
+  --altcha-border-width: 1px;
+  --altcha-border-radius: var(--radius);
+  --altcha-color-base: var(--card);
+  --altcha-color-border: var(--border);
+  --altcha-color-text: var(--foreground);
+  --altcha-color-border-focus: var(--border);
+  --altcha-color-error-text: var(--destructive);
+  --altcha-color-footer-bg: var(--card);
+  --altcha-max-width: 100%;
 }
 
 [data-theme="astra"] {

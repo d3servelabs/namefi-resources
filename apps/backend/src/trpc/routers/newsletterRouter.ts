@@ -4,6 +4,7 @@ import { TRPCError } from '@trpc/server';
 import { logger } from '#lib/logger';
 import { secrets } from '#lib/env';
 import { ListmonkClient } from '#lib/listmonk';
+import { verifySolution } from 'altcha-lib';
 
 const subscribeToNewsletterSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
@@ -16,6 +17,7 @@ const subscribeToNewsletterSchema = z.object({
    * Additional custom attributes to store with the subscriber
    */
   attributes: z.record(z.unknown()).optional(),
+  altcha: z.string().optional().nullable(),
 });
 
 const newsletterListId = 2;
@@ -154,7 +156,20 @@ export const newsletterRouter = createTRPCRouter({
   subscribe: publicProcedure
     .input(subscribeToNewsletterSchema)
     .mutation(async ({ input }) => {
-      const { email, name, from, attributes } = input;
+      const { email, name, from, attributes, altcha } = input;
+      if (!altcha) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Altcha is required',
+        });
+      }
+      const verified = await verifySolution(altcha, secrets.ALTCHA_HMAC_KEY);
+      if (!verified) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Invalid Altcha payload',
+        });
+      }
 
       await subscribeToNewsletter(email, from, name, attributes);
 

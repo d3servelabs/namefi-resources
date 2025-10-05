@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -26,6 +26,8 @@ import { toast } from 'sonner';
 import { Mail, CheckCircle2, X } from 'lucide-react';
 import { useMutation } from '@tanstack/react-query';
 import { useQueryState } from 'nuqs';
+import AltchaVerifier from './altcha-verifier';
+import type { AltchaWidgetRef } from './altcha-verifier';
 
 const newsletterFormSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
@@ -118,13 +120,18 @@ export function NewsletterForm({
       },
     }),
   );
+  const altchaRef = useRef<{
+    value: string | null;
+    widget: AltchaWidgetRef | null;
+  }>(null);
 
-  const onSubmit = (data: NewsletterFormData) => {
+  const onSubmit = async (data: NewsletterFormData) => {
     subscribeMutation.mutate({
       email: data.email,
       name: data.name || undefined,
       from,
       attributes,
+      altcha: altchaRef.current?.value,
     });
   };
 
@@ -265,6 +272,8 @@ export function NewsletterForm({
                 </FormItem>
               )}
             />
+
+            <AltchaVerifier ref={altchaRef} expire={120_000} />
 
             <Button
               type="submit"

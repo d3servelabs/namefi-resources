@@ -22,6 +22,7 @@ import { validateAndCreateSearchAttributes } from '#temporal/operator/search-att
 import { randomBytes } from 'node:crypto';
 import { getConnInfo } from '@hono/node-server/conninfo';
 import type { ConnInfo } from 'hono/conninfo';
+import { altchaRouter } from './routers/altcha';
 
 type HonoVariables = {
   requestId: string;
@@ -95,6 +96,7 @@ app.route('v1/dns/tracking', trackingRouter);
 app.route('v1/dnssec', dnssecRouter);
 app.route('v1/availability', availabilityRouter);
 app.route('/webhooks', webhooksRouter);
+app.route('/altcha', altchaRouter);
 
 app.get('/configfi', (c) => {
   return c.json({

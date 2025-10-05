@@ -71,6 +71,7 @@ export const secretsSchema = z.object({
   AVAILABILITY_API_AUTH_KEY: z.string(),
 
   COOKIE_SECRET: z.string(),
+  ALTCHA_HMAC_KEY: z.string(),
 });
 
 export type SecretsSchema = z.infer<typeof secretsSchema>;
