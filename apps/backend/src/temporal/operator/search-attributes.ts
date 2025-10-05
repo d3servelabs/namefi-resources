@@ -34,6 +34,7 @@ const typeMap: Record<string, IndexedValueType> = {
   Double: IndexedValueType.INDEXED_VALUE_TYPE_DOUBLE,
   Bool: IndexedValueType.INDEXED_VALUE_TYPE_BOOL,
   Datetime: IndexedValueType.INDEXED_VALUE_TYPE_DATETIME,
+  KeywordList: IndexedValueType.INDEXED_VALUE_TYPE_KEYWORD_LIST,
 };
 
 const namespace = config.TEMPORAL_NAMESPACE;
@@ -48,10 +49,23 @@ type SearchAttribute = {
  * These match the attributes defined in temporal-search-attributes.sh
  */
 const CUSTOM_SEARCH_ATTRIBUTES = [
-  // {name: 'callerType', description: 'Identifies the type of caller of the workflow', type: 'Keyword'},
   // {name: 'domainPublicSuffix', description: 'The public suffix of the domain name', type: 'Keyword'},
   // {name: 'chainId', description: 'The chain ID of the domain name', type: 'Keyword'},
-  // {name: 'caller', description: 'Identifies the caller of the workflow', type: 'Text'},
+  {
+    name: 'affectedResources',
+    description: 'Identifies the resource that was affected by the workflow',
+    type: 'KeywordList',
+  },
+  {
+    name: 'callerType',
+    description: 'Identifies the type of caller of the workflow',
+    type: 'Keyword',
+  },
+  {
+    name: 'caller',
+    description: 'Identifies the caller of the workflow',
+    type: 'Keyword',
+  },
   {
     name: 'userId',
     description:
