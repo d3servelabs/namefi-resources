@@ -7,41 +7,6 @@
         <base target="_blank">
 
         <style>
-            :root {
-                /* Color System - matching Namefi Astra design */
-                --background: oklch(0.145 0 0);
-                --foreground: oklch(0.985 0 0);
-                --card: oklch(0.205 0 0);
-                --card-foreground: oklch(0.985 0 0);
-                --primary: oklch(0.922 0 0);
-                --primary-foreground: oklch(0.205 0 0);
-                --secondary: oklch(0.269 0 0);
-                --secondary-foreground: oklch(0.985 0 0);
-                --muted: oklch(0.269 0 0);
-                --muted-foreground: oklch(0.708 0 0);
-                --accent: oklch(0.269 0 0);
-                --accent-foreground: oklch(0.985 0 0);
-                --destructive: oklch(0.704 0.191 22.216);
-                --border: oklch(1 0 0 / 10%);
-                --input: oklch(1 0 0 / 15%);
-                --ring: oklch(0.556 0 0);
-                --brand-primary: #4ade80; /* fallback */  
-                --brand-primary: oklch(75.85% 0.1804 155.5); /* modern browsers */ 
-                --brand-primary-hover: oklch(65.85% 0.1804 155.5);
-                --brand-primary-foreground: oklch(0.205 0 0);
-                --brand-secondary: oklch(75.85% 0.1804 155.5);
-                --brand-tertiary: oklch(75.85% 0.1804 155.5);
-                --radius: 0.65rem;
-              
-                /* Typography */
-                --font-sans:
-                  -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
-                  Arial, sans-serif;
-                --font-mono:
-                  ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco, Consolas, monospace;
-              }
-
-              
             body {
                 background-color: #F0F1F3;
                 font-family: 'Helvetica Neue', 'Segoe UI', Helvetica, sans-serif;
@@ -56,11 +21,11 @@
                 padding: 30px;
                 max-width: 525px;
                 margin: 0 auto;
-                border-radius: var(--radius);
+                border-radius: 0.65rem;
             }
 
             .header {
-                border-bottom: 1px solid var(--ring);
+                border-bottom: 1px solid #737373;
                 padding-bottom: 1rem;
                 margin-bottom: 1rem;
             }
@@ -71,27 +36,27 @@
                 color: #888;
             }
             .footer a {
-                color: var(--brand-primary);
+                color: #1dd17d;
             }
             .footer a:hover {
-                color: var(--brand-primary-hover);
+                color: #00b05f;
             }
 
             .gutter {
                 padding: 30px;
             }
             .button {
-                background: var(--brand-primary);
+                background: #1dd17d;
                 color: #fff !important;
                 display: inline-block;
-                border-radius: var(--radius);
+                border-radius: 0.65rem;
                 padding: 0.5rem 1rem;
                 text-align: center;
                 text-decoration: none;
                 font-weight: bold;
             }
             .button:hover {
-                background: var(--brand-primary-hover);
+                background: #00b05f;
                 color: #fff;
             }
             img {
@@ -99,11 +64,11 @@
             }
 
             a {
-                color: var(--brand-primary);
+                color: #1dd17d !important;
             }
-                a:hover {
-                    color: var(--brand-primary-hover);
-                }
+            a:hover {
+                color: #00b05f;
+            }
             @media screen and (max-width: 600px) {
                 .wrap {
                     max-width: auto;

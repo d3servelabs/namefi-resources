@@ -1,5 +1,5 @@
 #!/bin/sh
-STATIC_DIR="${LISTMONK__app__static_dir:-}"
+STATIC_DIR="${LISTMONK_app__static_dir:-}"
 ./listmonk --install --idempotent --yes --config ''
 ./listmonk --upgrade --yes --config ''
 echo "STATIC_DIR: $STATIC_DIR"

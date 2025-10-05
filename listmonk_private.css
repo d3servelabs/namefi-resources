@@ -35,6 +35,7 @@
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.556 0 0);
   --brand-primary: oklch(75.85% 0.1804 155.5);
+  --brand-primary-hover: oklch(64.47% 0.1804 155.5);
   --brand-secondary: oklch(75.85% 0.1804 155.5);
   --brand-tertiary: oklch(75.85% 0.1804 155.5);
   --radius: 0.65rem;
@@ -51,6 +52,11 @@
   --sidebar-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-hover: oklch(0.269 0 0);
+}
+
+* {
+  box-shadow: none !important;
+  border-color: var(--border);
 }
 
 /* Global Overrides */
@@ -823,4 +829,66 @@ pre code {
 .empty-state .description {
   font-size: 0.875rem;
   margin-bottom: 1.5rem;
+}
+
+/* Custom styles */
+.field.is-floating-label .label:before {
+  background-color: var(--background) !important;
+}
+
+.b-sidebar .menu-list .router-link-exact-active {
+  border-right: 5px solid var(--brand-primary) !important;
+  outline: 0 none;
+}
+
+a {
+  color: var(--brand-primary) !important;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--brand-primary-hover) !important;
+  text-decoration: underline;
+}
+
+.select:not(.is-multiple):not(.is-loading):after {
+  border-color: var(--brand-primary) !important;
+  right: 1.125em;
+  z-index: 4;
+}
+
+.select select,
+.taginput .taginput-container.is-focusable,
+.textarea,
+.input {
+  background-color: var(--background) !important;
+  border-color: var(--border) !important;
+  border-radius: var(--radius) !important;
+  color: var(--foreground) !important;
+}
+
+.tabs.is-boxed li.is-active a {
+  background-color: var(--card) !important;
+  border-color: var(--border) !important;
+  border-bottom-color: #dbdbdb !important;
+}
+
+.tabs.is-boxed a:hover {
+  background-color: var(--card) !important;
+  border-bottom-color: var(--border) !important;
+}
+
+.switch input[type="checkbox"]:checked + .check {
+  background: var(--brand-primary) !important;
+}
+
+.b-radio.radio input[type="radio"]:checked + .check {
+  border-color: var(--brand-primary) !important;
+}
+
+.navbar-link:not(.is-arrowless):after {
+  border-color: var(--brand-primary) !important;
+  margin-top: -0.375em;
+  right: 1.125em;
 }
