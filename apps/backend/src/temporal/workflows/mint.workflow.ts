@@ -134,11 +134,12 @@ export async function mintNamefiNFT({
   );
 }
 
-export async function mintNfsc(
-  chainId: number,
-  account: `0x${string}`,
-  amountInUsd: number,
-): Promise<string> {
+type MintNfscInput = {
+  chainId: number;
+  account: `0x${string}`;
+  amountInUsd: number;
+};
+export async function mintNfsc(input: MintNfscInput): Promise<string> {
   const { prepareTxToMintNfsc } = typedProxyActivities({
     temporalEnum: TEMPORAL_ENUMS.MINT,
     options: {
@@ -150,9 +151,9 @@ export async function mintNfsc(
   });
 
   const prepareResult: TxPrepareResult = await prepareTxToMintNfsc(
-    chainId,
-    account,
-    amountInUsd,
+    input.chainId,
+    input.account,
+    input.amountInUsd,
   );
 
   if ('error' in prepareResult) {
@@ -164,9 +165,13 @@ export async function mintNfsc(
   // For gas price too low issues
   return await _signAndSendTransactionWithRetry(
     prepareResult.preparedTx,
-    chainId,
+    input.chainId,
   );
 }
+
+mintNfsc.generateId = (input: MintNfscInput) => {
+  return `mint-nfsc-[${input.account}]-[${input.chainId}]-[${input.amountInUsd}]`;
+};
 
 export async function chargeNfscWorkflow(
   chainId: number,

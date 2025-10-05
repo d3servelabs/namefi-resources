@@ -11,8 +11,9 @@ import {
   CardTitle,
 } from '@/components/ui/shadcn/card';
 import { Button } from '@/components/ui/shadcn/button';
-import { Coins } from 'lucide-react';
+import { Coins, History } from 'lucide-react';
 import { BulkMintNfscDialog } from '@/components/nfsc/bulk-mint-dialog';
+import { RecentWorkflowsTable } from '@/components/nfsc/recent-workflows-table';
 
 export default function NfscAdminPage() {
   return (
@@ -58,6 +59,19 @@ function NfscManagement() {
           Bulk Mint NFSC
         </Button>
       </div>
+
+      {/* Recent Workflows */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center space-x-2">
+            <History className="h-5 w-5 text-primary" />
+            <CardTitle>Recent Mint Workflows</CardTitle>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <RecentWorkflowsTable />
+        </CardContent>
+      </Card>
 
       <Card>
         <CardHeader>

@@ -71,9 +71,26 @@ export async function refundUserWorkflow({
 
     try {
       paymentProviderReferenceId = await workflow.executeChild(mintNfsc, {
-        args: [input.chainId, input.account, input.amountInUsd],
-        workflowId: `mint-nfsc-${refundId}`,
+        args: [input],
+        workflowId: mintNfsc.generateId(input),
         taskQueue: TEMPORAL_QUEUES.MINT,
+        searchAttributes: {
+          callerType: ['system'],
+          caller: ['refund-user.workflow'],
+          userId: [nfscPaymentDetails.walletAddress], //todo
+          affectedResources: [
+            'nfsc',
+            `nfsc:${nfscPaymentDetails.walletAddress}`,
+            `refund:${refundId}`,
+          ],
+        },
+        memo: {
+          description: `Refund NFSC for Payment with ID: ${paymentId}`,
+          refundId,
+          paymentId,
+          amountInUsd: amountToRefundInUsdCents / 100,
+          chainId: nfscPaymentDetails.chainId,
+        },
         retry: {
           maximumAttempts: 1,
         },
