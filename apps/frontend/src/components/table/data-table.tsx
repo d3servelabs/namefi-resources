@@ -5,12 +5,22 @@ import {
   getSortedRowModel,
   useReactTable,
   type SortingState,
+  type ColumnSizingState,
+  type VisibilityState,
 } from '@tanstack/react-table';
 import { useState } from 'react';
 import { Button } from '@/components/ui/shadcn/button';
 import { TablePageSizeSelector } from './table-page-size-selector';
-import { ArrowUpDown, Loader2Icon } from 'lucide-react';
+import { ArrowUpDown, Loader2Icon, ColumnsIcon } from 'lucide-react';
 import { cn } from '@/lib/cn';
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/shadcn/dropdown-menu';
 
 type DataTableProps<TData> = {
   columns: ColumnDef<TData, any>[];
@@ -38,15 +48,39 @@ export function DataTable<TData>(props: DataTableProps<TData>) {
   } = props;
 
   const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [columnSizing, setColumnSizing] = useState<ColumnSizingState>({});
 
   const table = useReactTable({
     data,
     columns,
-    state: { sorting },
+    state: {
+      sorting,
+      columnVisibility,
+      columnSizing,
+    },
     onSortingChange: setSorting,
+    onColumnVisibilityChange: setColumnVisibility,
+    onColumnSizingChange: setColumnSizing,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
+    columnResizeMode: 'onChange',
+    enableColumnResizing: true,
+    defaultColumn: {
+      minSize: 50,
+      maxSize: 800,
+    },
   });
+
+  // Check if any columns have been manually resized
+  const hasResizedColumns = Object.keys(columnSizing).length > 0;
+
+  // Calculate total table width based on column sizes
+  const totalTableWidth = table
+    .getVisibleFlatColumns()
+    .reduce((total, column) => {
+      return total + column.getSize();
+    }, 0);
 
   return (
     <div className="space-y-4">
@@ -61,6 +95,38 @@ export function DataTable<TData>(props: DataTableProps<TData>) {
           </span>
         </div>
         <div className="flex items-center gap-2">
+          {/* Column Visibility Toggle */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="sm">
+                <ColumnsIcon className="h-3 w-3 mr-1" />
+                Columns
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-[180px]">
+              <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              {table
+                .getAllColumns()
+                .filter((column) => column.getCanHide())
+                .map((column) => {
+                  return (
+                    <DropdownMenuCheckboxItem
+                      key={column.id}
+                      className="capitalize"
+                      checked={column.getIsVisible()}
+                      onCheckedChange={(value) =>
+                        column.toggleVisibility(!!value)
+                      }
+                      onSelect={(e) => e.preventDefault()}
+                    >
+                      {column.id}
+                    </DropdownMenuCheckboxItem>
+                  );
+                })}
+            </DropdownMenuContent>
+          </DropdownMenu>
+
           {onOrderByChange && (
             <Button
               variant="outline"
@@ -100,8 +166,32 @@ export function DataTable<TData>(props: DataTableProps<TData>) {
       </div>
 
       <div className="rounded-lg border border-border overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
+        <div className="overflow-x-auto relative">
+          <table
+            className="w-full text-sm"
+            style={
+              hasResizedColumns
+                ? {
+                    width: `${totalTableWidth}px`,
+                    minWidth: 'calc(100% - 5px)',
+                  }
+                : undefined
+            }
+          >
+            <colgroup>
+              {table.getVisibleFlatColumns().map((column) => (
+                <col
+                  key={column.id}
+                  style={
+                    hasResizedColumns
+                      ? {
+                          width: `${column.getSize()}px`,
+                        }
+                      : undefined
+                  }
+                />
+              ))}
+            </colgroup>
             <thead className="bg-muted/50">
               {table.getHeaderGroups().map((hg) => (
                 <tr key={hg.id} className="border-b border-border">
@@ -114,6 +204,12 @@ export function DataTable<TData>(props: DataTableProps<TData>) {
                           'cursor-pointer select-none hover:text-foreground transition-colors',
                       )}
                       onClick={header.column.getToggleSortingHandler()}
+                      style={{
+                        position: 'relative',
+                        ...(hasResizedColumns && {
+                          width: `${header.getSize()}px`,
+                        }),
+                      }}
                     >
                       <div className="flex items-center gap-2">
                         {flexRender(
@@ -124,6 +220,41 @@ export function DataTable<TData>(props: DataTableProps<TData>) {
                           <ArrowUpDown className="h-3 w-3 opacity-50" />
                         )}
                       </div>
+                      {/* Resize handle */}
+                      {header.column.getCanResize() && (
+                        <button
+                          type="button"
+                          onMouseDown={(e) => {
+                            e.stopPropagation();
+                            e.preventDefault();
+                            header.getResizeHandler()(e);
+                          }}
+                          onTouchStart={(e) => {
+                            e.stopPropagation();
+                            e.preventDefault();
+                            header.getResizeHandler()(e);
+                          }}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            e.preventDefault();
+                          }}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                              e.preventDefault();
+                            }
+                          }}
+                          className={cn(
+                            'absolute right-0 top-0 h-full w-2 cursor-col-resize select-none touch-none z-10',
+                            'hover:bg-primary/50 active:bg-primary border-0 bg-transparent p-0',
+                            header.column.getIsResizing() && 'bg-primary',
+                          )}
+                          style={{
+                            transform: 'translateX(50%)',
+                          }}
+                          aria-label="Resize column"
+                          tabIndex={-1}
+                        />
+                      )}
                     </th>
                   ))}
                 </tr>
@@ -156,11 +287,24 @@ export function DataTable<TData>(props: DataTableProps<TData>) {
                     className="hover:bg-muted/50 transition-colors"
                   >
                     {row.getVisibleCells().map((cell) => (
-                      <td key={cell.id} className="px-4 py-3">
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext(),
-                        )}
+                      <td
+                        key={cell.id}
+                        className="px-4 py-3 overflow-hidden"
+                        style={
+                          hasResizedColumns
+                            ? {
+                                width: `${cell.column.getSize()}px`,
+                                maxWidth: `${cell.column.getSize()}px`,
+                              }
+                            : undefined
+                        }
+                      >
+                        <div className="break-words overflow-wrap-anywhere">
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext(),
+                          )}
+                        </div>
                       </td>
                     ))}
                   </tr>
