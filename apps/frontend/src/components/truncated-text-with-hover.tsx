@@ -4,6 +4,7 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from './ui/shadcn/hover-card';
+import { useId } from 'react';
 
 function centerTruncateString(str: string, length: number, filler = '...') {
   if (str.length > length) {
@@ -29,9 +30,14 @@ export function TruncatedTextWithHover({
   maxLength?: number;
   fillerString?: string;
 }) {
+  const id = useId();
   const [open, setOpen] = React.useState<boolean>(false);
   if (!maxLength || children.length < maxLength) {
-    return children;
+    return (
+      <span id={id} key={id}>
+        {children}
+      </span>
+    );
   }
 
   return (
@@ -47,7 +53,7 @@ export function TruncatedTextWithHover({
           setOpen((open) => !open);
         }}
       >
-        <span className="text-sm">
+        <span id={id} key={id}>
           {centerTruncateString(children, maxLength, fillerString)}
         </span>
       </HoverCardTrigger>
