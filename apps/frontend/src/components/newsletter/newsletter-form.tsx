@@ -1,6 +1,7 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useRef, useState, forwardRef } from 'react';
+import dynamic from 'next/dynamic';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -26,8 +27,22 @@ import { toast } from 'sonner';
 import { Mail, CheckCircle2, X } from 'lucide-react';
 import { useMutation } from '@tanstack/react-query';
 import { useQueryState } from 'nuqs';
-import AltchaVerifier from './altcha-verifier';
-import type { AltchaWidgetRef } from './altcha-verifier';
+import type {
+  AltchaWidgetRef,
+  AltchaVerifierRef,
+  AltchaProps,
+} from './altcha-verifier';
+
+const AltchaVerifierDynamic = dynamic(() => import('./altcha-verifier'), {
+  ssr: false,
+  loading: () => <div className="h-12 rounded-md bg-muted animate-pulse" />,
+});
+
+const AltchaVerifier = forwardRef<AltchaVerifierRef, AltchaProps>(
+  (props, ref) => (
+    <AltchaVerifierDynamic {...props} ref={ref as unknown as never} />
+  ),
+);
 
 const newsletterFormSchema = z.object({
   email: z.string().email('Please enter a valid email address'),

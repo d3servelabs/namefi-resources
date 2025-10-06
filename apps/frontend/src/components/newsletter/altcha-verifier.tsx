@@ -1,4 +1,5 @@
 'use client';
+
 import {
   useEffect,
   useRef,
@@ -13,7 +14,7 @@ import { config } from '@/lib/env';
 import { isNil } from 'ramda';
 import 'altcha/altcha.css';
 
-interface AltchaProps extends Omit<AltchaWidget, 'challengeurl'> {
+export interface AltchaProps extends Omit<AltchaWidget, 'challengeurl'> {
   onStateChange?: (ev: Event | CustomEvent) => void;
 }
 export type AltchaWidgetRef = AltchaWidget & AltchaWidgetMethods;
