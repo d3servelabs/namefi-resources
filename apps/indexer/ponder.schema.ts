@@ -23,3 +23,24 @@ export const NamefiNft = onchainTable(
     ).on(table.chainId, table.normalizedDomainName),
   }),
 );
+
+export const BurnedNamefiNftLog = onchainTable(
+  'BurnedNamefiNftLog',
+  (t) => ({
+    tokenId: t.bigint().notNull(),
+    normalizedDomainName: t.text().notNull(),
+    fromAddress: t.text().notNull(), // The address that burned the token
+    chainId: t.integer().notNull(),
+    burnedBlock: t.bigint().notNull(), // Block number when burned
+    burnedTimestamp: t.bigint().notNull(), // Timestamp when burned
+    transactionHash: t.text().notNull(), // Transaction hash of the burn
+  }),
+  (table) => ({
+    pk: primaryKey({
+      columns: [table.tokenId, table.chainId, table.burnedBlock],
+    }),
+    chainId: index('burned_chain_id_index').on(table.chainId),
+    fromAddress: index('burned_from_address_index').on(table.fromAddress),
+    burnedBlock: index('burned_block_index').on(table.burnedBlock),
+  }),
+);

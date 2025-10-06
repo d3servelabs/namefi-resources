@@ -1,9 +1,11 @@
-import { ponder } from 'ponder:registry';
+/** biome-ignore-all lint/suspicious/noConsole: we use console.log for logging */
+import { ponder, type Context } from 'ponder:registry';
 import schema from 'ponder:schema';
 import { type Chain, createPublicClient, http, zeroAddress } from 'viem';
 import { mainnet, base, sepolia } from 'viem/chains';
 import { filter, isNil, isNotNil } from 'ramda';
-import { and, desc, eq, sql } from 'ponder';
+import { desc, eq, sql } from 'ponder';
+import type { NftAbi } from '@namefi-astra/utils/abis/namefi-nft';
 
 const chainsByChainId: Record<number, Chain> = {
   [mainnet.id]: mainnet,
@@ -25,9 +27,9 @@ const chainIdToStartBlock: Record<number, bigint> = {
 
 // Helper function to fetch domain name from contract
 async function fetchDomainName(
-  client: any,
-  contractAddress: string,
-  abi: any,
+  client: Context['client'],
+  contractAddress: `0x${string}`,
+  abi: typeof NftAbi,
   tokenId: bigint,
 ): Promise<string | undefined> {
   try {
@@ -49,9 +51,9 @@ async function fetchDomainName(
 
 // Helper function to fetch expiration date from contract
 async function fetchExpirationDate(
-  client: any,
-  contractAddress: string,
-  abi: any,
+  client: Context['client'],
+  contractAddress: `0x${string}`,
+  abi: typeof NftAbi,
   tokenId: bigint,
 ): Promise<bigint | undefined> {
   try {
@@ -134,6 +136,15 @@ ponder.on('NamefiNft:setup', async ({ context }) => {
     { ownerAddress: `0x${string}`; blockNumber: bigint }
   >();
 
+  // Track burn events for historical logging
+  const burnEvents: Array<{
+    tokenId: bigint;
+    fromAddress: `0x${string}`;
+    blockNumber: bigint;
+    blockTimestamp: bigint;
+    transactionHash: `0x${string}`;
+  }> = [];
+
   let i = 0;
   for (const batch of batchRanges) {
     console.log(
@@ -147,18 +158,39 @@ ponder.on('NamefiNft:setup', async ({ context }) => {
       fromBlock: batch.start,
       toBlock: batch.end,
     });
+
     console.log(
       `Found ${events.length} events for chain ${chainId} from block ${batch.start} to block ${batch.end}`,
     );
+    const blocksTimestamps = new Map<bigint, bigint>();
+
     for (const event of events) {
       const {
-        args: { to, tokenId },
+        args: { from, to, tokenId },
         blockNumber,
+        transactionHash,
       } = event;
-      if (!to || !tokenId) {
+      if (!tokenId || !to) {
         continue;
       }
       if (to === zeroAddress) {
+        // This is a burn event - track it
+        if (from && from !== zeroAddress) {
+          // Get block timestamp for the burn event
+          let blockTimestamp = blocksTimestamps.get(blockNumber);
+          if (isNil(blockTimestamp)) {
+            const block = await publicClient.getBlock({ blockNumber });
+            blocksTimestamps.set(blockNumber, block.timestamp);
+            blockTimestamp = block.timestamp;
+          }
+          burnEvents.push({
+            tokenId,
+            fromAddress: from,
+            blockNumber,
+            blockTimestamp,
+            transactionHash,
+          });
+        }
         nftToOwners.delete(tokenId);
       } else {
         nftToOwners.set(tokenId, {
@@ -183,15 +215,13 @@ ponder.on('NamefiNft:setup', async ({ context }) => {
     })),
   });
   const domainNames = await publicClient.multicall({
-    contracts: nftToOwnersArray.map(
-      ([tokenId, { ownerAddress, blockNumber }]) => ({
-        address: contracts.NamefiNft.address,
-        abi: contracts.NamefiNft.abi,
-        functionName: 'idToNormalizedDomainName',
-        args: [tokenId],
-        blockNumber: blockNumber, // idToNormalizedDomainName doesn't work with expired domains so you need to get historic data
-      }),
-    ),
+    contracts: nftToOwnersArray.map(([tokenId, { blockNumber }]) => ({
+      address: contracts.NamefiNft.address,
+      abi: contracts.NamefiNft.abi,
+      functionName: 'idToNormalizedDomainName',
+      args: [tokenId],
+      blockNumber: blockNumber, // idToNormalizedDomainName doesn't work with expired domains so you need to get historic data
+    })),
   });
   const locked = await publicClient.multicall({
     contracts: nftToOwnersArray.map(([tokenId]) => ({
@@ -263,6 +293,65 @@ ponder.on('NamefiNft:setup', async ({ context }) => {
         isLocked: sql.raw('excluded.is_locked'),
       },
     });
+
+  // Process and insert burn events if any
+  if (burnEvents.length > 0) {
+    console.log(
+      `Processing ${burnEvents.length} burn events for chain ${chainId}`,
+    );
+
+    // Fetch domain names for burned tokens using multicall
+    const burnedDomainNames = await Promise.all(
+      burnEvents.map(({ tokenId, blockNumber: burnBlockNumber }) => {
+        return publicClient.readContract({
+          address: contracts.NamefiNft.address,
+          abi: contracts.NamefiNft.abi,
+          functionName: 'idToNormalizedDomainName',
+          args: [tokenId],
+          blockNumber: burnBlockNumber - 1n, // Get domain name from the block before burning
+        });
+      }),
+    );
+
+    const burnData = filter(
+      isNotNil,
+      burnEvents.map((burnEvent, index) => {
+        const domainName = burnedDomainNames[index];
+        if (!domainName) {
+          console.log(
+            `Skipping burn event for tokenId ${burnEvent.tokenId} - no domain name found`,
+            {
+              domainName,
+              tokenId: burnEvent.tokenId,
+              blockNumber: burnEvent.blockNumber,
+              burnedDomainNames: burnedDomainNames[index],
+            },
+          );
+          return null;
+        }
+        return {
+          tokenId: burnEvent.tokenId,
+          normalizedDomainName: domainName,
+          fromAddress: burnEvent.fromAddress,
+          chainId,
+          burnedBlock: burnEvent.blockNumber,
+          burnedTimestamp: burnEvent.blockTimestamp,
+          transactionHash: burnEvent.transactionHash,
+        };
+      }),
+    );
+
+    if (burnData.length > 0) {
+      console.log(
+        `Inserting ${burnData.length} burn events for chain ${chainId}`,
+      );
+      await context.db.sql
+        .insert(schema.BurnedNamefiNftLog)
+        .values(burnData)
+        .onConflictDoNothing(); // Skip if already logged
+    }
+  }
+
   console.log(
     `Indexed ${data.length} domains for chain ${chainId} from block ${chainIdToStartBlock[chainId]} to block ${toBlock} in ${Date.now() - start}ms`,
   );
@@ -272,13 +361,50 @@ ponder.on('NamefiNft:setup', async ({ context }) => {
 ponder.on('NamefiNft:Transfer', async ({ event, context }) => {
   const {
     block,
-    args: { to, tokenId },
+    args: { from, to, tokenId },
+    transaction,
   } = event;
 
   const chainId = context.chain.id;
 
   // Handle burning (transfer to zero address)
   if (to === zeroAddress) {
+    // First, fetch the domain name before deletion
+    let domainName = '';
+    try {
+      const domain = await context.db.find(schema.NamefiNft, {
+        tokenId,
+        chainId,
+      });
+      domainName = domain?.normalizedDomainName || '';
+    } catch (error) {
+      console.warn(
+        `Failed to fetch domain for burn logging: tokenId ${tokenId}`,
+        error,
+      );
+    }
+
+    // Log the burn event if we have the domain name and a valid from address
+    if (domainName && from && from !== zeroAddress) {
+      await context.db
+        .insert(schema.BurnedNamefiNftLog)
+        .values({
+          tokenId,
+          normalizedDomainName: domainName,
+          fromAddress: from,
+          chainId,
+          burnedBlock: block.number,
+          burnedTimestamp: block.timestamp,
+          transactionHash: transaction.hash,
+        })
+        .onConflictDoNothing(); // Skip if already logged
+
+      console.log(
+        `Logged burn event for domain ${domainName} (tokenId: ${tokenId}) on chain ${chainId}`,
+      );
+    }
+
+    // Delete the NFT from the main table as before
     await context.db.delete(schema.NamefiNft, {
       tokenId,
       chainId,

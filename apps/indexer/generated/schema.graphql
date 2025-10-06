@@ -19,6 +19,8 @@ type Meta {
 type Query {
   namefiNft(tokenId: BigInt!, chainId: Float!): NamefiNft
   namefiNfts(where: NamefiNftFilter, orderBy: String, orderDirection: String, before: String, after: String, limit: Int): NamefiNftPage!
+  burnedNamefiNftLog(tokenId: BigInt!, chainId: Float!, burnedBlock: BigInt!): BurnedNamefiNftLog
+  burnedNamefiNftLogs(where: BurnedNamefiNftLogFilter, orderBy: String, orderDirection: String, before: String, after: String, limit: Int): BurnedNamefiNftLogPage!
   _meta: Meta
 }
 
@@ -106,4 +108,87 @@ input NamefiNftFilter {
   lastUpdatedTimestamp_lt: BigInt
   lastUpdatedTimestamp_gte: BigInt
   lastUpdatedTimestamp_lte: BigInt
+}
+
+type BurnedNamefiNftLog {
+  tokenId: BigInt!
+  normalizedDomainName: String!
+  fromAddress: String!
+  chainId: Int!
+  burnedBlock: BigInt!
+  burnedTimestamp: BigInt!
+  transactionHash: String!
+}
+
+type BurnedNamefiNftLogPage {
+  items: [BurnedNamefiNftLog!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+input BurnedNamefiNftLogFilter {
+  AND: [BurnedNamefiNftLogFilter]
+  OR: [BurnedNamefiNftLogFilter]
+  tokenId: BigInt
+  tokenId_not: BigInt
+  tokenId_in: [BigInt]
+  tokenId_not_in: [BigInt]
+  tokenId_gt: BigInt
+  tokenId_lt: BigInt
+  tokenId_gte: BigInt
+  tokenId_lte: BigInt
+  normalizedDomainName: String
+  normalizedDomainName_not: String
+  normalizedDomainName_in: [String]
+  normalizedDomainName_not_in: [String]
+  normalizedDomainName_contains: String
+  normalizedDomainName_not_contains: String
+  normalizedDomainName_starts_with: String
+  normalizedDomainName_ends_with: String
+  normalizedDomainName_not_starts_with: String
+  normalizedDomainName_not_ends_with: String
+  fromAddress: String
+  fromAddress_not: String
+  fromAddress_in: [String]
+  fromAddress_not_in: [String]
+  fromAddress_contains: String
+  fromAddress_not_contains: String
+  fromAddress_starts_with: String
+  fromAddress_ends_with: String
+  fromAddress_not_starts_with: String
+  fromAddress_not_ends_with: String
+  chainId: Int
+  chainId_not: Int
+  chainId_in: [Int]
+  chainId_not_in: [Int]
+  chainId_gt: Int
+  chainId_lt: Int
+  chainId_gte: Int
+  chainId_lte: Int
+  burnedBlock: BigInt
+  burnedBlock_not: BigInt
+  burnedBlock_in: [BigInt]
+  burnedBlock_not_in: [BigInt]
+  burnedBlock_gt: BigInt
+  burnedBlock_lt: BigInt
+  burnedBlock_gte: BigInt
+  burnedBlock_lte: BigInt
+  burnedTimestamp: BigInt
+  burnedTimestamp_not: BigInt
+  burnedTimestamp_in: [BigInt]
+  burnedTimestamp_not_in: [BigInt]
+  burnedTimestamp_gt: BigInt
+  burnedTimestamp_lt: BigInt
+  burnedTimestamp_gte: BigInt
+  burnedTimestamp_lte: BigInt
+  transactionHash: String
+  transactionHash_not: String
+  transactionHash_in: [String]
+  transactionHash_not_in: [String]
+  transactionHash_contains: String
+  transactionHash_not_contains: String
+  transactionHash_starts_with: String
+  transactionHash_ends_with: String
+  transactionHash_not_starts_with: String
+  transactionHash_not_ends_with: String
 }
