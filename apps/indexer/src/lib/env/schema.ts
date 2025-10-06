@@ -1,4 +1,6 @@
 import { z } from 'zod';
+import { CHAINS } from '@namefi-astra/utils/chains';
+import { zJson } from '@namefi-astra/utils/zod-helpers';
 
 const _baseSecretsSchema = z.object({
   DATABASE_URL: z.string().url(),
@@ -13,6 +15,31 @@ const _baseSecretsSchema = z.object({
   SMTP_USERNAME: z.string(),
   SMTP_PASSWORD: z.string(),
   BASE_SCHEMA: z.string().optional().default('indexer'),
+  CHAINS_CONFIG: zJson.optional().pipe(
+    z
+      .record(
+        z.coerce.number(),
+        z.object({
+          useWebsockets: z.boolean().optional().default(true),
+          pollingIntervalMs: z
+            .number()
+            .optional()
+            .default(60 * 1000),
+        }),
+      )
+      .default({
+        [CHAINS.mainnet.id]: {
+          useWebsockets: true,
+        },
+        [CHAINS.base.id]: {
+          useWebsockets: true,
+        },
+        [CHAINS.sepolia.id]: {
+          useWebsockets: false,
+          pollingIntervalMs: 10 * 60 * 1000,
+        },
+      }),
+  ),
 });
 
 export const secretsSchema = _baseSecretsSchema

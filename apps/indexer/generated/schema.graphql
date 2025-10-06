@@ -17,15 +17,15 @@ type Meta {
 }
 
 type Query {
-  domainNft(tokenId: BigInt!, chainId: Float!): DomainNft
-  domainNfts(where: DomainNftFilter, orderBy: String, orderDirection: String, before: String, after: String, limit: Int): DomainNftPage!
+  namefiNft(tokenId: BigInt!, chainId: Float!): NamefiNft
+  namefiNfts(where: NamefiNftFilter, orderBy: String, orderDirection: String, before: String, after: String, limit: Int): NamefiNftPage!
   _meta: Meta
 }
 
-type DomainNft {
+type NamefiNft {
   tokenId: BigInt!
-  domainName: String!
-  expirationDate: BigInt!
+  normalizedDomainName: String!
+  expirationTimeInSeconds: BigInt!
   isLocked: Boolean
   ownerAddress: String!
   chainId: Int!
@@ -33,15 +33,15 @@ type DomainNft {
   lastUpdatedTimestamp: BigInt!
 }
 
-type DomainNftPage {
-  items: [DomainNft!]!
+type NamefiNftPage {
+  items: [NamefiNft!]!
   pageInfo: PageInfo!
   totalCount: Int!
 }
 
-input DomainNftFilter {
-  AND: [DomainNftFilter]
-  OR: [DomainNftFilter]
+input NamefiNftFilter {
+  AND: [NamefiNftFilter]
+  OR: [NamefiNftFilter]
   tokenId: BigInt
   tokenId_not: BigInt
   tokenId_in: [BigInt]
@@ -50,24 +50,24 @@ input DomainNftFilter {
   tokenId_lt: BigInt
   tokenId_gte: BigInt
   tokenId_lte: BigInt
-  domainName: String
-  domainName_not: String
-  domainName_in: [String]
-  domainName_not_in: [String]
-  domainName_contains: String
-  domainName_not_contains: String
-  domainName_starts_with: String
-  domainName_ends_with: String
-  domainName_not_starts_with: String
-  domainName_not_ends_with: String
-  expirationDate: BigInt
-  expirationDate_not: BigInt
-  expirationDate_in: [BigInt]
-  expirationDate_not_in: [BigInt]
-  expirationDate_gt: BigInt
-  expirationDate_lt: BigInt
-  expirationDate_gte: BigInt
-  expirationDate_lte: BigInt
+  normalizedDomainName: String
+  normalizedDomainName_not: String
+  normalizedDomainName_in: [String]
+  normalizedDomainName_not_in: [String]
+  normalizedDomainName_contains: String
+  normalizedDomainName_not_contains: String
+  normalizedDomainName_starts_with: String
+  normalizedDomainName_ends_with: String
+  normalizedDomainName_not_starts_with: String
+  normalizedDomainName_not_ends_with: String
+  expirationTimeInSeconds: BigInt
+  expirationTimeInSeconds_not: BigInt
+  expirationTimeInSeconds_in: [BigInt]
+  expirationTimeInSeconds_not_in: [BigInt]
+  expirationTimeInSeconds_gt: BigInt
+  expirationTimeInSeconds_lt: BigInt
+  expirationTimeInSeconds_gte: BigInt
+  expirationTimeInSeconds_lte: BigInt
   isLocked: Boolean
   isLocked_not: Boolean
   isLocked_in: [Boolean]

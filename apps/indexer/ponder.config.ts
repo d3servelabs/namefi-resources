@@ -4,7 +4,6 @@ import { NftAbi } from '@namefi-astra/utils/abis/namefi-nft';
 import { base, type Chain, mainnet, sepolia } from 'viem/chains';
 import { switchCaseOrDefault } from '@namefi-astra/utils/match';
 import type { ChainConfig } from 'ponder';
-import { isNotNil } from 'ramda';
 
 const ALCHEMY_API_KEY = secrets.ALCHEMY_API_KEY;
 const DEV = false;
@@ -14,8 +13,17 @@ const NAMEFI_NFT_CONTRACT_ADDRESS =
 
 const getChainConfig = (
   chain: Chain,
-  options: { useWebsockets?: boolean; pollingIntervalMs?: number } = {},
+  options?: { useWebsockets?: boolean; pollingIntervalMs?: number },
 ) => {
+  const useWebsockets =
+    options?.useWebsockets ??
+    secrets.CHAINS_CONFIG?.[chain.id]?.useWebsockets ??
+    secrets.USE_WEBSOCKETS;
+  const pollingInterval = useWebsockets
+    ? undefined
+    : (options?.pollingIntervalMs ??
+      secrets.CHAINS_CONFIG?.[chain.id]?.pollingIntervalMs);
+
   const chainRpcSubdomain = switchCaseOrDefault(
     chain.id,
     {
@@ -26,10 +34,11 @@ const getChainConfig = (
     'unsupported-chain',
   );
 
-  const pollingInterval = options.pollingIntervalMs;
-  const useWebsockets =
-    options.useWebsockets ??
-    (isNotNil(pollingInterval) ? false : secrets.USE_WEBSOCKETS);
+  console.log(`Chain config: ${chain.name}`, {
+    useWebsockets,
+    pollingInterval,
+  });
+
   return {
     id: chain.id,
     rpc: `https://${chainRpcSubdomain}.g.alchemy.com/v2/${ALCHEMY_API_KEY}`,
@@ -54,18 +63,9 @@ export default createConfig({
         connectionString: DATABASE_URL,
       },
   chains: {
-    mainnet: getChainConfig(mainnet, {
-      pollingIntervalMs: MINUTE_MS,
-      useWebsockets: secrets.USE_WEBSOCKETS,
-    }),
-    base: getChainConfig(base, {
-      pollingIntervalMs: 0.5 * MINUTE_MS,
-      useWebsockets: secrets.USE_WEBSOCKETS,
-    }),
-    sepolia: getChainConfig(sepolia, {
-      pollingIntervalMs: 5 * MINUTE_MS,
-      useWebsockets: secrets.USE_WEBSOCKETS,
-    }),
+    mainnet: getChainConfig(mainnet),
+    base: getChainConfig(base),
+    sepolia: getChainConfig(sepolia),
   },
   accounts: getAccounts(),
   contracts: {
@@ -74,12 +74,18 @@ export default createConfig({
       address: NAMEFI_NFT_CONTRACT_ADDRESS,
       chain: {
         mainnet: {
+          includeCallTraces: false,
+          includeTransactionReceipts: false,
           startBlock: 'latest', // Adjust based on when contract was deployed
         },
         base: {
+          includeCallTraces: false,
+          includeTransactionReceipts: false,
           startBlock: 'latest', // Adjust based on when contract was deployed
         },
         sepolia: {
+          includeCallTraces: false,
+          includeTransactionReceipts: false,
           startBlock: 'latest', // Adjust based on when contract was deployed
         },
       },
