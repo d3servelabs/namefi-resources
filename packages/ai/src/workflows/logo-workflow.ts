@@ -91,7 +91,7 @@ export async function runLogoWorkflow(
   return logoWorkflowOutputSchema.parse({
     concept,
     analysis: {
-      model: strategy.modelId ?? 'gpt-4o',
+      model: strategy.modelId ?? 'gpt-5',
       tokenUsage: strategy.totalUsage,
     },
     image: {

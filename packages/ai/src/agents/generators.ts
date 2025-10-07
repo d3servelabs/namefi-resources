@@ -4,6 +4,10 @@ import { createOpenAI } from '@ai-sdk/openai';
 import { createGoogleGenerativeAI } from '@ai-sdk/google';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { enhanceLogoPrompt } from '../prompts/logo-generation';
+import {
+  resolveImageSystemPrompt,
+  type ImageTask,
+} from '../prompts/image-system-prompts';
 import type { ImageModel } from '../types/generation';
 import type { LogoConceptSchema } from '../types/logo-schemas';
 
@@ -17,38 +21,76 @@ const google = createGoogleGenerativeAI({
 
 const imageGenerationTool = 'image_generation' as const;
 
-const openaiImageAgent = new Agent({
-  model: openai('gpt-4o'),
-  system:
-    'You must call the image_generation tool exactly once to produce a single 1024x1024 image. Return no additional text.',
+const OPENAI_TOOL_CONFIGS = {
+  logo: {
+    model: 'gpt-image-1',
+    size: '1024x1024',
+    quality: 'medium',
+    background: 'opaque',
+    outputFormat: 'png',
+    outputCompression: 100,
+  },
+  poster: {
+    model: 'gpt-image-1',
+    size: '1536x1024',
+    quality: 'medium',
+    background: 'opaque',
+    outputFormat: 'png',
+    outputCompression: 100,
+  },
+} as const;
+
+type ImageGenerationResult = {
+  imageBase64: string;
+  tokenUsage?: LanguageModelUsage;
+};
+
+const openaiPosterAgent = new Agent({
+  model: openai('gpt-4.1'),
+  system: resolveImageSystemPrompt('gpt-image-1', 'marketing'),
   tools: {
-    [imageGenerationTool]: openai.tools.imageGeneration({
-      model: 'gpt-image-1',
-      size: '1024x1024',
-      quality: 'low',
-      background: 'opaque',
-      outputFormat: 'png',
-    }),
+    [imageGenerationTool]: openai.tools.imageGeneration(
+      OPENAI_TOOL_CONFIGS.poster,
+    ),
   },
   toolChoice: { type: 'tool', toolName: imageGenerationTool },
 });
 
-const geminiImageAgent = new Agent({
-  model: google('gemini-2.5-flash-image'),
-  system:
-    'You must call the gemini_image tool exactly once to produce the requested image. Return no additional text.',
+const openaiLogoAgent = new Agent({
+  model: openai('gpt-4.1'),
+  system: resolveImageSystemPrompt('gpt-image-1', 'logo'),
+  tools: {
+    [imageGenerationTool]: openai.tools.imageGeneration(
+      OPENAI_TOOL_CONFIGS.logo,
+    ),
+  },
+  toolChoice: { type: 'tool', toolName: imageGenerationTool },
 });
 
-interface ImageGenerationResult {
-  imageBase64: string;
-  tokenUsage?: LanguageModelUsage;
+function getOpenAiAgent(task: ImageTask) {
+  return task === 'logo' ? openaiLogoAgent : openaiPosterAgent;
+}
+
+const geminiPosterAgent = new Agent({
+  model: google('gemini-2.5-flash-image'),
+  system: resolveImageSystemPrompt('gemini-2.5-flash-image', 'marketing'),
+});
+
+const geminiLogoAgent = new Agent({
+  model: google('gemini-2.5-flash-image'),
+  system: resolveImageSystemPrompt('gemini-2.5-flash-image', 'logo'),
+});
+
+function getGeminiAgent(task: ImageTask) {
+  return task === 'logo' ? geminiLogoAgent : geminiPosterAgent;
 }
 
 async function generateOpenAiImage(
+  task: ImageTask,
   prompt: string,
   referenceLogoDataUrl?: string,
 ): Promise<ImageGenerationResult> {
-  const result = await openaiImageAgent.generate({
+  const result = await getOpenAiAgent(task).generate({
     messages: [
       {
         role: 'user',
@@ -61,10 +103,10 @@ async function generateOpenAiImage(
       },
     ],
   });
-  const toolResult = result.staticToolResults.find(
-    (entry) => entry.toolName === 'image_generation',
-  );
 
+  const toolResult = result.staticToolResults.find(
+    (entry) => entry.toolName === imageGenerationTool,
+  );
   const imageBase64 = toolResult?.output?.result;
 
   if (!imageBase64) {
@@ -78,10 +120,11 @@ async function generateOpenAiImage(
 }
 
 async function generateGeminiImage(
+  task: ImageTask,
   prompt: string,
   referenceLogoDataUrl?: string,
 ): Promise<ImageGenerationResult> {
-  const result = await geminiImageAgent.generate({
+  const result = await getGeminiAgent(task).generate({
     messages: [
       {
         role: 'user',
@@ -108,14 +151,15 @@ async function generateGeminiImage(
 }
 
 async function createImage(
-  prompt: string,
+  task: ImageTask,
   model: ImageModel,
+  prompt: string,
   referenceLogoDataUrl?: string,
 ) {
   if (model === 'gpt-image-1') {
-    return generateOpenAiImage(prompt, referenceLogoDataUrl);
+    return generateOpenAiImage(task, prompt, referenceLogoDataUrl);
   }
-  return generateGeminiImage(prompt, referenceLogoDataUrl);
+  return generateGeminiImage(task, prompt, referenceLogoDataUrl);
 }
 
 export interface LogoGenerationInput {
@@ -133,7 +177,7 @@ export async function generateLogoImage(input: LogoGenerationInput) {
     model: input.model,
   });
 
-  const result = await createImage(prompt, input.model);
+  const result = await createImage('logo', input.model, prompt);
 
   return {
     prompt,
@@ -149,5 +193,10 @@ export interface PosterGenerationInput {
 }
 
 export async function generatePosterImage(input: PosterGenerationInput) {
-  return createImage(input.prompt, input.model, input.referenceLogoDataUrl);
+  return createImage(
+    'marketing',
+    input.model,
+    input.prompt,
+    input.referenceLogoDataUrl,
+  );
 }

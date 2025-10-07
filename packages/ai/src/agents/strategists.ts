@@ -15,29 +15,57 @@ import {
   logoConceptSchema,
   type LogoConceptSchema,
 } from '../types/logo-schemas';
+import {
+  logoAnalysisUserPrompt,
+  logoGenerationSystemPrompt,
+} from '../prompts/logo-generation';
 
-const logoTypesList = Object.values(LOGO_TYPES)
+const logoTypeInstructions = Object.values(LOGO_TYPES)
   .filter((type) => type.id !== 'let-ai-choose')
-  .map((type) => `${type.name} — ${type.description}`)
+  .map((type) => `- ${type.id} → ${type.name}: ${type.description}`)
   .join('\n');
 
-const logoStylesList = Object.values(LOGO_STYLES)
+const logoStyleInstructions = Object.values(LOGO_STYLES)
   .filter((style) => style.id !== 'let-ai-choose')
-  .map((style) => `${style.name} — ${style.description}`)
+  .map((style) => `- ${style.id} → ${style.name}: ${style.description}`)
   .join('\n');
 
 const logoStrategistAgent = new Agent({
-  model: openai('gpt-4o'),
-  system: `You are a seasoned brand strategist and creative director. You distill a brand's essence into a single, best-fit logo concept.\n\nWhen provided with brand inputs, you must:\n- analyze the brand's attributes, audience, and positioning\n- recommend a visual identity direction\n- select a single logo concept (type + style) that best supports the brand's goals\n- craft a production-ready image prompt for the selected concept\n\nAvailable logo types:\n${logoTypesList}\n\nAvailable styles:\n${logoStylesList}\n\nRespond only with JSON that matches the provided schema.`,
+  model: openai('gpt-5'),
+  system: `${logoGenerationSystemPrompt}
+
+STRICT JSON OUTPUT RULES:
+- Return only JSON matching the supplied schema.
+- Use the exact ID values (lowercase, hyphenated) listed below for both logoConcept.type and logoConcept.style.
+
+AVAILABLE LOGO TYPES (use the id on the left):
+${logoTypeInstructions}
+
+AVAILABLE LOGO STYLES (use the id on the left):
+${logoStyleInstructions}`,
   experimental_output: Output.object({ schema: logoConceptSchema }),
 });
 
-const posterStrategistAgent = new Agent({
-  model: openai('gpt-4o'),
-  system:
-    'You are a senior experiential designer. Given a brand domain and optional context, you recommend the most impactful marketing collateral concepts.\n\nFor each concept, you must reason about:\n- where the collateral appears and which audience it targets\n- how the logo is integrated (placement, scale, materials)\n- scene composition, lighting, and mood\n- storytelling elements that make the concept persuasive\n\nReturn only JSON adhering to the schema supplied at request time.',
-  experimental_output: Output.object({ schema: collateralAnalysisSchema }),
-});
+function createCollateralSystemPrompt(available: string) {
+  return `You are a marketing creative director. Choose the most effective marketing collateral type(s) for showcasing a brand's logo.
+
+CONSIDER:
+- Audience, context of use (indoor/outdoor, lifestyle/studio), realism vs studio polish
+- Material textures (fabric, metal, cardboard), scale, motion, lighting
+- Where the brand will most likely benefit (street presence, apparel, merchandise, awards, events)
+
+AVAILABLE COLLATERAL TYPES:
+${available}
+
+RULES:
+- Return exactly the number of unique picks requested (default 1), unless fewer make sense based on explicit constraints
+- Do not repeat collateral types
+- Craft a generation-ready prompt per pick that explicitly references the chosen collateral type and key scene details
+- If collateral is vehicle, compose scenes involving cars or commercial vehicles (sedan, SUV, van) with photorealistic logo placement on the vehicle body (door, hood, side panel) and, where appropriate, include the domain name as livery or decal. Consider reflections, paint texture, curves, and perspective.
+- If collateral is apparel, compose scenes involving a physical product (e.g., t-shirt, hoodie, cap etc.) with photorealistic logo placement on the product. Consider reflections, paint texture, and perspective.
+- If collateral is product, compose scenes involving a physical product (e.g., coffee mug, television, pizza box, sports equipment etc.) with photorealistic logo placement on the product. Consider reflections, paint texture, and perspective.
+`;
+}
 
 type StructuredGenerationResult<T> = {
   object: T;
@@ -56,7 +84,12 @@ export async function generateLogoStrategy(
   input: LogoStrategyInput,
 ): Promise<StructuredGenerationResult<LogoConceptSchema>> {
   const result = await logoStrategistAgent.generate({
-    prompt: `Domain: ${input.domain}\nDescription: ${input.description || 'N/A'}\nPreferred type: ${input.preferredType || 'N/A'}\nPreferred style: ${input.preferredStyle || 'N/A'}`,
+    prompt: logoAnalysisUserPrompt({
+      brandName: input.domain,
+      description: input.description,
+      logoType: input.preferredType,
+      logoStyle: input.preferredStyle,
+    }),
   });
 
   return {
@@ -82,8 +115,18 @@ export async function generatePosterStrategy(
       ? input.collateralType
       : 'billboard, apparel, vehicle, product';
 
+  const posterStrategistAgent = new Agent({
+    model: openai('gpt-5'),
+    system: createCollateralSystemPrompt(allowedCollateralTypes),
+    experimental_output: Output.object({ schema: collateralAnalysisSchema }),
+  });
+
   const result = await posterStrategistAgent.generate({
-    prompt: `Brand: ${input.domain}\nDescription: ${input.description || 'N/A'}\nAllowed collateral types: ${allowedCollateralTypes}`,
+    prompt: `Brand: ${input.domain}
+Description: ${input.description || 'N/A'}
+Requested number of collateral types: 1
+Allowed types (if constrained): ${allowedCollateralTypes}
+`,
   });
 
   return {

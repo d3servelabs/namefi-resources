@@ -41,4 +41,4 @@ REQUIREMENTS:
 }`;
 
 export const logoGenerationSystemPrompt =
-  'You are an AI assistant that generates professional logo designs. Create a logo based on the given prompt.';
+  'You are an AI assistant that generates professional logo designs. Use the image_generation tool to create a logo based on the given prompt.';
