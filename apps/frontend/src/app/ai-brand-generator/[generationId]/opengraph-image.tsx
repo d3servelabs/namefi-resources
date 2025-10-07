@@ -53,7 +53,7 @@ export default async function Image({
               'radial-gradient(ellipse at top left, #064e3b 0%, #134e4a 30%, #171717 70%)',
           }}
         >
-          <div tw="flex flex-col items-center text-center text-secondary-foreground">
+          <div tw="flex flex-col items-center text-center text-white">
             <h1 tw="text-6xl font-bold mb-4">{domain}</h1>
             <p tw="text-lg opacity-75 mt-2">Generation not found</p>
           </div>
@@ -88,17 +88,13 @@ export default async function Image({
         {/* Right side - QR Code and text */}
         <div tw="flex flex-col items-center justify-center w-1/4 pr-8">
           <div tw="flex flex-col items-center text-center">
-            <div tw="text-secondary-foreground text-lg font-medium mb-6">
-              Scan to visit
-            </div>
+            <div tw="text-white text-lg font-medium mb-6">Scan to visit</div>
             <img
               src={qrCodeUrl}
               tw="w-48 h-48 mb-6 rounded-lg"
               alt={`QR code for ${domain}`}
             />
-            <div tw="text-secondary-foreground text-xl font-bold mb-6">
-              {domain}
-            </div>
+            <div tw="text-white text-xl font-bold mb-6">{domain}</div>
             <img
               src={`${config.FIRST_PARTY_DEPLOYMENT_URL}/jain-with-namefi.svg`}
               tw="h-9"
@@ -130,7 +126,7 @@ export default async function Image({
             'radial-gradient(ellipse at top left, #064e3b 0%, #134e4a 30%, #171717 70%)',
         }}
       >
-        <div tw="flex flex-col items-center text-center text-secondary-foreground">
+        <div tw="flex flex-col items-center text-center text-white">
           <h1 tw="text-6xl font-bold mb-4">{domain}</h1>
           <p tw="text-lg opacity-75 mt-2">Unable to load</p>
         </div>

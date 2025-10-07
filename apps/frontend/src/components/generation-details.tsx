@@ -249,7 +249,7 @@ export function GenerationDetailsClient({
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Image Display */}
           <div className="lg:col-span-2">
-            <Card>
+            <Card className="p-0">
               <CardContent className="p-0">
                 <div className="relative aspect-square">
                   <img
