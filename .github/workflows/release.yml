@@ -66,8 +66,8 @@ jobs:
       - uses: actions/create-github-app-token@v2
         id: app-token
         with:
-          app-id: ${{ vars.NAMEFI_APP_ID }}
-          private-key: ${{ secrets.NAMEFI_BOT_SECRET }}
+          app-id: ${{ vars.NAMEFI_BOT_APP_ID }}
+          private-key: ${{ secrets.NAMEFI_BOT_PRIVATE_KEY }}
       - name: Get GitHub App User ID
         id: get-user-id
         run: echo "user-id=$(gh api "/users/${{ steps.app-token.outputs.app-slug }}[bot]" --jq .id)" >> "$GITHUB_OUTPUT"
