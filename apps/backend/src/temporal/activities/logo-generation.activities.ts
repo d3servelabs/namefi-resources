@@ -8,17 +8,21 @@ import { config, secrets } from '#lib/env';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import pMap from 'p-map';
 import { createS3Client, type StorageConfig } from '@namefi-astra/storage';
-import * as ai from '@namefi-astra/ai';
+import {
+  runLogoWorkflow,
+  type LogoStyleInput,
+  type LogoTypeInput,
+} from '@namefi-astra/ai';
 import { Context } from '@temporalio/activity';
 
 export interface GenerateLogosForDomainsParams {
   domains: NamefiNormalizedDomain[];
-  model: 'gpt-image-1' | 'gemini-2.5-flash-image-preview';
+  model: 'gpt-image-1' | 'gemini-2.5-flash-image';
   concurrency?: number; // per-activity execution concurrency
   batchId?: string; // optional correlation id
   description?: string; // prompt hint
-  logoType?: string;
-  logoStyle?: string;
+  logoType?: LogoTypeInput;
+  logoStyle?: LogoStyleInput;
 }
 
 export interface ListAliveNftDomainsParams {
@@ -115,8 +119,6 @@ export async function generateLogosForDomains(
 
   if (!domains?.length) return { processed: 0, successes: 0, failures: 0 };
 
-  const { analyzeLogoRequirements, generateLogo } = ai;
-
   const storage = getStorage(config.AI_BUCKET_FOLDERS.LOGOS);
 
   const results = await pMap(
@@ -128,39 +130,28 @@ export async function generateLogosForDomains(
         }
         ctx.heartbeat({ stage: 'start', domain });
 
-        const {
-          data: concept,
-          tokenUsage: analysisUsage,
-          model: analysisModel,
-        } = await heartbeatWhile(
-          analyzeLogoRequirements(domain, description, logoType, logoStyle),
-          { stage: 'analyze', domain },
-        );
-
-        const generated = await heartbeatWhile(
-          generateLogo({
+        const logoResult = await heartbeatWhile(
+          runLogoWorkflow({
             domain,
-            logoConcept: concept.logoConcept,
+            description,
+            preferredType: logoType,
+            preferredStyle: logoStyle,
+            imageModel: model,
             storage,
-            model,
           }),
-          { stage: 'generate', domain },
+          { stage: 'workflow', domain },
         );
-
-        if (!generated) {
-          return { domain, ok: false, error: 'generation-failed' } as const;
-        }
 
         const aggregateTokenUsage = [
           {
-            model: analysisModel,
-            inputTokens: analysisUsage?.input_tokens ?? 0,
-            outputTokens: analysisUsage?.output_tokens ?? 0,
+            model: logoResult.analysis.model,
+            inputTokens: logoResult.analysis.tokenUsage?.inputTokens ?? 0,
+            outputTokens: logoResult.analysis.tokenUsage?.outputTokens ?? 0,
           },
           {
-            model: generated.model,
-            inputTokens: generated.tokenUsage?.input_tokens ?? 0,
-            outputTokens: generated.tokenUsage?.output_tokens ?? 0,
+            model: logoResult.image.model,
+            inputTokens: logoResult.image.tokenUsage?.inputTokens ?? 0,
+            outputTokens: logoResult.image.tokenUsage?.outputTokens ?? 0,
           },
         ];
 
@@ -172,14 +163,13 @@ export async function generateLogosForDomains(
           params: { model },
           input: {
             type: 'logo',
-            logoType: concept.logoConcept.type,
-            logoStyle: concept.logoConcept.style,
+            logoType: logoResult.concept.logoConcept.type,
+            logoStyle: logoResult.concept.logoConcept.style,
             description,
           },
           output: {
             type: 'logo',
-            storagePath: generated.storagePath,
-            externalId: generated.generationCallId,
+            storagePath: logoResult.image.storagePath,
           },
           tokenUsage: aggregateTokenUsage,
           metadata: {},

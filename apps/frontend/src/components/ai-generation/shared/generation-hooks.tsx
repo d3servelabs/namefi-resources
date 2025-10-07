@@ -6,7 +6,12 @@ import { toast } from 'sonner';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import type { LogoFormData } from '../logo-generator';
 import type { PosterFormData } from '../poster-generator';
-import type { Model, MarketingCollateralType } from '@namefi-astra/ai';
+import type {
+  ImageModel as Model,
+  LogoStyleInput,
+  LogoTypeInput,
+  MarketingCollateralTypeInput,
+} from '@namefi-astra/ai/client';
 import { useGalleryPending } from '../gallery-pending-context';
 
 interface UseLogoGenerationProps {
@@ -161,8 +166,8 @@ export function usePosterGeneration({ domain }: UsePosterGenerationProps) {
 export const createLogoGenerationPayload = (data: LogoFormData) => {
   const payload: {
     domain: NamefiNormalizedDomain;
-    type: string;
-    style: string;
+    type: LogoTypeInput;
+    style: LogoStyleInput;
     description?: string;
     model: Model;
   } = {
@@ -185,7 +190,7 @@ export const createPosterGenerationPayload = (data: PosterFormData) => {
     description?: string;
     referenceLogoGenerationId?: string;
     model: Model;
-    collateralType: MarketingCollateralType | 'let_ai_choose';
+    collateralType: MarketingCollateralTypeInput;
   } = {
     domain: data.domain,
     description: data.description,

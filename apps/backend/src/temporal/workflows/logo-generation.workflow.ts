@@ -2,10 +2,11 @@ import * as workflow from '@temporalio/workflow';
 import { TEMPORAL_ENUMS } from '../shared/enums';
 import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import type { LogoStyleInput, LogoTypeInput } from '@namefi-astra/ai';
 
 export interface GenerateLogosWorkflowInput {
   // model provider selection
-  model: 'gpt-image-1' | 'gemini-2.5-flash-image-preview';
+  model: 'gpt-image-1' | 'gemini-2.5-flash-image';
   // optional explicit domains to process; if provided, skip DB pagination
   domains?: NamefiNormalizedDomain[];
   // batching and rate limiting
@@ -15,8 +16,8 @@ export interface GenerateLogosWorkflowInput {
   perPageConcurrency?: number; // p-map concurrency per page
   // prompt knobs
   description?: string;
-  logoType?: string;
-  logoStyle?: string;
+  logoType?: LogoTypeInput;
+  logoStyle?: LogoStyleInput;
   // correlation id
   batchId?: string;
   // if true, only generate for domains that don't already have a logo

@@ -630,14 +630,12 @@ export const aiGenerationsTable = pgTable(
       | {
           type: 'logo';
           storagePath: string;
-          externalId?: string;
           logoType?: string;
           logoStyle?: string;
         }
       | {
           type: 'marketing';
           storagePath: string;
-          externalId?: string;
           collateralType:
             | 'billboard'
             | 'apparel'
@@ -720,14 +718,12 @@ export const internalAiGenerationsTable = pgTable(
       | {
           type: 'logo';
           storagePath: string;
-          externalId?: string;
           logoType?: string;
           logoStyle?: string;
         }
       | {
           type: 'marketing';
           storagePath: string;
-          externalId?: string;
           collateralType: 'billboard' | 'apparel' | 'vehicle' | 'product';
         }
     >(),

@@ -98,7 +98,7 @@
     "viem": "^2.24.2",
     "vitest": "^3.1.2",
     "wagmi": "^2.14.15",
-    "zod": "3.25.32"
+    "zod": "3.25.76"
   },
   "devDependencies": {
     "@namefi-astra/typescript": "workspace:*",

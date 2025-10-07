@@ -3,27 +3,26 @@
   "type": "module",
   "exports": {
     ".": "./src/index.ts",
-    "./types": "./src/lib/types/index.ts"
+    "./client": "./src/client.ts",
+    "./types": "./src/client.ts"
   },
   "scripts": {
+    "lint": "bun run typecheck",
     "clean": "git clean -xdf .next .turbo node_modules out dist",
     "with-env": "infisical run --token=$INFISICAL_SERVICE_TOKEN -- bun",
     "typecheck": "tsc --noEmit",
-    "validate:secrets": "bun run with-env src/lib/env/index.ts"
+    "validate:secrets": "bun run with-env src/env/index.ts"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.830.0",
-    "@langchain/core": "^0.3.75",
-    "@langchain/google-genai": "^0.2.17",
-    "@langchain/openai": "^0.6.11",
+    "@ai-sdk/google": "^2.0.17",
+    "@ai-sdk/openai": "^2.0.43",
     "@namefi-astra/env": "workspace:*",
     "@namefi-astra/storage": "workspace:*",
     "@namefi-astra/utils": "workspace:*",
-    "openai": "^4.103.0",
-    "zod": "3.25.32"
+    "ai": "^5.0.60",
+    "zod": "3.25.76"
   },
   "devDependencies": {
-    "@google/genai": "^1.19.0",
     "@namefi-astra/typescript": "workspace:*"
   }
 }

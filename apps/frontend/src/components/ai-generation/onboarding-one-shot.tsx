@@ -18,6 +18,12 @@ import {
   useLogoGeneration,
   usePosterGeneration,
 } from './shared/generation-hooks';
+import type {
+  ImageModel as Model,
+  LogoStyleInput,
+  LogoTypeInput,
+  MarketingCollateralTypeInput,
+} from '@namefi-astra/ai/client';
 import { GenerationUsage } from '@/components/ai-generation/generation-usage';
 import { toast } from 'sonner';
 
@@ -42,18 +48,29 @@ export function AIOnboardingOneShot({
     if (!values.domain) return;
 
     setIsGenerating(true);
-    const logoPayload = {
+    const logoPayload: {
+      domain: NamefiNormalizedDomain;
+      type: LogoTypeInput;
+      style: LogoStyleInput;
+      description?: string;
+      model: Model;
+    } = {
       domain: values.domain as NamefiNormalizedDomain,
       type: 'let-ai-choose',
       style: 'let-ai-choose',
       description: values.description || undefined,
-      model: 'gpt-image-1' as const,
+      model: 'gpt-image-1',
     };
-    const marketingPayload = {
+    const marketingPayload: {
+      domain: NamefiNormalizedDomain;
+      description?: string;
+      collateralType: MarketingCollateralTypeInput;
+      model: Model;
+    } = {
       domain: values.domain as NamefiNormalizedDomain,
       description: values.description || undefined,
-      collateralType: 'let_ai_choose' as const,
-      model: 'gemini-2.5-flash-image-preview' as const,
+      collateralType: 'let_ai_choose',
+      model: 'gemini-2.5-flash-image',
     };
 
     try {

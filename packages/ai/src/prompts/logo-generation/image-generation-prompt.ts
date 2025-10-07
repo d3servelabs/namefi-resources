@@ -1,12 +1,13 @@
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
-import type { Model } from '../../lib/types';
+import type { ImageModel } from '../../types/generation';
+import type { LogoStyle, LogoType } from '../../types/logo-options';
 
 export interface LogoImageParams {
   basePrompt: string;
   domain: NamefiNormalizedDomain;
-  logoType: string;
-  style: string;
-  model: Model;
+  logoType: LogoType;
+  style: LogoStyle;
+  model: ImageModel;
 }
 
 export const enhanceLogoPrompt = ({
@@ -26,7 +27,7 @@ Background styling:
 - The background should enhance the logo and never overpower it
 
 ${
-  model === 'gemini-2.5-flash-image-preview'
+  model === 'gemini-2.5-flash-image'
     ? `
 REQUIREMENTS:
 - Output a single square image at 1024x1024 resolution.
@@ -40,4 +41,4 @@ REQUIREMENTS:
 }`;
 
 export const logoGenerationSystemPrompt =
-  'You are an AI assistant that generates professional logo designs. Use the image_generation tool to create a logo based on the given prompt.';
+  'You are an AI assistant that generates professional logo designs. Create a logo based on the given prompt.';

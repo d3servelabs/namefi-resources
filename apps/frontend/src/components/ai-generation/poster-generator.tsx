@@ -29,12 +29,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/shadcn/select';
-import type { Model, MarketingCollateralType } from '@namefi-astra/ai';
+import type {
+  ImageModel as Model,
+  MarketingCollateralTypeInput,
+} from '@namefi-astra/ai/client';
+import { MARKETING_COLLATERAL_TYPE_INPUT_IDS } from '@namefi-astra/ai/client';
 
-export const collateralLabels: Record<
-  MarketingCollateralType | 'let_ai_choose',
-  string
-> = {
+export const collateralLabels: Record<MarketingCollateralTypeInput, string> = {
   billboard: 'Billboard',
   apparel: 'Apparel',
   vehicle: 'Vehicle',
@@ -45,14 +46,11 @@ export const collateralLabels: Record<
 const posterFormSchema = baseFormSchema.extend({
   selectedLogoId: z.string().uuid(),
   collateralType: z
-    .union([
-      z.enum(['billboard', 'apparel', 'vehicle', 'product']),
-      z.literal('let_ai_choose'),
-    ])
+    .enum(MARKETING_COLLATERAL_TYPE_INPUT_IDS)
     .default('let_ai_choose'),
   model: z
-    .enum(['gpt-image-1', 'gemini-2.5-flash-image-preview'])
-    .default('gemini-2.5-flash-image-preview'),
+    .enum(['gpt-image-1', 'gemini-2.5-flash-image'])
+    .default('gemini-2.5-flash-image'),
 });
 
 type PosterFormData = z.infer<typeof posterFormSchema>;
@@ -90,7 +88,7 @@ export function PosterGenerator({
       description: '',
       selectedLogoId: '',
       collateralType: 'let_ai_choose' as const,
-      model: 'gemini-2.5-flash-image-preview' as Model,
+      model: 'gemini-2.5-flash-image' as Model,
     };
   }, [fixedDomain]);
 
@@ -258,9 +256,7 @@ export function PosterGenerator({
           key: 'model',
           label: 'Model',
           badge:
-            selectedModel === 'gemini-2.5-flash-image-preview'
-              ? 'Gemini'
-              : 'OpenAI',
+            selectedModel === 'gemini-2.5-flash-image' ? 'Gemini' : 'OpenAI',
           onClick: () => setOpenPanel(openPanel === 'model' ? null : 'model'),
           isActive: openPanel === 'model',
         });
@@ -345,7 +341,7 @@ export function PosterGenerator({
                           <SelectValue placeholder="Select a model" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="gemini-2.5-flash-image-preview">
+                          <SelectItem value="gemini-2.5-flash-image">
                             Gemini
                           </SelectItem>
                           <SelectItem value="gpt-image-1">OpenAI</SelectItem>

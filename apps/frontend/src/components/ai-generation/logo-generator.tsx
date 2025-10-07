@@ -25,15 +25,26 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/shadcn/select';
-import type { Model } from '@namefi-astra/ai';
+import type {
+  ImageModel as Model,
+  LogoStyleInput,
+  LogoTypeInput,
+} from '@namefi-astra/ai/client';
 import { Switch } from '@/components/ui/shadcn/switch';
 import { Label } from '@/components/ui/shadcn/label';
 
+const logoTypeOptions = Object.keys(LOGO_TYPES) as LogoTypeInput[];
+const logoStyleOptions = Object.keys(LOGO_STYLES) as LogoStyleInput[];
+
 const logoFormSchema = baseFormSchema.extend({
-  type: z.string().min(1, 'Logo type is required'),
-  style: z.string().min(1, 'Logo style is required'),
+  type: z
+    .enum(logoTypeOptions as [LogoTypeInput, ...LogoTypeInput[]])
+    .default('let-ai-choose'),
+  style: z
+    .enum(logoStyleOptions as [LogoStyleInput, ...LogoStyleInput[]])
+    .default('let-ai-choose'),
   model: z
-    .enum(['gpt-image-1', 'gemini-2.5-flash-image-preview'])
+    .enum(['gpt-image-1', 'gemini-2.5-flash-image'])
     .default('gpt-image-1'),
 });
 
@@ -72,12 +83,12 @@ export function LogoGenerator({
   };
 
   const getModelDisplay = (model: Model) =>
-    model === 'gemini-2.5-flash-image-preview' ? 'Gemini' : 'OpenAI';
+    model === 'gemini-2.5-flash-image' ? 'Gemini' : 'OpenAI';
 
   const defaultValues = useMemo(() => {
     return {
       domain: fixedDomain || '',
-      type: LOGO_STYLES['let-ai-choose'].id,
+      type: LOGO_TYPES['let-ai-choose'].id,
       style: LOGO_STYLES['let-ai-choose'].id,
       description: '',
       model: 'gpt-image-1' as Model,
@@ -319,7 +330,7 @@ export function LogoGenerator({
                           <SelectValue placeholder="Select a model" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="gemini-2.5-flash-image-preview">
+                          <SelectItem value="gemini-2.5-flash-image">
                             Gemini
                           </SelectItem>
                           <SelectItem value="gpt-image-1">OpenAI</SelectItem>

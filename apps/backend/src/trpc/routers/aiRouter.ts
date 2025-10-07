@@ -17,12 +17,12 @@ import { createTRPCRouter, protectedProcedure, publicProcedure } from '../base';
 import { createLogger } from '#lib/logger';
 const logger = createLogger({ module: 'ai-router' });
 import {
-  analyzeLogoRequirements,
-  generateLogo,
-  generateMarketingImage,
-  analyzeCollateralRequirements,
+  LOGO_STYLE_INPUT_IDS,
+  LOGO_TYPE_INPUT_IDS,
+  MARKETING_COLLATERAL_TYPE_INPUT_IDS,
+  runLogoWorkflow,
+  runMarketingWorkflow,
 } from '@namefi-astra/ai';
-import type { MarketingCollateralType } from '@namefi-astra/ai';
 
 const s3Client = createS3Client({
   AWS_ACCESS_KEY_ID: secrets.AWS_ACCESS_KEY_ID,
@@ -30,11 +30,18 @@ const s3Client = createS3Client({
   AWS_REGION: config.AWS_REGION,
 });
 
-const storageConfig = {
+const storageBaseConfig = {
   bucketName: config.STORAGE_BUCKET,
   cloudfrontDomain: config.CLOUD_FRONT_DOMAIN,
   s3Client,
 };
+
+function createStorageConfig(baseFolder: string) {
+  return {
+    ...storageBaseConfig,
+    baseFolder,
+  };
+}
 
 /**
  * Check if user has reached the maximum number of AI generations for the current month
@@ -59,10 +66,10 @@ async function checkUserGenerationLimit(userId: string): Promise<boolean> {
 const generateLogoInputSchema = z.object({
   domain: namefiNormalizedDomainSchema,
   description: z.string().optional(),
-  type: z.string().min(1, 'Logo type is required'),
-  style: z.string().min(1, 'Logo style is required'),
+  type: z.enum(LOGO_TYPE_INPUT_IDS),
+  style: z.enum(LOGO_STYLE_INPUT_IDS),
   model: z
-    .enum(['gpt-image-1', 'gemini-2.5-flash-image-preview'])
+    .enum(['gpt-image-1', 'gemini-2.5-flash-image'])
     .default('gpt-image-1'),
 });
 
@@ -71,14 +78,11 @@ const generateMarketingImageInputSchema = z.object({
   description: z.string().optional(),
   referenceLogoGenerationId: z.string().optional(),
   collateralType: z
-    .union([
-      z.enum(['billboard', 'apparel', 'vehicle', 'product']),
-      z.literal('let_ai_choose'),
-    ])
+    .enum(MARKETING_COLLATERAL_TYPE_INPUT_IDS)
     .default('let_ai_choose'),
   model: z
-    .enum(['gpt-image-1', 'gemini-2.5-flash-image-preview'])
-    .default('gemini-2.5-flash-image-preview'),
+    .enum(['gpt-image-1', 'gemini-2.5-flash-image'])
+    .default('gemini-2.5-flash-image'),
 });
 
 export const aiRouter = createTRPCRouter({
@@ -97,41 +101,27 @@ export const aiRouter = createTRPCRouter({
 
         const { domain, description, type, style, model } = input;
 
-        // Step 1: Analyze brand and generate logo concept
-        const {
-          data: logoConcept,
-          tokenUsage: logoConceptTokenUsage,
-          model: logoConceptModel,
-        } = await analyzeLogoRequirements(domain, description, type, style);
-
-        // Step 2: Generate logo image
-        const generatedLogo = await generateLogo({
+        const logoResult = await runLogoWorkflow({
           domain,
-          logoConcept: logoConcept.logoConcept,
-          storage: {
-            ...storageConfig,
-            baseFolder: config.AI_BUCKET_FOLDERS.LOGOS,
-          },
-          model,
+          description,
+          preferredType: type,
+          preferredStyle: style,
+          imageModel: model,
+          storage: createStorageConfig(config.AI_BUCKET_FOLDERS.LOGOS),
         });
 
-        if (!generatedLogo) {
-          throw new TRPCError({
-            code: 'INTERNAL_SERVER_ERROR',
-            message: 'Failed to generate logo',
-          });
-        }
+        const resolvedConcept = logoResult.concept.logoConcept;
 
         const aggregateTokenUsage = [
           {
-            model: logoConceptModel,
-            inputTokens: logoConceptTokenUsage?.input_tokens ?? 0,
-            outputTokens: logoConceptTokenUsage?.output_tokens ?? 0,
+            model: logoResult.analysis.model,
+            inputTokens: logoResult.analysis.tokenUsage?.inputTokens ?? 0,
+            outputTokens: logoResult.analysis.tokenUsage?.outputTokens ?? 0,
           },
           {
-            model: generatedLogo.model,
-            inputTokens: generatedLogo.tokenUsage?.input_tokens ?? 0,
-            outputTokens: generatedLogo.tokenUsage?.output_tokens ?? 0,
+            model: logoResult.image.model,
+            inputTokens: logoResult.image.tokenUsage?.inputTokens ?? 0,
+            outputTokens: logoResult.image.tokenUsage?.outputTokens ?? 0,
           },
         ];
 
@@ -150,23 +140,17 @@ export const aiRouter = createTRPCRouter({
             },
             output: {
               type: 'logo',
-              storagePath: generatedLogo.storagePath,
-              externalId: generatedLogo.generationCallId,
-              logoType: logoConcept.logoConcept.type,
-              logoStyle: logoConcept.logoConcept.style,
+              storagePath: logoResult.image.storagePath,
+              logoType: resolvedConcept.type,
+              logoStyle: resolvedConcept.style,
             },
             tokenUsage: aggregateTokenUsage,
           })
           .returning();
 
-        const publicUrl = generateUrlFromStoragePath(
-          generatedLogo.storagePath,
-          config.CLOUD_FRONT_DOMAIN,
-        );
-
         return {
           ...generationRecord,
-          url: publicUrl,
+          url: logoResult.image.url,
         };
       } catch (error) {
         logger.error({ error }, 'Logo generation error');
@@ -200,7 +184,6 @@ export const aiRouter = createTRPCRouter({
         } = input;
 
         // Step 1: Find reference generation if basedOnLogoCallId provided
-        let referenceLogoGenerationExternalId: string | undefined;
         let referenceLogoPublicUrl: string | undefined;
         if (referenceLogoGenerationId) {
           const referenceLogoGeneration = await db
@@ -216,8 +199,6 @@ export const aiRouter = createTRPCRouter({
             .then((results) => results[0]);
 
           if (referenceLogoGeneration) {
-            referenceLogoGenerationExternalId =
-              referenceLogoGeneration.output.externalId;
             referenceLogoPublicUrl = generateUrlFromStoragePath(
               referenceLogoGeneration.output.storagePath,
               config.CLOUD_FRONT_DOMAIN,
@@ -225,64 +206,26 @@ export const aiRouter = createTRPCRouter({
           }
         }
 
-        // Step 4: Choose collateral via AI if requested, else use provided type
-        let resolvedCollateralType: MarketingCollateralType;
-
-        let rewrittenPrompt: string | undefined;
-
-        if (collateralType === 'let_ai_choose') {
-          const analysis = await analyzeCollateralRequirements(
-            domain,
-            description,
-            1,
-          );
-          const pick = analysis.data.picks[0];
-          resolvedCollateralType = pick.collateralType;
-          // Include user's description context if provided
-          rewrittenPrompt = description
-            ? `${pick.prompt}\n\nBrand details: ${description}`
-            : pick.prompt;
-        } else {
-          resolvedCollateralType = collateralType;
-          // Even when user picks a specific type, generate a rewritten prompt via analysis
-          const analysis = await analyzeCollateralRequirements(
-            domain,
-            description,
-            1,
-            [resolvedCollateralType],
-          );
-          const pick = analysis.data.picks[0];
-          rewrittenPrompt = description
-            ? `${pick.prompt}\n\nBrand details: ${description}`
-            : pick.prompt;
-        }
-
-        // Step 5: Generate single image
-        const generatedImage = await generateMarketingImage({
+        const marketingResult = await runMarketingWorkflow({
           domain,
-          storage: {
-            ...storageConfig,
-            baseFolder: config.AI_BUCKET_FOLDERS.SOCIAL,
-          },
-          basedOnLogoCallId: referenceLogoGenerationExternalId,
-          basedOnLogoPublicUrl: referenceLogoPublicUrl,
-          model,
-          collateralType: resolvedCollateralType,
-          rewrittenPrompt,
+          description,
+          collateralType,
+          imageModel: model,
+          storage: createStorageConfig(config.AI_BUCKET_FOLDERS.SOCIAL),
+          referenceLogoUrl: referenceLogoPublicUrl,
         });
-
-        if (!generatedImage) {
-          throw new TRPCError({
-            code: 'INTERNAL_SERVER_ERROR',
-            message: 'Failed to generate marketing image',
-          });
-        }
 
         const aggregateTokenUsage = [
           {
-            model: generatedImage.model,
-            inputTokens: generatedImage.tokenUsage?.input_tokens ?? 0,
-            outputTokens: generatedImage.tokenUsage?.output_tokens ?? 0,
+            model: marketingResult.analysis.model,
+            inputTokens: marketingResult.analysis.tokenUsage?.inputTokens ?? 0,
+            outputTokens:
+              marketingResult.analysis.tokenUsage?.outputTokens ?? 0,
+          },
+          {
+            model: marketingResult.image.model,
+            inputTokens: marketingResult.image.tokenUsage?.inputTokens ?? 0,
+            outputTokens: marketingResult.image.tokenUsage?.outputTokens ?? 0,
           },
         ];
 
@@ -300,23 +243,17 @@ export const aiRouter = createTRPCRouter({
             },
             output: {
               type: 'marketing',
-              storagePath: generatedImage.storagePath,
-              externalId: generatedImage.generationCallId,
-              collateralType: resolvedCollateralType,
+              storagePath: marketingResult.image.storagePath,
+              collateralType: marketingResult.analysis.resolvedCollateralType,
             },
             tokenUsage: aggregateTokenUsage,
             referenceGenerationId: referenceLogoGenerationId,
           })
           .returning();
 
-        const publicUrl = generateUrlFromStoragePath(
-          generatedImage.storagePath,
-          config.CLOUD_FRONT_DOMAIN,
-        );
-
         return {
           ...generationRecord,
-          url: publicUrl,
+          url: marketingResult.image.url,
         };
       } catch (error) {
         logger.error({ error }, 'Poster generation error');
@@ -378,57 +315,7 @@ export const aiRouter = createTRPCRouter({
       .groupBy(aiGenerationsTable.domain)
       .orderBy(desc(latestGenerationAlias));
 
-    // Single additional query for previews using a window function, then group in memory
-    const previewRows = await db.execute(
-      sql`SELECT id, domain, type, created_at, output
-            FROM (
-              SELECT
-                id,
-                domain,
-                type,
-                created_at,
-                output,
-                ROW_NUMBER() OVER (PARTITION BY domain ORDER BY created_at DESC) AS rn
-              FROM ai_generations
-              WHERE user_id = ${ctx.user.id}
-            ) ranked
-            WHERE rn <= 3;`,
-    );
-
-    const previewRowSchema = z.object({
-      id: z.string().uuid(),
-      domain: namefiNormalizedDomainSchema,
-      type: z.enum(['logo', 'marketing']),
-      created_at: z.coerce.date(),
-      output: z.object({ storagePath: z.string() }),
-    });
-    const parsedPreviewRows = previewRowSchema.array().parse(previewRows.rows);
-
-    type PreviewGeneration = {
-      id: string;
-      type: 'logo' | 'marketing';
-      createdAt: Date;
-      url: string;
-    };
-    const previewsByDomain = new Map<string, PreviewGeneration[]>();
-    for (const r of parsedPreviewRows) {
-      const list = previewsByDomain.get(r.domain) ?? [];
-      list.push({
-        id: r.id,
-        type: r.type,
-        createdAt: r.created_at,
-        url: generateUrlFromStoragePath(
-          r.output.storagePath,
-          config.CLOUD_FRONT_DOMAIN,
-        ),
-      });
-      previewsByDomain.set(r.domain, list);
-    }
-
-    return domains.map((d) => ({
-      ...d,
-      previewGenerations: previewsByDomain.get(d.domain) ?? [],
-    }));
+    return domains;
   }),
 
   getUserGenerationsFiltered: protectedProcedure

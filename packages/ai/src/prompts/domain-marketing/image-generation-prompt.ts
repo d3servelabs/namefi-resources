@@ -41,5 +41,5 @@ IMPORTANT:
     : ''
 }`;
 
-export const imageGenerationSystemPrompt =
-  'You are an AI assistant that generates images. Use the image_generation tool to create an image based on the given prompt.';
+export const posterGenerationSystemPrompt =
+  'You are an AI assistant that generates marketing posters from a provided logo image.';

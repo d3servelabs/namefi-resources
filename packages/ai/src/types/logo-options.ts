@@ -137,5 +137,27 @@ export const LOGO_STYLES = {
   },
 } as const;
 
-export type LogoType = keyof typeof LOGO_TYPES;
-export type LogoStyle = keyof typeof LOGO_STYLES;
+export type LogoTypeInput = keyof typeof LOGO_TYPES;
+export type LogoStyleInput = keyof typeof LOGO_STYLES;
+
+export type LogoType = Exclude<LogoTypeInput, 'let-ai-choose'>;
+export type LogoStyle = Exclude<LogoStyleInput, 'let-ai-choose'>;
+
+const logoTypeInputIds = Object.keys(LOGO_TYPES) as LogoTypeInput[];
+const logoStyleInputIds = Object.keys(LOGO_STYLES) as LogoStyleInput[];
+
+export const LOGO_TYPE_INPUT_IDS = logoTypeInputIds as [
+  LogoTypeInput,
+  ...LogoTypeInput[],
+];
+export const LOGO_STYLE_INPUT_IDS = logoStyleInputIds as [
+  LogoStyleInput,
+  ...LogoStyleInput[],
+];
+
+export const LOGO_TYPE_RESOLVED_IDS = logoTypeInputIds.filter(
+  (id): id is LogoType => id !== 'let-ai-choose',
+) as [LogoType, ...LogoType[]];
+export const LOGO_STYLE_RESOLVED_IDS = logoStyleInputIds.filter(
+  (id): id is LogoStyle => id !== 'let-ai-choose',
+) as [LogoStyle, ...LogoStyle[]];
