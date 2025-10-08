@@ -40,14 +40,14 @@ export async function finalizePaymentWorkflow({
   // MARK: Payments with original amountInUSDCents === 0 (because of promos) should already be marked as successful
   // and amountToCapture and amountToRefund should === 0 or be null
   if (
-    paymentDetails.status === paymentStatusSchema.Values.SUCCEEDED &&
+    paymentDetails.status === paymentStatusSchema.enum.SUCCEEDED &&
     amountToCaptureInUsdCents === 0 &&
     !amountToRefundInUsdCents
   ) {
     return { paymentStatus: paymentDetails.status };
   }
 
-  if (paymentDetails.paymentProvider === paymentProviderSchema.Values.STRIPE) {
+  if (paymentDetails.paymentProvider === paymentProviderSchema.enum.STRIPE) {
     if (amountToCaptureInUsdCents > 0) {
       const { capturedStripePaymentIntent } = await captureStripePayment({
         amountToCaptureInUsdCents: amountToCaptureInUsdCents,
@@ -73,9 +73,9 @@ export async function finalizePaymentWorkflow({
   if (
     matchAny(
       paymentDetails.paymentProvider,
-      paymentProviderSchema.Values.NFSC_BASE,
-      paymentProviderSchema.Values.NFSC_ETHEREUM,
-      paymentProviderSchema.Values.NFSC_ETHEREUM_SEPOLIA,
+      paymentProviderSchema.enum.NFSC_BASE,
+      paymentProviderSchema.enum.NFSC_ETHEREUM,
+      paymentProviderSchema.enum.NFSC_ETHEREUM_SEPOLIA,
     )
   ) {
     if (amountToRefundInUsdCents && amountToRefundInUsdCents > 0) {
@@ -93,7 +93,7 @@ export async function finalizePaymentWorkflow({
         },
       });
       return {
-        paymentStatus: paymentStatusSchema.Values.REFUND_REQUESTED,
+        paymentStatus: paymentStatusSchema.enum.REFUND_REQUESTED,
         refundStatus: refundStatus,
       };
     }

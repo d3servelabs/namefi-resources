@@ -56,7 +56,7 @@ export async function chargeUserWorkflow({
 
   //  MARK: Payments with amountInUSDCents === 0 should be marked as successful
   if (amountInUSDCents === 0) {
-    paymentStatus = paymentStatusSchema.Values.SUCCEEDED;
+    paymentStatus = paymentStatusSchema.enum.SUCCEEDED;
 
     // MARK: Update Payment
     const updatedPayment = await updatePayment({
@@ -69,7 +69,7 @@ export async function chargeUserWorkflow({
   }
 
   // MARK: Execute Charge ChildWorkflow based on PaymentProvider
-  if (paymentProvider === paymentProviderSchema.Values.STRIPE) {
+  if (paymentProvider === paymentProviderSchema.enum.STRIPE) {
     try {
       const { paymentIntentId, paymentIntentStatus } =
         await workflow.executeChild(chargeStripeWorkflow, {
@@ -95,7 +95,7 @@ export async function chargeUserWorkflow({
       workflow.log.error(
         `Error while executing ChargeStripe workflow. workflowId: charge-stripe-${paymentId}, cause: ${JSON.stringify(error)}`,
       );
-      paymentStatus = paymentStatusSchema.Values.FAILED;
+      paymentStatus = paymentStatusSchema.enum.FAILED;
     }
   }
 
@@ -123,13 +123,13 @@ export async function chargeUserWorkflow({
           maximumAttempts: 1,
         },
       });
-      paymentStatus = paymentStatusSchema.Values.SUCCEEDED;
+      paymentStatus = paymentStatusSchema.enum.SUCCEEDED;
       paymentProviderReferenceId = txHash;
     } catch (error) {
       workflow.log.error(
         `Error while executing ChargeNfsc workflow. workflowId: charge-nfsc-${paymentId}, cause: ${JSON.stringify(error)}`,
       );
-      paymentStatus = paymentStatusSchema.Values.FAILED;
+      paymentStatus = paymentStatusSchema.enum.FAILED;
     }
   }
 

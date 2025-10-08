@@ -11,7 +11,7 @@ import {
   type DefaultValues,
   type FieldPath,
 } from 'react-hook-form';
-import { z, type ZodTypeDef } from 'zod';
+import { z } from 'zod';
 import { DomainField, DescriptionField } from './form-fields';
 import { GenerateSubmitButton } from './submit-button';
 import { useTRPC } from '@/lib/trpc';
@@ -42,7 +42,7 @@ interface BaseGeneratorProps<T extends FieldValues & BaseFormData> {
   isLoading?: boolean;
   disabled?: boolean;
   fixedDomain?: NamefiNormalizedDomain;
-  formSchema: z.ZodType<T, ZodTypeDef, unknown>;
+  formSchema: z.ZodType<T>;
   defaultValues: DefaultValues<T>;
   children?: (props: {
     form: UseFormReturn<T>;

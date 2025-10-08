@@ -93,7 +93,7 @@ export const poweredByNamefiOwnerRouter = createTRPCRouter({
           .optional(),
         costPerYearInUsdCents: z.number().int().nonnegative().optional(),
         enabled: z.boolean().optional(),
-        metadata: z.record(z.any()).optional(),
+        metadata: z.record(z.string(), z.any()).optional(),
       }),
     )
     .mutation(async ({ ctx, input }) => {

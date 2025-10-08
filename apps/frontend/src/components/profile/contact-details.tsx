@@ -95,9 +95,18 @@ export function ContactDetails() {
 
   // Load contact details from Privy user metadata
   useEffect(() => {
+    const address = privyUser.customMetadata.address
+      ? {
+          street: privyUser.customMetadata.address.street ?? undefined,
+          city: privyUser.customMetadata.address.city ?? undefined,
+          state: privyUser.customMetadata.address.state ?? undefined,
+          zipCode: privyUser.customMetadata.address.zipCode ?? undefined,
+          country: privyUser.customMetadata.address.country ?? undefined,
+        }
+      : undefined;
     const formData: ContactDetailsFormData = {
       fullName: privyUser.customMetadata.fullName || '',
-      address: privyUser.customMetadata.address || undefined,
+      address,
     };
     reset(formData);
   }, [privyUser, reset]);

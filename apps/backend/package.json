@@ -90,8 +90,8 @@
     "commander": "^14.0.0",
     "date-fns": "^4.1.0",
     "dotenv": "^16.4.7",
-    "drizzle-orm": "^0.40.1",
-    "drizzle-zod": "^0.7.0",
+    "drizzle-orm": "^0.44.6",
+    "drizzle-zod": "^0.8.3",
     "entities": "^6.0.1",
     "hono": "^4.7.5",
     "hono-pino-logger": "^1.0.0",
@@ -124,7 +124,7 @@
     "tldts": "^7.0.8",
     "unique-names-generator": "^4.7.1",
     "viem": "^2.24.2",
-    "zod": "3.25.76"
+    "zod": "4.1.12"
   },
   "devDependencies": {
     "@namefi-astra/typescript": "workspace:*",
@@ -133,7 +133,7 @@
     "@types/nodemailer": "^6.4.17",
     "@types/pluralize": "^0.0.33",
     "@types/ramda": "^0.30.2",
-    "drizzle-kit": "^0.30.6",
+    "drizzle-kit": "^0.31.5",
     "neonctl": "^2.9.0",
     "tsup": "^8.4.0",
     "tsx": "^4.19.3",

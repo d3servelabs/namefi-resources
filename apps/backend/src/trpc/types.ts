@@ -52,7 +52,8 @@ export const createOrderV2InputSchema = z.object({
         if (typeof provider === 'string' && provider === 'STRIPE') {
           if (p.amountInUsdCents < 100) {
             ctx.addIssue({
-              code: z.ZodIssueCode.too_small,
+              code: 'too_small',
+              origin: 'number',
               minimum: 100,
               type: 'number',
               inclusive: true,
@@ -108,24 +109,24 @@ export function isDomainUnsupported(domain: DomainAvailabilityInfo): boolean {
 /**
  * Gets the appropriate pricing details for a domain operation
  * @param domain - Domain availability information
- * @param operationType - Either itemTypeSchema.Values.REGISTER, itemTypeSchema.Values.IMPORT, or itemTypeSchema.Values.AUTO_RENEW
+ * @param operationType - Either itemTypeSchema.enum.REGISTER, itemTypeSchema.enum.IMPORT, or itemTypeSchema.enum.AUTO_RENEW
  * @returns The pricing details for the specified operation
  */
 export function getDomainPricingForOperation(
   domain: DomainAvailabilityInfo,
   operationType:
-    | typeof itemTypeSchema.Values.REGISTER
-    | typeof itemTypeSchema.Values.IMPORT
-    | typeof itemTypeSchema.Values.RENEW,
+    | typeof itemTypeSchema.enum.REGISTER
+    | typeof itemTypeSchema.enum.IMPORT
+    | typeof itemTypeSchema.enum.RENEW,
 ) {
   if (!domain.pricingDetails) {
     return undefined;
   }
 
   switch (operationType) {
-    case itemTypeSchema.Values.IMPORT:
+    case itemTypeSchema.enum.IMPORT:
       return domain.pricingDetails.importPrice;
-    case itemTypeSchema.Values.RENEW:
+    case itemTypeSchema.enum.RENEW:
       return domain.pricingDetails.renewalPrice;
     default:
       return domain.pricingDetails.registrationPrice;

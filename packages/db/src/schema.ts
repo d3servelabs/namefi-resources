@@ -5,7 +5,7 @@
  */
 
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
-import { recordTypeEnum } from '@namefi-astra/zod-dns';
+import { recordTypeEnum, recordTypeValues } from '@namefi-astra/zod-dns';
 import { asc, eq, getTableColumns, sql } from 'drizzle-orm';
 import {
   bigint,
@@ -319,10 +319,7 @@ export const orderItemsTable = pgTable(
  */
 // order_payments join table removed in favor of payments.order_id one-to-many
 
-export const recordTypePgEnum = pgEnum(
-  'record_type_enum',
-  recordTypeEnum.options,
-);
+export const recordTypePgEnum = pgEnum('record_type_enum', recordTypeValues);
 
 /**
  * DNS records table

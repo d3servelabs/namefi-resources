@@ -85,7 +85,7 @@
     "react-day-picker": "^9.10.0",
     "react-dom": "^19.1.1",
     "react-error-boundary": "^6.0.0",
-    "react-hook-form": "^7.58.1",
+    "react-hook-form": "^7.64.0",
     "react-responsive": "^10.0.1",
     "react-share": "^5.2.2",
     "rsuite": "^5.83.3",
@@ -98,7 +98,7 @@
     "viem": "^2.24.2",
     "vitest": "^3.1.2",
     "wagmi": "^2.14.15",
-    "zod": "3.25.76"
+    "zod": "4.1.12"
   },
   "devDependencies": {
     "@namefi-astra/typescript": "workspace:*",

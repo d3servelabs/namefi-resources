@@ -68,9 +68,9 @@ export async function multiChargeWorkflow(
     }
     // Optional: enforce pre-charge status sanity
     const allowedPreChargeStatuses: PaymentStatus[] = [
-      paymentStatusSchema.Values.CREATED,
-      paymentStatusSchema.Values.REQUIRES_CAPTURE,
-      paymentStatusSchema.Values.PROCESSING,
+      paymentStatusSchema.enum.CREATED,
+      paymentStatusSchema.enum.REQUIRES_CAPTURE,
+      paymentStatusSchema.enum.PROCESSING,
     ];
     if (!allowedPreChargeStatuses.includes(d.status as PaymentStatus)) {
       throw workflow.ApplicationFailure.create({

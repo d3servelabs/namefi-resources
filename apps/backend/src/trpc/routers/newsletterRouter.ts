@@ -16,7 +16,7 @@ const subscribeToNewsletterSchema = z.object({
   /**
    * Additional custom attributes to store with the subscriber
    */
-  attributes: z.record(z.unknown()).optional(),
+  attributes: z.record(z.string(), z.unknown()).optional(),
   altcha: z.string().optional().nullable(),
 });
 

@@ -1,13 +1,13 @@
-import type { ZodSchema } from 'zod';
+import type { z } from 'zod';
 
-export interface LoadSecretsOptions<Z> {
-  secretsSchema: Z;
+export interface LoadSecretsOptions<Schema extends z.ZodTypeAny> {
+  secretsSchema: Schema;
   secrets?: Record<string, string | undefined>;
 }
 
-export const loadSecrets = <Z extends ZodSchema<any>>(
-  options: LoadSecretsOptions<Z>,
-): Z['_output'] => {
+export const loadSecrets = <Schema extends z.ZodTypeAny>(
+  options: LoadSecretsOptions<Schema>,
+): z.output<Schema> => {
   const validatedSecrets = options.secretsSchema.parse(
     options.secrets ?? process.env,
   );

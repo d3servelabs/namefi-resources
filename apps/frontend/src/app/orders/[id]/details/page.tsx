@@ -91,11 +91,11 @@ export default function OrderDetailsPage({
 
   function humanizeItemType(t: string | null | undefined): string {
     switch (t) {
-      case itemTypeSchema.Values.REGISTER:
+      case itemTypeSchema.enum.REGISTER:
         return 'Register';
-      case itemTypeSchema.Values.IMPORT:
+      case itemTypeSchema.enum.IMPORT:
         return 'Import';
-      case itemTypeSchema.Values.RENEW:
+      case itemTypeSchema.enum.RENEW:
         return 'Renew';
       default:
         return t ?? '-';

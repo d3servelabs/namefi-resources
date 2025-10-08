@@ -269,7 +269,7 @@ export const pbnIssuanceReservationsRouter = createTRPCRouter({
           )
           .min(1),
         sendEmail: z.boolean().optional(),
-        metadata: z.record(z.any()).optional(),
+        metadata: z.record(z.string(), z.any()).optional(),
       }),
     )
     .mutation(async ({ ctx, input }) => {

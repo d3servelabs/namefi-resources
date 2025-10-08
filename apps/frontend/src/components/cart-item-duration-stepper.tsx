@@ -19,7 +19,7 @@ export function CartItemDurationControl({
   isDisabled: boolean;
 }) {
   // For IMPORT items, always show "1 year" (no duration control)
-  if (item.type === itemTypeSchema.Values.IMPORT) {
+  if (item.type === itemTypeSchema.enum.IMPORT) {
     return (
       <div className="w-32 h-10 flex items-center justify-center text-sm text-muted-foreground bg-muted/50 rounded-md">
         1 year
@@ -28,7 +28,7 @@ export function CartItemDurationControl({
   }
 
   // For RENEW items, use specialized renewal constraints
-  if (item.type === itemTypeSchema.Values.RENEW) {
+  if (item.type === itemTypeSchema.enum.RENEW) {
     return (
       <RenewalDurationStepper
         item={item}

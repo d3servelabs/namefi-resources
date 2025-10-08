@@ -465,7 +465,7 @@ export const poweredByNamefiRouter = createTRPCRouter({
             },
           ),
         costPerYearInUsdCents: z.number().min(0),
-        metadata: z.record(z.any()).optional(),
+        metadata: z.record(z.string(), z.any()).optional(),
         ownerId: z.string().uuid().optional(),
       }),
     )
@@ -552,7 +552,7 @@ export const poweredByNamefiRouter = createTRPCRouter({
           )
           .optional(),
         costPerYearInUsdCents: z.number().min(0).optional(),
-        metadata: z.record(z.any()).optional(),
+        metadata: z.record(z.string(), z.any()).optional(),
         ownerId: z.string().uuid().optional(),
       }),
     )

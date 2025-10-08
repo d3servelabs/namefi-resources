@@ -58,7 +58,7 @@ export async function captureStripePayment({
   const { paymentProvider, paymentProviderReferenceId, status } =
     await getPaymentDetails({ paymentId });
 
-  if (paymentProvider !== paymentProviderSchema.Values.STRIPE) {
+  if (paymentProvider !== paymentProviderSchema.enum.STRIPE) {
     throw new NfscPaymentCaptureNotSupportedError();
   }
 
@@ -66,7 +66,7 @@ export async function captureStripePayment({
     throw new MissingPaymentProviderReferenceId({ paymentId });
   }
 
-  if (status !== paymentStatusSchema.Values.REQUIRES_CAPTURE) {
+  if (status !== paymentStatusSchema.enum.REQUIRES_CAPTURE) {
     throw new PaymentNotReadyForCaptureError({
       paymentId,
       paymentProviderReferenceId,
@@ -109,7 +109,7 @@ export async function createPayment(
           : {
               nfscPaymentDetails: paymentProviderDetails.nfscPaymentDetails,
             },
-        { status: paymentStatusSchema.Values.CREATED },
+        { status: paymentStatusSchema.enum.CREATED },
       );
 
       const [newPayment] = await tx
@@ -461,10 +461,10 @@ export async function determineAvailablePaymentMethods(
         const paymentMethod = switchCaseOrDefault(
           chain.id,
           {
-            [CHAINS.base.id]: paymentProviderSchema.Values.NFSC_BASE, // Base chain -> NFSC on Base
-            [CHAINS.mainnet.id]: paymentProviderSchema.Values.NFSC_ETHEREUM, // Mainnet -> NFSC on Ethereum
+            [CHAINS.base.id]: paymentProviderSchema.enum.NFSC_BASE, // Base chain -> NFSC on Base
+            [CHAINS.mainnet.id]: paymentProviderSchema.enum.NFSC_ETHEREUM, // Mainnet -> NFSC on Ethereum
             [CHAINS.sepolia.id]:
-              paymentProviderSchema.Values.NFSC_ETHEREUM_SEPOLIA,
+              paymentProviderSchema.enum.NFSC_ETHEREUM_SEPOLIA,
           },
           null, // Default to null for unhandled chains
         );
@@ -489,7 +489,7 @@ export async function determineAvailablePaymentMethods(
     return {
       availablePaymentMethods: [
         ...paymentMethodsFromChains,
-        paymentProviderSchema.Values.STRIPE,
+        paymentProviderSchema.enum.STRIPE,
       ],
       walletAddressToBeCharged,
       stripePreferredPaymentMethodId: stripePreferredPaymentMethod.id,
@@ -505,11 +505,11 @@ export function chainIdFromPaymentMethod(
   paymentMethod: PaymentProvider,
 ): number {
   switch (paymentMethod) {
-    case paymentProviderSchema.Values.NFSC_BASE:
+    case paymentProviderSchema.enum.NFSC_BASE:
       return CHAINS.base.id;
-    case paymentProviderSchema.Values.NFSC_ETHEREUM:
+    case paymentProviderSchema.enum.NFSC_ETHEREUM:
       return CHAINS.mainnet.id;
-    case paymentProviderSchema.Values.STRIPE:
+    case paymentProviderSchema.enum.STRIPE:
       throw new Error(
         'STRIPE payment method does not have an associated chain ID',
       );

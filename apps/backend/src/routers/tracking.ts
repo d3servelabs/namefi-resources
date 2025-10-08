@@ -17,16 +17,22 @@ import { eq } from 'drizzle-orm';
 import { createLogger } from '#lib/logger';
 import { getPoweredByNamefi3PDomains } from '#lib/namefi-registry';
 import { parseDomainName } from '@namefi-astra/utils/parse-domain-name';
-import { toPunycodeFqdn } from '@namefi-astra/registrars/lib/data/validations';
+import {
+  toPunycodeFqdn,
+  type PunycodeFqdn,
+} from '@namefi-astra/registrars/lib/data/validations';
 
 const trackingRouter = new Hono();
 const _logger = createLogger({ context: 'TRACKING' });
+
+const fqdnLowercaseFromPunycodeSchema =
+  fqdnLowercaseSchema as unknown as z.ZodType<string, PunycodeFqdn>;
 
 const requestQuerySchema = z.object({
   name: z
     .string()
     .transform((name) => toPunycodeFqdn(name))
-    .pipe(fqdnLowercaseSchema),
+    .pipe(fqdnLowercaseFromPunycodeSchema),
 });
 
 trackingRouter.get('/healthz', (c) => c.json({ message: 'OK' }));

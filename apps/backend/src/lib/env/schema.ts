@@ -2,6 +2,13 @@ import { punycodeFqdnSchema } from '@namefi-astra/registrars/lib/data/validation
 import { zJson } from '@namefi-astra/utils/zod-helpers';
 import { z } from 'zod';
 
+const numericStringKeySchema = z
+  .string()
+  .regex(/^-?\d+$/, {
+    message: 'Record keys must be numeric strings',
+  })
+  .transform(Number);
+
 export const secretsSchema = z.object({
   DATABASE_URL: z.string().url(),
   PRIVY_APP_SECRET: z.string(),
@@ -18,7 +25,7 @@ export const secretsSchema = z.object({
   X_ALCHEMY_WEBHOOK_NFT_ACTIVITY_SIGNATURE: zJson
     .optional()
     .default('{}')
-    .pipe(z.record(z.coerce.number(), z.string())),
+    .pipe(z.record(numericStringKeySchema, z.string())),
   /**
    * The token for the GitHub Actions workflow.
    */
@@ -124,7 +131,11 @@ export const configSchema = z.object({
    */
   NAMEFI_ASTRA_NAMESERVERS: punycodeFqdnSchema
     .array()
-    .default(['ns3.namefi.dev.', 'ns4.namefi.dev.']),
+    .default(() =>
+      ['ns3.namefi.dev.', 'ns4.namefi.dev.'].map((value) =>
+        punycodeFqdnSchema.parse(value),
+      ),
+    ),
 
   AWS_REGION: z.string().default('us-east-1'),
   DYNADOT_BASE_URL: z.string().optional(),

@@ -86,7 +86,7 @@ export async function autoChargeStripeAndCreatePaymentWorkflow({
   const payment = await createPayment({
     amountInUsdCents: totalAmountInUsdCents,
     paymentProviderDetails: {
-      paymentProvider: paymentProviderSchema.Values.STRIPE,
+      paymentProvider: paymentProviderSchema.enum.STRIPE,
       stripePaymentDetails: {
         paymentMethodId: preferredPaymentMethod.id,
       },
@@ -110,7 +110,7 @@ export async function autoChargeStripeAndCreatePaymentWorkflow({
     workflow.log.error(
       `Error while executing ChargeStripe workflow. workflowId: charge-stripe-${paymentId}, cause: ${JSON.stringify(error)}`,
     );
-    paymentStatus = paymentStatusSchema.Values.FAILED;
+    paymentStatus = paymentStatusSchema.enum.FAILED;
   }
   await updatePayment({
     id: paymentId,

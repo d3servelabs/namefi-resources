@@ -139,7 +139,7 @@ export const DomainRenewReport = buildTemplate<DomainRenewReportProps>(
     domainLdhRenewSucceeded: ['test.org'],
     domainLdhRenewFailed: ['example.org', 'example.net'],
     chargedAmountInUsd: 120,
-    paymentMethodCharged: paymentProviderSchema.Values.STRIPE,
+    paymentMethodCharged: paymentProviderSchema.enum.STRIPE,
     paymentMethodIdentifier: '...7890',
     refundAmountInUsd: 50,
     refundStatus: 'SUCCESS',

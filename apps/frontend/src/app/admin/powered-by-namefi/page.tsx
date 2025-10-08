@@ -95,7 +95,7 @@ const createDomainSchema = z.object({
       path: ['durationConstraints'],
     }),
   costPerYearInUsdCents: z.number().min(0),
-  metadata: z.record(z.any()).optional(),
+  metadata: z.record(z.string(), z.any()).optional(),
   ownerId: z.string().uuid().optional(),
   // Setup options
   setupVercelAndDns: z.boolean().default(false),

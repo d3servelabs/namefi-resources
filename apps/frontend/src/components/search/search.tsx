@@ -473,8 +473,8 @@ export const DomainCard: FC<{
 
   // Get the appropriate pricing based on whether it's an import or registration
   const operationType = isImportable
-    ? itemTypeSchema.Values.IMPORT
-    : itemTypeSchema.Values.REGISTER;
+    ? itemTypeSchema.enum.IMPORT
+    : itemTypeSchema.enum.REGISTER;
   const pricingDetails = availabilityInfo
     ? getDomainPricingForOperation(availabilityInfo, operationType)
     : undefined;

@@ -67,8 +67,8 @@ const DEFAULT_CHAIN_ID = config.ALLOWED_CHAINS.includes(CHAINS.base.id)
 
 const DEFAULT_NFSC_PAYMENT_PROVIDER =
   DEFAULT_CHAIN_ID === CHAINS.base.id
-    ? paymentProviderSchema.Values.NFSC_BASE
-    : paymentProviderSchema.Values.NFSC_ETHEREUM_SEPOLIA;
+    ? paymentProviderSchema.enum.NFSC_BASE
+    : paymentProviderSchema.enum.NFSC_ETHEREUM_SEPOLIA;
 
 export default function CartPage() {
   type PaymentDetails = Omit<

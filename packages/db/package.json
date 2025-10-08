@@ -22,17 +22,17 @@
     "@namefi-astra/zod-dns": "workspace:*",
     "bufferutil": "^4.0.9",
     "ws": "^8.18.1",
-    "zod": "3.25.76"
+    "zod": "4.1.12"
   },
   "devDependencies": {
     "@namefi-astra/typescript": "workspace:*",
     "@types/node": "^22.13.14",
     "@types/ws": "^8.18.0",
-    "drizzle-kit": "^0.30.6"
+    "drizzle-kit": "^0.31.5"
   },
   "peerDependencies": {
-    "drizzle-orm": "^0.40.1",
-    "drizzle-zod": "^0.7.0"
+    "drizzle-orm": "^0.44.6",
+    "drizzle-zod": "^0.8.3"
   },
   "optionalDependencies": {
     "@neondatabase/serverless": "^0.10.4",

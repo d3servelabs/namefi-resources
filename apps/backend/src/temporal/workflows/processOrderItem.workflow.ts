@@ -88,13 +88,13 @@ export async function processOrderItemWorkflow(
     const [updateStatusError, _res] = await resolve(
       updateOrderItemStatusOrThrow({
         orderItemId: input.itemId,
-        status: orderStatusSchema.Values.SUCCEEDED,
+        status: orderStatusSchema.enum.SUCCEEDED,
       }),
     );
 
     if (updateStatusError) {
       workflow.log.error(
-        `Failed to update orderItem ${input.itemId} status to ${orderStatusSchema.Values.SUCCEEDED}: ${
+        `Failed to update orderItem ${input.itemId} status to ${orderStatusSchema.enum.SUCCEEDED}: ${
           updateStatusError instanceof Error
             ? updateStatusError.message
             : String(updateStatusError)
@@ -112,13 +112,13 @@ export async function processOrderItemWorkflow(
     const [updateStatusError, _res] = await resolve(
       updateOrderItemStatusOrThrow({
         orderItemId: input.itemId,
-        status: orderStatusSchema.Values.FAILED,
+        status: orderStatusSchema.enum.FAILED,
       }),
     );
 
     if (updateStatusError) {
       workflow.log.error(
-        `Failed to update orderItem ${input.itemId} status to ${orderStatusSchema.Values.FAILED}: ${
+        `Failed to update orderItem ${input.itemId} status to ${orderStatusSchema.enum.FAILED}: ${
           updateStatusError instanceof Error
             ? updateStatusError.message
             : String(updateStatusError)

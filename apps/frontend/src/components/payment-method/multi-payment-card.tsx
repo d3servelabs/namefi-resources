@@ -96,10 +96,10 @@ export function MultiPaymentCard({
     ) {
       const paymentProvider =
         initialNfscChainId === CHAINS.base.id
-          ? paymentProviderSchema.Values.NFSC_BASE
+          ? paymentProviderSchema.enum.NFSC_BASE
           : initialNfscChainId === CHAINS.mainnet.id
-            ? paymentProviderSchema.Values.NFSC_ETHEREUM
-            : paymentProviderSchema.Values.NFSC_ETHEREUM_SEPOLIA;
+            ? paymentProviderSchema.enum.NFSC_ETHEREUM
+            : paymentProviderSchema.enum.NFSC_ETHEREUM_SEPOLIA;
       paymentsDraft.push({
         amountInUsdCents: nfscAmountInUsdCents,
         paymentProviderDetails: {
@@ -115,7 +115,7 @@ export function MultiPaymentCard({
       paymentsDraft.push({
         amountInUsdCents: stripeAmountInUsdCents,
         paymentProviderDetails: {
-          paymentProvider: paymentProviderSchema.Values.STRIPE,
+          paymentProvider: paymentProviderSchema.enum.STRIPE,
           stripePaymentDetails: { paymentMethodId: undefined },
         },
         paymentMetadata: stripeConfirmationTokenId

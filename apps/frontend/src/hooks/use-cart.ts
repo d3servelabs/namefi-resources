@@ -642,12 +642,12 @@ export function useCartServerSync() {
           eppAuthorizationCode,
         } = p;
         if (
-          operationType === itemTypeSchema.Values.IMPORT &&
+          operationType === itemTypeSchema.enum.IMPORT &&
           !isDomainImportable(info)
         )
           throw new Error('Domain is not importable');
         if (
-          operationType === itemTypeSchema.Values.REGISTER &&
+          operationType === itemTypeSchema.enum.REGISTER &&
           !isDomainRegistrable(info)
         )
           throw new Error('Domain is not registrable');
@@ -662,7 +662,7 @@ export function useCartServerSync() {
           type: operationType,
           registrar: info.registrarKey || 'namefi',
           eppAuthorizationCode:
-            operationType === itemTypeSchema.Values.IMPORT
+            operationType === itemTypeSchema.enum.IMPORT
               ? eppAuthorizationCode
               : undefined,
         };

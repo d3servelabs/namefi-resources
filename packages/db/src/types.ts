@@ -315,14 +315,14 @@ const stripePaymentDetailsSchema = z.object({
 export type StripePaymentDetails = z.infer<typeof stripePaymentDetailsSchema>;
 
 export const nfscPaymentProviderSchema = z.enum([
-  paymentProviderSchema.Values.NFSC_BASE,
-  paymentProviderSchema.Values.NFSC_ETHEREUM,
-  paymentProviderSchema.Values.NFSC_ETHEREUM_SEPOLIA,
+  paymentProviderSchema.enum.NFSC_BASE,
+  paymentProviderSchema.enum.NFSC_ETHEREUM,
+  paymentProviderSchema.enum.NFSC_ETHEREUM_SEPOLIA,
 ]);
 export type NfscPaymentProvider = z.infer<typeof nfscPaymentProviderSchema>;
 
 export const stripePaymentProviderDetailsSchema = z.object({
-  paymentProvider: z.literal(paymentProviderSchema.Values.STRIPE),
+  paymentProvider: z.literal(paymentProviderSchema.enum.STRIPE),
   stripePaymentDetails: stripePaymentDetailsSchema,
 });
 
@@ -334,12 +334,24 @@ export const nfscPaymentProviderDetailsSchema = z.object({
   paymentProvider: nfscPaymentProviderSchema,
   nfscPaymentDetails: paymentInsertSchema.shape.nfscPaymentDetails
     .unwrap()
-    .refine((d) => d !== null),
+    .transform((details, ctx): NfscPaymentDetails => {
+      if (details === null) {
+        ctx.addIssue({
+          code: 'custom',
+          message: 'NFSC payment details are required',
+        });
+        return z.NEVER;
+      }
+      return details;
+    }),
 });
 
-export type NfscPaymentProviderDetails = z.infer<
-  typeof nfscPaymentProviderDetailsSchema
->;
+export type NfscPaymentProviderDetails = Omit<
+  z.infer<typeof nfscPaymentProviderDetailsSchema>,
+  'nfscPaymentDetails'
+> & {
+  nfscPaymentDetails: NfscPaymentDetails;
+};
 
 export const paymentProviderDetailsSchema = z.discriminatedUnion(
   'paymentProvider',

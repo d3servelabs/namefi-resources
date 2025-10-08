@@ -36,14 +36,15 @@ export const nameSchema = z
  * - Valid: "example.com."
  * - Invalid: "example.com", "Example.com.", "example.com.."
  */
-export const fqdnLowercaseSchema = z.string().refine(
-  (val) => val === '@' || fqdnLowercaseRegex.test(val),
-  (val) => {
-    return {
-      message: `Invalid fully qualified domain name: "${val}". Must be "@" or a normalized, lowercase domain name with a trailing dot, Example: "example.com."`,
-    };
-  },
-);
+export const fqdnLowercaseSchema = z
+  .string()
+  .refine((val) => val === '@' || fqdnLowercaseRegex.test(val), {
+    error: (issue) => {
+      const input =
+        typeof issue.input === 'string' ? issue.input : String(issue.input);
+      return `Invalid fully qualified domain name: "${input}". Must be "@" or a normalized, lowercase domain name with a trailing dot, Example: "example.com."`;
+    },
+  });
 
 export const normalizeDomainName = (domainNameToNormalize: string) => {
   const possibleNormalized = toASCII(domainNameToNormalize)

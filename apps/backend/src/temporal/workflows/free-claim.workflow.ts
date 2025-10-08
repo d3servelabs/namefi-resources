@@ -230,7 +230,7 @@ export async function processFreeClaimWorkflow(
       await updateOrderAndItemStatusOrThrow({
         orderId: state.orderId,
         orderItemId: state.orderItemId,
-        status: orderStatusSchema.Values.SUCCEEDED,
+        status: orderStatusSchema.enum.SUCCEEDED,
       });
     }
 
@@ -305,7 +305,7 @@ export async function processFreeClaimWorkflow(
         updateOrderAndItemStatusOrThrow({
           orderId: state.orderId,
           orderItemId: state.orderItemId,
-          status: orderStatusSchema.Values.FAILED,
+          status: orderStatusSchema.enum.FAILED,
         }),
       );
 

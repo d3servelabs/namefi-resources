@@ -43,7 +43,7 @@ export async function chargeUserAndCreatePaymentWorkflow({
   const chargeMethods = (
     [
       {
-        method: paymentProviderSchema.Values.NFSC_ETHEREUM_SEPOLIA,
+        method: paymentProviderSchema.enum.NFSC_ETHEREUM_SEPOLIA,
         workflow: chargeNfsc,
         args: [
           CHAINS.sepolia.id,
@@ -54,7 +54,7 @@ export async function chargeUserAndCreatePaymentWorkflow({
         ] as Parameters<typeof chargeNfsc>,
       },
       {
-        method: paymentProviderSchema.Values.NFSC_BASE,
+        method: paymentProviderSchema.enum.NFSC_BASE,
         workflow: chargeNfsc,
         args: [
           CHAINS.base.id,
@@ -65,7 +65,7 @@ export async function chargeUserAndCreatePaymentWorkflow({
         ] as Parameters<typeof chargeNfsc>,
       },
       {
-        method: paymentProviderSchema.Values.NFSC_ETHEREUM,
+        method: paymentProviderSchema.enum.NFSC_ETHEREUM,
         workflow: chargeNfsc,
         args: [
           CHAINS.mainnet.id,
@@ -76,7 +76,7 @@ export async function chargeUserAndCreatePaymentWorkflow({
         ] as Parameters<typeof chargeNfsc>,
       },
       {
-        method: paymentProviderSchema.Values.STRIPE,
+        method: paymentProviderSchema.enum.STRIPE,
         workflow: chargeStripeWorkflow,
         args: [
           {
@@ -121,7 +121,7 @@ export async function chargeUserAndCreatePaymentWorkflow({
 
   await updatePayment({
     id: payment.id,
-    status: paymentStatusSchema.Values.SUCCEEDED,
+    status: paymentStatusSchema.enum.SUCCEEDED,
     paymentProviderReferenceId,
   });
 
@@ -153,13 +153,13 @@ async function _tryChargingMethods({
       const result = await workflow.executeChild(chargeMethod.workflow, {
         args: chargeMethod.args,
         taskQueue:
-          chargeMethod.method === paymentProviderSchema.Values.STRIPE
+          chargeMethod.method === paymentProviderSchema.enum.STRIPE
             ? TEMPORAL_QUEUES.DEFAULT
             : TEMPORAL_QUEUES.MINT,
         workflowId: `charge-user-${new Date().toISOString()}-${walletAddressToBeCharged}-${totalAmountInUsd}$USD`,
       });
 
-      if (chargeMethod.method === paymentProviderSchema.Values.STRIPE) {
+      if (chargeMethod.method === paymentProviderSchema.enum.STRIPE) {
         if (!stripePreferredPaymentMethodId) {
           throw workflow.ApplicationFailure.create({
             message: `Attempted to charge user ${walletAddressToBeCharged} for ${totalAmountInUsd}$USD with Stripe, but payment method ID is undefined`,

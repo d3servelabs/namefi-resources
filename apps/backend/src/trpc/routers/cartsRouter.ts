@@ -164,7 +164,7 @@ export const cartsRouter = createTRPCRouter({
 
           // For import items, encrypt the EPP authorization code
           if (
-            item.type === itemTypeSchema.Values.IMPORT &&
+            item.type === itemTypeSchema.enum.IMPORT &&
             item.eppAuthorizationCode
           ) {
             if (!item.eppAuthorizationCode.trim()) {
@@ -297,7 +297,7 @@ export const cartsRouter = createTRPCRouter({
 
       // If EPP authorization code is being updated for import items
       if (
-        currentItem.type === itemTypeSchema.Values.IMPORT &&
+        currentItem.type === itemTypeSchema.enum.IMPORT &&
         input.eppAuthorizationCode
       ) {
         if (!input.eppAuthorizationCode.trim()) {

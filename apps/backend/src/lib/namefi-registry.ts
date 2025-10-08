@@ -504,11 +504,11 @@ const checkIfDomainsHavePendingOrders = async (
         inArray(orderItemsTable.normalizedDomainName, domains),
         and(
           or(
-            eq(orderItemsTable.status, orderItemStatusSchema.Enum.PROCESSING),
+            eq(orderItemsTable.status, orderItemStatusSchema.enum.PROCESSING),
             and(
-              eq(orderItemsTable.status, orderItemStatusSchema.Enum.CREATED),
+              eq(orderItemsTable.status, orderItemStatusSchema.enum.CREATED),
               gt(orderItemsTable.createdAt, subDays(new Date(), 1)), //TODO: this is a temporary constraint, we should find a better way to do this or at least define certain limits for duration of unprocessed orders
-              eq(ordersTable.status, orderStatusSchema.Enum.PROCESSING),
+              eq(ordersTable.status, orderStatusSchema.enum.PROCESSING),
             ),
           ),
         ),

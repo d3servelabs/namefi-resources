@@ -71,8 +71,8 @@ export default function OrderPage({ params }: OrderPageProps) {
 
       if (
         !currentStatus ||
-        currentStatus === orderStatusSchema.Values.PROCESSING ||
-        currentStatus === orderStatusSchema.Values.CREATED
+        currentStatus === orderStatusSchema.enum.PROCESSING ||
+        currentStatus === orderStatusSchema.enum.CREATED
       ) {
         return 5000;
       }
@@ -108,15 +108,15 @@ export default function OrderPage({ params }: OrderPageProps) {
 
   const isFailedOrder = useMemo(() => {
     return (
-      order?.status === orderStatusSchema.Values.FAILED ||
-      order?.status === orderStatusSchema.Values.CANCELLED
+      order?.status === orderStatusSchema.enum.FAILED ||
+      order?.status === orderStatusSchema.enum.CANCELLED
     );
   }, [order?.status]);
 
   const isCompletedOrder = useMemo(() => {
     return (
-      order?.status === orderStatusSchema.Values.SUCCEEDED ||
-      order?.status === orderStatusSchema.Values.PARTIALLY_COMPLETED
+      order?.status === orderStatusSchema.enum.SUCCEEDED ||
+      order?.status === orderStatusSchema.enum.PARTIALLY_COMPLETED
     );
   }, [order?.status]);
 
@@ -133,8 +133,8 @@ export default function OrderPage({ params }: OrderPageProps) {
     return items
       .filter(
         (item) =>
-          item.status !== orderStatusSchema.Values.FAILED &&
-          item.status !== orderStatusSchema.Values.CANCELLED,
+          item.status !== orderStatusSchema.enum.FAILED &&
+          item.status !== orderStatusSchema.enum.CANCELLED,
       )
       .map((item) => {
         const { subdomain, parentDomain } =

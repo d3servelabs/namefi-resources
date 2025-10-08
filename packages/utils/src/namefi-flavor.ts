@@ -22,9 +22,10 @@ export const namefiNormalizedDomainSchema = z
  * @throws Error if the domain cannot be normalized to a valid Namefi domain format
  */
 export const fqdnLowercaseToNamefiNormalizedDomain = z
-  .function()
-  .args(fqdnLowercaseSchema)
-  .returns(namefiNormalizedDomainSchema)
+  .function({
+    input: [fqdnLowercaseSchema],
+    output: namefiNormalizedDomainSchema,
+  })
   .implement((fqdnLowercase) => {
     // trimming trailing dots
     const trimmedFqdnLowercase = fqdnLowercase.replace(/\.+$/, '');

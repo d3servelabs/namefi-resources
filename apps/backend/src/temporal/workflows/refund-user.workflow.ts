@@ -51,7 +51,7 @@ export async function refundUserWorkflow({
 
   await updatePayment({
     id: paymentId,
-    status: paymentStatusSchema.Values.REFUND_REQUESTED,
+    status: paymentStatusSchema.enum.REFUND_REQUESTED,
   });
 
   // MARK: Process refund depending on payment provider
@@ -103,7 +103,7 @@ export async function refundUserWorkflow({
       );
       refundStatus = 'FAILED';
     }
-  } else if (paymentProvider === paymentProviderSchema.Values.STRIPE) {
+  } else if (paymentProvider === paymentProviderSchema.enum.STRIPE) {
     try {
       const refundStripeResult = await workflow.executeChild(
         refundStripeWorkflow,

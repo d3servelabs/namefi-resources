@@ -6,7 +6,7 @@ import { fqdnLowercaseRegex, nameSchema } from './name';
 // Design decision: we use a string enum for the record type instead of a numeric enum
 // because it's more readable and easier to work with.
 // See @namefi-astra/docs/architecture/decisions/dns-record-type-format.md for more details.
-export const recordTypeEnum = z.enum([
+export const recordTypeValues = [
   'A',
   'AAAA',
   'CNAME',
@@ -24,8 +24,9 @@ export const recordTypeEnum = z.enum([
   'SVCB',
   'NAPTR',
   'SPF',
-] as const);
-export const RecordType = recordTypeEnum.Values;
+] as const;
+export const recordTypeEnum = z.enum(recordTypeValues);
+export const RecordType = recordTypeEnum.enum;
 export type RecordType = z.infer<typeof recordTypeEnum>;
 
 // RFC 1035, Section 3.3.11
@@ -47,9 +48,8 @@ const recordBasicSchema = z.object({
 // A Record
 const aRecordSchema = recordBasicSchema.extend({
   type: z.literal(RecordType.A),
-  rdata: z.string().ip({
-    version: 'v4',
-    message:
+  rdata: z.ipv4({
+    error:
       'The input is not a valid IPv4 address, A record value (rdata) must be an IPv4 address, example: "192.168.1.1"',
   }),
 });
@@ -57,9 +57,8 @@ const aRecordSchema = recordBasicSchema.extend({
 // AAAA Record
 const aaaaRecordSchema = recordBasicSchema.extend({
   type: z.literal(RecordType.AAAA),
-  rdata: z.string().ip({
-    version: 'v6',
-    message:
+  rdata: z.ipv6({
+    error:
       'The input is not a valid IPv6 address, AAAA record value (rdata) must be an IPv6 address, example: "2001:0db8:85a3:0000:0000:8a2e:0370:7334"',
   }),
 });

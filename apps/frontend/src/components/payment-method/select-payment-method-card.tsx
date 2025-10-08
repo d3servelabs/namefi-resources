@@ -158,7 +158,7 @@ export function SelectPaymentMethodCard({
     (confirmationToken: ConfirmationToken) => {
       const newPaymentMethodDetails: PaymentDetails = {
         paymentProviderDetails: {
-          paymentProvider: paymentProviderSchema.Values.STRIPE,
+          paymentProvider: paymentProviderSchema.enum.STRIPE,
           stripePaymentDetails: {
             paymentMethodId: undefined,
           },
@@ -199,10 +199,10 @@ export function SelectPaymentMethodCard({
         paymentProviderDetails: {
           paymentProvider:
             chainId === CHAINS.mainnet.id
-              ? paymentProviderSchema.Values.NFSC_ETHEREUM
+              ? paymentProviderSchema.enum.NFSC_ETHEREUM
               : chainId === CHAINS.base.id
-                ? paymentProviderSchema.Values.NFSC_BASE
-                : paymentProviderSchema.Values.NFSC_ETHEREUM_SEPOLIA,
+                ? paymentProviderSchema.enum.NFSC_BASE
+                : paymentProviderSchema.enum.NFSC_ETHEREUM_SEPOLIA,
           nfscPaymentDetails: {
             walletAddress:
               walletAddress ??

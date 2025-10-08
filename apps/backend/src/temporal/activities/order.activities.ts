@@ -176,10 +176,10 @@ export async function createAutoRenewOrder({
 
   const orderStatus =
     successCount === 0
-      ? orderStatusSchema.Values.FAILED
+      ? orderStatusSchema.enum.FAILED
       : failureCount > 0
-        ? orderStatusSchema.Values.PARTIALLY_COMPLETED
-        : orderStatusSchema.Values.SUCCEEDED;
+        ? orderStatusSchema.enum.PARTIALLY_COMPLETED
+        : orderStatusSchema.enum.SUCCEEDED;
   // Create order items for each domain renewal result
   const orderItems = domainRenewResults.map(
     (result) =>
@@ -191,8 +191,8 @@ export async function createAutoRenewOrder({
         registrar: result.registrarKey,
         status:
           result.status === 'SUCCESS'
-            ? orderStatusSchema.Values.SUCCEEDED
-            : orderStatusSchema.Values.FAILED,
+            ? orderStatusSchema.enum.SUCCEEDED
+            : orderStatusSchema.enum.FAILED,
         metadata: {
           autoRenew: true,
           renewalSummary: {

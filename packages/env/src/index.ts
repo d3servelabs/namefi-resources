@@ -1,19 +1,19 @@
 import { createRequire } from 'node:module';
 import { config as loadBaseEnv } from 'dotenv';
-import type { ZodSchema, ZodTypeDef } from 'zod';
+import type { z } from 'zod';
 import { baseConfigSchema } from './schema';
 
 loadBaseEnv({ override: true });
 
-export interface LoadConfigOptions<Output, Def extends ZodTypeDef, Input> {
+export interface LoadConfigOptions<Schema extends z.ZodTypeAny> {
   configPath: string;
-  configSchema: ZodSchema<Output, Def, Input>;
+  configSchema: Schema;
 }
 
 // config is part of the codebase itself, unlike environment variables
-export const loadConfig = <Output, Def extends ZodTypeDef, Input>(
-  options: LoadConfigOptions<Output, Def, Input>,
-) => {
+export const loadConfig = <Schema extends z.ZodTypeAny>(
+  options: LoadConfigOptions<Schema>,
+): z.output<Schema> => {
   const validatedBaseConfig = baseConfigSchema.parse(process.env);
   const envConfigPath = `${options.configPath}/${validatedBaseConfig.ENVIRONMENT}`;
   let envConfig: unknown;

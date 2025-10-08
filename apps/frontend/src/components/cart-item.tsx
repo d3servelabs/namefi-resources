@@ -78,10 +78,10 @@ export function CartItem({
       <div className="flex flex-col gap-4">
         <div className="flex items-center gap-2">
           <span className="text-xl">{item.normalizedDomainName}</span>
-          {(item.type === itemTypeSchema.Values.IMPORT ||
-            item.type === itemTypeSchema.Values.RENEW) && (
+          {(item.type === itemTypeSchema.enum.IMPORT ||
+            item.type === itemTypeSchema.enum.RENEW) && (
             <Badge className="text-xs bg-blue-600/20 text-blue-400 border-blue-400/50">
-              {item.type === itemTypeSchema.Values.IMPORT ? 'Import' : 'Renew'}
+              {item.type === itemTypeSchema.enum.IMPORT ? 'Import' : 'Renew'}
             </Badge>
           )}
         </div>

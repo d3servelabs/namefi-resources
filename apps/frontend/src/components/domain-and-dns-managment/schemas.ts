@@ -27,10 +27,7 @@ export const TTL_OPTIONS = [
 // Schema for DNS record form
 export const dnsRecordSchema = z
   .object({
-    type: z.string({
-      required_error: 'Record type is required',
-      invalid_type_error: 'Invalid record type',
-    }),
+    type: z.string().min(1, { error: 'Record type is required' }),
     name: z
       .string()
       .optional()
@@ -39,7 +36,24 @@ export const dnsRecordSchema = z
     rdata: z.string().min(1, { message: 'Value is required' }),
     ttl: z.number().min(1, { message: 'TTL is required' }),
   })
-  .pipe(recordSchema);
+  .superRefine((value, ctx) => {
+    const recordValidation = recordSchema.safeParse({
+      type: value.type,
+      name: value.name,
+      rdata: value.rdata,
+      ttl: value.ttl,
+    });
+
+    if (!recordValidation.success) {
+      for (const issue of recordValidation.error.issues) {
+        ctx.addIssue({
+          code: 'custom',
+          path: issue.path,
+          message: issue.message,
+        });
+      }
+    }
+  });
 
 export type DnsRecordFormValues = (typeof dnsRecordSchema)['_input'];
 

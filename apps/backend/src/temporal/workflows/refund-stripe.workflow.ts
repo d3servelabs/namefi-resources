@@ -36,7 +36,7 @@ export async function refundStripeWorkflow({
   const { paymentProvider, paymentProviderReferenceId: stripePaymentIntentId } =
     await getPaymentDetails({ paymentId });
 
-  if (paymentProvider !== paymentProviderSchema.Values.STRIPE) {
+  if (paymentProvider !== paymentProviderSchema.enum.STRIPE) {
     throw workflow.ApplicationFailure.create({
       message: `refundStripeWorkflow invoked for a non-Stripe payment (provider: ${paymentProvider})`,
     });

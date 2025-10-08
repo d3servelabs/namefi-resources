@@ -64,14 +64,14 @@ export async function processOrderWorkflow(
     if (!orderDetails.items || orderDetails.items.length === 0) {
       await updateOrderStatusOrThrow({
         orderId: input.orderId,
-        status: orderStatusSchema.Values.FAILED,
+        status: orderStatusSchema.enum.FAILED,
       });
       throw new Error('Order is empty or malformed');
     }
     if (!(nftWalletAddress && nftChainId)) {
       await updateOrderStatusOrThrow({
         orderId: input.orderId,
-        status: orderStatusSchema.Values.FAILED,
+        status: orderStatusSchema.enum.FAILED,
       });
       throw new workflow.ApplicationFailure(
         'Order is missing NFT wallet address or chain ID, this should not happen, please investigate',
@@ -81,14 +81,14 @@ export async function processOrderWorkflow(
     // Update order status to PROCESSING
     await updateOrderStatusOrThrow({
       orderId: input.orderId,
-      status: orderStatusSchema.Values.PROCESSING,
+      status: orderStatusSchema.enum.PROCESSING,
     });
 
     // Charge the user for the order (multi-payment)
     if (orderDetails.payments.length === 0) {
       await updateOrderStatusOrThrow({
         orderId: input.orderId,
-        status: orderStatusSchema.Values.FAILED,
+        status: orderStatusSchema.enum.FAILED,
       });
       throw new workflow.ApplicationFailure('No payment found');
     }
@@ -115,12 +115,12 @@ export async function processOrderWorkflow(
         const [updateStatusError, _res] = await resolve(
           updateOrderItemStatusOrThrow({
             orderItemId: item.id,
-            status: orderStatusSchema.Values.CANCELLED,
+            status: orderStatusSchema.enum.CANCELLED,
           }),
         );
         if (updateStatusError) {
           workflow.log.error(
-            `Failed to update orderItem ${item.id} status to ${orderStatusSchema.Values.CANCELLED}: ${
+            `Failed to update orderItem ${item.id} status to ${orderStatusSchema.enum.CANCELLED}: ${
               updateStatusError instanceof Error
                 ? updateStatusError.message
                 : String(updateStatusError)
@@ -130,7 +130,7 @@ export async function processOrderWorkflow(
       }
       await updateOrderStatusOrThrow({
         orderId: input.orderId,
-        status: orderStatusSchema.Values.FAILED,
+        status: orderStatusSchema.enum.FAILED,
       });
       throw e instanceof Error ? e : new Error(String(e));
     }
@@ -217,19 +217,19 @@ export async function processOrderWorkflow(
       // All items succeeded
       await updateOrderStatusOrThrow({
         orderId: input.orderId,
-        status: orderStatusSchema.Values.SUCCEEDED,
+        status: orderStatusSchema.enum.SUCCEEDED,
       });
     } else if (succeededItems.length === 0) {
       // All items failed
       await updateOrderStatusOrThrow({
         orderId: input.orderId,
-        status: orderStatusSchema.Values.FAILED,
+        status: orderStatusSchema.enum.FAILED,
       });
     } else {
       // Some items succeeded, some failed
       await updateOrderStatusOrThrow({
         orderId: input.orderId,
-        status: orderStatusSchema.Values.PARTIALLY_COMPLETED,
+        status: orderStatusSchema.enum.PARTIALLY_COMPLETED,
       });
     }
 
@@ -267,7 +267,7 @@ export async function processOrderWorkflow(
     try {
       await updateOrderStatusOrThrow({
         orderId: input.orderId,
-        status: orderStatusSchema.Values.FAILED,
+        status: orderStatusSchema.enum.FAILED,
       });
     } catch (updateError) {
       workflow.log.error(

@@ -1,5 +1,5 @@
 import punycode from 'punycodejs';
-import { BRAND, z } from 'zod';
+import { z } from 'zod';
 
 /**
  * Represents a domain name string with branded type for type safety.
@@ -39,16 +39,14 @@ export type PunycodeFqdn = `${string}.` & {
  * Represents a domain name in ASCII Punycode format without trailing dot.
  * Used for internationalized domain names in their ASCII representation.
  */
-export type PunycodeDomainName = string & {
-  [BRAND]: {
-    readonly NamefiNormalizedDomain: true; // This is a hack to allow the type to be used in the NamefiNormalizedDomain type
+export type PunycodeDomainName = string &
+  z.BRAND<'NamefiNormalizedDomain'> & {
+    readonly __brand: {
+      readonly domainName: true;
+      readonly charset: 'ascii';
+      readonly punycode: true;
+    };
   };
-  readonly __brand: {
-    readonly domainName: true;
-    readonly charset: 'ascii';
-    readonly punycode: true;
-  };
-};
 
 /**
  * Represents a Fully Qualified Domain Name in Unicode format with trailing dot.

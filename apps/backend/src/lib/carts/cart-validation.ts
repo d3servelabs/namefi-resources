@@ -384,7 +384,7 @@ export async function validateCartItems(
             originalItem.normalizedDomainName
           ];
 
-        if (originalItem.type === itemTypeSchema.Values.RENEW) {
+        if (originalItem.type === itemTypeSchema.enum.RENEW) {
           if (!domainPricing?.durationValidationInYears) {
             return `${originalItem.normalizedDomainName} (duration validation data missing)`;
           }
@@ -680,7 +680,7 @@ function _prepareCartItemsWithChangesReflected(
       let { min, max } = durationValidationInYears;
 
       // For RENEW items, apply special duration validation based on expiration date
-      if (originalItem.type === itemTypeSchema.Values.RENEW) {
+      if (originalItem.type === itemTypeSchema.enum.RENEW) {
         const expirationTime = renewCartItemsExpirationDatesMap.get(
           originalItem.normalizedDomainName,
         );
