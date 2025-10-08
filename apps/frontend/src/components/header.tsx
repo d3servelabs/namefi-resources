@@ -26,15 +26,17 @@ export const Header: ForwardRefExoticComponent<HeaderProps> = forwardRef<
 ) {
   const { isMobile } = useSidebar();
   const origin = useOrigin();
+  const isBlurredHeader = origin.config.landingPage?.headerIsBlurred;
 
   return (
     <header
       ref={ref}
       className={cn(
-        'sticky lg:static top-0 flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear',
-        origin.config.landingPage?.headerIsBlurred &&
-          'backdrop-blur-2xl bg-background/20',
-        isMobile && 'px-2',
+        'sticky top-0 z-30 flex h-16 w-full shrink-0 items-center transition-[width,height,background-color] ease-linear lg:static',
+        isBlurredHeader
+          ? 'border-b border-white/10 supports-[backdrop-filter]:bg-background/40 supports-[backdrop-filter]:backdrop-blur-2xl'
+          : 'bg-background/95',
+        isMobile ? 'px-3' : 'px-6',
         className,
       )}
       {...rest}
@@ -46,16 +48,9 @@ export const Header: ForwardRefExoticComponent<HeaderProps> = forwardRef<
           className="data-[orientation=vertical]:h-4"
         />
       )}
-      <motion.div
-        className={cn(
-          'w-full items-center gap-4 flex px-4',
-          isMobile ? 'justify-end' : 'justify-between',
-        )}
-        layout
-        layoutRoot
-      >
-        <SidebarTrigger className="hidden md:flex -ml-1" />
-        <motion.div className="flex items-center gap-3 sm:gap-4" layout>
+      <motion.div className="flex w-full items-center gap-4" layout layoutRoot>
+        <SidebarTrigger className="hidden -ml-1 md:flex" />
+        <motion.div className="ml-auto flex items-center gap-3 sm:gap-4" layout>
           <CartDropdown
             disableBackdropBlur={origin.config.landingPage?.headerIsBlurred}
           />

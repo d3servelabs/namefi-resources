@@ -20,8 +20,11 @@ import {
 import Link from 'next/link';
 import { useFreeMintsGuidance } from '@/components/providers/free-mints-guidance';
 import { Button } from '@/components/ui/shadcn/button';
-import { Badge } from '@/components/ui/shadcn/badge';
 import { useRouter } from 'next/navigation';
+import {
+  HEADER_BADGE_CLASS,
+  HEADER_PILL_BUTTON_CLASS,
+} from '@/components/header.tokens';
 
 export function FreeMintsDropdown({
   className,
@@ -82,8 +85,12 @@ export function FreeMintsDropdown({
                 <ShinyButton
                   variant="ghost"
                   className={cn(
-                    'relative h-9 text-secondary-foreground hover:bg-sidebar-accent shadow-none hover:backdrop-blur-none',
-                    disableBackdropBlur && 'backdrop-blur-none',
+                    HEADER_PILL_BUTTON_CLASS,
+                    'gap-2 pr-6 text-sm font-semibold',
+                    !disableBackdropBlur &&
+                      'supports-[backdrop-filter]:backdrop-blur-md',
+                    disableBackdropBlur &&
+                      'supports-[backdrop-filter]:backdrop-blur-none',
                   )}
                   aria-label={`You have ${availableCount} free ${availableCount === 1 ? 'mint' : 'mints'} available`}
                 >
@@ -92,12 +99,9 @@ export function FreeMintsDropdown({
                     Free {availableCount === 1 ? 'Mint' : 'Mints'}
                   </span>
                 </ShinyButton>
-                <Badge
-                  className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 
-                    text-xs bg-brand-primary text-secondary-foreground"
-                >
+                <span className={HEADER_BADGE_CLASS}>
                   <NumberFlow value={availableCount} />
-                </Badge>
+                </span>
               </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56" align="end">
@@ -111,11 +115,11 @@ export function FreeMintsDropdown({
                     onClick={() => handleClaimAction(freeMint)}
                   >
                     <span className="truncate text-sm">
-                      {freeMint.type === 'single' ? (
-                        <>{freeMint.domain}</>
-                      ) : freeMint.type === 'campaign' ? (
-                        <>Any .{freeMint.domain}</>
-                      ) : null}
+                      {freeMint.type === 'single'
+                        ? freeMint.domain
+                        : freeMint.type === 'campaign'
+                          ? `Any .${freeMint.domain}`
+                          : null}
                     </span>
                     <Button
                       size="sm"

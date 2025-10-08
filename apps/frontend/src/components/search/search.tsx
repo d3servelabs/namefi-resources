@@ -617,7 +617,7 @@ export const DomainCard: FC<{
                 variant="link"
                 className="text-sm underline text-primary hover:opacity-80 p-0 bg-transparent"
               >
-                Own this domain?
+                Import if you own this domain?
               </Button>
             )}
             {hasOwnerInfo && (

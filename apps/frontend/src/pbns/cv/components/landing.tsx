@@ -21,7 +21,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useQueryState, parseAsBoolean } from 'nuqs';
 import { useSearch } from '@/hooks/use-search';
 import { useSearchFromQuery } from '@/hooks/use-search-from-query';
-import FloatingCart from '@/components/floating-cart';
+import { FloatingCart } from '@/components/floating-cart';
 import {
   type EppAuthorizationCodesFormData,
   SearchMode,
@@ -211,13 +211,6 @@ export const CVLanding = ({ config }: { config: CVLandingConfig }) => {
                 freeClaimEligibility={freeClaimEligibility}
               />
             </div>
-
-            <div className="sticky bottom-5 flex justify-center mt-4 px-4">
-              <FloatingCart
-                searchMode={searchMode}
-                importableDomains={importableDomains}
-              />
-            </div>
           </div>
         </div>
       )}
@@ -269,6 +262,10 @@ export const CVLanding = ({ config }: { config: CVLandingConfig }) => {
           </motion.div>
         )}
       </AnimatePresence>
+      <FloatingCart
+        searchMode={searchMode}
+        importableDomains={importableDomains}
+      />
     </>
   );
 };

@@ -1,6 +1,5 @@
 'use client';
 
-import { Badge } from '@/components/ui/shadcn/badge';
 import { Button } from '@/components/ui/shadcn/button';
 import {
   DropdownMenu,
@@ -22,9 +21,12 @@ import { forwardRef, useCallback, useMemo } from 'react';
 import { useInteractionLoggers } from '@/components/providers/analytics';
 import { motion, type HTMLMotionProps, AnimatePresence } from 'motion/react';
 import NumberFlow from '@number-flow/react';
+import {
+  HEADER_BADGE_CLASS,
+  HEADER_ICON_BUTTON_CLASS,
+} from '@/components/header.tokens';
 
 const MotionButton = motion.create(Button);
-const MotionBadge = motion.create(Badge);
 
 export type CartDropdownProps = Omit<HTMLMotionProps<'div'>, 'ref'> & {
   disableBackdropBlur?: boolean;
@@ -61,22 +63,26 @@ export const CartDropdown = forwardRef<HTMLDivElement, CartDropdownProps>(
           <DropdownMenuTrigger asChild={true}>
             <MotionButton
               className={cn(
-                'relative size-9 text-secondary-foreground bg-transparent shadow-none hover:bg-sidebar-accent hover:backdrop-blur-none',
-                !disableBackdropBlur && 'backdrop-blur-xl',
+                HEADER_ICON_BUTTON_CLASS,
+                'text-white/90',
+                !disableBackdropBlur &&
+                  'supports-[backdrop-filter]:backdrop-blur-md',
+                disableBackdropBlur &&
+                  'supports-[backdrop-filter]:backdrop-blur-none',
               )}
             >
               <ShoppingCart className="h-5 w-5" />
               <AnimatePresence initial={false} mode="popLayout">
                 {items.length > 0 && (
-                  <MotionBadge
+                  <motion.div
                     key="cart-badge"
-                    className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 text-xs bg-brand-primary text-secondary-foreground"
+                    className={HEADER_BADGE_CLASS}
                     initial={{ opacity: 0, scale: 0.9, y: -6 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.9, y: -6 }}
                   >
                     <NumberFlow value={items.length} />
-                  </MotionBadge>
+                  </motion.div>
                 )}
               </AnimatePresence>
             </MotionButton>

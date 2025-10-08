@@ -7,7 +7,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/shadcn/dropdown-menu';
-import { SidebarMenuButton, useSidebar } from '@/components/ui/shadcn/sidebar';
+import { useSidebar } from '@/components/ui/shadcn/sidebar';
 import { useAuth, useLogin, useLogout } from '@/hooks/use-auth';
 import type { NavItem } from '@/lib/types/nav-item';
 import { shortage } from '@/lib/string';
@@ -46,6 +46,10 @@ import { useTRPC } from '@/lib/trpc';
 import { useQuery } from '@tanstack/react-query';
 import { Permission } from '@namefi-astra/utils';
 import { useHasPermissions } from '@/components/access/PermissionGate';
+import {
+  HEADER_ICON_BUTTON_CLASS,
+  HEADER_PILL_BUTTON_CLASS,
+} from '@/components/header.tokens';
 
 const BASE_ITEMS: NavItem[] = [
   { title: 'Profile', href: '/profile', icon: UserIcon },
@@ -120,6 +124,26 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
       return forceExpanded || sidebarState !== 'collapsed' || isMobile;
     }, [forceExpanded, sidebarState, isMobile]);
 
+    const shouldStretch = useMemo(
+      () => !forceExpanded && sidebarState !== 'collapsed' && !isMobile,
+      [forceExpanded, sidebarState, isMobile],
+    );
+
+    const computeButtonClasses = useCallback(
+      (expanded: boolean, stretch = false) =>
+        cn(
+          expanded ? HEADER_PILL_BUTTON_CLASS : HEADER_ICON_BUTTON_CLASS,
+          expanded
+            ? 'gap-2 pl-1.5 pr-4 text-sm font-semibold'
+            : 'justify-center',
+          stretch && 'w-full',
+          !disableBackdropBlur && 'supports-[backdrop-filter]:backdrop-blur-md',
+          disableBackdropBlur &&
+            'supports-[backdrop-filter]:backdrop-blur-none',
+        ),
+      [disableBackdropBlur],
+    );
+
     return (
       <div ref={ref} {...rest}>
         {/* Sign Out Confirmation Dialog */}
@@ -165,7 +189,11 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
               }}
               layout
             >
-              <Button className="w-full" disabled={true}>
+              <Button
+                className={computeButtonClasses(isExpanded, shouldStretch)}
+                variant="ghost"
+                disabled={true}
+              >
                 <Loader2Icon className="animate-spin size-6" />
                 {isExpanded && <span>Loading...</span>}
               </Button>
@@ -188,7 +216,11 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
               }}
               layout
             >
-              <Button className="w-full" onClick={handleConnect}>
+              <Button
+                className={computeButtonClasses(isExpanded, shouldStretch)}
+                variant="ghost"
+                onClick={handleConnect}
+              >
                 <WalletIcon className="size-6" />
                 {isExpanded && <span>Sign In</span>}
               </Button>
@@ -213,11 +245,11 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
             >
               <DropdownMenu>
                 <DropdownMenuTrigger asChild={true}>
-                  <SidebarMenuButton
-                    size="lg"
+                  <Button
+                    variant="ghost"
                     className={cn(
-                      'w-full bg-transparent hover:bg-sidebar-accent hover:backdrop-blur-none data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground',
-                      !disableBackdropBlur && 'backdrop-blur-xl',
+                      computeButtonClasses(isExpanded, shouldStretch),
+                      'data-[state=open]:border-brand-primary/60 data-[state=open]:bg-brand-primary/20',
                     )}
                   >
                     <motion.div
@@ -235,7 +267,7 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
                     {isExpanded && (
                       <>
                         <motion.span
-                          className="text-sm hidden md:block"
+                          className="hidden text-sm md:block"
                           initial={{ opacity: 0, y: -10 }}
                           animate={{
                             opacity: 1,
@@ -268,7 +300,7 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
                         </motion.span>
                       </>
                     )}
-                  </SidebarMenuButton>
+                  </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-56">
                   {items.map((item) => {

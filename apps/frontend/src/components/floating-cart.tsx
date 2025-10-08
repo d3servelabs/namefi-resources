@@ -1,15 +1,27 @@
 import { cartItemsToInteractionLoggingCartItems } from '@/hooks/use-cart';
 import { useCartContext } from '@/components/providers/cart';
 import { InteractionLoggingEventName } from '@/lib/analytics-events';
-import { ShoppingCartIcon, Plus } from 'lucide-react';
+import { ShoppingCartIcon, Plus, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { useCallback, useMemo, useState } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type CSSProperties,
+} from 'react';
 import { useInteractionLoggers } from '@/components/providers/analytics';
 import { Button } from './ui/shadcn/button';
 import type { DomainAvailabilityInfo } from '@namefi-astra/backend/trpc/types';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { SearchMode } from './search/types';
 import { useCart } from '@/hooks/use-cart';
+import { AnimatePresence, motion } from 'motion/react';
+import { cn } from '@/lib/cn';
+import NumberFlow from '@number-flow/react';
+
+const FLOATING_CART_BASE_BOTTOM = 24;
 
 interface ImportableDomain {
   domain: NamefiNormalizedDomain;
@@ -23,7 +35,7 @@ interface FloatingCartProps {
   onBusyChange?: (isBusy: boolean) => void;
 }
 
-const FloatingCart = ({
+export const FloatingCart = ({
   searchMode,
   importableDomains,
   onBusyChange,
@@ -33,6 +45,9 @@ const FloatingCart = ({
   const { logEventWithInteractionLoggers } = useInteractionLoggers();
   const router = useRouter();
   const [isAddingAll, setIsAddingAll] = useState(false);
+  const [bottomOffset, setBottomOffset] = useState(FLOATING_CART_BASE_BOTTOM);
+  const footerRef = useRef<HTMLElement | null>(null);
+  const cartRef = useRef<HTMLDivElement | null>(null);
 
   const totalAmountInUsdCents = useMemo(
     () => items?.reduce((sum, item) => sum + item.amountInUSDCents, 0) ?? 0,
@@ -87,60 +102,197 @@ const FloatingCart = ({
       if (validItems.length > 0) {
         await cart.addItem(validItems);
       }
-    } catch (error) {
-      console.error('Failed to add all domains to cart:', error);
+    } catch (_error) {
+      // Swallowing error to preserve UX; upstream logging captures cart failures.
     } finally {
       setIsAddingAll(false);
       onBusyChange?.(false);
     }
   }, [filteredImportableDomains, cart, onBusyChange]);
 
-  const shouldShowAddAllButton =
-    searchMode === SearchMode.IMPORT &&
-    filteredImportableDomains &&
-    filteredImportableDomains.length > 0;
+  const itemCount = items?.length ?? 0;
+  const hasItems = itemCount > 0;
+  const totalAmountInUsd = totalAmountInUsdCents / 100;
+  const roundedTotalAmount = Number(totalAmountInUsd.toFixed(2));
 
-  return items && items.length > 0 ? (
-    <div className="flex justify-between items-center p-4 rounded-xl bg-white/3 border border-white/10 backdrop-blur-3xl w-full md:w-1/2">
-      <div className="flex flex-col">
-        <span className="text-sm text-muted-foreground">Total:</span>
-        <span className="text-lg font-bold">
-          ${totalAmountInUsdCents / 100} USD
-        </span>
-      </div>
-      <div className="flex items-center gap-2">
-        {shouldShowAddAllButton && (
-          <Button
-            className="relative"
-            variant="outline"
-            onClick={handleAddAllToCart}
-            disabled={isAddingAll}
-          >
-            {isAddingAll ? (
-              <Plus className="size-4 animate-spin" />
-            ) : (
-              <Plus className="size-4" />
-            )}
-            Add all to cart ({filteredImportableDomains.length})
-          </Button>
-        )}
-        <Button
-          className="relative"
-          variant="outline"
-          onClick={() => {
-            logBeginCheckout();
-            router.push('/cart');
+  const importableCount = filteredImportableDomains?.length ?? 0;
+
+  const shouldShowAddAllButton =
+    searchMode === SearchMode.IMPORT && importableCount > 0;
+
+  const cartStateSignature = `${itemCount}:${importableCount}:${
+    isAddingAll ? 1 : 0
+  }:${shouldShowAddAllButton ? 1 : 0}`;
+
+  const recalcPosition = useCallback(() => {
+    const footerEl = footerRef.current;
+    if (!footerEl) {
+      setBottomOffset(FLOATING_CART_BASE_BOTTOM);
+      return;
+    }
+    const cartHeight = cartRef.current?.offsetHeight ?? 0;
+    if (cartHeight === 0) {
+      setBottomOffset(FLOATING_CART_BASE_BOTTOM);
+      return;
+    }
+    const footerRect = footerEl.getBoundingClientRect();
+    const viewportHeight = window.innerHeight;
+    const footerTopFromBottom = viewportHeight - footerRect.top;
+    const desiredBottom = footerTopFromBottom - cartHeight / 2 - 8;
+    const desiredClamped = Math.max(FLOATING_CART_BASE_BOTTOM, desiredBottom);
+    const maxBottom = Math.max(
+      FLOATING_CART_BASE_BOTTOM,
+      viewportHeight - cartHeight - 16,
+    );
+    const safeBottom = Math.min(desiredClamped, maxBottom);
+    setBottomOffset((prev) =>
+      Math.abs(prev - safeBottom) > 1 ? safeBottom : prev,
+    );
+  }, []);
+
+  useEffect(() => {
+    footerRef.current = document.querySelector<HTMLElement>('footer');
+    if (!footerRef.current) {
+      setBottomOffset(FLOATING_CART_BASE_BOTTOM);
+      return;
+    }
+
+    let frame = 0;
+    const handle = () => {
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        recalcPosition();
+      });
+    };
+
+    handle();
+    window.addEventListener('scroll', handle, { passive: true });
+    window.addEventListener('resize', handle);
+
+    return () => {
+      if (frame) cancelAnimationFrame(frame);
+      window.removeEventListener('scroll', handle);
+      window.removeEventListener('resize', handle);
+    };
+  }, [recalcPosition]);
+
+  useEffect(() => {
+    if (!hasItems) return;
+    void cartStateSignature;
+    recalcPosition();
+  }, [hasItems, cartStateSignature, recalcPosition]);
+
+  return (
+    <AnimatePresence>
+      {hasItems ? (
+        <motion.aside
+          key="floating-cart"
+          initial={{ opacity: 0, y: 28, scale: 0.98 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: 20, scale: 0.97 }}
+          transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+          className="pointer-events-none fixed left-1/2 z-40 w-full max-w-sm -translate-x-1/2 px-4 sm:max-w-xl"
+          style={{
+            bottom: `calc(${bottomOffset}px + env(safe-area-inset-bottom, 0px))`,
           }}
         >
-          <ShoppingCartIcon className="size-4" />
-          View cart
-          <div className="absolute top-0 right-0 translate-x-1/2 -translate-y-1/2 bg-brand-primary text-secondary-foreground text-xs px-2 py-1 rounded-full">
-            {items?.length}
-          </div>
-        </Button>
-      </div>
-    </div>
-  ) : null;
-};
+          <motion.div
+            layout
+            ref={cartRef}
+            className="pointer-events-auto overflow-hidden rounded-[26px] border border-white/12 bg-black/75 backdrop-blur-2xl shadow-[0_24px_60px_-25px_rgba(0,0,0,0.8)]"
+          >
+            <div className="flex flex-col gap-2.5 p-3.5 sm:px-5 sm:py-4 sm:gap-3">
+              <motion.div
+                layout
+                className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4"
+              >
+                <div className="flex w-full items-center gap-2 sm:gap-3">
+                  <span className="flex flex-shrink-0 items-center gap-1 rounded-full border border-white/10 bg-white/[0.05] px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-white/70 sm:px-3 sm:py-1 sm:text-xs sm:tracking-[0.2em]">
+                    <NumberFlow
+                      value={itemCount}
+                      className="text-[13px] font-semibold normal-case tracking-normal text-white sm:text-base"
+                      style={
+                        {
+                          '--number-flow-char-height': '1em',
+                          '--number-flow-mask-height': '0.35em',
+                        } as CSSProperties
+                      }
+                    />
+                    <span className="ml-[3px] whitespace-nowrap">
+                      {itemCount === 1 ? 'item' : 'items'}
+                    </span>
+                  </span>
+                  <div className="ml-auto flex min-w-0 flex-col items-end text-right text-white/80 sm:ml-0 sm:items-start sm:text-left sm:gap-0">
+                    <span className="text-[9px] uppercase tracking-[0.16em] text-white/55 sm:text-[11px] sm:tracking-[0.32em]">
+                      Cart total
+                    </span>
+                    <NumberFlow
+                      value={roundedTotalAmount}
+                      prefix="$"
+                      className="text-sm font-semibold text-white tracking-tight sm:text-xl"
+                      style={
+                        {
+                          '--number-flow-char-height': '1.05em',
+                          '--number-flow-mask-height': '0.35em',
+                        } as CSSProperties
+                      }
+                    />
+                  </div>
+                </div>
 
-export default FloatingCart;
+                <div className="flex w-full flex-col gap-2 sm:ml-auto sm:w-auto sm:flex-row sm:items-center sm:gap-2">
+                  {shouldShowAddAllButton && (
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      onClick={handleAddAllToCart}
+                      disabled={isAddingAll}
+                      className={cn(
+                        'inline-flex h-9 w-full items-center justify-center gap-1.5 whitespace-nowrap rounded-full border border-white/10 bg-white/[0.02] px-4 text-[11px] font-semibold text-white transition hover:border-white/20 hover:bg-white/[0.07] sm:h-10 sm:w-auto sm:px-6 sm:text-sm',
+                      )}
+                    >
+                      {isAddingAll ? (
+                        <Loader2 className="size-4 animate-spin" />
+                      ) : (
+                        <Plus className="size-4" />
+                      )}
+                      <span className="flex items-center gap-1.5 pl-1.5">
+                        Add all
+                        <NumberFlow
+                          value={importableCount}
+                          className="text-sm font-semibold"
+                          style={
+                            {
+                              '--number-flow-char-height': '0.95em',
+                              '--number-flow-mask-height': '0.3em',
+                            } as CSSProperties
+                          }
+                        />
+                      </span>
+                    </Button>
+                  )}
+
+                  <Button
+                    type="button"
+                    variant="default"
+                    className={cn(
+                      'inline-flex h-10 w-full min-w-[120px] items-center justify-center gap-2 whitespace-nowrap rounded-full bg-brand-primary px-5 text-sm font-semibold text-black shadow-[0_15px_35px_-12px_rgba(16,185,129,0.6)] transition hover:bg-brand-primary/90 sm:h-11 sm:w-auto sm:min-w-[140px] sm:px-8 sm:text-base',
+                    )}
+                    onClick={() => {
+                      logBeginCheckout();
+                      router.push('/cart');
+                    }}
+                  >
+                    <ShoppingCartIcon className="size-5" />
+                    Checkout
+                  </Button>
+                </div>
+              </motion.div>
+            </div>
+          </motion.div>
+        </motion.aside>
+      ) : null}
+    </AnimatePresence>
+  );
+};

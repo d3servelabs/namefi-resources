@@ -5,7 +5,7 @@ import { useTRPC } from '@/lib/trpc';
 import { useQuery } from '@tanstack/react-query';
 import { useMemo, useCallback, useEffect, useRef } from 'react';
 import { useInView, motion, AnimatePresence } from 'motion/react';
-import FloatingCart from '@/components/floating-cart';
+import { FloatingCart } from '@/components/floating-cart';
 import {
   type EppAuthorizationCodesFormData,
   type LandingComponent,
@@ -26,7 +26,7 @@ import { useFreeMintsGuidance } from '@/components/providers/free-mints-guidance
 import { NewsletterForm } from '@/components/newsletter/newsletter-form';
 import { useQueryState, parseAsBoolean } from 'nuqs';
 
-const NO_OP = () => {};
+const NO_OP = () => undefined;
 
 // Main component
 export const Landing: LandingComponent = ({ origin }) => {
@@ -197,33 +197,25 @@ export const Landing: LandingComponent = ({ origin }) => {
 
       <div className="-mx-4">
         {query.length > 0 && (isLoading || hasData || isError) ? (
-          <>
-            <div className="backdrop-blur-3xl bg-black/20 px-4 pb-4 relative">
-              <div className="flex flex-col md:flex-row justify-between items-center py-5">
-                <h2 className="text-2xl font-semibold">Search Results</h2>
-              </div>
+          <div className="backdrop-blur-3xl bg-black/20 px-4 pb-4 relative">
+            <div className="flex flex-col md:flex-row justify-between items-center py-5">
+              <h2 className="text-2xl font-semibold">Search Results</h2>
+            </div>
 
-              <SearchResults
-                isLoading={isLoading}
-                isError={isError}
-                error={error}
-                hasData={hasData}
-                domainInfos={domainInfos}
-                domains={domains}
-                query={query}
-                eppAuthorizationCodes={eppAuthorizationCodes}
-                onEppCodeChange={handleEppCodeChange}
-                searchMode={searchMode}
-                freeClaimEligibility={freeClaimEligibility}
-              />
-            </div>
-            <div className="sticky bottom-5 flex justify-center mt-4 px-4">
-              <FloatingCart
-                searchMode={searchMode}
-                importableDomains={importableDomains}
-              />
-            </div>
-          </>
+            <SearchResults
+              isLoading={isLoading}
+              isError={isError}
+              error={error}
+              hasData={hasData}
+              domainInfos={domainInfos}
+              domains={domains}
+              query={query}
+              eppAuthorizationCodes={eppAuthorizationCodes}
+              onEppCodeChange={handleEppCodeChange}
+              searchMode={searchMode}
+              freeClaimEligibility={freeClaimEligibility}
+            />
+          </div>
         ) : (
           <Content />
         )}
@@ -257,6 +249,10 @@ export const Landing: LandingComponent = ({ origin }) => {
           )}
         </AnimatePresence>
       </div>
+      <FloatingCart
+        searchMode={searchMode}
+        importableDomains={importableDomains}
+      />
     </div>
   );
 };

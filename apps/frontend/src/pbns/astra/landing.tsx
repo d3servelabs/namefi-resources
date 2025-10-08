@@ -25,7 +25,7 @@ import { useSearchFromQuery } from '@/hooks/use-search-from-query';
 import { useFreeMintsGuidance } from '@/components/providers/free-mints-guidance';
 import { NewsletterForm } from '@/components/newsletter/newsletter-form';
 import { useQueryState, parseAsBoolean } from 'nuqs';
-import FloatingCart from '@/components/floating-cart';
+import { FloatingCart } from '@/components/floating-cart';
 import {
   type LandingComponent,
   SearchInput,
@@ -1324,13 +1324,13 @@ const MarketingSections = ({
         <Button
           asChild
           variant="default"
-          className="group rounded-full bg-brand-primary px-6 py-3 text-base font-semibold"
+          className="group rounded-full bg-brand-primary px-8 py-3 text-base font-semibold shadow-[0_15px_35px_-12px_rgba(16,185,129,0.6)] transition hover:bg-brand-primary/90 sm:px-10"
         >
           <Link
             href={`https://etherscan.io/address/${SMART_CONTRACT_ADDRESS}`}
             target="_blank"
             rel="noreferrer"
-            className="flex items-center gap-2"
+            className="flex items-center gap-2.5"
           >
             View on Etherscan{' '}
             <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
@@ -1593,7 +1593,7 @@ export const Landing: LandingComponent = ({ origin }) => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -12 }}
                 transition={{ duration: 0.4, ease: [0.25, 0.8, 0.25, 1] }}
-                className="mx-auto -mt-8 max-w-6xl px-6 pb-16 pt-4 md:-mt-72 md:pt-10"
+                className="mx-auto -mt-62 md:-mt-72 max-w-6xl px-6 pb-16 pt-10"
               >
                 <div className="rounded-3xl border border-white/10 bg-white/[0.02] p-4 backdrop-blur">
                   <SearchResults
@@ -1610,12 +1610,6 @@ export const Landing: LandingComponent = ({ origin }) => {
                     freeClaimEligibility={freeClaimEligibility}
                   />
                 </div>
-                <div className="sticky bottom-6 mt-6 flex justify-end">
-                  <FloatingCart
-                    searchMode={searchMode}
-                    importableDomains={importableDomains}
-                  />
-                </div>
               </motion.div>
             ) : (
               <motion.div
@@ -1624,7 +1618,7 @@ export const Landing: LandingComponent = ({ origin }) => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 16 }}
                 transition={{ duration: 0.5, ease: [0.25, 0.8, 0.25, 1] }}
-                className="-mt-10 sm:-mt-14 md:-mt-20 lg:-mt-24"
+                className="-mt-32"
               >
                 <MarketingSections
                   newsletterRef={newsletterRef}
@@ -1635,6 +1629,10 @@ export const Landing: LandingComponent = ({ origin }) => {
             )}
           </AnimatePresence>
         </div>
+        <FloatingCart
+          searchMode={searchMode}
+          importableDomains={importableDomains}
+        />
       </main>
     </div>
   );
