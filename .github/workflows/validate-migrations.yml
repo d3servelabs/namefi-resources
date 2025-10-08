@@ -2,6 +2,8 @@ name: Validate Database Migrations
 
 on:
   pull_request:
+    branches-ignore:
+      - prod
   workflow_dispatch:  # Allow manual triggering
 
 env:

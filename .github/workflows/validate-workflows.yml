@@ -2,8 +2,8 @@ name: Validate Temporal Workflows
 
 on:
   pull_request:
-  push:
-    branches: [main, prod]
+    branches-ignore:
+      - prod
   workflow_dispatch:
 
 jobs:
