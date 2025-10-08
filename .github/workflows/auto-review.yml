@@ -17,12 +17,44 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  check-auto-review:
+    name: Check Auto Review Configuration
+    runs-on: ubuntu-latest
+    outputs:
+      should-review: ${{ steps.check.outputs.should-review }}
+    steps:
+      - name: Check Configuration
+        id: check
+        run: |
+          # Always run for manual dispatches
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "should-review=true" >> $GITHUB_OUTPUT
+            echo "✅ Manual dispatch detected, proceeding with review"
+            exit 0
+          fi
+
+          # For PR triggers, check OPENHANDS_AUTO_REVIEW variable
+          OPENHANDS_AUTO_REVIEW="${{ vars.OPENHANDS_AUTO_REVIEW || 'false' }}"
+
+          if [ "$OPENHANDS_AUTO_REVIEW" = "true" ]; then
+            echo "should-review=true" >> $GITHUB_OUTPUT
+            echo "✅ Auto-review is enabled, proceeding with review"
+          else
+            echo "should-review=false" >> $GITHUB_OUTPUT
+            echo "❌ Auto-review is disabled (OPENHANDS_AUTO_REVIEW=$OPENHANDS_AUTO_REVIEW)"
+            echo "## ⏭️ Scheduled Review Skipped" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "Auto-review is disabled. To enable scheduled reviews, set the repository variable \`OPENHANDS_AUTO_REVIEW=true\`" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+          fi
   review:
     permissions:  
       contents: read  
       pull-requests: write  
       issues: write 
     runs-on: ubuntu-latest
+    needs: check-auto-review
+    if: needs.check-auto-review.outputs.should-review == 'true'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
