@@ -3,7 +3,7 @@ import type { ConfigInput } from '../schema';
 
 const productionConfig: ConfigInput = {
   TYPE: 'production',
-  BACKEND_URL: 'https://api.astra.namefi.io',
+  BACKEND_URL: 'https://backend.astra.namefi.io',
   FIRST_PARTY_DEPLOYMENT_URL: 'https://astra.namefi.io',
   GA_MEASUREMENT_ID: 'G-S8GRYLE2XF',
   PRIVY_APP_ID: 'cm23ds44v09x0oyiqqa7blr8i',
