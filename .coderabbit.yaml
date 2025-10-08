@@ -12,6 +12,7 @@ reviews:
     base_branches:
       - ".*"
       - "!prod"
+      - "!gtmq_spec_*"
   path_instructions:
     # Matches all files in all directories - serves as the base ruleset for all code
     - path: "**/*"

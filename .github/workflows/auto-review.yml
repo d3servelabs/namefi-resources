@@ -5,6 +5,7 @@ on:
     types: [opened, reopened, ready_for_review, review_requested, synchronize]
     branches-ignore:
       - prod
+      - gtmq_spec_* # GraphiTeMergeQueue
   workflow_dispatch:
     inputs:  
       pr_number:  
