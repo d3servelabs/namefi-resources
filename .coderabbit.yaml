@@ -11,6 +11,7 @@ reviews:
     drafts: true
     base_branches:
       - ".*"
+      - "!prod"
   path_instructions:
     # Matches all files in all directories - serves as the base ruleset for all code
     - path: "**/*"

@@ -3,6 +3,8 @@ name: Review PR by OpenHands
 on:
   pull_request:
     types: [opened, reopened, ready_for_review, review_requested, synchronize]
+    branches-ignore:
+      - prod
   workflow_dispatch:
     inputs:  
       pr_number:  
