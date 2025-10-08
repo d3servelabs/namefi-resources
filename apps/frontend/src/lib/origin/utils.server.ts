@@ -8,13 +8,16 @@ export const getOriginRuntime = cache(async () => {
   const headersList = await headers();
   const origin = getOriginFromServerHeaders(headersList);
   const info: OriginInfo = origin
-    ? await getOriginInfo(origin)
+    ? getOriginInfo(origin)
     : {
         isFirstPartyOrigin: true,
         thirdPartyHostname: null,
         config: originConfig.firstParty,
       };
-  return { origin, ...info };
+  return {
+    origin,
+    ...info,
+  };
 });
 
 export type OriginRuntime = Awaited<ReturnType<typeof getOriginRuntime>>;

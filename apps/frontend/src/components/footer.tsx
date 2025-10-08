@@ -10,8 +10,6 @@ import {
   type HTMLAttributes,
   forwardRef,
 } from 'react';
-import { Mail } from 'lucide-react';
-import { useIsClient } from 'usehooks-ts';
 
 export type FooterProps = HTMLAttributes<HTMLDivElement>;
 
@@ -23,7 +21,6 @@ export const Footer: ForwardRefExoticComponent<FooterProps> = forwardRef<
   ref: ForwardedRef<HTMLDivElement>,
 ) {
   const { openConsent } = useCookieConsent();
-  const isClient = useIsClient();
 
   return (
     <footer
@@ -44,13 +41,6 @@ export const Footer: ForwardRefExoticComponent<FooterProps> = forwardRef<
           </span>
         </div>
         <div className="flex items-center space-x-4">
-          <Link
-            href={isClient ? '?newsletter=true' : '/newsletter'}
-            className="text-gray-300 hover:text-secondary-foreground text-sm flex items-center gap-1.5"
-          >
-            <Mail className="w-4 h-4" />
-            Subscribe To Newsletter
-          </Link>
           <button
             type="button"
             className="text-gray-300 hover:text-secondary-foreground text-sm bg-transparent border-0 p-0 cursor-pointer"

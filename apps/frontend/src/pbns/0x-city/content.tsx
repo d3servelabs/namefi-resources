@@ -156,7 +156,7 @@ const WhyJoin: FC = () => {
               <IdCard className="w-8 h-8" />
             </div>
             <h3 className="text-xl font-semibold text-secondary-foreground">
-              Actively participating and creating in DAOs, NFTs, DeFi
+              Actively participating and creating in DAOs & NFTs
             </h3>
           </div>
         </div>
@@ -206,7 +206,7 @@ export const WhoAre0xCitizens: FC = () => {
     {
       title: 'Blockchain Believer',
       description:
-        'Deeply believes in blockchain and decentralized finance(DeFi) as the future, actively participating in related ecosystem building.',
+        'Deeply believes in blockchain as the future, actively participating in related ecosystem building.',
       imageSrc: '/assets/0x-city/citizens/believer.png',
       imageAlt: 'Blockchain Believer',
     },
@@ -239,7 +239,7 @@ export const WhoAre0xCitizens: FC = () => {
         Who Are 0x Citizens?
       </h2>
       <p className="text-lg text-secondary-foreground text-center mb-12 max-w-4xl">
-        Builders, artists, DAO contributors and DeFi degens who:
+        Builders, artists and DAO contributors who:
       </p>
 
       <div className="relative flex w-full flex-col items-center justify-center overflow-hidden">

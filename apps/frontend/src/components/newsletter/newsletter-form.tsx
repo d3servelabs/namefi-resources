@@ -23,6 +23,7 @@ import {
   CardTitle,
 } from '@/components/ui/shadcn/card';
 import { useTRPC } from '@/lib/trpc';
+import { cn } from '@/lib/cn';
 import { toast } from 'sonner';
 import { Mail, CheckCircle2, X } from 'lucide-react';
 import { useMutation } from '@tanstack/react-query';
@@ -84,6 +85,18 @@ interface NewsletterFormProps {
    * Callback function when the close button is clicked
    */
   onClose?: () => void;
+  /**
+   * Optional class names for styling the outer card container
+   */
+  className?: string;
+  /**
+   * Optional class names for the card header
+   */
+  headerClassName?: string;
+  /**
+   * Optional class names for the card content
+   */
+  contentClassName?: string;
 }
 
 export function NewsletterForm({
@@ -95,6 +108,9 @@ export function NewsletterForm({
   attributes,
   showCloseButton = false,
   onClose,
+  className,
+  headerClassName,
+  contentClassName,
 }: NewsletterFormProps) {
   const [isSuccess, setIsSuccess] = useState(false);
   const trpc = useTRPC();
@@ -150,9 +166,12 @@ export function NewsletterForm({
     });
   };
 
+  const cardClassName = cn('relative mx-auto w-full max-w-2xl', className);
+  const successContentClassName = cn('pt-6', contentClassName);
+
   if (isSuccess) {
     return (
-      <Card className="w-full max-w-2xl mx-auto relative">
+      <Card className={cardClassName}>
         {showCloseButton && onClose && (
           <Button
             variant="ghost"
@@ -164,7 +183,7 @@ export function NewsletterForm({
             <X className="h-4 w-4" />
           </Button>
         )}
-        <CardContent className="pt-6">
+        <CardContent className={successContentClassName}>
           <div className="flex flex-col items-center justify-center text-center space-y-4 py-8">
             <CheckCircle2 className="w-16 h-16 text-green-500" />
             <div className="space-y-2">
@@ -230,7 +249,7 @@ export function NewsletterForm({
   }
 
   return (
-    <Card className="w-full max-w-2xl mx-auto relative">
+    <Card className={cardClassName}>
       {showCloseButton && onClose && (
         <Button
           variant="ghost"
@@ -242,11 +261,11 @@ export function NewsletterForm({
           <X className="h-4 w-4" />
         </Button>
       )}
-      <CardHeader>
+      <CardHeader className={cn(headerClassName)}>
         <CardTitle>{title}</CardTitle>
         {description && <CardDescription>{description}</CardDescription>}
       </CardHeader>
-      <CardContent>
+      <CardContent className={cn(contentClassName)}>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             {showNameField && (
