@@ -68,7 +68,7 @@ import {
 
 const HERO_HEADING = 'Next generation domain platform with blockchain and AI';
 const HERO_SUBTITLE =
-  'Faster, cheaper and verfiable. The best way to own domains.';
+  'Faster, cheaper and verifiable. The best way to own domains.';
 
 const FEATURES = [
   {
