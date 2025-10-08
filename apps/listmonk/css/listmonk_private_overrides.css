@@ -892,3 +892,13 @@ a:hover {
   margin-top: -0.375em;
   right: 1.125em;
 }
+
+.icon.has-text-primary,
+.icon.has-text-primary.is-clickable,
+.icon.has-text-primary .mdi {
+  color: var(--brand-primary) !important;
+}
+
+.datepicker-cell.is-today.is-selectable {
+  border: 1px solid oklch(from var(--brand-primary) / 0.5) !important;
+}
