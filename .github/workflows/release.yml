@@ -56,37 +56,48 @@ jobs:
             echo "This workflow was triggered by the daily schedule (11:00 UTC) but will not create a release." >> $GITHUB_STEP_SUMMARY
           fi
 
-  create-release:
-    name: Create Release
+  auth-namefi-bot:
+    name: Authenticate NameFi Bot
     needs: check-auto-deploy
     if: needs.check-auto-deploy.outputs.should-deploy == 'true'
-    runs-on: 'blacksmith-4vcpu-ubuntu-2204'
-
+    runs-on: ubuntu-latest
+    outputs:
+      token: ${{ steps.app-token.outputs.token }}
+      app-slug: ${{ steps.app-token.outputs.app-slug }}
+      user-id: ${{ steps.get-user-id.outputs.user-id }}
     steps:
       - uses: actions/create-github-app-token@v2
         id: app-token
         with:
           app-id: ${{ vars.NAMEFI_BOT_APP_ID }}
           private-key: ${{ secrets.NAMEFI_BOT_PRIVATE_KEY }}
+
       - name: Get GitHub App User ID
         id: get-user-id
         run: echo "user-id=$(gh api "/users/${{ steps.app-token.outputs.app-slug }}[bot]" --jq .id)" >> "$GITHUB_OUTPUT"
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
-          
-      # Step 1: Checkout the repository
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          token: ${{ steps.app-token.outputs.token }}
-          fetch-depth: 0
 
-      # Step 2: Check if the latest Deploy Backend workflow on main succeeded
+  check-deployment-status:
+    name: Check Deploy Backend Workflow Status
+    needs: auth-namefi-bot
+    runs-on: ubuntu-latest
+    outputs:
+      deployment_run_url: ${{ steps.check-deployment.outputs.deployment_run_url }}
+      deployment_run_id: ${{ steps.check-deployment.outputs.deployment_run_id }}
+      deployment_sha: ${{ steps.check-deployment.outputs.deployment_sha }}
+      failure_reason: ${{ steps.check-deployment.outputs.failure_reason }}
+      failed_deployment_url: ${{ steps.check-deployment.outputs.failed_deployment_url }}
+      failed_deployment_conclusion: ${{ steps.check-deployment.outputs.failed_deployment_conclusion }}
+    steps:
       - name: Check Deploy Backend Workflow Status
         id: check-deployment
         uses: actions/github-script@v8
         with:
+          github-token: ${{ needs.auth-namefi-bot.outputs.token }}
           script: |
+            console.log('🔍 Checking latest Deploy Backend workflow status on main branch...');
+
             // Get the latest workflow runs for Deploy Backend on main branch
             const { data: runs } = await github.rest.actions.listWorkflowRuns({
               owner: context.repo.owner,
@@ -98,24 +109,64 @@ jobs:
             });
 
             if (runs.workflow_runs.length === 0) {
-              core.setFailed('No completed Deploy Backend workflow runs found on main branch');
+              const errorMsg = `❌ No completed Deploy Backend workflow runs found on main branch.
+
+              This release requires at least one successful deployment to main before proceeding.
+              Please ensure the Deploy Backend workflow has run successfully on the main branch.`;
+
+              core.setFailed(errorMsg);
+              core.setOutput('failure_reason', 'no_deployment_found');
               return;
             }
 
             const latestRun = runs.workflow_runs[0];
+            console.log(`Found workflow run: ${latestRun.html_url}`);
+            console.log(`Status: ${latestRun.status}, Conclusion: ${latestRun.conclusion}`);
 
             if (latestRun.conclusion !== 'success') {
-              core.setFailed(`Latest Deploy Backend workflow on main branch failed with conclusion: ${latestRun.conclusion}`);
-              core.setFailed(`Workflow run URL: ${latestRun.html_url}`);
+              const errorMsg = `❌ Latest Deploy Backend workflow on main branch failed.
+
+              Workflow conclusion: ${latestRun.conclusion}
+              Workflow URL: ${latestRun.html_url}
+              Run ID: ${latestRun.id}
+              Commit SHA: ${latestRun.head_sha}
+
+              The release process cannot continue until the main branch has a successful deployment.
+              Please fix the deployment issues and try again.`;
+
+              core.setFailed(errorMsg);
+              core.setOutput('failure_reason', 'deployment_failed');
+              core.setOutput('failed_deployment_url', latestRun.html_url);
+              core.setOutput('failed_deployment_conclusion', latestRun.conclusion);
               return;
             }
 
-            console.log(`✅ Latest Deploy Backend workflow succeeded: ${latestRun.html_url}`);
+            console.log(`✅ Latest Deploy Backend workflow succeeded!`);
+            console.log(`   Run ID: ${latestRun.id}`);
+            console.log(`   Commit SHA: ${latestRun.head_sha}`);
+            console.log(`   URL: ${latestRun.html_url}`);
+
             core.setOutput('deployment_run_url', latestRun.html_url);
             core.setOutput('deployment_run_id', latestRun.id);
             core.setOutput('deployment_sha', latestRun.head_sha);
 
-      # Step 3: Read current versions and increment them
+  update-versions:
+    name: Update Package Versions
+    needs: [auth-namefi-bot, check-deployment-status]
+    runs-on: 'blacksmith-4vcpu-ubuntu-2204'
+    outputs:
+      backend_version: ${{ steps.version.outputs.backend_version }}
+      frontend_version: ${{ steps.version.outputs.frontend_version }}
+      old_backend_version: ${{ steps.version.outputs.old_backend_version }}
+      old_frontend_version: ${{ steps.version.outputs.old_frontend_version }}
+      commit_sha: ${{ steps.commit.outputs.commit_sha }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ needs.auth-namefi-bot.outputs.token }}
+          fetch-depth: 0
+
       - name: Read and increment versions
         id: version
         uses: actions/github-script@v8
@@ -123,6 +174,8 @@ jobs:
           script: |
             const fs = require('fs');
             const path = require('path');
+
+            console.log('📦 Reading current package versions...');
 
             // Helper function to increment patch version
             function incrementPatchVersion(version) {
@@ -150,7 +203,7 @@ jobs:
             const oldBackendVersion = backendPkg.version;
             const newBackendVersion = incrementPatchVersion(oldBackendVersion);
 
-            console.log(`Backend: ${oldBackendVersion} → ${newBackendVersion}`);
+            console.log(`📈 Backend version increment: ${oldBackendVersion} → ${newBackendVersion}`);
 
             // Read and increment frontend version
             const frontendPkgPath = path.join(process.env.GITHUB_WORKSPACE, 'apps/frontend/package.json');
@@ -158,7 +211,12 @@ jobs:
             const oldFrontendVersion = frontendPkg.version;
             const newFrontendVersion = incrementPatchVersion(oldFrontendVersion);
 
-            console.log(`Frontend: ${oldFrontendVersion} → ${newFrontendVersion}`);
+            console.log(`📈 Frontend version increment: ${oldFrontendVersion} → ${newFrontendVersion}`);
+
+            // Log summary
+            console.log('\n✅ Version increments calculated successfully:');
+            console.log(`   Backend:  ${oldBackendVersion} → ${newBackendVersion}`);
+            console.log(`   Frontend: ${oldFrontendVersion} → ${newFrontendVersion}`);
 
             // Set outputs
             core.setOutput('backend_version', newBackendVersion);
@@ -166,7 +224,6 @@ jobs:
             core.setOutput('old_backend_version', oldBackendVersion);
             core.setOutput('old_frontend_version', oldFrontendVersion);
 
-      # Step 4: Update package.json files with new versions
       - name: Update package versions
         uses: actions/github-script@v8
         with:
@@ -191,15 +248,16 @@ jobs:
             fs.writeFileSync(frontendPkgPath, JSON.stringify(frontendPkg, null, 2) + '\n');
             console.log(`✅ Updated frontend version to ${frontendVersion}`);
 
-      # Step 5: Configure git and commit changes
       - name: Configure git
         run: |
-          git config --global user.name '${{ steps.app-token.outputs.app-slug }}[bot]'
-          git config --global user.email '${{ steps.get-user-id.outputs.user-id }}+${{ steps.app-token.outputs.app-slug }}[bot]@users.noreply.github.com'
+          git config --global user.name '${{ needs.auth-namefi-bot.outputs.app-slug }}[bot]'
+          git config --global user.email '${{ needs.auth-namefi-bot.outputs.user-id }}+${{ needs.auth-namefi-bot.outputs.app-slug }}[bot]@users.noreply.github.com'
 
       - name: Commit version changes
         id: commit
         run: |
+          echo "📝 Committing version changes..."
+
           git add apps/backend/package.json apps/frontend/package.json
 
           # Create commit message
@@ -207,39 +265,83 @@ jobs:
 
           git commit -m "$COMMIT_MESSAGE"
 
+          echo "✅ Changes committed locally"
+
           # Push to main
+          echo "🚀 Pushing to main branch..."
           git push origin main
 
           # Get the commit SHA
           COMMIT_SHA=$(git rev-parse HEAD)
           echo "commit_sha=$COMMIT_SHA" >> $GITHUB_OUTPUT
 
-      # Step 6: Create Pull Request from main to prod
+          echo "✅ Version bump committed and pushed successfully"
+          echo "   Commit SHA: $COMMIT_SHA"
+
+  create-release-tag:
+    name: Create Release Tag
+    needs: [auth-namefi-bot, update-versions]
+    runs-on: ubuntu-latest
+    outputs:
+      tag_name: ${{ steps.create-tag.outputs.tag_name }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ needs.auth-namefi-bot.outputs.token }}
+          fetch-depth: 0
+          ref: ${{ needs.update-versions.outputs.commit_sha }}
+
+      - name: Configure git
+        run: |
+          git config --global user.name '${{ needs.auth-namefi-bot.outputs.app-slug }}[bot]'
+          git config --global user.email '${{ needs.auth-namefi-bot.outputs.user-id }}+${{ needs.auth-namefi-bot.outputs.app-slug }}[bot]@users.noreply.github.com'
+
+      - name: Create Release Tag
+        id: create-tag
+        run: |
+          TAG_NAME="v${{ needs.update-versions.outputs.backend_version }}"
+
+          git tag -a "$TAG_NAME" -m "Release: frontend ${{ needs.update-versions.outputs.frontend_version }} backend ${{ needs.update-versions.outputs.backend_version }}"
+          git push origin "$TAG_NAME"
+
+          echo "✅ Created release tag: $TAG_NAME"
+          echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
+
+  create-pull-request:
+    name: Create Pull Request
+    needs: [auth-namefi-bot, check-deployment-status, update-versions, create-release-tag]
+    runs-on: ubuntu-latest
+    outputs:
+      pr_number: ${{ steps.create-pr.outputs.pr_number }}
+      pr_url: ${{ steps.create-pr.outputs.pr_url }}
+    steps:
       - name: Create Pull Request
         id: create-pr
         uses: actions/github-script@v8
         with:
+          github-token: ${{ needs.auth-namefi-bot.outputs.token }}
           script: |
             // Create the PR
             const { data: pr } = await github.rest.pulls.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              title: `Release: frontend ${{ steps.version.outputs.frontend_version }} backend ${{ steps.version.outputs.backend_version }}`,
+              title: `Release: frontend ${{ needs.update-versions.outputs.frontend_version }} backend ${{ needs.update-versions.outputs.backend_version }}`,
               head: 'main',
               base: 'prod',
               body: `## 🚀 Production Release
 
             ### Version Updates
-            - **Frontend**: ${{ steps.version.outputs.old_frontend_version }} → ${{ steps.version.outputs.frontend_version }}
-            - **Backend**: ${{ steps.version.outputs.old_backend_version }} → ${{ steps.version.outputs.backend_version }}
+            - **Frontend**: ${{ needs.update-versions.outputs.old_frontend_version }} → ${{ needs.update-versions.outputs.frontend_version }}
+            - **Backend**: ${{ needs.update-versions.outputs.old_backend_version }} → ${{ needs.update-versions.outputs.backend_version }}
 
             ### Pre-release Checks
-            - ✅ Deploy Backend workflow on main branch: [Success](${{ steps.check-deployment.outputs.deployment_run_url }})
-            - ✅ Version increments applied: [Commit](https://github.com/${{ github.repository }}/commit/${{ steps.commit.outputs.commit_sha }})
+            - ✅ Deploy Backend workflow on main branch: [Success](${{ needs.check-deployment-status.outputs.deployment_run_url }})
+            - ✅ Version increments applied: [Commit](https://github.com/${{ github.repository }}/commit/${{ needs.update-versions.outputs.commit_sha }})
 
             ### Deployment Information
-            - **Deployment SHA**: \`${{ steps.check-deployment.outputs.deployment_sha }}\`
-            - **Release Commit**: \`${{ steps.commit.outputs.commit_sha }}\`
+            - **Deployment SHA**: \`${{ needs.check-deployment-status.outputs.deployment_sha }}\`
+            - **Release Commit**: \`${{ needs.update-versions.outputs.commit_sha }}\`
             - **Triggered by**: ${{ github.event_name == 'schedule' && '🤖 Scheduled (Daily @ 11:00 UTC)' || format('@{0}', github.actor) }}
             - **Release Type**: ${{ github.event_name == 'schedule' && '⏰ Automated' || '🔧 Manual' }}
             - **Release Time**: ${{ github.event.head_commit.timestamp || github.event.repository.updated_at }}
@@ -257,12 +359,17 @@ jobs:
 
             return pr;
 
-      # Step 7: Enable auto-merge on the PR
+  enable-auto-merge:
+    name: Enable Auto-merge
+    needs: [auth-namefi-bot, create-pull-request, update-versions]
+    runs-on: ubuntu-latest
+    steps:
       - name: Enable Auto-merge
         uses: actions/github-script@v8
         with:
+          github-token: ${{ needs.auth-namefi-bot.outputs.token }}
           script: |
-            const prNumber = ${{ steps.create-pr.outputs.pr_number }};
+            const prNumber = ${{ needs.create-pull-request.outputs.pr_number }};
             const mergeMethod = '${{ github.event.inputs.merge_method || 'merge' }}';
 
             try {
@@ -306,37 +413,125 @@ jobs:
               // This might happen if branch protection rules don't allow it
             }
 
-      # Step 8: Create a git tag (optional, for tracking)
-      - name: Create Release Tag
+  release-summary:
+    name: Release Summary
+    needs:
+      - check-auto-deploy
+      - auth-namefi-bot
+      - check-deployment-status
+      - update-versions
+      - create-release-tag
+      - create-pull-request
+      - enable-auto-merge
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate Release Summary
         run: |
-          TAG_NAME="v${{ steps.version.outputs.backend_version }}"
+          # Check if release was skipped due to auto-deploy config
+          if [[ "${{ needs.check-auto-deploy.outputs.should-deploy }}" != "true" ]]; then
+            echo "## ⏭️ Release Skipped" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "The scheduled release was skipped because auto-deploy is disabled." >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "To enable automatic releases, set the repository variable \`AUTO_DEPLOY=true\`" >> $GITHUB_STEP_SUMMARY
+            exit 0
+          fi
 
-          git tag -a "$TAG_NAME" -m "Release: frontend ${{ steps.version.outputs.frontend_version }} backend ${{ steps.version.outputs.backend_version }}"
-          git push origin "$TAG_NAME"
+          # Check if any critical job failed
+          if [[ "${{ needs.check-deployment-status.result }}" == "failure" ]]; then
+            echo "## ❌ Release Failed - Deployment Check" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
 
-          echo "✅ Created release tag: $TAG_NAME"
+            FAILURE_REASON="${{ needs.check-deployment-status.outputs.failure_reason }}"
+            if [[ "$FAILURE_REASON" == "no_deployment_found" ]]; then
+              echo "### No Deployment Found" >> $GITHUB_STEP_SUMMARY
+              echo "No completed Deploy Backend workflow runs were found on the main branch." >> $GITHUB_STEP_SUMMARY
+              echo "" >> $GITHUB_STEP_SUMMARY
+              echo "**Action Required:** Run the Deploy Backend workflow on main branch before creating a release." >> $GITHUB_STEP_SUMMARY
+            elif [[ "$FAILURE_REASON" == "deployment_failed" ]]; then
+              echo "### Deployment Failed" >> $GITHUB_STEP_SUMMARY
+              echo "The latest Deploy Backend workflow on main branch did not succeed." >> $GITHUB_STEP_SUMMARY
+              echo "" >> $GITHUB_STEP_SUMMARY
+              echo "- **Conclusion:** ${{ needs.check-deployment-status.outputs.failed_deployment_conclusion }}" >> $GITHUB_STEP_SUMMARY
+              echo "- **Failed workflow:** [${{ needs.check-deployment-status.outputs.failed_deployment_url }}](${{ needs.check-deployment-status.outputs.failed_deployment_url }})" >> $GITHUB_STEP_SUMMARY
+              echo "" >> $GITHUB_STEP_SUMMARY
+              echo "**Action Required:** Fix the deployment issues and ensure main branch deploys successfully before creating a release." >> $GITHUB_STEP_SUMMARY
+            fi
+            exit 0
+          fi
 
-      # Step 9: Summary
-      - name: Release Summary
-        run: |
+          if [[ "${{ needs.update-versions.result }}" == "failure" ]]; then
+            echo "## ❌ Release Failed - Version Update" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "Failed to update package versions and commit changes." >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "**Action Required:** Check the workflow logs for details about what went wrong." >> $GITHUB_STEP_SUMMARY
+            exit 0
+          fi
+
+          if [[ "${{ needs.create-pull-request.result }}" == "failure" ]]; then
+            echo "## ❌ Release Failed - Pull Request Creation" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "Failed to create the release pull request from main to prod." >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "**Possible causes:**" >> $GITHUB_STEP_SUMMARY
+            echo "- There may already be an open PR from main to prod" >> $GITHUB_STEP_SUMMARY
+            echo "- Insufficient permissions to create pull requests" >> $GITHUB_STEP_SUMMARY
+            echo "- Network or API issues" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "**Action Required:** Check for existing PRs and review the workflow logs." >> $GITHUB_STEP_SUMMARY
+            exit 0
+          fi
+
+          # Success case
           echo "## 🎉 Release Created Successfully!" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
+
           echo "### Release Information" >> $GITHUB_STEP_SUMMARY
           echo "- **Type**: ${{ github.event_name == 'schedule' && '⏰ Automated (Daily @ 11:00 UTC)' || '🔧 Manual' }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Triggered by**: ${{ github.event_name == 'schedule' && '🤖 Scheduled Job' || github.actor }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### Version Updates" >> $GITHUB_STEP_SUMMARY
-          echo "- **Frontend**: ${{ steps.version.outputs.old_frontend_version }} → ${{ steps.version.outputs.frontend_version }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **Backend**: ${{ steps.version.outputs.old_backend_version }} → ${{ steps.version.outputs.backend_version }}" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### Pull Request" >> $GITHUB_STEP_SUMMARY
-          echo "- PR: [#${{ steps.create-pr.outputs.pr_number }}](${{ steps.create-pr.outputs.pr_url }})" >> $GITHUB_STEP_SUMMARY
-          echo "- Status: Auto-merge enabled (will merge when checks pass)" >> $GITHUB_STEP_SUMMARY
-          echo "- Merge method: ${{ github.event.inputs.merge_method || 'merge' }}" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### Release Tag" >> $GITHUB_STEP_SUMMARY
-          echo "- Tag: \`v${{ steps.version.outputs.backend_version }}\`" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
+
+          # Version updates (if available)
+          if [[ -n "${{ needs.update-versions.outputs.backend_version }}" ]]; then
+            echo "### Version Updates" >> $GITHUB_STEP_SUMMARY
+            echo "- **Frontend**: ${{ needs.update-versions.outputs.old_frontend_version }} → ${{ needs.update-versions.outputs.frontend_version }}" >> $GITHUB_STEP_SUMMARY
+            echo "- **Backend**: ${{ needs.update-versions.outputs.old_backend_version }} → ${{ needs.update-versions.outputs.backend_version }}" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          # Pull Request details
+          if [[ -n "${{ needs.create-pull-request.outputs.pr_number }}" ]]; then
+            echo "### Pull Request" >> $GITHUB_STEP_SUMMARY
+            echo "- **PR**: [#${{ needs.create-pull-request.outputs.pr_number }}](${{ needs.create-pull-request.outputs.pr_url }})" >> $GITHUB_STEP_SUMMARY
+
+            if [[ "${{ needs.enable-auto-merge.result }}" == "success" ]]; then
+              echo "- **Status**: ✅ Auto-merge enabled (will merge when checks pass)" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "- **Status**: ⚠️ Auto-merge could not be enabled (manual merge required)" >> $GITHUB_STEP_SUMMARY
+            fi
+
+            echo "- **Merge method**: ${{ github.event.inputs.merge_method || 'merge' }}" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          # Release tag
+          if [[ -n "${{ needs.create-release-tag.outputs.tag_name }}" ]]; then
+            echo "### Release Tag" >> $GITHUB_STEP_SUMMARY
+            echo "- **Tag**: \`${{ needs.create-release-tag.outputs.tag_name }}\`" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          # Deployment verification
+          if [[ -n "${{ needs.check-deployment-status.outputs.deployment_run_url }}" ]]; then
+            echo "### Pre-release Verification" >> $GITHUB_STEP_SUMMARY
+            echo "- ✅ Deploy Backend on main: [Successful](${{ needs.check-deployment-status.outputs.deployment_run_url }})" >> $GITHUB_STEP_SUMMARY
+            echo "- ✅ Version commit: [\`${{ needs.update-versions.outputs.commit_sha }}\`](https://github.com/${{ github.repository }}/commit/${{ needs.update-versions.outputs.commit_sha }})" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+          fi
+
           echo "### Next Steps" >> $GITHUB_STEP_SUMMARY
-          echo "1. Monitor the [PR](${{ steps.create-pr.outputs.pr_url }}) for status check completion" >> $GITHUB_STEP_SUMMARY
+          echo "1. Monitor the [PR](${{ needs.create-pull-request.outputs.pr_url }}) for status check completion" >> $GITHUB_STEP_SUMMARY
           echo "2. Once merged, the prod branch will trigger production deployment" >> $GITHUB_STEP_SUMMARY
           echo "3. Verify production deployment in the Deploy Backend workflow" >> $GITHUB_STEP_SUMMARY
