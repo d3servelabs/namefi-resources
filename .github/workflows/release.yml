@@ -6,7 +6,7 @@ on:
       merge_method:
         description: 'Merge method for the PR'
         required: false
-        default: 'merge'
+        default: 'rebase'
         type: choice
         options:
           - squash
