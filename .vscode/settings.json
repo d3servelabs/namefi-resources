@@ -32,6 +32,8 @@
   "typescript.tsdk": "node_modules/typescript/lib",
   "cSpell.words": [
     "3ld",
+    "aceternity",
+    "altcha",
     "dis",
     "dynadot",
     "gifter",
@@ -45,7 +47,6 @@
     "rsuite",
     "sami",
     "sid",
-    "viem",
-    "altcha"
+    "viem"
   ]
 }
