@@ -57,12 +57,11 @@ jobs:
           fi
 
   auth-namefi-bot:
-    name: Authenticate NameFi Bot
+    name: Get NameFi Bot Info
     needs: check-auto-deploy
     if: needs.check-auto-deploy.outputs.should-deploy == 'true'
     runs-on: ubuntu-latest
     outputs:
-      token: ${{ steps.app-token.outputs.token }}
       app-slug: ${{ steps.app-token.outputs.app-slug }}
       user-id: ${{ steps.get-user-id.outputs.user-id }}
     steps:
@@ -90,11 +89,17 @@ jobs:
       failed_deployment_url: ${{ steps.check-deployment.outputs.failed_deployment_url }}
       failed_deployment_conclusion: ${{ steps.check-deployment.outputs.failed_deployment_conclusion }}
     steps:
+      - uses: actions/create-github-app-token@v2
+        id: app-token
+        with:
+          app-id: ${{ vars.NAMEFI_BOT_APP_ID }}
+          private-key: ${{ secrets.NAMEFI_BOT_PRIVATE_KEY }}
+
       - name: Check Deploy Backend Workflow Status
         id: check-deployment
         uses: actions/github-script@v8
         with:
-          github-token: ${{ needs.auth-namefi-bot.outputs.token }}
+          github-token: ${{ steps.app-token.outputs.token }}
           script: |
             console.log('🔍 Checking latest Deploy Backend workflow status on main branch...');
 
@@ -161,10 +166,16 @@ jobs:
       old_frontend_version: ${{ steps.version.outputs.old_frontend_version }}
       commit_sha: ${{ steps.commit.outputs.commit_sha }}
     steps:
+      - uses: actions/create-github-app-token@v2
+        id: app-token
+        with:
+          app-id: ${{ vars.NAMEFI_BOT_APP_ID }}
+          private-key: ${{ secrets.NAMEFI_BOT_PRIVATE_KEY }}
+
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          token: ${{ needs.auth-namefi-bot.outputs.token }}
+          token: ${{ steps.app-token.outputs.token }}
           fetch-depth: 0
 
       - name: Read and increment versions
@@ -285,10 +296,16 @@ jobs:
     outputs:
       tag_name: ${{ steps.create-tag.outputs.tag_name }}
     steps:
+      - uses: actions/create-github-app-token@v2
+        id: app-token
+        with:
+          app-id: ${{ vars.NAMEFI_BOT_APP_ID }}
+          private-key: ${{ secrets.NAMEFI_BOT_PRIVATE_KEY }}
+
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          token: ${{ needs.auth-namefi-bot.outputs.token }}
+          token: ${{ steps.app-token.outputs.token }}
           fetch-depth: 0
           ref: ${{ needs.update-versions.outputs.commit_sha }}
 
@@ -316,11 +333,17 @@ jobs:
       pr_number: ${{ steps.create-pr.outputs.pr_number }}
       pr_url: ${{ steps.create-pr.outputs.pr_url }}
     steps:
+      - uses: actions/create-github-app-token@v2
+        id: app-token
+        with:
+          app-id: ${{ vars.NAMEFI_BOT_APP_ID }}
+          private-key: ${{ secrets.NAMEFI_BOT_PRIVATE_KEY }}
+
       - name: Create Pull Request
         id: create-pr
         uses: actions/github-script@v8
         with:
-          github-token: ${{ needs.auth-namefi-bot.outputs.token }}
+          github-token: ${{ steps.app-token.outputs.token }}
           script: |
             // Create the PR
             const { data: pr } = await github.rest.pulls.create({
@@ -364,10 +387,16 @@ jobs:
     needs: [auth-namefi-bot, create-pull-request, update-versions]
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/create-github-app-token@v2
+        id: app-token
+        with:
+          app-id: ${{ vars.NAMEFI_BOT_APP_ID }}
+          private-key: ${{ secrets.NAMEFI_BOT_PRIVATE_KEY }}
+
       - name: Enable Auto-merge
         uses: actions/github-script@v8
         with:
-          github-token: ${{ needs.auth-namefi-bot.outputs.token }}
+          github-token: ${{ steps.app-token.outputs.token }}
           script: |
             const prNumber = ${{ needs.create-pull-request.outputs.pr_number }};
             const mergeMethod = '${{ github.event.inputs.merge_method || 'merge' }}';
