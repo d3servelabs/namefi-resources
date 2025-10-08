@@ -64,5 +64,5 @@ USER nodejs
 EXPOSE 3000
 
 # Start the application with Node.js
-CMD ["node", "dist/index.js"] 
+CMD ["npm", "start"] 
 ## https://infisical.com/docs/integrations/platforms/docker
