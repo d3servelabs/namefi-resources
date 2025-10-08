@@ -7,7 +7,7 @@ import { useFreeMints, type FreeMint } from '@/hooks/use-free-mints';
 import { cn } from '@/lib/cn';
 import { AnimatePresence, motion } from 'motion/react';
 import NumberFlow from '@number-flow/react';
-import { ShinyButton } from '@/components/buttons/shiny-button';
+import { HeaderActionButton } from '@/components/header-action-button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,10 +21,14 @@ import Link from 'next/link';
 import { useFreeMintsGuidance } from '@/components/providers/free-mints-guidance';
 import { Button } from '@/components/ui/shadcn/button';
 import { useRouter } from 'next/navigation';
-import {
-  HEADER_BADGE_CLASS,
-  HEADER_PILL_BUTTON_CLASS,
-} from '@/components/header.tokens';
+import { HEADER_BADGE_CLASS } from '@/components/header.tokens';
+
+const SHINY_TEXT_TRANSITION = {
+  repeat: Number.POSITIVE_INFINITY,
+  repeatType: 'loop' as const,
+  ease: 'linear' as const,
+  duration: 2.4,
+};
 
 export function FreeMintsDropdown({
   className,
@@ -81,28 +85,35 @@ export function FreeMintsDropdown({
         >
           <DropdownMenu>
             <DropdownMenuTrigger asChild={true}>
-              <div className="relative">
-                <ShinyButton
-                  variant="ghost"
-                  className={cn(
-                    HEADER_PILL_BUTTON_CLASS,
-                    'gap-2 pr-6 text-sm font-semibold',
-                    !disableBackdropBlur &&
-                      'supports-[backdrop-filter]:backdrop-blur-md',
-                    disableBackdropBlur &&
-                      'supports-[backdrop-filter]:backdrop-blur-none',
-                  )}
-                  aria-label={`You have ${availableCount} free ${availableCount === 1 ? 'mint' : 'mints'} available`}
+              <HeaderActionButton
+                actionVariant="pill"
+                disableBackdropBlur={disableBackdropBlur}
+                className="pr-6"
+                aria-label={`You have ${availableCount} free ${availableCount === 1 ? 'mint' : 'mints'} available`}
+              >
+                <Gift className="size-[18px]" />
+                <motion.span
+                  className="relative whitespace-nowrap"
+                  style={{
+                    ['--x' as unknown as string]: '125%',
+                    maskImage:
+                      'linear-gradient(-75deg,rgba(255,255,255,0.85) calc(var(--x) + 20%),transparent calc(var(--x) + 30%),rgba(255,255,255,0.85) calc(var(--x) + 100%))',
+                    WebkitMaskImage:
+                      'linear-gradient(-75deg,rgba(255,255,255,0.85) calc(var(--x) + 20%),transparent calc(var(--x) + 30%),rgba(255,255,255,0.85) calc(var(--x) + 100%))',
+                  }}
+                  animate={{
+                    ['--x' as unknown as string]: '-125%',
+                  }}
+                  transition={SHINY_TEXT_TRANSITION}
                 >
-                  <span className="flex items-center gap-2">
-                    <Gift className="size-[18px]" />
+                  <span className="relative">
                     Free {availableCount === 1 ? 'Mint' : 'Mints'}
                   </span>
-                </ShinyButton>
+                </motion.span>
                 <span className={HEADER_BADGE_CLASS}>
                   <NumberFlow value={availableCount} />
                 </span>
-              </div>
+              </HeaderActionButton>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56" align="end">
               <DropdownMenuLabel>Free Mints</DropdownMenuLabel>

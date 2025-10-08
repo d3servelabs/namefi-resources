@@ -1,5 +1,5 @@
 'use client';
-import { Button } from '@/components/ui/shadcn/button';
+import { HeaderActionButton } from '@/components/header-action-button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -46,11 +46,6 @@ import { useTRPC } from '@/lib/trpc';
 import { useQuery } from '@tanstack/react-query';
 import { Permission } from '@namefi-astra/utils';
 import { useHasPermissions } from '@/components/access/PermissionGate';
-import {
-  HEADER_ICON_BUTTON_CLASS,
-  HEADER_PILL_BUTTON_CLASS,
-} from '@/components/header.tokens';
-
 const BASE_ITEMS: NavItem[] = [
   { title: 'Profile', href: '/profile', icon: UserIcon },
 ];
@@ -65,6 +60,7 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
     {
       forceExpanded = true,
       disableBackdropBlur = false,
+      className,
       ...rest
     }: UserDropdownProps,
     ref: ForwardedRef<HTMLDivElement>,
@@ -129,23 +125,18 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
       [forceExpanded, sidebarState, isMobile],
     );
 
-    const computeButtonClasses = useCallback(
-      (expanded: boolean, stretch = false) =>
-        cn(
-          expanded ? HEADER_PILL_BUTTON_CLASS : HEADER_ICON_BUTTON_CLASS,
-          expanded
-            ? 'gap-2 pl-1.5 pr-4 text-sm font-semibold'
-            : 'justify-center',
-          stretch && 'w-full',
-          !disableBackdropBlur && 'supports-[backdrop-filter]:backdrop-blur-md',
-          disableBackdropBlur &&
-            'supports-[backdrop-filter]:backdrop-blur-none',
-        ),
-      [disableBackdropBlur],
-    );
+    const actionVariant = isExpanded ? 'pill' : 'icon';
+    const expandedPaddingClass = isExpanded ? 'pl-[3px] pr-4' : undefined;
 
     return (
-      <div ref={ref} {...rest}>
+      <div
+        ref={ref}
+        className={cn(
+          !isExpanded && !shouldStretch && 'flex justify-center',
+          className,
+        )}
+        {...rest}
+      >
         {/* Sign Out Confirmation Dialog */}
         <AlertDialog
           open={isSignOutDialogOpen}
@@ -189,14 +180,19 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
               }}
               layout
             >
-              <Button
-                className={computeButtonClasses(isExpanded, shouldStretch)}
-                variant="ghost"
+              <HeaderActionButton
+                actionVariant={actionVariant}
+                disableBackdropBlur={disableBackdropBlur}
+                stretch={shouldStretch}
+                className={cn(
+                  expandedPaddingClass,
+                  !isExpanded && 'text-white/90',
+                )}
                 disabled={true}
               >
                 <Loader2Icon className="animate-spin size-6" />
                 {isExpanded && <span>Loading...</span>}
-              </Button>
+              </HeaderActionButton>
             </motion.div>
           )}
 
@@ -216,14 +212,16 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
               }}
               layout
             >
-              <Button
-                className={computeButtonClasses(isExpanded, shouldStretch)}
-                variant="ghost"
+              <HeaderActionButton
+                actionVariant={actionVariant}
+                disableBackdropBlur={disableBackdropBlur}
+                stretch={shouldStretch}
+                className={expandedPaddingClass}
                 onClick={handleConnect}
               >
                 <WalletIcon className="size-6" />
                 {isExpanded && <span>Sign In</span>}
-              </Button>
+              </HeaderActionButton>
             </motion.div>
           )}
 
@@ -245,12 +243,11 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
             >
               <DropdownMenu>
                 <DropdownMenuTrigger asChild={true}>
-                  <Button
-                    variant="ghost"
-                    className={cn(
-                      computeButtonClasses(isExpanded, shouldStretch),
-                      'data-[state=open]:border-brand-primary/60 data-[state=open]:bg-brand-primary/20',
-                    )}
+                  <HeaderActionButton
+                    actionVariant={actionVariant}
+                    disableBackdropBlur={disableBackdropBlur}
+                    stretch={shouldStretch}
+                    className={expandedPaddingClass}
                   >
                     <motion.div
                       initial={{ opacity: 0, y: -10 }}
@@ -300,7 +297,7 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
                         </motion.span>
                       </>
                     )}
-                  </Button>
+                  </HeaderActionButton>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-56">
                   {items.map((item) => {

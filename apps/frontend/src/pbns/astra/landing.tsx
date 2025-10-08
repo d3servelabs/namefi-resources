@@ -576,13 +576,9 @@ const STORY_PANELS: StoryPanel[] = [
             <span className="block text-xs uppercase tracking-[0.2em] text-white/60">
               Namefi NFT preview
             </span>
-            <h4 className="text-xl font-semibold text-white">
+            <h4 className="text-lg font-semibold text-white/70">
               Ownership that travels with your domain
             </h4>
-            <p className="text-sm text-white/70 max-w-md mx-auto">
-              Imports mint an ERC-721 you custody, and exports burn it—so
-              blockchain provenance always matches the DNS ledger.
-            </p>
           </div>
         </div>
       </Card>

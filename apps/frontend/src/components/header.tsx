@@ -35,7 +35,7 @@ export const Header: ForwardRefExoticComponent<HeaderProps> = forwardRef<
         'sticky top-0 z-30 flex h-16 w-full shrink-0 items-center transition-[width,height,background-color] ease-linear lg:static',
         isBlurredHeader
           ? 'border-b border-white/10 supports-[backdrop-filter]:bg-background/40 supports-[backdrop-filter]:backdrop-blur-2xl'
-          : 'bg-background/95',
+          : 'bg-transparent',
         isMobile ? 'px-3' : 'px-6',
         className,
       )}

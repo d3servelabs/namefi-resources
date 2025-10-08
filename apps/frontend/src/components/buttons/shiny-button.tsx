@@ -26,10 +26,7 @@ export const ShinyButton = React.forwardRef<
     <MotionButton
       ref={ref}
       className={cn(
-        'relative overflow-hidden transition-shadow duration-300 ease-in-out',
-        'backdrop-blur-xl border border-transparent',
-        '[&:not(:hover)]:bg-transparent',
-        'dark:[&:not(:hover)]:bg-transparent',
+        'relative overflow-hidden transition-[background-color,border-color,box-shadow] duration-200 ease-out',
         className,
       )}
       {...props}
@@ -40,9 +37,9 @@ export const ShinyButton = React.forwardRef<
         style={{
           ['--x' as unknown as string]: '125%',
           maskImage:
-            'linear-gradient(-75deg,var(--primary) calc(var(--x) + 20%),transparent calc(var(--x) + 30%),var(--primary) calc(var(--x) + 100%))',
+            'linear-gradient(-75deg,rgba(255,255,255,0.85) calc(var(--x) + 20%),transparent calc(var(--x) + 30%),rgba(255,255,255,0.85) calc(var(--x) + 100%))',
           WebkitMaskImage:
-            'linear-gradient(-75deg,var(--primary) calc(var(--x) + 20%),transparent calc(var(--x) + 30%),var(--primary) calc(var(--x) + 100%))',
+            'linear-gradient(-75deg,rgba(255,255,255,0.85) calc(var(--x) + 20%),transparent calc(var(--x) + 30%),rgba(255,255,255,0.85) calc(var(--x) + 100%))',
         }}
         animate={{ ['--x' as unknown as string]: '-125%' }}
         transition={overlayAnimation.transition}
@@ -58,7 +55,7 @@ export const ShinyButton = React.forwardRef<
           WebkitMask:
             'linear-gradient(rgb(0,0,0), rgb(0,0,0)) content-box exclude,linear-gradient(rgb(0,0,0), rgb(0,0,0))',
           backgroundImage:
-            'linear-gradient(-75deg,var(--primary)/10% calc(var(--x)+20%),var(--primary)/50% calc(var(--x)+25%),var(--primary)/10% calc(var(--x)+100%))',
+            'linear-gradient(-75deg,rgba(255,255,255,0.15) calc(var(--x)+20%),rgba(255,255,255,0.45) calc(var(--x)+25%),rgba(255,255,255,0.15) calc(var(--x)+100%))',
         }}
         animate={{ ['--x' as unknown as string]: '-125%' }}
         transition={overlayAnimation.transition}

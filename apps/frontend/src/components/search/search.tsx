@@ -305,7 +305,7 @@ export const SearchInput: FC<{
                     >
                       <Separator
                         orientation="vertical"
-                        className="!h-6 !w-px rounded-full bg-white/50"
+                        className="h-8! w-px! rounded-full bg-white/50"
                       />
                       <Badge
                         variant="secondary"
@@ -378,7 +378,7 @@ export const SearchInput: FC<{
         target={containerRef.current}
         visible={isFreeMintGuidanceVisible}
         onClose={() => setIsFreeMintGuidanceVisible(false)}
-        radius={80}
+        radius={40}
       />
     </>
   );

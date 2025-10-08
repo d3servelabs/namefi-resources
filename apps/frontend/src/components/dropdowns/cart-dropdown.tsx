@@ -1,5 +1,6 @@
 'use client';
 
+import { HeaderActionButton } from '@/components/header-action-button';
 import { Button } from '@/components/ui/shadcn/button';
 import {
   DropdownMenu,
@@ -21,12 +22,9 @@ import { forwardRef, useCallback, useMemo } from 'react';
 import { useInteractionLoggers } from '@/components/providers/analytics';
 import { motion, type HTMLMotionProps, AnimatePresence } from 'motion/react';
 import NumberFlow from '@number-flow/react';
-import {
-  HEADER_BADGE_CLASS,
-  HEADER_ICON_BUTTON_CLASS,
-} from '@/components/header.tokens';
+import { HEADER_BADGE_CLASS } from '@/components/header.tokens';
 
-const MotionButton = motion.create(Button);
+const MotionHeaderActionButton = motion.create(HeaderActionButton);
 
 export type CartDropdownProps = Omit<HTMLMotionProps<'div'>, 'ref'> & {
   disableBackdropBlur?: boolean;
@@ -61,15 +59,10 @@ export const CartDropdown = forwardRef<HTMLDivElement, CartDropdownProps>(
       <motion.div ref={ref} className={cn('', className)} {...rest} layout>
         <DropdownMenu>
           <DropdownMenuTrigger asChild={true}>
-            <MotionButton
-              className={cn(
-                HEADER_ICON_BUTTON_CLASS,
-                'text-white/90',
-                !disableBackdropBlur &&
-                  'supports-[backdrop-filter]:backdrop-blur-md',
-                disableBackdropBlur &&
-                  'supports-[backdrop-filter]:backdrop-blur-none',
-              )}
+            <MotionHeaderActionButton
+              actionVariant="icon"
+              disableBackdropBlur={disableBackdropBlur}
+              className="text-white/90"
             >
               <ShoppingCart className="h-5 w-5" />
               <AnimatePresence initial={false} mode="popLayout">
@@ -85,7 +78,7 @@ export const CartDropdown = forwardRef<HTMLDivElement, CartDropdownProps>(
                   </motion.div>
                 )}
               </AnimatePresence>
-            </MotionButton>
+            </MotionHeaderActionButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-56" align="end">
             <DropdownMenuLabel>My Cart</DropdownMenuLabel>
