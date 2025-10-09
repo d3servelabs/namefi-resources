@@ -258,6 +258,20 @@ jobs:
             frontendPkg.version = frontendVersion;
             fs.writeFileSync(frontendPkgPath, JSON.stringify(frontendPkg, null, 2) + '\n');
             console.log(`✅ Updated frontend version to ${frontendVersion}`);
+      
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: ".bun-version"
+    
+      - name: Install dependencies
+        run: |
+          bun install # required to update bun.lock
+      - name: Format files
+        run: |
+          bun biome format --write ./apps/backend || true
+          bun biome format --write ./apps/frontend || true
+          bunx sherif@latest -f || true
 
       - name: Configure git
         run: |
@@ -269,7 +283,7 @@ jobs:
         run: |
           echo "📝 Committing version changes..."
 
-          git add apps/backend/package.json apps/frontend/package.json
+          git add apps/backend/package.json apps/frontend/package.json ./bun.lock
 
           # Create commit message
           COMMIT_MESSAGE="chore(v${{ steps.version.outputs.backend_version }}): frontend ${{ steps.version.outputs.frontend_version }} backend ${{ steps.version.outputs.backend_version }}"
