@@ -3,6 +3,7 @@
  * This may cause incompatibilities with ESM only packages being loaded in next.config.ts
  * @see https://nextjs.org/docs/pages/api-reference/config/typescript
  */
+import createMdx from '@next/mdx';
 import { createJiti } from 'jiti';
 import packageJson from './package.json' with { type: 'json' };
 
@@ -14,6 +15,10 @@ const { loadInfisicalSecretsIfConfigured } = await jiti.import(
   '@namefi-astra/env/infisical',
 );
 await loadInfisicalSecretsIfConfigured({ allowEnvPassthrough: true });
+
+const withMDX = createMdx({
+  extension: /\.mdx?$/,
+});
 
 /** @type {{ config: import('./src/lib/env/schema').Config }} */
 const { config: appConfig } = await jiti.import('./src/lib/env/load');
@@ -90,6 +95,7 @@ const nextConfig = {
       },
     ];
   },
+  pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md', 'mdx'],
 };
 
-export default nextConfig;
+export default withMDX(nextConfig);

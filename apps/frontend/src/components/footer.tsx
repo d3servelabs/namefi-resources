@@ -84,24 +84,12 @@ const FOOTER_SECTIONS: Array<{
   {
     title: 'Resources',
     links: [
-      {
-        label: 'Blog & Updates',
-        href: 'https://mirror.xyz/namefi.eth',
-        external: true,
-      },
-      {
-        label: 'Status Page',
-        href: 'https://status.namefi.io',
-        external: true,
-      },
+      { label: 'Abuse Reporting', href: '/abuse' },
+      { label: 'Education Hub', href: '/education' },
+      { label: 'Registration Agreement', href: '/registration-agreement' },
       {
         label: 'Support',
         href: 'mailto:support@namefi.io',
-        external: true,
-      },
-      {
-        label: 'ICANN Accreditation',
-        href: 'https://radar.icann.org/registrar/4039',
         external: true,
       },
     ],
@@ -158,9 +146,9 @@ export const Footer: ForwardRefExoticComponent<FooterProps> = forwardRef<
               />
             </div>
             <p className="max-w-md text-sm text-muted-foreground">
-              Namefi tokenizes DNS ownership so founders, communities, and
-              onchain builders can register, trade, and activate domains with
-              enterprise-grade security.
+              Namefi is an ICANN-accredited registrar that tokenizes DNS
+              ownership so you can register, trade, and build with AI tooling
+              and onchain security.
             </p>
             <div className="flex flex-wrap items-center gap-3">
               {SOCIAL_LINKS.map(({ name, href, icon: Icon }) => (
@@ -207,9 +195,6 @@ export const Footer: ForwardRefExoticComponent<FooterProps> = forwardRef<
         <div className="flex flex-col gap-6 border-t border-white/10 pt-8 text-sm text-white/60 md:flex-row md:items-center md:justify-between">
           <div className="flex flex-col gap-3 md:flex-row md:items-center md:gap-4">
             <span>© {YEAR} D3SERVE LABS, Inc. All rights reserved.</span>
-            <span className="text-white/40">
-              ICANN Accredited Registrar #4039
-            </span>
           </div>
           <div className="flex flex-wrap items-center gap-4">
             <button
@@ -221,20 +206,10 @@ export const Footer: ForwardRefExoticComponent<FooterProps> = forwardRef<
               Cookie Settings
             </button>
             <Link
-              href="https://namefi.io/tos"
-              target="_blank"
-              rel="noreferrer noopener"
+              href="/tos"
               className="text-white/70 transition hover:text-white"
             >
               Terms &amp; Conditions
-            </Link>
-            <Link
-              href="https://namefi.io/privacy"
-              target="_blank"
-              rel="noreferrer noopener"
-              className="text-white/70 transition hover:text-white"
-            >
-              Privacy Policy
             </Link>
           </div>
         </div>
