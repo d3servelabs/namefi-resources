@@ -86,7 +86,7 @@ const FEATURES = [
   {
     title: 'Marketplace-ready assets',
     description:
-      'Move your domains directly into NFT marketplaces and use them as liquid collateral.',
+      'Move your domains directly into NFT marketplaces and trade them with onchain security.',
     icon: Coins,
   },
 ] as const;
@@ -589,10 +589,10 @@ const STORY_PANELS: StoryPanel[] = [
     badge: 'AI Brand Generator',
     title: 'Spin up brand directions and domain ideas in minutes.',
     description:
-      'Namefi AI pairs availability data with creative outputs so you can validate a concept, preview collateral, and move straight into registration.',
+      'Namefi AI pairs availability data with creative outputs so you can validate a concept, preview posters, and move straight into registration.',
     highlights: [
       'Domain-guided prompts',
-      'Logos & collateral',
+      'Logos & posters',
       'Share-ready assets',
     ],
     accent: 'emerald',
