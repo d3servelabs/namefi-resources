@@ -1201,6 +1201,7 @@ const HeroSection = ({
                 parentDomain={parentDomain}
                 onClearParentDomain={onClearParentDomain}
                 isFirstPartyOrigin
+                ctaClassName="text-primary-foreground"
               />
             </div>
           </div>

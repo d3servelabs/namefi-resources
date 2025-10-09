@@ -150,6 +150,7 @@ export const SearchInput: FC<{
   parentDomain: string | undefined;
   onClearParentDomain?: () => void;
   isFirstPartyOrigin?: boolean;
+  ctaClassName?: string;
 }> = ({
   query,
   setQuery,
@@ -160,6 +161,7 @@ export const SearchInput: FC<{
   parentDomain,
   onClearParentDomain,
   isFirstPartyOrigin,
+  ctaClassName,
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -354,7 +356,10 @@ export const SearchInput: FC<{
             </div>
             <NamefiButton
               onClick={handleSearchClick}
-              className="not-only:font-semibold h-12 shrink-0 rounded-full px-6 text-base shadow-none"
+              className={cn(
+                'not-only:font-semibold h-12 shrink-0 rounded-full px-6 text-base shadow-none',
+                ctaClassName,
+              )}
               title={searchMode === SearchMode.IMPORT ? 'Import' : 'Search'}
             >
               {searchMode === SearchMode.IMPORT ? 'Import' : 'Search'}
