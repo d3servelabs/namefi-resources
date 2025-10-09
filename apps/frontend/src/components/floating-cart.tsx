@@ -50,6 +50,7 @@ export const FloatingCart = ({
   const [bottomOffset, setBottomOffset] = useState(FLOATING_CART_BASE_BOTTOM);
   const footerRef = useRef<HTMLElement | null>(null);
   const cartRef = useRef<HTMLDivElement | null>(null);
+  const lastCartHeightRef = useRef(0);
   const { state: sidebarState, isMobile } = useSidebar();
   const frameRef = useRef<number | null>(null);
 
@@ -146,20 +147,23 @@ export const FloatingCart = ({
       footerRef.current = footerEl;
     }
 
-    const cartHeight = cartRef.current?.offsetHeight ?? 0;
+    const measuredCartHeight = cartRef.current?.offsetHeight;
+    if (typeof measuredCartHeight === 'number' && measuredCartHeight > 0) {
+      lastCartHeightRef.current = measuredCartHeight;
+    }
+    const cartHeight = measuredCartHeight ?? lastCartHeightRef.current;
     const viewportHeight = window.innerHeight;
     let nextBottom = FLOATING_CART_BASE_BOTTOM;
 
     if (footerEl && cartHeight > 0) {
       const footerRect = footerEl.getBoundingClientRect();
-      const footerTopFromBottom = viewportHeight - footerRect.top;
-      const desiredBottom = footerTopFromBottom - cartHeight / 2 - 8;
+      const footerOverlap = Math.max(0, viewportHeight - footerRect.top);
+      const desiredBottom =
+        footerOverlap > 0
+          ? footerOverlap - cartHeight / 2
+          : FLOATING_CART_BASE_BOTTOM;
       const desiredClamped = Math.max(FLOATING_CART_BASE_BOTTOM, desiredBottom);
-      const maxBottom = Math.max(
-        FLOATING_CART_BASE_BOTTOM,
-        viewportHeight - cartHeight - 16,
-      );
-      nextBottom = Math.min(desiredClamped, maxBottom);
+      nextBottom = desiredClamped;
     }
 
     setBottomOffset((prev) =>
