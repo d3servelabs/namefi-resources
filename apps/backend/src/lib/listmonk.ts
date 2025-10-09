@@ -95,6 +95,7 @@ export interface ListmonkConfig {
   username: string;
   password: string;
   defaultListId: number;
+  newsletterListId?: number;
 }
 
 export interface CreateNewSubscriberInput {
@@ -117,6 +118,7 @@ export const LISTMONK_CONFIG: ListmonkConfig = {
   username: secrets.LISTMONK_USERNAME || 'listmonk',
   password: secrets.LISTMONK_PASSWORD || '',
   defaultListId: config.LISTMONK_NAMEFI_LIST_ID,
+  newsletterListId: config.LISTMONK_NEWSLETTER_LIST_ID,
 };
 
 const limiter = new Bottleneck({
@@ -161,15 +163,40 @@ export class ListmonkClient {
       if (existingSubscriber) {
         // Update existing subscriber
         await this.$updateSubscriber(existingSubscriber, subscriber);
+
+        // Ensure all list subscriptions are confirmed for NameFi users
+        const listsToConfirm = subscriber.lists.filter(
+          (listId) =>
+            !existingSubscriber!.lists?.some(
+              (list) =>
+                list.id === listId && list.subscription_status === 'confirmed',
+            ),
+        );
+
+        if (listsToConfirm.length > 0) {
+          await this.$updateSubscriberLists({
+            action: 'add',
+            listIds: listsToConfirm,
+            subscriberIds: [existingSubscriber.id],
+            status: 'confirmed',
+          });
+          logger.info(
+            {
+              email: subscriber.email,
+              listsConfirmed: listsToConfirm,
+            },
+            'Confirmed list subscriptions for existing subscriber',
+          );
+        }
       } else {
-        // Create new subscriber
+        // Create new subscriber with preconfirmed subscriptions
         await this.$createSubscriber({
           email: subscriber.email,
           name: subscriber.name,
           status: subscriber.status,
           attribs: subscriber.attribs,
           lists: subscriber.lists,
-          preconfirm_subscriptions: true,
+          preconfirm_subscriptions: true, // NameFi users get preconfirmed subscriptions
         });
       }
     } catch (error) {
@@ -782,92 +809,111 @@ export class ListmonkClient {
   }
 
   /**
-   * Sync a single user subscription based on the subscribe flag
-   * Isolated function that implements the core sync logic
+   * Sync a single user subscription with two-list logic:
+   * - Always subscribe to default list (ID: 3)
+   * - Only subscribe to newsletter list (ID: 2) if subscribeToEmails is true
    */
   async syncUserSubscription(
     subscriber: ListmonkSubscriber,
-    subscribeFlag: boolean,
+    subscribeToEmails: boolean,
     userId: string,
-    targetListId: number = LISTMONK_CONFIG.defaultListId,
   ): Promise<void> {
     const existingSubscriber = await this.getSubscriberByUserId(userId);
+    const defaultListId = LISTMONK_CONFIG.defaultListId;
+    const newsletterListId = LISTMONK_CONFIG.newsletterListId;
 
-    // 1. subscribe flag true
-    if (subscribeFlag) {
-      const shouldUpdate =
-        existingSubscriber &&
-        (existingSubscriber.email !== subscriber.email ||
-          existingSubscriber.name !== subscriber.name ||
-          !equals(existingSubscriber.attribs, subscriber.attribs));
+    // Step 1: Ensure user exists in Listmonk (create or update)
+    const shouldUpdate =
+      existingSubscriber &&
+      (existingSubscriber.email !== subscriber.email ||
+        existingSubscriber.name !== subscriber.name ||
+        !equals(existingSubscriber.attribs, subscriber.attribs));
 
-      if (!existingSubscriber || shouldUpdate) {
-        await this.upsertSubscriber(subscriber);
-        logger.info(
-          { userId, email: subscriber.email },
-          'Updated subscriber info',
-        );
+    if (!existingSubscriber || shouldUpdate) {
+      // Set lists based on subscription preferences
+      const lists = [defaultListId];
+      if (subscribeToEmails && newsletterListId) {
+        lists.push(newsletterListId);
       }
 
-      // Ensure subscriber is subscribed to the default list
-      const finalSubscriber =
-        existingSubscriber || (await this.getSubscriberByUserId(userId));
-      if (finalSubscriber) {
-        if (
-          !finalSubscriber.lists?.some(
-            (list) =>
-              list.id === targetListId &&
-              list.subscription_status === 'confirmed',
-          )
-        ) {
-          await this.$updateSubscriberLists({
-            action: 'add',
-            listIds: [targetListId],
-            subscriberIds: [finalSubscriber.id],
-            status: 'confirmed',
-          });
-          logger.info(
-            { userId, email: subscriber.email, listId: targetListId },
-            'Added subscriber to default list',
-          );
-          return;
-        }
-        logger.info(
-          { userId, email: subscriber.email, listId: targetListId },
-          'Subscriber already subscribed to default list',
-        );
-      }
-
+      // Status is always 'enabled' for NameFi users
+      await this.upsertSubscriber({
+        ...subscriber,
+        status: 'enabled',
+        lists,
+      });
+      logger.info(
+        { userId, email: subscriber.email, lists },
+        'Created/updated subscriber with appropriate lists',
+      );
       return;
     }
 
-    // 2. subscribe flag false
+    // Step 2: Update list memberships for existing subscriber
+    const listsToAdd: number[] = [];
+    const listsToRemove: number[] = [];
 
-    if (existingSubscriber) {
-      if (existingSubscriber.lists?.some((list) => list.id === targetListId)) {
-        await this.$updateSubscriberLists({
-          action: 'unsubscribe',
-          listIds: [targetListId],
-          subscriberIds: [existingSubscriber.id],
-        });
-        logger.info(
-          { userId, email: existingSubscriber.email, listId: targetListId },
-          'Unsubscribed existing user from target list',
-        );
-        return;
-      }
-      logger.info(
-        { userId, email: existingSubscriber.email, listId: targetListId },
-        'User was not subscribed to target list',
+    // Always ensure user is in default list
+    if (
+      !existingSubscriber.lists?.some(
+        (list) =>
+          list.id === defaultListId && list.subscription_status === 'confirmed',
+      )
+    ) {
+      listsToAdd.push(defaultListId);
+    }
+
+    // Handle newsletter list based on subscribeToEmails flag
+    if (newsletterListId) {
+      const isInNewsletterList = existingSubscriber.lists?.some(
+        (list) =>
+          list.id === newsletterListId &&
+          list.subscription_status === 'confirmed',
       );
 
-      return;
+      if (subscribeToEmails && !isInNewsletterList) {
+        listsToAdd.push(newsletterListId);
+      } else if (!subscribeToEmails && isInNewsletterList) {
+        listsToRemove.push(newsletterListId);
+      }
     }
 
-    logger.info(
-      { userId },
-      'No existing user found for unsubscribe, exited early',
-    );
+    // Apply list changes
+    if (listsToAdd.length > 0) {
+      await this.$updateSubscriberLists({
+        action: 'add',
+        listIds: listsToAdd,
+        subscriberIds: [existingSubscriber.id],
+        status: 'confirmed',
+      });
+      logger.info(
+        { userId, email: existingSubscriber.email, listsAdded: listsToAdd },
+        'Added subscriber to lists',
+      );
+    }
+
+    if (listsToRemove.length > 0) {
+      await this.$updateSubscriberLists({
+        action: 'unsubscribe',
+        listIds: listsToRemove,
+        subscriberIds: [existingSubscriber.id],
+      });
+      logger.info(
+        {
+          userId,
+          email: existingSubscriber.email,
+          listsRemoved: listsToRemove,
+        },
+        'Removed subscriber from lists',
+      );
+    }
+
+    if (listsToAdd.length === 0 && listsToRemove.length === 0) {
+      logger.info(
+        { userId, email: existingSubscriber.email },
+        'No list membership changes needed',
+      );
+    }
   }
 
   async testConnection(): Promise<boolean> {

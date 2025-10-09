@@ -59,8 +59,7 @@ function extractNameFromPrivyUser(user: PrivyUser): {
 function privyUserToListmonkSubscriber(
   user: PrivyUser,
   dbUserId: string,
-  listId: number,
-  optedIn: boolean,
+  subscribeToEmails: boolean,
 ): ListmonkSubscriber | null {
   if (!user.email?.address) {
     logger.warn({ userId: user.id }, 'Skipping user without email address');
@@ -69,10 +68,16 @@ function privyUserToListmonkSubscriber(
 
   const nameInfo = extractNameFromPrivyUser(user);
 
+  // Always include default list, conditionally include newsletter list
+  const lists = [LISTMONK_CONFIG.defaultListId];
+  if (subscribeToEmails && LISTMONK_CONFIG.newsletterListId) {
+    lists.push(LISTMONK_CONFIG.newsletterListId);
+  }
+
   return {
     email: user.email.address,
     name: nameInfo.fullName,
-    status: optedIn ? 'enabled' : 'blocklisted',
+    status: 'enabled', // Always enabled since users are always in at least the default list
     attribs: {
       privyUserId: user.id,
       userId: dbUserId,
@@ -92,7 +97,7 @@ function privyUserToListmonkSubscriber(
         return {};
       })(),
     },
-    lists: optedIn ? [listId] : [],
+    lists,
   };
 }
 
@@ -181,29 +186,7 @@ export async function syncUsersToListmonkActivity(
 
   const listmonk = new ListmonkClient(LISTMONK_CONFIG);
 
-  // Filter users with email addresses and convert to Listmonk format
-  const subscribers = enrichedUsers
-    .map(({ privyUser, dbUserId, subscribeToEmails }) =>
-      privyUserToListmonkSubscriber(
-        privyUser,
-        dbUserId,
-        LISTMONK_CONFIG.defaultListId,
-        subscribeToEmails,
-      ),
-    )
-    .filter(
-      (subscriber): subscriber is ListmonkSubscriber => subscriber !== null,
-    );
-
-  logger.info(
-    {
-      totalUsers: enrichedUsers.length,
-      usersWithEmail: subscribers.length,
-    },
-    'Converted users to Listmonk subscribers',
-  );
-
-  // Sync subscribers to Listmonk using the isolated sync function
+  // Sync subscribers to Listmonk using the updated sync logic
   let successCount = 0;
   let errorCount = 0;
 
@@ -214,7 +197,6 @@ export async function syncUsersToListmonkActivity(
         const subscriber = privyUserToListmonkSubscriber(
           privyUser,
           dbUserId,
-          LISTMONK_CONFIG.defaultListId,
           subscribeToEmails,
         );
 
@@ -226,12 +208,28 @@ export async function syncUsersToListmonkActivity(
           return;
         }
 
-        // Use the isolated sync function
+        // Get existing subscriber to preserve their attributes
+        const existingSubscriber =
+          await listmonk.getSubscriberByUserId(dbUserId);
+
+        // Merge existing attributes with new ones (existing takes precedence for custom fields)
+        if (existingSubscriber?.attribs) {
+          subscriber.attribs = {
+            ...subscriber.attribs,
+            ...existingSubscriber.attribs,
+            // Ensure core NameFi attributes are updated
+            privyUserId: subscriber.attribs.privyUserId,
+            userId: subscriber.attribs.userId,
+            firstName: subscriber.attribs.firstName,
+            lastName: subscriber.attribs.lastName,
+          };
+        }
+
+        // Use the updated sync function with two-list logic
         await listmonk.syncUserSubscription(
           subscriber,
           subscribeToEmails,
           dbUserId,
-          LISTMONK_CONFIG.defaultListId,
         );
 
         successCount++;
@@ -302,7 +300,6 @@ export async function syncSingleUserToListmonkActivity(
     const subscriber = privyUserToListmonkSubscriber(
       enrichedUser,
       user.id,
-      LISTMONK_CONFIG.defaultListId,
       user.subscribeToEmails,
     );
 
@@ -311,12 +308,27 @@ export async function syncSingleUserToListmonkActivity(
       return;
     }
 
-    // Use the isolated sync function
+    // Get existing subscriber to preserve their attributes
+    const existingSubscriber = await listmonk.getSubscriberByUserId(userId);
+
+    // Merge existing attributes with new ones (existing takes precedence for custom fields)
+    if (existingSubscriber?.attribs) {
+      subscriber.attribs = {
+        ...subscriber.attribs,
+        ...existingSubscriber.attribs,
+        // Ensure core NameFi attributes are updated
+        privyUserId: subscriber.attribs.privyUserId,
+        userId: subscriber.attribs.userId,
+        firstName: subscriber.attribs.firstName,
+        lastName: subscriber.attribs.lastName,
+      };
+    }
+
+    // Use the updated sync function with two-list logic
     await listmonk.syncUserSubscription(
       subscriber,
       user.subscribeToEmails,
       userId,
-      LISTMONK_CONFIG.defaultListId,
     );
   } catch (error) {
     logger.error({ error, userId }, 'Failed to sync user to Listmonk');

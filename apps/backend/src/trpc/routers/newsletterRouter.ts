@@ -2,9 +2,12 @@ import { z } from 'zod';
 import { createTRPCRouter, publicProcedure } from '../base';
 import { TRPCError } from '@trpc/server';
 import { logger } from '#lib/logger';
-import { secrets } from '#lib/env';
+import { secrets, config } from '#lib/env';
 import { ListmonkClient } from '#lib/listmonk';
 import { verifySolution } from 'altcha-lib';
+import { db, usersTable } from '@namefi-astra/db';
+import { eq } from 'drizzle-orm';
+import { privyClient } from '#trpc/utils';
 
 const subscribeToNewsletterSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
@@ -20,13 +23,13 @@ const subscribeToNewsletterSchema = z.object({
   altcha: z.string().optional().nullable(),
 });
 
-const newsletterListId = 2;
 /**
  * Subscribe to newsletter using Listmonk with custom attributes
  */
 async function subscribeToNewsletter(
   email: string,
   from: string,
+  isNamefiUserWithSameEmail: boolean,
   name?: string,
   additionalAttributes?: Record<string, unknown>,
 ): Promise<void> {
@@ -37,11 +40,15 @@ async function subscribeToNewsletter(
     });
   }
 
+  const newsletterListId = config.LISTMONK_NEWSLETTER_LIST_ID;
+  const defaultListId = config.LISTMONK_NAMEFI_LIST_ID;
+
   const listmonkConfig = {
     baseUrl: secrets.LISTMONK_BASE_URL || 'http://localhost:9000',
     username: secrets.LISTMONK_USERNAME || 'listmonk',
     password: secrets.LISTMONK_PASSWORD || '',
-    defaultListId: newsletterListId,
+    defaultListId: defaultListId,
+    newsletterListId: newsletterListId,
   };
 
   const listmonkClient = new ListmonkClient(listmonkConfig);
@@ -65,6 +72,21 @@ async function subscribeToNewsletter(
         newsletterAttributes: attributes,
       };
 
+      // Build target lists based on whether they're a NameFi user
+      const currentListIds = existingSubscriber.lists.map(
+        (list: any) => list.id,
+      );
+      const targetListIds = isNamefiUserWithSameEmail
+        ? Array.from(
+            new Set([...currentListIds, defaultListId, newsletterListId]),
+          )
+        : Array.from(new Set([...currentListIds, newsletterListId]));
+
+      // NameFi users get confirmed status, anonymous users need to confirm via email
+      const subscriptionStatus = isNamefiUserWithSameEmail
+        ? 'confirmed'
+        : 'unconfirmed';
+
       // If subscriber has a userId, use the update method
       if (existingSubscriber.attribs.userId) {
         await listmonkClient.updateSubscriberByUserId(
@@ -72,11 +94,17 @@ async function subscribeToNewsletter(
           {
             name: name || existingSubscriber.name,
             attribs: mergedAttributes,
-            lists: existingSubscriber.lists
-              .map((list: any) => list.id)
-              .concat([newsletterListId]),
+            lists: targetListIds,
           },
         );
+
+        // Update subscription status
+        await listmonkClient.$updateSubscriberLists({
+          action: 'add',
+          listIds: [newsletterListId],
+          subscriberIds: [existingSubscriber.id],
+          status: subscriptionStatus,
+        });
       } else {
         // For subscribers without userId, use the private method via bracket notation
         await (listmonkClient as any).$updateSubscriber(existingSubscriber, {
@@ -84,9 +112,15 @@ async function subscribeToNewsletter(
           name: name || existingSubscriber.name,
           status: 'enabled',
           attribs: mergedAttributes,
-          lists: existingSubscriber.lists
-            .map((list: any) => list.id)
-            .concat([newsletterListId]),
+          lists: targetListIds,
+        });
+
+        // Update subscription status
+        await listmonkClient.$updateSubscriberLists({
+          action: 'add',
+          listIds: [newsletterListId],
+          subscriberIds: [existingSubscriber.id],
+          status: subscriptionStatus,
         });
       }
 
@@ -96,30 +130,36 @@ async function subscribeToNewsletter(
           subscriberId: existingSubscriber.id,
           from,
           hasName: !!name,
+          isNamefiUserWithSameEmail,
+          subscriptionStatus,
           attributes: mergedAttributes,
         },
         'Updated existing subscriber with new attributes',
       );
     } else {
-      // Create new subscriber using private method via bracket notation
+      // Create new subscriber - only add to newsletter list (not default list)
+      // since they're not an existing NameFi user
+      // NameFi users get pre-confirmed, anonymous users need to confirm via email
       await (listmonkClient as any).$createSubscriber({
         email,
         name: name || '',
         status: 'enabled',
         attribs: attributes,
-        lists: [listmonkConfig.defaultListId],
-        preconfirm_subscriptions: false, // Send confirmation email
+        lists: [newsletterListId],
+        preconfirm_subscriptions: isNamefiUserWithSameEmail, // NameFi users don't need confirmation
       });
 
       logger.info(
         {
           email,
-          listId: listmonkConfig.defaultListId,
+          newsletterListId,
           from,
           hasName: !!name,
+          isNamefiUserWithSameEmail,
+          preconfirmed: isNamefiUserWithSameEmail,
           attributes,
         },
-        'Successfully created new subscriber',
+        'Successfully created new newsletter subscriber',
       );
     }
   } catch (error) {
@@ -155,7 +195,7 @@ export const newsletterRouter = createTRPCRouter({
    */
   subscribe: publicProcedure
     .input(subscribeToNewsletterSchema)
-    .mutation(async ({ input }) => {
+    .mutation(async ({ input, ctx }) => {
       const { email, name, from, attributes, altcha } = input;
       if (!altcha) {
         throw new TRPCError({
@@ -171,11 +211,47 @@ export const newsletterRouter = createTRPCRouter({
         });
       }
 
-      await subscribeToNewsletter(email, from, name, attributes);
+      let sameEmailAsAuthenticatedUser = false;
+
+      // If this is a NameFi user, update their subscribeToEmails preference
+      if (ctx.user?.privyUserId && ctx.user?.id) {
+        const privyUser = await privyClient.getUserById(ctx.user.privyUserId);
+        sameEmailAsAuthenticatedUser =
+          !!privyUser?.email?.address &&
+          privyUser.email.address.toLowerCase() === email.toLowerCase();
+        if (sameEmailAsAuthenticatedUser) {
+          try {
+            await db
+              .update(usersTable)
+              .set({ subscribeToEmails: true })
+              .where(eq(usersTable.id, ctx.user.id));
+
+            logger.info(
+              { userId: ctx.user.id, email },
+              'Updated NameFi user subscribeToEmails to true',
+            );
+          } catch (error) {
+            logger.error(
+              { error, userId: ctx.user.id },
+              'Failed to update subscribeToEmails in database',
+            );
+          }
+        }
+      }
+
+      await subscribeToNewsletter(
+        email,
+        from,
+        sameEmailAsAuthenticatedUser,
+        name,
+        attributes,
+      );
 
       return {
         success: true,
-        message: 'Successfully subscribed! Please check your email to confirm.',
+        message: sameEmailAsAuthenticatedUser
+          ? 'Successfully subscribed!'
+          : 'Successfully subscribed! Please check your email to confirm.',
       };
     }),
 });

@@ -163,6 +163,10 @@ export const configSchema = z.object({
    * Default Listmonk list ID for new subscribers
    */
   LISTMONK_NAMEFI_LIST_ID: z.number().default(3), // z.literal(3) causes ts issues
+  /**
+   * Newsletter list ID for opted-in users
+   */
+  LISTMONK_NEWSLETTER_LIST_ID: z.number().default(2),
   ADMIN_WALLET_ADDRESSES: z
     .string()
     .array()
