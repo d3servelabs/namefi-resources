@@ -20,6 +20,8 @@ import { useCart } from '@/hooks/use-cart';
 import { AnimatePresence, motion } from 'motion/react';
 import { cn } from '@/lib/cn';
 import NumberFlow from '@number-flow/react';
+import { useSidebar } from '@/components/ui/shadcn/sidebar';
+import { useEventListener } from 'usehooks-ts';
 
 const FLOATING_CART_BASE_BOTTOM = 24;
 
@@ -48,6 +50,19 @@ export const FloatingCart = ({
   const [bottomOffset, setBottomOffset] = useState(FLOATING_CART_BASE_BOTTOM);
   const footerRef = useRef<HTMLElement | null>(null);
   const cartRef = useRef<HTMLDivElement | null>(null);
+  const { state: sidebarState, isMobile } = useSidebar();
+  const frameRef = useRef<number | null>(null);
+
+  const leftOffset = useMemo(() => {
+    if (isMobile) {
+      return '50%';
+    }
+
+    const ExpandedOffset = 'calc(50% + 8rem)';
+    const CollapsedOffset = 'calc(50% + 1.5rem)';
+
+    return sidebarState === 'expanded' ? ExpandedOffset : CollapsedOffset;
+  }, [isMobile, sidebarState]);
 
   const totalAmountInUsdCents = useMemo(
     () => items?.reduce((sum, item) => sum + item.amountInUSDCents, 0) ?? 0,
@@ -125,55 +140,53 @@ export const FloatingCart = ({
   }:${shouldShowAddAllButton ? 1 : 0}`;
 
   const recalcPosition = useCallback(() => {
-    const footerEl = footerRef.current;
-    if (!footerEl) {
-      setBottomOffset(FLOATING_CART_BASE_BOTTOM);
-      return;
+    const footerEl =
+      footerRef.current ?? document.querySelector<HTMLElement>('footer');
+    if (!footerRef.current && footerEl) {
+      footerRef.current = footerEl;
     }
+
     const cartHeight = cartRef.current?.offsetHeight ?? 0;
-    if (cartHeight === 0) {
-      setBottomOffset(FLOATING_CART_BASE_BOTTOM);
-      return;
-    }
-    const footerRect = footerEl.getBoundingClientRect();
     const viewportHeight = window.innerHeight;
-    const footerTopFromBottom = viewportHeight - footerRect.top;
-    const desiredBottom = footerTopFromBottom - cartHeight / 2 - 8;
-    const desiredClamped = Math.max(FLOATING_CART_BASE_BOTTOM, desiredBottom);
-    const maxBottom = Math.max(
-      FLOATING_CART_BASE_BOTTOM,
-      viewportHeight - cartHeight - 16,
-    );
-    const safeBottom = Math.min(desiredClamped, maxBottom);
+    let nextBottom = FLOATING_CART_BASE_BOTTOM;
+
+    if (footerEl && cartHeight > 0) {
+      const footerRect = footerEl.getBoundingClientRect();
+      const footerTopFromBottom = viewportHeight - footerRect.top;
+      const desiredBottom = footerTopFromBottom - cartHeight / 2 - 8;
+      const desiredClamped = Math.max(FLOATING_CART_BASE_BOTTOM, desiredBottom);
+      const maxBottom = Math.max(
+        FLOATING_CART_BASE_BOTTOM,
+        viewportHeight - cartHeight - 16,
+      );
+      nextBottom = Math.min(desiredClamped, maxBottom);
+    }
+
     setBottomOffset((prev) =>
-      Math.abs(prev - safeBottom) > 1 ? safeBottom : prev,
+      Math.abs(prev - nextBottom) > 1 ? nextBottom : prev,
     );
   }, []);
 
+  const scheduleRecalc = useCallback(() => {
+    if (typeof window === 'undefined') return;
+    if (frameRef.current !== null) return;
+
+    frameRef.current = window.requestAnimationFrame(() => {
+      frameRef.current = null;
+      recalcPosition();
+    });
+  }, [recalcPosition]);
+
+  useEventListener('scroll', scheduleRecalc, undefined, { passive: true });
+  useEventListener('resize', scheduleRecalc);
+
   useEffect(() => {
-    footerRef.current = document.querySelector<HTMLElement>('footer');
-    if (!footerRef.current) {
-      setBottomOffset(FLOATING_CART_BASE_BOTTOM);
-      return;
-    }
-
-    let frame = 0;
-    const handle = () => {
-      if (frame) return;
-      frame = requestAnimationFrame(() => {
-        frame = 0;
-        recalcPosition();
-      });
-    };
-
-    handle();
-    window.addEventListener('scroll', handle, { passive: true });
-    window.addEventListener('resize', handle);
+    recalcPosition();
 
     return () => {
-      if (frame) cancelAnimationFrame(frame);
-      window.removeEventListener('scroll', handle);
-      window.removeEventListener('resize', handle);
+      if (frameRef.current !== null) {
+        cancelAnimationFrame(frameRef.current);
+      }
     };
   }, [recalcPosition]);
 
@@ -192,15 +205,16 @@ export const FloatingCart = ({
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 20, scale: 0.97 }}
           transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-          className="pointer-events-none fixed left-1/2 z-40 w-full max-w-sm -translate-x-1/2 px-4 sm:max-w-xl"
+          className="pointer-events-none fixed z-40 w-full max-w-sm -translate-x-1/2 px-4 sm:max-w-xl"
           style={{
             bottom: `calc(${bottomOffset}px + env(safe-area-inset-bottom, 0px))`,
+            left: leftOffset,
           }}
         >
           <motion.div
             layout
             ref={cartRef}
-            className="pointer-events-auto overflow-hidden rounded-[26px] border border-white/12 bg-black/75 backdrop-blur-2xl shadow-[0_24px_60px_-25px_rgba(0,0,0,0.8)]"
+            className="pointer-events-auto overflow-hidden rounded-[24px] border border-white/12 bg-black/55 backdrop-blur-xl shadow-[0_22px_48px_-26px_rgba(0,0,0,0.78),0_0_40px_-24px_rgba(94,255,220,0.24)]"
           >
             <div className="flex flex-col gap-2.5 p-3.5 sm:px-5 sm:py-4 sm:gap-3">
               <motion.div
@@ -224,7 +238,7 @@ export const FloatingCart = ({
                     </span>
                   </span>
                   <div className="ml-auto flex min-w-0 flex-col items-end text-right text-white/80 sm:ml-0 sm:items-start sm:text-left sm:gap-0">
-                    <span className="text-[9px] uppercase tracking-[0.16em] text-white/55 sm:text-[11px] sm:tracking-[0.32em]">
+                    <span className="text-[9px] uppercase tracking-[0.1em] text-white/55 sm:text-[11px] sm:tracking-[0.2em]">
                       Cart total
                     </span>
                     <NumberFlow
