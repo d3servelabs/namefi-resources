@@ -12,84 +12,72 @@ When sending emails to users, we need stable URLs that will always work regardle
 
 ## How It Works
 
-Each file in this directory uses the `poweredByNamefiRedirect` utility from `@/lib/utils/dynamic-redirect.ts` to:
+Redirects are handled by **Next.js Middleware** (`src/middleware.ts`) which runs at the edge **before any page rendering occurs**. This provides:
 
-1. Check for a `powered-by-namefi` query parameter in the URL
-2. Determine the target hostname (defaults to `astra.namefi.io`)
-3. Redirect to the equivalent path on the target domain
+1. **Fast redirects** - Happens before any page loads or server-side rendering
+2. **Efficient** - No React components need to render
+3. **Edge-optimized** - Runs on CDN edge locations when deployed
+
+The middleware:
+
+1. Intercepts all `/m/*` requests
+2. Checks for a `powered-by-namefi` query parameter in the URL
+3. Determines the target hostname (defaults to the value from `FIRST_PARTY_DEPLOYMENT_URL` env var)
+4. Performs a 307 redirect to the equivalent path on the target domain
 
 ### Example Flow
 
-```
+```text
 Email link: https://namefi.io/m/user/orders/123?powered-by-namefi=0x.city
 ↓
 Redirects to: https://0x.city/orders/123
 ```
 
-## Directory Structure (App Router)
+## Directory Structure
 
-```
+```text
 /m/
-  user/
-    domains/
-      [domain]/
-        page.tsx     → /domains/{domain}
-      page.tsx       → /domains
-    orders/
-      [orderId]/
-        page.tsx     → /orders/{orderId}
-      page.tsx       → /orders
-    payment-methods/
-      page.tsx       → /payment-methods
+  README.md           ← This file (documentation only)
 ```
+
+**Note:** No page files are needed! All redirects are handled by middleware which runs before route matching.
 
 ## Adding New Redirect Routes
 
-To add a new email redirect route:
+To add a new email redirect route, simply **add the route to the middleware** (`src/middleware.ts`):
 
-1. Create a new `page.tsx` file in the appropriate directory
-2. Import and use `poweredByNamefiRedirect` from `@/lib/utils/dynamic-redirect`
-3. Define the target path in the resolver function
-4. Export an async Server Component that calls the redirect function
+1. Add a new entry to the `redirectRoutes` array
+2. Define the pattern (regex) that matches the route
+3. Define the `getDestination` function that returns the target path
 
-### Example Implementation (Static Path)
+**That's it!** No page files needed since middleware intercepts requests before route matching.
 
-```tsx
-import { poweredByNamefiRedirect } from "@/lib/utils/dynamic-redirect";
+### Example: Adding a Static Route
 
-type Props = {
-  searchParams: Promise<Record<string, string | string[] | undefined>>;
-};
+Add an entry to the `redirectRoutes` array in `src/middleware.ts`:
 
-export default async function Page({ searchParams }: Props) {
-  await poweredByNamefiRedirect(
-    ({ redirectHostname }) => `https://${redirectHostname}/payment-methods`,
-    await searchParams,
-  );
+```typescript
+{
+  pattern: /^\/m\/user\/settings$/,
+  getDestination: () => "/settings",
 }
 ```
 
-### Example Implementation (Dynamic Route)
+### Example: Adding a Dynamic Route
 
-```tsx
-import { poweredByNamefiRedirect } from "@/lib/utils/dynamic-redirect";
+Add an entry to the `redirectRoutes` array in `src/middleware.ts`:
 
-type Props = {
-  params: Promise<{ orderId: string }>;
-  searchParams: Promise<Record<string, string | string[] | undefined>>;
-};
-
-export default async function Page({ params, searchParams }: Props) {
-  const { orderId } = await params;
-  
-  await poweredByNamefiRedirect(
-    ({ redirectHostname }) => `https://${redirectHostname}/orders/${orderId}`,
-    await searchParams,
-    { orderId },
-  );
+```typescript
+{
+  pattern: /^\/m\/user\/invoices\/([^/]+)$/,
+  getDestination: (pathname: string) => {
+    const params = extractPathParams(pathname, "/m/user/invoices/[invoiceId]");
+    return `/invoices/${params.invoiceId}`;
+  },
 }
+```
 
 ## Query Parameters
 
 - `powered-by-namefi`: Specifies the target domain for redirection
-- All other query parameters are preserved and passed through to the target URL 
+- All other query parameters are preserved and passed through to the target URL

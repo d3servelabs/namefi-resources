@@ -89,9 +89,20 @@ const nextConfig = {
   async redirects() {
     return [
       {
+        source: '/b/:lang/blog/:path*',
+        destination: '/r/:lang/:path*',
+        permanent: true,
+      },
+      {
         source: '/b/:path*',
         permanent: false,
         destination: 'https://namefi.io/r/:path*',
+      },
+      {
+        source: '/discord',
+        destination:
+          process.env.DISCORD_REDIRECT_URL || 'https://discord.gg/namefi',
+        permanent: false,
       },
     ];
   },

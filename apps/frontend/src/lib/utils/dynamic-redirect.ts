@@ -2,6 +2,15 @@ import { redirect } from 'next/navigation';
 import { headers } from 'next/headers';
 import { config } from '@/lib/env';
 
+/**
+ * @deprecated This utility is no longer the preferred approach for email redirects.
+ * The `/m/*` routes now use Next.js Middleware (see `src/middleware.ts`) which handles
+ * redirects at the edge before any page rendering occurs, providing better performance.
+ *
+ * This file is kept for backwards compatibility or special use cases, but new redirect
+ * routes should be added to the middleware instead.
+ */
+
 const isPoweredByNamefiDomains = (domain: string) => {
   const poweredByNamefiDomains = ['0x.city'];
 
@@ -20,6 +29,8 @@ export type ResolvePathFunction = (args: {
 }) => string;
 
 /**
+ * @deprecated Use middleware instead for better performance (see `src/middleware.ts`).
+ *
  * Redirects to the correct hostname based on the poweredByNamefi domain (if it's passed in the query params).
  * This is designed for App Router Server Components.
  * @param resolvePath - A function that resolves the final redirect path.
