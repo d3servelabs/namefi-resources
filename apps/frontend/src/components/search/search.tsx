@@ -239,7 +239,7 @@ export const SearchInput: FC<{
         <TooltipTrigger asChild>
           <div
             ref={containerRef}
-            className="mx-auto flex w-full max-w-3xl items-center gap-3 rounded-full border border-white/14 bg-[#14161D] pl-4 pr-2 py-2 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]"
+            className="mx-auto flex w-full max-w-3xl items-center gap-3 rounded-full border border-white/14 bg-[#14161D] pl-4 pr-2 py-2 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] transition-[border-color,box-shadow,background-color] duration-200 focus-within:border-brand-primary/60 focus-within:bg-[#171A24] focus-within:ring-2 focus-within:ring-brand-primary/35 focus-within:ring-offset-2 focus-within:ring-offset-[#0B0F16] focus-within:shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_0_32px_color-mix(in_srgb,_var(--brand-primary)_35%,_transparent)]"
           >
             <div className="flex flex-1 items-center gap-3">
               {isLoading ? (
