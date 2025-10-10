@@ -36,7 +36,7 @@ export const originConfig: OriginConfig = {
       title: 'Tokenized domains for the future internet - Namefi',
       description:
         'Namefi is an ICANN-accredited registrar that tokenizes DNS ownership so you can register, trade, and build with AI tooling and onchain security.',
-      url: 'https://astra.namefi.io/',
+      url: 'https://namefi.io/',
       siteName: 'Namefi',
       type: 'website',
       locale: 'en_US',

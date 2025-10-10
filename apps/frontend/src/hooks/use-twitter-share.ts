@@ -21,7 +21,7 @@ function buildShareUrl(domainName: string, campaignKey?: string): string {
   const origin =
     typeof window !== 'undefined'
       ? window.location.origin
-      : 'https://astra.namefi.io';
+      : 'https://namefi.io';
   return `${origin}?${params.toString()}`;
 }
 

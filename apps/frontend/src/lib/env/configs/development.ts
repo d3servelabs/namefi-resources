@@ -4,12 +4,12 @@ import type { ConfigInput } from '../schema';
 const developmentConfig: ConfigInput = {
   TYPE: 'development',
   BACKEND_URL: 'https://backend.astra.namefi.dev',
-  FIRST_PARTY_DEPLOYMENT_URL: 'https://astra.namefi.dev',
+  FIRST_PARTY_DEPLOYMENT_URL: 'https://namefi.dev',
   GA_MEASUREMENT_ID: 'G-PHKF9PM32W',
   PRIVY_APP_ID: 'cm2lx4u5a03x3rtgp4keapmrb',
   STRIPE_PUBLISHABLE_KEY:
     'pk_test_51Pqc6fP7AJmUlGkqATatN7ovwZrEo0WjmJTjryazMHsXRIzk1WrMQv1C0SQ8J4LrTnrc2O5P4XxnTmtSKIfdl2Ct00o9GOerUj',
-  NAMEFI_FIRST_PARTY_HOSTNAMES: ['astra.namefi.dev'],
+  NAMEFI_FIRST_PARTY_HOSTNAMES: ['namefi.dev'],
   POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES: [
     '0x.city',
     'taylor.cv',

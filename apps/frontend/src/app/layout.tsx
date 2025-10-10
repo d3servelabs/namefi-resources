@@ -35,7 +35,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const metadata = originConfig.metadata;
 
   return {
-    metadataBase: new URL(origin ?? 'https://astra.namefi.io'),
+    metadataBase: new URL(origin ?? 'https://namefi.io'),
     ...metadata,
   };
 }

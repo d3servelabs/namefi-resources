@@ -1032,7 +1032,7 @@ function CreateDomainForm({
                 <div className="space-y-1 leading-none">
                   <FormLabel>
                     Configure {form.watch('normalizedDomainName') || '<domain>'}
-                    .astra.namefi.io
+                    .namefi.io
                   </FormLabel>
                   <FormDescription>
                     Create CNAME record in namefi-io zone
@@ -1056,7 +1056,7 @@ function CreateDomainForm({
                 <div className="space-y-1 leading-none">
                   <FormLabel>
                     Configure {form.watch('normalizedDomainName') || '<domain>'}
-                    .astra.namefi.dev
+                    .namefi.dev
                   </FormLabel>
                   <FormDescription>
                     Create CNAME record in namefi-dev zone
