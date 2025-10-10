@@ -16,6 +16,7 @@
     "@infisical/cli": "^0.40.0",
     "@vitest/coverage-v8": "^3.1.2",
     "concurrently": "^9.1.2",
+    "knip": "^5.64.2",
     "lefthook": "^1.11.6",
     "turbo": "^2.5.5",
     "vitest": "^3.1.2",
@@ -52,7 +53,8 @@
     "sgr": "bun run scripts/run-sgr.ts scan *",
     "sgr:fix": "bun run scripts/run-sgr.ts scan --fix *",
     "validate": "concurrently -n 'typecheck,biome,sherif,sgr' -c 'blue.bold,green.bold,yellow.bold,red.bold' \"turbo typecheck\" \"bun check:error\" \"bun sherif\" \"bun sgr\"",
-    "validate:secrets": "turbo validate:secrets"
+    "validate:secrets": "turbo validate:secrets",
+    "knip": "bunx knip"
   },
   "trustedDependencies": [
     "@ast-grep/cli",

@@ -1,0 +1,65 @@
+{
+  "$schema": "https://knip.dev/schema.json",
+  "ignore": [
+    "**/node_modules/**",
+    "**/dist/**",
+    "**/.turbo/**",
+    "**/.next/**",
+    "**/out/**",
+    "**/coverage/**",
+    "apps/indexer/generated/**",
+    "apps/backend/.react-email/**"
+  ],
+  "ignoreDependencies": ["postcss-load-config"],
+  "ignoreBinaries": ["tsc", "tsx", "act", "temporal"],
+  "ignoreWorkspaces": ["apps/listmonk"],
+  "typescript": {
+    "config": [
+      "tsconfig.json",
+      "apps/*/tsconfig.json",
+      "packages/*/tsconfig.json",
+      "tooling/*/tsconfig.json"
+    ]
+  },
+  "workspaces": {
+    ".": {
+      "entry": ["scripts/**/*.ts"],
+      "project": ["scripts/**/*.ts"]
+    },
+    "apps/backend": {
+      "entry": [
+        "src/index.ts",
+        "global.ts",
+        "src/temporal/**/*.ts",
+        "src/mail/templates/**/*.tsx",
+        "scripts/**/*.ts"
+      ],
+      "project": ["src/**/*.{ts,tsx}"]
+    },
+    "apps/frontend": {
+      "entry": ["src/app/**/*.{ts,tsx}", "src/lib/env/**/*.{ts,tsx}"],
+      "project": ["src/**/*.{ts,tsx}"]
+    },
+    "apps/indexer": {
+      "entry": ["ponder.config.ts", "src/**/*.ts"],
+      "project": ["src/**/*.ts"],
+      "ignore": ["generated/**"]
+    },
+    "packages/ai": {
+      "entry": [
+        "src/index.ts",
+        "src/client.ts",
+        "src/workflows/**/*.ts",
+        "src/agents/**/*.ts"
+      ],
+      "project": ["src/**/*.ts"]
+    },
+    "packages/registrars": {
+      "entry": ["src/**/*.ts"],
+      "project": ["src/**/*.ts"]
+    },
+    "packages/utils": {
+      "project": ["src/**/*.ts"]
+    }
+  }
+}
