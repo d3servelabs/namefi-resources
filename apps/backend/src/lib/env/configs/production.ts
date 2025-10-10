@@ -9,21 +9,11 @@ const productionConfig: ConfigInput = {
   SMTP_SECURE: true,
   SMTP_HOST: 'email-smtp.us-east-1.amazonaws.com',
   APP_URL: 'astra.namefi.io',
-  NAMEFI_FIRST_PARTY_HOSTNAMES: ['astra.namefi.io', 'poweredby.namefi.io'],
-  ADDITIONAL_HOSTNAME_MAP: {
-    '0x.city.astra.namefi.io': '0x.city',
-    'taylor.cv.astra.namefi.io': 'taylor.cv',
-    'ali.cv.astra.namefi.io': 'ali.cv',
-    'li.cv.astra.namefi.io': 'li.cv',
-    'muller.cv.astra.namefi.io': 'muller.cv',
-    'kumar.cv.astra.namefi.io': 'kumar.cv',
-    'victor.cv.astra.namefi.io': 'victor.cv',
-    'starts.today.astra.namefi.io': 'starts.today',
-    'ends.today.astra.namefi.io': 'ends.today',
-    'promos.today.astra.namefi.io': 'promos.today',
-    'available.today.astra.namefi.io': 'available.today',
-    'discounts.today.astra.namefi.io': 'discounts.today',
-  },
+  NAMEFI_FIRST_PARTY_HOSTNAMES: [
+    'astra.namefi.io',
+    'poweredby.namefi.io',
+    'namefi.io',
+  ],
   ALLOWED_CHAINS: [chains.mainnet.id, chains.base.id],
   EMAIL_ADDRESS_TO_OWNED_HOSTNAMES_MAP: {
     'dev-team@d3serve.xyz': [

@@ -21,20 +21,6 @@ const localConfig: ConfigInput = {
     'namefi.localhost',
     'astra.localhost',
   ],
-  ADDITIONAL_HOSTNAME_MAP: {
-    '0x.city.localhost': '0x.city',
-    'taylor.cv.localhost': 'taylor.cv',
-    'ali.cv.localhost': 'ali.cv',
-    'li.cv.localhost': 'li.cv',
-    'muller.cv.localhost': 'muller.cv',
-    'kumar.cv.localhost': 'kumar.cv',
-    'victor.cv.localhost': 'victor.cv',
-    'starts.today.localhost': 'starts.today',
-    'ends.today.localhost': 'ends.today',
-    'promos.today.localhost': 'promos.today',
-    'available.today.localhost': 'available.today',
-    'discounts.today.localhost': 'discounts.today',
-  },
   ALLOWED_CHAINS: [chains.sepolia.id],
   EMAIL_ADDRESS_TO_OWNED_HOSTNAMES_MAP: {
     'dev-team@d3serve.xyz': [

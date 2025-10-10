@@ -98,15 +98,6 @@ export const configSchema = z.object({
    * List of first-party domains that are owned by NameFI and allowed to interact with the API.
    */
   NAMEFI_FIRST_PARTY_HOSTNAMES: z.string().array().default([]),
-  /**
-   * Map of additional origins to their corresponding hostnames.
-   * @example
-   * {
-   *   '0xcity.localhost': '0x.city',
-   *   'defibuild.localhost': 'defi.build',
-   * }
-   */
-  ADDITIONAL_HOSTNAME_MAP: z.record(z.string(), z.string()).default({}),
   ALLOW_HTTP: z.boolean().default(false),
   ALLOWED_CHAINS: z.number().array().default([]),
   /**

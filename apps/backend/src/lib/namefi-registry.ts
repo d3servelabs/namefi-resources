@@ -15,7 +15,7 @@ import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 import { subDays } from 'date-fns';
 import { ParseResultType, parseDomain } from 'parse-domain';
-import { flatten, groupBy, isNil, toPairs, pluck } from 'ramda';
+import { groupBy, isNil, pluck, filter, isNotNil } from 'ramda';
 import { config } from '#lib/env';
 import { userQualifiesForDomainNamePromo } from '#lib/user-promo';
 import { getDomainLevels } from './get-domain-levels';
@@ -107,7 +107,17 @@ const HARDCODED_3P_DOMAINS = HARDCODED_3P_DOMAINS_NAMES.map(
       startRolloutAt: domain === '0x.city' ? subDays(new Date(), 1) : null,
       costPerYearInUsdCents: 500,
       enabled: domain === '0x.city',
-      additionalAllowedHostnames: [],
+      additionalAllowedHostnames: filter(isNotNil, [
+        ...(config.NAMEFI_FIRST_PARTY_HOSTNAMES.includes('poweredby.namefi.io')
+          ? [`${domain}.astra.namefi.io`, `${domain}.poweredby.namefi.io`]
+          : []),
+        ...(config.NAMEFI_FIRST_PARTY_HOSTNAMES.includes('poweredby.namefi.dev')
+          ? [`${domain}.astra.namefi.dev`, `${domain}.poweredby.namefi.dev`]
+          : []),
+        ...(config.NAMEFI_FIRST_PARTY_HOSTNAMES.includes('localhost')
+          ? [`${domain}.localhost`]
+          : []),
+      ]),
       durationConstraints: {
         minDurationInYears: 1,
         maxDurationInYears: 1,
@@ -118,6 +128,15 @@ const HARDCODED_3P_DOMAINS = HARDCODED_3P_DOMAINS_NAMES.map(
       updatedAt: new Date(),
       metadata: {},
     }) satisfies PoweredByNamefiDomainSelect,
+);
+
+const HARDCODED_ADDITIONAL_ALLOWED_HOSTNAMES_MAP = new Map(
+  HARDCODED_3P_DOMAINS.flatMap((domain) => {
+    return domain.additionalAllowedHostnames.map((hostname) => [
+      hostname,
+      domain.normalizedDomainName,
+    ]);
+  }),
 );
 
 export const getPoweredByNamefi3PDomainsDetails = async () => {
@@ -166,11 +185,12 @@ export const getPoweredByNamefiDomainFromHostname = async (
 ) => {
   const hostname = _hostname.toLowerCase().trim();
 
-  const fromConfig = config.ADDITIONAL_HOSTNAME_MAP[hostname];
-  if (fromConfig) {
-    return fromConfig;
+  const fromHardcoded =
+    HARDCODED_ADDITIONAL_ALLOWED_HOSTNAMES_MAP.get(hostname);
+  if (fromHardcoded) {
+    return fromHardcoded;
   }
-  if (Object.values(config.ADDITIONAL_HOSTNAME_MAP).includes(hostname)) {
+  if (HARDCODED_3P_DOMAINS_NAMES.includes(hostname as NamefiNormalizedDomain)) {
     return hostname;
   }
 
@@ -193,17 +213,14 @@ export const getPoweredByNamefiDomainFromHostname = async (
 export const getPoweredByNamefi3PHostnames = async () => {
   const poweredbyNamefiDomains = await getPoweredByNamefi3PDomainsDetails();
 
-  const fromDb = poweredbyNamefiDomains.flatMap((domain) => [
-    ...(domain.additionalAllowedHostnames ?? []),
-    domain.normalizedDomainName,
-    `${domain.normalizedDomainName}.astra.namefi.io`,
-    `${domain.normalizedDomainName}.astra.namefi.dev`,
-  ]);
-
-  // both key and value of config.ADDITIONAL_HOSTNAME_MAP are correct hostnames
-  const fromConfig = flatten(toPairs(config.ADDITIONAL_HOSTNAME_MAP));
-
-  return Array.from(new Set([...fromDb, ...fromConfig]));
+  return Array.from(
+    new Set(
+      poweredbyNamefiDomains.flatMap((domain) => [
+        ...(domain.additionalAllowedHostnames ?? []),
+        domain.normalizedDomainName,
+      ]),
+    ),
+  );
 };
 
 export const getSubdomainPriceInUsd = async (
