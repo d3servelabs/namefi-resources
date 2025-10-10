@@ -23,7 +23,7 @@ import type {
   LogoStyleInput,
   LogoTypeInput,
   MarketingCollateralTypeInput,
-} from '@namefi-astra/ai/client';
+} from '@namefi-astra/ai/types';
 import { GenerationUsage } from '@/components/ai-generation/generation-usage';
 import { toast } from 'sonner';
 

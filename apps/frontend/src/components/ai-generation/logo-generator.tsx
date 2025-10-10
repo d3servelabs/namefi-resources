@@ -29,7 +29,7 @@ import type {
   ImageModel as Model,
   LogoStyleInput,
   LogoTypeInput,
-} from '@namefi-astra/ai/client';
+} from '@namefi-astra/ai/types';
 import { Switch } from '@/components/ui/shadcn/switch';
 import { Label } from '@/components/ui/shadcn/label';
 
@@ -50,8 +50,6 @@ const logoFormSchema = baseFormSchema.extend({
 
 type LogoFormData = z.infer<typeof logoFormSchema>;
 
-// Export the schema and type for use in other components
-export { logoFormSchema };
 export type { LogoFormData };
 
 interface LogoGeneratorProps {

@@ -1,5 +1,5 @@
 {
-  "$schema": "https://knip.dev/schema.json",
+  "$schema": "https://unpkg.com/knip@5/schema.json",
   "ignore": [
     "**/node_modules/**",
     "**/dist/**",
@@ -28,7 +28,6 @@
     },
     "apps/backend": {
       "entry": [
-        "src/index.ts",
         "global.ts",
         "src/temporal/**/*.ts",
         "src/mail/templates/**/*.tsx",
@@ -36,30 +35,10 @@
       ],
       "project": ["src/**/*.{ts,tsx}"]
     },
-    "apps/frontend": {
-      "entry": ["src/app/**/*.{ts,tsx}", "src/lib/env/**/*.{ts,tsx}"],
-      "project": ["src/**/*.{ts,tsx}"]
-    },
     "apps/indexer": {
       "entry": ["ponder.config.ts", "src/**/*.ts"],
       "project": ["src/**/*.ts"],
       "ignore": ["generated/**"]
-    },
-    "packages/ai": {
-      "entry": [
-        "src/index.ts",
-        "src/client.ts",
-        "src/workflows/**/*.ts",
-        "src/agents/**/*.ts"
-      ],
-      "project": ["src/**/*.ts"]
-    },
-    "packages/registrars": {
-      "entry": ["src/**/*.ts"],
-      "project": ["src/**/*.ts"]
-    },
-    "packages/utils": {
-      "project": ["src/**/*.ts"]
     }
   }
 }

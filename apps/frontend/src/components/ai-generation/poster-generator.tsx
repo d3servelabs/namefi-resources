@@ -32,8 +32,8 @@ import {
 import type {
   ImageModel as Model,
   MarketingCollateralTypeInput,
-} from '@namefi-astra/ai/client';
-import { MARKETING_COLLATERAL_TYPE_INPUT_IDS } from '@namefi-astra/ai/client';
+} from '@namefi-astra/ai/types';
+import { MARKETING_COLLATERAL_TYPE_INPUT_IDS } from '@namefi-astra/ai/types';
 
 export const collateralLabels: Record<MarketingCollateralTypeInput, string> = {
   billboard: 'Billboard',
@@ -55,8 +55,6 @@ const posterFormSchema = baseFormSchema.extend({
 
 type PosterFormData = z.infer<typeof posterFormSchema>;
 
-// Export the schema and type for use in other components
-export { posterFormSchema };
 export type { PosterFormData };
 
 interface PosterGeneratorProps {

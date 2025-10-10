@@ -11,7 +11,7 @@ import type {
   LogoStyleInput,
   LogoTypeInput,
   MarketingCollateralTypeInput,
-} from '@namefi-astra/ai/client';
+} from '@namefi-astra/ai/types';
 import { useGalleryPending } from '../gallery-pending-context';
 
 interface UseLogoGenerationProps {
