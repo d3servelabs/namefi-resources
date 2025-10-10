@@ -1,5 +1,6 @@
 import * as chains from 'viem/chains';
 import type { ConfigInput } from '../schema';
+import { POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES } from '../consts';
 
 const localConfig: ConfigInput = {
   TYPE: 'local',
@@ -14,34 +15,12 @@ const localConfig: ConfigInput = {
     'namefi.localhost',
     'astra.localhost',
   ],
-  POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES: [
-    '0x.city',
-    'taylor.cv',
-    'ali.cv',
-    'li.cv',
-    'muller.cv',
-    'kumar.cv',
-    'victor.cv',
-    'starts.today',
-    'ends.today',
-    'promos.today',
-    'available.today',
-    'discounts.today',
-  ],
-  ADDITIONAL_HOSTNAME_MAP: {
-    '0x.city.localhost': '0x.city',
-    'taylor.cv.localhost': 'taylor.cv',
-    'ali.cv.localhost': 'ali.cv',
-    'li.cv.localhost': 'li.cv',
-    'muller.cv.localhost': 'muller.cv',
-    'kumar.cv.localhost': 'kumar.cv',
-    'victor.cv.localhost': 'victor.cv',
-    'starts.today.localhost': 'starts.today',
-    'ends.today.localhost': 'ends.today',
-    'promos.today.localhost': 'promos.today',
-    'available.today.localhost': 'available.today',
-    'discounts.today.localhost': 'discounts.today',
-  },
+  POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES,
+  ADDITIONAL_HOSTNAME_MAP: Object.fromEntries(
+    POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES.flatMap((hostname) => [
+      [`${hostname}.localhost`, hostname],
+    ]),
+  ),
   ALLOWED_CHAINS: [chains.sepolia.id],
   HUNT_CAMPAIGN_KEYS: ['cv-2025-07-16', 'cta-2025-07-16'],
 };

@@ -1,0 +1,14 @@
+export const POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES = [
+  '0x.city',
+  'taylor.cv',
+  'ali.cv',
+  'li.cv',
+  'muller.cv',
+  'kumar.cv',
+  'victor.cv',
+  'starts.today',
+  'ends.today',
+  'promos.today',
+  'available.today',
+  'discounts.today',
+];
