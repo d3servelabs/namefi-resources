@@ -1590,7 +1590,7 @@ export const Landing: LandingComponent = ({ origin }) => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -12 }}
                 transition={{ duration: 0.4, ease: [0.25, 0.8, 0.25, 1] }}
-                className="mx-auto -mt-62 md:-mt-72 max-w-6xl px-6 pb-16 pt-10"
+                className="mx-auto -mt-54 md:-mt-62 max-w-6xl px-6 pb-16 pt-10"
               >
                 <div className="rounded-3xl border border-white/10 bg-white/[0.02] p-4 backdrop-blur">
                   <SearchResults
