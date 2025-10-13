@@ -1,9 +1,8 @@
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useLinkedWalletAddresses } from '@/hooks/use-user-wallet-addresses';
-import { config } from '@/lib/env';
+import { useAllowedChains } from '@/hooks/use-allowed-chains';
 import { getShortAddress } from '@/lib/string';
-import { CHAINS, getChain } from '@namefi-astra/utils';
-import { filter, isNotNil } from 'ramda';
+import { CHAINS } from '@namefi-astra/utils';
 import { useCallback, useState } from 'react';
 import type { Chain } from 'viem';
 import { Badge } from './ui/shadcn/badge';
@@ -15,14 +14,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from './ui/shadcn/select';
-
-const ALLOWED_CHAINS: Chain[] = filter(
-  isNotNil,
-  config.ALLOWED_CHAINS.map((chainId) => getChain(chainId) as Chain),
-);
-const DEFAULT_PAYMENT_CHAIN_ID = config.ALLOWED_CHAINS.includes(CHAINS.base.id)
-  ? CHAINS.base.id
-  : CHAINS.sepolia.id;
 
 interface SelectWalletProps {
   onValueChange: (walletAddress: string) => void;
@@ -87,6 +78,12 @@ export function SelectChain({
   onValueChange,
   selectTriggerDisabled,
 }: SelectChainProps) {
+  const { chains, chainIds } = useAllowedChains();
+
+  const DefaultPaymentChainId = chainIds.includes(CHAINS.base.id)
+    ? CHAINS.base.id
+    : CHAINS.sepolia.id;
+
   if (baseChainOnly) {
     return (
       <Button
@@ -100,13 +97,13 @@ export function SelectChain({
     <Select
       disabled={selectTriggerDisabled}
       onValueChange={onValueChange}
-      defaultValue={`${DEFAULT_PAYMENT_CHAIN_ID}`}
+      defaultValue={`${DefaultPaymentChainId}`}
     >
       <SelectTrigger>
         <SelectValue placeholder="Select a Chain" />
       </SelectTrigger>
       <SelectContent>
-        {ALLOWED_CHAINS.map((chain: Chain) => (
+        {chains.map((chain: Chain) => (
           <SelectItem
             key={`${chain.id}`}
             value={`${chain.id}`}

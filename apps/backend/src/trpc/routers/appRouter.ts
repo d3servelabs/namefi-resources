@@ -6,6 +6,7 @@ import { aiRouter } from './aiRouter';
 import { analyticsRouter } from './analyticsRouter';
 import { bigQueryAuditRouter } from './bigQueryAuditRouter';
 import { cartsRouter } from './cartsRouter';
+import { configRouter } from './configRouter';
 import { dnsRecordsRouter } from './dnsRecordsRouter';
 import { domainConfigRouter } from './domainConfig/domainConfigRouter';
 import { huntRouter } from './hunt/huntRouter';
@@ -26,6 +27,7 @@ export const appRouter = createTRPCRouter({
   pbnReservations: pbnIssuanceReservationsRouter,
   analytics: analyticsRouter,
   bigQueryAudit: bigQueryAuditRouter,
+  config: configRouter,
   dnsRecords: dnsRecordsRouter,
   users: usersRouter,
   carts: cartsRouter,

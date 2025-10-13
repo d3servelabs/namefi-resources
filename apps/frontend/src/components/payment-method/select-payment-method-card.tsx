@@ -1,11 +1,8 @@
-'use client';
-
 import { Loader2, PencilIcon, PlusIcon } from 'lucide-react';
 import { type ReactNode, useCallback, useMemo, useState } from 'react';
 
 import { CartCard } from '@/components/cart-card';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/shadcn/radio-group';
-import { config } from '@/lib/env';
 import { cn } from '@/lib/cn';
 import { formatAmountInUSD } from '@/lib/number';
 import type { DeepPartial } from '@/lib/types/utils';
@@ -22,10 +19,7 @@ import { useBalance } from 'wagmi';
 import { SelectChain, SelectWallet } from '../select-wallet-and-chain';
 import { AddPaymentMethodDialog } from './add-payment-method-dialog';
 import { Separator } from '../ui/shadcn/separator';
-
-const DEFAULT_PAYMENT_CHAIN_ID = config.ALLOWED_CHAINS.includes(CHAINS.base.id)
-  ? CHAINS.base.id
-  : CHAINS.sepolia.id;
+import { useAllowedChains } from '@/hooks/use-allowed-chains';
 
 export enum SelectedPaymentMethod {
   CREDIT_CARD = 'CREDIT_CARD',
@@ -58,6 +52,12 @@ export function SelectPaymentMethodCard({
   onPaymentMethodDetailsChanged,
   onSelectedPaymentMethodChanged,
 }: SelectPaymentMethodCardProps) {
+  const { chainIds } = useAllowedChains();
+
+  const DefaultPaymentChainId = chainIds.includes(CHAINS.base.id)
+    ? CHAINS.base.id
+    : CHAINS.sepolia.id;
+
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<
     SelectedPaymentMethod | undefined
   >(SelectedPaymentMethod.NFSC);
@@ -216,8 +216,8 @@ export function SelectPaymentMethodCard({
               ((isNfscPayment(nfscPaymentMethodDetails?.paymentProviderDetails)
                 ? nfscPaymentMethodDetails.paymentProviderDetails
                     .nfscPaymentDetails?.chainId
-                : DEFAULT_PAYMENT_CHAIN_ID) ||
-                DEFAULT_PAYMENT_CHAIN_ID),
+                : DefaultPaymentChainId) ||
+                DefaultPaymentChainId),
           },
         },
       };
@@ -229,6 +229,7 @@ export function SelectPaymentMethodCard({
       nfscPaymentMethodDetails,
       onPaymentMethodDetailsChanged,
       refetchNfscBalance,
+      DefaultPaymentChainId,
     ],
   );
 
