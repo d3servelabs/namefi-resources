@@ -395,5 +395,6 @@ export {
   buildSimplifiedPrivyUsers,
   buildPrivySearchWhereClause,
   ensurePrivyTableFresh,
+  userNftsCTE,
   type SimplifiedPrivyUser,
 };
