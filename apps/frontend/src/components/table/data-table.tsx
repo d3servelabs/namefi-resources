@@ -7,8 +7,11 @@ import {
   type SortingState,
   type ColumnSizingState,
   type VisibilityState,
+  getExpandedRowModel,
+  type ExpandedState,
+  type Row,
 } from '@tanstack/react-table';
-import { useState } from 'react';
+import { Fragment, useState, type ReactNode } from 'react';
 import { Button } from '@/components/ui/shadcn/button';
 import { TablePageSizeSelector } from './table-page-size-selector';
 import { ArrowUpDown, Loader2Icon, ColumnsIcon } from 'lucide-react';
@@ -32,6 +35,8 @@ type DataTableProps<TData> = {
   onLoadMore?: (token?: string) => void;
   orderBy?: 'timestamp_desc' | 'timestamp_asc';
   onOrderByChange?: (o: 'timestamp_desc' | 'timestamp_asc') => void;
+  renderSubRow?: (row: Row<TData>) => ReactNode;
+  getRowCanExpand?: (row: Row<TData>) => boolean;
 };
 
 export function DataTable<TData>(props: DataTableProps<TData>) {
@@ -45,11 +50,14 @@ export function DataTable<TData>(props: DataTableProps<TData>) {
     onLoadMore,
     orderBy,
     onOrderByChange,
+    renderSubRow,
+    getRowCanExpand,
   } = props;
 
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [columnSizing, setColumnSizing] = useState<ColumnSizingState>({});
+  const [expanded, setExpanded] = useState<ExpandedState>({});
 
   const table = useReactTable({
     data,
@@ -58,12 +66,16 @@ export function DataTable<TData>(props: DataTableProps<TData>) {
       sorting,
       columnVisibility,
       columnSizing,
+      expanded,
     },
     onSortingChange: setSorting,
     onColumnVisibilityChange: setColumnVisibility,
     onColumnSizingChange: setColumnSizing,
+    onExpandedChange: setExpanded,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
+    getExpandedRowModel: getExpandedRowModel(),
+    getRowCanExpand: getRowCanExpand,
     columnResizeMode: 'onChange',
     enableColumnResizing: true,
     defaultColumn: {
@@ -282,32 +294,44 @@ export function DataTable<TData>(props: DataTableProps<TData>) {
                 </tr>
               ) : (
                 table.getRowModel().rows.map((row) => (
-                  <tr
-                    key={row.id}
-                    className="hover:bg-muted/50 transition-colors"
-                  >
-                    {row.getVisibleCells().map((cell) => (
-                      <td
-                        key={cell.id}
-                        className="px-4 py-3 overflow-hidden"
-                        style={
-                          hasResizedColumns
-                            ? {
-                                width: `${cell.column.getSize()}px`,
-                                maxWidth: `${cell.column.getSize()}px`,
-                              }
-                            : undefined
-                        }
-                      >
-                        <div className="break-words overflow-wrap-anywhere">
-                          {flexRender(
-                            cell.column.columnDef.cell,
-                            cell.getContext(),
-                          )}
-                        </div>
-                      </td>
-                    ))}
-                  </tr>
+                  <Fragment key={row.id}>
+                    <tr
+                      key={row.id}
+                      className="hover:bg-muted/50 transition-colors"
+                    >
+                      {row.getVisibleCells().map((cell) => (
+                        <td
+                          key={cell.id}
+                          className="px-4 py-3 overflow-hidden"
+                          style={
+                            hasResizedColumns
+                              ? {
+                                  width: `${cell.column.getSize()}px`,
+                                  maxWidth: `${cell.column.getSize()}px`,
+                                }
+                              : undefined
+                          }
+                        >
+                          <div className="break-words overflow-wrap-anywhere">
+                            {flexRender(
+                              cell.column.columnDef.cell,
+                              cell.getContext(),
+                            )}
+                          </div>
+                        </td>
+                      ))}
+                    </tr>
+                    {row.getIsExpanded() && renderSubRow && (
+                      <tr key={`${row.id}-expanded`}>
+                        <td
+                          colSpan={columns.length}
+                          className="px-4 py-2 bg-muted/30"
+                        >
+                          {renderSubRow(row)}
+                        </td>
+                      </tr>
+                    )}
+                  </Fragment>
                 ))
               )}
             </tbody>
