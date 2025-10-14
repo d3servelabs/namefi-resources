@@ -29,7 +29,7 @@
     "@namefi-astra/registrars": "workspace:*",
     "@namefi-astra/utils": "workspace:*",
     "@namefi-astra/zod-dns": "workspace:*",
-    "@next/mdx": "15.4.5",
+    "@next/mdx": "15.5.4",
     "@number-flow/react": "^0.5.10",
     "@privy-io/react-auth": "^2.7.2",
     "@privy-io/wagmi": "^1.0.3",
@@ -78,7 +78,7 @@
     "lottie-react": "^2.4.1",
     "lucide-react": "^0.525.0",
     "motion": "^12.10.4",
-    "next": "15.4.5",
+    "next": "15.5.4",
     "next-themes": "^0.4.6",
     "nuqs": "^2.4.3",
     "p-queue": "^8.1.0",
@@ -102,7 +102,7 @@
     "viem": "^2.24.2",
     "vitest": "^3.1.2",
     "wagmi": "^2.14.15",
-    "zod": "4.1.12"
+    "zod": "^4.1.12"
   },
   "devDependencies": {
     "@namefi-astra/typescript": "workspace:*",

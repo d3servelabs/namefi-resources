@@ -1,0 +1,15 @@
+{
+  "switcher": {
+    "label": "भाषा"
+  },
+  "blog": {
+    "homeEmpty": "इस भाषा में अभी कोई लेख उपलब्ध नहीं है। कृपया बाद में जांचें।",
+    "homeCta": "लेख पढ़ें",
+    "indexEmpty": "अभी तक कोई लेख प्रकाशित नहीं हुआ है।",
+    "detailBack": "सभी लेखों पर वापस जाएँ",
+    "detailPublishedOn": "प्रकाशित तारीख",
+    "detailBy": "द्वारा",
+    "detailAuthorsHeading": "लेखक के बारे में",
+    "detailSourceLanguage": "मूल भाषा"
+  }
+}

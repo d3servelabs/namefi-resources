@@ -1,0 +1,45 @@
+{
+  "extends": "//",
+  "linter": {
+    "domains": {
+      "next": "recommended"
+    },
+    "rules": {
+      "correctness": {
+        "noNodejsModules": "info"
+      },
+      "suspicious": {
+        "noReactSpecificProps": "off",
+        "noArrayIndexKey": "info"
+      },
+      "nursery": {
+        "useUniqueElementIds": "off"
+      }
+    }
+  },
+  "overrides": [
+    {
+      "includes": ["src/app/**/page.tsx", "src/app/**/layout.tsx"],
+      "linter": {
+        "rules": {
+          "style": {
+            "noDefaultExport": { "level": "off" }
+          }
+        }
+      }
+    },
+    {
+      "includes": ["scripts/**/*.ts"],
+      "linter": {
+        "rules": {
+          "correctness": {
+            "noNodejsModules": "off"
+          },
+          "suspicious": {
+            "noConsole": "off"
+          }
+        }
+      }
+    }
+  ]
+}

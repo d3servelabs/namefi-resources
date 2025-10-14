@@ -1,0 +1,15 @@
+{
+  "switcher": {
+    "label": "Idioma"
+  },
+  "blog": {
+    "homeEmpty": "Todavía no hay publicaciones disponibles en este idioma. Vuelve pronto.",
+    "homeCta": "Leer artículo",
+    "indexEmpty": "Todavía no hay publicaciones.",
+    "detailBack": "Volver a todas las publicaciones",
+    "detailPublishedOn": "Publicado el",
+    "detailBy": "Por",
+    "detailAuthorsHeading": "Sobre quienes escriben",
+    "detailSourceLanguage": "Idioma original"
+  }
+}
