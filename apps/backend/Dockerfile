@@ -19,7 +19,7 @@ RUN apt-get update && apt-get install -y bash curl dnsutils
 # && apt-get update && apt-get install -y infisical
 
 # Stage 2: Use Bun for dependency installation
-FROM oven/bun:1 AS deps
+FROM oven/bun:1.2.23-debian AS deps
 WORKDIR /app
 
 # Copy package files for dependency installation
@@ -36,8 +36,7 @@ WORKDIR /app
 # Copy the entire monorepo and the installed dependencies
 COPY . .
 COPY --from=deps /app/node_modules ./node_modules
-# Install tsup globally
-RUN npm install -g tsup@8.4.0
+
 # Build the backend application
 WORKDIR /app/apps/backend
 RUN npm run build:prod
