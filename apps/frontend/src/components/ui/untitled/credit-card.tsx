@@ -25,7 +25,7 @@ interface CreditCardProps {
 }
 
 const brandLogos: Record<string, ReactNode> = {
-  visa: <VisaIcon width={48} height={32} viewBox="0 0 48 32" />,
+  visa: <VisaIcon width={48} height={32} />,
   mastercard: (
     <svg
       width="48"

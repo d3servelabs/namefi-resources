@@ -4,10 +4,10 @@ export const VisaIcon = forwardRef<SVGSVGElement, SVGProps<SVGSVGElement>>(
   (props, ref) => {
     return (
       <svg
-        viewBox="0 0 1000 324.68"
         {...props}
         ref={ref}
         xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 1000 324.68"
       >
         <title>Visa icon</title>
         <path
