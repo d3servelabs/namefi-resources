@@ -456,6 +456,13 @@
       "when": 1758837381537,
       "tag": "0064_symmetric_domain_locks_for_reservations_and_free_claims",
       "breakpoints": true
+    },
+    {
+      "idx": 65,
+      "version": "7",
+      "when": 1760433288568,
+      "tag": "0065_extra-text-array-helpers",
+      "breakpoints": true
     }
   ]
 }
