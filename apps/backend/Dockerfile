@@ -36,7 +36,8 @@ WORKDIR /app
 # Copy the entire monorepo and the installed dependencies
 COPY . .
 COPY --from=deps /app/node_modules ./node_modules
-
+# Install tsup globally
+RUN npm install -g tsup@8.4.0
 # Build the backend application
 WORKDIR /app/apps/backend
 RUN npm run build:prod
