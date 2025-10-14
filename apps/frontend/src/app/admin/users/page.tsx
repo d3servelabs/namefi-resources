@@ -12,12 +12,14 @@ import {
   CardTitle,
 } from '@/components/ui/shadcn/card';
 import { toast } from 'sonner';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { usePagination } from '@/hooks/use-pagination';
 import { useRouter } from 'next/navigation';
 import { AsyncButton } from '@/components/buttons/async-button';
 import { useDebounceValue } from 'usehooks-ts';
 import { ServerDataTable } from '@/components/table/server-data-table';
 import { DataTable } from '@/components/table/data-table';
+import { TablePageSelector } from '@/components/table/table-page-selector';
 import { AutoTruncateTextV2 } from '@/components/auto-truncate-text-v2';
 import type {
   ColumnDef,
@@ -326,7 +328,20 @@ function renderSubRow(row: Row<UserRow>) {
 const UserNftsSubRow = ({ original: user }: Row<UserRow>) => {
   type NftRow = UserRow['nfts'][number];
 
-  const [nftPageSize, setNftPageSize] = useState(5);
+  const {
+    pageSize: nftPageSize,
+    handlePageSizeChange,
+    pageIndex,
+    setPageIndex,
+    pageCount,
+    setPageCount,
+  } = usePagination({ defaultPageSize: 5 });
+
+  useEffect(() => {
+    const total = user.nfts?.length ?? 0;
+    const pages = Math.max(1, Math.ceil(total / nftPageSize));
+    setPageCount(pages);
+  }, [user.nfts, nftPageSize, setPageCount]);
 
   const nftColumns = useMemo<Array<ColumnDef<NftRow>>>(
     () => [
@@ -374,11 +389,11 @@ const UserNftsSubRow = ({ original: user }: Row<UserRow>) => {
               rel="noopener noreferrer"
               className="font-mono text-xs text-primary hover:underline"
             >
-              #{row.original.tokenId}
+              {row.original.tokenId}
             </a>
           ) : (
             <span className="font-mono text-xs text-muted-foreground">
-              #{row.original.tokenId}
+              {row.original.tokenId}
             </span>
           );
         },
@@ -387,6 +402,12 @@ const UserNftsSubRow = ({ original: user }: Row<UserRow>) => {
     ],
     [],
   );
+
+  const slicedNfts = useMemo(() => {
+    const start = pageIndex * nftPageSize;
+    const end = Math.min(start + nftPageSize, user.nfts.length);
+    return user.nfts.slice(start, end);
+  }, [user.nfts, pageIndex, nftPageSize]);
 
   if (!user.nfts || user.nfts.length === 0) return null;
 
@@ -397,11 +418,22 @@ const UserNftsSubRow = ({ original: user }: Row<UserRow>) => {
       </div>
       <DataTable<NftRow>
         columns={nftColumns}
-        data={user.nfts}
+        data={slicedNfts}
         isLoading={false}
         pageSize={nftPageSize}
-        onPageSizeChange={setNftPageSize}
+        onPageSizeChange={handlePageSizeChange}
       />
+      <div className="flex items-center justify-between mt-2">
+        <div className="text-xs text-muted-foreground">
+          Page {pageIndex + 1} of {pageCount} — Total {user.nfts.length}{' '}
+          {user.nfts.length === 1 ? 'row' : 'rows'}
+        </div>
+        <TablePageSelector
+          pageIndex={pageIndex}
+          setPageIndex={setPageIndex}
+          pageCount={pageCount}
+        />
+      </div>
     </div>
   );
 };
