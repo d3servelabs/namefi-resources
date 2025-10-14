@@ -1,8 +1,10 @@
 /** biome-ignore-all lint/a11y/noSvgWithoutTitle: ignore */
 'use client';
 
+import { TruncatedTextWithHover } from '@/components/truncated-text-with-hover';
 import { cn } from '@/lib/cn';
 import type { ReactNode } from 'react';
+import { VisaIcon } from './visa-icon';
 
 interface CreditCardProps {
   type?:
@@ -18,24 +20,12 @@ interface CreditCardProps {
   cardExpiration?: string;
   width?: number;
   className?: string;
+  withChip?: boolean;
   children?: ReactNode;
 }
 
 const brandLogos: Record<string, ReactNode> = {
-  visa: (
-    <svg
-      width="48"
-      height="32"
-      viewBox="0 0 48 32"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M19.916 10.747l-2.624 10.508h-2.835l2.624-10.508h2.835zm11.424 6.787l1.673-4.618.96 4.618h-2.633zm3.526 3.721h2.625l-2.294-10.508h-2.424a1.312 1.312 0 00-1.224.817l-4.306 10.291h3.016l.599-1.658h3.685l.348 1.658h2.655l-.68-0.6zm-9.158-3.433c.012-2.924-4.045-3.086-4.018-4.393.009-.397.388-.82 1.217-.928a5.417 5.417 0 012.769.485l.493-2.303a7.555 7.555 0 00-2.625-.48c-2.773 0-4.723 1.473-4.738 3.585-.017 1.562 1.393 2.434 2.456 2.953 1.093.532 1.46.872 1.455 1.348-.008.728-.872 1.05-1.678 1.062a5.867 5.867 0 01-2.936-.698l-.518 2.419a8.482 8.482 0 003.122.578c2.948 0 4.876-1.456 4.882-3.709l.119-.919zm-11.609-6.832l-4.653 10.508h-3.03L4.744 13.48c-.103-.402-.192-.549-.505-.719-.512-.277-1.357-.537-2.099-.699l.05-.235h3.62a1.352 1.352 0 011.344 1.14l1.227 6.517 3.03-7.657h3.044l-.356-.08z"
-        fill="currentColor"
-      />
-    </svg>
-  ),
+  visa: <VisaIcon width={48} height={32} viewBox="0 0 48 32" />,
   mastercard: (
     <svg
       width="48"
@@ -107,6 +97,7 @@ export function CreditCard({
   width,
   className,
   children,
+  withChip = false,
 }: CreditCardProps) {
   const normalizedBrand = brand.toLowerCase();
   const logo = brandLogos[normalizedBrand] || brandLogos.visa;
@@ -140,8 +131,13 @@ export function CreditCard({
           <div className="w-12 h-8 flex items-center text-current opacity-90">
             {logo}
           </div>
+
           {/* Chip Icon */}
-          <div className="w-10 h-8 rounded bg-gradient-to-br from-yellow-400 to-yellow-600 opacity-80" />
+          {withChip ? (
+            <div className="w-10 h-8 rounded bg-gradient-to-br from-yellow-400 to-yellow-600 opacity-80" />
+          ) : (
+            false
+          )}
         </div>
 
         {/* Middle Section with Card Number */}
@@ -156,7 +152,9 @@ export function CreditCard({
           <div>
             <div className="text-xs opacity-60 uppercase mb-1">Card Holder</div>
             <div className="text-sm font-medium uppercase tracking-wide opacity-90">
-              {cardHolder}
+              <TruncatedTextWithHover maxLength={20}>
+                {cardHolder}
+              </TruncatedTextWithHover>
             </div>
           </div>
           <div>
