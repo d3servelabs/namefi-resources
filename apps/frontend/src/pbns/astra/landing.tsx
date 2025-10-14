@@ -1111,7 +1111,7 @@ const HeroSection = ({
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1, duration: 0.6, ease: [0.25, 0.8, 0.25, 1] }}
-          className="rounded-full border border-emerald-400/40 bg-emerald-500/20 px-3 py-1.5 text-[10px] uppercase tracking-[0.18em] text-emerald-100 backdrop-blur"
+          className="rounded-full border border-emerald-400/40 bg-emerald-500/20 px-3 py-1.5 text-[8px] md:text-[10px] uppercase tracking-[0.18em] text-emerald-100 backdrop-blur"
         >
           ICANN-accredited registrar on Ethereum & Base
         </motion.span>
@@ -1119,7 +1119,7 @@ const HeroSection = ({
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-6 text-balance text-4xl font-semibold leading-tight md:mt-8 md:text-6xl"
+          className="mt-6 text-balance text-2xl font-semibold leading-tight md:mt-8 md:text-6xl"
         >
           {HERO_HEADING}
         </motion.h1>
@@ -1127,7 +1127,7 @@ const HeroSection = ({
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-3 max-w-2xl text-pretty text-base text-muted-foreground md:mt-4 md:text-xl"
+          className="mt-3 max-w-2xl text-pretty text-sm text-muted-foreground md:mt-4 md:text-xl"
         >
           {HERO_SUBTITLE}
         </motion.p>
@@ -1136,7 +1136,7 @@ const HeroSection = ({
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.35, duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
-          className="mt-12 flex w-full max-w-3xl flex-col items-center gap-6"
+          className="mt-8 md:mt-12 flex w-full max-w-3xl flex-col items-center gap-6"
         >
           <div className="mx-auto w-full max-w-md">
             <SearchModeTabs
@@ -1590,7 +1590,7 @@ export const Landing: LandingComponent = ({ origin }) => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -12 }}
                 transition={{ duration: 0.4, ease: [0.25, 0.8, 0.25, 1] }}
-                className="mx-auto -mt-54 md:-mt-62 max-w-6xl px-6 pb-16 pt-10"
+                className="mx-auto -mt-48 md:-mt-62 max-w-6xl px-6 pb-16 pt-10"
               >
                 <div className="rounded-3xl border border-white/10 bg-white/[0.02] p-4 backdrop-blur">
                   <SearchResults

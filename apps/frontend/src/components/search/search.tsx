@@ -17,7 +17,7 @@ import { cn } from '@/lib/cn';
 import { InteractionLoggingEventName } from '@/lib/analytics-events';
 import { formatAmountInUSD } from '@/lib/number';
 import { computeChargesInUsdOrThrow } from '@namefi-astra/registrars/multi-year-pricing';
-import { Loader2, SearchIcon, User, X, Gift } from 'lucide-react';
+import { Loader2, SearchIcon, User, X, Gift, Download } from 'lucide-react';
 import { useWishlistRow } from '@/hooks/use-wishlist-row';
 import {
   AnimatedWishlistButton,
@@ -55,6 +55,7 @@ import { useEffect } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useFreeMintsGuidance } from '@/components/providers/free-mints-guidance';
 import { Spotlight } from '@/components/ui/spotlight';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 // Components
 export const SearchHeader: FC<{
@@ -120,7 +121,7 @@ export const SearchModeTabs: FC<{
     <Tabs
       value={searchMode}
       onValueChange={handleValueChange}
-      className="mx-auto h-12 w-full max-w-80"
+      className="mx-auto h-10 md:h-12 w-full max-w-60 md:max-w-80"
     >
       <TabsList className="grid h-full w-full grid-cols-2 rounded-full border border-white/12 bg-neutral-900/80 p-0.5 backdrop-blur-md">
         <TabsTrigger
@@ -233,6 +234,8 @@ export const SearchInput: FC<{
     [handleRawText],
   );
 
+  const isMobile = useIsMobile();
+
   return (
     <>
       <Tooltip open={isFreeMintGuidanceVisible}>
@@ -243,9 +246,9 @@ export const SearchInput: FC<{
           >
             <div className="flex flex-1 items-center gap-3">
               {isLoading ? (
-                <Loader2 className="h-5 w-5 shrink-0 animate-spin text-white/70" />
+                <Loader2 className="invisible md:visible h-5 w-5 shrink-0 animate-spin text-white/70" />
               ) : (
-                <SearchIcon className="h-5 w-5 shrink-0 text-white/70" />
+                <SearchIcon className="invisible md:visible h-5 w-5 shrink-0 text-white/70" />
               )}
               <Input
                 ref={inputRef}
@@ -266,7 +269,7 @@ export const SearchInput: FC<{
                     handleSearchClick();
                   }
                 }}
-                className="h-12 min-w-0 flex-1 border-0 px-0 text-base text-white placeholder:text-white/55 focus-visible:ring-0 focus-visible:ring-offset-0 md:text-lg bg-transparent!"
+                className="h-10 md:h-12 min-w-0 flex-1 border-0 px-0 text-base text-white placeholder:text-white/55 focus-visible:ring-0 focus-visible:ring-offset-0 md:text-lg bg-transparent!"
               />
               {query.length > 0 && (
                 <Button
@@ -357,12 +360,25 @@ export const SearchInput: FC<{
             <NamefiButton
               onClick={handleSearchClick}
               className={cn(
-                'not-only:font-semibold h-12 shrink-0 rounded-full px-6 text-base shadow-none',
+                'not-only:font-semibold md:h-12 h-10 shrink-0 rounded-full px-6 text-base shadow-none',
+                isMobile ? 'w-10' : '',
                 ctaClassName,
               )}
               title={searchMode === SearchMode.IMPORT ? 'Import' : 'Search'}
             >
-              {searchMode === SearchMode.IMPORT ? 'Import' : 'Search'}
+              {isMobile ? (
+                isLoading ? (
+                  <Loader2 className="h-5 w-5 shrink-0 animate-spin" />
+                ) : searchMode === SearchMode.IMPORT ? (
+                  <Download />
+                ) : (
+                  <SearchIcon />
+                )
+              ) : searchMode === SearchMode.IMPORT ? (
+                'Import'
+              ) : (
+                'Search'
+              )}
             </NamefiButton>
           </div>
         </TooltipTrigger>
