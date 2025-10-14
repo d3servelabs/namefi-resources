@@ -28,7 +28,14 @@ import { useLinkedWallets } from '@/hooks/use-user-wallet-addresses';
 import { cn } from '@/lib/cn';
 import { getShortAddress, shortage } from '@/lib/string';
 import { type WalletWithMetadata, usePrivy } from '@privy-io/react-auth';
-import { Copy, ExternalLink, Plus, Trash2, Wallet2 } from 'lucide-react';
+import {
+  Copy,
+  ExternalLink,
+  Loader2,
+  Plus,
+  Trash2,
+  Wallet2,
+} from 'lucide-react';
 import { type HTMLAttributes, useCallback, useState } from 'react';
 import { toast } from 'sonner';
 import { useAuth } from '@/hooks/use-auth';
@@ -51,13 +58,17 @@ const getWalletIcon = (type: string) => {
 interface WalletsProps extends HTMLAttributes<HTMLDivElement> {}
 
 export const Wallets = ({ className, ...rest }: WalletsProps) => {
-  const [isUnlinkWalletDialogOpen, setIsUnlinkWalletDialogOpen] =
-    useState(false);
-  const [walletToUnlink, setWalletToUnlink] = useState<string | null>(null);
-  const isMobile = useIsMobile();
+  const {
+    isUnlinkWalletDialogOpen,
+    setIsUnlinkWalletDialogOpen,
+    walletToUnlink,
+    handleConfirmUnlinkWalletClicked,
+    handleLinkWalletClicked,
+    handleUnlinkWalletClicked,
+    isUnlinkWalletPending,
+  } = useControlLinkedWallets();
 
-  const { linkWallet, unlinkWallet } = usePrivy();
-  const { privyUser: user, isImpersonating } = useAuth();
+  const { privyUser: user } = useAuth();
   const { linkedWallets } = useLinkedWallets();
 
   const isFirstConnectedWallet = useCallback(
@@ -69,51 +80,6 @@ export const Wallets = ({ className, ...rest }: WalletsProps) => {
       return user.wallet.address === wallet.address;
     },
     [user],
-  );
-
-  const handleLinkWallet = useCallback(() => {
-    if (isImpersonating) {
-      alert('You are impersonating a user, so you cannot link a wallet');
-      return;
-    }
-    linkWallet();
-  }, [linkWallet, isImpersonating]);
-
-  const handleUnlinkWalletButtonClick = useCallback(
-    (wallet: WalletWithMetadata) => {
-      if (isImpersonating) {
-        alert('You are impersonating a user, so you cannot unlink a wallet');
-        return;
-      }
-      setWalletToUnlink(wallet.address);
-      setIsUnlinkWalletDialogOpen(true);
-    },
-    [isImpersonating],
-  );
-
-  const handleUnlinkWalletConfirm = useCallback(
-    async (walletAddress: string) => {
-      if (!walletAddress) {
-        setIsUnlinkWalletDialogOpen(false);
-        return;
-      }
-
-      try {
-        await unlinkWallet(walletAddress);
-        setIsUnlinkWalletDialogOpen(false);
-        toast.success('Wallet unlinked', {
-          id: `wallet-unlink-success-${walletAddress}`,
-          description: 'Wallet has been successfully unlinked.',
-        });
-      } catch (error) {
-        setIsUnlinkWalletDialogOpen(false);
-        toast.error('Failed to unlink wallet', {
-          id: `wallet-unlink-failure-${walletAddress}`,
-          description: `${error instanceof Error ? error.message : 'Unknown error'}`,
-        });
-      }
-    },
-    [unlinkWallet],
   );
 
   const handleCopyAddress = useCallback(async (address: string) => {
@@ -134,7 +100,11 @@ export const Wallets = ({ className, ...rest }: WalletsProps) => {
           <CardDescription>Manage your wallets</CardDescription>
         </div>
 
-        <NamefiButton size="sm" className="gap-1" onClick={handleLinkWallet}>
+        <NamefiButton
+          size="sm"
+          className="gap-1"
+          onClick={handleLinkWalletClicked}
+        >
           <Plus className="h-4 w-4" />
           Link
         </NamefiButton>
@@ -146,7 +116,7 @@ export const Wallets = ({ className, ...rest }: WalletsProps) => {
             <Button
               variant="outline"
               className="mt-4"
-              onClick={handleLinkWallet}
+              onClick={handleLinkWalletClicked}
             >
               Link Wallet
             </Button>
@@ -218,7 +188,7 @@ export const Wallets = ({ className, ...rest }: WalletsProps) => {
                     <Button
                       variant="outline"
                       size="icon"
-                      onClick={() => handleUnlinkWalletButtonClick(wallet)}
+                      onClick={() => handleUnlinkWalletClicked(wallet.address)}
                       aria-label="Remove wallet"
                     >
                       <Trash2 className="h-4 w-4 text-destructive" />
@@ -231,33 +201,139 @@ export const Wallets = ({ className, ...rest }: WalletsProps) => {
         )}
       </CardContent>
 
-      {/* Unlink Wallet Dialog */}
-      <Dialog
-        open={isUnlinkWalletDialogOpen}
-        onOpenChange={setIsUnlinkWalletDialogOpen}
-      >
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Unlink Wallet</DialogTitle>
-            <DialogDescription>
-              {`Are you sure you want to continue unlinking wallet with address ${isMobile ? getShortAddress(walletToUnlink ?? '') : walletToUnlink}?`}
-            </DialogDescription>
-          </DialogHeader>
-          <DialogFooter>
-            <Button
-              variant="outline"
-              onClick={() => setIsUnlinkWalletDialogOpen(false)}
-            >
-              Cancel
-            </Button>
-            <Button
-              onClick={() => handleUnlinkWalletConfirm(walletToUnlink ?? '')}
-            >
-              Unlink
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <UnlinkWalletDialog
+        isUnlinkWalletDialogOpen={isUnlinkWalletDialogOpen}
+        setIsUnlinkWalletDialogOpen={setIsUnlinkWalletDialogOpen}
+        walletToUnlink={walletToUnlink}
+        handleUnlinkWalletConfirm={handleConfirmUnlinkWalletClicked}
+        isUnlinkWalletPending={isUnlinkWalletPending}
+      />
     </Card>
+  );
+};
+
+export const useControlLinkedWallets = () => {
+  const [isUnlinkWalletDialogOpen, setIsUnlinkWalletDialogOpen] =
+    useState(false);
+  const { isImpersonating } = useAuth();
+  const [walletToUnlink, setWalletToUnlink] = useState<string | null>(null);
+  const [isUnlinkWalletPending, setIsUnlinkWalletPending] = useState(false);
+
+  const { linkWallet, unlinkWallet } = usePrivy();
+  const { linkedWallets } = useLinkedWallets();
+
+  const handleLinkWalletClicked = useCallback(() => {
+    if (isImpersonating) {
+      alert('You are impersonating a user, so you cannot link a wallet');
+      return;
+    }
+    linkWallet();
+  }, [linkWallet, isImpersonating]);
+
+  const handleUnlinkWalletClicked = useCallback(
+    (walletAddress: string) => {
+      if (isImpersonating) {
+        alert('You are impersonating a user, so you cannot unlink a wallet');
+        return;
+      }
+      setWalletToUnlink(walletAddress);
+      setIsUnlinkWalletDialogOpen(true);
+    },
+    [isImpersonating],
+  );
+
+  const handleConfirmUnlinkWalletClicked = useCallback(
+    async (walletAddress: string) => {
+      if (!walletAddress) {
+        setIsUnlinkWalletDialogOpen(false);
+        setIsUnlinkWalletPending(false);
+        return;
+      }
+      setIsUnlinkWalletPending(true);
+
+      try {
+        await unlinkWallet(walletAddress);
+        setIsUnlinkWalletDialogOpen(false);
+        toast.success('Wallet unlinked', {
+          id: `wallet-unlink-success-${walletAddress}`,
+          description: 'Wallet has been successfully unlinked.',
+        });
+      } catch (error) {
+        toast.error('Failed to unlink wallet', {
+          id: `wallet-unlink-failure-${walletAddress}`,
+          description: `${error instanceof Error ? error.message : 'Unknown error'}`,
+        });
+      } finally {
+        setIsUnlinkWalletDialogOpen(false);
+        setIsUnlinkWalletPending(false);
+      }
+    },
+    [unlinkWallet],
+  );
+  return {
+    isUnlinkWalletDialogOpen,
+    setIsUnlinkWalletDialogOpen,
+    walletToUnlink,
+    setWalletToUnlink,
+    handleUnlinkWalletClicked,
+    handleLinkWalletClicked,
+    linkedWallets,
+    handleConfirmUnlinkWalletClicked,
+    isUnlinkWalletPending,
+  };
+};
+
+type UnlinkWalletDialogProps = {
+  isUnlinkWalletDialogOpen: boolean;
+  setIsUnlinkWalletDialogOpen: (open: boolean) => void;
+  walletToUnlink: string | null;
+  handleUnlinkWalletConfirm: (walletAddress: string) => void;
+  isUnlinkWalletPending: boolean;
+};
+
+export const UnlinkWalletDialog = ({
+  isUnlinkWalletDialogOpen,
+  setIsUnlinkWalletDialogOpen,
+  walletToUnlink,
+  handleUnlinkWalletConfirm,
+  isUnlinkWalletPending,
+}: UnlinkWalletDialogProps) => {
+  const isMobile = useIsMobile();
+  return (
+    <Dialog
+      open={isUnlinkWalletDialogOpen}
+      onOpenChange={setIsUnlinkWalletDialogOpen}
+    >
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Unlink Wallet</DialogTitle>
+          <DialogDescription>
+            {`Are you sure you want to continue unlinking wallet with address ${isMobile ? getShortAddress(walletToUnlink ?? '') : walletToUnlink}?`}
+          </DialogDescription>
+        </DialogHeader>
+        <DialogFooter>
+          <Button
+            variant="outline"
+            onClick={() => setIsUnlinkWalletDialogOpen(false)}
+            disabled={isUnlinkWalletPending}
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={() => handleUnlinkWalletConfirm(walletToUnlink ?? '')}
+            disabled={isUnlinkWalletPending}
+          >
+            {isUnlinkWalletPending ? (
+              <>
+                <Loader2 className="h-4 w-4 animate-spin" />
+                Unlinking...
+              </>
+            ) : (
+              'Unlink'
+            )}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 };
