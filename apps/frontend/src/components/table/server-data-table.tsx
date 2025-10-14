@@ -20,14 +20,14 @@ import {
 } from 'react';
 import { Button } from '@/components/ui/shadcn/button';
 import { TablePageSizeSelector } from './table-page-size-selector';
+import { TablePageSelector } from './table-page-selector';
 import {
-  ArrowUpDown,
   Loader2Icon,
   ColumnsIcon,
   Search,
-  ArrowUp,
-  ArrowDown,
-  ChevronsUpDown,
+  ArrowDownWideNarrowIcon,
+  ArrowUpNarrowWideIcon,
+  ArrowUpDownIcon,
 } from 'lucide-react';
 import { cn } from '@/lib/cn';
 import {
@@ -356,11 +356,11 @@ export function ServerDataTable<TData>(props: ServerDataTableProps<TData>) {
                         {header.column.getCanSort() && (
                           <div className="flex flex-col">
                             {header.column.getIsSorted() === 'asc' ? (
-                              <ArrowUp className="h-3 w-3 text-primary" />
+                              <ArrowUpNarrowWideIcon className="h-3 w-3 text-primary" />
                             ) : header.column.getIsSorted() === 'desc' ? (
-                              <ArrowDown className="h-3 w-3 text-primary" />
+                              <ArrowDownWideNarrowIcon className="h-3 w-3 text-primary" />
                             ) : (
-                              <ChevronsUpDown className="h-3 w-3 opacity-50" />
+                              <ArrowUpDownIcon className="h-3 w-3 opacity-50" />
                             )}
                           </div>
                         )}
@@ -513,24 +513,13 @@ export function ServerDataTable<TData>(props: ServerDataTableProps<TData>) {
           Page {page} of {totalPages} — Total {totalCount}{' '}
           {totalCount === 1 ? 'row' : 'rows'}
         </div>
-        <div className="flex gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            disabled={page <= 1}
-            onClick={() => onPageChange(Math.max(1, page - 1))}
-          >
-            Previous
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            disabled={page >= totalPages}
-            onClick={() => onPageChange(page + 1)}
-          >
-            Next
-          </Button>
-        </div>
+        <TablePageSelector
+          pageIndex={page - 1}
+          setPageIndex={(index) => {
+            onPageChange(index + 1);
+          }}
+          pageCount={totalPages}
+        />
       </div>
     </div>
   );
