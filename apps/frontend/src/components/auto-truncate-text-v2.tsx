@@ -18,16 +18,19 @@ import {
  *
  * @param text - The text to display
  * @param minCharactersToDisplay - Minimum number of characters to show
+ * @param initialSize - Optional initial display length (before auto-calculation)
  * @param className - Additional CSS classes
  * @param ellipsis - The ellipsis string (default: "...")
  */
 export const AutoTruncateTextV2 = ({
   minCharactersToDisplay,
+  initialCharactersCountToDisplay,
   className,
   children: text,
   ellipsis = '...',
 }: {
   minCharactersToDisplay: number;
+  initialCharactersCountToDisplay?: number;
   className?: string;
   children: string;
   ellipsis?: string;
@@ -36,8 +39,16 @@ export const AutoTruncateTextV2 = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const measureFullRef = useRef<HTMLSpanElement>(null);
   const measureEllipsisRef = useRef<HTMLSpanElement>(null);
-  const [shouldTruncate, setShouldTruncate] = useState(false);
-  const [displayLength, setDisplayLength] = useState(text.length);
+  const hasResizedRef = useRef(false);
+  const [shouldTruncate, setShouldTruncate] = useState(
+    initialCharactersCountToDisplay !== undefined &&
+      initialCharactersCountToDisplay < text.length,
+  );
+  const [displayLength, setDisplayLength] = useState(
+    initialCharactersCountToDisplay !== undefined
+      ? initialCharactersCountToDisplay
+      : text.length,
+  );
   const [hoverOpen, setHoverOpen] = useState(false);
 
   const centerTruncateString = useCallback(
@@ -62,6 +73,14 @@ export const AutoTruncateTextV2 = ({
     if (text.length === 0) {
       setShouldTruncate(false);
       setDisplayLength(text.length);
+      return;
+    }
+
+    // If initialSize is provided and we haven't resized yet, skip calculation
+    if (
+      initialCharactersCountToDisplay !== undefined &&
+      !hasResizedRef.current
+    ) {
       return;
     }
 
@@ -125,7 +144,7 @@ export const AutoTruncateTextV2 = ({
 
     setShouldTruncate(true);
     setDisplayLength(safeLength);
-  }, [text, minCharactersToDisplay, ellipsis]);
+  }, [text, minCharactersToDisplay, ellipsis, initialCharactersCountToDisplay]);
 
   const recomputeSizes = useDebounceCallback(_recomputeSizes, 100);
 
@@ -151,6 +170,7 @@ export const AutoTruncateTextV2 = ({
 
     // Check on resize using ResizeObserver
     const resizeObserver = new ResizeObserver(() => {
+      hasResizedRef.current = true;
       recomputeSizes();
     });
 
