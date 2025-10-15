@@ -7,6 +7,7 @@ import { resolveDescription, resolveTitle } from '@/lib/site-metadata';
 import { SiteFooter } from './components/site-footer';
 import { SiteHeader } from './components/site-header';
 import '../globals.css';
+import type { Metadata } from 'next';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -26,7 +27,7 @@ export async function generateMetadata({
   params,
 }: {
   params: Promise<{ lang: Locale }>;
-}) {
+}): Promise<Metadata> {
   const { lang } = await params;
   const title = resolveTitle(lang);
   const description = resolveDescription(lang);

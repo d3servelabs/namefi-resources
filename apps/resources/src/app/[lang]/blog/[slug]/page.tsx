@@ -12,6 +12,7 @@ import {
   type AuthorEntry,
 } from '@/lib/content';
 import { useMDXComponents } from '@/mdx-components';
+import type { Metadata } from 'next';
 
 export const dynamic = 'error';
 export const dynamicParams = false;
@@ -24,7 +25,7 @@ export async function generateMetadata({
   params,
 }: {
   params: Promise<{ lang: string; slug: string }>;
-}) {
+}): Promise<Metadata> {
   const { lang, slug } = await params;
   const locale = lang as Locale;
   const entry = getPost(locale, slug);
