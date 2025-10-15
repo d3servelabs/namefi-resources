@@ -38,8 +38,6 @@ import { useUserChainBalances } from '@/hooks/use-user-chain-balances';
 import { useLinkedWalletAddresses } from '@/hooks/use-user-wallet-addresses';
 import { prop, groupBy } from 'ramda';
 import { useLinkedWallets } from '@/hooks/use-user-wallet-addresses';
-import type { WalletProvider } from '../ui/untitled/wallet-card';
-import { mapPrivyWalletToProvider } from '@/hooks/use-privy-wallet-card-data';
 import {
   useControlLinkedWallets,
   UnlinkWalletDialog,
@@ -401,9 +399,6 @@ function UserWalletCardsGrid(props: {}) {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {linkedWallets.map((linkedWallet) => {
           const walletAddress = linkedWallet.address as `0x${string}`;
-          const provider = mapPrivyWalletToProvider(
-            linkedWallet.walletClientType,
-          ) as WalletProvider;
           const isHovered = hoveredCardId === walletAddress;
 
           return (
@@ -423,7 +418,7 @@ function UserWalletCardsGrid(props: {}) {
               >
                 <NFSCWalletCard
                   address={walletAddress}
-                  provider={provider}
+                  provider="nfsc"
                   balances={chainBalancesByWalletAddress[walletAddress] || []}
                 />
                 {/* Delete button overlay - positioned inside with proper z-index above glare layers */}

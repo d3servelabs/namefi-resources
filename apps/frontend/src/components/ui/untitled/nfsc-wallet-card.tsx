@@ -13,12 +13,14 @@ import { NetworkLogo } from '@/components/network-logo';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
 import { useAllowedChains } from '@/hooks/use-allowed-chains';
 import { getPaymentProviderForChain } from '@/hooks/use-user-chain-balances';
+import { cn } from '@/lib/cn';
 
 interface NFSCWalletCardProps
   extends Omit<WalletCardProps, 'networks' | 'bottomContent'> {
   balances: ChainBalance[];
   isLoadingBalance?: boolean;
   onBalanceClick?: () => void;
+  showSingleChain?: boolean;
 }
 
 function formatBalanceInUsdCents(balanceInUsdCents: number): string {
@@ -58,12 +60,17 @@ export function NFSCWalletCard({
   isLoadingBalance = false,
   className,
   onBalanceClick,
+  showSingleChain = false,
 }: NFSCWalletCardProps) {
   const [showBalanceModal, setShowBalanceModal] = useState(false);
   const { chains } = useAllowedChains();
 
-  // Add balances for chains with zero balance to show all allowed chains
+  // Add balances for chains with zero balance to show all allowed chains (only when not showing single chain)
   const completeBalances = useMemo(() => {
+    if (showSingleChain) {
+      return balances;
+    }
+
     const balanceMap = new Map(balances.map((b) => [b.chainId, b]));
 
     return chains.map((chain) => {
@@ -80,7 +87,7 @@ export function NFSCWalletCard({
         paymentProvider: getPaymentProviderForChain(chain.id),
       } as ChainBalance;
     });
-  }, [balances, chains, address]);
+  }, [balances, chains, address, showSingleChain]);
 
   // Calculate total for current wallet
   const currentWalletTotal = useMemo(() => {
@@ -101,31 +108,50 @@ export function NFSCWalletCard({
   const handleBalanceClick = () => {
     if (onBalanceClick) {
       onBalanceClick();
-    } else {
+    } else if (!showSingleChain) {
       setShowBalanceModal(true);
     }
   };
+
+  // Get single chain info when showSingleChain is true
+  const singleChainBalance = showSingleChain ? balances[0] : null;
 
   const bottomContent = (
     <button
       type="button"
       onClick={handleBalanceClick}
-      className="w-full bg-black/20 backdrop-blur-sm rounded-lg p-3 hover:bg-black/30 transition-colors cursor-pointer border border-white/10"
+      className={cn(
+        'w-full bg-black/20 backdrop-blur-sm rounded-lg p-3 transition-colors border border-white/10',
+        !showSingleChain && 'hover:bg-black/30 cursor-pointer',
+      )}
+      disabled={showSingleChain}
     >
       <div className="flex justify-between items-center">
-        <div className="text-left">
-          <div className="text-xs opacity-70 uppercase tracking-wider">
-            NFSC Balance
-          </div>
-          <div className="text-lg font-semibold font-mono">
-            {isLoadingBalance ? (
-              <Skeleton className="h-6 w-24 bg-white/20" />
-            ) : (
-              `$${formatBalanceInUsdCents(currentWalletTotal)}`
-            )}
+        <div className="text-left flex items-center gap-3">
+          {showSingleChain && singleChainBalance && (
+            <NetworkLogo
+              network={singleChainBalance.chainId}
+              className="w-6 h-6"
+            />
+          )}
+          <div>
+            <div className="text-xs opacity-70 uppercase tracking-wider">
+              {showSingleChain && singleChainBalance
+                ? `${singleChainBalance.chainName} Balance`
+                : 'NFSC Balance'}
+            </div>
+            <div className="text-lg font-semibold font-mono">
+              {isLoadingBalance ? (
+                <Skeleton className="h-6 w-24 bg-white/20" />
+              ) : (
+                `$${formatBalanceInUsdCents(currentWalletTotal)}`
+              )}
+            </div>
           </div>
         </div>
-        <div className="text-xs opacity-70">Click for details →</div>
+        {!showSingleChain && (
+          <div className="text-xs opacity-70">Click for details →</div>
+        )}
       </div>
     </button>
   );

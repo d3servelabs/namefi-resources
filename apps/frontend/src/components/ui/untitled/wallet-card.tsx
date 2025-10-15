@@ -10,6 +10,8 @@ import {
 } from '@/components/ui/shadcn/dialog';
 import { NetworkLogo } from '@/components/network-logo';
 import { WalletIcon } from '@web3icons/react';
+import Image from 'next/image';
+import { NamefiMonoLogo } from '@/components/namefi-logotype-mono';
 
 export type WalletProvider =
   | 'metamask'
@@ -59,6 +61,7 @@ export type WalletProvider =
   | 'solflare'
   | 'temple'
   | 'litprotocol'
+  | 'nfsc'
   | 'unknown';
 
 export interface WalletNetwork {
@@ -381,6 +384,12 @@ const providerStyles: Record<
     walletId: 'litprotocol',
     backgroundIconVariant: 'branded',
   },
+  nfsc: {
+    background: createRadialGradient('#1cd17d'),
+    textColor: 'text-white',
+    walletId: 'nfsc',
+    backgroundIconVariant: 'branded',
+  },
   unknown: {
     background: createRadialGradient('#6B7280'),
     textColor: 'text-white',
@@ -480,12 +489,19 @@ export function WalletCard({
             style.showBackgroundIcon === false && 'hidden',
           )}
         >
-          <WalletIcon
-            id={style.walletId}
-            variant={style.backgroundIconVariant}
-            size={'100%'}
-            className="opacity-50 saturate-50 blur-[2px]"
-          />
+          {provider === 'nfsc' ? (
+            <NamefiMonoLogo
+              fill="#000"
+              className="w-[75%] h-auto opacity-30 saturate-60 blur-[3px]"
+            />
+          ) : (
+            <WalletIcon
+              id={style.walletId}
+              variant={style.backgroundIconVariant}
+              size={'100%'}
+              className="opacity-50 saturate-50 blur-[2px]"
+            />
+          )}
         </div>
 
         {/* Background pattern */}
@@ -510,16 +526,26 @@ export function WalletCard({
           <div className="flex justify-between items-start">
             {/* Provider icon and name */}
             <div className="flex items-center gap-2">
-              <WalletIcon
-                id={style.walletId}
-                variant={style.cornerIconVariant ?? 'mono'}
-                size={24}
-              />
-              <span className="font-semibold text-sm uppercase tracking-wide opacity-90">
-                {provider === 'unknown'
-                  ? 'Wallet'
-                  : provider.replace(/([A-Z])/g, ' $1').trim()}
-              </span>
+              {provider === 'nfsc' ? (
+                <NamefiMonoLogo
+                  width={132}
+                  height={43}
+                  className="h-6 w-auto opacity-90"
+                />
+              ) : (
+                <>
+                  <WalletIcon
+                    id={style.walletId}
+                    variant={style.cornerIconVariant ?? 'mono'}
+                    size={24}
+                  />
+                  <span className="font-semibold text-sm uppercase tracking-wide opacity-90">
+                    {provider === 'unknown'
+                      ? 'Wallet'
+                      : provider.replace(/([A-Z])/g, ' $1').trim()}
+                  </span>
+                </>
+              )}
             </div>
 
             {/* Network logos */}
