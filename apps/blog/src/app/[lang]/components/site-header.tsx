@@ -26,6 +26,7 @@ export function SiteHeader({ locale, dictionary }: SiteHeaderProps) {
             height={43}
             priority
             className="h-8 w-auto"
+            unoptimized
           />
           <span className="hidden text-xs uppercase tracking-[0.3em] md:inline">
             Blog

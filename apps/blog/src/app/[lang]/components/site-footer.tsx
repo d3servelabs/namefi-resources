@@ -12,6 +12,7 @@ export function SiteFooter() {
             width={132}
             height={43}
             className="h-7 w-auto"
+            unoptimized
           />
           <p className="text-sm text-muted-foreground">
             © {currentYear} D3SERVE LABS, Inc. All rights reserved.
