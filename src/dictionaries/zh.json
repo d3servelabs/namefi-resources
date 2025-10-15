@@ -1,0 +1,15 @@
+{
+  "switcher": {
+    "label": "语言"
+  },
+  "blog": {
+    "homeEmpty": "该语言暂时没有文章，请稍后再来。",
+    "homeCta": "阅读文章",
+    "indexEmpty": "尚未发布任何文章。",
+    "detailBack": "返回全部文章",
+    "detailPublishedOn": "发表于",
+    "detailBy": "作者",
+    "detailAuthorsHeading": "关于作者",
+    "detailSourceLanguage": "原始语言"
+  }
+}

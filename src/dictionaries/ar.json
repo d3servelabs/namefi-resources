@@ -1,0 +1,15 @@
+{
+  "switcher": {
+    "label": "اللغة"
+  },
+  "blog": {
+    "homeEmpty": "لا توجد مقالات متاحة بهذه اللغة بعد. عد لاحقًا.",
+    "homeCta": "قراءة المقال",
+    "indexEmpty": "لم يتم نشر أي مقالات بعد.",
+    "detailBack": "العودة إلى جميع المقالات",
+    "detailPublishedOn": "نُشر في",
+    "detailBy": "بقلم",
+    "detailAuthorsHeading": "عن الكاتب/الكاتبة",
+    "detailSourceLanguage": "اللغة الأصلية"
+  }
+}

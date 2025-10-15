@@ -1,0 +1,15 @@
+{
+  "switcher": {
+    "label": "Language"
+  },
+  "blog": {
+    "homeEmpty": "No posts are available in this language yet. Check back soon.",
+    "homeCta": "Read article",
+    "indexEmpty": "No posts published yet.",
+    "detailBack": "Back to all posts",
+    "detailPublishedOn": "Published on",
+    "detailBy": "By",
+    "detailAuthorsHeading": "About the author(s)",
+    "detailSourceLanguage": "Original language"
+  }
+}
