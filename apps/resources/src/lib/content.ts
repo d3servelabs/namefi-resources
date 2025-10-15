@@ -1,10 +1,8 @@
 import 'server-only';
-
-/* biome-ignore lint/correctness/noNodejsModules: Content loading runs server-side in Next. */
 import fs from 'node:fs';
-/* biome-ignore lint/correctness/noNodejsModules: Content loading runs server-side in Next. */
 import path from 'node:path';
 import matter from 'gray-matter';
+import { cache } from 'react';
 import type { ComponentType } from 'react';
 import type { MDXComponents } from 'mdx/types';
 import { i18n, type Locale } from '@/i18n-config';
@@ -385,6 +383,10 @@ export function getPost(locale: Locale, slug: string): PostEntry | undefined {
   if (isProduction && isDraft(entry)) return undefined;
   return entry;
 }
+
+export const getPostCached = cache((locale: Locale, slug: string) =>
+  getPost(locale, slug),
+);
 
 export function getAuthor(
   locale: Locale,

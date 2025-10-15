@@ -1,8 +1,74 @@
 import Link from 'next/link';
+import type { Metadata } from 'next';
 import type { Locale } from '@/i18n-config';
-import { localeDateLocales, localeLabels } from '@/i18n-config';
+import { i18n, localeDateLocales, localeLabels } from '@/i18n-config';
 import { getDictionary } from '@/get-dictionary';
 import { getAuthorNames, getPostsForLocale } from '@/lib/content';
+import { resolveTitle } from '@/lib/site-metadata';
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}): Promise<Metadata> {
+  const { lang } = await params;
+  const locale = i18n.locales.includes(lang as Locale)
+    ? (lang as Locale)
+    : i18n.defaultLocale;
+  const rawBaseUrl =
+    process.env.NEXT_PUBLIC_VERCEL_URL ?? 'http://localhost:3000';
+  const normalisedBaseUrl = rawBaseUrl.startsWith('http')
+    ? rawBaseUrl
+    : `https://${rawBaseUrl}`;
+  const baseUrl = normalisedBaseUrl.replace(/\/$/, '');
+  const canonicalPath = `/${locale}`;
+  const url = `${baseUrl}${canonicalPath}`;
+  const ogImagePath = `${canonicalPath}/opengraph-image`;
+  const ogImageUrl = `${baseUrl}${ogImagePath}`;
+  const description = 'Blog posts about Namefi';
+  const siteName = 'namefi.io';
+  const pageTitle = `${resolveTitle(locale)} | ${siteName}`;
+  const twitterHandle = '@namefi_io';
+
+  const languageAlternates: Partial<Record<Locale, string>> = {};
+  for (const localeOption of i18n.locales) {
+    languageAlternates[localeOption] = `/${localeOption}`;
+  }
+
+  return {
+    alternates: {
+      canonical: canonicalPath,
+      languages: languageAlternates,
+    },
+    title: { absolute: pageTitle },
+    description,
+    openGraph: {
+      title: pageTitle,
+      description,
+      url,
+      locale,
+      type: 'article',
+      siteName,
+      images: [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 630,
+          type: 'image/png',
+          alt: pageTitle,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: pageTitle,
+      description,
+      images: [ogImageUrl],
+      site: twitterHandle,
+      creator: twitterHandle,
+    },
+  };
+}
 
 export default async function Home({
   params,

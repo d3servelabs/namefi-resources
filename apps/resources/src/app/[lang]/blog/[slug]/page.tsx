@@ -7,10 +7,12 @@ import { i18n, localeLabels, localeDateLocales } from '@/i18n-config';
 import { getDictionary } from '@/get-dictionary';
 import {
   getAuthor,
-  getPost,
+  getPostCached,
   getPostParams,
   type AuthorEntry,
+  getAuthorNames,
 } from '@/lib/content';
+import { resolveTitle } from '@/lib/site-metadata';
 import { useMDXComponents } from '@/mdx-components';
 import type { Metadata } from 'next';
 
@@ -28,30 +30,68 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { lang, slug } = await params;
   const locale = lang as Locale;
-  const entry = getPost(locale, slug);
+  const entry = getPostCached(locale, slug);
 
   if (!entry) return {};
 
+  const rawBaseUrl =
+    process.env.NEXT_PUBLIC_VERCEL_URL ?? 'http://localhost:3000';
+  const normalisedBaseUrl = rawBaseUrl.startsWith('http')
+    ? rawBaseUrl
+    : `https://${rawBaseUrl}`;
+  const baseUrl = normalisedBaseUrl.replace(/\/$/, '');
+  const canonicalPath = `/${locale}/blog/${slug}`;
+  const url = `${baseUrl}${canonicalPath}`;
+  const ogImagePath = `${canonicalPath}/opengraph-image`;
+  const ogImageUrl = `${baseUrl}${ogImagePath}`;
+  const authorNames = getAuthorNames(locale, entry.frontmatter.authors);
+  const siteName = resolveTitle(locale);
+  const publishedTime = entry.publishedAt.toISOString();
+  const twitterHandle = '@namefi_io';
+
   const languageAlternates: Partial<Record<Locale, string>> = {};
   for (const localeOption of i18n.locales) {
-    if (getPost(localeOption, slug)) {
+    if (getPostCached(localeOption, slug)) {
       languageAlternates[localeOption] = `/${localeOption}/blog/${slug}`;
     }
   }
 
   return {
+    alternates: {
+      canonical: canonicalPath,
+      languages: languageAlternates,
+    },
     title: entry.frontmatter.title,
     description: entry.frontmatter.summary,
     openGraph: {
       title: entry.frontmatter.title,
       description: entry.frontmatter.summary,
+      url,
       locale,
       type: 'article',
       tags: entry.frontmatter.tags,
+      siteName,
+      publishedTime,
+      authors: authorNames,
+      images: [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 630,
+          alt: entry.frontmatter.title,
+        },
+      ],
     },
-    alternates: {
-      canonical: `/${locale}/blog/${slug}`,
-      languages: languageAlternates,
+    twitter: {
+      card: 'summary_large_image',
+      title: entry.frontmatter.title,
+      description: entry.frontmatter.summary,
+      images: [ogImageUrl],
+      site: twitterHandle,
+      creator: twitterHandle,
+    },
+    other: {
+      'article:published_time': publishedTime,
     },
   };
 }
@@ -64,7 +104,7 @@ export default async function BlogPostPage({
   const { lang, slug } = await params;
   const locale = lang as Locale;
   const dictionary = await getDictionary(locale);
-  const entry = getPost(locale, slug);
+  const entry = getPostCached(locale, slug);
 
   if (!entry) {
     notFound();
