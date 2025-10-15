@@ -32,12 +32,15 @@ import { CreditCardIcon, Loader2, TrashIcon, Wallet2 } from 'lucide-react';
 import { Suspense, useCallback, useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import { useEnsName } from 'wagmi';
+import { useQueryState, parseAsBoolean } from 'nuqs';
 import { PaymentMethodsManagerPlaceholder } from './payment-methods-manager-placeholder';
 import { NFSCWalletCard } from '../ui/untitled/nfsc-wallet-card';
 import { useUserChainBalances } from '@/hooks/use-user-chain-balances';
 import { useLinkedWalletAddresses } from '@/hooks/use-user-wallet-addresses';
 import { prop, groupBy } from 'ramda';
 import { useLinkedWallets } from '@/hooks/use-user-wallet-addresses';
+import type { WalletProvider } from '../ui/untitled/wallet-card';
+import { mapPrivyWalletToProvider } from '@/hooks/use-privy-wallet-card-data';
 import {
   useControlLinkedWallets,
   UnlinkWalletDialog,
@@ -360,6 +363,16 @@ function UserWalletCardsGrid(props: {}) {
   const [hoveredCardId, setHoveredCardId] = useState<string | null>(null);
   const { privyUser } = useAuth();
 
+  // Query flags
+  const [separateByChain] = useQueryState(
+    'separateByChain',
+    parseAsBoolean.withDefault(false),
+  );
+  const [forceNfscVariant] = useQueryState(
+    'forceNfscVariant',
+    parseAsBoolean.withDefault(false),
+  );
+
   const { linkedWalletAddresses, linkedWalletsReady } =
     useLinkedWalletAddresses();
   const { linkedWallets } = useLinkedWallets();
@@ -373,6 +386,7 @@ function UserWalletCardsGrid(props: {}) {
     () => groupBy(prop('walletAddress'), chainBalances),
     [chainBalances],
   );
+
   const isFirstConnectedWallet = useCallback(
     (walletAddress: string) => {
       if (!privyUser?.wallet) {
@@ -383,6 +397,37 @@ function UserWalletCardsGrid(props: {}) {
     },
     [privyUser],
   );
+
+  // Create card items based on separateByChain flag
+  const cardItems = useMemo(() => {
+    if (separateByChain) {
+      // Create a card for each wallet + chain combination
+      return chainBalances.map((chainBalance) => ({
+        key: `${chainBalance.walletAddress}-${chainBalance.chainId}`,
+        walletAddress: chainBalance.walletAddress,
+        balances: [chainBalance],
+        linkedWallet: linkedWallets.find(
+          (w) =>
+            w.address.toLowerCase() ===
+            chainBalance.walletAddress.toLowerCase(),
+        ),
+      }));
+    }
+    // Default: one card per wallet with all chains combined
+    return linkedWallets.map((linkedWallet) => ({
+      key: linkedWallet.address,
+      walletAddress: linkedWallet.address as `0x${string}`,
+      balances:
+        chainBalancesByWalletAddress[linkedWallet.address as `0x${string}`] ||
+        [],
+      linkedWallet,
+    }));
+  }, [
+    separateByChain,
+    chainBalances,
+    linkedWallets,
+    chainBalancesByWalletAddress,
+  ]);
 
   const content = useMemo(() => {
     if (linkedWallets.length === 0) {
@@ -397,16 +442,21 @@ function UserWalletCardsGrid(props: {}) {
 
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {linkedWallets.map((linkedWallet) => {
-          const walletAddress = linkedWallet.address as `0x${string}`;
-          const isHovered = hoveredCardId === walletAddress;
+        {cardItems.map((item) => {
+          const { key, walletAddress, balances, linkedWallet } = item;
+          const isHovered = hoveredCardId === key;
+          const provider = forceNfscVariant
+            ? 'nfsc'
+            : linkedWallet
+              ? (mapPrivyWalletToProvider(
+                  linkedWallet.walletClientType,
+                ) as WalletProvider)
+              : 'nfsc';
 
           return (
-            <div key={linkedWallet.address} className="relative group">
+            <div key={key} className="relative group">
               <ControlledGlareCard
-                onHoverChange={(hover) =>
-                  setHoveredCardId(hover ? walletAddress : null)
-                }
+                onHoverChange={(hover) => setHoveredCardId(hover ? key : null)}
                 containerClassName="w-full"
                 className="bg-transparent"
                 rotateIntensity={0.3}
@@ -418,13 +468,12 @@ function UserWalletCardsGrid(props: {}) {
               >
                 <NFSCWalletCard
                   address={walletAddress}
-                  provider="nfsc"
-                  balances={chainBalancesByWalletAddress[walletAddress] || []}
+                  provider={provider}
+                  balances={balances}
+                  showSingleChain={separateByChain}
                 />
                 {/* Delete button overlay - positioned inside with proper z-index above glare layers */}
-                {isFirstConnectedWallet(walletAddress) ? (
-                  false
-                ) : (
+                {!separateByChain && !isFirstConnectedWallet(walletAddress) ? (
                   <div className="absolute top-4 right-4 transition-all duration-200">
                     <Button
                       variant="ghost"
@@ -453,7 +502,7 @@ function UserWalletCardsGrid(props: {}) {
                       )}
                     </Button>
                   </div>
-                )}
+                ) : null}
               </ControlledGlareCard>
             </div>
           );
@@ -462,7 +511,9 @@ function UserWalletCardsGrid(props: {}) {
     );
   }, [
     linkedWallets,
-    chainBalancesByWalletAddress,
+    cardItems,
+    forceNfscVariant,
+    separateByChain,
     isFirstConnectedWallet,
     isUnlinkWalletPending,
     walletToUnlink,
