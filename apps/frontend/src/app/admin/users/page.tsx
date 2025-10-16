@@ -12,23 +12,27 @@ import {
   CardTitle,
 } from '@/components/ui/shadcn/card';
 import { toast } from 'sonner';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { usePagination } from '@/hooks/use-pagination';
 import { useRouter } from 'next/navigation';
 import { AsyncButton } from '@/components/buttons/async-button';
 import { useDebounceValue } from 'usehooks-ts';
 import { ServerDataTable } from '@/components/table/server-data-table';
 import { DataTable } from '@/components/table/data-table';
-import { TablePageSelector } from '@/components/table/table-page-selector';
 import { AutoTruncateTextV2 } from '@/components/auto-truncate-text-v2';
 import type {
   ColumnDef,
   SortingState,
   ColumnFiltersState,
   Row,
+  VisibilityState,
 } from '@tanstack/react-table';
 import { ChevronDown, ChevronRight } from 'lucide-react';
-import { NAMEFI_NFT_CONTRACT_ADDRESS, getChain } from '@namefi-astra/utils';
+import {
+  NAMEFI_NFT_CONTRACT_ADDRESS,
+  getChain,
+  CHAINS,
+} from '@namefi-astra/utils';
 import { NetworkLogo } from '@/components/network-logo';
 
 type UserRow = {
@@ -43,6 +47,7 @@ type UserRow = {
     chainId: number;
     normalizedDomainName: string;
     tokenId: string;
+    expirationTime: Date | string;
   }>;
   nftCount: number;
 };
@@ -71,11 +76,28 @@ function UsersTable() {
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(20);
   const [searchTerm, setSearchTerm] = useState('');
-  const [sorting, setSorting] = useState<SortingState>([]);
+  const [domainSearchTerm, setDomainSearchTerm] = useState('');
+  const [ensSearchTerm, setEnsSearchTerm] = useState('');
+  const [sorting, setSorting] = useState<SortingState>([
+    { id: 'nftCount', desc: true },
+  ]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [debouncedSearch] = useDebounceValue(searchTerm, 300);
+  const [debouncedDomainSearch] = useDebounceValue(domainSearchTerm, 300);
+  const [debouncedEnsSearch] = useDebounceValue(ensSearchTerm, 300);
   const [debouncedColumnFilters] = useDebounceValue(columnFilters, 500);
-
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+    expander: true,
+    updatedAt: true,
+    id: true,
+    displayName: true,
+    primaryEmail: true,
+    privyUserId: false,
+    createdAt: false,
+    isAdmin: false,
+    nftCount: true,
+    actions: true,
+  });
   // Transform column filters to backend format
   const backendColumnFilters = useMemo(() => {
     return debouncedColumnFilters.map((filter) => ({
@@ -93,6 +115,8 @@ function UsersTable() {
         page,
         pageSize,
         searchTerm: debouncedSearch || undefined,
+        domainSearchTerm: debouncedDomainSearch || undefined,
+        ensSearchTerm: debouncedEnsSearch || undefined,
         sorting: sorting.length > 0 ? sorting : undefined,
         columnFilters:
           backendColumnFilters.length > 0 ? backendColumnFilters : undefined,
@@ -268,15 +292,66 @@ function UsersTable() {
 
   const filterConfig = useMemo(
     () => ({
-      id: 'text' as const,
-      displayName: 'text' as const,
-      primaryEmail: 'text' as const,
-      privyUserId: 'text' as const,
-      createdAt: 'date' as const,
-      updatedAt: 'date' as const,
-      nftCount: 'number' as const,
+      id: { type: 'text' as const, label: 'User ID' },
+      displayName: { type: 'text' as const, label: 'Display Name' },
+      primaryEmail: { type: 'text' as const, label: 'Email' },
+      privyUserId: { type: 'text' as const, label: 'Privy ID' },
+      createdAt: { type: 'date' as const, label: 'Created At' },
+      updatedAt: { type: 'date' as const, label: 'Updated At' },
+      nftCount: { type: 'number' as const, label: 'Asset Count' },
     }),
     [],
+  );
+
+  const customFilters = useMemo(
+    () => [
+      {
+        id: 'search',
+        label: 'General Search',
+        type: 'text' as const,
+        placeholder: 'Search by email, name, wallet, id...',
+        value: searchTerm,
+        onChange: (value: string | number | undefined) => {
+          setPage(1);
+          setSearchTerm(value ? String(value) : '');
+        },
+        onClear: () => {
+          setPage(1);
+          setSearchTerm('');
+        },
+      },
+      {
+        id: 'domainSearch',
+        label: 'Domain Search',
+        type: 'text' as const,
+        placeholder: 'Search by domain name...',
+        value: domainSearchTerm,
+        onChange: (value: string | number | undefined) => {
+          setPage(1);
+          setDomainSearchTerm(value ? String(value) : '');
+        },
+        onClear: () => {
+          setPage(1);
+          setDomainSearchTerm('');
+        },
+      },
+      {
+        id: 'ensSearch',
+        label: 'ENS Search',
+        type: 'text' as const,
+        placeholder: 'Search by ENS name...',
+        value: ensSearchTerm,
+        onChange: (value: string | number | undefined) => {
+          setPage(1);
+          setEnsSearchTerm(value ? String(value) : '');
+        },
+        onClear: () => {
+          setPage(1);
+          setEnsSearchTerm('');
+        },
+      },
+    ],
+    [searchTerm, domainSearchTerm, ensSearchTerm],
   );
 
   return (
@@ -299,12 +374,6 @@ function UsersTable() {
             setPage(1);
             setPageSize(size);
           }}
-          searchTerm={searchTerm}
-          onSearchChange={(term) => {
-            setPage(1);
-            setSearchTerm(term);
-          }}
-          searchPlaceholder="Search by email, name, wallet, id, or ENS..."
           sorting={sorting}
           onSortingChange={setSorting}
           columnFilters={columnFilters}
@@ -313,10 +382,13 @@ function UsersTable() {
             setColumnFilters(filters);
           }}
           filterConfig={filterConfig}
+          customFilters={customFilters}
           renderSubRow={renderSubRow}
           getRowCanExpand={(row) => row.original.nftCount > 0}
           emptyMessage="No users found"
           loadingMessage="Loading users..."
+          columnVisibility={columnVisibility}
+          onColumnVisibilityChange={setColumnVisibility}
         />
       </CardContent>
     </Card>
@@ -325,28 +397,65 @@ function UsersTable() {
 function renderSubRow(row: Row<UserRow>) {
   return <UserNftsSubRow {...row} />;
 }
+// Helper function to apply filter operators for client-side filtering
+const applyFilterOperator = (
+  cellValue: any,
+  operator: string,
+  filterValue: any,
+): boolean => {
+  if (typeof cellValue === 'string' && typeof filterValue === 'string') {
+    const lowerCell = cellValue.toLowerCase();
+    const lowerFilter = filterValue.toLowerCase();
+    switch (operator) {
+      case 'like':
+        return lowerCell.includes(lowerFilter);
+      case 'eq':
+        return lowerCell === lowerFilter;
+      case 'neq':
+        return lowerCell !== lowerFilter;
+      default:
+        return lowerCell.includes(lowerFilter);
+    }
+  }
+
+  if (typeof cellValue === 'number' && typeof filterValue === 'number') {
+    switch (operator) {
+      case 'eq':
+        return cellValue === filterValue;
+      case 'neq':
+        return cellValue !== filterValue;
+      case 'gt':
+        return cellValue > filterValue;
+      case 'gte':
+        return cellValue >= filterValue;
+      case 'lt':
+        return cellValue < filterValue;
+      case 'lte':
+        return cellValue <= filterValue;
+      default:
+        return cellValue === filterValue;
+    }
+  }
+
+  return false;
+};
+
 const UserNftsSubRow = ({ original: user }: Row<UserRow>) => {
   type NftRow = UserRow['nfts'][number];
 
-  const {
-    pageSize: nftPageSize,
-    handlePageSizeChange,
-    pageIndex,
-    setPageIndex,
-    pageCount,
-    setPageCount,
-  } = usePagination({ defaultPageSize: 5 });
-
-  useEffect(() => {
-    const total = user.nfts?.length ?? 0;
-    const pages = Math.max(1, Math.ceil(total / nftPageSize));
-    setPageCount(pages);
-  }, [user.nfts, nftPageSize, setPageCount]);
+  const [globalFilter, setGlobalFilter] = useState('');
+  const { pageSize: nftPageSize, handlePageSizeChange } = usePagination({
+    defaultPageSize: 5,
+  });
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+    tokenId: false,
+  });
 
   const nftColumns = useMemo<Array<ColumnDef<NftRow>>>(
     () => [
       {
-        id: 'network',
+        accessorKey: 'chainId',
+        id: 'chainId',
         header: 'Network',
         cell: ({ row }) => {
           const chain = getChain(row.original.chainId);
@@ -359,10 +468,34 @@ const UserNftsSubRow = ({ original: user }: Row<UserRow>) => {
             </div>
           );
         },
+        filterFn: (row, columnId, filterValue) => {
+          const chainId = row.getValue(columnId) as number;
+          // Handle simple value (from inline filter or select)
+          if (
+            typeof filterValue === 'string' ||
+            typeof filterValue === 'number'
+          ) {
+            return String(chainId) === String(filterValue);
+          }
+          // Handle operator/value object (from filter panel)
+          if (
+            filterValue &&
+            typeof filterValue === 'object' &&
+            'operator' in filterValue
+          ) {
+            return applyFilterOperator(
+              chainId,
+              filterValue.operator,
+              Number(filterValue.value),
+            );
+          }
+          return true;
+        },
         size: 100,
       },
       {
         accessorKey: 'normalizedDomainName',
+        id: 'normalizedDomainName',
         header: 'Domain',
         cell: ({ row }) => (
           <AutoTruncateTextV2
@@ -372,10 +505,75 @@ const UserNftsSubRow = ({ original: user }: Row<UserRow>) => {
             {row.original.normalizedDomainName}
           </AutoTruncateTextV2>
         ),
+        filterFn: (row, columnId, filterValue) => {
+          const cellValue = String(row.getValue(columnId) || '');
+          // Handle simple value (from inline filter)
+          if (typeof filterValue === 'string') {
+            return cellValue.toLowerCase().includes(filterValue.toLowerCase());
+          }
+          // Handle operator/value object (from filter panel)
+          if (
+            filterValue &&
+            typeof filterValue === 'object' &&
+            'operator' in filterValue
+          ) {
+            return applyFilterOperator(
+              cellValue,
+              filterValue.operator,
+              String(filterValue.value),
+            );
+          }
+          return true;
+        },
         size: 200,
       },
       {
-        id: 'token',
+        id: 'expiration',
+        header: 'Expiration',
+        accessorKey: 'expirationTime',
+        cell: ({ row }) => {
+          const expirationTime = row.original.expirationTime;
+          if (!expirationTime)
+            return <span className="text-xs text-muted-foreground">-</span>;
+
+          const expirationDate = new Date(expirationTime);
+          const now = new Date();
+          const daysUntilExpiration = Math.floor(
+            (expirationDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24),
+          );
+          const monthsUntilExpiration = daysUntilExpiration / 30;
+
+          // Color coding: < 4 months = red, 4-12 months = orange, > 12 months = green
+          let textColor = 'text-muted-foreground';
+          if (monthsUntilExpiration < 4) {
+            textColor = 'text-red-500 dark:text-red-400';
+          } else if (monthsUntilExpiration < 12) {
+            textColor = 'text-orange-500 dark:text-orange-400';
+          } else {
+            textColor = 'text-green-500 dark:text-green-400';
+          }
+
+          // Format date as "19 Feb 2025"
+          const formattedDate = expirationDate.toLocaleDateString('en-GB', {
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric',
+          });
+
+          return (
+            <span className={`text-xs font-medium ${textColor}`}>
+              {formattedDate}
+              {daysUntilExpiration >= 0 && (
+                <span className="text-xs ml-1">({daysUntilExpiration}d)</span>
+              )}
+            </span>
+          );
+        },
+        size: 120,
+      },
+      {
+        accessorKey: 'tokenId',
+        id: 'tokenId',
         header: 'Token',
         cell: ({ row }) => {
           const explorerUrl = getBlockExplorerUrl(
@@ -397,17 +595,114 @@ const UserNftsSubRow = ({ original: user }: Row<UserRow>) => {
             </span>
           );
         },
+        filterFn: (row, columnId, filterValue) => {
+          const cellValue = String(row.getValue(columnId) || '');
+          // Handle simple value (from inline filter)
+          if (typeof filterValue === 'string') {
+            return cellValue.toLowerCase().includes(filterValue.toLowerCase());
+          }
+          // Handle operator/value object (from filter panel)
+          if (
+            filterValue &&
+            typeof filterValue === 'object' &&
+            'operator' in filterValue
+          ) {
+            return applyFilterOperator(
+              cellValue,
+              filterValue.operator,
+              String(filterValue.value),
+            );
+          }
+          return true;
+        },
         size: 200,
+      },
+      {
+        id: 'actions',
+        header: 'Actions',
+        cell: ({ row }) => {
+          const explorerUrl = getBlockExplorerUrl(
+            row.original.chainId,
+            row.original.tokenId,
+          );
+          if (!explorerUrl) return null;
+          return (
+            <a
+              href={explorerUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs text-primary hover:underline inline-flex items-center gap-1"
+            >
+              Visit Scan
+            </a>
+          );
+        },
+        size: 100,
       },
     ],
     [],
   );
 
-  const slicedNfts = useMemo(() => {
-    const start = pageIndex * nftPageSize;
-    const end = Math.min(start + nftPageSize, user.nfts.length);
-    return user.nfts.slice(start, end);
-  }, [user.nfts, pageIndex, nftPageSize]);
+  // Filter NFTs based on global filter
+  const filteredNfts = useMemo(() => {
+    if (!globalFilter) return user.nfts;
+    const lowerFilter = globalFilter.toLowerCase();
+    return user.nfts.filter((nft) => {
+      const domainName = nft.normalizedDomainName.toLowerCase();
+      const tokenId = nft.tokenId.toLowerCase();
+      const chainName = getChain(nft.chainId)?.name?.toLowerCase() ?? '';
+      return (
+        domainName.includes(lowerFilter) ||
+        tokenId.includes(lowerFilter) ||
+        chainName.includes(lowerFilter)
+      );
+    });
+  }, [user.nfts, globalFilter]);
+
+  // Sort NFTs by expiration date (ascending - soonest first)
+  const sortedNfts = useMemo(() => {
+    return [...filteredNfts].sort((a, b) => {
+      const dateA = new Date(a.expirationTime).getTime();
+      const dateB = new Date(b.expirationTime).getTime();
+      return dateA - dateB; // Ascending order
+    });
+  }, [filteredNfts]);
+
+  const nftFilterConfig = useMemo(
+    () => ({
+      normalizedDomainName: { type: 'text' as const, label: 'Domain Name' },
+      chainId: {
+        type: 'select' as const,
+        label: 'Network',
+        options: [
+          { value: String(CHAINS.base.id), label: CHAINS.base.name },
+          { value: String(CHAINS.mainnet.id), label: CHAINS.mainnet.name },
+          { value: String(CHAINS.sepolia.id), label: CHAINS.sepolia.name },
+        ],
+      },
+      tokenId: { type: 'text' as const, label: 'Token ID' },
+    }),
+    [],
+  );
+
+  const customNftFilters = useMemo(
+    () => [
+      {
+        id: 'globalSearch',
+        label: 'Search NFTs',
+        type: 'text' as const,
+        placeholder: 'Search by domain, token ID, or network...',
+        value: globalFilter,
+        onChange: (value: string | number | undefined) => {
+          setGlobalFilter(value ? String(value) : '');
+        },
+        onClear: () => {
+          setGlobalFilter('');
+        },
+      },
+    ],
+    [globalFilter],
+  );
 
   if (!user.nfts || user.nfts.length === 0) return null;
 
@@ -418,22 +713,16 @@ const UserNftsSubRow = ({ original: user }: Row<UserRow>) => {
       </div>
       <DataTable<NftRow>
         columns={nftColumns}
-        data={slicedNfts}
+        data={sortedNfts}
         isLoading={false}
         pageSize={nftPageSize}
         onPageSizeChange={handlePageSizeChange}
+        enableColumnFilters={true}
+        filterConfig={nftFilterConfig}
+        customFilters={customNftFilters}
+        columnVisibility={columnVisibility}
+        onColumnVisibilityChange={setColumnVisibility}
       />
-      <div className="flex items-center justify-between mt-2">
-        <div className="text-xs text-muted-foreground">
-          Page {pageIndex + 1} of {pageCount} — Total {user.nfts.length}{' '}
-          {user.nfts.length === 1 ? 'row' : 'rows'}
-        </div>
-        <TablePageSelector
-          pageIndex={pageIndex}
-          setPageIndex={setPageIndex}
-          pageCount={pageCount}
-        />
-      </div>
     </div>
   );
 };

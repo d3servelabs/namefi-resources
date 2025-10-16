@@ -17,6 +17,8 @@ import {
   useMemo,
   Fragment,
   type ReactNode,
+  type Dispatch,
+  type SetStateAction,
 } from 'react';
 import { Button } from '@/components/ui/shadcn/button';
 import { TablePageSizeSelector } from './table-page-size-selector';
@@ -28,6 +30,7 @@ import {
   ArrowDownWideNarrowIcon,
   ArrowUpNarrowWideIcon,
   ArrowUpDownIcon,
+  FilterIcon,
 } from 'lucide-react';
 import { cn } from '@/lib/cn';
 import {
@@ -39,10 +42,27 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/shadcn/dropdown-menu';
 import { Input } from '@/components/ui/shadcn/input';
+import { Badge } from '@/components/ui/shadcn/badge';
 import { ColumnFilter } from './column-filter';
+import { TableFilterPanel } from './table-filter-panel';
 
 type FilterConfig = {
-  [columnId: string]: 'text' | 'number' | 'date';
+  [columnId: string]: {
+    type: 'text' | 'number' | 'date' | 'select';
+    label?: string;
+    options?: { value: string; label: string }[];
+  };
+};
+
+type CustomFilterField = {
+  id: string;
+  label: string;
+  type: 'text' | 'number' | 'date' | 'select';
+  placeholder?: string;
+  options?: { value: string; label: string }[];
+  value?: string | number;
+  onChange: (value: string | number | undefined) => void;
+  onClear?: () => void;
 };
 
 type ServerDataTableProps<TData> = {
@@ -72,6 +92,7 @@ type ServerDataTableProps<TData> = {
   columnFilters?: ColumnFiltersState;
   onColumnFiltersChange?: (filters: ColumnFiltersState) => void;
   filterConfig?: FilterConfig;
+  customFilters?: CustomFilterField[];
 
   // Expansion
   renderSubRow?: (row: Row<TData>) => ReactNode;
@@ -80,6 +101,9 @@ type ServerDataTableProps<TData> = {
   // Custom rendering
   emptyMessage?: string;
   loadingMessage?: string;
+
+  columnVisibility?: VisibilityState;
+  onColumnVisibilityChange?: Dispatch<SetStateAction<VisibilityState>>;
 };
 
 export function ServerDataTable<TData>(props: ServerDataTableProps<TData>) {
@@ -102,15 +126,18 @@ export function ServerDataTable<TData>(props: ServerDataTableProps<TData>) {
     columnFilters: controlledColumnFilters,
     onColumnFiltersChange,
     filterConfig,
+    customFilters,
     renderSubRow,
     getRowCanExpand,
     emptyMessage = 'No data found',
     loadingMessage = 'Loading...',
+    columnVisibility,
+    onColumnVisibilityChange,
   } = props;
 
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [columnSizing, setColumnSizing] = useState<ColumnSizingState>({});
   const [expanded, setExpanded] = useState<ExpandedState>({});
+  const [filterPanelOpen, setFilterPanelOpen] = useState(false);
 
   // Local state for sorting if not controlled
   const [localSorting, setLocalSorting] = useState<SortingState>([]);
@@ -150,7 +177,7 @@ export function ServerDataTable<TData>(props: ServerDataTableProps<TData>) {
       columnFilters,
     },
     onSortingChange: setSorting,
-    onColumnVisibilityChange: setColumnVisibility,
+    onColumnVisibilityChange,
     onColumnSizingChange: setColumnSizing,
     onExpandedChange: setExpanded,
     onColumnFiltersChange: setColumnFilters,
@@ -202,21 +229,42 @@ export function ServerDataTable<TData>(props: ServerDataTableProps<TData>) {
     );
   }, [searchTerm, handleSearchChange, searchPlaceholder, onSearchChange]);
 
+  // Calculate total active filter count
+  const activeFilterCount = useMemo(() => {
+    const customFilterCount =
+      customFilters?.filter((f) => f.value !== undefined && f.value !== '')
+        .length ?? 0;
+    return columnFilters.length + customFilterCount;
+  }, [columnFilters.length, customFilters]);
+
+  // Get columns that can be hidden for visibility dropdown
+  const visibilityColumns = useMemo(
+    () => table.getAllColumns().filter((column) => column.getCanHide()),
+    [table],
+  );
+
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between gap-3 px-1">
-        <div className="flex items-center gap-3">
-          {searchInput}
-          <TablePageSizeSelector
-            pageSize={pageSize}
-            onPageSizeChange={onPageSizeChange}
-          />
-          <span className="text-sm text-muted-foreground">
-            Showing {data.length} of {totalCount}{' '}
-            {totalCount === 1 ? 'row' : 'rows'}
-          </span>
-        </div>
+        <div className="flex items-center gap-3">{searchInput}</div>
         <div className="flex items-center gap-2">
+          {/* Filter Panel Toggle */}
+          {(filterConfig || customFilters) && onColumnFiltersChange && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setFilterPanelOpen(true)}
+            >
+              <FilterIcon className="h-3 w-3 mr-1" />
+              Filters
+              {activeFilterCount > 0 && (
+                <Badge variant="secondary" className="ml-2">
+                  {activeFilterCount}
+                </Badge>
+              )}
+            </Button>
+          )}
+
           {/* Column Visibility Toggle */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -228,81 +276,24 @@ export function ServerDataTable<TData>(props: ServerDataTableProps<TData>) {
             <DropdownMenuContent align="end" className="w-[180px]">
               <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              {table
-                .getAllColumns()
-                .filter((column) => column.getCanHide())
-                .map((column) => {
-                  return (
-                    <DropdownMenuCheckboxItem
-                      key={column.id}
-                      className="capitalize"
-                      checked={column.getIsVisible()}
-                      onCheckedChange={(value) =>
-                        column.toggleVisibility(!!value)
-                      }
-                      onSelect={(e) => e.preventDefault()}
-                    >
-                      {column.id}
-                    </DropdownMenuCheckboxItem>
-                  );
-                })}
+              {visibilityColumns.map((column) => (
+                <DropdownMenuCheckboxItem
+                  key={column.id}
+                  className="capitalize"
+                  checked={column.getIsVisible()}
+                  onCheckedChange={(value) => column.toggleVisibility(!!value)}
+                  onSelect={(e) => e.preventDefault()}
+                >
+                  {column.id}
+                </DropdownMenuCheckboxItem>
+              ))}
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
       </div>
 
       <div className="rounded-lg border border-border overflow-visible relative">
-        {isFetching && !isLoading && (
-          <div className="absolute top-0 left-0 right-0 h-1.5 bg-card z-50 overflow-x-clip overflow-y-visible">
-            <div
-              className="h-full absolute w-[40%]"
-              style={{
-                animation: 'gradient-slide 4s ease-in-out infinite',
-              }}
-            >
-              {/* Core gradient layer */}
-              <div
-                className="h-full w-full absolute"
-                style={{
-                  background: `linear-gradient(
-                  90deg,
-                   transparent 0%,
-                    oklch(from var(--brand-primary) calc(l/1.2) c h) 35%,
-                     oklch(from var(--brand-primary) calc(l/1.1) c h) 50%,
-                      oklch(from var(--brand-primary) calc(l/1.2) c h) 65%,
-                       transparent 100%)`,
-                }}
-              >
-                {/* Halo effect layer */}
-                <div
-                  id="halo"
-                  className="-left-2 -right-2 w-full h-1 top-2 z-10 blur-md absolute"
-                  style={{
-                    background: `linear-gradient(90deg,
-                   transparent 0%,
-                    oklch(from var(--brand-primary) l c h / 0.4) 40%,
-                    oklch(from var(--brand-primary) l c h / 0.6) 60%,
-                    oklch(from var(--brand-primary) l c h / 0.4) 90%,
-                    transparent 100%)`,
-                    boxShadow:
-                      '0 0 12px 4px oklch(from var(--brand-primary) calc(l/3) c h)',
-                  }}
-                />
-              </div>
-            </div>
-            <style jsx>{`
-              @keyframes gradient-slide {
-                0% {
-                  left: -50%;
-                }
-                100% {
-                  left: 110%;
-                }
-
-              }
-            `}</style>
-          </div>
-        )}
+        {isFetching && !isLoading && <TableLoadingBar />}
         <div className="overflow-x-auto relative">
           <table
             className="w-full text-sm"
@@ -377,7 +368,7 @@ export function ServerDataTable<TData>(props: ServerDataTableProps<TData>) {
                                     ? header.column.columnDef.header
                                     : header.column.id
                                 }
-                                filterType={filterConfig[header.column.id]}
+                                filterType={filterConfig[header.column.id].type}
                                 value={
                                   columnFilters?.find(
                                     (f) => f.id === header.column.id,
@@ -509,9 +500,15 @@ export function ServerDataTable<TData>(props: ServerDataTableProps<TData>) {
 
       {/* Pagination Controls */}
       <div className="flex items-center justify-between">
-        <div className="text-sm text-muted-foreground">
-          Page {page} of {totalPages} — Total {totalCount}{' '}
-          {totalCount === 1 ? 'row' : 'rows'}
+        <div className="flex items-center gap-2">
+          <TablePageSizeSelector
+            pageSize={pageSize}
+            onPageSizeChange={onPageSizeChange}
+          />
+          <div className="text-sm text-muted-foreground">
+            Page {page} of {totalPages} — Total {totalCount}{' '}
+            {totalCount === 1 ? 'row' : 'rows'}
+          </div>
         </div>
         <TablePageSelector
           pageIndex={page - 1}
@@ -521,6 +518,72 @@ export function ServerDataTable<TData>(props: ServerDataTableProps<TData>) {
           pageCount={totalPages}
         />
       </div>
+
+      {/* Filter Panel */}
+      {(filterConfig || customFilters) && onColumnFiltersChange && (
+        <TableFilterPanel
+          open={filterPanelOpen}
+          onOpenChange={setFilterPanelOpen}
+          filterConfig={filterConfig || {}}
+          columnFilters={columnFilters}
+          onColumnFiltersChange={onColumnFiltersChange}
+          customFilters={customFilters}
+        />
+      )}
+    </div>
+  );
+}
+
+export function TableLoadingBar() {
+  return (
+    <div className="absolute top-0 left-0 right-0 h-1.5 bg-card z-50 overflow-x-clip overflow-y-visible">
+      <div
+        className="h-full absolute w-[40%]"
+        style={{
+          animation: 'gradient-slide 4s ease-in-out infinite',
+        }}
+      >
+        {/* Core gradient layer */}
+        <div
+          className="h-full w-full absolute"
+          style={{
+            background: `linear-gradient(
+                  90deg,
+                   transparent 0%,
+                    oklch(from var(--brand-primary) calc(l/1.2) c h) 35%,
+                     oklch(from var(--brand-primary) calc(l/1.1) c h) 50%,
+                      oklch(from var(--brand-primary) calc(l/1.2) c h) 65%,
+                       transparent 100%)`,
+          }}
+        >
+          {/* Halo effect layer */}
+          <div
+            id="halo"
+            className="-left-2 -right-2 w-full h-1 top-2 z-10 blur-md absolute"
+            style={{
+              background: `linear-gradient(90deg,
+                   transparent 0%,
+                    oklch(from var(--brand-primary) l c h / 0.4) 40%,
+                    oklch(from var(--brand-primary) l c h / 0.6) 60%,
+                    oklch(from var(--brand-primary) l c h / 0.4) 90%,
+                    transparent 100%)`,
+              boxShadow:
+                '0 0 12px 4px oklch(from var(--brand-primary) calc(l/3) c h)',
+            }}
+          />
+        </div>
+      </div>
+      <style jsx>{`
+              @keyframes gradient-slide {
+                0% {
+                  left: -50%;
+                }
+                100% {
+                  left: 110%;
+                }
+
+              }
+            `}</style>
     </div>
   );
 }

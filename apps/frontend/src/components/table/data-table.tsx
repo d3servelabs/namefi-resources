@@ -3,18 +3,40 @@ import {
   flexRender,
   getCoreRowModel,
   getSortedRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
   useReactTable,
   type SortingState,
   type ColumnSizingState,
   type VisibilityState,
+  type ColumnFiltersState,
   getExpandedRowModel,
   type ExpandedState,
   type Row,
+  type PaginationState,
 } from '@tanstack/react-table';
-import { Fragment, useState, type ReactNode } from 'react';
+import {
+  Fragment,
+  useState,
+  useEffect,
+  useMemo,
+  type ReactNode,
+  type Dispatch,
+  type SetStateAction,
+} from 'react';
 import { Button } from '@/components/ui/shadcn/button';
 import { TablePageSizeSelector } from './table-page-size-selector';
-import { ArrowUpDown, Loader2Icon, ColumnsIcon } from 'lucide-react';
+import { TableFilterPanel } from './table-filter-panel';
+import { ColumnFilter } from './column-filter';
+import {
+  ArrowUpDown,
+  Loader2Icon,
+  ColumnsIcon,
+  FilterIcon,
+  ArrowDownWideNarrowIcon,
+  ArrowUpNarrowWideIcon,
+  ArrowUpDownIcon,
+} from 'lucide-react';
 import { cn } from '@/lib/cn';
 import {
   DropdownMenu,
@@ -24,6 +46,26 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/shadcn/dropdown-menu';
+import { Badge } from '@/components/ui/shadcn/badge';
+
+type FilterConfig = {
+  [columnId: string]: {
+    type: 'text' | 'number' | 'date' | 'select';
+    label?: string;
+    options?: { value: string; label: string }[];
+  };
+};
+
+type CustomFilterField = {
+  id: string;
+  label: string;
+  type: 'text' | 'number' | 'date' | 'select';
+  placeholder?: string;
+  options?: { value: string; label: string }[];
+  value?: string | number;
+  onChange: (value: string | number | undefined) => void;
+  onClear?: () => void;
+};
 
 type DataTableProps<TData> = {
   columns: ColumnDef<TData, any>[];
@@ -37,6 +79,13 @@ type DataTableProps<TData> = {
   onOrderByChange?: (o: 'timestamp_desc' | 'timestamp_asc') => void;
   renderSubRow?: (row: Row<TData>) => ReactNode;
   getRowCanExpand?: (row: Row<TData>) => boolean;
+
+  // Column filtering
+  filterConfig?: FilterConfig;
+  enableColumnFilters?: boolean;
+  customFilters?: CustomFilterField[];
+  columnVisibility?: VisibilityState;
+  onColumnVisibilityChange?: Dispatch<SetStateAction<VisibilityState>>;
 };
 
 export function DataTable<TData>(props: DataTableProps<TData>) {
@@ -52,12 +101,39 @@ export function DataTable<TData>(props: DataTableProps<TData>) {
     onOrderByChange,
     renderSubRow,
     getRowCanExpand,
+    filterConfig,
+    enableColumnFilters = false,
+    customFilters,
+    columnVisibility,
+    onColumnVisibilityChange,
   } = props;
 
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [columnSizing, setColumnSizing] = useState<ColumnSizingState>({});
   const [expanded, setExpanded] = useState<ExpandedState>({});
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [filterPanelOpen, setFilterPanelOpen] = useState(false);
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: pageSize,
+  });
+
+  // Create a stable string representation of filters for dependency tracking
+  const filterKey = useMemo(
+    () => JSON.stringify(columnFilters),
+    [columnFilters],
+  );
+
+  // Reset to page 1 when filters change
+  // biome-ignore lint/correctness/useExhaustiveDependencies: filterKey intentionally triggers reset
+  useEffect(() => {
+    setPagination((prev) => ({ ...prev, pageIndex: 0 }));
+  }, [filterKey]);
+
+  // Reset to page 1 and sync pageSize when it changes
+  useEffect(() => {
+    setPagination({ pageIndex: 0, pageSize });
+  }, [pageSize]);
 
   const table = useReactTable({
     data,
@@ -67,13 +143,21 @@ export function DataTable<TData>(props: DataTableProps<TData>) {
       columnVisibility,
       columnSizing,
       expanded,
+      columnFilters,
+      pagination,
     },
     onSortingChange: setSorting,
-    onColumnVisibilityChange: setColumnVisibility,
+    onColumnVisibilityChange,
     onColumnSizingChange: setColumnSizing,
     onExpandedChange: setExpanded,
+    onColumnFiltersChange: setColumnFilters,
+    onPaginationChange: setPagination,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: enableColumnFilters
+      ? getFilteredRowModel()
+      : undefined,
+    getPaginationRowModel: getPaginationRowModel(),
     getExpandedRowModel: getExpandedRowModel(),
     getRowCanExpand: getRowCanExpand,
     columnResizeMode: 'onChange',
@@ -107,6 +191,30 @@ export function DataTable<TData>(props: DataTableProps<TData>) {
           </span>
         </div>
         <div className="flex items-center gap-2">
+          {/* Filter Panel Toggle */}
+          {enableColumnFilters && (filterConfig || customFilters) && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setFilterPanelOpen(true)}
+            >
+              <FilterIcon className="h-3 w-3 mr-1" />
+              Filters
+              {(() => {
+                const customFilterCount =
+                  customFilters?.filter(
+                    (f) => f.value !== undefined && f.value !== '',
+                  ).length ?? 0;
+                const totalCount = columnFilters.length + customFilterCount;
+                return totalCount > 0 ? (
+                  <Badge variant="secondary" className="ml-2">
+                    {totalCount}
+                  </Badge>
+                ) : null;
+              })()}
+            </Button>
+          )}
+
           {/* Column Visibility Toggle */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -229,8 +337,55 @@ export function DataTable<TData>(props: DataTableProps<TData>) {
                           header.getContext(),
                         )}
                         {header.column.getCanSort() && (
-                          <ArrowUpDown className="h-3 w-3 opacity-50" />
+                          <div className="flex flex-col">
+                            {header.column.getIsSorted() === 'asc' ? (
+                              <ArrowUpNarrowWideIcon className="h-3 w-3 text-primary" />
+                            ) : header.column.getIsSorted() === 'desc' ? (
+                              <ArrowDownWideNarrowIcon className="h-3 w-3 text-primary" />
+                            ) : (
+                              <ArrowUpDownIcon className="h-3 w-3 opacity-50" />
+                            )}
+                          </div>
                         )}
+                        {enableColumnFilters &&
+                          filterConfig?.[header.column.id] && (
+                            // biome-ignore lint/a11y/useKeyWithClickEvents: not needed, this just to catch the event to stop event bubbling up
+                            // biome-ignore lint/a11y/noStaticElementInteractions: needed to stop event bubbling up
+                            <div onClick={(e) => e.stopPropagation()}>
+                              <ColumnFilter
+                                columnId={header.column.id}
+                                columnName={
+                                  typeof header.column.columnDef.header ===
+                                  'string'
+                                    ? header.column.columnDef.header
+                                    : header.column.id
+                                }
+                                filterType={filterConfig[header.column.id].type}
+                                options={filterConfig[header.column.id].options}
+                                value={
+                                  columnFilters?.find(
+                                    (f) => f.id === header.column.id,
+                                  )?.value as any
+                                }
+                                onChange={(value) => {
+                                  const newFilters = value
+                                    ? [
+                                        ...columnFilters.filter(
+                                          (f) => f.id !== header.column.id,
+                                        ),
+                                        {
+                                          id: header.column.id,
+                                          value: value,
+                                        },
+                                      ]
+                                    : columnFilters.filter(
+                                        (f) => f.id !== header.column.id,
+                                      );
+                                  setColumnFilters(newFilters);
+                                }}
+                              />
+                            </div>
+                          )}
                       </div>
                       {/* Resize handle */}
                       {header.column.getCanResize() && (
@@ -338,6 +493,46 @@ export function DataTable<TData>(props: DataTableProps<TData>) {
           </table>
         </div>
       </div>
+
+      {/* Pagination Controls */}
+      <div className="flex items-center justify-between mt-2">
+        <div className="text-xs text-muted-foreground">
+          Page {table.getState().pagination.pageIndex + 1} of{' '}
+          {table.getPageCount()} — Total{' '}
+          {table.getFilteredRowModel().rows.length}{' '}
+          {table.getFilteredRowModel().rows.length === 1 ? 'row' : 'rows'}
+        </div>
+        <div className="flex items-center gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+          >
+            Previous
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+          >
+            Next
+          </Button>
+        </div>
+      </div>
+
+      {/* Filter Panel */}
+      {enableColumnFilters && (filterConfig || customFilters) && (
+        <TableFilterPanel
+          open={filterPanelOpen}
+          onOpenChange={setFilterPanelOpen}
+          filterConfig={filterConfig || {}}
+          columnFilters={columnFilters}
+          onColumnFiltersChange={setColumnFilters}
+          customFilters={customFilters}
+        />
+      )}
     </div>
   );
 }
