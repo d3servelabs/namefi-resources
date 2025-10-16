@@ -22,13 +22,18 @@ type FilterOperator = 'like' | 'eq' | 'neq' | 'gt' | 'gte' | 'lt' | 'lte';
 type ColumnFilterProps = {
   columnId: string;
   columnName: string;
-  filterType?: 'text' | 'number' | 'date';
-  value?: { operator: FilterOperator; value: string | number | Date };
+  filterType?: 'text' | 'number' | 'date' | 'select';
+  value?:
+    | { operator: FilterOperator; value: string | number | Date }
+    | string
+    | number
+    | Date;
   onChange: (
     value:
       | { operator: FilterOperator; value: string | number | Date }
       | undefined,
   ) => void;
+  options?: { value: string; label: string }[];
 };
 
 const OPERATORS_BY_TYPE: Record<
@@ -56,6 +61,10 @@ const OPERATORS_BY_TYPE: Record<
     { value: 'lt', label: 'Before' },
     { value: 'lte', label: 'On or Before' },
   ],
+  select: [
+    { value: 'eq', label: 'Equals' },
+    { value: 'neq', label: 'Not Equals' },
+  ],
 };
 
 const formatFilterInputValue = (raw?: string | number | Date): string => {
@@ -71,27 +80,36 @@ export function ColumnFilter({
   filterType = 'text',
   value,
   onChange,
+  options,
 }: ColumnFilterProps) {
   const operators = OPERATORS_BY_TYPE[filterType] ?? OPERATORS_BY_TYPE.text;
   const defaultOperator = operators[0]?.value ?? 'like';
 
+  // Normalize value to FilterValue format
+  const normalizedValue =
+    value && typeof value === 'object' && 'operator' in value
+      ? value
+      : value
+        ? { operator: defaultOperator, value: value as string | number | Date }
+        : undefined;
+
   const [open, setOpen] = useState(false);
   const [operator, setOperator] = useState<FilterOperator>(
-    value?.operator ?? defaultOperator,
+    normalizedValue?.operator ?? defaultOperator,
   );
   const [filterValue, setFilterValue] = useState<string>(
-    formatFilterInputValue(value?.value) ?? '',
+    formatFilterInputValue(normalizedValue?.value) ?? '',
   );
 
   useEffect(() => {
-    if (!value) {
+    if (!normalizedValue) {
       setOperator(defaultOperator);
       setFilterValue('');
       return;
     }
-    setOperator(value.operator ?? defaultOperator);
-    setFilterValue(formatFilterInputValue(value.value));
-  }, [value, defaultOperator]);
+    setOperator(normalizedValue.operator ?? defaultOperator);
+    setFilterValue(formatFilterInputValue(normalizedValue.value));
+  }, [normalizedValue, defaultOperator]);
 
   const handleApply = () => {
     if (!filterValue) {
@@ -125,7 +143,7 @@ export function ColumnFilter({
     setOpen(false);
   };
 
-  const isActive = !!value;
+  const isActive = !!normalizedValue;
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -176,24 +194,42 @@ export function ColumnFilter({
             >
               Value
             </label>
-            <Input
-              id="filter-value"
-              type={
-                filterType === 'number'
-                  ? 'number'
-                  : filterType === 'date'
-                    ? 'date'
-                    : 'text'
-              }
-              placeholder={`Enter ${columnName.toLowerCase()}...`}
-              value={filterValue}
-              onChange={(e) => setFilterValue(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') {
-                  handleApply();
+            {filterType === 'select' && options ? (
+              <Select
+                value={filterValue}
+                onValueChange={(v) => setFilterValue(v)}
+              >
+                <SelectTrigger id="filter-value">
+                  <SelectValue placeholder="Select..." />
+                </SelectTrigger>
+                <SelectContent>
+                  {options.map((option) => (
+                    <SelectItem key={option.value} value={option.value}>
+                      {option.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            ) : (
+              <Input
+                id="filter-value"
+                type={
+                  filterType === 'number'
+                    ? 'number'
+                    : filterType === 'date'
+                      ? 'date'
+                      : 'text'
                 }
-              }}
-            />
+                placeholder={`Enter ${columnName.toLowerCase()}...`}
+                value={filterValue}
+                onChange={(e) => setFilterValue(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    handleApply();
+                  }
+                }}
+              />
+            )}
           </div>
 
           <div className="flex gap-2">
