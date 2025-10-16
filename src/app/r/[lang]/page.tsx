@@ -32,12 +32,13 @@ export async function generateMetadata({
 
   const languageAlternates: Partial<Record<Locale, string>> = {};
   for (const localeOption of i18n.locales) {
-    languageAlternates[localeOption] = `/r/${localeOption}`;
+    languageAlternates[localeOption] = `${baseUrl}/r/${localeOption}`;
   }
 
   return {
+    metadataBase: new URL(baseUrl),
     alternates: {
-      canonical: canonicalPath,
+      canonical: url,
       languages: languageAlternates,
     },
     title: { absolute: pageTitle },
