@@ -350,15 +350,22 @@ jobs:
       - name: Install Vercel CLI
         run: bun add --global vercel@latest
 
-      - name: Promote deployment
+      - name: Promote deployment to production
+        if: needs.compute-env.outputs.label == 'prod'
         run: |
-          echo "Promoting deployment to ${{ needs.compute-env.outputs.label }}: ${{ needs.deploy-vercel.outputs.deployment_url }}"
-          # Use vercel promote to route traffic
+          echo "Promoting deployment to production: ${{ needs.deploy-vercel.outputs.deployment_url }}"
+          # Use vercel promote to route production traffic
           vercel promote --yes "${{ needs.deploy-vercel.outputs.deployment_id }}" --token=${{ secrets.VERCEL_ACCOUNT_TOKEN }} --scope=${{ secrets.VERCEL_ORG_ID }}
-          echo "✅ Traffic routed successfully to ${{ needs.compute-env.outputs.label }} environment"
+          echo "✅ Production traffic routed successfully"
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_ASTRA_PROJECT_ID }}
+
+      - name: Dev deployment ready
+        if: needs.compute-env.outputs.label == 'dev'
+        run: |
+          echo "Development deployment is ready at: ${{ needs.deploy-vercel.outputs.deployment_url }}"
+          echo "✅ No promotion needed for dev environment"
 
   # Optional: Trigger additional workflow for prod deployment after tag build
   # Only runs for astra/v* tags (not astra/prod/v*)
