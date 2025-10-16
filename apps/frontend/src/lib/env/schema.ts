@@ -2,8 +2,9 @@ import { z } from 'zod';
 
 export const configSchema = z.object({
   TYPE: z.enum(['development', 'production', 'local']),
-  BACKEND_URL: z.string().url(),
-  FIRST_PARTY_DEPLOYMENT_URL: z.string().url(),
+  BACKEND_URL: z.url(),
+  RESOURCES_URL: z.url(),
+  FIRST_PARTY_DEPLOYMENT_URL: z.url(),
   GA_MEASUREMENT_ID: z.string(),
   PRIVY_APP_ID: z.string(),
   STRIPE_PUBLISHABLE_KEY: z.string(),

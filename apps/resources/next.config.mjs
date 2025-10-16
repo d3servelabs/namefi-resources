@@ -7,6 +7,7 @@ const withMDX = createMdx({
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md', 'mdx'],
+  assetPrefix: '/r',
 };
 
 // biome-ignore lint/style/noDefaultExport: Next.js requires a default export for the config file.

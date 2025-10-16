@@ -18,8 +18,8 @@ export function LocaleSwitcher({ activeLocale, label }: LocaleSwitcherProps) {
     const segments =
       pathname?.split('/').filter((segment) => segment.length > 0) ?? [];
 
-    if (segments.length > 0 && i18n.locales.includes(segments[0] as Locale)) {
-      segments[0] = nextLocale;
+    if (segments.length > 0 && i18n.locales.includes(segments[1] as Locale)) {
+      segments[1] = nextLocale;
     } else {
       segments.unshift(nextLocale);
     }

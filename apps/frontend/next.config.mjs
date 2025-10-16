@@ -20,7 +20,7 @@ const withMDX = createMdx({
   extension: /\.mdx?$/,
 });
 
-/** @type {{ config: import('./src/lib/env/schema').Config }} */
+/** @type {{ config: import('./src/lib/env/schema').ConfigInput }} */
 const { config: appConfig } = await jiti.import('./src/lib/env/load');
 
 /** @type {import('next').NextConfig} */
@@ -74,7 +74,7 @@ const nextConfig = {
     return [
       {
         source: '/r/:path*',
-        destination: 'https://r.namefi.io/:path*',
+        destination: `${appConfig.RESOURCES_URL}/r/:path*`,
       },
       {
         source: '/my-domains',

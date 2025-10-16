@@ -5,6 +5,7 @@ import { POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES } from '../consts';
 const localConfig: ConfigInput = {
   TYPE: 'local',
   BACKEND_URL: 'http://localhost:3000',
+  RESOURCES_URL: 'https://localhost:3002',
   FIRST_PARTY_DEPLOYMENT_URL: 'https://localhost:5050',
   GA_MEASUREMENT_ID: 'G-PHKF9PM32W',
   PRIVY_APP_ID: 'cm2lx4u5a03x3rtgp4keapmrb',
