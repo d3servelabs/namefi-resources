@@ -354,7 +354,7 @@ jobs:
         run: |
           echo "Promoting deployment to ${{ needs.compute-env.outputs.label }}: ${{ needs.deploy-vercel.outputs.deployment_url }}"
           # Use vercel promote to route traffic
-          vercel promote "${{ needs.deploy-vercel.outputs.deployment_id }}" --token=${{ secrets.VERCEL_ACCOUNT_TOKEN }} --scope=${{ secrets.VERCEL_ORG_ID }}
+          vercel promote --yes "${{ needs.deploy-vercel.outputs.deployment_id }}" --token=${{ secrets.VERCEL_ACCOUNT_TOKEN }} --scope=${{ secrets.VERCEL_ORG_ID }}
           echo "✅ Traffic routed successfully to ${{ needs.compute-env.outputs.label }} environment"
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
