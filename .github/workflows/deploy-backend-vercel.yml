@@ -1,0 +1,483 @@
+name: Deploy Backend and Vercel
+
+on:
+  push:
+    branches:
+      - main    # Regular push to main branch deploys to dev
+    tags:
+      - 'astra/prod/v*'  # Tags like astra/prod/v1.0.0 for production deployment
+      - 'astra/v*'       # Tags like astra/v1.0.0 (marker for triggering prod deployment)
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        default: 'dev'
+        type: choice
+        options:
+          - dev
+          - production
+
+env:
+  PROJECT_ID: ${{ vars.GCP_PROJECT_ID }} # GCP project ID
+  REGION: ${{ vars.GCP_REGION }} # GCP region
+  REPO_NAME: ${{ vars.REPOSITORY_NAME }} # Artifact Registry repository name
+  SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_RELEASE_CHANNEL_URL }} # Slack webhook URL
+jobs:
+  # Compute environment variables
+  compute-env:
+    name: Compute Environment Variables
+    runs-on: ubuntu-latest
+    outputs:
+      label: ${{ steps.compute.outputs.label }}
+      infisical_token_selector: ${{ steps.infisical_token_selector.outputs.infisical_token_selector }}
+      vercel_env: ${{ steps.compute.outputs.vercel_env }}
+      should_trigger_prod: ${{ steps.compute.outputs.should_trigger_prod }}
+    steps:
+      - name: Compute environment values
+        id: compute
+        run: |
+          # Determine if this is a production deployment
+          IS_PROD="false"
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" && "${{ github.event.inputs.environment }}" == "production" ]]; then
+            IS_PROD="true"
+          elif [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == refs/tags/astra/prod/v* ]]; then
+            IS_PROD="true"
+          fi
+
+          # Set label (prod or dev)
+          if [[ "$IS_PROD" == "true" ]]; then
+            echo "label=prod" >> $GITHUB_OUTPUT
+            echo "vercel_env=production" >> $GITHUB_OUTPUT
+          else
+            echo "label=dev" >> $GITHUB_OUTPUT
+            echo "vercel_env=preview" >> $GITHUB_OUTPUT
+          fi
+
+          # Determine if we should trigger prod deployment (only for astra/v* tags, not astra/prod/v*)
+          SHOULD_TRIGGER="false"
+          if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == refs/tags/astra/v* && "${{ github.ref }}" != refs/tags/astra/prod/v* ]]; then
+            SHOULD_TRIGGER="true"
+          fi
+          echo "should_trigger_prod=$SHOULD_TRIGGER" >> $GITHUB_OUTPUT
+
+          # Output for debugging
+          echo "Event: ${{ github.event_name }}"
+          echo "Ref: ${{ github.ref }}"
+          echo "Is Production: $IS_PROD"
+          echo "Label: $([ "$IS_PROD" == "true" ] && echo "prod" || echo "dev")"
+          echo "Vercel Env: $([ "$IS_PROD" == "true" ] && echo "production" || echo "preview")"
+          echo "Should Trigger Prod: $SHOULD_TRIGGER"
+
+      - name: Set Infisical token selector
+        id: infisical_token_selector
+        run: |
+          if [[ "${{ steps.compute.outputs.label }}" == "prod" ]]; then
+            echo "infisical_token_selector=prod" >> $GITHUB_OUTPUT
+          else
+            echo "infisical_token_selector=dev" >> $GITHUB_OUTPUT
+          fi
+
+  # Check if we should skip this run (if tag exists for same commit on main push)
+  check-duplicate:
+    name: Check for Duplicate Runs
+    runs-on: ubuntu-latest
+    outputs:
+      should_skip: ${{ steps.check.outputs.should_skip }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check if tag exists for this commit
+        id: check
+        run: |
+          # Only check for duplicates on main branch push
+          if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/main" ]]; then
+            # Get the current commit SHA
+            COMMIT_SHA="${{ github.sha }}"
+
+            # Check if any astra/v* or astra/prod/v* tags point to this commit
+            TAGS=$(git tag --points-at $COMMIT_SHA | grep -E '^astra/(prod/)?v' || true)
+
+            if [ ! -z "$TAGS" ]; then
+              echo "Found tags for this commit: $TAGS"
+              echo "should_skip=true" >> $GITHUB_OUTPUT
+              echo "Skipping workflow - tag-based deployment will handle this"
+            else
+              echo "No tags found for this commit"
+              echo "should_skip=false" >> $GITHUB_OUTPUT
+            fi
+          else
+            echo "Not a main branch push, proceeding with workflow"
+            echo "should_skip=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Debug output
+        run: |
+          echo "Event: ${{ github.event_name }}"
+          echo "Ref: ${{ github.ref }}"
+          echo "Should skip: ${{ steps.check.outputs.should_skip }}"
+
+  # Backend build job
+  build-backend:
+    name: Build Backend Container
+    needs: [compute-env, check-duplicate]
+    if: needs.check-duplicate.outputs.should_skip != 'true'
+    runs-on: 'blacksmith-4vcpu-ubuntu-2204'
+    permissions:
+      contents: read
+      id-token: write # Required for GCP Workload Identity Federation
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Debug environment variables
+        run: |
+          echo "Event name: ${{ github.event_name }}"
+          echo "Ref: ${{ github.ref }}"
+          echo "Environment: ${{ needs.compute-env.outputs.label }}"
+          echo "Vercel Environment: ${{ needs.compute-env.outputs.vercel_env }}"
+
+      # Set up Google Cloud authentication using WIF
+      - name: Google Auth
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
+          service_account: ${{ vars.GCP_WIF_SERVICE_ACCOUNT }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Configure Docker for Artifact Registry
+        run: gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev
+
+      - name: 'Build and Push Container'
+        run: |-
+          DOCKER_TAG="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/cloud-run-source-deploy/${{ env.REPO_NAME }}/namefi-astra-api-${{ needs.compute-env.outputs.label }}:${{ github.sha }}"
+          docker build --tag "${DOCKER_TAG}" . -f apps/backend/Dockerfile
+          docker push "${DOCKER_TAG}"
+
+  # Deploy to Cloud Run (Backend API)
+  deploy-backend-api:
+    name: Deploy Backend API to Cloud Run
+    needs: [compute-env, build-backend]
+    runs-on: 'ubuntu-latest'
+    permissions:
+      contents: read
+      id-token: write # Required for GCP Workload Identity Federation
+    steps:
+      - name: Google Auth
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
+          service_account: ${{ vars.GCP_WIF_SERVICE_ACCOUNT }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Deploy to Cloud Run (Backend/API)
+        id: deploy
+        uses: google-github-actions/deploy-cloudrun@v2
+        with:
+          service: 'namefi-astra-api-${{ needs.compute-env.outputs.label }}'
+          region: ${{ env.REGION }}
+          project_id: '${{ env.PROJECT_ID }}'
+          image: '${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/cloud-run-source-deploy/${{ env.REPO_NAME }}/namefi-astra-api-${{ needs.compute-env.outputs.label }}:${{ github.sha }}'
+
+      - name: Show Backend API URL
+        run: echo "Backend API deployed to ${{ steps.deploy.outputs.url }}"
+
+  # Deploy to Cloud Run (Temporal)
+  deploy-backend-temporal:
+    name: Deploy Temporal to Cloud Run
+    needs: [compute-env, build-backend]
+    runs-on: 'ubuntu-latest'
+    permissions:
+      contents: read
+      id-token: write # Required for GCP Workload Identity Federation
+    steps:
+      - name: Google Auth
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
+          service_account: ${{ vars.GCP_WIF_SERVICE_ACCOUNT }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Deploy to Cloud Run (Backend/Temporal)
+        id: deploy-temporal
+        uses: google-github-actions/deploy-cloudrun@v2
+        with:
+          service: 'namefi-astra-temporal-${{ needs.compute-env.outputs.label }}'
+          region: ${{ env.REGION }}
+          project_id: '${{ env.PROJECT_ID }}'
+          image: '${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/cloud-run-source-deploy/${{ env.REPO_NAME }}/namefi-astra-api-${{ needs.compute-env.outputs.label }}:${{ github.sha }}'
+
+      - name: Show Temporal URL
+        run: echo "Temporal deployed to ${{ steps.deploy-temporal.outputs.url }}"
+
+  # Run database migrations
+  migrate:
+    name: Run Database Migrations
+    needs: [compute-env, deploy-backend-api, deploy-backend-temporal]
+    runs-on: 'blacksmith-4vcpu-ubuntu-2204'
+    env:
+      INFISICAL_SERVICE_TOKEN: ${{ needs.compute-env.outputs.infisical_token_selector == 'prod' && secrets.INFISICAL_PROD_SERVICE_TOKEN || secrets.INFISICAL_DEV_SERVICE_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: ".bun-version"
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Run DB Migration
+        working-directory: ./packages/db
+        run: bun db:migrate
+
+  # Build Vercel after backend is successfully deployed
+  build-vercel:
+    name: Build Vercel Frontend
+    needs: [compute-env, build-backend]
+    runs-on: 'ubuntu-latest'
+    outputs:
+      deployment_url: ${{ steps.build.outputs.deployment_url }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: ".bun-version"
+
+      - name: Install Vercel CLI
+        run: bun add --global vercel@latest
+
+      - name: Pull Vercel Environment Information
+        run: |
+          if [[ "${{ needs.compute-env.outputs.vercel_env }}" == "production" ]]; then
+            vercel pull --yes --environment=production --token=${{ secrets.VERCEL_ACCOUNT_TOKEN }}
+          else
+            vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_ACCOUNT_TOKEN }}
+          fi
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_ASTRA_PROJECT_ID }}
+
+      - name: Build Project Artifacts
+        id: build
+        run: |
+          if [[ "${{ needs.compute-env.outputs.vercel_env }}" == "production" ]]; then
+            echo "Building for production environment"
+            vercel build --prod --token=${{ secrets.VERCEL_ACCOUNT_TOKEN }}
+          else
+            echo "Building for preview environment"
+            vercel build --token=${{ secrets.VERCEL_ACCOUNT_TOKEN }}
+          fi
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_ASTRA_PROJECT_ID }}
+
+  # Deploy to Vercel
+  deploy-vercel:
+    name: Deploy Frontend to Vercel
+    needs: [compute-env, build-vercel, deploy-backend-api, deploy-backend-temporal]
+    runs-on: 'ubuntu-latest'
+    outputs:
+      deployment_url: ${{ steps.deploy.outputs.deployment_url }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: ".bun-version"
+
+      - name: Install Vercel CLI
+        run: bun add --global vercel@latest
+
+      - name: Pull Vercel Environment Information
+        run: |
+          if [[ "${{ needs.compute-env.outputs.vercel_env }}" == "production" ]]; then
+            vercel pull --yes --environment=production --token=${{ secrets.VERCEL_ACCOUNT_TOKEN }}
+          else
+            vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_ACCOUNT_TOKEN }}
+          fi
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_ASTRA_PROJECT_ID }}
+
+      - name: Deploy Project Artifacts to Vercel
+        id: deploy
+        run: |
+          if [[ "${{ needs.compute-env.outputs.vercel_env }}" == "production" ]]; then
+            echo "Deploying to production"
+            DEPLOYMENT_URL=$(vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_ACCOUNT_TOKEN }})
+          else
+            echo "Deploying to preview"
+            DEPLOYMENT_URL=$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_ACCOUNT_TOKEN }})
+          fi
+          echo "deployment_url=$DEPLOYMENT_URL" >> $GITHUB_OUTPUT
+          echo "Deployed to: $DEPLOYMENT_URL"
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_ASTRA_PROJECT_ID }}
+
+      - name: Show Deployment URL
+        run: |
+          echo "🚀 Frontend deployed to: ${{ steps.deploy.outputs.deployment_url }}"
+          echo "Environment: ${{ needs.compute-env.outputs.vercel_env }}"
+
+  # Optional: Trigger additional workflow for prod deployment after tag build
+  # Only runs for astra/v* tags (not astra/prod/v*)
+  trigger-prod-deployment:
+    name: Trigger Production Deployment
+    needs: [compute-env, build-backend]
+    if: needs.compute-env.outputs.should_trigger_prod == 'true'
+    runs-on: 'ubuntu-latest'
+    steps:
+      - name: Trigger Production Workflow
+        run: |
+          echo "Tag deployment completed: ${{ github.ref }}"
+          echo "Container built with SHA: ${{ github.sha }}"
+
+          # Note: This job is a placeholder for triggering additional workflows
+          # You can use GitHub API to trigger other workflows if needed:
+          # curl -X POST \
+          #   -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          #   -H "Accept: application/vnd.github.v3+json" \
+          #   https://api.github.com/repos/${{ github.repository }}/actions/workflows/WORKFLOW_ID/dispatches \
+          #   -d '{"ref":"main","inputs":{"environment":"production"}}'
+
+          echo "Production deployment can be triggered here if needed"
+
+  # Summary job
+  deployment-summary:
+    name: Deployment Summary
+    needs: [compute-env, deploy-backend-api, deploy-backend-temporal, deploy-vercel]
+    if: always()
+    runs-on: 'ubuntu-latest'
+    steps:
+      - name: Summary
+        id: summary
+        run: |
+          echo "## 📊 Deployment Summary"
+          echo ""
+          echo "### Environment: ${{ needs.compute-env.outputs.label }}"
+          echo "### Trigger: ${{ github.event_name }}"
+          echo "### Ref: ${{ github.ref }}"
+          echo ""
+          echo "### Backend Status:"
+          echo "- API: ${{ needs.deploy-backend-api.result }}"
+          echo "- Temporal: ${{ needs.deploy-backend-temporal.result }}"
+          echo ""
+          echo "### Frontend Status:"
+          echo "- Vercel: ${{ needs.deploy-vercel.result }}"
+          echo ""
+
+          # Determine overall status
+          if [[ "${{ needs.deploy-vercel.result }}" == "success" && \
+                "${{ needs.deploy-backend-api.result }}" == "success" && \
+                "${{ needs.deploy-backend-temporal.result }}" == "success" ]]; then
+            echo "### 🎉 Deployment Complete!"
+            echo "status=success" >> $GITHUB_OUTPUT
+          else
+            echo "### ⚠️ Deployment had issues, please check the logs"
+            echo "status=failure" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Notify Slack
+        if: always() && !(github.event_name == 'push' && github.ref == 'refs/heads/main')
+        run: |
+          # Determine status emoji and color
+          if [[ "${{ steps.summary.outputs.status }}" == "success" ]]; then
+            STATUS_EMOJI="🎉"
+            STATUS_TEXT="Success"
+            COLOR="good"
+          else
+            STATUS_EMOJI="⚠️"
+            STATUS_TEXT="Failed"
+            COLOR="danger"
+          fi
+
+          # Build Slack message payload
+          PAYLOAD=$(cat <<EOF
+          {
+            "attachments": [
+              {
+                "color": "$COLOR",
+                "title": "$STATUS_EMOJI Deployment $STATUS_TEXT",
+                "fields": [
+                  {
+                    "title": "Environment",
+                    "value": "${{ needs.compute-env.outputs.label }}",
+                    "short": true
+                  },
+                  {
+                    "title": "Trigger",
+                    "value": "${{ github.event_name }}",
+                    "short": true
+                  },
+                  {
+                    "title": "Ref",
+                    "value": "${{ github.ref }}",
+                    "short": false
+                  },
+                  {
+                    "title": "Backend API",
+                    "value": "${{ needs.deploy-backend-api.result }}",
+                    "short": true
+                  },
+                  {
+                    "title": "Backend Temporal",
+                    "value": "${{ needs.deploy-backend-temporal.result }}",
+                    "short": true
+                  },
+                  {
+                    "title": "Frontend (Vercel)",
+                    "value": "${{ needs.deploy-vercel.result }}",
+                    "short": true
+                  },
+                  {
+                    "title": "Commit",
+                    "value": "<${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}|${{ github.sha }}>",
+                    "short": true
+                  },
+                  {
+                    "title": "Workflow Run",
+                    "value": "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Details>",
+                    "short": false
+                  }
+                ],
+                "footer": "GitHub Actions",
+                "ts": $(date +%s)
+              }
+            ]
+          }
+          EOF
+          )
+
+          # Send to Slack
+          # Requires SLACK_WEBHOOK_URL secret to be set
+          if [[ -n "${{ env.SLACK_WEBHOOK_URL }}" ]]; then
+            curl -X POST -H 'Content-type: application/json' \
+              --data "$PAYLOAD" \
+              "${{ env.SLACK_WEBHOOK_URL }}"
+            echo "Slack notification sent"
+          else
+            echo "SLACK_WEBHOOK_URL not configured, skipping notification"
+          fi

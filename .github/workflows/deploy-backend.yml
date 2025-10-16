@@ -1,10 +1,10 @@
 name: Deploy Backend to Cloud Run
 
 on:
-  push:
-    branches:
-      - main    # Regular push to main branch deploys to production
-      - prod
+  # push:
+  #   branches:
+  #     - main    # Regular push to main branch deploys to production
+  #     - prod
     # tags:
     #   - 'prod/v*'     # Tags like prod/v1.0.0 for production deployment
     #   - 'v*'          # Tags like v1.0.0 for production deployment

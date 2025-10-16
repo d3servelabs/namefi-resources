@@ -331,7 +331,7 @@ jobs:
       - name: Create Release Tag
         id: create-tag
         run: |
-          TAG_NAME="v${{ needs.update-versions.outputs.backend_version }}"
+          TAG_NAME="astra/v${{ needs.update-versions.outputs.backend_version }}"
 
           git tag -a "$TAG_NAME" -m "Release: frontend ${{ needs.update-versions.outputs.frontend_version }} backend ${{ needs.update-versions.outputs.backend_version }}"
           git push origin "$TAG_NAME"
@@ -343,6 +343,7 @@ jobs:
     name: Create Pull Request
     needs: [auth-namefi-bot, check-deployment-status, update-versions, create-release-tag]
     runs-on: ubuntu-latest
+    if: ${{ vars.CREATE_RELEASE_PR == 'true' }}
     outputs:
       pr_number: ${{ steps.create-pr.outputs.pr_number }}
       pr_url: ${{ steps.create-pr.outputs.pr_url }}
