@@ -16,7 +16,7 @@ export INFISICAL_SERVICE_TOKEN=<your-infisical-token> # Ask Victor for it
 Then, start the dev server
 
 ```bash
-bun run dev
+infisical run --token=$INFISICAL_SERVICE_TOKEN -- bun dev -- --experimental-https
 ```
 
 Then you can validate your setup by accessing
