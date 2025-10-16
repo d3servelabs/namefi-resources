@@ -2,6 +2,11 @@
   "switcher": {
     "label": "Idioma"
   },
+  "nav": {
+    "resources": "Recursos",
+    "blog": "Blog",
+    "tld": "TLDs"
+  },
   "blog": {
     "homeEmpty": "Todavía no hay publicaciones disponibles en este idioma. Vuelve pronto.",
     "homeCta": "Leer artículo",
@@ -11,5 +16,13 @@
     "detailBy": "Por",
     "detailAuthorsHeading": "Sobre quienes escriben",
     "detailSourceLanguage": "Idioma original"
+  },
+  "tld": {
+    "indexTitle": "Guías de dominios de nivel superior",
+    "indexDescription": "Descubre cómo cada TLD encaja en el ecosistema de Namefi.",
+    "indexEmpty": "No hay guías de TLD disponibles en este idioma todavía. Vuelve pronto.",
+    "indexCta": "Leer guía",
+    "detailBack": "Volver a todos los TLD",
+    "detailKeywordsHeading": "Palabras clave relacionadas"
   }
 }

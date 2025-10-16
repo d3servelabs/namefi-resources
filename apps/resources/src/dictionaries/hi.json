@@ -2,6 +2,11 @@
   "switcher": {
     "label": "भाषा"
   },
+  "nav": {
+    "resources": "संसाधन",
+    "blog": "ब्लॉग",
+    "tld": "टीएलडी"
+  },
   "blog": {
     "homeEmpty": "इस भाषा में अभी कोई लेख उपलब्ध नहीं है। कृपया बाद में जांचें।",
     "homeCta": "लेख पढ़ें",
@@ -11,5 +16,13 @@
     "detailBy": "द्वारा",
     "detailAuthorsHeading": "लेखक के बारे में",
     "detailSourceLanguage": "मूल भाषा"
+  },
+  "tld": {
+    "indexTitle": "टॉप-लेवल डोमेन मार्गदर्शिकाएँ",
+    "indexDescription": "जानें कि प्रत्येक TLD Namefi पारिस्थितिकी तंत्र में कैसे फिट बैठता है।",
+    "indexEmpty": "इस भाषा में अभी कोई TLD मार्गदर्शिका उपलब्ध नहीं है। जल्द ही वापस देखें।",
+    "indexCta": "मार्गदर्शिका पढ़ें",
+    "detailBack": "सभी TLD पर वापस जाएँ",
+    "detailKeywordsHeading": "संबंधित कीवर्ड"
   }
 }

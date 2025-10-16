@@ -1,7 +1,8 @@
 import { ImageResponse } from 'next/og';
-import { localeLabels, type Locale } from '@/i18n-config';
+import type { Locale } from '@/i18n-config';
+import { localeLabels } from '@/i18n-config';
 import { getDictionary } from '@/get-dictionary';
-import { getPostCached } from '@/lib/content';
+import { getTldCached } from '@/lib/content';
 import { OgLogotype } from '../../../og/logotype';
 
 export const size = {
@@ -10,11 +11,6 @@ export const size = {
 };
 
 export const contentType = 'image/png';
-
-function truncate(value: string, maxLength: number) {
-  if (value.length <= maxLength) return value;
-  return `${value.slice(0, maxLength - 1).trimEnd()}…`;
-}
 
 const backgroundColor = '#064E3B';
 const foregroundColor = '#ECFDF5';
@@ -27,7 +23,7 @@ export default async function Image({
 }) {
   const { lang, slug } = await params;
   const locale = lang as Locale;
-  const entry = getPostCached(locale, slug);
+  const entry = getTldCached(locale, slug);
 
   if (!entry) {
     return new ImageResponse(
@@ -46,7 +42,7 @@ export default async function Image({
           padding: '80px',
         }}
       >
-        Post not found
+        TLD not found
       </div>,
       {
         ...size,
@@ -57,10 +53,7 @@ export default async function Image({
 
   const dictionary = await getDictionary(locale);
   const resourcesLabel = dictionary.nav.resources;
-  const sectionLabel = dictionary.nav.blog;
-  const summary = entry.frontmatter.summary
-    ? truncate(entry.frontmatter.summary, 220)
-    : undefined;
+  const sectionLabel = dictionary.nav.tld;
   const languageLabel =
     localeLabels[entry.requestedLanguage] ??
     entry.requestedLanguage.toUpperCase();
@@ -93,7 +86,7 @@ export default async function Image({
             fontSize: 28,
             letterSpacing: '0.18em',
             textTransform: 'uppercase',
-            opacity: 0.8,
+            opacity: 0.75,
           }}
         >
           {pillLabel}
@@ -109,18 +102,6 @@ export default async function Image({
         >
           {entry.frontmatter.title}
         </h1>
-        {summary ? (
-          <p
-            style={{
-              fontSize: 32,
-              lineHeight: 1.36,
-              color: 'rgba(236, 253, 245, 0.82)',
-              margin: 0,
-            }}
-          >
-            {summary}
-          </p>
-        ) : null}
       </div>
 
       <div
