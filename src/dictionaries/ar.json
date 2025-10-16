@@ -2,6 +2,11 @@
   "switcher": {
     "label": "اللغة"
   },
+  "nav": {
+    "resources": "الموارد",
+    "blog": "المدونة",
+    "tld": "نطاقات TLD"
+  },
   "blog": {
     "homeEmpty": "لا توجد مقالات متاحة بهذه اللغة بعد. عد لاحقًا.",
     "homeCta": "قراءة المقال",
@@ -11,5 +16,13 @@
     "detailBy": "بقلم",
     "detailAuthorsHeading": "عن الكاتب/الكاتبة",
     "detailSourceLanguage": "اللغة الأصلية"
+  },
+  "tld": {
+    "indexTitle": "أدلة نطاقات المستوى الأعلى",
+    "indexDescription": "تعرّف على كيفية توافق كل نطاق TLD مع نظام Namefi البيئي.",
+    "indexEmpty": "لا توجد أدلة TLD متاحة بهذه اللغة بعد. عد لاحقًا.",
+    "indexCta": "اقرأ الدليل",
+    "detailBack": "العودة إلى جميع نطاقات TLD",
+    "detailKeywordsHeading": "الكلمات المفتاحية ذات الصلة"
   }
 }

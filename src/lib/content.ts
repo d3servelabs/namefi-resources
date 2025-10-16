@@ -7,7 +7,7 @@ import type { ComponentType } from 'react';
 import type { MDXComponents } from 'mdx/types';
 import { i18n, type Locale } from '@/i18n-config';
 
-type Collection = 'blog' | 'authors';
+type Collection = 'blog' | 'authors' | 'tld';
 
 type PostFrontmatter = {
   title: string;
@@ -46,17 +46,41 @@ type AuthorEntry = {
   content: string;
 };
 
+type TldFrontmatter = {
+  title: string;
+  summary?: string;
+  description?: string;
+  tags: string[];
+  authors: string[];
+  date: string;
+  draft: boolean;
+  language: Locale;
+  keywords: string[];
+};
+
+type TldEntry = {
+  slug: string;
+  frontmatter: TldFrontmatter;
+  sourceLanguage: Locale;
+  requestedLanguage: Locale;
+  content: string;
+  publishedAt: Date;
+};
+
 export type MDXContent = ComponentType<{ components?: MDXComponents }>;
 
 const DATA_ROOT = path.join(process.cwd(), 'data');
 const BLOG_ROOT = path.join(DATA_ROOT, 'blog');
 const AUTHOR_ROOT = path.join(DATA_ROOT, 'authors');
+const TLD_ROOT = path.join(DATA_ROOT, 'tld');
 
 const postDirectoryCache = new Map<string, string[]>();
 const authorDirectoryCache = new Map<string, string[]>();
+const tldDirectoryCache = new Map<string, string[]>();
 
 const postEntryCache = new Map<string, PostEntry | undefined>();
 const authorEntryCache = new Map<string, AuthorEntry | undefined>();
+const tldEntryCache = new Map<string, TldEntry | undefined>();
 
 const isProduction = process.env.NODE_ENV === 'production';
 const MARKDOWN_EXTENSION = /\.(md|mdx)$/;
@@ -92,7 +116,11 @@ function getDirectoryKey(collection: Collection, locale: Locale) {
 
 function listSlugs(collection: Collection, locale: Locale): string[] {
   const cache =
-    collection === 'blog' ? postDirectoryCache : authorDirectoryCache;
+    collection === 'blog'
+      ? postDirectoryCache
+      : collection === 'authors'
+        ? authorDirectoryCache
+        : tldDirectoryCache;
   const key = getDirectoryKey(collection, locale);
 
   const cached = cache.get(key);
@@ -101,7 +129,9 @@ function listSlugs(collection: Collection, locale: Locale): string[] {
   const dir =
     collection === 'blog'
       ? path.join(BLOG_ROOT, locale)
-      : path.join(AUTHOR_ROOT, locale);
+      : collection === 'authors'
+        ? path.join(AUTHOR_ROOT, locale)
+        : path.join(TLD_ROOT, locale);
 
   let entries: string[] = [];
   try {
@@ -209,6 +239,54 @@ function normaliseAuthorFrontmatter(
   };
 }
 
+function normaliseTldFrontmatter(
+  data: Record<string, unknown>,
+  slug: string,
+  sourceLanguage: Locale,
+): TldFrontmatter {
+  if (typeof data.title !== 'string' || data.title.trim().length === 0) {
+    throw new Error(`TLD "${slug}" is missing a valid "title" field.`);
+  }
+
+  const rawDate =
+    typeof data.date === 'string'
+      ? data.date
+      : data.date instanceof Date
+        ? data.date.toISOString()
+        : undefined;
+
+  if (!rawDate) {
+    throw new Error(`TLD "${slug}" is missing a valid "date" field.`);
+  }
+
+  const tags = toStringArray(data.tags);
+  const authors = toStringArray(data.authors);
+  const keywords = toStringArray(data.keywords);
+
+  const language = ensureLocale(data.language, sourceLanguage);
+  const description =
+    typeof data.description === 'string' && data.description.trim().length > 0
+      ? data.description.trim()
+      : undefined;
+  const summary =
+    typeof data.summary === 'string' && data.summary.trim().length > 0
+      ? data.summary.trim()
+      : description;
+  const draftValue = toBoolean(data.draft);
+
+  return {
+    title: data.title,
+    summary,
+    description,
+    tags,
+    authors,
+    date: rawDate,
+    draft: draftValue,
+    language,
+    keywords,
+  };
+}
+
 function resolvePostFilePath(locale: Locale, slug: string): string | undefined {
   for (const extension of POST_EXTENSIONS) {
     const candidate = path.join(BLOG_ROOT, locale, `${slug}${extension}`);
@@ -237,6 +315,44 @@ function parsePostEntry({
     throw new Error(
       `Post "${slug}" has an invalid "date": ${frontmatter.date}`,
     );
+  }
+
+  return {
+    slug,
+    frontmatter,
+    sourceLanguage: locale,
+    requestedLanguage: locale,
+    content: parsed.content,
+    publishedAt,
+  };
+}
+
+function resolveTldFilePath(locale: Locale, slug: string): string | undefined {
+  for (const extension of POST_EXTENSIONS) {
+    const candidate = path.join(TLD_ROOT, locale, `${slug}${extension}`);
+    if (fs.existsSync(candidate)) {
+      return candidate;
+    }
+  }
+  return undefined;
+}
+
+function parseTldEntry({
+  slug,
+  locale,
+  filePath,
+}: {
+  slug: string;
+  locale: Locale;
+  filePath: string;
+}): TldEntry {
+  const fileContents = fs.readFileSync(filePath, 'utf8');
+  const parsed = matter(fileContents);
+  const frontmatter = normaliseTldFrontmatter(parsed.data, slug, locale);
+  const publishedAt = new Date(frontmatter.date);
+
+  if (Number.isNaN(publishedAt.getTime())) {
+    throw new Error(`TLD "${slug}" has an invalid "date": ${frontmatter.date}`);
   }
 
   return {
@@ -331,6 +447,35 @@ function loadAuthorEntry(
   return undefined;
 }
 
+function loadTldEntry(locale: Locale, slug: string): TldEntry | undefined {
+  const cacheKey = `${locale}:${slug}`;
+  if (tldEntryCache.has(cacheKey)) {
+    return tldEntryCache.get(cacheKey);
+  }
+
+  const filePath = resolveTldFilePath(locale, slug);
+  if (filePath) {
+    const entry = parseTldEntry({ slug, locale, filePath });
+    tldEntryCache.set(cacheKey, entry);
+    return entry;
+  }
+
+  if (locale !== i18n.defaultLocale) {
+    const fallback = loadTldEntry(i18n.defaultLocale, slug);
+    if (fallback) {
+      const derived: TldEntry = {
+        ...fallback,
+        requestedLanguage: locale,
+      };
+      tldEntryCache.set(cacheKey, derived);
+      return derived;
+    }
+  }
+
+  tldEntryCache.set(cacheKey, undefined);
+  return undefined;
+}
+
 function getAllPostSlugs(): Set<string> {
   const slugs = new Set<string>();
   for (const locale of i18n.locales) {
@@ -411,4 +556,78 @@ export function getAvailableLocalesForSlug(slug: string): Locale[] {
   return locales;
 }
 
-export type { PostEntry, PostFrontmatter, AuthorEntry, AuthorFrontmatter };
+function getAllTldSlugs(): Set<string> {
+  const slugs = new Set<string>();
+  for (const locale of i18n.locales) {
+    for (const slug of listSlugs('tld', locale)) {
+      slugs.add(slug);
+    }
+  }
+  return slugs;
+}
+
+function isTldDraft(entry: TldEntry) {
+  return entry.frontmatter.draft;
+}
+
+export function getTldParams(): Array<{ lang: Locale; slug: string }> {
+  const params: Array<{ lang: Locale; slug: string }> = [];
+  const slugs = getAllTldSlugs();
+
+  for (const locale of i18n.locales) {
+    for (const slug of slugs) {
+      const entry = loadTldEntry(locale, slug);
+      if (!entry) continue;
+      if (isProduction && isTldDraft(entry)) continue;
+      params.push({ lang: locale, slug: entry.slug });
+    }
+  }
+
+  return params;
+}
+
+export function getTldsForLocale(locale: Locale): TldEntry[] {
+  const slugs = getAllTldSlugs();
+  const entries: TldEntry[] = [];
+
+  for (const slug of slugs) {
+    const entry = loadTldEntry(locale, slug);
+    if (!entry) continue;
+    if (isProduction && isTldDraft(entry)) continue;
+    entries.push(entry);
+  }
+
+  return entries.sort(
+    (a, b) => b.publishedAt.getTime() - a.publishedAt.getTime(),
+  );
+}
+
+export function getTld(locale: Locale, slug: string): TldEntry | undefined {
+  const entry = loadTldEntry(locale, slug);
+  if (!entry) return undefined;
+  if (isProduction && isTldDraft(entry)) return undefined;
+  return entry;
+}
+
+export const getTldCached = cache((locale: Locale, slug: string) =>
+  getTld(locale, slug),
+);
+
+export function getAvailableLocalesForTld(slug: string): Locale[] {
+  const locales: Locale[] = [];
+  for (const locale of i18n.locales) {
+    if (loadTldEntry(locale, slug)) {
+      locales.push(locale);
+    }
+  }
+  return locales;
+}
+
+export type {
+  PostEntry,
+  PostFrontmatter,
+  AuthorEntry,
+  AuthorFrontmatter,
+  TldEntry,
+  TldFrontmatter,
+};

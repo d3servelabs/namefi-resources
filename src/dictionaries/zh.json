@@ -2,6 +2,11 @@
   "switcher": {
     "label": "语言"
   },
+  "nav": {
+    "resources": "资源",
+    "blog": "博客",
+    "tld": "TLD 指南"
+  },
   "blog": {
     "homeEmpty": "该语言暂时没有文章，请稍后再来。",
     "homeCta": "阅读文章",
@@ -11,5 +16,13 @@
     "detailBy": "作者",
     "detailAuthorsHeading": "关于作者",
     "detailSourceLanguage": "原始语言"
+  },
+  "tld": {
+    "indexTitle": "顶级域名指南",
+    "indexDescription": "了解每个 TLD 如何融入 Namefi 生态系统。",
+    "indexEmpty": "此语言暂时没有 TLD 指南，敬请期待。",
+    "indexCta": "阅读指南",
+    "detailBack": "返回所有 TLD",
+    "detailKeywordsHeading": "相关关键词"
   }
 }

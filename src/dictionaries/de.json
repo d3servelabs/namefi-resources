@@ -2,6 +2,11 @@
   "switcher": {
     "label": "Sprache"
   },
+  "nav": {
+    "resources": "Ressourcen",
+    "blog": "Blog",
+    "tld": "TLDs"
+  },
   "blog": {
     "homeEmpty": "In dieser Sprache sind noch keine Beiträge verfügbar. Schau bald wieder vorbei.",
     "homeCta": "Artikel lesen",
@@ -11,5 +16,13 @@
     "detailBy": "Von",
     "detailAuthorsHeading": "Über die Autor*innen",
     "detailSourceLanguage": "Originalsprache"
+  },
+  "tld": {
+    "indexTitle": "Top-Level-Domain-Leitfäden",
+    "indexDescription": "Erfahre, wie jede TLD in das Namefi-Ökosystem passt.",
+    "indexEmpty": "Für diese Sprache sind noch keine TLD-Leitfäden verfügbar. Schau bald wieder vorbei.",
+    "indexCta": "Leitfaden lesen",
+    "detailBack": "Zurück zu allen TLDs",
+    "detailKeywordsHeading": "Verwandte Schlüsselwörter"
   }
 }
