@@ -19,7 +19,6 @@ import {
 } from 'motion/react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-
 import { useSearch } from '@/hooks/use-search';
 import { useSearchFromQuery } from '@/hooks/use-search-from-query';
 import { useFreeMintsGuidance } from '@/components/providers/free-mints-guidance';
@@ -525,7 +524,7 @@ const COMMUNITY_LINKS = [
   },
   {
     name: 'Namefi Blog',
-    href: 'https://namefi.substack.com',
+    href: '/r',
     icon: Newspaper,
   },
   {
