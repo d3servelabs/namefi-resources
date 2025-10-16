@@ -73,6 +73,10 @@ const nextConfig = {
   async rewrites() {
     return [
       {
+        source: '/r',
+        destination: `${appConfig.RESOURCES_URL}/r`,
+      },
+      {
         source: '/r/:path*',
         destination: `${appConfig.RESOURCES_URL}/r/:path*`,
       },
