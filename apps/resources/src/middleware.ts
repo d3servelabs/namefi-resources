@@ -41,7 +41,14 @@ export function middleware(request: NextRequest) {
   }
 
   const locale = getLocale(request);
-  request.nextUrl.pathname = `/r/${locale}${pathname}`;
+  let remainder = pathname;
+  if (pathname === '/r') {
+    remainder = '';
+  } else if (pathname.startsWith('/r/')) {
+    remainder = pathname.slice('/r'.length);
+  }
+
+  request.nextUrl.pathname = `/r/${locale}${remainder}`;
   return NextResponse.redirect(request.nextUrl);
 }
 
