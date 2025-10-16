@@ -8,17 +8,28 @@ describe('middleware redirect behaviour', () => {
     return new NextRequest(`http://localhost:3000${pathname}`);
   }
 
-  it('redirects non-localized paths to the detected locale', () => {
+  it('redirects non-localized paths to the detected locale under /r', () => {
     const response = middleware(createRequest('/foo'));
-    expect(getRedirectUrl(response)).toBe('http://localhost:3000/en/foo');
+    expect(getRedirectUrl(response)).toBe('http://localhost:3000/r/en/foo');
   });
 
-  it('handles root paths', () => {
-    const response = middleware(createRequest(''));
-    expect(getRedirectUrl(response)).toBe('http://localhost:3000/en');
+  it('handles root and bare /r paths', () => {
+    const response = middleware(createRequest('/'));
+    expect(getRedirectUrl(response)).toBe('http://localhost:3000/r/en');
 
-    const response2 = middleware(createRequest('/en'));
-    expect(getRedirectUrl(response2)).toBe(null);
+    const response2 = middleware(createRequest('/r'));
+    expect(getRedirectUrl(response2)).toBe('http://localhost:3000/r/en');
+
+    const response3 = middleware(createRequest('/r/en'));
+    expect(getRedirectUrl(response3)).toBe(null);
+
+    const response4 = middleware(createRequest('/r/en/blog'));
+    expect(getRedirectUrl(response4)).toBe(null);
+  });
+
+  it('redirects bare /r paths with additional segments', () => {
+    const response = middleware(createRequest('/r/blog'));
+    expect(getRedirectUrl(response)).toBe('http://localhost:3000/r/en/blog');
   });
 
   it('does not redirect internals and static assets', () => {
