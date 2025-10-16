@@ -52,13 +52,15 @@ export async function generateMetadata({
   const languageAlternates: Partial<Record<Locale, string>> = {};
   for (const localeOption of i18n.locales) {
     if (getPostCached(localeOption, slug)) {
-      languageAlternates[localeOption] = `/${localeOption}/blog/${slug}`;
+      languageAlternates[localeOption] =
+        `${baseUrl}/${localeOption}/blog/${slug}`;
     }
   }
 
   return {
+    metadataBase: new URL(baseUrl),
     alternates: {
-      canonical: canonicalPath,
+      canonical: url,
       languages: languageAlternates,
     },
     title: entry.frontmatter.title,

@@ -74,7 +74,7 @@ const nextConfig = {
     return [
       {
         source: '/r/:path*',
-        destination: 'https://r.namefi.io/r/:path*',
+        destination: 'https://r.namefi.io/:path*',
       },
       {
         source: '/my-domains',
