@@ -129,6 +129,9 @@ jobs:
     permissions:
       contents: read
       id-token: write # Required for GCP Workload Identity Federation
+    outputs:
+      image_exists: ${{ steps.check-image.outputs.exists }}
+      image_tag: ${{ steps.set-tag.outputs.image_tag }}
 
     steps:
       - name: Checkout repository
@@ -155,11 +158,41 @@ jobs:
       - name: Configure Docker for Artifact Registry
         run: gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev
 
-      - name: 'Build and Push Container'
+      - name: Set Docker tag
+        id: set-tag
+        run: |
+          # Use SHA-based tag without environment label for reusability
+          IMAGE_TAG="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/cloud-run-source-deploy/${{ env.REPO_NAME }}/namefi-astra-api:${{ github.sha }}"
+          echo "image_tag=$IMAGE_TAG" >> $GITHUB_OUTPUT
+          echo "Docker tag: $IMAGE_TAG"
+
+      - name: Check if Docker image exists
+        id: check-image
+        run: |
+          IMAGE_TAG="${{ steps.set-tag.outputs.image_tag }}"
+
+          # Try to pull the manifest to check if image exists
+          if gcloud artifacts docker images describe "$IMAGE_TAG" --format="get(name)" 2>/dev/null; then
+            echo "Image already exists: $IMAGE_TAG"
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "Image does not exist: $IMAGE_TAG"
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Build and Push Container
+        if: steps.check-image.outputs.exists != 'true'
         run: |-
-          DOCKER_TAG="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/cloud-run-source-deploy/${{ env.REPO_NAME }}/namefi-astra-api-${{ needs.compute-env.outputs.label }}:${{ github.sha }}"
-          docker build --tag "${DOCKER_TAG}" . -f apps/backend/Dockerfile
-          docker push "${DOCKER_TAG}"
+          IMAGE_TAG="${{ steps.set-tag.outputs.image_tag }}"
+          echo "Building and pushing new image: $IMAGE_TAG"
+          docker build --tag "${IMAGE_TAG}" . -f apps/backend/Dockerfile
+          docker push "${IMAGE_TAG}"
+
+      - name: Skip build
+        if: steps.check-image.outputs.exists == 'true'
+        run: |
+          echo "Skipping build - image already exists"
+          echo "Using existing image: ${{ steps.set-tag.outputs.image_tag }}"
 
   # Deploy to Cloud Run (Backend API)
   deploy-backend-api:
@@ -187,10 +220,13 @@ jobs:
           service: 'namefi-astra-api-${{ needs.compute-env.outputs.label }}'
           region: ${{ env.REGION }}
           project_id: '${{ env.PROJECT_ID }}'
-          image: '${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/cloud-run-source-deploy/${{ env.REPO_NAME }}/namefi-astra-api-${{ needs.compute-env.outputs.label }}:${{ github.sha }}'
+          image: '${{ needs.build-backend.outputs.image_tag }}'
 
       - name: Show Backend API URL
-        run: echo "Backend API deployed to ${{ steps.deploy.outputs.url }}"
+        run: |
+          echo "Backend API deployed to ${{ steps.deploy.outputs.url }}"
+          echo "Using image: ${{ needs.build-backend.outputs.image_tag }}"
+          echo "Image was cached: ${{ needs.build-backend.outputs.image_exists }}"
 
   # Deploy to Cloud Run (Temporal)
   deploy-backend-temporal:
@@ -218,10 +254,13 @@ jobs:
           service: 'namefi-astra-temporal-${{ needs.compute-env.outputs.label }}'
           region: ${{ env.REGION }}
           project_id: '${{ env.PROJECT_ID }}'
-          image: '${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/cloud-run-source-deploy/${{ env.REPO_NAME }}/namefi-astra-api-${{ needs.compute-env.outputs.label }}:${{ github.sha }}'
+          image: '${{ needs.build-backend.outputs.image_tag }}'
 
       - name: Show Temporal URL
-        run: echo "Temporal deployed to ${{ steps.deploy-temporal.outputs.url }}"
+        run: |
+          echo "Temporal deployed to ${{ steps.deploy-temporal.outputs.url }}"
+          echo "Using image: ${{ needs.build-backend.outputs.image_tag }}"
+          echo "Image was cached: ${{ needs.build-backend.outputs.image_exists }}"
 
   # Run database migrations
   migrate:
