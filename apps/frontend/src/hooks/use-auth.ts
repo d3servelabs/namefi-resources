@@ -23,17 +23,23 @@ export function useAuth() {
 
   const trpc = useTRPC();
 
+  const definitelyNotAuthenticated = useMemo(() => {
+    return ready && !authenticated;
+  }, [authenticated, ready]);
+
   const userQuery = useQuery(
     trpc.users.getUser.queryOptions(undefined, {
-      enabled: authenticated,
+      enabled: !definitelyNotAuthenticated,
+      trpc: { context: { skipBatch: true } },
     }),
   );
 
   const impersonation = useQuery(
     trpc.users.getImpersonationStatus.queryOptions(undefined, {
-      enabled: authenticated,
+      enabled: !definitelyNotAuthenticated,
       staleTime: 15_000,
       refetchInterval: 30_000,
+      trpc: { context: { skipBatch: true } },
     }),
   );
 
@@ -57,7 +63,8 @@ export function useAuth() {
     ready,
     isAuthenticated: ready && authenticated && !!userQuery.data?.privyUserId,
     isImpersonating: Boolean(impersonation.data?.impersonating),
-    isLoading: !ready || userQuery.isLoading || impersonation.isLoading,
+    isLoading: !ready || userQuery.isLoading,
+    isImpersonationLoading: impersonation.isLoading,
     user: ready && authenticated ? userQuery.data : undefined,
     privyUser: privyUserWithCustomMetadata,
     rawPrivyUser: privyUser,
