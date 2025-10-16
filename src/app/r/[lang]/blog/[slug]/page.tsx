@@ -35,8 +35,8 @@ export async function generateMetadata({
   if (!entry) return {};
 
   const rawBaseUrl =
-    process.env.NEXT_PUBLIC_VERCEL_URL ?? 'http://localhost:3000';
-  const normalisedBaseUrl = rawBaseUrl.startsWith('http')
+    process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL ?? 'localhost:3002';
+  const normalisedBaseUrl = rawBaseUrl.startsWith('https')
     ? rawBaseUrl
     : `https://${rawBaseUrl}`;
   const baseUrl = normalisedBaseUrl.replace(/\/$/, '');
