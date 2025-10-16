@@ -16,12 +16,12 @@ export async function generateMetadata({
     ? (lang as Locale)
     : i18n.defaultLocale;
   const rawBaseUrl =
-    process.env.NEXT_PUBLIC_VERCEL_URL ?? 'http://localhost:3000';
-  const normalisedBaseUrl = rawBaseUrl.startsWith('http')
+    process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL ?? 'localhost:3002';
+  const normalisedBaseUrl = rawBaseUrl.startsWith('https')
     ? rawBaseUrl
     : `https://${rawBaseUrl}`;
   const baseUrl = normalisedBaseUrl.replace(/\/$/, '');
-  const canonicalPath = `/${locale}`;
+  const canonicalPath = `/r/${locale}`;
   const url = `${baseUrl}${canonicalPath}`;
   const ogImagePath = `${canonicalPath}/opengraph-image`;
   const ogImageUrl = `${baseUrl}${ogImagePath}`;
@@ -32,7 +32,7 @@ export async function generateMetadata({
 
   const languageAlternates: Partial<Record<Locale, string>> = {};
   for (const localeOption of i18n.locales) {
-    languageAlternates[localeOption] = `/${localeOption}`;
+    languageAlternates[localeOption] = `/r/${localeOption}`;
   }
 
   return {
