@@ -14,6 +14,7 @@ import { useCartContext } from '@/components/providers/cart';
 import { config } from '@/lib/env';
 import { useCookieConsent } from '@/components/providers/cookie-consent';
 import { usePreAuthSignals } from '@/components/providers/pre-auth-signals';
+import { TRPCClientError } from '@trpc/client';
 
 type LoginCallbacks = Parameters<typeof usePrivyLogin>[0];
 type LogoutCallbacks = Parameters<typeof usePrivyLogout>[0];
@@ -30,6 +31,18 @@ export function useAuth() {
   const userQuery = useQuery(
     trpc.users.getUser.queryOptions(undefined, {
       enabled: !definitelyNotAuthenticated,
+      retry(failureCount, error) {
+        if (definitelyNotAuthenticated || failureCount > 2) {
+          return false;
+        }
+        if (
+          error instanceof TRPCClientError &&
+          error.data?.code === 'UNAUTHORIZED'
+        ) {
+          return false;
+        }
+        return true;
+      },
       trpc: { context: { skipBatch: true } },
     }),
   );
@@ -37,6 +50,18 @@ export function useAuth() {
   const impersonation = useQuery(
     trpc.users.getImpersonationStatus.queryOptions(undefined, {
       enabled: !definitelyNotAuthenticated,
+      retry(failureCount, error) {
+        if (definitelyNotAuthenticated || failureCount > 2) {
+          return false;
+        }
+        if (
+          error instanceof TRPCClientError &&
+          error.data?.code === 'UNAUTHORIZED'
+        ) {
+          return false;
+        }
+        return true;
+      },
       staleTime: 15_000,
       refetchInterval: 30_000,
       trpc: { context: { skipBatch: true } },
