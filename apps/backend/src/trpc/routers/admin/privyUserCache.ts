@@ -169,12 +169,19 @@ async function buildSimplifiedPrivyUsers(): Promise<SimplifiedPrivyUser[]> {
     };
   });
 }
-
+let _memoizedTableRefreshTime: Date | null = null;
 /**
  * Checks if the unlogged Privy table needs refresh by querying expiresAt from table
  * Returns true if table is expired or doesn't exist
  */
 async function needsTableRefresh(): Promise<boolean> {
+  if (
+    _memoizedTableRefreshTime &&
+    _memoizedTableRefreshTime.getTime() > Date.now()
+  ) {
+    return false;
+  }
+
   try {
     // Query the first row's expiresAt to check freshness
     // All rows have same expiresAt, so we only need to check one
@@ -189,6 +196,7 @@ async function needsTableRefresh(): Promise<boolean> {
     }
 
     const expiresAt = new Date(result[0].expiresAt);
+    _memoizedTableRefreshTime = expiresAt;
     const now = new Date();
 
     return expiresAt <= now;
@@ -233,7 +241,7 @@ async function ensurePrivyTableFresh(): Promise<void> {
 
       const now = new Date();
       const expiresAt = new Date(now.getTime() + PRIVY_CACHE_TTL_MS);
-
+      _memoizedTableRefreshTime = expiresAt;
       // Create table if it doesn't exist
       await tx.execute(sql`
         CREATE UNLOGGED TABLE IF NOT EXISTS ${sql.raw(PRIVY_CACHE_TABLE_NAME)} (
@@ -317,34 +325,32 @@ async function ensurePrivyTableFresh(): Promise<void> {
 /**
  * Builds WHERE clause for searching Privy users using Drizzle ORM
  * Supports searching by:
- * - Resolved wallet address (exact match in array)
  * - Email (ILIKE)
  * - Display name (ILIKE)
  * - Privy user ID (ILIKE)
- * - Wallets array (array contains)
+ * - Wallets array (ILIKE ANY)
  *
  * @param term - Search term
- * @param resolvedWallet - Optional resolved ENS wallet address
  * @param tableRef - Optional table reference (defaults to privyUsersTableSchema)
  */
 function buildPrivySearchWhereClause(
   term: string,
-  resolvedWallet: string | null,
   tableRef = privyUsersTableSchema,
-): SQL {
-  // If we resolved an ENS name to wallet, search by exact wallet match
-  if (resolvedWallet) {
-    // Use PostgreSQL array contains operator @>
-    return sql`${tableRef.wallets} @> ARRAY[${resolvedWallet}]::text[]`;
+): SQL | null {
+  if (!term || term.length === 0) {
+    return null;
   }
-
-  // Otherwise, search across multiple fields with ILIKE
+  // Search across multiple fields with ILIKE
   const likeTerm = `%${term}%`;
   return or(
     sql`${tableRef.email} ILIKE ${likeTerm}`,
     sql`${tableRef.displayName} ILIKE ${likeTerm}`,
     sql`${tableRef.privyUserId} ILIKE ${likeTerm}`,
-    sql`EXISTS (SELECT 1 FROM unnest(${tableRef.wallets}) AS w WHERE w ILIKE ${likeTerm})`,
+    sql`EXISTS (
+      SELECT 1
+      FROM unnest(${tableRef.wallets}) AS w
+      WHERE w ILIKE ${likeTerm}
+    )`,
   )!;
 }
 
@@ -359,6 +365,7 @@ const userNftsCTE = db.$with('user_nfts').as(
           chainId: number;
           normalizedDomainName: string;
           tokenId: string;
+          expirationTime: Date;
         }>
       >`
               COALESCE(
@@ -366,8 +373,10 @@ const userNftsCTE = db.$with('user_nfts').as(
                    json_build_object(
                     'chainId', ${namefiNftView.chainId},
                     'normalizedDomainName', ${namefiNftView.normalizedDomainName},
-                    'tokenId', ${namefiNftView.tokenId}::text
+                    'tokenId', ${namefiNftView.tokenId}::text,
+                    'expirationTime', ${namefiNftView.expirationTime}
                   )
+                  ORDER BY ${namefiNftView.expirationTime} ASC
                 ) FILTER (WHERE ${namefiNftView.tokenId} IS NOT NULL),
                 '[]'::json
               )

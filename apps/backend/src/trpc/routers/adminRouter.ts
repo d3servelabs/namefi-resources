@@ -1642,6 +1642,8 @@ export const adminRouter = createTRPCRouter({
         page: z.number().min(1).default(1),
         pageSize: z.number().min(1).max(100).default(25),
         searchTerm: z.string().optional(),
+        domainSearchTerm: z.string().optional(),
+        ensSearchTerm: z.string().optional(),
         columnFilters: z
           .array(
             z.object({
@@ -1672,7 +1674,15 @@ export const adminRouter = createTRPCRouter({
       }),
     )
     .query(async ({ input }) => {
-      const { page, pageSize, searchTerm, columnFilters, sorting } = input;
+      const {
+        page,
+        pageSize,
+        searchTerm,
+        domainSearchTerm,
+        ensSearchTerm,
+        columnFilters,
+        sorting,
+      } = input;
       const offset = (page - 1) * pageSize;
 
       // Fetch admin users once to avoid per-user checks
@@ -1707,37 +1717,51 @@ export const adminRouter = createTRPCRouter({
         .leftJoin(userNftsCTE, eq(userNftsCTE.userId, usersTable.id))
         .$dynamic();
 
-      // Build WHERE clause based on search term and column filters
-      const term = (searchTerm ?? '').trim().toLowerCase();
+      // Build WHERE clause based on search terms and column filters
       const whereClauses: SQL[] = [];
 
-      // Add search term filter
-      if (term.length > 0) {
-        // Check if term might be an ENS name
-        let resolvedWallet: string | null = null;
-        if (term.includes('.') && !term.includes('@')) {
-          try {
-            const addr = await resolveENSToWallet(term);
-            if (addr) resolvedWallet = addr.toLowerCase();
-          } catch {}
-        }
+      // Add general search term filter (email, name, id only)
+      const term = (searchTerm ?? '').trim().toLowerCase();
 
-        // Build Privy user search clause
-        const privySearchClause = buildPrivySearchWhereClause(
-          term,
-          resolvedWallet,
-          privyUsersTableSchema,
-        );
+      // Build Privy user search clause (no wallet or domain search)
+      const privySearchClause = buildPrivySearchWhereClause(
+        term,
+        privyUsersTableSchema,
+      );
+      if (privySearchClause) {
+        whereClauses.push(privySearchClause);
+      }
 
-        // Build domain name search clause
-        const likeTerm = `%${term}%`;
-        const domainSearchClause = sql`EXISTS (
+      // Add domain-specific search
+      const domainTerm = (domainSearchTerm ?? '').trim().toLowerCase();
+      if (domainTerm.length > 0) {
+        const domainLikeTerm = `%${domainTerm}%`;
+        const domainOnlySearchClause = sql`EXISTS (
           SELECT 1 FROM json_array_elements(
             COALESCE(${userNftsCTE.nfts}, '[]'::json)
           ) AS nft
-          WHERE nft->>'normalizedDomainName' ILIKE ${likeTerm}
+          WHERE nft->>'normalizedDomainName' ILIKE ${domainLikeTerm}
         )`;
-        whereClauses.push(or(privySearchClause, domainSearchClause)!);
+        whereClauses.push(domainOnlySearchClause);
+      }
+
+      // Add ENS-specific search
+      const ensTerm = (ensSearchTerm ?? '').trim().toLowerCase();
+      if (ensTerm.length > 0) {
+        let ensResolvedWallet: string | null = null;
+        // Try to resolve ENS name to wallet address
+        if (ensTerm.includes('.')) {
+          try {
+            const addr = await resolveENSToWallet(ensTerm);
+            if (addr) ensResolvedWallet = addr.toLowerCase();
+          } catch {}
+        }
+
+        if (ensResolvedWallet) {
+          // Search by resolved wallet address
+          const ensWalletClause = sql`${privyUsersTableSchema.wallets} @> ARRAY[${ensResolvedWallet}]::text[]`;
+          whereClauses.push(ensWalletClause);
+        }
       }
 
       // Add column filters
