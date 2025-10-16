@@ -37,7 +37,7 @@ import { PaymentMethodsManagerPlaceholder } from './payment-methods-manager-plac
 import { NFSCWalletCard } from '../ui/untitled/nfsc-wallet-card';
 import { useUserChainBalances } from '@/hooks/use-user-chain-balances';
 import { useLinkedWalletAddresses } from '@/hooks/use-user-wallet-addresses';
-import { prop, groupBy } from 'ramda';
+import { prop, groupBy, range } from 'ramda';
 import { useLinkedWallets } from '@/hooks/use-user-wallet-addresses';
 import type { WalletProvider } from '../ui/untitled/wallet-card';
 import { mapPrivyWalletToProvider } from '@/hooks/use-privy-wallet-card-data';
@@ -45,13 +45,15 @@ import {
   useControlLinkedWallets,
   UnlinkWalletDialog,
 } from '../profile/wallets';
-import { cn } from '@/lib/cn';
+import { useRegisterAdminFlags } from '../admin/feature-flags/register';
+import type { FeatureFlagDefinition } from '@/types/feature-flags';
+import { useAdminFeatureFlag } from '../admin/feature-flags/use-flag';
 
 const LoadingSkeletons = () => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {[...new Array(3)].map((_, index) => (
-        <div key={index} className="relative">
+      {range(0, 3).map((index) => (
+        <div key={`loading-skeleton-${index}`} className="relative">
           <Skeleton className="w-full aspect-[1.586] rounded-xl" />
         </div>
       ))}
@@ -349,6 +351,23 @@ function PaymentMethodsGrid({
   );
 }
 
+const _userWalletCardsGridFlags = [
+  {
+    key: 'separateByChain',
+    label: 'Separate By Chain',
+    description: 'Separate the wallet cards by chain',
+    scope: 'page',
+    pageKey: 'paymentmethods',
+  },
+  {
+    key: 'forceNfscVariant',
+    label: 'Force NFSC Variant',
+    description: 'Force the NFSC variant for the wallet cards',
+    scope: 'page',
+    pageKey: 'paymentmethods',
+  },
+] as FeatureFlagDefinition[];
+
 function UserWalletCardsGrid(props: {}) {
   const {
     isUnlinkWalletDialogOpen,
@@ -363,15 +382,9 @@ function UserWalletCardsGrid(props: {}) {
   const [hoveredCardId, setHoveredCardId] = useState<string | null>(null);
   const { privyUser } = useAuth();
 
-  // Query flags
-  const [separateByChain] = useQueryState(
-    'separateByChain',
-    parseAsBoolean.withDefault(false),
-  );
-  const [forceNfscVariant] = useQueryState(
-    'forceNfscVariant',
-    parseAsBoolean.withDefault(false),
-  );
+  useRegisterAdminFlags(_userWalletCardsGridFlags);
+  const [separateByChain] = useAdminFeatureFlag(_userWalletCardsGridFlags[0]);
+  const [forceNfscVariant] = useAdminFeatureFlag(_userWalletCardsGridFlags[1]);
 
   const { linkedWalletAddresses, linkedWalletsReady } =
     useLinkedWalletAddresses();
