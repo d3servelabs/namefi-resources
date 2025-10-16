@@ -46,6 +46,8 @@ import { useTRPC } from '@/lib/trpc';
 import { useQuery } from '@tanstack/react-query';
 import { Permission } from '@namefi-astra/utils';
 import { useHasPermissions } from '@/components/access/PermissionGate';
+import { useAdminFeatureFlagsSheet } from '@/components/admin/feature-flags/context';
+import { AdminFeatureFlagsSheet } from '@/components/admin/feature-flags/sheet';
 const BASE_ITEMS: NavItem[] = [
   { title: 'Profile', href: '/profile', icon: UserIcon },
 ];
@@ -127,6 +129,7 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
 
     const actionVariant = isExpanded ? 'pill' : 'icon';
     const expandedPaddingClass = isExpanded ? 'pl-[3px] pr-4' : undefined;
+    const { setOpen: openFeatureFlags } = useAdminFeatureFlagsSheet();
 
     return (
       <div
@@ -300,6 +303,12 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
                   </HeaderActionButton>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-56">
+                  {canViewAdminDashboard && (
+                    <DropdownMenuItem onClick={() => openFeatureFlags(true)}>
+                      <SettingsIcon className="mr-2 h-4 w-4" />
+                      <span>Admin Feature Flags</span>
+                    </DropdownMenuItem>
+                  )}
                   {items.map((item) => {
                     const Icon = item.icon;
 
@@ -322,6 +331,10 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
+              {canViewAdminDashboard && (
+                // Render the sheet once so it can open on demand
+                <AdminFeatureFlagsSheet />
+              )}
             </motion.div>
           )}
         </AnimatePresence>

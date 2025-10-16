@@ -18,6 +18,7 @@ import { WishlistProvider } from './wishlist';
 import { FreeMintsGuidanceProvider } from './free-mints-guidance';
 import type { OriginRuntime } from '@/lib/origin';
 import { PreAuthSignalsProvider } from '@/components/providers/pre-auth-signals';
+import { AdminFeatureFlagsProvider } from '@/components/admin/feature-flags/context';
 
 export const Providers: FC<
   PropsWithChildren<{
@@ -62,9 +63,11 @@ export const Providers: FC<
                           <InteractionLoggersProvider>
                             <WishlistProvider>
                               <CartProvider>
-                                <FreeMintsGuidanceProvider>
-                                  {children}
-                                </FreeMintsGuidanceProvider>
+                                <AdminFeatureFlagsProvider>
+                                  <FreeMintsGuidanceProvider>
+                                    {children}
+                                  </FreeMintsGuidanceProvider>
+                                </AdminFeatureFlagsProvider>
                               </CartProvider>
                             </WishlistProvider>
                           </InteractionLoggersProvider>
