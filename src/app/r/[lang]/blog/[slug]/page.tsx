@@ -40,7 +40,7 @@ export async function generateMetadata({
     ? rawBaseUrl
     : `https://${rawBaseUrl}`;
   const baseUrl = normalisedBaseUrl.replace(/\/$/, '');
-  const canonicalPath = `/${locale}/blog/${slug}`;
+  const canonicalPath = `/r/${locale}/blog/${slug}`;
   const url = `${baseUrl}${canonicalPath}`;
   const ogImagePath = `${canonicalPath}/opengraph-image`;
   const ogImageUrl = `${baseUrl}${ogImagePath}`;
@@ -53,7 +53,7 @@ export async function generateMetadata({
   for (const localeOption of i18n.locales) {
     if (getPostCached(localeOption, slug)) {
       languageAlternates[localeOption] =
-        `${baseUrl}/${localeOption}/blog/${slug}`;
+        `${baseUrl}/r/${localeOption}/blog/${slug}`;
     }
   }
 
