@@ -1,0 +1,18 @@
+# Analytics tRPC requests (SuperJSON)
+
+@baseUrl = http://localhost:3000
+@apiKey = --dev-api-auth-key--
+@startDate = 2025-09-01
+@endDate = today
+@domainName = 0x.city
+
+###
+# GET analytics.getParsedReportByRecordName (SuperJSON-wrapped input in query)
+# Notes:
+# - Uses the tRPC fetch adapter with SuperJSON; wrap payload under `{"json": ...}`
+# - Query param must be percent-encoded
+GET {{baseUrl}}/trpc/analytics.getParsedReportByRecordName?input=%7B%22json%22%3A%7B%22startDate%22%3A%22{{startDate}}%22%2C%22endDate%22%3A%22{{endDate}}%22%2C%22domainName%22%3A%22{{domainName}}%22%7D%7D
+x-api-key: {{apiKey}}
+
+###
+# POST analytics.getParsedReportByRecordName (SuperJSON body)
