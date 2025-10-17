@@ -3,6 +3,10 @@ import { useMemo } from 'react';
 import { formatUnits } from 'viem';
 import { multicall } from 'viem/actions';
 import { useClient, type UseClientReturnType, useConfig } from 'wagmi';
+import {
+  getPaymentProviderForChain,
+  getChainName,
+} from '@/components/payment-method/hybrid-payment-utils';
 import { useQuery } from '@tanstack/react-query';
 import { NfscAbi } from '@namefi-astra/utils/abis/nfsc';
 import { useAllowedChains } from './use-allowed-chains';
@@ -13,9 +17,35 @@ const CHAIN_PRIORITY = [
   CHAINS.mainnet.id as number,
 ];
 
+const sortBalancesByChainPriority = (chainBalances: ChainBalance[]) => {
+  return chainBalances
+    .filter((cb) => cb.balanceInUsdCents > 0)
+    .sort((a, b) => {
+      const _aPriority = CHAIN_PRIORITY.indexOf(a.chainId);
+      const _bPriority = CHAIN_PRIORITY.indexOf(b.chainId);
+
+      const aPriority =
+        _aPriority === -1 ? Number.MAX_SAFE_INTEGER : _aPriority;
+      const bPriority =
+        _bPriority === -1 ? Number.MAX_SAFE_INTEGER : _bPriority;
+      return aPriority - bPriority;
+    });
+};
+
+const sortChainsIdsByPriority = (chainIds: number[]) => {
+  return chainIds.sort((a, b) => {
+    const _aPriority = CHAIN_PRIORITY.indexOf(a);
+    const _bPriority = CHAIN_PRIORITY.indexOf(b);
+
+    const aPriority = _aPriority === -1 ? Number.MAX_SAFE_INTEGER : _aPriority;
+    const bPriority = _bPriority === -1 ? Number.MAX_SAFE_INTEGER : _bPriority;
+    return aPriority - bPriority;
+  });
+};
+
 const getWalletMultiChainNfscBalance = async (
   clients: Record<number, UseClientReturnType>,
-  chainIds: number[],
+  _chainIds: number[],
   walletAddresses: `0x${string}`[],
 ) => {
   if (!clients) {
@@ -24,6 +54,7 @@ const getWalletMultiChainNfscBalance = async (
   if (!walletAddresses) {
     throw new Error('Wallet addresses not found');
   }
+  const chainIds = sortChainsIdsByPriority(_chainIds);
   const balances: Record<
     `0x${string}`,
     Record<number, bigint | undefined>
@@ -110,7 +141,7 @@ export function useUserChainBalances(
   });
 
   // Calculate chain balances
-  const chainBalances = useMemo((): ChainBalance[] => {
+  const _chainBalances = useMemo((): ChainBalance[] => {
     if (!enabled || !primaryWallet) return [];
 
     const balances: ChainBalance[] = [];
@@ -138,8 +169,21 @@ export function useUserChainBalances(
       }
     }
 
-    return balances;
+    return sortBalancesByChainPriority(balances);
   }, [enabled, primaryWallet, q.data]);
+  const chainBalancesHash = useMemo(() => {
+    return JSON.stringify(
+      _chainBalances.map((cb) => ({
+        chainId: cb.chainId,
+        balanceInUsdCents: cb.balanceInUsdCents,
+      })),
+    );
+  }, [_chainBalances]);
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: using hash to avoid re-rendering
+  const chainBalances = useMemo((): ChainBalance[] => {
+    return _chainBalances;
+  }, [chainBalancesHash]);
 
   const totalBalanceInUsdCents = useMemo(
     () => chainBalances.reduce((sum, cb) => sum + cb.balanceInUsdCents, 0),
@@ -160,36 +204,4 @@ export function useUserChainBalances(
       await q.refetch();
     },
   };
-}
-
-/**
- * Get payment provider for a given chain ID
- */
-export function getPaymentProviderForChain(
-  chainId: number,
-): 'NFSC_BASE' | 'NFSC_ETHEREUM' | 'NFSC_ETHEREUM_SEPOLIA' {
-  switch (chainId) {
-    case CHAINS.base.id:
-      return 'NFSC_BASE';
-    case CHAINS.mainnet.id:
-      return 'NFSC_ETHEREUM';
-    case CHAINS.sepolia.id:
-    default:
-      return 'NFSC_ETHEREUM_SEPOLIA';
-  }
-}
-/**
- * Get chain name for display
- */
-export function getChainName(chainId: number): string {
-  switch (chainId) {
-    case CHAINS.base.id:
-      return 'Base';
-    case CHAINS.mainnet.id:
-      return 'Ethereum';
-    case CHAINS.sepolia.id:
-      return 'Sepolia';
-    default:
-      return 'Unknown Chain';
-  }
 }

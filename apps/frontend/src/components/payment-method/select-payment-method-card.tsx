@@ -9,7 +9,6 @@ import type { DeepPartial } from '@/lib/types/utils';
 import {
   type PaymentProviderDetails,
   isNfscPayment,
-  paymentProviderSchema,
 } from '@namefi-astra/db/types';
 import { CHAINS, NFSC_CONTRACT_ADDRESS } from '@namefi-astra/utils';
 import type { ConfirmationToken } from '@stripe/stripe-js';
@@ -158,7 +157,7 @@ export function SelectPaymentMethodCard({
     (confirmationToken: ConfirmationToken) => {
       const newPaymentMethodDetails: PaymentDetails = {
         paymentProviderDetails: {
-          paymentProvider: paymentProviderSchema.enum.STRIPE,
+          paymentProvider: 'STRIPE',
           stripePaymentDetails: {
             paymentMethodId: undefined,
           },
@@ -199,10 +198,10 @@ export function SelectPaymentMethodCard({
         paymentProviderDetails: {
           paymentProvider:
             chainId === CHAINS.mainnet.id
-              ? paymentProviderSchema.enum.NFSC_ETHEREUM
+              ? 'NFSC_ETHEREUM'
               : chainId === CHAINS.base.id
-                ? paymentProviderSchema.enum.NFSC_BASE
-                : paymentProviderSchema.enum.NFSC_ETHEREUM_SEPOLIA,
+                ? 'NFSC_BASE'
+                : 'NFSC_ETHEREUM_SEPOLIA',
           nfscPaymentDetails: {
             walletAddress:
               walletAddress ??

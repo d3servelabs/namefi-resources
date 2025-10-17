@@ -1,6 +1,6 @@
 import { useTRPC } from '@/lib/trpc';
 import { config } from '@/lib/env';
-import { getChain } from '@namefi-astra/utils';
+import { CHAINS, getChain } from '@namefi-astra/utils';
 import { filter, isNotNil } from 'ramda';
 import { useQuery } from '@tanstack/react-query';
 import type { Chain } from 'viem';
@@ -88,4 +88,12 @@ export function useAllowedChains() {
     isLoading: query.isLoading && !getPersistedChains(),
     isError: query.isError && !getPersistedChains(),
   };
+}
+
+export function useDefaultChainId() {
+  const { chainIds } = useAllowedChains();
+  if (Array.isArray(chainIds) && chainIds.length > 0) {
+    return chainIds.includes(CHAINS.base.id) ? CHAINS.base.id : chainIds[0];
+  }
+  return CHAINS.base.id;
 }

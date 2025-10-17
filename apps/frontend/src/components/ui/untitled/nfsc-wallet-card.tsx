@@ -12,7 +12,7 @@ import {
 import { NetworkLogo } from '@/components/network-logo';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
 import { useAllowedChains } from '@/hooks/use-allowed-chains';
-import { getPaymentProviderForChain } from '@/hooks/use-user-chain-balances';
+import { getPaymentProviderForChain } from '@/components/payment-method/hybrid-payment-utils';
 import { cn } from '@/lib/cn';
 
 interface NFSCWalletCardProps
