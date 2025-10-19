@@ -1,0 +1,172 @@
+name: Deploy Resources to Vercel
+
+on:
+  push:
+    branches:
+      - main    # Regular push to main branch deploys to dev
+    tags:
+      - 'resources/v*'  # Tags like resources/v1.0.0 for production deployment
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        default: 'dev'
+        type: choice
+        options:
+          - dev
+          - production
+
+env:
+  SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_RELEASE_CHANNEL_URL }} # Slack webhook URL
+
+jobs:
+  # Detect if resources package has changed
+  detect-changes:
+    name: Detect Resources Changes
+    runs-on: ubuntu-latest
+    outputs:
+      has-changes: ${{ steps.check-changes.outputs.has-changes }}
+      should-deploy: ${{ steps.should-deploy.outputs.result }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: ".bun-version"
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Detect Turbo changes
+        id: turbo-changes
+        uses: ./.github/actions/detect-turbo-changes
+        with:
+          filter: '...[HEAD^]'
+
+      - name: Check if resources changed
+        id: check-changes
+        run: |
+          CHANGED_PACKAGES='${{ steps.turbo-changes.outputs.changed-packages }}'
+          echo "Changed packages: $CHANGED_PACKAGES"
+
+          if echo "$CHANGED_PACKAGES" | jq -e 'any(. == "@namefi-astra/resources")' > /dev/null; then
+            echo "has-changes=true" >> $GITHUB_OUTPUT
+            echo "Resources package has changed"
+          else
+            echo "has-changes=false" >> $GITHUB_OUTPUT
+            echo "Resources package has NOT changed"
+          fi
+
+      - name: Determine if should deploy
+        id: should-deploy
+        run: |
+          # Deploy if:
+          # 1. Manual workflow dispatch
+          # 2. Tag push (resources/v*)
+          # 3. Main branch push AND resources has changes
+
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "result=true" >> $GITHUB_OUTPUT
+            echo "Deploying: Manual workflow dispatch"
+          elif [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" =~ ^refs/tags/resources/v ]]; then
+            echo "result=true" >> $GITHUB_OUTPUT
+            echo "Deploying: Tag push"
+          elif [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/main" && "${{ steps.check-changes.outputs.has-changes }}" == "true" ]]; then
+            echo "result=true" >> $GITHUB_OUTPUT
+            echo "Deploying: Main branch push with resources changes"
+          else
+            echo "result=false" >> $GITHUB_OUTPUT
+            echo "Skipping: No relevant changes or trigger"
+          fi
+
+  # Compute environment variables
+  compute-env:
+    name: Compute Environment Variables
+    needs: detect-changes
+    if: needs.detect-changes.outputs.should-deploy == 'true'
+    runs-on: ubuntu-latest
+    outputs:
+      label: ${{ steps.compute.outputs.label }}
+      vercel_env: ${{ steps.compute.outputs.vercel_env }}
+    steps:
+      - name: Compute environment values
+        id: compute
+        run: |
+          # Simple logic:
+          # - Tag push (resources/v*) = production
+          # - Manual dispatch with production = production
+          # - Everything else = dev
+
+          IS_PROD="false"
+          if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" =~ ^refs/tags/resources/v ]]; then
+            IS_PROD="true"
+          elif [[ "${{ github.event_name }}" == "workflow_dispatch" && "${{ github.event.inputs.environment }}" == "production" ]]; then
+            IS_PROD="true"
+          fi
+
+          # Set label (prod or dev)
+          if [[ "$IS_PROD" == "true" ]]; then
+            echo "label=prod" >> $GITHUB_OUTPUT
+            echo "vercel_env=production" >> $GITHUB_OUTPUT
+          else
+            echo "label=dev" >> $GITHUB_OUTPUT
+            echo "vercel_env=dev" >> $GITHUB_OUTPUT
+          fi
+
+          # Output for debugging
+          echo "Event: ${{ github.event_name }}"
+          echo "Ref: ${{ github.ref }}"
+          echo "Is Production: $IS_PROD"
+          echo "Label: $([ "$IS_PROD" == "true" ] && echo "prod" || echo "dev")"
+          echo "Vercel Env: $([ "$IS_PROD" == "true" ] && echo "production" || echo "dev")"
+
+  # Deploy to Vercel
+  deploy-vercel:
+    name: Deploy Resources to Vercel
+    needs: [compute-env]
+    runs-on: 'ubuntu-latest'
+    outputs:
+      deployment_url: ${{ steps.deploy.outputs.deployment_url }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: ".bun-version"
+
+      - name: Install Vercel CLI
+        run: bun add --global vercel@latest
+
+      - name: Deploy to Vercel
+        id: deploy
+        run: |
+          # Deploy to Vercel - builds on Vercel and automatically routes traffic
+          # Use --no-wait to trigger deployment without waiting for build completion
+          # Use --target=production or --target=dev based on environment
+          if [[ "${{ needs.compute-env.outputs.label }}" == "prod" ]]; then
+            echo "Deploying to production target"
+            DEPLOYMENT_URL=$(vercel deploy --target=production --no-wait --token=${{ secrets.VERCEL_ACCOUNT_TOKEN }})
+          else
+            echo "Deploying to dev target"
+            DEPLOYMENT_URL=$(vercel deploy --target=dev --no-wait --token=${{ secrets.VERCEL_ACCOUNT_TOKEN }})
+          fi
+
+          echo "deployment_url=$DEPLOYMENT_URL" >> $GITHUB_OUTPUT
+          echo "Deployment triggered: $DEPLOYMENT_URL"
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_RESOURCES_PROJECT_ID }}
+
+      - name: Show Deployment URL
+        run: |
+          echo "🚀 Resources deployment triggered: ${{ steps.deploy.outputs.deployment_url }}"
+          echo "Target environment: ${{ needs.compute-env.outputs.label }}"
+          echo "Build will continue on Vercel"
+
