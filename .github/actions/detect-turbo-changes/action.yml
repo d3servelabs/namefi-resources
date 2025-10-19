@@ -31,7 +31,7 @@ runs:
         echo "Running turbo with filter: ${{ inputs.filter }}"
 
         # Run turbo and extract packages in one step, filtering out '//'
-        PACKAGES=$(turbo run build --filter='${{ inputs.filter }}' --dry-run=json | jq -r '.packages[] | select(. != "//")')
+        PACKAGES=$(npx turbo run build --filter='${{ inputs.filter }}' --dry-run=json | jq -r '.packages[] | select(. != "//")')
 
         # Convert to JSON array and check if empty
         if [ -z "$PACKAGES" ]; then
