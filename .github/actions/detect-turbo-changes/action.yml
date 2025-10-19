@@ -1,0 +1,53 @@
+name: 'Detect Turbo Changes'
+description: 'Detects which packages have changed using Turbo and outputs package names (excluding //)'
+author: 'D3ServeLabs'
+
+inputs:
+  filter:
+    description: 'Turbo filter to use (e.g., "...[HEAD^]" or "...[origin/main]")'
+    required: false
+    default: '...[HEAD^]'
+  working-directory:
+    description: 'Working directory to run turbo from'
+    required: false
+    default: '.'
+
+outputs:
+  changed-packages:
+    description: 'JSON array of changed package names (excluding //)'
+    value: ${{ steps.detect-changes.outputs.changed-packages }}
+  has-changes:
+    description: 'Boolean indicating if any packages have changed'
+    value: ${{ steps.detect-changes.outputs.has-changes }}
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Detect changed packages
+      id: detect-changes
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      run: |
+        echo "Running turbo with filter: ${{ inputs.filter }}"
+
+        # Run turbo and extract packages in one step, filtering out '//'
+        PACKAGES=$(turbo run build --filter='${{ inputs.filter }}' --dry-run=json | jq -r '.packages[] | select(. != "//")')
+
+        # Convert to JSON array and check if empty
+        if [ -z "$PACKAGES" ]; then
+          CHANGED_PACKAGES="[]"
+          HAS_CHANGES="false"
+          echo "No packages changed"
+        else
+          CHANGED_PACKAGES=$(echo "$PACKAGES" | jq -R . | jq -s .)
+          HAS_CHANGES="true"
+          echo "Changed packages:"
+          echo "$PACKAGES"
+        fi
+
+        echo "changed-packages=$CHANGED_PACKAGES" >> $GITHUB_OUTPUT
+        echo "has-changes=$HAS_CHANGES" >> $GITHUB_OUTPUT
+
+branding:
+  icon: 'git-branch'
+  color: 'blue'
