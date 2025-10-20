@@ -27,13 +27,24 @@ import type {
   Row,
   VisibilityState,
 } from '@tanstack/react-table';
-import { ChevronDown, ChevronRight } from 'lucide-react';
+import { ChevronDown, ChevronRight, Copy } from 'lucide-react';
 import {
   NAMEFI_NFT_CONTRACT_ADDRESS,
   getChain,
   CHAINS,
+  checksumWalletAddressSchema,
 } from '@namefi-astra/utils';
 import { NetworkLogo } from '@/components/network-logo';
+import {
+  differenceInYears,
+  differenceInMonths,
+  differenceInDays,
+} from 'date-fns';
+
+const attemptGetChecksummedAddress = (address: string): string => {
+  const parsed = checksumWalletAddressSchema.safeParse(address);
+  return parsed.success ? parsed.data : address;
+};
 
 type UserRow = {
   id: string;
@@ -43,6 +54,7 @@ type UserRow = {
   createdAt: Date;
   updatedAt: Date;
   isAdmin: boolean;
+  wallets: string[];
   nfts: Array<{
     chainId: number;
     normalizedDomainName: string;
@@ -89,7 +101,7 @@ function UsersTable() {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
     expander: true,
     updatedAt: true,
-    id: true,
+    id: false,
     displayName: true,
     primaryEmail: true,
     privyUserId: false,
@@ -228,6 +240,96 @@ function UsersTable() {
         size: 150,
       },
       {
+        accessorKey: 'primaryWallet',
+        header: 'Primary Wallet',
+        cell: ({ row }) => {
+          let primaryWallet = row.original.wallets?.[0];
+          if (!primaryWallet) return '-';
+          primaryWallet = attemptGetChecksummedAddress(primaryWallet);
+
+          const handleCopyWallet = async () => {
+            try {
+              await navigator.clipboard.writeText(primaryWallet);
+              toast.success('Copied address successfully');
+            } catch (error) {
+              toast.error('Failed to copy address');
+            }
+          };
+
+          return (
+            <div className="flex items-center gap-2 px-2 py-1 bg-muted rounded max-w-full">
+              <div className="flex-1 min-w-0">
+                <AutoTruncateTextV2
+                  initialCharactersCountToDisplay={16}
+                  minCharactersToDisplay={16}
+                  className="font-mono text-xs"
+                >
+                  {primaryWallet}
+                </AutoTruncateTextV2>
+              </div>
+              <button
+                type="button"
+                onClick={handleCopyWallet}
+                className="p-1 hover:bg-background rounded transition-colors flex-shrink-0"
+                title="Copy address"
+              >
+                <Copy className="h-3 w-3" />
+              </button>
+            </div>
+          );
+        },
+        size: 150,
+      },
+      {
+        accessorKey: 'allWallets',
+        header: 'All Wallets',
+        cell: ({ row }) => {
+          let wallets = row.original.wallets ?? [];
+          if (wallets.length === 0) return '-';
+
+          wallets = wallets
+            .map((wallet) => attemptGetChecksummedAddress(wallet))
+            .filter((wallet) => wallet !== null);
+          const handleCopyWallet = async (wallet: string) => {
+            try {
+              await navigator.clipboard.writeText(wallet);
+              toast.success('Copied address successfully');
+            } catch (error) {
+              toast.error('Failed to copy address');
+            }
+          };
+
+          return (
+            <div className="flex flex-col gap-1">
+              {wallets.map((wallet) => (
+                <div
+                  key={wallet}
+                  className="flex items-center gap-2 px-2 py-1 bg-muted rounded w-fit"
+                >
+                  <span className="text-xs font-mono">
+                    <AutoTruncateTextV2
+                      initialCharactersCountToDisplay={16}
+                      minCharactersToDisplay={16}
+                    >
+                      {wallet}
+                    </AutoTruncateTextV2>
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => handleCopyWallet(wallet)}
+                    className="p-1 hover:bg-background rounded transition-colors"
+                    title="Copy address"
+                  >
+                    <Copy className="h-3 w-3" />
+                  </button>
+                </div>
+              ))}
+            </div>
+          );
+        },
+        size: 200,
+      },
+      {
         accessorKey: 'createdAt',
         header: 'Created',
         cell: ({ row }) =>
@@ -285,6 +387,7 @@ function UsersTable() {
       createdAt: u.createdAt,
       updatedAt: u.updatedAt,
       isAdmin: u.isAdmin,
+      wallets: u.wallets ?? [],
       nfts: u.nfts ?? [],
       nftCount: u.nftCount ?? 0,
     }));
@@ -296,6 +399,8 @@ function UsersTable() {
       displayName: { type: 'text' as const, label: 'Display Name' },
       primaryEmail: { type: 'text' as const, label: 'Email' },
       privyUserId: { type: 'text' as const, label: 'Privy ID' },
+      primaryWallet: { type: 'text' as const, label: 'Primary Wallet' },
+      allWallets: { type: 'text' as const, label: 'All Wallets' },
       createdAt: { type: 'date' as const, label: 'Created At' },
       updatedAt: { type: 'date' as const, label: 'Updated At' },
       nftCount: { type: 'number' as const, label: 'Asset Count' },
@@ -305,21 +410,21 @@ function UsersTable() {
 
   const customFilters = useMemo(
     () => [
-      {
-        id: 'search',
-        label: 'General Search',
-        type: 'text' as const,
-        placeholder: 'Search by email, name, wallet, id...',
-        value: searchTerm,
-        onChange: (value: string | number | undefined) => {
-          setPage(1);
-          setSearchTerm(value ? String(value) : '');
-        },
-        onClear: () => {
-          setPage(1);
-          setSearchTerm('');
-        },
-      },
+      // {
+      //   id: 'search',
+      //   label: 'General Search',
+      //   type: 'text' as const,
+      //   placeholder: 'Search by email, name, wallet, id...',
+      //   value: searchTerm,
+      //   onChange: (value: string | number | undefined) => {
+      //     setPage(1);
+      //     setSearchTerm(value ? String(value) : '');
+      //   },
+      //   onClear: () => {
+      //     setPage(1);
+      //     setSearchTerm('');
+      //   },
+      // },
       {
         id: 'domainSearch',
         label: 'Domain Search',
@@ -351,7 +456,7 @@ function UsersTable() {
         },
       },
     ],
-    [searchTerm, domainSearchTerm, ensSearchTerm],
+    [domainSearchTerm, ensSearchTerm],
   );
 
   return (
@@ -389,6 +494,7 @@ function UsersTable() {
           loadingMessage="Loading users..."
           columnVisibility={columnVisibility}
           onColumnVisibilityChange={setColumnVisibility}
+          filterDisplayOptions={{ showInHeader: false }}
         />
       </CardContent>
     </Card>
@@ -538,16 +644,28 @@ const UserNftsSubRow = ({ original: user }: Row<UserRow>) => {
 
           const expirationDate = new Date(expirationTime);
           const now = new Date();
-          const daysUntilExpiration = Math.floor(
-            (expirationDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24),
-          );
-          const monthsUntilExpiration = daysUntilExpiration / 30;
+
+          // Calculate differences
+          const years = differenceInYears(expirationDate, now);
+          const months = differenceInMonths(expirationDate, now) % 12;
+          const days = differenceInDays(expirationDate, now) % 30;
+
+          // Build duration string
+          const durationParts: string[] = [];
+          if (years > 0) durationParts.push(`${years}y`);
+          if (months > 0) durationParts.push(`${months}mo`);
+          if (days > 0 || durationParts.length === 0)
+            durationParts.push(`${days}d`);
+          const durationText = durationParts.join(' ');
+
+          // Calculate total months for color coding
+          const totalMonths = differenceInMonths(expirationDate, now);
 
           // Color coding: < 4 months = red, 4-12 months = orange, > 12 months = green
           let textColor = 'text-muted-foreground';
-          if (monthsUntilExpiration < 4) {
+          if (totalMonths < 4) {
             textColor = 'text-red-500 dark:text-red-400';
-          } else if (monthsUntilExpiration < 12) {
+          } else if (totalMonths < 12) {
             textColor = 'text-orange-500 dark:text-orange-400';
           } else {
             textColor = 'text-green-500 dark:text-green-400';
@@ -563,8 +681,8 @@ const UserNftsSubRow = ({ original: user }: Row<UserRow>) => {
           return (
             <span className={`text-xs font-medium ${textColor}`}>
               {formattedDate}
-              {daysUntilExpiration >= 0 && (
-                <span className="text-xs ml-1">({daysUntilExpiration}d)</span>
+              {totalMonths >= 0 && (
+                <span className="text-xs ml-1">({durationText})</span>
               )}
             </span>
           );
@@ -709,7 +827,7 @@ const UserNftsSubRow = ({ original: user }: Row<UserRow>) => {
   return (
     <div className="space-y-2">
       <div className="text-sm font-semibold text-muted-foreground mb-2">
-        NFTs ({user.nftCount})
+        Domains ({user.nftCount})
       </div>
       <DataTable<NftRow>
         columns={nftColumns}
@@ -722,6 +840,7 @@ const UserNftsSubRow = ({ original: user }: Row<UserRow>) => {
         customFilters={customNftFilters}
         columnVisibility={columnVisibility}
         onColumnVisibilityChange={setColumnVisibility}
+        filterDisplayOptions={{ showInHeader: false }}
       />
     </div>
   );

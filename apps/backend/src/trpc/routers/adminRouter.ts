@@ -1794,16 +1794,96 @@ export const adminRouter = createTRPCRouter({
             case 'nftCount':
               columnSql = sql`${userNftsCTE.nftCount}`;
               break;
+            case 'primaryWallet':
+              // Primary wallet is the first element in the wallets array
+              columnSql = sql`${privyUsersTableSchema.wallets}[1]`;
+              break;
+            case 'allWallets':
+              // For allWallets, we need to search within the array
+              // This will be handled specially in the operator switch
+              break;
           }
           const TextFilterableColumns = new Set([
             'id',
             'displayName',
             'primaryEmail',
             'privyUserId',
+            'primaryWallet',
+            'allWallets',
           ]);
           const NumberFilterableColumns = new Set(['nftCount']);
           const DateFilterableColumns = new Set(['createdAt', 'updatedAt']);
-          if (columnSql) {
+
+          // Special handling for allWallets (array search)
+          if (id === 'allWallets') {
+            if (typeof filterValue !== 'string') {
+              throw new TRPCError({
+                code: 'BAD_REQUEST',
+                message: 'allWallets filter expects a string value',
+              });
+            }
+            const lowerFilterValue = String(filterValue).trim().toLowerCase();
+            switch (operator) {
+              case 'like':
+                // Search for wallet containing the value in any element of the array (case-insensitive)
+                whereClauses.push(
+                  sql`EXISTS (
+                    SELECT 1
+                    FROM unnest(array_lowercase(${privyUsersTableSchema.wallets})) AS w
+                    WHERE w LIKE ${`%${lowerFilterValue}%`}
+                  )`,
+                );
+                break;
+              case 'eq':
+                // Check if any wallet matches exactly (case-insensitive)
+                whereClauses.push(
+                  sql`${lowerFilterValue} = ANY(array_lowercase(${privyUsersTableSchema.wallets}))`,
+                );
+                break;
+              case 'neq':
+                // Check that no wallet matches (case-insensitive)
+                whereClauses.push(
+                  sql`NOT (${lowerFilterValue} = ANY(array_lowercase(${privyUsersTableSchema.wallets})))`,
+                );
+                break;
+              default:
+                throw new TRPCError({
+                  code: 'BAD_REQUEST',
+                  message: `Operator "${operator}" is not supported for allWallets column`,
+                });
+            }
+          } else if (id === 'primaryWallet') {
+            if (typeof filterValue !== 'string') {
+              throw new TRPCError({
+                code: 'BAD_REQUEST',
+                message: 'primaryWallet filter expects a string value',
+              });
+            }
+            // Special handling for primaryWallet to ensure lowercase comparison
+            const lowerFilterValue = String(filterValue).trim().toLowerCase();
+            switch (operator) {
+              case 'like':
+                whereClauses.push(
+                  sql`LOWER(${columnSql}) LIKE ${`%${lowerFilterValue}%`}`,
+                );
+                break;
+              case 'eq':
+                whereClauses.push(
+                  sql`LOWER(${columnSql}) = ${lowerFilterValue}`,
+                );
+                break;
+              case 'neq':
+                whereClauses.push(
+                  sql`LOWER(${columnSql}) != ${lowerFilterValue}`,
+                );
+                break;
+              default:
+                throw new TRPCError({
+                  code: 'BAD_REQUEST',
+                  message: `Operator "${operator}" is not supported for primaryWallet column`,
+                });
+            }
+          } else if (columnSql) {
             switch (operator) {
               case 'like':
                 if (!TextFilterableColumns.has(id)) {
@@ -1916,11 +1996,20 @@ export const adminRouter = createTRPCRouter({
             case 'nftCount':
               columnSql = sql`${userNftsCTE.nftCount}`;
               break;
+            case 'primaryWallet':
+              columnSql = sql`${privyUsersTableSchema.wallets}[1]`;
+              break;
+            case 'allWallets':
+              // For allWallets, we can sort by the array as a whole (sorts by first element, then second, etc.)
+              columnSql = sql`${privyUsersTableSchema.wallets}`;
+              break;
           }
 
           if (columnSql) {
             orderByClauses.push(
-              sort.desc ? sql`${columnSql} DESC` : sql`${columnSql} ASC`,
+              sort.desc
+                ? sql`${columnSql} DESC NULLS LAST`
+                : sql`${columnSql} ASC NULLS LAST`,
             );
           }
         }
@@ -1952,7 +2041,7 @@ export const adminRouter = createTRPCRouter({
           updatedAt: r.updatedAt,
           isAdmin: adminIdsSet.has(r.id),
           displayName: r.displayName ?? null,
-          walletAddresses: r.wallets ?? [],
+          wallets: r.wallets ?? [],
           nfts: r.nfts ?? [],
           nftCount: r.nftCount ?? 0,
         }));
