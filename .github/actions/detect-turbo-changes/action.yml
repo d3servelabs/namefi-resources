@@ -39,7 +39,7 @@ runs:
           HAS_CHANGES="false"
           echo "No packages changed"
         else
-          CHANGED_PACKAGES=$(echo "$PACKAGES" | jq -R . | jq -s .)
+          CHANGED_PACKAGES=$(echo "$PACKAGES" | jq -R . | jq -s . | jq 'tostring')
           HAS_CHANGES="true"
           echo "Changed packages:"
           echo "$PACKAGES"

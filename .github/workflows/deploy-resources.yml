@@ -69,6 +69,7 @@ jobs:
           # 1. Manual workflow dispatch
           # 2. Tag push (resources/v*)
           # 3. Main branch push AND resources has changes
+          HAS_CHANGES="${{ contains((steps.turbo-changes.outputs.changed-packages), '@namefi-astra/resources' ) }}"
 
           if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
             echo "result=true" >> $GITHUB_OUTPUT
@@ -76,7 +77,7 @@ jobs:
           elif [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" =~ ^refs/tags/resources/v ]]; then
             echo "result=true" >> $GITHUB_OUTPUT
             echo "Deploying: Tag push"
-          elif [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/main" && "${{ steps.check-changes.outputs.has-changes }}" == "true" ]]; then
+          elif [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/main" && "$HAS_CHANGES" == "true" ]]; then
             echo "result=true" >> $GITHUB_OUTPUT
             echo "Deploying: Main branch push with resources changes"
           else
