@@ -232,17 +232,23 @@ export function GenerationDetailsClient({
     <>
       <div className="container max-w-4xl mx-auto py-8 px-8">
         {/* Header */}
-        <div className="flex justify-between items-center mb-6">
+        <div className="flex flex-col gap-4 mb-6">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={handleGoBack}
+            aria-label="Back to generator"
+            className="flex items-center gap-2 cursor-pointer self-start"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Back to generator
+          </Button>
           <div>
             <h1 className="text-2xl font-bold">
               {generation.type === 'logo' ? 'Logo' : 'Poster'} for {brandName}
             </h1>
             <p className="text-muted-foreground mt-1">{domain}</p>
           </div>
-          <Button variant="outline" onClick={handleGoBack}>
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Generator
-          </Button>
         </div>
 
         {/* Main Content */}
@@ -268,7 +274,7 @@ export function GenerationDetailsClient({
             <div className="space-y-3">
               {generation.type === 'logo' && (
                 <Button
-                  className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
+                  className="w-full bg-brand-primary text-primary-foreground hover:bg-brand-primary/90"
                   onClick={handleCreatePoster}
                 >
                   <Sparkles className="mr-2 h-4 w-4" />

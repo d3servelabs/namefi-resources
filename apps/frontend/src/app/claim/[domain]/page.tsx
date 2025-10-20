@@ -4,7 +4,6 @@ import { CartCard } from '@/components/cart-card';
 import { Button } from '@/components/ui/shadcn/button';
 import { useAuth } from '@/hooks/use-auth';
 import { useCartRow } from '@/hooks/use-cart-row';
-import { useUserWalletAddresses } from '@/hooks/use-user-wallet-addresses';
 import { cn } from '@/lib/cn';
 import { useTRPC } from '@/lib/trpc';
 import type { DomainAvailabilityInfo } from '@namefi-astra/backend/trpc/types';
@@ -34,18 +33,10 @@ export default function ClaimPage() {
   const queryClient = useQueryClient();
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
   const hasFiredConfettiRef = useRef(false);
-  const { userWalletAddresses } = useUserWalletAddresses();
   const { cart } = useCartRow(normalizedDomainName ?? undefined);
   const [selectedWalletAddress, setSelectedWalletAddress] = useState<
     string | null
   >(null);
-
-  // Initialize default wallet selection from connected wallets
-  useEffect(() => {
-    if (!selectedWalletAddress && userWalletAddresses.length > 0) {
-      setSelectedWalletAddress(userWalletAddresses[0] ?? null);
-    }
-  }, [selectedWalletAddress, userWalletAddresses]);
 
   const {
     data: availabilityInfo,

@@ -14,6 +14,7 @@ import type { ReactNode } from 'react';
 interface CartCardProps {
   title?: string;
   description?: string;
+  headerAction?: ReactNode;
   children?: ReactNode;
   footer?: ReactNode;
   className?: string;
@@ -22,6 +23,7 @@ interface CartCardProps {
 export function CartCard({
   title,
   description,
+  headerAction,
   children,
   footer,
   className,
@@ -34,11 +36,23 @@ export function CartCard({
       )}
     >
       {(title || description) && (
-        <CardHeader className="p-0 pb-4">
-          {title && (
-            <CardTitle className="text-2xl font-semibold">{title}</CardTitle>
+        <CardHeader
+          className={cn(
+            'p-0 pb-4',
+            headerAction
+              ? 'flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between'
+              : undefined,
           )}
-          {description && <CardDescription>{description}</CardDescription>}
+        >
+          <div>
+            {title && (
+              <CardTitle className="text-2xl font-semibold">{title}</CardTitle>
+            )}
+            {description && <CardDescription>{description}</CardDescription>}
+          </div>
+          {headerAction && (
+            <div className="sm:flex-shrink-0">{headerAction}</div>
+          )}
         </CardHeader>
       )}
       {children && <CardContent className="p-0">{children}</CardContent>}

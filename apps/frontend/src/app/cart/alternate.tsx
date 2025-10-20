@@ -12,6 +12,7 @@ import { useUserWalletAddresses } from '@/hooks/use-user-wallet-addresses';
 import { useDefaultChainId } from '@/hooks/use-allowed-chains';
 import {
   AlertDialog,
+  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -36,7 +37,7 @@ import { cn } from '@/lib/cn';
 import { InteractionLoggingEventName } from '@/lib/analytics-events';
 import { type AppRouterInput, useTRPC } from '@/lib/trpc';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { ArchiveX, Loader2 } from 'lucide-react';
+import { ArchiveX, Loader2, Trash2 } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useRouter } from 'next/navigation';
 import {
@@ -62,6 +63,8 @@ export default function CartPage() {
   const [isRedirecting, setIsRedirecting] = useState(false);
   const [isErrorDialogOpen, setIsErrorDialogOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [isClearingCart, setIsClearingCart] = useState(false);
+  const [isClearCartDialogOpen, setIsClearCartDialogOpen] = useState(false);
 
   const { logEventWithInteractionLoggers } = useInteractionLoggers();
 
@@ -70,7 +73,12 @@ export default function CartPage() {
 
   const trpc = useTRPC();
 
-  const { cartData: items, isCartLoading, isCartUpdating } = useCartContext();
+  const {
+    cartData: items,
+    isCartLoading,
+    isCartUpdating,
+    clearCart,
+  } = useCartContext();
 
   const [
     isExplicitlyCheckingCartItemsForUpdates,
@@ -210,6 +218,30 @@ export default function CartPage() {
     [createOrder, items, selectedNftWalletAddress, defaultChainId],
   );
 
+  const handleClearCart = useCallback(async () => {
+    if (!items || items.length === 0) {
+      setIsClearCartDialogOpen(false);
+      return;
+    }
+
+    setIsClearingCart(true);
+    try {
+      cartItemsToInteractionLoggingCartItems(items).forEach((cartItem) => {
+        logEventWithInteractionLoggers({
+          name: InteractionLoggingEventName.RemoveFromCart,
+          properties: { cartItem },
+        });
+      });
+      await clearCart();
+      await cartChangesSummaryCardRef.current?.checkCartItemsForUpdates();
+    } catch (error) {
+      console.error('clearCart error', error);
+    } finally {
+      setIsClearingCart(false);
+      setIsClearCartDialogOpen(false);
+    }
+  }, [items, clearCart, logEventWithInteractionLoggers]);
+
   const handleNftWalletAddressChange = useCallback(
     (walletAddress: string | null) => {
       setSelectedNftWalletAddress(walletAddress);
@@ -218,8 +250,11 @@ export default function CartPage() {
   );
 
   const isDisabled = useMemo(
-    () => isRedirecting || isExplicitlyCheckingCartItemsForUpdates,
-    [isRedirecting, isExplicitlyCheckingCartItemsForUpdates],
+    () =>
+      isRedirecting ||
+      isExplicitlyCheckingCartItemsForUpdates ||
+      isClearingCart,
+    [isRedirecting, isExplicitlyCheckingCartItemsForUpdates, isClearingCart],
   );
 
   const { data: domainAvailabilityInfo } = useQuery({
@@ -254,6 +289,40 @@ export default function CartPage() {
         </AlertDialogContent>
       </AlertDialog>
 
+      <AlertDialog
+        open={isClearCartDialogOpen}
+        onOpenChange={(open) => {
+          if (!isClearingCart) {
+            setIsClearCartDialogOpen(open);
+          }
+        }}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Clear cart?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This will remove all items from your cart. You can add them back
+              later if needed.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={isClearingCart}>
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90 gap-2"
+              onClick={handleClearCart}
+              disabled={isClearingCart}
+            >
+              {isClearingCart && (
+                <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+              )}
+              Clear Cart
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
       {isAuthenticated && (
         <CartChangesSummaryCard ref={cartChangesSummaryCardRef} />
       )}
@@ -277,7 +346,28 @@ export default function CartPage() {
             )}
 
             {/* Cart Items Card */}
-            <CartCard title="In your cart">
+            <CartCard
+              title="In your cart"
+              headerAction={
+                <Button
+                  variant="destructive"
+                  size="sm"
+                  onClick={() => setIsClearCartDialogOpen(true)}
+                  disabled={isClearingCart || isCartUpdating || !items?.length}
+                  className="gap-2"
+                >
+                  {isClearingCart ? (
+                    <Loader2
+                      className="h-4 w-4 animate-spin"
+                      aria-hidden="true"
+                    />
+                  ) : (
+                    <Trash2 className="h-4 w-4" aria-hidden="true" />
+                  )}
+                  Clear Cart
+                </Button>
+              }
+            >
               <div className="flex flex-col">
                 {items.map((item, index) => (
                   <CartItem

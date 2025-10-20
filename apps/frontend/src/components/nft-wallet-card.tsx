@@ -8,7 +8,7 @@ import {
 } from '@/hooks/use-user-wallet-addresses';
 import { useAllowedChains } from '@/hooks/use-allowed-chains';
 import { CHAINS, checksumWalletAddressSchema } from '@namefi-astra/utils';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 export interface NftWalletCardProps {
   onWalletAddressChange: (walletAddress: string | null) => void;
@@ -32,6 +32,7 @@ export function NftWalletCard({
   const { userWalletAddresses, userWalletsReady } = useUserWalletAddresses();
   const { linkedWalletAddresses, linkedWalletsReady } =
     useLinkedWalletAddresses();
+  const hasAutoSelectedDefault = useRef(false);
 
   const { options, optionsReady } = useMemo(() => {
     if (!(linkedWalletsReady && userWalletsReady)) {
@@ -53,6 +54,31 @@ export function NftWalletCard({
     linkedWalletsReady,
     userWalletAddresses,
     userWalletsReady,
+  ]);
+
+  // Pre-select the first connected wallet the first time options become ready.
+  useEffect(() => {
+    if (selectedWalletAddress) {
+      hasAutoSelectedDefault.current = true;
+      return;
+    }
+
+    if (
+      !hasAutoSelectedDefault.current &&
+      optionsReady &&
+      userWalletAddresses.length > 0
+    ) {
+      const defaultWallet = userWalletAddresses[0];
+      if (defaultWallet) {
+        onWalletAddressChange(defaultWallet);
+        hasAutoSelectedDefault.current = true;
+      }
+    }
+  }, [
+    selectedWalletAddress,
+    optionsReady,
+    userWalletAddresses,
+    onWalletAddressChange,
   ]);
 
   const handleWalletAddressChange = useCallback(

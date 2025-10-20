@@ -104,7 +104,15 @@ export default function OrdersPage() {
                         </Link>
                       </MobileTableItemTitle>
                       {item.status && (
-                        <StatusBadge status={item.status} type="order" />
+                        // Context: https://app.clickup.com/t/9009140026/NFI-5127
+                        <StatusBadge
+                          status={
+                            item.status === 'CREATED'
+                              ? 'PROCESSING'
+                              : item.status
+                          }
+                          type="order"
+                        />
                       )}
                     </MobileTableItemHeader>
 
@@ -166,7 +174,14 @@ export default function OrdersPage() {
                     </TableCell>
                     <TableCell>
                       {item.status ? (
-                        <StatusBadge status={item.status} type="order" />
+                        <StatusBadge
+                          status={
+                            item.status === 'CREATED'
+                              ? 'PROCESSING'
+                              : item.status
+                          }
+                          type="order"
+                        />
                       ) : (
                         <span>-</span>
                       )}
