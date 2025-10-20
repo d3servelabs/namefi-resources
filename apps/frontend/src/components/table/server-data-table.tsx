@@ -259,28 +259,27 @@ export function ServerDataTable<TData>(props: ServerDataTableProps<TData>) {
           {(filterConfig || customFilters) &&
             onColumnFiltersChange &&
             filterDisplayOptions?.showInPanel !== false && (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setFilterPanelOpen(true)}
-                className={cn(
-                  activeFilterCount > 0 && [
-                    'relative',
-                    'before:absolute before:inset-[-2px] before:rounded-md before:-z-10',
-                    'before:bg-[conic-gradient(from_0deg,#ff7773,#ffed5f,#a8ff5f,#83fff7,#7894ff,#d875ff,#ff7773)]',
-                    'before:animate-spin before:[animation-duration:3s]',
-                    'bg-background',
-                  ],
-                )}
+              <div
+                className={
+                  activeFilterCount > 0
+                    ? 'relative rounded-md p-[2px] bg-gradient-to-r from-red-500 via-yellow-500 via-green-500 via-blue-500 to-purple-500 animate-gradient-xy'
+                    : ''
+                }
               >
-                <FilterIcon className="h-3 w-3 mr-1" />
-                Filters
-                {activeFilterCount > 0 && (
-                  <Badge variant="secondary" className="ml-2">
-                    {activeFilterCount}
-                  </Badge>
-                )}
-              </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setFilterPanelOpen(true)}
+                >
+                  <FilterIcon className="h-3 w-3 mr-1" />
+                  Filters
+                  {activeFilterCount > 0 && (
+                    <Badge variant="outline" className="ml-1">
+                      {activeFilterCount}
+                    </Badge>
+                  )}
+                </Button>
+              </div>
             )}
 
           {/* Column Visibility Toggle */}
@@ -289,6 +288,10 @@ export function ServerDataTable<TData>(props: ServerDataTableProps<TData>) {
               <Button variant="outline" size="sm">
                 <ColumnsIcon className="h-3 w-3 mr-1" />
                 Columns
+                <Badge variant="outline" className="ml-1">
+                  {table.getVisibleFlatColumns().length}/
+                  {table.getAllColumns().length}
+                </Badge>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-[180px]">

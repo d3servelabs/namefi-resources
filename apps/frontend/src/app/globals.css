@@ -77,6 +77,18 @@
         rotate(calc((var(--angle) * -1deg) - 360deg));
     }
   }
+  --animate-gradient-xy: gradient-xy 12s ease infinite;
+  @keyframes gradient-xy {
+    0%,
+    100% {
+      background-size: 400% 400%;
+      background-position: left center;
+    }
+    50% {
+      background-size: 200% 200%;
+      background-position: right center;
+    }
+  }
 }
 
 :root {
