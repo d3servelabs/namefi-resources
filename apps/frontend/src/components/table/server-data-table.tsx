@@ -65,6 +65,11 @@ type CustomFilterField = {
   onClear?: () => void;
 };
 
+type FilterDisplayOptions = {
+  showInHeader?: boolean; // Show filters in column headers (default: true)
+  showInPanel?: boolean; // Show filters in side panel (default: true)
+};
+
 type ServerDataTableProps<TData> = {
   columns: ColumnDef<TData, any>[];
   data: TData[];
@@ -92,6 +97,7 @@ type ServerDataTableProps<TData> = {
   columnFilters?: ColumnFiltersState;
   onColumnFiltersChange?: (filters: ColumnFiltersState) => void;
   filterConfig?: FilterConfig;
+  filterDisplayOptions?: FilterDisplayOptions;
   customFilters?: CustomFilterField[];
 
   // Expansion
@@ -126,6 +132,7 @@ export function ServerDataTable<TData>(props: ServerDataTableProps<TData>) {
     columnFilters: controlledColumnFilters,
     onColumnFiltersChange,
     filterConfig,
+    filterDisplayOptions,
     customFilters,
     renderSubRow,
     getRowCanExpand,
@@ -249,21 +256,32 @@ export function ServerDataTable<TData>(props: ServerDataTableProps<TData>) {
         <div className="flex items-center gap-3">{searchInput}</div>
         <div className="flex items-center gap-2">
           {/* Filter Panel Toggle */}
-          {(filterConfig || customFilters) && onColumnFiltersChange && (
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setFilterPanelOpen(true)}
-            >
-              <FilterIcon className="h-3 w-3 mr-1" />
-              Filters
-              {activeFilterCount > 0 && (
-                <Badge variant="secondary" className="ml-2">
-                  {activeFilterCount}
-                </Badge>
-              )}
-            </Button>
-          )}
+          {(filterConfig || customFilters) &&
+            onColumnFiltersChange &&
+            filterDisplayOptions?.showInPanel !== false && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setFilterPanelOpen(true)}
+                className={cn(
+                  activeFilterCount > 0 && [
+                    'relative',
+                    'before:absolute before:inset-[-2px] before:rounded-md before:-z-10',
+                    'before:bg-[conic-gradient(from_0deg,#ff7773,#ffed5f,#a8ff5f,#83fff7,#7894ff,#d875ff,#ff7773)]',
+                    'before:animate-spin before:[animation-duration:3s]',
+                    'bg-background',
+                  ],
+                )}
+              >
+                <FilterIcon className="h-3 w-3 mr-1" />
+                Filters
+                {activeFilterCount > 0 && (
+                  <Badge variant="secondary" className="ml-2">
+                    {activeFilterCount}
+                  </Badge>
+                )}
+              </Button>
+            )}
 
           {/* Column Visibility Toggle */}
           <DropdownMenu>
@@ -356,7 +374,8 @@ export function ServerDataTable<TData>(props: ServerDataTableProps<TData>) {
                           </div>
                         )}
                         {filterConfig?.[header.column.id] &&
-                          onColumnFiltersChange && (
+                          onColumnFiltersChange &&
+                          filterDisplayOptions?.showInHeader !== false && (
                             // biome-ignore lint/a11y/useKeyWithClickEvents: not needed, this just to catch the event to stop event bubbling up
                             // biome-ignore lint/a11y/noStaticElementInteractions: needed to stop event bubbling up
                             <div onClick={(e) => e.stopPropagation()}>

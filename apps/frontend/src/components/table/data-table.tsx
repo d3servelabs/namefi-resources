@@ -67,6 +67,11 @@ type CustomFilterField = {
   onClear?: () => void;
 };
 
+type FilterDisplayOptions = {
+  showInHeader?: boolean; // Show filters in column headers (default: true)
+  showInPanel?: boolean; // Show filters in side panel (default: true)
+};
+
 type DataTableProps<TData> = {
   columns: ColumnDef<TData, any>[];
   data: TData[];
@@ -83,6 +88,7 @@ type DataTableProps<TData> = {
   // Column filtering
   filterConfig?: FilterConfig;
   enableColumnFilters?: boolean;
+  filterDisplayOptions?: FilterDisplayOptions;
   customFilters?: CustomFilterField[];
   columnVisibility?: VisibilityState;
   onColumnVisibilityChange?: Dispatch<SetStateAction<VisibilityState>>;
@@ -103,6 +109,7 @@ export function DataTable<TData>(props: DataTableProps<TData>) {
     getRowCanExpand,
     filterConfig,
     enableColumnFilters = false,
+    filterDisplayOptions,
     customFilters,
     columnVisibility,
     onColumnVisibilityChange,
@@ -171,6 +178,14 @@ export function DataTable<TData>(props: DataTableProps<TData>) {
   // Check if any columns have been manually resized
   const hasResizedColumns = Object.keys(columnSizing).length > 0;
 
+  // Calculate active filter count for rainbow gradient
+  const activeFilterCount = useMemo(() => {
+    const customFilterCount =
+      customFilters?.filter((f) => f.value !== undefined && f.value !== '')
+        .length ?? 0;
+    return columnFilters.length + customFilterCount;
+  }, [columnFilters.length, customFilters]);
+
   // Calculate total table width based on column sizes
   const totalTableWidth = table
     .getVisibleFlatColumns()
@@ -192,28 +207,32 @@ export function DataTable<TData>(props: DataTableProps<TData>) {
         </div>
         <div className="flex items-center gap-2">
           {/* Filter Panel Toggle */}
-          {enableColumnFilters && (filterConfig || customFilters) && (
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setFilterPanelOpen(true)}
-            >
-              <FilterIcon className="h-3 w-3 mr-1" />
-              Filters
-              {(() => {
-                const customFilterCount =
-                  customFilters?.filter(
-                    (f) => f.value !== undefined && f.value !== '',
-                  ).length ?? 0;
-                const totalCount = columnFilters.length + customFilterCount;
-                return totalCount > 0 ? (
+          {enableColumnFilters &&
+            (filterConfig || customFilters) &&
+            filterDisplayOptions?.showInPanel !== false && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setFilterPanelOpen(true)}
+                className={cn(
+                  activeFilterCount > 0 && [
+                    'relative',
+                    'before:absolute before:inset-[-2px] before:rounded-md before:-z-10',
+                    'before:bg-[conic-gradient(from_0deg,#ff7773,#ffed5f,#a8ff5f,#83fff7,#7894ff,#d875ff,#ff7773)]',
+                    'before:animate-spin before:[animation-duration:3s]',
+                    'bg-background',
+                  ],
+                )}
+              >
+                <FilterIcon className="h-3 w-3 mr-1" />
+                Filters
+                {activeFilterCount > 0 && (
                   <Badge variant="secondary" className="ml-2">
-                    {totalCount}
+                    {activeFilterCount}
                   </Badge>
-                ) : null;
-              })()}
-            </Button>
-          )}
+                )}
+              </Button>
+            )}
 
           {/* Column Visibility Toggle */}
           <DropdownMenu>
@@ -348,7 +367,8 @@ export function DataTable<TData>(props: DataTableProps<TData>) {
                           </div>
                         )}
                         {enableColumnFilters &&
-                          filterConfig?.[header.column.id] && (
+                          filterConfig?.[header.column.id] &&
+                          filterDisplayOptions?.showInHeader !== false && (
                             // biome-ignore lint/a11y/useKeyWithClickEvents: not needed, this just to catch the event to stop event bubbling up
                             // biome-ignore lint/a11y/noStaticElementInteractions: needed to stop event bubbling up
                             <div onClick={(e) => e.stopPropagation()}>
