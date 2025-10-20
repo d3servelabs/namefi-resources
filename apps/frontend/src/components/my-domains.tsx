@@ -900,6 +900,15 @@ export default function MyDomains() {
     <div className="container mx-auto py-8 px-8">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold">My Domains</h2>
+        <Button variant="outline" asChild={true}>
+          <Link
+            href="/domains/previously-owned"
+            aria-label="View previously owned domains"
+          >
+            <History className="w-4 h-4 mr-1" />
+            Previously Owned Domains
+          </Link>
+        </Button>
       </div>
       {isLoading ? (
         <LoadingSkeletons />

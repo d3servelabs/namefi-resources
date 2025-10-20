@@ -1,4 +1,9 @@
-import { db, usersTable, namefiNftOwnersView } from '@namefi-astra/db';
+import {
+  db,
+  usersTable,
+  namefiNftOwnersView,
+  burnedNamefiNftView,
+} from '@namefi-astra/db';
 import {
   namefiNormalizedDomainSchema,
   type NamefiNormalizedDomain,
@@ -774,4 +779,45 @@ export const usersRouter = createTRPCRouter({
 
       return { success: true, optIn: input.optIn };
     }),
+
+  getCurrentUserBurnedDomains: protectedProcedure.query(async ({ ctx }) => {
+    const { user } = ctx;
+    const [error, privyUser] = await resolve(
+      privyClient.getUserById(user.privyUserId),
+    );
+
+    if (error || isNil(privyUser)) {
+      throw new TRPCError({
+        code: 'PRECONDITION_FAILED',
+        message: 'could not find user details',
+      });
+    }
+
+    const privyUserLinkedEthereumChecksumWalletAddresses =
+      getPrivyUserLinkedEthereumChecksumWalletAddresses({
+        privyUser,
+      });
+
+    if (isEmpty(privyUserLinkedEthereumChecksumWalletAddresses)) {
+      return [];
+    }
+
+    const burnedDomains = await db
+      .select()
+      .from(burnedNamefiNftView)
+      .where(
+        inArray(
+          sql`LOWER(${burnedNamefiNftView.fromAddress})`,
+          privyUserLinkedEthereumChecksumWalletAddresses.map((address) =>
+            address.toLowerCase(),
+          ),
+        ),
+      )
+      .orderBy(sql`${burnedNamefiNftView.burnedTime} DESC`);
+
+    return burnedDomains.map((domain) => ({
+      ...domain,
+      tokenId: domain.tokenId.toString(),
+    }));
+  }),
 });
