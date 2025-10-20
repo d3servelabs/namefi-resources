@@ -1,5 +1,6 @@
 'use client';
 
+import { Languages } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
 import { i18n, localeLabels, type Locale } from '@/i18n-config';
 
@@ -30,6 +31,7 @@ export function LocaleSwitcher({ activeLocale, label }: LocaleSwitcherProps) {
 
   return (
     <div className="flex items-center gap-2 self-end rounded-full border border-border/60 bg-card/80 px-3 py-1 text-xs font-medium text-muted-foreground shadow-sm shadow-black/20 transition hover:border-border/40 hover:text-foreground">
+      <Languages className="h-3.5 w-3.5" aria-hidden="true" />
       <span>{label}</span>
       <select
         value={activeLocale}
