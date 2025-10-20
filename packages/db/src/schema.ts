@@ -1305,6 +1305,25 @@ export const namefiNftOwnersView = pgView('namefi_nft_owners_view', {
 }).existing();
 
 /**
+ * BurnedNamefiNftView - View for accessing burned NFT logs from indexer
+ * This view provides access to historical burn events from the ponder indexer.
+ *
+ * Note: View is created manually in SQL, this is just the Drizzle type definition.
+ */
+export const burnedNamefiNftView = pgView('burned_namefi_nft_view', {
+  tokenId: bigint('token_id', { mode: 'bigint' }).notNull(),
+  normalizedDomainName: text('normalized_domain_name')
+    .notNull()
+    .$type<NamefiNormalizedDomain>(),
+  fromAddress: text('from_address').notNull(),
+  chainId: integer('chain_id').notNull(),
+  burnedBlock: bigint('burned_block', { mode: 'bigint' }).notNull(),
+  burnedTimestamp: bigint('burned_timestamp', { mode: 'bigint' }).notNull(),
+  burnedTime: timestamp('burned_time').notNull(), // Derived from burnedTimestamp
+  transactionHash: text('transaction_hash').notNull(),
+}).existing();
+
+/**
  * Hidden configuration schema to store app-level configuration state
  */
 export const appConfigSchema = pgSchema('__config');
