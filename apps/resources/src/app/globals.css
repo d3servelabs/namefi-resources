@@ -81,6 +81,37 @@
   body {
     @apply bg-background font-sans text-foreground antialiased;
   }
+
+  body.ltr {
+    direction: ltr;
+  }
+
+  body.rtl {
+    direction: rtl;
+  }
+
+  [dir="rtl"] .prose {
+    direction: rtl;
+    text-align: start;
+  }
+
+  [dir="rtl"] .prose ol,
+  [dir="rtl"] .prose ul {
+    padding-inline-start: 0;
+    padding-inline-end: 1.625em;
+  }
+
+  [dir="rtl"] .prose blockquote {
+    border-left-width: 0;
+    border-right-width: 0.25rem;
+    padding-left: 0;
+    padding-right: 1.25em;
+  }
+
+  [dir="rtl"] .prose table th,
+  [dir="rtl"] .prose table td {
+    text-align: start;
+  }
 }
 
 @layer components {

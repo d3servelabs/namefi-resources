@@ -5,6 +5,19 @@ export const i18n = {
 
 export type Locale = (typeof i18n)['locales'][number];
 
+export const localeDirections: Record<Locale, 'ltr' | 'rtl'> = {
+  en: 'ltr',
+  es: 'ltr',
+  de: 'ltr',
+  fr: 'ltr',
+  zh: 'ltr',
+  ar: 'rtl',
+  hi: 'ltr',
+};
+
+export const isRtlLocale = (locale: Locale) =>
+  localeDirections[locale] === 'rtl';
+
 export const localeLabels: Record<Locale, string> = {
   en: 'English',
   es: 'Español',
