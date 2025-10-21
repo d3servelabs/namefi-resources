@@ -1,7 +1,7 @@
 import { Geist, Geist_Mono } from 'next/font/google';
 import { notFound } from 'next/navigation';
 import type { Locale } from '@/i18n-config';
-import { i18n } from '@/i18n-config';
+import { i18n, localeDirections, isRtlLocale } from '@/i18n-config';
 import { getDictionary } from '@/get-dictionary';
 import { resolveDescription, resolveTitle } from '@/lib/site-metadata';
 import { SiteFooter } from './components/site-footer';
@@ -54,11 +54,15 @@ export default async function RootLayout({
   }
   const locale = lang as Locale;
   const dictionary = await getDictionary(locale);
+  const direction = localeDirections[locale] ?? 'ltr';
+  const isRtl = isRtlLocale(locale);
 
   return (
-    <html lang={locale}>
+    <html lang={locale} dir={direction}>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} bg-background text-foreground antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} bg-background text-foreground antialiased ${
+          isRtl ? 'rtl' : 'ltr'
+        }`}
       >
         <div className="flex min-h-screen flex-col bg-background">
           <SiteHeader locale={locale} dictionary={dictionary} />

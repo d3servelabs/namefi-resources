@@ -22,7 +22,7 @@ export default async function TldIndex({
 
   return (
     <section className="mx-auto flex w-full max-w-5xl flex-col gap-10 px-6 py-12 md:px-10 lg:px-12">
-      <header className="space-y-4 text-left">
+      <header className="space-y-4 text-start">
         <h1 className="text-3xl font-semibold tracking-tight md:text-4xl">
           {dictionary.tld.indexTitle}
         </h1>
@@ -54,7 +54,7 @@ export default async function TldIndex({
                 key={`${entry.slug}-${entry.sourceLanguage}`}
                 className="surface-card transition hover:-translate-y-1 hover:shadow-2xl hover:shadow-black/15"
               >
-                <div className="flex flex-col gap-4 text-left">
+                <div className="flex flex-col gap-4 text-start">
                   <div className="flex flex-wrap items-center gap-3 text-xs uppercase tracking-wide text-muted-foreground">
                     <time dateTime={entry.frontmatter.date}>
                       {dictionary.blog.detailPublishedOn}{' '}

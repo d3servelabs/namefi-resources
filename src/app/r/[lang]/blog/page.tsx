@@ -39,7 +39,7 @@ export default async function BlogIndex({
                 key={`${post.slug}-${post.sourceLanguage}`}
                 className="surface-card transition hover:-translate-y-1 hover:shadow-2xl hover:shadow-black/15"
               >
-                <div className="flex flex-col gap-4 text-left">
+                <div className="flex flex-col gap-4 text-start">
                   <div className="flex flex-wrap items-center gap-3 text-xs uppercase tracking-wide text-muted-foreground">
                     <time dateTime={post.frontmatter.date}>
                       {dictionary.blog.detailPublishedOn}{' '}

@@ -143,7 +143,7 @@ export default async function BlogPostPage({
   const postSource = entry.content;
 
   return (
-    <article className="mx-auto flex w-full max-w-5xl flex-col gap-10 px-6 py-12 text-left md:px-10 lg:px-12">
+    <article className="mx-auto flex w-full max-w-5xl flex-col gap-10 px-6 py-12 text-start md:px-10 lg:px-12">
       <Link
         href={`/r/${locale}/blog`}
         className="inline-flex w-fit items-center rounded-full border border-border/60 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.35em] text-muted-foreground transition hover:border-brand-primary/60 hover:text-foreground"
