@@ -24,6 +24,58 @@ env:
   REPO_NAME: ${{ vars.REPOSITORY_NAME }} # Artifact Registry repository name
   SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_RELEASE_CHANNEL_URL }} # Slack webhook URL
 jobs:
+  # Detect if backend and frontend packages have changed
+  detect-changes:
+    name: Detect Backend and Frontend Changes
+    runs-on: ubuntu-latest
+    outputs:
+      has-backend-changes: ${{ steps.check-changes.outputs.has-backend-changes }}
+      has-frontend-changes: ${{ steps.check-changes.outputs.has-frontend-changes }}
+      should-backend-deploy: ${{ steps.check-changes.outputs.should-backend-deploy }}
+      should-frontend-deploy: ${{ steps.check-changes.outputs.should-frontend-deploy }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 4
+
+      - name: Detect Turbo changes
+        id: turbo-changes
+        uses: ./.github/actions/detect-turbo-changes
+        with:
+          filter: '...[HEAD^]'
+
+
+      - name: Check if changed
+        id: check-changes
+        run: |
+          # Deploy if:
+          # 1. Manual workflow dispatch
+          # 2. Tag push (astra/v*)
+          # 3. Main branch push AND (backend OR frontend have changes)
+          HAS_BACKEND_CHANGES="${{ contains(fromJSON(steps.turbo-changes.outputs.changed-packages), '@namefi-astra/backend' ) }}"
+          HAS_FRONTEND_CHANGES="${{ contains(fromJSON(steps.turbo-changes.outputs.changed-packages), '@namefi-astra/frontend' ) }}"
+          echo "has-backend-changes=$HAS_BACKEND_CHANGES" >> $GITHUB_OUTPUT
+          echo "has-frontend-changes=$HAS_FRONTEND_CHANGES" >> $GITHUB_OUTPUT
+
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "should-backend-deploy=true" >> $GITHUB_OUTPUT
+            echo "should-frontend-deploy=true" >> $GITHUB_OUTPUT
+            echo "Deploying: Manual workflow dispatch"
+          elif [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" =~ ^refs/tags/astra/v* ]]; then
+            echo "should-backend-deploy=true" >> $GITHUB_OUTPUT
+            echo "should-frontend-deploy=true" >> $GITHUB_OUTPUT
+            echo "Deploying: Tag push"
+          elif [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/main" ]]; then
+            echo "should-backend-deploy=$HAS_BACKEND_CHANGES" >> $GITHUB_OUTPUT
+            echo "should-frontend-deploy=$HAS_FRONTEND_CHANGES" >> $GITHUB_OUTPUT
+            echo "Deploying: Main branch push with backend changes"
+          else
+            echo "should-backend-deploy=false" >> $GITHUB_OUTPUT
+            echo "should-frontend-deploy=false" >> $GITHUB_OUTPUT
+            echo "Skipping: No relevant changes or trigger"
+          fi
+
   # Compute environment variables
   compute-env:
     name: Compute Environment Variables
@@ -123,8 +175,8 @@ jobs:
   # Backend build job
   build-backend:
     name: Build Backend Container
-    needs: [compute-env, check-duplicate]
-    if: needs.check-duplicate.outputs.should_skip != 'true'
+    needs: [compute-env, check-duplicate, detect-changes]
+    if: needs.check-duplicate.outputs.should_skip != 'true' && needs.detect-changes.outputs.should-backend-deploy == 'true'
     runs-on: 'blacksmith-4vcpu-ubuntu-2204'
     permissions:
       contents: read
@@ -289,7 +341,8 @@ jobs:
   # Deploy to Vercel (build happens on Vercel, but traffic is not routed yet)
   deploy-vercel:
     name: Deploy Frontend to Vercel
-    needs: [compute-env, build-backend, deploy-backend-api, deploy-backend-temporal]
+    needs: [compute-env, build-backend, detect-changes]
+    if: needs.detect-changes.outputs.should-frontend-deploy == 'true'
     runs-on: 'ubuntu-latest'
     outputs:
       deployment_url: ${{ steps.deploy.outputs.deployment_url }}
