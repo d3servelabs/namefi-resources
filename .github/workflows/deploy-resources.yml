@@ -163,7 +163,7 @@ jobs:
           echo "Deployment triggered: $DEPLOYMENT_URL"
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_RESOURCES_PROJECT_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_ASTRA_RESOURCES_PROJECT_ID }}
 
       - name: Show Deployment URL
         run: |

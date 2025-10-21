@@ -383,10 +383,11 @@ jobs:
           echo "Container built with SHA: ${{ github.sha }}"
 
           curl -X POST \
-            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
             -H "Accept: application/vnd.github.v3+json" \
+            --fail-with-body \
             https://api.github.com/repos/${{ github.repository }}/actions/workflows/${{ env.WORKFLOW_ID }}/dispatches \
-            -d '{"ref":"${{ github.ref }}","inputs":{"environment":"production"}}'
+            -d '{"ref":"${{ github.ref }}","inputs":{"environment":"production"}}' 
 
 
   # Summary job
