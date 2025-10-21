@@ -29,7 +29,9 @@ export function useHasPermissions(
 ) {
   const trpc = useTRPC();
   const { data, isLoading, isError } = useQuery(
-    trpc.users.getMyPermissions.queryOptions(),
+    trpc.users.getMyPermissions.queryOptions(void 0, {
+      trpc: { context: { skipBatch: true } },
+    }),
   );
   const userPermissions = useMemo(() => new Set(data ?? []), [data]);
   const hasPermissions = useMemo(() => {

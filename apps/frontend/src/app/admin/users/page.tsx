@@ -135,6 +135,7 @@ function UsersTable() {
       },
       {
         placeholderData: (prev) => prev,
+        trpc: { context: { skipBatch: true } },
       },
     ),
   );

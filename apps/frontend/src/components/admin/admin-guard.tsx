@@ -23,7 +23,10 @@ export function AdminGuard({
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
 
   const { data, isLoading, error } = useQuery(
-    trpc.admin.isUserAdmin.queryOptions(void 0, { enabled: isAuthenticated }),
+    trpc.admin.isUserAdmin.queryOptions(void 0, {
+      enabled: isAuthenticated,
+      trpc: { context: { skipBatch: true } },
+    }),
   );
 
   // Show loading state
