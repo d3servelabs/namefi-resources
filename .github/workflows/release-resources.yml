@@ -1,0 +1,301 @@
+name: Create Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      merge_method:
+        description: 'Merge method for the PR'
+        required: false
+        default: 'rebase'
+        type: choice
+        options:
+          - squash
+          - merge
+          - rebase
+  schedule:
+    # Run daily at 11:00 UTC
+    - cron: '0 11 * * *'
+
+permissions:
+  contents: write
+  pull-requests: write
+  actions: read
+  checks: read
+
+jobs:
+  check-auto-deploy:
+    name: Check Auto Deploy Configuration
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    outputs:
+      should-deploy: ${{ steps.check.outputs.should-deploy }}
+    steps:
+      - name: Check Configuration
+        id: check
+        run: |
+          # For manual triggers, always proceed
+          if [ "${{ github.event_name }}" != "schedule" ]; then
+            echo "should-deploy=true" >> $GITHUB_OUTPUT
+            echo "✅ Manual trigger detected, proceeding with release"
+            exit 0
+          fi
+
+          # For scheduled triggers, check AUTO_DEPLOY variable
+          AUTO_DEPLOY="${{ vars.AUTO_DEPLOY || 'false' }}"
+
+          if [ "$AUTO_DEPLOY" = "true" ]; then
+            echo "should-deploy=true" >> $GITHUB_OUTPUT
+            echo "✅ Auto-deploy is enabled, proceeding with scheduled release"
+          else
+            echo "should-deploy=false" >> $GITHUB_OUTPUT
+            echo "❌ Auto-deploy is disabled (AUTO_DEPLOY=$AUTO_DEPLOY)"
+            echo "## ⏭️ Scheduled Release Skipped" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "Auto-deploy is disabled. To enable scheduled releases, set the repository variable \`AUTO_DEPLOY=true\`" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "This workflow was triggered by the daily schedule (11:00 UTC) but will not create a release." >> $GITHUB_STEP_SUMMARY
+          fi
+
+  auth-namefi-bot:
+    name: Get NameFi Bot Info
+    needs: check-auto-deploy
+    if: needs.check-auto-deploy.outputs.should-deploy == 'true'
+    runs-on: ubuntu-latest
+    outputs:
+      app-slug: ${{ steps.app-token.outputs.app-slug }}
+      user-id: ${{ steps.get-user-id.outputs.user-id }}
+    steps:
+      - uses: actions/create-github-app-token@v2
+        id: app-token
+        with:
+          app-id: ${{ vars.NAMEFI_BOT_APP_ID }}
+          private-key: ${{ secrets.NAMEFI_BOT_PRIVATE_KEY }}
+
+      - name: Get GitHub App User ID
+        id: get-user-id
+        run: echo "user-id=$(gh api "/users/${{ steps.app-token.outputs.app-slug }}[bot]" --jq .id)" >> "$GITHUB_OUTPUT"
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+
+  update-versions:
+    name: Update Package Versions
+    needs: [auth-namefi-bot]
+    runs-on: 'blacksmith-4vcpu-ubuntu-2204'
+    outputs:
+      resources_version: ${{ steps.version.outputs.resources_version }}
+      old_resources_version: ${{ steps.version.outputs.old_resources_version }}
+      commit_sha: ${{ steps.commit.outputs.commit_sha }}
+    steps:
+      - uses: actions/create-github-app-token@v2
+        id: app-token
+        with:
+          app-id: ${{ vars.NAMEFI_BOT_APP_ID }}
+          private-key: ${{ secrets.NAMEFI_BOT_PRIVATE_KEY }}
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          fetch-depth: 0
+
+      - name: Read and increment versions
+        id: version
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+
+            console.log('📦 Reading current package versions...');
+
+            // Helper function to increment patch version
+            function incrementPatchVersion(version) {
+              // Handle versions with suffixes (e.g., 0.3.0-beta)
+              const suffixMatch = version.match(/^(.+?)-(.+)$/);
+              let baseVersion, suffix;
+
+              if (suffixMatch) {
+                baseVersion = suffixMatch[1];
+                suffix = suffixMatch[2];
+              } else {
+                baseVersion = version;
+                suffix = null;
+              }
+
+              const [major, minor, patch] = baseVersion.split('.').map(Number);
+              const newVersion = `${major}.${minor}.${patch + 1}`;
+
+              return suffix ? `${newVersion}-${suffix}` : newVersion;
+            }
+
+            // Read and increment backend version
+            const resourcesPkgPath = path.join(process.env.GITHUB_WORKSPACE, 'apps/resources/package.json');
+            const resourcesPkg = JSON.parse(fs.readFileSync(resourcesPkgPath, 'utf8'));
+            const oldResourcesVersion = resourcesPkg.version;
+            const newResourcesVersion = incrementPatchVersion(oldResourcesVersion);
+
+            console.log(`📈 Resources version increment: ${oldResourcesVersion} → ${newResourcesVersion}`);
+           
+            // Log summary
+            console.log('\n✅ Version increments calculated successfully:');
+            console.log(`   Resources:  ${oldResourcesVersion} → ${newResourcesVersion}`);
+
+            // Set outputs
+            core.setOutput('resources_version', newResourcesVersion);
+            core.setOutput('old_resources_version', oldResourcesVersion);
+
+      - name: Update package versions
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+
+            const resourcesVersion = '${{ needs.update-versions.outputs.resources_version }}';
+
+            // Update resources package.json
+            const resourcesPkgPath = path.join(process.env.GITHUB_WORKSPACE, 'apps/resources/package.json');
+            const resourcesPkg = JSON.parse(fs.readFileSync(resourcesPkgPath, 'utf8'));
+            resourcesPkg.version = resourcesVersion;
+            fs.writeFileSync(resourcesPkgPath, JSON.stringify(resourcesPkg, null, 2) + '\n');
+            console.log(`✅ Updated resources version to ${resourcesVersion}`);
+      
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: ".bun-version"
+    
+      - name: Install dependencies
+        run: |
+          bun install # required to update bun.lock
+      
+      - name: Format Resources files
+        run: |
+          bun biome format --write ./apps/resources || true
+          bunx sherif@latest -f || true
+
+      - name: Configure git
+        run: |
+          git config --global user.name '${{ needs.auth-namefi-bot.outputs.app-slug }}[bot]'
+          git config --global user.email '${{ needs.auth-namefi-bot.outputs.user-id }}+${{ needs.auth-namefi-bot.outputs.app-slug }}[bot]@users.noreply.github.com'
+
+      - name: Commit version changes
+        id: commit
+        run: |
+          echo "📝 Committing version changes..."
+
+          git add apps/resources/package.json ./bun.lock
+
+          # Create commit message
+          COMMIT_MESSAGE="chore(v${{ steps.version.outputs.resources_version }}): resources ${{ steps.version.outputs.resources_version }}"
+
+          git commit -m "$COMMIT_MESSAGE"
+
+          echo "✅ Changes committed locally"
+
+          # Push to main
+          echo "🚀 Pushing to main branch..."
+          git push origin main
+
+          # Get the commit SHA
+          COMMIT_SHA=$(git rev-parse HEAD)
+          echo "commit_sha=$COMMIT_SHA" >> $GITHUB_OUTPUT
+
+          echo "✅ Version bump committed and pushed successfully"
+          echo "   Commit SHA: $COMMIT_SHA"
+
+  create-release-tag:
+    name: Create Release Tag
+    needs: [auth-namefi-bot, update-versions]
+    runs-on: ubuntu-latest
+    outputs:
+      tag_name: ${{ steps.create-tag.outputs.tag_name }}
+    steps:
+      - uses: actions/create-github-app-token@v2
+        id: app-token
+        with:
+          app-id: ${{ vars.NAMEFI_BOT_APP_ID }}
+          private-key: ${{ secrets.NAMEFI_BOT_PRIVATE_KEY }}
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          fetch-depth: 0
+          ref: ${{ needs.update-versions.outputs.commit_sha }}
+
+      - name: Configure git
+        run: |
+          git config --global user.name '${{ needs.auth-namefi-bot.outputs.app-slug }}[bot]'
+          git config --global user.email '${{ needs.auth-namefi-bot.outputs.user-id }}+${{ needs.auth-namefi-bot.outputs.app-slug }}[bot]@users.noreply.github.com'
+
+      - name: Create Release Tag
+        id: create-tag
+        run: |
+          TAG_NAME="astra-resources/v${{ needs.update-versions.outputs.resources_version }}"
+
+          git tag -a "$TAG_NAME" -m "Release: resources ${{ needs.update-versions.outputs.resources_version }}"
+          git push origin "$TAG_NAME"
+
+          echo "✅ Created release tag: $TAG_NAME"
+          echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
+
+  release-summary:
+    name: Release Summary
+    needs: [check-auto-deploy, auth-namefi-bot, create-release-tag, update-versions]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate Release Summary
+        run: |
+          # Check if release was skipped due to auto-deploy config
+          if [[ "${{ needs.check-auto-deploy.outputs.should-deploy }}" != "true" ]]; then
+            echo "## ⏭️ Release Skipped" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "The scheduled release was skipped because auto-deploy is disabled." >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "To enable automatic releases, set the repository variable \`AUTO_DEPLOY=true\`" >> $GITHUB_STEP_SUMMARY
+            exit 0
+          fi
+
+
+          if [[ "${{ needs.update-versions.result }}" == "failure" ]]; then
+            echo "## ❌ Release Failed - Version Update" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "Failed to update package versions and commit changes." >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "**Action Required:** Check the workflow logs for details about what went wrong." >> $GITHUB_STEP_SUMMARY
+            exit 0
+          fi
+
+          # Success case
+          echo "## 🎉 Release Created Successfully!" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          echo "### Release Information" >> $GITHUB_STEP_SUMMARY
+          echo "- **Type**: ${{ github.event_name == 'schedule' && '⏰ Automated (Daily @ 11:00 UTC)' || '🔧 Manual' }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Triggered by**: ${{ github.event_name == 'schedule' && '🤖 Scheduled Job' || github.actor }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          # Version updates (if available)
+          if [[ -n "${{ needs.update-versions.outputs.resources_version }}" ]]; then
+            echo "### Version Updates" >> $GITHUB_STEP_SUMMARY
+            echo "- **Resources**: ${{ needs.update-versions.outputs.old_resources_version }} → ${{ needs.update-versions.outputs.resources_version }}" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+          fi
+
+
+          # Release tag
+          if [[ -n "${{ needs.create-release-tag.outputs.tag_name }}" ]]; then
+            echo "### Release Tag" >> $GITHUB_STEP_SUMMARY
+            echo "- **Tag**: \`${{ needs.create-release-tag.outputs.tag_name }}\`" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          # Deployment verification
+          if [[ -n "${{ needs.create-release-tag.outputs.tag_name }}" ]]; then
+            echo "### Pre-release Verification" >> $GITHUB_STEP_SUMMARY
+            echo "- ✅ Deploy Resources on main: [Successful](${{ needs.create-release-tag.outputs.tag_name }})" >> $GITHUB_STEP_SUMMARY
+            echo "- ✅ Version commit: [\`${{ needs.update-versions.outputs.commit_sha }}\`](https://github.com/${{ github.repository }}/commit/${{ needs.update-versions.outputs.commit_sha }})" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+          fi

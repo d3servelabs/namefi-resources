@@ -5,7 +5,7 @@ on:
     branches:
       - main    # Regular push to main branch deploys to dev
     tags:
-      - 'resources/v*'  # Tags like resources/v1.0.0 for production deployment
+      - 'astra-resources/v*'  # Tags like astra-resources/v1.0.0 for production deployment
   workflow_dispatch:
     inputs:
       environment:
@@ -26,7 +26,6 @@ jobs:
     name: Detect Resources Changes
     runs-on: ubuntu-latest
     outputs:
-      has-changes: ${{ steps.check-changes.outputs.has-changes }}
       should-deploy: ${{ steps.should-deploy.outputs.result }}
     steps:
       - name: Checkout repository
@@ -34,47 +33,25 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version-file: ".bun-version"
-
-      - name: Install dependencies
-        run: bun install
-
       - name: Detect Turbo changes
         id: turbo-changes
         uses: ./.github/actions/detect-turbo-changes
         with:
           filter: '...[HEAD^]'
 
-      - name: Check if resources changed
-        id: check-changes
-        run: |
-          CHANGED_PACKAGES='${{ steps.turbo-changes.outputs.changed-packages }}'
-          echo "Changed packages: $CHANGED_PACKAGES"
-
-          if echo "$CHANGED_PACKAGES" | jq -e 'any(. == "@namefi-astra/resources")' > /dev/null; then
-            echo "has-changes=true" >> $GITHUB_OUTPUT
-            echo "Resources package has changed"
-          else
-            echo "has-changes=false" >> $GITHUB_OUTPUT
-            echo "Resources package has NOT changed"
-          fi
-
       - name: Determine if should deploy
         id: should-deploy
         run: |
           # Deploy if:
           # 1. Manual workflow dispatch
-          # 2. Tag push (resources/v*)
+          # 2. Tag push (astra-resources/v*)
           # 3. Main branch push AND resources has changes
           HAS_CHANGES="${{ contains((steps.turbo-changes.outputs.changed-packages), '@namefi-astra/resources' ) }}"
 
           if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
             echo "result=true" >> $GITHUB_OUTPUT
             echo "Deploying: Manual workflow dispatch"
-          elif [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" =~ ^refs/tags/resources/v ]]; then
+          elif [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" =~ ^refs/tags/astra-resources/v ]]; then
             echo "result=true" >> $GITHUB_OUTPUT
             echo "Deploying: Tag push"
           elif [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/main" && "$HAS_CHANGES" == "true" ]]; then
@@ -99,12 +76,12 @@ jobs:
         id: compute
         run: |
           # Simple logic:
-          # - Tag push (resources/v*) = production
+          # - Tag push (astra-resources/v*) = production
           # - Manual dispatch with production = production
           # - Everything else = dev
 
           IS_PROD="false"
-          if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" =~ ^refs/tags/resources/v ]]; then
+          if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" =~ ^refs/tags/astra-resources/v ]]; then
             IS_PROD="true"
           elif [[ "${{ github.event_name }}" == "workflow_dispatch" && "${{ github.event.inputs.environment }}" == "production" ]]; then
             IS_PROD="true"
