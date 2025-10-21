@@ -36,7 +36,7 @@ const _baseSecretsSchema = z.object({
         },
         [CHAINS.sepolia.id]: {
           useWebsockets: false,
-          pollingIntervalMs: 10 * 60 * 1000,
+          pollingIntervalMs: 15 * 60 * 1000,
         },
       }),
   ),

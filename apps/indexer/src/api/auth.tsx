@@ -94,6 +94,13 @@ auth.get('/logout', async (c) => {
 });
 
 export const requireAuth = async (c: Context, next: Next) => {
+  const env = process.env.ENVIRONMENT;
+  const isLocalDev = env === 'local' || env === 'development';
+  if (isLocalDev) {
+    console.warn('[requireAuth] Bypassing auth in local/dev mode');
+    await next();
+    return;
+  }
   let token: string | undefined | boolean;
   try {
     token = await getSignedCookie(c, secrets.PONDER_COOKIE_SECRET, COOKIE_NAME);

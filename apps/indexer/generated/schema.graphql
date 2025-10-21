@@ -21,6 +21,10 @@ type Query {
   namefiNfts(where: NamefiNftFilter, orderBy: String, orderDirection: String, before: String, after: String, limit: Int): NamefiNftPage!
   burnedNamefiNftLog(tokenId: BigInt!, chainId: Float!, burnedBlock: BigInt!): BurnedNamefiNftLog
   burnedNamefiNftLogs(where: BurnedNamefiNftLogFilter, orderBy: String, orderDirection: String, before: String, after: String, limit: Int): BurnedNamefiNftLogPage!
+  transferLog(tokenId: BigInt!, chainId: Float!, blockNumber: BigInt!, transactionHash: String!): TransferLog
+  transferLogs(where: TransferLogFilter, orderBy: String, orderDirection: String, before: String, after: String, limit: Int): TransferLogPage!
+  expirationChangeLog(tokenId: BigInt!, chainId: Float!, blockNumber: BigInt!): ExpirationChangeLog
+  expirationChangeLogs(where: ExpirationChangeLogFilter, orderBy: String, orderDirection: String, before: String, after: String, limit: Int): ExpirationChangeLogPage!
   _meta: Meta
 }
 
@@ -118,6 +122,7 @@ type BurnedNamefiNftLog {
   burnedBlock: BigInt!
   burnedTimestamp: BigInt!
   transactionHash: String!
+  expirationTimeAtBurn: BigInt!
 }
 
 type BurnedNamefiNftLogPage {
@@ -181,6 +186,214 @@ input BurnedNamefiNftLogFilter {
   burnedTimestamp_lt: BigInt
   burnedTimestamp_gte: BigInt
   burnedTimestamp_lte: BigInt
+  transactionHash: String
+  transactionHash_not: String
+  transactionHash_in: [String]
+  transactionHash_not_in: [String]
+  transactionHash_contains: String
+  transactionHash_not_contains: String
+  transactionHash_starts_with: String
+  transactionHash_ends_with: String
+  transactionHash_not_starts_with: String
+  transactionHash_not_ends_with: String
+  expirationTimeAtBurn: BigInt
+  expirationTimeAtBurn_not: BigInt
+  expirationTimeAtBurn_in: [BigInt]
+  expirationTimeAtBurn_not_in: [BigInt]
+  expirationTimeAtBurn_gt: BigInt
+  expirationTimeAtBurn_lt: BigInt
+  expirationTimeAtBurn_gte: BigInt
+  expirationTimeAtBurn_lte: BigInt
+}
+
+type TransferLog {
+  tokenId: BigInt!
+  normalizedDomainName: String!
+  fromAddress: String!
+  toAddress: String!
+  chainId: Int!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: String!
+  isBurn: Boolean
+}
+
+type TransferLogPage {
+  items: [TransferLog!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+input TransferLogFilter {
+  AND: [TransferLogFilter]
+  OR: [TransferLogFilter]
+  tokenId: BigInt
+  tokenId_not: BigInt
+  tokenId_in: [BigInt]
+  tokenId_not_in: [BigInt]
+  tokenId_gt: BigInt
+  tokenId_lt: BigInt
+  tokenId_gte: BigInt
+  tokenId_lte: BigInt
+  normalizedDomainName: String
+  normalizedDomainName_not: String
+  normalizedDomainName_in: [String]
+  normalizedDomainName_not_in: [String]
+  normalizedDomainName_contains: String
+  normalizedDomainName_not_contains: String
+  normalizedDomainName_starts_with: String
+  normalizedDomainName_ends_with: String
+  normalizedDomainName_not_starts_with: String
+  normalizedDomainName_not_ends_with: String
+  fromAddress: String
+  fromAddress_not: String
+  fromAddress_in: [String]
+  fromAddress_not_in: [String]
+  fromAddress_contains: String
+  fromAddress_not_contains: String
+  fromAddress_starts_with: String
+  fromAddress_ends_with: String
+  fromAddress_not_starts_with: String
+  fromAddress_not_ends_with: String
+  toAddress: String
+  toAddress_not: String
+  toAddress_in: [String]
+  toAddress_not_in: [String]
+  toAddress_contains: String
+  toAddress_not_contains: String
+  toAddress_starts_with: String
+  toAddress_ends_with: String
+  toAddress_not_starts_with: String
+  toAddress_not_ends_with: String
+  chainId: Int
+  chainId_not: Int
+  chainId_in: [Int]
+  chainId_not_in: [Int]
+  chainId_gt: Int
+  chainId_lt: Int
+  chainId_gte: Int
+  chainId_lte: Int
+  blockNumber: BigInt
+  blockNumber_not: BigInt
+  blockNumber_in: [BigInt]
+  blockNumber_not_in: [BigInt]
+  blockNumber_gt: BigInt
+  blockNumber_lt: BigInt
+  blockNumber_gte: BigInt
+  blockNumber_lte: BigInt
+  blockTimestamp: BigInt
+  blockTimestamp_not: BigInt
+  blockTimestamp_in: [BigInt]
+  blockTimestamp_not_in: [BigInt]
+  blockTimestamp_gt: BigInt
+  blockTimestamp_lt: BigInt
+  blockTimestamp_gte: BigInt
+  blockTimestamp_lte: BigInt
+  transactionHash: String
+  transactionHash_not: String
+  transactionHash_in: [String]
+  transactionHash_not_in: [String]
+  transactionHash_contains: String
+  transactionHash_not_contains: String
+  transactionHash_starts_with: String
+  transactionHash_ends_with: String
+  transactionHash_not_starts_with: String
+  transactionHash_not_ends_with: String
+  isBurn: Boolean
+  isBurn_not: Boolean
+  isBurn_in: [Boolean]
+  isBurn_not_in: [Boolean]
+}
+
+type ExpirationChangeLog {
+  tokenId: BigInt!
+  normalizedDomainName: String!
+  previousExpiration: BigInt!
+  newExpiration: BigInt!
+  changedBy: String!
+  chainId: Int!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: String!
+}
+
+type ExpirationChangeLogPage {
+  items: [ExpirationChangeLog!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+input ExpirationChangeLogFilter {
+  AND: [ExpirationChangeLogFilter]
+  OR: [ExpirationChangeLogFilter]
+  tokenId: BigInt
+  tokenId_not: BigInt
+  tokenId_in: [BigInt]
+  tokenId_not_in: [BigInt]
+  tokenId_gt: BigInt
+  tokenId_lt: BigInt
+  tokenId_gte: BigInt
+  tokenId_lte: BigInt
+  normalizedDomainName: String
+  normalizedDomainName_not: String
+  normalizedDomainName_in: [String]
+  normalizedDomainName_not_in: [String]
+  normalizedDomainName_contains: String
+  normalizedDomainName_not_contains: String
+  normalizedDomainName_starts_with: String
+  normalizedDomainName_ends_with: String
+  normalizedDomainName_not_starts_with: String
+  normalizedDomainName_not_ends_with: String
+  previousExpiration: BigInt
+  previousExpiration_not: BigInt
+  previousExpiration_in: [BigInt]
+  previousExpiration_not_in: [BigInt]
+  previousExpiration_gt: BigInt
+  previousExpiration_lt: BigInt
+  previousExpiration_gte: BigInt
+  previousExpiration_lte: BigInt
+  newExpiration: BigInt
+  newExpiration_not: BigInt
+  newExpiration_in: [BigInt]
+  newExpiration_not_in: [BigInt]
+  newExpiration_gt: BigInt
+  newExpiration_lt: BigInt
+  newExpiration_gte: BigInt
+  newExpiration_lte: BigInt
+  changedBy: String
+  changedBy_not: String
+  changedBy_in: [String]
+  changedBy_not_in: [String]
+  changedBy_contains: String
+  changedBy_not_contains: String
+  changedBy_starts_with: String
+  changedBy_ends_with: String
+  changedBy_not_starts_with: String
+  changedBy_not_ends_with: String
+  chainId: Int
+  chainId_not: Int
+  chainId_in: [Int]
+  chainId_not_in: [Int]
+  chainId_gt: Int
+  chainId_lt: Int
+  chainId_gte: Int
+  chainId_lte: Int
+  blockNumber: BigInt
+  blockNumber_not: BigInt
+  blockNumber_in: [BigInt]
+  blockNumber_not_in: [BigInt]
+  blockNumber_gt: BigInt
+  blockNumber_lt: BigInt
+  blockNumber_gte: BigInt
+  blockNumber_lte: BigInt
+  blockTimestamp: BigInt
+  blockTimestamp_not: BigInt
+  blockTimestamp_in: [BigInt]
+  blockTimestamp_not_in: [BigInt]
+  blockTimestamp_gt: BigInt
+  blockTimestamp_lt: BigInt
+  blockTimestamp_gte: BigInt
+  blockTimestamp_lte: BigInt
   transactionHash: String
   transactionHash_not: String
   transactionHash_in: [String]
