@@ -88,7 +88,13 @@ export const applyFilterOperator = (
         return cellValue === filterValue;
     }
   }
-
+  if (cellValue instanceof Date && filterValue instanceof Date) {
+    return applyFilterOperator(
+      cellValue.getTime(),
+      operator,
+      filterValue.getTime(),
+    );
+  }
   return false;
 };
 

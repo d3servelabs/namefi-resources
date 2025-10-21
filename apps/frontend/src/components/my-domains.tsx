@@ -16,14 +16,7 @@ import {
 import { Button } from '@/components/ui/shadcn/button';
 import { Card, CardContent } from '@/components/ui/shadcn/card';
 import { Checkbox } from '@/components/ui/shadcn/checkbox';
-import { Input } from '@/components/ui/shadcn/input';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/shadcn/select';
+
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
 import { useAuth } from '@/hooks/use-auth';
 import { useEmailPrompt } from '@/hooks/use-email-prompt';
@@ -38,14 +31,16 @@ import {
   type NamefiNormalizedDomain,
 } from '@namefi-astra/utils';
 import { useSuspenseQuery } from '@tanstack/react-query';
+import type {
+  ColumnDef,
+  RowSelectionState,
+  SortingState,
+} from '@tanstack/react-table';
 import {
-  type ColumnDef,
-  type RowSelectionState,
-  flexRender,
+  useReactTable,
   getCoreRowModel,
   getFilteredRowModel,
   getSortedRowModel,
-  useReactTable,
 } from '@tanstack/react-table';
 import {
   AlertTriangle,
@@ -83,6 +78,8 @@ import {
   EmailRequiredModal,
   DNS_MANAGEMENT_EMAIL_REQUIRED,
 } from '@/components/dialogs/email-required-dialog';
+import { usePagination } from '@/hooks/use-pagination';
+import { DataTable, applyFilterOperator } from '@/components/table/data-table';
 
 type DomainRow = AppRouterOutput['users']['getCurrentUserDomains'][number];
 
@@ -98,9 +95,16 @@ const formatExpirationDate = (expirationDate: string | undefined) => {
 
   if (isExpired) {
     return (
-      <div className="flex items-center gap-1">
-        <AlertTriangle className="w-3 h-3 text-destructive" />
-        <span className="text-sm text-destructive font-medium">Expired</span>
+      <div className="flex flex-col gap-1">
+        <span className="text-sm font-medium text-foreground">
+          {expiry.toLocaleDateString()}
+        </span>
+        <div className="flex items-center gap-1">
+          <AlertTriangle className="w-3 h-3 text-muted-foreground" />
+          <span className="text-sm text-muted-foreground font-medium">
+            Expired
+          </span>
+        </div>
       </div>
     );
   }
@@ -117,20 +121,20 @@ const formatExpirationDate = (expirationDate: string | undefined) => {
     timeText = daysLeft === 1 ? '1 day' : `${daysLeft} days`;
     colorClass = 'text-destructive';
     IconComponent = AlertTriangle;
-  } else if (monthsLeft < 6) {
+  } else if (monthsLeft < 3) {
     timeText = monthsLeft === 1 ? '1 month' : `${monthsLeft} months`;
-    colorClass = 'text-orange-500';
+    colorClass = 'text-yellow-500';
     IconComponent = AlertCircle;
   } else if (monthsLeft < 12) {
     timeText = monthsLeft === 1 ? '1 month' : `${monthsLeft} months`;
-    colorClass = 'text-yellow-500';
+    colorClass = 'text-muted-foreground';
     IconComponent = null;
   } else {
     const hasExtraMonths = monthsLeft > yearsLeft * 12;
     const prefix = hasExtraMonths ? '> ' : '';
     timeText =
       yearsLeft === 1 ? `${prefix}1 year` : `${prefix}${yearsLeft} years`;
-    colorClass = 'text-green-600';
+    colorClass = 'text-muted-foreground';
     IconComponent = null;
   }
 
@@ -254,9 +258,14 @@ const MyDomainsEmptyPlaceholder: FC<HTMLAttributes<HTMLDivElement>> = ({
   );
 };
 
-function MyDomainsTable() {
+function MyDomainsTable(props: {
+  title?: string;
+  showExpiredDomains?: boolean;
+  showActiveDomains?: boolean;
+}) {
+  const { title, showExpiredDomains = false, showActiveDomains = true } = props;
   const trpc = useTRPC();
-  const { data: domains } = useSuspenseQuery(
+  const { data: _domains } = useSuspenseQuery(
     trpc.users.getCurrentUserDomains.queryOptions(),
   );
 
@@ -339,6 +348,25 @@ function MyDomainsTable() {
     [renewDomains],
   );
 
+  const domains = useMemo(() => {
+    return _domains.filter((domain) => {
+      const canBeRenewed = canDomainBeRenewed(
+        domain.normalizedDomainName,
+        domain.expirationDate?.toISOString() || null,
+      );
+      const expired =
+        differenceInDays(
+          new Date(domain.expirationDate?.toISOString() ?? ''),
+          new Date(),
+        ) < 0;
+
+      return (
+        (canBeRenewed && showActiveDomains && !expired) ||
+        (!canBeRenewed && showExpiredDomains && expired)
+      );
+    });
+  }, [_domains, canDomainBeRenewed, showActiveDomains, showExpiredDomains]);
+
   const columns: ColumnDef<DomainRow>[] = useMemo(
     () => [
       {
@@ -374,7 +402,29 @@ function MyDomainsTable() {
         ),
         size: 80,
         enableSorting: false,
-        filterFn: 'equals',
+        filterFn: (row, columnId, filterValue) => {
+          const chainId = row.getValue(columnId) as number;
+          // Handle simple value (from inline filter or select)
+          if (
+            typeof filterValue === 'string' ||
+            typeof filterValue === 'number'
+          ) {
+            return String(chainId) === String(filterValue);
+          }
+          // Handle operator/value object (from filter panel)
+          if (
+            filterValue &&
+            typeof filterValue === 'object' &&
+            'operator' in filterValue
+          ) {
+            return applyFilterOperator(
+              chainId,
+              filterValue.operator,
+              Number(filterValue.value),
+            );
+          }
+          return true;
+        },
       },
       {
         accessorKey: 'ownerAddress',
@@ -385,30 +435,34 @@ function MyDomainsTable() {
           </TruncatedTextWithHover>
         ),
         size: 140,
-        enableSorting: false,
+        sortingFn: 'alphanumeric',
+        filterFn: (row, columnId, filterValue) => {
+          const cellValue = String(row.getValue(columnId) || '');
+          // Handle simple value (from inline filter or select)
+          if (
+            typeof filterValue === 'string' ||
+            typeof filterValue === 'number'
+          ) {
+            return String(cellValue) === String(filterValue);
+          }
+          // Handle operator/value object (from filter panel)
+          if (
+            filterValue &&
+            typeof filterValue === 'object' &&
+            'operator' in filterValue
+          ) {
+            return applyFilterOperator(
+              cellValue,
+              filterValue.operator,
+              String(filterValue.value),
+            );
+          }
+          return true;
+        },
       },
       {
         accessorKey: 'normalizedDomainName',
-        header: ({ column }) => {
-          return (
-            <Button
-              variant="ghost"
-              onClick={() =>
-                column.toggleSorting(column.getIsSorted() === 'asc')
-              }
-              className="-mx-3 h-auto px-3 py-1 font-medium hover:bg-transparent justify-start"
-            >
-              Domain Name
-              {column.getIsSorted() === 'asc' ? (
-                <ChevronUp className="ml-2 h-4 w-4" />
-              ) : column.getIsSorted() === 'desc' ? (
-                <ChevronDown className="ml-2 h-4 w-4" />
-              ) : (
-                <ChevronsUpDown className="ml-2 h-4 w-4" />
-              )}
-            </Button>
-          );
-        },
+        header: 'Domain Name',
         cell: ({ row }) => (
           <Link
             href={`/domains/${row.getValue('normalizedDomainName')}`}
@@ -418,29 +472,30 @@ function MyDomainsTable() {
             {row.getValue('normalizedDomainName')}
           </Link>
         ),
+        filterFn: (row, columnId, filterValue) => {
+          const cellValue = String(row.getValue(columnId) || '');
+          // Handle simple value (from inline filter)
+          if (typeof filterValue === 'string') {
+            return cellValue.toLowerCase().includes(filterValue.toLowerCase());
+          }
+          // Handle operator/value object (from filter panel)
+          if (
+            filterValue &&
+            typeof filterValue === 'object' &&
+            'operator' in filterValue
+          ) {
+            return applyFilterOperator(
+              cellValue,
+              filterValue.operator,
+              String(filterValue.value),
+            );
+          }
+          return true;
+        },
       },
       {
         accessorKey: 'expirationDate',
-        header: ({ column }) => {
-          return (
-            <Button
-              variant="ghost"
-              onClick={() =>
-                column.toggleSorting(column.getIsSorted() === 'asc')
-              }
-              className="-mx-3 h-auto px-3 py-1 font-medium hover:bg-transparent justify-start"
-            >
-              Expires On
-              {column.getIsSorted() === 'asc' ? (
-                <ChevronUp className="ml-2 h-4 w-4" />
-              ) : column.getIsSorted() === 'desc' ? (
-                <ChevronDown className="ml-2 h-4 w-4" />
-              ) : (
-                <ChevronsUpDown className="ml-2 h-4 w-4" />
-              )}
-            </Button>
-          );
-        },
+        header: 'Expires On',
         cell: ({ row }) => {
           const expirationDate = row.getValue('expirationDate') as
             | string
@@ -458,6 +513,22 @@ function MyDomainsTable() {
 
           return new Date(a).getTime() - new Date(b).getTime();
         },
+        filterFn: (row, columnId, filter) => {
+          const cellValue = String(row.getValue(columnId) || '');
+          const operator =
+            filter && typeof filter === 'object' && 'operator' in filter
+              ? filter.operator
+              : 'eq';
+          const filterValue =
+            filter && typeof filter === 'object' && 'value' in filter
+              ? filter.value
+              : new Date(filter);
+          return applyFilterOperator(
+            new Date(cellValue).getTime(),
+            operator,
+            new Date(filterValue).getTime(),
+          );
+        },
       },
       {
         id: 'actions',
@@ -471,17 +542,34 @@ function MyDomainsTable() {
             domainName,
             expirationDate,
           );
+          const daysDifference = differenceInDays(
+            new Date(expirationDate ?? ''),
+            new Date(),
+          );
+          const showManageButton = daysDifference > -30;
+          const isExpired = daysDifference < 0;
 
           return (
             <div className="flex gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={(e) => handleManageDnsClick(domainName, e)}
-                aria-label={`Settings for ${domainName}`}
-              >
-                <Settings className="w-4 h-4 mr-1" /> Manage DNS
-              </Button>
+              {showManageButton && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={(e) => handleManageDnsClick(domainName, e)}
+                  aria-label={`Settings for ${domainName}`}
+                >
+                  {isExpired ? (
+                    <>
+                      <History className="w-4 h-4 mr-1" />
+                      Try to recover
+                    </>
+                  ) : (
+                    <>
+                      <Settings className="w-4 h-4 mr-1" /> Manage Domain{' '}
+                    </>
+                  )}
+                </Button>
+              )}
               {showRenewButton && (
                 <RenewButton
                   domainName={domainName}
@@ -492,16 +580,18 @@ function MyDomainsTable() {
                   isProcessing={processingDomains.has(domainName)}
                 />
               )}
-              <Button variant="outline" size="sm" asChild={true}>
-                <Link
-                  href={`https://basescan.org/nft/${NAMEFI_NFT_CONTRACT_ADDRESS}/${row.original.tokenId ?? ''}`}
-                  aria-label={`View NFT for ${domainName}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <ExternalLink className="w-4 h-4 mr-1" /> View NFT
-                </Link>
-              </Button>
+              {!isExpired && (
+                <Button variant="outline" size="sm" asChild={true}>
+                  <Link
+                    href={`https://basescan.org/nft/${NAMEFI_NFT_CONTRACT_ADDRESS}/${row.original.tokenId ?? ''}`}
+                    aria-label={`View NFT for ${domainName}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <ExternalLink className="w-4 h-4 mr-1" /> View NFT
+                  </Link>
+                </Button>
+              )}
             </div>
           );
         },
@@ -548,6 +638,33 @@ function MyDomainsTable() {
     }).length;
   }, [rowSelection, table, canDomainBeRenewed]);
 
+  const { pageIndex, pageSize, setPageIndex, setPageSize } = usePagination({
+    defaultPageSize: 5,
+    defaultPageIndex: 0,
+  });
+
+  const [sorting, setSorting] = useState<SortingState>([
+    { id: 'expirationDate', desc: false },
+  ]);
+
+  const nftFilterConfig = useMemo(
+    () => ({
+      normalizedDomainName: { type: 'text' as const, label: 'Domain Name' },
+      ownerAddress: { type: 'text' as const, label: 'Wallet' },
+      expirationDate: { type: 'date' as const, label: 'Expires On' },
+      chainId: {
+        type: 'select' as const,
+        label: 'Chain',
+        options: [
+          { value: String(CHAINS.base.id), label: CHAINS.base.name },
+          { value: String(CHAINS.mainnet.id), label: CHAINS.mainnet.name },
+          { value: String(CHAINS.sepolia.id), label: CHAINS.sepolia.name },
+        ],
+      },
+    }),
+    [],
+  );
+
   if (domains.length === 0) {
     return <MyDomainsEmptyPlaceholder />;
   }
@@ -561,138 +678,28 @@ function MyDomainsTable() {
         description={DNS_MANAGEMENT_EMAIL_REQUIRED.description}
         actionText={DNS_MANAGEMENT_EMAIL_REQUIRED.actionText}
       />
+      {!!title && (
+        <h2
+          id={title.toLowerCase().replaceAll(' ', '-')}
+          className="text-xl font-semibold mb-1"
+        >
+          {title}
+        </h2>
+      )}
       <Card>
         <CardContent>
-          <div className="flex justify-end mb-4 gap-2">
-            <Select
-              value={
-                table.getColumn('chainId')?.getFilterValue()?.toString() ?? '-1'
-              }
-              onValueChange={(value) =>
-                table
-                  .getColumn('chainId')
-                  ?.setFilterValue(
-                    !value || value === '-1'
-                      ? undefined
-                      : Number.parseInt(value),
-                  )
-              }
-            >
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Select chain">
-                  {(() => {
-                    const selectedValue =
-                      table
-                        .getColumn('chainId')
-                        ?.getFilterValue()
-                        ?.toString() ?? '-1';
-                    if (selectedValue === '-1') {
-                      return 'All chains';
-                    }
-                    const chain = getChain(Number.parseInt(selectedValue));
-                    return chain ? (
-                      <div className="flex items-center gap-2">
-                        <NetworkLogo network={chain.id} className="w-4 h-4" />
-                        {chain.name}
-                      </div>
-                    ) : (
-                      'Select chain'
-                    );
-                  })()}
-                </SelectValue>
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value={'-1'}>All chains</SelectItem>
-                {(config.TYPE === 'local' || config.TYPE === 'development') && (
-                  <SelectItem value={CHAINS.sepolia.id.toString()}>
-                    <div className="flex items-center gap-2">
-                      <NetworkLogo
-                        network={CHAINS.sepolia.id}
-                        className="w-4 h-4"
-                      />
-                      {CHAINS.sepolia.name}
-                    </div>
-                  </SelectItem>
-                )}
-                <SelectItem value={CHAINS.base.id.toString()}>
-                  <div className="flex items-center gap-2">
-                    <NetworkLogo network={CHAINS.base.id} className="w-4 h-4" />
-                    {CHAINS.base.name}
-                  </div>
-                </SelectItem>
-                <SelectItem value={CHAINS.mainnet.id.toString()}>
-                  <div className="flex items-center gap-2">
-                    <NetworkLogo
-                      network={CHAINS.mainnet.id}
-                      className="w-4 h-4"
-                    />
-                    {CHAINS.mainnet.name}
-                  </div>
-                </SelectItem>
-              </SelectContent>
-            </Select>
-            <div className="relative w-64">
-              <Search className="absolute left-2 top-2.5 h-4 w-4 text-zinc-500" />
-              <Input
-                placeholder="Search domains..."
-                value={table.getState().globalFilter ?? ''}
-                onChange={(e) => table.setGlobalFilter(e.target.value)}
-                className="pl-8"
-              />
-            </div>
-          </div>
-
-          <div className="rounded-md border">
-            <Table style={{ tableLayout: 'fixed' }}>
-              <TableHeader>
-                {table.getHeaderGroups().map((headerGroup) => (
-                  <TableRow key={headerGroup.id}>
-                    {headerGroup.headers.map((header) => (
-                      <TableHead
-                        key={header.id}
-                        style={{ width: header.getSize() }}
-                      >
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext(),
-                            )}
-                      </TableHead>
-                    ))}
-                  </TableRow>
-                ))}
-              </TableHeader>
-              <TableBody>
-                {table.getRowModel().rows?.length > 0 ? (
-                  table.getRowModel().rows.map((row) => (
-                    <TableRow key={row.id}>
-                      {row.getVisibleCells().map((cell) => (
-                        <TableCell
-                          key={cell.id}
-                          style={{ width: cell.column.getSize() }}
-                        >
-                          {flexRender(
-                            cell.column.columnDef.cell,
-                            cell.getContext(),
-                          )}
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell
-                      colSpan={columns.length}
-                      className="h-24 text-center"
-                    >
-                      No results.
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </div>
+          <DataTable<DomainRow>
+            columns={columns}
+            data={domains}
+            isLoading={false}
+            pageSize={pageSize}
+            onPageSizeChange={(n: number) => setPageSize(n)}
+            filterConfig={nftFilterConfig}
+            enableColumnFilters={true}
+            filterDisplayOptions={{ showInHeader: false }}
+            sorting={sorting}
+            onSortingChange={setSorting}
+          />
         </CardContent>
       </Card>
 
@@ -914,7 +921,17 @@ export default function MyDomains() {
         <LoadingSkeletons />
       ) : (
         <Suspense fallback={<LoadingSkeletons />}>
-          <MyDomainsTable />
+          <div className="flex flex-col gap-6">
+            <MyDomainsTable
+              showActiveDomains={true}
+              showExpiredDomains={false}
+            />
+            <MyDomainsTable
+              title="Expired Domains"
+              showExpiredDomains={true}
+              showActiveDomains={false}
+            />
+          </div>
         </Suspense>
       )}
     </div>
