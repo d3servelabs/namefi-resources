@@ -108,7 +108,7 @@ export default function CartPage() {
       onSuccess: (data) => {
         setIsRedirecting(true);
         logSubmitOrder({ success: true });
-        router.push(`/orders/${data.id}`);
+        router.push(`/orders/${data.id}?new=true`);
       },
       onError: (error) => {
         logSubmitOrder({ success: false });

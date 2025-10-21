@@ -15,6 +15,7 @@ import {
   CarouselPrevious,
 } from '@/components/ui/shadcn/carousel';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
+import { Separator } from '@/components/ui/shadcn/separator';
 import { Unauthorized } from '@/components/unauthorized';
 import { useCartContext } from '@/components/providers/cart';
 import { useAuth } from '@/hooks/use-auth';
@@ -42,6 +43,90 @@ import {
 } from 'react-share';
 import { useDebounceValue } from 'usehooks-ts';
 import { StatusBadge } from '@/components/status-badge';
+import { parseAsBoolean, useQueryState } from 'nuqs';
+
+function OrderPageSkeleton() {
+  return (
+    <div className="container mx-auto py-8 px-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <CartCard title="Order" className="relative">
+          <div className="flex flex-col gap-1 mt-2">
+            <div className="flex items-center justify-between h-8">
+              <Skeleton className="h-5 w-24" />
+              <Skeleton className="h-5 w-20" />
+            </div>
+            <div className="flex items-center justify-between h-8">
+              <Skeleton className="h-5 w-28" />
+              <Skeleton className="h-5 w-32" />
+            </div>
+            <div className="flex items-center justify-between h-8">
+              <Skeleton className="h-5 w-28" />
+              <div className="flex items-center gap-2">
+                <Skeleton className="h-5 w-32" />
+                <Skeleton className="h-8 w-8 rounded-md" />
+              </div>
+            </div>
+
+            <div className="my-2">
+              <Separator className="opacity-50" />
+            </div>
+
+            <Skeleton className="h-4 w-24" />
+            {Array.from({ length: 2 }).map((_, index) => (
+              <div
+                key={`payment-skeleton-${index}`}
+                className="flex items-center justify-between"
+              >
+                <div className="flex flex-col gap-2">
+                  <Skeleton className="h-4 w-24" />
+                  <Skeleton className="h-4 w-20" />
+                </div>
+                <div className="flex items-center gap-2">
+                  <Skeleton className="h-6 w-16" />
+                  <Skeleton className="h-6 w-20" />
+                </div>
+              </div>
+            ))}
+          </div>
+        </CartCard>
+
+        <CartCard title="Order Items">
+          <div className="flex flex-col mt-6">
+            {Array.from({ length: 2 }).map((_, index) => (
+              <div key={`order-item-skeleton-${index}`}>
+                <div className="flex flex-col gap-2">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <Skeleton className="h-6 w-48" />
+                      <Skeleton className="h-5 w-20" />
+                    </div>
+                    <Skeleton className="h-6 w-24" />
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <Skeleton className="h-4 w-24" />
+                    <Skeleton className="h-4 w-20" />
+                  </div>
+                </div>
+                {index === 0 && (
+                  <div className="my-6">
+                    <Separator />
+                  </div>
+                )}
+              </div>
+            ))}
+            <div className="mt-6">
+              <Separator />
+            </div>
+            <div className="flex items-center justify-between pt-4">
+              <Skeleton className="h-6 w-16" />
+              <Skeleton className="h-6 w-24" />
+            </div>
+          </div>
+        </CartCard>
+      </div>
+    </div>
+  );
+}
 
 interface OrderPageProps {
   params: Promise<{ id: string }>;
@@ -52,6 +137,7 @@ export default function OrderPage({ params }: OrderPageProps) {
   const router = useRouter();
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
   const trpc = useTRPC();
+  const [newOrder] = useQueryState('new', parseAsBoolean);
 
   const { refetchCart } = useCartContext();
 
@@ -190,40 +276,43 @@ export default function OrderPage({ params }: OrderPageProps) {
   }
 
   if (isAuthLoading || isOrderLoading) {
-    return (
-      <div className="container mx-auto py-8 px-8">
-        <div className="max-w-2xl mx-auto text-center">
-          <h1 className="text-4xl font-bold mb-4">
-            Great! We are ready to secure your domain
-          </h1>
-          <p className="text-muted-foreground text-lg mb-8 flex items-center justify-center gap-2">
-            Hang on tight...
-            <Loader2 className="h-5 w-5 animate-spin" />
-          </p>
-          {progressBar}
+    if (newOrder) {
+      return (
+        <div className="container mx-auto py-8 px-8">
+          <div className="max-w-2xl mx-auto text-center">
+            <h1 className="text-4xl font-bold mb-4">
+              Great! We are ready to secure your domain
+            </h1>
+            <p className="text-muted-foreground text-lg mb-8 flex items-center justify-center gap-2">
+              Hang on tight...
+              <Loader2 className="h-5 w-5 animate-spin" />
+            </p>
+            {progressBar}
 
-          <div className="mb-6 flex justify-center">
-            <CartCard className="p-4 w-full sm:w-3/4 md:w-1/2 lg:w-1/3 max-w-sm">
-              <div className="relative w-full aspect-square overflow-hidden rounded-md bg-black/[0.03] border-1 border-brand-primary">
-                <Skeleton className="h-full w-full" />
-                <div className="absolute top-4.5 left-4.5">
-                  <Skeleton className="h-6 w-24" />
+            <div className="mb-6 flex justify-center">
+              <CartCard className="p-4 w-full sm:w-3/4 md:w-1/2 lg:w-1/3 max-w-sm">
+                <div className="relative w-full aspect-square overflow-hidden rounded-md bg-black/[0.03] border-1 border-brand-primary">
+                  <Skeleton className="h-full w-full" />
+                  <div className="absolute top-4.5 left-4.5">
+                    <Skeleton className="h-6 w-24" />
+                  </div>
+                  <div className="absolute bottom-0 left-0 right-0 px-3 py-4 bg-gradient-to-t from-black/90 via-black/10 to-transparent">
+                    <Skeleton className="h-8 w-32 mb-2" />
+                    <Skeleton className="h-6 w-24" />
+                  </div>
                 </div>
-                <div className="absolute bottom-0 left-0 right-0 px-3 py-4 bg-gradient-to-t from-black/90 via-black/10 to-transparent">
-                  <Skeleton className="h-8 w-32 mb-2" />
-                  <Skeleton className="h-6 w-24" />
-                </div>
-              </div>
-              <Skeleton className="h-10 w-full mt-4" />
-            </CartCard>
-          </div>
+                <Skeleton className="h-10 w-full mt-4" />
+              </CartCard>
+            </div>
 
-          <div className="flex justify-center mb-8">
-            <Skeleton className="h-10 w-[180px]" />
+            <div className="flex justify-center mb-8">
+              <Skeleton className="h-10 w-[180px]" />
+            </div>
           </div>
         </div>
-      </div>
-    );
+      );
+    }
+    return <OrderPageSkeleton />;
   }
   if (
     error &&
@@ -253,59 +342,62 @@ export default function OrderPage({ params }: OrderPageProps) {
   }
 
   if (!debouncedIsCompletedOrder) {
-    return (
-      <div className="container mx-auto py-8 px-8">
-        <div className="max-w-2xl mx-auto text-center">
-          <h1 className="text-4xl font-bold mb-4">
-            Great! We are ready to secure your domain
-          </h1>
-          <p className="text-muted-foreground text-lg mb-8 flex items-center justify-center gap-2">
-            Hang on tight...
-            <Loader2 className="h-5 w-5 animate-spin" />
-          </p>
-          {progressBar}
+    if (newOrder) {
+      return (
+        <div className="container mx-auto py-8 px-8">
+          <div className="max-w-2xl mx-auto text-center">
+            <h1 className="text-4xl font-bold mb-4">
+              Great! We are ready to secure your domain
+            </h1>
+            <p className="text-muted-foreground text-lg mb-8 flex items-center justify-center gap-2">
+              Hang on tight...
+              <Loader2 className="h-5 w-5 animate-spin" />
+            </p>
+            {progressBar}
 
-          {showCarousel ? (
-            <Carousel className="mb-6">
-              <CarouselContent className="-ml-2 md:-ml-4">
+            {showCarousel ? (
+              <Carousel className="mb-6">
+                <CarouselContent className="-ml-2 md:-ml-4">
+                  {orderItems.map((item, index) => (
+                    <CarouselItem
+                      key={index}
+                      className="md:basis-1/2 lg:basis-1/3 pl-2 md:pl-4"
+                    >
+                      <NftDomainCard
+                        item={item}
+                        origin={origin}
+                        isCompleted={isCompletedOrder}
+                      />
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+                <CarouselPrevious />
+                <CarouselNext />
+              </Carousel>
+            ) : (
+              <div className="mb-6 flex flex-wrap justify-center gap-4">
                 {orderItems.map((item, index) => (
-                  <CarouselItem
+                  <NftDomainCard
                     key={index}
-                    className="md:basis-1/2 lg:basis-1/3 pl-2 md:pl-4"
-                  >
-                    <NftDomainCard
-                      item={item}
-                      origin={origin}
-                      isCompleted={isCompletedOrder}
-                    />
-                  </CarouselItem>
+                    item={item}
+                    origin={origin}
+                    isCompleted={isCompletedOrder}
+                    className="p-4 w-full sm:w-3/4 md:w-1/2 lg:w-1/3 max-w-sm"
+                  />
                 ))}
-              </CarouselContent>
-              <CarouselPrevious />
-              <CarouselNext />
-            </Carousel>
-          ) : (
-            <div className="mb-6 flex flex-wrap justify-center gap-4">
-              {orderItems.map((item, index) => (
-                <NftDomainCard
-                  key={index}
-                  item={item}
-                  origin={origin}
-                  isCompleted={isCompletedOrder}
-                  className="p-4 w-full sm:w-3/4 md:w-1/2 lg:w-1/3 max-w-sm"
-                />
-              ))}
-            </div>
-          )}
+              </div>
+            )}
 
-          <div className="flex gap-4 mb-8 justify-center">
-            <NamefiButton asChild={true}>
-              <Link href={`/orders/${id}/details`}>View order details</Link>
-            </NamefiButton>
+            <div className="flex gap-4 mb-8 justify-center">
+              <NamefiButton asChild={true}>
+                <Link href={`/orders/${id}/details`}>View order details</Link>
+              </NamefiButton>
+            </div>
           </div>
         </div>
-      </div>
-    );
+      );
+    }
+    return <OrderPageSkeleton />;
   }
 
   return (
