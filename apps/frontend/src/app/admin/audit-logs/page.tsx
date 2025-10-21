@@ -312,8 +312,6 @@ function AuditLogsPageInner() {
         onPageSizeChange={(n) => setPageSize(n)}
         nextPageToken={data?.nextPageToken}
         onLoadMore={(token) => setPageToken(token)}
-        orderBy={orderBy}
-        onOrderByChange={setOrderBy}
       />
 
       {/* Details Modal */}

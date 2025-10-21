@@ -40,6 +40,7 @@ import {
   differenceInMonths,
   differenceInDays,
 } from 'date-fns';
+import { applyFilterOperator } from '@/components/table/data-table';
 
 const attemptGetChecksummedAddress = (address: string): string => {
   const parsed = checksumWalletAddressSchema.safeParse(address);
@@ -504,48 +505,6 @@ function UsersTable() {
 function renderSubRow(row: Row<UserRow>) {
   return <UserNftsSubRow {...row} />;
 }
-// Helper function to apply filter operators for client-side filtering
-const applyFilterOperator = (
-  cellValue: any,
-  operator: string,
-  filterValue: any,
-): boolean => {
-  if (typeof cellValue === 'string' && typeof filterValue === 'string') {
-    const lowerCell = cellValue.toLowerCase();
-    const lowerFilter = filterValue.toLowerCase();
-    switch (operator) {
-      case 'like':
-        return lowerCell.includes(lowerFilter);
-      case 'eq':
-        return lowerCell === lowerFilter;
-      case 'neq':
-        return lowerCell !== lowerFilter;
-      default:
-        return lowerCell.includes(lowerFilter);
-    }
-  }
-
-  if (typeof cellValue === 'number' && typeof filterValue === 'number') {
-    switch (operator) {
-      case 'eq':
-        return cellValue === filterValue;
-      case 'neq':
-        return cellValue !== filterValue;
-      case 'gt':
-        return cellValue > filterValue;
-      case 'gte':
-        return cellValue >= filterValue;
-      case 'lt':
-        return cellValue < filterValue;
-      case 'lte':
-        return cellValue <= filterValue;
-      default:
-        return cellValue === filterValue;
-    }
-  }
-
-  return false;
-};
 
 const UserNftsSubRow = ({ original: user }: Row<UserRow>) => {
   type NftRow = UserRow['nfts'][number];

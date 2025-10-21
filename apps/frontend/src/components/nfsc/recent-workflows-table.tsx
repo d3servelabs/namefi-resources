@@ -61,9 +61,7 @@ export function RecentWorkflowsTable() {
   const { theme } = useTheme();
   const [days, setDays] = useState<number>(7);
   const [pageSize, setPageSize] = useState<number>(50);
-  const [orderBy, setOrderBy] = useState<'timestamp_desc' | 'timestamp_asc'>(
-    'timestamp_desc',
-  );
+
   const [selectedWorkflow, setSelectedWorkflow] = useState<WorkflowRow | null>(
     null,
   );
@@ -288,8 +286,6 @@ export function RecentWorkflowsTable() {
           // For now, just increase page size
           setPageSize((prev) => prev + 50);
         }}
-        orderBy={orderBy}
-        onOrderByChange={setOrderBy}
       />
 
       {/* Details Modal */}

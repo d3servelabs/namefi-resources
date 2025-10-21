@@ -14,6 +14,7 @@ import {
   type ExpandedState,
   type Row,
   type PaginationState,
+  type OnChangeFn,
 } from '@tanstack/react-table';
 import {
   Fragment,
@@ -48,6 +49,49 @@ import {
 } from '@/components/ui/shadcn/dropdown-menu';
 import { Badge } from '@/components/ui/shadcn/badge';
 
+// Helper function to apply filter operators for client-side filtering
+export const applyFilterOperator = (
+  cellValue: any,
+  operator: string,
+  filterValue: any,
+): boolean => {
+  if (typeof cellValue === 'string' && typeof filterValue === 'string') {
+    const lowerCell = cellValue.toLowerCase();
+    const lowerFilter = filterValue.toLowerCase();
+    switch (operator) {
+      case 'like':
+        return lowerCell.includes(lowerFilter);
+      case 'eq':
+        return lowerCell === lowerFilter;
+      case 'neq':
+        return lowerCell !== lowerFilter;
+      default:
+        return lowerCell.includes(lowerFilter);
+    }
+  }
+
+  if (typeof cellValue === 'number' && typeof filterValue === 'number') {
+    switch (operator) {
+      case 'eq':
+        return cellValue === filterValue;
+      case 'neq':
+        return cellValue !== filterValue;
+      case 'gt':
+        return cellValue > filterValue;
+      case 'gte':
+        return cellValue >= filterValue;
+      case 'lt':
+        return cellValue < filterValue;
+      case 'lte':
+        return cellValue <= filterValue;
+      default:
+        return cellValue === filterValue;
+    }
+  }
+
+  return false;
+};
+
 type FilterConfig = {
   [columnId: string]: {
     type: 'text' | 'number' | 'date' | 'select';
@@ -80,8 +124,8 @@ type DataTableProps<TData> = {
   onPageSizeChange: (n: number) => void;
   nextPageToken?: string;
   onLoadMore?: (token?: string) => void;
-  orderBy?: 'timestamp_desc' | 'timestamp_asc';
-  onOrderByChange?: (o: 'timestamp_desc' | 'timestamp_asc') => void;
+  sorting?: SortingState;
+  onSortingChange?: OnChangeFn<SortingState>;
   renderSubRow?: (row: Row<TData>) => ReactNode;
   getRowCanExpand?: (row: Row<TData>) => boolean;
 
@@ -103,8 +147,8 @@ export function DataTable<TData>(props: DataTableProps<TData>) {
     onPageSizeChange,
     nextPageToken,
     onLoadMore,
-    orderBy,
-    onOrderByChange,
+    sorting,
+    onSortingChange,
     renderSubRow,
     getRowCanExpand,
     filterConfig,
@@ -115,7 +159,7 @@ export function DataTable<TData>(props: DataTableProps<TData>) {
     onColumnVisibilityChange,
   } = props;
 
-  const [sorting, setSorting] = useState<SortingState>([]);
+  const [internalSorting, setInternalSorting] = useState<SortingState>([]);
   const [columnSizing, setColumnSizing] = useState<ColumnSizingState>({});
   const [expanded, setExpanded] = useState<ExpandedState>({});
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -146,14 +190,14 @@ export function DataTable<TData>(props: DataTableProps<TData>) {
     data,
     columns,
     state: {
-      sorting,
+      sorting: sorting ?? internalSorting ?? [],
       columnVisibility,
       columnSizing,
       expanded,
       columnFilters,
       pagination,
     },
-    onSortingChange: setSorting,
+    onSortingChange: onSortingChange ?? setInternalSorting,
     onColumnVisibilityChange,
     onColumnSizingChange: setColumnSizing,
     onExpandedChange: setExpanded,
@@ -266,22 +310,6 @@ export function DataTable<TData>(props: DataTableProps<TData>) {
             </DropdownMenuContent>
           </DropdownMenu>
 
-          {onOrderByChange && (
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() =>
-                onOrderByChange(
-                  orderBy === 'timestamp_desc'
-                    ? 'timestamp_asc'
-                    : 'timestamp_desc',
-                )
-              }
-            >
-              <ArrowUpDown className="h-3 w-3 mr-1" />
-              {orderBy === 'timestamp_desc' ? 'Newest First' : 'Oldest First'}
-            </Button>
-          )}
           {onLoadMore && (
             <Button
               variant="default"
