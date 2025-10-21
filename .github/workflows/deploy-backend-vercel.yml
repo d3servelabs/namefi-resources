@@ -24,6 +24,15 @@ env:
   REPO_NAME: ${{ vars.REPOSITORY_NAME }} # Artifact Registry repository name
   SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_RELEASE_CHANNEL_URL }} # Slack webhook URL
 jobs:
+  display_info:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Show Push Event Details
+        run: |
+          echo "Ref: ${{ github.event.ref }}"
+          echo "Before SHA: ${{ github.event.before }}"
+          echo "After SHA: ${{ github.event.after }}"
+          echo "Base Ref (for push events, usually null): ${{ github.event.base_ref }}"
   # Detect if backend and frontend packages have changed
   detect-changes:
     name: Detect Backend and Frontend Changes
@@ -43,7 +52,7 @@ jobs:
         id: turbo-changes
         uses: ./.github/actions/detect-turbo-changes
         with:
-          filter: '...[HEAD^]'
+          filter: "...[${{ github.event.before || 'HEAD^' }}]"
 
 
       - name: Check if changed

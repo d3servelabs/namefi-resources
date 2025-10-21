@@ -37,7 +37,7 @@ jobs:
         id: turbo-changes
         uses: ./.github/actions/detect-turbo-changes
         with:
-          filter: '...[HEAD^]'
+          filter: "...[${{ github.event.before || 'HEAD^' }}]"
 
       - name: Determine if should deploy
         id: should-deploy
