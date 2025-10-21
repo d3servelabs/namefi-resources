@@ -1,5 +1,6 @@
 'use client';
 import Link from 'next/link';
+import type { LucideIcon } from 'lucide-react';
 import { withAdminGuard } from '@/components/admin/admin-guard';
 import {
   Card,
@@ -21,6 +22,251 @@ import {
 } from 'lucide-react';
 import { Permission } from '@namefi-astra/utils';
 import { PermissionGate } from '@/components/access/PermissionGate';
+import { isNotNil, filter } from 'ramda';
+
+interface AdminCardConfig {
+  title: string;
+  description: string;
+  href: string;
+  icon: LucideIcon;
+  iconBgColor: string;
+  iconTextColor: string;
+  permissions?: Permission[];
+  permissionsMode?: 'some' | 'every';
+  disabled?: boolean;
+  comingSoon?: boolean;
+}
+
+interface AdminSection {
+  title: string;
+  items: AdminCardConfig[];
+}
+
+const ADMIN_SECTIONS: AdminSection[] = [
+  {
+    title: 'Workflows and Schedules',
+    items: [
+      {
+        title: 'Workflow History',
+        description:
+          'View and track all admin-initiated workflows and their execution status.',
+        href: '/admin/workflow-history',
+        icon: History,
+        iconBgColor: 'bg-purple-100',
+        iconTextColor: 'text-purple-600',
+        permissions: [Permission.READ_NFT, Permission.WRITE_NFT],
+        permissionsMode: 'some',
+      },
+      {
+        title: 'Schedules',
+        description:
+          'Manage and monitor Temporal workflow schedules and automated tasks.',
+        href: '/admin/schedules',
+        icon: Clock,
+        iconBgColor: 'bg-blue-100',
+        iconTextColor: 'text-blue-600',
+        permissions: [Permission.READ_SCHEDULES, Permission.WRITE_SCHEDULES],
+        permissionsMode: 'some',
+      },
+    ],
+  },
+  {
+    title: 'Users',
+    items: [
+      {
+        title: 'Users',
+        description:
+          'Browse users, view details, search by email, wallets, ENS, and impersonate when allowed.',
+        href: '/admin/users',
+        icon: Users,
+        iconBgColor: 'bg-gray-100',
+        iconTextColor: 'text-gray-700',
+        permissions: [Permission.READ_USERS],
+      },
+    ],
+  },
+  {
+    title: 'Admins',
+    items: [
+      {
+        title: 'Permissions',
+        description: 'View and manage user permissions and access controls.',
+        href: '/admin/permissions',
+        icon: Shield,
+        iconBgColor: 'bg-rose-100',
+        iconTextColor: 'text-rose-600',
+        permissions: [
+          Permission.READ_PERMISSIONS,
+          Permission.WRITE_PERMISSIONS,
+        ],
+        permissionsMode: 'some',
+      },
+      {
+        title: 'Audit Logs',
+        description:
+          'Track and review all system audit records and user activities.',
+        href: '/admin/audit-logs',
+        icon: FileText,
+        iconBgColor: 'bg-slate-100',
+        iconTextColor: 'text-slate-700',
+        permissions: [Permission.READ_AUDIT_LOGS],
+      },
+    ],
+  },
+  {
+    title: 'Powered by Namefi',
+    items: [
+      {
+        title: 'Powered by Namefi',
+        description:
+          'Manage third-party domains with Vercel, DNS, and GCloud setup.',
+        href: '/admin/powered-by-namefi',
+        icon: Settings,
+        iconBgColor: 'bg-indigo-100',
+        iconTextColor: 'text-indigo-600',
+        permissions: [Permission.READ_PBN, Permission.WRITE_PBN],
+        permissionsMode: 'some',
+      },
+    ],
+  },
+  {
+    title: 'Assets',
+    items: [
+      {
+        title: 'Domains (NFTs)',
+        description:
+          'Manage NFTs, digital assets, and blockchain-related operations.',
+        href: '/admin/nft-management',
+        icon: Coins,
+        iconBgColor: 'bg-amber-100',
+        iconTextColor: 'text-amber-600',
+        permissions: [Permission.READ_NFT, Permission.WRITE_NFT],
+        permissionsMode: 'some',
+      },
+      {
+        title: 'NFSC Tokens',
+        description: 'Mint and manage NFSC tokens for users and campaigns.',
+        href: '/admin/nfsc',
+        icon: Coins,
+        iconBgColor: 'bg-teal-100',
+        iconTextColor: 'text-teal-600',
+        permissions: [Permission.MINT_NFSC, Permission.BURN_NFSC],
+        permissionsMode: 'some',
+      },
+      {
+        title: 'Free Claims',
+        description:
+          'Manage free domain claims for campaigns and special promotions.',
+        href: '/admin/free-claims',
+        icon: Gift,
+        iconBgColor: 'bg-green-100',
+        iconTextColor: 'text-green-600',
+        permissions: [
+          Permission.READ_FREE_CLAIMS,
+          Permission.WRITE_FREE_CLAIMS,
+        ],
+        permissionsMode: 'some',
+      },
+    ],
+  },
+  {
+    title: 'General',
+    items: [
+      {
+        title: 'Analytics',
+        description:
+          'View DNS analytics, query metrics, and comprehensive system insights.',
+        href: '/admin/analytics',
+        icon: BarChart3,
+        iconBgColor: 'bg-green-100',
+        iconTextColor: 'text-green-600',
+        permissions: [Permission.READ_ANALYTICS],
+      },
+      {
+        title: 'Email Templates',
+        description:
+          'Create, edit, and manage email templates for your campaigns and transactional emails.',
+        href: '/admin/emails/templates',
+        icon: Mail,
+        iconBgColor: 'bg-blue-100',
+        iconTextColor: 'text-blue-600',
+        disabled: true,
+      },
+      {
+        title: 'Security',
+        description:
+          'Manage security settings, authentication, and access policies.',
+        href: '#',
+        icon: Shield,
+        iconBgColor: 'bg-gray-100',
+        iconTextColor: 'text-gray-400',
+        disabled: true,
+        comingSoon: true,
+      },
+      {
+        title: 'Settings',
+        description:
+          'Configure application settings, integrations, and preferences.',
+        href: '#',
+        icon: Settings,
+        iconBgColor: 'bg-gray-100',
+        iconTextColor: 'text-gray-400',
+        disabled: true,
+        comingSoon: true,
+      },
+    ],
+  },
+];
+
+function AdminCard({ card }: { card: AdminCardConfig }) {
+  const Icon = card.icon;
+  const isDisabled = card.disabled || card.comingSoon;
+
+  const cardContent = (
+    <Card
+      className={`h-full transition-all ${
+        isDisabled
+          ? 'opacity-50 cursor-not-allowed'
+          : 'hover:shadow-md hover:bg-muted/50'
+      }`}
+    >
+      <CardHeader className="pb-3">
+        <div className="flex items-center space-x-3">
+          <div
+            className={`p-2 rounded-lg ${card.iconBgColor} ${card.iconTextColor} ${!isDisabled ? 'group-hover:bg-opacity-80 transition-colors' : ''}`}
+          >
+            <Icon className="h-5 w-5" />
+          </div>
+          <div className="flex flex-col">
+            <CardTitle
+              className={`text-lg ${isDisabled ? 'text-muted-foreground' : ''}`}
+            >
+              {card.title}
+            </CardTitle>
+            {card.comingSoon && (
+              <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded-full mt-1 w-fit">
+                Coming Soon
+              </span>
+            )}
+          </div>
+        </div>
+      </CardHeader>
+      <CardContent>
+        <p className="text-sm text-muted-foreground">{card.description}</p>
+      </CardContent>
+    </Card>
+  );
+
+  if (isDisabled) {
+    return cardContent;
+  }
+
+  return (
+    <Link href={card.href} className="group">
+      {cardContent}
+    </Link>
+  );
+}
 
 export default withAdminGuard(function AdminPage() {
   return (
@@ -32,317 +278,37 @@ export default withAdminGuard(function AdminPage() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {/* Assets/NFT Management */}
-        <PermissionGate
-          permissions={[Permission.READ_NFT, Permission.WRITE_NFT]}
-          permissionsMode="some"
-        >
-          <Link href="/admin/nft-management" className="group">
-            <Card className="h-full transition-all hover:shadow-md hover:bg-muted/50">
-              <CardHeader className="pb-3">
-                <div className="flex items-center space-x-3">
-                  <div className="p-2 rounded-lg bg-amber-100 text-amber-600 group-hover:bg-amber-200 transition-colors">
-                    <Coins className="h-5 w-5" />
-                  </div>
-                  <CardTitle className="text-lg">Assets</CardTitle>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground">
-                  Manage NFTs, digital assets, and blockchain-related
-                  operations.
-                </p>
-              </CardContent>
-            </Card>
-          </Link>
-        </PermissionGate>
-
-        {/* Workflow History */}
-        <PermissionGate
-          permissions={[Permission.READ_NFT, Permission.WRITE_NFT]}
-          permissionsMode="some"
-        >
-          <Link href="/admin/workflow-history" className="group">
-            <Card className="h-full transition-all hover:shadow-md hover:bg-muted/50">
-              <CardHeader className="pb-3">
-                <div className="flex items-center space-x-3">
-                  <div className="p-2 rounded-lg bg-purple-100 text-purple-600 group-hover:bg-purple-200 transition-colors">
-                    <History className="h-5 w-5" />
-                  </div>
-                  <CardTitle className="text-lg">Workflow History</CardTitle>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground">
-                  View and track all admin-initiated workflows and their
-                  execution status.
-                </p>
-              </CardContent>
-            </Card>
-          </Link>
-        </PermissionGate>
-
-        {/* Schedules Management */}
-        <PermissionGate
-          permissions={[Permission.READ_SCHEDULES, Permission.WRITE_SCHEDULES]}
-          permissionsMode="some"
-        >
-          <Link href="/admin/schedules" className="group">
-            <Card className="h-full transition-all hover:shadow-md hover:bg-muted/50">
-              <CardHeader className="pb-3">
-                <div className="flex items-center space-x-3">
-                  <div className="p-2 rounded-lg bg-blue-100 text-blue-600 group-hover:bg-blue-200 transition-colors">
-                    <Clock className="h-5 w-5" />
-                  </div>
-                  <CardTitle className="text-lg">Schedules</CardTitle>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground">
-                  Manage and monitor Temporal workflow schedules and automated
-                  tasks.
-                </p>
-              </CardContent>
-            </Card>
-          </Link>
-        </PermissionGate>
-
-        {/* Free Claims Management */}
-        <PermissionGate
-          permissions={[
-            Permission.READ_FREE_CLAIMS,
-            Permission.WRITE_FREE_CLAIMS,
-          ]}
-          permissionsMode="some"
-        >
-          <Link href="/admin/free-claims" className="group">
-            <Card className="h-full transition-all hover:shadow-md hover:bg-muted/50">
-              <CardHeader className="pb-3">
-                <div className="flex items-center space-x-3">
-                  <div className="p-2 rounded-lg bg-green-100 text-green-600 group-hover:bg-green-200 transition-colors">
-                    <Gift className="h-5 w-5" />
-                  </div>
-                  <CardTitle className="text-lg">Free Claims</CardTitle>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground">
-                  Manage free domain claims for campaigns and special
-                  promotions.
-                </p>
-              </CardContent>
-            </Card>
-          </Link>
-        </PermissionGate>
-
-        {/* NFSC Management */}
-        <PermissionGate
-          permissions={[Permission.MINT_NFSC, Permission.BURN_NFSC]}
-          permissionsMode="some"
-        >
-          <Link href="/admin/nfsc" className="group">
-            <Card className="h-full transition-all hover:shadow-md hover:bg-muted/50">
-              <CardHeader className="pb-3">
-                <div className="flex items-center space-x-3">
-                  <div className="p-2 rounded-lg bg-teal-100 text-teal-600 group-hover:bg-teal-200 transition-colors">
-                    <Coins className="h-5 w-5" />
-                  </div>
-                  <CardTitle className="text-lg">NFSC Tokens</CardTitle>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground">
-                  Mint and manage NFSC tokens for users and campaigns.
-                </p>
-              </CardContent>
-            </Card>
-          </Link>
-        </PermissionGate>
-
-        {/* Powered by Namefi Domains */}
-        <PermissionGate
-          permissions={[Permission.READ_PBN, Permission.WRITE_PBN]}
-          permissionsMode="some"
-        >
-          <Link href="/admin/powered-by-namefi" className="group">
-            <Card className="h-full transition-all hover:shadow-md hover:bg-muted/50">
-              <CardHeader className="pb-3">
-                <div className="flex items-center space-x-3">
-                  <div className="p-2 rounded-lg bg-indigo-100 text-indigo-600 group-hover:bg-indigo-200 transition-colors">
-                    <Settings className="h-5 w-5" />
-                  </div>
-                  <CardTitle className="text-lg">Powered by Namefi</CardTitle>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground">
-                  Manage third-party domains with Vercel, DNS, and GCloud setup.
-                </p>
-              </CardContent>
-            </Card>
-          </Link>
-        </PermissionGate>
-
-        {/* Permissions Dashboard */}
-        <PermissionGate
-          permissions={[
-            Permission.READ_PERMISSIONS,
-            Permission.WRITE_PERMISSIONS,
-          ]}
-          permissionsMode="some"
-        >
-          <Link href="/admin/permissions" className="group">
-            <Card className="h-full transition-all hover:shadow-md hover:bg-muted/50">
-              <CardHeader className="pb-3">
-                <div className="flex items-center space-x-3">
-                  <div className="p-2 rounded-lg bg-rose-100 text-rose-600 group-hover:bg-rose-200 transition-colors">
-                    <Shield className="h-5 w-5" />
-                  </div>
-                  <CardTitle className="text-lg">Permissions</CardTitle>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground">
-                  View and manage user permissions and access controls.
-                </p>
-              </CardContent>
-            </Card>
-          </Link>
-        </PermissionGate>
-
-        {/* Email Templates - Disabled */}
-        <Link href="/admin/emails/templates" className="group">
-          <Card className="h-full opacity-50 cursor-not-allowed">
-            <CardHeader className="pb-3">
-              <div className="flex items-center space-x-3">
-                <div className="p-2 rounded-lg bg-blue-100 text-blue-600 group-hover:bg-blue-200 transition-colors">
-                  <Mail className="h-5 w-5" />
-                </div>
-                <CardTitle className="text-lg">Email Templates</CardTitle>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground">
-                Create, edit, and manage email templates for your campaigns and
-                transactional emails.
-              </p>
-            </CardContent>
-          </Card>
-        </Link>
-
-        {/* Users */}
-        <PermissionGate permissions={[Permission.READ_USERS]}>
-          <Link href="/admin/users" className="group">
-            <Card className="h-full transition-all hover:shadow-md hover:bg-muted/50">
-              <CardHeader className="pb-3">
-                <div className="flex items-center space-x-3">
-                  <div className="p-2 rounded-lg bg-gray-100 text-gray-700 group-hover:bg-gray-200 transition-colors">
-                    <Users className="h-5 w-5" />
-                  </div>
-                  <CardTitle className="text-lg">Users</CardTitle>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground">
-                  Browse users, view details, search by email, wallets, ENS, and
-                  impersonate when allowed.
-                </p>
-              </CardContent>
-            </Card>
-          </Link>
-        </PermissionGate>
-
-        {/* Analytics */}
-        <PermissionGate permissions={[Permission.READ_ANALYTICS]}>
-          <Link href="/admin/analytics" className="group">
-            <Card className="h-full transition-all hover:shadow-md hover:bg-muted/50">
-              <CardHeader className="pb-3">
-                <div className="flex items-center space-x-3">
-                  <div className="p-2 rounded-lg bg-green-100 text-green-600 group-hover:bg-green-200 transition-colors">
-                    <BarChart3 className="h-5 w-5" />
-                  </div>
-                  <CardTitle className="text-lg">Analytics</CardTitle>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground">
-                  View DNS analytics, query metrics, and comprehensive system
-                  insights.
-                </p>
-              </CardContent>
-            </Card>
-          </Link>
-        </PermissionGate>
-
-        <PermissionGate permissions={[Permission.READ_AUDIT_LOGS]}>
-          {/* Audit Logs */}
-          <Link href="/admin/audit-logs" className="group">
-            <Card className="h-full transition-all hover:shadow-md hover:bg-muted/50">
-              <CardHeader className="pb-3">
-                <div className="flex items-center space-x-3">
-                  <div className="p-2 rounded-lg bg-slate-100 text-slate-700 group-hover:bg-slate-200 transition-colors">
-                    <FileText className="h-5 w-5" />
-                  </div>
-                  <CardTitle className="text-lg">Audit Logs</CardTitle>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground">
-                  Track and review all system audit records and user activities.
-                </p>
-              </CardContent>
-            </Card>
-          </Link>
-        </PermissionGate>
-
-        {/* Security - Disabled */}
-        <Card className="h-full opacity-50 cursor-not-allowed">
-          <CardHeader className="pb-3">
-            <div className="flex items-center space-x-3">
-              <div className="p-2 rounded-lg bg-gray-100 text-gray-400">
-                <Shield className="h-5 w-5" />
-              </div>
-              <div>
-                <CardTitle className="text-lg text-muted-foreground">
-                  Security
-                </CardTitle>
-                <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded-full">
-                  Coming Soon
-                </span>
+      <div className="space-y-10">
+        {ADMIN_SECTIONS.map((section) => (
+          <PermissionGate
+            key={section.title}
+            permissions={filter(
+              isNotNil,
+              section.items.flatMap((item) => item.permissions),
+            )}
+            permissionsMode="some"
+          >
+            <div key={section.title}>
+              <h2 className="text-xl font-semibold mb-4">{section.title}</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {section.items.map((card) => {
+                  if (card.permissions && card.permissions.length > 0) {
+                    return (
+                      <PermissionGate
+                        key={card.title}
+                        permissions={card.permissions}
+                        permissionsMode={card.permissionsMode}
+                      >
+                        <AdminCard card={card} />
+                      </PermissionGate>
+                    );
+                  }
+                  return <AdminCard key={card.title} card={card} />;
+                })}
               </div>
             </div>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-muted-foreground">
-              Manage security settings, authentication, and access policies.
-            </p>
-          </CardContent>
-        </Card>
-
-        {/* Settings - Disabled */}
-        <Card className="h-full opacity-50 cursor-not-allowed">
-          <CardHeader className="pb-3">
-            <div className="flex items-center space-x-3">
-              <div className="p-2 rounded-lg bg-gray-100 text-gray-400">
-                <Settings className="h-5 w-5" />
-              </div>
-              <div>
-                <CardTitle className="text-lg text-muted-foreground">
-                  Settings
-                </CardTitle>
-                <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded-full">
-                  Coming Soon
-                </span>
-              </div>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-muted-foreground">
-              Configure application settings, integrations, and preferences.
-            </p>
-          </CardContent>
-        </Card>
+          </PermissionGate>
+        ))}
       </div>
     </div>
   );
