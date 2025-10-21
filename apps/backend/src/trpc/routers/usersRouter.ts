@@ -51,6 +51,7 @@ import { syncSingleUserToListmonkActivity } from '../../temporal/activities/defa
 import { audit, createAuditRecord } from '#lib/auditor';
 import { deleteCookie, setCookie } from 'hono/cookie';
 import { getDomainsExpirationDatesFromIndex } from '../../temporal/activities/domain/renew.activities';
+import { resolveEnsNameToAddress } from '#lib/crypto/ens';
 
 if (!secrets.ALCHEMY_API_KEY) {
   throw new Error('Cannot create Ethereum public client');
@@ -820,4 +821,20 @@ export const usersRouter = createTRPCRouter({
       tokenId: domain.tokenId.toString(),
     }));
   }),
+  resolveEnsName: protectedProcedure
+    .input(
+      z.object({
+        ensName: z.string().trim().min(1).max(255),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      const ensName = input.ensName.trim();
+      const normalizedEnsName = ensName.toLowerCase();
+      const address = await resolveEnsNameToAddress(normalizedEnsName);
+      return {
+        ensName,
+        normalizedEnsName,
+        address,
+      };
+    }),
 });

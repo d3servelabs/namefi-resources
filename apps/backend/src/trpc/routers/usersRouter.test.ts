@@ -1,13 +1,27 @@
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+
+process.env.DATABASE_URL ??= 'postgres://postgres:postgres@localhost:5432/test';
+
+vi.mock('#lib/env', () => ({
+  config: {
+    EMAIL_ADDRESS_TO_OWNED_HOSTNAMES_MAP: {},
+  },
+  secrets: {
+    ALCHEMY_API_KEY: 'test-alchemy-key',
+  },
+}));
+
 import type { HonoRequest } from 'hono';
 import type { RequestHeader } from 'hono/utils/headers';
 import { type Address, type BlockTag, zeroAddress } from 'viem';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { config as actualAppConfig } from '#lib/env'; // Import the actual config
 import testEnvConfig from '../../lib/env/configs/test'; // Import the test config file directly
 import { getQualifyingDomainNameFromUserIdentifier } from '../../lib/user-promo';
 import type { TrpcContext } from '../base';
 import { privyClient } from '../utils';
-import { usersRouter, viemEthereumPublicClient } from './usersRouter';
+import * as ensModule from '#lib/crypto/ens';
+
+const { config: actualAppConfig } = await import('#lib/env');
+const { usersRouter, viemEthereumPublicClient } = await import('./usersRouter');
 
 type LocalTrpcContextWithReq = Omit<
   TrpcContext,
@@ -1358,5 +1372,66 @@ describe('getUserQualifyingDomainNamesForPromo', () => {
 
     // Assert: Check the structure of the response
     expect(result).toEqual([]);
+  });
+});
+
+describe('resolveEnsName', () => {
+  const baseTestUser = {
+    primaryEmail: null,
+    stripeCustomerId: null,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    subscribeToEmails: true,
+  };
+
+  const createCaller = () =>
+    usersRouter.createCaller(
+      {
+        poweredByNamefiDomain: null,
+        testUser: {
+          ...baseTestUser,
+          id: 'test-user',
+          privyUserId: 'privy-user',
+        },
+      } satisfies LocalTrpcContext as TrpcContext,
+      {},
+    );
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it('returns the resolved address when ENS name resolves successfully', async () => {
+    const resolveSpy = vi
+      .spyOn(ensModule, 'resolveEnsNameToAddress')
+      .mockResolvedValue('0x1234567890abcdef1234567890abcdef12345678');
+
+    const caller = createCaller();
+
+    const result = await caller.resolveEnsName({ ensName: 'Example.eth' });
+
+    expect(resolveSpy).toHaveBeenCalledWith('example.eth');
+    expect(result).toEqual({
+      ensName: 'Example.eth',
+      normalizedEnsName: 'example.eth',
+      address: '0x1234567890abcdef1234567890abcdef12345678',
+    });
+  });
+
+  it('returns null address when ENS name cannot be resolved', async () => {
+    const resolveSpy = vi
+      .spyOn(ensModule, 'resolveEnsNameToAddress')
+      .mockResolvedValue(null);
+
+    const caller = createCaller();
+
+    const result = await caller.resolveEnsName({ ensName: 'missing.eth' });
+
+    expect(resolveSpy).toHaveBeenCalledWith('missing.eth');
+    expect(result).toEqual({
+      ensName: 'missing.eth',
+      normalizedEnsName: 'missing.eth',
+      address: null,
+    });
   });
 });

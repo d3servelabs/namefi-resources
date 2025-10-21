@@ -7,7 +7,6 @@ import {
   usersTable,
 } from '@namefi-astra/db';
 import {
-  CHAINS,
   namefiNormalizedDomainSchema,
   type NamefiNormalizedDomain,
   checksumWalletAddressSchema,
@@ -39,8 +38,7 @@ import {
 import { config } from '#lib/env';
 import { logger } from '#lib/logger';
 import { getDomainChain } from '#temporal/activities/domain/index';
-import { type Chain, createPublicClient, http } from 'viem';
-import { chainsToUrls } from '#lib/crypto/rpc-urls';
+import { resolveEnsNameToAddress } from '#lib/crypto/ens';
 import { schedulesRouter } from './admin/schedulesRouter';
 import { poweredByNamefiRouter } from './admin/poweredByNamefiRouter';
 import { permissionsRouter } from './admin/permissionsRouter';
@@ -2530,17 +2528,4 @@ function _buildOrderByClause(sortBy: string, sortOrder: string) {
 }
 
 // Helper to resolve ENS name to wallet address
-const resolveENSToWallet = async (ensName: string): Promise<string | null> => {
-  try {
-    // Use Ethereum mainnet (chainId 1) for ENS resolution
-    const publicClient = createPublicClient({
-      transport: http(chainsToUrls(CHAINS.mainnet)),
-      chain: CHAINS.mainnet,
-    });
-    const address = await publicClient.getEnsAddress({ name: ensName });
-    return address;
-  } catch (error) {
-    logger.warn({ ensName, error }, 'Failed to resolve ENS name');
-    return null;
-  }
-};
+const resolveENSToWallet = resolveEnsNameToAddress;

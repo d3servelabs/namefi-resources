@@ -25,7 +25,7 @@ interface WalletEditableSelectProps {
   error?: string;
   disabled?: boolean;
   className?: string;
-  helpText?: string;
+  helpText?: ReactNode;
   icon?: ReactNode;
 }
 
@@ -134,14 +134,14 @@ export function WalletEditableSelect({
         )}
       </div>
       {(error || helpText) && (
-        <p
+        <div
           className={cn(
-            'text-sm mt-1',
+            'mt-1 text-sm min-h-[1.5rem]',
             error ? 'text-red-500' : 'text-secondary-foreground/50',
           )}
         >
-          {error || helpText}
-        </p>
+          {error ? error : helpText}
+        </div>
       )}
     </div>
   );
