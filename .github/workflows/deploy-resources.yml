@@ -41,7 +41,7 @@ jobs:
         id: turbo-changes
         uses: ./.github/actions/detect-turbo-changes
         with:
-          filter: ${{ steps.determine-before-commit.outputs.filter }}
+          filter: "...[${{ steps.determine-before-commit.outputs.before-commit }}]"
 
       - name: Determine if should deploy
         id: should-deploy
