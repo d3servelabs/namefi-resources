@@ -177,16 +177,19 @@ jobs:
           echo "- Vercel Deploy: ${{ needs.deploy-vercel.result }}"
 
           # Determine overall status
-          if [[ "${{ needs.deploy-vercel.result }}" == "success" && \
+          if [[ "${{ needs.deploy-vercel.result }}" == "success" ]]; then
             echo "### 🎉 Deployment Complete!"
             echo "status=success" >> $GITHUB_OUTPUT
+          elif [[ "${{ needs.deploy-vercel.result }}" == "skipped" ]]; then
+            echo "### Deployment skipped"
+            echo "status=skipped" >> $GITHUB_OUTPUT
           else
             echo "### ⚠️ Deployment had issues, please check the logs"
             echo "status=failure" >> $GITHUB_OUTPUT
           fi
 
       - name: Notify Slack
-        if: always() && !(github.event_name == 'push' && github.ref == 'refs/heads/main')
+        if: always() && !(github.event_name == 'push' && github.ref == 'refs/heads/main') && steps.summary.outputs.status != 'skipped'
         run: |
           # Determine status emoji and color
           if [[ "${{ steps.summary.outputs.status }}" == "success" ]]; then
