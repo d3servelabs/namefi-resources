@@ -593,7 +593,7 @@ export async function sendEmailNotificationForUpcomingRenew(
   await sendMail({
     to: [userEmail],
     bcc: ['customer-email-archive@d3serve.xyz'],
-    subject: 'Domain Renew Notice',
+    subject: 'Domain Renew Notice | Namefi',
     content: {
       html,
       plain,
@@ -643,11 +643,16 @@ export async function sendEmailNotificationForRenewResult({
     pretty: false,
     plainText: true,
   });
+  let subject = 'Domain Renewal Report - Success | Namefi';
+  if (domainLdhRenewFailed.length > 0) {
+    subject =
+      '[Action May Be Required] Domain Renewal Report - Failed | Namefi';
+  }
 
   await sendMail({
     to: [userEmail],
     bcc: ['customer-email-archive@d3serve.xyz'],
-    subject: 'Domain Renew Update',
+    subject,
     content: {
       html,
       plain,
@@ -686,7 +691,7 @@ export async function sendEmailNotificationForRenewFailedToCharge({
   await sendMail({
     to: [userEmail],
     bcc: ['customer-email-archive@d3serve.xyz'],
-    subject: 'Domain Upcoming Renewal',
+    subject: '[Action Required] Domain Renewal - Payment Failed | Namefi',
     content: {
       html,
       plain,
