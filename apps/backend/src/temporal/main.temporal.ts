@@ -10,10 +10,6 @@ import { logger } from 'hono/logger';
 import { prettyJSON } from 'hono/pretty-json';
 import { config, secrets } from '#lib/env';
 import workersRouter from './workers.router';
-import { temporalClient } from './client';
-import { freeClaimsCorrectionWorkflow } from './workflows/free-claims-correction.workflow';
-import { TEMPORAL_ENUMS } from './shared';
-import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 
 async function main() {
   await initWorkers();

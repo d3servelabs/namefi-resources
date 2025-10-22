@@ -54,6 +54,8 @@ import {
   ensurePrivyTableFresh,
   userNftsCTE,
 } from './admin/privyUserCache';
+import { triggerUpdatePrivyCache } from '../../temporal/schedules/update-privy-cache';
+import { getPrivyCacheStatus } from '../../temporal/activities/indexers/privy-cache.activities';
 /**
  * Convert protobuf WorkflowExecutionStatus enum to readable string
  */
@@ -1686,8 +1688,18 @@ export const adminRouter = createTRPCRouter({
       // Fetch admin users once to avoid per-user checks
       const adminIdsSet = await getAllUsersThatCanAccessAdminPanel();
 
-      // Ensure Privy table is fresh
-      await ensurePrivyTableFresh();
+      // Trigger Privy cache refresh workflow (non-blocking, respects 15-min cache)
+      // and get the current cache status concurrently
+      const [cacheRefreshResult, cacheStatus] = await Promise.all([
+        triggerUpdatePrivyCache(false).catch((error) => {
+          logger.warn({ error }, 'Failed to trigger Privy cache refresh');
+          return null;
+        }),
+        getPrivyCacheStatus().catch((error) => {
+          logger.warn({ error }, 'Failed to get Privy cache status');
+          return null;
+        }),
+      ]);
 
       // Build base query using the CTE
       const baseQuery = db
@@ -2057,6 +2069,8 @@ export const adminRouter = createTRPCRouter({
           pageSize,
           total,
           totalPages: Math.ceil(total / pageSize),
+          cacheLastRefresh: cacheStatus?.lastRefresh || null,
+          cacheExpiresAt: cacheStatus?.expiresAt || null,
         };
       } catch (error) {
         logger.error({ error }, 'Failed to list users');
@@ -2066,6 +2080,33 @@ export const adminRouter = createTRPCRouter({
         });
       }
     }),
+
+  forceRefreshPrivyCache: adminProcedureWithPermissions(
+    Permission.READ_USERS,
+  ).mutation(async () => {
+    try {
+      logger.info('Force refreshing Privy cache');
+
+      // Trigger the workflow with forceRefresh=true
+      const result = await triggerUpdatePrivyCache(true);
+
+      // Get the updated status
+      const status = await getPrivyCacheStatus();
+
+      return {
+        success: true,
+        lastRefresh: status?.lastRefresh || null,
+        expiresAt: status?.expiresAt || null,
+        recordCount: status?.recordCount || 0,
+      };
+    } catch (error) {
+      logger.error({ error }, 'Failed to force refresh Privy cache');
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'Failed to force refresh Privy cache',
+      });
+    }
+  }),
 
   burnAllExpiredDomains: auditedAdminProcedureWithPermissions(
     Permission.WRITE_NFT,

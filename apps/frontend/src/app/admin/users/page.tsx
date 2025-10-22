@@ -539,10 +539,50 @@ function UsersTable() {
     [domainSearchTerm, ensSearchTerm],
   );
 
+  const forceRefreshCache = useMutation(
+    trpc.admin.forceRefreshPrivyCache.mutationOptions(),
+  );
+
+  const handleForceRefresh = useCallback(async () => {
+    try {
+      await forceRefreshCache.mutateAsync();
+      await users.refetch();
+      toast.success('Cache refreshed successfully');
+    } catch (error) {
+      toast.error('Failed to refresh cache');
+    }
+  }, [forceRefreshCache.mutateAsync, users]);
+
   return (
     <Card className="border border-muted/60 m-6">
       <CardHeader>
-        <CardTitle className="text-xl">All Users</CardTitle>
+        <div className="flex items-center justify-between">
+          <CardTitle className="text-xl">All Users</CardTitle>
+          <div className="flex items-center gap-4">
+            {users.data?.cacheLastRefresh && (
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <Clock className="h-4 w-4" />
+                <span>
+                  Last refreshed:{' '}
+                  {formatDate(
+                    users.data.cacheLastRefresh,
+                    'MMM d, yyyy HH:mm:ss',
+                  )}
+                </span>
+              </div>
+            )}
+            <AsyncButton
+              size="sm"
+              variant="outline"
+              onClick={handleForceRefresh}
+              loadingText="Refreshing..."
+              className="gap-2"
+            >
+              <RefreshCw className="h-4 w-4" />
+              Refresh Privy Index
+            </AsyncButton>
+          </div>
+        </div>
       </CardHeader>
       <CardContent>
         <ServerDataTable

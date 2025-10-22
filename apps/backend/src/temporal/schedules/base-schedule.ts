@@ -216,7 +216,7 @@ export abstract class BaseSchedule<T extends Workflow = Workflow>
         owner: this.config.owner,
       };
     } catch (error) {
-      this.logger.error(error, 'Failed to get schedule status');
+      this.logger.debug({ error }, 'Failed to get schedule status');
       throw error;
     }
   }

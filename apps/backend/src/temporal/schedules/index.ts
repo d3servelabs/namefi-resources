@@ -9,6 +9,7 @@ import type { NamefiSchedule, ScheduleGroup } from './types';
 
 // Import all schedule instances
 import { updateDomainIndexSchedule } from './update-domain-index';
+import { updatePrivyCacheSchedule } from './update-privy-cache';
 
 import { createLogger } from '#lib/logger';
 
@@ -45,6 +46,13 @@ export const SCHEDULE_GROUP_REGISTRY: Record<string, ScheduleGroup> = {
     name: 'Domain Indexing',
     description:
       'Schedules that index and update domain data from various sources',
+    category: 'indexer',
+    priority: 1,
+  },
+  'user-indexing': {
+    groupId: 'user-indexing',
+    name: 'User Indexing',
+    description: 'Schedules that index and cache user data for fast lookups',
     category: 'indexer',
     priority: 1,
   },
@@ -108,6 +116,7 @@ export const SCHEDULE_GROUP_REGISTRY: Record<string, ScheduleGroup> = {
  */
 export const SCHEDULE_REGISTRY: Record<string, NamefiSchedule<any>> = {
   [updateDomainIndexSchedule.config.scheduleId]: updateDomainIndexSchedule,
+  [updatePrivyCacheSchedule.config.scheduleId]: updatePrivyCacheSchedule,
   [emailSubscriptionSyncSchedule.config.scheduleId]:
     emailSubscriptionSyncSchedule,
   [nftManagementDailyReportSchedule.config.scheduleId]:
@@ -260,6 +269,7 @@ export async function getAllScheduleStatuses() {
 
 // Export individual schedules for backward compatibility and direct access
 export { updateDomainIndexSchedule };
+export { updatePrivyCacheSchedule };
 export { emailSubscriptionSyncSchedule };
 export { nftManagementDailyReportSchedule };
 export { updateNamefiNftIndexSchedule };
@@ -286,6 +296,12 @@ export {
   triggerUpdateDomainIndex,
   deleteScheduleForUpdateDomainIndex,
 } from './update-domain-index';
+
+export {
+  submitScheduleForUpdatePrivyCache,
+  triggerUpdatePrivyCache,
+  deleteScheduleForUpdatePrivyCache,
+} from './update-privy-cache';
 
 export {
   submitScheduleForEmailSubscriptionSync,
