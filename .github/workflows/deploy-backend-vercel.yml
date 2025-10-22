@@ -48,11 +48,15 @@ jobs:
         with:
           fetch-depth: 4
 
+      - name: Determine before commit
+        id: determine-before-commit
+        uses: ./.github/actions/determine-before-commit
+
       - name: Detect Turbo changes
         id: turbo-changes
         uses: ./.github/actions/detect-turbo-changes
         with:
-          filter: "...[${{ github.event.before || 'HEAD^' }}]"
+          filter: "...[${{ steps.determine-before-commit.outputs.before-commit }}]"
 
 
       - name: Check if changed
