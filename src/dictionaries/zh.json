@@ -5,7 +5,8 @@
   "nav": {
     "resources": "资源",
     "blog": "博客",
-    "tld": "TLD 指南"
+    "tld": "TLD 指南",
+    "partners": "合作伙伴"
   },
   "blog": {
     "homeEmpty": "该语言暂时没有文章，请稍后再来。",
@@ -24,5 +25,13 @@
     "indexCta": "阅读指南",
     "detailBack": "返回所有 TLD",
     "detailKeywordsHeading": "相关关键词"
+  },
+  "partners": {
+    "indexTitle": "合作伙伴故事",
+    "indexDescription": "了解与 Namefi 合作、共同建设生态的团队。",
+    "indexEmpty": "此语言暂时没有合作伙伴故事，敬请期待。",
+    "indexCta": "认识合作伙伴",
+    "detailBack": "返回所有合作伙伴",
+    "detailKeywordsHeading": "重点领域"
   }
 }

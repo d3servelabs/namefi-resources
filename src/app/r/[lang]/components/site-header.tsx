@@ -46,6 +46,12 @@ export function SiteHeader({ locale, dictionary }: SiteHeaderProps) {
             >
               {nav.tld}
             </Link>
+            <Link
+              href={`/r/${locale}/partners`}
+              className="transition hover:text-foreground"
+            >
+              {nav.partners}
+            </Link>
           </nav>
         </div>
 
@@ -61,6 +67,12 @@ export function SiteHeader({ locale, dictionary }: SiteHeaderProps) {
             className="transition hover:text-foreground"
           >
             {nav.tld}
+          </Link>
+          <Link
+            href={`/r/${locale}/partners`}
+            className="transition hover:text-foreground"
+          >
+            {nav.partners}
           </Link>
         </nav>
 

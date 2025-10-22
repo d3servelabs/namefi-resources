@@ -5,7 +5,8 @@
   "nav": {
     "resources": "Resources",
     "blog": "Blog",
-    "tld": "TLDs"
+    "tld": "TLDs",
+    "partners": "Partners"
   },
   "blog": {
     "homeEmpty": "No posts are available in this language yet. Check back soon.",
@@ -24,5 +25,13 @@
     "indexCta": "Read guide",
     "detailBack": "Back to all TLDs",
     "detailKeywordsHeading": "Related keywords"
+  },
+  "partners": {
+    "indexTitle": "Partner Spotlights",
+    "indexDescription": "Discover the teams collaborating with Namefi to grow the ecosystem.",
+    "indexEmpty": "No partner stories are available in this language yet. Check back soon.",
+    "indexCta": "Meet the partner",
+    "detailBack": "Back to all partners",
+    "detailKeywordsHeading": "Focus areas"
   }
 }
