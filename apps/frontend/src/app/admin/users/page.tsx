@@ -128,6 +128,7 @@ function UsersTable() {
     isAdmin: false,
     nftCount: true,
     actions: true,
+    walletCount: false,
   });
   // Transform column filters to backend format
   const backendColumnFilters = useMemo(() => {
@@ -386,6 +387,13 @@ function UsersTable() {
         size: 200,
       },
       {
+        accessorKey: 'walletCount',
+        header: 'Linked Wallets Count',
+        cell: ({ row }) => {
+          return row.original.wallets?.length ?? 0;
+        },
+      },
+      {
         accessorKey: 'createdAt',
         header: 'Created',
         cell: ({ row }) =>
@@ -475,6 +483,7 @@ function UsersTable() {
       createdAt: { type: 'date' as const, label: 'Created At' },
       updatedAt: { type: 'date' as const, label: 'Updated At' },
       nftCount: { type: 'number' as const, label: 'Asset Count' },
+      walletCount: { type: 'number' as const, label: 'Linked Wallets Count' },
     }),
     [],
   );

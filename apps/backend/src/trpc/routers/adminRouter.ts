@@ -1796,6 +1796,9 @@ export const adminRouter = createTRPCRouter({
               // Primary wallet is the first element in the wallets array
               columnSql = sql`${privyUsersTableSchema.wallets}[1]`;
               break;
+            case 'walletCount':
+              columnSql = sql`COALESCE(array_length(${privyUsersTableSchema.wallets}, 1), 0)`;
+              break;
             case 'allWallets':
               // For allWallets, we need to search within the array
               // This will be handled specially in the operator switch
@@ -1809,7 +1812,7 @@ export const adminRouter = createTRPCRouter({
             'primaryWallet',
             'allWallets',
           ]);
-          const NumberFilterableColumns = new Set(['nftCount']);
+          const NumberFilterableColumns = new Set(['nftCount', 'walletCount']);
           const DateFilterableColumns = new Set(['createdAt', 'updatedAt']);
 
           // Special handling for allWallets (array search)
@@ -1996,6 +1999,9 @@ export const adminRouter = createTRPCRouter({
               break;
             case 'primaryWallet':
               columnSql = sql`${privyUsersTableSchema.wallets}[1]`;
+              break;
+            case 'walletCount':
+              columnSql = sql`COALESCE(array_length(${privyUsersTableSchema.wallets}, 1), 0)`;
               break;
             case 'allWallets':
               // For allWallets, we can sort by the array as a whole (sorts by first element, then second, etc.)
