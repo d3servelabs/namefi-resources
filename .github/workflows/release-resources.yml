@@ -151,7 +151,7 @@ jobs:
             const fs = require('fs');
             const path = require('path');
 
-            const resourcesVersion = '${{ needs.update-versions.outputs.resources_version }}';
+            const resourcesVersion = '${{ steps.version.outputs.resources_version }}';
 
             // Update resources package.json
             const resourcesPkgPath = path.join(process.env.GITHUB_WORKSPACE, 'apps/resources/package.json');
