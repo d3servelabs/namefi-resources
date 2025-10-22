@@ -136,14 +136,13 @@ jobs:
         id: deploy
         run: |
           # Deploy to Vercel - builds on Vercel and automatically routes traffic
-          # Use --no-wait to trigger deployment without waiting for build completion
           # Use --target=production or --target=dev based on environment
           if [[ "${{ needs.compute-env.outputs.label }}" == "prod" ]]; then
             echo "Deploying to production target"
-            DEPLOYMENT_URL=$(vercel deploy --target=production --no-wait --token=${{ secrets.VERCEL_ACCOUNT_TOKEN }})
+            DEPLOYMENT_URL=$(vercel deploy --target=production --token=${{ secrets.VERCEL_ACCOUNT_TOKEN }})
           else
             echo "Deploying to dev target"
-            DEPLOYMENT_URL=$(vercel deploy --target=dev --no-wait --token=${{ secrets.VERCEL_ACCOUNT_TOKEN }})
+            DEPLOYMENT_URL=$(vercel deploy --target=dev --token=${{ secrets.VERCEL_ACCOUNT_TOKEN }})
           fi
 
           echo "deployment_url=$DEPLOYMENT_URL" >> $GITHUB_OUTPUT
@@ -158,3 +157,102 @@ jobs:
           echo "Target environment: ${{ needs.compute-env.outputs.label }}"
           echo "Build will continue on Vercel"
 
+  # Summary job
+  deployment-summary:
+    name: Deployment Summary
+    needs: [compute-env,  deploy-vercel]
+    if: always()
+    runs-on: 'ubuntu-latest'
+    steps:
+      - name: Summary
+        id: summary
+        run: |
+          echo "## 📊 Deployment Summary"
+          echo ""
+          echo "### Environment: ${{ needs.compute-env.outputs.label }}"
+          echo "### Trigger: ${{ github.event_name }}"
+          echo "### Ref: ${{ github.ref }}"
+          echo ""
+          echo "### Frontend Status:"
+          echo "- Vercel Deploy: ${{ needs.deploy-vercel.result }}"
+
+          # Determine overall status
+          if [[ "${{ needs.deploy-vercel.result }}" == "success" && \
+            echo "### 🎉 Deployment Complete!"
+            echo "status=success" >> $GITHUB_OUTPUT
+          else
+            echo "### ⚠️ Deployment had issues, please check the logs"
+            echo "status=failure" >> $GITHUB_OUTPUT
+          fi
+
+          - name: Notify Slack
+          if: always() && !(github.event_name == 'push' && github.ref == 'refs/heads/main')
+          run: |
+            # Determine status emoji and color
+            if [[ "${{ steps.summary.outputs.status }}" == "success" ]]; then
+              STATUS_EMOJI="🎉"
+              STATUS_TEXT="Success"
+              COLOR="good"
+            else
+              STATUS_EMOJI="⚠️"
+              STATUS_TEXT="Failed"
+              COLOR="danger"
+            fi
+  
+            # Build Slack message payload
+            PAYLOAD=$(cat <<EOF
+            {
+              "attachments": [
+                {
+                  "color": "$COLOR",
+                  "title": "$STATUS_EMOJI Deployment $STATUS_TEXT",
+                  "fields": [
+                    {
+                      "title": "Environment",
+                      "value": "${{ needs.compute-env.outputs.label }}",
+                      "short": true
+                    },
+                    {
+                      "title": "Trigger",
+                      "value": "${{ github.event_name }}",
+                      "short": true
+                    },
+                    {
+                      "title": "Ref",
+                      "value": "${{ github.ref }}",
+                      "short": false
+                    },
+                    {
+                      "title": "namefi-astra-resources (Vercel)",
+                      "value": "${{ needs.deploy-vercel.result }}",
+                      "short": true
+                    },
+                    {
+                      "title": "Commit",
+                      "value": "<${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}|${{ github.sha }}>",
+                      "short": true
+                    },
+                    {
+                      "title": "Workflow Run",
+                      "value": "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Details>",
+                      "short": false
+                    }
+                  ],
+                  "footer": "GitHub Actions",
+                  "ts": $(date +%s)
+                }
+              ]
+            }
+            EOF
+            )
+  
+            # Send to Slack
+            # Requires SLACK_WEBHOOK_URL secret to be set
+            if [[ -n "${{ env.SLACK_WEBHOOK_URL }}" ]]; then
+              curl -X POST -H 'Content-type: application/json' \
+                --data "$PAYLOAD" \
+                "${{ env.SLACK_WEBHOOK_URL }}"
+              echo "Slack notification sent"
+            else
+              echo "SLACK_WEBHOOK_URL not configured, skipping notification"
+            fi
