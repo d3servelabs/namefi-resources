@@ -5,5 +5,6 @@
       "main": false,
       "prod": false
     }
-  }
+  },
+  "installCommand": "curl -fsSL https://bun.com/install | bash -s \"bun-v$(cat .bun-version 2>/dev/null || cat ../../.bun-version)\" && ~/.bun/bin/bun install"
 }
