@@ -5,7 +5,8 @@
   "nav": {
     "resources": "الموارد",
     "blog": "المدونة",
-    "tld": "نطاقات TLD"
+    "tld": "نطاقات TLD",
+    "partners": "الشركاء"
   },
   "blog": {
     "homeEmpty": "لا توجد مقالات متاحة بهذه اللغة بعد. عد لاحقًا.",
@@ -24,5 +25,13 @@
     "indexCta": "اقرأ الدليل",
     "detailBack": "العودة إلى جميع نطاقات TLD",
     "detailKeywordsHeading": "الكلمات المفتاحية ذات الصلة"
+  },
+  "partners": {
+    "indexTitle": "شركاؤنا",
+    "indexDescription": "اكتشف الفرق التي تتعاون مع Namefi لتنمية النظام البيئي.",
+    "indexEmpty": "لا توجد قصص شركاء متاحة بهذه اللغة بعد. عد لاحقًا.",
+    "indexCta": "تعرّف على الشريك",
+    "detailBack": "العودة إلى جميع الشركاء",
+    "detailKeywordsHeading": "مجالات التركيز"
   }
 }

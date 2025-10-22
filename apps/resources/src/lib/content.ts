@@ -7,7 +7,7 @@ import type { ComponentType } from 'react';
 import type { MDXComponents } from 'mdx/types';
 import { i18n, type Locale } from '@/i18n-config';
 
-type Collection = 'blog' | 'authors' | 'tld';
+type Collection = 'blog' | 'authors' | 'tld' | 'partners';
 
 type PostFrontmatter = {
   title: string;
@@ -67,24 +67,78 @@ type TldEntry = {
   publishedAt: Date;
 };
 
+type PartnerFrontmatter = {
+  title: string;
+  summary?: string;
+  description?: string;
+  tags: string[];
+  authors: string[];
+  date: string;
+  draft: boolean;
+  language: Locale;
+  keywords: string[];
+};
+
+type PartnerEntry = {
+  slug: string;
+  frontmatter: PartnerFrontmatter;
+  sourceLanguage: Locale;
+  requestedLanguage: Locale;
+  content: string;
+  publishedAt: Date;
+};
+
 export type MDXContent = ComponentType<{ components?: MDXComponents }>;
 
 const DATA_ROOT = path.join(process.cwd(), 'data');
 const BLOG_ROOT = path.join(DATA_ROOT, 'blog');
 const AUTHOR_ROOT = path.join(DATA_ROOT, 'authors');
 const TLD_ROOT = path.join(DATA_ROOT, 'tld');
+const PARTNER_ROOT = path.join(DATA_ROOT, 'partners');
 
 const postDirectoryCache = new Map<string, string[]>();
 const authorDirectoryCache = new Map<string, string[]>();
 const tldDirectoryCache = new Map<string, string[]>();
+const partnerDirectoryCache = new Map<string, string[]>();
 
 const postEntryCache = new Map<string, PostEntry | undefined>();
 const authorEntryCache = new Map<string, AuthorEntry | undefined>();
 const tldEntryCache = new Map<string, TldEntry | undefined>();
+const partnerEntryCache = new Map<string, PartnerEntry | undefined>();
 
 const isProduction = process.env.NODE_ENV === 'production';
 const MARKDOWN_EXTENSION = /\.(md|mdx)$/;
 const POST_EXTENSIONS: readonly string[] = ['.mdx', '.md'];
+
+function getCacheForCollection(collection: Collection) {
+  switch (collection) {
+    case 'blog':
+      return postDirectoryCache;
+    case 'authors':
+      return authorDirectoryCache;
+    case 'tld':
+      return tldDirectoryCache;
+    case 'partners':
+      return partnerDirectoryCache;
+    default:
+      return postDirectoryCache;
+  }
+}
+
+function getRootForCollection(collection: Collection) {
+  switch (collection) {
+    case 'blog':
+      return BLOG_ROOT;
+    case 'authors':
+      return AUTHOR_ROOT;
+    case 'tld':
+      return TLD_ROOT;
+    case 'partners':
+      return PARTNER_ROOT;
+    default:
+      return BLOG_ROOT;
+  }
+}
 
 function toStringArray(value: unknown): string[] {
   if (Array.isArray(value)) {
@@ -115,23 +169,13 @@ function getDirectoryKey(collection: Collection, locale: Locale) {
 }
 
 function listSlugs(collection: Collection, locale: Locale): string[] {
-  const cache =
-    collection === 'blog'
-      ? postDirectoryCache
-      : collection === 'authors'
-        ? authorDirectoryCache
-        : tldDirectoryCache;
+  const cache = getCacheForCollection(collection);
   const key = getDirectoryKey(collection, locale);
 
   const cached = cache.get(key);
   if (cached !== undefined) return cached;
 
-  const dir =
-    collection === 'blog'
-      ? path.join(BLOG_ROOT, locale)
-      : collection === 'authors'
-        ? path.join(AUTHOR_ROOT, locale)
-        : path.join(TLD_ROOT, locale);
+  const dir = path.join(getRootForCollection(collection), locale);
 
   let entries: string[] = [];
   try {
@@ -287,6 +331,54 @@ function normaliseTldFrontmatter(
   };
 }
 
+function normalisePartnerFrontmatter(
+  data: Record<string, unknown>,
+  slug: string,
+  sourceLanguage: Locale,
+): PartnerFrontmatter {
+  if (typeof data.title !== 'string' || data.title.trim().length === 0) {
+    throw new Error(`Partner "${slug}" is missing a valid "title" field.`);
+  }
+
+  const rawDate =
+    typeof data.date === 'string'
+      ? data.date
+      : data.date instanceof Date
+        ? data.date.toISOString()
+        : undefined;
+
+  if (!rawDate) {
+    throw new Error(`Partner "${slug}" is missing a valid "date" field.`);
+  }
+
+  const tags = toStringArray(data.tags);
+  const authors = toStringArray(data.authors);
+  const keywords = toStringArray(data.keywords);
+
+  const language = ensureLocale(data.language, sourceLanguage);
+  const description =
+    typeof data.description === 'string' && data.description.trim().length > 0
+      ? data.description.trim()
+      : undefined;
+  const summary =
+    typeof data.summary === 'string' && data.summary.trim().length > 0
+      ? data.summary.trim()
+      : description;
+  const draftValue = toBoolean(data.draft);
+
+  return {
+    title: data.title,
+    summary,
+    description,
+    tags,
+    authors,
+    date: rawDate,
+    draft: draftValue,
+    language,
+    keywords,
+  };
+}
+
 function resolvePostFilePath(locale: Locale, slug: string): string | undefined {
   for (const extension of POST_EXTENSIONS) {
     const candidate = path.join(BLOG_ROOT, locale, `${slug}${extension}`);
@@ -353,6 +445,49 @@ function parseTldEntry({
 
   if (Number.isNaN(publishedAt.getTime())) {
     throw new Error(`TLD "${slug}" has an invalid "date": ${frontmatter.date}`);
+  }
+
+  return {
+    slug,
+    frontmatter,
+    sourceLanguage: locale,
+    requestedLanguage: locale,
+    content: parsed.content,
+    publishedAt,
+  };
+}
+
+function resolvePartnerFilePath(
+  locale: Locale,
+  slug: string,
+): string | undefined {
+  for (const extension of POST_EXTENSIONS) {
+    const candidate = path.join(PARTNER_ROOT, locale, `${slug}${extension}`);
+    if (fs.existsSync(candidate)) {
+      return candidate;
+    }
+  }
+  return undefined;
+}
+
+function parsePartnerEntry({
+  slug,
+  locale,
+  filePath,
+}: {
+  slug: string;
+  locale: Locale;
+  filePath: string;
+}): PartnerEntry {
+  const fileContents = fs.readFileSync(filePath, 'utf8');
+  const parsed = matter(fileContents);
+  const frontmatter = normalisePartnerFrontmatter(parsed.data, slug, locale);
+  const publishedAt = new Date(frontmatter.date);
+
+  if (Number.isNaN(publishedAt.getTime())) {
+    throw new Error(
+      `Partner "${slug}" has an invalid "date": ${frontmatter.date}`,
+    );
   }
 
   return {
@@ -476,6 +611,38 @@ function loadTldEntry(locale: Locale, slug: string): TldEntry | undefined {
   return undefined;
 }
 
+function loadPartnerEntry(
+  locale: Locale,
+  slug: string,
+): PartnerEntry | undefined {
+  const cacheKey = `${locale}:${slug}`;
+  if (partnerEntryCache.has(cacheKey)) {
+    return partnerEntryCache.get(cacheKey);
+  }
+
+  const filePath = resolvePartnerFilePath(locale, slug);
+  if (filePath) {
+    const entry = parsePartnerEntry({ slug, locale, filePath });
+    partnerEntryCache.set(cacheKey, entry);
+    return entry;
+  }
+
+  if (locale !== i18n.defaultLocale) {
+    const fallback = loadPartnerEntry(i18n.defaultLocale, slug);
+    if (fallback) {
+      const derived: PartnerEntry = {
+        ...fallback,
+        requestedLanguage: locale,
+      };
+      partnerEntryCache.set(cacheKey, derived);
+      return derived;
+    }
+  }
+
+  partnerEntryCache.set(cacheKey, undefined);
+  return undefined;
+}
+
 function getAllPostSlugs(): Set<string> {
   const slugs = new Set<string>();
   for (const locale of i18n.locales) {
@@ -570,6 +737,20 @@ function isTldDraft(entry: TldEntry) {
   return entry.frontmatter.draft;
 }
 
+function getAllPartnerSlugs(): Set<string> {
+  const slugs = new Set<string>();
+  for (const locale of i18n.locales) {
+    for (const slug of listSlugs('partners', locale)) {
+      slugs.add(slug);
+    }
+  }
+  return slugs;
+}
+
+function isPartnerDraft(entry: PartnerEntry) {
+  return entry.frontmatter.draft;
+}
+
 export function getTldParams(): Array<{ lang: Locale; slug: string }> {
   const params: Array<{ lang: Locale; slug: string }> = [];
   const slugs = getAllTldSlugs();
@@ -623,6 +804,62 @@ export function getAvailableLocalesForTld(slug: string): Locale[] {
   return locales;
 }
 
+export function getPartnerParams(): Array<{ lang: Locale; slug: string }> {
+  const params: Array<{ lang: Locale; slug: string }> = [];
+  const slugs = getAllPartnerSlugs();
+
+  for (const locale of i18n.locales) {
+    for (const slug of slugs) {
+      const entry = loadPartnerEntry(locale, slug);
+      if (!entry) continue;
+      if (isProduction && isPartnerDraft(entry)) continue;
+      params.push({ lang: locale, slug: entry.slug });
+    }
+  }
+
+  return params;
+}
+
+export function getPartnersForLocale(locale: Locale): PartnerEntry[] {
+  const slugs = getAllPartnerSlugs();
+  const entries: PartnerEntry[] = [];
+
+  for (const slug of slugs) {
+    const entry = loadPartnerEntry(locale, slug);
+    if (!entry) continue;
+    if (isProduction && isPartnerDraft(entry)) continue;
+    entries.push(entry);
+  }
+
+  return entries.sort(
+    (a, b) => b.publishedAt.getTime() - a.publishedAt.getTime(),
+  );
+}
+
+export function getPartner(
+  locale: Locale,
+  slug: string,
+): PartnerEntry | undefined {
+  const entry = loadPartnerEntry(locale, slug);
+  if (!entry) return undefined;
+  if (isProduction && isPartnerDraft(entry)) return undefined;
+  return entry;
+}
+
+export const getPartnerCached = cache((locale: Locale, slug: string) =>
+  getPartner(locale, slug),
+);
+
+export function getAvailableLocalesForPartner(slug: string): Locale[] {
+  const locales: Locale[] = [];
+  for (const locale of i18n.locales) {
+    if (loadPartnerEntry(locale, slug)) {
+      locales.push(locale);
+    }
+  }
+  return locales;
+}
+
 export type {
   PostEntry,
   PostFrontmatter,
@@ -630,4 +867,6 @@ export type {
   AuthorFrontmatter,
   TldEntry,
   TldFrontmatter,
+  PartnerEntry,
+  PartnerFrontmatter,
 };

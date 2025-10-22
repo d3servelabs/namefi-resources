@@ -1,10 +1,79 @@
 import Link from 'next/link';
+import type { Metadata } from 'next';
 import type { Locale } from '@/i18n-config';
-import { localeDateLocales, localeLabels } from '@/i18n-config';
+import { localeDateLocales, localeLabels, i18n } from '@/i18n-config';
 import { getDictionary } from '@/get-dictionary';
 import { getAuthorNames, getTldsForLocale } from '@/lib/content';
+import { resolveTitle } from '@/lib/site-metadata';
 
 export const dynamic = 'error';
+
+const TRAILING_SLASH_REGEX = /\/$/;
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}): Promise<Metadata> {
+  const { lang } = await params;
+  const locale = i18n.locales.includes(lang as Locale)
+    ? (lang as Locale)
+    : i18n.defaultLocale;
+  const dictionary = await getDictionary(locale);
+
+  const rawBaseUrl =
+    process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL ?? 'localhost:3002';
+  const normalisedBaseUrl = rawBaseUrl.startsWith('https')
+    ? rawBaseUrl
+    : `https://${rawBaseUrl}`;
+  const baseUrl = normalisedBaseUrl.replace(TRAILING_SLASH_REGEX, '');
+  const canonicalPath = `/r/${locale}/tld`;
+  const url = `${baseUrl}${canonicalPath}`;
+  const ogImagePath = `${canonicalPath}/opengraph-image`;
+  const ogImageUrl = `${baseUrl}${ogImagePath}`;
+  const title = dictionary.tld.indexTitle;
+  const description = dictionary.tld.indexDescription ?? resolveTitle(locale);
+  const twitterHandle = '@namefi_io';
+
+  const languageAlternates: Partial<Record<Locale, string>> = {};
+  for (const localeOption of i18n.locales) {
+    languageAlternates[localeOption] = `${baseUrl}/r/${localeOption}/tld`;
+  }
+
+  return {
+    metadataBase: new URL(baseUrl),
+    alternates: {
+      canonical: url,
+      languages: languageAlternates,
+    },
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      url,
+      locale,
+      type: 'website',
+      siteName: resolveTitle(locale),
+      images: [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [ogImageUrl],
+      site: twitterHandle,
+      creator: twitterHandle,
+    },
+  };
+}
 
 export default async function TldIndex({
   params,
