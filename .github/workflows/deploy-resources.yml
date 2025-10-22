@@ -185,74 +185,74 @@ jobs:
             echo "status=failure" >> $GITHUB_OUTPUT
           fi
 
-          - name: Notify Slack
-          if: always() && !(github.event_name == 'push' && github.ref == 'refs/heads/main')
-          run: |
-            # Determine status emoji and color
-            if [[ "${{ steps.summary.outputs.status }}" == "success" ]]; then
-              STATUS_EMOJI="🎉"
-              STATUS_TEXT="Success"
-              COLOR="good"
-            else
-              STATUS_EMOJI="⚠️"
-              STATUS_TEXT="Failed"
-              COLOR="danger"
-            fi
-  
-            # Build Slack message payload
-            PAYLOAD=$(cat <<EOF
-            {
-              "attachments": [
-                {
-                  "color": "$COLOR",
-                  "title": "$STATUS_EMOJI Deployment $STATUS_TEXT",
-                  "fields": [
-                    {
-                      "title": "Environment",
-                      "value": "${{ needs.compute-env.outputs.label }}",
-                      "short": true
-                    },
-                    {
-                      "title": "Trigger",
-                      "value": "${{ github.event_name }}",
-                      "short": true
-                    },
-                    {
-                      "title": "Ref",
-                      "value": "${{ github.ref }}",
-                      "short": false
-                    },
-                    {
-                      "title": "namefi-astra-resources (Vercel)",
-                      "value": "${{ needs.deploy-vercel.result }}",
-                      "short": true
-                    },
-                    {
-                      "title": "Commit",
-                      "value": "<${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}|${{ github.sha }}>",
-                      "short": true
-                    },
-                    {
-                      "title": "Workflow Run",
-                      "value": "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Details>",
-                      "short": false
-                    }
-                  ],
-                  "footer": "GitHub Actions",
-                  "ts": $(date +%s)
-                }
-              ]
-            }
-            EOF
-            )
-  
-            # Send to Slack
-            # Requires SLACK_WEBHOOK_URL secret to be set
-            if [[ -n "${{ env.SLACK_WEBHOOK_URL }}" ]]; then
-              curl -X POST -H 'Content-type: application/json' \
-                --data "$PAYLOAD" \
-                "${{ env.SLACK_WEBHOOK_URL }}"
-              echo "Slack notification sent"
-            else
-              echo "SLACK_WEBHOOK_URL not configured, skipping notification"
-            fi
+      - name: Notify Slack
+        if: always() && !(github.event_name == 'push' && github.ref == 'refs/heads/main')
+        run: |
+          # Determine status emoji and color
+          if [[ "${{ steps.summary.outputs.status }}" == "success" ]]; then
+            STATUS_EMOJI="🎉"
+            STATUS_TEXT="Success"
+            COLOR="good"
+          else
+            STATUS_EMOJI="⚠️"
+            STATUS_TEXT="Failed"
+            COLOR="danger"
+          fi
+
+          # Build Slack message payload
+          PAYLOAD=$(cat <<EOF
+          {
+            "attachments": [
+              {
+                "color": "$COLOR",
+                "title": "$STATUS_EMOJI Deployment $STATUS_TEXT",
+                "fields": [
+                  {
+                    "title": "Environment",
+                    "value": "${{ needs.compute-env.outputs.label }}",
+                    "short": true
+                  },
+                  {
+                    "title": "Trigger",
+                    "value": "${{ github.event_name }}",
+                    "short": true
+                  },
+                  {
+                    "title": "Ref",
+                    "value": "${{ github.ref }}",
+                    "short": false
+                  },
+                  {
+                    "title": "namefi-astra-resources (Vercel)",
+                    "value": "${{ needs.deploy-vercel.result }}",
+                    "short": true
+                  },
+                  {
+                    "title": "Commit",
+                    "value": "<${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}|${{ github.sha }}>",
+                    "short": true
+                  },
+                  {
+                    "title": "Workflow Run",
+                    "value": "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Details>",
+                    "short": false
+                  }
+                ],
+                "footer": "GitHub Actions",
+                "ts": $(date +%s)
+              }
+            ]
+          }
+          EOF
+          )
+
+          # Send to Slack
+          # Requires SLACK_WEBHOOK_URL secret to be set
+          if [[ -n "${{ env.SLACK_WEBHOOK_URL }}" ]]; then
+            curl -X POST -H 'Content-type: application/json' \
+              --data "$PAYLOAD" \
+              "${{ env.SLACK_WEBHOOK_URL }}"
+            echo "Slack notification sent"
+          else
+            echo "SLACK_WEBHOOK_URL not configured, skipping notification"
+          fi
