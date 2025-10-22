@@ -27,7 +27,14 @@ import type {
   Row,
   VisibilityState,
 } from '@tanstack/react-table';
-import { ChevronDown, ChevronRight, Copy } from 'lucide-react';
+import {
+  ChevronDown,
+  ChevronRight,
+  Copy,
+  RefreshCw,
+  Clock,
+  Mail,
+} from 'lucide-react';
 import {
   NAMEFI_NFT_CONTRACT_ADDRESS,
   getChain,
@@ -39,8 +46,19 @@ import {
   differenceInYears,
   differenceInMonths,
   differenceInDays,
+  formatDate,
 } from 'date-fns';
 import { applyFilterOperator } from '@/components/table/data-table';
+import { UserWalletAvatar } from '@/components/user-avatar';
+import Link from 'next/link';
+import { Button } from '@/components/ui/shadcn/button';
+import {
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+  Tooltip,
+} from '@/components/ui/shadcn/tooltip';
+import { cn } from '@/lib/cn';
 
 const attemptGetChecksummedAddress = (address: string): string => {
   const parsed = checksumWalletAddressSchema.safeParse(address);
@@ -185,7 +203,7 @@ function UsersTable() {
             </button>
           );
         },
-        size: 50,
+        size: 20,
       },
       {
         accessorKey: 'id',
@@ -203,7 +221,7 @@ function UsersTable() {
       },
       {
         accessorKey: 'displayName',
-        header: 'Display',
+        header: 'Display Name',
         cell: ({ row }) => (
           <AutoTruncateTextV2
             initialCharactersCountToDisplay={15}
@@ -218,12 +236,46 @@ function UsersTable() {
         accessorKey: 'primaryEmail',
         header: 'Email',
         cell: ({ row }) => (
-          <AutoTruncateTextV2
-            initialCharactersCountToDisplay={20}
-            minCharactersToDisplay={20}
-          >
-            {row.original.primaryEmail ?? '-'}
-          </AutoTruncateTextV2>
+          <div className="flex items-center w-full">
+            <AutoTruncateTextV2
+              initialCharactersCountToDisplay={20}
+              minCharactersToDisplay={20}
+            >
+              {row.original.primaryEmail ?? '-'}
+            </AutoTruncateTextV2>
+            {!!row.original.primaryEmail && (
+              <div className="ml-2 flex items-center gap-1">
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        className="rounded-full"
+                        size="sm"
+                        variant="ghost"
+                        asChild
+                      >
+                        <a
+                          href={`mailto:${row.original.primaryEmail}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label="Send email"
+                        >
+                          <Mail className="h-3 w-3" />
+                        </a>
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Send email to {row.original.primaryEmail}</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+                <CopyIconButton
+                  text={row.original.primaryEmail}
+                  classNames={{ icon: 'h-3 w-3' }}
+                />
+              </div>
+            )}
+          </div>
         ),
         size: 150,
       },
@@ -259,7 +311,8 @@ function UsersTable() {
           };
 
           return (
-            <div className="flex items-center gap-2 px-2 py-1 bg-muted rounded max-w-full">
+            <div className="flex items-center gap-2 px-1 py-1 bg-muted rounded-xl max-w-full">
+              <UserWalletAvatar address={primaryWallet} className="size-6" />
               <div className="flex-1 min-w-0">
                 <AutoTruncateTextV2
                   initialCharactersCountToDisplay={16}
@@ -306,8 +359,9 @@ function UsersTable() {
               {wallets.map((wallet) => (
                 <div
                   key={wallet}
-                  className="flex items-center gap-2 px-2 py-1 bg-muted rounded w-fit"
+                  className="flex items-center gap-2 px-1 py-1 bg-muted rounded-xl w-fit"
                 >
+                  <UserWalletAvatar address={wallet} className="size-6" />
                   <span className="text-xs font-mono">
                     <AutoTruncateTextV2
                       initialCharactersCountToDisplay={16}
@@ -363,17 +417,32 @@ function UsersTable() {
         id: 'actions',
         header: 'Action',
         cell: ({ row }) => (
-          <PermissionGate permissions={[Permission.IMPERSONATE_USERS]}>
-            <AsyncButton
-              size="sm"
-              variant="secondary"
-              disabled={row.original.isAdmin === true}
-              onClick={() => handleImpersonate(row.original.id)}
-              loadingText="Impersonating..."
-            >
-              Impersonate
-            </AsyncButton>
-          </PermissionGate>
+          <div className="flex items-center gap-2">
+            {!row.original.isAdmin && (
+              <PermissionGate permissions={[Permission.IMPERSONATE_USERS]}>
+                <AsyncButton
+                  size="sm"
+                  variant="secondary"
+                  onClick={() => handleImpersonate(row.original.id)}
+                  loadingText="Impersonating..."
+                >
+                  Impersonate
+                </AsyncButton>
+              </PermissionGate>
+            )}
+            {!!row.original.primaryEmail && (
+              <Button size="sm" variant="secondary" asChild>
+                <a
+                  href={`mailto:${row.original.primaryEmail}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Send email"
+                >
+                  <Mail className="h-4 w-4" /> Send Email
+                </a>
+              </Button>
+            )}
+          </div>
         ),
       },
     ],
@@ -803,5 +872,38 @@ const UserNftsSubRow = ({ original: user }: Row<UserRow>) => {
         filterDisplayOptions={{ showInHeader: false }}
       />
     </div>
+  );
+};
+
+const CopyIconButton = ({
+  text,
+  classNames,
+}: {
+  text: string;
+  classNames?: { button?: string; icon?: string; tooltipContent?: string };
+}) => {
+  const handleCopy = useCallback(async () => {
+    await navigator.clipboard.writeText(text);
+    toast.success('Copied to clipboard');
+  }, [text]);
+  return (
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button
+            className={cn('rounded-full', classNames?.button)}
+            size="sm"
+            variant="ghost"
+            aria-label="Copy to clipboard"
+            onClick={handleCopy}
+          >
+            <Copy className={cn('h-4 w-4', classNames?.icon)} />
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent className={cn(classNames?.tooltipContent)}>
+          <p>Copy To Clipboard</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 };

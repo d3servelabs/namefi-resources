@@ -48,7 +48,11 @@ export const UserWalletAvatar = forwardRef<
     }
 
     return (
-      <Avatar className="size-8 rounded-lg" {...props} ref={ref}>
+      <Avatar
+        {...props}
+        className={cn('size-8 rounded-lg', props.className)}
+        ref={ref}
+      >
         <AvatarImage
           src={ensAvatar.data || metamaskAvatar.data}
           className={cn('bg-[#f26202] rounded-full', props.className)}

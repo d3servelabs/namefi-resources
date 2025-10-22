@@ -223,7 +223,12 @@ function FilterField({
       </div>
 
       <div className="flex gap-2">
-        <Button onClick={handleApply} size="sm" className="flex-1">
+        <Button
+          onClick={handleApply}
+          size="sm"
+          className="flex-1"
+          variant={'secondary'}
+        >
           Apply
         </Button>
         <Button
