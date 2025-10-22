@@ -241,13 +241,18 @@ jobs:
             echo "exists=false" >> $GITHUB_OUTPUT
           fi
 
+      - name: Set up Docker Buildx
+        if: steps.check-image.outputs.exists != 'true'
+        uses: useblacksmith/setup-docker-builder@v1
+
       - name: Build and Push Container
         if: steps.check-image.outputs.exists != 'true'
-        run: |-
-          IMAGE_TAG="${{ steps.set-tag.outputs.image_tag }}"
-          echo "Building and pushing new image: $IMAGE_TAG"
-          docker build --tag "${IMAGE_TAG}" . -f apps/backend/Dockerfile
-          docker push "${IMAGE_TAG}"
+        uses: useblacksmith/build-push-action@v2
+        with:
+          tags: ${{ steps.set-tag.outputs.image_tag }}
+          push: true
+          context: .
+          file: ./apps/backend/Dockerfile
 
       - name: Skip build
         if: steps.check-image.outputs.exists == 'true'
