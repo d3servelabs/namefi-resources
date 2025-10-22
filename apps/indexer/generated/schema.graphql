@@ -23,7 +23,7 @@ type Query {
   burnedNamefiNftLogs(where: BurnedNamefiNftLogFilter, orderBy: String, orderDirection: String, before: String, after: String, limit: Int): BurnedNamefiNftLogPage!
   transferLog(tokenId: BigInt!, chainId: Float!, blockNumber: BigInt!, transactionHash: String!): TransferLog
   transferLogs(where: TransferLogFilter, orderBy: String, orderDirection: String, before: String, after: String, limit: Int): TransferLogPage!
-  expirationChangeLog(tokenId: BigInt!, chainId: Float!, blockNumber: BigInt!): ExpirationChangeLog
+  expirationChangeLog(tokenId: BigInt!, chainId: Float!, blockNumber: BigInt!, transactionHash: String!): ExpirationChangeLog
   expirationChangeLogs(where: ExpirationChangeLogFilter, orderBy: String, orderDirection: String, before: String, after: String, limit: Int): ExpirationChangeLogPage!
   _meta: Meta
 }
@@ -315,6 +315,7 @@ type ExpirationChangeLog {
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: String!
+  source: String!
 }
 
 type ExpirationChangeLogPage {
@@ -404,4 +405,14 @@ input ExpirationChangeLogFilter {
   transactionHash_ends_with: String
   transactionHash_not_starts_with: String
   transactionHash_not_ends_with: String
+  source: String
+  source_not: String
+  source_in: [String]
+  source_not_in: [String]
+  source_contains: String
+  source_not_contains: String
+  source_starts_with: String
+  source_ends_with: String
+  source_not_starts_with: String
+  source_not_ends_with: String
 }

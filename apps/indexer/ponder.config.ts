@@ -6,7 +6,7 @@ import { switchCaseOrDefault } from '@namefi-astra/utils/match';
 import type { ChainConfig } from 'ponder';
 
 const ALCHEMY_API_KEY = secrets.ALCHEMY_API_KEY;
-const DEV = false;
+const DEV = process.env.DEV === 'true';
 const LISTEN_TO_ACCOUNTS = false;
 const NAMEFI_NFT_CONTRACT_ADDRESS =
   '0x0000000000cf80e7cf8fa4480907f692177f8e06';

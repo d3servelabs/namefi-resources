@@ -50,6 +50,7 @@ export const secretsSchema = _baseSecretsSchema
       .optional()
       .transform((data) => (data ? data : undefined)) // change falsy to undefined
       .pipe(z.string().url().optional()),
+    SENTIO_API_KEY: z.string(),
   })
   .transform((secrets) => ({
     ...secrets,

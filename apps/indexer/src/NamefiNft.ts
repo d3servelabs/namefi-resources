@@ -8,28 +8,19 @@ import {
   zeroAddress,
   type PublicClient,
 } from 'viem';
-import { mainnet, base, sepolia } from 'viem/chains';
 import { filter, isNil, isNotNil } from 'ramda';
 import { desc, eq, sql } from 'ponder';
 import type { NftAbi } from '@namefi-astra/utils/abis/namefi-nft';
-
-const chainsByChainId: Record<number, Chain> = {
-  [mainnet.id]: mainnet,
-  [base.id]: base,
-  [sepolia.id]: sepolia,
-};
-
-const chainIdToAlchemyUrl: Record<number, string> = {
-  [mainnet.id]: `https://eth-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`,
-  [base.id]: `https://base-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`,
-  [sepolia.id]: `https://eth-sepolia.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`,
-};
-
-const chainIdToStartBlock: Record<number, bigint> = {
-  [mainnet.id]: 19059949n, // Adjust based on when contract was deployed
-  [base.id]: 11750288n, // Adjust based on when contract was deployed
-  [sepolia.id]: 5129892n, // Adjust based on when contract was deployed
-};
+import {
+  chainById,
+  alchemyUrlByChainId,
+  startBlockByChainId,
+} from './lib/consts';
+import {
+  getHistoricSetExpirationCallsBeforeEventAdded,
+  type HistoricSetExpirationCall,
+} from './lib/historic-data';
+import { NAMEFI_NFT_CONTRACT_ADDRESS } from '@namefi-astra/utils';
 
 // Helper function to fetch domain name from contract
 async function fetchDomainName(
@@ -113,14 +104,14 @@ async function setupBlockRanges(context: Context): Promise<SetupConfig> {
     contracts,
   } = context;
 
-  const chain = chainsByChainId[chainId] as Chain;
+  const chain = chainById[chainId] as Chain;
   if (!chain) {
     throw new Error(`Chain ${chainId} not found`);
   }
 
   const publicClient = createPublicClient({
     chain,
-    transport: http(chainIdToAlchemyUrl[chainId]),
+    transport: http(alchemyUrlByChainId[chainId]),
   });
 
   const latestBlock = await publicClient.getBlockNumber();
@@ -145,7 +136,7 @@ async function setupBlockRanges(context: Context): Promise<SetupConfig> {
   );
 
   let toBlock = contractSetupBlock;
-  let fromBlock = chainIdToStartBlock[chainId] ?? 0n;
+  let fromBlock = startBlockByChainId[chainId] ?? 0n;
 
   if (lastIndexedBlockQuery.length > 0) {
     const lastIndexedBlockNumber = lastIndexedBlockQuery[0]!.lastUpdatedBlock;
@@ -631,6 +622,7 @@ function prepareBurnLogData(
 // Helper function to prepare expiration change log data
 function prepareExpirationChangeLogData(
   expirationChangeEvents: ExpirationChangeEvent[],
+  historicSetExpirationCalls: HistoricSetExpirationCall[],
   domainNames: Map<bigint, string>,
   chainId: number,
 ): any[] {
@@ -639,11 +631,31 @@ function prepareExpirationChangeLogData(
   );
 
   // Sort events by tokenId and blockNumber to track previous values
-  const sortedEvents = [...expirationChangeEvents].sort((a, b) => {
-    if (a.tokenId !== b.tokenId) {
-      return a.tokenId < b.tokenId ? -1 : 1;
+  type EnrichedExpirationChangeEvent = ExpirationChangeEvent & {
+    source: string;
+    prevFromSource?: bigint;
+  };
+  const sortedEvents: EnrichedExpirationChangeEvent[] = [
+    ...historicSetExpirationCalls.map((call) => ({
+      tokenId: BigInt(call.tokenId),
+      newExpiration: call.newExpirationTime,
+      blockNumber: call.blockNumber,
+      blockTimestamp: BigInt(call.blockTimestamp),
+      transactionHash: call.transactionHash as `0x${string}`,
+      changedBy: NAMEFI_NFT_CONTRACT_ADDRESS as `0x${string}`,
+      source: call.source,
+      prevFromSource: call.previousExpirationTime,
+    })),
+    ...expirationChangeEvents.map((event) => ({
+      ...event,
+      source: 'event',
+      prevFromSource: undefined,
+    })),
+  ].sort((a, b) => {
+    if (a.blockNumber !== b.blockNumber) {
+      return a.blockNumber < b.blockNumber ? -1 : 1;
     }
-    return a.blockNumber < b.blockNumber ? -1 : 1;
+    return 0;
   });
 
   // Track the previous expiration for each token
@@ -663,7 +675,9 @@ function prepareExpirationChangeLogData(
 
       // Get previous expiration (either from our tracking or assume 0n for first change)
       const previousExpiration =
-        tokenPreviousExpiration.get(event.tokenId) || 0n; //todo use historic trace calls of setExpiration
+        tokenPreviousExpiration.get(event.tokenId) ??
+        event.prevFromSource ??
+        0n;
 
       // Update tracking for next event
       tokenPreviousExpiration.set(event.tokenId, event.newExpiration);
@@ -678,6 +692,7 @@ function prepareExpirationChangeLogData(
         blockNumber: event.blockNumber,
         blockTimestamp: event.blockTimestamp,
         transactionHash: event.transactionHash,
+        source: event.source,
       };
     }),
   );
@@ -694,8 +709,6 @@ ponder.on('NamefiNft:setup', async ({ context }) => {
   const {
     chain: { id: chainId },
     db,
-    contracts,
-    client,
   } = context;
 
   try {
@@ -703,10 +716,12 @@ ponder.on('NamefiNft:setup', async ({ context }) => {
     const config = await setupBlockRanges(context);
 
     // 2. Fetch all events in parallel
-    const [transferEvents, expirationChangeEvents] = await Promise.all([
-      getAllTransferEvents(config),
-      getAllExpirationChangeEvents(config),
-    ]);
+    const [transferEvents, expirationChangeEvents, historicSetExpirationCalls] =
+      await Promise.all([
+        getAllTransferEvents(config),
+        getAllExpirationChangeEvents(config),
+        getHistoricSetExpirationCallsBeforeEventAdded({ chainId }),
+      ]);
 
     // 3. Process ownership to get final NFT state
     const nftToOwners = processOwnership(transferEvents);
@@ -763,6 +778,7 @@ ponder.on('NamefiNft:setup', async ({ context }) => {
 
     const expirationChangeLogData = prepareExpirationChangeLogData(
       expirationChangeEvents,
+      historicSetExpirationCalls ?? [],
       domainNameMap,
       chainId,
     );
@@ -994,6 +1010,7 @@ ponder.on('NamefiNft:ExpirationChanged', async ({ event, context }) => {
         blockNumber: block.number,
         blockTimestamp: block.timestamp,
         transactionHash: transaction.hash,
+        source: 'event',
       })
       .onConflictDoNothing();
 

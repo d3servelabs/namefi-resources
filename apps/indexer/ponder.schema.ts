@@ -88,6 +88,7 @@ export const ExpirationChangeLog = onchainTable(
     blockNumber: t.bigint().notNull(),
     blockTimestamp: t.bigint().notNull(),
     transactionHash: t.text().notNull(),
+    source: t.text().notNull().default('event'), // 'set_expiration_trace_call' or 'mint' or 'event'
   }),
   (table) => ({
     pk: primaryKey({
