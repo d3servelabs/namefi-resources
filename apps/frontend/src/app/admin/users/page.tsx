@@ -34,6 +34,7 @@ import {
   RefreshCw,
   Clock,
   Mail,
+  VenetianMask,
 } from 'lucide-react';
 import {
   NAMEFI_NFT_CONTRACT_ADDRESS,
@@ -237,33 +238,32 @@ function UsersTable() {
         accessorKey: 'primaryEmail',
         header: 'Email',
         cell: ({ row }) => (
-          <div className="flex items-center w-full">
+          <div
+            className={cn(
+              'flex items-center justify-between w-full px-3 py-1 rounded-2xl',
+              row.original.primaryEmail ? 'bg-muted' : '',
+            )}
+          >
             <AutoTruncateTextV2
+              className="w-full"
               initialCharactersCountToDisplay={20}
-              minCharactersToDisplay={20}
+              minCharactersToDisplay={5}
             >
               {row.original.primaryEmail ?? '-'}
             </AutoTruncateTextV2>
             {!!row.original.primaryEmail && (
-              <div className="ml-2 flex items-center gap-1">
+              <div className="ml-1 flex items-center">
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <Button
-                        className="rounded-full"
-                        size="sm"
-                        variant="ghost"
-                        asChild
+                      <a
+                        href={`mailto:${row.original.primaryEmail}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`Send email to ${row.original.primaryEmail}`}
                       >
-                        <a
-                          href={`mailto:${row.original.primaryEmail}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          aria-label="Send email"
-                        >
-                          <Mail className="h-3 w-3" />
-                        </a>
-                      </Button>
+                        <Mail className="h-[14px] w-[14px]" />
+                      </a>
                     </TooltipTrigger>
                     <TooltipContent>
                       <p>Send email to {row.original.primaryEmail}</p>
@@ -272,7 +272,10 @@ function UsersTable() {
                 </TooltipProvider>
                 <CopyIconButton
                   text={row.original.primaryEmail}
-                  classNames={{ icon: 'h-3 w-3' }}
+                  classNames={{
+                    icon: '!h-[14px] !w-[14px]',
+                    button: '!p-[1px]',
+                  }}
                 />
               </div>
             )}
@@ -425,28 +428,42 @@ function UsersTable() {
         id: 'actions',
         header: 'Action',
         cell: ({ row }) => (
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1">
             {!row.original.isAdmin && (
               <PermissionGate permissions={[Permission.IMPERSONATE_USERS]}>
                 <AsyncButton
+                  className="group"
                   size="sm"
                   variant="secondary"
                   onClick={() => handleImpersonate(row.original.id)}
                   loadingText="Impersonating..."
                 >
-                  Impersonate
+                  <VenetianMask className="h-4 w-4" />
+                  <span
+                    className="origin-left w-0 group-hover:w-[calc-size(auto,size)] truncate"
+                    style={{ transition: 'all 0.4s ease-in-out' }}
+                  >
+                    Impersonate
+                  </span>
                 </AsyncButton>
               </PermissionGate>
             )}
             {!!row.original.primaryEmail && (
-              <Button size="sm" variant="secondary" asChild>
+              <Button className="group" size="sm" variant="secondary" asChild>
                 <a
                   href={`mailto:${row.original.primaryEmail}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Send email"
+                  className="flex"
                 >
-                  <Mail className="h-4 w-4" /> Send Email
+                  <Mail className="h-4 w-4" />{' '}
+                  <span
+                    className="origin-left w-0 group-hover:w-[calc-size(auto,size)] truncate"
+                    style={{ transition: 'all 0.8s allow-discrete' }}
+                  >
+                    Send Email
+                  </span>
                 </a>
               </Button>
             )}
@@ -941,7 +958,7 @@ const CopyIconButton = ({
         <TooltipTrigger asChild>
           <Button
             className={cn('rounded-full', classNames?.button)}
-            size="sm"
+            size="icon"
             variant="ghost"
             aria-label="Copy to clipboard"
             onClick={handleCopy}
