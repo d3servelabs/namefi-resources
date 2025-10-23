@@ -13,12 +13,15 @@ import {
 } from '@/components/ui/shadcn/dropdown-menu';
 import { cartItemsToInteractionLoggingCartItems } from '@/hooks/use-cart';
 import { useCartContext } from '@/components/providers/cart';
+import { useCartRow } from '@/hooks/use-cart-row';
+import type { UnifiedCartItem } from '@/hooks/use-cart';
 import { cn } from '@/lib/cn';
 import { InteractionLoggingEventName } from '@/lib/analytics-events';
 import { formatAmountInUSD } from '@/lib/number';
-import { ShoppingCart } from 'lucide-react';
+import { Loader2, ShoppingCart, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 import { forwardRef, useCallback, useMemo } from 'react';
+import type { MouseEvent } from 'react';
 import { useInteractionLoggers } from '@/components/providers/analytics';
 import { motion, type HTMLMotionProps, AnimatePresence } from 'motion/react';
 import NumberFlow from '@number-flow/react';
@@ -29,6 +32,51 @@ const MotionHeaderActionButton = motion.create(HeaderActionButton);
 export type CartDropdownProps = Omit<HTMLMotionProps<'div'>, 'ref'> & {
   disableBackdropBlur?: boolean;
 };
+
+type CartDropdownItemProps = {
+  item: UnifiedCartItem;
+};
+
+function CartDropdownItem({ item }: CartDropdownItemProps) {
+  const { cart, removingBusy } = useCartRow(item.normalizedDomainName);
+  const { removeItem } = cart;
+
+  const handleRemove = useCallback(
+    (event: MouseEvent<HTMLButtonElement>) => {
+      event.preventDefault();
+      event.stopPropagation();
+      void removeItem([item.normalizedDomainName]);
+    },
+    [removeItem, item.normalizedDomainName],
+  );
+
+  return (
+    <DropdownMenuItem
+      className="flex items-center gap-3"
+      onSelect={(event) => event.preventDefault()}
+    >
+      <span className="flex-1 truncate">{item.normalizedDomainName}</span>
+      <span className="text-muted-foreground">
+        {formatAmountInUSD(item.amountInUSDCents, true)}
+      </span>
+      <Button
+        type="button"
+        variant="ghost"
+        size="icon"
+        className="size-8 shrink-0"
+        onClick={handleRemove}
+        disabled={removingBusy}
+        aria-label={`Remove ${item.normalizedDomainName} from cart`}
+      >
+        {removingBusy ? (
+          <Loader2 className="size-4 animate-spin" />
+        ) : (
+          <Trash2 className="size-4" />
+        )}
+      </Button>
+    </DropdownMenuItem>
+  );
+}
 
 export const CartDropdown = forwardRef<HTMLDivElement, CartDropdownProps>(
   function v(
@@ -85,15 +133,10 @@ export const CartDropdown = forwardRef<HTMLDivElement, CartDropdownProps>(
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               {items.map((item) => (
-                <DropdownMenuItem
-                  key={item.id}
-                  className="flex justify-between"
-                >
-                  <span>{item.normalizedDomainName}</span>
-                  <span className="text-muted-foreground">
-                    {formatAmountInUSD(item.amountInUSDCents, true)}
-                  </span>
-                </DropdownMenuItem>
+                <CartDropdownItem
+                  key={item.id ?? item.normalizedDomainName}
+                  item={item}
+                />
               ))}
               {isCartEmpty && (
                 <DropdownMenuItem className="justify-start font-medium italic">
