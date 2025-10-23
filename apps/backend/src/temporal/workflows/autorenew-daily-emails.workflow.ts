@@ -12,7 +12,7 @@ import type {
 } from '../activities/domain/renew.activities';
 import { RenewOption } from '@namefi-astra/registrars/lib/abstract-registrar/index';
 import type { PaymentProvider } from '@namefi-astra/db/types';
-import { filter, isNotNil, map, sum } from 'ramda';
+import { filter, isNotNil, map, pickBy, pluck, sum } from 'ramda';
 import { refundUserWorkflow } from './refund-user.workflow';
 import { RENEW_EARLY_BY_DAYS } from '../../lib/env/consts';
 import type { DomainRenewalResult } from '../activities/order.activities';
@@ -153,6 +153,20 @@ export async function notifyAndRenewDomainsForSingleUserWorkflow(
   userDomainsUpForRenewal: UserDomainsUpForRenewal,
   dryRun: boolean,
 ) {
+  const chargeAmountByDomainLdh: Record<NamefiNormalizedDomain, number | null> =
+    await getRenewPriceByDomain({
+      normalizeDomainNameList: userDomainsUpForRenewal.map(
+        (domain) => domain.normalizedDomainName,
+      ),
+    });
+
+  const domainsMissingPriceData = userDomainsUpForRenewal.filter(
+    (domain) => !chargeAmountByDomainLdh[domain.normalizedDomainName],
+  );
+  const domainsThatHavePriceData = userDomainsUpForRenewal.filter(
+    (domain) => chargeAmountByDomainLdh[domain.normalizedDomainName],
+  );
+
   const domainsThatShouldBeRenewed = userDomainsUpForRenewal.filter(
     ({ autoRenewOption, expirationTime }) => {
       const daysToExpiration = differenceInCalendarDays(
@@ -167,23 +181,35 @@ export async function notifyAndRenewDomainsForSingleUserWorkflow(
     },
   );
 
+  const domainsThatCouldBeRenewed = domainsThatShouldBeRenewed
+    .map((domain) => ({
+      ...domain,
+      chargeAmount: chargeAmountByDomainLdh[domain.normalizedDomainName] ?? -1, // -1 means will be filtered out
+    }))
+    .filter((domain) => domain.chargeAmount && domain.chargeAmount > 0);
+
+  if (
+    domainsThatCouldBeRenewed.length !== domainsThatShouldBeRenewed.length ||
+    domainsMissingPriceData.length > 0
+  ) {
+    workflow.log.info(
+      `For user ${userId} there are domains that could be renewed but not all of them`,
+    );
+    await criticalAlertNamefi({
+      workflowInfo: workflow.workflowInfo(),
+      message: `For user ${userId} there are domains that could be renewed but not all of them`,
+      level: 'error',
+    });
+  }
+
   const userEmail = await maybeGetUserEmail(userId);
 
   workflow.log.info(
-    `For user ${userId}, ${userEmail} here are domains up for renew: ${JSON.stringify(domainsThatShouldBeRenewed, null, 2)}`,
+    `For user ${userId}, ${userEmail} here are domains up for renew: ${JSON.stringify(domainsThatCouldBeRenewed, null, 2)}`,
   );
 
-  const chargeAmountByDomainLdh: Record<NamefiNormalizedDomain, number> =
-    await getRenewPriceByDomain({
-      normalizeDomainNameList: userDomainsUpForRenewal.map(
-        (domain) => domain.normalizedDomainName,
-      ),
-    });
-
   const totalAmountInUsd = sum(
-    domainsThatShouldBeRenewed.map(
-      (domain) => chargeAmountByDomainLdh[domain.normalizedDomainName],
-    ),
+    pluck('chargeAmount', domainsThatCouldBeRenewed),
   );
 
   if (dryRun) {
@@ -191,9 +217,10 @@ export async function notifyAndRenewDomainsForSingleUserWorkflow(
       userId,
       userEmail,
       domainsThatShouldBeRenewed,
+      domainsThatCouldBeRenewed,
       chargeAmountByDomainLdh,
       totalAmountInUsd,
-      count: domainsThatShouldBeRenewed.length,
+      count: domainsThatCouldBeRenewed.length,
     };
   }
 
@@ -201,10 +228,10 @@ export async function notifyAndRenewDomainsForSingleUserWorkflow(
     await _notifyUserForUpcomingRenew(
       userEmail,
       {
-        domains: userDomainsUpForRenewal,
+        domains: domainsThatHavePriceData,
         userId,
       },
-      chargeAmountByDomainLdh,
+      pickBy(isNotNil, chargeAmountByDomainLdh),
     );
   } else {
     workflow.log.warn(
@@ -212,7 +239,7 @@ export async function notifyAndRenewDomainsForSingleUserWorkflow(
     );
   }
 
-  if (domainsThatShouldBeRenewed.length === 0) {
+  if (domainsThatCouldBeRenewed.length === 0) {
     workflow.log.info(`For user ${userId} there are no domains up for renew`);
     return;
   }
@@ -243,18 +270,18 @@ export async function notifyAndRenewDomainsForSingleUserWorkflow(
       await _notifyUserForFailedToCharge({
         userId,
         userEmail,
-        domainsToRenew: domainsThatShouldBeRenewed,
+        domainsToRenew: domainsThatCouldBeRenewed,
         chargeAmountInUsd: totalAmountInUsd,
       });
     }
-    // stop for this user
+    // stop for this user because we failed to charge
     return {
       userId,
       userEmail,
-      domainsToRenew: domainsThatShouldBeRenewed.map(
+      domainsToRenew: domainsThatCouldBeRenewed.map(
         ({ normalizedDomainName }) => normalizedDomainName,
       ),
-      domainToRenewCount: domainsThatShouldBeRenewed.length,
+      domainToRenewCount: domainsThatCouldBeRenewed.length,
       totalAmountInUsd,
       paymentStatus: 'FAILED',
       message: `Fail to charge user(userId:${userId}) for ${totalAmountInUsd}$USD`,
@@ -263,7 +290,7 @@ export async function notifyAndRenewDomainsForSingleUserWorkflow(
 
   const results = await Promise.all(
     /*we are try catching here.*/
-    domainsThatShouldBeRenewed.map(async (domain) => {
+    domainsThatCouldBeRenewed.map(async (domain) => {
       try {
         const result = await workflow.executeChild(
           extendDomainRegistrationWorkflow,
@@ -309,7 +336,7 @@ export async function notifyAndRenewDomainsForSingleUserWorkflow(
   if (failures.length > 0) {
     refundAmountInUsd = sum(
       failures.map(
-        ({ domain }) => chargeAmountByDomainLdh[domain.normalizedDomainName],
+        ({ domain }) => chargeAmountByDomainLdh[domain.normalizedDomainName]!, // at this point we know that the charge amount is not null
       ),
     );
     if (refundAmountInUsd > 0) {
@@ -327,7 +354,7 @@ export async function notifyAndRenewDomainsForSingleUserWorkflow(
   await _createAutoRenewOrderForSingleUser({
     userId,
     paymentId: chargeResult.namefiPaymentIntentId,
-    chargeAmountByDomainLdh,
+    chargeAmountByDomainLdh: pickBy(isNotNil, chargeAmountByDomainLdh),
     totalAmountInUsd,
     successes,
     failures,

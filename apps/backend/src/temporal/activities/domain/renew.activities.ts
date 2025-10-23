@@ -708,8 +708,8 @@ export async function getRenewPriceByDomain({
   normalizeDomainNameList,
 }: {
   normalizeDomainNameList: NamefiNormalizedDomain[];
-}): Promise<Record<NamefiNormalizedDomain, number>> {
-  const domainChargeAmounts: Record<NamefiNormalizedDomain, number> = {};
+}): Promise<Record<NamefiNormalizedDomain, number | null>> {
+  const domainChargeAmounts: Record<NamefiNormalizedDomain, number | null> = {};
 
   // Use getDomainListInfo to get pricing for all domains at once
   const domainInfoList = await getDomainListInfo(normalizeDomainNameList);
@@ -718,11 +718,8 @@ export async function getRenewPriceByDomain({
     const { domain, pricingDetails } = domainInfo;
 
     if (!pricingDetails?.renewalPrice) {
-      // No pricing info available, set to 0
-      throw ApplicationFailure.create({
-        message: `No pricing info available for domain ${domain}`,
-        nonRetryable: true,
-      });
+      domainChargeAmounts[domain] = null;
+      continue;
     }
 
     try {

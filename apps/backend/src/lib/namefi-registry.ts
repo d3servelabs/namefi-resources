@@ -376,6 +376,10 @@ const _getSldDomainListInfo = async (
 
     const pricingDetails = response.price;
     if (isNil(pricingDetails)) {
+      logger.debug(
+        { domain, response },
+        `No pricing details found for ${domain}`,
+      );
       return generateUnavailableDomainInfo(domain);
     }
     const available = response.available === DomainAvailability.AVAILABLE;
