@@ -144,12 +144,8 @@ export default function OrderPage({ params }: OrderPageProps) {
   });
   const { order, payments = [], items } = orderDetails ?? {};
   const hasOrderDetails = Boolean(orderDetails && order);
-  const domainsRaw = (items || [])
-    .map((it) => it.normalizedDomainName)
-    .filter(Boolean);
-  const uniqueDomains: NamefiNormalizedDomain[] = Array.from(
-    new Set(domainsRaw),
-  ) as NamefiNormalizedDomain[];
+  const domainsRaw = (items || []).map((it) => it.normalizedDomainName);
+  const uniqueDomains = Array.from(new Set(domainsRaw));
   const { data: bulkInternal } = useQuery({
     ...trpc.ai.getInternalGenerationsByDomains.queryOptions({
       domains: uniqueDomains,
@@ -174,7 +170,7 @@ export default function OrderPage({ params }: OrderPageProps) {
   const isInitialLoading = isAuthLoading || isOrderLoading;
 
   const orderProgress = useOrderProgress(id, {
-    enabled: isAuthenticated,
+    enabled: isAuthenticated && !isCompletedOrder && !isFailedOrder,
   });
 
   const activeProgressCopy = useMemo(() => {
@@ -228,7 +224,13 @@ export default function OrderPage({ params }: OrderPageProps) {
     if (workflowPhase === 'processing') {
       return 'processing';
     }
-    return hasOrderDetails ? 'completed' : 'loading';
+    if (!hasOrderDetails) {
+      return 'loading';
+    }
+    if (isCompletedOrder) {
+      return 'completed';
+    }
+    return 'processing';
   })();
   const showProcessingView = viewState !== 'completed';
 
