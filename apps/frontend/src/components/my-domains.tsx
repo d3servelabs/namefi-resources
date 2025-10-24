@@ -25,9 +25,8 @@ import { config } from '@/lib/env';
 import { cn } from '@/lib/cn';
 import { type AppRouterOutput, useTRPC } from '@/lib/trpc';
 import {
-  NAMEFI_NFT_CONTRACT_ADDRESS,
   CHAINS,
-  getChain,
+  getNftExplorerUrl,
   type NamefiNormalizedDomain,
 } from '@namefi-astra/utils';
 import { useSuspenseQuery } from '@tanstack/react-query';
@@ -45,13 +44,9 @@ import {
 import {
   AlertTriangle,
   AlertCircle,
-  ChevronDown,
-  ChevronUp,
-  ChevronsUpDown,
   ExternalLink,
   History,
   Loader2,
-  Search,
   SearchIcon,
   Settings,
 } from 'lucide-react';
@@ -548,6 +543,10 @@ function MyDomainsTable(props: {
           );
           const showManageButton = daysDifference > -30;
           const isExpired = daysDifference < 0;
+          const explorerUrl = getNftExplorerUrl(
+            row.original.chainId ?? null,
+            row.original.tokenId?.toString() ?? null,
+          );
 
           return (
             <div className="flex gap-2">
@@ -580,10 +579,10 @@ function MyDomainsTable(props: {
                   isProcessing={processingDomains.has(domainName)}
                 />
               )}
-              {!isExpired && (
+              {!isExpired && explorerUrl ? (
                 <Button variant="outline" size="sm" asChild={true}>
                   <Link
-                    href={`https://basescan.org/nft/${NAMEFI_NFT_CONTRACT_ADDRESS}/${row.original.tokenId ?? ''}`}
+                    href={explorerUrl}
                     aria-label={`View NFT for ${domainName}`}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -591,7 +590,7 @@ function MyDomainsTable(props: {
                     <ExternalLink className="w-4 h-4 mr-1" /> View NFT
                   </Link>
                 </Button>
-              )}
+              ) : null}
             </div>
           );
         },

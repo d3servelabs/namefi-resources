@@ -37,8 +37,8 @@ import {
   VenetianMask,
 } from 'lucide-react';
 import {
-  NAMEFI_NFT_CONTRACT_ADDRESS,
   getChain,
+  getNftExplorerUrl,
   CHAINS,
   checksumWalletAddressSchema,
 } from '@namefi-astra/utils';
@@ -51,7 +51,6 @@ import {
 } from 'date-fns';
 import { applyFilterOperator } from '@/components/table/data-table';
 import { UserWalletAvatar } from '@/components/user-avatar';
-import Link from 'next/link';
 import { Button } from '@/components/ui/shadcn/button';
 import {
   TooltipContent,
@@ -82,14 +81,6 @@ type UserRow = {
     expirationTime: Date | string;
   }>;
   nftCount: number;
-};
-
-const getBlockExplorerUrl = (chainId: number, tokenId: string) => {
-  const chain = getChain(chainId);
-  if (!chain?.blockExplorers?.default?.url) return null;
-
-  const contractAddress = NAMEFI_NFT_CONTRACT_ADDRESS;
-  return `${chain.blockExplorers.default.url}/nft/${contractAddress}/${tokenId}`;
 };
 
 export default function AdminUsersPage() {
@@ -789,7 +780,7 @@ const UserNftsSubRow = ({ original: user }: Row<UserRow>) => {
         id: 'tokenId',
         header: 'Token',
         cell: ({ row }) => {
-          const explorerUrl = getBlockExplorerUrl(
+          const explorerUrl = getNftExplorerUrl(
             row.original.chainId,
             row.original.tokenId,
           );
@@ -834,7 +825,7 @@ const UserNftsSubRow = ({ original: user }: Row<UserRow>) => {
         id: 'actions',
         header: 'Actions',
         cell: ({ row }) => {
-          const explorerUrl = getBlockExplorerUrl(
+          const explorerUrl = getNftExplorerUrl(
             row.original.chainId,
             row.original.tokenId,
           );

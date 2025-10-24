@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { CartCard } from './cart-card';
 import { NamefiButton } from './buttons/namefi-button';
 import { NFTDomain } from './nft-domain';
-import { getChain, NAMEFI_NFT_CONTRACT_ADDRESS } from '@namefi-astra/utils';
+import { getNftExplorerUrl } from '@namefi-astra/utils';
 import { NetworkLogo } from '@/components/network-logo';
 
 interface NftDomainCardProps {
@@ -37,10 +37,7 @@ export function NftDomainCard({
         config: thirdPartyCfg,
       }
     : origin;
-  const explorerUrl =
-    isCompleted && item.tokenId && item.chainId !== null
-      ? getNftExplorerUrl(item.chainId, item.tokenId)
-      : null;
+  const explorerUrl = getNftExplorerUrl(item.chainId, item.tokenId);
 
   return (
     <CartCard className={className ?? 'p-4'}>
@@ -80,18 +77,4 @@ export function NftDomainCard({
       ) : null}
     </CartCard>
   );
-}
-
-function getNftExplorerUrl(
-  chainId: number | null,
-  tokenId: string | null,
-): string | null {
-  if (chainId === null || tokenId === null) return null;
-  const chain = getChain(chainId);
-  const baseUrl = chain?.blockExplorers?.default?.url;
-  if (!baseUrl) return null;
-  const normalizedBaseUrl = baseUrl.endsWith('/')
-    ? baseUrl.slice(0, -1)
-    : baseUrl;
-  return `${normalizedBaseUrl}/nft/${NAMEFI_NFT_CONTRACT_ADDRESS}/${tokenId}`;
 }

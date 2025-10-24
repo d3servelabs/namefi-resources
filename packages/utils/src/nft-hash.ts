@@ -1,5 +1,7 @@
-import { assert } from './assert';
 import { hexToBytes, isHex, keccak256, pad } from 'viem';
+import { getChain } from './chains';
+import { NAMEFI_NFT_CONTRACT_ADDRESS } from './contract-addresses';
+import { assert } from './assert';
 
 export type NftId = bigint;
 export type NftHexId = SizedHexString<32>;
@@ -77,6 +79,35 @@ export function nftHexIdFromDomainName(
 export function nftIdFromDomainName(maybeNormalizedDomainName: string): NftId {
   const hexId = nftHexIdFromDomainName(maybeNormalizedDomainName);
   return BigInt(hexId);
+}
+
+/**
+ * Safely derives the string token ID from a domain name, returning null when hashing fails.
+ */
+export function getTokenIdFromDomainName(domainName: string): string | null {
+  try {
+    return nftIdFromDomainName(domainName).toString();
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Builds a URL to view an NFT on the chain's default block explorer, if available.
+ */
+export function getNftExplorerUrl(
+  chainId: number | null | undefined,
+  tokenId: string | null | undefined,
+): string | null {
+  if (chainId === null || chainId === undefined) return null;
+  if (!tokenId) return null;
+  const chain = getChain(chainId);
+  const baseUrl = chain?.blockExplorers?.default?.url;
+  if (!baseUrl) return null;
+  const normalizedBaseUrl = baseUrl.endsWith('/')
+    ? baseUrl.slice(0, -1)
+    : baseUrl;
+  return `${normalizedBaseUrl}/nft/${NAMEFI_NFT_CONTRACT_ADDRESS}/${tokenId}`;
 }
 
 function toAsciiDomain(domain: string): string {

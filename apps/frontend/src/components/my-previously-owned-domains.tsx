@@ -25,11 +25,7 @@ import {
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
 import { useAuth } from '@/hooks/use-auth';
 import { type AppRouterOutput, useTRPC } from '@/lib/trpc';
-import {
-  NAMEFI_NFT_CONTRACT_ADDRESS,
-  CHAINS,
-  getChain,
-} from '@namefi-astra/utils';
+import { CHAINS, getChain, getNftExplorerUrl } from '@namefi-astra/utils';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import {
   type ColumnDef,
@@ -238,18 +234,24 @@ function MyPreviouslyOwnedDomainsTable() {
         header: 'Actions',
         cell: ({ row }) => {
           const domainName = row.getValue('normalizedDomainName') as string;
+          const explorerUrl = getNftExplorerUrl(
+            row.original.chainId ?? null,
+            row.original.tokenId ?? null,
+          );
           return (
             <div className="flex gap-2">
-              <Button variant="outline" size="sm" asChild={true}>
-                <Link
-                  href={`https://basescan.org/nft/${NAMEFI_NFT_CONTRACT_ADDRESS}/${row.original.tokenId}`}
-                  aria-label={`View transaction for ${domainName}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <ExternalLink className="w-4 h-4 mr-1" /> View Transaction
-                </Link>
-              </Button>
+              {explorerUrl ? (
+                <Button variant="outline" size="sm" asChild={true}>
+                  <Link
+                    href={explorerUrl}
+                    aria-label={`View transaction for ${domainName}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <ExternalLink className="w-4 h-4 mr-1" /> View Transaction
+                  </Link>
+                </Button>
+              ) : null}
             </div>
           );
         },

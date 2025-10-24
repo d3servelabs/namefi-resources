@@ -21,8 +21,11 @@ import { useAuth } from '@/hooks/use-auth';
 import { getShortAddress } from '@/lib/string';
 import { formatAmountInUSD } from '@/lib/number';
 import { useTRPC } from '@/lib/trpc';
-import { getChain, NAMEFI_NFT_CONTRACT_ADDRESS } from '@namefi-astra/utils';
-import { nftIdFromDomainName } from '@namefi-astra/utils/nft-hash';
+import {
+  getChain,
+  getNftExplorerUrl,
+  getTokenIdFromDomainName,
+} from '@namefi-astra/utils';
 import { useQuery } from '@tanstack/react-query';
 import { TRPCClientError } from '@trpc/client';
 import { format } from 'date-fns';
@@ -665,28 +668,6 @@ function MintTokenLink({
       <ExternalLink className="size-3" />
     </a>
   );
-}
-
-function getNftExplorerUrl(
-  chainId: number | null | undefined,
-  tokenId: string,
-) {
-  if (chainId === null || chainId === undefined) return null;
-  const chain = getChain(chainId);
-  const baseUrl = chain?.blockExplorers?.default?.url;
-  if (!baseUrl) return null;
-  const normalizedBaseUrl = baseUrl.endsWith('/')
-    ? baseUrl.slice(0, -1)
-    : baseUrl;
-  return `${normalizedBaseUrl}/nft/${NAMEFI_NFT_CONTRACT_ADDRESS}/${tokenId}`;
-}
-
-function getTokenIdFromDomainName(domainName: string): string | null {
-  try {
-    return nftIdFromDomainName(domainName).toString();
-  } catch (error) {
-    return null;
-  }
 }
 
 function PaymentSummaryCard({
