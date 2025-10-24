@@ -54,7 +54,6 @@ type MintedItemSummary = {
   label: string;
   tokenId: string;
   chainId: number | null;
-  txHash: string;
 };
 
 function getShortId(id: string, start = 6, end = 4): string {
@@ -132,7 +131,6 @@ export default function OrderDetailsPage({
         label: item.normalizedDomainName,
         tokenId,
         chainId,
-        txHash: mintTransaction.txHash,
       });
       return acc;
     }, []);
@@ -419,13 +417,6 @@ export default function OrderDetailsPage({
                           label="Minted NFT"
                           chainId={chainId}
                           tokenId={tokenId}
-                          txHash={mintTransaction.txHash ?? null}
-                          onCopyToken={(text) =>
-                            navigator.clipboard.writeText(text)
-                          }
-                          onCopyTx={(text) =>
-                            navigator.clipboard.writeText(text)
-                          }
                         />
                       ) : null}
                     </div>
@@ -541,17 +532,13 @@ export default function OrderDetailsPage({
                   <div className="font-medium mb-2">Minted NFTs</div>
                   <div className="flex flex-col gap-2">
                     {mintTransactionsList.map(
-                      ({ itemId, label, tokenId, chainId, txHash }) => (
+                      ({ itemId, label, tokenId, chainId }) => (
                         <MintTokenRow
                           key={itemId}
                           label={label}
                           chainId={chainId}
                           tokenId={tokenId}
-                          txHash={txHash}
-                          onCopyToken={(text) =>
-                            navigator.clipboard.writeText(text)
-                          }
-                          onCopyTx={(text) =>
+                          onCopyUrl={(text) =>
                             navigator.clipboard.writeText(text)
                           }
                         />
@@ -590,58 +577,36 @@ function MintTokenRow({
   label,
   chainId,
   tokenId,
-  txHash,
-  onCopyToken,
-  onCopyTx,
+  onCopyUrl,
 }: {
   label: string;
   chainId?: number | null;
   tokenId: string;
-  txHash: string;
-  onCopyToken: (tokenId: string) => void;
-  onCopyTx?: (txHash: string) => void;
+  onCopyUrl?: (url: string) => void;
 }) {
-  const shortTxHash = txHash ? getShortId(txHash, 6, 6) : null;
+  const explorerUrl = getNftExplorerUrl(chainId ?? null, tokenId);
 
   return (
     <div className="flex items-center justify-between gap-3 py-1">
       <span className="text-sm text-muted-foreground">{label}</span>
       <div className="flex items-center gap-2">
         <MintTokenLink chainId={chainId} tokenId={tokenId} />
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-7 w-7"
-                onClick={() => onCopyToken(tokenId)}
-              >
-                <ClipboardCopy size={14} />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>Copy Token ID</TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-        {txHash ? (
-          <div className="flex items-center gap-1 text-xs text-muted-foreground">
-            <span className="font-mono">{shortTxHash}</span>
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-7 w-7"
-                    onClick={() => onCopyTx?.(txHash)}
-                  >
-                    <ClipboardCopy size={14} />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>Copy Tx Hash</TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          </div>
+        {explorerUrl && onCopyUrl ? (
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-7 w-7"
+                  onClick={() => onCopyUrl(explorerUrl)}
+                >
+                  <ClipboardCopy size={14} />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>Copy Explorer URL</TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         ) : null}
       </div>
     </div>
@@ -693,6 +658,7 @@ function MintTokenLink({
       href={explorerUrl}
       target="_blank"
       rel="noopener noreferrer"
+      onClick={(event) => event.stopPropagation()}
       className={`inline-flex items-center gap-2 text-primary hover:underline ${className ?? ''}`}
     >
       {content}
@@ -1115,9 +1081,7 @@ function ItemDetailsModal({
                 label="Minted NFT"
                 chainId={chainId}
                 tokenId={tokenId}
-                txHash={mintTransaction.txHash}
-                onCopyToken={(text) => navigator.clipboard.writeText(text)}
-                onCopyTx={(text) => navigator.clipboard.writeText(text)}
+                onCopyUrl={(text) => navigator.clipboard.writeText(text)}
               />
             ) : null}
           </div>
