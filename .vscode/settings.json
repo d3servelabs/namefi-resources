@@ -53,5 +53,6 @@
     "vcpu",
     "Vercel",
     "viem"
-  ]
+  ],
+  "chatgpt.openOnStartup": true
 }
