@@ -13,6 +13,9 @@ const nextConfig: NextConfig = {
     version: packageJson.version,
     name: packageJson.name,
   },
+  experimental: {
+    turbopackFileSystemCacheForDev: true,
+  },
 };
 
 export default nextConfig;

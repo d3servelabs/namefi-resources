@@ -39,15 +39,12 @@ const nextConfig = {
   },
   experimental: {
     authInterrupts: true,
+    turbopackFileSystemCacheForDev: true,
   },
   env: {
     version: packageJson.version,
     name: packageJson.name,
     ENVIRONMENT: process.env.ENVIRONMENT,
-  },
-  eslint: {
-    // Note: validate is run on CI with build
-    ignoreDuringBuilds: true,
   },
   typescript: {
     // Note: validate is run on CI with build

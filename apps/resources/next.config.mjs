@@ -8,6 +8,9 @@ const withMDX = createMdx({
 const nextConfig = {
   pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md', 'mdx'],
   assetPrefix: '/r',
+  experimental: {
+    turbopackFileSystemCacheForDev: true,
+  },
 };
 
 // biome-ignore lint/style/noDefaultExport: Next.js requires a default export for the config file.

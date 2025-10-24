@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { NextRequest } from 'next/server.js';
 import { getRedirectUrl } from 'next/experimental/testing/server';
-import { middleware } from '@/middleware';
+import { proxy } from '@/proxy';
 
 describe('middleware redirect behaviour', () => {
   function createRequest(pathname: string) {
@@ -9,31 +9,31 @@ describe('middleware redirect behaviour', () => {
   }
 
   it('redirects non-localized paths to the detected locale under /r', () => {
-    const response = middleware(createRequest('/foo'));
+    const response = proxy(createRequest('/foo'));
     expect(getRedirectUrl(response)).toBe('http://localhost:3000/r/en/foo');
   });
 
   it('handles root and bare /r paths', () => {
-    const response = middleware(createRequest('/'));
+    const response = proxy(createRequest('/'));
     expect(getRedirectUrl(response)).toBe('http://localhost:3000/r/en');
 
-    const response2 = middleware(createRequest('/r'));
+    const response2 = proxy(createRequest('/r'));
     expect(getRedirectUrl(response2)).toBe('http://localhost:3000/r/en');
 
-    const response3 = middleware(createRequest('/r/en'));
+    const response3 = proxy(createRequest('/r/en'));
     expect(getRedirectUrl(response3)).toBe(null);
 
-    const response4 = middleware(createRequest('/r/en/blog'));
+    const response4 = proxy(createRequest('/r/en/blog'));
     expect(getRedirectUrl(response4)).toBe(null);
   });
 
   it('redirects bare /r paths with additional segments', () => {
-    const response = middleware(createRequest('/r/blog'));
+    const response = proxy(createRequest('/r/blog'));
     expect(getRedirectUrl(response)).toBe('http://localhost:3000/r/en/blog');
   });
 
   it('does not redirect internals and static assets', () => {
-    const response2 = middleware(createRequest('/chunk.jpg'));
+    const response2 = proxy(createRequest('/chunk.jpg'));
     expect(getRedirectUrl(response2)).toBe(null);
   });
 
@@ -46,7 +46,7 @@ describe('middleware redirect behaviour', () => {
     ];
 
     for (const path of publicFiles) {
-      const response = middleware(createRequest(path));
+      const response = proxy(createRequest(path));
       expect(getRedirectUrl(response)).toBe(null);
     }
   });

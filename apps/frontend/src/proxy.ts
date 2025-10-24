@@ -81,7 +81,7 @@ const redirectRoutes = [
   },
 ];
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { pathname, searchParams } = request.nextUrl;
 
   // Only process /m/* paths
