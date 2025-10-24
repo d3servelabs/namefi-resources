@@ -7,14 +7,13 @@ import {
   useUserWalletAddresses,
 } from '@/hooks/use-user-wallet-addresses';
 import { useAllowedChains } from '@/hooks/use-allowed-chains';
-import { useTRPC } from '@/lib/trpc';
 import { getShortAddress } from '@/lib/string';
 import { cn } from '@/lib/cn';
 import { CHAINS, checksumWalletAddressSchema } from '@namefi-astra/utils';
-import { useMutation } from '@tanstack/react-query';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useDebounceValue } from 'usehooks-ts';
-import { Loader2, CheckCircle2, Info, Copy, Check } from 'lucide-react';
+import { Loader2, CheckCircle2, Copy, Check, Info } from 'lucide-react';
+import { useEnsAddress } from 'wagmi';
 import {
   Tooltip,
   TooltipContent,
@@ -58,8 +57,6 @@ export function NftWalletCard({
   const DefaultReceivingWalletChainId = chainIds.includes(CHAINS.base.id)
     ? CHAINS.base.id
     : CHAINS.sepolia.id;
-
-  const trpc = useTRPC();
   const [inputValue, setInputValue] = useState<string>(
     selectedWalletAddress ?? '',
   );
@@ -70,13 +67,8 @@ export function NftWalletCard({
       ? { status: 'address', address: selectedWalletAddress }
       : { status: 'idle' },
   );
-  const latestEnsRequestRef = useRef(0);
   const [copiedAddress, setCopiedAddress] = useState<string | null>(null);
   const copyTimeoutRef = useRef<number | null>(null);
-
-  const { mutateAsync: resolveEnsMutation } = useMutation(
-    trpc.users.resolveEnsName.mutationOptions(),
-  );
 
   const { userWalletAddresses, userWalletsReady } = useUserWalletAddresses();
   const { linkedWalletAddresses, linkedWalletsReady } =
@@ -120,7 +112,6 @@ export function NftWalletCard({
       const defaultWallet = userWalletAddresses[0];
       if (defaultWallet) {
         hasAutoSelectedDefault.current = true;
-        latestEnsRequestRef.current += 1;
         setInputValue(defaultWallet);
         setEnsCandidate(null);
         setEnsStatus({ status: 'address', address: defaultWallet });
@@ -147,64 +138,97 @@ export function NftWalletCard({
     }
   }, [selectedWalletAddress, ensStatus.status, inputValue]);
 
-  const [debouncedEnsCandidate] = useDebounceValue(ensCandidate, 350);
+  const [debouncedEnsCandidate] = useDebounceValue(ensCandidate, 300);
+  const ensLookupName = debouncedEnsCandidate?.normalized ?? '';
+  const ensDisplayName = debouncedEnsCandidate?.original ?? '';
+
+  const {
+    data: resolvedEnsAddress,
+    isFetching: isEnsFetching,
+    isFetched: isEnsFetched,
+    isError: isEnsError,
+  } = useEnsAddress({
+    chainId: CHAINS.mainnet.id,
+    name: ensLookupName || undefined,
+    query: {
+      enabled: Boolean(ensLookupName),
+      retry: 1,
+      staleTime: Number.POSITIVE_INFINITY,
+    },
+  });
 
   useEffect(() => {
-    if (!debouncedEnsCandidate) {
+    if (!ensCandidate) {
       return;
     }
 
-    const { original, normalized } = debouncedEnsCandidate;
-    const requestId = latestEnsRequestRef.current + 1;
-    latestEnsRequestRef.current = requestId;
-    let isActive = true;
+    if (!ensLookupName || !ensDisplayName) {
+      return;
+    }
 
-    const resolveEns = async () => {
-      setEnsStatus({ status: 'resolving', ensName: original });
-      try {
-        const result = await resolveEnsMutation({
-          ensName: normalized,
-        });
-
-        if (!isActive || latestEnsRequestRef.current !== requestId) {
-          return;
+    if (isEnsFetching) {
+      setEnsStatus((prev) => {
+        if (prev.status === 'resolving' && prev.ensName === ensDisplayName) {
+          return prev;
         }
+        return { status: 'resolving', ensName: ensDisplayName };
+      });
+      setError(null);
+      return;
+    }
 
-        if (result.address) {
-          setEnsStatus({
+    if (isEnsError) {
+      setEnsStatus((prev) => {
+        if (prev.status === 'error' && prev.ensName === ensDisplayName) {
+          return prev;
+        }
+        return { status: 'error', ensName: ensDisplayName };
+      });
+      setError('We had trouble resolving that ENS name. Try again shortly.');
+      onWalletAddressChange(null);
+      return;
+    }
+
+    if (isEnsFetched) {
+      if (resolvedEnsAddress) {
+        const address = resolvedEnsAddress as string;
+        setEnsStatus((prev) => {
+          if (
+            prev.status === 'resolved' &&
+            prev.address === address &&
+            prev.ensName === ensDisplayName
+          ) {
+            return prev;
+          }
+          return {
             status: 'resolved',
-            ensName: original,
-            address: result.address,
-          });
-          setError(null);
-          onWalletAddressChange(result.address);
-        } else {
-          setEnsStatus({ status: 'not_found', ensName: original });
-          setError(`We couldn't find a wallet for ${original}`);
-          onWalletAddressChange(null);
-        }
-      } catch (mutationError) {
-        if (!isActive || latestEnsRequestRef.current !== requestId) {
-          return;
-        }
-
-        setEnsStatus({ status: 'error', ensName: original });
-        console.error('Failed to resolve ENS name', mutationError);
-        setError('We had trouble resolving that ENS name. Try again shortly.');
+            ensName: ensDisplayName,
+            address,
+          };
+        });
+        setError(null);
+        onWalletAddressChange(address);
+      } else {
+        setEnsStatus((prev) => {
+          if (prev.status === 'not_found' && prev.ensName === ensDisplayName) {
+            return prev;
+          }
+          return { status: 'not_found', ensName: ensDisplayName };
+        });
+        setError(`We couldn't find a wallet for ${ensDisplayName}`);
         onWalletAddressChange(null);
-      } finally {
-        if (isActive && latestEnsRequestRef.current === requestId) {
-          setEnsCandidate(null);
-        }
       }
-    };
-
-    void resolveEns();
-
-    return () => {
-      isActive = false;
-    };
-  }, [debouncedEnsCandidate, resolveEnsMutation, onWalletAddressChange]);
+    }
+  }, [
+    ensCandidate,
+    ensLookupName,
+    ensDisplayName,
+    isEnsFetching,
+    isEnsFetched,
+    isEnsError,
+    resolvedEnsAddress,
+    onWalletAddressChange,
+  ]);
 
   const handleWalletAddressChange = useCallback(
     (value: string) => {
@@ -212,7 +236,6 @@ export function NftWalletCard({
       const trimmed = value.trim();
 
       if (trimmed.length === 0) {
-        latestEnsRequestRef.current += 1;
         setError(null);
         setEnsCandidate(null);
         setEnsStatus({ status: 'idle' });
@@ -221,7 +244,6 @@ export function NftWalletCard({
       }
       const parsedAddress = checksumWalletAddressSchema.safeParse(trimmed);
       if (parsedAddress.success) {
-        latestEnsRequestRef.current += 1;
         setError(null);
         setEnsCandidate(null);
         setEnsStatus({ status: 'address', address: parsedAddress.data });
@@ -238,7 +260,6 @@ export function NftWalletCard({
         onWalletAddressChange(null);
         return;
       }
-      latestEnsRequestRef.current += 1;
       setEnsCandidate(null);
       setEnsStatus({ status: 'idle' });
       setError('Enter a valid wallet address or ENS name');
@@ -291,6 +312,27 @@ export function NftWalletCard({
           ),
           className: 'text-emerald-500 dark:text-emerald-400',
           address: ensStatus.address,
+          ensName: ensStatus.ensName,
+        };
+      case 'not_found':
+        return {
+          message: `No wallet found for ${ensStatus.ensName}`,
+          icon: (
+            <Info
+              className="size-4 text-secondary-foreground/70"
+              aria-hidden="true"
+            />
+          ),
+          className: 'text-secondary-foreground/70',
+          address: null,
+          ensName: ensStatus.ensName,
+        };
+      case 'error':
+        return {
+          message: `We couldn't resolve ${ensStatus.ensName}`,
+          icon: <Info className="size-4 text-destructive" aria-hidden="true" />,
+          className: 'text-destructive',
+          address: null,
           ensName: ensStatus.ensName,
         };
       default:
@@ -353,6 +395,7 @@ export function NftWalletCard({
     <TooltipProvider delayDuration={100}>
       <div className="flex flex-col gap-1 text-muted-foreground">
         <span className="flex items-center gap-2 text-sm">
+          <Info className="size-4" aria-hidden="true" />
           <span>{baseHelpMessage}</span>
         </span>
         <div
@@ -390,7 +433,7 @@ export function NftWalletCard({
                       onClick={(event) => {
                         event.preventDefault();
                         event.stopPropagation();
-                        handleCopyAddress(statusMeta.address!);
+                        handleCopyAddress(statusMeta.address);
                       }}
                     >
                       {copiedAddress === statusMeta.address ? (
