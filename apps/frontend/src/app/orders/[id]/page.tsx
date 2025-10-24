@@ -26,6 +26,7 @@ import {
   getChain,
   getSubDomainAndParentDomainFromNormalizedDomainName,
 } from '@namefi-astra/utils';
+import { nftIdFromDomainName } from '@namefi-astra/utils/nft-hash';
 import { useQuery } from '@tanstack/react-query';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { TRPCClientError } from '@trpc/client';
@@ -216,6 +217,8 @@ export default function OrderPage({ params }: OrderPageProps) {
     if (!items) {
       return [];
     }
+    const chainId = order?.nftChainId ?? null;
+
     return items
       .filter(
         (item) =>
@@ -227,13 +230,22 @@ export default function OrderPage({ params }: OrderPageProps) {
           getSubDomainAndParentDomainFromNormalizedDomainName(
             item.normalizedDomainName,
           );
+        let tokenId: string | null = null;
+        try {
+          tokenId = nftIdFromDomainName(item.normalizedDomainName).toString();
+        } catch {
+          tokenId = null;
+        }
+
         return {
           subdomain,
           parentDomain,
           fullDomain: item.normalizedDomainName,
+          tokenId,
+          chainId,
         };
       });
-  }, [items]);
+  }, [items, order?.nftChainId]);
 
   const origin = useOrigin();
 

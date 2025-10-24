@@ -1,16 +1,20 @@
 import type { OriginInfo } from '@/lib/origin';
 import { originConfig } from '@/lib/origin/config';
-import { SquareArrowOutUpRightIcon } from 'lucide-react';
+import { ExternalLink } from 'lucide-react';
 import Link from 'next/link';
 import { CartCard } from './cart-card';
 import { NamefiButton } from './buttons/namefi-button';
 import { NFTDomain } from './nft-domain';
+import { getChain, NAMEFI_NFT_CONTRACT_ADDRESS } from '@namefi-astra/utils';
+import { NetworkLogo } from '@/components/network-logo';
 
 interface NftDomainCardProps {
   item: {
     subdomain: string;
     parentDomain: string;
     fullDomain: string;
+    tokenId: string | null;
+    chainId: number | null;
   };
   origin: OriginInfo;
   isCompleted: boolean;
@@ -33,6 +37,10 @@ export function NftDomainCard({
         config: thirdPartyCfg,
       }
     : origin;
+  const explorerUrl =
+    isCompleted && item.tokenId && item.chainId !== null
+      ? getNftExplorerUrl(item.chainId, item.tokenId)
+      : null;
 
   return (
     <CartCard className={className ?? 'p-4'}>
@@ -42,8 +50,7 @@ export function NftDomainCard({
         origin={computedOrigin}
       />
       <NamefiButton
-        variant="ghost"
-        className="w-full mt-4 bg-black/[0.03] border-white/10"
+        className="w-full mt-4"
         asChild={true}
         disabled={!isCompleted}
       >
@@ -53,9 +60,38 @@ export function NftDomainCard({
           tabIndex={isCompleted ? 0 : -1}
         >
           View Your Domain
-          <SquareArrowOutUpRightIcon className="w-4 h-4" />
+          <ExternalLink className="w-3.5 h-3.5" />
         </Link>
       </NamefiButton>
+      {explorerUrl ? (
+        <NamefiButton
+          variant="ghost"
+          className="w-full mt-2 bg-black/[0.03] border-white/10"
+          asChild={true}
+        >
+          <Link href={explorerUrl} target="_blank" rel="noopener noreferrer">
+            {item.chainId !== null ? (
+              <NetworkLogo className="size-4" network={item.chainId} />
+            ) : null}
+            View Your NFT
+            <ExternalLink className="w-3.5 h-3.5" />
+          </Link>
+        </NamefiButton>
+      ) : null}
     </CartCard>
   );
+}
+
+function getNftExplorerUrl(
+  chainId: number | null,
+  tokenId: string | null,
+): string | null {
+  if (chainId === null || tokenId === null) return null;
+  const chain = getChain(chainId);
+  const baseUrl = chain?.blockExplorers?.default?.url;
+  if (!baseUrl) return null;
+  const normalizedBaseUrl = baseUrl.endsWith('/')
+    ? baseUrl.slice(0, -1)
+    : baseUrl;
+  return `${normalizedBaseUrl}/nft/${NAMEFI_NFT_CONTRACT_ADDRESS}/${tokenId}`;
 }
