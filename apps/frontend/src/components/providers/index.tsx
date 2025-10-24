@@ -1,14 +1,9 @@
-'use client';
-
-import { Loading } from '@/components/loading';
+import { getOriginRuntime } from '@/lib/origin';
 import { InteractionLoggersProvider } from '@/components/providers/analytics';
 import { OriginProvider } from '@/components/providers/origin';
-import { getWagmiConfig } from '@/lib/wagmi-config';
-import { WagmiProvider } from '@privy-io/wagmi';
 import { CookieConsentProvider } from '@/components/providers/cookie-consent';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { NuqsAdapter } from 'nuqs/adapters/next/app';
-import { type PropsWithChildren, type FC, Suspense, useState } from 'react';
+import type { PropsWithChildren, FC } from 'react';
 import { CartProvider } from './cart';
 import { ProgressProvider } from './progress';
 import { SessionsProvider } from './privy';
@@ -16,71 +11,41 @@ import { ThemeProvider } from './theme';
 import { TrpcProvider } from './trpc';
 import { WishlistProvider } from './wishlist';
 import { FreeMintsGuidanceProvider } from './free-mints-guidance';
-import type { OriginRuntime } from '@/lib/origin';
 import { PreAuthSignalsProvider } from '@/components/providers/pre-auth-signals';
 import { AdminFeatureFlagsProvider } from '@/components/admin/feature-flags/context';
+import { WagmiProvider } from './wagmi';
 
-export const Providers: FC<
-  PropsWithChildren<{
-    originInfo: OriginRuntime;
-  }>
-> = ({ children, originInfo }) => {
-  const [config] = useState(() => getWagmiConfig());
-  const [queryClient] = useState(() => new QueryClient());
-
+export const Providers: FC<PropsWithChildren> = async ({ children }) => {
+  const originInfo = await getOriginRuntime();
   return (
-    <Suspense fallback={<Loading fullscreen={true} />}>
-      <ThemeProvider
-        storageKey="theme"
-        attribute="data-theme"
-        enableSystem={false}
-        disableTransitionOnChange={true}
-        defaultTheme={originInfo.thirdPartyHostname ?? 'astra'}
-        themes={[
-          'astra',
-          '0x.city',
-          'taylor.cv',
-          'ali.cv',
-          'li.cv',
-          'muller.cv',
-          'kumar.cv',
-          'starts.today',
-          'ends.today',
-          'promos.today',
-          'available.today',
-          'discounts.today',
-        ]}
-      >
-        <OriginProvider originInfo={originInfo}>
-          <SessionsProvider>
-            <TrpcProvider>
-              <NuqsAdapter>
-                <ProgressProvider>
-                  <QueryClientProvider client={queryClient}>
-                    <WagmiProvider config={config}>
-                      <CookieConsentProvider>
-                        <PreAuthSignalsProvider>
-                          <InteractionLoggersProvider>
-                            <WishlistProvider>
-                              <CartProvider>
-                                <AdminFeatureFlagsProvider>
-                                  <FreeMintsGuidanceProvider>
-                                    {children}
-                                  </FreeMintsGuidanceProvider>
-                                </AdminFeatureFlagsProvider>
-                              </CartProvider>
-                            </WishlistProvider>
-                          </InteractionLoggersProvider>
-                        </PreAuthSignalsProvider>
-                      </CookieConsentProvider>
-                    </WagmiProvider>
-                  </QueryClientProvider>
-                </ProgressProvider>
-              </NuqsAdapter>
-            </TrpcProvider>
-          </SessionsProvider>
-        </OriginProvider>
+    <OriginProvider originInfo={originInfo}>
+      <ThemeProvider>
+        <SessionsProvider>
+          <TrpcProvider>
+            <NuqsAdapter>
+              <ProgressProvider>
+                <WagmiProvider>
+                  <CookieConsentProvider>
+                    <PreAuthSignalsProvider>
+                      <InteractionLoggersProvider>
+                        <WishlistProvider>
+                          <CartProvider>
+                            <AdminFeatureFlagsProvider>
+                              <FreeMintsGuidanceProvider>
+                                {children}
+                              </FreeMintsGuidanceProvider>
+                            </AdminFeatureFlagsProvider>
+                          </CartProvider>
+                        </WishlistProvider>
+                      </InteractionLoggersProvider>
+                    </PreAuthSignalsProvider>
+                  </CookieConsentProvider>
+                </WagmiProvider>
+              </ProgressProvider>
+            </NuqsAdapter>
+          </TrpcProvider>
+        </SessionsProvider>
       </ThemeProvider>
-    </Suspense>
+    </OriginProvider>
   );
 };

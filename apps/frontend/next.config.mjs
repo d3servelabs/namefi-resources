@@ -25,6 +25,7 @@ const { config: appConfig } = await jiti.import('./src/lib/env/load');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  cacheComponents: true,
   compiler: {
     define: {
       'process.env.LOADED_CONFIG': JSON.stringify(appConfig),

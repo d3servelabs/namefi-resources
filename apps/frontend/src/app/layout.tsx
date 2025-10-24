@@ -9,11 +9,11 @@ import { Providers } from '@/components/providers';
 import { GoogleAnalyticsCookieConsentGated } from '@/components/ga';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
-import type { ReactNode } from 'react';
+import { Suspense, type PropsWithChildren } from 'react';
 import DatadogRum from '@/components/datadog-rum';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import './globals.css';
 import ImpersonationBanner from '@/components/ImpersonationBanner';
+import './globals.css';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -25,11 +25,6 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 });
 
-/**
- * Generate metadata for the current origin
- * This is a special function that is called by Next.js to generate metadata for the page.
- * @see https://nextjs.org/docs/app/api-reference/functions/generate-metadata
- */
 export async function generateMetadata(): Promise<Metadata> {
   const { origin, config: originConfig } = await getOriginRuntime();
   const metadata = originConfig.metadata;
@@ -40,12 +35,7 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default async function RootLayout({
-  children,
-}: Readonly<{
-  children: ReactNode;
-}>) {
-  const originInfo = await getOriginRuntime();
+export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en" className="dark h-full" suppressHydrationWarning={true}>
       <body
@@ -56,17 +46,19 @@ export default async function RootLayout({
         )}
       >
         <DatadogRum />
-        <Providers originInfo={originInfo}>
-          <GoogleAnalyticsCookieConsentGated />
-          <ReactQueryDevtools initialIsOpen={false} />
-          <OriginBackground />
-          <Toaster expand={true} visibleToasts={3} />
-          <SidebarProvider defaultOpen={false}>
-            <AppSidebar />
-            <Main>{children}</Main>
-          </SidebarProvider>
-          <ImpersonationBanner />
-        </Providers>
+        <Suspense>
+          <Providers>
+            <GoogleAnalyticsCookieConsentGated />
+            <ReactQueryDevtools initialIsOpen={false} />
+            <OriginBackground />
+            <Toaster expand={true} visibleToasts={3} />
+            <SidebarProvider defaultOpen={false}>
+              <AppSidebar />
+              <Main>{children}</Main>
+            </SidebarProvider>
+            <ImpersonationBanner />
+          </Providers>
+        </Suspense>
       </body>
     </html>
   );

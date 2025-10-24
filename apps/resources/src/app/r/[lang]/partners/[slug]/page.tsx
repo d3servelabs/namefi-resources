@@ -16,9 +16,6 @@ import {
 import { resolveTitle } from '@/lib/site-metadata';
 import { useMDXComponents } from '@/mdx-components';
 
-export const dynamic = 'error';
-export const dynamicParams = false;
-
 const TRAILING_SLASH_REGEX = /\/$/;
 
 export async function generateStaticParams() {

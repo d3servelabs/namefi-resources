@@ -4,9 +4,12 @@
 import { datadogRum } from '@datadog/browser-rum';
 import { reactPlugin } from '@datadog/browser-rum-react';
 
+let DatadogRumInitialized = false;
+
 if (
   process.env.NEXT_PUBLIC_DATADOG_RUM_APPLICATION_ID &&
-  process.env.NEXT_PUBLIC_DATADOG_RUM_CLIENT_TOKEN
+  process.env.NEXT_PUBLIC_DATADOG_RUM_CLIENT_TOKEN &&
+  !DatadogRumInitialized
 ) {
   datadogRum.init({
     applicationId: process.env.NEXT_PUBLIC_DATADOG_RUM_APPLICATION_ID,
@@ -27,6 +30,8 @@ if (
   datadogRum.startSessionReplayRecording({
     force: true,
   });
+
+  DatadogRumInitialized = true;
 }
 
 export default function DatadogRum() {

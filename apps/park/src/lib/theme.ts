@@ -54,22 +54,22 @@ export function getPoweredByNamefiApex(value?: string | null): string | null {
 
 export function resolveParkTheme(options?: {
   host?: string | null;
-  domain?: string | null;
+  domainOverride?: string | null;
 }): ParkTheme {
   if (!options) return 'astra';
 
   const hostMatch = getPoweredByNamefiApex(options.host);
   if (hostMatch) return hostMatch;
 
-  const domainMatch = getPoweredByNamefiApex(options.domain);
+  const domainMatch = getPoweredByNamefiApex(options.domainOverride);
   if (domainMatch) return domainMatch;
 
   const normalizedHost = normalizeHostname(options.host);
-  const normalizedDomain = normalizeHostname(options.domain);
+  const normalizedDomain = normalizeHostname(options.domainOverride);
 
   if (
-    (normalizedHost && normalizedHost.includes('.poweredby.')) ||
-    (normalizedDomain && normalizedDomain.includes('.poweredby.'))
+    normalizedHost?.includes('.poweredby.') ||
+    normalizedDomain?.includes('.poweredby.')
   ) {
     return 'pbn';
   }
