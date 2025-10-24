@@ -19,7 +19,7 @@ RUN apt-get update && apt-get install -y bash curl dnsutils
 # && apt-get update && apt-get install -y infisical
 
 # Stage 2: Use Bun for dependency installation
-FROM oven/bun:1.2.23-debian AS deps
+FROM oven/bun:1.3.1-debian AS deps
 WORKDIR /app
 
 # Copy package files for dependency installation

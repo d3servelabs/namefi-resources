@@ -3,6 +3,9 @@
 # whether to save text vs binary lock file
 saveTextLockfile = true
 
+# Use traditional hoisted installs
+linker = "hoisted"
+
 [install.lockfile]
 
 # whether to save the lockfile to disk
