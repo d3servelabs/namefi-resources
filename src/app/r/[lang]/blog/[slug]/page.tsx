@@ -16,9 +16,6 @@ import { resolveTitle } from '@/lib/site-metadata';
 import { useMDXComponents } from '@/mdx-components';
 import type { Metadata } from 'next';
 
-export const dynamic = 'error';
-export const dynamicParams = false;
-
 export async function generateStaticParams() {
   return getPostParams();
 }

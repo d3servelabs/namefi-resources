@@ -1,13 +1,14 @@
 import createMdx from '@next/mdx';
+import type { NextConfig } from 'next';
 
 const withMDX = createMdx({
   extension: /\.mdx?$/,
 });
 
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md', 'mdx'],
+const nextConfig: NextConfig = {
   assetPrefix: '/r',
+  cacheComponents: true,
+  pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md', 'mdx'],
   experimental: {
     turbopackFileSystemCacheForDev: true,
   },

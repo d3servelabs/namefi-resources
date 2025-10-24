@@ -6,8 +6,6 @@ import { getDictionary } from '@/get-dictionary';
 import { getAuthorNames, getPartnersForLocale } from '@/lib/content';
 import { resolveTitle } from '@/lib/site-metadata';
 
-export const dynamic = 'error';
-
 const TRAILING_SLASH_REGEX = /\/$/;
 
 export async function generateMetadata({
