@@ -5,6 +5,7 @@ import { format } from 'date-fns';
 import { cn } from '@/lib/cn';
 import { StatusBadge } from '@/components/status-badge';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
+import type { WorkflowProgressPhase } from '@/hooks/use-order-progress';
 import type { AppRouterOutput } from '@/lib/trpc';
 import {
   CheckCircle2,
@@ -19,7 +20,7 @@ type Step = NonNullable<OrderProgress['state']>['steps'][number];
 
 interface OrderProgressTimelineProps {
   progress: OrderProgress | null;
-  isLoading?: boolean;
+  workflowPhase: WorkflowProgressPhase;
 }
 
 const iconByStatus = (status: Step['status']) => {
@@ -76,9 +77,9 @@ const copyByStepId: Record<
 
 export function OrderProgressTimeline({
   progress,
-  isLoading = false,
+  workflowPhase,
 }: OrderProgressTimelineProps) {
-  const effectiveLoading = isLoading || !progress?.state;
+  const effectiveLoading = workflowPhase === 'loading' || !progress?.state;
   const steps = progress?.state?.steps ?? [];
   const startedAtMs = progress?.state?.timestamps.startedAt ?? null;
   const completedAtMs = progress?.state?.timestamps.completedAt ?? null;

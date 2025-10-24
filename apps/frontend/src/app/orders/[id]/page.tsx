@@ -20,7 +20,11 @@ import { useAuth } from '@/hooks/use-auth';
 import { formatDate, getShortAddress } from '@/lib/string';
 import { type AppRouterOutput, useTRPC } from '@/lib/trpc';
 import { OrderProgressTimeline } from '@/components/orders/order-progress-timeline';
-import { useOrderProgress } from '@/hooks/use-order-progress';
+import {
+  getWorkflowProgressPhase,
+  type WorkflowProgressPhase,
+  useOrderProgress,
+} from '@/hooks/use-order-progress';
 import { orderStatusSchema, type PaymentSelect } from '@namefi-astra/db/types';
 import {
   getChain,
@@ -42,7 +46,6 @@ import {
   TwitterIcon,
   TwitterShareButton,
 } from 'react-share';
-import { useDebounceValue } from 'usehooks-ts';
 import { StatusBadge } from '@/components/status-badge';
 
 interface OrderPageProps {
@@ -112,7 +115,7 @@ export default function OrderPage({ params }: OrderPageProps) {
     error,
   } = useQuery({
     ...trpc.orders.getOrder.queryOptions({ orderId: id }),
-    enabled: !!id && isAuthenticated,
+    enabled: isAuthenticated,
     refetchInterval: (query) => {
       const currentStatus = query.state.data?.order?.status;
 
@@ -171,13 +174,11 @@ export default function OrderPage({ params }: OrderPageProps) {
   const isInitialLoading = isAuthLoading || isOrderLoading;
 
   const orderProgress = useOrderProgress(id, {
-    enabled: Boolean(id) && !isCompletedOrder,
+    enabled: isAuthenticated,
   });
 
   const activeProgressCopy = useMemo(() => {
-    const stepId = orderProgress.activeStep?.id as
-      | OrderProgressStepId
-      | undefined;
+    const stepId = orderProgress.activeStep?.id;
     if (stepId) {
       return processingCopyByStep[stepId];
     }
@@ -219,12 +220,20 @@ export default function OrderPage({ params }: OrderPageProps) {
       });
   }, [items, order?.nftChainId]);
 
-  const showDomainSkeleton = isInitialLoading || orderItems.length === 0;
-  const timelineLoading =
-    isInitialLoading ||
-    orderProgress.isLoading ||
-    !orderProgress.data ||
-    !orderProgress.data.state;
+  const workflowPhase = getWorkflowProgressPhase(orderProgress.data ?? null);
+  const viewState: 'loading' | 'processing' | 'completed' = (() => {
+    if (workflowPhase === 'loading') {
+      return 'loading';
+    }
+    if (workflowPhase === 'processing') {
+      return 'processing';
+    }
+    return hasOrderDetails ? 'completed' : 'loading';
+  })();
+  const showProcessingView = viewState !== 'completed';
+
+  const showDomainSkeleton = viewState === 'loading' || orderItems.length === 0;
+  const canShowOrderDetailsButton = hasOrderDetails && viewState !== 'loading';
 
   const origin = useOrigin();
 
@@ -242,9 +251,6 @@ export default function OrderPage({ params }: OrderPageProps) {
       ? `Great I've just got ${domainList} from 0x.city (#PoweredByNamefi), come check it out!`
       : `Great I've just got ${orderItems[0].fullDomain} from 0x.city (#PoweredByNamefi), come check it out`;
   }, [orderItems]);
-
-  const [debouncedIsCompletedOrder] = useDebounceValue(isCompletedOrder, 3000);
-  const showProcessingView = isInitialLoading || !debouncedIsCompletedOrder;
 
   if (!(isAuthLoading || isAuthenticated)) {
     return (
@@ -283,31 +289,46 @@ export default function OrderPage({ params }: OrderPageProps) {
     return null;
   }
 
-  const heading = showProcessingView
-    ? activeProgressCopy.title
-    : 'Congratulations!';
-  const subheading = showProcessingView
-    ? activeProgressCopy.description
-    : `You've got your ${orderItems.length > 1 ? 'domains' : 'domain'} and here ${
-        orderItems.length > 1 ? 'are the NFTs' : 'is the NFT'
-      }`;
-  const showSpinner = showProcessingView && timelineLoading;
+  const heading =
+    viewState === 'completed' ? 'Congratulations!' : activeProgressCopy.title;
+  const subheading =
+    viewState === 'completed'
+      ? `You've got your ${orderItems.length > 1 ? 'domains' : 'domain'} and here ${
+          orderItems.length > 1 ? 'are the NFTs' : 'is the NFT'
+        }`
+      : activeProgressCopy.description;
+  const showSpinner = workflowPhase === 'processing' && orderProgress.isPolling;
+  const timelinePhase: WorkflowProgressPhase =
+    viewState === 'loading'
+      ? 'loading'
+      : workflowPhase === 'terminal'
+        ? 'terminal'
+        : 'processing';
 
   return (
     <div className="container mx-auto py-8 px-8">
       <div className="max-w-2xl mx-auto">
         <div className="text-center mb-6">
-          <h1 className="text-4xl font-bold mb-3">{heading}</h1>
-          <p className="text-muted-foreground text-lg flex items-center justify-center gap-2">
-            {subheading}
-            {showSpinner && <Loader2 className="h-5 w-5 animate-spin" />}
-          </p>
+          {viewState === 'loading' ? (
+            <>
+              <Skeleton className="mx-auto mb-3 h-10 w-64 max-w-full" />
+              <Skeleton className="mx-auto h-5 w-80 max-w-full" />
+            </>
+          ) : (
+            <>
+              <h1 className="text-4xl font-bold mb-3">{heading}</h1>
+              <p className="text-muted-foreground text-lg flex items-center justify-center gap-2">
+                {subheading}
+                {showSpinner && <Loader2 className="h-5 w-5 animate-spin" />}
+              </p>
+            </>
+          )}
         </div>
 
         <div className="mb-8">
           <OrderProgressTimeline
             progress={orderProgress.data ?? null}
-            isLoading={timelineLoading}
+            workflowPhase={timelinePhase}
           />
         </div>
 
@@ -358,12 +379,12 @@ export default function OrderPage({ params }: OrderPageProps) {
             )}
 
             <div className="flex gap-4 mb-8 justify-center">
-              {isInitialLoading ? (
-                <Skeleton className="h-10 w-[180px]" />
-              ) : (
+              {canShowOrderDetailsButton ? (
                 <NamefiButton asChild={true}>
                   <Link href={`/orders/${id}/details`}>View order details</Link>
                 </NamefiButton>
+              ) : (
+                <Skeleton className="h-10 w-[180px]" />
               )}
             </div>
           </>

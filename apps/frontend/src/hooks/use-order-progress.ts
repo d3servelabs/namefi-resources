@@ -11,7 +11,7 @@ export interface UseOrderProgressOptions {
   pollIntervalMs?: number;
 }
 
-const TERMINAL_WORKFLOW_STATUSES = new Set<
+export const TERMINAL_WORKFLOW_STATUSES = new Set<
   OrderProgressResponse['workflowStatus']
 >([
   'COMPLETED',
@@ -95,4 +95,20 @@ export function useOrderProgress(
     orderStatus: progress?.orderStatus,
     refreshedAt: progress?.fetchedAt ?? null,
   } as const;
+}
+
+export type WorkflowProgressPhase = 'loading' | 'processing' | 'terminal';
+
+export function getWorkflowProgressPhase(
+  progress: OrderProgressResponse | null | undefined,
+): WorkflowProgressPhase {
+  if (!progress || !progress.state) {
+    return 'loading';
+  }
+
+  if (TERMINAL_WORKFLOW_STATUSES.has(progress.workflowStatus)) {
+    return 'terminal';
+  }
+
+  return 'processing';
 }
