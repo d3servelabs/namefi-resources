@@ -121,6 +121,20 @@ function PageHeader() {
       <p className="text-muted-foreground mt-2">
         Create custom logos and posters for your brand
       </p>
+      <a
+        href="https://www.producthunt.com/products/namefi?embed=true&utm_source=badge-featured&utm_medium=badge"
+        target="_blank"
+        rel="noreferrer noopener"
+        className="mt-4 inline-block"
+      >
+        <img
+          src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1015110&theme=light&t=1758010170449"
+          alt="Just AI'ng by Namefi on Product Hunt"
+          width="250"
+          height="54"
+          style={{ width: 250, height: 54 }}
+        />
+      </a>
     </div>
   );
 }
