@@ -173,14 +173,6 @@ export async function createRefund({
 
 export async function getPaymentDetails({ paymentId }: { paymentId: string }) {
   const payment = await db.query.paymentsTable.findFirst({
-    columns: {
-      amountInUSDCents: true,
-      status: true,
-      paymentProvider: true,
-      paymentProviderReferenceId: true,
-      nfscPaymentDetails: true,
-      stripePaymentDetails: true,
-    },
     where: eq(paymentsTable.id, paymentId),
   });
 

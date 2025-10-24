@@ -704,7 +704,7 @@ export async function sendEmailNotificationForRenewFailedToCharge({
  * it's a renewal and with the *current provider* and extend for 1 year
  * @returns record with key as domainNameLdh and autoRenewPrice
  */
-export async function getRenewPriceByDomain({
+export async function getRenewPriceByDomainInUsd({
   normalizeDomainNameList,
 }: {
   normalizeDomainNameList: NamefiNormalizedDomain[];

@@ -11,14 +11,14 @@ import * as DnssecActivities from './dnssec.activities';
 import * as RegistrarActivities from './registrar.activities';
 import { getDomainDurationConstraints } from '#lib/domains/duration-constraints/index';
 import {
-  getRenewPriceByDomain,
+  getRenewPriceByDomainInUsd,
   sendEmailNotificationForRenewFailedToCharge,
   sendEmailNotificationForRenewResult,
   sendEmailNotificationForUpcomingRenew,
   getDomainsUpForRenewalGroupedByOwner,
 } from './renew.activities';
 import * as DisableAutoRenewalActivities from './disable-auto-renewal.activities';
-
+import * as AutoRenewReportActivities from './autorenew-report.activities';
 //TODO: add a check to see if name collision is happening
 export const DomainsActivities = {
   parkDomain,
@@ -31,7 +31,7 @@ export const DomainsActivities = {
   getPoweredByNamefi3PDomains,
   getDomainChain,
   // Renew activities
-  getRenewPriceByDomain,
+  getRenewPriceByDomainInUsd,
   sendEmailNotificationForRenewFailedToCharge,
   sendEmailNotificationForRenewResult,
   sendEmailNotificationForUpcomingRenew,
@@ -39,6 +39,7 @@ export const DomainsActivities = {
   getDomainDurationConstraints,
   // Auto-renewal disabling activities
   ...DisableAutoRenewalActivities,
+  ...AutoRenewReportActivities,
 };
 
 export async function getDomainChain(

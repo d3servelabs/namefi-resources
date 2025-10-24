@@ -11,8 +11,8 @@ import type {
   DomainsUpForRenewalWithUser,
 } from '../activities/domain/renew.activities';
 import { RenewOption } from '@namefi-astra/registrars/lib/abstract-registrar/index';
-import type { PaymentProvider } from '@namefi-astra/db/types';
-import { filter, isNotNil, map, pickBy, pluck, sum } from 'ramda';
+import type { PaymentProvider, PaymentSelect } from '@namefi-astra/db/types';
+import { isNotNil, pickBy, pluck, sum } from 'ramda';
 import { refundUserWorkflow } from './refund-user.workflow';
 import { RENEW_EARLY_BY_DAYS } from '../../lib/env/consts';
 import type { DomainRenewalResult } from '../activities/order.activities';
@@ -22,6 +22,11 @@ import {
 } from './charge-user-and-create-payment.workflow';
 import pMap from 'p-map';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
+import { catchAndAlertLocally } from '../shared/workflow-helpers/catch-and-alert-locally';
+import type {
+  AutoRenewMetrics,
+  AutoRenewReportInput,
+} from '../activities/domain/autorenew-report.activities';
 
 const { triggerUpdateDomainIndex } = typedProxyActivities({
   temporalEnum: TEMPORAL_ENUMS.INDEXERS,
@@ -30,11 +35,29 @@ const { triggerUpdateDomainIndex } = typedProxyActivities({
   },
 });
 
-const { generalAlertNamefi, createAutoRenewOrder, criticalAlertNamefi } =
-  typedProxyActivities({
-    temporalEnum: TEMPORAL_ENUMS.DEFAULT,
-    options: shortRunningOpts,
-  });
+// Auto-renewal report activities
+const {
+  collectAutoRenewMetrics,
+  formatAutoRenewReport,
+  sendAutoRenewReportToSlack,
+  sendAutoRenewReportEmail,
+} = typedProxyActivities({
+  temporalEnum: TEMPORAL_ENUMS.DOMAINS,
+  options: {
+    ...shortRunningOpts,
+    startToCloseTimeout: '5m',
+  },
+});
+
+const {
+  generalAlertNamefi,
+  createAutoRenewOrder,
+  criticalAlertNamefi,
+  getPaymentDetails,
+} = typedProxyActivities({
+  temporalEnum: TEMPORAL_ENUMS.DEFAULT,
+  options: shortRunningOpts,
+});
 
 const { maybeGetUserEmail } = typedProxyActivities({
   temporalEnum: TEMPORAL_ENUMS.NOTIFY,
@@ -58,16 +81,19 @@ const { getDomainsUpForRenewalGroupedByOwner } = typedProxyActivities({
 
 export async function dailyDomainsUpcomingRenewalsWorkflow({
   dryRun = false,
+  forceSendReport = false,
 }: {
   dryRun?: boolean;
+  forceSendReport?: boolean;
 } = {}) {
+  const startTime = Date.now();
   workflow.log.info(
     `Starting daily domains upcoming renewals workflow, ${dryRun ? 'dryRun' : 'live'}`,
   );
   const domainsUpForRenewalGroupedByOwner =
     await getDomainsUpForRenewalGroupedByOwner();
   workflow.log.info(
-    `Found ${Object.keys(domainsUpForRenewalGroupedByOwner).length} domains up for renewal`,
+    `Found ${Object.keys(domainsUpForRenewalGroupedByOwner).length} users with domains up for renewal`,
   );
 
   //Start child workflows for each user to notify and renew
@@ -114,6 +140,7 @@ export async function dailyDomainsUpcomingRenewalsWorkflow({
     userId: string;
     error: Error;
   }[];
+  const skipped = results.filter(({ status }) => status === 'skipped');
 
   if (failures.length > 0 && !dryRun) {
     await criticalAlertNamefi({
@@ -124,21 +151,37 @@ export async function dailyDomainsUpcomingRenewalsWorkflow({
     });
   }
 
-  const report = {
-    successes,
-    failures,
-  };
-
+  // Trigger domain index update
   try {
     await triggerUpdateDomainIndex();
   } catch (error) {
     workflow.log.error(`Error in triggerUpdateDomainIndex: ${error}`);
   }
 
+  // Generate and send comprehensive report
+  const executionTime = Date.now() - startTime;
+
+  if (!dryRun) {
+    await _generateAndSendAutoRenewReport({
+      successes,
+      failures,
+      skipped,
+      executionTime,
+      forceSendReport,
+    });
+  }
+
+  const report = {
+    successes,
+    failures,
+    executionTime,
+    reportSent: !dryRun,
+  };
+
   return report;
 }
 
-const { getRenewPriceByDomain } = typedProxyActivities({
+const { getRenewPriceByDomainInUsd } = typedProxyActivities({
   temporalEnum: TEMPORAL_ENUMS.DOMAINS,
   options: shortRunningOpts,
 });
@@ -147,14 +190,45 @@ type UserDomainsUpForRenewal = Exclude<
   Awaited<ReturnType<typeof getDomainsUpForRenewalGroupedByOwner>>[string],
   undefined
 >;
+//----------------------------------------------------------------
+// Renew domains for single user workflow
+//----------------------------------------------------------------
+// #region Renew domains for single user workflow output
+type NotifyAndRenewDomainsForSingleUserWorkflowOutput = {
+  userId: string;
+  userEmail: string | undefined;
+  domainsThatShouldBeRenewed: UserDomainsUpForRenewal;
+  domainsThatCouldBeRenewed: (UserDomainsUpForRenewal[number] & {
+    chargeAmount: number;
+  })[];
+  domainsMissingPriceData: UserDomainsUpForRenewal;
+  chargeAmountByDomainLdh: Record<NamefiNormalizedDomain, number | null>;
+  totalAmountInUsd: number;
+  paymentStatus: 'SUCCEEDED' | 'FAILED' | 'SKIPPED';
+  payments: PaymentSelect[];
+  paymentMethodCharged?: PaymentProvider;
+  paymentMethodIdentifier?: string;
+  refundAmountInUsd?: number | null;
+  message?: string | undefined;
+  successes: {
+    status: 'fulfilled';
+    domain: UserDomainsUpForRenewal[number];
+    result: ExtendDomainRegistrationWorkflowOutput;
+  }[];
+  failures: {
+    status: 'rejected';
+    domain: UserDomainsUpForRenewal[number];
+    error: Error;
+  }[];
+};
 
 export async function notifyAndRenewDomainsForSingleUserWorkflow(
   userId: string,
   userDomainsUpForRenewal: UserDomainsUpForRenewal,
   dryRun: boolean,
-) {
+): Promise<NotifyAndRenewDomainsForSingleUserWorkflowOutput> {
   const chargeAmountByDomainLdh: Record<NamefiNormalizedDomain, number | null> =
-    await getRenewPriceByDomain({
+    await getRenewPriceByDomainInUsd({
       normalizeDomainNameList: userDomainsUpForRenewal.map(
         (domain) => domain.normalizedDomainName,
       ),
@@ -218,9 +292,13 @@ export async function notifyAndRenewDomainsForSingleUserWorkflow(
       userEmail,
       domainsThatShouldBeRenewed,
       domainsThatCouldBeRenewed,
+      domainsMissingPriceData,
       chargeAmountByDomainLdh,
       totalAmountInUsd,
-      count: domainsThatCouldBeRenewed.length,
+      paymentStatus: 'SKIPPED',
+      successes: [],
+      failures: [],
+      payments: [],
     };
   }
 
@@ -241,11 +319,23 @@ export async function notifyAndRenewDomainsForSingleUserWorkflow(
 
   if (domainsThatCouldBeRenewed.length === 0) {
     workflow.log.info(`For user ${userId} there are no domains up for renew`);
-    return;
+    return {
+      userId,
+      userEmail,
+      domainsThatShouldBeRenewed,
+      domainsThatCouldBeRenewed,
+      domainsMissingPriceData,
+      chargeAmountByDomainLdh,
+      totalAmountInUsd,
+      paymentStatus: 'SKIPPED',
+      successes: [],
+      failures: [],
+      payments: [],
+    };
   }
 
   let chargeResult: ChargeUserAndCreatePaymentWorkflowOutput;
-
+  const payments: PaymentSelect[] = [];
   try {
     chargeResult = await workflow.executeChild(
       chargeUserAndCreatePaymentWorkflow,
@@ -258,6 +348,11 @@ export async function notifyAndRenewDomainsForSingleUserWorkflow(
         ],
         workflowId: `charge-user-${new Date().toISOString()}-${userId}-${totalAmountInUsd}$USD`,
       },
+    );
+    payments.push(
+      await getPaymentDetails({
+        paymentId: chargeResult.namefiPaymentIntentId,
+      }),
     );
   } catch (_error: unknown) {
     await generalAlertNamefi({
@@ -278,13 +373,16 @@ export async function notifyAndRenewDomainsForSingleUserWorkflow(
     return {
       userId,
       userEmail,
-      domainsToRenew: domainsThatCouldBeRenewed.map(
-        ({ normalizedDomainName }) => normalizedDomainName,
-      ),
-      domainToRenewCount: domainsThatCouldBeRenewed.length,
       totalAmountInUsd,
+      domainsThatCouldBeRenewed,
+      chargeAmountByDomainLdh,
+      domainsThatShouldBeRenewed,
+      domainsMissingPriceData,
       paymentStatus: 'FAILED',
+      payments,
       message: `Fail to charge user(userId:${userId}) for ${totalAmountInUsd}$USD`,
+      successes: [],
+      failures: [],
     };
   }
 
@@ -321,16 +419,12 @@ export async function notifyAndRenewDomainsForSingleUserWorkflow(
     }),
   );
 
-  const successes = results.filter(({ status }) => status === 'fulfilled') as {
-    status: 'fulfilled';
-    domain: UserDomainsUpForRenewal[number];
-    result: ExtendDomainRegistrationWorkflowOutput;
-  }[];
-  const failures = results.filter(({ status }) => status === 'rejected') as {
-    status: 'rejected';
-    domain: UserDomainsUpForRenewal[number];
-    error: Error;
-  }[];
+  const successes = results.filter(
+    ({ status }) => status === 'fulfilled',
+  ) as NotifyAndRenewDomainsForSingleUserWorkflowOutput['successes'];
+  const failures = results.filter(
+    ({ status }) => status === 'rejected',
+  ) as NotifyAndRenewDomainsForSingleUserWorkflowOutput['failures'];
 
   let refundAmountInUsd: number | null = null;
   if (failures.length > 0) {
@@ -370,7 +464,12 @@ export async function notifyAndRenewDomainsForSingleUserWorkflow(
     paymentMethodIdentifier: '', // TODO: Add payment method identifier for stripe
     totalAmountInUsd,
     refundAmountInUsd,
-  };
+    domainsThatShouldBeRenewed,
+    domainsThatCouldBeRenewed,
+    chargeAmountByDomainLdh,
+    domainsMissingPriceData,
+    payments,
+  } satisfies NotifyAndRenewDomainsForSingleUserWorkflowOutput;
 
   if (!userEmail) {
     workflow.log.warn(
@@ -386,6 +485,7 @@ export async function notifyAndRenewDomainsForSingleUserWorkflow(
   return report;
 }
 
+// #endregion Renew domains for single user workflow output
 // #region Notify User
 /**
  * Notify user for upcoming renew, a wrapper to send email
@@ -432,7 +532,7 @@ async function _notifyUserForRenewResult({
     result: ExtendDomainRegistrationWorkflowOutput;
   }[];
   failures: { status: 'rejected'; domain: DomainRenewInfo; error: Error }[];
-  refundAmountInUsd: number | null;
+  refundAmountInUsd: number | null | undefined;
   paymentMethodCharged: PaymentProvider;
   paymentMethodIdentifier: string;
   totalAmountInUsd: number;
@@ -543,4 +643,354 @@ async function _createAutoRenewOrderForSingleUser({
       `Failed to create order for user ${userId}: ${orderError}`,
     );
   }
+}
+
+// Type for the result of the single user workflow
+type SingleUserRenewalResult = Awaited<
+  ReturnType<typeof notifyAndRenewDomainsForSingleUserWorkflow>
+>;
+
+/**
+ * Generate and send comprehensive auto-renewal report
+ */
+async function _generateAndSendAutoRenewReport({
+  successes,
+  failures,
+  skipped,
+  executionTime,
+  forceSendReport,
+}: {
+  successes: Array<{
+    status: 'fulfilled';
+    userId: string;
+    result: SingleUserRenewalResult;
+  }>;
+  failures: Array<{
+    status: 'rejected';
+    userId: string;
+    error: Error;
+  }>;
+  skipped: Array<{
+    status: string;
+    userId: string;
+  }>;
+  executionTime: number;
+  forceSendReport: boolean;
+}) {
+  workflow.log.info('Generating auto-renewal daily report');
+
+  // Build workflow results for metrics collection
+  const workflowResults: AutoRenewReportInput['workflowResults'] = [];
+
+  // Process successful renewals
+  for (const success of successes) {
+    const result = success.result;
+    if (!result) continue;
+
+    const processedDomains: Array<{
+      domain: NamefiNormalizedDomain;
+      registrar?: string;
+    }> = [];
+    const failedDomains: Array<{
+      domain: NamefiNormalizedDomain;
+      reason: string;
+      registrar?: string;
+    }> = [];
+
+    // Count successes and failures from the result
+    if (result.successes) {
+      for (const s of result.successes) {
+        processedDomains.push({
+          domain: s.domain.normalizedDomainName,
+          registrar: s.domain.registrarKey,
+        });
+      }
+    }
+
+    if (result.failures) {
+      for (const f of result.failures) {
+        failedDomains.push({
+          domain: f.domain.normalizedDomainName,
+          reason: f.error?.message || 'Unknown error',
+          registrar: f.domain.registrarKey,
+        });
+      }
+    }
+
+    // Handle payment failures
+    if (result.paymentStatus === 'FAILED') {
+      if (result.domainsThatCouldBeRenewed) {
+        for (const domain of result.domainsThatCouldBeRenewed) {
+          failedDomains.push({
+            domain: domain.normalizedDomainName,
+            reason: result.message || 'Payment failed',
+            registrar: undefined,
+          });
+        }
+      }
+    }
+
+    // Handle domains with missing price data
+    for (const domain of result.domainsMissingPriceData) {
+      failedDomains.push({
+        domain: domain.normalizedDomainName,
+        reason: 'Missing price data',
+        registrar: domain.registrarKey,
+      });
+    }
+
+    workflowResults.push({
+      userId: success.userId,
+      userEmail: result.userEmail,
+      status: result.paymentStatus === 'FAILED' ? 'failure' : 'success',
+      domainsProcessed: processedDomains.length + failedDomains.length || 0,
+      amountChargedInUsd: result.totalAmountInUsd || 0,
+      amountRefundedInUsd: result.refundAmountInUsd || 0,
+      payments: result.payments,
+      failures: failedDomains,
+      successes: processedDomains,
+    });
+  }
+
+  // Process workflow failures
+  for (const failure of failures) {
+    workflowResults.push({
+      userId: failure.userId,
+      status: 'failure',
+      domainsProcessed: 0,
+      amountChargedInUsd: 0,
+      amountRefundedInUsd: 0,
+      failures: [
+        {
+          domain: 'Unknown' as NamefiNormalizedDomain,
+          reason: `Workflow failed: ${failure.error?.message || 'Unknown error'}`,
+        },
+      ],
+    });
+  }
+
+  // Process skipped users
+  for (const skip of skipped) {
+    workflowResults.push({
+      userId: skip.userId,
+      status: 'skipped',
+      domainsProcessed: 0,
+      amountChargedInUsd: 0,
+      amountRefundedInUsd: 0,
+    });
+  }
+
+  // Calculate detailed metrics
+  const metrics: AutoRenewMetrics = {
+    reportDate: new Date(),
+    totalUsersProcessed: workflowResults.length,
+    totalDomainsProcessed: 0,
+    successfulRenewals: 0,
+    failedRenewals: 0,
+    totalAmountChargedInUsd: 0,
+    totalAmountRefundedInUsd: 0,
+    paymentMethodBreakdown: {
+      NFSC_BASE: { count: 0, amountInUsd: 0 },
+      NFSC_ETHEREUM: { count: 0, amountInUsd: 0 },
+      NFSC_ETHEREUM_SEPOLIA: { count: 0, amountInUsd: 0 },
+      STRIPE: { count: 0, amountInUsd: 0 },
+    },
+    failureBreakdown: {
+      failedToCharge: 0,
+      registrarErrors: 0,
+      missingPriceData: 0,
+    },
+    criticalDomains: [],
+    userCommunication: {
+      upcomingRenewalNotifications: successes.length,
+      successfulRenewalConfirmations: 0,
+      failedRenewalAlerts: 0,
+      paymentFailureNotifications: 0,
+    },
+    executionMetrics: {
+      totalExecutionTime: executionTime,
+      averageTimePerUser:
+        workflowResults.length > 0 ? executionTime / workflowResults.length : 0,
+      childWorkflowsSpawned: workflowResults.length,
+    },
+    registrarBreakdown: {},
+    largestTransaction: {
+      userId: '',
+      amount: 0,
+      domainCount: 0,
+    },
+  };
+
+  // Process metrics from results
+  for (const result of workflowResults) {
+    metrics.totalDomainsProcessed += result.domainsProcessed || 0;
+    metrics.totalAmountChargedInUsd += result.amountChargedInUsd || 0;
+    metrics.totalAmountRefundedInUsd += result.amountRefundedInUsd || 0;
+
+    // Count successes and failures
+    if (result.successes) {
+      metrics.successfulRenewals += result.successes.length;
+      for (const success of result.successes) {
+        const registrar = success.registrar || 'Unknown';
+        if (!metrics.registrarBreakdown[registrar]) {
+          metrics.registrarBreakdown[registrar] = { successful: 0, failed: 0 };
+        }
+        metrics.registrarBreakdown[registrar].successful++;
+      }
+    }
+
+    if (result.failures) {
+      metrics.failedRenewals += result.failures.length;
+      for (const failure of result.failures) {
+        const registrar = failure.registrar || 'Unknown';
+        if (!metrics.registrarBreakdown[registrar]) {
+          metrics.registrarBreakdown[registrar] = { successful: 0, failed: 0 };
+        }
+        metrics.registrarBreakdown[registrar].failed++;
+
+        // Categorize failures
+        if (
+          failure.reason.toLowerCase().includes('charge') ||
+          failure.reason.toLowerCase().includes('payment')
+        ) {
+          metrics.failureBreakdown.failedToCharge++;
+        } else if (failure.reason.toLowerCase().includes('price')) {
+          metrics.failureBreakdown.missingPriceData++;
+        } else {
+          metrics.failureBreakdown.registrarErrors++;
+        }
+
+        // Add to critical domains if not a simple payment failure
+        if (
+          !failure.reason.toLowerCase().includes('insufficient') &&
+          !failure.reason.toLowerCase().includes('declined')
+        ) {
+          metrics.criticalDomains.push({
+            domain: failure.domain,
+            userId: result.userId,
+            userEmail: result.userEmail,
+            issue: failure.reason,
+            registrar: failure.registrar,
+            actionRequired: _determineActionRequired(failure.reason),
+          });
+        }
+      }
+    }
+
+    // Track payment methods
+    if (result.payments && result.amountChargedInUsd) {
+      for (const { paymentProvider, amountInUSDCents } of result.payments) {
+        if (!metrics.paymentMethodBreakdown[paymentProvider]) {
+          metrics.paymentMethodBreakdown[paymentProvider] = {
+            count: 0,
+            amountInUsd: 0,
+          };
+        }
+        metrics.paymentMethodBreakdown[paymentProvider].count++;
+        metrics.paymentMethodBreakdown[paymentProvider].amountInUsd +=
+          amountInUSDCents / 100; // Convert cents to USD
+      }
+    }
+
+    // Track largest transaction
+    if (
+      result.amountChargedInUsd &&
+      result.amountChargedInUsd > metrics.largestTransaction.amount
+    ) {
+      metrics.largestTransaction = {
+        userId: result.userId,
+        amount: result.amountChargedInUsd,
+        domainCount: result.domainsProcessed || 0,
+      };
+    }
+
+    // Update communication counts
+    if (result.status === 'success' && result.userEmail) {
+      metrics.userCommunication.successfulRenewalConfirmations++;
+    } else if (result.status === 'failure' && result.userEmail) {
+      if (result.failures?.some((f) => f.reason.includes('payment'))) {
+        metrics.userCommunication.paymentFailureNotifications++;
+      } else {
+        metrics.userCommunication.failedRenewalAlerts++;
+      }
+    }
+  }
+
+  // Collect final metrics
+  const finalMetrics = await collectAutoRenewMetrics({
+    metrics,
+    workflowResults,
+  });
+
+  // Format the report
+  const { title, content } = await formatAutoRenewReport(finalMetrics);
+
+  // Determine if we should send the report
+  const shouldSendReport =
+    forceSendReport ||
+    finalMetrics.failedRenewals > 0 ||
+    finalMetrics.criticalDomains.length > 0 ||
+    finalMetrics.totalDomainsProcessed > 0;
+
+  if (shouldSendReport) {
+    workflow.log.info('Sending auto-renewal report', {
+      title,
+      totalProcessed: finalMetrics.totalDomainsProcessed,
+      failures: finalMetrics.failedRenewals,
+      criticalIssues: finalMetrics.criticalDomains.length,
+    });
+
+    // Send to Slack
+    await catchAndAlertLocally(
+      async () => {
+        await sendAutoRenewReportToSlack(title, content);
+      },
+      {
+        message: 'Failed to send auto-renewal report to Slack',
+        details: { title },
+      },
+    );
+
+    // Send via email
+    await catchAndAlertLocally(
+      async () => {
+        await sendAutoRenewReportEmail(title, content);
+      },
+      {
+        message: 'Failed to send auto-renewal report email',
+        details: { title },
+      },
+    );
+
+    workflow.log.info('Auto-renewal report sent successfully');
+  } else {
+    workflow.log.info('No auto-renewal activity to report, skipping report');
+  }
+}
+
+/**
+ * Determine the action required based on the error message
+ */
+function _determineActionRequired(errorMessage: string): string {
+  const lowerError = errorMessage.toLowerCase();
+
+  if (lowerError.includes('price') || lowerError.includes('pricing')) {
+    return 'Update pricing data';
+  }
+  if (lowerError.includes('locked')) {
+    return 'Unlock domain and retry';
+  }
+  if (lowerError.includes('timeout')) {
+    return 'Retry renewal';
+  }
+  if (lowerError.includes('api')) {
+    return 'Check registrar API';
+  }
+  if (lowerError.includes('expired')) {
+    return 'Domain already expired';
+  }
+  if (lowerError.includes('balance') || lowerError.includes('payment')) {
+    return 'Contact user about payment';
+  }
+  return 'Manual investigation required';
 }
