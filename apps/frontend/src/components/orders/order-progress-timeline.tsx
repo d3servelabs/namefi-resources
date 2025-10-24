@@ -74,44 +74,12 @@ const copyByStepId: Record<
   },
 };
 
-const friendlyPaymentStatus: Record<
-  NonNullable<OrderProgress['state']>['payment']['status'],
-  string
-> = {
-  PENDING: 'Payment details queued',
-  CHARGING: 'Charging your payment method',
-  CHARGED: 'Payment confirmed',
-  FAILED: 'Payment failed',
-};
-
-const friendlyRefundStatus: Record<
-  NonNullable<OrderProgress['state']>['refund']['status'],
-  string
-> = {
-  NOT_REQUIRED: 'No refund needed',
-  PENDING: 'Preparing refund',
-  PROCESSING: 'Refund in progress',
-  COMPLETED: 'Refund completed',
-  FAILED: 'Refund failed',
-};
-
-const friendlyNotificationStatus: Record<
-  NonNullable<OrderProgress['state']>['notification']['status'],
-  string
-> = {
-  PENDING: 'We will email you when everything is ready',
-  SENT: 'Confirmation email sent',
-  SKIPPED: 'Notification skipped',
-  FAILED: 'Unable to send notification',
-};
-
 export function OrderProgressTimeline({
   progress,
   isLoading = false,
 }: OrderProgressTimelineProps) {
-  const effectiveLoading = isLoading || !progress;
+  const effectiveLoading = isLoading || !progress?.state;
   const steps = progress?.state?.steps ?? [];
-  const summary = progress?.state?.summary;
 
   const activeStepId = useMemo(() => {
     const active =
@@ -121,19 +89,6 @@ export function OrderProgressTimeline({
   }, [steps]);
 
   const refreshedAt = progress?.fetchedAt ? new Date(progress.fetchedAt) : null;
-
-  const summaryLine = useMemo(() => {
-    if (!summary) return null;
-    const total = summary.totalItems ?? 0;
-    const succeeded = summary.succeededItems ?? 0;
-    const failed = summary.failedItems ?? 0;
-    const pieces: string[] = [];
-    pieces.push(`${succeeded}/${total} domains secured`);
-    if (failed > 0) {
-      pieces.push(`${failed} need attention`);
-    }
-    return pieces.join(' • ');
-  }, [summary]);
 
   if (effectiveLoading) {
     return <OrderProgressTimelineSkeleton />;
@@ -155,12 +110,6 @@ export function OrderProgressTimeline({
           type="order"
         />
       </div>
-
-      {summaryLine ? (
-        <div className="mt-3 rounded-lg border border-border/80 bg-muted/40 px-3 py-2 text-sm text-muted-foreground">
-          {summaryLine}
-        </div>
-      ) : null}
 
       <ol className="mt-5 space-y-4">
         {steps.map((step) => {
@@ -189,33 +138,6 @@ export function OrderProgressTimeline({
           );
         })}
       </ol>
-
-      <div className="mt-5 grid gap-3 md:grid-cols-3">
-        <InfoTile
-          title="Payment"
-          value={
-            friendlyPaymentStatus[progress?.state?.payment.status ?? 'PENDING']
-          }
-        />
-        <InfoTile
-          title="Refunds"
-          value={
-            friendlyRefundStatus[
-              progress?.state?.refund.status ?? 'NOT_REQUIRED'
-            ]
-          }
-          muted={progress?.state?.refund.status === 'NOT_REQUIRED'}
-        />
-        <InfoTile
-          title="Notifications"
-          value={
-            friendlyNotificationStatus[
-              progress?.state?.notification.status ?? 'PENDING'
-            ]
-          }
-          muted={progress?.state?.notification.status === 'PENDING'}
-        />
-      </div>
 
       <p className="mt-4 text-xs text-muted-foreground">
         {refreshedAt
@@ -257,28 +179,6 @@ function StepStatusPill({ status }: { status: Step['status'] }) {
   );
 }
 
-interface InfoTileProps {
-  title: string;
-  value: string;
-  muted?: boolean;
-}
-
-function InfoTile({ title, value, muted = false }: InfoTileProps) {
-  return (
-    <div
-      className={cn(
-        'rounded-lg border border-border/80 bg-muted/20 px-3 py-2',
-        muted && 'opacity-80',
-      )}
-    >
-      <p className="text-xs uppercase tracking-wide text-muted-foreground">
-        {title}
-      </p>
-      <p className="text-sm font-medium text-foreground">{value}</p>
-    </div>
-  );
-}
-
 function OrderProgressTimelineSkeleton() {
   return (
     <div className="rounded-2xl border border-border bg-background/60 p-6 shadow-sm">
@@ -302,18 +202,6 @@ function OrderProgressTimelineSkeleton() {
               <Skeleton className="h-3 w-64" />
             </div>
             <Skeleton className="h-6 w-20 rounded-full" />
-          </div>
-        ))}
-      </div>
-
-      <div className="mt-5 grid gap-3 md:grid-cols-3">
-        {Array.from({ length: 3 }).map((_, index) => (
-          <div
-            key={`order-progress-info-skeleton-${index}`}
-            className="rounded-lg border border-border/80 bg-muted/20 px-3 py-3"
-          >
-            <Skeleton className="h-3 w-20 mb-2" />
-            <Skeleton className="h-4 w-32" />
           </div>
         ))}
       </div>

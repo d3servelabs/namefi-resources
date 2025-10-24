@@ -221,7 +221,10 @@ export default function OrderPage({ params }: OrderPageProps) {
 
   const showDomainSkeleton = isInitialLoading || orderItems.length === 0;
   const timelineLoading =
-    isInitialLoading || orderProgress.isLoading || !orderProgress.data;
+    isInitialLoading ||
+    orderProgress.isLoading ||
+    !orderProgress.data ||
+    !orderProgress.data.state;
 
   const origin = useOrigin();
 
