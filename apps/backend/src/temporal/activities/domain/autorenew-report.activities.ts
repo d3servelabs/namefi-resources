@@ -208,8 +208,7 @@ export async function formatAutoRenewReport(
 ): Promise<{ title: string; content: string }> {
   const ctx = Context.current();
   ctx.log.info('Formatting auto-renewal report');
-  const reportDate = metrics.reportDate || new Date();
-  const dateStr = reportDate.toISOString().split('T')[0];
+  const dateStr = format(metrics.reportDate || new Date(), 'MMM Do, yyyy');
   const title = `${dateStr} Auto-Renewal Daily Report`;
 
   const successRate =
