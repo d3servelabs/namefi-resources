@@ -18,9 +18,15 @@
       "dependsOn": ["^build"],
       "outputs": ["coverage/**"]
     },
+    "@namefi-astra/backend#build": {
+      "dependsOn": [],
+      "env": ["*"],
+      "outputs": ["dist/**", "build/**"]
+    },
     "build": {
       "dependsOn": ["^build"],
-      "env": ["*"]
+      "env": ["*"],
+      "outputs": ["dist/**", ".next/**", "build/**", "!.next/cache/**"]
     },
     "validate:secrets": {
       "env": ["*"]
