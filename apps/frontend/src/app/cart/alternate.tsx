@@ -120,7 +120,6 @@ export default function CartPage() {
 
   const ranPostAuthTasksRef = useRef(false);
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: run only once after auth
   useEffect(() => {
     if (!isAuthenticated) {
       ranPostAuthTasksRef.current = false;

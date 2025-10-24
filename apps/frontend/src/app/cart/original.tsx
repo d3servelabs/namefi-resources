@@ -130,6 +130,7 @@ export default function CartPage() {
       setCartItemsChangesSummary(_cartItemsChangesSummary);
     }
     return _cartItemsChangesSummary;
+    // Show loading skeletons only on initial load – avoid layout shift once the
   }, [reflectChangesInCartItemsIfAnyAndReturnSummary, items]);
 
   // Show loading skeletons only on initial load – avoid layout shift once the

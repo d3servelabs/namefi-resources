@@ -1,10 +1,10 @@
-import { orderStatusSchema } from '@namefi-astra/db/types';
+import { orderStatusSchema, type OrderStatus } from '@namefi-astra/db/types';
 import type {
   ChecksumWalletAddress,
   NamefiNormalizedDomain,
 } from '@namefi-astra/utils';
 import * as workflow from '@temporalio/workflow';
-import { ApplicationFailure } from '@temporalio/workflow';
+import { ApplicationFailure, defineQuery } from '@temporalio/workflow';
 import { resolve } from '../../utils/resolve';
 import { TEMPORAL_ENUMS, TEMPORAL_QUEUES, shortRunningOpts } from '../shared';
 import { generateLogosForAliveNftsWorkflow } from './logo-generation.workflow';
@@ -13,6 +13,122 @@ import type { ChargeUserWorkflowInput } from './chargeUser.workflow';
 import { processOrderItemWorkflow } from './processOrderItem.workflow';
 import { multiChargeWorkflow } from './multi-charge.workflow';
 import { multiRefundWorkflow } from './multi-refund.workflow';
+
+export type ProcessOrderWorkflowStepStatus =
+  | 'PENDING'
+  | 'IN_PROGRESS'
+  | 'COMPLETED'
+  | 'FAILED'
+  | 'SKIPPED';
+
+export type ProcessOrderWorkflowStepId =
+  | 'order-details'
+  | 'payments'
+  | 'items'
+  | 'post-processing'
+  | 'final-status'
+  | 'refund'
+  | 'notification';
+
+export interface ProcessOrderWorkflowStep {
+  id: ProcessOrderWorkflowStepId;
+  label: string;
+  status: ProcessOrderWorkflowStepStatus;
+  message?: string;
+  startedAt?: number;
+  completedAt?: number;
+}
+
+export type ProcessOrderWorkflowItemStatus =
+  | 'PENDING'
+  | 'PROCESSING'
+  | 'SUCCEEDED'
+  | 'FAILED'
+  | 'CANCELLED';
+
+export interface ProcessOrderWorkflowItemProgress {
+  itemId: string;
+  domain: NamefiNormalizedDomain;
+  type: 'REGISTER' | 'IMPORT';
+  durationInYears: number;
+  registrarKey: string;
+  status: ProcessOrderWorkflowItemStatus;
+  lastUpdatedAt: number;
+  message?: string;
+}
+
+export type ProcessOrderWorkflowPhase =
+  | 'INITIALIZING'
+  | 'FETCHING_ORDER'
+  | 'CHARGING'
+  | 'PROCESSING_ITEMS'
+  | 'POST_PROCESSING'
+  | 'FINALIZING'
+  | 'COMPLETED'
+  | 'FAILED';
+
+export interface ProcessOrderWorkflowPublicState {
+  orderId: string;
+  phase: ProcessOrderWorkflowPhase;
+  status: OrderStatus;
+  steps: ProcessOrderWorkflowStep[];
+  items: ProcessOrderWorkflowItemProgress[];
+  payment: {
+    status: 'PENDING' | 'CHARGING' | 'CHARGED' | 'FAILED';
+    message?: string;
+  };
+  refund: {
+    status: 'NOT_REQUIRED' | 'PENDING' | 'PROCESSING' | 'COMPLETED' | 'FAILED';
+    amountInUsdCents: number;
+  };
+  notification: {
+    status: 'PENDING' | 'SENT' | 'SKIPPED' | 'FAILED';
+    message?: string;
+  };
+  summary: {
+    totalItems: number;
+    succeededItems: number;
+    failedItems: number;
+  };
+  timestamps: {
+    startedAt: number;
+    lastUpdatedAt: number;
+    completedAt?: number;
+  };
+  error?: string;
+}
+
+export const getOrderProgressQuery =
+  defineQuery<ProcessOrderWorkflowPublicState>('getOrderProgress');
+
+type NotificationResultStatus = Exclude<
+  ProcessOrderWorkflowPublicState['notification']['status'],
+  'PENDING'
+>;
+
+interface NotificationResult {
+  status: NotificationResultStatus;
+  message?: string;
+}
+
+const createStep = (
+  id: ProcessOrderWorkflowStepId,
+  label: string,
+): ProcessOrderWorkflowStep => ({
+  id,
+  label,
+  status: 'PENDING',
+});
+
+const BASE_STEPS: ProcessOrderWorkflowStep[] = [
+  createStep('order-details', 'Preparing your order'),
+  createStep('payments', 'Collecting payment'),
+  createStep('items', 'Registering domains'),
+  createStep('post-processing', 'Finishing background tasks'),
+  createStep('final-status', 'Finalizing order status'),
+  createStep('refund', 'Processing refunds'),
+  createStep('notification', 'Sending confirmation'),
+];
 
 const { triggerUpdateDomainIndex } = typedProxyActivities({
   temporalEnum: TEMPORAL_ENUMS.INDEXERS,
@@ -52,47 +168,253 @@ export interface ProcessOrderWorkflowInput {
 export async function processOrderWorkflow(
   input: ProcessOrderWorkflowInput,
 ): Promise<void> {
+  const temporalNow = (): number => {
+    const info = workflow.workflowInfo();
+    return info.unsafe?.now ? info.unsafe.now() : Date.now();
+  };
+
+  const startedAt = temporalNow();
+  const state: ProcessOrderWorkflowPublicState = {
+    orderId: input.orderId,
+    phase: 'INITIALIZING',
+    status: orderStatusSchema.enum.CREATED,
+    steps: BASE_STEPS.map((step) => ({ ...step })),
+    items: [],
+    payment: {
+      status: 'PENDING',
+    },
+    refund: {
+      status: 'NOT_REQUIRED',
+      amountInUsdCents: 0,
+    },
+    notification: {
+      status: 'PENDING',
+    },
+    summary: {
+      totalItems: 0,
+      succeededItems: 0,
+      failedItems: 0,
+    },
+    timestamps: {
+      startedAt,
+      lastUpdatedAt: startedAt,
+    },
+  };
+
+  const touch = () => {
+    state.timestamps.lastUpdatedAt = temporalNow();
+  };
+
+  const setPhase = (phase: ProcessOrderWorkflowPhase) => {
+    state.phase = phase;
+    touch();
+  };
+
+  const updateOrderStatus = (status: OrderStatus) => {
+    state.status = status;
+    touch();
+  };
+
+  const findStep = (id: ProcessOrderWorkflowStepId) =>
+    state.steps.find((step) => step.id === id);
+
+  const setStepStatus = (
+    id: ProcessOrderWorkflowStepId,
+    status: ProcessOrderWorkflowStepStatus,
+    message?: string,
+  ) => {
+    const step = findStep(id);
+    if (!step) return;
+    if (step.status !== status) {
+      step.status = status;
+      if (status === 'IN_PROGRESS') {
+        step.startedAt = step.startedAt ?? temporalNow();
+      }
+      if (
+        status === 'COMPLETED' ||
+        status === 'FAILED' ||
+        status === 'SKIPPED'
+      ) {
+        step.completedAt = temporalNow();
+      }
+    }
+    if (message !== undefined) {
+      step.message = message;
+    }
+    touch();
+  };
+
+  const updatePayment = (
+    status: ProcessOrderWorkflowPublicState['payment']['status'],
+    message?: string,
+  ) => {
+    state.payment.status = status;
+    if (message !== undefined) {
+      state.payment.message = message;
+    }
+    touch();
+  };
+
+  const updateRefund = (
+    patch: Partial<ProcessOrderWorkflowPublicState['refund']>,
+  ) => {
+    state.refund = {
+      ...state.refund,
+      ...patch,
+    };
+    touch();
+  };
+
+  const updateNotification = (
+    patch: Partial<ProcessOrderWorkflowPublicState['notification']>,
+  ) => {
+    state.notification = {
+      ...state.notification,
+      ...patch,
+    };
+    touch();
+  };
+
+  const recomputeSummary = () => {
+    let succeededItems = 0;
+    let failedItems = 0;
+    for (const item of state.items) {
+      if (item.status === 'SUCCEEDED') {
+        succeededItems += 1;
+      } else if (item.status === 'FAILED') {
+        failedItems += 1;
+      }
+    }
+    state.summary = {
+      totalItems: state.items.length,
+      succeededItems,
+      failedItems,
+    };
+    touch();
+  };
+
+  const ensureItem = (
+    item: ProcessOrderWorkflowItemProgress,
+  ): ProcessOrderWorkflowItemProgress => {
+    const existing = state.items.find((entry) => entry.itemId === item.itemId);
+    if (existing) {
+      return existing;
+    }
+    item.lastUpdatedAt = temporalNow();
+    state.items.push(item);
+    recomputeSummary();
+    return item;
+  };
+
+  const updateItem = (
+    itemId: string,
+    patch: Partial<ProcessOrderWorkflowItemProgress>,
+  ) => {
+    const entry = state.items.find((item) => item.itemId === itemId);
+    if (!entry) return;
+    Object.assign(entry, patch, { lastUpdatedAt: temporalNow() });
+    recomputeSummary();
+  };
+
+  workflow.setHandler(getOrderProgressQuery, () => state);
+
   workflow.log.info('Processing order', {
     orderId: input.orderId,
   });
 
   try {
-    // MARK: - Get Order Details
+    setPhase('FETCHING_ORDER');
+    setStepStatus('order-details', 'IN_PROGRESS');
+
     const orderDetails = await getOrderDetailsOrThrow(input.orderId);
     const nftWalletAddress = orderDetails.order.nftWalletAddress;
     const nftChainId = orderDetails.order.nftChainId;
+
+    workflow.upsertSearchAttributes({
+      orderId: [input.orderId],
+      userId: [orderDetails.order.userId],
+    });
+
+    workflow.upsertMemo({
+      order: {
+        orderId: input.orderId,
+        userId: orderDetails.order.userId,
+        description: `Processing order ${input.orderId}`,
+      },
+    });
+
+    if (orderDetails.items) {
+      for (const item of orderDetails.items) {
+        ensureItem({
+          itemId: item.id,
+          domain: item.normalizedDomainName as NamefiNormalizedDomain,
+          type: (item.type as 'REGISTER' | 'IMPORT') ?? 'REGISTER',
+          durationInYears: item.durationInYears,
+          registrarKey: item.registrar,
+          status: 'PENDING',
+          lastUpdatedAt: temporalNow(),
+        });
+      }
+    }
+
     if (!orderDetails.items || orderDetails.items.length === 0) {
       await updateOrderStatusOrThrow({
         orderId: input.orderId,
         status: orderStatusSchema.enum.FAILED,
       });
+      setStepStatus(
+        'order-details',
+        'FAILED',
+        'Order is missing items to process',
+      );
+      updateOrderStatus(orderStatusSchema.enum.FAILED);
+      setPhase('FAILED');
       throw new Error('Order is empty or malformed');
     }
+
     if (!(nftWalletAddress && nftChainId)) {
       await updateOrderStatusOrThrow({
         orderId: input.orderId,
         status: orderStatusSchema.enum.FAILED,
       });
+      setStepStatus(
+        'order-details',
+        'FAILED',
+        'Wallet metadata is incomplete for this order',
+      );
+      updateOrderStatus(orderStatusSchema.enum.FAILED);
+      setPhase('FAILED');
       throw new workflow.ApplicationFailure(
         'Order is missing NFT wallet address or chain ID, this should not happen, please investigate',
       );
     }
 
-    // Update order status to PROCESSING
     await updateOrderStatusOrThrow({
       orderId: input.orderId,
       status: orderStatusSchema.enum.PROCESSING,
     });
+    updateOrderStatus(orderStatusSchema.enum.PROCESSING);
+    setStepStatus('order-details', 'COMPLETED');
 
-    // Charge the user for the order (multi-payment)
     if (orderDetails.payments.length === 0) {
       await updateOrderStatusOrThrow({
         orderId: input.orderId,
         status: orderStatusSchema.enum.FAILED,
       });
+      updateOrderStatus(orderStatusSchema.enum.FAILED);
+      setStepStatus(
+        'payments',
+        'FAILED',
+        'No payment information available for this order',
+      );
+      setPhase('FAILED');
       throw new workflow.ApplicationFailure('No payment found');
     }
+
     try {
+      setPhase('CHARGING');
+      setStepStatus('payments', 'IN_PROGRESS');
+      updatePayment('CHARGING');
       await workflow.executeChild(multiChargeWorkflow, {
         args: [
           {
@@ -109,10 +431,11 @@ export async function processOrderWorkflow(
         taskQueue: TEMPORAL_QUEUES.DEFAULT,
         retry: { maximumAttempts: 1 },
       });
-    } catch (e) {
-      // set orderItem statuses to CANCELLED in db and fail order
+      updatePayment('CHARGED');
+      setStepStatus('payments', 'COMPLETED');
+    } catch (error) {
       for (const item of orderDetails.items) {
-        const [updateStatusError, _res] = await resolve(
+        const [updateStatusError] = await resolve(
           updateOrderItemStatusOrThrow({
             orderItemId: item.id,
             status: orderStatusSchema.enum.CANCELLED,
@@ -127,18 +450,36 @@ export async function processOrderWorkflow(
             }`,
           );
         }
+        updateItem(item.id, {
+          status: 'CANCELLED',
+          message: 'Cancelled after payment failure',
+        });
       }
       await updateOrderStatusOrThrow({
         orderId: input.orderId,
         status: orderStatusSchema.enum.FAILED,
       });
-      throw e instanceof Error ? e : new Error(String(e));
+      updateOrderStatus(orderStatusSchema.enum.FAILED);
+      updatePayment(
+        'FAILED',
+        error instanceof Error ? error.message : String(error),
+      );
+      setStepStatus('payments', 'FAILED', 'Payment attempt failed');
+      setPhase('FAILED');
+      throw error instanceof Error ? error : new Error(String(error));
     }
 
-    // MARK: - Process Order Items
-    const orderItemResults = await Promise.allSettled(
-      orderDetails.items.map((item) => {
-        return workflow.executeChild(processOrderItemWorkflow, {
+    setPhase('PROCESSING_ITEMS');
+    setStepStatus('items', 'IN_PROGRESS');
+
+    const orderItemPromises = orderDetails.items.map((item) => {
+      updateItem(item.id, {
+        status: 'PROCESSING',
+        message: undefined,
+      });
+
+      return workflow
+        .executeChild(processOrderItemWorkflow, {
           args: [
             {
               itemId: item.id,
@@ -149,7 +490,7 @@ export async function processOrderWorkflow(
               recipientWalletAddress: nftWalletAddress as ChecksumWalletAddress,
               chainId: nftChainId,
               userId: orderDetails.order.userId,
-              operationType: item.type as 'REGISTER' | 'IMPORT', // Only REGISTER and IMPORT are valid for processOrderItemWorkflow
+              operationType: item.type as 'REGISTER' | 'IMPORT',
               registrarKey: item.registrar,
               encryptedEppAuthorizationCode: item.encryptedEppAuthorizationCode,
               encryptionKeyId: item.encryptionKeyId,
@@ -163,11 +504,25 @@ export async function processOrderWorkflow(
           workflowIdReusePolicy: 'ALLOW_DUPLICATE_FAILED_ONLY',
           workflowIdConflictPolicy: 'USE_EXISTING',
           parentClosePolicy: 'REQUEST_CANCEL',
+        })
+        .then(() => {
+          updateItem(item.id, {
+            status: 'SUCCEEDED',
+            message: undefined,
+          });
+        })
+        .catch((error) => {
+          updateItem(item.id, {
+            status: 'FAILED',
+            message: error instanceof Error ? error.message : String(error),
+          });
+          throw error;
         });
-      }),
-    );
+    });
 
-    // MARK: - Handle Results
+    const orderItemResults = await Promise.allSettled(orderItemPromises);
+    recomputeSummary();
+
     const failedItems = orderDetails.items.filter(
       (_, index) => orderItemResults[index].status === 'rejected',
     );
@@ -175,19 +530,37 @@ export async function processOrderWorkflow(
       (_, index) => orderItemResults[index].status === 'fulfilled',
     );
 
-    // MARK: - trigger update domain index
+    if (failedItems.length === 0) {
+      setStepStatus('items', 'COMPLETED', 'All domains secured successfully');
+    } else if (succeededItems.length === 0) {
+      setStepStatus('items', 'FAILED', 'All domains failed during processing');
+    } else {
+      setStepStatus(
+        'items',
+        'COMPLETED',
+        'Some domains were secured, some need attention',
+      );
+    }
+
+    setPhase('POST_PROCESSING');
+    setStepStatus('post-processing', 'IN_PROGRESS');
+
     try {
       await triggerUpdateDomainIndex();
-    } catch (e) {
+    } catch (error) {
       workflow.log.error(
-        `Failed to trigger update domain index for order ${input.orderId}. Error: ${e}`,
+        `Failed to trigger update domain index for order ${input.orderId}. Error: ${error}`,
+      );
+      setStepStatus(
+        'post-processing',
+        'FAILED',
+        'Unable to refresh domain index',
       );
     }
 
     try {
       if (succeededItems.length > 0) {
         await postProcessOrder();
-        // Trigger logo generation for purchased domains using explicit list
         const purchasedDomains = succeededItems.map(
           (item) => item.normalizedDomainName,
         );
@@ -206,31 +579,52 @@ export async function processOrderWorkflow(
           });
         }
       }
-    } catch (e) {
+      if (findStep('post-processing')?.status === 'IN_PROGRESS') {
+        setStepStatus('post-processing', 'COMPLETED');
+      }
+    } catch (error) {
       workflow.log.error(
-        `Failed to post-process order ${input.orderId}. Error: ${e}`,
+        `Failed to post-process order ${input.orderId}. Error: ${error}`,
+      );
+      setStepStatus(
+        'post-processing',
+        'FAILED',
+        'Post-processing tasks encountered an issue',
       );
     }
 
-    // MARK: - Update Order Status
+    setPhase('FINALIZING');
+    setStepStatus('final-status', 'IN_PROGRESS');
+
     if (failedItems.length === 0) {
-      // All items succeeded
       await updateOrderStatusOrThrow({
         orderId: input.orderId,
         status: orderStatusSchema.enum.SUCCEEDED,
       });
+      updateOrderStatus(orderStatusSchema.enum.SUCCEEDED);
+      setStepStatus('final-status', 'COMPLETED', 'Order completed');
     } else if (succeededItems.length === 0) {
-      // All items failed
       await updateOrderStatusOrThrow({
         orderId: input.orderId,
         status: orderStatusSchema.enum.FAILED,
       });
+      updateOrderStatus(orderStatusSchema.enum.FAILED);
+      setStepStatus(
+        'final-status',
+        'FAILED',
+        'Order failed, no domains were secured',
+      );
     } else {
-      // Some items succeeded, some failed
       await updateOrderStatusOrThrow({
         orderId: input.orderId,
         status: orderStatusSchema.enum.PARTIALLY_COMPLETED,
       });
+      updateOrderStatus(orderStatusSchema.enum.PARTIALLY_COMPLETED);
+      setStepStatus(
+        'final-status',
+        'COMPLETED',
+        'Order completed with partial success',
+      );
     }
 
     const amountToRefund = failedItems.reduce((acc, item) => {
@@ -238,32 +632,81 @@ export async function processOrderWorkflow(
     }, 0);
 
     if (amountToRefund > 0) {
-      await workflow.executeChild(multiRefundWorkflow, {
-        args: [
-          {
-            orderId: input.orderId,
-            paymentIds: orderDetails.payments.map((p) => p.id),
-            amountToRefundInUsdCents: amountToRefund,
-          },
-        ],
-        workflowId: `multi-refund-order-[${input.orderId}]`,
-        taskQueue: TEMPORAL_QUEUES.DEFAULT,
-        retry: { maximumAttempts: 1 },
-        workflowIdReusePolicy: 'ALLOW_DUPLICATE_FAILED_ONLY',
-        workflowIdConflictPolicy: 'USE_EXISTING',
-        parentClosePolicy: 'REQUEST_CANCEL',
+      updateRefund({
+        status: 'PROCESSING',
+        amountInUsdCents: amountToRefund,
       });
+      setStepStatus('refund', 'IN_PROGRESS');
+      try {
+        await workflow.executeChild(multiRefundWorkflow, {
+          args: [
+            {
+              orderId: input.orderId,
+              paymentIds: orderDetails.payments.map((p) => p.id),
+              amountToRefundInUsdCents: amountToRefund,
+            },
+          ],
+          workflowId: `multi-refund-order-[${input.orderId}]`,
+          taskQueue: TEMPORAL_QUEUES.DEFAULT,
+          retry: { maximumAttempts: 1 },
+          workflowIdReusePolicy: 'ALLOW_DUPLICATE_FAILED_ONLY',
+          workflowIdConflictPolicy: 'USE_EXISTING',
+          parentClosePolicy: 'REQUEST_CANCEL',
+        });
+        updateRefund({
+          status: 'COMPLETED',
+        });
+        setStepStatus('refund', 'COMPLETED');
+      } catch (error) {
+        updateRefund({
+          status: 'FAILED',
+        });
+        setStepStatus(
+          'refund',
+          'FAILED',
+          error instanceof Error ? error.message : String(error),
+        );
+        throw error;
+      }
+    } else {
+      updateRefund({
+        status: 'NOT_REQUIRED',
+        amountInUsdCents: 0,
+      });
+      setStepStatus('refund', 'SKIPPED', 'No refund required');
     }
 
-    // MARK: - Notify User if we have their email
-
-    await _notifyUserOrderProcessed(
+    setStepStatus('notification', 'IN_PROGRESS');
+    const notificationSummary = await _notifyUserOrderProcessed(
       orderDetails,
       orderItemResults,
       amountToRefund,
     );
+    updateNotification({
+      status: notificationSummary.status,
+      message: notificationSummary.message,
+    });
+
+    if (notificationSummary.status === 'FAILED') {
+      setStepStatus(
+        'notification',
+        'FAILED',
+        notificationSummary.message ??
+          'Unable to send confirmation at this time',
+      );
+    } else if (notificationSummary.status === 'SKIPPED') {
+      setStepStatus(
+        'notification',
+        'SKIPPED',
+        notificationSummary.message ?? 'Notification skipped',
+      );
+    } else {
+      setStepStatus('notification', 'COMPLETED');
+    }
+
+    setPhase('COMPLETED');
+    state.timestamps.completedAt = temporalNow();
   } catch (e) {
-    // Update order status to FAILED if an exception occurs
     try {
       await updateOrderStatusOrThrow({
         orderId: input.orderId,
@@ -273,6 +716,13 @@ export async function processOrderWorkflow(
       workflow.log.error(
         `Failed to update order status to FAILED for order ${input.orderId}. Error: ${updateError}`,
       );
+    }
+
+    updateOrderStatus(orderStatusSchema.enum.FAILED);
+    setPhase('FAILED');
+    state.error = e instanceof Error ? e.message : String(e);
+    if (!state.timestamps.completedAt) {
+      state.timestamps.completedAt = temporalNow();
     }
 
     throw ApplicationFailure.create({
@@ -309,7 +759,7 @@ async function _notifyUserOrderProcessed(
   orderDetails: Awaited<ReturnType<typeof getOrderDetailsOrThrow>>,
   orderItemsResults: PromiseSettledResult<void>[],
   amountToRefund: number,
-) {
+): Promise<NotificationResult> {
   const { notifyUserOrderProcessed, maybeGetUserEmail } = typedProxyActivities({
     temporalEnum: TEMPORAL_ENUMS.NOTIFY,
     options: {
@@ -325,7 +775,7 @@ async function _notifyUserOrderProcessed(
       },
     });
     workflow.log.warn(message);
-    return;
+    return { status: 'SKIPPED', message };
   }
   // Prefer a user-relevant payment for notifications (Stripe first)
   const priority = [
@@ -352,7 +802,7 @@ async function _notifyUserOrderProcessed(
       },
     });
     workflow.log.warn(message);
-    return;
+    return { status: 'SKIPPED', message };
   }
 
   try {
@@ -381,9 +831,15 @@ async function _notifyUserOrderProcessed(
             }
           : undefined,
     });
+    return { status: 'SENT' };
   } catch (e) {
     workflow.log.error(
       `Failed to notify user for order ${orderDetails.order.id}. Error: ${e}`,
     );
+    const message = e instanceof Error ? e.message : String(e);
+    return {
+      status: 'FAILED',
+      message,
+    };
   }
 }

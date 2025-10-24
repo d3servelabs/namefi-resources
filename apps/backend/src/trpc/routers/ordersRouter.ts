@@ -1,5 +1,6 @@
 import {
   type NfscPaymentProviderDetails,
+  type OrderStatus,
   type PaymentProviderDetails,
   type PaymentSelect,
   type UserSelect,
@@ -13,6 +14,7 @@ import {
 } from '@namefi-astra/db';
 import { checksumWalletAddressSchema } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
+import type { WorkflowExecutionStatusName } from '@temporalio/client';
 import { and, desc, eq, getTableColumns, ilike, inArray } from 'drizzle-orm';
 import { isNil, isNotNil, pluck, sum } from 'ramda';
 import Stripe from 'stripe';
@@ -26,7 +28,11 @@ import {
 import { createPayment } from '../../temporal/activities/payment.activities';
 import { temporalClient } from '../../temporal/client';
 import { TEMPORAL_QUEUES } from '../../temporal/shared';
-import { processOrderWorkflow } from '../../temporal/workflows/processOrder.workflow';
+import {
+  processOrderWorkflow,
+  getOrderProgressQuery,
+  type ProcessOrderWorkflowPublicState,
+} from '../../temporal/workflows/processOrder.workflow';
 import type { ChargeUserWorkflowInput } from '../../temporal/workflows/chargeUser.workflow';
 import { resolve } from '../../utils/resolve';
 import { createTRPCRouter, protectedProcedure, withAudit } from '../base';
@@ -61,6 +67,89 @@ type PaymentMethodDetailsOffChain = {
 type PaymentMethodDetails =
   | PaymentMethodDetailsOnChain
   | PaymentMethodDetailsOffChain;
+
+type OrderProgressSnapshot = {
+  workflowStatus: WorkflowExecutionStatusName | 'NOT_FOUND';
+  runId: string | null;
+  state: ProcessOrderWorkflowPublicState | null;
+};
+
+type OrderProgressPayload = OrderProgressSnapshot & {
+  orderStatus: OrderStatus;
+  fetchedAt: string;
+};
+
+const workflowIdForOrder = (orderId: string) => `process-order-${orderId}`;
+
+const ensureOrderOwnership = async (orderId: string, userId: string) => {
+  const orderRecord = await db.query.ordersTable.findFirst({
+    where: eq(ordersTable.id, orderId),
+    columns: {
+      userId: true,
+      status: true,
+    },
+  });
+
+  if (!orderRecord) {
+    throw new TRPCError({
+      code: 'NOT_FOUND',
+      message: 'Order not found',
+    });
+  }
+
+  if (orderRecord.userId !== userId) {
+    throw new TRPCError({
+      code: 'UNAUTHORIZED',
+      message: 'You are not authorized to view this order',
+    });
+  }
+
+  return orderRecord;
+};
+
+const fetchOrderWorkflowSnapshot = async (
+  orderId: string,
+): Promise<OrderProgressSnapshot> => {
+  const workflowId = workflowIdForOrder(orderId);
+  const handle = temporalClient.workflow.getHandle(workflowId);
+
+  try {
+    const description = await handle.describe();
+    const workflowStatus = description.status.name;
+
+    let state: ProcessOrderWorkflowPublicState | null = null;
+    const isQueryable =
+      workflowStatus === 'RUNNING' || workflowStatus === 'COMPLETED';
+    if (isQueryable) {
+      try {
+        state = await handle.query(getOrderProgressQuery);
+      } catch (error) {
+        logger.debug(
+          { error, workflowId, orderId },
+          'Order workflow state query failed',
+        );
+        state = null;
+      }
+    }
+
+    return {
+      workflowStatus,
+      runId: description.runId,
+      state,
+    };
+  } catch (error) {
+    logger.debug(
+      { error, workflowId, orderId },
+      'Failed to fetch order workflow snapshot',
+    );
+
+    return {
+      workflowStatus: 'NOT_FOUND',
+      runId: null,
+      state: null,
+    };
+  }
+};
 
 export const ordersRouter = createTRPCRouter({
   createOrder: withAudit(
@@ -201,12 +290,35 @@ export const ordersRouter = createTRPCRouter({
     },
   ),
 
-  // Stage 5: Multi-payment createOrderV2
+  getOrderProgress: protectedProcedure
+    .input(
+      z.object({
+        orderId: z.string().min(1),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const { user } = ctx;
+      const { orderId } = input;
+
+      const orderRecord = await ensureOrderOwnership(orderId, user.id);
+      const snapshot = await fetchOrderWorkflowSnapshot(orderId);
+      const orderStatus: OrderStatus =
+        snapshot.state?.status ?? orderRecord.status;
+
+      const payload: OrderProgressPayload = {
+        ...snapshot,
+        orderStatus,
+        fetchedAt: new Date().toISOString(),
+      };
+
+      return payload;
+    }),
+
   createOrderV2: withAudit(
     protectedProcedure,
     ({ ctx, input, auditActorExtraInfo, result }) => ({
       actorType: 'user',
-      actorId: (ctx as any).user?.id || 'unknown',
+      actorId: ctx.user?.id || 'unknown',
       actorExtraInfo: auditActorExtraInfo,
       resourceType: 'order',
       resourceId: result.id || '',

@@ -49,8 +49,11 @@ type SearchAttribute = {
  * These match the attributes defined in temporal-search-attributes.sh
  */
 const CUSTOM_SEARCH_ATTRIBUTES = [
-  // {name: 'domainPublicSuffix', description: 'The public suffix of the domain name', type: 'Keyword'},
-  // {name: 'chainId', description: 'The chain ID of the domain name', type: 'Keyword'},
+  {
+    name: 'orderId',
+    description: 'Unique identifier for an order workflow execution',
+    type: 'Keyword',
+  },
   {
     name: 'affectedResources',
     description: 'Identifies the resource that was affected by the workflow',

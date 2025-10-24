@@ -354,14 +354,19 @@ export function useCartServerSync() {
         const id =
           item.id ??
           deterministicCartId(item.normalizedDomainName, effectiveUserId);
-        return {
+        const wasOptimistic = isOptimistic(item);
+        const base = {
           ...stripOptimistic(item),
           id,
           userId: effectiveUserId,
           encryptionKeyId: item.encryptionKeyId ?? null,
           encryptedEppAuthorizationCode:
             item.encryptedEppAuthorizationCode ?? null,
-        };
+        } satisfies UnifiedCartItem;
+        if (wasOptimistic) {
+          (base as OptimisticUnifiedCartItem)[OPTIMISTIC] = true;
+        }
+        return base;
       }),
     [isAuthenticated, isUserLoading, user?.id],
   );
@@ -459,8 +464,9 @@ export function useCartServerSync() {
         const map = new Map(old.map((i) => [i.normalizedDomainName, i]));
         authoritative.forEach((s) => {
           const existing = map.get(s.normalizedDomainName);
-          if (existing && isOptimistic(existing))
+          if (existing && isOptimistic(existing)) {
             map.set(s.normalizedDomainName, s);
+          }
         });
         // Remove any remaining optimistic items not returned by the server
         const authoritativeDomains = new Set(
@@ -610,15 +616,19 @@ export function useCartServerSync() {
   /* ---------------------------- state flags ------------------------------ */
   const isCartLoading =
     isAuthenticated && !isUserLoading && user?.id ? isServerLoading : false;
+  const hasOptimisticEntries = useMemo(
+    () => cartData?.some((item) => isOptimistic(item)) ?? false,
+    [cartData],
+  );
+
   const isCartUpdating =
-    isAuthenticated && !isUserLoading && user?.id
-      ? addMutation.isPending ||
-        removeMutation.isPending ||
-        clearMutation.isPending ||
-        updateMutation.isPending ||
-        cartQueue.size > 0 ||
-        cartQueue.pending > 0
-      : false;
+    hasOptimisticEntries ||
+    addMutation.isPending ||
+    removeMutation.isPending ||
+    clearMutation.isPending ||
+    updateMutation.isPending ||
+    cartQueue.size > 0 ||
+    cartQueue.pending > 0;
 
   return {
     cartData,

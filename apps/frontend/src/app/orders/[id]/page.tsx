@@ -1,6 +1,5 @@
 'use client';
 
-import { AutoStartProgressBar } from '@/components/auto-start-progress-bar';
 import { AuthRequired } from '@/components/auth-required';
 import { CartCard } from '@/components/cart-card';
 import { NamefiButton } from '@/components/buttons/namefi-button';
@@ -15,12 +14,13 @@ import {
   CarouselPrevious,
 } from '@/components/ui/shadcn/carousel';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
-import { Separator } from '@/components/ui/shadcn/separator';
 import { Unauthorized } from '@/components/unauthorized';
 import { useCartContext } from '@/components/providers/cart';
 import { useAuth } from '@/hooks/use-auth';
 import { formatDate, getShortAddress } from '@/lib/string';
 import { type AppRouterOutput, useTRPC } from '@/lib/trpc';
+import { OrderProgressTimeline } from '@/components/orders/order-progress-timeline';
+import { useOrderProgress } from '@/hooks/use-order-progress';
 import { orderStatusSchema, type PaymentSelect } from '@namefi-astra/db/types';
 import {
   getChain,
@@ -33,7 +33,7 @@ import { TRPCClientError } from '@trpc/client';
 import { Loader2, ExternalLink } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { use, useEffect, useMemo, useRef } from 'react';
+import { use, useEffect, useMemo } from 'react';
 import {
   FacebookIcon,
   FacebookShareButton,
@@ -44,101 +44,61 @@ import {
 } from 'react-share';
 import { useDebounceValue } from 'usehooks-ts';
 import { StatusBadge } from '@/components/status-badge';
-import { parseAsBoolean, useQueryState } from 'nuqs';
-
-function OrderPageSkeleton() {
-  return (
-    <div className="container mx-auto py-8 px-8">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <CartCard title="Order" className="relative">
-          <div className="flex flex-col gap-1 mt-2">
-            <div className="flex items-center justify-between h-8">
-              <Skeleton className="h-5 w-24" />
-              <Skeleton className="h-5 w-20" />
-            </div>
-            <div className="flex items-center justify-between h-8">
-              <Skeleton className="h-5 w-28" />
-              <Skeleton className="h-5 w-32" />
-            </div>
-            <div className="flex items-center justify-between h-8">
-              <Skeleton className="h-5 w-28" />
-              <div className="flex items-center gap-2">
-                <Skeleton className="h-5 w-32" />
-                <Skeleton className="h-8 w-8 rounded-md" />
-              </div>
-            </div>
-
-            <div className="my-2">
-              <Separator className="opacity-50" />
-            </div>
-
-            <Skeleton className="h-4 w-24" />
-            {Array.from({ length: 2 }).map((_, index) => (
-              <div
-                key={`payment-skeleton-${index}`}
-                className="flex items-center justify-between"
-              >
-                <div className="flex flex-col gap-2">
-                  <Skeleton className="h-4 w-24" />
-                  <Skeleton className="h-4 w-20" />
-                </div>
-                <div className="flex items-center gap-2">
-                  <Skeleton className="h-6 w-16" />
-                  <Skeleton className="h-6 w-20" />
-                </div>
-              </div>
-            ))}
-          </div>
-        </CartCard>
-
-        <CartCard title="Order Items">
-          <div className="flex flex-col mt-6">
-            {Array.from({ length: 2 }).map((_, index) => (
-              <div key={`order-item-skeleton-${index}`}>
-                <div className="flex flex-col gap-2">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <Skeleton className="h-6 w-48" />
-                      <Skeleton className="h-5 w-20" />
-                    </div>
-                    <Skeleton className="h-6 w-24" />
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <Skeleton className="h-4 w-24" />
-                    <Skeleton className="h-4 w-20" />
-                  </div>
-                </div>
-                {index === 0 && (
-                  <div className="my-6">
-                    <Separator />
-                  </div>
-                )}
-              </div>
-            ))}
-            <div className="mt-6">
-              <Separator />
-            </div>
-            <div className="flex items-center justify-between pt-4">
-              <Skeleton className="h-6 w-16" />
-              <Skeleton className="h-6 w-24" />
-            </div>
-          </div>
-        </CartCard>
-      </div>
-    </div>
-  );
-}
 
 interface OrderPageProps {
   params: Promise<{ id: string }>;
 }
+
+type OrderProgressStepId = NonNullable<
+  AppRouterOutput['orders']['getOrderProgress']['state']
+>['steps'][number]['id'];
+
+const defaultProcessingCopy = {
+  title: 'Great! We are ready to secure your domain',
+  description: 'Hang on tight while we wrap things up.',
+};
+
+const processingCopyByStep: Record<
+  OrderProgressStepId,
+  { title: string; description: string }
+> = {
+  'order-details': {
+    title: 'Checking your order details',
+    description: 'We are verifying your wallet and domain selections.',
+  },
+  payments: {
+    title: 'Collecting payment',
+    description: 'We are charging your payment method securely.',
+  },
+  items: {
+    title: 'Registering your domains',
+    description: 'Each domain is being submitted to the registrar.',
+  },
+  'post-processing': {
+    title: 'Finishing background tasks',
+    description:
+      'We are refreshing indexes and preparing your on-chain records.',
+  },
+  'final-status': {
+    title: 'Wrapping up your order',
+    description: 'We are applying the final status to your order.',
+  },
+  refund: {
+    title: 'Refunding any failed items',
+    description: 'Refunds are being initiated for domains we could not secure.',
+  },
+  notification: {
+    title: 'Sending confirmation',
+    description:
+      'We will email you the final summary once everything is ready.',
+  },
+};
 
 export default function OrderPage({ params }: OrderPageProps) {
   const { id } = use(params);
   const router = useRouter();
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
   const trpc = useTRPC();
-  const [newOrder] = useQueryState('new', parseAsBoolean);
 
   const { refetchCart } = useCartContext();
 
@@ -180,6 +140,7 @@ export default function OrderPage({ params }: OrderPageProps) {
     },
   });
   const { order, payments = [], items } = orderDetails ?? {};
+  const hasOrderDetails = Boolean(orderDetails && order);
   const domainsRaw = (items || [])
     .map((it) => it.normalizedDomainName)
     .filter(Boolean);
@@ -206,6 +167,22 @@ export default function OrderPage({ params }: OrderPageProps) {
       order?.status === orderStatusSchema.enum.PARTIALLY_COMPLETED
     );
   }, [order?.status]);
+
+  const isInitialLoading = isAuthLoading || isOrderLoading;
+
+  const orderProgress = useOrderProgress(id, {
+    enabled: Boolean(id) && !isCompletedOrder,
+  });
+
+  const activeProgressCopy = useMemo(() => {
+    const stepId = orderProgress.activeStep?.id as
+      | OrderProgressStepId
+      | undefined;
+    if (stepId) {
+      return processingCopyByStep[stepId];
+    }
+    return defaultProcessingCopy;
+  }, [orderProgress.activeStep]);
 
   useEffect(() => {
     if (isFailedOrder) {
@@ -242,6 +219,10 @@ export default function OrderPage({ params }: OrderPageProps) {
       });
   }, [items, order?.nftChainId]);
 
+  const showDomainSkeleton = isInitialLoading || orderItems.length === 0;
+  const timelineLoading =
+    isInitialLoading || orderProgress.isLoading || !orderProgress.data;
+
   const origin = useOrigin();
 
   // Show carousel only when we have 3 or more domains, otherwise center cards in a flex row
@@ -259,22 +240,8 @@ export default function OrderPage({ params }: OrderPageProps) {
       : `Great I've just got ${orderItems[0].fullDomain} from 0x.city (#PoweredByNamefi), come check it out`;
   }, [orderItems]);
 
-  const progressBarRef = useRef<AutoStartProgressBar>(null);
-
-  useEffect(() => {
-    if (isCompletedOrder) {
-      progressBarRef.current?.finish();
-    }
-  }, [isCompletedOrder]);
   const [debouncedIsCompletedOrder] = useDebounceValue(isCompletedOrder, 3000);
-
-  const progressBar = useMemo(() => {
-    return (
-      <div className="flex items-center justify-center py-4">
-        <AutoStartProgressBar key={'progress-bar'} ref={progressBarRef} />
-      </div>
-    );
-  }, []);
+  const showProcessingView = isInitialLoading || !debouncedIsCompletedOrder;
 
   if (!(isAuthLoading || isAuthenticated)) {
     return (
@@ -282,45 +249,6 @@ export default function OrderPage({ params }: OrderPageProps) {
     );
   }
 
-  if (isAuthLoading || isOrderLoading) {
-    if (newOrder) {
-      return (
-        <div className="container mx-auto py-8 px-8">
-          <div className="max-w-2xl mx-auto text-center">
-            <h1 className="text-4xl font-bold mb-4">
-              Great! We are ready to secure your domain
-            </h1>
-            <p className="text-muted-foreground text-lg mb-8 flex items-center justify-center gap-2">
-              Hang on tight...
-              <Loader2 className="h-5 w-5 animate-spin" />
-            </p>
-            {progressBar}
-
-            <div className="mb-6 flex justify-center">
-              <CartCard className="p-4 w-full sm:w-3/4 md:w-1/2 lg:w-1/3 max-w-sm">
-                <div className="relative w-full aspect-square overflow-hidden rounded-md bg-black/[0.03] border-1 border-brand-primary">
-                  <Skeleton className="h-full w-full" />
-                  <div className="absolute top-4.5 left-4.5">
-                    <Skeleton className="h-6 w-24" />
-                  </div>
-                  <div className="absolute bottom-0 left-0 right-0 px-3 py-4 bg-gradient-to-t from-black/90 via-black/10 to-transparent">
-                    <Skeleton className="h-8 w-32 mb-2" />
-                    <Skeleton className="h-6 w-24" />
-                  </div>
-                </div>
-                <Skeleton className="h-10 w-full mt-4" />
-              </CartCard>
-            </div>
-
-            <div className="flex justify-center mb-8">
-              <Skeleton className="h-10 w-[180px]" />
-            </div>
-          </div>
-        </div>
-      );
-    }
-    return <OrderPageSkeleton />;
-  }
   if (
     error &&
     error instanceof TRPCClientError &&
@@ -330,7 +258,7 @@ export default function OrderPage({ params }: OrderPageProps) {
       <Unauthorized description="You are not authorized to view this order." />
     );
   }
-  if (!orderDetails || !order) {
+  if (!hasOrderDetails && !isInitialLoading) {
     return (
       <div className="container mx-auto py-8 px-8">
         <div className="max-w-2xl mx-auto">
@@ -348,21 +276,53 @@ export default function OrderPage({ params }: OrderPageProps) {
     );
   }
 
-  if (!debouncedIsCompletedOrder) {
-    if (newOrder) {
-      return (
-        <div className="container mx-auto py-8 px-8">
-          <div className="max-w-2xl mx-auto text-center">
-            <h1 className="text-4xl font-bold mb-4">
-              Great! We are ready to secure your domain
-            </h1>
-            <p className="text-muted-foreground text-lg mb-8 flex items-center justify-center gap-2">
-              Hang on tight...
-              <Loader2 className="h-5 w-5 animate-spin" />
-            </p>
-            {progressBar}
+  if (!order && !showProcessingView) {
+    return null;
+  }
 
-            {showCarousel ? (
+  const heading = showProcessingView
+    ? activeProgressCopy.title
+    : 'Congratulations!';
+  const subheading = showProcessingView
+    ? activeProgressCopy.description
+    : `You've got your ${orderItems.length > 1 ? 'domains' : 'domain'} and here ${
+        orderItems.length > 1 ? 'are the NFTs' : 'is the NFT'
+      }`;
+  const showSpinner =
+    showProcessingView && (orderProgress.isPolling || timelineLoading);
+
+  return (
+    <div className="container mx-auto py-8 px-8">
+      <div className="max-w-2xl mx-auto">
+        <div className="text-center mb-6">
+          <h1 className="text-4xl font-bold mb-3">{heading}</h1>
+          <p className="text-muted-foreground text-lg flex items-center justify-center gap-2">
+            {subheading}
+            {showSpinner && <Loader2 className="h-5 w-5 animate-spin" />}
+          </p>
+        </div>
+
+        <div className="mb-8">
+          <OrderProgressTimeline
+            progress={orderProgress.data ?? null}
+            isLoading={timelineLoading}
+          />
+        </div>
+
+        {showProcessingView ? (
+          <>
+            {showDomainSkeleton ? (
+              <div className="mb-6 flex flex-wrap justify-center gap-4">
+                {Array.from({
+                  length: Math.max(orderItems.length || 0, 2),
+                }).map((_, index) => (
+                  <Skeleton
+                    key={`order-domain-skeleton-${index}`}
+                    className="h-[260px] w-full max-w-sm rounded-2xl sm:w-3/4 md:w-1/2 lg:w-1/3"
+                  />
+                ))}
+              </div>
+            ) : showCarousel ? (
               <Carousel className="mb-6">
                 <CarouselContent className="-ml-2 md:-ml-4">
                   {orderItems.map((item, index) => (
@@ -396,194 +356,186 @@ export default function OrderPage({ params }: OrderPageProps) {
             )}
 
             <div className="flex gap-4 mb-8 justify-center">
-              <NamefiButton asChild={true}>
-                <Link href={`/orders/${id}/details`}>View order details</Link>
-              </NamefiButton>
+              {isInitialLoading ? (
+                <Skeleton className="h-10 w-[180px]" />
+              ) : (
+                <NamefiButton asChild={true}>
+                  <Link href={`/orders/${id}/details`}>View order details</Link>
+                </NamefiButton>
+              )}
             </div>
-          </div>
-        </div>
-      );
-    }
-    return <OrderPageSkeleton />;
-  }
-
-  return (
-    <div className="container mx-auto py-8 px-8">
-      <div className="max-w-2xl mx-auto">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold mb-4">Congratulations!</h1>
-          <p className="text-muted-foreground text-lg">
-            You've got your {orderItems.length > 1 ? 'domains' : 'domain'} and
-            here {orderItems.length > 1 ? 'are the NFTs' : 'is the NFT'}
-          </p>
-        </div>
-
-        {showCarousel ? (
-          <Carousel className="mb-6">
-            <CarouselContent className="-ml-2 md:-ml-4">
-              {orderItems.map((item, index) => (
-                <CarouselItem
-                  key={index}
-                  className="md:basis-1/2 lg:basis-1/3 pl-2 md:pl-4"
-                >
-                  <NftDomainCard
-                    item={item}
-                    origin={origin}
-                    isCompleted={isCompletedOrder}
-                  />
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            <CarouselPrevious />
-            <CarouselNext />
-          </Carousel>
+          </>
         ) : (
-          <div className="mb-6 flex flex-wrap justify-center gap-4">
-            {orderItems.map((item, index) => (
-              <NftDomainCard
-                key={index}
-                item={item}
-                origin={origin}
-                isCompleted={isCompletedOrder}
-                className="p-4 w-full sm:w-3/4 md:w-1/2 lg:w-1/3 max-w-sm"
-              />
-            ))}
-          </div>
-        )}
-
-        <CartCard className="mb-6 bg-black/[0.03] border-white/10">
-          <div className="flex justify-between items-center">
-            <span className="text-muted-foreground">Share on</span>
-            <div className="flex gap-4">
-              <TwitterShareButton
-                url={`https://${origin.thirdPartyHostname}`}
-                title={shareMessage}
-              >
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="bg-transparent border-none rounded-sm overflow-hidden cursor-pointer p-0"
-                >
-                  <TwitterIcon className="size-9" />
-                </Button>
-              </TwitterShareButton>
-
-              <LinkedinShareButton
-                url={`https://${origin.thirdPartyHostname}`}
-                title={shareMessage}
-              >
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="bg-transparent border-none rounded-sm overflow-hidden cursor-pointer p-0"
-                >
-                  <LinkedinIcon className="size-9" />
-                </Button>
-              </LinkedinShareButton>
-
-              <FacebookShareButton
-                url={`https://${origin.thirdPartyHostname}`}
-                title={shareMessage}
-              >
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="bg-transparent border-none rounded-sm overflow-hidden cursor-pointer p-0"
-                >
-                  <FacebookIcon className="size-9" />
-                </Button>
-              </FacebookShareButton>
-            </div>
-          </div>
-        </CartCard>
-
-        <CartCard
-          title="Order Details"
-          className="mb-6 bg-black/[0.03] border-white/10"
-        >
-          <div className="space-y-4">
-            <div className="flex justify-between items-center">
-              <span className="text-muted-foreground">Date</span>
-              <span>{formatDate(new Date(order.createdAt))}</span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-muted-foreground">Grand total</span>
-              <span>${order.amountInUSDCents / 100} USD</span>
-            </div>
-            <div className="flex justify-between items-start">
-              <span className="text-muted-foreground">
-                Payments ({payments.length === 1 ? 'Single' : 'Multiple'})
-              </span>
-              <PaymentMethodsDetails orderId={id} payments={payments} />
-            </div>
-          </div>
-        </CartCard>
-
-        {/* AI Brand Starters - Per Domain */}
-        {uniqueDomains.length > 0 && (
-          <CartCard className="mb-6 bg-black/[0.03] border-white/10">
-            <Link
-              href="/ai-brand-generator"
-              className="inline-flex items-center gap-2 text-white underline underline-offset-4 text-xl font-semibold"
-            >
-              <ExternalLink className="h-5 w-5" />
-              Just AIng by Namefi™
-            </Link>
-
-            <p className="text-sm text-muted-foreground mt-2">
-              While your order was processing, we prepared a logo preview for
-              your brand(s). Explore more styles and marketing images in Just
-              AIng.
-            </p>
-
-            <div className="mt-4 mb-2 flex flex-wrap justify-center gap-4">
-              {uniqueDomains.map((domain) => {
-                const gens = (bulkInternal?.[domain] ?? []) as Array<{
-                  type: 'logo' | 'marketing';
-                  url: string;
-                }>;
-                const logo = gens.find((g) => g.type === 'logo');
-                return (
-                  <div
-                    key={`ai-starter-${domain}`}
-                    className="p-4 w-full sm:w-3/4 md:w-1/2 lg:w-1/3 max-w-sm"
-                  >
-                    <div className="relative w-full aspect-square overflow-hidden rounded-md bg-black/[0.03] border border-white/10">
-                      {logo ? (
-                        // biome-ignore lint/performance/noImgElement: using plain img for remote asset
-                        <img
-                          src={logo.url}
-                          alt={`${domain} logo`}
-                          className="w-full h-full object-contain"
-                          loading="lazy"
+          order && (
+            <>
+              {showCarousel ? (
+                <Carousel className="mb-6">
+                  <CarouselContent className="-ml-2 md:-ml-4">
+                    {orderItems.map((item, index) => (
+                      <CarouselItem
+                        key={index}
+                        className="md:basis-1/2 lg:basis-1/3 pl-2 md:pl-4"
+                      >
+                        <NftDomainCard
+                          item={item}
+                          origin={origin}
+                          isCompleted={isCompletedOrder}
                         />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center text-xs text-muted-foreground">
-                          No preview
-                        </div>
-                      )}
-                    </div>
-                    <div className="mt-3 text-center text-sm truncate">
-                      {domain}
-                    </div>
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
+                  <CarouselPrevious />
+                  <CarouselNext />
+                </Carousel>
+              ) : (
+                <div className="mb-6 flex flex-wrap justify-center gap-4">
+                  {orderItems.map((item, index) => (
+                    <NftDomainCard
+                      key={index}
+                      item={item}
+                      origin={origin}
+                      isCompleted={isCompletedOrder}
+                      className="p-4 w-full sm:w-3/4 md:w-1/2 lg:w-1/3 max-w-sm"
+                    />
+                  ))}
+                </div>
+              )}
+
+              <CartCard className="mb-6 bg-black/[0.03] border-white/10">
+                <div className="flex justify-between items-center">
+                  <span className="text-muted-foreground">Share on</span>
+                  <div className="flex gap-4">
+                    <TwitterShareButton
+                      url={`https://${origin.thirdPartyHostname}`}
+                      title={shareMessage}
+                    >
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        className="bg-transparent border-none rounded-sm overflow-hidden cursor-pointer p-0"
+                      >
+                        <TwitterIcon className="size-9" />
+                      </Button>
+                    </TwitterShareButton>
+
+                    <LinkedinShareButton
+                      url={`https://${origin.thirdPartyHostname}`}
+                      title={shareMessage}
+                    >
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        className="bg-transparent border-none rounded-sm overflow-hidden cursor-pointer p-0"
+                      >
+                        <LinkedinIcon className="size-9" />
+                      </Button>
+                    </LinkedinShareButton>
+
+                    <FacebookShareButton
+                      url={`https://${origin.thirdPartyHostname}`}
+                      title={shareMessage}
+                    >
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        className="bg-transparent border-none rounded-sm overflow-hidden cursor-pointer p-0"
+                      >
+                        <FacebookIcon className="size-9" />
+                      </Button>
+                    </FacebookShareButton>
                   </div>
-                );
-              })}
-            </div>
-          </CartCard>
+                </div>
+              </CartCard>
+
+              <CartCard
+                title="Order Details"
+                className="mb-6 bg-black/[0.03] border-white/10"
+              >
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <span className="text-muted-foreground">Date</span>
+                    <span>{formatDate(new Date(order.createdAt))}</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-muted-foreground">Grand total</span>
+                    <span>${order.amountInUSDCents / 100} USD</span>
+                  </div>
+                  <div className="flex justify-between items-start">
+                    <span className="text-muted-foreground">
+                      Payments ({payments.length === 1 ? 'Single' : 'Multiple'})
+                    </span>
+                    <PaymentMethodsDetails orderId={id} payments={payments} />
+                  </div>
+                </div>
+              </CartCard>
+
+              {uniqueDomains.length > 0 && (
+                <CartCard className="mb-6 bg-black/[0.03] border-white/10">
+                  <Link
+                    href="/ai-brand-generator"
+                    className="inline-flex items-center gap-2 text-white underline underline-offset-4 text-xl font-semibold"
+                  >
+                    <ExternalLink className="h-5 w-5" />
+                    Just AIng by Namefi™
+                  </Link>
+
+                  <p className="text-sm text-muted-foreground mt-2">
+                    While your order was processing, we prepared a logo preview
+                    for your brand(s). Explore more styles and marketing images
+                    in Just AIng.
+                  </p>
+
+                  <div className="mt-4 mb-2 flex flex-wrap justify-center gap-4">
+                    {uniqueDomains.map((domain) => {
+                      const gens = (bulkInternal?.[domain] ?? []) as Array<{
+                        type: 'logo' | 'marketing';
+                        url: string;
+                      }>;
+                      const logo = gens.find((g) => g.type === 'logo');
+                      return (
+                        <div
+                          key={`ai-starter-${domain}`}
+                          className="p-4 w-full sm:w-3/4 md:w-1/2 lg:w-1/3 max-w-sm"
+                        >
+                          <div className="relative w-full aspect-square overflow-hidden rounded-md bg-black/[0.03] border border-white/10">
+                            {logo ? (
+                              // biome-ignore lint/performance/noImgElement: using plain img for remote asset
+                              <img
+                                src={logo.url}
+                                alt={`${domain} logo`}
+                                className="w-full h-full object-contain"
+                                loading="lazy"
+                              />
+                            ) : (
+                              <div className="w-full h-full flex items-center justify-center text-xs text-muted-foreground">
+                                No preview
+                              </div>
+                            )}
+                          </div>
+                          <div className="mt-3 text-center text-sm truncate">
+                            {domain}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </CartCard>
+              )}
+              <div className="flex gap-4 mb-8">
+                <NamefiButton
+                  variant="outline"
+                  className="flex-1 bg-black/[0.03] border-white/10 hover:bg-white/5"
+                  asChild={true}
+                >
+                  <Link href={`/orders/${id}/details`}>View full details</Link>
+                </NamefiButton>
+                <NamefiButton className="flex-1" asChild={true}>
+                  <Link href="/">Back to home</Link>
+                </NamefiButton>
+              </div>
+            </>
+          )
         )}
-        <div className="flex gap-4 mb-8">
-          <NamefiButton
-            variant="outline"
-            className="flex-1 bg-black/[0.03] border-white/10 hover:bg-white/5"
-            asChild={true}
-          >
-            <Link href={`/orders/${id}/details`}>View full details</Link>
-          </NamefiButton>
-          <NamefiButton className="flex-1" asChild={true}>
-            <Link href="/">Back to home</Link>
-          </NamefiButton>
-        </div>
       </div>
     </div>
   );

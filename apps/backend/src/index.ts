@@ -6,7 +6,6 @@ import '../global';
 import { serve } from '@hono/node-server';
 import { trpcServer } from '@hono/trpc-server'; // Deno 'npm:@hono/trpc-server'
 import { Hono } from 'hono';
-import { pinoLogger as pinoLoggerHono } from 'hono-pino-logger';
 import { cors } from 'hono/cors';
 import { prettyJSON } from 'hono/pretty-json';
 import { createLogger } from '#lib/logger';
