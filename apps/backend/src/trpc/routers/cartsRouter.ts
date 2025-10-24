@@ -152,14 +152,15 @@ export const cartsRouter = createTRPCRouter({
 
       // Process items for insertion
       const itemsToInsert = await Promise.all(
-        input.map(async (item) => {
-          const baseItem = {
+        input.map(async (item): Promise<typeof cartItemsTable.$inferInsert> => {
+          const baseItem: typeof cartItemsTable.$inferInsert = {
             userId: ctx.user.id,
             amountInUSDCents: item.amountInUSDCents,
             normalizedDomainName: item.normalizedDomainName,
             durationInYears: item.durationInYears,
             type: item.type,
             registrar: item.registrar,
+            metadata: item.metadata ?? undefined,
           };
 
           // For import items, encrypt the EPP authorization code

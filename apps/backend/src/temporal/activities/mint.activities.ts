@@ -19,7 +19,7 @@ import {
   getContract,
   parseUnits,
 } from 'viem';
-import { nftIdFromDomainName } from '#lib/nft-hash';
+import { nftIdFromDomainName } from '@namefi-astra/utils/nft-hash';
 import { resolve } from '../../utils/resolve';
 import { NfscAbi } from '@namefi-astra/utils/abis/nfsc';
 import { NftAbi } from '@namefi-astra/utils/abis/namefi-nft';

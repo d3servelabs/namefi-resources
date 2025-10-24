@@ -29,6 +29,10 @@ export interface AcquireDomainWorkflowInput {
   encryptionKeyId?: string | null;
 }
 
+export type AcquireDomainWorkflowOutput = {
+  mintTxHash?: string;
+};
+
 const { generalAlertNamefi, criticalAlertNamefi } = typedProxyActivities({
   temporalEnum: TEMPORAL_ENUMS.DEFAULT,
   options: {
@@ -47,7 +51,7 @@ const { getPoweredByNamefi3PDomains } = typedProxyActivities({
 });
 export async function acquireDomainWorkflow(
   input: AcquireDomainWorkflowInput,
-): Promise<void> {
+): Promise<AcquireDomainWorkflowOutput> {
   if (input.operationType !== 'REGISTER' && input.operationType !== 'IMPORT') {
     throw workflow.ApplicationFailure.create({
       message: `Invalid operation type "${input.operationType}"`,
@@ -118,10 +122,11 @@ export async function acquireDomainWorkflow(
     ),
   ]);
 
+  const mintResult = results[0];
   const errors = results
     .filter(({ failed }) => failed)
     .map(({ error }) => error);
-  const mintingError = results[0].error;
+  const mintingError = mintResult.error;
 
   const info = workflow.workflowInfo();
 
@@ -148,6 +153,10 @@ export async function acquireDomainWorkflow(
       cause: mintingError,
     });
   }
+
+  const mintTxHash = mintResult.success ? mintResult.result : undefined;
+
+  return { mintTxHash };
 }
 
 async function _acquireSldDomain(input: AcquireDomainWorkflowInput) {

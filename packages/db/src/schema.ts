@@ -5,7 +5,7 @@
  */
 
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
-import { recordTypeEnum, recordTypeValues } from '@namefi-astra/zod-dns';
+import { recordTypeValues } from '@namefi-astra/zod-dns';
 import { asc, eq, getTableColumns, sql } from 'drizzle-orm';
 import {
   bigint,
@@ -25,7 +25,6 @@ import {
   timestamp,
   unique,
   uuid,
-  uniqueIndex,
 } from 'drizzle-orm/pg-core';
 import type { Json } from 'drizzle-zod';
 import type { Permission } from '@namefi-astra/utils';
@@ -156,6 +155,42 @@ export const userContactsTable = pgTable('user_contacts', {
   ...timestamps,
 });
 
+export const orderMintTransactionMetadataSchema = z.object({
+  txHash: z.string(),
+  recordedAt: z.string(),
+});
+
+export type OrderMintTransactionMetadata = z.infer<
+  typeof orderMintTransactionMetadataSchema
+>;
+
+const claimMetadataShape = {
+  freeClaim: z.boolean().optional(),
+  groupOrCampaignKey: z.string().optional(),
+  claimId: z.string().optional(),
+};
+
+export const cartItemMetadataSchema = z.object(claimMetadataShape).loose();
+
+export type CartItemMetadata = z.infer<typeof cartItemMetadataSchema>;
+
+export const orderItemMetadataSchema = cartItemMetadataSchema.extend({
+  mintTransaction: orderMintTransactionMetadataSchema.optional(),
+});
+
+export type OrderItemMetadata = z.infer<typeof orderItemMetadataSchema>;
+
+export const orderMetadataSchema = z
+  .object({
+    ...claimMetadataShape,
+    mintTransactions: z
+      .record(z.string(), orderMintTransactionMetadataSchema)
+      .optional(),
+  })
+  .loose();
+
+export type OrderMetadata = z.infer<typeof orderMetadataSchema>;
+
 /**
  * Cart items table
  * Stores individual items in a shopping cart
@@ -174,7 +209,7 @@ export const cartItemsTable = pgTable(
     registrar: text('registrar').notNull(),
     encryptionKeyId: text('encryption_key_id'),
     encryptedEppAuthorizationCode: text('encrypted_epp_authorization_code'),
-    metadata: jsonb('metadata').$type<Json>().default({}),
+    metadata: jsonb('metadata').$type<CartItemMetadata>().default({}),
     ...timestamps,
   },
   (table) => [
@@ -273,7 +308,7 @@ export const ordersTable = pgTable(
     ...amountInUsdCents,
     nftWalletAddress: text('nft_wallet_address'),
     nftChainId: integer('nft_chain_id'),
-    metadata: jsonb('metadata').default({}),
+    metadata: jsonb('metadata').$type<OrderMetadata>().default({}),
     ...timestamps,
   },
   (table) => [
@@ -302,7 +337,7 @@ export const orderItemsTable = pgTable(
     encryptionKeyId: text('encryption_key_id'),
     encryptedEppAuthorizationCode: text('encrypted_epp_authorization_code'),
     status: orderStatusEnum('status').default('CREATED'),
-    metadata: jsonb('metadata').default({}),
+    metadata: jsonb('metadata').$type<OrderItemMetadata>().default({}),
     ...timestamps,
   },
   (table) => [

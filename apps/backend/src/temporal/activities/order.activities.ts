@@ -9,8 +9,9 @@ import {
   orderItemsTable,
   paymentsTable,
   orderStatusSchema,
+  type OrderMintTransactionMetadata,
 } from '@namefi-astra/db';
-import { eq, and } from 'drizzle-orm';
+import { eq, and, sql } from 'drizzle-orm';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { logger } from '#lib/logger';
 
@@ -120,12 +121,86 @@ export async function updateOrderAndItemStatusOrThrow({
   return result;
 }
 
+export async function recordOrderMintTransaction({
+  orderId,
+  orderItemId,
+  txHash,
+}: {
+  orderId: string;
+  orderItemId: string;
+  txHash: string;
+}) {
+  const recordedAt = new Date().toISOString();
+
+  await db.transaction(async (tx) => {
+    const details: OrderMintTransactionMetadata = {
+      txHash,
+      recordedAt,
+    };
+
+    const [updatedOrderItem] = await tx
+      .update(orderItemsTable)
+      .set({
+        metadata: sql`jsonb_set(
+          coalesce(${orderItemsTable.metadata}, '{}'::jsonb),
+          '{mintTransaction}',
+          ${JSON.stringify(details)}::jsonb,
+          true
+        )`,
+      })
+      .where(
+        and(
+          eq(orderItemsTable.id, orderItemId),
+          eq(orderItemsTable.orderId, orderId),
+        ),
+      )
+      .returning({ id: orderItemsTable.id });
+
+    if (!updatedOrderItem) {
+      throw new Error(
+        `Order item not found when recording mint metadata (orderId=${orderId}, orderItemId=${orderItemId})`,
+      );
+    }
+
+    const mintedEntry = {
+      [orderItemId]: details,
+    };
+
+    const [updatedOrder] = await tx
+      .update(ordersTable)
+      .set({
+        metadata: sql`jsonb_set(
+          coalesce(${ordersTable.metadata}, '{}'::jsonb),
+          '{mintTransactions}',
+          coalesce(${ordersTable.metadata} -> 'mintTransactions', '{}'::jsonb) || ${JSON.stringify(mintedEntry)}::jsonb,
+          true
+        )`,
+      })
+      .where(eq(ordersTable.id, orderId))
+      .returning({ id: ordersTable.id });
+
+    if (!updatedOrder) {
+      throw new Error(
+        `Order not found when recording mint metadata (orderId=${orderId})`,
+      );
+    }
+  });
+
+  logger.info(
+    { orderId, orderItemId, txHash },
+    'Recorded mint transaction metadata for order %s item %s',
+    orderId,
+    orderItemId,
+  );
+}
+
 // Export activities as a namespace for easier import in workflow
 export type OrderActivities = {
   getOrderDetailsOrThrow: typeof getOrderDetailsOrThrow;
   updateOrderItemStatusOrThrow: typeof updateOrderItemStatusOrThrow;
   updateOrderStatusOrThrow: typeof updateOrderStatusOrThrow;
   updateOrderAndItemStatusOrThrow: typeof updateOrderAndItemStatusOrThrow;
+  recordOrderMintTransaction: typeof recordOrderMintTransaction;
 };
 
 export type DomainRenewalResult = {

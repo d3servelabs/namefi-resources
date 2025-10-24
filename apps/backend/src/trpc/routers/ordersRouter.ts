@@ -35,7 +35,6 @@ import {
   getPrivyUserLinkedEthereumChecksumWalletAddresses,
   privyClient,
 } from '../utils';
-import type { Json } from 'drizzle-zod';
 import {
   reflectChangesInCartItemsIfAnyAndReturnSummary,
   validateCartItems,
@@ -123,7 +122,7 @@ export const ordersRouter = createTRPCRouter({
                   durationInYears: item.durationInYears,
                   type: item.type,
                   registrar: item.registrar,
-                  metadata: item.metadata as Json,
+                  metadata: item.metadata ?? undefined,
                   encryptionKeyId: item.encryptionKeyId ?? undefined,
                   encryptedEppAuthorizationCode:
                     item.encryptedEppAuthorizationCode ?? undefined,
@@ -310,7 +309,7 @@ export const ordersRouter = createTRPCRouter({
                     durationInYears: item.durationInYears,
                     type: item.type,
                     registrar: item.registrar,
-                    metadata: item.metadata as Json,
+                    metadata: item.metadata ?? undefined,
                     encryptionKeyId: item.encryptionKeyId ?? undefined,
                     encryptedEppAuthorizationCode:
                       item.encryptedEppAuthorizationCode ?? undefined,

@@ -13,7 +13,7 @@ import { createLogger } from '#lib/logger';
 import { secrets } from '#lib/env';
 import { sql } from 'drizzle-orm';
 import type { DomainAiAnalysisInsert } from '@namefi-astra/db/types';
-import { nftIdFromDomainName } from '#lib/nft-hash';
+import { nftIdFromDomainName } from '@namefi-astra/utils/nft-hash';
 
 const logger = createLogger({ module: 'mongo-ai-migration-activities' });
 

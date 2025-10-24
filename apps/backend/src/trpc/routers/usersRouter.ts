@@ -43,7 +43,7 @@ import {
   privyStorageToPrivyCustomMetadata,
 } from '../types';
 
-import { nftIdFromDomainName } from '#lib/nft-hash';
+import { nftIdFromDomainName } from '@namefi-astra/utils/nft-hash';
 
 import { logger } from '#lib/logger';
 import { IsUserDomainOwner } from '../guards/assert-domain-owner';

@@ -37,7 +37,11 @@ export async function processOrderItemWorkflow(
     encryptedEppAuthorizationCode,
     encryptionKeyId,
   } = input;
-  const { updateOrderItemStatusOrThrow } = typedProxyActivities({
+  const {
+    updateOrderItemStatusOrThrow,
+    recordOrderMintTransaction,
+    criticalAlertNamefi,
+  } = typedProxyActivities({
     temporalEnum: TEMPORAL_ENUMS.DEFAULT,
     options: {
       ...shortRunningOpts,
@@ -74,7 +78,7 @@ export async function processOrderItemWorkflow(
         durationInYears,
       };
       // Register or import the domain
-      await workflow.executeChild(acquireDomainWorkflow, {
+      const acquireResult = await workflow.executeChild(acquireDomainWorkflow, {
         args: [workflowInput],
         taskQueue: TEMPORAL_QUEUES.DOMAINS,
         workflowId: acquireDomainWorkflow.generateId(workflowInput),
@@ -82,6 +86,26 @@ export async function processOrderItemWorkflow(
         workflowIdConflictPolicy: 'FAIL',
         parentClosePolicy: 'REQUEST_CANCEL',
       });
+
+      if (acquireResult?.mintTxHash) {
+        const [mintMetadataError] = await resolve(
+          recordOrderMintTransaction({
+            orderId: input.orderId,
+            orderItemId: input.itemId,
+            txHash: acquireResult.mintTxHash,
+          }),
+        );
+
+        if (mintMetadataError) {
+          await criticalAlertNamefi({
+            workflowInfo: workflow.workflowInfo(),
+            message:
+              'Failed to record mint transaction metadata for order item',
+            operation: 'PROCESS_ORDER_ITEM',
+            error: mintMetadataError.message,
+          });
+        }
+      }
     }
 
     // update orderItem status in db

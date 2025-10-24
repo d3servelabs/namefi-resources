@@ -27,8 +27,11 @@ import {
   aiAppraisalDataSchema,
   poweredbyNamefiDomainsTable,
   pbnIssuanceReservationsTable,
-  reservationStatusEnum,
+  cartItemMetadataSchema,
+  orderMetadataSchema,
+  orderItemMetadataSchema,
 } from './schema';
+export type { OrderMintTransactionMetadata } from './schema';
 
 /**
  * Zod schemas for type-safe operations
@@ -39,12 +42,15 @@ export const userUpdateSchema = createUpdateSchema(usersTable);
 
 export const cartItemInsertSchema = createInsertSchema(cartItemsTable, {
   normalizedDomainName: namefiNormalizedDomainSchema,
+  metadata: cartItemMetadataSchema.optional(),
 });
 export const cartItemSelectSchema = createSelectSchema(cartItemsTable, {
   normalizedDomainName: namefiNormalizedDomainSchema,
+  metadata: cartItemMetadataSchema.optional(),
 });
 export const cartItemUpdateSchema = createUpdateSchema(cartItemsTable, {
   normalizedDomainName: namefiNormalizedDomainSchema,
+  metadata: cartItemMetadataSchema.optional(),
 });
 
 export const paymentInsertSchema = createInsertSchema(paymentsTable);
@@ -55,18 +61,27 @@ export const refundInsertSchema = createInsertSchema(refundsTable);
 export const refundSelectSchema = createSelectSchema(refundsTable);
 export const refundUpdateSchema = createUpdateSchema(refundsTable);
 
-export const orderInsertSchema = createInsertSchema(ordersTable);
-export const orderSelectSchema = createSelectSchema(ordersTable);
-export const orderUpdateSchema = createUpdateSchema(ordersTable);
+export const orderInsertSchema = createInsertSchema(ordersTable, {
+  metadata: orderMetadataSchema.optional(),
+});
+export const orderSelectSchema = createSelectSchema(ordersTable, {
+  metadata: orderMetadataSchema.optional(),
+});
+export const orderUpdateSchema = createUpdateSchema(ordersTable, {
+  metadata: orderMetadataSchema.optional(),
+});
 
 export const orderItemInsertSchema = createInsertSchema(orderItemsTable, {
   normalizedDomainName: namefiNormalizedDomainSchema,
+  metadata: orderItemMetadataSchema.optional(),
 });
 export const orderItemSelectSchema = createSelectSchema(orderItemsTable, {
   normalizedDomainName: namefiNormalizedDomainSchema,
+  metadata: orderItemMetadataSchema.optional(),
 });
 export const orderItemUpdateSchema = createUpdateSchema(orderItemsTable, {
   normalizedDomainName: namefiNormalizedDomainSchema,
+  metadata: orderItemMetadataSchema.optional(),
 });
 
 export const freeClaimInsertSchema = createInsertSchema(freeClaimsTable, {

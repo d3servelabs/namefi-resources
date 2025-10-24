@@ -8,16 +8,9 @@ import pMap from 'p-map';
 import * as R from 'ramda';
 import superjson from 'superjson';
 // Indexer for Namefi NFT activities
-import {
-  http,
-  type Address,
-  type Chain,
-  createPublicClient,
-  keccak256,
-  toBytes,
-} from 'viem';
+import { http, type Address, type Chain, createPublicClient } from 'viem';
 import { base, mainnet } from 'viem/chains';
-import { nftIdFromDomainName } from '#lib/nft-hash';
+import { nftIdFromDomainName } from '@namefi-astra/utils/nft-hash';
 import { NftAbi } from '@namefi-astra/utils/abis/namefi-nft';
 import { chainsToUrls } from '#lib/crypto/rpc-urls';
 
@@ -179,8 +172,7 @@ export const saveDomainToDatabase = async (
     }
     const domainName = domain.domainName;
     const tokenId: bigint = domain.tokenId;
-    // convert domain name to bytes
-    const domainNameToId = BigInt(keccak256(toBytes(domainName)));
+    const domainNameToId = nftIdFromDomainName(domainName);
     if (domainNameToId !== tokenId) {
       console.warn(
         `Domain name to id mismatch for domain ${superjson.stringify(domain)}`,

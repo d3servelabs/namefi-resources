@@ -9,3 +9,4 @@ export * from './src/safe-parse-json';
 export * from './src/assert';
 export * from './src/permissions';
 export * from './src/domain-dates';
+export * from './src/nft-hash';

@@ -1,5 +1,4 @@
-import punycode from 'node:punycode';
-import { assert } from '@namefi-astra/utils/assert';
+import { assert } from './assert';
 import { hexToBytes, isHex, keccak256, pad } from 'viem';
 
 export type NftId = bigint;
@@ -56,13 +55,13 @@ export function assertSizedHexString<N extends number>(
  * @param maybeNormalizedDomainName - The domain name to hash.
  * @returns The hashed domain name.
  */
+const encoder = new TextEncoder();
+
 export function nftHexIdFromDomainName(
   maybeNormalizedDomainName: string,
 ): SizedHexString<32> {
-  const normalizedDomainName = punycode.toASCII(
-    maybeNormalizedDomainName.toLowerCase(),
-  );
-  const result = pad(keccak256(Buffer.from(normalizedDomainName)), {
+  const normalizedDomainName = toAsciiDomain(maybeNormalizedDomainName);
+  const result = pad(keccak256(encoder.encode(normalizedDomainName)), {
     size: 32,
     dir: 'left',
   });
@@ -78,4 +77,16 @@ export function nftHexIdFromDomainName(
 export function nftIdFromDomainName(maybeNormalizedDomainName: string): NftId {
   const hexId = nftHexIdFromDomainName(maybeNormalizedDomainName);
   return BigInt(hexId);
+}
+
+function toAsciiDomain(domain: string): string {
+  const lower = domain.toLowerCase();
+  try {
+    const parsed = new URL(`http://${lower}`);
+    return parsed.hostname;
+  } catch (error) {
+    throw new Error(
+      `Failed to normalize domain ${domain}: ${error instanceof Error ? error.message : String(error)}`,
+    );
+  }
 }

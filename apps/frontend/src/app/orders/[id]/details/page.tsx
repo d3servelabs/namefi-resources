@@ -5,7 +5,11 @@ import { CartCard } from '@/components/cart-card';
 import { Button } from '@/components/ui/shadcn/button';
 import { Separator } from '@/components/ui/shadcn/separator';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
-import { itemTypeSchema, type PaymentSelect } from '@namefi-astra/db/types';
+import {
+  itemTypeSchema,
+  type PaymentSelect,
+  type OrderMintTransactionMetadata,
+} from '@namefi-astra/db/types';
 import {
   Tooltip,
   TooltipContent,
@@ -17,11 +21,18 @@ import { useAuth } from '@/hooks/use-auth';
 import { getShortAddress } from '@/lib/string';
 import { formatAmountInUSD } from '@/lib/number';
 import { useTRPC } from '@/lib/trpc';
-import { getChain } from '@namefi-astra/utils';
+import { getChain, NAMEFI_NFT_CONTRACT_ADDRESS } from '@namefi-astra/utils';
+import { nftIdFromDomainName } from '@namefi-astra/utils/nft-hash';
 import { useQuery } from '@tanstack/react-query';
 import { TRPCClientError } from '@trpc/client';
 import { format } from 'date-fns';
-import { Check, ClipboardCopy, Loader2, Info } from 'lucide-react';
+import {
+  Check,
+  ClipboardCopy,
+  Loader2,
+  Info,
+  ExternalLink,
+} from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { use, useMemo, useState } from 'react';
 import {
@@ -35,6 +46,16 @@ import {
 } from '@/components/ui/shadcn/alert-dialog';
 import { NetworkLogo } from '@/components/network-logo';
 import type { OrderItemSelect } from '@namefi-astra/db';
+
+type MintTransactionsByItemId = Record<string, OrderMintTransactionMetadata>;
+
+type MintedItemSummary = {
+  itemId: string;
+  label: string;
+  tokenId: string;
+  chainId: number | null;
+  txHash: string;
+};
 
 function getShortId(id: string, start = 6, end = 4): string {
   if (!id) return '-';
@@ -88,6 +109,34 @@ export default function OrderDetailsPage({
     null,
   );
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
+
+  const orderMintTransactions = order?.metadata?.mintTransactions;
+
+  const mintTransactionsList = useMemo(() => {
+    if (!order || !Array.isArray(items) || items.length === 0) {
+      return [] as Array<MintedItemSummary>;
+    }
+    const chainId = order.nftChainId ?? null;
+    return items.reduce<Array<MintedItemSummary>>((acc, item) => {
+      const mintTransaction =
+        item.metadata?.mintTransaction ?? orderMintTransactions?.[item.id];
+      if (!mintTransaction) {
+        return acc;
+      }
+      const tokenId = getTokenIdFromDomainName(item.normalizedDomainName);
+      if (!tokenId) {
+        return acc;
+      }
+      acc.push({
+        itemId: item.id,
+        label: item.normalizedDomainName,
+        tokenId,
+        chainId,
+        txHash: mintTransaction.txHash,
+      });
+      return acc;
+    }, []);
+  }, [order, orderMintTransactions, items]);
 
   function humanizeItemType(t: string | null | undefined): string {
     switch (t) {
@@ -328,38 +377,61 @@ export default function OrderDetailsPage({
         <div className="h-fit">
           <CartCard title="Order Items">
             <div className="flex flex-col gap-3 mt-6">
-              {items?.map((item) => (
-                <button
-                  type="button"
-                  key={item.id}
-                  onClick={() => setSelectedItemId(item.id)}
-                  className="text-left rounded-lg border border-white/10 bg-white/[0.02] p-4 hover:bg-white/[0.06] transition-colors"
-                >
-                  <div className="flex items-center justify-between">
-                    <span className="text-base font-medium break-all">
-                      {item.normalizedDomainName}
-                    </span>
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs px-2 py-0.5 rounded border border-blue-400/30 bg-blue-500/10 text-blue-300">
-                        {humanizeItemType(item.type)}
-                      </span>
-                      {item.status ? (
-                        <StatusBadge status={item.status} type="order" />
-                      ) : (
-                        <span>-</span>
-                      )}
-                    </div>
-                  </div>
-                  <div className="mt-2 text-sm">
+              {items?.map((item) => {
+                const mintTransaction =
+                  item.metadata?.mintTransaction ??
+                  orderMintTransactions?.[item.id];
+                const tokenId = getTokenIdFromDomainName(
+                  item.normalizedDomainName,
+                );
+                const chainId = order.nftChainId ?? null;
+                return (
+                  <button
+                    type="button"
+                    key={item.id}
+                    onClick={() => setSelectedItemId(item.id)}
+                    className="text-left rounded-lg border border-white/10 bg-white/[0.02] p-4 hover:bg-white/[0.06] transition-colors"
+                  >
                     <div className="flex items-center justify-between">
-                      <span className="text-muted-foreground">Amount</span>
-                      <span className="font-medium">
-                        {formatAmountInUSD(item.amountInUSDCents, true)}
+                      <span className="text-base font-medium break-all">
+                        {item.normalizedDomainName}
                       </span>
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs px-2 py-0.5 rounded border border-blue-400/30 bg-blue-500/10 text-blue-300">
+                          {humanizeItemType(item.type)}
+                        </span>
+                        {item.status ? (
+                          <StatusBadge status={item.status} type="order" />
+                        ) : (
+                          <span>-</span>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                </button>
-              ))}
+                    <div className="mt-2 text-sm">
+                      <div className="flex items-center justify-between">
+                        <span className="text-muted-foreground">Amount</span>
+                        <span className="font-medium">
+                          {formatAmountInUSD(item.amountInUSDCents, true)}
+                        </span>
+                      </div>
+                      {mintTransaction && tokenId ? (
+                        <MintTokenRow
+                          label="Minted NFT"
+                          chainId={chainId}
+                          tokenId={tokenId}
+                          txHash={mintTransaction.txHash ?? null}
+                          onCopyToken={(text) =>
+                            navigator.clipboard.writeText(text)
+                          }
+                          onCopyTx={(text) =>
+                            navigator.clipboard.writeText(text)
+                          }
+                        />
+                      ) : null}
+                    </div>
+                  </button>
+                );
+              })}
             </div>
             <div className="mt-6">
               <Separator />
@@ -461,6 +533,33 @@ export default function OrderDetailsPage({
                   navigator.clipboard.writeText(String(items?.length ?? 0))
                 }
               />
+              {mintTransactionsList.length > 0 ? (
+                <>
+                  <div className="my-2">
+                    <Separator className="opacity-50" />
+                  </div>
+                  <div className="font-medium mb-2">Minted NFTs</div>
+                  <div className="flex flex-col gap-2">
+                    {mintTransactionsList.map(
+                      ({ itemId, label, tokenId, chainId, txHash }) => (
+                        <MintTokenRow
+                          key={itemId}
+                          label={label}
+                          chainId={chainId}
+                          tokenId={tokenId}
+                          txHash={txHash}
+                          onCopyToken={(text) =>
+                            navigator.clipboard.writeText(text)
+                          }
+                          onCopyTx={(text) =>
+                            navigator.clipboard.writeText(text)
+                          }
+                        />
+                      ),
+                    )}
+                  </div>
+                </>
+              ) : null}
             </div>
           ) : null}
           <AlertDialogFooter>
@@ -479,10 +578,149 @@ export default function OrderDetailsPage({
       <ItemDetailsModal
         itemId={selectedItemId}
         items={items}
+        orderMintTransactions={orderMintTransactions}
+        chainId={order.nftChainId ?? null}
         onOpenChange={setSelectedItemId}
       />
     </div>
   );
+}
+
+function MintTokenRow({
+  label,
+  chainId,
+  tokenId,
+  txHash,
+  onCopyToken,
+  onCopyTx,
+}: {
+  label: string;
+  chainId?: number | null;
+  tokenId: string;
+  txHash: string;
+  onCopyToken: (tokenId: string) => void;
+  onCopyTx?: (txHash: string) => void;
+}) {
+  const shortTxHash = txHash ? getShortId(txHash, 6, 6) : null;
+
+  return (
+    <div className="flex items-center justify-between gap-3 py-1">
+      <span className="text-sm text-muted-foreground">{label}</span>
+      <div className="flex items-center gap-2">
+        <MintTokenLink chainId={chainId} tokenId={tokenId} />
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-7 w-7"
+                onClick={() => onCopyToken(tokenId)}
+              >
+                <ClipboardCopy size={14} />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>Copy Token ID</TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+        {txHash ? (
+          <div className="flex items-center gap-1 text-xs text-muted-foreground">
+            <span className="font-mono">{shortTxHash}</span>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-7 w-7"
+                    onClick={() => onCopyTx?.(txHash)}
+                  >
+                    <ClipboardCopy size={14} />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Copy Tx Hash</TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
+        ) : null}
+      </div>
+    </div>
+  );
+}
+
+function MintTokenLink({
+  chainId,
+  tokenId,
+  className,
+}: {
+  chainId?: number | null;
+  tokenId: string;
+  className?: string;
+}) {
+  const explorerUrl = getNftExplorerUrl(chainId, tokenId);
+  const shortTokenId = getShortId(tokenId, 6, 6);
+  if (!chainId) {
+    return (
+      <span
+        className={`inline-flex items-center gap-2 text-muted-foreground ${className ?? ''}`}
+      >
+        <span className="font-mono text-xs">{shortTokenId}</span>
+      </span>
+    );
+  }
+
+  const chainName = getChain(chainId)?.name ?? `Chain ID ${chainId}`;
+  const content = (
+    <>
+      <NetworkLogo className="size-4" network={chainId} />
+      <span className="hidden sm:inline text-xs">{chainName}</span>
+      <span className="font-mono text-xs">{shortTokenId}</span>
+    </>
+  );
+
+  if (!explorerUrl) {
+    return (
+      <span
+        className={`inline-flex items-center gap-2 text-muted-foreground ${className ?? ''}`}
+      >
+        {content}
+      </span>
+    );
+  }
+
+  return (
+    <a
+      href={explorerUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`inline-flex items-center gap-2 text-primary hover:underline ${className ?? ''}`}
+    >
+      {content}
+      <ExternalLink className="size-3" />
+    </a>
+  );
+}
+
+function getNftExplorerUrl(
+  chainId: number | null | undefined,
+  tokenId: string,
+) {
+  if (chainId === null || chainId === undefined) return null;
+  const chain = getChain(chainId);
+  const baseUrl = chain?.blockExplorers?.default?.url;
+  if (!baseUrl) return null;
+  const normalizedBaseUrl = baseUrl.endsWith('/')
+    ? baseUrl.slice(0, -1)
+    : baseUrl;
+  return `${normalizedBaseUrl}/nft/${NAMEFI_NFT_CONTRACT_ADDRESS}/${tokenId}`;
+}
+
+function getTokenIdFromDomainName(domainName: string): string | null {
+  try {
+    return nftIdFromDomainName(domainName).toString();
+  } catch (error) {
+    return null;
+  }
 }
 
 function PaymentSummaryCard({
@@ -809,13 +1047,23 @@ function PaymentDetailsModal({
 function ItemDetailsModal({
   itemId,
   items,
+  orderMintTransactions,
+  chainId,
   onOpenChange,
 }: {
   itemId: string | null;
   items: OrderItemSelect[] | undefined;
+  orderMintTransactions?: MintTransactionsByItemId;
+  chainId: number | null;
   onOpenChange: (id: string | null) => void;
 }) {
   const item = items?.find((it: OrderItemSelect) => it.id === itemId);
+  const mintTransaction = item
+    ? (item.metadata?.mintTransaction ?? orderMintTransactions?.[item.id])
+    : undefined;
+  const tokenId = item
+    ? getTokenIdFromDomainName(item.normalizedDomainName)
+    : null;
   return (
     <AlertDialog open={!!itemId} onOpenChange={() => onOpenChange(null)}>
       <AlertDialogContent className="max-w-xl">
@@ -862,6 +1110,16 @@ function ItemDetailsModal({
                 onCopy={(t) => navigator.clipboard.writeText(t)}
               />
             )}
+            {mintTransaction && tokenId ? (
+              <MintTokenRow
+                label="Minted NFT"
+                chainId={chainId}
+                tokenId={tokenId}
+                txHash={mintTransaction.txHash}
+                onCopyToken={(text) => navigator.clipboard.writeText(text)}
+                onCopyTx={(text) => navigator.clipboard.writeText(text)}
+              />
+            ) : null}
           </div>
         ) : null}
         <AlertDialogFooter>

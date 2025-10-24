@@ -122,6 +122,8 @@ export async function processFreeClaimWorkflow(
     revertClaim,
     updateClaimRecord,
     markClaimAsCompleted,
+    recordOrderMintTransaction,
+    criticalAlertNamefi,
   } = typedProxyActivities({
     temporalEnum: TEMPORAL_ENUMS.DEFAULT,
     options: {
@@ -213,7 +215,7 @@ export async function processFreeClaimWorkflow(
       durationInYears,
     };
 
-    await workflow.executeChild(acquireDomainWorkflow, {
+    const acquireResult = await workflow.executeChild(acquireDomainWorkflow, {
       args: [acquireDomainInput],
       taskQueue: TEMPORAL_QUEUES.DOMAINS,
       workflowId: acquireDomainWorkflow.generateId(acquireDomainInput),
@@ -221,6 +223,26 @@ export async function processFreeClaimWorkflow(
       workflowIdConflictPolicy: 'FAIL',
       parentClosePolicy: 'REQUEST_CANCEL',
     });
+
+    if (acquireResult?.mintTxHash && state.orderId && state.orderItemId) {
+      const [mintMetadataError] = await resolve(
+        recordOrderMintTransaction({
+          orderId: state.orderId,
+          orderItemId: state.orderItemId,
+          txHash: acquireResult.mintTxHash,
+        }),
+      );
+
+      if (mintMetadataError) {
+        await criticalAlertNamefi({
+          workflowInfo: workflow.workflowInfo(),
+          message:
+            'Failed to record mint transaction metadata for free claim order',
+          operation: 'FREE_CLAIM',
+          error: mintMetadataError.message,
+        });
+      }
+    }
 
     state.currentStep = 'domain_acquired';
 

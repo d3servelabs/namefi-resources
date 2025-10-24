@@ -13,7 +13,7 @@ import { db, domainAiAnalysisTable } from '@namefi-astra/db';
 import { secrets } from '#lib/env';
 import { sql } from 'drizzle-orm';
 import type { DomainAiAnalysisInsert } from '@namefi-astra/db/types';
-import { nftIdFromDomainName } from '#lib/nft-hash';
+import { nftIdFromDomainName } from '@namefi-astra/utils/nft-hash';
 import type { ObjectId } from 'mongoose';
 import { aiAppraisalDataSchema } from '@namefi-astra/db/schema';
 import { fileURLToPath } from 'node:url';
