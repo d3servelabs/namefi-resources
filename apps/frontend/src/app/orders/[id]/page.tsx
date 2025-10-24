@@ -291,8 +291,7 @@ export default function OrderPage({ params }: OrderPageProps) {
     : `You've got your ${orderItems.length > 1 ? 'domains' : 'domain'} and here ${
         orderItems.length > 1 ? 'are the NFTs' : 'is the NFT'
       }`;
-  const showSpinner =
-    showProcessingView && (orderProgress.isPolling || timelineLoading);
+  const showSpinner = showProcessingView && timelineLoading;
 
   return (
     <div className="container mx-auto py-8 px-8">

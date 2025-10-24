@@ -1,7 +1,7 @@
 'use client';
 
-import { useMemo } from 'react';
-import { formatDistanceToNowStrict } from 'date-fns';
+import { useEffect, useMemo, useState } from 'react';
+import { format } from 'date-fns';
 import { cn } from '@/lib/cn';
 import { StatusBadge } from '@/components/status-badge';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
@@ -80,6 +80,31 @@ export function OrderProgressTimeline({
 }: OrderProgressTimelineProps) {
   const effectiveLoading = isLoading || !progress?.state;
   const steps = progress?.state?.steps ?? [];
+  const startedAtMs = progress?.state?.timestamps.startedAt ?? null;
+  const completedAtMs = progress?.state?.timestamps.completedAt ?? null;
+  const [now, setNow] = useState(() => Date.now());
+
+  useEffect(() => {
+    if (!startedAtMs) return;
+
+    if (completedAtMs) {
+      setNow(completedAtMs);
+      return;
+    }
+
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    setNow(Date.now());
+    const intervalId = window.setInterval(() => {
+      setNow(Date.now());
+    }, 1000);
+
+    return () => {
+      window.clearInterval(intervalId);
+    };
+  }, [startedAtMs, completedAtMs]);
 
   const activeStepId = useMemo(() => {
     const active =
@@ -88,7 +113,30 @@ export function OrderProgressTimeline({
     return active?.id;
   }, [steps]);
 
-  const refreshedAt = progress?.fetchedAt ? new Date(progress.fetchedAt) : null;
+  const elapsedDisplay = useMemo(() => {
+    if (!startedAtMs) return null;
+    const totalSeconds = Math.max(
+      0,
+      Math.floor(((completedAtMs ?? now) - startedAtMs) / 1000),
+    );
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+    const parts: string[] = [];
+    if (hours > 0) {
+      parts.push(`${hours}h`);
+    }
+    if (minutes > 0 || hours > 0) {
+      parts.push(`${minutes}m`);
+    }
+    parts.push(`${seconds}s`);
+    return parts.join(' ');
+  }, [completedAtMs, now, startedAtMs]);
+
+  const startedAtDisplay = useMemo(() => {
+    if (!startedAtMs) return null;
+    return format(new Date(startedAtMs), 'MMM d, yyyy • h:mm:ss a');
+  }, [startedAtMs]);
 
   if (effectiveLoading) {
     return <OrderProgressTimelineSkeleton />;
@@ -139,11 +187,12 @@ export function OrderProgressTimeline({
         })}
       </ol>
 
-      <p className="mt-4 text-xs text-muted-foreground">
-        {refreshedAt
-          ? `Updated ${formatDistanceToNowStrict(refreshedAt, { addSuffix: true })}`
-          : 'Waiting for the first update…'}
-      </p>
+      {startedAtDisplay ? (
+        <p className="mt-4 text-xs text-muted-foreground">
+          Started {startedAtDisplay}
+          {elapsedDisplay ? ` • Elapsed ${elapsedDisplay}` : null}
+        </p>
+      ) : null}
     </div>
   );
 }
