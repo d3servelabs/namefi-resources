@@ -47,7 +47,7 @@ export function WalletEditableSelect({
   });
   const inputRef = useRef<HTMLInputElement>(null);
   const { width = 0 } = useResizeObserver({
-    // @ts-ignore: Remove this once usehooks-ts releases bug-fix https://github.com/juliencrn/usehooks-ts/issues/681
+    // @ts-expect-error: Remove this once usehooks-ts releases bug-fix https://github.com/juliencrn/usehooks-ts/issues/681
     ref: inputRef,
     box: 'border-box',
   });

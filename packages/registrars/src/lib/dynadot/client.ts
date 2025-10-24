@@ -165,7 +165,9 @@ export class Dynadot {
       this.instance.interceptors.request.use((config) => {
         const url = new URL((config.baseURL ?? '') + (config.url ?? ''));
         Object.entries(config.params ?? {}).forEach(
-          ([key, value]: [string, any]) => url.searchParams.set(key, value),
+          ([key, value]: [string, any]) => {
+            url.searchParams.set(key, value);
+          },
         );
         (config as any).context = {
           ...((config as any).context ?? {}),

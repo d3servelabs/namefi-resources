@@ -15,7 +15,7 @@ import { fromPairs, groupBy, isNil, isNotNil, uniqBy } from 'ramda';
 import { privyCustomMetadataToPrivyStorage } from '../../trpc/types';
 import * as workflow from '@temporalio/workflow';
 import * as changeKeys from 'change-case/keys';
-// @ts-ignore
+// @ts-expect-error
 import countryCodeLookup from 'iso-countries-lookup';
 type LinkedAccountInput = Parameters<
   typeof privyClient.importUser

@@ -546,7 +546,9 @@ program
     if (!method) {
       console.error(`Method "${methodName}" not found.`);
       console.log('Available methods:');
-      analyticsMethods.forEach((m) => console.log(`  - ${m.name}`));
+      analyticsMethods.forEach((m) => {
+        console.log(`  - ${m.name}`);
+      });
       process.exit(1);
     }
 

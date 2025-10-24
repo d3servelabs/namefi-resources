@@ -10,15 +10,15 @@
     "ignoreUnknown": true,
     "includes": [
       "**",
-      "!temp/**",
-      "!**/generated/**",
-      "!**/node_modules/**",
-      "!**/.next/**",
-      "!**/out/**",
-      "!**/.vercel/**",
-      "!**/.turbo/**",
-      "!**/db/src/migrations/**",
-      "!**/apps/listmonk/**"
+      "!temp",
+      "!**/generated",
+      "!**/node_modules",
+      "!**/.next",
+      "!**/out",
+      "!**/.vercel",
+      "!**/.turbo",
+      "!**/db/src/migrations",
+      "!**/apps/listmonk"
     ],
     "maxSize": 1536000
   },

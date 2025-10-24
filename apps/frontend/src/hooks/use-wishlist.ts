@@ -352,7 +352,9 @@ export function useWishlistServerSync() {
     base: UnifiedWishlistItem[] = [],
   ) => {
     const map = new Map(base.map((i) => [i.normalizedDomainName, i]));
-    delta.forEach((i) => map.set(i.normalizedDomainName, i));
+    delta.forEach((i) => {
+      map.set(i.normalizedDomainName, i);
+    });
     return [...map.values()];
   };
 
@@ -442,7 +444,9 @@ export function useWishlistServerSync() {
         WishlistKey,
         (old: UnifiedWishlistItem[] = []) => {
           const map = new Map(old.map((o) => [o.normalizedDomainName, o]));
-          authoritative.forEach((r) => map.set(r.normalizedDomainName, r));
+          authoritative.forEach((r) => {
+            map.set(r.normalizedDomainName, r);
+          });
           return [...map.values()].map((i) =>
             isOptimistic(i) ? stripOptimistic(i) : i,
           );
@@ -642,9 +646,9 @@ export function useWishlistOperations(
         };
         return wishlistQueue.add(task) as Promise<UnifiedWishlistItem[]>;
       } catch (error) {
-        touchedDomains.forEach((d) =>
-          sync.busy.clearBusy(wishlistDomainKey(userId, d)),
-        );
+        touchedDomains.forEach((d) => {
+          sync.busy.clearBusy(wishlistDomainKey(userId, d));
+        });
         throw error;
       }
     },
@@ -694,9 +698,9 @@ export function useWishlistOperations(
           const removedLocal = sync.local.removeLocalByDomain(list);
           return normalizeWishlistItems(removedLocal, false, undefined);
         } finally {
-          list.forEach((domain) =>
-            sync.busy.clearBusy(wishlistDomainKey(userId, domain)),
-          );
+          list.forEach((domain) => {
+            sync.busy.clearBusy(wishlistDomainKey(userId, domain));
+          });
         }
       };
       return wishlistQueue.add(task) as Promise<UnifiedWishlistItem[]>;

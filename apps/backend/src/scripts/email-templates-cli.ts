@@ -208,7 +208,9 @@ program
     if (!template) {
       console.error(`Template "${templateName}" not found.`);
       console.log('Available templates:');
-      templates.forEach((t) => console.log(`  - ${t.name}`));
+      templates.forEach((t) => {
+        console.log(`  - ${t.name}`);
+      });
       process.exit(1);
     }
 

@@ -327,7 +327,7 @@ function buildRecordNameRegex(domainName: string) {
     removeTrailingDot(domainName),
   );
   const escaped = normalized.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  return `^(?:.*\\.)?${escaped}\.?$`;
+  return `^(?:.*\\.)?${escaped}\\.?$`;
 }
 
 export const getFullReportByRecordNameInputSchema = z.object({

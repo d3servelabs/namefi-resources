@@ -220,7 +220,7 @@ export const ControlledGlareCard = ({
       <div
         className="h-full grid will-change-transform origin-center transition-transform duration-[var(--duration)] ease-[var(--easing)] [transform:rotateY(var(--r-x))_rotateX(var(--r-y))] rounded-[var(--radius)] border border-slate-800 hover:[--duration:200ms] hover:[--easing:linear] hover:filter-none overflow-hidden"
         style={{
-          // @ts-ignore - CSS custom property
+          // @ts-expect-error - CSS custom property
           '--opacity': glareOpacity,
         }}
       >

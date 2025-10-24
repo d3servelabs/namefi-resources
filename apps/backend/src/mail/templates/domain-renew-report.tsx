@@ -123,7 +123,7 @@ export const DomainRenewReport = buildTemplate<DomainRenewReportProps>(
           ]}
         >
           {domainLdhRenewFailed.length > 0
-            ? `The refund amount of \$${refundAmountInUsd?.toFixed(2)}USD has been initiated to your original payment method(${paymentMethodCharged}).` +
+            ? `The refund amount of $${refundAmountInUsd?.toFixed(2)}USD has been initiated to your original payment method(${paymentMethodCharged}).` +
               ' For domains that failed to renew, please renew them on the Namefi App dashboard.' +
               ' If the problem persists, please contact support@namefi.io.'
             : ''}

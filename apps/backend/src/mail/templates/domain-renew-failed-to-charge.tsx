@@ -29,7 +29,7 @@ export const DomainRenewFailedToCharge =
       const messageMarkdown =
         `Hi ${recipientName},\n\n` +
         `In order to renew the following domains in your account (${recipientUserId}),` + // TODO: add link to user dashboard
-        ` we attempted to process a payment of \$${chargeAmountInUsd.toFixed(2)} USD,` +
+        ` we attempted to process a payment of $${chargeAmountInUsd.toFixed(2)} USD,` +
         ' but the payment process was unsuccessful.' +
         ' This is usually due to lack of saved Stripe payment information and no enough available NamefiServiceCredits(NFSC) balance in your crypto account.';
 

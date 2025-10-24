@@ -371,7 +371,9 @@ export function useCartServerSync() {
     base: UnifiedCartItem[] = [],
   ) => {
     const map = new Map(base.map((i) => [i.normalizedDomainName, i]));
-    delta.forEach((i) => map.set(i.normalizedDomainName, i));
+    delta.forEach((i) => {
+      map.set(i.normalizedDomainName, i);
+    });
     return [...map.values()];
   };
 
@@ -782,9 +784,9 @@ export function useCartOperations(sync: ReturnType<typeof useCartServerSync>) {
         };
         return cartQueue.add(task) as Promise<UnifiedCartItem[]>;
       } catch (error) {
-        touchedDomains.forEach((d) =>
-          sync.busy.clearBusy(cartDomainKey(userId, d)),
-        );
+        touchedDomains.forEach((d) => {
+          sync.busy.clearBusy(cartDomainKey(userId, d));
+        });
         throw error;
       }
     },
@@ -854,9 +856,9 @@ export function useCartOperations(sync: ReturnType<typeof useCartServerSync>) {
           }
           return sync.normalize(removedLocal);
         } finally {
-          list.forEach((domain) =>
-            sync.busy.clearBusy(cartDomainKey(userId, domain)),
-          );
+          list.forEach((domain) => {
+            sync.busy.clearBusy(cartDomainKey(userId, domain));
+          });
         }
       };
       return cartQueue.add(task) as Promise<UnifiedCartItem[]>;

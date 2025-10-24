@@ -131,7 +131,7 @@ function DomainFieldWithSuggestions({
 
   const inputRef = useRef<HTMLInputElement>(null);
   const { width = 0 } = useResizeObserver({
-    // @ts-ignore - upstream lib typing issue
+    // @ts-expect-error - upstream lib typing issue
     ref: inputRef,
     box: 'border-box',
   });

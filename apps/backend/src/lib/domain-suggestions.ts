@@ -175,7 +175,9 @@ function generate3rdLevelDomainSuggestions(
         !totalSuggestions.has(d) && d !== `${sanitizedQuery}.${parentDomain}`,
     );
 
-    normalizedSuggestions.forEach((d) => totalSuggestions.add(d));
+    normalizedSuggestions.forEach((d) => {
+      totalSuggestions.add(d);
+    });
     suggestions.push(...normalizedSuggestions);
 
     // Stop if we have enough suggestions
