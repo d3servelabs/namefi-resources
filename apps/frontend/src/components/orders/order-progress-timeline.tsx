@@ -137,6 +137,11 @@ export function OrderProgressTimeline({
     if (!startedAtMs) return null;
     return format(new Date(startedAtMs), 'MMM d, yyyy • h:mm:ss a');
   }, [startedAtMs]);
+  const shouldDisplayElapsed = Boolean(
+    elapsedDisplay &&
+      !completedAtMs &&
+      (progress?.orderStatus ?? 'PROCESSING') === 'PROCESSING',
+  );
 
   if (effectiveLoading) {
     return <OrderProgressTimelineSkeleton />;
@@ -190,7 +195,7 @@ export function OrderProgressTimeline({
       {startedAtDisplay ? (
         <p className="mt-4 text-xs text-muted-foreground">
           Started {startedAtDisplay}
-          {elapsedDisplay ? ` • Elapsed ${elapsedDisplay}` : null}
+          {shouldDisplayElapsed ? ` • Elapsed ${elapsedDisplay}` : null}
         </p>
       ) : null}
     </div>
