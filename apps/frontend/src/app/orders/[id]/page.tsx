@@ -32,7 +32,6 @@ import {
 } from '@namefi-astra/utils';
 import { getTokenIdFromDomainName } from '@namefi-astra/utils';
 import { useQuery } from '@tanstack/react-query';
-import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { TRPCClientError } from '@trpc/client';
 import { Loader2, ExternalLink } from 'lucide-react';
 import Link from 'next/link';
@@ -299,7 +298,6 @@ export default function OrderPage({ params }: OrderPageProps) {
           orderItems.length > 1 ? 'are the NFTs' : 'is the NFT'
         }`
       : activeProgressCopy.description;
-  const showSpinner = workflowPhase === 'processing' && orderProgress.isPolling;
   const timelinePhase: WorkflowProgressPhase =
     viewState === 'loading'
       ? 'loading'
@@ -321,7 +319,6 @@ export default function OrderPage({ params }: OrderPageProps) {
               <h1 className="text-4xl font-bold mb-3">{heading}</h1>
               <p className="text-muted-foreground text-lg flex items-center justify-center gap-2">
                 {subheading}
-                {showSpinner && <Loader2 className="h-5 w-5 animate-spin" />}
               </p>
             </>
           )}
