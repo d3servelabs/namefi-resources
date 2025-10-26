@@ -156,7 +156,7 @@ export async function generateAutoRenewReportMarkdown(
   const ctx = Context.current();
   ctx.log.info('Generating auto-renewal detailed Markdown report');
 
-  const dateStr = format(metrics.reportDate || new Date(), 'MMM Do, yyyy');
+  const dateStr = format(metrics.reportDate || new Date(), 'MMM do, yyyy');
   let content = `# Auto-Renewal Detailed Report - ${dateStr}\n\n`;
 
   // Overview section
