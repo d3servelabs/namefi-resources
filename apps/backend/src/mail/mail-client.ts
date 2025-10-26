@@ -32,6 +32,11 @@ export interface SendMailInput {
   subject: string;
   content: { plain?: string; html: string };
   from?: string;
+  attachments?: Array<{
+    filename: string;
+    content: string | Buffer;
+    contentType?: string;
+  }>;
 }
 
 export async function sendMail({
@@ -41,6 +46,7 @@ export async function sendMail({
   subject,
   content,
   from = 'Namefi <support@namefi.io>',
+  attachments = [],
 }: SendMailInput) {
   // send mail with defined transport object
   const info = await transporter.sendMail({
@@ -51,6 +57,11 @@ export async function sendMail({
     subject, // Subject line
     text: content.plain, // plain text body
     html: content.html, // html body
+    attachments: attachments.map((att) => ({
+      filename: att.filename,
+      content: att.content,
+      contentType: att.contentType || 'text/plain',
+    })),
   });
 
   return info;

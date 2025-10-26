@@ -39,8 +39,9 @@ const { triggerUpdateDomainIndex } = typedProxyActivities({
 const {
   collectAutoRenewMetrics,
   formatAutoRenewReport,
-  sendAutoRenewReportToSlack,
-  sendAutoRenewReportEmail,
+  sendAutoRenewReportToSlackWithAttachments,
+  sendAutoRenewReportEmailWithAttachments,
+  checkDomainTransferPeriods,
 } = typedProxyActivities({
   temporalEnum: TEMPORAL_ENUMS.DOMAINS,
   options: {
@@ -302,7 +303,7 @@ export async function notifyAndRenewDomainsForSingleUserWorkflow(
     };
   }
 
-  if (userEmail) {
+  if (userEmail && domainsThatHavePriceData.length > 0) {
     await _notifyUserForUpcomingRenew(
       userEmail,
       {
@@ -313,7 +314,11 @@ export async function notifyAndRenewDomainsForSingleUserWorkflow(
     );
   } else {
     workflow.log.warn(
-      `We are skipping notifying user ${userId} for charge and renew because user didn't provide an email`,
+      `We are skipping notifying user ${userId} for charge and renew because user didn't provide an email or there are no domains with price data`,
+      {
+        userEmail,
+        domainsThatHavePriceData,
+      },
     );
   }
 
@@ -922,6 +927,46 @@ async function _generateAndSendAutoRenewReport({
     workflowResults,
   });
 
+  // Check domain transfer periods if there are domains to check
+  if (finalMetrics.totalDomainsProcessed > 0) {
+    const allDomains: NamefiNormalizedDomain[] = [];
+
+    // Collect all processed domains
+    for (const result of workflowResults) {
+      if (result.successes) {
+        for (const success of result.successes) {
+          allDomains.push(success.domain);
+        }
+      }
+      if (result.failures) {
+        for (const failure of result.failures) {
+          allDomains.push(failure.domain);
+        }
+      }
+    }
+
+    // Check transfer periods for all domains
+    if (allDomains.length > 0) {
+      try {
+        const domainLockStatus = await checkDomainTransferPeriods(allDomains);
+
+        // Update metrics with transfer period information
+        finalMetrics.domainLockStatus = domainLockStatus;
+        finalMetrics.domainsInTransferPeriod = Object.values(
+          domainLockStatus,
+        ).filter((d) => d.isTransferPeriod).length;
+        finalMetrics.domainsInAddPeriod = Object.values(
+          domainLockStatus,
+        ).filter((d) => d.isAddPeriod).length;
+        finalMetrics.lockedDomains = Object.values(domainLockStatus).filter(
+          (d) => d.locked,
+        ).length;
+      } catch (error) {
+        workflow.log.warn('Failed to check domain transfer periods', { error });
+      }
+    }
+  }
+
   // Format the report
   const { title, content } = await formatAutoRenewReport(finalMetrics);
 
@@ -938,12 +983,24 @@ async function _generateAndSendAutoRenewReport({
       totalProcessed: finalMetrics.totalDomainsProcessed,
       failures: finalMetrics.failedRenewals,
       criticalIssues: finalMetrics.criticalDomains.length,
+      domainsInTransferPeriod: finalMetrics.domainsInTransferPeriod || 0,
     });
 
-    // Send to Slack
+    // Prepare report input for both Slack and email
+    const reportInput: AutoRenewReportInput = {
+      metrics: finalMetrics,
+      workflowResults,
+    };
+
+    // Send to Slack with attachment notice
     await catchAndAlertLocally(
       async () => {
-        await sendAutoRenewReportToSlack(title, content);
+        await sendAutoRenewReportToSlackWithAttachments(
+          title,
+          content,
+          reportInput,
+          finalMetrics,
+        );
       },
       {
         message: 'Failed to send auto-renewal report to Slack',
@@ -951,13 +1008,18 @@ async function _generateAndSendAutoRenewReport({
       },
     );
 
-    // Send via email
+    // Send via email with attachments
     await catchAndAlertLocally(
       async () => {
-        await sendAutoRenewReportEmail(title, content);
+        await sendAutoRenewReportEmailWithAttachments(
+          title,
+          content,
+          reportInput,
+          finalMetrics,
+        );
       },
       {
-        message: 'Failed to send auto-renewal report email',
+        message: 'Failed to send auto-renewal report email with attachments',
         details: { title },
       },
     );
@@ -975,7 +1037,7 @@ function _determineActionRequired(errorMessage: string): string {
   const lowerError = errorMessage.toLowerCase();
 
   if (lowerError.includes('price') || lowerError.includes('pricing')) {
-    return 'Update pricing data';
+    return 'Check pricing data';
   }
   if (lowerError.includes('locked')) {
     return 'Unlock domain and retry';

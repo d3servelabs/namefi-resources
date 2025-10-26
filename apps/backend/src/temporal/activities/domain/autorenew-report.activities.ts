@@ -7,6 +7,11 @@ import { sendMail } from '../../../mail/mail-client';
 import React from 'react';
 import { render } from '@react-email/components';
 import { AutoRenewDailyReport } from '../../../mail/templates/autorenew-daily-report';
+import {
+  generateAutoRenewReportCsv,
+  generateAutoRenewReportMarkdown,
+  checkDomainTransferPeriods,
+} from './autorenew-report-attachments.activities';
 
 export interface AutoRenewMetrics {
   reportDate: Date;
@@ -60,6 +65,18 @@ export interface AutoRenewMetrics {
     amount: number;
     domainCount: number;
   };
+  domainsInTransferPeriod?: number;
+  domainsInAddPeriod?: number;
+  lockedDomains?: number;
+  domainLockStatus?: Record<
+    NamefiNormalizedDomain,
+    {
+      isTransferPeriod: boolean;
+      isAddPeriod: boolean;
+      locked: boolean;
+      error?: boolean;
+    }
+  >;
   comparisonWithPreviousDay?: {
     renewalsDiff: number;
     revenueDiff: number;
@@ -132,11 +149,11 @@ export async function collectAutoRenewMetrics(
     0,
   );
 
-  // Payment method breakdown
+  // Payment method breakdown - process each payment individually
   metrics.paymentMethodBreakdown = workflowResults.reduce(
     (breakdown, result) => {
       for (const payment of result.payments || []) {
-        if (payment.paymentProvider && result.amountChargedInUsd) {
+        if (payment.paymentProvider) {
           if (!breakdown[payment.paymentProvider]) {
             breakdown[payment.paymentProvider] = { count: 0, amountInUsd: 0 };
           }
@@ -157,7 +174,7 @@ export async function collectAutoRenewMetrics(
       for (const failure of result.failures) {
         let actionRequired = 'Manual investigation required';
         if (failure.reason.includes('price')) {
-          actionRequired = 'Update pricing data';
+          actionRequired = 'Check pricing data';
         } else if (failure.reason.includes('locked')) {
           actionRequired = 'Unlock domain and retry';
         } else if (failure.reason.includes('timeout')) {
@@ -184,7 +201,7 @@ export async function collectAutoRenewMetrics(
   // Sort critical domains by urgency
   metrics.criticalDomains.sort((a, b) => {
     const urgencyOrder = [
-      'Update pricing data',
+      'Check pricing data',
       'Unlock domain and retry',
       'Retry renewal',
       'Contact user about payment',
@@ -259,7 +276,7 @@ export async function formatAutoRenewReport(
       // Show up to 10 domains per action type
       const displayDomains = domains.slice(0, 10);
       for (const domain of displayDomains) {
-        const userDisplay = domain.userEmail || domain.userId.slice(0, 8);
+        const userDisplay = domain.userEmail || domain.userId;
         criticalDomainsTable += `| ${domain.domain} | ${userDisplay} | ${domain.issue.slice(0, 30)} | ${domain.registrar || 'Unknown'} | ${domain.actionRequired} |\n`;
       }
 
@@ -271,12 +288,20 @@ export async function formatAutoRenewReport(
     }
   }
 
-  // Build registrar breakdown
+  // Build registrar breakdown with proper names
   let registrarStats = '';
   for (const [registrar, stats] of Object.entries(
     metrics.registrarBreakdown || {},
   )) {
-    registrarStats += `- ${registrar}: ${stats.successful} successful, ${stats.failed} failed\n`;
+    const registrarDisplayName =
+      registrar === 'dynadot_gdg'
+        ? 'Dynadot (GDG)'
+        : registrar === 'dynadot_regular'
+          ? 'Dynadot (Regular)'
+          : registrar === 'route53'
+            ? 'Route 53'
+            : registrar || 'Unknown';
+    registrarStats += `- ${registrarDisplayName}: ${stats.successful} successful, ${stats.failed} failed\n`;
   }
 
   const content = `## 📊 Auto-Renewal Overview
@@ -328,6 +353,14 @@ ${
 - Failed renewal alerts: ${metrics.userCommunication?.failedRenewalAlerts || 0}
 - Payment failure notifications: ${metrics.userCommunication?.paymentFailureNotifications || 0}
 
+## 🔒 Domain Lock & Transfer Status
+
+**Domains in Transfer Period:** ${metrics.domainsInTransferPeriod || 0}
+**Domains in Add Period:** ${metrics.domainsInAddPeriod || 0}
+**Locked Domains:** ${metrics.lockedDomains || 0}
+
+${metrics.domainsInTransferPeriod ? '⚠️ Domains in transfer period cannot be renewed immediately and may require special handling.' : ''}
+
 ## 🛠️ System Health
 
 **Workflow Execution Time:** ${Math.floor((metrics.executionMetrics?.totalExecutionTime || 0) / 60000)}m ${Math.floor(((metrics.executionMetrics?.totalExecutionTime || 0) % 60000) / 1000)}s
@@ -353,7 +386,7 @@ ${
 ## 📈 Notable Transactions
 
 **Largest Single Transaction:**
-- User: ${metrics.largestTransaction.userId.slice(0, 8)}...
+- User: ${metrics.largestTransaction.userId}
 - Amount: $${metrics.largestTransaction.amount.toFixed(2)}
 - Domains: ${metrics.largestTransaction.domainCount}
 `
@@ -369,7 +402,72 @@ ${
 }
 
 /**
- * Send auto-renewal report to Slack (if webhook URL is configured)
+ * Send auto-renewal report to Slack with note about email attachments
+ * Note: Slack webhooks don't support file uploads. Files are sent via email.
+ */
+export async function sendAutoRenewReportToSlackWithAttachments(
+  title: string,
+  content: string,
+  input: AutoRenewReportInput,
+  metrics: AutoRenewMetrics,
+): Promise<void> {
+  const ctx = Context.current();
+  const webhookUrl = secrets.NAMEFI_ASSET_REPORT_SLACK_WEBHOOK_URL;
+
+  if (!webhookUrl) {
+    ctx.log.warn(
+      'No Slack webhook URL configured, skipping Slack notification',
+    );
+    return;
+  }
+
+  try {
+    const blocks = getSlackTextBlocks(content);
+    const dateStr = format(metrics.reportDate || new Date(), 'yyyy-MM-dd');
+
+    const message = {
+      blocks: [
+        {
+          type: 'header',
+          text: {
+            type: 'plain_text',
+            text: title,
+          },
+        },
+        {
+          type: 'section',
+          text: {
+            type: 'mrkdwn',
+            text: `📎 *Detailed reports with full data have been sent via email*\n\nAttachments include:\n• \`autorenew-report-${dateStr}.csv\` - Complete transaction data\n• \`autorenew-report-${dateStr}-detailed.md\` - Full detailed report\n\n---\n`,
+          },
+        },
+        ...blocks,
+      ],
+    };
+
+    const response = await fetch(webhookUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(message),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+
+    ctx.log.info(
+      'Successfully sent auto-renewal report to Slack with attachment notice',
+    );
+  } catch (error) {
+    ctx.log.error('Failed to send auto-renewal report to Slack', { error });
+    throw error;
+  }
+}
+
+/**
+ * Send auto-renewal report to Slack via webhook (no attachments)
  */
 export async function sendAutoRenewReportToSlack(
   title: string,
@@ -425,12 +523,77 @@ export async function sendAutoRenewReportToSlack(
 }
 
 /**
- * Send auto-renewal report via email to reporting@namefi.io
+ * Send auto-renewal report via email with CSV and Markdown attachments
+ */
+export async function sendAutoRenewReportEmailWithAttachments(
+  title: string,
+  content: string,
+  input: AutoRenewReportInput,
+  metrics: AutoRenewMetrics,
+): Promise<void> {
+  const ctx = Context.current();
+
+  try {
+    // Generate attachments
+    const csvContent = await generateAutoRenewReportCsv(input, metrics);
+    const markdownContent = await generateAutoRenewReportMarkdown(
+      input,
+      metrics,
+    );
+
+    const dateStr = format(metrics.reportDate || new Date(), 'yyyy-MM-dd');
+
+    // Create React email template
+    const emailTemplate = React.createElement(AutoRenewDailyReport, {
+      title,
+      reportContent: content,
+    });
+
+    // Render the template to HTML and plain text
+    const html = await render(emailTemplate);
+    const plain = await render(emailTemplate, { plainText: true });
+
+    await sendMail({
+      to: ['reports+autorenew@d3serve.xyz'],
+      subject: title,
+      content: {
+        html,
+        plain,
+      },
+      from: 'Auto-Renewal System <noreply@d3serve.xyz>',
+      attachments: [
+        {
+          filename: `autorenew-report-${dateStr}.csv`,
+          content: csvContent,
+          contentType: 'text/csv',
+        },
+        {
+          filename: `autorenew-report-${dateStr}-detailed.md`,
+          content: markdownContent,
+          contentType: 'text/markdown',
+        },
+      ],
+    });
+
+    ctx.log.info(
+      'Successfully sent auto-renewal report email with attachments to reports+autorenew@d3serve.xyz',
+    );
+  } catch (error) {
+    ctx.log.error('Failed to send auto-renewal report email with attachments', {
+      error,
+    });
+    throw error;
+  }
+}
+
+/**
+ * Legacy function for backward compatibility - redirects to new function with attachments
  */
 export async function sendAutoRenewReportEmail(
   title: string,
   content: string,
 ): Promise<void> {
+  // For backward compatibility, just send without attachments using simple email
   const ctx = Context.current();
 
   try {

@@ -19,6 +19,7 @@ import {
 } from './renew.activities';
 import * as DisableAutoRenewalActivities from './disable-auto-renewal.activities';
 import * as AutoRenewReportActivities from './autorenew-report.activities';
+import * as AutoRenewReportAttachmentActivities from './autorenew-report-attachments.activities';
 //TODO: add a check to see if name collision is happening
 export const DomainsActivities = {
   parkDomain,
@@ -40,6 +41,7 @@ export const DomainsActivities = {
   // Auto-renewal disabling activities
   ...DisableAutoRenewalActivities,
   ...AutoRenewReportActivities,
+  ...AutoRenewReportAttachmentActivities,
 };
 
 export async function getDomainChain(
