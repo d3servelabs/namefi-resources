@@ -8,7 +8,7 @@ import { useInteractionLoggers } from '@/components/providers/analytics';
 import { UserDropdown } from '@/components/dropdowns/user-dropdown';
 import { HybridPaymentCard } from '@/components/payment-method/hybrid-payment-card';
 import { NoPaymentMethodRequiredCard } from '@/components/payment-method/select-payment-method-card';
-import { useUserWalletAddresses } from '@/hooks/use-user-wallet-addresses';
+import { useLinkedWallets } from '@/hooks/use-user-wallet-addresses';
 import { useDefaultChainId } from '@/hooks/use-allowed-chains';
 import {
   AlertDialog,
@@ -69,7 +69,15 @@ export default function CartPage() {
   const { logEventWithInteractionLoggers } = useInteractionLoggers();
 
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
-  const { userWalletAddresses } = useUserWalletAddresses();
+  const { linkedWallets: _linkedWallets } = useLinkedWallets();
+  const _linkedWalletsAddresses = _linkedWallets.map(
+    (wallet) => wallet.address,
+  ) as `0x${string}`[];
+  // biome-ignore lint/correctness/useExhaustiveDependencies: We need to do this to avoid unnecessary re-renders
+  const linkedWalletAddresses = useMemo(
+    () => _linkedWalletsAddresses,
+    [_linkedWalletsAddresses.sort().join(',')],
+  );
 
   const trpc = useTRPC();
 
@@ -423,7 +431,7 @@ export default function CartPage() {
               ) : (
                 <HybridPaymentCard
                   totalAmountInUsdCents={totalAmountInUsdCents}
-                  userWalletAddresses={userWalletAddresses as `0x${string}`[]}
+                  userWalletAddresses={linkedWalletAddresses}
                   isDisabled={isDisabled}
                   isProcessing={
                     isCreateOrderPending ||
