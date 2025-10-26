@@ -1,5 +1,5 @@
 import * as workflow from '@temporalio/workflow';
-import type { ACTIVITIES } from '../../workers';
+import type { ACTIVITIES } from '../../workers/activity-registry';
 import { type TEMPORAL_ENUMS, TEMPORAL_QUEUES } from '../enums';
 
 export const typedProxyActivities = <T extends TEMPORAL_ENUMS>({
