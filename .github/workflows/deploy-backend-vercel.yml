@@ -359,7 +359,7 @@ jobs:
   # Deploy to Vercel (build happens on Vercel, but traffic is not routed yet)
   deploy-vercel:
     name: Deploy Frontend to Vercel
-    needs: [compute-env, build-backend, detect-changes]
+    needs: [compute-env, detect-changes]
     if: needs.detect-changes.outputs.should-frontend-deploy == 'true'
     runs-on: 'ubuntu-latest'
     outputs:
