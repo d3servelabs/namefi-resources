@@ -1,7 +1,6 @@
 'use client';
 
 import { useMemo } from 'react';
-import { format } from 'date-fns';
 import { cn } from '@/lib/cn';
 import { StatusBadge } from '@/components/status-badge';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
@@ -81,7 +80,6 @@ export function OrderProgressTimeline({
 }: OrderProgressTimelineProps) {
   const effectiveLoading = workflowPhase === 'loading' || !progress?.state;
   const steps = progress?.state?.steps ?? [];
-  const startedAtMs = progress?.state?.timestamps.startedAt ?? null;
 
   const activeStepId = useMemo(() => {
     const active =
@@ -89,11 +87,6 @@ export function OrderProgressTimeline({
       steps.find((step) => step.status === 'PENDING');
     return active?.id;
   }, [steps]);
-
-  const startedAtDisplay = useMemo(() => {
-    if (!startedAtMs) return null;
-    return format(new Date(startedAtMs), 'MMM d, yyyy • h:mm:ss a');
-  }, [startedAtMs]);
 
   if (effectiveLoading) {
     return <OrderProgressTimelineSkeleton />;
@@ -143,12 +136,6 @@ export function OrderProgressTimeline({
           );
         })}
       </ol>
-
-      {startedAtDisplay ? (
-        <p className="mt-4 text-xs text-muted-foreground">
-          Started {startedAtDisplay}
-        </p>
-      ) : null}
     </div>
   );
 }
