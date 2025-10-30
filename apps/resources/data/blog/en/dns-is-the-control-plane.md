@@ -1,6 +1,6 @@
 ---
 title: "Behind the Scenes of the Oct 20, 2025 AWS Outage"
-date: '2025-10-21'
+date: '2025-10-23'
 language: en
 tags: ['dns', 'aws', 'resilience', 'incident-explainer']
 authors: ['namefiteam']
