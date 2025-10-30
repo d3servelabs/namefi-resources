@@ -112,7 +112,7 @@ export default async function PartnersIndex({
               locale,
               entry.frontmatter.authors,
             );
-            const href = `/${locale}/partners/${entry.slug}`;
+            const href = `/r/${locale}/partners/${entry.slug}`;
             const summary =
               entry.frontmatter.summary ?? entry.frontmatter.description;
             const showSourceLanguage =

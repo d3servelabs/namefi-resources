@@ -17,11 +17,11 @@ export function SiteHeader({ locale, dictionary }: SiteHeaderProps) {
       <div className="mx-auto flex w-full max-w-5xl items-center justify-between gap-6 px-6 py-5 md:px-10 lg:px-12">
         <div className="flex items-center gap-6">
           <Link
-            href={`/${locale}`}
+            href={`/r/${locale}`}
             className="flex items-center gap-3 text-sm font-medium text-muted-foreground transition hover:text-foreground"
           >
             <Image
-              src="/r/logotype.svg"
+              src="/logotype.svg"
               alt="Namefi"
               width={132}
               height={43}
@@ -35,19 +35,19 @@ export function SiteHeader({ locale, dictionary }: SiteHeaderProps) {
 
           <nav className="hidden items-center gap-4 text-sm font-medium text-muted-foreground md:flex">
             <Link
-              href={`/${locale}/blog`}
+              href={`/r/${locale}/blog`}
               className="transition hover:text-foreground"
             >
               {nav.blog}
             </Link>
             <Link
-              href={`/${locale}/tld`}
+              href={`/r/${locale}/tld`}
               className="transition hover:text-foreground"
             >
               {nav.tld}
             </Link>
             <Link
-              href={`/${locale}/partners`}
+              href={`/r/${locale}/partners`}
               className="transition hover:text-foreground"
             >
               {nav.partners}
@@ -57,19 +57,19 @@ export function SiteHeader({ locale, dictionary }: SiteHeaderProps) {
 
         <nav className="flex items-center gap-4 text-sm font-medium text-muted-foreground md:hidden">
           <Link
-            href={`/${locale}/blog`}
+            href={`/r/${locale}/blog`}
             className="transition hover:text-foreground"
           >
             {nav.blog}
           </Link>
           <Link
-            href={`/${locale}/tld`}
+            href={`/r/${locale}/tld`}
             className="transition hover:text-foreground"
           >
             {nav.tld}
           </Link>
           <Link
-            href={`/${locale}/partners`}
+            href={`/r/${locale}/partners`}
             className="transition hover:text-foreground"
           >
             {nav.partners}

@@ -103,7 +103,7 @@ export default async function BlogIndex({
               locale,
               post.frontmatter.authors,
             );
-            const href = `/${locale}/blog/${post.slug}`;
+            const href = `/r/${locale}/blog/${post.slug}`;
             return (
               <article
                 key={`${post.slug}-${post.sourceLanguage}`}

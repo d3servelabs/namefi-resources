@@ -102,7 +102,7 @@ export default async function Home({
               locale,
               post.frontmatter.authors,
             );
-            const href = `/${locale}/blog/${post.slug}`;
+            const href = `/r/${locale}/blog/${post.slug}`;
             return (
               <li key={`${post.slug}-${post.sourceLanguage}`}>
                 <article className="surface-card transition hover:-translate-y-1 hover:shadow-2xl hover:shadow-black/15">
