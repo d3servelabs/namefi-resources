@@ -32,7 +32,8 @@ function getLocale(request: NextRequest): Locale {
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const pathnameHasLocale = LOCALES.some(
-    (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`,
+    (locale) =>
+      pathname.startsWith(`/r/${locale}/`) || pathname === `/r/${locale}`,
   );
 
   if (pathnameHasLocale || PUBLIC_FILE.test(pathname)) {
@@ -41,22 +42,16 @@ export function proxy(request: NextRequest) {
 
   const locale = getLocale(request);
   let remainder = pathname;
-
-  if (pathname === '/') {
+  if (pathname === '/r') {
     remainder = '';
-  } else if (pathname.startsWith('/')) {
-    remainder = pathname.slice(1);
+  } else if (pathname.startsWith('/r/')) {
+    remainder = pathname.slice('/r'.length);
   }
 
-  request.nextUrl.pathname = `/${locale}/${remainder}`;
+  request.nextUrl.pathname = `/r/${locale}${remainder}`;
   return NextResponse.redirect(request.nextUrl);
 }
 
 export const config = {
-  matcher: [
-    '/((?!_next).*)',
-    {
-      source: '/',
-    },
-  ],
+  matcher: ['/((?!_next).*)'],
 } satisfies ProxyConfig;

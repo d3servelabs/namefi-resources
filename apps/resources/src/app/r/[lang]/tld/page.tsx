@@ -111,7 +111,7 @@ export default async function TldIndex({
               locale,
               entry.frontmatter.authors,
             );
-            const href = `/${locale}/tld/${entry.slug}`;
+            const href = `/r/${locale}/tld/${entry.slug}`;
             const summary =
               entry.frontmatter.summary ?? entry.frontmatter.description;
             const showSourceLanguage =

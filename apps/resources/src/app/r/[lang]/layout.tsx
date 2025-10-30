@@ -6,8 +6,8 @@ import { getDictionary } from '@/get-dictionary';
 import { resolveDescription, resolveTitle } from '@/lib/site-metadata';
 import { SiteFooter } from '@/components/site-footer';
 import { SiteHeader } from '@/components/site-header';
-import '../globals.css';
 import type { Metadata } from 'next';
+import '../../globals.css';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',

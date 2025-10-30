@@ -2,22 +2,24 @@ import type { ReactNode } from 'react';
 import Link from 'next/link';
 import { MDXRemote } from 'next-mdx-remote-client/rsc';
 import { notFound } from 'next/navigation';
+import type { Metadata } from 'next';
 import type { Locale } from '@/i18n-config';
 import { i18n, localeLabels, localeDateLocales } from '@/i18n-config';
 import { getDictionary } from '@/get-dictionary';
 import {
   getAuthor,
-  getPostCached,
-  getPostParams,
   type AuthorEntry,
   getAuthorNames,
+  getPartnerCached,
+  getPartnerParams,
 } from '@/lib/content';
 import { resolveTitle } from '@/lib/site-metadata';
 import { useMDXComponents } from '@/mdx-components';
-import type { Metadata } from 'next';
+
+const TRAILING_SLASH_REGEX = /\/$/;
 
 export async function generateStaticParams() {
-  return getPostParams();
+  return getPartnerParams();
 }
 
 export async function generateMetadata({
@@ -27,7 +29,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { lang, slug } = await params;
   const locale = lang as Locale;
-  const entry = getPostCached(locale, slug);
+  const entry = getPartnerCached(locale, slug);
 
   if (!entry) return {};
 
@@ -36,8 +38,8 @@ export async function generateMetadata({
   const normalisedBaseUrl = rawBaseUrl.startsWith('https')
     ? rawBaseUrl
     : `https://${rawBaseUrl}`;
-  const baseUrl = normalisedBaseUrl.replace(/\/$/, '');
-  const canonicalPath = `/r/${locale}/blog/${slug}`;
+  const baseUrl = normalisedBaseUrl.replace(TRAILING_SLASH_REGEX, '');
+  const canonicalPath = `/r/${locale}/partners/${slug}`;
   const url = `${baseUrl}${canonicalPath}`;
   const ogImagePath = `${canonicalPath}/opengraph-image`;
   const ogImageUrl = `${baseUrl}${ogImagePath}`;
@@ -45,12 +47,14 @@ export async function generateMetadata({
   const siteName = resolveTitle(locale);
   const publishedTime = entry.publishedAt.toISOString();
   const twitterHandle = '@namefi_io';
+  const summary =
+    entry.frontmatter.summary ?? entry.frontmatter.description ?? undefined;
 
   const languageAlternates: Partial<Record<Locale, string>> = {};
   for (const localeOption of i18n.locales) {
-    if (getPostCached(localeOption, slug)) {
+    if (getPartnerCached(localeOption, slug)) {
       languageAlternates[localeOption] =
-        `${baseUrl}/r/${localeOption}/blog/${slug}`;
+        `${baseUrl}/r/${localeOption}/partners/${slug}`;
     }
   }
 
@@ -61,10 +65,11 @@ export async function generateMetadata({
       languages: languageAlternates,
     },
     title: entry.frontmatter.title,
-    description: entry.frontmatter.summary,
+    description: summary,
+    keywords: entry.frontmatter.keywords,
     openGraph: {
       title: entry.frontmatter.title,
-      description: entry.frontmatter.summary,
+      description: summary,
       url,
       locale,
       type: 'article',
@@ -84,7 +89,7 @@ export async function generateMetadata({
     twitter: {
       card: 'summary_large_image',
       title: entry.frontmatter.title,
-      description: entry.frontmatter.summary,
+      description: summary,
       images: [ogImageUrl],
       site: twitterHandle,
       creator: twitterHandle,
@@ -95,7 +100,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function BlogPostPage({
+export default async function PartnerDetailPage({
   params,
 }: {
   params: Promise<{ lang: string; slug: string }>;
@@ -103,14 +108,14 @@ export default async function BlogPostPage({
   const { lang, slug } = await params;
   const locale = lang as Locale;
   const dictionary = await getDictionary(locale);
-  const entry = getPostCached(locale, slug);
+  const entry = getPartnerCached(locale, slug);
 
   if (!entry) {
     notFound();
   }
 
   const components = useMDXComponents();
-  const postComponents = {
+  const articleComponents = {
     ...components,
     wrapper: ({ children }: { children: ReactNode }) => (
       <article className="prose prose-invert md:prose-lg max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-strong:text-foreground prose-em:text-foreground prose-a:font-semibold prose-a:no-underline prose-hr:border-border/60 prose-table:border-border/60 prose-table:text-foreground prose-img:rounded-3xl prose-pre:rounded-2xl prose-pre:border prose-pre:border-border/60 prose-pre:text-sm prose-code:text-foreground/90">
@@ -137,15 +142,16 @@ export default async function BlogPostPage({
   const authorNames = authorEntries.map((author) => author.frontmatter.name);
   const formattedDate = dateFormatter.format(entry.publishedAt);
   const showSourceLanguage = entry.requestedLanguage !== entry.sourceLanguage;
-  const postSource = entry.content;
+  const keywords = entry.frontmatter.keywords;
+  const articleSource = entry.content;
 
   return (
-    <article className="mx-auto flex w-full max-w-5xl flex-col gap-10 px-6 py-12 text-start md:px-10 lg:px-12">
+    <article className="mx-auto flex w-full max-w-5xl flex-col gap-10 px-6 py-12 text-left md:px-10 lg:px-12">
       <Link
-        href={`/${locale}/blog`}
+        href={`/r/${locale}/partners`}
         className="inline-flex w-fit items-center rounded-full border border-border/60 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.35em] text-muted-foreground transition hover:border-brand-primary/60 hover:text-foreground"
       >
-        {dictionary.blog.detailBack}
+        {dictionary.partners.detailBack}
       </Link>
 
       <header className="space-y-5">
@@ -153,9 +159,9 @@ export default async function BlogPostPage({
           <h1 className="text-3xl font-semibold tracking-tight md:text-4xl">
             {entry.frontmatter.title}
           </h1>
-          {entry.frontmatter.summary && (
+          {(entry.frontmatter.summary || entry.frontmatter.description) && (
             <p className="text-base leading-relaxed text-muted-foreground md:text-lg">
-              {entry.frontmatter.summary}
+              {entry.frontmatter.summary ?? entry.frontmatter.description}
             </p>
           )}
         </div>
@@ -190,7 +196,25 @@ export default async function BlogPostPage({
         )}
       </header>
 
-      <MDXRemote source={postSource} components={postComponents} />
+      <MDXRemote source={articleSource} components={articleComponents} />
+
+      {keywords.length > 0 && (
+        <section className="surface-card space-y-4">
+          <h2 className="text-xl font-semibold">
+            {dictionary.partners.detailKeywordsHeading}
+          </h2>
+          <ul className="flex flex-wrap gap-2 text-xs uppercase tracking-wide text-muted-foreground">
+            {keywords.map((keyword) => (
+              <li
+                key={keyword}
+                className="rounded-full border border-border/60 px-3 py-1"
+              >
+                {keyword}
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       {authorEntries.length > 0 && (
         <section className="surface-card space-y-6">
