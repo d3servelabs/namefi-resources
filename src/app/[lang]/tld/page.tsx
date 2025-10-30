@@ -3,8 +3,8 @@ import type { Metadata } from 'next';
 import type { Locale } from '@/i18n-config';
 import { localeDateLocales, localeLabels, i18n } from '@/i18n-config';
 import { getDictionary } from '@/get-dictionary';
-import { getAuthorNames, getPostsForLocale } from '@/lib/content';
-import { resolveDescription, resolveTitle } from '@/lib/site-metadata';
+import { getAuthorNames, getTldsForLocale } from '@/lib/content';
+import { resolveTitle } from '@/lib/site-metadata';
 
 const TRAILING_SLASH_REGEX = /\/$/;
 
@@ -17,6 +17,7 @@ export async function generateMetadata({
   const locale = i18n.locales.includes(lang as Locale)
     ? (lang as Locale)
     : i18n.defaultLocale;
+  const dictionary = await getDictionary(locale);
 
   const rawBaseUrl =
     process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL ?? 'localhost:3002';
@@ -24,17 +25,17 @@ export async function generateMetadata({
     ? rawBaseUrl
     : `https://${rawBaseUrl}`;
   const baseUrl = normalisedBaseUrl.replace(TRAILING_SLASH_REGEX, '');
-  const canonicalPath = `/r/${locale}/blog`;
+  const canonicalPath = `/r/${locale}/tld`;
   const url = `${baseUrl}${canonicalPath}`;
   const ogImagePath = `${canonicalPath}/opengraph-image`;
   const ogImageUrl = `${baseUrl}${ogImagePath}`;
-  const title = resolveTitle(locale);
-  const description = resolveDescription(locale);
+  const title = dictionary.tld.indexTitle;
+  const description = dictionary.tld.indexDescription ?? resolveTitle(locale);
   const twitterHandle = '@namefi_io';
 
   const languageAlternates: Partial<Record<Locale, string>> = {};
   for (const localeOption of i18n.locales) {
-    languageAlternates[localeOption] = `${baseUrl}/r/${localeOption}/blog`;
+    languageAlternates[localeOption] = `${baseUrl}/r/${localeOption}/tld`;
   }
 
   return {
@@ -51,7 +52,7 @@ export async function generateMetadata({
       url,
       locale,
       type: 'website',
-      siteName: title,
+      siteName: resolveTitle(locale),
       images: [
         {
           url: ogImageUrl,
@@ -72,7 +73,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function BlogIndex({
+export default async function TldIndex({
   params,
 }: {
   params: Promise<{ lang: string }>;
@@ -80,7 +81,7 @@ export default async function BlogIndex({
   const { lang } = await params;
   const locale = lang as Locale;
   const dictionary = await getDictionary(locale);
-  const posts = getPostsForLocale(locale);
+  const entries = getTldsForLocale(locale);
   const dateLocale = localeDateLocales[locale] ?? localeDateLocales.en;
   const dateFormatter = new Intl.DateTimeFormat(dateLocale, {
     dateStyle: 'long',
@@ -88,32 +89,54 @@ export default async function BlogIndex({
 
   return (
     <section className="mx-auto flex w-full max-w-5xl flex-col gap-10 px-6 py-12 md:px-10 lg:px-12">
-      {posts.length === 0 ? (
+      <header className="space-y-4 text-start">
+        <h1 className="text-3xl font-semibold tracking-tight md:text-4xl">
+          {dictionary.tld.indexTitle}
+        </h1>
+        {dictionary.tld.indexDescription ? (
+          <p className="text-base leading-relaxed text-muted-foreground md:text-lg">
+            {dictionary.tld.indexDescription}
+          </p>
+        ) : null}
+      </header>
+
+      {entries.length === 0 ? (
         <p className="rounded-3xl border border-dashed border-border/60 bg-card/70 p-10 text-center text-sm text-muted-foreground">
-          {dictionary.blog.indexEmpty}
+          {dictionary.tld.indexEmpty}
         </p>
       ) : (
         <div className="space-y-8">
-          {posts.map((post) => {
+          {entries.map((entry) => {
             const authorNames = getAuthorNames(
               locale,
-              post.frontmatter.authors,
+              entry.frontmatter.authors,
             );
-            const href = `/r/${locale}/blog/${post.slug}`;
+            const href = `/${locale}/tld/${entry.slug}`;
+            const summary =
+              entry.frontmatter.summary ?? entry.frontmatter.description;
+            const showSourceLanguage =
+              entry.requestedLanguage !== entry.sourceLanguage;
             return (
               <article
-                key={`${post.slug}-${post.sourceLanguage}`}
+                key={`${entry.slug}-${entry.sourceLanguage}`}
                 className="surface-card transition hover:-translate-y-1 hover:shadow-2xl hover:shadow-black/15"
               >
                 <div className="flex flex-col gap-4 text-start">
                   <div className="flex flex-wrap items-center gap-3 text-xs uppercase tracking-wide text-muted-foreground">
-                    <time dateTime={post.frontmatter.date}>
+                    <time dateTime={entry.frontmatter.date}>
                       {dictionary.blog.detailPublishedOn}{' '}
-                      {dateFormatter.format(post.publishedAt)}
+                      {dateFormatter.format(entry.publishedAt)}
                     </time>
                     {authorNames.length > 0 && (
                       <span>
                         {dictionary.blog.detailBy} {authorNames.join(', ')}
+                      </span>
+                    )}
+                    {showSourceLanguage && (
+                      <span>
+                        {dictionary.blog.detailSourceLanguage}:{' '}
+                        {localeLabels[entry.sourceLanguage] ??
+                          entry.sourceLanguage.toUpperCase()}
                       </span>
                     )}
                   </div>
@@ -123,17 +146,17 @@ export default async function BlogIndex({
                       className="group inline-flex flex-col gap-3"
                     >
                       <span className="text-xl font-semibold text-foreground transition group-hover:text-brand-primary md:text-2xl">
-                        {post.frontmatter.title}
+                        {entry.frontmatter.title}
                       </span>
-                      {post.frontmatter.summary && (
+                      {summary ? (
                         <p className="text-sm text-muted-foreground">
-                          {post.frontmatter.summary}
+                          {summary}
                         </p>
-                      )}
+                      ) : null}
                     </Link>
-                    {post.frontmatter.tags.length > 0 && (
+                    {entry.frontmatter.tags.length > 0 && (
                       <ul className="flex flex-wrap gap-2 text-xs text-muted-foreground">
-                        {post.frontmatter.tags.map((tag) => (
+                        {entry.frontmatter.tags.map((tag) => (
                           <li
                             key={tag}
                             className="rounded-full border border-border/60 px-3 py-1"
@@ -143,20 +166,13 @@ export default async function BlogIndex({
                         ))}
                       </ul>
                     )}
-                    {post.requestedLanguage !== post.sourceLanguage && (
-                      <span className="text-xs text-muted-foreground">
-                        {dictionary.blog.detailSourceLanguage}:{' '}
-                        {localeLabels[post.sourceLanguage] ??
-                          post.sourceLanguage.toUpperCase()}
-                      </span>
-                    )}
                   </div>
                   <div>
                     <Link
                       href={href}
                       className="inline-flex items-center text-xs font-medium text-brand-primary transition hover:underline"
                     >
-                      {dictionary.blog.homeCta}
+                      {dictionary.tld.indexCta}
                     </Link>
                   </div>
                 </div>

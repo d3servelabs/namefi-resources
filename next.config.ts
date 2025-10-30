@@ -6,7 +6,7 @@ const withMDX = createMdx({
 });
 
 const nextConfig: NextConfig = {
-  assetPrefix: '/r',
+  basePath: '/r',
   cacheComponents: true,
   pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md', 'mdx'],
   experimental: {

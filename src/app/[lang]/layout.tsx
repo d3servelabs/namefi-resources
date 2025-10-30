@@ -4,9 +4,9 @@ import type { Locale } from '@/i18n-config';
 import { i18n, localeDirections, isRtlLocale } from '@/i18n-config';
 import { getDictionary } from '@/get-dictionary';
 import { resolveDescription, resolveTitle } from '@/lib/site-metadata';
-import { SiteFooter } from './components/site-footer';
-import { SiteHeader } from './components/site-header';
-import '../../globals.css';
+import { SiteFooter } from '@/components/site-footer';
+import { SiteHeader } from '@/components/site-header';
+import '../globals.css';
 import type { Metadata } from 'next';
 
 const geistSans = Geist({
