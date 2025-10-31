@@ -37,4 +37,4 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 ## RSS Feed
 
-The blog now exposes an RSS 2.0 feed per locale at `/r/<locale>/blog/rss.xml`. When running locally with `bun dev`, you can open [http://localhost:3002/r/en/blog/rss.xml](http://localhost:3002/r/en/blog/rss.xml) to confirm it is working.
+The resources site now exposes an RSS 2.0 feed per locale at `/r/<locale>/rss.xml`. When running locally with `bun dev`, you can open [http://localhost:3002/r/en/rss.xml](http://localhost:3002/r/en/rss.xml) to confirm it is working.
