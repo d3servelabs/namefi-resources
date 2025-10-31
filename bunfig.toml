@@ -1,5 +1,5 @@
 [install]
-
+peer = true
 # whether to save text vs binary lock file
 saveTextLockfile = true
 

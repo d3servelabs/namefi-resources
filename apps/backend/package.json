@@ -55,6 +55,8 @@
   "dependencies": {
     "@aws-sdk/client-kms": "^3.830.0",
     "@aws-sdk/client-route-53": "^3.830.0",
+    "@date-fns/tz": "^1.3.1",
+    "@date-fns/utc": "^2.1.1",
     "@google-analytics/admin": "^8.3.0",
     "@google-analytics/data": "^5.2.0",
     "@google-cloud/bigquery": "^8.1.1",

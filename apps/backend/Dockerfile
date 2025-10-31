@@ -4,7 +4,7 @@
 # DOCKER_BUILDKIT=1 docker build -t namefi-astra-backend .
 
 # Stage 1: Setup base with Node.js 22 Debian Bullseye
-FROM node:jod-bullseye AS base
+FROM node:jod-bullseye-slim AS base
 WORKDIR /app
 
 # Set to production environment
@@ -18,23 +18,36 @@ RUN apt-get update && apt-get install -y bash curl dnsutils
 # 'https://dl.cloudsmith.io/public/infisical/infisical-cli/setup.deb.sh' | bash \
 # && apt-get update && apt-get install -y infisical
 
-# Stage 2: Use Bun for dependency installation
-FROM oven/bun:1.3.1-debian AS deps
+# Stage 2: Prune the monorepo to only include backend dependencies
+FROM node:jod-bullseye-slim AS pruner
 WORKDIR /app
 
-# Copy package files for dependency installation
+# Install turbo globally
+RUN npm install -g turbo@2.5.8
+# Copy the entire monorepo
 COPY . .
+# Prune the monorepo for the backend app
+RUN turbo prune @namefi-astra/backend --docker
 
+# Stage 3: Use Bun for dependency installation
+FROM oven/bun:1.3.1-debian AS deps
+# From base AS deps
+WORKDIR /app
+
+# Copy pruned lockfile and package.json files
+COPY --from=pruner /app/out/json/ .
+COPY --from=pruner /app/out/bun.lock ./bun.lock
+COPY bunfig.toml ./bunfig.toml
 # Install dependencies using Bun (faster than npm)
-RUN --mount=type=cache,id=bun,target=/root/.bun/install/cache bun install 
-# --frozen-lockfile
+RUN --mount=type=cache,id=bun,target=/root/.bun/install/cache bun install # --frozen-lockfile --production (not working atm )
 
-# Stage 3: Build stage with Node.js
+# Stage 4: Build stage with Node.js
 FROM base AS builder
 WORKDIR /app
 
-# Copy the entire monorepo and the installed dependencies
-COPY . .
+# Copy pruned source code
+COPY --from=pruner /app/out/full/ .
+# Copy installed dependencies
 COPY --from=deps /app/node_modules ./node_modules
 
 # Build the backend application
@@ -51,7 +64,7 @@ WORKDIR /app
 COPY --from=builder /app/apps/backend/package.json ./package.json
 COPY --from=builder /app/apps/backend/dist ./dist
 # Copy the infisical secret file
-COPY --from=builder /app/.infisical.json ./.infisical.json
+COPY ./.infisical.json ./.infisical.json
 # Copy the node_modules
 COPY --from=deps /app/node_modules ./node_modules
 

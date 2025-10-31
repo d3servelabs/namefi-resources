@@ -1,33 +1,44 @@
 # syntax=docker/dockerfile:1.4
 
 # Enable BuildKit support
-# DOCKER_BUILDKIT=1 docker build -t namefi-astra-backend .
+# DOCKER_BUILDKIT=1 docker build -t namefi-astra-indexer .
 
 # the app doesn't have a build process yet, so we're just basically containerizing the app for deployment 
 
 # Stage 1: Setup base with Node.js 22 Debian Bullseye
-FROM node:jod-bullseye AS base
+FROM node:jod-alpine3.22 AS base
 WORKDIR /app
 
 # Set to production environment
 ENV NODE_ENV production
 
-
-RUN apt-get update && apt-get install -y bash curl dnsutils
-
 # RUN curl -1sLf 'https://dl.cloudsmith.io/public/infisical/infisical-cli/setup.deb.sh' | bash \
 # && apt-get update && apt-get install -y infisical
 
-# Stage 2: Use Bun for dependency installation
+# Stage 2: Prune the monorepo to only include indexer dependencies
+FROM node:jod-alpine3.22 AS pruner
+WORKDIR /app
+
+# Install turbo globally
+RUN npm install -g turbo@2.5.8
+
+# Copy the entire monorepo
+COPY . .
+
+# Prune the monorepo for the indexer app
+RUN turbo prune @namefi-astra/indexer --docker
+
+# Stage 3: Use Bun for dependency installation
 FROM oven/bun:1 AS deps
 WORKDIR /app
 
-# Copy package files for dependency installation
-COPY . .
+# Copy pruned lockfile and package.json files
+COPY --from=pruner /app/out/json/ .
+COPY --from=pruner /app/out/bun.lock ./bun.lock
+COPY bunfig.toml ./bunfig.toml
 
 # Install dependencies using Bun (faster than npm)
-RUN --mount=type=cache,id=bun,target=/root/.bun/install/cache bun install
-# --frozen-lockfile
+RUN --mount=type=cache,id=bun,target=/root/.bun/install/cache bun install # --frozen-lockfile --production (not working atm )
 
 
 # Stage 4: Runtime image
@@ -37,14 +48,10 @@ WORKDIR /app
 ARG PORT
 ENV PORT=${PORT:-3000}
 
-# Copy package.json and built application
-# COPY --from=deps /app/apps/indexer/* /app
-# Copy the infisical secret file
-# COPY --from=deps /app/.infisical.json ./.infisical.json
-# Copy the node_modules
-# COPY --from=deps /app/node_modules ./node_modules
-
-COPY --from=deps /app /app
+# Copy pruned source code
+COPY --from=pruner /app/out/full/ .
+# Copy installed dependencies
+COPY --from=deps /app/node_modules ./node_modules
 
 
 # Don't run as root
