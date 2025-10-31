@@ -28,7 +28,6 @@ export async function generateMetadata({
   const url = `${baseUrl}${canonicalPath}`;
   const ogImagePath = `${canonicalPath}/opengraph-image`;
   const ogImageUrl = `${baseUrl}${ogImagePath}`;
-  const rssFeedUrl = `${baseUrl}${canonicalPath}/rss.xml`;
   const title = resolveTitle(locale);
   const description = resolveDescription(locale);
   const twitterHandle = '@namefi_io';
@@ -43,9 +42,6 @@ export async function generateMetadata({
     alternates: {
       canonical: url,
       languages: languageAlternates,
-      types: {
-        'application/rss+xml': rssFeedUrl,
-      },
     },
     title,
     description,
