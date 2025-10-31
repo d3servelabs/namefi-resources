@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { NextRequest } from 'next/server.js';
 import { getRedirectUrl } from 'next/experimental/testing/server';
-import { proxy } from '@/proxy';
+import { middleware } from '@/middleware';
 
 describe('middleware redirect behaviour', () => {
   function createRequest(pathname: string) {
@@ -9,28 +9,28 @@ describe('middleware redirect behaviour', () => {
   }
 
   it('redirects non-localized paths to the detected locale', () => {
-    const response = proxy(createRequest('foo'));
+    const response = middleware(createRequest('foo'));
     expect(getRedirectUrl(response)).toBe('http://localhost:3000/en/foo');
   });
 
   it('handles root paths', () => {
-    const response = proxy(createRequest(''));
+    const response = middleware(createRequest(''));
     expect(getRedirectUrl(response)).toBe('http://localhost:3000/en');
 
-    const response3 = proxy(createRequest('en'));
+    const response3 = middleware(createRequest('en'));
     expect(getRedirectUrl(response3)).toBe(null);
 
-    const response4 = proxy(createRequest('en/blog'));
+    const response4 = middleware(createRequest('en/blog'));
     expect(getRedirectUrl(response4)).toBe(null);
   });
 
   it('redirects bare paths with additional segments', () => {
-    const response = proxy(createRequest('blog'));
+    const response = middleware(createRequest('blog'));
     expect(getRedirectUrl(response)).toBe('http://localhost:3000/en/blog');
   });
 
   it('does not redirect internals and static assets', () => {
-    const response2 = proxy(createRequest('chunk.jpg'));
+    const response2 = middleware(createRequest('chunk.jpg'));
     expect(getRedirectUrl(response2)).toBe(null);
   });
 
@@ -43,7 +43,7 @@ describe('middleware redirect behaviour', () => {
     ];
 
     for (const path of publicFiles) {
-      const response = proxy(createRequest(path));
+      const response = middleware(createRequest(path));
       expect(getRedirectUrl(response)).toBe(null);
     }
   });
