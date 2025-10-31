@@ -53,10 +53,5 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    '/((?!_next).*)',
-    {
-      source: '/',
-    },
-  ],
+  matcher: ['/', '/((?!_next).*)'],
 } satisfies ProxyConfig;
