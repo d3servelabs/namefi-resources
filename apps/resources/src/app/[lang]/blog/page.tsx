@@ -28,7 +28,7 @@ export async function generateMetadata({
   const url = `${baseUrl}${canonicalPath}`;
   const ogImagePath = `${canonicalPath}/opengraph-image`;
   const ogImageUrl = `${baseUrl}${ogImagePath}`;
-  const rssFeedUrl = `${baseUrl}${canonicalPath}/rss.xml`;
+  const rssFeedUrl = `${baseUrl}/r/${locale}/rss.xml`;
   const title = resolveTitle(locale);
   const description = resolveDescription(locale);
   const twitterHandle = '@namefi_io';

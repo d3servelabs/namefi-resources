@@ -6,6 +6,8 @@ import { getDictionary } from '@/get-dictionary';
 import { getAuthorNames, getPostsForLocale } from '@/lib/content';
 import { resolveTitle } from '@/lib/site-metadata';
 
+const TRAILING_SLASH_REGEX = /\/$/;
+
 export async function generateMetadata({
   params,
 }: {
@@ -20,12 +22,12 @@ export async function generateMetadata({
   const normalisedBaseUrl = rawBaseUrl.startsWith('https')
     ? rawBaseUrl
     : `https://${rawBaseUrl}`;
-  const baseUrl = normalisedBaseUrl.replace(/\/$/, '');
+  const baseUrl = normalisedBaseUrl.replace(TRAILING_SLASH_REGEX, '');
   const canonicalPath = `/r/${locale}`;
   const url = `${baseUrl}${canonicalPath}`;
   const ogImagePath = `${canonicalPath}/opengraph-image`;
   const ogImageUrl = `${baseUrl}${ogImagePath}`;
-  const rssFeedUrl = `${baseUrl}/r/${locale}/blog/rss.xml`;
+  const rssFeedUrl = `${baseUrl}/r/${locale}/rss.xml`;
   const description = 'Blog posts about Namefi';
   const siteName = 'namefi.io';
   const pageTitle = `${resolveTitle(locale)} | ${siteName}`;
