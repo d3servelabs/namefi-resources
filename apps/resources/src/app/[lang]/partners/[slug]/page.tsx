@@ -10,8 +10,8 @@ import {
   getAuthor,
   type AuthorEntry,
   getAuthorNames,
-  getTldCached,
-  getTldParams,
+  getPartnerCached,
+  getPartnerParams,
 } from '@/lib/content';
 import { resolveTitle } from '@/lib/site-metadata';
 import { useMDXComponents } from '@/mdx-components';
@@ -19,7 +19,7 @@ import { useMDXComponents } from '@/mdx-components';
 const TRAILING_SLASH_REGEX = /\/$/;
 
 export async function generateStaticParams() {
-  return getTldParams();
+  return getPartnerParams();
 }
 
 export async function generateMetadata({
@@ -29,7 +29,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { lang, slug } = await params;
   const locale = lang as Locale;
-  const entry = getTldCached(locale, slug);
+  const entry = getPartnerCached(locale, slug);
 
   if (!entry) return {};
 
@@ -39,7 +39,7 @@ export async function generateMetadata({
     ? rawBaseUrl
     : `https://${rawBaseUrl}`;
   const baseUrl = normalisedBaseUrl.replace(TRAILING_SLASH_REGEX, '');
-  const canonicalPath = `/r/${locale}/tld/${slug}`;
+  const canonicalPath = `/r/${locale}/partners/${slug}`;
   const url = `${baseUrl}${canonicalPath}`;
   const ogImagePath = `${canonicalPath}/opengraph-image`;
   const ogImageUrl = `${baseUrl}${ogImagePath}`;
@@ -52,9 +52,9 @@ export async function generateMetadata({
 
   const languageAlternates: Partial<Record<Locale, string>> = {};
   for (const localeOption of i18n.locales) {
-    if (getTldCached(localeOption, slug)) {
+    if (getPartnerCached(localeOption, slug)) {
       languageAlternates[localeOption] =
-        `${baseUrl}/r/${localeOption}/tld/${slug}`;
+        `${baseUrl}/r/${localeOption}/partners/${slug}`;
     }
   }
 
@@ -100,7 +100,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function TldDetailPage({
+export default async function PartnerDetailPage({
   params,
 }: {
   params: Promise<{ lang: string; slug: string }>;
@@ -108,7 +108,7 @@ export default async function TldDetailPage({
   const { lang, slug } = await params;
   const locale = lang as Locale;
   const dictionary = await getDictionary(locale);
-  const entry = getTldCached(locale, slug);
+  const entry = getPartnerCached(locale, slug);
 
   if (!entry) {
     notFound();
@@ -146,12 +146,12 @@ export default async function TldDetailPage({
   const articleSource = entry.content;
 
   return (
-    <article className="mx-auto flex w-full max-w-5xl flex-col gap-10 px-6 py-12 text-start md:px-10 lg:px-12">
+    <article className="mx-auto flex w-full max-w-5xl flex-col gap-10 px-6 py-12 text-left md:px-10 lg:px-12">
       <Link
-        href={`/r/${locale}/tld`}
+        href={`/${locale}/partners`}
         className="inline-flex w-fit items-center rounded-full border border-border/60 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.35em] text-muted-foreground transition hover:border-brand-primary/60 hover:text-foreground"
       >
-        {dictionary.tld.detailBack}
+        {dictionary.partners.detailBack}
       </Link>
 
       <header className="space-y-5">
@@ -201,7 +201,7 @@ export default async function TldDetailPage({
       {keywords.length > 0 && (
         <section className="surface-card space-y-4">
           <h2 className="text-xl font-semibold">
-            {dictionary.tld.detailKeywordsHeading}
+            {dictionary.partners.detailKeywordsHeading}
           </h2>
           <ul className="flex flex-wrap gap-2 text-xs uppercase tracking-wide text-muted-foreground">
             {keywords.map((keyword) => (
