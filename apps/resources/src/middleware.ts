@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import type { NextRequest, ProxyConfig } from 'next/server';
+import type { NextRequest, MiddlewareConfig } from 'next/server';
 import { match as matchLocale } from '@formatjs/intl-localematcher';
 import Negotiator from 'negotiator';
 import { i18n, type Locale } from '@/i18n-config';
@@ -29,7 +29,7 @@ function getLocale(request: NextRequest): Locale {
   return matchLocale(languages, LOCALES, DEFAULT_LOCALE) as Locale;
 }
 
-export function proxy(request: NextRequest) {
+export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const pathnameHasLocale = LOCALES.some(
     (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`,
@@ -53,5 +53,8 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/', '/((?!_next).*)'],
-} satisfies ProxyConfig;
+  matcher: [
+    '/',
+    '/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)?',
+  ],
+} satisfies MiddlewareConfig;
