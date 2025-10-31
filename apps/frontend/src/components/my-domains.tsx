@@ -286,19 +286,8 @@ function MyDomainsTable(props: {
     [hasEmail, router],
   );
 
-  const isThirdPartyHostname = useCallback((domain: string) => {
-    return config.POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES.some((hostname) =>
-      domain.endsWith(hostname),
-    );
-  }, []);
-
   const canDomainBeRenewed = useCallback(
     (domain: string, expirationDate?: string | null) => {
-      // Hide renew button for third-party hostnames
-      if (isThirdPartyHostname(domain)) {
-        return false;
-      }
-
       // Hide renew button if domain has no expiry date
       if (!expirationDate) {
         return false;
@@ -313,7 +302,7 @@ function MyDomainsTable(props: {
 
       return true;
     },
-    [isThirdPartyHostname],
+    [],
   );
 
   const handleRenewDomain = useCallback(
