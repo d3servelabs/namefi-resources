@@ -25,6 +25,7 @@ export async function generateMetadata({
   const url = `${baseUrl}${canonicalPath}`;
   const ogImagePath = `${canonicalPath}/opengraph-image`;
   const ogImageUrl = `${baseUrl}${ogImagePath}`;
+  const rssFeedUrl = `${baseUrl}/r/${locale}/blog/rss.xml`;
   const description = 'Blog posts about Namefi';
   const siteName = 'namefi.io';
   const pageTitle = `${resolveTitle(locale)} | ${siteName}`;
@@ -40,6 +41,9 @@ export async function generateMetadata({
     alternates: {
       canonical: url,
       languages: languageAlternates,
+      types: {
+        'application/rss+xml': rssFeedUrl,
+      },
     },
     title: { absolute: pageTitle },
     description,
@@ -98,7 +102,7 @@ export default async function Home({
               locale,
               post.frontmatter.authors,
             );
-            const href = `/r/${locale}/blog/${post.slug}`;
+            const href = `/${locale}/blog/${post.slug}`;
             return (
               <li key={`${post.slug}-${post.sourceLanguage}`}>
                 <article className="surface-card transition hover:-translate-y-1 hover:shadow-2xl hover:shadow-black/15">
