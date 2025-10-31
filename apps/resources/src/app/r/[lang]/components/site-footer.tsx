@@ -1,6 +1,8 @@
+import { cacheLife } from 'next/cache';
 import Image from 'next/image';
-
-export function SiteFooter() {
+export async function SiteFooter() {
+  'use cache';
+  cacheLife('days');
   const currentYear = new Date().getFullYear();
 
   return (

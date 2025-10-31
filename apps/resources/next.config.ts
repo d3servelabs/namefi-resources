@@ -7,6 +7,7 @@ const withMDX = createMdx({
 
 const nextConfig: NextConfig = {
   assetPrefix: '/r',
+  cacheComponents: true,
   pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md', 'mdx'],
   experimental: {
     turbopackFileSystemCacheForDev: true,

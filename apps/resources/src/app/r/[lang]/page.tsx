@@ -25,7 +25,6 @@ export async function generateMetadata({
   const url = `${baseUrl}${canonicalPath}`;
   const ogImagePath = `${canonicalPath}/opengraph-image`;
   const ogImageUrl = `${baseUrl}${ogImagePath}`;
-  const rssFeedUrl = `${baseUrl}/r/${locale}/blog/rss.xml`;
   const description = 'Blog posts about Namefi';
   const siteName = 'namefi.io';
   const pageTitle = `${resolveTitle(locale)} | ${siteName}`;
@@ -41,9 +40,6 @@ export async function generateMetadata({
     alternates: {
       canonical: url,
       languages: languageAlternates,
-      types: {
-        'application/rss+xml': rssFeedUrl,
-      },
     },
     title: { absolute: pageTitle },
     description,
