@@ -51,7 +51,6 @@ import {
 import {
   buildPrivySearchWhereClause,
   privyUsersTableSchema,
-  ensurePrivyTableFresh,
   userNftsCTE,
 } from './admin/privyUserCache';
 import { triggerUpdatePrivyCache } from '../../temporal/schedules/update-privy-cache';
@@ -1709,6 +1708,9 @@ export const adminRouter = createTRPCRouter({
           privyUserId: usersTable.privyUserId,
           createdAt: usersTable.createdAt,
           updatedAt: usersTable.updatedAt,
+          lastSignInAt: usersTable.lastSignInAt,
+          twitterUsername: privyUsersTableSchema.twitterUsername,
+          twitterDetails: privyUsersTableSchema.twitterDetails,
           primaryEmail: sql<
             string | null
           >`COALESCE(${usersTable.primaryEmail}, ${privyUsersTableSchema.email})`.as(
@@ -1801,6 +1803,12 @@ export const adminRouter = createTRPCRouter({
             case 'updatedAt':
               columnSql = sql`${usersTable.updatedAt}`;
               break;
+            case 'lastSignInAt':
+              columnSql = sql`${usersTable.lastSignInAt}`;
+              break;
+            case 'twitterUsername':
+              columnSql = sql`${privyUsersTableSchema.twitterUsername}`;
+              break;
             case 'nftCount':
               columnSql = sql`${userNftsCTE.nftCount}`;
               break;
@@ -1823,9 +1831,14 @@ export const adminRouter = createTRPCRouter({
             'privyUserId',
             'primaryWallet',
             'allWallets',
+            'twitterUsername',
           ]);
           const NumberFilterableColumns = new Set(['nftCount', 'walletCount']);
-          const DateFilterableColumns = new Set(['createdAt', 'updatedAt']);
+          const DateFilterableColumns = new Set([
+            'createdAt',
+            'updatedAt',
+            'lastSignInAt',
+          ]);
 
           // Special handling for allWallets (array search)
           if (id === 'allWallets') {
@@ -2006,6 +2019,12 @@ export const adminRouter = createTRPCRouter({
             case 'updatedAt':
               columnSql = sql`${usersTable.updatedAt}`;
               break;
+            case 'lastSignInAt':
+              columnSql = sql`${usersTable.lastSignInAt}`;
+              break;
+            case 'twitterUsername':
+              columnSql = sql`${privyUsersTableSchema.twitterUsername}`;
+              break;
             case 'nftCount':
               columnSql = sql`${userNftsCTE.nftCount}`;
               break;
@@ -2055,6 +2074,9 @@ export const adminRouter = createTRPCRouter({
           primaryEmail: r.primaryEmail,
           createdAt: r.createdAt,
           updatedAt: r.updatedAt,
+          lastSignInAt: r.lastSignInAt ?? null,
+          twitterUsername: r.twitterUsername ?? null,
+          twitterDetails: r.twitterDetails ?? null,
           isAdmin: adminIdsSet.has(r.id),
           displayName: r.displayName ?? null,
           wallets: r.wallets ?? [],

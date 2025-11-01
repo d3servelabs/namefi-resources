@@ -72,6 +72,14 @@ type UserRow = {
   privyUserId: string;
   createdAt: Date;
   updatedAt: Date;
+  lastSignInAt: Date | null;
+  twitterUsername: string | null;
+  twitterDetails: {
+    username?: string;
+    name?: string;
+    subject?: string;
+    profilePictureUrl?: string;
+  } | null;
   isAdmin: boolean;
   wallets: string[];
   nfts: Array<{
@@ -117,6 +125,8 @@ function UsersTable() {
     primaryEmail: true,
     privyUserId: false,
     createdAt: false,
+    lastSignInAt: true,
+    twitterUsername: true,
     isAdmin: false,
     nftCount: true,
     actions: true,
@@ -404,6 +414,74 @@ function UsersTable() {
             : '-',
       },
       {
+        accessorKey: 'lastSignInAt',
+        header: 'Last Sign In',
+        cell: ({ row }) => {
+          if (!row.original.lastSignInAt) return '-';
+
+          const lastSignIn = new Date(row.original.lastSignInAt);
+          const now = new Date();
+
+          // Calculate time difference
+          const years = differenceInYears(now, lastSignIn);
+          const months = differenceInMonths(now, lastSignIn);
+          const days = differenceInDays(now, lastSignIn);
+
+          let relativeTime = '';
+          let colorClass = 'text-green-600'; // Recent
+
+          if (years > 0) {
+            relativeTime = `${years}y ago`;
+            colorClass = 'text-red-600'; // Very old
+          } else if (months > 0) {
+            relativeTime = `${months}mo ago`;
+            colorClass = months > 1 ? 'text-red-600' : 'text-orange-600';
+          } else if (days > 0) {
+            relativeTime = `${days}d ago`;
+            colorClass = days > 7 ? 'text-orange-600' : 'text-green-600';
+          } else {
+            relativeTime = 'Today';
+            colorClass = 'text-green-600';
+          }
+
+          return (
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <span className={cn('font-medium cursor-help', colorClass)}>
+                    {relativeTime}
+                  </span>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{lastSignIn.toLocaleString()}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          );
+        },
+        size: 120,
+      },
+      {
+        accessorKey: 'twitterUsername',
+        header: 'Twitter',
+        cell: ({ row }) => {
+          const username = row.original.twitterUsername;
+          if (!username) return '-';
+
+          return (
+            <a
+              href={`https://x.com/${username}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1 text-blue-600 hover:text-blue-800 hover:underline"
+            >
+              <span>@{username}</span>
+            </a>
+          );
+        },
+        size: 120,
+      },
+      {
         accessorKey: 'isAdmin',
         header: 'Admin',
         cell: ({ row }) => (row.original.isAdmin ? 'Yes' : 'No'),
@@ -473,6 +551,9 @@ function UsersTable() {
       privyUserId: u.privyUserId,
       createdAt: u.createdAt,
       updatedAt: u.updatedAt,
+      lastSignInAt: u.lastSignInAt ?? null,
+      twitterUsername: u.twitterUsername ?? null,
+      twitterDetails: u.twitterDetails ?? null,
       isAdmin: u.isAdmin,
       wallets: u.wallets ?? [],
       nfts: u.nfts ?? [],
@@ -490,6 +571,8 @@ function UsersTable() {
       allWallets: { type: 'text' as const, label: 'All Wallets' },
       createdAt: { type: 'date' as const, label: 'Created At' },
       updatedAt: { type: 'date' as const, label: 'Updated At' },
+      lastSignInAt: { type: 'date' as const, label: 'Last Sign In' },
+      twitterUsername: { type: 'text' as const, label: 'Twitter Username' },
       nftCount: { type: 'number' as const, label: 'Asset Count' },
       walletCount: { type: 'number' as const, label: 'Linked Wallets Count' },
     }),

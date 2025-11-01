@@ -1020,12 +1020,12 @@ describe('getUserQualifyingDomainNamesForPromo', () => {
   });
 
   const baseTestUser = {
-    lastSignInAt: null,
-    lastAccessedSessionAt: null,
     primaryEmail: null,
     stripeCustomerId: null,
     createdAt: new Date(),
     updatedAt: new Date(),
+    lastSignInAt: null,
+    lastAccessedSessionAt: null,
   };
 
   it('should return qualifying domain name for testUserWithQualifyingEmail', async () => {
@@ -1393,13 +1393,13 @@ describe('getUserQualifyingDomainNamesForPromo', () => {
 
 describe('resolveEnsName', () => {
   const baseTestUser = {
-    lastSignInAt: null,
-    lastAccessedSessionAt: null,
     primaryEmail: null,
     stripeCustomerId: null,
     createdAt: new Date(),
     updatedAt: new Date(),
     subscribeToEmails: true,
+    lastSignInAt: null,
+    lastAccessedSessionAt: null,
   };
 
   const createCaller = () =>
