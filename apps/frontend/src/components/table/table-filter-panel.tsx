@@ -25,6 +25,7 @@ import { Badge } from '@/components/ui/shadcn/badge';
 import { Filter } from 'lucide-react';
 import type { ColumnFiltersState } from '@tanstack/react-table';
 import { cn } from '@/lib/cn';
+import { DatePickerWithInput } from '@/components/date-picker/date-picker-with-input';
 
 type FilterOperator = 'like' | 'eq' | 'neq' | 'gt' | 'gte' | 'lt' | 'lte';
 
@@ -119,14 +120,37 @@ function FilterField({
   const [filterValue, setFilterValue] = useState<string>(
     formatFilterInputValue(value?.value) ?? '',
   );
+  const [dateValue, setDateValue] = useState<Date | undefined>(
+    config.type === 'date' && value?.value instanceof Date
+      ? value.value
+      : config.type === 'date' && typeof value?.value === 'string'
+        ? new Date(value.value)
+        : undefined,
+  );
 
   useEffect(() => {
     setOperator(value?.operator ?? defaultOperator);
     setFilterValue(formatFilterInputValue(value?.value) ?? '');
-  }, [value?.operator, value?.value, defaultOperator]);
+    if (config.type === 'date') {
+      if (value?.value instanceof Date) {
+        setDateValue(value.value);
+      } else if (typeof value?.value === 'string') {
+        const parsed = new Date(value.value);
+        setDateValue(Number.isNaN(parsed.getTime()) ? undefined : parsed);
+      } else {
+        setDateValue(undefined);
+      }
+    }
+  }, [value?.operator, value?.value, defaultOperator, config.type]);
 
   const handleApply = () => {
-    if (!filterValue) {
+    if (config.type === 'date') {
+      if (!dateValue) {
+        onChange(undefined);
+      } else {
+        onChange({ operator, value: dateValue });
+      }
+    } else if (!filterValue) {
       onChange(undefined);
     } else {
       let processedValue: string | number | Date = filterValue;
@@ -134,11 +158,6 @@ function FilterField({
       if (config.type === 'number') {
         processedValue = Number(filterValue);
         if (Number.isNaN(processedValue)) {
-          return;
-        }
-      } else if (config.type === 'date') {
-        processedValue = new Date(filterValue);
-        if (Number.isNaN(processedValue.getTime())) {
           return;
         }
       }
@@ -149,6 +168,7 @@ function FilterField({
 
   const handleClear = () => {
     setFilterValue('');
+    setDateValue(undefined);
     setOperator(defaultOperator);
     onChange(undefined);
   };
@@ -199,16 +219,25 @@ function FilterField({
               ))}
             </SelectContent>
           </Select>
+        ) : config.type === 'date' ? (
+          <DatePickerWithInput
+            id={`filter-value-${columnId}`}
+            value={dateValue}
+            onChange={(date) => {
+              setDateValue(date);
+              if (date) {
+                setFilterValue(date.toISOString().split('T')[0]);
+              } else {
+                setFilterValue('');
+              }
+            }}
+            placeholder={`Enter ${config.label?.toLowerCase() || 'date'}...`}
+            className="flex flex-col gap-2"
+          />
         ) : (
           <Input
             id={`filter-value-${columnId}`}
-            type={
-              config.type === 'number'
-                ? 'number'
-                : config.type === 'date'
-                  ? 'date'
-                  : 'text'
-            }
+            type={config.type === 'number' ? 'number' : 'text'}
             placeholder={`Enter ${config.label?.toLowerCase() || 'value'}...`}
             value={filterValue}
             onChange={(e) => setFilterValue(e.target.value)}
