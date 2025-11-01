@@ -1,48 +1,9 @@
 import { db, namefiNftView, usersTable } from '@namefi-astra/db';
+import { privyUsersTableSchema } from '@namefi-astra/db/schemas/internal';
 import { sql, eq, or, type SQL } from 'drizzle-orm';
-import { pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 import { privyClient } from '../../utils';
 import { logger } from '#lib/logger';
-
-/**
- * Unlogged table for Privy user cache
- * This replaces the on-the-fly CTE approach with a persistent temporary table
- *
- * UNLOGGED tables in PostgreSQL:
- * - Not written to WAL (Write-Ahead Log), making writes faster
- * - Not crash-safe (data lost on server crash, but acceptable for cache)
- * - Perfect for temporary data that can be regenerated
- *
- * Benefits over CTE approach:
- * - No need to send full dataset with every query
- * - Can be indexed for faster searches
- * - Reduced network overhead and query size
- *
- * Refresh strategy:
- * - Check expiration before each query
- * - DROP and recreate when expired (5 minute TTL)
- * - Atomic recreation to avoid race conditions
- */
-const PRIVY_CACHE_TABLE_NAME = 'privy_users_cache';
-
-const privyUsersTableSchema = pgTable(PRIVY_CACHE_TABLE_NAME, {
-  // Primary identifier from Privy
-  privyUserId: text('privy_user_id').primaryKey().notNull(),
-
-  // User contact information
-  email: text('email').notNull(),
-
-  // Display name (typically derived from email prefix)
-  displayName: text('display_name').notNull(),
-
-  // Array of Ethereum wallet addresses associated with this user
-  // Includes both main wallet and linked wallets
-  wallets: text('wallets').array().notNull(),
-
-  // When this cached data expires and should be refreshed
-  // Stored in the table so we can query it directly
-  expiresAt: timestamp('expires_at').notNull(),
-});
+import { assoc, map } from 'ramda';
 
 /**
  * Cache TTL is 5 minutes to balance freshness with API call reduction
@@ -136,11 +97,18 @@ type SimplifiedPrivyUser = {
   email: string;
   displayName: string;
   wallets: string[];
+  twitterUsername: string | null;
+  twitterDetails: {
+    username?: string;
+    name?: string;
+    subject?: string;
+    profilePictureUrl?: string;
+  } | null;
 };
 
 /**
  * Builds simplified Privy user objects from raw Privy API data
- * Extracts email, wallets, and display name for efficient CTE usage
+ * Extracts email, wallets, display name, and Twitter username for efficient CTE usage
  */
 async function buildSimplifiedPrivyUsers(): Promise<SimplifiedPrivyUser[]> {
   const allPrivy = await getAllPrivyUsersCached();
@@ -161,11 +129,29 @@ async function buildSimplifiedPrivyUsers(): Promise<SimplifiedPrivyUser[]> {
     const mainWallet = String(p.wallet?.address || '').toLowerCase();
     if (mainWallet && !wallets.includes(mainWallet)) wallets.push(mainWallet);
 
+    // Extract Twitter details from linked accounts
+    const twitterAccount = (p.linkedAccounts || []).find(
+      (la: any) => la?.type === 'twitter_oauth',
+    );
+    const twitterUsername = twitterAccount?.username || null;
+    const twitterDetails = twitterAccount
+      ? {
+          username: twitterAccount.username as string | undefined,
+          name: twitterAccount.name as string | undefined,
+          subject: twitterAccount.subject as string | undefined,
+          profilePictureUrl: twitterAccount.profilePictureUrl as
+            | string
+            | undefined,
+        }
+      : null;
+
     return {
       privyUserId: String(p.id || ''),
       email,
       displayName,
       wallets,
+      twitterUsername,
+      twitterDetails,
     };
   });
 }
@@ -242,60 +228,27 @@ async function ensurePrivyTableFresh(): Promise<void> {
       const now = new Date();
       const expiresAt = new Date(now.getTime() + PRIVY_CACHE_TTL_MS);
       _memoizedTableRefreshTime = expiresAt;
-      // Create table if it doesn't exist
-      await tx.execute(sql`
-        CREATE UNLOGGED TABLE IF NOT EXISTS ${sql.raw(PRIVY_CACHE_TABLE_NAME)} (
-          privy_user_id TEXT PRIMARY KEY NOT NULL,
-          email TEXT NOT NULL,
-          display_name TEXT NOT NULL,
-          wallets TEXT[] NOT NULL,
-          expires_at TIMESTAMP NOT NULL
-        )
-      `);
-
-      // Create indexes if they don't exist
-      await tx.execute(sql`
-        CREATE INDEX IF NOT EXISTS idx_privy_email
-        ON ${sql.raw(PRIVY_CACHE_TABLE_NAME)} (email)
-      `);
-      await tx.execute(sql`
-        CREATE INDEX IF NOT EXISTS idx_privy_display_name
-        ON ${sql.raw(PRIVY_CACHE_TABLE_NAME)} (display_name)
-      `);
-      await tx.execute(sql`
-        CREATE INDEX IF NOT EXISTS idx_privy_wallets
-        ON ${sql.raw(PRIVY_CACHE_TABLE_NAME)} USING GIN (wallets)
-      `);
-      await tx.execute(sql`
-        CREATE INDEX IF NOT EXISTS idx_privy_expires_at
-        ON ${sql.raw(PRIVY_CACHE_TABLE_NAME)} (expires_at)
-      `);
 
       // Drop stale rows so the snapshot matches Privy exactly
-      await tx.execute(sql`TRUNCATE ${sql.raw(PRIVY_CACHE_TABLE_NAME)}`);
+      await tx.execute(sql`TRUNCATE ${privyUsersTableSchema}`);
 
       // Upsert all users (INSERT ... ON CONFLICT DO UPDATE)
       if (simplified.length > 0) {
-        const valuesRows = simplified.map((u) => {
-          const walletsArray = u.wallets.length
-            ? `ARRAY[${u.wallets.map((w) => `'${escapeSqlLiteral(w)}'`).join(',')}]`
-            : 'ARRAY[]::text[]';
-          return `('${escapeSqlLiteral(u.privyUserId)}','${escapeSqlLiteral(u.email)}','${escapeSqlLiteral(
-            u.displayName,
-          )}', ${walletsArray}, '${expiresAt.toISOString()}')`;
-        });
-
-        await tx.execute(sql`
-          INSERT INTO ${sql.raw(PRIVY_CACHE_TABLE_NAME)}
-            (privy_user_id, email, display_name, wallets, expires_at)
-          VALUES ${sql.raw(valuesRows.join(','))}
-          ON CONFLICT (privy_user_id)
-          DO UPDATE SET
-            email = EXCLUDED.email,
-            display_name = EXCLUDED.display_name,
-            wallets = EXCLUDED.wallets,
-            expires_at = EXCLUDED.expires_at
-        `);
+        const values = map(assoc('expiresAt', expiresAt), simplified);
+        await tx
+          .insert(privyUsersTableSchema)
+          .values(values)
+          .onConflictDoUpdate({
+            target: [privyUsersTableSchema.privyUserId],
+            set: {
+              email: sql`EXCLUDED.email`,
+              displayName: sql`EXCLUDED.display_name`,
+              wallets: sql`EXCLUDED.wallets`,
+              twitterUsername: sql`EXCLUDED.twitter_username`,
+              twitterDetails: sql`EXCLUDED.twitter_details`,
+              expiresAt: sql`EXCLUDED.expires_at`,
+            },
+          });
       }
 
       logger.info(

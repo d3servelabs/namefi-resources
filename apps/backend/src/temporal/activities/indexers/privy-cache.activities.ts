@@ -9,22 +9,14 @@ import { createLogger } from '#lib/logger';
 import {
   buildSimplifiedPrivyUsers,
   privyUsersTableSchema,
-  type SimplifiedPrivyUser,
 } from '../../../trpc/routers/admin/privyUserCache';
+import { assoc, map } from 'ramda';
 
 const logger = createLogger({ module: 'privy-cache-activities' });
 
 const PRIVY_CACHE_TABLE_NAME = 'privy_users_cache';
 const PRIVY_CACHE_TTL_MS = 15 * 60 * 1000; // 15 minutes
 const PRIVY_REFRESH_LOCK_ID = 1234567890;
-
-/**
- * SQL escape helper for string literals in raw SQL
- * Doubles single quotes to prevent SQL injection
- */
-function escapeSqlLiteral(input: string): string {
-  return input.replace(/'/g, "''");
-}
 
 export type PrivyCacheStatus = {
   exists: boolean;
@@ -126,54 +118,27 @@ export async function refreshPrivyUsersCache(): Promise<RefreshPrivyCacheResult>
         throw new Error('Could not acquire lock - another refresh in progress');
       }
 
-      // Create table if it doesn't exist
-      await tx.execute(sql`
-        CREATE UNLOGGED TABLE IF NOT EXISTS ${sql.raw(PRIVY_CACHE_TABLE_NAME)} (
-          privy_user_id TEXT PRIMARY KEY NOT NULL,
-          email TEXT NOT NULL,
-          display_name TEXT NOT NULL,
-          wallets TEXT[] NOT NULL,
-          expires_at TIMESTAMP NOT NULL
-        )
-      `);
-
-      // Create indexes if they don't exist
-      await tx.execute(sql`
-        CREATE INDEX IF NOT EXISTS idx_privy_email
-        ON ${sql.raw(PRIVY_CACHE_TABLE_NAME)} (email)
-      `);
-      await tx.execute(sql`
-        CREATE INDEX IF NOT EXISTS idx_privy_display_name
-        ON ${sql.raw(PRIVY_CACHE_TABLE_NAME)} (display_name)
-      `);
-      await tx.execute(sql`
-        CREATE INDEX IF NOT EXISTS idx_privy_wallets
-        ON ${sql.raw(PRIVY_CACHE_TABLE_NAME)} USING GIN (wallets)
-      `);
-      await tx.execute(sql`
-        CREATE INDEX IF NOT EXISTS idx_privy_expires_at
-        ON ${sql.raw(PRIVY_CACHE_TABLE_NAME)} (expires_at)
-      `);
-
       // Truncate and insert fresh data
-      await tx.execute(sql`TRUNCATE ${sql.raw(PRIVY_CACHE_TABLE_NAME)}`);
+      await tx.execute(sql`TRUNCATE ${privyUsersTableSchema}`);
 
       // Insert all users
       if (simplified.length > 0) {
-        const valuesRows = simplified.map((u) => {
-          const walletsArray = u.wallets.length
-            ? `ARRAY[${u.wallets.map((w) => `'${escapeSqlLiteral(w)}'`).join(',')}]`
-            : 'ARRAY[]::text[]';
-          return `('${escapeSqlLiteral(u.privyUserId)}','${escapeSqlLiteral(u.email)}','${escapeSqlLiteral(
-            u.displayName,
-          )}', ${walletsArray}, '${expiresAt.toISOString()}')`;
-        });
+        const values = map(assoc('expiresAt', expiresAt), simplified);
 
-        await tx.execute(sql`
-          INSERT INTO ${sql.raw(PRIVY_CACHE_TABLE_NAME)}
-            (privy_user_id, email, display_name, wallets, expires_at)
-          VALUES ${sql.raw(valuesRows.join(','))}
-        `);
+        await tx
+          .insert(privyUsersTableSchema)
+          .values(values)
+          .onConflictDoUpdate({
+            target: [privyUsersTableSchema.privyUserId],
+            set: {
+              email: sql`EXCLUDED.email`,
+              displayName: sql`EXCLUDED.display_name`,
+              wallets: sql`EXCLUDED.wallets`,
+              twitterUsername: sql`EXCLUDED.twitter_username`,
+              twitterDetails: sql`EXCLUDED.twitter_details`,
+              expiresAt: sql`EXCLUDED.expires_at`,
+            },
+          });
       }
 
       logger.info(
