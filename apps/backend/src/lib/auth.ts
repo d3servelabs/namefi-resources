@@ -43,6 +43,13 @@ export async function verifyUserAuthAndGetUser(
     // Verify the token with Privy
     const userClaims = await privyClient.verifyAuthToken(authToken);
 
+    // Token's issuedAt represents when the user actually signed in
+    // Current time represents when they're accessing this session
+    const lastSignInAt = userClaims.issuedAt
+      ? new Date(userClaims.issuedAt * 1000)
+      : new Date();
+    const lastAccessedSessionAt = new Date();
+
     // Find existing user in database
     let user = await db.query.usersTable.findFirst({
       where: eq(usersTable.privyUserId, userClaims.userId),
@@ -55,9 +62,22 @@ export async function verifyUserAuthAndGetUser(
         .insert(usersTable)
         .values({
           privyUserId: userClaims.userId,
+          lastSignInAt,
+          lastAccessedSessionAt,
         })
         .returning();
       user = newUser[0];
+    } else {
+      // Update timestamps for existing user
+      const updatedUser = await db
+        .update(usersTable)
+        .set({
+          lastSignInAt,
+          lastAccessedSessionAt,
+        })
+        .where(eq(usersTable.id, user.id))
+        .returning();
+      user = updatedUser[0];
     }
 
     return { user, sessionId: userClaims.sessionId ?? null };

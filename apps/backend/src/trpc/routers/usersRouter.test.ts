@@ -257,6 +257,8 @@ describe('getUserQualifiesForDomainNamePromo', () => {
     createdAt: new Date(),
     updatedAt: new Date(),
     subscribeToEmails: true,
+    lastSignInAt: null,
+    lastAccessedSessionAt: null,
   };
   const testNormalizedDomainName = 'netizen1.0x.city';
 
@@ -558,6 +560,8 @@ describe('getManagerPageEntrypointViewable', () => {
     createdAt: new Date(),
     updatedAt: new Date(),
     subscribeToEmails: true,
+    lastSignInAt: null,
+    lastAccessedSessionAt: null,
   };
 
   it('should return false for null user', async () => {
@@ -600,6 +604,8 @@ describe('getManagerPageEntrypointViewable', () => {
           createdAt: new Date(),
           updatedAt: new Date(),
           subscribeToEmails: true,
+          lastSignInAt: null,
+          lastAccessedSessionAt: null,
         },
       } satisfies LocalTrpcContext as TrpcContext,
       {},
@@ -624,6 +630,8 @@ describe('getManagerPageEntrypointViewable', () => {
           createdAt: new Date(),
           updatedAt: new Date(),
           subscribeToEmails: true,
+          lastSignInAt: null,
+          lastAccessedSessionAt: null,
         },
       } satisfies LocalTrpcContext as TrpcContext,
       {},
@@ -648,6 +656,8 @@ describe('getManagerPageEntrypointViewable', () => {
           createdAt: new Date(),
           updatedAt: new Date(),
           subscribeToEmails: true,
+          lastSignInAt: null,
+          lastAccessedSessionAt: null,
         },
       } satisfies LocalTrpcContext as TrpcContext,
       {},
@@ -1010,6 +1020,8 @@ describe('getUserQualifyingDomainNamesForPromo', () => {
   });
 
   const baseTestUser = {
+    lastSignInAt: null,
+    lastAccessedSessionAt: null,
     primaryEmail: null,
     stripeCustomerId: null,
     createdAt: new Date(),
@@ -1296,6 +1308,8 @@ describe('getUserQualifyingDomainNamesForPromo', () => {
           createdAt: new Date(),
           updatedAt: new Date(),
           subscribeToEmails: true,
+          lastSignInAt: null,
+          lastAccessedSessionAt: null,
         },
       } satisfies LocalTrpcContext as TrpcContext,
       {},
@@ -1320,6 +1334,8 @@ describe('getUserQualifyingDomainNamesForPromo', () => {
           createdAt: new Date(),
           updatedAt: new Date(),
           subscribeToEmails: true,
+          lastSignInAt: null,
+          lastAccessedSessionAt: null,
         },
       } satisfies LocalTrpcContext as TrpcContext,
       {},
@@ -1377,6 +1393,8 @@ describe('getUserQualifyingDomainNamesForPromo', () => {
 
 describe('resolveEnsName', () => {
   const baseTestUser = {
+    lastSignInAt: null,
+    lastAccessedSessionAt: null,
     primaryEmail: null,
     stripeCustomerId: null,
     createdAt: new Date(),

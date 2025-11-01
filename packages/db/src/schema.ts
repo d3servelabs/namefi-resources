@@ -123,6 +123,8 @@ export const usersTable = pgTable('users', {
   stripeCustomerId: text('stripe_customer_id').unique(),
   privyUserId: text('privy_user_id').notNull().unique(),
   subscribeToEmails: boolean('subscribe_to_emails').notNull().default(true),
+  lastSignInAt: timestamp('last_sign_in_at'),
+  lastAccessedSessionAt: timestamp('last_accessed_session_at'),
   ...timestamps,
 });
 
