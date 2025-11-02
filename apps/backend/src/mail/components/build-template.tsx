@@ -1,7 +1,9 @@
 import { withPoweredByNamefiDomain } from './powered-by-namefi-url-context';
+// biome-ignore lint/style/useImportType: required for react-email
+import React from 'react';
 
 export function buildTemplate<T>(
-  template: React.ComponentType<T>,
+  template: React.ComponentType<T & { title?: string }>,
   previewProps: T,
 ) {
   const WrappedComponent = withPoweredByNamefiDomain(template);
