@@ -3,6 +3,7 @@ import { TEMPORAL_ENUMS, TEMPORAL_QUEUES, shortRunningOpts } from '../shared';
 import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';
 import { refundUserWorkflow } from './refund-user.workflow';
 import { values } from 'ramda';
+import type { PaymentPriority } from '../shared/workflow-helpers/payment-priority';
 
 const { getMultiplePaymentsDetails } = typedProxyActivities({
   temporalEnum: TEMPORAL_ENUMS.DEFAULT,
@@ -12,34 +13,68 @@ const { getMultiplePaymentsDetails } = typedProxyActivities({
 });
 
 export interface MultiRefundWorkflowInput {
-  orderId: string;
+  orderId?: string; // Made optional for multi-payment scenarios
   paymentIds: string[];
   amountToRefundInUsdCents: number;
+  /**
+   * Optional priority order for refunding payments.
+   * Default: ['STRIPE', 'NFSC_ETHEREUM_SEPOLIA', 'NFSC_BASE', 'NFSC_ETHEREUM']
+   * Payments will be refunded in this order based on their provider.
+   */
+  refundPriority?: PaymentPriority;
 }
 
-const priorityOrder = [
-  'STRIPE',
-  'NFSC_ETHEREUM_SEPOLIA',
-  'NFSC_BASE',
-  'NFSC_ETHEREUM',
-];
+export interface MultiRefundWorkflowOutput {
+  successfulRefunds: Array<{
+    paymentId: string;
+    amountInUsdCents: number;
+  }>;
+  failedRefunds: Array<{
+    paymentId: string;
+    amountInUsdCents: number;
+    error?: string;
+  }>;
+  totalRefundedInUsdCents: number;
+}
 
 export async function multiRefundWorkflow({
   orderId,
   paymentIds,
   amountToRefundInUsdCents,
-}: MultiRefundWorkflowInput): Promise<void> {
-  // Priority: Stripe, NFSC_SEPOLIA, NFSC_BASE, NFSC_ETHEREUM
+  refundPriority,
+}: MultiRefundWorkflowInput): Promise<MultiRefundWorkflowOutput> {
+  // Default priority: Stripe first, then NFSC chains
+  const defaultPriority: PaymentPriority = [
+    'STRIPE',
+    'NFSC_ETHEREUM_SEPOLIA',
+    'NFSC_BASE',
+    'NFSC_ETHEREUM',
+  ] as PaymentPriority;
+  const priorityOrder = refundPriority || defaultPriority;
+
   const paymentsWithProvidersMap = await getMultiplePaymentsDetails({
     paymentIds,
   });
   const paymentsWithProviders = values(paymentsWithProvidersMap);
 
-  const sorted = paymentsWithProviders.sort(
-    (a, b) =>
-      priorityOrder.indexOf(a.paymentProvider) -
-      priorityOrder.indexOf(b.paymentProvider),
-  );
+  // Sort payments based on priority order
+  // Since PaymentPriority guarantees all 4 providers are present, indexOf will always find a match
+  const sorted = paymentsWithProviders.sort((a, b) => {
+    const indexA = priorityOrder.indexOf(a.paymentProvider);
+    const indexB = priorityOrder.indexOf(b.paymentProvider);
+    return indexA - indexB;
+  });
+
+  const successfulRefunds: Array<{
+    paymentId: string;
+    amountInUsdCents: number;
+  }> = [];
+  const failedRefunds: Array<{
+    paymentId: string;
+    amountInUsdCents: number;
+    error?: string;
+  }> = [];
+  let totalRefundedInUsdCents = 0;
 
   let remainingAmountToRefundInUsdCents = amountToRefundInUsdCents;
   for (const p of sorted) {
@@ -52,25 +87,51 @@ export async function multiRefundWorkflow({
       remainingAmountToRefundInUsdCents,
     );
     if (amountRefundableInUsdCents > 0) {
-      await workflow.executeChild(refundUserWorkflow, {
-        args: [
-          {
-            paymentId: p.id,
-            amountToRefundInUsdCents: amountRefundableInUsdCents,
-          },
-        ],
-        workflowId: `refund-payment-[${p.id}]`,
-        taskQueue: TEMPORAL_QUEUES.DEFAULT,
-        retry: { maximumAttempts: 1 },
-        workflowIdReusePolicy: 'ALLOW_DUPLICATE_FAILED_ONLY',
-      });
-      remainingAmountToRefundInUsdCents -= amountRefundableInUsdCents;
+      try {
+        await workflow.executeChild(refundUserWorkflow, {
+          args: [
+            {
+              paymentId: p.id,
+              amountToRefundInUsdCents: amountRefundableInUsdCents,
+            },
+          ],
+          workflowId: `refund-payment-[${p.id}]`,
+          taskQueue: TEMPORAL_QUEUES.DEFAULT,
+          retry: { maximumAttempts: 1 },
+          workflowIdReusePolicy: 'ALLOW_DUPLICATE_FAILED_ONLY',
+        });
+        successfulRefunds.push({
+          paymentId: p.id,
+          amountInUsdCents: amountRefundableInUsdCents,
+        });
+        totalRefundedInUsdCents += amountRefundableInUsdCents;
+        remainingAmountToRefundInUsdCents -= amountRefundableInUsdCents;
+      } catch (error) {
+        failedRefunds.push({
+          paymentId: p.id,
+          amountInUsdCents: amountRefundableInUsdCents,
+          error: error instanceof Error ? error.message : String(error),
+        });
+        workflow.log.error(
+          `Failed to refund payment ${p.id}: ${
+            error instanceof Error ? error.message : String(error)
+          }`,
+        );
+      }
     }
   }
 
   if (remainingAmountToRefundInUsdCents > 0) {
     workflow.log.warn(
-      `multiRefundWorkflow: remaining refund (${remainingAmountToRefundInUsdCents}) could not be fulfilled for order ${orderId}`,
+      `multiRefundWorkflow: remaining refund (${remainingAmountToRefundInUsdCents}) could not be fulfilled${
+        orderId ? ` for order ${orderId}` : ''
+      }`,
     );
   }
+
+  return {
+    successfulRefunds,
+    failedRefunds,
+    totalRefundedInUsdCents,
+  };
 }

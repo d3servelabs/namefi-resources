@@ -1,13 +1,18 @@
 import {
   paymentStatusSchema,
+  type PaymentProvider,
   type PaymentStatus,
 } from '@namefi-astra/db/types';
 import * as workflow from '@temporalio/workflow';
 import { TEMPORAL_ENUMS, TEMPORAL_QUEUES, shortRunningOpts } from '../shared';
 import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';
 import { chargeUserWorkflow } from './chargeUser.workflow';
-import { multiRefundWorkflow } from './multi-refund.workflow';
+import {
+  multiRefundWorkflow,
+  type MultiRefundWorkflowOutput,
+} from './multi-refund.workflow';
 import type { PaymentExtraMetadata } from './chargeUser.workflow';
+import type { PaymentPriority } from '../shared/workflow-helpers/payment-priority';
 
 const { getMultiplePaymentsDetails } = typedProxyActivities({
   temporalEnum: TEMPORAL_ENUMS.DEFAULT,
@@ -17,25 +22,45 @@ const { getMultiplePaymentsDetails } = typedProxyActivities({
 });
 
 export interface MultiChargeWorkflowInput {
-  orderId: string;
+  orderId?: string; // Made optional for multi-payment scenarios
   userId: string;
   paymentsData: {
     paymentId: string;
     amountInUSDCents: number;
     metadata?: PaymentExtraMetadata;
   }[];
+  /**
+   * Optional priority order for charging payments.
+   * Default: ['STRIPE', 'NFSC_ETHEREUM_SEPOLIA', 'NFSC_BASE', 'NFSC_ETHEREUM']
+   * Payments will be charged in this order based on their provider.
+   */
+  chargePriority?: PaymentPriority;
+  /**
+   * Optional flag to fail the workflow if not all payments are charged.
+   * Default: true
+   * @default true
+   */
+  failOnNotAllCharged?: boolean;
 }
 
 export interface MultiChargeWorkflowOutput {
   succeededPaymentIds: string[];
   failedPaymentIds: string[];
   totalChargedInUsdCents: number;
+  totalRefundedInUsdCents: number;
+  refundResult: MultiRefundWorkflowOutput | undefined;
 }
 
 export async function multiChargeWorkflow(
   input: MultiChargeWorkflowInput,
 ): Promise<MultiChargeWorkflowOutput> {
-  const { paymentsData, userId, orderId } = input;
+  const {
+    paymentsData,
+    userId,
+    orderId,
+    chargePriority,
+    failOnNotAllCharged = true,
+  } = input;
   const succeeded: string[] = [];
   const failed: string[] = [];
   let totalCharged = 0;
@@ -47,7 +72,16 @@ export async function multiChargeWorkflow(
     throw new Error('Some payments are duplicated');
   }
 
-  // validate payment amounts
+  // Default priority: Stripe first for better UX, then NFSC chains
+  const defaultPriority: PaymentPriority = [
+    'STRIPE',
+    'NFSC_ETHEREUM_SEPOLIA',
+    'NFSC_BASE',
+    'NFSC_ETHEREUM',
+  ] as PaymentPriority;
+  const priorityOrder = chargePriority || defaultPriority;
+
+  // validate payment amounts and get payment details
   const details = await getMultiplePaymentsDetails({
     paymentIds: paymentsData.map((p) => p.paymentId),
   });
@@ -81,7 +115,18 @@ export async function multiChargeWorkflow(
     }
   }
 
-  for (const { paymentId, amountInUSDCents, metadata } of paymentsData) {
+  // Sort payments based on priority order
+  // Since PaymentPriority guarantees all 4 providers are present, indexOf will always find a match
+  const sortedPaymentsData = paymentsData.sort((a, b) => {
+    const providerA = details[a.paymentId].paymentProvider;
+    const providerB = details[b.paymentId].paymentProvider;
+    const indexA = priorityOrder.indexOf(providerA);
+    const indexB = priorityOrder.indexOf(providerB);
+    return indexA - indexB;
+  });
+
+  let refundResult: MultiRefundWorkflowOutput | undefined;
+  for (const { paymentId, amountInUSDCents, metadata } of sortedPaymentsData) {
     try {
       const res = await workflow.executeChild(chargeUserWorkflow, {
         args: [
@@ -109,21 +154,30 @@ export async function multiChargeWorkflow(
       failed.push(paymentId);
       // ensure already-charged amounts are refunded
       if (succeeded.length > 0 && totalCharged > 0) {
-        await workflow.executeChild(multiRefundWorkflow, {
+        refundResult = await workflow.executeChild(multiRefundWorkflow, {
           args: [
             {
-              orderId,
+              orderId, // Can be undefined
               paymentIds: succeeded,
               amountToRefundInUsdCents: totalCharged,
             },
           ],
-          workflowId: `refund-order-[${orderId}]`,
+          // Use timestamp if orderId is not provided to ensure unique workflow ID
+          workflowId: orderId
+            ? `refund-order-[${orderId}]`
+            : `refund-payments-[${Date.now()}]`,
           taskQueue: TEMPORAL_QUEUES.DEFAULT,
           retry: { maximumAttempts: 1 },
           workflowIdReusePolicy: 'ALLOW_DUPLICATE_FAILED_ONLY',
         });
       }
-      throw e;
+      if (failOnNotAllCharged) {
+        throw workflow.ApplicationFailure.create({
+          message: `Payment charge failed for ${paymentId}`,
+          nonRetryable: true,
+          details: [{ paymentId, refundResult, error: e }],
+        });
+      }
     }
   }
 
@@ -131,5 +185,7 @@ export async function multiChargeWorkflow(
     succeededPaymentIds: succeeded,
     failedPaymentIds: failed,
     totalChargedInUsdCents: totalCharged,
+    totalRefundedInUsdCents: refundResult?.totalRefundedInUsdCents || 0,
+    refundResult,
   };
 }

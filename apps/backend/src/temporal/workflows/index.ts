@@ -46,3 +46,4 @@ export * from './logo-generation.workflow';
 export * from './multi-charge.workflow';
 export * from './multi-refund.workflow';
 export * from './update-privy-cache.workflow';
+export * from './prepare-multi-payments-and-charge.workflow';

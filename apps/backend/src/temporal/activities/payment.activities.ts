@@ -743,3 +743,165 @@ export async function getStripePaymentMethodPublicIdentifier({
       return null;
   }
 }
+
+/**
+ * Fetches all available payment sources for a user including all wallets with NFSC balances
+ * and all Stripe payment methods
+ */
+export async function getAllUserPaymentSourcesWithBalances(
+  userId: string,
+): Promise<{
+  nfscSources: Array<{
+    walletAddress: ChecksumWalletAddress;
+    balances: Partial<Record<ChainId, number>>;
+  }>;
+  stripePaymentMethods: StripePaymentMethod[];
+}> {
+  // Get user and Privy user data
+  const user = await db.query.usersTable.findFirst({
+    where: (usersTable, { eq }) => eq(usersTable.id, userId),
+  });
+  if (!user) {
+    throw new Error('User not found');
+  }
+
+  const privyUser = await privyClient.getUser(user.privyUserId);
+  if (!privyUser) {
+    throw new Error('Privy user not found');
+  }
+
+  // Get all linked wallet addresses
+  const walletAddresses = privyUser.linkedAccounts
+    .filter(
+      (account): account is WalletWithMetadata =>
+        account.type === 'wallet' && account.chainType === 'ethereum',
+    )
+    .map((wallet) => {
+      const result = checksumWalletAddressSchema.safeParse(wallet.address);
+      if (!result.success) {
+        logger.warn(
+          { address: wallet.address },
+          'Invalid wallet address format, skipping',
+        );
+        return null;
+      }
+      return result.data;
+    })
+    .filter((address): address is ChecksumWalletAddress => address !== null);
+
+  // Check if live payment methods are disabled
+  const disableLivePaymentMethods = config.DISALLOW_LIVE_PAYMENT_METHODS;
+
+  // Determine which chains to check based on config
+  const chainsToCheck: Array<{
+    chainId: number;
+    provider: PaymentProvider;
+    key: ChainName;
+  }> = [];
+
+  // Add chains based on allowed chains config
+  const allowedChains = config.ALLOWED_CHAINS.map((chain) => getChain(chain));
+
+  for (const chain of allowedChains) {
+    if (!chain) continue;
+    if (chain.testnet === false && disableLivePaymentMethods) continue;
+
+    chainsToCheck.push({
+      chainId: chain.id,
+      provider: getPaymentProviderFromChainId(chain.id),
+      key: chain.name.toLowerCase() as ChainName,
+    });
+  }
+
+  // Get NFSC balances for all wallets on all chains
+  const nfscSources = await Promise.all(
+    walletAddresses.map(async (walletAddress) => {
+      const balances: Partial<Record<number, number>> = {};
+
+      // Check balance on each chain
+      await Promise.all(
+        chainsToCheck.map(async ({ chainId }) => {
+          try {
+            const balance = await getNfscBalanceInUSD(chainId, walletAddress);
+            if (balance > 0) {
+              balances[chainId] = balance;
+            }
+          } catch (error) {
+            logger.warn(
+              { error, walletAddress, chainId },
+              'Failed to fetch NFSC balance',
+            );
+          }
+        }),
+      );
+
+      return {
+        walletAddress,
+        balances,
+      };
+    }),
+  );
+
+  // Get all Stripe payment methods
+  let stripePaymentMethods: StripePaymentMethod[] = [];
+
+  if (user.stripeCustomerId) {
+    try {
+      stripePaymentMethods = await getStripeCustomerPaymentMethods({
+        stripeCustomerId: user.stripeCustomerId,
+      });
+    } catch (error) {
+      logger.warn(
+        { error, stripeCustomerId: user.stripeCustomerId },
+        'Failed to fetch Stripe payment methods',
+      );
+    }
+  }
+
+  return {
+    nfscSources: nfscSources.filter(
+      // Only include wallets that have at least one balance
+      (source) => Object.keys(source.balances).length > 0,
+    ),
+    stripePaymentMethods,
+  };
+}
+
+/**
+ * Helper to map payment provider to chain ID
+ */
+export function getChainIdFromPaymentProvider(
+  provider: PaymentProvider,
+): number {
+  switch (provider) {
+    case paymentProviderSchema.enum.NFSC_ETHEREUM_SEPOLIA:
+      return CHAINS.sepolia.id; // Sepolia testnet
+    case paymentProviderSchema.enum.NFSC_BASE:
+      return CHAINS.base.id; // Base mainnet
+    case paymentProviderSchema.enum.NFSC_ETHEREUM:
+      return CHAINS.mainnet.id; // Ethereum mainnet
+    default:
+      throw new Error(`Invalid NFSC provider: ${provider}`);
+  }
+}
+
+/**
+ * Helper to map chain ID to payment provider
+ */
+export function getPaymentProviderFromChainId(
+  chainId: number,
+): PaymentProvider {
+  switch (chainId) {
+    case CHAINS.sepolia.id:
+      return paymentProviderSchema.enum.NFSC_ETHEREUM_SEPOLIA;
+    case CHAINS.base.id:
+      return paymentProviderSchema.enum.NFSC_BASE;
+    case CHAINS.mainnet.id:
+      return paymentProviderSchema.enum.NFSC_ETHEREUM;
+    default:
+      throw new Error(`Invalid chain ID: ${chainId}`);
+  }
+}
+
+type ChainName = Lowercase<(typeof CHAINS)[keyof typeof CHAINS]['name']>;
+type ChainId = (typeof CHAINS)[keyof typeof CHAINS]['id'];
