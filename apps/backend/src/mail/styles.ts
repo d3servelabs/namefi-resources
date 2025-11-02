@@ -24,11 +24,15 @@ export const hr: CSSProperties = {
   margin: '20px 0',
 };
 
-export const paragraph: CSSProperties = {
+export const text: CSSProperties = {
   color: '#525f7f',
   fontSize: '16px',
+};
+
+export const paragraph: CSSProperties = {
   lineHeight: '24px',
   textAlign: 'left',
+  ...text,
 };
 
 export const anchor: CSSProperties = {

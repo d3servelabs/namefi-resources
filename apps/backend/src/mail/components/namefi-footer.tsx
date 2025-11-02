@@ -12,20 +12,16 @@ export function NamefiFooter() {
       <Hr style={styles.hr} />
 
       <Text style={styles.paragraph}>
-        We'll be here to help you with any step along the way. you can contact
-        us at{' '}
+        More questions?{' '}
         <Link style={styles.anchor} href="mailto:support@namefi.io">
           support@namefi.io
         </Link>
-        .
       </Text>
-      <Text style={styles.paragraph}>— The D3Serve team</Text>
-      <Hr style={styles.hr} />
       <Link
         style={styles.anchor}
         href={NamefiEmailLinks.emailSubscription({ poweredByNamefiDomain })}
       >
-        Click here to unsubscribe or manage your email preferences
+        Unsubscribe or manage your email preferences
       </Link>
     </>
   );

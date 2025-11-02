@@ -12,7 +12,7 @@ export function GoToDashboard() {
       style={button}
       href={NamefiEmailLinks.dashboard({ poweredByNamefiDomain })}
     >
-      Go To Your Domains Dashboard
+      Go To Namefi Dashboard
     </Button>
   );
 }
