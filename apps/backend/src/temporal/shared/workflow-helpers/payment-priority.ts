@@ -18,7 +18,7 @@ export const createPaymentPriority = (
   const uniquePaymentProviders = new Set(paymentProviders);
   if (uniquePaymentProviders.size !== 4) {
     throw new Error(
-      `Payment providers must be exactly 4, got ${uniquePaymentProviders.size}`,
+      `Payment providers must be exactly 4 *unique* providers, got ${uniquePaymentProviders.size}`,
     );
   }
   return paymentProviders as PaymentPriority;
