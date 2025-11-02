@@ -94,7 +94,11 @@ export interface AutoRenewReportInput {
     domainsProcessed?: number;
     amountChargedInUsd?: number;
     amountRefundedInUsd?: number;
-    payments?: PaymentSelect[];
+    payments?: {
+      id: string;
+      paymentProvider: PaymentProvider;
+      amountInUsdCents: number;
+    }[];
     failures?: {
       domain: NamefiNormalizedDomain;
       reason: string;
@@ -159,7 +163,7 @@ export async function collectAutoRenewMetrics(
           }
           breakdown[payment.paymentProvider].count += 1;
           breakdown[payment.paymentProvider].amountInUsd +=
-            payment.amountInUSDCents / 100; // Convert cents to USD
+            payment.amountInUsdCents / 100; // Convert cents to USD
         }
       }
       return breakdown;

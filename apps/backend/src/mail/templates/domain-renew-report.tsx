@@ -3,12 +3,17 @@
 // biome-ignore lint/correctness/noUnusedImports: required for react-email
 import React from 'react';
 import { NamefiEmailContainer } from '../components/namefi-email-container';
-import { GoToDashboard } from '../components/go-to-dashboard';
 import punycode from 'punycode';
 import rehypeExternalLinks from 'rehype-external-links';
 import ReactMarkdown from 'react-markdown';
 import { z } from 'zod';
 import { buildTemplate } from '../components/build-template';
+import { NamefiEmailLinks } from '../email-links';
+import { usePoweredByNamefiDomain } from '../components/powered-by-namefi-url-context';
+import { Button } from '@react-email/components';
+import { button } from '../styles';
+import { addDays, format } from 'date-fns';
+import * as styles from '../styles';
 
 const paymentProviderSchema = z.enum([
   'NFSC_BASE',
@@ -22,13 +27,54 @@ export type DomainRenewReportProps = {
   recipientUserId: string;
   recipientName: string;
   recipientEmail: string;
-  chargedAmountInUsd: number;
-  paymentMethodCharged: PaymentProvider;
+  chargeAmountInUsdByDomainLdh: Record<string, number>;
+  expirationDatesByDomainLdh: Record<string, Date>;
+  availableBalanceInNfsc: number;
+  availableOffChainPaymentMethods: string[];
   domainLdhRenewFailed: string[];
   domainLdhRenewSucceeded: string[];
-  paymentMethodIdentifier: string;
+  chargedAmountInUsd: number;
+  payments: Array<{
+    provider: PaymentProvider;
+    amountInUsdCents: number;
+    paymentId: string;
+    walletAddress?: string;
+    stripeLast4?: string;
+  }>;
   refundAmountInUsd: number | null | undefined;
   refundStatus: 'SUCCESS' | 'FAILED';
+  orderId?: string | null;
+};
+
+// Helper function to truncate wallet address
+const truncateWalletAddress = (address: string): string => {
+  if (address.length <= 10) return address;
+  return `${address.slice(0, 6)}...${address.slice(-4)}`;
+};
+
+function formatNfscPaymentIdentifier(provider: PaymentProvider): string {
+  switch (provider) {
+    case 'NFSC_BASE':
+      return 'NFSC Base';
+    case 'NFSC_ETHEREUM':
+      return 'NFSC Ethereum';
+    case 'NFSC_ETHEREUM_SEPOLIA':
+      return 'NFSC Ethereum Sepolia';
+    default:
+      return 'Unknown';
+  }
+}
+// Helper function to format payment method identifier
+const formatPaymentIdentifier = (
+  payment: DomainRenewReportProps['payments'][number],
+): string => {
+  if (payment.walletAddress) {
+    return `${truncateWalletAddress(payment.walletAddress)} (${formatNfscPaymentIdentifier(payment.provider)})`;
+  }
+  if (payment.stripeLast4) {
+    return `Credit Card (••••${payment.stripeLast4})`;
+  }
+  return '';
 };
 
 export const DomainRenewReport = buildTemplate<DomainRenewReportProps>(
@@ -38,35 +84,52 @@ export const DomainRenewReport = buildTemplate<DomainRenewReportProps>(
       recipientName,
       domainLdhRenewSucceeded,
       domainLdhRenewFailed,
-      chargedAmountInUsd,
+      chargeAmountInUsdByDomainLdh,
+      expirationDatesByDomainLdh,
       refundAmountInUsd,
-      paymentMethodCharged,
+      chargedAmountInUsd,
+      payments: paymentMethods,
+      orderId,
     } = props;
+    const poweredByNamefiDomain = usePoweredByNamefiDomain();
     const messageMarkdown =
       `Hi ${recipientName ?? ''},\n\n` +
-      'We performed the renew for the following domains in your account ' +
-      `(${recipientUserId})` + // TODO: add link to user dashboard
-      ` charged ${chargedAmountInUsd.toFixed(2)}` +
-      ` of the payment method ${paymentMethodCharged} and here is the result:`;
+      'We performed the renewal for the following domains';
     return (
       <NamefiEmailContainer title="[Namefi] Domain Expiration and Renewal Notice">
-        <ReactMarkdown
-          rehypePlugins={[
-            [
-              rehypeExternalLinks,
-              { target: '_blank', rel: ['noopener', 'noreferrer'] },
-            ],
-          ]}
+        <div style={{ ...styles.text }}>
+          <ReactMarkdown
+            rehypePlugins={[
+              [
+                rehypeExternalLinks,
+                { target: '_blank', rel: ['noopener', 'noreferrer'] },
+              ],
+            ]}
+          >
+            {messageMarkdown}
+          </ReactMarkdown>
+        </div>
+        <table
+          style={{ ...styles.text, borderCollapse: 'collapse', width: '100%' }}
         >
-          {messageMarkdown}
-        </ReactMarkdown>
-        <table style={{ borderCollapse: 'collapse', width: '100%' }}>
           <tr>
             <td
               className="py-1 px-1 font-medium"
               style={{ border: '1px #D9D9D9 solid', textAlign: 'right' }}
             >
               Domain Name
+            </td>
+            <td
+              className="py-1 px-1 font-medium"
+              style={{ border: '1px #D9D9D9 solid', textAlign: 'right' }}
+            >
+              Expiration Date
+            </td>
+            <td
+              className="py-1 px-1 font-medium"
+              style={{ border: '1px #D9D9D9 solid', textAlign: 'right' }}
+            >
+              Renew Price
             </td>
             <td
               className="py-1 px-1 font-medium"
@@ -90,7 +153,22 @@ export const DomainRenewReport = buildTemplate<DomainRenewReportProps>(
                 className="py-1 px-1"
                 style={{ border: '1px #D9D9D9 solid', textAlign: 'right' }}
               >
-                <span style={{ color: 'green' }}>Success</span>
+                {format(
+                  expirationDatesByDomainLdh[domainNameLdh],
+                  'yyyy-MM-dd',
+                )}
+              </td>
+              <td
+                className="py-1 px-1"
+                style={{ border: '1px #D9D9D9 solid', textAlign: 'right' }}
+              >
+                ${chargeAmountInUsdByDomainLdh[domainNameLdh].toFixed(2)}
+              </td>
+              <td
+                className="py-1 px-1"
+                style={{ border: '1px #D9D9D9 solid', textAlign: 'right' }}
+              >
+                <span className="text-green-400">Success</span>
               </td>
             </tr>
           ))}
@@ -109,26 +187,140 @@ export const DomainRenewReport = buildTemplate<DomainRenewReportProps>(
                 className="py-1 px-1"
                 style={{ border: '1px #D9D9D9 solid', textAlign: 'right' }}
               >
-                <span style={{ color: 'red' }}>Failed</span>
+                {format(
+                  expirationDatesByDomainLdh[domainNameLdh],
+                  'yyyy-MM-dd',
+                )}
+              </td>
+              <td
+                className="py-1 px-1"
+                style={{ border: '1px #D9D9D9 solid', textAlign: 'right' }}
+              >
+                ${chargeAmountInUsdByDomainLdh[domainNameLdh].toFixed(2)}
+              </td>
+              <td
+                className="py-1 px-1"
+                style={{ border: '1px #D9D9D9 solid', textAlign: 'right' }}
+              >
+                <span className="text-red-400">Failed (Registry Error)</span>
               </td>
             </tr>
           ))}
         </table>
-        <ReactMarkdown
-          rehypePlugins={[
-            [
-              rehypeExternalLinks,
-              { target: '_blank', rel: ['noopener', 'noreferrer'] },
-            ],
-          ]}
-        >
-          {domainLdhRenewFailed.length > 0
-            ? `The refund amount of $${refundAmountInUsd?.toFixed(2)}USD has been initiated to your original payment method(${paymentMethodCharged}).` +
-              ' For domains that failed to renew, please renew them on the Namefi App dashboard.' +
-              ' If the problem persists, please contact support@namefi.io.'
-            : ''}
-        </ReactMarkdown>
-        <GoToDashboard />
+        {/* Show payment method breakdown if multiple payments were used */}
+        {paymentMethods && paymentMethods.length > 1 && (
+          <>
+            <h4
+              style={{
+                ...styles.text,
+                marginTop: '20px',
+                marginBottom: '10px',
+              }}
+            >
+              Payments
+            </h4>
+            <table
+              style={{
+                ...styles.text,
+                borderCollapse: 'collapse',
+                width: '100%',
+                fontFamily: 'monospace',
+              }}
+            >
+              <tr>
+                <td
+                  className="py-1 px-1 font-medium"
+                  style={{ border: '1px #D9D9D9 solid', textAlign: 'left' }}
+                />
+                <td
+                  className="py-1 px-1 font-medium"
+                  style={{ border: '1px #D9D9D9 solid', textAlign: 'right' }}
+                >
+                  Amount
+                </td>
+              </tr>
+              {paymentMethods.map((payment) => (
+                <tr key={payment.paymentId}>
+                  <td
+                    className="py-1 px-1"
+                    style={{
+                      border: '1px #D9D9D9 solid',
+                      textAlign: 'left',
+                    }}
+                  >
+                    {formatPaymentIdentifier(payment)}
+                  </td>
+                  <td
+                    className="py-1 px-1 text-red-800"
+                    style={{ border: '1px #D9D9D9 solid', textAlign: 'right' }}
+                  >
+                    ${(payment.amountInUsdCents / 100).toFixed(2)}
+                  </td>
+                </tr>
+              ))}
+              {refundAmountInUsd && (
+                <>
+                  <tr>
+                    <td />
+                    <td />
+                  </tr>
+                  <tr>
+                    <td
+                      className="py-1 px-1"
+                      style={{ border: '1px #D9D9D9 solid', textAlign: 'left' }}
+                    >
+                      Refunded Amount
+                    </td>
+                    <td
+                      className="py-1 px-1 text-green-800"
+                      style={{
+                        border: '1px #D9D9D9 solid',
+                        textAlign: 'right',
+                      }}
+                    >
+                      - ${refundAmountInUsd.toFixed(2)}
+                    </td>
+                  </tr>
+                </>
+              )}
+              <tr>
+                <td />
+                <td />
+              </tr>
+              <tr>
+                <td
+                  className="py-1 px-1 font-medium"
+                  style={{ border: '1px #D9D9D9 solid', textAlign: 'left' }}
+                >
+                  Total
+                </td>
+                <td
+                  className="py-1 px-1 font-medium"
+                  style={{ border: '1px #D9D9D9 solid', textAlign: 'right' }}
+                >
+                  {' '}
+                  ${(chargedAmountInUsd - (refundAmountInUsd ?? 0)).toFixed(2)}
+                </td>
+              </tr>
+            </table>
+            <div style={{ marginTop: '2px', marginBottom: '30px' }}>
+              <span style={{ fontSize: '11px', color: '#666' }}>
+                For more details, view the order details
+              </span>
+            </div>
+          </>
+        )}
+        {orderId && (
+          <Button
+            style={button}
+            href={NamefiEmailLinks.orderDetails({
+              orderId,
+              poweredByNamefiDomain,
+            })}
+          >
+            View Order Details
+          </Button>
+        )}
       </NamefiEmailContainer>
     );
   },
@@ -138,11 +330,36 @@ export const DomainRenewReport = buildTemplate<DomainRenewReportProps>(
     recipientEmail: 'alice@example.com',
     domainLdhRenewSucceeded: ['test.org'],
     domainLdhRenewFailed: ['example.org', 'example.net'],
-    chargedAmountInUsd: 120,
-    paymentMethodCharged: paymentProviderSchema.enum.STRIPE,
-    paymentMethodIdentifier: '...7890',
-    refundAmountInUsd: 50,
+    chargeAmountInUsdByDomainLdh: {
+      'test.org': 11.1,
+      'example.org': 11.1,
+      'example.net': 12.52,
+    },
+    expirationDatesByDomainLdh: {
+      'test.org': addDays(new Date(), 1),
+      'example.org': addDays(new Date(), 2),
+      'example.net': addDays(new Date(), 3),
+    },
+    chargedAmountInUsd: 11.1 + 11.1 + 12.52,
+    availableBalanceInNfsc: 11.1 + 12.52,
+    availableOffChainPaymentMethods: ['4242', '0043'],
+    payments: [
+      {
+        provider: paymentProviderSchema.enum.NFSC_BASE,
+        amountInUsdCents: Math.round((11.1 + 12.52) * 100),
+        paymentId: 'payment-1',
+        walletAddress: '0x1234567890123456789012345678901234567890',
+      },
+      {
+        provider: paymentProviderSchema.enum.STRIPE,
+        amountInUsdCents: 11.1 * 100,
+        paymentId: 'payment-2',
+        stripeLast4: '4242',
+      },
+    ],
+    refundAmountInUsd: 11.1 + 12.52,
     refundStatus: 'SUCCESS',
+    orderId: 'order-123',
   },
 );
 

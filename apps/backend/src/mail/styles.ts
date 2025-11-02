@@ -41,7 +41,7 @@ export const anchor: CSSProperties = {
 
 export const button: CSSProperties = {
   backgroundColor: '#14b8a6',
-  borderRadius: '5px',
+  borderRadius: '8px',
   color: '#fff',
   fontSize: '16px',
   fontWeight: 'bold',
@@ -54,7 +54,23 @@ export const button: CSSProperties = {
   paddingTop: '10px',
   paddingBottom: '10px',
 };
-
+export const outlineButton: CSSProperties = {
+  borderColor: '#14b8a6',
+  backgroundColor: 'transparent',
+  border: '2px solid #14b8a6',
+  borderRadius: '8px',
+  color: '#14b8a6',
+  fontSize: '16px',
+  fontWeight: '600',
+  textDecoration: 'none',
+  textAlign: 'center',
+  display: 'block',
+  width: '100%',
+  marginTop: '5px',
+  marginBottom: '5px',
+  paddingTop: '10px',
+  paddingBottom: '10px',
+};
 export const footer: CSSProperties = {
   color: '#8898aa',
   fontSize: '12px',

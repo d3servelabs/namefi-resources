@@ -76,6 +76,7 @@
     "@neondatabase/serverless": "^0.10.4",
     "@privy-io/server-auth": "^1.19.2",
     "@react-email/components": "^0.0.34",
+    "@react-email/render": "^1.4.0",
     "@temporalio/activity": "^1.11.7",
     "@temporalio/client": "^1.11.7",
     "@temporalio/common": "^1.11.7",

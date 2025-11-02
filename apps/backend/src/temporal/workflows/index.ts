@@ -50,3 +50,4 @@ export * from './prepare-multi-payments-and-charge.workflow';
 export * from './test-workflows/test-multi-payments.workflow';
 export * from './prepare-multi-payments.workflow';
 export * from './charge-prepared-payments.workflow';
+export * from './autorenew-daily-report.workflow';

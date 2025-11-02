@@ -35,10 +35,7 @@ import {
   DomainUpcomingRenewal,
   type DomainUpcomingRenewalProps,
 } from '../../../mail/templates/domain-upcoming-renewal';
-import {
-  DomainRenewReport,
-  type DomainRenewReportProps,
-} from '../../../mail/templates/domain-renew-report';
+import { DomainRenewReport } from '../../../mail/templates/domain-renew-report';
 import {
   DomainRenewFailedToCharge,
   type DomainRenewFailedToChargeProps,
@@ -68,6 +65,7 @@ import { toPunycodeDomainName } from '@namefi-astra/registrars/lib/data/validati
 import pMap from 'p-map';
 import { namefiNftView } from '@namefi-astra/db';
 import { RDAP } from '@namefi-astra/registrars/lib/rdap-whois/rdap_client';
+import type { PrepareMultiPaymentsOutput } from '#temporal/workflows/prepare-multi-payments.workflow';
 
 export type DomainRenewInfo = {
   normalizedDomainName: NamefiNormalizedDomain;
@@ -540,7 +538,25 @@ async function _getUserDomainsWithAutoRenewOption(
 
 export async function sendEmailNotificationForUpcomingRenew(
   userEmail: string,
-  { domains, userId }: DomainsUpForRenewalWithUserWithPrice,
+  {
+    domains,
+    userId,
+    expectedPayments,
+    availableBalanceInNfsc,
+    availableOffChainPaymentMethodsPublicIdentifiers,
+    paymentPreparationSummary,
+  }: DomainsUpForRenewalWithUserWithPrice & {
+    expectedPayments: Array<{
+      provider: PaymentProvider;
+      amountInUsdCents: number;
+      paymentId: string;
+      walletAddress?: string;
+      stripeLast4?: string;
+    }>;
+    availableBalanceInNfsc: number;
+    availableOffChainPaymentMethodsPublicIdentifiers: string[];
+    paymentPreparationSummary: PrepareMultiPaymentsOutput['preparationSummary'];
+  },
 ) {
   if (!userEmail) {
     logger.warn(
@@ -562,9 +578,6 @@ export async function sendEmailNotificationForUpcomingRenew(
       })),
     RENEW_EARLY_BY_DAYS,
   );
-  const preferredPaymentMethod = await getPreferredPaymentMethodForNamefiUser({
-    namefiUserId: userId,
-  });
   const populatedTemplate = React.createElement(DomainUpcomingRenewal, {
     recipientName: userEmail,
     userId,
@@ -578,11 +591,14 @@ export async function sendEmailNotificationForUpcomingRenew(
     recipientEmail: userEmail,
     nextChargeAmount: { amount: nextChargeAmount, currency: 'USD' },
     nextChargeDate,
-    last4DigitsOfCreditCardToCharge: preferredPaymentMethod?.cardDetails?.last4,
+    expectedPayments,
+    availableBalanceInNfsc,
+    availableOffChainPaymentMethodsPublicIdentifiers,
+    paymentPreparationSummary,
   } satisfies DomainUpcomingRenewalProps);
 
   const html = await render(populatedTemplate, {
-    pretty: false,
+    pretty: true,
     plainText: false,
   });
   const plain = await render(populatedTemplate, {
@@ -605,38 +621,56 @@ export async function sendEmailNotificationForRenewResult({
   userId,
   domainLdhRenewFailed,
   domainLdhRenewSucceeded,
-  paymentMethodCharged,
-  paymentMethodIdentifier,
+  paymentMethods,
   refundAmountInUsd,
   refundStatus,
   chargedAmountInUsd,
   userEmail,
+  orderId,
+  chargeAmountInUsdByDomainLdh,
+  expirationDatesByDomainLdh,
+  availableBalanceInNfsc,
+  availableOffChainPaymentMethods,
 }: {
   userId: string;
   domainLdhRenewFailed: string[];
   domainLdhRenewSucceeded: string[];
-  paymentMethodCharged: PaymentProvider;
-  paymentMethodIdentifier: string;
+  paymentMethods: Array<{
+    provider: PaymentProvider;
+    amountInUsdCents: number;
+    paymentId: string;
+    walletAddress?: string;
+    stripeLast4?: string;
+  }>;
   refundAmountInUsd: number | null | undefined;
   refundStatus: 'SUCCESS' | 'FAILED';
-  chargedAmountInUsd: number;
   userEmail: string;
+  orderId?: string | null;
+  chargedAmountInUsd: number;
+  chargeAmountInUsdByDomainLdh: Record<string, number>;
+  expirationDatesByDomainLdh: Record<string, Date>;
+  availableBalanceInNfsc: number;
+  availableOffChainPaymentMethods: string[];
 }) {
   const populatedTemplate = React.createElement(DomainRenewReport, {
     recipientName: userEmail,
     recipientUserId: userId,
     recipientEmail: userEmail,
     chargedAmountInUsd,
+    chargeAmountInUsdByDomainLdh,
+    expirationDatesByDomainLdh,
+    availableBalanceInNfsc,
+    availableOffChainPaymentMethods,
     domainLdhRenewFailed,
     domainLdhRenewSucceeded,
-    paymentMethodCharged,
-    paymentMethodIdentifier,
+    payments: paymentMethods,
     refundAmountInUsd,
     refundStatus,
-  } satisfies DomainRenewReportProps);
+    orderId,
+  });
 
   const html = await render(populatedTemplate, {
-    pretty: false,
+    pretty: true,
     plainText: false,
   });
   const plain = await render(populatedTemplate, {
@@ -661,26 +695,34 @@ export async function sendEmailNotificationForRenewResult({
 }
 
 export async function sendEmailNotificationForRenewFailedToCharge({
-  chargeAmountInUsd,
   domainsToRenew,
   userId,
   userEmail,
+  chargeAmountInUsdByDomainLdh,
+  expirationDatesByDomainLdh,
+  availableBalanceInNfsc,
+  availableOffChainPaymentMethods,
 }: {
-  chargeAmountInUsd: number;
   domainsToRenew: string[];
   userId: string;
   userEmail: string;
+  chargeAmountInUsdByDomainLdh: Record<string, number>;
+  expirationDatesByDomainLdh: Record<string, Date>;
+  availableBalanceInNfsc: number;
+  availableOffChainPaymentMethods: string[];
 }) {
   const populatedTemplate = React.createElement(DomainRenewFailedToCharge, {
     recipientName: userEmail,
-    recipientUserId: userId,
     recipientEmail: userEmail,
-    chargeAmountInUsd,
     domainsToRenew,
+    chargeAmountInUsdByDomainLdh,
+    expirationDatesByDomainLdh,
+    availableBalanceInNfsc,
+    availableOffChainPaymentMethods,
   } satisfies DomainRenewFailedToChargeProps);
 
   const html = await render(populatedTemplate, {
-    pretty: false,
+    pretty: true,
     plainText: false,
   });
   const plain = await render(populatedTemplate, {

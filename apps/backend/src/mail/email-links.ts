@@ -18,7 +18,10 @@ export const NamefiEmailLinks = withPoweredByNamefiDomain({
   ordersHistory: () => 'https://namefi.io/m/user/orders',
   orderDetails: (args: { orderId: string }) =>
     `https://namefi.io/m/user/orders/${args.orderId}`,
+
   paymentMethods: () => 'https://namefi.io/m/user/payment-methods',
+  rechargeNFSC: () => 'https://namefi.io/m/user/nfsc/recharge',
+
   emailSubscription: () => 'https://namefi.io/m/user/email/subscription',
   freeMints: () => 'https://namefi.io/m/user/rewards/domains',
 } as const);

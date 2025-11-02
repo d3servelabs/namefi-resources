@@ -1,19 +1,25 @@
 // biome-ignore lint/correctness/noUnusedImports: required for react-email
 import React from 'react';
 import { NamefiEmailContainer } from '../components/namefi-email-container';
-import { GoToDashboard } from '../components/go-to-dashboard';
 import punycode from 'punycode';
 import rehypeExternalLinks from 'rehype-external-links';
 import ReactMarkdown from 'react-markdown';
 import { NamefiEmailLinks } from '../email-links';
 import { buildTemplate } from '../components/build-template';
+import * as styles from '../styles';
+import { addDays, format } from 'date-fns';
+import { sum, map } from 'ramda';
+import { Button } from '@react-email/components';
+import { usePoweredByNamefiDomain } from '../components/powered-by-namefi-url-context';
 
 export type DomainRenewFailedToChargeProps = {
   recipientName: string;
   recipientEmail: string;
-  recipientUserId: string;
   domainsToRenew: string[];
-  chargeAmountInUsd: number;
+  chargeAmountInUsdByDomainLdh: Record<string, number>;
+  expirationDatesByDomainLdh: Record<string, Date>;
+  availableBalanceInNfsc: number;
+  availableOffChainPaymentMethods: string[];
 };
 
 export const DomainRenewFailedToCharge =
@@ -21,50 +27,67 @@ export const DomainRenewFailedToCharge =
     (props) => {
       const {
         recipientName,
-        recipientUserId,
         domainsToRenew,
-        chargeAmountInUsd,
+        chargeAmountInUsdByDomainLdh,
+        expirationDatesByDomainLdh,
+        availableBalanceInNfsc,
+        availableOffChainPaymentMethods,
       } = props;
+
+      const poweredByNamefiDomain = usePoweredByNamefiDomain();
 
       const messageMarkdown =
         `Hi ${recipientName},\n\n` +
-        `In order to renew the following domains in your account (${recipientUserId}),` + // TODO: add link to user dashboard
-        ` we attempted to process a payment of $${chargeAmountInUsd.toFixed(2)} USD,` +
-        ' but the payment process was unsuccessful.' +
-        ' This is usually due to lack of saved Stripe payment information and no enough available NamefiServiceCredits(NFSC) balance in your crypto account.';
+        'While renewing the following domains, We failed to process the payment.';
 
       return (
         <NamefiEmailContainer title="[Namefi] Important: Domain Renewal Payment Failed">
-          <ReactMarkdown
-            rehypePlugins={[
-              [
-                rehypeExternalLinks,
-                { target: '_blank', rel: ['noopener', 'noreferrer'] },
-              ],
-            ]}
+          <div style={{ ...styles.paragraph, marginBottom: '8px' }}>
+            <ReactMarkdown
+              rehypePlugins={[
+                [
+                  rehypeExternalLinks,
+                  { target: '_blank', rel: ['noopener', 'noreferrer'] },
+                ],
+              ]}
+            >
+              {messageMarkdown}
+            </ReactMarkdown>
+          </div>
+          <table
+            style={{
+              ...styles.paragraph,
+              borderCollapse: 'collapse',
+              marginLeft: 'auto',
+              marginRight: 'auto',
+              minWidth: '80%',
+            }}
           >
-            {messageMarkdown}
-          </ReactMarkdown>
-          <table style={{ borderCollapse: 'collapse', width: '100%' }}>
             <tr>
               <td
                 className="py-1 px-1 font-medium"
-                style={{ border: '1px #D9D9D9 solid', textAlign: 'right' }}
+                style={{ border: '1px #D9D9D9 solid', textAlign: 'left' }}
               >
                 Domain Name
               </td>
               <td
                 className="py-1 px-1 font-medium"
-                style={{ border: '1px #D9D9D9 solid', textAlign: 'right' }}
+                style={{ border: '1px #D9D9D9 solid', textAlign: 'left' }}
               >
-                Status
+                Expiration Date
+              </td>
+              <td
+                className="py-1 px-1 font-medium"
+                style={{ border: '1px #D9D9D9 solid', textAlign: 'left' }}
+              >
+                Renew Price
               </td>
             </tr>
             {domainsToRenew.map((domainNameLdh) => (
               <tr key={domainNameLdh}>
                 <td
                   className="py-1 px-1"
-                  style={{ border: '1px #D9D9D9 solid', textAlign: 'right' }}
+                  style={{ border: '1px #D9D9D9 solid', textAlign: 'left' }}
                 >
                   {domainNameLdh}{' '}
                   {punycode.toUnicode(domainNameLdh) === domainNameLdh
@@ -73,39 +96,100 @@ export const DomainRenewFailedToCharge =
                 </td>
                 <td
                   className="py-1 px-1"
-                  style={{ border: '1px #D9D9D9 solid', textAlign: 'right' }}
+                  style={{ border: '1px #D9D9D9 solid', textAlign: 'left' }}
                 >
-                  <span style={{ color: 'red' }}>Payment Failed</span>
+                  {format(
+                    expirationDatesByDomainLdh[domainNameLdh],
+                    'yyyy-MM-dd',
+                  )}
+                </td>
+                <td
+                  className="py-1 px-1"
+                  style={{ border: '1px #D9D9D9 solid', textAlign: 'left' }}
+                >
+                  ${chargeAmountInUsdByDomainLdh[domainNameLdh].toFixed(2)}
                 </td>
               </tr>
             ))}
+            <tr>
+              <td />
+              <td />
+              <td />
+            </tr>
+            <tr>
+              <td
+                className="py-1 px-1 font-medium"
+                style={{ border: '1px #D9D9D9 solid', textAlign: 'left' }}
+              >
+                Total
+              </td>
+              <td
+                className="py-1 px-1 font-medium"
+                style={{ border: '1px #D9D9D9 solid', textAlign: 'left' }}
+              />
+              <td
+                className="py-1 px-1 font-medium"
+                style={{ border: '1px #D9D9D9 solid', textAlign: 'left' }}
+              >
+                $
+                {sum(
+                  map(
+                    (domainNameLdh) =>
+                      chargeAmountInUsdByDomainLdh[domainNameLdh],
+                    domainsToRenew,
+                  ),
+                ).toFixed(2)}
+              </td>
+            </tr>
           </table>
-          <ReactMarkdown
-            rehypePlugins={[
-              [
-                rehypeExternalLinks,
-                { target: '_blank', rel: ['noopener', 'noreferrer'] },
-              ],
-            ]}
+          <div style={{ ...styles.paragraph, marginTop: '8px' }}>
+            <div>
+              Available balance in NFSC: ${availableBalanceInNfsc.toFixed(2)}{' '}
+              USD (<span className="text-amber-500">insufficient</span>)
+            </div>
+            <div>
+              Credit cards on profile:
+              <ul className="list-none list-outside mt-1">
+                {availableOffChainPaymentMethods.map((paymentMethod) => (
+                  <li key={paymentMethod}>
+                    •••• •••• •••• {paymentMethod} (
+                    <span className="text-amber-500">declined</span>)
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+          <div style={{ ...styles.paragraph, marginTop: '8px' }}>
+            <span style={{ fontWeight: 'bold' }}>Action Required: </span>
+            <span>Please update your payment methods.</span>
+          </div>
+          <Button
+            style={styles.button}
+            href={NamefiEmailLinks.paymentMethods({ poweredByNamefiDomain })}
           >
-            {`**Action Required**: Please visit the [Namefi Dashboard](${NamefiEmailLinks.dashboard(
-              {
-                poweredByNamefiDomain: null,
-              },
-            )}) as soon as possible to update your payment information and renew these domains. Failure to renew on time may result in your domains expiring and becoming available for others to register.
-
-If you need any assistance, please contact our support team at support@namefi.io.`}
-          </ReactMarkdown>
-          <GoToDashboard />
+            Update Payment Methods
+          </Button>
+          <div style={{ ...styles.paragraph, marginTop: '8px' }}>
+            Failure to renew on time may risk the loss of your domains due to
+            expiration.
+          </div>
         </NamefiEmailContainer>
       );
     },
     {
       recipientName: 'Alice',
       recipientEmail: 'alice@example.com',
-      recipientUserId: '123',
       domainsToRenew: ['example.org', 'example.net'],
-      chargeAmountInUsd: 120,
+      chargeAmountInUsdByDomainLdh: {
+        'example.org': 11.1,
+        'example.net': 12.52,
+      },
+      expirationDatesByDomainLdh: {
+        'example.org': addDays(new Date(), 5),
+        'example.net': addDays(new Date(), 2),
+      },
+      availableBalanceInNfsc: 10.43,
+      availableOffChainPaymentMethods: ['4242', '0043'],
     },
   );
 

@@ -11,7 +11,7 @@ import {
   orderStatusSchema,
   type OrderMintTransactionMetadata,
 } from '@namefi-astra/db';
-import { eq, and, sql } from 'drizzle-orm';
+import { eq, and, sql, inArray } from 'drizzle-orm';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { logger } from '#lib/logger';
 
@@ -216,29 +216,33 @@ export type DomainRenewalResult = {
 
 export type CreateAutoRenewOrderInput = {
   userId: string;
-  paymentId: string;
+  paymentIds: string[];
   domainRenewResults: DomainRenewalResult[];
   totalAmountInUsd: number;
 };
 
 export async function createAutoRenewOrder({
   userId,
-  paymentId,
+  paymentIds,
   domainRenewResults,
   totalAmountInUsd,
 }: CreateAutoRenewOrderInput): Promise<{ orderId: string }> {
   logger.info(
-    { userId, paymentId, domainCount: domainRenewResults.length },
-    'Creating auto-renew order for user %s with %d domains',
+    { userId, paymentIds, domainCount: domainRenewResults.length },
+    'Creating auto-renew order for user %s with %d payments and %d domains',
     userId,
+    paymentIds.length,
     domainRenewResults.length,
   );
 
-  const existingPayment = await db.query.paymentsTable.findFirst({
-    where: eq(paymentsTable.id, paymentId),
+  // Validate all payments exist
+  const existingPayments = await db.query.paymentsTable.findMany({
+    where: inArray(paymentsTable.id, paymentIds),
   });
-  if (!existingPayment) {
-    throw new Error(`Payment ${paymentId} not found`);
+  if (existingPayments.length !== paymentIds.length) {
+    throw new Error(
+      `Some payments not found. Expected ${paymentIds.length}, found ${existingPayments.length}`,
+    );
   }
 
   // Calculate success/failure counts for metadata
@@ -286,10 +290,10 @@ export async function createAutoRenewOrder({
       }) satisfies CreateOrderItemInput,
   );
 
-  // Create the order using storage-agnostic service
-  const created = await orderService.createOrderWithExistingSinglePayment({
+  // Create the order using storage-agnostic service with multiple payments
+  const created = await orderService.createOrderWithExistingMultiplePayments({
     userId,
-    paymentId,
+    paymentIds,
     status: orderStatus,
     amountInUSDCents: Math.round(totalAmountInUsd * 100),
     metadata: {
