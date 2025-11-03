@@ -448,13 +448,20 @@ jobs:
     env:
       WORKFLOW_ID: ${{ vars.DEPLOY_BACKEND_VERCEL_WORKFLOW_ID }}
     steps:
+      - name: Authenticate as NameFi Bot
+        id: app-token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ vars.NAMEFI_BOT_APP_ID }}
+          private-key: ${{ secrets.NAMEFI_BOT_PRIVATE_KEY }}
+
       - name: Trigger Production Workflow
         run: |
           echo "Tag deployment completed: ${{ github.ref }}"
           echo "Container built with SHA: ${{ github.sha }}"
 
           curl -X POST \
-            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Authorization: Bearer ${{ steps.app-token.outputs.token }}" \
             -H "Accept: application/vnd.github.v3+json" \
             --fail-with-body \
             https://api.github.com/repos/${{ github.repository }}/actions/workflows/${{ env.WORKFLOW_ID }}/dispatches \
