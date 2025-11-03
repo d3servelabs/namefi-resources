@@ -3,6 +3,17 @@
 import { Languages } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
 import { i18n, localeLabels, type Locale } from '@/i18n-config';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/shadcn/dropdown-menu';
+import { Button } from '@/components/ui/shadcn/button';
+import { cn } from '@/lib/cn';
 
 type LocaleSwitcherProps = {
   activeLocale: Locale;
@@ -29,22 +40,41 @@ export function LocaleSwitcher({ activeLocale, label }: LocaleSwitcherProps) {
     router.push(href === '' ? '/' : href);
   };
 
+  const activeLabel = localeLabels[activeLocale] ?? activeLocale.toUpperCase();
+
   return (
-    <div className="flex items-center gap-2 self-end rounded-full border border-border/60 bg-card/80 px-3 py-1 text-xs font-medium text-muted-foreground shadow-sm shadow-black/20 transition hover:border-border/40 hover:text-foreground">
-      <Languages className="h-3.5 w-3.5" aria-hidden="true" />
-      <span>{label}</span>
-      <select
-        value={activeLocale}
-        onChange={(event) => onSelectLocale(event.target.value as Locale)}
-        className="bg-transparent text-xs text-foreground outline-none border-none focus:border-none focus-visible:ring-0 focus-visible:ring-offset-0"
-        aria-label={label}
-      >
-        {i18n.locales.map((locale) => (
-          <option key={locale} value={locale}>
-            {localeLabels[locale]}
-          </option>
-        ))}
-      </select>
-    </div>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          className={cn(
+            'gap-2 rounded-full border-border/60 bg-card/80 text-xs font-medium text-muted-foreground shadow-sm shadow-black/10 transition hover:border-border hover:text-foreground',
+            'px-3 py-1',
+          )}
+        >
+          <Languages className="h-3.5 w-3.5" aria-hidden="true" />
+          <span className="hidden sm:inline">{label}</span>
+          <span className="text-foreground">{activeLabel}</span>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="w-48">
+        <DropdownMenuLabel className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
+          {label}
+        </DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuRadioGroup
+          value={activeLocale}
+          onValueChange={(value) => onSelectLocale(value as Locale)}
+        >
+          {i18n.locales.map((locale) => (
+            <DropdownMenuRadioItem key={locale} value={locale}>
+              {localeLabels[locale] ?? locale.toUpperCase()}
+            </DropdownMenuRadioItem>
+          ))}
+        </DropdownMenuRadioGroup>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }
