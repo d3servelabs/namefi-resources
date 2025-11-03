@@ -6,8 +6,9 @@ import { getDictionary } from '@/get-dictionary';
 import { resolveDescription, resolveTitle } from '@/lib/site-metadata';
 import { SiteFooter } from '@/components/site-footer';
 import { SiteHeader } from '@/components/site-header';
-import '../globals.css';
+import { Providers } from '@/components/providers';
 import type { Metadata } from 'next';
+import '../globals.css';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -64,11 +65,13 @@ export default async function RootLayout({
           isRtl ? 'rtl' : 'ltr'
         }`}
       >
-        <div className="flex min-h-screen flex-col bg-background">
-          <SiteHeader locale={locale} dictionary={dictionary} />
-          <main className="flex-1">{children}</main>
-          <SiteFooter />
-        </div>
+        <Providers>
+          <div className="flex min-h-screen flex-col bg-background">
+            <SiteHeader locale={locale} dictionary={dictionary} />
+            <main className="flex-1">{children}</main>
+            <SiteFooter />
+          </div>
+        </Providers>
       </body>
     </html>
   );

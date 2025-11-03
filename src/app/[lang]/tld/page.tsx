@@ -88,7 +88,7 @@ export default async function TldIndex({
   });
 
   return (
-    <section className="mx-auto flex w-full max-w-5xl flex-col gap-10 px-6 py-12 md:px-10 lg:px-12">
+    <section className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-6 py-12 md:px-10 lg:px-12">
       <header className="space-y-4 text-start">
         <h1 className="text-3xl font-semibold tracking-tight md:text-4xl">
           {dictionary.tld.indexTitle}
