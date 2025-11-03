@@ -48,6 +48,7 @@ import {
 import { useRegisterAdminFlags } from '../admin/feature-flags/register';
 import type { FeatureFlagDefinition } from '@/types/feature-flags';
 import { useAdminFeatureFlag } from '../admin/feature-flags/use-flag';
+import { useWatchAssets } from '@/hooks/use-watch-assets';
 
 const LoadingSkeletons = () => {
   return (
@@ -381,6 +382,26 @@ function UserWalletCardsGrid(props: {}) {
 
   const [hoveredCardId, setHoveredCardId] = useState<string | null>(null);
   const { privyUser } = useAuth();
+  const { watchNfscInWallet, isAnyWalletConnected } = useWatchAssets();
+
+  const handleAddAssets = useCallback(async () => {
+    try {
+      toast('Request sent to wallet', {
+        description: 'Please check your wallet to add the NFSC token',
+      });
+      const result = await watchNfscInWallet();
+
+      if (result) {
+        toast('Successfully added NFSC token to your wallet');
+      } else {
+        toast('Failed to add NFSC token to your wallet');
+      }
+    } catch (error) {
+      toast('Failed to add token', {
+        description: error instanceof Error ? error.message : 'Unknown error',
+      });
+    }
+  }, [watchNfscInWallet]);
 
   useRegisterAdminFlags(_userWalletCardsGridFlags);
   const [separateByChain] = useAdminFeatureFlag(_userWalletCardsGridFlags[0]);
@@ -542,13 +563,25 @@ function UserWalletCardsGrid(props: {}) {
     <div className="flex flex-col gap-6">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold">Linked Wallets</h2>
-        <NamefiButton
-          onClick={handleLinkWalletClicked}
-          className="font-bold"
-          size="sm"
-        >
-          Link Wallet
-        </NamefiButton>
+        <div className="flex gap-2">
+          {isAnyWalletConnected && (
+            <NamefiButton
+              onClick={handleAddAssets}
+              className="font-bold"
+              size="sm"
+              variant="outline"
+            >
+              Show NFSC in Wallet
+            </NamefiButton>
+          )}
+          <NamefiButton
+            onClick={handleLinkWalletClicked}
+            className="font-bold"
+            size="sm"
+          >
+            Link Wallet
+          </NamefiButton>
+        </div>
       </div>
       {content}
       <UnlinkWalletDialog

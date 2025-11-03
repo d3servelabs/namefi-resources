@@ -22,7 +22,7 @@ export function useWatchAssets() {
     if (!isAnyWalletConnected) {
       return;
     }
-    await watchAssetAsync({
+    const result = await watchAssetAsync({
       type: 'ERC20',
       options: {
         address: NAMEFI_NFT_CONTRACT_ADDRESS,
@@ -30,6 +30,7 @@ export function useWatchAssets() {
         decimals: 18,
       },
     });
+    return result;
   }, [isAnyWalletConnected, watchAssetAsync]);
 
   return { watchNfscInWallet, isMetaMask, isAnyWalletConnected };
