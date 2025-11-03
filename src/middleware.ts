@@ -30,7 +30,7 @@ function getLocale(request: NextRequest): Locale {
 }
 
 export function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
+  const { pathname, search, searchParams } = request.nextUrl;
   const pathnameHasLocale = LOCALES.some(
     (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`,
   );
@@ -48,8 +48,17 @@ export function middleware(request: NextRequest) {
     remainder = pathname.slice(1);
   }
 
-  request.nextUrl.pathname = `/${locale}/${remainder}`;
-  return NextResponse.redirect(request.nextUrl);
+  const redirectUrl = request.nextUrl.clone();
+  redirectUrl.pathname = `/${locale}/${remainder}`;
+
+  // Redirect home (/${locale}) to blog index for now.
+  if (redirectUrl.pathname === `/${locale}`) {
+    redirectUrl.pathname = `/${locale}/blog`;
+    redirectUrl.search = search ? search : '';
+    return NextResponse.redirect(redirectUrl);
+  }
+
+  return NextResponse.redirect(redirectUrl);
 }
 
 export const config = {
