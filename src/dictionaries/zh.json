@@ -19,19 +19,19 @@
     "detailSourceLanguage": "原始语言"
   },
   "tld": {
-    "indexTitle": "顶级域名指南",
-    "indexDescription": "了解每个 TLD 如何融入 Namefi 生态系统。",
     "indexEmpty": "此语言暂时没有 TLD 指南，敬请期待。",
     "indexCta": "阅读指南",
     "detailBack": "返回所有 TLD",
-    "detailKeywordsHeading": "相关关键词"
+    "detailKeywordsHeading": "相关关键词",
+    "indexTitle": "顶级域名指南",
+    "indexDescription": "了解每个 TLD 如何融入 Namefi 生态系统。"
   },
   "partners": {
-    "indexTitle": "合作伙伴故事",
-    "indexDescription": "了解与 Namefi 合作、共同建设生态的团队。",
     "indexEmpty": "此语言暂时没有合作伙伴故事，敬请期待。",
     "indexCta": "认识合作伙伴",
     "detailBack": "返回所有合作伙伴",
-    "detailKeywordsHeading": "重点领域"
+    "detailKeywordsHeading": "重点领域",
+    "indexTitle": "合作伙伴故事",
+    "indexDescription": "了解与 Namefi 合作、共同建设生态的团队。"
   }
 }

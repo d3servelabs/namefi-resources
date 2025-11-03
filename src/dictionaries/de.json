@@ -19,19 +19,19 @@
     "detailSourceLanguage": "Originalsprache"
   },
   "tld": {
-    "indexTitle": "Top-Level-Domain-Leitfäden",
-    "indexDescription": "Erfahre, wie jede TLD in das Namefi-Ökosystem passt.",
     "indexEmpty": "Für diese Sprache sind noch keine TLD-Leitfäden verfügbar. Schau bald wieder vorbei.",
     "indexCta": "Leitfaden lesen",
     "detailBack": "Zurück zu allen TLDs",
-    "detailKeywordsHeading": "Verwandte Schlüsselwörter"
+    "detailKeywordsHeading": "Verwandte Schlüsselwörter",
+    "indexTitle": "Top-Level-Domain-Leitfäden",
+    "indexDescription": "Erfahre, wie jede TLD in das Namefi-Ökosystem passt."
   },
   "partners": {
-    "indexTitle": "Partner-Porträts",
-    "indexDescription": "Lerne die Teams kennen, die gemeinsam mit Namefi das Ökosystem ausbauen.",
     "indexEmpty": "Für diese Sprache sind noch keine Partner-Porträts verfügbar. Schau bald wieder vorbei.",
     "indexCta": "Partner kennenlernen",
     "detailBack": "Zurück zu allen Partnern",
-    "detailKeywordsHeading": "Schwerpunkte"
+    "detailKeywordsHeading": "Schwerpunkte",
+    "indexTitle": "Partner-Porträts",
+    "indexDescription": "Lerne die Teams kennen, die gemeinsam mit Namefi das Ökosystem ausbauen."
   }
 }

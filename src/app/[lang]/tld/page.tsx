@@ -18,6 +18,10 @@ export async function generateMetadata({
     ? (lang as Locale)
     : i18n.defaultLocale;
   const dictionary = await getDictionary(locale);
+  const navLabel = dictionary.nav.tld;
+  const baseTitle = resolveTitle(locale);
+  const sectionTitle = dictionary.tld.indexTitle ?? navLabel;
+  const sectionDescription = dictionary.tld.indexDescription ?? navLabel;
 
   const rawBaseUrl =
     process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL ?? 'localhost:3002';
@@ -29,8 +33,8 @@ export async function generateMetadata({
   const url = `${baseUrl}${canonicalPath}`;
   const ogImagePath = `${canonicalPath}/opengraph-image`;
   const ogImageUrl = `${baseUrl}${ogImagePath}`;
-  const title = dictionary.tld.indexTitle;
-  const description = dictionary.tld.indexDescription ?? resolveTitle(locale);
+  const pageTitle = `${baseTitle} – ${sectionTitle}`;
+  const description = sectionDescription;
   const twitterHandle = '@namefi_io';
 
   const languageAlternates: Partial<Record<Locale, string>> = {};
@@ -43,27 +47,27 @@ export async function generateMetadata({
       canonical: url,
       languages: languageAlternates,
     },
-    title,
+    title: pageTitle,
     description,
     openGraph: {
-      title,
+      title: pageTitle,
       description,
       url,
       locale,
       type: 'website',
-      siteName: resolveTitle(locale),
+      siteName: baseTitle,
       images: [
         {
           url: ogImageUrl,
           width: 1200,
           height: 630,
-          alt: title,
+          alt: pageTitle,
         },
       ],
     },
     twitter: {
       card: 'summary_large_image',
-      title,
+      title: pageTitle,
       description,
       images: [ogImageUrl],
       site: twitterHandle,
@@ -88,17 +92,6 @@ export default async function TldIndex({
 
   return (
     <section className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-6 py-12 md:px-10 lg:px-12">
-      <header className="space-y-4 text-start">
-        <h1 className="text-3xl font-semibold tracking-tight md:text-4xl">
-          {dictionary.tld.indexTitle}
-        </h1>
-        {dictionary.tld.indexDescription ? (
-          <p className="text-base leading-relaxed text-muted-foreground md:text-lg">
-            {dictionary.tld.indexDescription}
-          </p>
-        ) : null}
-      </header>
-
       {entries.length === 0 ? (
         <p className="rounded-3xl border border-dashed border-border/60 bg-card/70 p-10 text-center text-sm text-muted-foreground">
           {dictionary.tld.indexEmpty}

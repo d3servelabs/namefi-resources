@@ -19,19 +19,19 @@
     "detailSourceLanguage": "Idioma original"
   },
   "tld": {
-    "indexTitle": "Guías de dominios de nivel superior",
-    "indexDescription": "Descubre cómo cada TLD encaja en el ecosistema de Namefi.",
     "indexEmpty": "No hay guías de TLD disponibles en este idioma todavía. Vuelve pronto.",
     "indexCta": "Leer guía",
     "detailBack": "Volver a todos los TLD",
-    "detailKeywordsHeading": "Palabras clave relacionadas"
+    "detailKeywordsHeading": "Palabras clave relacionadas",
+    "indexTitle": "Guías de dominios de nivel superior",
+    "indexDescription": "Descubre cómo cada TLD encaja en el ecosistema de Namefi."
   },
   "partners": {
-    "indexTitle": "Historias de socios",
-    "indexDescription": "Conoce a los equipos que colaboran con Namefi para hacer crecer el ecosistema.",
     "indexEmpty": "Todavía no hay historias de socios disponibles en este idioma. Vuelve pronto.",
     "indexCta": "Conocer al socio",
     "detailBack": "Volver a todos los socios",
-    "detailKeywordsHeading": "Áreas de enfoque"
+    "detailKeywordsHeading": "Áreas de enfoque",
+    "indexTitle": "Historias de socios",
+    "indexDescription": "Conoce a los equipos que colaboran con Namefi para hacer crecer el ecosistema."
   }
 }

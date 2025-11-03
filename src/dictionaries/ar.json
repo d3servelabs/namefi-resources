@@ -19,19 +19,19 @@
     "detailSourceLanguage": "اللغة الأصلية"
   },
   "tld": {
-    "indexTitle": "أدلة نطاقات المستوى الأعلى",
-    "indexDescription": "تعرّف على كيفية توافق كل نطاق TLD مع نظام Namefi البيئي.",
     "indexEmpty": "لا توجد أدلة TLD متاحة بهذه اللغة بعد. عد لاحقًا.",
     "indexCta": "اقرأ الدليل",
     "detailBack": "العودة إلى جميع نطاقات TLD",
-    "detailKeywordsHeading": "الكلمات المفتاحية ذات الصلة"
+    "detailKeywordsHeading": "الكلمات المفتاحية ذات الصلة",
+    "indexTitle": "أدلة نطاقات المستوى الأعلى",
+    "indexDescription": "تعرّف على كيفية توافق كل نطاق TLD مع نظام Namefi البيئي."
   },
   "partners": {
-    "indexTitle": "شركاؤنا",
-    "indexDescription": "اكتشف الفرق التي تتعاون مع Namefi لتنمية النظام البيئي.",
     "indexEmpty": "لا توجد قصص شركاء متاحة بهذه اللغة بعد. عد لاحقًا.",
     "indexCta": "تعرّف على الشريك",
     "detailBack": "العودة إلى جميع الشركاء",
-    "detailKeywordsHeading": "مجالات التركيز"
+    "detailKeywordsHeading": "مجالات التركيز",
+    "indexTitle": "شركاؤنا",
+    "indexDescription": "اكتشف الفرق التي تتعاون مع Namefi لتنمية النظام البيئي."
   }
 }

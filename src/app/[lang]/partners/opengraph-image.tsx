@@ -30,7 +30,7 @@ export default async function Image({
   const sectionLabel = dictionary.nav.partners;
   const languageLabel = localeLabels[locale] ?? locale.toUpperCase();
   const pillLabel = [resourcesLabel, sectionLabel, languageLabel].join(' • ');
-  const title = dictionary.partners.indexTitle;
+  const title = dictionary.partners.indexTitle ?? sectionLabel;
   const description =
     dictionary.partners.indexDescription ?? resolveTitle(locale);
 
