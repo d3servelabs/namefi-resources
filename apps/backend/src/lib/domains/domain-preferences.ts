@@ -264,7 +264,7 @@ export const getAnswerForDnsQueryFromPreferences = async (
     return null;
   }
   const preferencesResponse = await resolve(
-    getDomainPreferencesAndConfig(recordName),
+    getNonUserSpecificDomainPreferencesAndConfig(recordName),
   );
   logger.trace({ preferencesResponse }, 'Preferences response');
   if (!preferencesResponse.result) {
