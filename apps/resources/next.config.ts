@@ -3,6 +3,12 @@ import type { NextConfig } from 'next';
 
 const withMDX = createMdx({
   extension: /\.mdx?$/,
+  options: {
+    remarkPlugins: [
+      'remark-frontmatter',
+      ['remark-mdx-frontmatter', { name: 'frontmatter' }],
+    ],
+  },
 });
 
 const nextConfig: NextConfig = {

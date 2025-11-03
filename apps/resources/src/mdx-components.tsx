@@ -55,7 +55,6 @@ const MDXImage = ({
         alt={alt}
         fill
         sizes={sizes}
-        preload={true}
         className={cx('object-cover object-center', className)}
         {...props}
       />
