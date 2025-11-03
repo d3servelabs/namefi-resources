@@ -91,7 +91,7 @@ export default async function BlogIndex({
   });
 
   return (
-    <section className="mx-auto flex w-full max-w-5xl flex-col gap-10 px-6 py-12 md:px-10 lg:px-12">
+    <section className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-6 py-12 md:px-10 lg:px-12">
       {posts.length === 0 ? (
         <p className="rounded-3xl border border-dashed border-border/60 bg-card/70 p-10 text-center text-sm text-muted-foreground">
           {dictionary.blog.indexEmpty}

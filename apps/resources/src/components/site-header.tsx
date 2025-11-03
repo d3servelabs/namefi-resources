@@ -14,7 +14,7 @@ export function SiteHeader({ locale, dictionary }: SiteHeaderProps) {
 
   return (
     <header className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur">
-      <div className="mx-auto flex w-full max-w-5xl items-center justify-between gap-6 px-6 py-5 md:px-10 lg:px-12">
+      <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-6 px-6 py-5 md:px-10 lg:px-12">
         <div className="flex items-center gap-6">
           <Link
             href={`/${locale}`}
