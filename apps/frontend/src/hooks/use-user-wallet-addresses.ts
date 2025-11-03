@@ -2,6 +2,16 @@ import { useWallets } from '@privy-io/react-auth';
 import { useAuth } from './use-auth';
 import { useMemo } from 'react';
 
+export function useConnectedWallets() {
+  const { ready: connectedWalletsReady, wallets } = useWallets();
+  const connectedEthereumWallets = useMemo(
+    () => wallets.filter((wallet) => wallet.type === 'ethereum'),
+    [wallets],
+  );
+
+  return { connectedWalletsReady, connectedEthereumWallets };
+}
+
 /**
  * Hook to get a user's ConnectedWallets from Privy. Currently, we only support Ethereum wallets
  */
