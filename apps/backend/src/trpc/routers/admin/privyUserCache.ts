@@ -319,6 +319,7 @@ const userNftsCTE = db.$with('user_nfts').as(
           normalizedDomainName: string;
           tokenId: string;
           expirationTime: Date;
+          ownerAddress: string;
         }>
       >`
               COALESCE(
@@ -327,7 +328,8 @@ const userNftsCTE = db.$with('user_nfts').as(
                     'chainId', ${namefiNftView.chainId},
                     'normalizedDomainName', ${namefiNftView.normalizedDomainName},
                     'tokenId', ${namefiNftView.tokenId}::text,
-                    'expirationTime', ${namefiNftView.expirationTime}
+                    'expirationTime', ${namefiNftView.expirationTime},
+                    'ownerAddress', ${namefiNftView.ownerAddress}
                   )
                   ORDER BY ${namefiNftView.expirationTime} ASC
                 ) FILTER (WHERE ${namefiNftView.tokenId} IS NOT NULL),

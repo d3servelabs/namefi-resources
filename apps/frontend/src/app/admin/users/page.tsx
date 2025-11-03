@@ -87,6 +87,7 @@ type UserRow = {
     normalizedDomainName: string;
     tokenId: string;
     expirationTime: Date | string;
+    ownerAddress: string;
   }>;
   nftCount: number;
 };
@@ -724,6 +725,7 @@ const UserNftsSubRow = ({ original: user }: Row<UserRow>) => {
   });
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
     tokenId: false,
+    ownerAddress: true,
   });
 
   const nftColumns = useMemo<Array<ColumnDef<NftRow>>>(
@@ -796,6 +798,68 @@ const UserNftsSubRow = ({ original: user }: Row<UserRow>) => {
               cellValue,
               filterValue.operator,
               String(filterValue.value),
+            );
+          }
+          return true;
+        },
+        size: 200,
+      },
+      {
+        accessorKey: 'ownerAddress',
+        id: 'ownerAddress',
+        header: 'Holding Wallet',
+        cell: ({ row }) => {
+          const ownerAddress = attemptGetChecksummedAddress(
+            row.original.ownerAddress,
+          );
+          const handleCopyWallet = async () => {
+            try {
+              await navigator.clipboard.writeText(ownerAddress);
+              toast.success('Copied address successfully');
+            } catch (error) {
+              toast.error('Failed to copy address');
+            }
+          };
+
+          return (
+            <div className="flex items-center gap-2 px-1 py-1 bg-muted rounded-xl max-w-full">
+              <UserWalletAvatar address={ownerAddress} className="size-6" />
+              <div className="flex-1 min-w-0">
+                <AutoTruncateTextV2
+                  initialCharactersCountToDisplay={16}
+                  minCharactersToDisplay={16}
+                  className="font-mono text-xs"
+                >
+                  {ownerAddress}
+                </AutoTruncateTextV2>
+              </div>
+              <button
+                type="button"
+                onClick={handleCopyWallet}
+                className="p-1 hover:bg-background rounded transition-colors flex-shrink-0"
+                title="Copy address"
+              >
+                <Copy className="h-3 w-3" />
+              </button>
+            </div>
+          );
+        },
+        filterFn: (row, columnId, filterValue) => {
+          const cellValue = String(row.getValue(columnId) || '').toLowerCase();
+          // Handle simple value (from inline filter)
+          if (typeof filterValue === 'string') {
+            return cellValue.includes(filterValue.toLowerCase());
+          }
+          // Handle operator/value object (from filter panel)
+          if (
+            filterValue &&
+            typeof filterValue === 'object' &&
+            'operator' in filterValue
+          ) {
+            return applyFilterOperator(
+              cellValue,
+              filterValue.operator,
+              String(filterValue.value).toLowerCase(),
             );
           }
           return true;
@@ -958,6 +1022,7 @@ const UserNftsSubRow = ({ original: user }: Row<UserRow>) => {
   const nftFilterConfig = useMemo(
     () => ({
       normalizedDomainName: { type: 'text' as const, label: 'Domain Name' },
+      ownerAddress: { type: 'text' as const, label: 'Holding Wallet' },
       chainId: {
         type: 'select' as const,
         label: 'Network',
