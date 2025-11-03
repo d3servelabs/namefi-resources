@@ -52,7 +52,9 @@ const requestQuerySchema = z.object({
 nsJsonRouter.get('/', async (c) => {
   _logger.assign({ query: c.req.query() });
   // get qname and qtype from query params
-
+  if (c.req.query('name') === '041.ai.') {
+    _logger.assign({ heartbeat: true });
+  }
   const requestQueryResult = requestQuerySchema.safeParse(c.req.query());
 
   if (!requestQueryResult.success) {
@@ -99,7 +101,7 @@ nsJsonRouter.get('/', async (c) => {
   }
 
   const response = await getAnswerForDnsQuery(recordName, qTypeEnum);
-
+  _logger.trace({ response }, 'Response from getAnswerForDnsQuery');
   if (response) {
     return c.json(response);
   }
@@ -111,7 +113,7 @@ nsJsonRouter.get('/', async (c) => {
     }
   }
   _logger.info({
-    error: 'Not Found',
+    error: new Error('Not Found'),
     message: 'No DNS record found for domain',
   });
 
@@ -161,6 +163,7 @@ export const getAnswerForDnsQuery = async (
     recordName,
     qTypeEnum,
   );
+  _logger.trace({ answerFromPreferences }, 'Answer from preferences');
 
   if (answerFromPreferences) {
     if (isNotNil(answerFromPreferences.RCODE)) {
@@ -194,6 +197,8 @@ export const getAnswerForDnsQuery = async (
       eq(dnsRecordsTable.type, qTypeEnum),
     ),
   });
+
+  _logger.trace({ records }, 'Records');
 
   result.Answer = [
     ...(result.Answer ?? []),

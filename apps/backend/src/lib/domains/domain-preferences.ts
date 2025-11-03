@@ -17,6 +17,7 @@ import { PARKED_DOMAIN_RECORDS } from '../../services/dns/parking';
 import { privyClient } from '../../trpc/utils';
 import { dnsRecordTypeCodes } from '../dns/record-type-codes';
 import type { DnsResponse } from '../dns/types';
+import { logger } from '#lib/logger';
 
 // #region Domain Config
 
@@ -122,14 +123,9 @@ type DomainPreferencesAndConfig = {
   forwardTo?: string;
 };
 
-/**
- * Get the domain preferences
- * @param domainName - The name of the domain
- * @returns The domain preferences
- */
-export const getDomainPreferencesAndConfig = async (
+export const getNonUserSpecificDomainPreferencesAndConfig = async (
   domainName: NamefiNormalizedDomain,
-): Promise<DomainPreferencesAndConfig> => {
+): Promise<Omit<DomainPreferencesAndConfig, 'autoRenewEnabled'>> => {
   const [nftResult, domainConfig] = await Promise.all([
     db
       .select()
@@ -140,28 +136,56 @@ export const getDomainPreferencesAndConfig = async (
       where: eq(domainConfigTable.normalizedDomainName, domainName),
     }),
   ]);
-
+  logger.trace({ nftResult, domainConfig }, 'NFT and domain config');
   const nft = nftResult[0];
+
   if (!nft) {
     throw new TRPCError({
       code: 'NOT_FOUND',
       message: 'Domain not found',
     });
   }
-
-  const userDomainPreferences =
-    await getUserSpecificDomainPreferencesByOwnerAddress(
-      domainName,
-      nft.ownerAddress,
-    );
-
   return {
-    autoRenewEnabled:
-      userDomainPreferences?.preferences.autoRenewEnabled ?? false,
     autoEnsEnabled: domainConfig?.autoEnsEnabled ?? false,
     autoParkEnabled: domainConfig?.autoParkEnabled ?? false,
     ownerAddress: nft.ownerAddress,
     forwardTo: domainConfig?.forwardTo ?? undefined,
+  };
+};
+
+/**
+ * Get the domain preferences
+ * @param domainName - The name of the domain
+ * @returns The domain preferences
+ */
+export const getDomainPreferencesAndConfig = async (
+  domainName: NamefiNormalizedDomain,
+): Promise<DomainPreferencesAndConfig> => {
+  const domainConfig =
+    await getNonUserSpecificDomainPreferencesAndConfig(domainName);
+  logger.trace({ domainConfig }, 'Domain config');
+  let userDomainPreferences: Awaited<
+    ReturnType<typeof getUserSpecificDomainPreferencesByOwnerAddress>
+  > | null = null;
+  try {
+    userDomainPreferences =
+      await getUserSpecificDomainPreferencesByOwnerAddress(
+        domainName,
+        domainConfig.ownerAddress,
+      );
+    logger.trace({ userDomainPreferences }, 'User domain preferences');
+  } catch (error) {
+    logger.error({ error }, 'Error getting user domain preferences');
+    throw error;
+  }
+
+  return {
+    autoRenewEnabled:
+      userDomainPreferences?.preferences.autoRenewEnabled ?? false,
+    autoEnsEnabled: domainConfig.autoEnsEnabled,
+    autoParkEnabled: domainConfig.autoParkEnabled,
+    ownerAddress: domainConfig.ownerAddress,
+    forwardTo: domainConfig.forwardTo,
   };
 };
 
@@ -226,23 +250,29 @@ export const getAnswerForDnsQueryFromPreferences = async (
   recordName: NamefiNormalizedDomain,
   qTypeEnum: RecordType,
 ): Promise<DnsResponse | null> => {
+  logger.trace(
+    { recordName, qTypeEnum },
+    'getAnswerForDnsQueryFromPreferences',
+  );
   const result: DnsResponse = {
     RCODE: undefined,
     Answer: [],
   };
 
   if (!matchAny(qTypeEnum, RecordType.A, RecordType.AAAA, RecordType.TXT)) {
+    logger.trace({ qTypeEnum }, 'No match for qTypeEnum');
     return null;
   }
   const preferencesResponse = await resolve(
     getDomainPreferencesAndConfig(recordName),
   );
-
+  logger.trace({ preferencesResponse }, 'Preferences response');
   if (!preferencesResponse.result) {
     return null;
   }
 
   const preferences = preferencesResponse.result;
+  logger.trace({ preferences }, 'Preferences');
   const forwardToTrimmed = preferences.forwardTo?.trim();
   const forwardTo =
     isNotNil(forwardToTrimmed) && forwardToTrimmed !== ''
@@ -252,6 +282,7 @@ export const getAnswerForDnsQueryFromPreferences = async (
     (preferences.autoParkEnabled || isNotNil(forwardTo)) &&
     matchAny(qTypeEnum, RecordType.A, RecordType.AAAA)
   ) {
+    logger.trace({ qTypeEnum, PARKED_DOMAIN_RECORDS }, 'PARKED_DOMAIN_RECORDS');
     //Final Answer RCODE is 0
     return {
       RCODE: 0,

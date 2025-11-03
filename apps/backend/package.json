@@ -18,9 +18,9 @@
   },
   "scripts": {
     "clean": "git clean -xdf .next .turbo node_modules out dist .react-email",
-    "force-local": "ENVIRONMENT=local LOG_LEVEL=debug bun",
-    "dev": "ENVIRONMENT=local LOG_LEVEL=debug bun run tsx watch src/index.ts",
-    "dev:temporal": "wait-on tcp:${TEMPORAL_SERVER_PORT:-7233} && ENVIRONMENT=local LOG_LEVEL=debug bun run tsx watch src/temporal/main.temporal.ts",
+    "force-local": "ENVIRONMENT=local LOG_LEVEL=${LOG_LEVEL:-debug} bun",
+    "dev": "ENVIRONMENT=local LOG_LEVEL=${LOG_LEVEL:-debug} bun run tsx watch src/index.ts",
+    "dev:temporal": "wait-on tcp:${TEMPORAL_SERVER_PORT:-7233} && ENVIRONMENT=local LOG_LEVEL=${LOG_LEVEL:-debug} bun run tsx watch src/temporal/main.temporal.ts",
     "with-env": "infisical run --token=$INFISICAL_SERVICE_TOKEN -- bun",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
