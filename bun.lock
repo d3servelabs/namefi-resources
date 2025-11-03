@@ -298,7 +298,7 @@
     },
     "apps/resources": {
       "name": "@namefi-astra/resources",
-      "version": "0.1.6",
+      "version": "0.1.7",
       "dependencies": {
         "@formatjs/intl-localematcher": "^0.5.4",
         "@mdx-js/loader": "^3.1.1",
