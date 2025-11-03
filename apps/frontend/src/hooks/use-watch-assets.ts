@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from 'react';
 import { useConnectedWallets } from './use-user-wallet-addresses';
-import { NAMEFI_NFT_CONTRACT_ADDRESS } from '@namefi-astra/utils';
+import { NFSC_CONTRACT_ADDRESS } from '@namefi-astra/utils';
 import { useConfig, useWatchAsset } from 'wagmi';
 
 export function useWatchAssets() {
@@ -25,7 +25,7 @@ export function useWatchAssets() {
     const result = await watchAssetAsync({
       type: 'ERC20',
       options: {
-        address: NAMEFI_NFT_CONTRACT_ADDRESS,
+        address: NFSC_CONTRACT_ADDRESS,
         symbol: 'NFSC',
         decimals: 18,
       },
