@@ -19,19 +19,19 @@
     "detailSourceLanguage": "मूल भाषा"
   },
   "tld": {
-    "indexTitle": "टॉप-लेवल डोमेन मार्गदर्शिकाएँ",
-    "indexDescription": "जानें कि प्रत्येक TLD Namefi पारिस्थितिकी तंत्र में कैसे फिट बैठता है।",
     "indexEmpty": "इस भाषा में अभी कोई TLD मार्गदर्शिका उपलब्ध नहीं है। जल्द ही वापस देखें।",
     "indexCta": "मार्गदर्शिका पढ़ें",
     "detailBack": "सभी TLD पर वापस जाएँ",
-    "detailKeywordsHeading": "संबंधित कीवर्ड"
+    "detailKeywordsHeading": "संबंधित कीवर्ड",
+    "indexTitle": "टॉप-लेवल डोमेन मार्गदर्शिकाएँ",
+    "indexDescription": "जानें कि प्रत्येक TLD Namefi पारिस्थितिकी तंत्र में कैसे फिट बैठता है।"
   },
   "partners": {
-    "indexTitle": "साझेदार परिचय",
-    "indexDescription": "उन टीमों से मिलें जो Namefi के साथ मिलकर पारिस्थितिकी तंत्र को आगे बढ़ा रही हैं।",
     "indexEmpty": "इस भाषा में अभी कोई साझेदार कहानी उपलब्ध नहीं है। जल्द ही वापस देखें।",
     "indexCta": "साझेदार से मिलें",
     "detailBack": "सभी साझेदारों पर वापस जाएँ",
-    "detailKeywordsHeading": "केंद्रित क्षेत्र"
+    "detailKeywordsHeading": "केंद्रित क्षेत्र",
+    "indexTitle": "साझेदार परिचय",
+    "indexDescription": "उन टीमों से मिलें जो Namefi के साथ मिलकर पारिस्थितिकी तंत्र को आगे बढ़ा रही हैं।"
   }
 }

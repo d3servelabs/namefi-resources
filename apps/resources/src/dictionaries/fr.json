@@ -19,19 +19,19 @@
     "detailSourceLanguage": "Langue d’origine"
   },
   "tld": {
-    "indexTitle": "Guides des domaines de premier niveau",
-    "indexDescription": "Découvrez comment chaque TLD s’intègre dans l’écosystème Namefi.",
     "indexEmpty": "Aucun guide TLD n’est encore disponible dans cette langue. Revenez bientôt.",
     "indexCta": "Lire le guide",
     "detailBack": "Retour à tous les TLD",
-    "detailKeywordsHeading": "Mots-clés associés"
+    "detailKeywordsHeading": "Mots-clés associés",
+    "indexTitle": "Guides des domaines de premier niveau",
+    "indexDescription": "Découvrez comment chaque TLD s’intègre dans l’écosystème Namefi."
   },
   "partners": {
-    "indexTitle": "Portraits de partenaires",
-    "indexDescription": "Rencontrez les équipes qui collaborent avec Namefi pour développer l’écosystème.",
     "indexEmpty": "Aucun portrait de partenaire n’est encore disponible dans cette langue. Revenez bientôt.",
     "indexCta": "Découvrir le partenaire",
     "detailBack": "Retour à tous les partenaires",
-    "detailKeywordsHeading": "Domaines d’expertise"
+    "detailKeywordsHeading": "Domaines d’expertise",
+    "indexTitle": "Portraits de partenaires",
+    "indexDescription": "Rencontrez les équipes qui collaborent avec Namefi pour développer l’écosystème."
   }
 }
