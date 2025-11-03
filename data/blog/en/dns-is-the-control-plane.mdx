@@ -9,7 +9,10 @@ description: A registrar/DNS‑operations perspective on the October 20, 2025 AW
 keywords: ['dns', 'aws outage', 'control plane', 'dynamodb', 'us-east-1', 'dns caching', 'cloud resilience', 'multi-signer dns', 'incident response']
 ---
 
-![Illustration of resilient DNS control planes steering around a regional outage](/r/assets/blog/dns-is-the-control-plane/hero.png)
+import Image from 'next/image';
+import heroImage from '@/../public/assets/blog/dns-is-the-control-plane/hero.png';
+
+<Image src={heroImage} alt="Illustration of resilient DNS control planes steering around a regional outage" placeholder='blur' />
 
 On October 20, 2025, parts of the internet had a bad morning. Amazon Web Services (AWS) reported problems in its Northern Virginia data center cluster (US-EAST-1). For several hours, many popular apps and sites were slow or unavailable—[Vercel](https://downdetector.com/status/vercel/), [Figma](https://downdetector.in/status/figma/), [Venmo](https://downdetector.in/status/venmo/), and [Snapchat](https://downdetector.com/status/snapchat/), to name a few. News outlets and monitoring services recorded millions of user reports, and even some Amazon services flickered.
 
