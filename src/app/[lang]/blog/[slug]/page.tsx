@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
+import type { Metadata } from 'next';
 import Link from 'next/link';
-import { MDXRemote } from 'next-mdx-remote-client/rsc';
 import { notFound } from 'next/navigation';
 import type { Locale } from '@/i18n-config';
 import { i18n, localeLabels, localeDateLocales } from '@/i18n-config';
@@ -12,9 +12,11 @@ import {
   type AuthorEntry,
   getAuthorNames,
 } from '@/lib/content';
+import { loadMdxModule } from '@/lib/load-mdx-module';
 import { resolveTitle } from '@/lib/site-metadata';
 import { useMDXComponents } from '@/mdx-components';
-import type { Metadata } from 'next';
+
+const TRAILING_SLASH_REGEX = /\/$/;
 
 export async function generateStaticParams() {
   return getPostParams();
@@ -36,7 +38,7 @@ export async function generateMetadata({
   const normalisedBaseUrl = rawBaseUrl.startsWith('https')
     ? rawBaseUrl
     : `https://${rawBaseUrl}`;
-  const baseUrl = normalisedBaseUrl.replace(/\/$/, '');
+  const baseUrl = normalisedBaseUrl.replace(TRAILING_SLASH_REGEX, '');
   const canonicalPath = `/r/${locale}/blog/${slug}`;
   const url = `${baseUrl}${canonicalPath}`;
   const ogImagePath = `${canonicalPath}/opengraph-image`;
@@ -137,7 +139,13 @@ export default async function BlogPostPage({
   const authorNames = authorEntries.map((author) => author.frontmatter.name);
   const formattedDate = dateFormatter.format(entry.publishedAt);
   const showSourceLanguage = entry.requestedLanguage !== entry.sourceLanguage;
-  const postSource = entry.content;
+  const { default: PostContent } = await loadMdxModule(entry.relativePath);
+  const authorModules = await Promise.all(
+    authorEntries.map(async (author) => {
+      const module = await loadMdxModule(author.relativePath);
+      return { author, Module: module.default };
+    }),
+  );
 
   return (
     <article className="mx-auto flex w-full max-w-5xl flex-col gap-10 px-6 py-12 text-start md:px-10 lg:px-12">
@@ -190,15 +198,15 @@ export default async function BlogPostPage({
         )}
       </header>
 
-      <MDXRemote source={postSource} components={postComponents} />
+      <PostContent components={postComponents} />
 
-      {authorEntries.length > 0 && (
+      {authorModules.length > 0 && (
         <section className="surface-card space-y-6">
           <h2 className="text-xl font-semibold">
             {dictionary.blog.detailAuthorsHeading}
           </h2>
           <div className="space-y-6">
-            {authorEntries.map((author) => (
+            {authorModules.map(({ author, Module }) => (
               <div
                 key={`${author.slug}-${author.sourceLanguage}`}
                 className="flex flex-col gap-4 rounded-2xl border border-border/60 bg-card p-6 shadow-lg shadow-black/5"
@@ -237,10 +245,7 @@ export default async function BlogPostPage({
                     )}
                   </div>
                 ) : null}
-                <MDXRemote
-                  source={author.content}
-                  components={authorComponents}
-                />
+                <Module components={authorComponents} />
               </div>
             ))}
           </div>

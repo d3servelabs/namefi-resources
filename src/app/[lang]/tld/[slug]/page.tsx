@@ -1,6 +1,5 @@
 import type { ReactNode } from 'react';
 import Link from 'next/link';
-import { MDXRemote } from 'next-mdx-remote-client/rsc';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import type { Locale } from '@/i18n-config';
@@ -13,6 +12,7 @@ import {
   getTldCached,
   getTldParams,
 } from '@/lib/content';
+import { loadMdxModule } from '@/lib/load-mdx-module';
 import { resolveTitle } from '@/lib/site-metadata';
 import { useMDXComponents } from '@/mdx-components';
 
@@ -143,7 +143,13 @@ export default async function TldDetailPage({
   const formattedDate = dateFormatter.format(entry.publishedAt);
   const showSourceLanguage = entry.requestedLanguage !== entry.sourceLanguage;
   const keywords = entry.frontmatter.keywords;
-  const articleSource = entry.content;
+  const { default: ArticleContent } = await loadMdxModule(entry.relativePath);
+  const authorModules = await Promise.all(
+    authorEntries.map(async (author) => {
+      const module = await loadMdxModule(author.relativePath);
+      return { author, Module: module.default };
+    }),
+  );
 
   return (
     <article className="mx-auto flex w-full max-w-5xl flex-col gap-10 px-6 py-12 text-start md:px-10 lg:px-12">
@@ -196,7 +202,7 @@ export default async function TldDetailPage({
         )}
       </header>
 
-      <MDXRemote source={articleSource} components={articleComponents} />
+      <ArticleContent components={articleComponents} />
 
       {keywords.length > 0 && (
         <section className="surface-card space-y-4">
@@ -216,13 +222,13 @@ export default async function TldDetailPage({
         </section>
       )}
 
-      {authorEntries.length > 0 && (
+      {authorModules.length > 0 && (
         <section className="surface-card space-y-6">
           <h2 className="text-xl font-semibold">
             {dictionary.blog.detailAuthorsHeading}
           </h2>
           <div className="space-y-6">
-            {authorEntries.map((author) => (
+            {authorModules.map(({ author, Module }) => (
               <div
                 key={`${author.slug}-${author.sourceLanguage}`}
                 className="flex flex-col gap-4 rounded-2xl border border-border/60 bg-card p-6 shadow-lg shadow-black/5"
@@ -261,10 +267,7 @@ export default async function TldDetailPage({
                     )}
                   </div>
                 ) : null}
-                <MDXRemote
-                  source={author.content}
-                  components={authorComponents}
-                />
+                <Module components={authorComponents} />
               </div>
             ))}
           </div>

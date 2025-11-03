@@ -1,10 +1,10 @@
 import 'server-only';
+// biome-ignore lint/correctness/noNodejsModules: server-side content helpers rely on Node file system APIs.
 import fs from 'node:fs';
+// biome-ignore lint/correctness/noNodejsModules: server-side content helpers rely on Node path utilities.
 import path from 'node:path';
 import matter from 'gray-matter';
 import { cache } from 'react';
-import type { ComponentType } from 'react';
-import type { MDXComponents } from 'mdx/types';
 import { i18n, type Locale } from '@/i18n-config';
 
 type Collection = 'blog' | 'authors' | 'tld' | 'partners';
@@ -24,7 +24,7 @@ type PostEntry = {
   frontmatter: PostFrontmatter;
   sourceLanguage: Locale;
   requestedLanguage: Locale;
-  content: string;
+  relativePath: string;
   publishedAt: Date;
 };
 
@@ -43,7 +43,7 @@ type AuthorEntry = {
   frontmatter: AuthorFrontmatter;
   sourceLanguage: Locale;
   requestedLanguage: Locale;
-  content: string;
+  relativePath: string;
 };
 
 type TldFrontmatter = {
@@ -63,7 +63,7 @@ type TldEntry = {
   frontmatter: TldFrontmatter;
   sourceLanguage: Locale;
   requestedLanguage: Locale;
-  content: string;
+  relativePath: string;
   publishedAt: Date;
 };
 
@@ -84,11 +84,9 @@ type PartnerEntry = {
   frontmatter: PartnerFrontmatter;
   sourceLanguage: Locale;
   requestedLanguage: Locale;
-  content: string;
+  relativePath: string;
   publishedAt: Date;
 };
-
-export type MDXContent = ComponentType<{ components?: MDXComponents }>;
 
 const DATA_ROOT = path.join(process.cwd(), 'data');
 const BLOG_ROOT = path.join(DATA_ROOT, 'blog');
@@ -138,6 +136,11 @@ function getRootForCollection(collection: Collection) {
     default:
       return BLOG_ROOT;
   }
+}
+
+function toRelativeDataPath(filePath: string): string {
+  const relative = path.relative(DATA_ROOT, filePath);
+  return relative.split(path.sep).join('/');
 }
 
 function toStringArray(value: unknown): string[] {
@@ -414,7 +417,7 @@ function parsePostEntry({
     frontmatter,
     sourceLanguage: locale,
     requestedLanguage: locale,
-    content: parsed.content,
+    relativePath: toRelativeDataPath(filePath),
     publishedAt,
   };
 }
@@ -452,7 +455,7 @@ function parseTldEntry({
     frontmatter,
     sourceLanguage: locale,
     requestedLanguage: locale,
-    content: parsed.content,
+    relativePath: toRelativeDataPath(filePath),
     publishedAt,
   };
 }
@@ -495,7 +498,7 @@ function parsePartnerEntry({
     frontmatter,
     sourceLanguage: locale,
     requestedLanguage: locale,
-    content: parsed.content,
+    relativePath: toRelativeDataPath(filePath),
     publishedAt,
   };
 }
@@ -503,11 +506,12 @@ function parsePartnerEntry({
 function parseAuthorEntry({
   slug,
   locale,
+  filePath,
 }: {
   slug: string;
   locale: Locale;
+  filePath: string;
 }): AuthorEntry {
-  const filePath = path.join(AUTHOR_ROOT, locale, `${slug}.mdx`);
   const fileContents = fs.readFileSync(filePath, 'utf8');
   const parsed = matter(fileContents);
   const frontmatter = normaliseAuthorFrontmatter(parsed.data, slug, locale);
@@ -517,7 +521,7 @@ function parseAuthorEntry({
     frontmatter,
     sourceLanguage: locale,
     requestedLanguage: locale,
-    content: parsed.content,
+    relativePath: toRelativeDataPath(filePath),
   };
 }
 
@@ -561,7 +565,7 @@ function loadAuthorEntry(
 
   const filePath = path.join(AUTHOR_ROOT, locale, `${slug}.mdx`);
   if (fs.existsSync(filePath)) {
-    const entry = parseAuthorEntry({ slug, locale });
+    const entry = parseAuthorEntry({ slug, locale, filePath });
     authorEntryCache.set(cacheKey, entry);
     return entry;
   }
