@@ -40,7 +40,6 @@ export async function generateMetadata({
   }
 
   return {
-    metadataBase: new URL(baseUrl),
     alternates: {
       canonical: url,
       languages: languageAlternates,
