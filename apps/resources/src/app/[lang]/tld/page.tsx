@@ -1,10 +1,14 @@
-import Link from 'next/link';
 import type { Metadata } from 'next';
 import type { Locale } from '@/i18n-config';
-import { localeDateLocales, localeLabels, i18n } from '@/i18n-config';
+import { localeDateLocales, i18n } from '@/i18n-config';
 import { getDictionary } from '@/get-dictionary';
 import { getAuthorNames, getTldsForLocale } from '@/lib/content';
 import { resolveTitle } from '@/lib/site-metadata';
+import {
+  ResourceIndexCard,
+  ResourceIndexEmptyState,
+} from '@/components/resource-index-card';
+import { createResourceMetaItems } from '@/lib/resource-meta-items';
 
 const TRAILING_SLASH_REGEX = /\/$/;
 
@@ -91,13 +95,13 @@ export default async function TldIndex({
   });
 
   return (
-    <section className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-6 py-12 md:px-10 lg:px-12">
+    <section className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-6 py-12 md:px-10 lg:px-12">
       {entries.length === 0 ? (
-        <p className="rounded-3xl border border-dashed border-border/60 bg-card/70 p-10 text-center text-sm text-muted-foreground">
+        <ResourceIndexEmptyState>
           {dictionary.tld.indexEmpty}
-        </p>
+        </ResourceIndexEmptyState>
       ) : (
-        <div className="space-y-8">
+        <div className="grid gap-6">
           {entries.map((entry) => {
             const authorNames = getAuthorNames(
               locale,
@@ -106,69 +110,28 @@ export default async function TldIndex({
             const href = `/${locale}/tld/${entry.slug}`;
             const summary =
               entry.frontmatter.summary ?? entry.frontmatter.description;
-            const showSourceLanguage =
-              entry.requestedLanguage !== entry.sourceLanguage;
+            const metaItems = createResourceMetaItems({
+              labels: {
+                publishedOn: dictionary.blog.detailPublishedOn,
+                by: dictionary.blog.detailBy,
+                sourceLanguage: dictionary.blog.detailSourceLanguage,
+              },
+              publishedAt: entry.publishedAt,
+              authorNames,
+              dateFormatter,
+              sourceLanguage: entry.sourceLanguage,
+              requestedLanguage: entry.requestedLanguage,
+            });
+
             return (
-              <article
+              <ResourceIndexCard
                 key={`${entry.slug}-${entry.sourceLanguage}`}
-                className="surface-card transition hover:-translate-y-1 hover:shadow-2xl hover:shadow-black/15"
-              >
-                <div className="flex flex-col gap-4 text-start">
-                  <div className="flex flex-wrap items-center gap-3 text-xs uppercase tracking-wide text-muted-foreground">
-                    <time dateTime={entry.frontmatter.date}>
-                      {dictionary.blog.detailPublishedOn}{' '}
-                      {dateFormatter.format(entry.publishedAt)}
-                    </time>
-                    {authorNames.length > 0 && (
-                      <span>
-                        {dictionary.blog.detailBy} {authorNames.join(', ')}
-                      </span>
-                    )}
-                    {showSourceLanguage && (
-                      <span>
-                        {dictionary.blog.detailSourceLanguage}:{' '}
-                        {localeLabels[entry.sourceLanguage] ??
-                          entry.sourceLanguage.toUpperCase()}
-                      </span>
-                    )}
-                  </div>
-                  <div className="space-y-3">
-                    <Link
-                      href={href}
-                      className="group inline-flex flex-col gap-3"
-                    >
-                      <span className="text-xl font-semibold text-foreground transition group-hover:text-brand-primary md:text-2xl">
-                        {entry.frontmatter.title}
-                      </span>
-                      {summary ? (
-                        <p className="text-sm text-muted-foreground">
-                          {summary}
-                        </p>
-                      ) : null}
-                    </Link>
-                    {entry.frontmatter.tags.length > 0 && (
-                      <ul className="flex flex-wrap gap-2 text-xs text-muted-foreground">
-                        {entry.frontmatter.tags.map((tag) => (
-                          <li
-                            key={tag}
-                            className="rounded-full border border-border/60 px-3 py-1"
-                          >
-                            {tag}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
-                  <div>
-                    <Link
-                      href={href}
-                      className="inline-flex items-center text-xs font-medium text-brand-primary transition hover:underline"
-                    >
-                      {dictionary.tld.indexCta}
-                    </Link>
-                  </div>
-                </div>
-              </article>
+                title={entry.frontmatter.title}
+                href={href}
+                summary={summary}
+                tags={entry.frontmatter.tags}
+                metaItems={metaItems}
+              />
             );
           })}
         </div>

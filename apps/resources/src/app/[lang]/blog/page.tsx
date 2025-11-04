@@ -1,10 +1,14 @@
-import Link from 'next/link';
 import type { Metadata } from 'next';
 import type { Locale } from '@/i18n-config';
-import { localeDateLocales, localeLabels, i18n } from '@/i18n-config';
+import { localeDateLocales, i18n } from '@/i18n-config';
 import { getDictionary } from '@/get-dictionary';
 import { getAuthorNames, getPostsForLocale } from '@/lib/content';
 import { resolveDescription, resolveTitle } from '@/lib/site-metadata';
+import {
+  ResourceIndexCard,
+  ResourceIndexEmptyState,
+} from '@/components/resource-index-card';
+import { createResourceMetaItems } from '@/lib/resource-meta-items';
 
 const TRAILING_SLASH_REGEX = /\/$/;
 
@@ -90,80 +94,42 @@ export default async function BlogIndex({
   });
 
   return (
-    <section className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-6 py-12 md:px-10 lg:px-12">
+    <section className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-6 py-12 md:px-10 lg:px-12">
       {posts.length === 0 ? (
-        <p className="rounded-3xl border border-dashed border-border/60 bg-card/70 p-10 text-center text-sm text-muted-foreground">
+        <ResourceIndexEmptyState>
           {dictionary.blog.indexEmpty}
-        </p>
+        </ResourceIndexEmptyState>
       ) : (
-        <div className="space-y-8">
+        <div className="grid gap-6">
           {posts.map((post) => {
             const authorNames = getAuthorNames(
               locale,
               post.frontmatter.authors,
             );
             const href = `/${locale}/blog/${post.slug}`;
+            const summary = post.frontmatter.summary;
+            const metaItems = createResourceMetaItems({
+              labels: {
+                publishedOn: dictionary.blog.detailPublishedOn,
+                by: dictionary.blog.detailBy,
+                sourceLanguage: dictionary.blog.detailSourceLanguage,
+              },
+              publishedAt: post.publishedAt,
+              authorNames,
+              dateFormatter,
+              sourceLanguage: post.sourceLanguage,
+              requestedLanguage: post.requestedLanguage,
+            });
+
             return (
-              <article
+              <ResourceIndexCard
                 key={`${post.slug}-${post.sourceLanguage}`}
-                className="surface-card transition hover:-translate-y-1 hover:shadow-2xl hover:shadow-black/15"
-              >
-                <div className="flex flex-col gap-4 text-start">
-                  <div className="flex flex-wrap items-center gap-3 text-xs uppercase tracking-wide text-muted-foreground">
-                    <time dateTime={post.frontmatter.date}>
-                      {dictionary.blog.detailPublishedOn}{' '}
-                      {dateFormatter.format(post.publishedAt)}
-                    </time>
-                    {authorNames.length > 0 && (
-                      <span>
-                        {dictionary.blog.detailBy} {authorNames.join(', ')}
-                      </span>
-                    )}
-                  </div>
-                  <div className="space-y-3">
-                    <Link
-                      href={href}
-                      className="group inline-flex flex-col gap-3"
-                    >
-                      <span className="text-xl font-semibold text-foreground transition group-hover:text-brand-primary md:text-2xl">
-                        {post.frontmatter.title}
-                      </span>
-                      {post.frontmatter.summary && (
-                        <p className="text-sm text-muted-foreground">
-                          {post.frontmatter.summary}
-                        </p>
-                      )}
-                    </Link>
-                    {post.frontmatter.tags.length > 0 && (
-                      <ul className="flex flex-wrap gap-2 text-xs text-muted-foreground">
-                        {post.frontmatter.tags.map((tag) => (
-                          <li
-                            key={tag}
-                            className="rounded-full border border-border/60 px-3 py-1"
-                          >
-                            {tag}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                    {post.requestedLanguage !== post.sourceLanguage && (
-                      <span className="text-xs text-muted-foreground">
-                        {dictionary.blog.detailSourceLanguage}:{' '}
-                        {localeLabels[post.sourceLanguage] ??
-                          post.sourceLanguage.toUpperCase()}
-                      </span>
-                    )}
-                  </div>
-                  <div>
-                    <Link
-                      href={href}
-                      className="inline-flex items-center text-xs font-medium text-brand-primary transition hover:underline"
-                    >
-                      {dictionary.blog.homeCta}
-                    </Link>
-                  </div>
-                </div>
-              </article>
+                title={post.frontmatter.title}
+                href={href}
+                summary={summary}
+                tags={post.frontmatter.tags}
+                metaItems={metaItems}
+              />
             );
           })}
         </div>
