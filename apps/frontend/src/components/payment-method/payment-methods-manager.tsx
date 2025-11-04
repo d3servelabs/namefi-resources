@@ -29,16 +29,25 @@ import type { SetupIntent } from '@stripe/stripe-js';
 import { useMutation, useSuspenseQuery } from '@tanstack/react-query';
 import type { inferOutput } from '@trpc/tanstack-react-query';
 import { CreditCardIcon, Loader2, TrashIcon, Wallet2 } from 'lucide-react';
-import { Suspense, useCallback, useEffect, useMemo, useState } from 'react';
+import {
+  Suspense,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { toast } from 'sonner';
 import { useEnsName } from 'wagmi';
 import { useQueryState, parseAsBoolean } from 'nuqs';
 import { PaymentMethodsManagerPlaceholder } from './payment-methods-manager-placeholder';
 import { NFSCWalletCard } from '../ui/untitled/nfsc-wallet-card';
 import { useUserChainBalances } from '@/hooks/use-user-chain-balances';
-import { useLinkedWalletAddresses } from '@/hooks/use-user-wallet-addresses';
+import {
+  useLinkedWalletAddresses,
+  useLinkedWallets,
+} from '@/hooks/use-user-wallet-addresses';
 import { prop, groupBy, range } from 'ramda';
-import { useLinkedWallets } from '@/hooks/use-user-wallet-addresses';
 import type { WalletProvider } from '../ui/untitled/wallet-card';
 import { mapPrivyWalletToProvider } from '@/hooks/use-privy-wallet-card-data';
 import {
@@ -49,6 +58,18 @@ import { useRegisterAdminFlags } from '../admin/feature-flags/register';
 import type { FeatureFlagDefinition } from '@/types/feature-flags';
 import { useAdminFeatureFlag } from '../admin/feature-flags/use-flag';
 import { useWatchAssets } from '@/hooks/use-watch-assets';
+import { useActiveWallet } from '@/hooks/use-active-wallet';
+import NfscSwapDialog from '../dialogs/nfsc-swap-dialog';
+import {
+  RequestWalletConnection,
+  type RequestWalletConnectionRef,
+} from '../dialogs/request-wallet-connection';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/shadcn/tooltip';
 
 const LoadingSkeletons = () => {
   return (
@@ -380,9 +401,43 @@ function UserWalletCardsGrid(props: {}) {
     handleLinkWalletClicked,
   } = useControlLinkedWallets();
 
+  useRegisterAdminFlags(_userWalletCardsGridFlags);
+  const [separateByChain] = useAdminFeatureFlag(_userWalletCardsGridFlags[0]);
+  const [forceNfscVariant] = useAdminFeatureFlag(_userWalletCardsGridFlags[1]);
+
+  const { linkedWalletAddresses, linkedWalletsReady } =
+    useLinkedWalletAddresses();
+  const { linkedWallets } = useLinkedWallets();
+
   const [hoveredCardId, setHoveredCardId] = useState<string | null>(null);
+  const [isSwapDialogOpen, setIsSwapDialogOpen] = useState(false);
+  const [walletConnectionRequest, setWalletConnectionRequest] = useState<{
+    walletAddress: string;
+    action: 'addAssets' | 'chargeWallet';
+  } | null>(null);
+  const requestWalletConnectionRef = useRef<RequestWalletConnectionRef | null>(
+    null,
+  );
+
   const { privyUser } = useAuth();
   const { watchNfscInWallet, isAnyWalletConnected } = useWatchAssets();
+  const { switchToWallet, activeWalletAddress } = useActiveWallet();
+
+  // Request wallet connection and set pending action
+  const requestWalletConnection = useCallback(
+    (walletAddress: string, action: 'addAssets' | 'chargeWallet') => {
+      setWalletConnectionRequest({
+        walletAddress,
+        action,
+      });
+      setTimeout(() => {
+        requestWalletConnectionRef.current?.requestWalletConnection(
+          walletAddress,
+        );
+      }, 100);
+    },
+    [],
+  );
 
   const handleAddAssets = useCallback(async () => {
     try {
@@ -403,13 +458,31 @@ function UserWalletCardsGrid(props: {}) {
     }
   }, [watchNfscInWallet]);
 
-  useRegisterAdminFlags(_userWalletCardsGridFlags);
-  const [separateByChain] = useAdminFeatureFlag(_userWalletCardsGridFlags[0]);
-  const [forceNfscVariant] = useAdminFeatureFlag(_userWalletCardsGridFlags[1]);
+  const handleChargeWallet = useCallback(async (walletAddress?: string) => {
+    try {
+      setIsSwapDialogOpen(true);
+    } catch (error) {
+      toast('Failed to switch wallet', {
+        description: error instanceof Error ? error.message : 'Unknown error',
+      });
+    }
+  }, []);
 
-  const { linkedWalletAddresses, linkedWalletsReady } =
-    useLinkedWalletAddresses();
-  const { linkedWallets } = useLinkedWallets();
+  // Handle when wallet is successfully connected via modal
+  const handleWalletConnected = useCallback(
+    async (walletAddress: string) => {
+      if (!walletConnectionRequest) return;
+
+      // Execute the requested action based on what was requested
+      if (walletConnectionRequest.action === 'addAssets') {
+        await handleAddAssets();
+      } else if (walletConnectionRequest.action === 'chargeWallet') {
+        await handleChargeWallet(walletAddress);
+      }
+      setWalletConnectionRequest(null);
+    },
+    [walletConnectionRequest, handleAddAssets, handleChargeWallet],
+  );
 
   const { chainBalances, isLoadingBalance } = useUserChainBalances({
     walletAddresses: linkedWalletAddresses as `0x${string}`[],
@@ -505,6 +578,30 @@ function UserWalletCardsGrid(props: {}) {
                   provider={provider}
                   balances={balances}
                   showSingleChain={separateByChain}
+                  bottomActions={
+                    <div className="flex gap-2">
+                      <Button
+                        onClick={() =>
+                          requestWalletConnection(walletAddress, 'addAssets')
+                        }
+                        size="sm"
+                        variant="secondary"
+                        className="flex-1 text-xs"
+                      >
+                        Show in Wallet
+                      </Button>
+                      <Button
+                        onClick={() =>
+                          requestWalletConnection(walletAddress, 'chargeWallet')
+                        }
+                        size="sm"
+                        variant="secondary"
+                        className="flex-1 text-xs"
+                      >
+                        Add Funds
+                      </Button>
+                    </div>
+                  }
                 />
                 {/* Delete button overlay - positioned inside with proper z-index above glare layers */}
                 {!separateByChain && !isFirstConnectedWallet(walletAddress) ? (
@@ -553,6 +650,7 @@ function UserWalletCardsGrid(props: {}) {
     walletToUnlink,
     hoveredCardId,
     handleUnlinkWalletClicked,
+    requestWalletConnection,
   ]);
 
   if (isLoadingBalance || !linkedWalletsReady) {
@@ -563,25 +661,13 @@ function UserWalletCardsGrid(props: {}) {
     <div className="flex flex-col gap-6">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold">Linked Wallets</h2>
-        <div className="flex gap-2">
-          {isAnyWalletConnected && (
-            <NamefiButton
-              onClick={handleAddAssets}
-              className="font-bold"
-              size="sm"
-              variant="outline"
-            >
-              Show NFSC in Wallet
-            </NamefiButton>
-          )}
-          <NamefiButton
-            onClick={handleLinkWalletClicked}
-            className="font-bold"
-            size="sm"
-          >
-            Link Wallet
-          </NamefiButton>
-        </div>
+        <NamefiButton
+          onClick={handleLinkWalletClicked}
+          className="font-bold"
+          size="sm"
+        >
+          Link Wallet
+        </NamefiButton>
       </div>
       {content}
       <UnlinkWalletDialog
@@ -590,6 +676,20 @@ function UserWalletCardsGrid(props: {}) {
         walletToUnlink={walletToUnlink}
         handleUnlinkWalletConfirm={handleConfirmUnlinkWalletClicked}
         isUnlinkWalletPending={isUnlinkWalletPending}
+      />
+      <NfscSwapDialog
+        open={isSwapDialogOpen}
+        onOpenChange={setIsSwapDialogOpen}
+        walletAddress={activeWalletAddress}
+      />
+      <RequestWalletConnection
+        ref={requestWalletConnectionRef}
+        onRequestedWalletConnected={handleWalletConnected}
+        actionDescription={
+          walletConnectionRequest?.action === 'addAssets'
+            ? 'to add NFSC token to your wallet'
+            : 'to charge your wallet'
+        }
       />
     </div>
   );
