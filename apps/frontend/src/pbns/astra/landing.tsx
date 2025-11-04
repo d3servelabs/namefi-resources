@@ -523,7 +523,7 @@ const COMMUNITY_LINKS = [
     icon: Youtube,
   },
   {
-    name: 'Namefi Blog',
+    name: 'Namefi Resources',
     href: '/r',
     icon: Newspaper,
   },
