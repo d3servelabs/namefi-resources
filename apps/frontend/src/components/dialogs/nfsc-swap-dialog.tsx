@@ -15,24 +15,53 @@ import useNfscBalance from '@/hooks/use-nfsc-balance';
 import { AlertCircle, ArrowDown } from 'lucide-react';
 import { Loader2 } from 'lucide-react';
 import Image from 'next/image';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, useMemo } from 'react';
 import { toast } from 'sonner';
 import { parseEther } from 'viem';
+import { useAccount, useSwitchChain } from 'wagmi';
+import { UserWalletAvatar } from '@/components/user-avatar';
+import { AutoTruncateTextV2 } from '@/components/auto-truncate-text-v2';
+import { checksumWalletAddressSchema } from '@namefi-astra/utils';
+import { useAllowedChains } from '@/hooks/use-allowed-chains';
+import { NetworkLogo } from '@/components/network-logo';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/shadcn/select';
 
 type Props = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  walletAddress?: string;
 };
 
 const DISPLAY_DECIMALS = 2;
 const CALCULATION_DECIMALS = 6;
 
+const attemptGetChecksummedAddress = (address: string): string => {
+  const parsed = checksumWalletAddressSchema.safeParse(address);
+  return parsed.success ? parsed.data : address;
+};
+
 export default function NFSCSwapDialog(props: Props) {
-  const { open, onOpenChange } = props;
+  const { open, onOpenChange, walletAddress } = props;
+  const { address: connectedAddress, chainId } = useAccount();
+  const displayAddress = walletAddress || connectedAddress;
+  const checksummedAddress = useMemo(
+    () =>
+      displayAddress ? attemptGetChecksummedAddress(displayAddress) : null,
+    [displayAddress],
+  );
   const [amountPay, setAmountPay] = useState('');
   const [amountReceive, setAmountReceive] = useState('');
   const [insufficientBalance, setInsufficientBalance] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+
+  const { chains } = useAllowedChains();
+  const { switchChain, isPending: isSwitchingChain } = useSwitchChain();
 
   const { nfscBalance, nativeBalance, isLoading } = useNfscBalance();
   const { data: conversionRate, isLoading: isConversionRateLoading } =
@@ -94,6 +123,30 @@ export default function NFSCSwapDialog(props: Props) {
     }
   }, []);
 
+  const handleChainChange = useCallback(
+    (value: string) => {
+      const selectedChainId = Number.parseInt(value, 10);
+      if (switchChain && selectedChainId !== chainId) {
+        switchChain(
+          { chainId: selectedChainId },
+          {
+            onSuccess: () => {
+              toast.success('Network switched', {
+                description: `Switched to ${chains.find((c) => c.id === selectedChainId)?.name}`,
+              });
+            },
+            onError: (error) => {
+              toast.error('Failed to switch network', {
+                description: error.message,
+              });
+            },
+          },
+        );
+      }
+    },
+    [switchChain, chainId, chains],
+  );
+
   const handleOnExchange = async () => {
     setErrorMessage('');
 
@@ -152,10 +205,73 @@ export default function NFSCSwapDialog(props: Props) {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-md p-0 overflow-hidden bg-zinc-950 border border-zinc-800">
         <DialogHeader className="p-6 pb-4">
-          <div className="flex justify-between items-center">
+          <div className="flex flex-col gap-3">
             <DialogTitle className="text-2xl font-bold">
               Add funds to your NFSC
             </DialogTitle>
+            {checksummedAddress && (
+              <div className="flex flex-col gap-1">
+                <span className="text-xs text-gray-500 uppercase tracking-wide">
+                  Charging wallet
+                </span>
+                <div className="flex items-center gap-2 px-2 py-1.5 bg-muted rounded-xl max-w-full">
+                  <UserWalletAvatar
+                    address={checksummedAddress}
+                    className="size-6"
+                  />
+                  <div className="flex-1 min-w-0">
+                    <AutoTruncateTextV2
+                      initialCharactersCountToDisplay={16}
+                      minCharactersToDisplay={16}
+                      className="font-mono text-xs"
+                    >
+                      {checksummedAddress}
+                    </AutoTruncateTextV2>
+                  </div>
+                </div>
+              </div>
+            )}
+            <div className="flex flex-col gap-1">
+              <span className="text-xs text-gray-500 uppercase tracking-wide">
+                Network
+              </span>
+              <Select
+                value={chainId?.toString()}
+                onValueChange={handleChainChange}
+                disabled={isSwitchingChain}
+              >
+                <SelectTrigger className="bg-muted">
+                  <SelectValue>
+                    {isSwitchingChain ? (
+                      <div className="flex items-center gap-2">
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        <span>Switching...</span>
+                      </div>
+                    ) : chainId ? (
+                      <div className="flex items-center gap-2">
+                        <NetworkLogo network={chainId} className="w-5 h-5" />
+                        <span>
+                          {chains.find((c) => c.id === chainId)?.name ||
+                            'Unknown'}
+                        </span>
+                      </div>
+                    ) : (
+                      'Select network'
+                    )}
+                  </SelectValue>
+                </SelectTrigger>
+                <SelectContent>
+                  {chains.map((chain) => (
+                    <SelectItem key={chain.id} value={chain.id.toString()}>
+                      <div className="flex items-center gap-2">
+                        <NetworkLogo network={chain.id} className="w-5 h-5" />
+                        <span>{chain.name}</span>
+                      </div>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
           </div>
         </DialogHeader>
 

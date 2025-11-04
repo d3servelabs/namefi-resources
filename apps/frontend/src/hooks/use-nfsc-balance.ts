@@ -16,7 +16,7 @@ export default function useNFSCBalance() {
   const {
     data: nfscBalance,
     isLoading: isNfscLoading,
-    refetch: refetchNfcsBalance,
+    refetch: refetchNfscBalance,
   } = useBalance({
     query: {
       enabled: !!address,
@@ -26,14 +26,14 @@ export default function useNFSCBalance() {
     chainId,
   });
 
-  const refecthBalances = async () => {
-    await Promise.all([refetchNativeBalance(), refetchNfcsBalance()]);
+  const refetchBalances = async () => {
+    await Promise.all([refetchNativeBalance(), refetchNfscBalance()]);
   };
 
   return {
     nfscBalance,
     nativeBalance: balance,
     isLoading: isNativeLoading || isNfscLoading,
-    refetch: refecthBalances,
+    refetch: refetchBalances,
   };
 }
