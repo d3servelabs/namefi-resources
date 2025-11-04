@@ -21,6 +21,7 @@ interface NFSCWalletCardProps
   isLoadingBalance?: boolean;
   onBalanceClick?: () => void;
   showSingleChain?: boolean;
+  bottomActions?: React.ReactNode;
 }
 
 function formatBalanceInUsdCents(balanceInUsdCents: number): string {
@@ -61,6 +62,7 @@ export function NFSCWalletCard({
   className,
   onBalanceClick,
   showSingleChain = false,
+  bottomActions,
 }: NFSCWalletCardProps) {
   const [showBalanceModal, setShowBalanceModal] = useState(false);
   const { chains } = useAllowedChains();
@@ -117,43 +119,47 @@ export function NFSCWalletCard({
   const singleChainBalance = showSingleChain ? balances[0] : null;
 
   const bottomContent = (
-    <button
-      type="button"
-      onClick={handleBalanceClick}
-      className={cn(
-        'w-full bg-black/20 backdrop-blur-sm rounded-lg p-3 transition-colors border border-white/10',
-        !showSingleChain && 'hover:bg-black/30 cursor-pointer',
-      )}
-      disabled={showSingleChain}
-    >
-      <div className="flex justify-between items-center">
-        <div className="text-left flex items-center gap-3">
-          {showSingleChain && singleChainBalance && (
-            <NetworkLogo
-              network={singleChainBalance.chainId}
-              className="w-6 h-6"
-            />
-          )}
-          <div>
-            <div className="text-xs opacity-70 uppercase tracking-wider">
-              {showSingleChain && singleChainBalance
-                ? `${singleChainBalance.chainName} Balance`
-                : 'NFSC Balance'}
-            </div>
-            <div className="text-lg font-semibold font-mono">
-              {isLoadingBalance ? (
-                <Skeleton className="h-6 w-24 bg-white/20" />
-              ) : (
-                `$${formatBalanceInUsdCents(currentWalletTotal)}`
-              )}
+    <div className="w-full bg-black/20 backdrop-blur-sm rounded-lg p-3 border border-white/10 space-y-2">
+      <button
+        type="button"
+        onClick={handleBalanceClick}
+        className={cn(
+          'w-full transition-colors rounded-md',
+          !showSingleChain && 'hover:bg-white/10 cursor-pointer p-1 -m-1',
+        )}
+        disabled={showSingleChain}
+      >
+        <div className="flex justify-between items-center">
+          <div className="text-left flex items-center gap-3">
+            {showSingleChain && singleChainBalance && (
+              <NetworkLogo
+                network={singleChainBalance.chainId}
+                className="w-6 h-6"
+              />
+            )}
+            <div>
+              <div className="text-xs opacity-70 uppercase tracking-wider">
+                {showSingleChain && singleChainBalance
+                  ? `${singleChainBalance.chainName} Balance`
+                  : 'NFSC Balance'}
+              </div>
+              <div className="text-lg font-semibold font-mono">
+                {isLoadingBalance ? (
+                  <Skeleton className="h-6 w-24 bg-white/20" />
+                ) : (
+                  `$${formatBalanceInUsdCents(currentWalletTotal)}`
+                )}
+              </div>
             </div>
           </div>
+          {!showSingleChain && (
+            <div className="text-xs opacity-70">Click for details →</div>
+          )}
         </div>
-        {!showSingleChain && (
-          <div className="text-xs opacity-70">Click for details →</div>
-        )}
-      </div>
-    </button>
+      </button>
+
+      {bottomActions && <div className="pt-2">{bottomActions}</div>}
+    </div>
   );
 
   return (
