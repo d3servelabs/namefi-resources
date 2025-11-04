@@ -5,6 +5,7 @@
   "nav": {
     "resources": "资源",
     "blog": "博客",
+    "glossary": "术语表",
     "tld": "TLD 指南",
     "partners": "合作伙伴"
   },
@@ -17,6 +18,13 @@
     "detailBy": "作者",
     "detailAuthorsHeading": "关于作者",
     "detailSourceLanguage": "原始语言"
+  },
+  "glossary": {
+    "indexEmpty": "该语言暂时没有术语条目，敬请期待。",
+    "detailBack": "返回所有术语",
+    "detailKeywordsHeading": "相关关键词",
+    "indexTitle": "Namefi 术语表",
+    "indexDescription": "了解 Namefi 生态中的关键概念定义。"
   },
   "tld": {
     "indexEmpty": "此语言暂时没有 TLD 指南，敬请期待。",

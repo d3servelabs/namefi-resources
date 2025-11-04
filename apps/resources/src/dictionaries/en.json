@@ -5,6 +5,7 @@
   "nav": {
     "resources": "Resources",
     "blog": "Blog",
+    "glossary": "Glossary",
     "tld": "TLDs",
     "partners": "Partners"
   },
@@ -17,6 +18,13 @@
     "detailBy": "By",
     "detailAuthorsHeading": "About the author(s)",
     "detailSourceLanguage": "Original language"
+  },
+  "glossary": {
+    "indexEmpty": "No glossary entries are available in this language yet. Check back soon.",
+    "detailBack": "Back to all glossary terms",
+    "detailKeywordsHeading": "Related keywords",
+    "indexTitle": "Namefi Glossary",
+    "indexDescription": "Explore definitions for the key concepts powering the Namefi ecosystem."
   },
   "tld": {
     "indexEmpty": "No TLD guides are available in this language yet. Check back soon.",

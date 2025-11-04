@@ -1,9 +1,13 @@
 import type { MetadataRoute } from 'next';
 import { i18n, type Locale } from '@/i18n-config';
 import {
+  getAvailableLocalesForGlossary,
   getAvailableLocalesForPartner,
   getAvailableLocalesForSlug,
   getAvailableLocalesForTld,
+  getGlossaryCached,
+  getGlossaryEntriesForLocale,
+  getGlossaryParams,
   getPartnerCached,
   getPartnerParams,
   getPartnersForLocale,
@@ -78,6 +82,11 @@ function buildLocaleIndexEntries(
     i18n.locales,
     (locale) => `/r/${locale}/blog`,
   );
+  const glossaryAlternates = createLanguageAlternates(
+    baseUrl,
+    i18n.locales,
+    (locale) => `/r/${locale}/glossary`,
+  );
   const partnersAlternates = createLanguageAlternates(
     baseUrl,
     i18n.locales,
@@ -91,15 +100,19 @@ function buildLocaleIndexEntries(
 
   return locales.flatMap((locale) => {
     const posts = getPostsForLocale(locale);
+    const glossaryEntries = getGlossaryEntriesForLocale(locale);
     const partners = getPartnersForLocale(locale);
     const tlds = getTldsForLocale(locale);
 
     const homeLastModified = latestDate([
       posts[0]?.publishedAt,
+      glossaryEntries[0]?.publishedAt,
       partners[0]?.publishedAt,
       tlds[0]?.publishedAt,
     ]);
     const blogLastModified = posts[0]?.publishedAt ?? homeLastModified;
+    const glossaryLastModified =
+      glossaryEntries[0]?.publishedAt ?? homeLastModified;
     const partnersLastModified = partners[0]?.publishedAt;
     const tldLastModified = tlds[0]?.publishedAt;
 
@@ -117,6 +130,13 @@ function buildLocaleIndexEntries(
         priority: 0.8,
         lastModified: blogLastModified,
         alternates: blogAlternates,
+      }),
+      createEntry({
+        url: toAbsoluteUrl(baseUrl, `/r/${locale}/glossary`),
+        changeFrequency: 'monthly',
+        priority: 0.75,
+        lastModified: glossaryLastModified,
+        alternates: glossaryAlternates,
       }),
       createEntry({
         url: toAbsoluteUrl(baseUrl, `/r/${locale}/partners`),
@@ -183,6 +203,17 @@ export function buildSitemapEntries(
       getEntry: getPostCached,
       getLocales: getAvailableLocalesForSlug,
       pathBuilder: (lang, slug) => `/r/${lang}/blog/${slug}`,
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    }),
+  );
+
+  entries.push(
+    ...buildCollectionEntries(baseUrl, {
+      params: getGlossaryParams().filter(({ lang }) => localeSet.has(lang)),
+      getEntry: getGlossaryCached,
+      getLocales: getAvailableLocalesForGlossary,
+      pathBuilder: (lang, slug) => `/r/${lang}/glossary/${slug}`,
       changeFrequency: 'monthly',
       priority: 0.6,
     }),

@@ -7,7 +7,7 @@ import matter from 'gray-matter';
 import { cache } from 'react';
 import { i18n, type Locale } from '@/i18n-config';
 
-type Collection = 'blog' | 'authors' | 'tld' | 'partners';
+type Collection = 'blog' | 'authors' | 'tld' | 'partners' | 'glossary';
 
 type PostFrontmatter = {
   title: string;
@@ -88,21 +88,45 @@ type PartnerEntry = {
   publishedAt: Date;
 };
 
+type GlossaryFrontmatter = {
+  title: string;
+  summary?: string;
+  description?: string;
+  tags: string[];
+  authors: string[];
+  date: string;
+  draft: boolean;
+  language: Locale;
+  keywords: string[];
+};
+
+type GlossaryEntry = {
+  slug: string;
+  frontmatter: GlossaryFrontmatter;
+  sourceLanguage: Locale;
+  requestedLanguage: Locale;
+  relativePath: string;
+  publishedAt: Date;
+};
+
 const DATA_ROOT = path.join(process.cwd(), 'data');
 const BLOG_ROOT = path.join(DATA_ROOT, 'blog');
 const AUTHOR_ROOT = path.join(DATA_ROOT, 'authors');
 const TLD_ROOT = path.join(DATA_ROOT, 'tld');
 const PARTNER_ROOT = path.join(DATA_ROOT, 'partners');
+const GLOSSARY_ROOT = path.join(DATA_ROOT, 'glossary');
 
 const postDirectoryCache = new Map<string, string[]>();
 const authorDirectoryCache = new Map<string, string[]>();
 const tldDirectoryCache = new Map<string, string[]>();
 const partnerDirectoryCache = new Map<string, string[]>();
+const glossaryDirectoryCache = new Map<string, string[]>();
 
 const postEntryCache = new Map<string, PostEntry | undefined>();
 const authorEntryCache = new Map<string, AuthorEntry | undefined>();
 const tldEntryCache = new Map<string, TldEntry | undefined>();
 const partnerEntryCache = new Map<string, PartnerEntry | undefined>();
+const glossaryEntryCache = new Map<string, GlossaryEntry | undefined>();
 
 const isProduction = process.env.NODE_ENV === 'production';
 const MARKDOWN_EXTENSION = /\.(md|mdx)$/;
@@ -118,6 +142,8 @@ function getCacheForCollection(collection: Collection) {
       return tldDirectoryCache;
     case 'partners':
       return partnerDirectoryCache;
+    case 'glossary':
+      return glossaryDirectoryCache;
     default:
       return postDirectoryCache;
   }
@@ -133,6 +159,8 @@ function getRootForCollection(collection: Collection) {
       return TLD_ROOT;
     case 'partners':
       return PARTNER_ROOT;
+    case 'glossary':
+      return GLOSSARY_ROOT;
     default:
       return BLOG_ROOT;
   }
@@ -382,6 +410,56 @@ function normalisePartnerFrontmatter(
   };
 }
 
+function normaliseGlossaryFrontmatter(
+  data: Record<string, unknown>,
+  slug: string,
+  sourceLanguage: Locale,
+): GlossaryFrontmatter {
+  if (typeof data.title !== 'string' || data.title.trim().length === 0) {
+    throw new Error(
+      `Glossary term "${slug}" is missing a valid "title" field.`,
+    );
+  }
+
+  const rawDate =
+    typeof data.date === 'string'
+      ? data.date
+      : data.date instanceof Date
+        ? data.date.toISOString()
+        : undefined;
+
+  if (!rawDate) {
+    throw new Error(`Glossary term "${slug}" is missing a valid "date" field.`);
+  }
+
+  const tags = toStringArray(data.tags);
+  const authors = toStringArray(data.authors);
+  const keywords = toStringArray(data.keywords);
+
+  const language = ensureLocale(data.language, sourceLanguage);
+  const description =
+    typeof data.description === 'string' && data.description.trim().length > 0
+      ? data.description.trim()
+      : undefined;
+  const summary =
+    typeof data.summary === 'string' && data.summary.trim().length > 0
+      ? data.summary.trim()
+      : description;
+  const draftValue = toBoolean(data.draft);
+
+  return {
+    title: data.title,
+    summary,
+    description,
+    tags,
+    authors,
+    date: rawDate,
+    draft: draftValue,
+    language,
+    keywords,
+  };
+}
+
 function resolvePostFilePath(locale: Locale, slug: string): string | undefined {
   for (const extension of POST_EXTENSIONS) {
     const candidate = path.join(BLOG_ROOT, locale, `${slug}${extension}`);
@@ -525,6 +603,49 @@ function parseAuthorEntry({
   };
 }
 
+function resolveGlossaryFilePath(
+  locale: Locale,
+  slug: string,
+): string | undefined {
+  for (const extension of POST_EXTENSIONS) {
+    const candidate = path.join(GLOSSARY_ROOT, locale, `${slug}${extension}`);
+    if (fs.existsSync(candidate)) {
+      return candidate;
+    }
+  }
+  return undefined;
+}
+
+function parseGlossaryEntry({
+  slug,
+  locale,
+  filePath,
+}: {
+  slug: string;
+  locale: Locale;
+  filePath: string;
+}): GlossaryEntry {
+  const fileContents = fs.readFileSync(filePath, 'utf8');
+  const parsed = matter(fileContents);
+  const frontmatter = normaliseGlossaryFrontmatter(parsed.data, slug, locale);
+  const publishedAt = new Date(frontmatter.date);
+
+  if (Number.isNaN(publishedAt.getTime())) {
+    throw new Error(
+      `Glossary term "${slug}" has an invalid "date": ${frontmatter.date}`,
+    );
+  }
+
+  return {
+    slug,
+    frontmatter,
+    sourceLanguage: locale,
+    requestedLanguage: locale,
+    relativePath: toRelativeDataPath(filePath),
+    publishedAt,
+  };
+}
+
 function loadPostEntry(locale: Locale, slug: string): PostEntry | undefined {
   const cacheKey = `${locale}:${slug}`;
   if (postEntryCache.has(cacheKey)) {
@@ -647,6 +768,38 @@ function loadPartnerEntry(
   return undefined;
 }
 
+function loadGlossaryEntry(
+  locale: Locale,
+  slug: string,
+): GlossaryEntry | undefined {
+  const cacheKey = `${locale}:${slug}`;
+  if (glossaryEntryCache.has(cacheKey)) {
+    return glossaryEntryCache.get(cacheKey);
+  }
+
+  const filePath = resolveGlossaryFilePath(locale, slug);
+  if (filePath) {
+    const entry = parseGlossaryEntry({ slug, locale, filePath });
+    glossaryEntryCache.set(cacheKey, entry);
+    return entry;
+  }
+
+  if (locale !== i18n.defaultLocale) {
+    const fallback = loadGlossaryEntry(i18n.defaultLocale, slug);
+    if (fallback) {
+      const derived: GlossaryEntry = {
+        ...fallback,
+        requestedLanguage: locale,
+      };
+      glossaryEntryCache.set(cacheKey, derived);
+      return derived;
+    }
+  }
+
+  glossaryEntryCache.set(cacheKey, undefined);
+  return undefined;
+}
+
 function getAllPostSlugs(): Set<string> {
   const slugs = new Set<string>();
   for (const locale of i18n.locales) {
@@ -721,6 +874,76 @@ export function getAvailableLocalesForSlug(slug: string): Locale[] {
   const locales: Locale[] = [];
   for (const locale of i18n.locales) {
     if (loadPostEntry(locale, slug)) {
+      locales.push(locale);
+    }
+  }
+  return locales;
+}
+
+function getAllGlossarySlugs(): Set<string> {
+  const slugs = new Set<string>();
+  for (const locale of i18n.locales) {
+    for (const slug of listSlugs('glossary', locale)) {
+      slugs.add(slug);
+    }
+  }
+  return slugs;
+}
+
+function isGlossaryDraft(entry: GlossaryEntry) {
+  return entry.frontmatter.draft;
+}
+
+export function getGlossaryParams(): Array<{ lang: Locale; slug: string }> {
+  const params: Array<{ lang: Locale; slug: string }> = [];
+  const slugs = getAllGlossarySlugs();
+
+  for (const locale of i18n.locales) {
+    for (const slug of slugs) {
+      const entry = loadGlossaryEntry(locale, slug);
+      if (!entry) continue;
+      if (isProduction && isGlossaryDraft(entry)) continue;
+      params.push({ lang: locale, slug: entry.slug });
+    }
+  }
+
+  return params;
+}
+
+export function getGlossaryEntriesForLocale(locale: Locale): GlossaryEntry[] {
+  const slugs = getAllGlossarySlugs();
+  const entries: GlossaryEntry[] = [];
+
+  for (const slug of slugs) {
+    const entry = loadGlossaryEntry(locale, slug);
+    if (!entry) continue;
+    if (isProduction && isGlossaryDraft(entry)) continue;
+    entries.push(entry);
+  }
+
+  return entries.sort(
+    (a, b) => b.publishedAt.getTime() - a.publishedAt.getTime(),
+  );
+}
+
+export function getGlossaryEntry(
+  locale: Locale,
+  slug: string,
+): GlossaryEntry | undefined {
+  const entry = loadGlossaryEntry(locale, slug);
+  if (!entry) return undefined;
+  if (isProduction && isGlossaryDraft(entry)) return undefined;
+  return entry;
+}
+
+export const getGlossaryCached = cache((locale: Locale, slug: string) =>
+  getGlossaryEntry(locale, slug),
+);
+
+export function getAvailableLocalesForGlossary(slug: string): Locale[] {
+  const locales: Locale[] = [];
+  for (const locale of i18n.locales) {
+    if (loadGlossaryEntry(locale, slug)) {
       locales.push(locale);
     }
   }
@@ -873,4 +1096,6 @@ export type {
   TldFrontmatter,
   PartnerEntry,
   PartnerFrontmatter,
+  GlossaryEntry,
+  GlossaryFrontmatter,
 };
