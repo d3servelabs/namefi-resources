@@ -5,6 +5,7 @@
   "nav": {
     "resources": "Ressourcen",
     "blog": "Blog",
+    "glossary": "Glossar",
     "tld": "TLDs",
     "partners": "Partner"
   },
@@ -17,6 +18,13 @@
     "detailBy": "Von",
     "detailAuthorsHeading": "Über die Autor*innen",
     "detailSourceLanguage": "Originalsprache"
+  },
+  "glossary": {
+    "indexEmpty": "Für diese Sprache sind noch keine Glossar-Einträge verfügbar. Schau bald wieder vorbei.",
+    "detailBack": "Zurück zu allen Begriffen",
+    "detailKeywordsHeading": "Verwandte Schlüsselbegriffe",
+    "indexTitle": "Namefi Glossar",
+    "indexDescription": "Entdecke Definitionen der wichtigsten Konzepte im Namefi-Ökosystem."
   },
   "tld": {
     "indexEmpty": "Für diese Sprache sind noch keine TLD-Leitfäden verfügbar. Schau bald wieder vorbei.",

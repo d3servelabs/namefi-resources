@@ -5,6 +5,7 @@
   "nav": {
     "resources": "संसाधन",
     "blog": "ब्लॉग",
+    "glossary": "शब्दावली",
     "tld": "टीएलडी",
     "partners": "साझेदार"
   },
@@ -17,6 +18,13 @@
     "detailBy": "द्वारा",
     "detailAuthorsHeading": "लेखक के बारे में",
     "detailSourceLanguage": "मूल भाषा"
+  },
+  "glossary": {
+    "indexEmpty": "इस भाषा में अभी कोई शब्दावली प्रविष्टियाँ उपलब्ध नहीं हैं। जल्द ही वापस देखें।",
+    "detailBack": "सभी शब्दों पर वापस जाएँ",
+    "detailKeywordsHeading": "संबंधित कीवर्ड",
+    "indexTitle": "Namefi शब्दावली",
+    "indexDescription": "Namefi पारिस्थितिकी तंत्र में उपयोग होने वाले मुख्य अवधारणाओं की परिभाषाएँ पढ़ें।"
   },
   "tld": {
     "indexEmpty": "इस भाषा में अभी कोई TLD मार्गदर्शिका उपलब्ध नहीं है। जल्द ही वापस देखें।",

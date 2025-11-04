@@ -5,6 +5,7 @@
   "nav": {
     "resources": "الموارد",
     "blog": "المدونة",
+    "glossary": "مسرد المصطلحات",
     "tld": "نطاقات TLD",
     "partners": "الشركاء"
   },
@@ -17,6 +18,13 @@
     "detailBy": "بقلم",
     "detailAuthorsHeading": "عن الكاتب/الكاتبة",
     "detailSourceLanguage": "اللغة الأصلية"
+  },
+  "glossary": {
+    "indexEmpty": "لا توجد مصطلحات متاحة بهذه اللغة بعد. عد لاحقًا.",
+    "detailBack": "العودة إلى جميع المصطلحات",
+    "detailKeywordsHeading": "الكلمات المفتاحية ذات الصلة",
+    "indexTitle": "مسرد Namefi للمصطلحات",
+    "indexDescription": "استكشف تعريفات المفاهيم الأساسية في نظام Namefi البيئي."
   },
   "tld": {
     "indexEmpty": "لا توجد أدلة TLD متاحة بهذه اللغة بعد. عد لاحقًا.",
