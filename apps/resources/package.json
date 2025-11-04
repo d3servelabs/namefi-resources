@@ -29,6 +29,7 @@
     "react": "19.2.0",
     "react-dom": "19.2.0",
     "remark-frontmatter": "^5.0.0",
+    "remark-gfm": "^4.0.1",
     "remark-mdx-frontmatter": "^2.1.1",
     "rss": "^1.2.2",
     "server-only": "^0.0.1",

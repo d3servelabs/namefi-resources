@@ -6,7 +6,8 @@ const withMDX = createMdx({
   options: {
     remarkPlugins: [
       'remark-frontmatter',
-      ['remark-mdx-frontmatter', { name: 'frontmatter' }],
+      'remark-mdx-frontmatter',
+      'remark-gfm',
     ],
   },
 });
