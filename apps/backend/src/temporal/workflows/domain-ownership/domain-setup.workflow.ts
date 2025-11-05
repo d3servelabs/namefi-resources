@@ -42,7 +42,6 @@ export async function domainSetupWorkflow(
           },
         ],
         workflowId: `reset-nameservers-${input.normalizedDomainName}`,
-        workflowIdConflictPolicy: 'USE_EXISTING',
         workflowIdReusePolicy: 'ALLOW_DUPLICATE',
       });
     } else if (levels.length === 3) {

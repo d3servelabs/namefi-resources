@@ -62,7 +62,6 @@ export async function processOrderItemWorkflow(
         taskQueue: TEMPORAL_QUEUES.DOMAINS,
         workflowId: extendDomainRegistrationWorkflow.generateId(workflowInput),
         workflowIdReusePolicy: 'ALLOW_DUPLICATE',
-        workflowIdConflictPolicy: 'FAIL',
         parentClosePolicy: 'REQUEST_CANCEL',
       });
     } else {
@@ -83,7 +82,6 @@ export async function processOrderItemWorkflow(
         taskQueue: TEMPORAL_QUEUES.DOMAINS,
         workflowId: acquireDomainWorkflow.generateId(workflowInput),
         workflowIdReusePolicy: 'ALLOW_DUPLICATE',
-        workflowIdConflictPolicy: 'FAIL',
         parentClosePolicy: 'REQUEST_CANCEL',
       });
 

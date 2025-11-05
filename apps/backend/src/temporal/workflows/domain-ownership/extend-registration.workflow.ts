@@ -179,7 +179,6 @@ export async function extendDomainRegistrationWorkflow({
         maximumAttempts: 2,
       },
       workflowIdReusePolicy: 'ALLOW_DUPLICATE',
-      workflowIdConflictPolicy: 'FAIL',
       parentClosePolicy: 'REQUEST_CANCEL',
     });
 

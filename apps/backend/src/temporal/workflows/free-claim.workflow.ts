@@ -220,7 +220,6 @@ export async function processFreeClaimWorkflow(
       taskQueue: TEMPORAL_QUEUES.DOMAINS,
       workflowId: acquireDomainWorkflow.generateId(acquireDomainInput),
       workflowIdReusePolicy: 'ALLOW_DUPLICATE',
-      workflowIdConflictPolicy: 'FAIL',
       parentClosePolicy: 'REQUEST_CANCEL',
     });
 

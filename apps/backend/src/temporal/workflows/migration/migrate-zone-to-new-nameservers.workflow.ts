@@ -117,7 +117,6 @@ export const migrateZoneToNewNameserversWorkflow = async (args: {
       taskQueue: TEMPORAL_QUEUES.DOMAINS,
       workflowId: `reset-nameservers-${args.zoneName}`,
       parentClosePolicy: 'ABANDON',
-      workflowIdConflictPolicy: 'USE_EXISTING',
       workflowIdReusePolicy: 'ALLOW_DUPLICATE',
     });
   }
@@ -188,7 +187,6 @@ export async function migrateAllZonesToNewNameserversWorkflow() {
             taskQueue: TEMPORAL_QUEUES.DOMAINS,
             parentClosePolicy: 'ABANDON',
             workflowId: `migrate-zone-to-new-nameservers-${domain.domainName}`,
-            workflowIdConflictPolicy: 'USE_EXISTING',
             workflowIdReusePolicy: 'ALLOW_DUPLICATE',
           });
           return {

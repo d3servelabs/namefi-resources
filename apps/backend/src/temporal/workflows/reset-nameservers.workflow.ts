@@ -1,8 +1,5 @@
 import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
-import {
-  WorkflowIdConflictPolicy,
-  WorkflowIdReusePolicy,
-} from '@temporalio/common';
+import { WorkflowIdReusePolicy } from '@temporalio/common';
 import * as workflow from '@temporalio/workflow';
 import { TEMPORAL_ENUMS, TEMPORAL_QUEUES, shortRunningOpts } from '../shared';
 import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';
@@ -48,7 +45,6 @@ export async function resetNameserversWorkflow({
       taskQueue: TEMPORAL_QUEUES.DOMAINS,
       workflowId: `enable-dnssec-${domainName}`,
       workflowIdReusePolicy: WorkflowIdReusePolicy.ALLOW_DUPLICATE,
-      workflowIdConflictPolicy: WorkflowIdConflictPolicy.FAIL,
       args: [
         {
           domainName,

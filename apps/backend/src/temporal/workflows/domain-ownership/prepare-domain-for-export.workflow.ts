@@ -85,7 +85,6 @@ export async function prepareDomainForExportWorkflow({
         args: [{ chainId, domainName }],
         taskQueue: TEMPORAL_QUEUES.MINT,
         workflowId: lockNamefiNftByName.generateId({ chainId, domainName }),
-        workflowIdConflictPolicy: 'USE_EXISTING',
         workflowIdReusePolicy: 'ALLOW_DUPLICATE',
       });
     }

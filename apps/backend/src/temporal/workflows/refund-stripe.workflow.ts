@@ -65,7 +65,6 @@ export async function refundStripeWorkflow({
           },
         ],
         workflowId: `monitor-stripe-refund-status-${stripeRefund.id}`,
-        workflowIdConflictPolicy: 'USE_EXISTING',
         workflowRunTimeout: '31 days',
       },
     );

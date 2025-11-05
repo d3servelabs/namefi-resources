@@ -502,7 +502,6 @@ export async function processOrderWorkflow(
             maximumAttempts: 1,
           },
           workflowIdReusePolicy: 'ALLOW_DUPLICATE_FAILED_ONLY',
-          workflowIdConflictPolicy: 'USE_EXISTING',
           parentClosePolicy: 'REQUEST_CANCEL',
         })
         .then(() => {
@@ -650,7 +649,6 @@ export async function processOrderWorkflow(
           taskQueue: TEMPORAL_QUEUES.DEFAULT,
           retry: { maximumAttempts: 1 },
           workflowIdReusePolicy: 'ALLOW_DUPLICATE_FAILED_ONLY',
-          workflowIdConflictPolicy: 'USE_EXISTING',
           parentClosePolicy: 'REQUEST_CANCEL',
         });
         updateRefund({

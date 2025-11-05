@@ -98,7 +98,6 @@ export async function dailyDomainsUpcomingRenewalsWorkflow({
           {
             args: [userId, domainsUpForRenewalGroupedByOwner[userId], dryRun],
             workflowId: `notify-and-renew-domains-${new Date().toISOString()}-${userId}`,
-            workflowIdConflictPolicy: 'USE_EXISTING',
             workflowIdReusePolicy: 'ALLOW_DUPLICATE',
             parentClosePolicy: 'ABANDON',
           },
@@ -533,7 +532,6 @@ export async function notifyAndRenewDomainsForSingleUserWorkflow(
               userId,
             }),
             workflowIdReusePolicy: 'ALLOW_DUPLICATE',
-            workflowIdConflictPolicy: 'FAIL',
             parentClosePolicy: 'REQUEST_CANCEL',
           },
         );
