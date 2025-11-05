@@ -1,4 +1,4 @@
-import { Experimental_Agent as Agent } from 'ai';
+import { ToolLoopAgent } from 'ai';
 import type { LanguageModelUsage } from 'ai';
 import { createOpenAI } from '@ai-sdk/openai';
 import { createGoogleGenerativeAI } from '@ai-sdk/google';
@@ -46,9 +46,9 @@ type ImageGenerationResult = {
   tokenUsage?: LanguageModelUsage;
 };
 
-const openaiPosterAgent = new Agent({
+const openaiPosterAgent = new ToolLoopAgent({
   model: openai('gpt-4.1'),
-  system: resolveImageSystemPrompt('gpt-image-1', 'marketing'),
+  instructions: resolveImageSystemPrompt('gpt-image-1', 'marketing'),
   tools: {
     [imageGenerationTool]: openai.tools.imageGeneration(
       OPENAI_TOOL_CONFIGS.poster,
@@ -57,9 +57,9 @@ const openaiPosterAgent = new Agent({
   toolChoice: { type: 'tool', toolName: imageGenerationTool },
 });
 
-const openaiLogoAgent = new Agent({
+const openaiLogoAgent = new ToolLoopAgent({
   model: openai('gpt-4.1'),
-  system: resolveImageSystemPrompt('gpt-image-1', 'logo'),
+  instructions: resolveImageSystemPrompt('gpt-image-1', 'logo'),
   tools: {
     [imageGenerationTool]: openai.tools.imageGeneration(
       OPENAI_TOOL_CONFIGS.logo,
@@ -72,14 +72,14 @@ function getOpenAiAgent(task: ImageTask) {
   return task === 'logo' ? openaiLogoAgent : openaiPosterAgent;
 }
 
-const geminiPosterAgent = new Agent({
+const geminiPosterAgent = new ToolLoopAgent({
   model: google('gemini-2.5-flash-image'),
-  system: resolveImageSystemPrompt('gemini-2.5-flash-image', 'marketing'),
+  instructions: resolveImageSystemPrompt('gemini-2.5-flash-image', 'marketing'),
 });
 
-const geminiLogoAgent = new Agent({
+const geminiLogoAgent = new ToolLoopAgent({
   model: google('gemini-2.5-flash-image'),
-  system: resolveImageSystemPrompt('gemini-2.5-flash-image', 'logo'),
+  instructions: resolveImageSystemPrompt('gemini-2.5-flash-image', 'logo'),
 });
 
 function getGeminiAgent(task: ImageTask) {

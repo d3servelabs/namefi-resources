@@ -1,4 +1,4 @@
-import { Experimental_Agent as Agent, Output } from 'ai';
+import { ToolLoopAgent, Output } from 'ai';
 import type { LanguageModelUsage } from 'ai';
 import { openai } from '@ai-sdk/openai';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
@@ -30,9 +30,9 @@ const logoStyleInstructions = Object.values(LOGO_STYLES)
   .map((style) => `- ${style.id} → ${style.name}: ${style.description}`)
   .join('\n');
 
-const logoStrategistAgent = new Agent({
+const logoStrategistAgent = new ToolLoopAgent({
   model: openai('gpt-5'),
-  system: `${logoGenerationSystemPrompt}
+  instructions: `${logoGenerationSystemPrompt}
 
 STRICT JSON OUTPUT RULES:
 - Return only JSON matching the supplied schema.
@@ -43,7 +43,7 @@ ${logoTypeInstructions}
 
 AVAILABLE LOGO STYLES (use the id on the left):
 ${logoStyleInstructions}`,
-  experimental_output: Output.object({ schema: logoConceptSchema }),
+  output: Output.object({ schema: logoConceptSchema }),
 });
 
 function createCollateralSystemPrompt(available: string) {
@@ -93,7 +93,7 @@ export async function generateLogoStrategy(
   });
 
   return {
-    object: result.experimental_output,
+    object: result.output,
     totalUsage: result.totalUsage,
     modelId: result.response?.modelId,
   };
@@ -115,10 +115,10 @@ export async function generatePosterStrategy(
       ? input.collateralType
       : 'billboard, apparel, vehicle, product';
 
-  const posterStrategistAgent = new Agent({
+  const posterStrategistAgent = new ToolLoopAgent({
     model: openai('gpt-5'),
-    system: createCollateralSystemPrompt(allowedCollateralTypes),
-    experimental_output: Output.object({ schema: collateralAnalysisSchema }),
+    instructions: createCollateralSystemPrompt(allowedCollateralTypes),
+    output: Output.object({ schema: collateralAnalysisSchema }),
   });
 
   const result = await posterStrategistAgent.generate({
@@ -130,7 +130,7 @@ Allowed types (if constrained): ${allowedCollateralTypes}
   });
 
   return {
-    object: result.experimental_output,
+    object: result.output,
     totalUsage: result.totalUsage,
     modelId: result.response?.modelId,
   };
