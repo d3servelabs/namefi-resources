@@ -1,12 +1,15 @@
+import { GoogleAnalyticsCookieConsentGated } from '@/components/ga';
 import type { PropsWithChildren } from 'react';
 import { CookieConsentProvider } from './cookie-consent';
-import { GoogleAnalyticsCookieConsentGated } from '@/components/ga';
+import { ProgressProvider } from './progress';
 
 export function Providers({ children }: PropsWithChildren) {
   return (
-    <CookieConsentProvider>
-      <GoogleAnalyticsCookieConsentGated />
-      {children}
-    </CookieConsentProvider>
+    <ProgressProvider>
+      <CookieConsentProvider>
+        <GoogleAnalyticsCookieConsentGated />
+        {children}
+      </CookieConsentProvider>
+    </ProgressProvider>
   );
 }

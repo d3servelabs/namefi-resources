@@ -11,6 +11,7 @@
     "authors:sync": "bun scripts/sync-authors.ts"
   },
   "dependencies": {
+    "@bprogress/next": "^3.2.12",
     "@formatjs/intl-localematcher": "^0.5.4",
     "@mdx-js/loader": "^3.1.1",
     "@mdx-js/react": "^3.1.1",
