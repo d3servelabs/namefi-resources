@@ -8,6 +8,8 @@ const withMDX = createMdx({
       'remark-frontmatter',
       'remark-mdx-frontmatter',
       'remark-gfm',
+      'remark-reading-time',
+      'remark-reading-time/mdx',
     ],
   },
 });

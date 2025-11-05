@@ -9,6 +9,7 @@ import {
   ResourceIndexEmptyState,
 } from '@/components/resource-index-card';
 import { createResourceMetaItems } from '@/lib/resource-meta-items';
+import { loadMdxReadingTime } from '@/lib/load-mdx-module';
 
 const TRAILING_SLASH_REGEX = /\/$/;
 
@@ -88,6 +89,12 @@ export default async function BlogIndex({
   const locale = lang as Locale;
   const dictionary = await getDictionary(locale);
   const posts = getPostsForLocale(locale);
+  const postsWithReadingTime = await Promise.all(
+    posts.map(async (post) => {
+      const readingTime = await loadMdxReadingTime(post.relativePath);
+      return { post, readingTimeText: readingTime?.text };
+    }),
+  );
   const dateLocale = localeDateLocales[locale] ?? localeDateLocales.en;
   const dateFormatter = new Intl.DateTimeFormat(dateLocale, {
     dateStyle: 'long',
@@ -101,7 +108,7 @@ export default async function BlogIndex({
         </ResourceIndexEmptyState>
       ) : (
         <div className="grid gap-6">
-          {posts.map((post) => {
+          {postsWithReadingTime.map(({ post, readingTimeText }) => {
             const authorNames = getAuthorNames(
               locale,
               post.frontmatter.authors,
@@ -119,6 +126,7 @@ export default async function BlogIndex({
               dateFormatter,
               sourceLanguage: post.sourceLanguage,
               requestedLanguage: post.requestedLanguage,
+              readingTimeText,
             });
 
             return (
