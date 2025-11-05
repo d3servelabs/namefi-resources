@@ -484,6 +484,13 @@
       "when": 1761963222988,
       "tag": "0068_red_speed_demon",
       "breakpoints": true
+    },
+    {
+      "idx": 69,
+      "version": "7",
+      "when": 1762342194360,
+      "tag": "0069_rainy_anita_blake",
+      "breakpoints": true
     }
   ]
 }
