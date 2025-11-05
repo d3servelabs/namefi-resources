@@ -10,13 +10,14 @@ import {
 } from '../prompts/image-system-prompts';
 import type { ImageModel } from '../types/generation';
 import type { LogoConceptSchema } from '../types/logo-schemas';
+import { secrets } from '../env';
 
 const openai = createOpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+  apiKey: secrets.OPENAI_API_KEY,
 });
 
 const google = createGoogleGenerativeAI({
-  apiKey: process.env.GOOGLE_API_KEY,
+  apiKey: secrets.GEMINI_API_KEY,
 });
 
 const imageGenerationTool = 'image_generation' as const;

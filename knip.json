@@ -12,7 +12,6 @@
   ],
   "ignoreDependencies": ["postcss-load-config"],
   "ignoreBinaries": ["tsc", "tsx", "act", "temporal"],
-  "ignoreWorkspaces": ["apps/listmonk"],
   "typescript": {
     "config": [
       "tsconfig.json",
@@ -20,25 +19,5 @@
       "packages/*/tsconfig.json",
       "tooling/*/tsconfig.json"
     ]
-  },
-  "workspaces": {
-    ".": {
-      "entry": ["scripts/**/*.ts"],
-      "project": ["scripts/**/*.ts"]
-    },
-    "apps/backend": {
-      "entry": [
-        "global.ts",
-        "src/temporal/**/*.ts",
-        "src/mail/templates/**/*.tsx",
-        "scripts/**/*.ts"
-      ],
-      "project": ["src/**/*.{ts,tsx}"]
-    },
-    "apps/indexer": {
-      "entry": ["ponder.config.ts", "src/**/*.ts"],
-      "project": ["src/**/*.ts"],
-      "ignore": ["generated/**"]
-    }
   }
 }
