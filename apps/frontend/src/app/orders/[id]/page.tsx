@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import { TRPCClientError } from '@trpc/client';
 import { type AppRouterOutput, useTRPC } from '@/lib/trpc';
-import { useRouter } from 'next/navigation';
+import { redirect } from 'next/navigation';
 import { useAuth } from '@/hooks/use-auth';
 import {
   getWorkflowProgressPhase,
@@ -84,7 +84,6 @@ export default function OrderPage({ params }: OrderPageProps) {
   const { id } = use(params);
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
   const trpc = useTRPC();
-  const router = useRouter();
 
   // This sets the cart count to 0 after the order is created
   const { refetchCart } = useCartContext();
@@ -267,6 +266,10 @@ export default function OrderPage({ params }: OrderPageProps) {
 
   if (!isLoading && !hasOrderDetails) {
     return <OrderNotFound />;
+  }
+
+  if (isFailedOrder) {
+    return redirect(`/orders/${id}/details`);
   }
 
   return (
