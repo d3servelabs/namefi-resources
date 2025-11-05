@@ -1,10 +1,18 @@
 import type { ReactNode } from 'react';
+import type { LucideIcon } from 'lucide-react';
+import { CalendarDays, Clock, Languages, Users } from 'lucide-react';
 import { localeLabels, type Locale } from '@/i18n-config';
 
 type ResourceMetaLabels = {
   publishedOn: string;
   by: string;
   sourceLanguage: string;
+};
+
+export type ResourceMetaItem = {
+  key: string;
+  icon: LucideIcon;
+  content: ReactNode;
 };
 
 type ResourceMetaItemsParams = {
@@ -14,6 +22,7 @@ type ResourceMetaItemsParams = {
   dateFormatter: Intl.DateTimeFormat;
   sourceLanguage: Locale;
   requestedLanguage: Locale;
+  readingTimeText?: string;
 };
 
 export function createResourceMetaItems({
@@ -23,29 +32,55 @@ export function createResourceMetaItems({
   dateFormatter,
   sourceLanguage,
   requestedLanguage,
-}: ResourceMetaItemsParams): ReactNode[] {
+  readingTimeText,
+}: ResourceMetaItemsParams): ResourceMetaItem[] {
   const publishedIso = publishedAt.toISOString();
 
-  const metaItems: Array<ReactNode | null> = [
-    <time key="published" dateTime={publishedIso}>
-      {labels.publishedOn} {dateFormatter.format(publishedAt)}
-    </time>,
-    authorNames.length > 0 ? (
-      <span key="authors">
-        {labels.by} {authorNames.join(', ')}
-      </span>
-    ) : null,
-  ];
+  const metaItems: ResourceMetaItem[] = [];
+
+  if (readingTimeText) {
+    metaItems.push({
+      key: 'reading-time',
+      icon: Clock,
+      content: readingTimeText,
+    });
+  }
+
+  metaItems.push({
+    key: 'published',
+    icon: CalendarDays,
+    content: (
+      <time dateTime={publishedIso}>
+        {labels.publishedOn} {dateFormatter.format(publishedAt)}
+      </time>
+    ),
+  });
+
+  if (authorNames.length > 0) {
+    metaItems.push({
+      key: 'authors',
+      icon: Users,
+      content: (
+        <>
+          {labels.by} {authorNames.join(', ')}
+        </>
+      ),
+    });
+  }
 
   if (requestedLanguage !== sourceLanguage) {
     const sourceLanguageLabel =
       localeLabels[sourceLanguage] ?? sourceLanguage.toUpperCase();
-    metaItems.push(
-      <span key="source">
-        {labels.sourceLanguage}: {sourceLanguageLabel}
-      </span>,
-    );
+    metaItems.push({
+      key: 'source-language',
+      icon: Languages,
+      content: (
+        <>
+          {labels.sourceLanguage}: {sourceLanguageLabel}
+        </>
+      ),
+    });
   }
 
-  return metaItems.filter(Boolean) as ReactNode[];
+  return metaItems;
 }

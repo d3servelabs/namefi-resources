@@ -8,11 +8,12 @@ import {
   CardTitle,
 } from '@/components/ui/shadcn/card';
 import { cn } from '@/lib/cn';
+import type { ResourceMetaItem } from '@/lib/resource-meta-items';
 
 export type ResourceIndexCardProps = {
   title: string;
   href: string;
-  metaItems: ReactNode[];
+  metaItems: ResourceMetaItem[];
   summary?: string | null;
   tags?: string[];
   className?: string;
@@ -41,10 +42,17 @@ export function ResourceIndexCard({
         </div>
         <CardHeader className="relative space-y-5 px-8 pb-0 pt-8 text-left md:px-10 md:pt-10">
           {metaItems.length > 0 && (
-            <ul className="flex flex-wrap items-center gap-4 text-[0.7rem] font-semibold uppercase tracking-[0.28em] text-white/70">
-              {metaItems.map((item, index) => (
-                <li key={index} className="whitespace-nowrap">
-                  {item}
+            <ul className="flex flex-wrap items-center gap-3 text-[0.7rem] font-semibold uppercase tracking-[0.28em] text-white/70">
+              {metaItems.map((item) => (
+                <li
+                  key={item.key}
+                  className="flex items-center gap-2 whitespace-nowrap"
+                >
+                  <item.icon
+                    className="h-3 w-3 flex-shrink-0 text-white/60"
+                    aria-hidden="true"
+                  />
+                  <span className="text-white/70">{item.content}</span>
                 </li>
               ))}
             </ul>

@@ -9,6 +9,7 @@ import {
   ResourceIndexEmptyState,
 } from '@/components/resource-index-card';
 import { createResourceMetaItems } from '@/lib/resource-meta-items';
+import { loadMdxReadingTime } from '@/lib/load-mdx-module';
 
 const TRAILING_SLASH_REGEX = /\/$/;
 
@@ -89,6 +90,12 @@ export default async function TldIndex({
   const locale = lang as Locale;
   const dictionary = await getDictionary(locale);
   const entries = getTldsForLocale(locale);
+  const entriesWithReadingTime = await Promise.all(
+    entries.map(async (entry) => {
+      const readingTime = await loadMdxReadingTime(entry.relativePath);
+      return { entry, readingTimeText: readingTime?.text };
+    }),
+  );
   const dateLocale = localeDateLocales[locale] ?? localeDateLocales.en;
   const dateFormatter = new Intl.DateTimeFormat(dateLocale, {
     dateStyle: 'long',
@@ -102,7 +109,7 @@ export default async function TldIndex({
         </ResourceIndexEmptyState>
       ) : (
         <div className="grid gap-6">
-          {entries.map((entry) => {
+          {entriesWithReadingTime.map(({ entry, readingTimeText }) => {
             const authorNames = getAuthorNames(
               locale,
               entry.frontmatter.authors,
@@ -121,6 +128,7 @@ export default async function TldIndex({
               dateFormatter,
               sourceLanguage: entry.sourceLanguage,
               requestedLanguage: entry.requestedLanguage,
+              readingTimeText,
             });
 
             return (
