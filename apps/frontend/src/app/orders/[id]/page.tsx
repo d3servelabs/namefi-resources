@@ -1,51 +1,35 @@
 'use client';
 
-import { AuthRequired } from '@/components/auth-required';
-import { CartCard } from '@/components/cart-card';
-import { NamefiButton } from '@/components/buttons/namefi-button';
-import { NftDomainCard } from '@/components/nft-domain-card';
-import { useOrigin } from '@/components/providers/origin';
-import { Button } from '@/components/ui/shadcn/button';
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from '@/components/ui/shadcn/carousel';
-import { Skeleton } from '@/components/ui/shadcn/skeleton';
-import { Unauthorized } from '@/components/unauthorized';
-import { useCartContext } from '@/components/providers/cart';
-import { useAuth } from '@/hooks/use-auth';
-import { formatDate, getShortAddress } from '@/lib/string';
+import { use, useEffect, useMemo, useRef } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import Link from 'next/link';
+import { TRPCClientError } from '@trpc/client';
 import { type AppRouterOutput, useTRPC } from '@/lib/trpc';
-import { OrderProgressTimeline } from '@/components/orders/order-progress-timeline';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/hooks/use-auth';
 import {
   getWorkflowProgressPhase,
   type WorkflowProgressPhase,
   useOrderProgress,
 } from '@/hooks/use-order-progress';
-import { orderStatusSchema, type PaymentSelect } from '@namefi-astra/db/types';
+import { orderStatusSchema } from '@namefi-astra/db/types';
 import {
-  getChain,
   getSubDomainAndParentDomainFromNormalizedDomainName,
+  getTokenIdFromDomainName,
 } from '@namefi-astra/utils';
-import { getTokenIdFromDomainName } from '@namefi-astra/utils';
-import { useQuery } from '@tanstack/react-query';
-import { TRPCClientError } from '@trpc/client';
-import { Loader2, ExternalLink } from 'lucide-react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { use, useEffect, useMemo } from 'react';
-import {
-  FacebookIcon,
-  FacebookShareButton,
-  LinkedinIcon,
-  LinkedinShareButton,
-  TwitterIcon,
-  TwitterShareButton,
-} from 'react-share';
-import { StatusBadge } from '@/components/status-badge';
+import { AuthRequired } from '@/components/auth-required';
+import { NamefiButton } from '@/components/buttons/namefi-button';
+import { useOrigin } from '@/components/providers/origin';
+import { Skeleton } from '@/components/ui/shadcn/skeleton';
+import { Unauthorized } from '@/components/unauthorized';
+import { useCartContext } from '@/components/providers/cart';
+import { OrderProgressTimeline } from '@/components/orders/order-progress-timeline';
+import { InternalAIGenerations } from '@/components/orders/internal-ai-generations';
+import { ShareOrder } from '@/components/orders/share-order';
+import { PaymentDetailsSummary } from '@/components/orders/payment-details-summary';
+import { NftCarousel } from '@/components/orders/nft-carousel';
+import { OrderNotFound } from '@/components/orders/order-not-found';
+import { motion, AnimatePresence } from 'motion/react';
 
 interface OrderPageProps {
   params: Promise<{ id: string }>;
@@ -98,36 +82,33 @@ const processingCopyByStep: Record<
 
 export default function OrderPage({ params }: OrderPageProps) {
   const { id } = use(params);
-  const router = useRouter();
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
   const trpc = useTRPC();
+  const router = useRouter();
 
+  // This sets the cart count to 0 after the order is created
   const { refetchCart } = useCartContext();
-
   useEffect(() => {
     refetchCart();
   }, [refetchCart]);
 
   const {
     data: orderDetails,
-    isLoading: isOrderLoading,
-    error,
+    isLoading: isOrderDetailsLoading,
+    error: orderDetailsError,
+    refetch: refetchOrderDetails,
   } = useQuery({
-    ...trpc.orders.getOrder.queryOptions({ orderId: id }),
+    ...trpc.orders.getOrder.queryOptions(
+      { orderId: id },
+      {
+        trpc: {
+          context: {
+            skipBatch: true,
+          },
+        },
+      },
+    ),
     enabled: isAuthenticated,
-    refetchInterval: (query) => {
-      const currentStatus = query.state.data?.order?.status;
-
-      if (
-        !currentStatus ||
-        currentStatus === orderStatusSchema.enum.PROCESSING ||
-        currentStatus === orderStatusSchema.enum.CREATED
-      ) {
-        return 5000;
-      }
-
-      return false;
-    },
     retry(failureCount, error) {
       if (failureCount >= 3) {
         return false;
@@ -141,50 +122,38 @@ export default function OrderPage({ params }: OrderPageProps) {
       return true;
     },
   });
-  const { order, payments = [], items } = orderDetails ?? {};
-  const hasOrderDetails = Boolean(orderDetails && order);
-  const domainsRaw = (items || []).map((it) => it.normalizedDomainName);
+
+  const { order, items = [] } = orderDetails ?? {};
+
+  const isFailedOrder =
+    order?.status === orderStatusSchema.enum.FAILED ||
+    order?.status === orderStatusSchema.enum.CANCELLED;
+
+  const isCompletedOrder =
+    order?.status === orderStatusSchema.enum.SUCCEEDED ||
+    order?.status === orderStatusSchema.enum.PARTIALLY_COMPLETED;
+
+  const hasOrderDetails = Boolean(order);
+  const domainsRaw = items.map((it) => it.normalizedDomainName);
   const uniqueDomains = Array.from(new Set(domainsRaw));
-  const { data: bulkInternal } = useQuery({
-    ...trpc.ai.getInternalGenerationsByDomains.queryOptions({
-      domains: uniqueDomains,
-    }),
-    enabled: uniqueDomains.length > 0,
-  });
+  const { data: internalAiGenerations, refetch: refetchInternalAiGenerations } =
+    useQuery({
+      ...trpc.ai.getInternalGenerationsByDomains.queryOptions({
+        domains: uniqueDomains,
+      }),
+      enabled: uniqueDomains.length > 0,
+    });
 
-  const isFailedOrder = useMemo(() => {
-    return (
-      order?.status === orderStatusSchema.enum.FAILED ||
-      order?.status === orderStatusSchema.enum.CANCELLED
-    );
-  }, [order?.status]);
+  const isLoading = isAuthLoading || isOrderDetailsLoading;
 
-  const isCompletedOrder = useMemo(() => {
-    return (
-      order?.status === orderStatusSchema.enum.SUCCEEDED ||
-      order?.status === orderStatusSchema.enum.PARTIALLY_COMPLETED
-    );
-  }, [order?.status]);
-
-  const isInitialLoading = isAuthLoading || isOrderLoading;
-
+  // TODO: (Sid) we should fetch this once but then stop polling once we know order is completed or failed
   const orderProgress = useOrderProgress(id, {
-    enabled: isAuthenticated && !isCompletedOrder && !isFailedOrder,
+    enabled: isAuthenticated,
   });
 
-  const activeProgressCopy = useMemo(() => {
-    const stepId = orderProgress.activeStep?.id;
-    if (stepId) {
-      return processingCopyByStep[stepId];
-    }
-    return defaultProcessingCopy;
-  }, [orderProgress.activeStep]);
-
-  useEffect(() => {
-    if (isFailedOrder) {
-      router.replace(`/orders/${id}/details`);
-    }
-  }, [isFailedOrder, id, router]);
+  const activeProgressCopy = orderProgress.activeStep?.id
+    ? processingCopyByStep[orderProgress.activeStep.id]
+    : defaultProcessingCopy;
 
   const orderItems = useMemo(() => {
     if (!items) {
@@ -216,30 +185,34 @@ export default function OrderPage({ params }: OrderPageProps) {
   }, [items, order?.nftChainId]);
 
   const workflowPhase = getWorkflowProgressPhase(orderProgress.data ?? null);
-  const viewState: 'loading' | 'processing' | 'completed' = (() => {
-    if (workflowPhase === 'loading') {
-      return 'loading';
+  const prevWorkflowPhase = useRef<WorkflowProgressPhase>(workflowPhase);
+
+  useEffect(() => {
+    const previousPhase = prevWorkflowPhase.current;
+    if (workflowPhase === 'terminal' && previousPhase !== 'terminal') {
+      refetchOrderDetails();
+      refetchInternalAiGenerations();
     }
-    if (workflowPhase === 'processing') {
-      return 'processing';
-    }
+    prevWorkflowPhase.current = workflowPhase;
+  }, [workflowPhase, refetchOrderDetails, refetchInternalAiGenerations]);
+
+  const viewState: 'loading' | 'processing' | 'success' | 'failed' = (() => {
     if (!hasOrderDetails) {
       return 'loading';
     }
+    if (isFailedOrder) {
+      return 'failed';
+    }
     if (isCompletedOrder) {
-      return 'completed';
+      return 'success';
+    }
+    if (workflowPhase === 'loading') {
+      return 'loading';
     }
     return 'processing';
   })();
-  const showProcessingView = viewState !== 'completed';
-
-  const showDomainSkeleton = viewState === 'loading' || orderItems.length === 0;
-  const canShowOrderDetailsButton = hasOrderDetails && viewState !== 'loading';
 
   const origin = useOrigin();
-
-  // Show carousel only when we have 3 or more domains, otherwise center cards in a flex row
-  const showCarousel = orderItems.length > 2;
 
   const shareMessage = useMemo(() => {
     if (orderItems?.length === 0) {
@@ -253,6 +226,29 @@ export default function OrderPage({ params }: OrderPageProps) {
       : `Great I've just got ${orderItems[0].fullDomain} from 0x.city (#PoweredByNamefi), come check it out`;
   }, [orderItems]);
 
+  const heading =
+    viewState === 'success'
+      ? 'Congratulations!'
+      : viewState === 'failed'
+        ? "We couldn't complete your order"
+        : activeProgressCopy.title;
+  const subheading =
+    viewState === 'success'
+      ? `You've got your ${
+          orderItems.length > 1 ? 'domains' : 'domain'
+        } and here ${orderItems.length > 1 ? 'are the NFTs' : 'is the NFT'}`
+      : viewState === 'failed'
+        ? 'Something went wrong while processing this order. Review the details below.'
+        : activeProgressCopy.description;
+  const timelinePhase: WorkflowProgressPhase =
+    viewState === 'loading'
+      ? 'loading'
+      : workflowPhase === 'terminal' ||
+          viewState === 'failed' ||
+          viewState === 'success'
+        ? 'terminal'
+        : 'processing';
+
   if (!(isAuthLoading || isAuthenticated)) {
     return (
       <AuthRequired description="Please sign in to view your order details" />
@@ -260,50 +256,18 @@ export default function OrderPage({ params }: OrderPageProps) {
   }
 
   if (
-    error &&
-    error instanceof TRPCClientError &&
-    error.data?.code === 'UNAUTHORIZED'
+    orderDetailsError &&
+    orderDetailsError instanceof TRPCClientError &&
+    orderDetailsError.data?.code === 'UNAUTHORIZED'
   ) {
     return (
       <Unauthorized description="You are not authorized to view this order." />
     );
   }
-  if (!hasOrderDetails && !isInitialLoading) {
-    return (
-      <div className="container mx-auto py-8 px-8">
-        <div className="max-w-2xl mx-auto">
-          <CartCard
-            title="Order not found"
-            description="The order you are looking for could not be found. Please check the order ID and try again."
-            footer={
-              <Button onClick={() => router.push('/orders')}>
-                Back to Orders
-              </Button>
-            }
-          />
-        </div>
-      </div>
-    );
-  }
 
-  if (!order && !showProcessingView) {
-    return null;
+  if (!isLoading && !hasOrderDetails) {
+    return <OrderNotFound />;
   }
-
-  const heading =
-    viewState === 'completed' ? 'Congratulations!' : activeProgressCopy.title;
-  const subheading =
-    viewState === 'completed'
-      ? `You've got your ${orderItems.length > 1 ? 'domains' : 'domain'} and here ${
-          orderItems.length > 1 ? 'are the NFTs' : 'is the NFT'
-        }`
-      : activeProgressCopy.description;
-  const timelinePhase: WorkflowProgressPhase =
-    viewState === 'loading'
-      ? 'loading'
-      : workflowPhase === 'terminal'
-        ? 'terminal'
-        : 'processing';
 
   return (
     <div className="container mx-auto py-8 px-8">
@@ -324,375 +288,55 @@ export default function OrderPage({ params }: OrderPageProps) {
           )}
         </div>
 
-        <div className="mb-8">
-          <OrderProgressTimeline
-            progress={orderProgress.data ?? null}
-            workflowPhase={timelinePhase}
-          />
+        <AnimatePresence>
+          {viewState !== 'success' && !isFailedOrder && (
+            <motion.div className="mb-8">
+              <OrderProgressTimeline
+                progress={orderProgress.data ?? null}
+                workflowPhase={timelinePhase}
+              />
+            </motion.div>
+          )}
+          {!isFailedOrder && (
+            <motion.div>
+              <NftCarousel
+                items={orderItems}
+                origin={origin}
+                isCompletedOrder={isCompletedOrder}
+              />
+            </motion.div>
+          )}
+          {(viewState === 'success' || viewState === 'failed') && (
+            <motion.div>
+              {orderDetails && (
+                <PaymentDetailsSummary orderWithPayments={orderDetails} />
+              )}
+            </motion.div>
+          )}
+          {viewState === 'success' && !isFailedOrder && (
+            <motion.div>
+              <ShareOrder origin={origin} shareMessage={shareMessage} />
+              <InternalAIGenerations
+                domains={uniqueDomains}
+                internalAIGenerations={internalAiGenerations}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        <div className="flex gap-4 mb-8">
+          <NamefiButton
+            variant="outline"
+            className="flex-1 bg-black/[0.03] border-white/10 hover:bg-white/5"
+            asChild={true}
+          >
+            <Link href={`/orders/${id}/details`}>View full details</Link>
+          </NamefiButton>
+          <NamefiButton className="flex-1" asChild={true}>
+            <Link href="/">Back to home</Link>
+          </NamefiButton>
         </div>
-
-        {showProcessingView ? (
-          <>
-            {showDomainSkeleton ? (
-              <div className="mb-6 flex flex-wrap justify-center gap-4">
-                {Array.from({
-                  length: Math.max(orderItems.length || 0, 2),
-                }).map((_, index) => (
-                  <Skeleton
-                    key={`order-domain-skeleton-${index}`}
-                    className="h-[260px] w-full max-w-sm rounded-2xl sm:w-3/4 md:w-1/2 lg:w-1/3"
-                  />
-                ))}
-              </div>
-            ) : showCarousel ? (
-              <Carousel className="mb-6">
-                <CarouselContent className="-ml-2 md:-ml-4">
-                  {orderItems.map((item, index) => (
-                    <CarouselItem
-                      key={index}
-                      className="md:basis-1/2 lg:basis-1/3 pl-2 md:pl-4"
-                    >
-                      <NftDomainCard
-                        item={item}
-                        origin={origin}
-                        isCompleted={isCompletedOrder}
-                      />
-                    </CarouselItem>
-                  ))}
-                </CarouselContent>
-                <CarouselPrevious />
-                <CarouselNext />
-              </Carousel>
-            ) : (
-              <div className="mb-6 flex flex-wrap justify-center gap-4">
-                {orderItems.map((item, index) => (
-                  <NftDomainCard
-                    key={index}
-                    item={item}
-                    origin={origin}
-                    isCompleted={isCompletedOrder}
-                    className="p-4 w-full sm:w-3/4 md:w-1/2 lg:w-1/3 max-w-sm"
-                  />
-                ))}
-              </div>
-            )}
-
-            <div className="flex gap-4 mb-8 justify-center">
-              {canShowOrderDetailsButton ? (
-                <NamefiButton asChild={true}>
-                  <Link href={`/orders/${id}/details`}>View order details</Link>
-                </NamefiButton>
-              ) : (
-                <Skeleton className="h-10 w-[180px]" />
-              )}
-            </div>
-          </>
-        ) : (
-          order && (
-            <>
-              {showCarousel ? (
-                <Carousel className="mb-6">
-                  <CarouselContent className="-ml-2 md:-ml-4">
-                    {orderItems.map((item, index) => (
-                      <CarouselItem
-                        key={index}
-                        className="md:basis-1/2 lg:basis-1/3 pl-2 md:pl-4"
-                      >
-                        <NftDomainCard
-                          item={item}
-                          origin={origin}
-                          isCompleted={isCompletedOrder}
-                        />
-                      </CarouselItem>
-                    ))}
-                  </CarouselContent>
-                  <CarouselPrevious />
-                  <CarouselNext />
-                </Carousel>
-              ) : (
-                <div className="mb-6 flex flex-wrap justify-center gap-4">
-                  {orderItems.map((item, index) => (
-                    <NftDomainCard
-                      key={index}
-                      item={item}
-                      origin={origin}
-                      isCompleted={isCompletedOrder}
-                      className="p-4 w-full sm:w-3/4 md:w-1/2 lg:w-1/3 max-w-sm"
-                    />
-                  ))}
-                </div>
-              )}
-
-              <CartCard className="mb-6 bg-black/[0.03] border-white/10">
-                <div className="flex justify-between items-center">
-                  <span className="text-muted-foreground">Share on</span>
-                  <div className="flex gap-4">
-                    <TwitterShareButton
-                      url={`https://${origin.thirdPartyHostname}`}
-                      title={shareMessage}
-                    >
-                      <Button
-                        variant="outline"
-                        size="icon"
-                        className="bg-transparent border-none rounded-sm overflow-hidden cursor-pointer p-0"
-                      >
-                        <TwitterIcon className="size-9" />
-                      </Button>
-                    </TwitterShareButton>
-
-                    <LinkedinShareButton
-                      url={`https://${origin.thirdPartyHostname}`}
-                      title={shareMessage}
-                    >
-                      <Button
-                        variant="outline"
-                        size="icon"
-                        className="bg-transparent border-none rounded-sm overflow-hidden cursor-pointer p-0"
-                      >
-                        <LinkedinIcon className="size-9" />
-                      </Button>
-                    </LinkedinShareButton>
-
-                    <FacebookShareButton
-                      url={`https://${origin.thirdPartyHostname}`}
-                      title={shareMessage}
-                    >
-                      <Button
-                        variant="outline"
-                        size="icon"
-                        className="bg-transparent border-none rounded-sm overflow-hidden cursor-pointer p-0"
-                      >
-                        <FacebookIcon className="size-9" />
-                      </Button>
-                    </FacebookShareButton>
-                  </div>
-                </div>
-              </CartCard>
-
-              <CartCard
-                title="Order Details"
-                className="mb-6 bg-black/[0.03] border-white/10"
-              >
-                <div className="space-y-4">
-                  <div className="flex justify-between items-center">
-                    <span className="text-muted-foreground">Date</span>
-                    <span>{formatDate(new Date(order.createdAt))}</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-muted-foreground">Grand total</span>
-                    <span>${order.amountInUSDCents / 100} USD</span>
-                  </div>
-                  <div className="flex justify-between items-start">
-                    <span className="text-muted-foreground">
-                      Payments ({payments.length === 1 ? 'Single' : 'Multiple'})
-                    </span>
-                    <PaymentMethodsDetails orderId={id} payments={payments} />
-                  </div>
-                </div>
-              </CartCard>
-
-              {uniqueDomains.length > 0 && (
-                <CartCard className="mb-6 bg-black/[0.03] border-white/10">
-                  <Link
-                    href="/ai-brand-generator"
-                    className="inline-flex items-center gap-2 text-white underline underline-offset-4 text-xl font-semibold"
-                  >
-                    <ExternalLink className="h-5 w-5" />
-                    Just AIng by Namefi™
-                  </Link>
-
-                  <p className="text-sm text-muted-foreground mt-2">
-                    While your order was processing, we prepared a logo preview
-                    for your brand(s). Explore more styles and marketing images
-                    in Just AIng.
-                  </p>
-
-                  <div className="mt-4 mb-2 flex flex-wrap justify-center gap-4">
-                    {uniqueDomains.map((domain) => {
-                      const gens = (bulkInternal?.[domain] ?? []) as Array<{
-                        type: 'logo' | 'marketing';
-                        url: string;
-                      }>;
-                      const logo = gens.find((g) => g.type === 'logo');
-                      return (
-                        <div
-                          key={`ai-starter-${domain}`}
-                          className="p-4 w-full sm:w-3/4 md:w-1/2 lg:w-1/3 max-w-sm"
-                        >
-                          <div className="relative w-full aspect-square overflow-hidden rounded-md bg-black/[0.03] border border-white/10">
-                            {logo ? (
-                              // biome-ignore lint/performance/noImgElement: using plain img for remote asset
-                              <img
-                                src={logo.url}
-                                alt={`${domain} logo`}
-                                className="w-full h-full object-contain"
-                                loading="lazy"
-                              />
-                            ) : (
-                              <div className="w-full h-full flex items-center justify-center text-xs text-muted-foreground">
-                                No preview
-                              </div>
-                            )}
-                          </div>
-                          <div className="mt-3 text-center text-sm truncate">
-                            {domain}
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </CartCard>
-              )}
-              <div className="flex gap-4 mb-8">
-                <NamefiButton
-                  variant="outline"
-                  className="flex-1 bg-black/[0.03] border-white/10 hover:bg-white/5"
-                  asChild={true}
-                >
-                  <Link href={`/orders/${id}/details`}>View full details</Link>
-                </NamefiButton>
-                <NamefiButton className="flex-1" asChild={true}>
-                  <Link href="/">Back to home</Link>
-                </NamefiButton>
-              </div>
-            </>
-          )
-        )}
       </div>
-    </div>
-  );
-}
-
-function PaymentMethodsDetails({
-  orderId,
-  payments,
-}: {
-  orderId: string;
-  payments: PaymentSelect[];
-}) {
-  const trpc = useTRPC();
-  const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
-
-  const { data: paymentMethods, isLoading: arePaymentMethodDetailsLoading } =
-    useQuery({
-      ...trpc.orders.getOrderPaymentMethodsDetails.queryOptions({ orderId }),
-      enabled: !!orderId && isAuthenticated,
-      retry(failureCount, error) {
-        if (failureCount >= 3) {
-          return false;
-        }
-        if (
-          error instanceof TRPCClientError &&
-          error.data?.code === 'UNAUTHORIZED'
-        ) {
-          return false;
-        }
-        return true;
-      },
-    });
-
-  const paymentMethodDetailsMap = useMemo(() => {
-    return new Map(
-      paymentMethods?.map((payment) => [payment.paymentId, payment]) ?? [],
-    );
-  }, [paymentMethods]);
-
-  if (arePaymentMethodDetailsLoading || isAuthLoading) {
-    return <Loader2 className="animate-spin" />;
-  }
-
-  if (!paymentMethodDetailsMap) {
-    return null;
-  }
-
-  return (
-    <div className="flex flex-col gap-2 items-end">
-      {payments.map((payment) => (
-        <SinglePaymentMethodDetails
-          key={payment.id}
-          payment={payment}
-          paymentMethodDetails={
-            paymentMethodDetailsMap.get(payment.id) ?? {
-              paymentId: payment.id,
-              isOnChainPayment: false,
-              brand: undefined,
-              last4: undefined,
-            }
-          }
-        />
-      ))}
-    </div>
-  );
-}
-
-type PaymentMethodDetails =
-  AppRouterOutput['orders']['getOrderPaymentMethodsDetails'][number];
-
-export function SinglePaymentMethodDetails({
-  payment,
-  paymentMethodDetails,
-}: {
-  payment: PaymentSelect;
-  paymentMethodDetails: PaymentMethodDetails;
-}) {
-  const isCreditCardPayment = useMemo(
-    () => payment.paymentProvider === 'STRIPE',
-    [payment.paymentProvider],
-  );
-  const primaryPaymentMethod = paymentMethodDetails;
-  const creditCardPreviewText = useMemo(() => {
-    if (!isCreditCardPayment || !primaryPaymentMethod) {
-      return '-';
-    }
-
-    if (
-      !(
-        !primaryPaymentMethod.isOnChainPayment &&
-        primaryPaymentMethod.brand &&
-        primaryPaymentMethod.last4
-      )
-    ) {
-      return 'Credit Card';
-    }
-
-    return `${primaryPaymentMethod.brand.toLocaleUpperCase()}(${primaryPaymentMethod.last4})`;
-  }, [isCreditCardPayment, primaryPaymentMethod]);
-
-  const onChainPaymentPreviewText = useMemo(() => {
-    if (isCreditCardPayment) {
-      return '';
-    }
-
-    if (!payment.nfscPaymentDetails) {
-      return '-';
-    }
-
-    const chain = getChain(payment.nfscPaymentDetails.chainId);
-    const chainName =
-      chain?.name || `Chain ID ${payment.nfscPaymentDetails.chainId}`;
-    return `(${chainName}) ${getShortAddress(payment.nfscPaymentDetails.walletAddress)}`;
-  }, [isCreditCardPayment, payment.nfscPaymentDetails]);
-
-  return (
-    <div className="flex flex-row gap-2 items-center">
-      {isCreditCardPayment ? (
-        <span className="font-medium text-muted-foreground text-sm">
-          {creditCardPreviewText}
-        </span>
-      ) : (
-        <span className="font-medium text-muted-foreground text-sm">
-          {onChainPaymentPreviewText}
-        </span>
-      )}
-      {payment.status && (
-        <div className="scale-90">
-          <StatusBadge status={payment.status} type="payment" />
-        </div>
-      )}
-      <span className="w-[8ch] text-end whitespace-pre">
-        ${payment.amountInUSDCents / 100}{' '}
-        {isCreditCardPayment ? '  USD' : 'NFSC'}
-      </span>
     </div>
   );
 }

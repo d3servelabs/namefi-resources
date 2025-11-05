@@ -8,7 +8,7 @@ import { NFTDomain } from './nft-domain';
 import { getNftExplorerUrl } from '@namefi-astra/utils';
 import { NetworkLogo } from '@/components/network-logo';
 
-interface NftDomainCardProps {
+export interface NftDomainCardProps {
   item: {
     subdomain: string;
     parentDomain: string;
