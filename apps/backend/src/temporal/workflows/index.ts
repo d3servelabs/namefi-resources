@@ -51,3 +51,4 @@ export * from './test-workflows/test-multi-payments.workflow';
 export * from './prepare-multi-payments.workflow';
 export * from './charge-prepared-payments.workflow';
 export * from './autorenew-daily-report.workflow';
+export * from './export-expiration-daily-report.workflow';

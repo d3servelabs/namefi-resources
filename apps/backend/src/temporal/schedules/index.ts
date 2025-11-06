@@ -15,6 +15,7 @@ import { createLogger } from '#lib/logger';
 
 import { emailSubscriptionSyncSchedule } from './email-subscription-sync';
 import { nftManagementDailyReportSchedule } from './nft-management-daily-report';
+import { exportExpirationDailyReportSchedule } from './export-expiration-daily-report';
 import { updateNamefiNftIndexSchedule } from './update-namefi-nft-index';
 import { generateAndUpdateDataForDomainsSchedule } from './generate-and-update-data-for-domains';
 import { campaignAwardSchedule } from './hunt/campaign-award';
@@ -121,6 +122,8 @@ export const SCHEDULE_REGISTRY: Record<string, NamefiSchedule<any>> = {
     emailSubscriptionSyncSchedule,
   [nftManagementDailyReportSchedule.config.scheduleId]:
     nftManagementDailyReportSchedule,
+  [exportExpirationDailyReportSchedule.config.scheduleId]:
+    exportExpirationDailyReportSchedule,
   [updateNamefiNftIndexSchedule.config.scheduleId]:
     updateNamefiNftIndexSchedule,
   [generateAndUpdateDataForDomainsSchedule.config.scheduleId]:
@@ -272,6 +275,7 @@ export { updateDomainIndexSchedule };
 export { updatePrivyCacheSchedule };
 export { emailSubscriptionSyncSchedule };
 export { nftManagementDailyReportSchedule };
+export { exportExpirationDailyReportSchedule };
 export { updateNamefiNftIndexSchedule };
 export { generateAndUpdateDataForDomainsSchedule };
 export { campaignAwardSchedule };
@@ -318,6 +322,16 @@ export {
   getNftManagementDailyReportScheduleStatus,
   deleteNftManagementDailyReportSchedule,
 } from './nft-management-daily-report';
+
+export {
+  submitScheduleForExportExpirationDailyReport,
+  triggerExportExpirationDailyReport,
+  updateExportExpirationDailyReportSchedule,
+  pauseExportExpirationDailyReportSchedule,
+  unpauseExportExpirationDailyReportSchedule,
+  getExportExpirationDailyReportScheduleStatus,
+  deleteExportExpirationDailyReportSchedule,
+} from './export-expiration-daily-report';
 
 export {
   submitScheduleForUpdateNamefiNftIndex,
