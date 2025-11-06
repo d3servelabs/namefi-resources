@@ -13,6 +13,7 @@ import { sldRegistrar } from '../../../lib/namefi-registry';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import type { Registrars } from '@namefi-astra/registrars/registrars/registrars-keys';
 import { createLogger } from '#lib/logger';
+import { splitEvery } from 'ramda';
 
 const logger = createLogger({ module: 'domain-index-activities' });
 
@@ -57,25 +58,28 @@ export async function updateDomainIndex(): Promise<{
       lastIndexedAt: now,
     }));
 
-    // Use upsert to handle both inserts and updates
-    let updatedCount = 0;
-
     // Use PostgreSQL's ON CONFLICT to handle upserts
-    const result = await database
-      .insert(indexedDomainsTable)
-      .values(domainRecords)
-      .onConflictDoUpdate({
-        target: [
-          indexedDomainsTable.registrarKey,
-          indexedDomainsTable.normalizedDomainName,
-        ],
-        set: {
-          expirationTime: sql.raw('EXCLUDED.expiration_time'),
-          lastIndexedAt: sql.raw('EXCLUDED.last_indexed_at'),
-        },
-      });
-
-    updatedCount = result.rowCount ?? 0;
+    const updatedCount = await database.transaction(async (tx) => {
+      const batches = splitEvery(500, domainRecords);
+      let updatedCount = 0;
+      for (const batch of batches) {
+        const result = await tx
+          .insert(indexedDomainsTable)
+          .values(batch)
+          .onConflictDoUpdate({
+            target: [
+              indexedDomainsTable.registrarKey,
+              indexedDomainsTable.normalizedDomainName,
+            ],
+            set: {
+              expirationTime: sql.raw('EXCLUDED.expiration_time'),
+              lastIndexedAt: sql.raw('EXCLUDED.last_indexed_at'),
+            },
+          });
+        updatedCount += result.rowCount ?? 0;
+      }
+      return updatedCount;
+    });
 
     const registrarsProcessed = [
       ...new Set(domainsWithRegistrar.map((d) => d.registrarKey)),
