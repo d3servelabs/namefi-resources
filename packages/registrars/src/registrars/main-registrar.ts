@@ -133,12 +133,13 @@ export class RegistrarService extends AbstractRegistrarService {
 
   async getDomainDetails(
     domainName: PunycodeDomainName,
-  ): Promise<DomainRegistration> {
+  ): Promise<WithRegistrar<DomainRegistration>> {
     const provider = await this.getRegistrar(domainName);
     const details = await provider.getDomainDetails(domainName);
     return {
       ...details,
       supportsDnssec: supportsDnssec(domainName),
+      registrarKey: provider.key,
     };
   }
 

@@ -622,6 +622,98 @@ export const indexedDomainsTable = pgTable(
   ],
 );
 
+/**
+ * Domain export transfer status enum
+ * Tracks the lifecycle of a domain being exported/transferred out
+ */
+export const domainExportStatusEnum = pgEnum('domain_export_status', [
+  'PENDING_TRANSFER', // Transfer has been initiated (EPP status: pendingTransfer)
+  'TRANSFER_PERIOD', // Transfer completed, in 60-day lock period (EPP status: transferPeriod)
+  'TRANSFER_COMPLETED', // Transfer fully completed and domain no longer in our account
+  'TRANSFER_FAILED', // Transfer failed or was cancelled
+]);
+
+/**
+ * Domain export tracking table
+ * Tracks domains that are being exported/transferred out of Namefi
+ * Used for monitoring export status and notifying users of status changes
+ */
+export const domainExportTrackingTable = pgTable(
+  'domain_export_tracking',
+  {
+    ...randomUuid,
+    ...normalizedDomain,
+    chainId: integer('chain_id').notNull(),
+    ownerAddress: text('owner_address').notNull(),
+
+    // Status tracking
+    status: domainExportStatusEnum('status').notNull(),
+    previousStatus: domainExportStatusEnum('previous_status'),
+    statusHistory: jsonb('status_history')
+      .$type<
+        Array<{
+          timestamp: string;
+          status: string;
+          eppStatuses?: string[];
+        }>
+      >()
+      .default([]),
+
+    // EPP/RDAP/WHOIS data
+    eppStatuses: jsonb('epp_statuses').$type<string[]>(),
+    whoisData: jsonb('whois_data').$type<Json>(),
+
+    // Registrar information
+    registrarKey: text('registrar_key'),
+
+    // Timestamps
+    statusChangedAt: timestamp('status_changed_at').notNull().defaultNow(),
+    firstDetectedAt: timestamp('first_detected_at').notNull().defaultNow(),
+    lastCheckedAt: timestamp('last_checked_at').notNull().defaultNow(),
+    transferCompletedAt: timestamp('transfer_completed_at'),
+
+    // User notification tracking
+    userNotified: boolean('user_notified').notNull().default(false),
+    notifiedAt: timestamp('notified_at'),
+
+    ...timestamps,
+  },
+  (table) => [
+    // Primary lookup indexes
+    index('domain_export_tracking_domain_idx').on(table.normalizedDomainName),
+    index('domain_export_tracking_status_idx').on(table.status),
+    index('domain_export_tracking_owner_idx').on(table.ownerAddress),
+    index('domain_export_tracking_chain_idx').on(table.chainId),
+
+    // Composite indexes for common queries
+    index('domain_export_tracking_domain_status_idx').on(
+      table.normalizedDomainName,
+      table.status,
+    ),
+    index('domain_export_tracking_owner_status_idx').on(
+      table.ownerAddress,
+      table.status,
+    ),
+
+    // Time-based queries
+    index('domain_export_tracking_status_changed_idx').on(
+      table.statusChangedAt,
+    ),
+    index('domain_export_tracking_last_checked_idx').on(table.lastCheckedAt),
+
+    // Notification queries
+    index('domain_export_tracking_unnotified_idx')
+      .on(table.userNotified)
+      .where(sql`${table.userNotified} = false`),
+
+    // Unique constraint to prevent duplicate tracking entries
+    unique('domain_export_tracking_domain_chain_unique').on(
+      table.normalizedDomainName,
+      table.chainId,
+    ),
+  ],
+);
+
 export const aiGenerationsTable = pgTable(
   'ai_generations',
   {

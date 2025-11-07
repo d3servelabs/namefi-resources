@@ -52,3 +52,4 @@ export * from './prepare-multi-payments.workflow';
 export * from './charge-prepared-payments.workflow';
 export * from './autorenew-daily-report.workflow';
 export * from './export-expiration-daily-report.workflow';
+export * from './domain-export-tracking.workflow';

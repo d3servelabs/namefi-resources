@@ -16,6 +16,7 @@ import { createLogger } from '#lib/logger';
 import { emailSubscriptionSyncSchedule } from './email-subscription-sync';
 import { nftManagementDailyReportSchedule } from './nft-management-daily-report';
 import { exportExpirationDailyReportSchedule } from './export-expiration-daily-report';
+import { domainExportTrackingSchedule } from './domain-export-tracking';
 import { updateNamefiNftIndexSchedule } from './update-namefi-nft-index';
 import { generateAndUpdateDataForDomainsSchedule } from './generate-and-update-data-for-domains';
 import { campaignAwardSchedule } from './hunt/campaign-award';
@@ -124,6 +125,8 @@ export const SCHEDULE_REGISTRY: Record<string, NamefiSchedule<any>> = {
     nftManagementDailyReportSchedule,
   [exportExpirationDailyReportSchedule.config.scheduleId]:
     exportExpirationDailyReportSchedule,
+  [domainExportTrackingSchedule.config.scheduleId]:
+    domainExportTrackingSchedule,
   [updateNamefiNftIndexSchedule.config.scheduleId]:
     updateNamefiNftIndexSchedule,
   [generateAndUpdateDataForDomainsSchedule.config.scheduleId]:
@@ -276,6 +279,7 @@ export { updatePrivyCacheSchedule };
 export { emailSubscriptionSyncSchedule };
 export { nftManagementDailyReportSchedule };
 export { exportExpirationDailyReportSchedule };
+export { domainExportTrackingSchedule };
 export { updateNamefiNftIndexSchedule };
 export { generateAndUpdateDataForDomainsSchedule };
 export { campaignAwardSchedule };
