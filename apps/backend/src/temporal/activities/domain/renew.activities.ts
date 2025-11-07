@@ -751,6 +751,7 @@ export async function getRenewPriceByDomainInUsd({
 }: {
   normalizeDomainNameList: NamefiNormalizedDomain[];
 }): Promise<Record<NamefiNormalizedDomain, number | null>> {
+  logger.assign({ context: 'getRenewPriceByDomainInUsd' });
   const domainChargeAmounts: Record<NamefiNormalizedDomain, number | null> = {};
 
   // Use getDomainListInfo to get pricing for all domains at once
@@ -760,6 +761,10 @@ export async function getRenewPriceByDomainInUsd({
     const { domain, pricingDetails } = domainInfo;
 
     if (!pricingDetails?.renewalPrice) {
+      logger.warn(
+        { domain, pricingDetails },
+        `No renewal price found for domain ${domain}`,
+      );
       domainChargeAmounts[domain] = null;
       continue;
     }
