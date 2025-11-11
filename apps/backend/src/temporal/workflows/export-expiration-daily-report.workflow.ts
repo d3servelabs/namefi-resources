@@ -9,9 +9,14 @@
  */
 
 import * as workflow from '@temporalio/workflow';
-import { shortRunningOpts, TEMPORAL_ENUMS } from '../shared';
+import { shortRunningOpts, TEMPORAL_ENUMS, TEMPORAL_QUEUES } from '../shared';
 import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';
 import { catchAndAlertLocally } from '../shared/workflow-helpers/catch-and-alert-locally';
+import {
+  bulkBurnExpiredDomainsWorkflow,
+  generateBulkBurnWorkflowId,
+} from './bulk-burn-expired-domains.workflow';
+import type { DomainToBurn } from '../activities/domain/bulk-burn.activities';
 
 // Activity proxies for export/expiration reporting
 const {
@@ -26,6 +31,15 @@ const {
     startToCloseTimeout: '20m', // Allow time for comprehensive data collection from multiple sources
   },
 });
+
+// Activity proxies for bulk burn workflow management
+const { checkForExistingBulkBurnWorkflow, sendPendingBurnNotification } =
+  typedProxyActivities({
+    temporalEnum: TEMPORAL_ENUMS.DOMAINS,
+    options: {
+      ...shortRunningOpts,
+    },
+  });
 
 export interface ExportExpirationDailyReportWorkflowInput {
   /**
@@ -154,6 +168,78 @@ export async function exportExpirationDailyReportWorkflow({
     } else {
       skippedReason = 'No exported or expired domains found, report not sent';
       workflow.log.info('Skipping report send', { reason: skippedReason });
+    }
+
+    // Step 6: Trigger bulk burn workflow if there are domains ready to burn
+    if (metrics.expiredDomains.readyToBurn.length > 0) {
+      workflow.log.info('Checking for bulk burn workflow', {
+        readyToBurnCount: metrics.expiredDomains.readyToBurn.length,
+      });
+
+      await catchAndAlertLocally(
+        async () => {
+          // Check if there's already a bulk burn workflow running
+          const existingWorkflow = await checkForExistingBulkBurnWorkflow();
+
+          if (existingWorkflow.exists && existingWorkflow.workflowId) {
+            workflow.log.info(
+              'Bulk burn workflow already exists and waiting for approval',
+              {
+                workflowId: existingWorkflow.workflowId,
+                status: existingWorkflow.status,
+              },
+            );
+
+            // Send pending action notification
+            await sendPendingBurnNotification(
+              existingWorkflow.workflowId,
+              metrics.expiredDomains.readyToBurn.length,
+            );
+          } else {
+            workflow.log.info('Starting new bulk burn workflow', {
+              domainCount: metrics.expiredDomains.readyToBurn.length,
+            });
+
+            // Convert ExpiredDomainInfo to DomainToBurn format
+            const domainsToBurn: DomainToBurn[] =
+              metrics.expiredDomains.readyToBurn.map((d) => ({
+                domain: d.domain,
+                chainId: d.chainId,
+                ownerAddress: d.ownerAddress,
+                nftExpirationDate: d.nftExpirationDate,
+                daysSinceExpiration: d.daysSinceExpiration,
+                registrar: d.registrar,
+              }));
+
+            // Start bulk burn workflow
+            const bulkBurnWorkflowId = generateBulkBurnWorkflowId();
+            await workflow.startChild(bulkBurnExpiredDomainsWorkflow, {
+              workflowId: bulkBurnWorkflowId,
+              args: [
+                {
+                  domains: domainsToBurn,
+                  approvalTimeoutDays: 7,
+                },
+              ],
+              taskQueue: TEMPORAL_QUEUES.DEFAULT,
+            });
+
+            workflow.log.info('Bulk burn workflow started', {
+              workflowId: bulkBurnWorkflowId,
+            });
+          }
+        },
+        {
+          message: 'Failed to trigger or check bulk burn workflow',
+          details: {
+            readyToBurnCount: metrics.expiredDomains.readyToBurn.length,
+          },
+        },
+      );
+    } else {
+      workflow.log.info(
+        'No domains ready to burn, skipping bulk burn workflow',
+      );
     }
 
     const executionTimeMs = Date.now() - startTime;

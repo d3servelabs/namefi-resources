@@ -47,6 +47,7 @@ export const ResourceType = {
   PAYMENT_METHOD: 'payment_method',
   LINK_SHARE: 'link_share',
   NFSC: 'nfsc',
+  BULK_BURN: 'bulk_burn',
   OTHER: 'other',
 } as const;
 
