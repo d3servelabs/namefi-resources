@@ -1,5 +1,6 @@
 import { randomUUID } from 'node:crypto';
 import { logger } from './logger';
+import superjson from 'superjson';
 
 /**
  * Audit record actor classification.
@@ -122,11 +123,11 @@ export function createAuditRecord(
     id,
     actorType: params.actorType,
     actorId: params.actorId,
-    actorExtraInfo: params.actorExtraInfo,
+    actorExtraInfo: _safeJson(params.actorExtraInfo),
     resourceType: params.resourceType,
     resourceId: params.resourceId,
     action: params.action,
-    extraInput: params.extraInput,
+    extraInput: _safeJson(params.extraInput),
     timestamp,
   };
 }
@@ -142,7 +143,7 @@ export function asAuditLogPayload(
   return {
     ...record,
     audit_record: true,
-    metadata,
+    metadata: _safeJson(metadata),
   };
 }
 
@@ -156,4 +157,26 @@ export function audit(
 ): AuditRecord {
   logger.info(asAuditLogPayload(record, metadata));
   return record;
+}
+
+function _safeJson(value: any) {
+  if (value === undefined || value === null) {
+    return '';
+  }
+  let result: any = null;
+  try {
+    result = JSON.parse(JSON.stringify(value));
+  } catch (error) {
+    console.warn('Error serializing value to JSON', error);
+  }
+
+  if (!result) {
+    try {
+      result = superjson.serialize(value).json;
+    } catch (error) {
+      console.warn('Error serializing value to SuperJSON', error);
+    }
+  }
+
+  return result ?? { error: 'unserializable', value: String(value) };
 }
