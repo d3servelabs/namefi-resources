@@ -35,6 +35,8 @@ export enum Permission {
   MINT_NFSC = 'NFSC;;MINT',
   BURN_NFSC = 'NFSC;;BURN',
 
+  READ_ORDERS = 'ORDERS;;READ',
+
   /**
    * Hidden permission - not shown in UI lists, auto-added to ensure at least one row exists for an admin user
    */

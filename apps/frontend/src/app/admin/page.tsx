@@ -19,6 +19,7 @@ import {
   Gift,
   Clock,
   FileText,
+  ShoppingCart,
 } from 'lucide-react';
 import { Permission } from '@namefi-astra/utils';
 import { PermissionGate } from '@/components/access/PermissionGate';
@@ -71,21 +72,6 @@ const ADMIN_SECTIONS: AdminSection[] = [
     ],
   },
   {
-    title: 'Users',
-    items: [
-      {
-        title: 'Users',
-        description:
-          'Browse users, view details, search by email, wallets, ENS, and impersonate when allowed.',
-        href: '/admin/users',
-        icon: Users,
-        iconBgColor: 'bg-gray-100',
-        iconTextColor: 'text-gray-700',
-        permissions: [Permission.READ_USERS],
-      },
-    ],
-  },
-  {
     title: 'Admins',
     items: [
       {
@@ -111,11 +97,6 @@ const ADMIN_SECTIONS: AdminSection[] = [
         iconTextColor: 'text-slate-700',
         permissions: [Permission.READ_AUDIT_LOGS],
       },
-    ],
-  },
-  {
-    title: 'Powered by Namefi',
-    items: [
       {
         title: 'Powered by Namefi',
         description:
@@ -154,6 +135,17 @@ const ADMIN_SECTIONS: AdminSection[] = [
         permissionsMode: 'some',
       },
       {
+        title: 'Order Items',
+        description:
+          'View and manage all order items, payments, and domain purchases across the platform.',
+        href: '/admin/order-items',
+        icon: ShoppingCart,
+        iconBgColor: 'bg-indigo-100',
+        iconTextColor: 'text-indigo-600',
+        permissions: [Permission.READ_ORDERS, Permission.READ_USERS],
+        permissionsMode: 'every',
+      },
+      {
         title: 'Free Claims',
         description:
           'Manage free domain claims for campaigns and special promotions.',
@@ -172,6 +164,16 @@ const ADMIN_SECTIONS: AdminSection[] = [
   {
     title: 'General',
     items: [
+      {
+        title: 'Users',
+        description:
+          'Browse users, view details, search by email, wallets, ENS, and impersonate when allowed.',
+        href: '/admin/users',
+        icon: Users,
+        iconBgColor: 'bg-gray-100',
+        iconTextColor: 'text-gray-700',
+        permissions: [Permission.READ_USERS],
+      },
       {
         title: 'Analytics',
         description:
