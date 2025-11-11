@@ -20,6 +20,7 @@ import {
   Clock,
   FileText,
   ShoppingCart,
+  Flame,
 } from 'lucide-react';
 import { Permission } from '@namefi-astra/utils';
 import { PermissionGate } from '@/components/access/PermissionGate';
@@ -123,6 +124,16 @@ const ADMIN_SECTIONS: AdminSection[] = [
         iconTextColor: 'text-amber-600',
         permissions: [Permission.READ_NFT, Permission.WRITE_NFT],
         permissionsMode: 'some',
+      },
+      {
+        title: 'Bulk Burn',
+        description:
+          'Manage bulk burning of expired domain NFTs with approval workflow.',
+        href: '/admin/bulk-burn',
+        icon: Flame,
+        iconBgColor: 'bg-red-100',
+        iconTextColor: 'text-red-600',
+        permissions: [Permission.WRITE_NFT],
       },
       {
         title: 'NFSC Tokens',

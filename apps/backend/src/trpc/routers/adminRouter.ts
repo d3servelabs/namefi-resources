@@ -24,6 +24,13 @@ import { ensureNftIsLockedAndBurnByNftName } from '#temporal/workflows/mint.work
 import { extendDomainRegistrationWorkflow } from '#temporal/workflows/domain-ownership/extend-registration.workflow';
 import { fixNftExpirationWorkflow } from '#temporal/workflows/fix-nft-expiration.workflow';
 import {
+  bulkBurnExpiredDomainsWorkflow,
+  bulkBurnApprovalSignal,
+  bulkBurnCancelSignal,
+  getBulkBurnWorkflowStateQuery,
+  type BulkBurnWorkflowState,
+} from '#temporal/workflows/bulk-burn-expired-domains.workflow';
+import {
   adminProcedureWithPermissions,
   auditedAdminProcedureWithPermissions,
   createTRPCRouter,
@@ -527,6 +534,179 @@ export const adminRouter = createTRPCRouter({
       return [];
     }
   }),
+
+  // Bulk Burn Workflow Management
+  getPendingBulkBurnWorkflow: adminProcedureWithPermissions(
+    Permission.WRITE_NFT,
+  ).query(async () => {
+    try {
+      await temporalClient.connection.ensureConnected();
+
+      // Query for bulk burn workflows in RUNNING state
+      const workflowList = await temporalClient.workflow.list({
+        query:
+          'WorkflowType = "bulkBurnExpiredDomainsWorkflow" AND ExecutionStatus = "Running"',
+      });
+
+      // Get the first (and should be only) running bulk burn workflow
+      for await (const workflowInfo of workflowList) {
+        try {
+          const workflowHandle = temporalClient.workflow.getHandle(
+            workflowInfo.workflowId,
+          );
+
+          // Query the workflow state
+          const state: BulkBurnWorkflowState = await workflowHandle.query(
+            getBulkBurnWorkflowStateQuery,
+          );
+
+          return {
+            exists: true,
+            workflowId: workflowInfo.workflowId,
+            status: state.currentStatus,
+            startTime: workflowInfo.startTime,
+            runId: workflowInfo.runId,
+            state: {
+              currentStatus: state.currentStatus,
+              totalRequested: state.totalRequested,
+              verifiedDomains: state.verifiedDomains,
+              skippedDomains: state.skippedDomains,
+              approvedDomains: state.approvedDomains,
+              successfulBurns: state.successfulBurns,
+              failedBurns: state.failedBurns,
+              verificationTime: state.verificationTime,
+              approvalTime: state.approvalTime,
+              completionTime: state.completionTime,
+            },
+          };
+        } catch (error) {
+          logger.error(
+            { workflowId: workflowInfo.workflowId, error },
+            'Failed to query bulk burn workflow state',
+          );
+        }
+      }
+
+      return {
+        exists: false,
+      };
+    } catch (error) {
+      logger.error(
+        { context: 'getPendingBulkBurnWorkflow', error },
+        'Failed to fetch pending bulk burn workflow',
+      );
+      return {
+        error: 'Failed to fetch pending bulk burn workflow',
+        errorCode: 'INTERNAL_SERVER_ERROR',
+        exists: false,
+      };
+    }
+  }),
+
+  approveBulkBurn: auditedAdminProcedureWithPermissions(
+    Permission.WRITE_NFT,
+    ({ ctx, input, auditActorExtraInfo }) => ({
+      actorType: 'admin',
+      actorId: ctx.user.id,
+      actorExtraInfo: auditActorExtraInfo,
+      resourceType: ResourceType.BULK_BURN,
+      resourceId: input.workflowId,
+      action: 'approve_bulk_burn',
+      extraInput: input,
+    }),
+  )
+    .input(
+      z.object({
+        workflowId: z.string(),
+        domainNames: z.array(namefiNormalizedDomainSchema),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      const { workflowId, domainNames } = input;
+      if (domainNames.length === 0) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'At least one domain must be selected for approval',
+        });
+      }
+
+      try {
+        await temporalClient.connection.ensureConnected();
+
+        const workflowHandle = temporalClient.workflow.getHandle(workflowId);
+
+        // Send approval signal with selected domains
+        await workflowHandle.signal(bulkBurnApprovalSignal, domainNames);
+
+        logger.info(
+          { workflowId, approvedCount: domainNames.length },
+          'Bulk burn approval signal sent',
+        );
+
+        return {
+          success: true,
+          workflowId,
+          approvedCount: domainNames.length,
+        };
+      } catch (error) {
+        logger.error(
+          { workflowId, error },
+          'Failed to send bulk burn approval signal',
+        );
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to approve bulk burn',
+          cause: error,
+        });
+      }
+    }),
+
+  cancelBulkBurn: auditedAdminProcedureWithPermissions(
+    Permission.WRITE_NFT,
+    ({ ctx, input, auditActorExtraInfo }) => ({
+      actorType: 'admin',
+      actorId: ctx.user.id,
+      actorExtraInfo: auditActorExtraInfo,
+      resourceType: ResourceType.BULK_BURN,
+      resourceId: input.workflowId,
+      action: 'cancel_bulk_burn',
+      extraInput: input,
+    }),
+  )
+    .input(
+      z.object({
+        workflowId: z.string(),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      const { workflowId } = input;
+
+      try {
+        await temporalClient.connection.ensureConnected();
+
+        const workflowHandle = temporalClient.workflow.getHandle(workflowId);
+
+        // Send cancellation signal
+        await workflowHandle.signal(bulkBurnCancelSignal);
+
+        logger.info({ workflowId }, 'Bulk burn cancellation signal sent');
+
+        return {
+          success: true,
+          workflowId,
+        };
+      } catch (error) {
+        logger.error(
+          { workflowId, error },
+          'Failed to send bulk burn cancellation signal',
+        );
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to cancel bulk burn',
+          cause: error,
+        });
+      }
+    }),
 
   getActiveFixExpirationWorkflows: adminProcedureWithPermissions(
     Permission.READ_NFT,
