@@ -222,6 +222,7 @@ export async function exportExpirationDailyReportWorkflow({
                 },
               ],
               taskQueue: TEMPORAL_QUEUES.DEFAULT,
+              parentClosePolicy: 'ABANDON',
             });
 
             workflow.log.info('Bulk burn workflow started', {
