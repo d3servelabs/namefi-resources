@@ -35,9 +35,12 @@ import {
   XCircle,
   Clock,
   RefreshCw,
+  Copy,
 } from 'lucide-react';
 import { withAdminGuard } from './admin-guard';
 import { AutoTruncateTextV2 } from '../auto-truncate-text-v2';
+import { UserWalletAvatar } from '../user-avatar';
+import { getChain } from '@namefi-astra/utils';
 
 const LoadingSkeletons: FC = () => (
   <div className="flex flex-col gap-4">
@@ -110,10 +113,36 @@ function BulkBurnManagementContent() {
   );
 
   const verifiedDomains = workflowData?.state?.verifiedDomains || [];
-  const skippedDomains = workflowData?.state?.skippedDomains || [];
-  const successfulBurns = workflowData?.state?.successfulBurns || [];
-  const failedBurns = workflowData?.state?.failedBurns || [];
+  const verifiedDomainsMap = useMemo(() => {
+    return new Map(verifiedDomains.map((d) => [d.domain, d]));
+  }, [verifiedDomains]);
 
+  const skippedDomains = workflowData?.state?.skippedDomains || [];
+  const successfulBurns = useMemo(
+    () =>
+      workflowData?.state?.successfulBurns.map((d) => ({
+        ...d,
+        chainId: verifiedDomainsMap.get(d.domain)?.chainId,
+      })) ?? [],
+    [workflowData?.state?.successfulBurns, verifiedDomainsMap],
+  );
+  const failedBurns = useMemo(
+    () =>
+      workflowData?.state?.failedBurns.map((d) => ({
+        ...d,
+        chainId: verifiedDomainsMap.get(d.domain)?.chainId,
+      })) ?? [],
+    [workflowData?.state?.failedBurns, verifiedDomainsMap],
+  );
+
+  const handleCopyWallet = async (address: string) => {
+    try {
+      await navigator.clipboard.writeText(address);
+      toast.success('Copied address successfully');
+    } catch (error) {
+      toast.error('Failed to copy address');
+    }
+  };
   const handleSelectAll = () => {
     if (selectedDomains.size === verifiedDomains.length) {
       setSelectedDomains(new Set());
@@ -464,10 +493,31 @@ function BulkBurnManagementContent() {
                         </Badge>
                       </Td>
                       <Td>
-                        <code className="text-xs">
-                          {domain.ownerAddress.slice(0, 6)}...
-                          {domain.ownerAddress.slice(-4)}
-                        </code>
+                        <div className="flex items-center gap-2 px-1 py-1 bg-muted rounded-xl max-w-full">
+                          <UserWalletAvatar
+                            address={domain.ownerAddress}
+                            className="size-6"
+                          />
+                          <div className="flex-1 min-w-0">
+                            <AutoTruncateTextV2
+                              initialCharactersCountToDisplay={16}
+                              minCharactersToDisplay={16}
+                              className="font-mono text-xs"
+                            >
+                              {domain.ownerAddress}
+                            </AutoTruncateTextV2>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() =>
+                              handleCopyWallet(domain.ownerAddress)
+                            }
+                            className="p-1 hover:bg-background rounded transition-colors flex-shrink-0"
+                            title="Copy address"
+                          >
+                            <Copy className="h-3 w-3" />
+                          </button>
+                        </div>
                       </Td>
                       <Td className="text-sm">
                         {format(
@@ -566,9 +616,23 @@ function BulkBurnManagementContent() {
                         </AutoTruncateTextV2>
                       </Td>
                       <Td>
-                        <code className="text-xs">
-                          {burn.txHash.slice(0, 10)}...{burn.txHash.slice(-8)}
-                        </code>
+                        <a
+                          href={
+                            getTransactionExplorerUrl(
+                              burn.chainId,
+                              burn.txHash,
+                            ) ?? '#'
+                          }
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <AutoTruncateTextV2
+                            minCharactersToDisplay={10}
+                            initialCharactersCountToDisplay={10}
+                          >
+                            {burn.txHash}
+                          </AutoTruncateTextV2>
+                        </a>
                       </Td>
                     </Tr>
                   ))}
@@ -700,3 +764,18 @@ function BulkBurnManagementContent() {
 }
 
 export default withAdminGuard(BulkBurnManagementContent);
+
+export function getTransactionExplorerUrl(
+  chainId: number | null | undefined,
+  txHash: string | null | undefined,
+): string | null {
+  if (chainId === null || chainId === undefined) return null;
+  if (!txHash) return null;
+  const chain = getChain(chainId);
+  const baseUrl = chain?.blockExplorers?.default?.url;
+  if (!baseUrl) return null;
+  const normalizedBaseUrl = baseUrl.endsWith('/')
+    ? baseUrl.slice(0, -1)
+    : baseUrl;
+  return `${normalizedBaseUrl}/tx/${txHash}`;
+}
