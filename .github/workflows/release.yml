@@ -107,7 +107,7 @@ jobs:
             const { data: runs } = await github.rest.actions.listWorkflowRuns({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              workflow_id: 'deploy-backend.yml',
+              workflow_id: 'deploy-backend-vercel.yml',
               branch: 'main',
               status: 'completed',
               per_page: 1
@@ -165,6 +165,7 @@ jobs:
       old_backend_version: ${{ steps.version.outputs.old_backend_version }}
       old_frontend_version: ${{ steps.version.outputs.old_frontend_version }}
       commit_sha: ${{ steps.commit.outputs.commit_sha }}
+      tag_name: ${{ steps.commit.outputs.tag_name }}
     steps:
       - uses: actions/create-github-app-token@v2
         id: app-token
@@ -278,7 +279,7 @@ jobs:
           git config --global user.name '${{ needs.auth-namefi-bot.outputs.app-slug }}[bot]'
           git config --global user.email '${{ needs.auth-namefi-bot.outputs.user-id }}+${{ needs.auth-namefi-bot.outputs.app-slug }}[bot]@users.noreply.github.com'
 
-      - name: Commit version changes
+      - name: Commit version changes and create release tag
         id: commit
         run: |
           echo "📝 Committing version changes..."
@@ -286,19 +287,28 @@ jobs:
           git add apps/backend/package.json apps/frontend/package.json ./bun.lock
 
           # Create commit message
-          COMMIT_MESSAGE="chore(v${{ steps.version.outputs.backend_version }}): frontend ${{ steps.version.outputs.frontend_version }} backend ${{ steps.version.outputs.backend_version }}"
+          VERSION_STRING="frontend ${{ steps.version.outputs.frontend_version }} backend ${{ steps.version.outputs.backend_version }}"
+          COMMIT_MESSAGE="chore(v${{ steps.version.outputs.backend_version }}): $VERSION_STRING"
+          TAG_NAME="astra/v${{ steps.version.outputs.backend_version }}"
 
           git commit -m "$COMMIT_MESSAGE"
 
           echo "✅ Changes committed locally"
+                    
+          git tag -a "$TAG_NAME" -m "Release: $VERSION_STRING"
+          
+
+          echo "✅ Created release tag: $TAG_NAME"
 
           # Push to main
           echo "🚀 Pushing to main branch..."
           git push origin main
+          git push origin "$TAG_NAME"
 
           # Get the commit SHA
           COMMIT_SHA=$(git rev-parse HEAD)
           echo "commit_sha=$COMMIT_SHA" >> $GITHUB_OUTPUT
+          echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
 
           echo "✅ Version bump committed and pushed successfully"
           echo "   Commit SHA: $COMMIT_SHA"
@@ -310,34 +320,40 @@ jobs:
     outputs:
       tag_name: ${{ steps.create-tag.outputs.tag_name }}
     steps:
-      - uses: actions/create-github-app-token@v2
-        id: app-token
-        with:
-          app-id: ${{ vars.NAMEFI_BOT_APP_ID }}
-          private-key: ${{ secrets.NAMEFI_BOT_PRIVATE_KEY }}
-
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          token: ${{ steps.app-token.outputs.token }}
-          fetch-depth: 0
-          ref: ${{ needs.update-versions.outputs.commit_sha }}
-
-      - name: Configure git
-        run: |
-          git config --global user.name '${{ needs.auth-namefi-bot.outputs.app-slug }}[bot]'
-          git config --global user.email '${{ needs.auth-namefi-bot.outputs.user-id }}+${{ needs.auth-namefi-bot.outputs.app-slug }}[bot]@users.noreply.github.com'
-
       - name: Create Release Tag
         id: create-tag
         run: |
           TAG_NAME="astra/v${{ needs.update-versions.outputs.backend_version }}"
-
-          git tag -a "$TAG_NAME" -m "Release: frontend ${{ needs.update-versions.outputs.frontend_version }} backend ${{ needs.update-versions.outputs.backend_version }}"
-          git push origin "$TAG_NAME"
-
-          echo "✅ Created release tag: $TAG_NAME"
           echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
+          echo "✅ Created release tag: $TAG_NAME"
+      # - uses: actions/create-github-app-token@v2
+      #   id: app-token
+      #   with:
+      #     app-id: ${{ vars.NAMEFI_BOT_APP_ID }}
+      #     private-key: ${{ secrets.NAMEFI_BOT_PRIVATE_KEY }}
+
+      # - name: Checkout repository
+      #   uses: actions/checkout@v4
+      #   with:
+      #     token: ${{ steps.app-token.outputs.token }}
+      #     fetch-depth: 0
+      #     ref: ${{ needs.update-versions.outputs.commit_sha }}
+
+      # - name: Configure git
+      #   run: |
+      #     git config --global user.name '${{ needs.auth-namefi-bot.outputs.app-slug }}[bot]'
+      #     git config --global user.email '${{ needs.auth-namefi-bot.outputs.user-id }}+${{ needs.auth-namefi-bot.outputs.app-slug }}[bot]@users.noreply.github.com'
+
+      # - name: Create Release Tag
+      #   id: create-tag
+      #   run: |
+      #     TAG_NAME="astra/v${{ needs.update-versions.outputs.backend_version }}"
+
+      #     git tag -a "$TAG_NAME" -m "Release: frontend ${{ needs.update-versions.outputs.frontend_version }} backend ${{ needs.update-versions.outputs.backend_version }}"
+      #     git push origin "$TAG_NAME"
+
+      #     echo "✅ Created release tag: $TAG_NAME"
+      #     echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
 
   create-pull-request:
     name: Create Pull Request
