@@ -37,7 +37,6 @@ import {
   RefreshCw,
   Copy,
 } from 'lucide-react';
-import { withAdminGuard } from './admin-guard';
 import { AutoTruncateTextV2 } from '../auto-truncate-text-v2';
 import { UserWalletAvatar } from '../user-avatar';
 import { getChain } from '@namefi-astra/utils';
@@ -59,7 +58,13 @@ const LoadingSkeletons: FC = () => (
   </div>
 );
 
-function BulkBurnManagementContent() {
+interface BulkBurnManagementContentProps {
+  workflowId: string;
+}
+
+function BulkBurnManagementContent({
+  workflowId,
+}: BulkBurnManagementContentProps) {
   const trpc = useTRPC();
   const queryClient = useQueryClient();
 
@@ -69,13 +74,13 @@ function BulkBurnManagementContent() {
   const [approveDialogOpen, setApproveDialogOpen] = useState(false);
   const [cancelDialogOpen, setCancelDialogOpen] = useState(false);
 
-  // Fetch pending bulk burn workflow
+  // Fetch bulk burn workflow - either by ID or get the pending one
   const {
     data: workflowData,
     isLoading,
     refetch,
   } = useQuery({
-    ...trpc.admin.getPendingBulkBurnWorkflow.queryOptions(),
+    ...trpc.admin.getBulkBurnWorkflowById.queryOptions({ workflowId }),
     refetchInterval: 10000, // Refresh every 10 seconds
   });
 
@@ -194,61 +199,6 @@ function BulkBurnManagementContent() {
     });
   };
 
-  const getStatusBadge = (status: string) => {
-    switch (status) {
-      case 'VERIFYING':
-        return (
-          <Badge variant="secondary" className="gap-1">
-            <Loader2 className="w-3 h-3 animate-spin" />
-            Verifying
-          </Badge>
-        );
-      case 'WAITING_APPROVAL':
-        return (
-          <Badge variant="default" className="gap-1">
-            <Clock className="w-3 h-3" />
-            Waiting for Approval
-          </Badge>
-        );
-      case 'PROCESSING':
-        return (
-          <Badge variant="secondary" className="gap-1">
-            <Loader2 className="w-3 h-3 animate-spin" />
-            Processing Burns
-          </Badge>
-        );
-      case 'COMPLETED':
-        return (
-          <Badge variant="default" className="gap-1 bg-green-500">
-            <CheckCircle2 className="w-3 h-3" />
-            Completed
-          </Badge>
-        );
-      case 'CANCELLED':
-        return (
-          <Badge variant="destructive" className="gap-1">
-            <XCircle className="w-3 h-3" />
-            Cancelled
-          </Badge>
-        );
-      default:
-        return <Badge variant="secondary">{status}</Badge>;
-    }
-  };
-
-  const getChainName = (chainId: number) => {
-    switch (chainId) {
-      case 1:
-        return 'Ethereum';
-      case 8453:
-        return 'Base';
-      case 11155111:
-        return 'Sepolia';
-      default:
-        return `Chain ${chainId}`;
-    }
-  };
-
   if (isLoading) {
     return (
       <div className="container mx-auto p-6">
@@ -314,7 +264,12 @@ function BulkBurnManagementContent() {
     );
   }
 
-  const { workflowId, status, startTime, state } = workflowData;
+  const {
+    workflowId: currentWorkflowId,
+    status,
+    startTime,
+    state,
+  } = workflowData;
   const isWaitingApproval = status === 'WAITING_APPROVAL';
   const isProcessing = status === 'PROCESSING';
   const isCompleted = status === 'COMPLETED' || status === 'CANCELLED';
@@ -331,7 +286,8 @@ function BulkBurnManagementContent() {
                 Bulk Burn Workflow
               </CardTitle>
               <CardDescription className="mt-2">
-                Workflow ID: <code className="text-xs">{workflowId}</code>
+                Workflow ID:{' '}
+                <code className="text-xs">{currentWorkflowId}</code>
               </CardDescription>
             </div>
             <div className="flex items-center gap-2">
@@ -400,191 +356,6 @@ function BulkBurnManagementContent() {
           )}
         </CardContent>
       </Card>
-
-      {/* Verified Domains Table - Only show when waiting for approval */}
-      {isWaitingApproval && verifiedDomains.length > 0 && (
-        <Card>
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <div>
-                <CardTitle>Domains Ready to Burn</CardTitle>
-                <CardDescription>
-                  Select domains to approve for burning ({selectedDomains.size}{' '}
-                  of {verifiedDomains.length} selected)
-                </CardDescription>
-              </div>
-              <div className="flex gap-2">
-                <Button
-                  onClick={handleSelectAll}
-                  variant="outline"
-                  size="sm"
-                  disabled={verifiedDomains.length === 0}
-                >
-                  {selectedDomains.size === verifiedDomains.length
-                    ? 'Deselect All'
-                    : 'Select All'}
-                </Button>
-                <Button
-                  onClick={handleApprove}
-                  variant="default"
-                  size="sm"
-                  disabled={selectedDomains.size === 0}
-                  className="gap-2"
-                >
-                  <Flame className="w-4 h-4" />
-                  Approve Burn ({selectedDomains.size})
-                </Button>
-                <Button
-                  onClick={handleCancel}
-                  variant="destructive"
-                  size="sm"
-                  className="gap-2"
-                >
-                  <XCircle className="w-4 h-4" />
-                  Cancel Workflow
-                </Button>
-              </div>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="rounded-md border">
-              <Table>
-                <Thead>
-                  <Tr>
-                    <Th className="w-12">
-                      <Checkbox
-                        checked={
-                          selectedDomains.size === verifiedDomains.length &&
-                          verifiedDomains.length > 0
-                        }
-                        onCheckedChange={handleSelectAll}
-                      />
-                    </Th>
-                    <Th>Domain</Th>
-                    <Th>Chain</Th>
-                    <Th>Owner</Th>
-                    <Th>NFT Expiry</Th>
-                    <Th>Days Expired</Th>
-                    <Th>Registrar</Th>
-                  </Tr>
-                </Thead>
-                <TableBody>
-                  {verifiedDomains.map((domain) => (
-                    <Tr key={domain.domain}>
-                      <Td>
-                        <Checkbox
-                          checked={selectedDomains.has(domain.domain)}
-                          onCheckedChange={() =>
-                            handleSelectDomain(domain.domain)
-                          }
-                        />
-                      </Td>
-                      <Td>
-                        <AutoTruncateTextV2
-                          minCharactersToDisplay={30}
-                          initialCharactersCountToDisplay={30}
-                        >
-                          {domain.domain}
-                        </AutoTruncateTextV2>
-                      </Td>
-                      <Td>
-                        <Badge variant="outline">
-                          {getChainName(domain.chainId)}
-                        </Badge>
-                      </Td>
-                      <Td>
-                        <div className="flex items-center gap-2 px-1 py-1 bg-muted rounded-xl max-w-full">
-                          <UserWalletAvatar
-                            address={domain.ownerAddress}
-                            className="size-6"
-                          />
-                          <div className="flex-1 min-w-0">
-                            <AutoTruncateTextV2
-                              initialCharactersCountToDisplay={16}
-                              minCharactersToDisplay={16}
-                              className="font-mono text-xs"
-                            >
-                              {domain.ownerAddress}
-                            </AutoTruncateTextV2>
-                          </div>
-                          <button
-                            type="button"
-                            onClick={() =>
-                              handleCopyWallet(domain.ownerAddress)
-                            }
-                            className="p-1 hover:bg-background rounded transition-colors flex-shrink-0"
-                            title="Copy address"
-                          >
-                            <Copy className="h-3 w-3" />
-                          </button>
-                        </div>
-                      </Td>
-                      <Td className="text-sm">
-                        {format(
-                          new Date(domain.nftExpirationDate),
-                          'MMM dd, yyyy',
-                        )}
-                      </Td>
-                      <Td>
-                        <Badge variant="secondary">
-                          {domain.daysSinceExpiration} days
-                        </Badge>
-                      </Td>
-                      <Td className="text-sm text-muted-foreground">
-                        {domain.registrar || 'N/A'}
-                      </Td>
-                    </Tr>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
-          </CardContent>
-        </Card>
-      )}
-
-      {/* Skipped Domains */}
-      {skippedDomains.length > 0 && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <AlertTriangle className="w-5 h-5 text-yellow-600" />
-              Skipped Domains ({skippedDomains.length})
-            </CardTitle>
-            <CardDescription>
-              These domains were skipped during verification
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="rounded-md border">
-              <Table>
-                <Thead>
-                  <Tr>
-                    <Th>Domain</Th>
-                    <Th>Reason</Th>
-                  </Tr>
-                </Thead>
-                <TableBody>
-                  {skippedDomains.map((domain) => (
-                    <Tr key={domain.domain}>
-                      <Td>
-                        <AutoTruncateTextV2
-                          minCharactersToDisplay={30}
-                          initialCharactersCountToDisplay={30}
-                        >
-                          {domain.domain}
-                        </AutoTruncateTextV2>
-                      </Td>
-                      <Td className="text-sm text-muted-foreground">
-                        {domain.reason}
-                      </Td>
-                    </Tr>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
-          </CardContent>
-        </Card>
-      )}
 
       {/* Successful Burns */}
       {successfulBurns.length > 0 && (
@@ -759,11 +530,202 @@ function BulkBurnManagementContent() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* Skipped Domains */}
+      {skippedDomains.length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <AlertTriangle className="w-5 h-5 text-yellow-600" />
+              Skipped Domains ({skippedDomains.length})
+            </CardTitle>
+            <CardDescription>
+              These domains were skipped during verification
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="rounded-md border">
+              <Table>
+                <Thead>
+                  <Tr>
+                    <Th>Domain</Th>
+                    <Th>Reason</Th>
+                  </Tr>
+                </Thead>
+                <TableBody>
+                  {skippedDomains.map((domain) => (
+                    <Tr key={domain.domain}>
+                      <Td>
+                        <AutoTruncateTextV2
+                          minCharactersToDisplay={30}
+                          initialCharactersCountToDisplay={30}
+                        >
+                          {domain.domain}
+                        </AutoTruncateTextV2>
+                      </Td>
+                      <Td className="text-sm text-muted-foreground">
+                        {domain.reason}
+                      </Td>
+                    </Tr>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+      {/* Verified Domains Table - Only show when waiting for approval */}
+      {verifiedDomains.length > 0 && (
+        <Card>
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <div>
+                <CardTitle>Domains Ready to Burn</CardTitle>
+                <CardDescription>
+                  Select domains to approve for burning ({selectedDomains.size}{' '}
+                  of {verifiedDomains.length} selected)
+                </CardDescription>
+              </div>
+              <div className="flex gap-2">
+                <Button
+                  onClick={handleSelectAll}
+                  variant="outline"
+                  size="sm"
+                  disabled={!isWaitingApproval || verifiedDomains.length === 0}
+                >
+                  {selectedDomains.size === verifiedDomains.length
+                    ? 'Deselect All'
+                    : 'Select All'}
+                </Button>
+                <Button
+                  onClick={handleApprove}
+                  variant="default"
+                  size="sm"
+                  disabled={!isWaitingApproval || selectedDomains.size === 0}
+                  className="gap-2"
+                >
+                  <Flame className="w-4 h-4" />
+                  Approve Burn ({selectedDomains.size})
+                </Button>
+                <Button
+                  onClick={handleCancel}
+                  variant="destructive"
+                  size="sm"
+                  disabled={!isWaitingApproval}
+                  className="gap-2"
+                >
+                  <XCircle className="w-4 h-4" />
+                  Cancel Workflow
+                </Button>
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="rounded-md border">
+              <Table>
+                <Thead>
+                  <Tr>
+                    <Th className="w-12">
+                      <Checkbox
+                        checked={
+                          selectedDomains.size === verifiedDomains.length &&
+                          verifiedDomains.length > 0
+                        }
+                        disabled={!isWaitingApproval}
+                        onCheckedChange={handleSelectAll}
+                      />
+                    </Th>
+                    <Th>Domain</Th>
+                    <Th>Chain</Th>
+                    <Th>Owner</Th>
+                    <Th>Registrar DomainStatus</Th>
+                    <Th>NFT Expiry</Th>
+                    <Th>Days Expired</Th>
+                    <Th>Registrar</Th>
+                  </Tr>
+                </Thead>
+                <TableBody>
+                  {verifiedDomains.map((domain) => (
+                    <Tr key={domain.domain}>
+                      <Td>
+                        <Checkbox
+                          checked={selectedDomains.has(domain.domain)}
+                          disabled={!isWaitingApproval}
+                          onCheckedChange={() =>
+                            handleSelectDomain(domain.domain)
+                          }
+                        />
+                      </Td>
+                      <Td>
+                        <AutoTruncateTextV2
+                          minCharactersToDisplay={30}
+                          initialCharactersCountToDisplay={30}
+                        >
+                          {domain.domain}
+                        </AutoTruncateTextV2>
+                      </Td>
+                      <Td>
+                        <Badge variant="outline">
+                          {getChainName(domain.chainId)}
+                        </Badge>
+                      </Td>
+                      <Td>
+                        <div className="flex items-center gap-2 px-1 py-1 bg-muted rounded-xl max-w-full">
+                          <UserWalletAvatar
+                            address={domain.ownerAddress}
+                            className="size-6"
+                          />
+                          <div className="flex-1 min-w-0">
+                            <AutoTruncateTextV2
+                              initialCharactersCountToDisplay={16}
+                              minCharactersToDisplay={16}
+                              className="font-mono text-xs"
+                            >
+                              {domain.ownerAddress}
+                            </AutoTruncateTextV2>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() =>
+                              handleCopyWallet(domain.ownerAddress)
+                            }
+                            className="p-1 hover:bg-background rounded transition-colors flex-shrink-0"
+                            title="Copy address"
+                          >
+                            <Copy className="h-3 w-3" />
+                          </button>
+                        </div>
+                      </Td>
+                      <Td>
+                        <Badge variant="secondary">
+                          Not found in registrar account
+                        </Badge>
+                      </Td>
+                      <Td className="text-sm">
+                        {format(
+                          new Date(domain.nftExpirationDate),
+                          'MMM dd, yyyy',
+                        )}
+                      </Td>
+                      <Td>
+                        <Badge variant="secondary">
+                          {domain.daysSinceExpiration} days
+                        </Badge>
+                      </Td>
+                      <Td className="text-sm text-muted-foreground">
+                        {domain.registrar || 'N/A'}
+                      </Td>
+                    </Tr>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 }
-
-export default withAdminGuard(BulkBurnManagementContent);
 
 export function getTransactionExplorerUrl(
   chainId: number | null | undefined,
@@ -778,4 +740,70 @@ export function getTransactionExplorerUrl(
     ? baseUrl.slice(0, -1)
     : baseUrl;
   return `${normalizedBaseUrl}/tx/${txHash}`;
+}
+
+export default function BulkBurnManagement({
+  workflowId,
+}: {
+  workflowId?: string;
+}) {
+  if (!workflowId) {
+    return <div>Invalid workflow ID</div>;
+  }
+  return <BulkBurnManagementContent workflowId={workflowId} />;
+}
+
+function getStatusBadge(status: string) {
+  switch (status) {
+    case 'VERIFYING':
+      return (
+        <Badge variant="secondary" className="gap-1">
+          <Loader2 className="w-3 h-3 animate-spin" />
+          Verifying
+        </Badge>
+      );
+    case 'WAITING_APPROVAL':
+      return (
+        <Badge variant="default" className="gap-1">
+          <Clock className="w-3 h-3" />
+          Waiting for Approval
+        </Badge>
+      );
+    case 'PROCESSING':
+      return (
+        <Badge variant="secondary" className="gap-1">
+          <Loader2 className="w-3 h-3 animate-spin" />
+          Processing Burns
+        </Badge>
+      );
+    case 'COMPLETED':
+      return (
+        <Badge variant="default" className="gap-1 bg-green-500">
+          <CheckCircle2 className="w-3 h-3" />
+          Completed
+        </Badge>
+      );
+    case 'CANCELLED':
+      return (
+        <Badge variant="destructive" className="gap-1">
+          <XCircle className="w-3 h-3" />
+          Cancelled
+        </Badge>
+      );
+    default:
+      return <Badge variant="secondary">{status}</Badge>;
+  }
+}
+
+function getChainName(chainId: number) {
+  switch (chainId) {
+    case 1:
+      return 'Ethereum';
+    case 8453:
+      return 'Base';
+    case 11155111:
+      return 'Sepolia';
+    default:
+      return `Chain ${chainId}`;
+  }
 }

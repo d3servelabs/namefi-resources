@@ -1,5 +1,5 @@
 'use client';
 import { withAdminGuard } from '@/components/admin/admin-guard';
-import BulkBurnManagement from '../../../components/admin/bulk-burn-management';
+import BulkBurnWorkflowsList from '../../../components/admin/bulk-burn-workflows-list';
 
-export default withAdminGuard(BulkBurnManagement);
+export default withAdminGuard(BulkBurnWorkflowsList);

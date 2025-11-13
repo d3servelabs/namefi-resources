@@ -536,6 +536,132 @@ export const adminRouter = createTRPCRouter({
   }),
 
   // Bulk Burn Workflow Management
+  getAllBulkBurnWorkflows: adminProcedureWithPermissions(
+    Permission.WRITE_NFT,
+  ).query(async () => {
+    try {
+      await temporalClient.connection.ensureConnected();
+
+      // Query for all bulk burn workflows (running and completed)
+      const workflowList = await temporalClient.workflow.list({
+        query: 'WorkflowType = "bulkBurnExpiredDomainsWorkflow"',
+      });
+
+      const workflows = [];
+      for await (const workflowInfo of workflowList) {
+        try {
+          const workflowHandle = temporalClient.workflow.getHandle(
+            workflowInfo.workflowId,
+          );
+
+          let state: BulkBurnWorkflowState | null = null;
+
+          // Only query state if workflow is still running
+          if (workflowInfo.status?.name === 'RUNNING') {
+            try {
+              state = await workflowHandle.query(getBulkBurnWorkflowStateQuery);
+            } catch (error) {
+              logger.warn(
+                { workflowId: workflowInfo.workflowId, error },
+                'Failed to query running workflow state',
+              );
+            }
+          }
+
+          workflows.push({
+            workflowId: workflowInfo.workflowId,
+            status: workflowInfo.status?.name || 'Unknown',
+            startTime: workflowInfo.startTime,
+            closeTime: workflowInfo.closeTime,
+            runId: workflowInfo.runId,
+            state: state || undefined,
+          });
+        } catch (error) {
+          logger.error(
+            { workflowId: workflowInfo.workflowId, error },
+            'Failed to process bulk burn workflow',
+          );
+        }
+      }
+
+      // Sort by start time descending (most recent first)
+      workflows.sort((a, b) => {
+        const aTime = a.startTime ? new Date(a.startTime).getTime() : 0;
+        const bTime = b.startTime ? new Date(b.startTime).getTime() : 0;
+        return bTime - aTime;
+      });
+
+      return workflows;
+    } catch (error) {
+      logger.error(
+        { context: 'getAllBulkBurnWorkflows', error },
+        'Failed to fetch bulk burn workflows',
+      );
+      return [];
+    }
+  }),
+
+  getBulkBurnWorkflowById: adminProcedureWithPermissions(Permission.WRITE_NFT)
+    .input(
+      z.object({
+        workflowId: z.string(),
+      }),
+    )
+    .query(async ({ input }) => {
+      const { workflowId } = input;
+
+      try {
+        await temporalClient.connection.ensureConnected();
+
+        const workflowHandle = temporalClient.workflow.getHandle(workflowId);
+        const workflowInfo = await workflowHandle.describe();
+
+        let state: BulkBurnWorkflowState | null = null;
+
+        // Try to query state
+        try {
+          state = await workflowHandle.query(getBulkBurnWorkflowStateQuery);
+        } catch (error) {
+          logger.warn(
+            { workflowId, error },
+            'Failed to query workflow state (may be completed)',
+          );
+        }
+
+        return {
+          exists: true,
+          workflowId: workflowInfo.workflowId,
+          status:
+            state?.currentStatus || workflowInfo.status?.name || 'Unknown',
+          startTime: workflowInfo.startTime,
+          closeTime: workflowInfo.closeTime,
+          runId: workflowInfo.runId,
+          state: state
+            ? {
+                currentStatus: state.currentStatus,
+                totalRequested: state.totalRequested,
+                verifiedDomains: state.verifiedDomains,
+                skippedDomains: state.skippedDomains,
+                approvedDomains: state.approvedDomains,
+                successfulBurns: state.successfulBurns,
+                failedBurns: state.failedBurns,
+                verificationTime: state.verificationTime,
+                approvalTime: state.approvalTime,
+                completionTime: state.completionTime,
+              }
+            : undefined,
+        };
+      } catch (error) {
+        logger.error(
+          { workflowId, error },
+          'Failed to fetch bulk burn workflow by ID',
+        );
+        return {
+          exists: false,
+        };
+      }
+    }),
+
   getPendingBulkBurnWorkflow: adminProcedureWithPermissions(
     Permission.WRITE_NFT,
   ).query(async () => {

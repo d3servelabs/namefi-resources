@@ -4,6 +4,7 @@ import { createLogger } from '#lib/logger';
 import { sldRegistrar } from '#lib/namefi-registry';
 import { temporalClient } from '#temporal/client';
 import { sendMail } from '../../../mail/mail-client';
+import { secrets, config } from '#lib/env';
 
 const logger = createLogger({ name: 'bulk-burn-activities' });
 
@@ -120,6 +121,9 @@ export async function sendPendingBurnNotification(
   logger.info({ workflowId, domainCount }, 'Sending pending burn notification');
 
   try {
+    const baseUrl = config.APP_URL || 'https://namefi.io';
+    const workflowUrl = `${baseUrl}/admin/bulk-burn/${encodeURIComponent(workflowId)}`;
+
     const subject = `[Pending Action] Bulk Burn Workflow Awaiting Approval - ${domainCount} domains`;
     const htmlContent = `
       <html>
@@ -131,19 +135,30 @@ export async function sendPendingBurnNotification(
           <div style="background-color: #f8f9fa; border-left: 4px solid #007bff; padding: 15px; margin: 20px 0;">
             <h3 style="margin-top: 0;">Workflow Details</h3>
             <ul style="list-style: none; padding-left: 0;">
-              <li><strong>Workflow ID:</strong> ${workflowId}</li>
+              <li><strong>Workflow ID:</strong> <code>${workflowId}</code></li>
               <li><strong>Domains Ready to Burn:</strong> ${domainCount}</li>
               <li><strong>Status:</strong> Waiting for approval signal</li>
             </ul>
           </div>
 
+          <div style="margin: 30px 0;">
+            <a href="${workflowUrl}"
+               style="display: inline-block; padding: 12px 24px; background-color: #007bff; color: white; text-decoration: none; border-radius: 4px; font-weight: bold;">
+              Review & Approve Workflow
+            </a>
+          </div>
+
           <p>
-            Please review the pending bulk burn workflow in the admin dashboard and either:
+            In the admin dashboard, you can:
           </p>
           <ul>
             <li><strong>Approve:</strong> Select domains to burn and send approval signal</li>
             <li><strong>Cancel:</strong> Cancel the bulk burn operation</li>
           </ul>
+
+          <p style="margin-top: 20px;">
+            <a href="${workflowUrl}" style="color: #007bff;">View Workflow Details →</a>
+          </p>
 
           <p style="color: #6c757d; font-size: 12px; margin-top: 30px;">
             This is an automated notification from the NameFi domain management system.
