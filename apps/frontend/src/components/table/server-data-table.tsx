@@ -10,6 +10,7 @@ import {
   type ExpandedState,
   type Row,
   type ColumnFiltersState,
+  type ColumnOrderState,
 } from '@tanstack/react-table';
 import {
   useState,
@@ -45,6 +46,7 @@ import { Input } from '@/components/ui/shadcn/input';
 import { Badge } from '@/components/ui/shadcn/badge';
 import { ColumnFilter } from './column-filter';
 import { TableFilterPanel } from './table-filter-panel';
+import { isNotNil } from 'ramda';
 
 type FilterConfig = {
   [columnId: string]: {
@@ -110,6 +112,10 @@ type ServerDataTableProps<TData> = {
 
   columnVisibility?: VisibilityState;
   onColumnVisibilityChange?: Dispatch<SetStateAction<VisibilityState>>;
+
+  // Column ordering
+  columnOrder?: ColumnOrderState;
+  onColumnOrderChange?: Dispatch<SetStateAction<ColumnOrderState>>;
 };
 
 export function ServerDataTable<TData>(props: ServerDataTableProps<TData>) {
@@ -140,11 +146,32 @@ export function ServerDataTable<TData>(props: ServerDataTableProps<TData>) {
     loadingMessage = 'Loading...',
     columnVisibility,
     onColumnVisibilityChange,
+    columnOrder: controlledColumnOrder,
+    onColumnOrderChange,
   } = props;
 
   const [columnSizing, setColumnSizing] = useState<ColumnSizingState>({});
   const [expanded, setExpanded] = useState<ExpandedState>({});
   const [filterPanelOpen, setFilterPanelOpen] = useState(false);
+  const [draggedColumn, setDraggedColumn] = useState<string | null>(null);
+
+  // Local state for column order if not controlled
+  const [localColumnOrder, setLocalColumnOrder] = useState<ColumnOrderState>(
+    [],
+  );
+  const isControlledColumnOrder = isNotNil(controlledColumnOrder);
+  const columnOrder = isControlledColumnOrder
+    ? controlledColumnOrder
+    : localColumnOrder;
+  const setColumnOrder = isControlledColumnOrder
+    ? (updater: any) => {
+        const newValue =
+          typeof updater === 'function'
+            ? updater(controlledColumnOrder ?? [])
+            : updater;
+        onColumnOrderChange?.(newValue);
+      }
+    : setLocalColumnOrder;
 
   // Local state for sorting if not controlled
   const [localSorting, setLocalSorting] = useState<SortingState>([]);
@@ -182,12 +209,14 @@ export function ServerDataTable<TData>(props: ServerDataTableProps<TData>) {
       columnSizing,
       expanded,
       columnFilters,
+      columnOrder,
     },
     onSortingChange: setSorting,
     onColumnVisibilityChange,
     onColumnSizingChange: setColumnSizing,
     onExpandedChange: setExpanded,
     onColumnFiltersChange: setColumnFilters,
+    onColumnOrderChange: setColumnOrder,
     getCoreRowModel: getCoreRowModel(),
     getExpandedRowModel: getExpandedRowModel(),
     getRowCanExpand: getRowCanExpand,
@@ -205,6 +234,47 @@ export function ServerDataTable<TData>(props: ServerDataTableProps<TData>) {
 
   // Check if any columns have been manually resized
   const hasResizedColumns = Object.keys(columnSizing).length > 0;
+
+  // Column reordering handlers
+  const handleDragStart = useCallback((columnId: string) => {
+    setDraggedColumn(columnId);
+  }, []);
+
+  const handleDragOver = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+  }, []);
+
+  const handleDrop = useCallback(
+    (targetColumnId: string) => {
+      if (!draggedColumn || draggedColumn === targetColumnId) {
+        setDraggedColumn(null);
+        return;
+      }
+
+      const currentOrder = table.getState().columnOrder;
+      const allColumns = table.getAllLeafColumns().map((col) => col.id);
+
+      // Use current order if set, otherwise use default column order
+      const workingOrder = currentOrder.length > 0 ? currentOrder : allColumns;
+
+      const draggedIndex = workingOrder.indexOf(draggedColumn);
+      const targetIndex = workingOrder.indexOf(targetColumnId);
+
+      if (draggedIndex === -1 || targetIndex === -1) {
+        setDraggedColumn(null);
+        return;
+      }
+
+      // Create new order by removing dragged column and inserting at target position
+      const newOrder = [...workingOrder];
+      newOrder.splice(draggedIndex, 1);
+      newOrder.splice(targetIndex, 0, draggedColumn);
+
+      setColumnOrder(newOrder);
+      setDraggedColumn(null);
+    },
+    [draggedColumn, table, setColumnOrder],
+  );
 
   // Calculate total table width based on column sizes
   const totalTableWidth = table
@@ -347,10 +417,19 @@ export function ServerDataTable<TData>(props: ServerDataTableProps<TData>) {
                   {hg.headers.map((header) => (
                     <th
                       key={header.id}
+                      draggable
+                      onDragStart={() => handleDragStart(header.column.id)}
+                      onDragOver={handleDragOver}
+                      onDrop={() => handleDrop(header.column.id)}
                       className={cn(
                         'px-4 py-3 text-left text-xs font-semibold text-muted-foreground uppercase tracking-wider',
                         header.column.getCanSort() &&
                           'cursor-pointer select-none hover:text-foreground transition-colors',
+                        draggedColumn === header.column.id &&
+                          'opacity-50 bg-muted',
+                        draggedColumn &&
+                          draggedColumn !== header.column.id &&
+                          'cursor-move',
                       )}
                       onClick={header.column.getToggleSortingHandler()}
                       style={{
