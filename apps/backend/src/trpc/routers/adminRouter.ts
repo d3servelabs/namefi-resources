@@ -10,6 +10,12 @@ import {
   paymentsTable,
 } from '@namefi-astra/db';
 import {
+  buildWhereClause,
+  buildSortClause,
+  type FilterOptions,
+  type SortOptions,
+} from '@samyx/drizzler-filters-sorters';
+import {
   namefiNormalizedDomainSchema,
   type NamefiNormalizedDomain,
   checksumWalletAddressSchema,
@@ -2405,6 +2411,201 @@ export const adminRouter = createTRPCRouter({
         };
       } catch (error) {
         logger.error({ error }, 'Failed to list users');
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to list users',
+        });
+      }
+    }),
+
+  listUsersV2: adminProcedureWithPermissions(Permission.READ_USERS)
+    .input(
+      z.object({
+        page: z.number().min(1).default(1),
+        pageSize: z.number().min(1).max(100).default(25),
+        searchTerm: z.string().optional(),
+        domainSearchTerm: z.string().optional(),
+        ensSearchTerm: z.string().optional(),
+        filters: z.any().optional(), // FilterOptions type from drizzler
+        sorting: z.any().optional(), // SortOptions type from drizzler
+      }),
+    )
+    .query(async ({ input }) => {
+      const {
+        page,
+        pageSize,
+        searchTerm,
+        domainSearchTerm,
+        ensSearchTerm,
+        filters,
+        sorting,
+      } = input;
+      const offset = (page - 1) * pageSize;
+
+      // Fetch admin users once
+      const adminIdsSet = await getAllUsersThatCanAccessAdminPanel();
+
+      // Trigger cache refresh (non-blocking)
+      const [cacheRefreshResult, cacheStatus] = await Promise.all([
+        triggerUpdatePrivyCache(false).catch((error) => {
+          logger.trace({ error }, 'Failed to trigger Privy cache refresh');
+          return null;
+        }),
+        getPrivyCacheStatus().catch((error) => {
+          logger.trace({ error }, 'Failed to get Privy cache status');
+          return null;
+        }),
+      ]);
+
+      // Define table structure for drizzler
+      const tableStructure = {
+        id: usersTable.id,
+        privyUserId: usersTable.privyUserId,
+        createdAt: usersTable.createdAt,
+        updatedAt: usersTable.updatedAt,
+        lastSignInAt: usersTable.lastSignInAt,
+        displayName: privyUsersTableSchema.displayName,
+        primaryEmail: sql<
+          string | null
+        >`TRIM(LOWER(${privyUsersTableSchema.email}))`.as('primary_email'),
+        twitterUsername: privyUsersTableSchema.twitterUsername,
+        nftCount: userNftsCTE.nftCount,
+      };
+
+      // Build base query
+      const baseQuery = db
+        .with(userNftsCTE)
+        .select({
+          id: usersTable.id,
+          privyUserId: usersTable.privyUserId,
+          createdAt: usersTable.createdAt,
+          updatedAt: usersTable.updatedAt,
+          lastSignInAt: usersTable.lastSignInAt,
+          twitterUsername: privyUsersTableSchema.twitterUsername,
+          twitterDetails: privyUsersTableSchema.twitterDetails,
+          primaryEmail: sql<
+            string | null
+          >`TRIM(LOWER(${privyUsersTableSchema.email}))`.as('primary_email'),
+          displayName: privyUsersTableSchema.displayName,
+          wallets: privyUsersTableSchema.wallets,
+          nfts: userNftsCTE.nfts,
+          nftCount: userNftsCTE.nftCount,
+        })
+        .from(usersTable)
+        .leftJoin(
+          privyUsersTableSchema,
+          eq(privyUsersTableSchema.privyUserId, usersTable.privyUserId),
+        )
+        .leftJoin(userNftsCTE, eq(userNftsCTE.userId, usersTable.id))
+        .$dynamic();
+
+      // Build WHERE clauses
+      const whereClauses: SQL[] = [];
+
+      // Add general search term filter (same as before)
+      const term = (searchTerm ?? '').trim().toLowerCase();
+      const privySearchClause = buildPrivySearchWhereClause(
+        term,
+        privyUsersTableSchema,
+      );
+      if (privySearchClause) {
+        whereClauses.push(privySearchClause);
+      }
+
+      // Add domain-specific search (same as before)
+      const domainTerm = (domainSearchTerm ?? '').trim().toLowerCase();
+      if (domainTerm.length > 0) {
+        const domainLikeTerm = `%${domainTerm}%`;
+        whereClauses.push(sql`EXISTS (
+          SELECT 1 FROM json_array_elements(
+            COALESCE(${userNftsCTE.nfts}, '[]'::json)
+          ) AS nft
+          WHERE nft->>'normalizedDomainName' ILIKE ${domainLikeTerm}
+        )`);
+      }
+
+      // Add ENS-specific search (same as before)
+      const ensTerm = (ensSearchTerm ?? '').trim().toLowerCase();
+      if (ensTerm.length > 0) {
+        let ensResolvedWallet: string | null = null;
+        if (ensTerm.includes('.')) {
+          try {
+            const addr = await resolveENSToWallet(ensTerm);
+            if (addr) ensResolvedWallet = addr.toLowerCase();
+          } catch {}
+        }
+        if (ensResolvedWallet) {
+          whereClauses.push(
+            sql`${privyUsersTableSchema.wallets} @> ARRAY[${ensResolvedWallet}]::text[]`,
+          );
+        }
+      }
+
+      // Add column filters using drizzler buildWhereClause
+      if (filters) {
+        const drizzlerWhere = buildWhereClause(
+          tableStructure,
+          filters as FilterOptions<any>,
+        );
+
+        if (drizzlerWhere) {
+          whereClauses.push(drizzlerWhere);
+        }
+      }
+
+      // Apply WHERE clauses
+      let query = baseQuery;
+      if (whereClauses.length > 0) {
+        query = query.where(and(...whereClauses));
+      }
+      // Build ORDER BY using drizzler buildSortClause or default
+      const orderByClauses = sorting
+        ? buildSortClause(tableStructure, sorting as SortOptions<any>)
+        : [sql`${usersTable.createdAt} DESC`];
+
+      try {
+        // Build count query
+        const countQuery = db
+          .select({ count: sql<number>`COUNT(*)::int` })
+          .from(query.as('sq'));
+
+        // Execute queries in parallel
+        const [rows, countRow] = await Promise.all([
+          query
+            .orderBy(...orderByClauses)
+            .limit(pageSize)
+            .offset(offset),
+          countQuery,
+        ]);
+
+        const items = rows.map((r) => ({
+          id: r.id,
+          privyUserId: r.privyUserId,
+          primaryEmail: r.primaryEmail,
+          createdAt: r.createdAt,
+          updatedAt: r.updatedAt,
+          lastSignInAt: r.lastSignInAt ?? null,
+          twitterUsername: r.twitterUsername ?? null,
+          twitterDetails: r.twitterDetails ?? null,
+          isAdmin: adminIdsSet.has(r.id),
+          displayName: r.displayName ?? null,
+          wallets: r.wallets ?? [],
+          nfts: r.nfts ?? [],
+          nftCount: r.nftCount ?? 0,
+        }));
+
+        const total = countRow[0]?.count ?? 0;
+        return {
+          items,
+          page,
+          pageSize,
+          total,
+          totalPages: Math.ceil(total / pageSize),
+          cacheLastRefresh: cacheStatus?.lastRefresh || null,
+          cacheExpiresAt: cacheStatus?.expiresAt || null,
+        };
+      } catch (error) {
+        logger.error({ error }, 'Failed to list users v2');
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to list users',
