@@ -60,6 +60,7 @@ type TableFilterPanelProps = {
   columnFilters: ColumnFiltersState;
   onColumnFiltersChange: (filters: ColumnFiltersState) => void;
   customFilters?: CustomFilterField[];
+  onClearAll?: () => void;
 };
 
 const OPERATORS_BY_TYPE: Record<
@@ -376,6 +377,7 @@ export function TableFilterPanel({
   columnFilters,
   onColumnFiltersChange,
   customFilters = [],
+  onClearAll,
 }: TableFilterPanelProps) {
   const activeFiltersCount =
     columnFilters.length +
@@ -395,14 +397,16 @@ export function TableFilterPanel({
     onColumnFiltersChange(newFilters);
   };
 
-  const handleClearAll = () => {
-    onColumnFiltersChange([]);
-    // Clear all custom filters
-    customFilters.forEach((filter) => {
-      filter.onChange(undefined);
-      filter.onClear?.();
-    });
-  };
+  const handleClearAll = onClearAll
+    ? onClearAll
+    : () => {
+        onColumnFiltersChange([]);
+        // Clear all custom filters
+        customFilters.forEach((filter) => {
+          filter.onChange(undefined);
+          filter.onClear?.();
+        });
+      };
 
   const getFilterValue = (columnId: string): FilterValue | undefined => {
     const filter = columnFilters.find((f) => f.id === columnId);
