@@ -40,7 +40,7 @@ import { isNotNil, isNotEmpty } from 'ramda';
 import { switchCaseOrDefault, resolve } from '@namefi-astra/utils';
 import type { Chain } from 'viem';
 import { logger } from '#lib/logger';
-import { getNfscBalanceInUSD } from './mint.activities';
+import { getNfscBalanceInUSD } from './mint/mint.activities';
 import { privyClient } from '../../trpc/utils';
 import type { WalletWithMetadata } from '@privy-io/server-auth';
 import { $withTransaction } from '@namefi-astra/db';

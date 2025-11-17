@@ -35,7 +35,7 @@ import { parseDomainName } from '@namefi-astra/utils/parse-domain-name';
 import { prepareDomainForExportWorkflow } from '#temporal/workflows/domain-ownership/prepare-domain-for-export.workflow';
 import { temporalClient } from '#temporal/client';
 import { TEMPORAL_QUEUES } from '#temporal/shared';
-import { getNamefiNftLock } from '#temporal/activities/namefi-nft';
+import { getNamefiNftLock } from '#temporal/activities/mint/namefi-nft';
 import { getEppLockState } from '#temporal/activities/domain/registrar.activities';
 import { getDomainChain } from '#temporal/activities/domain/index';
 import type { WorkflowExecutionStatusName } from '@temporalio/client';

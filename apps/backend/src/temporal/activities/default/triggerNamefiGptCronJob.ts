@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { secrets } from '../../lib/env';
+import { secrets } from '#lib/env';
 
 export async function triggerNamefiGptCronJob() {
   if (!secrets.GITHUB_WORKFLOWS_TOKEN) {

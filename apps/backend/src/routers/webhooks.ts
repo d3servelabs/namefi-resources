@@ -3,7 +3,7 @@ import { CHAINS } from '@namefi-astra/utils/chains';
 import { switchCaseOrDefault } from '@namefi-astra/utils/match';
 import { Hono } from 'hono';
 import { secrets } from '#lib/env';
-import { updateNamefiNftIndex } from '../temporal/activities/namefi-nft';
+import { updateNamefiNftIndex } from '../temporal/activities/mint/namefi-nft';
 import { triggerUpdateNamefiNftIndex } from '../temporal/schedules/update-namefi-nft-index';
 
 // Router for webhooks

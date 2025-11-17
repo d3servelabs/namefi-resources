@@ -1,9 +1,9 @@
 export * as MigrationActivities from './migration.activities';
 export * as MongoAiMigrationActivities from './migration/mongo-ai-migration.activities';
 export * as GreetActivities from './greet.activities';
-export * as MintActivities from './mint.activities';
+export * as MintActivities from './mint/mint.activities';
 export * as PaymentActivities from './payment.activities';
-export * as NamefiNftActivities from './namefi-nft';
+export * as NamefiNftActivities from './mint/namefi-nft';
 export * as OrderActivities from './order.activities';
 export * as NotifyActivities from './notify.activities';
 export * as NftManagementReportActivities from './indexers/reporting/nft-management-report.activities';

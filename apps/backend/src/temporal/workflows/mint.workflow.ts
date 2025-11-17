@@ -4,7 +4,7 @@ import type {
   PreparedTxOnlySerializableParams,
   TxPrepareResult,
   TxSendResult,
-} from '../activities/mint.activities';
+} from '../activities/mint/mint.activities';
 import { TEMPORAL_ENUMS } from '../shared/enums';
 import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';
 

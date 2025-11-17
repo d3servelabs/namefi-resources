@@ -6,7 +6,7 @@
  * Usage:
  *   bun run command:get-nft-updates
  */
-import { updateNamefiNftIndex } from '../temporal/activities/namefi-nft';
+import { updateNamefiNftIndex } from '../temporal/activities/mint/namefi-nft';
 
 // Start the process
 async function main(): Promise<void> {
