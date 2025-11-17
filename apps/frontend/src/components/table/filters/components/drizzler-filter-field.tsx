@@ -29,7 +29,7 @@ type DrizzlerFilterFieldProps = {
 };
 
 // Operator definitions by field type
-const OPERATORS_BY_TYPE: Record<
+export const OPERATORS_BY_TYPE: Record<
   string,
   { value: FilterOperators; label: string }[]
 > = {
@@ -38,8 +38,8 @@ const OPERATORS_BY_TYPE: Record<
     { value: 'ilike', label: 'Contains (case-insensitive)' },
     { value: 'eq', label: 'Equals' },
     { value: 'neq', label: 'Not Equals' },
-    { value: 'isNull', label: 'Is Null' },
-    { value: 'isNotNull', label: 'Is Not Null' },
+    { value: 'isnull', label: 'Is Null' },
+    { value: 'not_isnull', label: 'Is Not Null' },
   ],
   number: [
     { value: 'eq', label: 'Equals' },
@@ -48,8 +48,8 @@ const OPERATORS_BY_TYPE: Record<
     { value: 'gte', label: 'Greater or Equal' },
     { value: 'lt', label: 'Less Than' },
     { value: 'lte', label: 'Less or Equal' },
-    { value: 'isNull', label: 'Is Null' },
-    { value: 'isNotNull', label: 'Is Not Null' },
+    { value: 'isnull', label: 'Is Null' },
+    { value: 'not_isnull', label: 'Is Not Null' },
   ],
   date: [
     { value: 'eq', label: 'Equals' },
@@ -58,20 +58,39 @@ const OPERATORS_BY_TYPE: Record<
     { value: 'gte', label: 'On or After' },
     { value: 'lt', label: 'Before' },
     { value: 'lte', label: 'On or Before' },
-    { value: 'isNull', label: 'Is Null' },
-    { value: 'isNotNull', label: 'Is Not Null' },
+    { value: 'isnull', label: 'Is Null' },
+    { value: 'not_isnull', label: 'Is Not Null' },
   ],
   select: [
     { value: 'eq', label: 'Equals' },
     { value: 'neq', label: 'Not Equals' },
-    { value: 'inArray', label: 'In List' },
-    { value: 'notInArray', label: 'Not In List' },
-    { value: 'isNull', label: 'Is Null' },
-    { value: 'isNotNull', label: 'Is Not Null' },
+    { value: 'in_array', label: 'In List' },
+    { value: 'not_in_array', label: 'Not In List' },
+    { value: 'isnull', label: 'Is Null' },
+    { value: 'not_isnull', label: 'Is Not Null' },
+  ],
+  array: [
+    { value: 'isnull', label: 'Is Null' },
+    { value: 'not_isnull', label: 'Is Not Null' },
+
+    { value: 'array_all_i_like', label: 'All Elements Equals' },
+    { value: 'not_array_all_i_like', label: 'All Elements Does Not Equal' },
+
+    { value: 'array_any_i_like', label: 'Any Element Equals' },
+    { value: 'not_array_any_i_like', label: 'Any Element Does Not Equal' },
+
+    { value: 'array_all_i_contains', label: 'All Elements Contain' },
+    { value: 'not_array_all_i_contains', label: 'All Elements Do Not Contain' },
+
+    { value: 'array_any_i_contains', label: 'Any Element Contains' },
+    {
+      value: 'not_array_any_i_contains',
+      label: 'Any Element Does Not Contain',
+    },
   ],
 };
 
-const UNARY_OPERATORS: FilterOperators[] = ['isNull', 'isNotNull'];
+const UNARY_OPERATORS: FilterOperators[] = ['isnull', 'not_isnull'];
 
 const formatValueForDisplay = (value: unknown, type: string): string => {
   if (value instanceof Date) {
@@ -88,23 +107,57 @@ function SingleConditionEditor({
   fieldType,
   fieldOptions,
   allowedOperators,
+  typeSpecificOptions,
+  operatorsCustomLabels,
   onChange,
   onRemove,
   showRemove,
 }: {
   condition: DrizzlerFilterCondition;
-  fieldType: 'text' | 'number' | 'date' | 'select';
+  fieldType: 'text' | 'number' | 'date' | 'select' | 'array';
   fieldOptions?: { value: string; label: string }[];
   allowedOperators?: FilterOperators[];
+  typeSpecificOptions?: DrizzlerFilterFieldConfig['typeSpecificOptions'];
+  operatorsCustomLabels?: Record<FilterOperators, string>;
   onChange: (updated: DrizzlerFilterCondition) => void;
   onRemove: () => void;
   showRemove: boolean;
 }) {
   const allOperators = OPERATORS_BY_TYPE[fieldType] ?? OPERATORS_BY_TYPE.text;
   // Filter operators based on allowedOperators if provided
-  const operators = allowedOperators
-    ? allOperators.filter((op) => allowedOperators.includes(op.value))
-    : allOperators;
+  const operators = useMemo(() => {
+    let operatorsList = allowedOperators
+      ? allOperators.filter((op) => allowedOperators.includes(op.value))
+      : allOperators;
+    if (operatorsCustomLabels) {
+      operatorsList = operatorsList.map((op) => ({
+        ...op,
+        label: operatorsCustomLabels[op.value] ?? op.label,
+      }));
+    }
+    if (fieldType === 'array') {
+      return operatorsList.map((op) => ({
+        ...op,
+        label: op.label
+          .replace(
+            'Elements',
+            typeSpecificOptions?.array?.elementName?.plural ?? 'Elements',
+          )
+          .replace(
+            'Element',
+            typeSpecificOptions?.array?.elementName?.singular ?? 'Element',
+          ),
+      }));
+    }
+    return operatorsList;
+  }, [
+    allowedOperators,
+    allOperators,
+    fieldType,
+    typeSpecificOptions?.array?.elementName?.plural,
+    typeSpecificOptions?.array?.elementName?.singular,
+    operatorsCustomLabels,
+  ]);
   const isUnaryOperator = UNARY_OPERATORS.includes(condition.operator);
 
   const [localValue, setLocalValue] = useState<string>(
@@ -261,13 +314,14 @@ export function DrizzlerFilterField({
     if (!_conditions || _conditions.length === 0) {
       return [
         {
-          operator: 'eq',
+          operator:
+            field.type === 'array' ? OPERATORS_BY_TYPE.array[3]?.value : 'eq',
           value: undefined,
         },
       ];
     }
     return _conditions;
-  }, [_conditions]);
+  }, [_conditions, field.type]);
   const canAddMoreConditions =
     field.maxConditions === undefined ||
     conditions.length < field.maxConditions;
@@ -326,6 +380,8 @@ export function DrizzlerFilterField({
               fieldType={field.type}
               fieldOptions={field.options}
               allowedOperators={field.allowedOperators}
+              typeSpecificOptions={field.typeSpecificOptions}
+              operatorsCustomLabels={field.operatorsCustomLabels}
               onChange={(updated) => handleUpdateCondition(index, updated)}
               onRemove={() => handleRemoveCondition(index)}
               showRemove={conditions.length > 1}

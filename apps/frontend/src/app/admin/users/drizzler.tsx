@@ -66,6 +66,7 @@ import {
   Tooltip,
 } from '@/components/ui/shadcn/tooltip';
 import { cn } from '@/lib/cn';
+import { OPERATORS_BY_TYPE } from '@/components/table/filters/components/drizzler-filter-field';
 
 const attemptGetChecksummedAddress = (address: string): string => {
   const parsed = checksumWalletAddressSchema.safeParse(address);
@@ -625,28 +626,58 @@ function UsersTableV2() {
         label: 'NFT Count',
         type: 'number',
         columnId: 'nftCount',
-        maxConditions: 2, // Allow range filtering (e.g., >= 5 AND <= 10)
       },
       createdAt: {
         id: 'createdAt',
         label: 'Created At',
         type: 'date',
         columnId: 'createdAt',
-        maxConditions: 2, // Allow date range filtering
       },
       updatedAt: {
         id: 'updatedAt',
         label: 'Updated At',
         type: 'date',
         columnId: 'updatedAt',
-        maxConditions: 2,
       },
       lastSignInAt: {
         id: 'lastSignInAt',
         label: 'Last Sign In',
         type: 'date',
         columnId: 'lastSignInAt',
-        maxConditions: 2,
+      },
+      wallets: {
+        id: 'allWallets',
+        label: 'All Wallets',
+        type: 'array',
+        columnId: 'wallets',
+        allowedOperators: OPERATORS_BY_TYPE.array
+          .map((op) => op.value)
+          .filter(
+            (op) =>
+              op !== 'array_all_i_like' &&
+              op !== 'not_array_all_i_like' &&
+              op !== 'not_array_any_i_like',
+          ),
+        typeSpecificOptions: {
+          array: {
+            elementName: {
+              singular: 'Wallet',
+              plural: 'Wallets',
+            },
+          },
+        },
+      },
+      primaryWallet: {
+        id: 'primaryWallet',
+        label: 'Primary Wallet',
+        type: 'text',
+        columnId: 'primaryWallet',
+      },
+      walletCount: {
+        id: 'walletCount',
+        label: 'Linked Wallets Count',
+        type: 'number',
+        columnId: 'walletCount',
       },
     },
     customFilters: {

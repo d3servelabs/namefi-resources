@@ -23,11 +23,20 @@ export type DefaultSingleFilterState = {
 export type DrizzlerFilterFieldConfig = {
   id: string;
   label: string;
-  type: 'text' | 'number' | 'date' | 'select';
+  type: 'text' | 'number' | 'date' | 'select' | 'array';
   allowedOperators?: FilterOperators[]; // undefined = all operators allowed
   maxConditions?: number; // undefined = unlimited conditions
   options?: { value: string; label: string }[];
   columnId: string; // SQL column name for buildWhereClause
+  typeSpecificOptions?: {
+    array?: {
+      elementName?: {
+        singular: string;
+        plural: string;
+      };
+    };
+  };
+  operatorsCustomLabels?: Record<FilterOperators, string>;
 };
 
 // Alias for backward compatibility

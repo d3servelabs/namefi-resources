@@ -2470,6 +2470,14 @@ export const adminRouter = createTRPCRouter({
         >`TRIM(LOWER(${privyUsersTableSchema.email}))`.as('primary_email'),
         twitterUsername: privyUsersTableSchema.twitterUsername,
         nftCount: userNftsCTE.nftCount,
+        wallets: privyUsersTableSchema.wallets,
+        walletCount:
+          sql`COALESCE(array_length(${privyUsersTableSchema.wallets}, 1), 0)`.as(
+            'wallet_count',
+          ),
+        primaryWallet: sql`${privyUsersTableSchema.wallets}[1]`.as(
+          'primary_wallet',
+        ),
       };
 
       // Build base query
