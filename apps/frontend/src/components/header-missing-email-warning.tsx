@@ -38,9 +38,10 @@ export function HeaderMissingEmailWarning() {
   const [forceHeaderMissingEmailWarning] = useAdminFeatureFlag(
     FEATURE_FLAGS[0],
   );
-  const { privyUser } = useAuth();
+  const { privyUser, ready, isAuthenticated } = useAuth();
   const canShowPrompt =
-    forceHeaderMissingEmailWarning || !privyUser?.email?.address;
+    forceHeaderMissingEmailWarning ||
+    (ready && isAuthenticated && !privyUser?.email?.address);
   const { isMobile } = useSidebar();
   const router = useRouter();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
