@@ -11,9 +11,10 @@ import { Account } from './account';
 interface ContactAccountsProps {
   className?: string;
 }
-
+const ALLOW_UNLINK_EMAIL = true;
+const ALLOW_UNLINK_PHONE = true;
 export function ContactAccounts({ className = '' }: ContactAccountsProps) {
-  const { linkEmail, linkPhone } = usePrivy();
+  const { linkEmail, linkPhone, unlinkEmail, unlinkPhone } = usePrivy();
   const { privyUser, isImpersonating } = useAuth();
   const [highlightParam, setHighlightParam] = useQueryState(
     'highlight',
@@ -42,7 +43,7 @@ export function ContactAccounts({ className = '' }: ContactAccountsProps) {
     }
   }, [highlightParam, setHighlightParam]);
 
-  const handleLinkEmail = useCallback(() => {
+  const handleLinkEmail = useCallback(async () => {
     if (isImpersonating) {
       alert(
         'You are impersonating a user, so you cannot link an email address',
@@ -50,7 +51,7 @@ export function ContactAccounts({ className = '' }: ContactAccountsProps) {
       return;
     }
     try {
-      linkEmail();
+      await linkEmail();
     } catch (error) {
       toast.error('Failed to link email', {
         description: `Please try again. ${error instanceof Error ? error.message : 'Unknown error'}`,
@@ -58,13 +59,51 @@ export function ContactAccounts({ className = '' }: ContactAccountsProps) {
     }
   }, [linkEmail, isImpersonating]);
 
-  const handleLinkPhone = useCallback(() => {
+  const handleUnlinkEmail = useCallback(async () => {
+    if (isImpersonating) {
+      alert(
+        'You are impersonating a user, so you cannot unlink an email address',
+      );
+      return;
+    }
+    try {
+      await unlinkEmail(currentEmail);
+    } catch (error) {
+      toast.error('Failed to unlink email', {
+        description: `Please try again. ${error instanceof Error ? error.message : 'Unknown error'}`,
+      });
+    }
+  }, [unlinkEmail, isImpersonating, currentEmail]);
+
+  const handleUnlinkPhone = useCallback(async () => {
+    if (isImpersonating) {
+      alert(
+        'You are impersonating a user, so you cannot unlink a phone number',
+      );
+      return;
+    }
+    try {
+      await unlinkPhone(currentPhone);
+      toast.success('Phone number unlinked', {
+        description: 'Your phone number has been successfully unlinked.',
+      });
+    } catch (error) {
+      toast.error('Failed to unlink phone', {
+        description: `Please try again. ${error instanceof Error ? error.message : 'Unknown error'}`,
+      });
+    }
+  }, [unlinkPhone, isImpersonating, currentPhone]);
+
+  const handleLinkPhone = useCallback(async () => {
     if (isImpersonating) {
       alert('You are impersonating a user, so you cannot link a phone number');
       return;
     }
     try {
-      linkPhone();
+      await linkPhone();
+      toast.success('Phone number linked', {
+        description: 'Your phone number has been successfully linked.',
+      });
     } catch (error) {
       toast.error('Failed to link phone', {
         description: `Please try again. ${error instanceof Error ? error.message : 'Unknown error'}`,
@@ -81,6 +120,7 @@ export function ContactAccounts({ className = '' }: ContactAccountsProps) {
         linkedValue={currentEmail}
         verified={!!currentEmail}
         onLink={handleLinkEmail}
+        onUnlink={ALLOW_UNLINK_EMAIL ? handleUnlinkEmail : undefined}
         showLabel={true}
         shouldHighlight={shouldHighlightEmail}
       />
@@ -92,6 +132,7 @@ export function ContactAccounts({ className = '' }: ContactAccountsProps) {
         linkedValue={currentPhone}
         verified={!!currentPhone}
         onLink={handleLinkPhone}
+        onUnlink={ALLOW_UNLINK_PHONE ? handleUnlinkPhone : undefined}
         showLabel={true}
       />
     </div>
