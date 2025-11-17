@@ -52,13 +52,22 @@ const { getNamefiNftLock } = typedProxyActivities({
   },
 });
 
-const { sendStyledEmailNotification } = typedProxyActivities({
-  temporalEnum: TEMPORAL_ENUMS.NOTIFY,
+const { sendStyledEmailNotificationForUser, sendStyledEmailNotification } =
+  typedProxyActivities({
+    temporalEnum: TEMPORAL_ENUMS.NOTIFY,
+    options: {
+      startToCloseTimeout: '20 seconds',
+    },
+  });
+
+const { getTemporalWorkflowRunUrl } = typedProxyActivities({
+  temporalEnum: TEMPORAL_ENUMS.DEFAULT,
   options: {
-    startToCloseTimeout: '20 seconds',
+    startToCloseTimeout: '10 seconds',
   },
 });
 
+const NOTIFY_ERRORS = false;
 export async function prepareDomainForExportWorkflow({
   domainName,
   userId,
@@ -119,7 +128,7 @@ export async function prepareDomainForExportWorkflow({
     }
 
     try {
-      await sendStyledEmailNotification({
+      await sendStyledEmailNotificationForUser({
         userId,
         messageMarkdown: `### Domain is ready for export
 
@@ -134,15 +143,33 @@ export async function prepareDomainForExportWorkflow({
   } catch (error: any) {
     workflow.log.error('Error preparing domain for export', error);
     try {
+      const workflowInfo = workflow.workflowInfo();
       await sendStyledEmailNotification({
-        userId,
+        to: ['dev-team@d3serve.xyz'],
         messageMarkdown: `### Error preparing domain for export
 
-        We encountered an error while preparing your domain ${domainName} for export. Please go to the dashboard to retry.
+        We encountered an error while preparing your domain ${domainName} for export.
+        Error: ${error.message}
+        Stack: ${error.stack}
+        Workflow ID: ${workflowInfo.workflowId}
+        Workflow Run ID: ${workflowInfo.runId}
+        Workflow Type: ${workflowInfo.workflowType}
+        Workflow Link: ${getTemporalWorkflowRunUrl(workflowInfo.workflowId, workflowInfo.runId)}
       `,
         showGoToDashboard: true,
         title: '[Namefi] Error preparing domain for export',
       });
+      if (NOTIFY_ERRORS) {
+        await sendStyledEmailNotificationForUser({
+          userId,
+          messageMarkdown: `### Error preparing domain for export
+  
+          We encountered an error while preparing your domain ${domainName} for export. Please go to the dashboard to retry.
+        `,
+          showGoToDashboard: true,
+          title: '[Namefi] Error preparing domain for export',
+        });
+      }
     } catch (error: any) {
       workflow.log.error('Error sending email notification', error);
     }

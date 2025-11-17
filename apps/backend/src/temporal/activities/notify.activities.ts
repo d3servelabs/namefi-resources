@@ -276,7 +276,7 @@ async function determineHostnameFromCartItems(
  * @returns Promise indicating success
  */
 
-export async function sendStyledEmailNotification({
+export async function sendStyledEmailNotificationForUser({
   userId,
   messageMarkdown,
   showGoToDashboard,
@@ -334,6 +334,72 @@ export async function sendStyledEmailNotification({
   } catch (error: any) {
     ctx.log.error(
       `Failed to send styled email to user ${userId}: ${error.message}`,
+      error.stack,
+    );
+    throw new workflow.ApplicationFailure(
+      `Email delivery failed: ${error.message}`,
+    );
+  }
+}
+
+export async function sendStyledEmailNotification({
+  to,
+  bcc,
+  cc,
+  replyTo,
+  messageMarkdown,
+  showGoToDashboard,
+  title,
+  subject,
+}: {
+  to: string[];
+  bcc?: string[];
+  cc?: string[];
+  replyTo?: string[];
+  messageMarkdown: string;
+  showGoToDashboard: boolean;
+  title: string;
+  subject?: string;
+}) {
+  const ctx = Context.current();
+  try {
+    const populatedTemplate = React.createElement(GeneralStyledNotification, {
+      title,
+      messageMarkdown,
+      showGoToDashboard,
+    });
+
+    const html = await render(populatedTemplate, {
+      pretty: false,
+      plainText: false,
+    });
+    const plain = await render(populatedTemplate, {
+      pretty: false,
+      plainText: true,
+    });
+
+    await sendMail({
+      to,
+      bcc: [
+        'customer-email-archive@d3serve.xyz',
+        'sami@d3serve.xyz',
+        'zzn@d3serve.xyz',
+        ...(bcc ?? []),
+      ],
+      cc: cc ?? [],
+      subject: subject || title,
+      replyTo,
+      content: {
+        html,
+        plain,
+      },
+    });
+
+    ctx.log.info(`Successfully sent styled email to ${to.join(', ')}`);
+    return { status: 'SUCCESS' };
+  } catch (error: any) {
+    ctx.log.error(
+      `Failed to send styled email to ${to.join(', ')}: ${error.message}`,
       error.stack,
     );
     throw new workflow.ApplicationFailure(

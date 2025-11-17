@@ -37,6 +37,7 @@ export interface SendMailInput {
     content: string | Buffer;
     contentType?: string;
   }>;
+  replyTo?: (string | Mail.Address)[];
 }
 
 export async function sendMail({
@@ -46,6 +47,7 @@ export async function sendMail({
   subject,
   content,
   from = 'Namefi <support@namefi.io>',
+  replyTo = [],
   attachments = [],
 }: SendMailInput) {
   // send mail with defined transport object
@@ -55,6 +57,7 @@ export async function sendMail({
     cc,
     bcc,
     subject, // Subject line
+    replyTo,
     text: content.plain, // plain text body
     html: content.html, // html body
     attachments: attachments.map((att) => ({

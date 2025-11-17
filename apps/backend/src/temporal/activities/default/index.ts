@@ -8,6 +8,7 @@ import { updateNamefiNftIndex } from '../mint/namefi-nft';
 import { triggerNamefiGptCronJob } from './triggerNamefiGptCronJob';
 import { triggerUpdateNamefiNftIndex } from '../../schedules/update-namefi-nft-index';
 import { addCategoriesToDomainsWithNoCategories } from '#lib/clubs-categories';
+import { getTemporalWorkflowRunUrl } from './get-workflow-url';
 
 export const defaultTaskQueueActivities = {
   ...EmailSubscriptionSyncActivities,
@@ -44,4 +45,5 @@ export const defaultTaskQueueActivities = {
   triggerUpdateNamefiNftIndex,
   triggerNamefiGptCronJob,
   addCategoriesToDomainsWithNoCategories,
+  getTemporalWorkflowRunUrl,
 };
