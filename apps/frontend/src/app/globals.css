@@ -177,3 +177,41 @@ html,
 body {
   scrollbar-gutter: stable both-edges;
 }
+
+/* Rotating ring highlight effect */
+@property --ring-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes rotating-ring {
+  0% {
+    --ring-angle: 0deg;
+  }
+  100% {
+    --ring-angle: 360deg;
+  }
+}
+
+.highlight-effect {
+  position: relative;
+  border: 2px solid transparent;
+  --ring-color: #fbbf24;
+  --ring-color-2: oklch(from var(--ring-color) calc(l * 0.8) c h);
+  --duration: 4s;
+  background:
+    linear-gradient(var(--background), var(--background)) padding-box,
+    conic-gradient(
+      from var(--ring-angle, 0deg),
+      transparent 0deg,
+      transparent 70deg,
+      var(--ring-color) 90deg,
+      var(--ring-color-2) 110deg,
+      var(--ring-color) 130deg,
+      transparent 150deg,
+      transparent 360deg
+    )
+    border-box;
+  animation: rotating-ring var(--duration) linear;
+}

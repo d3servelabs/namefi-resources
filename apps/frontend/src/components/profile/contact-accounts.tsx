@@ -1,10 +1,11 @@
 'use client';
 
 import { Mail, Phone } from 'lucide-react';
-import { useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { usePrivy } from '@privy-io/react-auth';
 import { useAuth } from '@/hooks/use-auth';
+import { useQueryState, parseAsStringLiteral } from 'nuqs';
 import { Account } from './account';
 
 interface ContactAccountsProps {
@@ -14,10 +15,32 @@ interface ContactAccountsProps {
 export function ContactAccounts({ className = '' }: ContactAccountsProps) {
   const { linkEmail, linkPhone } = usePrivy();
   const { privyUser, isImpersonating } = useAuth();
+  const [highlightParam, setHighlightParam] = useQueryState(
+    'highlight',
+    parseAsStringLiteral(['email'] as const).withOptions({
+      clearOnDefault: true,
+      shallow: true,
+    }),
+  );
+  const [shouldHighlightEmail, setShouldHighlightEmail] = useState(false);
 
   // Get email and phone from Privy linked accounts
   const currentEmail = privyUser?.email?.address || '';
   const currentPhone = privyUser?.phone?.number || '';
+
+  // Check for highlight query param and trigger effect
+  useEffect(() => {
+    if (highlightParam === 'email') {
+      setShouldHighlightEmail(true);
+      // Remove highlight after 2 seconds
+      const timer = setTimeout(() => {
+        setShouldHighlightEmail(false);
+        // Clear the query param after effect completes
+        setHighlightParam(null);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [highlightParam, setHighlightParam]);
 
   const handleLinkEmail = useCallback(() => {
     if (isImpersonating) {
@@ -59,6 +82,7 @@ export function ContactAccounts({ className = '' }: ContactAccountsProps) {
         verified={!!currentEmail}
         onLink={handleLinkEmail}
         showLabel={true}
+        shouldHighlight={shouldHighlightEmail}
       />
 
       <Account

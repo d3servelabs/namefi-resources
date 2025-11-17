@@ -4,6 +4,7 @@ import { CartDropdown } from '@/components/dropdowns/cart-dropdown';
 import { UserDropdown } from '@/components/dropdowns/user-dropdown';
 import { Separator } from '@/components/ui/shadcn/separator';
 import { FreeMintsDropdown } from '@/components/dropdowns/free-mints-dropdown';
+import { HeaderMissingEmailWarning } from '@/components/header-missing-email-warning';
 import { SidebarTrigger, useSidebar } from '@/components/ui/shadcn/sidebar';
 import { cn } from '@/lib/cn';
 import { useOrigin } from '@/components/providers/origin';
@@ -51,6 +52,7 @@ export const Header: ForwardRefExoticComponent<HeaderProps> = forwardRef<
       <motion.div className="flex w-full items-center gap-4" layout layoutRoot>
         <SidebarTrigger className="hidden -ml-1 md:flex" />
         <motion.div className="ml-auto flex items-center gap-3 sm:gap-4" layout>
+          <HeaderMissingEmailWarning />
           <CartDropdown
             disableBackdropBlur={origin.config.landingPage?.headerIsBlurred}
           />

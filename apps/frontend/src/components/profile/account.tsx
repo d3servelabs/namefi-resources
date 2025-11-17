@@ -15,6 +15,7 @@ export interface AccountProps extends HTMLAttributes<HTMLDivElement> {
   onLink?: () => void;
   onUnlink?: () => void;
   showLabel?: boolean;
+  shouldHighlight?: boolean;
 }
 
 export const Account = ({
@@ -27,12 +28,20 @@ export const Account = ({
   onLink,
   onUnlink,
   showLabel = false,
+  shouldHighlight = false,
   ...rest
 }: AccountProps) => {
   return (
     <div className={cn('space-y-2', className)} {...rest}>
       {showLabel && <Label>{title}</Label>}
-      <div className="flex items-center justify-between rounded-lg border p-3 bg-muted/30 min-h-15">
+      <div
+        className={cn(
+          'flex items-center justify-between rounded-lg p-3 bg-muted/30 min-h-15',
+          shouldHighlight ? '' : 'border',
+          shouldHighlight &&
+            '[--background:#1c1c1c] [--ring-color:var(--brand-primary)]! [--duration:3s]! highlight-effect',
+        )}
+      >
         <div className="flex items-center gap-3">
           <div className="h-5 w-5 text-muted-foreground">{icon}</div>
           <div>
