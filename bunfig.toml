@@ -1,5 +1,8 @@
 [install]
+
+# Whether to install peer dependencies
 peer = true
+
 # whether to save text vs binary lock file
 saveTextLockfile = true
 
