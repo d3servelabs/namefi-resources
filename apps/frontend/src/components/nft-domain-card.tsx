@@ -18,6 +18,7 @@ export interface NftDomainCardProps {
   };
   origin: OriginInfo;
   isCompleted: boolean;
+  canViewNft: boolean;
   className?: string;
 }
 
@@ -25,6 +26,7 @@ export function NftDomainCard({
   item,
   origin,
   isCompleted,
+  canViewNft,
   className,
 }: NftDomainCardProps) {
   // Determine apex domain and origin-based config, mirroring FreeMintCard logic
@@ -60,7 +62,7 @@ export function NftDomainCard({
           <ExternalLink className="w-3.5 h-3.5" />
         </Link>
       </NamefiButton>
-      {explorerUrl ? (
+      {explorerUrl && canViewNft ? (
         <NamefiButton
           variant="ghost"
           className="w-full mt-2 bg-black/[0.03] border-white/10"

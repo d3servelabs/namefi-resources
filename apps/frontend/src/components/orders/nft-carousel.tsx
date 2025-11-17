@@ -14,7 +14,7 @@ export const NftCarousel = ({
   origin,
   isCompletedOrder,
 }: {
-  items: NftDomainCardProps['item'][];
+  items: Array<NftDomainCardProps['item'] & { hasMintedNft: boolean }>;
   origin: OriginInfo;
   isCompletedOrder: boolean;
 }) => {
@@ -42,6 +42,7 @@ export const NftCarousel = ({
             item={item}
             origin={origin}
             isCompleted={isCompletedOrder}
+            canViewNft={isCompletedOrder && item.hasMintedNft}
             className="p-4 w-full sm:w-3/4 md:w-1/2 lg:w-1/3 max-w-sm"
           />
         ))}
@@ -61,6 +62,7 @@ export const NftCarousel = ({
               item={item}
               origin={origin}
               isCompleted={isCompletedOrder}
+              canViewNft={isCompletedOrder && item.hasMintedNft}
             />
           </CarouselItem>
         ))}

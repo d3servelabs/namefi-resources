@@ -179,6 +179,7 @@ export default function OrderPage({ params }: OrderPageProps) {
           fullDomain: item.normalizedDomainName,
           tokenId,
           chainId,
+          hasMintedNft: item.status === orderStatusSchema.enum.SUCCEEDED,
         };
       });
   }, [items, order?.nftChainId]);
