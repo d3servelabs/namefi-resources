@@ -1,6 +1,7 @@
 import {
   domainTagsTable,
   namefiNftOwnersView,
+  namefiNftOwnersCte,
   orderItemsTable,
   ordersTable,
 } from '@namefi-astra/db';
@@ -23,6 +24,7 @@ type TagDetails = Awaited<ReturnType<typeof getTags>>[number];
  */
 export const checkDomainsWithNoCategories = async () => {
   const domains = await db
+    .with(namefiNftOwnersCte)
     .select({
       normalizedDomainName: namefiNftOwnersView.normalizedDomainName,
     })
@@ -145,6 +147,7 @@ export const domainTagsWithNftAndOrderItemsCte = db
   .$with('domain_tags_with_nft_and_order_items_cte')
   .as((qb) =>
     qb
+      .with(namefiNftOwnersCte)
       .select({
         ...pick(
           ['createdAt', 'status', 'amountInUSDCents', 'orderId'],

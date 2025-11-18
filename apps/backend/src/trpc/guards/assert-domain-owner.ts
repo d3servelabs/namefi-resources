@@ -1,4 +1,9 @@
-import { type UserSelect, db, namefiNftOwnersView } from '@namefi-astra/db';
+import {
+  type UserSelect,
+  db,
+  namefiNftOwnersCte,
+  namefiNftOwnersView,
+} from '@namefi-astra/db';
 import { eq } from 'drizzle-orm';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
@@ -31,6 +36,7 @@ export async function IsUserDomainOwner(
 ) {
   // Verify user has permission to manage DNS records for this domain
   const nft = await db
+    .with(namefiNftOwnersCte)
     .select()
     .from(namefiNftOwnersView)
     .where(eq(namefiNftOwnersView.normalizedDomainName, normalizedDomainName))

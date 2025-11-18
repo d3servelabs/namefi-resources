@@ -13,6 +13,7 @@ import {
   orderItemsTable,
   ordersTable,
   poweredbyNamefiDomainsTable,
+  namefiNftCte,
 } from '@namefi-astra/db';
 import { subDays } from 'date-fns';
 import { isNil, sum } from 'ramda';
@@ -440,6 +441,7 @@ export const poweredByNamefiOwnerRouter = createTRPCRouter({
 
           // Check if word already exists as a domain
           const existingDomain = await ctx.db
+            .with(namefiNftCte)
             .select()
             .from(namefiNftView)
             .where(
@@ -524,6 +526,7 @@ export const poweredByNamefiOwnerRouter = createTRPCRouter({
 
           // Check if word already exists as a domain
           const existingDomain = await ctx.db
+            .with(namefiNftCte)
             .select()
             .from(namefiNftView)
             .where(

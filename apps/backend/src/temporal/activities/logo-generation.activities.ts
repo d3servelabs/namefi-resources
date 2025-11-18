@@ -2,6 +2,7 @@ import { and, gt, sql } from 'drizzle-orm';
 import {
   db,
   internalAiGenerationsTable,
+  namefiNftCte,
   namefiNftView,
 } from '@namefi-astra/db';
 import { config, secrets } from '#lib/env';
@@ -45,6 +46,7 @@ export async function listAliveNftDomains({
     : baseWhere;
 
   const rows = await db
+    .with(namefiNftCte)
     .select({ domain: namefiNftView.normalizedDomainName })
     .from(namefiNftView)
     .where(whereClause)

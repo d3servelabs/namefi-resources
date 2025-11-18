@@ -1301,31 +1301,6 @@ export const linkSharesTable = pgTable(
 );
 
 /**
- * NamefiNftView - View based on NamefiNft schema from ponder indexer
- * This view provides a stable interface to query NFT data with dates and metadata
- * from the ponder indexer, insulating the application from schema changes.
- *
- * Note: View is created manually in SQL, this is just the Drizzle type definition.
- */
-export const namefiNftView = pgView('namefi_nft_view', {
-  tokenId: bigint('token_id', { mode: 'bigint' }).notNull(),
-  normalizedDomainName: text('normalized_domain_name')
-    .notNull()
-    .$type<NamefiNormalizedDomain>(),
-  expirationTimeInSeconds: bigint('expiration_time_in_seconds', {
-    mode: 'bigint',
-  }).notNull(),
-  expirationTime: timestamp('expiration_time').notNull(), // This is the expiration time in UTC derived from expirationTimeInSeconds
-  isLocked: boolean('is_locked').default(false),
-  ownerAddress: text('owner_address').notNull(),
-  chainId: integer('chain_id').notNull(), //todo change to bigint
-  lastUpdatedBlock: bigint('last_updated_block', { mode: 'bigint' }).notNull(),
-  lastUpdatedTimestamp: bigint('last_updated_timestamp', {
-    mode: 'bigint',
-  }).notNull(),
-}).existing();
-
-/**
  * AI Analysis System Schema and Tables
  * Domain analysis data including explanations, appraisals, and Unicode processing
  */
@@ -1377,80 +1352,6 @@ export const domainAiAnalysisTable = namefiAiSchema.table(
       .where(sql`${table.appraisal} IS NULL`),
   ],
 );
-
-/**
- * AI View - combines namefi_nft_view with namefi_ai.domain_ai_analysis
- * This view provides a unified interface for accessing both NFT and AI analysis data
- */
-export const namefiNftWithAiAnalysisView = pgView(
-  'namefi_nft_with_ai_analysis_view',
-).as((qb) =>
-  qb
-    .select({
-      // NFT data from namefi_nft_view
-      tokenId: namefiNftView.tokenId,
-      normalizedDomainName: namefiNftView.normalizedDomainName,
-      expirationTimeInSeconds: namefiNftView.expirationTimeInSeconds,
-      expirationTime: namefiNftView.expirationTime,
-      isLocked: namefiNftView.isLocked,
-      ownerAddress: namefiNftView.ownerAddress,
-      chainId: namefiNftView.chainId,
-      lastUpdatedBlock: namefiNftView.lastUpdatedBlock,
-      lastUpdatedTimestamp: namefiNftView.lastUpdatedTimestamp,
-      // AI analysis data from namefi_ai.ai_collection (LEFT JOIN to include NFTs without AI data)
-      explain: domainAiAnalysisTable.explain,
-      appraisal: domainAiAnalysisTable.appraisal,
-      namefiGptVersion: domainAiAnalysisTable.namefiGptVersion,
-      dirty: domainAiAnalysisTable.dirty,
-      aiAnalysisCreatedAt: sql<Date>`${domainAiAnalysisTable.createdAt}`.as(
-        'ai_analysis_created_at',
-      ),
-      aiAnalysisUpdatedAt: sql<Date>`${domainAiAnalysisTable.updatedAt}`.as(
-        'ai_analysis_updated_at',
-      ),
-    })
-    .from(namefiNftView)
-    .leftJoin(
-      domainAiAnalysisTable,
-      eq(namefiNftView.tokenId, domainAiAnalysisTable.tokenId),
-    ),
-);
-
-/**
- * NamefiNftOwnersView - Simplified view for owner-based queries
- * This view provides the essential NFT ownership data that replaces most
- * namefiNftTable queries, providing a stable interface during schema migrations.
- * Based on namefiNftView with only the essential columns for ownership queries.
- *
- * Note: View is created manually in SQL, this is just the Drizzle type definition.
- */
-export const namefiNftOwnersView = pgView('namefi_nft_owners_view', {
-  normalizedDomainName: text('normalized_domain_name')
-    .notNull()
-    .$type<NamefiNormalizedDomain>(),
-  chainId: integer('chain_id').notNull(),
-  ownerAddress: text('owner_address').notNull(),
-  asOfBlockNumber: bigint('as_of_block_number', { mode: 'bigint' }).notNull(),
-}).existing();
-
-/**
- * BurnedNamefiNftView - View for accessing burned NFT logs from indexer
- * This view provides access to historical burn events from the ponder indexer.
- *
- * Note: View is created manually in SQL, this is just the Drizzle type definition.
- */
-export const burnedNamefiNftView = pgView('burned_namefi_nft_view', {
-  tokenId: bigint('token_id', { mode: 'bigint' }).notNull(),
-  normalizedDomainName: text('normalized_domain_name')
-    .notNull()
-    .$type<NamefiNormalizedDomain>(),
-  fromAddress: text('from_address').notNull(),
-  chainId: integer('chain_id').notNull(),
-  burnedBlock: bigint('burned_block', { mode: 'bigint' }).notNull(),
-  burnedTimestamp: bigint('burned_timestamp', { mode: 'bigint' }).notNull(),
-  burnedTime: timestamp('burned_time').notNull(), // Derived from burnedTimestamp
-  transactionHash: text('transaction_hash').notNull(),
-}).existing();
 
 /**
  * Hidden configuration schema to store app-level configuration state

@@ -3,6 +3,7 @@ import {
   pbnIssuanceReservationsTable,
   indexedDomainsTable,
   namefiNftOwnersView,
+  namefiNftOwnersCte,
   orderItemStatusSchema,
   orderItemsTable,
   orderStatusSchema,
@@ -36,8 +37,7 @@ import { computeChargesInUsdOrThrow } from '@namefi-astra/registrars/multi-year-
 import { getDomainDurationConstraints } from './domains/duration-constraints';
 import pMap from 'p-map';
 import { maybeGetUserEmail } from '#temporal/activities/notify.activities';
-
-export type NamefiNftSelect = typeof namefiNftOwnersView.$inferSelect;
+import type { NamefiNftOwnersSelect } from '@namefi-astra/db';
 
 export const sldRegistrar = createRegistrarService({
   aws: {
@@ -284,6 +284,7 @@ export const getDomainListInfo = async (
   // Query the database for NFTs matching the provided domain names
   const [nfts, pendingOrdersMap, reservedDomainsMap] = await Promise.all([
     db
+      .with(namefiNftOwnersCte)
       .select()
       .from(namefiNftOwnersView)
       .where(inArray(namefiNftOwnersView.normalizedDomainName, domains)),
@@ -294,7 +295,7 @@ export const getDomainListInfo = async (
   // Create a map of domain names to their corresponding NFT records for efficient lookup
   const nftMap = new Map(
     nfts.map((nft) => [nft.normalizedDomainName, nft]),
-  ) as Map<NamefiNormalizedDomain, NamefiNftSelect>;
+  ) as Map<NamefiNormalizedDomain, NamefiNftOwnersSelect>;
 
   const { sld = [], _3ld = [] } = groupBy((domain) => {
     // Parse the domain to extract its components
@@ -357,7 +358,7 @@ export const getDomainListInfo = async (
 
 const _getSldDomainListInfo = async (
   domains: NamefiNormalizedDomain[],
-  nftMap: Map<NamefiNormalizedDomain, NamefiNftSelect>,
+  nftMap: Map<NamefiNormalizedDomain, NamefiNftOwnersSelect>,
 ) => {
   const responseOrError = await resolve(
     sldRegistrar.bulkSearch(domains.map(toPunycodeDomainName)),
@@ -414,7 +415,7 @@ const _getSldDomainListInfo = async (
 
 const _get3ldDomainListInfo = async (
   domain: NamefiNormalizedDomain,
-  nftMap: Map<NamefiNormalizedDomain, NamefiNftSelect>,
+  nftMap: Map<NamefiNormalizedDomain, NamefiNftOwnersSelect>,
   user?: { privyUserId: string } | null,
 ) => {
   const { parentDomain, levels } = getDomainLevels(domain);

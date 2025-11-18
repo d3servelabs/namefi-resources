@@ -8,6 +8,8 @@ import {
   orderItemsTable,
   ordersTable,
   paymentsTable,
+  namefiNftCte,
+  namefiNftOwnersCte,
 } from '@namefi-astra/db';
 import {
   buildWhereClause,
@@ -158,6 +160,7 @@ export const adminRouter = createTRPCRouter({
 
       // Build base query with joins and computed fields, excluding sepolia and test domains
       const baseQuery = db
+        .with(namefiNftOwnersCte, namefiNftCte)
         .select({
           normalizedDomainName: namefiNftOwnersView.normalizedDomainName,
           chainId: namefiNftOwnersView.chainId,
@@ -229,6 +232,7 @@ export const adminRouter = createTRPCRouter({
 
       // Build count query with same joins and filters
       const countQuery = db
+        .with(namefiNftOwnersCte, namefiNftCte)
         .select({ count: sql<number>`COUNT(*)` })
         .from(namefiNftOwnersView)
         .leftJoin(
@@ -356,6 +360,7 @@ export const adminRouter = createTRPCRouter({
 
       // Verify the NFT exists
       const nft = await db
+        .with(namefiNftOwnersCte)
         .select()
         .from(namefiNftOwnersView)
         .where(
@@ -969,6 +974,7 @@ export const adminRouter = createTRPCRouter({
 
       // Verify the NFT exists
       const nft = await db
+        .with(namefiNftOwnersCte)
         .select()
         .from(namefiNftOwnersView)
         .where(
@@ -1063,6 +1069,7 @@ export const adminRouter = createTRPCRouter({
 
       // Verify the NFT exists
       const nft = await db
+        .with(namefiNftOwnersCte)
         .select()
         .from(namefiNftOwnersView)
         .where(
@@ -1082,6 +1089,7 @@ export const adminRouter = createTRPCRouter({
 
       // Check if there's actually a date mismatch by querying the computed field
       const nftWithMismatchInfo = await db
+        .with(namefiNftOwnersCte, namefiNftCte)
         .select({
           hasDateMismatch: sql<boolean>`
             CASE 
@@ -3061,6 +3069,7 @@ export const adminRouter = createTRPCRouter({
         const isTestDomainCondition = sql<boolean>`split_part(${namefiNftOwnersView.normalizedDomainName}, '.', -1) LIKE 'test%'`;
 
         const nftDataQuery = db
+          .with(namefiNftOwnersCte, namefiNftCte)
           .select({
             normalizedDomainName: namefiNftOwnersView.normalizedDomainName,
             chainId: namefiNftOwnersView.chainId,

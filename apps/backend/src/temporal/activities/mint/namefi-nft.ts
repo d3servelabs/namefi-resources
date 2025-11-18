@@ -1,4 +1,4 @@
-import { db, namefiNftOwnersView } from '@namefi-astra/db';
+import { db, namefiNftOwnersCte, namefiNftOwnersView } from '@namefi-astra/db';
 import { namefiNftTable } from '@namefi-astra/db';
 import { getChain, type NamefiNormalizedDomain } from '@namefi-astra/utils';
 import BigNumber from 'bignumber.js';
@@ -346,6 +346,7 @@ export const getNamefiNftLock = async (
 
 export const getNftFromIndexer = async (domainName: NamefiNormalizedDomain) => {
   const nft = await db
+    .with(namefiNftOwnersCte)
     .select()
     .from(namefiNftOwnersView)
     .where(eq(namefiNftOwnersView.normalizedDomainName, domainName))
@@ -362,6 +363,7 @@ export const getNftFromIndexer = async (domainName: NamefiNormalizedDomain) => {
 
 export const getNftsForWallets = async (walletAddresses: string[]) => {
   const nfts = await db
+    .with(namefiNftOwnersCte)
     .select()
     .from(namefiNftOwnersView)
     .where(inArray(namefiNftOwnersView.ownerAddress, walletAddresses));

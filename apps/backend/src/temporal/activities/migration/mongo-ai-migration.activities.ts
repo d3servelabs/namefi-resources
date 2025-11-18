@@ -4,11 +4,7 @@
  */
 
 import mongoose from 'mongoose';
-import {
-  db,
-  domainAiAnalysisTable,
-  namefiNftWithAiAnalysisView,
-} from '@namefi-astra/db';
+import { db, domainAiAnalysisTable } from '@namefi-astra/db';
 import { createLogger } from '#lib/logger';
 import { secrets } from '#lib/env';
 import { sql } from 'drizzle-orm';

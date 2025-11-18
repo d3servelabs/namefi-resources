@@ -1,13 +1,13 @@
 import { Context } from '@temporalio/activity';
 import { format } from 'date-fns';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
-import { db } from '@namefi-astra/db';
+import { db, namefiNftCte } from '@namefi-astra/db';
 import { and, eq, inArray, sql } from 'drizzle-orm';
 import {
   domainExportTrackingTable,
   namefiNftView,
   indexedDomainsTable,
-} from '@namefi-astra/db/schema';
+} from '@namefi-astra/db';
 import { createLogger } from '#lib/logger';
 import { sldRegistrar } from '#lib/namefi-registry';
 import { toPunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
@@ -238,6 +238,7 @@ export async function getLockedNftsForTracking(): Promise<
   logger.info('Getting locked NFTs for export tracking');
 
   const lockedNfts = await db
+    .with(namefiNftCte)
     .select({
       chainId: namefiNftView.chainId,
       normalizedDomainName: namefiNftView.normalizedDomainName,

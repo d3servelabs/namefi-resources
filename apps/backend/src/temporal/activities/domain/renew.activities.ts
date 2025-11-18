@@ -27,6 +27,8 @@ import {
   namefiNftOwnersView,
   domainUserPreferencesTable,
   type PaymentProvider,
+  namefiNftOwnersCte,
+  namefiNftCte,
 } from '@namefi-astra/db';
 import { sldRegistrar } from '#lib/namefi-registry';
 import React from 'react';
@@ -102,6 +104,7 @@ export async function getDomainsUpForRenewal(): Promise<
   // Get 3LD domains from NFT table
   logger.debug('Fetching NFTs from database');
   const allNfts = await db
+    .with(namefiNftOwnersCte)
     .select({
       normalizedDomainName: namefiNftOwnersView.normalizedDomainName,
       chainId: namefiNftOwnersView.chainId,
@@ -308,6 +311,7 @@ export async function getDomainsUpForRenewalGroupedByOwner() {
   // Fetch NFT domain details for all domains up for renewal
   logger.debug('Fetching NFT domain details for all domains up for renewal');
   const nftDomains = await db
+    .with(namefiNftOwnersCte)
     .select({
       normalizedDomainName: namefiNftOwnersView.normalizedDomainName,
       ownerAddress: namefiNftOwnersView.ownerAddress,
@@ -502,6 +506,7 @@ async function _getUserDomainsWithAutoRenewOption(
     .filter(isNotNil);
 
   const userDomains = await db
+    .with(namefiNftOwnersCte)
     .select({
       normalizedDomainName: namefiNftOwnersView.normalizedDomainName,
       autoRenewEnabled:
@@ -937,6 +942,7 @@ export async function get3ldExpirationDateForDomainListFromIndex(
   normalizedDomainNames: NamefiNormalizedDomain[],
 ) {
   const nfts = await db
+    .with(namefiNftCte)
     .select({
       tokenId: namefiNftView.tokenId,
       normalizedDomainName: namefiNftView.normalizedDomainName,

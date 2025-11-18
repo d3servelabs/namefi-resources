@@ -1,5 +1,5 @@
 /** biome-ignore-all lint/performance/noNamespaceImport: expected */
-import { db, namefiNftOwnersView } from '@namefi-astra/db';
+import { db, namefiNftOwnersCte, namefiNftOwnersView } from '@namefi-astra/db';
 import { eq } from 'drizzle-orm';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import * as DnssecLib from '#lib/domains/dnssec';
@@ -57,6 +57,7 @@ export async function getDomainChain(
   normalizedDomainName: NamefiNormalizedDomain,
 ): Promise<number> {
   const domainResult = await db
+    .with(namefiNftOwnersCte)
     .select()
     .from(namefiNftOwnersView)
     .where(eq(namefiNftOwnersView.normalizedDomainName, normalizedDomainName))

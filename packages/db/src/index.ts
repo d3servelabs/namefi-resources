@@ -4,3 +4,13 @@ export * from './types';
 export * from './client';
 // Hidden config schema tables
 export { appConfigSchema, userPermissionsTable } from './schema';
+export {
+  namefiNftView,
+  namefiNftWithAiAnalysisView,
+  namefiNftOwnersView,
+  burnedNamefiNftView,
+  namefiNftCte,
+  namefiNftWithAiAnalysisCte,
+  namefiNftOwnersCte,
+  burnedNamefiNftCte,
+} from './schemas/onchain-indexers';

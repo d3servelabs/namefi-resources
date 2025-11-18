@@ -5,9 +5,9 @@ import { secrets } from '#lib/env';
 import { sendMail } from '../../../mail/mail-client';
 import React from 'react';
 import { render } from '@react-email/components';
-import { db } from '@namefi-astra/db';
+import { db, namefiNftCte } from '@namefi-astra/db';
 import { and, eq, lt, sql, inArray, desc } from 'drizzle-orm';
-import { namefiNftView, indexedDomainsTable } from '@namefi-astra/db/schema';
+import { namefiNftView, indexedDomainsTable } from '@namefi-astra/db';
 import { createLogger } from '#lib/logger';
 import { sldRegistrar } from '#lib/namefi-registry';
 import { RDAP } from '@namefi-astra/registrars/lib/rdap-whois/rdap_client';
@@ -76,6 +76,7 @@ export async function collectExportedDomainsMetrics(): Promise<
 
   // Step 1: Get all locked NFTs (primary indicator of export)
   const lockedNfts = await db
+    .with(namefiNftCte)
     .select({
       chainId: namefiNftView.chainId,
       normalizedDomainName: namefiNftView.normalizedDomainName,
@@ -275,6 +276,7 @@ export async function collectExpiredDomainsMetrics(): Promise<
 
   // Step 1: Get all NFTs that expired more than 30 days ago
   const expiredNfts = await db
+    .with(namefiNftCte)
     .select({
       chainId: namefiNftView.chainId,
       normalizedDomainName: namefiNftView.normalizedDomainName,

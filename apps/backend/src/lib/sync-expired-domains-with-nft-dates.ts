@@ -1,6 +1,10 @@
 import { sldRegistrar } from '#lib/namefi-registry';
 import { db } from '@namefi-astra/db';
-import { indexedDomainsTable, namefiNftView } from '@namefi-astra/db/schema';
+import {
+  indexedDomainsTable,
+  namefiNftView,
+  namefiNftCte,
+} from '@namefi-astra/db';
 import { eq, sql } from 'drizzle-orm';
 import { logger } from '#lib/logger';
 import { indexBy, prop } from 'ramda';
@@ -58,6 +62,7 @@ async function syncExpiredDomainsWithNftDates(
       const batch = expiredDomainNames.slice(i, i + batchSize);
 
       const batchResults = await db
+        .with(namefiNftCte)
         .select({
           normalizedDomainName: namefiNftView.normalizedDomainName,
           currentExpirationTime: indexedDomainsTable.expirationTime,

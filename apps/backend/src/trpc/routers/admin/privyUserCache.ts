@@ -1,4 +1,4 @@
-import { db, namefiNftView, usersTable } from '@namefi-astra/db';
+import { db, namefiNftCte, namefiNftView, usersTable } from '@namefi-astra/db';
 import { privyUsersTableSchema } from '@namefi-astra/db/schemas/internal';
 import { sql, eq, or, type SQL } from 'drizzle-orm';
 import { privyClient } from '../../utils';
@@ -311,6 +311,7 @@ function buildPrivySearchWhereClause(
 // Join wallets array with namefiNftView to get all NFTs owned by the user
 const userNftsCTE = db.$with('user_nfts').as(
   db
+    .with(namefiNftCte)
     .select({
       userId: usersTable.id,
       nfts: sql<

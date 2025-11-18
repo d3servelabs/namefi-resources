@@ -3,6 +3,8 @@ import {
   usersTable,
   namefiNftOwnersView,
   burnedNamefiNftView,
+  namefiNftOwnersCte,
+  burnedNamefiNftCte,
 } from '@namefi-astra/db';
 import {
   namefiNormalizedDomainSchema,
@@ -416,6 +418,7 @@ export const usersRouter = createTRPCRouter({
 
     const nfts = (
       await db
+        .with(namefiNftOwnersCte)
         .select()
         .from(namefiNftOwnersView)
         .where(and(...whereConditions))
@@ -531,6 +534,7 @@ export const usersRouter = createTRPCRouter({
       }
 
       const issuedSubdomainNfts = await db
+        .with(namefiNftOwnersCte)
         .select()
         .from(namefiNftOwnersView)
         .where(
@@ -804,6 +808,7 @@ export const usersRouter = createTRPCRouter({
     }
 
     const burnedDomains = await db
+      .with(burnedNamefiNftCte)
       .select()
       .from(burnedNamefiNftView)
       .where(

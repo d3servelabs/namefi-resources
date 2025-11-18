@@ -13,6 +13,7 @@ import {
   indexedDomainsTable,
   orderItemsTable,
   ordersTable,
+  namefiNftCte,
 } from '@namefi-astra/db';
 import { and, eq, sql, gte } from 'drizzle-orm';
 import { temporalClient } from '../../../client';
@@ -103,6 +104,7 @@ export async function collectNftManagementMetrics(): Promise<ReportMetrics> {
 
     // Fetch all NFT data with computed fields, excluding sepolia and test domains
     const nftDataQuery = db
+      .with(namefiNftCte)
       .select({
         normalizedDomainName: namefiNftView.normalizedDomainName,
         chainId: namefiNftView.chainId,

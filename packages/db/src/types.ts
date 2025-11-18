@@ -23,7 +23,6 @@ import {
   freeClaimsTable,
   freeClaimClaimingStatusEnum,
   domainAiAnalysisTable,
-  namefiNftWithAiAnalysisView,
   aiAppraisalDataSchema,
   poweredbyNamefiDomainsTable,
   pbnIssuanceReservationsTable,
@@ -145,14 +144,6 @@ export const domainAiAnalysisSelectSchema = createSelectSchema(
 );
 export const domainAiAnalysisUpdateSchema = createUpdateSchema(
   domainAiAnalysisTable,
-  {
-    normalizedDomainName: namefiNormalizedDomainSchema,
-    appraisal: aiAppraisalDataSchema.optional().nullable(),
-  },
-);
-
-export const namefiNftWithAiAnalysisSelectSchema = createSelectSchema(
-  namefiNftWithAiAnalysisView,
   {
     normalizedDomainName: namefiNormalizedDomainSchema,
     appraisal: aiAppraisalDataSchema.optional().nullable(),
@@ -295,11 +286,6 @@ export type DomainAiAnalysisUpdate = z.infer<
   typeof domainAiAnalysisUpdateSchema
 >;
 
-// Namefi Nft With Ai Analysis types
-export type NamefiNftWithAiAnalysisSelect = z.infer<
-  typeof namefiNftWithAiAnalysisSelectSchema
->;
-
 /**
  * Enum types from pgEnums
  */
@@ -420,3 +406,10 @@ export type OrderItemStatus = z.infer<typeof orderItemStatusSchema>;
 
 export const itemTypeSchema = z.enum(itemTypeEnum.enumValues);
 export type ItemType = z.infer<typeof itemTypeSchema>;
+
+export type {
+  NamefiNftSelect,
+  NamefiNftWithAiAnalysisSelect,
+  NamefiNftOwnersSelect,
+  BurnedNamefiNftSelect,
+} from './schemas/onchain-indexers';

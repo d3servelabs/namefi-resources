@@ -3,6 +3,7 @@ import {
   domainConfigTable,
   domainUserPreferencesTable,
   namefiNftOwnersView,
+  namefiNftOwnersCte,
   usersTable,
 } from '@namefi-astra/db';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
@@ -128,6 +129,7 @@ export const getNonUserSpecificDomainPreferencesAndConfig = async (
 ): Promise<Omit<DomainPreferencesAndConfig, 'autoRenewEnabled'>> => {
   const [nftResult, domainConfig] = await Promise.all([
     db
+      .with(namefiNftOwnersCte)
       .select()
       .from(namefiNftOwnersView)
       .where(eq(namefiNftOwnersView.normalizedDomainName, domainName))

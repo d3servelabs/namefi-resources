@@ -6,7 +6,7 @@
 import { Hono } from 'hono';
 import { z } from 'zod';
 
-import { db, namefiNftOwnersView } from '@namefi-astra/db';
+import { db, namefiNftOwnersView, namefiNftOwnersCte } from '@namefi-astra/db';
 import {
   fqdnLowercaseToNamefiNormalizedDomain,
   type NamefiNormalizedDomain,
@@ -82,6 +82,7 @@ trackingRouter.get('/', async (c) => {
   }
   try {
     const nft = await db
+      .with(namefiNftOwnersCte)
       .select()
       .from(namefiNftOwnersView)
       .where(eq(namefiNftOwnersView.normalizedDomainName, recordName))
