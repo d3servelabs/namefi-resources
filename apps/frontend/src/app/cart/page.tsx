@@ -7,9 +7,9 @@ import AlternateCartPage from './alternate';
 import OriginalCartPage from './original';
 
 const CART_FLAG_DEFINITION: FeatureFlagDefinition = {
-  key: 'hybrid_cart',
-  label: 'Hybrid Cart',
-  description: 'Use the new cart page that combines payment methods',
+  key: 'old_cart',
+  label: 'Old Cart',
+  description: 'Use the old cart page that does not combine payment methods',
   scope: 'page',
   pageKey: 'cart',
   defaultValue: false,
@@ -18,7 +18,7 @@ const CART_FLAG_DEFINITION: FeatureFlagDefinition = {
 export default function CartPage() {
   useRegisterAdminFlags([CART_FLAG_DEFINITION]);
 
-  const [hybridCart] = useAdminFeatureFlag(CART_FLAG_DEFINITION);
+  const [oldCart] = useAdminFeatureFlag(CART_FLAG_DEFINITION);
 
-  return hybridCart ? <AlternateCartPage /> : <OriginalCartPage />;
+  return oldCart ? <OriginalCartPage /> : <AlternateCartPage />;
 }
