@@ -8,7 +8,6 @@ export {
   namefiNftView,
   namefiNftWithAiAnalysisView,
   namefiNftOwnersView,
-  burnedNamefiNftView,
   namefiNftCte,
   namefiNftWithAiAnalysisCte,
   namefiNftOwnersCte,

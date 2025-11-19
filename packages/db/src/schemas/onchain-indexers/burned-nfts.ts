@@ -34,38 +34,23 @@ export const burnedNamefiNftCte = qb.$with('burned_namefi_nft_cte').as((qb) => {
       burnedTime: sql<Date>`to_timestamp(burned_timestamp)`
         .mapWith(mapper.time)
         .as('burned_time'),
+      expirationTimeAtBurn: sql<bigint>`expiration_time_at_burn`.as(
+        'expiration_time_at_burn',
+      ),
+      expirationTimeAtBurnDate: sql<Date>`
+    CASE WHEN expiration_time_at_burn IS NULL
+      OR expiration_time_at_burn = 0 THEN
+      NULL
+    ELSE
+      to_timestamp(expiration_time_at_burn)
+    END
+    `
+        .mapWith(mapper.time)
+        .as('expiration_time_at_burn_date'),
       transactionHash: sql<string>`transaction_hash`.as('transaction_hash'),
     })
     .from(sql`indexed_onchain_data."BurnedNamefiNftLog"`);
 });
-
-/**
- * [REPLACED WITH CTE] (deprecated view)
- * This is a workaround because drizzle does not handle column disambiguation correctly with CTEs.
- * We need to create a view to avoid column name conflicts.
- * @deprecated This view is deprecated and will be removed in the future.
- * @see burnedNamefiNftCte for the new CTE.
- * you still need to include the CTE in the query like this:
- * ```typescript
- * const result = await db
- *   .with(burnedNamefiNftCte)
- *   .select()
- *   .from(burnedNamefiNftView)
- *   .limit(1);
- * ```
- */
-export const burnedNamefiNftView = pgView('burned_namefi_nft_cte', {
-  tokenId: bigint('token_id', { mode: 'bigint' }).notNull(),
-  normalizedDomainName: text('normalized_domain_name')
-    .notNull()
-    .$type<NamefiNormalizedDomain>(),
-  fromAddress: text('from_address').notNull(),
-  chainId: integer('chain_id').notNull(),
-  burnedBlock: bigint('burned_block', { mode: 'bigint' }).notNull(),
-  burnedTimestamp: bigint('burned_timestamp', { mode: 'bigint' }).notNull(),
-  burnedTime: timestamp('burned_time').notNull(), // Derived from burnedTimestamp
-  transactionHash: text('transaction_hash').notNull(),
-}).existing();
 
 async function _selectFromBurnedNamefiNftView() {
   const res = await db

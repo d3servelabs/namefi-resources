@@ -2,9 +2,9 @@ import {
   db,
   usersTable,
   namefiNftOwnersView,
-  burnedNamefiNftView,
   namefiNftOwnersCte,
   burnedNamefiNftCte,
+  transferLogsCte,
 } from '@namefi-astra/db';
 import {
   namefiNormalizedDomainSchema,
@@ -60,6 +60,30 @@ if (!secrets.ALCHEMY_API_KEY) {
 }
 
 const ONLY_SHOW_SUBDOMAINS_FOR_CURRENT_USER = false;
+
+const PREVIOUSLY_OWNED_REMOVAL_LABELS = {
+  domain_exported: 'Domain Exported',
+  domain_expired: 'Domain Expired',
+  transferred_to_another_wallet: 'Transferred To Another Wallet',
+} as const;
+
+type PreviouslyOwnedRemovalType = keyof typeof PREVIOUSLY_OWNED_REMOVAL_LABELS;
+
+type PreviouslyOwnedDomainEvent = {
+  eventId: string;
+  tokenId: string;
+  normalizedDomainName: NamefiNormalizedDomain;
+  chainId: number;
+  fromAddress: string;
+  toAddress: string | null;
+  removalType: PreviouslyOwnedRemovalType;
+  removalReason: (typeof PREVIOUSLY_OWNED_REMOVAL_LABELS)[PreviouslyOwnedRemovalType];
+  removedAt: Date;
+  removalTimestamp: bigint;
+  removalBlock: bigint;
+  transactionHash: string;
+  expirationTimeAtRemoval: Date | null;
+};
 
 export const viemBasePublicClient = createPublicClient({
   chain: chains.base,
@@ -807,24 +831,140 @@ export const usersRouter = createTRPCRouter({
       return [];
     }
 
-    const burnedDomains = await db
-      .with(burnedNamefiNftCte)
-      .select()
-      .from(burnedNamefiNftView)
-      .where(
-        inArray(
-          sql`LOWER(${burnedNamefiNftView.fromAddress})`,
-          privyUserLinkedEthereumChecksumWalletAddresses.map((address) =>
-            address.toLowerCase(),
-          ),
-        ),
-      )
-      .orderBy(sql`${burnedNamefiNftView.burnedTime} DESC`);
+    const walletAddressesLowercase =
+      privyUserLinkedEthereumChecksumWalletAddresses.map((address) =>
+        address.toLowerCase(),
+      );
+    const walletAddressesLowercaseSet = new Set(walletAddressesLowercase);
+    const buildOwnershipKey = (
+      domainName: NamefiNormalizedDomain,
+      chainId: number,
+    ) => `${chainId}:${domainName}`;
 
-    return burnedDomains.map((domain) => ({
-      ...domain,
-      tokenId: domain.tokenId.toString(),
-    }));
+    const [currentOwnershipRecords, burnedDomains, transferLogs] =
+      await Promise.all([
+        db
+          .with(namefiNftOwnersCte)
+          .select({
+            normalizedDomainName: namefiNftOwnersView.normalizedDomainName,
+            chainId: namefiNftOwnersView.chainId,
+          })
+          .from(namefiNftOwnersView)
+          .where(
+            inArray(
+              sql`LOWER(${namefiNftOwnersView.ownerAddress})`,
+              walletAddressesLowercase,
+            ),
+          ),
+        db
+          .with(burnedNamefiNftCte)
+          .select()
+          .from(burnedNamefiNftCte)
+          .where(
+            inArray(
+              sql`LOWER(${burnedNamefiNftCte.fromAddress})`,
+              walletAddressesLowercase,
+            ),
+          )
+          .orderBy(sql`${burnedNamefiNftCte.burnedTime} DESC`),
+        db
+          .with(transferLogsCte)
+          .select()
+          .from(transferLogsCte)
+          .where(
+            and(
+              inArray(
+                sql`LOWER(${transferLogsCte.fromAddress})`,
+                walletAddressesLowercase,
+              ),
+              eq(transferLogsCte.isBurn, false),
+              eq(transferLogsCte.isMint, false),
+            ),
+          )
+          .orderBy(sql`${transferLogsCte.blockTime} DESC`),
+      ]);
+
+    // If a domain is owned currently, it is not considered previously owned (even if it was transferred at some point )
+    const currentlyOwnedDomainKeys = new Set(
+      currentOwnershipRecords.map((record) =>
+        buildOwnershipKey(record.normalizedDomainName, record.chainId),
+      ),
+    );
+
+    const burnedDomainEvents: PreviouslyOwnedDomainEvent[] = burnedDomains
+      .filter((domain) => {
+        const key = buildOwnershipKey(
+          domain.normalizedDomainName,
+          domain.chainId,
+        );
+        return !currentlyOwnedDomainKeys.has(key);
+      })
+      .map((domain) => {
+        const expirationTimeAtRemoval = domain.expirationTimeAtBurnDate ?? null;
+        const removalType: PreviouslyOwnedRemovalType =
+          expirationTimeAtRemoval &&
+          expirationTimeAtRemoval.getTime() > domain.burnedTime.getTime()
+            ? 'domain_exported'
+            : 'domain_expired';
+
+        return {
+          eventId: `burn:${domain.chainId}:${domain.tokenId.toString()}:${domain.transactionHash}`,
+          tokenId: domain.tokenId.toString(),
+          normalizedDomainName: domain.normalizedDomainName,
+          chainId: domain.chainId,
+          fromAddress: domain.fromAddress,
+          toAddress: null,
+          removalType,
+          removalReason: PREVIOUSLY_OWNED_REMOVAL_LABELS[removalType],
+          removedAt: domain.burnedTime,
+          removalTimestamp: domain.burnedTimestamp,
+          removalBlock: domain.burnedBlock,
+          transactionHash: domain.transactionHash,
+          expirationTimeAtRemoval,
+        };
+      });
+
+    const transferEvents: PreviouslyOwnedDomainEvent[] = transferLogs
+      .filter((transfer) => {
+        if (transfer.isBurn || transfer.isMint) {
+          return false;
+        }
+        const toAddressLower = transfer.toAddress?.toLowerCase() ?? null;
+        if (
+          !toAddressLower ||
+          walletAddressesLowercaseSet.has(toAddressLower)
+        ) {
+          return false;
+        }
+        const key = buildOwnershipKey(
+          transfer.normalizedDomainName,
+          transfer.chainId,
+        );
+        return !currentlyOwnedDomainKeys.has(key);
+      })
+      .map((transfer) => ({
+        eventId: `transfer:${transfer.chainId}:${transfer.tokenId.toString()}:${transfer.transactionHash}`,
+        tokenId: transfer.tokenId.toString(),
+        normalizedDomainName: transfer.normalizedDomainName,
+        chainId: transfer.chainId,
+        fromAddress: transfer.fromAddress,
+        toAddress: transfer.toAddress,
+        removalType: 'transferred_to_another_wallet',
+        removalReason:
+          PREVIOUSLY_OWNED_REMOVAL_LABELS.transferred_to_another_wallet,
+        removedAt: transfer.blockTime,
+        removalTimestamp: transfer.blockTimestamp,
+        removalBlock: transfer.blockNumber,
+        transactionHash: transfer.transactionHash,
+        expirationTimeAtRemoval: null,
+      }));
+
+    const previouslyOwnedEvents = [
+      ...burnedDomainEvents,
+      ...transferEvents,
+    ].sort((a, b) => b.removedAt.getTime() - a.removedAt.getTime());
+
+    return previouslyOwnedEvents;
   }),
   resolveEnsName: protectedProcedure
     .input(
