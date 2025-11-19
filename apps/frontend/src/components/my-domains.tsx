@@ -58,6 +58,7 @@ import {
   useEffect,
   useMemo,
   useState,
+  useRef,
 } from 'react';
 import {
   differenceInDays,
@@ -74,7 +75,7 @@ import {
 } from '@/components/dialogs/email-required-dialog';
 import { applyDrizzlerFilterOnDataset } from '@samyx/drizzler-filters-sorters/experimental';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { useRef } from 'react';
+import { groupBy } from 'ramda';
 
 type DomainRow = AppRouterOutput['users']['getCurrentUserDomains'][number];
 
@@ -258,16 +259,8 @@ const MyDomainsEmptyPlaceholder: FC<HTMLAttributes<HTMLDivElement>> = ({
   );
 };
 
-function MyDomainsTable(props: {
-  title?: string;
-  showExpiredDomains?: boolean;
-  showActiveDomains?: boolean;
-}) {
-  const { title, showExpiredDomains = false, showActiveDomains = true } = props;
-  const trpc = useTRPC();
-  const { data: _domains } = useSuspenseQuery(
-    trpc.users.getCurrentUserDomains.queryOptions(),
-  );
+function MyDomainsTable(props: { title?: string; domains: DomainRow[] }) {
+  const { title, domains } = props;
 
   const [showEmailModal, setShowEmailModal] = useState(false);
   const [selectedDomainIds, setSelectedDomainIds] = useState<
@@ -290,6 +283,24 @@ function MyDomainsTable(props: {
     actions: true,
   });
 
+  const prevColumnVisibility = useRef<VisibilityState>(columnVisibility);
+  const isMobile = useIsMobile();
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  useEffect(() => {
+    if (isMobile) {
+      prevColumnVisibility.current = columnVisibility;
+      setColumnVisibility((prev) => ({
+        select: true,
+        chainId: false,
+        ownerAddress: false,
+        normalizedDomainName: true,
+        expirationDate: true,
+        actions: true,
+      }));
+    } else {
+      setColumnVisibility(prevColumnVisibility.current ?? columnVisibility);
+    }
+  }, [isMobile]);
   const { hasEmail } = useEmailPrompt();
   const router = useRouter();
   const canAnimate = useCanAnimate();
@@ -305,20 +316,6 @@ function MyDomainsTable(props: {
       }
     },
     [hasEmail, router],
-  );
-
-  const canDomainBeRenewed = useCallback(
-    (expirationDate?: Date | string | null) => {
-      if (!expirationDate) {
-        return false;
-      }
-      const expiry = new Date(expirationDate);
-      if (Number.isNaN(expiry.getTime())) {
-        return false;
-      }
-      return expiry > new Date();
-    },
-    [],
   );
 
   const handleRenewDomain = useCallback(
@@ -398,24 +395,6 @@ function MyDomainsTable(props: {
       ),
     [filterState],
   );
-
-  const domains = useMemo(() => {
-    return _domains.filter((domain) => {
-      const expirationDate = domain.expirationDate
-        ? new Date(domain.expirationDate)
-        : null;
-      const canBeRenewed = canDomainBeRenewed(expirationDate);
-      const isExpired =
-        expirationDate !== null
-          ? differenceInDays(expirationDate, new Date()) < 0
-          : false;
-
-      return (
-        (canBeRenewed && showActiveDomains && !isExpired) ||
-        (!canBeRenewed && showExpiredDomains && isExpired)
-      );
-    });
-  }, [_domains, canDomainBeRenewed, showActiveDomains, showExpiredDomains]);
 
   useEffect(() => {
     setSelectedDomainIds((prev: Set<NamefiNormalizedDomain>) => {
@@ -608,9 +587,9 @@ function MyDomainsTable(props: {
   const renewableDomains = useMemo(
     () =>
       selectedDomainRows.filter((domain) =>
-        canDomainBeRenewed(domain.expirationDate),
+        isDomainPossiblyRenewable(domain.expirationDate),
       ),
-    [selectedDomainRows, canDomainBeRenewed],
+    [selectedDomainRows],
   );
 
   const renewableDomainsCount = renewableDomains.length;
@@ -717,7 +696,7 @@ function MyDomainsTable(props: {
           const expirationDate = expirationDateRaw
             ? new Date(expirationDateRaw)
             : null;
-          const showRenewButton = canDomainBeRenewed(expirationDate);
+          const showRenewButton = isDomainPossiblyRenewable(expirationDate);
           const daysDifference = expirationDate
             ? differenceInDays(expirationDate, new Date())
             : Number.NEGATIVE_INFINITY;
@@ -779,7 +758,6 @@ function MyDomainsTable(props: {
       },
     ],
     [
-      canDomainBeRenewed,
       handleManageDnsClick,
       handleRenewDomain,
       handleRowSelectionChange,
@@ -789,10 +767,6 @@ function MyDomainsTable(props: {
       selectedDomainIds,
     ],
   );
-
-  if (domains.length === 0) {
-    return <MyDomainsEmptyPlaceholder />;
-  }
 
   return (
     <>
@@ -1029,19 +1003,66 @@ export default function MyDomains() {
         <LoadingSkeletons />
       ) : (
         <Suspense fallback={<LoadingSkeletons />}>
-          <div className="flex flex-col gap-6">
-            <MyDomainsTable
-              showActiveDomains={true}
-              showExpiredDomains={false}
-            />
-            <MyDomainsTable
-              title="Expired Domains"
-              showExpiredDomains={true}
-              showActiveDomains={false}
-            />
-          </div>
+          <MyDomainsContent />
         </Suspense>
       )}
     </div>
   );
+}
+
+const MyDomainsContent = () => {
+  const trpc = useTRPC();
+  const { data: _domains } = useSuspenseQuery(
+    trpc.users.getCurrentUserDomains.queryOptions(),
+  );
+
+  const { activeDomains, inactiveDomains } = useMemo(() => {
+    const { activeDomains, expiredDomains, otherDomains } = groupBy(
+      (domain) => {
+        const expirationDate = domain.expirationDate
+          ? new Date(domain.expirationDate)
+          : null;
+        const canBeRenewed = isDomainPossiblyRenewable(expirationDate);
+        const isExpired =
+          expirationDate !== null
+            ? differenceInDays(expirationDate, new Date()) < 0
+            : false;
+
+        if (canBeRenewed && !isExpired) {
+          return 'activeDomains';
+        }
+        if (!canBeRenewed && isExpired) {
+          return 'expiredDomains';
+        }
+        return 'otherDomains';
+      },
+      _domains,
+    );
+    return {
+      activeDomains: activeDomains ?? [],
+      inactiveDomains: [...(expiredDomains ?? []), ...(otherDomains ?? [])],
+    };
+  }, [_domains]);
+
+  if (activeDomains.length === 0 && inactiveDomains.length === 0) {
+    return <MyDomainsEmptyPlaceholder />;
+  }
+
+  return (
+    <div className="flex flex-col gap-6">
+      <MyDomainsTable domains={activeDomains} />
+      <MyDomainsTable title="Inactive Domains" domains={inactiveDomains} />
+    </div>
+  );
+};
+
+function isDomainPossiblyRenewable(expirationDate?: Date | string | null) {
+  if (!expirationDate) {
+    return false;
+  }
+  const expiry = new Date(expirationDate);
+  if (Number.isNaN(expiry.getTime())) {
+    return false;
+  }
+  return expiry > new Date();
 }
