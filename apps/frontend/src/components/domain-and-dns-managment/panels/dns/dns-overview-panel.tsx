@@ -76,7 +76,7 @@ export const DnsOverviewPanel = ({
         <CardTitle>Domain Overview</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-2 gap-2 w-full">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-2 w-full">
           {(isInLateRenewalPeriod || isInGraceRestorationPeriod) &&
             (canAttemptRenewal ? (
               <Alert variant="warning" className="col-span-2">
@@ -212,7 +212,7 @@ export const DomainRenewalSection = ({
     );
   }
   return (
-    <div className="flex items-center justify-between rounded-2xl bg-zinc-900 border border-zinc-800 p-4">
+    <div className="flex flex-wrap items-center justify-between rounded-2xl bg-zinc-900 border border-zinc-800 p-4 gap-y-2">
       <div className="space-y-0.5">
         <Label htmlFor="auto-renew">Auto Renew</Label>
         <p className="text-sm text-muted-foreground">
@@ -227,15 +227,28 @@ export const DomainRenewalSection = ({
           <Skeleton className="h-3 w-24" />
         ) : null}
       </div>
-      <div className="flex items-center gap-3">
+      <div className="sm:hidden block items-center gap-3">
+        <Switch
+          id="auto-renew"
+          className={cn(isPending ? 'animate-pulse cursor-progress' : '')}
+          checked={domainPreferencesAndConfig?.autoRenewEnabled}
+          disabled={disableAllButtons || isPending}
+          onCheckedChange={handleChange('autoRenewEnabled')}
+        />
+      </div>
+      <div className="flex items-center gap-3 sm:w-auto w-full">
         <RenewDomainButton
           domain={domain}
           disabled={disableAllButtons}
           isPending={isPending}
+          className="w-full sm:w-auto"
         />
         <Switch
           id="auto-renew"
-          className={cn(isPending ? 'animate-pulse cursor-progress' : '')}
+          className={cn(
+            'hidden sm:block',
+            isPending ? 'animate-pulse cursor-progress' : '',
+          )}
           checked={domainPreferencesAndConfig?.autoRenewEnabled}
           disabled={disableAllButtons || isPending}
           onCheckedChange={handleChange('autoRenewEnabled')}
@@ -309,10 +322,12 @@ export const RenewDomainButton = ({
   domain,
   disabled,
   isPending,
+  className,
 }: {
   domain: NamefiNormalizedDomain;
   disabled: boolean;
   isPending: boolean;
+  className?: string;
 }) => {
   const trpc = useTRPC();
   const { renewDomains } = useDomainRenewal();
@@ -350,6 +365,7 @@ export const RenewDomainButton = ({
         !domainDetails?.expirationTime
       }
       size="sm"
+      className={className}
     >
       Renew now
     </AsyncButton>
@@ -442,7 +458,7 @@ export const DomainExportSection = ({
   }
 
   return (
-    <div className="flex items-center justify-between rounded-2xl bg-zinc-900 border border-zinc-800 p-4">
+    <div className="flex flex-wrap items-center justify-between rounded-2xl bg-zinc-900 border border-zinc-800 p-4 gap-y-2">
       <div className="space-y-0.5">
         <div className="flex items-center gap-2">
           <Label htmlFor="domain-export">Domain Export</Label>
@@ -463,33 +479,36 @@ export const DomainExportSection = ({
           Export domain to another registrar
         </p>
       </div>
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 sm:w-auto w-full">
         {!domainExportDetails.supportsExport ? (
-          <Button disabled size="sm" variant="secondary">
+          <Button
+            disabled
+            size="sm"
+            variant="secondary"
+            className="w-full sm:w-auto"
+          >
             <ExternalLink className="h-4 w-4 mr-2" />
             Export Unavailable
           </Button>
         ) : domainExportDetails.pendingRequestToEnableExport ? (
-          <Button disabled>
+          <Button disabled className="w-full sm:w-auto">
             <Loader2 className="h-4 w-4 animate-spin" />
             <span>Enable Export Request Pending...</span>
           </Button>
         ) : domainExportDetails.readyToExport ? (
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 w-full sm:w-auto">
             {authCode?.authCode ? (
-              <>
-                <div className="flex items-center gap-2 px-3 py-1 bg-zinc-800 rounded border text-sm font-mono">
-                  <span className="text-green-400">{authCode.authCode}</span>
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    onClick={handleCopyAuthCode}
-                    className="h-6 w-6 p-0"
-                  >
-                    <Copy className="h-3 w-3" />
-                  </Button>
-                </div>
-              </>
+              <div className="flex items-center gap-2 px-3 py-1 bg-zinc-800 rounded border text-sm font-mono">
+                <span className="text-green-400">{authCode.authCode}</span>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={handleCopyAuthCode}
+                  className="h-6 w-6 p-0"
+                >
+                  <Copy className="h-3 w-3" />
+                </Button>
+              </div>
             ) : (
               <Button
                 size="sm"
@@ -497,6 +516,7 @@ export const DomainExportSection = ({
                   setFetchAuthCode(true);
                 }}
                 disabled={isAuthCodeLoading}
+                className="w-full sm:w-auto"
               >
                 {isAuthCodeLoading ? (
                   <Loader2 className="h-4 w-4 animate-spin mr-2" />
@@ -514,6 +534,7 @@ export const DomainExportSection = ({
             loadingText="Requesting Export..."
             loadingIcon={<Loader2 className="h-4 w-4 animate-spin mr-2" />}
             size="sm"
+            className="w-full sm:w-auto"
           >
             <ExternalLink className="h-4 w-4 mr-2" />
             Request Export
