@@ -222,10 +222,18 @@ function SingleConditionEditor({
         {!isUnaryOperator &&
           (fieldType === 'select' && fieldOptions ? (
             <Select
-              value={localValue}
+              value={localValue?.toString()}
               onValueChange={(v) => {
-                setLocalValue(v);
-                handleValueChange(v);
+                const foundOption = fieldOptions?.find(
+                  (option) => option.value?.toString() === v,
+                );
+                if (foundOption) {
+                  handleValueChange(foundOption.value);
+                  setLocalValue(foundOption.value?.toString() ?? '');
+                } else {
+                  handleValueChange(undefined);
+                  setLocalValue('');
+                }
               }}
             >
               <SelectTrigger className="h-9">
@@ -233,7 +241,10 @@ function SingleConditionEditor({
               </SelectTrigger>
               <SelectContent>
                 {fieldOptions.map((option) => (
-                  <SelectItem key={option.value} value={option.value}>
+                  <SelectItem
+                    key={option.value}
+                    value={option.value?.toString()}
+                  >
                     {option.label}
                   </SelectItem>
                 ))}
