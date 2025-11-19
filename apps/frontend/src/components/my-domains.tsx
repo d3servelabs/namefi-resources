@@ -18,10 +18,14 @@ import { Card, CardContent } from '@/components/ui/shadcn/card';
 import { Checkbox } from '@/components/ui/shadcn/checkbox';
 
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
+import { ExtensibleDataTable } from '@/components/table/extensible-data-table';
+import {
+  convertToDrizzlerFilterOptions,
+  useDrizzlerServerFilterStrategy,
+} from '@/components/table/filters';
 import { useAuth } from '@/hooks/use-auth';
 import { useEmailPrompt } from '@/hooks/use-email-prompt';
 import { useDomainRenewal } from '@/hooks/use-domain-renewal';
-import { config } from '@/lib/env';
 import { cn } from '@/lib/cn';
 import { type AppRouterOutput, useTRPC } from '@/lib/trpc';
 import {
@@ -32,14 +36,8 @@ import {
 import { useSuspenseQuery } from '@tanstack/react-query';
 import type {
   ColumnDef,
-  RowSelectionState,
   SortingState,
-} from '@tanstack/react-table';
-import {
-  useReactTable,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getSortedRowModel,
+  VisibilityState,
 } from '@tanstack/react-table';
 import {
   AlertTriangle,
@@ -57,6 +55,7 @@ import {
   type HTMLAttributes,
   Suspense,
   useCallback,
+  useEffect,
   useMemo,
   useState,
 } from 'react';
@@ -73,18 +72,24 @@ import {
   EmailRequiredModal,
   DNS_MANAGEMENT_EMAIL_REQUIRED,
 } from '@/components/dialogs/email-required-dialog';
-import { usePagination } from '@/hooks/use-pagination';
-import { DataTable, applyFilterOperator } from '@/components/table/data-table';
+import { applyDrizzlerFilterOnDataset } from '@samyx/drizzler-filters-sorters/experimental';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { useRef } from 'react';
 
 type DomainRow = AppRouterOutput['users']['getCurrentUserDomains'][number];
 
 // Helper function to format expiration date with severity colors
-const formatExpirationDate = (expirationDate: string | undefined) => {
+const formatExpirationDate = (
+  expirationDate: string | Date | null | undefined,
+) => {
   if (!expirationDate) {
     return <span className="text-sm text-muted-foreground">-</span>;
   }
 
   const expiry = new Date(expirationDate);
+  if (Number.isNaN(expiry.getTime())) {
+    return <span className="text-sm text-muted-foreground">-</span>;
+  }
   const now = new Date();
   const isExpired = isPast(expiry);
 
@@ -265,10 +270,26 @@ function MyDomainsTable(props: {
   );
 
   const [showEmailModal, setShowEmailModal] = useState(false);
-  const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
+  const [selectedDomainIds, setSelectedDomainIds] = useState<
+    Set<NamefiNormalizedDomain>
+  >(() => new Set<NamefiNormalizedDomain>());
   const [processingDomains, setProcessingDomains] = useState<Set<string>>(
-    new Set(),
+    () => new Set(),
   );
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(5);
+  const [sorting, setSorting] = useState<SortingState>([
+    { id: 'expirationDate', desc: false },
+  ]);
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+    select: true,
+    chainId: true,
+    ownerAddress: true,
+    normalizedDomainName: true,
+    expirationDate: true,
+    actions: true,
+  });
+
   const { hasEmail } = useEmailPrompt();
   const router = useRouter();
   const canAnimate = useCanAnimate();
@@ -287,20 +308,15 @@ function MyDomainsTable(props: {
   );
 
   const canDomainBeRenewed = useCallback(
-    (domain: string, expirationDate?: string | null) => {
-      // Hide renew button if domain has no expiry date
+    (expirationDate?: Date | string | null) => {
       if (!expirationDate) {
         return false;
       }
-
-      // Hide renew button if domain is already expired
-      const currentDate = new Date();
       const expiry = new Date(expirationDate);
-      if (expiry <= currentDate) {
+      if (Number.isNaN(expiry.getTime())) {
         return false;
       }
-
-      return true;
+      return expiry > new Date();
     },
     [],
   );
@@ -310,9 +326,11 @@ function MyDomainsTable(props: {
       normalizedDomainName: string;
       expirationDate?: Date | null;
     }) => {
-      setProcessingDomains((prev) =>
-        new Set(prev).add(domain.normalizedDomainName),
-      );
+      setProcessingDomains((prev) => {
+        const next = new Set(prev);
+        next.add(domain.normalizedDomainName);
+        return next;
+      });
       try {
         await renewDomains([
           {
@@ -323,57 +341,321 @@ function MyDomainsTable(props: {
         ]);
       } finally {
         setProcessingDomains((prev) => {
-          const newSet = new Set(prev);
-          newSet.delete(domain.normalizedDomainName);
-          return newSet;
+          const next = new Set(prev);
+          next.delete(domain.normalizedDomainName);
+          return next;
         });
       }
     },
     [renewDomains],
   );
 
+  const drizzlerFilterConfig = useMemo(
+    () => ({
+      normalizedDomainName: {
+        id: 'normalizedDomainName',
+        label: 'Domain Name',
+        type: 'text' as const,
+        columnId: 'normalizedDomainName',
+      },
+      ownerAddress: {
+        id: 'ownerAddress',
+        label: 'Wallet',
+        type: 'text' as const,
+        columnId: 'ownerAddress',
+      },
+      expirationDate: {
+        id: 'expirationDate',
+        label: 'Expires On',
+        type: 'date' as const,
+        columnId: 'expirationDate',
+      },
+      chainId: {
+        id: 'chainId',
+        label: 'Chain',
+        type: 'select' as const,
+        columnId: 'chainId',
+        options: [
+          { value: CHAINS.base.id, label: CHAINS.base.name },
+          { value: CHAINS.mainnet.id, label: CHAINS.mainnet.name },
+          { value: CHAINS.sepolia.id, label: CHAINS.sepolia.name },
+        ],
+      },
+    }),
+    [],
+  );
+
+  const filterStrategy = useDrizzlerServerFilterStrategy<DomainRow>({
+    filterConfig: drizzlerFilterConfig as any,
+    filterDisplayOptions: { showInHeader: false },
+  });
+  const filterState = filterStrategy.filterState;
+
+  const drizzlerFilterOptions = useMemo(
+    () =>
+      convertToDrizzlerFilterOptions<DomainRow>(
+        filterState?.columnFilters ?? {},
+      ),
+    [filterState],
+  );
+
   const domains = useMemo(() => {
     return _domains.filter((domain) => {
-      const canBeRenewed = canDomainBeRenewed(
-        domain.normalizedDomainName,
-        domain.expirationDate?.toISOString() || null,
-      );
-      const expired =
-        differenceInDays(
-          new Date(domain.expirationDate?.toISOString() ?? ''),
-          new Date(),
-        ) < 0;
+      const expirationDate = domain.expirationDate
+        ? new Date(domain.expirationDate)
+        : null;
+      const canBeRenewed = canDomainBeRenewed(expirationDate);
+      const isExpired =
+        expirationDate !== null
+          ? differenceInDays(expirationDate, new Date()) < 0
+          : false;
 
       return (
-        (canBeRenewed && showActiveDomains && !expired) ||
-        (!canBeRenewed && showExpiredDomains && expired)
+        (canBeRenewed && showActiveDomains && !isExpired) ||
+        (!canBeRenewed && showExpiredDomains && isExpired)
       );
     });
   }, [_domains, canDomainBeRenewed, showActiveDomains, showExpiredDomains]);
+
+  useEffect(() => {
+    setSelectedDomainIds((prev: Set<NamefiNormalizedDomain>) => {
+      if (prev.size === 0) {
+        return prev;
+      }
+      const allowedIds = new Set<NamefiNormalizedDomain>(
+        domains.map(
+          (domain) => domain.normalizedDomainName as NamefiNormalizedDomain,
+        ),
+      );
+      let changed = false;
+      const next = new Set<NamefiNormalizedDomain>();
+      prev.forEach((id) => {
+        if (allowedIds.has(id)) {
+          next.add(id);
+        } else {
+          changed = true;
+        }
+      });
+      return changed ? next : prev;
+    });
+  }, [domains]);
+
+  const filteredDomains = useMemo(() => {
+    if (!drizzlerFilterOptions) {
+      return domains;
+    }
+    return applyDrizzlerFilterOnDataset(domains, drizzlerFilterOptions);
+  }, [domains, drizzlerFilterOptions]);
+
+  const comparators = useMemo(
+    () => ({
+      chainId: (a: DomainRow, b: DomainRow) =>
+        (a.chainId ?? 0) - (b.chainId ?? 0),
+      ownerAddress: (a: DomainRow, b: DomainRow) =>
+        (a.ownerAddress ?? '').localeCompare(b.ownerAddress ?? '', undefined, {
+          sensitivity: 'base',
+        }),
+      normalizedDomainName: (a: DomainRow, b: DomainRow) =>
+        (a.normalizedDomainName ?? '').localeCompare(
+          b.normalizedDomainName ?? '',
+          undefined,
+          { sensitivity: 'base' },
+        ),
+      expirationDate: (a: DomainRow, b: DomainRow) => {
+        const timeA = a.expirationDate
+          ? new Date(a.expirationDate).getTime()
+          : 0;
+        const timeB = b.expirationDate
+          ? new Date(b.expirationDate).getTime()
+          : 0;
+        return timeA - timeB;
+      },
+    }),
+    [],
+  );
+
+  const sortedDomains = useMemo(() => {
+    if (sorting.length === 0) {
+      return filteredDomains;
+    }
+    const next = [...filteredDomains];
+    return next.sort((a, b) => {
+      for (const sort of sorting) {
+        const compareFn = comparators[sort.id as keyof typeof comparators];
+        if (!compareFn) {
+          continue;
+        }
+        const result = compareFn(a, b);
+        if (result !== 0) {
+          return sort.desc ? -result : result;
+        }
+      }
+      return 0;
+    });
+  }, [filteredDomains, sorting, comparators]);
+
+  const totalCount = sortedDomains.length;
+  const totalPages = Math.max(1, Math.ceil(totalCount / pageSize));
+
+  useEffect(() => {
+    setPage((prev) => {
+      if (prev > totalPages) {
+        return totalPages;
+      }
+      if (prev < 1) {
+        return 1;
+      }
+      return prev;
+    });
+  }, [totalPages]);
+
+  useEffect(() => {
+    if (!filterState) {
+      return;
+    }
+    setPage(1);
+  }, [filterState]);
+
+  const paginatedDomains = useMemo(() => {
+    const start = (page - 1) * pageSize;
+    return sortedDomains.slice(start, start + pageSize);
+  }, [sortedDomains, page, pageSize]);
+
+  const currentPageIds = useMemo(
+    () =>
+      paginatedDomains.map(
+        (domain) => domain.normalizedDomainName as NamefiNormalizedDomain,
+      ),
+    [paginatedDomains],
+  );
+
+  const pageSelectionState = useMemo(() => {
+    if (currentPageIds.length === 0) {
+      return { allSelected: false, someSelected: false };
+    }
+    let selectedCount = 0;
+    currentPageIds.forEach((id) => {
+      if (selectedDomainIds.has(id)) {
+        selectedCount += 1;
+      }
+    });
+    return {
+      allSelected: selectedCount > 0 && selectedCount === currentPageIds.length,
+      someSelected: selectedCount > 0 && selectedCount < currentPageIds.length,
+    };
+  }, [currentPageIds, selectedDomainIds]);
+
+  const handleToggleAllCurrentPage = useCallback(
+    (selectAll: boolean) => {
+      setSelectedDomainIds((prev: Set<NamefiNormalizedDomain>) => {
+        if (currentPageIds.length === 0) {
+          return prev;
+        }
+        const next = new Set(prev);
+        let changed = false;
+        currentPageIds.forEach((id) => {
+          if (selectAll) {
+            if (!next.has(id)) {
+              next.add(id);
+              changed = true;
+            }
+          } else if (next.delete(id)) {
+            changed = true;
+          }
+        });
+        return changed ? next : prev;
+      });
+    },
+    [currentPageIds],
+  );
+
+  const handleRowSelectionChange = useCallback(
+    (domainName: NamefiNormalizedDomain, checked: boolean) => {
+      setSelectedDomainIds((prev: Set<NamefiNormalizedDomain>) => {
+        const alreadySelected = prev.has(domainName);
+        if ((checked && alreadySelected) || (!checked && !alreadySelected)) {
+          return prev;
+        }
+        const next = new Set(prev);
+        if (checked) {
+          next.add(domainName);
+        } else {
+          next.delete(domainName);
+        }
+        return next;
+      });
+    },
+    [],
+  );
+
+  const clearSelection = useCallback(() => {
+    setSelectedDomainIds((prev: Set<NamefiNormalizedDomain>) =>
+      prev.size === 0 ? prev : new Set<NamefiNormalizedDomain>(),
+    );
+  }, []);
+
+  const selectedDomainRows = useMemo(() => {
+    if (selectedDomainIds.size === 0) {
+      return [];
+    }
+    return domains.filter((domain) =>
+      selectedDomainIds.has(
+        domain.normalizedDomainName as NamefiNormalizedDomain,
+      ),
+    );
+  }, [domains, selectedDomainIds]);
+
+  const renewableDomains = useMemo(
+    () =>
+      selectedDomainRows.filter((domain) =>
+        canDomainBeRenewed(domain.expirationDate),
+      ),
+    [selectedDomainRows, canDomainBeRenewed],
+  );
+
+  const renewableDomainsCount = renewableDomains.length;
+  const selectedDomainCount = selectedDomainIds.size;
+  const filteredTotalCount = filteredDomains.length;
+
+  const handlePageSizeChange = useCallback((size: number) => {
+    setPageSize(size);
+    setPage(1);
+  }, []);
 
   const columns: ColumnDef<DomainRow>[] = useMemo(
     () => [
       {
         id: 'select',
-        header: ({ table }) => (
+        header: () => (
           <Checkbox
             checked={
-              table.getIsAllPageRowsSelected() ||
-              (table.getIsSomePageRowsSelected() && 'indeterminate')
+              pageSelectionState.allSelected
+                ? true
+                : pageSelectionState.someSelected
+                  ? 'indeterminate'
+                  : false
             }
             onCheckedChange={(value) =>
-              table.toggleAllPageRowsSelected(!!value)
+              handleToggleAllCurrentPage(value === true)
             }
             aria-label="Select all"
           />
         ),
-        cell: ({ row }) => (
-          <Checkbox
-            checked={row.getIsSelected()}
-            onCheckedChange={(value) => row.toggleSelected(!!value)}
-            aria-label="Select row"
-          />
-        ),
+        cell: ({ row }) => {
+          const domainName = row.getValue(
+            'normalizedDomainName',
+          ) as NamefiNormalizedDomain;
+          const isSelected = selectedDomainIds.has(domainName);
+          return (
+            <Checkbox
+              checked={isSelected}
+              onCheckedChange={(value) =>
+                handleRowSelectionChange(domainName, value === true)
+              }
+              aria-label="Select row"
+            />
+          );
+        },
         size: 50,
         enableSorting: false,
         enableHiding: false,
@@ -385,30 +667,6 @@ function MyDomainsTable(props: {
           <NetworkLogo network={row.getValue('chainId')} className="w-6 h-6" />
         ),
         size: 80,
-        enableSorting: false,
-        filterFn: (row, columnId, filterValue) => {
-          const chainId = row.getValue(columnId) as number;
-          // Handle simple value (from inline filter or select)
-          if (
-            typeof filterValue === 'string' ||
-            typeof filterValue === 'number'
-          ) {
-            return String(chainId) === String(filterValue);
-          }
-          // Handle operator/value object (from filter panel)
-          if (
-            filterValue &&
-            typeof filterValue === 'object' &&
-            'operator' in filterValue
-          ) {
-            return applyFilterOperator(
-              chainId,
-              filterValue.operator,
-              Number(filterValue.value),
-            );
-          }
-          return true;
-        },
       },
       {
         accessorKey: 'ownerAddress',
@@ -419,30 +677,6 @@ function MyDomainsTable(props: {
           </TruncatedTextWithHover>
         ),
         size: 140,
-        sortingFn: 'alphanumeric',
-        filterFn: (row, columnId, filterValue) => {
-          const cellValue = String(row.getValue(columnId) || '');
-          // Handle simple value (from inline filter or select)
-          if (
-            typeof filterValue === 'string' ||
-            typeof filterValue === 'number'
-          ) {
-            return String(cellValue) === String(filterValue);
-          }
-          // Handle operator/value object (from filter panel)
-          if (
-            filterValue &&
-            typeof filterValue === 'object' &&
-            'operator' in filterValue
-          ) {
-            return applyFilterOperator(
-              cellValue,
-              filterValue.operator,
-              String(filterValue.value),
-            );
-          }
-          return true;
-        },
       },
       {
         accessorKey: 'normalizedDomainName',
@@ -456,82 +690,41 @@ function MyDomainsTable(props: {
             {row.getValue('normalizedDomainName')}
           </Link>
         ),
-        filterFn: (row, columnId, filterValue) => {
-          const cellValue = String(row.getValue(columnId) || '');
-          // Handle simple value (from inline filter)
-          if (typeof filterValue === 'string') {
-            return cellValue.toLowerCase().includes(filterValue.toLowerCase());
-          }
-          // Handle operator/value object (from filter panel)
-          if (
-            filterValue &&
-            typeof filterValue === 'object' &&
-            'operator' in filterValue
-          ) {
-            return applyFilterOperator(
-              cellValue,
-              filterValue.operator,
-              String(filterValue.value),
-            );
-          }
-          return true;
-        },
       },
       {
         accessorKey: 'expirationDate',
         header: 'Expires On',
         cell: ({ row }) => {
           const expirationDate = row.getValue('expirationDate') as
+            | Date
             | string
+            | null
             | undefined;
           return formatExpirationDate(expirationDate);
         },
         size: 150,
-        sortingFn: (rowA, rowB) => {
-          const a = rowA.getValue('expirationDate') as string | undefined;
-          const b = rowB.getValue('expirationDate') as string | undefined;
-
-          if (!a && !b) return 0;
-          if (!a) return 1;
-          if (!b) return -1;
-
-          return new Date(a).getTime() - new Date(b).getTime();
-        },
-        filterFn: (row, columnId, filter) => {
-          const cellValue = String(row.getValue(columnId) || '');
-          const operator =
-            filter && typeof filter === 'object' && 'operator' in filter
-              ? filter.operator
-              : 'eq';
-          const filterValue =
-            filter && typeof filter === 'object' && 'value' in filter
-              ? filter.value
-              : new Date(filter);
-          return applyFilterOperator(
-            new Date(cellValue).getTime(),
-            operator,
-            new Date(filterValue).getTime(),
-          );
-        },
       },
       {
         id: 'actions',
         header: 'Actions',
         cell: ({ row }) => {
           const domainName = row.getValue('normalizedDomainName') as string;
-          const expirationDate = row.getValue('expirationDate') as
+          const expirationDateRaw = row.getValue('expirationDate') as
+            | Date
             | string
-            | null;
-          const showRenewButton = canDomainBeRenewed(
-            domainName,
-            expirationDate,
-          );
-          const daysDifference = differenceInDays(
-            new Date(expirationDate ?? ''),
-            new Date(),
-          );
-          const showManageButton = daysDifference > -30;
-          const isExpired = daysDifference < 0;
+            | null
+            | undefined;
+          const expirationDate = expirationDateRaw
+            ? new Date(expirationDateRaw)
+            : null;
+          const showRenewButton = canDomainBeRenewed(expirationDate);
+          const daysDifference = expirationDate
+            ? differenceInDays(expirationDate, new Date())
+            : Number.NEGATIVE_INFINITY;
+          const showManageButton =
+            expirationDate !== null ? daysDifference > -30 : false;
+          const isExpired =
+            expirationDate !== null ? daysDifference < 0 : false;
           const explorerUrl = getNftExplorerUrl(
             row.original.chainId ?? null,
             row.original.tokenId?.toString() ?? null,
@@ -561,9 +754,7 @@ function MyDomainsTable(props: {
               {showRenewButton && (
                 <RenewButton
                   domainName={domainName}
-                  expirationDate={
-                    expirationDate ? new Date(expirationDate) : null
-                  }
+                  expirationDate={expirationDate}
                   onRenew={handleRenewDomain}
                   isProcessing={processingDomains.has(domainName)}
                 />
@@ -588,69 +779,15 @@ function MyDomainsTable(props: {
       },
     ],
     [
+      canDomainBeRenewed,
       handleManageDnsClick,
       handleRenewDomain,
+      handleRowSelectionChange,
+      handleToggleAllCurrentPage,
+      pageSelectionState,
       processingDomains,
-      canDomainBeRenewed,
+      selectedDomainIds,
     ],
-  );
-
-  const table = useReactTable({
-    data: domains,
-    columns,
-    getRowId: (row) => row.normalizedDomainName,
-    getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    columnResizeMode: 'onChange',
-    enableRowSelection: true,
-    onRowSelectionChange: setRowSelection,
-    state: {
-      rowSelection,
-    },
-  });
-
-  // Calculate renewable domains count for floating action panel
-  const renewableDomainsCount = useMemo(() => {
-    if (Object.keys(rowSelection).length === 0) return 0;
-    const selectedRows = table.getSelectedRowModel().rows;
-    return selectedRows.filter((row) => {
-      const expirationDateStr =
-        typeof row.original.expirationDate === 'string'
-          ? row.original.expirationDate
-          : row.original.expirationDate?.toISOString() || null;
-      return canDomainBeRenewed(
-        row.original.normalizedDomainName,
-        expirationDateStr,
-      );
-    }).length;
-  }, [rowSelection, table, canDomainBeRenewed]);
-
-  const { pageIndex, pageSize, setPageIndex, setPageSize } = usePagination({
-    defaultPageSize: 5,
-    defaultPageIndex: 0,
-  });
-
-  const [sorting, setSorting] = useState<SortingState>([
-    { id: 'expirationDate', desc: false },
-  ]);
-
-  const nftFilterConfig = useMemo(
-    () => ({
-      normalizedDomainName: { type: 'text' as const, label: 'Domain Name' },
-      ownerAddress: { type: 'text' as const, label: 'Wallet' },
-      expirationDate: { type: 'date' as const, label: 'Expires On' },
-      chainId: {
-        type: 'select' as const,
-        label: 'Chain',
-        options: [
-          { value: String(CHAINS.base.id), label: CHAINS.base.name },
-          { value: String(CHAINS.mainnet.id), label: CHAINS.mainnet.name },
-          { value: String(CHAINS.sepolia.id), label: CHAINS.sepolia.name },
-        ],
-      },
-    }),
-    [],
   );
 
   if (domains.length === 0) {
@@ -676,24 +813,30 @@ function MyDomainsTable(props: {
       )}
       <Card>
         <CardContent>
-          <DataTable<DomainRow>
+          <ExtensibleDataTable<DomainRow, typeof filterStrategy>
             columns={columns}
-            data={domains}
+            data={paginatedDomains}
             isLoading={false}
+            page={page}
             pageSize={pageSize}
-            onPageSizeChange={(n: number) => setPageSize(n)}
-            filterConfig={nftFilterConfig}
-            enableColumnFilters={true}
-            filterDisplayOptions={{ showInHeader: false }}
+            totalPages={totalPages}
+            totalCount={totalCount}
+            onPageChange={setPage}
+            onPageSizeChange={handlePageSizeChange}
             sorting={sorting}
             onSortingChange={setSorting}
+            filterStrategy={filterStrategy}
+            columnVisibility={columnVisibility}
+            onColumnVisibilityChange={setColumnVisibility}
+            emptyMessage="No domains match your filters"
+            loadingMessage="Loading domains..."
           />
         </CardContent>
       </Card>
 
       {/* Floating Action Panel */}
       <AnimatePresence>
-        {Object.keys(rowSelection).length > 0 && (
+        {selectedDomainCount > 0 && (
           <motion.div
             initial={{ y: 100, scale: 0.95 }}
             animate={{ y: 0, scale: 1 }}
@@ -732,7 +875,7 @@ function MyDomainsTable(props: {
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 bg-primary/20 border border-primary/30 rounded-full flex items-center justify-center">
                         <NumberFlow
-                          value={Object.keys(rowSelection).length}
+                          value={selectedDomainCount}
                           className="text-primary font-bold text-sm"
                           style={
                             {
@@ -745,9 +888,7 @@ function MyDomainsTable(props: {
                       <div className="flex flex-col">
                         <div className="flex items-center gap-1">
                           <span className="font-semibold text-foreground text-sm">
-                            {Object.keys(rowSelection).length === 1
-                              ? 'Domain'
-                              : 'Domains'}
+                            {selectedDomainCount === 1 ? 'Domain' : 'Domains'}
                           </span>
                           <span className="font-medium text-muted-foreground text-sm">
                             selected
@@ -755,7 +896,7 @@ function MyDomainsTable(props: {
                         </div>
                         <div className="flex items-center gap-1">
                           <NumberFlow
-                            value={domains.length}
+                            value={filteredTotalCount}
                             className="text-xs text-muted-foreground font-medium"
                             style={
                               {
@@ -781,44 +922,25 @@ function MyDomainsTable(props: {
                       <NumberFlowGroup>
                         <AsyncButton
                           onClick={async () => {
-                            const allSelectedDomains = table
-                              .getSelectedRowModel()
-                              .rows.map((row) => ({
-                                normalizedDomainName:
-                                  row.original.normalizedDomainName,
-                                expirationDate: row.original.expirationDate,
-                              }));
-
-                            // Filter to only include domains that can be renewed
-                            const renewableDomains = allSelectedDomains.filter(
-                              (domain) => {
-                                const expirationDateStr =
-                                  typeof domain.expirationDate === 'string'
-                                    ? domain.expirationDate
-                                    : domain.expirationDate?.toISOString() ||
-                                      null;
-                                return canDomainBeRenewed(
-                                  domain.normalizedDomainName,
-                                  expirationDateStr,
-                                );
-                              },
-                            );
-
-                            if (renewableDomains.length === 0) {
-                              return; // No domains can be renewed
+                            if (renewableDomainsCount === 0) {
+                              return;
                             }
-
-                            // Mark all renewable domains as processing
-                            const renewableDomainNames = renewableDomains.map(
-                              (d) => d.normalizedDomainName,
+                            const payload = renewableDomains.map((domain) => ({
+                              normalizedDomainName:
+                                domain.normalizedDomainName as NamefiNormalizedDomain,
+                              expirationDate: domain.expirationDate ?? null,
+                            }));
+                            setProcessingDomains(
+                              new Set(
+                                payload.map(
+                                  (domain) => domain.normalizedDomainName,
+                                ),
+                              ),
                             );
-                            setProcessingDomains(new Set(renewableDomainNames));
-
                             try {
-                              await renewDomains(renewableDomains);
-                              setRowSelection({});
+                              await renewDomains(payload);
+                              clearSelection();
                             } finally {
-                              // Clear processing state for all domains
                               setProcessingDomains(new Set());
                             }
                           }}
@@ -827,8 +949,7 @@ function MyDomainsTable(props: {
                           customLoadingContent={
                             <>
                               <Loader2 className="w-4 h-4 animate-spin" />
-                              {renewableDomainsCount ===
-                              Object.keys(rowSelection).length ? (
+                              {renewableDomainsCount === selectedDomainCount ? (
                                 'Renew All'
                               ) : (
                                 <NumberFlow
@@ -846,8 +967,7 @@ function MyDomainsTable(props: {
                           }
                         >
                           <History className="w-4 h-4 scale-x-[-1]" />
-                          {renewableDomainsCount ===
-                          Object.keys(rowSelection).length ? (
+                          {renewableDomainsCount === selectedDomainCount ? (
                             'Renew All'
                           ) : (
                             <NumberFlow
@@ -867,7 +987,7 @@ function MyDomainsTable(props: {
                       <Button
                         variant="ghost"
                         size="sm"
-                        onClick={() => setRowSelection({})}
+                        onClick={clearSelection}
                         className="h-10 px-3 text-muted-foreground hover:text-foreground"
                       >
                         Clear
