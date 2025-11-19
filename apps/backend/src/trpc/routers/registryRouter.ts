@@ -1,7 +1,8 @@
 import {
+  checksumWalletAddressSchema,
   namefiNormalizedDomainSchema,
-  type NamefiNormalizedDomain,
 } from '@namefi-astra/utils';
+import { db, namefiNftCte } from '@namefi-astra/db';
 import { normalizeDomainName } from '@namefi-astra/zod-dns';
 import {
   adjectives,
@@ -19,6 +20,8 @@ import {
   publicProcedure,
 } from '../base';
 import { TRPCError } from '@trpc/server';
+import { sql } from 'drizzle-orm';
+import { resolveEnsNameToAddress } from '#lib/crypto/ens';
 
 /**
  * Schema for parsing and validating an array of normalized domain names.
@@ -67,6 +70,76 @@ export const registryRouter = createTRPCRouter({
         };
       }
       return availability[0];
+    }),
+
+  getDomainsByOwner: publicProcedure
+    .input(
+      z.object({
+        identifier: z
+          .string()
+          .min(1)
+          .describe('Wallet address or ENS name to retrieve NFT ownership data')
+          .transform((value) => value.trim()),
+      }),
+    )
+    .query(async ({ input }) => {
+      const parsedWallet = checksumWalletAddressSchema.safeParse(
+        input.identifier,
+      );
+
+      let walletAddress: string | null = null;
+      let ensName: string | null = null;
+
+      if (parsedWallet.success) {
+        walletAddress = parsedWallet.data;
+      } else {
+        const possibleEns = input.identifier.toLowerCase();
+        if (!possibleEns.includes('.')) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'Enter a valid wallet address or ENS name',
+          });
+        }
+
+        const resolvedAddress = await resolveEnsNameToAddress(possibleEns);
+        if (!resolvedAddress) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'Unable to resolve ENS name to a wallet address',
+          });
+        }
+        walletAddress = resolvedAddress;
+        ensName = possibleEns;
+      }
+
+      const walletAddressLowercase = walletAddress.toLowerCase();
+
+      const records = await db
+        .with(namefiNftCte)
+        .select({
+          normalizedDomainName: namefiNftCte.normalizedDomainName,
+          chainId: namefiNftCte.chainId,
+          ownerAddress: namefiNftCte.ownerAddress,
+          tokenId: namefiNftCte.tokenId,
+          expirationTime: namefiNftCte.expirationTime,
+        })
+        .from(namefiNftCte)
+        .where(
+          sql`LOWER(${namefiNftCte.ownerAddress}) = ${walletAddressLowercase}`,
+        )
+        .orderBy(namefiNftCte.normalizedDomainName);
+
+      return {
+        walletAddress,
+        ensName,
+        domains: records.map((record) => ({
+          normalizedDomainName: record.normalizedDomainName,
+          chainId: record.chainId,
+          ownerAddress: record.ownerAddress,
+          tokenId: record.tokenId ? record.tokenId.toString() : null,
+          expirationTime: record.expirationTime,
+        })),
+      };
     }),
 
   /**

@@ -20,6 +20,9 @@ export interface NftDomainCardProps {
   isCompleted: boolean;
   canViewNft: boolean;
   className?: string;
+  showViewDomainButton?: boolean;
+  viewDomainButtonText?: string;
+  viewNftButtonText?: string;
 }
 
 export function NftDomainCard({
@@ -28,6 +31,9 @@ export function NftDomainCard({
   isCompleted,
   canViewNft,
   className,
+  showViewDomainButton = true,
+  viewDomainButtonText = 'View Your Domain',
+  viewNftButtonText = 'View Your NFT',
 }: NftDomainCardProps) {
   // Determine apex domain and origin-based config, mirroring FreeMintCard logic
   const apex = item.parentDomain;
@@ -48,20 +54,22 @@ export function NftDomainCard({
         parentDomain={item.parentDomain}
         origin={computedOrigin}
       />
-      <NamefiButton
-        className="w-full mt-4"
-        asChild={true}
-        disabled={!isCompleted}
-      >
-        <Link
-          href={`https://${item.fullDomain}`}
-          target="_blank"
-          tabIndex={isCompleted ? 0 : -1}
+      {showViewDomainButton ? (
+        <NamefiButton
+          className="w-full mt-4"
+          asChild={true}
+          disabled={!isCompleted}
         >
-          View Your Domain
-          <ExternalLink className="w-3.5 h-3.5" />
-        </Link>
-      </NamefiButton>
+          <Link
+            href={`https://${item.fullDomain}`}
+            target="_blank"
+            tabIndex={isCompleted ? 0 : -1}
+          >
+            {viewDomainButtonText}
+            <ExternalLink className="w-3.5 h-3.5" />
+          </Link>
+        </NamefiButton>
+      ) : null}
       {explorerUrl && canViewNft ? (
         <NamefiButton
           variant="ghost"
@@ -72,7 +80,7 @@ export function NftDomainCard({
             {item.chainId !== null ? (
               <NetworkLogo className="size-4" network={item.chainId} />
             ) : null}
-            View Your NFT
+            {viewNftButtonText}
             <ExternalLink className="w-3.5 h-3.5" />
           </Link>
         </NamefiButton>
