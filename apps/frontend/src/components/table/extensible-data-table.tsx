@@ -527,15 +527,18 @@ export function ExtensibleDataTable<TData, FS extends IFilterStrategy<TData>>(
       </div>
 
       {/* Pagination Controls */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between flex-wrap gap-2">
         <div className="flex items-center gap-2">
           <TablePageSizeSelector
             pageSize={pageSize}
             onPageSizeChange={onPageSizeChange}
           />
-          <div className="text-sm text-muted-foreground">
+          <div className="hidden sm:block text-sm text-muted-foreground">
             Page {page} of {totalPages} — Total {totalCount}{' '}
             {totalCount === 1 ? 'row' : 'rows'}
+          </div>
+          <div className="sm:hidden block text-sm text-muted-foreground">
+            Total: {totalCount} {totalCount === 1 ? 'row' : 'rows'}
           </div>
         </div>
         <TablePageSelector
