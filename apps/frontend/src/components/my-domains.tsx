@@ -47,6 +47,7 @@ import {
   Loader2,
   SearchIcon,
   Settings,
+  MoreVertical,
 } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -59,6 +60,7 @@ import {
   useMemo,
   useState,
   useRef,
+  type ComponentProps,
 } from 'react';
 import {
   differenceInDays,
@@ -76,6 +78,12 @@ import {
 import { applyDrizzlerFilterOnDataset } from '@samyx/drizzler-filters-sorters/experimental';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { groupBy } from 'ramda';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/shadcn/dropdown-menu';
 
 type DomainRow = AppRouterOutput['users']['getCurrentUserDomains'][number];
 
@@ -161,10 +169,21 @@ const RenewButton: FC<{
     expirationDate?: Date | null;
   }) => Promise<unknown>;
   isProcessing: boolean;
-}> = ({ domainName, expirationDate, onRenew, isProcessing }) => {
+  asChild?: boolean;
+  className?: string;
+  variant?: ComponentProps<typeof Button>['variant'];
+}> = ({
+  domainName,
+  expirationDate,
+  onRenew,
+  isProcessing,
+  asChild,
+  className,
+  variant,
+}) => {
   return (
     <AsyncButton
-      variant="outline"
+      variant={variant || 'outline'}
       size="sm"
       onClick={async () => {
         await onRenew({
@@ -180,9 +199,13 @@ const RenewButton: FC<{
           Renew
         </>
       }
+      asChild={asChild}
+      className={className}
     >
-      <History className="w-4 h-4 mr-1 scale-x-[-1]" />
-      Renew
+      <>
+        <History className="w-4 h-4 mr-1 scale-x-[-1]" />
+        Renew
+      </>
     </AsyncButton>
   );
 };
@@ -308,7 +331,7 @@ function MyDomainsTable(props: { title?: string; domains: DomainRow[] }) {
 
   const handleManageDnsClick = useCallback(
     (domainName: string, e: React.MouseEvent) => {
-      e.preventDefault();
+      // e.preventDefault();
       if (!hasEmail) {
         setShowEmailModal(true);
       } else {
@@ -709,47 +732,83 @@ function MyDomainsTable(props: { title?: string; domains: DomainRow[] }) {
             row.original.tokenId?.toString() ?? null,
           );
 
+          const manageButton = showManageButton ? (
+            <Button
+              variant={isMobile ? 'ghost' : 'outline'}
+              size="sm"
+              onClick={(e) => handleManageDnsClick(domainName, e)}
+              aria-label={`Settings for ${domainName}`}
+            >
+              {isExpired ? (
+                <>
+                  <History className="w-4 h-4 mr-1" />
+                  Try to recover
+                </>
+              ) : (
+                <>
+                  <Settings className="w-4 h-4 mr-1" /> Manage Domain{' '}
+                </>
+              )}
+            </Button>
+          ) : null;
+
+          const renewButton = showRenewButton ? (
+            <RenewButton
+              domainName={domainName}
+              expirationDate={expirationDate}
+              onRenew={handleRenewDomain}
+              isProcessing={processingDomains.has(domainName)}
+              variant={isMobile ? 'ghost' : 'outline'}
+            />
+          ) : null;
+
+          const explorerButton =
+            !isExpired && explorerUrl ? (
+              <Button
+                variant={isMobile ? 'ghost' : 'outline'}
+                size="sm"
+                asChild={true}
+              >
+                <Link
+                  href={explorerUrl}
+                  aria-label={`View NFT for ${domainName}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex justify-start items-center"
+                >
+                  <ExternalLink className="w-4 h-4 mr-1" /> View NFT
+                </Link>
+              </Button>
+            ) : null;
+
+          if (isMobile) {
+            return (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" size="sm">
+                    <MoreVertical className="w-4 h-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  {!!manageButton && (
+                    <DropdownMenuItem>{manageButton}</DropdownMenuItem>
+                  )}
+                  {!!renewButton && (
+                    <DropdownMenuItem>{renewButton}</DropdownMenuItem>
+                  )}
+                  {!!explorerButton && (
+                    <DropdownMenuItem>{explorerButton}</DropdownMenuItem>
+                  )}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            );
+          }
+
           return (
             <div className="flex gap-2">
-              {showManageButton && (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={(e) => handleManageDnsClick(domainName, e)}
-                  aria-label={`Settings for ${domainName}`}
-                >
-                  {isExpired ? (
-                    <>
-                      <History className="w-4 h-4 mr-1" />
-                      Try to recover
-                    </>
-                  ) : (
-                    <>
-                      <Settings className="w-4 h-4 mr-1" /> Manage Domain{' '}
-                    </>
-                  )}
-                </Button>
-              )}
-              {showRenewButton && (
-                <RenewButton
-                  domainName={domainName}
-                  expirationDate={expirationDate}
-                  onRenew={handleRenewDomain}
-                  isProcessing={processingDomains.has(domainName)}
-                />
-              )}
-              {!isExpired && explorerUrl ? (
-                <Button variant="outline" size="sm" asChild={true}>
-                  <Link
-                    href={explorerUrl}
-                    aria-label={`View NFT for ${domainName}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <ExternalLink className="w-4 h-4 mr-1" /> View NFT
-                  </Link>
-                </Button>
-              ) : null}
+              {manageButton}
+              {renewButton}
+              {explorerButton}
             </div>
           );
         },
@@ -765,6 +824,7 @@ function MyDomainsTable(props: { title?: string; domains: DomainRow[] }) {
       pageSelectionState,
       processingDomains,
       selectedDomainIds,
+      isMobile,
     ],
   );
 
