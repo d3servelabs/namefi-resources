@@ -13,4 +13,5 @@ export {
   namefiNftWithAiAnalysisCte,
   namefiNftOwnersCte,
   burnedNamefiNftCte,
+  transferLogsCte,
 } from './schemas/onchain-indexers';
