@@ -25,9 +25,14 @@ import { config } from '#lib/env';
 import { parseDomainName } from '@namefi-astra/utils/parse-domain-name';
 import { getPoweredByNamefi3PDomains } from '#lib/namefi-registry';
 
+const _logger = createLogger({ context: 'NS-JSON' });
+
 const nsJsonRouter = new Hono();
 
-const _logger = createLogger({ context: 'NS-JSON' });
+nsJsonRouter.use(async (_c, next) => {
+  _logger.assign({ context: 'NS-JSON', noindex: true });
+  return next();
+});
 
 nsJsonRouter.get('/healthz', (c) => c.json({ message: 'OK' }));
 

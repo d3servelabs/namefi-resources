@@ -7,9 +7,14 @@ import { eq, ilike, or, sql } from 'drizzle-orm';
 import { Hono } from 'hono';
 import { createLogger } from '#lib/logger';
 
+const _logger = createLogger({ context: 'DNSSEC' });
+
 const dnssecRouter = new Hono();
 
-const _logger = createLogger({ context: 'DNSSEC' });
+dnssecRouter.use(async (_c, next) => {
+  _logger.assign({ context: 'DNSSEC', noindex: true });
+  return next();
+});
 
 dnssecRouter.get('/healthz', (c) => c.json({ message: 'OK' }));
 

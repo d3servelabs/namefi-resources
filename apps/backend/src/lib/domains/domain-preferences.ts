@@ -284,7 +284,6 @@ export const getAnswerForDnsQueryFromPreferences = async (
     (preferences.autoParkEnabled || isNotNil(forwardTo)) &&
     matchAny(qTypeEnum, RecordType.A, RecordType.AAAA)
   ) {
-    logger.trace({ qTypeEnum, PARKED_DOMAIN_RECORDS }, 'PARKED_DOMAIN_RECORDS');
     //Final Answer RCODE is 0
     return {
       RCODE: 0,
