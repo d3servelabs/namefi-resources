@@ -26,6 +26,7 @@ import {
   WalletIcon,
   Settings as SettingsIcon,
   CoinsIcon,
+  LayoutListIcon,
 } from 'lucide-react';
 import Link from 'next/link';
 import {
@@ -65,6 +66,9 @@ import { useHasPermissions } from '@/components/access/PermissionGate';
 import { useAdminFeatureFlagsSheet } from '@/components/admin/feature-flags/context';
 import { AdminFeatureFlagsSheet } from '@/components/admin/feature-flags/sheet';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
+import { useAdminFeatureFlag } from '../admin/feature-flags/use-flag';
+import { useRegisterAdminFlags } from '../admin/feature-flags/register';
+import type { FeatureFlagDefinition } from '@/types/feature-flags';
 
 const BASE_ITEMS: NavItem[] = [
   { title: 'Profile', href: '/profile', icon: UserIcon },
@@ -74,6 +78,14 @@ export type UserDropdownProps = HTMLAttributes<HTMLDivElement> & {
   forceExpanded?: boolean;
   disableBackdropBlur?: boolean;
 };
+const FEATURE_FLAGS_ITEMS: FeatureFlagDefinition[] = [
+  {
+    key: 'show_balance_in_user_dropdown',
+    label: 'Show Balance in User Dropdown',
+    scope: 'global',
+    defaultValue: false,
+  },
+];
 
 export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
   forwardRef<HTMLDivElement, UserDropdownProps>(function UserDropdown(
@@ -85,6 +97,10 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
     }: UserDropdownProps,
     ref: ForwardedRef<HTMLDivElement>,
   ) {
+    useRegisterAdminFlags(FEATURE_FLAGS_ITEMS);
+    const [showBalanceInUserDropdown] = useAdminFeatureFlag(
+      FEATURE_FLAGS_ITEMS[0],
+    );
     const [isSignOutDialogOpen, setIsSignOutDialogOpen] = useState(false);
     const [isBalanceDialogOpen, setIsBalanceDialogOpen] = useState(false);
     const { state: sidebarState, isMobile } = useSidebar();
@@ -339,32 +355,34 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
                 <DropdownMenuContent align="end" className="w-56">
                   {canViewAdminDashboard && (
                     <DropdownMenuItem onClick={() => openFeatureFlags(true)}>
-                      <SettingsIcon className="mr-2 h-4 w-4" />
+                      <LayoutListIcon className="mr-2 h-4 w-4" />
                       <span>Admin Feature Flags</span>
                     </DropdownMenuItem>
                   )}
-                  <DropdownMenuItem
-                    onSelect={() => setIsBalanceDialogOpen(true)}
-                    className="cursor-pointer"
-                  >
-                    <div className="flex w-full items-center justify-between gap-3">
-                      <div className="flex items-center gap-2 text-sm">
-                        <CoinsIcon className="h-4 w-4" />
-                        <span>Balance</span>
+                  {showBalanceInUserDropdown && (
+                    <DropdownMenuItem
+                      onSelect={() => setIsBalanceDialogOpen(true)}
+                      className="cursor-pointer"
+                    >
+                      <div className="flex w-full items-center justify-between gap-3">
+                        <div className="flex items-center gap-2 text-sm">
+                          <CoinsIcon className="h-4 w-4" />
+                          <span>Balance</span>
+                        </div>
+                        <div className="flex flex-col items-end leading-tight font-mono">
+                          {isLoadingBalance ? (
+                            <Skeleton className="h-6 w-[10ch] bg-white/20" />
+                          ) : (
+                            <span className="text-sm font-semibold">
+                              {nfscWalletAddresses.length > 0
+                                ? `${formattedBalance} NFSC`
+                                : '0.00 NFSC'}
+                            </span>
+                          )}
+                        </div>
                       </div>
-                      <div className="flex flex-col items-end leading-tight font-mono">
-                        {isLoadingBalance ? (
-                          <Skeleton className="h-6 w-[10ch] bg-white/20" />
-                        ) : (
-                          <span className="text-sm font-semibold">
-                            {nfscWalletAddresses.length > 0
-                              ? `${formattedBalance} NFSC`
-                              : '0.00 NFSC'}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  </DropdownMenuItem>
+                    </DropdownMenuItem>
+                  )}
                   {items.map((item) => {
                     const Icon = item.icon;
 
