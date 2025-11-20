@@ -60,7 +60,7 @@ export const namefiNftWithAiAnalysisCte = qb
  *   .limit(1);
  * ```
  */
-export const namefiNftWithAiAnalysisView = pgView(
+export const __Internal_namefiNftWithAiAnalysisView = pgView(
   'namefi_nft_with_ai_analysis_cte',
 ).as((qb) =>
   qb

@@ -1,7 +1,7 @@
 import {
   db,
   domainAiAnalysisTable,
-  namefiNftWithAiAnalysisView,
+  namefiNftWithAiAnalysisCte,
 } from '@namefi-astra/db';
 
 import {
@@ -29,12 +29,13 @@ export async function getAllDomainsNeedingProcessingForNamefiGpt(
   );
 
   let query = db
+    .with(namefiNftWithAiAnalysisCte)
     .select({
-      tokenId: namefiNftWithAiAnalysisView.tokenId,
-      normalizedDomainName: namefiNftWithAiAnalysisView.normalizedDomainName,
-      chainId: namefiNftWithAiAnalysisView.chainId,
+      tokenId: namefiNftWithAiAnalysisCte.tokenId,
+      normalizedDomainName: namefiNftWithAiAnalysisCte.normalizedDomainName,
+      chainId: namefiNftWithAiAnalysisCte.chainId,
     })
-    .from(namefiNftWithAiAnalysisView)
+    .from(namefiNftWithAiAnalysisCte)
     .$dynamic();
 
   // If not regenerating all, only get domains missing AI content
@@ -43,15 +44,15 @@ export async function getAllDomainsNeedingProcessingForNamefiGpt(
       and(
         not(
           inArray(
-            namefiNftWithAiAnalysisView.chainId,
+            namefiNftWithAiAnalysisCte.chainId,
             TEST_CHAINS.map((chain) => chain.id).filter(
               (id) => Number.isSafeInteger(id) && id < 2147483647,
             ), //todo change to bigint
           ),
         ),
         or(
-          isNull(namefiNftWithAiAnalysisView.explain),
-          isNull(namefiNftWithAiAnalysisView.appraisal),
+          isNull(namefiNftWithAiAnalysisCte.explain),
+          isNull(namefiNftWithAiAnalysisCte.appraisal),
         ),
       ),
     );
@@ -131,13 +132,14 @@ export async function getDirtyDomains(limit?: number) {
   logger.info({ limit }, 'Getting dirty domains for marketplace updates');
 
   let query = db
+    .with(namefiNftWithAiAnalysisCte)
     .select({
-      tokenId: namefiNftWithAiAnalysisView.tokenId,
-      normalizedDomainName: namefiNftWithAiAnalysisView.normalizedDomainName,
-      chainId: namefiNftWithAiAnalysisView.chainId,
+      tokenId: namefiNftWithAiAnalysisCte.tokenId,
+      normalizedDomainName: namefiNftWithAiAnalysisCte.normalizedDomainName,
+      chainId: namefiNftWithAiAnalysisCte.chainId,
     })
-    .from(namefiNftWithAiAnalysisView)
-    .where(eq(namefiNftWithAiAnalysisView.dirty, true))
+    .from(namefiNftWithAiAnalysisCte)
+    .where(eq(namefiNftWithAiAnalysisCte.dirty, true))
     .$dynamic();
 
   if (limit) {

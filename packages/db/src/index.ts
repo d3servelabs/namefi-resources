@@ -6,7 +6,6 @@ export * from './client';
 export { appConfigSchema, userPermissionsTable } from './schema';
 export {
   namefiNftView,
-  namefiNftWithAiAnalysisView,
   namefiNftOwnersView,
   namefiNftCte,
   namefiNftWithAiAnalysisCte,
