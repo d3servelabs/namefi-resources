@@ -3,6 +3,7 @@ export const formatAmountInUSD = (amount: number, inCents = false): string =>
     style: 'currency',
     currency: 'USD',
     minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
   }).format(inCents ? amount / 100 : amount);
 
 export const formatNumberWithAbbreviations = (num: number | string): string => {

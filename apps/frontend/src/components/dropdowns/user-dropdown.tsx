@@ -7,10 +7,17 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/shadcn/dropdown-menu';
+import { Button } from '@/components/ui/shadcn/button';
 import { useSidebar } from '@/components/ui/shadcn/sidebar';
 import { useAuth, useLogin, useLogout } from '@/hooks/use-auth';
+import { useUserWalletAddresses } from '@/hooks/use-user-wallet-addresses';
+import {
+  useUserChainBalances,
+  type ChainBalance,
+} from '@/hooks/use-user-chain-balances';
 import type { NavItem } from '@/lib/types/nav-item';
-import { shortage } from '@/lib/string';
+import { formatAmountInUSD } from '@/lib/number';
+import { getShortAddress, shortage } from '@/lib/string';
 import {
   Loader2Icon,
   LogOutIcon,
@@ -18,6 +25,7 @@ import {
   UserIcon,
   WalletIcon,
   Settings as SettingsIcon,
+  CoinsIcon,
 } from 'lucide-react';
 import Link from 'next/link';
 import {
@@ -27,6 +35,7 @@ import {
   forwardRef,
   useCallback,
   useMemo,
+  useState,
 } from 'react';
 import { CurrentUserAvatar } from '../user-avatar';
 import {
@@ -39,7 +48,14 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/shadcn/alert-dialog';
-import { useState } from 'react';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/shadcn/dialog';
 import { AnimatePresence, motion } from 'motion/react';
 import { cn } from '@/lib/cn';
 import { useTRPC } from '@/lib/trpc';
@@ -48,6 +64,8 @@ import { Permission } from '@namefi-astra/utils';
 import { useHasPermissions } from '@/components/access/PermissionGate';
 import { useAdminFeatureFlagsSheet } from '@/components/admin/feature-flags/context';
 import { AdminFeatureFlagsSheet } from '@/components/admin/feature-flags/sheet';
+import { Skeleton } from '@/components/ui/shadcn/skeleton';
+
 const BASE_ITEMS: NavItem[] = [
   { title: 'Profile', href: '/profile', icon: UserIcon },
 ];
@@ -68,10 +86,26 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
     ref: ForwardedRef<HTMLDivElement>,
   ) {
     const [isSignOutDialogOpen, setIsSignOutDialogOpen] = useState(false);
+    const [isBalanceDialogOpen, setIsBalanceDialogOpen] = useState(false);
     const { state: sidebarState, isMobile } = useSidebar();
     const { isLoading, isAuthenticated, privyUser } = useAuth();
     const { login } = useLogin();
     const { logout } = useLogout();
+    const { userWalletAddresses } = useUserWalletAddresses();
+    const nfscWalletAddresses = useMemo(
+      () =>
+        userWalletAddresses.filter(
+          (address): address is `0x${string}` =>
+            typeof address === 'string' && address.startsWith('0x'),
+        ),
+      [userWalletAddresses],
+    );
+    const { chainBalances, totalBalanceInUsdCents, isLoadingBalance } =
+      useUserChainBalances({
+        enabled: nfscWalletAddresses.length > 0,
+        walletAddresses: nfscWalletAddresses,
+      });
+    const formattedBalance = formatAmountInUSD(totalBalanceInUsdCents, true);
 
     const name =
       privyUser?.wallet?.address ||
@@ -309,6 +343,28 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
                       <span>Admin Feature Flags</span>
                     </DropdownMenuItem>
                   )}
+                  <DropdownMenuItem
+                    onSelect={() => setIsBalanceDialogOpen(true)}
+                    className="cursor-pointer"
+                  >
+                    <div className="flex w-full items-center justify-between gap-3">
+                      <div className="flex items-center gap-2 text-sm">
+                        <CoinsIcon className="h-4 w-4" />
+                        <span>Balance</span>
+                      </div>
+                      <div className="flex flex-col items-end leading-tight font-mono">
+                        {isLoadingBalance ? (
+                          <Skeleton className="h-6 w-[10ch] bg-white/20" />
+                        ) : (
+                          <span className="text-sm font-semibold">
+                            {nfscWalletAddresses.length > 0
+                              ? `${formattedBalance} NFSC`
+                              : '0.00 NFSC'}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </DropdownMenuItem>
                   {items.map((item) => {
                     const Icon = item.icon;
 
@@ -331,6 +387,14 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
+              <BalanceBreakdownDialog
+                open={isBalanceDialogOpen}
+                onOpenChange={setIsBalanceDialogOpen}
+                chainBalances={chainBalances}
+                totalBalanceInUsdCents={totalBalanceInUsdCents}
+                isLoadingBalances={isLoadingBalance}
+                walletAddresses={nfscWalletAddresses}
+              />
               {canViewAdminDashboard && (
                 // Render the sheet once so it can open on demand
                 <AdminFeatureFlagsSheet />
@@ -343,3 +407,132 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
   });
 
 UserDropdown.displayName = 'UserDropdown';
+
+type BalanceBreakdownDialogProps = {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  chainBalances: ChainBalance[];
+  totalBalanceInUsdCents: number;
+  isLoadingBalances: boolean;
+  walletAddresses: `0x${string}`[];
+};
+
+function BalanceBreakdownDialog({
+  open,
+  onOpenChange,
+  chainBalances,
+  totalBalanceInUsdCents,
+  isLoadingBalances,
+  walletAddresses,
+}: BalanceBreakdownDialogProps) {
+  const walletGroups = useMemo(() => {
+    const addressMap = walletAddresses.map((walletAddress) => {
+      const balances = chainBalances.filter(
+        (balance) =>
+          balance.walletAddress.toLowerCase() === walletAddress.toLowerCase(),
+      );
+      return { walletAddress, balances };
+    });
+
+    return addressMap.filter((group) => group.balances.length > 0);
+  }, [chainBalances, walletAddresses]);
+
+  const hasWallets = walletAddresses.length > 0;
+  const hasBalances = chainBalances.length > 0;
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-lg">
+        <DialogHeader>
+          <DialogTitle>NFSC Balance</DialogTitle>
+          <DialogDescription>
+            Review your available $NFSC across linked wallets and supported
+            chains.
+          </DialogDescription>
+        </DialogHeader>
+        <div className="space-y-4">
+          <div className="rounded-lg border border-border/60 bg-muted/10 px-4 py-3">
+            <div className="text-xs uppercase tracking-wide text-muted-foreground">
+              Total Available
+            </div>
+            <div className="text-2xl font-semibold">
+              {formatAmountInUSD(totalBalanceInUsdCents, true)} NFSC
+            </div>
+          </div>
+          {isLoadingBalances ? (
+            <div className="flex items-center justify-center gap-2 py-10 text-sm text-muted-foreground">
+              <Loader2Icon className="h-4 w-4 animate-spin" />
+              Fetching balances...
+            </div>
+          ) : !hasWallets ? (
+            <EmptyState message="Link or connect a wallet to view your $NFSC balances." />
+          ) : !hasBalances ? (
+            <EmptyState message="No $NFSC detected across your wallets yet." />
+          ) : (
+            <div className="space-y-3">
+              {walletGroups.map(({ walletAddress, balances }) => {
+                const walletTotal = balances.reduce(
+                  (sum, balance) => sum + balance.balanceInUsdCents,
+                  0,
+                );
+                return (
+                  <div
+                    key={walletAddress}
+                    className="rounded-lg border border-border/60 p-3"
+                  >
+                    <div className="flex items-center justify-between text-sm font-medium">
+                      <span>{getShortAddress(walletAddress)}</span>
+                      <span>{formatAmountInUSD(walletTotal, true)} NFSC</span>
+                    </div>
+                    <div className="mt-2 space-y-1.5">
+                      {balances.map((balance) => (
+                        <div
+                          key={`${walletAddress}-${balance.chainId}`}
+                          className="flex items-center justify-between text-xs text-muted-foreground"
+                        >
+                          <span>{balance.chainName}</span>
+                          <span className="font-medium text-foreground">
+                            {formatAmountInUSD(balance.balanceInUsdCents, true)}{' '}
+                            NFSC
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+        <DialogFooter className="flex flex-col gap-2 sm:flex-row">
+          <Button
+            asChild
+            variant="secondary"
+            className="w-full sm:flex-1"
+            onClick={() => onOpenChange(false)}
+          >
+            <Link href="/payment-methods">Go to Payment Methods</Link>
+          </Button>
+          <Button
+            className="w-full sm:flex-1"
+            onClick={() => onOpenChange(false)}
+          >
+            Close
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+type EmptyStateProps = {
+  message: string;
+};
+
+function EmptyState({ message }: EmptyStateProps) {
+  return (
+    <div className="rounded-lg border border-dashed border-border/60 px-4 py-6 text-center text-sm text-muted-foreground">
+      {message}
+    </div>
+  );
+}
