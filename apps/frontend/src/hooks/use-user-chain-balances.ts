@@ -199,7 +199,7 @@ export function useUserChainBalances(
     chainBalances,
     totalBalanceInUsdCents,
     canUseBalance,
-    isLoadingBalance: q.isLoading || isLoading,
+    isLoadingBalance: primaryWallet ? q.isLoading || isLoading : false, // if no primary wallet, then query is not enabled, so it's not loading
     refetchBalances: async () => {
       await q.refetch();
     },

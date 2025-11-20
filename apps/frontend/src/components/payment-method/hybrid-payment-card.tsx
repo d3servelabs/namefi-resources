@@ -166,25 +166,34 @@ export function HybridPaymentCard({
     >
       <div className="space-y-4">
         {/* Balance Toggle */}
-        {canUseBalance && (
-          <div className="flex items-center justify-between p-4 rounded-lg bg-[#18181B] border border-white/10">
-            <div className="flex items-center gap-3">
-              <Wallet className="h-5 w-5 text-brand-primary" />
-              <div>
-                <div className="font-medium">Use Available Balance</div>
+        <div className="flex items-center justify-between p-4 rounded-lg bg-[#18181B] border border-white/10">
+          <div className="flex items-center gap-3">
+            <Wallet className="h-5 w-5 text-brand-primary" />
+            <div>
+              <div className="font-medium">Use Available Balance</div>
+              {canUseBalance && totalBalanceInUsdCents > 0 ? (
                 <div className="text-sm text-muted-foreground">
-                  {formatAmountInUSD(totalBalanceInUsdCents, true)} $NFSC
+                  {formatAmountInUSD(totalBalanceInUsdCents, true)} NFSC
                   available
                 </div>
-              </div>
+              ) : (
+                <div className="text-sm text-muted-foreground">
+                  No $NFSC balance available
+                </div>
+              )}
             </div>
-            <Switch
-              className="data-[state=checked]:bg-brand-primary"
-              checked={shouldUseBalance}
-              onCheckedChange={() => setShouldUseBalance(!shouldUseBalance)}
-            />
           </div>
-        )}
+          <Switch
+            className="data-[state=checked]:bg-brand-primary"
+            checked={canUseBalance && shouldUseBalance}
+            onCheckedChange={
+              canUseBalance
+                ? () => setShouldUseBalance(!shouldUseBalance)
+                : undefined
+            }
+            disabled={!canUseBalance}
+          />
+        </div>
 
         {/* Balance Details */}
         <AnimatePresence>
@@ -304,15 +313,15 @@ export function HybridPaymentCard({
           totalBalanceInUsdCents >= totalAmountInUsdCents && (
             <div className="space-y-3">
               <div className="flex items-center gap-2">
-                <CheckCircle className="h-5 w-5 text-green-500" />
-                <span className="font-medium text-green-500">
+                <CheckCircle className="h-5 w-5 text-green-500/80" />
+                <span className="font-medium text-green-500/80">
                   Payment Covered by Balance
                 </span>
               </div>
-              <p className="text-sm text-muted-foreground">
+              {/* <p className="text-xs text-muted-foreground">
                 Your $NFSC balance is sufficient to cover this order. No credit
                 card needed.
-              </p>
+              </p> */}
             </div>
           )}
 
