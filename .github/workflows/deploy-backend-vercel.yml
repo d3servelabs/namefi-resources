@@ -455,6 +455,11 @@ jobs:
           app-id: ${{ vars.NAMEFI_BOT_APP_ID }}
           private-key: ${{ secrets.NAMEFI_BOT_PRIVATE_KEY }}
 
+      - name: Wait for Artifact Registry propagation
+        run: |
+          echo "Waiting 30 seconds to ensure Docker image is available..."
+          sleep 30
+
       - name: Trigger Production Workflow
         run: |
           echo "Tag deployment completed: ${{ github.ref }}"
