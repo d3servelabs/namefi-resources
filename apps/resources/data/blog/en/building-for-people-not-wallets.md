@@ -1,5 +1,5 @@
 ---
-title: "Building for People, Not Wallets: Lessons on Usability from Henri Stern of Privy?"
+title: "Building for People, Not Wallets: Lessons on Usability from Henri Stern of Privy"
 date: '2025-11-19'
 language: en
 tags: ['partners', 'namefi space']
