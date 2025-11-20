@@ -4,7 +4,7 @@ date: '2025-11-19'
 language: en
 tags: ['partners', 'namefi space']
 authors: ['namefiteam']
-draft: true
+draft: false
 description: A conversation-driven exploration of Henri Stern’s journey building Privy, focusing on usability, customer-led product development, and the shift from crypto complexity to human-centered design.
 ---
 
