@@ -27,6 +27,7 @@ import {
   Settings as SettingsIcon,
   CoinsIcon,
   LayoutListIcon,
+  Globe,
 } from 'lucide-react';
 import Link from 'next/link';
 import {
@@ -37,6 +38,7 @@ import {
   useCallback,
   useMemo,
   useState,
+  type ComponentProps,
 } from 'react';
 import { CurrentUserAvatar } from '../user-avatar';
 import {
@@ -69,23 +71,35 @@ import { Skeleton } from '@/components/ui/shadcn/skeleton';
 import { useAdminFeatureFlag } from '../admin/feature-flags/use-flag';
 import { useRegisterAdminFlags } from '../admin/feature-flags/register';
 import type { FeatureFlagDefinition } from '@/types/feature-flags';
+import { ErrorBoundary } from '@suspensive/react';
 
-const BASE_ITEMS: NavItem[] = [
-  { title: 'Profile', href: '/profile', icon: UserIcon },
-];
+import {
+  flatten,
+  compose,
+  intersperse,
+  filter,
+  isNotEmpty,
+  isNotNil,
+  both,
+} from 'ramda';
 
 export type UserDropdownProps = HTMLAttributes<HTMLDivElement> & {
   forceExpanded?: boolean;
   disableBackdropBlur?: boolean;
 };
+
 const FEATURE_FLAGS_ITEMS: FeatureFlagDefinition[] = [
   {
     key: 'show_balance_in_user_dropdown',
     label: 'Show Balance in User Dropdown',
     scope: 'global',
-    defaultValue: false,
+    defaultValue: true,
   },
 ];
+
+/**
+ * To Add NavItems to the UserDropdown, go to @see {getUserDropdownItems}
+ */
 
 export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
   forwardRef<HTMLDivElement, UserDropdownProps>(function UserDropdown(
@@ -101,27 +115,10 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
     const [showBalanceInUserDropdown] = useAdminFeatureFlag(
       FEATURE_FLAGS_ITEMS[0],
     );
-    const [isSignOutDialogOpen, setIsSignOutDialogOpen] = useState(false);
-    const [isBalanceDialogOpen, setIsBalanceDialogOpen] = useState(false);
+
     const { state: sidebarState, isMobile } = useSidebar();
     const { isLoading, isAuthenticated, privyUser } = useAuth();
-    const { login } = useLogin();
-    const { logout } = useLogout();
-    const { userWalletAddresses } = useUserWalletAddresses();
-    const nfscWalletAddresses = useMemo(
-      () =>
-        userWalletAddresses.filter(
-          (address): address is `0x${string}` =>
-            typeof address === 'string' && address.startsWith('0x'),
-        ),
-      [userWalletAddresses],
-    );
-    const { chainBalances, totalBalanceInUsdCents, isLoadingBalance } =
-      useUserChainBalances({
-        enabled: nfscWalletAddresses.length > 0,
-        walletAddresses: nfscWalletAddresses,
-      });
-    const formattedBalance = formatAmountInUSD(totalBalanceInUsdCents, true);
+    const { login: handleConnect } = useLogin();
 
     const name =
       privyUser?.wallet?.address ||
@@ -130,14 +127,6 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
       privyUser?.id ||
       'ME';
 
-    const handleConnect = useCallback(() => {
-      login(); // Uses default loginMethods from centralized hook
-    }, [login]);
-
-    const handleSignOut = useCallback(async () => {
-      await logout(); // Callbacks are already configured in the hook
-      setIsSignOutDialogOpen(false);
-    }, [logout]);
     const trpc = useTRPC();
     const pbnOwnerQuery = useQuery(
       trpc.pbnOwner.isUserAPoweredByNamefiOwner.queryOptions(undefined, {
@@ -149,24 +138,17 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
       'every',
     );
 
-    const items: NavItem[] = useMemo(() => {
-      const out: NavItem[] = [...BASE_ITEMS];
-      if (canViewAdminDashboard) {
-        out.unshift({
-          title: 'Admin Dashboard',
-          href: '/admin',
-          icon: SettingsIcon,
-        });
-      }
-      if (pbnOwnerQuery.data?.isOwner) {
-        out.unshift({
-          title: 'Powered Domains',
-          href: '/powered-by-namefi/admin',
-          icon: WalletIcon,
-        });
-      }
-      return out;
-    }, [canViewAdminDashboard, pbnOwnerQuery.data?.isOwner]);
+    const items: UserDropdownItemProps[] = useMemo(() => {
+      return getUserDropdownItems({
+        canViewAdminDashboard,
+        isPbnOwner: pbnOwnerQuery.data?.isOwner ?? false,
+        showBalanceInUserDropdown,
+      });
+    }, [
+      canViewAdminDashboard,
+      pbnOwnerQuery.data?.isOwner,
+      showBalanceInUserDropdown,
+    ]);
 
     const isExpanded = useMemo(() => {
       return forceExpanded || sidebarState !== 'collapsed' || isMobile;
@@ -179,7 +161,6 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
 
     const actionVariant = isExpanded ? 'pill' : 'icon';
     const expandedPaddingClass = isExpanded ? 'pl-[3px] pr-4' : undefined;
-    const { setOpen: openFeatureFlags } = useAdminFeatureFlagsSheet();
 
     return (
       <div
@@ -190,32 +171,6 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
         )}
         {...rest}
       >
-        {/* Sign Out Confirmation Dialog */}
-        <AlertDialog
-          open={isSignOutDialogOpen}
-          onOpenChange={setIsSignOutDialogOpen}
-        >
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>
-                Are you sure you want to sign out?
-              </AlertDialogTitle>
-              <AlertDialogDescription>
-                Are you sure you want to sign out? Any unsaved changes will be
-                lost.
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction
-                onClick={handleSignOut}
-                className="text-red-500"
-              >
-                Sign Out
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
         <AnimatePresence initial={false} mode="popLayout">
           {isLoading && (
             <motion.div
@@ -270,7 +225,7 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
                 disableBackdropBlur={disableBackdropBlur}
                 stretch={shouldStretch}
                 className={expandedPaddingClass}
-                onClick={handleConnect}
+                onClick={handleConnect as any}
               >
                 <WalletIcon className="size-6" />
                 {isExpanded && <span>Sign In</span>}
@@ -353,70 +308,18 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
                   </HeaderActionButton>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-56">
-                  {canViewAdminDashboard && (
-                    <DropdownMenuItem onClick={() => openFeatureFlags(true)}>
-                      <LayoutListIcon className="mr-2 h-4 w-4" />
-                      <span>Admin Feature Flags</span>
-                    </DropdownMenuItem>
+                  {items.map((item, index) =>
+                    item ? (
+                      <UserDropdownItem
+                        key={`${item.type}-${'title' in item ? item.title : `unknown-${index}`}`}
+                        item={item}
+                      />
+                    ) : (
+                      <div>error</div>
+                    ),
                   )}
-                  {showBalanceInUserDropdown && (
-                    <DropdownMenuItem
-                      onSelect={() => setIsBalanceDialogOpen(true)}
-                      className="cursor-pointer"
-                    >
-                      <div className="flex w-full items-center justify-between gap-3">
-                        <div className="flex items-center gap-2 text-sm">
-                          <CoinsIcon className="h-4 w-4" />
-                          <span>Balance</span>
-                        </div>
-                        <div className="flex flex-col items-end leading-tight font-mono">
-                          {isLoadingBalance ? (
-                            <Skeleton className="h-6 w-[10ch] bg-white/20" />
-                          ) : (
-                            <span className="text-sm font-semibold">
-                              {nfscWalletAddresses.length > 0
-                                ? `${formattedBalance} NFSC`
-                                : '0.00 NFSC'}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    </DropdownMenuItem>
-                  )}
-                  {items.map((item) => {
-                    const Icon = item.icon;
-
-                    return (
-                      <DropdownMenuItem key={item.href} asChild={true}>
-                        <Link href={item.href}>
-                          {Icon && <Icon className="mr-2 h-4 w-4" />}
-                          <span>{item.title}</span>
-                        </Link>
-                      </DropdownMenuItem>
-                    );
-                  })}
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem
-                    onClick={() => setIsSignOutDialogOpen(true)}
-                    className="text-red-500"
-                  >
-                    <LogOutIcon className="mr-2 h-4 w-4" />
-                    <span>Log Out</span>
-                  </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
-              <BalanceBreakdownDialog
-                open={isBalanceDialogOpen}
-                onOpenChange={setIsBalanceDialogOpen}
-                chainBalances={chainBalances}
-                totalBalanceInUsdCents={totalBalanceInUsdCents}
-                isLoadingBalances={isLoadingBalance}
-                walletAddresses={nfscWalletAddresses}
-              />
-              {canViewAdminDashboard && (
-                // Render the sheet once so it can open on demand
-                <AdminFeatureFlagsSheet />
-              )}
             </motion.div>
           )}
         </AnimatePresence>
@@ -552,5 +455,252 @@ function EmptyState({ message }: EmptyStateProps) {
     <div className="rounded-lg border border-dashed border-border/60 px-4 py-6 text-center text-sm text-muted-foreground">
       {message}
     </div>
+  );
+}
+
+type DropdownMenuItemProps = ComponentProps<typeof DropdownMenuItem>;
+type UserDropdownItemProps =
+  | (NavItem & { type: 'link'; customProps?: DropdownMenuItemProps })
+  | { custom: React.ReactNode; type: 'custom' }
+  | { type: 'separator' }
+  | (Omit<NavItem, 'href'> & {
+      onClick?: (e: React.MouseEvent<any>) => void;
+      type: 'button';
+      customProps?: DropdownMenuItemProps;
+    });
+
+const joinNavItemGroups = compose<
+  any[],
+  UserDropdownItemProps[],
+  UserDropdownItemProps[],
+  UserDropdownItemProps[],
+  UserDropdownItemProps[]
+>(
+  filter(both(isNotNil, Boolean)), // Remove nulls
+  flatten, // Flatten the array of arrays into a single array
+  intersperse({ type: 'separator' } as UserDropdownItemProps), // Add separators between groups
+  filter(compose(isNotEmpty, filter(both(isNotNil, Boolean)))), // Remove nulls and empty arrays
+);
+
+const UserDropdownItem = ({ item }: { item: UserDropdownItemProps }) => {
+  return (
+    <ErrorBoundary fallback={<></>}>
+      <UserDropdownItemInner item={item} />
+    </ErrorBoundary>
+  );
+};
+
+const UserDropdownItemInner = ({ item }: { item: UserDropdownItemProps }) => {
+  const Icon = 'icon' in item ? item.icon : undefined;
+  switch (item.type) {
+    case 'link':
+      return (
+        <DropdownMenuItem asChild={true} {...item.customProps}>
+          <Link href={item.href}>
+            {Icon && <Icon className="mr-2 h-4 w-4" />}
+            <span>{item.title}</span>
+          </Link>
+        </DropdownMenuItem>
+      );
+    case 'custom':
+      return item.custom;
+    case 'separator':
+      return <DropdownMenuSeparator />;
+    case 'button':
+      return (
+        <DropdownMenuItem
+          key={`${item.title}-${item.type}`}
+          onClick={item.onClick}
+          {...item.customProps}
+        >
+          {Icon && <Icon className="mr-2 h-4 w-4" />}
+          <span>{item.title}</span>
+        </DropdownMenuItem>
+      );
+    default:
+      return null;
+  }
+};
+
+const BASE_ITEMS: UserDropdownItemProps[] = [
+  { type: 'link', title: 'My Domains', href: '/my-domains', icon: Globe },
+  { type: 'link', title: 'Profile', href: '/profile', icon: UserIcon },
+];
+
+function getUserDropdownItems(options: {
+  canViewAdminDashboard: boolean;
+  isPbnOwner: boolean;
+  showBalanceInUserDropdown: boolean;
+}): UserDropdownItemProps[] {
+  const { canViewAdminDashboard, isPbnOwner, showBalanceInUserDropdown } =
+    options;
+
+  const items: (UserDropdownItemProps | boolean | undefined | null)[][] = [
+    showBalanceInUserDropdown
+      ? [
+          {
+            type: 'custom',
+            custom: <UserBalanceDropdownItem key="user-balance" />,
+          },
+        ]
+      : [],
+    [
+      canViewAdminDashboard && {
+        type: 'link',
+        title: 'Admin Dashboard',
+        href: '/admin',
+        icon: SettingsIcon,
+      },
+      canViewAdminDashboard && {
+        type: 'custom',
+        custom: <AdminFeatureFlagsDropdownItem key="admin-feature-flags" />,
+      },
+      isPbnOwner && {
+        type: 'link',
+        title: 'Powered Domains',
+        href: '/powered-by-namefi/admin',
+        icon: WalletIcon,
+      },
+    ],
+    BASE_ITEMS,
+    [
+      {
+        type: 'custom',
+        custom: <LogoutDropdownItem key="logout" />,
+      },
+    ],
+  ];
+  return joinNavItemGroups(items) as UserDropdownItemProps[];
+}
+
+function UserBalanceDropdownItem() {
+  const { userWalletAddresses } = useUserWalletAddresses();
+  const nfscWalletAddresses = useMemo(
+    () =>
+      userWalletAddresses.filter(
+        (address): address is `0x${string}` =>
+          typeof address === 'string' && address.startsWith('0x'),
+      ),
+    [userWalletAddresses],
+  );
+  const [isBalanceDialogOpen, setIsBalanceDialogOpen] = useState(false);
+
+  const { chainBalances, totalBalanceInUsdCents, isLoadingBalance } =
+    useUserChainBalances({
+      enabled: nfscWalletAddresses.length > 0,
+      walletAddresses: nfscWalletAddresses,
+    });
+  const formattedBalance = formatAmountInUSD(totalBalanceInUsdCents, true);
+
+  return (
+    <>
+      <DropdownMenuItem
+        onSelect={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          setIsBalanceDialogOpen(true);
+        }}
+        className="cursor-pointer"
+      >
+        <div className="flex w-full items-center justify-between gap-3">
+          <div className="flex items-center gap-2 text-sm">
+            <CoinsIcon className="h-4 w-4" />
+            <span>Balance</span>
+          </div>
+          <div className="flex flex-col items-end leading-tight font-mono">
+            {isLoadingBalance ? (
+              <Skeleton className="h-6 w-[10ch] bg-white/20" />
+            ) : (
+              <span className="text-sm font-semibold">
+                {nfscWalletAddresses.length > 0
+                  ? `${formattedBalance} NFSC`
+                  : '0.00 NFSC'}
+              </span>
+            )}
+          </div>
+        </div>
+      </DropdownMenuItem>
+      <BalanceBreakdownDialog
+        open={isBalanceDialogOpen}
+        onOpenChange={setIsBalanceDialogOpen}
+        chainBalances={chainBalances}
+        totalBalanceInUsdCents={totalBalanceInUsdCents}
+        isLoadingBalances={isLoadingBalance}
+        walletAddresses={nfscWalletAddresses}
+      />
+    </>
+  );
+}
+
+function LogoutDropdownItem() {
+  const [isSignOutDialogOpen, setIsSignOutDialogOpen] = useState(false);
+  const { logout } = useLogout();
+  const handleSignOut = useCallback(async () => {
+    await logout(); // Callbacks are already configured in the hook
+    setIsSignOutDialogOpen(false);
+  }, [logout]);
+
+  return (
+    <>
+      <UserDropdownItem
+        item={{
+          type: 'button',
+          onClick: (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            setIsSignOutDialogOpen(true);
+          },
+          title: 'Log Out',
+          icon: LogOutIcon,
+          customProps: {
+            className: 'text-red-500',
+          },
+        }}
+      />
+      {/* Sign Out Confirmation Dialog */}
+      <AlertDialog
+        open={isSignOutDialogOpen}
+        onOpenChange={setIsSignOutDialogOpen}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              Are you sure you want to sign out?
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to sign out? Any unsaved changes will be
+              lost.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleSignOut} className="text-red-500">
+              Sign Out
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
+  );
+}
+
+function AdminFeatureFlagsDropdownItem() {
+  const { setOpen: openFeatureFlags } = useAdminFeatureFlagsSheet();
+  return (
+    <>
+      <UserDropdownItem
+        item={{
+          type: 'button',
+          onClick: (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            openFeatureFlags(true);
+          },
+          title: 'Admin Feature Flags',
+          icon: LayoutListIcon,
+        }}
+      />
+      <AdminFeatureFlagsSheet />
+    </>
   );
 }
