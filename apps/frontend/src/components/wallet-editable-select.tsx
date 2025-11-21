@@ -6,16 +6,19 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
+  SelectValue,
 } from '@/components/ui/shadcn/select';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/cn';
 import { getShortAddress } from '@/lib/string';
 import { CHAINS } from '@namefi-astra/utils';
 import type { ChangeEvent, ReactNode } from 'react';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useResizeObserver } from 'usehooks-ts';
 import { NetworkLogo } from './network-logo';
 import { Badge } from './ui/shadcn/badge';
+import { useAllowedChains } from '@/hooks/use-allowed-chains';
+import { useDefaultChainId } from '@/hooks/use-allowed-chains';
 
 interface WalletEditableSelectProps {
   value: string;
@@ -27,6 +30,8 @@ interface WalletEditableSelectProps {
   className?: string;
   helpText?: ReactNode;
   icon?: ReactNode;
+  onChainIdChange?: (chainId: number) => void;
+  selectedChainId?: number;
 }
 
 export function WalletEditableSelect({
@@ -39,7 +44,11 @@ export function WalletEditableSelect({
   className,
   helpText,
   icon,
+  onChainIdChange,
+  selectedChainId,
 }: WalletEditableSelectProps) {
+  const { chains } = useAllowedChains();
+  const defaultChainId = useDefaultChainId();
   // Track both the input value and what's selected in the dropdown
   const [localValue, setLocalValue] = useState({
     input: value,
@@ -80,20 +89,44 @@ export function WalletEditableSelect({
     [onValueChange],
   );
 
+  const allowChangeChain = useMemo(() => {
+    return chains.length > 0 && onChainIdChange;
+  }, [chains, onChainIdChange]);
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 w-full">
       <div className="relative flex items-center">
-        {icon && (
+        {allowChangeChain && (
+          <Select
+            value={selectedChainId?.toString() ?? defaultChainId.toString()}
+            onValueChange={(value) => {
+              onChainIdChange?.(Number.parseInt(value));
+            }}
+          >
+            <SelectTrigger className="h-12 py-5.5 mr-1">
+              <SelectValue placeholder="Select a Chain" />
+            </SelectTrigger>
+            <SelectContent align="end">
+              {chains.map((chain) => (
+                <SelectItem key={chain.id} value={chain.id.toString()}>
+                  <NetworkLogo network={chain.id} className="size-4" />
+                  {chain.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        )}
+        {!allowChangeChain && icon && (
           <div className="absolute left-3 flex items-center">{icon}</div>
         )}
+
         <Input
           value={localValue.input}
           onChange={handleInputChange}
           placeholder={placeholder}
           ref={inputRef}
           className={cn(
-            'h-14 rounded-md px-3 py-1',
-            icon && 'pl-9',
+            'h-12 rounded-md px-3 py-1',
+            !allowChangeChain && icon && 'pl-9',
             options.length > 0 && 'pr-9',
             className,
           )}

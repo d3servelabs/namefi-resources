@@ -48,6 +48,7 @@ import {
 import { secrets } from '../../lib/env';
 import pMap from 'p-map';
 import { logger } from '#lib/logger';
+import { config } from '#lib/env';
 
 const stripe = new Stripe(secrets.STRIPE_SECRET_KEY);
 type PaymentMethodDetailsOnChain = {
@@ -326,7 +327,22 @@ export const ordersRouter = createTRPCRouter({
       extraInput: input,
     }),
   )
-    .input(createOrderV2InputSchema)
+    .input(
+      createOrderV2InputSchema.superRefine((input, ctx) => {
+        if (!input.nftMetadata.nftChainId) {
+          ctx.addIssue({
+            code: 'custom',
+            message: 'NFT chain ID is required',
+          });
+        }
+        if (!config.ALLOWED_CHAINS.includes(input.nftMetadata.nftChainId)) {
+          ctx.addIssue({
+            code: 'custom',
+            message: `NFT chain ID ${input.nftMetadata.nftChainId} is not allowed`,
+          });
+        }
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
       const { cartItemIds, payments, nftMetadata } = input;
 

@@ -5,8 +5,10 @@ import {
 } from '@namefi-astra/db/types';
 
 import { z } from 'zod';
+
 import { createStripePaymentIntentSchema } from '../services/stripe-payments/types';
 import type { DomainAvailabilityInfo } from '../lib/namefi-registry';
+import { checksumWalletAddressSchema } from '@namefi-astra/utils';
 
 const paymentMetadataSchema = z
   .object({
@@ -30,6 +32,21 @@ export const createOrderInputSchema = z.object({
 
 export type CreateOrderInput = z.infer<typeof createOrderInputSchema>;
 
+const nftMetadataSchema2 = z.object({
+  nftWalletAddress: checksumWalletAddressSchema,
+  nftChainId: z.number().refine(
+    (chainId) => {
+      // const { config } = await import('#lib/env');
+      // const allowedChains = await import('../lib/env').then((env) => env.config.ALLOWED_CHAINS);
+      const allowedChains = [1, 11155111, 8453];
+      return allowedChains.includes(chainId);
+    },
+    {
+      message: 'Chain ID provided is not allowed',
+      path: ['nftChainId'],
+    },
+  ),
+});
 // Stage 5: Multi-payment order creation (V2)
 export const createOrderV2InputSchema = z.object({
   cartItemIds: z.array(z.string()).min(1, 'At least one cart item is required'),
@@ -64,7 +81,7 @@ export const createOrderV2InputSchema = z.object({
         }
       }
     }),
-  nftMetadata: nftMetadataSchema,
+  nftMetadata: nftMetadataSchema2,
 });
 
 export type CreateOrderV2Input = z.infer<typeof createOrderV2InputSchema>;

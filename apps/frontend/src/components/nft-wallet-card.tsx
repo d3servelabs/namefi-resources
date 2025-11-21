@@ -22,6 +22,14 @@ import {
 } from '@/components/ui/shadcn/tooltip';
 import { Button } from '@/components/ui/shadcn/button';
 import { toast } from 'sonner';
+import { useDefaultChainId } from '@/hooks/use-allowed-chains';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/shadcn/select';
 
 type EnsCandidate = {
   original: string;
@@ -45,18 +53,18 @@ export interface NftWalletCardProps {
   onWalletAddressChange: (walletAddress: string | null) => void;
   selectedWalletAddress: string | null;
   disabled?: boolean;
+  onChainIdChange?: (chainId: number) => void;
+  selectedChainId?: number;
 }
 
 export function NftWalletCard({
   onWalletAddressChange,
   selectedWalletAddress,
   disabled,
+  onChainIdChange,
+  selectedChainId,
 }: NftWalletCardProps) {
-  const { chainIds } = useAllowedChains();
-
-  const DefaultReceivingWalletChainId = chainIds.includes(CHAINS.base.id)
-    ? CHAINS.base.id
-    : CHAINS.sepolia.id;
+  const defaultChainId = useDefaultChainId();
   const [inputValue, setInputValue] = useState<string>(
     selectedWalletAddress ?? '',
   );
@@ -457,25 +465,29 @@ export function NftWalletCard({
 
   return (
     <CartCard title="Receiving Wallet or ENS">
-      <WalletEditableSelect
-        value={inputValue}
-        onValueChange={handleWalletAddressChange}
-        options={options}
-        placeholder={
-          userWalletAddresses.length > 0
-            ? 'Paste a wallet address or ENS name, or select from connected wallets'
-            : 'Paste a wallet address or ENS name to receive domains'
-        }
-        error={error || undefined}
-        disabled={!optionsReady || disabled}
-        helpText={helpContent}
-        icon={
-          <NetworkLogo
-            network={DefaultReceivingWalletChainId}
-            className="size-4"
-          />
-        }
-      />
+      <div className="flex items-start gap-2">
+        <WalletEditableSelect
+          onChainIdChange={onChainIdChange}
+          selectedChainId={selectedChainId}
+          value={inputValue}
+          onValueChange={handleWalletAddressChange}
+          options={options}
+          placeholder={
+            userWalletAddresses.length > 0
+              ? 'Paste a wallet address or ENS name, or select from connected wallets'
+              : 'Paste a wallet address or ENS name to receive domains'
+          }
+          error={error || undefined}
+          disabled={!optionsReady || disabled}
+          helpText={helpContent}
+          icon={
+            <NetworkLogo
+              network={selectedChainId ?? defaultChainId}
+              className="size-4"
+            />
+          }
+        />
+      </div>
     </CartCard>
   );
 }

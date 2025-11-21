@@ -60,6 +60,8 @@ export default function CartPage() {
   const [selectedNftWalletAddress, setSelectedNftWalletAddress] = useState<
     string | null
   >(null);
+  const [selectedNftChainId, setSelectedNftChainId] =
+    useState<number>(defaultChainId);
   const [isRedirecting, setIsRedirecting] = useState(false);
   const [isErrorDialogOpen, setIsErrorDialogOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -213,7 +215,7 @@ export default function CartPage() {
           payments,
           nftMetadata: {
             nftWalletAddress: selectedNftWalletAddress,
-            nftChainId: defaultChainId,
+            nftChainId: selectedNftChainId ?? defaultChainId,
           },
         });
       } catch (error) {
@@ -222,7 +224,13 @@ export default function CartPage() {
         setExplicitlyCheckingCartItemsForUpdates(false);
       }
     },
-    [createOrder, items, selectedNftWalletAddress, defaultChainId],
+    [
+      createOrder,
+      items,
+      selectedNftWalletAddress,
+      selectedNftChainId,
+      defaultChainId,
+    ],
   );
 
   const handleClearCart = useCallback(async () => {
@@ -254,6 +262,13 @@ export default function CartPage() {
       setSelectedNftWalletAddress(walletAddress);
     },
     [],
+  );
+
+  const handleNftChainIdChange = useCallback(
+    (chainId: number) => {
+      setSelectedNftChainId(chainId ?? defaultChainId);
+    },
+    [defaultChainId],
   );
 
   const isDisabled = useMemo(
@@ -349,6 +364,8 @@ export default function CartPage() {
                 onWalletAddressChange={handleNftWalletAddressChange}
                 selectedWalletAddress={selectedNftWalletAddress}
                 disabled={isDisabled}
+                onChainIdChange={handleNftChainIdChange}
+                selectedChainId={selectedNftChainId}
               />
             )}
 
