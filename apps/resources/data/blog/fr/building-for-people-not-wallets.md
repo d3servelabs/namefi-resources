@@ -4,7 +4,7 @@ date: '2025-11-19'
 language: fr
 tags: ['partners']
 authors: ['namefiteam']
-draft: true
+draft: false
 description: Une exploration guidée par la conversation du parcours d’Henri Stern dans la création de Privy, centrée sur l’utilisabilité, le développement produit dirigé par les clients, et la transition de la complexité crypto vers un design véritablement centré sur l’humain.
 ---
 
