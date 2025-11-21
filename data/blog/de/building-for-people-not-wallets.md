@@ -4,7 +4,7 @@ date: '2025-11-19'
 language: de
 tags: ['partners']
 authors: ['namefiteam']
-draft: true
+draft: false
 description: Ein dialogorientierter Einblick in Henri Sterns Weg beim Aufbau von Privy – mit Fokus auf Usability, kundengetriebene Produktentwicklung und den Wandel von kryptotechnischer Komplexität hin zu menschenzentriertem Design.
 ---
 
