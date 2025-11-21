@@ -224,10 +224,11 @@ export const domainConfigRouter = createTRPCRouter({
       }),
     )
     .query(async ({ input, ctx }) => {
-      await assertAuthenticatedUserIsDomainOwner(
-        input.normalizedDomainName,
-        ctx.user,
-      );
+      // This data is all public and does not require authorization
+      // await assertAuthenticatedUserIsDomainOwner(
+      //   input.normalizedDomainName,
+      //   ctx.user,
+      // );
       try {
         const parsedDomainName = parseDomainName(input.normalizedDomainName);
         if (!parsedDomainName.valid) {
@@ -288,9 +289,16 @@ export const domainConfigRouter = createTRPCRouter({
           };
         }
 
-        const expirationDate = (
-          await getDomainsExpirationDatesFromIndex([input.normalizedDomainName])
-        )[input.normalizedDomainName];
+        const [expirationDate, nameserverRes] = await Promise.all([
+          getDomainsExpirationDatesFromIndex([input.normalizedDomainName]).then(
+            (expirationDates) => expirationDates[input.normalizedDomainName],
+          ),
+          resolve(
+            sldRegistrar.getNameServers(
+              toPunycodeDomainName(input.normalizedDomainName),
+            ),
+          ),
+        ]);
 
         const isExpired = isDomainExpirationDatePassed(expirationDate);
         const isInLateRenewalPeriod =
@@ -298,11 +306,7 @@ export const domainConfigRouter = createTRPCRouter({
         const isInGraceRestorationPeriod =
           isDomainAssumedInGraceRestorationPeriod(expirationDate);
 
-        const [error, nameservers] = await resolve(
-          sldRegistrar.getNameServers(
-            toPunycodeDomainName(input.normalizedDomainName),
-          ),
-        );
+        const [error, nameservers] = nameserverRes;
         if (error) {
           if (isInLateRenewalPeriod || isInGraceRestorationPeriod) {
             return {
@@ -364,7 +368,7 @@ export const domainConfigRouter = createTRPCRouter({
           throw error;
         }
         const isUsingOldNamefiNameservers =
-          await checkIfNameserversAreLegacyNamefiNameservers(nameservers);
+          checkIfNameserversAreLegacyNamefiNameservers(nameservers);
 
         if (isUsingOldNamefiNameservers) {
           return {
@@ -472,8 +476,11 @@ export const domainConfigRouter = createTRPCRouter({
       }),
     )
     .query(async ({ input, ctx }) => {
-      await assertAuthenticatedUserIsDomainOwner(input.domainName, ctx.user);
-      return await getDomainPreferencesAndConfig(input.domainName);
+      const [_, domainPreferencesAndConfig] = await Promise.all([
+        assertAuthenticatedUserIsDomainOwner(input.domainName, ctx.user),
+        getDomainPreferencesAndConfig(input.domainName),
+      ]);
+      return domainPreferencesAndConfig;
     }),
 
   updateDomainPreferencesAndConfig: protectedProcedure

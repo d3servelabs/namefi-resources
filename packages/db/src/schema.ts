@@ -587,6 +587,13 @@ export const aiGenerationTypeEnum = pgEnum('ai_generation_type', [
  * Indexed domains table - stores a cached index of all domains from all registrars
  * This table is populated by a Temporal workflow that calls listAllDomains on each registrar
  */
+export type IndexedDomainDnssecStatus = {
+  supportsDnssec: boolean;
+  hasDelegationSigner: boolean;
+  isUsingNamefiDelegationSigner: boolean;
+  zoneHasActiveDnssec: boolean;
+};
+
 export const indexedDomainsTable = pgTable(
   'indexed_domains',
   {
@@ -597,6 +604,19 @@ export const indexedDomainsTable = pgTable(
     registrarKey: text('registrar_key').notNull(),
     expirationTime: timestamp('expiration_time').notNull(),
     lastIndexedAt: timestamp('last_indexed_at').notNull().defaultNow(),
+    nameservers: jsonb('nameservers').$type<string[]>().notNull().default([]),
+    nameserversLastUpdatedAt: timestamp('nameservers_last_updated_at'),
+    isUsingNamefiNameservers: boolean('is_using_namefi_nameservers')
+      .notNull()
+      .default(false),
+    dnssecStatus: jsonb(
+      'dnssec_status',
+    ).$type<IndexedDomainDnssecStatus | null>(),
+    dnssecLastUpdatedAt: timestamp('dnssec_last_updated_at'),
+    isMissingFromRegistrar: boolean('is_missing_from_registrar')
+      .notNull()
+      .default(false),
+    missingFromRegistrarSince: timestamp('missing_from_registrar_since'),
     ...timestamps,
   },
   (table) => [
