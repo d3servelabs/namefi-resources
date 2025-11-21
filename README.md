@@ -3,6 +3,10 @@
 [![Test](https://github.com/d3servelabs/namefi-astra/actions/workflows/test.yml/badge.svg)](https://github.com/d3servelabs/namefi-astra/actions/workflows/test.yml)
 [![Validate](https://github.com/d3servelabs/namefi-astra/actions/workflows/validate.yml/badge.svg)](https://github.com/d3servelabs/namefi-astra/actions/workflows/validate.yml)
 
+## Other Docs
+
+- [Logs Access](./docs/logs.md)
+
 ## Quick Start
 
 Once you have all dependencies installed
