@@ -235,9 +235,14 @@ jobs:
         id: check-image
         run: |
           IMAGE_TAG="${{ steps.set-tag.outputs.image_tag }}"
+          
+          IMAGE_DETAILS=`gcloud artifacts docker images describe "$IMAGE_TAG" --format="json" 2>/dev/null`
+          DIGEST=`echo $IMAGE_DETAILS | jq .image_summary.digest`
+
+          echo $IMAGE_DETAILS | jq
 
           # Try to pull the manifest to check if image exists
-          if gcloud artifacts docker images describe "$IMAGE_TAG" --format="get(name)" 2>/dev/null; then
+          if [[ -n $DIGEST ]]; then
             echo "Image already exists: $IMAGE_TAG"
             echo "exists=true" >> $GITHUB_OUTPUT
           else
@@ -253,7 +258,7 @@ jobs:
         if: steps.check-image.outputs.exists != 'true'
         uses: useblacksmith/build-push-action@v2
         with:
-          tags: ${{ steps.set-tag.outputs.image_tag }}
+          tags: astra/backend:latest
           push: true
           context: .
           file: ./apps/backend/Dockerfile
@@ -457,7 +462,7 @@ jobs:
 
       - name: Wait for Artifact Registry propagation
         run: |
-          echo "Waiting 30 seconds to ensure Docker image is available..."
+          echo "Waiting 60 seconds to ensure Docker image is available..."
           sleep 60
 
       - name: Trigger Production Workflow
