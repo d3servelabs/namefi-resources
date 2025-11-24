@@ -799,6 +799,16 @@ export function createRegistrarService(config: {
     accountType: 'bulk',
     connection,
     overrideKey: Registrars.DynadotRegular,
+    hooks: {
+      afterFetchAllowedTlds: async (
+        regularAllowedTlds: PunycodeDomainName[],
+      ) => {
+        const gdgExistingTlds = await dynadotGdg.getAllowedParentDomains();
+        return regularAllowedTlds.filter(
+          (tld) => !gdgExistingTlds.includes(tld),
+        );
+      },
+    },
   });
 
   return new RegistrarService(

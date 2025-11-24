@@ -83,6 +83,10 @@ import { parseDomainName } from '@namefi-astra/utils/parse-domain-name';
 
 const DYNADOT_DOMAIN_REGISTER_CHECK_TIME_WINDOW_IN_MINUTES = 30;
 
+const DEFAULT_HOOKS = {
+  afterFetchAllowedTlds: async (allowedTlds: PunycodeDomainName[]) =>
+    allowedTlds,
+};
 export class DynadotRegistrarService extends AbstractRegistrarService {
   readonly logger: pino.Logger;
   private readonly client: Dynadot;
@@ -92,6 +96,12 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
     checkperiod: 60 * 60 * 12, // 12 hours in seconds
     deleteOnExpire: true,
   });
+
+  private readonly hooks: {
+    afterFetchAllowedTlds?: (
+      allowedTlds: PunycodeDomainName[],
+    ) => Promise<PunycodeDomainName[]>;
+  } = DEFAULT_HOOKS;
 
   private get priceMap() {
     return this.cache.get<Record<string, DomainPricingDetails>>('tld_prices');
@@ -113,6 +123,11 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
     overrideKey?: Registrars;
     accountType?: 'super_bulk' | 'bulk' | 'regular';
     connection?: Bottleneck.IORedisConnection | Bottleneck.RedisConnection;
+    hooks?: {
+      afterFetchAllowedTlds?: (
+        allowedTlds: PunycodeDomainName[],
+      ) => Promise<PunycodeDomainName[]>;
+    };
   }) {
     super(config.overrideKey ?? Registrars.DynadotGdg);
     this.logger =
@@ -158,6 +173,10 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
       this.logger.info('prices cache expired');
       await this.getTldPrices();
     });
+    this.hooks = {
+      ...DEFAULT_HOOKS,
+      ...(config.hooks ?? {}),
+    };
     this.getAllowedParentDomains()
       .then((tlds) => {
         this.logger.info(
@@ -171,9 +190,13 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
   }
 
   async getAllowedParentDomains(): Promise<PunycodeDomainName[]> {
-    return this.getTldPrices().then((pricing) =>
+    const allowedTlds = await this.getTldPrices().then((pricing) =>
       Object.keys(pricing).map((tld) => toPunycodeDomainName(tld)),
     );
+    if (isNotNil(this.hooks.afterFetchAllowedTlds)) {
+      return await this.hooks.afterFetchAllowedTlds(allowedTlds);
+    }
+    return allowedTlds;
   }
 
   async registerDomain(
