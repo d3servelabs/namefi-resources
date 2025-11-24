@@ -79,6 +79,17 @@ export const secretsSchema = z.object({
 
   COOKIE_SECRET: z.string(),
   ALTCHA_HMAC_KEY: z.string(),
+  PRIVY_SIGNATURE_VERIFICATION_KEY: z
+    .string()
+    .optional()
+    .transform((val) => {
+      if (!val) return null;
+      return [
+        '-----BEGIN PUBLIC KEY-----',
+        val,
+        '-----END PUBLIC KEY-----',
+      ].join('\n');
+    }),
 });
 
 export type SecretsSchema = z.infer<typeof secretsSchema>;

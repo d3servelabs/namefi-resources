@@ -398,7 +398,7 @@ const timingMiddleware = t.middleware(async ({ next, path }) => {
  * guarantee that a user querying is authorized, but we can still access user session data if they
  * are logged in.
  */
-const $publicProcedure = t.procedure
+export const baseProcedure = t.procedure
   .use(timingMiddleware)
   .use(async ({ ctx, next }) => {
     logger.assign({
@@ -428,16 +428,19 @@ export const verifyUserAuthAndCreation = t.middleware<TrpcContextWithUser>(
       });
 
       // Load user permissions for this request
-      const permissionsRows = await appDb
-        .select({ permission: userPermissionsTable.permission })
-        .from(userPermissionsTable)
-        .where(eq(userPermissionsTable.userId, user.id));
+      const [permissionsRows, impersonateUserId] = await Promise.all([
+        appDb
+          .select({ permission: userPermissionsTable.permission })
+          .from(userPermissionsTable)
+          .where(eq(userPermissionsTable.userId, user.id)),
+
+        // Apply impersonation if token is present and caller has permission
+        readImpersonationTargetUserId(ctx),
+      ]);
+
       const userPermissions = permissionsRows.map(
         (r) => r.permission as Permission,
       );
-
-      // Apply impersonation if token is present and caller has permission
-      const impersonateUserId = await readImpersonationTargetUserId(ctx);
 
       let effectiveUser = user;
       let impersonation:
@@ -540,14 +543,17 @@ export const maybeVerifyUserAuthAndCreation =
       | { actorUserId: string; targetUserId: string }
       | undefined;
     if (user) {
-      const permissionsRows = await appDb
-        .select({ permission: userPermissionsTable.permission })
-        .from(userPermissionsTable)
-        .where(eq(userPermissionsTable.userId, user.id));
+      const [permissionsRows, impersonateUserId] = await Promise.all([
+        appDb
+          .select({ permission: userPermissionsTable.permission })
+          .from(userPermissionsTable)
+          .where(eq(userPermissionsTable.userId, user.id)),
+
+        // Apply impersonation if token is present and caller has permission
+        readImpersonationTargetUserId(ctx),
+      ]);
       userPermissions = permissionsRows.map((r) => r.permission as Permission);
 
-      // Apply impersonation if token is present and caller has permission
-      const impersonateUserId = await readImpersonationTargetUserId(ctx);
       if (
         impersonateUserId &&
         impersonateUserId !== user.id &&
@@ -603,7 +609,7 @@ export const maybeVerifyUserAuthAndCreation =
  * if so it will verify the user's authentication token and add the user to the context.
  * If the user is not authenticated, it will add a null user to the context.
  */
-export const authedOrPublicProcedure = $publicProcedure
+export const authedOrPublicProcedure = baseProcedure
   .use(maybeVerifyUserAuthAndCreation)
   .use(impersonationMutationGuard)
   .use(async ({ ctx, next }) => {
@@ -628,7 +634,7 @@ export const publicProcedure = authedOrPublicProcedure;
  * This is the piece we will use to build new queries and mutations on our tRPC API. It will
  * guarantee that a user querying is authenticated, and that we can access user's data.
  */
-export const protectedProcedure = $publicProcedure
+export const protectedProcedure = baseProcedure
   .use(verifyUserAuthAndCreation)
   .use(impersonationMutationGuard)
   .use(async ({ ctx, next }) => {
@@ -956,6 +962,6 @@ export const verifyPrivyWebhookPayload = t.middleware(async ({ ctx, next }) => {
  * This is the piece we will use to build new webhook handlers on our tRPC API. It will
  * guarantee that a webhook querying is authenticated, and that we can access webhook's data.
  */
-export const protectedWebhookProcedure = $publicProcedure.use(
+export const protectedWebhookProcedure = baseProcedure.use(
   verifyPrivyWebhookPayload,
 );
