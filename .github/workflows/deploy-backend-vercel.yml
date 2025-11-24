@@ -190,7 +190,7 @@ jobs:
     name: Build Backend Container
     needs: [compute-env, check-duplicate, detect-changes]
     if: needs.check-duplicate.outputs.should_skip != 'true' && needs.detect-changes.outputs.should-backend-deploy == 'true'
-    runs-on: 'blacksmith-8vcpu-ubuntu-2404'
+    runs-on: 'blacksmith-4vcpu-ubuntu-2404'
     permissions:
       contents: read
       id-token: write # Required for GCP Workload Identity Federation
@@ -458,7 +458,7 @@ jobs:
       - name: Wait for Artifact Registry propagation
         run: |
           echo "Waiting 30 seconds to ensure Docker image is available..."
-          sleep 30
+          sleep 60
 
       - name: Trigger Production Workflow
         run: |
