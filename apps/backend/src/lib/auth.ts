@@ -60,7 +60,8 @@ export async function verifyUserAuthAndGetUser(
       .select()
       .from(usersTable)
       .where(eq(usersTable.privyUserId, userClaims.userId))
-      .limit(1);
+      .limit(1)
+      .$withCache();
 
     // Create new user if doesn't exist
     if (!user) {
