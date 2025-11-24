@@ -512,6 +512,7 @@ export class R53RegistrarService extends AbstractRegistrarService {
           ? DomainAvailability.AVAILABLE
           : DomainAvailability.UNAVAILABLE,
       isPremium: false,
+      supported: true,
     };
   }
 
@@ -534,6 +535,7 @@ export class R53RegistrarService extends AbstractRegistrarService {
           price: null,
           available: DomainAvailability.UNAVAILABLE,
           isPremium: false,
+          supported: false,
         },
       ]),
     );
@@ -552,6 +554,7 @@ export class R53RegistrarService extends AbstractRegistrarService {
           price: null,
           available: DomainAvailability.UNAVAILABLE,
           isPremium: false,
+          supported: true,
         },
     );
   }

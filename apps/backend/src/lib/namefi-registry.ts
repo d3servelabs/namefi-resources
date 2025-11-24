@@ -38,6 +38,8 @@ import { getDomainDurationConstraints } from './domains/duration-constraints';
 import pMap from 'p-map';
 import { maybeGetUserEmail } from '#temporal/activities/notify.activities';
 import type { NamefiNftOwnersSelect } from '@namefi-astra/db';
+import type { Registrars } from '@namefi-astra/registrars/registrars/registrars-keys';
+import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
 
 export const sldRegistrar = createRegistrarService({
   aws: {
@@ -62,6 +64,26 @@ export const sldRegistrar = createRegistrarService({
     }
     return null;
   },
+  getRegistrarKeysForExistingDomains: async (
+    domains: NamefiNormalizedDomain[],
+  ) => {
+    try {
+      const query = db.query.indexedDomainsTable.findMany({
+        where: inArray(indexedDomainsTable.normalizedDomainName, domains),
+      });
+      const indexedDomains = await query.execute();
+      //todo exclude expired domains
+      return Object.fromEntries(
+        indexedDomains.map((domain) => [
+          toPunycodeDomainName(domain.normalizedDomainName),
+          domain.registrarKey,
+        ]),
+      ) as Record<PunycodeDomainName, Registrars>;
+    } catch (error) {
+      console.error('error in getRegistrarKeysFroExistingDomains', error);
+      return {};
+    }
+  },
   redisClientOptions: secrets.LIMITER_REDIS_HOST
     ? {
         host: secrets.LIMITER_REDIS_HOST,
@@ -72,7 +94,10 @@ export const sldRegistrar = createRegistrarService({
     : undefined,
 });
 
-const generateUnavailableDomainInfo = (domain: NamefiNormalizedDomain) => ({
+const generateUnavailableDomainInfo = (
+  domain: NamefiNormalizedDomain,
+  supported = false,
+) => ({
   domain,
   availability: false,
   pricingDetails: undefined,
@@ -83,6 +108,7 @@ const generateUnavailableDomainInfo = (domain: NamefiNormalizedDomain) => ({
     max: 10,
   },
   importable: false,
+  supported: supported,
 });
 
 const HARDCODED_3P_DOMAINS_NAMES = [
@@ -271,6 +297,7 @@ export type DomainAvailabilityInfo = {
     max: number;
   };
   importable: boolean;
+  supported: boolean;
 };
 /**
  * Retrieves information about a list of domain names including their availability, price, and current owner.
@@ -365,7 +392,7 @@ const _getSldDomainListInfo = async (
   );
 
   if (responseOrError.failed) {
-    return domains.map(generateUnavailableDomainInfo);
+    return domains.map((domain) => generateUnavailableDomainInfo(domain, true));
   }
 
   const responses = responseOrError.result;
@@ -381,7 +408,7 @@ const _getSldDomainListInfo = async (
         { domain, response },
         `No pricing details found for ${domain}`,
       );
-      return generateUnavailableDomainInfo(domain);
+      return generateUnavailableDomainInfo(domain, response.supported);
     }
     const available = response.available === DomainAvailability.AVAILABLE;
     const importable =
@@ -409,6 +436,7 @@ const _getSldDomainListInfo = async (
         min: durationConstraints.minYears,
         max: durationConstraints.maxYears,
       },
+      supported: response.supported,
     };
   });
 };
@@ -419,23 +447,22 @@ const _get3ldDomainListInfo = async (
   user?: { privyUserId: string } | null,
 ) => {
   const { parentDomain, levels } = getDomainLevels(domain);
-  const unavailableDomainInfo = generateUnavailableDomainInfo(domain);
   const prefix = levels[2];
 
   if (!parentDomain) {
-    return unavailableDomainInfo;
+    return generateUnavailableDomainInfo(domain, false);
   }
 
   const poweredByNamefiDomain =
     await getSinglePoweredByNamefi3PDomainsDetails(parentDomain);
 
   if (isNil(poweredByNamefiDomain) || poweredByNamefiDomain.enabled === false) {
-    return unavailableDomainInfo;
+    return generateUnavailableDomainInfo(domain, false);
   }
 
   // Check if the domain is reserved
   if (await isReservedKeywordForParentDomain(parentDomain, prefix)) {
-    return unavailableDomainInfo;
+    return generateUnavailableDomainInfo(domain, false);
   }
 
   const startDate = poweredByNamefiDomain.startRolloutAt
@@ -448,20 +475,20 @@ const _get3ldDomainListInfo = async (
   const shouldRollout = hashBasedPercentageRollouted(domain, currentPercentage);
 
   if (!shouldRollout && parentDomain !== '0x.city') {
-    return unavailableDomainInfo;
+    return generateUnavailableDomainInfo(domain, true);
   }
 
   let isFreeMint = false;
   if (!shouldRollout && parentDomain === '0x.city') {
     if (!user?.privyUserId) {
-      return unavailableDomainInfo;
+      return generateUnavailableDomainInfo(domain, true);
     }
     const userQualifiesFor0xDotCity = await userQualifiesForDomainNamePromo({
       normalizedDomainName: domain,
       user,
     });
     if (!userQualifiesFor0xDotCity) {
-      return unavailableDomainInfo;
+      return generateUnavailableDomainInfo(domain, true);
     }
     isFreeMint = userQualifiesFor0xDotCity;
   }
@@ -470,7 +497,7 @@ const _get3ldDomainListInfo = async (
   const nft = nftMap.get(domain);
   const price = await getSubdomainPriceInUsd(domain, isFreeMint);
   if (isNil(price)) {
-    return unavailableDomainInfo;
+    return generateUnavailableDomainInfo(domain, false);
   }
   let durationConstraints = { minYears: 1, maxYears: 10 };
   try {
@@ -504,6 +531,7 @@ const _get3ldDomainListInfo = async (
       max: durationConstraints.maxYears,
     },
     registrarKey: 'namefi',
+    supported: true,
   } satisfies DomainAvailabilityInfo;
 };
 

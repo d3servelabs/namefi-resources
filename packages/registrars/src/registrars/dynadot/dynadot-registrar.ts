@@ -812,6 +812,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
           firstSearchResult.Available === 'yes'
             ? DomainAvailability.AVAILABLE
             : DomainAvailability.UNAVAILABLE,
+        supported: true,
       };
     }
 
@@ -820,6 +821,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
       price: nonPremiumPrices, //todo!! figure out transfer price for premium domains
       available: DomainAvailability.UNAVAILABLE,
       isPremium: false,
+      supported: true,
     };
   }
 
@@ -833,6 +835,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
         price: null,
         isPremium: false,
         available: DomainAvailability.UNAVAILABLE,
+        supported: false,
       };
     }
     return results[0];
@@ -865,6 +868,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
         price: null,
         isPremium: false,
         available: DomainAvailability.UNAVAILABLE,
+        supported: true,
       };
 
       if (
@@ -873,14 +877,20 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
           parsedResult.publicSuffix as PunycodeDomainName,
         )
       ) {
-        return unavailableResult; // the performance for this can be improved by moving outside the bulkSearch request to dynadot but this is for a hotfix
+        return {
+          ...unavailableResult,
+          supported: false,
+        }; // the performance for this can be improved by moving outside the bulkSearch request to dynadot but this is for a hotfix
       }
 
       if (
         isNil(result.DomainName) ||
         (result.Status !== 'success' && result.Available !== 'yes')
       ) {
-        return unavailableResult;
+        return {
+          ...unavailableResult,
+          supported: false,
+        };
       }
 
       const { isPremium, priceDetails } = parseDomainPriceString(result.Price);
@@ -925,6 +935,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
           result.Available === 'yes'
             ? DomainAvailability.AVAILABLE
             : DomainAvailability.UNAVAILABLE,
+        supported: true,
       };
     });
   }

@@ -41,6 +41,7 @@ import { AbstractRegistrarService } from '#lib/abstract-registrar/registrar-serv
 import {
   type PunycodeDomainName,
   assertPunycodeDomainName,
+  toPunycodeDomainName,
 } from '#lib/data/validations';
 import { computeChargesInUsdOrThrow } from '#lib/multi-year-pricing';
 import { supportsDnssec } from '#lib/supports-dnssec';
@@ -61,8 +62,10 @@ const injectRegistrar = assoc('registrarKey');
 
 export class RegistrarService extends AbstractRegistrarService {
   logger = pino({ name: RegistrarService.name });
-  private readonly domainToRegistrar: Map<PunycodeDomainName, Registrars> =
-    new Map();
+  private readonly domainToRegistrar: Map<
+    PunycodeDomainName,
+    { registrarKey?: Registrars; found: boolean }
+  > = new Map();
   private readonly registrars: Record<
     Registrars,
     AbstractRegistrarService<Registrars>
@@ -73,6 +76,9 @@ export class RegistrarService extends AbstractRegistrarService {
     private readonly getRegistrarKeyForExistingDomain?: (
       domain: PunycodeDomainName,
     ) => Promise<Registrars | null>,
+    private readonly getRegistrarKeysFromExistingDomains?: (
+      domains: PunycodeDomainName[],
+    ) => Promise<Record<PunycodeDomainName, Registrars>>,
   ) {
     super('main');
     this.registrars = registrars;
@@ -315,27 +321,60 @@ export class RegistrarService extends AbstractRegistrarService {
   async bulkSearch(
     queries: PunycodeDomainName[],
   ): Promise<WithRegistrar<DomainQueryResult>[]> {
-    const fallbackRegistrar = this.getAllowedRegistrars()[0];
+    try {
+      const fallbackRegistrar = this.getAllowedRegistrars()[0];
+      const registrarKeys =
+        (await this._getRegistrarKeysFromExistingDomains(queries)) ?? {};
 
-    const promises = await pProps(this.registrars, async (registrar) => {
-      try {
-        const res = await registrar.bulkSearch(queries);
-        return res;
-      } catch (error) {
-        this.logger.error(
-          { error, registrar: registrar.key },
-          'error in bulkSearch',
-        );
-      }
-    });
-    const responsesByRegistrar: Record<Registrars, DomainQueryResult[]> =
-      pickBy(isNotNil, promises);
+      const promises = await pProps(this.registrars, async (registrar) => {
+        try {
+          if (registrar.key === Registrars.Route53) {
+            const route53ExistingDomains = queries.filter(
+              (domain) => registrarKeys[domain] === Registrars.Route53,
+            );
+            const route53Responses = await registrar.bulkSearch(
+              route53ExistingDomains,
+            );
+            const route53ResponsesMap = new Map(
+              route53Responses.map((response) => [
+                response.domainName,
+                response,
+              ]),
+            );
+            const res = queries.map(
+              (domain) =>
+                route53ResponsesMap.get(domain) ?? {
+                  domainName: domain,
+                  price: null,
+                  available: DomainAvailability.UNAVAILABLE,
+                  isPremium: false,
+                  supported: false,
+                },
+            );
+            return res;
+          }
+          const res = await registrar.bulkSearch(queries);
 
-    return this._chooseBestRegistrar(
-      responsesByRegistrar,
-      queries,
-      fallbackRegistrar,
-    );
+          return res;
+        } catch (error) {
+          this.logger.error(
+            { error, registrar: registrar.key },
+            'error in bulkSearch',
+          );
+        }
+      });
+      const responsesByRegistrar: Record<Registrars, DomainQueryResult[]> =
+        pickBy(isNotNil, promises);
+
+      return this._chooseBestRegistrar(
+        responsesByRegistrar,
+        queries,
+        fallbackRegistrar,
+      );
+    } catch (error) {
+      this.logger.error(error, 'error in bulkSearch');
+      throw error;
+    }
   }
 
   private _chooseBestRegistrar(
@@ -413,6 +452,7 @@ export class RegistrarService extends AbstractRegistrarService {
           available: DomainAvailability.UNAVAILABLE,
           isPremium: false,
           price: null,
+          supported: false,
         };
       }
 
@@ -535,7 +575,10 @@ export class RegistrarService extends AbstractRegistrarService {
       list.map(injectRegistrar(registrars[index])),
     );
     domains.forEach((domain) => {
-      this.domainToRegistrar.set(domain.domainName, domain.registrarKey);
+      this.domainToRegistrar.set(domain.domainName, {
+        found: true,
+        registrarKey: domain.registrarKey,
+      });
     });
     return domains;
   }
@@ -560,7 +603,10 @@ export class RegistrarService extends AbstractRegistrarService {
 
     // Cache the domain-to-registrar mapping for expired domains too
     expiredDomains.forEach((domain) => {
-      this.domainToRegistrar.set(domain.domainName, domain.registrarKey);
+      this.domainToRegistrar.set(domain.domainName, {
+        found: true,
+        registrarKey: domain.registrarKey,
+      });
     });
 
     return expiredDomains;
@@ -588,6 +634,50 @@ export class RegistrarService extends AbstractRegistrarService {
     throw new Error('getRegistrarFromDomainName: unknown-registrar');
   }
 
+  private async _getRegistrarKeysFromExistingDomains(
+    domains: PunycodeDomainName[],
+  ): Promise<Record<PunycodeDomainName, Registrars>> {
+    const domainsNotCached = await domains.filter(
+      (domain) => !this.domainToRegistrar.has(domain),
+    );
+    if (domainsNotCached.length > 0) {
+      let registrarKeys: Record<PunycodeDomainName, Registrars> = {};
+      if (isNotNil(this.getRegistrarKeysFromExistingDomains)) {
+        registrarKeys =
+          await this.getRegistrarKeysFromExistingDomains(domainsNotCached);
+      } else {
+        registrarKeys = Object.fromEntries(
+          await Promise.all(
+            domains.map(async (domain) => {
+              const registrarKey =
+                await this.getRegistrarKeyForExistingDomain?.(domain);
+              return [toPunycodeDomainName(domain), registrarKey] as [
+                PunycodeDomainName,
+                Registrars,
+              ];
+            }),
+          ),
+        );
+      }
+      domainsNotCached.forEach((domain) => {
+        if (isNotNil(registrarKeys[domain])) {
+          this.domainToRegistrar.set(domain, {
+            found: true,
+            registrarKey: registrarKeys[domain],
+          });
+        } else {
+          this.domainToRegistrar.set(domain, { found: false });
+        }
+      });
+    }
+    return Object.fromEntries(
+      domains.map((domain) => [
+        domain,
+        this.domainToRegistrar.get(domain)?.registrarKey,
+      ]),
+    ) as Record<PunycodeDomainName, Registrars>;
+  }
+
   private async getRegistrar(
     domain: PunycodeDomainName,
   ): Promise<AbstractRegistrarService<Registrars>> {
@@ -602,8 +692,8 @@ export class RegistrarService extends AbstractRegistrarService {
       return registrar;
     }
     const cachedRegistrar = this.domainToRegistrar.get(domainName);
-    if (cachedRegistrar) {
-      return cachedRegistrar;
+    if (cachedRegistrar?.found && isNotNil(cachedRegistrar.registrarKey)) {
+      return cachedRegistrar.registrarKey;
     }
 
     const _registrar = await resolve(
@@ -629,12 +719,18 @@ export class RegistrarService extends AbstractRegistrarService {
     );
 
     if (domainDetails) {
-      this.domainToRegistrar.set(domainName, domainDetails.value.registrarKey);
+      this.domainToRegistrar.set(domainName, {
+        found: true,
+        registrarKey: domainDetails.value.registrarKey,
+      });
       return domainDetails.value.registrarKey;
     }
 
     const registrarKey = (await this.searchForDomain(domainName)).registrarKey;
-    this.domainToRegistrar.set(domainName, registrarKey);
+    this.domainToRegistrar.set(domainName, {
+      found: true,
+      registrarKey: registrarKey,
+    });
     return registrarKey;
   }
 }
@@ -657,6 +753,9 @@ export function createRegistrarService(config: {
   getRegistrarKeyForExistingDomain?: (
     domain: PunycodeDomainName,
   ) => Promise<Registrars | null>;
+  getRegistrarKeysForExistingDomains?: (
+    domains: PunycodeDomainName[],
+  ) => Promise<Record<PunycodeDomainName, Registrars>>;
   redisClientOptions?: Bottleneck.IORedisConnectionOptions['clientOptions'] & {
     host?: string;
     port?: number;
@@ -709,5 +808,6 @@ export function createRegistrarService(config: {
       [Registrars.DynadotRegular]: dynadotRegular,
     },
     config.getRegistrarKeyForExistingDomain,
+    config.getRegistrarKeysForExistingDomains,
   );
 }

@@ -248,4 +248,5 @@ export type DomainQueryResult = {
   available: DomainAvailability;
   price: DomainPricingDetails | null | undefined;
   isPremium: boolean;
+  supported: boolean;
 };

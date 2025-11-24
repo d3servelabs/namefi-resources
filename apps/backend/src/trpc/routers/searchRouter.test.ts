@@ -8,6 +8,7 @@ import {
   stringRotatePermutations,
   windowedSubStrings,
 } from '#lib/domain-suggestions';
+import type { DomainAvailabilityInfo } from '#lib/namefi-registry';
 
 const testUser = {
   privyUserId: '123',
@@ -22,30 +23,34 @@ describe('Search Router', () => {
     // It should return an array matching the structure expected by the router
     vi.spyOn(namefiRegistry, 'getDomainListInfo').mockImplementation(
       async (domains: NamefiNormalizedDomain[]) =>
-        domains.map((domain) => ({
-          domain,
-          availability: true, // Default to available
-          importable: false,
-          pricingDetails: {
-            registrationPrice: {
-              type: 'PER_YEAR',
-              price: { amount: 9.99, currency: 'USD' },
-            },
-            renewalPrice: {
-              type: 'PER_YEAR',
-              price: { amount: 9.99, currency: 'USD' },
-            },
-            importPrice: {
-              type: 'PER_YEAR',
-              price: { amount: 9.99, currency: 'USD' },
-            },
-          },
-          currentOwner: undefined,
-          durationValidationInYears: {
-            min: 1,
-            max: 10,
-          },
-        })),
+        domains.map(
+          (domain) =>
+            ({
+              domain,
+              availability: true, // Default to available
+              importable: false,
+              pricingDetails: {
+                registrationPrice: {
+                  type: 'PER_YEAR',
+                  price: { amount: 9.99, currency: 'USD' },
+                },
+                renewalPrice: {
+                  type: 'PER_YEAR',
+                  price: { amount: 9.99, currency: 'USD' },
+                },
+                importPrice: {
+                  type: 'PER_YEAR',
+                  price: { amount: 9.99, currency: 'USD' },
+                },
+              },
+              currentOwner: undefined,
+              durationValidationInYears: {
+                min: 1,
+                max: 10,
+              },
+              supported: true,
+            }) satisfies DomainAvailabilityInfo,
+        ),
     );
   });
 

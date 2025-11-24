@@ -119,7 +119,7 @@ export function isDomainRegistrable(domain: DomainAvailabilityInfo): boolean {
  * @returns true if the domain is not supported
  */
 export function isDomainUnsupported(domain: DomainAvailabilityInfo): boolean {
-  return domain.importable === false && domain.availability === false;
+  return !domain.supported;
 }
 
 // TODO: move these to a better location
