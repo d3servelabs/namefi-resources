@@ -1,7 +1,10 @@
 import { type UserSelect, db, usersTable } from '@namefi-astra/db';
-import { eq } from 'drizzle-orm';
+import { eq, sql } from 'drizzle-orm';
 import { privyClient } from '../trpc/utils';
 import { secrets } from '#lib/env';
+import { debounceTime, groupBy, mergeMap, Subject, bufferTime } from 'rxjs';
+import { logger } from '#lib/logger';
+
 /**
  * Shared authentication utility for verifying Privy auth tokens
  * and creating/fetching users from the database.
@@ -57,8 +60,7 @@ export async function verifyUserAuthAndGetUser(
       .select()
       .from(usersTable)
       .where(eq(usersTable.privyUserId, userClaims.userId))
-      .limit(1)
-      .$withCache();
+      .limit(1);
 
     // Create new user if doesn't exist
     if (!user) {
@@ -74,13 +76,11 @@ export async function verifyUserAuthAndGetUser(
       user = newUser[0];
     } else {
       // Update timestamps for existing user
-      await db
-        .update(usersTable)
-        .set({
-          lastSignInAt,
-          lastAccessedSessionAt,
-        })
-        .where(eq(usersTable.id, user.id));
+      updateUserLastSignInAtSubject.next({
+        userId: user.id,
+        lastSignInAt,
+        lastAccessedSessionAt,
+      });
     }
 
     return { user, sessionId: userClaims.sessionId ?? null };
@@ -126,3 +126,52 @@ export async function requireUserAuth(
     sessionId: result.sessionId,
   };
 }
+
+interface UpdateUserLastSignInAt {
+  userId: string;
+  lastSignInAt: Date;
+  lastAccessedSessionAt: Date;
+}
+// Create a Subject to handle materialized view refresh notifications
+const updateUserLastSignInAtSubject = new Subject<UpdateUserLastSignInAt>();
+
+// Setup debounced refresh handling - debounce by 1 second per materialized view
+updateUserLastSignInAtSubject
+  .pipe(
+    groupBy((update) => update.userId),
+    mergeMap((group) => group.pipe(debounceTime(30_000))),
+    bufferTime(60_000, null, 10), // Buffer for 1 minute, max 10 updates
+  )
+  .subscribe(async (updates) => {
+    try {
+      logger.trace({ updates }, 'Updating user last sign in at');
+      if (updates.length === 0) return;
+      const updatesMap = new Map<string, UpdateUserLastSignInAt>();
+      for (const update of updates) {
+        updatesMap.set(update.userId, {
+          lastSignInAt: update.lastSignInAt,
+          lastAccessedSessionAt: update.lastAccessedSessionAt,
+          userId: update.userId,
+        });
+      }
+      const updateStatements = Array.from(updatesMap.values()).map((update) => {
+        return db
+          .update(usersTable)
+          .set({
+            lastSignInAt: update.lastSignInAt,
+            lastAccessedSessionAt: update.lastAccessedSessionAt,
+          })
+          .where(eq(usersTable.id, update.userId))
+          .getSQL()
+          .inlineParams();
+      });
+      await db.execute(sql.join(updateStatements, sql`;\n`));
+    } catch (error) {
+      logger.error({ error }, 'Failed to update user last sign in at');
+    }
+  });
+
+// Ensure cleanup on process termination
+process.on('SIGTERM', () => updateUserLastSignInAtSubject.complete());
+
+process.on('SIGINT', () => updateUserLastSignInAtSubject.complete());
