@@ -572,7 +572,7 @@ export const DomainCard: FC<{
   const hasAvailabilityInfo = availabilityInfo !== undefined;
   // When availabilityInfo is available, all data that CAN be loaded HAS been loaded
   // Some domains (like unsupported ones) may legitimately not have pricing
-  const shouldShowPricingSkeleton = !hasAvailabilityInfo;
+  const shouldShowPricingSkeleton = !hasAvailabilityInfo; //|| (isNil(availabilityInfo?.pricingDetails) && availabilityInfo?.registrarKey === 'preliminary');
   const shouldShowActionSkeleton = !hasAvailabilityInfo;
   const hasOwnerInfo =
     hasAvailabilityInfo &&
@@ -617,20 +617,45 @@ export const DomainCard: FC<{
               </div>
             </div>
             <div className="flex items-center gap-2">
-              {shouldShowPricingSkeleton ? (
-                <Skeleton className="h-6 w-20 bg-gray-600/50" />
-              ) : isNotNil(priceInUsd) ? (
-                <div className="flex items-center gap-3">
-                  <p className="text-sm md:text-xl shrink-0 font-medium line-clamp-1">
-                    {`${formatAmountInUSD(priceInUsd)} USD`}
-                  </p>
-                  {isNotNil(renewalPriceInUsd) && (
-                    <p className="text-xs md:text-sm text-muted-foreground">
-                      renews at {formatAmountInUSD(renewalPriceInUsd)}
+              <AnimatePresence initial={false} mode="wait">
+                {shouldShowPricingSkeleton ? (
+                  <Skeleton className="h-6 w-20 bg-gray-600/50" />
+                ) : isNotNil(priceInUsd) ? (
+                  <motion.div
+                    key="price-in-usd"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 10 }}
+                    transition={{ duration: 0.4, ease: 'easeOut' }}
+                    className="flex items-center gap-3"
+                  >
+                    <p className="text-sm md:text-xl shrink-0 font-medium line-clamp-1">
+                      {`${formatAmountInUSD(priceInUsd)} USD`}
                     </p>
-                  )}
-                </div>
-              ) : null}
+                    {isNotNil(renewalPriceInUsd) && (
+                      <p className="text-xs md:text-sm text-muted-foreground">
+                        renews at {formatAmountInUSD(renewalPriceInUsd)}
+                      </p>
+                    )}
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="price-in-usd-na"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 10 }}
+                    transition={{ duration: 0.4, ease: 'easeOut' }}
+                    className="flex items-center gap-3 invisible"
+                  >
+                    <p className="text-sm md:text-xl shrink-0 font-medium line-clamp-1 invisible">
+                      {'N/A'}
+                    </p>
+                    <p className="text-xs md:text-sm text-muted-foreground invisible">
+                      {'N/A'}
+                    </p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
             {isImportable && !showImportUi && (
               <Button

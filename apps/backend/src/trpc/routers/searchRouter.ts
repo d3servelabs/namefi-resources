@@ -13,15 +13,21 @@ import {
   authedOrPublicProcedure,
   createTRPCRouter,
   protectedProcedure,
+  baseProcedure,
 } from '../base';
 import { generateDomainSuggestions } from '#lib/domain-suggestions';
-import { drop, splitEvery } from 'ramda';
+import { drop, take, isNil, isNotNil, isEmpty } from 'ramda';
 import type { UserSelect } from '@namefi-astra/db';
 import { promiseWithAbortSignal } from '@namefi-astra/utils/promises/promiseWithAbortSignal';
 import {
   getUserUnusedClaims,
   checkItemClaimEligibility,
 } from '#temporal/activities/free-claim.activities';
+import pMap from 'p-map';
+import { resolve } from '@namefi-astra/utils/promises/resolve';
+import { toPunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
+import { resolveNs } from 'node:dns/promises';
+import { parseDomainName } from '@namefi-astra/utils/parse-domain-name';
 
 export const searchRouter = createTRPCRouter({
   isDomainAvailable: authedOrPublicProcedure
@@ -45,7 +51,7 @@ export const searchRouter = createTRPCRouter({
           currentOwner: undefined,
           durationValidationInYears: undefined,
           importable: false,
-          supported: true,
+          supported: false,
         } satisfies DomainAvailabilityInfo;
       }
       return availability[0];
@@ -67,7 +73,7 @@ export const searchRouter = createTRPCRouter({
     },
   ),
 
-  getDomainSuggestions: authedOrPublicProcedure
+  getDomainSuggestions: baseProcedure
     .input(
       z.object({
         query: z.string().min(1),
@@ -97,17 +103,31 @@ export const searchRouter = createTRPCRouter({
         return;
       }
 
-      yield* await getDomainListInfoWithAbortSignal(
+      const firstDomainResult = await getDomainListInfoWithAbortSignal(
         [domains[0] as NamefiNormalizedDomain],
         signal,
         ctx.user,
       );
 
-      // split the domains into chunks of 3,
-      const chunks = splitEvery(3 /** chunk size */, drop(1, domains));
+      const nonTraditionalDomainsResult = getDomainListInfoWithAbortSignal(
+        pickNonTraditionalDomains(drop(1, domains)),
+        signal,
+        ctx.user,
+      );
+
+      yield* firstDomainResult;
+
+      // split the domains into increasing size chunks starting from 3, ie; [3, 15, 13, 23, 36, ...]
+      const chunks = increasingSizeChunks(
+        pickTraditionalDomains(drop(1, domains)),
+        3,
+        (prev, curr) => (prev === 0 && curr === 3 ? 15 : prev + curr),
+      );
+
       const promises = chunks.map((names) =>
         getDomainListInfoWithAbortSignal(names, signal, ctx.user),
       );
+      yield* await nonTraditionalDomainsResult;
 
       for (const promise of promises) {
         if (signal?.aborted) break;
@@ -166,4 +186,83 @@ const getDomainListInfoWithAbortSignal = async (
     signal,
     [],
   );
+};
+
+const increasingSizeChunks = <T>(
+  arr: T[],
+  initialChunkSize = 1,
+  nextChunkSize?: (prevChunkSize: number, currentChunkSize: number) => number,
+) => {
+  const _nextChunkSize =
+    nextChunkSize ?? ((prev, curr) => (prev === 0 ? curr * 2 : prev + curr));
+  let chunkSize = initialChunkSize;
+  let _arr = arr;
+
+  const chunks: T[][] = [];
+
+  while (_arr.length > 0) {
+    chunks.push(take(chunkSize, _arr));
+    _arr = drop(chunkSize, _arr);
+    chunkSize = _nextChunkSize((chunks.at(-1) ?? []).length, chunkSize);
+  }
+
+  return chunks;
+};
+
+const getPreliminaryDomainAvailability = async (
+  domains: NamefiNormalizedDomain[],
+): Promise<DomainAvailabilityInfo[]> => {
+  const nonTraditionalDomains = pickNonTraditionalDomains(domains);
+  const nonTraditionalDomainsPromises = await getDomainListInfo(
+    nonTraditionalDomains,
+  );
+  const nonTraditionalDomainsMap = new Map(
+    nonTraditionalDomainsPromises.map((domain) => [domain.domain, domain]),
+  );
+
+  return pMap(domains, async (domain) => {
+    const nonTraditionalDomain = nonTraditionalDomainsMap.get(domain);
+    if (isNotNil(nonTraditionalDomain)) {
+      return nonTraditionalDomain;
+    }
+
+    const [_error, nameservers] = await resolve(
+      resolveNs(toPunycodeDomainName(domain)),
+    );
+    const availability = isNil(nameservers) || isEmpty(nameservers);
+
+    return {
+      domain,
+      availability,
+      pricingDetails: undefined,
+      currentOwner: undefined,
+      durationValidationInYears: { min: 1, max: 1 },
+      importable: !availability,
+      registrarKey: 'preliminary',
+      supported: true,
+    } satisfies DomainAvailabilityInfo;
+  });
+};
+
+const pickTraditionalDomains = (
+  domains: NamefiNormalizedDomain[],
+): NamefiNormalizedDomain[] => {
+  return domains.filter((domain) => {
+    const parseResult = parseDomainName(domain);
+    if (!parseResult.valid) {
+      return false;
+    }
+    return parseResult.registryType === 'traditional';
+  });
+};
+const pickNonTraditionalDomains = (
+  domains: NamefiNormalizedDomain[],
+): NamefiNormalizedDomain[] => {
+  return domains.filter((domain) => {
+    const parseResult = parseDomainName(domain);
+    if (!parseResult.valid) {
+      return false;
+    }
+    return parseResult.registryType === 'subdomain';
+  });
 };
