@@ -3,16 +3,16 @@ name: Deploy Backend and Vercel
 on:
   push:
     branches:
-      - main    # Regular push to main branch deploys to dev
+      - main # Regular push to main branch deploys to dev
     tags:
-      - 'astra/prod/v*'  # Tags like astra/prod/v1.0.0 for production deployment
-      - 'astra/v*'       # Tags like astra/v1.0.0 (marker for triggering prod deployment)
+      - "astra/prod/v*" # Tags like astra/prod/v1.0.0 for production deployment
+      - "astra/v*" # Tags like astra/v1.0.0 (marker for triggering prod deployment)
   workflow_dispatch:
     inputs:
       environment:
-        description: 'Environment to deploy to'
+        description: "Environment to deploy to"
         required: true
-        default: 'dev'
+        default: "dev"
         type: choice
         options:
           - dev
@@ -57,7 +57,6 @@ jobs:
         uses: ./.github/actions/detect-turbo-changes
         with:
           filter: "...[${{ steps.determine-before-commit.outputs.before-commit }}]"
-
 
       - name: Check if changed
         id: check-changes
@@ -190,7 +189,7 @@ jobs:
     name: Build Backend Container
     needs: [compute-env, check-duplicate, detect-changes]
     if: needs.check-duplicate.outputs.should_skip != 'true' && needs.detect-changes.outputs.should-backend-deploy == 'true'
-    runs-on: 'blacksmith-4vcpu-ubuntu-2404'
+    runs-on: "blacksmith-4vcpu-ubuntu-2404"
     permissions:
       contents: read
       id-token: write # Required for GCP Workload Identity Federation
@@ -235,9 +234,9 @@ jobs:
         id: check-image
         run: |
           IMAGE_TAG="${{ steps.set-tag.outputs.image_tag }}"
-          
-          IMAGE_DETAILS=`gcloud artifacts docker images describe "$IMAGE_TAG" --format="json" 2>/dev/null`
-          DIGEST=`echo $IMAGE_DETAILS | jq .image_summary.digest`
+
+          IMAGE_DETAILS="$(gcloud artifacts docker images describe "$IMAGE_TAG" --format="json" 2>/dev/null)"
+          DIGEST="$(echo $IMAGE_DETAILS | jq .image_summary.digest)"
 
           echo $IMAGE_DETAILS | jq
 
@@ -273,7 +272,7 @@ jobs:
   deploy-backend-api:
     name: Deploy Backend API to Cloud Run
     needs: [compute-env, build-backend]
-    runs-on: 'ubuntu-latest'
+    runs-on: "ubuntu-latest"
     permissions:
       contents: read
       id-token: write # Required for GCP Workload Identity Federation
@@ -292,10 +291,10 @@ jobs:
         id: deploy
         uses: google-github-actions/deploy-cloudrun@v2
         with:
-          service: 'namefi-astra-api-${{ needs.compute-env.outputs.label }}'
+          service: "namefi-astra-api-${{ needs.compute-env.outputs.label }}"
           region: ${{ env.REGION }}
-          project_id: '${{ env.PROJECT_ID }}'
-          image: '${{ needs.build-backend.outputs.image_tag }}'
+          project_id: "${{ env.PROJECT_ID }}"
+          image: "${{ needs.build-backend.outputs.image_tag }}"
 
       - name: Show Backend API URL
         run: |
@@ -307,7 +306,7 @@ jobs:
   deploy-backend-temporal:
     name: Deploy Temporal to Cloud Run
     needs: [compute-env, build-backend]
-    runs-on: 'ubuntu-latest'
+    runs-on: "ubuntu-latest"
     permissions:
       contents: read
       id-token: write # Required for GCP Workload Identity Federation
@@ -326,10 +325,10 @@ jobs:
         id: deploy-temporal
         uses: google-github-actions/deploy-cloudrun@v2
         with:
-          service: 'namefi-astra-temporal-${{ needs.compute-env.outputs.label }}'
+          service: "namefi-astra-temporal-${{ needs.compute-env.outputs.label }}"
           region: ${{ env.REGION }}
-          project_id: '${{ env.PROJECT_ID }}'
-          image: '${{ needs.build-backend.outputs.image_tag }}'
+          project_id: "${{ env.PROJECT_ID }}"
+          image: "${{ needs.build-backend.outputs.image_tag }}"
 
       - name: Show Temporal URL
         run: |
@@ -341,7 +340,7 @@ jobs:
   migrate:
     name: Run Database Migrations
     needs: [compute-env, deploy-backend-api, deploy-backend-temporal]
-    runs-on: 'blacksmith-4vcpu-ubuntu-2204'
+    runs-on: "blacksmith-4vcpu-ubuntu-2204"
     env:
       INFISICAL_SERVICE_TOKEN: ${{ needs.compute-env.outputs.infisical_token_selector == 'prod' && secrets.INFISICAL_PROD_SERVICE_TOKEN || secrets.INFISICAL_DEV_SERVICE_TOKEN }}
     steps:
@@ -364,9 +363,9 @@ jobs:
   # Deploy to Vercel (build happens on Vercel, but traffic is not routed yet)
   deploy-vercel:
     name: Deploy Frontend to Vercel
-    needs: [compute-env,check-duplicate, detect-changes]
-    if:  needs.check-duplicate.outputs.should_skip != 'true' && needs.detect-changes.outputs.should-frontend-deploy == 'true'
-    runs-on: 'ubuntu-latest'
+    needs: [compute-env, check-duplicate, detect-changes]
+    if: needs.check-duplicate.outputs.should_skip != 'true' && needs.detect-changes.outputs.should-frontend-deploy == 'true'
+    runs-on: "ubuntu-latest"
     outputs:
       deployment_url: ${{ steps.deploy.outputs.deployment_url }}
       deployment_id: ${{ steps.deploy.outputs.deployment_id }}
@@ -416,7 +415,7 @@ jobs:
   route-vercel-traffic:
     name: Route Traffic to Vercel
     needs: [compute-env, deploy-vercel]
-    runs-on: 'ubuntu-latest'
+    runs-on: "ubuntu-latest"
     steps:
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
@@ -449,7 +448,7 @@ jobs:
     name: Trigger Production Deployment
     needs: [compute-env, build-backend]
     if: needs.compute-env.outputs.should_trigger_prod == 'true'
-    runs-on: 'ubuntu-latest'
+    runs-on: "ubuntu-latest"
     env:
       WORKFLOW_ID: ${{ vars.DEPLOY_BACKEND_VERCEL_WORKFLOW_ID }}
     steps:
@@ -475,15 +474,21 @@ jobs:
             -H "Accept: application/vnd.github.v3+json" \
             --fail-with-body \
             https://api.github.com/repos/${{ github.repository }}/actions/workflows/${{ env.WORKFLOW_ID }}/dispatches \
-            -d '{"ref":"${{ github.ref }}","inputs":{"environment":"production"}}' 
-
+            -d '{"ref":"${{ github.ref }}","inputs":{"environment":"production"}}'
 
   # Summary job
   deployment-summary:
     name: Deployment Summary
-    needs: [compute-env, deploy-backend-api, deploy-backend-temporal, deploy-vercel, route-vercel-traffic]
+    needs:
+      [
+        compute-env,
+        deploy-backend-api,
+        deploy-backend-temporal,
+        deploy-vercel,
+        route-vercel-traffic,
+      ]
     if: always()
-    runs-on: 'ubuntu-latest'
+    runs-on: "ubuntu-latest"
     steps:
       - name: Summary
         id: summary
