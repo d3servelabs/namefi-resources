@@ -227,7 +227,9 @@ jobs:
         run: |
           # Use SHA-based tag without environment label for reusability
           IMAGE_TAG="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/cloud-run-source-deploy/${{ env.REPO_NAME }}/namefi-astra-api:${{ github.sha }}"
+          LATEST_IMAGE_TAG="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/cloud-run-source-deploy/${{ env.REPO_NAME }}/namefi-astra-api:latest"
           echo "image_tag=$IMAGE_TAG" >> $GITHUB_OUTPUT
+          echo "latest_image_tag=$LATEST_IMAGE_TAG" >> $GITHUB_OUTPUT
           echo "Docker tag: $IMAGE_TAG"
 
       - name: Check if Docker image exists
@@ -266,7 +268,7 @@ jobs:
         if: steps.check-image.outputs.exists != 'true'
         uses: useblacksmith/build-push-action@v2
         with:
-          tags: astra/backend:latest
+          tags: ${{ steps.set-tag.outputs.latest_image_tag }},${{ steps.set-tag.outputs.image_tag }}
           push: true
           context: .
           file: ./apps/backend/Dockerfile
