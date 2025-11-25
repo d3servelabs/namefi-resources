@@ -233,21 +233,30 @@ jobs:
       - name: Check if Docker image exists
         id: check-image
         run: |
-          IMAGE_TAG="${{ steps.set-tag.outputs.image_tag }}"
+          {
+            IMAGE_TAG="${{ steps.set-tag.outputs.image_tag }}"
 
-          IMAGE_DETAILS="$(gcloud artifacts docker images describe "$IMAGE_TAG" --format="json" 2>/dev/null)"
-          DIGEST="$(echo $IMAGE_DETAILS | jq .image_summary.digest)"
+            IMAGE_DETAILS="$(gcloud artifacts docker images describe "$IMAGE_TAG" --format="json" 2>/dev/null)"
 
-          echo $IMAGE_DETAILS | jq
+            {
+              echo "Image details: $IMAGE_DETAILS"
+            } || {
+              echo "Image not found: $IMAGE_TAG"
+            }
+            DIGEST="$(echo $IMAGE_DETAILS | jq .image_summary.digest)"
 
-          # Try to pull the manifest to check if image exists
-          if [[ -n $DIGEST ]]; then
-            echo "Image already exists: $IMAGE_TAG"
-            echo "exists=true" >> $GITHUB_OUTPUT
-          else
-            echo "Image does not exist: $IMAGE_TAG"
+            # Try to pull the manifest to check if image exists
+            if [[ -n $DIGEST ]]; then
+              echo "Image already exists: $IMAGE_TAG"
+              echo "exists=true" >> $GITHUB_OUTPUT
+            else
+              echo "Image does not exist: $IMAGE_TAG"
+              echo "exists=false" >> $GITHUB_OUTPUT
+            fi
+          } || {
+            echo "Failed to check image: $IMAGE_TAG"
             echo "exists=false" >> $GITHUB_OUTPUT
-          fi
+          }
 
       - name: Set up Docker Buildx
         if: steps.check-image.outputs.exists != 'true'
