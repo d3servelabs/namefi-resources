@@ -7,9 +7,9 @@ import {
   type RefObject,
 } from 'react';
 import { useDebounceValue } from 'usehooks-ts';
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { useSubscription } from '@trpc/tanstack-react-query';
-import { useTRPC } from '@/lib/trpc';
+import { useTRPC, useTRPCClient } from '@/lib/trpc';
 import type { DomainAvailabilityInfo } from '@namefi-astra/backend/trpc/types';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { SearchMode } from '@/components/search/types';
@@ -24,6 +24,9 @@ declare global {
     printTimingDetails: () => void;
   }
 }
+
+const RANKED_TLD_PAGE_SIZE = 16;
+
 export const useSearch = (parentDomain?: string) => {
   const [query, setQuery] = useState('');
   const [searchMode, setSearchMode] = useState<SearchMode>(SearchMode.REGISTER);
@@ -37,26 +40,36 @@ export const useSearch = (parentDomain?: string) => {
   }, []);
 
   const trpc = useTRPC();
+  const trpcClient = useTRPCClient();
+  const normalizedQuery = sanitized.toLowerCase();
+  const suggestionEnabled =
+    normalizedQuery.length > 0 && searchMode === SearchMode.REGISTER;
   const {
     error: suggestionError,
     data: suggestionData,
     isFetching: suggestionIsFetching,
-    isSuccess: suggestionIsSuccess,
+    isFetchingNextPage,
     isError: suggestionIsError,
     refetch: refetchSuggestions,
-  } = useQuery({
-    ...trpc.search.getDomainSuggestions.queryOptions(
-      {
-        query: sanitized.toLowerCase(),
+    fetchNextPage,
+    hasNextPage,
+  } = useInfiniteQuery({
+    queryKey: [
+      'search.getDomainSuggestions',
+      normalizedQuery,
+      parentDomain ?? null,
+      RANKED_TLD_PAGE_SIZE,
+    ],
+    queryFn: ({ pageParam = 1 }) =>
+      trpcClient.search.getDomainSuggestions.query({
+        query: normalizedQuery,
         ...(parentDomain && { parentDomain }),
-      },
-      {
-        trpc: {
-          context: { skipBatch: true },
-        },
-      },
-    ),
-    enabled: sanitized.length > 0 && searchMode === SearchMode.REGISTER,
+        page: pageParam,
+        pageSize: RANKED_TLD_PAGE_SIZE,
+      }),
+    getNextPageParam: (lastPage) => lastPage.nextPage ?? undefined,
+    initialPageParam: 1,
+    enabled: suggestionEnabled,
     refetchOnWindowFocus: false,
     refetchOnMount: false,
     refetchOnReconnect: false,
@@ -72,22 +85,32 @@ export const useSearch = (parentDomain?: string) => {
     return new Map();
   }, [sanitized]);
 
+  const suggestedDomains = useMemo<NamefiNormalizedDomain[]>(() => {
+    if (!suggestionEnabled || searchMode !== SearchMode.REGISTER) {
+      return [];
+    }
+    const pages = suggestionData?.pages ?? [];
+    const seen = new Set<NamefiNormalizedDomain>();
+    const collected: NamefiNormalizedDomain[] = [];
+
+    for (const page of pages) {
+      for (const domain of page.domains) {
+        if (!seen.has(domain)) {
+          seen.add(domain);
+          collected.push(domain);
+        }
+      }
+    }
+
+    return collected;
+  }, [suggestionData?.pages, suggestionEnabled, searchMode]);
+
   const domains = useMemo<NamefiNormalizedDomain[]>(
     () =>
       searchMode === SearchMode.IMPORT
         ? Array.from(importQuery.keys())
-        : suggestionIsFetching
-          ? []
-          : suggestionIsSuccess
-            ? suggestionData.domains
-            : [],
-    [
-      suggestionIsFetching,
-      suggestionIsSuccess,
-      suggestionData?.domains,
-      searchMode,
-      importQuery,
-    ],
+        : suggestedDomains,
+    [searchMode, importQuery, suggestedDomains],
   );
 
   const [_domainInfo, setDomainInfo] = useState<
@@ -114,9 +137,21 @@ export const useSearch = (parentDomain?: string) => {
     numberOfResponses: 0,
     timestamps: [],
   });
-  // biome-ignore lint/correctness/useExhaustiveDependencies: reset infoMap when domains change
   useEffect(() => {
-    setDomainInfo(new Map());
+    setDomainInfo((previous) => {
+      if (domains.length === 0) {
+        return new Map();
+      }
+
+      const next = new Map<NamefiNormalizedDomain, DomainAvailabilityInfo>();
+      for (const domain of domains) {
+        const existing = previous.get(domain);
+        if (existing) {
+          next.set(domain, existing);
+        }
+      }
+      return next;
+    });
     resetTimingDetails(timingDetails);
   }, [domains]);
 
@@ -159,30 +194,41 @@ export const useSearch = (parentDomain?: string) => {
   const runSearch = useCallback(() => {
     if (query.trim().length === 0) return;
     if (searchMode === SearchMode.REGISTER) {
-      refetchSuggestions({ cancelRefetch: true });
+      void refetchSuggestions();
     } else {
       setDomainInfo(new Map());
       resetAvailStatus();
     }
   }, [query, refetchSuggestions, searchMode, resetAvailStatus]);
 
-  const isLoading = useMemo(() => {
-    const isRegisterLoading =
-      searchMode === SearchMode.REGISTER && suggestionIsFetching;
-    const isImportLoading =
-      domains.length > 0 &&
-      domainInfo.size < domains.length &&
-      availStatus !== 'error' &&
-      availStatus !== 'idle';
+  const loadMore = useCallback(() => {
+    if (!hasNextPage) return;
+    void fetchNextPage();
+  }, [hasNextPage, fetchNextPage]);
 
-    return isRegisterLoading || isImportLoading;
-  }, [
-    searchMode,
-    suggestionIsFetching,
-    domains.length,
-    domainInfo.size,
-    availStatus,
-  ]);
+  const isAvailabilityStreaming =
+    domains.length > 0 &&
+    domainInfo.size < domains.length &&
+    availStatus !== 'error' &&
+    availStatus !== 'idle';
+
+  const isRegisterLoading =
+    searchMode === SearchMode.REGISTER &&
+    suggestionIsFetching &&
+    suggestedDomains.length === 0;
+
+  const isLoading = useMemo(
+    () => isRegisterLoading || isAvailabilityStreaming,
+    [isAvailabilityStreaming, isRegisterLoading],
+  );
+
+  const hasData = domains.length > 0;
+
+  const canLoadMore =
+    searchMode === SearchMode.REGISTER && !parentDomain && Boolean(hasNextPage);
+
+  const isLoadingMore =
+    searchMode === SearchMode.REGISTER && Boolean(isFetchingNextPage);
 
   return {
     query,
@@ -204,7 +250,10 @@ export const useSearch = (parentDomain?: string) => {
         : undefined,
     domains,
     domainInfos: domainInfo,
-    hasData: domains.length > 0,
+    hasData,
+    loadMore,
+    canLoadMore,
+    isLoadingMore,
     freeClaimEligibility,
     refetchFreeClaimEligibility,
   } as const;
@@ -213,8 +262,8 @@ export const useSearch = (parentDomain?: string) => {
 function resolveNsDOH(domain: NamefiNormalizedDomain) {
   return fetch(`https://dns.google/resolve?name=${domain}&type=NS`)
     .then((res) => res.json())
-    .then((data) => data.Answer.map((answer: any) => answer.data))
-    .then((ns) => ns.map((ns: string) => ns.trim()))
+    .then((data) => data.Answer?.map((answer: any) => answer.data))
+    .then((ns) => ns?.map((ns: string) => ns.trim()))
     .catch((error) => {
       // biome-ignore lint/suspicious/noConsole: used for debugging
       console.error('Error resolving NS for', domain, error);

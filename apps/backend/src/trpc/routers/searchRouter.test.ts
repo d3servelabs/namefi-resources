@@ -3,6 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import * as namefiRegistry from '#lib/namefi-registry';
 import type { TrpcContext } from '../base';
 import { searchRouter } from './searchRouter';
+import { RANKED_TLDS } from '#lib/tld-rank';
 import {
   rotateString,
   stringRotatePermutations,
@@ -76,6 +77,9 @@ describe('Search Router', () => {
     expect(result).toHaveProperty('domains');
     expect(Array.isArray(result.domains)).toBe(true);
     expect(result.domains.length).toBeGreaterThan(0);
+    expect(result.page).toBe(1);
+    expect(result.totalPages).toBe(1);
+    expect(result.nextPage).toBeNull();
 
     // Check that the suggestions include the parent domain
     for (const domain of result.domains) {
@@ -139,6 +143,35 @@ describe('Search Router', () => {
     for (const domain of result.domains) {
       expect(domain.endsWith('.0x.city')).toBe(true);
     }
+  });
+
+  it('should paginate ranked TLD suggestions', async () => {
+    const pageSize = 10;
+    const secondPageTld = RANKED_TLDS[pageSize];
+    const expectedTotalPages = Math.ceil(RANKED_TLDS.length / pageSize);
+    const result = await caller.getDomainSuggestions({
+      query: 'pagetest',
+      page: 2,
+      pageSize,
+    });
+
+    expect(result.page).toBe(2);
+    expect(result.totalPages).toBe(expectedTotalPages);
+    expect(result.nextPage).toBe(3);
+    expect(result.pageSize).toBe(pageSize);
+    expect(result.domains.length).toBeGreaterThan(0);
+    expect(
+      result.domains.some((domain) => domain.endsWith(`.${secondPageTld}`)),
+    ).toBe(true);
+
+    const lastPage = await caller.getDomainSuggestions({
+      query: 'pagetest',
+      page: 99,
+      pageSize,
+    });
+    expect(lastPage.page).toBe(expectedTotalPages);
+    expect(lastPage.nextPage).toBeNull();
+    expect(lastPage.pageSize).toBe(pageSize);
   });
 });
 

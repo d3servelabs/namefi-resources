@@ -783,6 +783,9 @@ export const SearchResults: FC<{
       hasParentMatch: boolean;
     }>;
   }>;
+  canLoadMore?: boolean;
+  onLoadMore?: () => void;
+  isLoadingMore?: boolean;
 }> = ({
   isLoading,
   isError,
@@ -795,6 +798,9 @@ export const SearchResults: FC<{
   onEppCodeChange,
   searchMode,
   freeClaimEligibility,
+  canLoadMore = false,
+  onLoadMore,
+  isLoadingMore = false,
 }) => {
   // Show error state
   if (isError && query.length > 0) {
@@ -840,6 +846,21 @@ export const SearchResults: FC<{
             />
           );
         })}
+        {canLoadMore && (
+          <div className="flex justify-center">
+            <Button
+              variant="outline"
+              className="mt-2 rounded-full border-white/30 bg-white/5 text-white hover:bg-white/10"
+              disabled={isLoadingMore}
+              onClick={onLoadMore}
+            >
+              {isLoadingMore && (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              )}
+              Load more
+            </Button>
+          </div>
+        )}
       </div>
     );
   }

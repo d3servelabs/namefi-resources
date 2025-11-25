@@ -4,7 +4,7 @@ import {
   type NamefiNormalizedDomain,
 } from '@namefi-astra/utils';
 import { getDomainLevels } from './get-domain-levels';
-import { RANKED_TLDS } from './tld-rank';
+import { DEFAULT_RANKED_TLD_PAGE_SIZE, RANKED_TLDS } from './tld-rank';
 import { getTags } from '@namefi/cat';
 import {
   adjectives,
@@ -77,6 +77,14 @@ export const sanitisedQuerySchema = z
 
 type Tag = ReturnType<typeof getTags>[number];
 
+export type DomainSuggestionsResult = {
+  domains: NamefiNormalizedDomain[];
+  page: number;
+  totalPages: number;
+  nextPage: number | null;
+  pageSize: number;
+};
+
 /**
  * Generates domain suggestions based on query and parentDomain.
  * This function handles both third-party domains (with parentDomain) and general domain searches.
@@ -88,54 +96,89 @@ type Tag = ReturnType<typeof getTags>[number];
 export function generateDomainSuggestions(
   query: string,
   parentDomain?: string,
-) {
-  let domains: PunycodeDomainName[] = [];
+  page = 1,
+  pageSize = DEFAULT_RANKED_TLD_PAGE_SIZE,
+): DomainSuggestionsResult {
   const { ascii: sanitizedQuery } = sanitisedQuerySchema.parse(query);
+  const normalizedPageSize = Math.trunc(pageSize);
+  const effectivePageSize =
+    normalizedPageSize > 0 ? normalizedPageSize : DEFAULT_RANKED_TLD_PAGE_SIZE;
+
+  // Third-party domains don't paginate; always return a single page
   if (parentDomain) {
-    // For third-party domains, use the 3rd level suggestions logic
-    domains = generate3rdLevelDomainSuggestions(
-      sanitizedQuery,
-      parentDomain,
-    ).map(toPunycodeDomainName);
-  } else {
-    const { levels } = getDomainLevels(sanitizedQuery);
+    const thirdLevelSuggestions = filterNamefiNormalizedDomain(
+      generate3rdLevelDomainSuggestions(sanitizedQuery, parentDomain).map(
+        toPunycodeDomainName,
+      ),
+    );
 
-    if (levels.length <= 1) {
-      // Check if user provided a TLD (contains a dot) even if not recognized
-      if (sanitizedQuery.includes('.')) {
-        // User provided a TLD (even if not recognized) - prioritize it
-        const userDomain = sanitizedQuery; // Use the complete domain as-is
-        sanitizedQuery.split('.').pop() || ''; // Extract TLD
-
-        // Start with user's complete domain, then add all ranked TLDs
-        domains = [
-          userDomain,
-          ...RANKED_TLDS.map((tld) =>
-            toPunycodeDomainName(`${userDomain.split('.')[0]}.${tld}`),
-          ),
-        ];
-      } else {
-        domains = RANKED_TLDS.map((tld) =>
-          toPunycodeDomainName(`${sanitizedQuery}.${tld}`),
-        );
-      }
-    } else {
-      // levels > 1
-
-      // User provided a complete domain - prioritize it and add all ranked TLDs
-      const validTlds = RANKED_TLDS.filter(
-        (tld) => !sanitizedQuery.endsWith(`.${tld}`),
-      );
-      domains = [
-        sanitizedQuery,
-        ...validTlds.map((tld) =>
-          toPunycodeDomainName(`${sanitizedQuery.split('.')[0]}.${tld}`),
-        ),
-      ];
-    }
+    return {
+      domains: thirdLevelSuggestions,
+      page: 1,
+      totalPages: 1,
+      nextPage: null,
+      pageSize: effectivePageSize,
+    };
   }
 
-  return domains;
+  const totalPages = Math.max(
+    1,
+    Math.ceil(RANKED_TLDS.length / effectivePageSize),
+  );
+  const currentPage = Math.min(Math.max(Math.trunc(page) || 1, 1), totalPages);
+  const sliceStart = (currentPage - 1) * effectivePageSize;
+  const rankedTldsForPage = RANKED_TLDS.slice(
+    sliceStart,
+    sliceStart + effectivePageSize,
+  );
+
+  let domains: PunycodeDomainName[] = [];
+  const { levels } = getDomainLevels(sanitizedQuery);
+
+  if (levels.length <= 1) {
+    // Check if user provided a TLD (contains a dot) even if not recognized
+    if (sanitizedQuery.includes('.')) {
+      // User provided a TLD (even if not recognized) - prioritize it
+      const userDomain = sanitizedQuery; // Use the complete domain as-is
+
+      // Start with user's complete domain, then add ranked TLDs for the current page
+      domains = [
+        userDomain,
+        ...rankedTldsForPage.map((tld) =>
+          toPunycodeDomainName(`${userDomain.split('.')[0]}.${tld}`),
+        ),
+      ];
+    } else {
+      domains = rankedTldsForPage.map((tld) =>
+        toPunycodeDomainName(`${sanitizedQuery}.${tld}`),
+      );
+    }
+  } else {
+    // levels > 1
+
+    // User provided a complete domain - prioritize it and add ranked TLDs for the current page
+    const validTlds = rankedTldsForPage.filter(
+      (tld) => !sanitizedQuery.endsWith(`.${tld}`),
+    );
+    domains = [
+      sanitizedQuery,
+      ...validTlds.map((tld) =>
+        toPunycodeDomainName(`${sanitizedQuery.split('.')[0]}.${tld}`),
+      ),
+    ];
+  }
+
+  const uniqueDomains = filterNamefiNormalizedDomain(
+    Array.from(new Set(domains)),
+  );
+
+  return {
+    domains: uniqueDomains,
+    page: currentPage,
+    totalPages,
+    nextPage: currentPage < totalPages ? currentPage + 1 : null,
+    pageSize: effectivePageSize,
+  };
 }
 
 /**

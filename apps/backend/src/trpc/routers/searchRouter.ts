@@ -78,14 +78,15 @@ export const searchRouter = createTRPCRouter({
       z.object({
         query: z.string().min(1),
         parentDomain: z.string().optional(),
+        page: z.number().int().min(1).optional(),
+        pageSize: z.number().int().min(1).max(100).optional(),
       }),
     )
     .query(async ({ input, ctx }) => {
-      const { query } = input;
+      const { query, page = 1, pageSize } = input;
       const parentDomain =
         input.parentDomain ?? ctx.poweredByNamefiDomain ?? undefined;
-      const domains = generateDomainSuggestions(query, parentDomain);
-      return { domains };
+      return generateDomainSuggestions(query, parentDomain, page, pageSize);
     }),
 
   /**

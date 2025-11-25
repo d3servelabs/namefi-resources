@@ -1441,6 +1441,9 @@ export const Landing: LandingComponent = ({ origin }) => {
     hasData,
     domainInfos,
     domains,
+    canLoadMore,
+    loadMore,
+    isLoadingMore,
     freeClaimEligibility,
   } = useSearch(parentDomain);
 
@@ -1604,6 +1607,9 @@ export const Landing: LandingComponent = ({ origin }) => {
                     onEppCodeChange={handleEppCodeChange}
                     searchMode={searchMode}
                     freeClaimEligibility={freeClaimEligibility}
+                    canLoadMore={canLoadMore}
+                    onLoadMore={loadMore}
+                    isLoadingMore={isLoadingMore}
                   />
                 </div>
               </motion.div>
