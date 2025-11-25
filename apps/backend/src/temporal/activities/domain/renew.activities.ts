@@ -920,25 +920,35 @@ export async function getDomainsExpirationDatesFromIndex(
     );
   }
 
-  const [sldExpirationDates, _3ldNftsExpirationDates] = await Promise.all([
+  const [sldExpirationDates, nftsExpirationDates] = await Promise.all([
     getSldExpirationDateForDomainList(sldDomainNames),
-    get3ldExpirationDateForDomainListFromIndex(_3ldDomainNames),
+    getExpirationDateForDomainListFromNftIndex([
+      ..._3ldDomainNames,
+      ...sldDomainNames,
+    ]),
   ]);
+
+  const nftsExpirationDatesMap = Object.fromEntries(
+    nftsExpirationDates?.map((data) => [
+      data.normalizedDomainName,
+      data.expirationDate,
+    ]) ?? [],
+  );
 
   return Object.fromEntries([
     ...sldDomainNames.map((domainName, i) => [
       domainName,
-      sldExpirationDates[i] ?? null,
+      sldExpirationDates[i] ?? nftsExpirationDatesMap[domainName],
     ]),
     ..._3ldDomainNames.map((domainName, i) => [
       domainName,
-      _3ldNftsExpirationDates[i]?.expirationDate,
+      nftsExpirationDatesMap[domainName],
     ]),
     ...unknownDomainNames.map((domainName) => [domainName, null]),
   ]);
 }
 
-export async function get3ldExpirationDateForDomainListFromIndex(
+export async function getExpirationDateForDomainListFromNftIndex(
   normalizedDomainNames: NamefiNormalizedDomain[],
 ) {
   const nfts = await db
@@ -962,6 +972,12 @@ export async function get3ldExpirationDateForDomainListFromIndex(
       chainId: nft?.chainId,
     };
   });
+}
+
+export async function get3ldExpirationDateForDomainListFromIndex(
+  normalizedDomainNames: NamefiNormalizedDomain[],
+) {
+  return getExpirationDateForDomainListFromNftIndex(normalizedDomainNames);
 }
 
 export async function get3ldExpirationDateForDomainListFromContract(
@@ -999,6 +1015,9 @@ export async function get3ldExpirationDateForDomainListFromContract(
 
 export async function getSldExpirationDateForDomainList(
   normalizedDomainNames: NamefiNormalizedDomain[],
+  options?: {
+    fallbackOption: 'NONE' | 'RDAP';
+  },
 ) {
   const indexedExpirationDates = await db.query.indexedDomainsTable.findMany({
     where: (table, { inArray }) =>
@@ -1031,6 +1050,9 @@ export async function getSldExpirationDateForDomainList(
         indexedExpirationDatesMap.get(normalizedDomainName);
       if (indexedExpirationDate) {
         return indexedExpirationDate;
+      }
+      if (options?.fallbackOption !== 'RDAP') {
+        return null;
       }
       try {
         const liveExpirationDate =
