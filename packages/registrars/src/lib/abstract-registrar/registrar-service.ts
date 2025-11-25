@@ -241,6 +241,8 @@ export abstract class AbstractRegistrarService<T extends string = string> {
     }
     return this.unlockDomain(domainName, options);
   }
+
+  // abstract getTldPrices(): Promise<Record<string, DomainPricingDetails>>;
 }
 
 export type DomainQueryResult = {

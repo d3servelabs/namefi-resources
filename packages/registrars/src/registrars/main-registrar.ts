@@ -57,6 +57,9 @@ export type WithRegistrar<T> = T & {
 type LongRunningOperationResult<T> = WithRegistrar<
   iLongRunningOperationResult<T>
 >;
+type RegistrarWithTldPricing = AbstractRegistrarService<Registrars> & {
+  getTldPrices: () => Promise<Record<string, DomainPricingDetails>>;
+};
 
 const injectRegistrar = assoc('registrarKey');
 
@@ -464,6 +467,43 @@ export class RegistrarService extends AbstractRegistrarService {
     return result;
   }
 
+  async getRegistrarsTldPricing(): Promise<
+    Record<Registrars, Record<string, DomainPricingDetails>>
+  > {
+    const entries = await Promise.all(
+      this.getAllowedRegistrars().map(async (registrarKey) => {
+        const registrar = this.registrars[registrarKey];
+        if (!this.supportsTldPricing(registrar)) {
+          return null;
+        }
+        try {
+          const priceMap = await registrar.getTldPrices();
+          const parentDomains = await registrar.getAllowedParentDomains();
+          const finalPriceMap = Object.fromEntries(
+            parentDomains
+              .map((parent) => [parent, priceMap[parent]])
+              .filter(([_p, price]) => price !== null),
+          );
+
+          return [registrarKey, finalPriceMap] as const;
+        } catch (error) {
+          this.logger.error(
+            { error, registrar: registrarKey },
+            'error fetching TLD pricing',
+          );
+          return null;
+        }
+      }),
+    );
+
+    const filteredEntries = entries.filter(
+      (entry): entry is [Registrars, Record<string, DomainPricingDetails>] =>
+        entry !== null,
+    );
+
+    return Object.fromEntries(filteredEntries);
+  }
+
   getAllowedRegistrars(): Registrars[] {
     return Object.keys(this.registrars) as Registrars[];
   }
@@ -732,6 +772,14 @@ export class RegistrarService extends AbstractRegistrarService {
       registrarKey: registrarKey,
     });
     return registrarKey;
+  }
+
+  private supportsTldPricing(
+    registrar: AbstractRegistrarService<Registrars>,
+  ): registrar is RegistrarWithTldPricing {
+    return (
+      typeof (registrar as RegistrarWithTldPricing).getTldPrices === 'function'
+    );
   }
 }
 

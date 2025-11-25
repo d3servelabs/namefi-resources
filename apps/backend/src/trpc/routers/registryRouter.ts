@@ -13,6 +13,7 @@ import { z } from 'zod';
 import {
   getDomainListInfo,
   getPoweredByNamefi3PDomains,
+  getTldPricingTable,
 } from '#lib/namefi-registry';
 import {
   authedOrPublicProcedure,
@@ -71,6 +72,10 @@ export const registryRouter = createTRPCRouter({
       }
       return availability[0];
     }),
+
+  getTldPricingTable: authedOrPublicProcedure.query(async () =>
+    getTldPricingTable(),
+  ),
 
   getDomainsByOwner: publicProcedure
     .input(

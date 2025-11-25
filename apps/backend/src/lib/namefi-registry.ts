@@ -28,7 +28,10 @@ import {
 import { DomainAvailability } from '@namefi-astra/registrars/lib/abstract-registrar/data/domain-availability';
 import { toPunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
 
-import type { DomainPricingDetails } from '@namefi-astra/registrars/lib/abstract-registrar/index';
+import type {
+  DomainPricingDetails,
+  PricingDetails,
+} from '@namefi-astra/registrars/lib/abstract-registrar/index';
 import { resolve } from '@namefi-astra/utils/promises/resolve';
 import { and, eq, gt, inArray, isNull, or, sql, ne } from 'drizzle-orm';
 import { secrets } from '#lib/env';
@@ -38,7 +41,7 @@ import { getDomainDurationConstraints } from './domains/duration-constraints';
 import pMap from 'p-map';
 import { maybeGetUserEmail } from '#temporal/activities/notify.activities';
 import type { NamefiNftOwnersSelect } from '@namefi-astra/db';
-import type { Registrars } from '@namefi-astra/registrars/registrars/registrars-keys';
+import { Registrars } from '@namefi-astra/registrars/registrars/registrars-keys';
 import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
 
 export const sldRegistrar = createRegistrarService({
@@ -299,6 +302,29 @@ export type DomainAvailabilityInfo = {
   importable: boolean;
   supported: boolean;
 };
+
+export type TldPricingInfo = {
+  tld: string;
+  registrarKey: Registrars;
+  /**
+   * Price (USD) for one year of registration.
+   */
+  registrationPriceUsdPerYear: number | null;
+  /**
+   * Price (USD) for one year of renewal.
+   */
+  renewalPriceUsdPerYear: number | null;
+  /**
+   * Price (USD) for one year transfer/import.
+   */
+  transferPriceUsdPerYear: number | null;
+};
+
+type TldPricingBestEntry = {
+  registrarKey: Registrars;
+  pricing: DomainPricingDetails;
+  registrationUsdPerYear: number | null;
+};
 /**
  * Retrieves information about a list of domain names including their availability, price, and current owner.
  * @param domains - Array of normalized domain names to query
@@ -381,6 +407,107 @@ export const getDomainListInfo = async (
     }
     return domainInfo;
   });
+};
+
+export const getTldPricingTable = async (): Promise<TldPricingInfo[]> => {
+  const registrarsPricing = await sldRegistrar.getRegistrarsTldPricing();
+  const bestByTld = new Map<string, TldPricingBestEntry>();
+
+  const registrarEntries = Object.entries(registrarsPricing) as [
+    Registrars,
+    Record<string, DomainPricingDetails>,
+  ][];
+
+  for (const [registrarKey, tldPricingMap] of registrarEntries) {
+    for (const [tld, pricing] of Object.entries(tldPricingMap)) {
+      const registrationUsdPerYear = getUsdAmountPerYear(
+        pricing.registrationPrice,
+      );
+      const existing = bestByTld.get(tld);
+
+      if (
+        !existing ||
+        shouldReplaceBestEntry(existing, {
+          registrarKey,
+          registrationUsdPerYear,
+        })
+      ) {
+        bestByTld.set(tld, {
+          registrarKey,
+          pricing,
+          registrationUsdPerYear,
+        });
+      }
+    }
+  }
+
+  return Array.from(bestByTld.entries())
+    .map(([tld, entry]) => ({
+      tld,
+      registrarKey: entry.registrarKey,
+      registrationPriceUsdPerYear: entry.registrationUsdPerYear,
+      renewalPriceUsdPerYear: getUsdAmountPerYear(entry.pricing.renewalPrice),
+      transferPriceUsdPerYear: getUsdAmountPerYear(entry.pricing.importPrice),
+    }))
+    .sort((a, b) => a.tld.localeCompare(b.tld));
+};
+
+const getUsdAmountPerYear = (
+  pricingDetails?: PricingDetails | null,
+): number | null => {
+  if (!pricingDetails) {
+    return null;
+  }
+
+  return computeChargesInUsdOrThrow(pricingDetails, 1);
+};
+
+const shouldReplaceBestEntry = (
+  current: TldPricingBestEntry,
+  candidate: Pick<
+    TldPricingBestEntry,
+    'registrarKey' | 'registrationUsdPerYear'
+  >,
+) => {
+  const currentUsd = current.registrationUsdPerYear;
+  const candidateUsd = candidate.registrationUsdPerYear;
+
+  if (candidateUsd === null) {
+    return false;
+  }
+
+  if (currentUsd === null) {
+    return true;
+  }
+
+  if (candidateUsd < currentUsd) {
+    return true;
+  }
+
+  if (candidateUsd === currentUsd) {
+    return preferRegistrar(candidate.registrarKey, current.registrarKey);
+  }
+
+  return false;
+};
+
+const preferRegistrar = (
+  candidate: Registrars,
+  current: Registrars,
+): boolean => {
+  const priority = {
+    [Registrars.DynadotGdg]: 1,
+    [Registrars.DynadotRegular]: 2,
+  };
+
+  const candidatePriority = priority[candidate];
+  const currentPriority = priority[current];
+
+  if (candidatePriority === undefined || currentPriority === undefined) {
+    return false;
+  }
+
+  return candidatePriority < currentPriority;
 };
 
 const _getSldDomainListInfo = async (
