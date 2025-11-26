@@ -22,6 +22,7 @@ All content lives under the `content/` directory (e.g., `content/blog/en/...`).
 - On every push to `main`, a workflow dispatches a `resources-updated` event to `namefi-astra`.
 - The main repo then updates the `apps/resources/data` submodule, runs content validation, and opens a PR with the new content.
 
-### Required secret
+### Required configuration
 
-Set `ASTRA_REPO_TOKEN` (repo scope PAT or GitHub App token with access to `d3servelabs/namefi-astra`) in this repository so the dispatch can succeed.
+- Install the NameFi bot GitHub App on both `namefi-resources` and `namefi-astra`.
+- Add secret `NAMEFI_BOT_PRIVATE_KEY` (the bot’s PEM) and variable `NAMEFI_BOT_APP_ID` (the bot’s app ID) in this repo. The dispatch workflow uses these to authenticate to `namefi-astra`.
