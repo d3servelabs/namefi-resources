@@ -16,10 +16,17 @@ jobs:
     name: Dispatch resources update
     runs-on: ubuntu-latest
     steps:
+      - name: Create NameFi bot token
+        id: app-token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ vars.NAMEFI_BOT_APP_ID }}
+          private-key: ${{ secrets.NAMEFI_BOT_PRIVATE_KEY }}
+
       - name: Send repository dispatch
         uses: peter-evans/repository-dispatch@v3
         with:
-          token: ${{ secrets.ASTRA_REPO_TOKEN }}
+          token: ${{ steps.app-token.outputs.token }}
           repository: d3servelabs/namefi-astra
           event-type: resources-updated
           client-payload: |
