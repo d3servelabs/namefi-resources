@@ -1,0 +1,6 @@
+pre-push:
+  commands:
+    data_validate:
+      run: bun data:validate
+    lint_mdx:
+      run: bun lint:mdx
