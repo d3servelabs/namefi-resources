@@ -2,11 +2,11 @@
 
 This repository holds the content that powers the resources site (blog posts, glossary, partners, authors, and TLDs). It is consumed as a git submodule at `apps/resources/data` inside [`d3servelabs/namefi-astra`](https://github.com/d3servelabs/namefi-astra).
 
-All content lives under the `data/` directory (e.g., `data/blog/en/...`).
+All content lives under the `content/` directory (e.g., `content/blog/en/...`).
 
 ## Editing content
 
-- Keep the existing folder structure: `authors/`, `blog/`, `glossary/`, `partners/`, and `tld/`, each with language subfolders inside `data/`.
+- Keep the existing folder structure: `authors/`, `blog/`, `glossary/`, `partners/`, and `tld/`, each with language subfolders inside `content/`.
 - Add or edit Markdown/MDX files directly; frontmatter is validated by the main repo.
 - Open a PR or push to `main` once your changes are ready.
 

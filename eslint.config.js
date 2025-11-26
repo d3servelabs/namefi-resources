@@ -9,7 +9,7 @@ export default [
   ...compat.config({
     overrides: [
       {
-        files: ['data/**/*.{md,mdx}'],
+      files: ['content/**/*.{md,mdx}'],
         extends: ['plugin:mdx/recommended'],
       },
     ],

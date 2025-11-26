@@ -1,9 +1,10 @@
 {
   "name": "namefi-resources-content",
   "private": true,
+  "type": "module",
   "scripts": {
     "data:validate": "bun scripts/validate-data.ts",
-    "lint:mdx": "bunx eslint \"data/**/*.{md,mdx}\""
+    "lint:mdx": "bunx eslint \"content/**/*.{md,mdx}\""
   },
   "dependencies": {
     "gray-matter": "^4.0.3"

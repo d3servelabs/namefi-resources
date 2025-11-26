@@ -20,7 +20,7 @@ type ValidationResult = {
   filesChecked: number;
 };
 
-const DATA_ROOT = path.join(process.cwd(), 'data');
+const DATA_ROOT = path.join(process.cwd(), 'content');
 const MARKDOWN_EXTENSIONS = new Set(['.md', '.mdx']);
 
 const COLLECTION_ROOTS: Record<Collection, string> = {
