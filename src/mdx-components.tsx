@@ -1,6 +1,6 @@
 import type { MDXComponents } from 'mdx/types';
-import type { AnchorHTMLAttributes, ReactNode } from 'react';
 import Link from 'next/link';
+import type { AnchorHTMLAttributes, ReactNode } from 'react';
 import { cn } from '@/lib/cn';
 
 const Wrapper = ({ children }: { children: ReactNode }) => (

@@ -6,9 +6,13 @@
     "dev": "next dev --port 3002",
     "build": "next build",
     "start": "next start",
-    "lint": "biome check",
-    "format": "biome format --write",
-    "authors:sync": "bun scripts/sync-authors.ts"
+    "check": "bunx --bun biome check .",
+    "check:error": "bunx --bun biome check . --diagnostic-level=error",
+    "check:fix": "bunx --bun biome check --write .",
+    "check:unsafe": "bunx --bun biome check --write --unsafe .",
+    "authors:sync": "bun scripts/sync-authors.ts",
+    "typecheck": "bunx --bun tsc --noEmit",
+    "validate": "bunx --bun concurrently -n 'typecheck,biome' -c 'blue.bold,green.bold' \"bun typecheck\" \"bun check:error\""
   },
   "dependencies": {
     "@bprogress/next": "^3.2.12",
@@ -38,18 +42,23 @@
     "tailwind-merge": "^3.0.2"
   },
   "devDependencies": {
-    "@namefi-astra/typescript": "workspace:*",
+    "@biomejs/biome": "^2.2.7",
+    "@infisical/cli": "^0.43.16",
     "@tailwindcss/forms": "^0.5.10",
     "@tailwindcss/postcss": "^4.1.11",
     "@tailwindcss/typography": "^0.5.16",
+    "@types/js-cookie": "^3.0.6",
     "@types/mdx": "^2.0.13",
     "@types/negotiator": "^0.6.4",
     "@types/node": "^22.13.14",
     "@types/react": "19.2.2",
     "@types/react-dom": "19.2.2",
     "@types/rss": "^0.0.32",
+    "concurrently": "^9.1.2",
+    "lefthook": "^1.11.6",
     "tailwindcss": "^4.1.11",
     "tw-animate-css": "^1.3.5",
+    "typescript": "^5.9.3",
     "vitest": "^3.2.4"
   },
   "overrides": {

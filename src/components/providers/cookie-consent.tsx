@@ -1,8 +1,10 @@
 'use client';
 
+import Cookies from 'js-cookie';
+import { AnimatePresence } from 'motion/react';
 import {
-  type PropsWithChildren,
   createContext,
+  type PropsWithChildren,
   useCallback,
   useContext,
   useEffect,
@@ -10,8 +12,6 @@ import {
   useState,
 } from 'react';
 import { CookieConsent } from '@/components/cookie-consent';
-import { AnimatePresence } from 'motion/react';
-import Cookies from 'js-cookie';
 
 export type ConsentState = 'accepted' | 'declined' | 'unknown';
 

@@ -1,13 +1,13 @@
-import type { ReactNode } from 'react';
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import type { Metadata } from 'next';
-import type { Locale } from '@/i18n-config';
-import { i18n, localeLabels, localeDateLocales } from '@/i18n-config';
+import type { ReactNode } from 'react';
 import { getDictionary } from '@/get-dictionary';
+import type { Locale } from '@/i18n-config';
+import { i18n, localeDateLocales, localeLabels } from '@/i18n-config';
 import {
-  getAuthor,
   type AuthorEntry,
+  getAuthor,
   getAuthorNames,
   getPartnerCached,
   getPartnerParams,

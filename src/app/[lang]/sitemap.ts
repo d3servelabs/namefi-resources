@@ -1,7 +1,7 @@
 import type { MetadataRoute } from 'next';
 import { i18n, type Locale } from '@/i18n-config';
-import { buildSitemapEntries } from '@/lib/sitemap';
 import { resolveBaseUrl } from '@/lib/site-url';
+import { buildSitemapEntries } from '@/lib/sitemap';
 
 function resolveLocale(lang: string): Locale {
   return i18n.locales.includes(lang as Locale)

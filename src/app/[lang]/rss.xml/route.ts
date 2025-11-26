@@ -1,5 +1,5 @@
-import RSS from 'rss';
 import type { NextRequest } from 'next/server';
+import RSS from 'rss';
 import { i18n, type Locale } from '@/i18n-config';
 import {
   getAuthorNames,

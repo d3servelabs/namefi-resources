@@ -1,6 +1,6 @@
 import { ImageResponse } from 'next/og';
-import { localeLabels, type Locale } from '@/i18n-config';
 import { getDictionary } from '@/get-dictionary';
+import { type Locale, localeLabels } from '@/i18n-config';
 import { getPostCached } from '@/lib/content';
 import { OgLogotype } from '../../../og/logotype';
 

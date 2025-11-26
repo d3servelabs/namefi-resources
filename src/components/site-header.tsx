@@ -3,9 +3,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import type { Locale } from '@/i18n-config';
-import type { Dictionary } from '@/get-dictionary';
-import { LocaleSwitcher } from './locale-switcher';
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -13,7 +10,10 @@ import {
   NavigationMenuList,
   navigationMenuTriggerStyle,
 } from '@/components/ui/shadcn/navigation-menu';
+import type { Dictionary } from '@/get-dictionary';
+import type { Locale } from '@/i18n-config';
 import { cn } from '@/lib/cn';
+import { LocaleSwitcher } from './locale-switcher';
 
 type SiteHeaderProps = {
   locale: Locale;

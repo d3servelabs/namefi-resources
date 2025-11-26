@@ -1,6 +1,10 @@
 {
-  "extends": "@namefi-astra/typescript",
   "compilerOptions": {
+    "target": "ES2020",
+    "strict": true,
+    "strictNullChecks": true,
+    "jsx": "react-jsx",
+    "forceConsistentCasingInFileNames": true,
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "baseUrl": ".",
@@ -27,7 +31,8 @@
     ".next/types/**/*.ts",
     "**/*.ts",
     "**/*.tsx",
-    "next.config.ts"
+    "next.config.ts",
+    ".next/dev/types/**/*.ts"
   ],
   "exclude": ["node_modules"]
 }

@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect } from 'react';
 import Script from 'next/script';
+import { useEffect } from 'react';
 import { useCookieConsent } from '@/components/providers/cookie-consent';
 
 const GA_MEASUREMENT_ID =

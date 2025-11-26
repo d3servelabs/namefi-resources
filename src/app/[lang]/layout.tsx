@@ -1,13 +1,13 @@
+import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { notFound } from 'next/navigation';
-import type { Locale } from '@/i18n-config';
-import { i18n, localeDirections, isRtlLocale } from '@/i18n-config';
-import { getDictionary } from '@/get-dictionary';
+import { Providers } from '@/components/providers';
 import { SiteFooter } from '@/components/site-footer';
 import { SiteHeader } from '@/components/site-header';
-import { Providers } from '@/components/providers';
+import { getDictionary } from '@/get-dictionary';
+import type { Locale } from '@/i18n-config';
+import { i18n, isRtlLocale, localeDirections } from '@/i18n-config';
 import { resolveBaseUrl } from '@/lib/site-url';
-import type { Metadata } from 'next';
 import '../globals.css';
 
 const geistSans = Geist({

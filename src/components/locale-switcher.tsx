@@ -2,7 +2,7 @@
 
 import { Languages } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
-import { i18n, localeLabels, type Locale } from '@/i18n-config';
+import { Button } from '@/components/ui/shadcn/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,7 +12,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/shadcn/dropdown-menu';
-import { Button } from '@/components/ui/shadcn/button';
+import { i18n, type Locale, localeLabels } from '@/i18n-config';
 import { cn } from '@/lib/cn';
 
 type LocaleSwitcherProps = {

@@ -1,14 +1,14 @@
 import type { Metadata } from 'next';
-import type { Locale } from '@/i18n-config';
-import { i18n, localeDateLocales } from '@/i18n-config';
-import { getDictionary } from '@/get-dictionary';
-import { getAuthorNames, getGlossaryEntriesForLocale } from '@/lib/content';
-import { resolveTitle } from '@/lib/site-metadata';
 import {
   ResourceIndexCard,
   ResourceIndexEmptyState,
 } from '@/components/resource-index-card';
+import { getDictionary } from '@/get-dictionary';
+import type { Locale } from '@/i18n-config';
+import { i18n, localeDateLocales } from '@/i18n-config';
+import { getAuthorNames, getGlossaryEntriesForLocale } from '@/lib/content';
 import { createResourceMetaItems } from '@/lib/resource-meta-items';
+import { resolveTitle } from '@/lib/site-metadata';
 
 const TRAILING_SLASH_REGEX = /\/$/;
 

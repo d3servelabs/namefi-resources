@@ -1,7 +1,7 @@
 'use client';
 
-import { ProgressProvider as NextProgressProvider } from '@bprogress/next/app';
 import type { AppProgressProviderProps } from '@bprogress/next';
+import { ProgressProvider as NextProgressProvider } from '@bprogress/next/app';
 
 export const ProgressProvider = ({
   children,

@@ -1,10 +1,12 @@
 'use client';
 
-import { useCallback, forwardRef } from 'react';
-import type { ReactNode } from 'react';
 import { Cookie } from 'lucide-react';
-import { Button } from '@/components/ui/shadcn/button';
+import type { HTMLMotionProps } from 'motion/react';
+import { motion } from 'motion/react';
 import Link from 'next/link';
+import type { ReactNode } from 'react';
+import { forwardRef, useCallback } from 'react';
+import { Button } from '@/components/ui/shadcn/button';
 import {
   Card,
   CardContent,
@@ -14,8 +16,6 @@ import {
   CardTitle,
 } from '@/components/ui/shadcn/card';
 import { cn } from '@/lib/cn';
-import { motion } from 'motion/react';
-import type { HTMLMotionProps } from 'motion/react';
 
 interface CookieConsentProps extends Omit<HTMLMotionProps<'div'>, 'ref'> {
   variant?: 'default' | 'small' | 'mini';

@@ -1,16 +1,16 @@
-import type { ReactNode } from 'react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import type { Locale } from '@/i18n-config';
-import { i18n, localeLabels, localeDateLocales } from '@/i18n-config';
+import type { ReactNode } from 'react';
 import { getDictionary } from '@/get-dictionary';
+import type { Locale } from '@/i18n-config';
+import { i18n, localeDateLocales, localeLabels } from '@/i18n-config';
 import {
+  type AuthorEntry,
   getAuthor,
+  getAuthorNames,
   getPostCached,
   getPostParams,
-  type AuthorEntry,
-  getAuthorNames,
 } from '@/lib/content';
 import { loadMdxModule } from '@/lib/load-mdx-module';
 import { resolveTitle } from '@/lib/site-metadata';

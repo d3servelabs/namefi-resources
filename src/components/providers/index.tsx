@@ -1,5 +1,5 @@
-import { GoogleAnalyticsCookieConsentGated } from '@/components/ga';
 import type { PropsWithChildren } from 'react';
+import { GoogleAnalyticsCookieConsentGated } from '@/components/ga';
 import { CookieConsentProvider } from './cookie-consent';
 import { ProgressProvider } from './progress';
 

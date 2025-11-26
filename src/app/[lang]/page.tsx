@@ -1,9 +1,9 @@
+import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import type { Locale } from '@/i18n-config';
 import { i18n } from '@/i18n-config';
-import type { Metadata } from 'next';
-import { resolveBaseUrl } from '@/lib/site-url';
 import { resolveTitle } from '@/lib/site-metadata';
+import { resolveBaseUrl } from '@/lib/site-url';
 
 export async function generateMetadata({
   params,

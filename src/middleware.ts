@@ -1,7 +1,7 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest, MiddlewareConfig } from 'next/server';
 import { match as matchLocale } from '@formatjs/intl-localematcher';
 import Negotiator from 'negotiator';
+import type { MiddlewareConfig, NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
 import { i18n, type Locale } from '@/i18n-config';
 
 const LOCALES: Locale[] = [...i18n.locales];
@@ -30,7 +30,7 @@ function getLocale(request: NextRequest): Locale {
 }
 
 export function middleware(request: NextRequest) {
-  const { pathname, search, searchParams } = request.nextUrl;
+  const { pathname, search } = request.nextUrl;
   const pathnameHasLocale = LOCALES.some(
     (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`,
   );

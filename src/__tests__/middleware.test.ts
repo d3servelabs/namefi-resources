@@ -1,6 +1,6 @@
-import { describe, expect, it } from 'vitest';
-import { NextRequest } from 'next/server.js';
 import { getRedirectUrl } from 'next/experimental/testing/server';
+import { NextRequest } from 'next/server.js';
+import { describe, expect, it } from 'vitest';
 import { middleware } from '@/middleware';
 
 describe('middleware redirect behaviour', () => {

@@ -1,7 +1,7 @@
-import type { ReactNode } from 'react';
 import type { LucideIcon } from 'lucide-react';
 import { CalendarDays, Clock, Languages, Users } from 'lucide-react';
-import { localeLabels, type Locale } from '@/i18n-config';
+import type { ReactNode } from 'react';
+import { type Locale, localeLabels } from '@/i18n-config';
 
 type ResourceMetaLabels = {
   publishedOn: string;
