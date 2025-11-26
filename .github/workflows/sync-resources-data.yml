@@ -107,6 +107,52 @@ jobs:
             apps/resources/data
             apps/resources/.gitignore
 
+      - name: Enable auto-merge
+        if: steps.cpr.outputs.pull-request-number != ''
+        uses: actions/github-script@v8
+        with:
+          github-token: ${{ steps.app-token.outputs.token }}
+          script: |
+            const prNumber = Number("${{ steps.cpr.outputs.pull-request-number }}");
+            const mergeMethod = 'merge';
+
+            try {
+              const { data: pr } = await github.rest.pulls.get({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: prNumber,
+              });
+
+              const mutation = `
+                mutation($pullRequestId: ID!, $mergeMethod: PullRequestMergeMethod!) {
+                  enablePullRequestAutoMerge(input: {
+                    pullRequestId: $pullRequestId,
+                    mergeMethod: $mergeMethod
+                  }) {
+                    pullRequest {
+                      autoMergeRequest {
+                        enabledAt
+                        mergeMethod
+                      }
+                    }
+                  }
+                }
+              `;
+
+              const variables = {
+                pullRequestId: pr.node_id,
+                mergeMethod: mergeMethod.toUpperCase(),
+              };
+
+              const result = await github.graphql(mutation, variables);
+
+              console.log(`✅ Auto-merge enabled on PR #${prNumber} with ${mergeMethod} method`);
+              console.log('Auto-merge details:', result.enablePullRequestAutoMerge.pullRequest.autoMergeRequest);
+            } catch (error) {
+              console.log(`⚠️ Could not enable auto-merge on PR #${prNumber}: ${error.message}`);
+              console.log('The PR will need manual merge once checks pass.');
+            }
+
       - name: No changes
         if: steps.update-submodule.outputs.changed != 'true'
         run: echo "Submodule already up to date; nothing to do."
