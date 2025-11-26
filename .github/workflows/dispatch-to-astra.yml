@@ -22,6 +22,9 @@ jobs:
         with:
           app-id: ${{ vars.NAMEFI_BOT_APP_ID }}
           private-key: ${{ secrets.NAMEFI_BOT_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: |
+            namefi-astra
 
       - name: Trigger Astra sync workflow
         env:
@@ -32,6 +35,6 @@ jobs:
           set -euo pipefail
           curl -s --fail-with-body -X POST \
             -H "Authorization: Bearer $DISPATCH_TOKEN" \
-            -H "Accept: application/vnd.github.v3+json" \
+            -H "Accept: application/vnd.github+json" \
             "https://api.github.com/repos/d3servelabs/namefi-astra/actions/workflows/210533412/dispatches" \
             -d "$(jq -n --arg ref "$TARGET_REF" --arg sha "$TARGET_SHA" '{ref:"main",inputs:{ref:$ref,sha:$sha}}')"
