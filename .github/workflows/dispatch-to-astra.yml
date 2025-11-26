@@ -1,0 +1,29 @@
+name: Notify Astra
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: 'Ref to send to namefi-astra (defaults to current ref)'
+        required: false
+        default: ''
+
+jobs:
+  dispatch:
+    name: Dispatch resources update
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send repository dispatch
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.ASTRA_REPO_TOKEN }}
+          repository: d3servelabs/namefi-astra
+          event-type: resources-updated
+          client-payload: |
+            {
+              "ref": "${{ github.event.inputs.ref || github.ref_name }}",
+              "sha": "${{ github.sha }}"
+            }
