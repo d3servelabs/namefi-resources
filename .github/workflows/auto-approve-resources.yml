@@ -1,0 +1,165 @@
+name: Auto Approve Resources Data PRs
+
+on:
+  check_run:
+    types: [completed]
+    branches:
+      - chore/resources-data/*
+
+jobs:
+  auto-approve:
+    name: Auto approve resources data PR
+    runs-on: ubuntu-latest
+    if: |
+      github.event.check_run.conclusion == 'success' &&
+      startsWith(github.event.check_run.check_suite.head_branch, 'chore/resources-data/')
+    steps:
+      - name: Create NameFi bot token
+        id: app-token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ vars.NAMEFI_BOT_APP_ID }}
+          private-key: ${{ secrets.NAMEFI_BOT_PRIVATE_KEY }}
+
+      - name: Find associated PR
+        id: find-pr
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ steps.app-token.outputs.token }}
+          script: |
+            const branch = context.payload.check_run.check_suite.head_branch;
+            console.log(`Looking for PR with head branch: ${branch}`);
+
+            const { data: prs } = await github.rest.pulls.list({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              head: `${context.repo.owner}:${branch}`,
+              state: 'open'
+            });
+
+            if (prs.length === 0) {
+              console.log('No open PR found for this branch');
+              return;
+            }
+
+            const pr = prs[0];
+            console.log(`Found PR #${pr.number}: ${pr.title}`);
+            core.setOutput('pr_number', pr.number);
+            core.setOutput('found', 'true');
+
+      - name: Check all required checks passed
+        if: steps.find-pr.outputs.found == 'true'
+        id: check-status
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ steps.app-token.outputs.token }}
+          script: |
+            const prNumber = ${{ steps.find-pr.outputs.pr_number }};
+            const headSha = context.payload.check_run.head_sha;
+
+            console.log(`Checking status for PR #${prNumber} at SHA ${headSha}`);
+
+            // Get the combined status for the commit
+            const { data: combinedStatus } = await github.rest.repos.getCombinedStatusForRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: headSha
+            });
+
+            console.log(`Combined status state: ${combinedStatus.state}`);
+
+            // Get all check runs for the commit
+            const { data: checkRuns } = await github.rest.checks.listForRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: headSha
+            });
+
+            const pendingOrFailed = checkRuns.check_runs.filter(run => {
+              // Skip this workflow's own check run
+              if (run.name === 'Auto approve resources data PR') return false;
+              return run.status !== 'completed' || run.conclusion !== 'success';
+            });
+
+            if (pendingOrFailed.length > 0) {
+              console.log('Some checks are still pending or failed:');
+              pendingOrFailed.forEach(run => {
+                console.log(`  - ${run.name}: status=${run.status}, conclusion=${run.conclusion || 'pending'}`);
+              });
+              core.setOutput('all_passed', 'false');
+              return;
+            }
+
+            // Also check commit statuses (for external CI systems)
+            if (combinedStatus.state !== 'success' && combinedStatus.statuses.length > 0) {
+              console.log('Combined commit status is not success');
+              combinedStatus.statuses.forEach(status => {
+                console.log(`  - ${status.context}: ${status.state}`);
+              });
+              core.setOutput('all_passed', 'false');
+              return;
+            }
+
+            console.log('All required checks have passed');
+            core.setOutput('all_passed', 'true');
+
+      - name: Validate changed files
+        if: steps.find-pr.outputs.found == 'true' && steps.check-status.outputs.all_passed == 'true'
+        id: validate-files
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ steps.app-token.outputs.token }}
+          script: |
+            const prNumber = ${{ steps.find-pr.outputs.pr_number }};
+            const allowedPathPrefixes = ['apps/resources/data', '.gitmodules'];
+
+            console.log(`Checking files changed in PR #${prNumber}`);
+
+            const { data: files } = await github.rest.pulls.listFiles({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: prNumber,
+              per_page: 100
+            });
+
+            console.log(`Found ${files.length} changed files:`);
+            files.forEach(f => console.log(`  - ${f.filename}`));
+
+            const allFilesValid = files.every(file => {
+              return allowedPathPrefixes.some(prefix => file.filename.startsWith(prefix));
+            });
+
+            if (!allFilesValid) {
+              const invalidFiles = files
+                .filter(file => !allowedPathPrefixes.some(prefix => file.filename.startsWith(prefix)))
+                .map(f => f.filename);
+              console.log(`Invalid files found: ${invalidFiles.join(', ')}`);
+              core.setOutput('valid', 'false');
+              return;
+            }
+
+            console.log('All changed files are within allowed paths');
+            core.setOutput('valid', 'true');
+
+      - name: Approve PR
+        if: |
+          steps.find-pr.outputs.found == 'true' &&
+          steps.check-status.outputs.all_passed == 'true' &&
+          steps.validate-files.outputs.valid == 'true'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ steps.app-token.outputs.token }}
+          script: |
+            const prNumber = ${{ steps.find-pr.outputs.pr_number }};
+
+            console.log(`Approving PR #${prNumber}`);
+
+            await github.rest.pulls.createReview({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: prNumber,
+              event: 'APPROVE',
+              body: '✅ Auto-approved: All checks passed and changes are limited to resources data.'
+            });
+
+            console.log(`PR #${prNumber} approved successfully`);
