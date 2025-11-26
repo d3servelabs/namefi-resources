@@ -8,7 +8,7 @@ All content lives under the `content/` directory (e.g., `content/blog/en/...`).
 
 - Keep the existing folder structure: `authors/`, `blog/`, `glossary/`, `partners/`, and `tld/`, each with language subfolders inside `content/`.
 - Add or edit Markdown/MDX files directly.
-- Open a PR to `main` once your changes are ready.
+- Open a PR to `main` once your changes are ready and merge it.
 
 ## Validation
 
