@@ -3,8 +3,8 @@ name: Auto Merge Resources Data PRs
 on:
   pull_request:
     types: [auto_merge_enabled, synchronize]
-    branches:
-      - chore/resources-data/*
+    paths:
+      - apps/resources/data/**
   workflow_dispatch:
     inputs:
       pr_number:
@@ -18,7 +18,7 @@ jobs:
     runs-on: blacksmith-2vcpu-ubuntu-2404-arm
     if: |
       github.event_name == 'workflow_dispatch' ||
-      (github.event.review.state == 'approved' && startsWith(github.event.pull_request.head.ref, 'chore/resources-data/'))
+      startsWith(github.event.pull_request.head.ref, 'chore/resources-data/')
     steps:
       - name: Create NameFi bot token
         id: app-token
