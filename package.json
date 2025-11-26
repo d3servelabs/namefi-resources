@@ -1,0 +1,10 @@
+{
+  "name": "namefi-resources-content",
+  "private": true,
+  "scripts": {
+    "data:validate": "bun scripts/validate-data.ts"
+  },
+  "dependencies": {
+    "gray-matter": "^4.0.3"
+  }
+}
