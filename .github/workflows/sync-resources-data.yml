@@ -107,14 +107,14 @@ jobs:
             apps/resources/data
             apps/resources/.gitignore
 
-      - name: Enable auto-merge
+      - name: Enable auto-merge (rebase)
         if: steps.cpr.outputs.pull-request-number != ''
         uses: actions/github-script@v8
         with:
           github-token: ${{ steps.app-token.outputs.token }}
           script: |
             const prNumber = Number("${{ steps.cpr.outputs.pull-request-number }}");
-            const mergeMethod = 'merge';
+            const mergeMethod = 'rebase'; // merge commits not allowed in this repo
 
             try {
               const { data: pr } = await github.rest.pulls.get({
