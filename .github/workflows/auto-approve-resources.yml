@@ -1,18 +1,22 @@
 name: Auto Approve Resources Data PRs
 
 on:
-  check_run:
-    types: [completed]
+  pull_request:
+    types: [ready_for_review]
     branches:
-      - chore/resources-data/*
+      - main
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: "PR number to approve"
+        required: true
+        type: number
 
 jobs:
   auto-approve:
     name: Auto approve resources data PR
-    runs-on: ubuntu-latest
-    if: |
-      github.event.check_run.conclusion == 'success' &&
-      startsWith(github.event.check_run.check_suite.head_branch, 'chore/resources-data/')
+    runs-on: blacksmith-2vcpu-ubuntu-2404-arm
+    if: github.event_name == 'workflow_dispatch' || startsWith(github.head_ref, 'chore/resources-data/')
     steps:
       - name: Create NameFi bot token
         id: app-token
@@ -21,96 +25,46 @@ jobs:
           app-id: ${{ vars.NAMEFI_BOT_APP_ID }}
           private-key: ${{ secrets.NAMEFI_BOT_PRIVATE_KEY }}
 
-      - name: Find associated PR
-        id: find-pr
+      - name: Get PR info
+        id: pr-info
         uses: actions/github-script@v7
         with:
           github-token: ${{ steps.app-token.outputs.token }}
           script: |
-            const branch = context.payload.check_run.check_suite.head_branch;
-            console.log(`Looking for PR with head branch: ${branch}`);
+            const prNumber = context.payload.pull_request?.number || ${{ inputs.pr_number || 0 }};
 
-            const { data: prs } = await github.rest.pulls.list({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              head: `${context.repo.owner}:${branch}`,
-              state: 'open'
-            });
-
-            if (prs.length === 0) {
-              console.log('No open PR found for this branch');
+            if (!prNumber) {
+              core.setFailed('No PR number provided');
               return;
             }
 
-            const pr = prs[0];
-            console.log(`Found PR #${pr.number}: ${pr.title}`);
-            core.setOutput('pr_number', pr.number);
-            core.setOutput('found', 'true');
-
-      - name: Check all required checks passed
-        if: steps.find-pr.outputs.found == 'true'
-        id: check-status
-        uses: actions/github-script@v7
-        with:
-          github-token: ${{ steps.app-token.outputs.token }}
-          script: |
-            const prNumber = ${{ steps.find-pr.outputs.pr_number }};
-            const headSha = context.payload.check_run.head_sha;
-
-            console.log(`Checking status for PR #${prNumber} at SHA ${headSha}`);
-
-            // Get the combined status for the commit
-            const { data: combinedStatus } = await github.rest.repos.getCombinedStatusForRef({
+            const { data: pr } = await github.rest.pulls.get({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              ref: headSha
+              pull_number: prNumber
             });
 
-            console.log(`Combined status state: ${combinedStatus.state}`);
+            console.log(`PR #${prNumber}: ${pr.title}`);
+            console.log(`Branch: ${pr.head.ref}`);
+            console.log(`SHA: ${pr.head.sha}`);
 
-            // Get all check runs for the commit
-            const { data: checkRuns } = await github.rest.checks.listForRef({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              ref: headSha
-            });
-
-            const pendingOrFailed = checkRuns.check_runs.filter(run => {
-              // Skip this workflow's own check run
-              if (run.name === 'Auto approve resources data PR') return false;
-              return run.status !== 'completed' || run.conclusion !== 'success';
-            });
-
-            if (pendingOrFailed.length > 0) {
-              console.log('Some checks are still pending or failed:');
-              pendingOrFailed.forEach(run => {
-                console.log(`  - ${run.name}: status=${run.status}, conclusion=${run.conclusion || 'pending'}`);
-              });
-              core.setOutput('all_passed', 'false');
+            // Validate branch pattern for workflow_dispatch
+            if (!pr.head.ref.startsWith('chore/resources-data/')) {
+              core.setFailed(`Branch '${pr.head.ref}' does not match pattern 'chore/resources-data/*'`);
               return;
             }
 
-            // Also check commit statuses (for external CI systems)
-            if (combinedStatus.state !== 'success' && combinedStatus.statuses.length > 0) {
-              console.log('Combined commit status is not success');
-              combinedStatus.statuses.forEach(status => {
-                console.log(`  - ${status.context}: ${status.state}`);
-              });
-              core.setOutput('all_passed', 'false');
-              return;
-            }
-
-            console.log('All required checks have passed');
-            core.setOutput('all_passed', 'true');
+            core.setOutput('pr_number', prNumber);
+            core.setOutput('head_sha', pr.head.sha);
+            core.setOutput('head_ref', pr.head.ref);
 
       - name: Validate changed files
-        if: steps.find-pr.outputs.found == 'true' && steps.check-status.outputs.all_passed == 'true'
         id: validate-files
         uses: actions/github-script@v7
         with:
           github-token: ${{ steps.app-token.outputs.token }}
           script: |
-            const prNumber = ${{ steps.find-pr.outputs.pr_number }};
+            const prNumber = ${{ steps.pr-info.outputs.pr_number }};
             const allowedPathPrefixes = ['apps/resources/data', '.gitmodules'];
 
             console.log(`Checking files changed in PR #${prNumber}`);
@@ -134,23 +88,99 @@ jobs:
                 .filter(file => !allowedPathPrefixes.some(prefix => file.filename.startsWith(prefix)))
                 .map(f => f.filename);
               console.log(`Invalid files found: ${invalidFiles.join(', ')}`);
-              core.setOutput('valid', 'false');
+              core.setFailed('PR contains files outside allowed paths');
               return;
             }
 
             console.log('All changed files are within allowed paths');
-            core.setOutput('valid', 'true');
 
-      - name: Approve PR
-        if: |
-          steps.find-pr.outputs.found == 'true' &&
-          steps.check-status.outputs.all_passed == 'true' &&
-          steps.validate-files.outputs.valid == 'true'
+      - name: Wait for all checks to complete
+        id: wait-checks
         uses: actions/github-script@v7
         with:
           github-token: ${{ steps.app-token.outputs.token }}
           script: |
-            const prNumber = ${{ steps.find-pr.outputs.pr_number }};
+            const prNumber = ${{ steps.pr-info.outputs.pr_number }};
+            const headSha = '${{ steps.pr-info.outputs.head_sha }}';
+            const timeout = 180_000; // 3 minutes
+            const pollInterval = 10_000; // 10 seconds
+
+            const maxAttempts = timeout / pollInterval;
+
+            console.log(`Waiting for checks to complete on PR #${prNumber} (SHA: ${headSha})`);
+
+            for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+              console.log(`\nAttempt ${attempt}/${maxAttempts}`);
+
+              // Get all check runs for the commit
+              const { data: checkRuns } = await github.rest.checks.listForRef({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: headSha
+              });
+
+              // Get combined commit status (for external CI systems)
+              const { data: combinedStatus } = await github.rest.repos.getCombinedStatusForRef({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: headSha
+              });
+
+              // Filter out this workflow's own check
+              const otherChecks = checkRuns.check_runs.filter(run =>
+                run.name !== 'Auto approve resources data PR'
+              );
+
+              const pendingChecks = otherChecks.filter(run => run.status !== 'completed');
+              const failedChecks = otherChecks.filter(run =>
+                run.status === 'completed' &&
+                !['success', 'skipped'].includes(run.conclusion)
+              );
+
+              // Check external statuses
+              const pendingStatuses = combinedStatus.statuses.filter(s => s.state === 'pending');
+              const failedStatuses = combinedStatus.statuses.filter(s =>
+                !['success', 'pending'].includes(s.state)
+              );
+
+              console.log(`Check runs: ${otherChecks.length} total, ${pendingChecks.length} pending, ${failedChecks.length} failed`);
+              console.log(`Commit statuses: ${combinedStatus.statuses.length} total, ${pendingStatuses.length} pending, ${failedStatuses.length} failed`);
+
+              // If any checks failed, fail immediately
+              if (failedChecks.length > 0 || failedStatuses.length > 0) {
+                console.log('\nFailed checks:');
+                failedChecks.forEach(run => console.log(`  - ${run.name}: ${run.conclusion}`));
+                failedStatuses.forEach(s => console.log(`  - ${s.context}: ${s.state}`));
+                core.setFailed('Some required checks failed');
+                return;
+              }
+
+              // If all checks completed successfully
+              if (pendingChecks.length === 0 && pendingStatuses.length === 0) {
+                console.log('\nAll checks completed successfully!');
+                otherChecks.forEach(run => console.log(`  - ${run.name}: ${run.conclusion}`));
+                return;
+              }
+
+              // Still waiting
+              console.log('Pending checks:');
+              pendingChecks.forEach(run => console.log(`  - ${run.name}: ${run.status}`));
+              pendingStatuses.forEach(s => console.log(`  - ${s.context}: ${s.state}`));
+
+              if (attempt < maxAttempts) {
+                console.log(`Waiting ${pollInterval / 1000} seconds before next check...`);
+                await new Promise(resolve => setTimeout(resolve, pollInterval));
+              }
+            }
+
+            core.setFailed('Timed out waiting for checks to complete');
+
+      - name: Approve PR
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ steps.app-token.outputs.token }}
+          script: |
+            const prNumber = ${{ steps.pr-info.outputs.pr_number }};
 
             console.log(`Approving PR #${prNumber}`);
 
