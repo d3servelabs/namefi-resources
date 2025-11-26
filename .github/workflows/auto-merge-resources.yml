@@ -4,7 +4,7 @@ on:
   pull_request:
     types: [auto_merge_enabled, synchronize]
     paths:
-      - apps/resources/data/**
+      - apps/resources/data
   workflow_dispatch:
     inputs:
       pr_number:
