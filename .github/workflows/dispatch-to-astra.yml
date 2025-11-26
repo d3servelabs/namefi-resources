@@ -24,12 +24,14 @@ jobs:
           private-key: ${{ secrets.NAMEFI_BOT_PRIVATE_KEY }}
 
       - name: Trigger Astra sync workflow
-        uses: peter-evans/workflow-dispatch@v1
-        with:
-          token: ${{ steps.app-token.outputs.token }}
-          repository: d3servelabs/namefi-astra
-          workflow: sync-resources-data.yml
-          ref: main
-          inputs: |
-            ref=${{ github.event.inputs.ref || github.ref_name }}
-            sha=${{ github.sha }}
+        env:
+          TARGET_REF: ${{ github.event.inputs.ref || github.ref_name }}
+          TARGET_SHA: ${{ github.sha }}
+          DISPATCH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          set -euo pipefail
+          curl -s --fail-with-body -X POST \
+            -H "Authorization: Bearer $DISPATCH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            https://api.github.com/repos/d3servelabs/namefi-astra/actions/workflows/sync-resources-data.yml/dispatches \
+            -d "$(jq -n --arg ref "$TARGET_REF" --arg sha "$TARGET_SHA" '{ref:"main",inputs:{ref:$ref,sha:$sha}}')"
