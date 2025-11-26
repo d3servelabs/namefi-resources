@@ -10,6 +10,10 @@ on:
         description: 'Ref in d3servelabs/namefi-resources to sync (branch, tag, or SHA)'
         required: false
         default: 'main'
+      sha:
+        description: 'Exact commit SHA in d3servelabs/namefi-resources to sync (optional)'
+        required: false
+        default: ''
 
 permissions:
   contents: write
@@ -37,7 +41,7 @@ jobs:
       - name: Determine target ref
         id: target
         run: |
-          REF_INPUT="${{ github.event.client_payload.ref || github.event.client_payload.sha || github.event.inputs.ref || 'main' }}"
+          REF_INPUT="${{ github.event.client_payload.sha || github.event.client_payload.ref || github.event.inputs.sha || github.event.inputs.ref || 'main' }}"
           echo "ref=$REF_INPUT" >> "$GITHUB_OUTPUT"
           echo "target ref: $REF_INPUT"
 
