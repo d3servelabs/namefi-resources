@@ -12,8 +12,10 @@ All content lives under the `data/` directory (e.g., `data/blog/en/...`).
 
 ## Validation
 
-- Run `bun install` once, then `bun data:validate` to check frontmatter and dates.
-- CI runs the same validation on every pull request.
+- Run `bun install` once, then:
+  - `bun data:validate` to check frontmatter and dates.
+  - `bun lint:mdx` to lint markdown/MDX frontmatter and formatting.
+- CI runs validation and MDX lint on every pull request.
 
 ## Automation
 

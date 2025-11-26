@@ -20,3 +20,6 @@ jobs:
 
       - name: Validate data
         run: bun data:validate
+
+      - name: Lint MDX
+        run: bun lint:mdx
