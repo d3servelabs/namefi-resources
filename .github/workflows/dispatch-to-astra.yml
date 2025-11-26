@@ -23,14 +23,13 @@ jobs:
           app-id: ${{ vars.NAMEFI_BOT_APP_ID }}
           private-key: ${{ secrets.NAMEFI_BOT_PRIVATE_KEY }}
 
-      - name: Send repository dispatch
-        uses: peter-evans/repository-dispatch@v3
+      - name: Trigger Astra sync workflow
+        uses: peter-evans/workflow-dispatch@v1
         with:
           token: ${{ steps.app-token.outputs.token }}
           repository: d3servelabs/namefi-astra
-          event-type: resources-updated
-          client-payload: |
-            {
-              "ref": "${{ github.event.inputs.ref || github.ref_name }}",
-              "sha": "${{ github.sha }}"
-            }
+          workflow: sync-resources-data.yml
+          ref: main
+          inputs: |
+            ref=${{ github.event.inputs.ref || github.ref_name }}
+            sha=${{ github.sha }}
