@@ -25,10 +25,10 @@ function normaliseRelativePath(relativePath: string) {
 export async function loadMdxModule(relativePath: string): Promise<MdxModule> {
   const normalized = normaliseRelativePath(relativePath);
   try {
-    const module = await import(`@data/${normalized}`);
+    const module = await import(`@content/${normalized}`);
     return module as MdxModule;
   } catch (error) {
-    throw new Error(`Failed to import MDX module at @data/${normalized}`, {
+    throw new Error(`Failed to import MDX module at @content/${normalized}`, {
       cause: error instanceof Error ? error : undefined,
     });
   }

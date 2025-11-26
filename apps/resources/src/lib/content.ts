@@ -109,7 +109,8 @@ type GlossaryEntry = {
   publishedAt: Date;
 };
 
-const DATA_ROOT = path.join(process.cwd(), 'data');
+// Content lives inside the data submodule under /data/content.
+const DATA_ROOT = path.join(process.cwd(), 'data', 'content');
 const BLOG_ROOT = path.join(DATA_ROOT, 'blog');
 const AUTHOR_ROOT = path.join(DATA_ROOT, 'authors');
 const TLD_ROOT = path.join(DATA_ROOT, 'tld');
@@ -225,13 +226,6 @@ function listSlugs(collection: Collection, locale: Locale): string[] {
   return slugs;
 }
 
-function ensureLocale(value: unknown, fallback: Locale): Locale {
-  if (typeof value === 'string' && i18n.locales.includes(value as Locale)) {
-    return value as Locale;
-  }
-  return fallback;
-}
-
 function normalisePostFrontmatter(
   data: Record<string, unknown>,
   slug: string,
@@ -255,7 +249,7 @@ function normalisePostFrontmatter(
   const tags = toStringArray(data.tags);
   const authors = toStringArray(data.authors);
 
-  const language = ensureLocale(data.language, sourceLanguage);
+  const language = sourceLanguage;
   const summaryFromDescription =
     typeof data.description === 'string' && data.description.trim().length > 0
       ? data.description.trim()
@@ -286,7 +280,7 @@ function normaliseAuthorFrontmatter(
     throw new Error(`Author "${slug}" is missing a valid "name" field.`);
   }
 
-  const language = ensureLocale(data.language, sourceLanguage);
+  const language = sourceLanguage;
 
   return {
     name: data.name,
@@ -338,7 +332,7 @@ function normaliseTldFrontmatter(
   const authors = toStringArray(data.authors);
   const keywords = toStringArray(data.keywords);
 
-  const language = ensureLocale(data.language, sourceLanguage);
+  const language = sourceLanguage;
   const description =
     typeof data.description === 'string' && data.description.trim().length > 0
       ? data.description.trim()
@@ -386,7 +380,7 @@ function normalisePartnerFrontmatter(
   const authors = toStringArray(data.authors);
   const keywords = toStringArray(data.keywords);
 
-  const language = ensureLocale(data.language, sourceLanguage);
+  const language = sourceLanguage;
   const description =
     typeof data.description === 'string' && data.description.trim().length > 0
       ? data.description.trim()
@@ -436,7 +430,7 @@ function normaliseGlossaryFrontmatter(
   const authors = toStringArray(data.authors);
   const keywords = toStringArray(data.keywords);
 
-  const language = ensureLocale(data.language, sourceLanguage);
+  const language = sourceLanguage;
   const description =
     typeof data.description === 'string' && data.description.trim().length > 0
       ? data.description.trim()

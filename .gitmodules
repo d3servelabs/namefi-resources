@@ -1,0 +1,3 @@
+[submodule "apps/resources/data"]
+	path = apps/resources/data
+	url = https://github.com/d3servelabs/namefi-resources.git

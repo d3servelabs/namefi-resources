@@ -38,3 +38,13 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 ## RSS Feed
 
 The resources site now exposes an RSS 2.0 feed per locale at `/r/<locale>/rss.xml`. When running locally with `bun dev`, you can open [http://localhost:3002/r/en/rss.xml](http://localhost:3002/r/en/rss.xml) to confirm it is working.
+
+## Content data
+
+The content under `apps/resources/data` is a git submodule that points to `d3servelabs/namefi-resources`. Markdown/MDX files live inside the submodule’s `content/` directory.
+
+- After cloning, run `git submodule update --init --recursive` to fetch content.
+- Install submodule dependencies once with `bun run --cwd apps/resources data:install`.
+- Validate or lint content locally via the submodule scripts:
+  - `bun run --cwd apps/resources data:validate`
+  - `bun run --cwd apps/resources lint:mdx`

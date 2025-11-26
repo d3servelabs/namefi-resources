@@ -8,7 +8,12 @@
     "start": "next start",
     "lint": "biome check",
     "format": "biome format --write",
-    "authors:sync": "bun scripts/sync-authors.ts"
+    "data:ff": "git -C data fetch origin main --tags && git -C data checkout --detach origin/main",
+    "data:install": "bun install --cwd data --frozen-lockfile",
+    "predata:validate": "bun run data:install",
+    "data:validate": "bun run --cwd data data:validate",
+    "prelint:mdx": "bun run data:install",
+    "lint:mdx": "bun run --cwd data lint:mdx"
   },
   "dependencies": {
     "@bprogress/next": "^3.2.12",

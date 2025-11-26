@@ -6,7 +6,7 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@data/*": ["./data/*"]
+      "@content/*": ["./data/content/*"]
     },
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
@@ -29,5 +29,5 @@
     "**/*.tsx",
     "next.config.ts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "data/**/*"]
 }

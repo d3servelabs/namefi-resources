@@ -97,6 +97,7 @@ jobs:
         with:
           token: ${{ steps.app-token.outputs.token }}
           fetch-depth: 0
+          submodules: recursive
 
       - name: Read and increment versions
         id: version
@@ -222,6 +223,7 @@ jobs:
         with:
           token: ${{ steps.app-token.outputs.token }}
           fetch-depth: 0
+          submodules: recursive
           ref: ${{ needs.update-versions.outputs.commit_sha }}
 
       - name: Configure git

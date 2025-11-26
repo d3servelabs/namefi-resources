@@ -1,5 +1,9 @@
 {
   "extends": "//",
+  "files": {
+    "ignoreUnknown": true,
+    "includes": ["**", "!data"]
+  },
   "linter": {
     "domains": {
       "next": "recommended"

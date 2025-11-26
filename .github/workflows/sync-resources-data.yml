@@ -1,0 +1,113 @@
+name: Sync Resources Data
+
+on:
+  repository_dispatch:
+    types:
+      - resources-updated
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: 'Ref in d3servelabs/namefi-resources to sync (branch, tag, or SHA)'
+        required: false
+        default: 'main'
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    name: Update data submodule and open PR
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create NameFi bot token
+        id: app-token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ vars.NAMEFI_BOT_APP_ID }}
+          private-key: ${{ secrets.NAMEFI_BOT_PRIVATE_KEY }}
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          fetch-depth: 0
+          submodules: recursive
+
+      - name: Determine target ref
+        id: target
+        run: |
+          REF_INPUT="${{ github.event.client_payload.ref || github.event.client_payload.sha || github.event.inputs.ref || 'main' }}"
+          echo "ref=$REF_INPUT" >> "$GITHUB_OUTPUT"
+          echo "target ref: $REF_INPUT"
+
+      - name: Update data submodule
+        id: update-submodule
+        run: |
+          set -e
+          TARGET_REF="${{ steps.target.outputs.ref }}"
+
+          git submodule update --init apps/resources/data
+
+          pushd apps/resources/data
+          git fetch origin "$TARGET_REF" --tags
+          git checkout "$TARGET_REF"
+          TARGET_SHA=$(git rev-parse HEAD)
+          echo "sha=$TARGET_SHA" >> "$GITHUB_OUTPUT"
+          popd
+
+          git add apps/resources/data
+
+          if git diff --quiet --cached -- apps/resources/data; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Setup Bun
+        if: steps.update-submodule.outputs.changed == 'true'
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: ".bun-version"
+
+      - name: Install dependencies
+        if: steps.update-submodule.outputs.changed == 'true'
+        run: bun install --frozen-lockfile
+
+      - name: Validate resources data
+        if: steps.update-submodule.outputs.changed == 'true'
+        run: bun run --cwd apps/resources data:validate
+
+      - name: Create pull request
+        id: cpr
+        if: steps.update-submodule.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          commit-message: |
+            chore: bump resources data to ${{ steps.update-submodule.outputs.sha }}
+          title: "chore: sync resources data to ${{ steps.update-submodule.outputs.sha }}"
+          body: |
+            Automated update from d3servelabs/namefi-resources.
+
+            - Source ref: `${{ steps.target.outputs.ref }}`
+            - Source commit: `${{ steps.update-submodule.outputs.sha }}`
+            - Trigger: `${{ github.event_name }}`
+          branch: "chore/resources-data/${{ steps.update-submodule.outputs.sha }}"
+          base: main
+          labels: |
+            resources
+            automation
+          add-paths: |
+            .gitmodules
+            apps/resources/data
+            apps/resources/.gitignore
+
+      - name: No changes
+        if: steps.update-submodule.outputs.changed != 'true'
+        run: echo "Submodule already up to date; nothing to do."
+
+      - name: PR details
+        if: steps.cpr.outputs.pull-request-url != ''
+        run: |
+          echo "Pull request opened: ${{ steps.cpr.outputs.pull-request-url }}"
