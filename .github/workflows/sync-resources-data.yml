@@ -74,6 +74,14 @@ jobs:
         with:
           bun-version-file: ".bun-version"
 
+      - name: Cache bun dependencies
+        if: steps.update-submodule.outputs.changed == 'true'
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock') }}
+
       - name: Install dependencies
         if: steps.update-submodule.outputs.changed == 'true'
         run: bun install --frozen-lockfile
