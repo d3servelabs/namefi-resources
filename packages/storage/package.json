@@ -7,7 +7,11 @@
   "scripts": {
     "clean": "git clean -xdf .next .turbo node_modules out dist",
     "with-env": "infisical run --token=$INFISICAL_SERVICE_TOKEN -- bun",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "check": "biome check .",
+    "check:error": "biome check . --diagnostic-level=error",
+    "check:fix": "biome check --write .",
+    "check:unsafe": "biome check --write --unsafe ."
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.830.0",

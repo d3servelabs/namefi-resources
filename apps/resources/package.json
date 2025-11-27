@@ -13,7 +13,11 @@
     "predata:validate": "bun run data:install",
     "data:validate": "bun run --cwd data data:validate",
     "prelint:mdx": "bun run data:install",
-    "lint:mdx": "bun run --cwd data lint:mdx"
+    "lint:mdx": "bun run --cwd data lint:mdx",
+    "check": "biome check .",
+    "check:error": "biome check . --diagnostic-level=error",
+    "check:fix": "biome check --write .",
+    "check:unsafe": "biome check --write --unsafe ."
   },
   "dependencies": {
     "@bprogress/next": "^3.2.12",

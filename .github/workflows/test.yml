@@ -15,7 +15,9 @@ on:
         required: false
         default: ""
 env:
-  ENVIRONEMNT: test
+  ENVIRONMENT: test
+  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+  TURBO_TEAM: ${{ vars.TURBO_TEAM }}
 
 jobs:
   test:

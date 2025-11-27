@@ -11,7 +11,11 @@
     "test": "vitest --run",
     "test:coverage": "bun vitest run --coverage",
     "build": "tsup",
-    "dns-tools": "node dist/bin.js"
+    "dns-tools": "node dist/bin.js",
+    "check": "biome check .",
+    "check:error": "biome check . --diagnostic-level=error",
+    "check:fix": "biome check --write .",
+    "check:unsafe": "biome check --write --unsafe ."
   },
   "bin": {
     "dns-tools": "./dist/bin.js"

@@ -10,7 +10,11 @@
     "clean": "git clean -xdf .next .turbo node_modules out dist",
     "with-env": "infisical run --token=$INFISICAL_SERVICE_TOKEN -- bun",
     "typecheck": "tsc --noEmit",
-    "validate:secrets": "bun run with-env src/env/index.ts"
+    "validate:secrets": "bun run with-env src/env/index.ts",
+    "check": "biome check .",
+    "check:error": "biome check . --diagnostic-level=error",
+    "check:fix": "biome check --write .",
+    "check:unsafe": "biome check --write --unsafe ."
   },
   "dependencies": {
     "@ai-sdk/google": "^3.0.0-beta.39",

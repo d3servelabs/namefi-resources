@@ -15,7 +15,11 @@
     "with-env": "infisical run --token=$INFISICAL_SERVICE_TOKEN -- bun",
     "generate-schema": "npx tsx src/generate-schema.ts",
     "migrate-schema": "npx tsx src/migrate-schema.ts",
-    "migrate-schema:dry-run": "DRY_RUN=true npx tsx src/migrate-schema.ts"
+    "migrate-schema:dry-run": "DRY_RUN=true npx tsx src/migrate-schema.ts",
+    "check": "biome check .",
+    "check:error": "biome check . --diagnostic-level=error",
+    "check:fix": "biome check --write .",
+    "check:unsafe": "biome check --write --unsafe ."
   },
   "dependencies": {
     "@date-fns/tz": "^1.3.1",

@@ -9,12 +9,14 @@ on:
   workflow_dispatch: # Allow manual triggering
 
 env:
-  ENVIRONEMNT: test # Match the typo in other workflow files for consistency
+  ENVIRONMENT: test
+  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+  TURBO_TEAM: ${{ vars.TURBO_TEAM }}
 
 jobs:
   check-for-sql-changes:
     name: Check for SQL Changes
-    runs-on: ubuntu-latest
+    runs-on: "blacksmith-4vcpu-ubuntu-2404"
     outputs:
       has_sql_changes: ${{ steps.check-sql-changes.outputs.has_sql_changes }}
 
@@ -48,7 +50,7 @@ jobs:
     name: Validate DB Migrations
     needs: check-for-sql-changes
     if: needs.check-for-sql-changes.outputs.has_sql_changes == 'true'
-    runs-on: ubuntu-latest
+    runs-on: "blacksmith-4vcpu-ubuntu-2404"
 
     steps:
       - name: Checkout repository

@@ -14,7 +14,11 @@
     "clean": "git clean -xdf .next .turbo node_modules out dist",
     "typecheck": "tsc --noEmit",
     "test": "vitest --run",
-    "test:coverage": "bun vitest run --coverage"
+    "test:coverage": "bun vitest run --coverage",
+    "check": "biome check .",
+    "check:error": "biome check . --diagnostic-level=error",
+    "check:fix": "biome check --write .",
+    "check:unsafe": "biome check --write --unsafe ."
   },
   "dependencies": {
     "parse-domain": "^8.2.2",

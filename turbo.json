@@ -29,7 +29,17 @@
       "outputs": ["dist/**", ".next/**", "build/**", "!.next/cache/**"]
     },
     "validate:secrets": {
-      "env": ["*"]
+      "env": ["*"],
+      "cache": false
+    },
+    "check": {
+      "dependsOn": ["^check"]
+    },
+    "check:error": {
+      "dependsOn": ["^check:error"]
+    },
+    "check:unsafe": {
+      "dependsOn": ["^check:unsafe"]
     },
     "clean": {}
   }

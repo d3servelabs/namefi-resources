@@ -15,7 +15,11 @@
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
     "typecheck": "tsc --noEmit",
-    "validate:secrets": "bun run with-env src/lib/env/index.ts"
+    "validate:secrets": "bun run with-env src/lib/env/index.ts",
+    "check": "biome check .",
+    "check:error": "biome check . --diagnostic-level=error",
+    "check:fix": "biome check --write .",
+    "check:unsafe": "biome check --write --unsafe ."
   },
   "dependencies": {
     "@namefi-astra/env": "workspace:*",

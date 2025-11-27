@@ -12,3 +12,4 @@ ALTER TABLE "indexed_domains" ADD COLUMN "is_missing_from_registrar" boolean NOT
 --> statement-breakpoint
 ALTER TABLE "indexed_domains" ADD COLUMN "missing_from_registrar_since" timestamp;
 
+
