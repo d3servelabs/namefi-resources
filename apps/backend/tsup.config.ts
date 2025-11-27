@@ -15,6 +15,8 @@ const config: Options = {
   minifyIdentifiers: false,
   esbuildOptions(options) {
     options.conditions = ['node'];
+    options.chunkNames = 'chunks/[name]-[hash]';
+    // options.entryNames = "[dir]/[name]-[hash]";
   },
   noExternal: (() => {
     const noExternal: (string | RegExp)[] = [/@namefi-astra\/.*/];
