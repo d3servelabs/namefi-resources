@@ -42,7 +42,7 @@ COPY bunfig.toml ./bunfig.toml
 RUN --mount=type=cache,id=bun,target=/root/.bun/install/cache bun install # --frozen-lockfile --production (not working atm )
 
 # Stage 4: Build stage with Node.js
-FROM base AS builder
+FROM base AS base_builder
 WORKDIR /app
 
 # Copy pruned source code
@@ -52,17 +52,22 @@ COPY --from=deps /app/node_modules ./node_modules
 
 # Build the backend application
 WORKDIR /app/apps/backend
+#Stage 4.a: Build stage with Node.js
+FROM base_builder AS backend_builder
 RUN npm run build:prod
+#Stage 4.b: Build temporal workflows
+FROM base_builder AS temporal_builder
 # Bundle the workflows
 RUN npm run bundle:workflows
 
-# Stage 4: Runtime image
+# Stage 5: Runtime image
 FROM base AS runner
 WORKDIR /app
 
 # Copy package.json and built application
-COPY --from=builder /app/apps/backend/package.json ./package.json
-COPY --from=builder /app/apps/backend/dist ./dist
+COPY --from=backend_builder /app/apps/backend/package.json ./package.json
+COPY --from=backend_builder /app/apps/backend/dist ./dist
+COPY --from=temporal_builder /app/apps/backend/dist ./dist
 # Copy the infisical secret file
 COPY ./.infisical.json ./.infisical.json
 # Copy the node_modules
@@ -77,5 +82,5 @@ USER nodejs
 EXPOSE 3000
 
 # Start the application with Node.js
-CMD ["npm", "start"] 
+CMD ["npm", "start"]
 ## https://infisical.com/docs/integrations/platforms/docker
