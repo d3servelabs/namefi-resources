@@ -4,10 +4,12 @@ on:
   pull_request:
     branches-ignore:
       - prod
-  workflow_dispatch:  # Allow manual triggering
+    paths-ignore:
+      - apps/resources/data
+  workflow_dispatch: # Allow manual triggering
 
 env:
-  ENVIRONEMNT: test  # Match the typo in other workflow files for consistency
+  ENVIRONEMNT: test # Match the typo in other workflow files for consistency
 
 jobs:
   check-for-sql-changes:
@@ -15,13 +17,13 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       has_sql_changes: ${{ steps.check-sql-changes.outputs.has_sql_changes }}
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          
+
       - name: Check for SQL migration changes
         id: check-sql-changes
         run: |
@@ -32,7 +34,7 @@ jobs:
             # For workflow_dispatch or other events, check last commit
             SQL_FILES=$(git diff --name-only HEAD^ HEAD | grep -E '\.sql$' || true)
           fi
-          
+
           if [[ -n "$SQL_FILES" ]]; then
             echo "SQL files changed in this diff:"
             echo "$SQL_FILES"
@@ -47,7 +49,7 @@ jobs:
     needs: check-for-sql-changes
     if: needs.check-for-sql-changes.outputs.has_sql_changes == 'true'
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -63,8 +65,8 @@ jobs:
         run: |
           # intentionally run twice to ensure infisical is installed
           # bun install && bun install #infisical-clean
-          bun install 
-          
+          bun install
+
       - name: Create test branch in Neon
         id: create-branch
         run: |
@@ -73,13 +75,13 @@ jobs:
           echo "Creating test branch: $BRANCH_ID"
           # Check if branch already exists
           EXISTING_BRANCH=$(bun run neonctl branches list --project-id ${{ secrets.NEON_PROJECT_ID }} --api-key ${{ secrets.NEON_API_KEY }} | grep -w "$BRANCH_ID" || true)
-          
+
           if [ ! -z "$EXISTING_BRANCH" ]; then
             echo "Branch $BRANCH_ID already exists, deleting it first"
             bun run neonctl branches delete $BRANCH_ID --project-id ${{ secrets.NEON_PROJECT_ID }} --api-key ${{ secrets.NEON_API_KEY }} --force
           fi
           bun run neonctl branches create --name $BRANCH_ID --project-id ${{ secrets.NEON_PROJECT_ID }} --api-key ${{ secrets.NEON_API_KEY }}
-          
+
           # Save branch ID for later steps
           echo "BRANCH_ID=$BRANCH_ID" >> $GITHUB_ENV
 
@@ -104,4 +106,4 @@ jobs:
           else
             echo "Migrations failed, but still cleaning up branch: ${{ env.BRANCH_ID }}"
           fi
-          bun run neonctl branches delete ${{ env.BRANCH_ID }} --project-id ${{ secrets.NEON_PROJECT_ID }} --api-key ${{ secrets.NEON_API_KEY }} --force 
+          bun run neonctl branches delete ${{ env.BRANCH_ID }} --project-id ${{ secrets.NEON_PROJECT_ID }} --api-key ${{ secrets.NEON_API_KEY }} --force

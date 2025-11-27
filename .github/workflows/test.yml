@@ -3,13 +3,17 @@ name: Test
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - apps/resources/data
   pull_request:
+    paths-ignore:
+      - apps/resources/data
   workflow_dispatch: # Allow manual triggering from GitHub UI or CLI
     inputs:
       package_filter:
         description: 'Filter for specific package to test (e.g., "@namefi-astra/backend")'
         required: false
-        default: ''
+        default: ""
 env:
   ENVIRONEMNT: test
 
@@ -52,4 +56,4 @@ jobs:
           verbose: true
         if: ${{ env.CODECOV_TOKEN != '' }}
         env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }} 
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}

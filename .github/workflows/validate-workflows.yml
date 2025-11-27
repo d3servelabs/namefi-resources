@@ -4,6 +4,8 @@ on:
   pull_request:
     branches-ignore:
       - prod
+    paths-ignore:
+      - apps/resources/data
   workflow_dispatch:
 
 jobs:
@@ -74,22 +76,23 @@ jobs:
   summary:
     name: Workflow Validation Summary
     runs-on: ubuntu-latest
-    needs: [validate-workflow-exports, test-workflow-bundling, validate-typescript]
+    needs:
+      [validate-workflow-exports, test-workflow-bundling, validate-typescript]
     if: always()
     steps:
       - name: Check validation results
         run: |
           echo "📊 Workflow Validation Summary"
           echo "=============================="
-          
+
           export_result="${{ needs.validate-workflow-exports.result }}"
           bundle_result="${{ needs.test-workflow-bundling.result }}"
           typescript_result="${{ needs.validate-typescript.result }}"
-          
+
           echo "✅ Workflow Exports: $export_result"
-          echo "🧪 Workflow Bundling: $bundle_result"  
+          echo "🧪 Workflow Bundling: $bundle_result"
           echo "📝 TypeScript Check: $typescript_result"
-          
+
           if [[ "$export_result" != "success" ]] || [[ "$bundle_result" != "success" ]] || [[ "$typescript_result" != "success" ]]; then
             echo ""
             echo "❌ Workflow validation failed!"

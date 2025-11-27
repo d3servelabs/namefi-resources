@@ -1,14 +1,14 @@
 name: Validate
 
 on:
-  push:
-    branches: [main]
   pull_request:
     branches-ignore:
       - prod
+    paths-ignore:
+      - apps/resources/data
 
 env:
-  ENVIRONMENT: test 
+  ENVIRONMENT: test
   NODE_OPTIONS: --max-old-space-size=4096
 
 jobs:
