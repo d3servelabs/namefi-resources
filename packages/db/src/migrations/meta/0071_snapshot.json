@@ -1,6 +1,6 @@
 {
-  "id": "cf9bd84a-55ff-46ea-afbe-e77a74f3e426",
-  "prevId": "5d84ed4c-c4bf-4735-92a3-f81d5d76deb3",
+  "id": "9d32f94a-e1bf-48aa-bb24-aa1a1940ebdb",
+  "prevId": "cf9bd84a-55ff-46ea-afbe-e77a74f3e426",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -2214,7 +2214,7 @@
           "type": "boolean",
           "primaryKey": false,
           "notNull": true,
-          "default": "false"
+          "default": false
         },
         "dnssec_status": {
           "name": "dnssec_status",
@@ -2233,7 +2233,7 @@
           "type": "boolean",
           "primaryKey": false,
           "notNull": true,
-          "default": "false"
+          "default": false
         },
         "missing_from_registrar_since": {
           "name": "missing_from_registrar_since",
@@ -4554,62 +4554,6 @@
   "roles": {},
   "policies": {},
   "views": {
-    "public.burned_namefi_nft_view": {
-      "columns": {
-        "token_id": {
-          "name": "token_id",
-          "type": "bigint",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "normalized_domain_name": {
-          "name": "normalized_domain_name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "from_address": {
-          "name": "from_address",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "chain_id": {
-          "name": "chain_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "burned_block": {
-          "name": "burned_block",
-          "type": "bigint",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "burned_timestamp": {
-          "name": "burned_timestamp",
-          "type": "bigint",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "burned_time": {
-          "name": "burned_time",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "transaction_hash": {
-          "name": "transaction_hash",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "name": "burned_namefi_nft_view",
-      "schema": "public",
-      "isExisting": true,
-      "materialized": false
-    },
     "public.domain_tags_array_view": {
       "columns": {
         "normalized_domain_name": {
@@ -4793,190 +4737,6 @@
       },
       "definition": "select \"hunt_edges\".\"target_id\", COUNT(CASE WHEN \"hunt_edges\".\"action\" = 'UPVOTE' THEN 1 END) as \"upvote_count\", MIN(CASE WHEN \"hunt_edges\".\"action\" = 'SUBMIT' THEN \"hunt_edges\".\"created_at\" END) as \"first_submit_date\", MAX(CASE WHEN \"hunt_edges\".\"action\" = 'UPVOTE' THEN \"hunt_edges\".\"created_at\" END) as \"last_upvote_date\", COALESCE(\"hunt_pinned_domains\".\"weight\", 0) as \"pin_weight\", CASE WHEN \"hunt_pinned_domains\".\"domain_name\" IS NOT NULL THEN true ELSE false END as \"is_pinned\" from \"hunt_edges\" left join \"hunt_pinned_domains\" on \"hunt_edges\".\"target_id\" = \"hunt_pinned_domains\".\"domain_name\" where \"hunt_edges\".\"target_type\" = 'DOMAIN' group by \"hunt_edges\".\"target_id\", \"hunt_pinned_domains\".\"weight\", \"hunt_pinned_domains\".\"domain_name\"",
       "name": "hunt_domain_stats_view",
-      "schema": "public",
-      "isExisting": false,
-      "materialized": false
-    },
-    "public.namefi_nft_owners_view": {
-      "columns": {
-        "normalized_domain_name": {
-          "name": "normalized_domain_name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "chain_id": {
-          "name": "chain_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "owner_address": {
-          "name": "owner_address",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "as_of_block_number": {
-          "name": "as_of_block_number",
-          "type": "bigint",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "name": "namefi_nft_owners_view",
-      "schema": "public",
-      "isExisting": true,
-      "materialized": false
-    },
-    "public.namefi_nft_view": {
-      "columns": {
-        "token_id": {
-          "name": "token_id",
-          "type": "bigint",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "normalized_domain_name": {
-          "name": "normalized_domain_name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "expiration_time_in_seconds": {
-          "name": "expiration_time_in_seconds",
-          "type": "bigint",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "expiration_time": {
-          "name": "expiration_time",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "is_locked": {
-          "name": "is_locked",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": false,
-          "default": false
-        },
-        "owner_address": {
-          "name": "owner_address",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "chain_id": {
-          "name": "chain_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "last_updated_block": {
-          "name": "last_updated_block",
-          "type": "bigint",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "last_updated_timestamp": {
-          "name": "last_updated_timestamp",
-          "type": "bigint",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "name": "namefi_nft_view",
-      "schema": "public",
-      "isExisting": true,
-      "materialized": false
-    },
-    "public.namefi_nft_with_ai_analysis_view": {
-      "columns": {
-        "token_id": {
-          "name": "token_id",
-          "type": "bigint",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "normalized_domain_name": {
-          "name": "normalized_domain_name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "expiration_time_in_seconds": {
-          "name": "expiration_time_in_seconds",
-          "type": "bigint",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "expiration_time": {
-          "name": "expiration_time",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "is_locked": {
-          "name": "is_locked",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": false,
-          "default": false
-        },
-        "owner_address": {
-          "name": "owner_address",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "chain_id": {
-          "name": "chain_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "last_updated_block": {
-          "name": "last_updated_block",
-          "type": "bigint",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "last_updated_timestamp": {
-          "name": "last_updated_timestamp",
-          "type": "bigint",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "explain": {
-          "name": "explain",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "appraisal": {
-          "name": "appraisal",
-          "type": "jsonb",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "namefi_gpt_version": {
-          "name": "namefi_gpt_version",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "dirty": {
-          "name": "dirty",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": false,
-          "default": false
-        }
-      },
-      "definition": "select \"namefi_nft_view\".\"token_id\", \"namefi_nft_view\".\"normalized_domain_name\", \"namefi_nft_view\".\"expiration_time_in_seconds\", \"namefi_nft_view\".\"expiration_time\", \"namefi_nft_view\".\"is_locked\", \"namefi_nft_view\".\"owner_address\", \"namefi_nft_view\".\"chain_id\", \"namefi_nft_view\".\"last_updated_block\", \"namefi_nft_view\".\"last_updated_timestamp\", \"namefi_ai\".\"domain_ai_analysis\".\"explain\", \"namefi_ai\".\"domain_ai_analysis\".\"appraisal\", \"namefi_ai\".\"domain_ai_analysis\".\"namefi_gpt_version\", \"namefi_ai\".\"domain_ai_analysis\".\"dirty\", \"namefi_ai\".\"domain_ai_analysis\".\"created_at\" as \"ai_analysis_created_at\", \"namefi_ai\".\"domain_ai_analysis\".\"updated_at\" as \"ai_analysis_updated_at\" from \"namefi_nft_view\" left join \"namefi_ai\".\"domain_ai_analysis\" on \"namefi_nft_view\".\"token_id\" = \"namefi_ai\".\"domain_ai_analysis\".\"token_id\"",
-      "name": "namefi_nft_with_ai_analysis_view",
       "schema": "public",
       "isExisting": false,
       "materialized": false

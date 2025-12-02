@@ -6,7 +6,7 @@ export default defineDrizzleConfig({
   schema: [
     './src/schema.ts',
     './src/schemas/internal.ts',
-    './src/schemas/onchain-indexers/index.ts',
+    // './src/schemas/onchain-indexers/index.ts', //TODO
   ],
   out: './src/migrations',
   dialect: 'postgresql',
