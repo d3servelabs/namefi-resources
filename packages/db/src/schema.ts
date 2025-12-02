@@ -157,6 +157,32 @@ export const userContactsTable = pgTable('user_contacts', {
   ...timestamps,
 });
 
+export const feedbackResponsesTable = pgTable(
+  'feedback_responses',
+  {
+    ...randomUuid,
+    userId: uuid('user_id').references(() => usersTable.id, {
+      onDelete: 'set null',
+    }),
+    ipAddress: text('ip_address').notNull().default('unknown'),
+    rating: integer('rating').notNull(),
+    message: text('message'),
+    metadata: jsonb('metadata').default({}).$type<{
+      path?: string;
+      poweredByNamefiDomain?: string | null;
+      sessionId?: string | null;
+      userAgent?: string;
+      referer?: string;
+    }>(),
+    ...timestamps,
+  },
+  (table) => [
+    index('feedback_user_idx').on(table.userId),
+    index('feedback_ip_idx').on(table.ipAddress),
+    check('feedback_rating_bounds', sql`${table.rating} BETWEEN 1 AND 5`),
+  ],
+);
+
 export const orderMintTransactionMetadataSchema = z.object({
   txHash: z.string(),
   recordedAt: z.string(),

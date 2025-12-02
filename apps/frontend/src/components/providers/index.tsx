@@ -14,6 +14,7 @@ import { FreeMintsGuidanceProvider } from './free-mints-guidance';
 import { PreAuthSignalsProvider } from '@/components/providers/pre-auth-signals';
 import { AdminFeatureFlagsProvider } from '@/components/admin/feature-flags/context';
 import { WagmiProvider } from './wagmi';
+import { FeedbackProvider } from './feedback';
 
 export const Providers: FC<PropsWithChildren> = async ({ children }) => {
   const originInfo = await getOriginRuntime();
@@ -32,7 +33,7 @@ export const Providers: FC<PropsWithChildren> = async ({ children }) => {
                           <CartProvider>
                             <AdminFeatureFlagsProvider>
                               <FreeMintsGuidanceProvider>
-                                {children}
+                                <FeedbackProvider>{children}</FeedbackProvider>
                               </FreeMintsGuidanceProvider>
                             </AdminFeatureFlagsProvider>
                           </CartProvider>

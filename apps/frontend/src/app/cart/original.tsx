@@ -38,6 +38,7 @@ import { config } from '@/lib/env';
 import { cn } from '@/lib/cn';
 import { InteractionLoggingEventName } from '@/lib/analytics-events';
 import { type AppRouterInput, useTRPC } from '@/lib/trpc';
+import { useFeedback } from '@/components/providers/feedback';
 import type { DeepPartial } from '@/lib/types/utils';
 import { createOrderInputSchema } from '@namefi-astra/backend/trpc/types';
 import {
@@ -45,6 +46,7 @@ import {
   isStripePayment,
   paymentProviderSchema,
 } from '@namefi-astra/db/types';
+import { feedbackTriggerSchema } from '@/lib/feedback-triggers';
 import { CHAINS, NFSC_CONTRACT_ADDRESS } from '@namefi-astra/utils';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import type { inferInput } from '@trpc/tanstack-react-query';
@@ -96,6 +98,7 @@ export default function CartPage() {
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
 
   const trpc = useTRPC();
+  const { requestFeedback } = useFeedback();
 
   const {
     cartData: items,
@@ -156,6 +159,7 @@ export default function CartPage() {
       onSuccess: (data) => {
         setIsRedirecting(true);
         logSubmitOrder({ success: true });
+        requestFeedback(feedbackTriggerSchema.enum.CHECKOUT_SUCCESS);
         router.push(`/orders/${data.id}`);
       },
       onError: (error) => {
@@ -173,6 +177,7 @@ export default function CartPage() {
         onSuccess: (data) => {
           setIsRedirecting(true);
           logSubmitOrder({ success: true });
+          requestFeedback(feedbackTriggerSchema.enum.CHECKOUT_SUCCESS);
           router.push(`/orders/${data.id}`);
         },
         onError: (error) => {

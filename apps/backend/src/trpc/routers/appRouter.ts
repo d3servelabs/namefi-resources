@@ -19,6 +19,7 @@ import { usersRouter } from './usersRouter';
 import { wishlistRouter } from './wishlistRouter';
 import { poweredByNamefiOwnerRouter } from './poweredByNamefiOwnerRouter';
 import { newsletterRouter } from './newsletterRouter';
+import { feedbackRouter } from './feedbackRouter';
 
 export const appRouter = createTRPCRouter({
   admin: adminRouter,
@@ -41,6 +42,7 @@ export const appRouter = createTRPCRouter({
   wishlist: wishlistRouter,
   pbnOwner: poweredByNamefiOwnerRouter,
   newsletter: newsletterRouter,
+  feedback: feedbackRouter,
 
   version: publicProcedure.query(() => {
     const result = {

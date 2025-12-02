@@ -19,6 +19,7 @@ import {
   refundStatusEnum,
   itemTypeEnum,
   refundsTable,
+  feedbackResponsesTable,
   usersTable,
   freeClaimsTable,
   freeClaimClaimingStatusEnum,
@@ -38,6 +39,19 @@ export type { OrderMintTransactionMetadata } from './schema';
 export const userInsertSchema = createInsertSchema(usersTable);
 export const userSelectSchema = createSelectSchema(usersTable);
 export const userUpdateSchema = createUpdateSchema(usersTable);
+
+export const feedbackInsertSchema = createInsertSchema(feedbackResponsesTable, {
+  rating: z.number().int().min(1).max(5),
+  message: z.string().trim().min(1).max(2000).optional(),
+});
+export const feedbackSelectSchema = createSelectSchema(feedbackResponsesTable, {
+  rating: z.number().int().min(1).max(5),
+  message: z.string().trim().min(1).max(2000).nullable(),
+});
+export const feedbackUpdateSchema = createUpdateSchema(feedbackResponsesTable, {
+  rating: z.number().int().min(1).max(5).optional(),
+  message: z.string().trim().min(1).max(2000).optional(),
+});
 
 export const cartItemInsertSchema = createInsertSchema(cartItemsTable, {
   normalizedDomainName: namefiNormalizedDomainSchema,
@@ -177,6 +191,10 @@ export const poweredbyNamefiDomainUpdateSchema = createUpdateSchema(
 export type UserInsert = z.infer<typeof userInsertSchema>;
 export type UserSelect = z.infer<typeof userSelectSchema>;
 export type UserUpdate = z.infer<typeof userUpdateSchema>;
+
+export type FeedbackInsert = z.infer<typeof feedbackInsertSchema>;
+export type FeedbackSelect = z.infer<typeof feedbackSelectSchema>;
+export type FeedbackUpdate = z.infer<typeof feedbackUpdateSchema>;
 
 // CartItem types
 export type CartItemInsert = z.infer<typeof cartItemInsertSchema>;

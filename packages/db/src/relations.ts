@@ -6,6 +6,7 @@ import {
   linkSharesTable,
   orderItemsTable,
   ordersTable,
+  feedbackResponsesTable,
   paymentsTable,
   refundsTable,
   usersTable,
@@ -19,6 +20,7 @@ export const usersRelations = relations(usersTable, ({ many }) => ({
   aiGenerations: many(aiGenerationsTable),
   wishlistedDomains: many(wishlistedDomainsTable),
   linkShares: many(linkSharesTable),
+  feedbackResponses: many(feedbackResponsesTable),
 }));
 
 // Cart items relations
@@ -98,3 +100,13 @@ export const linkSharesRelations = relations(linkSharesTable, ({ one }) => ({
     references: [usersTable.id],
   }),
 }));
+
+export const feedbackResponsesRelations = relations(
+  feedbackResponsesTable,
+  ({ one }) => ({
+    user: one(usersTable, {
+      fields: [feedbackResponsesTable.userId],
+      references: [usersTable.id],
+    }),
+  }),
+);
