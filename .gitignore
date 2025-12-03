@@ -228,6 +228,7 @@ next-env.d.ts
 temp/
 
 **/env/configs/custom.ts
+**/env/configs/custom*.ts
 
 settings.local.json
 .COMMITMSG*
