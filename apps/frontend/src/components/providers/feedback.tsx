@@ -201,7 +201,6 @@ export function FeedbackProvider({ children }: PropsWithChildren) {
                   [trigger]: { id, rating, message },
                 },
               }));
-              toast.dismiss(toastId);
             }}
             onDismissAction={() => {
               markDismissed(now);
