@@ -41,6 +41,8 @@
     "check:unsafe": {
       "dependsOn": ["^check:unsafe"]
     },
-    "clean": {}
+    "clean": {
+      "cache": false
+    }
   }
 }

@@ -28,7 +28,7 @@
   "scripts": {
     "clean:workspaces": "turbo clean",
     "clean:root": "git clean -xdf node_modules out .turbo .next",
-    "clean:all": "bun run clean:root && bun run clean:workspaces",
+    "clean:all": "bun run clean:workspaces && bun run clean:root",
     "fix-infisical": "bun --cwd node_modules/@infisical/cli preinstall",
     "link-infisical": "bun run scripts/link-infisical.ts",
     "check": "biome check .",
