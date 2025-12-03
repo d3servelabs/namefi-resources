@@ -51,7 +51,7 @@ export function useAuth() {
     trpc.users.getImpersonationStatus.queryOptions(undefined, {
       enabled: !definitelyNotAuthenticated,
       retry(failureCount, error) {
-        if (definitelyNotAuthenticated || failureCount > 2) {
+        if (definitelyNotAuthenticated || failureCount > 1) {
           return false;
         }
         if (
@@ -60,7 +60,7 @@ export function useAuth() {
         ) {
           return false;
         }
-        return true;
+        return failureCount < 3;
       },
       staleTime: 15_000,
       refetchInterval: 30_000,
