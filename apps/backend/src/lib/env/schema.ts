@@ -76,6 +76,7 @@ export const secretsSchema = z.object({
   GOOGLE_CLOUD_PROJECT_ID: z.string().optional(),
   OPENSEA_API_KEY: z.string(),
   AVAILABILITY_API_AUTH_KEY: z.string(),
+  PUBLIC_ROUTER_AUTH_KEY: z.string(),
 
   COOKIE_SECRET: z.string(),
   ALTCHA_HMAC_KEY: z.string(),

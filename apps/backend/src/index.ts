@@ -22,6 +22,7 @@ import { randomBytes } from 'node:crypto';
 import { getConnInfo } from '@hono/node-server/conninfo';
 import type { ConnInfo } from 'hono/conninfo';
 import { altchaRouter } from './routers/altcha';
+import { publicRouter } from './routers/public';
 
 type HonoVariables = {
   requestId: string;
@@ -94,6 +95,7 @@ app.route('v1/ns-json', nsJsonRouter);
 app.route('v1/dns/tracking', trackingRouter);
 app.route('v1/dnssec', dnssecRouter);
 app.route('v1/availability', availabilityRouter);
+app.route('v1/public', publicRouter);
 app.route('/webhooks', webhooksRouter);
 app.route('/altcha', altchaRouter);
 
