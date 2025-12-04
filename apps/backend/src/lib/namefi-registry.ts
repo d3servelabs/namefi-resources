@@ -371,7 +371,7 @@ export const getDomainListInfo = async (
       return 'invalid';
     }
     const lastLevel = levels[levels.length - 1];
-    if (lastLevel.includes('namefi')) {
+    if (lastLevel?.includes('namefi')) {
       return 'unavailable';
     }
     if (levels.length === 2) {

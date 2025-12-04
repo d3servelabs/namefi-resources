@@ -29,26 +29,26 @@ export const getDomainLevels = (
     };
   }
 
+  const publicSuffix = domainParseResult.icann.topLevelDomains.join('.');
+  const publicSuffixPlusOne = domainParseResult.icann.domain
+    ? `${domainParseResult.icann.domain}.${publicSuffix}`
+    : publicSuffix;
+
   const levels = reverse([
-    ...domainParseResult.subDomains,
-    domainParseResult.domain,
-    domainParseResult.topLevelDomains.join('.'),
+    ...domainParseResult.icann.subDomains,
+    ...(domainParseResult.icann.domain ? [domainParseResult.icann.domain] : []),
+    publicSuffix,
   ]) as NamefiNormalizedDomain[];
 
   if (levels.length === 2) {
     return {
       levels,
-      parentDomain: domainParseResult.topLevelDomains.join(
-        '.',
-      ) as NamefiNormalizedDomain,
+      parentDomain: publicSuffix as NamefiNormalizedDomain,
     };
   }
 
   return {
     levels,
-    parentDomain: [
-      domainParseResult.domain,
-      ...domainParseResult.topLevelDomains,
-    ].join('.') as NamefiNormalizedDomain,
+    parentDomain: publicSuffixPlusOne as NamefiNormalizedDomain,
   };
 };
