@@ -303,7 +303,7 @@
     },
     "apps/resources": {
       "name": "@namefi-astra/resources",
-      "version": "0.1.14",
+      "version": "0.1.15",
       "dependencies": {
         "@bprogress/next": "^3.2.12",
         "@formatjs/intl-localematcher": "^0.5.4",
