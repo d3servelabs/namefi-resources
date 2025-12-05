@@ -576,10 +576,8 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
     }
     const prices = Object.fromEntries(
       response.TldPrice.map((value) => {
-        const registerPrice = Math.ceil(
-          Number.parseFloat(value.Price.Register),
-        );
-        const renewPrice = Math.ceil(Number.parseFloat(value.Price.Renew));
+        const registerPrice = Number.parseFloat(value.Price.Register);
+        const renewPrice = Number.parseFloat(value.Price.Renew);
         const multiYearRegistrationPrice = range(0, 10).map(
           (index) => registerPrice + renewPrice * index,
         );
@@ -594,14 +592,14 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
           {
             registrationPrice: registrationPrice,
             renewalPrice: singleYearPricingTemplate(
-              Math.ceil(Number.parseFloat(value.Price.Renew)),
+              Number.parseFloat(value.Price.Renew),
             ),
             importPrice: singleYearPricingTemplate(
-              Math.ceil(Number.parseFloat(value.Price.Transfer)),
+              Number.parseFloat(value.Price.Transfer),
             ),
             changeOwnershipPrice: singleYearPricingTemplate(0),
             restorationPrice: singleYearPricingTemplate(
-              Math.ceil(Number.parseFloat(value.Price.Restore) * 10),
+              Number.parseFloat(value.Price.Restore),
             ),
           } as DomainPricingDetails,
         ];
