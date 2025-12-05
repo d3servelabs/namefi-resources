@@ -38,13 +38,6 @@ const nextConfig = {
       ),
     },
   },
-  webpack: (config, context) => {
-    config.externals.push({
-      'thread-stream': 'commonjs thread-stream',
-      pino: 'commonjs pino',
-    });
-    return config;
-  },
   experimental: {
     authInterrupts: true,
     turbopackFileSystemCacheForDev: true,
