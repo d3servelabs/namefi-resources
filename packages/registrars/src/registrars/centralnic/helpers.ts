@@ -30,6 +30,7 @@ import type {
 } from '#lib/abstract-registrar/registrar-service';
 import type {
   EppResponseTypeXml,
+  EppResultCode,
   Result,
   SendResult,
 } from '@namefi-astra/epp-client';
@@ -42,6 +43,12 @@ import {
   DomainTrnDataTypeXml,
   FeeChkDataTypeXml,
   type EppEnvelopeXml,
+  EppError,
+  EppUnknownError,
+  EppTransportError,
+  EppObjectNotFoundError,
+  createEppError,
+  EppValidationError,
 } from '@namefi-astra/epp-client';
 import { isEppSuccessCode, EPP_NAMESPACES } from './types';
 import { noCase } from 'change-case';
@@ -99,14 +106,16 @@ function getEppResponse(
  */
 export function getResultCode(
   data: SendResult<EppEnvelopeXml>,
-): number | undefined {
+): EppResultCode | undefined {
   const response = getEppResponse(data);
   const results = response?.['epp:result'] as Array<Record<string, unknown>>;
   const result = results?.[0];
   if (!result) return undefined;
 
   const code = result['@_code'];
-  return code ? Number(code) : undefined;
+  if (!code) return undefined;
+  const parsed = Number.parseInt(String(code), 10);
+  return Number.isFinite(parsed) ? (parsed as EppResultCode) : undefined;
 }
 
 /**
@@ -231,13 +240,28 @@ export function handleEppResult<T>(
   if (!result.ok) {
     const msg = result.error?.message ?? 'EPP request failed';
     const reason = result.error?.reason ?? 'unknown';
-    throw new Error(`EPP error (${reason}): ${msg}`);
+    const cause = result.error?.cause;
+    // The transport layer wraps socket failures in typed EppErrors; rethrow
+    // them so the registrar error factory can classify by type instead of
+    // string-matching the message.
+    if (cause instanceof EppError) {
+      throw cause;
+    }
+    if (reason === 'transport') {
+      throw new EppTransportError(`EPP error (${reason}): ${msg}`, cause);
+    }
+    throw new EppUnknownError(`EPP error (${reason}): ${msg}`, result.error);
   }
 
   const code = getResultCode(result.data);
+
   if (code !== undefined && !isEppSuccessCode(code)) {
-    const msg = getResultMessage(result.data);
-    throw new Error(`EPP ${code}: ${msg}`);
+    const message = getResultMessage(result.data);
+
+    throw createEppError({
+      message,
+      resultCode: code,
+    });
   }
 
   return parser(result.data);
@@ -404,7 +428,9 @@ export function parseDomainInfoResponse(
   const resData = getResData(data);
   const response = getEppResponse(data);
   if (!resData) {
-    throw new Error('Invalid domain:info response - missing resData');
+    throw new EppValidationError(
+      'Invalid domain:info response - missing resData',
+    );
   }
 
   const infData = safePropAccess('domain:infData', resData);
@@ -416,12 +442,14 @@ export function parseDomainInfoResponse(
   const secData = safePropAccess('secDNS:infData', extData);
   const dsData = safePropAccess('secDNS:dsData', secData);
   if (!infData) {
-    throw new Error('Invalid domain:info response - missing infData');
+    throw new EppValidationError(
+      'Invalid domain:info response - missing infData',
+    );
   }
 
   const parsed = DomainInfDataTypeXml.safeParse(infData);
   if (!parsed.success) {
-    throw new Error(
+    throw new EppValidationError(
       `Invalid domain:info response - schema validation failed: ${parsed.error.message}`,
     );
   }
@@ -594,8 +622,8 @@ export function parseRenewResponse(
   const success = code ? isEppSuccessCode(code) : false;
   const status = success
     ? isPending
-      ? OperationStatus.SUCCESSFUL
-      : OperationStatus.IN_PROGRESS
+      ? OperationStatus.IN_PROGRESS
+      : OperationStatus.SUCCESSFUL
     : OperationStatus.FAILED;
 
   const resData = getResData(data);
@@ -671,7 +699,7 @@ export function parseTransferQueryResponse(data: SendResult<EppEnvelopeXml>) {
       response = parsed.data;
     }
   }
-  if (!response) throw new Error('Invalid response');
+  if (!response) throw new EppValidationError('Invalid response');
 
   const status = extractOptionalText(response['domain:trStatus']);
   const isPending = status === 'pending';
@@ -857,10 +885,20 @@ export function assertOwner(
 ): string {
   const owner = getCurrentOwner(obj);
   if (!owner) {
-    throw new Error('Domain owner not found');
+    throw new EppUnknownError('Domain owner not found');
   }
   if (owner !== challengingOwner) {
-    throw new Error('Domain owner does not match');
+    // `owner` here is the registry/ICANN-level sponsoring registrar, not one of
+    // our end users. A mismatch means the domain is sponsored elsewhere and
+    // outside our control, so we surface it as "not found" (2303) rather than
+    // leaking that it exists under another sponsor.
+    const domainName = extractOptionalText(
+      safePropAccess('domain:name', obj),
+      'unknown',
+    );
+    throw new EppObjectNotFoundError('domain', domainName, {
+      resultCode: 2303,
+    });
   }
   return owner;
 }

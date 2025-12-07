@@ -152,13 +152,19 @@ describe('computeChargesInUsdOrThrow', () => {
       },
     };
 
-    it('should throw error for duration less than 1', () => {
-      expect(() => computeChargesInUsdOrThrow(singleYearPricing, 0)).toThrow(
-        'Invalid duration',
-      );
+    it('should throw error for negative duration', () => {
       expect(() => computeChargesInUsdOrThrow(singleYearPricing, -1)).toThrow(
         'Invalid duration',
       );
+      expect(() => computeChargesInUsdOrThrow(singleYearPricing, -5)).toThrow(
+        'Invalid duration',
+      );
+    });
+
+    it('should allow a duration of 0 (granular duration support)', () => {
+      // The duration schema now uses `.min(0)`, so 0 is a valid duration and
+      // resolves to a zero charge rather than throwing.
+      expect(computeChargesInUsdOrThrow(singleYearPricing, 0)).toBe(0);
     });
 
     it('should throw error for duration greater than 10', () => {

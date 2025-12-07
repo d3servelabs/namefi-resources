@@ -96,6 +96,11 @@ import { parseDomainName } from '@namefi-astra/utils/parse-domain-name';
 import { differenceInMinutes, formatDate } from 'date-fns';
 import { signMessage } from '#lib/sign-message';
 import pMap, { pMapSkip } from 'p-map';
+import {
+  createRegistrarErrorFromEpp,
+  type RegistrarError,
+  withRegistrarError,
+} from '../../errors';
 
 function supportsContacts(tld: string) {
   return !['pw'].includes(tld);
@@ -268,8 +273,26 @@ export class CentralNicRegistrarService extends AbstractRegistrarService {
     }
   }
 
+  /**
+   * Convert EPP errors to RegistrarError. Invoked by the shared
+   * withErrorHandling() in AbstractRegistrarService via @withRegistrarError().
+   */
+  protected override toRegistrarError(
+    error: Error,
+    operation: string,
+    domainName: string | undefined,
+  ): RegistrarError {
+    return createRegistrarErrorFromEpp({
+      error,
+      domainName,
+      operation,
+      registrarKey: this.key,
+    });
+  }
+
   // ============ Domain Search & Availability ============
 
+  @withRegistrarError()
   async searchForDomain(query: string): Promise<DomainQueryResult> {
     assertPunycodeDomainName(query as PunycodeDomainName);
 
@@ -298,6 +321,9 @@ export class CentralNicRegistrarService extends AbstractRegistrarService {
     return this.config.supportedTlds.some((tld) => domain.endsWith(`.${tld}`));
   }
 
+  // bulkSearch takes a `string[]`, not a single domain, so errors carry no
+  // domain name (getDefaultDomainName returns undefined for an array arg).
+  @withRegistrarError()
   async bulkSearch(
     _queries: string[],
     options?: { existingDomains?: PunycodeDomainName[] },
@@ -329,38 +355,30 @@ export class CentralNicRegistrarService extends AbstractRegistrarService {
     }
 
     return this.executeCommand(async (client) => {
-      try {
-        const command = buildDomainCheckCommand(supportedDomains, {
-          extension: buildFeeCheckExtension(),
-        });
-        const result = await sendCommand(client, command);
+      const command = buildDomainCheckCommand(supportedDomains, {
+        extension: buildFeeCheckExtension(),
+      });
+      const result = await sendCommand(client, command);
 
-        return handleEppResult(result as any, (data) => {
-          const parsed = parseMultipleDomainCheckResponse(
-            data,
-            supportedDomains,
-          );
-          const mapped = new Map<string, DomainQueryResult>(
-            parsed.map((res) => [res.domainName, res]),
-          );
-          return queries.map(
-            (q) =>
-              mapped.get(q) ||
-              ({
-                domainName: q,
-                available: DomainAvailability.UNAVAILABLE,
-                isPremium: false,
-                supported: this.isSupportedDomain(q, {
-                  existingDomains,
-                }),
-                price: null,
-              } satisfies DomainQueryResult),
-          );
-        });
-      } catch (error) {
-        this.logger.error(error, 'Bulk search failed');
-        throw error;
-      }
+      return handleEppResult(result as any, (data) => {
+        const parsed = parseMultipleDomainCheckResponse(data, supportedDomains);
+        const mapped = new Map<string, DomainQueryResult>(
+          parsed.map((res) => [res.domainName, res]),
+        );
+        return queries.map(
+          (q) =>
+            mapped.get(q) ||
+            ({
+              domainName: q,
+              available: DomainAvailability.UNAVAILABLE,
+              isPremium: false,
+              supported: this.isSupportedDomain(q, {
+                existingDomains,
+              }),
+              price: null,
+            } satisfies DomainQueryResult),
+        );
+      });
     });
   }
 
@@ -377,6 +395,7 @@ export class CentralNicRegistrarService extends AbstractRegistrarService {
 
   // ============ Domain Info & Status ============
 
+  @withRegistrarError()
   async getDomainDetails(
     domainName: PunycodeDomainName,
   ): Promise<DomainRegistration> {
@@ -411,6 +430,7 @@ export class CentralNicRegistrarService extends AbstractRegistrarService {
     return registration;
   }
 
+  @withRegistrarError()
   async getDomainStatus(
     domainName: PunycodeDomainName,
   ): Promise<RdapDomainStatus> {
@@ -434,6 +454,7 @@ export class CentralNicRegistrarService extends AbstractRegistrarService {
 
   // ============ Domain Pricing ============
 
+  @withRegistrarError()
   async getDomainPrice(
     domainName: PunycodeDomainName,
     operation: DomainOwnershipOperation,
@@ -456,6 +477,7 @@ export class CentralNicRegistrarService extends AbstractRegistrarService {
     });
   }
 
+  @withRegistrarError()
   async getDomainPriceDetails(
     domainName: PunycodeDomainName,
   ): Promise<DomainPricingDetails> {
@@ -491,6 +513,7 @@ export class CentralNicRegistrarService extends AbstractRegistrarService {
 
   // ============ Domain Registration ============
 
+  @withRegistrarError()
   async registerDomain(
     args: RegisterDomainInput,
   ): Promise<LongRunningOperationResult> {
@@ -543,6 +566,7 @@ export class CentralNicRegistrarService extends AbstractRegistrarService {
 
   // ============ Domain Renewal ============
 
+  @withRegistrarError()
   async renewDomain(
     args: RenewDomainInput,
   ): Promise<LongRunningOperationResult> {
@@ -586,6 +610,7 @@ export class CentralNicRegistrarService extends AbstractRegistrarService {
 
   // ============ Domain Transfer ============
 
+  @withRegistrarError()
   async transferDomain(
     args: TransferDomainInput,
   ): Promise<LongRunningOperationResult> {
@@ -704,6 +729,7 @@ export class CentralNicRegistrarService extends AbstractRegistrarService {
     return this.transferDomain(args);
   }
 
+  @withRegistrarError()
   async cancelImportDomainRequest(
     args: CancelImportDomainRequestInput,
   ): Promise<LongRunningOperationResult> {
@@ -721,6 +747,7 @@ export class CentralNicRegistrarService extends AbstractRegistrarService {
     });
   }
 
+  @withRegistrarError()
   async retrieveAuthCode(domainName: PunycodeDomainName): Promise<string> {
     assertPunycodeDomainName(domainName);
     const payload = `${formatDate(new Date(), 'yyw')}-${domainName}`;
@@ -749,6 +776,7 @@ export class CentralNicRegistrarService extends AbstractRegistrarService {
 
   // ============ Domain Lock/Unlock ============
 
+  @withRegistrarError()
   async lockDomain(
     domainName: PunycodeDomainName,
   ): Promise<LongRunningOperationResult> {
@@ -790,6 +818,7 @@ export class CentralNicRegistrarService extends AbstractRegistrarService {
     return result;
   }
 
+  @withRegistrarError()
   async unlockDomain(
     domainName: PunycodeDomainName,
   ): Promise<LongRunningOperationResult> {
@@ -836,6 +865,7 @@ export class CentralNicRegistrarService extends AbstractRegistrarService {
     return details.nameservers ?? [];
   }
 
+  @withRegistrarError()
   async setNameServers(
     domainName: PunycodeDomainName,
     nameservers: Nameservers,
@@ -863,6 +893,7 @@ export class CentralNicRegistrarService extends AbstractRegistrarService {
 
   // ============ DNSSEC ============
 
+  @withRegistrarError()
   async addDelegationSigner(
     domainName: PunycodeDomainName,
     signingAttributes: DnssecKey,
@@ -884,6 +915,7 @@ export class CentralNicRegistrarService extends AbstractRegistrarService {
     });
   }
 
+  @withRegistrarError()
   async removeDelegationSigner(
     domainName: PunycodeDomainName,
     publicKeyOrId: string,
@@ -1074,6 +1106,7 @@ export class CentralNicRegistrarService extends AbstractRegistrarService {
     };
   }
 
+  @withRegistrarError()
   async _getTransferStatus(domainName: PunycodeDomainName) {
     assertPunycodeDomainName(domainName);
     return this.executeCommand(async (client) => {
@@ -1111,6 +1144,7 @@ export class CentralNicRegistrarService extends AbstractRegistrarService {
     }
   }
 
+  @withRegistrarError()
   async approveTransfer(
     domainName: PunycodeDomainName,
   ): Promise<LongRunningOperationResult> {
@@ -1126,6 +1160,7 @@ export class CentralNicRegistrarService extends AbstractRegistrarService {
     });
   }
 
+  @withRegistrarError()
   async rejectTransfer(
     domainName: PunycodeDomainName,
   ): Promise<LongRunningOperationResult> {

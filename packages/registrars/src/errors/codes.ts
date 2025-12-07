@@ -1,0 +1,48 @@
+/**
+ * Registrar Error Code Constants
+ *
+ * These codes are used for programmatic error handling and identification.
+ * They follow a consistent naming convention: REGISTRAR_<ERROR_TYPE>
+ */
+
+export const RegistrarErrorCodes = {
+  // Base errors (non-protocol specific)
+  UNKNOWN_ERROR: 'REGISTRAR_UNKNOWN_ERROR',
+  TRANSPORT_ERROR: 'REGISTRAR_TRANSPORT_ERROR',
+  RATE_LIMIT_ERROR: 'REGISTRAR_RATE_LIMIT_ERROR',
+
+  // Domain-related errors
+  DOMAIN_EXISTS: 'REGISTRAR_DOMAIN_EXISTS',
+  DOMAIN_NOT_FOUND: 'REGISTRAR_DOMAIN_NOT_FOUND',
+  DOMAIN_LIMIT_EXCEEDED: 'REGISTRAR_DOMAIN_LIMIT_EXCEEDED',
+
+  // Authentication/Authorization errors
+  AUTHENTICATION_ERROR: 'REGISTRAR_AUTHENTICATION_ERROR',
+  AUTHORIZATION_ERROR: 'REGISTRAR_AUTHORIZATION_ERROR',
+  INVALID_AUTH_CODE: 'REGISTRAR_INVALID_AUTH_CODE',
+
+  // Operation state errors
+  STATUS_PROHIBITS: 'REGISTRAR_STATUS_PROHIBITS',
+  NOT_ELIGIBLE_FOR_RENEWAL: 'REGISTRAR_NOT_ELIGIBLE_FOR_RENEWAL',
+  TRANSFER_ERROR: 'REGISTRAR_TRANSFER_ERROR',
+
+  // Billing/Resource errors
+  BILLING_ERROR: 'REGISTRAR_BILLING_ERROR',
+  OPERATION_LIMIT_EXCEEDED: 'REGISTRAR_OPERATION_LIMIT_EXCEEDED',
+
+  // Validation/Input errors
+  VALIDATION_ERROR: 'REGISTRAR_VALIDATION_ERROR',
+
+  // TLD-related errors
+  TLD_NOT_SUPPORTED: 'REGISTRAR_TLD_NOT_SUPPORTED',
+  TLD_RULES_VIOLATION: 'REGISTRAR_TLD_RULES_VIOLATION',
+
+  // Request state errors
+  DUPLICATE_REQUEST: 'REGISTRAR_DUPLICATE_REQUEST',
+
+  // Generic fallback
+  OPERATION_FAILED: 'REGISTRAR_OPERATION_FAILED',
+} as const;
+
+export type RegistrarErrorCode =
+  (typeof RegistrarErrorCodes)[keyof typeof RegistrarErrorCodes];

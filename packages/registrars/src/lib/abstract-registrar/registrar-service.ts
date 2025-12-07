@@ -14,6 +14,7 @@ import type {
   RdapDomainStatus,
   RenewOption,
 } from './data';
+import { RegistrarError, RegistrarUnknownError } from '../../errors';
 import type { DnssecKey } from './data/dnssec';
 import type { OperationStatus } from './data/operation-status';
 import type { OperationType } from './data/operation-type';
@@ -98,6 +99,53 @@ export abstract class AbstractRegistrarService<T extends string = string> {
 
   get key(): T {
     return this._key;
+  }
+
+  /**
+   * Convert a raw, registrar-native error into a unified {@link RegistrarError}.
+   *
+   * Leaf registrars override this to map provider-specific failures
+   * (Route53 → from-r53, Dynadot → from-dynadot, CentralNic → from-epp). The
+   * default wraps anything unrecognized as a generic {@link RegistrarUnknownError},
+   * which is what the aggregating registrar relies on (its children already
+   * throw {@link RegistrarError}).
+   */
+  protected toRegistrarError(
+    error: Error,
+    operation: string,
+    domainName: string | undefined,
+  ): RegistrarError {
+    return new RegistrarUnknownError(error.message, {
+      registrarKey: this.key,
+      domainName,
+      operation,
+      originalError: error,
+      timestamp: new Date(),
+    });
+  }
+
+  /**
+   * Shared wrapper invoked by the `@withRegistrarError()` decorator. Passes
+   * through already-normalized {@link RegistrarError}s and delegates conversion
+   * of native errors to {@link toRegistrarError}. Defined here so every
+   * registrar that uses the decorator has the hook (no runtime surprises) and
+   * the try/catch is not duplicated per registrar.
+   */
+  protected async withErrorHandling<TResult>(
+    operation: string,
+    domainName: string | undefined,
+    fn: () => Promise<TResult>,
+  ): Promise<TResult> {
+    try {
+      return await fn();
+    } catch (error) {
+      if (error instanceof RegistrarError) {
+        throw error;
+      }
+      const normalized =
+        error instanceof Error ? error : new Error(String(error));
+      throw this.toRegistrarError(normalized, operation, domainName);
+    }
   }
 
   //#region DomainImport

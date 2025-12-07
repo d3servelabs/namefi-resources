@@ -1,12 +1,11 @@
 import punycode from 'node:punycode';
-import { assertNot, assertNotNil, parseJsonOrNull } from '@namefi-astra/utils';
+import { assertNotNil, parseJsonOrNull } from '@namefi-astra/utils';
 import { differenceInMinutes } from 'date-fns';
 import { HttpsProxyAgent } from 'https-proxy-agent';
 import pino from 'pino';
 import {
   compose,
   fromPairs,
-  head,
   isEmpty,
   isNil,
   isNotNil,
@@ -85,6 +84,12 @@ import NodeCache from '@cacheable/node-cache';
 import pMap from 'p-map';
 import type Bottleneck from 'bottleneck';
 import { parseDomainName } from '@namefi-astra/utils/parse-domain-name';
+import {
+  createRegistrarErrorFromDynadot,
+  isDynadotResponseFailed,
+  type RegistrarError,
+  withRegistrarError,
+} from '../../errors';
 
 const DYNADOT_DOMAIN_REGISTER_CHECK_TIME_WINDOW_IN_MINUTES = 30;
 
@@ -199,6 +204,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
       });
   }
 
+  @withRegistrarError()
   async getAllowedParentDomains(): Promise<PunycodeDomainName[]> {
     const allowedTlds = await this.getTldPrices().then((pricing) =>
       Object.keys(pricing).map((tld) => toPunycodeDomainName(tld)),
@@ -209,6 +215,24 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
     return allowedTlds;
   }
 
+  /**
+   * Convert Dynadot errors to RegistrarError. Invoked by the shared
+   * withErrorHandling() in AbstractRegistrarService via @withRegistrarError().
+   */
+  protected override toRegistrarError(
+    error: Error,
+    operation: string,
+    domainName: string | undefined,
+  ): RegistrarError {
+    return createRegistrarErrorFromDynadot({
+      error,
+      domainName,
+      operation,
+      registrarKey: this.key,
+    });
+  }
+
+  @withRegistrarError()
   async registerDomain(
     args: RegisterDomainInput,
   ): Promise<LongRunningOperationResult<DynadotRegisterCommandOutput>> {
@@ -231,7 +255,12 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
       premium: searchRes.isPremium ? '1' : undefined,
     });
 
-    assertDynadotResponseNotFailed(this.key, response.RegisterResponse);
+    assertDynadotSuccess(
+      this.key,
+      response.RegisterResponse,
+      domainName,
+      'registerDomain',
+    );
 
     if (response.RegisterResponse.Status === 'success') {
       return {
@@ -256,6 +285,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
     };
   }
 
+  @withRegistrarError()
   async renewDomain(
     args: RenewDomainInput,
   ): Promise<LongRunningOperationResult<DynadotRenewCommandOutput>> {
@@ -266,7 +296,12 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
       duration: args.durationInYears,
       no_renew_if_late_renew_fee_needed: 1,
     });
-    assertDynadotResponseNotFailed(this.key, response.RenewResponse);
+    assertDynadotSuccess(
+      this.key,
+      response.RenewResponse,
+      args.domainName,
+      'renewDomain',
+    );
     return {
       type: OperationType.RENEW_DOMAIN,
       operationId: generateOperationId(
@@ -281,6 +316,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
     };
   }
 
+  @withRegistrarError()
   async transferDomain(
     args: TransferDomainInput,
   ): Promise<LongRunningOperationResult<any>> {
@@ -296,7 +332,12 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
       auth: authCode,
     });
 
-    assertDynadotResponseNotFailed(this.key, response.TransferResponse);
+    assertDynadotSuccess(
+      this.key,
+      response.TransferResponse,
+      domainName,
+      'transferDomain',
+    );
 
     return {
       type: OperationType.TRANSFER_IN_DOMAIN,
@@ -309,6 +350,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
     };
   }
 
+  @withRegistrarError()
   async resubmitImportDomainRequest(
     args: ResubmitImportDomainRequestInput,
   ): Promise<LongRunningOperationResult<any>> {
@@ -321,9 +363,11 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
         transfer_type: 'in',
       },
     );
-    assertDynadotResponseNotFailed(
+    assertDynadotSuccess(
       this.key,
       statusResponse.GetTransferStatusResponse,
+      args.domainName,
+      'resubmitImportDomainRequest',
     );
 
     const transferList =
@@ -353,7 +397,9 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
           OperationType.TRANSFER_IN_DOMAIN,
           args.domainName,
         ),
-        status: responseFailed(updateResponse.SetTransferAuthCodeResponse)
+        status: isDynadotResponseFailed(
+          updateResponse.SetTransferAuthCodeResponse,
+        )
           ? OperationStatus.FAILED
           : OperationStatus.IN_PROGRESS,
         response: updateResponse,
@@ -375,6 +421,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
     return this.transferDomain(args);
   }
 
+  @withRegistrarError()
   async cancelImportDomainRequest(
     args: CancelImportDomainRequestInput,
   ): Promise<LongRunningOperationResult<any>> {
@@ -387,9 +434,11 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
         transfer_type: 'in',
       },
     );
-    assertDynadotResponseNotFailed(
+    assertDynadotSuccess(
       this.key,
       statusResponse.GetTransferStatusResponse,
+      args.domainName,
+      'cancelImportDomainRequest',
     );
 
     const transferList =
@@ -415,7 +464,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
     );
 
     const hasFailure = cancelResponses.some((response) =>
-      responseFailed(response.CancelTransferResponse),
+      isDynadotResponseFailed(response.CancelTransferResponse),
     );
 
     return {
@@ -429,6 +478,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
     };
   }
 
+  @withRegistrarError()
   async renewAuthCode(domainName: PunycodeDomainName): Promise<string> {
     assertPunycodeDomainName(domainName);
 
@@ -439,14 +489,17 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
         new_code: 1,
       },
     );
-    assertDynadotResponseNotFailed(
+    assertDynadotSuccess(
       this.key,
       response.GetTransferAuthCodeResponse,
+      domainName,
+      'renewAuthCode',
     );
 
     return response.GetTransferAuthCodeResponse.AuthCode;
   }
 
+  @withRegistrarError()
   async retrieveAuthCode(domainName: PunycodeDomainName): Promise<string> {
     assertPunycodeDomainName(domainName);
 
@@ -456,14 +509,17 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
         domain: domainName,
       },
     );
-    assertDynadotResponseNotFailed(
+    assertDynadotSuccess(
       this.key,
       response.GetTransferAuthCodeResponse,
+      domainName,
+      'retrieveAuthCode',
     );
 
     return response.GetTransferAuthCodeResponse.AuthCode;
   }
 
+  @withRegistrarError()
   verifyAuthCode(
     domainName: PunycodeDomainName,
     authCode: string,
@@ -476,6 +532,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
     });
   }
 
+  @withRegistrarError()
   async lockDomain(
     domainName: PunycodeDomainName,
   ): Promise<LongRunningOperationResult<DynadotLockDomainCommandOutput>> {
@@ -484,7 +541,12 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
     const response = await this.client.command(DynadotCommand.lock_domain, {
       domain: domainName,
     });
-    assertDynadotResponseNotFailed(this.key, response.LockDomainResponse);
+    assertDynadotSuccess(
+      this.key,
+      response.LockDomainResponse,
+      domainName,
+      'lockDomain',
+    );
 
     return {
       type: OperationType.DOMAIN_CHANGE_LOCK,
@@ -500,6 +562,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
     };
   }
 
+  @withRegistrarError()
   async unlockDomain(
     domainName: PunycodeDomainName,
   ): Promise<LongRunningOperationResult<any>> {
@@ -509,7 +572,12 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
       domain: domainName,
     });
 
-    assertDynadotResponseNotFailed(this.key, response.UnlockDomainResponse);
+    assertDynadotSuccess(
+      this.key,
+      response.UnlockDomainResponse,
+      domainName,
+      'unlockDomain',
+    );
 
     return {
       type: OperationType.DOMAIN_CHANGE_LOCK,
@@ -532,7 +600,12 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
       domain: domainName,
     });
 
-    assertDynadotResponseNotFailed(this.key, response.DomainInfoResponse);
+    assertDynadotSuccess(
+      this.key,
+      response.DomainInfoResponse,
+      domainName,
+      '_getDomainInfo',
+    );
     return response.DomainInfoResponse.DomainInfo;
   }
 
@@ -593,6 +666,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
         };
   }
 
+  @withRegistrarError()
   async getDomainDetails(
     domainName: PunycodeDomainName,
   ): Promise<DomainRegistration> {
@@ -655,6 +729,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
     };
   }
 
+  @withRegistrarError()
   async getDomainStatus(
     domainName: PunycodeDomainName,
   ): Promise<RdapDomainStatus> {
@@ -664,6 +739,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
     return status;
   }
 
+  @withRegistrarError()
   async getDomainPrice(
     domainName: PunycodeDomainName,
     operation: DomainOwnershipOperation,
@@ -689,6 +765,8 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
     }
   }
 
+  // getTldPrices takes no domain argument, so errors carry no domain name.
+  @withRegistrarError()
   async getTldPrices(options?: {}) {
     if (this.priceMap) {
       return this.priceMap;
@@ -697,7 +775,12 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
       currency: 'USD',
     });
 
-    assertDynadotResponseNotFailed(this.key, commandResults.TldPriceResponse);
+    assertDynadotSuccess(
+      this.key,
+      commandResults.TldPriceResponse,
+      undefined,
+      'getTldPrices',
+    );
     const response = commandResults.TldPriceResponse;
 
     if (response.Currency !== 'USD') {
@@ -715,6 +798,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
     return prices;
   }
 
+  @withRegistrarError()
   async getDomainPriceDetails(
     domainName: PunycodeDomainName,
   ): Promise<DomainPricingDetails> {
@@ -767,6 +851,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
     return pricing;
   }
 
+  @withRegistrarError()
   async getDelegationSigner(
     domainName: PunycodeDomainName,
   ): Promise<DnssecKey[]> {
@@ -783,28 +868,42 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
     const response = await this.client.command(DynadotCommand.get_dnssec, {
       domain_name: punycode.toASCII(domainName),
     } as any);
-    if (
-      isNil(response?.GetDnssecResponse) ||
-      responseFailed(response.GetDnssecResponse)
-    ) {
+    const dnssecResponse = response.GetDnssecResponse;
+
+    if (isNil(dnssecResponse) || isDynadotResponseFailed(dnssecResponse)) {
       if (
-        response.GetDnssecResponse.Status === 'error' &&
-        response.GetDnssecResponse.Error ===
-          "This domain doesn't support DNSSEC."
+        dnssecResponse?.Status === 'error' &&
+        dnssecResponse.Error === "This domain doesn't support DNSSEC."
       ) {
         this.logger.error(
           {
             method: 'getDelegationSigner',
             domainName,
-            response,
+            response: dnssecResponse,
           },
           'Response Failed. This domain does not support DNSSEC.',
         );
         return [];
       }
-      throw new Error('Response Failed. No DNSSEC keys found.');
+
+      if (dnssecResponse) {
+        throw createRegistrarErrorFromDynadot({
+          response: dnssecResponse,
+          domainName,
+          operation: 'getDelegationSigner',
+          registrarKey: this.key,
+        });
+      }
+
+      throw createRegistrarErrorFromDynadot({
+        error: new Error('Response Failed. No DNSSEC keys found.'),
+        domainName,
+        operation: 'getDelegationSigner',
+        registrarKey: this.key,
+      });
     }
-    return response.GetDnssecResponse.DnssecInfo.map((key) => {
+
+    return dnssecResponse.DnssecInfo.map((key) => {
       const { value: algorithmValue } =
         /^(?<name>.*)\((?<value>.*)\)$/.exec(key.Algorithm)?.groups ?? {};
       const algorithm = Number.parseInt(algorithmValue) as DnssecAlgorithms;
@@ -821,6 +920,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
       };
     });
   }
+  @withRegistrarError()
   async addDelegationSigner(
     domainName: PunycodeDomainName,
     signingAttributes: DnssecKey,
@@ -842,7 +942,12 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
       digest: signingAttributes.digest,
     });
 
-    assertDynadotResponseNotFailed(this.key, response.SetDnssecResponse);
+    assertDynadotSuccess(
+      this.key,
+      response.SetDnssecResponse,
+      domainName,
+      'addDelegationSigner',
+    );
     return {
       type: OperationType.ADD_DNSSEC,
       operationId: generateOperationId(OperationType.ADD_DNSSEC, domainName, {
@@ -853,6 +958,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
     };
   }
 
+  @withRegistrarError()
   async removeDelegationSigner(
     domainName: PunycodeDomainName,
     publicKeyOrId: string,
@@ -862,7 +968,12 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
     const response = await this.client.command(DynadotCommand.clear_dnssec, {
       domain_name: domainName,
     });
-    assertDynadotResponseNotFailed(this.key, response.ClearDnssecResponse);
+    assertDynadotSuccess(
+      this.key,
+      response.ClearDnssecResponse,
+      domainName,
+      'removeDelegationSigner',
+    );
     const status = getImmediateOperationStatus(response.ClearDnssecResponse);
     return {
       type: OperationType.REMOVE_DNSSEC,
@@ -878,6 +989,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
     };
   }
 
+  @withRegistrarError()
   async searchForDomain(query: PunycodeDomainName): Promise<DomainQueryResult> {
     assertPunycodeDomainName(query);
 
@@ -933,7 +1045,12 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
       show_price: '1',
     });
     const allowedParentDomains = new Set(await this.getAllowedParentDomains());
-    assertDynadotResponseNotFailed(this.key, response.SearchResponse);
+    assertDynadotSuccess(
+      this.key,
+      response.SearchResponse,
+      batch[0],
+      '_bulkSearchBatch',
+    );
     const results = response.SearchResponse.SearchResults;
     return results.map((result) => {
       const domainName = toPunycodeDomainName(result.DomainName);
@@ -1011,6 +1128,9 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
     });
   }
 
+  // bulkSearch takes a `PunycodeDomainName[]`, not a single domain, so errors
+  // carry no domain name (getDefaultDomainName returns undefined for an array).
+  @withRegistrarError()
   async bulkSearch(
     queries: PunycodeDomainName[],
     options?: { existingDomains?: PunycodeDomainName[] },
@@ -1037,6 +1157,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
     return results.flat();
   }
 
+  @withRegistrarError()
   async getSuggestions(
     query: PunycodeDomainName,
     suggestionsCount: number,
@@ -1048,6 +1169,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
     };
   }
 
+  @withRegistrarError()
   updateDomainContacts(
     domainName: PunycodeDomainName,
     contacts: Partial<DomainContacts>,
@@ -1068,6 +1190,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
     });
   }
 
+  @withRegistrarError()
   async getDomainContacts(
     domainName: PunycodeDomainName,
   ): Promise<DomainContacts> {
@@ -1081,7 +1204,12 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
     const response = await this.client.command(DynadotCommand.get_contact, {
       contact_id: contactId,
     });
-    assertDynadotResponseNotFailed(this.key, response.GetContactResponse);
+    assertDynadotSuccess(
+      this.key,
+      response.GetContactResponse,
+      undefined,
+      '_getContact',
+    );
     return response.GetContactResponse.GetContact;
   }
 
@@ -1098,6 +1226,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
     return contactIds.map((id) => contactsMap.get(id));
   }
 
+  @withRegistrarError()
   async setNameServers(
     domainName: PunycodeDomainName,
     nameservers: Nameserver[],
@@ -1110,7 +1239,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
         nameservers.map((name, i) => [`ns${i}`, toPunycodeDomainName(name)]), // Dynadot expects punycode domain names
       ),
     });
-    if (responseFailed(response.SetNsResponse)) {
+    if (isDynadotResponseFailed(response.SetNsResponse)) {
       this.logger.error(
         {
           domainName,
@@ -1119,9 +1248,13 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
         },
         'Failed to set nameservers',
       );
-      throw new Error(
-        `Failed to set nameservers for domain, ${domainName}. Response: ${JSON.stringify(response.SetNsResponse)}`,
-      );
+
+      throw createRegistrarErrorFromDynadot({
+        response: response.SetNsResponse,
+        domainName,
+        operation: 'setNameServers',
+        registrarKey: this.key,
+      });
     }
     return {
       type: OperationType.UPDATE_NAMESERVER,
@@ -1134,6 +1267,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
     };
   }
 
+  @withRegistrarError()
   async getNameServers(domainName: PunycodeDomainName): Promise<Nameservers> {
     assertPunycodeDomainName(domainName);
 
@@ -1141,7 +1275,12 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
       domain: domainName,
     });
 
-    assertDynadotResponseNotFailed(this.key, response.GetNsResponse);
+    assertDynadotSuccess(
+      this.key,
+      response.GetNsResponse,
+      domainName,
+      'getNameServers',
+    );
     const nameservers = Object.entries(response.GetNsResponse.NsContent ?? {})
       .filter(([key]) => key.toLowerCase().startsWith('host'))
       .map(compose(toPunycodeFqdn, prop(1)));
@@ -1157,13 +1296,16 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
         transfer_type: 'in',
       },
     );
-    assertDynadotResponseNotFailed(
+    assertDynadotSuccess(
       this.key,
       response.GetTransferStatusResponse,
+      domainName,
+      '_getTransferStatus',
     );
     return response.GetTransferStatusResponse.TransferList;
   }
 
+  @withRegistrarError()
   async getOperationStatus(
     domainNameLdh: PunycodeDomainName,
     operationId: string,
@@ -1277,6 +1419,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
     }
   }
 
+  @withRegistrarError()
   async setRenewOption(
     domainName: PunycodeDomainName,
     option: RenewOption,
@@ -1304,6 +1447,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
     };
   }
 
+  @withRegistrarError()
   async getRenewOption(domainName: PunycodeDomainName): Promise<RenewOption> {
     assertPunycodeDomainName(domainName);
 
@@ -1311,6 +1455,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
     return response.autoRenewOption;
   }
 
+  @withRegistrarError()
   async updateDomainContactsPrivacy(
     domainName: PunycodeDomainName,
     privacy: ContactsMap<DomainContactPrivacyEnum>,
@@ -1354,6 +1499,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
    *
    * @throws Will throw an error if the API request fails
    */
+  @withRegistrarError()
   async listAllDomains(): Promise<DomainSummary[]> {
     const domains: DynadotDomainInfo[] = [];
     let nextPage: number | null = 0;
@@ -1362,10 +1508,12 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
         count_per_page: 5000,
         page_index: nextPage,
       });
-      if (responseFailed(res.ListDomainInfoResponse)) {
-        throw new Error(
-          `Failed to list domains: ${JSON.stringify(res.ListDomainInfoResponse)}`,
-        );
+      if (isDynadotResponseFailed(res.ListDomainInfoResponse)) {
+        throw createRegistrarErrorFromDynadot({
+          response: res.ListDomainInfoResponse,
+          operation: 'listAllDomains',
+          registrarKey: this.key,
+        });
       }
       domains.push(...(res.ListDomainInfoResponse?.MainDomains ?? []));
       if (
@@ -1395,6 +1543,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
    *       When the API becomes available, this method should be updated to call the
    *       appropriate Dynadot endpoint to filter expired domains.
    */
+  @withRegistrarError()
   async listExpiredDomains(): Promise<
     {
       domainName: PunycodeDomainName;
@@ -1414,6 +1563,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
   /**
    * get_transfer_status transfer_type:away
    */
+  @withRegistrarError()
   async queryPendingTransfer(
     domainName: PunycodeDomainName,
   ): Promise<PendingTransferInfo | null> {
@@ -1428,7 +1578,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
         },
       );
 
-      if (responseFailed(response.GetTransferStatusResponse)) {
+      if (isDynadotResponseFailed(response.GetTransferStatusResponse)) {
         this.logger.debug(
           { domainName, response: response.GetTransferStatusResponse },
           'Dynadot transfer status query failed',
@@ -1470,6 +1620,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
    * 1. get_transfer_status transfer_type:away (for order_id)
    * 2. authorize_transfer_away authorize:approve
    */
+  @withRegistrarError()
   async approveTransfer(
     domainName: PunycodeDomainName,
   ): Promise<LongRunningOperationResult> {
@@ -1482,9 +1633,11 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
         transfer_type: 'away',
       },
     );
-    assertDynadotResponseNotFailed(
+    assertDynadotSuccess(
       this.key,
       statusResponse.GetTransferStatusResponse,
+      domainName,
+      'approveTransfer',
     );
 
     const transferList =
@@ -1504,9 +1657,11 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
         order_id: latestTransfer.OrderId,
       },
     );
-    assertDynadotResponseNotFailed(
+    assertDynadotSuccess(
       this.key,
       response.AuthorizeTransferAwayResponse,
+      domainName,
+      'approveTransfer',
     );
 
     return {
@@ -1526,6 +1681,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
    * 1. get_transfer_status transfer_type:away (for order_id)
    * 2. authorize_transfer_away authorize:deny
    */
+  @withRegistrarError()
   async rejectTransfer(
     domainName: PunycodeDomainName,
   ): Promise<LongRunningOperationResult> {
@@ -1538,9 +1694,11 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
         transfer_type: 'away',
       },
     );
-    assertDynadotResponseNotFailed(
+    assertDynadotSuccess(
       this.key,
       statusResponse.GetTransferStatusResponse,
+      domainName,
+      'rejectTransfer',
     );
 
     const transferList =
@@ -1560,9 +1718,11 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
         order_id: latestTransfer.OrderId,
       },
     );
-    assertDynadotResponseNotFailed(
+    assertDynadotSuccess(
       this.key,
       response.AuthorizeTransferAwayResponse,
+      domainName,
+      'rejectTransfer',
     );
 
     return {
@@ -1691,11 +1851,6 @@ function getNonce(length: number) {
     .join('');
 }
 
-function responseFailed(args: { ResponseCode: DynadotResponseCode }) {
-  const resCode = args.ResponseCode.toString();
-  return resCode !== '0' && resCode !== '1';
-}
-
 const RADIX = 32;
 const ID_SEP = ':::';
 
@@ -1748,60 +1903,19 @@ function getRunningOperationStatus(response?: {
     : OperationStatus.FAILED;
 }
 
-class DynadotRegistrarError extends Error {
-  constructor(
-    public key: string,
-    _message: string,
-    public payload?: any,
-  ) {
-    const message = `[Dynadot:${key}] ${_message ?? 'No Error Message'}`;
-    super(message);
-    this.name = `DynadotRegistrarError(${key})`;
-  }
-
-  static fromResponse<R extends DynadotResponse<any, any>>(
-    key: string,
-    response: R,
-  ) {
-    return new DynadotFailedResponseError(key, response);
-  }
-
-  static generator(key: string) {
-    return <R extends DynadotResponse<any, any>>(response: R) =>
-      new DynadotFailedResponseError(key, response);
-  }
-}
-class DynadotFailedResponseError extends DynadotRegistrarError {
-  constructor(
-    key: string,
-    public response: DynadotResponse<any, any>,
-    _message?: string,
-  ) {
-    const message =
-      _message ??
-      `[CODE:${response?.ResponseCode?.toString()}][Status:${response?.Status ?? 'N/A'}]: ${response?.Error ?? 'No Error Message'}`;
-    super(key, message, response);
-    this.name = `DynadotFailedResponseError(${key})`;
-  }
-
-  static fromResponse<R extends DynadotResponse<any, any>>(
-    key: string,
-    response: R,
-  ) {
-    return new DynadotFailedResponseError(key, response);
-  }
-
-  static generator(key: string) {
-    return <R extends DynadotResponse<any, any>>(response: R) =>
-      new DynadotFailedResponseError(key, response);
-  }
-}
-function assertDynadotResponseNotFailed<R extends DynadotResponse<any, any>>(
-  key: string,
+function assertDynadotSuccess<R extends DynadotResponse<any, any>>(
+  registrarKey: Registrars,
   response: R,
-) {
-  if (responseFailed(response)) {
-    throw new DynadotFailedResponseError(key, response);
+  domainName?: string,
+  operation?: string,
+): asserts response is R & { ResponseCode: '0' | '1' } {
+  if (isDynadotResponseFailed(response)) {
+    throw createRegistrarErrorFromDynadot({
+      response,
+      domainName,
+      operation,
+      registrarKey,
+    });
   }
 }
 

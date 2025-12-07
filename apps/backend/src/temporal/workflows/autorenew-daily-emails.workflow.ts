@@ -10,7 +10,8 @@ import type {
   DomainRenewInfo,
   DomainsUpForRenewalWithUser,
 } from '../activities/domain/renew.activities';
-import { RenewOption } from '@namefi-astra/registrars/lib/abstract-registrar/index';
+
+import { RenewOption } from '@namefi-astra/registrars/lib/abstract-registrar/data/renew-option';
 import type { PaymentProvider } from '@namefi-astra/db/types';
 import { fromPairs, isNotNil, pickBy, pluck, sum, filter } from 'ramda';
 import { RENEW_EARLY_BY_DAYS } from '../../lib/env/consts';

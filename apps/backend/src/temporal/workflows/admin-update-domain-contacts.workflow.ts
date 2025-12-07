@@ -1,4 +1,4 @@
-import type { DomainContacts } from '@namefi-astra/registrars/lib/abstract-registrar/data/index';
+import type { DomainContacts } from '@namefi-astra/registrars/lib/abstract-registrar/data/contact';
 import * as workflow from '@temporalio/workflow';
 import { TEMPORAL_ENUMS, shortRunningOpts } from '../shared';
 import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';

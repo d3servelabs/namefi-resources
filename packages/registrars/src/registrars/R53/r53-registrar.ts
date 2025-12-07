@@ -27,6 +27,11 @@ import {
 import { assertNotNil } from '@namefi-astra/utils';
 import pino from 'pino';
 import { AbstractRegistrarService } from '#lib/abstract-registrar';
+import {
+  createRegistrarErrorFromR53,
+  type RegistrarError,
+  withRegistrarError,
+} from '../../errors';
 import type {
   ContactsMap,
   DnssecKey,
@@ -233,6 +238,23 @@ export class R53RegistrarService extends AbstractRegistrarService {
     });
   }
 
+  /**
+   * Convert AWS Route53 errors to RegistrarError. Invoked by the shared
+   * withErrorHandling() in AbstractRegistrarService via @withRegistrarError().
+   */
+  protected override toRegistrarError(
+    error: Error,
+    operation: string,
+    domainName: string | undefined,
+  ): RegistrarError {
+    return createRegistrarErrorFromR53({
+      error,
+      domainName,
+      operation,
+      registrarKey: this.key,
+    });
+  }
+
   async getAllowedParentDomains(): Promise<PunycodeDomainName[]> {
     if (Object.keys(this.priceMap).length === 0) {
       await this._updatePrices();
@@ -240,6 +262,7 @@ export class R53RegistrarService extends AbstractRegistrarService {
     return Object.keys(this.priceMap).map((tld) => toPunycodeDomainName(tld));
   }
 
+  @withRegistrarError()
   async registerDomain(
     args: RegisterDomainInput,
   ): Promise<LongRunningOperationResult<RegisterDomainCommandOutput>> {
@@ -274,6 +297,7 @@ export class R53RegistrarService extends AbstractRegistrarService {
     };
   }
 
+  @withRegistrarError()
   async renewDomain(
     args: RenewDomainInput,
   ): Promise<LongRunningOperationResult<RenewDomainCommandOutput>> {
@@ -293,6 +317,7 @@ export class R53RegistrarService extends AbstractRegistrarService {
     };
   }
 
+  @withRegistrarError()
   async transferDomain(
     args: TransferDomainInput,
   ): Promise<LongRunningOperationResult<any>> {
@@ -376,12 +401,14 @@ export class R53RegistrarService extends AbstractRegistrarService {
     }
   }
 
+  @withRegistrarError()
   async resubmitImportDomainRequest(
     args: ResubmitImportDomainRequestInput,
   ): Promise<LongRunningOperationResult<any>> {
     return this.transferDomain(args);
   }
 
+  @withRegistrarError()
   async cancelImportDomainRequest(
     args: CancelImportDomainRequestInput,
   ): Promise<LongRunningOperationResult<any>> {
@@ -395,6 +422,7 @@ export class R53RegistrarService extends AbstractRegistrarService {
     };
   }
 
+  @withRegistrarError()
   async retrieveAuthCode(domainName: PunycodeDomainName): Promise<string> {
     assertPunycodeDomainName(domainName);
 
@@ -407,6 +435,7 @@ export class R53RegistrarService extends AbstractRegistrarService {
     return res.AuthCode;
   }
 
+  @withRegistrarError()
   async verifyAuthCode(
     domainName: PunycodeDomainName,
     authCode: string,
@@ -433,6 +462,7 @@ export class R53RegistrarService extends AbstractRegistrarService {
     };
   }
 
+  @withRegistrarError()
   async lockDomain(
     domainName: PunycodeDomainName,
   ): Promise<LongRunningOperationResult<any>> {
@@ -451,6 +481,7 @@ export class R53RegistrarService extends AbstractRegistrarService {
     };
   }
 
+  @withRegistrarError()
   async unlockDomain(
     domainName: PunycodeDomainName,
   ): Promise<LongRunningOperationResult<any>> {
@@ -470,6 +501,7 @@ export class R53RegistrarService extends AbstractRegistrarService {
     };
   }
 
+  @withRegistrarError()
   async getDomainDetails(
     domainName: PunycodeDomainName,
   ): Promise<DomainRegistration> {
@@ -487,6 +519,7 @@ export class R53RegistrarService extends AbstractRegistrarService {
     };
   }
 
+  @withRegistrarError()
   async getDomainStatus(
     domainName: PunycodeDomainName,
   ): Promise<RdapDomainStatus> {
@@ -544,6 +577,7 @@ export class R53RegistrarService extends AbstractRegistrarService {
     return fromR53DomainPrice(response);
   }
 
+  @withRegistrarError()
   async addDelegationSigner(
     domainName: PunycodeDomainName,
     signingAttributes: DnssecKey,
@@ -568,6 +602,7 @@ export class R53RegistrarService extends AbstractRegistrarService {
     };
   }
 
+  @withRegistrarError()
   async removeDelegationSigner(
     domainName: PunycodeDomainName,
     publicKeyOrId: string,
@@ -587,6 +622,7 @@ export class R53RegistrarService extends AbstractRegistrarService {
     };
   }
 
+  @withRegistrarError()
   async searchForDomain(query: PunycodeDomainName): Promise<DomainQueryResult> {
     assertPunycodeDomainName(query);
 
@@ -699,6 +735,7 @@ export class R53RegistrarService extends AbstractRegistrarService {
     };
   }
 
+  @withRegistrarError()
   async updateDomainContacts(
     domainName: PunycodeDomainName,
     contacts: Partial<DomainContacts>,
@@ -739,6 +776,7 @@ export class R53RegistrarService extends AbstractRegistrarService {
     return response.contacts;
   }
 
+  @withRegistrarError()
   async setNameServers(
     domainName: PunycodeDomainName,
     nameservers: Nameserver[],
@@ -768,6 +806,7 @@ export class R53RegistrarService extends AbstractRegistrarService {
     return response.nameservers;
   }
 
+  @withRegistrarError()
   async getOperationStatus(
     domainName: PunycodeDomainName,
     operationId: string,
@@ -793,6 +832,7 @@ export class R53RegistrarService extends AbstractRegistrarService {
     };
   }
 
+  @withRegistrarError()
   async setRenewOption(
     domainName: PunycodeDomainName,
     option: RenewOption,
@@ -826,6 +866,7 @@ export class R53RegistrarService extends AbstractRegistrarService {
     return response.autoRenewOption;
   }
 
+  @withRegistrarError()
   async updateDomainContactsPrivacy(
     domainName: PunycodeDomainName,
     privacy: ContactsMap<DomainContactPrivacyEnum>,

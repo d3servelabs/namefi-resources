@@ -6,6 +6,8 @@
     "strictNullChecks": true,
     "jsx": "preserve",
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true
   }
 }

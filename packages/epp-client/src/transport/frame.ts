@@ -1,6 +1,7 @@
 import net from 'node:net';
 import tls from 'node:tls';
 import type { EppFrame, EppConnectionOptions } from '../protocol/core/types';
+import { EppTransportError } from '../errors';
 
 export interface EppConnection {
   socket: net.Socket | tls.TLSSocket;
@@ -10,6 +11,20 @@ export interface EppConnection {
 export interface ConnectOptions extends EppConnectionOptions {
   timeoutMs?: number;
   tlsOptions?: tls.ConnectionOptions;
+}
+
+/**
+ * Normalize a socket-level failure into a typed EppTransportError, preserving
+ * the original error (which carries Node's structured `.code`) as the cause.
+ */
+function toEppTransportError(
+  cause: unknown,
+  fallbackMessage: string,
+): EppTransportError {
+  if (cause instanceof EppTransportError) return cause;
+  const message =
+    cause instanceof Error && cause.message ? cause.message : fallbackMessage;
+  return new EppTransportError(message, cause);
 }
 
 export async function connectEpp(
@@ -28,7 +43,7 @@ export async function connectEpp(
     (resolve, reject) => {
       const onError = (err: Error) => {
         cleanup();
-        reject(err);
+        reject(toEppTransportError(err, 'EPP connection failed'));
       };
 
       const cleanup = () => {
@@ -41,7 +56,11 @@ export async function connectEpp(
           ? setTimeout(() => {
               cleanup();
               socket.destroy();
-              reject(new Error(`EPP connect timeout after ${timeoutMs}ms`));
+              reject(
+                new EppTransportError(
+                  `EPP connect timeout after ${timeoutMs}ms`,
+                ),
+              );
             }, timeoutMs)
           : undefined;
 
@@ -88,7 +107,7 @@ export async function sendFrame(
 
   await new Promise<void>((resolve, reject) => {
     conn.socket.write(frame, (err) => {
-      if (err) return reject(err);
+      if (err) return reject(toEppTransportError(err, 'EPP send failed'));
       resolve();
     });
   });
@@ -123,12 +142,12 @@ export async function readFrame(
 
     const onError = (err: Error) => {
       cleanup();
-      reject(err);
+      reject(toEppTransportError(err, 'EPP read failed'));
     };
 
     const onClose = () => {
       cleanup();
-      reject(new Error('Socket closed before full frame was read'));
+      reject(new EppTransportError('Socket closed before full frame was read'));
     };
 
     const cleanup = () => {
@@ -142,7 +161,11 @@ export async function readFrame(
       opts.timeoutMs && opts.timeoutMs > 0
         ? setTimeout(() => {
             cleanup();
-            reject(new Error(`EPP read timeout after ${opts.timeoutMs}ms`));
+            reject(
+              new EppTransportError(
+                `EPP read timeout after ${opts.timeoutMs}ms`,
+              ),
+            );
           }, opts.timeoutMs)
         : undefined;
 

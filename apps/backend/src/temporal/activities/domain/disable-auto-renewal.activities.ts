@@ -1,9 +1,8 @@
 import { sldRegistrar } from '#lib/namefi-registry';
-import { logger } from '#lib/logger';
-import { RenewOption } from '@namefi-astra/registrars/lib/abstract-registrar/data/renew-option';
 import type { Registrars } from '@namefi-astra/registrars/registrars/registrars-keys';
 import pMap from 'p-map';
 import { Context } from '@temporalio/activity';
+import { RenewOption } from '@namefi-astra/registrars/lib/abstract-registrar/data/renew-option';
 
 /**
  * Result of processing a single domain for auto-renewal disabling
