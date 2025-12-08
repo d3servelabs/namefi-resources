@@ -1,7 +1,8 @@
 #!/usr/bin/env tsx
-import fs from 'node:fs';
+/** biome-ignore-all lint/suspicious/noConsole: console app */
 import os from 'node:os';
 import path from 'node:path';
+import fs from 'node:fs';
 import readline from 'node:readline';
 import process from 'node:process';
 import { input, select, confirm } from '@inquirer/prompts';
@@ -18,120 +19,36 @@ import {
   buildDomainCheckCommand,
   buildDomainInfoCommand,
   buildDomainCreateCommand,
+  buildDomainRenewCommand,
+  buildDomainTransferCommand,
   buildPollReqCommand,
   buildPollAckCommand,
   type EppClientRuntime,
   type EppCredentials,
-  type EppSessionConfig,
   type Result,
   type SendResult,
   buildEppEnvelope,
-  buildDomainRenewCommand,
 } from '..';
 import type { ConnectOptions } from '../transport';
 import xmlFormat from 'xml-formatter';
-
-type OutputFormat = 'json' | 'xml' | 'yaml';
-
-type TraceLogLevel = 'none' | 'xml' | 'parsed' | 'both';
-
-type DomainCheckPayload = { names: string[] };
-type DomainLockPayload = { names: string[] };
-type DomainUnlockPayload = { names: string[] };
-type DomainAddNsPayload = { name: string; ns: string[] };
-type DomainRemoveNsPayload = { name: string; ns: string[] };
-type DomainUpdateDsPayload = {
-  name: string;
-  keyTag: string;
-  alg: string;
-  digest: string;
-  digestType: string;
-};
-type DomainClearDsPayload = { name: string };
-
-type DomainInfoPayload = {
-  name: string;
-  authInfo?: string;
-};
-
-type DomainRenewPayload = {
-  name: string;
-  period: string;
-  curExpDate: string;
-};
-
-type DomainCreatePayload = {
-  name: string;
-  period?: { value: number; unit: 'y' | 'm' };
-  ns?: string[];
-  registrant?: string;
-  contacts?: { type: 'admin' | 'tech' | 'billing'; id: string }[];
-  authInfo: string;
-};
-
-type CliAction =
-  | { kind: 'empty' }
-  | { kind: 'help' }
-  | { kind: 'quit' }
-  | { kind: 'hello' }
-  | { kind: 'login'; user?: string; pw?: string }
-  | { kind: 'logout' }
-  | { kind: 'check'; names: string[]; withFee?: boolean }
-  | { kind: 'info'; name: string; authInfo?: string }
-  | { kind: 'create'; payload: DomainCreatePayload }
-  | { kind: 'renew'; payload: DomainRenewPayload }
-  | { kind: 'poll'; op: 'req' | 'ack'; msgID?: string }
-  | { kind: 'send-raw'; xml: string; source: 'inline' | 'file' }
-  | { kind: 'set-format'; format: OutputFormat }
-  | { kind: 'set-pretty'; value: boolean }
-  | { kind: 'set-color'; value: boolean }
-  | { kind: 'set-trace-log'; level: TraceLogLevel }
-  | { kind: 'set-endpoint'; host: string; port?: number; tls?: boolean }
-  | { kind: 'add-ns'; name: string; ns: string[] }
-  | {
-      kind: 'update-ds';
-      payload: DomainUpdateDsPayload;
-    }
-  | { kind: 'clear-ds'; name: string }
-  | { kind: 'remove-ns'; name: string; ns: string[] }
-  | { kind: 'lock'; names: string[] }
-  | { kind: 'unlock'; names: string[] }
-  | { kind: 'unknown'; message: string };
+import {
+  type CliState,
+  type OutputFormat,
+  type TraceLogLevel,
+  type DomainCreatePayload,
+  parseBoolean,
+} from './commands';
+import {
+  findCommandByPrefix,
+  getAllCompletions,
+  getHelpLines,
+  type ExecutionContext,
+  type RuntimeCommand,
+} from './command-registry';
 
 const DOMAIN_NS = 'urn:ietf:params:xml:ns:domain-1.0';
-const FEE_NS = 'urn:ietf:params:xml:ns:epp:fee-1.0';
 
-/**
- * Build fee:check extension for domain check command.
- * Queries pricing for create, transfer, and renew operations.
- */
-function buildFeeCheckExtension(): Record<string, unknown> {
-  return {
-    'fee:check': {
-      '@_xmlns:fee': FEE_NS,
-      'fee:currency': 'USD',
-      'fee:command': [
-        { '@_name': 'create' },
-        { '@_name': 'transfer' },
-        { '@_name': 'renew' },
-      ],
-    },
-  };
-}
-
-interface CliState {
-  format: OutputFormat;
-  connection?: ConnectOptions;
-  credentials?: EppCredentials;
-  session?: EppSessionConfig;
-  client?: EppClientRuntime;
-  logXml: boolean;
-  logParsed: boolean;
-  pretty: boolean;
-  color: boolean;
-}
-
-function defaultSession(): EppSessionConfig {
+function defaultSession(): NonNullable<CliState['session']> {
   const objUrIs = process.env.EPP_OBJ_URIS?.split(',')
     .map((v) => v.trim().replaceAll('"', ''))
     .filter(Boolean) ?? [DOMAIN_NS];
@@ -493,575 +410,105 @@ function expandEnv(tokens: string[]): { tokens: string[]; missing: string[] } {
   return { tokens: expanded, missing: Array.from(missing) };
 }
 
-/**
- * Parse create command arguments:
- * create <domain> <authInfo> [period] [ns1,ns2,...] [registrant] [admin:id] [tech:id] [billing:id]
- *
- * Period format: 1y, 2y, 12m, etc.
- * Nameservers: comma-separated list
- * Contacts: type:id format (e.g., admin:sh8013, tech:sh8013)
- */
-function parseCreatePayload(args: string[]): DomainCreatePayload | null {
-  if (args.length < 2) return null;
+// =============================================================================
+// Command Parsing & Execution (uses registry)
+// =============================================================================
 
-  const [name, authInfo, ...rest] = args;
-  const payload: DomainCreatePayload = { name, authInfo };
-
-  for (const arg of rest) {
-    // Check if it's a period (e.g., 1y, 2y, 12m)
-    const periodMatch = arg.match(/^(\d+)(y|m)$/i);
-    if (periodMatch) {
-      payload.period = {
-        value: Number.parseInt(periodMatch[1], 10),
-        unit: periodMatch[2].toLowerCase() as 'y' | 'm',
-      };
-      continue;
-    }
-
-    // Check if it's a contact (type:id format)
-    const contactMatch = arg.match(/^(admin|tech|billing):(.+)$/i);
-    if (contactMatch) {
-      payload.contacts ??= [];
-      payload.contacts.push({
-        type: contactMatch[1].toLowerCase() as 'admin' | 'tech' | 'billing',
-        id: contactMatch[2],
-      });
-      continue;
-    }
-
-    // Check if it looks like nameservers (contains comma or looks like a hostname)
-    if (arg.includes(',') || arg.match(/^ns\d*\./i)) {
-      payload.ns = arg
-        .split(',')
-        .map((s) => s.trim())
-        .filter(Boolean);
-      continue;
-    }
-
-    // Otherwise, treat as registrant if not set
-    if (!payload.registrant) {
-      payload.registrant = arg;
-    }
-  }
-
-  return payload;
+interface ParsedCommand {
+  command: RuntimeCommand | undefined;
+  payload: unknown;
+  error?: string;
 }
 
-function parseAction(input: string): CliAction {
-  if (!input.trim()) return { kind: 'empty' };
+function parseCommand(input: string): ParsedCommand {
+  if (!input.trim()) return { command: undefined, payload: undefined };
+
   const { tokens, missing } = expandEnv(tokenize(input.trim()));
   if (missing.length) {
     console.warn(
       `Missing env vars (${missing.join(', ')}); replaced with empty string.`,
     );
   }
-  if (!tokens.length) return { kind: 'empty' };
+  if (!tokens.length) return { command: undefined, payload: undefined };
 
-  const [command, ...rest] = tokens;
-  const cmd = command.toLowerCase();
-
-  if (cmd === 'help' || cmd === '?') return { kind: 'help' };
-  if (cmd === 'exit' || cmd === 'quit') return { kind: 'quit' };
-
-  if (cmd === 'set' && rest.length) {
-    const target = rest[0].toLowerCase();
-    if (target === 'format' && rest[1]) {
-      const fmt = rest[1].toLowerCase();
-      if (fmt === 'json' || fmt === 'xml' || fmt === 'yaml') {
-        return { kind: 'set-format', format: fmt };
-      }
-      return {
-        kind: 'unknown',
-        message: 'Supported formats: JSON | XML | YAML',
-      };
-    }
-    if (target === 'pretty' && rest[1]) {
-      return { kind: 'set-pretty', value: parseBoolean(rest[1], true) };
-    }
-    if (target === 'color' && rest[1]) {
-      return { kind: 'set-color', value: parseBoolean(rest[1], true) };
-    }
-    if ((target === 'trace_log' || target === 'tracelog') && rest[1]) {
-      const level = rest[1].toLowerCase();
-      if (
-        level === 'none' ||
-        level === 'xml' ||
-        level === 'parsed' ||
-        level === 'both'
-      ) {
-        return { kind: 'set-trace-log', level };
-      }
-      return {
-        kind: 'unknown',
-        message: 'Supported trace log levels: NONE | XML | PARSED | BOTH',
-      };
-    }
-    if (target === 'endpoint' && rest[1]) {
-      const host = rest[1];
-      const port = rest[2] ? Number(rest[2]) : undefined;
-      const tls = rest[3] ? parseBoolean(rest[3]) : undefined;
-      return { kind: 'set-endpoint', host, port, tls };
-    }
-  }
-
-  if (cmd === 'hello') return { kind: 'hello' };
-  if (cmd === 'login') {
-    return { kind: 'login', user: rest[0], pw: rest[1] };
-  }
-  if (cmd === 'logout') return { kind: 'logout' };
-  if (cmd === 'unlock') {
-    return { kind: 'unlock', names: rest };
-  }
-  if (cmd === 'lock') {
-    return { kind: 'lock', names: rest };
-  }
-  if (cmd === 'add-ns') {
-    return { kind: 'add-ns', name: rest[0], ns: rest.slice(1) };
-  }
-  if (cmd === 'remove-ns') {
-    return { kind: 'remove-ns', name: rest[0], ns: rest.slice(1) };
-  }
-  if (cmd === 'check') {
-    // Parse --with-fee flag
-    const withFee = rest.some((arg) => arg === '--with-fee');
-    const names = rest.filter((arg) => arg !== '--with-fee');
-    if (!names.length)
-      return {
-        kind: 'unknown',
-        message: 'Usage: check <domain1> [domain2 ...] [--with-fee]',
-      };
-    return { kind: 'check', names, withFee };
-  }
-  if (cmd === 'info') {
-    if (!rest.length)
-      return {
-        kind: 'unknown',
-        message: 'Usage: info <domain> [authInfo]',
-      };
-    return { kind: 'info', name: rest[0], authInfo: rest[1] };
-  }
-  if (cmd === 'create') {
-    // create <domain> <authInfo> [period] [ns1,ns2,...] [registrant] [admin:id] [tech:id] [billing:id]
-    if (rest.length < 2)
-      return {
-        kind: 'unknown',
-        message:
-          'Usage: create <domain> <authInfo> [period] [ns1,ns2,...] [registrant] [contacts...]',
-      };
-    const payload = parseCreatePayload(rest);
-    if (!payload)
-      return {
-        kind: 'unknown',
-        message:
-          'Usage: create <domain> <authInfo> [period] [ns1,ns2,...] [registrant] [admin:id] [tech:id] [billing:id]',
-      };
-    return { kind: 'create', payload };
-  }
-  if (cmd === 'renew') {
+  const { command, args } = findCommandByPrefix(tokens);
+  if (!command) {
     return {
-      kind: 'renew',
-      payload: {
-        name: rest[0],
-        period: rest[1],
-        curExpDate: rest[2],
-      },
-    };
-  }
-  if (cmd === 'update-ds') {
-    if (rest.length < 5)
-      return {
-        kind: 'unknown',
-        message:
-          'Usage: update-ds <domain> <keyTag> <alg> <digestType> <digest>',
-      };
-
-    return {
-      kind: 'update-ds',
-      payload: {
-        name: rest[0],
-        keyTag: rest[1],
-        alg: rest[2],
-        digestType: rest[3],
-        digest: rest[4],
-      },
+      command: undefined,
+      payload: undefined,
+      error: `Unknown command: ${tokens[0]}`,
     };
   }
 
-  if (cmd === 'clear-ds') {
-    return {
-      kind: 'clear-ds',
-      name: rest[0],
-    };
+  const parseResult = command.parseArgs(args);
+  if (!parseResult.ok) {
+    return { command: undefined, payload: undefined, error: parseResult.error };
   }
 
-  if (cmd === 'poll') {
-    if (!rest.length) return { kind: 'poll', op: 'req' };
-    const op = rest[0].toLowerCase();
-    if (op === 'ack') {
-      return { kind: 'poll', op: 'ack', msgID: rest[1] };
-    }
-    if (op === 'req') return { kind: 'poll', op: 'req' };
-  }
-
-  if (cmd === 'raw') {
-    if (!rest.length) {
-      return {
-        kind: 'unknown',
-        message: "Usage: raw @/path/to/file.xml  OR  raw '<epp>...</epp>'",
-      };
-    }
-    const arg = rest[0];
-    // File input: raw @/path/to/file.xml
-    if (arg.startsWith('@')) {
-      const filePath = arg.slice(1);
-      if (!filePath) {
-        return { kind: 'unknown', message: 'File path required after @' };
-      }
-      try {
-        const xml = fs.readFileSync(filePath, 'utf-8');
-        return { kind: 'send-raw', xml, source: 'file' };
-      } catch (err) {
-        return {
-          kind: 'unknown',
-          message: `Failed to read file: ${filePath} - ${err instanceof Error ? err.message : String(err)}`,
-        };
-      }
-    }
-    // Inline XML: raw '<epp>...</epp>' (quotes handled by tokenizer)
-    // Join all remaining tokens in case XML was split
-    const xml = rest.join(' ');
-    if (!xml.includes('<')) {
-      return {
-        kind: 'unknown',
-        message:
-          "Invalid XML. Usage: raw @/path/to/file.xml  OR  raw '<epp>...</epp>'",
-      };
-    }
-    return { kind: 'send-raw', xml, source: 'inline' };
-  }
-
-  return { kind: 'unknown', message: `Unknown command: ${command}` };
+  return { command, payload: parseResult.payload };
 }
 
-async function executeAction(
+// Create execution context with all utilities needed by commands
+function createExecutionContext(): ExecutionContext {
+  return {
+    ensureClient,
+    resetClient,
+    runCommand,
+    printResult,
+    printHelloResult,
+    printRawResult,
+    defaultSession,
+    getTraceLogLevel,
+    send,
+    sendCommand,
+    sendRaw,
+    buildHelloEnvelope,
+    buildLoginCommand,
+    buildLogoutCommand,
+    buildDomainCheckCommand,
+    buildDomainInfoCommand,
+    buildDomainCreateCommand,
+    buildDomainRenewCommand,
+    buildDomainTransferCommand,
+    buildPollReqCommand,
+    buildPollAckCommand,
+    buildEppEnvelope,
+  };
+}
+
+async function executeCommand(
   state: CliState,
-  action: CliAction,
+  input: string,
 ): Promise<boolean> {
-  switch (action.kind) {
-    case 'empty':
-      return true;
-    case 'help':
-      renderHelp(state);
-      return true;
-    case 'quit':
-      resetClient(state);
-      return false;
-    case 'set-format':
-      state.format = action.format;
-      console.log(`Format set to ${action.format.toUpperCase()}`);
-      return true;
-    case 'set-pretty':
-      state.pretty = action.value;
-      console.log(`Pretty output ${state.pretty ? 'enabled' : 'disabled'}`);
-      return true;
-    case 'set-color':
-      state.color = action.value;
-      console.log(`Color ${state.color ? 'enabled' : 'disabled'}`);
-      return true;
-    case 'set-trace-log': {
-      state.logXml = action.level === 'xml' || action.level === 'both';
-      state.logParsed = action.level === 'parsed' || action.level === 'both';
-      // Update existing client options if client is connected
-      if (state.client) {
-        state.client.options.logXml = state.logXml;
-        state.client.options.logParsed = state.logParsed;
-      }
-      console.log(
-        `Trace log set to ${action.level.toUpperCase()} (xml=${state.logXml ? 'on' : 'off'}, parsed=${state.logParsed ? 'on' : 'off'})`,
-      );
-      return true;
-    }
-    case 'set-endpoint': {
-      const port = action.port ?? state.connection?.port ?? 700;
-      const tls = action.tls ?? state.connection?.tls ?? true;
-      state.connection = { host: action.host, port, tls };
-      resetClient(state);
-      console.log(
-        `Endpoint set to ${action.host}:${port} (tls=${tls ? 'on' : 'off'}). Connection reset.`,
-      );
-      return true;
-    }
-    case 'hello': {
-      const client = await ensureClient(state);
-      if (!client) return true;
-      const result = await send(client, buildHelloEnvelope());
-      printHelloResult(result, state);
-      return true;
-    }
-    case 'login': {
-      const user =
-        action.user ?? state.credentials?.clID ?? process.env.EPP_USER;
-      const pw = action.pw ?? state.credentials?.pw ?? process.env.EPP_PASS;
-      if (!user || !pw) {
-        console.error(
-          'login requires <user> <password> or EPP_USER/EPP_PASS env vars.',
-        );
-        return true;
-      }
-      state.credentials = { clID: user, pw };
-      state.session ??= defaultSession();
-      await runCommand(state, 'login', (client) =>
-        sendCommand(
-          client,
-          buildLoginCommand({
-            clID: user,
-            pw,
-            version: state.session?.version ?? '1.0',
-            lang: state.session?.lang ?? 'en',
-            objURIs: state.session?.services?.objURIs ?? [DOMAIN_NS],
-            extURIs: state.session?.services?.extURIs,
-          }),
-        ),
-      );
-      return true;
-    }
-    case 'renew': {
-      await runCommand(state, 'create', (client) =>
-        sendCommand(
-          client,
-          buildDomainRenewCommand({
-            name: action.payload.name,
-            period: {
-              unit: 'y',
-              value: Number.parseInt(action.payload.period),
-            },
-            curExpDate: action.payload.curExpDate,
-          }),
-        ),
-      );
-      return true;
-    }
-    case 'logout':
-      await runCommand(state, 'logout', (client) =>
-        sendCommand(client, buildLogoutCommand()),
-      );
-      return true;
-    case 'check': {
-      const checkOpts = action.withFee
-        ? { extension: buildFeeCheckExtension() }
-        : undefined;
-      await runCommand(state, 'check', (client) =>
-        sendCommand(client, buildDomainCheckCommand(action.names, checkOpts)),
-      );
-      return true;
-    }
-    case 'info':
-      await runCommand(state, 'info', (client) =>
-        sendCommand(
-          client,
-          buildDomainInfoCommand({
-            name: action.name,
-            authInfo: action.authInfo,
-          }),
-        ),
-      );
-      return true;
-    case 'create':
-      await runCommand(state, 'create', (client) =>
-        sendCommand(client, buildDomainCreateCommand(action.payload)),
-      );
-      return true;
-    case 'poll': {
-      const msgId = action.op === 'ack' ? action.msgID : undefined;
-      if (action.op === 'ack' && !msgId) {
-        console.error('poll ack requires a message ID: poll ack <msgID>');
-        return true;
-      }
-      await runCommand(state, 'poll', (client) =>
-        sendCommand(
-          client,
-          action.op === 'req'
-            ? buildPollReqCommand()
-            : buildPollAckCommand(msgId!),
-        ),
-      );
-      return true;
-    }
-    case 'send-raw': {
-      const client = await ensureClient(state);
-      if (!client) return true;
-      const result = await sendRaw(client, action.xml);
-      printRawResult(result, action.source, state);
-      return true;
-    }
-    case 'unlock':
-    case 'lock': {
-      const client = await ensureClient(state);
-      if (!client) return true;
-      const result = await send(
-        client,
-        buildEppEnvelope({
-          'epp:update': {
-            'domain:update': {
-              'domain:name': action.names[0],
-              [action.kind === 'lock' ? 'domain:add' : 'domain:rem']: {
-                'domain:status': [
-                  {
-                    '@_s': 'clientTransferProhibited',
-                    '#text': '',
-                  },
-                ],
-              },
-            },
-          },
-        } as const),
-      );
-      printResult(action.kind, result, state);
-      return true;
-    }
-    case 'add-ns': {
-      const client = await ensureClient(state);
-      if (!client) return true;
-      const result = await send(
-        client,
-        buildEppEnvelope({
-          'epp:update': {
-            'domain:update': {
-              'domain:name': action.name,
-              ['domain:add']: {
-                'domain:ns': {
-                  'domain:hostObj': action.ns,
-                },
-              },
-            },
-          },
-        } as const),
-      );
-      printResult(action.kind, result, state);
-      return true;
-    }
-    case 'remove-ns': {
-      const client = await ensureClient(state);
-      if (!client) return true;
-      const result = await send(
-        client,
-        buildEppEnvelope({
-          'epp:update': {
-            'domain:update': {
-              'domain:name': action.name,
-              ['domain:rem']: {
-                'domain:ns': {
-                  'domain:hostObj': action.ns,
-                },
-              },
-            },
-          },
-        } as const),
-      );
-      printResult(action.kind, result, state);
-      return true;
-    }
-    case 'update-ds': {
-      const client = await ensureClient(state);
-      if (!client) return true;
-      const result = await send(
-        client,
-        buildEppEnvelope({
-          'epp:update': {
-            'domain:update': {
-              'domain:name': action.payload.name,
-            },
-          },
-          'epp:extension': {
-            'secDNS:update': {
-              'secDNS:add': {
-                'secDNS:dsData': [
-                  {
-                    'secDNS:keyTag': action.payload.keyTag,
-                    'secDNS:alg': action.payload.alg,
-                    'secDNS:digestType': action.payload.digestType,
-                    'secDNS:digest': action.payload.digest,
-                  },
-                ],
-              },
-            },
-          },
-        } as const),
-      );
-      printResult(action.kind, result, state);
-      return true;
-    }
-    case 'clear-ds': {
-      const client = await ensureClient(state);
-      if (!client) return true;
-      const result = await send(
-        client,
-        buildEppEnvelope({
-          'epp:update': {
-            'domain:update': {
-              'domain:name': action.name,
-            },
-          },
-          'epp:extension': {
-            'secDNS:update': {
-              'secDNS:rem': {
-                'secDNS:all': 'true',
-              },
-            },
-          },
-        } as const),
-      );
-      printResult(action.kind, result, state);
-      return true;
-    }
-    case 'unknown':
-      console.error(action.message);
-      return true;
+  const parsed = parseCommand(input);
+
+  // Empty input - continue REPL
+  if (!parsed.command && !parsed.error) {
+    return true;
   }
+
+  // Parse error
+  if (parsed.error) {
+    console.error(parsed.error);
+    return true;
+  }
+
+  // Special handling for help command
+  if (parsed.command!.kind === 'help') {
+    renderHelp(state);
+    return true;
+  }
+
+  // Execute the command
+  const ctx = createExecutionContext();
+  return parsed.command!.execute(state, parsed.payload, ctx);
 }
 
 function renderHelp(state: CliState): void {
-  console.log('Commands:');
-  console.log('- help                     Show this help');
-  console.log('- hello                    Send <hello>');
-  console.log(
-    '- login [user] [pass]      Send <login> (env $EPP_USER/$EPP_PASS supported)',
-  );
-  console.log('- logout                   Send <logout>');
-  console.log('- check <d1> [d2 ...] [--with-fee]');
-  console.log(
-    '                           Send <domain:check> for one or more domains',
-  );
-  console.log(
-    '                           --with-fee: include fee extension for pricing',
-  );
-  console.log('- info <domain> [authInfo] Send <domain:info> for a domain');
-  console.log(
-    '- create <domain> <authInfo> [period] [ns1,ns2] [registrant] [admin:id] [tech:id] [billing:id]',
-  );
-  console.log(
-    '                           Send <domain:create> to register a domain',
-  );
-  console.log('- poll                     Send <poll op="req">');
-  console.log('- poll ack <msgID>         Acknowledge a poll message');
-  console.log('- raw @/path/to/file.xml   Send raw XML from file');
-  console.log("- raw '<epp>...</epp>'     Send raw inline XML");
-  console.log(
-    '- SET FORMAT JSON|XML|YAML Change response output format (current ' +
-      state.format.toUpperCase() +
-      ')',
-  );
-  console.log(
-    `- SET PRETTY 1|0           Pretty-print output (current ${state.pretty ? '1' : '0'})`,
-  );
-  console.log(
-    `- SET COLOR 1|0            Colorize headers (current ${state.color ? '1' : '0'})`,
-  );
-  console.log(
-    `- SET TRACE_LOG NONE|XML|PARSED|BOTH  Trace logging (current ${getTraceLogLevel(state).toUpperCase()})`,
-  );
-  console.log('- SET ENDPOINT host [port] [tls]');
-  console.log('- quit | exit              Exit the shell');
+  const lines = getHelpLines(state, getTraceLogLevel);
+  for (const line of lines) {
+    console.log(line);
+  }
 }
 
 function getTraceLogLevel(state: CliState): TraceLogLevel {
@@ -1098,41 +545,7 @@ function saveHistory(history: string[]): void {
 
 async function startRepl(): Promise<void> {
   const state = createState();
-  const completions = [
-    'help',
-    'hello',
-    'login',
-    'logout',
-    'check',
-    'lock',
-    'unlock',
-    'add-ns',
-    'update-ds',
-    'clear-ds',
-    'remove-ns',
-    'check --with-fee',
-    'renew',
-    'info',
-    'create',
-    'poll',
-    'poll ack',
-    'raw',
-    'raw @',
-    'SET FORMAT JSON',
-    'SET FORMAT XML',
-    'SET FORMAT YAML',
-    'SET PRETTY 1',
-    'SET PRETTY 0',
-    'SET COLOR 1',
-    'SET COLOR 0',
-    'SET TRACE_LOG NONE',
-    'SET TRACE_LOG XML',
-    'SET TRACE_LOG PARSED',
-    'SET TRACE_LOG BOTH',
-    'SET ENDPOINT',
-    'quit',
-    'exit',
-  ];
+  const completions = getAllCompletions();
 
   const history = loadHistory();
   ensureClient(state);
@@ -1166,8 +579,7 @@ async function startRepl(): Promise<void> {
 
   rl.on('line', (line) => {
     void (async () => {
-      const action = parseAction(line);
-      const keepGoing = await executeAction(state, action);
+      const keepGoing = await executeCommand(state, line);
       if (!keepGoing) {
         cleanup();
         rl.close();
@@ -1295,12 +707,12 @@ async function startInteractive(): Promise<void> {
         ],
         default: getTraceLogLevel(state),
       });
-      await executeAction(state, { kind: 'set-trace-log', level });
+      await executeCommand(state, `set trace_log ${level}`);
       continue;
     }
 
     if (choice === 'hello') {
-      await executeAction(state, { kind: 'hello' });
+      await executeCommand(state, 'hello');
       continue;
     }
 
@@ -1313,12 +725,12 @@ async function startInteractive(): Promise<void> {
         message: 'Password',
         default: state.credentials?.pw ?? process.env.EPP_PASS ?? '',
       });
-      await executeAction(state, { kind: 'login', user, pw });
+      await executeCommand(state, `login "${user}" "${pw}"`);
       continue;
     }
 
     if (choice === 'logout') {
-      await executeAction(state, { kind: 'logout' });
+      await executeCommand(state, 'logout');
       continue;
     }
 
@@ -1339,7 +751,8 @@ async function startInteractive(): Promise<void> {
         message: 'Include fee extension (pricing info)?',
         default: false,
       });
-      await executeAction(state, { kind: 'check', names, withFee });
+      const feeFlag = withFee ? ' --with-fee' : '';
+      await executeCommand(state, `check ${names.join(' ')}${feeFlag}`);
       continue;
     }
 
@@ -1356,11 +769,8 @@ async function startInteractive(): Promise<void> {
         message: 'Auth info (optional, press enter to skip)',
         default: '',
       });
-      await executeAction(state, {
-        kind: 'info',
-        name,
-        authInfo: authInfo || undefined,
-      });
+      const authPart = authInfo ? ` "${authInfo}"` : '';
+      await executeCommand(state, `info "${name}"${authPart}`);
       continue;
     }
 
@@ -1407,42 +817,21 @@ async function startInteractive(): Promise<void> {
         default: '',
       });
 
-      const payload: DomainCreatePayload = { name, authInfo };
+      // Build command string
+      const parts = [`create "${name}" "${authInfo}"`];
+      if (periodStr) parts.push(periodStr);
+      if (nsStr) parts.push(nsStr);
+      if (registrant) parts.push(registrant);
+      if (adminContact) parts.push(`admin:${adminContact}`);
+      if (techContact) parts.push(`tech:${techContact}`);
+      if (billingContact) parts.push(`billing:${billingContact}`);
 
-      if (periodStr) {
-        const periodMatch = periodStr.match(/^(\d+)(y|m)$/i);
-        if (periodMatch) {
-          payload.period = {
-            value: Number.parseInt(periodMatch[1], 10),
-            unit: periodMatch[2].toLowerCase() as 'y' | 'm',
-          };
-        }
-      }
-
-      if (nsStr) {
-        payload.ns = nsStr
-          .split(',')
-          .map((s) => s.trim())
-          .filter(Boolean);
-      }
-
-      if (registrant) {
-        payload.registrant = registrant;
-      }
-
-      const contacts: DomainCreatePayload['contacts'] = [];
-      if (adminContact) contacts.push({ type: 'admin', id: adminContact });
-      if (techContact) contacts.push({ type: 'tech', id: techContact });
-      if (billingContact)
-        contacts.push({ type: 'billing', id: billingContact });
-      if (contacts.length) payload.contacts = contacts;
-
-      await executeAction(state, { kind: 'create', payload });
+      await executeCommand(state, parts.join(' '));
       continue;
     }
 
     if (choice === 'poll-req') {
-      await executeAction(state, { kind: 'poll', op: 'req' });
+      await executeCommand(state, 'poll req');
       continue;
     }
 
@@ -1452,7 +841,7 @@ async function startInteractive(): Promise<void> {
         console.error('Message ID is required for poll ack.');
         continue;
       }
-      await executeAction(state, { kind: 'poll', op: 'ack', msgID: msgId });
+      await executeCommand(state, `poll ack ${msgId}`);
       continue;
     }
 
@@ -1470,30 +859,17 @@ async function startInteractive(): Promise<void> {
           console.error('File path is required.');
           continue;
         }
-        try {
-          const xml = fs.readFileSync(filePath, 'utf-8');
-          await executeAction(state, { kind: 'send-raw', xml, source: 'file' });
-        } catch (err) {
-          console.error(
-            `Failed to read file: ${err instanceof Error ? err.message : String(err)}`,
-          );
-        }
+        await executeCommand(state, `raw @${filePath}`);
       } else {
         const xml = await input({ message: 'XML (paste and press enter)' });
         if (!xml || !xml.includes('<')) {
           console.error('Invalid XML.');
           continue;
         }
-        await executeAction(state, { kind: 'send-raw', xml, source: 'inline' });
+        await executeCommand(state, `raw '${xml}'`);
       }
     }
   }
-}
-
-function parseBoolean(value: string | undefined, fallback = false): boolean {
-  if (value === undefined) return fallback;
-  const normalized = value.toLowerCase();
-  return !['false', '0', 'no', 'off'].includes(normalized);
 }
 
 function shouldUseColor(state: CliState): boolean {
