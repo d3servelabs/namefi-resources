@@ -1,5 +1,6 @@
 import * as chains from 'viem/chains';
 import type { ConfigInput } from '../schema';
+import { Registrars } from '@namefi-astra/registrars/registrars/registrars-keys';
 
 const developmentConfig: ConfigInput = {
   LOG_LEVEL: 'debug',
@@ -38,6 +39,8 @@ const developmentConfig: ConfigInput = {
   DNSSEC_DNSKEY_KEY_TAG: 22005,
   MAX_AI_GENERATIONS_PER_USER_PER_MONTH: 100,
   BIGQUERY_AUDIT_SERVICE_NAMES: ['namefi-astra-api-dev'],
+
+  CENTRALNIC_KEY: Registrars.CentralNic_OTE_01,
 };
 
 export default developmentConfig;

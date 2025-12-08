@@ -1,5 +1,6 @@
 import * as chains from 'viem/chains';
 import type { ConfigInput } from '../schema';
+import { Registrars } from '@namefi-astra/registrars/registrars/registrars-keys';
 
 const localConfig: ConfigInput = {
   LOG_LEVEL: 'debug',
@@ -49,6 +50,7 @@ const localConfig: ConfigInput = {
   REQUIRE_TEMPORAL_SEARCH_ATTRIBUTES_VALIDATION: false,
 
   BIGQUERY_AUDIT_SERVICE_NAMES: ['namefi-astra-api-local'],
+  CENTRALNIC_KEY: Registrars.CentralNic_OTE_01,
 };
 
 export default localConfig;

@@ -96,6 +96,13 @@ export const secretsSchema = z.object({
   CENTRALNIC_CLID: z.string().optional(),
   CENTRALNIC_PASS: z.string().optional(),
   CENTRALNIC_HOST: z.string().optional(),
+  EPP_AUTH_GEN_PRIVATE_KEY: z
+    .string()
+    .optional()
+    .transform((val) => {
+      if (!val) return null;
+      return Buffer.from(val, 'base64').toString('utf-8');
+    }),
 });
 
 export type SecretsSchema = z.infer<typeof secretsSchema>;

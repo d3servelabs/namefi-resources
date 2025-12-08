@@ -82,6 +82,8 @@ export interface CentralNicConfig {
    * Rate limiter connection for distributed limiting
    */
   connection?: Bottleneck.IORedisConnection | Bottleneck.RedisConnection;
+
+  readonly eppAuthCodePrivateKey: string;
 }
 
 /** EPP namespace URIs */

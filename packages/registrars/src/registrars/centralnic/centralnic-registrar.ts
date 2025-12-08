@@ -12,6 +12,10 @@ import {
   buildDomainTransferCommand,
   buildFeeCheckExtension,
   buildSecDnsAddExtension,
+  buildChangeNsCommand,
+  buildDomainUpdateCommand,
+  buildToggleLockTransferCommand,
+  buildSecDnsClearExtension,
   DOMAIN_NS,
   CONTACT_NS,
   HOST_NS,
@@ -85,18 +89,12 @@ import {
   type DomainIndexFunctions,
   noopDomainIndexFunctions,
 } from './domain-index';
-import {
-  buildChangeNsCommand,
-  buildDomainUpdateCommand,
-  buildToggleLockTransferCommand,
-} from '../../../../epp-client/src/client/commands/domain/update';
-import { buildSecDnsClearExtension } from '../../../../epp-client/src/client/commands/extensions/secDns/update';
 import { parseDomainName } from '@namefi-astra/utils/parse-domain-name';
 import { differenceInMinutes, formatDate } from 'date-fns';
 import { signMessage } from '#lib/sign-message';
 
 function supportsContacts(tld: string) {
-  return tld !== 'pw';
+  return false; //TODO
 }
 
 /**
@@ -596,14 +594,10 @@ export class CentralNicRegistrarService extends AbstractRegistrarService {
   async retrieveAuthCode(domainName: PunycodeDomainName): Promise<string> {
     assertPunycodeDomainName(domainName);
     const payload = `${formatDate(new Date(), 'yyw')}-${domainName}`;
-    const privateKey = Buffer.from(
-      process.env.EPP_AUTH_GEN_PRIVATE_KEY ?? '',
-      'base64',
-    ).toString('utf-8');
 
     const signedPayload = signMessage({
       message: payload,
-      privateKey,
+      privateKey: this.config.eppAuthCodePrivateKey,
     });
 
     const authCode = `#z${signedPayload.slice(0, 6)}A1${signedPayload.slice(6, 12)}`;

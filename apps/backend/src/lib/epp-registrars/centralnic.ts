@@ -87,7 +87,8 @@ function getCentralnicRegistrarOte1(connection: any) {
   if (
     !secrets.CENTRALNIC_CLID ||
     !secrets.CENTRALNIC_PASS ||
-    !secrets.CENTRALNIC_HOST
+    !secrets.CENTRALNIC_HOST ||
+    !secrets.EPP_AUTH_GEN_PRIVATE_KEY
   ) {
     throw new Error('CentralNic credentials not set');
   }
@@ -188,6 +189,7 @@ function getCentralnicRegistrarOte1(connection: any) {
       registrar: Registrars.CentralNic_OTE_01,
     }) as any,
     connection,
+    eppAuthCodePrivateKey: secrets.EPP_AUTH_GEN_PRIVATE_KEY,
   });
 }
 
@@ -195,7 +197,8 @@ function getCentralnicRegistrarLive(connection: any) {
   if (
     !secrets.CENTRALNIC_CLID ||
     !secrets.CENTRALNIC_PASS ||
-    !secrets.CENTRALNIC_HOST
+    !secrets.CENTRALNIC_HOST ||
+    !secrets.EPP_AUTH_GEN_PRIVATE_KEY
   ) {
     throw new Error('CentralNic credentials not set');
   }
@@ -296,6 +299,7 @@ function getCentralnicRegistrarLive(connection: any) {
       registrar: Registrars.CentralNic,
     }) as any,
     connection,
+    eppAuthCodePrivateKey: secrets.EPP_AUTH_GEN_PRIVATE_KEY,
   });
 }
 
