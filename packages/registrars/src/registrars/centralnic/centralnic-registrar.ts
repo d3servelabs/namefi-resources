@@ -363,7 +363,9 @@ export class CentralNicRegistrarService extends AbstractRegistrarService {
         }),
       );
 
-      return handleEppResult(result, parseDomainInfoResponse);
+      return handleEppResult(result, (data) => {
+        return parseDomainInfoResponse(data, this.config.clID);
+      });
     });
 
     // Update domain index with fresh data
@@ -602,7 +604,7 @@ export class CentralNicRegistrarService extends AbstractRegistrarService {
       privateKey,
     });
 
-    const authCode = `$z${signedPayload.slice(0, 6)}A1${signedPayload.slice(6, 12)}`;
+    const authCode = `#z${signedPayload.slice(0, 6)}A1${signedPayload.slice(6, 12)}`;
 
     return this.executeCommand(async (client) => {
       await sendCommand(
@@ -892,7 +894,7 @@ export class CentralNicRegistrarService extends AbstractRegistrarService {
       if (result.ok) {
         let parsed: DomainRegistration | undefined;
         try {
-          parsed = parseDomainInfoResponse(result.data);
+          parsed = parseDomainInfoResponse(result.data, this.config.clID);
         } catch (error) {
           console.error(error);
         }

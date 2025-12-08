@@ -397,6 +397,7 @@ function createDefaultPrivacy(): DomainContactsPrivacy {
  */
 export function parseDomainInfoResponse(
   data: SendResult<EppEnvelopeXml>,
+  ownerToValidate?: string,
 ): DomainRegistration {
   const resData = getResData(data);
   const response = getEppResponse(data);
@@ -405,6 +406,10 @@ export function parseDomainInfoResponse(
   }
 
   const infData = safePropAccess('domain:infData', resData);
+
+  if (ownerToValidate) {
+    assertOwner(ownerToValidate, infData);
+  }
   const extData = safePropAccess('epp:extension', response);
   const secData = safePropAccess('secDNS:infData', extData);
   const dsData = safePropAccess('secDNS:dsData', secData);
@@ -796,3 +801,21 @@ function safePropAccess<P extends KeysOfUnion<O>, O>(
 }
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
+
+function getCurrentOwner(obj: DomainInfDataTypeXml): string | undefined {
+  return extractText(safePropAccess('domain:clID', obj));
+}
+
+export function assertOwner(
+  challengingOwner: string,
+  obj: DomainInfDataTypeXml,
+): string {
+  const owner = getCurrentOwner(obj);
+  if (!owner) {
+    throw new Error('Domain owner not found');
+  }
+  if (owner !== challengingOwner) {
+    throw new Error('Domain owner does not match');
+  }
+  return owner;
+}
