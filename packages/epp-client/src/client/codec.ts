@@ -3,7 +3,12 @@
  * Provides type-safe encoding (JSON -> XML) and decoding (XML -> JSON).
  */
 import { z, type ZodSchema, type ZodString } from 'zod';
-import { XMLParser, XMLBuilder } from 'fast-xml-parser';
+import {
+  type X2jOptions,
+  XMLParser,
+  XMLBuilder,
+  type XmlBuilderOptions,
+} from 'fast-xml-parser';
 import {
   EppEppXml,
   EppCommandTypeXml,
@@ -19,12 +24,14 @@ import {
   type EppGreetingTypeXml as EppGreetingType,
   namespaces,
 } from '../data/schemas/epp-core';
+import { zloosen } from '../utils/zod';
+import util from 'node:util';
 
 // Re-export types for convenience
 export type { EppEppTypeXml, EppCommandType, EppResponseType, EppGreetingType };
 
 // XML parser/builder configuration
-const parserOptions = {
+const parserOptions: X2jOptions = {
   ignoreAttributes: false,
   attributeNamePrefix: '@_',
   textNodeName: '#text',
@@ -32,18 +39,37 @@ const parserOptions = {
   parseAttributeValue: false,
   ignoreDeclaration: true,
   trimValues: true,
+  // isArray: (tagName, jPath, isLeafNode, isAttribute) => {
+  //   if (tagName === "epp:epp") return false;
+  //   if (isAttribute) return false;
+  //   console.log(
+  //     tagName,
+  //     jPath,
+  //     isLeafNode,
+  //     isAttribute,
+  //     isSingularNode(tagName, jPath),
+  //   );
+  //   return !isSingularNode(tagName, jPath);
+  // },
+  updateTag: (tagName, jPath, attrs) => {
+    if (tagName.includes(':')) {
+      return tagName;
+    }
+    return `epp:${tagName}`;
+  },
 };
 
-const builderOptions = {
+const builderOptions: XmlBuilderOptions = {
   ignoreAttributes: false,
   attributeNamePrefix: '@_',
   textNodeName: '#text',
-  suppressEmptyNode: true,
-  format: false,
+  suppressEmptyNode: false,
+  format: true,
+  preserveOrder: false,
 };
 
-const parser = new XMLParser(parserOptions);
-const builder = new XMLBuilder(builderOptions);
+export const parser = new XMLParser(parserOptions);
+export const builder = new XMLBuilder(builderOptions);
 
 /**
  * Create a Zod codec for bidirectional XML <-> JSON transformation.
@@ -55,15 +81,22 @@ export function createXmlCodec<S extends ZodSchema>(schema: S) {
      * Encode JSON object to XML string (validates against schema first).
      */
     encode(value: z.infer<S>): string {
-      const validated = schema.parse(value);
-      return builder.build(validated);
+      const validated = schema.safeParse(value);
+      if (!validated.success) {
+        console.log(value, validated.error);
+        throw new Error('Validation failed');
+      }
+      // intentionally not using builder.build(validated.data) to preserveOrder
+      return builder.build(value);
     },
     /**
      * Decode XML string to validated JSON object.
      */
     decode(xml: string): z.infer<S> {
       const parsed = parser.parse(xml);
-      return schema.parse(parsed);
+      // console.log(util.inspect(parsed, { depth: null }));
+      // return schema.parse(parsed);
+      return parsed;
     },
     /**
      * Safe decode - returns result object instead of throwing.
@@ -106,6 +139,13 @@ export function createXmlCodec<S extends ZodSchema>(schema: S) {
 
 // Pre-built codecs for common EPP structures
 export const EppCodec = createXmlCodec(EppEppXml);
+export const EppEnvelopeCodec = createXmlCodec(
+  zloosen(
+    z.object({
+      'epp:epp': EppEppXml,
+    }),
+  ),
+);
 export const EppCommandCodec = createXmlCodec(EppCommandTypeXml);
 export const EppResponseCodec = createXmlCodec(EppResponseTypeXml);
 export const EppGreetingCodec = createXmlCodec(EppGreetingTypeXml);
@@ -134,7 +174,7 @@ export function wrapInEppEnvelope(
   command: EppCommandType,
 ): Record<string, unknown> {
   return {
-    epp: {
+    'epp:epp': {
       '@_xmlns': EPP_NS,
       '@_xmlns:domain': DOMAIN_NS,
       '@_xmlns:contact': CONTACT_NS,
@@ -149,7 +189,7 @@ export function wrapInEppEnvelope(
  */
 export function createHelloEnvelope(): Record<string, unknown> {
   return {
-    epp: {
+    'epp:epp': {
       '@_xmlns': EPP_NS,
       'epp:hello': '',
     },
@@ -167,8 +207,8 @@ export type EppMessageType =
   | 'unknown';
 
 export function detectMessageType(xml: string): EppMessageType {
-  const parsed = parser.parse(xml) as { epp?: Record<string, unknown> };
-  const epp = parsed?.epp;
+  const parsed = parser.parse(xml) as { 'epp:epp'?: Record<string, unknown> };
+  const epp = parsed?.['epp:epp'];
   if (!epp) return 'unknown';
 
   if ('epp:greeting' in epp || 'greeting' in epp) return 'greeting';
@@ -187,8 +227,8 @@ export function extractFromEppEnvelope(xml: string): {
   content: unknown;
   raw: Record<string, unknown>;
 } {
-  const parsed = parser.parse(xml) as { epp?: Record<string, unknown> };
-  const epp = parsed?.epp;
+  const parsed = parser.parse(xml) as { ['epp:epp']?: Record<string, unknown> };
+  const epp = parsed?.['epp:epp'];
   if (!epp) {
     return { type: 'unknown', content: null, raw: parsed };
   }

@@ -1,45 +1,22 @@
 /** biome-ignore-all lint/suspicious/noExplicitAny: for higher leve types */
 /** biome-ignore-all lint/style/useNamingConvention: external constraints */
-import { XMLParser, XMLBuilder } from 'fast-xml-parser';
-import {
-  closeConnection,
-  connectEpp,
-  readFrame,
-  sendFrame,
-  type ConnectOptions,
-  type EppConnection,
-} from '../transport';
+import { sendFrame, readFrame, type ConnectOptions } from '../transport';
 import type { EppCredentials, EppSessionConfig } from '../protocol/core/types';
 import { err, ok, type Result } from './result';
 import type { EppCommand } from './commands';
 import {
   buildEppEnvelope,
-  buildHelloEnvelope,
   buildLoginCommand,
   buildLogoutCommand,
-  DOMAIN_NS,
-  CONTACT_NS,
-  HOST_NS,
 } from './commands';
-
-// XML parser/builder instances for encoding/decoding EPP messages
-const parser = new XMLParser({
-  ignoreAttributes: false,
-  attributeNamePrefix: '@_',
-  textNodeName: '#text',
-  parseTagValue: false,
-  parseAttributeValue: false,
-  ignoreDeclaration: true,
-  trimValues: true,
-});
-
-const builder = new XMLBuilder({
-  ignoreAttributes: false,
-  attributeNamePrefix: '@_',
-  textNodeName: '#text',
-  suppressEmptyNode: true,
-  format: false,
-});
+import {
+  createEppConnectionPool,
+  type EppConnectionPool,
+  type EppPoolOptions,
+  type PooledConnection,
+} from '../pool';
+import { EppEnvelopeCodec, EppLoginCodec, parser } from './codec';
+import z from 'zod';
 
 export interface EppLogger {
   debug?(message: string, meta?: Record<string, unknown>): void;
@@ -61,136 +38,171 @@ export interface CreateEppClientOptions {
    * Log parsed command/response payloads.
    */
   logParsed?: boolean;
+  /**
+   * Automatically login after connecting (requires credentials and session).
+   * Default: true (when credentials and session are provided)
+   */
+  autoLogin?: boolean;
+  /**
+   * Automatically logout when closing connections.
+   * Default: true when autoLogin is true
+   */
+  autoLogout?: boolean;
+  /**
+   * Connection pool configuration.
+   * Default: { min: 0, max: 1 } (single connection, created on demand)
+   */
+  pool?: EppPoolOptions;
 }
 
 export interface EppClientRuntime {
   options: CreateEppClientOptions;
-  conn?: EppConnection;
-  lastGreeting?: Record<string, unknown>;
-  loggedIn: boolean;
+  pool: EppConnectionPool;
   closed: boolean;
 }
 
+/**
+ * Create an EPP client with connection pooling.
+ *
+ * The client internally manages a connection pool. By default, a single
+ * connection is used (min: 0, max: 1). Configure `pool` options for
+ * multiple concurrent connections.
+ *
+ * @example
+ * ```ts
+ * const client = await createEppClient({
+ *   connection: { host: 'epp.example.com', port: 700, tls: true },
+ *   credentials: { clID: 'user', pw: 'pass' },
+ *   session: { services: { objURIs: [DOMAIN_NS] } },
+ *   autoLogin: true,
+ *   pool: { min: 2, max: 10 }, // optional: configure pool size
+ * });
+ *
+ * // Send commands - pool handles connection management
+ * const result = await sendCommand(client, buildDomainCheckCommand(['example.com']));
+ *
+ * // Close when done
+ * await closeClient(client);
+ * ```
+ */
 export async function createEppClient(
   options: CreateEppClientOptions,
 ): Promise<EppClientRuntime> {
-  const client: EppClientRuntime = {
+  // Determine if we should auto-login
+  const shouldAutoLogin =
+    options.autoLogin ?? !!(options.credentials && options.session);
+
+  const pool = createEppConnectionPool({
+    connection: options.connection,
+    pool: options.pool,
+
+    // Login handler - called after each connection is established
+    onLogin: shouldAutoLogin
+      ? async (conn) => {
+          try {
+            if (!options.credentials || !options.session) {
+              throw new Error(
+                'autoLogin requires credentials and session config',
+              );
+            }
+
+            const loginCmd = buildLoginCommand({
+              clID: options.credentials.clID,
+              pw: options.credentials.pw,
+              newPW: options.credentials.newPW,
+              version: options.session.version ?? '1.0',
+              lang: options.session.lang ?? 'en',
+              objURIs: options.session.services.objURIs,
+              extURIs: options.session.services.extURIs,
+            });
+
+            console.log('Sending login command');
+            console.log(loginCmd);
+            const envelope = buildEppEnvelope(loginCmd as any);
+            const xml = EppEnvelopeCodec.encode(envelope);
+            console.log({ xml });
+
+            await sendFrame(conn, xml);
+            const resXml = await readFrame(conn, { timeoutMs: 15_000 });
+
+            console.log(resXml);
+            // Parse and validate login response
+            const parsed = EppEnvelopeCodec.decode(resXml);
+            const eppNode = parsed['epp:epp'];
+            // console.log(eppNode);
+
+            const response =
+              'epp:response' in eppNode ? eppNode['epp:response'] : undefined;
+            const result =
+              !!response && 'epp:result' in response
+                ? response['epp:result']
+                : undefined;
+            const code =
+              !!result && '@_code' in result ? result['@_code'] : undefined;
+
+            if (!code || !String(code).startsWith('1')) {
+              throw new Error(`Login failed with code ${code}`);
+            }
+
+            logMessage(options, 'info', 'EPP auto-login successful');
+            return resXml;
+          } catch (error) {
+            logMessage(options, 'error', `EPP auto-login failed: ${error}`);
+            throw error;
+          }
+        }
+      : undefined,
+
+    // Logout handler - called before each connection is destroyed
+    onLogout:
+      (options.autoLogout ?? shouldAutoLogin)
+        ? async (conn) => {
+            try {
+              logMessage(options, 'info', 'EPP logging out...');
+              const logoutCmd = buildLogoutCommand({
+                clTRID: `logout-${Date.now()}`,
+              });
+              const envelope = buildEppEnvelope(logoutCmd);
+              const xml = EppEnvelopeCodec.encode(envelope);
+
+              await sendFrame(conn, xml);
+              await readFrame(conn, { timeoutMs: 5_000 });
+              logMessage(options, 'info', 'EPP logout successful');
+            } catch {
+              logMessage(options, 'warn', 'EPP logout failed during close');
+            }
+          }
+        : undefined,
+
+    // Validate handler - check if connection is still alive
+    onValidate: async (conn) => {
+      // Simple socket check - connection is valid if socket is not destroyed
+      return !conn.socket.destroyed;
+    },
+  });
+
+  return {
     options,
-    loggedIn: false,
+    pool,
     closed: false,
   };
-
-  const refreshed = await refreshSession(client);
-  if (!refreshed.ok) {
-    // Do not throw; caller can inspect the error and retry.
-    return client;
-  }
-  return client;
-}
-
-export async function refreshSession(
-  client: EppClientRuntime,
-): Promise<Result<void, string | undefined>> {
-  if (client.closed) {
-    return err({ reason: 'transport', message: 'Client is closed' });
-  }
-
-  if (client.conn) {
-    closeConnection(client.conn);
-    client.conn = undefined;
-  }
-
-  try {
-    const conn = await connectEpp(client.options.connection);
-    client.conn = conn;
-
-    // Read initial greeting
-    const greetingXml = await readFrame(conn, { timeoutMs: 10_000 });
-    const parsed = parser.parse(greetingXml) as Record<string, unknown>;
-    const eppNode = parsed.epp as Record<string, unknown> | undefined;
-
-    if (!eppNode) {
-      return err(
-        {
-          reason: 'protocol',
-          message: 'Invalid EPP response: missing <epp> root',
-        },
-        greetingXml,
-      );
-    }
-
-    // Extract greeting (handle both prefixed and non-prefixed)
-    const greeting = eppNode['epp:greeting'] ?? eppNode.greeting;
-    if (!greeting) {
-      return err(
-        { reason: 'protocol', message: 'Expected greeting on connect' },
-        greetingXml,
-      );
-    }
-
-    client.lastGreeting = greeting as Record<string, unknown>;
-    client.loggedIn = false;
-
-    // TODO LOGIN
-    // // Auto-login if credentials + session config exist
-    // if (client.options.credentials && client.options.session) {
-    //   const loginCmd = buildLoginCommand({
-    //     clID: client.options.credentials.clID,
-    //     pw: client.options.credentials.pw,
-    //     newPW: client.options.credentials.newPW,
-    //     version: client.options.session.version ?? "1.0",
-    //     lang: client.options.session.lang ?? "en",
-    //     objURIs: client.options.session.services.objURIs,
-    //     extURIs: client.options.session.services.extURIs,
-    //   });
-    //   const loginResult = await sendCommand(client, loginCmd);
-    //   if (!loginResult.ok) {
-    //     return err(loginResult.error, loginResult.raw);
-    //   }
-    //   client.loggedIn = true;
-    // }
-
-    return ok(undefined, greetingXml);
-  } catch (cause) {
-    log(client, 'error', 'EPP session refresh failed', { cause });
-    return err({
-      reason: 'transport',
-      message: 'Failed to refresh session',
-      cause,
-    });
-  }
 }
 
 /**
- * Gracefully close the client: sends logout if logged in, then closes the connection.
- * Always safe to call, even if already closed or not logged in.
+ * Gracefully close the client: drains the pool and closes all connections.
+ * Always safe to call, even if already closed.
  */
 export async function closeClient(client: EppClientRuntime): Promise<void> {
   if (client.closed) return;
 
-  // Send logout if we're logged in
-  if (client.loggedIn && client.conn && !client.conn.socket.destroyed) {
-    try {
-      const logoutCmd = buildLogoutCommand({ clTRID: `logout-${Date.now()}` });
-      await sendCommand(client, logoutCmd);
-      log(client, 'info', 'EPP logout successful');
-    } catch (cause) {
-      // Best-effort logout - don't fail the close operation
-      log(client, 'warn', 'EPP logout failed during close', { cause });
-    }
-    client.loggedIn = false;
-  }
-
   client.closed = true;
-  if (client.conn) {
-    closeConnection(client.conn);
-    client.conn = undefined;
-  }
+  await client.pool.drain();
+  await client.pool.clear();
 }
 
 /**
- * Execute a callback with an EPP client, ensuring proper login and logout lifecycle.
- * The client is automatically logged in (if credentials provided) and logged out when done.
+ * Execute a callback with an EPP client, ensuring proper lifecycle.
+ * The client pool is automatically drained when done.
  *
  * @example
  * ```ts
@@ -214,28 +226,16 @@ export async function withEppClient<T>(
 
 // ---------- Internal helpers ----------
 
-async function ensureConnected(
-  client: EppClientRuntime,
-): Promise<Result<void>> {
-  if (client.conn && !client.conn.socket.destroyed) {
-    return ok(undefined, undefined);
-  }
-  const refreshed = await refreshSession(client);
-  if (!refreshed.ok) return refreshed as Result<void>;
-  return ok(undefined, undefined);
-}
-
-function log(
-  client: EppClientRuntime,
+function logMessage(
+  options: CreateEppClientOptions,
   level: keyof EppLogger,
   message: string,
   meta?: Record<string, unknown>,
 ): void {
   const logger =
-    client.options.logger ??
-    // If caller requested logging or the message is important, fallback to console.
-    (client.options.logXml ||
-    client.options.logParsed ||
+    options.logger ??
+    (options.logXml ||
+    options.logParsed ||
     level === 'error' ||
     level === 'warn'
       ? consoleLogger
@@ -266,7 +266,7 @@ export interface SendResult<T = unknown> {
 
 /**
  * Send raw XML string and receive the parsed response.
- * This is the lowest-level send function.
+ * Automatically acquires a connection from the pool and releases it after.
  *
  * @example
  * ```ts
@@ -285,32 +285,37 @@ export async function sendRaw(
     return err({ reason: 'transport', message: 'Client is closed' });
   }
 
-  const ready = await ensureConnected(client);
-  if (!ready.ok) return ready as Result<SendResult, undefined>;
-
   const timeoutMs = opts.timeoutMs ?? 15_000;
 
   try {
-    if (client.options.logXml) log(client, 'debug', 'EPP send xml', { xml });
+    // Use pool.use() to automatically acquire and release connection
+    const result = await client.pool.use(async (pooled: PooledConnection) => {
+      const { conn } = pooled;
 
-    if (!client.conn) {
-      return err({ reason: 'transport', message: 'Client is closed' });
-    }
+      if (client.options.logXml) {
+        logMessage(client.options, 'debug', 'EPP send xml', { xml });
+      }
 
-    await sendFrame(client.conn, xml);
-    const resXml = await readFrame(client.conn, { timeoutMs });
+      await sendFrame(conn, xml);
+      const resXml = await readFrame(conn, { timeoutMs });
 
-    if (client.options.logXml)
-      log(client, 'debug', 'EPP recv xml', { xml: resXml });
+      if (client.options.logXml) {
+        logMessage(client.options, 'debug', 'EPP recv xml', { xml: resXml });
+      }
 
-    const parsed = parser.parse(resXml) as Record<string, unknown>;
+      //use decode
+      const parsed = parser.parse(resXml) as Record<string, unknown>;
 
-    if (client.options.logParsed)
-      log(client, 'debug', 'EPP recv parsed', { parsed });
+      if (client.options.logParsed) {
+        logMessage(client.options, 'debug', 'EPP recv parsed', { parsed });
+      }
 
-    return ok({ response: parsed, xml: resXml }, resXml);
+      return { response: parsed, xml: resXml };
+    });
+
+    return ok(result, result.xml);
   } catch (cause) {
-    log(client, 'error', 'EPP send failed', { cause });
+    logMessage(client.options, 'error', 'EPP send failed', { cause });
     return err({
       reason: 'transport',
       message: 'EPP send/receive failed',
@@ -342,7 +347,7 @@ export async function send(
   envelope: Record<string, unknown>,
   opts: { timeoutMs?: number } = {},
 ): Promise<Result<SendResult, string | undefined>> {
-  const xml = builder.build(envelope);
+  const xml = EppEnvelopeCodec.encode(envelope as any);
   return sendRaw(client, xml, opts);
 }
 

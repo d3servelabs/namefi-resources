@@ -201,6 +201,12 @@ async function ensureClient(
       session: state.session,
       logXml: state.logXml,
       logParsed: state.logParsed,
+      autoLogin: true,
+      autoLogout: true,
+      pool: {
+        min: 1,
+        max: 2,
+      },
     });
     return state.client;
   } catch (err) {
@@ -1129,6 +1135,7 @@ async function startRepl(): Promise<void> {
   ];
 
   const history = loadHistory();
+  ensureClient(state);
 
   const rl = readline.createInterface({
     input: process.stdin,

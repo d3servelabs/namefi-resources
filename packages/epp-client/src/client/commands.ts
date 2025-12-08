@@ -294,7 +294,7 @@ export function buildDomainRenewCommand(
   if (renew.period) {
     domainRenew['domain:period'] = {
       '@_unit': renew.period.unit,
-      '#text': renew.period.value,
+      '#text': renew.period.value.toString(),
     };
   }
 
@@ -432,9 +432,9 @@ export function buildHostInfoCommand(
  * Wrap a command in a full EPP envelope with namespace declarations.
  * This creates the structure ready for XML encoding.
  */
-export function buildEppEnvelope(command: EppCommand): Record<string, unknown> {
+export function buildEppEnvelope<E extends EppCommand>(command: E) {
   return {
-    epp: {
+    'epp:epp': {
       '@_xmlns': EPP_NS,
       '@_xmlns:epp': EPP_NS,
       '@_xmlns:domain': DOMAIN_NS,
@@ -449,7 +449,7 @@ export function buildEppEnvelope(command: EppCommand): Record<string, unknown> {
 
       'epp:command': command,
     },
-  };
+  } as const;
 }
 
 /**
@@ -457,8 +457,9 @@ export function buildEppEnvelope(command: EppCommand): Record<string, unknown> {
  */
 export function buildHelloEnvelope(): Record<string, unknown> {
   return {
-    epp: {
+    'epp:epp': {
       '@_xmlns': EPP_NS,
+      '@_xmlns:epp': EPP_NS,
       'epp:hello': '',
     },
   };

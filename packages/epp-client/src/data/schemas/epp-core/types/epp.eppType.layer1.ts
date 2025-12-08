@@ -7,23 +7,34 @@ import { EppGreetingTypeXml } from './epp.greetingType.layer1.js';
 import { EppCommandTypeXml } from './epp.commandType.layer1.js';
 import { EppResponseTypeXml } from './epp.responseType.layer1.js';
 import { EppExtAnyTypeXml } from './epp.extAnyType.layer1.js';
+import { zloosen } from '../../../../utils/zod.js';
 
 export const EppEppTypeXml = z.union([
-  z.object({
-    'epp:greeting': EppGreetingTypeXml,
-  }),
-  z.object({
-    'epp:hello': z.string(),
-  }),
-  z.object({
-    'epp:command': EppCommandTypeXml,
-  }),
-  z.object({
-    'epp:response': EppResponseTypeXml,
-  }),
-  z.object({
-    'epp:extension': EppExtAnyTypeXml,
-  }),
+  zloosen(
+    z.object({
+      'epp:greeting': zloosen(EppGreetingTypeXml),
+    }),
+  ),
+  zloosen(
+    z.object({
+      'epp:hello': z.string(),
+    }),
+  ),
+  zloosen(
+    z.object({
+      'epp:command': EppCommandTypeXml,
+    }),
+  ),
+  zloosen(
+    z.object({
+      'epp:response': zloosen(EppResponseTypeXml),
+    }),
+  ),
+  zloosen(
+    z.object({
+      'epp:extension': EppExtAnyTypeXml,
+    }),
+  ),
 ]);
 
 export type EppEppTypeXml = z.infer<typeof EppEppTypeXml>;
