@@ -512,6 +512,13 @@
       "when": 1764684987972,
       "tag": "0072_noisy_violations",
       "breakpoints": true
+    },
+    {
+      "idx": 73,
+      "version": "7",
+      "when": 1765198131839,
+      "tag": "0073_wandering_prodigy",
+      "breakpoints": true
     }
   ]
 }

@@ -839,6 +839,73 @@ export const aiGenerationsTable = pgTable(
   ],
 );
 
+export const publicAiGenerationsTable = pgTable(
+  'public_ai_generations',
+  {
+    ...randomUuid,
+    externalUserId: text('external_user_id').notNull(),
+    domain: text('domain').notNull().$type<NamefiNormalizedDomain>(),
+    type: aiGenerationTypeEnum('type').notNull(),
+    tokenUsage: jsonb('token_usage')
+      .$type<
+        Array<{
+          model: string;
+          inputTokens: number;
+          outputTokens: number;
+        }>
+      >()
+      .notNull()
+      .default([]),
+    input: jsonb('input').notNull().$type<
+      | {
+          type: 'logo';
+          logoType: string;
+          logoStyle: string;
+          description?: string;
+          imageModel?: string;
+        }
+      | {
+          type: 'marketing';
+          description?: string;
+          collateralType:
+            | 'billboard'
+            | 'apparel'
+            | 'vehicle'
+            | 'product'
+            | 'let_ai_choose';
+          imageModel?: string;
+          referenceLogoUrl?: string;
+        }
+    >(),
+    output: jsonb('output').notNull().$type<
+      | {
+          type: 'logo';
+          storagePath: string;
+          logoType?: string;
+          logoStyle?: string;
+          imageModel?: string;
+        }
+      | {
+          type: 'marketing';
+          storagePath: string;
+          collateralType:
+            | 'billboard'
+            | 'apparel'
+            | 'vehicle'
+            | 'product'
+            | 'let_ai_choose';
+          imageModel?: string;
+        }
+    >(),
+    metadata: jsonb('metadata').default({}),
+    ...timestamps,
+  },
+  (table) => [
+    index('public_ai_generations_external_user_idx').on(table.externalUserId),
+    index('public_ai_generations_domain_type_idx').on(table.domain, table.type),
+  ],
+);
+
 /**
  * Internal AI generations table
  * Stores AI-generated assets created by background jobs (non user-facing)

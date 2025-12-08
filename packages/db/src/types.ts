@@ -7,6 +7,7 @@ import {
 import { z } from 'zod';
 import {
   aiGenerationsTable,
+  publicAiGenerationsTable,
   internalAiGenerationsTable,
   cartItemsTable,
   dnsRecordsTable,
@@ -131,6 +132,16 @@ export const dnsRecordUpdateSchema = createUpdateSchema(dnsRecordsTable, {
 export const aiGenerationInsertSchema = createInsertSchema(aiGenerationsTable);
 export const aiGenerationSelectSchema = createSelectSchema(aiGenerationsTable);
 export const aiGenerationUpdateSchema = createUpdateSchema(aiGenerationsTable);
+
+export const publicAiGenerationInsertSchema = createInsertSchema(
+  publicAiGenerationsTable,
+);
+export const publicAiGenerationSelectSchema = createSelectSchema(
+  publicAiGenerationsTable,
+);
+export const publicAiGenerationUpdateSchema = createUpdateSchema(
+  publicAiGenerationsTable,
+);
 
 export const aiInternalGenerationInsertSchema = createInsertSchema(
   internalAiGenerationsTable,
