@@ -3,12 +3,12 @@
 import { sendFrame, readFrame, type ConnectOptions } from '../transport';
 import type { EppCredentials, EppSessionConfig } from '../protocol/core/types';
 import { err, ok, type Result } from './result';
-import type { EppCommand } from './commands';
+import type { EppCommandTypeXml } from './commands/index';
 import {
-  buildEppEnvelope,
+  buildEppEnvelopeFromCommand,
   buildLoginCommand,
   buildLogoutCommand,
-} from './commands';
+} from './commands/index';
 import {
   createEppConnectionPool,
   type EppConnectionPool,
@@ -19,6 +19,7 @@ import {
   EppEnvelopeCodec,
   EppLoginCodec,
   parser,
+  type EppEnvelopeXml,
   type EppResponseType,
 } from './codec';
 import z from 'zod';
@@ -121,7 +122,7 @@ export async function createEppClient(
               extURIs: options.session.services.extURIs,
             });
 
-            const envelope = buildEppEnvelope(loginCmd as any);
+            const envelope = buildEppEnvelopeFromCommand(loginCmd as any);
             const xml = EppEnvelopeCodec.encode(envelope);
 
             await sendFrame(conn, xml);
@@ -162,7 +163,7 @@ export async function createEppClient(
               const logoutCmd = buildLogoutCommand({
                 clTRID: `logout-${Date.now()}`,
               });
-              const envelope = buildEppEnvelope(logoutCmd);
+              const envelope = buildEppEnvelopeFromCommand(logoutCmd);
               const xml = EppEnvelopeCodec.encode(envelope);
 
               await sendFrame(conn, xml);
@@ -232,17 +233,33 @@ function logMessage(
   message: string,
   meta?: Record<string, unknown>,
 ): void {
-  const logger =
-    options.logger ??
-    (options.logXml ||
-    options.logParsed ||
-    level === 'error' ||
-    level === 'warn'
-      ? consoleLogger
-      : undefined);
-  const fn = logger?.[level];
-  if (typeof fn === 'function') {
-    fn(message, meta);
+  try {
+    const logger =
+      options.logger ??
+      (options.logXml ||
+      options.logParsed ||
+      level === 'error' ||
+      level === 'warn'
+        ? consoleLogger
+        : undefined);
+    const fn = logger?.[level];
+    if (typeof fn === 'function') {
+      fn(message, meta);
+    }
+  } catch (error) {
+    process.stdout.write(
+      '\n' +
+        JSON.stringify(
+          {
+            message,
+            error,
+            meta,
+          },
+          null,
+          2,
+        ) +
+        '\n',
+    );
   }
 }
 
@@ -280,7 +297,7 @@ export async function sendRaw(
   client: EppClientRuntime,
   xml: string,
   opts: { timeoutMs?: number } = {},
-): Promise<Result<SendResult, string | undefined>> {
+): Promise<Result<SendResult<EppEnvelopeXml>, string | undefined>> {
   if (client.closed) {
     return err({ reason: 'transport', message: 'Client is closed' });
   }
@@ -304,7 +321,7 @@ export async function sendRaw(
       }
 
       //use decode
-      const parsed = parser.parse(resXml) as Record<string, unknown>;
+      const parsed = parser.parse(resXml) as EppEnvelopeXml;
 
       if (client.options.logParsed) {
         logMessage(client.options, 'debug', 'EPP recv parsed', { parsed });
@@ -344,9 +361,9 @@ export async function sendRaw(
  */
 export async function send(
   client: EppClientRuntime,
-  envelope: Record<string, unknown>,
+  envelope: EppEnvelopeXml,
   opts: { timeoutMs?: number } = {},
-): Promise<Result<SendResult, string | undefined>> {
+) {
   const xml = EppEnvelopeCodec.encode(envelope as any);
   return sendRaw(client, xml, opts);
 }
@@ -368,10 +385,10 @@ export async function send(
  */
 export async function sendCommand(
   client: EppClientRuntime,
-  command: EppCommand,
+  command: EppCommandTypeXml,
   opts: { timeoutMs?: number } = {},
-): Promise<Result<SendResult, string | undefined>> {
-  const envelope = buildEppEnvelope(command);
+): Promise<Result<SendResult<EppEnvelopeXml>, string | undefined>> {
+  const envelope = buildEppEnvelopeFromCommand(command);
   return send(client, envelope, opts);
 }
 

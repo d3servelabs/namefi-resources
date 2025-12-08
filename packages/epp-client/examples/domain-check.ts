@@ -28,27 +28,10 @@ import {
   DOMAIN_NS,
   type Result,
   type SendResult,
+  buildFeeCheckExtension,
 } from '../src';
 
 const FEE_NS = 'urn:ietf:params:xml:ns:epp:fee-1.0';
-
-/**
- * Build fee:check extension for domain check command.
- * Queries pricing for create, transfer, and renew operations.
- */
-function buildFeeCheckExtension(): Record<string, unknown> {
-  return {
-    'fee:check': {
-      '@_xmlns:fee': FEE_NS,
-      'fee:currency': 'USD',
-      'fee:command': [
-        { '@_name': 'create' },
-        { '@_name': 'transfer' },
-        { '@_name': 'renew' },
-      ],
-    },
-  };
-}
 
 async function main() {
   const host = requireEnv('EPP_HOST');

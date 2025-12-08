@@ -136,15 +136,16 @@ export function createXmlCodec<S extends ZodSchema>(schema: S) {
   };
 }
 
+const EppEnvelopeXml = zloosen(
+  z.object({
+    'epp:epp': EppEppXml,
+  }),
+);
+export type EppEnvelopeXml = z.infer<typeof EppEnvelopeXml>;
+
 // Pre-built codecs for common EPP structures
 export const EppCodec = createXmlCodec(EppEppXml);
-export const EppEnvelopeCodec = createXmlCodec(
-  zloosen(
-    z.object({
-      'epp:epp': EppEppXml,
-    }),
-  ),
-);
+export const EppEnvelopeCodec = createXmlCodec(EppEnvelopeXml);
 export const EppCommandCodec = createXmlCodec(EppCommandTypeXml);
 export const EppResponseCodec = createXmlCodec(EppResponseTypeXml);
 export const EppGreetingCodec = createXmlCodec(EppGreetingTypeXml);

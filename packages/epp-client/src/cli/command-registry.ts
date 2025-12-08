@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   type CliState,
   type CommandDefinition,
@@ -29,7 +28,21 @@ import {
   parseCreatePayload,
   readXmlFile,
 } from './commands';
-import type { EppClientRuntime, Result, SendResult } from '..';
+import {
+  buildDomainUpdateCommand,
+  buildFeeCheckExtension,
+  FeeCheckXml,
+  withNamespaces,
+  xmlTextNode,
+  type EppClientRuntime,
+  type Result,
+  type SendResult,
+} from '..';
+import {
+  buildSecDnsAddExtension,
+  buildSecDnsClearExtension,
+} from '../client/commands/extensions/secDns/update';
+import { buildToggleLockTransferCommand } from '../client/commands/domain/update';
 
 // =============================================================================
 // Execution Context - utilities passed to command executors
@@ -75,7 +88,7 @@ export interface ExecutionContext {
   buildDomainTransferCommand: typeof import('..').buildDomainTransferCommand;
   buildPollReqCommand: typeof import('..').buildPollReqCommand;
   buildPollAckCommand: typeof import('..').buildPollAckCommand;
-  buildEppEnvelope: typeof import('..').buildEppEnvelope;
+  buildEppEnvelope: typeof import('..').buildEppEnvelopeFromCommand;
 }
 
 // =============================================================================
@@ -84,20 +97,6 @@ export interface ExecutionContext {
 
 const DOMAIN_NS = 'urn:ietf:params:xml:ns:domain-1.0';
 const FEE_NS = 'urn:ietf:params:xml:ns:epp:fee-1.0';
-
-function buildFeeCheckExtension(): Record<string, unknown> {
-  return {
-    'fee:check': {
-      '@_xmlns:fee': FEE_NS,
-      'fee:currency': 'USD',
-      'fee:command': [
-        { '@_name': 'create' },
-        { '@_name': 'transfer' },
-        { '@_name': 'renew' },
-      ],
-    },
-  };
-}
 
 type CommandExecutor<P = unknown> = (
   state: CliState,
@@ -569,20 +568,9 @@ const lockCommand: FullCommandDefinition<'lock', DomainNamesPayload> = {
   execute: async (state, payload, ctx) => {
     const client = await ctx.ensureClient(state);
     if (!client) return true;
-    const result = await ctx.send(
+    const result = await ctx.sendCommand(
       client,
-      ctx.buildEppEnvelope({
-        'epp:update': {
-          'domain:update': {
-            'domain:name': payload.names[0],
-            'domain:add': {
-              'domain:status': [
-                { '@_s': 'clientTransferProhibited', '#text': '' },
-              ],
-            },
-          },
-        },
-      } as const),
+      buildToggleLockTransferCommand(payload.names[0], 'lock'),
     );
     ctx.printResult('lock', result, state);
     return true;
@@ -605,20 +593,9 @@ const unlockCommand: FullCommandDefinition<'unlock', DomainNamesPayload> = {
   execute: async (state, payload, ctx) => {
     const client = await ctx.ensureClient(state);
     if (!client) return true;
-    const result = await ctx.send(
+    const result = await ctx.sendCommand(
       client,
-      ctx.buildEppEnvelope({
-        'epp:update': {
-          'domain:update': {
-            'domain:name': payload.names[0],
-            'domain:rem': {
-              'domain:status': [
-                { '@_s': 'clientTransferProhibited', '#text': '' },
-              ],
-            },
-          },
-        },
-      } as const),
+      buildToggleLockTransferCommand(payload.names[0], 'unlock'),
     );
     ctx.printResult('unlock', result, state);
     return true;
@@ -641,16 +618,12 @@ const addNsCommand: FullCommandDefinition<'add-ns', DomainNsPayload> = {
   execute: async (state, payload, ctx) => {
     const client = await ctx.ensureClient(state);
     if (!client) return true;
-    const result = await ctx.send(
+    const result = await ctx.sendCommand(
       client,
-      ctx.buildEppEnvelope({
-        'epp:update': {
-          'domain:update': {
-            'domain:name': payload.name,
-            'domain:add': {
-              'domain:ns': { 'domain:hostObj': payload.ns },
-            },
-          },
+      buildDomainUpdateCommand({
+        name: payload.name,
+        add: {
+          ns: payload.ns,
         },
       } as const),
     );
@@ -676,16 +649,12 @@ const removeNsCommand: FullCommandDefinition<'remove-ns', DomainNsPayload> = {
   execute: async (state, payload, ctx) => {
     const client = await ctx.ensureClient(state);
     if (!client) return true;
-    const result = await ctx.send(
+    const result = await ctx.sendCommand(
       client,
-      ctx.buildEppEnvelope({
-        'epp:update': {
-          'domain:update': {
-            'domain:name': payload.name,
-            'domain:rem': {
-              'domain:ns': { 'domain:hostObj': payload.ns },
-            },
-          },
+      buildDomainUpdateCommand({
+        name: payload.name,
+        rem: {
+          ns: payload.ns,
         },
       } as const),
     );
@@ -720,26 +689,15 @@ const updateDsCommand: FullCommandDefinition<'update-ds', UpdateDsPayload> = {
   execute: async (state, payload, ctx) => {
     const client = await ctx.ensureClient(state);
     if (!client) return true;
-    const result = await ctx.send(
+    const result = await ctx.sendCommand(
       client,
-      ctx.buildEppEnvelope({
-        'epp:update': {
-          'domain:update': { 'domain:name': payload.name },
-        },
-        'epp:extension': {
-          'secDNS:update': {
-            'secDNS:add': {
-              'secDNS:dsData': [
-                {
-                  'secDNS:keyTag': payload.keyTag,
-                  'secDNS:alg': payload.alg,
-                  'secDNS:digestType': payload.digestType,
-                  'secDNS:digest': payload.digest,
-                },
-              ],
-            },
-          },
-        },
+      buildDomainUpdateCommand({ name: payload.name }, {
+        extension: buildSecDnsAddExtension({
+          keyTag: payload.keyTag as any,
+          algorithm: payload.alg as any,
+          digestType: payload.digestType as any,
+          digest: payload.digest,
+        }),
       } as const),
     );
     ctx.printResult('update-ds', result, state);
@@ -763,18 +721,12 @@ const clearDsCommand: FullCommandDefinition<'clear-ds', ClearDsPayload> = {
   execute: async (state, payload, ctx) => {
     const client = await ctx.ensureClient(state);
     if (!client) return true;
-    const result = await ctx.send(
+    const result = await ctx.sendCommand(
       client,
-      ctx.buildEppEnvelope({
-        'epp:update': {
-          'domain:update': { 'domain:name': payload.name },
-        },
-        'epp:extension': {
-          'secDNS:update': {
-            'secDNS:rem': { 'secDNS:all': 'true' },
-          },
-        },
-      } as const),
+      buildDomainUpdateCommand(
+        { name: payload.name },
+        { extension: buildSecDnsClearExtension() },
+      ),
     );
     ctx.printResult('clear-ds', result, state);
     return true;

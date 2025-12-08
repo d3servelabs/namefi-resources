@@ -27,7 +27,7 @@ import {
   type EppCredentials,
   type Result,
   type SendResult,
-  buildEppEnvelope,
+  buildEppEnvelopeFromCommand,
 } from '..';
 import type { ConnectOptions } from '../transport';
 import xmlFormat from 'xml-formatter';
@@ -472,7 +472,7 @@ function createExecutionContext(): ExecutionContext {
     buildDomainTransferCommand,
     buildPollReqCommand,
     buildPollAckCommand,
-    buildEppEnvelope,
+    buildEppEnvelope: buildEppEnvelopeFromCommand,
   };
 }
 

@@ -4,8 +4,9 @@
   "type": "module",
   "exports": {
     ".": "./src/index.ts",
-    "./trpc": "./src/trpc/index.ts",
-    "./trpc/types": "./src/trpc/types.ts"
+    "./data": "./src/data/index.ts",
+    "./data/*": "./src/data/*.ts",
+    "./utils/*": "./src/utils/*.ts"
   },
   "imports": {
     "#lib/env": "./src/lib/env/index.ts",
@@ -61,7 +62,6 @@
     "@types/node": "^22.13.14",
     "@types/pluralize": "^0.0.33",
     "@types/ramda": "^0.30.2",
-    "neonctl": "^2.9.0",
     "tsup": "^8.4.0",
     "tsx": "^4.19.3",
     "vite-tsconfig-paths": "^5.1.4"
