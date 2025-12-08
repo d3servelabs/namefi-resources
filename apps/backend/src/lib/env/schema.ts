@@ -1,6 +1,7 @@
 import { punycodeFqdnSchema } from '@namefi-astra/registrars/lib/data/validations';
 import { zJson } from '@namefi-astra/utils/zod-helpers';
 import { z } from 'zod';
+import { Registrars } from '@namefi-astra/registrars/registrars/registrars-keys';
 
 const numericStringKeySchema = z
   .string()
@@ -91,6 +92,10 @@ export const secretsSchema = z.object({
         '-----END PUBLIC KEY-----',
       ].join('\n');
     }),
+
+  CENTRALNIC_CLID: z.string().optional(),
+  CENTRALNIC_PASS: z.string().optional(),
+  CENTRALNIC_HOST: z.string().optional(),
 });
 
 export type SecretsSchema = z.infer<typeof secretsSchema>;
@@ -195,6 +200,13 @@ export const configSchema = z.object({
     .optional()
     .describe('List of service names to filter audit logs by environment')
     .default([]),
+  CENTRALNIC_KEY: z
+    .enum([
+      Registrars.CentralNic_OTE_01,
+      Registrars.CentralNic_OTE_02,
+      Registrars.CentralNic,
+    ])
+    .optional(),
 });
 
 export type ConfigInput = z.input<typeof configSchema>;

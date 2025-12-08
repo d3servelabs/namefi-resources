@@ -47,6 +47,10 @@ import { computeChargesInUsdOrThrow } from '#lib/multi-year-pricing';
 import { supportsDnssec } from '#lib/supports-dnssec';
 import { R53RegistrarService } from './R53/r53-registrar';
 import { DynadotRegistrarService } from './dynadot/dynadot-registrar';
+import {
+  CentralNicRegistrarService,
+  type CentralNicConfig,
+} from './centralnic';
 import { Registrars } from './registrars-keys';
 import pProps from 'p-props';
 import Bottleneck from 'bottleneck';
@@ -358,6 +362,7 @@ export class RegistrarService extends AbstractRegistrarService {
           }
           const res = await registrar.bulkSearch(queries);
 
+          this.logger.info(res, `Bulk search completed for ${registrar.key}`);
           return res;
         } catch (error) {
           this.logger.error(
@@ -721,7 +726,8 @@ export class RegistrarService extends AbstractRegistrarService {
   private async getRegistrar(
     domain: PunycodeDomainName,
   ): Promise<AbstractRegistrarService<Registrars>> {
-    return this.registrars[await this.determineRegistrar(domain)];
+    const registrarKey = await this.determineRegistrar(domain);
+    return this.registrars[registrarKey];
   }
 
   private async determineRegistrar(
@@ -784,20 +790,6 @@ export class RegistrarService extends AbstractRegistrarService {
 }
 
 export function createRegistrarService(config: {
-  USE_MOCK_REGISTRARS?: boolean;
-  aws: {
-    region: string;
-    accessKeyId: string;
-    secretAccessKey: string;
-  };
-  dynadot: {
-    gdgApiKey: string;
-    regularApiKey: string;
-    privateKey?: string;
-    accountId?: string;
-    baseUrl?: string;
-  };
-  customLogger?: pino.Logger;
   getRegistrarKeyForExistingDomain?: (
     domain: PunycodeDomainName,
   ) => Promise<Registrars | null>;
@@ -810,6 +802,9 @@ export function createRegistrarService(config: {
     username?: string;
     password?: string;
   };
+  registrars: (
+    connection?: Bottleneck.IORedisConnection,
+  ) => Record<Registrars, AbstractRegistrarService<Registrars>>;
 }): RegistrarService {
   const connection = config.redisClientOptions
     ? new Bottleneck.IORedisConnection({
@@ -817,54 +812,8 @@ export function createRegistrarService(config: {
       })
     : undefined;
 
-  const r53Registrar = new R53RegistrarService({
-    region: config.aws.region,
-    accessKeyId: config.aws.accessKeyId,
-    secretAccessKey: config.aws.secretAccessKey,
-    connection,
-  });
-
-  const dynadotGdg = new DynadotRegistrarService({
-    apiKey: config.dynadot.gdgApiKey,
-    privateKey: config.dynadot.privateKey,
-    accountId: config.dynadot.accountId,
-    baseUrl: config.dynadot.baseUrl,
-    customLogger: config.customLogger?.child({
-      registrar: Registrars.DynadotGdg,
-    }),
-    accountType: 'super_bulk',
-    connection,
-  });
-
-  const dynadotRegular = new DynadotRegistrarService({
-    apiKey: config.dynadot.regularApiKey,
-    privateKey: config.dynadot.privateKey,
-    accountId: config.dynadot.accountId,
-    baseUrl: config.dynadot.baseUrl,
-    customLogger: config.customLogger?.child({
-      registrar: Registrars.DynadotRegular,
-    }),
-    accountType: 'bulk',
-    connection,
-    overrideKey: Registrars.DynadotRegular,
-    hooks: {
-      afterFetchAllowedTlds: async (
-        regularAllowedTlds: PunycodeDomainName[],
-      ) => {
-        const gdgExistingTlds = await dynadotGdg.getAllowedParentDomains();
-        return regularAllowedTlds.filter(
-          (tld) => !gdgExistingTlds.includes(tld),
-        );
-      },
-    },
-  });
-
   return new RegistrarService(
-    {
-      [Registrars.Route53]: r53Registrar,
-      [Registrars.DynadotGdg]: dynadotGdg,
-      [Registrars.DynadotRegular]: dynadotRegular,
-    },
+    config.registrars(connection),
     config.getRegistrarKeyForExistingDomain,
     config.getRegistrarKeysForExistingDomains,
   );

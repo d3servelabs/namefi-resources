@@ -10,8 +10,14 @@ import {
   ordersTable,
   usersTable,
   type PoweredByNamefiDomainSelect,
+  namefiNftCte,
 } from '@namefi-astra/db';
 import { createRegistrarService } from '@namefi-astra/registrars/registrars/main-registrar';
+import {
+  CentralNicRegistrarService,
+  DynadotRegistrarService,
+  R53RegistrarService,
+} from '@namefi-astra/registrars/registrars/sub-registrars';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 import { subDays } from 'date-fns';
@@ -29,13 +35,14 @@ import { DomainAvailability } from '@namefi-astra/registrars/lib/abstract-regist
 import { toPunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
 
 import type {
+  AbstractRegistrarService,
   DomainPricingDetails,
   PricingDetails,
 } from '@namefi-astra/registrars/lib/abstract-registrar/index';
 import { resolve } from '@namefi-astra/utils/promises/resolve';
 import { and, eq, gt, inArray, isNull, or, sql, ne } from 'drizzle-orm';
 import { secrets } from '#lib/env';
-import { logger } from '#lib/logger';
+import { createLogger, logger } from '#lib/logger';
 import { computeChargesInUsdOrThrow } from '@namefi-astra/registrars/multi-year-pricing';
 import { getDomainDurationConstraints } from './domains/duration-constraints';
 import pMap from 'p-map';
@@ -43,59 +50,14 @@ import { maybeGetUserEmail } from '#temporal/activities/notify.activities';
 import type { NamefiNftOwnersSelect } from '@namefi-astra/db';
 import { Registrars } from '@namefi-astra/registrars/registrars/registrars-keys';
 import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
+import {
+  type DomainIndexFunctions,
+  createInMemoryDomainIndex,
+} from '@namefi-astra/registrars/registrars/centralnic/domain-index';
+import { normalizeDomainName } from '@namefi-astra/zod-dns';
+import { sldRegistrar } from './epp-registrars';
 
-export const sldRegistrar = createRegistrarService({
-  aws: {
-    region: config.AWS_REGION,
-    accessKeyId: secrets.AWS_ACCESS_KEY_ID,
-    secretAccessKey: secrets.AWS_SECRET_ACCESS_KEY,
-  },
-  dynadot: {
-    gdgApiKey: secrets.DYNADOT_GDG_API_KEY,
-    regularApiKey: secrets.DYNADOT_REGULAR_API_KEY,
-    privateKey: secrets.DYNADOT_PRIVATE_KEY,
-    accountId: secrets.DYNADOT_ACCOUNT_ID,
-    baseUrl: config.DYNADOT_BASE_URL,
-  },
-  customLogger: logger as any,
-  getRegistrarKeyForExistingDomain: async (domain: NamefiNormalizedDomain) => {
-    const indexedDomain = await db.query.indexedDomainsTable.findFirst({
-      where: eq(indexedDomainsTable.normalizedDomainName, domain),
-    });
-    if (indexedDomain) {
-      return indexedDomain.registrarKey;
-    }
-    return null;
-  },
-  getRegistrarKeysForExistingDomains: async (
-    domains: NamefiNormalizedDomain[],
-  ) => {
-    try {
-      const query = db.query.indexedDomainsTable.findMany({
-        where: inArray(indexedDomainsTable.normalizedDomainName, domains),
-      });
-      const indexedDomains = await query.execute();
-      //todo exclude expired domains
-      return Object.fromEntries(
-        indexedDomains.map((domain) => [
-          toPunycodeDomainName(domain.normalizedDomainName),
-          domain.registrarKey,
-        ]),
-      ) as Record<PunycodeDomainName, Registrars>;
-    } catch (error) {
-      console.error('error in getRegistrarKeysFroExistingDomains', error);
-      return {};
-    }
-  },
-  redisClientOptions: secrets.LIMITER_REDIS_HOST
-    ? {
-        host: secrets.LIMITER_REDIS_HOST,
-        port: secrets.LIMITER_REDIS_PORT,
-        username: secrets.LIMITER_REDIS_USER,
-        password: secrets.LIMITER_REDIS_PASSWORD,
-      }
-    : undefined,
-});
+export { sldRegistrar };
 
 const generateUnavailableDomainInfo = (
   domain: NamefiNormalizedDomain,

@@ -24,6 +24,7 @@ import { logger } from '#lib/logger';
 import { sldRegistrar } from '#lib/namefi-registry';
 import { RDAP } from '@namefi-astra/registrars/lib/rdap-whois/rdap_client';
 import { WhoisClient } from '@namefi-astra/registrars/lib/rdap-whois/whois_client';
+import { camelCase, noCase } from 'change-case';
 
 /**
  * Poll the removal status of the DS record
@@ -370,20 +371,48 @@ export async function getEppLockState(
   domainNameLdh: PunycodeDomainName,
 ): Promise<GetLockStateResponse> {
   logger.info(`Getting EPP lock state for domain: ${domainNameLdh}`);
-  try {
-    const res = await _getLockStateFromRdapAndWhois(domainNameLdh);
+
+  const [error, res] = await resolve(
+    _getLockStateFromRdapAndWhois(domainNameLdh),
+  );
+  if (res && !error) {
     logger.info(
       `Retrieved EPP lock state for domain: ${domainNameLdh}, locked: ${res}`,
     );
 
     return res;
-  } catch (error: any) {
+  }
+
+  const [_error, status] = await resolve(
+    sldRegistrar.getDomainStatus(domainNameLdh),
+  );
+  if (_error || !status) {
+    logger.trace(
+      `Error getting domain status for domain: ${domainNameLdh}: ${_error.message}`,
+      _error.stack,
+    );
     logger.error(
       `Error getting EPP lock state for domain: ${domainNameLdh}: ${error.message}`,
       error.stack,
     );
     throw error;
   }
+  const eppStatusRdap = status.map((s) => {
+    const trimmedSnakeCase = s.trim().replaceAll(/\s+/g, '_');
+    const trimmedSnakeCaseLower = trimmedSnakeCase.includes('_')
+      ? trimmedSnakeCase.toLowerCase()
+      : trimmedSnakeCase;
+
+    return noCase(camelCase(trimmedSnakeCaseLower));
+  });
+
+  const result: GetLockStateResponse = {
+    isAddPeriod: eppStatusRdap.includes('add period'),
+    isTransferPeriod: eppStatusRdap.includes('transfer period'),
+    locked: eppStatusRdap.includes('transfer prohibited'),
+    status: eppStatusRdap,
+  };
+  return result;
 }
 
 export async function pollAndExpectEppLockStateChange(
@@ -407,18 +436,19 @@ export type GetLockStateResponse = {
   isTransferPeriod: boolean;
   status: string[];
 };
+const USE_MOCK_REGISTRARS = false;
 
 async function _getLockStateFromRdapAndWhois(
   domain: string,
 ): Promise<GetLockStateResponse> {
-  // if (USE_MOCK_REGISTRARS) {
-  //   return {
-  //     locked: false,
-  //     isAddPeriod: false,
-  //     isTransferPeriod: false,
-  //     status: [],
-  //   };
-  // }
+  if (USE_MOCK_REGISTRARS) {
+    return {
+      locked: false,
+      isAddPeriod: false,
+      isTransferPeriod: false,
+      status: [],
+    };
+  }
   let res: GetLockStateResponse | null = null;
   const errors: {
     rdapError?: string;
@@ -429,7 +459,7 @@ async function _getLockStateFromRdapAndWhois(
 
   if (rdapError) {
     errors.rdapError = rdapError.message;
-    logger.error(`getLockState: RDAP failed ${rdapError}`);
+    logger.trace(`getLockState: RDAP failed ${rdapError}`);
   }
 
   if (rdapRes) {
@@ -447,7 +477,7 @@ async function _getLockStateFromRdapAndWhois(
     );
     if (whoisError) {
       errors.whoisError = whoisError.message;
-      logger.error(`getLockState: WHOIS failed ${whoisError}`);
+      logger.trace(`getLockState: WHOIS failed ${whoisError}`);
     }
     if (whoisRes) {
       res = {
