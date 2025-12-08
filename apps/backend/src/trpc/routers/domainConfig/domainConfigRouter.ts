@@ -624,6 +624,55 @@ export const domainConfigRouter = createTRPCRouter({
       };
     }),
 
+  /**
+   * Get pending transfer status for a domain
+   */
+  getPendingTransfer: protectedProcedure
+    .input(
+      z.object({
+        domainName: namefiNormalizedDomainSchema,
+      }),
+    )
+    .query(async ({ input, ctx }) => {
+      await assertAuthenticatedUserIsDomainOwner(input.domainName, ctx.user);
+      const domainName = toPunycodeDomainName(input.domainName);
+      const pendingTransfer =
+        await sldRegistrar.queryPendingTransfer(domainName);
+      return pendingTransfer;
+    }),
+
+  /**
+   * Approve a pending transfer for a domain
+   */
+  approveTransfer: protectedProcedure
+    .input(
+      z.object({
+        domainName: namefiNormalizedDomainSchema,
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      await assertAuthenticatedUserIsDomainOwner(input.domainName, ctx.user);
+      const domainName = toPunycodeDomainName(input.domainName);
+      const result = await sldRegistrar.approveTransfer(domainName);
+      return result;
+    }),
+
+  /**
+   * Reject a pending transfer for a domain
+   */
+  rejectTransfer: protectedProcedure
+    .input(
+      z.object({
+        domainName: namefiNormalizedDomainSchema,
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      await assertAuthenticatedUserIsDomainOwner(input.domainName, ctx.user);
+      const domainName = toPunycodeDomainName(input.domainName);
+      const result = await sldRegistrar.rejectTransfer(domainName);
+      return result;
+    }),
+
   dnssec: domainDnssecRouter,
 });
 

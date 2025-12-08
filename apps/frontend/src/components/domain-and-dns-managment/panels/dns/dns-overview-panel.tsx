@@ -29,6 +29,9 @@ import {
   Loader2,
   Terminal,
   AlertOctagon,
+  ArrowRightLeft,
+  Check,
+  X,
 } from 'lucide-react';
 import {
   Tooltip,
@@ -110,6 +113,8 @@ export const DnsOverviewPanel = ({
           {domainSupportedFeatures?.domainExport?.enabled && (
             <DomainExportSection domain={domain} disabled={false} />
           )}
+
+          <PendingTransferSection domain={domain} />
         </div>
       </CardContent>
     </Card>
@@ -540,6 +545,129 @@ export const DomainExportSection = ({
             Request Export
           </AsyncButton>
         )}
+      </div>
+    </div>
+  );
+};
+
+export const PendingTransferSection = ({
+  domain,
+}: {
+  domain: NamefiNormalizedDomain;
+}) => {
+  const trpc = useTRPC();
+  const trpcClient = useTRPCClient();
+  const queryClient = useQueryClient();
+
+  const [isApproving, setIsApproving] = useState(false);
+  const [isRejecting, setIsRejecting] = useState(false);
+
+  const { data: pendingTransfer, isLoading: isPendingTransferLoading } =
+    useQuery(
+      trpc.domainConfig.getPendingTransfer.queryOptions(
+        {
+          domainName: domain,
+        },
+        {
+          refetchInterval: 10_000,
+          retry: 1,
+        },
+      ),
+    );
+
+  const handleApprove = async () => {
+    try {
+      setIsApproving(true);
+      await trpcClient.domainConfig.approveTransfer.mutate({
+        domainName: domain,
+      });
+      toast.success('Transfer approved successfully');
+      await queryClient.refetchQueries({
+        queryKey: trpc.domainConfig.getPendingTransfer.queryKey({
+          domainName: domain,
+        }),
+      });
+    } catch (error) {
+      toast.error('Failed to approve transfer');
+    } finally {
+      setIsApproving(false);
+    }
+  };
+
+  const handleReject = async () => {
+    try {
+      setIsRejecting(true);
+      await trpcClient.domainConfig.rejectTransfer.mutate({
+        domainName: domain,
+      });
+      toast.success('Transfer rejected successfully');
+      await queryClient.refetchQueries({
+        queryKey: trpc.domainConfig.getPendingTransfer.queryKey({
+          domainName: domain,
+        }),
+      });
+    } catch (error) {
+      toast.error('Failed to reject transfer');
+    } finally {
+      setIsRejecting(false);
+    }
+  };
+
+  // Don't render anything if loading or no pending transfer
+  if (isPendingTransferLoading) {
+    return null;
+  }
+
+  if (!pendingTransfer || pendingTransfer.status !== 'pending') {
+    return null;
+  }
+
+  return (
+    <div className="flex flex-wrap items-center justify-between rounded-2xl bg-zinc-900 border border-amber-600 p-4 gap-y-2 col-span-2">
+      <div className="space-y-0.5">
+        <div className="flex items-center gap-2">
+          <ArrowRightLeft className="h-4 w-4 text-amber-500" />
+          <Label htmlFor="pending-transfer" className="text-amber-500">
+            Pending Transfer
+          </Label>
+        </div>
+        <p className="text-sm text-muted-foreground">
+          Transfer requested by: {pendingTransfer.requestingRegistrarId}
+        </p>
+        <p className="text-xs text-zinc-400">
+          Action required by:{' '}
+          {new Date(pendingTransfer.actionDate).toLocaleDateString()}
+        </p>
+      </div>
+      <div className="flex items-center gap-2 sm:w-auto w-full">
+        <AsyncButton
+          onClick={handleApprove}
+          disabled={isApproving || isRejecting}
+          size="sm"
+          variant="default"
+          className="w-full sm:w-auto"
+        >
+          {isApproving ? (
+            <Loader2 className="h-4 w-4 animate-spin mr-2" />
+          ) : (
+            <Check className="h-4 w-4 mr-2" />
+          )}
+          Approve
+        </AsyncButton>
+        <AsyncButton
+          onClick={handleReject}
+          disabled={isApproving || isRejecting}
+          size="sm"
+          variant="destructive"
+          className="w-full sm:w-auto"
+        >
+          {isRejecting ? (
+            <Loader2 className="h-4 w-4 animate-spin mr-2" />
+          ) : (
+            <X className="h-4 w-4 mr-2" />
+          )}
+          Reject
+        </AsyncButton>
       </div>
     </div>
   );
