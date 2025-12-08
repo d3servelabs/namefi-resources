@@ -3,10 +3,10 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
-import { zloosen } from '../helpers/zod/loosen.js';
-import { FeeObjectIdentifierTypeXml } from './fee.objectIdentifierType.layer1.js';
-import { FeeCommandDataTypeXml } from './fee.commandDataType.layer1.js';
-import { FeeReasonTypeXml } from './fee.reasonType.layer1.js';
+import { zloosen } from '../helpers/zod/loosen';
+import { FeeObjectIdentifierTypeXml } from './fee.objectIdentifierType.layer1';
+import { FeeCommandDataTypeXml } from './fee.commandDataType.layer1';
+import { FeeReasonTypeXml } from './fee.reasonType.layer1';
 
 export const FeeObjectCDTypeXml = zloosen(
   z.object({
@@ -20,9 +20,7 @@ export const FeeObjectCDTypeXml = zloosen(
       .default('1')
       .optional(),
     'fee:objID': FeeObjectIdentifierTypeXml,
-    'fee:class': z
-      .union([z.string(), zloosen(z.object({ '#text': z.string() }))])
-      .optional(),
+    'fee:class': zloosen(z.object({ '#text': z.string() })).optional(),
     'fee:command': z.array(FeeCommandDataTypeXml).optional(),
     'fee:reason': FeeReasonTypeXml.optional(),
   }),

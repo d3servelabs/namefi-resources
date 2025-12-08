@@ -3,10 +3,10 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
-import { zloosen } from '../helpers/zod/loosen.js';
-import { XmldsigTransformsXml } from '../elements/xmldsig.Transforms.layer1.js';
-import { XmldsigDigestMethodXml } from '../elements/xmldsig.DigestMethod.layer1.js';
-import { XmldsigDigestValueXml } from '../elements/xmldsig.DigestValue.layer1.js';
+import { zloosen } from '../helpers/zod/loosen';
+import { XmldsigTransformsXml } from '../elements/xmldsig.Transforms.layer1';
+import { XmldsigDigestMethodXml } from '../elements/xmldsig.DigestMethod.layer1';
+import { XmldsigDigestValueXml } from '../elements/xmldsig.DigestValue.layer1';
 
 export const XmldsigReferenceTypeXml = zloosen(
   z.object({

@@ -293,12 +293,6 @@ export const singularNodes: SingularNodeInfo[] = [
       'epp:epp.epp:command.epp:extension.fee:renew',
       'epp:epp.epp:command.epp:extension.fee:transfer',
       'epp:epp.epp:command.epp:extension.fee:update',
-      'epp:epp.epp:response.epp:resData.fee:chkData',
-      'epp:epp.epp:response.epp:resData.fee:creData',
-      'epp:epp.epp:response.epp:resData.fee:renData',
-      'epp:epp.epp:response.epp:resData.fee:trnData',
-      'epp:epp.epp:response.epp:resData.fee:updData',
-      'epp:epp.epp:response.epp:resData.fee:delData',
       'epp:epp.epp:response.epp:extension.fee:chkData',
       'epp:epp.epp:response.epp:extension.fee:creData',
       'epp:epp.epp:response.epp:extension.fee:renData',
@@ -333,11 +327,6 @@ export const singularNodes: SingularNodeInfo[] = [
     nodeName: 'fee:period',
     parentPaths: [
       'epp:epp.epp:command.epp:extension.fee:check.fee:command',
-      'epp:epp.epp:response.epp:resData.fee:creData',
-      'epp:epp.epp:response.epp:resData.fee:renData',
-      'epp:epp.epp:response.epp:resData.fee:trnData',
-      'epp:epp.epp:response.epp:resData.fee:updData',
-      'epp:epp.epp:response.epp:resData.fee:delData',
       'epp:epp.epp:response.epp:extension.fee:creData',
       'epp:epp.epp:response.epp:extension.fee:renData',
       'epp:epp.epp:response.epp:extension.fee:trnData',
@@ -383,12 +372,11 @@ export const singularNodes: SingularNodeInfo[] = [
       'epp:epp.epp:command.epp:extension.secDNS:create',
       'epp:epp.epp:command.epp:extension.secDNS:update.secDNS:add',
       'epp:epp.epp:command.epp:extension.secDNS:update.secDNS:chg',
-      'epp:epp.epp:response.epp:resData.epp:infData',
-      'epp:epp.epp:response.epp:extension.epp:infData',
+      'epp:epp.epp:response.epp:extension.secDNS:infData',
       'epp:epp.epp:extension.secDNS:create',
       'epp:epp.epp:extension.secDNS:update.secDNS:add',
       'epp:epp.epp:extension.secDNS:update.secDNS:chg',
-      'epp:epp.epp:extension.epp:infData',
+      'epp:epp.epp:extension.secDNS:infData',
       'secDNS:create',
       'secDNS:update.secDNS:add',
       'secDNS:update.secDNS:chg',
@@ -401,12 +389,11 @@ export const singularNodes: SingularNodeInfo[] = [
       'epp:epp.epp:command.epp:extension.secDNS:create.secDNS:dsData',
       'epp:epp.epp:command.epp:extension.secDNS:update.secDNS:rem.secDNS:dsData',
       'epp:epp.epp:command.epp:extension.secDNS:update.secDNS:add.secDNS:dsData',
-      'epp:epp.epp:response.epp:resData.epp:infData.secDNS:dsData',
-      'epp:epp.epp:response.epp:extension.epp:infData.secDNS:dsData',
+      'epp:epp.epp:response.epp:extension.secDNS:infData.secDNS:dsData',
       'epp:epp.epp:extension.secDNS:create.secDNS:dsData',
       'epp:epp.epp:extension.secDNS:update.secDNS:rem.secDNS:dsData',
       'epp:epp.epp:extension.secDNS:update.secDNS:add.secDNS:dsData',
-      'epp:epp.epp:extension.epp:infData.secDNS:dsData',
+      'epp:epp.epp:extension.secDNS:infData.secDNS:dsData',
       'secDNS:create.secDNS:dsData',
       'secDNS:update.secDNS:rem.secDNS:dsData',
       'secDNS:update.secDNS:add.secDNS:dsData',
@@ -425,12 +412,9 @@ export const singularNodes: SingularNodeInfo[] = [
       'epp:epp.epp:command.epp:extension.secDNS:update.secDNS:add.secDNS:dsData',
       'epp:epp.epp:command.epp:extension.secDNS:update.secDNS:add.secDNS:dsData.secDNS:keyData',
       'epp:epp.epp:command.epp:extension.secDNS:update.secDNS:add.secDNS:keyData',
-      'epp:epp.epp:response.epp:resData.epp:infData.secDNS:dsData',
-      'epp:epp.epp:response.epp:resData.epp:infData.secDNS:dsData.secDNS:keyData',
-      'epp:epp.epp:response.epp:resData.epp:infData.secDNS:keyData',
-      'epp:epp.epp:response.epp:extension.epp:infData.secDNS:dsData',
-      'epp:epp.epp:response.epp:extension.epp:infData.secDNS:dsData.secDNS:keyData',
-      'epp:epp.epp:response.epp:extension.epp:infData.secDNS:keyData',
+      'epp:epp.epp:response.epp:extension.secDNS:infData.secDNS:dsData',
+      'epp:epp.epp:response.epp:extension.secDNS:infData.secDNS:dsData.secDNS:keyData',
+      'epp:epp.epp:response.epp:extension.secDNS:infData.secDNS:keyData',
       'epp:epp.epp:extension.secDNS:create.secDNS:dsData',
       'epp:epp.epp:extension.secDNS:create.secDNS:dsData.secDNS:keyData',
       'epp:epp.epp:extension.secDNS:create.secDNS:keyData',
@@ -440,9 +424,9 @@ export const singularNodes: SingularNodeInfo[] = [
       'epp:epp.epp:extension.secDNS:update.secDNS:add.secDNS:dsData',
       'epp:epp.epp:extension.secDNS:update.secDNS:add.secDNS:dsData.secDNS:keyData',
       'epp:epp.epp:extension.secDNS:update.secDNS:add.secDNS:keyData',
-      'epp:epp.epp:extension.epp:infData.secDNS:dsData',
-      'epp:epp.epp:extension.epp:infData.secDNS:dsData.secDNS:keyData',
-      'epp:epp.epp:extension.epp:infData.secDNS:keyData',
+      'epp:epp.epp:extension.secDNS:infData.secDNS:dsData',
+      'epp:epp.epp:extension.secDNS:infData.secDNS:dsData.secDNS:keyData',
+      'epp:epp.epp:extension.secDNS:infData.secDNS:keyData',
       'secDNS:create.secDNS:dsData',
       'secDNS:create.secDNS:dsData.secDNS:keyData',
       'secDNS:create.secDNS:keyData',
@@ -463,12 +447,11 @@ export const singularNodes: SingularNodeInfo[] = [
       'epp:epp.epp:command.epp:extension.secDNS:create.secDNS:dsData',
       'epp:epp.epp:command.epp:extension.secDNS:update.secDNS:rem.secDNS:dsData',
       'epp:epp.epp:command.epp:extension.secDNS:update.secDNS:add.secDNS:dsData',
-      'epp:epp.epp:response.epp:resData.epp:infData.secDNS:dsData',
-      'epp:epp.epp:response.epp:extension.epp:infData.secDNS:dsData',
+      'epp:epp.epp:response.epp:extension.secDNS:infData.secDNS:dsData',
       'epp:epp.epp:extension.secDNS:create.secDNS:dsData',
       'epp:epp.epp:extension.secDNS:update.secDNS:rem.secDNS:dsData',
       'epp:epp.epp:extension.secDNS:update.secDNS:add.secDNS:dsData',
-      'epp:epp.epp:extension.epp:infData.secDNS:dsData',
+      'epp:epp.epp:extension.secDNS:infData.secDNS:dsData',
       'secDNS:create.secDNS:dsData',
       'secDNS:update.secDNS:rem.secDNS:dsData',
       'secDNS:update.secDNS:add.secDNS:dsData',
@@ -481,12 +464,11 @@ export const singularNodes: SingularNodeInfo[] = [
       'epp:epp.epp:command.epp:extension.secDNS:create.secDNS:dsData',
       'epp:epp.epp:command.epp:extension.secDNS:update.secDNS:rem.secDNS:dsData',
       'epp:epp.epp:command.epp:extension.secDNS:update.secDNS:add.secDNS:dsData',
-      'epp:epp.epp:response.epp:resData.epp:infData.secDNS:dsData',
-      'epp:epp.epp:response.epp:extension.epp:infData.secDNS:dsData',
+      'epp:epp.epp:response.epp:extension.secDNS:infData.secDNS:dsData',
       'epp:epp.epp:extension.secDNS:create.secDNS:dsData',
       'epp:epp.epp:extension.secDNS:update.secDNS:rem.secDNS:dsData',
       'epp:epp.epp:extension.secDNS:update.secDNS:add.secDNS:dsData',
-      'epp:epp.epp:extension.epp:infData.secDNS:dsData',
+      'epp:epp.epp:extension.secDNS:infData.secDNS:dsData',
       'secDNS:create.secDNS:dsData',
       'secDNS:update.secDNS:rem.secDNS:dsData',
       'secDNS:update.secDNS:add.secDNS:dsData',
@@ -499,12 +481,11 @@ export const singularNodes: SingularNodeInfo[] = [
       'epp:epp.epp:command.epp:extension.secDNS:create.secDNS:dsData',
       'epp:epp.epp:command.epp:extension.secDNS:update.secDNS:rem.secDNS:dsData',
       'epp:epp.epp:command.epp:extension.secDNS:update.secDNS:add.secDNS:dsData',
-      'epp:epp.epp:response.epp:resData.epp:infData.secDNS:dsData',
-      'epp:epp.epp:response.epp:extension.epp:infData.secDNS:dsData',
+      'epp:epp.epp:response.epp:extension.secDNS:infData.secDNS:dsData',
       'epp:epp.epp:extension.secDNS:create.secDNS:dsData',
       'epp:epp.epp:extension.secDNS:update.secDNS:rem.secDNS:dsData',
       'epp:epp.epp:extension.secDNS:update.secDNS:add.secDNS:dsData',
-      'epp:epp.epp:extension.epp:infData.secDNS:dsData',
+      'epp:epp.epp:extension.secDNS:infData.secDNS:dsData',
       'secDNS:create.secDNS:dsData',
       'secDNS:update.secDNS:rem.secDNS:dsData',
       'secDNS:update.secDNS:add.secDNS:dsData',
@@ -520,18 +501,16 @@ export const singularNodes: SingularNodeInfo[] = [
       'epp:epp.epp:command.epp:extension.secDNS:update.secDNS:rem.secDNS:keyData',
       'epp:epp.epp:command.epp:extension.secDNS:update.secDNS:add.secDNS:dsData.secDNS:keyData',
       'epp:epp.epp:command.epp:extension.secDNS:update.secDNS:add.secDNS:keyData',
-      'epp:epp.epp:response.epp:resData.epp:infData.secDNS:dsData.secDNS:keyData',
-      'epp:epp.epp:response.epp:resData.epp:infData.secDNS:keyData',
-      'epp:epp.epp:response.epp:extension.epp:infData.secDNS:dsData.secDNS:keyData',
-      'epp:epp.epp:response.epp:extension.epp:infData.secDNS:keyData',
+      'epp:epp.epp:response.epp:extension.secDNS:infData.secDNS:dsData.secDNS:keyData',
+      'epp:epp.epp:response.epp:extension.secDNS:infData.secDNS:keyData',
       'epp:epp.epp:extension.secDNS:create.secDNS:dsData.secDNS:keyData',
       'epp:epp.epp:extension.secDNS:create.secDNS:keyData',
       'epp:epp.epp:extension.secDNS:update.secDNS:rem.secDNS:dsData.secDNS:keyData',
       'epp:epp.epp:extension.secDNS:update.secDNS:rem.secDNS:keyData',
       'epp:epp.epp:extension.secDNS:update.secDNS:add.secDNS:dsData.secDNS:keyData',
       'epp:epp.epp:extension.secDNS:update.secDNS:add.secDNS:keyData',
-      'epp:epp.epp:extension.epp:infData.secDNS:dsData.secDNS:keyData',
-      'epp:epp.epp:extension.epp:infData.secDNS:keyData',
+      'epp:epp.epp:extension.secDNS:infData.secDNS:dsData.secDNS:keyData',
+      'epp:epp.epp:extension.secDNS:infData.secDNS:keyData',
       'secDNS:create.secDNS:dsData.secDNS:keyData',
       'secDNS:create.secDNS:keyData',
       'secDNS:update.secDNS:rem.secDNS:dsData.secDNS:keyData',
@@ -551,18 +530,16 @@ export const singularNodes: SingularNodeInfo[] = [
       'epp:epp.epp:command.epp:extension.secDNS:update.secDNS:rem.secDNS:keyData',
       'epp:epp.epp:command.epp:extension.secDNS:update.secDNS:add.secDNS:dsData.secDNS:keyData',
       'epp:epp.epp:command.epp:extension.secDNS:update.secDNS:add.secDNS:keyData',
-      'epp:epp.epp:response.epp:resData.epp:infData.secDNS:dsData.secDNS:keyData',
-      'epp:epp.epp:response.epp:resData.epp:infData.secDNS:keyData',
-      'epp:epp.epp:response.epp:extension.epp:infData.secDNS:dsData.secDNS:keyData',
-      'epp:epp.epp:response.epp:extension.epp:infData.secDNS:keyData',
+      'epp:epp.epp:response.epp:extension.secDNS:infData.secDNS:dsData.secDNS:keyData',
+      'epp:epp.epp:response.epp:extension.secDNS:infData.secDNS:keyData',
       'epp:epp.epp:extension.secDNS:create.secDNS:dsData.secDNS:keyData',
       'epp:epp.epp:extension.secDNS:create.secDNS:keyData',
       'epp:epp.epp:extension.secDNS:update.secDNS:rem.secDNS:dsData.secDNS:keyData',
       'epp:epp.epp:extension.secDNS:update.secDNS:rem.secDNS:keyData',
       'epp:epp.epp:extension.secDNS:update.secDNS:add.secDNS:dsData.secDNS:keyData',
       'epp:epp.epp:extension.secDNS:update.secDNS:add.secDNS:keyData',
-      'epp:epp.epp:extension.epp:infData.secDNS:dsData.secDNS:keyData',
-      'epp:epp.epp:extension.epp:infData.secDNS:keyData',
+      'epp:epp.epp:extension.secDNS:infData.secDNS:dsData.secDNS:keyData',
+      'epp:epp.epp:extension.secDNS:infData.secDNS:keyData',
       'secDNS:create.secDNS:dsData.secDNS:keyData',
       'secDNS:create.secDNS:keyData',
       'secDNS:update.secDNS:rem.secDNS:dsData.secDNS:keyData',
@@ -582,18 +559,16 @@ export const singularNodes: SingularNodeInfo[] = [
       'epp:epp.epp:command.epp:extension.secDNS:update.secDNS:rem.secDNS:keyData',
       'epp:epp.epp:command.epp:extension.secDNS:update.secDNS:add.secDNS:dsData.secDNS:keyData',
       'epp:epp.epp:command.epp:extension.secDNS:update.secDNS:add.secDNS:keyData',
-      'epp:epp.epp:response.epp:resData.epp:infData.secDNS:dsData.secDNS:keyData',
-      'epp:epp.epp:response.epp:resData.epp:infData.secDNS:keyData',
-      'epp:epp.epp:response.epp:extension.epp:infData.secDNS:dsData.secDNS:keyData',
-      'epp:epp.epp:response.epp:extension.epp:infData.secDNS:keyData',
+      'epp:epp.epp:response.epp:extension.secDNS:infData.secDNS:dsData.secDNS:keyData',
+      'epp:epp.epp:response.epp:extension.secDNS:infData.secDNS:keyData',
       'epp:epp.epp:extension.secDNS:create.secDNS:dsData.secDNS:keyData',
       'epp:epp.epp:extension.secDNS:create.secDNS:keyData',
       'epp:epp.epp:extension.secDNS:update.secDNS:rem.secDNS:dsData.secDNS:keyData',
       'epp:epp.epp:extension.secDNS:update.secDNS:rem.secDNS:keyData',
       'epp:epp.epp:extension.secDNS:update.secDNS:add.secDNS:dsData.secDNS:keyData',
       'epp:epp.epp:extension.secDNS:update.secDNS:add.secDNS:keyData',
-      'epp:epp.epp:extension.epp:infData.secDNS:dsData.secDNS:keyData',
-      'epp:epp.epp:extension.epp:infData.secDNS:keyData',
+      'epp:epp.epp:extension.secDNS:infData.secDNS:dsData.secDNS:keyData',
+      'epp:epp.epp:extension.secDNS:infData.secDNS:keyData',
       'secDNS:create.secDNS:dsData.secDNS:keyData',
       'secDNS:create.secDNS:keyData',
       'secDNS:update.secDNS:rem.secDNS:dsData.secDNS:keyData',
@@ -641,8 +616,72 @@ export const singularNodes: SingularNodeInfo[] = [
     ],
   },
   {
-    nodeName: 'epp:rgp:update',
+    nodeName: 'rgp:update',
     parentPaths: ['epp:epp.epp:command.epp:extension', 'epp:epp.epp:extension'],
+  },
+  {
+    nodeName: 'rgp:restore',
+    parentPaths: [
+      'epp:epp.epp:command.epp:extension.rgp:update',
+      'epp:epp.epp:extension.rgp:update',
+      'rgp:update',
+    ],
+  },
+  {
+    nodeName: 'rgp:report',
+    parentPaths: [
+      'epp:epp.epp:command.epp:extension.rgp:update.rgp:restore',
+      'epp:epp.epp:extension.rgp:update.rgp:restore',
+      'rgp:update.rgp:restore',
+    ],
+  },
+  {
+    nodeName: 'rgp:preData',
+    parentPaths: [
+      'epp:epp.epp:command.epp:extension.rgp:update.rgp:restore.rgp:report',
+      'epp:epp.epp:extension.rgp:update.rgp:restore.rgp:report',
+      'rgp:update.rgp:restore.rgp:report',
+    ],
+  },
+  {
+    nodeName: 'rgp:postData',
+    parentPaths: [
+      'epp:epp.epp:command.epp:extension.rgp:update.rgp:restore.rgp:report',
+      'epp:epp.epp:extension.rgp:update.rgp:restore.rgp:report',
+      'rgp:update.rgp:restore.rgp:report',
+    ],
+  },
+  {
+    nodeName: 'rgp:delTime',
+    parentPaths: [
+      'epp:epp.epp:command.epp:extension.rgp:update.rgp:restore.rgp:report',
+      'epp:epp.epp:extension.rgp:update.rgp:restore.rgp:report',
+      'rgp:update.rgp:restore.rgp:report',
+    ],
+  },
+  {
+    nodeName: 'rgp:resTime',
+    parentPaths: [
+      'epp:epp.epp:command.epp:extension.rgp:update.rgp:restore.rgp:report',
+      'epp:epp.epp:extension.rgp:update.rgp:restore.rgp:report',
+      'rgp:update.rgp:restore.rgp:report',
+    ],
+  },
+  {
+    nodeName: 'rgp:resReason',
+    parentPaths: [
+      'epp:epp.epp:command.epp:extension.rgp:update.rgp:restore.rgp:report',
+      'epp:epp.epp:extension.rgp:update.rgp:restore.rgp:report',
+      'rgp:update.rgp:restore.rgp:report',
+    ],
+  },
+  {
+    nodeName: 'rgp:other',
+    parentPaths: [
+      'epp:epp.epp:command.epp:extension.rgp:update.rgp:restore.rgp:report',
+      'epp:epp.epp:extension.rgp:update.rgp:restore.rgp:report',
+      'rgp:update.rgp:restore.rgp:report',
+    ],
   },
   {
     nodeName: 'launch:check',
@@ -656,9 +695,6 @@ export const singularNodes: SingularNodeInfo[] = [
       'epp:epp.epp:command.epp:extension.launch:create',
       'epp:epp.epp:command.epp:extension.launch:update',
       'epp:epp.epp:command.epp:extension.launch:delete',
-      'epp:epp.epp:response.epp:resData.launch:chkData',
-      'epp:epp.epp:response.epp:resData.launch:creData',
-      'epp:epp.epp:response.epp:resData.launch:infData',
       'epp:epp.epp:response.epp:extension.launch:chkData',
       'epp:epp.epp:response.epp:extension.launch:creData',
       'epp:epp.epp:response.epp:extension.launch:infData',
@@ -690,8 +726,6 @@ export const singularNodes: SingularNodeInfo[] = [
       'epp:epp.epp:command.epp:extension.launch:info',
       'epp:epp.epp:command.epp:extension.launch:update',
       'epp:epp.epp:command.epp:extension.launch:delete',
-      'epp:epp.epp:response.epp:resData.launch:creData',
-      'epp:epp.epp:response.epp:resData.launch:infData',
       'epp:epp.epp:response.epp:extension.launch:creData',
       'epp:epp.epp:response.epp:extension.launch:infData',
       'epp:epp.epp:extension.launch:info',
@@ -776,7 +810,6 @@ export const singularNodes: SingularNodeInfo[] = [
     parentPaths: [
       'epp:epp.epp:command.epp:extension.artRecord:create',
       'epp:epp.epp:command.epp:extension.artRecord:update',
-      'epp:epp.epp:response.epp:resData.artRecord:infData',
       'epp:epp.epp:response.epp:extension.artRecord:infData',
       'epp:epp.epp:extension.artRecord:create',
       'epp:epp.epp:extension.artRecord:update',
@@ -791,7 +824,6 @@ export const singularNodes: SingularNodeInfo[] = [
     parentPaths: [
       'epp:epp.epp:command.epp:extension.artRecord:create',
       'epp:epp.epp:command.epp:extension.artRecord:update',
-      'epp:epp.epp:response.epp:resData.artRecord:infData',
       'epp:epp.epp:response.epp:extension.artRecord:infData',
       'epp:epp.epp:extension.artRecord:create',
       'epp:epp.epp:extension.artRecord:update',
@@ -806,7 +838,6 @@ export const singularNodes: SingularNodeInfo[] = [
     parentPaths: [
       'epp:epp.epp:command.epp:extension.artRecord:create',
       'epp:epp.epp:command.epp:extension.artRecord:update',
-      'epp:epp.epp:response.epp:resData.artRecord:infData',
       'epp:epp.epp:response.epp:extension.artRecord:infData',
       'epp:epp.epp:extension.artRecord:create',
       'epp:epp.epp:extension.artRecord:update',
@@ -821,7 +852,6 @@ export const singularNodes: SingularNodeInfo[] = [
     parentPaths: [
       'epp:epp.epp:command.epp:extension.artRecord:create',
       'epp:epp.epp:command.epp:extension.artRecord:update',
-      'epp:epp.epp:response.epp:resData.artRecord:infData',
       'epp:epp.epp:response.epp:extension.artRecord:infData',
       'epp:epp.epp:extension.artRecord:create',
       'epp:epp.epp:extension.artRecord:update',
@@ -836,7 +866,6 @@ export const singularNodes: SingularNodeInfo[] = [
     parentPaths: [
       'epp:epp.epp:command.epp:extension.artRecord:create',
       'epp:epp.epp:command.epp:extension.artRecord:update',
-      'epp:epp.epp:response.epp:resData.artRecord:infData',
       'epp:epp.epp:response.epp:extension.artRecord:infData',
       'epp:epp.epp:extension.artRecord:create',
       'epp:epp.epp:extension.artRecord:update',
@@ -851,7 +880,6 @@ export const singularNodes: SingularNodeInfo[] = [
     parentPaths: [
       'epp:epp.epp:command.epp:extension.artRecord:create',
       'epp:epp.epp:command.epp:extension.artRecord:update',
-      'epp:epp.epp:response.epp:resData.artRecord:infData',
       'epp:epp.epp:response.epp:extension.artRecord:infData',
       'epp:epp.epp:extension.artRecord:create',
       'epp:epp.epp:extension.artRecord:update',
@@ -866,7 +894,6 @@ export const singularNodes: SingularNodeInfo[] = [
     parentPaths: [
       'epp:epp.epp:command.epp:extension.artRecord:create',
       'epp:epp.epp:command.epp:extension.artRecord:update',
-      'epp:epp.epp:response.epp:resData.artRecord:infData',
       'epp:epp.epp:response.epp:extension.artRecord:infData',
       'epp:epp.epp:extension.artRecord:create',
       'epp:epp.epp:extension.artRecord:update',
@@ -881,7 +908,6 @@ export const singularNodes: SingularNodeInfo[] = [
     parentPaths: [
       'epp:epp.epp:command.epp:extension.artRecord:create',
       'epp:epp.epp:command.epp:extension.artRecord:update',
-      'epp:epp.epp:response.epp:resData.artRecord:infData',
       'epp:epp.epp:response.epp:extension.artRecord:infData',
       'epp:epp.epp:extension.artRecord:create',
       'epp:epp.epp:extension.artRecord:update',
@@ -896,7 +922,6 @@ export const singularNodes: SingularNodeInfo[] = [
     parentPaths: [
       'epp:epp.epp:command.epp:extension.artRecord:create',
       'epp:epp.epp:command.epp:extension.artRecord:update',
-      'epp:epp.epp:response.epp:resData.artRecord:infData',
       'epp:epp.epp:response.epp:extension.artRecord:infData',
       'epp:epp.epp:extension.artRecord:create',
       'epp:epp.epp:extension.artRecord:update',
@@ -911,7 +936,6 @@ export const singularNodes: SingularNodeInfo[] = [
     parentPaths: [
       'epp:epp.epp:command.epp:extension.artRecord:create',
       'epp:epp.epp:command.epp:extension.artRecord:update',
-      'epp:epp.epp:response.epp:resData.artRecord:infData',
       'epp:epp.epp:response.epp:extension.artRecord:infData',
       'epp:epp.epp:extension.artRecord:create',
       'epp:epp.epp:extension.artRecord:update',
@@ -929,6 +953,9 @@ export const singularNodes: SingularNodeInfo[] = [
     nodeName: 'epp:clTRID',
     parentPaths: [
       'epp:epp.epp:command',
+      'epp:epp.epp:response.epp:resData.domain:panData.domain:paTRID',
+      'epp:epp.epp:response.epp:resData.contact:panData.contact:paTRID',
+      'epp:epp.epp:response.epp:resData.host:panData.host:paTRID',
       'epp:epp.epp:response.epp:trID',
       'domain:panData.domain:paTRID',
       'contact:panData.contact:paTRID',
@@ -953,6 +980,12 @@ export const singularNodes: SingularNodeInfo[] = [
       'epp:epp.epp:command.epp:renew.domain:renew',
       'epp:epp.epp:command.epp:transfer.domain:transfer',
       'epp:epp.epp:command.epp:update.domain:update',
+      'epp:epp.epp:response.epp:resData.domain:chkData.domain:cd',
+      'epp:epp.epp:response.epp:resData.domain:creData',
+      'epp:epp.epp:response.epp:resData.domain:infData',
+      'epp:epp.epp:response.epp:resData.domain:panData',
+      'epp:epp.epp:response.epp:resData.domain:renData',
+      'epp:epp.epp:response.epp:resData.domain:trnData',
       'domain:create',
       'domain:delete',
       'domain:info',
@@ -984,6 +1017,7 @@ export const singularNodes: SingularNodeInfo[] = [
       'epp:epp.epp:command.epp:create.domain:create',
       'epp:epp.epp:command.epp:update.domain:update.domain:add',
       'epp:epp.epp:command.epp:update.domain:update.domain:rem',
+      'epp:epp.epp:response.epp:resData.domain:infData',
       'domain:create',
       'domain:update.domain:add',
       'domain:update.domain:rem',
@@ -996,6 +1030,7 @@ export const singularNodes: SingularNodeInfo[] = [
       'epp:epp.epp:command.epp:create.domain:create.domain:ns.domain:hostAttr',
       'epp:epp.epp:command.epp:update.domain:update.domain:add.domain:ns.domain:hostAttr',
       'epp:epp.epp:command.epp:update.domain:update.domain:rem.domain:ns.domain:hostAttr',
+      'epp:epp.epp:response.epp:resData.domain:infData.domain:ns.domain:hostAttr',
       'domain:create.domain:ns.domain:hostAttr',
       'domain:update.domain:add.domain:ns.domain:hostAttr',
       'domain:update.domain:rem.domain:ns.domain:hostAttr',
@@ -1007,6 +1042,7 @@ export const singularNodes: SingularNodeInfo[] = [
     parentPaths: [
       'epp:epp.epp:command.epp:create.domain:create',
       'epp:epp.epp:command.epp:update.domain:update.domain:chg',
+      'epp:epp.epp:response.epp:resData.domain:infData',
       'domain:create',
       'domain:update.domain:chg',
       'domain:infData',
@@ -1019,6 +1055,7 @@ export const singularNodes: SingularNodeInfo[] = [
       'epp:epp.epp:command.epp:info.domain:info',
       'epp:epp.epp:command.epp:transfer.domain:transfer',
       'epp:epp.epp:command.epp:update.domain:update.domain:chg',
+      'epp:epp.epp:response.epp:resData.domain:infData',
       'domain:create',
       'domain:info',
       'domain:transfer',
@@ -1033,6 +1070,7 @@ export const singularNodes: SingularNodeInfo[] = [
       'epp:epp.epp:command.epp:info.domain:info.domain:authInfo',
       'epp:epp.epp:command.epp:transfer.domain:transfer.domain:authInfo',
       'epp:epp.epp:command.epp:update.domain:update.domain:chg.domain:authInfo',
+      'epp:epp.epp:response.epp:resData.domain:infData.domain:authInfo',
       'domain:create.domain:authInfo',
       'domain:info.domain:authInfo',
       'domain:transfer.domain:authInfo',
@@ -1047,6 +1085,7 @@ export const singularNodes: SingularNodeInfo[] = [
       'epp:epp.epp:command.epp:info.domain:info.domain:authInfo',
       'epp:epp.epp:command.epp:transfer.domain:transfer.domain:authInfo',
       'epp:epp.epp:command.epp:update.domain:update.domain:chg.domain:authInfo',
+      'epp:epp.epp:response.epp:resData.domain:infData.domain:authInfo',
       'domain:create.domain:authInfo',
       'domain:info.domain:authInfo',
       'domain:transfer.domain:authInfo',
@@ -1066,6 +1105,11 @@ export const singularNodes: SingularNodeInfo[] = [
       'epp:epp.epp:command.epp:info.contact:info',
       'epp:epp.epp:command.epp:transfer.contact:transfer',
       'epp:epp.epp:command.epp:update.contact:update',
+      'epp:epp.epp:response.epp:resData.contact:chkData.contact:cd',
+      'epp:epp.epp:response.epp:resData.contact:creData',
+      'epp:epp.epp:response.epp:resData.contact:infData',
+      'epp:epp.epp:response.epp:resData.contact:panData',
+      'epp:epp.epp:response.epp:resData.contact:trnData',
       'contact:create',
       'contact:delete',
       'contact:info',
@@ -1083,6 +1127,7 @@ export const singularNodes: SingularNodeInfo[] = [
     parentPaths: [
       'epp:epp.epp:command.epp:create.contact:create.contact:postalInfo',
       'epp:epp.epp:command.epp:update.contact:update.contact:chg.contact:postalInfo',
+      'epp:epp.epp:response.epp:resData.contact:infData.contact:postalInfo',
       'contact:create.contact:postalInfo',
       'contact:update.contact:chg.contact:postalInfo',
       'contact:infData.contact:postalInfo',
@@ -1093,6 +1138,7 @@ export const singularNodes: SingularNodeInfo[] = [
     parentPaths: [
       'epp:epp.epp:command.epp:create.contact:create.contact:postalInfo',
       'epp:epp.epp:command.epp:update.contact:update.contact:chg.contact:postalInfo',
+      'epp:epp.epp:response.epp:resData.contact:infData.contact:postalInfo',
       'contact:create.contact:postalInfo',
       'contact:update.contact:chg.contact:postalInfo',
       'contact:infData.contact:postalInfo',
@@ -1103,6 +1149,7 @@ export const singularNodes: SingularNodeInfo[] = [
     parentPaths: [
       'epp:epp.epp:command.epp:create.contact:create.contact:postalInfo',
       'epp:epp.epp:command.epp:update.contact:update.contact:chg.contact:postalInfo',
+      'epp:epp.epp:response.epp:resData.contact:infData.contact:postalInfo',
       'contact:create.contact:postalInfo',
       'contact:update.contact:chg.contact:postalInfo',
       'contact:infData.contact:postalInfo',
@@ -1113,6 +1160,7 @@ export const singularNodes: SingularNodeInfo[] = [
     parentPaths: [
       'epp:epp.epp:command.epp:create.contact:create.contact:postalInfo.contact:addr',
       'epp:epp.epp:command.epp:update.contact:update.contact:chg.contact:postalInfo.contact:addr',
+      'epp:epp.epp:response.epp:resData.contact:infData.contact:postalInfo.contact:addr',
       'contact:create.contact:postalInfo.contact:addr',
       'contact:update.contact:chg.contact:postalInfo.contact:addr',
       'contact:infData.contact:postalInfo.contact:addr',
@@ -1123,6 +1171,7 @@ export const singularNodes: SingularNodeInfo[] = [
     parentPaths: [
       'epp:epp.epp:command.epp:create.contact:create.contact:postalInfo.contact:addr',
       'epp:epp.epp:command.epp:update.contact:update.contact:chg.contact:postalInfo.contact:addr',
+      'epp:epp.epp:response.epp:resData.contact:infData.contact:postalInfo.contact:addr',
       'contact:create.contact:postalInfo.contact:addr',
       'contact:update.contact:chg.contact:postalInfo.contact:addr',
       'contact:infData.contact:postalInfo.contact:addr',
@@ -1133,6 +1182,7 @@ export const singularNodes: SingularNodeInfo[] = [
     parentPaths: [
       'epp:epp.epp:command.epp:create.contact:create.contact:postalInfo.contact:addr',
       'epp:epp.epp:command.epp:update.contact:update.contact:chg.contact:postalInfo.contact:addr',
+      'epp:epp.epp:response.epp:resData.contact:infData.contact:postalInfo.contact:addr',
       'contact:create.contact:postalInfo.contact:addr',
       'contact:update.contact:chg.contact:postalInfo.contact:addr',
       'contact:infData.contact:postalInfo.contact:addr',
@@ -1143,6 +1193,7 @@ export const singularNodes: SingularNodeInfo[] = [
     parentPaths: [
       'epp:epp.epp:command.epp:create.contact:create.contact:postalInfo.contact:addr',
       'epp:epp.epp:command.epp:update.contact:update.contact:chg.contact:postalInfo.contact:addr',
+      'epp:epp.epp:response.epp:resData.contact:infData.contact:postalInfo.contact:addr',
       'contact:create.contact:postalInfo.contact:addr',
       'contact:update.contact:chg.contact:postalInfo.contact:addr',
       'contact:infData.contact:postalInfo.contact:addr',
@@ -1155,6 +1206,8 @@ export const singularNodes: SingularNodeInfo[] = [
       'epp:epp.epp:command.epp:create.contact:create.contact:disclose',
       'epp:epp.epp:command.epp:update.contact:update.contact:chg',
       'epp:epp.epp:command.epp:update.contact:update.contact:chg.contact:disclose',
+      'epp:epp.epp:response.epp:resData.contact:infData',
+      'epp:epp.epp:response.epp:resData.contact:infData.contact:disclose',
       'contact:create',
       'contact:create.contact:disclose',
       'contact:update.contact:chg',
@@ -1170,6 +1223,8 @@ export const singularNodes: SingularNodeInfo[] = [
       'epp:epp.epp:command.epp:create.contact:create.contact:disclose',
       'epp:epp.epp:command.epp:update.contact:update.contact:chg',
       'epp:epp.epp:command.epp:update.contact:update.contact:chg.contact:disclose',
+      'epp:epp.epp:response.epp:resData.contact:infData',
+      'epp:epp.epp:response.epp:resData.contact:infData.contact:disclose',
       'contact:create',
       'contact:create.contact:disclose',
       'contact:update.contact:chg',
@@ -1185,6 +1240,8 @@ export const singularNodes: SingularNodeInfo[] = [
       'epp:epp.epp:command.epp:create.contact:create.contact:disclose',
       'epp:epp.epp:command.epp:update.contact:update.contact:chg',
       'epp:epp.epp:command.epp:update.contact:update.contact:chg.contact:disclose',
+      'epp:epp.epp:response.epp:resData.contact:infData',
+      'epp:epp.epp:response.epp:resData.contact:infData.contact:disclose',
       'contact:create',
       'contact:create.contact:disclose',
       'contact:update.contact:chg',
@@ -1200,6 +1257,7 @@ export const singularNodes: SingularNodeInfo[] = [
       'epp:epp.epp:command.epp:info.contact:info',
       'epp:epp.epp:command.epp:transfer.contact:transfer',
       'epp:epp.epp:command.epp:update.contact:update.contact:chg',
+      'epp:epp.epp:response.epp:resData.contact:infData',
       'contact:create',
       'contact:info',
       'contact:transfer',
@@ -1214,6 +1272,7 @@ export const singularNodes: SingularNodeInfo[] = [
       'epp:epp.epp:command.epp:info.contact:info.contact:authInfo',
       'epp:epp.epp:command.epp:transfer.contact:transfer.contact:authInfo',
       'epp:epp.epp:command.epp:update.contact:update.contact:chg.contact:authInfo',
+      'epp:epp.epp:response.epp:resData.contact:infData.contact:authInfo',
       'contact:create.contact:authInfo',
       'contact:info.contact:authInfo',
       'contact:transfer.contact:authInfo',
@@ -1228,6 +1287,7 @@ export const singularNodes: SingularNodeInfo[] = [
       'epp:epp.epp:command.epp:info.contact:info.contact:authInfo',
       'epp:epp.epp:command.epp:transfer.contact:transfer.contact:authInfo',
       'epp:epp.epp:command.epp:update.contact:update.contact:chg.contact:authInfo',
+      'epp:epp.epp:response.epp:resData.contact:infData.contact:authInfo',
       'contact:create.contact:authInfo',
       'contact:info.contact:authInfo',
       'contact:transfer.contact:authInfo',
@@ -1240,6 +1300,7 @@ export const singularNodes: SingularNodeInfo[] = [
     parentPaths: [
       'epp:epp.epp:command.epp:create.contact:create',
       'epp:epp.epp:command.epp:update.contact:update.contact:chg',
+      'epp:epp.epp:response.epp:resData.contact:infData',
       'contact:create',
       'contact:update.contact:chg',
       'contact:infData',
@@ -1254,6 +1315,10 @@ export const singularNodes: SingularNodeInfo[] = [
       'epp:epp.epp:command.epp:info.host:info',
       'epp:epp.epp:command.epp:update.host:update',
       'epp:epp.epp:command.epp:update.host:update.host:chg',
+      'epp:epp.epp:response.epp:resData.host:chkData.host:cd',
+      'epp:epp.epp:response.epp:resData.host:creData',
+      'epp:epp.epp:response.epp:resData.host:infData',
+      'epp:epp.epp:response.epp:resData.host:panData',
       'host:create',
       'host:delete',
       'host:info',
@@ -1408,9 +1473,379 @@ export const singularNodes: SingularNodeInfo[] = [
   { nodeName: 'epp:qDate', parentPaths: ['epp:epp.epp:response.epp:msgQ'] },
   { nodeName: 'epp:resData', parentPaths: ['epp:epp.epp:response'] },
   {
+    nodeName: 'domain:chkData',
+    parentPaths: ['epp:epp.epp:response.epp:resData'],
+  },
+  {
+    nodeName: 'domain:reason',
+    parentPaths: [
+      'epp:epp.epp:response.epp:resData.domain:chkData.domain:cd',
+      'domain:chkData.domain:cd',
+    ],
+  },
+  {
+    nodeName: 'domain:creData',
+    parentPaths: ['epp:epp.epp:response.epp:resData'],
+  },
+  {
+    nodeName: 'domain:crDate',
+    parentPaths: [
+      'epp:epp.epp:response.epp:resData.domain:creData',
+      'epp:epp.epp:response.epp:resData.domain:infData',
+      'domain:creData',
+      'domain:infData',
+    ],
+  },
+  {
+    nodeName: 'domain:exDate',
+    parentPaths: [
+      'epp:epp.epp:response.epp:resData.domain:creData',
+      'epp:epp.epp:response.epp:resData.domain:infData',
+      'epp:epp.epp:response.epp:resData.domain:renData',
+      'epp:epp.epp:response.epp:resData.domain:trnData',
+      'domain:creData',
+      'domain:infData',
+      'domain:renData',
+      'domain:trnData',
+    ],
+  },
+  {
+    nodeName: 'domain:infData',
+    parentPaths: ['epp:epp.epp:response.epp:resData'],
+  },
+  {
+    nodeName: 'domain:roid',
+    parentPaths: [
+      'epp:epp.epp:response.epp:resData.domain:infData',
+      'domain:infData',
+    ],
+  },
+  {
+    nodeName: 'domain:clID',
+    parentPaths: [
+      'epp:epp.epp:response.epp:resData.domain:infData',
+      'domain:infData',
+    ],
+  },
+  {
+    nodeName: 'domain:crID',
+    parentPaths: [
+      'epp:epp.epp:response.epp:resData.domain:infData',
+      'domain:infData',
+    ],
+  },
+  {
+    nodeName: 'domain:upID',
+    parentPaths: [
+      'epp:epp.epp:response.epp:resData.domain:infData',
+      'domain:infData',
+    ],
+  },
+  {
+    nodeName: 'domain:upDate',
+    parentPaths: [
+      'epp:epp.epp:response.epp:resData.domain:infData',
+      'domain:infData',
+    ],
+  },
+  {
+    nodeName: 'domain:trDate',
+    parentPaths: [
+      'epp:epp.epp:response.epp:resData.domain:infData',
+      'domain:infData',
+    ],
+  },
+  {
+    nodeName: 'domain:panData',
+    parentPaths: ['epp:epp.epp:response.epp:resData'],
+  },
+  {
+    nodeName: 'domain:paTRID',
+    parentPaths: [
+      'epp:epp.epp:response.epp:resData.domain:panData',
+      'domain:panData',
+    ],
+  },
+  {
+    nodeName: 'epp:svTRID',
+    parentPaths: [
+      'epp:epp.epp:response.epp:resData.domain:panData.domain:paTRID',
+      'epp:epp.epp:response.epp:resData.contact:panData.contact:paTRID',
+      'epp:epp.epp:response.epp:resData.host:panData.host:paTRID',
+      'epp:epp.epp:response.epp:trID',
+      'domain:panData.domain:paTRID',
+      'contact:panData.contact:paTRID',
+      'host:panData.host:paTRID',
+    ],
+  },
+  {
+    nodeName: 'domain:paDate',
+    parentPaths: [
+      'epp:epp.epp:response.epp:resData.domain:panData',
+      'domain:panData',
+    ],
+  },
+  {
+    nodeName: 'domain:renData',
+    parentPaths: ['epp:epp.epp:response.epp:resData'],
+  },
+  {
+    nodeName: 'domain:trnData',
+    parentPaths: ['epp:epp.epp:response.epp:resData'],
+  },
+  {
+    nodeName: 'domain:trStatus',
+    parentPaths: [
+      'epp:epp.epp:response.epp:resData.domain:trnData',
+      'domain:trnData',
+    ],
+  },
+  {
+    nodeName: 'domain:reID',
+    parentPaths: [
+      'epp:epp.epp:response.epp:resData.domain:trnData',
+      'domain:trnData',
+    ],
+  },
+  {
+    nodeName: 'domain:reDate',
+    parentPaths: [
+      'epp:epp.epp:response.epp:resData.domain:trnData',
+      'domain:trnData',
+    ],
+  },
+  {
+    nodeName: 'domain:acID',
+    parentPaths: [
+      'epp:epp.epp:response.epp:resData.domain:trnData',
+      'domain:trnData',
+    ],
+  },
+  {
+    nodeName: 'domain:acDate',
+    parentPaths: [
+      'epp:epp.epp:response.epp:resData.domain:trnData',
+      'domain:trnData',
+    ],
+  },
+  {
+    nodeName: 'contact:chkData',
+    parentPaths: ['epp:epp.epp:response.epp:resData'],
+  },
+  {
+    nodeName: 'contact:reason',
+    parentPaths: [
+      'epp:epp.epp:response.epp:resData.contact:chkData.contact:cd',
+      'contact:chkData.contact:cd',
+    ],
+  },
+  {
+    nodeName: 'contact:creData',
+    parentPaths: ['epp:epp.epp:response.epp:resData'],
+  },
+  {
+    nodeName: 'contact:crDate',
+    parentPaths: [
+      'epp:epp.epp:response.epp:resData.contact:creData',
+      'epp:epp.epp:response.epp:resData.contact:infData',
+      'contact:creData',
+      'contact:infData',
+    ],
+  },
+  {
+    nodeName: 'contact:infData',
+    parentPaths: ['epp:epp.epp:response.epp:resData'],
+  },
+  {
+    nodeName: 'contact:roid',
+    parentPaths: [
+      'epp:epp.epp:response.epp:resData.contact:infData',
+      'contact:infData',
+    ],
+  },
+  {
+    nodeName: 'contact:clID',
+    parentPaths: [
+      'epp:epp.epp:response.epp:resData.contact:infData',
+      'contact:infData',
+    ],
+  },
+  {
+    nodeName: 'contact:crID',
+    parentPaths: [
+      'epp:epp.epp:response.epp:resData.contact:infData',
+      'contact:infData',
+    ],
+  },
+  {
+    nodeName: 'contact:upID',
+    parentPaths: [
+      'epp:epp.epp:response.epp:resData.contact:infData',
+      'contact:infData',
+    ],
+  },
+  {
+    nodeName: 'contact:upDate',
+    parentPaths: [
+      'epp:epp.epp:response.epp:resData.contact:infData',
+      'contact:infData',
+    ],
+  },
+  {
+    nodeName: 'contact:trDate',
+    parentPaths: [
+      'epp:epp.epp:response.epp:resData.contact:infData',
+      'contact:infData',
+    ],
+  },
+  {
+    nodeName: 'contact:panData',
+    parentPaths: ['epp:epp.epp:response.epp:resData'],
+  },
+  {
+    nodeName: 'contact:paTRID',
+    parentPaths: [
+      'epp:epp.epp:response.epp:resData.contact:panData',
+      'contact:panData',
+    ],
+  },
+  {
+    nodeName: 'contact:paDate',
+    parentPaths: [
+      'epp:epp.epp:response.epp:resData.contact:panData',
+      'contact:panData',
+    ],
+  },
+  {
+    nodeName: 'contact:trnData',
+    parentPaths: ['epp:epp.epp:response.epp:resData'],
+  },
+  {
+    nodeName: 'contact:trStatus',
+    parentPaths: [
+      'epp:epp.epp:response.epp:resData.contact:trnData',
+      'contact:trnData',
+    ],
+  },
+  {
+    nodeName: 'contact:reID',
+    parentPaths: [
+      'epp:epp.epp:response.epp:resData.contact:trnData',
+      'contact:trnData',
+    ],
+  },
+  {
+    nodeName: 'contact:reDate',
+    parentPaths: [
+      'epp:epp.epp:response.epp:resData.contact:trnData',
+      'contact:trnData',
+    ],
+  },
+  {
+    nodeName: 'contact:acID',
+    parentPaths: [
+      'epp:epp.epp:response.epp:resData.contact:trnData',
+      'contact:trnData',
+    ],
+  },
+  {
+    nodeName: 'contact:acDate',
+    parentPaths: [
+      'epp:epp.epp:response.epp:resData.contact:trnData',
+      'contact:trnData',
+    ],
+  },
+  {
+    nodeName: 'host:chkData',
+    parentPaths: ['epp:epp.epp:response.epp:resData'],
+  },
+  {
+    nodeName: 'host:reason',
+    parentPaths: [
+      'epp:epp.epp:response.epp:resData.host:chkData.host:cd',
+      'host:chkData.host:cd',
+    ],
+  },
+  {
+    nodeName: 'host:creData',
+    parentPaths: ['epp:epp.epp:response.epp:resData'],
+  },
+  {
+    nodeName: 'host:crDate',
+    parentPaths: [
+      'epp:epp.epp:response.epp:resData.host:creData',
+      'epp:epp.epp:response.epp:resData.host:infData',
+      'host:creData',
+      'host:infData',
+    ],
+  },
+  {
+    nodeName: 'host:infData',
+    parentPaths: ['epp:epp.epp:response.epp:resData'],
+  },
+  {
+    nodeName: 'host:roid',
+    parentPaths: [
+      'epp:epp.epp:response.epp:resData.host:infData',
+      'host:infData',
+    ],
+  },
+  {
+    nodeName: 'host:clID',
+    parentPaths: [
+      'epp:epp.epp:response.epp:resData.host:infData',
+      'host:infData',
+    ],
+  },
+  {
+    nodeName: 'host:crID',
+    parentPaths: [
+      'epp:epp.epp:response.epp:resData.host:infData',
+      'host:infData',
+    ],
+  },
+  {
+    nodeName: 'host:upID',
+    parentPaths: [
+      'epp:epp.epp:response.epp:resData.host:infData',
+      'host:infData',
+    ],
+  },
+  {
+    nodeName: 'host:upDate',
+    parentPaths: [
+      'epp:epp.epp:response.epp:resData.host:infData',
+      'host:infData',
+    ],
+  },
+  {
+    nodeName: 'host:trDate',
+    parentPaths: [
+      'epp:epp.epp:response.epp:resData.host:infData',
+      'host:infData',
+    ],
+  },
+  {
+    nodeName: 'host:panData',
+    parentPaths: ['epp:epp.epp:response.epp:resData'],
+  },
+  {
+    nodeName: 'host:paTRID',
+    parentPaths: [
+      'epp:epp.epp:response.epp:resData.host:panData',
+      'host:panData',
+    ],
+  },
+  {
+    nodeName: 'host:paDate',
+    parentPaths: [
+      'epp:epp.epp:response.epp:resData.host:panData',
+      'host:panData',
+    ],
+  },
+  {
     nodeName: 'idn:data',
     parentPaths: [
-      'epp:epp.epp:response.epp:resData',
       'epp:epp.epp:response.epp:extension',
       'epp:epp.epp:extension',
     ],
@@ -1418,7 +1853,6 @@ export const singularNodes: SingularNodeInfo[] = [
   {
     nodeName: 'idn:table',
     parentPaths: [
-      'epp:epp.epp:response.epp:resData.idn:data',
       'epp:epp.epp:response.epp:extension.idn:data',
       'epp:epp.epp:extension.idn:data',
       'idn:data',
@@ -1427,7 +1861,6 @@ export const singularNodes: SingularNodeInfo[] = [
   {
     nodeName: 'idn:uname',
     parentPaths: [
-      'epp:epp.epp:response.epp:resData.idn:data',
       'epp:epp.epp:response.epp:extension.idn:data',
       'epp:epp.epp:extension.idn:data',
       'idn:data',
@@ -1436,7 +1869,6 @@ export const singularNodes: SingularNodeInfo[] = [
   {
     nodeName: 'fee:chkData',
     parentPaths: [
-      'epp:epp.epp:response.epp:resData',
       'epp:epp.epp:response.epp:extension',
       'epp:epp.epp:extension',
     ],
@@ -1444,7 +1876,6 @@ export const singularNodes: SingularNodeInfo[] = [
   {
     nodeName: 'fee:objID',
     parentPaths: [
-      'epp:epp.epp:response.epp:resData.fee:chkData.fee:cd',
       'epp:epp.epp:response.epp:extension.fee:chkData.fee:cd',
       'epp:epp.epp:extension.fee:chkData.fee:cd',
       'fee:chkData.fee:cd',
@@ -1453,7 +1884,6 @@ export const singularNodes: SingularNodeInfo[] = [
   {
     nodeName: 'fee:class',
     parentPaths: [
-      'epp:epp.epp:response.epp:resData.fee:chkData.fee:cd',
       'epp:epp.epp:response.epp:extension.fee:chkData.fee:cd',
       'epp:epp.epp:extension.fee:chkData.fee:cd',
       'fee:chkData.fee:cd',
@@ -1462,8 +1892,6 @@ export const singularNodes: SingularNodeInfo[] = [
   {
     nodeName: 'fee:reason',
     parentPaths: [
-      'epp:epp.epp:response.epp:resData.fee:chkData.fee:cd.fee:command',
-      'epp:epp.epp:response.epp:resData.fee:chkData.fee:cd',
       'epp:epp.epp:response.epp:extension.fee:chkData.fee:cd.fee:command',
       'epp:epp.epp:response.epp:extension.fee:chkData.fee:cd',
       'epp:epp.epp:extension.fee:chkData.fee:cd.fee:command',
@@ -1475,7 +1903,6 @@ export const singularNodes: SingularNodeInfo[] = [
   {
     nodeName: 'fee:creData',
     parentPaths: [
-      'epp:epp.epp:response.epp:resData',
       'epp:epp.epp:response.epp:extension',
       'epp:epp.epp:extension',
     ],
@@ -1483,11 +1910,6 @@ export const singularNodes: SingularNodeInfo[] = [
   {
     nodeName: 'fee:balance',
     parentPaths: [
-      'epp:epp.epp:response.epp:resData.fee:creData',
-      'epp:epp.epp:response.epp:resData.fee:renData',
-      'epp:epp.epp:response.epp:resData.fee:trnData',
-      'epp:epp.epp:response.epp:resData.fee:updData',
-      'epp:epp.epp:response.epp:resData.fee:delData',
       'epp:epp.epp:response.epp:extension.fee:creData',
       'epp:epp.epp:response.epp:extension.fee:renData',
       'epp:epp.epp:response.epp:extension.fee:trnData',
@@ -1508,11 +1930,6 @@ export const singularNodes: SingularNodeInfo[] = [
   {
     nodeName: 'fee:creditLimit',
     parentPaths: [
-      'epp:epp.epp:response.epp:resData.fee:creData',
-      'epp:epp.epp:response.epp:resData.fee:renData',
-      'epp:epp.epp:response.epp:resData.fee:trnData',
-      'epp:epp.epp:response.epp:resData.fee:updData',
-      'epp:epp.epp:response.epp:resData.fee:delData',
       'epp:epp.epp:response.epp:extension.fee:creData',
       'epp:epp.epp:response.epp:extension.fee:renData',
       'epp:epp.epp:response.epp:extension.fee:trnData',
@@ -1533,7 +1950,6 @@ export const singularNodes: SingularNodeInfo[] = [
   {
     nodeName: 'fee:renData',
     parentPaths: [
-      'epp:epp.epp:response.epp:resData',
       'epp:epp.epp:response.epp:extension',
       'epp:epp.epp:extension',
     ],
@@ -1541,7 +1957,6 @@ export const singularNodes: SingularNodeInfo[] = [
   {
     nodeName: 'fee:trnData',
     parentPaths: [
-      'epp:epp.epp:response.epp:resData',
       'epp:epp.epp:response.epp:extension',
       'epp:epp.epp:extension',
     ],
@@ -1549,7 +1964,6 @@ export const singularNodes: SingularNodeInfo[] = [
   {
     nodeName: 'fee:updData',
     parentPaths: [
-      'epp:epp.epp:response.epp:resData',
       'epp:epp.epp:response.epp:extension',
       'epp:epp.epp:extension',
     ],
@@ -1557,15 +1971,13 @@ export const singularNodes: SingularNodeInfo[] = [
   {
     nodeName: 'fee:delData',
     parentPaths: [
-      'epp:epp.epp:response.epp:resData',
       'epp:epp.epp:response.epp:extension',
       'epp:epp.epp:extension',
     ],
   },
   {
-    nodeName: 'epp:infData',
+    nodeName: 'secDNS:infData',
     parentPaths: [
-      'epp:epp.epp:response.epp:resData',
       'epp:epp.epp:response.epp:extension',
       'epp:epp.epp:extension',
     ],
@@ -1573,7 +1985,6 @@ export const singularNodes: SingularNodeInfo[] = [
   {
     nodeName: 'rgp:infData',
     parentPaths: [
-      'epp:epp.epp:response.epp:resData',
       'epp:epp.epp:response.epp:extension',
       'epp:epp.epp:extension',
     ],
@@ -1581,7 +1992,6 @@ export const singularNodes: SingularNodeInfo[] = [
   {
     nodeName: 'rgp:upData',
     parentPaths: [
-      'epp:epp.epp:response.epp:resData',
       'epp:epp.epp:response.epp:extension',
       'epp:epp.epp:extension',
     ],
@@ -1589,7 +1999,6 @@ export const singularNodes: SingularNodeInfo[] = [
   {
     nodeName: 'launch:chkData',
     parentPaths: [
-      'epp:epp.epp:response.epp:resData',
       'epp:epp.epp:response.epp:extension',
       'epp:epp.epp:extension',
     ],
@@ -1597,7 +2006,6 @@ export const singularNodes: SingularNodeInfo[] = [
   {
     nodeName: 'launch:name',
     parentPaths: [
-      'epp:epp.epp:response.epp:resData.launch:chkData.launch:cd',
       'epp:epp.epp:response.epp:extension.launch:chkData.launch:cd',
       'epp:epp.epp:extension.launch:chkData.launch:cd',
       'launch:chkData.launch:cd',
@@ -1606,7 +2014,6 @@ export const singularNodes: SingularNodeInfo[] = [
   {
     nodeName: 'launch:claimKey',
     parentPaths: [
-      'epp:epp.epp:response.epp:resData.launch:chkData.launch:cd',
       'epp:epp.epp:response.epp:extension.launch:chkData.launch:cd',
       'epp:epp.epp:extension.launch:chkData.launch:cd',
       'launch:chkData.launch:cd',
@@ -1615,7 +2022,6 @@ export const singularNodes: SingularNodeInfo[] = [
   {
     nodeName: 'launch:creData',
     parentPaths: [
-      'epp:epp.epp:response.epp:resData',
       'epp:epp.epp:response.epp:extension',
       'epp:epp.epp:extension',
     ],
@@ -1623,7 +2029,6 @@ export const singularNodes: SingularNodeInfo[] = [
   {
     nodeName: 'launch:infData',
     parentPaths: [
-      'epp:epp.epp:response.epp:resData',
       'epp:epp.epp:response.epp:extension',
       'epp:epp.epp:extension',
     ],
@@ -1631,7 +2036,6 @@ export const singularNodes: SingularNodeInfo[] = [
   {
     nodeName: 'launch:status',
     parentPaths: [
-      'epp:epp.epp:response.epp:resData.launch:infData',
       'epp:epp.epp:response.epp:extension.launch:infData',
       'epp:epp.epp:extension.launch:infData',
       'launch:infData',
@@ -1640,99 +2044,11 @@ export const singularNodes: SingularNodeInfo[] = [
   {
     nodeName: 'artRecord:infData',
     parentPaths: [
-      'epp:epp.epp:response.epp:resData',
       'epp:epp.epp:response.epp:extension',
       'epp:epp.epp:extension',
     ],
   },
   { nodeName: 'epp:trID', parentPaths: ['epp:epp.epp:response'] },
-  {
-    nodeName: 'epp:svTRID',
-    parentPaths: [
-      'epp:epp.epp:response.epp:trID',
-      'domain:panData.domain:paTRID',
-      'contact:panData.contact:paTRID',
-      'host:panData.host:paTRID',
-    ],
-  },
-  { nodeName: 'domain:reason', parentPaths: ['domain:chkData.domain:cd'] },
-  {
-    nodeName: 'domain:crDate',
-    parentPaths: ['domain:creData', 'domain:infData'],
-  },
-  {
-    nodeName: 'domain:exDate',
-    parentPaths: [
-      'domain:creData',
-      'domain:infData',
-      'domain:renData',
-      'domain:trnData',
-    ],
-  },
-  { nodeName: 'domain:roid', parentPaths: ['domain:infData'] },
-  { nodeName: 'domain:clID', parentPaths: ['domain:infData'] },
-  { nodeName: 'domain:crID', parentPaths: ['domain:infData'] },
-  { nodeName: 'domain:upID', parentPaths: ['domain:infData'] },
-  { nodeName: 'domain:upDate', parentPaths: ['domain:infData'] },
-  { nodeName: 'domain:trDate', parentPaths: ['domain:infData'] },
-  { nodeName: 'domain:paTRID', parentPaths: ['domain:panData'] },
-  { nodeName: 'domain:paDate', parentPaths: ['domain:panData'] },
-  { nodeName: 'domain:trStatus', parentPaths: ['domain:trnData'] },
-  { nodeName: 'domain:reID', parentPaths: ['domain:trnData'] },
-  { nodeName: 'domain:reDate', parentPaths: ['domain:trnData'] },
-  { nodeName: 'domain:acID', parentPaths: ['domain:trnData'] },
-  { nodeName: 'domain:acDate', parentPaths: ['domain:trnData'] },
-  { nodeName: 'contact:reason', parentPaths: ['contact:chkData.contact:cd'] },
-  {
-    nodeName: 'contact:crDate',
-    parentPaths: ['contact:creData', 'contact:infData'],
-  },
-  { nodeName: 'contact:roid', parentPaths: ['contact:infData'] },
-  { nodeName: 'contact:clID', parentPaths: ['contact:infData'] },
-  { nodeName: 'contact:crID', parentPaths: ['contact:infData'] },
-  { nodeName: 'contact:upID', parentPaths: ['contact:infData'] },
-  { nodeName: 'contact:upDate', parentPaths: ['contact:infData'] },
-  { nodeName: 'contact:trDate', parentPaths: ['contact:infData'] },
-  { nodeName: 'contact:paTRID', parentPaths: ['contact:panData'] },
-  { nodeName: 'contact:paDate', parentPaths: ['contact:panData'] },
-  { nodeName: 'contact:trStatus', parentPaths: ['contact:trnData'] },
-  { nodeName: 'contact:reID', parentPaths: ['contact:trnData'] },
-  { nodeName: 'contact:reDate', parentPaths: ['contact:trnData'] },
-  { nodeName: 'contact:acID', parentPaths: ['contact:trnData'] },
-  { nodeName: 'contact:acDate', parentPaths: ['contact:trnData'] },
-  { nodeName: 'host:reason', parentPaths: ['host:chkData.host:cd'] },
-  { nodeName: 'host:crDate', parentPaths: ['host:creData', 'host:infData'] },
-  { nodeName: 'host:roid', parentPaths: ['host:infData'] },
-  { nodeName: 'host:clID', parentPaths: ['host:infData'] },
-  { nodeName: 'host:crID', parentPaths: ['host:infData'] },
-  { nodeName: 'host:upID', parentPaths: ['host:infData'] },
-  { nodeName: 'host:upDate', parentPaths: ['host:infData'] },
-  { nodeName: 'host:trDate', parentPaths: ['host:infData'] },
-  { nodeName: 'host:paTRID', parentPaths: ['host:panData'] },
-  { nodeName: 'host:paDate', parentPaths: ['host:panData'] },
-  { nodeName: 'rgp:restore', parentPaths: ['rgp:update'] },
-  { nodeName: 'rgp:report', parentPaths: ['rgp:update.rgp:restore'] },
-  {
-    nodeName: 'rgp:preData',
-    parentPaths: ['rgp:update.rgp:restore.rgp:report'],
-  },
-  {
-    nodeName: 'rgp:postData',
-    parentPaths: ['rgp:update.rgp:restore.rgp:report'],
-  },
-  {
-    nodeName: 'rgp:delTime',
-    parentPaths: ['rgp:update.rgp:restore.rgp:report'],
-  },
-  {
-    nodeName: 'rgp:resTime',
-    parentPaths: ['rgp:update.rgp:restore.rgp:report'],
-  },
-  {
-    nodeName: 'rgp:resReason',
-    parentPaths: ['rgp:update.rgp:restore.rgp:report'],
-  },
-  { nodeName: 'rgp:other', parentPaths: ['rgp:update.rgp:restore.rgp:report'] },
   {
     nodeName: 'mark:id',
     parentPaths: [
@@ -2319,7 +2635,6 @@ export const nodesWithAttributes: NodeWithAttributesInfo[] = [
     nodeName: 'fee:command',
     parentPaths: [
       'epp:epp.epp:command.epp:extension.fee:check',
-      'epp:epp.epp:response.epp:resData.fee:chkData.fee:cd',
       'epp:epp.epp:response.epp:extension.fee:chkData.fee:cd',
       'epp:epp.epp:extension.fee:check',
       'epp:epp.epp:extension.fee:chkData.fee:cd',
@@ -2331,11 +2646,6 @@ export const nodesWithAttributes: NodeWithAttributesInfo[] = [
     nodeName: 'fee:period',
     parentPaths: [
       'epp:epp.epp:command.epp:extension.fee:check.fee:command',
-      'epp:epp.epp:response.epp:resData.fee:creData',
-      'epp:epp.epp:response.epp:resData.fee:renData',
-      'epp:epp.epp:response.epp:resData.fee:trnData',
-      'epp:epp.epp:response.epp:resData.fee:updData',
-      'epp:epp.epp:response.epp:resData.fee:delData',
       'epp:epp.epp:response.epp:extension.fee:creData',
       'epp:epp.epp:response.epp:extension.fee:renData',
       'epp:epp.epp:response.epp:extension.fee:trnData',
@@ -2362,12 +2672,6 @@ export const nodesWithAttributes: NodeWithAttributesInfo[] = [
       'epp:epp.epp:command.epp:extension.fee:renew',
       'epp:epp.epp:command.epp:extension.fee:transfer',
       'epp:epp.epp:command.epp:extension.fee:update',
-      'epp:epp.epp:response.epp:resData.fee:chkData.fee:cd.fee:command',
-      'epp:epp.epp:response.epp:resData.fee:creData',
-      'epp:epp.epp:response.epp:resData.fee:renData',
-      'epp:epp.epp:response.epp:resData.fee:trnData',
-      'epp:epp.epp:response.epp:resData.fee:updData',
-      'epp:epp.epp:response.epp:resData.fee:delData',
       'epp:epp.epp:response.epp:extension.fee:chkData.fee:cd.fee:command',
       'epp:epp.epp:response.epp:extension.fee:creData',
       'epp:epp.epp:response.epp:extension.fee:renData',
@@ -2403,12 +2707,6 @@ export const nodesWithAttributes: NodeWithAttributesInfo[] = [
       'epp:epp.epp:command.epp:extension.fee:renew',
       'epp:epp.epp:command.epp:extension.fee:transfer',
       'epp:epp.epp:command.epp:extension.fee:update',
-      'epp:epp.epp:response.epp:resData.fee:chkData.fee:cd.fee:command',
-      'epp:epp.epp:response.epp:resData.fee:creData',
-      'epp:epp.epp:response.epp:resData.fee:renData',
-      'epp:epp.epp:response.epp:resData.fee:trnData',
-      'epp:epp.epp:response.epp:resData.fee:updData',
-      'epp:epp.epp:response.epp:resData.fee:delData',
       'epp:epp.epp:response.epp:extension.fee:chkData.fee:cd.fee:command',
       'epp:epp.epp:response.epp:extension.fee:creData',
       'epp:epp.epp:response.epp:extension.fee:renData',
@@ -2446,6 +2744,30 @@ export const nodesWithAttributes: NodeWithAttributesInfo[] = [
     ],
   },
   {
+    nodeName: 'rgp:restore',
+    parentPaths: [
+      'epp:epp.epp:command.epp:extension.rgp:update',
+      'epp:epp.epp:extension.rgp:update',
+      'rgp:update',
+    ],
+  },
+  {
+    nodeName: 'rgp:resReason',
+    parentPaths: [
+      'epp:epp.epp:command.epp:extension.rgp:update.rgp:restore.rgp:report',
+      'epp:epp.epp:extension.rgp:update.rgp:restore.rgp:report',
+      'rgp:update.rgp:restore.rgp:report',
+    ],
+  },
+  {
+    nodeName: 'rgp:statement',
+    parentPaths: [
+      'epp:epp.epp:command.epp:extension.rgp:update.rgp:restore.rgp:report',
+      'epp:epp.epp:extension.rgp:update.rgp:restore.rgp:report',
+      'rgp:update.rgp:restore.rgp:report',
+    ],
+  },
+  {
     nodeName: 'launch:check',
     parentPaths: [
       'epp:epp.epp:command.epp:extension',
@@ -2461,9 +2783,6 @@ export const nodesWithAttributes: NodeWithAttributesInfo[] = [
       'epp:epp.epp:command.epp:extension.launch:create',
       'epp:epp.epp:command.epp:extension.launch:update',
       'epp:epp.epp:command.epp:extension.launch:delete',
-      'epp:epp.epp:response.epp:resData.launch:chkData',
-      'epp:epp.epp:response.epp:resData.launch:creData',
-      'epp:epp.epp:response.epp:resData.launch:infData',
       'epp:epp.epp:response.epp:extension.launch:chkData',
       'epp:epp.epp:response.epp:extension.launch:creData',
       'epp:epp.epp:response.epp:extension.launch:infData',
@@ -2543,6 +2862,7 @@ export const nodesWithAttributes: NodeWithAttributesInfo[] = [
       'epp:epp.epp:command.epp:create.domain:create.domain:ns.domain:hostAttr',
       'epp:epp.epp:command.epp:update.domain:update.domain:add.domain:ns.domain:hostAttr',
       'epp:epp.epp:command.epp:update.domain:update.domain:rem.domain:ns.domain:hostAttr',
+      'epp:epp.epp:response.epp:resData.domain:infData.domain:ns.domain:hostAttr',
       'domain:create.domain:ns.domain:hostAttr',
       'domain:update.domain:add.domain:ns.domain:hostAttr',
       'domain:update.domain:rem.domain:ns.domain:hostAttr',
@@ -2555,6 +2875,7 @@ export const nodesWithAttributes: NodeWithAttributesInfo[] = [
       'epp:epp.epp:command.epp:create.domain:create',
       'epp:epp.epp:command.epp:update.domain:update.domain:add',
       'epp:epp.epp:command.epp:update.domain:update.domain:rem',
+      'epp:epp.epp:response.epp:resData.domain:infData',
       'domain:create',
       'domain:update.domain:add',
       'domain:update.domain:rem',
@@ -2568,6 +2889,7 @@ export const nodesWithAttributes: NodeWithAttributesInfo[] = [
       'epp:epp.epp:command.epp:info.domain:info.domain:authInfo',
       'epp:epp.epp:command.epp:transfer.domain:transfer.domain:authInfo',
       'epp:epp.epp:command.epp:update.domain:update.domain:chg.domain:authInfo',
+      'epp:epp.epp:response.epp:resData.domain:infData.domain:authInfo',
       'domain:create.domain:authInfo',
       'domain:info.domain:authInfo',
       'domain:transfer.domain:authInfo',
@@ -2580,6 +2902,7 @@ export const nodesWithAttributes: NodeWithAttributesInfo[] = [
     parentPaths: [
       'epp:epp.epp:command.epp:create.contact:create',
       'epp:epp.epp:command.epp:update.contact:update.contact:chg',
+      'epp:epp.epp:response.epp:resData.contact:infData',
       'contact:create',
       'contact:update.contact:chg',
       'contact:infData',
@@ -2590,6 +2913,7 @@ export const nodesWithAttributes: NodeWithAttributesInfo[] = [
     parentPaths: [
       'epp:epp.epp:command.epp:create.contact:create',
       'epp:epp.epp:command.epp:update.contact:update.contact:chg',
+      'epp:epp.epp:response.epp:resData.contact:infData',
       'contact:create',
       'contact:update.contact:chg',
       'contact:infData',
@@ -2600,6 +2924,7 @@ export const nodesWithAttributes: NodeWithAttributesInfo[] = [
     parentPaths: [
       'epp:epp.epp:command.epp:create.contact:create',
       'epp:epp.epp:command.epp:update.contact:update.contact:chg',
+      'epp:epp.epp:response.epp:resData.contact:infData',
       'contact:create',
       'contact:update.contact:chg',
       'contact:infData',
@@ -2612,6 +2937,7 @@ export const nodesWithAttributes: NodeWithAttributesInfo[] = [
       'epp:epp.epp:command.epp:info.contact:info.contact:authInfo',
       'epp:epp.epp:command.epp:transfer.contact:transfer.contact:authInfo',
       'epp:epp.epp:command.epp:update.contact:update.contact:chg.contact:authInfo',
+      'epp:epp.epp:response.epp:resData.contact:infData.contact:authInfo',
       'contact:create.contact:authInfo',
       'contact:info.contact:authInfo',
       'contact:transfer.contact:authInfo',
@@ -2624,6 +2950,7 @@ export const nodesWithAttributes: NodeWithAttributesInfo[] = [
     parentPaths: [
       'epp:epp.epp:command.epp:create.contact:create',
       'epp:epp.epp:command.epp:update.contact:update.contact:chg',
+      'epp:epp.epp:response.epp:resData.contact:infData',
       'contact:create',
       'contact:update.contact:chg',
       'contact:infData',
@@ -2634,6 +2961,7 @@ export const nodesWithAttributes: NodeWithAttributesInfo[] = [
     parentPaths: [
       'epp:epp.epp:command.epp:create.contact:create.contact:disclose',
       'epp:epp.epp:command.epp:update.contact:update.contact:chg.contact:disclose',
+      'epp:epp.epp:response.epp:resData.contact:infData.contact:disclose',
       'contact:create.contact:disclose',
       'contact:update.contact:chg.contact:disclose',
       'contact:infData.contact:disclose',
@@ -2644,6 +2972,7 @@ export const nodesWithAttributes: NodeWithAttributesInfo[] = [
     parentPaths: [
       'epp:epp.epp:command.epp:create.contact:create.contact:disclose',
       'epp:epp.epp:command.epp:update.contact:update.contact:chg.contact:disclose',
+      'epp:epp.epp:response.epp:resData.contact:infData.contact:disclose',
       'contact:create.contact:disclose',
       'contact:update.contact:chg.contact:disclose',
       'contact:infData.contact:disclose',
@@ -2654,6 +2983,7 @@ export const nodesWithAttributes: NodeWithAttributesInfo[] = [
     parentPaths: [
       'epp:epp.epp:command.epp:create.contact:create.contact:disclose',
       'epp:epp.epp:command.epp:update.contact:update.contact:chg.contact:disclose',
+      'epp:epp.epp:response.epp:resData.contact:infData.contact:disclose',
       'contact:create.contact:disclose',
       'contact:update.contact:chg.contact:disclose',
       'contact:infData.contact:disclose',
@@ -2665,6 +2995,7 @@ export const nodesWithAttributes: NodeWithAttributesInfo[] = [
       'epp:epp.epp:command.epp:create.host:create',
       'epp:epp.epp:command.epp:update.host:update.host:add',
       'epp:epp.epp:command.epp:update.host:update.host:rem',
+      'epp:epp.epp:response.epp:resData.host:infData',
       'host:create',
       'host:update.host:add',
       'host:update.host:rem',
@@ -2675,6 +3006,8 @@ export const nodesWithAttributes: NodeWithAttributesInfo[] = [
     nodeName: 'domain:name',
     parentPaths: [
       'epp:epp.epp:command.epp:info.domain:info',
+      'epp:epp.epp:response.epp:resData.domain:chkData.domain:cd',
+      'epp:epp.epp:response.epp:resData.domain:panData',
       'domain:info',
       'domain:chkData.domain:cd',
       'domain:panData',
@@ -2687,6 +3020,7 @@ export const nodesWithAttributes: NodeWithAttributesInfo[] = [
     parentPaths: [
       'epp:epp.epp:command.epp:update.domain:update.domain:add',
       'epp:epp.epp:command.epp:update.domain:update.domain:rem',
+      'epp:epp.epp:response.epp:resData.domain:infData',
       'domain:update.domain:add',
       'domain:update.domain:rem',
       'domain:infData',
@@ -2697,6 +3031,7 @@ export const nodesWithAttributes: NodeWithAttributesInfo[] = [
     parentPaths: [
       'epp:epp.epp:command.epp:update.contact:update.contact:add',
       'epp:epp.epp:command.epp:update.contact:update.contact:rem',
+      'epp:epp.epp:response.epp:resData.contact:infData',
       'contact:update.contact:add',
       'contact:update.contact:rem',
       'contact:infData',
@@ -2707,6 +3042,7 @@ export const nodesWithAttributes: NodeWithAttributesInfo[] = [
     parentPaths: [
       'epp:epp.epp:command.epp:update.host:update.host:add',
       'epp:epp.epp:command.epp:update.host:update.host:rem',
+      'epp:epp.epp:response.epp:resData.host:infData',
       'host:update.host:add',
       'host:update.host:rem',
       'host:infData',
@@ -2726,9 +3062,47 @@ export const nodesWithAttributes: NodeWithAttributesInfo[] = [
   },
   { nodeName: 'epp:msgQ', parentPaths: ['epp:epp.epp:response'] },
   {
+    nodeName: 'domain:reason',
+    parentPaths: [
+      'epp:epp.epp:response.epp:resData.domain:chkData.domain:cd',
+      'domain:chkData.domain:cd',
+    ],
+  },
+  {
+    nodeName: 'contact:id',
+    parentPaths: [
+      'epp:epp.epp:response.epp:resData.contact:chkData.contact:cd',
+      'epp:epp.epp:response.epp:resData.contact:panData',
+      'contact:chkData.contact:cd',
+      'contact:panData',
+    ],
+  },
+  {
+    nodeName: 'contact:reason',
+    parentPaths: [
+      'epp:epp.epp:response.epp:resData.contact:chkData.contact:cd',
+      'contact:chkData.contact:cd',
+    ],
+  },
+  {
+    nodeName: 'host:name',
+    parentPaths: [
+      'epp:epp.epp:response.epp:resData.host:chkData.host:cd',
+      'epp:epp.epp:response.epp:resData.host:panData',
+      'host:chkData.host:cd',
+      'host:panData',
+    ],
+  },
+  {
+    nodeName: 'host:reason',
+    parentPaths: [
+      'epp:epp.epp:response.epp:resData.host:chkData.host:cd',
+      'host:chkData.host:cd',
+    ],
+  },
+  {
     nodeName: 'fee:cd',
     parentPaths: [
-      'epp:epp.epp:response.epp:resData.fee:chkData',
       'epp:epp.epp:response.epp:extension.fee:chkData',
       'epp:epp.epp:extension.fee:chkData',
       'fee:chkData',
@@ -2737,7 +3111,6 @@ export const nodesWithAttributes: NodeWithAttributesInfo[] = [
   {
     nodeName: 'fee:objID',
     parentPaths: [
-      'epp:epp.epp:response.epp:resData.fee:chkData.fee:cd',
       'epp:epp.epp:response.epp:extension.fee:chkData.fee:cd',
       'epp:epp.epp:extension.fee:chkData.fee:cd',
       'fee:chkData.fee:cd',
@@ -2746,8 +3119,6 @@ export const nodesWithAttributes: NodeWithAttributesInfo[] = [
   {
     nodeName: 'fee:reason',
     parentPaths: [
-      'epp:epp.epp:response.epp:resData.fee:chkData.fee:cd.fee:command',
-      'epp:epp.epp:response.epp:resData.fee:chkData.fee:cd',
       'epp:epp.epp:response.epp:extension.fee:chkData.fee:cd.fee:command',
       'epp:epp.epp:response.epp:extension.fee:chkData.fee:cd',
       'epp:epp.epp:extension.fee:chkData.fee:cd.fee:command',
@@ -2759,8 +3130,6 @@ export const nodesWithAttributes: NodeWithAttributesInfo[] = [
   {
     nodeName: 'rgp:rgpStatus',
     parentPaths: [
-      'epp:epp.epp:response.epp:resData.rgp:infData',
-      'epp:epp.epp:response.epp:resData.rgp:upData',
       'epp:epp.epp:response.epp:extension.rgp:infData',
       'epp:epp.epp:response.epp:extension.rgp:upData',
       'epp:epp.epp:extension.rgp:infData',
@@ -2772,7 +3141,6 @@ export const nodesWithAttributes: NodeWithAttributesInfo[] = [
   {
     nodeName: 'launch:name',
     parentPaths: [
-      'epp:epp.epp:response.epp:resData.launch:chkData.launch:cd',
       'epp:epp.epp:response.epp:extension.launch:chkData.launch:cd',
       'epp:epp.epp:extension.launch:chkData.launch:cd',
       'launch:chkData.launch:cd',
@@ -2781,7 +3149,6 @@ export const nodesWithAttributes: NodeWithAttributesInfo[] = [
   {
     nodeName: 'launch:claimKey',
     parentPaths: [
-      'epp:epp.epp:response.epp:resData.launch:chkData.launch:cd',
       'epp:epp.epp:response.epp:extension.launch:chkData.launch:cd',
       'epp:epp.epp:extension.launch:chkData.launch:cd',
       'launch:chkData.launch:cd',
@@ -2790,31 +3157,10 @@ export const nodesWithAttributes: NodeWithAttributesInfo[] = [
   {
     nodeName: 'launch:status',
     parentPaths: [
-      'epp:epp.epp:response.epp:resData.launch:infData',
       'epp:epp.epp:response.epp:extension.launch:infData',
       'epp:epp.epp:extension.launch:infData',
       'launch:infData',
     ],
-  },
-  { nodeName: 'domain:reason', parentPaths: ['domain:chkData.domain:cd'] },
-  {
-    nodeName: 'contact:id',
-    parentPaths: ['contact:chkData.contact:cd', 'contact:panData'],
-  },
-  { nodeName: 'contact:reason', parentPaths: ['contact:chkData.contact:cd'] },
-  {
-    nodeName: 'host:name',
-    parentPaths: ['host:chkData.host:cd', 'host:panData'],
-  },
-  { nodeName: 'host:reason', parentPaths: ['host:chkData.host:cd'] },
-  { nodeName: 'rgp:restore', parentPaths: ['rgp:update'] },
-  {
-    nodeName: 'rgp:resReason',
-    parentPaths: ['rgp:update.rgp:restore.rgp:report'],
-  },
-  {
-    nodeName: 'rgp:statement',
-    parentPaths: ['rgp:update.rgp:restore.rgp:report'],
   },
   {
     nodeName: 'mark:holder',

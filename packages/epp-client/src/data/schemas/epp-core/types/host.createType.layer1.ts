@@ -3,15 +3,12 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
-import { zloosen } from '../helpers/zod/loosen.js';
-import { HostAddrTypeXml } from './host.addrType.layer1.js';
+import { zloosen } from '../helpers/zod/loosen';
+import { HostAddrTypeXml } from './host.addrType.layer1';
 
 export const HostCreateTypeXml = zloosen(
   z.object({
-    'host:name': z.union([
-      z.string().min(1).max(255),
-      zloosen(z.object({ '#text': z.string().min(1).max(255) })),
-    ]),
+    'host:name': zloosen(z.object({ '#text': z.string().min(1).max(255) })),
     'host:addr': z.array(HostAddrTypeXml).optional(),
   }),
 );

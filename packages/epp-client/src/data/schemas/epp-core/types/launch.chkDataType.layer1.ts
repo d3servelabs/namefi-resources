@@ -3,9 +3,9 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
-import { zloosen } from '../helpers/zod/loosen.js';
-import { LaunchPhaseTypeXml } from './launch.phaseType.layer1.js';
-import { LaunchCdTypeXml } from './launch.cdType.layer1.js';
+import { zloosen } from '../helpers/zod/loosen';
+import { LaunchPhaseTypeXml } from './launch.phaseType.layer1';
+import { LaunchCdTypeXml } from './launch.cdType.layer1';
 
 export const LaunchChkDataTypeXml = zloosen(
   z.object({

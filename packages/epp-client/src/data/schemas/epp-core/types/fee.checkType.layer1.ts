@@ -3,17 +3,14 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
-import { zloosen } from '../helpers/zod/loosen.js';
-import { FeeCommandTypeXml } from './fee.commandType.layer1.js';
+import { zloosen } from '../helpers/zod/loosen';
+import { FeeCommandTypeXml } from './fee.commandType.layer1';
 
 export const FeeCheckTypeXml = zloosen(
   z.object({
-    'fee:currency': z
-      .union([
-        z.string().regex(/[A-Z]{3}/),
-        zloosen(z.object({ '#text': z.string().regex(/[A-Z]{3}/) })),
-      ])
-      .optional(),
+    'fee:currency': zloosen(
+      z.object({ '#text': z.string().regex(/[A-Z]{3}/) }),
+    ).optional(),
     'fee:command': z.array(FeeCommandTypeXml).min(1),
   }),
 );

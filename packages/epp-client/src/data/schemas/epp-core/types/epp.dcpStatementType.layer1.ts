@@ -3,10 +3,10 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
-import { zloosen } from '../helpers/zod/loosen.js';
-import { EppDcpPurposeTypeXml } from './epp.dcpPurposeType.layer1.js';
-import { EppDcpRecipientTypeXml } from './epp.dcpRecipientType.layer1.js';
-import { EppDcpRetentionTypeXml } from './epp.dcpRetentionType.layer1.js';
+import { zloosen } from '../helpers/zod/loosen';
+import { EppDcpPurposeTypeXml } from './epp.dcpPurposeType.layer1';
+import { EppDcpRecipientTypeXml } from './epp.dcpRecipientType.layer1';
+import { EppDcpRetentionTypeXml } from './epp.dcpRetentionType.layer1';
 
 export const EppDcpStatementTypeXml = zloosen(
   z.object({

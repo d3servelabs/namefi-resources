@@ -3,9 +3,9 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
-import { zloosen } from '../helpers/zod/loosen.js';
-import { EppcomPwAuthInfoTypeXml } from './eppcom.pwAuthInfoType.layer1.js';
-import { EppcomExtAuthInfoTypeXml } from './eppcom.extAuthInfoType.layer1.js';
+import { zloosen } from '../helpers/zod/loosen';
+import { EppcomPwAuthInfoTypeXml } from './eppcom.pwAuthInfoType.layer1';
+import { EppcomExtAuthInfoTypeXml } from './eppcom.extAuthInfoType.layer1';
 
 export const DomainAuthInfoTypeXml = z.union([
   zloosen(

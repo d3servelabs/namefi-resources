@@ -3,8 +3,8 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import type { z } from 'zod';
-import { zloosen } from '../helpers/zod/loosen.js';
-import { LaunchCheckTypeXml } from '../types/launch.checkType.layer1.js';
+import { zloosen } from '../helpers/zod/loosen';
+import { LaunchCheckTypeXml } from '../types/launch.checkType.layer1';
 
 export const LaunchCheckXml = LaunchCheckTypeXml;
 

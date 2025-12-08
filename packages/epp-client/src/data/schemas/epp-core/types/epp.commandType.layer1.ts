@@ -3,26 +3,23 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
-import { zloosen } from '../helpers/zod/loosen.js';
-import { EppExtCommandTypeXml } from './epp.extCommandType.layer1.js';
-import { EppCheckCommandTypeXml } from './epp.checkCommandType.layer1.js';
-import { EppCreateCommandTypeXml } from './epp.createCommandType.layer1.js';
-import { EppDeleteCommandTypeXml } from './epp.deleteCommandType.layer1.js';
-import { EppInfoCommandTypeXml } from './epp.infoCommandType.layer1.js';
-import { EppLoginTypeXml } from './epp.loginType.layer1.js';
-import { EppPollTypeXml } from './epp.pollType.layer1.js';
-import { EppRenewCommandTypeXml } from './epp.renewCommandType.layer1.js';
-import { EppTransferTypeXml } from './epp.transferType.layer1.js';
-import { EppUpdateCommandTypeXml } from './epp.updateCommandType.layer1.js';
+import { zloosen } from '../helpers/zod/loosen';
+import { EppExtCommandTypeXml } from './epp.extCommandType.layer1';
+import { EppCheckCommandTypeXml } from './epp.checkCommandType.layer1';
+import { EppCreateCommandTypeXml } from './epp.createCommandType.layer1';
+import { EppDeleteCommandTypeXml } from './epp.deleteCommandType.layer1';
+import { EppInfoCommandTypeXml } from './epp.infoCommandType.layer1';
+import { EppLoginTypeXml } from './epp.loginType.layer1';
+import { EppPollTypeXml } from './epp.pollType.layer1';
+import { EppRenewCommandTypeXml } from './epp.renewCommandType.layer1';
+import { EppTransferTypeXml } from './epp.transferType.layer1';
+import { EppUpdateCommandTypeXml } from './epp.updateCommandType.layer1';
 
 const _base0 = z.object({
   'epp:extension': EppExtCommandTypeXml.optional(),
-  'epp:clTRID': z
-    .union([
-      z.string().min(0).max(64),
-      zloosen(z.object({ '#text': z.string().min(0).max(64) })),
-    ])
-    .optional(),
+  'epp:clTRID': zloosen(
+    z.object({ '#text': z.string().min(0).max(64) }),
+  ).optional(),
 });
 
 export const EppCommandTypeXml = z.union([
@@ -59,10 +56,7 @@ export const EppCommandTypeXml = z.union([
   zloosen(
     z.object({
       ..._base0.shape,
-      'epp:logout': z.union([
-        z.string(),
-        zloosen(z.object({ '#text': z.string() })),
-      ]),
+      'epp:logout': zloosen(z.object({ '#text': z.string() })),
     }),
   ),
   zloosen(

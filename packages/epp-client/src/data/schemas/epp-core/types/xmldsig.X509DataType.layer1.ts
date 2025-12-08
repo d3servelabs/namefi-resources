@@ -3,8 +3,8 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
-import { zloosen } from '../helpers/zod/loosen.js';
-import { XmldsigX509IssuerSerialTypeXml } from './xmldsig.X509IssuerSerialType.layer1.js';
+import { zloosen } from '../helpers/zod/loosen';
+import { XmldsigX509IssuerSerialTypeXml } from './xmldsig.X509IssuerSerialType.layer1';
 
 export const XmldsigX509DataTypeXml = z.union([
   zloosen(
@@ -14,34 +14,22 @@ export const XmldsigX509DataTypeXml = z.union([
   ),
   zloosen(
     z.object({
-      'xmldsig:X509SKI': z.union([
-        z.string(),
-        zloosen(z.object({ '#text': z.string() })),
-      ]),
+      'xmldsig:X509SKI': zloosen(z.object({ '#text': z.string() })),
     }),
   ),
   zloosen(
     z.object({
-      'xmldsig:X509SubjectName': z.union([
-        z.string(),
-        zloosen(z.object({ '#text': z.string() })),
-      ]),
+      'xmldsig:X509SubjectName': zloosen(z.object({ '#text': z.string() })),
     }),
   ),
   zloosen(
     z.object({
-      'xmldsig:X509Certificate': z.union([
-        z.string(),
-        zloosen(z.object({ '#text': z.string() })),
-      ]),
+      'xmldsig:X509Certificate': zloosen(z.object({ '#text': z.string() })),
     }),
   ),
   zloosen(
     z.object({
-      'xmldsig:X509CRL': z.union([
-        z.string(),
-        zloosen(z.object({ '#text': z.string() })),
-      ]),
+      'xmldsig:X509CRL': zloosen(z.object({ '#text': z.string() })),
     }),
   ),
 ]);

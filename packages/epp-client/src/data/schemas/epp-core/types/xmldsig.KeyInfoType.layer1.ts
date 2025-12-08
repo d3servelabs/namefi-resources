@@ -3,16 +3,16 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
-import { zloosen } from '../helpers/zod/loosen.js';
-import { XmldsigKeyNameXml } from '../elements/xmldsig.KeyName.layer1.js';
-import { XmldsigKeyValueXml } from '../elements/xmldsig.KeyValue.layer1.js';
-import { XmldsigRetrievalMethodXml } from '../elements/xmldsig.RetrievalMethod.layer1.js';
-import { XmldsigX509DataXml } from '../elements/xmldsig.X509Data.layer1.js';
-import { XmldsigPGPDataXml } from '../elements/xmldsig.PGPData.layer1.js';
-import { XmldsigSPKIDataXml } from '../elements/xmldsig.SPKIData.layer1.js';
-import { XmldsigMgmtDataXml } from '../elements/xmldsig.MgmtData.layer1.js';
+import { zloosen } from '../helpers/zod/loosen';
+import { XmldsigKeyNameXml } from '../elements/xmldsig.KeyName.layer1';
+import { XmldsigKeyValueXml } from '../elements/xmldsig.KeyValue.layer1';
+import { XmldsigRetrievalMethodXml } from '../elements/xmldsig.RetrievalMethod.layer1';
+import { XmldsigX509DataXml } from '../elements/xmldsig.X509Data.layer1';
+import { XmldsigPGPDataXml } from '../elements/xmldsig.PGPData.layer1';
+import { XmldsigSPKIDataXml } from '../elements/xmldsig.SPKIData.layer1';
+import { XmldsigMgmtDataXml } from '../elements/xmldsig.MgmtData.layer1';
 
-const _baseFields = z.object({
+const _base0 = z.object({
   '@_Id': z.string().optional(),
   '#text': z.string().optional(),
 });
@@ -20,43 +20,43 @@ const _baseFields = z.object({
 export const XmldsigKeyInfoTypeXml = z.union([
   zloosen(
     z.object({
-      ..._baseFields.shape,
+      ..._base0.shape,
       'xmldsig:KeyName': XmldsigKeyNameXml,
     }),
   ),
   zloosen(
     z.object({
-      ..._baseFields.safeDecode,
+      ..._base0.shape,
       'xmldsig:KeyValue': XmldsigKeyValueXml,
     }),
   ),
   zloosen(
     z.object({
-      ..._baseFields.shape,
+      ..._base0.shape,
       'xmldsig:RetrievalMethod': XmldsigRetrievalMethodXml,
     }),
   ),
   zloosen(
     z.object({
-      ..._baseFields.shape,
+      ..._base0.shape,
       'xmldsig:X509Data': XmldsigX509DataXml,
     }),
   ),
   zloosen(
     z.object({
-      ..._baseFields.shape,
+      ..._base0.shape,
       'xmldsig:PGPData': XmldsigPGPDataXml,
     }),
   ),
   zloosen(
     z.object({
-      ..._baseFields.shape,
+      ..._base0.shape,
       'xmldsig:SPKIData': XmldsigSPKIDataXml,
     }),
   ),
   zloosen(
     z.object({
-      ..._baseFields.shape,
+      ..._base0.shape,
       'xmldsig:MgmtData': XmldsigMgmtDataXml,
     }),
   ),

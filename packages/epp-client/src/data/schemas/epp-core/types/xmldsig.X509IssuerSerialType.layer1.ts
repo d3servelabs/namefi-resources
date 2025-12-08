@@ -3,18 +3,14 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
-import { zloosen } from '../helpers/zod/loosen.js';
+import { zloosen } from '../helpers/zod/loosen';
 
 export const XmldsigX509IssuerSerialTypeXml = zloosen(
   z.object({
-    'xmldsig:X509IssuerName': z.union([
-      z.string(),
-      zloosen(z.object({ '#text': z.string() })),
-    ]),
-    'xmldsig:X509SerialNumber': z.union([
-      z.string().regex(/^-?\d+$/),
-      zloosen(z.object({ '#text': z.string().regex(/^-?\d+$/) })),
-    ]),
+    'xmldsig:X509IssuerName': zloosen(z.object({ '#text': z.string() })),
+    'xmldsig:X509SerialNumber': zloosen(
+      z.object({ '#text': z.string().regex(/^-?\d+$/) }),
+    ),
   }),
 );
 

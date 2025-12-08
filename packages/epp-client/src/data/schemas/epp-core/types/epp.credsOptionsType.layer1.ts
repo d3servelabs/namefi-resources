@@ -3,18 +3,12 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
-import { zloosen } from '../helpers/zod/loosen.js';
+import { zloosen } from '../helpers/zod/loosen';
 
 export const EppCredsOptionsTypeXml = zloosen(
   z.object({
-    'epp:version': z.union([
-      z.enum(['1.0']),
-      zloosen(z.object({ '#text': z.enum(['1.0']) })),
-    ]),
-    'epp:lang': z.union([
-      z.string(),
-      zloosen(z.object({ '#text': z.string() })),
-    ]),
+    'epp:version': zloosen(z.object({ '#text': z.enum(['1.0']) })),
+    'epp:lang': zloosen(z.object({ '#text': z.string() })),
   }),
 );
 

@@ -3,19 +3,14 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
-import { zloosen } from '../helpers/zod/loosen.js';
-import { DomainHostAttrTypeXml } from './domain.hostAttrType.layer1.js';
+import { zloosen } from '../helpers/zod/loosen';
+import { DomainHostAttrTypeXml } from './domain.hostAttrType.layer1';
 
 export const DomainNsTypeXml = z.union([
   zloosen(
     z.object({
       'domain:hostObj': z
-        .array(
-          z.union([
-            z.string().min(1).max(255),
-            zloosen(z.object({ '#text': z.string().min(1).max(255) })),
-          ]),
-        )
+        .array(zloosen(z.object({ '#text': z.string().min(1).max(255) })))
         .min(1),
     }),
   ),

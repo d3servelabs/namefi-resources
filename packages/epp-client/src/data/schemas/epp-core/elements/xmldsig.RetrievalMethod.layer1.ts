@@ -3,8 +3,8 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import type { z } from 'zod';
-import { zloosen } from '../helpers/zod/loosen.js';
-import { XmldsigRetrievalMethodTypeXml } from '../types/xmldsig.RetrievalMethodType.layer1.js';
+import { zloosen } from '../helpers/zod/loosen';
+import { XmldsigRetrievalMethodTypeXml } from '../types/xmldsig.RetrievalMethodType.layer1';
 
 export const XmldsigRetrievalMethodXml = XmldsigRetrievalMethodTypeXml;
 

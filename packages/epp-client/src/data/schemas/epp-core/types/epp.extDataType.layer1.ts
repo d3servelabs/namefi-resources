@@ -3,21 +3,21 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
-import { zloosen } from '../helpers/zod/loosen.js';
-import { IdnDataXml } from '../elements/idn.data.layer1.js';
-import { FeeChkDataXml } from '../elements/fee.chkData.layer1.js';
-import { FeeCreDataXml } from '../elements/fee.creData.layer1.js';
-import { FeeRenDataXml } from '../elements/fee.renData.layer1.js';
-import { FeeTrnDataXml } from '../elements/fee.trnData.layer1.js';
-import { FeeUpdDataXml } from '../elements/fee.updData.layer1.js';
-import { FeeDelDataXml } from '../elements/fee.delData.layer1.js';
-import { SecDNSDsOrKeyTypeXml } from './secDNS.dsOrKeyType.layer1.js';
-import { RgpInfDataXml } from '../elements/rgp.infData.layer1.js';
-import { RgpUpDataXml } from '../elements/rgp.upData.layer1.js';
-import { LaunchChkDataXml } from '../elements/launch.chkData.layer1.js';
-import { LaunchCreDataXml } from '../elements/launch.creData.layer1.js';
-import { LaunchInfDataXml } from '../elements/launch.infData.layer1.js';
-import { ArtRecordInfDataXml } from '../elements/artRecord.infData.layer1.js';
+import { zloosen } from '../helpers/zod/loosen';
+import { IdnDataXml } from '../elements/idn.data.layer1';
+import { FeeChkDataXml } from '../elements/fee.chkData.layer1';
+import { FeeCreDataXml } from '../elements/fee.creData.layer1';
+import { FeeRenDataXml } from '../elements/fee.renData.layer1';
+import { FeeTrnDataXml } from '../elements/fee.trnData.layer1';
+import { FeeUpdDataXml } from '../elements/fee.updData.layer1';
+import { FeeDelDataXml } from '../elements/fee.delData.layer1';
+import { SecDNSInfDataXml } from '../elements/secDNS.infData.layer1';
+import { RgpInfDataXml } from '../elements/rgp.infData.layer1';
+import { RgpUpDataXml } from '../elements/rgp.upData.layer1';
+import { LaunchChkDataXml } from '../elements/launch.chkData.layer1';
+import { LaunchCreDataXml } from '../elements/launch.creData.layer1';
+import { LaunchInfDataXml } from '../elements/launch.infData.layer1';
+import { ArtRecordInfDataXml } from '../elements/artRecord.infData.layer1';
 
 export const EppExtDataTypeXml = z.union([
   zloosen(
@@ -57,7 +57,7 @@ export const EppExtDataTypeXml = z.union([
   ),
   zloosen(
     z.object({
-      'epp:infData': SecDNSDsOrKeyTypeXml,
+      'secDNS:infData': SecDNSInfDataXml,
     }),
   ),
   zloosen(

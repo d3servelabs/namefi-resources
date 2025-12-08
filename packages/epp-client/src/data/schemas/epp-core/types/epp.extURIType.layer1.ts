@@ -3,13 +3,11 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
-import { zloosen } from '../helpers/zod/loosen.js';
+import { zloosen } from '../helpers/zod/loosen';
 
 export const EppExtURITypeXml = zloosen(
   z.object({
-    'epp:extURI': z
-      .array(z.union([z.string(), zloosen(z.object({ '#text': z.string() }))]))
-      .min(1),
+    'epp:extURI': z.array(zloosen(z.object({ '#text': z.string() }))).min(1),
   }),
 );
 

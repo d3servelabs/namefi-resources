@@ -3,15 +3,14 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
-import { zloosen } from '../helpers/zod/loosen.js';
-import { FeeObjectCDTypeXml } from './fee.objectCDType.layer1.js';
+import { zloosen } from '../helpers/zod/loosen';
+import { FeeObjectCDTypeXml } from './fee.objectCDType.layer1';
 
 export const FeeChkDataTypeXml = zloosen(
   z.object({
-    'fee:currency': z.union([
-      z.string().regex(/[A-Z]{3}/),
-      zloosen(z.object({ '#text': z.string().regex(/[A-Z]{3}/) })),
-    ]),
+    'fee:currency': zloosen(
+      z.object({ '#text': z.string().regex(/[A-Z]{3}/) }),
+    ),
     'fee:cd': z.array(FeeObjectCDTypeXml).min(1),
   }),
 );

@@ -3,8 +3,8 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
-import { zloosen } from '../helpers/zod/loosen.js';
-import { XmldsigReferenceXml } from '../elements/xmldsig.Reference.layer1.js';
+import { zloosen } from '../helpers/zod/loosen';
+import { XmldsigReferenceXml } from '../elements/xmldsig.Reference.layer1';
 
 export const XmldsigManifestTypeXml = zloosen(
   z.object({

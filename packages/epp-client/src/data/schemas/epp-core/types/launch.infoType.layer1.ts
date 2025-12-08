@@ -3,8 +3,8 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
-import { zloosen } from '../helpers/zod/loosen.js';
-import { LaunchPhaseTypeXml } from './launch.phaseType.layer1.js';
+import { zloosen } from '../helpers/zod/loosen';
+import { LaunchPhaseTypeXml } from './launch.phaseType.layer1';
 
 export const LaunchInfoTypeXml = zloosen(
   z.object({
@@ -18,9 +18,9 @@ export const LaunchInfoTypeXml = zloosen(
       .default('false')
       .optional(),
     'launch:phase': LaunchPhaseTypeXml,
-    'launch:applicationID': z
-      .union([z.string(), zloosen(z.object({ '#text': z.string() }))])
-      .optional(),
+    'launch:applicationID': zloosen(
+      z.object({ '#text': z.string() }),
+    ).optional(),
   }),
 );
 

@@ -3,10 +3,10 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
-import { zloosen } from '../helpers/zod/loosen.js';
-import { MarkTrademarkTypeXml } from './mark.trademarkType.layer1.js';
-import { MarkTreatyOrStatuteTypeXml } from './mark.treatyOrStatuteType.layer1.js';
-import { MarkCourtTypeXml } from './mark.courtType.layer1.js';
+import { zloosen } from '../helpers/zod/loosen';
+import { MarkTrademarkTypeXml } from './mark.trademarkType.layer1';
+import { MarkTreatyOrStatuteTypeXml } from './mark.treatyOrStatuteType.layer1';
+import { MarkCourtTypeXml } from './mark.courtType.layer1';
 
 export const MarkMarkTypeXml = zloosen(
   z.object({

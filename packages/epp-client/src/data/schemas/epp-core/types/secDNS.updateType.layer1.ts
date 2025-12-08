@@ -3,10 +3,10 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
-import { zloosen } from '../helpers/zod/loosen.js';
-import { SecDNSRemTypeXml } from './secDNS.remType.layer1.js';
-import { SecDNSDsOrKeyTypeXml } from './secDNS.dsOrKeyType.layer1.js';
-import { SecDNSChgTypeXml } from './secDNS.chgType.layer1.js';
+import { zloosen } from '../helpers/zod/loosen';
+import { SecDNSRemTypeXml } from './secDNS.remType.layer1';
+import { SecDNSDsOrKeyTypeXml } from './secDNS.dsOrKeyType.layer1';
+import { SecDNSChgTypeXml } from './secDNS.chgType.layer1';
 
 export const SecDNSUpdateTypeXml = zloosen(
   z.object({

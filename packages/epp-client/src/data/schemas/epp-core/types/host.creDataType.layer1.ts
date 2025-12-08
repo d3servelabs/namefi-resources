@@ -3,18 +3,12 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
-import { zloosen } from '../helpers/zod/loosen.js';
+import { zloosen } from '../helpers/zod/loosen';
 
 export const HostCreDataTypeXml = zloosen(
   z.object({
-    'host:name': z.union([
-      z.string().min(1).max(255),
-      zloosen(z.object({ '#text': z.string().min(1).max(255) })),
-    ]),
-    'host:crDate': z.union([
-      z.string(),
-      zloosen(z.object({ '#text': z.string() })),
-    ]),
+    'host:name': zloosen(z.object({ '#text': z.string().min(1).max(255) })),
+    'host:crDate': zloosen(z.object({ '#text': z.string() })),
   }),
 );
 

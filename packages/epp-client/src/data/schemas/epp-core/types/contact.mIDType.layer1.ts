@@ -3,17 +3,12 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
-import { zloosen } from '../helpers/zod/loosen.js';
+import { zloosen } from '../helpers/zod/loosen';
 
 export const ContactMIDTypeXml = zloosen(
   z.object({
     'contact:id': z
-      .array(
-        z.union([
-          z.string().min(3).max(64),
-          zloosen(z.object({ '#text': z.string().min(3).max(64) })),
-        ]),
-      )
+      .array(zloosen(z.object({ '#text': z.string().min(3).max(64) })))
       .min(1),
   }),
 );

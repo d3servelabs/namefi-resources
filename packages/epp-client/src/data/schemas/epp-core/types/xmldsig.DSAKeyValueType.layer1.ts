@@ -3,36 +3,17 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
-import { zloosen } from '../helpers/zod/loosen.js';
+import { zloosen } from '../helpers/zod/loosen';
 
 export const XmldsigDSAKeyValueTypeXml = zloosen(
   z.object({
-    'xmldsig:G': z
-      .union([z.string(), zloosen(z.object({ '#text': z.string() }))])
-      .optional(),
-    'xmldsig:Y': z.union([
-      z.string(),
-      zloosen(z.object({ '#text': z.string() })),
-    ]),
-    'xmldsig:J': z
-      .union([z.string(), zloosen(z.object({ '#text': z.string() }))])
-      .optional(),
-    'xmldsig:P': z.union([
-      z.string(),
-      zloosen(z.object({ '#text': z.string() })),
-    ]),
-    'xmldsig:Q': z.union([
-      z.string(),
-      zloosen(z.object({ '#text': z.string() })),
-    ]),
-    'xmldsig:Seed': z.union([
-      z.string(),
-      zloosen(z.object({ '#text': z.string() })),
-    ]),
-    'xmldsig:PgenCounter': z.union([
-      z.string(),
-      zloosen(z.object({ '#text': z.string() })),
-    ]),
+    'xmldsig:G': zloosen(z.object({ '#text': z.string() })).optional(),
+    'xmldsig:Y': zloosen(z.object({ '#text': z.string() })),
+    'xmldsig:J': zloosen(z.object({ '#text': z.string() })).optional(),
+    'xmldsig:P': zloosen(z.object({ '#text': z.string() })),
+    'xmldsig:Q': zloosen(z.object({ '#text': z.string() })),
+    'xmldsig:Seed': zloosen(z.object({ '#text': z.string() })),
+    'xmldsig:PgenCounter': zloosen(z.object({ '#text': z.string() })),
   }),
 );
 

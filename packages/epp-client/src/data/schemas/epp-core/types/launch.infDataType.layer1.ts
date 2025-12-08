@@ -3,17 +3,17 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
-import { zloosen } from '../helpers/zod/loosen.js';
-import { LaunchPhaseTypeXml } from './launch.phaseType.layer1.js';
-import { LaunchStatusTypeXml } from './launch.statusType.layer1.js';
-import { MarkAbstractMarkXml } from '../elements/mark.abstractMark.layer1.js';
+import { zloosen } from '../helpers/zod/loosen';
+import { LaunchPhaseTypeXml } from './launch.phaseType.layer1';
+import { LaunchStatusTypeXml } from './launch.statusType.layer1';
+import { MarkAbstractMarkXml } from '../elements/mark.abstractMark.layer1';
 
 export const LaunchInfDataTypeXml = zloosen(
   z.object({
     'launch:phase': LaunchPhaseTypeXml,
-    'launch:applicationID': z
-      .union([z.string(), zloosen(z.object({ '#text': z.string() }))])
-      .optional(),
+    'launch:applicationID': zloosen(
+      z.object({ '#text': z.string() }),
+    ).optional(),
     'launch:status': LaunchStatusTypeXml.optional(),
     'mark:abstractMark': z.array(MarkAbstractMarkXml).optional(),
   }),

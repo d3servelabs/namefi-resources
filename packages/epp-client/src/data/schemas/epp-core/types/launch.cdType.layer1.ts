@@ -3,9 +3,9 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
-import { zloosen } from '../helpers/zod/loosen.js';
-import { LaunchCdNameTypeXml } from './launch.cdNameType.layer1.js';
-import { LaunchClaimKeyTypeXml } from './launch.claimKeyType.layer1.js';
+import { zloosen } from '../helpers/zod/loosen';
+import { LaunchCdNameTypeXml } from './launch.cdNameType.layer1';
+import { LaunchClaimKeyTypeXml } from './launch.claimKeyType.layer1';
 
 export const LaunchCdTypeXml = zloosen(
   z.object({

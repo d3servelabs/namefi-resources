@@ -3,8 +3,8 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import type { z } from 'zod';
-import { zloosen } from '../helpers/zod/loosen.js';
-import { ContactSIDTypeXml } from '../types/contact.sIDType.layer1.js';
+import { zloosen } from '../helpers/zod/loosen';
+import { ContactSIDTypeXml } from '../types/contact.sIDType.layer1';
 
 export const ContactDeleteXml = ContactSIDTypeXml;
 

@@ -3,20 +3,14 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
-import { zloosen } from '../helpers/zod/loosen.js';
+import { zloosen } from '../helpers/zod/loosen';
 
 export const EppTrIDTypeXml = zloosen(
   z.object({
-    'epp:clTRID': z
-      .union([
-        z.string().min(0).max(64),
-        zloosen(z.object({ '#text': z.string().min(0).max(64) })),
-      ])
-      .optional(),
-    'epp:svTRID': z.union([
-      z.string().min(0).max(64),
-      zloosen(z.object({ '#text': z.string().min(0).max(64) })),
-    ]),
+    'epp:clTRID': zloosen(
+      z.object({ '#text': z.string().min(0).max(64) }),
+    ).optional(),
+    'epp:svTRID': zloosen(z.object({ '#text': z.string().min(0).max(64) })),
   }),
 );
 

@@ -3,8 +3,8 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
-import { zloosen } from '../helpers/zod/loosen.js';
-import { ContactCheckTypeXml } from './contact.checkType.layer1.js';
+import { zloosen } from '../helpers/zod/loosen';
+import { ContactCheckTypeXml } from './contact.checkType.layer1';
 
 export const ContactChkDataTypeXml = zloosen(
   z.object({

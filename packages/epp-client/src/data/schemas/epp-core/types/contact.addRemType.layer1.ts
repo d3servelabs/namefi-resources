@@ -3,8 +3,8 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
-import { zloosen } from '../helpers/zod/loosen.js';
-import { ContactStatusTypeXml } from './contact.statusType.layer1.js';
+import { zloosen } from '../helpers/zod/loosen';
+import { ContactStatusTypeXml } from './contact.statusType.layer1';
 
 export const ContactAddRemTypeXml = zloosen(
   z.object({

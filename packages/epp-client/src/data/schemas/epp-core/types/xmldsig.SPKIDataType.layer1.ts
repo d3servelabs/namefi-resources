@@ -3,14 +3,11 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
-import { zloosen } from '../helpers/zod/loosen.js';
+import { zloosen } from '../helpers/zod/loosen';
 
 export const XmldsigSPKIDataTypeXml = zloosen(
   z.object({
-    'xmldsig:SPKISexp': z.union([
-      z.string(),
-      zloosen(z.object({ '#text': z.string() })),
-    ]),
+    'xmldsig:SPKISexp': zloosen(z.object({ '#text': z.string() })),
   }),
 );
 

@@ -3,11 +3,11 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
-import { zloosen } from '../helpers/zod/loosen.js';
-import { EppGreetingTypeXml } from './epp.greetingType.layer1.js';
-import { EppCommandTypeXml } from './epp.commandType.layer1.js';
-import { EppResponseTypeXml } from './epp.responseType.layer1.js';
-import { EppExtAnyTypeXml } from './epp.extAnyType.layer1.js';
+import { zloosen } from '../helpers/zod/loosen';
+import { EppGreetingTypeXml } from './epp.greetingType.layer1';
+import { EppCommandTypeXml } from './epp.commandType.layer1';
+import { EppResponseTypeXml } from './epp.responseType.layer1';
+import { EppExtAnyTypeXml } from './epp.extAnyType.layer1';
 
 export const EppEppTypeXml = z.union([
   zloosen(
@@ -17,10 +17,7 @@ export const EppEppTypeXml = z.union([
   ),
   zloosen(
     z.object({
-      'epp:hello': z.union([
-        z.string(),
-        zloosen(z.object({ '#text': z.string() })),
-      ]),
+      'epp:hello': zloosen(z.object({ '#text': z.string() })),
     }),
   ),
   zloosen(

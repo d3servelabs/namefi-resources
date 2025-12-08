@@ -3,20 +3,14 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
-import { zloosen } from '../helpers/zod/loosen.js';
-import { LaunchNoticeIDTypeXml } from './launch.noticeIDType.layer1.js';
+import { zloosen } from '../helpers/zod/loosen';
+import { LaunchNoticeIDTypeXml } from './launch.noticeIDType.layer1';
 
 export const LaunchCreateNoticeTypeXml = zloosen(
   z.object({
     'launch:noticeID': LaunchNoticeIDTypeXml,
-    'launch:notAfter': z.union([
-      z.string(),
-      zloosen(z.object({ '#text': z.string() })),
-    ]),
-    'launch:acceptedDate': z.union([
-      z.string(),
-      zloosen(z.object({ '#text': z.string() })),
-    ]),
+    'launch:notAfter': zloosen(z.object({ '#text': z.string() })),
+    'launch:acceptedDate': zloosen(z.object({ '#text': z.string() })),
   }),
 );
 

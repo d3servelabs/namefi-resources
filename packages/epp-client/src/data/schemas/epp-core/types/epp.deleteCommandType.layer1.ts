@@ -3,10 +3,10 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
-import { zloosen } from '../helpers/zod/loosen.js';
-import { DomainDeleteXml } from '../elements/domain.delete.layer1.js';
-import { ContactDeleteXml } from '../elements/contact.delete.layer1.js';
-import { HostDeleteXml } from '../elements/host.delete.layer1.js';
+import { zloosen } from '../helpers/zod/loosen';
+import { DomainDeleteXml } from '../elements/domain.delete.layer1';
+import { ContactDeleteXml } from '../elements/contact.delete.layer1';
+import { HostDeleteXml } from '../elements/host.delete.layer1';
 
 export const EppDeleteCommandTypeXml = z.union([
   zloosen(

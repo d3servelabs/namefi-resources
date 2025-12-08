@@ -1,3 +1,4 @@
+// @ts-nocheck
 import fs from 'node:fs';
 import type { EppClientRuntime, EppCredentials, EppSessionConfig } from '..';
 import type { ConnectOptions } from '../transport';

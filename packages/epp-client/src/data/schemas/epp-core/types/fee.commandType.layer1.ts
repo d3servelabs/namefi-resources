@@ -3,8 +3,8 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
-import { zloosen } from '../helpers/zod/loosen.js';
-import { DomainPeriodTypeXml } from './domain.periodType.layer1.js';
+import { zloosen } from '../helpers/zod/loosen';
+import { DomainPeriodTypeXml } from './domain.periodType.layer1';
 
 export const FeeCommandTypeXml = zloosen(
   z.object({

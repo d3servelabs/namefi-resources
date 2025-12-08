@@ -3,8 +3,8 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
-import { zloosen } from '../helpers/zod/loosen.js';
-import { ContactIntLocTypeXml } from './contact.intLocType.layer1.js';
+import { zloosen } from '../helpers/zod/loosen';
+import { ContactIntLocTypeXml } from './contact.intLocType.layer1';
 
 export const ContactDiscloseTypeXml = zloosen(
   z.object({
@@ -17,15 +17,9 @@ export const ContactDiscloseTypeXml = zloosen(
     'contact:name': z.array(ContactIntLocTypeXml).optional(),
     'contact:org': z.array(ContactIntLocTypeXml).optional(),
     'contact:addr': z.array(ContactIntLocTypeXml).optional(),
-    'contact:voice': z
-      .union([z.string(), zloosen(z.object({ '#text': z.string() }))])
-      .optional(),
-    'contact:fax': z
-      .union([z.string(), zloosen(z.object({ '#text': z.string() }))])
-      .optional(),
-    'contact:email': z
-      .union([z.string(), zloosen(z.object({ '#text': z.string() }))])
-      .optional(),
+    'contact:voice': zloosen(z.object({ '#text': z.string() })).optional(),
+    'contact:fax': zloosen(z.object({ '#text': z.string() })).optional(),
+    'contact:email': zloosen(z.object({ '#text': z.string() })).optional(),
   }),
 );
 

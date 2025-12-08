@@ -3,8 +3,8 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
-import { zloosen } from '../helpers/zod/loosen.js';
-import { DomainCheckTypeXml } from './domain.checkType.layer1.js';
+import { zloosen } from '../helpers/zod/loosen';
+import { DomainCheckTypeXml } from './domain.checkType.layer1';
 
 export const DomainChkDataTypeXml = zloosen(
   z.object({

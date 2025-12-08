@@ -3,18 +3,12 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
-import { zloosen } from '../helpers/zod/loosen.js';
+import { zloosen } from '../helpers/zod/loosen';
 
 export const XmldsigRSAKeyValueTypeXml = zloosen(
   z.object({
-    'xmldsig:Modulus': z.union([
-      z.string(),
-      zloosen(z.object({ '#text': z.string() })),
-    ]),
-    'xmldsig:Exponent': z.union([
-      z.string(),
-      zloosen(z.object({ '#text': z.string() })),
-    ]),
+    'xmldsig:Modulus': zloosen(z.object({ '#text': z.string() })),
+    'xmldsig:Exponent': zloosen(z.object({ '#text': z.string() })),
   }),
 );
 

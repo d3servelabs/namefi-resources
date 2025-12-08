@@ -3,10 +3,10 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
-import { zloosen } from '../helpers/zod/loosen.js';
-import { DomainNsTypeXml } from './domain.nsType.layer1.js';
-import { DomainContactTypeXml } from './domain.contactType.layer1.js';
-import { DomainStatusTypeXml } from './domain.statusType.layer1.js';
+import { zloosen } from '../helpers/zod/loosen';
+import { DomainNsTypeXml } from './domain.nsType.layer1';
+import { DomainContactTypeXml } from './domain.contactType.layer1';
+import { DomainStatusTypeXml } from './domain.statusType.layer1';
 
 export const DomainAddRemTypeXml = zloosen(
   z.object({

@@ -3,10 +3,10 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
-import { zloosen } from '../helpers/zod/loosen.js';
-import { XmldsigCanonicalizationMethodXml } from '../elements/xmldsig.CanonicalizationMethod.layer1.js';
-import { XmldsigSignatureMethodXml } from '../elements/xmldsig.SignatureMethod.layer1.js';
-import { XmldsigReferenceXml } from '../elements/xmldsig.Reference.layer1.js';
+import { zloosen } from '../helpers/zod/loosen';
+import { XmldsigCanonicalizationMethodXml } from '../elements/xmldsig.CanonicalizationMethod.layer1';
+import { XmldsigSignatureMethodXml } from '../elements/xmldsig.SignatureMethod.layer1';
+import { XmldsigReferenceXml } from '../elements/xmldsig.Reference.layer1';
 
 export const XmldsigSignedInfoTypeXml = zloosen(
   z.object({

@@ -3,23 +3,17 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
-import { zloosen } from '../helpers/zod/loosen.js';
+import { zloosen } from '../helpers/zod/loosen';
 
 export const EppDcpExpiryTypeXml = z.union([
   zloosen(
     z.object({
-      'epp:absolute': z.union([
-        z.string(),
-        zloosen(z.object({ '#text': z.string() })),
-      ]),
+      'epp:absolute': zloosen(z.object({ '#text': z.string() })),
     }),
   ),
   zloosen(
     z.object({
-      'epp:relative': z.union([
-        z.string(),
-        zloosen(z.object({ '#text': z.string() })),
-      ]),
+      'epp:relative': zloosen(z.object({ '#text': z.string() })),
     }),
   ),
 ]);

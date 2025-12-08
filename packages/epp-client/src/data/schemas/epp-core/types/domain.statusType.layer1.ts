@@ -3,7 +3,7 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
-import { zloosen } from '../helpers/zod/loosen.js';
+import { zloosen } from '../helpers/zod/loosen';
 
 export const DomainStatusTypeXml = zloosen(
   z.object({
@@ -27,7 +27,7 @@ export const DomainStatusTypeXml = zloosen(
       'serverUpdateProhibited',
     ]),
     '@_lang': z.string().default('en').optional(),
-    '#text': z.string(),
+    '#text': z.string().optional().default(''),
   }),
 );
 

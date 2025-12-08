@@ -3,9 +3,9 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
-import { zloosen } from '../helpers/zod/loosen.js';
-import { EppcomPwAuthInfoTypeXml } from './eppcom.pwAuthInfoType.layer1.js';
-import { EppcomExtAuthInfoTypeXml } from './eppcom.extAuthInfoType.layer1.js';
+import { zloosen } from '../helpers/zod/loosen';
+import { EppcomPwAuthInfoTypeXml } from './eppcom.pwAuthInfoType.layer1';
+import { EppcomExtAuthInfoTypeXml } from './eppcom.extAuthInfoType.layer1';
 
 export const DomainAuthInfoChgTypeXml = z.union([
   zloosen(
@@ -20,10 +20,7 @@ export const DomainAuthInfoChgTypeXml = z.union([
   ),
   zloosen(
     z.object({
-      'domain:null': z.union([
-        z.string(),
-        zloosen(z.object({ '#text': z.string() })),
-      ]),
+      'domain:null': zloosen(z.object({ '#text': z.string() })),
     }),
   ),
 ]);

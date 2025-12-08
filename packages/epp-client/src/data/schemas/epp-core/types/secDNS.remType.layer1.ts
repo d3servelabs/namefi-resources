@@ -3,31 +3,23 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
-import { zloosen } from '../helpers/zod/loosen.js';
-import { SecDNSDsDataTypeXml } from './secDNS.dsDataType.layer1.js';
-import { SecDNSKeyDataTypeXml } from './secDNS.keyDataType.layer1.js';
+import { zloosen } from '../helpers/zod/loosen';
+import { SecDNSDsDataTypeXml } from './secDNS.dsDataType.layer1';
+import { SecDNSKeyDataTypeXml } from './secDNS.keyDataType.layer1';
 
 export const SecDNSRemTypeXml = z.union([
   zloosen(
     z.object({
-      'secDNS:all': z.union([
-        z.union([
-          z.literal('true'),
-          z.literal('false'),
-          z.literal('1'),
-          z.literal('0'),
-        ]),
-        zloosen(
-          z.object({
-            '#text': z.union([
-              z.literal('true'),
-              z.literal('false'),
-              z.literal('1'),
-              z.literal('0'),
-            ]),
-          }),
-        ),
-      ]),
+      'secDNS:all': zloosen(
+        z.object({
+          '#text': z.union([
+            z.literal('true'),
+            z.literal('false'),
+            z.literal('1'),
+            z.literal('0'),
+          ]),
+        }),
+      ),
     }),
   ),
   zloosen(

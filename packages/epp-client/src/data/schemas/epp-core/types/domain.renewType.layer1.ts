@@ -3,19 +3,13 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
-import { zloosen } from '../helpers/zod/loosen.js';
-import { DomainPeriodTypeXml } from './domain.periodType.layer1.js';
+import { zloosen } from '../helpers/zod/loosen';
+import { DomainPeriodTypeXml } from './domain.periodType.layer1';
 
 export const DomainRenewTypeXml = zloosen(
   z.object({
-    'domain:name': z.union([
-      z.string().min(1).max(255),
-      zloosen(z.object({ '#text': z.string().min(1).max(255) })),
-    ]),
-    'domain:curExpDate': z.union([
-      z.string(),
-      zloosen(z.object({ '#text': z.string() })),
-    ]),
+    'domain:name': zloosen(z.object({ '#text': z.string().min(1).max(255) })),
+    'domain:curExpDate': zloosen(z.object({ '#text': z.string() })),
     'domain:period': DomainPeriodTypeXml.optional(),
   }),
 );

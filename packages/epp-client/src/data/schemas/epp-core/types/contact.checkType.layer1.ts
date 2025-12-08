@@ -3,9 +3,9 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
-import { zloosen } from '../helpers/zod/loosen.js';
-import { ContactCheckIDTypeXml } from './contact.checkIDType.layer1.js';
-import { EppcomReasonTypeXml } from './eppcom.reasonType.layer1.js';
+import { zloosen } from '../helpers/zod/loosen';
+import { ContactCheckIDTypeXml } from './contact.checkIDType.layer1';
+import { EppcomReasonTypeXml } from './eppcom.reasonType.layer1';
 
 export const ContactCheckTypeXml = zloosen(
   z.object({

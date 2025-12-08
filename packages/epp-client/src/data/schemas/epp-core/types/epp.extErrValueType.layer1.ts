@@ -3,9 +3,9 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
-import { zloosen } from '../helpers/zod/loosen.js';
-import { EppErrValueTypeXml } from './epp.errValueType.layer1.js';
-import { EppMsgTypeXml } from './epp.msgType.layer1.js';
+import { zloosen } from '../helpers/zod/loosen';
+import { EppErrValueTypeXml } from './epp.errValueType.layer1';
+import { EppMsgTypeXml } from './epp.msgType.layer1';
 
 export const EppExtErrValueTypeXml = zloosen(
   z.object({

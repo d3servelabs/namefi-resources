@@ -3,35 +3,36 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
-import { zloosen } from '../helpers/zod/loosen.js';
-import { FeeCheckXml } from '../elements/fee.check.layer1.js';
-import { FeeCreateXml } from '../elements/fee.create.layer1.js';
-import { FeeRenewXml } from '../elements/fee.renew.layer1.js';
-import { FeeTransferXml } from '../elements/fee.transfer.layer1.js';
-import { FeeUpdateXml } from '../elements/fee.update.layer1.js';
-import { FeeChkDataXml } from '../elements/fee.chkData.layer1.js';
-import { FeeCreDataXml } from '../elements/fee.creData.layer1.js';
-import { FeeRenDataXml } from '../elements/fee.renData.layer1.js';
-import { FeeTrnDataXml } from '../elements/fee.trnData.layer1.js';
-import { FeeUpdDataXml } from '../elements/fee.updData.layer1.js';
-import { FeeDelDataXml } from '../elements/fee.delData.layer1.js';
-import { SecDNSCreateXml } from '../elements/secDNS.create.layer1.js';
-import { SecDNSUpdateXml } from '../elements/secDNS.update.layer1.js';
-import { SecDNSDsOrKeyTypeXml } from './secDNS.dsOrKeyType.layer1.js';
-import { IdnDataXml } from '../elements/idn.data.layer1.js';
-import { RgpInfDataXml } from '../elements/rgp.infData.layer1.js';
-import { RgpUpDataXml } from '../elements/rgp.upData.layer1.js';
-import { LaunchCheckXml } from '../elements/launch.check.layer1.js';
-import { LaunchInfoXml } from '../elements/launch.info.layer1.js';
-import { LaunchCreateXml } from '../elements/launch.create.layer1.js';
-import { LaunchUpdateXml } from '../elements/launch.update.layer1.js';
-import { LaunchDeleteXml } from '../elements/launch.delete.layer1.js';
-import { LaunchChkDataXml } from '../elements/launch.chkData.layer1.js';
-import { LaunchCreDataXml } from '../elements/launch.creData.layer1.js';
-import { LaunchInfDataXml } from '../elements/launch.infData.layer1.js';
-import { ArtRecordCreateXml } from '../elements/artRecord.create.layer1.js';
-import { ArtRecordUpdateXml } from '../elements/artRecord.update.layer1.js';
-import { ArtRecordInfDataXml } from '../elements/artRecord.infData.layer1.js';
+import { zloosen } from '../helpers/zod/loosen';
+import { FeeCheckXml } from '../elements/fee.check.layer1';
+import { FeeCreateXml } from '../elements/fee.create.layer1';
+import { FeeRenewXml } from '../elements/fee.renew.layer1';
+import { FeeTransferXml } from '../elements/fee.transfer.layer1';
+import { FeeUpdateXml } from '../elements/fee.update.layer1';
+import { FeeChkDataXml } from '../elements/fee.chkData.layer1';
+import { FeeCreDataXml } from '../elements/fee.creData.layer1';
+import { FeeRenDataXml } from '../elements/fee.renData.layer1';
+import { FeeTrnDataXml } from '../elements/fee.trnData.layer1';
+import { FeeUpdDataXml } from '../elements/fee.updData.layer1';
+import { FeeDelDataXml } from '../elements/fee.delData.layer1';
+import { SecDNSCreateXml } from '../elements/secDNS.create.layer1';
+import { SecDNSUpdateXml } from '../elements/secDNS.update.layer1';
+import { SecDNSInfDataXml } from '../elements/secDNS.infData.layer1';
+import { IdnDataXml } from '../elements/idn.data.layer1';
+import { RgpUpdateXml } from '../elements/rgp.update.layer1';
+import { RgpInfDataXml } from '../elements/rgp.infData.layer1';
+import { RgpUpDataXml } from '../elements/rgp.upData.layer1';
+import { LaunchCheckXml } from '../elements/launch.check.layer1';
+import { LaunchInfoXml } from '../elements/launch.info.layer1';
+import { LaunchCreateXml } from '../elements/launch.create.layer1';
+import { LaunchUpdateXml } from '../elements/launch.update.layer1';
+import { LaunchDeleteXml } from '../elements/launch.delete.layer1';
+import { LaunchChkDataXml } from '../elements/launch.chkData.layer1';
+import { LaunchCreDataXml } from '../elements/launch.creData.layer1';
+import { LaunchInfDataXml } from '../elements/launch.infData.layer1';
+import { ArtRecordCreateXml } from '../elements/artRecord.create.layer1';
+import { ArtRecordUpdateXml } from '../elements/artRecord.update.layer1';
+import { ArtRecordInfDataXml } from '../elements/artRecord.infData.layer1';
 
 export const EppExtAnyTypeXml = z.union([
   zloosen(
@@ -101,7 +102,7 @@ export const EppExtAnyTypeXml = z.union([
   ),
   zloosen(
     z.object({
-      'epp:infData': SecDNSDsOrKeyTypeXml,
+      'secDNS:infData': SecDNSInfDataXml,
     }),
   ),
   zloosen(
@@ -111,10 +112,7 @@ export const EppExtAnyTypeXml = z.union([
   ),
   zloosen(
     z.object({
-      'epp:rgp:update': z.union([
-        z.string(),
-        zloosen(z.object({ '#text': z.string() })),
-      ]),
+      'rgp:update': RgpUpdateXml,
     }),
   ),
   zloosen(

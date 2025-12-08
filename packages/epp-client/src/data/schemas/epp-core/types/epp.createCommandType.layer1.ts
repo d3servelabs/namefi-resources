@@ -3,10 +3,10 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
-import { zloosen } from '../helpers/zod/loosen.js';
-import { DomainCreateXml } from '../elements/domain.create.layer1.js';
-import { ContactCreateXml } from '../elements/contact.create.layer1.js';
-import { HostCreateXml } from '../elements/host.create.layer1.js';
+import { zloosen } from '../helpers/zod/loosen';
+import { DomainCreateXml } from '../elements/domain.create.layer1';
+import { ContactCreateXml } from '../elements/contact.create.layer1';
+import { HostCreateXml } from '../elements/host.create.layer1';
 
 export const EppCreateCommandTypeXml = z.union([
   zloosen(

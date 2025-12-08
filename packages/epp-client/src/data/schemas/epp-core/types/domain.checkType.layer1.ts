@@ -3,9 +3,9 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
-import { zloosen } from '../helpers/zod/loosen.js';
-import { DomainCheckNameTypeXml } from './domain.checkNameType.layer1.js';
-import { EppcomReasonTypeXml } from './eppcom.reasonType.layer1.js';
+import { zloosen } from '../helpers/zod/loosen';
+import { DomainCheckNameTypeXml } from './domain.checkNameType.layer1';
+import { EppcomReasonTypeXml } from './eppcom.reasonType.layer1';
 
 export const DomainCheckTypeXml = zloosen(
   z.object({

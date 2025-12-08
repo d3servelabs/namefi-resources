@@ -3,8 +3,8 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import type { z } from 'zod';
-import { zloosen } from '../helpers/zod/loosen.js';
-import { HostPanDataTypeXml } from '../types/host.panDataType.layer1.js';
+import { zloosen } from '../helpers/zod/loosen';
+import { HostPanDataTypeXml } from '../types/host.panDataType.layer1';
 
 export const HostPanDataXml = HostPanDataTypeXml;
 

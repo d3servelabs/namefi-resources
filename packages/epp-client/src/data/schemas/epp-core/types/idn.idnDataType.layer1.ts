@@ -3,20 +3,14 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
-import { zloosen } from '../helpers/zod/loosen.js';
+import { zloosen } from '../helpers/zod/loosen';
 
 export const IdnIdnDataTypeXml = zloosen(
   z.object({
-    'idn:table': z.union([
-      z.string().min(1),
-      zloosen(z.object({ '#text': z.string().min(1) })),
-    ]),
-    'idn:uname': z
-      .union([
-        z.string().min(1).max(255),
-        zloosen(z.object({ '#text': z.string().min(1).max(255) })),
-      ])
-      .optional(),
+    'idn:table': zloosen(z.object({ '#text': z.string().min(1) })),
+    'idn:uname': zloosen(
+      z.object({ '#text': z.string().min(1).max(255) }),
+    ).optional(),
   }),
 );
 

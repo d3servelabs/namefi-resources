@@ -3,50 +3,40 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
-import { zloosen } from '../helpers/zod/loosen.js';
+import { zloosen } from '../helpers/zod/loosen';
 
 export const ArtRecordArtRecordTypeXml = zloosen(
   z.object({
-    'artRecord:objectType': z.union([
-      z.string().min(0).max(255),
-      zloosen(z.object({ '#text': z.string().min(0).max(255) })),
-    ]),
-    'artRecord:materialsAndTechniques': z.union([
-      z.string().min(0).max(255),
-      zloosen(z.object({ '#text': z.string().min(0).max(255) })),
-    ]),
-    'artRecord:dimensions': z.union([
-      z.string().min(0).max(255),
-      zloosen(z.object({ '#text': z.string().min(0).max(255) })),
-    ]),
-    'artRecord:title': z.union([
-      z.string().min(0).max(255),
-      zloosen(z.object({ '#text': z.string().min(0).max(255) })),
-    ]),
-    'artRecord:dateOrPeriod': z.union([
-      z.string().min(0).max(255),
-      zloosen(z.object({ '#text': z.string().min(0).max(255) })),
-    ]),
-    'artRecord:maker': z.union([
-      z.string().min(0).max(255),
-      zloosen(z.object({ '#text': z.string().min(0).max(255) })),
-    ]),
-    'artRecord:subject': z.union([
-      z.string().min(0).max(255),
-      zloosen(z.object({ '#text': z.string().min(0).max(255) })),
-    ]),
-    'artRecord:inscriptionsAndMarkings': z.union([
-      z.string().min(0).max(255),
-      zloosen(z.object({ '#text': z.string().min(0).max(255) })),
-    ]),
-    'artRecord:features': z.union([
-      z.string().min(0).max(255),
-      zloosen(z.object({ '#text': z.string().min(0).max(255) })),
-    ]),
-    'artRecord:reference': z.union([
-      z.string().min(0).max(255),
-      zloosen(z.object({ '#text': z.string().min(0).max(255) })),
-    ]),
+    'artRecord:objectType': zloosen(
+      z.object({ '#text': z.string().min(0).max(255) }),
+    ),
+    'artRecord:materialsAndTechniques': zloosen(
+      z.object({ '#text': z.string().min(0).max(255) }),
+    ),
+    'artRecord:dimensions': zloosen(
+      z.object({ '#text': z.string().min(0).max(255) }),
+    ),
+    'artRecord:title': zloosen(
+      z.object({ '#text': z.string().min(0).max(255) }),
+    ),
+    'artRecord:dateOrPeriod': zloosen(
+      z.object({ '#text': z.string().min(0).max(255) }),
+    ),
+    'artRecord:maker': zloosen(
+      z.object({ '#text': z.string().min(0).max(255) }),
+    ),
+    'artRecord:subject': zloosen(
+      z.object({ '#text': z.string().min(0).max(255) }),
+    ),
+    'artRecord:inscriptionsAndMarkings': zloosen(
+      z.object({ '#text': z.string().min(0).max(255) }),
+    ),
+    'artRecord:features': zloosen(
+      z.object({ '#text': z.string().min(0).max(255) }),
+    ),
+    'artRecord:reference': zloosen(
+      z.object({ '#text': z.string().min(0).max(255) }),
+    ),
   }),
 );
 

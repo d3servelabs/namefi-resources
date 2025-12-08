@@ -3,16 +3,13 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
-import { zloosen } from '../helpers/zod/loosen.js';
+import { zloosen } from '../helpers/zod/loosen';
 
 export const SecDNSChgTypeXml = zloosen(
   z.object({
-    'secDNS:maxSigLife': z
-      .union([
-        z.string().regex(/^-?\d+$/),
-        zloosen(z.object({ '#text': z.string().regex(/^-?\d+$/) })),
-      ])
-      .optional(),
+    'secDNS:maxSigLife': zloosen(
+      z.object({ '#text': z.string().regex(/^-?\d+$/) }),
+    ).optional(),
   }),
 );
 

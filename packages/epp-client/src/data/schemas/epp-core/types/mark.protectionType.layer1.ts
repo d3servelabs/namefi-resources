@@ -3,19 +3,14 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
-import { zloosen } from '../helpers/zod/loosen.js';
+import { zloosen } from '../helpers/zod/loosen';
 
 export const MarkProtectionTypeXml = zloosen(
   z.object({
-    'mark:cc': z.union([
-      z.string(),
-      zloosen(z.object({ '#text': z.string() })),
-    ]),
-    'mark:region': z
-      .union([z.string(), zloosen(z.object({ '#text': z.string() }))])
-      .optional(),
+    'mark:cc': zloosen(z.object({ '#text': z.string() })),
+    'mark:region': zloosen(z.object({ '#text': z.string() })).optional(),
     'mark:ruling': z
-      .array(z.union([z.string(), zloosen(z.object({ '#text': z.string() }))]))
+      .array(zloosen(z.object({ '#text': z.string() })))
       .optional(),
   }),
 );

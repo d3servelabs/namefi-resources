@@ -3,10 +3,10 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
-import { zloosen } from '../helpers/zod/loosen.js';
-import { FeeFeeTypeXml } from './fee.feeType.layer1.js';
-import { FeeCreditTypeXml } from './fee.creditType.layer1.js';
-import { FeeReasonTypeXml } from './fee.reasonType.layer1.js';
+import { zloosen } from '../helpers/zod/loosen';
+import { FeeFeeTypeXml } from './fee.feeType.layer1';
+import { FeeCreditTypeXml } from './fee.creditType.layer1';
+import { FeeReasonTypeXml } from './fee.reasonType.layer1';
 
 export const FeeCommandDataTypeXml = zloosen(
   z.object({

@@ -3,9 +3,9 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
-import { zloosen } from '../helpers/zod/loosen.js';
-import { HostAddrTypeXml } from './host.addrType.layer1.js';
-import { HostStatusTypeXml } from './host.statusType.layer1.js';
+import { zloosen } from '../helpers/zod/loosen';
+import { HostAddrTypeXml } from './host.addrType.layer1';
+import { HostStatusTypeXml } from './host.statusType.layer1';
 
 export const HostAddRemTypeXml = zloosen(
   z.object({

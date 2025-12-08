@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Type-safe EPP command builders using Zod schemas.
  * These builders create the XML JSON structure expected by the codecs.

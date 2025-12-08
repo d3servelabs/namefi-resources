@@ -3,13 +3,16 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
-import { zloosen } from '../helpers/zod/loosen.js';
-import { EppMsgTypeXml } from './epp.msgType.layer1.js';
-import { EppErrValueTypeXml } from './epp.errValueType.layer1.js';
-import { EppExtErrValueTypeXml } from './epp.extErrValueType.layer1.js';
+import { zloosen } from '../helpers/zod/loosen';
+import { EppMsgTypeXml } from './epp.msgType.layer1';
+import { EppErrValueTypeXml } from './epp.errValueType.layer1';
+import { EppExtErrValueTypeXml } from './epp.extErrValueType.layer1';
 
 const _base0 = z.object({
   'epp:msg': EppMsgTypeXml,
+});
+
+const _base1 = z.object({
   '@_code': z.enum([
     '1000',
     '1001',
@@ -51,13 +54,15 @@ const _base0 = z.object({
 export const EppResultTypeXml = z.union([
   zloosen(
     z.object({
-      ..._base0.shape,
+      ..._base1.shape,
+      'epp:msg': EppMsgTypeXml,
       'epp:value': EppErrValueTypeXml,
     }),
   ),
   zloosen(
     z.object({
-      ..._base0.shape,
+      ..._base1.shape,
+      'epp:msg': EppMsgTypeXml,
       'epp:extValue': EppExtErrValueTypeXml,
     }),
   ),

@@ -3,55 +3,37 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
-import { zloosen } from '../helpers/zod/loosen.js';
+import { zloosen } from '../helpers/zod/loosen';
 
 export const EppDcpAccessTypeXml = z.union([
   zloosen(
     z.object({
-      'epp:all': z.union([
-        z.string(),
-        zloosen(z.object({ '#text': z.string() })),
-      ]),
+      'epp:all': zloosen(z.object({ '#text': z.string() })),
     }),
   ),
   zloosen(
     z.object({
-      'epp:none': z.union([
-        z.string(),
-        zloosen(z.object({ '#text': z.string() })),
-      ]),
+      'epp:none': zloosen(z.object({ '#text': z.string() })),
     }),
   ),
   zloosen(
     z.object({
-      'epp:null': z.union([
-        z.string(),
-        zloosen(z.object({ '#text': z.string() })),
-      ]),
+      'epp:null': zloosen(z.object({ '#text': z.string() })),
     }),
   ),
   zloosen(
     z.object({
-      'epp:other': z.union([
-        z.string(),
-        zloosen(z.object({ '#text': z.string() })),
-      ]),
+      'epp:other': zloosen(z.object({ '#text': z.string() })),
     }),
   ),
   zloosen(
     z.object({
-      'epp:personal': z.union([
-        z.string(),
-        zloosen(z.object({ '#text': z.string() })),
-      ]),
+      'epp:personal': zloosen(z.object({ '#text': z.string() })),
     }),
   ),
   zloosen(
     z.object({
-      'epp:personalAndOther': z.union([
-        z.string(),
-        zloosen(z.object({ '#text': z.string() })),
-      ]),
+      'epp:personalAndOther': zloosen(z.object({ '#text': z.string() })),
     }),
   ),
 ]);

@@ -3,16 +3,13 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
-import { zloosen } from '../helpers/zod/loosen.js';
+import { zloosen } from '../helpers/zod/loosen';
 
 export const XmldsigTransformTypeXml = zloosen(
   z.object({
     '@_Algorithm': z.string(),
     '#text': z.string().optional(),
-    'xmldsig:XPath': z.union([
-      z.string(),
-      zloosen(z.object({ '#text': z.string() })),
-    ]),
+    'xmldsig:XPath': zloosen(z.object({ '#text': z.string() })),
   }),
 );
 

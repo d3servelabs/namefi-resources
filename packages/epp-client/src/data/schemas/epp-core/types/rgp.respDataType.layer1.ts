@@ -3,8 +3,8 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
-import { zloosen } from '../helpers/zod/loosen.js';
-import { RgpStatusTypeXml } from './rgp.statusType.layer1.js';
+import { zloosen } from '../helpers/zod/loosen';
+import { RgpStatusTypeXml } from './rgp.statusType.layer1';
 
 export const RgpRespDataTypeXml = zloosen(
   z.object({

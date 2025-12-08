@@ -3,10 +3,10 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
-import { zloosen } from '../helpers/zod/loosen.js';
-import { DomainUpdateXml } from '../elements/domain.update.layer1.js';
-import { ContactUpdateXml } from '../elements/contact.update.layer1.js';
-import { HostUpdateXml } from '../elements/host.update.layer1.js';
+import { zloosen } from '../helpers/zod/loosen';
+import { DomainUpdateXml } from '../elements/domain.update.layer1';
+import { ContactUpdateXml } from '../elements/contact.update.layer1';
+import { HostUpdateXml } from '../elements/host.update.layer1';
 
 export const EppUpdateCommandTypeXml = z.union([
   zloosen(

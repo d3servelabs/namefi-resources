@@ -3,16 +3,13 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
-import { zloosen } from '../helpers/zod/loosen.js';
-import { DomainPeriodTypeXml } from './domain.periodType.layer1.js';
-import { DomainAuthInfoTypeXml } from './domain.authInfoType.layer1.js';
+import { zloosen } from '../helpers/zod/loosen';
+import { DomainPeriodTypeXml } from './domain.periodType.layer1';
+import { DomainAuthInfoTypeXml } from './domain.authInfoType.layer1';
 
 export const DomainTransferTypeXml = zloosen(
   z.object({
-    'domain:name': z.union([
-      z.string().min(1).max(255),
-      zloosen(z.object({ '#text': z.string().min(1).max(255) })),
-    ]),
+    'domain:name': zloosen(z.object({ '#text': z.string().min(1).max(255) })),
     'domain:period': DomainPeriodTypeXml.optional(),
     'domain:authInfo': DomainAuthInfoTypeXml.optional(),
   }),
