@@ -3,6 +3,7 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import type { z } from 'zod';
+import { zloosen } from '../helpers/zod/loosen.js';
 import { XmldsigSignaturePropertiesTypeXml } from '../types/xmldsig.SignaturePropertiesType.layer1.js';
 
 export const XmldsigSignaturePropertiesXml = XmldsigSignaturePropertiesTypeXml;

@@ -3,10 +3,13 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
+import { zloosen } from '../helpers/zod/loosen.js';
 
-export const LaunchClaimKeyTypeXml = z.object({
-  '@_validatorID': z.string().min(1).optional(),
-  '#text': z.string(),
-});
+export const LaunchClaimKeyTypeXml = zloosen(
+  z.object({
+    '@_validatorID': z.string().min(1).optional(),
+    '#text': z.string(),
+  }),
+);
 
 export type LaunchClaimKeyTypeXml = z.infer<typeof LaunchClaimKeyTypeXml>;

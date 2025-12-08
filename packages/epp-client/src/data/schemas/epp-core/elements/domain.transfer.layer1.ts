@@ -3,6 +3,7 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import type { z } from 'zod';
+import { zloosen } from '../helpers/zod/loosen.js';
 import { DomainTransferTypeXml } from '../types/domain.transferType.layer1.js';
 
 export const DomainTransferXml = DomainTransferTypeXml;

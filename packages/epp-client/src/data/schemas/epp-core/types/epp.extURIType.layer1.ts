@@ -3,9 +3,14 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
+import { zloosen } from '../helpers/zod/loosen.js';
 
-export const EppExtURITypeXml = z.object({
-  'epp:extURI': z.array(z.string()).min(1),
-});
+export const EppExtURITypeXml = zloosen(
+  z.object({
+    'epp:extURI': z
+      .array(z.union([z.string(), zloosen(z.object({ '#text': z.string() }))]))
+      .min(1),
+  }),
+);
 
 export type EppExtURITypeXml = z.infer<typeof EppExtURITypeXml>;

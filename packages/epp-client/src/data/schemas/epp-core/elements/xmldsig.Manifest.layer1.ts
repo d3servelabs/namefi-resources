@@ -3,6 +3,7 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import type { z } from 'zod';
+import { zloosen } from '../helpers/zod/loosen.js';
 import { XmldsigManifestTypeXml } from '../types/xmldsig.ManifestType.layer1.js';
 
 export const XmldsigManifestXml = XmldsigManifestTypeXml;

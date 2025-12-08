@@ -3,10 +3,13 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
+import { zloosen } from '../helpers/zod/loosen.js';
 
-export const LaunchCodeTypeXml = z.object({
-  '@_validatorID': z.string().min(1).optional(),
-  '#text': z.string().min(1),
-});
+export const LaunchCodeTypeXml = zloosen(
+  z.object({
+    '@_validatorID': z.string().min(1).optional(),
+    '#text': z.string().min(1),
+  }),
+);
 
 export type LaunchCodeTypeXml = z.infer<typeof LaunchCodeTypeXml>;

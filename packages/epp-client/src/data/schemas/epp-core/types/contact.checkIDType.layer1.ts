@@ -3,15 +3,18 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
+import { zloosen } from '../helpers/zod/loosen.js';
 
-export const ContactCheckIDTypeXml = z.object({
-  '@_avail': z.union([
-    z.literal('true'),
-    z.literal('false'),
-    z.literal('1'),
-    z.literal('0'),
-  ]),
-  '#text': z.string().min(3).max(64),
-});
+export const ContactCheckIDTypeXml = zloosen(
+  z.object({
+    '@_avail': z.union([
+      z.literal('true'),
+      z.literal('false'),
+      z.literal('1'),
+      z.literal('0'),
+    ]),
+    '#text': z.string().min(3).max(64),
+  }),
+);
 
 export type ContactCheckIDTypeXml = z.infer<typeof ContactCheckIDTypeXml>;

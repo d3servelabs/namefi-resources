@@ -3,6 +3,7 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
+import { zloosen } from '../helpers/zod/loosen.js';
 import { IdnDataXml } from '../elements/idn.data.layer1.js';
 import { FeeChkDataXml } from '../elements/fee.chkData.layer1.js';
 import { FeeCreDataXml } from '../elements/fee.creData.layer1.js';
@@ -19,51 +20,81 @@ import { LaunchInfDataXml } from '../elements/launch.infData.layer1.js';
 import { ArtRecordInfDataXml } from '../elements/artRecord.infData.layer1.js';
 
 export const EppExtDataTypeXml = z.union([
-  z.object({
-    'idn:data': IdnDataXml,
-  }),
-  z.object({
-    'fee:chkData': FeeChkDataXml,
-  }),
-  z.object({
-    'fee:creData': FeeCreDataXml,
-  }),
-  z.object({
-    'fee:renData': FeeRenDataXml,
-  }),
-  z.object({
-    'fee:trnData': FeeTrnDataXml,
-  }),
-  z.object({
-    'fee:updData': FeeUpdDataXml,
-  }),
-  z.object({
-    'fee:delData': FeeDelDataXml,
-  }),
-  z.object({
-    'epp:infData': SecDNSDsOrKeyTypeXml,
-  }),
-  z.object({
-    'idn:data': IdnDataXml,
-  }),
-  z.object({
-    'rgp:infData': RgpInfDataXml,
-  }),
-  z.object({
-    'rgp:upData': RgpUpDataXml,
-  }),
-  z.object({
-    'launch:chkData': LaunchChkDataXml,
-  }),
-  z.object({
-    'launch:creData': LaunchCreDataXml,
-  }),
-  z.object({
-    'launch:infData': LaunchInfDataXml,
-  }),
-  z.object({
-    'artRecord:infData': ArtRecordInfDataXml,
-  }),
+  zloosen(
+    z.object({
+      'idn:data': IdnDataXml,
+    }),
+  ),
+  zloosen(
+    z.object({
+      'fee:chkData': FeeChkDataXml,
+    }),
+  ),
+  zloosen(
+    z.object({
+      'fee:creData': FeeCreDataXml,
+    }),
+  ),
+  zloosen(
+    z.object({
+      'fee:renData': FeeRenDataXml,
+    }),
+  ),
+  zloosen(
+    z.object({
+      'fee:trnData': FeeTrnDataXml,
+    }),
+  ),
+  zloosen(
+    z.object({
+      'fee:updData': FeeUpdDataXml,
+    }),
+  ),
+  zloosen(
+    z.object({
+      'fee:delData': FeeDelDataXml,
+    }),
+  ),
+  zloosen(
+    z.object({
+      'epp:infData': SecDNSDsOrKeyTypeXml,
+    }),
+  ),
+  zloosen(
+    z.object({
+      'idn:data': IdnDataXml,
+    }),
+  ),
+  zloosen(
+    z.object({
+      'rgp:infData': RgpInfDataXml,
+    }),
+  ),
+  zloosen(
+    z.object({
+      'rgp:upData': RgpUpDataXml,
+    }),
+  ),
+  zloosen(
+    z.object({
+      'launch:chkData': LaunchChkDataXml,
+    }),
+  ),
+  zloosen(
+    z.object({
+      'launch:creData': LaunchCreDataXml,
+    }),
+  ),
+  zloosen(
+    z.object({
+      'launch:infData': LaunchInfDataXml,
+    }),
+  ),
+  zloosen(
+    z.object({
+      'artRecord:infData': ArtRecordInfDataXml,
+    }),
+  ),
 ]);
 
 export type EppExtDataTypeXml = z.infer<typeof EppExtDataTypeXml>;

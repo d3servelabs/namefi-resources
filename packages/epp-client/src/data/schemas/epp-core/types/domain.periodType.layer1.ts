@@ -3,10 +3,13 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
+import { zloosen } from '../helpers/zod/loosen.js';
 
-export const DomainPeriodTypeXml = z.object({
-  '@_unit': z.enum(['y', 'm']),
-  '#text': z.string().regex(/^-?\d+$/),
-});
+export const DomainPeriodTypeXml = zloosen(
+  z.object({
+    '@_unit': z.enum(['y', 'm']),
+    '#text': z.string().regex(/^-?\d+$/),
+  }),
+);
 
 export type DomainPeriodTypeXml = z.infer<typeof DomainPeriodTypeXml>;

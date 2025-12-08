@@ -3,6 +3,7 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import type { z } from 'zod';
+import { zloosen } from '../helpers/zod/loosen.js';
 import { HostUpdateTypeXml } from '../types/host.updateType.layer1.js';
 
 export const HostUpdateXml = HostUpdateTypeXml;

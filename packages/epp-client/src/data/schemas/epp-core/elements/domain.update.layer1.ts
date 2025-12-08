@@ -3,6 +3,7 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import type { z } from 'zod';
+import { zloosen } from '../helpers/zod/loosen.js';
 import { DomainUpdateTypeXml } from '../types/domain.updateType.layer1.js';
 
 export const DomainUpdateXml = DomainUpdateTypeXml;

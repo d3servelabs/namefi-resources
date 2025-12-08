@@ -3,23 +3,49 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
+import { zloosen } from '../helpers/zod/loosen.js';
 
 export const EppDcpRetentionTypeXml = z.union([
-  z.object({
-    'epp:business': z.string(),
-  }),
-  z.object({
-    'epp:indefinite': z.string(),
-  }),
-  z.object({
-    'epp:legal': z.string(),
-  }),
-  z.object({
-    'epp:none': z.string(),
-  }),
-  z.object({
-    'epp:stated': z.string(),
-  }),
+  zloosen(
+    z.object({
+      'epp:business': z.union([
+        z.string(),
+        zloosen(z.object({ '#text': z.string() })),
+      ]),
+    }),
+  ),
+  zloosen(
+    z.object({
+      'epp:indefinite': z.union([
+        z.string(),
+        zloosen(z.object({ '#text': z.string() })),
+      ]),
+    }),
+  ),
+  zloosen(
+    z.object({
+      'epp:legal': z.union([
+        z.string(),
+        zloosen(z.object({ '#text': z.string() })),
+      ]),
+    }),
+  ),
+  zloosen(
+    z.object({
+      'epp:none': z.union([
+        z.string(),
+        zloosen(z.object({ '#text': z.string() })),
+      ]),
+    }),
+  ),
+  zloosen(
+    z.object({
+      'epp:stated': z.union([
+        z.string(),
+        zloosen(z.object({ '#text': z.string() })),
+      ]),
+    }),
+  ),
 ]);
 
 export type EppDcpRetentionTypeXml = z.infer<typeof EppDcpRetentionTypeXml>;

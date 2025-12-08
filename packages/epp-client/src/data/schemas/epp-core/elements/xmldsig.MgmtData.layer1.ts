@@ -3,6 +3,7 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
+import { zloosen } from '../helpers/zod/loosen.js';
 
 export const XmldsigMgmtDataXml = z.string();
 

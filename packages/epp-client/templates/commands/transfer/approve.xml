@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
+ <command>
+   <transfer op="approve">
+     <domain:transfer
+      xmlns:domain="urn:ietf:params:xml:ns:domain-1.0">
+       <domain:name>victor.pw</domain:name>
+     </domain:transfer>
+   </transfer>
+   <clTRID>089D6F9C-301B-11DE-882F-APPROVE-TRANSFER-[VICTOR.PW]</clTRID>
+ </command>
+</epp>

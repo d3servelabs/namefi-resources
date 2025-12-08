@@ -3,11 +3,16 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
+import { zloosen } from '../helpers/zod/loosen.js';
 import { EppExtURITypeXml } from './epp.extURIType.layer1.js';
 
-export const EppLoginSvcTypeXml = z.object({
-  'epp:objURI': z.array(z.string()).min(1),
-  'epp:svcExtension': EppExtURITypeXml.optional(),
-});
+export const EppLoginSvcTypeXml = zloosen(
+  z.object({
+    'epp:objURI': z
+      .array(z.union([z.string(), zloosen(z.object({ '#text': z.string() }))]))
+      .min(1),
+    'epp:svcExtension': EppExtURITypeXml.optional(),
+  }),
+);
 
 export type EppLoginSvcTypeXml = z.infer<typeof EppLoginSvcTypeXml>;

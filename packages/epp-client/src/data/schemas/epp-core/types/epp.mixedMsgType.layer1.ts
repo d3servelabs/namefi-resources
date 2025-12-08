@@ -3,10 +3,13 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
+import { zloosen } from '../helpers/zod/loosen.js';
 
-export const EppMixedMsgTypeXml = z.object({
-  '@_lang': z.string().default('en').optional(),
-  '#text': z.string().optional(),
-});
+export const EppMixedMsgTypeXml = zloosen(
+  z.object({
+    '@_lang': z.string().default('en').optional(),
+    '#text': z.string().optional(),
+  }),
+);
 
 export type EppMixedMsgTypeXml = z.infer<typeof EppMixedMsgTypeXml>;

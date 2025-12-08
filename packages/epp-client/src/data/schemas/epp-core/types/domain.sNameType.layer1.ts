@@ -3,9 +3,15 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
+import { zloosen } from '../helpers/zod/loosen.js';
 
-export const DomainSNameTypeXml = z.object({
-  'domain:name': z.string().min(1).max(255),
-});
+export const DomainSNameTypeXml = zloosen(
+  z.object({
+    'domain:name': z.union([
+      z.string().min(1).max(255),
+      zloosen(z.object({ '#text': z.string().min(1).max(255) })),
+    ]),
+  }),
+);
 
 export type DomainSNameTypeXml = z.infer<typeof DomainSNameTypeXml>;

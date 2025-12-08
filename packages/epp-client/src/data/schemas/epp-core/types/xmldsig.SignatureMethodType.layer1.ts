@@ -3,15 +3,20 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
+import { zloosen } from '../helpers/zod/loosen.js';
 
-export const XmldsigSignatureMethodTypeXml = z.object({
-  '@_Algorithm': z.string(),
-  '#text': z.string().optional(),
-  'xmldsig:HMACOutputLength': z
-    .string()
-    .regex(/^-?\d+$/)
-    .optional(),
-});
+export const XmldsigSignatureMethodTypeXml = zloosen(
+  z.object({
+    '@_Algorithm': z.string(),
+    '#text': z.string().optional(),
+    'xmldsig:HMACOutputLength': z
+      .union([
+        z.string().regex(/^-?\d+$/),
+        zloosen(z.object({ '#text': z.string().regex(/^-?\d+$/) })),
+      ])
+      .optional(),
+  }),
+);
 
 export type XmldsigSignatureMethodTypeXml = z.infer<
   typeof XmldsigSignatureMethodTypeXml

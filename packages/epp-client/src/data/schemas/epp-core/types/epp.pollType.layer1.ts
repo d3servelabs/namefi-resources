@@ -3,10 +3,13 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
+import { zloosen } from '../helpers/zod/loosen.js';
 
-export const EppPollTypeXml = z.object({
-  '@_op': z.enum(['ack', 'req']),
-  '@_msgID': z.string().optional(),
-});
+export const EppPollTypeXml = zloosen(
+  z.object({
+    '@_op': z.enum(['ack', 'req']),
+    '@_msgID': z.string().optional(),
+  }),
+);
 
 export type EppPollTypeXml = z.infer<typeof EppPollTypeXml>;

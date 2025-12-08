@@ -3,6 +3,7 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import type { z } from 'zod';
+import { zloosen } from '../helpers/zod/loosen.js';
 import { HostInfDataTypeXml } from '../types/host.infDataType.layer1.js';
 
 export const HostInfDataXml = HostInfDataTypeXml;

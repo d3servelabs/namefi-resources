@@ -3,20 +3,27 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
+import { zloosen } from '../helpers/zod/loosen.js';
 import { DomainUpdateXml } from '../elements/domain.update.layer1.js';
 import { ContactUpdateXml } from '../elements/contact.update.layer1.js';
 import { HostUpdateXml } from '../elements/host.update.layer1.js';
 
 export const EppUpdateCommandTypeXml = z.union([
-  z.object({
-    'domain:update': DomainUpdateXml,
-  }),
-  z.object({
-    'contact:update': ContactUpdateXml,
-  }),
-  z.object({
-    'host:update': HostUpdateXml,
-  }),
+  zloosen(
+    z.object({
+      'domain:update': DomainUpdateXml,
+    }),
+  ),
+  zloosen(
+    z.object({
+      'contact:update': ContactUpdateXml,
+    }),
+  ),
+  zloosen(
+    z.object({
+      'host:update': HostUpdateXml,
+    }),
+  ),
 ]);
 
 export type EppUpdateCommandTypeXml = z.infer<typeof EppUpdateCommandTypeXml>;

@@ -3,9 +3,15 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
+import { zloosen } from '../helpers/zod/loosen.js';
 
-export const HostSNameTypeXml = z.object({
-  'host:name': z.string().min(1).max(255),
-});
+export const HostSNameTypeXml = zloosen(
+  z.object({
+    'host:name': z.union([
+      z.string().min(1).max(255),
+      zloosen(z.object({ '#text': z.string().min(1).max(255) })),
+    ]),
+  }),
+);
 
 export type HostSNameTypeXml = z.infer<typeof HostSNameTypeXml>;

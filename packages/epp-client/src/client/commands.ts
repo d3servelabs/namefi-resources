@@ -3,24 +3,26 @@
  * These builders create the XML JSON structure expected by the codecs.
  */
 import type { z } from 'zod';
-import type {
-  EppCommandTypeXml,
-  EppLoginTypeXml,
-  EppPollTypeXml,
-  DomainMNameTypeXml,
-  DomainInfoTypeXml,
+import {
+  type EppCommandTypeXml,
+  type EppLoginTypeXml,
+  type EppPollTypeXml,
+  type DomainMNameTypeXml,
+  type DomainInfoTypeXml,
   DomainCreateTypeXml,
-  DomainRenewTypeXml,
+  type DomainRenewTypeXml,
   DomainTransferTypeXml,
-  DomainUpdateTypeXml,
-  ContactCheckTypeXml,
-  ContactInfoXml,
-  ContactCreateTypeXml,
-  ContactUpdateTypeXml,
-  HostCheckTypeXml,
-  HostInfoXml,
-  HostCreateTypeXml,
-  HostUpdateTypeXml,
+  type DomainUpdateTypeXml,
+  type ContactCheckTypeXml,
+  type ContactInfoXml,
+  type ContactCreateTypeXml,
+  type ContactUpdateTypeXml,
+  type HostCheckTypeXml,
+  type HostInfoXml,
+  type HostCreateTypeXml,
+  type HostUpdateTypeXml,
+  EppCreateCommandTypeXml,
+  EppTransferTypeXml,
 } from '../data/schemas/epp-core';
 // Import and re-export namespace constants for convenience
 import {
@@ -219,15 +221,20 @@ export function buildDomainCreateCommand(
   create: DomainCreateOptions,
   opts?: CommandOptions,
 ): EppCommand {
-  const domainCreate: Record<string, unknown> = {
+  const domainCreate: DomainCreateTypeXml & { '@_xmlns:domain': string } = {
     '@_xmlns:domain': DOMAIN_NS,
     'domain:name': create.name,
+    'domain:authInfo': {
+      'domain:pw': {
+        '#text': create.authInfo,
+      },
+    },
   };
 
   if (create.period) {
     domainCreate['domain:period'] = {
       '@_unit': create.period.unit,
-      '#text': create.period.value,
+      '#text': create.period.value.toString(),
     };
   }
 
@@ -248,11 +255,11 @@ export function buildDomainCreateCommand(
     }));
   }
 
-  domainCreate['domain:authInfo'] = { 'domain:pw': create.authInfo };
-
   return withBaseFields(
     {
-      'epp:create': { 'domain:create': domainCreate },
+      'epp:create': EppCreateCommandTypeXml.parse({
+        'domain:create': DomainCreateTypeXml.parse(domainCreate),
+      }),
     },
     opts,
   ) as EppCommand;
@@ -319,7 +326,7 @@ export function buildDomainTransferCommand(
   transfer: DomainTransferOptions,
   opts?: CommandOptions,
 ): EppCommand {
-  const domainTransfer: Record<string, unknown> = {
+  const domainTransfer: DomainTransferTypeXml & { '@_xmlns:domain': string } = {
     '@_xmlns:domain': DOMAIN_NS,
     'domain:name': transfer.name,
   };
@@ -327,23 +334,26 @@ export function buildDomainTransferCommand(
   if (transfer.period) {
     domainTransfer['domain:period'] = {
       '@_unit': transfer.period.unit,
-      '#text': transfer.period.value,
+      '#text': transfer.period.value?.toString(),
     };
   }
 
   if (transfer.authInfo) {
-    domainTransfer['domain:authInfo'] = { 'domain:pw': transfer.authInfo };
+    domainTransfer['domain:authInfo'] = {
+      'domain:pw': {
+        '#text': transfer.authInfo,
+      },
+    };
   }
 
-  return withBaseFields(
-    {
-      'epp:transfer': {
-        '@_op': transfer.op,
-        'domain:transfer': domainTransfer,
-      },
-    },
-    opts,
-  ) as EppCommand;
+  const transferCommand = {
+    'epp:transfer': EppTransferTypeXml.parse({
+      '@_op': transfer.op,
+      'domain:transfer': DomainTransferTypeXml.parse(domainTransfer),
+    }),
+  };
+
+  return withBaseFields(transferCommand, opts) as EppCommand;
 }
 
 // ============ Contact Commands ============

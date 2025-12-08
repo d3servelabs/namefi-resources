@@ -3,6 +3,7 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import type { z } from 'zod';
+import { zloosen } from '../helpers/zod/loosen.js';
 import { MarkAbstractMarkTypeXml } from '../types/mark.abstractMarkType.layer1.js';
 
 export const MarkAbstractMarkXml = MarkAbstractMarkTypeXml;

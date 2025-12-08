@@ -3,9 +3,12 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
+import { zloosen } from '../helpers/zod/loosen.js';
 
-export const ContactIntLocTypeXml = z.object({
-  '@_type': z.enum(['loc', 'int']),
-});
+export const ContactIntLocTypeXml = zloosen(
+  z.object({
+    '@_type': z.enum(['loc', 'int']),
+  }),
+);
 
 export type ContactIntLocTypeXml = z.infer<typeof ContactIntLocTypeXml>;

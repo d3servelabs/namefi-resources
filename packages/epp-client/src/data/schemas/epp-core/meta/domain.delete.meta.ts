@@ -1,0 +1,26 @@
+/**
+ * Static XmlMeta for delete
+ * Generated from: urn:ietf:params:xml:ns:domain-1.0
+ *
+ * @generated - Do not edit manually
+ */
+
+import type { XmlMeta } from './types';
+
+export const DomainDeleteMeta: XmlMeta = {
+  strategyId: 'fxp-v1',
+  root: {
+    qname: {
+      namespace: 'urn:ietf:params:xml:ns:domain-1.0',
+      localName: 'delete',
+    },
+    fields: {
+      'domain:name': {
+        kind: 'element',
+        xmlName: 'domain:name',
+        namespace: 'urn:ietf:params:xml:ns:domain-1.0',
+        cardinality: 'one',
+      },
+    },
+  },
+};

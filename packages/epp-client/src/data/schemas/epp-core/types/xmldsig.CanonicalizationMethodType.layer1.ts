@@ -3,11 +3,14 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
+import { zloosen } from '../helpers/zod/loosen.js';
 
-export const XmldsigCanonicalizationMethodTypeXml = z.object({
-  '@_Algorithm': z.string(),
-  '#text': z.string().optional(),
-});
+export const XmldsigCanonicalizationMethodTypeXml = zloosen(
+  z.object({
+    '@_Algorithm': z.string(),
+    '#text': z.string().optional(),
+  }),
+);
 
 export type XmldsigCanonicalizationMethodTypeXml = z.infer<
   typeof XmldsigCanonicalizationMethodTypeXml

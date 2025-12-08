@@ -2,7 +2,7 @@
  * Zod-based EPP codec using auto-generated schemas.
  * Provides type-safe encoding (JSON -> XML) and decoding (XML -> JSON).
  */
-import { z, type ZodSchema, type ZodString } from 'zod';
+import { z, type ZodSchema } from 'zod';
 import {
   type X2jOptions,
   XMLParser,
@@ -23,6 +23,7 @@ import {
   type EppResponseTypeXml as EppResponseType,
   type EppGreetingTypeXml as EppGreetingType,
   namespaces,
+  isSingularNode,
 } from '../data/schemas/epp-core';
 import { zloosen } from '../utils/zod';
 import util from 'node:util';
@@ -39,18 +40,12 @@ const parserOptions: X2jOptions = {
   parseAttributeValue: false,
   ignoreDeclaration: true,
   trimValues: true,
-  // isArray: (tagName, jPath, isLeafNode, isAttribute) => {
-  //   if (tagName === "epp:epp") return false;
-  //   if (isAttribute) return false;
-  //   console.log(
-  //     tagName,
-  //     jPath,
-  //     isLeafNode,
-  //     isAttribute,
-  //     isSingularNode(tagName, jPath),
-  //   );
-  //   return !isSingularNode(tagName, jPath);
-  // },
+  alwaysCreateTextNode: true,
+  isArray: (tagName, jPath, isLeafNode, isAttribute) => {
+    if (tagName === 'epp:epp') return false;
+    if (isAttribute) return false;
+    return !isSingularNode(tagName, jPath);
+  },
   updateTag: (tagName, jPath, attrs) => {
     if (tagName.includes(':')) {
       return tagName;
@@ -83,7 +78,11 @@ export function createXmlCodec<S extends ZodSchema>(schema: S) {
     encode(value: z.infer<S>): string {
       const validated = schema.safeParse(value);
       if (!validated.success) {
-        console.log(value, validated.error);
+        console.log(
+          util.inspect(value, { depth: null }),
+          z.prettifyError(validated.error),
+        );
+
         throw new Error('Validation failed');
       }
       // intentionally not using builder.build(validated.data) to preserveOrder

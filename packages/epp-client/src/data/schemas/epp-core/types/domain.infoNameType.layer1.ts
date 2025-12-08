@@ -3,10 +3,13 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
+import { zloosen } from '../helpers/zod/loosen.js';
 
-export const DomainInfoNameTypeXml = z.object({
-  '@_hosts': z.enum(['all', 'del', 'none', 'sub']).default('all').optional(),
-  '#text': z.string().min(1).max(255),
-});
+export const DomainInfoNameTypeXml = zloosen(
+  z.object({
+    '@_hosts': z.enum(['all', 'del', 'none', 'sub']).default('all').optional(),
+    '#text': z.string().min(1).max(255),
+  }),
+);
 
 export type DomainInfoNameTypeXml = z.infer<typeof DomainInfoNameTypeXml>;

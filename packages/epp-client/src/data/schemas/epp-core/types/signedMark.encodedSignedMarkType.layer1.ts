@@ -3,11 +3,14 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
+import { zloosen } from '../helpers/zod/loosen.js';
 
-export const SignedMarkEncodedSignedMarkTypeXml = z.object({
-  '@_encoding': z.string().default('base64').optional(),
-  '#text': z.string(),
-});
+export const SignedMarkEncodedSignedMarkTypeXml = zloosen(
+  z.object({
+    '@_encoding': z.string().default('base64').optional(),
+    '#text': z.string(),
+  }),
+);
 
 export type SignedMarkEncodedSignedMarkTypeXml = z.infer<
   typeof SignedMarkEncodedSignedMarkTypeXml

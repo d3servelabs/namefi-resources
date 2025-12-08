@@ -3,10 +3,13 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
+import { zloosen } from '../helpers/zod/loosen.js';
 import { HostCheckTypeXml } from './host.checkType.layer1.js';
 
-export const HostChkDataTypeXml = z.object({
-  'host:cd': z.array(HostCheckTypeXml).min(1),
-});
+export const HostChkDataTypeXml = zloosen(
+  z.object({
+    'host:cd': z.array(HostCheckTypeXml).min(1),
+  }),
+);
 
 export type HostChkDataTypeXml = z.infer<typeof HostChkDataTypeXml>;

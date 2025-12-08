@@ -3,12 +3,15 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
+import { zloosen } from '../helpers/zod/loosen.js';
 import { HostCheckNameTypeXml } from './host.checkNameType.layer1.js';
 import { EppcomReasonTypeXml } from './eppcom.reasonType.layer1.js';
 
-export const HostCheckTypeXml = z.object({
-  'host:name': HostCheckNameTypeXml,
-  'host:reason': EppcomReasonTypeXml.optional(),
-});
+export const HostCheckTypeXml = zloosen(
+  z.object({
+    'host:name': HostCheckNameTypeXml,
+    'host:reason': EppcomReasonTypeXml.optional(),
+  }),
+);
 
 export type HostCheckTypeXml = z.infer<typeof HostCheckTypeXml>;

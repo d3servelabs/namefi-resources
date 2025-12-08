@@ -3,10 +3,13 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
+import { zloosen } from '../helpers/zod/loosen.js';
 
-export const LaunchPhaseTypeXml = z.object({
-  '@_name': z.string().optional(),
-  '#text': z.enum(['sunrise', 'landrush', 'claims', 'open', 'custom']),
-});
+export const LaunchPhaseTypeXml = zloosen(
+  z.object({
+    '@_name': z.string().optional(),
+    '#text': z.enum(['sunrise', 'landrush', 'claims', 'open', 'custom']),
+  }),
+);
 
 export type LaunchPhaseTypeXml = z.infer<typeof LaunchPhaseTypeXml>;

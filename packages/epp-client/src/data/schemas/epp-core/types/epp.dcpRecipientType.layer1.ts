@@ -3,14 +3,25 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
+import { zloosen } from '../helpers/zod/loosen.js';
 import { EppDcpOursTypeXml } from './epp.dcpOursType.layer1.js';
 
-export const EppDcpRecipientTypeXml = z.object({
-  'epp:other': z.string().optional(),
-  'epp:ours': z.array(EppDcpOursTypeXml).optional(),
-  'epp:public': z.string().optional(),
-  'epp:same': z.string().optional(),
-  'epp:unrelated': z.string().optional(),
-});
+export const EppDcpRecipientTypeXml = zloosen(
+  z.object({
+    'epp:other': z
+      .union([z.string(), zloosen(z.object({ '#text': z.string() }))])
+      .optional(),
+    'epp:ours': z.array(EppDcpOursTypeXml).optional(),
+    'epp:public': z
+      .union([z.string(), zloosen(z.object({ '#text': z.string() }))])
+      .optional(),
+    'epp:same': z
+      .union([z.string(), zloosen(z.object({ '#text': z.string() }))])
+      .optional(),
+    'epp:unrelated': z
+      .union([z.string(), zloosen(z.object({ '#text': z.string() }))])
+      .optional(),
+  }),
+);
 
 export type EppDcpRecipientTypeXml = z.infer<typeof EppDcpRecipientTypeXml>;

@@ -3,6 +3,7 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
+import { zloosen } from '../helpers/zod/loosen.js';
 import { FeeCheckXml } from '../elements/fee.check.layer1.js';
 import { FeeCreateXml } from '../elements/fee.create.layer1.js';
 import { FeeRenewXml } from '../elements/fee.renew.layer1.js';
@@ -33,93 +34,154 @@ import { ArtRecordUpdateXml } from '../elements/artRecord.update.layer1.js';
 import { ArtRecordInfDataXml } from '../elements/artRecord.infData.layer1.js';
 
 export const EppExtAnyTypeXml = z.union([
-  z.object({
-    'fee:check': FeeCheckXml,
-  }),
-  z.object({
-    'fee:create': FeeCreateXml,
-  }),
-  z.object({
-    'fee:renew': FeeRenewXml,
-  }),
-  z.object({
-    'fee:transfer': FeeTransferXml,
-  }),
-  z.object({
-    'fee:update': FeeUpdateXml,
-  }),
-  z.object({
-    'fee:chkData': FeeChkDataXml,
-  }),
-  z.object({
-    'fee:creData': FeeCreDataXml,
-  }),
-  z.object({
-    'fee:renData': FeeRenDataXml,
-  }),
-  z.object({
-    'fee:trnData': FeeTrnDataXml,
-  }),
-  z.object({
-    'fee:updData': FeeUpdDataXml,
-  }),
-  z.object({
-    'fee:delData': FeeDelDataXml,
-  }),
-  z.object({
-    'secDNS:create': SecDNSCreateXml,
-  }),
-  z.object({
-    'secDNS:update': SecDNSUpdateXml,
-  }),
-  z.object({
-    'epp:infData': SecDNSDsOrKeyTypeXml,
-  }),
-  z.object({
-    'idn:data': IdnDataXml,
-  }),
-  z.object({
-    'epp:rgp:update': z.string(),
-  }),
-  z.object({
-    'rgp:infData': RgpInfDataXml,
-  }),
-  z.object({
-    'rgp:upData': RgpUpDataXml,
-  }),
-  z.object({
-    'launch:check': LaunchCheckXml,
-  }),
-  z.object({
-    'launch:info': LaunchInfoXml,
-  }),
-  z.object({
-    'launch:create': LaunchCreateXml,
-  }),
-  z.object({
-    'launch:update': LaunchUpdateXml,
-  }),
-  z.object({
-    'launch:delete': LaunchDeleteXml,
-  }),
-  z.object({
-    'launch:chkData': LaunchChkDataXml,
-  }),
-  z.object({
-    'launch:creData': LaunchCreDataXml,
-  }),
-  z.object({
-    'launch:infData': LaunchInfDataXml,
-  }),
-  z.object({
-    'artRecord:create': ArtRecordCreateXml,
-  }),
-  z.object({
-    'artRecord:update': ArtRecordUpdateXml,
-  }),
-  z.object({
-    'artRecord:infData': ArtRecordInfDataXml,
-  }),
+  zloosen(
+    z.object({
+      'fee:check': FeeCheckXml,
+    }),
+  ),
+  zloosen(
+    z.object({
+      'fee:create': FeeCreateXml,
+    }),
+  ),
+  zloosen(
+    z.object({
+      'fee:renew': FeeRenewXml,
+    }),
+  ),
+  zloosen(
+    z.object({
+      'fee:transfer': FeeTransferXml,
+    }),
+  ),
+  zloosen(
+    z.object({
+      'fee:update': FeeUpdateXml,
+    }),
+  ),
+  zloosen(
+    z.object({
+      'fee:chkData': FeeChkDataXml,
+    }),
+  ),
+  zloosen(
+    z.object({
+      'fee:creData': FeeCreDataXml,
+    }),
+  ),
+  zloosen(
+    z.object({
+      'fee:renData': FeeRenDataXml,
+    }),
+  ),
+  zloosen(
+    z.object({
+      'fee:trnData': FeeTrnDataXml,
+    }),
+  ),
+  zloosen(
+    z.object({
+      'fee:updData': FeeUpdDataXml,
+    }),
+  ),
+  zloosen(
+    z.object({
+      'fee:delData': FeeDelDataXml,
+    }),
+  ),
+  zloosen(
+    z.object({
+      'secDNS:create': SecDNSCreateXml,
+    }),
+  ),
+  zloosen(
+    z.object({
+      'secDNS:update': SecDNSUpdateXml,
+    }),
+  ),
+  zloosen(
+    z.object({
+      'epp:infData': SecDNSDsOrKeyTypeXml,
+    }),
+  ),
+  zloosen(
+    z.object({
+      'idn:data': IdnDataXml,
+    }),
+  ),
+  zloosen(
+    z.object({
+      'epp:rgp:update': z.union([
+        z.string(),
+        zloosen(z.object({ '#text': z.string() })),
+      ]),
+    }),
+  ),
+  zloosen(
+    z.object({
+      'rgp:infData': RgpInfDataXml,
+    }),
+  ),
+  zloosen(
+    z.object({
+      'rgp:upData': RgpUpDataXml,
+    }),
+  ),
+  zloosen(
+    z.object({
+      'launch:check': LaunchCheckXml,
+    }),
+  ),
+  zloosen(
+    z.object({
+      'launch:info': LaunchInfoXml,
+    }),
+  ),
+  zloosen(
+    z.object({
+      'launch:create': LaunchCreateXml,
+    }),
+  ),
+  zloosen(
+    z.object({
+      'launch:update': LaunchUpdateXml,
+    }),
+  ),
+  zloosen(
+    z.object({
+      'launch:delete': LaunchDeleteXml,
+    }),
+  ),
+  zloosen(
+    z.object({
+      'launch:chkData': LaunchChkDataXml,
+    }),
+  ),
+  zloosen(
+    z.object({
+      'launch:creData': LaunchCreDataXml,
+    }),
+  ),
+  zloosen(
+    z.object({
+      'launch:infData': LaunchInfDataXml,
+    }),
+  ),
+  zloosen(
+    z.object({
+      'artRecord:create': ArtRecordCreateXml,
+    }),
+  ),
+  zloosen(
+    z.object({
+      'artRecord:update': ArtRecordUpdateXml,
+    }),
+  ),
+  zloosen(
+    z.object({
+      'artRecord:infData': ArtRecordInfDataXml,
+    }),
+  ),
 ]);
 
 export type EppExtAnyTypeXml = z.infer<typeof EppExtAnyTypeXml>;

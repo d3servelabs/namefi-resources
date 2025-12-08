@@ -3,16 +3,21 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
+import { zloosen } from '../helpers/zod/loosen.js';
 import { EppcomPwAuthInfoTypeXml } from './eppcom.pwAuthInfoType.layer1.js';
 import { EppcomExtAuthInfoTypeXml } from './eppcom.extAuthInfoType.layer1.js';
 
 export const ContactAuthInfoTypeXml = z.union([
-  z.object({
-    'contact:pw': EppcomPwAuthInfoTypeXml,
-  }),
-  z.object({
-    'contact:ext': EppcomExtAuthInfoTypeXml,
-  }),
+  zloosen(
+    z.object({
+      'contact:pw': EppcomPwAuthInfoTypeXml,
+    }),
+  ),
+  zloosen(
+    z.object({
+      'contact:ext': EppcomExtAuthInfoTypeXml,
+    }),
+  ),
 ]);
 
 export type ContactAuthInfoTypeXml = z.infer<typeof ContactAuthInfoTypeXml>;

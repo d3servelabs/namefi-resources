@@ -3,22 +3,27 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
+import { zloosen } from '../helpers/zod/loosen.js';
 import { DomainTransferXml } from '../elements/domain.transfer.layer1.js';
 import { ContactTransferXml } from '../elements/contact.transfer.layer1.js';
 
-export const EppTransferTypeXml = z
-  .object({
-    '@_op': z.enum(['approve', 'cancel', 'query', 'reject', 'request']),
-  })
-  .and(
-    z.union([
-      z.object({
-        'domain:transfer': DomainTransferXml,
-      }),
-      z.object({
-        'contact:transfer': ContactTransferXml,
-      }),
-    ]),
-  );
+const _baseFields = z.object({
+  '@_op': z.enum(['approve', 'cancel', 'query', 'reject', 'request']),
+});
+
+export const EppTransferTypeXml = z.union([
+  zloosen(
+    z.object({
+      ..._baseFields.shape,
+      'domain:transfer': DomainTransferXml,
+    }),
+  ),
+  zloosen(
+    z.object({
+      ..._baseFields.shape,
+      'contact:transfer': ContactTransferXml,
+    }),
+  ),
+]);
 
 export type EppTransferTypeXml = z.infer<typeof EppTransferTypeXml>;

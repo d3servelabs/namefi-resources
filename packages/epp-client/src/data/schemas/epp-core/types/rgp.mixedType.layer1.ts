@@ -3,7 +3,8 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 import { z } from 'zod';
+import { zloosen } from '../helpers/zod/loosen.js';
 
-export const RgpMixedTypeXml = z.object({});
+export const RgpMixedTypeXml = zloosen(z.object({}));
 
 export type RgpMixedTypeXml = z.infer<typeof RgpMixedTypeXml>;

@@ -15,7 +15,12 @@ import {
   type EppPoolOptions,
   type PooledConnection,
 } from '../pool';
-import { EppEnvelopeCodec, EppLoginCodec, parser } from './codec';
+import {
+  EppEnvelopeCodec,
+  EppLoginCodec,
+  parser,
+  type EppResponseType,
+} from './codec';
 import z from 'zod';
 
 export interface EppLogger {
@@ -116,26 +121,21 @@ export async function createEppClient(
               extURIs: options.session.services.extURIs,
             });
 
-            console.log('Sending login command');
-            console.log(loginCmd);
             const envelope = buildEppEnvelope(loginCmd as any);
             const xml = EppEnvelopeCodec.encode(envelope);
-            console.log({ xml });
 
             await sendFrame(conn, xml);
             const resXml = await readFrame(conn, { timeoutMs: 15_000 });
 
-            console.log(resXml);
             // Parse and validate login response
             const parsed = EppEnvelopeCodec.decode(resXml);
             const eppNode = parsed['epp:epp'];
-            // console.log(eppNode);
 
             const response =
               'epp:response' in eppNode ? eppNode['epp:response'] : undefined;
             const result =
               !!response && 'epp:result' in response
-                ? response['epp:result']
+                ? response['epp:result'][0]
                 : undefined;
             const code =
               !!result && '@_code' in result ? result['@_code'] : undefined;
@@ -373,4 +373,8 @@ export async function sendCommand(
 ): Promise<Result<SendResult, string | undefined>> {
   const envelope = buildEppEnvelope(command);
   return send(client, envelope, opts);
+}
+
+function isEppResult(node: unknown): node is EppResponseType {
+  return typeof node === 'object' && node !== null && 'epp:result' in node;
 }
