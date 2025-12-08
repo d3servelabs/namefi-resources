@@ -27,6 +27,7 @@ import type {
   DomainSuggestionsQueryResult,
   DomainSummary,
   Nameservers,
+  PendingTransferInfo,
   PricingDetails,
   RdapDomainStatus,
   RenewOption,
@@ -78,6 +79,7 @@ import {
   getResultMessage,
   getResData,
   parseTransferQueryResponse,
+  parsePendingTransferInfo,
 } from './helpers';
 import {
   type DomainIndexFunctions,
@@ -958,6 +960,63 @@ export class CentralNicRegistrarService extends AbstractRegistrarService {
       return handleEppResult(res, parseTransferQueryResponse);
     });
   }
+
+  async queryPendingTransfer(
+    domainName: PunycodeDomainName,
+  ): Promise<PendingTransferInfo | null> {
+    assertPunycodeDomainName(domainName);
+    try {
+      return await this.executeCommand(async (client) => {
+        const res = await sendCommand(
+          client,
+          buildDomainTransferCommand({ name: domainName, op: 'query' }),
+        );
+        if (!res.ok) {
+          return null;
+        }
+        const code = getResultCode(res.data);
+        // 2303 = Object does not exist (no pending transfer)
+        if (code === 2303) {
+          return null;
+        }
+        return parsePendingTransferInfo(res.data, domainName);
+      });
+    } catch (error) {
+      this.logger.debug({ error, domainName }, 'No pending transfer found');
+      return null;
+    }
+  }
+
+  async approveTransfer(
+    domainName: PunycodeDomainName,
+  ): Promise<LongRunningOperationResult> {
+    assertPunycodeDomainName(domainName);
+    return this.executeCommand(async (client) => {
+      const res = await sendCommand(
+        client,
+        buildDomainTransferCommand({ name: domainName, op: 'approve' }),
+      );
+      return handleEppResult(res, (data) =>
+        parseUpdateResponse(data, OperationType.TRANSFER_APPROVE, domainName),
+      );
+    });
+  }
+
+  async rejectTransfer(
+    domainName: PunycodeDomainName,
+  ): Promise<LongRunningOperationResult> {
+    assertPunycodeDomainName(domainName);
+    return this.executeCommand(async (client) => {
+      const res = await sendCommand(
+        client,
+        buildDomainTransferCommand({ name: domainName, op: 'reject' }),
+      );
+      return handleEppResult(res, (data) =>
+        parseUpdateResponse(data, OperationType.TRANSFER_REJECT, domainName),
+      );
+    });
+  }
+
   async getOperationStatus(
     domainNameLdh: PunycodeDomainName,
     operationId: string,

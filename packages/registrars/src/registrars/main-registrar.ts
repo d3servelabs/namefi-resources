@@ -25,6 +25,7 @@ import type {
   DomainSummary,
   DomainQueryResult,
   Nameservers,
+  PendingTransferInfo,
   PricingDetails,
   RdapDomainStatus,
   RenewOption,
@@ -727,6 +728,9 @@ export class RegistrarService extends AbstractRegistrarService {
     domain: PunycodeDomainName,
   ): Promise<AbstractRegistrarService<Registrars>> {
     const registrarKey = await this.determineRegistrar(domain);
+    this.logger.debug(
+      `Getting registrar for domain ${domain}: ${registrarKey}`,
+    );
     return this.registrars[registrarKey];
   }
 
@@ -778,6 +782,31 @@ export class RegistrarService extends AbstractRegistrarService {
       registrarKey: registrarKey,
     });
     return registrarKey;
+  }
+
+  async queryPendingTransfer(
+    domainName: PunycodeDomainName,
+  ): Promise<PendingTransferInfo | null> {
+    const provider = await this.getRegistrar(domainName);
+    return provider.queryPendingTransfer(domainName);
+  }
+
+  async approveTransfer(
+    domainName: PunycodeDomainName,
+  ): Promise<LongRunningOperationResult<any>> {
+    const provider = await this.getRegistrar(domainName);
+    return provider
+      .approveTransfer(domainName)
+      .then(injectRegistrar(provider.key));
+  }
+
+  async rejectTransfer(
+    domainName: PunycodeDomainName,
+  ): Promise<LongRunningOperationResult<any>> {
+    const provider = await this.getRegistrar(domainName);
+    return provider
+      .rejectTransfer(domainName)
+      .then(injectRegistrar(provider.key));
   }
 
   private supportsTldPricing(

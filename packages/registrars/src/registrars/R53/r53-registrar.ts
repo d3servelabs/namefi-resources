@@ -39,6 +39,7 @@ import type {
   LongRunningOperationResult,
   Nameserver,
   Nameservers,
+  PendingTransferInfo,
   PricingDetails,
   RdapDomainStatus,
   RegisterDomainInput,
@@ -950,6 +951,25 @@ export class R53RegistrarService extends AbstractRegistrarService {
     }
 
     return finalOutput;
+  }
+
+  async queryPendingTransfer(
+    _domainName: PunycodeDomainName,
+  ): Promise<PendingTransferInfo | null> {
+    // Route53 does not support querying pending transfers via API
+    return null;
+  }
+
+  async approveTransfer(
+    _domainName: PunycodeDomainName,
+  ): Promise<LongRunningOperationResult> {
+    throw new Error('Route53 does not support transfer approval via API');
+  }
+
+  async rejectTransfer(
+    _domainName: PunycodeDomainName,
+  ): Promise<LongRunningOperationResult> {
+    throw new Error('Route53 does not support transfer rejection via API');
   }
 }
 type TldPrices = DomainPrice;

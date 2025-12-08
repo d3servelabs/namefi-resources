@@ -21,6 +21,7 @@ import type {
   DomainSuggestion,
   DomainSuggestionsQueryResult,
 } from './data/suggestions';
+import type { PendingTransferInfo } from './data/transfer-status';
 
 export type LongRunningOperationResult<T = any> = {
   operationId?: string | null;
@@ -230,6 +231,34 @@ export abstract class AbstractRegistrarService<T extends string = string> {
       domainName: PunycodeDomainName;
     }[]
   >;
+
+  //#region Transfer Management
+  /**
+   * Query pending transfer status for a domain.
+   * Returns null if there is no pending transfer.
+   */
+  abstract queryPendingTransfer(
+    domainName: PunycodeDomainName,
+    options?: any,
+  ): Promise<PendingTransferInfo | null>;
+
+  /**
+   * Approve an outgoing transfer (as losing registrar).
+   */
+  abstract approveTransfer(
+    domainName: PunycodeDomainName,
+    options?: any,
+  ): Promise<LongRunningOperationResult>;
+
+  /**
+   * Reject an outgoing transfer (as losing registrar).
+   */
+  abstract rejectTransfer(
+    domainName: PunycodeDomainName,
+    options?: any,
+  ): Promise<LongRunningOperationResult>;
+
+  //#endregion Transfer Management
 
   setDomainLockState(
     domainName: PunycodeDomainName,

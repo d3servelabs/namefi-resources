@@ -21,6 +21,8 @@ import {
   type DnssecAlgorithms,
   type DnssecDigestType,
   type DnssecFlags,
+  type PendingTransferInfo,
+  type TransferStatus,
 } from '#lib/abstract-registrar';
 import type {
   DomainQueryResult,
@@ -682,6 +684,49 @@ export function parseTransferQueryResponse(data: SendResult<EppEnvelopeXml>) {
     isRejected: rejected,
     message: getResultMessage(data),
     response,
+  };
+}
+
+/**
+ * Parse transfer query response into PendingTransferInfo.
+ * Returns null if no transfer data or if transfer is not pending.
+ */
+export function parsePendingTransferInfo(
+  data: SendResult<EppEnvelopeXml>,
+  domainName: string,
+): PendingTransferInfo | null {
+  const resData = getResData(data);
+  const trnData = safePropAccess('domain:trnData', resData);
+
+  if (!trnData) {
+    return null;
+  }
+
+  const parsed = DomainTrnDataTypeXml.safeParse(trnData);
+  if (!parsed.success) {
+    return null;
+  }
+
+  const response = parsed.data;
+  const status = extractOptionalText(
+    response['domain:trStatus'],
+  ) as TransferStatus;
+
+  // Extract dates and registrar IDs
+  const requestingRegistrarId = extractOptionalText(response['domain:reID']);
+  const requestDateStr = extractOptionalText(response['domain:reDate']);
+  const actionRegistrarId = extractOptionalText(response['domain:acID']);
+  const actionDateStr = extractOptionalText(response['domain:acDate']);
+  const expirationDateStr = extractOptionalText(response['domain:exDate']);
+
+  return {
+    domainName,
+    status,
+    requestingRegistrarId,
+    requestDate: new Date(requestDateStr),
+    actionRegistrarId,
+    actionDate: new Date(actionDateStr),
+    expirationDate: expirationDateStr ? new Date(expirationDateStr) : undefined,
   };
 }
 

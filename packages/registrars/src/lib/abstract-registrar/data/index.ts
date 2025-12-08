@@ -11,3 +11,4 @@ export * from './renew-option';
 export * from './dnssec';
 export * from './dnssec-tlds';
 export * from './suggestions';
+export * from './transfer-status';

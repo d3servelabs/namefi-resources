@@ -25,6 +25,7 @@ import type {
   DomainSummary,
   Nameserver,
   Nameservers,
+  PendingTransferInfo,
   PricingDetails,
   RdapDomainStatus,
 } from '#lib/abstract-registrar';
@@ -1329,6 +1330,25 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
     // TODO: Implement when Dynadot provides expired domains endpoint
     // For now, returning empty array as placeholder
     return [];
+  }
+
+  async queryPendingTransfer(
+    _domainName: PunycodeDomainName,
+  ): Promise<PendingTransferInfo | null> {
+    // Dynadot does not support querying pending transfers via API
+    return null;
+  }
+
+  async approveTransfer(
+    _domainName: PunycodeDomainName,
+  ): Promise<LongRunningOperationResult> {
+    throw new Error('Dynadot does not support transfer approval via API');
+  }
+
+  async rejectTransfer(
+    _domainName: PunycodeDomainName,
+  ): Promise<LongRunningOperationResult> {
+    throw new Error('Dynadot does not support transfer rejection via API');
   }
 }
 

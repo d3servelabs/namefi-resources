@@ -17,6 +17,8 @@ export const OperationType = {
   PUSH_DOMAIN: 'PUSH_DOMAIN',
   INTERNAL_TRANSFER_OUT_DOMAIN: 'INTERNAL_TRANSFER_OUT_DOMAIN',
   INTERNAL_TRANSFER_IN_DOMAIN: 'INTERNAL_TRANSFER_IN_DOMAIN',
+  TRANSFER_APPROVE: 'TRANSFER_APPROVE',
+  TRANSFER_REJECT: 'TRANSFER_REJECT',
 } as const;
 
 export type OperationType = (typeof OperationType)[keyof typeof OperationType];
