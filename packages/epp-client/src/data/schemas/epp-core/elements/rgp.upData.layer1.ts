@@ -1,0 +1,10 @@
+/**
+ * Layer-1 XML JSON schema for <rgp:upData>.
+ * Auto-generated from XSD. Do not edit manually.
+ */
+import type { z } from 'zod';
+import { RgpRespDataTypeXml } from '../types/rgp.respDataType.layer1.js';
+
+export const RgpUpDataXml = RgpRespDataTypeXml;
+
+export type RgpUpDataXml = z.infer<typeof RgpUpDataXml>;

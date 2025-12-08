@@ -1,0 +1,9 @@
+/**
+ * Layer-1 XML JSON schema for <xmldsig:KeyName>.
+ * Auto-generated from XSD. Do not edit manually.
+ */
+import { z } from 'zod';
+
+export const XmldsigKeyNameXml = z.string();
+
+export type XmldsigKeyNameXml = z.infer<typeof XmldsigKeyNameXml>;

@@ -1,0 +1,22 @@
+/**
+ * Layer-1 XML JSON schema for type epp:checkCommandType.
+ * Auto-generated from XSD. Do not edit manually.
+ */
+import { z } from 'zod';
+import { DomainCheckXml } from '../elements/domain.check.layer1.js';
+import { ContactCheckXml } from '../elements/contact.check.layer1.js';
+import { HostCheckXml } from '../elements/host.check.layer1.js';
+
+export const EppCheckCommandTypeXml = z.union([
+  z.object({
+    'domain:check': DomainCheckXml,
+  }),
+  z.object({
+    'contact:check': ContactCheckXml,
+  }),
+  z.object({
+    'host:check': HostCheckXml,
+  }),
+]);
+
+export type EppCheckCommandTypeXml = z.infer<typeof EppCheckCommandTypeXml>;
