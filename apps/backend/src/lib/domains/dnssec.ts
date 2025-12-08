@@ -157,10 +157,10 @@ export async function setZoneSigningFlag(
 export async function getZoneDnssecSigningConfig(
   domainName: PunycodeDomainName,
 ): Promise<DnssecKey> {
-  const dnskey = await parseDnskeyRecord(config.DNSSEC_DNSKEY_PUBLIC_RECORD);
+  const dnskey = parseDnskeyRecord(config.DNSSEC_DNSKEY_PUBLIC_RECORD);
   const keyTag = config.DNSSEC_DNSKEY_KEY_TAG;
 
-  const digest = await computeDsDigest(
+  const digest = computeDsDigest(
     domainName,
     dnskey.flags,
     dnskey.protocol,
@@ -176,6 +176,7 @@ export async function getZoneDnssecSigningConfig(
     keyTag,
     digestType: DnssecDigestType.SHA_256,
     digest,
+    keyData: dnskey,
   };
 }
 // #endregion Zone DNSSEC

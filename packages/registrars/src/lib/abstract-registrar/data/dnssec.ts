@@ -29,6 +29,12 @@ export type DnssecKey = {
    *  A numeric identification of the DNSKEY record referred to by this DS record.
    */
   keyTag?: number;
+  keyData?: {
+    flags: number;
+    algorithm: number;
+    protocol: number;
+    publicKey: string;
+  };
 };
 
 export const DnssecAlgorithms = Object.freeze({
