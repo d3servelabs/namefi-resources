@@ -6,6 +6,7 @@ import { Toaster } from '@/components/ui/shadcn/sonner';
 import { getOriginRuntime } from '@/lib/origin';
 import { cn } from '@/lib/cn';
 import { Providers } from '@/components/providers';
+import { AddToCartFromUrl } from '@/components/add-to-cart-from-url';
 import { GoogleAnalyticsCookieConsentGated } from '@/components/ga';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
@@ -52,6 +53,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
             <ReactQueryDevtools initialIsOpen={false} />
             <OriginBackground />
             <Toaster expand={true} visibleToasts={3} />
+            <AddToCartFromUrl />
             <SidebarProvider defaultOpen={false}>
               <AppSidebar />
               <Main>{children}</Main>
