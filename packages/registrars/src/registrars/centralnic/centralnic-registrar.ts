@@ -92,6 +92,7 @@ import {
 import { parseDomainName } from '@namefi-astra/utils/parse-domain-name';
 import { differenceInMinutes, formatDate } from 'date-fns';
 import { signMessage } from '#lib/sign-message';
+import pMap, { pMapSkip } from 'p-map';
 
 function supportsContacts(tld: string) {
   return false; //TODO
@@ -1101,28 +1102,37 @@ export class CentralNicRegistrarService extends AbstractRegistrarService {
 
     // Check in batches of 50
     const batchSize = 50;
-    const verifiedDomains: DomainSummary[] = [];
+    const unavailableDomains: DomainQueryResult[] = [];
 
     for (let i = 0; i < domainNames.length; i += batchSize) {
       const batch = domainNames.slice(i, i + batchSize);
       const checkResults = await this.bulkSearch(batch);
-
-      for (const result of checkResults) {
-        // Domain exists if it's NOT available
-        if (result.available === 'UNAVAILABLE') {
-          const indexed = domains.find(
-            (d) => d.domainName === result.domainName,
-          );
-          verifiedDomains.push({
-            domainName: result.domainName as PunycodeDomainName,
-            expirationTime: indexed?.expirationDate ?? new Date(),
-            autoRenewOption: 'MANUAL' as RenewOption,
-            transferLocked: false, // Would need to check domain statuses
-          });
-        }
-      }
+      unavailableDomains.push(
+        ...checkResults.filter((result) => result.available === 'UNAVAILABLE'),
+      );
     }
 
+    const verifiedDomains = await pMap(
+      unavailableDomains,
+      async (domain) => {
+        const { domainName } = domain;
+        try {
+          const domainDetails = await this.getDomainDetails(domainName);
+          return {
+            autoRenewOption: domainDetails.autoRenewOption,
+            domainName: domainDetails.domainName,
+            expirationTime: domainDetails.expirationTime,
+            transferLocked: true, //TODO!
+          } satisfies DomainSummary;
+        } catch (e: any) {
+          this.logger.trace(
+            `Error fetching domain details for ${domainName}: ${e?.message}`,
+          );
+          return pMapSkip;
+        }
+      },
+      { concurrency: 50 },
+    );
     return verifiedDomains;
   }
 
