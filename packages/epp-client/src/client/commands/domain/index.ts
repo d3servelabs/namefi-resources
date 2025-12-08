@@ -37,4 +37,8 @@ export { buildDomainCreateCommand } from './create';
 export { buildDomainDeleteCommand } from './delete';
 export { buildDomainRenewCommand } from './renew';
 export { buildDomainTransferCommand } from './transfer';
-export { buildDomainUpdateCommand } from './update';
+export {
+  buildDomainUpdateCommand,
+  buildChangeNsCommand,
+  buildToggleLockTransferCommand,
+} from './update';

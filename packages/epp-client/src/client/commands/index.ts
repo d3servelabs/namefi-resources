@@ -78,6 +78,8 @@ export {
   buildDomainRenewCommand,
   buildDomainTransferCommand,
   buildDomainUpdateCommand,
+  buildChangeNsCommand,
+  buildToggleLockTransferCommand,
 } from './domain';
 
 // ============ Contact Commands ============
