@@ -200,6 +200,7 @@ export class CentralNicRegistrarService extends AbstractRegistrarService {
    */
   private async createClient(): Promise<EppClientRuntime> {
     const poolConfig = this.config.pool;
+    const logger = this.logger.child({ component: 'epp-client' });
 
     const client = await createEppClient({
       connection: {
@@ -229,7 +230,12 @@ export class CentralNicRegistrarService extends AbstractRegistrarService {
       },
       logXml: this.config.logXml ?? false,
       logParsed: this.config.logParsed ?? false,
-      logger: this.logger,
+      logger: {
+        debug: (msg, meta) => logger.debug(meta, msg),
+        info: (msg, meta) => logger.info(meta, msg),
+        warn: (msg, meta) => logger.warn(meta, msg),
+        error: (msg, meta) => logger.error(meta, msg),
+      },
     });
 
     this.logger.info('EPP client created with connection pool');

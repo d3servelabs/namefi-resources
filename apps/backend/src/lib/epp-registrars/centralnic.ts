@@ -184,7 +184,6 @@ function getCentralnicRegistrarOte1(connection: any) {
     host: secrets.CENTRALNIC_HOST,
     port: 700,
     logParsed: true,
-
     customLogger: createLogger({
       registrar: Registrars.CentralNic_OTE_01,
     }) as any,
