@@ -38,6 +38,13 @@ const nextConfig = {
       ),
     },
   },
+  serverExternalPackages: [
+    'pino',
+    'pino-pretty',
+    'pino-elasticsearch',
+    'thread-stream',
+    '@walletconnect/*',
+  ],
   experimental: {
     authInterrupts: true,
     turbopackFileSystemCacheForDev: true,
