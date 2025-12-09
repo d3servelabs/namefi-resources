@@ -1,4 +1,5 @@
 import { createTRPCRouter, publicProcedure } from '../base';
+import { authRouter } from './authRouter';
 import { freeClaimsRouter } from './freeClaimsRouter';
 import { pbnIssuanceReservationsRouter } from './pbnIssuanceReservationsRouter';
 import { adminRouter } from './adminRouter';
@@ -24,6 +25,7 @@ import { feedbackRouter } from './feedbackRouter';
 export const appRouter = createTRPCRouter({
   admin: adminRouter,
   ai: aiRouter,
+  auth: authRouter,
   freeClaims: freeClaimsRouter,
   pbnReservations: pbnIssuanceReservationsRouter,
   analytics: analyticsRouter,

@@ -35,6 +35,12 @@ import {
 } from '#lib/auditor';
 import { timingSafeEqual } from 'crypto';
 import { getCookie } from 'hono/cookie';
+import { getAddress } from 'viem';
+import {
+  verifySignedPayload,
+  NAMEFI_EIP712_DOMAIN,
+} from '#lib/auth/ecdsa-payload-signature';
+import { getPrivyUserLinkedEthereumChecksumWalletAddresses } from './utils';
 
 /**
  * Get the powered by namefi (pbn) domain from the origin.
@@ -643,6 +649,154 @@ export const protectedProcedure = baseProcedure
     });
     return next({ ctx });
   });
+
+/**
+ * Context type for requests with EIP-712 signed payload verification.
+ */
+export type TrpcContextWithSignedPayload = TrpcContextWithUser & {
+  /** The wallet address that signed the payload */
+  signerWalletAddress: string;
+};
+
+/**
+ * Configuration for creating an EIP-712 signed payload procedure.
+ */
+export interface SignedPayloadProcedureConfig<
+  TTypes extends Record<string, Array<{ name: string; type: string }>>,
+  TPrimaryType extends keyof TTypes & string,
+> {
+  /** EIP-712 type definitions for the payload */
+  types: TTypes;
+  /** The primary type name being signed */
+  primaryType: TPrimaryType;
+  /**
+   * Function to extract the payload data from the procedure input.
+   * The input will have { signature: string, payload: T } shape.
+   */
+  getPayloadFromInput: (input: unknown) => Record<string, unknown>;
+  /**
+   * Function to extract the signature from the procedure input.
+   */
+  getSignatureFromInput: (input: unknown) => string;
+}
+
+/**
+ * Creates an EIP-712 signed payload verification middleware.
+ *
+ * This middleware:
+ * 1. Requires the user to be authenticated via Privy (uses protectedProcedure)
+ * 2. Verifies the EIP-712 signature on the input payload
+ * 3. Confirms the signer's wallet is linked to the authenticated Privy user
+ *
+ * Use this for dangerous operations where you need cryptographic proof
+ * that the authenticated user intentionally signed the specific payload.
+ *
+ * @example
+ * const DELETE_ASSET_TYPES = {
+ *   DeleteAsset: [
+ *     { name: 'assetId', type: 'string' },
+ *     { name: 'timestamp', type: 'uint256' },
+ *   ],
+ * };
+ *
+ * const deleteAssetProcedure = createSignedPayloadProcedure({
+ *   types: DELETE_ASSET_TYPES,
+ *   primaryType: 'DeleteAsset',
+ *   getPayloadFromInput: (input) => (input as any).payload,
+ *   getSignatureFromInput: (input) => (input as any).signature,
+ * });
+ */
+export function createSignedPayloadProcedure<
+  TTypes extends Record<string, Array<{ name: string; type: string }>>,
+  TPrimaryType extends keyof TTypes & string,
+>(config: SignedPayloadProcedureConfig<TTypes, TPrimaryType>) {
+  return protectedProcedure.use(async ({ ctx, next, getRawInput }) => {
+    const rawInput = await getRawInput();
+
+    // Extract signature and payload from input
+    const signature = config.getSignatureFromInput(rawInput);
+    const payload = config.getPayloadFromInput(rawInput);
+
+    if (!signature) {
+      throw new TRPCError({
+        code: 'BAD_REQUEST',
+        message: 'Missing signature in request',
+      });
+    }
+
+    // Verify the EIP-712 signature
+    const verificationResult = await verifySignedPayload({
+      signature,
+      types: config.types,
+      primaryType: config.primaryType,
+      message: payload,
+      domain: NAMEFI_EIP712_DOMAIN,
+    });
+
+    if (!verificationResult.valid || !verificationResult.recoveredAddress) {
+      logger.warn(
+        { error: verificationResult.error, userId: ctx.user.id },
+        'EIP-712 signature verification failed',
+      );
+      throw new TRPCError({
+        code: 'UNAUTHORIZED',
+        message: verificationResult.error || 'Invalid payload signature',
+      });
+    }
+
+    const signerAddress = getAddress(verificationResult.recoveredAddress);
+
+    // Get the user's linked wallets from Privy
+    const privyUser = await privyClient.getUser(ctx.user.privyUserId);
+    if (!privyUser) {
+      throw new TRPCError({
+        code: 'UNAUTHORIZED',
+        message: 'Could not verify user wallet ownership',
+      });
+    }
+
+    const userWallets = getPrivyUserLinkedEthereumChecksumWalletAddresses({
+      privyUser,
+    });
+
+    // Verify the signer's wallet belongs to the authenticated user
+    const signerOwnsWallet = userWallets.some(
+      (wallet) => wallet.toLowerCase() === signerAddress.toLowerCase(),
+    );
+
+    if (!signerOwnsWallet) {
+      logger.warn(
+        {
+          signerAddress,
+          userWallets,
+          userId: ctx.user.id,
+        },
+        'Payload signed by wallet not owned by authenticated user',
+      );
+      throw new TRPCError({
+        code: 'FORBIDDEN',
+        message: 'Signature wallet does not belong to authenticated user',
+      });
+    }
+
+    logger.assign({
+      signerWalletAddress: signerAddress,
+      signedPayload: true,
+    });
+
+    return next({
+      ctx: {
+        ...ctx,
+        signerWalletAddress: signerAddress,
+      },
+    });
+  });
+}
+
+/**
+ * Re-export for convenience when defining EIP-712 types in routers.
+ */
+export { NAMEFI_EIP712_DOMAIN } from '#lib/auth/ecdsa-payload-signature';
 
 /**
  * Admin procedure
