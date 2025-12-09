@@ -41,11 +41,42 @@ import {
 } from '@tanstack/react-query';
 import { Info, Loader2, RotateCw, SaveIcon } from 'lucide-react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import React from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
+import { useSignTypedData } from '@/hooks/use-sign-typed-data';
+import {
+  RequestWalletConnection,
+  type RequestWalletConnectionRef,
+} from '@/components/dialogs/request-wallet-connection';
+import { useAccount } from 'wagmi';
+
+/**
+ * EIP-712 types for changing domain nameservers.
+ * Must match the backend CHANGE_NAMESERVERS_EIP712_TYPES.
+ */
+const CHANGE_NAMESERVERS_EIP712_TYPES: Record<
+  string,
+  Array<{ name: string; type: string }>
+> = {
+  ChangeNameservers: [
+    { name: 'domainName', type: 'string' },
+    { name: 'nameservers', type: 'string' },
+  ],
+};
+
+/**
+ * EIP-712 types for resetting domain nameservers to Namefi defaults.
+ * Must match the backend RESET_NAMESERVERS_EIP712_TYPES.
+ */
+const RESET_NAMESERVERS_EIP712_TYPES: Record<
+  string,
+  Array<{ name: string; type: string }>
+> = {
+  ResetNameservers: [{ name: 'domainName', type: 'string' }],
+};
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -89,8 +120,25 @@ const NameserversPanelForm = React.memo(
     );
 
     const trpcClient = useTRPCClient();
-
     const queryClient = useQueryClient();
+    const { signTypedData } = useSignTypedData();
+    const walletConnectionRef = useRef<RequestWalletConnectionRef>(null);
+    const { address: activeWalletAddress } = useAccount();
+
+    // Store pending form values for after wallet connection
+    // - undefined: no pending operation
+    // - null: reset nameservers operation
+    // - DomainNameserversFormData: change nameservers operation
+    const pendingFormValues = useRef<
+      DomainNameserversFormData | null | undefined
+    >(undefined);
+
+    // Fetch the owner wallet address for this domain's NFT
+    const { data: ownerWalletData } = useQuery(
+      trpc.domainConfig.getDomainOwnerWallet.queryOptions({
+        domainName,
+      }),
+    );
 
     const { data: domainDnssecDetails, isLoading: isDnssecLoading } = useQuery(
       trpc.domainConfig.dnssec.getDomainDnssecDetails.queryOptions(
@@ -140,20 +188,50 @@ const NameserversPanelForm = React.memo(
       await refetchActiveNameserversChangeWorkflow();
     }, [trpc, queryClient, domainName, refetchActiveNameserversChangeWorkflow]);
 
-    const handleResetToNamefi = useCallback(async () => {
+    const resetWithSignature = useCallback(async () => {
       setLoadingOperation('resetting');
 
       try {
+        // Sign the payload with EIP-712
+        const payload = { domainName };
+        const signature = await signTypedData({
+          types: RESET_NAMESERVERS_EIP712_TYPES,
+          primaryType: 'ResetNameservers',
+          message: payload,
+        });
+
         await trpcClient.domainConfig.resetDomainNameservers.mutate({
-          domainName,
+          signature,
+          payload,
         });
         toast.success('Nameservers reset to Namefi defaults');
       } catch (error: any) {
-        toast.error(error.message ?? 'Failed to reset nameservers');
+        if (error.message?.includes('rejected')) {
+          toast.error('Signature request was rejected');
+        } else {
+          toast.error(error.message ?? 'Failed to reset nameservers');
+        }
       }
       await invalidateQueries();
       setLoadingOperation(null);
-    }, [trpcClient, domainName, invalidateQueries]);
+    }, [trpcClient, domainName, invalidateQueries, signTypedData]);
+
+    const handleResetToNamefi = useCallback(async () => {
+      const ownerWalletAddress = ownerWalletData?.ownerWalletAddress;
+      if (!ownerWalletAddress) {
+        toast.error('Unable to determine domain owner wallet');
+        return;
+      }
+      if (activeWalletAddress !== ownerWalletAddress) {
+        // Store that we want to reset after wallet connection
+        pendingFormValues.current = null; // null indicates reset operation
+        walletConnectionRef.current?.requestWalletConnection(
+          ownerWalletAddress,
+        );
+        return;
+      }
+      await resetWithSignature();
+    }, [ownerWalletData, activeWalletAddress, resetWithSignature]);
 
     const validationSchema = useMemo(
       () =>
@@ -192,22 +270,69 @@ const NameserversPanelForm = React.memo(
       trigger,
     } = form;
 
-    const onSubmit: SubmitHandler<DomainNameserversFormData> = async (
-      values,
-    ) => {
+    const submitWithSignature = async (values: DomainNameserversFormData) => {
       try {
         if (domainName) {
-          await trpcClient.domainConfig.changeDomainNameservers.mutate({
+          // Create payload with nameservers as comma-separated string for EIP-712
+          const payload = {
             domainName,
-            nameservers: values.nameservers,
+            nameservers: values.nameservers.join(','),
+          };
+
+          // Sign the payload with EIP-712
+          const signature = await signTypedData({
+            types: CHANGE_NAMESERVERS_EIP712_TYPES,
+            primaryType: 'ChangeNameservers',
+            message: payload,
+          });
+
+          await trpcClient.domainConfig.changeDomainNameservers.mutate({
+            signature,
+            payload,
           });
           toast.success('Nameservers Updated Successfully');
         }
       } catch (error: any) {
-        toast.error(error.message ?? 'Failed to update Nameservers');
+        if (error.message?.includes('rejected')) {
+          toast.error('Signature request was rejected');
+        } else {
+          toast.error(error.message ?? 'Failed to update Nameservers');
+        }
       }
 
       await invalidateQueries();
+    };
+
+    const onSubmit: SubmitHandler<DomainNameserversFormData> = async (
+      values,
+    ) => {
+      const ownerWalletAddress = ownerWalletData?.ownerWalletAddress;
+      if (!ownerWalletAddress) {
+        toast.error('Unable to determine domain owner wallet');
+        return;
+      }
+      if (activeWalletAddress !== ownerWalletAddress) {
+        // Store values and request wallet connection
+        pendingFormValues.current = values;
+        walletConnectionRef.current?.requestWalletConnection(
+          ownerWalletAddress,
+        );
+        return;
+      }
+      await submitWithSignature(values);
+    };
+
+    const handleWalletConnected = async () => {
+      if (pendingFormValues.current !== undefined) {
+        if (pendingFormValues.current === null) {
+          // null indicates reset operation
+          await resetWithSignature();
+        } else {
+          // Form values indicate change nameservers operation
+          await submitWithSignature(pendingFormValues.current);
+        }
+        pendingFormValues.current = undefined;
+      }
     };
 
     const values = watch();
@@ -276,119 +401,130 @@ const NameserversPanelForm = React.memo(
     }, [nameservers, setFieldValue]);
 
     return (
-      <Form {...form}>
-        <div className="flex flex-col gap-2">
-          <ActiveNameserversChangeWorkflowBanner
-            activeNameserversChangeWorkflow={activeNameserversChangeWorkflow}
-          />
+      <>
+        <RequestWalletConnection
+          ref={walletConnectionRef}
+          onRequestedWalletConnected={handleWalletConnected}
+          actionDescription="to change domain nameservers"
+        />
+        <Form {...form}>
+          <div className="flex flex-col gap-2">
+            <ActiveNameserversChangeWorkflowBanner
+              activeNameserversChangeWorkflow={activeNameserversChangeWorkflow}
+            />
 
-          {resetButton}
-          <AnimatePresence mode="sync" presenceAffectsLayout={true}>
-            {values.nameservers.map((_, index) => (
-              <motion.div
-                {...(shouldReduceMotion
-                  ? {}
-                  : {
-                      exit: { scaleY: 0, opacity: 0.2, top: '10%' },
-                      animate: { scaleY: 1, opacity: 1, top: '0%' },
-                      initial: { scaleY: 0, opacity: 0.2, top: '-10%' },
-                      transition: {
-                        duration: 0.5,
-                        ease: 'easeInOut',
-                        transformOrigin: 'top',
-                      },
-                    })}
-                style={{
-                  transformOrigin: 'top',
-                }}
-                key={`nameserver-motion-${index}`}
-              >
-                <FormField
-                  control={control}
-                  name={`nameservers.${index}`}
-                  disabled={disableAllButtons}
-                  render={({ field }) => (
-                    <FormItem className="w-full">
-                      <FormLabel className="text-sm text-zinc-400">
-                        Nameserver {index + 1}{' '}
-                        {index < 2 && <span className="text-red-500">*</span>}
-                      </FormLabel>
-                      <div className="flex items-center gap-2">
-                        <FormControl>
-                          <Input
-                            {...field}
-                            onChange={(e) =>
-                              handleUpdateNameserver(index, e.target.value)
-                            }
-                            className="bg-zinc-950 border-zinc-800"
-                            placeholder="e.g., ns1.example.com"
-                          />
-                        </FormControl>
-                        {values.nameservers.length > 2 && (
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => handleRemoveNameserver(index)}
-                            className="text-zinc-400 hover:text-red-500"
-                            disabled={disableAllButtons}
-                          >
-                            Remove
-                          </Button>
-                        )}
-                      </div>
-                      <FormMessage className="text-xs text-red-500" />
-                    </FormItem>
-                  )}
-                />
-              </motion.div>
-            ))}
-
-            <div className="flex items-center gap-2 justify-between mt-4">
-              {values.nameservers.length < 4 && (
-                <Button
-                  variant="outline"
-                  onClick={handleAddNameserver}
-                  className="w-auto py-1.25 px-5 "
-                  disabled={disableAllButtons}
+            {resetButton}
+            <AnimatePresence mode="sync" presenceAffectsLayout={true}>
+              {values.nameservers.map((_, index) => (
+                <motion.div
+                  {...(shouldReduceMotion
+                    ? {}
+                    : {
+                        exit: { scaleY: 0, opacity: 0.2, top: '10%' },
+                        animate: { scaleY: 1, opacity: 1, top: '0%' },
+                        initial: { scaleY: 0, opacity: 0.2, top: '-10%' },
+                        transition: {
+                          duration: 0.5,
+                          ease: 'easeInOut',
+                          transformOrigin: 'top',
+                        },
+                      })}
+                  style={{
+                    transformOrigin: 'top',
+                  }}
+                  key={`nameserver-motion-${index}`}
                 >
-                  Add nameserver
-                </Button>
-              )}
-              <div className="flex items-center gap-2">
-                {areChanged ? (
+                  <FormField
+                    control={control}
+                    name={`nameservers.${index}`}
+                    disabled={disableAllButtons}
+                    render={({ field }) => (
+                      <FormItem className="w-full">
+                        <FormLabel className="text-sm text-zinc-400">
+                          Nameserver {index + 1}{' '}
+                          {index < 2 && <span className="text-red-500">*</span>}
+                        </FormLabel>
+                        <div className="flex items-center gap-2">
+                          <FormControl>
+                            <Input
+                              {...field}
+                              onChange={(e) =>
+                                handleUpdateNameserver(index, e.target.value)
+                              }
+                              className="bg-zinc-950 border-zinc-800"
+                              placeholder="e.g., ns1.example.com"
+                            />
+                          </FormControl>
+                          {values.nameservers.length > 2 && (
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleRemoveNameserver(index)}
+                              className="text-zinc-400 hover:text-red-500"
+                              disabled={disableAllButtons}
+                            >
+                              Remove
+                            </Button>
+                          )}
+                        </div>
+                        <FormMessage className="text-xs text-red-500" />
+                      </FormItem>
+                    )}
+                  />
+                </motion.div>
+              ))}
+
+              <div className="flex items-center gap-2 justify-between mt-4">
+                {values.nameservers.length < 4 && (
                   <Button
-                    variant="destructive"
-                    onClick={cancelChanges}
+                    variant="outline"
+                    onClick={handleAddNameserver}
+                    className="w-auto py-1.25 px-5 "
                     disabled={disableAllButtons}
                   >
-                    Cancel
+                    Add nameserver
                   </Button>
-                ) : (
-                  false
                 )}
-                <LoadingButton
-                  isLoading={isSubmitting}
-                  loadingText="Saving..."
-                  className={cn('w-auto py-1.25 px-5')}
-                  onClick={handleSubmit(onSubmit)}
-                  disabled={
-                    isSubmitting || !isValid || !areChanged || disableAllButtons
-                  }
-                  variant={'default'}
-                >
-                  <SaveIcon width={20} height={20} /> Save Changes
-                </LoadingButton>
+                <div className="flex items-center gap-2">
+                  {areChanged ? (
+                    <Button
+                      variant="destructive"
+                      onClick={cancelChanges}
+                      disabled={disableAllButtons}
+                    >
+                      Cancel
+                    </Button>
+                  ) : (
+                    false
+                  )}
+                  <LoadingButton
+                    isLoading={isSubmitting}
+                    loadingText="Saving..."
+                    className={cn('w-auto py-1.25 px-5')}
+                    onClick={handleSubmit(onSubmit)}
+                    disabled={
+                      isSubmitting ||
+                      !isValid ||
+                      !areChanged ||
+                      disableAllButtons
+                    }
+                    variant={'default'}
+                  >
+                    <SaveIcon width={20} height={20} /> Save Changes
+                  </LoadingButton>
+                </div>
               </div>
-            </div>
-          </AnimatePresence>
+            </AnimatePresence>
 
-          <div className="text-sm text-zinc-500 mt-4">
-            <p>
-              Changes to nameservers can take 24-48 hours to propagate globally.
-            </p>
+            <div className="text-sm text-zinc-500 mt-4">
+              <p>
+                Changes to nameservers can take 24-48 hours to propagate
+                globally.
+              </p>
+            </div>
           </div>
-        </div>
-      </Form>
+        </Form>
+      </>
     );
   },
   (prevProps, nextProps) => {

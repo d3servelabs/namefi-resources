@@ -67,6 +67,42 @@ export const APPROVE_EXPORT_EIP712_TYPES: Record<
   ApproveExport: [{ name: 'domainName', type: 'string' }],
 };
 
+/**
+ * EIP-712 type definitions for enabling domain export.
+ * This is displayed to the user in their wallet when signing.
+ */
+export const ENABLE_EXPORT_EIP712_TYPES: Record<
+  string,
+  Array<{ name: string; type: string }>
+> = {
+  EnableExport: [{ name: 'domainName', type: 'string' }],
+};
+
+/**
+ * EIP-712 type definitions for changing domain nameservers.
+ * This is displayed to the user in their wallet when signing.
+ */
+export const CHANGE_NAMESERVERS_EIP712_TYPES: Record<
+  string,
+  Array<{ name: string; type: string }>
+> = {
+  ChangeNameservers: [
+    { name: 'domainName', type: 'string' },
+    { name: 'nameservers', type: 'string' },
+  ],
+};
+
+/**
+ * EIP-712 type definitions for resetting domain nameservers to Namefi defaults.
+ * This is displayed to the user in their wallet when signing.
+ */
+export const RESET_NAMESERVERS_EIP712_TYPES: Record<
+  string,
+  Array<{ name: string; type: string }>
+> = {
+  ResetNameservers: [{ name: 'domainName', type: 'string' }],
+};
+
 export const domainConfigRouter = createTRPCRouter({
   /**
    * Get Domain Details
@@ -168,36 +204,117 @@ export const domainConfigRouter = createTRPCRouter({
     }),
 
   /**
-   * Change Domain Nameservers
+   * Change Domain Nameservers.
+   * This is a dangerous operation that requires EIP-712 signature verification.
+   * The user must sign the payload with their wallet to confirm the nameserver change.
    */
-  changeDomainNameservers: protectedProcedure
+  changeDomainNameservers: withAudit(
+    createSignedPayloadProcedure({
+      types: CHANGE_NAMESERVERS_EIP712_TYPES,
+      primaryType: 'ChangeNameservers',
+      getPayloadFromInput: (input: unknown) =>
+        (input as { payload: { domainName: string; nameservers: string } })
+          .payload,
+      getSignatureFromInput: (input: unknown) =>
+        (input as { signature: string }).signature,
+    }),
+    ({ ctx, input, auditActorExtraInfo }) => ({
+      actorType: 'user',
+      actorId: ctx.user.id,
+      actorExtraInfo: auditActorExtraInfo,
+      resourceType: 'domain',
+      resourceId: (
+        input as { payload: { domainName: string; nameservers: string } }
+      ).payload.domainName,
+      action: 'change_nameservers',
+      extraInput: {
+        signedPayload: true,
+        signerWalletAddress: (ctx as { signerWalletAddress?: string })
+          .signerWalletAddress,
+        nameservers: (
+          input as { payload: { domainName: string; nameservers: string } }
+        ).payload.nameservers,
+      },
+    }),
+  )
     .input(
       z.object({
-        domainName: namefiNormalizedDomainSchema,
-        nameservers: z.array(punycodeFqdnSchema).min(2).max(4),
+        signature: z.string().regex(/^0x[a-fA-F0-9]+$/),
+        payload: z.object({
+          domainName: namefiNormalizedDomainSchema,
+          // Nameservers as comma-separated string for EIP-712 signing
+          nameservers: z.string().min(1),
+        }),
       }),
     )
     .mutation(async ({ input, ctx }) => {
-      await assertAuthenticatedUserIsDomainOwner(input.domainName, ctx.user);
+      await assertAuthenticatedUserIsDomainOwner(
+        input.payload.domainName,
+        ctx.user,
+      );
+      // Parse nameservers from comma-separated string
+      const nameserversList = input.payload.nameservers
+        .split(',')
+        .map((ns) => ns.trim())
+        .filter((ns) => ns.length > 0);
+
+      if (nameserversList.length < 2 || nameserversList.length > 4) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Must provide between 2 and 4 nameservers',
+        });
+      }
+
       await submitNameserversChangeWorkflow(
-        toPunycodeDomainName(input.domainName),
-        input.nameservers.map((nameserver) => toPunycodeFqdn(nameserver)),
+        toPunycodeDomainName(input.payload.domainName),
+        nameserversList.map((nameserver) => toPunycodeFqdn(nameserver)),
       );
     }),
 
   /**
-   * Change Domain Nameservers
+   * Reset Domain Nameservers to Namefi defaults.
+   * This is a dangerous operation that requires EIP-712 signature verification.
+   * The user must sign the payload with their wallet to confirm the reset.
    */
-  resetDomainNameservers: protectedProcedure
+  resetDomainNameservers: withAudit(
+    createSignedPayloadProcedure({
+      types: RESET_NAMESERVERS_EIP712_TYPES,
+      primaryType: 'ResetNameservers',
+      getPayloadFromInput: (input: unknown) =>
+        (input as { payload: { domainName: string } }).payload,
+      getSignatureFromInput: (input: unknown) =>
+        (input as { signature: string }).signature,
+    }),
+    ({ ctx, input, auditActorExtraInfo }) => ({
+      actorType: 'user',
+      actorId: ctx.user.id,
+      actorExtraInfo: auditActorExtraInfo,
+      resourceType: 'domain',
+      resourceId: (input as { payload: { domainName: string } }).payload
+        .domainName,
+      action: 'reset_nameservers',
+      extraInput: {
+        signedPayload: true,
+        signerWalletAddress: (ctx as { signerWalletAddress?: string })
+          .signerWalletAddress,
+      },
+    }),
+  )
     .input(
       z.object({
-        domainName: namefiNormalizedDomainSchema,
+        signature: z.string().regex(/^0x[a-fA-F0-9]+$/),
+        payload: z.object({
+          domainName: namefiNormalizedDomainSchema,
+        }),
       }),
     )
     .mutation(async ({ input, ctx }) => {
-      await assertAuthenticatedUserIsDomainOwner(input.domainName, ctx.user);
+      await assertAuthenticatedUserIsDomainOwner(
+        input.payload.domainName,
+        ctx.user,
+      );
       await submitResetNameserversWorkflow(
-        toPunycodeDomainName(input.domainName),
+        toPunycodeDomainName(input.payload.domainName),
       );
     }),
 
@@ -523,15 +640,49 @@ export const domainConfigRouter = createTRPCRouter({
       );
     }),
 
-  requestDomainExport: protectedProcedure
+  /**
+   * Request to enable domain export.
+   * This is a dangerous operation that requires EIP-712 signature verification.
+   * The user must sign the payload with their wallet to confirm enabling export.
+   */
+  requestDomainExport: withAudit(
+    createSignedPayloadProcedure({
+      types: ENABLE_EXPORT_EIP712_TYPES,
+      primaryType: 'EnableExport',
+      getPayloadFromInput: (input: unknown) =>
+        (input as { payload: { domainName: string } }).payload,
+      getSignatureFromInput: (input: unknown) =>
+        (input as { signature: string }).signature,
+    }),
+    ({ ctx, input, auditActorExtraInfo }) => ({
+      actorType: 'user',
+      actorId: ctx.user.id,
+      actorExtraInfo: auditActorExtraInfo,
+      resourceType: 'domain',
+      resourceId: (input as { payload: { domainName: string } }).payload
+        .domainName,
+      action: 'enable_export',
+      extraInput: {
+        signedPayload: true,
+        signerWalletAddress: (ctx as { signerWalletAddress?: string })
+          .signerWalletAddress,
+      },
+    }),
+  )
     .input(
       z.object({
-        domainName: namefiNormalizedDomainSchema,
+        signature: z.string().regex(/^0x[a-fA-F0-9]+$/),
+        payload: z.object({
+          domainName: namefiNormalizedDomainSchema,
+        }),
       }),
     )
     .mutation(async ({ input, ctx }) => {
-      await assertAuthenticatedUserIsDomainOwner(input.domainName, ctx.user);
-      const parsedDomainName = parseDomainName(input.domainName);
+      await assertAuthenticatedUserIsDomainOwner(
+        input.payload.domainName,
+        ctx.user,
+      );
+      const parsedDomainName = parseDomainName(input.payload.domainName);
       if (!parsedDomainName.valid) {
         throw new TRPCError({
           code: 'BAD_REQUEST',
@@ -547,12 +698,12 @@ export const domainConfigRouter = createTRPCRouter({
       await temporalClient.workflow.start(prepareDomainForExportWorkflow, {
         args: [
           {
-            domainName: toPunycodeDomainName(input.domainName),
+            domainName: toPunycodeDomainName(input.payload.domainName),
             userId: ctx.user.id,
           },
         ],
         workflowId: prepareDomainForExportWorkflow.generateId({
-          domainName: toPunycodeDomainName(input.domainName),
+          domainName: toPunycodeDomainName(input.payload.domainName),
           userId: ctx.user.id,
         }),
         taskQueue: TEMPORAL_QUEUES.DOMAINS,

@@ -63,6 +63,17 @@ const APPROVE_EXPORT_EIP712_TYPES: Record<
   ApproveExport: [{ name: 'domainName', type: 'string' }],
 };
 
+/**
+ * EIP-712 types for enabling domain export.
+ * Must match the backend ENABLE_EXPORT_EIP712_TYPES.
+ */
+const ENABLE_EXPORT_EIP712_TYPES: Record<
+  string,
+  Array<{ name: string; type: string }>
+> = {
+  EnableExport: [{ name: 'domainName', type: 'string' }],
+};
+
 type DomainPreferencesAndConfig =
   AppRouterOutput['domainConfig']['getDomainPreferencesAndConfig'];
 
@@ -404,14 +415,34 @@ export const DomainExportSection = ({
   const trpc = useTRPC();
   const trpcClient = useTRPCClient();
   const queryClient = useQueryClient();
+  const { signTypedData } = useSignTypedData();
+  const walletConnectionRef = useRef<RequestWalletConnectionRef>(null);
+  const { address: activeWalletAddress } = useAccount();
 
   const [isRequestingExport, setIsRequestingExport] = useState(false);
 
-  const handleRequestExport = async () => {
+  // Fetch the owner wallet address for this domain's NFT
+  const { data: ownerWalletData } = useQuery(
+    trpc.domainConfig.getDomainOwnerWallet.queryOptions({
+      domainName: domain,
+    }),
+  );
+
+  const handleRequestExportInner = async () => {
     try {
       setIsRequestingExport(true);
+
+      // Sign the payload with EIP-712
+      const payload = { domainName: domain };
+      const signature = await signTypedData({
+        types: ENABLE_EXPORT_EIP712_TYPES,
+        primaryType: 'EnableExport',
+        message: payload,
+      });
+
       await trpcClient.domainConfig.requestDomainExport.mutate({
-        domainName: domain,
+        signature,
+        payload,
       });
       toast.success('Export request submitted successfully');
       await queryClient.refetchQueries({
@@ -420,10 +451,27 @@ export const DomainExportSection = ({
         }),
       });
     } catch (error) {
-      toast.error('Failed to request domain export');
+      if (error instanceof Error && error.message.includes('rejected')) {
+        toast.error('Signature request was rejected');
+      } else {
+        toast.error('Failed to request domain export');
+      }
     } finally {
       setIsRequestingExport(false);
     }
+  };
+
+  const handleRequestExport = async () => {
+    const ownerWalletAddress = ownerWalletData?.ownerWalletAddress;
+    if (!ownerWalletAddress) {
+      toast.error('Unable to determine domain owner wallet');
+      return;
+    }
+    if (activeWalletAddress !== ownerWalletAddress) {
+      walletConnectionRef.current?.requestWalletConnection(ownerWalletAddress);
+      return;
+    }
+    return handleRequestExportInner();
   };
 
   const handleCopyAuthCode = async () => {
@@ -480,90 +528,97 @@ export const DomainExportSection = ({
   }
 
   return (
-    <div className="flex flex-wrap items-center justify-between rounded-2xl bg-zinc-900 border border-zinc-800 p-4 gap-y-2">
-      <div className="space-y-0.5">
-        <div className="flex items-center gap-2">
-          <Label htmlFor="domain-export">Domain Export</Label>
-          {!domainExportDetails.supportsExport && (
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Info className="h-4 w-4 text-zinc-500 cursor-help" />
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>{domainExportDetails.message}</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          )}
-        </div>
-        <p className="text-sm text-muted-foreground">
-          Export domain to another registrar
-        </p>
-      </div>
-      <div className="flex items-center gap-2 sm:w-auto w-full">
-        {!domainExportDetails.supportsExport ? (
-          <Button
-            disabled
-            size="sm"
-            variant="secondary"
-            className="w-full sm:w-auto"
-          >
-            <ExternalLink className="h-4 w-4 mr-2" />
-            Export Unavailable
-          </Button>
-        ) : domainExportDetails.pendingRequestToEnableExport ? (
-          <Button disabled className="w-full sm:w-auto">
-            <Loader2 className="h-4 w-4 animate-spin" />
-            <span>Enable Export Request Pending...</span>
-          </Button>
-        ) : domainExportDetails.readyToExport ? (
-          <div className="flex items-center gap-2 w-full sm:w-auto">
-            {authCode?.authCode ? (
-              <div className="flex items-center gap-2 px-3 py-1 bg-zinc-800 rounded border text-sm font-mono">
-                <span className="text-green-400">{authCode.authCode}</span>
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  onClick={handleCopyAuthCode}
-                  className="h-6 w-6 p-0"
-                >
-                  <Copy className="h-3 w-3" />
-                </Button>
-              </div>
-            ) : (
-              <Button
-                size="sm"
-                onClick={async () => {
-                  setFetchAuthCode(true);
-                }}
-                disabled={isAuthCodeLoading}
-                className="w-full sm:w-auto"
-              >
-                {isAuthCodeLoading ? (
-                  <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                ) : (
-                  <ExternalLink className="h-4 w-4 mr-2" />
-                )}
-                Get Auth Code
-              </Button>
+    <>
+      <RequestWalletConnection
+        ref={walletConnectionRef}
+        onRequestedWalletConnected={handleRequestExportInner}
+        actionDescription="to enable domain export"
+      />
+      <div className="flex flex-wrap items-center justify-between rounded-2xl bg-zinc-900 border border-zinc-800 p-4 gap-y-2">
+        <div className="space-y-0.5">
+          <div className="flex items-center gap-2">
+            <Label htmlFor="domain-export">Domain Export</Label>
+            {!domainExportDetails.supportsExport && (
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Info className="h-4 w-4 text-zinc-500 cursor-help" />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{domainExportDetails.message}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             )}
           </div>
-        ) : (
-          <AsyncButton
-            onClick={handleRequestExport}
-            disabled={disabled || isRequestingExport}
-            loadingText="Requesting Export..."
-            loadingIcon={<Loader2 className="h-4 w-4 animate-spin mr-2" />}
-            size="sm"
-            className="w-full sm:w-auto"
-          >
-            <ExternalLink className="h-4 w-4 mr-2" />
-            Request Export
-          </AsyncButton>
-        )}
+          <p className="text-sm text-muted-foreground">
+            Export domain to another registrar
+          </p>
+        </div>
+        <div className="flex items-center gap-2 sm:w-auto w-full">
+          {!domainExportDetails.supportsExport ? (
+            <Button
+              disabled
+              size="sm"
+              variant="secondary"
+              className="w-full sm:w-auto"
+            >
+              <ExternalLink className="h-4 w-4 mr-2" />
+              Export Unavailable
+            </Button>
+          ) : domainExportDetails.pendingRequestToEnableExport ? (
+            <Button disabled className="w-full sm:w-auto">
+              <Loader2 className="h-4 w-4 animate-spin" />
+              <span>Enable Export Request Pending...</span>
+            </Button>
+          ) : domainExportDetails.readyToExport ? (
+            <div className="flex items-center gap-2 w-full sm:w-auto">
+              {authCode?.authCode ? (
+                <div className="flex items-center gap-2 px-3 py-1 bg-zinc-800 rounded border text-sm font-mono">
+                  <span className="text-green-400">{authCode.authCode}</span>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={handleCopyAuthCode}
+                    className="h-6 w-6 p-0"
+                  >
+                    <Copy className="h-3 w-3" />
+                  </Button>
+                </div>
+              ) : (
+                <Button
+                  size="sm"
+                  onClick={async () => {
+                    setFetchAuthCode(true);
+                  }}
+                  disabled={isAuthCodeLoading}
+                  className="w-full sm:w-auto"
+                >
+                  {isAuthCodeLoading ? (
+                    <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                  ) : (
+                    <ExternalLink className="h-4 w-4 mr-2" />
+                  )}
+                  Get Auth Code
+                </Button>
+              )}
+            </div>
+          ) : (
+            <AsyncButton
+              onClick={handleRequestExport}
+              disabled={disabled || isRequestingExport}
+              loadingText="Requesting Export..."
+              loadingIcon={<Loader2 className="h-4 w-4 animate-spin mr-2" />}
+              size="sm"
+              className="w-full sm:w-auto"
+            >
+              <ExternalLink className="h-4 w-4 mr-2" />
+              Request Export
+            </AsyncButton>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
