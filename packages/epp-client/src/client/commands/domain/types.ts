@@ -53,7 +53,7 @@ export interface DomainCreateOptions {
   ns?: string[];
 
   /** Registrant contact ID */
-  registrant: string;
+  registrant?: string;
 
   /** Associated contacts */
   contacts?: Array<{ type: 'admin' | 'tech' | 'billing'; id: string }>;

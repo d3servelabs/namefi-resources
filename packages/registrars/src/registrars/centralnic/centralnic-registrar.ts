@@ -95,7 +95,7 @@ import { signMessage } from '#lib/sign-message';
 import pMap, { pMapSkip } from 'p-map';
 
 function supportsContacts(tld: string) {
-  return false; //TODO
+  return !['pw'].includes(tld);
 }
 
 /**
@@ -491,7 +491,9 @@ export class CentralNicRegistrarService extends AbstractRegistrarService {
           name: domainName,
           period: { value: durationInYears, unit: 'y' },
           authInfo: authCode,
-          registrant: this.config.defaultRegistrant,
+          registrant: supportsContacts(parsed.publicSuffix)
+            ? this.config.defaultRegistrant
+            : undefined,
           contacts: supportsContacts(parsed.publicSuffix)
             ? this.config.defaultContacts
             : undefined,
