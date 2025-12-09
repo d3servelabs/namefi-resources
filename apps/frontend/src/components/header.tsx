@@ -29,14 +29,19 @@ export const Header: ForwardRefExoticComponent<HeaderProps> = forwardRef<
   const origin = useOrigin();
   const isBlurredHeader = origin.config.landingPage?.headerIsBlurred;
 
+  const backgroundClass = isMobile
+    ? 'bg-background/95 border-b border-border/60 shadow-sm supports-[backdrop-filter]:bg-background/70 supports-[backdrop-filter]:backdrop-blur'
+    : isBlurredHeader
+      ? 'border-b border-white/10 supports-[backdrop-filter]:bg-background/40 supports-[backdrop-filter]:backdrop-blur-2xl'
+      : 'bg-transparent';
+
   return (
     <header
       ref={ref}
       className={cn(
-        'sticky top-0 z-30 flex h-16 w-full shrink-0 items-center transition-[width,height,background-color] ease-linear lg:static',
-        isBlurredHeader
-          ? 'border-b border-white/10 supports-[backdrop-filter]:bg-background/40 supports-[backdrop-filter]:backdrop-blur-2xl'
-          : 'bg-transparent',
+        'z-30 flex h-16 w-full shrink-0 items-center transition-[width,height,background-color] ease-linear',
+        isMobile ? 'fixed inset-x-0 top-0' : 'sticky top-0 lg:static',
+        backgroundClass,
         isMobile ? 'px-3' : 'px-6',
         className,
       )}
