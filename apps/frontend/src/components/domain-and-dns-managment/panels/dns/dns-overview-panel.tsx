@@ -581,14 +581,14 @@ export const PendingTransferSection = ({
       await trpcClient.domainConfig.approveTransfer.mutate({
         domainName: domain,
       });
-      toast.success('Transfer approved successfully');
+      toast.success('Export approved successfully');
       await queryClient.refetchQueries({
         queryKey: trpc.domainConfig.getPendingTransfer.queryKey({
           domainName: domain,
         }),
       });
     } catch (error) {
-      toast.error('Failed to approve transfer');
+      toast.error('Failed to approve export');
     } finally {
       setIsApproving(false);
     }
@@ -600,14 +600,14 @@ export const PendingTransferSection = ({
       await trpcClient.domainConfig.rejectTransfer.mutate({
         domainName: domain,
       });
-      toast.success('Transfer rejected successfully');
+      toast.success('Export rejected successfully');
       await queryClient.refetchQueries({
         queryKey: trpc.domainConfig.getPendingTransfer.queryKey({
           domainName: domain,
         }),
       });
     } catch (error) {
-      toast.error('Failed to reject transfer');
+      toast.error('Failed to reject export');
     } finally {
       setIsRejecting(false);
     }
@@ -627,12 +627,12 @@ export const PendingTransferSection = ({
       <div className="space-y-0.5">
         <div className="flex items-center gap-2">
           <ArrowRightLeft className="h-4 w-4 text-amber-500" />
-          <Label htmlFor="pending-transfer" className="text-amber-500">
-            Pending Transfer
+          <Label htmlFor="pending-export" className="text-amber-500">
+            Pending Export
           </Label>
         </div>
         <p className="text-sm text-muted-foreground">
-          Transfer requested by: {pendingTransfer.requestingRegistrarId}
+          Export requested by: {pendingTransfer.requestingRegistrarId}
         </p>
         <p className="text-xs text-zinc-400">
           Action required by:{' '}
