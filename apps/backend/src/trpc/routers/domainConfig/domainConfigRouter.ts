@@ -28,7 +28,13 @@ import {
   getPoweredByNamefi3PDomains,
   sldRegistrar,
 } from '../../../lib/namefi-registry';
-import { createTRPCRouter, protectedProcedure } from '../../base';
+import {
+  createTRPCRouter,
+  protectedProcedure,
+  createSignedPayloadProcedure,
+  withAudit,
+  NAMEFI_EIP712_DOMAIN,
+} from '../../base';
 import { assertAuthenticatedUserIsDomainOwner } from '../../guards/assert-domain-owner';
 import { domainDnssecRouter } from './domainDnssecRouter';
 import { parseDomainName } from '@namefi-astra/utils/parse-domain-name';
@@ -47,6 +53,19 @@ import {
 } from '../../../temporal/activities/domain/renew.activities';
 import { differenceInDays, isBefore } from 'date-fns';
 import { resolve } from '@namefi-astra/utils';
+import { db, namefiNftOwnersCte, namefiNftOwnersView } from '@namefi-astra/db';
+import { eq } from 'drizzle-orm';
+
+/**
+ * EIP-712 type definitions for approving a domain export.
+ * This is displayed to the user in their wallet when signing.
+ */
+export const APPROVE_EXPORT_EIP712_TYPES: Record<
+  string,
+  Array<{ name: string; type: string }>
+> = {
+  ApproveExport: [{ name: 'domainName', type: 'string' }],
+};
 
 export const domainConfigRouter = createTRPCRouter({
   /**
@@ -625,6 +644,39 @@ export const domainConfigRouter = createTRPCRouter({
     }),
 
   /**
+   * Get the wallet address that owns the domain NFT.
+   * This is used by the frontend to request the specific wallet connection
+   * for operations that require signing with the owner wallet.
+   */
+  getDomainOwnerWallet: protectedProcedure
+    .input(
+      z.object({
+        domainName: namefiNormalizedDomainSchema,
+      }),
+    )
+    .query(async ({ input, ctx }) => {
+      await assertAuthenticatedUserIsDomainOwner(input.domainName, ctx.user);
+
+      const nft = await db
+        .with(namefiNftOwnersCte)
+        .select({ ownerAddress: namefiNftOwnersView.ownerAddress })
+        .from(namefiNftOwnersView)
+        .where(eq(namefiNftOwnersView.normalizedDomainName, input.domainName))
+        .limit(1);
+
+      if (!nft[0]) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Domain NFT not found',
+        });
+      }
+
+      return {
+        ownerWalletAddress: nft[0].ownerAddress,
+      };
+    }),
+
+  /**
    * Get pending transfer status for a domain
    */
   getPendingTransfer: protectedProcedure
@@ -642,17 +694,48 @@ export const domainConfigRouter = createTRPCRouter({
     }),
 
   /**
-   * Approve a pending transfer for a domain
+   * Approve a pending export for a domain.
+   * This is a dangerous operation that requires EIP-712 signature verification.
+   * The user must sign the payload with their wallet to confirm the export approval.
    */
-  approveTransfer: protectedProcedure
+  approveTransfer: withAudit(
+    createSignedPayloadProcedure({
+      types: APPROVE_EXPORT_EIP712_TYPES,
+      primaryType: 'ApproveExport',
+      getPayloadFromInput: (input: unknown) =>
+        (input as { payload: { domainName: string } }).payload,
+      getSignatureFromInput: (input: unknown) =>
+        (input as { signature: string }).signature,
+    }),
+    ({ ctx, input, auditActorExtraInfo }) => ({
+      actorType: 'user',
+      actorId: ctx.user.id,
+      actorExtraInfo: auditActorExtraInfo,
+      resourceType: 'domain',
+      resourceId: (input as { payload: { domainName: string } }).payload
+        .domainName,
+      action: 'approve_export',
+      extraInput: {
+        signedPayload: true,
+        signerWalletAddress: (ctx as { signerWalletAddress?: string })
+          .signerWalletAddress,
+      },
+    }),
+  )
     .input(
       z.object({
-        domainName: namefiNormalizedDomainSchema,
+        signature: z.string().regex(/^0x[a-fA-F0-9]+$/),
+        payload: z.object({
+          domainName: namefiNormalizedDomainSchema,
+        }),
       }),
     )
     .mutation(async ({ input, ctx }) => {
-      await assertAuthenticatedUserIsDomainOwner(input.domainName, ctx.user);
-      const domainName = toPunycodeDomainName(input.domainName);
+      await assertAuthenticatedUserIsDomainOwner(
+        input.payload.domainName,
+        ctx.user,
+      );
+      const domainName = toPunycodeDomainName(input.payload.domainName);
       const result = await sldRegistrar.approveTransfer(domainName);
       return result;
     }),

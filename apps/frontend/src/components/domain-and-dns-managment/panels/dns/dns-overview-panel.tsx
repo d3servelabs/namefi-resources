@@ -19,7 +19,7 @@ import {
   useSuspenseQuery,
 } from '@tanstack/react-query';
 import { isNil } from 'ramda';
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { toast } from 'sonner';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import {
@@ -45,6 +45,23 @@ import {
   AlertDescription,
   AlertTitle,
 } from '@/components/ui/shadcn/alert';
+import { useSignTypedData } from '@/hooks/use-sign-typed-data';
+import {
+  RequestWalletConnection,
+  type RequestWalletConnectionRef,
+} from '@/components/dialogs/request-wallet-connection';
+import { useAccount } from 'wagmi';
+
+/**
+ * EIP-712 types for approving a domain export.
+ * Must match the backend APPROVE_EXPORT_EIP712_TYPES.
+ */
+const APPROVE_EXPORT_EIP712_TYPES: Record<
+  string,
+  Array<{ name: string; type: string }>
+> = {
+  ApproveExport: [{ name: 'domainName', type: 'string' }],
+};
 
 type DomainPreferencesAndConfig =
   AppRouterOutput['domainConfig']['getDomainPreferencesAndConfig'];
@@ -558,6 +575,9 @@ export const PendingTransferSection = ({
   const trpc = useTRPC();
   const trpcClient = useTRPCClient();
   const queryClient = useQueryClient();
+  const { signTypedData } = useSignTypedData();
+  const walletConnectionRef = useRef<RequestWalletConnectionRef>(null);
+  const { address: activeWalletAddress } = useAccount();
 
   const [isApproving, setIsApproving] = useState(false);
   const [isRejecting, setIsRejecting] = useState(false);
@@ -575,11 +595,39 @@ export const PendingTransferSection = ({
       ),
     );
 
-  const handleApprove = async () => {
+  // Fetch the owner wallet address for this domain's NFT
+  const { data: ownerWalletData } = useQuery(
+    trpc.domainConfig.getDomainOwnerWallet.queryOptions(
+      {
+        domainName: domain,
+      },
+      {
+        enabled: !!pendingTransfer && pendingTransfer.status === 'pending',
+      },
+    ),
+  );
+
+  const handleApproveInner = async () => {
     try {
       setIsApproving(true);
+
+      // Get the owner wallet address
+      const ownerWalletAddress = ownerWalletData?.ownerWalletAddress;
+      if (!ownerWalletAddress) {
+        toast.error('Unable to determine domain owner wallet');
+        return;
+      }
+      // Sign the payload with EIP-712
+      const payload = { domainName: domain };
+      const signature = await signTypedData({
+        types: APPROVE_EXPORT_EIP712_TYPES,
+        primaryType: 'ApproveExport',
+        message: payload,
+      });
+
       await trpcClient.domainConfig.approveTransfer.mutate({
-        domainName: domain,
+        signature,
+        payload,
       });
       toast.success('Export approved successfully');
       await queryClient.refetchQueries({
@@ -588,10 +636,28 @@ export const PendingTransferSection = ({
         }),
       });
     } catch (error) {
-      toast.error('Failed to approve export');
+      if (error instanceof Error && error.message.includes('rejected')) {
+        toast.error('Signature request was rejected');
+      } else {
+        toast.error('Failed to approve export');
+      }
     } finally {
       setIsApproving(false);
     }
+  };
+
+  const handleApprove = async () => {
+    // Get the owner wallet address
+    const ownerWalletAddress = ownerWalletData?.ownerWalletAddress;
+    if (!ownerWalletAddress) {
+      toast.error('Unable to determine domain owner wallet');
+      return;
+    }
+    if (activeWalletAddress !== ownerWalletAddress) {
+      walletConnectionRef.current?.requestWalletConnection(ownerWalletAddress);
+      return;
+    }
+    return handleApproveInner();
   };
 
   const handleReject = async () => {
@@ -623,52 +689,59 @@ export const PendingTransferSection = ({
   }
 
   return (
-    <div className="flex flex-wrap items-center justify-between rounded-2xl bg-zinc-900 border border-amber-600 p-4 gap-y-2 col-span-2">
-      <div className="space-y-0.5">
-        <div className="flex items-center gap-2">
-          <ArrowRightLeft className="h-4 w-4 text-amber-500" />
-          <Label htmlFor="pending-export" className="text-amber-500">
-            Pending Export
-          </Label>
+    <>
+      <RequestWalletConnection
+        ref={walletConnectionRef}
+        onRequestedWalletConnected={handleApprove}
+        actionDescription="to approve the domain export"
+      />
+      <div className="flex flex-wrap items-center justify-between rounded-2xl bg-zinc-900 border border-amber-600 p-4 gap-y-2 col-span-2">
+        <div className="space-y-0.5">
+          <div className="flex items-center gap-2">
+            <ArrowRightLeft className="h-4 w-4 text-amber-500" />
+            <Label htmlFor="pending-export" className="text-amber-500">
+              Pending Export
+            </Label>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Export requested by: {pendingTransfer.requestingRegistrarId}
+          </p>
+          <p className="text-xs text-zinc-400">
+            Action required by:{' '}
+            {new Date(pendingTransfer.actionDate).toLocaleDateString()}
+          </p>
         </div>
-        <p className="text-sm text-muted-foreground">
-          Export requested by: {pendingTransfer.requestingRegistrarId}
-        </p>
-        <p className="text-xs text-zinc-400">
-          Action required by:{' '}
-          {new Date(pendingTransfer.actionDate).toLocaleDateString()}
-        </p>
+        <div className="flex items-center gap-2 sm:w-auto w-full">
+          <AsyncButton
+            onClick={handleApprove}
+            disabled={isApproving || isRejecting}
+            size="sm"
+            variant="default"
+            className="w-full sm:w-auto"
+          >
+            {isApproving ? (
+              <Loader2 className="h-4 w-4 animate-spin mr-2" />
+            ) : (
+              <Check className="h-4 w-4 mr-2" />
+            )}
+            Approve
+          </AsyncButton>
+          <AsyncButton
+            onClick={handleReject}
+            disabled={isApproving || isRejecting}
+            size="sm"
+            variant="destructive"
+            className="w-full sm:w-auto"
+          >
+            {isRejecting ? (
+              <Loader2 className="h-4 w-4 animate-spin mr-2" />
+            ) : (
+              <X className="h-4 w-4 mr-2" />
+            )}
+            Reject
+          </AsyncButton>
+        </div>
       </div>
-      <div className="flex items-center gap-2 sm:w-auto w-full">
-        <AsyncButton
-          onClick={handleApprove}
-          disabled={isApproving || isRejecting}
-          size="sm"
-          variant="default"
-          className="w-full sm:w-auto"
-        >
-          {isApproving ? (
-            <Loader2 className="h-4 w-4 animate-spin mr-2" />
-          ) : (
-            <Check className="h-4 w-4 mr-2" />
-          )}
-          Approve
-        </AsyncButton>
-        <AsyncButton
-          onClick={handleReject}
-          disabled={isApproving || isRejecting}
-          size="sm"
-          variant="destructive"
-          className="w-full sm:w-auto"
-        >
-          {isRejecting ? (
-            <Loader2 className="h-4 w-4 animate-spin mr-2" />
-          ) : (
-            <X className="h-4 w-4 mr-2" />
-          )}
-          Reject
-        </AsyncButton>
-      </div>
-    </div>
+    </>
   );
 };
