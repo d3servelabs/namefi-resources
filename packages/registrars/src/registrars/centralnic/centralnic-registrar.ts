@@ -491,6 +491,7 @@ export class CentralNicRegistrarService extends AbstractRegistrarService {
           name: domainName,
           period: { value: durationInYears, unit: 'y' },
           authInfo: authCode,
+          registrant: this.config.defaultRegistrant,
           contacts: supportsContacts(parsed.publicSuffix)
             ? this.config.defaultContacts
             : undefined,

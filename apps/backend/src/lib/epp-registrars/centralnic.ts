@@ -189,6 +189,21 @@ function getCentralnicRegistrarOte1(connection: any) {
     }) as any,
     connection,
     eppAuthCodePrivateKey: secrets.EPP_AUTH_GEN_PRIVATE_KEY,
+    defaultRegistrant: 'H1609236457',
+    defaultContacts: [
+      {
+        type: 'admin',
+        id: 'H1609236457',
+      },
+      {
+        type: 'billing',
+        id: 'H1609236457',
+      },
+      {
+        type: 'tech',
+        id: 'H1609236457',
+      },
+    ],
   });
 }
 
@@ -293,7 +308,7 @@ function getCentralnicRegistrarLive(connection: any) {
     host: secrets.CENTRALNIC_HOST,
     port: 700,
     logParsed: true,
-
+    defaultRegistrant: '', //TODO
     customLogger: createLogger({
       registrar: Registrars.CentralNic,
     }) as any,

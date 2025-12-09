@@ -68,6 +68,8 @@ export interface CentralNicConfig {
   /** Account key identifier (for multi-account setups) */
   accountKey?: string;
 
+  defaultRegistrant: string;
+
   defaultContacts?: {
     type: 'billing' | 'tech' | 'admin';
     id: string;

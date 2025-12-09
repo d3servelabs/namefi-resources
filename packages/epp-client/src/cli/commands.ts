@@ -81,7 +81,7 @@ export interface DomainCreatePayload {
   name: string;
   period?: { value: number; unit: 'y' | 'm' };
   ns?: string[];
-  registrant?: string;
+  registrant: string;
   contacts?: { type: 'admin' | 'tech' | 'billing'; id: string }[];
   authInfo: string;
 }
@@ -203,6 +203,7 @@ export function parseCreatePayload(args: string[]): DomainCreatePayload | null {
     }
 
     // Check if it looks like nameservers (contains comma or looks like a hostname)
+    // TODO this is not a valid check
     if (arg.includes(',') || arg.match(/^ns\d*\./i)) {
       payload.ns = arg
         .split(',')
