@@ -129,6 +129,40 @@ function getCentralnicRegistrarOte1(connection: any) {
   });
 }
 
+function getCentralnicRegistrarOte2(connection: any) {
+  if (
+    !secrets.CENTRALNIC_OTE2_CLID ||
+    !secrets.CENTRALNIC_OTE2_PASS ||
+    !secrets.CENTRALNIC_OTE2_HOST ||
+    !secrets.EPP_AUTH_GEN_PRIVATE_KEY
+  ) {
+    throw new Error('CentralNic OTE2 credentials not set');
+  }
+  return new CentralNicRegistrarService({
+    clID: secrets.CENTRALNIC_OTE2_CLID,
+    pw: secrets.CENTRALNIC_OTE2_PASS,
+    supportedTlds: CENTRALNIC_OTE_TLDS,
+    tls: true,
+    domainIndex: UnclaimedDomainsIndex(Registrars.CentralNic_OTE_02),
+    host: secrets.CENTRALNIC_OTE2_HOST,
+    port: 700,
+    logParsed: true,
+    customLogger: createLogger({
+      registrar: Registrars.CentralNic_OTE_02,
+    }) as any,
+    connection,
+    eppAuthCodePrivateKey: secrets.EPP_AUTH_GEN_PRIVATE_KEY,
+    defaultRegistrant: secrets.CENTRALNIC_OTE2_DEFAULT_REGISTRANT ?? '',
+    defaultContacts: secrets.CENTRALNIC_OTE2_DEFAULT_REGISTRANT
+      ? [
+          { type: 'admin', id: secrets.CENTRALNIC_OTE2_DEFAULT_REGISTRANT },
+          { type: 'billing', id: secrets.CENTRALNIC_OTE2_DEFAULT_REGISTRANT },
+          { type: 'tech', id: secrets.CENTRALNIC_OTE2_DEFAULT_REGISTRANT },
+        ]
+      : undefined,
+  });
+}
+
 function getCentralnicRegistrarLive(connection: any) {
   if (
     !secrets.CENTRALNIC_CLID ||
@@ -160,10 +194,21 @@ export function getCentralnicRegistrar(key: Registrars, connection: any) {
   if (key === Registrars.CentralNic_OTE_01) {
     return getCentralnicRegistrarOte1(connection);
   }
+  if (key === Registrars.CentralNic_OTE_02) {
+    return getCentralnicRegistrarOte2(connection);
+  }
   if (key === Registrars.CentralNic) {
     return getCentralnicRegistrarLive(connection);
   }
   throw new Error(`Unknown CentralNic key: ${key}`);
+}
+
+/**
+ * Get OTE2 registrar instance for admin testing
+ * This is a standalone function for use in admin routes
+ */
+export function getCentralnicOte2Registrar(connection?: any) {
+  return getCentralnicRegistrarOte2(connection);
 }
 export const CENTRALNIC_OTE_TLDS = [
   'pw',

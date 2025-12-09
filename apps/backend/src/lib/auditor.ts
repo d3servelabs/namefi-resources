@@ -48,6 +48,7 @@ export const ResourceType = {
   LINK_SHARE: 'link_share',
   NFSC: 'nfsc',
   BULK_BURN: 'bulk_burn',
+  EPP_TESTING: 'epp_testing',
   OTHER: 'other',
 } as const;
 

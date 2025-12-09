@@ -21,6 +21,7 @@ import {
   FileText,
   ShoppingCart,
   Flame,
+  Globe,
 } from 'lucide-react';
 import { Permission } from '@namefi-astra/utils';
 import { PermissionGate } from '@/components/access/PermissionGate';
@@ -226,6 +227,21 @@ const ADMIN_SECTIONS: AdminSection[] = [
         iconTextColor: 'text-gray-400',
         disabled: true,
         comingSoon: true,
+      },
+    ],
+  },
+  {
+    title: 'Developer Tools',
+    items: [
+      {
+        title: 'EPP Testing (OTE2)',
+        description:
+          'Test domain transfers using CentralNic OTE2. Create domains, manage auth codes, and test transfer flows.',
+        href: '/admin/epp-testing',
+        icon: Globe,
+        iconBgColor: 'bg-orange-100',
+        iconTextColor: 'text-orange-600',
+        permissions: [Permission.EPP_TESTING],
       },
     ],
   },

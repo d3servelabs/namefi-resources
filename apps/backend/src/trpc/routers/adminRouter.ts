@@ -61,6 +61,7 @@ import { schedulesRouter } from './admin/schedulesRouter';
 import { poweredByNamefiRouter } from './admin/poweredByNamefiRouter';
 import { permissionsRouter } from './admin/permissionsRouter';
 import { nfscRouter } from './admin/nfscRouter';
+import { eppTestingRouter } from './admin/eppTestingRouter';
 import { ResourceType } from '#lib/auditor';
 import {
   canUserAccessAdminPanel,
@@ -3318,6 +3319,7 @@ export const adminRouter = createTRPCRouter({
   poweredByNamefi: poweredByNamefiRouter,
   permissions: permissionsRouter,
   nfsc: nfscRouter,
+  eppTesting: eppTestingRouter,
 });
 
 function _buildQueryFilters(

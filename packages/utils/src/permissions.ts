@@ -38,6 +38,11 @@ export enum Permission {
   READ_ORDERS = 'ORDERS;;READ',
 
   /**
+   * Permission to use EPP testing tools (CentralNic OTE2 admin dashboard)
+   */
+  EPP_TESTING = 'EPP_TESTING;;WRITE',
+
+  /**
    * Hidden permission - not shown in UI lists, auto-added to ensure at least one row exists for an admin user
    */
   VIEW_ADMIN_DASHBOARD = 'ADMIN_DASHBOARD;;READ',
