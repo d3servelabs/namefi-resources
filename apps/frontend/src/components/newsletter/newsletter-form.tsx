@@ -117,7 +117,7 @@ export function NewsletterForm({
 
   const form = useForm<NewsletterFormData>({
     resolver: zodResolver(newsletterFormSchema),
-    mode: 'onChange',
+    mode: 'onSubmit',
     reValidateMode: 'onChange',
     defaultValues: {
       email: '',
