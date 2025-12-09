@@ -1,4 +1,9 @@
-import { db, namefiNftCte, indexedDomainsTable } from '@namefi-astra/db';
+import {
+  db,
+  namefiNftCte,
+  indexedDomainsTable,
+  namefiNftView,
+} from '@namefi-astra/db';
 import { CentralNicRegistrarService } from '@namefi-astra/registrars/registrars/sub-registrars';
 
 import { toPunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
@@ -13,13 +18,13 @@ const UnclaimedDomainsIndex = (key: Registrars) => {
   const baseQuery = db
     .with(namefiNftCte)
     .select({
-      normalizedDomainName: namefiNftCte.normalizedDomainName,
+      normalizedDomainName: namefiNftView.normalizedDomainName,
     })
-    .from(namefiNftCte)
+    .from(namefiNftView)
     .leftJoin(
       indexedDomainsTable,
       eq(
-        namefiNftCte.normalizedDomainName,
+        namefiNftView.normalizedDomainName,
         indexedDomainsTable.normalizedDomainName,
       ),
     )
