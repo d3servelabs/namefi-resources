@@ -81,7 +81,7 @@ export interface DomainCreatePayload {
   name: string;
   period?: { value: number; unit: 'y' | 'm' };
   ns?: string[];
-  registrant: string;
+  registrant?: string;
   contacts?: { type: 'admin' | 'tech' | 'billing'; id: string }[];
   authInfo: string;
 }

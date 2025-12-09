@@ -131,7 +131,7 @@ export function createEppConnectionPool(
     acquireTimeoutMillis: options.pool?.acquireTimeoutMs ?? 30_000,
     idleTimeoutMillis: options.pool?.idleTimeoutMs ?? 600_000,
     evictionRunIntervalMillis: options.pool?.evictionRunIntervalMs ?? 15_000,
-    testOnBorrow: false,
+    testOnBorrow: true,
     autostart: true,
     testOnReturn: true,
     fifo: true,

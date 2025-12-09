@@ -6,6 +6,7 @@ import { err, ok, type Result } from './result';
 import type { EppCommandTypeXml } from './commands/index';
 import {
   buildEppEnvelopeFromCommand,
+  buildHelloEnvelope,
   buildLoginCommand,
   buildLogoutCommand,
 } from './commands/index';
@@ -178,7 +179,23 @@ export async function createEppClient(
     // Validate handler - check if connection is still alive
     onValidate: async (conn) => {
       // Simple socket check - connection is valid if socket is not destroyed
-      return !conn.socket.destroyed;
+      if (conn.socket.destroyed) {
+        return false;
+      }
+
+      try {
+        logMessage(options, 'debug', 'EPP validation connection');
+        const xml = EppEnvelopeCodec.encode(buildHelloEnvelope());
+
+        await sendFrame(conn, xml);
+        await readFrame(conn, { timeoutMs: 5_000 });
+        logMessage(options, 'debug', 'EPP connection valid');
+        return true;
+      } catch {
+        logMessage(options, 'debug', 'EPP connection is not valid');
+      }
+
+      return false;
     },
   });
 

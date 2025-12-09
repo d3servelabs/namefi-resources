@@ -224,9 +224,9 @@ export class CentralNicRegistrarService extends AbstractRegistrarService {
       autoLogout: true,
       pool: {
         min: poolConfig?.min ?? 1,
-        max: poolConfig?.max ?? 5,
-        acquireTimeoutMs: poolConfig?.acquireTimeoutMs ?? 30000,
-        idleTimeoutMs: poolConfig?.idleTimeoutMs ?? 600000,
+        max: poolConfig?.max ?? 50,
+        acquireTimeoutMs: poolConfig?.acquireTimeoutMs ?? 30_000,
+        idleTimeoutMs: poolConfig?.idleTimeoutMs ?? 600_000,
       },
       logXml: this.config.logXml ?? false,
       logParsed: this.config.logParsed ?? false,
