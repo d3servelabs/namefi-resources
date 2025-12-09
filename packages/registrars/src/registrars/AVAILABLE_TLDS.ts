@@ -1564,6 +1564,92 @@ export const MockTLDs = [
   'testio',
   'testxyz',
 ];
+
+export const CENTRALNIC_OTE_TLDS = [
+  'pw',
+  'fm',
+  'fo',
+  'co.com',
+  'web.in',
+  'gd',
+  'vg',
+  'br.com',
+  'cn.com',
+  'eu.com',
+  'gb.net',
+  'uk.com',
+  'uk.net',
+  'us.com',
+  'ru.com',
+  'sa.com',
+  'se.net',
+  'za.com',
+  'de.com',
+  'jpn.com',
+  'ae.org',
+  'us.org',
+  'gr.com',
+  'com.de',
+  'jp.net',
+  'hu.net',
+  'in.net',
+  'mex.com',
+  'za.bz',
+  'com.se',
+  'com.fm',
+  'edu.fm',
+  'net.fm',
+  'org.fm',
+  'radio.fm',
+  'radio.am',
+  'co.no',
+  'co.nl',
+  'shop.ro',
+  'co.ro',
+  'edu.vg',
+  'edu.gd',
+  'bh',
+  'com.bh',
+  'org.bh',
+  'xn--mgbcpq6gpa1a',
+  'biz.bh',
+  'cc.bh',
+  'edu.bh',
+  'info.bh',
+  'net.bh',
+  'me.bh',
+  'name.bh',
+  'gl',
+  'my',
+  'co.gl',
+  'com.gl',
+  'edu.gl',
+  'net.gl',
+  'org.gl',
+  'gov.gl',
+  'mil.gl',
+  'tel.gl',
+  'com.my',
+  'biz.my',
+  'org.my',
+  'net.my',
+  'edu.my',
+  'gov.my',
+  'mil.my',
+  'name.my',
+  'coop.my',
+  'smoketestcnic.ruhr',
+  'eclipse',
+  'eaptest1',
+  'co.site',
+  'my.site',
+  'co.store',
+  'my.store',
+  'sunrise.my.store',
+  '3gppnetwork.org',
+  'ipxnetwork.org',
+];
+
 export const AVAILABLE_TLDS = new Set(
   Route53TLDs.concat(DynadotTLDs, MockTLDs),
 );
@@ -1583,12 +1669,21 @@ function main() {
   const onlyDynadotGdgTlDs = DynadotTLDs.filter(
     (tld) => !route53tlDsSet.has(tld) && !dynadotRegularTlDsSet.has(tld),
   );
+  const onlyCentralnicOteTlds = CENTRALNIC_OTE_TLDS.filter(
+    (tld) =>
+      !route53tlDsSet.has(tld) &&
+      !dynadotRegularTlDsSet.has(tld) &&
+      !dynadotGdgTlDsSet.has(tld),
+  );
   console.log('onlyRoute53TLDs', onlyRoute53tlDs);
   console.log('onlyDynadotRegularTLDs', onlyDynadotRegularTlDs);
   console.log('onlyDynadotGdgTLDs', onlyDynadotGdgTlDs);
+  console.log('onlyCentralnicOteTlds', onlyCentralnicOteTlds);
+
   console.log('onlyRoute53TLDs.length', onlyRoute53tlDs.length);
   console.log('onlyDynadotRegularTLDs.length', onlyDynadotRegularTlDs.length);
   console.log('onlyDynadotGdgTLDs.length', onlyDynadotGdgTlDs.length);
+  console.log('onlyCentralnicOteTlds.length', onlyCentralnicOteTlds.length);
 }
 
 // main.mjs or main.js (in ESM mode)

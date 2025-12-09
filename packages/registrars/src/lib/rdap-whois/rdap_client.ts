@@ -5,14 +5,14 @@ import type { GetLockStateResponse } from './get-lock-state-response';
 import type { RdapDomainStatus, RdapResponse } from './rdap-response';
 
 async function queryDomain(domain: string): Promise<RdapResponse> {
-  console.log('[RDAP] queryDomain', domain);
+  console.trace('[RDAP] queryDomain', domain);
   try {
     const res = await axios.get(`https://rdap.org/domain/${domain}`, {
       timeout: 5000,
     });
     return res.data;
   } catch (error) {
-    console.error('[RDAP] queryDomain', domain, error);
+    console.trace('[RDAP] queryDomain', domain, error);
     throw error;
   }
 }
