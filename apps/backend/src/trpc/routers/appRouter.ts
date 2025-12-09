@@ -21,6 +21,7 @@ import { wishlistRouter } from './wishlistRouter';
 import { poweredByNamefiOwnerRouter } from './poweredByNamefiOwnerRouter';
 import { newsletterRouter } from './newsletterRouter';
 import { feedbackRouter } from './feedbackRouter';
+import { testSignedPayloadRouter } from './testSignedPayloadRouter';
 
 export const appRouter = createTRPCRouter({
   admin: adminRouter,
@@ -54,6 +55,7 @@ export const appRouter = createTRPCRouter({
 
     return result;
   }),
+  testSignedPayload: testSignedPayloadRouter,
 });
 
 export type AppRouter = typeof appRouter;
