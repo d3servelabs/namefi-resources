@@ -754,26 +754,44 @@ export class RegistrarService extends AbstractRegistrarService {
       return _registrar.result;
     }
 
-    const domainDetailsList = await Promise.allSettled(
-      this.getAllowedRegistrars().map(async (registrarKey) => {
-        const registrar = this.registrars[registrarKey];
-        const domainDetails = await registrar.getDomainDetails(domainName);
-        return {
-          registrarKey,
-          domainDetails,
-        };
+    const allowedRegistrars = this.getAllowedRegistrars();
+    const domainDetailsList = await Promise.all(
+      allowedRegistrars.map(async (registrarKey) => {
+        try {
+          const registrar = this.registrars[registrarKey];
+          const domainDetails = await registrar.getDomainDetails(domainName);
+          return {
+            registrarKey,
+            domainDetails,
+          };
+        } catch (_e) {
+          return {
+            registrarKey,
+          };
+        }
       }),
     );
-    const domainDetails = domainDetailsList.find(
-      (result) => result.status === 'fulfilled',
+    this.logger.trace(
+      {
+        resultsSummary: domainDetailsList.map(
+          ({ registrarKey, domainDetails }) => ({
+            registrarKey,
+            found: !!domainDetails,
+          }),
+        ),
+      },
+      `Determine Registrar [${domainName}]`,
+    );
+    const domainDetails = domainDetailsList.find((result) =>
+      isNotNil(result.domainDetails),
     );
 
     if (domainDetails) {
       this.domainToRegistrar.set(domainName, {
         found: true,
-        registrarKey: domainDetails.value.registrarKey,
+        registrarKey: domainDetails.registrarKey,
       });
-      return domainDetails.value.registrarKey;
+      return domainDetails.registrarKey;
     }
 
     const registrarKey = (await this.searchForDomain(domainName)).registrarKey;
