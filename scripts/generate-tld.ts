@@ -3,6 +3,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import { ALL_ICANN_EXTENSIONS, POPULAR_EXTENSIONS } from "../constants";
 import fs from "node:fs/promises";
 import path from "node:path";
+import pLimit from "p-limit";
 
 // Initialize Gemini
 const apiKey = process.env.GEMINI_API_KEY;
@@ -12,7 +13,8 @@ if (!apiKey) {
 }
 
 const genAI = new GoogleGenerativeAI(apiKey);
-const model = genAI.getGenerativeModel({ model: "gemini-3-pro-preview" });
+// Default to gemini-3-pro-preview as requested
+let modelName = "gemini-3-pro-preview";
 
 // CLI Argument Parsing
 const args = process.argv.slice(2);
@@ -45,8 +47,13 @@ for (let i = 0; i < args.length; i++) {
     i++;
   } else if (arg === "--overwrite") {
     force = true;
+  } else if (arg === "--model") {
+    modelName = args[i + 1];
+    i++;
   }
 }
+
+const model = genAI.getGenerativeModel({ model: modelName });
 
 // Determine TLDs to process
 let tldsToProcess: string[] = [];
@@ -90,7 +97,7 @@ Structure Requirements:
     -   authors: ['namefiteam']
     -   draft: false
     -   description: A short, compelling meta description (150-160 chars).
-    -   keywords: [Array of 10-15 SEO keywords relevant to the TLD, domain investing, and web3]
+    -   keywords: [Array of 10-15 SEO short and long-tail keywords very very relevant to the TLD ${tld} and its releavnce to domain investing, and/or blockchain, tokenized domain. Always also start with combinations of ".${tld}" and "domains", "TLD", "top-level domain", plus "what is .${tld}", "why choose .${tld}", "what is the .${tld} domain", "why choose the .${tld} domain" as well. Every keyword should be very relevant to the TLD ${tld}.]
 
 2.  **Body Content**: (Markdown format) following the frontmatter.
     -   **Important**: Include markdown links to authoritative external sources (e.g., ICANN, specific TLD registry site, major tech news) where relevant to back up facts or provide more info.
@@ -118,61 +125,124 @@ Constraint:
 `;
 };
 
-async function generateContent(tld: string, locale: string) {
-  const prompt = generatePrompt(tld, locale);
-  try {
-    const result = await model.generateContent(prompt);
-    const response = await result.response;
-    let text = response.text();
+// Rate limiter state
+let CONCURRENCY = 20;        // Default to high concurrency for Tier 3
+let REQUESTS_PER_MINUTE = 500; // Default to high RPM for Tier 3
 
-    // Cleanup if model wraps in code blocks despite instructions
-    if (text.startsWith("```markdown")) {
-        text = text.replace(/^```markdown\n/, "").replace(/\n```$/, "");
-    } else if (text.startsWith("```yaml")) {
-        // sometimes it wraps just the frontmatter or the whole thing in yaml block?
-        // If it starts with yaml block, we might need to be careful.
-        // But usually we want it to start with ---
-        text = text.replace(/^```yaml\n/, "");
-    } else if (text.startsWith("```")) {
-        text = text.replace(/^```\n/, "").replace(/\n```$/, "");
+// Adjust limits based on model type (heuristic)
+// If user explicitly switches to an experimental model, throttle down
+if (modelName.includes("exp") || modelName.includes("preview")) {
+    console.log(`Using conservative settings for experimental model: ${modelName}`);
+    CONCURRENCY = 3;
+    REQUESTS_PER_MINUTE = 10;
+} else {
+    console.log(`Using high-throughput settings for stable model: ${modelName}`);
+}
+
+const MIN_INTERVAL_MS = (60 * 1000) / REQUESTS_PER_MINUTE; // Min time between starting requests
+let lastRequestTime = 0;
+
+// Throttled Gemini Call
+async function callGeminiThrottled(tld: string, locale: string) {
+    // Throttling: Ensure we don't start too fast
+    // This is a crude global throttle, but effective for strict RPM limits
+    const now = Date.now();
+    const timeSinceLast = now - lastRequestTime;
+    if (timeSinceLast < MIN_INTERVAL_MS) {
+        const waitTime = MIN_INTERVAL_MS - timeSinceLast;
+        await new Promise(resolve => setTimeout(resolve, waitTime));
     }
+    lastRequestTime = Date.now();
 
-    // Ensure it starts with ---
-    if (!text.trim().startsWith("---")) {
-        // If it doesn't start with ---, maybe the model omitted the first separator?
-        // Or maybe it has the yaml fence.
-        // Let's try to fix it.
-        if (text.includes("title:")) {
+    const prompt = generatePrompt(tld, locale);
+    try {
+        const result = await model.generateContent(prompt);
+        const response = await result.response;
+        let text = response.text();
+
+        // Cleanup if model wraps in code blocks despite instructions
+        if (text.startsWith("```markdown")) {
+            text = text.replace(/^```markdown\n/, "").replace(/\n```$/, "");
+        } else if (text.startsWith("```yaml")) {
+            text = text.replace(/^```yaml\n/, "");
+        } else if (text.startsWith("```")) {
+            text = text.replace(/^```\n/, "").replace(/\n```$/, "");
+        }
+
+        // Regex to remove any leading code block fences
+        text = text.replace(/^```[a-z]*\n/, "");
+        // Regex to remove any trailing code block fences
+        text = text.replace(/\n```$/, "");
+
+        // Check if it starts with ---
+        if (!text.trim().startsWith("---")) {
              text = "---\n" + text;
+        }
+
+        return text;
+    } catch (error) {
+        // Check for 429
+        if (String(error).includes("429")) {
+            throw new Error("RATE_LIMIT");
+        }
+        console.error(`Failed to generate content for .${tld} in ${locale}:`, error);
+        return null;
+    }
+}
+
+async function processTask(tld: string, locale: string, dirPath: string) {
+    const filePath = path.join(dirPath, `${tld}.md`);
+
+    // Check existence BEFORE checking rate limits/throttling
+    if (!force) {
+        try {
+            await fs.access(filePath);
+            console.log(`Skipping .${tld} for locale: ${locale} (already exists)`);
+            return;
+        } catch {
+            // File doesn't exist, proceed
         }
     }
 
-    // Sometimes the model might produce:
-    // ```yaml
-    // title: ...
-    // ---
-    // ```
-    // In that case we removed ```yaml, but might still have the closing ``` at the end?
-    // Let's be more robust.
+    console.log(`Generating .${tld} for locale: ${locale}...`);
 
-    // Regex to remove any leading code block fences
-    text = text.replace(/^```[a-z]*\n/, "");
-    // Regex to remove any trailing code block fences
-    text = text.replace(/\n```$/, "");
+    // Retry Logic with exponential backoff for Rate Limits
+    let attempts = 0;
+    const maxAttempts = 5;
+    let delay = 5000;
 
-    // Check if it starts with ---
-    if (!text.trim().startsWith("---")) {
-         text = "---\n" + text;
+    while (attempts < maxAttempts) {
+        try {
+            // Only call the throttled function here
+            const content = await callGeminiThrottled(tld, locale);
+
+            if (content) {
+                await fs.writeFile(filePath, content, "utf-8");
+                console.log(`✓ Saved: ${filePath}`);
+                return;
+            } else {
+                console.log(`✗ Failed (empty/error): ${tld} (${locale})`);
+                return; // Non-retryable error usually returns null
+            }
+        } catch (e: any) {
+            if (e.message === "RATE_LIMIT") {
+                attempts++;
+                console.log(`⚠️ Rate Limit hit for .${tld} (${locale}). Retrying in ${delay/1000}s... (Attempt ${attempts}/${maxAttempts})`);
+                await new Promise(resolve => setTimeout(resolve, delay));
+                delay *= 2; // Exponential backoff
+            } else {
+                 console.error(`✗ Error processing .${tld} (${locale}):`, e);
+                 return;
+            }
+        }
     }
-
-    return text;
-  } catch (error) {
-    console.error(`Failed to generate content for .${tld} in ${locale}:`, error);
-    return null;
-  }
+    console.error(`✗ Failed .${tld} (${locale}) after ${maxAttempts} rate limit retries.`);
 }
 
 async function main() {
+  const limitPool = pLimit(CONCURRENCY);
+  const tasks = [];
+
   for (const locale of targetLocales) {
     const dirPath = path.join(process.cwd(), "content", "tld", locale);
     try {
@@ -180,35 +250,17 @@ async function main() {
     } catch (e) {
        // ignore if exists
     }
-
     for (const tld of tldsToProcess) {
-      const filePath = path.join(dirPath, `${tld}.md`);
-
-      if (!force) {
-        try {
-          await fs.access(filePath);
-          console.log(`Skipping .${tld} for locale: ${locale} (already exists)`);
-          continue;
-        } catch {
-          // File does not exist, proceed
-        }
-      }
-
-      console.log(`Generating .${tld} for locale: ${locale}...`);
-      const content = await generateContent(tld, locale);
-
-      if (content) {
-        await fs.writeFile(filePath, content, "utf-8");
-        console.log(`✓ Saved: ${filePath}`);
-      } else {
-        console.log(`✗ Failed: ${tld} (${locale})`);
-      }
-
-      // Simple rate limit helper
-      await new Promise(resolve => setTimeout(resolve, 5000));
+        // We wrap the processTask in the limit function.
+        // processTask handles the "skip" logic internally at the start.
+        // If skipped, it returns quickly and doesn't call callGeminiThrottled,
+        // so it doesn't wait on the rate limiter.
+        tasks.push(limitPool(() => processTask(tld, locale, dirPath)));
     }
   }
+
+  await Promise.all(tasks);
+  console.log("All tasks completed.");
 }
 
 main().catch(console.error);
-
