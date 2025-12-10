@@ -102,31 +102,45 @@ function EppTestingDashboard() {
 
   // Queries
   const domainInfoQuery = useQuery({
-    ...trpc.admin.eppTesting.getDomainInfo.queryOptions(
-      { domainName },
-      {
-        enabled: false, // Manual trigger
-      },
-    ),
+    ...trpc.admin.eppTesting.getDomainInfo.queryOptions({ domainName }),
+    enabled: false, // Manual trigger
   });
 
   const availabilityQuery = useQuery({
-    ...trpc.admin.eppTesting.checkAvailability.queryOptions(
-      { domainName },
-      {
-        enabled: false,
-      },
-    ),
+    ...trpc.admin.eppTesting.checkAvailability.queryOptions({ domainName }),
+    enabled: false,
   });
 
   const transferQuery = useQuery({
-    ...trpc.admin.eppTesting.queryTransfer.queryOptions(
-      { domainName },
-      {
-        enabled: false,
-      },
-    ),
+    ...trpc.admin.eppTesting.queryTransfer.queryOptions({ domainName }),
+    enabled: false,
   });
+
+  // Handle query results with toasts for not found cases
+  const handleDomainInfoRefetch = async () => {
+    const result = await domainInfoQuery.refetch();
+    if (result.data && !result.data.domain) {
+      toast.error(`Domain "${domainName}" not found`);
+    } else if (result.error) {
+      toast.error(`Failed to get domain info: ${result.error.message}`);
+    }
+  };
+
+  const handleAvailabilityRefetch = async () => {
+    const result = await availabilityQuery.refetch();
+    if (result.error) {
+      toast.error(`Failed to check availability: ${result.error.message}`);
+    }
+  };
+
+  const handleTransferQueryRefetch = async () => {
+    const result = await transferQuery.refetch();
+    if (result.data && !result.data.hasPendingTransfer) {
+      toast.info(`No pending transfer found for "${domainName}"`);
+    } else if (result.error) {
+      toast.error(`Failed to query transfer: ${result.error.message}`);
+    }
+  };
 
   // Mutations
   const createDomainMutation = useMutation(
@@ -154,7 +168,6 @@ function EppTestingDashboard() {
       onSuccess: (data) => {
         if (data.success) {
           toast.success('Auth code changed successfully');
-          setAuthCode(data.authCode);
         } else {
           toast.error('Failed to change auth code');
         }
@@ -322,7 +335,7 @@ function EppTestingDashboard() {
             </div>
             <Button
               variant="outline"
-              onClick={() => availabilityQuery.refetch()}
+              onClick={handleAvailabilityRefetch}
               disabled={!domainName || isLoading}
             >
               <Search className="h-4 w-4 mr-2" />
@@ -330,7 +343,7 @@ function EppTestingDashboard() {
             </Button>
             <Button
               variant="outline"
-              onClick={() => domainInfoQuery.refetch()}
+              onClick={handleDomainInfoRefetch}
               disabled={!domainName || isLoading}
             >
               <RefreshCw className="h-4 w-4 mr-2" />
@@ -338,7 +351,7 @@ function EppTestingDashboard() {
             </Button>
             <Button
               variant="outline"
-              onClick={() => transferQuery.refetch()}
+              onClick={handleTransferQueryRefetch}
               disabled={!domainName || isLoading}
             >
               <Search className="h-4 w-4 mr-2" />
@@ -365,10 +378,11 @@ function EppTestingDashboard() {
 
       {/* Operations Tabs */}
       <Tabs defaultValue="create" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-4">
+        <TabsList className="grid w-full grid-cols-5">
           <TabsTrigger value="create">Create Domain</TabsTrigger>
           <TabsTrigger value="authcode">Auth Code</TabsTrigger>
-          <TabsTrigger value="transfer">Transfer</TabsTrigger>
+          <TabsTrigger value="import">Import</TabsTrigger>
+          <TabsTrigger value="export">Export</TabsTrigger>
           <TabsTrigger value="lock">Lock/Unlock</TabsTrigger>
         </TabsList>
 
@@ -449,110 +463,142 @@ function EppTestingDashboard() {
                   </div>
                 </div>
               )}
+            </CardContent>
+          </Card>
+        </TabsContent>
 
-              {authCode && (
-                <div className="p-4 rounded-lg border bg-green-50 dark:bg-green-950">
-                  <Label>Current Auth Code (from last generation)</Label>
-                  <div className="flex items-center gap-2 mt-2">
-                    <code className="flex-1 p-2 bg-background rounded text-sm font-mono">
-                      {authCode}
-                    </code>
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => copyToClipboard(authCode)}
-                    >
-                      <Copy className="h-4 w-4" />
-                    </Button>
-                  </div>
+        {/* Import Tab (Transfer In) */}
+        <TabsContent value="import">
+          <Card>
+            <CardHeader>
+              <CardTitle>Import Domain (Transfer In)</CardTitle>
+              <CardDescription>
+                Request to transfer a domain into OTE2 from another registrar
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex gap-4 items-end">
+                <div className="flex-1 space-y-2">
+                  <Label htmlFor="transferAuthCode">Auth Code</Label>
+                  <Input
+                    id="transferAuthCode"
+                    placeholder="Enter auth code from losing registrar"
+                    value={authCode}
+                    onChange={(e) => setAuthCode(e.target.value)}
+                  />
                 </div>
+                <Button
+                  onClick={() =>
+                    requestTransferMutation.mutate({ domainName, authCode })
+                  }
+                  disabled={!domainName || !authCode || isLoading}
+                >
+                  <Send className="h-4 w-4 mr-2" />
+                  Request Import
+                </Button>
+              </div>
+              {requestTransferMutation.data && (
+                <OperationResultDisplay result={requestTransferMutation.data} />
               )}
             </CardContent>
           </Card>
         </TabsContent>
 
-        {/* Transfer Tab */}
-        <TabsContent value="transfer">
+        {/* Export Tab (Transfer Out) */}
+        <TabsContent value="export">
           <Card>
             <CardHeader>
-              <CardTitle>Transfer Operations</CardTitle>
+              <CardTitle>Export Domain (Transfer Out)</CardTitle>
               <CardDescription>
-                Request, approve, or reject domain transfers
+                Approve or reject pending transfer requests for domains in OTE2
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-6">
-              {/* Request Transfer */}
-              <div className="space-y-4 p-4 border rounded-lg">
-                <h4 className="font-medium">Request Transfer (Transfer In)</h4>
-                <div className="flex gap-4 items-end">
-                  <div className="flex-1 space-y-2">
-                    <Label htmlFor="transferAuthCode">Auth Code</Label>
-                    <Input
-                      id="transferAuthCode"
-                      placeholder="Enter auth code from losing registrar"
-                      value={authCode}
-                      onChange={(e) => setAuthCode(e.target.value)}
-                    />
-                  </div>
-                  <Button
-                    onClick={() =>
-                      requestTransferMutation.mutate({ domainName, authCode })
-                    }
-                    disabled={!domainName || !authCode || isLoading}
-                  >
-                    <Send className="h-4 w-4 mr-2" />
-                    Request Transfer
-                  </Button>
-                </div>
-                {requestTransferMutation.data && (
-                  <OperationResultDisplay
-                    result={requestTransferMutation.data}
-                  />
+            <CardContent className="space-y-4">
+              {/* Query Transfer Status */}
+              <div className="flex gap-4 items-center">
+                <Button
+                  variant="outline"
+                  onClick={handleTransferQueryRefetch}
+                  disabled={!domainName || isLoading}
+                >
+                  <Search className="h-4 w-4 mr-2" />
+                  Check Pending Transfer
+                </Button>
+                {transferQuery.isFetching && (
+                  <span className="text-sm text-muted-foreground">
+                    Checking...
+                  </span>
                 )}
               </div>
 
-              {/* Approve/Reject Transfer */}
-              <div className="space-y-4 p-4 border rounded-lg">
-                <h4 className="font-medium">
-                  Approve/Reject Transfer (Transfer Out)
-                </h4>
-                <p className="text-sm text-muted-foreground">
-                  Use these when you're the losing registrar and want to
-                  approve/reject an incoming transfer request.
-                </p>
-                <div className="flex gap-4">
-                  <Button
-                    variant="default"
-                    onClick={() =>
-                      approveTransferMutation.mutate({ domainName })
-                    }
-                    disabled={!domainName || isLoading}
-                  >
-                    <CheckCircle className="h-4 w-4 mr-2" />
-                    Approve Transfer
-                  </Button>
-                  <Button
-                    variant="destructive"
-                    onClick={() =>
-                      rejectTransferMutation.mutate({ domainName })
-                    }
-                    disabled={!domainName || isLoading}
-                  >
-                    <XCircle className="h-4 w-4 mr-2" />
-                    Reject Transfer
-                  </Button>
+              {/* Show transfer status and approve/reject buttons */}
+              {transferQuery.data && (
+                <div className="space-y-4">
+                  {transferQuery.data.hasPendingTransfer ? (
+                    <div className="space-y-4 p-4 border rounded-lg bg-yellow-50 dark:bg-yellow-950 border-yellow-200">
+                      <div className="flex items-center gap-2">
+                        <Clock className="h-5 w-5 text-yellow-600" />
+                        <h4 className="font-medium text-yellow-800 dark:text-yellow-200">
+                          Pending Transfer Request
+                        </h4>
+                      </div>
+                      {transferQuery.data.transfer && (
+                        <pre className="text-xs overflow-auto p-2 bg-background rounded">
+                          {JSON.stringify(transferQuery.data.transfer, null, 2)}
+                        </pre>
+                      )}
+                      <div className="flex gap-4">
+                        <Button
+                          variant="default"
+                          onClick={() =>
+                            approveTransferMutation.mutate({ domainName })
+                          }
+                          disabled={!domainName || isLoading}
+                        >
+                          <CheckCircle className="h-4 w-4 mr-2" />
+                          Approve Export
+                        </Button>
+                        <Button
+                          variant="destructive"
+                          onClick={() =>
+                            rejectTransferMutation.mutate({ domainName })
+                          }
+                          disabled={!domainName || isLoading}
+                        >
+                          <XCircle className="h-4 w-4 mr-2" />
+                          Reject Export
+                        </Button>
+                      </div>
+                      {approveTransferMutation.data && (
+                        <OperationResultDisplay
+                          result={approveTransferMutation.data}
+                        />
+                      )}
+                      {rejectTransferMutation.data && (
+                        <OperationResultDisplay
+                          result={rejectTransferMutation.data}
+                        />
+                      )}
+                    </div>
+                  ) : (
+                    <div className="p-4 rounded-lg border bg-muted/50">
+                      <div className="flex items-center gap-2">
+                        <CheckCircle className="h-5 w-5 text-green-500" />
+                        <span className="text-muted-foreground">
+                          No pending transfer request for this domain
+                        </span>
+                      </div>
+                    </div>
+                  )}
                 </div>
-                {approveTransferMutation.data && (
-                  <OperationResultDisplay
-                    result={approveTransferMutation.data}
-                  />
-                )}
-                {rejectTransferMutation.data && (
-                  <OperationResultDisplay
-                    result={rejectTransferMutation.data}
-                  />
-                )}
-              </div>
+              )}
+
+              {!transferQuery.data && (
+                <p className="text-sm text-muted-foreground">
+                  Click "Check Pending Transfer" to see if there are any pending
+                  export requests for this domain.
+                </p>
+              )}
             </CardContent>
           </Card>
         </TabsContent>
