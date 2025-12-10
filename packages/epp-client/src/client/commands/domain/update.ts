@@ -155,11 +155,11 @@ function cleanNameserver(ns: string) {
 }
 export function buildChangeNsCommand(
   domainName: string,
-  currentNs: string[],
-  ns: string[],
+  _currentNs: string[],
+  _ns: string[],
 ) {
-  const _currentNs = currentNs.map(cleanNameserver);
-  const _ns = ns.map(cleanNameserver);
+  const currentNs = _currentNs.map(cleanNameserver);
+  const ns = _ns.map(cleanNameserver);
   const nsAdd = ns.filter((n) => !currentNs.includes(n));
   const nsRem = currentNs.filter((n) => !ns.includes(n));
   return buildDomainUpdateCommand({
