@@ -743,13 +743,26 @@ export class RegistrarService extends AbstractRegistrarService {
     }
     const cachedRegistrar = this.domainToRegistrar.get(domainName);
     if (cachedRegistrar?.found && isNotNil(cachedRegistrar.registrarKey)) {
+      this.logger.trace(
+        {
+          cachedRegistrar,
+          domainName,
+        },
+        `[Determine Registrar]: [${domainName}] cached registrar`,
+      );
       return cachedRegistrar.registrarKey;
     }
 
     const _registrar = await resolve(
       this.getRegistrarFromDomainName(domainName),
     );
-
+    this.logger.trace(
+      {
+        registrar: _registrar,
+        domainName,
+      },
+      `[Determine Registrar]: [${domainName}] from index`,
+    );
     if (_registrar.result) {
       return _registrar.result;
     }
@@ -780,7 +793,7 @@ export class RegistrarService extends AbstractRegistrarService {
           }),
         ),
       },
-      `Determine Registrar [${domainName}]`,
+      `[Determine Registrar]: [${domainName}] from live registrars`,
     );
     const domainDetails = domainDetailsList.find((result) =>
       isNotNil(result.domainDetails),
