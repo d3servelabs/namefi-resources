@@ -90,10 +90,17 @@ export function useAllowedChains() {
   };
 }
 
+const CHAIN_ID_ORDER = [CHAINS.sepolia.id, CHAINS.base.id, CHAINS.mainnet.id];
+
 export function useDefaultChainId() {
-  const { chainIds } = useAllowedChains();
-  if (Array.isArray(chainIds) && chainIds.length > 0) {
-    return chainIds.includes(CHAINS.base.id) ? CHAINS.base.id : chainIds[0];
+  const { chainIds: allowedChainIds } = useAllowedChains();
+  if (Array.isArray(allowedChainIds) && allowedChainIds.length > 0) {
+    const found = CHAIN_ID_ORDER.find((chainId) =>
+      allowedChainIds.includes(chainId),
+    );
+    if (isNotNil(found)) {
+      return found;
+    }
   }
   return CHAINS.base.id;
 }
