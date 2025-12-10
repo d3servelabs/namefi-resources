@@ -21,6 +21,7 @@ let targetLocales: string[] = ["en"]; // Default to English
 let limit = 0;
 let dateArg: string | null = null;
 let useAllIcann = false;
+let force = false;
 
 // Parse args
 for (let i = 0; i < args.length; i++) {
@@ -42,6 +43,8 @@ for (let i = 0; i < args.length; i++) {
         useAllIcann = true;
     }
     i++;
+  } else if (arg === "--overwrite") {
+    force = true;
   }
 }
 
@@ -181,12 +184,14 @@ async function main() {
     for (const tld of tldsToProcess) {
       const filePath = path.join(dirPath, `${tld}.md`);
 
-      try {
-        await fs.access(filePath);
-        console.log(`Skipping .${tld} for locale: ${locale} (already exists)`);
-        continue;
-      } catch {
-        // File does not exist, proceed
+      if (!force) {
+        try {
+          await fs.access(filePath);
+          console.log(`Skipping .${tld} for locale: ${locale} (already exists)`);
+          continue;
+        } catch {
+          // File does not exist, proceed
+        }
       }
 
       console.log(`Generating .${tld} for locale: ${locale}...`);
