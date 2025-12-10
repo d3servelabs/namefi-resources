@@ -54,29 +54,29 @@ import {
 import { useAccount } from 'wagmi';
 
 /**
- * EIP-712 types for changing domain nameservers.
- * Must match the backend CHANGE_NAMESERVERS_EIP712_TYPES.
+ * Unified EIP-712 types for domain actions.
+ * Must match the backend DOMAIN_ACTION_EIP712_TYPES.
  */
-const CHANGE_NAMESERVERS_EIP712_TYPES: Record<
+const DOMAIN_ACTION_EIP712_TYPES: Record<
   string,
   Array<{ name: string; type: string }>
 > = {
-  ChangeNameservers: [
+  DomainAction: [
     { name: 'domainName', type: 'string' },
-    { name: 'nameservers', type: 'string' },
+    { name: 'action', type: 'string' },
+    { name: 'payload', type: 'string' },
+    { name: 'message', type: 'string' },
   ],
 };
 
 /**
- * EIP-712 types for resetting domain nameservers to Namefi defaults.
- * Must match the backend RESET_NAMESERVERS_EIP712_TYPES.
+ * Valid domain actions for EIP-712 signing.
+ * Must match the backend DOMAIN_ACTIONS.
  */
-const RESET_NAMESERVERS_EIP712_TYPES: Record<
-  string,
-  Array<{ name: string; type: string }>
-> = {
-  ResetNameservers: [{ name: 'domainName', type: 'string' }],
-};
+const DOMAIN_ACTIONS = {
+  CHANGE_NAMESERVERS: 'CHANGE_NAMESERVERS',
+  RESET_NAMESERVERS: 'RESET_NAMESERVERS',
+} as const;
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -192,11 +192,16 @@ const NameserversPanelForm = React.memo(
       setLoadingOperation('resetting');
 
       try {
-        // Sign the payload with EIP-712
-        const payload = { domainName };
+        // Sign the payload with EIP-712 using unified domain action type
+        const payload = {
+          domainName,
+          action: DOMAIN_ACTIONS.RESET_NAMESERVERS,
+          payload: '',
+          message: `Reset nameservers for ${domainName} to Namefi defaults. Your DNS records will be managed by Namefi.`,
+        };
         const signature = await signTypedData({
-          types: RESET_NAMESERVERS_EIP712_TYPES,
-          primaryType: 'ResetNameservers',
+          types: DOMAIN_ACTION_EIP712_TYPES,
+          primaryType: 'DomainAction',
           message: payload,
         });
 
@@ -273,16 +278,19 @@ const NameserversPanelForm = React.memo(
     const submitWithSignature = async (values: DomainNameserversFormData) => {
       try {
         if (domainName) {
-          // Create payload with nameservers as comma-separated string for EIP-712
+          const nameserversList = values.nameservers.join(', ');
+          // Create payload with nameservers as comma-separated string in payload field
           const payload = {
             domainName,
-            nameservers: values.nameservers.join(','),
+            action: DOMAIN_ACTIONS.CHANGE_NAMESERVERS,
+            payload: values.nameservers.join(','),
+            message: `Change nameservers for ${domainName} to: ${nameserversList}`,
           };
 
-          // Sign the payload with EIP-712
+          // Sign the payload with EIP-712 using unified domain action type
           const signature = await signTypedData({
-            types: CHANGE_NAMESERVERS_EIP712_TYPES,
-            primaryType: 'ChangeNameservers',
+            types: DOMAIN_ACTION_EIP712_TYPES,
+            primaryType: 'DomainAction',
             message: payload,
           });
 

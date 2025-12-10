@@ -53,26 +53,32 @@ import {
 import { useAccount } from 'wagmi';
 
 /**
- * EIP-712 types for approving a domain export.
- * Must match the backend APPROVE_EXPORT_EIP712_TYPES.
+ * Unified EIP-712 types for domain actions.
+ * Must match the backend DOMAIN_ACTION_EIP712_TYPES.
  */
-const APPROVE_EXPORT_EIP712_TYPES: Record<
+const DOMAIN_ACTION_EIP712_TYPES: Record<
   string,
   Array<{ name: string; type: string }>
 > = {
-  ApproveExport: [{ name: 'domainName', type: 'string' }],
+  DomainAction: [
+    { name: 'domainName', type: 'string' },
+    { name: 'action', type: 'string' },
+    { name: 'payload', type: 'string' },
+    { name: 'message', type: 'string' },
+  ],
 };
 
 /**
- * EIP-712 types for enabling domain export.
- * Must match the backend ENABLE_EXPORT_EIP712_TYPES.
+ * Valid domain actions for EIP-712 signing.
+ * Must match the backend DOMAIN_ACTIONS.
  */
-const ENABLE_EXPORT_EIP712_TYPES: Record<
-  string,
-  Array<{ name: string; type: string }>
-> = {
-  EnableExport: [{ name: 'domainName', type: 'string' }],
-};
+const DOMAIN_ACTIONS = {
+  APPROVE_EXPORT: 'APPROVE_EXPORT',
+  ENABLE_EXPORT: 'ENABLE_EXPORT',
+  CHANGE_NAMESERVERS: 'CHANGE_NAMESERVERS',
+  RESET_NAMESERVERS: 'RESET_NAMESERVERS',
+  GET_AUTH_CODE: 'GET_AUTH_CODE',
+} as const;
 
 type DomainPreferencesAndConfig =
   AppRouterOutput['domainConfig']['getDomainPreferencesAndConfig'];
@@ -420,6 +426,9 @@ export const DomainExportSection = ({
   const { address: activeWalletAddress } = useAccount();
 
   const [isRequestingExport, setIsRequestingExport] = useState(false);
+  const [isFetchingAuthCode, setIsFetchingAuthCode] = useState(false);
+  const [authCode, setAuthCode] = useState<string | null>(null);
+  const authCodeWalletConnectionRef = useRef<RequestWalletConnectionRef>(null);
 
   // Fetch the owner wallet address for this domain's NFT
   const { data: ownerWalletData } = useQuery(
@@ -432,11 +441,16 @@ export const DomainExportSection = ({
     try {
       setIsRequestingExport(true);
 
-      // Sign the payload with EIP-712
-      const payload = { domainName: domain };
+      // Sign the payload with EIP-712 using unified domain action type
+      const payload = {
+        domainName: domain,
+        action: DOMAIN_ACTIONS.ENABLE_EXPORT,
+        payload: '',
+        message: `Enable export for ${domain}. This will prepare your domain to be transferred to another registrar.`,
+      };
       const signature = await signTypedData({
-        types: ENABLE_EXPORT_EIP712_TYPES,
-        primaryType: 'EnableExport',
+        types: DOMAIN_ACTION_EIP712_TYPES,
+        primaryType: 'DomainAction',
         message: payload,
       });
 
@@ -474,10 +488,58 @@ export const DomainExportSection = ({
     return handleRequestExportInner();
   };
 
+  const handleGetAuthCodeInner = async () => {
+    try {
+      setIsFetchingAuthCode(true);
+
+      // Sign the payload with EIP-712 using unified domain action type
+      const payload = {
+        domainName: domain,
+        action: DOMAIN_ACTIONS.GET_AUTH_CODE,
+        payload: '',
+        message: `Retrieve auth code for ${domain}. This code is required to transfer your domain to another registrar.`,
+      };
+      const signature = await signTypedData({
+        types: DOMAIN_ACTION_EIP712_TYPES,
+        primaryType: 'DomainAction',
+        message: payload,
+      });
+
+      const result = await trpcClient.domainConfig.getAuthCode.mutate({
+        signature,
+        payload,
+      });
+      setAuthCode(result.authCode);
+    } catch (error) {
+      if (error instanceof Error && error.message.includes('rejected')) {
+        toast.error('Signature request was rejected');
+      } else {
+        toast.error('Failed to get auth code');
+      }
+    } finally {
+      setIsFetchingAuthCode(false);
+    }
+  };
+
+  const handleGetAuthCode = async () => {
+    const ownerWalletAddress = ownerWalletData?.ownerWalletAddress;
+    if (!ownerWalletAddress) {
+      toast.error('Unable to determine domain owner wallet');
+      return;
+    }
+    if (activeWalletAddress !== ownerWalletAddress) {
+      authCodeWalletConnectionRef.current?.requestWalletConnection(
+        ownerWalletAddress,
+      );
+      return;
+    }
+    return handleGetAuthCodeInner();
+  };
+
   const handleCopyAuthCode = async () => {
-    if (authCode?.authCode) {
+    if (authCode) {
       try {
-        await navigator.clipboard.writeText(authCode.authCode);
+        await navigator.clipboard.writeText(authCode);
         toast.success('Auth code copied to clipboard');
       } catch (error) {
         toast.error('Failed to copy auth code');
@@ -496,19 +558,6 @@ export const DomainExportSection = ({
         },
       ),
     );
-
-  const [fetchAuthCode, setFetchAuthCode] = useState(false);
-  const { data: authCode, isLoading: isAuthCodeLoading } = useQuery(
-    trpc.domainConfig.getAuthCode.queryOptions(
-      {
-        domainName: domain,
-      },
-      {
-        enabled: fetchAuthCode && domainExportDetails?.readyToExport,
-        refetchInterval: false,
-      },
-    ),
-  );
   if (isDomainExportDetailsLoading) {
     return (
       <div className="flex items-center flex-col rounded-2xl bg-zinc-900 border border-zinc-800 p-4 gap-1">
@@ -533,6 +582,11 @@ export const DomainExportSection = ({
         ref={walletConnectionRef}
         onRequestedWalletConnected={handleRequestExportInner}
         actionDescription="to enable domain export"
+      />
+      <RequestWalletConnection
+        ref={authCodeWalletConnectionRef}
+        onRequestedWalletConnected={handleGetAuthCodeInner}
+        actionDescription="to get the auth code"
       />
       <div className="flex flex-wrap items-center justify-between rounded-2xl bg-zinc-900 border border-zinc-800 p-4 gap-y-2">
         <div className="space-y-0.5">
@@ -573,9 +627,9 @@ export const DomainExportSection = ({
             </Button>
           ) : domainExportDetails.readyToExport ? (
             <div className="flex items-center gap-2 w-full sm:w-auto">
-              {authCode?.authCode ? (
+              {authCode ? (
                 <div className="flex items-center gap-2 px-3 py-1 bg-zinc-800 rounded border text-sm font-mono">
-                  <span className="text-green-400">{authCode.authCode}</span>
+                  <span className="text-green-400">{authCode}</span>
                   <Button
                     size="sm"
                     variant="ghost"
@@ -588,13 +642,11 @@ export const DomainExportSection = ({
               ) : (
                 <Button
                   size="sm"
-                  onClick={async () => {
-                    setFetchAuthCode(true);
-                  }}
-                  disabled={isAuthCodeLoading}
+                  onClick={handleGetAuthCode}
+                  disabled={isFetchingAuthCode}
                   className="w-full sm:w-auto"
                 >
-                  {isAuthCodeLoading ? (
+                  {isFetchingAuthCode ? (
                     <Loader2 className="h-4 w-4 animate-spin mr-2" />
                   ) : (
                     <ExternalLink className="h-4 w-4 mr-2" />
@@ -672,11 +724,16 @@ export const PendingTransferSection = ({
         toast.error('Unable to determine domain owner wallet');
         return;
       }
-      // Sign the payload with EIP-712
-      const payload = { domainName: domain };
+      // Sign the payload with EIP-712 using unified domain action type
+      const payload = {
+        domainName: domain,
+        action: DOMAIN_ACTIONS.APPROVE_EXPORT,
+        payload: '',
+        message: `Approve transfer of ${domain} to another registrar. This action cannot be undone.`,
+      };
       const signature = await signTypedData({
-        types: APPROVE_EXPORT_EIP712_TYPES,
-        primaryType: 'ApproveExport',
+        types: DOMAIN_ACTION_EIP712_TYPES,
+        primaryType: 'DomainAction',
         message: payload,
       });
 

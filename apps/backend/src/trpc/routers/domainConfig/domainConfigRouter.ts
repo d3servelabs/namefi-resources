@@ -57,51 +57,87 @@ import { db, namefiNftOwnersCte, namefiNftOwnersView } from '@namefi-astra/db';
 import { eq } from 'drizzle-orm';
 
 /**
- * EIP-712 type definitions for approving a domain export.
+ * Unified EIP-712 type definitions for domain actions.
  * This is displayed to the user in their wallet when signing.
+ *
+ * The structure includes:
+ * - domainName: The domain being acted upon
+ * - action: The action being performed (e.g., 'APPROVE_EXPORT', 'CHANGE_NAMESERVERS')
+ * - payload: Optional additional data for the action (e.g., nameservers list)
+ * - message: Human-readable description of the action (display only, not validated)
  */
-export const APPROVE_EXPORT_EIP712_TYPES: Record<
+export const DOMAIN_ACTION_EIP712_TYPES: Record<
   string,
   Array<{ name: string; type: string }>
 > = {
-  ApproveExport: [{ name: 'domainName', type: 'string' }],
-};
-
-/**
- * EIP-712 type definitions for enabling domain export.
- * This is displayed to the user in their wallet when signing.
- */
-export const ENABLE_EXPORT_EIP712_TYPES: Record<
-  string,
-  Array<{ name: string; type: string }>
-> = {
-  EnableExport: [{ name: 'domainName', type: 'string' }],
-};
-
-/**
- * EIP-712 type definitions for changing domain nameservers.
- * This is displayed to the user in their wallet when signing.
- */
-export const CHANGE_NAMESERVERS_EIP712_TYPES: Record<
-  string,
-  Array<{ name: string; type: string }>
-> = {
-  ChangeNameservers: [
+  DomainAction: [
     { name: 'domainName', type: 'string' },
-    { name: 'nameservers', type: 'string' },
+    { name: 'action', type: 'string' },
+    { name: 'payload', type: 'string' },
+    { name: 'message', type: 'string' },
   ],
 };
 
 /**
- * EIP-712 type definitions for resetting domain nameservers to Namefi defaults.
- * This is displayed to the user in their wallet when signing.
+ * Valid domain actions for EIP-712 signing.
  */
-export const RESET_NAMESERVERS_EIP712_TYPES: Record<
-  string,
-  Array<{ name: string; type: string }>
-> = {
-  ResetNameservers: [{ name: 'domainName', type: 'string' }],
-};
+export const DOMAIN_ACTIONS = {
+  APPROVE_EXPORT: 'APPROVE_EXPORT',
+  ENABLE_EXPORT: 'ENABLE_EXPORT',
+  CHANGE_NAMESERVERS: 'CHANGE_NAMESERVERS',
+  RESET_NAMESERVERS: 'RESET_NAMESERVERS',
+  GET_AUTH_CODE: 'GET_AUTH_CODE',
+} as const;
+
+export type DomainAction = (typeof DOMAIN_ACTIONS)[keyof typeof DOMAIN_ACTIONS];
+
+/**
+ * Input schema for domain action signed payloads.
+ */
+export const domainActionInputSchema = z.object({
+  signature: z.string().regex(/^0x[a-fA-F0-9]+$/),
+  payload: z.object({
+    domainName: namefiNormalizedDomainSchema,
+    action: z.enum([
+      DOMAIN_ACTIONS.APPROVE_EXPORT,
+      DOMAIN_ACTIONS.ENABLE_EXPORT,
+      DOMAIN_ACTIONS.CHANGE_NAMESERVERS,
+      DOMAIN_ACTIONS.RESET_NAMESERVERS,
+      DOMAIN_ACTIONS.GET_AUTH_CODE,
+    ]),
+    payload: z.string(), // Additional payload data (e.g., nameservers)
+    message: z.string(), // Human-readable description (display only)
+  }),
+});
+
+/**
+ * Creates a signed payload procedure for domain actions.
+ * Validates that the action in the payload matches the expected action.
+ */
+function createDomainActionProcedure(expectedAction: DomainAction) {
+  return createSignedPayloadProcedure({
+    types: DOMAIN_ACTION_EIP712_TYPES,
+    primaryType: 'DomainAction',
+    getPayloadFromInput: (input: unknown) =>
+      (input as z.infer<typeof domainActionInputSchema>).payload,
+    getSignatureFromInput: (input: unknown) =>
+      (input as z.infer<typeof domainActionInputSchema>).signature,
+  }).use(async ({ ctx, next, getRawInput }) => {
+    const rawInput = (await getRawInput()) as z.infer<
+      typeof domainActionInputSchema
+    >;
+
+    // Validate the action matches what's expected
+    if (rawInput.payload.action !== expectedAction) {
+      throw new TRPCError({
+        code: 'BAD_REQUEST',
+        message: `Invalid action. Expected ${expectedAction}, got ${rawInput.payload.action}`,
+      });
+    }
+
+    return next({ ctx });
+  });
+}
 
 export const domainConfigRouter = createTRPCRouter({
   /**
@@ -209,51 +245,32 @@ export const domainConfigRouter = createTRPCRouter({
    * The user must sign the payload with their wallet to confirm the nameserver change.
    */
   changeDomainNameservers: withAudit(
-    createSignedPayloadProcedure({
-      types: CHANGE_NAMESERVERS_EIP712_TYPES,
-      primaryType: 'ChangeNameservers',
-      getPayloadFromInput: (input: unknown) =>
-        (input as { payload: { domainName: string; nameservers: string } })
-          .payload,
-      getSignatureFromInput: (input: unknown) =>
-        (input as { signature: string }).signature,
-    }),
+    createDomainActionProcedure(DOMAIN_ACTIONS.CHANGE_NAMESERVERS),
     ({ ctx, input, auditActorExtraInfo }) => ({
       actorType: 'user',
       actorId: ctx.user.id,
       actorExtraInfo: auditActorExtraInfo,
       resourceType: 'domain',
-      resourceId: (
-        input as { payload: { domainName: string; nameservers: string } }
-      ).payload.domainName,
+      resourceId: (input as z.infer<typeof domainActionInputSchema>).payload
+        .domainName,
       action: 'change_nameservers',
       extraInput: {
         signedPayload: true,
         signerWalletAddress: (ctx as { signerWalletAddress?: string })
           .signerWalletAddress,
-        nameservers: (
-          input as { payload: { domainName: string; nameservers: string } }
-        ).payload.nameservers,
+        nameservers: (input as z.infer<typeof domainActionInputSchema>).payload
+          .payload,
       },
     }),
   )
-    .input(
-      z.object({
-        signature: z.string().regex(/^0x[a-fA-F0-9]+$/),
-        payload: z.object({
-          domainName: namefiNormalizedDomainSchema,
-          // Nameservers as comma-separated string for EIP-712 signing
-          nameservers: z.string().min(1),
-        }),
-      }),
-    )
+    .input(domainActionInputSchema)
     .mutation(async ({ input, ctx }) => {
       await assertAuthenticatedUserIsDomainOwner(
         input.payload.domainName,
         ctx.user,
       );
-      // Parse nameservers from comma-separated string
-      const nameserversList = input.payload.nameservers
+      // Parse nameservers from payload (comma-separated string)
+      const nameserversList = input.payload.payload
         .split(',')
         .map((ns) => ns.trim())
         .filter((ns) => ns.length > 0);
@@ -277,20 +294,13 @@ export const domainConfigRouter = createTRPCRouter({
    * The user must sign the payload with their wallet to confirm the reset.
    */
   resetDomainNameservers: withAudit(
-    createSignedPayloadProcedure({
-      types: RESET_NAMESERVERS_EIP712_TYPES,
-      primaryType: 'ResetNameservers',
-      getPayloadFromInput: (input: unknown) =>
-        (input as { payload: { domainName: string } }).payload,
-      getSignatureFromInput: (input: unknown) =>
-        (input as { signature: string }).signature,
-    }),
+    createDomainActionProcedure(DOMAIN_ACTIONS.RESET_NAMESERVERS),
     ({ ctx, input, auditActorExtraInfo }) => ({
       actorType: 'user',
       actorId: ctx.user.id,
       actorExtraInfo: auditActorExtraInfo,
       resourceType: 'domain',
-      resourceId: (input as { payload: { domainName: string } }).payload
+      resourceId: (input as z.infer<typeof domainActionInputSchema>).payload
         .domainName,
       action: 'reset_nameservers',
       extraInput: {
@@ -300,14 +310,7 @@ export const domainConfigRouter = createTRPCRouter({
       },
     }),
   )
-    .input(
-      z.object({
-        signature: z.string().regex(/^0x[a-fA-F0-9]+$/),
-        payload: z.object({
-          domainName: namefiNormalizedDomainSchema,
-        }),
-      }),
-    )
+    .input(domainActionInputSchema)
     .mutation(async ({ input, ctx }) => {
       await assertAuthenticatedUserIsDomainOwner(
         input.payload.domainName,
@@ -646,20 +649,13 @@ export const domainConfigRouter = createTRPCRouter({
    * The user must sign the payload with their wallet to confirm enabling export.
    */
   requestDomainExport: withAudit(
-    createSignedPayloadProcedure({
-      types: ENABLE_EXPORT_EIP712_TYPES,
-      primaryType: 'EnableExport',
-      getPayloadFromInput: (input: unknown) =>
-        (input as { payload: { domainName: string } }).payload,
-      getSignatureFromInput: (input: unknown) =>
-        (input as { signature: string }).signature,
-    }),
+    createDomainActionProcedure(DOMAIN_ACTIONS.ENABLE_EXPORT),
     ({ ctx, input, auditActorExtraInfo }) => ({
       actorType: 'user',
       actorId: ctx.user.id,
       actorExtraInfo: auditActorExtraInfo,
       resourceType: 'domain',
-      resourceId: (input as { payload: { domainName: string } }).payload
+      resourceId: (input as z.infer<typeof domainActionInputSchema>).payload
         .domainName,
       action: 'enable_export',
       extraInput: {
@@ -669,14 +665,7 @@ export const domainConfigRouter = createTRPCRouter({
       },
     }),
   )
-    .input(
-      z.object({
-        signature: z.string().regex(/^0x[a-fA-F0-9]+$/),
-        payload: z.object({
-          domainName: namefiNormalizedDomainSchema,
-        }),
-      }),
-    )
+    .input(domainActionInputSchema)
     .mutation(async ({ input, ctx }) => {
       await assertAuthenticatedUserIsDomainOwner(
         input.payload.domainName,
@@ -763,15 +752,35 @@ export const domainConfigRouter = createTRPCRouter({
       };
     }),
 
-  getAuthCode: protectedProcedure
-    .input(
-      z.object({
-        domainName: namefiNormalizedDomainSchema,
-      }),
-    )
-    .query(async ({ input, ctx }) => {
-      await assertAuthenticatedUserIsDomainOwner(input.domainName, ctx.user);
-      const domainName = toPunycodeDomainName(input.domainName);
+  /**
+   * Get the auth code for a domain export.
+   * This is a dangerous operation that requires EIP-712 signature verification.
+   * The user must sign the payload with their wallet to retrieve the auth code.
+   */
+  getAuthCode: withAudit(
+    createDomainActionProcedure(DOMAIN_ACTIONS.GET_AUTH_CODE),
+    ({ ctx, input, auditActorExtraInfo }) => ({
+      actorType: 'user',
+      actorId: ctx.user.id,
+      actorExtraInfo: auditActorExtraInfo,
+      resourceType: 'domain',
+      resourceId: (input as z.infer<typeof domainActionInputSchema>).payload
+        .domainName,
+      action: 'get_auth_code',
+      extraInput: {
+        signedPayload: true,
+        signerWalletAddress: (ctx as { signerWalletAddress?: string })
+          .signerWalletAddress,
+      },
+    }),
+  )
+    .input(domainActionInputSchema)
+    .mutation(async ({ input, ctx }) => {
+      await assertAuthenticatedUserIsDomainOwner(
+        input.payload.domainName,
+        ctx.user,
+      );
+      const domainName = toPunycodeDomainName(input.payload.domainName);
       const supportsExport = await doesDomainSupportExport(domainName);
       if (!supportsExport) {
         throw new TRPCError({
@@ -850,20 +859,13 @@ export const domainConfigRouter = createTRPCRouter({
    * The user must sign the payload with their wallet to confirm the export approval.
    */
   approveTransfer: withAudit(
-    createSignedPayloadProcedure({
-      types: APPROVE_EXPORT_EIP712_TYPES,
-      primaryType: 'ApproveExport',
-      getPayloadFromInput: (input: unknown) =>
-        (input as { payload: { domainName: string } }).payload,
-      getSignatureFromInput: (input: unknown) =>
-        (input as { signature: string }).signature,
-    }),
+    createDomainActionProcedure(DOMAIN_ACTIONS.APPROVE_EXPORT),
     ({ ctx, input, auditActorExtraInfo }) => ({
       actorType: 'user',
       actorId: ctx.user.id,
       actorExtraInfo: auditActorExtraInfo,
       resourceType: 'domain',
-      resourceId: (input as { payload: { domainName: string } }).payload
+      resourceId: (input as z.infer<typeof domainActionInputSchema>).payload
         .domainName,
       action: 'approve_export',
       extraInput: {
@@ -873,14 +875,7 @@ export const domainConfigRouter = createTRPCRouter({
       },
     }),
   )
-    .input(
-      z.object({
-        signature: z.string().regex(/^0x[a-fA-F0-9]+$/),
-        payload: z.object({
-          domainName: namefiNormalizedDomainSchema,
-        }),
-      }),
-    )
+    .input(domainActionInputSchema)
     .mutation(async ({ input, ctx }) => {
       await assertAuthenticatedUserIsDomainOwner(
         input.payload.domainName,
