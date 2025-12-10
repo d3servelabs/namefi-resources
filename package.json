@@ -4,9 +4,11 @@
   "type": "module",
   "scripts": {
     "data:validate": "bun scripts/validate-data.ts",
+    "generate:tld": "bun scripts/generate-tld.ts",
     "lint:mdx": "bunx eslint \"content/**/*.{md,mdx}\""
   },
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
     "gray-matter": "^4.0.3"
   },
   "devDependencies": {
