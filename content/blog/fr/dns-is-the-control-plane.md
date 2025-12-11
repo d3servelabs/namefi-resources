@@ -9,10 +9,7 @@ description: "Une perspective axée sur les opérations DNS et registrar concern
 keywords: ['dns', 'panne aws', 'plan de contrôle', 'dynamodb', 'us-east-1', 'mise en cache dns', 'résilience cloud', 'dns multi-signataire', 'réponse aux incidents']
 ---
 
-import Image from 'next/image';
-import heroImage from '@/../public/assets/blog/dns-is-the-control-plane/hero.png';
-
-<Image src={heroImage} alt="Illustration de plans de contrôle DNS résilients contournant une panne régionale" placeholder='blur' />
+[![](../../assets/dns-is-the-control-plane.png)](../../assets/dns-is-the-control-plane.png)
 
 Le 20 octobre 2025, une partie d'Internet a passé une mauvaise matinée. Amazon Web Services (AWS) a signalé des problèmes dans son cluster de centres de données de Virginie du Nord (US-EAST-1). Pendant plusieurs heures, de nombreuses applications et sites populaires ont été lents ou indisponibles — [Vercel](https://downdetector.com/status/vercel/), [Figma](https://downdetector.in/status/figma/), [Venmo](https://downdetector.in/status/venmo/) et [Snapchat](https://downdetector.com/status/snapchat/), pour n'en citer que quelques-uns. Les médias et les services de surveillance ont enregistré des millions de rapports d'utilisateurs, et même certains services Amazon ont vacillé.
 
