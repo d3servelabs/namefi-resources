@@ -9,10 +9,7 @@ description: "نظرة من منظور مسجلي النطاقات وعمليا�
 keywords: ['نظام أسماء النطاقات', 'انقطاع aws', 'مستوى التحكم', 'dynamodb', 'us-east-1', 'التخزين المؤقت لنظام dns', 'مرونة السحابة', 'dns متعدد التواقيع', 'الاستجابة للحوادث']
 ---
 
-import Image from 'next/image';
-import heroImage from '@/../public/assets/blog/dns-is-the-control-plane/hero.png';
-
-<Image src={heroImage} alt="Illustration of resilient DNS control planes steering around a regional outage" placeholder='blur' />
+[![](../../assets/dns-is-the-control-plane.png)](../../assets/dns-is-the-control-plane.png)
 
 في صباح يوم 20 أكتوبر 2025، واجهت أجزاء من الإنترنت وقتاً عصيباً. أبلغت خدمات أمازون ويب (AWS) عن مشاكل في مجموعة مراكز البيانات الخاصة بها في شمال فيرجينيا (US-EAST-1). لعدة ساعات، كانت العديد من التطبيقات والمواقع الشهيرة بطيئة أو غير متاحة — مثل [Vercel](https://downdetector.com/status/vercel/)، و[Figma](https://downdetector.in/status/figma/)، و[Venmo](https://downdetector.in/status/venmo/)، و[Snapchat](https://downdetector.com/status/snapchat/)، على سبيل المثال لا الحصر. سجلت وكالات الأنباء وخدمات المراقبة ملايين التقارير من المستخدمين، وحتى بعض خدمات أمازون نفسها عانت من تقطع في الخدمة.
 

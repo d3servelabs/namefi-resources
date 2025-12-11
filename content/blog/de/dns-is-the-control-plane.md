@@ -9,10 +9,7 @@ description: "Eine Perspektive aus Sicht von Registrar/DNS-Betrieb auf den AWS-V
 keywords: ['DNS', 'AWS-Ausfall', 'Control Plane', 'DynamoDB', 'us-east-1', 'DNS-Caching', 'Cloud-Resilienz', 'Multi-Signer DNS', 'Incident Response']
 ---
 
-import Image from 'next/image';
-import heroImage from '@/../public/assets/blog/dns-is-the-control-plane/hero.png';
-
-<Image src={heroImage} alt="Illustration von resilienten DNS Control Planes, die um einen regionalen Ausfall herumsteuern" placeholder='blur' />
+[![](../../assets/dns-is-the-control-plane.png)](../../assets/dns-is-the-control-plane.png)
 
 Am 20. Oktober 2025 erlebten Teile des Internets einen schlechten Morgen. Amazon Web Services (AWS) meldete Probleme in seinem Rechenzentrums-Cluster in Nord-Virginia (US-EAST-1). Mehrere Stunden lang waren viele beliebte Apps und Websites langsam oder nicht verfügbar – [Vercel](https://downdetector.com/status/vercel/), [Figma](https://downdetector.in/status/figma/), [Venmo](https://downdetector.in/status/venmo/) und [Snapchat](https://downdetector.com/status/snapchat/), um nur einige zu nennen. Nachrichtenagenturen und Überwachungsdienste verzeichneten Millionen von Nutzermeldungen, und sogar einige Amazon-Dienste hatten Aussetzer.
 
