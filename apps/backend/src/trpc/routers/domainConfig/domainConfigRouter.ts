@@ -65,6 +65,7 @@ import { eq } from 'drizzle-orm';
  * - action: The action being performed (e.g., 'APPROVE_EXPORT', 'CHANGE_NAMESERVERS')
  * - payload: Optional additional data for the action (e.g., nameservers list)
  * - message: Human-readable description of the action (display only, not validated)
+ * - timestamp: Unix timestamp in seconds when the signature was created (validated to be within 5 seconds)
  */
 export const DOMAIN_ACTION_EIP712_TYPES: Record<
   string,
@@ -75,8 +76,14 @@ export const DOMAIN_ACTION_EIP712_TYPES: Record<
     { name: 'action', type: 'string' },
     { name: 'payload', type: 'string' },
     { name: 'message', type: 'string' },
+    { name: 'timestamp', type: 'uint256' },
   ],
 };
+
+/**
+ * Maximum allowed time difference in seconds between signature timestamp and server time.
+ */
+const SIGNATURE_TIMESTAMP_TOLERANCE_SECONDS = 5;
 
 /**
  * Valid domain actions for EIP-712 signing.
@@ -107,12 +114,14 @@ export const domainActionInputSchema = z.object({
     ]),
     payload: z.string(), // Additional payload data (e.g., nameservers)
     message: z.string(), // Human-readable description (display only)
+    timestamp: z.number().int().positive(), // Unix timestamp in seconds
   }),
 });
 
 /**
  * Creates a signed payload procedure for domain actions.
- * Validates that the action in the payload matches the expected action.
+ * Validates that the action in the payload matches the expected action
+ * and that the timestamp is within the allowed tolerance.
  */
 function createDomainActionProcedure(expectedAction: DomainAction) {
   return createSignedPayloadProcedure({
@@ -132,6 +141,25 @@ function createDomainActionProcedure(expectedAction: DomainAction) {
       throw new TRPCError({
         code: 'BAD_REQUEST',
         message: `Invalid action. Expected ${expectedAction}, got ${rawInput.payload.action}`,
+      });
+    }
+
+    // Validate the timestamp is within tolerance
+    const nowSeconds = Math.floor(Date.now() / 1000);
+    const timestampDiff = Math.abs(nowSeconds - rawInput.payload.timestamp);
+    if (timestampDiff > SIGNATURE_TIMESTAMP_TOLERANCE_SECONDS) {
+      logger.warn(
+        {
+          timestamp: rawInput.payload.timestamp,
+          nowSeconds,
+          diff: timestampDiff,
+          action: expectedAction,
+        },
+        'Signature timestamp expired',
+      );
+      throw new TRPCError({
+        code: 'BAD_REQUEST',
+        message: 'Signature has expired. Please sign again.',
       });
     }
 

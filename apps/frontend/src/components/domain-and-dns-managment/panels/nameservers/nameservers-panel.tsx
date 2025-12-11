@@ -66,6 +66,7 @@ const DOMAIN_ACTION_EIP712_TYPES: Record<
     { name: 'action', type: 'string' },
     { name: 'payload', type: 'string' },
     { name: 'message', type: 'string' },
+    { name: 'timestamp', type: 'uint256' },
   ],
 };
 
@@ -193,11 +194,13 @@ const NameserversPanelForm = React.memo(
 
       try {
         // Sign the payload with EIP-712 using unified domain action type
+        const timestamp = Math.floor(Date.now() / 1000);
         const payload = {
           domainName,
           action: DOMAIN_ACTIONS.RESET_NAMESERVERS,
           payload: '',
           message: `Reset nameservers for ${domainName} to Namefi defaults. Your DNS records will be managed by Namefi.`,
+          timestamp,
         };
         const signature = await signTypedData({
           types: DOMAIN_ACTION_EIP712_TYPES,
@@ -279,12 +282,14 @@ const NameserversPanelForm = React.memo(
       try {
         if (domainName) {
           const nameserversList = values.nameservers.join(', ');
+          const timestamp = Math.floor(Date.now() / 1000);
           // Create payload with nameservers as comma-separated string in payload field
           const payload = {
             domainName,
             action: DOMAIN_ACTIONS.CHANGE_NAMESERVERS,
             payload: values.nameservers.join(','),
             message: `Change nameservers for ${domainName} to: ${nameserversList}`,
+            timestamp,
           };
 
           // Sign the payload with EIP-712 using unified domain action type

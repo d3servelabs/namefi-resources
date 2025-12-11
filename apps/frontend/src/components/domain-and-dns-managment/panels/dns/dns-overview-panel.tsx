@@ -65,6 +65,7 @@ const DOMAIN_ACTION_EIP712_TYPES: Record<
     { name: 'action', type: 'string' },
     { name: 'payload', type: 'string' },
     { name: 'message', type: 'string' },
+    { name: 'timestamp', type: 'uint256' },
   ],
 };
 
@@ -442,11 +443,13 @@ export const DomainExportSection = ({
       setIsRequestingExport(true);
 
       // Sign the payload with EIP-712 using unified domain action type
+      const timestamp = Math.floor(Date.now() / 1000);
       const payload = {
         domainName: domain,
         action: DOMAIN_ACTIONS.ENABLE_EXPORT,
         payload: '',
         message: `Enable export for ${domain}. This will prepare your domain to be transferred to another registrar.`,
+        timestamp,
       };
       const signature = await signTypedData({
         types: DOMAIN_ACTION_EIP712_TYPES,
@@ -493,11 +496,13 @@ export const DomainExportSection = ({
       setIsFetchingAuthCode(true);
 
       // Sign the payload with EIP-712 using unified domain action type
+      const timestamp = Math.floor(Date.now() / 1000);
       const payload = {
         domainName: domain,
         action: DOMAIN_ACTIONS.GET_AUTH_CODE,
         payload: '',
         message: `Retrieve auth code for ${domain}. This code is required to transfer your domain to another registrar.`,
+        timestamp,
       };
       const signature = await signTypedData({
         types: DOMAIN_ACTION_EIP712_TYPES,
@@ -725,11 +730,13 @@ export const PendingTransferSection = ({
         return;
       }
       // Sign the payload with EIP-712 using unified domain action type
+      const timestamp = Math.floor(Date.now() / 1000);
       const payload = {
         domainName: domain,
         action: DOMAIN_ACTIONS.APPROVE_EXPORT,
         payload: '',
         message: `Approve transfer of ${domain} to another registrar. This action cannot be undone.`,
+        timestamp,
       };
       const signature = await signTypedData({
         types: DOMAIN_ACTION_EIP712_TYPES,
