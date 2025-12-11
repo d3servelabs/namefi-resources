@@ -83,7 +83,7 @@ export const DOMAIN_ACTION_EIP712_TYPES: Record<
 /**
  * Maximum allowed time difference in seconds between signature timestamp and server time.
  */
-const SIGNATURE_TIMESTAMP_TOLERANCE_SECONDS = 5;
+const SIGNATURE_TIMESTAMP_TOLERANCE_SECONDS = 30;
 
 /**
  * Valid domain actions for EIP-712 signing.
