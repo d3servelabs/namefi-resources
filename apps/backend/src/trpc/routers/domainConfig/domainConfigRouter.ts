@@ -90,6 +90,7 @@ const SIGNATURE_TIMESTAMP_TOLERANCE_SECONDS = 5;
  */
 export const DOMAIN_ACTIONS = {
   APPROVE_EXPORT: 'APPROVE_EXPORT',
+  REJECT_EXPORT: 'REJECT_EXPORT',
   ENABLE_EXPORT: 'ENABLE_EXPORT',
   CHANGE_NAMESERVERS: 'CHANGE_NAMESERVERS',
   RESET_NAMESERVERS: 'RESET_NAMESERVERS',
@@ -107,6 +108,7 @@ export const domainActionInputSchema = z.object({
     domainName: namefiNormalizedDomainSchema,
     action: z.enum([
       DOMAIN_ACTIONS.APPROVE_EXPORT,
+      DOMAIN_ACTIONS.REJECT_EXPORT,
       DOMAIN_ACTIONS.ENABLE_EXPORT,
       DOMAIN_ACTIONS.CHANGE_NAMESERVERS,
       DOMAIN_ACTIONS.RESET_NAMESERVERS,
@@ -915,17 +917,34 @@ export const domainConfigRouter = createTRPCRouter({
     }),
 
   /**
-   * Reject a pending transfer for a domain
+   * Reject a pending transfer for a domain.
+   * This is a dangerous operation that requires EIP-712 signature verification.
+   * The user must sign the payload with their wallet to confirm rejecting the transfer.
    */
-  rejectTransfer: protectedProcedure
-    .input(
-      z.object({
-        domainName: namefiNormalizedDomainSchema,
-      }),
-    )
+  rejectTransfer: withAudit(
+    createDomainActionProcedure(DOMAIN_ACTIONS.REJECT_EXPORT),
+    ({ ctx, input, auditActorExtraInfo }) => ({
+      actorType: 'user',
+      actorId: ctx.user.id,
+      actorExtraInfo: auditActorExtraInfo,
+      resourceType: 'domain',
+      resourceId: (input as z.infer<typeof domainActionInputSchema>).payload
+        .domainName,
+      action: 'reject_export',
+      extraInput: {
+        signedPayload: true,
+        signerWalletAddress: (ctx as { signerWalletAddress?: string })
+          .signerWalletAddress,
+      },
+    }),
+  )
+    .input(domainActionInputSchema)
     .mutation(async ({ input, ctx }) => {
-      await assertAuthenticatedUserIsDomainOwner(input.domainName, ctx.user);
-      const domainName = toPunycodeDomainName(input.domainName);
+      await assertAuthenticatedUserIsDomainOwner(
+        input.payload.domainName,
+        ctx.user,
+      );
+      const domainName = toPunycodeDomainName(input.payload.domainName);
       const result = await sldRegistrar.rejectTransfer(domainName);
       return result;
     }),

@@ -75,6 +75,7 @@ const DOMAIN_ACTION_EIP712_TYPES: Record<
  */
 const DOMAIN_ACTIONS = {
   APPROVE_EXPORT: 'APPROVE_EXPORT',
+  REJECT_EXPORT: 'REJECT_EXPORT',
   ENABLE_EXPORT: 'ENABLE_EXPORT',
   CHANGE_NAMESERVERS: 'CHANGE_NAMESERVERS',
   RESET_NAMESERVERS: 'RESET_NAMESERVERS',
@@ -693,6 +694,8 @@ export const PendingTransferSection = ({
 
   const [isApproving, setIsApproving] = useState(false);
   const [isRejecting, setIsRejecting] = useState(false);
+  // Track which action to perform after wallet connection: 'approve' or 'reject'
+  const pendingAction = useRef<'approve' | 'reject' | null>(null);
 
   const { data: pendingTransfer, isLoading: isPendingTransferLoading } =
     useQuery(
@@ -723,12 +726,6 @@ export const PendingTransferSection = ({
     try {
       setIsApproving(true);
 
-      // Get the owner wallet address
-      const ownerWalletAddress = ownerWalletData?.ownerWalletAddress;
-      if (!ownerWalletAddress) {
-        toast.error('Unable to determine domain owner wallet');
-        return;
-      }
       // Sign the payload with EIP-712 using unified domain action type
       const timestamp = Math.floor(Date.now() / 1000);
       const payload = {
@@ -765,25 +762,28 @@ export const PendingTransferSection = ({
     }
   };
 
-  const handleApprove = async () => {
-    // Get the owner wallet address
-    const ownerWalletAddress = ownerWalletData?.ownerWalletAddress;
-    if (!ownerWalletAddress) {
-      toast.error('Unable to determine domain owner wallet');
-      return;
-    }
-    if (activeWalletAddress !== ownerWalletAddress) {
-      walletConnectionRef.current?.requestWalletConnection(ownerWalletAddress);
-      return;
-    }
-    return handleApproveInner();
-  };
-
-  const handleReject = async () => {
+  const handleRejectInner = async () => {
     try {
       setIsRejecting(true);
-      await trpcClient.domainConfig.rejectTransfer.mutate({
+
+      // Sign the payload with EIP-712 using unified domain action type
+      const timestamp = Math.floor(Date.now() / 1000);
+      const payload = {
         domainName: domain,
+        action: DOMAIN_ACTIONS.REJECT_EXPORT,
+        payload: '',
+        message: `Reject transfer of ${domain}. The pending transfer request will be cancelled.`,
+        timestamp,
+      };
+      const signature = await signTypedData({
+        types: DOMAIN_ACTION_EIP712_TYPES,
+        primaryType: 'DomainAction',
+        message: payload,
+      });
+
+      await trpcClient.domainConfig.rejectTransfer.mutate({
+        signature,
+        payload,
       });
       toast.success('Export rejected successfully');
       await queryClient.refetchQueries({
@@ -792,10 +792,51 @@ export const PendingTransferSection = ({
         }),
       });
     } catch (error) {
-      toast.error('Failed to reject export');
+      if (error instanceof Error && error.message.includes('rejected')) {
+        toast.error('Signature request was rejected');
+      } else {
+        toast.error('Failed to reject export');
+      }
     } finally {
       setIsRejecting(false);
     }
+  };
+
+  const handleWalletConnected = async () => {
+    if (pendingAction.current === 'approve') {
+      await handleApproveInner();
+    } else if (pendingAction.current === 'reject') {
+      await handleRejectInner();
+    }
+    pendingAction.current = null;
+  };
+
+  const handleApprove = async () => {
+    const ownerWalletAddress = ownerWalletData?.ownerWalletAddress;
+    if (!ownerWalletAddress) {
+      toast.error('Unable to determine domain owner wallet');
+      return;
+    }
+    if (activeWalletAddress !== ownerWalletAddress) {
+      pendingAction.current = 'approve';
+      walletConnectionRef.current?.requestWalletConnection(ownerWalletAddress);
+      return;
+    }
+    return handleApproveInner();
+  };
+
+  const handleReject = async () => {
+    const ownerWalletAddress = ownerWalletData?.ownerWalletAddress;
+    if (!ownerWalletAddress) {
+      toast.error('Unable to determine domain owner wallet');
+      return;
+    }
+    if (activeWalletAddress !== ownerWalletAddress) {
+      pendingAction.current = 'reject';
+      walletConnectionRef.current?.requestWalletConnection(ownerWalletAddress);
+      return;
+    }
+    return handleRejectInner();
   };
 
   // Don't render anything if loading or no pending transfer
@@ -811,8 +852,8 @@ export const PendingTransferSection = ({
     <>
       <RequestWalletConnection
         ref={walletConnectionRef}
-        onRequestedWalletConnected={handleApprove}
-        actionDescription="to approve the domain export"
+        onRequestedWalletConnected={handleWalletConnected}
+        actionDescription="to manage the domain export"
       />
       <div className="flex flex-wrap items-center justify-between rounded-2xl bg-zinc-900 border border-amber-600 p-4 gap-y-2 col-span-2">
         <div className="space-y-0.5">
