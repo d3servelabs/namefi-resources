@@ -1,0 +1,67 @@
+---
+title: "2025年10月20日 AWS 宕机幕后解析"
+date: '2025-10-23'
+language: zh
+tags: ['dns', 'aws', 'resilience', 'incident-explainer']
+authors: ['namefiteam']
+draft: false
+description: "从域名注册商/DNS 运营角度深度解析 2025 年 10 月 20 日 AWS 事故，探讨 DNS 的实际工作原理、此次故障广泛传播的原因，以及弹性互联网团队的应对之策。"
+keywords: ['dns', 'aws 宕机', '控制平面', 'dynamodb', 'us-east-1', 'dns 缓存', '云韧性', '多签名 dns', '事故响应']
+---
+
+import Image from 'next/image';
+import heroImage from '@/../public/assets/blog/dns-is-the-control-plane/hero.png';
+
+<Image src={heroImage} alt="展示弹性 DNS 控制平面绕过区域性故障的插图" placeholder='blur' />
+
+2025年10月20日，互联网的部分区域经历了一个糟糕的早晨。Amazon Web Services (AWS) 报告其弗吉尼亚北部数据中心集群（US-EAST-1）出现问题。在随后的几个小时里，许多流行的应用程序和网站变得缓慢或无法访问——[Vercel](https://downdetector.com/status/vercel/)、[Figma](https://downdetector.in/status/figma/)、[Venmo](https://downdetector.in/status/venmo/) 和 [Snapchat](https://downdetector.com/status/snapchat/) 等等。新闻媒体和监控服务记录了数百万份用户报告，甚至部分亚马逊自身的服务也出现了闪断。
+
+然而，Namefi 的客户却度过了平静的一天。我们的系统照常运行——这并非侥幸，而是因为我们在工程和运营上的严谨投入，使得 DNS 解析具备了应对区域性故障的韧性。
+
+尽管如此，Namefi 工程团队像对待所有重大事故一样，对此次全球性宕机进行了复盘和学习。以下是我们目前的分析总结：
+
+*注：本文撰写时，该事件仍在发展中。本文可能会不时更新。如果您发现任何错误或需要更正之处，请通过 dev-team [at] [namefi.io](http://namefi.io) 联系我们。不胜感激。*
+
+## AWS 到底出了什么问题——通俗易懂版
+
+每一个应用程序和网站都需要一种方式来“查找”连接地址。这个互联网的地址簿被称为 DNS（域名系统，Domain Name System）。10月20日，AWS 内部的一个命名问题导致部分计算机无法通过名称找到关键的 AWS 数据库服务。如果地址簿不能在关键时刻提供正确的条目，即使是健康的系统也无法相互通信。
+
+AWS 在几个小时内修复了直接的命名问题，然后在当天的剩余时间里清理积压任务并让系统逐步恢复正常。到了下午晚些时候（太平洋时间），AWS 表示一切已恢复正常运行，尽管部分服务花了更长时间才完全跟上。
+
+## 受影响范围（以及这对当今互联网的启示）
+
+此次故障波及范围广泛，普通用户对此并不陌生。Snapchat 和 Reddit 等消费类应用，Zoom 和 Signal 等通讯工具，以及包括 Fortnite 和 Roblox 在内的游戏平台均报告了问题。金融服务方面，Coinbase 和 Robinhood 出现中断；而在英国，许多面向公众的服务——包括 HMRC（税务门户）和 Lloyds/Halifax/Bank of Scotland 集团旗下的银行——也经历了宕机。沃达丰（Vodafone）和英国电信（BT）的客户应用也受到影响，尽管它们的核心网络仍然可用。
+
+亚马逊自家的资产也未能幸免：Amazon.com、Prime Video、Alexa 和 Ring 都出现了中断，这表明 AWS 与其母公司的消费者服务交织得多么紧密。像 Downdetector 这样的实时追踪器记录了全球数百万用户的故障报告，突显了有多少日常生活应用构建在 AWS 之上。一些综述还指出，在此期间，娱乐应用（如 Apple Music）和大型消费品牌的移动应用也产生了连锁反应。
+
+## 技术深究
+
+AWS 的时间线指向 US-EAST-1 区域 DynamoDB API 的 DNS 解析故障。根本原因归咎于一个监控网络负载均衡器（NLB）健康状况的内部 EC2 子系统；当该子系统发生故障时，对外表现为 DynamoDB 端点的名称查找失败。AWS 在太平洋夏令时间（PDT）凌晨 2:24 缓解了 DNS 问题，并在下午 3:01 宣布所有服务恢复正常，同时积压的任务在下午逐渐消化完毕。（[Amazon](https://www.aboutamazon.com/news/aws/aws-service-disruptions-outage-update), [Reuters](https://www.reuters.com/business/retail-consumer/amazons-cloud-unit-reports-outage-several-websites-down-2025-10-20/)）
+
+独立的网络遥测显示没有更广泛的互联网路由异常（例如，没有发生 BGP 事故），这与故障位于 AWS 控制平面内部而非公共互联网上的结论一致。（[ThousandEyes](https://www.thousandeyes.com/blog/aws-outage-analysis-october-20-2025)）
+
+## 几个 DNS 行为解释了修复后的“长尾效应”：
+
+- **缓存，包括否定缓存 (Negative Caching)**。解析器会将答案存储一段时间，称为 TTL（生存时间）。按照标准，它们也会缓存失败的结果。如果解析器在事故期间缓存了“未找到”的响应，它可能会一直提供该失败响应直到计时器过期，即使 AWS 已经修正了源头。（标准参考：[RFC 2308](https://datatracker.ietf.org/doc/html/rfc2308)，更新于 [RFC 9520](https://www.rfc-editor.org/rfc/rfc9520)）
+- **控制平面与数据平面**。云平台将编排（控制平面）与稳态服务（数据平面）分离开来。导致名称查找失败的控制平面故障可能会阻塞原本健康的服务路径，因为客户端仍然需要通过名称来发现端点。AWS 自身的韧性指南区分了这些平面，并指出了控制系统中更高的复杂性和变更率。（[AWS 白皮书](https://docs.aws.amazon.com/whitepapers/latest/aws-fault-isolation-boundaries/control-planes-and-data-planes.html)）
+- **区域中心化**。US-EAST-1 托管了许多全球功能所依赖的组件；这种集中化解释了为什么一个区域性的命名问题会产生全球性的影响。（一般报道背景：[Reuters](https://www.reuters.com/business/retail-consumer/amazons-cloud-unit-reports-outage-several-websites-down-2025-10-20/)）
+
+## 小型互联网公司可以从中汲取什么经验
+
+像这样的事故强调了一个简单的理念：命名层即安全层。关于将用户发送到哪里、接下来尝试哪个数据中心以及在故障期间如何引导流量的决策，全都要通过 DNS 进行。将该层构建为独立、冗余并随时准备应对变化，可以加快恢复速度并缩小停机影响。
+
+## 为什么 DNS 至关重要以及 Namefi 的角色
+
+教训并非在于云是脆弱的；而是在于依赖单一的命名和控制路径会集中风险。现代互联网团队通过将 DNS 视为其流量的独立、弹性的引导层，并在故障到来之前准备好备用端点，从而降低这种风险。拥有稳健的 DNS，应用程序就能保留重新路由、优雅降级的能力，并在提供商遭遇糟糕的一天时更快地恢复。
+
+这一理念正是 Namefi 存在的理由。Namefi 的平台将域名和 DNS 韧性作为一种产品提供，融合了最佳实践、精心设计的 TTL 和通信界面。其结果是一个经过设计的命名层，当底层云服务正在自愈、限流或追赶进度时，它仍能继续做出正确的路由决策。采用 Namefi 的团队开箱即用就能获得这种态势，以及用于观察和调整它的操作工具，而无需将这些控制权绑定在可能正经历故障的同一平面上。
+
+当像10月20日这样的事故发生时，这种分离正是保持地图完整的关键。
+
+## 来源与延伸阅读
+
+- Amazon — 官方事故时间线和恢复步骤（太平洋夏令时间凌晨 2:24 缓解；下午 3:01 所有服务正常；恢复期间的 EC2 限流）。（[Amazon](https://www.aboutamazon.com/news/aws/aws-service-disruptions-outage-update)）
+- Reuters — 根本原因在于 EC2 内部 NLB 健康监控子系统；影响范围；数百万用户报告；积压清理。（[Reuters](https://www.reuters.com/business/retail-consumer/amazons-cloud-unit-reports-outage-several-websites-down-2025-10-20/)）
+- ThousandEyes — 聚焦 US-EAST-1、DNS 到 DynamoDB 以及缺乏更广泛路由异常的遥测数据。（[ThousandEyes](https://www.thousandeyes.com/blog/aws-outage-analysis-october-20-2025)）
+- The Verge / Tom’s Guide — 公众时间线，确认事件与 DNS/控制平面相关而非网络攻击，以及受影响平台的示例。（[The Verge](https://www.theverge.com/news/802486/aws-outage-alexa-fortnite-snapchat-offline))
+- IETF / Cloudflare 文档 — DNS 否定缓存行为 (RFC 2308, RFC 9520) 以及用于多提供商权威部署的多签名者 DNSSEC 模式 (RFC 8901, 运营商文档)。（[RFC Editor](https://www.rfc-editor.org/rfc/rfc8901), [RFC Editor](https://www.rfc-editor.org/rfc/rfc9520)）

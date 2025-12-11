@@ -1,0 +1,67 @@
+---
+title: "Dans les coulisses de la panne AWS du 20 octobre 2025"
+date: '2025-10-23'
+language: fr
+tags: ['dns', 'aws', 'resilience', 'incident-explainer']
+authors: ['namefiteam']
+draft: false
+description: "Une perspective axée sur les opérations DNS et registrar concernant l'incident AWS du 20 octobre 2025, le fonctionnement réel du DNS, les raisons de la propagation de cette panne, et ce que les équipes internet résilientes peuvent faire."
+keywords: ['dns', 'panne aws', 'plan de contrôle', 'dynamodb', 'us-east-1', 'mise en cache dns', 'résilience cloud', 'dns multi-signataire', 'réponse aux incidents']
+---
+
+import Image from 'next/image';
+import heroImage from '@/../public/assets/blog/dns-is-the-control-plane/hero.png';
+
+<Image src={heroImage} alt="Illustration de plans de contrôle DNS résilients contournant une panne régionale" placeholder='blur' />
+
+Le 20 octobre 2025, une partie d'Internet a passé une mauvaise matinée. Amazon Web Services (AWS) a signalé des problèmes dans son cluster de centres de données de Virginie du Nord (US-EAST-1). Pendant plusieurs heures, de nombreuses applications et sites populaires ont été lents ou indisponibles — [Vercel](https://downdetector.com/status/vercel/), [Figma](https://downdetector.in/status/figma/), [Venmo](https://downdetector.in/status/venmo/) et [Snapchat](https://downdetector.com/status/snapchat/), pour n'en citer que quelques-uns. Les médias et les services de surveillance ont enregistré des millions de rapports d'utilisateurs, et même certains services Amazon ont vacillé.
+
+Les clients de Namefi, cependant, ont connu une journée tranquille. Nos systèmes ont continué à fonctionner comme d'habitude — non pas par hasard, mais parce que nous investissons massivement dans l'ingénierie et la rigueur opérationnelle qui rendent la résolution DNS résiliente aux hoquets régionaux.
+
+Cela dit, l'équipe d'ingénierie de Namefi analyse les pannes mondiales comme celle-ci pour en tirer des leçons, comme elle le fait pour tout incident majeur. Voici ce qui a été appris jusqu'à présent :
+
+*Note : Au moment de la rédaction, l'incident est encore en cours de développement. Cet article peut être mis à jour périodiquement. Si vous constatez des erreurs ou des corrections nécessaires, merci de les partager avec l'équipe de développement sur [namefi.io](http://namefi.io). Nous vous en remercions.*
+
+## Ce qui s'est réellement passé chez AWS — sans jargon
+
+Chaque application et site web a besoin d'un moyen de « chercher » où se connecter. Cet annuaire d'Internet s'appelle le DNS — abréviation de Domain Name System (Système de Noms de Domaine). Le 20 octobre, un problème de nommage au sein d'AWS a fait que certains ordinateurs ne pouvaient pas trouver un service de base de données AWS clé par son nom. Si l'annuaire ne peut pas fournir la bonne entrée au bon moment, même des systèmes en bonne santé ne peuvent pas communiquer entre eux.
+
+AWS a résolu le problème immédiat de nommage en quelques heures, puis a passé le reste de la journée à résorber les retards accumulés et à ramener les systèmes à la normale. En fin d'après-midi (heure du Pacifique), AWS a déclaré que tout fonctionnait à nouveau normalement, bien que certains services aient mis plus de temps à rattraper leur retard.
+
+## Qui a été touché (et ce que cela révèle sur l'Internet d'aujourd'hui)
+
+L'impact a été large et familier pour les utilisateurs quotidiens. Des applications grand public comme Snapchat et Reddit, des outils de communication comme Zoom et Signal, et des plateformes de jeux incluant Fortnite et Roblox ont signalé des problèmes. Les services financiers ont connu des interruptions chez Coinbase et Robinhood, tandis qu'au Royaume-Uni, un certain nombre de services publics — y compris le HMRC (le portail fiscal) et les banques du groupe Lloyds/Halifax/Bank of Scotland — ont subi des pannes. Les applications clients des télécoms Vodafone et BT ont également été touchées, bien que leurs réseaux principaux soient restés disponibles.
+
+Les propres propriétés d'Amazon ont également eu des problèmes : Amazon.com, Prime Video, Alexa et Ring ont tous connu des perturbations, illustrant à quel point AWS est intimement lié aux services grand public de sa société mère. Les traqueurs en direct comme Downdetector ont enregistré des millions de signalements de problèmes dans le monde entier, soulignant combien d'applications de la vie quotidienne reposent sur AWS. Certaines synthèses ont également noté des effets d'entraînement sur les applications de divertissement (par exemple, Apple Music) et les applications mobiles de grandes marques grand public durant cette fenêtre.
+
+## Sous le capot
+
+La chronologie d'AWS pointe vers des échecs de résolution DNS pour l'API DynamoDB dans la région US-EAST-1. Le déclencheur sous-jacent a été attribué à un sous-système interne EC2 qui surveille la santé des équilibreurs de charge réseau (NLB) ; lorsque ce sous-système a dysfonctionné, cela s'est manifesté extérieurement par de mauvaises recherches de noms vers le point de terminaison DynamoDB. AWS a atténué le problème DNS à 02h24 PDT et a déclaré tous les services normaux à 15h01 PDT, tandis que les files d'attente se résorbaient au cours de l'après-midi. ([Amazon](https://www.aboutamazon.com/news/aws/aws-service-disruptions-outage-update), [Reuters](https://www.reuters.com/business/retail-consumer/amazons-cloud-unit-reports-outage-several-websites-down-2025-10-20/))
+
+La télémétrie réseau indépendante n'a noté aucune anomalie de routage Internet plus large (par exemple, aucun incident BGP), ce qui concorde avec la conclusion que la faute se situait à l'intérieur du plan de contrôle d'AWS plutôt que sur l'Internet public. ([ThousandEyes](https://www.thousandeyes.com/blog/aws-outage-analysis-october-20-2025))
+
+## Quelques comportements DNS expliquent la « longue traîne » après le correctif :
+
+- **Mise en cache, y compris la mise en cache négative.** Les résolveurs stockent les réponses pendant une période appelée TTL (Time-To-Live). Ils mettent également en cache les échecs, selon les standards. Si un résolveur a mis en cache une réponse « introuvable » pendant l'incident, il pourrait continuer à servir cet échec jusqu'à l'expiration du délai, même après qu'AWS ait corrigé la source. (Standards : [RFC 2308](https://datatracker.ietf.org/doc/html/rfc2308), mis à jour dans [RFC 9520](https://www.rfc-editor.org/rfc/rfc9520))
+- **Plan de contrôle vs plan de données.** Les plateformes cloud séparent l'orchestration (plan de contrôle) du service en régime permanent (plan de données). Un hoquet du plan de contrôle qui casse les recherches de noms peut bloquer des chemins de service autrement sains, car les clients ont toujours besoin de découvrir les points de terminaison par leur nom. Les propres directives de résilience d'AWS distinguent ces plans et notent la complexité plus élevée et le taux de changement dans les systèmes de contrôle. ([Livre blanc AWS](https://docs.aws.amazon.com/whitepapers/latest/aws-fault-isolation-boundaries/control-planes-and-data-planes.html))
+- **Centralité régionale.** US-EAST-1 héberge des composants sur lesquels reposent de nombreuses fonctionnalités mondiales ; cette concentration explique pourquoi un problème de nommage régional a eu un effet ressenti mondialement. (Contexte dans les reportages généraux : [Reuters](https://www.reuters.com/business/retail-consumer/amazons-cloud-unit-reports-outage-several-websites-down-2025-10-20/))
+
+## Ce que les petites entreprises Internet peuvent en retenir
+
+Des incidents comme celui-ci soulignent une idée simple : la couche de nommage est la couche de sécurité. Les décisions concernant l'endroit où les utilisateurs sont envoyés, quel centre de données essayer ensuite, et comment orienter le trafic en cas de problème passent toutes par le DNS. Construire cette couche pour qu'elle soit indépendante, redondante et prête au changement rend la récupération plus rapide et les pannes plus limitées.
+
+## Pourquoi le DNS est critique et comment Namefi s'y intègre
+
+La leçon n'est pas que le cloud est fragile ; c'est que la dépendance à un seul chemin de nommage et de contrôle concentre le risque. Les équipes Internet modernes réduisent ce risque en traitant le DNS comme la couche de pilotage indépendante et résiliente pour leur trafic et en préparant des points de terminaison alternatifs avant que les problèmes n'arrivent. Avec un DNS robuste en place, les applications conservent la capacité de se rediriger, de se dégrader gracieusement et de récupérer plus rapidement lorsqu'un fournisseur passe une mauvaise journée.
+
+Cette philosophie est la raison d'être de Namefi. La plateforme Namefi fournit la résilience des domaines et du DNS en tant que produit, tissant ensemble les meilleures pratiques, des TTL soigneusement conçus et des surfaces de communication optimisées. Le résultat est une couche de nommage conçue pour continuer à prendre de bonnes décisions de routage lorsque les clouds sous-jacents sont en cours de guérison, de limitation ou de rattrapage. Les équipes adoptant Namefi bénéficient de cette posture clé en main, ainsi que des outils opérationnels pour l'observer et l'ajuster sans lier ces contrôles au même plan qui pourrait rencontrer des problèmes.
+
+Lorsque des incidents comme celui du 20 octobre se produisent, cette séparation est ce qui maintient la carte intacte.
+
+## Sources et lectures complémentaires
+
+- Amazon — Chronologie officielle de l'incident et étapes de récupération (atténuation à 02h24 PDT ; tous les services normaux à 15h01 PDT ; limitation EC2 pendant la récupération). ([Amazon](https://www.aboutamazon.com/news/aws/aws-service-disruptions-outage-update))
+- Reuters — Cause racine dans le sous-système interne de surveillance de santé NLB d'EC2 ; portée de l'impact ; rapports de plusieurs millions d'utilisateurs ; résorption du retard. ([Reuters](https://www.reuters.com/business/retail-consumer/amazons-cloud-unit-reports-outage-several-websites-down-2025-10-20/))
+- ThousandEyes — Télémétrie se concentrant sur US-EAST-1, le DNS vers DynamoDB, et l'absence d'anomalies de routage plus larges. ([ThousandEyes](https://www.thousandeyes.com/blog/aws-outage-analysis-october-20-2025))
+- The Verge / Tom’s Guide — Chronologies publiques, confirmation que l'événement était lié au DNS/plan de contrôle plutôt qu'à une cyberattaque, et exemples de plateformes affectées. ([The Verge](https://www.theverge.com/news/802486/aws-outage-alexa-fortnite-snapchat-offline))
+- IETF / Cloudflare Docs — Comportement de mise en cache négative DNS (RFC 2308, RFC 9520) et modèles DNSSEC multi-signataires pour les déploiements faisant autorité multi-fournisseurs (RFC 8901, documentation opérateur). ([RFC Editor](https://www.rfc-editor.org/rfc/rfc8901), [RFC Editor](https://www.rfc-editor.org/rfc/rfc9520))

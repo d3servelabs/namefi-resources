@@ -129,7 +129,7 @@ Structure Requirements:
     -   keywords: [Array of 10-15 SEO short and long-tail keywords very very relevant to the TLD ${tld} and its releavnce to domain investing, and/or blockchain, tokenized domain. Always also start with combinations of ".${tld}" and "domains", "TLD", "top-level domain", plus "what is .${tld}", "why choose .${tld}", "what is the .${tld} domain", "why choose the .${tld} domain" as well. Every keyword should be very relevant to the TLD ${tld}. **EACH KEYWORD MUST BE A PROPERLY QUOTED STRING IN THE ARRAY** - use single quotes for each item, e.g., ['keyword1', 'keyword2']. Do NOT use escaped quotes like 'qu\'est-ce' - instead use proper quoting or rephrase to avoid apostrophes if needed.]
 
 2.  **Body Content**: (Markdown format) following the frontmatter.
-    -   **Important**: Include markdown links to authoritative external sources (e.g., ICANN, specific TLD registry site, major tech news) where relevant to back up facts or provide more info.
+    -   **Important**: Include markdown links to authoritative external sources for concept mentioned (e.g., ICANN, specific TLD registry site, major tech news, official site for the concept, wikipedia articles etc.) where relevant to back up facts or provide more info.
     -   **Introduction**: Header "## **What is .${tld}?**"
         -   Explain what .${tld} stands for (if applicable) or its general category (ccTLD, gTLD, new gTLD).
         -   Brief history or intended purpose.
