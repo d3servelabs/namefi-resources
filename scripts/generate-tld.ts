@@ -24,6 +24,7 @@ let limit = 0;
 let dateArg: string | null = null;
 let useAllIcann = false;
 let force = false;
+let specificTasks: { locale: string; tld: string }[] = [];
 
 // Parse args
 for (let i = 0; i < args.length; i++) {
@@ -33,6 +34,16 @@ for (let i = 0; i < args.length; i++) {
     i++;
   } else if (arg === "--locales") {
     targetLocales = args[i + 1]?.split(",").map((s) => s.trim()) || [];
+    i++;
+  } else if (arg === "--locale-tlds") {
+    // Expected format: en/ally,de/ads
+    const pairs = args[i + 1]?.split(",").map((s) => s.trim()) || [];
+    for (const pair of pairs) {
+      const [locale, tld] = pair.split("/");
+      if (locale && tld) {
+        specificTasks.push({ locale, tld });
+      }
+    }
     i++;
   } else if (arg === "--limit") {
     limit = parseInt(args[i + 1], 10);
@@ -90,14 +101,32 @@ Language: ${locale} (Use the ISO language code to determine the language. e.g. '
 
 Structure Requirements:
 1.  **Frontmatter**: Must be at the very top of the file. Start with \`---\`, then valid YAML key-value pairs, then end with \`---\`.
-    -   title: A catchy title like "What is .${tld} TLD and why choose it?" (Translate to target language).
+    -   **CRITICAL YAML FORMATTING RULES**:
+        -   ALL string values containing colons (:), quotes, apostrophes, or special characters MUST be wrapped in single quotes ('...') or double quotes ("...")
+        -   The description field MUST always be quoted because it often contains colons
+        -   Keywords array items MUST be properly quoted strings, not escaped quotes
+        -   Use proper YAML array syntax: keywords: ['keyword1', 'keyword2', 'keyword3']
+        -   Example of correct frontmatter:
+            \`\`\`
+            ---
+            title: 'What is .${tld} TLD and why choose it?'
+            date: '${currentDate}'
+            language: '${locale}'
+            tags: ['tld']
+            authors: ['namefiteam']
+            draft: false
+            description: 'A compelling description about .${tld} domains and their benefits for your business.'
+            keywords: ['.${tld}', '.${tld} domains', '.${tld} TLD', 'what is .${tld}', 'why choose .${tld}']
+            ---
+            \`\`\`
+    -   title: A catchy title like "What is .${tld} TLD and why choose it?" (Translate to target language). MUST be quoted if it contains colons or special characters.
     -   date: '${currentDate}'
     -   language: '${locale}'
     -   tags: ['tld']
     -   authors: ['namefiteam']
     -   draft: false
-    -   description: A short, compelling meta description (150-160 chars).
-    -   keywords: [Array of 10-15 SEO short and long-tail keywords very very relevant to the TLD ${tld} and its releavnce to domain investing, and/or blockchain, tokenized domain. Always also start with combinations of ".${tld}" and "domains", "TLD", "top-level domain", plus "what is .${tld}", "why choose .${tld}", "what is the .${tld} domain", "why choose the .${tld} domain" as well. Every keyword should be very relevant to the TLD ${tld}.]
+    -   description: A short, compelling meta description (150-160 chars). **MUST ALWAYS BE QUOTED** (use single quotes '...' or double quotes "...") because descriptions often contain colons which break YAML parsing.
+    -   keywords: [Array of 10-15 SEO short and long-tail keywords very very relevant to the TLD ${tld} and its releavnce to domain investing, and/or blockchain, tokenized domain. Always also start with combinations of ".${tld}" and "domains", "TLD", "top-level domain", plus "what is .${tld}", "why choose .${tld}", "what is the .${tld} domain", "why choose the .${tld} domain" as well. Every keyword should be very relevant to the TLD ${tld}. **EACH KEYWORD MUST BE A PROPERLY QUOTED STRING IN THE ARRAY** - use single quotes for each item, e.g., ['keyword1', 'keyword2']. Do NOT use escaped quotes like 'qu\'est-ce' - instead use proper quoting or rephrase to avoid apostrophes if needed.]
 
 2.  **Body Content**: (Markdown format) following the frontmatter.
     -   **Important**: Include markdown links to authoritative external sources (e.g., ICANN, specific TLD registry site, major tech news) where relevant to back up facts or provide more info.
@@ -190,6 +219,19 @@ async function callGeminiThrottled(tld: string, locale: string) {
     }
 }
 
+// Basic validity check to avoid writing malformed posts
+function isValidContent(text: string, tld: string, locale: string) {
+    const trimmed = text.trim();
+    const hasFrontmatter = trimmed.startsWith("---");
+    const hasTitle = text.includes("title:");
+    const hasDate = text.includes("date:");
+    if (!hasFrontmatter || !hasTitle || !hasDate) {
+        console.warn(`⚠️ Skipping write for .${tld} (${locale}) – missing frontmatter/title/date.`);
+        return false;
+    }
+    return true;
+}
+
 async function processTask(tld: string, locale: string, dirPath: string) {
     const filePath = path.join(dirPath, `${tld}.md`);
 
@@ -216,7 +258,7 @@ async function processTask(tld: string, locale: string, dirPath: string) {
             // Only call the throttled function here
             const content = await callGeminiThrottled(tld, locale);
 
-            if (content) {
+            if (content && isValidContent(content, tld, locale)) {
                 await fs.writeFile(filePath, content, "utf-8");
                 console.log(`✓ Saved: ${filePath}`);
                 return;
@@ -243,20 +285,33 @@ async function main() {
   const limitPool = pLimit(CONCURRENCY);
   const tasks = [];
 
-  for (const locale of targetLocales) {
-    const dirPath = path.join(process.cwd(), "content", "tld", locale);
-    try {
-      await fs.mkdir(dirPath, { recursive: true });
-    } catch (e) {
-       // ignore if exists
-    }
-    for (const tld of tldsToProcess) {
-        // We wrap the processTask in the limit function.
-        // processTask handles the "skip" logic internally at the start.
-        // If skipped, it returns quickly and doesn't call callGeminiThrottled,
-        // so it doesn't wait on the rate limiter.
-        tasks.push(limitPool(() => processTask(tld, locale, dirPath)));
-    }
+  if (specificTasks.length > 0) {
+      console.log(`Processing ${specificTasks.length} specific locale/TLD pairs...`);
+      for (const { locale, tld } of specificTasks) {
+          const dirPath = path.join(process.cwd(), "content", "tld", locale);
+          try {
+              await fs.mkdir(dirPath, { recursive: true });
+          } catch (e) {
+              // ignore if exists
+          }
+          tasks.push(limitPool(() => processTask(tld, locale, dirPath)));
+      }
+  } else {
+      for (const locale of targetLocales) {
+        const dirPath = path.join(process.cwd(), "content", "tld", locale);
+        try {
+          await fs.mkdir(dirPath, { recursive: true });
+        } catch (e) {
+           // ignore if exists
+        }
+        for (const tld of tldsToProcess) {
+            // We wrap the processTask in the limit function.
+            // processTask handles the "skip" logic internally at the start.
+            // If skipped, it returns quickly and doesn't call callGeminiThrottled,
+            // so it doesn't wait on the rate limiter.
+            tasks.push(limitPool(() => processTask(tld, locale, dirPath)));
+        }
+      }
   }
 
   await Promise.all(tasks);

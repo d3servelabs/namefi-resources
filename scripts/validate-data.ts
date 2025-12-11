@@ -39,9 +39,55 @@ function isMarkdownFile(fileName: string) {
   return MARKDOWN_EXTENSIONS.has(path.extname(fileName));
 }
 
-function loadFrontmatter(filePath: string) {
-  const raw = readFileSync(filePath, 'utf8');
-  return matter(raw).data as Record<string, unknown>;
+type FrontmatterResult =
+  | { data: Record<string, unknown>; error: null }
+  | { data: null; error: string };
+
+function loadFrontmatter(filePath: string): FrontmatterResult {
+  try {
+    const raw = readFileSync(filePath, 'utf8');
+    const parsed = matter(raw);
+    return { data: parsed.data as Record<string, unknown>, error: null };
+  } catch (error: unknown) {
+    const relativePath = toRelative(filePath);
+    let errorMessage = `YAML parsing error in ${relativePath}`;
+
+    if (error && typeof error === 'object' && 'name' in error) {
+      const yamlError = error as {
+        name?: string;
+        message?: string;
+        mark?: {
+          line?: number;
+          column?: number;
+          getSnippet?: () => string;
+        };
+        reason?: string;
+      };
+
+      if (yamlError.mark) {
+        const line = yamlError.mark.line ?? '?';
+        const column = yamlError.mark.column ?? '?';
+        errorMessage = `YAML parsing error in ${relativePath}:\n   Line ${line}, column ${column}: ${yamlError.reason || yamlError.message || 'unknown error'}`;
+
+        if (yamlError.mark.getSnippet) {
+          try {
+            const snippet = yamlError.mark.getSnippet();
+            if (snippet) {
+              errorMessage += `\n   Snippet: ${snippet.trim()}`;
+            }
+          } catch {
+            // Ignore snippet errors
+          }
+        }
+      } else if (yamlError.message) {
+        errorMessage = `YAML parsing error in ${relativePath}: ${yamlError.message}`;
+      }
+    } else if (error instanceof Error) {
+      errorMessage = `Error reading ${relativePath}: ${error.message}`;
+    }
+
+    return { data: null, error: errorMessage };
+  }
 }
 
 function asString(value: unknown) {
@@ -79,21 +125,61 @@ function validateDate(rawDate: unknown) {
   return false;
 }
 
+async function processInBatches<T, R>(
+  items: T[],
+  processor: (item: T) => Promise<R> | R,
+  concurrency: number,
+): Promise<R[]> {
+  const results: R[] = [];
+
+  for (let i = 0; i < items.length; i += concurrency) {
+    const batch = items.slice(i, i + concurrency);
+    const batchResults = await Promise.allSettled(
+      batch.map((item) => Promise.resolve(processor(item))),
+    );
+
+    for (const result of batchResults) {
+      if (result.status === 'fulfilled') {
+        results.push(result.value);
+      } else {
+        // If a processor throws, we still want to continue
+        // This shouldn't happen with our current implementation, but handle it gracefully
+        throw result.reason;
+      }
+    }
+  }
+
+  return results;
+}
+
 function validateContentFile(
   collection: Collection,
   locale: Locale,
   filePath: string,
 ): ValidationResult {
-  const data = loadFrontmatter(filePath);
+  const frontmatterResult = loadFrontmatter(filePath);
   const errors: Issue[] = [];
   const warnings: Issue[] = [];
   const relativePath = toRelative(filePath);
   const filesChecked = 1;
 
+  // If there's a YAML parsing error, return it immediately and skip further validation
+  if (frontmatterResult.error) {
+    errors.push({
+      file: relativePath,
+      message: frontmatterResult.error,
+    });
+    return { errors, warnings, filesChecked };
+  }
+
+  // TypeScript: after error check, data is guaranteed to be non-null
+  const data = frontmatterResult.data!;
+
   let language: Locale = locale;
   if (typeof data.language === 'string') {
+    const dataLanguage = data.language;
     const matched = locales.find(
-      (value) => value.toLowerCase() === data.language.toLowerCase(),
+      (value) => value.toLowerCase() === dataLanguage.toLowerCase(),
     );
     if (matched) {
       language = matched;
@@ -183,11 +269,11 @@ function validateContentFile(
   return { errors, warnings, filesChecked };
 }
 
-function validateCollection(
+async function validateCollection(
   collection: Collection,
   locale: Locale,
   directory: string,
-): ValidationResult {
+): Promise<ValidationResult> {
   const errors: Issue[] = [];
   const warnings: Issue[] = [];
   let filesChecked = 0;
@@ -203,13 +289,25 @@ function validateCollection(
     return { errors, warnings, filesChecked };
   }
 
+  // Collect all markdown files first
+  const markdownFiles: string[] = [];
   for (const entry of entries) {
     const filePath = path.join(directory, entry);
     const stats = statSync(filePath);
     if (stats.isDirectory()) continue;
     if (!isMarkdownFile(entry)) continue;
+    markdownFiles.push(filePath);
+  }
 
-    const result = validateContentFile(collection, locale, filePath);
+  // Process files in parallel batches of 5
+  const results = await processInBatches(
+    markdownFiles,
+    (filePath) => validateContentFile(collection, locale, filePath),
+    5,
+  );
+
+  // Aggregate results
+  for (const result of results) {
     errors.push(...result.errors);
     warnings.push(...result.warnings);
     filesChecked += result.filesChecked;
@@ -218,7 +316,7 @@ function validateCollection(
   return { errors, warnings, filesChecked };
 }
 
-function main() {
+async function main() {
   const errors: Issue[] = [];
   const warnings: Issue[] = [];
 
@@ -235,7 +333,7 @@ function main() {
   for (const collection of collections) {
     for (const locale of locales) {
       const directory = path.join(COLLECTION_ROOTS[collection], locale);
-      const result = validateCollection(collection, locale, directory);
+      const result = await validateCollection(collection, locale, directory);
       errors.push(...result.errors);
       warnings.push(...result.warnings);
       filesChecked += result.filesChecked;
@@ -260,6 +358,32 @@ function main() {
     console.error(
       '\nFix the errors above (warnings are optional) and rerun: bun data:validate',
     );
+
+    // Suggest regeneration for TLD files if applicable
+    const tldErrors = errors.filter((e) => e.file.startsWith('content/tld/'));
+    if (tldErrors.length > 0) {
+      const failedTlds = new Set<string>();
+      for (const err of tldErrors) {
+        // Expected path format: content/tld/[locale]/[tld].md
+        const parts = err.file.split('/');
+        if (parts.length >= 4) {
+          const locale = parts[2];
+          const filename = parts[3];
+          if (filename.endsWith('.md')) {
+            const tld = filename.replace('.md', '');
+            failedTlds.add(`${locale}/${tld}`);
+          }
+        }
+      }
+
+      if (failedTlds.size > 0) {
+        const localeTldsArg = Array.from(failedTlds).join(',');
+        console.error(
+          `\n💡 Suggestion: Regenerate the failing TLD articles with:\n   bun scripts/generate-tld.ts --locale-tlds ${localeTldsArg} --overwrite`,
+        );
+      }
+    }
+
     process.exitCode = 1;
     return;
   }
