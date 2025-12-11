@@ -2,6 +2,7 @@ import type { MDXComponents } from 'mdx/types';
 import type { AnchorHTMLAttributes, ReactNode } from 'react';
 import Link from 'next/link';
 import { cn } from '@/lib/cn';
+import { ContentImage } from '@/components/content-image';
 
 const Wrapper = ({ children }: { children: ReactNode }) => (
   <div className="mx-auto w-full max-w-4xl px-6 py-16 md:px-8 md:py-20 lg:max-w-6xl">
@@ -42,6 +43,7 @@ export function useMDXComponents(
 ): MDXComponents {
   return {
     a: Anchor,
+    img: ContentImage,
     wrapper: Wrapper,
     ...components,
   };

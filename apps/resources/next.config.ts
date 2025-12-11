@@ -1,5 +1,12 @@
 import createMdx from '@next/mdx';
 import type { NextConfig } from 'next';
+// biome-ignore lint/correctness/noNodejsModules: next.config runs in Node and needs createRequire
+import { createRequire } from 'node:module';
+
+const require = createRequire(import.meta.url);
+const remarkStaticImageImportsPath = require.resolve(
+  './mdx-plugins/remark-static-image-imports',
+);
 
 const withMDX = createMdx({
   extension: /\.mdx?$/,
@@ -10,6 +17,7 @@ const withMDX = createMdx({
       'remark-gfm',
       'remark-reading-time',
       'remark-reading-time/mdx',
+      remarkStaticImageImportsPath,
     ],
   },
 });
