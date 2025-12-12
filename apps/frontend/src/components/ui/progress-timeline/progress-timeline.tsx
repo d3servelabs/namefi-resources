@@ -4,6 +4,7 @@ import { useMemo, type ReactNode } from 'react';
 import { ProgressTimelineStep } from './progress-timeline-step';
 import { ProgressTimelineSkeleton } from './progress-timeline-skeleton';
 import type { StepDisplayInfo, TimelineStep } from './types';
+import { cn } from '@/lib/cn';
 
 interface ProgressTimelineProps<TStepId extends string = string> {
   /** Whether the timeline is in a loading state */
@@ -22,6 +23,15 @@ interface ProgressTimelineProps<TStepId extends string = string> {
   activeStepId?: string | null;
   /** Number of skeleton steps to show when loading */
   skeletonStepCount?: number;
+  /** Map of substep IDs to display labels and helpers (for nested workflows) */
+  substepDisplayInfo?: Record<string, StepDisplayInfo>;
+  /** Function to get substep display info for a specific step (alternative to substepDisplayInfo) */
+  getSubstepDisplayInfo?: (
+    stepId: string,
+  ) => Record<string, StepDisplayInfo> | undefined;
+  /** Whether to show the title */
+  showTitle?: boolean;
+  className?: string;
 }
 
 /**
@@ -52,6 +62,9 @@ export function ProgressTimeline<TStepId extends string = string>({
   badge,
   activeStepId: activeStepIdOverride,
   skeletonStepCount,
+  getSubstepDisplayInfo,
+  className,
+  showTitle = true,
 }: ProgressTimelineProps<TStepId>) {
   // Compute active step if not overridden
   const activeStepId = useMemo(() => {
@@ -82,16 +95,23 @@ export function ProgressTimeline<TStepId extends string = string>({
   }
 
   return (
-    <div className="rounded-2xl border border-border bg-background/60 p-6 shadow-sm">
-      <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
-        <div>
-          {subtitle && (
-            <p className="text-sm text-muted-foreground">{subtitle}</p>
-          )}
-          <h2 className="text-xl font-semibold">{effectiveTitle}</h2>
+    <div
+      className={cn(
+        'rounded-2xl border border-border bg-background/60 p-6 shadow-sm',
+        className,
+      )}
+    >
+      {showTitle && !!badge && (
+        <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+          <div className={showTitle ? '' : 'invisible'}>
+            {subtitle && (
+              <p className="text-sm text-muted-foreground">{subtitle}</p>
+            )}
+            <h2 className="text-xl font-semibold">{effectiveTitle}</h2>
+          </div>
+          {badge}
         </div>
-        {badge}
-      </div>
+      )}
 
       <ol className="mt-5 space-y-4">
         {steps.map((step) => {
@@ -99,6 +119,10 @@ export function ProgressTimeline<TStepId extends string = string>({
           if (!display) {
             return null;
           }
+          // Use getSubstepDisplayInfo function if provided, otherwise fall back to substepDisplayInfo
+          const stepSubstepDisplayInfo = getSubstepDisplayInfo
+            ? getSubstepDisplayInfo(step.id)
+            : undefined;
           return (
             <ProgressTimelineStep
               key={step.id}
@@ -106,6 +130,8 @@ export function ProgressTimeline<TStepId extends string = string>({
               label={display.label}
               helper={step.message ?? display.helper}
               isActive={step.id === activeStepId}
+              substeps={step.substeps}
+              substepDisplayInfo={stepSubstepDisplayInfo}
             />
           );
         })}

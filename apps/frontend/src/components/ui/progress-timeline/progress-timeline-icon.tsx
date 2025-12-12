@@ -10,7 +10,14 @@ import type { StepStatus } from './types';
 interface ProgressTimelineIconProps {
   status: StepStatus;
   className?: string;
+  /** Size variant for the icon */
+  size?: 'sm' | 'md';
 }
+
+const sizeClasses = {
+  sm: 'h-3.5 w-3.5',
+  md: 'h-5 w-5',
+};
 
 /**
  * Renders an icon based on the step status.
@@ -18,8 +25,9 @@ interface ProgressTimelineIconProps {
 export function ProgressTimelineIcon({
   status,
   className,
+  size = 'md',
 }: ProgressTimelineIconProps) {
-  const baseClass = className ?? 'h-5 w-5';
+  const baseClass = className ?? sizeClasses[size];
 
   switch (status) {
     case 'COMPLETED':

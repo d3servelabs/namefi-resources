@@ -15,6 +15,11 @@ export interface TimelineStep {
   id: string;
   status: StepStatus;
   message?: string;
+  /**
+   * Substeps for nested/embedded workflows.
+   * When present, the step can be expanded to show its substeps in an accordion.
+   */
+  substeps?: TimelineStep[];
 }
 
 /**
