@@ -1,10 +1,13 @@
 import { db, dnsRecordsTable } from '@namefi-astra/db';
+import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 import { recordSchema } from '@namefi-astra/zod-dns';
 import { TRPCError } from '@trpc/server';
+import type { WorkflowExecutionStatusName } from '@temporalio/client';
 import { and, eq, inArray, sql } from 'drizzle-orm';
 import { assoc, isNotNil, map, pickBy, pluck } from 'ramda';
 import { z } from 'zod';
+import { logger } from '#lib/logger';
 import { isDomainParked, parkDomain } from '#services/dns/parking';
 import {
   createRecord,
@@ -15,8 +18,130 @@ import {
   updateRecordInputSchema,
   validateZone,
 } from '../../services/dns/service';
+import { temporalClient } from '../../temporal/client';
+import {
+  enableDnssecWorkflow,
+  getEnableDnssecProgressQuery,
+  type EnableDnssecStepId,
+} from '../../temporal/workflows/enable-dnssec.workflow';
+import {
+  disableDnssecWorkflow,
+  getDisableDnssecProgressQuery,
+  type DisableDnssecStepId,
+} from '../../temporal/workflows/disable-dnssec.workflow';
+import type { WorkflowProgressState } from '../../temporal/shared/workflow-helpers/workflow-progress';
 import { createTRPCRouter, protectedProcedure, publicProcedure } from '../base';
 import { assertAuthenticatedUserIsDomainOwner } from '../guards/assert-domain-owner';
+
+type EnableDnssecProgressSnapshot = {
+  workflowStatus: WorkflowExecutionStatusName | 'NOT_FOUND';
+  runId: string | null;
+  state: WorkflowProgressState<EnableDnssecStepId> | null;
+};
+
+type EnableDnssecProgressPayload = EnableDnssecProgressSnapshot & {
+  domainName: string;
+  fetchedAt: string;
+};
+
+type DisableDnssecProgressSnapshot = {
+  workflowStatus: WorkflowExecutionStatusName | 'NOT_FOUND';
+  runId: string | null;
+  state: WorkflowProgressState<DisableDnssecStepId> | null;
+};
+
+type DisableDnssecProgressPayload = DisableDnssecProgressSnapshot & {
+  domainName: string;
+  fetchedAt: string;
+};
+
+const fetchEnableDnssecWorkflowSnapshot = async (
+  domainName: PunycodeDomainName,
+): Promise<EnableDnssecProgressSnapshot> => {
+  const workflowId = enableDnssecWorkflow.generateId({ domainName });
+  const handle = temporalClient.workflow.getHandle(workflowId);
+
+  try {
+    const description = await handle.describe();
+    const workflowStatus = description.status.name;
+
+    let state: WorkflowProgressState<EnableDnssecStepId> | null = null;
+    const isQueryable =
+      workflowStatus === 'RUNNING' || workflowStatus === 'COMPLETED';
+    if (isQueryable) {
+      try {
+        state = await handle.query(getEnableDnssecProgressQuery);
+      } catch (error) {
+        logger.debug(
+          { error, workflowId, domainName },
+          'Enable DNSSEC workflow state query failed',
+        );
+        state = null;
+      }
+    }
+
+    return {
+      workflowStatus,
+      runId: description.runId,
+      state,
+    };
+  } catch (error) {
+    logger.debug(
+      { error, workflowId, domainName },
+      'Failed to fetch enable DNSSEC workflow snapshot',
+    );
+
+    return {
+      workflowStatus: 'NOT_FOUND',
+      runId: null,
+      state: null,
+    };
+  }
+};
+
+const fetchDisableDnssecWorkflowSnapshot = async (
+  domainName: PunycodeDomainName,
+): Promise<DisableDnssecProgressSnapshot> => {
+  const workflowId = disableDnssecWorkflow.generateId({ domainName });
+  const handle = temporalClient.workflow.getHandle(workflowId);
+
+  try {
+    const description = await handle.describe();
+    const workflowStatus = description.status.name;
+
+    let state: WorkflowProgressState<DisableDnssecStepId> | null = null;
+    const isQueryable =
+      workflowStatus === 'RUNNING' || workflowStatus === 'COMPLETED';
+    if (isQueryable) {
+      try {
+        state = await handle.query(getDisableDnssecProgressQuery);
+      } catch (error) {
+        logger.debug(
+          { error, workflowId, domainName },
+          'Disable DNSSEC workflow state query failed',
+        );
+        state = null;
+      }
+    }
+
+    return {
+      workflowStatus,
+      runId: description.runId,
+      state,
+    };
+  } catch (error) {
+    logger.debug(
+      { error, workflowId, domainName },
+      'Failed to fetch disable DNSSEC workflow snapshot',
+    );
+
+    return {
+      workflowStatus: 'NOT_FOUND',
+      runId: null,
+      state: null,
+    };
+  }
+};
 
 export const dnsRecordsRouter = createTRPCRouter({
   /**
@@ -242,4 +367,58 @@ export const dnsRecordsRouter = createTRPCRouter({
   isDomainParked: publicProcedure
     .input(z.object({ normalizedDomainName: namefiNormalizedDomainSchema }))
     .query(({ input }) => isDomainParked(input.normalizedDomainName)),
+
+  /**
+   * Get DNSSEC enable workflow progress for a domain.
+   * Returns the current state of the workflow if running or completed.
+   */
+  getEnableDnssecProgress: protectedProcedure
+    .input(
+      z.object({
+        domainName: namefiNormalizedDomainSchema,
+      }),
+    )
+    .query(async ({ ctx, input }): Promise<EnableDnssecProgressPayload> => {
+      const { domainName } = input;
+
+      await assertAuthenticatedUserIsDomainOwner(domainName, ctx.user);
+
+      // Cast to PunycodeDomainName since NamefiNormalizedDomain is compatible
+      const snapshot = await fetchEnableDnssecWorkflowSnapshot(
+        domainName as PunycodeDomainName,
+      );
+
+      return {
+        ...snapshot,
+        domainName,
+        fetchedAt: new Date().toISOString(),
+      };
+    }),
+
+  /**
+   * Get DNSSEC disable workflow progress for a domain.
+   * Returns the current state of the workflow if running or completed.
+   */
+  getDisableDnssecProgress: protectedProcedure
+    .input(
+      z.object({
+        domainName: namefiNormalizedDomainSchema,
+      }),
+    )
+    .query(async ({ ctx, input }): Promise<DisableDnssecProgressPayload> => {
+      const { domainName } = input;
+
+      await assertAuthenticatedUserIsDomainOwner(domainName, ctx.user);
+
+      // Cast to PunycodeDomainName since NamefiNormalizedDomain is compatible
+      const snapshot = await fetchDisableDnssecWorkflowSnapshot(
+        domainName as PunycodeDomainName,
+      );
+
+      return {
+        ...snapshot,
+        domainName,
+        fetchedAt: new Date().toISOString(),
+      };
+    }),
 });

@@ -270,15 +270,12 @@ export async function enableAutoDnssecForDomain(
   _logger.debug(`Submitting Request to enable DNSSEC for domain ${domainName}`);
 
   try {
+    const workflowInput = { domainName };
     await temporalClient.workflow.start(enableDnssecWorkflow, {
       taskQueue: TEMPORAL_QUEUES.DOMAINS,
-      workflowId: `enable-dnssec-${domainName}`,
+      workflowId: enableDnssecWorkflow.generateId(workflowInput),
       workflowIdReusePolicy: WorkflowIdReusePolicy.ALLOW_DUPLICATE,
-      args: [
-        {
-          domainName,
-        },
-      ],
+      args: [workflowInput],
     });
 
     _logger.debug('EnableDnssec Temporal Workflow Started Successfully');
@@ -312,17 +309,19 @@ export async function enableAutoDnssecForDomainImmediate(
 export async function getActiveDnssecOperationWorkflows(
   domainName: PunycodeDomainName,
 ) {
+  const enableWorkflowId = enableDnssecWorkflow.generateId({ domainName });
+  const disableWorkflowId = disableDnssecWorkflow.generateId({ domainName });
   const workflows = await temporalClient.workflow.list({
-    query: `TaskQueue = '${TEMPORAL_QUEUES.DOMAINS}' AND ExecutionStatus = 'Running' AND (WorkflowId = 'disable-dnssec-${domainName}' OR WorkflowId = 'enable-dnssec-${domainName}')`,
+    query: `TaskQueue = '${TEMPORAL_QUEUES.DOMAINS}' AND ExecutionStatus = 'Running' AND (WorkflowId = '${disableWorkflowId}' OR WorkflowId = '${enableWorkflowId}')`,
   });
 
   for await (const workflow of workflows) {
     const status = await workflow.status;
     if (status.name === 'RUNNING') {
       return {
-        operation: workflow.workflowId.includes('disable-dnssec')
+        operation: (workflow.workflowId.includes('disable-dnssec')
           ? 'REMOVE_DNSSEC'
-          : 'ENABLE_DNSSEC',
+          : 'ENABLE_DNSSEC') as 'REMOVE_DNSSEC' | 'ENABLE_DNSSEC',
         workflowId: workflow.workflowId,
         runId: workflow.runId,
         workflowType: workflow.type,
@@ -354,15 +353,12 @@ export async function disableDnssecForDomain(
   );
 
   try {
+    const workflowInput = { domainName };
     await temporalClient.workflow.start(disableDnssecWorkflow, {
       taskQueue: TEMPORAL_QUEUES.DOMAINS,
-      workflowId: `disable-dnssec-${domainName}`,
+      workflowId: disableDnssecWorkflow.generateId(workflowInput),
       workflowIdReusePolicy: WorkflowIdReusePolicy.ALLOW_DUPLICATE,
-      args: [
-        {
-          domainName,
-        },
-      ],
+      args: [workflowInput],
     });
 
     _logger.debug('DisableDnssec Temporal Workflow Started Successfully');
