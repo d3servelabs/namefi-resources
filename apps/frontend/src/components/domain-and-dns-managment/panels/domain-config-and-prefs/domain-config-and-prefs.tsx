@@ -283,6 +283,7 @@ export const DomainConfigAndPrefsForm = ({
     <div className="flex flex-col items-start gap-4">
       <ActiveNameserversChangeWorkflowBanner
         activeNameserversChangeWorkflow={activeNameserversChangeWorkflow}
+        domainName={domainName}
       />
 
       <div className="grid grid-cols-2 gap-2 w-full">

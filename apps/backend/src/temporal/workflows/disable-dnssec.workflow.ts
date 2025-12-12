@@ -41,14 +41,17 @@ export interface DisableDnssecWorkflowInput {
  */
 export async function disableDnssecWorkflow(
   input: DisableDnssecWorkflowInput,
-): Promise<void> {
+): Promise<WorkflowProgressState<DisableDnssecStepId>> {
   // Initialize progress tracking
-  const progress = createWorkflowProgress<DisableDnssecStepId>([
-    'check-status',
-    'remove-ds-record',
-    'verify-removal',
-    'disable-zone-signing',
-  ]);
+  const progress = createWorkflowProgress<DisableDnssecStepId>(
+    [
+      'check-status',
+      'remove-ds-record',
+      'verify-removal',
+      'disable-zone-signing',
+    ],
+    { workflowType: 'disableDnssec' },
+  );
 
   // Expose progress state via query
   workflow.setHandler(getDisableDnssecProgressQuery, () => progress.state);
@@ -64,7 +67,8 @@ export async function disableDnssecWorkflow(
     options: {
       startToCloseTimeout: '1 minute',
       retry: {
-        initialInterval: '2 minute',
+        initialInterval: '30 seconds',
+        backoffCoefficient: 1.5,
         maximumInterval: '2 minutes',
         maximumAttempts: undefined,
       },
@@ -184,6 +188,8 @@ export async function disableDnssecWorkflow(
       'DNSSEC disabled successfully',
     );
     progress.complete();
+
+    return progress.state;
   } catch (e) {
     // Only update progress if not already failed
     if (progress.state.phase !== 'FAILED') {
@@ -201,3 +207,8 @@ disableDnssecWorkflow.generateId = (
 ): string => {
   return `disable-dnssec-[${input.domainName}]`;
 };
+
+/**
+ * The progress query for this workflow.
+ */
+disableDnssecWorkflow.progressQuery = getDisableDnssecProgressQuery;

@@ -246,6 +246,7 @@ export const DnssecPanelInner = ({
       <div className="flex flex-col items-start gap-4">
         <ActiveNameserversChangeWorkflowBanner
           activeNameserversChangeWorkflow={activeNameserversChangeWorkflow}
+          domainName={domainName}
         />
         {isUsingNamefiSigning ? (
           <div className="flex items-center gap-2">
@@ -351,12 +352,16 @@ function DnssecProgressModal({
             loading={enableProgress.isLoading}
             steps={enableProgress.steps}
             stepDisplayInfo={enableDnssecStepDisplayInfo}
+            showTitle={false}
+            className="border-none"
           />
         ) : (
           <ProgressTimeline
             loading={disableProgress.isLoading}
             steps={disableProgress.steps}
             stepDisplayInfo={disableDnssecStepDisplayInfo}
+            showTitle={false}
+            className="border-none"
           />
         )}
       </DialogContent>
@@ -379,9 +384,16 @@ export const DnssecPanelAction = ({
     data: activeDnssecOperationWorkflows,
     isLoading: isLoadingActiveDnssecOperationWorkflows,
   } = useQuery(
-    trpc.domainConfig.dnssec.getActiveDnssecOperationWorkflows.queryOptions({
-      domainName,
-    }),
+    trpc.domainConfig.dnssec.getActiveDnssecOperationWorkflows.queryOptions(
+      {
+        domainName,
+      },
+      {
+        refetchInterval: (query) => {
+          return query.state.data?.hasActiveWorkflow ? 5000 : 15_000;
+        },
+      },
+    ),
   );
 
   const isUsingNamefiSigning =

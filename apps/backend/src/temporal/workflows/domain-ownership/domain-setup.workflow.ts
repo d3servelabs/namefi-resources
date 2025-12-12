@@ -41,7 +41,9 @@ export async function domainSetupWorkflow(
             domainName: input.normalizedDomainName as PunycodeDomainName, // TODO: Add validation or type guard
           },
         ],
-        workflowId: `reset-nameservers-${input.normalizedDomainName}`,
+        workflowId: resetNameserversWorkflow.generateId({
+          domainName: input.normalizedDomainName as PunycodeDomainName,
+        }),
         workflowIdReusePolicy: 'ALLOW_DUPLICATE',
       });
     } else if (levels.length === 3) {

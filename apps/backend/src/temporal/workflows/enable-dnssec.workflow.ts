@@ -43,12 +43,15 @@ export async function enableDnssecWorkflow(
   input: EnableDnssecWorkflowInput,
 ): Promise<void> {
   // Initialize progress tracking
-  const progress = createWorkflowProgress<EnableDnssecStepId>([
-    'check-support',
-    'enable-zone-signing',
-    'associate-ds-record',
-    'verify-propagation',
-  ]);
+  const progress = createWorkflowProgress<EnableDnssecStepId>(
+    [
+      'check-support',
+      'enable-zone-signing',
+      'associate-ds-record',
+      'verify-propagation',
+    ],
+    { workflowType: 'enableDnssec' },
+  );
 
   // Expose progress state via query
   workflow.setHandler(getEnableDnssecProgressQuery, () => progress.state);
@@ -195,3 +198,8 @@ enableDnssecWorkflow.generateId = (
 ): string => {
   return `enable-dnssec-[${input.domainName}]`;
 };
+
+/**
+ * The progress query for this workflow.
+ */
+enableDnssecWorkflow.progressQuery = getEnableDnssecProgressQuery;

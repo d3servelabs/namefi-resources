@@ -9,6 +9,13 @@ import {
   CardTitle,
 } from '@/components/ui/shadcn/card';
 import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/shadcn/dialog';
+import {
   Form,
   FormControl,
   FormField,
@@ -24,6 +31,15 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/shadcn/tooltip';
+import { ProgressTimeline } from '@/components/ui/progress-timeline';
+import {
+  useChangeNameserversProgress,
+  changeNameserversStepDisplayInfo,
+  changeNameserversSubstepDisplayInfo,
+  resetNameserversStepDisplayInfo,
+  resetNameserversChangeSubstepDisplayInfo,
+  resetNameserversEnableDnssecSubstepDisplayInfo,
+} from '@/hooks/use-change-nameservers-progress';
 import { cn } from '@/lib/cn';
 import { type AppRouterOutput, useTRPC, useTRPCClient } from '@/lib/trpc';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -41,7 +57,7 @@ import {
 } from '@tanstack/react-query';
 import { Info, Loader2, RotateCw, SaveIcon } from 'lucide-react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useMemo, useRef, useState, useEffect } from 'react';
 import React from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
@@ -168,25 +184,31 @@ const NameserversPanelForm = React.memo(
       ),
     );
 
+    const [submittedChanges, setSubmittedChanges] = useState(false);
+
     const disableAllButtons = useMemo(() => {
       return !!loadingOperation || !!activeNameserversChangeWorkflow;
     }, [loadingOperation, activeNameserversChangeWorkflow]);
 
     const invalidateQueries = useCallback(async () => {
-      await queryClient.invalidateQueries({
-        queryKey: trpc.domainConfig.getDomainDetails.queryKey({ domainName }),
-      });
-      await queryClient.invalidateQueries({
-        queryKey: trpc.domainConfig.getDomainSupportedFeatures.queryKey({
-          normalizedDomainName: domainName,
-        }),
-      });
-      await queryClient.invalidateQueries({
-        queryKey: trpc.domainConfig.dnssec.getDomainDnssecDetails.queryKey({
-          domainName,
-        }),
-      });
+      // Refetch active workflow first so the banner appears immediately
       await refetchActiveNameserversChangeWorkflow();
+      // Then invalidate other queries in parallel
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: trpc.domainConfig.getDomainDetails.queryKey({ domainName }),
+        }),
+        queryClient.invalidateQueries({
+          queryKey: trpc.domainConfig.getDomainSupportedFeatures.queryKey({
+            normalizedDomainName: domainName,
+          }),
+        }),
+        queryClient.invalidateQueries({
+          queryKey: trpc.domainConfig.dnssec.getDomainDnssecDetails.queryKey({
+            domainName,
+          }),
+        }),
+      ]);
     }, [trpc, queryClient, domainName, refetchActiveNameserversChangeWorkflow]);
 
     const resetWithSignature = useCallback(async () => {
@@ -213,6 +235,7 @@ const NameserversPanelForm = React.memo(
           payload,
         });
         toast.success('Nameservers reset to Namefi defaults');
+        setSubmittedChanges(true);
       } catch (error: any) {
         if (error.message?.includes('rejected')) {
           toast.error('Signature request was rejected');
@@ -304,6 +327,7 @@ const NameserversPanelForm = React.memo(
             payload,
           });
           toast.success('Nameservers Updated Successfully');
+          setSubmittedChanges(true);
         }
       } catch (error: any) {
         if (error.message?.includes('rejected')) {
@@ -409,6 +433,13 @@ const NameserversPanelForm = React.memo(
       return !arrayEquals(values.nameservers, nameservers);
     }, [values, nameservers]);
 
+    useEffect(() => {
+      if (areChanged && submittedChanges) {
+        setFieldValue('nameservers', nameservers);
+        setSubmittedChanges(false);
+      }
+    }, [areChanged, nameservers, setFieldValue, submittedChanges]);
+
     const cancelChanges = useCallback(() => {
       setFieldValue('nameservers', nameservers);
     }, [nameservers, setFieldValue]);
@@ -424,6 +455,7 @@ const NameserversPanelForm = React.memo(
           <div className="flex flex-col gap-2">
             <ActiveNameserversChangeWorkflowBanner
               activeNameserversChangeWorkflow={activeNameserversChangeWorkflow}
+              domainName={domainName}
             />
 
             {resetButton}
@@ -652,23 +684,164 @@ export const NameserversPanel = ({
   return false;
 };
 
+/**
+ * Get substep display info for a step based on workflow type and step ID.
+ */
+function getSubstepDisplayInfo(
+  workflowType: 'change-nameservers' | 'reset-nameservers' | null,
+  stepId: string,
+) {
+  if (workflowType === 'reset-nameservers') {
+    if (stepId === 'change-nameservers') {
+      return resetNameserversChangeSubstepDisplayInfo;
+    }
+    if (stepId === 'enable-dnssec') {
+      return resetNameserversEnableDnssecSubstepDisplayInfo;
+    }
+  }
+  // For change-nameservers workflow, disable-dnssec has substeps
+  if (stepId === 'disable-dnssec') {
+    return changeNameserversSubstepDisplayInfo;
+  }
+  return undefined;
+}
+
+/**
+ * Modal component to show nameservers change operation progress
+ */
+function NameserversProgressModal({
+  domainName,
+  operation,
+  onClose,
+}: {
+  domainName: string;
+  operation: 'CHANGE_NAMESERVERS' | 'RESET_NAMESERVERS';
+  onClose?: () => void;
+}) {
+  const [open, setOpen] = useState(false);
+
+  const progress = useChangeNameserversProgress(domainName, {
+    enabled: open,
+  });
+
+  const handleOpenChange = (isOpen: boolean) => {
+    if (isOpen) {
+      // Reset stale data before opening
+      progress.reset();
+    }
+    setOpen(isOpen);
+    if (!isOpen) {
+      onClose?.();
+    }
+  };
+
+  const title =
+    operation === 'RESET_NAMESERVERS'
+      ? `Resetting nameservers for ${domainName}`
+      : `Changing nameservers for ${domainName}`;
+
+  // Determine which step display info to use based on actual workflow type
+  const isResetWorkflow = progress.workflowType === 'reset-nameservers';
+  const stepDisplayInfo: Record<string, { label: string; helper: string }> =
+    isResetWorkflow
+      ? resetNameserversStepDisplayInfo
+      : changeNameserversStepDisplayInfo;
+
+  // Create a function to get substep display info per step
+  const getSubstepDisplayInfoForStep = useCallback(
+    (stepId: string) => getSubstepDisplayInfo(progress.workflowType, stepId),
+    [progress.workflowType],
+  );
+
+  return (
+    <Dialog open={open} onOpenChange={handleOpenChange}>
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild={true}>
+            <DialogTrigger asChild={true}>
+              <Button variant="ghost" size="icon" className="h-6 w-6">
+                <Info className="h-4 w-4" />
+              </Button>
+            </DialogTrigger>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>View progress details</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+      <DialogContent className="sm:max-w-lg">
+        <DialogHeader>
+          <DialogTitle>{title}</DialogTitle>
+        </DialogHeader>
+        <ProgressTimeline
+          loading={progress.isLoading}
+          steps={progress.steps}
+          stepDisplayInfo={stepDisplayInfo}
+          getSubstepDisplayInfo={getSubstepDisplayInfoForStep}
+          showTitle={false}
+          className="border-none"
+        />
+      </DialogContent>
+    </Dialog>
+  );
+}
+
 export const ActiveNameserversChangeWorkflowBanner = ({
   activeNameserversChangeWorkflow,
+  domainName,
 }: {
   activeNameserversChangeWorkflow?: AppRouterOutput['domainConfig']['queryActiveNameserversChangeWorkflow'];
+  domainName: string;
 }) => {
-  if (!activeNameserversChangeWorkflow) {
+  // Track the last known operation so modal can stay open after workflow completes
+  const [lastOperation, setLastOperation] = useState<
+    'CHANGE_NAMESERVERS' | 'RESET_NAMESERVERS' | null
+  >(null);
+
+  // Update last operation when workflow becomes active
+  React.useEffect(() => {
+    if (activeNameserversChangeWorkflow?.operation) {
+      setLastOperation(
+        activeNameserversChangeWorkflow.operation as
+          | 'CHANGE_NAMESERVERS'
+          | 'RESET_NAMESERVERS',
+      );
+    }
+  }, [activeNameserversChangeWorkflow?.operation]);
+
+  const isActive = !!activeNameserversChangeWorkflow;
+  const operation =
+    (activeNameserversChangeWorkflow?.operation as
+      | 'CHANGE_NAMESERVERS'
+      | 'RESET_NAMESERVERS'
+      | undefined) ?? lastOperation;
+
+  // Keep component mounted but hidden when no active workflow (to preserve modal state)
+  // Only fully unmount if we've never had an operation
+  if (!isActive && !lastOperation) {
     return null;
   }
 
   return (
-    <div className="flex bg-zinc-800 border-zinc-700 rounded-md p-2 w-full justify-center items-center gap-2">
+    <div
+      className={cn(
+        'flex bg-zinc-800 border-zinc-700 rounded-md p-2 w-full justify-center items-center gap-2',
+        !isActive && 'hidden',
+      )}
+    >
       <Loader2 className="h-4 w-4 animate-spin" />
       <p>
-        {activeNameserversChangeWorkflow.operation === 'RESET_NAMESERVERS'
+        {operation === 'RESET_NAMESERVERS'
           ? 'An operation to reset nameservers to Namefi defaults is in progress...'
           : 'An operation to update nameservers is in progress...'}
       </p>
+      {operation && (
+        <NameserversProgressModal
+          domainName={domainName}
+          operation={operation}
+          onClose={() => setLastOperation(null)}
+        />
+      )}
     </div>
   );
 };

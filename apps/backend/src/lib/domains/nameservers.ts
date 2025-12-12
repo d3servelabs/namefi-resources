@@ -15,6 +15,7 @@ import { TEMPORAL_QUEUES } from '../../temporal/shared';
 import {
   changeNameserversWorkflow,
   resetNameserversWorkflow,
+  type ChangeNameserversWorkflowInput,
 } from '../../temporal/workflows';
 
 const _logger = createLogger({ module: 'domains-nameservers' });
@@ -250,13 +251,15 @@ export async function getNameserversForDomain(domainName: PunycodeDomainName) {
 export async function submitResetNameserversWorkflow(
   domainName: PunycodeDomainName,
 ) {
+  const workflowInput = {
+    domainName: toPunycodeDomainName(domainName),
+  };
+  const workflowId = resetNameserversWorkflow.generateId({
+    domainName,
+  });
   await temporalClient.workflow.start(resetNameserversWorkflow, {
-    args: [
-      {
-        domainName: toPunycodeDomainName(domainName),
-      },
-    ],
-    workflowId: `reset-nameservers-${domainName}`,
+    args: [workflowInput],
+    workflowId,
     taskQueue: TEMPORAL_QUEUES.DOMAINS,
     workflowIdReusePolicy: 'ALLOW_DUPLICATE',
     workflowIdConflictPolicy: 'USE_EXISTING',
@@ -272,16 +275,14 @@ export async function submitNameserversChangeWorkflow(
   domainName: PunycodeDomainName,
   nameservers: Nameserver[],
 ) {
+  const workflowInput: ChangeNameserversWorkflowInput = {
+    domainName: toPunycodeDomainName(domainName),
+    nameservers: nameservers.map((nameserver) => toPunycodeFqdn(nameserver)),
+  };
+  const workflowId = changeNameserversWorkflow.generateId(workflowInput);
   await temporalClient.workflow.start(changeNameserversWorkflow, {
-    args: [
-      {
-        domainName: toPunycodeDomainName(domainName),
-        nameservers: nameservers.map((nameserver) =>
-          toPunycodeFqdn(nameserver),
-        ),
-      },
-    ],
-    workflowId: `change-nameservers-${domainName}`,
+    args: [workflowInput],
+    workflowId,
     taskQueue: TEMPORAL_QUEUES.DOMAINS,
     workflowIdReusePolicy: 'ALLOW_DUPLICATE',
     workflowIdConflictPolicy: 'FAIL',
@@ -296,8 +297,13 @@ export async function submitNameserversChangeWorkflow(
 export async function queryActiveNameserversChangeWorkflow(
   domainName: PunycodeDomainName,
 ) {
+  const changeNsId = changeNameserversWorkflow.generateId({
+    domainName,
+    nameservers: [],
+  });
+  const resetNsId = resetNameserversWorkflow.generateId({ domainName });
   const workflows = await temporalClient.workflow.list({
-    query: `TaskQueue = '${TEMPORAL_QUEUES.DOMAINS}' AND ExecutionStatus = 'Running' AND (WorkflowId = 'change-nameservers-${domainName}' OR WorkflowId = 'reset-nameservers-${domainName}')`,
+    query: `TaskQueue = '${TEMPORAL_QUEUES.DOMAINS}' AND ExecutionStatus = 'Running' AND (WorkflowId = '${changeNsId}' OR WorkflowId = '${resetNsId}')`,
   });
 
   for await (const workflow of workflows) {

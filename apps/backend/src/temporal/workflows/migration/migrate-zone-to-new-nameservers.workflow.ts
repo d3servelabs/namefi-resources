@@ -115,7 +115,9 @@ export const migrateZoneToNewNameserversWorkflow = async (args: {
         },
       ],
       taskQueue: TEMPORAL_QUEUES.DOMAINS,
-      workflowId: `reset-nameservers-${args.zoneName}`,
+      workflowId: resetNameserversWorkflow.generateId({
+        domainName: args.zoneName as any,
+      }),
       parentClosePolicy: 'ABANDON',
       workflowIdReusePolicy: 'ALLOW_DUPLICATE',
     });
