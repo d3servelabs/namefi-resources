@@ -6,6 +6,7 @@
 ## Other Docs
 
 - [Logs Access](./docs/logs.md)
+- [Dev Guides](./docs/dev-guides.md)
 
 ## Quick Start
 
