@@ -20,6 +20,13 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/shadcn/card';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/shadcn/dialog';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
 import {
   Tooltip,
@@ -27,6 +34,13 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/shadcn/tooltip';
+import { ProgressTimeline } from '@/components/ui/progress-timeline';
+import {
+  useEnableDnssecProgress,
+  useDisableDnssecProgress,
+  enableDnssecStepDisplayInfo,
+  disableDnssecStepDisplayInfo,
+} from '@/hooks/use-dnssec-progress';
 import { type AppRouterOutput, useTRPC } from '@/lib/trpc';
 import type { Nameserver } from '@namefi-astra/registrars/lib/abstract-registrar/data/nameservers';
 import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
@@ -45,7 +59,7 @@ import {
   ShieldXIcon,
 } from 'lucide-react';
 import { isNotEmpty, isNotNil } from 'ramda';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import { ActiveNameserversChangeWorkflowBanner } from '../nameservers/nameservers-panel';
 
@@ -289,6 +303,67 @@ export const DnssecPanelInner = ({
   );
 };
 
+/**
+ * Modal component to show DNSSEC operation progress
+ */
+function DnssecProgressModal({
+  domainName,
+  operation,
+}: {
+  domainName: PunycodeDomainName;
+  operation: 'ENABLE_DNSSEC' | 'REMOVE_DNSSEC';
+}) {
+  const [open, setOpen] = useState(false);
+
+  const enableProgress = useEnableDnssecProgress(domainName, {
+    enabled: open && operation === 'ENABLE_DNSSEC',
+  });
+
+  const disableProgress = useDisableDnssecProgress(domainName, {
+    enabled: open && operation === 'REMOVE_DNSSEC',
+  });
+
+  const isEnabling = operation === 'ENABLE_DNSSEC';
+  const title = `${isEnabling ? 'Enabling' : 'Disabling'} for ${domainName}`;
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild={true}>
+            <DialogTrigger asChild={true}>
+              <Button variant="ghost" size="icon" className="h-6 w-6">
+                <Info className="h-4 w-4" />
+              </Button>
+            </DialogTrigger>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>View progress details</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+      <DialogContent className="sm:max-w-lg">
+        <DialogHeader>
+          <DialogTitle>{title}</DialogTitle>
+        </DialogHeader>
+        {isEnabling ? (
+          <ProgressTimeline
+            loading={enableProgress.isLoading}
+            steps={enableProgress.steps}
+            stepDisplayInfo={enableDnssecStepDisplayInfo}
+          />
+        ) : (
+          <ProgressTimeline
+            loading={disableProgress.isLoading}
+            steps={disableProgress.steps}
+            stepDisplayInfo={disableDnssecStepDisplayInfo}
+          />
+        )}
+      </DialogContent>
+    </Dialog>
+  );
+}
+
 export const DnssecPanelAction = ({
   domainName,
   dnssecDetails,
@@ -378,12 +453,16 @@ export const DnssecPanelAction = ({
       activeDnssecOperationWorkflows?.workflowDetails?.operation;
     if (operation) {
       return (
-        <div className="flex items-center gap-2 bg-zinc-800 p-2 rounded-md">
+        <div
+          id="request-in-progress"
+          className="flex items-center gap-2 bg-zinc-800 p-2 rounded-md"
+        >
           <Loader2 className="w-4 h-4 animate-spin" />
           <p>
             A request to {operation === 'REMOVE_DNSSEC' ? 'disable' : 'enable'}{' '}
             DNSSEC is already in progress
           </p>
+          <DnssecProgressModal domainName={domainName} operation={operation} />
         </div>
       );
     }
