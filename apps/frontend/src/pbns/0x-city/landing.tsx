@@ -23,8 +23,19 @@ import { isDomainImportable } from '@namefi-astra/backend/trpc/types';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { useSearchFromQuery } from '@/hooks/use-search-from-query';
 import { useFreeMintsGuidance } from '@/components/providers/free-mints-guidance';
-import { NewsletterForm } from '@/components/newsletter/newsletter-form';
+import dynamic from 'next/dynamic';
 import { useQueryState, parseAsBoolean } from 'nuqs';
+
+const NewsletterForm = dynamic(
+  () =>
+    import('@/components/newsletter/newsletter-form').then(
+      (module) => module.NewsletterForm,
+    ),
+  {
+    ssr: false,
+    loading: () => <div className="h-12 rounded-md bg-muted animate-pulse" />,
+  },
+);
 
 const NO_OP = () => undefined;
 

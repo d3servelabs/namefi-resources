@@ -22,7 +22,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useSearch } from '@/hooks/use-search';
 import { useSearchFromQuery } from '@/hooks/use-search-from-query';
 import { useFreeMintsGuidance } from '@/components/providers/free-mints-guidance';
-import { NewsletterForm } from '@/components/newsletter/newsletter-form';
+import dynamic from 'next/dynamic';
 import { useQueryState, parseAsBoolean } from 'nuqs';
 import { FloatingCart } from '@/components/floating-cart';
 import {
@@ -64,6 +64,17 @@ import {
   Search as SearchIcon,
   Youtube,
 } from 'lucide-react';
+
+const NewsletterForm = dynamic(
+  () =>
+    import('@/components/newsletter/newsletter-form').then(
+      (module) => module.NewsletterForm,
+    ),
+  {
+    ssr: false,
+    loading: () => <div className="h-12 rounded-md bg-muted animate-pulse" />,
+  },
+);
 
 const HERO_HEADING = 'Next generation domain platform with blockchain and AI';
 const HERO_SUBTITLE =

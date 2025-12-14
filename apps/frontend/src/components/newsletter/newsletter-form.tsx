@@ -33,6 +33,7 @@ import type {
   AltchaVerifierRef,
   AltchaProps,
 } from './altcha-verifier';
+import { useIsClient } from 'usehooks-ts';
 
 const AltchaVerifierDynamic = dynamic(() => import('./altcha-verifier'), {
   ssr: false,
@@ -100,13 +101,37 @@ interface NewsletterFormProps {
 }
 
 export function NewsletterForm({
-  from,
   title = 'Stay Updated',
   description = 'Subscribe to our newsletter for the latest updates and announcements.',
   showNameField = true,
   variant = 'default',
-  attributes,
   showCloseButton = false,
+  ...props
+}: NewsletterFormProps) {
+  const isClient = useIsClient();
+  if (!isClient) {
+    return null;
+  }
+  return (
+    <NewsletterFormInner
+      title={title}
+      description={description}
+      showNameField={showNameField}
+      variant={variant}
+      showCloseButton={showCloseButton}
+      {...props}
+    />
+  );
+}
+
+function NewsletterFormInner({
+  from,
+  title,
+  description,
+  showNameField,
+  variant,
+  attributes,
+  showCloseButton,
   onClose,
   className,
   headerClassName,
@@ -118,7 +143,7 @@ export function NewsletterForm({
   const form = useForm<NewsletterFormData>({
     resolver: zodResolver(newsletterFormSchema),
     mode: 'onSubmit',
-    reValidateMode: 'onChange',
+    reValidateMode: 'onSubmit',
     defaultValues: {
       email: '',
       name: '',

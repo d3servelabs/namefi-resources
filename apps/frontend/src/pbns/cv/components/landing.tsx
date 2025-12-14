@@ -29,8 +29,18 @@ import {
   SearchResults,
 } from '@/components/search';
 import { isDomainImportable } from '@namefi-astra/backend/trpc/types';
-import { NewsletterForm } from '@/components/newsletter/newsletter-form';
+import dynamic from 'next/dynamic';
 
+const NewsletterForm = dynamic(
+  () =>
+    import('@/components/newsletter/newsletter-form').then(
+      (module) => module.NewsletterForm,
+    ),
+  {
+    ssr: false,
+    loading: () => <div className="h-12 rounded-md bg-muted animate-pulse" />,
+  },
+);
 export interface CVLandingConfig {
   /** The name (e.g., "taylor") - will be auto-capitalized for display */
   name: string;

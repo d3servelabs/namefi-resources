@@ -15,11 +15,21 @@ import {
   Target,
   TrendingUp,
 } from 'lucide-react';
-import { NewsletterForm } from '@/components/newsletter/newsletter-form';
 import { useEffect, useRef } from 'react';
 import { useInView, motion, AnimatePresence } from 'motion/react';
 import { useQueryState, parseAsBoolean } from 'nuqs';
+import dynamic from 'next/dynamic';
 
+const NewsletterForm = dynamic(
+  () =>
+    import('@/components/newsletter/newsletter-form').then(
+      (module) => module.NewsletterForm,
+    ),
+  {
+    ssr: false,
+    loading: () => <div className="h-12 rounded-md bg-muted animate-pulse" />,
+  },
+);
 export interface BespokeLandingProps {
   config: BespokeLandingConfig;
 }
