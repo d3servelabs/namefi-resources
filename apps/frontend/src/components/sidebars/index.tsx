@@ -36,14 +36,14 @@ import { motion, AnimatePresence } from 'motion/react';
 
 const ITEMS: NavItem[] = [
   { title: 'Discover', href: '/', icon: Compass },
-  { title: "Just AI'ng™", href: '/ai-brand-generator', icon: Sparkles },
-  { title: 'Hunt', href: '/hunt', icon: TrendingUp },
   { title: 'My Domains', href: '/domains', icon: Globe },
   { title: 'My Wishlist', href: '/wishlist', icon: Heart },
   { title: 'My Orders', href: '/orders', icon: ClipboardList },
   { title: 'My Free Mints', href: '/free-mints', icon: Gift },
   { title: 'My Payment Methods', href: '/payment-methods', icon: CreditCard },
   { title: 'Manage', href: '/manage', icon: PenToolIcon },
+  { title: "Just AI'ng™", href: '/ai-brand-generator', icon: Sparkles },
+  { title: 'Hunt', href: '/hunt', icon: TrendingUp },
 ];
 
 export function AppSidebar() {
