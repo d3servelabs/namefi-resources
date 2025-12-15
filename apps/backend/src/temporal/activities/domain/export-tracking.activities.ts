@@ -1,8 +1,9 @@
 import { Context } from '@temporalio/activity';
-import { format } from 'date-fns';
+import { differenceInHours, format } from 'date-fns';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { db, namefiNftCte } from '@namefi-astra/db';
-import { and, eq, inArray, sql } from 'drizzle-orm';
+import { and, eq, inArray, isNull, sql } from 'drizzle-orm';
+import { config } from '#lib/env';
 import {
   domainExportTrackingTable,
   namefiNftView,
@@ -14,6 +15,28 @@ import { toPunycodeDomainName } from '@namefi-astra/registrars/lib/data/validati
 import { RDAP } from '@namefi-astra/registrars/lib/rdap-whois/rdap_client';
 import { WhoisClient } from '@namefi-astra/registrars/lib/rdap-whois/whois_client';
 import { sendMail } from '../../../mail/mail-client';
+import { render } from '@react-email/components';
+import React from 'react';
+import {
+  DomainExportPending,
+  type DomainExportPendingProps,
+} from '../../../mail/templates/domain-export-pending';
+import {
+  DomainExportComplete,
+  type DomainExportCompleteProps,
+} from '../../../mail/templates/domain-export-complete';
+import { maybeGetUserEmail } from '../notify.activities';
+import { privyClient } from '../../../trpc/utils';
+
+/** Minimum hours domain must be confirmed out of account before time-based burn */
+const MIN_HOURS_FOR_TIME_BASED_BURN = 36;
+
+/** Email archive addresses for BCC */
+const EMAIL_BCC = [
+  'customer-email-archive@d3serve.xyz',
+  'sami@d3serve.xyz',
+  'zzn@d3serve.xyz',
+];
 
 const logger = createLogger({ name: 'export-tracking' });
 
@@ -227,6 +250,7 @@ export async function markExportTrackingAsNotified(
 }
 /**
  * Get all locked NFTs that need export tracking
+ * Filters by ALLOWED_CHAINS config to only track NFTs on chains relevant to the current environment
  */
 export async function getLockedNftsForTracking(): Promise<
   Array<{
@@ -235,7 +259,11 @@ export async function getLockedNftsForTracking(): Promise<
     ownerAddress: string;
   }>
 > {
-  logger.info('Getting locked NFTs for export tracking');
+  const allowedChains = config.ALLOWED_CHAINS;
+  logger.info(
+    { allowedChains },
+    'Getting locked NFTs for export tracking on allowed chains',
+  );
 
   const lockedNfts = await db
     .with(namefiNftCte)
@@ -245,7 +273,12 @@ export async function getLockedNftsForTracking(): Promise<
       ownerAddress: namefiNftView.ownerAddress,
     })
     .from(namefiNftView)
-    .where(eq(namefiNftView.isLocked, true));
+    .where(
+      and(
+        eq(namefiNftView.isLocked, true),
+        inArray(namefiNftView.chainId, allowedChains),
+      ),
+    );
 
   logger.info({ count: lockedNfts.length }, 'Found locked NFTs');
 
@@ -311,6 +344,10 @@ export async function processSingleDomainExportStatus(input: {
   action: 'created' | 'updated' | 'no_change' | 'skipped';
   status?: string;
   previousStatus?: string;
+  domain?: NamefiNormalizedDomain;
+  chainId?: number;
+  ownerAddress?: string;
+  registrarKey?: string | null;
 }> {
   const { domain, chainId, ownerAddress } = input;
   const activityContext = Context.current();
@@ -429,7 +466,14 @@ export async function processSingleDomainExportStatus(input: {
     'Created new export tracking record',
   );
 
-  return { action: 'created', status: currentStatus };
+  return {
+    action: 'created',
+    status: currentStatus,
+    domain,
+    chainId,
+    ownerAddress,
+    registrarKey,
+  };
 }
 
 /**
@@ -468,13 +512,16 @@ export async function getPendingTransferDomains(): Promise<
 export async function checkSinglePendingTransfer(input: {
   id: string;
   domain: NamefiNormalizedDomain;
+  chainId: number;
   currentStatus: string;
   statusHistory: unknown;
 }): Promise<{
   action: 'failed' | 'completed' | 'still_pending';
   newStatus?: string;
+  domain?: NamefiNormalizedDomain;
+  chainId?: number;
 }> {
-  const { id, domain, currentStatus, statusHistory } = input;
+  const { id, domain, chainId, currentStatus, statusHistory } = input;
   const activityContext = Context.current();
 
   logger.info({ domain, id }, 'Checking pending transfer');
@@ -538,6 +585,8 @@ export async function checkSinglePendingTransfer(input: {
         statusChangedAt: new Date(),
         lastCheckedAt: new Date(),
         transferCompletedAt: new Date(),
+        // Set confirmedOutOfAccountAt if not already set
+        confirmedOutOfAccountAt: sql`COALESCE(${domainExportTrackingTable.confirmedOutOfAccountAt}, NOW())`,
         userNotified: false,
       })
       .where(eq(domainExportTrackingTable.id, id));
@@ -546,7 +595,12 @@ export async function checkSinglePendingTransfer(input: {
       { domain },
       'Transfer completed - domain no longer in our account',
     );
-    return { action: 'completed', newStatus: 'TRANSFER_COMPLETED' };
+    return {
+      action: 'completed',
+      newStatus: 'TRANSFER_COMPLETED',
+      domain,
+      chainId,
+    };
   }
 
   await db
@@ -829,4 +883,335 @@ export async function sendExportTrackingReportEmail(
     logger.error({ error }, 'Failed to send export tracking report email');
     throw error;
   }
+}
+
+/**
+ * Burn eligibility reasons
+ */
+export type BurnEligibilityReason =
+  | 'client_approved'
+  | 'admin_approved'
+  | 'time_confirmed'
+  | 'not_eligible';
+
+/**
+ * Check if an NFT should be burned based on approval status
+ *
+ * Burns are allowed when:
+ * 1. Client approved (clientApprovedAt is set) - user explicitly approved transfer
+ * 2. Admin approved (verifyingAdminId is set) - admin initiated the burn
+ * 3. Time confirmed (confirmedOutOfAccountAt > 36 hours ago) - safety net for edge cases
+ */
+export async function shouldBurnNft(input: {
+  domain: NamefiNormalizedDomain;
+  chainId: number;
+}): Promise<{
+  shouldBurn: boolean;
+  reason: BurnEligibilityReason;
+  trackingRecordId?: string;
+}> {
+  const { domain, chainId } = input;
+
+  logger.info({ domain, chainId }, 'Checking NFT burn eligibility');
+
+  const records = await db
+    .select({
+      id: domainExportTrackingTable.id,
+      status: domainExportTrackingTable.status,
+      clientApprovedAt: domainExportTrackingTable.clientApprovedAt,
+      verifyingAdminId: domainExportTrackingTable.verfyingAdminId,
+      confirmedOutOfAccountAt:
+        domainExportTrackingTable.confirmedOutOfAccountAt,
+      nftBurnedAt: domainExportTrackingTable.nftBurnedAt,
+    })
+    .from(domainExportTrackingTable)
+    .where(
+      and(
+        eq(domainExportTrackingTable.normalizedDomainName, domain),
+        eq(domainExportTrackingTable.chainId, chainId),
+      ),
+    )
+    .limit(1);
+
+  const record = records[0];
+
+  if (!record) {
+    logger.info({ domain, chainId }, 'No tracking record found');
+    return { shouldBurn: false, reason: 'not_eligible' };
+  }
+
+  // Already burned
+  if (record.nftBurnedAt) {
+    logger.info({ domain, chainId }, 'NFT already burned');
+    return {
+      shouldBurn: false,
+      reason: 'not_eligible',
+      trackingRecordId: record.id,
+    };
+  }
+
+  // Must be in TRANSFER_COMPLETED status
+  if (record.status !== 'TRANSFER_COMPLETED') {
+    logger.info(
+      { domain, chainId, status: record.status },
+      'Domain not in TRANSFER_COMPLETED status',
+    );
+    return {
+      shouldBurn: false,
+      reason: 'not_eligible',
+      trackingRecordId: record.id,
+    };
+  }
+
+  // Check client approval
+  if (record.clientApprovedAt) {
+    logger.info({ domain, chainId }, 'Burn eligible: client approved');
+    return {
+      shouldBurn: true,
+      reason: 'client_approved',
+      trackingRecordId: record.id,
+    };
+  }
+
+  // Check admin approval
+  if (record.verifyingAdminId) {
+    logger.info({ domain, chainId }, 'Burn eligible: admin approved');
+    return {
+      shouldBurn: true,
+      reason: 'admin_approved',
+      trackingRecordId: record.id,
+    };
+  }
+
+  // Check time-based confirmation (36+ hours out of account)
+  if (record.confirmedOutOfAccountAt) {
+    const hoursOutOfAccount = differenceInHours(
+      new Date(),
+      record.confirmedOutOfAccountAt,
+    );
+    if (hoursOutOfAccount >= MIN_HOURS_FOR_TIME_BASED_BURN) {
+      logger.info(
+        { domain, chainId, hoursOutOfAccount },
+        'Burn eligible: time-based confirmation (%d hours)',
+        hoursOutOfAccount,
+      );
+      return {
+        shouldBurn: true,
+        reason: 'time_confirmed',
+        trackingRecordId: record.id,
+      };
+    }
+    logger.info(
+      {
+        domain,
+        chainId,
+        hoursOutOfAccount,
+        required: MIN_HOURS_FOR_TIME_BASED_BURN,
+      },
+      'Not enough time for time-based burn',
+    );
+  }
+
+  return {
+    shouldBurn: false,
+    reason: 'not_eligible',
+    trackingRecordId: record.id,
+  };
+}
+
+/**
+ * Get domains eligible for NFT burning
+ * Returns completed transfers that haven't been burned yet
+ * Filters by ALLOWED_CHAINS config to only process burns on chains relevant to the current environment
+ */
+export async function getDomainsEligibleForBurn(): Promise<
+  Array<{
+    id: string;
+    domain: NamefiNormalizedDomain;
+    chainId: number;
+    ownerAddress: string;
+    clientApprovedAt: Date | null;
+    verifyingAdminId: string | null;
+    confirmedOutOfAccountAt: Date | null;
+  }>
+> {
+  const allowedChains = config.ALLOWED_CHAINS;
+  logger.info(
+    { allowedChains },
+    'Getting domains eligible for NFT burning on allowed chains',
+  );
+
+  const records = await db
+    .select({
+      id: domainExportTrackingTable.id,
+      domain: domainExportTrackingTable.normalizedDomainName,
+      chainId: domainExportTrackingTable.chainId,
+      ownerAddress: domainExportTrackingTable.ownerAddress,
+      clientApprovedAt: domainExportTrackingTable.clientApprovedAt,
+      verifyingAdminId: domainExportTrackingTable.verfyingAdminId,
+      confirmedOutOfAccountAt:
+        domainExportTrackingTable.confirmedOutOfAccountAt,
+    })
+    .from(domainExportTrackingTable)
+    .where(
+      and(
+        eq(domainExportTrackingTable.status, 'TRANSFER_COMPLETED'),
+        isNull(domainExportTrackingTable.nftBurnedAt),
+        inArray(domainExportTrackingTable.chainId, allowedChains),
+      ),
+    );
+
+  logger.info(
+    { count: records.length },
+    'Found domains eligible for burn check',
+  );
+
+  return records;
+}
+
+/**
+ * Record the result of an NFT burn operation
+ */
+export async function recordNftBurn(input: {
+  domain: NamefiNormalizedDomain;
+  chainId: number;
+  txHash?: string;
+  error?: string;
+}): Promise<void> {
+  const { domain, chainId, txHash, error } = input;
+
+  logger.info({ domain, chainId, txHash, error }, 'Recording NFT burn result');
+
+  if (txHash) {
+    // Successful burn
+    await db
+      .update(domainExportTrackingTable)
+      .set({
+        nftBurnedAt: new Date(),
+        nftBurnTxHash: txHash,
+        updatedAt: new Date(),
+      })
+      .where(
+        and(
+          eq(domainExportTrackingTable.normalizedDomainName, domain),
+          eq(domainExportTrackingTable.chainId, chainId),
+        ),
+      );
+    logger.info({ domain, chainId, txHash }, 'Recorded successful NFT burn');
+  } else if (error) {
+    // Failed burn - we don't have a dedicated error column, so just log it
+    logger.error({ domain, chainId, error }, 'NFT burn failed');
+  }
+}
+
+/**
+ * Send email notification for pending domain export
+ */
+export async function sendPendingExportEmail(input: {
+  userId: string;
+  domain: NamefiNormalizedDomain;
+  registrarKey: string;
+}): Promise<{ sent: boolean }> {
+  const { userId, domain, registrarKey } = input;
+
+  logger.info({ userId, domain, registrarKey }, 'Sending pending export email');
+
+  const email = await maybeGetUserEmail(userId);
+  if (!email) {
+    logger.info(
+      { userId, domain },
+      'No email found for user, skipping notification',
+    );
+    return { sent: false };
+  }
+
+  const isCentralNic =
+    registrarKey?.toLowerCase().includes('centralnic') ?? false;
+
+  const html = await render(
+    React.createElement(DomainExportPending, {
+      domainName: domain,
+      supportsApprovingExport: isCentralNic,
+    } satisfies DomainExportPendingProps),
+  );
+
+  await sendMail({
+    to: [email],
+    bcc: EMAIL_BCC,
+    subject: `Domain Export Request Detected: ${domain}`,
+    content: { html },
+  });
+
+  logger.info({ userId, domain, email }, 'Pending export email sent');
+  return { sent: true };
+}
+
+/**
+ * Send email notification for completed domain export
+ */
+export async function sendExportCompleteEmail(input: {
+  userId: string;
+  domain: NamefiNormalizedDomain;
+  chainId: number;
+  nftBurnTxHash?: string;
+}): Promise<{ sent: boolean }> {
+  const { userId, domain, chainId, nftBurnTxHash } = input;
+
+  logger.info(
+    { userId, domain, chainId, nftBurnTxHash },
+    'Sending export complete email',
+  );
+
+  const email = await maybeGetUserEmail(userId);
+  if (!email) {
+    logger.info(
+      { userId, domain },
+      'No email found for user, skipping notification',
+    );
+    return { sent: false };
+  }
+
+  const html = await render(
+    React.createElement(DomainExportComplete, {
+      domainName: domain,
+      chainId,
+      nftBurnTxHash,
+    } satisfies DomainExportCompleteProps),
+  );
+
+  await sendMail({
+    to: [email],
+    bcc: EMAIL_BCC,
+    subject: `Domain Export Completed: ${domain}`,
+    content: { html },
+  });
+
+  logger.info({ userId, domain, email }, 'Export complete email sent');
+  return { sent: true };
+}
+
+/**
+ * Get user ID from owner address
+ * Uses privyClient to look up the Privy user by wallet, then finds the internal user ID
+ */
+export async function getUserIdFromOwnerAddress(
+  ownerAddress: string,
+): Promise<string | null> {
+  const { usersTable } = await import('@namefi-astra/db');
+
+  // First, look up the Privy user by wallet address
+  const privyUser = await privyClient.getUserByWalletAddress(ownerAddress);
+  if (!privyUser) {
+    logger.info({ ownerAddress }, 'No Privy user found for wallet address');
+    return null;
+  }
+
+  // Then query the users table by privyUserId
+  const users = await db
+    .select({ id: usersTable.id })
+    .from(usersTable)
+    .where(eq(usersTable.privyUserId, privyUser.id))
+    .limit(1);
+
+  return users[0]?.id || null;
 }

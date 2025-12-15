@@ -722,6 +722,18 @@ export const domainExportTrackingTable = pgTable(
     userNotified: boolean('user_notified').notNull().default(false),
     notifiedAt: timestamp('notified_at'),
 
+    // Approval tracking for safe NFT burning
+    clientApprovedAt: timestamp('client_approved_at'),
+    verfyingAdminId: uuid('verifying_admin_id'),
+    adminVerifiedAt: timestamp('admin_verified_at'),
+
+    // Time-based confirmation tracking
+    confirmedOutOfAccountAt: timestamp('confirmed_out_of_account_at'),
+
+    // NFT burn tracking
+    nftBurnedAt: timestamp('nft_burned_at'),
+    nftBurnTxHash: text('nft_burn_tx_hash'),
+
     ...timestamps,
   },
   (table) => [
@@ -1581,7 +1593,7 @@ export const poweredbyNamefiDomainsTable = pgTable(
     ),
     check(
       'pb_namefi_duration_valid',
-      sql`(((${table.durationConstraints}) ->> 'minDurationInYears')::int > 0)  
+      sql`(((${table.durationConstraints}) ->> 'minDurationInYears')::int > 0)
             AND (((${table.durationConstraints}) ->> 'maxDurationInYears')::int >= (((${table.durationConstraints}) ->> 'minDurationInYears')::int))`,
     ),
   ],

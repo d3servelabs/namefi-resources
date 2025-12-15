@@ -17,7 +17,7 @@ const developmentConfig: ConfigInput = {
     'namefi.dev',
   ],
   ALLOW_ALL_ORIGINS: false,
-  ALLOWED_CHAINS: [chains.sepolia.id, chains.base.id],
+  ALLOWED_CHAINS: [chains.sepolia.id],
   EMAIL_ADDRESS_TO_OWNED_HOSTNAMES_MAP: {
     'dev-team@d3serve.xyz': [
       '0x.city',

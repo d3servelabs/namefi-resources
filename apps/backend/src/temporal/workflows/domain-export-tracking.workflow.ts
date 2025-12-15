@@ -1,6 +1,9 @@
-import { proxyActivities } from '@temporalio/workflow';
+import { executeChild, proxyActivities } from '@temporalio/workflow';
 import type { DomainsActivities } from '../activities/domain';
 import * as workflow from '@temporalio/workflow';
+import { TEMPORAL_QUEUES } from '../shared';
+import { ensureNftIsLockedAndBurnByNftName } from './mint.workflow';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 
 // Short timeout for simple DB queries
 const {
@@ -8,6 +11,12 @@ const {
   getPendingTransferDomains,
   collectExportTrackingMetrics,
   sendExportTrackingReportEmail,
+  getDomainsEligibleForBurn,
+  shouldBurnNft,
+  recordNftBurn,
+  sendPendingExportEmail,
+  sendExportCompleteEmail,
+  getUserIdFromOwnerAddress,
 } = proxyActivities<typeof DomainsActivities>({
   startToCloseTimeout: '2 minutes',
   retry: {
@@ -46,6 +55,10 @@ export interface DomainExportTrackingWorkflowOutput {
   pendingTransfersChecked: number;
   transfersCompleted: number;
   transfersFailed: number;
+  nftsBurned: number;
+  nftBurnsFailed: number;
+  pendingExportEmailsSent: number;
+  exportCompleteEmailsSent: number;
   success: boolean;
 }
 
@@ -86,6 +99,15 @@ export async function domainExportTrackingWorkflow(
     let updated = 0;
     let skipped = 0;
     let noChange = 0;
+    let pendingExportEmailsSent = 0;
+
+    // Track newly created records for email sending
+    const newlyCreatedRecords: Array<{
+      domain: string;
+      chainId: number;
+      ownerAddress: string;
+      registrarKey?: string | null;
+    }> = [];
 
     if (lockedNfts.length > 0) {
       workflow.log.info('Processing locked NFTs in parallel');
@@ -122,6 +144,15 @@ export async function domainExportTrackingWorkflow(
           switch (result.action) {
             case 'created':
               created++;
+              // Track for pending export email
+              if (result.domain && result.ownerAddress && result.chainId) {
+                newlyCreatedRecords.push({
+                  domain: result.domain,
+                  chainId: result.chainId,
+                  ownerAddress: result.ownerAddress,
+                  registrarKey: result.registrarKey,
+                });
+              }
               break;
             case 'updated':
               updated++;
@@ -142,6 +173,38 @@ export async function domainExportTrackingWorkflow(
         skipped,
         noChange,
       });
+
+      // Send pending export emails for newly created records
+      if (newlyCreatedRecords.length > 0) {
+        workflow.log.info('Sending pending export emails', {
+          count: newlyCreatedRecords.length,
+        });
+
+        for (const record of newlyCreatedRecords) {
+          try {
+            const userId = await getUserIdFromOwnerAddress(record.ownerAddress);
+            if (userId) {
+              const emailResult = await sendPendingExportEmail({
+                userId,
+                domain: record.domain as NamefiNormalizedDomain,
+                registrarKey: record.registrarKey || 'unknown',
+              });
+              if (emailResult.sent) {
+                pendingExportEmailsSent++;
+              }
+            }
+          } catch (emailError) {
+            workflow.log.error('Failed to send pending export email', {
+              domain: record.domain,
+              error: emailError,
+            });
+          }
+        }
+
+        workflow.log.info('Completed sending pending export emails', {
+          sent: pendingExportEmailsSent,
+        });
+      }
     }
 
     // Step 3: Check pending transfers
@@ -172,6 +235,7 @@ export async function domainExportTrackingWorkflow(
             checkSinglePendingTransfer({
               id: record.id,
               domain: record.domain,
+              chainId: record.chainId,
               currentStatus: record.status,
               statusHistory: record.statusHistory,
             }).catch((error) => {
@@ -201,7 +265,118 @@ export async function domainExportTrackingWorkflow(
       });
     }
 
-    // Step 4: Generate and send report
+    // Step 4: Check burn eligibility and burn NFTs
+    workflow.log.info('Checking domains eligible for NFT burning');
+    const eligibleForBurn = await getDomainsEligibleForBurn();
+
+    let nftsBurned = 0;
+    let nftBurnsFailed = 0;
+    let exportCompleteEmailsSent = 0;
+
+    if (eligibleForBurn.length > 0) {
+      workflow.log.info('Processing burn eligibility', {
+        count: eligibleForBurn.length,
+      });
+
+      for (const record of eligibleForBurn) {
+        try {
+          const burnCheck = await shouldBurnNft({
+            domain: record.domain,
+            chainId: record.chainId,
+          });
+
+          if (burnCheck.shouldBurn) {
+            workflow.log.info('Burning NFT for exported domain', {
+              domain: record.domain,
+              chainId: record.chainId,
+              reason: burnCheck.reason,
+            });
+
+            try {
+              const burnTxHash = await executeChild(
+                ensureNftIsLockedAndBurnByNftName,
+                {
+                  workflowId: ensureNftIsLockedAndBurnByNftName.generateId({
+                    domainName: record.domain,
+                    chainId: record.chainId,
+                  }),
+                  args: [
+                    {
+                      chainId: record.chainId,
+                      domainName: record.domain,
+                    },
+                  ],
+                  taskQueue: TEMPORAL_QUEUES.MINT,
+                },
+              );
+
+              // Record successful burn
+              await recordNftBurn({
+                domain: record.domain,
+                chainId: record.chainId,
+                txHash: burnTxHash,
+              });
+
+              nftsBurned++;
+
+              workflow.log.info('NFT burned successfully', {
+                domain: record.domain,
+                chainId: record.chainId,
+                txHash: burnTxHash,
+              });
+
+              // Send export complete email
+              try {
+                const userId = await getUserIdFromOwnerAddress(
+                  record.ownerAddress,
+                );
+                if (userId) {
+                  const emailResult = await sendExportCompleteEmail({
+                    userId,
+                    domain: record.domain,
+                    chainId: record.chainId,
+                    nftBurnTxHash: burnTxHash,
+                  });
+                  if (emailResult.sent) {
+                    exportCompleteEmailsSent++;
+                  }
+                }
+              } catch (emailError) {
+                workflow.log.error('Failed to send export complete email', {
+                  domain: record.domain,
+                  error: emailError,
+                });
+              }
+            } catch (burnError) {
+              nftBurnsFailed++;
+              await recordNftBurn({
+                domain: record.domain,
+                chainId: record.chainId,
+                error: String(burnError),
+              });
+              workflow.log.error('Failed to burn NFT', {
+                domain: record.domain,
+                chainId: record.chainId,
+                error: burnError,
+              });
+            }
+          }
+        } catch (eligibilityError) {
+          workflow.log.error('Failed to check burn eligibility', {
+            domain: record.domain,
+            error: eligibilityError,
+          });
+        }
+      }
+
+      workflow.log.info('Completed burn eligibility processing', {
+        burned: nftsBurned,
+        failed: nftBurnsFailed,
+        emailsSent: exportCompleteEmailsSent,
+      });
+    }
+
+    // Step 6: Generate and send report
     workflow.log.info('Generating export tracking report');
     const reportMetrics = await collectExportTrackingMetrics();
 
@@ -223,6 +398,10 @@ export async function domainExportTrackingWorkflow(
       pendingTransfersChecked: pendingTransfers.length,
       transfersCompleted,
       transfersFailed,
+      nftsBurned,
+      nftBurnsFailed,
+      pendingExportEmailsSent,
+      exportCompleteEmailsSent,
       success: true,
     };
 

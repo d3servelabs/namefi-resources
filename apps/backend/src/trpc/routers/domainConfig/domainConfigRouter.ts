@@ -53,8 +53,15 @@ import {
 } from '../../../temporal/activities/domain/renew.activities';
 import { differenceInDays, isBefore } from 'date-fns';
 import { resolve } from '@namefi-astra/utils';
-import { db, namefiNftOwnersCte, namefiNftOwnersView } from '@namefi-astra/db';
-import { eq } from 'drizzle-orm';
+import {
+  db,
+  domainExportTrackingTable,
+  namefiNftCte,
+  namefiNftOwnersCte,
+  namefiNftOwnersView,
+  namefiNftView,
+} from '@namefi-astra/db';
+import { and, eq } from 'drizzle-orm';
 
 /**
  * Unified EIP-712 type definitions for domain actions.
@@ -907,12 +914,55 @@ export const domainConfigRouter = createTRPCRouter({
   )
     .input(domainActionInputSchema)
     .mutation(async ({ input, ctx }) => {
-      await assertAuthenticatedUserIsDomainOwner(
-        input.payload.domainName,
-        ctx.user,
-      );
       const domainName = toPunycodeDomainName(input.payload.domainName);
+
+      await assertAuthenticatedUserIsDomainOwner(domainName, ctx.user);
+
+      // Get the owner address from the NFT
+      const nfts = await db
+        .with(namefiNftCte)
+        .select({
+          ownerAddress: namefiNftCte.ownerAddress,
+          chainId: namefiNftCte.chainId,
+        })
+        .from(namefiNftCte)
+        .where(eq(namefiNftCte.normalizedDomainName, input.payload.domainName))
+        .limit(1);
+      const nft = nfts[0];
+
+      const ownerAddress = nft?.ownerAddress;
+      if (!ownerAddress) {
+        logger.warn(
+          { domainName },
+          'Could not find owner address for domain when approving transfer',
+        );
+      }
+
       const result = await sldRegistrar.approveTransfer(domainName);
+
+      // Upsert export tracking record to mark client approval
+      // This allows safe NFT burning once domain leaves our account
+      // The record might not exist yet if the export tracking workflow hasn't detected the pending transfer
+      await db
+        .insert(domainExportTrackingTable)
+        .values({
+          normalizedDomainName: domainName,
+          chainId: nft.chainId,
+          ownerAddress,
+          status: 'PENDING_TRANSFER',
+          clientApprovedAt: new Date(),
+        })
+        .onConflictDoUpdate({
+          target: [
+            domainExportTrackingTable.normalizedDomainName,
+            domainExportTrackingTable.chainId,
+          ],
+          set: {
+            clientApprovedAt: new Date(),
+            updatedAt: new Date(),
+          },
+        });
+
       return result;
     }),
 

@@ -519,6 +519,13 @@
       "when": 1765198131839,
       "tag": "0073_wandering_prodigy",
       "breakpoints": true
+    },
+    {
+      "idx": 74,
+      "version": "7",
+      "when": 1765794742095,
+      "tag": "0074_free_sleepwalker",
+      "breakpoints": true
     }
   ]
 }
