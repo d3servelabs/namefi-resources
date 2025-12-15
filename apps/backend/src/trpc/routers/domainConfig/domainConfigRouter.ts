@@ -39,8 +39,12 @@ import { assertAuthenticatedUserIsDomainOwner } from '../../guards/assert-domain
 import { domainDnssecRouter } from './domainDnssecRouter';
 import { parseDomainName } from '@namefi-astra/utils/parse-domain-name';
 import { prepareDomainForExportWorkflow } from '#temporal/workflows/domain-ownership/prepare-domain-for-export.workflow';
+import {
+  startActivityWorkflow,
+  type StartActivityWorkflow,
+} from '#temporal/workflows/generic/start-activity.workflow';
 import { temporalClient } from '#temporal/client';
-import { TEMPORAL_QUEUES } from '#temporal/shared';
+import { TEMPORAL_ENUMS, TEMPORAL_QUEUES } from '#temporal/shared';
 import { getNamefiNftLock } from '#temporal/activities/mint/namefi-nft';
 import { getEppLockState } from '#temporal/activities/domain/registrar.activities';
 import { getDomainChain } from '#temporal/activities/domain/index';
@@ -963,6 +967,30 @@ export const domainConfigRouter = createTRPCRouter({
           },
         });
 
+      try {
+        temporalClient.workflow.start(
+          startActivityWorkflow as StartActivityWorkflow<
+            typeof TEMPORAL_ENUMS.INDEXERS,
+            'triggerDomainExportTracking'
+          >,
+          {
+            workflowId: 'triggerDomainExportTracking',
+            taskQueue: TEMPORAL_QUEUES.INDEXERS,
+            args: [
+              {
+                temporalEnum: TEMPORAL_ENUMS.INDEXERS,
+                activityName: 'triggerDomainExportTracking',
+                args: [],
+              },
+            ],
+            startDelay: '30 seconds',
+            workflowIdConflictPolicy: 'USE_EXISTING',
+            workflowIdReusePolicy: 'ALLOW_DUPLICATE',
+          },
+        );
+      } catch (error) {
+        logger.error(error, 'Failed to start workflow');
+      }
       return result;
     }),
 

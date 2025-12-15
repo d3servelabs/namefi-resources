@@ -3,6 +3,7 @@
  */
 import { triggerUpdateDomainIndex } from '../../schedules/update-domain-index';
 import { triggerGenerateAndUpdateDataForDomains } from '../../schedules/generate-and-update-data-for-domains';
+import { domainExportTrackingSchedule } from '../../schedules/domain-export-tracking';
 import * as DomainIndexActivities from './domain-index.activities';
 import * as NftManagementReportActivities from './reporting/nft-management-report.activities';
 import * as NamefiGptDomainProcessingActivities from './namefi-gpt-domain-processing.activities';
@@ -19,6 +20,8 @@ export const IndexersActivities = {
   ...PrivyCacheActivities,
   triggerGenerateAndUpdateDataForDomains,
   addCategoriesToDomainsWithNoCategories,
+  triggerDomainExportTracking: async () =>
+    domainExportTrackingSchedule.trigger(),
 };
 
 export type IndexersActivities = typeof IndexersActivities;
