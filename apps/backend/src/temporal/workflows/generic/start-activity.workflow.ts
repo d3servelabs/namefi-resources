@@ -49,7 +49,10 @@ export async function startActivityWorkflow<
 
   const activities = typedProxyActivities({
     temporalEnum,
-    options,
+    options: {
+      startToCloseTimeout: '1m',
+      ...options,
+    },
   });
 
   const activity = (activities as Record<string, any>)[activityName as any];
