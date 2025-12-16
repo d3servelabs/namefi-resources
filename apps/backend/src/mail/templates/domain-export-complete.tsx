@@ -1,4 +1,4 @@
-import { Text } from '@react-email/components';
+import { Text, Button } from '@react-email/components';
 // biome-ignore lint/correctness/noUnusedImports: required for react-email
 import React from 'react';
 import { NamefiEmailContainer } from '../components/namefi-email-container';
@@ -6,6 +6,9 @@ import { GoToDashboard } from '../components/go-to-dashboard';
 import { buildTemplate } from '../components/build-template';
 import { getChain } from '@namefi-astra/utils';
 import * as styles from '../styles';
+import { usePoweredByNamefiDomain } from '../components/powered-by-namefi-url-context';
+import { NamefiEmailLinks } from '../email-links';
+import { Card } from '../components/card';
 
 export type DomainExportCompleteProps = {
   recipientName?: string;
@@ -43,35 +46,39 @@ export const DomainExportComplete = buildTemplate<DomainExportCompleteProps>(
     return (
       <NamefiEmailContainer title={title}>
         <Text style={styles.paragraph}>
-          Your domain <strong>{domainName}</strong> has been successfully
+          ✅ Your domain <strong>{domainName}</strong> has been successfully
           exported.
         </Text>
 
-        <Text style={styles.paragraph}>
-          The domain transfer has been completed and is now managed by your new
-          registrar.
-        </Text>
-
-        <Text style={styles.paragraph}>
-          <strong>NFT Burned:</strong> The Namefi NFT associated with this
-          domain has been burned as part of the export process.
-          {txUrl && (
-            <>
-              <br />
-              You can view the burn transaction on the blockchain:{' '}
-              <a href={txUrl} style={{ color: '#3498db' }}>
+        <Card
+          variant="info"
+          style={{
+            paddingBottom: '5px',
+            paddingTop: '5px',
+            marginLeft: '5px',
+            marginRight: '5px',
+          }}
+        >
+          <Text
+            style={{ ...styles.paragraph, fontSize: '12px', fontWeight: '400' }}
+          >
+            The Namefi NFT for this domain has been burned as part of the export
+            process.{' '}
+            {txUrl && (
+              <a href={txUrl} style={styles.anchor}>
                 View Transaction
               </a>
-            </>
-          )}
-        </Text>
+            )}
+            <br />
+            You can always import it back to Namefi again to receive a new NFT.
+            <br />
+          </Text>
+        </Card>
+        <Text style={styles.paragraph}>Thank you for using Namefi!</Text>
 
-        <Text style={styles.paragraph}>
-          Thank you for using Namefi! If you ever want to bring your domain
-          back, you can always transfer it to Namefi again to receive a new NFT.
-        </Text>
-
-        <GoToDashboard />
+        <Button style={styles.button} href={'https://namefi.io'}>
+          Get Another Domain
+        </Button>
       </NamefiEmailContainer>
     );
   },

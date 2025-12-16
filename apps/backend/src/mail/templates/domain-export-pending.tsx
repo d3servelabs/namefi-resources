@@ -7,6 +7,7 @@ import { buildTemplate } from '../components/build-template';
 import * as styles from '../styles';
 import { NamefiEmailLinks } from '../email-links';
 import { usePoweredByNamefiDomain } from '../components/powered-by-namefi-url-context';
+import { Card } from '../components/card';
 
 export type DomainExportPendingProps = {
   recipientName?: string;
@@ -18,28 +19,30 @@ export const DomainExportPending = buildTemplate<DomainExportPendingProps>(
   ({
     domainName,
     supportsApprovingExport,
-    title = 'Domain Export Request Detected',
+    title = 'Domain Export Request Received',
   }) => {
     const poweredByNamefiDomain = usePoweredByNamefiDomain();
     return (
       <NamefiEmailContainer title={title}>
         <Text style={styles.paragraph}>
-          We detected a transfer request for your domain{' '}
+          We received an export request for your domain{' '}
           <strong>{domainName}</strong>.
         </Text>
 
         <Text style={styles.paragraph}>
-          This means another registrar has initiated a transfer to move your
-          domain away from Namefi. If you did not request this transfer, please
-          contact support immediately.
+          <strong>
+            <span className="font-medium text-amber-600">
+              [Attention Needed]
+            </span>
+          </strong>{' '}
+          If you did not request this, please contact support immediately.
         </Text>
 
         {supportsApprovingExport && (
-          <>
+          <Card variant="info">
             <Text style={styles.paragraph}>
-              <strong>Action Required:</strong> <br />
-              You can approve or reject this transfer request directly from your
-              Namefi dashboard.
+              ℹ️ You can approve or reject this export request from your
+              dashboard.
             </Text>
 
             <Button
@@ -49,16 +52,14 @@ export const DomainExportPending = buildTemplate<DomainExportPendingProps>(
               })}
               style={styles.button}
             >
-              Manage Transfer in Dashboard
+              Manage Export in Dashboard
             </Button>
-          </>
+          </Card>
         )}
 
         {!supportsApprovingExport && (
           <Text style={styles.paragraph}>
-            The transfer will proceed automatically unless rejected. You should
-            receive a confirmation email from your current registrar with
-            instructions on how to approve or cancel the transfer.
+            The export will proceed automatically unless rejected.
           </Text>
         )}
 
@@ -66,15 +67,11 @@ export const DomainExportPending = buildTemplate<DomainExportPendingProps>(
           <strong>What happens next?</strong>
         </Text>
         <Text style={styles.paragraph}>
-          • If the transfer completes successfully, your domain will move to the
-          new registrar
-          <br />• The associated Namefi NFT will be burned once the transfer is
-          confirmed
+          • If the export completes, your domain will leave Namefi
+          <br />• The associated NFT will be burned once the export is confirmed
           <br />• You will receive a confirmation email when the export is
           complete
         </Text>
-
-        <GoToDashboard />
       </NamefiEmailContainer>
     );
   },

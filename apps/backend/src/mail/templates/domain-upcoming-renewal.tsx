@@ -1,4 +1,5 @@
 import { Button } from '@react-email/components';
+import { Card } from '../components/card';
 // biome-ignore lint/correctness/noUnusedImports: required for react-email
 import React from 'react';
 import { NamefiEmailContainer } from '../components/namefi-email-container';
@@ -377,7 +378,7 @@ export const DomainUpcomingRenewal = buildTemplate<DomainUpcomingRenewalProps>(
               </div>
 
               {showPaymentMethodBreakdown && (
-                <Card variant="info">
+                <Card variant="success">
                   <div className="font-bold text-lg text-green-800 mb-2">
                     ✅ You are all set!
                   </div>
@@ -889,46 +890,3 @@ function TD({
     </td>
   );
 }
-
-const Card = ({
-  variant = 'warning',
-  children,
-  style,
-}: {
-  variant?: 'warning' | 'success' | 'info' | 'error';
-  children: React.ReactNode;
-  style?: React.CSSProperties;
-}) => {
-  const backgroundColor =
-    variant === 'warning'
-      ? '#FFF4E5'
-      : variant === 'success'
-        ? '#E6F9EB'
-        : variant === 'info'
-          ? '#E6F9EB'
-          : '#FFF4E5';
-  const borderColor =
-    variant === 'warning'
-      ? '#FFA500'
-      : variant === 'success'
-        ? '#00C853'
-        : variant === 'info'
-          ? '#00C853'
-          : '#FFA500';
-  return (
-    <div
-      style={{
-        ...styles.text,
-        marginTop: '20px',
-        marginBottom: '20px',
-        padding: '16px',
-        backgroundColor,
-        border: `1px solid ${borderColor}`,
-        borderRadius: '8px',
-        ...style,
-      }}
-    >
-      {children}
-    </div>
-  );
-};
