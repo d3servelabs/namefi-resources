@@ -1,9 +1,9 @@
 'use client';
 
 import NetworkLogo from '@/components/network-logo';
-import { TruncatedTextWithHover } from '@/components/truncated-text-with-hover';
 import { AuthRequired } from '@/components/auth-required';
 import { EmptyPlaceholder } from '@/components/empty-placeholder';
+import { AddressWithChain } from '@/components/address-with-chain';
 import {
   Table,
   TableBody,
@@ -13,9 +13,7 @@ import {
   TableRow,
 } from '@/components/ui/shadcn/table';
 import { Button } from '@/components/ui/shadcn/button';
-import { Card, CardContent } from '@/components/ui/shadcn/card';
 import { Input } from '@/components/ui/shadcn/input';
-import { Badge } from '@/components/ui/shadcn/badge';
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -50,16 +48,14 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import {
-  SendIcon,
-  ShareIcon,
   ChevronDown,
-  ChevronUp,
-  ChevronsUpDown,
-  Clock3,
   Copy,
   ExternalLink,
   Flame,
   Search,
+  ArrowDownWideNarrowIcon,
+  ArrowUpDownIcon,
+  ArrowUpNarrowWideIcon,
 } from 'lucide-react';
 import Link from 'next/link';
 import {
@@ -68,6 +64,7 @@ import {
   Suspense,
   useCallback,
   useMemo,
+  useState,
 } from 'react';
 import { config } from '@/lib/env';
 import { cn } from '@/lib/cn';
@@ -75,9 +72,6 @@ import { range } from 'ramda';
 import { UserWalletAvatar } from '@/components/user-avatar';
 import { AutoTruncateTextV2 } from '@/components/auto-truncate-text-v2';
 import { toast } from 'sonner';
-import type { FeatureFlagDefinition } from '@/types/feature-flags';
-import { useRegisterAdminFlags } from './admin/feature-flags/register';
-import { useAdminFeatureFlag } from './admin/feature-flags/use-flag';
 
 type PreviouslyOwnedDomainRow =
   AppRouterOutput['users']['getCurrentUserBurnedDomains'][number];
@@ -85,52 +79,47 @@ type RemovalType = PreviouslyOwnedDomainRow['removalType'];
 
 const LoadingSkeletons: FC = () => (
   <div className="flex flex-col gap-4">
-    <Card>
-      <CardContent>
-        <div className="rounded-md border">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-[80px]">Chain</TableHead>
-                <TableHead className="w-[140px]">Wallet</TableHead>
-                <TableHead>Domain Name</TableHead>
-                <TableHead className="w-[150px]">Removal Date</TableHead>
-                <TableHead className="w-[220px]">Reason</TableHead>
-                <TableHead className="w-[220px]">Receiving Wallet</TableHead>
-                <TableHead className="w-[150px]">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {range(0, 6).map((index) => (
-                <TableRow key={index}>
-                  <TableCell>
-                    <Skeleton className="h-6 w-6" />
-                  </TableCell>
-                  <TableCell>
-                    <Skeleton className="h-6 w-24" />
-                  </TableCell>
-                  <TableCell>
-                    <Skeleton className="h-6 w-28" />
-                  </TableCell>
-                  <TableCell>
-                    <Skeleton className="h-6 w-24" />
-                  </TableCell>
-                  <TableCell>
-                    <Skeleton className="h-6 w-32" />
-                  </TableCell>
-                  <TableCell>
-                    <Skeleton className="h-6 w-32" />
-                  </TableCell>
-                  <TableCell>
-                    <Skeleton className="h-6 w-32" />
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
-      </CardContent>
-    </Card>
+    <div className="rounded-md border">
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Domain Name</TableHead>
+            <TableHead className="w-[200px]">Account</TableHead>
+            <TableHead className="w-[150px]">Removal Date</TableHead>
+            <TableHead className="w-[220px]">Reason</TableHead>
+            <TableHead className="w-[220px]">Receiving Wallet</TableHead>
+            <TableHead className="w-[150px]">Actions</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {range(0, 6).map((index) => (
+            <TableRow key={index}>
+              <TableCell>
+                <Skeleton className="h-6 w-28" />
+              </TableCell>
+              <TableCell>
+                <Skeleton className="h-6 w-40" />
+              </TableCell>
+              <TableCell>
+                <Skeleton className="h-6 w-24" />
+              </TableCell>
+              <TableCell>
+                <Skeleton className="h-6 w-24" />
+              </TableCell>
+              <TableCell>
+                <Skeleton className="h-6 w-32" />
+              </TableCell>
+              <TableCell>
+                <Skeleton className="h-6 w-32" />
+              </TableCell>
+              <TableCell>
+                <Skeleton className="h-6 w-32" />
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
   </div>
 );
 
@@ -163,66 +152,15 @@ const formatWalletAddress = (address: string) => {
   return parsed.success ? parsed.data : address;
 };
 
-const WalletBadge: FC<{ address: string }> = ({ address }) => {
-  const formattedAddress = formatWalletAddress(address);
-
-  const handleCopyWallet = useCallback(async () => {
-    try {
-      await navigator.clipboard.writeText(formattedAddress);
-      toast.success('Copied address successfully');
-    } catch {
-      toast.error('Failed to copy address');
-    }
-  }, [formattedAddress]);
-
-  return (
-    <div className="flex items-center gap-2 px-1 py-1 bg-muted rounded-xl max-w-full">
-      <UserWalletAvatar address={formattedAddress} className="size-6" />
-      <div className="flex-1 min-w-0">
-        <AutoTruncateTextV2
-          initialCharactersCountToDisplay={16}
-          minCharactersToDisplay={16}
-          className="font-mono text-xs"
-        >
-          {formattedAddress}
-        </AutoTruncateTextV2>
-      </div>
-      <button
-        type="button"
-        onClick={handleCopyWallet}
-        className="p-1 hover:bg-background rounded transition-colors flex-shrink-0"
-        title="Copy address"
-      >
-        <Copy className="h-3 w-3" />
-      </button>
-    </div>
-  );
-};
-
-const removalReasonMeta: Record<
-  RemovalType,
-  {
-    label: string;
-    badgeClassName: string;
-    Icon: typeof Clock3;
-  }
-> = {
+const removalReasonMeta: Record<RemovalType, { label: string }> = {
   domain_expired: {
     label: 'Domain Expired',
-    badgeClassName:
-      'bg-amber-100 text-amber-900 border-amber-200 hover:bg-amber-100',
-    Icon: Clock3,
   },
   transferred_to_another_wallet: {
     label: 'Transferred To Another Wallet',
-    badgeClassName:
-      'bg-purple-100 text-purple-900 border-purple-200 hover:bg-purple-100',
-    Icon: SendIcon,
   },
   domain_exported: {
     label: 'Domain Exported',
-    badgeClassName: 'bg-sky-100 text-sky-900 border-sky-200 hover:bg-sky-100',
-    Icon: ShareIcon,
   },
 };
 
@@ -241,17 +179,7 @@ const reasonFilterOptions: Array<{ value: RemovalType; label: string }> = [
   },
 ];
 
-const ICON_BADGE_FEATURE_FLAG: FeatureFlagDefinition = {
-  key: 'icon_badge',
-  label: 'Hide icon badge in the reason column',
-  scope: 'global',
-  defaultValue: false,
-};
 function MyPreviouslyOwnedDomainsTable() {
-  useRegisterAdminFlags([ICON_BADGE_FEATURE_FLAG]);
-  const [hideIconBadgeInReasonColumn] = useAdminFeatureFlag(
-    ICON_BADGE_FEATURE_FLAG,
-  );
   const trpc = useTRPC();
   const { data: domains } = useSuspenseQuery(
     trpc.users.getCurrentUserBurnedDomains.queryOptions(),
@@ -260,76 +188,39 @@ function MyPreviouslyOwnedDomainsTable() {
   const columns: ColumnDef<PreviouslyOwnedDomainRow>[] = useMemo(
     () => [
       {
-        accessorKey: 'chainId',
-        header: 'Chain',
-        cell: ({ row }) => (
-          <NetworkLogo network={row.getValue('chainId')} className="w-6 h-6" />
-        ),
-        size: 80,
-        enableSorting: false,
-        filterFn: 'equals',
-      },
-      {
-        accessorKey: 'fromAddress',
-        header: 'Wallet',
-        cell: ({ row }) => (
-          <TruncatedTextWithHover maxLength={12}>
-            {row.getValue('fromAddress')}
-          </TruncatedTextWithHover>
-        ),
-        size: 140,
-        enableSorting: false,
-      },
-      {
         accessorKey: 'normalizedDomainName',
-        header: ({ column }) => {
-          return (
-            <Button
-              variant="ghost"
-              onClick={() =>
-                column.toggleSorting(column.getIsSorted() === 'asc')
-              }
-              className="-mx-3 h-auto px-3 py-1 font-medium hover:bg-transparent justify-start"
-            >
-              Domain Name
-              {column.getIsSorted() === 'asc' ? (
-                <ChevronUp className="ml-2 h-4 w-4" />
-              ) : column.getIsSorted() === 'desc' ? (
-                <ChevronDown className="ml-2 h-4 w-4" />
-              ) : (
-                <ChevronsUpDown className="ml-2 h-4 w-4" />
-              )}
-            </Button>
-          );
-        },
+        header: 'Domain Name',
         cell: ({ row }) => (
           <span className="font-medium">
             {row.getValue('normalizedDomainName')}
           </span>
         ),
+        filterFn: 'includesString',
+      },
+      {
+        id: 'account',
+        header: 'Account',
+        cell: ({ row }) => (
+          <AddressWithChain
+            address={row.original.fromAddress ?? null}
+            chainId={row.original.chainId ?? null}
+          />
+        ),
+        size: 200,
+        enableSorting: false,
+      },
+      {
+        id: 'chainId',
+        accessorKey: 'chainId',
+        header: 'Chain',
+        cell: () => null,
+        size: 0,
+        enableSorting: false,
+        filterFn: 'equals',
       },
       {
         accessorKey: 'removedAt',
-        header: ({ column }) => {
-          return (
-            <Button
-              variant="ghost"
-              onClick={() =>
-                column.toggleSorting(column.getIsSorted() === 'asc')
-              }
-              className="-mx-3 h-auto px-3 py-1 font-medium hover:bg-transparent justify-start"
-            >
-              Removal Date
-              {column.getIsSorted() === 'asc' ? (
-                <ChevronUp className="ml-2 h-4 w-4" />
-              ) : column.getIsSorted() === 'desc' ? (
-                <ChevronDown className="ml-2 h-4 w-4" />
-              ) : (
-                <ChevronsUpDown className="ml-2 h-4 w-4" />
-              )}
-            </Button>
-          );
-        },
+        header: 'Removal Date',
         cell: ({ row }) => {
           const removedAt = row.getValue('removedAt') as Date;
           return (
@@ -353,7 +244,6 @@ function MyPreviouslyOwnedDomainsTable() {
         accessorKey: 'removalReason',
         header: 'Reason',
         cell: ({ row }) => {
-          const meta = removalReasonMeta[row.original.removalType];
           const defaultReason = row.getValue('removalReason') as string;
           const isSepoliaExport =
             row.original.removalType === 'domain_exported' &&
@@ -365,28 +255,9 @@ function MyPreviouslyOwnedDomainsTable() {
             ? 'Actual Reason: Removed From Test Chain'
             : null;
 
-          if (!meta) {
-            return (
-              <span className="text-sm text-muted-foreground">{label}</span>
-            );
-          }
-
-          const Icon = meta.Icon;
-
           return (
             <div className="flex flex-col gap-1">
-              <Badge
-                variant="secondary"
-                className={cn(
-                  'gap-1 justify-start w-fit px-3 py-1 text-xs font-medium',
-                  meta.badgeClassName,
-                )}
-              >
-                {!hideIconBadgeInReasonColumn ? (
-                  <Icon className="h-3.5 w-3.5" />
-                ) : null}
-                <span>{label}</span>
-              </Badge>
+              <span className="text-sm text-white">{label}</span>
               {extraText ? (
                 <span className="text-xs text-muted-foreground">
                   {extraText}
@@ -415,7 +286,12 @@ function MyPreviouslyOwnedDomainsTable() {
           ) {
             return <span className="text-sm text-muted-foreground">—</span>;
           }
-          return <WalletBadge address={row.original.toAddress} />;
+          return (
+            <AddressWithChain
+              address={row.original.toAddress}
+              chainId={row.original.chainId ?? null}
+            />
+          );
         },
         size: 220,
         enableSorting: false,
@@ -450,13 +326,21 @@ function MyPreviouslyOwnedDomainsTable() {
         enableSorting: false,
       },
     ],
-    [hideIconBadgeInReasonColumn],
+    [],
   );
+
+  const [columnVisibility, setColumnVisibility] = useState<
+    Record<string, boolean>
+  >({
+    chainId: false,
+  });
 
   const table = useReactTable({
     data: domains,
     columns,
     getRowId: (row) => row.eventId,
+    state: { columnVisibility },
+    onColumnVisibilityChange: setColumnVisibility,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
@@ -484,9 +368,27 @@ function MyPreviouslyOwnedDomainsTable() {
   }
 
   return (
-    <Card>
-      <CardContent>
-        <div className="flex justify-end mb-4 gap-2">
+    <>
+      <div className="flex flex-col gap-2 mb-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="relative w-full sm:w-72">
+          <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder="Filter domains..."
+            value={
+              (table
+                .getColumn('normalizedDomainName')
+                ?.getFilterValue() as string) ?? ''
+            }
+            onChange={(e) =>
+              table
+                .getColumn('normalizedDomainName')
+                ?.setFilterValue(e.target.value)
+            }
+            className="pl-8"
+          />
+        </div>
+
+        <div className="flex flex-wrap items-center justify-end gap-2">
           <Select
             value={
               table.getColumn('chainId')?.getFilterValue()?.toString() ?? '-1'
@@ -550,6 +452,7 @@ function MyPreviouslyOwnedDomainsTable() {
               </SelectItem>
             </SelectContent>
           </Select>
+
           <DropdownMenu>
             <DropdownMenuTrigger asChild={true}>
               <Button
@@ -592,70 +495,103 @@ function MyPreviouslyOwnedDomainsTable() {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-          <div className="relative w-64">
-            <Search className="absolute left-2 top-2.5 h-4 w-4 text-zinc-500" />
-            <Input
-              placeholder="Search domains..."
-              value={table.getState().globalFilter ?? ''}
-              onChange={(e) => table.setGlobalFilter(e.target.value)}
-              className="pl-8"
-            />
-          </div>
         </div>
+      </div>
 
-        <div className="rounded-md border">
-          <Table style={{ tableLayout: 'fixed' }}>
-            <TableHeader>
-              {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => (
-                    <TableHead
-                      key={header.id}
-                      style={{ width: header.getSize() }}
-                    >
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
+      <div className="rounded-md border">
+        <Table style={{ tableLayout: 'fixed' }}>
+          <TableHeader className="bg-muted/50">
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id} className="border-b border-border">
+                {headerGroup.headers.map((header) => (
+                  <TableHead
+                    key={header.id}
+                    style={{ width: header.getSize() }}
+                    className="p-0"
+                  >
+                    {header.column.getCanSort() ? (
+                      <button
+                        type="button"
+                        className={cn(
+                          'w-full px-4 py-3 text-left text-xs font-semibold text-muted-foreground uppercase tracking-wider',
+                          'cursor-pointer select-none hover:text-foreground transition-colors',
+                        )}
+                        onClick={header.column.getToggleSortingHandler()}
+                      >
+                        <span className="flex items-center gap-2">
+                          {header.isPlaceholder
+                            ? null
+                            : flexRender(
+                                header.column.columnDef.header,
+                                header.getContext(),
+                              )}
+                          {header.column.getIsSorted() === 'asc' ? (
+                            <ArrowUpNarrowWideIcon className="h-3 w-3 text-primary" />
+                          ) : header.column.getIsSorted() === 'desc' ? (
+                            <ArrowDownWideNarrowIcon className="h-3 w-3 text-primary" />
+                          ) : (
+                            <ArrowUpDownIcon className="h-3 w-3 opacity-50" />
                           )}
-                    </TableHead>
+                        </span>
+                      </button>
+                    ) : (
+                      <div className="px-4 py-3 text-left text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext(),
+                            )}
+                      </div>
+                    )}
+                  </TableHead>
+                ))}
+              </TableRow>
+            ))}
+          </TableHeader>
+          <TableBody className="bg-background divide-y divide-border">
+            {table.getRowModel().rows?.length > 0 ? (
+              table.getRowModel().rows.map((row) => (
+                <TableRow
+                  key={row.id}
+                  className="hover:bg-muted/50 transition-colors"
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell
+                      key={cell.id}
+                      style={{ width: cell.column.getSize() }}
+                      className="px-4 py-3 overflow-hidden"
+                    >
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext(),
+                      )}
+                    </TableCell>
                   ))}
                 </TableRow>
-              ))}
-            </TableHeader>
-            <TableBody>
-              {table.getRowModel().rows?.length > 0 ? (
-                table.getRowModel().rows.map((row) => (
-                  <TableRow key={row.id}>
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell
-                        key={cell.id}
-                        style={{ width: cell.column.getSize() }}
-                      >
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext(),
-                        )}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell
-                    colSpan={columns.length}
-                    className="h-24 text-center"
-                  >
-                    No results.
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </div>
-      </CardContent>
-    </Card>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center"
+                >
+                  No results.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </div>
+    </>
+  );
+}
+
+export function MyPreviouslyOwnedDomainsContent() {
+  return (
+    <Suspense fallback={<LoadingSkeletons />}>
+      <MyPreviouslyOwnedDomainsTable />
+    </Suspense>
   );
 }
 
@@ -671,13 +607,7 @@ export default function MyBurnedDomains() {
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold">Previously Owned Domains</h2>
       </div>
-      {isLoading ? (
-        <LoadingSkeletons />
-      ) : (
-        <Suspense fallback={<LoadingSkeletons />}>
-          <MyPreviouslyOwnedDomainsTable />
-        </Suspense>
-      )}
+      {isLoading ? <LoadingSkeletons /> : <MyPreviouslyOwnedDomainsContent />}
     </div>
   );
 }

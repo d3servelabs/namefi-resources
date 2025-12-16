@@ -13,7 +13,6 @@ import {
   TableRow,
 } from '@/components/ui/shadcn/table';
 import { Button } from '@/components/ui/shadcn/button';
-import { Card, CardContent } from '@/components/ui/shadcn/card';
 import { Checkbox } from '@/components/ui/shadcn/checkbox';
 
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
@@ -77,12 +76,24 @@ import { motion, AnimatePresence, MotionConfig } from 'motion/react';
 import NumberFlow, { NumberFlowGroup, useCanAnimate } from '@number-flow/react';
 import { Separator } from '@/components/ui/shadcn/separator';
 import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from '@/components/ui/shadcn/tabs';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/shadcn/tooltip';
+import {
   EmailRequiredModal,
   DNS_MANAGEMENT_EMAIL_REQUIRED,
 } from '@/components/dialogs/email-required-dialog';
 import { applyDrizzlerFilterOnDataset } from '@samyx/drizzler-filters-sorters/experimental';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { groupBy } from 'ramda';
+import { MyPreviouslyOwnedDomainsContent } from '@/components/my-previously-owned-domains';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -101,6 +112,15 @@ import {
 type DomainRow = AppRouterOutput['users']['getCurrentUserDomains'][number];
 
 const DEFAULT_DOMAIN_LIST_PAGE_SIZE = 500;
+
+function getRenewalPriceUsdPerYearForDomain(
+  normalizedDomainName: string | null | undefined,
+  renewalPriceUsdPerYearByTld: Map<string, number | null>,
+) {
+  const domainName = normalizedDomainName ?? '';
+  const tld = domainName.split('.').pop()?.toLowerCase() ?? '';
+  return tld === '' ? null : (renewalPriceUsdPerYearByTld.get(tld) ?? null);
+}
 
 // Helper function to format expiration date with severity colors
 const formatExpirationDate = (
@@ -210,67 +230,102 @@ const RenewButton: FC<{
       aria-label={`Renew ${domainName}`}
       customLoadingContent={
         <>
-          <Loader2 className="w-4 h-4 mr-1 animate-spin" />
-          Renew
+          <Loader2 className="w-4 h-4 xl:mr-1 animate-spin" />
+          <span className="hidden xl:inline">Renew</span>
         </>
       }
       asChild={asChild}
       className={className}
     >
       <>
-        <History className="w-4 h-4 mr-1 scale-x-[-1]" />
-        Renew
+        <History className="w-4 h-4 xl:mr-1 scale-x-[-1]" />
+        <span className="hidden xl:inline">Renew</span>
       </>
     </AsyncButton>
   );
 };
 
+const RenewPricePremiumInfo: FC<{ domainName: string }> = ({ domainName }) => {
+  const [open, setOpen] = useState(false);
+  return (
+    <Tooltip open={open} onOpenChange={setOpen}>
+      <TooltipTrigger asChild={true}>
+        <button
+          type="button"
+          aria-label={`Renewal price info for ${domainName}`}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            setOpen((prev) => !prev);
+          }}
+          className="inline-flex size-4 items-center justify-center rounded-full border border-muted-foreground/40 text-[10px] font-semibold leading-none text-muted-foreground hover:bg-muted hover:text-foreground"
+        >
+          !
+        </button>
+      </TooltipTrigger>
+      <TooltipContent sideOffset={6}>
+        Premium domains may have a different renewal price.
+      </TooltipContent>
+    </Tooltip>
+  );
+};
+
+const ActionTooltip: FC<{ label: string; children: React.ReactNode }> = ({
+  label,
+  children,
+}) => {
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild={true}>
+        <span className="inline-flex">{children}</span>
+      </TooltipTrigger>
+      <TooltipContent sideOffset={6}>{label}</TooltipContent>
+    </Tooltip>
+  );
+};
+
 const LoadingSkeletons: FC = () => (
   <div className="flex flex-col gap-4">
-    <Card>
-      <CardContent>
-        <div className="rounded-md border">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-[50px]">
-                  <Skeleton className="h-4 w-4" />
-                </TableHead>
-                <TableHead className="w-[80px]">Chain</TableHead>
-                <TableHead className="w-[140px]">Wallet</TableHead>
-                <TableHead>Domain Name</TableHead>
-                <TableHead className="w-[150px]">Expires On</TableHead>
-                <TableHead className="w-[280px]">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {[...new Array(6)].map((_, index) => (
-                <TableRow key={index}>
-                  <TableCell>
-                    <Skeleton className="h-4 w-4" />
-                  </TableCell>
-                  <TableCell>
-                    <Skeleton className="h-6 w-6" />
-                  </TableCell>
-                  <TableCell>
-                    <Skeleton className="h-6 w-24" />
-                  </TableCell>
-                  <TableCell>
-                    <Skeleton className="h-6 w-28" />
-                  </TableCell>
-                  <TableCell>
-                    <Skeleton className="h-6 w-24" />
-                  </TableCell>
-                  <TableCell>
-                    <Skeleton className="h-6 w-32" />
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
-      </CardContent>
-    </Card>
+    <div className="rounded-md border">
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead className="w-[50px]">
+              <Skeleton className="h-4 w-4" />
+            </TableHead>
+            <TableHead className="w-[80px]">Chain</TableHead>
+            <TableHead className="w-[140px]">Wallet</TableHead>
+            <TableHead>Domain Name</TableHead>
+            <TableHead className="w-[150px]">Expires On</TableHead>
+            <TableHead className="w-[280px]">Actions</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {[...new Array(6)].map((_, index) => (
+            <TableRow key={index}>
+              <TableCell>
+                <Skeleton className="h-4 w-4" />
+              </TableCell>
+              <TableCell>
+                <Skeleton className="h-6 w-6" />
+              </TableCell>
+              <TableCell>
+                <Skeleton className="h-6 w-24" />
+              </TableCell>
+              <TableCell>
+                <Skeleton className="h-6 w-28" />
+              </TableCell>
+              <TableCell>
+                <Skeleton className="h-6 w-24" />
+              </TableCell>
+              <TableCell>
+                <Skeleton className="h-6 w-32" />
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
   </div>
 );
 
@@ -297,15 +352,16 @@ const MyDomainsEmptyPlaceholder: FC<HTMLAttributes<HTMLDivElement>> = ({
   );
 };
 
-function MyDomainsTable(props: { title?: string; domains: DomainRow[] }) {
-  const { title, domains } = props;
+function MyDomainsTable(props: {
+  title?: string;
+  domains: DomainRow[];
+  kind: 'active' | 'inactive';
+}) {
+  const { title, domains, kind } = props;
 
   const trpc = useTRPC();
   const { logEventWithInteractionLoggers } = useInteractionLoggers();
-  const tableKind = useMemo<'active' | 'inactive'>(
-    () => (title ? 'inactive' : 'active'),
-    [title],
-  );
+  const tableKind = kind;
   const [showEmailModal, setShowEmailModal] = useState(false);
   const [listForSaleDialogDomain, setListForSaleDialogDomain] = useState<
     string | null
@@ -557,6 +613,27 @@ function MyDomainsTable(props: { title?: string; domains: DomainRow[] }) {
     const next = [...filteredDomainsBySearch];
     return next.sort((a, b) => {
       for (const sort of sorting) {
+        if (sort.id === 'renewPricing') {
+          const priceA = getRenewalPriceUsdPerYearForDomain(
+            a.normalizedDomainName,
+            renewalPriceUsdPerYearByTld,
+          );
+          const priceB = getRenewalPriceUsdPerYearForDomain(
+            b.normalizedDomainName,
+            renewalPriceUsdPerYearByTld,
+          );
+          if (priceA === null && priceB === null) {
+            continue;
+          }
+          // Keep unknown prices ("—") sorted last in both directions.
+          if (priceA === null) return 1;
+          if (priceB === null) return -1;
+          const result = priceA - priceB;
+          if (result !== 0) {
+            return sort.desc ? -result : result;
+          }
+          continue;
+        }
         const compareFn = comparators[sort.id as keyof typeof comparators];
         if (!compareFn) {
           continue;
@@ -568,7 +645,12 @@ function MyDomainsTable(props: { title?: string; domains: DomainRow[] }) {
       }
       return 0;
     });
-  }, [filteredDomainsBySearch, sorting, comparators]);
+  }, [
+    filteredDomainsBySearch,
+    sorting,
+    comparators,
+    renewalPriceUsdPerYearByTld,
+  ]);
 
   const totalCount = sortedDomains.length;
   const totalPages = Math.max(1, Math.ceil(totalCount / pageSize));
@@ -746,16 +828,6 @@ function MyDomainsTable(props: { title?: string; domains: DomainRow[] }) {
         enableHiding: false,
       },
       {
-        id: 'account',
-        header: 'Account',
-        cell: ({ row }) => {
-          const chainId = row.original.chainId ?? null;
-          const ownerAddress = row.original.ownerAddress ?? null;
-          return <AddressWithChain address={ownerAddress} chainId={chainId} />;
-        },
-        size: 200,
-      },
-      {
         accessorKey: 'normalizedDomainName',
         header: 'Domain Name',
         cell: ({ row }) => (
@@ -767,6 +839,16 @@ function MyDomainsTable(props: { title?: string; domains: DomainRow[] }) {
             {row.getValue('normalizedDomainName')}
           </Link>
         ),
+      },
+      {
+        id: 'account',
+        header: 'Account',
+        cell: ({ row }) => {
+          const chainId = row.original.chainId ?? null;
+          const ownerAddress = row.original.ownerAddress ?? null;
+          return <AddressWithChain address={ownerAddress} chainId={chainId} />;
+        },
+        size: 200,
       },
       {
         accessorKey: 'expirationDate',
@@ -784,17 +866,16 @@ function MyDomainsTable(props: { title?: string; domains: DomainRow[] }) {
       {
         id: 'renewPricing',
         header: 'Renew (USD/yr)',
+        accessorFn: (row) =>
+          getRenewalPriceUsdPerYearForDomain(
+            row.normalizedDomainName,
+            renewalPriceUsdPerYearByTld,
+          ),
         cell: ({ row }) => {
           const domainName = row.original.normalizedDomainName ?? '';
-          const expirationDateRaw = row.original.expirationDate;
-          const expirationDate = expirationDateRaw
-            ? new Date(expirationDateRaw)
-            : null;
-          const showRenewButton = isDomainPossiblyRenewable(expirationDate);
-
-          const tld = domainName.split('.').pop()?.toLowerCase() ?? '';
-          const renewalPriceUsdPerYear =
-            tld === '' ? null : (renewalPriceUsdPerYearByTld.get(tld) ?? null);
+          const renewalPriceUsdPerYear = row.getValue('renewPricing') as
+            | number
+            | null;
 
           const priceLabel =
             renewalPriceUsdPerYear === null
@@ -802,31 +883,16 @@ function MyDomainsTable(props: { title?: string; domains: DomainRow[] }) {
               : formatAmountInUSD(renewalPriceUsdPerYear);
 
           return (
-            <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
               <span className="text-sm text-muted-foreground">
                 {priceLabel}
               </span>
-              {showRenewButton ? (
-                <AsyncButton
-                  variant="outline"
-                  size="icon"
-                  aria-label={`Renew ${domainName}`}
-                  isLoading={processingDomains.has(domainName)}
-                  onClick={async () => {
-                    await handleRenewDomain({
-                      normalizedDomainName: domainName,
-                      expirationDate: expirationDate,
-                    });
-                  }}
-                >
-                  <History className="w-4 h-4 scale-x-[-1]" />
-                </AsyncButton>
-              ) : null}
+              <RenewPricePremiumInfo domainName={domainName} />
             </div>
           );
         },
         size: 180,
-        enableSorting: false,
+        enableSorting: true,
       },
       {
         id: 'actions',
@@ -854,15 +920,17 @@ function MyDomainsTable(props: { title?: string; domains: DomainRow[] }) {
             row.original.tokenId?.toString() ?? null,
           );
 
+          const actionButtonBaseClassName =
+            'w-9 px-0 gap-0 xl:w-auto xl:px-3 xl:gap-1.5 !text-white border-0 bg-transparent shadow-none hover:bg-muted/30 xl:border xl:bg-background xl:shadow-xs';
+
           const manageButton = showManageButton ? (
             <Button
-              variant={isMobile ? 'ghost' : 'outline'}
+              variant="outline"
               size="sm"
-              className={
-                isMobile
-                  ? undefined
-                  : 'w-9 px-0 gap-0 xl:w-auto xl:px-3 xl:gap-1.5'
-              }
+              className={cn(
+                actionButtonBaseClassName,
+                isExpired ? 'hover:!text-amber-400' : 'hover:!text-sky-400',
+              )}
               onClick={(e) => handleManageDnsClick(domainName, e)}
               aria-label={`Settings for ${domainName}`}
             >
@@ -880,26 +948,28 @@ function MyDomainsTable(props: { title?: string; domains: DomainRow[] }) {
             </Button>
           ) : null;
 
-          const renewButton =
-            showRenewButton && isMobile ? (
-              <RenewButton
-                domainName={domainName}
-                expirationDate={expirationDate}
-                onRenew={handleRenewDomain}
-                isProcessing={processingDomains.has(domainName)}
-                variant="ghost"
-              />
-            ) : null;
+          const renewButton = showRenewButton ? (
+            <RenewButton
+              domainName={domainName}
+              expirationDate={expirationDate}
+              onRenew={handleRenewDomain}
+              isProcessing={processingDomains.has(domainName)}
+              variant="outline"
+              className={cn(
+                actionButtonBaseClassName,
+                'hover:!text-emerald-400',
+              )}
+            />
+          ) : null;
 
           const urlForwardButton = (
             <Button
-              variant={isMobile ? 'ghost' : 'outline'}
+              variant="outline"
               size="sm"
-              className={
-                isMobile
-                  ? undefined
-                  : 'w-9 px-0 gap-0 xl:w-auto xl:px-3 xl:gap-1.5'
-              }
+              className={cn(
+                actionButtonBaseClassName,
+                'hover:!text-violet-400',
+              )}
               onClick={() => handleUrlForwardClick(domainName)}
               aria-label={`Update URL Forward for ${domainName}`}
             >
@@ -910,13 +980,12 @@ function MyDomainsTable(props: { title?: string; domains: DomainRow[] }) {
 
           const listForSaleButton = (
             <Button
-              variant={isMobile ? 'ghost' : 'outline'}
+              variant="outline"
               size="sm"
-              className={
-                isMobile
-                  ? undefined
-                  : 'w-9 px-0 gap-0 xl:w-auto xl:px-3 xl:gap-1.5'
-              }
+              className={cn(
+                actionButtonBaseClassName,
+                'hover:!text-orange-400',
+              )}
               onClick={() => handleListForSaleClick(domainName)}
               aria-label={`List ${domainName} for sale`}
             >
@@ -928,13 +997,12 @@ function MyDomainsTable(props: { title?: string; domains: DomainRow[] }) {
           const explorerButton =
             !isExpired && explorerUrl ? (
               <Button
-                variant={isMobile ? 'ghost' : 'outline'}
+                variant="outline"
                 size="sm"
-                className={
-                  isMobile
-                    ? undefined
-                    : 'w-9 px-0 gap-0 xl:w-auto xl:px-3 xl:gap-1.5'
-                }
+                className={cn(
+                  actionButtonBaseClassName,
+                  'hover:!text-blue-400',
+                )}
                 asChild={true}
               >
                 <Link
@@ -954,7 +1022,12 @@ function MyDomainsTable(props: { title?: string; domains: DomainRow[] }) {
             return (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="sm">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="!text-white border-0 bg-transparent shadow-none hover:bg-muted/30"
+                    aria-label={`Actions for ${domainName}`}
+                  >
                     <MoreVertical className="w-4 h-4" />
                   </Button>
                 </DropdownMenuTrigger>
@@ -981,11 +1054,23 @@ function MyDomainsTable(props: { title?: string; domains: DomainRow[] }) {
 
           return (
             <div className="flex gap-2">
-              {manageButton}
-              {renewButton}
-              {urlForwardButton}
-              {listForSaleButton}
-              {explorerButton}
+              {manageButton ? (
+                <ActionTooltip label={isExpired ? 'Try to recover' : 'Manage'}>
+                  {manageButton}
+                </ActionTooltip>
+              ) : null}
+              {renewButton ? (
+                <ActionTooltip label="Renew">{renewButton}</ActionTooltip>
+              ) : null}
+              <ActionTooltip label="URL Forward">
+                {urlForwardButton}
+              </ActionTooltip>
+              <ActionTooltip label="List for sale">
+                {listForSaleButton}
+              </ActionTooltip>
+              {explorerButton ? (
+                <ActionTooltip label="View NFT">{explorerButton}</ActionTooltip>
+              ) : null}
             </div>
           );
         },
@@ -1057,33 +1142,29 @@ function MyDomainsTable(props: { title?: string; domains: DomainRow[] }) {
           {title}
         </h2>
       )}
-      <Card>
-        <CardContent>
-          <ExtensibleDataTable<DomainRow, typeof filterStrategy>
-            columns={columns}
-            data={paginatedDomains}
-            isLoading={false}
-            page={page}
-            pageSize={pageSize}
-            totalPages={totalPages}
-            totalCount={totalCount}
-            onPageChange={setPage}
-            onPageSizeChange={handlePageSizeChange}
-            sorting={sorting}
-            onSortingChange={setSorting}
-            searchTerm={domainSearch}
-            onSearchChange={setDomainSearch}
-            searchPlaceholder="Filter domains..."
-            filterStrategy={filterStrategy}
-            columnVisibility={columnVisibility}
-            onColumnVisibilityChange={setColumnVisibility}
-            emptyMessage="No domains match your filters"
-            loadingMessage="Loading domains..."
-            paginationVisibility="auto"
-            showPageSizeSelector={false}
-          />
-        </CardContent>
-      </Card>
+      <ExtensibleDataTable<DomainRow, typeof filterStrategy>
+        columns={columns}
+        data={paginatedDomains}
+        isLoading={false}
+        page={page}
+        pageSize={pageSize}
+        totalPages={totalPages}
+        totalCount={totalCount}
+        onPageChange={setPage}
+        onPageSizeChange={handlePageSizeChange}
+        sorting={sorting}
+        onSortingChange={setSorting}
+        searchTerm={domainSearch}
+        onSearchChange={setDomainSearch}
+        searchPlaceholder="Filter domains..."
+        filterStrategy={filterStrategy}
+        columnVisibility={columnVisibility}
+        onColumnVisibilityChange={setColumnVisibility}
+        emptyMessage="No domains match your filters"
+        loadingMessage="Loading domains..."
+        paginationVisibility="auto"
+        showPageSizeSelector={false}
+      />
 
       {/* Floating Action Panel */}
       <AnimatePresence>
@@ -1244,15 +1325,6 @@ export default function MyDomains() {
     <div className="container mx-auto py-8 px-8">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold">My Domains</h2>
-        <Button variant="outline" asChild={true}>
-          <Link
-            href="/domains/previously-owned"
-            aria-label="View previously owned domains"
-          >
-            <History className="w-4 h-4 mr-1" />
-            Previously Owned Domains
-          </Link>
-        </Button>
       </div>
       {isLoading ? (
         <LoadingSkeletons />
@@ -1304,10 +1376,39 @@ const MyDomainsContent = () => {
   }
 
   return (
-    <div className="flex flex-col gap-6">
-      <MyDomainsTable domains={activeDomains} />
-      <MyDomainsTable title="Inactive Domains" domains={inactiveDomains} />
-    </div>
+    <Tabs defaultValue="active">
+      <TabsList className="w-fit">
+        <TabsTrigger value="active">My Domains</TabsTrigger>
+        <TabsTrigger value="inactive">Inactive Domains</TabsTrigger>
+        <TabsTrigger value="previously-owned">
+          Previously Owned Domains
+        </TabsTrigger>
+      </TabsList>
+
+      <TabsContent value="active" className="mt-4">
+        {activeDomains.length === 0 ? (
+          <EmptyPlaceholder>
+            <EmptyPlaceholder.Title>No active domains</EmptyPlaceholder.Title>
+          </EmptyPlaceholder>
+        ) : (
+          <MyDomainsTable kind="active" domains={activeDomains} />
+        )}
+      </TabsContent>
+
+      <TabsContent value="inactive" className="mt-4">
+        {inactiveDomains.length === 0 ? (
+          <EmptyPlaceholder>
+            <EmptyPlaceholder.Title>No inactive domains</EmptyPlaceholder.Title>
+          </EmptyPlaceholder>
+        ) : (
+          <MyDomainsTable kind="inactive" domains={inactiveDomains} />
+        )}
+      </TabsContent>
+
+      <TabsContent value="previously-owned" className="mt-4">
+        <MyPreviouslyOwnedDomainsContent />
+      </TabsContent>
+    </Tabs>
   );
 };
 

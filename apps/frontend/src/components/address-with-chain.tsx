@@ -9,13 +9,23 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/shadcn/tooltip';
+import { CopyIcon } from 'lucide-react';
 import type { ComponentProps } from 'react';
+import { useCallback } from 'react';
+import { toast } from 'sonner';
 
 export type AddressWithChainProps = Omit<ComponentProps<'div'>, 'children'> & {
   address?: string | null;
   chainId?: number | null;
   showChainBadge?: boolean;
 };
+
+function formatMobileAddress(address: string) {
+  if (address.startsWith('0x') && address.length >= 6) {
+    return `0x${address.slice(2, 6)}..`;
+  }
+  return `${address.slice(0, 6)}..`;
+}
 
 export function AddressWithChain({
   address,
@@ -24,6 +34,18 @@ export function AddressWithChain({
   className,
   ...props
 }: AddressWithChainProps) {
+  const safeAddress = address ?? '';
+  const short = getShortAddress(safeAddress);
+  const mobileShort = formatMobileAddress(safeAddress);
+  const handleCopy = useCallback(async () => {
+    try {
+      await navigator.clipboard.writeText(safeAddress);
+      toast.success('Copied address');
+    } catch {
+      toast.error('Failed to copy address');
+    }
+  }, [safeAddress]);
+
   if (!address) {
     return (
       <div className={cn('flex items-center gap-2', className)} {...props}>
@@ -32,26 +54,45 @@ export function AddressWithChain({
     );
   }
 
-  const short = getShortAddress(address);
-
   return (
     <div className={cn('flex items-center gap-2', className)} {...props}>
-      <div className="relative shrink-0">
-        <UserWalletAvatar address={address} className="size-6 rounded-full" />
-        {showChainBadge && chainId ? (
-          <div className="absolute -bottom-1 -right-1 rounded-full border border-background bg-background">
-            <NetworkLogo network={chainId} className="w-3.5 h-3.5" />
-          </div>
-        ) : null}
-      </div>
-
       <Tooltip>
         <TooltipTrigger asChild={true}>
-          <span className="font-mono text-sm">{short}</span>
+          <span className="inline-flex items-center gap-2">
+            <span className="relative shrink-0">
+              <UserWalletAvatar
+                address={address}
+                className="size-6 rounded-full"
+              />
+              {showChainBadge && chainId ? (
+                <span className="absolute -bottom-1 -right-1 rounded-full border border-background bg-background">
+                  <NetworkLogo network={chainId} className="w-3.5 h-3.5" />
+                </span>
+              ) : null}
+            </span>
+            <span className="hidden lg:inline font-mono text-sm">{short}</span>
+            <span className="hidden md:inline lg:hidden font-mono text-sm">
+              {mobileShort}
+            </span>
+          </span>
         </TooltipTrigger>
         <TooltipContent sideOffset={6}>
           <span className="font-mono">{address}</span>
         </TooltipContent>
+      </Tooltip>
+
+      <Tooltip>
+        <TooltipTrigger asChild={true}>
+          <button
+            type="button"
+            onClick={handleCopy}
+            className="rounded-full p-1 hover:bg-muted"
+            aria-label="Copy address"
+          >
+            <CopyIcon className="h-3 w-3" />
+          </button>
+        </TooltipTrigger>
+        <TooltipContent sideOffset={6}>Copy</TooltipContent>
       </Tooltip>
     </div>
   );

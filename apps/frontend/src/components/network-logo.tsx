@@ -22,15 +22,16 @@ export const NetworkLogo = ({
   missingNetworkClassName,
   ...props
 }: React.ComponentProps<'div'> & {
-  network: number;
+  network?: number | null;
   missingNetworkClassName?: string;
 }) => {
+  const networkId = typeof network === 'number' ? network : null;
   const testnet = useMemo(() => {
-    return TEST_NETS.includes(network);
-  }, [network]);
+    return networkId ? TEST_NETS.includes(networkId) : false;
+  }, [networkId]);
   const networkName = useMemo(() => {
-    return getChain(network)?.name || 'Unknown Network';
-  }, [network]);
+    return (networkId ? getChain(networkId)?.name : null) || 'Unknown Network';
+  }, [networkId]);
 
   return (
     <TooltipProvider>
@@ -45,14 +46,14 @@ export const NetworkLogo = ({
               props.className,
             )}
           >
-            {ETH_NETWORKS.includes(network) ? (
+            {networkId && ETH_NETWORKS.includes(networkId) ? (
               <EthNetwork className={cn('w-full h-full')} />
-            ) : BASE_NETWORKS.includes(network) ? (
+            ) : networkId && BASE_NETWORKS.includes(networkId) ? (
               <BaseNetwork className={cn('w-full h-full')} />
-            ) : network ? (
+            ) : networkId ? (
               <NetworkIcon
                 variant="branded"
-                chainId={network}
+                chainId={networkId}
                 className={cn('w-full h-full')}
               />
             ) : (
