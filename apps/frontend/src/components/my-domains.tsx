@@ -1,6 +1,5 @@
 'use client';
 
-import NetworkLogo from '@/components/network-logo';
 import { TruncatedTextWithHover } from '@/components/truncated-text-with-hover';
 import { AuthRequired } from '@/components/auth-required';
 import { AsyncButton } from '@/components/buttons/async-button';
@@ -26,14 +25,18 @@ import {
 import { useAuth } from '@/hooks/use-auth';
 import { useEmailPrompt } from '@/hooks/use-email-prompt';
 import { useDomainRenewal } from '@/hooks/use-domain-renewal';
+import { AddressWithChain } from '@/components/address-with-chain';
 import { cn } from '@/lib/cn';
 import { type AppRouterOutput, useTRPC } from '@/lib/trpc';
+import { formatAmountInUSD } from '@/lib/number';
+import { useInteractionLoggers } from '@/components/providers/analytics';
+import { InteractionLoggingEventName } from '@/lib/analytics-events';
 import {
   CHAINS,
   getNftExplorerUrl,
   type NamefiNormalizedDomain,
 } from '@namefi-astra/utils';
-import { useSuspenseQuery } from '@tanstack/react-query';
+import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
 import type {
   ColumnDef,
   SortingState,
@@ -44,6 +47,8 @@ import {
   AlertCircle,
   ExternalLink,
   History,
+  Link2,
+  Tag,
   Loader2,
   SearchIcon,
   Settings,
@@ -84,8 +89,18 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/shadcn/dropdown-menu';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/shadcn/dialog';
 
 type DomainRow = AppRouterOutput['users']['getCurrentUserDomains'][number];
+
+const DEFAULT_DOMAIN_LIST_PAGE_SIZE = 500;
 
 // Helper function to format expiration date with severity colors
 const formatExpirationDate = (
@@ -285,7 +300,16 @@ const MyDomainsEmptyPlaceholder: FC<HTMLAttributes<HTMLDivElement>> = ({
 function MyDomainsTable(props: { title?: string; domains: DomainRow[] }) {
   const { title, domains } = props;
 
+  const trpc = useTRPC();
+  const { logEventWithInteractionLoggers } = useInteractionLoggers();
+  const tableKind = useMemo<'active' | 'inactive'>(
+    () => (title ? 'inactive' : 'active'),
+    [title],
+  );
   const [showEmailModal, setShowEmailModal] = useState(false);
+  const [listForSaleDialogDomain, setListForSaleDialogDomain] = useState<
+    string | null
+  >(null);
   const [selectedDomainIds, setSelectedDomainIds] = useState<
     Set<NamefiNormalizedDomain>
   >(() => new Set<NamefiNormalizedDomain>());
@@ -293,16 +317,19 @@ function MyDomainsTable(props: { title?: string; domains: DomainRow[] }) {
     () => new Set(),
   );
   const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(5);
+  const [pageSize, setPageSize] = useState(DEFAULT_DOMAIN_LIST_PAGE_SIZE);
   const [sorting, setSorting] = useState<SortingState>([
     { id: 'expirationDate', desc: false },
   ]);
+  const [domainSearch, setDomainSearch] = useState('');
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
     select: true,
-    chainId: true,
-    ownerAddress: true,
+    account: true,
     normalizedDomainName: true,
     expirationDate: true,
+    renewPricing: true,
+    urlForward: true,
+    listForSale: true,
     actions: true,
   });
 
@@ -314,10 +341,12 @@ function MyDomainsTable(props: { title?: string; domains: DomainRow[] }) {
       prevColumnVisibility.current = columnVisibility;
       setColumnVisibility((prev) => ({
         select: true,
-        chainId: false,
-        ownerAddress: false,
+        account: false,
         normalizedDomainName: true,
         expirationDate: true,
+        renewPricing: false,
+        urlForward: false,
+        listForSale: false,
         actions: true,
       }));
     } else {
@@ -339,6 +368,26 @@ function MyDomainsTable(props: { title?: string; domains: DomainRow[] }) {
       }
     },
     [hasEmail, router],
+  );
+
+  const handleUrlForwardClick = useCallback(
+    (domainName: string) => {
+      router.push(
+        `/domains/${domainName}?tab=dns-management&section=forward-to`,
+      );
+    },
+    [router],
+  );
+
+  const handleListForSaleClick = useCallback(
+    (domainName: string) => {
+      logEventWithInteractionLoggers({
+        name: InteractionLoggingEventName.MyDomainsListForSaleClicked,
+        properties: { domainName, tableKind },
+      });
+      setListForSaleDialogDomain(domainName);
+    },
+    [logEventWithInteractionLoggers, tableKind],
   );
 
   const handleRenewDomain = useCallback(
@@ -369,6 +418,21 @@ function MyDomainsTable(props: { title?: string; domains: DomainRow[] }) {
     },
     [renewDomains],
   );
+
+  const tldPricingQuery = useQuery(
+    trpc.registry.getTldPricingTable.queryOptions(),
+  );
+  const renewalPriceUsdPerYearByTld = useMemo(() => {
+    const map = new Map<string, number | null>();
+    for (const row of tldPricingQuery.data ?? []) {
+      if (!row?.tld) continue;
+      map.set(
+        String(row.tld).toLowerCase(),
+        row.renewalPriceUsdPerYear ?? null,
+      );
+    }
+    return map;
+  }, [tldPricingQuery.data]);
 
   const drizzlerFilterConfig = useMemo(
     () => ({
@@ -449,6 +513,16 @@ function MyDomainsTable(props: { title?: string; domains: DomainRow[] }) {
     return applyDrizzlerFilterOnDataset(domains, drizzlerFilterOptions);
   }, [domains, drizzlerFilterOptions]);
 
+  const filteredDomainsBySearch = useMemo(() => {
+    const needle = domainSearch.trim().toLowerCase();
+    if (!needle) {
+      return filteredDomains;
+    }
+    return filteredDomains.filter((domain) =>
+      (domain.normalizedDomainName ?? '').toLowerCase().includes(needle),
+    );
+  }, [filteredDomains, domainSearch]);
+
   const comparators = useMemo(
     () => ({
       chainId: (a: DomainRow, b: DomainRow) =>
@@ -478,9 +552,9 @@ function MyDomainsTable(props: { title?: string; domains: DomainRow[] }) {
 
   const sortedDomains = useMemo(() => {
     if (sorting.length === 0) {
-      return filteredDomains;
+      return filteredDomainsBySearch;
     }
-    const next = [...filteredDomains];
+    const next = [...filteredDomainsBySearch];
     return next.sort((a, b) => {
       for (const sort of sorting) {
         const compareFn = comparators[sort.id as keyof typeof comparators];
@@ -494,7 +568,7 @@ function MyDomainsTable(props: { title?: string; domains: DomainRow[] }) {
       }
       return 0;
     });
-  }, [filteredDomains, sorting, comparators]);
+  }, [filteredDomainsBySearch, sorting, comparators]);
 
   const totalCount = sortedDomains.length;
   const totalPages = Math.max(1, Math.ceil(totalCount / pageSize));
@@ -517,6 +591,15 @@ function MyDomainsTable(props: { title?: string; domains: DomainRow[] }) {
     }
     setPage(1);
   }, [filterState]);
+
+  useEffect(() => {
+    if (!domainSearch) {
+      // Still reset to page 1 when clearing search, but avoid redundant sets.
+      setPage(1);
+      return;
+    }
+    setPage(1);
+  }, [domainSearch]);
 
   const paginatedDomains = useMemo(() => {
     const start = (page - 1) * pageSize;
@@ -663,22 +746,14 @@ function MyDomainsTable(props: { title?: string; domains: DomainRow[] }) {
         enableHiding: false,
       },
       {
-        accessorKey: 'chainId',
-        header: 'Chain',
-        cell: ({ row }) => (
-          <NetworkLogo network={row.getValue('chainId')} className="w-6 h-6" />
-        ),
-        size: 80,
-      },
-      {
-        accessorKey: 'ownerAddress',
-        header: 'Wallet',
-        cell: ({ row }) => (
-          <TruncatedTextWithHover maxLength={12}>
-            {row.getValue('ownerAddress')}
-          </TruncatedTextWithHover>
-        ),
-        size: 140,
+        id: 'account',
+        header: 'Account',
+        cell: ({ row }) => {
+          const chainId = row.original.chainId ?? null;
+          const ownerAddress = row.original.ownerAddress ?? null;
+          return <AddressWithChain address={ownerAddress} chainId={chainId} />;
+        },
+        size: 200,
       },
       {
         accessorKey: 'normalizedDomainName',
@@ -705,6 +780,53 @@ function MyDomainsTable(props: { title?: string; domains: DomainRow[] }) {
           return formatExpirationDate(expirationDate);
         },
         size: 150,
+      },
+      {
+        id: 'renewPricing',
+        header: 'Renew (USD/yr)',
+        cell: ({ row }) => {
+          const domainName = row.original.normalizedDomainName ?? '';
+          const expirationDateRaw = row.original.expirationDate;
+          const expirationDate = expirationDateRaw
+            ? new Date(expirationDateRaw)
+            : null;
+          const showRenewButton = isDomainPossiblyRenewable(expirationDate);
+
+          const tld = domainName.split('.').pop()?.toLowerCase() ?? '';
+          const renewalPriceUsdPerYear =
+            tld === '' ? null : (renewalPriceUsdPerYearByTld.get(tld) ?? null);
+
+          const priceLabel =
+            renewalPriceUsdPerYear === null
+              ? '—'
+              : formatAmountInUSD(renewalPriceUsdPerYear);
+
+          return (
+            <div className="flex items-center justify-between gap-2">
+              <span className="text-sm text-muted-foreground">
+                {priceLabel}
+              </span>
+              {showRenewButton ? (
+                <AsyncButton
+                  variant="outline"
+                  size="icon"
+                  aria-label={`Renew ${domainName}`}
+                  isLoading={processingDomains.has(domainName)}
+                  onClick={async () => {
+                    await handleRenewDomain({
+                      normalizedDomainName: domainName,
+                      expirationDate: expirationDate,
+                    });
+                  }}
+                >
+                  <History className="w-4 h-4 scale-x-[-1]" />
+                </AsyncButton>
+              ) : null}
+            </div>
+          );
+        },
+        size: 180,
+        enableSorting: false,
       },
       {
         id: 'actions',
@@ -736,37 +858,83 @@ function MyDomainsTable(props: { title?: string; domains: DomainRow[] }) {
             <Button
               variant={isMobile ? 'ghost' : 'outline'}
               size="sm"
+              className={
+                isMobile
+                  ? undefined
+                  : 'w-9 px-0 gap-0 xl:w-auto xl:px-3 xl:gap-1.5'
+              }
               onClick={(e) => handleManageDnsClick(domainName, e)}
               aria-label={`Settings for ${domainName}`}
             >
               {isExpired ? (
                 <>
-                  <History className="w-4 h-4 mr-1" />
-                  Try to recover
+                  <History className="w-4 h-4 xl:mr-1" />
+                  <span className="hidden xl:inline">Try to recover</span>
                 </>
               ) : (
                 <>
-                  <Settings className="w-4 h-4 mr-1" /> Manage Domain{' '}
+                  <Settings className="w-4 h-4 xl:mr-1" />
+                  <span className="hidden xl:inline">Manage Domain</span>
                 </>
               )}
             </Button>
           ) : null;
 
-          const renewButton = showRenewButton ? (
-            <RenewButton
-              domainName={domainName}
-              expirationDate={expirationDate}
-              onRenew={handleRenewDomain}
-              isProcessing={processingDomains.has(domainName)}
+          const renewButton =
+            showRenewButton && isMobile ? (
+              <RenewButton
+                domainName={domainName}
+                expirationDate={expirationDate}
+                onRenew={handleRenewDomain}
+                isProcessing={processingDomains.has(domainName)}
+                variant="ghost"
+              />
+            ) : null;
+
+          const urlForwardButton = (
+            <Button
               variant={isMobile ? 'ghost' : 'outline'}
-            />
-          ) : null;
+              size="sm"
+              className={
+                isMobile
+                  ? undefined
+                  : 'w-9 px-0 gap-0 xl:w-auto xl:px-3 xl:gap-1.5'
+              }
+              onClick={() => handleUrlForwardClick(domainName)}
+              aria-label={`Update URL Forward for ${domainName}`}
+            >
+              <Link2 className="w-4 h-4 xl:mr-1" />
+              <span className="hidden xl:inline">URL Forward</span>
+            </Button>
+          );
+
+          const listForSaleButton = (
+            <Button
+              variant={isMobile ? 'ghost' : 'outline'}
+              size="sm"
+              className={
+                isMobile
+                  ? undefined
+                  : 'w-9 px-0 gap-0 xl:w-auto xl:px-3 xl:gap-1.5'
+              }
+              onClick={() => handleListForSaleClick(domainName)}
+              aria-label={`List ${domainName} for sale`}
+            >
+              <Tag className="w-4 h-4 xl:mr-1" />
+              <span className="hidden xl:inline">List</span>
+            </Button>
+          );
 
           const explorerButton =
             !isExpired && explorerUrl ? (
               <Button
                 variant={isMobile ? 'ghost' : 'outline'}
                 size="sm"
+                className={
+                  isMobile
+                    ? undefined
+                    : 'w-9 px-0 gap-0 xl:w-auto xl:px-3 xl:gap-1.5'
+                }
                 asChild={true}
               >
                 <Link
@@ -776,7 +944,8 @@ function MyDomainsTable(props: { title?: string; domains: DomainRow[] }) {
                   rel="noopener noreferrer"
                   className="flex justify-start items-center"
                 >
-                  <ExternalLink className="w-4 h-4 mr-1" /> View NFT
+                  <ExternalLink className="w-4 h-4 xl:mr-1" />
+                  <span className="hidden xl:inline">View NFT</span>
                 </Link>
               </Button>
             ) : null;
@@ -796,6 +965,12 @@ function MyDomainsTable(props: { title?: string; domains: DomainRow[] }) {
                   {!!renewButton && (
                     <DropdownMenuItem>{renewButton}</DropdownMenuItem>
                   )}
+                  {!!urlForwardButton && (
+                    <DropdownMenuItem>{urlForwardButton}</DropdownMenuItem>
+                  )}
+                  {!!listForSaleButton && (
+                    <DropdownMenuItem>{listForSaleButton}</DropdownMenuItem>
+                  )}
                   {!!explorerButton && (
                     <DropdownMenuItem>{explorerButton}</DropdownMenuItem>
                   )}
@@ -808,6 +983,8 @@ function MyDomainsTable(props: { title?: string; domains: DomainRow[] }) {
             <div className="flex gap-2">
               {manageButton}
               {renewButton}
+              {urlForwardButton}
+              {listForSaleButton}
               {explorerButton}
             </div>
           );
@@ -818,6 +995,8 @@ function MyDomainsTable(props: { title?: string; domains: DomainRow[] }) {
     ],
     [
       handleManageDnsClick,
+      handleUrlForwardClick,
+      handleListForSaleClick,
       handleRenewDomain,
       handleRowSelectionChange,
       handleToggleAllCurrentPage,
@@ -825,6 +1004,7 @@ function MyDomainsTable(props: { title?: string; domains: DomainRow[] }) {
       processingDomains,
       selectedDomainIds,
       isMobile,
+      renewalPriceUsdPerYearByTld,
     ],
   );
 
@@ -837,6 +1017,38 @@ function MyDomainsTable(props: { title?: string; domains: DomainRow[] }) {
         description={DNS_MANAGEMENT_EMAIL_REQUIRED.description}
         actionText={DNS_MANAGEMENT_EMAIL_REQUIRED.actionText}
       />
+      <Dialog
+        open={listForSaleDialogDomain !== null}
+        onOpenChange={(open) => {
+          if (!open) {
+            setListForSaleDialogDomain(null);
+          }
+        }}
+      >
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Coming soon</DialogTitle>
+            <DialogDescription>
+              Listing domains for sale isn’t available yet.
+              {listForSaleDialogDomain ? (
+                <>
+                  {' '}
+                  You clicked:{' '}
+                  <span className="font-medium">{listForSaleDialogDomain}</span>
+                </>
+              ) : null}
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setListForSaleDialogDomain(null)}
+            >
+              Close
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
       {!!title && (
         <h2
           id={title.toLowerCase().replaceAll(' ', '-')}
@@ -859,11 +1071,16 @@ function MyDomainsTable(props: { title?: string; domains: DomainRow[] }) {
             onPageSizeChange={handlePageSizeChange}
             sorting={sorting}
             onSortingChange={setSorting}
+            searchTerm={domainSearch}
+            onSearchChange={setDomainSearch}
+            searchPlaceholder="Filter domains..."
             filterStrategy={filterStrategy}
             columnVisibility={columnVisibility}
             onColumnVisibilityChange={setColumnVisibility}
             emptyMessage="No domains match your filters"
             loadingMessage="Loading domains..."
+            paginationVisibility="auto"
+            showPageSizeSelector={false}
           />
         </CardContent>
       </Card>
@@ -919,31 +1136,9 @@ function MyDomainsTable(props: { title?: string; domains: DomainRow[] }) {
                           }
                         />
                       </div>
-                      <div className="flex flex-col">
-                        <div className="flex items-center gap-1">
-                          <span className="font-semibold text-foreground text-sm">
-                            {selectedDomainCount === 1 ? 'Domain' : 'Domains'}
-                          </span>
-                          <span className="font-medium text-muted-foreground text-sm">
-                            selected
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <NumberFlow
-                            value={filteredTotalCount}
-                            className="text-xs text-muted-foreground font-medium"
-                            style={
-                              {
-                                '--number-flow-char-height': '0.85em',
-                                '--number-flow-mask-height': '0.3em',
-                              } as React.CSSProperties
-                            }
-                          />
-                          <span className="text-xs text-muted-foreground">
-                            total
-                          </span>
-                        </div>
-                      </div>
+                      <span className="font-semibold text-foreground text-sm">
+                        selected
+                      </span>
                     </div>
 
                     <Separator

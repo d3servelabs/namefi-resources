@@ -134,6 +134,16 @@ function transformEvent(event: InteractionLoggingEvent): TransformedEvent {
         },
       };
     }
+    case InteractionLoggingEventName.MyDomainsListForSaleClicked: {
+      const { domainName, tableKind } = event.properties;
+      return {
+        name: event.name,
+        properties: {
+          domain_name: domainName,
+          table_kind: tableKind,
+        },
+      };
+    }
     default: {
       return event;
     }

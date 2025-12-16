@@ -22,7 +22,7 @@ import {
   useState,
   useEffect,
 } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Alert, AlertDescription, AlertTitle } from '../ui/shadcn/alert';
 import { Button } from '../ui/shadcn/button';
 import { Card, CardHeader, CardTitle } from '../ui/shadcn/card';
@@ -45,6 +45,10 @@ export const DomainManagement: FC<DomainManagementProps> = ({
   className,
   ...rest
 }: DomainManagementProps) => {
+  const searchParams = useSearchParams();
+  const requestedTab = searchParams.get('tab');
+  const requestedSection = searchParams.get('section');
+
   // Check if domain matches any third-party hostname
   const isPbn = useMemo(
     () =>
@@ -56,7 +60,16 @@ export const DomainManagement: FC<DomainManagementProps> = ({
 
   // Set default tab based on whether it's a third-party hostname
   const defaultTab = isPbn ? 'dns-management' : 'dns-overview';
-  const [currentTab, setCurrentTab] = useState(defaultTab);
+  const [currentTab, setCurrentTab] = useState(() => {
+    if (
+      requestedTab === 'dns-overview' ||
+      requestedTab === 'dns-records' ||
+      requestedTab === 'dns-management'
+    ) {
+      return requestedTab;
+    }
+    return defaultTab;
+  });
   const [showEmailModal, setShowEmailModal] = useState(false);
   const { hasEmail } = useEmailPrompt();
   const { isLoading: isAuthLoading } = useAuth();
@@ -93,6 +106,17 @@ export const DomainManagement: FC<DomainManagementProps> = ({
     }
   }, [hasEmail, isAuthLoading]);
 
+  useEffect(() => {
+    if (
+      requestedTab !== 'dns-overview' &&
+      requestedTab !== 'dns-records' &&
+      requestedTab !== 'dns-management'
+    ) {
+      return;
+    }
+    setCurrentTab((prev) => (prev === requestedTab ? prev : requestedTab));
+  }, [requestedTab]);
+
   const handleTabChange = (value: string) => {
     // If user doesn't have email, don't allow tab changes
     if (!hasEmail) {
@@ -121,6 +145,25 @@ export const DomainManagement: FC<DomainManagementProps> = ({
 
   const showDnsManagement =
     showNameservers || showDnssec || showDomainPreferences;
+
+  useEffect(() => {
+    if (requestedSection !== 'forward-to') {
+      return;
+    }
+    if (currentTab !== 'dns-management') {
+      return;
+    }
+    if (!showDomainPreferences) {
+      return;
+    }
+    const raf = requestAnimationFrame(() => {
+      document
+        .getElementById('forward-to')
+        ?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+    return () => cancelAnimationFrame(raf);
+  }, [requestedSection, currentTab, showDomainPreferences]);
+
   return (
     <div className={cn('', className)} {...rest}>
       <EmailRequiredModal

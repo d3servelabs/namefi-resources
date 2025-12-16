@@ -62,6 +62,8 @@ type ExtensibleDataTableProps<TData, FS extends IFilterStrategy<TData>> = {
   totalCount: number;
   onPageChange: (page: number) => void;
   onPageSizeChange: (pageSize: number) => void;
+  paginationVisibility?: 'always' | 'auto' | 'hidden';
+  showPageSizeSelector?: boolean;
 
   // Sorting
   sorting?: SortingState;
@@ -105,6 +107,8 @@ export function ExtensibleDataTable<TData, FS extends IFilterStrategy<TData>>(
     totalCount,
     onPageChange,
     onPageSizeChange,
+    paginationVisibility = 'always',
+    showPageSizeSelector = true,
     sorting: controlledSorting,
     onSortingChange,
     searchTerm,
@@ -270,6 +274,16 @@ export function ExtensibleDataTable<TData, FS extends IFilterStrategy<TData>>(
     () => table.getAllColumns().filter((column) => column.getCanHide()),
     [table],
   );
+
+  const shouldShowPagination = useMemo(() => {
+    if (paginationVisibility === 'hidden') {
+      return false;
+    }
+    if (paginationVisibility === 'auto') {
+      return totalPages > 1;
+    }
+    return true;
+  }, [paginationVisibility, totalPages]);
 
   return (
     <div className="space-y-4">
@@ -527,28 +541,32 @@ export function ExtensibleDataTable<TData, FS extends IFilterStrategy<TData>>(
       </div>
 
       {/* Pagination Controls */}
-      <div className="flex items-center justify-between flex-wrap gap-2">
-        <div className="flex items-center gap-2">
-          <TablePageSizeSelector
-            pageSize={pageSize}
-            onPageSizeChange={onPageSizeChange}
+      {shouldShowPagination && (
+        <div className="flex items-center justify-between flex-wrap gap-2">
+          <div className="flex items-center gap-2">
+            {showPageSizeSelector && (
+              <TablePageSizeSelector
+                pageSize={pageSize}
+                onPageSizeChange={onPageSizeChange}
+              />
+            )}
+            <div className="hidden sm:block text-sm text-muted-foreground">
+              Page {page} of {totalPages} — Total {totalCount}{' '}
+              {totalCount === 1 ? 'row' : 'rows'}
+            </div>
+            <div className="sm:hidden block text-sm text-muted-foreground">
+              Total: {totalCount} {totalCount === 1 ? 'row' : 'rows'}
+            </div>
+          </div>
+          <TablePageSelector
+            pageIndex={page - 1}
+            setPageIndex={(index) => {
+              onPageChange(index + 1);
+            }}
+            pageCount={totalPages}
           />
-          <div className="hidden sm:block text-sm text-muted-foreground">
-            Page {page} of {totalPages} — Total {totalCount}{' '}
-            {totalCount === 1 ? 'row' : 'rows'}
-          </div>
-          <div className="sm:hidden block text-sm text-muted-foreground">
-            Total: {totalCount} {totalCount === 1 ? 'row' : 'rows'}
-          </div>
         </div>
-        <TablePageSelector
-          pageIndex={page - 1}
-          setPageIndex={(index) => {
-            onPageChange(index + 1);
-          }}
-          pageCount={totalPages}
-        />
-      </div>
+      )}
 
       {/* Filter Panel */}
       {filterStrategy?.renderFilterPanel &&

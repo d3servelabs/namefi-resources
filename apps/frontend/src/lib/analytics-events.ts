@@ -17,6 +17,9 @@ export enum InteractionLoggingEventName {
   ShareDialogOpened = 'share_dialog_opened',
   ShareIntent = 'share_intent',
   ShareRecorded = 'share_recorded',
+
+  // My Domains Events
+  MyDomainsListForSaleClicked = 'my_domains_list_for_sale_clicked',
 }
 
 export type InteractionLoggingCartItem = Pick<
@@ -105,6 +108,10 @@ export type InteractionLoggingEvent =
         sharedUrl: string;
         postUrl: string;
       }
+    >
+  | BaseEvent<
+      InteractionLoggingEventName.MyDomainsListForSaleClicked,
+      { domainName: string; tableKind: 'active' | 'inactive' }
     >;
 
 // Event with only name and augmentation (no properties)
