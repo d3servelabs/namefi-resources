@@ -23,6 +23,8 @@ import { useSearch } from '@/hooks/use-search';
 import { useSearchFromQuery } from '@/hooks/use-search-from-query';
 import { useFreeMintsGuidance } from '@/components/providers/free-mints-guidance';
 import dynamic from 'next/dynamic';
+import { useInteractionLoggers } from '@/components/providers/analytics';
+import { InteractionLoggingEventName } from '@/lib/analytics-events';
 import { useQueryState, parseAsBoolean } from 'nuqs';
 import { FloatingCart } from '@/components/floating-cart';
 import {
@@ -49,6 +51,7 @@ import {
 } from '@/components/ui/shadcn/accordion';
 import { cn } from '@/lib/cn';
 import {
+  ArrowLeft,
   ArrowRight,
   BrainCircuit,
   Coins,
@@ -1050,6 +1053,7 @@ const HeroSection = ({
   onClearParentDomain,
   showScrollIndicator = true,
   onScrollIndicatorClick,
+  onV3BetaClick,
 }: {
   searchMode: SearchMode;
   onSearchModeChange: (mode: SearchMode) => void;
@@ -1062,6 +1066,7 @@ const HeroSection = ({
   onClearParentDomain?: () => void;
   showScrollIndicator?: boolean;
   onScrollIndicatorClick?: () => void;
+  onV3BetaClick?: () => void;
 }) => {
   const heroRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
@@ -1213,6 +1218,34 @@ const HeroSection = ({
                 isFirstPartyOrigin
                 ctaClassName="text-primary-foreground"
               />
+              <div className="mt-4 flex justify-center">
+                <Link
+                  href="https://search.labs.namefi.io"
+                  target="_blank"
+                  onClick={onV3BetaClick}
+                  className="flex items-center gap-2 text-sm"
+                >
+                  <motion.div
+                    className="flex items-center gap-2"
+                    animate={{
+                      color: [
+                        'var(--muted-foreground)',
+                        'var(--brand-primary)',
+                        'var(--muted-foreground)',
+                      ],
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Number.POSITIVE_INFINITY,
+                      ease: 'easeInOut',
+                    }}
+                  >
+                    <Sparkles className="h-3.5 w-3.5" />
+                    <span>Or try our new search experience (v3 beta)</span>
+                    <ArrowLeft className="h-3.5 w-3.5" />
+                  </motion.div>
+                </Link>
+              </div>
             </div>
           </div>
         </motion.div>
@@ -1439,6 +1472,8 @@ export const Landing: LandingComponent = ({ origin }) => {
     startFreeMintsSearchGuidance,
   } = useFreeMintsGuidance();
 
+  const { logEventWithInteractionLoggers } = useInteractionLoggers();
+
   const {
     query,
     setQuery,
@@ -1570,6 +1605,16 @@ export const Landing: LandingComponent = ({ origin }) => {
     });
   }, []);
 
+  const handleV3BetaClick = useCallback(() => {
+    logEventWithInteractionLoggers({
+      name: InteractionLoggingEventName.PromoClick,
+      properties: {
+        id: 'search-v3-beta',
+        target_url: 'https://search.labs.namefi.io',
+      },
+    });
+  }, [logEventWithInteractionLoggers]);
+
   const shouldShowScrollIndicator =
     !showSearchResults && !hasSeenStorylineThisCycle;
 
@@ -1592,6 +1637,7 @@ export const Landing: LandingComponent = ({ origin }) => {
           onClearParentDomain={() => setParentDomain(undefined)}
           showScrollIndicator={shouldShowScrollIndicator}
           onScrollIndicatorClick={handleScrollIndicatorClick}
+          onV3BetaClick={handleV3BetaClick}
         />
 
         <div className="relative z-10">
