@@ -10,6 +10,7 @@ import {
   paymentsTable,
   namefiNftCte,
   namefiNftOwnersCte,
+  domainExportTrackingTable,
 } from '@namefi-astra/db';
 import {
   buildWhereClause,
@@ -176,21 +177,21 @@ export const adminRouter = createTRPCRouter({
             'is_powered_by_namefi_domain',
           ),
           effectiveDomainExpirationTime: sql<Date | null>`
-            CASE 
+            CASE
               WHEN ${isPoweredByNamefiCondition}
               THEN ${namefiNftView.expirationTime}
               ELSE ${indexedDomainsTable.expirationTime}
             END
           `.as('effective_domain_expiration_time'),
           effectiveRegistrarKey: sql<string | null>`
-            CASE 
+            CASE
               WHEN ${isPoweredByNamefiCondition}
               THEN 'Powered by Namefi'
               ELSE ${indexedDomainsTable.registrarKey}
             END
           `.as('effective_registrar_key'),
           canBurn: sql<boolean>`
-            CASE 
+            CASE
               WHEN ${isPoweredByNamefiCondition}
               THEN false
               WHEN ${indexedDomainsTable.expirationTime} IS NULL OR ${namefiNftView.expirationTime} IS NULL
@@ -203,7 +204,7 @@ export const adminRouter = createTRPCRouter({
             END
           `.as('can_burn'),
           hasDateMismatch: sql<boolean>`
-            CASE 
+            CASE
               WHEN ${isPoweredByNamefiCondition}
               THEN false
               WHEN ${namefiNftView.expirationTime} IS NULL OR ${indexedDomainsTable.expirationTime} IS NULL
@@ -1093,7 +1094,7 @@ export const adminRouter = createTRPCRouter({
         .with(namefiNftOwnersCte, namefiNftCte)
         .select({
           hasDateMismatch: sql<boolean>`
-            CASE 
+            CASE
               WHEN ${namefiNftView.expirationTime} IS NULL OR ${indexedDomainsTable.expirationTime} IS NULL
               THEN false
               ELSE ABS(EXTRACT(EPOCH FROM (${namefiNftView.expirationTime} - ${indexedDomainsTable.expirationTime}))) > 86400
@@ -3083,7 +3084,7 @@ export const adminRouter = createTRPCRouter({
               'is_powered_by_namefi_domain',
             ),
             canBurn: sql<boolean>`
-              CASE 
+              CASE
                 WHEN ${isPoweredByNamefiCondition}
                 THEN false
                 WHEN ${indexedDomainsTable.expirationTime} IS NULL OR ${namefiNftView.expirationTime} IS NULL
@@ -3096,7 +3097,7 @@ export const adminRouter = createTRPCRouter({
               END
             `.as('can_burn'),
             hasDateMismatch: sql<boolean>`
-              CASE 
+              CASE
                 WHEN ${isPoweredByNamefiCondition}
                 THEN false
                 WHEN ${namefiNftView.expirationTime} IS NULL OR ${indexedDomainsTable.expirationTime} IS NULL
@@ -3105,7 +3106,7 @@ export const adminRouter = createTRPCRouter({
               END
             `.as('has_date_mismatch'),
             hasMissingData: sql<boolean>`
-              CASE 
+              CASE
                 WHEN ${isPoweredByNamefiCondition}
                 THEN ${namefiNftView.expirationTime} IS NULL
                 ELSE (${namefiNftView.expirationTime} IS NULL OR ${indexedDomainsTable.expirationTime} IS NULL)
@@ -3312,6 +3313,234 @@ export const adminRouter = createTRPCRouter({
           cause: error,
         });
       }
+    }),
+
+  // ============================================
+  // Export Tracking Endpoints
+  // ============================================
+
+  /**
+   * Get export tracking records with pagination and filtering
+   */
+  getExportTrackingRecords: adminProcedureWithPermissions(Permission.READ_NFT)
+    .input(
+      z.object({
+        page: z.number().min(1).default(1),
+        pageSize: z.number().min(1).max(100).default(25),
+        filters: z.any().optional(), // FilterOptions type from drizzler
+        sorting: z.any().optional(), // SortOptions type from drizzler
+      }),
+    )
+    .query(async ({ input }) => {
+      const { page, pageSize, filters, sorting } = input;
+      const offset = (page - 1) * pageSize;
+
+      // Define table structure for drizzler
+      const tableStructure = {
+        id: domainExportTrackingTable.id,
+        normalizedDomainName: domainExportTrackingTable.normalizedDomainName,
+        chainId: domainExportTrackingTable.chainId,
+        ownerAddress: domainExportTrackingTable.ownerAddress,
+        status: domainExportTrackingTable.status,
+        previousStatus: domainExportTrackingTable.previousStatus,
+        registrarKey: domainExportTrackingTable.registrarKey,
+        statusChangedAt: domainExportTrackingTable.statusChangedAt,
+        firstDetectedAt: domainExportTrackingTable.firstDetectedAt,
+        lastCheckedAt: domainExportTrackingTable.lastCheckedAt,
+        transferCompletedAt: domainExportTrackingTable.transferCompletedAt,
+        userNotified: domainExportTrackingTable.userNotified,
+        clientApprovedAt: domainExportTrackingTable.clientApprovedAt,
+        adminVerifiedAt: domainExportTrackingTable.adminVerifiedAt,
+        confirmedOutOfAccountAt:
+          domainExportTrackingTable.confirmedOutOfAccountAt,
+        nftBurnedAt: domainExportTrackingTable.nftBurnedAt,
+        createdAt: domainExportTrackingTable.createdAt,
+        updatedAt: domainExportTrackingTable.updatedAt,
+      };
+
+      // Build base query
+      const baseQuery = db
+        .select({
+          id: domainExportTrackingTable.id,
+          normalizedDomainName: domainExportTrackingTable.normalizedDomainName,
+          chainId: domainExportTrackingTable.chainId,
+          ownerAddress: domainExportTrackingTable.ownerAddress,
+          status: domainExportTrackingTable.status,
+          previousStatus: domainExportTrackingTable.previousStatus,
+          statusHistory: domainExportTrackingTable.statusHistory,
+          eppStatuses: domainExportTrackingTable.eppStatuses,
+          registrarKey: domainExportTrackingTable.registrarKey,
+          statusChangedAt: domainExportTrackingTable.statusChangedAt,
+          firstDetectedAt: domainExportTrackingTable.firstDetectedAt,
+          lastCheckedAt: domainExportTrackingTable.lastCheckedAt,
+          transferCompletedAt: domainExportTrackingTable.transferCompletedAt,
+          userNotified: domainExportTrackingTable.userNotified,
+          notifiedAt: domainExportTrackingTable.notifiedAt,
+          clientApprovedAt: domainExportTrackingTable.clientApprovedAt,
+          verfyingAdminId: domainExportTrackingTable.verfyingAdminId,
+          adminVerifiedAt: domainExportTrackingTable.adminVerifiedAt,
+          confirmedOutOfAccountAt:
+            domainExportTrackingTable.confirmedOutOfAccountAt,
+          nftBurnedAt: domainExportTrackingTable.nftBurnedAt,
+          nftBurnTxHash: domainExportTrackingTable.nftBurnTxHash,
+          createdAt: domainExportTrackingTable.createdAt,
+          updatedAt: domainExportTrackingTable.updatedAt,
+        })
+        .from(domainExportTrackingTable)
+        .$dynamic();
+
+      // Build WHERE clauses
+      const whereClauses: SQL[] = [];
+
+      // Add column filters using drizzler buildWhereClause
+      if (filters) {
+        const drizzlerWhere = buildWhereClause(
+          tableStructure,
+          filters as FilterOptions<any>,
+        );
+        if (drizzlerWhere) {
+          whereClauses.push(drizzlerWhere);
+        }
+      }
+
+      // Apply WHERE clauses
+      let query = baseQuery;
+      if (whereClauses.length > 0) {
+        query = query.where(and(...whereClauses));
+      }
+
+      // Build ORDER BY using drizzler buildSortClause or default
+      const orderByClauses = sorting
+        ? buildSortClause(tableStructure, sorting as SortOptions<any>)
+        : [sql`${domainExportTrackingTable.statusChangedAt} DESC`];
+
+      try {
+        // Build count query
+        const countQuery = db
+          .select({ count: sql<number>`COUNT(*)::int` })
+          .from(domainExportTrackingTable)
+          .$dynamic();
+
+        // Apply same WHERE to count query
+        let countQueryWithWhere = countQuery;
+        if (whereClauses.length > 0) {
+          countQueryWithWhere = countQuery.where(and(...whereClauses));
+        }
+
+        // Execute queries in parallel
+        const [rows, countRow] = await Promise.all([
+          query
+            .orderBy(...orderByClauses)
+            .limit(pageSize)
+            .offset(offset),
+          countQueryWithWhere,
+        ]);
+
+        const total = countRow[0]?.count ?? 0;
+
+        return {
+          data: rows,
+          pagination: {
+            page,
+            pageSize,
+            totalCount: total,
+            totalPages: Math.ceil(total / pageSize),
+          },
+        };
+      } catch (error) {
+        logger.error({ error }, 'Failed to get export tracking records');
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to get export tracking records',
+        });
+      }
+    }),
+
+  /**
+   * Admin verify an export tracking record
+   * This sets the adminVerifiedAt timestamp and verfyingAdminId,
+   * which makes the domain eligible for NFT burning
+   */
+  verifyExportTracking: auditedAdminProcedureWithPermissions(
+    Permission.WRITE_NFT,
+    ({ ctx, input, auditActorExtraInfo }) => ({
+      actorType: 'admin' as const,
+      actorId: ctx.user.id,
+      actorExtraInfo: auditActorExtraInfo,
+      resourceType: ResourceType.DOMAIN_EXPORT,
+      resourceId: input.id,
+      action: 'verify_export',
+      extraInput: input,
+    }),
+  )
+    .input(z.object({ id: z.string().uuid() }))
+    .mutation(async ({ ctx, input }) => {
+      // First verify the record exists and is in TRANSFER_COMPLETED status
+      const existingRecord = await db
+        .select({
+          id: domainExportTrackingTable.id,
+          normalizedDomainName: domainExportTrackingTable.normalizedDomainName,
+          status: domainExportTrackingTable.status,
+          adminVerifiedAt: domainExportTrackingTable.adminVerifiedAt,
+          nftBurnedAt: domainExportTrackingTable.nftBurnedAt,
+        })
+        .from(domainExportTrackingTable)
+        .where(eq(domainExportTrackingTable.id, input.id))
+        .limit(1);
+
+      if (!existingRecord[0]) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Export tracking record not found',
+        });
+      }
+
+      const record = existingRecord[0];
+
+      if (record.adminVerifiedAt) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Export tracking record is already verified',
+        });
+      }
+
+      if (record.nftBurnedAt) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'NFT has already been burned for this export',
+        });
+      }
+
+      if (record.status !== 'TRANSFER_COMPLETED') {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: `Cannot verify export with status: ${record.status}. Only TRANSFER_COMPLETED exports can be verified.`,
+        });
+      }
+
+      // Update the record with admin verification
+      await db
+        .update(domainExportTrackingTable)
+        .set({
+          verfyingAdminId: ctx.user.id,
+          adminVerifiedAt: new Date(),
+          updatedAt: new Date(),
+        })
+        .where(eq(domainExportTrackingTable.id, input.id));
+
+      logger.info(
+        {
+          recordId: input.id,
+          domain: record.normalizedDomainName,
+          adminId: ctx.user.id,
+        },
+        'Admin verified export tracking record',
+      );
+
+      return {
+        success: true,
+        message: `Export for ${record.normalizedDomainName} has been verified`,
+      };
     }),
 
   // Subrouters

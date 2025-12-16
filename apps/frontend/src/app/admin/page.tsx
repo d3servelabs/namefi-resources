@@ -22,6 +22,7 @@ import {
   ShoppingCart,
   Flame,
   Globe,
+  ArrowRightLeft,
 } from 'lucide-react';
 import { Permission } from '@namefi-astra/utils';
 import { PermissionGate } from '@/components/access/PermissionGate';
@@ -135,6 +136,17 @@ const ADMIN_SECTIONS: AdminSection[] = [
         iconBgColor: 'bg-red-100',
         iconTextColor: 'text-red-600',
         permissions: [Permission.WRITE_NFT],
+      },
+      {
+        title: 'Export Tracking',
+        description:
+          'Monitor domain export requests and verify transfers for NFT burning.',
+        href: '/admin/export-tracking',
+        icon: ArrowRightLeft,
+        iconBgColor: 'bg-cyan-100',
+        iconTextColor: 'text-cyan-600',
+        permissions: [Permission.READ_NFT, Permission.WRITE_NFT],
+        permissionsMode: 'some',
       },
       {
         title: 'NFSC Tokens',

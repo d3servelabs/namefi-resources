@@ -49,6 +49,7 @@ export const ResourceType = {
   NFSC: 'nfsc',
   BULK_BURN: 'bulk_burn',
   EPP_TESTING: 'epp_testing',
+  DOMAIN_EXPORT: 'domain_export',
   OTHER: 'other',
 } as const;
 
