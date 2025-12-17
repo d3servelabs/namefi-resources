@@ -1,20 +1,11 @@
 'use client';
 
-import { useRef, useState, forwardRef } from 'react';
+import { useRef, useState, useMemo, forwardRef, type FormEvent } from 'react';
 import dynamic from 'next/dynamic';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Button } from '@/components/ui/shadcn/button';
 import { Input } from '@/components/ui/shadcn/input';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/shadcn/form';
+import { Label } from '@/components/ui/shadcn/label';
 import {
   Card,
   CardContent,
@@ -47,11 +38,9 @@ const AltchaVerifier = forwardRef<AltchaVerifierRef, AltchaProps>(
 );
 
 const newsletterFormSchema = z.object({
-  email: z.string().email('Please enter a valid email address'),
+  email: z.string().trim().email('Please enter a valid email address'),
   name: z.string().optional(),
 });
-
-type NewsletterFormData = z.infer<typeof newsletterFormSchema>;
 
 interface NewsletterFormProps {
   /**
@@ -140,21 +129,35 @@ function NewsletterFormInner({
   const [isSuccess, setIsSuccess] = useState(false);
   const trpc = useTRPC();
 
-  const form = useForm<NewsletterFormData>({
-    resolver: zodResolver(newsletterFormSchema),
-    mode: 'onSubmit',
-    reValidateMode: 'onSubmit',
-    defaultValues: {
-      email: '',
-      name: '',
-    },
-  });
+  const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
+  const [hasAttemptedSubmit, setHasAttemptedSubmit] = useState(false);
+
+  const validationResult = useMemo(() => {
+    return newsletterFormSchema.safeParse({
+      email,
+      name,
+    });
+  }, [email, name]);
+
+  const errors = useMemo(() => {
+    return validationResult.error
+      ? z.treeifyError(validationResult.error)
+      : undefined;
+  }, [validationResult]);
+
+  const emailError =
+    hasAttemptedSubmit && !validationResult.success && errors
+      ? errors?.properties?.email?.errors?.[0]
+      : undefined;
 
   const subscribeMutation = useMutation(
     trpc.newsletter.subscribe.mutationOptions({
       onSuccess: (data) => {
         setIsSuccess(true);
-        form.reset();
+        setEmail('');
+        setName('');
+        setHasAttemptedSubmit(false);
         toast.success('Subscribed!', {
           description: data.message,
         });
@@ -181,10 +184,17 @@ function NewsletterFormInner({
     widget: AltchaWidgetRef | null;
   }>(null);
 
-  const onSubmit = async (data: NewsletterFormData) => {
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (subscribeMutation.isPending) return;
+
+    setHasAttemptedSubmit(true);
+    const parsed = newsletterFormSchema.safeParse({ email, name });
+    if (!parsed.success) return;
+
     subscribeMutation.mutate({
-      email: data.email,
-      name: data.name || undefined,
+      email: parsed.data.email,
+      name: parsed.data.name || undefined,
       from,
       attributes,
       altcha: altchaRef.current?.value,
@@ -232,44 +242,38 @@ function NewsletterFormInner({
 
   if (variant === 'minimal') {
     return (
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="flex flex-col sm:flex-row gap-2 w-full max-w-md mx-auto"
-        >
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem className="flex-1">
-                <FormControl>
-                  <Input
-                    placeholder="Enter your email"
-                    type="email"
-                    {...field}
-                    disabled={subscribeMutation.isPending}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col sm:flex-row gap-2 w-full max-w-md mx-auto"
+      >
+        <div className="flex-1">
+          <Input
+            placeholder="Enter your email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            disabled={subscribeMutation.isPending}
+            aria-invalid={Boolean(emailError)}
           />
-          <Button
-            type="submit"
-            disabled={subscribeMutation.isPending || !form.formState.isValid}
-            className="shrink-0"
-          >
-            {subscribeMutation.isPending ? (
-              'Subscribing...'
-            ) : (
-              <>
-                <Mail className="w-4 h-4 mr-2" />
-                Subscribe
-              </>
-            )}
-          </Button>
-        </form>
-      </Form>
+          {emailError && (
+            <p className="text-destructive text-sm mt-1">{emailError}</p>
+          )}
+        </div>
+        <Button
+          type="submit"
+          disabled={subscribeMutation.isPending}
+          className="shrink-0"
+        >
+          {subscribeMutation.isPending ? (
+            'Subscribing...'
+          ) : (
+            <>
+              <Mail className="w-4 h-4 mr-2" />
+              Subscribe
+            </>
+          )}
+        </Button>
+      </form>
     );
   }
 
@@ -291,65 +295,53 @@ function NewsletterFormInner({
         {description && <CardDescription>{description}</CardDescription>}
       </CardHeader>
       <CardContent className={cn(contentClassName)}>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            {showNameField && (
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Name (optional)</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Your name"
-                        {...field}
-                        disabled={subscribeMutation.isPending}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {showNameField && (
+            <div className="grid gap-2">
+              <Label htmlFor="newsletter-name">Name (optional)</Label>
+              <Input
+                id="newsletter-name"
+                placeholder="Your name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                disabled={subscribeMutation.isPending}
               />
-            )}
+            </div>
+          )}
 
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="your@email.com"
-                      type="email"
-                      {...field}
-                      disabled={subscribeMutation.isPending}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+          <div className="grid gap-2">
+            <Label htmlFor="newsletter-email">Email</Label>
+            <Input
+              id="newsletter-email"
+              placeholder="your@email.com"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              disabled={subscribeMutation.isPending}
+              aria-invalid={Boolean(emailError)}
             />
+            {emailError && (
+              <p className="text-destructive text-sm">{emailError}</p>
+            )}
+          </div>
 
-            <AltchaVerifier ref={altchaRef} expire={120_000} />
+          <AltchaVerifier ref={altchaRef} expire={120_000} />
 
-            <Button
-              type="submit"
-              className="w-full"
-              disabled={subscribeMutation.isPending || !form.formState.isValid}
-            >
-              {subscribeMutation.isPending ? (
-                'Subscribing...'
-              ) : (
-                <>
-                  <Mail className="w-4 h-4 mr-2" />
-                  Subscribe to Newsletter
-                </>
-              )}
-            </Button>
-          </form>
-        </Form>
+          <Button
+            type="submit"
+            className="w-full"
+            disabled={subscribeMutation.isPending}
+          >
+            {subscribeMutation.isPending ? (
+              'Subscribing...'
+            ) : (
+              <>
+                <Mail className="w-4 h-4 mr-2" />
+                Subscribe to Newsletter
+              </>
+            )}
+          </Button>
+        </form>
       </CardContent>
     </Card>
   );
