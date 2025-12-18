@@ -56,6 +56,7 @@ import { AnimatePresence, motion } from 'motion/react';
 import { useFreeMintsGuidance } from '@/components/providers/free-mints-guidance';
 import { Spotlight } from '@/components/ui/spotlight';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { InstantBuyButton } from '@/components/instant-buy';
 
 // Components
 export const SearchHeader: FC<{
@@ -725,27 +726,36 @@ export const DomainCard: FC<{
               </NamefiButton>
             ) : availabilityInfo.availability ||
               (isImportable && showImportUi) ? (
-              <AnimatedCartButton
-                state={
-                  removingBusy
-                    ? 'removing'
-                    : addingBusy
-                      ? 'adding'
-                      : inCart
-                        ? 'in-cart'
-                        : isImportable && showImportUi
-                          ? 'import'
-                          : 'add-to-cart'
-                }
-                onAdd={isImportable ? handleImport : handleAdd}
-                onRemove={handleRemove}
-                onGoToCart={() => {
-                  logBeginCheckout();
-                  router.push('/cart');
-                }}
-                showRemoveButton={inCart}
-                disabled={addingBusy || removingBusy}
-              />
+              <div className="flex items-center gap-2">
+                <AnimatedCartButton
+                  state={
+                    removingBusy
+                      ? 'removing'
+                      : addingBusy
+                        ? 'adding'
+                        : inCart
+                          ? 'in-cart'
+                          : isImportable && showImportUi
+                            ? 'import'
+                            : 'add-to-cart'
+                  }
+                  onAdd={isImportable ? handleImport : handleAdd}
+                  onRemove={handleRemove}
+                  onGoToCart={() => {
+                    logBeginCheckout();
+                    router.push('/cart');
+                  }}
+                  showRemoveButton={inCart}
+                  disabled={addingBusy || removingBusy}
+                />
+                {/* Show Instant Buy only for registrations (not imports) */}
+                {availabilityInfo.availability && !isImportable && (
+                  <InstantBuyButton
+                    domainAvailabilityInfo={availabilityInfo}
+                    disabled={addingBusy || removingBusy}
+                  />
+                )}
+              </div>
             ) : null}
           </div>
         </div>

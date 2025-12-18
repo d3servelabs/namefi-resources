@@ -8,7 +8,10 @@ import { z } from 'zod';
 
 import { createStripePaymentIntentSchema } from '../services/stripe-payments/types';
 import type { DomainAvailabilityInfo } from '../lib/namefi-registry';
-import { checksumWalletAddressSchema } from '@namefi-astra/utils';
+import {
+  checksumWalletAddressSchema,
+  namefiNormalizedDomainSchema,
+} from '@namefi-astra/utils';
 
 const paymentMetadataSchema = z
   .object({
@@ -85,6 +88,48 @@ export const createOrderV2InputSchema = z.object({
 });
 
 export type CreateOrderV2Input = z.infer<typeof createOrderV2InputSchema>;
+
+// Instant buy schema - single domain purchase without cart
+const paymentsArraySchema = z
+  .array(
+    z.object({
+      amountInUsdCents: z
+        .number()
+        .int()
+        .nonnegative('Payment amount must be non-negative'),
+      paymentProviderDetails: paymentProviderDetailsSchema,
+      paymentMetadata: paymentMetadataSchema.optional(),
+    }),
+  )
+  .min(1)
+  .superRefine((payments, ctx) => {
+    for (const [idx, p] of payments.entries()) {
+      const provider = (p.paymentProviderDetails as any)?.paymentProvider;
+      // Enforce Stripe minimum $1.00 (only if amount > 0)
+      if (typeof provider === 'string' && provider === 'STRIPE') {
+        if (p.amountInUsdCents > 0 && p.amountInUsdCents < 100) {
+          ctx.addIssue({
+            code: 'too_small',
+            origin: 'number',
+            minimum: 100,
+            type: 'number',
+            inclusive: true,
+            path: [idx, 'amountInUsdCents'],
+            message: 'Stripe charge must be at least 100 cents',
+          });
+        }
+      }
+    }
+  });
+
+export const instantBuyInputSchema = z.object({
+  normalizedDomainName: namefiNormalizedDomainSchema,
+  durationInYears: z.number().int().min(1).max(10).default(1),
+  payments: paymentsArraySchema,
+  nftMetadata: nftMetadataSchema2,
+});
+
+export type InstantBuyInput = z.infer<typeof instantBuyInputSchema>;
 
 // Re-export the DomainAvailabilityInfo type for convenience
 export type { DomainAvailabilityInfo };

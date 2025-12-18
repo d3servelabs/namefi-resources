@@ -36,7 +36,13 @@ import {
 import type { ChargeUserWorkflowInput } from '../../temporal/workflows/chargeUser.workflow';
 import { resolve } from '../../utils/resolve';
 import { createTRPCRouter, protectedProcedure, withAudit } from '../base';
-import { createOrderInputSchema, createOrderV2InputSchema } from '../types';
+import {
+  createOrderInputSchema,
+  createOrderV2InputSchema,
+  instantBuyInputSchema,
+} from '../types';
+import { validateDomainForInstantPurchaseOrThrow } from '../../lib/instant-buy';
+import { itemTypeSchema } from '@namefi-astra/db/types';
 import {
   getPrivyUserLinkedEthereumChecksumWalletAddresses,
   privyClient,
@@ -479,6 +485,187 @@ export const ordersRouter = createTRPCRouter({
               'Could not initiate the order, please contact support if the issue persists',
           });
         }
+
+        return order;
+      });
+    }),
+
+  // Instant buy - single domain purchase without cart
+  instantBuy: withAudit(
+    protectedProcedure,
+    ({ ctx, input, auditActorExtraInfo, result }) => ({
+      actorType: 'user',
+      actorId: ctx.user?.id || 'unknown',
+      actorExtraInfo: auditActorExtraInfo,
+      resourceType: 'order',
+      resourceId: result.id || '',
+      action: 'instant_buy',
+      extraInput: input,
+    }),
+  )
+    .input(
+      instantBuyInputSchema.superRefine((input, ctx) => {
+        if (!input.nftMetadata.nftChainId) {
+          ctx.addIssue({
+            code: 'custom',
+            message: 'NFT chain ID is required',
+          });
+        }
+        if (!config.ALLOWED_CHAINS.includes(input.nftMetadata.nftChainId)) {
+          ctx.addIssue({
+            code: 'custom',
+            message: `NFT chain ID ${input.nftMetadata.nftChainId} is not allowed`,
+          });
+        }
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { normalizedDomainName, durationInYears, payments, nftMetadata } =
+        input;
+
+      // 1. Get user details from Privy
+      const [error, privyUser] = await resolve(
+        privyClient.getUserById(ctx.user.privyUserId),
+      );
+      if (error || isNil(privyUser)) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Could not find user details',
+        });
+      }
+
+      // 2. Validate domain availability and get pricing
+      const validation = await validateDomainForInstantPurchaseOrThrow({
+        normalizedDomainName,
+        durationInYears,
+        user: { id: ctx.user.id, privyUserId: ctx.user.privyUserId },
+      });
+
+      // 3. Validate payments total matches price
+      const inputPaymentsTotal = sum(pluck('amountInUsdCents', payments));
+      if (inputPaymentsTotal !== validation.priceInUsdCents) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: `Payments total (${inputPaymentsTotal}) does not match domain price (${validation.priceInUsdCents})`,
+        });
+      }
+
+      // 4. Validate NFSC wallet addresses are linked to user
+      const userWallets = new Set(
+        getPrivyUserLinkedEthereumChecksumWalletAddresses({ privyUser }),
+      );
+      const nfscPayments = payments
+        .map((p) => p.paymentProviderDetails)
+        .filter((p) => isNfscPayment(p)) as NfscPaymentProviderDetails[];
+
+      for (const p of nfscPayments) {
+        const validWalletAddress = checksumWalletAddressSchema.safeParse(
+          p.nfscPaymentDetails.walletAddress,
+        );
+        if (!validWalletAddress.success) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message:
+              'NFSC payment walletAddress is not a valid Ethereum wallet address',
+          });
+        }
+        if (!userWallets.has(validWalletAddress.data)) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'NFSC payment walletAddress is not linked to the user',
+          });
+        }
+      }
+
+      // 5. Create order in transaction
+      return await db.transaction(async (tx) => {
+        // Create payments
+        const createdPayments: PaymentSelect[] = [];
+        for (const p of payments) {
+          const created = await createPayment(
+            {
+              amountInUsdCents: p.amountInUsdCents,
+              paymentProviderDetails: p.paymentProviderDetails,
+            },
+            { tx },
+          );
+          createdPayments.push(created);
+        }
+
+        // Create order with single item
+        const order =
+          await orderService.createOrderWithExistingMultiplePayments(
+            {
+              amountInUSDCents: validation.priceInUsdCents,
+              userId: ctx.user.id,
+              paymentIds: createdPayments.map((p) => p.id),
+              nftWalletAddress: nftMetadata.nftWalletAddress,
+              nftChainId: nftMetadata.nftChainId,
+              items: [
+                {
+                  normalizedDomainName,
+                  amountInUSDCents: validation.priceInUsdCents,
+                  durationInYears,
+                  type: itemTypeSchema.enum.REGISTER,
+                  registrar: validation.registrar,
+                } satisfies CreateOrderItemInput,
+              ],
+            },
+            { tx },
+          );
+
+        // Remove from cart if exists (cleanup)
+        await tx
+          .delete(cartItemsTable)
+          .where(
+            and(
+              eq(cartItemsTable.userId, ctx.user.id),
+              eq(cartItemsTable.normalizedDomainName, normalizedDomainName),
+            ),
+          );
+
+        // Build per-payment metadata map and start workflow
+        const paymentsMetadata = createdPayments.reduce<{
+          [paymentId: string]: ChargeUserWorkflowInput['metadata'] | undefined;
+        }>((acc, p, i) => {
+          acc[p.id] = payments[i]?.paymentMetadata as
+            | ChargeUserWorkflowInput['metadata']
+            | undefined;
+          return acc;
+        }, {});
+
+        try {
+          await temporalClient.workflow.start(processOrderWorkflow, {
+            args: [
+              {
+                orderId: order.id,
+                paymentsMetadata,
+              },
+            ],
+            taskQueue: TEMPORAL_QUEUES.DOMAINS,
+            workflowId: `process-order-${order.id}`,
+          });
+        } catch (workflowError) {
+          logger.error(
+            { error: workflowError },
+            'Could not start process order workflow for instant buy',
+          );
+          throw new TRPCError({
+            code: 'INTERNAL_SERVER_ERROR',
+            message:
+              'Could not initiate the order, please contact support if the issue persists',
+          });
+        }
+
+        logger.info(
+          {
+            orderId: order.id,
+            domain: normalizedDomainName,
+            userId: ctx.user.id,
+            priceInUsdCents: validation.priceInUsdCents,
+          },
+          'Instant buy order created successfully',
+        );
 
         return order;
       });
