@@ -40,6 +40,8 @@ export type AddEditRecordsDialogProps = {
   onSubmitSettled?: () => void;
   children?: ReactNode;
   onOpenChange?: (open: boolean) => void;
+  readOnly?: boolean;
+  warningMessage?: string;
 };
 
 export function AddEditRecordsDialog({
@@ -52,6 +54,8 @@ export function AddEditRecordsDialog({
   onSubmitSettled,
   children,
   onOpenChange,
+  readOnly,
+  warningMessage,
 }: AddEditRecordsDialogProps) {
   // Memoize the default form values
   const defaultFormValues = useMemo(
@@ -290,6 +294,12 @@ export function AddEditRecordsDialog({
           </DialogTitle>
         </DialogHeader>
 
+        {warningMessage && (
+          <div className="bg-yellow-500/10 border border-yellow-500/20 text-yellow-500 p-4 rounded-md text-sm mb-4">
+            {warningMessage}
+          </div>
+        )}
+
         {formErrors && (
           <div className="text-red-500 text-sm mb-4">
             Please complete all required fields marked with *
@@ -308,13 +318,14 @@ export function AddEditRecordsDialog({
                 showRemoveButton={forms.length > 1}
                 onValuesChange={handleValues(index)}
                 index={index}
+                disabled={readOnly}
               />
             </div>
           ))}
         </div>
 
         <DialogFooter className="flex items-center justify-between sm:justify-between gap-2">
-          {mode === 'add' && (
+          {mode === 'add' && !readOnly && (
             <Button
               variant="secondary"
               className="p-0"
@@ -334,24 +345,26 @@ export function AddEditRecordsDialog({
               }}
               type="button"
             >
-              Cancel
+              {readOnly ? 'Close' : 'Cancel'}
             </Button>
-            <Button
-              onClick={handleSubmit}
-              type="button"
-              disabled={
-                forms.length === 0 ||
-                createRecords.isPending ||
-                updateRecords.isPending
-              }
-            >
-              {createRecords.isPending || updateRecords.isPending ? (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              ) : (
-                <Plus className="mr-2 h-4 w-4" />
-              )}
-              {mode === 'add' ? 'Add' : 'Save'} record
-            </Button>
+            {!readOnly && (
+              <Button
+                onClick={handleSubmit}
+                type="button"
+                disabled={
+                  forms.length === 0 ||
+                  createRecords.isPending ||
+                  updateRecords.isPending
+                }
+              >
+                {createRecords.isPending || updateRecords.isPending ? (
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                ) : (
+                  <Plus className="mr-2 h-4 w-4" />
+                )}
+                {mode === 'add' ? 'Add' : 'Save'} record
+              </Button>
+            )}
           </div>
         </DialogFooter>
       </DialogContent>

@@ -5,6 +5,9 @@ import {
   namefiNftOwnersCte,
   burnedNamefiNftCte,
   transferLogsCte,
+  indexedDomainsTable,
+  domainConfigTable,
+  dnsRecordsTable,
 } from '@namefi-astra/db';
 import {
   namefiNormalizedDomainSchema,
@@ -452,21 +455,113 @@ export const usersRouter = createTRPCRouter({
       expirationDate: null,
     }));
 
+    const domainNames = pluck('normalizedDomainName', nfts);
+
+    // If no domains, return early
+    if (isEmpty(domainNames)) {
+      return [];
+    }
+
     try {
-      const expirationDates = await getDomainsExpirationDatesFromIndex(
-        pluck('normalizedDomainName', nfts),
+      const [expirationDates, indexedDomains, domainConfigs, dnsRecords] =
+        await Promise.all([
+          getDomainsExpirationDatesFromIndex(domainNames),
+          db
+            .select({
+              normalizedDomainName: indexedDomainsTable.normalizedDomainName,
+              isUsingNamefiNameservers:
+                indexedDomainsTable.isUsingNamefiNameservers,
+              nameservers: indexedDomainsTable.nameservers,
+            })
+            .from(indexedDomainsTable)
+            .where(
+              inArray(indexedDomainsTable.normalizedDomainName, domainNames),
+            ),
+          db
+            .select({
+              normalizedDomainName: domainConfigTable.normalizedDomainName,
+              autoParkEnabled: domainConfigTable.autoParkEnabled,
+              forwardTo: domainConfigTable.forwardTo,
+            })
+            .from(domainConfigTable)
+            .where(
+              inArray(domainConfigTable.normalizedDomainName, domainNames),
+            ),
+          db
+            .select({
+              zoneName: dnsRecordsTable.zoneName,
+              type: dnsRecordsTable.type,
+              rdata: dnsRecordsTable.rdata,
+              name: dnsRecordsTable.name,
+            })
+            .from(dnsRecordsTable)
+            .where(inArray(dnsRecordsTable.zoneName, domainNames)),
+        ]);
+
+      // Create lookup maps
+      const indexedDomainsMap = new Map(
+        indexedDomains.map((d) => [d.normalizedDomainName, d]),
+      );
+      const domainConfigsMap = new Map(
+        domainConfigs.map((d) => [d.normalizedDomainName, d]),
       );
 
-      return nfts.map((nft) => ({
-        ...nft,
-        expirationDate: expirationDates[nft.normalizedDomainName],
-      }));
+      // Group DNS records by zone
+      const dnsRecordsMap = new Map<string, typeof dnsRecords>();
+      for (const record of dnsRecords) {
+        const records = dnsRecordsMap.get(record.zoneName) || [];
+        records.push(record);
+        dnsRecordsMap.set(record.zoneName, records);
+      }
+
+      return nfts.map((nft) => {
+        const domainName = nft.normalizedDomainName;
+        const indexedDomain = indexedDomainsMap.get(domainName);
+        const config = domainConfigsMap.get(domainName);
+        const records = dnsRecordsMap.get(domainName) || [];
+
+        const hasWebRecords = records.some((r) =>
+          ['A', 'AAAA', 'CNAME'].includes(r.type),
+        );
+        const hasMxRecords = records.some((r) => r.type === 'MX');
+        const ensRecord = records.find(
+          (r) =>
+            r.type === 'TXT' && r.rdata.startsWith('ENS1') && r.name === '@',
+        );
+
+        return {
+          ...nft,
+          expirationDate: expirationDates[domainName],
+          dnsStatus: {
+            nameservers: indexedDomain?.nameservers ?? [],
+            isUsingNamefiNameservers:
+              indexedDomain?.isUsingNamefiNameservers ?? false,
+            isParkingEnabled: config?.autoParkEnabled ?? false,
+            forwardTo: config?.forwardTo ?? null,
+            hasWebRecords,
+            hasMxRecords,
+            ensRecord: ensRecord?.rdata ?? null,
+          },
+        };
+      });
     } catch (error) {
       logger.error(
         { context: 'getCurrentUserDomains', error },
-        'Failed to fetch expiration dates from index',
+        'Failed to fetch domain details',
       );
-      return nfts;
+      // Fallback to minimal data if something fails
+      return nfts.map((nft) => ({
+        ...nft,
+        dnsStatus: {
+          nameservers: [],
+          isUsingNamefiNameservers: false,
+          isParkingEnabled: false,
+          forwardTo: null,
+          hasWebRecords: false,
+          hasMxRecords: false,
+          ensRecord: null,
+        },
+      }));
     }
   }),
 

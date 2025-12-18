@@ -1,6 +1,5 @@
 'use client';
 
-import { TruncatedTextWithHover } from '@/components/truncated-text-with-hover';
 import { AuthRequired } from '@/components/auth-required';
 import { AsyncButton } from '@/components/buttons/async-button';
 import { EmptyPlaceholder } from '@/components/empty-placeholder';
@@ -44,17 +43,11 @@ import type {
 import {
   AlertTriangle,
   AlertCircle,
-  ExternalLink,
-  History,
-  Link2,
-  Tag,
   Loader2,
   SearchIcon,
-  Settings,
   MoreVertical,
 } from 'lucide-react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import {
   type FC,
   type HTMLAttributes,
@@ -108,6 +101,19 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/shadcn/dialog';
+import { DnsStatusCell } from '@/components/domain-and-dns-managment/cells/dns-status-cell';
+import { BatchDnsDialog } from '@/components/domain-and-dns-managment/dialogs/batch-dns-dialog';
+import {
+  CalendarPlus,
+  BadgeDollarSign,
+  Compass,
+  Server,
+  Globe,
+  Mail,
+  Hexagon,
+  Link as LinkIcon,
+  X,
+} from 'lucide-react';
 
 type DomainRow = AppRouterOutput['users']['getCurrentUserDomains'][number];
 
@@ -207,6 +213,7 @@ const RenewButton: FC<{
   asChild?: boolean;
   className?: string;
   variant?: ComponentProps<typeof Button>['variant'];
+  size?: ComponentProps<typeof Button>['size'];
 }> = ({
   domainName,
   expirationDate,
@@ -215,11 +222,12 @@ const RenewButton: FC<{
   asChild,
   className,
   variant,
+  size = 'sm',
 }) => {
   return (
     <AsyncButton
       variant={variant || 'outline'}
-      size="sm"
+      size={size}
       onClick={async () => {
         await onRenew({
           normalizedDomainName: domainName,
@@ -238,7 +246,7 @@ const RenewButton: FC<{
       className={className}
     >
       <>
-        <History className="w-4 h-4 xl:mr-1 scale-x-[-1]" />
+        <CalendarPlus className="w-4 h-4 xl:mr-1" />
         <span className="hidden xl:inline">Renew</span>
       </>
     </AsyncButton>
@@ -372,6 +380,9 @@ function MyDomainsTable(props: {
   const [processingDomains, setProcessingDomains] = useState<Set<string>>(
     () => new Set(),
   );
+  const [batchAction, setBatchAction] = useState<
+    'ns' | 'web' | 'mx' | 'ens' | 'forward' | null
+  >(null);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_DOMAIN_LIST_PAGE_SIZE);
   const [sorting, setSorting] = useState<SortingState>([
@@ -380,10 +391,10 @@ function MyDomainsTable(props: {
   const [domainSearch, setDomainSearch] = useState('');
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
     select: true,
-    account: true,
+    account: false,
     normalizedDomainName: true,
     expirationDate: true,
-    renewPricing: true,
+    renewPricing: false,
     urlForward: true,
     listForSale: true,
     actions: true,
@@ -395,7 +406,7 @@ function MyDomainsTable(props: {
   useEffect(() => {
     if (isMobile) {
       prevColumnVisibility.current = columnVisibility;
-      setColumnVisibility((prev) => ({
+      setColumnVisibility((_prev) => ({
         select: true,
         account: false,
         normalizedDomainName: true,
@@ -410,30 +421,8 @@ function MyDomainsTable(props: {
     }
   }, [isMobile]);
   const { hasEmail } = useEmailPrompt();
-  const router = useRouter();
   const canAnimate = useCanAnimate();
   const { renewDomains } = useDomainRenewal();
-
-  const handleManageDnsClick = useCallback(
-    (domainName: string, e: React.MouseEvent) => {
-      // e.preventDefault();
-      if (!hasEmail) {
-        setShowEmailModal(true);
-      } else {
-        router.push(`/domains/${domainName}`);
-      }
-    },
-    [hasEmail, router],
-  );
-
-  const handleUrlForwardClick = useCallback(
-    (domainName: string) => {
-      router.push(
-        `/domains/${domainName}?tab=dns-management&section=forward-to`,
-      );
-    },
-    [router],
-  );
 
   const handleListForSaleClick = useCallback(
     (domainName: string) => {
@@ -489,6 +478,30 @@ function MyDomainsTable(props: {
     }
     return map;
   }, [tldPricingQuery.data]);
+
+  /**
+   * Returns a custom fixed renewal price for specific TLDs.
+   *
+   * TLDs: .0x.city, .defi.build, .astra.namefi.io
+   * Price: $5.00
+   * Rationale: Promotional pricing for these specific partner domains.
+   * Reference: See product requirement for Fixed Rate Partner Domains.
+   *
+   * TODO: https://app.clickup.com/t/9009140026/NFI-5260 Prompt for LLM: a deeper search in
+   * entire codebase, especially backend and database to find whether there is a database
+   * that returns the pricing of 0x.city  when user visits 0x.city to register a domain,
+   * then see if you need to update getCustomRenewalPrice a instead of locally hardcoded price
+   */
+  const getCustomRenewalPrice = useCallback((domainName: string) => {
+    if (
+      domainName.endsWith('.0x.city') ||
+      domainName.endsWith('.defi.build') ||
+      domainName.endsWith('.astra.namefi.io')
+    ) {
+      return 5.0;
+    }
+    return null;
+  }, []);
 
   const drizzlerFilterConfig = useMemo(
     () => ({
@@ -782,7 +795,6 @@ function MyDomainsTable(props: {
 
   const renewableDomainsCount = renewableDomains.length;
   const selectedDomainCount = selectedDomainIds.size;
-  const filteredTotalCount = filteredDomains.length;
 
   const handlePageSizeChange = useCallback((size: number) => {
     setPageSize(size);
@@ -832,7 +844,7 @@ function MyDomainsTable(props: {
         header: 'Domain Name',
         cell: ({ row }) => (
           <Link
-            href={`/domains/${row.getValue('normalizedDomainName')}`}
+            href={`/domains/${row.getValue('normalizedDomainName')}?tab=dns-overview`}
             aria-label={`Settings for ${row.getValue('normalizedDomainName')}`}
             className="font-medium hover:underline"
           >
@@ -864,30 +876,78 @@ function MyDomainsTable(props: {
         size: 150,
       },
       {
+        id: 'dnsStatus',
+        header: 'DNS Records',
+        cell: ({ row }) => {
+          const domainName = row.getValue(
+            'normalizedDomainName',
+          ) as NamefiNormalizedDomain;
+          const status = row.original.dnsStatus;
+
+          if (!status) return <span className="text-muted-foreground">-</span>;
+
+          return <DnsStatusCell domainName={domainName} status={status} />;
+        },
+        size: 200,
+      },
+      {
         id: 'renewPricing',
         header: 'Renew (USD/yr)',
-        accessorFn: (row) =>
-          getRenewalPriceUsdPerYearForDomain(
+        accessorFn: (row) => {
+          const customPrice = getCustomRenewalPrice(
+            row.normalizedDomainName ?? '',
+          );
+          if (customPrice !== null) return customPrice;
+          return getRenewalPriceUsdPerYearForDomain(
             row.normalizedDomainName,
             renewalPriceUsdPerYearByTld,
-          ),
+          );
+        },
         cell: ({ row }) => {
           const domainName = row.original.normalizedDomainName ?? '';
-          const renewalPriceUsdPerYear = row.getValue('renewPricing') as
+          const customPrice = getCustomRenewalPrice(domainName);
+          let renewalPriceUsdPerYear = row.getValue('renewPricing') as
             | number
             | null;
+
+          if (customPrice !== null) {
+            renewalPriceUsdPerYear = customPrice;
+          }
 
           const priceLabel =
             renewalPriceUsdPerYear === null
               ? '—'
               : formatAmountInUSD(renewalPriceUsdPerYear);
 
+          const expirationDateRaw = row.getValue('expirationDate') as
+            | Date
+            | string
+            | null
+            | undefined;
+          const expirationDate = expirationDateRaw
+            ? new Date(expirationDateRaw)
+            : null;
+          const showRenewButton = isDomainPossiblyRenewable(expirationDate);
+
           return (
-            <div className="flex items-center gap-2">
-              <span className="text-sm text-muted-foreground">
-                {priceLabel}
-              </span>
-              <RenewPricePremiumInfo domainName={domainName} />
+            <div className="flex items-center gap-2 justify-between">
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-muted-foreground">
+                  {priceLabel}
+                </span>
+                <RenewPricePremiumInfo domainName={domainName} />
+              </div>
+              {showRenewButton && (
+                <RenewButton
+                  domainName={domainName}
+                  expirationDate={expirationDate}
+                  onRenew={handleRenewDomain}
+                  isProcessing={processingDomains.has(domainName)}
+                  variant="ghost"
+                  size="icon"
+                  className="h-8 w-8 hover:bg-muted"
+                />
+              )}
             </div>
           );
         },
@@ -907,14 +967,10 @@ function MyDomainsTable(props: {
           const expirationDate = expirationDateRaw
             ? new Date(expirationDateRaw)
             : null;
-          const showRenewButton = isDomainPossiblyRenewable(expirationDate);
-          const daysDifference = expirationDate
-            ? differenceInDays(expirationDate, new Date())
-            : Number.NEGATIVE_INFINITY;
-          const showManageButton =
-            expirationDate !== null ? daysDifference > -30 : false;
           const isExpired =
-            expirationDate !== null ? daysDifference < 0 : false;
+            expirationDate !== null
+              ? differenceInDays(expirationDate, new Date()) < 0
+              : false;
           const explorerUrl = getNftExplorerUrl(
             row.original.chainId ?? null,
             row.original.tokenId?.toString() ?? null,
@@ -922,61 +978,6 @@ function MyDomainsTable(props: {
 
           const actionButtonBaseClassName =
             'w-9 px-0 gap-0 xl:w-auto xl:px-3 xl:gap-1.5 !text-white border-0 bg-transparent shadow-none hover:bg-muted/30 xl:border xl:bg-background xl:shadow-xs';
-
-          const manageButton = showManageButton ? (
-            <Button
-              variant="outline"
-              size="sm"
-              className={cn(
-                actionButtonBaseClassName,
-                isExpired ? 'hover:!text-amber-400' : 'hover:!text-sky-400',
-              )}
-              onClick={(e) => handleManageDnsClick(domainName, e)}
-              aria-label={`Settings for ${domainName}`}
-            >
-              {isExpired ? (
-                <>
-                  <History className="w-4 h-4 xl:mr-1" />
-                  <span className="hidden xl:inline">Try to recover</span>
-                </>
-              ) : (
-                <>
-                  <Settings className="w-4 h-4 xl:mr-1" />
-                  <span className="hidden xl:inline">Manage Domain</span>
-                </>
-              )}
-            </Button>
-          ) : null;
-
-          const renewButton = showRenewButton ? (
-            <RenewButton
-              domainName={domainName}
-              expirationDate={expirationDate}
-              onRenew={handleRenewDomain}
-              isProcessing={processingDomains.has(domainName)}
-              variant="outline"
-              className={cn(
-                actionButtonBaseClassName,
-                'hover:!text-emerald-400',
-              )}
-            />
-          ) : null;
-
-          const urlForwardButton = (
-            <Button
-              variant="outline"
-              size="sm"
-              className={cn(
-                actionButtonBaseClassName,
-                'hover:!text-violet-400',
-              )}
-              onClick={() => handleUrlForwardClick(domainName)}
-              aria-label={`Update URL Forward for ${domainName}`}
-            >
-              <Link2 className="w-4 h-4 xl:mr-1" />
-              <span className="hidden xl:inline">URL Forward</span>
-            </Button>
-          );
 
           const listForSaleButton = (
             <Button
@@ -989,8 +990,7 @@ function MyDomainsTable(props: {
               onClick={() => handleListForSaleClick(domainName)}
               aria-label={`List ${domainName} for sale`}
             >
-              <Tag className="w-4 h-4 xl:mr-1" />
-              <span className="hidden xl:inline">List</span>
+              <BadgeDollarSign className="w-4 h-4" />
             </Button>
           );
 
@@ -1012,8 +1012,7 @@ function MyDomainsTable(props: {
                   rel="noopener noreferrer"
                   className="flex justify-start items-center"
                 >
-                  <ExternalLink className="w-4 h-4 xl:mr-1" />
-                  <span className="hidden xl:inline">View NFT</span>
+                  <Compass className="w-4 h-4" />
                 </Link>
               </Button>
             ) : null;
@@ -1032,15 +1031,7 @@ function MyDomainsTable(props: {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
-                  {!!manageButton && (
-                    <DropdownMenuItem>{manageButton}</DropdownMenuItem>
-                  )}
-                  {!!renewButton && (
-                    <DropdownMenuItem>{renewButton}</DropdownMenuItem>
-                  )}
-                  {!!urlForwardButton && (
-                    <DropdownMenuItem>{urlForwardButton}</DropdownMenuItem>
-                  )}
+                  {/* Renew button logic can be added here if needed for mobile, but it's in the column now */}
                   {!!listForSaleButton && (
                     <DropdownMenuItem>{listForSaleButton}</DropdownMenuItem>
                   )}
@@ -1054,17 +1045,6 @@ function MyDomainsTable(props: {
 
           return (
             <div className="flex gap-2">
-              {manageButton ? (
-                <ActionTooltip label={isExpired ? 'Try to recover' : 'Manage'}>
-                  {manageButton}
-                </ActionTooltip>
-              ) : null}
-              {renewButton ? (
-                <ActionTooltip label="Renew">{renewButton}</ActionTooltip>
-              ) : null}
-              <ActionTooltip label="URL Forward">
-                {urlForwardButton}
-              </ActionTooltip>
               <ActionTooltip label="List for sale">
                 {listForSaleButton}
               </ActionTooltip>
@@ -1079,8 +1059,6 @@ function MyDomainsTable(props: {
       },
     ],
     [
-      handleManageDnsClick,
-      handleUrlForwardClick,
       handleListForSaleClick,
       handleRenewDomain,
       handleRowSelectionChange,
@@ -1090,6 +1068,7 @@ function MyDomainsTable(props: {
       selectedDomainIds,
       isMobile,
       renewalPriceUsdPerYearByTld,
+      getCustomRenewalPrice,
     ],
   );
 
@@ -1220,6 +1199,14 @@ function MyDomainsTable(props: {
                       <span className="font-semibold text-foreground text-sm">
                         selected
                       </span>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={clearSelection}
+                        className="h-6 w-6 rounded-full hover:bg-muted"
+                      >
+                        <X className="w-4 h-4" />
+                      </Button>
                     </div>
 
                     <Separator
@@ -1228,80 +1215,97 @@ function MyDomainsTable(props: {
                     />
 
                     {/* Actions */}
-                    <div className="flex items-center gap-3">
-                      <NumberFlowGroup>
-                        <AsyncButton
-                          onClick={async () => {
-                            if (renewableDomainsCount === 0) {
-                              return;
-                            }
-                            const payload = renewableDomains.map((domain) => ({
-                              normalizedDomainName:
-                                domain.normalizedDomainName as NamefiNormalizedDomain,
-                              expirationDate: domain.expirationDate ?? null,
-                            }));
-                            setProcessingDomains(
-                              new Set(
-                                payload.map(
-                                  (domain) => domain.normalizedDomainName,
-                                ),
-                              ),
-                            );
-                            try {
-                              await renewDomains(payload);
-                              clearSelection();
-                            } finally {
-                              setProcessingDomains(new Set());
-                            }
-                          }}
-                          className="h-10 px-4 gap-2 bg-primary hover:bg-primary/90"
-                          disabled={renewableDomainsCount === 0}
-                          customLoadingContent={
-                            <>
-                              <Loader2 className="w-4 h-4 animate-spin" />
-                              {renewableDomainsCount === selectedDomainCount ? (
-                                'Renew All'
-                              ) : (
-                                <NumberFlow
-                                  value={renewableDomainsCount}
-                                  style={
-                                    {
-                                      '--number-flow-char-height': '0.85em',
-                                      '--number-flow-mask-height': '0.3em',
-                                    } as React.CSSProperties
-                                  }
-                                  prefix="Renew "
-                                />
-                              )}
-                            </>
-                          }
-                        >
-                          <History className="w-4 h-4 scale-x-[-1]" />
-                          {renewableDomainsCount === selectedDomainCount ? (
-                            'Renew All'
-                          ) : (
-                            <NumberFlow
-                              value={renewableDomainsCount}
-                              style={
-                                {
-                                  '--number-flow-char-height': '0.85em',
-                                  '--number-flow-mask-height': '0.3em',
-                                } as React.CSSProperties
+                    <div className="flex items-center gap-1">
+                      {/* Renew All */}
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <AsyncButton
+                            onClick={async () => {
+                              if (renewableDomainsCount === 0) {
+                                return;
                               }
-                              prefix="Renew "
-                            />
-                          )}
-                        </AsyncButton>
-                      </NumberFlowGroup>
+                              const payload = renewableDomains.map(
+                                (domain) => ({
+                                  normalizedDomainName:
+                                    domain.normalizedDomainName as NamefiNormalizedDomain,
+                                  expirationDate: domain.expirationDate ?? null,
+                                }),
+                              );
+                              setProcessingDomains(
+                                new Set(
+                                  payload.map(
+                                    (domain) => domain.normalizedDomainName,
+                                  ),
+                                ),
+                              );
+                              try {
+                                await renewDomains(payload);
+                                clearSelection();
+                              } finally {
+                                setProcessingDomains(new Set());
+                              }
+                            }}
+                            className="h-8 w-8 px-0 bg-transparent hover:bg-muted border-0 shadow-none text-foreground"
+                            disabled={renewableDomainsCount === 0}
+                            customLoadingContent={
+                              <Loader2 className="w-4 h-4 animate-spin" />
+                            }
+                          >
+                            <CalendarPlus className="w-4 h-4" />
+                          </AsyncButton>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          Renew {renewableDomainsCount} domain
+                          {renewableDomainsCount !== 1 ? 's' : ''}
+                        </TooltipContent>
+                      </Tooltip>
 
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={clearSelection}
-                        className="h-10 px-3 text-muted-foreground hover:text-foreground"
-                      >
-                        Clear
-                      </Button>
+                      <Separator
+                        orientation="vertical"
+                        className="h-4 bg-border mx-1"
+                      />
+
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => setBatchAction('web')}
+                            className="h-8 w-8"
+                          >
+                            <Globe className="w-4 h-4" />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>Set Web Records</TooltipContent>
+                      </Tooltip>
+
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => setBatchAction('forward')}
+                            className="h-8 w-8"
+                          >
+                            <LinkIcon className="w-4 h-4" />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>Set URL Forwarding</TooltipContent>
+                      </Tooltip>
+
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => setBatchAction('ens')}
+                            className="h-8 w-8"
+                          >
+                            <Hexagon className="w-4 h-4" />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>Set ENS Record</TooltipContent>
+                      </Tooltip>
                     </div>
                   </div>
                 </MotionConfig>
@@ -1310,6 +1314,12 @@ function MyDomainsTable(props: {
           </motion.div>
         )}
       </AnimatePresence>
+      <BatchDnsDialog
+        isOpen={batchAction !== null}
+        onOpenChange={(open) => !open && setBatchAction(null)}
+        domains={Array.from(selectedDomainIds)}
+        action={batchAction}
+      />
     </>
   );
 }

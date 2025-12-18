@@ -59,7 +59,8 @@ export function DnsRecordForm({
   onRemove,
   showRemoveButton = false,
   index,
-}: DnsRecordFormProps) {
+  disabled = false,
+}: DnsRecordFormProps & { disabled?: boolean }) {
   const form = useForm<DnsRecordFormValues>({
     resolver,
     defaultValues,
@@ -97,6 +98,7 @@ export function DnsRecordForm({
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
+                  disabled={disabled}
                 >
                   <FormControl>
                     <SelectTrigger className="w-full bg-zinc-900 border-zinc-800">
@@ -126,9 +128,10 @@ export function DnsRecordForm({
                 <div className="flex">
                   <Select
                     onValueChange={(value) =>
-                      field.onChange(Number.parseInt(value))
+                      field.onChange(Number.parseInt(value, 10))
                     }
                     defaultValue={field.value.toString()}
+                    disabled={disabled}
                   >
                     <FormControl>
                       <SelectTrigger className="bg-zinc-900 border-zinc-800">
@@ -154,6 +157,7 @@ export function DnsRecordForm({
                       onClick={onRemove}
                       type="button"
                       aria-label={`Remove record ${index + 1}`}
+                      disabled={disabled}
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>
@@ -182,6 +186,7 @@ export function DnsRecordForm({
                       placeholder="www or @"
                       className="bg-zinc-900 border-zinc-800 rounded-r-none"
                       {...field}
+                      disabled={disabled}
                     />
                   </FormControl>
                   <Input
@@ -217,6 +222,7 @@ export function DnsRecordForm({
                     placeholder={valuePlaceholder}
                     className="bg-zinc-900 border-zinc-800"
                     {...field}
+                    disabled={disabled}
                   />
                 </FormControl>
                 <FormMessage className="text-xs text-red-500" />
