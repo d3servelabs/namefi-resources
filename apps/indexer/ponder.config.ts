@@ -7,6 +7,7 @@ import type { ChainConfig } from 'ponder';
 
 const ALCHEMY_API_KEY = secrets.ALCHEMY_API_KEY;
 const DEV = process.env.DEV === 'true';
+const LOCAL_DB = process.env.LOCAL_DB === 'true';
 const LISTEN_TO_ACCOUNTS = false;
 const NAMEFI_NFT_CONTRACT_ADDRESS =
   '0x0000000000cf80e7cf8fa4480907f692177f8e06';
@@ -54,7 +55,7 @@ const MINUTE_MS = 60 * 1000;
 
 export default createConfig({
   ordering: 'multichain',
-  database: DEV
+  database: LOCAL_DB
     ? {
         kind: 'pglite',
       }
@@ -62,33 +63,39 @@ export default createConfig({
         kind: 'postgres',
         connectionString: DATABASE_URL,
       },
-  chains: {
-    mainnet: getChainConfig(mainnet),
-    base: getChainConfig(base),
-    sepolia: getChainConfig(sepolia),
-  },
+  chains: DEV
+    ? {
+        sepolia: getChainConfig(sepolia),
+      }
+    : {
+        mainnet: getChainConfig(mainnet),
+        base: getChainConfig(base),
+      },
   accounts: getAccounts(),
   contracts: {
     NamefiNft: {
       abi: NftAbi,
       address: NAMEFI_NFT_CONTRACT_ADDRESS,
-      chain: {
-        mainnet: {
-          includeCallTraces: false,
-          includeTransactionReceipts: false,
-          startBlock: 'latest', // Adjust based on when contract was deployed
-        },
-        base: {
-          includeCallTraces: false,
-          includeTransactionReceipts: false,
-          startBlock: 'latest', // Adjust based on when contract was deployed
-        },
-        sepolia: {
-          includeCallTraces: false,
-          includeTransactionReceipts: false,
-          startBlock: 'latest', // Adjust based on when contract was deployed
-        },
-      },
+      chain: DEV
+        ? {
+            sepolia: {
+              includeCallTraces: false,
+              includeTransactionReceipts: false,
+              startBlock: 'latest', // Adjust based on when contract was deployed
+            },
+          }
+        : {
+            mainnet: {
+              includeCallTraces: false,
+              includeTransactionReceipts: false,
+              startBlock: 'latest', // Adjust based on when contract was deployed
+            },
+            base: {
+              includeCallTraces: false,
+              includeTransactionReceipts: false,
+              startBlock: 'latest', // Adjust based on when contract was deployed
+            },
+          },
     },
   },
 });
