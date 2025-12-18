@@ -15,12 +15,15 @@ import {
   TooltipTrigger,
 } from '@/components/ui/shadcn/tooltip';
 import { cn } from '@/lib/cn';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { NameserversDialog } from '../dialogs/nameservers-dialog';
 import { ForwardingDialog } from '../dialogs/forwarding-dialog';
 import { EditDnsRecordsWrapper } from '../dialogs/edit-dns-records-wrapper';
 import { useRouter } from 'next/navigation';
+import { useQuery } from '@tanstack/react-query';
+import { useTRPC } from '@/lib/trpc';
+import { normalizeDomainName } from '@namefi-astra/zod-dns';
 
 export interface DnsStatus {
   nameservers: string[];
@@ -38,8 +41,57 @@ interface DnsStatusCellProps {
   disabled?: boolean;
 }
 
-function getStatusColors(status: DnsStatus) {
-  const nsColor = status.isUsingNamefiNameservers
+const NAMEFI_ASTRA_NAMESERVERS_PROD = [
+  'ns3.namefi.io',
+  'ns4.namefi.io',
+] as const;
+const NAMEFI_ASTRA_NAMESERVERS_DEV = [
+  'ns3.namefi.dev',
+  'ns4.namefi.dev',
+] as const;
+
+function normalizeNameserverForComparison(value: string): string | null {
+  const trimmed = value.trim().toLowerCase();
+  if (!trimmed) return null;
+
+  try {
+    // Use the repo's canonical normalizer (ASCII, lowercase, strip trailing dots,
+    // and validate against Namefi DNS name rules).
+    return normalizeDomainName(trimmed);
+  } catch {
+    // If a registrar returns an "odd" but still useful hostname, fall back to a
+    // best-effort comparison key instead of treating it as missing.
+    return trimmed.replace(/\.+$/, '');
+  }
+}
+
+function formatNameserverForDisplay(value: string): string {
+  return value.trim().replace(/\.$/, '');
+}
+
+function areNameserverSetsEqual(a: string[], b: string[]): boolean {
+  const aNorm = a
+    .map(normalizeNameserverForComparison)
+    .filter((v): v is string => typeof v === 'string');
+  const bNorm = b
+    .map(normalizeNameserverForComparison)
+    .filter((v): v is string => typeof v === 'string');
+
+  if (aNorm.length === 0 || bNorm.length === 0) return false;
+  const aSet = new Set(aNorm);
+  const bSet = new Set(bNorm);
+  if (aSet.size !== bSet.size) return false;
+  for (const v of aSet) {
+    if (!bSet.has(v)) return false;
+  }
+  return true;
+}
+
+function getStatusColors(
+  status: DnsStatus,
+  effectiveIsUsingNamefiNameservers: boolean,
+) {
+  const nsColor = effectiveIsUsingNamefiNameservers
     ? 'text-emerald-500'
     : status.nameservers.length > 0
       ? 'text-sky-500'
@@ -146,16 +198,60 @@ export function DnsStatusCell({
   disabled,
 }: DnsStatusCellProps) {
   const [activeDialog, setActiveDialog] = useState<DialogType>(null);
+  const [hasInteracted, setHasInteracted] = useState(false);
   const router = useRouter();
+  const trpc = useTRPC();
+
+  const shouldLazyFetchNameservers =
+    status.nameservers.length === 0 && hasInteracted;
+  const domainDetailsQuery = useQuery(
+    trpc.domainConfig.getDomainDetails.queryOptions(
+      { domainName },
+      {
+        enabled: shouldLazyFetchNameservers,
+        staleTime: 5 * 60 * 1000,
+      },
+    ),
+  );
+
+  const effectiveNameservers = useMemo(() => {
+    if (status.nameservers.length > 0) return status.nameservers;
+    const fetched = domainDetailsQuery.data?.nameservers ?? [];
+    return fetched;
+  }, [status.nameservers, domainDetailsQuery.data?.nameservers]);
+
+  const effectiveIsUsingNamefiNameservers = useMemo(() => {
+    // If we have nameservers, derive truth from normalized comparison.
+    if (effectiveNameservers.length > 0) {
+      return (
+        status.isUsingNamefiNameservers ||
+        areNameserverSetsEqual(effectiveNameservers, [
+          ...NAMEFI_ASTRA_NAMESERVERS_PROD,
+        ]) ||
+        areNameserverSetsEqual(effectiveNameservers, [
+          ...NAMEFI_ASTRA_NAMESERVERS_DEV,
+        ])
+      );
+    }
+    // Otherwise fall back to backend-provided boolean.
+    return status.isUsingNamefiNameservers;
+  }, [effectiveNameservers, status.isUsingNamefiNameservers]);
 
   const { nsColor, webColor, mxColor, ensColor, forwardColor } =
-    getStatusColors(status);
+    getStatusColors(
+      {
+        ...status,
+        // Use effectiveNameservers for NS coloring only.
+        nameservers: effectiveNameservers,
+      },
+      effectiveIsUsingNamefiNameservers,
+    );
 
   // Read-only if not using Namefi NS (except NS settings itself, usually)
   // But wait, if we are not using Namefi NS, can we set NS? Yes, we can change NS back to Namefi.
   // So NS dialog should probably remain editable or handle its own state.
   // The requirement says: "For DNS Records other than NS, they are uneditable when NS were not using Namefi's NS"
-  const isReadOnly = !status.isUsingNamefiNameservers;
+  const isReadOnly = !effectiveIsUsingNamefiNameservers;
   const warningMessage = isReadOnly
     ? 'Not editable when using external nameservers'
     : undefined;
@@ -169,6 +265,11 @@ export function DnsStatusCell({
       role="toolbar"
       aria-label="DNS Actions"
       onClick={(e) => e.stopPropagation()}
+      onMouseEnter={() => {
+        // Avoid N+1 on initial table load; only fetch live nameservers on user interaction
+        // (hover) and only when the cached nameservers list is empty.
+        if (!hasInteracted) setHasInteracted(true);
+      }}
       onKeyDown={(e) => {
         if (['Enter', ' ', 'Spacebar', 'Escape'].includes(e.key)) {
           e.stopPropagation();
@@ -192,8 +293,8 @@ export function DnsStatusCell({
         </TooltipTrigger>
         <TooltipContent>
           Nameservers:{' '}
-          {status.nameservers.length > 0
-            ? status.nameservers.join(', ')
+          {effectiveNameservers.length > 0
+            ? effectiveNameservers.map(formatNameserverForDisplay).join(', ')
             : 'None'}
         </TooltipContent>
       </Tooltip>
