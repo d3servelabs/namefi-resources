@@ -20,10 +20,12 @@
     "lefthook": "^1.11.6",
     "turbo": "^2.5.8",
     "vitest": "^3.2.4",
-    "wait-on": "^8.0.3"
+    "wait-on": "^8.0.3",
+    "webpack": "5.99.9"
   },
   "overrides": {
-    "date-fns": "4.1.0"
+    "date-fns": "4.1.0",
+    "webpack": "5.99.9"
   },
   "scripts": {
     "clean:workspaces": "turbo clean",
