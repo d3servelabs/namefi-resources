@@ -21,7 +21,9 @@ import { privyClient } from '../utils';
 import * as ensModule from '#lib/crypto/ens';
 
 const { config: actualAppConfig } = await import('#lib/env');
-const { usersRouter, viemEthereumPublicClient } = await import('./usersRouter');
+const { usersRouter } = await import('./usersRouter');
+const { getViemPublicClient } = await import('#lib/crypto/viem-clients');
+const viemEthereumPublicClient = getViemPublicClient(1);
 
 type LocalTrpcContextWithReq = Omit<
   TrpcContext,

@@ -20,8 +20,6 @@ import type {
 import { TRPCError } from '@trpc/server';
 import { and, eq, sql, inArray, ilike, gte, or } from 'drizzle-orm';
 import { isEmpty, isNil, isNotEmpty, isNotNil, pluck } from 'ramda';
-import { http, createPublicClient } from 'viem';
-import * as chains from 'viem/chains';
 import { z } from 'zod';
 import { config, secrets } from '#lib/env';
 import {
@@ -87,20 +85,6 @@ type PreviouslyOwnedDomainEvent = {
   transactionHash: string;
   expirationTimeAtRemoval: Date | null;
 };
-
-export const viemBasePublicClient = createPublicClient({
-  chain: chains.base,
-  transport: http(
-    `https://base-mainnet.g.alchemy.com/v2/${secrets.ALCHEMY_API_KEY}`,
-  ),
-});
-
-export const viemEthereumPublicClient = createPublicClient({
-  chain: chains.mainnet,
-  transport: http(
-    `https://eth-mainnet.g.alchemy.com/v2/${secrets.ALCHEMY_API_KEY}`,
-  ),
-});
 
 type ImpersonationProfile = {
   id: string;
