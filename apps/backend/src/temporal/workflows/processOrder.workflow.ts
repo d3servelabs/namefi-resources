@@ -564,7 +564,7 @@ export async function processOrderWorkflow(
           (item) => item.normalizedDomainName,
         );
         if (purchasedDomains.length > 0) {
-          await workflow.executeChild(generateLogosForAliveNftsWorkflow, {
+          await workflow.startChild(generateLogosForAliveNftsWorkflow, {
             args: [
               {
                 model: 'gpt-image-1',
