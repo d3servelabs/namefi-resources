@@ -184,15 +184,17 @@ export function buildToggleLockTransferCommand(
   return buildDomainUpdateCommand({
     name: domainName,
     // don't use string named properties for type safety
-    add: !state
-      ? undefined
-      : {
-          statuses,
-        },
-    rem: state
-      ? undefined
-      : {
-          statuses,
-        },
+    add:
+      state === 'lock'
+        ? {
+            statuses,
+          }
+        : undefined,
+    rem:
+      state === 'unlock'
+        ? {
+            statuses,
+          }
+        : undefined,
   });
 }
