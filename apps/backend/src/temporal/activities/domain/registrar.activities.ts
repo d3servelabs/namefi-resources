@@ -10,13 +10,13 @@ import {
   type PunycodeDomainName,
   toPunycodeDomainName,
 } from '@namefi-astra/registrars/lib/data/validations';
-import type { Registrars } from '@namefi-astra/registrars/registrars/registrars-keys';
+import { Registrars } from '@namefi-astra/registrars/registrars/registrars-keys';
 import {
   type NamefiNormalizedDomain,
   matchAny,
   resolve,
 } from '@namefi-astra/utils';
-import { Context } from '@temporalio/activity';
+import { ApplicationFailure, Context } from '@temporalio/activity';
 import * as workflow from '@temporalio/workflow';
 import { addYears, isSameDay } from 'date-fns';
 import { decryptEppAuthCode } from '#lib/epp-code-encryption';
@@ -25,6 +25,8 @@ import { sldRegistrar } from '#lib/namefi-registry';
 import { RDAP } from '@namefi-astra/registrars/lib/rdap-whois/rdap_client';
 import { WhoisClient } from '@namefi-astra/registrars/lib/rdap-whois/whois_client';
 import { camelCase, noCase } from 'change-case';
+import { config } from '#lib/env';
+import { CENTRALNIC_OTE_TLDS } from '#lib/epp-registrars/centralnic';
 
 /**
  * Poll the removal status of the DS record
@@ -372,47 +374,81 @@ export async function getEppLockState(
 ): Promise<GetLockStateResponse> {
   logger.info(`Getting EPP lock state for domain: ${domainNameLdh}`);
 
-  const [error, res] = await resolve(
-    _getLockStateFromRdapAndWhois(domainNameLdh),
-  );
-  if (res && !error) {
-    logger.info(
-      `Retrieved EPP lock state for domain: ${domainNameLdh}, locked: ${res}`,
+  const getFromPublic = async (): Promise<
+    [Error | null, GetLockStateResponse | null]
+  > => {
+    const [error, res] = await resolve(
+      _getLockStateFromRdapAndWhois(domainNameLdh),
     );
+    if (res && !error) {
+      logger.trace(
+        `Retrieved EPP lock state for domain: ${domainNameLdh}, locked: ${res}`,
+      );
 
-    return res;
-  }
+      return [null, res];
+    }
 
-  const [_error, status] = await resolve(
-    sldRegistrar.getDomainStatus(domainNameLdh),
-  );
-  if (_error || !status) {
     logger.trace(
-      `Error getting domain status for domain: ${domainNameLdh}: ${_error.message}`,
-      _error.stack,
-    );
-    logger.error(
       `Error getting EPP lock state for domain: ${domainNameLdh}: ${error.message}`,
       error.stack,
     );
-    throw error;
-  }
-  const eppStatusRdap = status.map((s) => {
-    const trimmedSnakeCase = s.trim().replaceAll(/\s+/g, '_');
-    const trimmedSnakeCaseLower = trimmedSnakeCase.includes('_')
-      ? trimmedSnakeCase.toLowerCase()
-      : trimmedSnakeCase;
-
-    return noCase(camelCase(trimmedSnakeCaseLower));
-  });
-
-  const result: GetLockStateResponse = {
-    isAddPeriod: eppStatusRdap.includes('add period'),
-    isTransferPeriod: eppStatusRdap.includes('transfer period'),
-    locked: eppStatusRdap.includes('transfer prohibited'),
-    status: eppStatusRdap,
+    return [error, null];
   };
-  return result;
+
+  const getFromRegistrar = async (): Promise<
+    [Error | null, GetLockStateResponse | null]
+  > => {
+    const [_error, status] = await resolve(
+      sldRegistrar.getDomainStatus(domainNameLdh),
+    );
+    if (_error || !status) {
+      logger.trace(
+        `Error getting domain status for domain: ${domainNameLdh}: ${_error.message}`,
+        _error.stack,
+      );
+      return [_error, null];
+    }
+    const eppStatusRdap = status.map((s) => {
+      const trimmedSnakeCase = s.trim().replaceAll(/\s+/g, '_');
+      const trimmedSnakeCaseLower = trimmedSnakeCase.includes('_')
+        ? trimmedSnakeCase.toLowerCase()
+        : trimmedSnakeCase;
+
+      return noCase(camelCase(trimmedSnakeCaseLower));
+    });
+
+    const result: GetLockStateResponse = {
+      isAddPeriod: eppStatusRdap.includes('add period'),
+      isTransferPeriod: eppStatusRdap.includes('transfer period'),
+      locked: eppStatusRdap.includes('transfer prohibited'),
+      status: eppStatusRdap,
+    };
+    return [null, result];
+  };
+
+  /**
+   * Determines the order of calls to get EPP lock state based on the configuration.
+   * If CENTRALNIC_KEY is not nil, it will prioritize getting the lock state from the registrar.
+   */
+  const centralNicSandboxEnabled = [
+    Registrars.CentralNic_OTE_01,
+    Registrars.CentralNic_OTE_02,
+  ].includes(config.CENTRALNIC_KEY as any);
+
+  const orderedCalls = centralNicSandboxEnabled
+    ? [getFromRegistrar, getFromPublic]
+    : [getFromPublic, getFromRegistrar];
+
+  for (let i = 0; i < orderedCalls.length; i++) {
+    const [error, result] = await orderedCalls[i]();
+    if (result) {
+      return result;
+    }
+    if (error && i === orderedCalls.length - 1) {
+      throw error;
+    }
+  }
+  throw new ApplicationFailure('Not found');
 }
 
 export async function pollAndExpectEppLockStateChange(
