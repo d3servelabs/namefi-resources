@@ -7,6 +7,9 @@ import {
 } from '@/components/ui/progress-timeline';
 import type { WorkflowProgressPhase } from '@/hooks/use-order-progress';
 import type { AppRouterOutput } from '@/lib/trpc';
+import { isNotNil } from 'ramda';
+import { matchAny } from '@namefi-astra/utils/match';
+import { useMemo } from 'react';
 
 type OrderProgress = AppRouterOutput['orders']['getOrderProgress'];
 type OrderStepId = NonNullable<OrderProgress['state']>['steps'][number]['id'];
@@ -34,7 +37,7 @@ const orderStepDisplayInfo: Record<OrderStepId, StepDisplayInfo> = {
   },
   'post-processing': {
     label: 'Final touches',
-    helper: 'Updating indexes and generating NFT assets.',
+    helper: 'Adding Some Namefi Magic to your domains.',
   },
   'final-status': {
     label: 'Finalising order status',
@@ -60,11 +63,22 @@ export function OrderProgressTimeline({
 }: OrderProgressTimelineProps) {
   const effectiveLoading = workflowPhase === 'loading' || !progress?.state;
   const steps = progress?.state?.steps ?? [];
+  const displayedSteps = useMemo(() => {
+    return steps.filter((step) => {
+      if (step.id === 'refund') {
+        return isNotNil(step.startedAt);
+      }
+      if (matchAny(step.id, 'notification', 'final-status')) {
+        return false;
+      }
+      return true;
+    });
+  }, [steps]);
 
   return (
     <ProgressTimeline<OrderStepId>
       loading={effectiveLoading}
-      steps={steps}
+      steps={displayedSteps}
       stepDisplayInfo={orderStepDisplayInfo}
       subtitle="Live order updates"
       badge={
