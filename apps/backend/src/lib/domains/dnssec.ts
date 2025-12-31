@@ -14,7 +14,10 @@ import {
   type PunycodeDomainName,
   toPunycodeFqdn,
 } from '@namefi-astra/registrars/lib/data/validations';
-import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
+import {
+  namefiNormalizedDomainSchema,
+  type NamefiNormalizedDomain,
+} from '@namefi-astra/utils';
 import { WorkflowIdReusePolicy } from '@temporalio/common';
 import { TRPCError } from '@trpc/server';
 import { isEmpty, isNil, isNotEmpty, isNotNil } from 'ramda';
@@ -32,12 +35,48 @@ import { disableDnssecWorkflow } from '../../temporal/workflows/disable-dnssec.w
 import { enableDnssecWorkflow } from '../../temporal/workflows/enable-dnssec.workflow';
 import { checkIfNameserversAreNamefiNameservers } from './nameservers';
 import { parseDomainName } from '@namefi-astra/utils/parse-domain-name';
+import { isBefore, subHours } from 'date-fns';
+import type { IndexedDomainDnssecStatus } from '@namefi-astra/db/schema';
 
 util.inspect.defaultOptions.depth = null;
 
 const execAsync = promisify(exec);
 
 const _logger = createLogger({ module: 'domains-dnssec' });
+
+export async function getDomainDnssecFromIndex(
+  normalizedDomainName: NamefiNormalizedDomain,
+  options?: { maxAgeInHours?: number },
+): Promise<IndexedDomainDnssecStatus | null> {
+  const maxAgeInHours = options?.maxAgeInHours;
+
+  const record = await db.query.indexedDomainsTable.findFirst({
+    columns: {
+      dnssecStatus: true,
+      dnssecLastUpdatedAt: true,
+      lastIndexedAt: true,
+    },
+    where: (table, { eq }) =>
+      eq(table.normalizedDomainName, normalizedDomainName),
+  });
+
+  if (!record?.dnssecStatus) {
+    return null;
+  }
+
+  const lastUpdatedAt =
+    record.dnssecLastUpdatedAt ?? record.lastIndexedAt ?? null;
+
+  if (
+    maxAgeInHours &&
+    (!lastUpdatedAt ||
+      isBefore(lastUpdatedAt, subHours(new Date(), maxAgeInHours)))
+  ) {
+    return null;
+  }
+
+  return record.dnssecStatus;
+}
 
 // #region Delegation Signer
 export async function associateDelegationSigner(
@@ -214,6 +253,7 @@ export async function getDnssecStatusDetails(domainName: PunycodeDomainName) {
       isUsingNamefiDelegationSigner: true,
       zoneHasActiveDnssec: true,
       isUsingNamefiNameservers: true,
+      nameservers: config.NAMEFI_ASTRA_NAMESERVERS.map(toPunycodeFqdn),
     };
   }
 
@@ -247,6 +287,7 @@ export async function getDnssecStatusDetails(domainName: PunycodeDomainName) {
     zoneHasActiveDnssec: isZoneSigningEnabled,
     zoneSigningConfig,
     isUsingNamefiNameservers,
+    nameservers: details.nameservers.map(toPunycodeFqdn),
   };
 }
 

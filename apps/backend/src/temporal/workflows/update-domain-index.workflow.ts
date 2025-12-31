@@ -8,7 +8,11 @@ import { shortRunningOpts, TEMPORAL_ENUMS } from '../shared';
 import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';
 
 // Main indexing activities with longer timeouts
-const { updateDomainIndex, cleanupStaleIndexedDomains } = typedProxyActivities({
+const {
+  updateDomainIndex,
+  cleanupStaleIndexedDomains,
+  backfillMissingNameserversAndDnssecInIndex,
+} = typedProxyActivities({
   temporalEnum: TEMPORAL_ENUMS.INDEXERS,
   options: {
     ...shortRunningOpts,
@@ -39,6 +43,13 @@ export type UpdateDomainIndexWorkflowOutput = {
   };
   cleanupResult?: {
     deletedCount: number;
+  };
+  metadataBackfillResult?: {
+    iterations: number;
+    nameserversUpdated: number;
+    dnssecUpdated: number;
+    nameserversRemaining: number;
+    dnssecRemaining: number;
   };
   workflowExecutionTimeMs: number;
 };
@@ -79,11 +90,41 @@ export async function updateDomainIndexWorkflow({
     });
   }
 
+  workflow.log.info('Starting metadata backfill for indexed domains');
+  let stillRemaining = true;
+  let backfillIterations = 0;
+  let totalNameserversUpdated = 0;
+  let totalDnssecUpdated = 0;
+  let finalNameserversRemaining = 0;
+  let finalDnssecRemaining = 0;
+
+  while (stillRemaining) {
+    const result = await backfillMissingNameserversAndDnssecInIndex();
+    backfillIterations++;
+    totalNameserversUpdated += result.nameserversUpdated;
+    totalDnssecUpdated += result.dnssecUpdated;
+    finalNameserversRemaining = result.nameserversRemaining;
+    finalDnssecRemaining = result.dnssecRemaining;
+    stillRemaining = result.stillRemaining;
+
+    workflow.log.info('Metadata backfill iteration completed', {
+      iteration: backfillIterations,
+      result,
+    });
+  }
+
   const workflowExecutionTimeMs = Date.now() - startTime;
 
   const output: UpdateDomainIndexWorkflowOutput = {
     indexingResult,
     cleanupResult,
+    metadataBackfillResult: {
+      iterations: backfillIterations,
+      nameserversUpdated: totalNameserversUpdated,
+      dnssecUpdated: totalDnssecUpdated,
+      nameserversRemaining: finalNameserversRemaining,
+      dnssecRemaining: finalDnssecRemaining,
+    },
     workflowExecutionTimeMs,
   };
 

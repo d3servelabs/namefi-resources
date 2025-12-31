@@ -6,16 +6,21 @@
  * It also contains the activities for updating specific domain index rows by domain names and registrar keys.
  */
 
-import { and, eq, lt, sql } from 'drizzle-orm';
+import { eq, lt, sql, or, isNull } from 'drizzle-orm';
 import { db as database } from '@namefi-astra/db';
 import { indexedDomainsTable } from '@namefi-astra/db/schema';
+import type { IndexedDomainDnssecStatus } from '@namefi-astra/db/schema';
 import { sldRegistrar } from '../../../lib/namefi-registry';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import type { Registrars } from '@namefi-astra/registrars/registrars/registrars-keys';
+import type { Nameserver } from '@namefi-astra/registrars/lib/abstract-registrar/data/nameservers';
 import { createLogger } from '#lib/logger';
 import { splitEvery } from 'ramda';
+import { toPunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
+import { getDnssecStatusDetails } from '#lib/domains/dnssec';
 
 const logger = createLogger({ module: 'domain-index-activities' });
+const METADATA_BACKFILL_BATCH_SIZE = 25;
 
 /**
  * Activity to update the domain index by fetching all domains from registrars
@@ -50,16 +55,26 @@ export async function updateDomainIndex(): Promise<{
     }
 
     // Prepare batch insert/update data
-    const now = new Date();
+    const indexingTimestamp = new Date();
     const domainRecords = domainsWithRegistrar.map((domain) => ({
       normalizedDomainName: domain.domainName,
       registrarKey: domain.registrarKey as Registrars,
       expirationTime: domain.expirationTime,
-      lastIndexedAt: now,
+      lastIndexedAt: indexingTimestamp,
+      isMissingFromRegistrar: false,
+      missingFromRegistrarSince: null,
     }));
 
     // Use PostgreSQL's ON CONFLICT to handle upserts
     const updatedCount = await database.transaction(async (tx) => {
+      // Mark all existing domains as missing from registrar which will be overridden by the upserts
+      await tx
+        .update(indexedDomainsTable)
+        .set({
+          isMissingFromRegistrar: true,
+          missingFromRegistrarSince: sql`COALESCE(${indexedDomainsTable.missingFromRegistrarSince}, ${indexingTimestamp})`,
+        })
+        .where(eq(indexedDomainsTable.isMissingFromRegistrar, false));
       const batches = splitEvery(500, domainRecords);
       let updatedCount = 0;
       for (const batch of batches) {
@@ -74,6 +89,8 @@ export async function updateDomainIndex(): Promise<{
             set: {
               expirationTime: sql.raw('EXCLUDED.expiration_time'),
               lastIndexedAt: sql.raw('EXCLUDED.last_indexed_at'),
+              isMissingFromRegistrar: false,
+              missingFromRegistrarSince: null,
             },
           });
         updatedCount += result.rowCount ?? 0;
@@ -145,7 +162,15 @@ export async function cleanupStaleIndexedDomains(
 
 export type UpdateDomainIndexRowsInput = {
   domainName: NamefiNormalizedDomain;
-  expirationTime: Date;
+  expirationTime?: Date;
+  nameservers?: Nameserver[];
+  nameserversLastUpdatedAt?: Date;
+  isUsingNamefiNameservers?: boolean;
+  dnssecStatus?: IndexedDomainDnssecStatus | null;
+  dnssecLastUpdatedAt?: Date | null;
+  isMissingFromRegistrar?: boolean;
+  missingFromRegistrarSince?: Date | null;
+  lastIndexedAt?: Date;
 };
 export type UpdateDomainIndexRowsFailedDomain = {
   domainName: string;
@@ -194,17 +219,69 @@ export async function updateDomainIndexRows(
     await database.transaction(async (tx) => {
       for (const update of domainUpdates) {
         try {
-          // Update the lastIndexedAt timestamp for existing domain records
+          const updatePayload: Partial<
+            typeof indexedDomainsTable.$inferInsert
+          > = {};
+
+          if (update.expirationTime) {
+            updatePayload.expirationTime = update.expirationTime;
+          }
+
+          if (update.nameservers !== undefined) {
+            updatePayload.nameservers = update.nameservers;
+            updatePayload.nameserversLastUpdatedAt =
+              update.nameserversLastUpdatedAt ?? now;
+          } else if (update.nameserversLastUpdatedAt) {
+            updatePayload.nameserversLastUpdatedAt =
+              update.nameserversLastUpdatedAt;
+          }
+
+          if (typeof update.isUsingNamefiNameservers === 'boolean') {
+            updatePayload.isUsingNamefiNameservers =
+              update.isUsingNamefiNameservers;
+          }
+
+          if (update.dnssecStatus !== undefined) {
+            updatePayload.dnssecStatus = update.dnssecStatus;
+            updatePayload.dnssecLastUpdatedAt =
+              update.dnssecLastUpdatedAt ?? now;
+          } else if (update.dnssecLastUpdatedAt) {
+            updatePayload.dnssecLastUpdatedAt = update.dnssecLastUpdatedAt;
+          }
+
+          if (typeof update.isMissingFromRegistrar === 'boolean') {
+            updatePayload.isMissingFromRegistrar =
+              update.isMissingFromRegistrar;
+            updatePayload.missingFromRegistrarSince =
+              update.isMissingFromRegistrar
+                ? (update.missingFromRegistrarSince ?? now)
+                : null;
+          } else if (update.missingFromRegistrarSince) {
+            updatePayload.missingFromRegistrarSince =
+              update.missingFromRegistrarSince;
+          }
+
+          if (
+            Object.keys(updatePayload).length === 0 &&
+            !update.lastIndexedAt
+          ) {
+            logger.warn(
+              {
+                domainName: update.domainName,
+              },
+              'No fields provided for domain index update',
+            );
+            continue;
+          }
+
+          updatePayload.lastIndexedAt = update.lastIndexedAt ?? now;
+
+          // Update the lastIndexedAt timestamp and any provided metadata
           const result = await tx
             .update(indexedDomainsTable)
-            .set({
-              expirationTime: update.expirationTime,
-              lastIndexedAt: now,
-            })
+            .set(updatePayload)
             .where(
-              and(
-                eq(indexedDomainsTable.normalizedDomainName, update.domainName),
-              ),
+              eq(indexedDomainsTable.normalizedDomainName, update.domainName),
             );
 
           if (result.rowCount && result.rowCount > 0) {
@@ -256,4 +333,151 @@ export async function updateDomainIndexRows(
     );
     throw error;
   }
+}
+
+type MetadataBackfillResult = {
+  nameserversUpdated: number;
+  dnssecUpdated: number;
+  nameserversRemaining: number;
+  dnssecRemaining: number;
+  stillRemaining: boolean;
+};
+
+export async function backfillMissingNameserversAndDnssecInIndex(): Promise<MetadataBackfillResult> {
+  const updatesMap = new Map<
+    NamefiNormalizedDomain,
+    UpdateDomainIndexRowsInput
+  >();
+  let nameserversUpdated = 0;
+  let dnssecUpdated = 0;
+
+  const targets = await database
+    .select({
+      normalizedDomainName: indexedDomainsTable.normalizedDomainName,
+      nameserversLastUpdatedAt: indexedDomainsTable.nameserversLastUpdatedAt,
+      nameserversCount: sql<number>`COALESCE(jsonb_array_length(${indexedDomainsTable.nameservers}), 0)`,
+      dnssecStatus: indexedDomainsTable.dnssecStatus,
+      dnssecLastUpdatedAt: indexedDomainsTable.dnssecLastUpdatedAt,
+    })
+    .from(indexedDomainsTable)
+    .where(
+      or(
+        or(
+          isNull(indexedDomainsTable.nameserversLastUpdatedAt),
+          sql`jsonb_array_length(${indexedDomainsTable.nameservers}) = 0`,
+        ),
+        or(
+          isNull(indexedDomainsTable.dnssecStatus),
+          isNull(indexedDomainsTable.dnssecLastUpdatedAt),
+        ),
+      ),
+    )
+    .limit(METADATA_BACKFILL_BATCH_SIZE);
+
+  for (const target of targets) {
+    const normalizedDomainName = target.normalizedDomainName;
+    const needsNameservers =
+      !target.nameserversLastUpdatedAt || (target.nameserversCount ?? 0) === 0;
+    const needsDnssec = !target.dnssecStatus || !target.dnssecLastUpdatedAt;
+
+    if (!needsNameservers && !needsDnssec) {
+      continue;
+    }
+
+    try {
+      const dnssecDetails = await getDnssecStatusDetails(
+        toPunycodeDomainName(normalizedDomainName),
+      );
+
+      const existingUpdate = updatesMap.get(normalizedDomainName) ?? {
+        domainName: normalizedDomainName,
+      };
+
+      const now = new Date();
+      const update: UpdateDomainIndexRowsInput = { ...existingUpdate };
+
+      if (needsNameservers) {
+        update.nameservers = dnssecDetails.nameservers as Nameserver[];
+        update.nameserversLastUpdatedAt = now;
+        update.isUsingNamefiNameservers =
+          dnssecDetails.isUsingNamefiNameservers;
+        nameserversUpdated++;
+      }
+
+      if (needsDnssec) {
+        update.dnssecStatus = {
+          supportsDnssec: dnssecDetails.supportsDnssec,
+          hasDelegationSigner: dnssecDetails.hasDelegationSigner,
+          isUsingNamefiDelegationSigner:
+            dnssecDetails.isUsingNamefiDelegationSigner ?? false,
+          zoneHasActiveDnssec: dnssecDetails.zoneHasActiveDnssec,
+        };
+        update.dnssecLastUpdatedAt = now;
+        dnssecUpdated++;
+      }
+
+      updatesMap.set(normalizedDomainName, update);
+    } catch (error) {
+      logger.warn(
+        { domainName: normalizedDomainName, error },
+        'Failed to backfill domain metadata',
+      );
+    }
+  }
+
+  const updates = Array.from(updatesMap.values());
+  if (updates.length > 0) {
+    await updateDomainIndexRows(updates);
+  }
+
+  const { nameserversRemaining, dnssecRemaining } =
+    await getMetadataBackfillCounts();
+
+  logger.info('Completed domain index metadata backfill', {
+    nameserversUpdated,
+    dnssecUpdated,
+    nameserversRemaining,
+    dnssecRemaining,
+  });
+
+  return {
+    nameserversUpdated,
+    dnssecUpdated,
+    nameserversRemaining,
+    dnssecRemaining,
+    stillRemaining: nameserversRemaining > 0 || dnssecRemaining > 0,
+  };
+}
+
+async function getMetadataBackfillCounts(): Promise<{
+  nameserversRemaining: number;
+  dnssecRemaining: number;
+}> {
+  const [result] = await database
+    .select({
+      nameserversRemaining: sql<number>`
+        SUM(
+          CASE
+            WHEN ${indexedDomainsTable.nameserversLastUpdatedAt} IS NULL
+              OR jsonb_array_length(${indexedDomainsTable.nameservers}) = 0
+            THEN 1 ELSE 0
+          END
+        )
+      `,
+      dnssecRemaining: sql<number>`
+        SUM(
+          CASE
+            WHEN ${indexedDomainsTable.dnssecStatus} IS NULL
+              OR ${indexedDomainsTable.dnssecLastUpdatedAt} IS NULL
+            THEN 1 ELSE 0
+          END
+        )
+      `,
+    })
+    .from(indexedDomainsTable);
+
+  return {
+    nameserversRemaining: Number(result.nameserversRemaining ?? 0),
+    dnssecRemaining: Number(result.dnssecRemaining ?? 0),
+  };
 }

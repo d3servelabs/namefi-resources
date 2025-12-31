@@ -12,6 +12,8 @@ import { createLogger } from '#lib/logger';
 import { sldRegistrar } from '#lib/namefi-registry';
 import { temporalClient } from '../../temporal/client';
 import { TEMPORAL_QUEUES } from '../../temporal/shared';
+import { db } from '@namefi-astra/db';
+import { isBefore, subHours } from 'date-fns';
 import {
   changeNameserversWorkflow,
   resetNameserversWorkflow,
@@ -127,6 +129,15 @@ export const checkIfNameserversAreNamefiNameservers = (
   );
   return comparisonResult.isExactMatch;
 };
+/**
+ *  executes the checkIfNameserversAreNamefiNameservers activity
+ *  temporal requires activities to be async
+ */
+export const checkIfNameserversAreNamefiNameserversActivity = async (
+  nameservers: Nameserver[],
+): Promise<boolean> => {
+  return checkIfNameserversAreNamefiNameservers(nameservers);
+};
 
 /**
  * Checks if a domain is using the legacy Namefi nameservers
@@ -211,6 +222,51 @@ export async function getPropagatedNameservers(
  */
 export function getDefaultNameservers(): Promise<Nameserver[]> {
   return Promise.resolve(config.NAMEFI_ASTRA_NAMESERVERS);
+}
+
+export type DomainNameserversIndexResult = {
+  nameservers: Nameserver[];
+  isUsingNamefiNameservers: boolean;
+  lastUpdatedAt: Date;
+};
+
+export async function getDomainNameserversFromIndex(
+  normalizedDomainName: NamefiNormalizedDomain,
+  options?: { maxAgeInHours?: number },
+): Promise<DomainNameserversIndexResult | null> {
+  const maxAgeInHours = options?.maxAgeInHours;
+
+  const record = await db.query.indexedDomainsTable.findFirst({
+    columns: {
+      nameservers: true,
+      nameserversLastUpdatedAt: true,
+      lastIndexedAt: true,
+      isUsingNamefiNameservers: true,
+    },
+    where: (table, { eq }) =>
+      eq(table.normalizedDomainName, normalizedDomainName),
+  });
+
+  if (!record || record.nameservers.length === 0) {
+    return null;
+  }
+
+  const lastUpdatedAt =
+    record.nameserversLastUpdatedAt ?? record.lastIndexedAt ?? null;
+
+  if (
+    maxAgeInHours &&
+    (!lastUpdatedAt ||
+      isBefore(lastUpdatedAt, subHours(new Date(), maxAgeInHours)))
+  ) {
+    return null;
+  }
+
+  return {
+    nameservers: record.nameservers as Nameserver[],
+    isUsingNamefiNameservers: record.isUsingNamefiNameservers,
+    lastUpdatedAt,
+  };
 }
 
 /**

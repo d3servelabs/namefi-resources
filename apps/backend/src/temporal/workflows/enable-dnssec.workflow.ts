@@ -1,5 +1,6 @@
 import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
 import { matchAny } from '@namefi-astra/utils';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import * as workflow from '@temporalio/workflow';
 import { defineQuery } from '@temporalio/workflow';
 import { TEMPORAL_ENUMS, shortRunningOpts } from '../shared';
@@ -8,6 +9,7 @@ import {
   createWorkflowProgress,
   type WorkflowProgressState,
 } from '../shared/workflow-helpers/workflow-progress';
+import { catchAndAlertLocally } from '../shared/workflow-helpers/catch-and-alert-locally';
 
 /**
  * Step IDs for the enable DNSSEC workflow.
@@ -82,6 +84,13 @@ export async function enableDnssecWorkflow(
       ...shortRunningOpts,
     },
   });
+  const indexerActivities = typedProxyActivities({
+    temporalEnum: TEMPORAL_ENUMS.INDEXERS,
+    options: {
+      ...shortRunningOpts,
+      startToCloseTimeout: '2m',
+    },
+  });
 
   const {
     getDnssecStatusDetails,
@@ -90,6 +99,7 @@ export async function enableDnssecWorkflow(
   } = standardActivities;
 
   const { pollDsRecordAssociationStatus } = longRunningActivities;
+  const { updateDomainIndexRows } = indexerActivities;
 
   try {
     // Step 1: Check if domain supports DNSSEC
@@ -180,6 +190,30 @@ export async function enableDnssecWorkflow(
     }
 
     progress.completeStep('verify-propagation', 'DNSSEC enabled successfully');
+
+    const normalizedDomainName = input.domainName as NamefiNormalizedDomain;
+    await catchAndAlertLocally(
+      () =>
+        updateDomainIndexRows([
+          {
+            domainName: normalizedDomainName,
+            dnssecStatus: {
+              supportsDnssec,
+              hasDelegationSigner: true,
+              isUsingNamefiDelegationSigner: true,
+              zoneHasActiveDnssec: true,
+            },
+          },
+        ]),
+      {
+        message: 'Failed to update DNSSEC metadata after enabling DNSSEC',
+        details: {
+          domainName: input.domainName,
+          workflowId: workflow.workflowInfo().workflowId,
+        },
+      },
+    );
+
     progress.complete();
   } catch (e) {
     // Only update progress if not already failed

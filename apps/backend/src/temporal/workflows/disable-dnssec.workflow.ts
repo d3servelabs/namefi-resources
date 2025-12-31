@@ -1,5 +1,6 @@
 import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
 import { matchAny } from '@namefi-astra/utils';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import * as workflow from '@temporalio/workflow';
 import { defineQuery } from '@temporalio/workflow';
 import { TEMPORAL_ENUMS, shortRunningOpts } from '../shared';
@@ -8,6 +9,7 @@ import {
   createWorkflowProgress,
   type WorkflowProgressState,
 } from '../shared/workflow-helpers/workflow-progress';
+import { catchAndAlertLocally } from '../shared/workflow-helpers/catch-and-alert-locally';
 
 /**
  * Step IDs for the disable DNSSEC workflow.
@@ -39,9 +41,7 @@ export interface DisableDnssecWorkflowInput {
  * 3. Verify DS record removal propagation
  * 4. Disable zone signing
  */
-export async function disableDnssecWorkflow(
-  input: DisableDnssecWorkflowInput,
-): Promise<WorkflowProgressState<DisableDnssecStepId>> {
+export async function disableDnssecWorkflow(input: DisableDnssecWorkflowInput) {
   // Initialize progress tracking
   const progress = createWorkflowProgress<DisableDnssecStepId>(
     [
@@ -82,6 +82,13 @@ export async function disableDnssecWorkflow(
       ...shortRunningOpts,
     },
   });
+  const indexerActivities = typedProxyActivities({
+    temporalEnum: TEMPORAL_ENUMS.INDEXERS,
+    options: {
+      ...shortRunningOpts,
+      startToCloseTimeout: '2m',
+    },
+  });
 
   const {
     getDnssecStatusDetails,
@@ -91,6 +98,7 @@ export async function disableDnssecWorkflow(
 
   const { pollDsRecordRemovalStatus, pollDsRecordRemovalPropagation } =
     longRunningActivities;
+  const { updateDomainIndexRows } = indexerActivities;
 
   try {
     // Step 1: Check current DNSSEC status
@@ -183,12 +191,34 @@ export async function disableDnssecWorkflow(
 
     await setZoneSigningFlag(input.domainName, false);
 
+    const normalizedDomainName = input.domainName as NamefiNormalizedDomain;
+    await catchAndAlertLocally(
+      () =>
+        updateDomainIndexRows([
+          {
+            domainName: normalizedDomainName,
+            dnssecStatus: {
+              supportsDnssec,
+              hasDelegationSigner: false,
+              isUsingNamefiDelegationSigner: false,
+              zoneHasActiveDnssec: false,
+            },
+          },
+        ]),
+      {
+        message: 'Failed to update DNSSEC metadata after disabling DNSSEC',
+        details: {
+          domainName: input.domainName,
+          workflowId: workflow.workflowInfo().workflowId,
+        },
+      },
+    );
+
     progress.completeStep(
       'disable-zone-signing',
       'DNSSEC disabled successfully',
     );
     progress.complete();
-
     return progress.state;
   } catch (e) {
     // Only update progress if not already failed

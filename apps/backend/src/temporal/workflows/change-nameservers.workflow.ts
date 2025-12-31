@@ -1,10 +1,13 @@
 import type { Nameserver } from '@namefi-astra/registrars/lib/abstract-registrar/data/nameservers';
 import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { matchAny } from '@namefi-astra/utils';
 import * as workflow from '@temporalio/workflow';
 import { defineQuery } from '@temporalio/workflow';
 import { TEMPORAL_ENUMS, pollingOpts, shortRunningOpts } from '../shared';
 import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';
+import { catchAndAlertLocally } from '../shared/workflow-helpers/catch-and-alert-locally';
+
 import {
   createWorkflowProgress,
   type WorkflowProgressState,
@@ -65,8 +68,18 @@ export async function changeNameserversWorkflow({
     temporalEnum: TEMPORAL_ENUMS.DOMAINS,
     options: shortRunningOpts,
   });
-  const { setNameserversForDomain } = standardActivities;
+  const {
+    setNameserversForDomain,
+    checkIfNameserversAreNamefiNameserversActivity,
+  } = standardActivities;
   const { pollRegistrarOperationStatus } = pollingActivities;
+  const { updateDomainIndexRows } = typedProxyActivities({
+    temporalEnum: TEMPORAL_ENUMS.INDEXERS,
+    options: {
+      ...shortRunningOpts,
+      startToCloseTimeout: '2m',
+    },
+  });
 
   try {
     // Step 1: Disable DNSSEC (embedded workflow with substeps)
@@ -137,13 +150,34 @@ export async function changeNameserversWorkflow({
     progress.completeStep('verify-change');
 
     progress.complete();
-    return progress.state;
   } catch (e) {
     if (progress.state.phase !== 'FAILED') {
       progress.fail(e instanceof Error ? e.message : String(e));
     }
     throw e;
   }
+
+  const normalizedDomainName = domainName as NamefiNormalizedDomain;
+  const isUsingNamefiNameservers =
+    await checkIfNameserversAreNamefiNameserversActivity(nameservers);
+
+  await catchAndAlertLocally(
+    () =>
+      updateDomainIndexRows([
+        {
+          domainName: normalizedDomainName,
+          nameservers,
+          isUsingNamefiNameservers,
+        },
+      ]),
+    {
+      message: 'Failed to update domain index after nameservers change',
+      details: {
+        domainName,
+        workflowId: workflow.workflowInfo().workflowId,
+      },
+    },
+  );
 }
 
 /**
