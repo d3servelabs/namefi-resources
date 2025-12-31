@@ -493,9 +493,9 @@ export const DomainExportSection = ({
   };
 
   const handleGetAuthCodeInner = async () => {
-    try {
-      setIsFetchingAuthCode(true);
+    setIsFetchingAuthCode(true);
 
+    try {
       // Sign the payload with EIP-712 using unified domain action type
       const timestamp = Math.floor(Date.now() / 1000);
       const payload = {
@@ -505,12 +505,21 @@ export const DomainExportSection = ({
         message: `Retrieve auth code for ${domain}. This code is required to transfer your domain to another registrar.`,
         timestamp,
       };
-      const signature = await signTypedData({
-        types: DOMAIN_ACTION_EIP712_TYPES,
-        primaryType: 'DomainAction',
-        message: payload,
-      });
-
+      let signature: string;
+      try {
+        signature = await signTypedData({
+          types: DOMAIN_ACTION_EIP712_TYPES,
+          primaryType: 'DomainAction',
+          message: payload,
+        });
+      } catch (error) {
+        console.error(error);
+        toast.error(
+          'Failed to request signature. This could be due to a browser error or a problem with your wallet.',
+        );
+        setIsFetchingAuthCode(false);
+        return;
+      }
       const result = await trpcClient.domainConfig.getAuthCode.mutate({
         signature,
         payload,
