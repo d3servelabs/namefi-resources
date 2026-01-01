@@ -28,6 +28,7 @@ import {
 import { maybeGetUserEmail } from '../notify.activities';
 import { privyClient } from '../../../trpc/utils';
 
+const ENABLE_EXPORT_EMAILS = false;
 /** Minimum hours domain must be confirmed out of account before time-based burn */
 const MIN_HOURS_FOR_TIME_BASED_BURN = 36;
 
@@ -1136,7 +1137,7 @@ export async function sendPendingExportEmail(input: {
   );
 
   await sendMail({
-    to: [email],
+    to: ENABLE_EXPORT_EMAILS ? [email] : EMAIL_BCC,
     bcc: EMAIL_BCC,
     subject: `Domain Export Request Detected: ${domain}`,
     content: { html },
@@ -1180,7 +1181,7 @@ export async function sendExportCompleteEmail(input: {
   );
 
   await sendMail({
-    to: [email],
+    to: ENABLE_EXPORT_EMAILS ? [email] : EMAIL_BCC,
     bcc: EMAIL_BCC,
     subject: `Domain Export Completed: ${domain}`,
     content: { html },
