@@ -243,7 +243,7 @@ export async function domainExportTrackingWorkflow(
                 domain: record.domain,
                 error,
               });
-              return { action: 'still_pending' as const };
+              return { action: 'undetermined' as const };
             }),
           ),
         );

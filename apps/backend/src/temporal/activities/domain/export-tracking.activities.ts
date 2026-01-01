@@ -163,7 +163,11 @@ export async function checkDomainTransferStatus(
  */
 export async function isDomainInOurAccount(
   domain: NamefiNormalizedDomain,
-): Promise<{ inOurAccount: boolean; registrarKey?: string }> {
+): Promise<{
+  inOurAccount: boolean;
+  registrarKey?: string;
+  confirmed: boolean;
+}> {
   const activityContext = Context.current();
   logger.info({ domain }, 'Checking if domain is in our account');
 
@@ -175,18 +179,18 @@ export async function isDomainInOurAccount(
 
     if (!domainDetails) {
       logger.info({ domain }, 'Domain not found in our account');
-      return { inOurAccount: false };
+      return { inOurAccount: false, confirmed: true };
     }
 
     // If we can get domain details, it's in our account
     const registrarKey = domainDetails.registrarKey || undefined;
 
     logger.info({ domain, registrarKey }, 'Domain found in our account');
-    return { inOurAccount: true, registrarKey };
+    return { inOurAccount: true, registrarKey, confirmed: true };
   } catch (error) {
     logger.warn({ domain, error }, 'Error checking domain in account');
     // If we get an error, assume it's not in our account
-    return { inOurAccount: false };
+    return { inOurAccount: false, confirmed: false };
   }
 }
 
@@ -356,8 +360,16 @@ export async function processSingleDomainExportStatus(input: {
   logger.info({ domain, chainId }, 'Processing single domain export status');
   activityContext.heartbeat({ domain, step: 'checking_status' });
 
-  const transferStatus = await checkDomainTransferStatus(domain);
   const accountCheck = await isDomainInOurAccount(domain);
+  if (!accountCheck.confirmed) {
+    logger.info({ domain, accountCheck }, 'processSingleDomainExportStatus');
+
+    return {
+      action: 'skipped',
+    };
+  }
+
+  const transferStatus = await checkDomainTransferStatus(domain);
   const indexRegistrarKey = await getDomainRegistrarFromIndex(domain);
   const registrarKey = accountCheck.registrarKey || indexRegistrarKey;
 
@@ -517,7 +529,7 @@ export async function checkSinglePendingTransfer(input: {
   currentStatus: string;
   statusHistory: unknown;
 }): Promise<{
-  action: 'failed' | 'completed' | 'still_pending';
+  action: 'failed' | 'completed' | 'still_pending' | 'undetermined';
   newStatus?: string;
   domain?: NamefiNormalizedDomain;
   chainId?: number;
@@ -530,6 +542,12 @@ export async function checkSinglePendingTransfer(input: {
 
   const transferStatus = await checkDomainTransferStatus(domain);
   const accountCheck = await isDomainInOurAccount(domain);
+  if (!accountCheck.confirmed) {
+    logger.info({ domain, accountCheck }, 'checkSinglePendingTransfer');
+    return {
+      action: 'undetermined',
+    };
+  }
 
   if (!transferStatus.hasPendingTransfer && !transferStatus.hasTransferPeriod) {
     if (accountCheck.inOurAccount) {
