@@ -196,7 +196,6 @@ export async function updateDomainIndexRows(
   logger.info(
     {
       domainsToUpdate: domainUpdates.length,
-      updates: domainUpdates,
     },
     'Starting selective domain index update',
   );

@@ -53,6 +53,7 @@ export type UpdateDomainIndexWorkflowOutput = {
   };
   workflowExecutionTimeMs: number;
 };
+const MAX_BACKFILL_ITERATIONS = 100;
 
 /**
  * Workflow to update the domain index by fetching all domains from registrars
@@ -97,8 +98,10 @@ export async function updateDomainIndexWorkflow({
   let totalDnssecUpdated = 0;
   let finalNameserversRemaining = 0;
   let finalDnssecRemaining = 0;
+  let last3IterationsTotalUpdates: Array<number> = [];
+  let loop = true;
 
-  while (stillRemaining) {
+  while (loop) {
     const result = await backfillMissingNameserversAndDnssecInIndex();
     backfillIterations++;
     totalNameserversUpdated += result.nameserversUpdated;
@@ -106,6 +109,23 @@ export async function updateDomainIndexWorkflow({
     finalNameserversRemaining = result.nameserversRemaining;
     finalDnssecRemaining = result.dnssecRemaining;
     stillRemaining = result.stillRemaining;
+
+    last3IterationsTotalUpdates.push(
+      result.nameserversUpdated + result.dnssecUpdated,
+    );
+    last3IterationsTotalUpdates = last3IterationsTotalUpdates.slice(-3);
+    const noChangesInLast3Iterations = last3IterationsTotalUpdates.every(
+      (update) => update === 0,
+    );
+
+    // you have to start noChangesInLast3Iterations only when you atleast surpass 3 iterations
+    const effectiveNoChangesInLast3Iterations =
+      noChangesInLast3Iterations && backfillIterations > 3;
+
+    loop =
+      stillRemaining &&
+      backfillIterations < MAX_BACKFILL_ITERATIONS &&
+      !effectiveNoChangesInLast3Iterations;
 
     workflow.log.info('Metadata backfill iteration completed', {
       iteration: backfillIterations,
