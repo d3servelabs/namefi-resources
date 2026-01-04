@@ -1353,6 +1353,17 @@ const MyDomainsContent = () => {
     trpc.users.getCurrentUserDomains.queryOptions(),
   );
 
+  const { data: orderItems } = useQuery(
+    trpc.orders.getOrderItems.queryOptions(),
+  );
+
+  const processingOrderItems = useMemo(() => {
+    if (!orderItems) return [];
+    return orderItems.filter((item) =>
+      ['CREATED', 'PROCESSING'].includes(item.status ?? ''),
+    );
+  }, [orderItems]);
+
   const { activeDomains, inactiveDomains } = useMemo(() => {
     const { activeDomains, expiredDomains, otherDomains } = groupBy(
       (domain) => {
@@ -1381,44 +1392,68 @@ const MyDomainsContent = () => {
     };
   }, [_domains]);
 
-  if (activeDomains.length === 0 && inactiveDomains.length === 0) {
+  if (
+    activeDomains.length === 0 &&
+    inactiveDomains.length === 0 &&
+    processingOrderItems.length === 0
+  ) {
     return <MyDomainsEmptyPlaceholder />;
   }
 
   return (
-    <Tabs defaultValue="active">
-      <TabsList className="w-fit">
-        <TabsTrigger value="active">My Domains</TabsTrigger>
-        <TabsTrigger value="inactive">Inactive Domains</TabsTrigger>
-        <TabsTrigger value="previously-owned">
-          Previously Owned Domains
-        </TabsTrigger>
-      </TabsList>
+    <div className="space-y-4">
+      {processingOrderItems.length > 0 && (
+        <div className="bg-muted/50 border border-border rounded-lg p-4 text-sm text-muted-foreground">
+          <span className="font-medium text-foreground">
+            ⏳{' '}
+            {processingOrderItems
+              .map((item) => item.normalizedDomainName)
+              .join(', ')}
+          </span>{' '}
+          are being processed. Visit{' '}
+          <Link href="/orders" className="text-primary hover:underline">
+            Orders
+          </Link>{' '}
+          to see their status.
+        </div>
+      )}
 
-      <TabsContent value="active" className="mt-4">
-        {activeDomains.length === 0 ? (
-          <EmptyPlaceholder>
-            <EmptyPlaceholder.Title>No active domains</EmptyPlaceholder.Title>
-          </EmptyPlaceholder>
-        ) : (
-          <MyDomainsTable kind="active" domains={activeDomains} />
-        )}
-      </TabsContent>
+      <Tabs defaultValue="active">
+        <TabsList className="w-fit">
+          <TabsTrigger value="active">My Domains</TabsTrigger>
+          <TabsTrigger value="inactive">Inactive Domains</TabsTrigger>
+          <TabsTrigger value="previously-owned">
+            Previously Owned Domains
+          </TabsTrigger>
+        </TabsList>
 
-      <TabsContent value="inactive" className="mt-4">
-        {inactiveDomains.length === 0 ? (
-          <EmptyPlaceholder>
-            <EmptyPlaceholder.Title>No inactive domains</EmptyPlaceholder.Title>
-          </EmptyPlaceholder>
-        ) : (
-          <MyDomainsTable kind="inactive" domains={inactiveDomains} />
-        )}
-      </TabsContent>
+        <TabsContent value="active" className="mt-4">
+          {activeDomains.length === 0 ? (
+            <EmptyPlaceholder>
+              <EmptyPlaceholder.Title>No active domains</EmptyPlaceholder.Title>
+            </EmptyPlaceholder>
+          ) : (
+            <MyDomainsTable kind="active" domains={activeDomains} />
+          )}
+        </TabsContent>
 
-      <TabsContent value="previously-owned" className="mt-4">
-        <MyPreviouslyOwnedDomainsContent />
-      </TabsContent>
-    </Tabs>
+        <TabsContent value="inactive" className="mt-4">
+          {inactiveDomains.length === 0 ? (
+            <EmptyPlaceholder>
+              <EmptyPlaceholder.Title>
+                No inactive domains
+              </EmptyPlaceholder.Title>
+            </EmptyPlaceholder>
+          ) : (
+            <MyDomainsTable kind="inactive" domains={inactiveDomains} />
+          )}
+        </TabsContent>
+
+        <TabsContent value="previously-owned" className="mt-4">
+          <MyPreviouslyOwnedDomainsContent />
+        </TabsContent>
+      </Tabs>
+    </div>
   );
 };
 
