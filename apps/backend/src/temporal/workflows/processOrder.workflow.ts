@@ -824,7 +824,9 @@ async function _notifyUserOrderProcessed(
       refund:
         amountToRefund > 0
           ? {
-              amountInUsd: amountToRefund,
+              amountInUsd: workflow.patched('refund-cents-fix')
+                ? amountToRefund / 100
+                : amountToRefund,
               status: 'PROCESSING',
             }
           : undefined,
