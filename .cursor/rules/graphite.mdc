@@ -1,0 +1,73 @@
+---
+description: Trigger when the user asks to create/submit a pull request (PR), stack changes, manage branches, perform git operations, or explicitly mentions "graphite", "gt", or "stacking".
+globs: 
+alwaysApply: false
+---
+# Graphite CLI (gt) Rules
+
+Use the Graphite CLI (`gt`) for managing stacked pull requests. It simplifies git workflows, automates rebasing, and manages dependencies between branches in a stack.
+
+## Core Workflow
+
+### 1. Create a Stack (New PR)
+Instead of `git checkout -b` and `git commit`:
+- **Stage changes**: `git add <files>` (optional if using `--all`)
+- **Create branch & commit**:
+  ```bash
+  gt create --message "feat(scope): description" --all
+  ```
+- This creates a new branch *on top* of the current branch.
+- **Push/Submit**:
+  ```bash
+  gt submit
+  ```
+  This pushes the branch and creates/updates the PR.
+
+### 2. Stacking (creating PRs on top of PRs)
+- While waiting for review on PR #1, create PR #2 on top of it:
+  1. Ensure you are on the branch for PR #1 (`gt checkout`).
+  2. Make new changes.
+  3. Run `gt create -m "..."`.
+  4. Run `gt submit --stack` to push the new stack.
+
+### 3. Modifying a Stack (Addressing Feedback)
+To change a PR in the middle of a stack:
+1. Checkout the branch: `gt checkout` (select the branch).
+2. Make edits.
+3. **Amend and Restack**:
+   ```bash
+   gt modify -a
+   ```
+   - This amends the current commit AND automatically rebases all branches on top of it.
+   - Use `--no-edit` to keep the commit message, or omit it to edit.
+4. **Push updates**: `gt submit --stack` (updates all affected PRs).
+
+### 4. Syncing with Trunk
+Keep your local stacks up to date with `main`:
+```bash
+gt sync
+```
+- Pulls latest `main`.
+- Rebases all open stacks on top of `main`.
+- Prompts to delete merged/closed branches.
+- Run this frequently.
+
+## Navigation & Visualization
+- **View Stack**: `gt log short` (shows the tree of stacked branches).
+- **Checkout**: `gt checkout` (interactive picker).
+- **Go to Top**: `gt top` (checkout the tip of the current stack).
+- **Go to Bottom**: `gt bottom`.
+
+## Key Rules for Agent
+1. **Prefer `gt` over `git`** for creating branches, committing changes, and managing stacks.
+2. **Always Suggest Stacking**: When the user has multiple dependent features, suggest using `gt create` to stack them.
+3. **Use `gt modify`**: When fixing a PR that has children, ALWAYS use `gt modify` instead of `git commit --amend` to ensure the stack remains valid.
+4. **Sync Frequently**: Remind the user to run `gt sync` if the stack seems stale.
+5. **Commit Messages**: Follow the project's conventional commit style when using `gt create -m`.
+
+## Command Reference
+- `gt create [-m "msg"] [--all]`: Create new stacked branch.
+- `gt submit [--stack] [--reviewers <user>]`: Push and create PRs.
+- `gt modify [-a] [--commit]`: Update current branch and restack children.
+- `gt sync`: Update from remote and cleanup.
+- `gt pr`: Open PR in browser.
