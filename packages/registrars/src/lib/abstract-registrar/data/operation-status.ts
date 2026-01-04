@@ -4,6 +4,7 @@ export const OperationStatus = {
   IN_PROGRESS: 'IN_PROGRESS',
   SUBMITTED: 'SUBMITTED',
   SUCCESSFUL: 'SUCCESSFUL',
+  REQUIRES_ACTION: 'REQUIRES_ACTION',
 } as const;
 
 export type OperationStatus =

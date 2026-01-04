@@ -1140,6 +1140,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
         assertNotNil(response, 'Response Failed');
         const latestStatus = response[0];
         let status: OperationStatus;
+        let message: string | undefined;
         switch (latestStatus.TransferStatus) {
           case DynadotTransferStatus.NONE:
             status = OperationStatus.SUBMITTED;
@@ -1148,8 +1149,10 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
           case DynadotTransferStatus.Approved:
             status = OperationStatus.IN_PROGRESS;
             break;
-
           case DynadotTransferStatus.LOCKED:
+            message = 'Cannot Import domain while it is locked';
+            status = OperationStatus.REQUIRES_ACTION;
+            break;
           case DynadotTransferStatus.AUTH_CODE_NEEDED:
             status = OperationStatus.ERROR;
             break;
@@ -1171,6 +1174,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
           operationId,
           response,
           status,
+          message,
         });
       }
       case OperationType.RENEW_DOMAIN:

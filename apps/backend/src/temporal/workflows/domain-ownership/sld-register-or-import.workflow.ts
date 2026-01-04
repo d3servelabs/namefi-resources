@@ -7,6 +7,7 @@ import {
   type ChecksumWalletAddress,
   type NamefiNormalizedDomain,
   notMatchAny,
+  matchAny,
 } from '@namefi-astra/utils';
 import * as workflow from '@temporalio/workflow';
 import { TEMPORAL_ENUMS, shortRunningOpts } from '../../shared';
@@ -23,6 +24,8 @@ interface SldRegisterOrImportWorkflowInput {
   encryptionKeyId?: string | null;
   encryptedEppAuthorizationCode?: string | null;
 }
+export const sldRegisterOrImportProceed =
+  workflow.defineSignal<[{ action: 'PROCEED' | 'FAIL' }]>('nextAction');
 
 export async function sldRegisterOrImportWorkflow(
   input: SldRegisterOrImportWorkflowInput,
@@ -141,16 +144,75 @@ export async function sldRegisterOrImportWorkflow(
       input.registrarKey,
     );
 
-    if (registrarOperationStatus !== OperationStatus.SUCCESSFUL) {
-      throw workflow.ApplicationFailure.create({
-        nonRetryable: true,
-        message: `Failed to request ${isImport ? 'import' : 'register'} domain status`,
-        details: [
-          `Type: ${registrarRes.type}`,
-          `Status: ${registrarRes.status}`,
-          `Message: ${registrarRes.message}`,
-        ],
+    if (workflow.patched('add-support-for-requires-action')) {
+      let nextAction: 'PROCEED' | 'FAIL' | null = null;
+      let waitingForSignal = false;
+      workflow.setHandler(sldRegisterOrImportProceed, (input) => {
+        if (!waitingForSignal) return;
+        nextAction = input.action;
       });
+
+      const { criticalAlertNamefi } = typedProxyActivities({
+        temporalEnum: TEMPORAL_ENUMS.DEFAULT,
+        options: {
+          ...shortRunningOpts,
+          retry: {
+            maximumInterval: '1 minute',
+          },
+        },
+      });
+      if (registrarOperationStatus === OperationStatus.REQUIRES_ACTION) {
+        await criticalAlertNamefi({
+          workflowInfo: workflow.workflowInfo(),
+          message: 'Action Required',
+          registrarOperationStatus,
+          input,
+          level: 'error',
+        });
+        waitingForSignal = true;
+        await workflow.condition(() => nextAction !== null);
+        if (nextAction === 'FAIL') {
+          throw workflow.ApplicationFailure.create({
+            nonRetryable: true,
+            message: `Failed to request ${isImport ? 'import' : 'register'} domain status`,
+            details: [
+              `Type: ${registrarRes.type}`,
+              `Status: ${registrarRes.status}`,
+              `Message: ${registrarRes.message}`,
+              'Admin Signal',
+            ],
+          });
+        }
+      }
+      if (
+        matchAny(
+          registrarOperationStatus,
+          OperationStatus.FAILED,
+          OperationStatus.ERROR,
+        )
+      ) {
+        throw workflow.ApplicationFailure.create({
+          nonRetryable: true,
+          message: `Failed to request ${isImport ? 'import' : 'register'} domain status`,
+          details: [
+            `Type: ${registrarRes.type}`,
+            `Status: ${registrarRes.status}`,
+            `Message: ${registrarRes.message}`,
+          ],
+        });
+      }
+    } else {
+      if (registrarOperationStatus !== OperationStatus.SUCCESSFUL) {
+        throw workflow.ApplicationFailure.create({
+          nonRetryable: true,
+          message: `Failed to request ${isImport ? 'import' : 'register'} domain status`,
+          details: [
+            `Type: ${registrarRes.type}`,
+            `Status: ${registrarRes.status}`,
+            `Message: ${registrarRes.message}`,
+          ],
+        });
+      }
     }
 
     return getDomainDetails(input.normalizedDomainName as PunycodeDomainName);
