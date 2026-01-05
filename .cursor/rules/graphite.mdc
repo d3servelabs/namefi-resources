@@ -1,6 +1,6 @@
 ---
 description: Trigger when the user asks to create/submit a pull request (PR), stack changes, manage branches, perform git operations, or explicitly mentions "graphite", "gt", or "stacking".
-globs: 
+globs:
 alwaysApply: false
 ---
 # Graphite CLI (gt) Rules
@@ -14,21 +14,24 @@ Instead of `git checkout -b` and `git commit`:
 - **Stage changes**: `git add <files>` (optional if using `--all`)
 - **Create branch & commit**:
   ```bash
-  gt create --message "feat(scope): description" --all
+  gt create <branch-name> --message "feat(scope): description" --all --no-interactive
   ```
-- This creates a new branch *on top* of the current branch.
+- **IMPORTANT**:
+  - Always specify a branch name as the first argument (e.g., `refactor/user-display-name`).
+  - Always provide a `--message` (or `-m`) to avoid opening an interactive editor.
+  - Use `--all` to stage all changes automatically.
+  - Use `--no-interactive` to avoid prompts.
 - **Push/Submit**:
   ```bash
-  gt submit
+  gt submit --no-interactive
   ```
-  This pushes the branch and creates/updates the PR.
 
 ### 2. Stacking (creating PRs on top of PRs)
 - While waiting for review on PR #1, create PR #2 on top of it:
-  1. Ensure you are on the branch for PR #1 (`gt checkout`).
+  1. Ensure you are on the branch for PR #1 (`gt checkout <branch-name>`).
   2. Make new changes.
-  3. Run `gt create -m "..."`.
-  4. Run `gt submit --stack` to push the new stack.
+  3. Run `gt create <branch-name> -m "..." --all --no-interactive`.
+  4. Run `gt submit --stack --no-interactive` to push the new stack.
 
 ### 3. Modifying a Stack (Addressing Feedback)
 To change a PR in the middle of a stack:
@@ -36,25 +39,25 @@ To change a PR in the middle of a stack:
 2. Make edits.
 3. **Amend and Restack**:
    ```bash
-   gt modify -a
+   gt modify -a --no-edit
    ```
    - This amends the current commit AND automatically rebases all branches on top of it.
-   - Use `--no-edit` to keep the commit message, or omit it to edit.
+   - Use `--no-edit` to keep the commit message. If you must change the message, use `gt modify -a -m "new message"`.
+   - **AVOID** running `gt modify` without flags, as it opens an interactive editor.
 4. **Push updates**: `gt submit --stack` (updates all affected PRs).
 
 ### 4. Syncing with Trunk
 Keep your local stacks up to date with `main`:
 ```bash
-gt sync
+gt sync --no-interactive
 ```
 - Pulls latest `main`.
 - Rebases all open stacks on top of `main`.
-- Prompts to delete merged/closed branches.
-- Run this frequently.
+- Prompts to delete merged/closed branches (skipped with `--no-interactive`, usually accepts defaults or does nothing safe).
 
 ## Navigation & Visualization
 - **View Stack**: `gt log short` (shows the tree of stacked branches).
-- **Checkout**: `gt checkout` (interactive picker).
+- **Checkout**: `gt checkout` (interactive picker - AVOID in agent mode, use `gt checkout <branch>`).
 - **Go to Top**: `gt top` (checkout the tip of the current stack).
 - **Go to Bottom**: `gt bottom`.
 
@@ -64,10 +67,15 @@ gt sync
 3. **Use `gt modify`**: When fixing a PR that has children, ALWAYS use `gt modify` instead of `git commit --amend` to ensure the stack remains valid.
 4. **Sync Frequently**: Remind the user to run `gt sync` if the stack seems stale.
 5. **Commit Messages**: Follow the project's conventional commit style when using `gt create -m`.
+6. **NON-INTERACTIVE MODE**: Always use flags to avoid interactive prompts/editors:
+   - `gt create`: ALWAYS specify branch name and use `-m "message" --all --no-interactive`
+     - Example: `gt create refactor/user-display-name -m "refactor(frontend): centralize user display name logic" --all --no-interactive`
+   - `gt modify`: ALWAYS use `--no-edit` OR `-m "new message"` with `-a` flag
+   - General: Consider appending `--no-interactive` or `--no-pager` if the command supports it and might hang.
 
 ## Command Reference
-- `gt create [-m "msg"] [--all]`: Create new stacked branch.
-- `gt submit [--stack] [--reviewers <user>]`: Push and create PRs.
-- `gt modify [-a] [--commit]`: Update current branch and restack children.
-- `gt sync`: Update from remote and cleanup.
+- `gt create <branch-name> [-m "msg"] [--all] [--no-interactive]`: Create new stacked branch.
+- `gt submit [--stack] [--reviewers <user>] [--no-interactive]`: Push and create PRs.
+- `gt modify [-a] [--no-edit] [-m "new message"]`: Update current branch and restack children.
+- `gt sync [--no-interactive]`: Update from remote and cleanup.
 - `gt pr`: Open PR in browser.

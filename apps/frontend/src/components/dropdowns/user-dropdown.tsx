@@ -18,6 +18,7 @@ import {
 import type { NavItem } from '@/lib/types/nav-item';
 import { formatAmountInUSD } from '@/lib/number';
 import { getShortAddress, shortage } from '@/lib/string';
+import { getUserDisplayName } from '@/lib/user';
 import {
   Loader2Icon,
   LogOutIcon,
@@ -120,12 +121,8 @@ export const UserDropdown: ForwardRefExoticComponent<UserDropdownProps> =
     const { isLoading, isAuthenticated, privyUser } = useAuth();
     const { login: handleConnect } = useLogin();
 
-    const name =
-      privyUser?.wallet?.address ||
-      privyUser?.email?.address ||
-      privyUser?.google?.email ||
-      privyUser?.id ||
-      'ME';
+    // Resolves the display name based on user metadata/availability
+    const name = getUserDisplayName(privyUser);
 
     const trpc = useTRPC();
     const pbnOwnerQuery = useQuery(

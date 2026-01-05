@@ -2,6 +2,7 @@
 import { useAuth } from '@/hooks/use-auth';
 import { cn } from '@/lib/cn';
 import { abbreviation } from '@/lib/string';
+import { getUserDisplayName } from '@/lib/user';
 import { generateAvatarURL } from '@cfx-kit/wallet-avatar';
 import { useQuery } from '@tanstack/react-query';
 import type { ComponentProps, ForwardedRef } from 'react';
@@ -76,12 +77,7 @@ export const CurrentUserAvatar = forwardRef<
   ) => {
     const { privyUser } = useAuth();
     const fallback = useMemo(() => {
-      const name =
-        privyUser?.wallet?.address ||
-        privyUser?.email?.address ||
-        privyUser?.google?.email ||
-        privyUser?.id ||
-        'ME';
+      const name = getUserDisplayName(privyUser);
       return abbreviation(name.replace('0x', ''), true);
     }, [privyUser]);
     return (
