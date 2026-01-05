@@ -161,6 +161,9 @@ export class Dynadot {
       },
     );
 
+    /**
+     * Note: Axios interceptors are called in reverse order of definition LiFo
+     */
     if (isNotNil(namefiProxy)) {
       this.instance.interceptors.request.use((config) => {
         const url = new URL((config.baseURL ?? '') + (config.url ?? ''));
@@ -169,10 +172,7 @@ export class Dynadot {
             url.searchParams.set(key, value);
           },
         );
-        (config as any).context = {
-          ...((config as any).context ?? {}),
-          params: config.params,
-        }; //this is for logging
+
         config.params = undefined;
         config.url = url.toString(); // payload is sent as query params (so url-encoded params ), hence signing the url
         config.headers['x-namefi-signature'] = signMessage({
@@ -183,7 +183,15 @@ export class Dynadot {
         return config;
       });
     }
+    this.instance.interceptors.request.use((config: any) => {
+      config.context = {
+        ...(config.context ?? {}),
+        params: config.params,
+      }; //this is for logging
+      return config;
+    });
     setupLoggers(this.instance, this.loggingOptions);
+
     const limiter = setupLimiter({
       apiKey,
       requestsPerSecond:
