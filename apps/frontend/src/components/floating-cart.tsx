@@ -136,6 +136,9 @@ export const FloatingCart = ({
   const shouldShowAddAllButton =
     searchMode === SearchMode.IMPORT && importableCount > 0;
 
+  // Show floating cart when there are items OR when in import mode with importable domains
+  const shouldShowFloatingCart = hasItems || shouldShowAddAllButton;
+
   const cartStateSignature = `${itemCount}:${importableCount}:${
     isAddingAll ? 1 : 0
   }:${shouldShowAddAllButton ? 1 : 0}`;
@@ -195,14 +198,14 @@ export const FloatingCart = ({
   }, [recalcPosition]);
 
   useEffect(() => {
-    if (!hasItems) return;
+    if (!shouldShowFloatingCart) return;
     void cartStateSignature;
     recalcPosition();
-  }, [hasItems, cartStateSignature, recalcPosition]);
+  }, [shouldShowFloatingCart, cartStateSignature, recalcPosition]);
 
   return (
     <AnimatePresence>
-      {hasItems ? (
+      {shouldShowFloatingCart ? (
         <motion.aside
           key="floating-cart"
           initial={{ opacity: 0, y: 28, scale: 0.98 }}
@@ -225,49 +228,76 @@ export const FloatingCart = ({
                 layout
                 className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4"
               >
-                <div className="flex w-full items-center gap-2 sm:gap-3">
-                  <span className="flex flex-shrink-0 items-center gap-1 rounded-full border border-white/10 bg-white/[0.05] px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-white/70 sm:px-3 sm:py-1 sm:text-xs sm:tracking-[0.2em]">
-                    <NumberFlow
-                      value={itemCount}
-                      className="text-[13px] font-semibold normal-case tracking-normal text-white sm:text-base"
-                      style={
-                        {
-                          '--number-flow-char-height': '1em',
-                          '--number-flow-mask-height': '0.35em',
-                        } as CSSProperties
-                      }
-                    />
-                    <span className="ml-[3px] whitespace-nowrap">
-                      {itemCount === 1 ? 'item' : 'items'}
+                {/* Show cart info only when there are items in cart */}
+                {hasItems && (
+                  <div className="flex w-full items-center gap-2 sm:gap-3">
+                    <span className="flex flex-shrink-0 items-center gap-1 rounded-full border border-white/10 bg-white/[0.05] px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-white/70 sm:px-3 sm:py-1 sm:text-xs sm:tracking-[0.2em]">
+                      <NumberFlow
+                        value={itemCount}
+                        className="text-[13px] font-semibold normal-case tracking-normal text-white sm:text-base"
+                        style={
+                          {
+                            '--number-flow-char-height': '1em',
+                            '--number-flow-mask-height': '0.35em',
+                          } as CSSProperties
+                        }
+                      />
+                      <span className="ml-[3px] whitespace-nowrap">
+                        {itemCount === 1 ? 'item' : 'items'}
+                      </span>
                     </span>
-                  </span>
-                  <div className="ml-auto flex min-w-0 flex-col items-end text-right text-white/80 sm:ml-0 sm:items-start sm:text-left sm:gap-0">
-                    <span className="text-[9px] uppercase tracking-[0.1em] text-white/55 sm:text-[11px] sm:tracking-[0.2em]">
-                      Cart total
-                    </span>
-                    <NumberFlow
-                      value={roundedTotalAmount}
-                      prefix="$"
-                      className="text-sm font-semibold text-white tracking-tight sm:text-xl"
-                      style={
-                        {
-                          '--number-flow-char-height': '1.05em',
-                          '--number-flow-mask-height': '0.35em',
-                        } as CSSProperties
-                      }
-                    />
+                    <div className="ml-auto flex min-w-0 flex-col items-end text-right text-white/80 sm:ml-0 sm:items-start sm:text-left sm:gap-0">
+                      <span className="text-[9px] uppercase tracking-[0.1em] text-white/55 sm:text-[11px] sm:tracking-[0.2em]">
+                        Cart total
+                      </span>
+                      <NumberFlow
+                        value={roundedTotalAmount}
+                        prefix="$"
+                        className="text-sm font-semibold text-white tracking-tight sm:text-xl"
+                        style={
+                          {
+                            '--number-flow-char-height': '1.05em',
+                            '--number-flow-mask-height': '0.35em',
+                          } as CSSProperties
+                        }
+                      />
+                    </div>
                   </div>
-                </div>
+                )}
+
+                {/* Show import info when no cart items but has importable domains */}
+                {!hasItems && shouldShowAddAllButton && (
+                  <div className="flex w-full items-center gap-2 sm:gap-3">
+                    <span className="text-sm text-white/70">
+                      <NumberFlow
+                        value={importableCount}
+                        className="text-[13px] font-semibold text-white sm:text-base"
+                        style={
+                          {
+                            '--number-flow-char-height': '1em',
+                            '--number-flow-mask-height': '0.35em',
+                          } as CSSProperties
+                        }
+                      />
+                      <span className="ml-1">
+                        {importableCount === 1 ? 'domain' : 'domains'} ready to
+                        import
+                      </span>
+                    </span>
+                  </div>
+                )}
 
                 <div className="flex w-full flex-col gap-2 sm:ml-auto sm:w-auto sm:flex-row sm:items-center sm:gap-2">
                   {shouldShowAddAllButton && (
                     <Button
                       type="button"
-                      variant="ghost"
+                      variant={hasItems ? 'ghost' : 'default'}
                       onClick={handleAddAllToCart}
                       disabled={isAddingAll}
                       className={cn(
-                        'inline-flex h-9 w-full items-center justify-center gap-1.5 whitespace-nowrap rounded-full border border-white/10 bg-white/[0.02] px-4 text-[11px] font-semibold text-white transition hover:border-white/20 hover:bg-white/[0.07] sm:h-10 sm:w-auto sm:px-6 sm:text-sm',
+                        hasItems
+                          ? 'inline-flex h-9 w-full items-center justify-center gap-1.5 whitespace-nowrap rounded-full border border-white/10 bg-white/[0.02] px-4 text-[11px] font-semibold text-white transition hover:border-white/20 hover:bg-white/[0.07] sm:h-10 sm:w-auto sm:px-6 sm:text-sm'
+                          : 'inline-flex h-10 w-full min-w-[120px] items-center justify-center gap-2 whitespace-nowrap rounded-full bg-brand-primary px-5 text-sm font-semibold text-black shadow-[0_15px_35px_-12px_rgba(16,185,129,0.6)] transition hover:bg-brand-primary/90 sm:h-11 sm:w-auto sm:min-w-[140px] sm:px-8 sm:text-base',
                       )}
                     >
                       {isAddingAll ? (
@@ -276,7 +306,7 @@ export const FloatingCart = ({
                         <Plus className="size-4" />
                       )}
                       <span className="flex items-center gap-1.5 pl-1.5">
-                        Add all
+                        {hasItems ? 'Add all' : 'Add to Cart'}
                         <NumberFlow
                           value={importableCount}
                           className="text-sm font-semibold"
@@ -291,20 +321,22 @@ export const FloatingCart = ({
                     </Button>
                   )}
 
-                  <Button
-                    type="button"
-                    variant="default"
-                    className={cn(
-                      'inline-flex h-10 w-full min-w-[120px] items-center justify-center gap-2 whitespace-nowrap rounded-full bg-brand-primary px-5 text-sm font-semibold text-black shadow-[0_15px_35px_-12px_rgba(16,185,129,0.6)] transition hover:bg-brand-primary/90 sm:h-11 sm:w-auto sm:min-w-[140px] sm:px-8 sm:text-base',
-                    )}
-                    onClick={() => {
-                      logBeginCheckout();
-                      router.push('/cart');
-                    }}
-                  >
-                    <ShoppingCartIcon className="size-5" />
-                    Checkout
-                  </Button>
+                  {hasItems && (
+                    <Button
+                      type="button"
+                      variant="default"
+                      className={cn(
+                        'inline-flex h-10 w-full min-w-[120px] items-center justify-center gap-2 whitespace-nowrap rounded-full bg-brand-primary px-5 text-sm font-semibold text-black shadow-[0_15px_35px_-12px_rgba(16,185,129,0.6)] transition hover:bg-brand-primary/90 sm:h-11 sm:w-auto sm:min-w-[140px] sm:px-8 sm:text-base',
+                      )}
+                      onClick={() => {
+                        logBeginCheckout();
+                        router.push('/cart');
+                      }}
+                    >
+                      <ShoppingCartIcon className="size-5" />
+                      Checkout
+                    </Button>
+                  )}
                 </div>
               </motion.div>
             </div>
