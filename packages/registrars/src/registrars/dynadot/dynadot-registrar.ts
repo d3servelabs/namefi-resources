@@ -857,7 +857,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
         price: null,
         isPremium: false,
         available: DomainAvailability.UNAVAILABLE,
-        supported: false,
+        supported: true,
       };
     }
     return results[0];
@@ -909,10 +909,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
         isNil(result.DomainName) ||
         (result.Status !== 'success' && result.Available !== 'yes')
       ) {
-        return {
-          ...unavailableResult,
-          supported: false,
-        };
+        return unavailableResult;
       }
 
       const { isPremium, priceDetails } = parseDomainPriceString(result.Price);

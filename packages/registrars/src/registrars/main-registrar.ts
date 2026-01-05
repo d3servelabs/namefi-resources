@@ -398,6 +398,9 @@ export class RegistrarService extends AbstractRegistrarService {
       const isAvailableOnAnyRegistrar = registrarToResult.some(
         ([_, res]) => res?.available === DomainAvailability.AVAILABLE,
       );
+      const isSupportedByAnyRegistrar = registrarToResult.some(
+        ([_, res]) => res.supported,
+      );
 
       const comparePrice = isAvailableOnAnyRegistrar
         ? 'registrationPrice'
@@ -461,7 +464,7 @@ export class RegistrarService extends AbstractRegistrarService {
           available: DomainAvailability.UNAVAILABLE,
           isPremium: false,
           price: null,
-          supported: false,
+          supported: isSupportedByAnyRegistrar,
         };
       }
 
