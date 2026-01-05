@@ -2,6 +2,7 @@ import { getOriginInfo } from '@/lib/origin/utils';
 import type { OriginInfo } from '@/lib/origin/types';
 import Image from 'next/image';
 import { cn } from '@/lib/cn';
+import { NftDomainLabel } from '@/components/nft-domain-label';
 
 type NFTDomainProps = {
   origin: OriginInfo | string;
@@ -67,8 +68,12 @@ export function NFTDomain({ origin, className, ...props }: NFTDomainProps) {
         </div>
       </div>
       <div className="absolute bottom-0 left-0 right-0 flex flex-col items-start text-secondary-foreground px-3 py-4 bg-gradient-to-t from-black/90 via-black/10 to-transparent">
-        <h2 className="text-2xl font-semibold break-all">{subdomain}</h2>
-        <p className="text-md font-semibold break-all">.{parentDomain}</p>
+        <NftDomainLabel text={subdomain} variant="subdomain" as="h2" />
+        <NftDomainLabel
+          text={parentDomain ? `.${parentDomain}` : ''}
+          variant="parent"
+          as="p"
+        />
       </div>
     </div>
   );
