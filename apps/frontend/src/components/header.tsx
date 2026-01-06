@@ -55,7 +55,6 @@ export const Header: ForwardRefExoticComponent<HeaderProps> = forwardRef<
         />
       )}
       <motion.div className="flex w-full items-center gap-4" layout layoutRoot>
-        <SidebarTrigger className="hidden -ml-1 md:flex" />
         <motion.div className="ml-auto flex items-center gap-3 sm:gap-4" layout>
           <HeaderMissingEmailWarning />
           <CartDropdown
