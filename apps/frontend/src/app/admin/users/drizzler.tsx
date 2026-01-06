@@ -19,6 +19,7 @@ import {
 } from '@/components/table/filters';
 import { AutoTruncateTextV2 } from '@/components/auto-truncate-text-v2';
 import { Button } from '@/components/ui/shadcn/button';
+import { PageShell } from '@/components/page-shell';
 import { toast } from 'sonner';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
@@ -730,7 +731,7 @@ function UsersTableV2() {
   }, []);
 
   return (
-    <div className="container mx-auto py-8">
+    <PageShell padding="admin">
       <Card>
         <CardHeader>
           <CardTitle>
@@ -768,7 +769,7 @@ function UsersTableV2() {
           />
         </CardContent>
       </Card>
-    </div>
+    </PageShell>
   );
 }
 

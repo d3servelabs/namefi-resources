@@ -27,6 +27,7 @@ import {
   ExternalLink,
 } from 'lucide-react';
 import { withAdminGuard } from './admin-guard';
+import { PageShell } from '@/components/page-shell';
 
 const LoadingSkeletons: FC = () => (
   <div className="flex flex-col gap-4">
@@ -111,7 +112,7 @@ function BulkBurnWorkflowsListContent() {
 
   if (isLoading) {
     return (
-      <div className="container mx-auto p-6">
+      <PageShell padding="admin">
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -123,13 +124,13 @@ function BulkBurnWorkflowsListContent() {
             <LoadingSkeletons />
           </CardContent>
         </Card>
-      </div>
+      </PageShell>
     );
   }
 
   if (!workflows || workflows.length === 0) {
     return (
-      <div className="container mx-auto p-6">
+      <PageShell padding="admin">
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -166,12 +167,12 @@ function BulkBurnWorkflowsListContent() {
             </div>
           </CardContent>
         </Card>
-      </div>
+      </PageShell>
     );
   }
 
   return (
-    <div className="container mx-auto p-6">
+    <PageShell padding="admin">
       <Card>
         <CardHeader>
           <div className="flex items-center justify-between">
@@ -247,7 +248,7 @@ function BulkBurnWorkflowsListContent() {
           </div>
         </CardContent>
       </Card>
-    </div>
+    </PageShell>
   );
 }
 

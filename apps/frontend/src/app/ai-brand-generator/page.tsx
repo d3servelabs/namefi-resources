@@ -20,6 +20,7 @@ import { usePosterFlow } from '@/components/ai-generation/poster-flow-context';
 import type { PosterSource } from '@/components/ai-generation/poster-flow-context';
 import { GalleryPendingProvider } from '@/components/ai-generation/gallery-pending-context';
 import { useEffect, useRef } from 'react';
+import { PageShell } from '@/components/page-shell';
 
 export default function AIBrandGeneratorPage() {
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
@@ -48,7 +49,12 @@ export default function AIBrandGeneratorPage() {
       <GalleryPendingProvider>
         <PosterFlowProvider>
           <PosterFlowInitializer />
-          <div className="container max-w-full mx-auto py-8 px-8 lg:flex lg:flex-col lg:h-[calc(100vh-10rem)] lg:max-h-[calc(100vh-10rem)] lg:min-h-0 lg:overflow-hidden lg:py-6">
+          <PageShell
+            size="full"
+            padding="none"
+            shellClassName="py-8 px-8 lg:py-6"
+            className="lg:flex lg:flex-col lg:h-[calc(100vh-10rem)] lg:max-h-[calc(100vh-10rem)] lg:min-h-0 lg:overflow-hidden"
+          >
             <div className="grid grid-cols-1 gap-10 mb-12 flex-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:min-h-0 lg:overflow-hidden lg:mb-0">
               <div className="flex flex-col space-y-6 lg:min-h-0 lg:overflow-auto">
                 <PageHeader />
@@ -58,7 +64,7 @@ export default function AIBrandGeneratorPage() {
                 <GenerationsColumnSkeleton className="flex-1" />
               </div>
             </div>
-          </div>
+          </PageShell>
         </PosterFlowProvider>
       </GalleryPendingProvider>
     );
@@ -74,7 +80,12 @@ export default function AIBrandGeneratorPage() {
     <GalleryPendingProvider>
       <PosterFlowProvider>
         <PosterFlowInitializer />
-        <div className="container max-w-full mx-auto py-8 px-8 lg:flex lg:flex-col lg:h-[calc(100vh-10rem)] lg:max-h-[calc(100vh-10rem)] lg:min-h-0 lg:overflow-hidden lg:py-6">
+        <PageShell
+          size="full"
+          padding="none"
+          shellClassName="py-8 px-8 lg:py-6"
+          className="lg:flex lg:flex-col lg:h-[calc(100vh-10rem)] lg:max-h-[calc(100vh-10rem)] lg:min-h-0 lg:overflow-hidden"
+        >
           {/* Main Content - 2 Column Layout */}
           <div className="grid grid-cols-1 gap-10 mb-12 flex-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:min-h-0 lg:overflow-hidden lg:mb-0">
             {/* Left Column - Generator */}
@@ -101,7 +112,7 @@ export default function AIBrandGeneratorPage() {
               )}
             </div>
           </div>
-        </div>
+        </PageShell>
       </PosterFlowProvider>
     </GalleryPendingProvider>
   );

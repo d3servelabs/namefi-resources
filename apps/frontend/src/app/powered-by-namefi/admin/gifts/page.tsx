@@ -44,6 +44,7 @@ import {
 import { format } from 'date-fns';
 import { toast } from 'sonner';
 import { range } from 'ramda';
+import { PageShell } from '@/components/page-shell';
 
 type UiStatus = 'SENT' | 'CLAIMED' | 'EXPIRED' | 'CANCELLED';
 
@@ -134,7 +135,7 @@ export function GiftsManagementPage({
   };
 
   return (
-    <div className="container mx-auto p-6 space-y-6">
+    <PageShell padding="admin" className="space-y-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-3">
           <Gift className="h-8 w-8 text-primary" />
@@ -379,7 +380,7 @@ export function GiftsManagementPage({
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    </div>
+    </PageShell>
   );
 }
 

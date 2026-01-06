@@ -1,5 +1,6 @@
 import { LogIn } from 'lucide-react';
 import { UserDropdown } from './dropdowns/user-dropdown';
+import { PageShell } from '@/components/page-shell';
 
 interface AuthRequiredProps {
   title?: string;
@@ -11,7 +12,11 @@ export function AuthRequired({
   description = 'Please sign in to continue',
 }: AuthRequiredProps) {
   return (
-    <div className="container mx-auto py-12 px-8 flex items-center justify-center">
+    <PageShell
+      padding="none"
+      shellClassName="py-12 px-8"
+      className="flex items-center justify-center"
+    >
       <div className="bg-white/[0.03] border border-white/10 shadow-sm rounded-lg p-8 max-w-md w-full">
         <div className="flex flex-col items-center justify-center text-center">
           <div className="bg-muted rounded-full p-4 mb-6">
@@ -22,6 +27,6 @@ export function AuthRequired({
           <UserDropdown className="w-fit" />
         </div>
       </div>
-    </div>
+    </PageShell>
   );
 }

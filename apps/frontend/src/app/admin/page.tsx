@@ -27,6 +27,7 @@ import {
 import { Permission } from '@namefi-astra/utils';
 import { PermissionGate } from '@/components/access/PermissionGate';
 import { isNotNil, filter } from 'ramda';
+import { PageShell } from '@/components/page-shell';
 
 interface AdminCardConfig {
   title: string;
@@ -311,7 +312,7 @@ function AdminCard({ card }: { card: AdminCardConfig }) {
 
 export default withAdminGuard(function AdminPage() {
   return (
-    <div className="container mx-auto p-6">
+    <PageShell padding="admin">
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2">Admin Dashboard</h1>
         <p className="text-muted-foreground">
@@ -351,6 +352,6 @@ export default withAdminGuard(function AdminPage() {
           </PermissionGate>
         ))}
       </div>
-    </div>
+    </PageShell>
   );
 });

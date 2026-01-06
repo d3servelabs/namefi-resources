@@ -13,6 +13,7 @@ import { OrdersTableSkeleton } from '@/components/powered-by-namefi/OrdersTableS
 import { PbnOwnerGuard } from '@/components/admin/pbn-owner-guard';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { useMemo } from 'react';
+import { PageShell } from '@/components/page-shell';
 
 export default function PoweredByNamefiAllOrdersPage() {
   const params = useParams<{ domain: string }>();
@@ -40,7 +41,7 @@ function InnerPage({ domain }: { domain: string }) {
   );
 
   return (
-    <div className="container mx-auto p-6">
+    <PageShell padding="admin">
       <Card>
         <CardHeader>
           <CardTitle>All Orders for {domain}</CardTitle>
@@ -57,6 +58,6 @@ function InnerPage({ domain }: { domain: string }) {
           )}
         </CardContent>
       </Card>
-    </div>
+    </PageShell>
   );
 }

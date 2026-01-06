@@ -30,6 +30,7 @@ import {
   useHuntVoteRow,
 } from '@/hooks/use-hunt-vote-row';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import { PageShell } from '@/components/page-shell';
 
 interface DomainDetailProps extends Omit<HuntVoteRowOptions, 'domain'> {
   domainName: NamefiNormalizedDomain;
@@ -87,16 +88,16 @@ export const DomainDetail = ({
 
   if (domainLoading || authLoading) {
     return (
-      <div className="container mx-auto py-8 px-4 sm:px-8">
+      <PageShell padding="compact">
         <div className="max-w-4xl mx-auto">
           <DomainItemSkeleton />
         </div>
-      </div>
+      </PageShell>
     );
   }
 
   return (
-    <div className="container mx-auto py-8 px-4 sm:px-8">
+    <PageShell padding="compact">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="flex items-center gap-4 mb-6">
@@ -174,6 +175,6 @@ export const DomainDetail = ({
           </CardContent>
         </Card>
       </div>
-    </div>
+    </PageShell>
   );
 };

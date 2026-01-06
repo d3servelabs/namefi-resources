@@ -42,6 +42,7 @@ import {
 import { cn } from '@/lib/cn';
 import JsonView from '@uiw/react-json-view';
 import { useTheme } from 'next-themes';
+import { PageShell } from '@/components/page-shell';
 
 type AuditRow = {
   service_name?: string;
@@ -266,7 +267,7 @@ function AuditLogsPageInner() {
   );
 
   return (
-    <div className="container mx-auto p-6 space-y-6">
+    <PageShell padding="admin" className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold">Audit Logs</h1>
@@ -465,7 +466,7 @@ function AuditLogsPageInner() {
           )}
         </DialogContent>
       </Dialog>
-    </div>
+    </PageShell>
   );
 }
 

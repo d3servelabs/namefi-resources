@@ -16,6 +16,7 @@ import { HeaderTabs } from './header-tabs';
 import { VoteOrShareChoiceDialog } from '../dialogs/vote-or-share-choice-dialog';
 import { TwitterShareDialog } from './twitter-share-dialog';
 import { useHuntVote } from '@/hooks/use-hunt-vote';
+import { PageShell } from '@/components/page-shell';
 
 const DOMAINS_LIST_PER_PAGE_LIMIT = 20;
 
@@ -56,7 +57,7 @@ export const HuntHome = () => {
     <>
       <div className="flex flex-col ">
         <HeaderTabs activeTab="all" />
-        <div className="container mx-auto py-8 px-4 sm:px-8">
+        <PageShell padding="compact">
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-4">
             <h2 className="text-2xl font-bold flex items-center gap-2">
               Domain Hunt
@@ -139,7 +140,7 @@ export const HuntHome = () => {
               />
             </div>
           </div>
-        </div>
+        </PageShell>
       </div>
 
       {/* Vote or Share Choice Dialog */}

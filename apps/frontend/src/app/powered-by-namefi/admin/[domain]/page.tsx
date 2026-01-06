@@ -57,6 +57,7 @@ import {
   BreadcrumbPage,
   Breadcrumb,
 } from '@/components/ui/shadcn/breadcrumb';
+import { PageShell } from '@/components/page-shell';
 
 import {
   DropdownMenu,
@@ -123,7 +124,7 @@ function InnerPage({ domain }: { domain: NamefiNormalizedDomain }) {
   );
 
   return (
-    <div className="container mx-auto px-x">
+    <PageShell padding="admin">
       <PbnDomainBreadcrumb domain={domain} activeTab={activeTab} />
 
       <Tabs value={activeTab.toString()} onValueChange={handleTabChange}>
@@ -152,7 +153,7 @@ function InnerPage({ domain }: { domain: NamefiNormalizedDomain }) {
           <DomainAnalytics domain={domain} />
         </TabsContent>
       </Tabs>
-    </div>
+    </PageShell>
   );
 }
 
@@ -277,7 +278,7 @@ function Overview({ domain }: { domain: NamefiNormalizedDomain }) {
   }, [revenueQuery.data?.points]);
 
   return (
-    <div className="container mx-auto p-6 space-y-6">
+    <PageShell padding="admin" className="space-y-6" gutter={false}>
       <div className="flex justify-end">
         <Button asChild variant="outline" size="sm">
           <Link href={`/powered-by-namefi/admin/${domain}/gifts`}>
@@ -378,7 +379,7 @@ function Overview({ domain }: { domain: NamefiNormalizedDomain }) {
           )}
         </CardContent>
       </Card>
-    </div>
+    </PageShell>
   );
 }
 
@@ -393,7 +394,7 @@ function OrderDetails({ domain }: { domain: string }) {
   );
 
   return (
-    <div className="container mx-auto p-6">
+    <PageShell padding="admin" gutter={false}>
       <Card>
         <CardHeader>
           <CardTitle>All Orders for {domain}</CardTitle>
@@ -406,7 +407,7 @@ function OrderDetails({ domain }: { domain: string }) {
           )}
         </CardContent>
       </Card>
-    </div>
+    </PageShell>
   );
 }
 
@@ -450,7 +451,7 @@ function DomainAnalytics({ domain }: { domain: NamefiNormalizedDomain }) {
   };
 
   return (
-    <div className="container mx-auto p-6 space-y-6">
+    <PageShell padding="admin" className="space-y-6" gutter={false}>
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h2 className="text-2xl font-bold text-foreground">
@@ -593,6 +594,6 @@ function DomainAnalytics({ domain }: { domain: NamefiNormalizedDomain }) {
           publicSuffixPie: false,
         }}
       />
-    </div>
+    </PageShell>
   );
 }

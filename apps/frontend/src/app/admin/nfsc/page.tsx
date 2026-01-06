@@ -14,6 +14,7 @@ import { Button } from '@/components/ui/shadcn/button';
 import { Coins, History } from 'lucide-react';
 import { BulkMintNfscDialog } from '@/components/nfsc/bulk-mint-dialog';
 import { RecentWorkflowsTable } from '@/components/nfsc/recent-workflows-table';
+import { PageShell } from '@/components/page-shell';
 
 export default function NfscAdminPage() {
   return (
@@ -29,11 +30,11 @@ export default function NfscAdminPage() {
         permissions={[Permission.MINT_NFSC]}
         loadingFallback={null}
       >
-        <div className="container mx-auto p-6">
+        <PageShell padding="admin">
           <div className="text-center py-8 text-muted-foreground">
             You do not have permission to access this page.
           </div>
-        </div>
+        </PageShell>
       </PermissionGate>
     </AdminGuard>
   );
@@ -43,7 +44,7 @@ function NfscManagement() {
   const [bulkMintDialogOpen, setBulkMintDialogOpen] = useState(false);
 
   return (
-    <div className="container mx-auto p-6 space-y-6">
+    <PageShell padding="admin" className="space-y-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-3">
           <Coins className="h-8 w-8 text-primary" />
@@ -131,6 +132,6 @@ function NfscManagement() {
           // Optionally refresh data or show success message
         }}
       />
-    </div>
+    </PageShell>
   );
 }

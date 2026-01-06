@@ -38,6 +38,7 @@ import {
 import { useTRPC, type AppRouterOutput } from '@/lib/trpc';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { toast } from 'sonner';
+import { PageShell } from '@/components/page-shell';
 import { format } from 'date-fns';
 
 // Type aliases for EPP Testing router outputs
@@ -84,11 +85,11 @@ export default function EppTestingPage() {
         permissions={[Permission.EPP_TESTING]}
         loadingFallback={null}
       >
-        <div className="container mx-auto p-6">
+        <PageShell padding="admin">
           <div className="text-center py-8 text-muted-foreground">
             You do not have permission to access EPP Testing tools.
           </div>
-        </div>
+        </PageShell>
       </PermissionGate>
     </AdminGuard>
   );
@@ -298,7 +299,7 @@ function EppTestingDashboard() {
     transferQuery.isFetching;
 
   return (
-    <div className="container mx-auto p-6 space-y-6">
+    <PageShell padding="admin" className="space-y-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-3">
           <Globe className="h-8 w-8 text-primary" />
@@ -680,7 +681,7 @@ function EppTestingDashboard() {
           </div>
         </CardContent>
       </Card>
-    </div>
+    </PageShell>
   );
 }
 

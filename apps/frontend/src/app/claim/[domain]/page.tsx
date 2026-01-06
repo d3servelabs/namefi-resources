@@ -19,6 +19,7 @@ import { AuthRequiredCard } from '@/components/payment-method/select-payment-met
 import { UserDropdown } from '@/components/dropdowns/user-dropdown';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
 import confetti from 'canvas-confetti';
+import { PageShell } from '@/components/page-shell';
 
 export default function ClaimPage() {
   const router = useRouter();
@@ -173,44 +174,42 @@ export default function ClaimPage() {
 
   if (isInitialLoading) {
     return (
-      <div className="container mx-auto py-10 px-6 md:px-8 lg:px-10">
-        <div className="space-y-6">
-          {/* Heading */}
-          <div className="space-y-2">
-            <Skeleton className="h-8 w-48" />
-          </div>
-
-          {/* Domain summary */}
-          <CartCard>
-            <div className="flex flex-col gap-2">
-              <Skeleton className="h-8 w-[280px]" />
-              <Skeleton className="h-5 w-[180px]" />
-            </div>
-          </CartCard>
-
-          {/* Wallet */}
-          <CartCard>
-            <div className="flex flex-col gap-4 mt-2">
-              <Skeleton className="h-10 w-full" />
-              <div className="flex items-center gap-2">
-                <Skeleton className="h-6 w-[200px]" />
-                <Skeleton className="h-6 w-6 rounded-full" />
-              </div>
-            </div>
-          </CartCard>
-
-          {/* Button */}
-          <div>
-            <Skeleton className="h-10 w-full" />
-          </div>
+      <PageShell padding="roomy" className="space-y-6">
+        {/* Heading */}
+        <div className="space-y-2">
+          <Skeleton className="h-8 w-48" />
         </div>
-      </div>
+
+        {/* Domain summary */}
+        <CartCard>
+          <div className="flex flex-col gap-2">
+            <Skeleton className="h-8 w-[280px]" />
+            <Skeleton className="h-5 w-[180px]" />
+          </div>
+        </CartCard>
+
+        {/* Wallet */}
+        <CartCard>
+          <div className="flex flex-col gap-4 mt-2">
+            <Skeleton className="h-10 w-full" />
+            <div className="flex items-center gap-2">
+              <Skeleton className="h-6 w-[200px]" />
+              <Skeleton className="h-6 w-6 rounded-full" />
+            </div>
+          </div>
+        </CartCard>
+
+        {/* Button */}
+        <div>
+          <Skeleton className="h-10 w-full" />
+        </div>
+      </PageShell>
     );
   }
 
   if (!normalizedDomainName) {
     return (
-      <div className="max-w-3xl mx-auto py-12">
+      <PageShell size="narrow" padding="relaxed">
         <CartCard
           title="Invalid domain"
           description="The provided domain is not a valid normalized Namefi domain."
@@ -227,12 +226,12 @@ export default function ClaimPage() {
             "alice.0x.city".
           </div>
         </CartCard>
-      </div>
+      </PageShell>
     );
   }
 
   return (
-    <div className="container mx-auto py-10 px-6 md:px-8 lg:px-10">
+    <PageShell padding="roomy">
       <div className="mb-6">
         <h1 className="text-3xl font-semibold tracking-tight">Free Claim</h1>
       </div>
@@ -313,6 +312,6 @@ export default function ClaimPage() {
           </NamefiButton>
         )}
       </div>
-    </div>
+    </PageShell>
   );
 }

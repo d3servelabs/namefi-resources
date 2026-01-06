@@ -1,6 +1,7 @@
 'use client';
 import { TruncatedTextWithHover } from '@/components/truncated-text-with-hover';
 import { AuthRequired } from '@/components/auth-required';
+import { PageShell } from '@/components/page-shell';
 import { Table, Td, Th, Thead, Tr } from '@/components/table';
 import {
   Card,
@@ -140,7 +141,7 @@ export default function ManageDashboard() {
   }
 
   return (
-    <div className="container mx-auto py-8 px-8">
+    <PageShell>
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold">My Sold Domains</h2>
       </div>
@@ -151,6 +152,6 @@ export default function ManageDashboard() {
           <SoldDomainsContent />
         </Suspense>
       )}
-    </div>
+    </PageShell>
   );
 }

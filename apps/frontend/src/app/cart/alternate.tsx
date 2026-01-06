@@ -6,6 +6,7 @@ import { NamefiButton } from '@/components/buttons/namefi-button';
 import { NftWalletCard } from '@/components/nft-wallet-card';
 import { useInteractionLoggers } from '@/components/providers/analytics';
 import { UserDropdown } from '@/components/dropdowns/user-dropdown';
+import { PageShell } from '@/components/page-shell';
 import { HybridPaymentCard } from '@/components/payment-method/hybrid-payment-card';
 import { NoPaymentMethodRequiredCard } from '@/components/payment-method/select-payment-method-card';
 import { useLinkedWallets } from '@/hooks/use-user-wallet-addresses';
@@ -292,7 +293,7 @@ export default function CartPage() {
   }
 
   return (
-    <div className="container mx-auto py-8 px-8">
+    <PageShell>
       <AlertDialog open={isErrorDialogOpen} onOpenChange={setIsErrorDialogOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
@@ -480,12 +481,12 @@ export default function CartPage() {
           </div>
         </CartCard>
       )}
-    </div>
+    </PageShell>
   );
 }
 
 const LoadingSkeletons = () => (
-  <div className="container mx-auto py-8 px-8">
+  <PageShell>
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
       {/* Left Column */}
       <div className="space-y-4">
@@ -538,7 +539,7 @@ const LoadingSkeletons = () => (
         </CartCard>
       </div>
     </div>
-  </div>
+  </PageShell>
 );
 
 type CartChangesSummaryCardRef = {
@@ -594,7 +595,7 @@ const CartChangesSummaryCard = forwardRef<
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -10 }}
         transition={{ duration: 0.5 }}
-        className="container mx-auto py-4"
+        className="py-4"
       >
         <Card
           className={cn(

@@ -3,6 +3,7 @@
 import { AuthRequired } from '@/components/auth-required';
 import { AsyncButton } from '@/components/buttons/async-button';
 import { EmptyPlaceholder } from '@/components/empty-placeholder';
+import { PageShell } from '@/components/page-shell';
 import {
   Table,
   TableBody,
@@ -1332,7 +1333,7 @@ export default function MyDomains() {
   }
 
   return (
-    <div className="container mx-auto py-8 px-8">
+    <PageShell>
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold">My Domains</h2>
       </div>
@@ -1343,7 +1344,7 @@ export default function MyDomains() {
           <MyDomainsContent />
         </Suspense>
       )}
-    </div>
+    </PageShell>
   );
 }
 

@@ -22,6 +22,7 @@ import { useConnectedWallets } from '@/hooks/use-user-wallet-addresses';
 import { toast } from 'sonner';
 import { Loader2, CheckCircle, XCircle, Wallet } from 'lucide-react';
 import { useAccount } from 'wagmi';
+import { PageShell } from '@/components/page-shell';
 
 /**
  * EIP-712 types for the test payload.
@@ -137,7 +138,11 @@ export function TestSignedPayload() {
 
   if (!isAuthenticated) {
     return (
-      <div className="container mx-auto max-w-2xl p-8">
+      <PageShell
+        padding="none"
+        shellClassName="max-w-2xl mx-auto p-8"
+        gutter={false}
+      >
         <Card>
           <CardHeader>
             <CardTitle>Test Signed Payload</CardTitle>
@@ -146,12 +151,16 @@ export function TestSignedPayload() {
             </CardDescription>
           </CardHeader>
         </Card>
-      </div>
+      </PageShell>
     );
   }
 
   return (
-    <div className="container mx-auto max-w-2xl p-8">
+    <PageShell
+      padding="none"
+      shellClassName="max-w-2xl mx-auto p-8"
+      gutter={false}
+    >
       <RequestWalletConnection
         ref={walletConnectionRef}
         onRequestedWalletConnected={handleWalletConnected}
@@ -284,6 +293,6 @@ export function TestSignedPayload() {
           </div>
         </CardContent>
       </Card>
-    </div>
+    </PageShell>
   );
 }

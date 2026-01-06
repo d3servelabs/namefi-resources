@@ -13,6 +13,7 @@ import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 import { Loader2, CheckCircle2, AlertTriangle, Circle } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useMemo, useRef, useState, type ReactElement } from 'react';
+import { PageShell } from '@/components/page-shell';
 
 const PARAM_KEY = 'add_to_cart';
 
@@ -193,7 +194,7 @@ export default function AddFromUrlPage() {
   ].filter((item) => item.data.length > 0);
 
   return (
-    <div className="container mx-auto max-w-3xl px-4 py-10">
+    <PageShell size="narrow" padding="relaxed">
       <div className="space-y-6">
         <div>
           <p className="text-sm uppercase tracking-wide text-muted-foreground">
@@ -269,6 +270,6 @@ export default function AddFromUrlPage() {
           </div>
         </CartCard>
       </div>
-    </div>
+    </PageShell>
   );
 }

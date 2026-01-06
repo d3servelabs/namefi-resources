@@ -2,10 +2,11 @@
 
 import { withAdminGuard } from '@/components/admin/admin-guard';
 import { ExportTrackingTable } from '@/components/admin/export-tracking/export-tracking-table';
+import { PageShell } from '@/components/page-shell';
 
 function ExportTrackingPage() {
   return (
-    <div className="container mx-auto p-6 space-y-6">
+    <PageShell padding="admin" className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold">Domain Export Tracking</h1>
         <p className="text-muted-foreground">
@@ -13,7 +14,7 @@ function ExportTrackingPage() {
         </p>
       </div>
       <ExportTrackingTable />
-    </div>
+    </PageShell>
   );
 }
 

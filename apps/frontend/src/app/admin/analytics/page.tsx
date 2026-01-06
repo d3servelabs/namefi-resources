@@ -35,6 +35,7 @@ import DashboardOverview from '@/components/admin/analytics/DashboardOverview';
 import DateRangePicker from '@/components/admin/analytics/DateRangePicker';
 import { parseDomainName } from '@namefi-astra/utils/parse-domain-name';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import { PageShell } from '@/components/page-shell';
 
 function AnalyticsPageContent() {
   const [dateRange, setDateRange] = useState({
@@ -160,7 +161,7 @@ function AnalyticsPageContent() {
   };
 
   return (
-    <div className="container mx-auto p-6 space-y-6">
+    <PageShell padding="admin" className="space-y-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
@@ -444,7 +445,7 @@ function AnalyticsPageContent() {
         isFetching={isFetching}
         dateRange={dateRange}
       />
-    </div>
+    </PageShell>
   );
 }
 

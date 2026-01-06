@@ -25,6 +25,7 @@ import { format } from 'date-fns';
 import { Loader2 } from 'lucide-react';
 import { useMemo } from 'react';
 import { FreeMintCard } from '@/components/free-mint-card';
+import { PageShell } from '@/components/page-shell';
 
 export default function FreeClaimsPage() {
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
@@ -178,7 +179,7 @@ export default function FreeClaimsPage() {
   }
 
   return (
-    <div className="container mx-auto py-8 px-8">
+    <PageShell>
       {/* Page Header */}
       <h1 className="mb-10 text-3xl md:text-4xl font-bold tracking-tight">
         My Free Mints
@@ -302,6 +303,6 @@ export default function FreeClaimsPage() {
           )}
         </div>
       )}
-    </div>
+    </PageShell>
   );
 }

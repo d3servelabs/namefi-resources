@@ -1,6 +1,7 @@
 'use client';
 import { TruncatedTextWithHover } from '@/components/truncated-text-with-hover';
 import { AuthRequired } from '@/components/auth-required';
+import { PageShell } from '@/components/page-shell';
 import { Table, Td, Th, Thead, Tr } from '@/components/table';
 import {
   Card,
@@ -615,7 +616,7 @@ export default function AdminWorkflowHistory() {
   }
 
   return (
-    <div className="container mx-auto py-8 px-8">
+    <PageShell>
       <div className="flex justify-between items-center mb-6">
         <div>
           <h1 className="text-3xl font-bold">Admin Workflow History</h1>
@@ -626,6 +627,6 @@ export default function AdminWorkflowHistory() {
         </div>
       </div>
       {isLoading ? <LoadingSkeletons /> : <WorkflowHistoryContent />}
-    </div>
+    </PageShell>
   );
 }

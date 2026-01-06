@@ -30,6 +30,7 @@ import { PaymentDetailsSummary } from '@/components/orders/payment-details-summa
 import { NftCarousel } from '@/components/orders/nft-carousel';
 import { OrderNotFound } from '@/components/orders/order-not-found';
 import { motion, AnimatePresence } from 'motion/react';
+import { PageShell } from '@/components/page-shell';
 
 interface OrderPageProps {
   params: Promise<{ id: string }>;
@@ -274,7 +275,7 @@ export default function OrderPage({ params }: OrderPageProps) {
   }
 
   return (
-    <div className="container mx-auto py-8 px-8">
+    <PageShell>
       <div className="max-w-2xl mx-auto">
         <div className="text-center mb-6">
           {viewState === 'loading' ? (
@@ -341,6 +342,6 @@ export default function OrderPage({ params }: OrderPageProps) {
           </NamefiButton>
         </div>
       </div>
-    </div>
+    </PageShell>
   );
 }

@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/shadcn/button';
 import { TriangleIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import { PageShell } from '@/components/page-shell';
 
 export default function ErrorPage({
   error,
@@ -24,7 +25,10 @@ export default function ErrorPage({
   }, [error]);
 
   return (
-    <div className="container mx-auto flex min-h-screen flex-col items-center justify-center px-4 py-8">
+    <PageShell
+      padding="compact"
+      className="flex min-h-screen flex-col items-center justify-center"
+    >
       <Alert variant="destructive" className="mb-6 w-full max-w-md">
         <TriangleIcon className="size-4" />
         <AlertTitle>Error</AlertTitle>
@@ -50,6 +54,6 @@ export default function ErrorPage({
           Go to Homepage
         </Button>
       </div>
-    </div>
+    </PageShell>
   );
 }

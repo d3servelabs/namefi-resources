@@ -41,6 +41,7 @@ ChartJs.register(
 );
 import { withPbnOwnerGuard } from '@/components/admin/pbn-owner-guard';
 import { keccak256 } from 'viem';
+import { PageShell } from '@/components/page-shell';
 
 function PoweredByNamefiOwnerDashboard() {
   const trpc = useTRPC();
@@ -71,7 +72,7 @@ function PoweredByNamefiOwnerDashboard() {
   // Overview page does not render a line chart; only pie chart of totals per domain
 
   return (
-    <div className="container mx-auto p-6 space-y-6">
+    <PageShell padding="admin" className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold">Powered by Namefi Dashboard</h1>
       </div>
@@ -125,7 +126,7 @@ function PoweredByNamefiOwnerDashboard() {
           </CardContent>
         </Card>
       </div>
-    </div>
+    </PageShell>
   );
 }
 

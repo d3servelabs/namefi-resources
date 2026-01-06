@@ -7,6 +7,7 @@ import { AuthRequired } from '@/components/auth-required';
 import { useAuth } from '@/hooks/use-auth';
 import { Alert, AlertDescription } from '@/components/ui/shadcn/alert';
 import { Loader2, ShieldAlert } from 'lucide-react';
+import { PageShell } from '@/components/page-shell';
 
 interface AdminGuardProps {
   children: ReactNode;
@@ -49,16 +50,17 @@ export function AdminGuard({
   // Show access denied if not admin
   if (error || !data) {
     return (
-      <div className="container mx-auto p-6">
-        <div className="flex items-center justify-center min-h-[50vh]">
-          <Alert variant="destructive" className="max-w-md">
-            <ShieldAlert className="h-4 w-4" />
-            <AlertDescription className="text-base">
-              {error?.message || accessDeniedMessage}
-            </AlertDescription>
-          </Alert>
-        </div>
-      </div>
+      <PageShell
+        padding="admin"
+        className="flex items-center justify-center min-h-[50vh]"
+      >
+        <Alert variant="destructive" className="max-w-md">
+          <ShieldAlert className="h-4 w-4" />
+          <AlertDescription className="text-base">
+            {error?.message || accessDeniedMessage}
+          </AlertDescription>
+        </Alert>
+      </PageShell>
     );
   }
 

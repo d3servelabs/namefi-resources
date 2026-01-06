@@ -38,6 +38,7 @@ import {
   Copy,
 } from 'lucide-react';
 import { AutoTruncateTextV2 } from '../auto-truncate-text-v2';
+import { PageShell } from '@/components/page-shell';
 import { UserWalletAvatar } from '../user-avatar';
 import { getChain } from '@namefi-astra/utils';
 
@@ -201,7 +202,7 @@ function BulkBurnManagementContent({
 
   if (isLoading) {
     return (
-      <div className="container mx-auto p-6">
+      <PageShell padding="admin">
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -213,13 +214,13 @@ function BulkBurnManagementContent({
             <LoadingSkeletons />
           </CardContent>
         </Card>
-      </div>
+      </PageShell>
     );
   }
 
   if (!workflowData?.exists) {
     return (
-      <div className="container mx-auto p-6">
+      <PageShell padding="admin">
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -260,7 +261,7 @@ function BulkBurnManagementContent({
             </div>
           </CardContent>
         </Card>
-      </div>
+      </PageShell>
     );
   }
 
@@ -275,7 +276,7 @@ function BulkBurnManagementContent({
   const isCompleted = status === 'COMPLETED' || status === 'CANCELLED';
 
   return (
-    <div className="container mx-auto p-6 space-y-6">
+    <PageShell padding="admin" className="space-y-6">
       {/* Workflow Status Card */}
       <Card>
         <CardHeader>
@@ -723,7 +724,7 @@ function BulkBurnManagementContent({
           </CardContent>
         </Card>
       )}
-    </div>
+    </PageShell>
   );
 }
 

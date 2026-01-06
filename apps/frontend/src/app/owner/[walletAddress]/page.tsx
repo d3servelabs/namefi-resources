@@ -6,6 +6,7 @@ import { getOriginRuntime } from '@/lib/origin/utils.server';
 import type { OriginInfo } from '@/lib/origin';
 import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
+import { PageShell } from '@/components/page-shell';
 
 interface PageProps {
   params: Promise<{ walletAddress: string }>;
@@ -27,7 +28,7 @@ export default async function OwnerWalletPage({ params }: PageProps) {
   };
 
   return (
-    <div className="container mx-auto max-w-6xl px-4 py-10 lg:px-6">
+    <PageShell size="wide" padding="relaxed">
       <div className="mb-8 space-y-2">
         <h1 className="text-3xl font-semibold tracking-tight">
           Domains owned by this wallet
@@ -39,6 +40,6 @@ export default async function OwnerWalletPage({ params }: PageProps) {
       <Suspense fallback={<WalletNftGridSkeleton />}>
         <WalletNftGrid walletIdentifier={decoded} origin={originInfo} />
       </Suspense>
-    </div>
+    </PageShell>
   );
 }

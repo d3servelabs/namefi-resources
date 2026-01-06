@@ -9,6 +9,7 @@ import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import type { DomainAvailabilityInfo } from '@namefi-astra/backend/trpc/types';
 import { useAuth } from '@/hooks/use-auth';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
+import { PageShell } from '@/components/page-shell';
 
 export default function WishlistPage() {
   const { isLoading: isUserLoading } = useAuth();
@@ -53,7 +54,7 @@ export default function WishlistPage() {
   const isLoading = isWishlistLoading || isUserLoading;
 
   return (
-    <div className="container mx-auto py-8 px-8">
+    <PageShell>
       <h1 className="text-3xl font-bold mb-6 flex items-center gap-3">
         My Wishlist
         {isWishlistLoading || isUserLoading ? (
@@ -85,6 +86,6 @@ export default function WishlistPage() {
           ))}
         </div>
       )}
-    </div>
+    </PageShell>
   );
 }

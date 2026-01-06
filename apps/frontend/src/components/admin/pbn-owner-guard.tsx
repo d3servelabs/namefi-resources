@@ -9,6 +9,7 @@ import { Alert, AlertDescription } from '@/components/ui/shadcn/alert';
 import { Loader2, ShieldAlert } from 'lucide-react';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { isNotNil } from 'ramda';
+import { PageShell } from '@/components/page-shell';
 
 interface PbnOwnerGuardProps {
   children: ReactNode;
@@ -73,31 +74,33 @@ export function PbnOwnerGuard({
   // Show access denied if not admin
   if (!isAnOwner) {
     return (
-      <div className="container mx-auto p-6">
-        <div className="flex items-center justify-center min-h-[50vh]">
-          <Alert variant="destructive" className="max-w-md">
-            <ShieldAlert className="h-4 w-4" />
-            <AlertDescription className="text-base">
-              {isAnOwnerQuery.error?.message || accessDeniedMessage}
-            </AlertDescription>
-          </Alert>
-        </div>
-      </div>
+      <PageShell
+        padding="admin"
+        className="flex items-center justify-center min-h-[50vh]"
+      >
+        <Alert variant="destructive" className="max-w-md">
+          <ShieldAlert className="h-4 w-4" />
+          <AlertDescription className="text-base">
+            {isAnOwnerQuery.error?.message || accessDeniedMessage}
+          </AlertDescription>
+        </Alert>
+      </PageShell>
     );
   }
 
   if (checkDomain && !isCorrectOwner) {
     return (
-      <div className="container mx-auto p-6">
-        <div className="flex items-center justify-center min-h-[50vh]">
-          <Alert variant="destructive" className="max-w-md">
-            <ShieldAlert className="h-4 w-4" />
-            <AlertDescription className="text-base">
-              {ownerDomainsQuery.error?.message || accessDeniedMessage}
-            </AlertDescription>
-          </Alert>
-        </div>
-      </div>
+      <PageShell
+        padding="admin"
+        className="flex items-center justify-center min-h-[50vh]"
+      >
+        <Alert variant="destructive" className="max-w-md">
+          <ShieldAlert className="h-4 w-4" />
+          <AlertDescription className="text-base">
+            {ownerDomainsQuery.error?.message || accessDeniedMessage}
+          </AlertDescription>
+        </Alert>
+      </PageShell>
     );
   }
 

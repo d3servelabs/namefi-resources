@@ -34,6 +34,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/shadcn/tooltip';
+import { PageShell } from '@/components/page-shell';
 
 type ScheduleConfig =
   AppRouterOutput['admin']['schedules']['getAllSchedules'][number]['config'];
@@ -172,7 +173,7 @@ export default function SchedulesPage() {
   const isLoading = schedulesLoading || statusesLoading || groupsLoading;
 
   return (
-    <div className="container mx-auto py-8">
+    <PageShell padding="admin">
       <div className="mb-8">
         <div className="flex items-center justify-between mb-4">
           <div>
@@ -380,7 +381,7 @@ export default function SchedulesPage() {
           )}
         </TabsContent>
       </Tabs>
-    </div>
+    </PageShell>
   );
 }
 

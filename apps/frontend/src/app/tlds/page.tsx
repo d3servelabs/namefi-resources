@@ -32,6 +32,7 @@ import {
   TooltipTrigger,
   TooltipContent,
 } from '@/components/ui/shadcn/tooltip';
+import { PageShell } from '@/components/page-shell';
 
 type TldPricingRow = AppRouterOutput['registry']['getTldPricingTable'][number];
 
@@ -257,7 +258,7 @@ export default function TldPricingPage() {
 
   if (pricingQuery.isLoading) {
     return (
-      <div className="container mx-auto px-4 py-8">
+      <PageShell padding="compact">
         <Card>
           <CardHeader>
             <CardTitle>TLD Pricing</CardTitle>
@@ -276,13 +277,13 @@ export default function TldPricingPage() {
             </p>
           </CardContent>
         </Card>
-      </div>
+      </PageShell>
     );
   }
 
   if (pricingQuery.isError) {
     return (
-      <div className="container mx-auto px-4 py-8">
+      <PageShell padding="compact">
         <Card>
           <CardHeader>
             <CardTitle>TLD Pricing</CardTitle>
@@ -296,12 +297,12 @@ export default function TldPricingPage() {
             </div>
           </CardContent>
         </Card>
-      </div>
+      </PageShell>
     );
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <PageShell padding="compact">
       <Card>
         <CardHeader>
           <CardTitle>TLD Pricing</CardTitle>
@@ -333,7 +334,7 @@ export default function TldPricingPage() {
           </p>
         </CardContent>
       </Card>
-    </div>
+    </PageShell>
   );
 }
 

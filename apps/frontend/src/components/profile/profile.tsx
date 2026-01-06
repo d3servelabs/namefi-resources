@@ -15,6 +15,7 @@ import { Wallets } from './wallets';
 import { ContactDetails } from './contact-details';
 import { useQueryState, parseAsStringEnum } from 'nuqs';
 import { useAuth } from '@/hooks/use-auth';
+import { PageShell } from '@/components/page-shell';
 
 enum TabValues {
   WALLETS = 'wallets',
@@ -73,7 +74,7 @@ export default function Profile() {
   }
 
   return (
-    <div className="w-full gap-8 flex flex-col p-4">
+    <PageShell padding="compact" className="gap-8 flex flex-col">
       <Header user={user} />
 
       <Tabs value={activeTab.toString()} onValueChange={handleTabChange}>
@@ -99,6 +100,6 @@ export default function Profile() {
       </Tabs>
 
       <Footer user={user} className="hidden" />
-    </div>
+    </PageShell>
   );
 }

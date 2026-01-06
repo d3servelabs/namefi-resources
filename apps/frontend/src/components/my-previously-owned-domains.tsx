@@ -3,6 +3,7 @@
 import NetworkLogo from '@/components/network-logo';
 import { AuthRequired } from '@/components/auth-required';
 import { EmptyPlaceholder } from '@/components/empty-placeholder';
+import { PageShell } from '@/components/page-shell';
 import { AddressWithChain } from '@/components/address-with-chain';
 import {
   Table,
@@ -603,11 +604,11 @@ export default function MyBurnedDomains() {
   }
 
   return (
-    <div className="container mx-auto py-8 px-8">
+    <PageShell>
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold">Previously Owned Domains</h2>
       </div>
       {isLoading ? <LoadingSkeletons /> : <MyPreviouslyOwnedDomainsContent />}
-    </div>
+    </PageShell>
   );
 }

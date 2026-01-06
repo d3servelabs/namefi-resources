@@ -2,6 +2,7 @@
 
 import { AuthRequired } from '@/components/auth-required';
 import { NamefiButton } from '@/components/buttons/namefi-button';
+import { PageShell } from '@/components/page-shell';
 import { SavePaymentMethodDialog } from './save-payment-method-dialog';
 import { ControlledGlareCard } from '@/components/ui/aceternity/controlled-glare-card';
 import { CreditCard } from '@/components/ui/untitled/credit-card';
@@ -116,7 +117,7 @@ export default function PaymentMethodsManager() {
   }
 
   return (
-    <div className="container mx-auto py-8 px-8 gap-6 flex flex-col">
+    <PageShell className="gap-6 flex flex-col">
       <div className="flex flex-col">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold">Payment Methods</h2>
@@ -142,7 +143,7 @@ export default function PaymentMethodsManager() {
       <Suspense fallback={<LoadingSkeletons />}>
         <UserWalletCardsGrid />
       </Suspense>
-    </div>
+    </PageShell>
   );
 }
 

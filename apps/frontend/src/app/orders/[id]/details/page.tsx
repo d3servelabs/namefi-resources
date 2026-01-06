@@ -49,6 +49,7 @@ import {
 } from '@/components/ui/shadcn/alert-dialog';
 import { NetworkLogo } from '@/components/network-logo';
 import type { OrderItemSelect } from '@namefi-astra/db';
+import { PageShell } from '@/components/page-shell';
 
 type MintTransactionsByItemId = Record<string, OrderMintTransactionMetadata>;
 
@@ -154,7 +155,7 @@ export default function OrderDetailsPage({
 
   if (isLoading) {
     return (
-      <div className="container mx-auto py-8 px-8">
+      <PageShell>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           {/* Order Information Skeleton */}
           <div>
@@ -241,7 +242,7 @@ export default function OrderDetailsPage({
             </CartCard>
           </div>
         </div>
-      </div>
+      </PageShell>
     );
   }
   if (
@@ -255,7 +256,7 @@ export default function OrderDetailsPage({
   }
   if (!order) {
     return (
-      <div className="container mx-auto py-8 px-8">
+      <PageShell>
         <CartCard
           title="Order not found"
           description="The order you are looking for could not be found. Please check the order ID and try again."
@@ -265,13 +266,13 @@ export default function OrderDetailsPage({
             </Button>
           }
         />
-      </div>
+      </PageShell>
     );
   }
   const singlePayment = payments.length === 1;
 
   return (
-    <div className="container mx-auto py-8 px-8">
+    <PageShell>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {/* Left Column - Order + Payments */}
         <div className="space-y-4">
@@ -572,7 +573,7 @@ export default function OrderDetailsPage({
         chainId={order.nftChainId ?? null}
         onOpenChange={setSelectedItemId}
       />
-    </div>
+    </PageShell>
   );
 }
 

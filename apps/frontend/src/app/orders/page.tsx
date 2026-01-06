@@ -31,6 +31,7 @@ import { ExternalLink, PackageX, Calendar } from 'lucide-react';
 import Link from 'next/link';
 import { useMemo } from 'react';
 import { Button } from '@/components/ui/shadcn/button';
+import { PageShell } from '@/components/page-shell';
 
 export default function OrdersPage() {
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
@@ -52,7 +53,7 @@ export default function OrdersPage() {
   }
 
   return (
-    <div className="container mx-auto py-8 px-4 sm:px-8">
+    <PageShell padding="compact">
       <CartCard title="Order History">
         {isLoading ? (
           <MobileTable>
@@ -208,6 +209,6 @@ export default function OrdersPage() {
           />
         )}
       </CartCard>
-    </div>
+    </PageShell>
   );
 }

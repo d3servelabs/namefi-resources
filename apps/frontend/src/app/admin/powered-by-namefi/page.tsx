@@ -42,6 +42,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/shadcn/dropdown-menu';
+import { PageShell } from '@/components/page-shell';
 import { Badge } from '@/components/ui/shadcn/badge';
 import {
   Form,
@@ -311,7 +312,7 @@ export default withAdminGuard(function PoweredByNamefiDomainsPage() {
   const pagination = domainsData?.pagination;
 
   return (
-    <div className="container mx-auto p-6">
+    <PageShell padding="admin">
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2">Powered by Namefi Domains</h1>
         <p className="text-muted-foreground">
@@ -688,7 +689,7 @@ export default withAdminGuard(function PoweredByNamefiDomainsPage() {
           )}
         </DialogContent>
       </Dialog>
-    </div>
+    </PageShell>
   );
 });
 

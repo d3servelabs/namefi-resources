@@ -8,6 +8,7 @@ import { CampaignDomainsList } from '@/components/hunt/campaign/campaign-domains
 import { CampaignWhyVote } from '@/components/hunt/campaign/campaign-why-vote';
 import { CampaignCommunity } from '@/components/hunt/campaign/campaign-community';
 import { CampaignHowItWorks } from '@/components/hunt/campaign/campaign-how-it-works';
+import { PageShell } from '@/components/page-shell';
 
 interface CampaignPageProps {
   params: Promise<{
@@ -22,7 +23,12 @@ export default function CampaignPage({ params }: CampaignPageProps) {
   return (
     <div className="min-h-screen flex flex-col">
       <HeaderTabs activeTab={campaignKey} />
-      <div className="flex flex-col gap-4 bg-black">
+      <PageShell
+        size="full"
+        padding="none"
+        shellClassName="bg-black"
+        className="flex flex-col gap-4"
+      >
         <CampaignHero campaignKey={campaignKey} />
         <CampaignHowItWorks />
         <CampaignDomainsList
@@ -32,7 +38,7 @@ export default function CampaignPage({ params }: CampaignPageProps) {
         />
         <CampaignWhyVote />
         <CampaignCommunity />
-      </div>
+      </PageShell>
     </div>
   );
 }

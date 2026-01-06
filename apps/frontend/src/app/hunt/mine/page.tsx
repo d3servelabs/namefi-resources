@@ -17,6 +17,7 @@ import { useMemo, useState } from 'react';
 import { PaginationControls } from '@/components/hunt/pagination-control';
 import { MySubmittedDomains } from '@/components/hunt/mine/my-submitted-domains';
 import { MyUpvotedDomains } from '@/components/hunt/mine/my-upvoted-domains';
+import { PageShell } from '@/components/page-shell';
 
 const DOMAINS_LIST_PER_PAGE_LIMIT = 20;
 
@@ -77,7 +78,7 @@ export default function MyDomainsPage() {
   }
 
   return (
-    <div className="container mx-auto py-8 px-4 sm:px-8">
+    <PageShell padding="compact">
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-4">
         <div className="flex items-center gap-4">
           <Link href="/hunt">
@@ -137,6 +138,6 @@ export default function MyDomainsPage() {
           />
         </TabsContent>
       </Tabs>
-    </div>
+    </PageShell>
   );
 }
