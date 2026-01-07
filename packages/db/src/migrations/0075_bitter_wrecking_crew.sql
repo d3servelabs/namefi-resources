@@ -1,0 +1,1 @@
+ALTER TABLE "ai_generations" ADD COLUMN "is_deleted" boolean DEFAULT false NOT NULL;

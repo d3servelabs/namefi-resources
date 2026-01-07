@@ -830,6 +830,7 @@ export const aiGenerationsTable = pgTable(
     >(),
     metadata: jsonb('metadata').default({}),
     featured: boolean('featured').notNull().default(false),
+    isDeleted: boolean('is_deleted').notNull().default(false),
     ...timestamps,
   },
   (table) => [

@@ -7,6 +7,7 @@ import {
   Download as DownloadIcon,
   Twitter,
   Sparkles,
+  Trash2,
 } from 'lucide-react';
 import type { MouseEvent } from 'react';
 
@@ -16,6 +17,11 @@ interface GenerationActionButtonsProps {
   onShare: (event: MouseEvent<HTMLButtonElement>) => void;
   onDownload: (event: MouseEvent<HTMLButtonElement>) => void;
   posterAction?: {
+    label?: string;
+    onClick: (event: MouseEvent<HTMLButtonElement>) => void;
+    disabled?: boolean;
+  };
+  deleteAction?: {
     label?: string;
     onClick: (event: MouseEvent<HTMLButtonElement>) => void;
     disabled?: boolean;
@@ -35,6 +41,9 @@ const appearanceConfig = {
     size: 'sm' as const,
     posterClass:
       'h-9 rounded-full bg-primary text-primary-foreground hover:bg-primary/80 gap-2 shadow-md transition',
+    deleteClass:
+      'h-9 rounded-full bg-destructive/80 text-white shadow-md transition hover:bg-destructive',
+    deleteVariant: 'destructive' as const,
   },
   featured: {
     buttonClass:
@@ -43,6 +52,9 @@ const appearanceConfig = {
     size: 'sm' as const,
     posterClass:
       'h-8 rounded-full bg-primary text-primary-foreground hover:bg-primary/80 gap-2 shadow-md transition',
+    deleteClass:
+      'h-8 rounded-full bg-destructive/80 text-white shadow-md transition hover:bg-destructive',
+    deleteVariant: 'destructive' as const,
   },
   grid: {
     buttonClass:
@@ -51,6 +63,9 @@ const appearanceConfig = {
     size: 'sm' as const,
     posterClass:
       'h-9 rounded-full bg-primary text-primary-foreground hover:bg-primary/80 px-4',
+    deleteClass:
+      'h-9 rounded-full bg-destructive text-white hover:bg-destructive/90 px-3',
+    deleteVariant: 'destructive' as const,
   },
 } as const;
 
@@ -60,6 +75,7 @@ export function GenerationActionButtons({
   onShare,
   onDownload,
   posterAction,
+  deleteAction,
   disabled,
 }: GenerationActionButtonsProps) {
   const config = appearanceConfig[appearance];
@@ -113,6 +129,20 @@ export function GenerationActionButtons({
         />
         {appearance === 'grid' ? 'Download' : 'Download'}
       </Button>
+      {deleteAction && (
+        <Button
+          size={config.size}
+          variant={config.deleteVariant}
+          className={config.deleteClass}
+          onClick={deleteAction.onClick}
+          disabled={deleteAction.disabled}
+        >
+          <Trash2
+            className={cn('h-4 w-4', appearance === 'grid' ? '' : 'mr-1')}
+          />
+          {deleteAction.label ?? 'Delete'}
+        </Button>
+      )}
     </div>
   );
 }

@@ -205,3 +205,65 @@ export const createPosterGenerationPayload = (data: PosterFormData) => {
 
   return requestBody;
 };
+
+interface UseDeleteGenerationOptions {
+  onSuccess?: () => void;
+}
+
+export function useDeleteGeneration(options: UseDeleteGenerationOptions = {}) {
+  const trpc = useTRPC();
+  const queryClient = useQueryClient();
+
+  return useMutation(
+    trpc.ai.deleteGeneration.mutationOptions({
+      onSuccess: (_data, variables) => {
+        if (variables?.id) {
+          queryClient.setQueryData(
+            trpc.ai.getFeaturedAndRecentGenerations.queryKey(),
+            (old) => {
+              if (!old) return old;
+              return {
+                ...old,
+                featured: (old.featured ?? []).filter(
+                  (item) => item.id !== variables.id,
+                ),
+                recent: (old.recent ?? []).filter(
+                  (item) => item.id !== variables.id,
+                ),
+              };
+            },
+          );
+        }
+
+        queryClient.invalidateQueries({
+          predicate: (query) => {
+            if (!Array.isArray(query.queryKey)) return false;
+            if (query.queryKey[0] !== 'ai') return false;
+            const key = query.queryKey[1];
+            return (
+              key === 'getUserGenerationsFiltered' ||
+              key === 'getGenerationsByDomain' ||
+              key === 'getGenerationsByType' ||
+              key === 'getGenerationById' ||
+              key === 'getFeaturedAndRecentGenerations'
+            );
+          },
+        });
+
+        queryClient.invalidateQueries({
+          queryKey: trpc.ai.getUserDomains.queryKey(),
+        });
+
+        queryClient.invalidateQueries({
+          queryKey: trpc.ai.getUserGenerationUsage.queryKey(),
+        });
+
+        toast.success('Generation deleted');
+        options.onSuccess?.();
+      },
+      onError: (error) => {
+        toast.error(error.message || 'Failed to delete generation');
+      },
+    }),
+  );
+}

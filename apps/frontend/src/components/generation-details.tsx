@@ -10,6 +10,17 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/shadcn/card';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/shadcn/alert-dialog';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
 import { useTRPC } from '@/lib/trpc';
 import { useQuery } from '@tanstack/react-query';
@@ -20,6 +31,7 @@ import {
   Download,
   Image as ImageIcon,
   Sparkles,
+  Trash2,
   Type,
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -33,6 +45,8 @@ import { toast } from 'sonner';
 import { useCallback, useEffect, useState } from 'react';
 import type { AppRouterOutput } from '@/lib/trpc';
 import { collateralLabels } from './ai-generation/poster-generator';
+import { useAuth } from '@/hooks/use-auth';
+import { useDeleteGeneration } from './ai-generation/shared/generation-hooks';
 
 type GenerationData = AppRouterOutput['ai']['getGenerationById'];
 
@@ -121,6 +135,7 @@ export function GenerationDetailsClient({
   error: initialError,
 }: GenerationDetailsClientProps) {
   const router = useRouter();
+  const { isAuthenticated, user } = useAuth();
   const trpc = useTRPC();
   const [currentUrl, setCurrentUrl] = useState('');
   const shareDialog = useTwitterShareDialog({
@@ -130,6 +145,7 @@ export function GenerationDetailsClient({
     featureKey: 'ai_generation',
   });
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
   useEffect(() => {
     setCurrentUrl(window.location.href);
@@ -144,6 +160,13 @@ export function GenerationDetailsClient({
     ...trpc.ai.getGenerationById.queryOptions({ id: generationId }),
     enabled: !initialGeneration,
     initialData: initialGeneration,
+  });
+
+  const deleteMutation = useDeleteGeneration({
+    onSuccess: () => {
+      setDeleteDialogOpen(false);
+      router.push('/ai-brand-generator');
+    },
   });
 
   // Fetch reference generation (logo) for marketing generations
@@ -214,6 +237,12 @@ export function GenerationDetailsClient({
     .split('-')
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
+
+  const canDelete =
+    isAuthenticated &&
+    !!user?.id &&
+    !!generation?.userId &&
+    user.id === generation.userId;
 
   if (isGenerationLoading) {
     return <LoadingSkeleton />;
@@ -309,6 +338,50 @@ export function GenerationDetailsClient({
                   </Button>
                 </div>
               </div>
+              {canDelete && (
+                <AlertDialog
+                  open={deleteDialogOpen}
+                  onOpenChange={setDeleteDialogOpen}
+                >
+                  <AlertDialogTrigger asChild>
+                    <Button
+                      variant="destructive"
+                      className="w-full"
+                      disabled={deleteMutation.isPending}
+                    >
+                      <Trash2 className="mr-2 h-4 w-4" />
+                      Delete
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>
+                        Delete this generation?
+                      </AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This will remove the{' '}
+                        {generation.type === 'marketing' ? 'poster' : 'logo'}{' '}
+                        for <strong>{domain}</strong> from your gallery. This
+                        action can't be undone.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel disabled={deleteMutation.isPending}>
+                        Cancel
+                      </AlertDialogCancel>
+                      <AlertDialogAction
+                        onClick={() =>
+                          deleteMutation.mutate({ id: generationId })
+                        }
+                        disabled={deleteMutation.isPending}
+                        className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                      >
+                        {deleteMutation.isPending ? 'Deleting...' : 'Delete'}
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              )}
             </div>
 
             {/* Generation Details */}

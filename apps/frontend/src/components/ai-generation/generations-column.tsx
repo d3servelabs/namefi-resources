@@ -6,6 +6,16 @@ import { toast } from 'sonner';
 import { Card, CardContent } from '@/components/ui/shadcn/card';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
 import { Button } from '@/components/ui/shadcn/button';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/shadcn/alert-dialog';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/shadcn/tabs';
 import {
   Popover,
@@ -54,6 +64,7 @@ import {
 import { usePendingGenerationProgress } from './shared/use-gallery-progress';
 import { useGenerationsGalleryData } from './shared/use-gallery-data';
 import { GenerationActionButtons } from './shared/generation-action-buttons';
+import { useDeleteGeneration } from './shared/generation-hooks';
 import type {
   DomainPreview,
   GalleryFilters,
@@ -68,6 +79,12 @@ type ShareState = {
   isOpen: boolean;
   url: string | null;
   domain: NamefiNormalizedDomain | null;
+};
+
+type DeleteTarget = {
+  id: string;
+  domain: string;
+  type: 'logo' | 'marketing';
 };
 
 interface GenerationsColumnProps {
@@ -100,6 +117,10 @@ export function GenerationsColumn({
     isOpen: false,
     url: null,
     domain: null,
+  });
+  const [deleteTarget, setDeleteTarget] = useState<DeleteTarget | null>(null);
+  const deleteMutation = useDeleteGeneration({
+    onSuccess: () => setDeleteTarget(null),
   });
 
   const { progressById, getProgressValue } =
@@ -221,6 +242,27 @@ export function GenerationsColumn({
     shareDialog.openDialog(domain as NamefiNormalizedDomain);
   };
 
+  const handleDeleteRequest = (item: GalleryItem) => {
+    const resolvedType =
+      item.type ?? item.generation?.type ?? ('logo' as const);
+    setDeleteTarget({
+      id: item.id,
+      domain: item.domain,
+      type: resolvedType,
+    });
+  };
+
+  const handleConfirmDelete = () => {
+    if (!deleteTarget) return;
+    deleteMutation.mutate({ id: deleteTarget.id });
+  };
+
+  const handleDeleteDialogChange = (open: boolean) => {
+    if (!open) {
+      setDeleteTarget(null);
+    }
+  };
+
   const handleDownload = async (
     item: Pick<GalleryItem, 'id' | 'domain' | 'url'>,
   ) => {
@@ -284,6 +326,8 @@ export function GenerationsColumn({
                   onShare={handleOpenShareDialog}
                   onDownload={handleDownload}
                   onPoster={handlePosterRequest}
+                  onDelete={handleDeleteRequest}
+                  isDeleting={deleteMutation.isPending}
                 />
               );
             })}
@@ -353,6 +397,34 @@ export function GenerationsColumn({
         campaignKey={undefined}
         featureKey="ai_generation"
       />
+      <AlertDialog
+        open={!!deleteTarget}
+        onOpenChange={handleDeleteDialogChange}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete generation?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This will remove the{' '}
+              {deleteTarget?.type === 'marketing' ? 'poster' : 'logo'} for{' '}
+              <strong>{deleteTarget?.domain}</strong> from your gallery. This
+              action can't be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={deleteMutation.isPending}>
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleConfirmDelete}
+              disabled={deleteMutation.isPending}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              {deleteMutation.isPending ? 'Deleting...' : 'Delete'}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
@@ -510,6 +582,8 @@ interface ReadyGenerationTileProps {
   onShare: (id: string, domain: string) => void;
   onDownload: (item: Pick<GalleryItem, 'id' | 'domain' | 'url'>) => void;
   onPoster: (generation?: GalleryGeneration) => void;
+  onDelete: (item: GalleryItem) => void;
+  isDeleting?: boolean;
 }
 
 function ReadyGenerationTile({
@@ -519,6 +593,8 @@ function ReadyGenerationTile({
   onShare,
   onDownload,
   onPoster,
+  onDelete,
+  isDeleting,
 }: ReadyGenerationTileProps) {
   return (
     // biome-ignore lint/a11y/useSemanticElements: container wraps nested action buttons within the card
@@ -596,6 +672,14 @@ function ReadyGenerationTile({
             event.stopPropagation();
             event.preventDefault();
             onDownload(item);
+          }}
+          deleteAction={{
+            onClick: (event) => {
+              event.stopPropagation();
+              event.preventDefault();
+              onDelete(item);
+            },
+            disabled: isDeleting,
           }}
         />
       </div>

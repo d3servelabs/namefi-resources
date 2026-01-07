@@ -194,6 +194,7 @@ export const aiRouter = createTRPCRouter({
                 eq(aiGenerationsTable.userId, ctx.user.id),
                 eq(aiGenerationsTable.id, referenceLogoGenerationId),
                 eq(aiGenerationsTable.type, 'logo'),
+                eq(aiGenerationsTable.isDeleted, false),
               ),
             )
             .then((results) => results[0]);
@@ -281,6 +282,7 @@ export const aiRouter = createTRPCRouter({
           and(
             eq(aiGenerationsTable.userId, ctx.user.id),
             eq(aiGenerationsTable.domain, input.domain),
+            eq(aiGenerationsTable.isDeleted, false),
           ),
         )
         .orderBy(desc(aiGenerationsTable.createdAt));
@@ -311,7 +313,12 @@ export const aiRouter = createTRPCRouter({
         ).as('marketingCount'),
       })
       .from(aiGenerationsTable)
-      .where(eq(aiGenerationsTable.userId, ctx.user.id))
+      .where(
+        and(
+          eq(aiGenerationsTable.userId, ctx.user.id),
+          eq(aiGenerationsTable.isDeleted, false),
+        ),
+      )
       .groupBy(aiGenerationsTable.domain)
       .orderBy(desc(latestGenerationAlias));
 
@@ -330,7 +337,10 @@ export const aiRouter = createTRPCRouter({
       }),
     )
     .query(async ({ ctx, input }) => {
-      const whereConds = [eq(aiGenerationsTable.userId, ctx.user.id)];
+      const whereConds = [
+        eq(aiGenerationsTable.userId, ctx.user.id),
+        eq(aiGenerationsTable.isDeleted, false),
+      ];
 
       if (input.types && input.types.length > 0) {
         whereConds.push(inArray(aiGenerationsTable.type, input.types));
@@ -371,6 +381,7 @@ export const aiRouter = createTRPCRouter({
             eq(aiGenerationsTable.userId, ctx.user.id),
             eq(aiGenerationsTable.domain, input.domain),
             eq(aiGenerationsTable.type, input.type),
+            eq(aiGenerationsTable.isDeleted, false),
           ),
         )
         .orderBy(desc(aiGenerationsTable.createdAt));
@@ -397,11 +408,17 @@ export const aiRouter = createTRPCRouter({
       db
         .select(selectFields)
         .from(aiGenerationsTable)
-        .where(eq(aiGenerationsTable.featured, true))
+        .where(
+          and(
+            eq(aiGenerationsTable.featured, true),
+            eq(aiGenerationsTable.isDeleted, false),
+          ),
+        )
         .orderBy(desc(aiGenerationsTable.createdAt)),
       db
         .select(selectFields)
         .from(aiGenerationsTable)
+        .where(eq(aiGenerationsTable.isDeleted, false))
         .orderBy(desc(aiGenerationsTable.createdAt))
         .limit(50),
     ]);
@@ -430,7 +447,12 @@ export const aiRouter = createTRPCRouter({
       const [generation] = await db
         .select()
         .from(aiGenerationsTable)
-        .where(eq(aiGenerationsTable.id, input.id));
+        .where(
+          and(
+            eq(aiGenerationsTable.id, input.id),
+            eq(aiGenerationsTable.isDeleted, false),
+          ),
+        );
 
       if (!generation) {
         throw new TRPCError({
@@ -446,6 +468,30 @@ export const aiRouter = createTRPCRouter({
           config.CLOUD_FRONT_DOMAIN,
         ),
       };
+    }),
+
+  deleteGeneration: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ input, ctx }) => {
+      const [generation] = await db
+        .update(aiGenerationsTable)
+        .set({ isDeleted: true })
+        .where(
+          and(
+            eq(aiGenerationsTable.id, input.id),
+            eq(aiGenerationsTable.userId, ctx.user.id),
+          ),
+        )
+        .returning();
+
+      if (!generation) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Generation not found',
+        });
+      }
+
+      return generation;
     }),
 
   getInternalGenerationsByDomain: publicProcedure
