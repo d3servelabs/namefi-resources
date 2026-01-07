@@ -1,12 +1,13 @@
 'use client';
 
-import { use, useEffect, useMemo, useRef } from 'react';
+import { use, useEffect, useMemo, useRef, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import { TRPCClientError } from '@trpc/client';
 import { type AppRouterOutput, useTRPC } from '@/lib/trpc';
 import { redirect } from 'next/navigation';
 import { useAuth } from '@/hooks/use-auth';
+import { useUserWalletAddresses } from '@/hooks/use-user-wallet-addresses';
 import {
   getWorkflowProgressPhase,
   type WorkflowProgressPhase,
@@ -31,6 +32,18 @@ import { NftCarousel } from '@/components/orders/nft-carousel';
 import { OrderNotFound } from '@/components/orders/order-not-found';
 import { motion, AnimatePresence } from 'motion/react';
 import { PageShell } from '@/components/page-shell';
+import { Button } from '@/components/ui/shadcn/button';
+import { Textarea } from '@/components/ui/shadcn/textarea';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/shadcn/dialog';
+import { Label } from '@/components/ui/shadcn/label';
+import { Check, Copy } from 'lucide-react';
 
 interface OrderPageProps {
   params: Promise<{ id: string }>;
@@ -84,13 +97,23 @@ const processingCopyByStep: Record<
 export default function OrderPage({ params }: OrderPageProps) {
   const { id } = use(params);
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
+  const { userWalletAddresses, userWalletsReady } = useUserWalletAddresses();
   const trpc = useTRPC();
+  const [shareDialogOpen, setShareDialogOpen] = useState(false);
+  const [copiedField, setCopiedField] = useState<'message' | null>(null);
+  const [manageShareUrl, setManageShareUrl] = useState('');
 
   // This sets the cart count to 0 after the order is created
   const { refetchCart } = useCartContext();
   useEffect(() => {
     refetchCart();
   }, [refetchCart]);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setManageShareUrl(window.location.origin);
+    }
+  }, []);
 
   const {
     data: orderDetails,
@@ -227,6 +250,42 @@ export default function OrderPage({ params }: OrderPageProps) {
       : `Great I've just got ${orderItems[0].fullDomain} from 0x.city (#PoweredByNamefi), come check it out`;
   }, [orderItems]);
 
+  const recipientWalletAddress = order?.nftWalletAddress ?? null;
+  const isRecipientSelf = useMemo(() => {
+    if (!recipientWalletAddress) return true;
+    if (!userWalletsReady) return true;
+    const normalizedRecipient = recipientWalletAddress.toLowerCase();
+    return userWalletAddresses.some(
+      (address) => address.toLowerCase() === normalizedRecipient,
+    );
+  }, [recipientWalletAddress, userWalletAddresses, userWalletsReady]);
+
+  const shareManageMessage = useMemo(() => {
+    if (!orderItems?.length) {
+      return 'Begin managing your domain on Namefi.';
+    }
+
+    const domainList = orderItems.map((item) => item.fullDomain).join(', ');
+    const domainLabel = orderItems.length > 1 ? 'your domains' : 'your domain';
+
+    return `I've registered ${domainList} for you on Namefi. Begin managing ${domainLabel} here:`;
+  }, [orderItems]);
+
+  const shareManageUrl = useMemo(() => {
+    if (!manageShareUrl) return '';
+    if (orderItems.length === 1) {
+      return `${manageShareUrl}/domains/${orderItems[0].fullDomain}`;
+    }
+    return `${manageShareUrl}/domains`;
+  }, [manageShareUrl, orderItems]);
+
+  const handleCopy = (value: string, field: 'message') => {
+    if (!value) return;
+    navigator.clipboard.writeText(value);
+    setCopiedField(field);
+    window.setTimeout(() => setCopiedField(null), 2000);
+  };
+
   const heading =
     viewState === 'success'
       ? 'Congratulations!'
@@ -308,6 +367,10 @@ export default function OrderPage({ params }: OrderPageProps) {
                 items={orderItems}
                 origin={origin}
                 isCompletedOrder={isCompletedOrder}
+                domainAction={isRecipientSelf ? 'manage' : 'share'}
+                onShare={
+                  isRecipientSelf ? undefined : () => setShareDialogOpen(true)
+                }
               />
             </motion.div>
           )}
@@ -342,6 +405,56 @@ export default function OrderPage({ params }: OrderPageProps) {
           </NamefiButton>
         </div>
       </div>
+
+      <Dialog open={shareDialogOpen} onOpenChange={setShareDialogOpen}>
+        <DialogContent className="sm:max-w-[560px]">
+          <DialogHeader>
+            <DialogTitle>Share domain access</DialogTitle>
+            <DialogDescription>
+              Send this message to the recipient so they can begin managing
+              their domain.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-5">
+            <div className="space-y-2">
+              <Label>Message</Label>
+              <div className="flex items-start gap-2">
+                <Textarea
+                  value={
+                    shareManageUrl
+                      ? `${shareManageMessage} ${shareManageUrl}`
+                      : shareManageMessage
+                  }
+                  readOnly
+                  className="min-h-[110px] font-medium"
+                />
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={() =>
+                    handleCopy(
+                      `${shareManageMessage} ${shareManageUrl}`.trim(),
+                      'message',
+                    )
+                  }
+                  disabled={!shareManageMessage}
+                >
+                  {copiedField === 'message' ? (
+                    <Check className="h-4 w-4" />
+                  ) : (
+                    <Copy className="h-4 w-4" />
+                  )}
+                </Button>
+              </div>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShareDialogOpen(false)}>
+              Close
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </PageShell>
   );
 }

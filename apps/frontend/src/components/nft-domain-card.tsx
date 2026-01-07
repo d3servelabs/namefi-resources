@@ -1,6 +1,6 @@
 import type { OriginInfo } from '@/lib/origin';
 import { originConfig } from '@/lib/origin/config';
-import { ExternalLink } from 'lucide-react';
+import { ExternalLink, Share2, Settings } from 'lucide-react';
 import Link from 'next/link';
 import { CartCard } from './cart-card';
 import { NamefiButton } from './buttons/namefi-button';
@@ -21,6 +21,11 @@ export interface NftDomainCardProps {
   canViewNft: boolean;
   className?: string;
   showViewDomainButton?: boolean;
+  domainAction?: 'view' | 'manage' | 'share';
+  onShare?: () => void;
+  manageHref?: string;
+  manageLabel?: string;
+  shareLabel?: string;
   viewDomainButtonText?: string;
   viewNftButtonText?: string;
 }
@@ -32,6 +37,11 @@ export function NftDomainCard({
   canViewNft,
   className,
   showViewDomainButton = true,
+  domainAction = 'view',
+  onShare,
+  manageHref,
+  manageLabel = 'Manage domain',
+  shareLabel = 'Share domain',
   viewDomainButtonText = 'View Your Domain',
   viewNftButtonText = 'View Your NFT',
 }: NftDomainCardProps) {
@@ -46,6 +56,7 @@ export function NftDomainCard({
       }
     : origin;
   const explorerUrl = getNftExplorerUrl(item.chainId, item.tokenId);
+  const manageTarget = manageHref ?? `/domains/${item.fullDomain}`;
 
   return (
     <CartCard className={className ?? 'p-4'}>
@@ -55,20 +66,44 @@ export function NftDomainCard({
         origin={computedOrigin}
       />
       {showViewDomainButton ? (
-        <NamefiButton
-          className="w-full mt-4"
-          asChild={true}
-          disabled={!isCompleted}
-        >
-          <Link
-            href={`https://${item.fullDomain}`}
-            target="_blank"
-            tabIndex={isCompleted ? 0 : -1}
+        domainAction === 'share' ? (
+          <NamefiButton
+            className="w-full mt-4"
+            disabled={!isCompleted || !onShare}
+            onClick={onShare}
           >
-            {viewDomainButtonText}
-            <ExternalLink className="w-3.5 h-3.5" />
-          </Link>
-        </NamefiButton>
+            <Share2 className="mr-1 h-4 w-4" />
+            {shareLabel}
+          </NamefiButton>
+        ) : (
+          <NamefiButton
+            className="w-full mt-4"
+            asChild={true}
+            disabled={!isCompleted}
+          >
+            <Link
+              href={
+                domainAction === 'manage'
+                  ? manageTarget
+                  : `https://${item.fullDomain}`
+              }
+              target={domainAction === 'manage' ? undefined : '_blank'}
+              tabIndex={isCompleted ? 0 : -1}
+            >
+              {domainAction === 'manage' ? (
+                <>
+                  <Settings className="mr-1 h-4 w-4" />
+                  {manageLabel}
+                </>
+              ) : (
+                viewDomainButtonText
+              )}
+              {domainAction === 'manage' ? null : (
+                <ExternalLink className="w-3.5 h-3.5" />
+              )}
+            </Link>
+          </NamefiButton>
+        )
       ) : null}
       {explorerUrl && canViewNft ? (
         <NamefiButton
