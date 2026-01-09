@@ -1,7 +1,12 @@
 'use client';
 
 import { useTRPC } from '@/lib/trpc';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import type { AppRouterOutput } from '@/lib/trpc';
+import {
+  useMutation,
+  useQueryClient,
+  type QueryKey,
+} from '@tanstack/react-query';
 import { toast } from 'sonner';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import type { LogoFormData } from '../logo-generator';
@@ -206,9 +211,21 @@ export const createPosterGenerationPayload = (data: PosterFormData) => {
   return requestBody;
 };
 
+type FeaturedRecentGenerations =
+  AppRouterOutput['ai']['getFeaturedAndRecentGenerations'];
+
 interface UseDeleteGenerationOptions {
   onSuccess?: () => void;
+  onError?: (error: unknown) => void;
 }
+
+type DeleteGenerationContext = {
+  removedId: string;
+  previousUserGenerations: Array<[QueryKey, unknown]>;
+  previousGenerationsByDomain: Array<[QueryKey, unknown]>;
+  previousGenerationsByType: Array<[QueryKey, unknown]>;
+  previousFeaturedAndRecent: FeaturedRecentGenerations | undefined;
+};
 
 export function useDeleteGeneration(options: UseDeleteGenerationOptions = {}) {
   const trpc = useTRPC();
@@ -216,6 +233,103 @@ export function useDeleteGeneration(options: UseDeleteGenerationOptions = {}) {
 
   return useMutation(
     trpc.ai.deleteGeneration.mutationOptions({
+      onMutate: async (
+        variables,
+      ): Promise<DeleteGenerationContext | undefined> => {
+        const removedId = variables?.id;
+        if (!removedId) return undefined;
+
+        await queryClient.cancelQueries({
+          predicate: (query) =>
+            Array.isArray(query.queryKey) && query.queryKey[0] === 'ai',
+        });
+
+        const previousUserGenerations = queryClient.getQueriesData({
+          predicate: (query) =>
+            Array.isArray(query.queryKey) &&
+            query.queryKey[0] === 'ai' &&
+            query.queryKey[1] === 'getUserGenerationsFiltered',
+        });
+        const previousGenerationsByDomain = queryClient.getQueriesData({
+          predicate: (query) =>
+            Array.isArray(query.queryKey) &&
+            query.queryKey[0] === 'ai' &&
+            query.queryKey[1] === 'getGenerationsByDomain',
+        });
+        const previousGenerationsByType = queryClient.getQueriesData({
+          predicate: (query) =>
+            Array.isArray(query.queryKey) &&
+            query.queryKey[0] === 'ai' &&
+            query.queryKey[1] === 'getGenerationsByType',
+        });
+        const previousFeaturedAndRecent =
+          queryClient.getQueryData<FeaturedRecentGenerations>(
+            trpc.ai.getFeaturedAndRecentGenerations.queryKey(),
+          );
+
+        queryClient.setQueriesData(
+          {
+            predicate: (query) =>
+              Array.isArray(query.queryKey) &&
+              query.queryKey[0] === 'ai' &&
+              query.queryKey[1] === 'getUserGenerationsFiltered',
+          },
+          (old) => {
+            if (!Array.isArray(old)) return old;
+            return old.filter((item) => item.id !== removedId);
+          },
+        );
+
+        queryClient.setQueriesData(
+          {
+            predicate: (query) =>
+              Array.isArray(query.queryKey) &&
+              query.queryKey[0] === 'ai' &&
+              query.queryKey[1] === 'getGenerationsByDomain',
+          },
+          (old) => {
+            if (!Array.isArray(old)) return old;
+            return old.filter((item) => item.id !== removedId);
+          },
+        );
+
+        queryClient.setQueriesData(
+          {
+            predicate: (query) =>
+              Array.isArray(query.queryKey) &&
+              query.queryKey[0] === 'ai' &&
+              query.queryKey[1] === 'getGenerationsByType',
+          },
+          (old) => {
+            if (!Array.isArray(old)) return old;
+            return old.filter((item) => item.id !== removedId);
+          },
+        );
+
+        queryClient.setQueryData(
+          trpc.ai.getFeaturedAndRecentGenerations.queryKey(),
+          (old) => {
+            if (!old) return old;
+            return {
+              ...old,
+              featured: (old.featured ?? []).filter(
+                (item) => item.id !== removedId,
+              ),
+              recent: (old.recent ?? []).filter(
+                (item) => item.id !== removedId,
+              ),
+            };
+          },
+        );
+
+        return {
+          removedId,
+          previousUserGenerations,
+          previousGenerationsByDomain,
+          previousGenerationsByType,
+          previousFeaturedAndRecent,
+        };
+      },
       onSuccess: (_data, variables) => {
         if (variables?.id) {
           queryClient.setQueryData(
@@ -261,8 +375,36 @@ export function useDeleteGeneration(options: UseDeleteGenerationOptions = {}) {
         toast.success('Generation deleted');
         options.onSuccess?.();
       },
-      onError: (error) => {
-        toast.error(error.message || 'Failed to delete generation');
+      onError: (error, _variables, context) => {
+        if (context?.previousUserGenerations) {
+          for (const [queryKey, data] of context.previousUserGenerations) {
+            queryClient.setQueryData(queryKey, data);
+          }
+        }
+        if (context?.previousGenerationsByDomain) {
+          for (const [queryKey, data] of context.previousGenerationsByDomain) {
+            queryClient.setQueryData(queryKey, data);
+          }
+        }
+        if (context?.previousGenerationsByType) {
+          for (const [queryKey, data] of context.previousGenerationsByType) {
+            queryClient.setQueryData(queryKey, data);
+          }
+        }
+        if (context?.previousFeaturedAndRecent !== undefined) {
+          queryClient.setQueryData<FeaturedRecentGenerations | undefined>(
+            trpc.ai.getFeaturedAndRecentGenerations.queryKey(),
+            context.previousFeaturedAndRecent,
+          );
+        }
+        const message =
+          error instanceof Error
+            ? error.message
+            : typeof error === 'object' && error && 'message' in error
+              ? String((error as { message?: unknown }).message)
+              : 'Failed to delete generation';
+        toast.error(message);
+        options.onError?.(error);
       },
     }),
   );

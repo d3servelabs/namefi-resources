@@ -165,7 +165,6 @@ export function GenerationDetailsClient({
   const deleteMutation = useDeleteGeneration({
     onSuccess: () => {
       setDeleteDialogOpen(false);
-      router.push('/ai-brand-generator');
     },
   });
 
@@ -370,9 +369,11 @@ export function GenerationDetailsClient({
                         Cancel
                       </AlertDialogCancel>
                       <AlertDialogAction
-                        onClick={() =>
-                          deleteMutation.mutate({ id: generationId })
-                        }
+                        onClick={() => {
+                          setDeleteDialogOpen(false);
+                          deleteMutation.mutate({ id: generationId });
+                          router.replace('/ai-brand-generator');
+                        }}
                         disabled={deleteMutation.isPending}
                         className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                       >

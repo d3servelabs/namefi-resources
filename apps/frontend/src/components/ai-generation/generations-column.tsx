@@ -254,7 +254,9 @@ export function GenerationsColumn({
 
   const handleConfirmDelete = () => {
     if (!deleteTarget) return;
-    deleteMutation.mutate({ id: deleteTarget.id });
+    const targetId = deleteTarget.id;
+    setDeleteTarget(null);
+    deleteMutation.mutate({ id: targetId });
   };
 
   const handleDeleteDialogChange = (open: boolean) => {
