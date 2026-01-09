@@ -19,6 +19,7 @@ When asked to create UI prototypes, visual demos, or component explorations:
 - **Self-contained**: All CSS should be inline in `<style>` tags
 - **CDN-only**: External dependencies (fonts, icons, libraries) should use CDN links only
 - **No build step**: Files should work without any compilation or bundling
+- **Responsive**: Must work on all screen sizes (Mobile, Tablet, Desktop). Use flexible grids (e.g., `minmax`) and wrapping layouts.
 
 ## Design System
 
@@ -57,8 +58,10 @@ A highlighted box explaining the design challenge:
 
 ### 3. Interactive Demo (Hero Section)
 - Show the **recommended solution** first as an interactive demo
-- Let the viewer experience the intended behavior immediately
-- This is the "pitch" - what we're proposing
+- **Include a Configurator**: Add a panel to tweak key variables (colors, states, text labels, density)
+- **Live Preview**: The demo should update instantly when configuration changes
+- **Generated Code**: Optionally show the CSS/JS variables or code snippet for the selected configuration
+- This is the "pitch" - what we're proposing, with the ability to "try before you buy"
 
 ### 4. Design Exploration (Variants Grid)
 - Organize variants by category (e.g., "Prominent", "Subtle", "Minimal")
