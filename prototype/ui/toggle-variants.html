@@ -1,0 +1,1546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Toggle Variants - Prominent vs Subtle</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Background colors */
+      --bg-dark: #0a0a0a;
+      --bg-card: #141414;
+      --bg-card-hover: #1a1a1a;
+
+      /* Text colors */
+      --text-primary: #ffffff;
+      --text-secondary: #a1a1aa;
+      --text-muted: #71717a;
+
+      /* Green variants */
+      --green-prominent: #22c55e;
+      --green-prominent-glow: rgba(34, 197, 94, 0.3);
+      --green-subtle: #166534;
+      --green-subtle-light: #15803d;
+      --green-muted: rgba(34, 197, 94, 0.15);
+      --green-outline: rgba(34, 197, 94, 0.4);
+
+      /* Red variants (warning/danger) */
+      --red-prominent: #ef4444;
+      --red-prominent-glow: rgba(239, 68, 68, 0.3);
+      --red-subtle: #991b1b;
+      --red-muted: rgba(239, 68, 68, 0.15);
+      --red-outline: rgba(239, 68, 68, 0.4);
+
+      /* Yellow variants (caution) */
+      --yellow-prominent: #eab308;
+      --yellow-prominent-glow: rgba(234, 179, 8, 0.3);
+      --yellow-subtle: #854d0e;
+      --yellow-muted: rgba(234, 179, 8, 0.15);
+      --yellow-outline: rgba(234, 179, 8, 0.4);
+
+      /* Neutral */
+      --neutral-track: #27272a;
+      --neutral-thumb: #52525b;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-primary);
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, #fff 0%, #a1a1aa 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .subtitle {
+      color: var(--text-secondary);
+      margin-bottom: 40px;
+      font-size: 15px;
+    }
+
+    .section {
+      margin-bottom: 48px;
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--text-primary);
+    }
+
+    .section-desc {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+
+    .toggle-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+    }
+
+    .toggle-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 12px;
+      padding: 20px;
+      transition: all 0.2s ease;
+    }
+
+    .toggle-card:hover {
+      background: var(--bg-card-hover);
+      border-color: rgba(255,255,255,0.1);
+    }
+
+    .toggle-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .toggle-label {
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .toggle-type {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .toggle-desc {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    /* Base Toggle Styles */
+    .toggle {
+      position: relative;
+      width: 44px;
+      height: 24px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .toggle input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+      position: absolute;
+    }
+
+    .toggle-track {
+      position: absolute;
+      inset: 0;
+      background: var(--neutral-track);
+      border-radius: 12px;
+      transition: all 0.25s ease;
+    }
+
+    .toggle-thumb {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 20px;
+      height: 20px;
+      background: var(--neutral-thumb);
+      border-radius: 10px;
+      transition: all 0.25s ease;
+    }
+
+    .toggle input:checked + .toggle-track + .toggle-thumb {
+      transform: translateX(20px);
+      background: #fff;
+    }
+
+    /* ==================== */
+    /* GREEN VARIANTS */
+    /* ==================== */
+
+    /* Green Prominent - Filled with glow */
+    .toggle.green-prominent input:checked + .toggle-track {
+      background: var(--green-prominent);
+      box-shadow: 0 0 20px var(--green-prominent-glow);
+    }
+
+    /* Green Subtle - Darker filled */
+    .toggle.green-subtle input:checked + .toggle-track {
+      background: var(--green-subtle);
+    }
+    .toggle.green-subtle input:checked + .toggle-track + .toggle-thumb {
+      background: var(--green-prominent);
+    }
+
+    /* Green Muted - Very light fill */
+    .toggle.green-muted input:checked + .toggle-track {
+      background: var(--green-muted);
+    }
+    .toggle.green-muted input:checked + .toggle-track + .toggle-thumb {
+      background: var(--green-subtle-light);
+    }
+
+    /* Green Outline - Border only (FIXED positioning) */
+    .toggle.green-outline .toggle-track {
+      border: 2px solid transparent;
+    }
+    .toggle.green-outline input:checked + .toggle-track {
+      background: transparent;
+      border-color: var(--green-outline);
+    }
+    .toggle.green-outline .toggle-thumb {
+      top: 4px;
+      left: 4px;
+      width: 16px;
+      height: 16px;
+      border-radius: 8px;
+    }
+    .toggle.green-outline input:checked + .toggle-track + .toggle-thumb {
+      transform: translateX(20px);
+      background: var(--green-subtle-light);
+    }
+
+    /* Green Soft - Egg green / sage */
+    .toggle.green-soft input:checked + .toggle-track {
+      background: rgba(134, 179, 144, 0.25);
+    }
+    .toggle.green-soft input:checked + .toggle-track + .toggle-thumb {
+      background: #86b390;
+    }
+
+    /* ==================== */
+    /* ULTRA SUBTLE GREEN VARIANTS */
+    /* ==================== */
+
+    /* Ghost - Almost invisible, just thumb color changes */
+    .toggle.green-ghost input:checked + .toggle-track {
+      background: rgba(34, 197, 94, 0.08);
+    }
+    .toggle.green-ghost input:checked + .toggle-track + .toggle-thumb {
+      background: rgba(34, 197, 94, 0.5);
+    }
+
+    /* Whisper - Minimal color, blends with background */
+    .toggle.green-whisper input:checked + .toggle-track {
+      background: #1a1f1c;
+    }
+    .toggle.green-whisper input:checked + .toggle-track + .toggle-thumb {
+      background: #3d5a45;
+    }
+
+    /* Neutral with hint - Almost gray with slight green tint */
+    .toggle.green-hint input:checked + .toggle-track {
+      background: #1f2a22;
+    }
+    .toggle.green-hint input:checked + .toggle-track + .toggle-thumb {
+      background: #4a5d4f;
+    }
+
+    /* Desaturated - Grayish green */
+    .toggle.green-desaturated input:checked + .toggle-track {
+      background: rgba(120, 140, 125, 0.2);
+    }
+    .toggle.green-desaturated input:checked + .toggle-track + .toggle-thumb {
+      background: #6b7c6f;
+    }
+
+    /* Minimal dot - Track stays neutral, only dot has subtle color */
+    .toggle.green-minimal-dot input:checked + .toggle-track {
+      background: #2a2a2a;
+    }
+    .toggle.green-minimal-dot input:checked + .toggle-track + .toggle-thumb {
+      background: #4ade80;
+      opacity: 0.6;
+    }
+
+    /* Inner glow - Subtle inner glow effect */
+    .toggle.green-inner-glow input:checked + .toggle-track {
+      background: #1a1a1a;
+      box-shadow: inset 0 0 8px rgba(34, 197, 94, 0.2);
+    }
+    .toggle.green-inner-glow input:checked + .toggle-track + .toggle-thumb {
+      background: #4ade80;
+      opacity: 0.7;
+    }
+
+    /* Outline thin - Thinner border */
+    .toggle.green-outline-thin .toggle-track {
+      border: 1px solid transparent;
+    }
+    .toggle.green-outline-thin input:checked + .toggle-track {
+      background: transparent;
+      border-color: rgba(34, 197, 94, 0.3);
+    }
+    .toggle.green-outline-thin .toggle-thumb {
+      top: 3px;
+      left: 3px;
+      width: 18px;
+      height: 18px;
+      border-radius: 9px;
+    }
+    .toggle.green-outline-thin input:checked + .toggle-track + .toggle-thumb {
+      transform: translateX(20px);
+      background: rgba(34, 197, 94, 0.5);
+    }
+
+    /* Gradient subtle - Very subtle gradient */
+    .toggle.green-gradient-subtle input:checked + .toggle-track {
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(34, 197, 94, 0.05) 100%);
+    }
+    .toggle.green-gradient-subtle input:checked + .toggle-track + .toggle-thumb {
+      background: #4a7a54;
+    }
+
+    /* ==================== */
+    /* RED VARIANTS */
+    /* ==================== */
+
+    /* Red Prominent - Filled with glow */
+    .toggle.red-prominent input:checked + .toggle-track {
+      background: var(--red-prominent);
+      box-shadow: 0 0 20px var(--red-prominent-glow);
+    }
+
+    /* Red Subtle - Darker filled */
+    .toggle.red-subtle input:checked + .toggle-track {
+      background: var(--red-subtle);
+    }
+    .toggle.red-subtle input:checked + .toggle-track + .toggle-thumb {
+      background: var(--red-prominent);
+    }
+
+    /* Red Muted - Very light fill */
+    .toggle.red-muted input:checked + .toggle-track {
+      background: var(--red-muted);
+    }
+    .toggle.red-muted input:checked + .toggle-track + .toggle-thumb {
+      background: #dc2626;
+    }
+
+    /* Red Outline - Border only (FIXED) */
+    .toggle.red-outline .toggle-track {
+      border: 2px solid transparent;
+    }
+    .toggle.red-outline input:checked + .toggle-track {
+      background: transparent;
+      border-color: var(--red-outline);
+    }
+    .toggle.red-outline .toggle-thumb {
+      top: 4px;
+      left: 4px;
+      width: 16px;
+      height: 16px;
+      border-radius: 8px;
+    }
+    .toggle.red-outline input:checked + .toggle-track + .toggle-thumb {
+      transform: translateX(20px);
+      background: #dc2626;
+    }
+
+    /* ==================== */
+    /* YELLOW VARIANTS */
+    /* ==================== */
+
+    /* Yellow Prominent - Filled with glow */
+    .toggle.yellow-prominent input:checked + .toggle-track {
+      background: var(--yellow-prominent);
+      box-shadow: 0 0 20px var(--yellow-prominent-glow);
+    }
+    .toggle.yellow-prominent input:checked + .toggle-track + .toggle-thumb {
+      background: #1a1a1a;
+    }
+
+    /* Yellow Subtle - Darker filled */
+    .toggle.yellow-subtle input:checked + .toggle-track {
+      background: var(--yellow-subtle);
+    }
+    .toggle.yellow-subtle input:checked + .toggle-track + .toggle-thumb {
+      background: var(--yellow-prominent);
+    }
+
+    /* Yellow Muted - Very light fill */
+    .toggle.yellow-muted input:checked + .toggle-track {
+      background: var(--yellow-muted);
+    }
+    .toggle.yellow-muted input:checked + .toggle-track + .toggle-thumb {
+      background: #ca8a04;
+    }
+
+    /* Yellow Outline - Border only (FIXED) */
+    .toggle.yellow-outline .toggle-track {
+      border: 2px solid transparent;
+    }
+    .toggle.yellow-outline input:checked + .toggle-track {
+      background: transparent;
+      border-color: var(--yellow-outline);
+    }
+    .toggle.yellow-outline .toggle-thumb {
+      top: 4px;
+      left: 4px;
+      width: 16px;
+      height: 16px;
+      border-radius: 8px;
+    }
+    .toggle.yellow-outline input:checked + .toggle-track + .toggle-thumb {
+      transform: translateX(20px);
+      background: #ca8a04;
+    }
+
+    /* ==================== */
+    /* COMPARISON SECTION */
+    /* ==================== */
+
+    .comparison-section {
+      background: var(--bg-card);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 28px;
+      margin-top: 48px;
+    }
+
+    .comparison-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .comparison-title::before {
+      content: '';
+      width: 4px;
+      height: 16px;
+      background: linear-gradient(135deg, var(--green-prominent), var(--red-prominent));
+      border-radius: 2px;
+    }
+
+    .use-case {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 16px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .use-case:last-child {
+      border-bottom: none;
+    }
+
+    .use-case-label {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .use-case-title {
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+
+    .use-case-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .use-case-toggles {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .toggle-with-label {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .toggle-mini-label {
+      font-size: 10px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+    }
+
+    /* Divider */
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+      margin: 48px 0;
+    }
+
+    /* Animation for demonstration */
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 20px var(--red-prominent-glow); }
+      50% { box-shadow: 0 0 30px var(--red-prominent-glow), 0 0 40px var(--red-prominent-glow); }
+    }
+
+    .toggle.red-prominent.pulsing input:checked + .toggle-track {
+      animation: pulse-glow 2s ease-in-out infinite;
+    }
+
+    /* Badge for attention */
+    .attention-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      background: rgba(239, 68, 68, 0.15);
+      color: var(--red-prominent);
+      font-size: 10px;
+      font-weight: 600;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .normal-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      background: rgba(34, 197, 94, 0.15);
+      color: var(--green-subtle-light);
+      font-size: 10px;
+      font-weight: 600;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .row-badges {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    /* Spectrum display */
+    .spectrum {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 20px;
+      background: var(--bg-card);
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.06);
+      margin-top: 16px;
+      overflow-x: auto;
+    }
+
+    .spectrum-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      min-width: 60px;
+    }
+
+    .spectrum-label {
+      font-size: 9px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .spectrum-arrow {
+      color: var(--text-muted);
+      font-size: 20px;
+    }
+
+    /* ==================== */
+    /* TOGGLE WITH TEXT (ON/OFF) */
+    /* ==================== */
+
+    .toggle-text {
+      position: relative;
+      width: 56px;
+      height: 28px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .toggle-text input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+      position: absolute;
+    }
+
+    .toggle-text .toggle-track {
+      position: absolute;
+      inset: 0;
+      background: var(--neutral-track);
+      border-radius: 14px;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      padding: 0 8px;
+    }
+
+    .toggle-text .toggle-track::before {
+      content: 'OFF';
+      position: absolute;
+      right: 8px;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      color: rgba(255,255,255,0.4);
+      transition: all 0.3s ease;
+    }
+
+    .toggle-text .toggle-track::after {
+      content: 'ON';
+      position: absolute;
+      left: 8px;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      color: rgba(255,255,255,0);
+      transition: all 0.3s ease;
+    }
+
+    .toggle-text .toggle-thumb {
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 22px;
+      height: 22px;
+      background: #fff;
+      border-radius: 11px;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .toggle-text input:checked + .toggle-track + .toggle-thumb {
+      transform: translateX(28px);
+    }
+
+    .toggle-text input:checked + .toggle-track::before {
+      color: rgba(255,255,255,0);
+    }
+
+    .toggle-text input:checked + .toggle-track::after {
+      color: rgba(255,255,255,0.7);
+    }
+
+    /* Green ON - Peaceful green for safe states */
+    .toggle-text.green-on input:checked + .toggle-track {
+      background: var(--green-prominent);
+    }
+
+    /* Green ON Subtle - Softer green for less prominent safe states */
+    .toggle-text.green-on-subtle input:checked + .toggle-track {
+      background: var(--green-subtle);
+    }
+    .toggle-text.green-on-subtle input:checked + .toggle-track::after {
+      color: rgba(255,255,255,0.5);
+    }
+
+    /* Green ON Muted - Very subtle green */
+    .toggle-text.green-on-muted input:checked + .toggle-track {
+      background: rgba(34, 197, 94, 0.25);
+    }
+    .toggle-text.green-on-muted input:checked + .toggle-track::after {
+      color: rgba(34, 197, 94, 0.8);
+    }
+
+    /* Red OFF Warning - Show red when OFF to warn user */
+    .toggle-text.red-off-warning .toggle-track {
+      background: var(--red-prominent);
+    }
+    .toggle-text.red-off-warning .toggle-track::before {
+      color: rgba(255,255,255,0.9);
+    }
+    .toggle-text.red-off-warning input:checked + .toggle-track {
+      background: var(--green-prominent);
+    }
+
+    /* Red OFF Warning Subtle */
+    .toggle-text.red-off-warning-subtle .toggle-track {
+      background: var(--red-subtle);
+    }
+    .toggle-text.red-off-warning-subtle .toggle-track::before {
+      color: rgba(255,255,255,0.7);
+    }
+    .toggle-text.red-off-warning-subtle input:checked + .toggle-track {
+      background: var(--green-subtle);
+    }
+    .toggle-text.red-off-warning-subtle input:checked + .toggle-track::after {
+      color: rgba(255,255,255,0.7);
+    }
+
+    /* Neutral OFF, Green ON */
+    .toggle-text.neutral-off-green-on .toggle-track {
+      background: #3a3a3a;
+    }
+    .toggle-text.neutral-off-green-on .toggle-track::before {
+      color: rgba(255,255,255,0.5);
+    }
+    .toggle-text.neutral-off-green-on input:checked + .toggle-track {
+      background: var(--green-prominent);
+    }
+
+    /* Neutral OFF, Green ON Subtle */
+    .toggle-text.neutral-off-green-on-subtle .toggle-track {
+      background: #2a2a2a;
+    }
+    .toggle-text.neutral-off-green-on-subtle .toggle-track::before {
+      color: rgba(255,255,255,0.3);
+    }
+    .toggle-text.neutral-off-green-on-subtle input:checked + .toggle-track {
+      background: var(--green-subtle);
+    }
+    .toggle-text.neutral-off-green-on-subtle input:checked + .toggle-track::after {
+      color: rgba(255,255,255,0.6);
+    }
+
+    /* Larger toggle with text for emphasis */
+    .toggle-text.large {
+      width: 64px;
+      height: 32px;
+    }
+    .toggle-text.large .toggle-track {
+      border-radius: 16px;
+    }
+    .toggle-text.large .toggle-track::before {
+      right: 10px;
+      font-size: 10px;
+    }
+    .toggle-text.large .toggle-track::after {
+      left: 10px;
+      font-size: 10px;
+    }
+    .toggle-text.large .toggle-thumb {
+      top: 4px;
+      left: 4px;
+      width: 24px;
+      height: 24px;
+      border-radius: 12px;
+    }
+    .toggle-text.large input:checked + .toggle-track + .toggle-thumb {
+      transform: translateX(32px);
+    }
+
+    /* With checkmark/X icons instead of text */
+    .toggle-text.with-icons .toggle-track::before {
+      content: '✕';
+      font-size: 11px;
+    }
+    .toggle-text.with-icons .toggle-track::after {
+      content: '✓';
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Toggle Variants Demo v3</h1>
+    <p class="subtitle">Prominent vs Subtle toggle styles — full spectrum from most prominent to most subtle</p>
+
+    <!-- TOGGLE WITH TEXT (ON/OFF) SECTION -->
+    <div class="section">
+      <h2 class="section-title">🔤 Toggle with Text (ON/OFF Labels)</h2>
+      <p class="section-desc">Display ON/OFF text inside the toggle for clearer state indication. Green ON = peaceful/safe, Red OFF = warning</p>
+
+      <div class="toggle-grid">
+        <div class="toggle-card">
+          <div class="toggle-card-header">
+            <div>
+              <div class="toggle-label">Green ON</div>
+              <div class="toggle-type">Peaceful State</div>
+            </div>
+            <label class="toggle-text green-on">
+              <input type="checkbox" checked>
+              <span class="toggle-track"></span>
+              <span class="toggle-thumb"></span>
+            </label>
+          </div>
+          <p class="toggle-desc">Shows green + ON when enabled, gray + OFF when disabled. Try clicking to toggle!</p>
+        </div>
+
+        <div class="toggle-card">
+          <div class="toggle-card-header">
+            <div>
+              <div class="toggle-label">Green ON Subtle</div>
+              <div class="toggle-type">Subtle Peaceful</div>
+            </div>
+            <label class="toggle-text green-on-subtle">
+              <input type="checkbox" checked>
+              <span class="toggle-track"></span>
+              <span class="toggle-thumb"></span>
+            </label>
+          </div>
+          <p class="toggle-desc">Dark green ON, more subtle.</p>
+        </div>
+
+        <div class="toggle-card">
+          <div class="toggle-card-header">
+            <div>
+              <div class="toggle-label">Green ON Muted</div>
+              <div class="toggle-type">Ultra Subtle</div>
+            </div>
+            <label class="toggle-text green-on-muted">
+              <input type="checkbox" checked>
+              <span class="toggle-track"></span>
+              <span class="toggle-thumb"></span>
+            </label>
+          </div>
+          <p class="toggle-desc">Very faint green ON.</p>
+        </div>
+
+        <div class="toggle-card">
+          <div class="toggle-card-header">
+            <div>
+              <div class="toggle-label">Red OFF Warning ⚠️</div>
+              <div class="toggle-type">Warning Mode</div>
+            </div>
+            <label class="toggle-text red-off-warning">
+              <input type="checkbox">
+              <span class="toggle-track"></span>
+              <span class="toggle-thumb"></span>
+            </label>
+          </div>
+          <p class="toggle-desc">Shows red warning when OFF! Turns green when ON. Great for Auto Renew and important settings.</p>
+        </div>
+
+        <div class="toggle-card">
+          <div class="toggle-card-header">
+            <div>
+              <div class="toggle-label">Red OFF Warning Subtle</div>
+              <div class="toggle-type">Subtle Warning</div>
+            </div>
+            <label class="toggle-text red-off-warning-subtle">
+              <input type="checkbox">
+              <span class="toggle-track"></span>
+              <span class="toggle-thumb"></span>
+            </label>
+          </div>
+          <p class="toggle-desc">Dark red OFF warning, dark green ON.</p>
+        </div>
+
+        <div class="toggle-card">
+          <div class="toggle-card-header">
+            <div>
+              <div class="toggle-label">Neutral OFF → Green ON</div>
+              <div class="toggle-type">Neutral to Peaceful</div>
+            </div>
+            <label class="toggle-text neutral-off-green-on">
+              <input type="checkbox" checked>
+              <span class="toggle-track"></span>
+              <span class="toggle-thumb"></span>
+            </label>
+          </div>
+          <p class="toggle-desc">Neutral gray when OFF, green when ON.</p>
+        </div>
+
+        <div class="toggle-card">
+          <div class="toggle-card-header">
+            <div>
+              <div class="toggle-label">Neutral OFF → Green ON Subtle</div>
+              <div class="toggle-type">Subtle Transition</div>
+            </div>
+            <label class="toggle-text neutral-off-green-on-subtle">
+              <input type="checkbox" checked>
+              <span class="toggle-track"></span>
+              <span class="toggle-thumb"></span>
+            </label>
+          </div>
+          <p class="toggle-desc">More subtle version.</p>
+        </div>
+
+        <div class="toggle-card">
+          <div class="toggle-card-header">
+            <div>
+              <div class="toggle-label">With Icons ✓/✕</div>
+              <div class="toggle-type">Icon Version</div>
+            </div>
+            <label class="toggle-text green-on with-icons">
+              <input type="checkbox" checked>
+              <span class="toggle-track"></span>
+              <span class="toggle-thumb"></span>
+            </label>
+          </div>
+          <p class="toggle-desc">Uses ✓ and ✕ icons instead of text.</p>
+        </div>
+
+        <div class="toggle-card">
+          <div class="toggle-card-header">
+            <div>
+              <div class="toggle-label">Large Size</div>
+              <div class="toggle-type">Larger Size</div>
+            </div>
+            <label class="toggle-text large green-on">
+              <input type="checkbox" checked>
+              <span class="toggle-track"></span>
+              <span class="toggle-thumb"></span>
+            </label>
+          </div>
+          <p class="toggle-desc">Larger toggle for better readability.</p>
+        </div>
+
+        <div class="toggle-card">
+          <div class="toggle-card-header">
+            <div>
+              <div class="toggle-label">Large Red OFF Warning</div>
+              <div class="toggle-type">Large Warning</div>
+            </div>
+            <label class="toggle-text large red-off-warning">
+              <input type="checkbox">
+              <span class="toggle-track"></span>
+              <span class="toggle-thumb"></span>
+            </label>
+          </div>
+          <p class="toggle-desc">Large size red warning mode.</p>
+        </div>
+
+        <div class="toggle-card">
+          <div class="toggle-card-header">
+            <div>
+              <div class="toggle-label">Large with Icons</div>
+              <div class="toggle-type">Large + Icons</div>
+            </div>
+            <label class="toggle-text large red-off-warning with-icons">
+              <input type="checkbox">
+              <span class="toggle-track"></span>
+              <span class="toggle-thumb"></span>
+            </label>
+          </div>
+          <p class="toggle-desc">Large size + red warning + icons.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ULTRA SUBTLE SECTION - NEW! -->
+    <div class="section">
+      <h2 class="section-title">🌿 Ultra Subtle Green</h2>
+      <p class="section-desc">For default/normal states that don't need attention, making users feel comfortable and natural</p>
+
+      <div class="toggle-grid">
+        <div class="toggle-card">
+          <div class="toggle-card-header">
+            <div>
+              <div class="toggle-label">Ghost</div>
+              <div class="toggle-type">Ultra Subtle</div>
+            </div>
+            <label class="toggle green-ghost">
+              <input type="checkbox" checked>
+              <span class="toggle-track"></span>
+              <span class="toggle-thumb"></span>
+            </label>
+          </div>
+          <p class="toggle-desc">Almost invisible background, only the thumb has a faint color.</p>
+        </div>
+
+        <div class="toggle-card">
+          <div class="toggle-card-header">
+            <div>
+              <div class="toggle-label">Whisper</div>
+              <div class="toggle-type">Ultra Subtle</div>
+            </div>
+            <label class="toggle green-whisper">
+              <input type="checkbox" checked>
+              <span class="toggle-track"></span>
+              <span class="toggle-thumb"></span>
+            </label>
+          </div>
+          <p class="toggle-desc">Dark background with a hint of green, blends well with the environment.</p>
+        </div>
+
+        <div class="toggle-card">
+          <div class="toggle-card-header">
+            <div>
+              <div class="toggle-label">Hint</div>
+              <div class="toggle-type">Ultra Subtle</div>
+            </div>
+            <label class="toggle green-hint">
+              <input type="checkbox" checked>
+              <span class="toggle-track"></span>
+              <span class="toggle-thumb"></span>
+            </label>
+          </div>
+          <p class="toggle-desc">Neutral tones with a slight green hint.</p>
+        </div>
+
+        <div class="toggle-card">
+          <div class="toggle-card-header">
+            <div>
+              <div class="toggle-label">Desaturated</div>
+              <div class="toggle-type">Subtle</div>
+            </div>
+            <label class="toggle green-desaturated">
+              <input type="checkbox" checked>
+              <span class="toggle-track"></span>
+              <span class="toggle-thumb"></span>
+            </label>
+          </div>
+          <p class="toggle-desc">Grayish green, soft desaturated tones.</p>
+        </div>
+
+        <div class="toggle-card">
+          <div class="toggle-card-header">
+            <div>
+              <div class="toggle-label">Minimal Dot</div>
+              <div class="toggle-type">Subtle</div>
+            </div>
+            <label class="toggle green-minimal-dot">
+              <input type="checkbox" checked>
+              <span class="toggle-track"></span>
+              <span class="toggle-thumb"></span>
+            </label>
+          </div>
+          <p class="toggle-desc">Track stays neutral, only the thumb has semi-transparent green.</p>
+        </div>
+
+        <div class="toggle-card">
+          <div class="toggle-card-header">
+            <div>
+              <div class="toggle-label">Inner Glow</div>
+              <div class="toggle-type">Subtle</div>
+            </div>
+            <label class="toggle green-inner-glow">
+              <input type="checkbox" checked>
+              <span class="toggle-track"></span>
+              <span class="toggle-thumb"></span>
+            </label>
+          </div>
+          <p class="toggle-desc">Track has a subtle inner green glow effect.</p>
+        </div>
+
+        <div class="toggle-card">
+          <div class="toggle-card-header">
+            <div>
+              <div class="toggle-label">Outline Thin</div>
+              <div class="toggle-type">Subtle</div>
+            </div>
+            <label class="toggle green-outline-thin">
+              <input type="checkbox" checked>
+              <span class="toggle-track"></span>
+              <span class="toggle-thumb"></span>
+            </label>
+          </div>
+          <p class="toggle-desc">1px thin border, very refined and subtle.</p>
+        </div>
+
+        <div class="toggle-card">
+          <div class="toggle-card-header">
+            <div>
+              <div class="toggle-label">Gradient Subtle</div>
+              <div class="toggle-type">Subtle</div>
+            </div>
+            <label class="toggle green-gradient-subtle">
+              <input type="checkbox" checked>
+              <span class="toggle-track"></span>
+              <span class="toggle-thumb"></span>
+            </label>
+          </div>
+          <p class="toggle-desc">Very faint gradient background effect.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- GREEN SECTION -->
+    <div class="section">
+      <h2 class="section-title">🟢 Standard Green Variants</h2>
+      <p class="section-desc">Standard green variants, from prominent to subtle</p>
+
+      <div class="toggle-grid">
+        <div class="toggle-card">
+          <div class="toggle-card-header">
+            <div>
+              <div class="toggle-label">Prominent (Filled + Glow)</div>
+              <div class="toggle-type">Prominent</div>
+            </div>
+            <label class="toggle green-prominent">
+              <input type="checkbox" checked>
+              <span class="toggle-track"></span>
+              <span class="toggle-thumb"></span>
+            </label>
+          </div>
+          <p class="toggle-desc">Full fill + glow effect, most eye-catching.</p>
+        </div>
+
+        <div class="toggle-card">
+          <div class="toggle-card-header">
+            <div>
+              <div class="toggle-label">Subtle (Dark Fill)</div>
+              <div class="toggle-type">Subtle</div>
+            </div>
+            <label class="toggle green-subtle">
+              <input type="checkbox" checked>
+              <span class="toggle-track"></span>
+              <span class="toggle-thumb"></span>
+            </label>
+          </div>
+          <p class="toggle-desc">Dark green track + bright thumb.</p>
+        </div>
+
+        <div class="toggle-card">
+          <div class="toggle-card-header">
+            <div>
+              <div class="toggle-label">Muted (Light Fill)</div>
+              <div class="toggle-type">Subtle</div>
+            </div>
+            <label class="toggle green-muted">
+              <input type="checkbox" checked>
+              <span class="toggle-track"></span>
+              <span class="toggle-thumb"></span>
+            </label>
+          </div>
+          <p class="toggle-desc">Very light green background.</p>
+        </div>
+
+        <div class="toggle-card">
+          <div class="toggle-card-header">
+            <div>
+              <div class="toggle-label">Outline (Border Only)</div>
+              <div class="toggle-type">Subtle</div>
+            </div>
+            <label class="toggle green-outline">
+              <input type="checkbox" checked>
+              <span class="toggle-track"></span>
+              <span class="toggle-thumb"></span>
+            </label>
+          </div>
+          <p class="toggle-desc">Border only, no fill (centering fixed).</p>
+        </div>
+
+        <div class="toggle-card">
+          <div class="toggle-card-header">
+            <div>
+              <div class="toggle-label">Soft (Egg Green / Sage)</div>
+              <div class="toggle-type">Subtle</div>
+            </div>
+            <label class="toggle green-soft">
+              <input type="checkbox" checked>
+              <span class="toggle-track"></span>
+              <span class="toggle-thumb"></span>
+            </label>
+          </div>
+          <p class="toggle-desc">Egg green / sage, soft and comfortable.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- RED SECTION -->
+    <div class="section">
+      <h2 class="section-title">🔴 Red (Warning/Danger State)</h2>
+      <p class="section-desc">For warning/danger states that need attention</p>
+
+      <div class="toggle-grid">
+        <div class="toggle-card">
+          <div class="toggle-card-header">
+            <div>
+              <div class="toggle-label">Prominent (Filled + Glow)</div>
+              <div class="toggle-type">Prominent - Recommended for warnings</div>
+            </div>
+            <label class="toggle red-prominent">
+              <input type="checkbox" checked>
+              <span class="toggle-track"></span>
+              <span class="toggle-thumb"></span>
+            </label>
+          </div>
+          <p class="toggle-desc">Full red fill + glow, immediately grabs attention.</p>
+        </div>
+
+        <div class="toggle-card">
+          <div class="toggle-card-header">
+            <div>
+              <div class="toggle-label">Prominent + Pulsing</div>
+              <div class="toggle-type">Prominent - Stronger warning</div>
+            </div>
+            <label class="toggle red-prominent pulsing">
+              <input type="checkbox" checked>
+              <span class="toggle-track"></span>
+              <span class="toggle-thumb"></span>
+            </label>
+          </div>
+          <p class="toggle-desc">Pulsing glow animation for critical warnings.</p>
+        </div>
+
+        <div class="toggle-card">
+          <div class="toggle-card-header">
+            <div>
+              <div class="toggle-label">Subtle (Dark Fill)</div>
+              <div class="toggle-type">Subtle</div>
+            </div>
+            <label class="toggle red-subtle">
+              <input type="checkbox" checked>
+              <span class="toggle-track"></span>
+              <span class="toggle-thumb"></span>
+            </label>
+          </div>
+          <p class="toggle-desc">Dark red track, more subtle warning.</p>
+        </div>
+
+        <div class="toggle-card">
+          <div class="toggle-card-header">
+            <div>
+              <div class="toggle-label">Muted (Light Fill)</div>
+              <div class="toggle-type">Subtle</div>
+            </div>
+            <label class="toggle red-muted">
+              <input type="checkbox" checked>
+              <span class="toggle-track"></span>
+              <span class="toggle-thumb"></span>
+            </label>
+          </div>
+          <p class="toggle-desc">Light red background.</p>
+        </div>
+
+        <div class="toggle-card">
+          <div class="toggle-card-header">
+            <div>
+              <div class="toggle-label">Outline (Border Only)</div>
+              <div class="toggle-type">Subtle</div>
+            </div>
+            <label class="toggle red-outline">
+              <input type="checkbox" checked>
+              <span class="toggle-track"></span>
+              <span class="toggle-thumb"></span>
+            </label>
+          </div>
+          <p class="toggle-desc">Border only (centering fixed).</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- YELLOW SECTION -->
+    <div class="section">
+      <h2 class="section-title">🟡 Yellow (Caution State)</h2>
+      <p class="section-desc">For caution states, between normal and warning</p>
+
+      <div class="toggle-grid">
+        <div class="toggle-card">
+          <div class="toggle-card-header">
+            <div>
+              <div class="toggle-label">Prominent (Filled + Glow)</div>
+              <div class="toggle-type">Prominent</div>
+            </div>
+            <label class="toggle yellow-prominent">
+              <input type="checkbox" checked>
+              <span class="toggle-track"></span>
+              <span class="toggle-thumb"></span>
+            </label>
+          </div>
+          <p class="toggle-desc">Full yellow fill, clear caution signal.</p>
+        </div>
+
+        <div class="toggle-card">
+          <div class="toggle-card-header">
+            <div>
+              <div class="toggle-label">Subtle (Dark Fill)</div>
+              <div class="toggle-type">Subtle</div>
+            </div>
+            <label class="toggle yellow-subtle">
+              <input type="checkbox" checked>
+              <span class="toggle-track"></span>
+              <span class="toggle-thumb"></span>
+            </label>
+          </div>
+          <p class="toggle-desc">Dark yellow track.</p>
+        </div>
+
+        <div class="toggle-card">
+          <div class="toggle-card-header">
+            <div>
+              <div class="toggle-label">Muted (Light Fill)</div>
+              <div class="toggle-type">Subtle</div>
+            </div>
+            <label class="toggle yellow-muted">
+              <input type="checkbox" checked>
+              <span class="toggle-track"></span>
+              <span class="toggle-thumb"></span>
+            </label>
+          </div>
+          <p class="toggle-desc">Light yellow background.</p>
+        </div>
+
+        <div class="toggle-card">
+          <div class="toggle-card-header">
+            <div>
+              <div class="toggle-label">Outline (Border Only)</div>
+              <div class="toggle-type">Subtle</div>
+            </div>
+            <label class="toggle yellow-outline">
+              <input type="checkbox" checked>
+              <span class="toggle-track"></span>
+              <span class="toggle-thumb"></span>
+            </label>
+          </div>
+          <p class="toggle-desc">Border only (centering fixed).</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- SPECTRUM COMPARISON -->
+    <div class="comparison-section">
+      <h3 class="comparison-title">Full Spectrum: From Most Prominent to Most Subtle</h3>
+
+      <p style="color: var(--text-secondary); margin-bottom: 16px; font-size: 14px;">Green variants from left to right: Prominent → Subtle</p>
+
+      <div class="spectrum">
+        <div class="spectrum-item">
+          <label class="toggle green-prominent">
+            <input type="checkbox" checked>
+            <span class="toggle-track"></span>
+            <span class="toggle-thumb"></span>
+          </label>
+          <span class="spectrum-label">Prominent</span>
+        </div>
+
+        <span class="spectrum-arrow">→</span>
+
+        <div class="spectrum-item">
+          <label class="toggle green-subtle">
+            <input type="checkbox" checked>
+            <span class="toggle-track"></span>
+            <span class="toggle-thumb"></span>
+          </label>
+          <span class="spectrum-label">Subtle</span>
+        </div>
+
+        <span class="spectrum-arrow">→</span>
+
+        <div class="spectrum-item">
+          <label class="toggle green-soft">
+            <input type="checkbox" checked>
+            <span class="toggle-track"></span>
+            <span class="toggle-thumb"></span>
+          </label>
+          <span class="spectrum-label">Soft</span>
+        </div>
+
+        <span class="spectrum-arrow">→</span>
+
+        <div class="spectrum-item">
+          <label class="toggle green-muted">
+            <input type="checkbox" checked>
+            <span class="toggle-track"></span>
+            <span class="toggle-thumb"></span>
+          </label>
+          <span class="spectrum-label">Muted</span>
+        </div>
+
+        <span class="spectrum-arrow">→</span>
+
+        <div class="spectrum-item">
+          <label class="toggle green-desaturated">
+            <input type="checkbox" checked>
+            <span class="toggle-track"></span>
+            <span class="toggle-thumb"></span>
+          </label>
+          <span class="spectrum-label">Desaturated</span>
+        </div>
+
+        <span class="spectrum-arrow">→</span>
+
+        <div class="spectrum-item">
+          <label class="toggle green-minimal-dot">
+            <input type="checkbox" checked>
+            <span class="toggle-track"></span>
+            <span class="toggle-thumb"></span>
+          </label>
+          <span class="spectrum-label">Minimal Dot</span>
+        </div>
+
+        <span class="spectrum-arrow">→</span>
+
+        <div class="spectrum-item">
+          <label class="toggle green-hint">
+            <input type="checkbox" checked>
+            <span class="toggle-track"></span>
+            <span class="toggle-thumb"></span>
+          </label>
+          <span class="spectrum-label">Hint</span>
+        </div>
+
+        <span class="spectrum-arrow">→</span>
+
+        <div class="spectrum-item">
+          <label class="toggle green-whisper">
+            <input type="checkbox" checked>
+            <span class="toggle-track"></span>
+            <span class="toggle-thumb"></span>
+          </label>
+          <span class="spectrum-label">Whisper</span>
+        </div>
+
+        <span class="spectrum-arrow">→</span>
+
+        <div class="spectrum-item">
+          <label class="toggle green-ghost">
+            <input type="checkbox" checked>
+            <span class="toggle-track"></span>
+            <span class="toggle-thumb"></span>
+          </label>
+          <span class="spectrum-label">Ghost</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- USE CASE COMPARISON -->
+    <div class="comparison-section" style="margin-top: 24px;">
+      <h3 class="comparison-title">Real-World Use Cases Comparison</h3>
+
+      <div class="use-case">
+        <div class="use-case-label">
+          <div class="use-case-title">Auto Renew: ON ✓</div>
+          <div class="use-case-desc">Domain will auto-renew. This is the safe, default state.</div>
+          <div class="row-badges">
+            <span class="normal-badge">Normal State</span>
+          </div>
+        </div>
+        <div class="use-case-toggles">
+          <div class="toggle-with-label">
+            <label class="toggle green-ghost">
+              <input type="checkbox" checked>
+              <span class="toggle-track"></span>
+              <span class="toggle-thumb"></span>
+            </label>
+            <span class="toggle-mini-label">Ghost</span>
+          </div>
+          <div class="toggle-with-label">
+            <label class="toggle green-whisper">
+              <input type="checkbox" checked>
+              <span class="toggle-track"></span>
+              <span class="toggle-thumb"></span>
+            </label>
+            <span class="toggle-mini-label">Whisper</span>
+          </div>
+          <div class="toggle-with-label">
+            <label class="toggle green-hint">
+              <input type="checkbox" checked>
+              <span class="toggle-track"></span>
+              <span class="toggle-thumb"></span>
+            </label>
+            <span class="toggle-mini-label">Hint</span>
+          </div>
+          <div class="toggle-with-label">
+            <label class="toggle green-muted">
+              <input type="checkbox" checked>
+              <span class="toggle-track"></span>
+              <span class="toggle-thumb"></span>
+            </label>
+            <span class="toggle-mini-label">Muted</span>
+          </div>
+          <div class="toggle-with-label">
+            <label class="toggle green-soft">
+              <input type="checkbox" checked>
+              <span class="toggle-track"></span>
+              <span class="toggle-thumb"></span>
+            </label>
+            <span class="toggle-mini-label">Soft</span>
+          </div>
+          <div class="toggle-with-label">
+            <label class="toggle green-outline-thin">
+              <input type="checkbox" checked>
+              <span class="toggle-track"></span>
+              <span class="toggle-thumb"></span>
+            </label>
+            <span class="toggle-mini-label">Outline</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="use-case">
+        <div class="use-case-label">
+          <div class="use-case-title">Auto Renew: OFF ⚠️</div>
+          <div class="use-case-desc">Domain will NOT auto-renew! Risk of losing domain.</div>
+          <div class="row-badges">
+            <span class="attention-badge">Needs Attention</span>
+          </div>
+        </div>
+        <div class="use-case-toggles">
+          <div class="toggle-with-label">
+            <label class="toggle red-prominent">
+              <input type="checkbox" checked>
+              <span class="toggle-track"></span>
+              <span class="toggle-thumb"></span>
+            </label>
+            <span class="toggle-mini-label">Prominent</span>
+          </div>
+          <div class="toggle-with-label">
+            <label class="toggle red-prominent pulsing">
+              <input type="checkbox" checked>
+              <span class="toggle-track"></span>
+              <span class="toggle-thumb"></span>
+            </label>
+            <span class="toggle-mini-label">Pulsing</span>
+          </div>
+          <div class="toggle-with-label">
+            <label class="toggle red-subtle">
+              <input type="checkbox" checked>
+              <span class="toggle-track"></span>
+              <span class="toggle-thumb"></span>
+            </label>
+            <span class="toggle-mini-label">Subtle</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RECOMMENDATION -->
+    <div class="comparison-section" style="margin-top: 24px; border-color: rgba(34, 197, 94, 0.2);">
+      <h3 class="comparison-title">💡 Recommended Approach</h3>
+      <div style="color: var(--text-secondary); line-height: 1.7; font-size: 14px;">
+        <p style="margin-bottom: 12px;"><strong>For "safe" default states (Auto Renew ON, Privacy ON):</strong></p>
+        <ul style="margin-left: 20px; margin-bottom: 16px;">
+          <li><strong>Ghost / Whisper</strong> - Ultra subtle, barely noticeable</li>
+          <li><strong>Hint / Desaturated</strong> - Subtle but still recognizable</li>
+          <li><strong>Soft (Egg Green)</strong> - Soft and comfortable egg green</li>
+          <li><strong>Outline Thin</strong> - Refined thin border design</li>
+        </ul>
+
+        <p style="margin-bottom: 12px;"><strong>For "danger" states that need attention:</strong></p>
+        <ul style="margin-left: 20px;">
+          <li>Use <strong>Red Prominent</strong> with glow - Immediately grabs attention</li>
+          <li>For critical warnings: Add <strong>pulsing animation</strong></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

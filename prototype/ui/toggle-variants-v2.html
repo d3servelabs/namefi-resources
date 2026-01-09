@@ -1,0 +1,2172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Toggle Visual Hierarchy - Design Exploration</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Background colors */
+      --bg-dark: #0a0a0a;
+      --bg-card: #141414;
+      --bg-card-hover: #1a1a1a;
+      --bg-elevated: #1c1c1c;
+
+      /* Text colors */
+      --text-primary: #ffffff;
+      --text-secondary: #a1a1aa;
+      --text-muted: #71717a;
+
+      /* Semantic colors */
+      --green: #22c55e;
+      --green-subtle: #166534;
+      --green-muted: rgba(34, 197, 94, 0.15);
+      --red: #ef4444;
+      --red-subtle: #991b1b;
+      --red-muted: rgba(239, 68, 68, 0.15);
+      --yellow: #eab308;
+      --yellow-subtle: #854d0e;
+
+      /* Neutral */
+      --neutral-track: #27272a;
+      --neutral-thumb: #52525b;
+      --border-subtle: rgba(255, 255, 255, 0.06);
+      --border-medium: rgba(255, 255, 255, 0.1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-primary);
+      min-height: 100vh;
+      padding: 48px 24px;
+      line-height: 1.5;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    /* ==================== */
+    /* HEADER */
+    /* ==================== */
+
+    .header {
+      margin-bottom: 40px;
+    }
+
+    h1 {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, #fff 0%, #a1a1aa 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .subtitle {
+      color: var(--text-secondary);
+      font-size: 16px;
+      max-width: 600px;
+    }
+
+    /* ==================== */
+    /* DESIGN REQUIREMENTS */
+    /* ==================== */
+
+    .design-requirements {
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.08), rgba(34, 197, 94, 0.02));
+      border: 1px solid rgba(34, 197, 94, 0.2);
+      border-radius: 16px;
+      padding: 28px 32px;
+      margin-bottom: 48px;
+    }
+
+    .design-requirements-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .design-requirements-header h2 {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--green);
+      font-weight: 600;
+    }
+
+    .requirements-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px 40px;
+    }
+
+    @media (max-width: 768px) {
+      .requirements-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .requirement-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .requirement-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .requirement-value {
+      font-size: 14px;
+      color: var(--text-primary);
+      line-height: 1.6;
+    }
+
+    /* ==================== */
+    /* SECTIONS */
+    /* ==================== */
+
+    .section {
+      margin-bottom: 56px;
+    }
+
+    .section-header {
+      margin-bottom: 24px;
+    }
+
+    .section-title {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-desc {
+      font-size: 14px;
+      color: var(--text-muted);
+      max-width: 700px;
+    }
+
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border-medium), transparent);
+      margin: 48px 0;
+    }
+
+    /* ==================== */
+    /* RECOMMENDED HERO */
+    /* ==================== */
+
+    .hero-demo {
+      background: var(--bg-card);
+      border: 1px solid var(--border-medium);
+      border-radius: 20px;
+      padding: 40px;
+      margin-bottom: 32px;
+    }
+
+    .hero-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 32px;
+    }
+
+    .hero-toggles {
+      display: flex;
+      gap: 48px;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .hero-toggle-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .hero-toggle-label {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .hero-badge.safe {
+      background: rgba(34, 197, 94, 0.15);
+      color: var(--green);
+    }
+
+    .hero-badge.warning {
+      background: rgba(239, 68, 68, 0.15);
+      color: var(--red);
+    }
+
+    .hero-explanation {
+      max-width: 500px;
+      color: var(--text-secondary);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    /* ==================== */
+    /* CARD GRID */
+    /* ==================== */
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    .toggle-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 20px;
+      transition: all 0.2s ease;
+    }
+
+    .toggle-card:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--border-medium);
+    }
+
+    .toggle-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .toggle-label {
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .toggle-type {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 2px;
+    }
+
+    .toggle-desc {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    /* ==================== */
+    /* SPECTRUM */
+    /* ==================== */
+
+    .spectrum-section {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 32px;
+    }
+
+    .spectrum-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .spectrum-title::before {
+      content: '';
+      width: 4px;
+      height: 18px;
+      background: linear-gradient(135deg, var(--green), var(--red));
+      border-radius: 2px;
+    }
+
+    .spectrum-subtitle {
+      color: var(--text-muted);
+      font-size: 14px;
+      margin-bottom: 24px;
+    }
+
+    .spectrum {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      overflow-x: auto;
+      padding: 8px 0;
+    }
+
+    .spectrum-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      min-width: 70px;
+    }
+
+    .spectrum-item-label {
+      font-size: 10px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .spectrum-arrow {
+      color: var(--text-muted);
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    /* ==================== */
+    /* USE CASES */
+    /* ==================== */
+
+    .use-case-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .use-case {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 24px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .use-case-info {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .use-case-title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .use-case-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .use-case-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 10px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .use-case-badge.safe {
+      background: rgba(34, 197, 94, 0.15);
+      color: #15803d;
+    }
+
+    .use-case-badge.warning {
+      background: rgba(239, 68, 68, 0.15);
+      color: var(--red);
+    }
+
+    .use-case-toggles {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .use-case-toggle-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .use-case-toggle-label {
+      font-size: 10px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    /* ==================== */
+    /* RECOMMENDATIONS */
+    /* ==================== */
+
+    .recommendations {
+      background: var(--bg-card);
+      border: 1px solid rgba(34, 197, 94, 0.2);
+      border-left: 4px solid var(--green);
+      border-radius: 12px;
+      padding: 28px 32px;
+    }
+
+    .recommendations-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .recommendations-content {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 32px;
+    }
+
+    @media (max-width: 768px) {
+      .recommendations-content {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .recommendation-group h4 {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: var(--text-primary);
+    }
+
+    .recommendation-group ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .recommendation-group li {
+      font-size: 13px;
+      color: var(--text-secondary);
+      padding: 6px 0;
+      padding-left: 16px;
+      position: relative;
+      line-height: 1.6;
+    }
+
+    .recommendation-group li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--text-muted);
+    }
+
+    .recommendation-group li strong {
+      color: var(--text-primary);
+    }
+
+    /* ==================== */
+    /* TOGGLE STYLES */
+    /* ==================== */
+
+    /* Base Toggle */
+    .toggle {
+      position: relative;
+      width: 44px;
+      height: 24px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .toggle input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+      position: absolute;
+    }
+
+    .toggle-track {
+      position: absolute;
+      inset: 0;
+      background: var(--neutral-track);
+      border-radius: 12px;
+      transition: all 0.25s ease;
+    }
+
+    .toggle-thumb {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 20px;
+      height: 20px;
+      background: var(--neutral-thumb);
+      border-radius: 10px;
+      transition: all 0.25s ease;
+    }
+
+    .toggle input:checked + .toggle-track + .toggle-thumb {
+      transform: translateX(20px);
+      background: #fff;
+    }
+
+    /* Toggle with Text */
+    .toggle-text {
+      position: relative;
+      width: 56px;
+      height: 28px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .toggle-text input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+      position: absolute;
+    }
+
+    .toggle-text .toggle-track {
+      position: absolute;
+      inset: 0;
+      background: var(--neutral-track);
+      border-radius: 14px;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      padding: 0 8px;
+    }
+
+    .toggle-text .toggle-track::before {
+      content: 'OFF';
+      position: absolute;
+      right: 8px;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      color: rgba(255,255,255,0.4);
+      transition: all 0.3s ease;
+    }
+
+    .toggle-text .toggle-track::after {
+      content: 'ON';
+      position: absolute;
+      left: 8px;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      color: rgba(255,255,255,0);
+      transition: all 0.3s ease;
+    }
+
+    .toggle-text .toggle-thumb {
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 22px;
+      height: 22px;
+      background: #fff;
+      border-radius: 11px;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .toggle-text input:checked + .toggle-track + .toggle-thumb {
+      transform: translateX(28px);
+    }
+
+    .toggle-text input:checked + .toggle-track::before {
+      color: rgba(255,255,255,0);
+    }
+
+    .toggle-text input:checked + .toggle-track::after {
+      color: rgba(255,255,255,0.7);
+    }
+
+    /* Large Toggle */
+    .toggle-text.large {
+      width: 64px;
+      height: 32px;
+    }
+    .toggle-text.large .toggle-track { border-radius: 16px; }
+    .toggle-text.large .toggle-track::before { right: 10px; font-size: 10px; }
+    .toggle-text.large .toggle-track::after { left: 10px; font-size: 10px; }
+    .toggle-text.large .toggle-thumb { top: 4px; left: 4px; width: 24px; height: 24px; border-radius: 12px; }
+    .toggle-text.large input:checked + .toggle-track + .toggle-thumb { transform: translateX(32px); }
+
+    /* Green ON */
+    .toggle-text.green-on input:checked + .toggle-track { background: var(--green); }
+
+    /* Green ON Subtle */
+    .toggle-text.green-on-subtle input:checked + .toggle-track { background: var(--green-subtle); }
+    .toggle-text.green-on-subtle input:checked + .toggle-track::after { color: rgba(255,255,255,0.5); }
+
+    /* Green ON Muted */
+    .toggle-text.green-on-muted input:checked + .toggle-track { background: rgba(34, 197, 94, 0.25); }
+    .toggle-text.green-on-muted input:checked + .toggle-track::after { color: rgba(34, 197, 94, 0.8); }
+
+    /* Red OFF Warning */
+    .toggle-text.red-off-warning .toggle-track { background: var(--red); }
+    .toggle-text.red-off-warning .toggle-track::before { color: rgba(255,255,255,0.9); }
+    .toggle-text.red-off-warning input:checked + .toggle-track { background: var(--green); }
+
+    /* Red OFF Warning Subtle */
+    .toggle-text.red-off-warning-subtle .toggle-track { background: var(--red-subtle); }
+    .toggle-text.red-off-warning-subtle .toggle-track::before { color: rgba(255,255,255,0.7); }
+    .toggle-text.red-off-warning-subtle input:checked + .toggle-track { background: var(--green-subtle); }
+    .toggle-text.red-off-warning-subtle input:checked + .toggle-track::after { color: rgba(255,255,255,0.7); }
+
+    /* Neutral OFF Green ON */
+    .toggle-text.neutral-green .toggle-track { background: #3a3a3a; }
+    .toggle-text.neutral-green .toggle-track::before { color: rgba(255,255,255,0.5); }
+    .toggle-text.neutral-green input:checked + .toggle-track { background: var(--green); }
+
+    /* Standard Toggle Variants */
+    .toggle.green-prominent input:checked + .toggle-track {
+      background: var(--green);
+      box-shadow: 0 0 20px rgba(34, 197, 94, 0.3);
+    }
+
+    .toggle.green-subtle input:checked + .toggle-track { background: var(--green-subtle); }
+    .toggle.green-subtle input:checked + .toggle-track + .toggle-thumb { background: var(--green); }
+
+    .toggle.green-muted input:checked + .toggle-track { background: var(--green-muted); }
+    .toggle.green-muted input:checked + .toggle-track + .toggle-thumb { background: #15803d; }
+
+    .toggle.green-soft input:checked + .toggle-track { background: rgba(134, 179, 144, 0.25); }
+    .toggle.green-soft input:checked + .toggle-track + .toggle-thumb { background: #86b390; }
+
+    /* Ultra Subtle Variants */
+    .toggle.green-ghost input:checked + .toggle-track { background: rgba(34, 197, 94, 0.08); }
+    .toggle.green-ghost input:checked + .toggle-track + .toggle-thumb { background: rgba(34, 197, 94, 0.5); }
+
+    .toggle.green-whisper input:checked + .toggle-track { background: #1a1f1c; }
+    .toggle.green-whisper input:checked + .toggle-track + .toggle-thumb { background: #3d5a45; }
+
+    .toggle.green-hint input:checked + .toggle-track { background: #1f2a22; }
+    .toggle.green-hint input:checked + .toggle-track + .toggle-thumb { background: #4a5d4f; }
+
+    .toggle.green-desaturated input:checked + .toggle-track { background: rgba(120, 140, 125, 0.2); }
+    .toggle.green-desaturated input:checked + .toggle-track + .toggle-thumb { background: #6b7c6f; }
+
+    /* Red Variants */
+    .toggle.red-prominent input:checked + .toggle-track {
+      background: var(--red);
+      box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
+    }
+
+    .toggle.red-subtle input:checked + .toggle-track { background: var(--red-subtle); }
+    .toggle.red-subtle input:checked + .toggle-track + .toggle-thumb { background: var(--red); }
+
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 20px rgba(239, 68, 68, 0.3); }
+      50% { box-shadow: 0 0 30px rgba(239, 68, 68, 0.4), 0 0 40px rgba(239, 68, 68, 0.2); }
+    }
+
+    .toggle.red-prominent.pulsing input:checked + .toggle-track {
+      animation: pulse-glow 2s ease-in-out infinite;
+    }
+
+    /* ==================== */
+    /* CONFIGURATOR PANEL */
+    /* ==================== */
+
+    .configurator {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-medium);
+      border-radius: 16px;
+      padding: 28px;
+      margin-top: 32px;
+    }
+
+    .configurator-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .configurator-title {
+      font-size: 16px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .configurator-title::before {
+      content: '⚙️';
+    }
+
+    .config-reset-btn {
+      background: transparent;
+      border: 1px solid var(--border-medium);
+      color: var(--text-muted);
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .config-reset-btn:hover {
+      border-color: var(--text-secondary);
+      color: var(--text-secondary);
+    }
+
+    .config-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 24px;
+    }
+
+    .config-section {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .config-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .config-sublabel {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: -8px;
+    }
+
+    /* Color Presets */
+    .color-presets {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .color-preset {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .color-preset:hover {
+      transform: scale(1.1);
+    }
+
+    .color-preset.selected {
+      border-color: #fff;
+      box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2);
+    }
+
+    .color-preset.selected::after {
+      content: '✓';
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      color: #fff;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+    }
+
+    .color-preset.custom {
+      background: conic-gradient(
+        from 0deg,
+        #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00
+      );
+      position: relative;
+    }
+
+    .color-preset.custom::before {
+      content: '';
+      position: absolute;
+      inset: 4px;
+      background: var(--bg-elevated);
+      border-radius: 4px;
+    }
+
+    /* Custom Color Input */
+    .custom-color-input {
+      display: none;
+      align-items: center;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .custom-color-input.visible {
+      display: flex;
+    }
+
+    .custom-color-input input[type="color"] {
+      width: 36px;
+      height: 28px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      background: transparent;
+    }
+
+    .custom-color-input input[type="text"] {
+      flex: 1;
+      min-width: 0;
+      background: var(--bg-card);
+      border: 1px solid var(--border-medium);
+      border-radius: 6px;
+      padding: 6px 10px;
+      font-size: 12px;
+      font-family: 'SF Mono', Monaco, monospace;
+      color: var(--text-primary);
+    }
+
+    .custom-color-input input[type="text"]:focus {
+      outline: none;
+      border-color: var(--green);
+    }
+
+    /* Toggle Switch for Config */
+    .config-toggle {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+    }
+
+    .config-toggle-track {
+      width: 40px;
+      height: 22px;
+      background: var(--neutral-track);
+      border-radius: 11px;
+      position: relative;
+      transition: all 0.25s ease;
+    }
+
+    .config-toggle-track::after {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 18px;
+      height: 18px;
+      background: #fff;
+      border-radius: 9px;
+      transition: all 0.25s ease;
+    }
+
+    .config-toggle input {
+      display: none;
+    }
+
+    .config-toggle input:checked + .config-toggle-track {
+      background: var(--green);
+    }
+
+    .config-toggle input:checked + .config-toggle-track::after {
+      transform: translateX(18px);
+    }
+
+    .config-toggle-label {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    /* Text Input */
+    .config-text-input {
+      display: flex;
+      gap: 8px;
+    }
+
+    .config-text-field {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .config-text-field label {
+      font-size: 10px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    .config-text-field input {
+      background: var(--bg-card);
+      border: 1px solid var(--border-medium);
+      border-radius: 6px;
+      padding: 8px 12px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-primary);
+      text-align: center;
+      transition: all 0.2s ease;
+    }
+
+    .config-text-field input:focus {
+      outline: none;
+      border-color: var(--green);
+    }
+
+    .config-text-field input:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    /* Prominence Slider */
+    .prominence-slider {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .prominence-track {
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+
+    .prominence-option {
+      flex: 1;
+      min-width: 60px;
+      padding: 10px 6px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: center;
+    }
+
+    .prominence-option:hover {
+      border-color: var(--border-medium);
+      background: var(--bg-card-hover);
+    }
+
+    .prominence-option.selected {
+      border-color: var(--green);
+      background: rgba(34, 197, 94, 0.1);
+    }
+
+    .prominence-option-label {
+      font-size: 10px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      display: block;
+      margin-top: 6px;
+    }
+
+    .prominence-option.selected .prominence-option-label {
+      color: var(--green);
+    }
+
+    /* Preview Section */
+    .preview-section {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 24px;
+      margin-top: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .preview-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .preview-states {
+      display: flex;
+      gap: 40px;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .preview-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .preview-state-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+
+    /* Dynamic Toggle - Base */
+    .dynamic-toggle {
+      position: relative;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: all 0.3s ease;
+    }
+
+    .dynamic-toggle input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+      position: absolute;
+    }
+
+    .dynamic-toggle .dt-track {
+      position: absolute;
+      inset: 0;
+      border-radius: 999px;
+      transition: all 0.3s ease;
+    }
+
+    .dynamic-toggle .dt-thumb {
+      position: absolute;
+      background: #fff;
+      border-radius: 999px;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    /* Code Output */
+    .code-output {
+      background: #1a1a1a;
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 16px;
+      margin-top: 16px;
+      font-family: 'SF Mono', Monaco, 'Courier New', monospace;
+      font-size: 12px;
+      line-height: 1.6;
+      color: var(--text-secondary);
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+
+    .code-output .code-comment {
+      color: var(--text-muted);
+    }
+
+    .code-output .code-prop {
+      color: #7dd3fc;
+    }
+
+    .code-output .code-value {
+      color: #86efac;
+    }
+
+    .copy-code-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: transparent;
+      border: 1px solid var(--border-medium);
+      color: var(--text-secondary);
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-top: 12px;
+    }
+
+    .copy-code-btn:hover {
+      border-color: var(--green);
+      color: var(--green);
+    }
+
+    .copy-code-btn.copied {
+      border-color: var(--green);
+      color: var(--green);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- ==================== -->
+    <!-- 1. HEADER -->
+    <!-- ==================== -->
+    <header class="header">
+      <h1>Toggle Visual Hierarchy</h1>
+      <p class="subtitle">Exploring toggle styles that communicate state importance — from subtle defaults to attention-grabbing warnings</p>
+    </header>
+
+    <!-- ==================== -->
+    <!-- 2. DESIGN REQUIREMENTS -->
+    <!-- ==================== -->
+    <section class="design-requirements">
+      <div class="design-requirements-header">
+        <span>📋</span>
+        <h2>Design Requirements</h2>
+      </div>
+      <div class="requirements-grid">
+        <div class="requirement-item">
+          <span class="requirement-label">Problem</span>
+          <span class="requirement-value">Current toggles treat all states equally. Users don't recognize when a setting is in a risky state (e.g., Auto Renew OFF) vs. a safe default state.</span>
+        </div>
+        <div class="requirement-item">
+          <span class="requirement-label">Goals</span>
+          <span class="requirement-value">Create a visual hierarchy where safe/default states are calm and subtle, while risky states immediately draw attention without being overwhelming.</span>
+        </div>
+        <div class="requirement-item">
+          <span class="requirement-label">Constraints</span>
+          <span class="requirement-value">Must work in dark theme. Toggle size should remain consistent (44-64px width). Must be accessible and clearly indicate ON/OFF state.</span>
+        </div>
+        <div class="requirement-item">
+          <span class="requirement-label">Success Criteria</span>
+          <span class="requirement-value">Users can instantly identify which domains need attention. Safe states don't create visual noise. Warning states are noticeable but not alarming.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== -->
+    <!-- 3. RECOMMENDED SOLUTION (HERO) -->
+    <!-- ==================== -->
+    <section class="section">
+      <div class="section-header">
+        <h2 class="section-title">✨ Recommended Approach</h2>
+        <p class="section-desc">Our proposed solution: Use "Red OFF Warning" toggle that shows red when OFF (danger) and green when ON (safe). Try toggling below to see the interaction.</p>
+      </div>
+
+      <div class="hero-demo">
+        <div class="hero-content">
+          <div class="hero-toggles">
+            <div class="hero-toggle-group">
+              <span class="hero-toggle-label">Auto Renew: OFF (Risky)</span>
+              <label class="toggle-text large red-off-warning">
+                <input type="checkbox">
+                <span class="toggle-track"></span>
+                <span class="toggle-thumb"></span>
+              </label>
+              <span class="hero-badge warning">⚠️ Needs Attention</span>
+            </div>
+
+            <div class="hero-toggle-group">
+              <span class="hero-toggle-label">Auto Renew: ON (Safe)</span>
+              <label class="toggle-text large red-off-warning">
+                <input type="checkbox" checked>
+                <span class="toggle-track"></span>
+                <span class="toggle-thumb"></span>
+              </label>
+              <span class="hero-badge safe">✓ Protected</span>
+            </div>
+          </div>
+
+          <p class="hero-explanation">
+            The toggle is <strong>red when OFF</strong> to immediately signal risk, and <strong>green when ON</strong> to indicate safety.
+            This inverts the typical pattern where color only appears when enabled, ensuring dangerous states are never invisible.
+          </p>
+        </div>
+      </div>
+
+      <!-- Configurator Panel -->
+      <div class="configurator">
+        <div class="configurator-header">
+          <h3 class="configurator-title">Configure Your Toggle</h3>
+          <button type="button" class="config-reset-btn" onclick="resetConfig()">Reset to Default</button>
+        </div>
+
+        <div class="config-grid">
+          <!-- OFF Color -->
+          <div class="config-section">
+            <span class="config-label">OFF State Color</span>
+            <div class="color-presets" id="offColorPresets">
+              <button type="button" class="color-preset selected" style="background: #ef4444" data-color="#ef4444" title="Red (Danger)"></button>
+              <button type="button" class="color-preset" style="background: #991b1b" data-color="#991b1b" title="Dark Red"></button>
+              <button type="button" class="color-preset" style="background: #27272a" data-color="#27272a" title="Neutral Gray"></button>
+              <button type="button" class="color-preset" style="background: #3a3a3a" data-color="#3a3a3a" title="Light Gray"></button>
+              <button type="button" class="color-preset" style="background: #eab308" data-color="#eab308" title="Yellow (Caution)"></button>
+              <button type="button" class="color-preset custom" data-color="custom" title="Custom Color"></button>
+            </div>
+            <div class="custom-color-input" id="offCustomColor">
+              <input type="color" id="offColorPicker" value="#ef4444">
+              <input type="text" id="offColorHex" value="#ef4444" placeholder="#hex">
+            </div>
+          </div>
+
+          <!-- ON Color -->
+          <div class="config-section">
+            <span class="config-label">ON State Color</span>
+            <div class="color-presets" id="onColorPresets">
+              <button type="button" class="color-preset selected" style="background: #22c55e" data-color="#22c55e" title="Green (Safe)"></button>
+              <button type="button" class="color-preset" style="background: #166534" data-color="#166534" title="Dark Green"></button>
+              <button type="button" class="color-preset" style="background: #15803d" data-color="#15803d" title="Forest Green"></button>
+              <button type="button" class="color-preset" style="background: #3b82f6" data-color="#3b82f6" title="Blue"></button>
+              <button type="button" class="color-preset" style="background: #8b5cf6" data-color="#8b5cf6" title="Purple"></button>
+              <button type="button" class="color-preset custom" data-color="custom" title="Custom Color"></button>
+            </div>
+            <div class="custom-color-input" id="onCustomColor">
+              <input type="color" id="onColorPicker" value="#22c55e">
+              <input type="text" id="onColorHex" value="#22c55e" placeholder="#hex">
+            </div>
+          </div>
+
+          <!-- Text Toggle -->
+          <div class="config-section">
+            <span class="config-label">Text Labels</span>
+            <label class="config-toggle">
+              <input type="checkbox" id="showText" checked onchange="updatePreview()">
+              <span class="config-toggle-track"></span>
+              <span class="config-toggle-label">Show ON/OFF text inside toggle</span>
+            </label>
+            <div class="config-text-input" id="textInputs">
+              <div class="config-text-field">
+                <label for="offText">OFF Label</label>
+                <input type="text" id="offText" value="OFF" maxlength="4" oninput="updatePreview()">
+              </div>
+              <div class="config-text-field">
+                <label for="onText">ON Label</label>
+                <input type="text" id="onText" value="ON" maxlength="4" oninput="updatePreview()">
+              </div>
+            </div>
+          </div>
+
+          <!-- Visual Prominence -->
+          <div class="config-section">
+            <span class="config-label">Visual Prominence</span>
+            <p class="config-sublabel">How much attention should the toggle draw?</p>
+            <div class="prominence-slider">
+              <div class="prominence-track" id="prominenceTrack">
+                <div class="prominence-option selected" data-value="prominent">
+                  <div style="width: 20px; height: 20px; border-radius: 50%; background: var(--green); box-shadow: 0 0 12px rgba(34, 197, 94, 0.5); margin: 0 auto;"></div>
+                  <span class="prominence-option-label">Prominent</span>
+                </div>
+                <div class="prominence-option" data-value="standard">
+                  <div style="width: 20px; height: 20px; border-radius: 50%; background: var(--green); margin: 0 auto;"></div>
+                  <span class="prominence-option-label">Standard</span>
+                </div>
+                <div class="prominence-option" data-value="subtle">
+                  <div style="width: 20px; height: 20px; border-radius: 50%; background: #166534; margin: 0 auto;"></div>
+                  <span class="prominence-option-label">Subtle</span>
+                </div>
+                <div class="prominence-option" data-value="muted">
+                  <div style="width: 20px; height: 20px; border-radius: 50%; background: rgba(34, 197, 94, 0.25); margin: 0 auto;"></div>
+                  <span class="prominence-option-label">Muted</span>
+                </div>
+                <div class="prominence-option" data-value="ghost">
+                  <div style="width: 20px; height: 20px; border-radius: 50%; background: rgba(34, 197, 94, 0.1); margin: 0 auto;"></div>
+                  <span class="prominence-option-label">Ghost</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Live Preview -->
+        <div class="preview-section">
+          <span class="preview-label">Live Preview</span>
+          <div class="preview-states">
+            <div class="preview-state">
+              <span class="preview-state-label">OFF State</span>
+              <label class="dynamic-toggle" id="previewOff" style="width: 56px; height: 28px;">
+                <input type="checkbox" onchange="this.checked = false;">
+                <span class="dt-track"></span>
+                <span class="dt-thumb" style="top: 3px; left: 3px; width: 22px; height: 22px;"></span>
+              </label>
+            </div>
+            <div class="preview-state">
+              <span class="preview-state-label">ON State</span>
+              <label class="dynamic-toggle" id="previewOn" style="width: 56px; height: 28px;">
+                <input type="checkbox" checked onchange="this.checked = true;">
+                <span class="dt-track"></span>
+                <span class="dt-thumb" style="top: 3px; left: 3px; width: 22px; height: 22px;"></span>
+              </label>
+            </div>
+            <div class="preview-state">
+              <span class="preview-state-label">Interactive</span>
+              <label class="dynamic-toggle" id="previewInteractive" style="width: 56px; height: 28px;">
+                <input type="checkbox">
+                <span class="dt-track"></span>
+                <span class="dt-thumb" style="top: 3px; left: 3px; width: 22px; height: 22px;"></span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Generated CSS -->
+          <div style="width: 100%; margin-top: 16px;">
+            <span class="preview-label" style="display: block; margin-bottom: 8px;">Generated CSS Variables</span>
+            <div class="code-output" id="codeOutput">/* Toggle Configuration */</div>
+            <button type="button" class="copy-code-btn" id="copyCodeBtn" onclick="copyCode()">
+              <span>📋</span> Copy CSS
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ==================== -->
+    <!-- 4. DESIGN VARIANTS -->
+    <!-- ==================== -->
+    <section class="section">
+      <div class="section-header">
+        <h2 class="section-title">🎨 Toggle with Text Variants</h2>
+        <p class="section-desc">Toggles with ON/OFF labels inside for clearer state indication</p>
+      </div>
+
+      <div class="card-grid">
+        <div class="toggle-card">
+          <div class="toggle-card-header">
+            <div>
+              <div class="toggle-label">Red OFF Warning</div>
+              <div class="toggle-type">Recommended</div>
+            </div>
+            <label class="toggle-text red-off-warning">
+              <input type="checkbox">
+              <span class="toggle-track"></span>
+              <span class="toggle-thumb"></span>
+            </label>
+          </div>
+          <p class="toggle-desc">Red when OFF to signal danger, green when ON. Best for critical settings like Auto Renew.</p>
+        </div>
+
+        <div class="toggle-card">
+          <div class="toggle-card-header">
+            <div>
+              <div class="toggle-label">Red OFF Warning Subtle</div>
+              <div class="toggle-type">Subtle Warning</div>
+            </div>
+            <label class="toggle-text red-off-warning-subtle">
+              <input type="checkbox">
+              <span class="toggle-track"></span>
+              <span class="toggle-thumb"></span>
+            </label>
+          </div>
+          <p class="toggle-desc">Darker red/green tones for a less aggressive warning.</p>
+        </div>
+
+        <div class="toggle-card">
+          <div class="toggle-card-header">
+            <div>
+              <div class="toggle-label">Green ON</div>
+              <div class="toggle-type">Standard</div>
+            </div>
+            <label class="toggle-text green-on">
+              <input type="checkbox" checked>
+              <span class="toggle-track"></span>
+              <span class="toggle-thumb"></span>
+            </label>
+          </div>
+          <p class="toggle-desc">Classic pattern: gray when OFF, green when ON.</p>
+        </div>
+
+        <div class="toggle-card">
+          <div class="toggle-card-header">
+            <div>
+              <div class="toggle-label">Green ON Subtle</div>
+              <div class="toggle-type">Subtle</div>
+            </div>
+            <label class="toggle-text green-on-subtle">
+              <input type="checkbox" checked>
+              <span class="toggle-track"></span>
+              <span class="toggle-thumb"></span>
+            </label>
+          </div>
+          <p class="toggle-desc">Dark green when ON for a calmer appearance.</p>
+        </div>
+
+        <div class="toggle-card">
+          <div class="toggle-card-header">
+            <div>
+              <div class="toggle-label">Green ON Muted</div>
+              <div class="toggle-type">Ultra Subtle</div>
+            </div>
+            <label class="toggle-text green-on-muted">
+              <input type="checkbox" checked>
+              <span class="toggle-track"></span>
+              <span class="toggle-thumb"></span>
+            </label>
+          </div>
+          <p class="toggle-desc">Very faint green, almost blends with background.</p>
+        </div>
+
+        <div class="toggle-card">
+          <div class="toggle-card-header">
+            <div>
+              <div class="toggle-label">Neutral → Green</div>
+              <div class="toggle-type">Neutral Transition</div>
+            </div>
+            <label class="toggle-text neutral-green">
+              <input type="checkbox" checked>
+              <span class="toggle-track"></span>
+              <span class="toggle-thumb"></span>
+            </label>
+          </div>
+          <p class="toggle-desc">Neutral gray OFF, bright green ON.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <h2 class="section-title">🌿 Standard Toggle Variants (No Text)</h2>
+        <p class="section-desc">Classic toggle styles without ON/OFF labels, from prominent to ultra-subtle</p>
+      </div>
+
+      <div class="card-grid">
+        <div class="toggle-card">
+          <div class="toggle-card-header">
+            <div>
+              <div class="toggle-label">Prominent</div>
+              <div class="toggle-type">With Glow</div>
+            </div>
+            <label class="toggle green-prominent">
+              <input type="checkbox" checked>
+              <span class="toggle-track"></span>
+              <span class="toggle-thumb"></span>
+            </label>
+          </div>
+          <p class="toggle-desc">Full fill with outer glow. Most eye-catching.</p>
+        </div>
+
+        <div class="toggle-card">
+          <div class="toggle-card-header">
+            <div>
+              <div class="toggle-label">Subtle</div>
+              <div class="toggle-type">Dark Fill</div>
+            </div>
+            <label class="toggle green-subtle">
+              <input type="checkbox" checked>
+              <span class="toggle-track"></span>
+              <span class="toggle-thumb"></span>
+            </label>
+          </div>
+          <p class="toggle-desc">Dark green track with bright thumb.</p>
+        </div>
+
+        <div class="toggle-card">
+          <div class="toggle-card-header">
+            <div>
+              <div class="toggle-label">Muted</div>
+              <div class="toggle-type">Light Fill</div>
+            </div>
+            <label class="toggle green-muted">
+              <input type="checkbox" checked>
+              <span class="toggle-track"></span>
+              <span class="toggle-thumb"></span>
+            </label>
+          </div>
+          <p class="toggle-desc">Very light green background.</p>
+        </div>
+
+        <div class="toggle-card">
+          <div class="toggle-card-header">
+            <div>
+              <div class="toggle-label">Soft (Sage)</div>
+              <div class="toggle-type">Egg Green</div>
+            </div>
+            <label class="toggle green-soft">
+              <input type="checkbox" checked>
+              <span class="toggle-track"></span>
+              <span class="toggle-thumb"></span>
+            </label>
+          </div>
+          <p class="toggle-desc">Soft sage/egg green for a calm feel.</p>
+        </div>
+
+        <div class="toggle-card">
+          <div class="toggle-card-header">
+            <div>
+              <div class="toggle-label">Ghost</div>
+              <div class="toggle-type">Ultra Subtle</div>
+            </div>
+            <label class="toggle green-ghost">
+              <input type="checkbox" checked>
+              <span class="toggle-track"></span>
+              <span class="toggle-thumb"></span>
+            </label>
+          </div>
+          <p class="toggle-desc">Almost invisible, barely there.</p>
+        </div>
+
+        <div class="toggle-card">
+          <div class="toggle-card-header">
+            <div>
+              <div class="toggle-label">Whisper</div>
+              <div class="toggle-type">Ultra Subtle</div>
+            </div>
+            <label class="toggle green-whisper">
+              <input type="checkbox" checked>
+              <span class="toggle-track"></span>
+              <span class="toggle-thumb"></span>
+            </label>
+          </div>
+          <p class="toggle-desc">Hints at green, blends with dark UI.</p>
+        </div>
+
+        <div class="toggle-card">
+          <div class="toggle-card-header">
+            <div>
+              <div class="toggle-label">Hint</div>
+              <div class="toggle-type">Ultra Subtle</div>
+            </div>
+            <label class="toggle green-hint">
+              <input type="checkbox" checked>
+              <span class="toggle-track"></span>
+              <span class="toggle-thumb"></span>
+            </label>
+          </div>
+          <p class="toggle-desc">Neutral with slight green tint.</p>
+        </div>
+
+        <div class="toggle-card">
+          <div class="toggle-card-header">
+            <div>
+              <div class="toggle-label">Desaturated</div>
+              <div class="toggle-type">Subtle</div>
+            </div>
+            <label class="toggle green-desaturated">
+              <input type="checkbox" checked>
+              <span class="toggle-track"></span>
+              <span class="toggle-thumb"></span>
+            </label>
+          </div>
+          <p class="toggle-desc">Grayish-green, low saturation.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ==================== -->
+    <!-- 5. SPECTRUM COMPARISON -->
+    <!-- ==================== -->
+    <section class="spectrum-section">
+      <h3 class="spectrum-title">Visual Prominence Spectrum</h3>
+      <p class="spectrum-subtitle">All variants arranged from most prominent (left) to most subtle (right)</p>
+
+      <div class="spectrum">
+        <div class="spectrum-item">
+          <label class="toggle green-prominent">
+            <input type="checkbox" checked>
+            <span class="toggle-track"></span>
+            <span class="toggle-thumb"></span>
+          </label>
+          <span class="spectrum-item-label">Prominent</span>
+        </div>
+
+        <span class="spectrum-arrow">→</span>
+
+        <div class="spectrum-item">
+          <label class="toggle green-subtle">
+            <input type="checkbox" checked>
+            <span class="toggle-track"></span>
+            <span class="toggle-thumb"></span>
+          </label>
+          <span class="spectrum-item-label">Subtle</span>
+        </div>
+
+        <span class="spectrum-arrow">→</span>
+
+        <div class="spectrum-item">
+          <label class="toggle green-soft">
+            <input type="checkbox" checked>
+            <span class="toggle-track"></span>
+            <span class="toggle-thumb"></span>
+          </label>
+          <span class="spectrum-item-label">Soft</span>
+        </div>
+
+        <span class="spectrum-arrow">→</span>
+
+        <div class="spectrum-item">
+          <label class="toggle green-muted">
+            <input type="checkbox" checked>
+            <span class="toggle-track"></span>
+            <span class="toggle-thumb"></span>
+          </label>
+          <span class="spectrum-item-label">Muted</span>
+        </div>
+
+        <span class="spectrum-arrow">→</span>
+
+        <div class="spectrum-item">
+          <label class="toggle green-desaturated">
+            <input type="checkbox" checked>
+            <span class="toggle-track"></span>
+            <span class="toggle-thumb"></span>
+          </label>
+          <span class="spectrum-item-label">Desaturated</span>
+        </div>
+
+        <span class="spectrum-arrow">→</span>
+
+        <div class="spectrum-item">
+          <label class="toggle green-hint">
+            <input type="checkbox" checked>
+            <span class="toggle-track"></span>
+            <span class="toggle-thumb"></span>
+          </label>
+          <span class="spectrum-item-label">Hint</span>
+        </div>
+
+        <span class="spectrum-arrow">→</span>
+
+        <div class="spectrum-item">
+          <label class="toggle green-whisper">
+            <input type="checkbox" checked>
+            <span class="toggle-track"></span>
+            <span class="toggle-thumb"></span>
+          </label>
+          <span class="spectrum-item-label">Whisper</span>
+        </div>
+
+        <span class="spectrum-arrow">→</span>
+
+        <div class="spectrum-item">
+          <label class="toggle green-ghost">
+            <input type="checkbox" checked>
+            <span class="toggle-track"></span>
+            <span class="toggle-thumb"></span>
+          </label>
+          <span class="spectrum-item-label">Ghost</span>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ==================== -->
+    <!-- 6. USE CASE EXAMPLES -->
+    <!-- ==================== -->
+    <section class="section">
+      <div class="section-header">
+        <h2 class="section-title">📱 Real-World Use Cases</h2>
+        <p class="section-desc">How these toggles would appear in actual product scenarios</p>
+      </div>
+
+      <div class="use-case-grid">
+        <div class="use-case">
+          <div class="use-case-info">
+            <div class="use-case-title">Auto Renew: ON ✓</div>
+            <div class="use-case-desc">Domain will auto-renew. This is the safe, expected default state.</div>
+            <span class="use-case-badge safe">Safe State</span>
+          </div>
+          <div class="use-case-toggles">
+            <div class="use-case-toggle-item">
+              <label class="toggle-text red-off-warning">
+                <input type="checkbox" checked>
+                <span class="toggle-track"></span>
+                <span class="toggle-thumb"></span>
+              </label>
+              <span class="use-case-toggle-label">Red OFF</span>
+            </div>
+            <div class="use-case-toggle-item">
+              <label class="toggle green-muted">
+                <input type="checkbox" checked>
+                <span class="toggle-track"></span>
+                <span class="toggle-thumb"></span>
+              </label>
+              <span class="use-case-toggle-label">Muted</span>
+            </div>
+            <div class="use-case-toggle-item">
+              <label class="toggle green-ghost">
+                <input type="checkbox" checked>
+                <span class="toggle-track"></span>
+                <span class="toggle-thumb"></span>
+              </label>
+              <span class="use-case-toggle-label">Ghost</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="use-case">
+          <div class="use-case-info">
+            <div class="use-case-title">Auto Renew: OFF ⚠️</div>
+            <div class="use-case-desc">Domain will NOT auto-renew. Risk of losing the domain!</div>
+            <span class="use-case-badge warning">Needs Attention</span>
+          </div>
+          <div class="use-case-toggles">
+            <div class="use-case-toggle-item">
+              <label class="toggle-text red-off-warning">
+                <input type="checkbox">
+                <span class="toggle-track"></span>
+                <span class="toggle-thumb"></span>
+              </label>
+              <span class="use-case-toggle-label">Red OFF</span>
+            </div>
+            <div class="use-case-toggle-item">
+              <label class="toggle red-prominent">
+                <input type="checkbox" checked>
+                <span class="toggle-track"></span>
+                <span class="toggle-thumb"></span>
+              </label>
+              <span class="use-case-toggle-label">Red Glow</span>
+            </div>
+            <div class="use-case-toggle-item">
+              <label class="toggle red-prominent pulsing">
+                <input type="checkbox" checked>
+                <span class="toggle-track"></span>
+                <span class="toggle-thumb"></span>
+              </label>
+              <span class="use-case-toggle-label">Pulsing</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="use-case">
+          <div class="use-case-info">
+            <div class="use-case-title">Privacy Protection: ON</div>
+            <div class="use-case-desc">WHOIS privacy is enabled. Normal expected state.</div>
+            <span class="use-case-badge safe">Safe State</span>
+          </div>
+          <div class="use-case-toggles">
+            <div class="use-case-toggle-item">
+              <label class="toggle green-soft">
+                <input type="checkbox" checked>
+                <span class="toggle-track"></span>
+                <span class="toggle-thumb"></span>
+              </label>
+              <span class="use-case-toggle-label">Soft</span>
+            </div>
+            <div class="use-case-toggle-item">
+              <label class="toggle green-whisper">
+                <input type="checkbox" checked>
+                <span class="toggle-track"></span>
+                <span class="toggle-thumb"></span>
+              </label>
+              <span class="use-case-toggle-label">Whisper</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ==================== -->
+    <!-- 7. RECOMMENDATIONS -->
+    <!-- ==================== -->
+    <section class="recommendations">
+      <h3 class="recommendations-title">💡 Recommendations</h3>
+
+      <div class="recommendations-content">
+        <div class="recommendation-group">
+          <h4>For Critical Settings (Auto Renew, Transfer Lock)</h4>
+          <ul>
+            <li><strong>Red OFF Warning</strong> — Shows danger when disabled, safety when enabled</li>
+            <li>Use the <strong>large size</strong> variant for emphasis</li>
+            <li>Consider <strong>pulsing animation</strong> for domains expiring soon</li>
+          </ul>
+        </div>
+
+        <div class="recommendation-group">
+          <h4>For Safe Default States</h4>
+          <ul>
+            <li><strong>Ghost / Whisper</strong> — Ultra subtle, doesn't draw attention</li>
+            <li><strong>Muted / Soft</strong> — Visible but calm</li>
+            <li>Avoid prominent green when ON is the expected state</li>
+          </ul>
+        </div>
+
+        <div class="recommendation-group">
+          <h4>For Standard Settings</h4>
+          <ul>
+            <li><strong>Subtle or Muted</strong> — Balanced visibility</li>
+            <li>Use consistent style across similar settings</li>
+          </ul>
+        </div>
+
+        <div class="recommendation-group">
+          <h4>General Guidelines</h4>
+          <ul>
+            <li>Reserve <strong>prominent/glowing</strong> styles for states needing action</li>
+            <li>Default states should be <strong>calm and quiet</strong></li>
+            <li>Use <strong>text labels (ON/OFF)</strong> for critical toggles</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <script>
+    // Configuration State
+    const config = {
+      offColor: '#ef4444',
+      onColor: '#22c55e',
+      showText: true,
+      offText: 'OFF',
+      onText: 'ON',
+      prominence: 'prominent'
+    };
+
+    // Prominence settings
+    const prominenceSettings = {
+      prominent: { glow: true, glowIntensity: 0.4, opacity: 1 },
+      standard: { glow: false, glowIntensity: 0, opacity: 1 },
+      subtle: { glow: false, glowIntensity: 0, opacity: 0.7 },
+      muted: { glow: false, glowIntensity: 0, opacity: 0.4 },
+      ghost: { glow: false, glowIntensity: 0, opacity: 0.15 }
+    };
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      setupColorPresets();
+      setupProminenceOptions();
+      updatePreview();
+    });
+
+    // Setup color preset buttons
+    function setupColorPresets() {
+      // OFF color presets
+      document.querySelectorAll('#offColorPresets .color-preset').forEach(btn => {
+        btn.addEventListener('click', () => selectColorPreset('off', btn));
+      });
+
+      // ON color presets
+      document.querySelectorAll('#onColorPresets .color-preset').forEach(btn => {
+        btn.addEventListener('click', () => selectColorPreset('on', btn));
+      });
+
+      // Color picker sync
+      document.getElementById('offColorPicker').addEventListener('input', (e) => {
+        config.offColor = e.target.value;
+        document.getElementById('offColorHex').value = e.target.value;
+        updatePreview();
+      });
+
+      document.getElementById('onColorPicker').addEventListener('input', (e) => {
+        config.onColor = e.target.value;
+        document.getElementById('onColorHex').value = e.target.value;
+        updatePreview();
+      });
+
+      // Hex input sync
+      document.getElementById('offColorHex').addEventListener('input', (e) => {
+        const hex = e.target.value;
+        if (/^#[0-9A-Fa-f]{6}$/.test(hex)) {
+          config.offColor = hex;
+          document.getElementById('offColorPicker').value = hex;
+          updatePreview();
+        }
+      });
+
+      document.getElementById('onColorHex').addEventListener('input', (e) => {
+        const hex = e.target.value;
+        if (/^#[0-9A-Fa-f]{6}$/.test(hex)) {
+          config.onColor = hex;
+          document.getElementById('onColorPicker').value = hex;
+          updatePreview();
+        }
+      });
+    }
+
+    // Select color preset
+    function selectColorPreset(type, btn) {
+      const container = document.getElementById(type + 'ColorPresets');
+      const customInput = document.getElementById(type + 'CustomColor');
+
+      // Update selection UI
+      container.querySelectorAll('.color-preset').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+
+      const color = btn.dataset.color;
+
+      if (color === 'custom') {
+        customInput.classList.add('visible');
+        // Sync picker to current config value to avoid jump
+        const currentColor = config[type + 'Color'];
+        document.getElementById(type + 'ColorPicker').value = currentColor;
+        document.getElementById(type + 'ColorHex').value = currentColor;
+      } else {
+        customInput.classList.remove('visible');
+        config[type + 'Color'] = color;
+        // Also sync picker for better UX when switching back
+        document.getElementById(type + 'ColorPicker').value = color;
+        document.getElementById(type + 'ColorHex').value = color;
+        updatePreview();
+      }
+    }
+
+    // Setup prominence options
+    function setupProminenceOptions() {
+      document.querySelectorAll('#prominenceTrack .prominence-option').forEach(opt => {
+        opt.addEventListener('click', () => {
+          document.querySelectorAll('#prominenceTrack .prominence-option').forEach(o => o.classList.remove('selected'));
+          opt.classList.add('selected');
+          config.prominence = opt.dataset.value;
+          updatePreview();
+        });
+      });
+    }
+
+    // Main update function
+    function updatePreview() {
+      // Update config from inputs
+      config.showText = document.getElementById('showText').checked;
+      config.offText = document.getElementById('offText').value || 'OFF';
+      config.onText = document.getElementById('onText').value || 'ON';
+
+      // Disable/enable text inputs
+      const textInputs = document.querySelectorAll('#textInputs input');
+      textInputs.forEach(input => {
+        input.disabled = !config.showText;
+      });
+
+      // Get prominence settings
+      const prom = prominenceSettings[config.prominence];
+
+      // Calculate colors with opacity/prominence
+      const offTrackColor = adjustColorBrightness(config.offColor, prom.opacity);
+      const onTrackColor = adjustColorBrightness(config.onColor, prom.opacity);
+
+      // Size based on text
+      const width = config.showText ? 56 : 44;
+      const height = config.showText ? 28 : 24;
+      const thumbSize = config.showText ? 22 : 20;
+      const padding = config.showText ? 3 : 2;
+      const translateX = width - thumbSize - (padding * 2);
+
+      // Update all preview toggles
+      updateToggle('previewOff', false, { offTrackColor, onTrackColor, prom, width, height, thumbSize, padding, translateX });
+      updateToggle('previewOn', true, { offTrackColor, onTrackColor, prom, width, height, thumbSize, padding, translateX });
+      updateToggle('previewInteractive', null, { offTrackColor, onTrackColor, prom, width, height, thumbSize, padding, translateX });
+
+      // Update code output
+      updateCodeOutput(offTrackColor, onTrackColor, prom);
+    }
+
+    function updateToggle(id, checked, opts) {
+      const toggle = document.getElementById(id);
+      const track = toggle.querySelector('.dt-track');
+      const thumb = toggle.querySelector('.dt-thumb');
+      const input = toggle.querySelector('input');
+
+      // Update toggle size
+      toggle.style.width = opts.width + 'px';
+      toggle.style.height = opts.height + 'px';
+
+      // Update thumb size and position
+      thumb.style.width = opts.thumbSize + 'px';
+      thumb.style.height = opts.thumbSize + 'px';
+      thumb.style.top = opts.padding + 'px';
+      thumb.style.left = opts.padding + 'px';
+      thumb.style.borderRadius = (opts.thumbSize / 2) + 'px';
+
+      // Determine checked state
+      const isChecked = checked !== null ? checked : input.checked;
+
+      // Update track color
+      const trackColor = isChecked ? opts.onTrackColor : opts.offTrackColor;
+      track.style.background = trackColor;
+
+      // Add glow effect
+      if (opts.prom.glow) {
+        const glowColor = isChecked ? config.onColor : config.offColor;
+        track.style.boxShadow = `0 0 20px ${hexToRgba(glowColor, opts.prom.glowIntensity)}`;
+      } else {
+        track.style.boxShadow = 'none';
+      }
+
+      // Update thumb position
+      thumb.style.transform = isChecked ? `translateX(${opts.translateX}px)` : 'translateX(0)';
+
+      // Add text labels
+      if (config.showText) {
+        track.style.setProperty('--off-text', `"${config.offText}"`);
+        track.style.setProperty('--on-text', `"${config.onText}"`);
+
+        // Create/update pseudo-element styles using inline styles
+        track.innerHTML = '';
+
+        const offLabel = document.createElement('span');
+        offLabel.textContent = config.offText;
+        offLabel.style.cssText = `
+          position: absolute;
+          right: 8px;
+          top: 50%;
+          transform: translateY(-50%);
+          font-size: 9px;
+          font-weight: 600;
+          letter-spacing: 0.5px;
+          color: ${isChecked ? 'transparent' : 'rgba(255,255,255,0.7)'};
+          transition: color 0.3s ease;
+          pointer-events: none;
+        `;
+        track.appendChild(offLabel);
+
+        const onLabel = document.createElement('span');
+        onLabel.textContent = config.onText;
+        onLabel.style.cssText = `
+          position: absolute;
+          left: 8px;
+          top: 50%;
+          transform: translateY(-50%);
+          font-size: 9px;
+          font-weight: 600;
+          letter-spacing: 0.5px;
+          color: ${isChecked ? 'rgba(255,255,255,0.7)' : 'transparent'};
+          transition: color 0.3s ease;
+          pointer-events: none;
+        `;
+        track.appendChild(onLabel);
+      } else {
+        track.innerHTML = '';
+      }
+
+      // For interactive toggle, add change listener
+      if (id === 'previewInteractive') {
+        input.onchange = () => {
+          updateToggle(id, null, opts);
+        };
+      }
+    }
+
+    function updateCodeOutput(offTrackColor, onTrackColor, prom) {
+      const code = `<span class="code-comment">/* Toggle Configuration */</span>
+<span class="code-prop">--toggle-off-color:</span> <span class="code-value">${config.offColor}</span>;
+<span class="code-prop">--toggle-on-color:</span> <span class="code-value">${config.onColor}</span>;
+<span class="code-prop">--toggle-show-text:</span> <span class="code-value">${config.showText}</span>;
+<span class="code-prop">--toggle-off-text:</span> <span class="code-value">"${config.offText}"</span>;
+<span class="code-prop">--toggle-on-text:</span> <span class="code-value">"${config.onText}"</span>;
+<span class="code-prop">--toggle-prominence:</span> <span class="code-value">${config.prominence}</span>;
+<span class="code-prop">--toggle-glow:</span> <span class="code-value">${prom.glow ? `0 0 20px ${hexToRgba(config.onColor, prom.glowIntensity)}` : 'none'}</span>;`;
+
+      document.getElementById('codeOutput').innerHTML = code;
+    }
+
+    // Helper: Adjust color brightness/opacity
+    function adjustColorBrightness(hex, opacity) {
+      if (opacity >= 1) return hex;
+
+      // Convert hex to rgba
+      const r = parseInt(hex.slice(1, 3), 16);
+      const g = parseInt(hex.slice(3, 5), 16);
+      const b = parseInt(hex.slice(5, 7), 16);
+
+      // For muted/ghost, we blend with dark background
+      if (opacity < 0.5) {
+        return `rgba(${r}, ${g}, ${b}, ${opacity})`;
+      }
+
+      // For subtle, we darken the color
+      const factor = 0.3 + (opacity * 0.7);
+      const dr = Math.round(r * factor);
+      const dg = Math.round(g * factor);
+      const db = Math.round(b * factor);
+      return `rgb(${dr}, ${dg}, ${db})`;
+    }
+
+    // Helper: Hex to RGBA
+    function hexToRgba(hex, alpha) {
+      const r = parseInt(hex.slice(1, 3), 16);
+      const g = parseInt(hex.slice(3, 5), 16);
+      const b = parseInt(hex.slice(5, 7), 16);
+      return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+    }
+
+    // Reset configuration
+    function resetConfig() {
+      config.offColor = '#ef4444';
+      config.onColor = '#22c55e';
+      config.showText = true;
+      config.offText = 'OFF';
+      config.onText = 'ON';
+      config.prominence = 'prominent';
+
+      // Reset UI
+      document.getElementById('showText').checked = true;
+      document.getElementById('offText').value = 'OFF';
+      document.getElementById('onText').value = 'ON';
+
+      // Reset color presets
+      document.querySelectorAll('#offColorPresets .color-preset').forEach((b, i) => {
+        b.classList.toggle('selected', i === 0);
+      });
+      document.querySelectorAll('#onColorPresets .color-preset').forEach((b, i) => {
+        b.classList.toggle('selected', i === 0);
+      });
+      document.getElementById('offCustomColor').classList.remove('visible');
+      document.getElementById('onCustomColor').classList.remove('visible');
+
+      // Reset prominence
+      document.querySelectorAll('#prominenceTrack .prominence-option').forEach((o, i) => {
+        o.classList.toggle('selected', i === 0);
+      });
+
+      // Reset color pickers
+      document.getElementById('offColorPicker').value = '#ef4444';
+      document.getElementById('offColorHex').value = '#ef4444';
+      document.getElementById('onColorPicker').value = '#22c55e';
+      document.getElementById('onColorHex').value = '#22c55e';
+
+      updatePreview();
+    }
+
+    // Copy code to clipboard
+    function copyCode() {
+      const code = `/* Toggle Configuration */
+--toggle-off-color: ${config.offColor};
+--toggle-on-color: ${config.onColor};
+--toggle-show-text: ${config.showText};
+--toggle-off-text: "${config.offText}";
+--toggle-on-text: "${config.onText}";
+--toggle-prominence: ${config.prominence};`;
+
+      navigator.clipboard.writeText(code).then(() => {
+        const btn = document.getElementById('copyCodeBtn');
+        btn.classList.add('copied');
+        btn.innerHTML = '<span>✓</span> Copied!';
+        setTimeout(() => {
+          btn.classList.remove('copied');
+          btn.innerHTML = '<span>📋</span> Copy CSS';
+        }, 2000);
+      });
+    }
+  </script>
+</body>
+</html>

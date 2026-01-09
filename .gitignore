@@ -227,6 +227,7 @@ next-env.d.ts
 *-local-temporal.db
 
 temp/
+tmp/
 
 **/env/configs/custom.ts
 **/env/configs/custom*.ts
