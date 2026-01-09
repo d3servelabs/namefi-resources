@@ -1,0 +1,77 @@
+---
+description: Trigger when the user asks to file a bug report or create a ClickUp task for a bug/issue.
+globs:
+alwaysApply: false
+---
+# ClickUp Bug Report Guidelines
+
+When filing a ClickUp task for a bug, always include the following sections:
+
+## Required Sections
+
+### 1. Issue
+Brief description of the bug/error.
+
+### 2. Environment
+- **Environment type**: Local dev / Staging / Production
+- **Frontend URL**: e.g., `http://localhost:5050`
+- **Backend URL**: e.g., `http://localhost:3000`
+- **Branch**: Current git branch name
+- **Relevant versions/configs** if applicable
+
+### 3. How to Replicate
+Step-by-step instructions to reproduce the bug:
+1. Start with the initial state/setup
+2. List each action the user takes
+3. Be specific about what to click/enter
+4. Include any test data needed (e.g., domain names, user accounts)
+
+### 4. Expected Behavior
+What should happen when following the replication steps.
+
+### 5. Actual Behavior
+What actually happens (the bug). Include:
+- Error messages
+- HTTP status codes
+- Console errors/logs
+
+### 6. Request Details (for API bugs)
+- Full request URL
+- Request method (GET/POST/etc.)
+- Request body if applicable
+- Response status and body
+
+### 7. Likely Cause (if known)
+- File paths and line numbers where the error originates
+- Possible root causes
+
+### 8. To Debug
+Suggestions for how to investigate the issue.
+
+### 9. Log Attachments
+**Always gather and attach relevant logs from the appropriate source(s):**
+
+Identify where the error manifests and collect logs from the relevant source:
+- **Browser Console**: For frontend errors, network failures, client-side exceptions
+- **Network Tab**: For HTTP request/response details, status codes, payloads
+- **Backend Server Logs**: For server-side errors, stack traces, database issues
+- **Terminal Output**: For build errors, CLI tool failures, script issues
+- **Application Logs**: For runtime errors, workflow failures, background job issues
+
+**How to attach:**
+1. Identify the relevant log source based on where the error occurs
+2. Copy/extract the relevant log entries (not everything, just what is pertinent)
+3. Create a text file with the logs
+4. **Redact any secrets** (API keys, tokens, credentials, passwords) before attaching
+5. Use the clickup_attach_task_file tool to attach the log file to the task
+
+**Log file naming convention:**
+- browser-console-logs-{brief-description}.txt
+- backend-logs-{brief-description}.txt
+- network-requests-{brief-description}.txt
+- terminal-output-{brief-description}.txt
+
+## Task Settings
+- **Priority**: Set based on severity (urgent/high/normal/low)
+- **Assignee**: Assign to the appropriate team member
+- **List**: Use "Default Backlog (Namefi Dev)" for general bugs, or sprint list if urgent
