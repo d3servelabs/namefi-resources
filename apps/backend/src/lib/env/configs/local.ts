@@ -51,6 +51,16 @@ const localConfig: ConfigInput = {
 
   BIGQUERY_AUDIT_SERVICE_NAMES: ['namefi-astra-api-local'],
   CENTRALNIC_KEY: Registrars.CentralNic_OTE_01,
+  DNS_CACHE_SERVERS: [
+    {
+      name: 'NS3',
+      baseUrl: 'http://ns3.namefi.dev:8181',
+    },
+    {
+      name: 'NS4',
+      baseUrl: 'http://ns4.namefi.dev:8181',
+    },
+  ],
 };
 
 export default localConfig;

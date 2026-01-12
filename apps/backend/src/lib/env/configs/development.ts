@@ -41,6 +41,12 @@ const developmentConfig: ConfigInput = {
   BIGQUERY_AUDIT_SERVICE_NAMES: ['namefi-astra-api-dev'],
 
   CENTRALNIC_KEY: Registrars.CentralNic_OTE_01,
+  DNS_CACHE_SERVERS: [
+    {
+      name: 'NS3 & NS4',
+      baseUrl: 'http://ns3.namefi.dev:8181',
+    },
+  ],
 };
 
 export default developmentConfig;

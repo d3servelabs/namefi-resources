@@ -43,6 +43,11 @@ export enum Permission {
   EPP_TESTING = 'EPP_TESTING;;WRITE',
 
   /**
+   * Permission to flush DNS caches across configured DNS servers
+   */
+  FLUSH_DNS_CACHE = 'DNS_CACHE;;FLUSH',
+
+  /**
    * Hidden permission - not shown in UI lists, auto-added to ensure at least one row exists for an admin user
    */
   VIEW_ADMIN_DASHBOARD = 'ADMIN_DASHBOARD;;READ',

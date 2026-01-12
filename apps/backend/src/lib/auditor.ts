@@ -50,6 +50,7 @@ export const ResourceType = {
   BULK_BURN: 'bulk_burn',
   EPP_TESTING: 'epp_testing',
   DOMAIN_EXPORT: 'domain_export',
+  DNS_CACHE: 'dns_cache',
   OTHER: 'other',
 } as const;
 

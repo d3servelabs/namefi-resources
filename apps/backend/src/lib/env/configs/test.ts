@@ -19,6 +19,12 @@ const testConfig: ConfigInput = {
   DNSSEC_DNSKEY_PUBLIC_RECORD:
     'example.com. 3600 IN DNSKEY 257 3 13 g2sb5aS1wJZPanPqAeUzcb6pNM6h9ruKJb2ptCEtppMEBdmvVnS49wATr083ghefNvYN2tl552ICYiNxm2q54w==',
   DNSSEC_DNSKEY_KEY_TAG: 22005,
+  DNS_CACHE_SERVERS: [
+    {
+      name: 'NS3 & NS4',
+      baseUrl: 'http://ns3.namefi.dev:8181',
+    },
+  ],
 };
 
 export default testConfig;

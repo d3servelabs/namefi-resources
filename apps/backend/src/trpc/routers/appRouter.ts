@@ -22,6 +22,7 @@ import { poweredByNamefiOwnerRouter } from './poweredByNamefiOwnerRouter';
 import { newsletterRouter } from './newsletterRouter';
 import { feedbackRouter } from './feedbackRouter';
 import { testSignedPayloadRouter } from './testSignedPayloadRouter';
+import { dnsCacheRouter } from './dnsCacheRouter';
 
 export const appRouter = createTRPCRouter({
   admin: adminRouter,
@@ -46,6 +47,7 @@ export const appRouter = createTRPCRouter({
   pbnOwner: poweredByNamefiOwnerRouter,
   newsletter: newsletterRouter,
   feedback: feedbackRouter,
+  dnsCache: dnsCacheRouter,
 
   version: publicProcedure.query(() => {
     const result = {

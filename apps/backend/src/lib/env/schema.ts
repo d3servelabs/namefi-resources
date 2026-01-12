@@ -111,6 +111,7 @@ export const secretsSchema = z.object({
       return Buffer.from(val, 'base64').toString('utf-8');
     }),
   NAMEFI_ALERT_SLACK_WEBHOOK_URL: z.string().url().optional(),
+  DNS_CACHE_SERVERS_API_KEY: z.string().optional(),
 });
 
 export type SecretsSchema = z.infer<typeof secretsSchema>;
@@ -222,6 +223,14 @@ export const configSchema = z.object({
       Registrars.CentralNic,
     ])
     .optional(),
+  DNS_CACHE_SERVERS: z
+    .array(
+      z.object({
+        name: z.string(),
+        baseUrl: z.string().url(),
+      }),
+    )
+    .default([]),
 });
 
 export type ConfigInput = z.input<typeof configSchema>;

@@ -40,6 +40,16 @@ const productionConfig: ConfigInput = {
   STORAGE_BUCKET: 'namefi-astra-prod',
   CLOUD_FRONT_DOMAIN: 'd37hwq656n7huw.cloudfront.net',
   BIGQUERY_AUDIT_SERVICE_NAMES: ['namefi-astra-api-prod'],
+  DNS_CACHE_SERVERS: [
+    {
+      name: 'NS3',
+      baseUrl: 'http://ns3.namefi.io:8181',
+    },
+    {
+      name: 'NS4',
+      baseUrl: 'http://ns4.namefi.io:8181',
+    },
+  ],
 };
 
 export default productionConfig;
