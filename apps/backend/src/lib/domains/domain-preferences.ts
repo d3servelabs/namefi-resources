@@ -149,7 +149,7 @@ export const getNonUserSpecificDomainPreferencesAndConfig = async (
   }
   return {
     autoEnsEnabled: domainConfig?.autoEnsEnabled ?? false,
-    autoParkEnabled: domainConfig?.autoParkEnabled ?? false,
+    autoParkEnabled: domainConfig?.autoParkEnabled ?? true,
     ownerAddress: nft.ownerAddress,
     forwardTo: domainConfig?.forwardTo ?? undefined,
   };

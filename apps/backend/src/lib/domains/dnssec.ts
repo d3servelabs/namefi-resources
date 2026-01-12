@@ -179,6 +179,7 @@ export async function setZoneSigningFlag(
     .values({
       normalizedDomainName,
       dnssecEnabled: enable,
+      autoParkEnabled: true, //todo (remove this and add a park step in domainSetup)
     })
     .onConflictDoUpdate({
       target: [domainConfigTable.normalizedDomainName],
