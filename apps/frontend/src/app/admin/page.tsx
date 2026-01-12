@@ -23,6 +23,7 @@ import {
   Flame,
   Globe,
   ArrowRightLeft,
+  RefreshCw,
 } from 'lucide-react';
 import { Permission } from '@namefi-astra/utils';
 import { PermissionGate } from '@/components/access/PermissionGate';
@@ -255,6 +256,16 @@ const ADMIN_SECTIONS: AdminSection[] = [
         iconBgColor: 'bg-orange-100',
         iconTextColor: 'text-orange-600',
         permissions: [Permission.EPP_TESTING],
+      },
+      {
+        title: 'DNS Cache Management',
+        description:
+          'Flush DNS caches across configured servers for specific zones and record types',
+        href: '/admin/dns-cache',
+        icon: RefreshCw,
+        iconBgColor: 'bg-sky-100',
+        iconTextColor: 'text-sky-600',
+        permissions: [Permission.FLUSH_DNS_CACHE],
       },
     ],
   },
