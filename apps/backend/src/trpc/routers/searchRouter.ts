@@ -118,12 +118,7 @@ export const searchRouter = createTRPCRouter({
 
       yield* firstDomainResult;
 
-      // split the domains into increasing size chunks starting from 3, ie; [3, 15, 13, 23, 36, ...]
-      const chunks = increasingSizeChunks(
-        pickTraditionalDomains(drop(1, domains)),
-        3,
-        (prev, curr) => (prev === 0 && curr === 3 ? 15 : prev + curr),
-      );
+      const chunks = [pickTraditionalDomains(drop(1, domains))];
 
       const promises = chunks.map((names) =>
         getDomainListInfoWithAbortSignal(names, signal, ctx.user),

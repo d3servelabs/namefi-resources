@@ -9,7 +9,7 @@ import {
 import { useDebounceValue } from 'usehooks-ts';
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { useSubscription } from '@trpc/tanstack-react-query';
-import { useTRPC, useTRPCClient } from '@/lib/trpc';
+import { type AppRouterOutput, useTRPC, useTRPCClient } from '@/lib/trpc';
 import type { DomainAvailabilityInfo } from '@namefi-astra/backend/trpc/types';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { SearchMode } from '@/components/search/types';
@@ -24,6 +24,7 @@ declare global {
     printTimingDetails: () => void;
   }
 }
+type TldPricingInfo = AppRouterOutput['registry']['getTldPricingTable'][number];
 
 const RANKED_TLD_PAGE_SIZE = 16;
 
@@ -117,10 +118,14 @@ export const useSearch = (parentDomain?: string) => {
     Map<NamefiNormalizedDomain, DomainAvailabilityInfo>
   >(new Map());
 
+  const tldPricingQuery = useQuery(
+    trpc.registry.getTldPricingTable.queryOptions(),
+  );
   const { data: preliminaryDomainAvailability } = useQuery({
     queryKey: ['preliminaryDomainAvailability', domains],
-    queryFn: () => getPreliminaryDomainAvailability(domains),
-    enabled: domains.length > 0,
+    queryFn: () =>
+      getPreliminaryDomainAvailability(domains, tldPricingQuery.data || []),
+    enabled: domains.length > 0 && !tldPricingQuery.isLoading,
   });
 
   const domainInfo = useMemo(() => {
@@ -273,21 +278,52 @@ function resolveNsDOH(domain: NamefiNormalizedDomain) {
 
 const getPreliminaryDomainAvailability = async (
   _domains: NamefiNormalizedDomain[],
+  tldPricingInfo: TldPricingInfo[],
 ): Promise<DomainAvailabilityInfo[]> => {
+  const priceMap = new Map<string, TldPricingInfo>(
+    tldPricingInfo.map((info) => [info.tld, info]),
+  );
   const domains = _domains.filter((domain) => domain.split('.').length === 2); //todo use actual public suffix list
 
   return Promise.all(
     domains.map(async (domain) => {
       const [_error, nameservers] = await resolve(resolveNsDOH(domain));
       const availability = isNil(nameservers) || isEmpty(nameservers);
+      const tld = domain.split('.').pop();
+      const pricingDetails = tld ? priceMap.get(tld) : undefined;
+
       return {
         domain,
         availability,
-        pricingDetails: undefined,
+        pricingDetails: {
+          importPrice: {
+            type: 'PER_YEAR',
+            price: {
+              amount: pricingDetails?.transferPriceUsdPerYear ?? 0,
+              currency: 'USD',
+            },
+          },
+          registrationPrice: {
+            type: 'PER_YEAR',
+            price: {
+              amount: pricingDetails?.registrationPriceUsdPerYear ?? 0,
+              currency: 'USD',
+            },
+          },
+          renewalPrice: {
+            type: 'PER_YEAR',
+            price: {
+              amount: pricingDetails?.renewalPriceUsdPerYear ?? 0,
+              currency: 'USD',
+            },
+          },
+        },
         currentOwner: undefined,
         durationValidationInYears: { min: 1, max: 1 },
         importable: !availability,
-        registrarKey: 'preliminary',
+        registrarKey: pricingDetails
+          ? pricingDetails.registrarKey
+          : 'preliminary',
         supported: true,
       } satisfies DomainAvailabilityInfo;
     }),
