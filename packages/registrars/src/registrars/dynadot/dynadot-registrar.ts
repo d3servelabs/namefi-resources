@@ -1151,7 +1151,8 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
             status = OperationStatus.REQUIRES_ACTION;
             break;
           case DynadotTransferStatus.AUTH_CODE_NEEDED:
-            status = OperationStatus.ERROR;
+            message = 'Authcode is invalid or missing';
+            status = OperationStatus.REQUIRES_ACTION;
             break;
 
           case DynadotTransferStatus.CANCELLED:

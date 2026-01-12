@@ -189,7 +189,7 @@ async function _acquireSldDomain(input: AcquireDomainWorkflowInput) {
           encryptionKeyId: isImport ? input.encryptionKeyId : undefined,
         },
       ],
-      workflowId: `domain-acquire-${input.normalizedDomainName}`,
+      workflowId: `eppRegisterOrImport-[${input.normalizedDomainName}]`,
       workflowRunTimeout: isImport ? '21 days' : /* REGISTER */ '4 hours',
     });
 

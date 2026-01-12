@@ -27,6 +27,36 @@ interface SldRegisterOrImportWorkflowInput {
 export const sldRegisterOrImportProceed =
   workflow.defineSignal<[{ action: 'PROCEED' | 'FAIL' }]>('nextAction');
 
+const { generalAlertNamefi } = typedProxyActivities({
+  temporalEnum: TEMPORAL_ENUMS.DEFAULT,
+  options: {
+    ...shortRunningOpts,
+    retry: {
+      maximumInterval: '1 minute',
+    },
+  },
+});
+
+const { getDomainDetails } = typedProxyActivities({
+  temporalEnum: TEMPORAL_ENUMS.DOMAINS,
+  options: {
+    ...shortRunningOpts,
+  },
+});
+
+const { sendRegisterOrImportRequestToNamefiRegistrar } = typedProxyActivities({
+  temporalEnum: TEMPORAL_ENUMS.DOMAINS,
+  options: {
+    startToCloseTimeout: '30 seconds',
+    retry: {
+      initialInterval: '5 seconds',
+      backoffCoefficient: 2,
+      maximumInterval: '1 minutes',
+      maximumAttempts: 5,
+    },
+  },
+});
+
 export async function sldRegisterOrImportWorkflow(
   input: SldRegisterOrImportWorkflowInput,
 ): Promise<DomainRegistration> {
@@ -35,47 +65,6 @@ export async function sldRegisterOrImportWorkflow(
   }
 
   const isImport = input.operationType === 'IMPORT';
-
-  if (
-    isImport &&
-    !(input.encryptedEppAuthorizationCode && input.encryptionKeyId)
-  ) {
-    throw new Error(
-      'Authorization code is required for domain import operations',
-    );
-  }
-
-  const { generalAlertNamefi } = typedProxyActivities({
-    temporalEnum: TEMPORAL_ENUMS.DEFAULT,
-    options: {
-      ...shortRunningOpts,
-      retry: {
-        maximumInterval: '1 minute',
-      },
-    },
-  });
-
-  const { getDomainDetails } = typedProxyActivities({
-    temporalEnum: TEMPORAL_ENUMS.DOMAINS,
-    options: {
-      ...shortRunningOpts,
-    },
-  });
-
-  const { sendRegisterOrImportRequestToNamefiRegistrar } = typedProxyActivities(
-    {
-      temporalEnum: TEMPORAL_ENUMS.DOMAINS,
-      options: {
-        startToCloseTimeout: '30 seconds',
-        retry: {
-          initialInterval: '5 seconds',
-          backoffCoefficient: 2,
-          maximumInterval: '1 minutes',
-          maximumAttempts: 5,
-        },
-      },
-    },
-  );
 
   const { pollRegisterOrImportDomainOperationStatus } = typedProxyActivities({
     temporalEnum: TEMPORAL_ENUMS.DOMAINS,
@@ -95,6 +84,15 @@ export async function sldRegisterOrImportWorkflow(
           },
     },
   });
+
+  if (
+    isImport &&
+    !(input.encryptedEppAuthorizationCode && input.encryptionKeyId)
+  ) {
+    throw new Error(
+      'Authorization code is required for domain import operations',
+    );
+  }
 
   try {
     const registrarRes: LongRunningOperationResult =
@@ -144,75 +142,65 @@ export async function sldRegisterOrImportWorkflow(
       input.registrarKey,
     );
 
-    if (workflow.patched('add-support-for-requires-action')) {
-      let nextAction: 'PROCEED' | 'FAIL' | null = null;
-      let waitingForSignal = false;
-      workflow.setHandler(sldRegisterOrImportProceed, (input) => {
-        if (!waitingForSignal) return;
-        nextAction = input.action;
+    workflow.deprecatePatch('add-support-for-requires-action');
+    let nextAction: 'PROCEED' | 'FAIL' | null = null;
+    let waitingForSignal = false;
+    workflow.setHandler(sldRegisterOrImportProceed, (input) => {
+      if (!waitingForSignal) return;
+      nextAction = input.action;
+    });
+
+    const { criticalAlertNamefi } = typedProxyActivities({
+      temporalEnum: TEMPORAL_ENUMS.DEFAULT,
+      options: {
+        ...shortRunningOpts,
+        retry: {
+          maximumInterval: '1 minute',
+        },
+      },
+    });
+    if (
+      matchAny(
+        registrarOperationStatus,
+        OperationStatus.REQUIRES_ACTION,
+        OperationStatus.ERROR,
+      )
+    ) {
+      await criticalAlertNamefi({
+        workflowInfo: workflow.workflowInfo(),
+        message: 'Action Required',
+        registrarOperationStatus,
+        input,
+        level: 'error',
       });
 
-      const { criticalAlertNamefi } = typedProxyActivities({
-        temporalEnum: TEMPORAL_ENUMS.DEFAULT,
-        options: {
-          ...shortRunningOpts,
-          retry: {
-            maximumInterval: '1 minute',
-          },
-        },
+      waitingForSignal = true;
+      await workflow.condition(() => nextAction !== null);
+
+      if (nextAction === 'FAIL') {
+        throw workflow.ApplicationFailure.create({
+          nonRetryable: true,
+          message: `Failed to request ${isImport ? 'import' : 'register'} domain status`,
+          details: [
+            `Type: ${registrarRes.type}`,
+            `Status: ${registrarRes.status}`,
+            `Message: ${registrarRes.message}`,
+            'Admin Signal',
+          ],
+        });
+      }
+    }
+
+    if (registrarOperationStatus === OperationStatus.FAILED) {
+      throw workflow.ApplicationFailure.create({
+        nonRetryable: true,
+        message: `Failed to request ${isImport ? 'import' : 'register'} domain status`,
+        details: [
+          `Type: ${registrarRes.type}`,
+          `Status: ${registrarRes.status}`,
+          `Message: ${registrarRes.message}`,
+        ],
       });
-      if (registrarOperationStatus === OperationStatus.REQUIRES_ACTION) {
-        await criticalAlertNamefi({
-          workflowInfo: workflow.workflowInfo(),
-          message: 'Action Required',
-          registrarOperationStatus,
-          input,
-          level: 'error',
-        });
-        waitingForSignal = true;
-        await workflow.condition(() => nextAction !== null);
-        if (nextAction === 'FAIL') {
-          throw workflow.ApplicationFailure.create({
-            nonRetryable: true,
-            message: `Failed to request ${isImport ? 'import' : 'register'} domain status`,
-            details: [
-              `Type: ${registrarRes.type}`,
-              `Status: ${registrarRes.status}`,
-              `Message: ${registrarRes.message}`,
-              'Admin Signal',
-            ],
-          });
-        }
-      }
-      if (
-        matchAny(
-          registrarOperationStatus,
-          OperationStatus.FAILED,
-          OperationStatus.ERROR,
-        )
-      ) {
-        throw workflow.ApplicationFailure.create({
-          nonRetryable: true,
-          message: `Failed to request ${isImport ? 'import' : 'register'} domain status`,
-          details: [
-            `Type: ${registrarRes.type}`,
-            `Status: ${registrarRes.status}`,
-            `Message: ${registrarRes.message}`,
-          ],
-        });
-      }
-    } else {
-      if (registrarOperationStatus !== OperationStatus.SUCCESSFUL) {
-        throw workflow.ApplicationFailure.create({
-          nonRetryable: true,
-          message: `Failed to request ${isImport ? 'import' : 'register'} domain status`,
-          details: [
-            `Type: ${registrarRes.type}`,
-            `Status: ${registrarRes.status}`,
-            `Message: ${registrarRes.message}`,
-          ],
-        });
-      }
     }
 
     return getDomainDetails(input.normalizedDomainName as PunycodeDomainName);
