@@ -70,7 +70,7 @@ export function AIOnboardingOneShot({
       domain: values.domain as NamefiNormalizedDomain,
       description: values.description || undefined,
       collateralType: 'let_ai_choose',
-      model: 'gemini-2.5-flash-image',
+      model: 'gemini-3-pro-image-preview',
     };
 
     try {

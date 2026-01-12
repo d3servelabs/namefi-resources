@@ -27,6 +27,11 @@ const MODEL_SPECIFIC_PROMPTS: Partial<
     marketing:
       'You are a Gemini assistant specializing in marketing visuals. Generate an inline image that matches the prompt precisely. Return only the image output.',
   },
+  'gemini-3-pro-image-preview': {
+    logo: 'You are a Gemini assistant specializing in logo creation. Return only a single inline image at 1024x1024. Generate ONLY the logo (no mockups, scenes, products, or people). Use a subtle, visually complementary gradient or clean solid background that does not distract from the logo.',
+    marketing:
+      'You are a Gemini assistant specializing in marketing visuals. Generate an inline image that matches the prompt precisely. Return only the image output.',
+  },
 };
 
 export function resolveImageSystemPrompt(

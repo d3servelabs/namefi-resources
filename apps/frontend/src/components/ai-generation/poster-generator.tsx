@@ -49,8 +49,13 @@ const posterFormSchema = baseFormSchema.extend({
     .enum(MARKETING_COLLATERAL_TYPE_INPUT_IDS)
     .default('let_ai_choose'),
   model: z
-    .enum(['gpt-image-1', 'gpt-image-1.5', 'gemini-2.5-flash-image'])
-    .default('gemini-2.5-flash-image'),
+    .enum([
+      'gpt-image-1',
+      'gpt-image-1.5',
+      'gemini-2.5-flash-image',
+      'gemini-3-pro-image-preview',
+    ])
+    .default('gemini-3-pro-image-preview'),
 });
 
 type PosterFormData = z.infer<typeof posterFormSchema>;
@@ -86,7 +91,7 @@ export function PosterGenerator({
       description: '',
       selectedLogoId: '',
       collateralType: 'let_ai_choose' as const,
-      model: 'gemini-2.5-flash-image' as Model,
+      model: 'gemini-3-pro-image-preview' as Model,
     };
   }, [fixedDomain]);
 
@@ -251,11 +256,13 @@ export function PosterGenerator({
         const selectedModel = form.watch('model');
         const selectedCollateral = form.watch('collateralType');
         const selectedModelLabel =
-          selectedModel === 'gemini-2.5-flash-image'
-            ? 'Gemini'
-            : selectedModel === 'gpt-image-1.5'
-              ? 'OpenAI 1.5'
-              : 'OpenAI (legacy)';
+          selectedModel === 'gemini-3-pro-image-preview'
+            ? 'Gemini 3 Pro (preview)'
+            : selectedModel === 'gemini-2.5-flash-image'
+              ? 'Gemini 2.5 (legacy)'
+              : selectedModel === 'gpt-image-1.5'
+                ? 'OpenAI 1.5'
+                : 'OpenAI (legacy)';
         controlButtons.push({
           key: 'model',
           label: 'Model',
@@ -344,8 +351,11 @@ export function PosterGenerator({
                           <SelectValue placeholder="Select a model" />
                         </SelectTrigger>
                         <SelectContent>
+                          <SelectItem value="gemini-3-pro-image-preview">
+                            Gemini 3 Pro (preview)
+                          </SelectItem>
                           <SelectItem value="gemini-2.5-flash-image">
-                            Gemini
+                            Gemini 2.5 (legacy)
                           </SelectItem>
                           <SelectItem value="gpt-image-1.5">
                             OpenAI 1.5

@@ -69,7 +69,12 @@ const generateLogoInputSchema = z.object({
   type: z.enum(LOGO_TYPE_INPUT_IDS),
   style: z.enum(LOGO_STYLE_INPUT_IDS),
   model: z
-    .enum(['gpt-image-1', 'gpt-image-1.5', 'gemini-2.5-flash-image'])
+    .enum([
+      'gpt-image-1',
+      'gpt-image-1.5',
+      'gemini-2.5-flash-image',
+      'gemini-3-pro-image-preview',
+    ])
     .default('gpt-image-1.5'),
 });
 
@@ -81,8 +86,13 @@ const generateMarketingImageInputSchema = z.object({
     .enum(MARKETING_COLLATERAL_TYPE_INPUT_IDS)
     .default('let_ai_choose'),
   model: z
-    .enum(['gpt-image-1', 'gpt-image-1.5', 'gemini-2.5-flash-image'])
-    .default('gemini-2.5-flash-image'),
+    .enum([
+      'gpt-image-1',
+      'gpt-image-1.5',
+      'gemini-2.5-flash-image',
+      'gemini-3-pro-image-preview',
+    ])
+    .default('gemini-3-pro-image-preview'),
 });
 
 export const aiRouter = createTRPCRouter({

@@ -19,6 +19,7 @@ const imageModelEnum = z.enum([
   'gpt-image-1',
   'gpt-image-1.5',
   'gemini-2.5-flash-image',
+  'gemini-3-pro-image-preview',
 ]);
 const collateralTypeInputEnum = z.enum(MARKETING_COLLATERAL_TYPE_INPUT_IDS);
 const collateralTypeResolvedEnum = z.enum(
@@ -29,7 +30,7 @@ export const marketingWorkflowInputSchema = z.object({
   domain: z.string(),
   description: z.string().optional(),
   collateralType: collateralTypeInputEnum.default('let_ai_choose'),
-  imageModel: imageModelEnum.default('gemini-2.5-flash-image'),
+  imageModel: imageModelEnum.default('gemini-3-pro-image-preview'),
   storage: z.custom<StorageConfig>(),
   referenceLogoUrl: z.string().optional(),
 });

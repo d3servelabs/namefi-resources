@@ -39,7 +39,12 @@ const generateLogoInputSchema = z.object({
   type: z.enum(LOGO_TYPE_INPUT_IDS),
   style: z.enum(LOGO_STYLE_INPUT_IDS),
   model: z
-    .enum(['gpt-image-1', 'gpt-image-1.5', 'gemini-2.5-flash-image'])
+    .enum([
+      'gpt-image-1',
+      'gpt-image-1.5',
+      'gemini-2.5-flash-image',
+      'gemini-3-pro-image-preview',
+    ])
     .default('gpt-image-1.5'),
 });
 

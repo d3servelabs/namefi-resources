@@ -6,7 +6,11 @@ import type { LogoStyleInput, LogoTypeInput } from '@namefi-astra/ai';
 
 export interface GenerateLogosWorkflowInput {
   // model provider selection
-  model: 'gpt-image-1' | 'gpt-image-1.5' | 'gemini-2.5-flash-image';
+  model:
+    | 'gpt-image-1'
+    | 'gpt-image-1.5'
+    | 'gemini-2.5-flash-image'
+    | 'gemini-3-pro-image-preview';
   // optional explicit domains to process; if provided, skip DB pagination
   domains?: NamefiNormalizedDomain[];
   // batching and rate limiting

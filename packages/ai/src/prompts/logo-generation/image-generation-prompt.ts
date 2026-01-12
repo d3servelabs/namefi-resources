@@ -27,7 +27,7 @@ Background styling:
 - The background should enhance the logo and never overpower it
 
 ${
-  model === 'gemini-2.5-flash-image'
+  model === 'gemini-2.5-flash-image' || model === 'gemini-3-pro-image-preview'
     ? `
 REQUIREMENTS:
 - Output a single square image at 1024x1024 resolution.

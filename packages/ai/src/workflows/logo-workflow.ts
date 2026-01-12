@@ -18,6 +18,7 @@ const imageModelEnum = z.enum([
   'gpt-image-1',
   'gpt-image-1.5',
   'gemini-2.5-flash-image',
+  'gemini-3-pro-image-preview',
 ]);
 const logoTypeInputEnum = z.enum(LOGO_TYPE_INPUT_IDS);
 const logoStyleInputEnum = z.enum(LOGO_STYLE_INPUT_IDS);

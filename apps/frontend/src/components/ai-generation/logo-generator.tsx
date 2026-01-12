@@ -44,7 +44,12 @@ const logoFormSchema = baseFormSchema.extend({
     .enum(logoStyleOptions as [LogoStyleInput, ...LogoStyleInput[]])
     .default('let-ai-choose'),
   model: z
-    .enum(['gpt-image-1', 'gpt-image-1.5', 'gemini-2.5-flash-image'])
+    .enum([
+      'gpt-image-1',
+      'gpt-image-1.5',
+      'gemini-2.5-flash-image',
+      'gemini-3-pro-image-preview',
+    ])
     .default('gpt-image-1.5'),
 });
 
@@ -81,7 +86,8 @@ export function LogoGenerator({
   };
 
   const getModelDisplay = (model: Model) => {
-    if (model === 'gemini-2.5-flash-image') return 'Gemini';
+    if (model === 'gemini-3-pro-image-preview') return 'Gemini 3 Pro (preview)';
+    if (model === 'gemini-2.5-flash-image') return 'Gemini 2.5 (legacy)';
     if (model === 'gpt-image-1.5') return 'OpenAI 1.5';
     return 'OpenAI (legacy)';
   };
@@ -331,8 +337,11 @@ export function LogoGenerator({
                           <SelectValue placeholder="Select a model" />
                         </SelectTrigger>
                         <SelectContent>
+                          <SelectItem value="gemini-3-pro-image-preview">
+                            Gemini 3 Pro (preview)
+                          </SelectItem>
                           <SelectItem value="gemini-2.5-flash-image">
-                            Gemini
+                            Gemini 2.5 (legacy)
                           </SelectItem>
                           <SelectItem value="gpt-image-1.5">
                             OpenAI 1.5

@@ -119,18 +119,42 @@ function getOpenAiAgent(
   return task === 'logo' ? openaiLogoAgents[model] : openaiPosterAgents[model];
 }
 
-const geminiPosterAgent = new ToolLoopAgent({
-  model: google('gemini-2.5-flash-image'),
-  instructions: resolveImageSystemPrompt('gemini-2.5-flash-image', 'marketing'),
-});
+const geminiPosterAgents = {
+  'gemini-2.5-flash-image': new ToolLoopAgent({
+    model: google('gemini-2.5-flash-image'),
+    instructions: resolveImageSystemPrompt(
+      'gemini-2.5-flash-image',
+      'marketing',
+    ),
+  }),
+  'gemini-3-pro-image-preview': new ToolLoopAgent({
+    model: google('gemini-3-pro-image-preview'),
+    instructions: resolveImageSystemPrompt(
+      'gemini-3-pro-image-preview',
+      'marketing',
+    ),
+  }),
+} as const;
 
-const geminiLogoAgent = new ToolLoopAgent({
-  model: google('gemini-2.5-flash-image'),
-  instructions: resolveImageSystemPrompt('gemini-2.5-flash-image', 'logo'),
-});
+const geminiLogoAgents = {
+  'gemini-2.5-flash-image': new ToolLoopAgent({
+    model: google('gemini-2.5-flash-image'),
+    instructions: resolveImageSystemPrompt('gemini-2.5-flash-image', 'logo'),
+  }),
+  'gemini-3-pro-image-preview': new ToolLoopAgent({
+    model: google('gemini-3-pro-image-preview'),
+    instructions: resolveImageSystemPrompt(
+      'gemini-3-pro-image-preview',
+      'logo',
+    ),
+  }),
+} as const;
 
-function getGeminiAgent(task: ImageTask) {
-  return task === 'logo' ? geminiLogoAgent : geminiPosterAgent;
+function getGeminiAgent(
+  task: ImageTask,
+  model: 'gemini-2.5-flash-image' | 'gemini-3-pro-image-preview',
+) {
+  return task === 'logo' ? geminiLogoAgents[model] : geminiPosterAgents[model];
 }
 
 async function generateOpenAiImage(
@@ -170,10 +194,11 @@ async function generateOpenAiImage(
 
 async function generateGeminiImage(
   task: ImageTask,
+  model: 'gemini-2.5-flash-image' | 'gemini-3-pro-image-preview',
   prompt: string,
   referenceLogoDataUrl?: string,
 ): Promise<ImageGenerationResult> {
-  const result = await getGeminiAgent(task).generate({
+  const result = await getGeminiAgent(task, model).generate({
     messages: [
       {
         role: 'user',
@@ -208,7 +233,7 @@ async function createImage(
   if (model === 'gpt-image-1' || model === 'gpt-image-1.5') {
     return generateOpenAiImage(task, model, prompt, referenceLogoDataUrl);
   }
-  return generateGeminiImage(task, prompt, referenceLogoDataUrl);
+  return generateGeminiImage(task, model, prompt, referenceLogoDataUrl);
 }
 
 export interface LogoGenerationInput {

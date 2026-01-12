@@ -11,7 +11,8 @@ import type { LanguageModelUsage } from 'ai';
 export type ImageModel =
   | 'gpt-image-1'
   | 'gpt-image-1.5'
-  | 'gemini-2.5-flash-image';
+  | 'gemini-2.5-flash-image'
+  | 'gemini-3-pro-image-preview';
 
 export const MARKETING_COLLATERAL_TYPES = [
   'billboard',
