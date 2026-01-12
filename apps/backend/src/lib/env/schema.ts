@@ -110,6 +110,7 @@ export const secretsSchema = z.object({
       if (!val) return null;
       return Buffer.from(val, 'base64').toString('utf-8');
     }),
+  NAMEFI_ALERT_SLACK_WEBHOOK_URL: z.string().url().optional(),
 });
 
 export type SecretsSchema = z.infer<typeof secretsSchema>;
