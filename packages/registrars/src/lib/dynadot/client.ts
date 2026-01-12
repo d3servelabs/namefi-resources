@@ -65,7 +65,7 @@ function setupLimiter({
       if (
         retryWhenBusy &&
         jobInfo.retryCount < maxRetries &&
-        jobInfo.retryCount > 0 &&
+        jobInfo.retryCount >= 0 &&
         error instanceof Error &&
         error.message.includes('Threads Busy')
       ) {
