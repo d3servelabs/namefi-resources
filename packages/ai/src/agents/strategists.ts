@@ -31,7 +31,7 @@ const logoStyleInstructions = Object.values(LOGO_STYLES)
   .join('\n');
 
 const logoStrategistAgent = new ToolLoopAgent({
-  model: openai('gpt-5'),
+  model: openai('gpt-5.2'),
   instructions: `${logoGenerationSystemPrompt}
 
 STRICT JSON OUTPUT RULES:
@@ -116,7 +116,7 @@ export async function generatePosterStrategy(
       : 'billboard, apparel, vehicle, product';
 
   const posterStrategistAgent = new ToolLoopAgent({
-    model: openai('gpt-5'),
+    model: openai('gpt-5.2'),
     instructions: createCollateralSystemPrompt(allowedCollateralTypes),
     output: Output.object({ schema: collateralAnalysisSchema }),
   });

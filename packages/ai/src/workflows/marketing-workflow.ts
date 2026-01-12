@@ -128,7 +128,7 @@ export async function runMarketingWorkflow(
       analysis,
       resolvedCollateralType,
       prompt,
-      model: strategy.modelId ?? 'gpt-5',
+      model: strategy.modelId ?? 'gpt-5.2',
       tokenUsage: strategy.totalUsage,
     },
     image: {
