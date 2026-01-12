@@ -8,7 +8,10 @@ import type {
 } from './logo-options';
 import type { LanguageModelUsage } from 'ai';
 
-export type ImageModel = 'gpt-image-1' | 'gemini-2.5-flash-image';
+export type ImageModel =
+  | 'gpt-image-1'
+  | 'gpt-image-1.5'
+  | 'gemini-2.5-flash-image';
 
 export const MARKETING_COLLATERAL_TYPES = [
   'billboard',

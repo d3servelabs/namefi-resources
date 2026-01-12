@@ -44,8 +44,8 @@ const logoFormSchema = baseFormSchema.extend({
     .enum(logoStyleOptions as [LogoStyleInput, ...LogoStyleInput[]])
     .default('let-ai-choose'),
   model: z
-    .enum(['gpt-image-1', 'gemini-2.5-flash-image'])
-    .default('gpt-image-1'),
+    .enum(['gpt-image-1', 'gpt-image-1.5', 'gemini-2.5-flash-image'])
+    .default('gpt-image-1.5'),
 });
 
 type LogoFormData = z.infer<typeof logoFormSchema>;
@@ -80,8 +80,11 @@ export function LogoGenerator({
     return logoStyle ? logoStyle.name : style;
   };
 
-  const getModelDisplay = (model: Model) =>
-    model === 'gemini-2.5-flash-image' ? 'Gemini' : 'OpenAI';
+  const getModelDisplay = (model: Model) => {
+    if (model === 'gemini-2.5-flash-image') return 'Gemini';
+    if (model === 'gpt-image-1.5') return 'OpenAI 1.5';
+    return 'OpenAI (legacy)';
+  };
 
   const defaultValues = useMemo(() => {
     return {
@@ -89,7 +92,7 @@ export function LogoGenerator({
       type: LOGO_TYPES['let-ai-choose'].id,
       style: LOGO_STYLES['let-ai-choose'].id,
       description: '',
-      model: 'gpt-image-1' as Model,
+      model: 'gpt-image-1.5' as Model,
     };
   }, [fixedDomain]);
 
@@ -331,7 +334,12 @@ export function LogoGenerator({
                           <SelectItem value="gemini-2.5-flash-image">
                             Gemini
                           </SelectItem>
-                          <SelectItem value="gpt-image-1">OpenAI</SelectItem>
+                          <SelectItem value="gpt-image-1.5">
+                            OpenAI 1.5
+                          </SelectItem>
+                          <SelectItem value="gpt-image-1">
+                            OpenAI (legacy)
+                          </SelectItem>
                         </SelectContent>
                       </Select>
                     </FormControl>

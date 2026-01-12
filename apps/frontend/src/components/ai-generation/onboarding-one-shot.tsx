@@ -59,7 +59,7 @@ export function AIOnboardingOneShot({
       type: 'let-ai-choose',
       style: 'let-ai-choose',
       description: values.description || undefined,
-      model: 'gpt-image-1',
+      model: 'gpt-image-1.5',
     };
     const marketingPayload: {
       domain: NamefiNormalizedDomain;

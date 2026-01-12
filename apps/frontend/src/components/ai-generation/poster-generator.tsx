@@ -49,7 +49,7 @@ const posterFormSchema = baseFormSchema.extend({
     .enum(MARKETING_COLLATERAL_TYPE_INPUT_IDS)
     .default('let_ai_choose'),
   model: z
-    .enum(['gpt-image-1', 'gemini-2.5-flash-image'])
+    .enum(['gpt-image-1', 'gpt-image-1.5', 'gemini-2.5-flash-image'])
     .default('gemini-2.5-flash-image'),
 });
 
@@ -250,11 +250,16 @@ export function PosterGenerator({
 
         const selectedModel = form.watch('model');
         const selectedCollateral = form.watch('collateralType');
+        const selectedModelLabel =
+          selectedModel === 'gemini-2.5-flash-image'
+            ? 'Gemini'
+            : selectedModel === 'gpt-image-1.5'
+              ? 'OpenAI 1.5'
+              : 'OpenAI (legacy)';
         controlButtons.push({
           key: 'model',
           label: 'Model',
-          badge:
-            selectedModel === 'gemini-2.5-flash-image' ? 'Gemini' : 'OpenAI',
+          badge: selectedModelLabel,
           onClick: () => setOpenPanel(openPanel === 'model' ? null : 'model'),
           isActive: openPanel === 'model',
         });
@@ -342,7 +347,12 @@ export function PosterGenerator({
                           <SelectItem value="gemini-2.5-flash-image">
                             Gemini
                           </SelectItem>
-                          <SelectItem value="gpt-image-1">OpenAI</SelectItem>
+                          <SelectItem value="gpt-image-1.5">
+                            OpenAI 1.5
+                          </SelectItem>
+                          <SelectItem value="gpt-image-1">
+                            OpenAI (legacy)
+                          </SelectItem>
                         </SelectContent>
                       </Select>
                     </FormControl>

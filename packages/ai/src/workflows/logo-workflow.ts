@@ -14,7 +14,11 @@ import { logoConceptSchema, tokenUsageSchema } from '../types/logo-schemas';
 import { generateLogoStrategy } from '../agents/strategists';
 import { generateLogoImage } from '../agents/generators';
 
-const imageModelEnum = z.enum(['gpt-image-1', 'gemini-2.5-flash-image']);
+const imageModelEnum = z.enum([
+  'gpt-image-1',
+  'gpt-image-1.5',
+  'gemini-2.5-flash-image',
+]);
 const logoTypeInputEnum = z.enum(LOGO_TYPE_INPUT_IDS);
 const logoStyleInputEnum = z.enum(LOGO_STYLE_INPUT_IDS);
 
@@ -23,7 +27,7 @@ export const logoWorkflowInputSchema = z.object({
   description: z.string().optional(),
   preferredType: logoTypeInputEnum.optional(),
   preferredStyle: logoStyleInputEnum.optional(),
-  imageModel: imageModelEnum.default('gpt-image-1'),
+  imageModel: imageModelEnum.default('gpt-image-1.5'),
   storage: z.custom<StorageConfig>(),
 });
 

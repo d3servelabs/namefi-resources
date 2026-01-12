@@ -15,7 +15,11 @@ import {
   MARKETING_COLLATERAL_TYPE_RESOLVED_IDS,
 } from '../types/generation';
 
-const imageModelEnum = z.enum(['gpt-image-1', 'gemini-2.5-flash-image']);
+const imageModelEnum = z.enum([
+  'gpt-image-1',
+  'gpt-image-1.5',
+  'gemini-2.5-flash-image',
+]);
 const collateralTypeInputEnum = z.enum(MARKETING_COLLATERAL_TYPE_INPUT_IDS);
 const collateralTypeResolvedEnum = z.enum(
   MARKETING_COLLATERAL_TYPE_RESOLVED_IDS,

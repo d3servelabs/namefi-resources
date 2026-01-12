@@ -39,8 +39,8 @@ const generateLogoInputSchema = z.object({
   type: z.enum(LOGO_TYPE_INPUT_IDS),
   style: z.enum(LOGO_STYLE_INPUT_IDS),
   model: z
-    .enum(['gpt-image-1', 'gemini-2.5-flash-image'])
-    .default('gpt-image-1'),
+    .enum(['gpt-image-1', 'gpt-image-1.5', 'gemini-2.5-flash-image'])
+    .default('gpt-image-1.5'),
 });
 
 publicAiRouter.post('/generate-logo', async (c) => {

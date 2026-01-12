@@ -18,7 +18,7 @@ import { Context } from '@temporalio/activity';
 
 export interface GenerateLogosForDomainsParams {
   domains: NamefiNormalizedDomain[];
-  model: 'gpt-image-1' | 'gemini-2.5-flash-image';
+  model: 'gpt-image-1' | 'gpt-image-1.5' | 'gemini-2.5-flash-image';
   concurrency?: number; // per-activity execution concurrency
   batchId?: string; // optional correlation id
   description?: string; // prompt hint
