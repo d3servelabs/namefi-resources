@@ -19,7 +19,7 @@
     },
     "apps/backend": {
       "name": "@namefi-astra/backend",
-      "version": "0.3.55-beta",
+      "version": "0.3.56-beta",
       "dependencies": {
         "@aws-sdk/client-kms": "^3.830.0",
         "@aws-sdk/client-route-53": "^3.830.0",
@@ -120,7 +120,7 @@
     },
     "apps/frontend": {
       "name": "@namefi-astra/frontend",
-      "version": "0.3.55-beta",
+      "version": "0.3.56-beta",
       "dependencies": {
         "@bprogress/next": "^3.2.12",
         "@cfx-kit/wallet-avatar": "^0.0.5",
@@ -602,8 +602,8 @@
     "lefthook",
   ],
   "overrides": {
-    "webpack": "5.99.9",
     "date-fns": "4.1.0",
+    "webpack": "5.99.9",
   },
   "packages": {
     "@adraffy/ens-normalize": ["@adraffy/ens-normalize@1.11.0", "", {}, "sha512-/3DDPKHqqIqxUULp8yP4zODUY1i+2xvVWsv8A79xGWdCAG+8sb0hRh0Rk2QyOJUnnbyPUAZYcpBuRe3nS2OIUg=="],
