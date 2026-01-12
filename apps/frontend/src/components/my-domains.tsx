@@ -1,7 +1,6 @@
 'use client';
 
 import { AuthRequired } from '@/components/auth-required';
-import { AsyncButton } from '@/components/buttons/async-button';
 import { EmptyPlaceholder } from '@/components/empty-placeholder';
 import { PageShell } from '@/components/page-shell';
 import {
@@ -23,11 +22,24 @@ import {
 } from '@/components/table/filters';
 import { useAuth } from '@/hooks/use-auth';
 import { useEmailPrompt } from '@/hooks/use-email-prompt';
-import { useDomainRenewal } from '@/hooks/use-domain-renewal';
+import {
+  useDomainRenewal,
+  type RenewalResult,
+} from '@/hooks/use-domain-renewal';
 import { AddressWithChain } from '@/components/address-with-chain';
 import { cn } from '@/lib/cn';
-import { type AppRouterOutput, useTRPC } from '@/lib/trpc';
+import { type AppRouterOutput, useTRPC, useTRPCClient } from '@/lib/trpc';
 import { formatAmountInUSD } from '@/lib/number';
+import { toast } from 'sonner';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/shadcn/select';
+import { Label } from '@/components/ui/shadcn/label';
+import confetti from 'canvas-confetti';
 import { useInteractionLoggers } from '@/components/providers/analytics';
 import { InteractionLoggingEventName } from '@/lib/analytics-events';
 import {
@@ -42,23 +54,23 @@ import type {
   VisibilityState,
 } from '@tanstack/react-table';
 import {
-  AlertTriangle,
-  AlertCircle,
   Loader2,
   SearchIcon,
   MoreVertical,
+  ExternalLink,
+  ShoppingCart,
 } from 'lucide-react';
 import Link from 'next/link';
 import {
   type FC,
   type HTMLAttributes,
+  type CSSProperties,
   Suspense,
   useCallback,
   useEffect,
   useMemo,
   useState,
   useRef,
-  type ComponentProps,
 } from 'react';
 import {
   differenceInDays,
@@ -129,128 +141,368 @@ function getRenewalPriceUsdPerYearForDomain(
   return tld === '' ? null : (renewalPriceUsdPerYearByTld.get(tld) ?? null);
 }
 
-// Helper function to format expiration date with severity colors
-const formatExpirationDate = (
+// Helper function to format time left with simplified display
+// Returns: "Xd" if less than 30 days, "Xm+" if less than 12 months, "Xy+" if more than a year
+const formatTimeLeft = (
   expirationDate: string | Date | null | undefined,
-) => {
-  if (!expirationDate) {
-    return <span className="text-sm text-muted-foreground">-</span>;
-  }
+): string => {
+  if (!expirationDate) return '-';
 
   const expiry = new Date(expirationDate);
-  if (Number.isNaN(expiry.getTime())) {
-    return <span className="text-sm text-muted-foreground">-</span>;
-  }
+  if (Number.isNaN(expiry.getTime())) return '-';
+
   const now = new Date();
   const isExpired = isPast(expiry);
 
-  if (isExpired) {
-    return (
-      <div className="flex flex-col gap-1">
-        <span className="text-sm font-medium text-foreground">
-          {expiry.toLocaleDateString()}
-        </span>
-        <div className="flex items-center gap-1">
-          <AlertTriangle className="w-3 h-3 text-muted-foreground" />
-          <span className="text-sm text-muted-foreground font-medium">
-            Expired
-          </span>
-        </div>
-      </div>
-    );
-  }
+  if (isExpired) return 'Expired';
 
   const daysLeft = differenceInDays(expiry, now);
   const monthsLeft = differenceInMonths(expiry, now);
   const yearsLeft = differenceInYears(expiry, now);
 
-  let timeText: string;
-  let colorClass: string;
-  let IconComponent: React.ComponentType<{ className?: string }> | null = null;
-
-  if (daysLeft < 30) {
-    timeText = daysLeft === 1 ? '1 day' : `${daysLeft} days`;
-    colorClass = 'text-destructive';
-    IconComponent = AlertTriangle;
-  } else if (monthsLeft < 3) {
-    timeText = monthsLeft === 1 ? '1 month' : `${monthsLeft} months`;
-    colorClass = 'text-yellow-500';
-    IconComponent = AlertCircle;
-  } else if (monthsLeft < 12) {
-    timeText = monthsLeft === 1 ? '1 month' : `${monthsLeft} months`;
-    colorClass = 'text-muted-foreground';
-    IconComponent = null;
-  } else {
-    const hasExtraMonths = monthsLeft > yearsLeft * 12;
-    const prefix = hasExtraMonths ? '> ' : '';
-    timeText =
-      yearsLeft === 1 ? `${prefix}1 year` : `${prefix}${yearsLeft} years`;
-    colorClass = 'text-muted-foreground';
-    IconComponent = null;
+  // Less than 1 full calendar month: show days
+  if (monthsLeft < 1) {
+    return `${daysLeft}d`;
   }
 
+  // Less than 12 months: show months with + if there are extra days
+  if (monthsLeft < 12) {
+    const extraDays = daysLeft - monthsLeft * 30;
+    return extraDays > 0 ? `${monthsLeft}m+` : `${monthsLeft}m`;
+  }
+
+  // More than a year: show years with + if there are extra months
+  const extraMonths = monthsLeft - yearsLeft * 12;
+  return extraMonths > 0 ? `${yearsLeft}y+` : `${yearsLeft}y`;
+};
+
+// Helper function to format expiration date in ISO format yyyy-mm-dd (UTC)
+// Uses UTC to avoid timezone-shift issues where a UTC midnight date
+// could display as the previous day for users in western timezones
+const formatExpirationDateISO = (
+  expirationDate: string | Date | null | undefined,
+): string => {
+  if (!expirationDate) return '-';
+
+  const expiry = new Date(expirationDate);
+  if (Number.isNaN(expiry.getTime())) return '-';
+
+  return expiry.toISOString().slice(0, 10);
+};
+
+// Animated Auto-Renew Toggle with celebration
+interface AnimatedAutoRenewToggleProps {
+  checked: boolean;
+  onCheckedChange: (
+    checked: boolean,
+    position: { x: number; y: number } | null,
+  ) => void;
+  disabled?: boolean;
+  isLoading?: boolean;
+}
+
+const triggerCelebrationAtPosition = (x: number, y: number) => {
+  const colors = ['#22c55e', '#4ade80', '#86efac', '#bbf7d0', '#dcfce7'];
+
+  // Small burst from the toggle position
+  confetti({
+    particleCount: 30,
+    spread: 50,
+    origin: { x, y },
+    colors,
+    startVelocity: 15,
+    gravity: 0.6,
+    scalar: 0.5,
+    ticks: 40,
+    shapes: ['circle'],
+    drift: 0,
+  });
+};
+
+const AnimatedAutoRenewToggle: FC<AnimatedAutoRenewToggleProps> = ({
+  checked,
+  onCheckedChange,
+  disabled = false,
+  isLoading = false,
+}) => {
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  const handleToggle = useCallback(() => {
+    if (disabled || isLoading) return;
+
+    const newValue = !checked;
+
+    // Calculate position for potential celebration (passed to handler)
+    let position: { x: number; y: number } | null = null;
+    if (newValue && buttonRef.current) {
+      const rect = buttonRef.current.getBoundingClientRect();
+      position = {
+        x: (rect.left + rect.width / 2) / window.innerWidth,
+        y: (rect.top + rect.height / 2) / window.innerHeight,
+      };
+    }
+
+    onCheckedChange(newValue, position);
+  }, [checked, onCheckedChange, disabled, isLoading]);
+
+  // Determine thumb style based on loading state
+  const thumbStyle: CSSProperties = isLoading
+    ? {
+        animation: checked
+          ? 'oscillateOn 0.8s ease-in-out infinite'
+          : 'oscillateOff 0.8s ease-in-out infinite',
+      }
+    : {
+        transform: checked ? 'translateX(28px)' : 'translateX(0)',
+        transition: 'transform 0.3s ease',
+      };
+
+  // Ghost style for ON, muted yellow for OFF
+  const trackStyle: CSSProperties = {
+    background: checked
+      ? 'rgba(34, 197, 94, 0.08)' // Green ghost (ultra subtle)
+      : 'rgba(234, 179, 8, 0.25)', // Yellow muted
+    transition: 'background 0.3s ease',
+  };
+
+  const thumbColor = checked ? 'rgba(34, 197, 94, 0.5)' : '#ca8a04'; // Semi-transparent green for ON (ghost), dark yellow for OFF
+
   return (
-    <div className="flex flex-col gap-1">
-      <span className="text-sm font-medium text-foreground">
-        {expiry.toLocaleDateString()}
+    <motion.button
+      ref={buttonRef}
+      type="button"
+      role="switch"
+      aria-checked={checked}
+      disabled={disabled || isLoading}
+      onClick={handleToggle}
+      className={cn(
+        'relative inline-flex h-7 w-14 shrink-0 cursor-pointer items-center rounded-full border-0 transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+        (disabled || isLoading) && 'cursor-not-allowed opacity-50',
+      )}
+      style={trackStyle}
+      whileTap={{ scale: disabled ? 1 : 0.95 }}
+    >
+      {/* ON/OFF text labels */}
+      <span
+        className="absolute left-2 top-1/2 -translate-y-1/2 text-[9px] font-semibold leading-none tracking-wider transition-colors duration-300 pointer-events-none"
+        style={{
+          color: checked ? 'rgba(255, 255, 255, 0.7)' : 'transparent',
+        }}
+      >
+        ON
       </span>
-      <div className="flex items-center gap-1">
-        {IconComponent && <IconComponent className={`w-3 h-3 ${colorClass}`} />}
-        <span className={`text-xs ${colorClass}`}>{timeText} left</span>
-      </div>
-    </div>
+      <span
+        className="absolute right-2 top-1/2 -translate-y-1/2 text-[9px] font-semibold leading-none tracking-wider transition-colors duration-300 pointer-events-none"
+        style={{
+          color: checked ? 'transparent' : 'rgba(255, 255, 255, 0.7)',
+        }}
+      >
+        OFF
+      </span>
+
+      {/* Thumb */}
+      <span
+        className="pointer-events-none absolute block rounded-full shadow-lg ring-0"
+        style={{
+          ...thumbStyle,
+          width: '22px',
+          height: '22px',
+          top: '3px',
+          left: '3px',
+          background: thumbColor,
+        }}
+      />
+    </motion.button>
   );
 };
 
-// Wrapper component to maintain button state
-const RenewButton: FC<{
-  domainName: string;
-  expirationDate: Date | null | undefined;
-  onRenew: (domain: {
-    normalizedDomainName: string;
-    expirationDate?: Date | null;
-  }) => Promise<unknown>;
-  isProcessing: boolean;
-  asChild?: boolean;
-  className?: string;
-  variant?: ComponentProps<typeof Button>['variant'];
-  size?: ComponentProps<typeof Button>['size'];
-}> = ({
-  domainName,
-  expirationDate,
-  onRenew,
-  isProcessing,
-  asChild,
-  className,
-  variant,
-  size = 'sm',
+// Bulk Auto-Renew Toggle with three states: off, mixed, on
+type BulkAutoRenewState = 'off' | 'mixed' | 'on';
+
+interface BulkAutoRenewToggleProps {
+  state: BulkAutoRenewState;
+  onStateChange: (
+    newState: 'off' | 'on',
+    position: { x: number; y: number } | null,
+  ) => void;
+  disabled?: boolean;
+  isLoading?: boolean;
+}
+
+const BulkAutoRenewToggle: FC<BulkAutoRenewToggleProps> = ({
+  state,
+  onStateChange,
+  disabled = false,
+  isLoading = false,
 }) => {
-  return (
-    <AsyncButton
-      variant={variant || 'outline'}
-      size={size}
-      onClick={async () => {
-        await onRenew({
-          normalizedDomainName: domainName,
-          expirationDate: expirationDate,
-        });
-      }}
-      isLoading={isProcessing}
-      aria-label={`Renew ${domainName}`}
-      customLoadingContent={
-        <>
-          <Loader2 className="w-4 h-4 xl:mr-1 animate-spin" />
-          <span className="hidden xl:inline">Renew</span>
-        </>
+  const handleClick = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement>) => {
+      if (disabled || isLoading) return;
+
+      const rect = e.currentTarget.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const midpoint = rect.width / 2;
+
+      // UX: Click position determines state (left=off, right=on)
+      // This allows users to explicitly choose the desired state
+      // rather than cycling through states, which is clearer for bulk actions
+      // when domains have mixed auto-renew states
+      const newState = clickX < midpoint ? 'off' : 'on';
+
+      // Calculate position for potential celebration
+      let position: { x: number; y: number } | null = null;
+      if (newState === 'on') {
+        position = {
+          x: (rect.left + rect.width / 2) / window.innerWidth,
+          y: (rect.top + rect.height / 2) / window.innerHeight,
+        };
       }
-      asChild={asChild}
-      className={className}
+
+      onStateChange(newState, position);
+    },
+    [onStateChange, disabled, isLoading],
+  );
+
+  // Keyboard handler for accessibility
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLButtonElement>) => {
+      if (disabled || isLoading) return;
+
+      switch (e.key) {
+        case 'ArrowLeft':
+          e.preventDefault();
+          onStateChange('off', null);
+          break;
+        case 'ArrowRight':
+          e.preventDefault();
+          onStateChange('on', null);
+          break;
+        case 'Enter':
+        case ' ':
+          e.preventDefault();
+          // Toggle: if on -> off, otherwise (off or mixed) -> on
+          onStateChange(state === 'on' ? 'off' : 'on', null);
+          break;
+      }
+    },
+    [onStateChange, disabled, isLoading, state],
+  );
+
+  // Determine thumb position: off=left (0), mixed=center (8px), on=right (28px)
+  const getThumbTransform = () => {
+    if (isLoading) return undefined; // Will use animation instead
+    switch (state) {
+      case 'off':
+        return 'translateX(0)';
+      case 'mixed':
+        return 'translateX(8px)'; // Center position for 36px toggle with 14px thumb
+      case 'on':
+        return 'translateX(28px)';
+    }
+  };
+
+  // Get animation based on state to match static positions
+  const getLoadingAnimation = () => {
+    switch (state) {
+      case 'on':
+        return 'oscillateOn 0.8s ease-in-out infinite';
+      case 'mixed':
+        return 'oscillateMixed 0.8s ease-in-out infinite';
+      case 'off':
+        return 'oscillateOff 0.8s ease-in-out infinite';
+    }
+  };
+
+  // Determine thumb style based on loading state
+  const thumbStyle: CSSProperties = isLoading
+    ? {
+        animation: getLoadingAnimation(),
+      }
+    : {
+        transform: getThumbTransform(),
+        transition: 'transform 0.3s ease',
+      };
+
+  // Track background color based on state (ghost for ON, muted yellow for OFF)
+  const getTrackStyle = (): CSSProperties => {
+    switch (state) {
+      case 'on':
+        return { background: 'rgba(34, 197, 94, 0.08)' }; // Green ghost (ultra subtle)
+      case 'mixed':
+        return { background: 'rgba(234, 179, 8, 0.25)' }; // Yellow muted
+      case 'off':
+        return { background: 'rgba(234, 179, 8, 0.25)' }; // Yellow muted
+    }
+  };
+
+  // Thumb color based on state
+  const getThumbColor = () => {
+    switch (state) {
+      case 'on':
+        return 'rgba(34, 197, 94, 0.5)'; // Semi-transparent green (ghost)
+      case 'mixed':
+        return '#ca8a04'; // Dark yellow/amber
+      case 'off':
+        return '#ca8a04'; // Dark yellow
+    }
+  };
+
+  // Show text labels only when not in mixed state
+  const showTextLabels = state !== 'mixed';
+
+  return (
+    <motion.button
+      type="button"
+      role="checkbox"
+      aria-checked={state === 'mixed' ? 'mixed' : state === 'on'}
+      disabled={disabled || isLoading}
+      onClick={handleClick}
+      onKeyDown={handleKeyDown}
+      className={cn(
+        'relative inline-flex h-7 shrink-0 cursor-pointer items-center rounded-full border-0 transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+        showTextLabels ? 'w-14' : 'w-9', // Wider when showing text labels
+        (disabled || isLoading) && 'cursor-not-allowed opacity-50',
+      )}
+      style={getTrackStyle()}
+      whileTap={{ scale: disabled ? 1 : 0.95 }}
     >
-      <>
-        <CalendarPlus className="w-4 h-4 xl:mr-1" />
-        <span className="hidden xl:inline">Renew</span>
-      </>
-    </AsyncButton>
+      {/* ON/OFF text labels - only show when not mixed */}
+      {showTextLabels && (
+        <>
+          <span
+            className="absolute left-2 top-1/2 -translate-y-1/2 text-[9px] font-semibold leading-none tracking-wider transition-colors duration-300 pointer-events-none"
+            style={{
+              color:
+                state === 'on' ? 'rgba(255, 255, 255, 0.7)' : 'transparent',
+            }}
+          >
+            ON
+          </span>
+          <span
+            className="absolute right-2 top-1/2 -translate-y-1/2 text-[9px] font-semibold leading-none tracking-wider transition-colors duration-300 pointer-events-none"
+            style={{
+              color:
+                state === 'off' ? 'rgba(255, 255, 255, 0.7)' : 'transparent',
+            }}
+          >
+            OFF
+          </span>
+        </>
+      )}
+
+      {/* Thumb */}
+      <span
+        className="pointer-events-none absolute block rounded-full shadow-lg ring-0"
+        style={{
+          ...thumbStyle,
+          width: state === 'mixed' ? '14px' : '22px', // Smaller thumb for mixed state
+          height: state === 'mixed' ? '14px' : '22px',
+          top: state === 'mixed' ? '7px' : '3px', // Center vertically for mixed (28-14)/2 = 7px
+          left: '3px',
+          background: getThumbColor(),
+        }}
+      />
+    </motion.button>
   );
 };
 
@@ -279,6 +531,197 @@ const RenewPricePremiumInfo: FC<{ domainName: string }> = ({ domainName }) => {
   );
 };
 
+// Renew Now Modal Component
+interface RenewNowModalProps {
+  isOpen: boolean;
+  onOpenChange: (open: boolean) => void;
+  domains: Array<{
+    normalizedDomainName: string;
+    expirationDate: Date | string | null | undefined;
+  }>;
+  renewalPriceUsdPerYearByTld: Map<string, number | null>;
+  getCustomRenewalPrice: (domainName: string) => number | null;
+  onRenew: (
+    domains: Array<{
+      normalizedDomainName: NamefiNormalizedDomain;
+      expirationDate?: Date | null;
+    }>,
+    durationYears: number,
+  ) => Promise<RenewalResult[]>;
+  onSuccess?: () => void;
+}
+
+const RenewNowModal: FC<RenewNowModalProps> = ({
+  isOpen,
+  onOpenChange,
+  domains,
+  renewalPriceUsdPerYearByTld,
+  getCustomRenewalPrice,
+  onRenew,
+  onSuccess,
+}) => {
+  const [selectedYears, setSelectedYears] = useState(1);
+  const [isProcessing, setIsProcessing] = useState(false);
+
+  // Reset selectedYears when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      setSelectedYears(1);
+    }
+  }, [isOpen]);
+
+  const totalPricePerYear = useMemo(() => {
+    let total = 0;
+    for (const domain of domains) {
+      const customPrice = getCustomRenewalPrice(domain.normalizedDomainName);
+      if (customPrice !== null) {
+        total += customPrice;
+      } else {
+        const price = getRenewalPriceUsdPerYearForDomain(
+          domain.normalizedDomainName,
+          renewalPriceUsdPerYearByTld,
+        );
+        if (price !== null) {
+          total += price;
+        }
+      }
+    }
+    return total;
+  }, [domains, renewalPriceUsdPerYearByTld, getCustomRenewalPrice]);
+
+  const handleRenew = async () => {
+    setIsProcessing(true);
+    try {
+      const results = await onRenew(
+        domains.map((d) => ({
+          normalizedDomainName:
+            d.normalizedDomainName as NamefiNormalizedDomain,
+          expirationDate: d.expirationDate ? new Date(d.expirationDate) : null,
+        })),
+        selectedYears,
+      );
+
+      // Check if any domains were successfully added
+      const successCount = results.filter((r) => r.success).length;
+      if (successCount > 0) {
+        onSuccess?.();
+        onOpenChange(false);
+      } else {
+        // All domains failed - keep modal open so user can adjust
+        // Toast notifications are already shown by the renewDomains hook
+      }
+    } catch (error) {
+      toast.error('Failed to add domains to cart. Please try again.');
+      console.error('Renewal error:', error);
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  return (
+    <Dialog open={isOpen} onOpenChange={onOpenChange}>
+      <DialogContent className="max-w-md">
+        <DialogHeader>
+          <DialogTitle>
+            Renew {domains.length === 1 ? 'Domain' : 'Domains'}
+          </DialogTitle>
+          <DialogDescription>
+            {domains.length === 1
+              ? `Renew ${domains[0].normalizedDomainName}`
+              : `Renew ${domains.length} domains`}
+          </DialogDescription>
+        </DialogHeader>
+
+        <div className="space-y-4 py-4">
+          {/* Domain list (only show if multiple) */}
+          {domains.length > 1 && (
+            <div className="max-h-32 overflow-y-auto rounded-md border border-border p-2">
+              <ul className="space-y-1 text-sm">
+                {domains.map((d) => (
+                  <li
+                    key={d.normalizedDomainName}
+                    className="text-muted-foreground"
+                  >
+                    {d.normalizedDomainName}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* Year selection */}
+          <div className="flex items-center justify-between">
+            <Label htmlFor="renewal-years">Renewal Period</Label>
+            <Select
+              value={selectedYears.toString()}
+              onValueChange={(value) =>
+                setSelectedYears(Number.parseInt(value, 10))
+              }
+            >
+              <SelectTrigger className="w-32">
+                <SelectValue placeholder="Select years" />
+              </SelectTrigger>
+              <SelectContent>
+                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((year) => (
+                  <SelectItem key={year} value={year.toString()}>
+                    {year} {year === 1 ? 'year' : 'years'}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Price display */}
+          <div className="rounded-lg bg-muted/50 p-4 space-y-2">
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-muted-foreground">Price per year</span>
+              <span>{formatAmountInUSD(totalPricePerYear)}</span>
+            </div>
+            <Separator />
+            <div className="flex items-center justify-between font-medium">
+              <span>
+                Total ({selectedYears} {selectedYears === 1 ? 'year' : 'years'})
+              </span>
+              <span className="text-lg">
+                {formatAmountInUSD(totalPricePerYear * selectedYears)}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <DialogFooter>
+          <Button
+            variant="outline"
+            onClick={() => onOpenChange(false)}
+            disabled={isProcessing}
+          >
+            Cancel
+          </Button>
+          {/* UX: Disable when totalPricePerYear === 0 (pricing unavailable for all domains).
+              This is intentional to prevent user confusion about the cost before checkout.
+              Backend can calculate pricing, but we prefer explicit pricing upfront for better UX. */}
+          <Button
+            onClick={handleRenew}
+            disabled={isProcessing || totalPricePerYear === 0}
+          >
+            {isProcessing ? (
+              <>
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                Adding to Cart...
+              </>
+            ) : (
+              <>
+                <ShoppingCart className="w-4 h-4 mr-2" />
+                Add to Cart
+              </>
+            )}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
 const ActionTooltip: FC<{ label: string; children: React.ReactNode }> = ({
   label,
   children,
@@ -302,10 +745,9 @@ const LoadingSkeletons: FC = () => (
             <TableHead className="w-[50px]">
               <Skeleton className="h-4 w-4" />
             </TableHead>
-            <TableHead className="w-[80px]">Chain</TableHead>
-            <TableHead className="w-[140px]">Wallet</TableHead>
             <TableHead>Domain Name</TableHead>
-            <TableHead className="w-[150px]">Expires On</TableHead>
+            <TableHead className="w-[180px]">Renewal</TableHead>
+            <TableHead className="w-[140px]">Renew (USD/yr)</TableHead>
             <TableHead className="w-[280px]">Actions</TableHead>
           </TableRow>
         </TableHeader>
@@ -316,19 +758,19 @@ const LoadingSkeletons: FC = () => (
                 <Skeleton className="h-4 w-4" />
               </TableCell>
               <TableCell>
-                <Skeleton className="h-6 w-6" />
-              </TableCell>
-              <TableCell>
-                <Skeleton className="h-6 w-24" />
-              </TableCell>
-              <TableCell>
-                <Skeleton className="h-6 w-28" />
-              </TableCell>
-              <TableCell>
-                <Skeleton className="h-6 w-24" />
-              </TableCell>
-              <TableCell>
                 <Skeleton className="h-6 w-32" />
+              </TableCell>
+              <TableCell>
+                <div className="flex flex-col gap-1.5">
+                  <Skeleton className="h-4 w-16" />
+                  <Skeleton className="h-3 w-24" />
+                </div>
+              </TableCell>
+              <TableCell>
+                <Skeleton className="h-6 w-16" />
+              </TableCell>
+              <TableCell>
+                <Skeleton className="h-6 w-24" />
               </TableCell>
             </TableRow>
           ))}
@@ -369,6 +811,7 @@ function MyDomainsTable(props: {
   const { title, domains, kind } = props;
 
   const trpc = useTRPC();
+  const trpcClient = useTRPCClient();
   const { logEventWithInteractionLoggers } = useInteractionLoggers();
   const tableKind = kind;
   const [showEmailModal, setShowEmailModal] = useState(false);
@@ -384,6 +827,24 @@ function MyDomainsTable(props: {
   const [batchAction, setBatchAction] = useState<
     'ns' | 'web' | 'mx' | 'ens' | 'forward' | null
   >(null);
+
+  // State for renewal modal
+  const [renewNowModalDomains, setRenewNowModalDomains] = useState<
+    Array<{
+      normalizedDomainName: string;
+      expirationDate: Date | string | null | undefined;
+    }>
+  >([]);
+
+  // State for auto-renewal toggling
+  const [togglingAutoRenew, setTogglingAutoRenew] = useState<Set<string>>(
+    () => new Set(),
+  );
+
+  // Cache for domain auto-renewal status
+  const [autoRenewCache, setAutoRenewCache] = useState<Map<string, boolean>>(
+    () => new Map(),
+  );
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_DOMAIN_LIST_PAGE_SIZE);
   const [sorting, setSorting] = useState<SortingState>([
@@ -421,6 +882,28 @@ function MyDomainsTable(props: {
       setColumnVisibility(prevColumnVisibility.current ?? columnVisibility);
     }
   }, [isMobile]);
+
+  // Initialize autoRenewCache from domain data when domains are loaded
+  useEffect(() => {
+    setAutoRenewCache((prev) => {
+      const next = new Map(prev);
+      let changed = false;
+
+      for (const domain of domains) {
+        const domainName = domain.normalizedDomainName;
+        if (!domainName || prev.has(domainName)) continue;
+
+        // Use autoRenewEnabled from the backend if available
+        if (domain.autoRenewEnabled !== undefined) {
+          next.set(domainName, domain.autoRenewEnabled);
+          changed = true;
+        }
+      }
+
+      return changed ? next : prev;
+    });
+  }, [domains]);
+
   const { hasEmail } = useEmailPrompt();
   const canAnimate = useCanAnimate();
   const { renewDomains } = useDomainRenewal();
@@ -436,28 +919,205 @@ function MyDomainsTable(props: {
     [logEventWithInteractionLoggers, tableKind],
   );
 
-  const handleRenewDomain = useCallback(
-    async (domain: {
-      normalizedDomainName: string;
-      expirationDate?: Date | null;
-    }) => {
-      setProcessingDomains((prev) => {
+  // Handle auto-renewal toggle for a single domain
+  const handleToggleAutoRenew = useCallback(
+    async (
+      domainName: string,
+      enabled: boolean,
+      position: { x: number; y: number } | null,
+    ) => {
+      // Snapshot previous value before any state updates (safe for rollback)
+      const prevValue = autoRenewCache.get(domainName) ?? false;
+
+      setTogglingAutoRenew((prev) => {
         const next = new Set(prev);
-        next.add(domain.normalizedDomainName);
+        next.add(domainName);
         return next;
       });
       try {
-        await renewDomains([
-          {
-            normalizedDomainName:
-              domain.normalizedDomainName as NamefiNormalizedDomain,
-            expirationDate: domain.expirationDate,
+        // Optimistic update
+        setAutoRenewCache((prev) => {
+          const next = new Map(prev);
+          next.set(domainName, enabled);
+          return next;
+        });
+
+        await trpcClient.domainConfig.updateDomainPreferencesAndConfig.mutate({
+          domainName: domainName as NamefiNormalizedDomain,
+          domainPreferencesAndConfig: {
+            autoRenewEnabled: enabled,
           },
-        ]);
+        });
+        toast.success(
+          `Auto-renew ${enabled ? 'enabled' : 'disabled'} for ${domainName}`,
+        );
+
+        // Trigger celebration after successful enable
+        if (enabled && position) {
+          triggerCelebrationAtPosition(position.x, position.y);
+        }
+      } catch (error) {
+        // Revert optimistic update to actual previous value
+        setAutoRenewCache((prev) => {
+          const next = new Map(prev);
+          next.set(domainName, prevValue);
+          return next;
+        });
+        toast.error(`Failed to update auto-renew for ${domainName}`);
+      } finally {
+        setTogglingAutoRenew((prev) => {
+          const next = new Set(prev);
+          next.delete(domainName);
+          return next;
+        });
+      }
+    },
+    [trpcClient, autoRenewCache],
+  );
+
+  // Handle batch auto-renewal toggle
+  const handleBatchToggleAutoRenew = useCallback(
+    async (enabled: boolean, position?: { x: number; y: number } | null) => {
+      const domainsToUpdate = Array.from(selectedDomainIds);
+      if (domainsToUpdate.length === 0) return;
+
+      // Snapshot original states synchronously (safe for rollback)
+      // Must be done before any state updates to avoid React Strict Mode issues
+      const originalStates = new Map<string, boolean>();
+      for (const d of domainsToUpdate) {
+        originalStates.set(d, autoRenewCache.get(d) ?? false);
+      }
+
+      setTogglingAutoRenew((prev) => {
+        const next = new Set(prev);
+        for (const d of domainsToUpdate) {
+          next.add(d);
+        }
+        return next;
+      });
+
+      try {
+        // Optimistic update
+        setAutoRenewCache((prev) => {
+          const next = new Map(prev);
+          for (const d of domainsToUpdate) {
+            next.set(d, enabled);
+          }
+          return next;
+        });
+
+        // Update domains with concurrency limit to avoid thundering herd
+        const ConcurrencyLimit = 8;
+        const results: PromiseSettledResult<unknown>[] = [];
+        for (let i = 0; i < domainsToUpdate.length; i += ConcurrencyLimit) {
+          const chunk = domainsToUpdate.slice(i, i + ConcurrencyLimit);
+          const chunkResults = await Promise.allSettled(
+            chunk.map((domainName) =>
+              trpcClient.domainConfig.updateDomainPreferencesAndConfig.mutate({
+                domainName: domainName as NamefiNormalizedDomain,
+                domainPreferencesAndConfig: {
+                  autoRenewEnabled: enabled,
+                },
+              }),
+            ),
+          );
+          results.push(...chunkResults);
+        }
+
+        // Separate successful and failed domains
+        const succeeded: string[] = [];
+        const failed: Array<{ domainName: string; error: unknown }> = [];
+
+        results.forEach((result, index) => {
+          const domainName = domainsToUpdate[index];
+          if (result.status === 'fulfilled') {
+            succeeded.push(domainName);
+          } else {
+            failed.push({ domainName, error: result.reason });
+          }
+        });
+
+        // Revert only failed domains to their original states
+        if (failed.length > 0) {
+          setAutoRenewCache((prev) => {
+            const next = new Map(prev);
+            for (const { domainName } of failed) {
+              const originalState = originalStates.get(domainName) ?? false;
+              next.set(domainName, originalState);
+            }
+            return next;
+          });
+          toast.error(
+            `Failed to update ${failed.length} of ${domainsToUpdate.length} domains`,
+          );
+        }
+
+        // Show success message for succeeded domains
+        if (succeeded.length > 0) {
+          toast.success(
+            `Auto-renew ${enabled ? 'enabled' : 'disabled'} for ${succeeded.length} domain${succeeded.length > 1 ? 's' : ''}`,
+          );
+        }
+
+        // Trigger celebration when enabling auto-renew for successfully updated domains
+        if (enabled && succeeded.length > 0) {
+          // Use provided position or default to center-bottom
+          const celebrationX = position?.x ?? 0.5;
+          const celebrationY = position?.y ?? 0.9;
+          setTimeout(
+            () => triggerCelebrationAtPosition(celebrationX, celebrationY),
+            100,
+          );
+        }
+      } catch (error) {
+        // Revert all domains to original states on unexpected error
+        setAutoRenewCache((prev) => {
+          const next = new Map(prev);
+          for (const d of domainsToUpdate) {
+            const originalState = originalStates.get(d) ?? false;
+            next.set(d, originalState);
+          }
+          return next;
+        });
+        toast.error('An unexpected error occurred');
+        console.error('Batch toggle error:', error);
+      } finally {
+        setTogglingAutoRenew((prev) => {
+          const next = new Set(prev);
+          for (const d of domainsToUpdate) {
+            next.delete(d);
+          }
+          return next;
+        });
+      }
+    },
+    [selectedDomainIds, trpcClient, autoRenewCache],
+  );
+
+  // Handle renew now with year selection
+  const handleRenewNowWithYears = useCallback(
+    async (
+      domainsToRenew: Array<{
+        normalizedDomainName: NamefiNormalizedDomain;
+        expirationDate?: Date | null;
+      }>,
+      durationYears: number,
+    ): Promise<RenewalResult[]> => {
+      setProcessingDomains((prev) => {
+        const next = new Set(prev);
+        for (const d of domainsToRenew) {
+          next.add(d.normalizedDomainName);
+        }
+        return next;
+      });
+      try {
+        return await renewDomains(domainsToRenew, durationYears);
       } finally {
         setProcessingDomains((prev) => {
           const next = new Set(prev);
-          next.delete(domain.normalizedDomainName);
+          for (const d of domainsToRenew) {
+            next.delete(d.normalizedDomainName);
+          }
           return next;
         });
       }
@@ -520,7 +1180,7 @@ function MyDomainsTable(props: {
       },
       expirationDate: {
         id: 'expirationDate',
-        label: 'Expires On',
+        label: 'Renewal',
         type: 'date' as const,
         columnId: 'expirationDate',
       },
@@ -797,6 +1457,31 @@ function MyDomainsTable(props: {
   const renewableDomainsCount = renewableDomains.length;
   const selectedDomainCount = selectedDomainIds.size;
 
+  // Calculate bulk auto-renew state based on selected domains
+  const bulkAutoRenewState = useMemo((): BulkAutoRenewState => {
+    if (selectedDomainIds.size === 0) return 'off';
+
+    const selectedDomainNames = Array.from(selectedDomainIds);
+    const autoRenewStates = selectedDomainNames.map(
+      (name) => autoRenewCache.get(name) ?? false,
+    );
+
+    const allOn = autoRenewStates.every((state) => state === true);
+    const allOff = autoRenewStates.every((state) => state === false);
+
+    if (allOn) return 'on';
+    if (allOff) return 'off';
+    return 'mixed';
+  }, [selectedDomainIds, autoRenewCache]);
+
+  // Handle bulk auto-renew toggle from the three-state toggle
+  const handleBulkAutoRenewToggle = useCallback(
+    (newState: 'off' | 'on', position: { x: number; y: number } | null) => {
+      handleBatchToggleAutoRenew(newState === 'on', position);
+    },
+    [handleBatchToggleAutoRenew],
+  );
+
   const handlePageSizeChange = useCallback((size: number) => {
     setPageSize(size);
     setPage(1);
@@ -843,15 +1528,35 @@ function MyDomainsTable(props: {
       {
         accessorKey: 'normalizedDomainName',
         header: 'Domain Name',
-        cell: ({ row }) => (
-          <Link
-            href={`/domains/${row.getValue('normalizedDomainName')}?tab=dns-overview`}
-            aria-label={`Settings for ${row.getValue('normalizedDomainName')}`}
-            className="font-medium hover:underline"
-          >
-            {row.getValue('normalizedDomainName')}
-          </Link>
-        ),
+        cell: ({ row }) => {
+          const domainName = row.getValue('normalizedDomainName') as string;
+          return (
+            <div className="flex items-center gap-2">
+              <Link
+                href={`/domains/${domainName}?tab=dns-overview`}
+                aria-label={`Settings for ${domainName}`}
+                className="font-medium hover:underline"
+              >
+                {domainName}
+              </Link>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <a
+                    href={`https://${domainName}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-muted-foreground hover:text-foreground transition-colors"
+                    aria-label={`Visit ${domainName}`}
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <ExternalLink className="w-3.5 h-3.5" />
+                  </a>
+                </TooltipTrigger>
+                <TooltipContent>Visit {domainName}</TooltipContent>
+              </Tooltip>
+            </div>
+          );
+        },
       },
       {
         id: 'account',
@@ -865,31 +1570,68 @@ function MyDomainsTable(props: {
       },
       {
         accessorKey: 'expirationDate',
-        header: 'Expires On',
+        header: 'Renewal',
         cell: ({ row }) => {
+          const domainName = row.getValue('normalizedDomainName') as string;
           const expirationDate = row.getValue('expirationDate') as
             | Date
             | string
             | null
             | undefined;
-          return formatExpirationDate(expirationDate);
-        },
-        size: 150,
-      },
-      {
-        id: 'dnsStatus',
-        header: 'DNS Records',
-        cell: ({ row }) => {
-          const domainName = row.getValue(
-            'normalizedDomainName',
-          ) as NamefiNormalizedDomain;
-          const status = row.original.dnsStatus;
 
-          if (!status) return <span className="text-muted-foreground">-</span>;
+          const isToggling = togglingAutoRenew.has(domainName);
+          const cachedAutoRenew = autoRenewCache.get(domainName);
+          // Use cached value if available, otherwise default to false (will be fetched)
+          const isAutoRenewEnabled = cachedAutoRenew ?? false;
+          const isExpired = expirationDate
+            ? isPast(new Date(expirationDate))
+            : false;
+          const canRenew = isDomainPossiblyRenewable(expirationDate);
 
-          return <DnsStatusCell domainName={domainName} status={status} />;
+          return (
+            <div className="flex flex-col gap-1">
+              {/* Auto toggle row - primary text */}
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-medium text-foreground">
+                  Auto
+                </span>
+                <AnimatedAutoRenewToggle
+                  checked={isAutoRenewEnabled}
+                  onCheckedChange={(checked, position) =>
+                    handleToggleAutoRenew(domainName, checked, position)
+                  }
+                  disabled={isExpired}
+                  isLoading={isToggling}
+                />
+              </div>
+
+              {/* Time left - secondary text, clickable to open renew modal */}
+              {canRenew ? (
+                <button
+                  type="button"
+                  onClick={() =>
+                    setRenewNowModalDomains([
+                      {
+                        normalizedDomainName: domainName,
+                        expirationDate,
+                      },
+                    ])
+                  }
+                  className="text-left text-[11px] text-muted-foreground hover:text-foreground hover:underline cursor-pointer transition-colors"
+                >
+                  {formatExpirationDateISO(expirationDate)} (
+                  {formatTimeLeft(expirationDate)})
+                </button>
+              ) : (
+                <span className="text-[11px] text-muted-foreground">
+                  {formatExpirationDateISO(expirationDate)} (
+                  {isExpired ? 'Expired' : formatTimeLeft(expirationDate)})
+                </span>
+              )}
+            </div>
+          );
         },
-        size: 200,
+        size: 180,
       },
       {
         id: 'renewPricing',
@@ -920,40 +1662,32 @@ function MyDomainsTable(props: {
               ? '—'
               : formatAmountInUSD(renewalPriceUsdPerYear);
 
-          const expirationDateRaw = row.getValue('expirationDate') as
-            | Date
-            | string
-            | null
-            | undefined;
-          const expirationDate = expirationDateRaw
-            ? new Date(expirationDateRaw)
-            : null;
-          const showRenewButton = isDomainPossiblyRenewable(expirationDate);
-
           return (
-            <div className="flex items-center gap-2 justify-between">
-              <div className="flex items-center gap-2">
-                <span className="text-sm text-muted-foreground">
-                  {priceLabel}
-                </span>
-                <RenewPricePremiumInfo domainName={domainName} />
-              </div>
-              {showRenewButton && (
-                <RenewButton
-                  domainName={domainName}
-                  expirationDate={expirationDate}
-                  onRenew={handleRenewDomain}
-                  isProcessing={processingDomains.has(domainName)}
-                  variant="ghost"
-                  size="icon"
-                  className="h-8 w-8 hover:bg-muted"
-                />
-              )}
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-muted-foreground">
+                {priceLabel}
+              </span>
+              <RenewPricePremiumInfo domainName={domainName} />
             </div>
           );
         },
-        size: 180,
+        size: 140,
         enableSorting: true,
+      },
+      {
+        id: 'dnsStatus',
+        header: 'DNS Records',
+        cell: ({ row }) => {
+          const domainName = row.getValue(
+            'normalizedDomainName',
+          ) as NamefiNormalizedDomain;
+          const status = row.original.dnsStatus;
+
+          if (!status) return <span className="text-muted-foreground">-</span>;
+
+          return <DnsStatusCell domainName={domainName} status={status} />;
+        },
+        size: 200,
       },
       {
         id: 'actions',
@@ -1061,12 +1795,13 @@ function MyDomainsTable(props: {
     ],
     [
       handleListForSaleClick,
-      handleRenewDomain,
       handleRowSelectionChange,
       handleToggleAllCurrentPage,
+      handleToggleAutoRenew,
       pageSelectionState,
-      processingDomains,
       selectedDomainIds,
+      togglingAutoRenew,
+      autoRenewCache,
       isMobile,
       renewalPriceUsdPerYearByTld,
       getCustomRenewalPrice,
@@ -1114,6 +1849,22 @@ function MyDomainsTable(props: {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Renew Now Modal */}
+      <RenewNowModal
+        isOpen={renewNowModalDomains.length > 0}
+        onOpenChange={(open) => {
+          if (!open) {
+            setRenewNowModalDomains([]);
+          }
+        }}
+        domains={renewNowModalDomains}
+        renewalPriceUsdPerYearByTld={renewalPriceUsdPerYearByTld}
+        getCustomRenewalPrice={getCustomRenewalPrice}
+        onRenew={handleRenewNowWithYears}
+        onSuccess={clearSelection}
+      />
+
       {!!title && (
         <h2
           id={title.toLowerCase().replaceAll(' ', '-')}
@@ -1193,7 +1944,7 @@ function MyDomainsTable(props: {
                             {
                               '--number-flow-char-height': '0.85em',
                               '--number-flow-mask-height': '0.3em',
-                            } as React.CSSProperties
+                            } as CSSProperties
                           }
                         />
                       </div>
@@ -1216,44 +1967,57 @@ function MyDomainsTable(props: {
                     />
 
                     {/* Actions */}
-                    <div className="flex items-center gap-1">
-                      {/* Renew All */}
+                    <div className="flex items-center gap-2">
+                      {/* Auto-Renew Toggle */}
                       <Tooltip>
                         <TooltipTrigger asChild>
-                          <AsyncButton
-                            onClick={async () => {
-                              if (renewableDomainsCount === 0) {
-                                return;
-                              }
-                              const payload = renewableDomains.map(
-                                (domain) => ({
+                          <div className="flex items-center gap-2 px-2 py-1 rounded-md bg-muted/30">
+                            <span className="text-xs text-muted-foreground">
+                              Auto
+                            </span>
+                            <BulkAutoRenewToggle
+                              state={bulkAutoRenewState}
+                              onStateChange={handleBulkAutoRenewToggle}
+                              disabled={selectedDomainCount === 0}
+                              isLoading={togglingAutoRenew.size > 0}
+                            />
+                          </div>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          {bulkAutoRenewState === 'mixed'
+                            ? 'Mixed states - click left to disable all, right to enable all'
+                            : bulkAutoRenewState === 'on'
+                              ? 'Auto-renew enabled - click left to disable'
+                              : 'Auto-renew disabled - click right to enable'}
+                        </TooltipContent>
+                      </Tooltip>
+
+                      <Separator
+                        orientation="vertical"
+                        className="h-4 bg-border mx-1"
+                      />
+
+                      {/* Renew Now */}
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => {
+                              if (renewableDomainsCount === 0) return;
+                              setRenewNowModalDomains(
+                                renewableDomains.map((domain) => ({
                                   normalizedDomainName:
-                                    domain.normalizedDomainName as NamefiNormalizedDomain,
-                                  expirationDate: domain.expirationDate ?? null,
-                                }),
+                                    domain.normalizedDomainName ?? '',
+                                  expirationDate: domain.expirationDate,
+                                })),
                               );
-                              setProcessingDomains(
-                                new Set(
-                                  payload.map(
-                                    (domain) => domain.normalizedDomainName,
-                                  ),
-                                ),
-                              );
-                              try {
-                                await renewDomains(payload);
-                                clearSelection();
-                              } finally {
-                                setProcessingDomains(new Set());
-                              }
                             }}
-                            className="h-8 w-8 px-0 bg-transparent hover:bg-muted border-0 shadow-none text-foreground"
+                            className="h-8 w-8 hover:bg-muted"
                             disabled={renewableDomainsCount === 0}
-                            customLoadingContent={
-                              <Loader2 className="w-4 h-4 animate-spin" />
-                            }
                           >
                             <CalendarPlus className="w-4 h-4" />
-                          </AsyncButton>
+                          </Button>
                         </TooltipTrigger>
                         <TooltipContent>
                           Renew {renewableDomainsCount} domain

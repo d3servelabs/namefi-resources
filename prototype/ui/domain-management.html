@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Domain Management - example.com</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Background colors */
+      --bg-dark: #0a0a0a;
+      --bg-card: #141414;
+      --bg-card-hover: #1a1a1a;
+      --bg-elevated: #1c1c1c;
+
+      /* Text colors */
+      --text-primary: #ffffff;
+      --text-secondary: #a1a1aa;
+      --text-muted: #71717a;
+
+      /* Semantic colors */
+      --green: #22c55e;
+      --green-subtle: #166534;
+      --green-muted: rgba(34, 197, 94, 0.15);
+      --red: #ef4444;
+      --red-subtle: #991b1b;
+      --red-muted: rgba(239, 68, 68, 0.15);
+      --yellow: #eab308;
+      --yellow-subtle: #854d0e;
+      --blue: #3b82f6;
+      --blue-muted: rgba(59, 130, 246, 0.15);
+
+      /* Neutral */
+      --neutral-track: #27272a;
+      --neutral-thumb: #52525b;
+      --border-subtle: rgba(255, 255, 255, 0.06);
+      --border-medium: rgba(255, 255, 255, 0.1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-primary);
+      min-height: 100vh;
+      padding: 0;
+      line-height: 1.5;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 32px 24px;
+    }
+
+    /* ==================== */
+    /* HEADER */
+    /* ==================== */
+
+    .page-header {
+      margin-bottom: 32px;
+    }
+
+    .domain-title {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .domain-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      background: var(--green-muted);
+      color: var(--green);
+    }
+
+    .page-subtitle {
+      color: var(--text-secondary);
+      font-size: 14px;
+    }
+
+    /* ==================== */
+    /* SECTION STYLES */
+    /* ==================== */
+
+    .section {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .section-subtitle {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+
+    /* ==================== */
+    /* NS SERVER SECTION */
+    /* ==================== */
+
+    .ns-status {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px;
+      background: var(--bg-elevated);
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+
+    .ns-status-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .ns-status-icon.using-namefi {
+      background: var(--green-muted);
+      color: var(--green);
+    }
+
+    .ns-status-icon.not-using-namefi {
+      background: var(--red-muted);
+      color: var(--red);
+    }
+
+    .ns-status-info {
+      flex: 1;
+    }
+
+    .ns-status-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+
+    .ns-status-value {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    .ns-servers-list {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-top: 4px;
+      font-family: 'Monaco', 'Menlo', monospace;
+    }
+
+    .ns-toggle-group {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .ns-toggle-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px;
+      background: var(--bg-elevated);
+      border-radius: 8px;
+      transition: background 0.2s ease;
+    }
+
+    .ns-toggle-item:hover {
+      background: var(--bg-card-hover);
+    }
+
+    .ns-toggle-info {
+      flex: 1;
+    }
+
+    .ns-toggle-label {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .ns-toggle-desc {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    /* ==================== */
+    /* TOGGLE SWITCH */
+    /* ==================== */
+
+    .toggle-switch {
+      position: relative;
+      width: 48px;
+      height: 26px;
+      flex-shrink: 0;
+    }
+
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .toggle-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: var(--neutral-track);
+      transition: 0.3s;
+      border-radius: 26px;
+    }
+
+    .toggle-slider:before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 3px;
+      bottom: 3px;
+      background-color: var(--neutral-thumb);
+      transition: 0.3s;
+      border-radius: 50%;
+    }
+
+    .toggle-switch input:checked + .toggle-slider {
+      background-color: var(--green);
+    }
+
+    .toggle-switch input:checked + .toggle-slider:before {
+      transform: translateX(22px);
+      background-color: white;
+    }
+
+    .toggle-switch input:disabled + .toggle-slider {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* ==================== */
+    /* DNS RECORDS TABLE */
+    /* ==================== */
+
+    .table-container {
+      overflow-x: auto;
+    }
+
+    .dns-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .dns-table thead {
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .dns-table th {
+      text-align: left;
+      padding: 12px 16px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .dns-table td {
+      padding: 14px 16px;
+      font-size: 14px;
+      color: var(--text-primary);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .dns-table tbody tr:hover {
+      background: var(--bg-elevated);
+    }
+
+    .dns-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    .record-type {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .record-type.A {
+      background: rgba(59, 130, 246, 0.15);
+      color: var(--blue);
+    }
+
+    .record-type.AAAA {
+      background: rgba(59, 130, 246, 0.15);
+      color: var(--blue);
+    }
+
+    .record-type.CNAME {
+      background: rgba(234, 179, 8, 0.15);
+      color: var(--yellow);
+    }
+
+    .record-type.MX {
+      background: rgba(34, 197, 94, 0.15);
+      color: var(--green);
+    }
+
+    .record-type.TXT {
+      background: rgba(168, 85, 247, 0.15);
+      color: #a855f7;
+    }
+
+    .record-type.NS {
+      background: rgba(239, 68, 68, 0.15);
+      color: var(--red);
+    }
+
+    .record-value {
+      font-family: 'Monaco', 'Menlo', monospace;
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .record-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn-icon {
+      background: transparent;
+      border: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 14px;
+    }
+
+    .btn-icon:hover {
+      background: var(--bg-elevated);
+      border-color: var(--border-medium);
+      color: var(--text-primary);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 48px 24px;
+      color: var(--text-muted);
+    }
+
+    .empty-state-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+      opacity: 0.5;
+    }
+
+    .empty-state-text {
+      font-size: 14px;
+    }
+
+    /* ==================== */
+    /* INTEGRATIONS GALLERY */
+    /* ==================== */
+
+    .integrations-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+    }
+
+    .integration-card {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .integration-card:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--border-medium);
+      transform: translateY(-2px);
+    }
+
+    .integration-card.connected {
+      border-color: var(--green);
+      background: var(--green-muted);
+    }
+
+    .integration-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      margin-bottom: 12px;
+      background: var(--bg-card);
+    }
+
+    .integration-card.connected .integration-icon {
+      background: rgba(34, 197, 94, 0.2);
+    }
+
+    .integration-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .integration-status {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .integration-card.connected .integration-status {
+      color: var(--green);
+    }
+
+    .integration-badge {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+    }
+
+    /* ==================== */
+    /* RESPONSIVE */
+    /* ==================== */
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 20px 16px;
+      }
+
+      .domain-title {
+        font-size: 24px;
+      }
+
+      .section {
+        padding: 20px;
+      }
+
+      .integrations-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="domain-title">
+        <span>example.com</span>
+        <span class="domain-badge">Active</span>
+      </div>
+      <p class="page-subtitle">Manage your domain settings, DNS records, and integrations</p>
+    </div>
+
+    <!-- NS Server Section -->
+    <div class="section">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Name Servers</h2>
+          <p class="section-subtitle">Configure where your domain's DNS is managed</p>
+        </div>
+      </div>
+
+      <div class="ns-status">
+        <div class="ns-status-icon using-namefi">✓</div>
+        <div class="ns-status-info">
+          <div class="ns-status-label">Current Status</div>
+          <div class="ns-status-value">Using Namefi Name Servers</div>
+          <div class="ns-servers-list">
+            ns1.namefi.com • ns2.namefi.com • ns3.namefi.com
+          </div>
+        </div>
+      </div>
+
+      <div class="ns-toggle-group">
+        <div class="ns-toggle-item">
+          <div class="ns-toggle-info">
+            <div class="ns-toggle-label">Use Namefi A Server</div>
+            <div class="ns-toggle-desc">Automatically configure A record pointing to Namefi servers</div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" checked>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+
+        <div class="ns-toggle-item">
+          <div class="ns-toggle-info">
+            <div class="ns-toggle-label">Auto ENS</div>
+            <div class="ns-toggle-desc">Automatically sync with Ethereum Name Service</div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" checked>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+
+        <div class="ns-toggle-item">
+          <div class="ns-toggle-info">
+            <div class="ns-toggle-label">Auto Park</div>
+            <div class="ns-toggle-desc">Enable automatic domain parking features</div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox">
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- DNS Records Table -->
+    <div class="section">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">DNS Records</h2>
+          <p class="section-subtitle">Manage your domain's DNS configuration</p>
+        </div>
+      </div>
+
+      <div class="table-container">
+        <table class="dns-table">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Name</th>
+              <th>Value</th>
+              <th>TTL</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="record-type A">A</span></td>
+              <td>@</td>
+              <td class="record-value">192.0.2.1</td>
+              <td>3600</td>
+              <td>
+                <div class="record-actions">
+                  <button class="btn-icon" title="Edit">✎</button>
+                  <button class="btn-icon" title="Delete">🗑</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><span class="record-type AAAA">AAAA</span></td>
+              <td>@</td>
+              <td class="record-value">2001:db8::1</td>
+              <td>3600</td>
+              <td>
+                <div class="record-actions">
+                  <button class="btn-icon" title="Edit">✎</button>
+                  <button class="btn-icon" title="Delete">🗑</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><span class="record-type CNAME">CNAME</span></td>
+              <td>www</td>
+              <td class="record-value">example.com</td>
+              <td>3600</td>
+              <td>
+                <div class="record-actions">
+                  <button class="btn-icon" title="Edit">✎</button>
+                  <button class="btn-icon" title="Delete">🗑</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><span class="record-type MX">MX</span></td>
+              <td>@</td>
+              <td class="record-value">10 mail.example.com</td>
+              <td>3600</td>
+              <td>
+                <div class="record-actions">
+                  <button class="btn-icon" title="Edit">✎</button>
+                  <button class="btn-icon" title="Delete">🗑</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><span class="record-type TXT">TXT</span></td>
+              <td>@</td>
+              <td class="record-value">v=spf1 include:_spf.google.com ~all</td>
+              <td>3600</td>
+              <td>
+                <div class="record-actions">
+                  <button class="btn-icon" title="Edit">✎</button>
+                  <button class="btn-icon" title="Delete">🗑</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><span class="record-type TXT">TXT</span></td>
+              <td>_dmarc</td>
+              <td class="record-value">v=DMARC1; p=none; rua=mailto:dmarc@example.com</td>
+              <td>3600</td>
+              <td>
+                <div class="record-actions">
+                  <button class="btn-icon" title="Edit">✎</button>
+                  <button class="btn-icon" title="Delete">🗑</button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Integrations Gallery -->
+    <div class="section">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Integrations</h2>
+          <p class="section-subtitle">Connect your domain with third-party services</p>
+        </div>
+      </div>
+
+      <div class="integrations-grid">
+        <div class="integration-card connected">
+          <div class="integration-badge"></div>
+          <div class="integration-icon">📧</div>
+          <div class="integration-name">Gmail</div>
+          <div class="integration-status">Connected</div>
+        </div>
+
+        <div class="integration-card connected">
+          <div class="integration-badge"></div>
+          <div class="integration-icon">📊</div>
+          <div class="integration-name">Google Workspace</div>
+          <div class="integration-status">Connected</div>
+        </div>
+
+        <div class="integration-card">
+          <div class="integration-icon">📬</div>
+          <div class="integration-name">Outlook</div>
+          <div class="integration-status">Not connected</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Simple toggle functionality
+    document.querySelectorAll('.toggle-switch input').forEach(toggle => {
+      toggle.addEventListener('change', function() {
+        const item = this.closest('.ns-toggle-item');
+        if (item) {
+          if (this.checked) {
+            item.style.opacity = '1';
+          } else {
+            item.style.opacity = '0.7';
+          }
+        }
+      });
+    });
+
+    // Integration card click handlers
+    document.querySelectorAll('.integration-card').forEach(card => {
+      card.addEventListener('click', function() {
+        const isConnected = this.classList.contains('connected');
+        if (isConnected) {
+          // Show disconnect confirmation or settings
+          alert('Integration is connected. Click to manage settings.');
+        } else {
+          // Show connection flow
+          alert('Click to connect this integration.');
+        }
+      });
+    });
+
+    // Table row actions
+    document.querySelectorAll('.btn-icon').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        const action = this.title;
+        const row = this.closest('tr');
+        const recordType = row.querySelector('.record-type').textContent;
+        const recordName = row.querySelector('td:nth-child(2)').textContent;
+
+        if (action === 'Edit') {
+          alert(`Edit ${recordType} record for ${recordName}`);
+        } else if (action === 'Delete') {
+          if (confirm(`Delete ${recordType} record for ${recordName}?`)) {
+            alert('Record deleted (demo)');
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>

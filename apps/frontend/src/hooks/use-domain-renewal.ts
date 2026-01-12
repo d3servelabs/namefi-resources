@@ -5,7 +5,7 @@ import { toast } from 'sonner';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { isDomainAssumedBeyondLateRenewalPeriod } from '@namefi-astra/utils';
 
-interface RenewalResult {
+export interface RenewalResult {
   domain: string;
   success: boolean;
   reason?: string;
@@ -23,6 +23,7 @@ export function useDomainRenewal() {
   const renewDomains = useCallback(
     async (
       domainsWithExpiration: DomainWithExpiration[],
+      durationInYears?: number,
     ): Promise<RenewalResult[]> => {
       const results: RenewalResult[] = [];
 
@@ -86,7 +87,10 @@ export function useDomainRenewal() {
           }
 
           // Check for duration validation from domainAvailabilityInfo
-          if (!domainAvailabilityInfo?.durationValidationInYears?.min) {
+          if (
+            !domainAvailabilityInfo?.durationValidationInYears?.min ||
+            domainAvailabilityInfo.durationValidationInYears.max === undefined
+          ) {
             results.push({
               domain,
               success: false,
@@ -97,11 +101,34 @@ export function useDomainRenewal() {
 
           const minDurationYears =
             domainAvailabilityInfo.durationValidationInYears.min;
+          const maxDurationYears =
+            domainAvailabilityInfo.durationValidationInYears.max;
+
+          // Determine the duration to use
+          let finalDurationInYears: number;
+          if (durationInYears !== undefined) {
+            // Validate provided duration is within allowed range
+            if (
+              durationInYears < minDurationYears ||
+              durationInYears > maxDurationYears
+            ) {
+              results.push({
+                domain,
+                success: false,
+                reason: `Duration must be between ${minDurationYears} and ${maxDurationYears} years`,
+              });
+              continue;
+            }
+            finalDurationInYears = durationInYears;
+          } else {
+            // Fall back to minimum duration if not provided
+            finalDurationInYears = minDurationYears;
+          }
 
           // Collect valid items for batch addition
           itemsToAdd.push({
             domainAvailabilityInfo,
-            durationInYears: minDurationYears,
+            durationInYears: finalDurationInYears,
             operationType: 'RENEW' as const,
             toggle: false,
             domain, // Keep for results tracking

@@ -8,6 +8,7 @@ import {
   indexedDomainsTable,
   domainConfigTable,
   dnsRecordsTable,
+  domainUserPreferencesTable,
 } from '@namefi-astra/db';
 import {
   namefiNormalizedDomainSchema,
@@ -447,40 +448,59 @@ export const usersRouter = createTRPCRouter({
     }
 
     try {
-      const [expirationDates, indexedDomains, domainConfigs, dnsRecords] =
-        await Promise.all([
-          getDomainsExpirationDatesFromIndex(domainNames),
-          db
-            .select({
-              normalizedDomainName: indexedDomainsTable.normalizedDomainName,
-              isUsingNamefiNameservers:
-                indexedDomainsTable.isUsingNamefiNameservers,
-              nameservers: indexedDomainsTable.nameservers,
-            })
-            .from(indexedDomainsTable)
-            .where(
-              inArray(indexedDomainsTable.normalizedDomainName, domainNames),
+      const [
+        expirationDates,
+        indexedDomains,
+        domainConfigs,
+        dnsRecords,
+        userPreferences,
+      ] = await Promise.all([
+        getDomainsExpirationDatesFromIndex(domainNames),
+        db
+          .select({
+            normalizedDomainName: indexedDomainsTable.normalizedDomainName,
+            isUsingNamefiNameservers:
+              indexedDomainsTable.isUsingNamefiNameservers,
+            nameservers: indexedDomainsTable.nameservers,
+          })
+          .from(indexedDomainsTable)
+          .where(
+            inArray(indexedDomainsTable.normalizedDomainName, domainNames),
+          ),
+        db
+          .select({
+            normalizedDomainName: domainConfigTable.normalizedDomainName,
+            autoParkEnabled: domainConfigTable.autoParkEnabled,
+            forwardTo: domainConfigTable.forwardTo,
+          })
+          .from(domainConfigTable)
+          .where(inArray(domainConfigTable.normalizedDomainName, domainNames)),
+        db
+          .select({
+            zoneName: dnsRecordsTable.zoneName,
+            type: dnsRecordsTable.type,
+            rdata: dnsRecordsTable.rdata,
+            name: dnsRecordsTable.name,
+          })
+          .from(dnsRecordsTable)
+          .where(inArray(dnsRecordsTable.zoneName, domainNames)),
+        db
+          .select({
+            normalizedDomainName:
+              domainUserPreferencesTable.normalizedDomainName,
+            autoRenewEnabled: domainUserPreferencesTable.autoRenewEnabled,
+          })
+          .from(domainUserPreferencesTable)
+          .where(
+            and(
+              inArray(
+                domainUserPreferencesTable.normalizedDomainName,
+                domainNames,
+              ),
+              eq(domainUserPreferencesTable.userId, user.id),
             ),
-          db
-            .select({
-              normalizedDomainName: domainConfigTable.normalizedDomainName,
-              autoParkEnabled: domainConfigTable.autoParkEnabled,
-              forwardTo: domainConfigTable.forwardTo,
-            })
-            .from(domainConfigTable)
-            .where(
-              inArray(domainConfigTable.normalizedDomainName, domainNames),
-            ),
-          db
-            .select({
-              zoneName: dnsRecordsTable.zoneName,
-              type: dnsRecordsTable.type,
-              rdata: dnsRecordsTable.rdata,
-              name: dnsRecordsTable.name,
-            })
-            .from(dnsRecordsTable)
-            .where(inArray(dnsRecordsTable.zoneName, domainNames)),
-        ]);
+          ),
+      ]);
 
       // Create lookup maps
       const indexedDomainsMap = new Map(
@@ -488,6 +508,9 @@ export const usersRouter = createTRPCRouter({
       );
       const domainConfigsMap = new Map(
         domainConfigs.map((d) => [d.normalizedDomainName, d]),
+      );
+      const userPreferencesMap = new Map(
+        userPreferences.map((d) => [d.normalizedDomainName, d]),
       );
 
       // Group DNS records by zone
@@ -503,6 +526,7 @@ export const usersRouter = createTRPCRouter({
         const indexedDomain = indexedDomainsMap.get(domainName);
         const config = domainConfigsMap.get(domainName);
         const records = dnsRecordsMap.get(domainName) || [];
+        const preferences = userPreferencesMap.get(domainName);
 
         const hasWebRecords = records.some((r) =>
           ['A', 'AAAA', 'CNAME'].includes(r.type),
@@ -516,6 +540,7 @@ export const usersRouter = createTRPCRouter({
         return {
           ...nft,
           expirationDate: expirationDates[domainName],
+          autoRenewEnabled: preferences?.autoRenewEnabled ?? false,
           dnsStatus: {
             nameservers: indexedDomain?.nameservers ?? [],
             isUsingNamefiNameservers:
@@ -536,6 +561,7 @@ export const usersRouter = createTRPCRouter({
       // Fallback to minimal data if something fails
       return nfts.map((nft) => ({
         ...nft,
+        autoRenewEnabled: false,
         dnsStatus: {
           nameservers: [],
           isUsingNamefiNameservers: false,
