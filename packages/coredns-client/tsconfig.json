@@ -1,0 +1,18 @@
+{
+  "extends": "@namefi-astra/typescript",
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "strictNullChecks": true,
+    "verbatimModuleSyntax": true,
+    "skipLibCheck": true,
+    "types": ["node"],
+    "jsx": "react-jsx",
+    "outDir": "./dist",
+    "rootDir": ".",
+    "baseUrl": "."
+  },
+  "include": ["src/**/*.ts"]
+}

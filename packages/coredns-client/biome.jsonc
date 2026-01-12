@@ -1,0 +1,16 @@
+{
+  "extends": "//",
+  "javascript": {
+    "globals": ["console", "logger", "createLogger"]
+  },
+  "linter": {
+    "rules": {
+      "suspicious": {
+        "noConsole": { "level": "warn", "options": { "allow": ["log"] } }
+      },
+      "style": {
+        "noDefaultExport": { "level": "off" }
+      }
+    }
+  }
+}

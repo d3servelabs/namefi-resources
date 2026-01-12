@@ -1,0 +1,33 @@
+{
+  "name": "@namefi-astra/coredns-client",
+  "version": "0.0.0-alpha.0",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./client": "./src/client.ts"
+  },
+  "scripts": {
+    "clean": "git clean -xdf .next .turbo node_modules out dist",
+    "generate:types": "openapi-typescript ./openapi-spec/cache.yaml -o ./src/generated/cache.d.ts",
+    "prebuild": "bun run generate:types",
+    "postinstall": "bun run generate:types",
+    "typecheck": "tsc --noEmit",
+    "test": "bun --env-file .env.test test",
+    "test:watch": "bun --env-file .env.test vitest",
+    "test:coverage": "bun --env-file .env.test test --coverage --coverage-reporter=lcov"
+  },
+  "dependencies": {
+    "openapi-fetch": "^0.15.0"
+  },
+  "devDependencies": {
+    "@namefi-astra/typescript": "workspace:*",
+    "openapi-typescript": "^7.10.1",
+    "tsup": "^8.4.0",
+    "tsx": "^4.19.3",
+    "vite-tsconfig-paths": "^5.1.4"
+  },
+  "peerDependencies": {
+    "@vitest/coverage-v8": "^3.1.2",
+    "vitest": "^3.1.2"
+  }
+}

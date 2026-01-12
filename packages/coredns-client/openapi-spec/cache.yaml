@@ -1,0 +1,665 @@
+openapi: 3.0.3
+info:
+  title: CoreDNS Cache Management API
+  description: |
+    HTTP API for managing CoreDNS cache operations including flushing, querying, 
+    statistics, and dumping cache contents.
+    
+    ## Authentication
+    All endpoints require authentication via API key in one of two ways:
+    - `X-API-Key` header
+    - `Authorization: Bearer` header
+    
+    ## Content Negotiation
+    The API supports both JSON and plain text responses based on the `Accept` header:
+    - `Accept: application/json` - Returns JSON responses
+    - `Accept: text/plain` or default - Returns plain text responses
+  version: 1.0.0
+  contact:
+    name: CoreDNS Cache Plugin
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+
+servers:
+  - url: http://localhost:8181
+    description: Local development server (default)
+  - url: http://127.0.0.1:8181
+    description: Localhost only (recommended for production)
+
+tags:
+  - name: Cache Management
+    description: Operations for managing cache entries
+  - name: Cache Inspection
+    description: Operations for inspecting cache contents and statistics
+
+security:
+  - ApiKeyAuth: []
+  - BearerAuth: []
+
+paths:
+  /cache/flush:
+    post:
+      tags:
+        - Cache Management
+      summary: Flush cache entries
+      description: |
+        Flush cache entries based on optional filters. Can flush all entries, 
+        specific zones, specific record types, or combinations thereof.
+      operationId: flushCache
+      requestBody:
+        description: Optional filters for selective cache flushing
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FlushRequest'
+            examples:
+              flushAll:
+                summary: Flush all cache entries
+                value: {}
+              flushZone:
+                summary: Flush specific zone
+                value:
+                  zone: "example.com."
+              flushType:
+                summary: Flush specific record type
+                value:
+                  qtype: "AAAA"
+              flushZoneAndType:
+                summary: Flush zone and type combination
+                value:
+                  zone: "example.com."
+                  qtype: "A"
+              flushSuccessOnly:
+                summary: Flush only success cache
+                value:
+                  cache_type: "success"
+      responses:
+        '200':
+          description: Cache flushed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlushResponse'
+              example:
+                success: true
+                message: "Cache flushed successfully"
+                details:
+                  success_cache_flushed: 150
+                  denial_cache_flushed: 45
+                  total_flushed: 195
+            text/plain:
+              schema:
+                type: string
+              example: "OK - Flushed 195 entries (150 success, 45 denial)"
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+    
+    delete:
+      tags:
+        - Cache Management
+      summary: Flush cache entries (DELETE method)
+      description: Same as POST /cache/flush - provided for RESTful semantics
+      operationId: flushCacheDelete
+      requestBody:
+        description: Optional filters for selective cache flushing
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FlushRequest'
+      responses:
+        '200':
+          description: Cache flushed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlushResponse'
+            text/plain:
+              schema:
+                type: string
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+
+  /cache/stats:
+    get:
+      tags:
+        - Cache Inspection
+      summary: Get cache statistics
+      description: |
+        Retrieve current cache statistics including size, capacity, utilization, 
+        and configuration information for both success and denial caches.
+      operationId: getCacheStats
+      responses:
+        '200':
+          description: Cache statistics retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatsResponse'
+              example:
+                success_cache:
+                  size: 150
+                  capacity: 10000
+                  utilization_percent: 1.5
+                denial_cache:
+                  size: 45
+                  capacity: 10000
+                  utilization_percent: 0.45
+                configuration:
+                  zones: ["."]
+                  success_ttl: 3600
+                  denial_ttl: 1800
+                  min_success_ttl: 5
+                  min_denial_ttl: 5
+                  prefetch_enabled: true
+                  serve_stale_enabled: false
+            text/plain:
+              schema:
+                type: string
+              example: |
+                Success Cache: 150/10000 (1.50%)
+                Denial Cache: 45/10000 (0.45%)
+                Total: 195 entries
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+
+  /cache/query:
+    get:
+      tags:
+        - Cache Inspection
+      summary: Query a specific cache entry
+      description: |
+        Look up a specific entry in the cache by name, type, and optional 
+        DNSSEC flags. Returns the full cache entry if found.
+      operationId: queryCacheEntry
+      parameters:
+        - name: name
+          in: query
+          required: true
+          description: Query name (FQDN)
+          schema:
+            type: string
+          example: "example.com."
+        - name: type
+          in: query
+          required: false
+          description: DNS record type
+          schema:
+            type: string
+            default: "A"
+          example: "A"
+        - name: do
+          in: query
+          required: false
+          description: DNSSEC OK bit
+          schema:
+            type: string
+            enum: ["0", "1", "true", "false"]
+            default: "0"
+        - name: cd
+          in: query
+          required: false
+          description: Checking Disabled bit
+          schema:
+            type: string
+            enum: ["0", "1", "true", "false"]
+            default: "0"
+      responses:
+        '200':
+          description: Query executed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CacheEntry'
+              examples:
+                found:
+                  summary: Entry found in cache
+                  value:
+                    found: true
+                    cache_type: "success"
+                    name: "example.com."
+                    qtype: 1
+                    qtype_name: "A"
+                    rcode: 0
+                    ttl_remaining: 245
+                    original_ttl: 300
+                    stored_at: "2026-01-07T12:00:00Z"
+                    answer: ["example.com. 245 IN A 1.2.3.4"]
+                    authority: []
+                    additional: []
+                notFound:
+                  summary: Entry not found in cache
+                  value:
+                    found: false
+            text/plain:
+              schema:
+                type: string
+              examples:
+                found:
+                  summary: Entry found
+                  value: |
+                    Found in success cache
+                    Name: example.com.
+                    Type: A (1)
+                    TTL: 245s remaining (original: 300s)
+                    Stored: 2026-01-07T12:00:00Z
+                    Answer:
+                      example.com. 245 IN A 1.2.3.4
+                notFound:
+                  summary: Entry not found
+                  value: "Not found in cache"
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+
+  /cache/dump:
+    get:
+      tags:
+        - Cache Inspection
+      summary: Dump cache contents with pagination
+      description: |
+        Export cache contents in paginated form. Useful for analysis, debugging, 
+        or monitoring cache contents.
+      operationId: dumpCache
+      parameters:
+        - name: page
+          in: query
+          required: false
+          description: Page number (1-indexed)
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+          example: 1
+        - name: limit
+          in: query
+          required: false
+          description: Number of entries per page (max 1000)
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 1000
+            default: 100
+          example: 100
+        - name: cache_type
+          in: query
+          required: false
+          description: Filter by cache type
+          schema:
+            type: string
+            enum: ["all", "success", "denial"]
+            default: "all"
+          example: "all"
+      responses:
+        '200':
+          description: Cache dump retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DumpResponse'
+              example:
+                page: 1
+                limit: 100
+                total_entries: 195
+                total_pages: 2
+                cache_type: "all"
+                entries:
+                  - cache_type: "success"
+                    name: "example.com."
+                    qtype: 1
+                    qtype_name: "A"
+                    ttl_remaining: 245
+                    stored_at: "2026-01-07T12:00:00Z"
+            text/plain:
+              schema:
+                type: string
+              example: |
+                Page 1/2 (limit: 100, total: 195)
+                Cache Type: all
+                
+                [Success Cache - 95 entries on this page]
+                example.com. A TTL:245s
+                example.org. AAAA TTL:180s
+                
+                [Denial Cache - 5 entries on this page]
+                notfound.com. A TTL:30s
+                
+                Total on page: 100
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: API key authentication via custom header
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: API key authentication via Authorization header
+
+  schemas:
+    FlushRequest:
+      type: object
+      properties:
+        zone:
+          type: string
+          description: Optional zone filter (includes subdomains)
+          example: "example.com."
+        qtype:
+          type: string
+          description: Optional DNS record type filter
+          example: "A"
+        cache_type:
+          type: string
+          enum: ["all", "success", "denial"]
+          default: "all"
+          description: Which cache to flush
+          example: "all"
+
+    FlushResponse:
+      type: object
+      required:
+        - success
+        - message
+        - details
+      properties:
+        success:
+          type: boolean
+          description: Whether the operation succeeded
+          example: true
+        message:
+          type: string
+          description: Human-readable message
+          example: "Cache flushed successfully"
+        details:
+          type: object
+          required:
+            - success_cache_flushed
+            - denial_cache_flushed
+            - total_flushed
+          properties:
+            success_cache_flushed:
+              type: integer
+              description: Number of entries flushed from success cache
+              example: 150
+            denial_cache_flushed:
+              type: integer
+              description: Number of entries flushed from denial cache
+              example: 45
+            total_flushed:
+              type: integer
+              description: Total number of entries flushed
+              example: 195
+
+    StatsResponse:
+      type: object
+      required:
+        - success_cache
+        - denial_cache
+        - configuration
+      properties:
+        success_cache:
+          $ref: '#/components/schemas/CacheStats'
+        denial_cache:
+          $ref: '#/components/schemas/CacheStats'
+        configuration:
+          $ref: '#/components/schemas/CacheConfiguration'
+
+    CacheStats:
+      type: object
+      required:
+        - size
+        - capacity
+        - utilization_percent
+      properties:
+        size:
+          type: integer
+          description: Current number of entries
+          example: 150
+        capacity:
+          type: integer
+          description: Maximum number of entries
+          example: 10000
+        utilization_percent:
+          type: number
+          format: float
+          description: Percentage of capacity used
+          example: 1.5
+
+    CacheConfiguration:
+      type: object
+      properties:
+        zones:
+          type: array
+          items:
+            type: string
+          description: Zones being cached
+          example: ["."]
+        success_ttl:
+          type: integer
+          description: Maximum TTL for success cache (seconds)
+          example: 3600
+        denial_ttl:
+          type: integer
+          description: Maximum TTL for denial cache (seconds)
+          example: 1800
+        min_success_ttl:
+          type: integer
+          description: Minimum TTL for success cache (seconds)
+          example: 5
+        min_denial_ttl:
+          type: integer
+          description: Minimum TTL for denial cache (seconds)
+          example: 5
+        prefetch_enabled:
+          type: boolean
+          description: Whether prefetching is enabled
+          example: true
+        serve_stale_enabled:
+          type: boolean
+          description: Whether serving stale entries is enabled
+          example: false
+
+    CacheEntry:
+      type: object
+      required:
+        - found
+      properties:
+        found:
+          type: boolean
+          description: Whether the entry was found in cache
+          example: true
+        cache_type:
+          type: string
+          enum: ["success", "denial"]
+          description: Which cache the entry was found in
+          example: "success"
+        name:
+          type: string
+          description: Query name (FQDN)
+          example: "example.com."
+        qtype:
+          type: integer
+          description: DNS record type (numeric)
+          example: 1
+        qtype_name:
+          type: string
+          description: DNS record type (string)
+          example: "A"
+        rcode:
+          type: integer
+          description: DNS response code
+          example: 0
+        ttl_remaining:
+          type: integer
+          description: Remaining TTL in seconds
+          example: 245
+        original_ttl:
+          type: integer
+          description: Original TTL when cached
+          example: 300
+        stored_at:
+          type: string
+          format: date-time
+          description: When the entry was stored
+          example: "2026-01-07T12:00:00Z"
+        answer:
+          type: array
+          items:
+            type: string
+          description: Answer section RRs
+          example: ["example.com. 245 IN A 1.2.3.4"]
+        authority:
+          type: array
+          items:
+            type: string
+          description: Authority section RRs
+          example: []
+        additional:
+          type: array
+          items:
+            type: string
+          description: Additional section RRs
+          example: []
+
+    DumpResponse:
+      type: object
+      required:
+        - page
+        - limit
+        - total_entries
+        - total_pages
+        - cache_type
+        - entries
+      properties:
+        page:
+          type: integer
+          description: Current page number
+          example: 1
+        limit:
+          type: integer
+          description: Entries per page
+          example: 100
+        total_entries:
+          type: integer
+          description: Total number of entries across all pages
+          example: 195
+        total_pages:
+          type: integer
+          description: Total number of pages
+          example: 2
+        cache_type:
+          type: string
+          enum: ["all", "success", "denial"]
+          description: Cache type filter applied
+          example: "all"
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/CacheEntry'
+          description: Array of cache entries on this page
+
+    ErrorResponse:
+      type: object
+      required:
+        - success
+        - error
+      properties:
+        success:
+          type: boolean
+          description: Always false for errors
+          example: false
+        error:
+          type: string
+          description: Error message
+          example: "Invalid query type: INVALID"
+        details:
+          type: string
+          description: Additional error details
+          example: "unknown DNS type"
+
+  responses:
+    BadRequest:
+      description: Bad request - invalid parameters or request body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            success: false
+            error: "Invalid query type: INVALID"
+        text/plain:
+          schema:
+            type: string
+          example: "Invalid query type: INVALID"
+
+    Unauthorized:
+      description: Unauthorized - invalid or missing API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            success: false
+            error: "Unauthorized - Invalid API key"
+        text/plain:
+          schema:
+            type: string
+          example: "Unauthorized - Invalid API key"
+
+    MethodNotAllowed:
+      description: Method not allowed for this endpoint
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            success: false
+            error: "Method not allowed - use POST or DELETE"
+        text/plain:
+          schema:
+            type: string
+          example: "Method not allowed - use POST or DELETE"
+
+  examples:
+    FlushAll:
+      summary: Flush all cache entries
+      value: {}
+    
+    FlushZone:
+      summary: Flush specific zone
+      value:
+        zone: "example.com."
+    
+    FlushType:
+      summary: Flush specific record type
+      value:
+        qtype: "AAAA"
+    
+    FlushZoneType:
+      summary: Flush zone and type combination
+      value:
+        zone: "example.com."
+        qtype: "A"
