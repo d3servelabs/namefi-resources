@@ -69,6 +69,7 @@ const FOOTER_SECTIONS: Array<{
       { label: 'AI Brand Generator', href: '/ai-brand-generator' },
       { label: 'Domain Hunt', href: '/hunt' },
       { label: 'Newsletter', href: '/newsletter' },
+      { label: 'Flush DNS', href: '/dns-cache' },
     ],
   },
   {
