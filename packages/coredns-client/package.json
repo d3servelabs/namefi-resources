@@ -8,7 +8,7 @@
   },
   "scripts": {
     "clean": "git clean -xdf .next .turbo node_modules out dist",
-    "generate:types": "openapi-typescript ./openapi-spec/cache.yaml -o ./src/generated/cache.d.ts",
+    "generate:types": "npx openapi-typescript ./openapi-spec/cache.yaml -o ./src/generated/cache.d.ts",
     "prebuild": "bun run generate:types",
     "postinstall": "bun run generate:types",
     "typecheck": "tsc --noEmit",
