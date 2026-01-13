@@ -287,37 +287,55 @@ const getPreliminaryDomainAvailability = async (
 
   return Promise.all(
     domains.map(async (domain) => {
+      const parts = domain.split('.');
+      const lastLabel = parts[parts.length - 1] ?? '';
+      // Mirror backend rule: mark last label containing "namefi" as unsupported.
+      const isNamefiTld = lastLabel.includes('namefi');
+      if (isNamefiTld) {
+        return {
+          domain,
+          availability: false,
+          pricingDetails: undefined,
+          currentOwner: undefined,
+          durationValidationInYears: { min: 1, max: 1 },
+          importable: false,
+          registrarKey: 'preliminary',
+          supported: false,
+        } satisfies DomainAvailabilityInfo;
+      }
+
       const [_error, nameservers] = await resolve(resolveNsDOH(domain));
       const availability = isNil(nameservers) || isEmpty(nameservers);
-      const tld = domain.split('.').pop();
-      const pricingDetails = tld ? priceMap.get(tld) : undefined;
+      const pricingDetails = priceMap.get(lastLabel);
 
       return {
         domain,
         availability,
-        pricingDetails: {
-          importPrice: {
-            type: 'PER_YEAR',
-            price: {
-              amount: pricingDetails?.transferPriceUsdPerYear ?? 0,
-              currency: 'USD',
-            },
-          },
-          registrationPrice: {
-            type: 'PER_YEAR',
-            price: {
-              amount: pricingDetails?.registrationPriceUsdPerYear ?? 0,
-              currency: 'USD',
-            },
-          },
-          renewalPrice: {
-            type: 'PER_YEAR',
-            price: {
-              amount: pricingDetails?.renewalPriceUsdPerYear ?? 0,
-              currency: 'USD',
-            },
-          },
-        },
+        pricingDetails: pricingDetails
+          ? {
+              importPrice: {
+                type: 'PER_YEAR',
+                price: {
+                  amount: pricingDetails.transferPriceUsdPerYear ?? 0,
+                  currency: 'USD',
+                },
+              },
+              registrationPrice: {
+                type: 'PER_YEAR',
+                price: {
+                  amount: pricingDetails.registrationPriceUsdPerYear ?? 0,
+                  currency: 'USD',
+                },
+              },
+              renewalPrice: {
+                type: 'PER_YEAR',
+                price: {
+                  amount: pricingDetails.renewalPriceUsdPerYear ?? 0,
+                  currency: 'USD',
+                },
+              },
+            }
+          : undefined,
         currentOwner: undefined,
         durationValidationInYears: { min: 1, max: 1 },
         importable: !availability,

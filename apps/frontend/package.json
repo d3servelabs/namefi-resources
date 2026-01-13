@@ -6,7 +6,7 @@
   "scripts": {
     "clean": "git clean -xdf .next .turbo node_modules out dist",
     "force-local": "ENVIRONMENT=local bun",
-    "dev": "ENVIRONMENT=local bun run next dev --port 5050",
+    "dev": "ENVIRONMENT=local next dev --port 5050",
     "with-env": "infisical run --token=$INFISICAL_SERVICE_TOKEN -- bun",
     "build": "next build",
     "start": "next start",
