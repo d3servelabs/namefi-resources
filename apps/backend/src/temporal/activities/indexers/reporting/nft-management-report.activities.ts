@@ -15,7 +15,7 @@ import {
   ordersTable,
   namefiNftCte,
 } from '@namefi-astra/db';
-import { and, eq, sql, gte } from 'drizzle-orm';
+import { and, eq, sql, gte, isNull } from 'drizzle-orm';
 import { temporalClient } from '../../../client';
 import { getPoweredByNamefi3PDomains } from '#lib/namefi-registry';
 import { secrets } from '#lib/env';
@@ -65,6 +65,14 @@ export interface ReportMetrics {
       orderId: string;
     }>;
   };
+  unmintedDomains: {
+    totalCount: number;
+    expiredCount: number;
+    activeCount: number;
+    missingFromRegistrarCount: number;
+    registrarBreakdown: Record<string, number>;
+    domains: UnmintedDomainData[];
+  };
 }
 
 export interface DetailedNftData {
@@ -77,6 +85,14 @@ export interface DetailedNftData {
   isPoweredByNamefiDomain: boolean;
   canBurn: boolean;
   hasDateMismatch: boolean;
+}
+
+export interface UnmintedDomainData {
+  normalizedDomainName: string;
+  registrarKey: string;
+  expirationTime: Date | null;
+  lastIndexedAt: Date;
+  isMissingFromRegistrar: boolean;
 }
 
 /**
@@ -117,26 +133,26 @@ export async function collectNftManagementMetrics(): Promise<ReportMetrics> {
           'is_powered_by_namefi_domain',
         ),
         effectiveDomainExpirationTime: sql<Date | null>`
-          CASE 
+          CASE
             WHEN ${isPoweredByNamefiCondition}
             THEN ${namefiNftView.expirationTime}
             ELSE ${indexedDomainsTable.expirationTime}
           END
         `.as('effective_domain_expiration_time'),
         effectiveRegistrarKey: sql<string | null>`
-          CASE 
+          CASE
             WHEN ${isPoweredByNamefiCondition}
             THEN 'Powered by Namefi'
             ELSE ${indexedDomainsTable.registrarKey}
           END
         `.as('effective_registrar_key'),
         canBurn: sql<boolean>`
-          CASE 
+          CASE
             WHEN ${isPoweredByNamefiCondition}
             THEN false
             ELSE (
               ( ( NOW() - coalesce(${indexedDomainsTable.expirationTime}, NOW()) ) > interval '${sql.raw(MAX_GRACE_PERIOD_DAYS.toString())} days' )
-              OR 
+              OR
               ( ( NOW() - ${namefiNftView.expirationTime}) > interval '${sql.raw(MAX_GRACE_PERIOD_DAYS.toString())} days' )
               OR
               ${indexedDomainsTable.expirationTime} IS NULL
@@ -144,7 +160,7 @@ export async function collectNftManagementMetrics(): Promise<ReportMetrics> {
           END
         `.as('can_burn'),
         hasDateMismatch: sql<boolean>`
-          CASE 
+          CASE
             WHEN ${isPoweredByNamefiCondition}
             THEN false
             WHEN ${namefiNftView.expirationTime} IS NULL OR ${indexedDomainsTable.expirationTime} IS NULL
@@ -175,11 +191,15 @@ export async function collectNftManagementMetrics(): Promise<ReportMetrics> {
     // Collect recent order items (last 24 hours)
     const recentOrdersMetrics = await collectRecentOrdersMetrics(ctx);
 
+    // Collect unminted domains (domains in index but not in NFT view)
+    const unmintedDomainsMetrics = await collectUnmintedDomainsMetrics(ctx);
+
     // Analyze the collected data
     const metrics = analyzeNftData(
       allNftsData,
       workflowMetrics,
       recentOrdersMetrics,
+      unmintedDomainsMetrics,
     );
 
     ctx.log.info('NFT metrics collection completed', {
@@ -291,6 +311,104 @@ async function collectRecentOrdersMetrics(ctx: Context) {
   }
 
   return recentOrdersMetrics;
+}
+
+/**
+ * Collects metrics for domains that exist in indexedDomainsTable but NOT in namefiNftView
+ * These are "unminted" domains - registered with registrar but no NFT exists
+ *
+ * @param ctx - Temporal activity context for logging
+ * @returns Object containing unminted domain metrics and details
+ */
+async function collectUnmintedDomainsMetrics(ctx: Context) {
+  const unmintedDomainsMetrics = {
+    totalCount: 0,
+    expiredCount: 0,
+    activeCount: 0,
+    missingFromRegistrarCount: 0,
+    registrarBreakdown: {} as Record<string, number>,
+    domains: [] as UnmintedDomainData[],
+  };
+
+  try {
+    // Build test domain filter for indexedDomainsTable
+    // Exclude domains with TLD starting with 'test'
+    const isTestDomainCondition = sql<boolean>`split_part(${indexedDomainsTable.normalizedDomainName}, '.', -1) LIKE 'test%'`;
+
+    // Query: LEFT JOIN indexedDomainsTable with namefiNftView
+    // WHERE namefiNftView.normalizedDomainName IS NULL (no matching NFT)
+    const unmintedDomainsQuery = db
+      .with(namefiNftCte)
+      .select({
+        normalizedDomainName: indexedDomainsTable.normalizedDomainName,
+        registrarKey: indexedDomainsTable.registrarKey,
+        expirationTime: indexedDomainsTable.expirationTime,
+        lastIndexedAt: indexedDomainsTable.lastIndexedAt,
+        isMissingFromRegistrar: indexedDomainsTable.isMissingFromRegistrar,
+      })
+      .from(indexedDomainsTable)
+      .leftJoin(
+        namefiNftView,
+        eq(
+          indexedDomainsTable.normalizedDomainName,
+          namefiNftView.normalizedDomainName,
+        ),
+      )
+      .where(
+        and(
+          isNull(namefiNftView.normalizedDomainName), // No matching NFT
+          sql`NOT ${isTestDomainCondition}`, // Exclude test domains
+        ),
+      );
+
+    const unmintedDomains = await unmintedDomainsQuery;
+
+    ctx.log.info(`Found ${unmintedDomains.length} unminted domains`);
+
+    const now = new Date();
+
+    for (const domain of unmintedDomains) {
+      unmintedDomainsMetrics.totalCount++;
+
+      // Check if expired
+      if (domain.expirationTime && domain.expirationTime < now) {
+        unmintedDomainsMetrics.expiredCount++;
+      } else if (domain.expirationTime) {
+        unmintedDomainsMetrics.activeCount++;
+      }
+
+      // Check if missing from registrar
+      if (domain.isMissingFromRegistrar) {
+        unmintedDomainsMetrics.missingFromRegistrarCount++;
+      }
+
+      // Registrar breakdown
+      const registrar = domain.registrarKey || 'Unknown';
+      unmintedDomainsMetrics.registrarBreakdown[registrar] =
+        (unmintedDomainsMetrics.registrarBreakdown[registrar] || 0) + 1;
+
+      // Add to domains list
+      unmintedDomainsMetrics.domains.push({
+        normalizedDomainName: domain.normalizedDomainName,
+        registrarKey: domain.registrarKey,
+        expirationTime: domain.expirationTime,
+        lastIndexedAt: domain.lastIndexedAt,
+        isMissingFromRegistrar: domain.isMissingFromRegistrar,
+      });
+    }
+
+    // Sort domains by expiration time (soonest first, null at end)
+    unmintedDomainsMetrics.domains.sort((a, b) => {
+      if (!a.expirationTime && !b.expirationTime) return 0;
+      if (!a.expirationTime) return 1;
+      if (!b.expirationTime) return -1;
+      return a.expirationTime.getTime() - b.expirationTime.getTime();
+    });
+  } catch (error) {
+    ctx.log.warn('Failed to collect unminted domains metrics', { error });
+  }
+
+  return unmintedDomainsMetrics;
 }
 
 /**
@@ -577,6 +695,14 @@ function analyzeNftData(
       orderId: string;
     }>;
   },
+  unmintedDomainsMetrics: {
+    totalCount: number;
+    expiredCount: number;
+    activeCount: number;
+    missingFromRegistrarCount: number;
+    registrarBreakdown: Record<string, number>;
+    domains: UnmintedDomainData[];
+  },
 ): ReportMetrics {
   const metrics: ReportMetrics = {
     totalNfts: allNftsData.length,
@@ -596,6 +722,7 @@ function analyzeNftData(
     },
     criticalDomains: [],
     recentOrders: recentOrdersMetrics,
+    unmintedDomains: unmintedDomainsMetrics,
   };
 
   const now = new Date();
@@ -643,31 +770,68 @@ export async function formatNftManagementReport(
       ? ((metrics.dateMismatchNfts / metrics.totalNfts) * 100).toFixed(1)
       : '0';
 
+  // Build TLDR critical actions
+  const tldrActions: string[] = [];
+  if (metrics.dateMismatchNfts > 0) {
+    tldrActions.push(
+      `- **Date Mismatch:** ${metrics.dateMismatchNfts.toLocaleString()} NFTs have expiration date mismatch (>1 day difference)`,
+    );
+  }
+  if (metrics.missingDataNfts > 0) {
+    tldrActions.push(
+      `- **Missing NFT Data:** ${metrics.missingDataNfts.toLocaleString()} NFTs have missing expiration data`,
+    );
+  }
+  if (metrics.unmintedDomains.totalCount > 0) {
+    tldrActions.push(
+      `- **Unminted Domains:** ${metrics.unmintedDomains.totalCount.toLocaleString()} domains in registrar index without NFTs (${metrics.unmintedDomains.activeCount.toLocaleString()} active, ${metrics.unmintedDomains.expiredCount.toLocaleString()} expired)`,
+    );
+  }
+
+  const tldrSection =
+    tldrActions.length > 0
+      ? ['## TLDR - Critical Actions Required', '', ...tldrActions, '']
+      : ['## TLDR - No Critical Actions Required', ''];
+
   const sections = [
-    '## 📊 Overall NFT Statistics',
+    ...tldrSection,
+    '## Overall NFT Statistics',
     `**Total NFTs:** ${metrics.totalNfts.toLocaleString()}`,
     `**Powered by Namefi:** ${metrics.poweredByNamefiDomains.toLocaleString()}`,
     `**Regular Domains:** ${metrics.regularDomains.toLocaleString()}`,
     '',
-    '## ⚠️ Critical Issues Overview',
+    '## Critical Issues Overview',
     `**Expired Domains:** ${metrics.expiredDomains.toLocaleString()} (${expiredPercentage}%)`,
     `**Can Burn NFTs:** ${metrics.canBurnNfts.toLocaleString()} (${canBurnPercentage}%)`,
     `**Date Mismatches:** ${metrics.dateMismatchNfts.toLocaleString()} (${dateMismatchPercentage}%)`,
     `**Missing Data (Cannot Fix):** ${metrics.missingDataNfts.toLocaleString()}`,
     '',
-    '## 🔥 Critical Action Items',
+    '## Critical Action Items',
     `**Expired & Burnable:** ${metrics.criticalIssues.expiredCanBurn.toLocaleString()} NFTs need immediate burn action`,
     `**Missing Data Issues:** ${metrics.criticalIssues.missingDataCannotFix.toLocaleString()} NFTs cannot be automatically fixed`,
     `**Long Overdue (30+ days expired):** ${metrics.criticalIssues.longOverdueExpired.toLocaleString()} domains`,
     '',
-    '## 🔄 Workflows (Last 24 Hours)',
+    '## Unminted Domains Summary',
+    `**Total Unminted:** ${metrics.unmintedDomains.totalCount.toLocaleString()} domains in registrar index without NFTs`,
+    `**Active (Not Expired):** ${metrics.unmintedDomains.activeCount.toLocaleString()}`,
+    `**Expired:** ${metrics.unmintedDomains.expiredCount.toLocaleString()}`,
+    `**Missing from Registrar:** ${metrics.unmintedDomains.missingFromRegistrarCount.toLocaleString()}`,
+    '',
+    '**Unminted by Registrar:**',
+    ...Object.entries(metrics.unmintedDomains.registrarBreakdown)
+      .sort(([, a], [, b]) => b - a)
+      .map(
+        ([registrar, count]) => `- **${registrar}:** ${count.toLocaleString()}`,
+      ),
+    '',
+    '## Workflows (Last 24 Hours)',
     `**Total Workflows:** ${totalRecentWorkflows.toLocaleString()}
 
 - Burn Workflows: ${metrics.activeWorkflows.burnWorkflows.toLocaleString()}
 - Fix Expiration: ${metrics.activeWorkflows.fixExpirationWorkflows.toLocaleString()}
 - Extend Registration: ${metrics.activeWorkflows.extendRegistrationWorkflows.toLocaleString()}`,
     '',
-    '## 🛒 Recent Orders (Last 24 Hours)',
+    '## Recent Orders (Last 24 Hours)',
     `**Total Order Items:** ${metrics.recentOrders.totalOrderItems.toLocaleString()}`,
     `**Total Revenue:** $${(metrics.recentOrders.totalRevenue / 100).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
     '**Orders by Type:**',
@@ -683,7 +847,7 @@ export async function formatNftManagementReport(
           `- **${domain}:** ${count.toLocaleString()} order${count !== 1 ? 's' : ''} ($${(revenue / 100).toFixed(2)})`,
       ),
     '',
-    '## 🏢 Registrar Breakdown',
+    '## Registrar Breakdown',
     Object.entries(metrics.registrarBreakdown)
       .sort(([, a], [, b]) => b - a)
       .map(
@@ -691,7 +855,7 @@ export async function formatNftManagementReport(
       )
       .join('\n'),
     '',
-    '## ⛓️ Chain Distribution',
+    '## Chain Distribution',
     Object.entries(metrics.chainBreakdown)
       .sort(([, a], [, b]) => b - a)
       .map(([_chainId, count]) => {
@@ -706,17 +870,17 @@ export async function formatNftManagementReport(
       })
       .join('\n'),
     '',
-    '## 📈 Health Score',
+    '## Health Score',
     `**Overall Health:** ${calculateHealthScore(metrics)}`,
     generateHealthRecommendations(metrics),
     '',
 
-    '## 🛠️ System Information',
+    '## System Information',
     `**Report Generated:** ${new Date().toISOString()}`,
     '**Data Source:** Direct database queries (namefiNftOwnersView, indexedDomainsTable)',
     '**Admin Panel:** Available at https://astra.namefi.io/admin/nft-management',
     '',
-    '## 📋 Quick Actions Available',
+    '## Quick Actions Available',
     `- **Burn expired NFTs** - Use admin panel or API
 - **Fix date mismatches** - Automated workflow available
 - **Extend registrations** - Admin-initiated workflow
@@ -727,6 +891,8 @@ export async function formatNftManagementReport(
     formatCriticalDomainsTable(metrics.criticalDomains),
     '',
     formatAllOrderItemsTable(metrics.recentOrders.allOrderItems),
+    '',
+    formatUnmintedDomainsTable(metrics.unmintedDomains.domains),
     '',
     '</div>',
     '',
@@ -794,9 +960,21 @@ function generateHealthRecommendations(metrics: ReportMetrics): string {
     );
   }
 
+  if (metrics.unmintedDomains.activeCount > 0) {
+    recommendations.push(
+      `- **ATTENTION:** ${metrics.unmintedDomains.activeCount} active domains have not been minted as NFTs`,
+    );
+  }
+
+  if (metrics.unmintedDomains.expiredCount > 0) {
+    recommendations.push(
+      `- **CLEANUP:** ${metrics.unmintedDomains.expiredCount} expired domains in index without NFTs may need removal`,
+    );
+  }
+
   if (recommendations.length === 0) {
     recommendations.push(
-      '- **EXCELLENT:** No immediate action items identified! 🎉',
+      '- **EXCELLENT:** No immediate action items identified!',
     );
   }
 
@@ -820,7 +998,7 @@ function formatAllOrderItemsTable(
   }>,
 ): string {
   if (allOrderItems.length === 0) {
-    return '## 📦 All Order Items (Last 24 Hours)\n\n✅ **No order items found in the last 24 hours.**';
+    return '## All Order Items (Last 24 Hours)\n\n✅ **No order items found in the last 24 hours.**';
   }
 
   // Sort order items by creation date (newest first)
@@ -851,12 +1029,76 @@ function formatAllOrderItemsTable(
   }
 
   return [
-    '## 📦 All Order Items (Last 24 Hours)',
+    '## All Order Items (Last 24 Hours)',
     '',
     `**${allOrderItems.length} order items** in the last 24 hours:`,
     '',
     ...tableRows,
   ].join('\n');
+}
+
+/**
+ * Formats unminted domains into a markdown table
+ *
+ * @param unmintedDomains - Array of unminted domain data to format
+ * @returns Markdown formatted table section with unminted domains
+ */
+function formatUnmintedDomainsTable(
+  unmintedDomains: UnmintedDomainData[],
+): string {
+  if (unmintedDomains.length === 0) {
+    return '## Unminted Domains (No NFT)\n\n✅ **No unminted domains found.** All domains have corresponding NFTs.';
+  }
+
+  // Limit to first 50 for report readability
+  const domainsToShow = unmintedDomains.slice(0, 50);
+  const hasMore = unmintedDomains.length > 50;
+
+  const tableRows = [
+    '| Domain | Registrar | Expiration | Status |',
+    '|--------|-----------|------------|--------|',
+  ];
+
+  const now = new Date();
+
+  for (const domain of domainsToShow) {
+    const expirationDate = domain.expirationTime
+      ? format(domain.expirationTime, 'MMM do, yyyy')
+      : 'Unknown';
+    const lastIndexed = format(domain.lastIndexedAt, 'MMM do, HH:mm');
+    const isExpired = domain.expirationTime && domain.expirationTime < now;
+
+    let status = isExpired ? '🔴 Expired' : '🟢 Active';
+    if (domain.isMissingFromRegistrar) {
+      status = '🟡 Missing from Registrar';
+    }
+
+    const domainName =
+      domain.normalizedDomainName.length > 30
+        ? `${domain.normalizedDomainName.substring(0, 30)}...`
+        : domain.normalizedDomainName;
+
+    tableRows.push(
+      `| ${domainName} | ${domain.registrarKey} | ${expirationDate} | ${status} |`,
+    );
+  }
+
+  const sections = [
+    '## Unminted Domains (No NFT)',
+    '',
+    `**${unmintedDomains.length} domains** in registry without corresponding NFTs:`,
+    '',
+    ...tableRows,
+  ];
+
+  if (hasMore) {
+    sections.push(
+      '',
+      `*... and ${unmintedDomains.length - 50} more domains not shown*`,
+    );
+  }
+
+  return sections.join('\n');
 }
 
 /**
@@ -884,10 +1126,10 @@ function getChainName(chainId: number): string {
  */
 function getCriticalDomainIssues(domain: DetailedNftData): string[] {
   const issues = [];
-  if (domain.canBurn) issues.push('🔥 Can Burn');
-  if (domain.hasDateMismatch) issues.push('📅 Date Mismatch');
+  if (domain.canBurn) issues.push('🔴 Can Burn');
+  if (domain.hasDateMismatch) issues.push('🟡 Date Mismatch');
   if (!domain.nftExpirationTime || !domain.domainExpirationTime)
-    issues.push('❓ Missing Data');
+    issues.push('🟠 Missing Data');
   return issues;
 }
 
@@ -919,7 +1161,7 @@ function formatCriticalDomainsTable(
   criticalDomains: DetailedNftData[],
 ): string {
   if (criticalDomains.length === 0) {
-    return '## 🎯 Critical Domains\n\n✅ **No critical domains found!** All NFTs are in good health.';
+    return '## Critical Domains\n\n✅ **No critical domains found!** All NFTs are in good health.';
   }
 
   // Sort critical domains by severity (can burn first, then by expiration date)
@@ -960,7 +1202,7 @@ function formatCriticalDomainsTable(
   }
 
   return [
-    '## 🎯 Critical Domains',
+    '## Critical Domains',
     '',
     `**${criticalDomains.length} domains** require immediate attention:`,
     '',

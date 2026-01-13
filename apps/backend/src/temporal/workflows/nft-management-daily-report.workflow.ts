@@ -25,6 +25,7 @@ const {
     startToCloseTimeout: '15m', // Allow time for comprehensive data collection
   },
 });
+const SEND_TO_SLACK = false;
 
 export interface NftManagementDailyReportWorkflowInput {
   /**
@@ -116,8 +117,10 @@ export async function nftManagementDailyReportWorkflow({
 
       await catchAndAlertLocally(
         async () => {
-          await sendNftManagementReportToSlack(finalTitle, content);
-          slackSent = true;
+          if (SEND_TO_SLACK) {
+            await sendNftManagementReportToSlack(finalTitle, content);
+            slackSent = true;
+          }
         },
         {
           message: 'Failed to send NFT management report to Slack',
