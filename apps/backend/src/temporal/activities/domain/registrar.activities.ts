@@ -166,7 +166,7 @@ export async function pollRegisterOrImportDomainOperationStatus(
 
 const ALLOW_EMAIL_LABELS = false;
 
-const DEFAULT_CONTACT = (
+export const DEFAULT_CONTACT = (
   _domain?: string,
   contactType: 'registrant' | 'admin' | 'tech' = 'registrant',
 ) => {

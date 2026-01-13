@@ -2,7 +2,6 @@ import {
   toPunycodeDomainName,
   toPunycodeFqdn,
 } from '@namefi-astra/registrars/lib/data/validations';
-import { punycodeFqdnSchema } from '@namefi-astra/registrars/lib/data/validations';
 import {
   isDomainExpirationDatePassed,
   isDomainAssumedInLateRenewalPeriod,
@@ -33,7 +32,6 @@ import {
   protectedProcedure,
   createSignedPayloadProcedure,
   withAudit,
-  NAMEFI_EIP712_DOMAIN,
 } from '../../base';
 import { assertAuthenticatedUserIsDomainOwner } from '../../guards/assert-domain-owner';
 import { domainDnssecRouter } from './domainDnssecRouter';
@@ -46,7 +44,10 @@ import {
 import { temporalClient } from '#temporal/client';
 import { TEMPORAL_ENUMS, TEMPORAL_QUEUES } from '#temporal/shared';
 import { getNamefiNftLock } from '#temporal/activities/mint/namefi-nft';
-import { getEppLockState } from '#temporal/activities/domain/registrar.activities';
+import {
+  DEFAULT_CONTACT,
+  getEppLockState,
+} from '#temporal/activities/domain/registrar.activities';
 import { getDomainChain } from '#temporal/activities/domain/index';
 import type { WorkflowExecutionStatusName } from '@temporalio/client';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
@@ -55,7 +56,6 @@ import {
   getDomainsExpirationDatesFromIndex,
   maybeQueryActiveRenewalWorkflow,
 } from '../../../temporal/activities/domain/renew.activities';
-import { differenceInDays, isBefore } from 'date-fns';
 import { resolve } from '@namefi-astra/utils';
 import {
   db,
@@ -63,9 +63,12 @@ import {
   namefiNftCte,
   namefiNftOwnersCte,
   namefiNftOwnersView,
-  namefiNftView,
 } from '@namefi-astra/db';
-import { and, eq } from 'drizzle-orm';
+import { eq } from 'drizzle-orm';
+import type { DomainRegistration } from '@namefi-astra/registrars/lib/abstract-registrar/data/domain';
+import type { WithRegistrar } from '@namefi-astra/registrars/registrars/main-registrar';
+import { config } from '#lib/env';
+import { RenewOption } from '@namefi-astra/registrars/lib/abstract-registrar/data/renew-option';
 
 /**
  * Unified EIP-712 type definitions for domain actions.
@@ -192,6 +195,47 @@ export const domainConfigRouter = createTRPCRouter({
     )
     .query(async ({ input, ctx }) => {
       await assertAuthenticatedUserIsDomainOwner(input.domainName, ctx.user);
+      const parseResult = parseDomainName(input.domainName);
+      if (!parseResult.valid) {
+        throw new TRPCError({
+          code: 'PRECONDITION_FAILED',
+          message: 'invalid domain name provided',
+        });
+      }
+      if (parseResult.registryType === 'subdomain') {
+        const [[nft], { autoRenewEnabled }] = await Promise.all([
+          db
+            .with(namefiNftCte)
+            .select()
+            .from(namefiNftCte)
+            .where(eq(namefiNftCte.normalizedDomainName, input.domainName))
+            .limit(1),
+          getDomainPreferencesAndConfig(input.domainName),
+        ]);
+        if (!nft) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: `${input.domainName} is not found`,
+          });
+        }
+        return {
+          supportsDnssec: true,
+          contacts: {
+            registrantContact: DEFAULT_CONTACT(input.domainName, 'registrant'),
+          },
+          contactsPrivacy: {
+            registrantContact: 'CONTACT_PRIVACY_UNSPECIFIED',
+          },
+          nameservers: config.NAMEFI_ASTRA_NAMESERVERS,
+          registrarKey: 'namefi',
+          expirationTime: nft.expirationTime,
+          domainName: toPunycodeDomainName(nft.normalizedDomainName),
+          creationTime: new Date(Number(nft.lastUpdatedTimestamp)),
+          autoRenewOption: autoRenewEnabled
+            ? RenewOption.AUTOMATIC
+            : RenewOption.MANUAL,
+        } satisfies WithRegistrar<DomainRegistration>;
+      }
       const domainDetails = await sldRegistrar.getDomainDetails(
         toPunycodeDomainName(input.domainName),
       );
