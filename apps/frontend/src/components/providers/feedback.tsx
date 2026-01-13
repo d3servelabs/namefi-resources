@@ -15,6 +15,8 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
+  useState,
 } from 'react';
 import { toast } from 'sonner';
 import type { z } from 'zod';
@@ -64,6 +66,7 @@ const FeedbackContext = createContext<FeedbackContextValue | undefined>(
 const USAGE_THRESHOLD_SECONDS = 10;
 const FEEDBACK_REASK_INTERVAL_MS = 14 * 24 * 60 * 60 * 1_000; // ask again after 14 days since last submission
 const FEEDBACK_PROMPT_COOLDOWN_MS = 24 * 60 * 60 * 1_000; // avoid re-prompting more than once a day
+const ENABLE_ANONYMOUS_CLAIMING = false;
 
 const FEEDBACK_TOAST_IDS: Record<FeedbackTrigger, string> = {
   USAGE_TIME: 'feedback-usage-toast',
@@ -120,6 +123,12 @@ export function FeedbackProvider({ children }: PropsWithChildren) {
     { seconds: 0, lastUpdatedAt: undefined },
     { initializeWithValue: false },
   );
+  const [hasHydrated, setHasHydrated] = useState(false);
+  const lastClaimKeyRef = useRef<string>('');
+
+  useEffect(() => {
+    setHasHydrated(true);
+  }, []);
 
   const latestSubmissionAt = useMemo(() => {
     let latest: Date | null = null;
@@ -162,7 +171,6 @@ export function FeedbackProvider({ children }: PropsWithChildren) {
     (trigger: FeedbackTrigger) => {
       const copy = FEEDBACK_COPY[trigger] ?? DEFAULT_FEEDBACK_COPY;
       const entry = feedbackState.entries?.[trigger];
-      const now = new Date();
 
       toast.custom(
         (toastId) => (
@@ -203,7 +211,7 @@ export function FeedbackProvider({ children }: PropsWithChildren) {
               }));
             }}
             onDismissAction={() => {
-              markDismissed(now);
+              markDismissed();
             }}
           />
         ),
@@ -225,17 +233,22 @@ export function FeedbackProvider({ children }: PropsWithChildren) {
       onError: (error) => {
         console.error('[feedback] claim failed', error);
       },
-      onSuccess: ({ updated }) => {
-        if (!userId || !updated?.length) {
+      onSuccess: (_data, variables) => {
+        if (!userId) {
+          return;
+        }
+
+        const attemptedIds = variables?.feedbackIds ?? [];
+        if (!attemptedIds.length) {
           return;
         }
 
         setFeedbackSubmissions((prev) => {
           const next = { ...prev };
-          updated.forEach((row) => {
-            const existing = next[row.id];
+          attemptedIds.forEach((id) => {
+            const existing = next[id];
             if (existing) {
-              next[row.id] = { ...existing, claimed: true };
+              next[id] = { ...existing, claimed: true };
             }
           });
           return next;
@@ -246,21 +259,25 @@ export function FeedbackProvider({ children }: PropsWithChildren) {
 
   const claimableIds = useMemo(() => {
     if (!userId) return [];
-    return Object.values(feedbackSubmissions)
+    const ids = Object.values(feedbackSubmissions)
       .filter((entry) => entry.id && !entry.claimed)
       .map((entry) => entry.id);
+    return ids.sort();
   }, [feedbackSubmissions, userId]);
 
-  const claimKey = useMemo(
-    () => (userId ? claimableIds.join(',') : ''),
-    [claimableIds, userId],
-  );
+  const claimKey = useMemo(() => {
+    if (!userId || !claimableIds.length) return '';
+    return `${userId}:${claimableIds.join(',')}`;
+  }, [claimableIds, userId]);
 
   useEffect(() => {
+    if (!ENABLE_ANONYMOUS_CLAIMING) return;
     if (!userId) return;
     if (!claimKey) return;
     if (isClaimAnonymousFeedbackPending) return;
+    if (lastClaimKeyRef.current === claimKey) return;
 
+    lastClaimKeyRef.current = claimKey;
     claimAnonymousFeedback({
       feedbackIds: claimableIds,
     });
@@ -274,6 +291,10 @@ export function FeedbackProvider({ children }: PropsWithChildren) {
 
   const requestFeedback = useCallback(
     (trigger: FeedbackTrigger, options?: { force?: boolean }) => {
+      if (!hasHydrated && !options?.force) {
+        return false;
+      }
+
       const now = new Date();
       const state = feedbackState;
       const lastPrompted =
@@ -306,12 +327,14 @@ export function FeedbackProvider({ children }: PropsWithChildren) {
       openFeedbackToast(trigger);
       return true;
     },
-    [combinedLastSubmittedAt, feedbackState, openFeedbackToast],
+    [combinedLastSubmittedAt, feedbackState, hasHydrated, openFeedbackToast],
   );
 
   const usageSeconds = usageState.seconds ?? 0;
 
   useEffect(() => {
+    if (!hasHydrated) return;
+
     let lastTick = Date.now();
     const interval = window.setInterval(() => {
       if (document.visibilityState !== 'visible') {
@@ -334,7 +357,7 @@ export function FeedbackProvider({ children }: PropsWithChildren) {
     }, 1_000);
 
     return () => window.clearInterval(interval);
-  }, [setUsageState]);
+  }, [hasHydrated, setUsageState]);
 
   const now = Date.now();
   const recentPrompt =
@@ -350,6 +373,7 @@ export function FeedbackProvider({ children }: PropsWithChildren) {
     now - combinedLastSubmittedAt.getTime() >= FEEDBACK_REASK_INTERVAL_MS;
 
   const shouldPromptFromUsage =
+    hasHydrated &&
     usageSeconds >= USAGE_THRESHOLD_SECONDS &&
     eligibleAfterSubmission &&
     !recentPrompt &&
@@ -365,7 +389,7 @@ export function FeedbackProvider({ children }: PropsWithChildren) {
     <FeedbackContext.Provider
       value={{
         requestFeedback,
-        hasIdentity: true,
+        hasIdentity: Boolean(userId),
       }}
     >
       {children}
