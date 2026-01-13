@@ -332,10 +332,6 @@ export const getDomainListInfo = async (
     if (levels.length !== 2 && levels.length !== 3) {
       return 'invalid';
     }
-    const lastLevel = levels[levels.length - 1];
-    if (lastLevel?.includes('namefi')) {
-      return 'unavailable';
-    }
     if (levels.length === 2) {
       return 'sld';
     }

@@ -486,7 +486,6 @@ export const DomainCard: FC<{
   }, [cartItem]);
 
   // Only calculate these if we have availabilityInfo
-  const isPreliminary = availabilityInfo?.registrarKey === 'preliminary';
   const isImportable = availabilityInfo
     ? isDomainImportable(availabilityInfo)
     : false;
@@ -574,10 +573,8 @@ export const DomainCard: FC<{
   const hasAvailabilityInfo = availabilityInfo !== undefined;
   // When availabilityInfo is available, all data that CAN be loaded HAS been loaded
   // Some domains (like unsupported ones) may legitimately not have pricing
-  const shouldShowPricingSkeleton =
-    !hasAvailabilityInfo || (isPreliminary && availabilityInfo?.supported);
-  const shouldShowActionSkeleton =
-    !hasAvailabilityInfo || (isPreliminary && availabilityInfo?.supported);
+  const shouldShowPricingSkeleton = !hasAvailabilityInfo; //|| (isNil(availabilityInfo?.pricingDetails) && availabilityInfo?.registrarKey === 'preliminary');
+  const shouldShowActionSkeleton = !hasAvailabilityInfo;
   const hasOwnerInfo =
     hasAvailabilityInfo &&
     !availabilityInfo.availability &&
@@ -661,7 +658,7 @@ export const DomainCard: FC<{
                 )}
               </AnimatePresence>
             </div>
-            {isImportable && !showImportUi && !isPreliminary && (
+            {isImportable && !showImportUi && (
               <Button
                 onClick={() => setShowImportUi(true)}
                 variant="link"
@@ -679,7 +676,7 @@ export const DomainCard: FC<{
                 </span>
               </div>
             )}
-            {isImportable && showImportUi && !isPreliminary && (
+            {isImportable && showImportUi && (
               <div className="flex items-center gap-2 mt-2 w-full md:w-80">
                 <PasswordInput
                   ref={eppInputRef}
