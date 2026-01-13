@@ -856,6 +856,7 @@ function MyDomainsTable(props: {
     account: false,
     normalizedDomainName: true,
     expirationDate: true,
+    dateTokenized: false,
     renewPricing: false,
     urlForward: true,
     listForSale: true,
@@ -873,6 +874,7 @@ function MyDomainsTable(props: {
         account: false,
         normalizedDomainName: true,
         expirationDate: true,
+        dateTokenized: false,
         renewPricing: false,
         urlForward: false,
         listForSale: false,
@@ -1184,6 +1186,12 @@ function MyDomainsTable(props: {
         type: 'date' as const,
         columnId: 'expirationDate',
       },
+      dateTokenized: {
+        id: 'dateTokenized',
+        label: 'Date Tokenized',
+        type: 'date' as const,
+        columnId: 'dateTokenized',
+      },
       chainId: {
         id: 'chainId',
         label: 'Chain',
@@ -1274,6 +1282,11 @@ function MyDomainsTable(props: {
         const timeB = b.expirationDate
           ? new Date(b.expirationDate).getTime()
           : 0;
+        return timeA - timeB;
+      },
+      dateTokenized: (a: DomainRow, b: DomainRow) => {
+        const timeA = a.dateTokenized ? new Date(a.dateTokenized).getTime() : 0;
+        const timeB = b.dateTokenized ? new Date(b.dateTokenized).getTime() : 0;
         return timeA - timeB;
       },
     }),
@@ -1632,6 +1645,37 @@ function MyDomainsTable(props: {
           );
         },
         size: 180,
+      },
+      {
+        accessorKey: 'dateTokenized',
+        header: 'Date Tokenized',
+        cell: ({ row }) => {
+          const dateTokenized = row.getValue('dateTokenized') as
+            | Date
+            | string
+            | null
+            | undefined;
+
+          if (!dateTokenized) {
+            return <span className="text-muted-foreground">-</span>;
+          }
+
+          const date = new Date(dateTokenized);
+          if (Number.isNaN(date.getTime())) {
+            return <span className="text-muted-foreground">-</span>;
+          }
+
+          // Format: yyyy-mm-dd
+          const formattedDate = date.toISOString().slice(0, 10);
+
+          return (
+            <span className="text-sm text-muted-foreground">
+              {formattedDate}
+            </span>
+          );
+        },
+        size: 140,
+        enableSorting: true,
       },
       {
         id: 'renewPricing',

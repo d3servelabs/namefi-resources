@@ -9,6 +9,7 @@ import {
   domainConfigTable,
   dnsRecordsTable,
   domainUserPreferencesTable,
+  orderItemsTable,
 } from '@namefi-astra/db';
 import {
   namefiNormalizedDomainSchema,
@@ -454,6 +455,7 @@ export const usersRouter = createTRPCRouter({
         domainConfigs,
         dnsRecords,
         userPreferences,
+        orderItems,
       ] = await Promise.all([
         getDomainsExpirationDatesFromIndex(domainNames),
         db
@@ -500,6 +502,18 @@ export const usersRouter = createTRPCRouter({
               eq(domainUserPreferencesTable.userId, user.id),
             ),
           ),
+        db
+          .select({
+            normalizedDomainName: orderItemsTable.normalizedDomainName,
+            createdAt: orderItemsTable.createdAt,
+          })
+          .from(orderItemsTable)
+          .where(
+            and(
+              inArray(orderItemsTable.normalizedDomainName, domainNames),
+              eq(orderItemsTable.status, 'SUCCEEDED'),
+            ),
+          ),
       ]);
 
       // Create lookup maps
@@ -512,6 +526,16 @@ export const usersRouter = createTRPCRouter({
       const userPreferencesMap = new Map(
         userPreferences.map((d) => [d.normalizedDomainName, d]),
       );
+
+      // Create orderItems map - get the earliest createdAt for each domain
+      const orderItemsMap = new Map<string, Date>();
+      for (const item of orderItems) {
+        const domainName = item.normalizedDomainName;
+        const existingDate = orderItemsMap.get(domainName);
+        if (!existingDate || item.createdAt < existingDate) {
+          orderItemsMap.set(domainName, item.createdAt);
+        }
+      }
 
       // Group DNS records by zone
       const dnsRecordsMap = new Map<string, typeof dnsRecords>();
@@ -527,6 +551,7 @@ export const usersRouter = createTRPCRouter({
         const config = domainConfigsMap.get(domainName);
         const records = dnsRecordsMap.get(domainName) || [];
         const preferences = userPreferencesMap.get(domainName);
+        const dateTokenized = orderItemsMap.get(domainName) ?? null;
 
         const hasWebRecords = records.some((r) =>
           ['A', 'AAAA', 'CNAME'].includes(r.type),
@@ -541,6 +566,7 @@ export const usersRouter = createTRPCRouter({
           ...nft,
           expirationDate: expirationDates[domainName],
           autoRenewEnabled: preferences?.autoRenewEnabled ?? false,
+          dateTokenized,
           dnsStatus: {
             nameservers: indexedDomain?.nameservers ?? [],
             isUsingNamefiNameservers:
@@ -562,6 +588,7 @@ export const usersRouter = createTRPCRouter({
       return nfts.map((nft) => ({
         ...nft,
         autoRenewEnabled: false,
+        dateTokenized: null,
         dnsStatus: {
           nameservers: [],
           isUsingNamefiNameservers: false,
