@@ -23,6 +23,51 @@ interface EmailTemplate {
   subject: string;
 }
 
+type SendScenario = 'preview' | 'congrats-single';
+
+function parseToOption(to?: string): string[] | undefined {
+  if (!to) return undefined;
+  const emails = to
+    .split(',')
+    .map((email) => email.trim())
+    .filter(Boolean);
+  return emails.length > 0 ? emails : undefined;
+}
+
+function getScenarioPropsAndSubject(
+  templateName: string,
+  scenario: SendScenario,
+) {
+  if (templateName !== 'processed-order') return {};
+  if (scenario !== 'congrats-single') return {};
+
+  const orderId = 'order-test-congrats-single-001';
+  const domainName = 'example.org';
+  const items = [
+    {
+      normalizedDomainName: domainName,
+      duration: 1,
+      priceInUsdCents: 1299,
+      status: 'SUCCEEDED',
+      type: 'REGISTER',
+    },
+  ];
+
+  return {
+    subject: `[Namefi] Congratulations! Your domain ${domainName} is ready!`,
+    props: {
+      poweredByNamefiDomain: '0x.city',
+      orderId,
+      recipientName: 'Dev Team',
+      recipientEmail: 'dev-team@d3serve.xyz',
+      items,
+      chargedAmountInUsdCents: 1299,
+      paymentMethodCharged: 'Credit Card',
+      paymentMethodIdentifier: '...7890',
+    },
+  };
+}
+
 const templates: EmailTemplate[] = [
   {
     name: 'domain-renew-report',
@@ -54,21 +99,38 @@ const templates: EmailTemplate[] = [
   },
 ];
 
-async function sendTemplate(template: EmailTemplate) {
+async function sendTemplate({
+  template,
+  to,
+  scenario,
+}: {
+  template: EmailTemplate;
+  to: string[];
+  scenario: SendScenario;
+}) {
   try {
     console.log(`\nRendering ${template.name}...`);
 
     // Render template using react-email
-    const element = React.createElement(template.component, {});
+    const previewProps =
+      'PreviewProps' in template.component
+        ? // biome-ignore lint/suspicious/noExplicitAny: runtime access to preview props
+          (template.component as any).PreviewProps
+        : {};
+    const scenarioConfig = getScenarioPropsAndSubject(template.name, scenario);
+    const element = React.createElement(
+      template.component,
+      scenarioConfig.props ?? previewProps,
+    );
     const html = await render(element);
     const text = await render(element, { plainText: true });
 
-    console.log(`Sending ${template.name} to ${DEV_EMAIL[0]}...`);
+    console.log(`Sending ${template.name} to ${to.join(', ')}...`);
 
     await sendMail({
       from: 'support@namefi.io',
-      to: DEV_EMAIL,
-      subject: template.subject,
+      to,
+      subject: scenarioConfig.subject ?? template.subject,
       content: { html, plain: text },
     });
 
@@ -79,14 +141,14 @@ async function sendTemplate(template: EmailTemplate) {
   }
 }
 
-async function sendAllTemplates() {
-  console.log('Sending all email templates to dev email server...\n');
+async function sendAllTemplates(to: string[]) {
+  console.log(`Sending all email templates to ${to.join(', ')}...\n`);
 
   for (const template of templates) {
-    await sendTemplate(template);
+    await sendTemplate({ template, to, scenario: 'preview' });
   }
 
-  console.log(`\n🎉 All templates sent successfully to ${DEV_EMAIL[0]}`);
+  console.log(`\n🎉 All templates sent successfully to ${to.join(', ')}`);
   console.log('Check your dev email server at http://mail.namefi.dev');
 }
 
@@ -127,7 +189,7 @@ async function interactiveMode() {
 
     if (action === 'all') {
       try {
-        await sendAllTemplates();
+        await sendAllTemplates(DEV_EMAIL);
       } catch (error) {
         console.error('Failed to send all templates:', error);
       }
@@ -146,7 +208,11 @@ async function interactiveMode() {
       const selectedTemplate = templates.find((t) => t.name === templateChoice);
       if (selectedTemplate) {
         try {
-          await sendTemplate(selectedTemplate);
+          await sendTemplate({
+            template: selectedTemplate,
+            to: DEV_EMAIL,
+            scenario: 'preview',
+          });
         } catch (error) {
           console.error('Failed to send template:', error);
         }
@@ -190,9 +256,15 @@ program
 program
   .command('send-all')
   .description('Send all email templates to dev email server')
-  .action(async () => {
+  .option(
+    '--to <emails>',
+    'Comma-separated recipient list (overrides default dev recipient)',
+  )
+  .action(async (_opts: unknown, command: Command) => {
     try {
-      await sendAllTemplates();
+      const opts = command.opts<{ to?: string }>();
+      const to = parseToOption(opts.to) ?? DEV_EMAIL;
+      await sendAllTemplates(to);
     } catch (error) {
       console.error('Error sending templates:', error);
       process.exit(1);
@@ -203,7 +275,16 @@ program
   .command('send')
   .description('Send a specific template')
   .argument('<template>', 'Template name to send')
-  .action(async (templateName: string) => {
+  .option(
+    '--to <emails>',
+    'Comma-separated recipient list (overrides default dev recipient)',
+  )
+  .option(
+    '--scenario <scenario>',
+    'Template scenario (processed-order only: preview, congrats-single)',
+    'preview',
+  )
+  .action(async (templateName: string, _opts: unknown, command: Command) => {
     const template = templates.find((t) => t.name === templateName);
     if (!template) {
       console.error(`Template "${templateName}" not found.`);
@@ -215,7 +296,11 @@ program
     }
 
     try {
-      await sendTemplate(template);
+      const opts = command.opts<{ to?: string; scenario?: string }>();
+      const to = parseToOption(opts.to) ?? DEV_EMAIL;
+      const scenario =
+        opts.scenario === 'congrats-single' ? 'congrats-single' : 'preview';
+      await sendTemplate({ template, to, scenario });
     } catch (error) {
       console.error('Error sending template:', error);
       process.exit(1);
