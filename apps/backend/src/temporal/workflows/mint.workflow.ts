@@ -9,13 +9,15 @@ import { TEMPORAL_ENUMS } from '../shared/enums';
 import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';
 
 const TIMEOUT_IN_MS = 120_000;
-const MAX_GAS_PRICE_MULTIPLIER = 1.25;
 const GAS_PRICE_MULTIPLIER_INCREMENT = 0.05;
 
-function incrementGasPriceMultiplier(gasPriceMultiplier: number) {
+function incrementGasPriceMultiplier(
+  gasPriceMultiplier: number,
+  maxGasPriceMultiplier = 1.25,
+) {
   return Math.min(
     gasPriceMultiplier + GAS_PRICE_MULTIPLIER_INCREMENT,
-    MAX_GAS_PRICE_MULTIPLIER,
+    maxGasPriceMultiplier,
   );
 }
 
@@ -24,7 +26,11 @@ async function _signAndSendTransactionWithRetry(
   chainId: number,
   maxAttempts = 5,
 ) {
-  const { signAndSendTransaction } = typedProxyActivities({
+  const {
+    signAndSendTransaction,
+    getMaxGasPriceMultiplier,
+    getInitalGasPriceMultiplier,
+  } = typedProxyActivities({
     temporalEnum: TEMPORAL_ENUMS.MINT,
     options: {
       startToCloseTimeout: TIMEOUT_IN_MS,
@@ -34,7 +40,8 @@ async function _signAndSendTransactionWithRetry(
     },
   });
 
-  let gasPriceMultiplier = 1.05;
+  let gasPriceMultiplier = await getInitalGasPriceMultiplier(chainId);
+  const maxGasPriceMultiplier = await getMaxGasPriceMultiplier(chainId);
 
   for (let attempt = 0; attempt < maxAttempts; attempt++) {
     let sendResult: TxSendResult;
@@ -47,7 +54,10 @@ async function _signAndSendTransactionWithRetry(
       );
     } catch (error) {
       if (error instanceof workflow.TimeoutFailure) {
-        gasPriceMultiplier = incrementGasPriceMultiplier(gasPriceMultiplier);
+        gasPriceMultiplier = incrementGasPriceMultiplier(
+          gasPriceMultiplier,
+          maxGasPriceMultiplier,
+        );
         workflow.log.info(
           `Activity Timeout, increasing multiplier to ${gasPriceMultiplier} and retrying...`,
         );

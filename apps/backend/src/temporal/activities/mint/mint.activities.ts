@@ -27,6 +27,7 @@ import {
   getViemPublicClient,
   getViemWalletClient,
 } from '#lib/crypto/viem-clients';
+import { CHAINS } from '@namefi-astra/utils';
 
 export type PreparedTxOnlySerializableParams = Omit<
   PrepareTransactionRequestReturnType,
@@ -58,8 +59,6 @@ export type TxSendResult =
         | 'GAS_PRICE_TOO_LOW';
       error: Error;
     };
-
-const ABSOLUTE_MAX_GAS_PRICE_MULTIPLIER = 1.2;
 
 export const prepareTxToMintNfsc = async (
   chainId: number,
@@ -206,9 +205,10 @@ const _updatePreparedTxParamsBeforeSend = async (
     return { status: 'FAILED_TO_GET_GAS_PRICE', error };
   }
   ctx.log.info(`Gas price: ${gasPrice}`);
+  const maxGasPriceMultiplier = await getMaxGasPriceMultiplier(chainId);
   preparedTx.maxFeePerGas = multiplyBigIntByFraction(
     gasPrice,
-    Math.min(gasPriceMultiplier, ABSOLUTE_MAX_GAS_PRICE_MULTIPLIER),
+    Math.min(gasPriceMultiplier, maxGasPriceMultiplier),
   );
 
   return { preparedTx };
@@ -532,3 +532,29 @@ export const prepareTxToBurnNamefiNftByName = async (
     },
   };
 };
+
+export async function getInitalGasPriceMultiplier(chainId: number) {
+  switch (chainId) {
+    case CHAINS.sepolia.id:
+    case CHAINS.baseSepolia.id:
+      return 1.35;
+    case CHAINS.base.id:
+      return 1.125;
+    default:
+      return 1.05;
+  }
+}
+
+export async function getMaxGasPriceMultiplier(chainId: number) {
+  switch (chainId) {
+    case CHAINS.sepolia.id:
+    case CHAINS.baseSepolia.id:
+      return 1.35;
+    case CHAINS.base.id:
+      return 1.35;
+    case CHAINS.mainnet.id:
+      return 1.25;
+    default:
+      return 1.25;
+  }
+}
