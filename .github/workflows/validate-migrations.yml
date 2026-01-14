@@ -46,8 +46,8 @@ jobs:
             echo "has_sql_changes=false" >> $GITHUB_OUTPUT
           fi
 
-  validate-migrations:
-    name: Validate DB Migrations
+  validate-migrations-run:
+    name: Validate Migrations (Neon)
     needs: check-for-sql-changes
     if: needs.check-for-sql-changes.outputs.has_sql_changes == 'true'
     runs-on: "blacksmith-4vcpu-ubuntu-2404"
@@ -116,3 +116,35 @@ jobs:
             echo "Migrations failed, but still cleaning up branch: ${{ env.BRANCH_ID }}"
           fi
           bun run neonctl branches delete ${{ env.BRANCH_ID }} --project-id ${{ secrets.NEON_PROJECT_ID }} --api-key ${{ secrets.NEON_API_KEY }} --force
+
+  validate-migrations:
+    name: Validate DB Migrations
+    needs:
+      - check-for-sql-changes
+      - validate-migrations-run
+    if: always()
+    runs-on: "blacksmith-4vcpu-ubuntu-2404"
+    steps:
+      - name: Summarize migration validation
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          HAS_SQL="${{ needs.check-for-sql-changes.outputs.has_sql_changes }}"
+          RUN_RESULT="${{ needs.validate-migrations-run.result }}"
+
+          echo "has_sql_changes=$HAS_SQL"
+          echo "validate-migrations-run.result=$RUN_RESULT"
+
+          if [[ "$HAS_SQL" != "true" ]]; then
+            echo "No SQL changes; skipping migration test."
+            exit 0
+          fi
+
+          if [[ "$RUN_RESULT" == "success" ]]; then
+            echo "SQL changes detected; migration validation succeeded."
+            exit 0
+          fi
+
+          echo "SQL changes detected; migration validation did not succeed (result: $RUN_RESULT)."
+          exit 1
