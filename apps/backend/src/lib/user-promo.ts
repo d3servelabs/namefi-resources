@@ -2,12 +2,15 @@ import {
   type NamefiNormalizedDomain,
   getSubDomainAndParentDomainFromNormalizedDomainName,
 } from '@namefi-astra/utils';
+import { db, ordersTable, orderItemsTable, usersTable } from '@namefi-astra/db';
 import type { LinkedAccountWithMetadata } from '@privy-io/server-auth';
+import { and, eq, ilike, notInArray, sql } from 'drizzle-orm';
 import { isNil, isNotNil } from 'ramda';
 import { http, createPublicClient } from 'viem';
 import * as chains from 'viem/chains';
 import { secrets } from '#lib/env';
 import {
+  canUserAccessAdminPanel,
   getPrivyUserLinkedEthereumChecksumWalletAddresses,
   privyClient,
 } from '../trpc/utils';
@@ -31,6 +34,62 @@ export const viemEthereumPublicClient = createPublicClient({
   ),
 });
 
+// ============================================================================
+// test.namefi.dev Promo
+// ============================================================================
+
+const TEST_NAMEFI_DEV_MAX_SUBDOMAINS = 15;
+
+/**
+ * Checks if user qualifies for free test.namefi.dev subdomain.
+ * - Admins always qualify
+ * - Non-admins can have up to 15 subdomains
+ *
+ * @warning This check is not safe for race conditions. Multiple concurrent
+ * requests could exceed the limit before the count is updated.
+ */
+async function userQualifiesForTestNamefiDevPromo({
+  user,
+}: {
+  user: { privyUserId: string };
+}): Promise<boolean> {
+  // 1. Get user from database
+  const dbUser = await db.query.usersTable.findFirst({
+    where: eq(usersTable.privyUserId, user.privyUserId),
+    columns: { id: true, privyUserId: true },
+  });
+
+  if (!dbUser) {
+    return false;
+  }
+
+  // 2. Check if user is admin - admins always qualify
+  const isAdmin = await canUserAccessAdminPanel(dbUser);
+  if (isAdmin) {
+    return true;
+  }
+
+  // 3. Count user's existing test.namefi.dev subdomains
+  // WARNING: Not safe for race conditions
+  const [{ count }] = await db
+    .select({ count: sql<number>`COUNT(*)` })
+    .from(orderItemsTable)
+    .innerJoin(ordersTable, eq(orderItemsTable.orderId, ordersTable.id))
+    .where(
+      and(
+        eq(ordersTable.userId, dbUser.id),
+        ilike(orderItemsTable.normalizedDomainName, '%.test.namefi.dev'),
+        notInArray(orderItemsTable.status, ['FAILED', 'CANCELLED']),
+      ),
+    );
+
+  return (count ?? 0) < TEST_NAMEFI_DEV_MAX_SUBDOMAINS;
+}
+
+// ============================================================================
+// 0x.city Promo
+// ============================================================================
+
 /*
  * Function that checks if the the User qualifies for a promo for the provided normalizedDomainName.
  * The current implementation checks if normalizedDomainName has the "0x.city" parent domain, the
@@ -49,6 +108,12 @@ export async function userQualifiesForDomainNamePromo({
   const { subdomain, parentDomain } =
     getSubDomainAndParentDomainFromNormalizedDomainName(normalizedDomainName);
 
+  // Handle test.namefi.dev subdomains (zero-price domains)
+  if (parentDomain === 'test.namefi.dev' && subdomain) {
+    return userQualifiesForTestNamefiDevPromo({ user });
+  }
+
+  // Handle 0x.city promo
   if (!subdomain || parentDomain !== '0x.city') {
     return false;
   }

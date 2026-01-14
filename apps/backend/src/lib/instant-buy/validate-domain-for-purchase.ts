@@ -100,7 +100,7 @@ export async function validateDomainForInstantPurchase(
 
   // 4. Validate duration constraints
   const minDuration = domainInfo.durationValidationInYears?.min ?? 1;
-  const maxDuration = domainInfo.durationValidationInYears?.max ?? 10;
+  const maxDuration = domainInfo.durationValidationInYears?.max ?? 1;
 
   if (durationInYears < minDuration || durationInYears > maxDuration) {
     logger.info(
