@@ -320,6 +320,47 @@ export const userDataRouterOrpc = createTRPCRouter({
     }),
 
   /**
+   * Get user's order items
+   */
+  getUserOrders: protectedProcedure
+    .meta({
+      route: {
+        path: '/user/orders',
+        method: 'GET',
+        tags: ['user', 'orders'],
+        operationId: 'getUserOrders',
+        summary: 'Get user orders',
+        description:
+          'Retrieve all order items for the current user. Returns order items sorted by creation date in descending order.',
+      },
+    })
+    .output(z.array(orderItemSchema))
+    .query(async ({ ctx: { user, poweredByNamefiDomain } }) => {
+      const items = await db
+        .select({
+          ...getTableColumns(orderItemsTable),
+        })
+        .from(orderItemsTable)
+        .leftJoin(ordersTable, eq(orderItemsTable.orderId, ordersTable.id))
+        .where(
+          and(
+            eq(ordersTable.userId, user.id),
+            isNotNil(poweredByNamefiDomain)
+              ? ilike(
+                  orderItemsTable.normalizedDomainName,
+                  `%.${poweredByNamefiDomain}`,
+                )
+              : undefined,
+          ),
+        )
+        .orderBy(desc(ordersTable.createdAt));
+
+      return items;
+    }),
+});
+
+const extra = {
+  /**
    * Get user's cart items
    */
   getUserCart: protectedProcedure
@@ -364,43 +405,4 @@ export const userDataRouterOrpc = createTRPCRouter({
 
       return cartItemsWithClaims;
     }),
-
-  /**
-   * Get user's order items
-   */
-  getUserOrders: protectedProcedure
-    .meta({
-      route: {
-        path: '/user/orders',
-        method: 'GET',
-        tags: ['user', 'orders'],
-        operationId: 'getUserOrders',
-        summary: 'Get user orders',
-        description:
-          'Retrieve all order items for the current user. Returns order items sorted by creation date in descending order.',
-      },
-    })
-    .output(z.array(orderItemSchema))
-    .query(async ({ ctx: { user, poweredByNamefiDomain } }) => {
-      const items = await db
-        .select({
-          ...getTableColumns(orderItemsTable),
-        })
-        .from(orderItemsTable)
-        .leftJoin(ordersTable, eq(orderItemsTable.orderId, ordersTable.id))
-        .where(
-          and(
-            eq(ordersTable.userId, user.id),
-            isNotNil(poweredByNamefiDomain)
-              ? ilike(
-                  orderItemsTable.normalizedDomainName,
-                  `%.${poweredByNamefiDomain}`,
-                )
-              : undefined,
-          ),
-        )
-        .orderBy(desc(ordersTable.createdAt));
-
-      return items;
-    }),
-});
+};
