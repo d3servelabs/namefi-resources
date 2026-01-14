@@ -90,6 +90,7 @@ app.use(
   trpcServer({
     router: appRouter,
     createContext,
+    allowMethodOverride: true,
   }),
 );
 

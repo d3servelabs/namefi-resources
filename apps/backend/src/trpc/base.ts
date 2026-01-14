@@ -42,6 +42,7 @@ import {
   NAMEFI_EIP712_DOMAIN,
 } from '#lib/auth/ecdsa-payload-signature';
 import { getPrivyUserLinkedEthereumChecksumWalletAddresses } from './utils';
+import type { ORPCMeta } from '@orpc/trpc';
 
 /**
  * Get the powered by namefi (pbn) domain from the origin.
@@ -287,24 +288,27 @@ export function ctxRequirePermission(ctx: TrpcContext, permission: Permission) {
  * ZodErrors so that we get typesafety on the frontend if our procedure fails due to validation
  * errors on the backend.
  */
-export const t = initTRPC.context<TrpcContext>().create({
-  transformer: superjson,
-  errorFormatter({ shape, error }) {
-    return {
-      ...shape,
-      data: {
-        ...shape.data,
-        zodError:
-          error.cause instanceof ZodError ? error.cause.flatten() : null,
-      },
-    };
-  },
-  sse: {
-    maxDurationMs: 120_000, // 2 minutes
-    ping: { enabled: true, intervalMs: 30_000 },
-    client: { reconnectAfterInactivityMs: 30_000 },
-  },
-});
+export const t = initTRPC
+  .context<TrpcContext>()
+  .meta<ORPCMeta>()
+  .create({
+    transformer: superjson,
+    errorFormatter({ shape, error }) {
+      return {
+        ...shape,
+        data: {
+          ...shape.data,
+          zodError:
+            error.cause instanceof ZodError ? error.cause.flatten() : null,
+        },
+      };
+    },
+    sse: {
+      maxDurationMs: 120_000, // 2 minutes
+      ping: { enabled: true, intervalMs: 30_000 },
+      client: { reconnectAfterInactivityMs: 30_000 },
+    },
+  });
 
 /**
  * Create a server-side caller.
