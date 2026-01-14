@@ -23,6 +23,11 @@ interface EmailTemplate {
   subject: string;
 }
 
+type ScenarioConfig = {
+  subject?: string;
+  props?: Record<string, unknown>;
+};
+
 type SendScenario = 'preview' | 'congrats-single';
 
 function parseToOption(to?: string): string[] | undefined {
@@ -37,7 +42,7 @@ function parseToOption(to?: string): string[] | undefined {
 function getScenarioPropsAndSubject(
   templateName: string,
   scenario: SendScenario,
-) {
+): ScenarioConfig {
   if (templateName !== 'processed-order') return {};
   if (scenario !== 'congrats-single') return {};
 
@@ -118,9 +123,19 @@ async function sendTemplate({
           (template.component as any).PreviewProps
         : {};
     const scenarioConfig = getScenarioPropsAndSubject(template.name, scenario);
+    const scenarioPropsWithRecipient =
+      template.name === 'processed-order' &&
+      scenarioConfig.props &&
+      typeof to[0] === 'string'
+        ? {
+            ...scenarioConfig.props,
+            recipientEmail: to[0],
+            recipientName: to[0],
+          }
+        : scenarioConfig.props;
     const element = React.createElement(
       template.component,
-      scenarioConfig.props ?? previewProps,
+      scenarioPropsWithRecipient ?? previewProps,
     );
     const html = await render(element);
     const text = await render(element, { plainText: true });

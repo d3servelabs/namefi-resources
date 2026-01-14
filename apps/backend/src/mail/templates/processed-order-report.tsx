@@ -83,9 +83,15 @@ export const ProcessedOrderReport = buildTemplate<ProcessedOrderProps>(
 
     let introMessage = `Your order ${orderId} has been processed.`;
 
-    if (successfulRegistrations.length > 0 && failedItems.length === 0) {
+    if (
+      successfulRegistrations.length > 0 &&
+      failedItems.length === 0 &&
+      processingItems.length === 0
+    ) {
       if (successfulRegistrations.length === 1) {
-        const domain = successfulRegistrations[0].normalizedDomainName;
+        const domain = getDomainWithIdn(
+          successfulRegistrations[0].normalizedDomainName,
+        );
         introMessage = `Congratulations! Your domain **${domain}** has been successfully registered and is ready for use.`;
       } else {
         introMessage = `Congratulations! Your **${successfulRegistrations.length} domains** have been successfully registered and are ready for use.`;

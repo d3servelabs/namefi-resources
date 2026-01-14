@@ -166,6 +166,7 @@ export async function getProcessedOrderEmail({
 }: GetProcessedOrderEmailInput) {
   const successfulItems = items.filter((item) => item.status === 'SUCCEEDED');
   const failedItems = items.filter((item) => item.status === 'FAILED');
+  const processingItems = items.filter((item) => item.status === 'PROCESSING');
 
   const poweredByNamefiDomain = await determineHostnameFromCartItems(items);
 
@@ -178,6 +179,8 @@ export async function getProcessedOrderEmail({
     subject = `[Namefi] Order ${orderId} - Partially Processed`;
   } else if (failedItems.length > 0) {
     subject = `[Namefi] Order ${orderId} - Processing Failed`;
+  } else if (processingItems.length > 0) {
+    subject = `[Namefi] Order ${orderId} - Still Processing`;
   } else if (successfulRegistrations.length > 0) {
     if (successfulRegistrations.length === 1) {
       const domainName = successfulRegistrations[0].normalizedDomainName;
@@ -188,6 +191,9 @@ export async function getProcessedOrderEmail({
   } else {
     subject = `[Namefi] Order ${orderId} - Successfully Processed`;
   }
+
+  // Defensive: avoid SMTP header injection via CRLF in subject.
+  subject = subject.replaceAll(/\r|\n/g, ' ');
 
   const paymentMethodDisplayName =
     displayNameForPaymentMethod(paymentMethodCharged);
