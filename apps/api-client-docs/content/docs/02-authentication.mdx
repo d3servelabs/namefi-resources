@@ -1,0 +1,18 @@
+---
+title: Authentication
+description: Authenticate the Namefi client with an API key
+---
+
+Create a client with an API key using the `authentication` option.
+
+```ts
+import { createNamefiClient } from '@namefi/api-client';
+
+const client = createNamefiClient({
+  authentication: {
+    apiKey: process.env.NAMEFI_API_KEY!,
+    type: 'API_KEY',
+  },
+  logger: true,
+});
+```

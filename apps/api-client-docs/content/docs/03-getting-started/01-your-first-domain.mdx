@@ -1,0 +1,80 @@
+---
+title: Register A Domain
+description: Check availability and register a domain
+---
+
+The example below checks availability and registers a domain if it is available.
+
+```ts
+import { createNamefiClient } from '@namefi/api-client';
+
+const client = createNamefiClient({
+  authentication: {
+    apiKey: process.env.NAMEFI_API_KEY!,
+    type: 'API_KEY',
+  },
+  logger: true,
+});
+
+const domain = 'example.com';
+const {availability} = await client.search.checkAvailability({ domain });
+
+if (availability) {
+  const order = await client.orders.registerDomain({
+    normalizedDomainName: domain,
+    durationInYears: 1,
+  });
+
+  console.log('Registered', order.id);
+}
+```
+
+Similar exmaple but with polling the order status
+
+```ts
+import { createNamefiClient } from "@namefi/api-client";
+import { setTimeout } from "node:timers/promises";
+
+const client = createNamefiClient({
+	authentication: {
+		apiKey: process.env.NAMEFI_API_KEY!,
+		type: "API_KEY",
+	},
+	logger: false,
+});
+
+const domain = "exmaple.com";
+
+const start = Date.now();
+let end = Date.now();
+
+const result = await client.search.checkAvailability({ domain });
+
+if (result.availability) {
+	const sentOrder = await client.orders.registerDomain({
+		normalizedDomainName: domain,
+		durationInYears: 1,
+	});
+
+	console.timeLog("Order Sent", sentOrder.id);
+
+
+	while (true) {
+		const { order } = await client.orders.getOrder({ orderId: sentOrder.id });
+		if (["PARTIALLY_COMPLETED", "PROCESSING"].includes(order.status)) {
+			console.timeLog(`Order(${sentOrder.id}) is in-progress`);
+		} else {
+			end = Date.now();
+			console.timeLog(`Order(${sentOrder.id}) is ${order.status}`);
+			break;
+		}
+		if(Date.now() - start > 60_000){
+			console.timeLog(`Timeout Order(${sentOrder.id}) is still ${order.status}`);
+			break;
+		}
+		await setTimeout(15_000);
+	}
+	console.log(`Total time = ${((end - start) / 1000).toFixed(3)}s`);
+}
+
+```

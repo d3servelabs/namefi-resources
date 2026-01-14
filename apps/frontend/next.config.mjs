@@ -120,6 +120,11 @@ const nextConfig = {
           process.env.DISCORD_REDIRECT_URL || 'https://discord.gg/namefi',
         permanent: false,
       },
+      {
+        source: '/public/docs/api',
+        destination: process.env.API_DOCS_URL || 'https://docs.namefi.io/',
+        permanent: false,
+      },
     ];
   },
   pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md', 'mdx'],

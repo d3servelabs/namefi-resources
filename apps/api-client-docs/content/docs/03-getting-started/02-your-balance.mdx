@@ -1,0 +1,27 @@
+---
+title: Managing Your Balance
+description: Charge your NFSC balance and check totals
+---
+
+## Charge Your Balance
+
+Use the Namefi dashboard to fund your NFSC balance. A video walkthrough will be added here.
+
+## Check Your Balance
+
+```ts
+import { createNamefiClient } from '@namefi/api-client';
+
+const client = createNamefiClient({
+  authentication: {
+    apiKey: process.env.NAMEFI_API_KEY!,
+    type: 'API_KEY',
+  },
+  logger: true,
+});
+
+const balance = await client.balance.getBalance();
+
+console.log('Total USD', balance.totalBalanceInUsd);
+console.log('Total USD cents', balance.totalBalanceInUsdCents);
+```
