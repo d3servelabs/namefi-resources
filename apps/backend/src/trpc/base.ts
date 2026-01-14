@@ -43,6 +43,8 @@ import {
 } from '#lib/auth/ecdsa-payload-signature';
 import { getPrivyUserLinkedEthereumChecksumWalletAddresses } from './utils';
 import type { ORPCMeta } from '@orpc/trpc';
+import type { AuthMethodResult } from '#lib/auth/auth-registry';
+import type { MiddlewareBuilder } from '@trpc/server/unstable-core-do-not-import';
 
 /**
  * Get the powered by namefi (pbn) domain from the origin.
@@ -261,12 +263,14 @@ export type TrpcContext = {
     actorUserId: string;
     targetUserId: string;
   };
+  user?: UserSelect | null;
+  apiAuthResult?: AuthMethodResult;
 };
 
-export type TrpcContextWithUser = TrpcContext & {
+export type TrpcContextWithUser = Omit<TrpcContext, 'user'> & {
   user: UserSelect;
 };
-export type TrpcContextWithUserOrNull = TrpcContext & {
+export type TrpcContextWithUserOrNull = Omit<TrpcContext, 'user'> & {
   user: UserSelect | null;
 };
 
@@ -325,7 +329,7 @@ const IMPERSONATION_ALLOWED_MUTATIONS = new Set<string>([
   'carts.addItems',
 ]);
 
-const impersonationMutationGuard = t.middleware(
+const impersonationMutationGuard = t.middleware<TrpcContextWithUser>(
   async ({ ctx, next, path, type }) => {
     if (type === 'mutation' && ctx?.impersonation) {
       if (!IMPERSONATION_ALLOWED_MUTATIONS.has(path)) {
@@ -422,6 +426,123 @@ export const baseProcedure = t.procedure
   });
 
 /**
+ * Parameters for processing user auth context (permissions, impersonation, execution context).
+ */
+interface ProcessUserAuthContextParams {
+  user: UserSelect | null;
+  sessionId: string | null;
+  ctx: TrpcContext;
+  /** If true, throws FORBIDDEN when user lacks impersonation permission. If false, silently ignores. */
+  throwOnImpersonationFailure: boolean;
+}
+
+/**
+ * Result of processing user auth context.
+ */
+interface ProcessUserAuthContextResult {
+  effectiveUser: UserSelect | null;
+  sessionId: string | null;
+  userPermissions: Permission[];
+  impersonation?: { actorUserId: string; targetUserId: string };
+}
+
+/**
+ * Shared helper for processing user auth context.
+ * Handles permission loading, impersonation, and execution context setup.
+ */
+async function processUserAuthContext(
+  params: ProcessUserAuthContextParams,
+): Promise<ProcessUserAuthContextResult> {
+  const { user, sessionId, ctx, throwOnImpersonationFailure } = params;
+
+  logger.assign({
+    userId: user?.id,
+    privyUserId: user?.privyUserId,
+    sessionId,
+  });
+
+  let userPermissions: Permission[] = ctx.userPermissions ?? [];
+  let effectiveUser = user;
+  let impersonation: { actorUserId: string; targetUserId: string } | undefined;
+
+  if (user) {
+    // Load user permissions and impersonation target in parallel
+    const [permissionsRows, impersonateUserId] = await Promise.all([
+      appDb
+        .select({ permission: userPermissionsTable.permission })
+        .from(userPermissionsTable)
+        .where(eq(userPermissionsTable.userId, user.id)),
+      readImpersonationTargetUserId(ctx),
+    ]);
+
+    userPermissions = permissionsRows.map((r) => r.permission as Permission);
+
+    // Handle impersonation if requested
+    if (impersonateUserId && impersonateUserId !== user.id) {
+      const hasImpersonatePermission = userPermissions.includes(
+        Permission.IMPERSONATE_USERS,
+      );
+
+      if (!hasImpersonatePermission) {
+        if (throwOnImpersonationFailure) {
+          throw new TRPCError({
+            code: 'FORBIDDEN',
+            message: 'Missing permission to impersonate user',
+          });
+        }
+        // Silently ignore impersonation attempt when throwOnImpersonationFailure is false
+      } else {
+        const targetUser = await appDb.query.usersTable.findFirst({
+          where: eq(usersTable.id, impersonateUserId),
+        });
+
+        if (!targetUser) {
+          if (throwOnImpersonationFailure) {
+            throw new TRPCError({
+              code: 'NOT_FOUND',
+              message: 'Target user not found',
+            });
+          }
+        } else {
+          // Do not allow impersonating other admins
+          const targetIsAdmin = await canUserAccessAdminPanel(targetUser);
+          if (targetIsAdmin) {
+            throw new TRPCError({
+              code: 'FORBIDDEN',
+              message: 'Cannot impersonate an admin user',
+            });
+          }
+          effectiveUser = targetUser;
+          impersonation = { actorUserId: user.id, targetUserId: targetUser.id };
+          logger.assign({
+            impersonating: true,
+            actorUserId: user.id,
+            targetUserId: targetUser.id,
+          });
+        }
+      }
+    }
+  }
+
+  // Set execution context using the effective user
+  setExecutionContext(
+    createUserContext({
+      userId: effectiveUser?.id,
+      sessionId: sessionId ?? undefined,
+      privyUserId: effectiveUser?.privyUserId,
+      requestId: ctx.honoVars?.requestId,
+    }),
+  );
+
+  return {
+    effectiveUser,
+    sessionId,
+    userPermissions,
+    impersonation,
+  };
+}
+
+/**
  * Middleware for verifying a user's privy authentication token and creating a user if they don't exist.
  *
  * This middleware will verify the user's privy authentication token, fetch the user from the database, and add the user to the context.
@@ -429,88 +550,35 @@ export const baseProcedure = t.procedure
 export const verifyUserAuthAndCreation = t.middleware<TrpcContextWithUser>(
   async ({ ctx, next }) => {
     try {
-      const authHeader = ctx.req?.header?.('Authorization');
-      const { user, sessionId } = await requireUserAuth(
-        authHeader,
-        ctx.testUser,
-      );
-
-      logger.assign({
-        userId: user?.id,
-        privyUserId: user?.privyUserId,
-        sessionId,
-      });
-
-      // Load user permissions for this request
-      const [permissionsRows, impersonateUserId] = await Promise.all([
-        appDb
-          .select({ permission: userPermissionsTable.permission })
-          .from(userPermissionsTable)
-          .where(eq(userPermissionsTable.userId, user.id)),
-
-        // Apply impersonation if token is present and caller has permission
-        readImpersonationTargetUserId(ctx),
-      ]);
-
-      const userPermissions = permissionsRows.map(
-        (r) => r.permission as Permission,
-      );
-
-      let effectiveUser = user;
-      let impersonation:
-        | { actorUserId: string; targetUserId: string }
-        | undefined;
-      if (impersonateUserId && impersonateUserId !== user.id) {
-        if (!userPermissions.includes(Permission.IMPERSONATE_USERS) && user) {
+      let user = ctx.user;
+      let sessionId = ctx.sessionId;
+      if (!user) {
+        const authHeader = ctx.req?.header?.('Authorization');
+        if (!authHeader?.startsWith('Bearer ')) {
           throw new TRPCError({
-            code: 'FORBIDDEN',
-            message: 'Missing permission to impersonate user',
+            code: 'UNAUTHORIZED',
+            message: ctx.apiAuthResult?.error ?? 'Invalid authorization header',
           });
         }
-
-        const targetUser = await appDb.query.usersTable.findFirst({
-          where: eq(usersTable.id, impersonateUserId),
-        });
-        if (!targetUser) {
-          throw new TRPCError({
-            code: 'NOT_FOUND',
-            message: 'Target user not found',
-          });
-        }
-        // Do not allow impersonating other admins
-        const targetIsAdmin = await canUserAccessAdminPanel(targetUser);
-        if (targetIsAdmin) {
-          throw new TRPCError({
-            code: 'FORBIDDEN',
-            message: 'Cannot impersonate an admin user',
-          });
-        }
-        effectiveUser = targetUser;
-        impersonation = { actorUserId: user.id, targetUserId: targetUser.id };
-        logger.assign({
-          impersonating: true,
-          actorUserId: user.id,
-          targetUserId: targetUser.id,
-        });
+        const result = await requireUserAuth(authHeader, ctx.testUser);
+        user = result.user;
+        sessionId = result.sessionId;
       }
 
-      // Set execution context using the effective user (impersonated or original)
-      setExecutionContext(
-        createUserContext({
-          userId: effectiveUser.id,
-          sessionId: sessionId ?? undefined,
-          privyUserId: effectiveUser.privyUserId,
-          requestId: ctx.honoVars?.requestId,
-        }),
-      );
+      const result = await processUserAuthContext({
+        user,
+        sessionId: sessionId ?? 'unknown',
+        ctx,
+        throwOnImpersonationFailure: true,
+      });
 
       return next({
         ctx: {
           ...ctx,
-          user: effectiveUser,
-          sessionId,
-          userPermissions,
-          impersonation,
+          user: result.effectiveUser,
+          sessionId: result.sessionId,
+          userPermissions: result.userPermissions,
+          impersonation: result.impersonation,
         },
       });
     } catch (error) {
@@ -530,87 +598,32 @@ export const verifyUserAuthAndCreation = t.middleware<TrpcContextWithUser>(
  */
 export const maybeVerifyUserAuthAndCreation =
   t.middleware<TrpcContextWithUserOrNull>(async ({ ctx, next }) => {
-    const authHeader = ctx.req?.header?.('Authorization');
-    const { user, sessionId } = await verifyUserAuthAndGetUser(
-      authHeader,
-      ctx.testUser,
-    );
-    logger.assign({
-      userId: user?.id,
-      privyUserId: user?.privyUserId,
-      sessionId,
-    });
-    // Set execution context for user requests
-
-    setExecutionContext(
-      createUserContext({
-        userId: user?.id,
-        sessionId: sessionId ?? undefined,
-        privyUserId: user?.privyUserId,
-        requestId: ctx.honoVars?.requestId,
-      }),
-    );
-    // Load user permissions if user exists
-    let userPermissions: Permission[] = ctx.userPermissions ?? [];
-    let effectiveUser = user ?? null;
-    let impersonation:
-      | { actorUserId: string; targetUserId: string }
-      | undefined;
-    if (user) {
-      const [permissionsRows, impersonateUserId] = await Promise.all([
-        appDb
-          .select({ permission: userPermissionsTable.permission })
-          .from(userPermissionsTable)
-          .where(eq(userPermissionsTable.userId, user.id)),
-
-        // Apply impersonation if token is present and caller has permission
-        readImpersonationTargetUserId(ctx),
-      ]);
-      userPermissions = permissionsRows.map((r) => r.permission as Permission);
-
-      if (
-        impersonateUserId &&
-        impersonateUserId !== user.id &&
-        userPermissions.includes(Permission.IMPERSONATE_USERS)
-      ) {
-        const targetUser = await appDb.query.usersTable.findFirst({
-          where: eq(usersTable.id, impersonateUserId),
-        });
-        if (targetUser) {
-          // Do not allow impersonating other admins
-          const targetIsAdmin = await canUserAccessAdminPanel(targetUser);
-          if (targetIsAdmin) {
-            throw new TRPCError({
-              code: 'FORBIDDEN',
-              message: 'Cannot impersonate an admin user',
-            });
-          }
-          effectiveUser = targetUser;
-          impersonation = { actorUserId: user.id, targetUserId: targetUser.id };
-          logger.assign({
-            impersonating: true,
-            actorUserId: user.id,
-            targetUserId: targetUser.id,
-          });
-          setExecutionContext(
-            createUserContext({
-              userId: targetUser.id,
-              sessionId: sessionId ?? undefined,
-              privyUserId: targetUser.privyUserId,
-              requestId: ctx.honoVars?.requestId,
-            }),
-          );
-        }
+    let user = ctx.user;
+    let sessionId = ctx.sessionId;
+    if (!user) {
+      const authHeader = ctx.req?.header?.('Authorization');
+      if (!authHeader?.startsWith('Bearer ')) {
+        return next({ ctx });
       }
+      const result = await requireUserAuth(authHeader, ctx.testUser);
+      user = result.user;
+      sessionId = result.sessionId;
     }
+
+    const result = await processUserAuthContext({
+      user,
+      sessionId: sessionId ?? 'unknown',
+      ctx,
+      throwOnImpersonationFailure: false,
+    });
 
     return next({
       ctx: {
         ...ctx,
-        user: effectiveUser,
-        sessionId,
-        userPermissions,
-        impersonation,
+        user: result.effectiveUser,
+        sessionId: result.sessionId,
+        userPermissions: result.userPermissions,
+        impersonation: result.impersonation,
       },
     });
   });
@@ -651,7 +664,7 @@ export const publicProcedure = authedOrPublicProcedure;
 export const protectedProcedure = baseProcedure
   .use(verifyUserAuthAndCreation)
   .use(impersonationMutationGuard)
-  .use(async ({ ctx, next }) => {
+  .use<TrpcContextWithUser>(async ({ ctx, next }) => {
     logger.assign({
       procedureType: 'protectedProcedure',
     });
@@ -809,21 +822,23 @@ export { NAMEFI_EIP712_DOMAIN } from '#lib/auth/ecdsa-payload-signature';
 /**
  * Admin procedure
  */
-export const adminProcedure = protectedProcedure.use(async ({ ctx, next }) => {
-  const isAdmin = await canUserAccessAdminPanel(ctx.user);
-  logger.assign({
-    procedureType: 'adminProcedure',
-    isAdmin,
-    audit: true,
-  });
-  if (!isAdmin) {
-    throw new TRPCError({
-      code: 'UNAUTHORIZED',
-      message: 'user is not an admin',
+export const adminProcedure = protectedProcedure.use<TrpcContextWithUser>(
+  async ({ ctx, next }) => {
+    const isAdmin = await canUserAccessAdminPanel(ctx.user);
+    logger.assign({
+      procedureType: 'adminProcedure',
+      isAdmin,
+      audit: true,
     });
-  }
-  return next({ ctx });
-});
+    if (!isAdmin) {
+      throw new TRPCError({
+        code: 'UNAUTHORIZED',
+        message: 'user is not an admin',
+      });
+    }
+    return next({ ctx });
+  },
+);
 
 /**
  * Permission middleware builder for admin routes
@@ -836,7 +851,7 @@ function buildPermissionMiddleware(
 ) {
   const requiredList = Array.isArray(required) ? required : [required];
   const mode = options?.mode ?? 'every';
-  return t.middleware(async ({ ctx, next }) => {
+  return t.middleware<TrpcContextWithUser>(async ({ ctx, next }) => {
     const userPerms = new Set(ctx.userPermissions ?? []);
     // SUPER_ADMIN bypass
     if (userPerms.has(Permission.SUPER_ADMIN)) {
@@ -861,7 +876,14 @@ function buildPermissionMiddleware(
  */
 export function withRequiredPermissions<
   TProc extends {
-    use: (mw: ReturnType<typeof t.middleware>) => any;
+    use: (
+      mw: MiddlewareBuilder<
+        TrpcContext,
+        ORPCMeta,
+        TrpcContextWithUser,
+        unknown
+      >,
+    ) => any;
   },
 >(
   procedure: TProc,
@@ -877,7 +899,10 @@ export function withRequiredPermissions<
 export const adminProcedureWithPermissions = (
   required: Permission | Permission[],
   options?: { mode?: 'every' | 'some' },
-) => adminProcedure.use(buildPermissionMiddleware(required, options));
+) =>
+  adminProcedure.use<TrpcContextWithUser>(
+    buildPermissionMiddleware(required, options),
+  );
 
 /**
  * Audited Admin procedure
@@ -897,57 +922,62 @@ export const auditedAdminProcedure = (
         auditActorExtraInfo: AuditActorExtraInfo;
       }) => CreateAuditRecordParams),
 ) =>
-  protectedProcedure.use(async ({ ctx, next, meta, getRawInput }) => {
-    const input = await getRawInput();
-    const isAdmin = await canUserAccessAdminPanel(ctx.user);
-    logger.assign({
-      procedureType: 'adminProcedure',
-      isAdmin,
-      audit: true,
-    });
-    if (!isAdmin) {
-      throw new TRPCError({
-        code: 'UNAUTHORIZED',
-        message: 'user is not an admin',
+  protectedProcedure.use<TrpcContextWithUser>(
+    async ({ ctx, next, meta, getRawInput }) => {
+      const input = await getRawInput();
+      const isAdmin = await canUserAccessAdminPanel(ctx.user);
+      logger.assign({
+        procedureType: 'adminProcedure',
+        isAdmin,
+        audit: true,
       });
-    }
-    const start = performance.now();
-    const result = await next({ ctx });
-
-    try {
-      const auditActorExtraInfo: AuditActorExtraInfo = {
-        ipAddress: ctx.honoVars?.connInfo.remote.address || '',
-        ipAddressType: ctx.honoVars?.connInfo.remote.addressType || 'unknown',
-        userAgent: ctx.req.header('user-agent') || '',
-        referer: ctx.req.header('referer') || '',
-        url: ctx.req.url,
-        method: ctx.req.method,
-        requestId: ctx.honoVars?.requestId || '',
-        sessionId: ctx.sessionId || '',
-        userId: ctx.user.id || '',
-        statusCode: ctx.res.status,
-        responseTimeInMs: performance.now() - start,
-        type: 'user',
-      };
-      // Attach impersonation context to logger for downstream processing/auditing (non-breaking)
-      if (ctx.impersonation) {
-        logger.assign({
-          auditActorUserId: ctx.impersonation.actorUserId,
-          auditImpersonatedUserId: ctx.impersonation.targetUserId,
+      if (!isAdmin) {
+        throw new TRPCError({
+          code: 'UNAUTHORIZED',
+          message: 'user is not an admin',
         });
       }
-      audit(
-        createAuditRecord(
-          typeof params === 'function'
-            ? params({ ctx, input, meta, auditActorExtraInfo })
-            : params,
-        ),
-      );
-    } catch (error) {
-      logger.fatal({ error, userId: ctx.user.id }, 'Error auditing procedure');
-    }
-    return result;
-  });
+      const start = performance.now();
+      const result = await next({ ctx });
+
+      try {
+        const auditActorExtraInfo: AuditActorExtraInfo = {
+          ipAddress: ctx.honoVars?.connInfo.remote.address || '',
+          ipAddressType: ctx.honoVars?.connInfo.remote.addressType || 'unknown',
+          userAgent: ctx.req.header('user-agent') || '',
+          referer: ctx.req.header('referer') || '',
+          url: ctx.req.url,
+          method: ctx.req.method,
+          requestId: ctx.honoVars?.requestId || '',
+          sessionId: ctx.sessionId || '',
+          userId: ctx.user.id || '',
+          statusCode: ctx.res.status,
+          responseTimeInMs: performance.now() - start,
+          type: 'user',
+        };
+        // Attach impersonation context to logger for downstream processing/auditing (non-breaking)
+        if (ctx.impersonation) {
+          logger.assign({
+            auditActorUserId: ctx.impersonation.actorUserId,
+            auditImpersonatedUserId: ctx.impersonation.targetUserId,
+          });
+        }
+        audit(
+          createAuditRecord(
+            typeof params === 'function'
+              ? params({ ctx, input, meta, auditActorExtraInfo })
+              : params,
+          ),
+        );
+      } catch (error) {
+        logger.fatal(
+          { error, userId: ctx.user.id },
+          'Error auditing procedure',
+        );
+      }
+      return result;
+    },
+  );
 
 /**
  * Audited admin procedure that also enforces specific permissions
@@ -964,7 +994,7 @@ export const auditedAdminProcedureWithPermissions = (
       }) => CreateAuditRecordParams),
   options?: { mode?: 'every' | 'some' },
 ) =>
-  auditedAdminProcedure(params).use(
+  auditedAdminProcedure(params).use<TrpcContextWithUser>(
     buildPermissionMiddleware(required, options),
   );
 
