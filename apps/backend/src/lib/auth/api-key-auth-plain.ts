@@ -12,6 +12,11 @@ import {
   verifyPlainApiKey,
   PLAIN_API_KEY_PREFIX,
 } from './api-key-plain';
+import type {
+  AuthMethod,
+  AuthRequestContext,
+  AuthMethodResult,
+} from './auth-registry';
 
 /**
  * PLAIN API Key Authentication
@@ -119,3 +124,55 @@ export async function authenticateWithPlainApiKey(
 export function isPlainApiKeyHeader(apiKeyHeader: string): boolean {
   return apiKeyHeader.startsWith(PLAIN_API_KEY_PREFIX);
 }
+
+/**
+ * Header name for PLAIN API key authentication (lowercase)
+ */
+export const PLAIN_API_KEY_HEADER = 'x-api-key';
+
+/**
+ * Check if this is a PLAIN API key authentication request
+ *
+ * Returns true if the request has the X-API-Key header
+ * with a PLAIN key prefix.
+ *
+ * @param ctx - The request context
+ * @returns True if this is a PLAIN auth request
+ */
+export function isPlainAuthRequest(ctx: AuthRequestContext): boolean {
+  const apiKey = ctx.headers[PLAIN_API_KEY_HEADER];
+  if (!apiKey) {
+    return false;
+  }
+  return isPlainApiKeyHeader(apiKey);
+}
+
+/**
+ * Authenticate a request using PLAIN API key from context
+ *
+ * @param ctx - The request context
+ * @returns Authentication result
+ */
+async function authenticatePlainFromContext(
+  ctx: AuthRequestContext,
+): Promise<AuthMethodResult> {
+  const apiKey = ctx.headers[PLAIN_API_KEY_HEADER];
+  if (!apiKey) {
+    return { success: false, error: 'Missing API key' };
+  }
+
+  return authenticateWithPlainApiKey(apiKey);
+}
+
+/**
+ * PLAIN API key authentication method for the registry
+ *
+ * This is the AuthMethod implementation that integrates with
+ * the auth registry system.
+ */
+export const plainAuthMethod: AuthMethod = {
+  id: 'plain',
+  keyType: 'PLAIN',
+  shouldHandle: isPlainAuthRequest,
+  authenticate: authenticatePlainFromContext,
+};
