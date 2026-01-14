@@ -99,7 +99,7 @@ export function toTrpcError(orpcError: ORPCError<string, unknown>): TRPCError {
   return new TRPCError({
     code,
     message: orpcError.message,
-    cause: orpcError.cause,
+    cause: (orpcError as any).cause,
   });
 }
 
@@ -108,8 +108,12 @@ export function toTrpcError(orpcError: ORPCError<string, unknown>): TRPCError {
  * Catches ORPCErrors that wrap TRPCErrors and re-throws them as properly mapped ORPCErrors.
  */
 export function createTrpcToOrpcErrorInterceptor() {
-  return (error: Error) => {
-    if (error instanceof ORPCError && error.cause instanceof TRPCError) {
+  return (error: any) => {
+    if (
+      error instanceof ORPCError &&
+      'cause' in error &&
+      error.cause instanceof TRPCError
+    ) {
       throw toOrpcError(error.cause);
     }
   };

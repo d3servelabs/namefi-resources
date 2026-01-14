@@ -25,6 +25,7 @@ import { getConnInfo } from '@hono/node-server/conninfo';
 import type { ConnInfo } from 'hono/conninfo';
 import { altchaRouter } from './routers/altcha';
 import { publicRouter } from './routers/public';
+import { providersRouter } from './routers/openapi';
 
 type HonoVariables = {
   requestId: string;
@@ -102,6 +103,7 @@ app.route('v1/public/ai', publicAiRouter);
 app.route('v1/public', publicRouter);
 app.route('/webhooks', webhooksRouter);
 app.route('/altcha', altchaRouter);
+app.route('v-next', providersRouter);
 
 app.get('/configfi', (c) => {
   return c.json({

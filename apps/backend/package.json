@@ -4,7 +4,8 @@
   "type": "module",
   "exports": {
     "./trpc": "./src/trpc/index.ts",
-    "./trpc/types": "./src/trpc/types.ts"
+    "./trpc/types": "./src/trpc/types.ts",
+    "./openapi": "./src/routers/openapi.ts"
   },
   "imports": {
     "#lib/env": "./src/lib/env/index.ts",
