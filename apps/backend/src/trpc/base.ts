@@ -22,6 +22,7 @@ import {
   getPoweredByNamefi3PHostnames,
   getPoweredByNamefiDomainFromHostname,
 } from '#lib/namefi-registry';
+import { isHostnameAllowed } from '#lib/hostname-validation';
 import { canUserAccessAdminPanel, privyClient } from './utils';
 import { userPermissionsTable, db as appDb } from '@namefi-astra/db';
 import { Permission } from '@namefi-astra/utils';
@@ -76,13 +77,16 @@ export async function getPbnDomainFromOriginOrThrow(
   }
 
   //if it's our own domain, return null
-  if (config.NAMEFI_FIRST_PARTY_HOSTNAMES?.includes(origin.hostname)) {
+  if (
+    config.NAMEFI_FIRST_PARTY_HOSTNAMES &&
+    isHostnameAllowed(origin.hostname, config.NAMEFI_FIRST_PARTY_HOSTNAMES)
+  ) {
     return null;
   }
   // if it's not our own domain, check if it's an allowed parent domain
   const allowedThirdPartyHostnames = await getPoweredByNamefi3PHostnames();
   // if it's not an allowed parent domain, throw an error
-  if (!allowedThirdPartyHostnames.includes(origin.hostname)) {
+  if (!isHostnameAllowed(origin.hostname, allowedThirdPartyHostnames)) {
     throw new TRPCError({
       code: 'FORBIDDEN',
       message: 'parent domain not allowed',
