@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { AdminGuard } from '@/components/admin/admin-guard';
-import { Permission } from '@namefi-astra/utils';
+import { Permission } from '@namefi-astra/utils/permissions';
 import { PermissionGate } from '@/components/access/PermissionGate';
 import {
   Card,

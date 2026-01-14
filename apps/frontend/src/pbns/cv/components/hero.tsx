@@ -5,10 +5,10 @@ import Link from 'next/link';
 import { AnimatedSection, AnimatedChild } from './animated-section';
 import { motion } from 'motion/react';
 import { DomainHuntWidget } from '@/pbns/cv/components/domain-hunt-widget';
-import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
+import { namefiNormalizedDomainSchema } from '@namefi-astra/utils/namefi-flavor';
 import { SearchInput, type SearchMode } from '@/components/search';
 import type { ImportQuery } from '@/components/search/types';
-import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { HUNT_CAMPAIGN_KEYS } from '@/lib/hunt-campaign-keys';
 
 interface HeroProps {

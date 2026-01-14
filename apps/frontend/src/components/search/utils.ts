@@ -1,7 +1,5 @@
-import {
-  namefiNormalizedDomainSchema,
-  type NamefiNormalizedDomain,
-} from '@namefi-astra/utils';
+import { namefiNormalizedDomainSchema } from '@namefi-astra/utils/namefi-flavor';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import type { ImportQuery } from './types';
 
 export const parseCSVDomains = (csvText: string): ImportQuery[] => {

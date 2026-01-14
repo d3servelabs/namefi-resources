@@ -1,5 +1,4 @@
-import { CHAINS } from '@namefi-astra/utils';
-import { paymentProviderSchema } from '@namefi-astra/db/types';
+import { CHAINS } from '@namefi-astra/utils/chains';
 import type { AppRouterInput } from '@/lib/trpc';
 
 type CreateOrderV2Input = AppRouterInput['orders']['createOrderV2'];

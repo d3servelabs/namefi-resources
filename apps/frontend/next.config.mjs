@@ -25,7 +25,7 @@ const { config: appConfig } = await jiti.import('./src/lib/env/load');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  cacheComponents: true,
+  cacheComponents: false,
   compiler: {
     define: {
       'process.env.LOADED_CONFIG': JSON.stringify(appConfig),
@@ -38,6 +38,11 @@ const nextConfig = {
       ),
     },
   },
+  logging: {
+    fetches: {
+      fullUrl: true,
+    },
+  },
   serverExternalPackages: [
     'pino',
     'pino-pretty',
@@ -48,6 +53,8 @@ const nextConfig = {
   experimental: {
     authInterrupts: true,
     turbopackFileSystemCacheForDev: true,
+    // Favor per-module imports for large libraries to reduce dev compile time.
+    optimizePackageImports: ['date-fns', 'ramda', 'lucide-react'],
   },
   env: {
     version: packageJson.version,

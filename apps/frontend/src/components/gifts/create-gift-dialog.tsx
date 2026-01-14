@@ -37,7 +37,7 @@ import { Loader2 } from 'lucide-react';
 import { format, addDays } from 'date-fns';
 import { NaturalLanguageDatePicker } from '@/components/date-picker/natural-language-date-picker';
 import { toast } from 'sonner';
-import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
+import { namefiNormalizedDomainSchema } from '@namefi-astra/utils/namefi-flavor';
 import { da } from 'date-fns/locale';
 
 const createGiftSchema = z

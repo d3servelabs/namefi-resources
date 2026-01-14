@@ -13,7 +13,7 @@ import type {
 import { ChevronDown, ChevronRight, Copy } from 'lucide-react';
 import { toast } from 'sonner';
 import { UserWalletAvatar } from '@/components/user-avatar';
-import { checksumWalletAddressSchema } from '@namefi-astra/utils';
+import { checksumWalletAddressSchema } from '@namefi-astra/utils/namefi-flavor';
 import { ExtensibleDataTable } from '@/components/table/extensible-data-table';
 import {
   useDrizzlerServerFilterStrategy,
@@ -22,7 +22,7 @@ import {
 } from '@/components/table/filters';
 import { AutoTruncateTextV2 } from '@/components/auto-truncate-text-v2';
 import { NetworkLogo } from '@/components/network-logo';
-import { getChain, CHAINS } from '@namefi-astra/utils';
+import { getChain, CHAINS } from '@namefi-astra/utils/chains';
 import { ExportStatusBadge } from './export-status-badge';
 import { StatusHistorySubrow } from './status-history-subrow';
 import { VerifyButton } from './verify-button';

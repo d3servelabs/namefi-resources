@@ -39,8 +39,8 @@ import type {
   EppAuthorizationCodesFormData,
   ImportQuery,
 } from '@/components/search';
-import { isDomainImportable } from '@namefi-astra/backend/trpc/types';
-import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import { isDomainImportable } from '@namefi-astra/contracts/domain-availability';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { Button } from '@/components/ui/shadcn/button';
 import { Card } from '@/components/ui/shadcn/card';
 import {

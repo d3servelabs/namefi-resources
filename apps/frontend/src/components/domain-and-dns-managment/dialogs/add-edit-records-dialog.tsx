@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/shadcn/dialog';
 import { useTRPC } from '@/lib/trpc';
 import type { DnsRecordSelect } from '@namefi-astra/db';
-import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import type { RecordType } from '@namefi-astra/zod-dns';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { TRPCClientError } from '@trpc/client';

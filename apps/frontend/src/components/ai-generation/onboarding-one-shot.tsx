@@ -13,7 +13,7 @@ import {
   baseFormSchema,
   type BaseFormData,
 } from './shared/base-generator';
-import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import {
   useLogoGeneration,
   usePosterGeneration,

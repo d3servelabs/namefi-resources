@@ -1,6 +1,6 @@
 import { type GeneratedItem, ImageGrid } from '../image-grid';
 import { useMemo, type ReactNode } from 'react';
-import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import type { Generation } from './types';
 
 interface BaseGenerationTabProps {

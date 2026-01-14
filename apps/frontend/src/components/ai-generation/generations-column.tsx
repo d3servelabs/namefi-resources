@@ -71,7 +71,7 @@ import type {
   GalleryGeneration,
   GalleryItem,
 } from './shared/gallery-types';
-import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 
 type TabValue = 'yours' | 'featured';
 

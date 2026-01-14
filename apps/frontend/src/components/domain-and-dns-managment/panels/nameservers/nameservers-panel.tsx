@@ -49,7 +49,7 @@ import {
   punycodeFqdnSchema,
 } from '@namefi-astra/registrars/lib/data/validations';
 import { toPunycodeFqdn } from '@namefi-astra/registrars/lib/data/validations';
-import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
+import { namefiNormalizedDomainSchema } from '@namefi-astra/utils/namefi-flavor';
 import {
   useQuery,
   useQueryClient,

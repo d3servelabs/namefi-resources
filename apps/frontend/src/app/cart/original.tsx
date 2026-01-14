@@ -41,14 +41,15 @@ import { InteractionLoggingEventName } from '@/lib/analytics-events';
 import { type AppRouterInput, useTRPC } from '@/lib/trpc';
 import { useFeedback } from '@/components/providers/feedback';
 import type { DeepPartial } from '@/lib/types/utils';
-import { createOrderInputSchema } from '@namefi-astra/backend/trpc/types';
+import { createOrderInputSchema } from '@namefi-astra/contracts/order-input';
 import {
   isNfscPayment,
   isStripePayment,
   paymentProviderSchema,
-} from '@namefi-astra/db/types';
+} from '@namefi-astra/contracts/payment-provider';
 import { feedbackTriggerSchema } from '@/lib/feedback-triggers';
-import { CHAINS, NFSC_CONTRACT_ADDRESS } from '@namefi-astra/utils';
+import { CHAINS } from '@namefi-astra/utils/chains';
+import { NFSC_CONTRACT_ADDRESS } from '@namefi-astra/utils/contract-addresses';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import type { inferInput } from '@trpc/tanstack-react-query';
 import { ArchiveX, Loader2, Trash2 } from 'lucide-react';

@@ -8,8 +8,8 @@ import type { AddToCartParams } from '@/hooks/use-cart';
 import {
   isDomainImportable,
   isDomainRegistrable,
-} from '@namefi-astra/backend/trpc/types';
-import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
+} from '@namefi-astra/contracts/domain-availability';
+import { namefiNormalizedDomainSchema } from '@namefi-astra/utils/namefi-flavor';
 import { Loader2, CheckCircle2, AlertTriangle, Circle } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useMemo, useRef, useState, type ReactElement } from 'react';

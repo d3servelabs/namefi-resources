@@ -4,7 +4,7 @@ import { useLocalStorage } from 'usehooks-ts';
 import PQueue from 'p-queue';
 import { useAuth } from '@/hooks/use-auth';
 import { useTRPC, type AppRouterInput, type AppRouterOutput } from '@/lib/trpc';
-import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { LocalStorageKeys } from '@/lib/local-storage-keys';
 
 /**

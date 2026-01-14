@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from 'react';
 import { useConnectedWallets } from './use-user-wallet-addresses';
-import { NFSC_CONTRACT_ADDRESS } from '@namefi-astra/utils';
+import { NFSC_CONTRACT_ADDRESS } from '@namefi-astra/utils/contract-addresses';
 import { useConfig, useWatchAsset } from 'wagmi';
 
 export function useWatchAssets() {

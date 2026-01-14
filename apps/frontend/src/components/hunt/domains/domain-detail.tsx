@@ -29,7 +29,7 @@ import {
   type HuntVoteRowOptions,
   useHuntVoteRow,
 } from '@/hooks/use-hunt-vote-row';
-import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { PageShell } from '@/components/page-shell';
 
 interface DomainDetailProps extends Omit<HuntVoteRowOptions, 'domain'> {

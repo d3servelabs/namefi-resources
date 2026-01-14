@@ -2,7 +2,7 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { useLinkedWalletAddresses } from '@/hooks/use-user-wallet-addresses';
 import { useAllowedChains } from '@/hooks/use-allowed-chains';
 import { getShortAddress } from '@/lib/string';
-import { CHAINS } from '@namefi-astra/utils';
+import { CHAINS } from '@namefi-astra/utils/chains';
 import { useCallback, useState } from 'react';
 import type { Chain } from 'viem';
 import { Badge } from './ui/shadcn/badge';

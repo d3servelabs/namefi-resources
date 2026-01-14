@@ -17,7 +17,7 @@ import {
 import { ScrollArea } from '@/components/ui/shadcn/scroll-area';
 import { useTRPC } from '@/lib/trpc';
 import type { DnsRecordSelect } from '@namefi-astra/db';
-import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { TRPCClientError } from '@trpc/client';
 import { ChevronDown, CircleCheck, CircleX, Loader2 } from 'lucide-react';

@@ -1,7 +1,7 @@
 'use client';
 
 import { AdminGuard } from '@/components/admin/admin-guard';
-import { Permission } from '@namefi-astra/utils';
+import { Permission } from '@namefi-astra/utils/permissions';
 import { PermissionGate } from '@/components/access/PermissionGate';
 import { useTRPC } from '@/lib/trpc';
 import {
@@ -45,12 +45,9 @@ import {
   Mail,
   VenetianMask,
 } from 'lucide-react';
-import {
-  getChain,
-  getNftExplorerUrl,
-  CHAINS,
-  checksumWalletAddressSchema,
-} from '@namefi-astra/utils';
+import { getChain, CHAINS } from '@namefi-astra/utils/chains';
+import { getNftExplorerUrl } from '@namefi-astra/utils/nft-hash';
+import { checksumWalletAddressSchema } from '@namefi-astra/utils/namefi-flavor';
 import { NetworkLogo } from '@/components/network-logo';
 import {
   differenceInYears,

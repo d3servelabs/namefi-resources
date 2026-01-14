@@ -16,7 +16,7 @@ import {
 } from '@/components/ui/shadcn/tooltip';
 import { cn } from '@/lib/cn';
 import { useMemo, useState } from 'react';
-import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { NameserversDialog } from '../dialogs/nameservers-dialog';
 import { ForwardingDialog } from '../dialogs/forwarding-dialog';
 import { EditDnsRecordsWrapper } from '../dialogs/edit-dns-records-wrapper';

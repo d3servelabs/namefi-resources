@@ -9,7 +9,7 @@ import {
 } from '@/hooks/use-twitter-share';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
-import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import {
   buildDownloadFilename,
   copyGenerationLink,

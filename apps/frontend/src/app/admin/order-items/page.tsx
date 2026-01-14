@@ -1,7 +1,7 @@
 'use client';
 
 import { AdminGuard } from '@/components/admin/admin-guard';
-import { Permission } from '@namefi-astra/utils';
+import { Permission } from '@namefi-astra/utils/permissions';
 import { PermissionGate } from '@/components/access/PermissionGate';
 import { useTRPC } from '@/lib/trpc';
 import { useQuery } from '@tanstack/react-query';
@@ -22,11 +22,8 @@ import type {
   VisibilityState,
 } from '@tanstack/react-table';
 import { Copy, ExternalLink } from 'lucide-react';
-import {
-  getChain,
-  CHAINS,
-  checksumWalletAddressSchema,
-} from '@namefi-astra/utils';
+import { getChain, CHAINS } from '@namefi-astra/utils/chains';
+import { checksumWalletAddressSchema } from '@namefi-astra/utils/namefi-flavor';
 import { NetworkLogo } from '@/components/network-logo';
 import { formatDate, formatDistanceToNow } from 'date-fns';
 import { UserWalletAvatar } from '@/components/user-avatar';

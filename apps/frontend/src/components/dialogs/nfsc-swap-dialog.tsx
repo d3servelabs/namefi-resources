@@ -21,7 +21,7 @@ import { parseEther } from 'viem';
 import { useAccount, useSwitchChain } from 'wagmi';
 import { UserWalletAvatar } from '@/components/user-avatar';
 import { AutoTruncateTextV2 } from '@/components/auto-truncate-text-v2';
-import { checksumWalletAddressSchema } from '@namefi-astra/utils';
+import { checksumWalletAddressSchema } from '@namefi-astra/utils/namefi-flavor';
 import { useAllowedChains } from '@/hooks/use-allowed-chains';
 import { NetworkLogo } from '@/components/network-logo';
 import {

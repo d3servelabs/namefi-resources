@@ -40,7 +40,7 @@ import {
 import { AutoTruncateTextV2 } from '../auto-truncate-text-v2';
 import { PageShell } from '@/components/page-shell';
 import { UserWalletAvatar } from '../user-avatar';
-import { getChain } from '@namefi-astra/utils';
+import { getChain } from '@namefi-astra/utils/chains';
 
 const LoadingSkeletons: FC = () => (
   <div className="flex flex-col gap-4">

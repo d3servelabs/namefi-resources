@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/shadcn/dialog';
 import { Button } from '@/components/ui/shadcn/button';
 import { LogIn, Share2 } from 'lucide-react';
-import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 
 interface VoteOrShareChoiceDialogProps {
   isOpen: boolean;

@@ -33,12 +33,9 @@ import {
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
 import { useAuth } from '@/hooks/use-auth';
 import { type AppRouterOutput, useTRPC } from '@/lib/trpc';
-import {
-  CHAINS,
-  checksumWalletAddressSchema,
-  getChain,
-  getNftExplorerUrl,
-} from '@namefi-astra/utils';
+import { CHAINS, getChain } from '@namefi-astra/utils/chains';
+import { checksumWalletAddressSchema } from '@namefi-astra/utils/namefi-flavor';
+import { getNftExplorerUrl } from '@namefi-astra/utils/nft-hash';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import {
   type ColumnDef,

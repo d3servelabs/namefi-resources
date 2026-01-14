@@ -3,7 +3,7 @@
 import { useCallback, useMemo, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { AdminGuard } from '@/components/admin/admin-guard';
-import { Permission } from '@namefi-astra/utils';
+import { Permission } from '@namefi-astra/utils/permissions';
 import { PermissionGate } from '@/components/access/PermissionGate';
 import { useTRPC } from '@/lib/trpc';
 import { Button } from '@/components/ui/shadcn/button';

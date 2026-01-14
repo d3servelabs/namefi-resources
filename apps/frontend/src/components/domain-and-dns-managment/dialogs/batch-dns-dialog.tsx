@@ -16,7 +16,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { Loader2 } from 'lucide-react';
-import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { DnsRecordForm } from './dns-record-form';
 import { type DnsRecordFormValues, formValuesToDnsRecord } from '../schemas';
 import type { RecordType } from '@namefi-astra/zod-dns';

@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { CartCard } from './cart-card';
 import { NamefiButton } from './buttons/namefi-button';
 import { NFTDomain } from './nft-domain';
-import { getNftExplorerUrl } from '@namefi-astra/utils';
+import { getNftExplorerUrl } from '@namefi-astra/utils/nft-hash';
 import { NetworkLogo } from '@/components/network-logo';
 
 export interface NftDomainCardProps {

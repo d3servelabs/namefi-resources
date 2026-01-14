@@ -11,7 +11,7 @@ import {
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/cn';
 import { getShortAddress } from '@/lib/string';
-import { CHAINS } from '@namefi-astra/utils';
+import { CHAINS } from '@namefi-astra/utils/chains';
 import type { ChangeEvent, ReactNode } from 'react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useResizeObserver } from 'usehooks-ts';

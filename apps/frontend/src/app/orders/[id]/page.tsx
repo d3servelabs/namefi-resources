@@ -13,11 +13,9 @@ import {
   type WorkflowProgressPhase,
   useOrderProgress,
 } from '@/hooks/use-order-progress';
-import { orderStatusSchema } from '@namefi-astra/db/types';
-import {
-  getSubDomainAndParentDomainFromNormalizedDomainName,
-  getTokenIdFromDomainName,
-} from '@namefi-astra/utils';
+import { orderStatusSchema } from '@namefi-astra/contracts/shared-schemas';
+import { getSubDomainAndParentDomainFromNormalizedDomainName } from '@namefi-astra/utils/domain-names';
+import { getTokenIdFromDomainName } from '@namefi-astra/utils/nft-hash';
 import { AuthRequired } from '@/components/auth-required';
 import { NamefiButton } from '@/components/buttons/namefi-button';
 import { useOrigin } from '@/components/providers/origin';

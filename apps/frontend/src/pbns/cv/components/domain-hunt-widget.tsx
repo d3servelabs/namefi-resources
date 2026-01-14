@@ -16,7 +16,7 @@ import {
 } from '@/hooks/use-hunt-vote-row';
 import { TwitterShareDialog } from '@/components/hunt/twitter-share-dialog';
 import { VoteOrShareChoiceDialog } from '@/components/dialogs/vote-or-share-choice-dialog';
-import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { motion, AnimatePresence } from 'motion/react';
 import NumberFlow from '@number-flow/react';
 

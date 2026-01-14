@@ -1,4 +1,4 @@
-import { NFSC_CONTRACT_ADDRESS } from '@namefi-astra/utils';
+import { NFSC_CONTRACT_ADDRESS } from '@namefi-astra/utils/contract-addresses';
 import { useAccount, useBalance, useChainId } from 'wagmi';
 
 export default function useNFSCBalance() {

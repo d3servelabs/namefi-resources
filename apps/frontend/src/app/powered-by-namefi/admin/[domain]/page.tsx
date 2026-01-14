@@ -38,7 +38,7 @@ import {
   SelectValue,
 } from '@/components/ui/shadcn/select';
 import { RsuiteRangePicker } from '@/components/powered-by-namefi/RsuiteRangePicker';
-import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { PbnOwnerGuard } from '@/components/admin/pbn-owner-guard';
 import { parseAsStringEnum, useQueryState } from 'nuqs';
 import {

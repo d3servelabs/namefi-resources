@@ -8,7 +8,7 @@ import {
 } from '@privy-io/react-auth';
 import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
-import { privyStorageToPrivyCustomMetadata } from '@namefi-astra/backend/trpc/types';
+import { privyStorageToPrivyCustomMetadata } from '@namefi-astra/contracts/privy-custom-metadata';
 import { useEmailPrompt } from './use-email-prompt';
 import { useCartContext } from '@/components/providers/cart';
 import { config } from '@/lib/env';

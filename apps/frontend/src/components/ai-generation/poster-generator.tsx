@@ -14,7 +14,7 @@ import { Check } from 'lucide-react';
 import { z } from 'zod';
 import { BaseGenerator, baseFormSchema } from './shared/base-generator';
 import { ControlPanel } from './shared/form-fields';
-import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTRPC } from '@/lib/trpc';
 import { useQuery } from '@tanstack/react-query';

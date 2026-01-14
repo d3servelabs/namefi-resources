@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useMemo } from 'react';
 import { useLogin } from '@/hooks/use-auth';
-import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 
 export interface HuntChoiceDialogOptions {
   onShare?: (domainName: NamefiNormalizedDomain) => void;

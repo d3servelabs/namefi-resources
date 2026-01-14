@@ -13,7 +13,7 @@ import {
   type ExampleProfile,
   type Testimonial,
 } from './index';
-import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
+import { namefiNormalizedDomainSchema } from '@namefi-astra/utils/namefi-flavor';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { useInView, motion, AnimatePresence } from 'motion/react';
 import { useForm } from 'react-hook-form';
@@ -28,7 +28,7 @@ import {
   eppAuthorizationCodesFormSchema,
   SearchResults,
 } from '@/components/search';
-import { isDomainImportable } from '@namefi-astra/backend/trpc/types';
+import { isDomainImportable } from '@namefi-astra/contracts/domain-availability';
 import dynamic from 'next/dynamic';
 
 const NewsletterForm = dynamic(

@@ -5,10 +5,10 @@ import { CartCard } from '@/components/cart-card';
 import { Button } from '@/components/ui/shadcn/button';
 import { Separator } from '@/components/ui/shadcn/separator';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
-import {
-  itemTypeSchema,
-  type PaymentSelect,
-  type OrderMintTransactionMetadata,
+import { itemTypeSchema } from '@namefi-astra/contracts/shared-schemas';
+import type {
+  PaymentSelect,
+  OrderMintTransactionMetadata,
 } from '@namefi-astra/db/types';
 import {
   Tooltip,
@@ -21,11 +21,11 @@ import { useAuth } from '@/hooks/use-auth';
 import { getShortAddress } from '@/lib/string';
 import { formatAmountInUSD } from '@/lib/number';
 import { useTRPC } from '@/lib/trpc';
+import { getChain } from '@namefi-astra/utils/chains';
 import {
-  getChain,
   getNftExplorerUrl,
   getTokenIdFromDomainName,
-} from '@namefi-astra/utils';
+} from '@namefi-astra/utils/nft-hash';
 import { useQuery } from '@tanstack/react-query';
 import { TRPCClientError } from '@trpc/client';
 import { format } from 'date-fns';

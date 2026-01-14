@@ -34,7 +34,7 @@ import { useQuery } from '@tanstack/react-query';
 import DashboardOverview from '@/components/admin/analytics/DashboardOverview';
 import DateRangePicker from '@/components/admin/analytics/DateRangePicker';
 import { parseDomainName } from '@namefi-astra/utils/parse-domain-name';
-import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { PageShell } from '@/components/page-shell';
 
 function AnalyticsPageContent() {

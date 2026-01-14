@@ -15,7 +15,7 @@ import {
 } from '@/components/ui/shadcn/card';
 import { useTRPC } from '@/lib/trpc';
 import { useQuery } from '@tanstack/react-query';
-import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 
 interface DomainAwardsProps {
   domainName: NamefiNormalizedDomain;

@@ -1,5 +1,5 @@
 import { DomainDetail } from '@/components/hunt/domains/domain-detail';
-import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
+import { namefiNormalizedDomainSchema } from '@namefi-astra/utils/namefi-flavor';
 import { notFound } from 'next/navigation';
 
 interface PageProps {

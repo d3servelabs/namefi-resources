@@ -1,4 +1,5 @@
-import { CHAINS, NFSC_CONTRACT_ADDRESS } from '@namefi-astra/utils';
+import { CHAINS } from '@namefi-astra/utils/chains';
+import { NFSC_CONTRACT_ADDRESS } from '@namefi-astra/utils/contract-addresses';
 import { useMemo } from 'react';
 import { formatUnits } from 'viem';
 import { multicall } from 'viem/actions';

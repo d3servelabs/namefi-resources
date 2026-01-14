@@ -11,11 +11,8 @@ import { Badge } from '@/components/ui/shadcn/badge';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
 import type { OriginInfo } from '@/lib/origin';
 import { useTRPC, type AppRouterOutput } from '@/lib/trpc';
-import {
-  CHAINS,
-  checksumWalletAddressSchema,
-  getChain,
-} from '@namefi-astra/utils';
+import { CHAINS, getChain } from '@namefi-astra/utils/chains';
+import { checksumWalletAddressSchema } from '@namefi-astra/utils/namefi-flavor';
 import { format } from 'date-fns';
 import { NetworkLogo } from '@/components/network-logo';
 import { UserWalletAvatar } from '@/components/user-avatar';

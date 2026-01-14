@@ -12,7 +12,7 @@ import {
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
 import { Badge } from '@/components/ui/shadcn/badge';
 import { useHasPermissions } from '@/components/access/PermissionGate';
-import { Permission } from '@namefi-astra/utils';
+import { Permission } from '@namefi-astra/utils/permissions';
 import { ExtensibleDataTable } from '@/components/table/extensible-data-table';
 import {
   convertToDrizzlerFilterOptions,

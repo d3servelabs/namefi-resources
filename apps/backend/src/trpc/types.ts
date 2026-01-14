@@ -1,36 +1,18 @@
-import {
-  orderInsertSchema,
-  paymentProviderDetailsSchema,
-  itemTypeSchema,
-} from '@namefi-astra/db/types';
-
+import { paymentProviderDetailsSchema } from '@namefi-astra/db/types';
 import { z } from 'zod';
-
-import { createStripePaymentIntentSchema } from '../services/stripe-payments/types';
-import type { DomainAvailabilityInfo } from '../lib/namefi-registry';
+import {
+  createOrderInputSchema as baseCreateOrderInputSchema,
+  paymentMetadataSchema,
+} from '@namefi-astra/contracts/order-input';
+import type { DomainAvailabilityInfo } from '@namefi-astra/contracts/domain-availability';
 import {
   checksumWalletAddressSchema,
   namefiNormalizedDomainSchema,
 } from '@namefi-astra/utils';
 
-const paymentMetadataSchema = z
-  .object({
-    ...createStripePaymentIntentSchema.pick({
-      confirmationTokenId: true,
-    }).shape,
-  })
-  .optional();
-
-const nftMetadataSchema = orderInsertSchema.pick({
-  nftWalletAddress: true,
-  nftChainId: true,
-});
-
-export const createOrderInputSchema = z.object({
-  cartItemIds: z.array(z.string()),
+export const createOrderInputSchema = baseCreateOrderInputSchema.extend({
+  // Keep server-side validation aligned with DB constraints.
   paymentProviderDetails: paymentProviderDetailsSchema,
-  paymentMetadata: paymentMetadataSchema,
-  nftMetadata: nftMetadataSchema,
 });
 
 export type CreateOrderInput = z.infer<typeof createOrderInputSchema>;
@@ -131,107 +113,25 @@ export const instantBuyInputSchema = z.object({
 
 export type InstantBuyInput = z.infer<typeof instantBuyInputSchema>;
 
-// Re-export the DomainAvailabilityInfo type for convenience
+export {
+  isDomainImportable,
+  isDomainRegistrable,
+  isDomainUnsupported,
+  getDomainPricingForOperation,
+} from '@namefi-astra/contracts/domain-availability';
+
 export type { DomainAvailabilityInfo };
 
-// TODO: move these to a better location
-/**
- * Checks if a domain is importable (can be transferred/imported)
- * A domain is importable if it's unavailable
- * @param domain - Domain availability information
- * @returns true if the domain can be imported
- */
-export function isDomainImportable(domain: DomainAvailabilityInfo): boolean {
-  return domain.importable;
-}
+export {
+  addressSchema,
+  privyCustomMetadataSchema,
+  privyStorageSchema,
+  privyCustomMetadataToPrivyStorage,
+  privyStorageToPrivyCustomMetadata,
+} from '@namefi-astra/contracts/privy-custom-metadata';
 
-// TODO: move these to a better location
-/**
- * Checks if a domain is registrable (available for new registration)
- * A domain is registrable if it's available
- * @param domain - Domain availability information
- * @returns true if the domain can be registered
- */
-export function isDomainRegistrable(domain: DomainAvailabilityInfo): boolean {
-  return domain.availability === true;
-}
-
-// TODO: move these to a better location
-/**
- * Checks if a domain is not supported (unavailable and not importable)
- * A domain is not supported if it's unavailable and not importable
- * @param domain - Domain availability information
- * @returns true if the domain is not supported
- */
-export function isDomainUnsupported(domain: DomainAvailabilityInfo): boolean {
-  return !domain.supported;
-}
-
-// TODO: move these to a better location
-/**
- * Gets the appropriate pricing details for a domain operation
- * @param domain - Domain availability information
- * @param operationType - Either itemTypeSchema.enum.REGISTER, itemTypeSchema.enum.IMPORT, or itemTypeSchema.enum.AUTO_RENEW
- * @returns The pricing details for the specified operation
- */
-export function getDomainPricingForOperation(
-  domain: DomainAvailabilityInfo,
-  operationType:
-    | typeof itemTypeSchema.enum.REGISTER
-    | typeof itemTypeSchema.enum.IMPORT
-    | typeof itemTypeSchema.enum.RENEW,
-) {
-  if (!domain.pricingDetails) {
-    return undefined;
-  }
-
-  switch (operationType) {
-    case itemTypeSchema.enum.IMPORT:
-      return domain.pricingDetails.importPrice;
-    case itemTypeSchema.enum.RENEW:
-      return domain.pricingDetails.renewalPrice;
-    default:
-      return domain.pricingDetails.registrationPrice;
-  }
-}
-
-// Note: keeping address subfields optional as suggested by Victor
-export const addressSchema = z.object({
-  street: z.string().optional(),
-  city: z.string().optional(),
-  state: z.string().optional(),
-  zipCode: z.string().optional(),
-  country: z.string().min(2).max(2).optional(), // ISO 3166-1 alpha-2 code
-});
-
-export type Address = z.infer<typeof addressSchema>;
-
-// Schema for the actual data structure we want to work with
-export const privyCustomMetadataSchema = z.object({
-  fullName: z.string().optional(),
-  address: addressSchema.optional(),
-});
-
-export type PrivyCustomMetadata = z.infer<typeof privyCustomMetadataSchema>;
-
-// Storage schema - represents the primitive format stored in Privy
-export const privyStorageSchema = z
-  .object({
-    data: z.string().optional(),
-  })
-  .optional();
-
-export type PrivyStorage = z.infer<typeof privyStorageSchema>;
-
-export const privyCustomMetadataToPrivyStorage =
-  privyCustomMetadataSchema.transform((data) => {
-    return {
-      data: JSON.stringify(data),
-    };
-  });
-
-export const privyStorageToPrivyCustomMetadata = privyStorageSchema.transform(
-  (data) => {
-    return privyCustomMetadataSchema.parse(JSON.parse(data?.data ?? '{}'));
-  },
-);
+export type {
+  Address,
+  PrivyCustomMetadata,
+  PrivyStorage,
+} from '@namefi-astra/contracts/privy-custom-metadata';

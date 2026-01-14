@@ -42,7 +42,7 @@ import {
   X,
 } from 'lucide-react';
 import { toast } from 'sonner';
-import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import {
   Table,
   TableBody,

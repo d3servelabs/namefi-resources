@@ -8,7 +8,7 @@ import {
   createLogoGenerationPayload,
 } from './shared/generation-hooks';
 import { useState, useRef } from 'react';
-import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import type { Generation } from './shared/types';
 import { usePosterFlow } from './poster-flow-context';
 

@@ -9,7 +9,8 @@ import {
 import { useAllowedChains } from '@/hooks/use-allowed-chains';
 import { getShortAddress } from '@/lib/string';
 import { cn } from '@/lib/cn';
-import { CHAINS, checksumWalletAddressSchema } from '@namefi-astra/utils';
+import { CHAINS } from '@namefi-astra/utils/chains';
+import { checksumWalletAddressSchema } from '@namefi-astra/utils/namefi-flavor';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useDebounceValue } from 'usehooks-ts';
 import { Loader2, CheckCircle2, Copy, Check, Info } from 'lucide-react';

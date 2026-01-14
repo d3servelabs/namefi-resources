@@ -10,7 +10,7 @@ import {
   usePosterGeneration,
   createPosterGenerationPayload,
 } from './shared/generation-hooks';
-import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import type { Generation } from './shared/types';
 import type { PosterSource } from './poster-flow-context';
 

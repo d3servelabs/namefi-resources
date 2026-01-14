@@ -15,7 +15,7 @@ import { Check, Sparkles } from 'lucide-react';
 import { z } from 'zod';
 import { BaseGenerator, baseFormSchema } from './shared/base-generator';
 import { ControlPanel } from './shared/form-fields';
-import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { useMemo, useState } from 'react';
 import type { Generation } from './shared/types';
 import {

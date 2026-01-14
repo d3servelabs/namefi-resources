@@ -25,7 +25,7 @@ import {
   ArrowRightLeft,
   RefreshCw,
 } from 'lucide-react';
-import { Permission } from '@namefi-astra/utils';
+import { Permission } from '@namefi-astra/utils/permissions';
 import { PermissionGate } from '@/components/access/PermissionGate';
 import { isNotNil, filter } from 'ramda';
 import { PageShell } from '@/components/page-shell';

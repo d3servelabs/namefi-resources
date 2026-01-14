@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
+import { namefiNormalizedDomainSchema } from '@namefi-astra/utils/namefi-flavor';
 
 /* ------------------------------- Zod schemas ------------------------------ */
 const baseSchema = z.object({

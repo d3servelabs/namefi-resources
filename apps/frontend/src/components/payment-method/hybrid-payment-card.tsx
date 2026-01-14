@@ -6,8 +6,7 @@ import { NetworkLogo } from '@/components/network-logo';
 import { getShortAddress } from '@/lib/string';
 import { formatAmountInUSD } from '@/lib/number';
 import type { AppRouterInput } from '@/lib/trpc';
-import { CHAINS } from '@namefi-astra/utils';
-import { paymentProviderSchema } from '@namefi-astra/db/types';
+import { CHAINS } from '@namefi-astra/utils/chains';
 import {
   Loader2,
   CreditCard,

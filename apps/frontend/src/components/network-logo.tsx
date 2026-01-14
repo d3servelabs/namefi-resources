@@ -1,5 +1,5 @@
 import { cn } from '@/lib/cn';
-import { CHAINS, getChain } from '@namefi-astra/utils';
+import { CHAINS, getChain } from '@namefi-astra/utils/chains';
 import { AlertTriangleIcon } from 'lucide-react';
 import BaseNetwork from '@/components/chains/base-network';
 import EthNetwork from '@/components/chains/eth-network';

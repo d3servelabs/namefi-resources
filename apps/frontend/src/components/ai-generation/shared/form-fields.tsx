@@ -22,7 +22,7 @@ import { useResizeObserver } from 'usehooks-ts';
 import { useCallback, useMemo, useRef } from 'react';
 import { cn } from '@/lib/cn';
 import type { Control, FieldPath, FieldValues } from 'react-hook-form';
-import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 
 export interface DomainFieldProps<T extends FieldValues> {
   control: Control<T>;

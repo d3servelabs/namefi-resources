@@ -44,9 +44,9 @@ import {
   isDomainUnsupported,
   getDomainPricingForOperation,
   type DomainAvailabilityInfo,
-} from '@namefi-astra/backend/trpc/types';
-import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
-import { itemTypeSchema } from '@namefi-astra/db/types';
+} from '@namefi-astra/contracts/domain-availability';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
+import { itemTypeSchema } from '@namefi-astra/contracts/shared-schemas';
 import { toUnicodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
 import { SearchMode } from './types';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/shadcn/tabs';

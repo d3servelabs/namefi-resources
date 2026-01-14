@@ -1,4 +1,4 @@
-import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import type { RecordType } from '@namefi-astra/zod-dns';
 import { recordSchema } from '@namefi-astra/zod-dns';
 import { z } from 'zod';

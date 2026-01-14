@@ -21,7 +21,7 @@ import {
 import { isNil } from 'ramda';
 import { useMemo, useRef, useState } from 'react';
 import { toast } from 'sonner';
-import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import {
   Copy,
   Info,

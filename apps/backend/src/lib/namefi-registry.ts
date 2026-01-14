@@ -12,6 +12,7 @@ import {
 } from '@namefi-astra/db';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
+import type { DomainAvailabilityInfo } from '@namefi-astra/contracts/domain-availability';
 import { subDays } from 'date-fns';
 import { ParseResultType, parseDomain } from 'parse-domain';
 import { groupBy, isNil, pluck, filter, isNotNil, last } from 'ramda';
@@ -229,25 +230,7 @@ export const getSubdomainPriceInUsd = async (
   return poweredbyNamefiDomain.costPerYearInUsdCents / 100;
 };
 
-export type DomainAvailabilityInfo = {
-  domain: NamefiNormalizedDomain;
-  availability: boolean;
-  /**
-   * @remarks do not use this directly, only use computeChargesInUsdOrThrow
-   */
-  pricingDetails: DomainPricingDetails | undefined;
-  /**
-   * Current owner of the domain
-   */
-  currentOwner: string | undefined;
-  registrarKey?: string;
-  durationValidationInYears?: {
-    min: number;
-    max: number;
-  };
-  importable: boolean;
-  supported: boolean;
-};
+export type { DomainAvailabilityInfo };
 
 export type TldPricingInfo = {
   tld: string;

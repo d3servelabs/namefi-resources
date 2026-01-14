@@ -8,7 +8,7 @@ import { TagsDisplay } from './tags-display';
 import { UpvoteIcon } from './upvote-icon';
 import { usePendingToast } from '../../hooks/use-pending-toast';
 import type { UseHuntVote } from '@/hooks/use-hunt-vote';
-import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 
 export type Domain = {
   domainName: NamefiNormalizedDomain;

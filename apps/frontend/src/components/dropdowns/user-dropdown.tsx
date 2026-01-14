@@ -64,7 +64,7 @@ import { AnimatePresence, motion } from 'motion/react';
 import { cn } from '@/lib/cn';
 import { useTRPC } from '@/lib/trpc';
 import { useQuery } from '@tanstack/react-query';
-import { Permission } from '@namefi-astra/utils';
+import { Permission } from '@namefi-astra/utils/permissions';
 import { useHasPermissions } from '@/components/access/PermissionGate';
 import { useAdminFeatureFlagsSheet } from '@/components/admin/feature-flags/context';
 import { AdminFeatureFlagsSheet } from '@/components/admin/feature-flags/sheet';

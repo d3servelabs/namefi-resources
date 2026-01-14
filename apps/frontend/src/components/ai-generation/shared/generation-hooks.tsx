@@ -8,7 +8,7 @@ import {
   type QueryKey,
 } from '@tanstack/react-query';
 import { toast } from 'sonner';
-import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import type { LogoFormData } from '../logo-generator';
 import type { PosterFormData } from '../poster-generator';
 import type {

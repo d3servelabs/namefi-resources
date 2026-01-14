@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/shadcn/dialog';
 import { UserWalletAvatar } from '@/components/user-avatar';
 import { AutoTruncateTextV2 } from '@/components/auto-truncate-text-v2';
-import { checksumWalletAddressSchema } from '@namefi-astra/utils';
+import { checksumWalletAddressSchema } from '@namefi-astra/utils/namefi-flavor';
 import { Loader2, Wallet2, AlertCircle, CheckCircle } from 'lucide-react';
 import {
   useCallback,

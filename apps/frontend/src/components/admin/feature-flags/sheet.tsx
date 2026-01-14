@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo } from 'react';
-import { Permission } from '@namefi-astra/utils';
+import { Permission } from '@namefi-astra/utils/permissions';
 import { useHasPermissions } from '@/components/access/PermissionGate';
 import { useAdminFeatureFlags, useAdminFeatureFlagsSheet } from './context';
 import { useAdminFeatureFlag } from './use-flag';

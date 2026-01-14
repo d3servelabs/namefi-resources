@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, useMemo, useId } from 'react';
 import type { Domain } from '@/components/hunt/domains-list-item';
-import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 
 interface UseAnimatedListOptions {
   /**

@@ -2,7 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { useMemo, type ReactNode } from 'react';
-import { Permission } from '@namefi-astra/utils';
+import { Permission } from '@namefi-astra/utils/permissions';
 import { useTRPC } from '@/lib/trpc';
 
 type PermissionGateMode = 'normal' | 'inverted';

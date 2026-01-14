@@ -1,4 +1,4 @@
-import { NFSC_CONTRACT_ADDRESS } from '@namefi-astra/utils';
+import { NFSC_CONTRACT_ADDRESS } from '@namefi-astra/utils/contract-addresses';
 import { NfscAbi } from '@namefi-astra/utils/abis/nfsc';
 import { useMemo } from 'react';
 import { type Hex, formatUnits, parseUnits, zeroAddress } from 'viem';

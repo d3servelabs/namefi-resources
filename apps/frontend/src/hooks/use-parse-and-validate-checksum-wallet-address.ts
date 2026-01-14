@@ -1,4 +1,4 @@
-import { checksumWalletAddressSchema } from '@namefi-astra/utils';
+import { checksumWalletAddressSchema } from '@namefi-astra/utils/namefi-flavor';
 import * as React from 'react';
 
 /**

@@ -9,8 +9,9 @@ import type { DeepPartial } from '@/lib/types/utils';
 import {
   type PaymentProviderDetails,
   isNfscPayment,
-} from '@namefi-astra/db/types';
-import { CHAINS, NFSC_CONTRACT_ADDRESS } from '@namefi-astra/utils';
+} from '@namefi-astra/contracts/payment-provider';
+import { CHAINS } from '@namefi-astra/utils/chains';
+import { NFSC_CONTRACT_ADDRESS } from '@namefi-astra/utils/contract-addresses';
 import type { ConfirmationToken } from '@stripe/stripe-js';
 import Image from 'next/image';
 import { formatUnits } from 'viem';

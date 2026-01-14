@@ -6,7 +6,7 @@ import { type LucideIcon, Trophy, Sparkles, ArrowDown } from 'lucide-react';
 import { cn } from '@/lib/cn';
 import { ContainerTextFlip } from '@/components/ui/aceternity/container-text-flip';
 import { DomainHuntWidget } from './domain-hunt-widget';
-import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
+import { namefiNormalizedDomainSchema } from '@namefi-astra/utils/namefi-flavor';
 import { HUNT_CAMPAIGN_KEYS } from '@/lib/hunt-campaign-keys';
 
 export interface ConversionNotification {

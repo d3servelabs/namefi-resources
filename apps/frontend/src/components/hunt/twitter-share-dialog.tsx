@@ -26,7 +26,7 @@ import { useState, useCallback, useMemo } from 'react';
 import { toast } from 'sonner';
 import { usePendingToast } from '@/hooks/use-pending-toast';
 import { Twitter, ExternalLink, Copy, CheckCircle } from 'lucide-react';
-import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { useInteractionLoggers } from '@/components/providers/analytics';
 import { InteractionLoggingEventName } from '@/lib/analytics-events';
 

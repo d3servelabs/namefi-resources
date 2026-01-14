@@ -21,7 +21,7 @@ import {
   type AugmentationFor,
   type PartialEventFor,
 } from '@/lib/analytics-events';
-import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 
 interface PreAuthSignalsContextValue {
   signals: PreAuthSignal[];

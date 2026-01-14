@@ -42,11 +42,9 @@ import { Label } from '@/components/ui/shadcn/label';
 import confetti from 'canvas-confetti';
 import { useInteractionLoggers } from '@/components/providers/analytics';
 import { InteractionLoggingEventName } from '@/lib/analytics-events';
-import {
-  CHAINS,
-  getNftExplorerUrl,
-  type NamefiNormalizedDomain,
-} from '@namefi-astra/utils';
+import { CHAINS } from '@namefi-astra/utils/chains';
+import { getNftExplorerUrl } from '@namefi-astra/utils/nft-hash';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
 import type {
   ColumnDef,

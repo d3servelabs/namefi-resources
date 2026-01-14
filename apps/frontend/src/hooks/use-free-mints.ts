@@ -4,7 +4,7 @@ import { useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useTRPC, type AppRouterOutput } from '@/lib/trpc';
 import { useAuth } from '@/hooks/use-auth';
-import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 
 type GetUserClaimsResponse = AppRouterOutput['freeClaims']['getUserClaims'];
 

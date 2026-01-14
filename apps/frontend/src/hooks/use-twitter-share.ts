@@ -1,7 +1,7 @@
 import { useState, useCallback, useMemo, useEffect } from 'react';
 import { toast } from 'sonner';
 import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
-import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { useTRPC } from '@/lib/trpc';
 import { HUNT_CAMPAIGN_KEYS } from '@/lib/hunt-campaign-keys';
 import { InteractionLoggingEventName } from '@/lib/analytics-events';

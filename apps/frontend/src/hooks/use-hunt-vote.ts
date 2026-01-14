@@ -7,7 +7,7 @@ import { useInteractionLoggers } from '@/components/providers/analytics';
 import { InteractionLoggingEventName } from '@/lib/analytics-events';
 import { useTRPC, type AppRouterInput } from '@/lib/trpc';
 import { toast } from 'sonner';
-import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { useHuntVoteChoice } from './use-hunt-vote-choice';
 import {
   defaultShareConfig,

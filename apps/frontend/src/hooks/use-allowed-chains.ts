@@ -1,6 +1,6 @@
 import { useTRPC } from '@/lib/trpc';
 import { config } from '@/lib/env';
-import { CHAINS, getChain } from '@namefi-astra/utils';
+import { CHAINS, getChain } from '@namefi-astra/utils/chains';
 import { filter, isNotNil } from 'ramda';
 import { useQuery } from '@tanstack/react-query';
 import type { Chain } from 'viem';

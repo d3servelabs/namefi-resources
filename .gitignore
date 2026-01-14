@@ -234,3 +234,5 @@ tmp/
 
 settings.local.json
 .COMMITMSG*
+
+*.cpuprofile

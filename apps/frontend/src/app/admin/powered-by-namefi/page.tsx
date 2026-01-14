@@ -79,7 +79,7 @@ import { toast } from 'sonner';
 import type { AppRouterOutput } from '@/lib/trpc';
 import { AsyncButton } from '@/components/buttons/async-button';
 import { useQueryClient } from '@tanstack/react-query';
-import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
+import { namefiNormalizedDomainSchema } from '@namefi-astra/utils/namefi-flavor';
 
 // Form schema for creating powered by namefi domains
 const createDomainSchema = z.object({

@@ -24,10 +24,8 @@ import { toast } from 'sonner';
 import { usePendingToast } from '../../hooks/use-pending-toast';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import {
-  type NamefiNormalizedDomain,
-  namefiNormalizedDomainSchema,
-} from '@namefi-astra/utils';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
+import { namefiNormalizedDomainSchema } from '@namefi-astra/utils/namefi-flavor';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useInteractionLoggers } from '@/components/providers/analytics';
 import { InteractionLoggingEventName } from '@/lib/analytics-events';

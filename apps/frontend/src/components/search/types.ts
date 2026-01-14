@@ -1,9 +1,7 @@
 import type { OriginRuntime } from '@/lib/origin';
 import type { FC } from 'react';
-import {
-  namefiNormalizedDomainSchema,
-  type NamefiNormalizedDomain,
-} from '@namefi-astra/utils';
+import { namefiNormalizedDomainSchema } from '@namefi-astra/utils/namefi-flavor';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { z } from 'zod';
 
 export type LandingComponent = FC<{

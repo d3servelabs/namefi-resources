@@ -2,8 +2,8 @@ import { useCallback } from 'react';
 import { useTRPCClient } from '@/lib/trpc';
 import { useCartContext } from '@/components/providers/cart';
 import { toast } from 'sonner';
-import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
-import { isDomainAssumedBeyondLateRenewalPeriod } from '@namefi-astra/utils';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
+import { isDomainAssumedBeyondLateRenewalPeriod } from '@namefi-astra/utils/domain-dates';
 
 export interface RenewalResult {
   domain: string;

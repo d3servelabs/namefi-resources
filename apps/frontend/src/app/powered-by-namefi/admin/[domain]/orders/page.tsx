@@ -11,7 +11,7 @@ import {
 import { OrdersDataTable } from '@/components/powered-by-namefi/OrdersDataTable';
 import { OrdersTableSkeleton } from '@/components/powered-by-namefi/OrdersTableSkeleton';
 import { PbnOwnerGuard } from '@/components/admin/pbn-owner-guard';
-import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { useMemo } from 'react';
 import { PageShell } from '@/components/page-shell';
 

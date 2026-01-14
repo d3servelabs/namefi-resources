@@ -18,7 +18,7 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/shadcn/alert-dialog';
 import { PermissionGate } from '@/components/access/PermissionGate';
-import { Permission } from '@namefi-astra/utils';
+import { Permission } from '@namefi-astra/utils/permissions';
 
 type ExportTrackingRecord = {
   id: string;

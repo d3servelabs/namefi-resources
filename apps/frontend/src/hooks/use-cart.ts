@@ -13,13 +13,13 @@ import {
   isDomainRegistrable,
   getDomainPricingForOperation,
   type DomainAvailabilityInfo,
-} from '@namefi-astra/backend/trpc/types';
-import { itemTypeSchema } from '@namefi-astra/db/types';
+} from '@namefi-astra/contracts/domain-availability';
+import { itemTypeSchema } from '@namefi-astra/contracts/shared-schemas';
 import {
   computeChargesInUsdOrThrow,
   usdToCents,
 } from '@namefi-astra/registrars/multi-year-pricing';
-import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { useDebounceCallback } from 'usehooks-ts';
 import { LocalStorageKeys } from '@/lib/local-storage-keys';
 

@@ -2,8 +2,8 @@ import { useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useTRPC } from '@/lib/trpc';
 import { differenceInYears } from 'date-fns';
-import { isDomainAssumedBeyondLateRenewalPeriod } from '@namefi-astra/utils';
-import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import { isDomainAssumedBeyondLateRenewalPeriod } from '@namefi-astra/utils/domain-dates';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 
 export type RenewalErrorCode =
   | 'DOMAIN_DETAILS_LOAD_FAILED'

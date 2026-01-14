@@ -31,7 +31,7 @@ import {
   computeChargesInUsdOrThrow,
   usdToCents,
 } from '@namefi-astra/registrars/multi-year-pricing';
-import type { DomainAvailabilityInfo } from '@namefi-astra/backend/trpc/types';
+import type { DomainAvailabilityInfo } from '@namefi-astra/contracts/domain-availability';
 import {
   AlertDialog,
   AlertDialogCancel,
