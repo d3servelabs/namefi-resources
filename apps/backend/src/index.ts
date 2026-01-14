@@ -33,6 +33,41 @@ type HonoVariables = {
 const app = new Hono<{ Variables: HonoVariables }>();
 const logger = createLogger({ module: 'index', context: 'Main' });
 
+function isHostnameAllowed(
+  hostname: string,
+  allowedHostnames: string[],
+): boolean {
+  return allowedHostnames.some((pattern) => {
+    if (pattern === hostname) return true;
+
+    // Support simple suffix match (e.g. .vercel.app)
+    if (pattern.startsWith('.') && hostname.endsWith(pattern)) return true;
+
+    // Support glob patterns (e.g. namefi-astra-*-d3servelabs.vercel.app)
+    if (pattern.includes('*')) {
+      // Remove regex anchors if present to normalize
+      const cleanPattern = pattern.replace(/^\^/, '').replace(/\$$/, '');
+
+      // Security: Validate pattern only contains safe characters (letters, digits, dashes, dots, and *)
+      // This prevents regex injection attacks
+      const safePatternRegex = /^[a-zA-Z0-9.*-]+$/;
+      if (!safePatternRegex.test(cleanPattern)) {
+        // Reject patterns with unsafe characters
+        return false;
+      }
+
+      const regexStr = `^${
+        cleanPattern
+          .replace(/\./g, '\\.') // Escape dots
+          .replace(/\*/g, '.*') // Convert glob * to regex .*
+      }$`;
+      return new RegExp(regexStr).test(hostname);
+    }
+
+    return false;
+  });
+}
+
 app.use(async (...args) => {
   const allowedHostnames: string[] = [
     ...config.NAMEFI_FIRST_PARTY_HOSTNAMES,
@@ -54,7 +89,7 @@ app.use(async (...args) => {
             return null;
           }
 
-          if (allowedHostnames.includes(parsedOrigin.hostname)) {
+          if (isHostnameAllowed(parsedOrigin.hostname, allowedHostnames)) {
             return origin;
           }
         } catch (error) {

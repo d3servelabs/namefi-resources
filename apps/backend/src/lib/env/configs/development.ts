@@ -15,6 +15,7 @@ const developmentConfig: ConfigInput = {
     'astra.namefi.dev',
     'poweredby.namefi.dev',
     'namefi.dev',
+    'namefi-astra-*-d3servelabs.vercel.app',
   ],
   ALLOW_ALL_ORIGINS: false,
   ALLOWED_CHAINS: [chains.sepolia.id],
