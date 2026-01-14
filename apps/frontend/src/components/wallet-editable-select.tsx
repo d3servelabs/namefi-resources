@@ -94,7 +94,7 @@ export function WalletEditableSelect({
   }, [chains, onChainIdChange]);
   return (
     <div className="flex flex-col gap-2 w-full">
-      <div className="relative flex items-center">
+      <div className="flex items-center w-full">
         {allowChangeChain && (
           <Select
             value={selectedChainId?.toString() ?? defaultChainId.toString()}
@@ -115,56 +115,63 @@ export function WalletEditableSelect({
             </SelectContent>
           </Select>
         )}
-        {!allowChangeChain && icon && (
-          <div className="absolute left-3 flex items-center">{icon}</div>
-        )}
+        <div className="relative flex-1">
+          {icon ? (
+            <div className="absolute left-3 top-1/2 -translate-y-1/2 flex items-center">
+              {icon}
+            </div>
+          ) : null}
 
-        <Input
-          value={localValue.input}
-          onChange={handleInputChange}
-          placeholder={placeholder}
-          ref={inputRef}
-          className={cn(
-            'h-12 rounded-md px-3 py-1',
-            !allowChangeChain && icon && 'pl-9',
-            options.length > 0 && 'pr-9',
-            className,
-          )}
-          disabled={disabled}
-        />
-        {options.length > 0 && (
-          <Select
-            value={localValue.selected}
-            onValueChange={handleSelectChange}
-          >
-            <SelectTrigger className="absolute right-3 border-none dark:bg-transparent" />
-            <SelectContent
-              align="end"
-              alignOffset={-12}
-              position="popper"
-              side="bottom"
-              sideOffset={10}
-              style={{ width: width ? `${width}px` : undefined }}
+          <Input
+            value={localValue.input}
+            onChange={handleInputChange}
+            placeholder={placeholder}
+            ref={inputRef}
+            className={cn(
+              'h-12 rounded-md px-3 py-1',
+              icon && 'pl-9',
+              options.length > 0 && 'pr-9',
+              className,
+            )}
+            disabled={disabled}
+          />
+          {options.length > 0 && (
+            <Select
+              value={localValue.selected}
+              onValueChange={handleSelectChange}
             >
-              {options.map((option) => (
-                <SelectItem
-                  key={option.walletAddress}
-                  value={option.walletAddress}
-                >
-                  <div className="flex items-center gap-2">
-                    <Badge>
-                      {option.isLinkedWallet ? 'Linked' : 'Connected'}
-                    </Badge>
-                    <NetworkLogo network={CHAINS.base.id} className="size-4" />
-                    {isMobile
-                      ? getShortAddress(option.walletAddress)
-                      : option.walletAddress}
-                  </div>
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        )}
+              <SelectTrigger className="absolute right-3 top-1/2 -translate-y-1/2 border-none dark:bg-transparent" />
+              <SelectContent
+                align="end"
+                alignOffset={-12}
+                position="popper"
+                side="bottom"
+                sideOffset={10}
+                style={{ width: width ? `${width}px` : undefined }}
+              >
+                {options.map((option) => (
+                  <SelectItem
+                    key={option.walletAddress}
+                    value={option.walletAddress}
+                  >
+                    <div className="flex items-center gap-2">
+                      <Badge>
+                        {option.isLinkedWallet ? 'Linked' : 'Connected'}
+                      </Badge>
+                      <NetworkLogo
+                        network={CHAINS.base.id}
+                        className="size-4"
+                      />
+                      {isMobile
+                        ? getShortAddress(option.walletAddress)
+                        : option.walletAddress}
+                    </div>
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          )}
+        </div>
       </div>
       {(error || helpText) && (
         <div

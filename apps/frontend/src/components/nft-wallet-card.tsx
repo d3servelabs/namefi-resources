@@ -2,6 +2,7 @@
 import { NetworkLogo } from '@/components/network-logo';
 import { CartCard } from '@/components/cart-card';
 import { WalletEditableSelect } from '@/components/wallet-editable-select';
+import { UserWalletAvatar } from '@/components/user-avatar';
 import {
   useLinkedWalletAddresses,
   useUserWalletAddresses,
@@ -464,6 +465,24 @@ export function NftWalletCard({
     </TooltipProvider>
   );
 
+  const leadingIcon = useMemo(() => {
+    if (statusMeta.address) {
+      return (
+        <UserWalletAvatar
+          address={statusMeta.address}
+          className="size-5 rounded-full"
+        />
+      );
+    }
+
+    return (
+      <NetworkLogo
+        network={selectedChainId ?? defaultChainId}
+        className="size-4"
+      />
+    );
+  }, [defaultChainId, selectedChainId, statusMeta.address]);
+
   return (
     <CartCard title="Receiving Wallet or ENS">
       <div className="flex items-start gap-2">
@@ -481,12 +500,7 @@ export function NftWalletCard({
           error={error || undefined}
           disabled={!optionsReady || disabled}
           helpText={helpContent}
-          icon={
-            <NetworkLogo
-              network={selectedChainId ?? defaultChainId}
-              className="size-4"
-            />
-          }
+          icon={leadingIcon}
         />
       </div>
     </CartCard>
