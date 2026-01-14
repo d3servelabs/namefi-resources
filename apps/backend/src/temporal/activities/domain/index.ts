@@ -23,6 +23,8 @@ import * as AutoRenewReportAttachmentActivities from './autorenew-report-attachm
 import * as ExportExpirationReportActivities from './export-expiration-report.activities';
 import * as ExportTrackingActivities from './export-tracking.activities';
 import * as BulkBurnActivities from './bulk-burn.activities';
+import { updateDomainPreferencesAndConfig } from '#lib/domains/domain-preferences';
+
 //TODO: add a check to see if name collision is happening
 export const DomainsActivities = {
   parkDomain,
@@ -51,6 +53,8 @@ export const DomainsActivities = {
   ...ExportTrackingActivities,
   // Bulk burn activities
   ...BulkBurnActivities,
+  updateDomainPreferencesAndConfig,
+  fillDefaultDomainConfig,
 };
 
 export async function getDomainChain(
@@ -70,4 +74,16 @@ export async function getDomainChain(
   }
 
   return domain.chainId;
+}
+
+export async function fillDefaultDomainConfig(
+  normalizedDomainName: NamefiNormalizedDomain,
+  userId: string,
+) {
+  return updateDomainPreferencesAndConfig(normalizedDomainName, userId, {
+    autoEnsEnabled: false,
+    autoParkEnabled: true,
+    autoRenewEnabled: true,
+    dnssecEnabled: false,
+  });
 }

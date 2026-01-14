@@ -27,12 +27,25 @@ const { generalAlertNamefi } = typedProxyActivities({
   options: shortRunningOpts,
 });
 
+const { fillDefaultDomainConfig } = typedProxyActivities({
+  temporalEnum: TEMPORAL_ENUMS.DOMAINS,
+  options: shortRunningOpts,
+});
+
 export async function domainSetupWorkflow(
   input: DomainSetupWorkflowInput,
 ): Promise<void> {
   try {
     const { levels } = getDomainLevels(input.normalizedDomainName);
 
+    try {
+      await fillDefaultDomainConfig(input.normalizedDomainName, input.userId);
+    } catch (e: any) {
+      workflow.log.error(
+        `Failed to set defaults ${input.normalizedDomainName}`,
+        e,
+      );
+    }
     if (levels.length === 2) {
       await workflow.executeChild(resetNameserversWorkflow, {
         taskQueue: TEMPORAL_QUEUES.DOMAINS,
