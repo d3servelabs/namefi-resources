@@ -1,0 +1,25 @@
+{
+  "name": "@namefi/api-client",
+  "author": "Namefi <dev-team@namefi.io>",
+  "license": "MIT",
+  "description": "API client for Namefi",
+  "version": "0.0.0-pre.4",
+  "type": "module",
+  "files": ["dist"],
+  "dependencies": {
+    "@orpc/client": "^1.13.2",
+    "@orpc/contract": "^1.13.2",
+    "@orpc/openapi-client": "^1.13.2"
+  },
+  "exports": {
+    ".": {
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.js",
+      "default": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "peerDependencies": {
+    "zod": "^4.1.12"
+  }
+}

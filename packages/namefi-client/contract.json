@@ -1,5 +1,5 @@
 {
-  "dnsRecordsRouterOrpc": {
+  "dnsRecords": {
     "getRecords": {
       "~orpc": {
         "errorMap": {},
@@ -208,7 +208,7 @@
       }
     }
   },
-  "userDataRouterOrpc": {
+  "user": {
     "getDomains": {
       "~orpc": {
         "errorMap": {},
@@ -279,7 +279,7 @@
       }
     }
   },
-  "ordersRouterOrpc": {
+  "orders": {
     "getOrder": {
       "~orpc": {
         "errorMap": {},
@@ -326,25 +326,25 @@
         }
       }
     },
-    "instantBuy": {
+    "registerDomain": {
       "~orpc": {
         "errorMap": {},
         "meta": {
           "route": {
-            "path": "/orders/instant-buy",
+            "path": "/orders/register-domain",
             "method": "POST",
             "tags": ["orders"],
-            "operationId": "instantBuy",
-            "summary": "Instant buy domain",
+            "operationId": "registerDomain",
+            "summary": "Instant Register domain",
             "description": "Purchase a single domain instantly without adding to cart. Validates domain availability, creates payments and order, then starts the order processing workflow."
           }
         },
         "route": {
-          "path": "/orders/instant-buy",
+          "path": "/orders/register-domain",
           "method": "POST",
           "tags": ["orders"],
-          "operationId": "instantBuy",
-          "summary": "Instant buy domain",
+          "operationId": "registerDomain",
+          "summary": "Instant Register domain",
           "description": "Purchase a single domain instantly without adding to cart. Validates domain availability, creates payments and order, then starts the order processing workflow."
         }
       }
@@ -369,6 +369,79 @@
           "operationId": "getOrderPaymentMethodsDetails",
           "summary": "Get order payment methods",
           "description": "Retrieve payment method details for an order, including card info for Stripe payments and wallet addresses for on-chain payments."
+        }
+      }
+    }
+  },
+  "balance": {
+    "getBalance": {
+      "~orpc": {
+        "errorMap": {},
+        "meta": {
+          "route": {
+            "path": "/balance",
+            "method": "GET",
+            "tags": ["balance"],
+            "operationId": "getBalance",
+            "summary": "Get NFSC balance",
+            "description": "Retrieve NFSC (Namefi Stable Coin) balance across all supported blockchain chains for the authenticated user's linked wallet addresses. Returns both raw contract values and human-readable USD amounts."
+          }
+        },
+        "route": {
+          "path": "/balance",
+          "method": "GET",
+          "tags": ["balance"],
+          "operationId": "getBalance",
+          "summary": "Get NFSC balance",
+          "description": "Retrieve NFSC (Namefi Stable Coin) balance across all supported blockchain chains for the authenticated user's linked wallet addresses. Returns both raw contract values and human-readable USD amounts."
+        }
+      }
+    }
+  },
+  "search": {
+    "checkAvailability": {
+      "~orpc": {
+        "errorMap": {},
+        "meta": {
+          "route": {
+            "path": "/search/availability",
+            "method": "GET",
+            "tags": ["search"],
+            "operationId": "checkAvailability",
+            "summary": "Check domain availability",
+            "description": "Check if a domain is available for registration. Returns availability status, pricing details, current owner (if any), and registration constraints."
+          }
+        },
+        "route": {
+          "path": "/search/availability",
+          "method": "GET",
+          "tags": ["search"],
+          "operationId": "checkAvailability",
+          "summary": "Check domain availability",
+          "description": "Check if a domain is available for registration. Returns availability status, pricing details, current owner (if any), and registration constraints."
+        }
+      }
+    },
+    "getSuggestions": {
+      "~orpc": {
+        "errorMap": {},
+        "meta": {
+          "route": {
+            "path": "/search/suggestions",
+            "method": "GET",
+            "tags": ["search"],
+            "operationId": "getSuggestions",
+            "summary": "Get domain suggestions",
+            "description": "Generate domain suggestions based on a search query. Supports pagination and optional parent domain filtering for third-level domain suggestions."
+          }
+        },
+        "route": {
+          "path": "/search/suggestions",
+          "method": "GET",
+          "tags": ["search"],
+          "operationId": "getSuggestions",
+          "summary": "Get domain suggestions",
+          "description": "Generate domain suggestions based on a search query. Supports pagination and optional parent domain filtering for third-level domain suggestions."
         }
       }
     }

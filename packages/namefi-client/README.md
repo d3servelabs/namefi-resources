@@ -1,30 +1,31 @@
-# Namefi Client
+![img](https://namefi.io/logotype.svg)
 
-API client for Namefi.
+
+# [Namefi API Client](https://namefi.io)
 
 > This package is still in alpha. APIs and behavior may change without notice.
+
+> For [Full docs](https://namefi.io/public/docs/api)
 
 ## Table of Contents
 
 - [Installation](#installation)
 - [Usage](#usage)
-- [Authentication](#authentication)
-- [Contract](#contract)
 
 ## Installation
 
 ```bash
-npm install @namefi-astra/client
+npm install @namefi/api-client
 ```
 
 ## Usage
 
 ```ts
-import { createNamefiClient } from '@namefi-astra/client';
+import { createNamefiClient } from '@namefi/api-client';
 
 const client = createNamefiClient({
   authentication: {
-    apiKey: process.env.NAMEFI_API_KEY ?? '',
+    apiKey: process.env.NAMEFI_API_KEY!,
     type: 'API_KEY',
   },
   logger: true,
@@ -42,11 +43,3 @@ if (result.availability) {
   console.log('Registered', order.id);
 }
 ```
-
-## Authentication
-
-Provide an API key through the `authentication` option when creating the client.
-
-## Contract
-
-The client is generated against the bundled `contract.json` OpenAPI contract, which defines the available routes and shapes.
