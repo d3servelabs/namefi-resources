@@ -1,6 +1,7 @@
 import { relations } from 'drizzle-orm';
 import {
   aiGenerationsTable,
+  apiKeysTable,
   cartItemsTable,
   huntEdgesTable,
   linkSharesTable,
@@ -21,6 +22,7 @@ export const usersRelations = relations(usersTable, ({ many }) => ({
   wishlistedDomains: many(wishlistedDomainsTable),
   linkShares: many(linkSharesTable),
   feedbackResponses: many(feedbackResponsesTable),
+  apiKeys: many(apiKeysTable),
 }));
 
 // Cart items relations
@@ -110,3 +112,11 @@ export const feedbackResponsesRelations = relations(
     }),
   }),
 );
+
+// API keys relations
+export const apiKeysRelations = relations(apiKeysTable, ({ one }) => ({
+  user: one(usersTable, {
+    fields: [apiKeysTable.userId],
+    references: [usersTable.id],
+  }),
+}));

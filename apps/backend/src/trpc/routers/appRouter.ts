@@ -1,4 +1,5 @@
 import { createTRPCRouter, publicProcedure } from '../base';
+import { apiKeysRouter } from './apiKeysRouter';
 import { authRouter } from './authRouter';
 import { freeClaimsRouter } from './freeClaimsRouter';
 import { pbnIssuanceReservationsRouter } from './pbnIssuanceReservationsRouter';
@@ -27,6 +28,7 @@ import { dnsCacheRouter } from './dnsCacheRouter';
 export const appRouter = createTRPCRouter({
   admin: adminRouter,
   ai: aiRouter,
+  apiKeys: apiKeysRouter,
   auth: authRouter,
   freeClaims: freeClaimsRouter,
   pbnReservations: pbnIssuanceReservationsRouter,

@@ -1609,6 +1609,81 @@ export const reservationStatusEnum = pgEnum('pbn_issuance_reservation_status', [
 ]);
 
 /**
+ * API Key type enum
+ * - PLAIN: Traditional API key (random string, stored as hash)
+ * - PUBLIC_PRIVATE: ECDSA keypair where user stores private key, we store public key
+ */
+export const apiKeyTypeEnum = pgEnum('api_key_type', [
+  'PLAIN',
+  'PUBLIC_PRIVATE',
+]);
+
+/**
+ * API Keys table
+ * Stores API keys for programmatic access to user accounts
+ *
+ * Security considerations:
+ * - PLAIN keys: Only the hash is stored, original key shown once at creation
+ * - PUBLIC_PRIVATE: User generates keypair locally, only public key is stored
+ * - All create/revoke operations require EIP-712 signature for added security
+ */
+export const apiKeysTable = pgTable(
+  'api_keys',
+  {
+    ...randomUuid,
+    userId: uuid('user_id')
+      .notNull()
+      .references(() => usersTable.id, { onDelete: 'cascade' }),
+
+    // User-provided label for identification
+    name: text('name').notNull(),
+    type: apiKeyTypeEnum('type').notNull(),
+
+    // For PLAIN keys: bcrypt hash of the key
+    // For PUBLIC_PRIVATE: null (public key stored in publicKey field)
+    keyHash: text('key_hash'),
+
+    // For PUBLIC_PRIVATE keys: hex-encoded public key (uncompressed, 65 bytes -> 130 hex chars)
+    // For PLAIN keys: null
+    publicKey: text('public_key'),
+
+    // Key prefix for identification without revealing the full key
+    // Format: "nfk_<first 8 chars>" for PLAIN keys
+    // Format: "nfpk_<first 8 chars of public key>" for PUBLIC_PRIVATE keys
+    keyPrefix: text('key_prefix').notNull(),
+
+    // Expiration time - null means the key never expires
+    expiresAt: timestamp('expires_at'),
+
+    // Revocation time - null means the key is active
+    revokedAt: timestamp('revoked_at'),
+
+    // Last time the key was used for authentication
+    lastUsedAt: timestamp('last_used_at'),
+
+    ...timestamps,
+  },
+  (table) => [
+    // Primary lookup indexes
+    index('api_keys_user_id_idx').on(table.userId),
+    index('api_keys_key_prefix_idx').on(table.keyPrefix),
+
+    // For looking up active keys by user
+    index('api_keys_user_active_idx')
+      .on(table.userId, table.revokedAt)
+      .where(sql`${table.revokedAt} IS NULL`),
+
+    // Constraints
+    // PLAIN keys must have keyHash, PUBLIC_PRIVATE keys must have publicKey
+    check(
+      'api_keys_type_fields_check',
+      sql`(${table.type} = 'PLAIN' AND ${table.keyHash} IS NOT NULL AND ${table.publicKey} IS NULL)
+          OR (${table.type} = 'PUBLIC_PRIVATE' AND ${table.publicKey} IS NOT NULL AND ${table.keyHash} IS NULL)`,
+    ),
+  ],
+);
+
+/**
  * PBN Issuance Reservations table - unified system for gifts and internal reservations
  * Replaces gift_free_claims with more flexible reservation system
  */

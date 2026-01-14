@@ -533,6 +533,13 @@
       "when": 1767785833971,
       "tag": "0075_bitter_wrecking_crew",
       "breakpoints": true
+    },
+    {
+      "idx": 76,
+      "version": "7",
+      "when": 1768212707370,
+      "tag": "0076_fine_richard_fisk",
+      "breakpoints": true
     }
   ]
 }
