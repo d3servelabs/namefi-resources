@@ -1,5 +1,4 @@
 import {
-  type NfscPaymentProviderDetails,
   type PaymentSelect,
   db,
   isNfscPayment,
@@ -25,14 +24,16 @@ import {
   orderService,
   type CreateOrderItemInput,
 } from '../../services/orders/orders.service';
-import { createPayment } from '../../temporal/activities/payment.activities';
+import {
+  createPayment,
+  determineAvailablePaymentMethods,
+} from '../../temporal/activities/payment.activities';
 import { temporalClient } from '../../temporal/client';
 import { TEMPORAL_QUEUES } from '../../temporal/shared';
 import { processOrderWorkflow } from '../../temporal/workflows/processOrder.workflow';
 import type { ChargeUserWorkflowInput } from '../../temporal/workflows/chargeUser.workflow';
 import { resolve } from '../../utils/resolve';
 import { createTRPCRouter, protectedProcedure, withAudit } from '../base';
-import { instantBuyInputSchema } from '../types';
 import { validateDomainForInstantPurchaseOrThrow } from '../../lib/instant-buy';
 import { itemTypeSchema } from '@namefi-astra/db/types';
 import {
@@ -42,6 +43,8 @@ import {
 import { secrets } from '../../lib/env';
 import { logger } from '#lib/logger';
 import { config } from '#lib/env';
+import { determinePayments, getUserChainBalances } from '../../lib/payments';
+import { getChain, CHAINS as chains } from '@namefi-astra/utils';
 
 const stripe = new Stripe(secrets.STRIPE_SECRET_KEY);
 
@@ -71,6 +74,29 @@ const paymentMethodDetailsSchema = z.union([
 ]);
 
 type PaymentMethodDetails = z.infer<typeof paymentMethodDetailsSchema>;
+
+export const instantBuyInputSchema = z.object({
+  normalizedDomainName: namefiNormalizedDomainSchema,
+  durationInYears: z.number().int().min(1).max(10).default(1),
+  nftReceivinggWallet: z
+    .object({
+      walletAddress: checksumWalletAddressSchema,
+      chainId: z.number().refine(
+        (chainId) => {
+          const allowedChains = config.ALLOWED_CHAINS;
+          return allowedChains.includes(chainId);
+        },
+        {
+          message: 'Chain ID provided is not allowed',
+          path: ['nftReceivinggWallet', 'chainId'],
+        },
+      ),
+    })
+    .optional()
+    .describe(
+      'Wallet address and chain ID of the wallet that will receive the NFT, defaults to the buyer\'s wallet and "Base Chain"',
+    ),
+});
 
 // Order details schema (for getOrder)
 // We need to handle nullable metadata fields properly since DB returns null but schemas may expect undefined
@@ -179,7 +205,7 @@ export const ordersRouterOrpc = createTRPCRouter({
   /**
    * Instant buy - single domain purchase without cart
    */
-  instantBuy: withAudit(
+  registerDomain: withAudit(
     protectedProcedure,
     ({ ctx, input, auditActorExtraInfo, result }) => ({
       actorType: 'user',
@@ -187,41 +213,25 @@ export const ordersRouterOrpc = createTRPCRouter({
       actorExtraInfo: auditActorExtraInfo,
       resourceType: 'order',
       resourceId: result.id || '',
-      action: 'instant_buy',
+      action: 'register_domain',
       extraInput: input,
     }),
   )
     .meta({
       route: {
-        path: '/orders/instant-buy',
+        path: '/orders/register-domain',
         method: 'POST',
         tags: ['orders'],
-        operationId: 'instantBuy',
-        summary: 'Instant buy domain',
+        operationId: 'registerDomain',
+        summary: 'Instant Register domain',
         description:
           'Purchase a single domain instantly without adding to cart. Validates domain availability, creates payments and order, then starts the order processing workflow.',
       },
     })
-    .input(
-      instantBuyInputSchema.superRefine((input, ctx) => {
-        if (!input.nftMetadata.nftChainId) {
-          ctx.addIssue({
-            code: 'custom',
-            message: 'NFT chain ID is required',
-          });
-        }
-        if (!config.ALLOWED_CHAINS.includes(input.nftMetadata.nftChainId)) {
-          ctx.addIssue({
-            code: 'custom',
-            message: `NFT chain ID ${input.nftMetadata.nftChainId} is not allowed`,
-          });
-        }
-      }),
-    )
+    .input(instantBuyInputSchema)
     .output(orderOutputSchema)
     .mutation(async ({ ctx, input }) => {
-      const { normalizedDomainName, durationInYears, payments, nftMetadata } =
-        input;
+      const { normalizedDomainName, durationInYears } = input;
 
       // 1. Get user details from Privy
       const [error, privyUser] = await resolve(
@@ -241,43 +251,47 @@ export const ordersRouterOrpc = createTRPCRouter({
         user: { id: ctx.user.id, privyUserId: ctx.user.privyUserId },
       });
 
-      // 3. Validate payments total matches price
-      const inputPaymentsTotal = sum(pluck('amountInUsdCents', payments));
-      if (inputPaymentsTotal !== validation.priceInUsdCents) {
+      // 3. Get user's linked wallet addresses and chain balances
+      const userWalletAddresses =
+        getPrivyUserLinkedEthereumChecksumWalletAddresses({ privyUser });
+
+      if (userWalletAddresses.length === 0) {
         throw new TRPCError({
           code: 'BAD_REQUEST',
-          message: `Payments total (${inputPaymentsTotal}) does not match domain price (${validation.priceInUsdCents})`,
+          message: 'No linked wallet addresses found for user',
+        });
+      }
+      const nftReceivinggWallet = input.nftReceivinggWallet || {
+        walletAddress: userWalletAddresses[0],
+        chainId: config.ALLOWED_CHAINS.includes(chains.base.id)
+          ? chains.base.id
+          : config.ALLOWED_CHAINS[0],
+      };
+
+      // 4. Get chain balances for user's wallets
+      const chainBalances = await getUserChainBalances(userWalletAddresses);
+
+      // 5. Determine payments from NFSC balances
+      const paymentResult = determinePayments({
+        totalAmountInUsdCents: validation.priceInUsdCents,
+        chainBalances,
+        allowedMethods: ['NFSC'], // Only NFSC for API, no Stripe
+        allowZeroPayments: true,
+        defaultWalletAddress: userWalletAddresses[0],
+      });
+
+      if (paymentResult.status === 'INSUFFICIENT_FUNDS') {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message:
+            paymentResult.errorMessage ??
+            'Insufficient NFSC balance to complete purchase',
         });
       }
 
-      // 4. Validate NFSC wallet addresses are linked to user
-      const userWallets = new Set(
-        getPrivyUserLinkedEthereumChecksumWalletAddresses({ privyUser }),
-      );
-      const nfscPayments = payments
-        .map((p) => p.paymentProviderDetails)
-        .filter((p) => isNfscPayment(p)) as NfscPaymentProviderDetails[];
+      const payments = paymentResult.payments;
 
-      for (const p of nfscPayments) {
-        const validWalletAddress = checksumWalletAddressSchema.safeParse(
-          p.nfscPaymentDetails.walletAddress,
-        );
-        if (!validWalletAddress.success) {
-          throw new TRPCError({
-            code: 'BAD_REQUEST',
-            message:
-              'NFSC payment walletAddress is not a valid Ethereum wallet address',
-          });
-        }
-        if (!userWallets.has(validWalletAddress.data)) {
-          throw new TRPCError({
-            code: 'BAD_REQUEST',
-            message: 'NFSC payment walletAddress is not linked to the user',
-          });
-        }
-      }
-
-      // 5. Create order in transaction
+      // 6. Create order in transaction
       return await db.transaction(async (tx) => {
         // Create payments
         const createdPayments: PaymentSelect[] = [];
@@ -299,8 +313,8 @@ export const ordersRouterOrpc = createTRPCRouter({
               amountInUSDCents: validation.priceInUsdCents,
               userId: ctx.user.id,
               paymentIds: createdPayments.map((p) => p.id),
-              nftWalletAddress: nftMetadata.nftWalletAddress,
-              nftChainId: nftMetadata.nftChainId,
+              nftWalletAddress: nftReceivinggWallet.walletAddress,
+              nftChainId: nftReceivinggWallet.chainId,
               items: [
                 {
                   normalizedDomainName,
@@ -324,15 +338,10 @@ export const ordersRouterOrpc = createTRPCRouter({
             ),
           );
 
-        // Build per-payment metadata map and start workflow
-        const paymentsMetadata = createdPayments.reduce<{
+        // Build per-payment metadata map (empty for NFSC payments) and start workflow
+        const paymentsMetadata: {
           [paymentId: string]: ChargeUserWorkflowInput['metadata'] | undefined;
-        }>((acc, p, i) => {
-          acc[p.id] = payments[i]?.paymentMetadata as
-            | ChargeUserWorkflowInput['metadata']
-            | undefined;
-          return acc;
-        }, {});
+        } = {};
 
         try {
           await temporalClient.workflow.start(processOrderWorkflow, {
