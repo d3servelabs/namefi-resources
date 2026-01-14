@@ -10,8 +10,9 @@ import { AutoRenewDailyReport } from '../../../mail/templates/autorenew-daily-re
 import {
   generateAutoRenewReportCsv,
   generateAutoRenewReportMarkdown,
-  checkDomainTransferPeriods,
 } from './autorenew-report-attachments.activities';
+
+const SEND_TO_SLACK_DIRECT = false;
 
 export interface AutoRenewMetrics {
   reportDate: Date;
@@ -404,7 +405,6 @@ ${
 
   return { title, content };
 }
-
 /**
  * Send auto-renewal report to Slack with note about email attachments
  * Note: Slack webhooks don't support file uploads. Files are sent via email.
@@ -415,6 +415,9 @@ export async function sendAutoRenewReportToSlackWithAttachments(
   input: AutoRenewReportInput,
   metrics: AutoRenewMetrics,
 ): Promise<void> {
+  if (!SEND_TO_SLACK_DIRECT) {
+    return;
+  }
   const ctx = Context.current();
   const webhookUrl = secrets.NAMEFI_ASSET_REPORT_SLACK_WEBHOOK_URL;
 
@@ -477,6 +480,9 @@ export async function sendAutoRenewReportToSlack(
   title: string,
   content: string,
 ): Promise<void> {
+  if (!SEND_TO_SLACK_DIRECT) {
+    return;
+  }
   const ctx = Context.current();
   const webhookUrl = secrets.NAMEFI_ASSET_REPORT_SLACK_WEBHOOK_URL;
 
@@ -558,7 +564,10 @@ export async function sendAutoRenewReportEmailWithAttachments(
     const plain = await render(emailTemplate, { plainText: true });
 
     await sendMail({
-      to: ['reports+autorenew@d3serve.xyz'],
+      to: [
+        'reports+autorenew@d3serve.xyz',
+        'asset-report-aaaao27zt2zkdocu7mqxfdxvzm@namefi.slack.com',
+      ],
       subject: title,
       content: {
         html,
@@ -612,7 +621,10 @@ export async function sendAutoRenewReportEmail(
     const plain = await render(emailTemplate, { plainText: true });
 
     await sendMail({
-      to: ['reports+autorenew@d3serve.xyz'],
+      to: [
+        'reports+autorenew@d3serve.xyz',
+        'asset-report-aaaao27zt2zkdocu7mqxfdxvzm@namefi.slack.com',
+      ],
       subject: title,
       content: {
         html,

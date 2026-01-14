@@ -24,6 +24,8 @@ import React from 'react';
 import { render } from '@react-email/components';
 import { NftManagementReport } from '../../../../mail/templates/nft-management-report';
 
+const SEND_TO_SLACK_DIRECT = false;
+
 const MAX_GRACE_PERIOD_DAYS = 45;
 
 export interface ReportMetrics {
@@ -1209,7 +1211,6 @@ function formatCriticalDomainsTable(
     ...tableRows,
   ].join('\n');
 }
-
 /**
  * Send the formatted report to Slack (if webhook URL is configured)
  */
@@ -1217,6 +1218,9 @@ export async function sendNftManagementReportToSlack(
   title: string,
   content: string,
 ): Promise<void> {
+  if (!SEND_TO_SLACK_DIRECT) {
+    return;
+  }
   const ctx = Context.current();
   const webhookUrl = secrets.NAMEFI_ASSET_REPORT_SLACK_WEBHOOK_URL;
 
@@ -1287,7 +1291,10 @@ export async function sendNftManagementReportEmail(
     const plain = await render(emailTemplate, { plainText: true });
 
     await sendMail({
-      to: ['reports+nft@d3serve.xyz'],
+      to: [
+        'reports+nft@d3serve.xyz',
+        'asset-report-aaaao27zt2zkdocu7mqxfdxvzm@namefi.slack.com',
+      ],
       subject: title,
       content: {
         html,

@@ -28,6 +28,7 @@ import {
 import { maybeGetUserEmail } from '../notify.activities';
 import { privyClient } from '../../../trpc/utils';
 
+const SEND_TO_SLACK_DIRECT = false;
 const ENABLE_EXPORT_EMAILS = false;
 /** Minimum hours domain must be confirmed out of account before time-based burn */
 const MIN_HOURS_FOR_TIME_BASED_BURN = 36;
@@ -883,7 +884,10 @@ export async function sendExportTrackingReportEmail(
     });
 
     await sendMail({
-      to: ['reports+exports@d3serve.xyz'],
+      to: [
+        'reports+exports@d3serve.xyz',
+        'asset-report-aaaao27zt2zkdocu7mqxfdxvzm@namefi.slack.com',
+      ],
       subject: title,
       content: {
         html: htmlContent,
