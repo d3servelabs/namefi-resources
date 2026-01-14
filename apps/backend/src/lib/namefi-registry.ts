@@ -1,7 +1,6 @@
 import {
   db,
   pbnIssuanceReservationsTable,
-  indexedDomainsTable,
   namefiNftOwnersView,
   namefiNftOwnersCte,
   orderItemStatusSchema,
@@ -10,19 +9,12 @@ import {
   ordersTable,
   usersTable,
   type PoweredByNamefiDomainSelect,
-  namefiNftCte,
 } from '@namefi-astra/db';
-import { createRegistrarService } from '@namefi-astra/registrars/registrars/main-registrar';
-import {
-  CentralNicRegistrarService,
-  DynadotRegistrarService,
-  R53RegistrarService,
-} from '@namefi-astra/registrars/registrars/sub-registrars';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 import { subDays } from 'date-fns';
 import { ParseResultType, parseDomain } from 'parse-domain';
-import { groupBy, isNil, pluck, filter, isNotNil } from 'ramda';
+import { groupBy, isNil, pluck, filter, isNotNil, last } from 'ramda';
 import { config } from '#lib/env';
 import { userQualifiesForDomainNamePromo } from '#lib/user-promo';
 import { getDomainLevels } from './get-domain-levels';
@@ -35,26 +27,18 @@ import { DomainAvailability } from '@namefi-astra/registrars/lib/abstract-regist
 import { toPunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
 
 import type {
-  AbstractRegistrarService,
   DomainPricingDetails,
   PricingDetails,
 } from '@namefi-astra/registrars/lib/abstract-registrar/index';
 import { resolve } from '@namefi-astra/utils/promises/resolve';
 import { and, eq, gt, inArray, isNull, or, sql, ne } from 'drizzle-orm';
-import { secrets } from '#lib/env';
-import { createLogger, logger } from '#lib/logger';
+import { logger } from '#lib/logger';
 import { computeChargesInUsdOrThrow } from '@namefi-astra/registrars/multi-year-pricing';
 import { getDomainDurationConstraints } from './domains/duration-constraints';
 import pMap from 'p-map';
 import { maybeGetUserEmail } from '#temporal/activities/notify.activities';
 import type { NamefiNftOwnersSelect } from '@namefi-astra/db';
 import { Registrars } from '@namefi-astra/registrars/registrars/registrars-keys';
-import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
-import {
-  type DomainIndexFunctions,
-  createInMemoryDomainIndex,
-} from '@namefi-astra/registrars/registrars/centralnic/domain-index';
-import { normalizeDomainName } from '@namefi-astra/zod-dns';
 import { sldRegistrar } from './epp-registrars';
 
 export { sldRegistrar };
@@ -220,10 +204,10 @@ export const getSubdomainPriceInUsd = async (
 ) => {
   if (isFreeMint) return 0;
   const { parentDomain, levels } = getDomainLevels(_subdomain);
-  // Validate that this is actually a subdomain (3LD)
-  if (levels?.length !== 3) {
+  // Validate that this is actually a subdomain
+  if (!(levels?.length >= 3)) {
     logger.warn(
-      `getSubdomainPriceInUsd called with non-3LD domain: ${_subdomain}`,
+      `getSubdomainPriceInUsd called with non-subdomain: ${_subdomain}`,
     );
     return null;
   }
@@ -312,7 +296,7 @@ export const getDomainListInfo = async (
     nfts.map((nft) => [nft.normalizedDomainName, nft]),
   ) as Map<NamefiNormalizedDomain, NamefiNftOwnersSelect>;
 
-  const { sld = [], _3ld = [] } = groupBy((domain) => {
+  const { eppDomain = [], subdomain = [] } = groupBy((domain) => {
     // Parse the domain to extract its components
     const domainParseResult = parseDomain(domain);
     // Return default values for invalid or unsupported domains
@@ -329,37 +313,37 @@ export const getDomainListInfo = async (
     }
 
     const { levels } = getDomainLevels(domain);
-    if (levels.length !== 2 && levels.length !== 3) {
+    if (!(levels.length >= 2)) {
       return 'invalid';
     }
     if (levels.length === 2) {
-      return 'sld';
+      return 'eppDomain';
     }
-    if (levels.length === 3) {
-      return '_3ld';
+    if (levels.length >= 3) {
+      return 'subdomain';
     }
 
     return 'invalid';
   }, domains);
 
-  const [sldDomainsResponse, _3ldDomainsResponse] = await Promise.all([
-    _getSldDomainListInfo(sld, nftMap),
+  const [eppDomainsResponse, subdomainsResponse] = await Promise.all([
+    _getEppDomainListInfo(eppDomain, nftMap),
     Promise.all(
-      _3ld.map(
-        async (domain) => await _get3ldDomainListInfo(domain, nftMap, user),
+      subdomain.map(
+        async (domain) => await _getSubdomainListInfo(domain, nftMap, user),
       ),
     ),
   ]);
 
-  const sldDomains = new Map(
-    sldDomainsResponse?.map((domain) => [domain.domain, domain]) ?? [],
+  const eppDomains = new Map(
+    eppDomainsResponse?.map((domain) => [domain.domain, domain]) ?? [],
   );
-  const _3ldDomains = new Map(
-    _3ldDomainsResponse?.map((domain) => [domain.domain, domain]) ?? [],
+  const subdomains = new Map(
+    subdomainsResponse?.map((domain) => [domain.domain, domain]) ?? [],
   );
 
   return domains.map((domain) => {
-    const domainInfo = sldDomains.get(domain) || _3ldDomains.get(domain);
+    const domainInfo = eppDomains.get(domain) || subdomains.get(domain);
     if (isNil(domainInfo)) {
       return generateUnavailableDomainInfo(domain);
     }
@@ -468,7 +452,7 @@ const preferRegistrar = (
   return candidatePriority < currentPriority;
 };
 
-const _getSldDomainListInfo = async (
+const _getEppDomainListInfo = async (
   domains: NamefiNormalizedDomain[],
   nftMap: Map<NamefiNormalizedDomain, NamefiNftOwnersSelect>,
 ) => {
@@ -526,15 +510,15 @@ const _getSldDomainListInfo = async (
   });
 };
 
-const _get3ldDomainListInfo = async (
+const _getSubdomainListInfo = async (
   domain: NamefiNormalizedDomain,
   nftMap: Map<NamefiNormalizedDomain, NamefiNftOwnersSelect>,
   user?: { privyUserId: string } | null,
 ) => {
   const { parentDomain, levels } = getDomainLevels(domain);
-  const prefix = levels[2];
+  const prefix = last(levels);
 
-  if (!parentDomain) {
+  if (!parentDomain || !prefix) {
     return generateUnavailableDomainInfo(domain, false);
   }
 

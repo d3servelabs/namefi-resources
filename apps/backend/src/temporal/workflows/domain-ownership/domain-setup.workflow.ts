@@ -46,7 +46,7 @@ export async function domainSetupWorkflow(
         }),
         workflowIdReusePolicy: 'ALLOW_DUPLICATE',
       });
-    } else if (levels.length === 3) {
+    } else if (levels.length >= 3) {
       // TODO: Implement domain setup for 3 levels
       return;
     } else {

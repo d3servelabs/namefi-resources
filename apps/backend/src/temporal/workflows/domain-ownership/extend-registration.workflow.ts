@@ -141,7 +141,7 @@ export async function extendDomainRegistrationWorkflow({
       chainId,
       userId,
     });
-  } else if (levels.length === 3) {
+  } else if (levels.length >= 3) {
     const allowedParentDomains = await getPoweredByNamefi3PDomains();
     if (
       !(

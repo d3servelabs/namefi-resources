@@ -49,6 +49,6 @@ export const getDomainLevels = (
 
   return {
     levels,
-    parentDomain: publicSuffixPlusOne as NamefiNormalizedDomain,
+    parentDomain: reverse(levels).slice(1).join('.') as NamefiNormalizedDomain,
   };
 };

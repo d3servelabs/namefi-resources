@@ -51,7 +51,7 @@ export async function getDomainDurationConstraints(
 
     return { minYears: 1, maxYears: 10 };
   }
-  if (levels.length === 3) {
+  if (levels.length >= 3) {
     if (!parentDomain) {
       throw new Error(
         `Domain ${domainName} is not a valid powered by namefi 3P domain`,

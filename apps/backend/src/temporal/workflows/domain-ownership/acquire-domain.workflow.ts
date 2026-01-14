@@ -66,7 +66,7 @@ export async function acquireDomainWorkflow(
   if (levels.length === 2) {
     const details = await _acquireSldDomain(input);
     expirationTimeInSeconds = getUnixTime(details.expirationTime);
-  } else if (levels.length === 3) {
+  } else if (levels.length >= 3) {
     failOnMintingError = true; // Subdomains require NFT minting to be successful
     const allowedParentDomains = await getPoweredByNamefi3PDomains();
     if (

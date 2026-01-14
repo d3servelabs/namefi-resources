@@ -236,24 +236,24 @@ async function determineHostnameFromCartItems(
     return { item, levels, parentDomain: parentDomain ?? '' };
   }, items);
 
-  const { thirdLevel = [] } = groupBy(({ levels }) => {
+  const { subdomains = [] } = groupBy(({ levels }) => {
     if (levels.length === 3) {
-      return 'thirdLevel';
+      return 'subdomains';
     }
     return 'other';
   }, itemsWithLevels);
 
-  if (thirdLevel.length !== items.length) {
+  if (subdomains.length !== items.length) {
     return 'namefi.io';
   }
 
-  const thirdLevelGroupedByParentDomain = groupBy(
+  const subdomainsGroupedByParentDomain = groupBy(
     prop('parentDomain'),
-    thirdLevel,
+    subdomains,
   );
 
-  if (Object.keys(thirdLevelGroupedByParentDomain).length === 1) {
-    const parentDomain = Object.keys(thirdLevelGroupedByParentDomain)[0];
+  if (Object.keys(subdomainsGroupedByParentDomain).length === 1) {
+    const parentDomain = Object.keys(subdomainsGroupedByParentDomain)[0];
     const poweredByNamefi3pDomains = await getPoweredByNamefi3PDomains();
     if (
       poweredByNamefi3pDomains.includes(parentDomain as NamefiNormalizedDomain)
