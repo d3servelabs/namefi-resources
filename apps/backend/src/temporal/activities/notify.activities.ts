@@ -169,12 +169,25 @@ export async function getProcessedOrderEmail({
 
   const poweredByNamefiDomain = await determineHostnameFromCartItems(items);
 
-  const subject =
-    failedItems.length > 0 && successfulItems.length > 0
-      ? `[Namefi] Order ${orderId} - Partially Processed`
-      : failedItems.length > 0
-        ? `[Namefi] Order ${orderId} - Processing Failed`
-        : `[Namefi] Order ${orderId} - Successfully Processed`;
+  const successfulRegistrations = successfulItems.filter(
+    (item) => item.type === 'REGISTER',
+  );
+
+  let subject: string;
+  if (failedItems.length > 0 && successfulItems.length > 0) {
+    subject = `[Namefi] Order ${orderId} - Partially Processed`;
+  } else if (failedItems.length > 0) {
+    subject = `[Namefi] Order ${orderId} - Processing Failed`;
+  } else if (successfulRegistrations.length > 0) {
+    if (successfulRegistrations.length === 1) {
+      const domainName = successfulRegistrations[0].normalizedDomainName;
+      subject = `[Namefi] Congratulations! Your domain ${domainName} is ready!`;
+    } else {
+      subject = `[Namefi] Congratulations! Your ${successfulRegistrations.length} domains are ready!`;
+    }
+  } else {
+    subject = `[Namefi] Order ${orderId} - Successfully Processed`;
+  }
 
   const paymentMethodDisplayName =
     displayNameForPaymentMethod(paymentMethodCharged);

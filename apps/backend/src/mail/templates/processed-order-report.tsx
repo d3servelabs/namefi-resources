@@ -77,9 +77,25 @@ export const ProcessedOrderReport = buildTemplate<ProcessedOrderProps>(
       return `**Order Summary:** ${summary.join(', ')}.`;
     }, [successfulItems, failedItems, processingItems]);
 
+    const successfulRegistrations = successfulItems.filter(
+      (item) => item.type === 'REGISTER',
+    );
+
+    let introMessage = `Your order ${orderId} has been processed.`;
+
+    if (successfulRegistrations.length > 0 && failedItems.length === 0) {
+      if (successfulRegistrations.length === 1) {
+        const domain = successfulRegistrations[0].normalizedDomainName;
+        introMessage = `Congratulations! Your domain **${domain}** has been successfully registered and is ready for use.`;
+      } else {
+        introMessage = `Congratulations! Your **${successfulRegistrations.length} domains** have been successfully registered and are ready for use.`;
+      }
+    }
+
     const messageMarkdown =
       `Hi ${recipientName ?? ''},\n\n` +
-      `Your order ${orderId} has been processed. Here are the details:`;
+      introMessage +
+      ' Here are the details:';
 
     return (
       <NamefiEmailContainer title="[Namefi] Order Processed Report">
