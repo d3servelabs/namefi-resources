@@ -11,7 +11,6 @@ import {
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/cn';
 import { getShortAddress } from '@/lib/string';
-import { CHAINS } from '@namefi-astra/utils/chains';
 import type { ChangeEvent, ReactNode } from 'react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useResizeObserver } from 'usehooks-ts';
@@ -49,15 +48,17 @@ export function WalletEditableSelect({
 }: WalletEditableSelectProps) {
   const { chains } = useAllowedChains();
   const defaultChainId = useDefaultChainId();
+  const activeChainId = selectedChainId ?? defaultChainId;
   // Track both the input value and what's selected in the dropdown
   const [localValue, setLocalValue] = useState({
     input: value,
     selected: value,
   });
   const inputRef = useRef<HTMLInputElement>(null);
+  const inputContainerRef = useRef<HTMLDivElement>(null);
   const { width = 0 } = useResizeObserver({
     // @ts-expect-error: Remove this once usehooks-ts releases bug-fix https://github.com/juliencrn/usehooks-ts/issues/681
-    ref: inputRef,
+    ref: inputContainerRef,
     box: 'border-box',
   });
   const isMobile = useIsMobile();
@@ -115,7 +116,7 @@ export function WalletEditableSelect({
             </SelectContent>
           </Select>
         )}
-        <div className="relative flex-1">
+        <div className="relative flex-1" ref={inputContainerRef}>
           {icon ? (
             <div className="absolute left-3 top-1/2 -translate-y-1/2 flex items-center">
               {icon}
@@ -147,24 +148,30 @@ export function WalletEditableSelect({
                 position="popper"
                 side="bottom"
                 sideOffset={10}
-                style={{ width: width ? `${width}px` : undefined }}
+                className="min-w-[18rem]"
+                style={{
+                  // Ensure the dropdown is readable even before the resize observer reports.
+                  width: width ? `${width}px` : '28rem',
+                  maxWidth: 'min(90vw, 42rem)',
+                }}
               >
                 {options.map((option) => (
                   <SelectItem
                     key={option.walletAddress}
                     value={option.walletAddress}
                   >
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 w-full">
                       <Badge>
                         {option.isLinkedWallet ? 'Linked' : 'Connected'}
                       </Badge>
-                      <NetworkLogo
-                        network={CHAINS.base.id}
-                        className="size-4"
-                      />
-                      {isMobile
-                        ? getShortAddress(option.walletAddress)
-                        : option.walletAddress}
+                      <NetworkLogo network={activeChainId} className="size-4" />
+                      <span
+                        className={cn('font-mono', isMobile ? '' : 'truncate')}
+                      >
+                        {isMobile
+                          ? getShortAddress(option.walletAddress)
+                          : option.walletAddress}
+                      </span>
                     </div>
                   </SelectItem>
                 ))}
