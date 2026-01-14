@@ -1,0 +1,36 @@
+{
+  "name": "@namefi-astra/client",
+  "author": "Namefi <dev-team@namefi.io>",
+  "license": "MIT",
+  "description": "API client for Namefi",
+  "version": "0.0.0-pre.1",
+  "type": "module",
+  "scripts": {
+    "clean": "git clean -xdf .next .turbo node_modules out dist",
+    "typecheck": "tsc --noEmit",
+    "build": "tsup",
+    "generate:contract": "bun run tsx ./scripts/minify-contract.ts",
+    "check": "biome check .",
+    "check:error": "biome check . --diagnostic-level=error",
+    "check:fix": "biome check --write .",
+    "check:unsafe": "biome check --write --unsafe ."
+  },
+  "dependencies": {
+    "@namefi-astra/backend": "workspace:*",
+    "@orpc/client": "^1.13.2",
+    "@orpc/contract": "^1.13.2",
+    "@orpc/openapi-client": "^1.13.2"
+  },
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "peerDependencies": {
+    "vitest": "^3.1.2",
+    "zod": "^4.1.12"
+  },
+  "devDependencies": {
+    "@namefi-astra/typescript": "workspace:*",
+    "tsup": "^8.4.0",
+    "vite-tsconfig-paths": "^5.1.4"
+  }
+}

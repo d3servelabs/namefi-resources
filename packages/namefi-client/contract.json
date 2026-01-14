@@ -1,0 +1,376 @@
+{
+  "dnsRecordsRouterOrpc": {
+    "getRecords": {
+      "~orpc": {
+        "errorMap": {},
+        "meta": {
+          "route": {
+            "path": "/dns/records",
+            "method": "GET",
+            "tags": ["dns"],
+            "operationId": "getDnsRecords",
+            "summary": "Get DNS records",
+            "description": "Retrieve all DNS records for a specified domain zone. Returns an array of DNS records including A, AAAA, CNAME, MX, TXT, and other record types."
+          }
+        },
+        "route": {
+          "path": "/dns/records",
+          "method": "GET",
+          "tags": ["dns"],
+          "operationId": "getDnsRecords",
+          "summary": "Get DNS records",
+          "description": "Retrieve all DNS records for a specified domain zone. Returns an array of DNS records including A, AAAA, CNAME, MX, TXT, and other record types."
+        }
+      }
+    },
+    "createDnsRecord": {
+      "~orpc": {
+        "errorMap": {},
+        "meta": {
+          "route": {
+            "path": "/dns/records",
+            "method": "POST",
+            "tags": ["dns"],
+            "operationId": "createDnsRecord",
+            "summary": "Create DNS record",
+            "description": "Create a new DNS record for a domain. Requires domain ownership. The record will be validated against DNS zone rules before creation."
+          }
+        },
+        "route": {
+          "path": "/dns/records",
+          "method": "POST",
+          "tags": ["dns"],
+          "operationId": "createDnsRecord",
+          "summary": "Create DNS record",
+          "description": "Create a new DNS record for a domain. Requires domain ownership. The record will be validated against DNS zone rules before creation."
+        }
+      }
+    },
+    "updateRecord": {
+      "~orpc": {
+        "errorMap": {},
+        "meta": {
+          "route": {
+            "path": "/dns/records/{id}",
+            "method": "PUT",
+            "tags": ["dns"],
+            "operationId": "updateDnsRecord",
+            "summary": "Update DNS record",
+            "description": "Update an existing DNS record by its ID. Requires domain ownership. The updated record will be validated against DNS zone rules."
+          }
+        },
+        "route": {
+          "path": "/dns/records/{id}",
+          "method": "PUT",
+          "tags": ["dns"],
+          "operationId": "updateDnsRecord",
+          "summary": "Update DNS record",
+          "description": "Update an existing DNS record by its ID. Requires domain ownership. The updated record will be validated against DNS zone rules."
+        }
+      }
+    },
+    "deleteRecord": {
+      "~orpc": {
+        "errorMap": {},
+        "meta": {
+          "route": {
+            "path": "/dns/records/{id}",
+            "method": "DELETE",
+            "tags": ["dns"],
+            "operationId": "deleteDnsRecord",
+            "summary": "Delete DNS record",
+            "description": "Delete a DNS record by its ID. Requires domain ownership. The deletion will be validated to ensure zone integrity."
+          }
+        },
+        "route": {
+          "path": "/dns/records/{id}",
+          "method": "DELETE",
+          "tags": ["dns"],
+          "operationId": "deleteDnsRecord",
+          "summary": "Delete DNS record",
+          "description": "Delete a DNS record by its ID. Requires domain ownership. The deletion will be validated to ensure zone integrity."
+        }
+      }
+    },
+    "updateRecords": {
+      "~orpc": {
+        "errorMap": {},
+        "meta": {
+          "route": {
+            "path": "/dns/records/batch",
+            "method": "PUT",
+            "tags": ["dns"],
+            "operationId": "batchUpdateDnsRecords",
+            "summary": "Batch update DNS records",
+            "description": "Update multiple DNS records in a single transaction. Requires domain ownership. All records must belong to the same zone and will be validated together."
+          }
+        },
+        "route": {
+          "path": "/dns/records/batch",
+          "method": "PUT",
+          "tags": ["dns"],
+          "operationId": "batchUpdateDnsRecords",
+          "summary": "Batch update DNS records",
+          "description": "Update multiple DNS records in a single transaction. Requires domain ownership. All records must belong to the same zone and will be validated together."
+        }
+      }
+    },
+    "createRecords": {
+      "~orpc": {
+        "errorMap": {},
+        "meta": {
+          "route": {
+            "path": "/dns/records/batch",
+            "method": "POST",
+            "tags": ["dns"],
+            "operationId": "batchCreateDnsRecords",
+            "summary": "Batch create DNS records",
+            "description": "Create multiple DNS records in a single transaction. Requires domain ownership. All records will be validated together against DNS zone rules."
+          }
+        },
+        "route": {
+          "path": "/dns/records/batch",
+          "method": "POST",
+          "tags": ["dns"],
+          "operationId": "batchCreateDnsRecords",
+          "summary": "Batch create DNS records",
+          "description": "Create multiple DNS records in a single transaction. Requires domain ownership. All records will be validated together against DNS zone rules."
+        }
+      }
+    },
+    "deleteRecords": {
+      "~orpc": {
+        "errorMap": {},
+        "meta": {
+          "route": {
+            "path": "/dns/records/batch",
+            "method": "DELETE",
+            "tags": ["dns"],
+            "operationId": "batchDeleteDnsRecords",
+            "summary": "Batch delete DNS records",
+            "description": "Delete multiple DNS records by their IDs in a single transaction. Requires domain ownership. The zone will be validated after deletion."
+          }
+        },
+        "route": {
+          "path": "/dns/records/batch",
+          "method": "DELETE",
+          "tags": ["dns"],
+          "operationId": "batchDeleteDnsRecords",
+          "summary": "Batch delete DNS records",
+          "description": "Delete multiple DNS records by their IDs in a single transaction. Requires domain ownership. The zone will be validated after deletion."
+        }
+      }
+    },
+    "parkDomain": {
+      "~orpc": {
+        "errorMap": {},
+        "meta": {
+          "route": {
+            "path": "/dns/park",
+            "method": "POST",
+            "tags": ["dns"],
+            "operationId": "parkDomain",
+            "summary": "Park domain",
+            "description": "Park a domain by setting up default parking DNS records (A and AAAA records pointing to the parking server). Optionally override existing conflicting records."
+          }
+        },
+        "route": {
+          "path": "/dns/park",
+          "method": "POST",
+          "tags": ["dns"],
+          "operationId": "parkDomain",
+          "summary": "Park domain",
+          "description": "Park a domain by setting up default parking DNS records (A and AAAA records pointing to the parking server). Optionally override existing conflicting records."
+        }
+      }
+    },
+    "isDomainParked": {
+      "~orpc": {
+        "errorMap": {},
+        "meta": {
+          "route": {
+            "path": "/dns/parked",
+            "method": "GET",
+            "tags": ["dns"],
+            "operationId": "isDomainParked",
+            "summary": "Check if domain is parked",
+            "description": "Check whether a domain has the standard parking DNS records configured. Returns true if the domain is parked, false otherwise."
+          }
+        },
+        "route": {
+          "path": "/dns/parked",
+          "method": "GET",
+          "tags": ["dns"],
+          "operationId": "isDomainParked",
+          "summary": "Check if domain is parked",
+          "description": "Check whether a domain has the standard parking DNS records configured. Returns true if the domain is parked, false otherwise."
+        }
+      }
+    }
+  },
+  "userDataRouterOrpc": {
+    "getDomains": {
+      "~orpc": {
+        "errorMap": {},
+        "meta": {
+          "route": {
+            "path": "/user/domains",
+            "method": "GET",
+            "tags": ["user"],
+            "operationId": "getUserDomains",
+            "summary": "Get user domains",
+            "description": "Retrieve all domains owned by the current user. Returns domain details including DNS status, nameservers, and expiration dates."
+          }
+        },
+        "route": {
+          "path": "/user/domains",
+          "method": "GET",
+          "tags": ["user"],
+          "operationId": "getUserDomains",
+          "summary": "Get user domains",
+          "description": "Retrieve all domains owned by the current user. Returns domain details including DNS status, nameservers, and expiration dates."
+        }
+      }
+    },
+    "getUserCart": {
+      "~orpc": {
+        "errorMap": {},
+        "meta": {
+          "route": {
+            "path": "/user/cart",
+            "method": "GET",
+            "tags": ["user", "cart"],
+            "operationId": "getUserCart",
+            "summary": "Get user cart",
+            "description": "Retrieve all items in the current user's shopping cart. Includes free claim eligibility information for each item."
+          }
+        },
+        "route": {
+          "path": "/user/cart",
+          "method": "GET",
+          "tags": ["user", "cart"],
+          "operationId": "getUserCart",
+          "summary": "Get user cart",
+          "description": "Retrieve all items in the current user's shopping cart. Includes free claim eligibility information for each item."
+        }
+      }
+    },
+    "getUserOrders": {
+      "~orpc": {
+        "errorMap": {},
+        "meta": {
+          "route": {
+            "path": "/user/orders",
+            "method": "GET",
+            "tags": ["user", "orders"],
+            "operationId": "getUserOrders",
+            "summary": "Get user orders",
+            "description": "Retrieve all order items for the current user. Returns order items sorted by creation date in descending order."
+          }
+        },
+        "route": {
+          "path": "/user/orders",
+          "method": "GET",
+          "tags": ["user", "orders"],
+          "operationId": "getUserOrders",
+          "summary": "Get user orders",
+          "description": "Retrieve all order items for the current user. Returns order items sorted by creation date in descending order."
+        }
+      }
+    }
+  },
+  "ordersRouterOrpc": {
+    "getOrder": {
+      "~orpc": {
+        "errorMap": {},
+        "meta": {
+          "route": {
+            "path": "/orders/{orderId}",
+            "method": "GET",
+            "tags": ["orders"],
+            "operationId": "getOrder",
+            "summary": "Get order details",
+            "description": "Retrieve detailed information about an order including items, payments, and user details. User must own the order."
+          }
+        },
+        "route": {
+          "path": "/orders/{orderId}",
+          "method": "GET",
+          "tags": ["orders"],
+          "operationId": "getOrder",
+          "summary": "Get order details",
+          "description": "Retrieve detailed information about an order including items, payments, and user details. User must own the order."
+        }
+      }
+    },
+    "getOrderItems": {
+      "~orpc": {
+        "errorMap": {},
+        "meta": {
+          "route": {
+            "path": "/orders/items",
+            "method": "GET",
+            "tags": ["orders"],
+            "operationId": "getOrderItems",
+            "summary": "Get user order items",
+            "description": "Retrieve all order items for the current user, sorted by creation date in descending order."
+          }
+        },
+        "route": {
+          "path": "/orders/items",
+          "method": "GET",
+          "tags": ["orders"],
+          "operationId": "getOrderItems",
+          "summary": "Get user order items",
+          "description": "Retrieve all order items for the current user, sorted by creation date in descending order."
+        }
+      }
+    },
+    "instantBuy": {
+      "~orpc": {
+        "errorMap": {},
+        "meta": {
+          "route": {
+            "path": "/orders/instant-buy",
+            "method": "POST",
+            "tags": ["orders"],
+            "operationId": "instantBuy",
+            "summary": "Instant buy domain",
+            "description": "Purchase a single domain instantly without adding to cart. Validates domain availability, creates payments and order, then starts the order processing workflow."
+          }
+        },
+        "route": {
+          "path": "/orders/instant-buy",
+          "method": "POST",
+          "tags": ["orders"],
+          "operationId": "instantBuy",
+          "summary": "Instant buy domain",
+          "description": "Purchase a single domain instantly without adding to cart. Validates domain availability, creates payments and order, then starts the order processing workflow."
+        }
+      }
+    },
+    "getOrderPaymentMethodsDetails": {
+      "~orpc": {
+        "errorMap": {},
+        "meta": {
+          "route": {
+            "path": "/orders/{orderId}/payment-methods",
+            "method": "GET",
+            "tags": ["orders"],
+            "operationId": "getOrderPaymentMethodsDetails",
+            "summary": "Get order payment methods",
+            "description": "Retrieve payment method details for an order, including card info for Stripe payments and wallet addresses for on-chain payments."
+          }
+        },
+        "route": {
+          "path": "/orders/{orderId}/payment-methods",
+          "method": "GET",
+          "tags": ["orders"],
+          "operationId": "getOrderPaymentMethodsDetails",
+          "summary": "Get order payment methods",
+          "description": "Retrieve payment method details for an order, including card info for Stripe payments and wallet addresses for on-chain payments."
+        }
+      }
+    }
+  }
+}

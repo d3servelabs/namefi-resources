@@ -499,6 +499,25 @@
         "vitest": "^3.1.2",
       },
     },
+    "packages/namefi-client": {
+      "name": "@namefi-astra/client",
+      "version": "0.0.0-pre.1",
+      "dependencies": {
+        "@namefi-astra/backend": "workspace:*",
+        "@orpc/client": "^1.13.2",
+        "@orpc/contract": "^1.13.2",
+        "@orpc/openapi-client": "^1.13.2",
+      },
+      "devDependencies": {
+        "@namefi-astra/typescript": "workspace:*",
+        "tsup": "^8.4.0",
+        "vite-tsconfig-paths": "^5.1.4",
+      },
+      "peerDependencies": {
+        "vitest": "^3.1.2",
+        "zod": "^4.1.12",
+      },
+    },
     "packages/registrars": {
       "name": "@namefi-astra/registrars",
       "version": "0.0.0-pre.1",
@@ -1293,6 +1312,8 @@
     "@namefi-astra/ai": ["@namefi-astra/ai@workspace:packages/ai"],
 
     "@namefi-astra/backend": ["@namefi-astra/backend@workspace:apps/backend"],
+
+    "@namefi-astra/client": ["@namefi-astra/client@workspace:packages/namefi-client"],
 
     "@namefi-astra/coredns-client": ["@namefi-astra/coredns-client@workspace:packages/coredns-client"],
 
