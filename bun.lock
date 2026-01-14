@@ -1,6 +1,5 @@
 {
   "lockfileVersion": 1,
-  "configVersion": 0,
   "workspaces": {
     "": {
       "name": "namefi-astra",
@@ -21,7 +20,7 @@
     },
     "apps/backend": {
       "name": "@namefi-astra/backend",
-      "version": "0.3.59-beta",
+      "version": "0.3.60-beta",
       "dependencies": {
         "@aws-sdk/client-kms": "^3.830.0",
         "@aws-sdk/client-route-53": "^3.830.0",
@@ -131,7 +130,7 @@
     },
     "apps/frontend": {
       "name": "@namefi-astra/frontend",
-      "version": "0.3.59-beta",
+      "version": "0.3.60-beta",
       "dependencies": {
         "@bprogress/next": "^3.2.12",
         "@cfx-kit/wallet-avatar": "^0.0.5",
