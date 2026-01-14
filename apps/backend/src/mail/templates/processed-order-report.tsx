@@ -83,6 +83,14 @@ export const ProcessedOrderReport = buildTemplate<ProcessedOrderProps>(
 
     let introMessage = `Your order ${orderId} has been processed.`;
 
+    if (failedItems.length > 0 && successfulItems.length > 0) {
+      introMessage = `Your order ${orderId} has been partially processed.`;
+    } else if (failedItems.length > 0) {
+      introMessage = `Your order ${orderId} failed to process.`;
+    } else if (processingItems.length > 0) {
+      introMessage = `Your order ${orderId} is still processing.`;
+    }
+
     if (
       successfulRegistrations.length > 0 &&
       failedItems.length === 0 &&
