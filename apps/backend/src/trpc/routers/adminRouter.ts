@@ -3005,6 +3005,257 @@ export const adminRouter = createTRPCRouter({
       }
     }),
 
+  listOrders: adminProcedureWithPermissions(
+    [Permission.READ_ORDERS, Permission.READ_USERS],
+    { mode: 'every' },
+  )
+    .input(
+      z.object({
+        page: z.number().min(1).default(1),
+        pageSize: z.number().min(1).max(100).default(25),
+        searchTerm: z.string().optional(),
+        userId: z.string().optional(),
+        columnFilters: z
+          .array(
+            z.object({
+              id: z.string(),
+              value: z.object({
+                operator: z.enum([
+                  'like',
+                  'eq',
+                  'neq',
+                  'gt',
+                  'gte',
+                  'lt',
+                  'lte',
+                ]),
+                value: z.union([z.string(), z.number(), z.date()]),
+              }),
+            }),
+          )
+          .optional(),
+        sorting: z
+          .array(
+            z.object({
+              id: z.string(),
+              desc: z.boolean(),
+            }),
+          )
+          .optional(),
+      }),
+    )
+    .query(async ({ input }) => {
+      const { page, pageSize, searchTerm, userId, columnFilters, sorting } =
+        input;
+      const offset = (page - 1) * pageSize;
+
+      const baseQuery = db
+        .select({
+          id: ordersTable.id,
+          status: ordersTable.status,
+          amountInUsdCents: ordersTable.amountInUSDCents,
+          nftWalletAddress: ordersTable.nftWalletAddress,
+          nftChainId: ordersTable.nftChainId,
+          createdAt: ordersTable.createdAt,
+          updatedAt: ordersTable.updatedAt,
+          userId: usersTable.id,
+          userEmail: usersTable.primaryEmail,
+          userPrivyUserId: usersTable.privyUserId,
+          itemCount: sql<number>`(
+            SELECT COUNT(*)::int
+            FROM ${orderItemsTable}
+            WHERE ${orderItemsTable.orderId} = ${ordersTable.id}
+          )`.as('item_count'),
+          domainNames: sql<string>`(
+            SELECT STRING_AGG(${orderItemsTable.normalizedDomainName}, ', ')
+            FROM ${orderItemsTable}
+            WHERE ${orderItemsTable.orderId} = ${ordersTable.id}
+          )`.as('domain_names'),
+          paymentProvider: sql<string | null>`(
+            SELECT p.payment_provider
+            FROM ${paymentsTable} p
+            WHERE p.order_id = ${ordersTable.id}
+            ORDER BY p.created_at DESC
+            LIMIT 1
+          )`.as('payment_provider'),
+          paymentStatus: sql<string | null>`(
+            SELECT p.status
+            FROM ${paymentsTable} p
+            WHERE p.order_id = ${ordersTable.id}
+            ORDER BY p.created_at DESC
+            LIMIT 1
+          )`.as('payment_status'),
+        })
+        .from(ordersTable)
+        .innerJoin(usersTable, eq(ordersTable.userId, usersTable.id))
+        .$dynamic();
+
+      const whereClauses: SQL[] = [];
+
+      if (userId) {
+        whereClauses.push(sql`${usersTable.id} = ${userId}`);
+      }
+
+      if (searchTerm) {
+        const term = searchTerm.trim().toLowerCase();
+        const likeTerm = `%${term}%`;
+        const searchCondition = or(
+          sql`LOWER(${usersTable.primaryEmail}) LIKE ${likeTerm}`,
+          sql`LOWER(${ordersTable.nftWalletAddress}) LIKE ${likeTerm}`,
+          sql`${ordersTable.id}::text LIKE ${likeTerm}`,
+          sql`EXISTS (
+            SELECT 1 FROM ${orderItemsTable}
+            WHERE ${orderItemsTable.orderId} = ${ordersTable.id}
+            AND LOWER(${orderItemsTable.normalizedDomainName}) LIKE ${likeTerm}
+          )`,
+        );
+        if (searchCondition) {
+          whereClauses.push(searchCondition);
+        }
+      }
+
+      if (columnFilters && columnFilters.length > 0) {
+        for (const filter of columnFilters) {
+          const { id, value } = filter;
+          const { operator, value: filterValue } = value;
+
+          let columnSql: SQL | undefined;
+          switch (id) {
+            case 'status':
+              columnSql = sql`${ordersTable.status}`;
+              break;
+            case 'amountInUsdCents':
+              columnSql = sql`${ordersTable.amountInUSDCents}`;
+              break;
+            case 'createdAt':
+              columnSql = sql`${ordersTable.createdAt}`;
+              break;
+            case 'nftChainId':
+              columnSql = sql`${ordersTable.nftChainId}`;
+              break;
+            case 'userEmail':
+              columnSql = sql`${usersTable.primaryEmail}`;
+              break;
+            case 'nftWalletAddress':
+              columnSql = sql`${ordersTable.nftWalletAddress}`;
+              break;
+            case 'userId':
+              columnSql = sql`${usersTable.id}`;
+              break;
+          }
+
+          if (columnSql) {
+            switch (operator) {
+              case 'like':
+                whereClauses.push(
+                  sql`${columnSql} ILIKE ${`%${String(filterValue)}%`}`,
+                );
+                break;
+              case 'eq':
+                whereClauses.push(sql`${columnSql} = ${filterValue}`);
+                break;
+              case 'neq':
+                whereClauses.push(sql`${columnSql} != ${filterValue}`);
+                break;
+              case 'gt':
+                whereClauses.push(sql`${columnSql} > ${filterValue}`);
+                break;
+              case 'gte':
+                whereClauses.push(sql`${columnSql} >= ${filterValue}`);
+                break;
+              case 'lt':
+                whereClauses.push(sql`${columnSql} < ${filterValue}`);
+                break;
+              case 'lte':
+                whereClauses.push(sql`${columnSql} <= ${filterValue}`);
+                break;
+            }
+          }
+        }
+      }
+
+      let query = baseQuery;
+      if (whereClauses.length > 0) {
+        query = query.where(and(...whereClauses));
+      }
+
+      const orderByClauses: SQL[] = [];
+      if (sorting && sorting.length > 0) {
+        for (const sort of sorting) {
+          let columnSql: SQL | undefined;
+          switch (sort.id) {
+            case 'createdAt':
+              columnSql = sql`${ordersTable.createdAt}`;
+              break;
+            case 'amountInUsdCents':
+              columnSql = sql`${ordersTable.amountInUSDCents}`;
+              break;
+            case 'status':
+              columnSql = sql`${ordersTable.status}`;
+              break;
+            case 'nftChainId':
+              columnSql = sql`${ordersTable.nftChainId}`;
+              break;
+          }
+          if (columnSql) {
+            orderByClauses.push(
+              sort.desc
+                ? sql`${columnSql} DESC NULLS LAST`
+                : sql`${columnSql} ASC NULLS LAST`,
+            );
+          }
+        }
+      } else {
+        orderByClauses.push(sql`${ordersTable.createdAt} DESC`);
+      }
+
+      try {
+        const countQuery = db
+          .select({ count: sql<number>`COUNT(*)::int` })
+          .from(query.as('sq'));
+
+        const [rows, countRow] = await Promise.all([
+          query
+            .orderBy(...orderByClauses)
+            .limit(pageSize)
+            .offset(offset),
+          countQuery,
+        ]);
+
+        const items = rows.map((r) => ({
+          id: r.id,
+          status: r.status,
+          amountInUsdCents: r.amountInUsdCents,
+          nftWalletAddress: r.nftWalletAddress,
+          nftChainId: r.nftChainId,
+          createdAt: r.createdAt,
+          updatedAt: r.updatedAt,
+          userId: r.userId,
+          userEmail: r.userEmail,
+          userPrivyUserId: r.userPrivyUserId,
+          itemCount: r.itemCount,
+          domainNames: r.domainNames,
+          paymentProvider: r.paymentProvider,
+          paymentStatus: r.paymentStatus,
+        }));
+
+        const total = countRow[0]?.count ?? 0;
+        return {
+          items,
+          page,
+          pageSize,
+          total,
+          totalPages: Math.ceil(total / pageSize),
+        };
+      } catch (error) {
+        logger.error({ error }, 'Failed to list orders');
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to list orders',
+        });
+      }
+    }),
+
   burnAllExpiredDomains: auditedAdminProcedureWithPermissions(
     Permission.WRITE_NFT,
     ({ ctx, input, auditActorExtraInfo }) => ({

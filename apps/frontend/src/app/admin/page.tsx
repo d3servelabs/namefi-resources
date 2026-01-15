@@ -24,6 +24,7 @@ import {
   Globe,
   ArrowRightLeft,
   RefreshCw,
+  ClipboardList,
 } from 'lucide-react';
 import { Permission } from '@namefi-astra/utils/permissions';
 import { PermissionGate } from '@/components/access/PermissionGate';
@@ -159,6 +160,17 @@ const ADMIN_SECTIONS: AdminSection[] = [
         iconTextColor: 'text-teal-600',
         permissions: [Permission.MINT_NFSC, Permission.BURN_NFSC],
         permissionsMode: 'some',
+      },
+      {
+        title: 'Orders',
+        description:
+          'View all orders across users with filtering and search capabilities.',
+        href: '/admin/orders',
+        icon: ClipboardList,
+        iconBgColor: 'bg-violet-100',
+        iconTextColor: 'text-violet-600',
+        permissions: [Permission.READ_ORDERS, Permission.READ_USERS],
+        permissionsMode: 'every',
       },
       {
         title: 'Order Items',
