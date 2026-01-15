@@ -3186,16 +3186,20 @@ export const adminRouter = createTRPCRouter({
       }
 
       try {
+        const whereClause =
+          whereClauses.length > 0 ? and(...whereClauses) : undefined;
+
         const countQuery = db
           .select({ count: sql<number>`COUNT(*)::int` })
-          .from(query.as('sq'));
+          .from(ordersTable)
+          .innerJoin(usersTable, eq(ordersTable.userId, usersTable.id));
 
         const [rows, countRow] = await Promise.all([
           query
             .orderBy(...orderByClauses)
             .limit(pageSize)
             .offset(offset),
-          countQuery,
+          whereClause ? countQuery.where(whereClause) : countQuery,
         ]);
 
         const items = rows.map((r) => ({
