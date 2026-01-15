@@ -3181,7 +3181,9 @@ export const adminRouter = createTRPCRouter({
             );
           }
         }
-      } else {
+      }
+
+      if (orderByClauses.length === 0) {
         orderByClauses.push(sql`${ordersTable.createdAt} DESC`);
       }
 
