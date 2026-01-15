@@ -4,6 +4,7 @@ import { withAdminGuard } from '@/components/admin/admin-guard';
 import { useTRPC } from '@/lib/trpc';
 import { useQuery } from '@tanstack/react-query';
 import { useMemo, useState } from 'react';
+import { useTablePreferences } from '@/hooks/use-table-preferences';
 import type { Dispatch, SetStateAction } from 'react';
 import { Input } from '@/components/ui/shadcn/input';
 import { Button } from '@/components/ui/shadcn/button';
@@ -68,11 +69,20 @@ function AuditLogsPageInner() {
   const trpc = useTRPC();
   const { theme } = useTheme();
 
-  const [pageSize, setPageSize] = useState(50);
   const [pageToken, setPageToken] = useState<string | undefined>(undefined);
   const [orderBy, setOrderBy] = useState<'timestamp_desc' | 'timestamp_asc'>(
     'timestamp_desc',
   );
+
+  const {
+    preferences: { pageSize },
+    setPageSize,
+  } = useTablePreferences({
+    tableId: 'admin-audit-logs',
+    defaultPreferences: {
+      pageSize: 50,
+    },
+  });
 
   const [filters, setFilters] = useState<Filters>({});
 

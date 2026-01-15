@@ -62,8 +62,8 @@ import {
   Suspense,
   useCallback,
   useMemo,
-  useState,
 } from 'react';
+import { useTablePreferences } from '@/hooks/use-table-preferences';
 import { config } from '@/lib/env';
 import { cn } from '@/lib/cn';
 import { range } from 'ramda';
@@ -327,10 +327,16 @@ function MyPreviouslyOwnedDomainsTable() {
     [],
   );
 
-  const [columnVisibility, setColumnVisibility] = useState<
-    Record<string, boolean>
-  >({
-    chainId: false,
+  const {
+    preferences: { columnVisibility },
+    setColumnVisibility,
+  } = useTablePreferences({
+    tableId: 'previously-owned-domains',
+    defaultPreferences: {
+      columnVisibility: {
+        chainId: false,
+      },
+    },
   });
 
   const table = useReactTable({

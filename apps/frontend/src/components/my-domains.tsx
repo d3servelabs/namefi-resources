@@ -51,6 +51,7 @@ import type {
   SortingState,
   VisibilityState,
 } from '@tanstack/react-table';
+import { useTablePreferences } from '@/hooks/use-table-preferences';
 import {
   Loader2,
   SearchIcon,
@@ -844,12 +845,9 @@ function MyDomainsTable(props: {
     () => new Map(),
   );
   const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(DEFAULT_DOMAIN_LIST_PAGE_SIZE);
-  const [sorting, setSorting] = useState<SortingState>([
-    { id: 'expirationDate', desc: false },
-  ]);
   const [domainSearch, setDomainSearch] = useState('');
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+
+  const defaultColumnVisibility: VisibilityState = {
     select: true,
     account: false,
     normalizedDomainName: true,
@@ -859,7 +857,24 @@ function MyDomainsTable(props: {
     urlForward: true,
     listForSale: true,
     actions: true,
+  };
+
+  const {
+    preferences,
+    setColumnVisibility,
+    setSorting,
+    setPageSize,
+    resetToDefaults,
+  } = useTablePreferences({
+    tableId: `my-domains-${kind}`,
+    defaultPreferences: {
+      columnVisibility: defaultColumnVisibility,
+      sorting: [{ id: 'expirationDate', desc: false }],
+      pageSize: DEFAULT_DOMAIN_LIST_PAGE_SIZE,
+    },
   });
+
+  const { columnVisibility, sorting, pageSize } = preferences;
 
   const prevColumnVisibility = useRef<VisibilityState>(columnVisibility);
   const isMobile = useIsMobile();
@@ -1493,10 +1508,13 @@ function MyDomainsTable(props: {
     [handleBatchToggleAutoRenew],
   );
 
-  const handlePageSizeChange = useCallback((size: number) => {
-    setPageSize(size);
-    setPage(1);
-  }, []);
+  const handlePageSizeChange = useCallback(
+    (size: number) => {
+      setPageSize(size);
+      setPage(1);
+    },
+    [setPageSize],
+  );
 
   const columns: ColumnDef<DomainRow>[] = useMemo(
     () => [

@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/shadcn/card';
 import { toast } from 'sonner';
 import { useCallback, useMemo, useState } from 'react';
+import { useTablePreferences } from '@/hooks/use-table-preferences';
 import { ServerDataTable } from '@/components/table/server-data-table';
 import { AutoTruncateTextV2 } from '@/components/auto-truncate-text-v2';
 import type {
@@ -86,13 +87,9 @@ export default function AdminOrderItemsPage() {
 function OrderItemsTable() {
   const trpc = useTRPC();
   const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(20);
   const [searchTerm, setSearchTerm] = useState('');
-  const [sorting, setSorting] = useState<SortingState>([
-    { id: 'createdAt', desc: true },
-  ]);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+
+  const defaultColumnVisibility: VisibilityState = {
     id: false,
     orderId: false,
     userId: false,
@@ -105,6 +102,28 @@ function OrderItemsTable() {
     freeClaimId: false,
     freeClaimGroupOrCampaignKey: true,
     freeClaimReason: false,
+  };
+
+  const {
+    preferences: {
+      columnVisibility,
+      sorting,
+      filters: columnFilters,
+      pageSize,
+    },
+    setColumnVisibility,
+    setSorting,
+    setFilters: setColumnFilters,
+    setPageSize,
+    resetToDefaults,
+  } = useTablePreferences({
+    tableId: 'admin-order-items',
+    defaultPreferences: {
+      columnVisibility: defaultColumnVisibility,
+      sorting: [{ id: 'createdAt', desc: true }],
+      filters: [],
+      pageSize: 20,
+    },
   });
 
   const orderItems = useQuery(
@@ -574,6 +593,7 @@ function OrderItemsTable() {
           columnVisibility={columnVisibility}
           onColumnVisibilityChange={setColumnVisibility}
           filterDisplayOptions={{ showInHeader: false }}
+          onResetPreferences={resetToDefaults}
         />
       </CardContent>
     </Card>

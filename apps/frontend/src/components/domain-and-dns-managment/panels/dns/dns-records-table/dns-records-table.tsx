@@ -52,6 +52,7 @@ import {
   useMemo,
   useState,
 } from 'react';
+import { useTablePreferences } from '@/hooks/use-table-preferences';
 import { toast } from 'sonner';
 import { AddEditRecordsDialog } from '../../../dialogs/add-edit-records-dialog';
 import { DeleteRecordDialog } from '../../../dialogs/delete-records-dialog';
@@ -94,9 +95,20 @@ export const DnsRecordsTable: FC<DnsRecordsTableProps> = ({
     ),
   );
 
-  const [sorting, setSorting] = useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const {
+    preferences: { sorting, columnVisibility, filters: columnFilters },
+    setSorting,
+    setColumnVisibility,
+    setFilters: setColumnFilters,
+  } = useTablePreferences({
+    tableId: `dns-records-${domain}`,
+    defaultPreferences: {
+      sorting: [],
+      columnVisibility: {},
+      filters: [],
+    },
+  });
+
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const [globalFilter, setGlobalFilter] = useState('');
   const [typeFilter, setTypeFilter] = useState<string[]>([]);

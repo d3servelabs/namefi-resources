@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useMemo, useState } from 'react';
+import { useTablePreferences } from '@/hooks/use-table-preferences';
 import { useTRPC } from '@/lib/trpc';
 import { useQuery } from '@tanstack/react-query';
 import { useDebounceValue } from 'usehooks-ts';
@@ -63,10 +64,24 @@ type ExportTrackingRecord = {
 export function ExportTrackingTable() {
   const trpc = useTRPC();
   const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(25);
-  const [sorting, setSorting] = useState<SortingState>([
-    { id: 'statusChangedAt', desc: true },
-  ]);
+
+  const {
+    preferences: { sorting, pageSize, columnVisibility },
+    setSorting,
+    setPageSize,
+    setColumnVisibility,
+    resetToDefaults,
+  } = useTablePreferences({
+    tableId: 'admin-export-tracking',
+    defaultPreferences: {
+      sorting: [{ id: 'statusChangedAt', desc: true }],
+      pageSize: 25,
+      columnVisibility: {
+        statusChangedAt: false,
+        registrarKey: false,
+      },
+    },
+  });
 
   // Drizzler filter state
   const [drizzlerFilterState, setDrizzlerFilterState] =
@@ -321,15 +336,6 @@ export function ExportTrackingTable() {
     [],
   );
 
-  const { columnVisibility, setColumnVisibility } = useVisibility({
-    columns,
-    initial: {
-      statusChangedAt: false,
-      registrarKey: false,
-    },
-    defaultVisibility: true,
-  });
-
   const renderSubRow = (row: Row<ExportTrackingRecord>) => (
     <StatusHistorySubrow statusHistory={row.original.statusHistory ?? []} />
   );
@@ -358,6 +364,7 @@ export function ExportTrackingTable() {
       loadingMessage="Loading export tracking records..."
       columnVisibility={columnVisibility}
       onColumnVisibilityChange={setColumnVisibility}
+      onResetPreferences={resetToDefaults}
     />
   );
 }

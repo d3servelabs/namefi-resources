@@ -32,6 +32,7 @@ import {
   ArrowUpNarrowWideIcon,
   ArrowUpDownIcon,
   FilterIcon,
+  RotateCcwIcon,
 } from 'lucide-react';
 import { cn } from '@/lib/cn';
 import {
@@ -116,6 +117,9 @@ type ServerDataTableProps<TData> = {
   // Column ordering
   columnOrder?: ColumnOrderState;
   onColumnOrderChange?: Dispatch<SetStateAction<ColumnOrderState>>;
+
+  // Reset preferences
+  onResetPreferences?: () => void;
 };
 
 export function ServerDataTable<TData>(props: ServerDataTableProps<TData>) {
@@ -148,6 +152,7 @@ export function ServerDataTable<TData>(props: ServerDataTableProps<TData>) {
     onColumnVisibilityChange,
     columnOrder: controlledColumnOrder,
     onColumnOrderChange,
+    onResetPreferences,
   } = props;
 
   const [columnSizing, setColumnSizing] = useState<ColumnSizingState>({});
@@ -378,6 +383,20 @@ export function ServerDataTable<TData>(props: ServerDataTableProps<TData>) {
                   {column.id}
                 </DropdownMenuCheckboxItem>
               ))}
+              {onResetPreferences && (
+                <>
+                  <DropdownMenuSeparator />
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="w-full justify-start text-xs font-normal"
+                    onClick={onResetPreferences}
+                  >
+                    <RotateCcwIcon className="h-3 w-3 mr-2" />
+                    Reset to defaults
+                  </Button>
+                </>
+              )}
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

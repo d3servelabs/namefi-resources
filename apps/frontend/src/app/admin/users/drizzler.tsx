@@ -36,6 +36,7 @@ import type {
   Row,
   VisibilityState,
 } from '@tanstack/react-table';
+import { useTablePreferences } from '@/hooks/use-table-preferences';
 import {
   ChevronDown,
   ChevronRight,
@@ -112,14 +113,11 @@ function UsersTableV2() {
   const queryClient = useQueryClient();
   const trpc = useTRPC();
   const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(20);
   const [searchTerm, setSearchTerm] = useState('');
   const [domainSearchTerm, setDomainSearchTerm] = useState('');
   const [ensSearchTerm, setEnsSearchTerm] = useState('');
-  const [sorting, setSorting] = useState<SortingState>([
-    { id: 'nftCount', desc: true },
-  ]);
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+
+  const defaultColumnVisibility: VisibilityState = {
     expander: true,
     updatedAt: true,
     id: false,
@@ -134,6 +132,20 @@ function UsersTableV2() {
     actions: true,
     walletCount: false,
     primaryWallet: false,
+  };
+
+  const {
+    preferences: { columnVisibility, sorting, pageSize },
+    setColumnVisibility,
+    setSorting,
+    setPageSize,
+  } = useTablePreferences({
+    tableId: 'admin-users',
+    defaultPreferences: {
+      columnVisibility: defaultColumnVisibility,
+      sorting: [{ id: 'nftCount', desc: true }],
+      pageSize: 20,
+    },
   });
 
   const impersonate = useMutation(trpc.users.impersonateUser.mutationOptions());

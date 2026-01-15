@@ -34,6 +34,7 @@ import {
   ArrowUpNarrowWideIcon,
   ArrowUpDownIcon,
   FilterIcon,
+  RotateCcwIcon,
 } from 'lucide-react';
 import { cn } from '@/lib/cn';
 import {
@@ -91,6 +92,9 @@ type ExtensibleDataTableProps<TData, FS extends IFilterStrategy<TData>> = {
   // Column ordering
   columnOrder?: ColumnOrderState;
   onColumnOrderChange?: Dispatch<SetStateAction<ColumnOrderState>>;
+
+  // Reset preferences
+  onResetPreferences?: () => void;
 };
 
 export function ExtensibleDataTable<TData, FS extends IFilterStrategy<TData>>(
@@ -123,6 +127,7 @@ export function ExtensibleDataTable<TData, FS extends IFilterStrategy<TData>>(
     onColumnVisibilityChange,
     columnOrder: controlledColumnOrder,
     onColumnOrderChange,
+    onResetPreferences,
   } = props;
   const {
     filterState: controlledFilterState,
@@ -342,6 +347,20 @@ export function ExtensibleDataTable<TData, FS extends IFilterStrategy<TData>>(
                   {column.id}
                 </DropdownMenuCheckboxItem>
               ))}
+              {onResetPreferences && (
+                <>
+                  <DropdownMenuSeparator />
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="w-full justify-start text-xs font-normal"
+                    onClick={onResetPreferences}
+                  >
+                    <RotateCcwIcon className="h-3 w-3 mr-2" />
+                    Reset to defaults
+                  </Button>
+                </>
+              )}
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

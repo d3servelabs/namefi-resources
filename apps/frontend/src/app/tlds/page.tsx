@@ -25,7 +25,8 @@ import type {
   SortingState,
   VisibilityState,
 } from '@tanstack/react-table';
-import { useMemo, useState, useEffect, useCallback } from 'react';
+import { useMemo, useState, useCallback, useEffect } from 'react';
+import { useTablePreferences } from '@/hooks/use-table-preferences';
 import { both, isNil, complement, isNotNil } from 'ramda';
 import {
   Tooltip,
@@ -76,16 +77,27 @@ export default function TldPricingPage() {
   const allRows = pricingQuery.data ?? [];
 
   const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(50);
-  const [sorting, setSorting] = useState<SortingState>([
-    { id: 'tld', desc: false },
-  ]);
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+
+  const defaultColumnVisibility: VisibilityState = {
     tld: true,
     registrationPriceUsdPerYear: true,
     renewalPriceUsdPerYear: true,
     transferPriceUsdPerYear: true,
     registrarKey: true,
+  };
+
+  const {
+    preferences: { columnVisibility, sorting, pageSize },
+    setColumnVisibility,
+    setSorting,
+    setPageSize,
+  } = useTablePreferences({
+    tableId: 'tld-pricing',
+    defaultPreferences: {
+      columnVisibility: defaultColumnVisibility,
+      sorting: [{ id: 'tld', desc: false }],
+      pageSize: 50,
+    },
   });
 
   const drizzlerFilterConfig = useMemo(
@@ -196,10 +208,13 @@ export default function TldPricingPage() {
     return sortedRows.slice(start, start + pageSize);
   }, [sortedRows, page, pageSize]);
 
-  const handlePageSizeChange = useCallback((size: number) => {
-    setPageSize(size);
-    setPage(1);
-  }, []);
+  const handlePageSizeChange = useCallback(
+    (size: number) => {
+      setPageSize(size);
+      setPage(1);
+    },
+    [setPageSize],
+  );
 
   const columns: ColumnDef<TldPricingRow>[] = useMemo(() => {
     const baseColumns: ColumnDef<TldPricingRow>[] = [
