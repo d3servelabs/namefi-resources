@@ -3061,30 +3061,6 @@ export const adminRouter = createTRPCRouter({
           userId: usersTable.id,
           userEmail: usersTable.primaryEmail,
           userPrivyUserId: usersTable.privyUserId,
-          itemCount: sql<number>`(
-            SELECT COUNT(*)::int
-            FROM ${orderItemsTable}
-            WHERE ${orderItemsTable.orderId} = ${ordersTable.id}
-          )`.as('item_count'),
-          domainNames: sql<string>`(
-            SELECT STRING_AGG(${orderItemsTable.normalizedDomainName}, ', ')
-            FROM ${orderItemsTable}
-            WHERE ${orderItemsTable.orderId} = ${ordersTable.id}
-          )`.as('domain_names'),
-          paymentProvider: sql<string | null>`(
-            SELECT p.payment_provider
-            FROM ${paymentsTable} p
-            WHERE p.order_id = ${ordersTable.id}
-            ORDER BY p.created_at DESC
-            LIMIT 1
-          )`.as('payment_provider'),
-          paymentStatus: sql<string | null>`(
-            SELECT p.status
-            FROM ${paymentsTable} p
-            WHERE p.order_id = ${ordersTable.id}
-            ORDER BY p.created_at DESC
-            LIMIT 1
-          )`.as('payment_status'),
         })
         .from(ordersTable)
         .innerJoin(usersTable, eq(ordersTable.userId, usersTable.id))
@@ -3233,10 +3209,6 @@ export const adminRouter = createTRPCRouter({
           userId: r.userId,
           userEmail: r.userEmail,
           userPrivyUserId: r.userPrivyUserId,
-          itemCount: r.itemCount,
-          domainNames: r.domainNames,
-          paymentProvider: r.paymentProvider,
-          paymentStatus: r.paymentStatus,
         }));
 
         const total = countRow[0]?.count ?? 0;

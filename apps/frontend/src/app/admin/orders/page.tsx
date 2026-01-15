@@ -55,10 +55,6 @@ type OrderRow = {
   userId: string;
   userEmail: string | null;
   userPrivyUserId: string | null;
-  itemCount: number;
-  domainNames: string | null;
-  paymentProvider: string | null;
-  paymentStatus: string | null;
 };
 
 export default function AdminOrdersPage() {
@@ -157,29 +153,6 @@ function OrdersTable() {
         size: 150,
       },
       {
-        accessorKey: 'domainNames',
-        header: 'Domains',
-        cell: ({ row }) => {
-          const domains = row.original.domainNames;
-          if (!domains) return <span className="text-muted-foreground">-</span>;
-          return (
-            <div className="flex flex-col gap-1">
-              <AutoTruncateTextV2
-                initialCharactersCountToDisplay={40}
-                minCharactersToDisplay={30}
-              >
-                {domains}
-              </AutoTruncateTextV2>
-              <span className="text-xs text-muted-foreground">
-                {row.original.itemCount} item
-                {row.original.itemCount !== 1 ? 's' : ''}
-              </span>
-            </div>
-          );
-        },
-        size: 250,
-      },
-      {
         accessorKey: 'nftChainId',
         header: 'Chain',
         cell: ({ row }) => {
@@ -226,29 +199,6 @@ function OrdersTable() {
           </div>
         ),
         size: 200,
-      },
-      {
-        accessorKey: 'paymentProvider',
-        header: 'Payment',
-        cell: ({ row }) => {
-          const provider = getPaymentProviderDisplay(
-            row.original.paymentProvider,
-          );
-          const amount = row.original.amountInUsdCents;
-          return (
-            <div className="flex flex-col gap-1">
-              <Badge variant="outline" className={cn('w-fit', provider.color)}>
-                {provider.label}
-              </Badge>
-              {amount !== null && (
-                <span className="text-sm font-medium">
-                  ${(amount / 100).toFixed(2)}
-                </span>
-              )}
-            </div>
-          );
-        },
-        size: 120,
       },
       {
         accessorKey: 'nftWalletAddress',
@@ -302,23 +252,6 @@ function OrdersTable() {
           );
         },
         size: 100,
-      },
-      {
-        accessorKey: 'paymentStatus',
-        header: 'Payment Status',
-        cell: ({ row }) => {
-          const status = row.original.paymentStatus;
-          if (!status) return <span className="text-muted-foreground">-</span>;
-          return (
-            <Badge
-              variant="outline"
-              className={cn('w-fit', getStatusColor(status))}
-            >
-              {status}
-            </Badge>
-          );
-        },
-        size: 120,
       },
       {
         accessorKey: 'createdAt',
