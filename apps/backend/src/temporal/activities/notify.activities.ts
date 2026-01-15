@@ -18,6 +18,7 @@ import { GeneralStyledNotification } from '../../mail/templates/general-styled-n
 import * as workflow from '@temporalio/workflow';
 import { getStripePaymentMethodPublicIdentifier } from './payment.activities';
 import { resolve } from '@namefi-astra/utils';
+import { domainToUnicode } from 'node:url';
 import punycode from 'punycode';
 
 export async function maybeGetUserEmail(
@@ -184,7 +185,7 @@ export async function getProcessedOrderEmail({
     subject = `[Namefi] Order ${orderId} - Still Processing`;
   } else if (successfulRegistrations.length > 0) {
     if (successfulRegistrations.length === 1) {
-      const domainName = punycode.toUnicode(
+      const domainName = domainToUnicode(
         successfulRegistrations[0].normalizedDomainName,
       );
       subject = `[Namefi] Congratulations! Your domain ${domainName} is ready!`;

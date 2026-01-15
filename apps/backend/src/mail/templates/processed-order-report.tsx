@@ -4,7 +4,7 @@
 import React from 'react';
 import { NamefiEmailContainer } from '../components/namefi-email-container';
 import { GoToDashboard } from '../components/go-to-dashboard';
-import punycode from 'punycode';
+import { domainToASCII, domainToUnicode } from 'node:url';
 import rehypeExternalLinks from 'rehype-external-links';
 import ReactMarkdown from 'react-markdown';
 import { Button } from '@react-email/components';
@@ -348,9 +348,9 @@ const localStyles = {
 } as const;
 
 function getDomainWithIdn(domain: string) {
-  const unicodeDomain = punycode.toUnicode(domain);
-  const punycodeDomain = punycode.toASCII(domain);
+  const unicodeDomain = domainToUnicode(domain);
+  const punycodeDomain = domainToASCII(domain) || domain;
   return unicodeDomain === punycodeDomain
     ? domain
-    : `${domain} (${punycodeDomain})`;
+    : `${unicodeDomain} (${punycodeDomain})`;
 }
