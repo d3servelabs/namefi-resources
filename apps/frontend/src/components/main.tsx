@@ -10,10 +10,10 @@ import { SidebarInset, SidebarTrigger, useSidebar } from './ui/shadcn/sidebar';
 export const Main = ({ children }: { children: ReactNode }) => {
   const pathname = usePathname();
   const { state } = useSidebar();
-  const triggerLeftClass =
+  const triggerLeft =
     state === 'collapsed'
-      ? 'left-[calc(var(--sidebar-width-icon)+1.25rem)]'
-      : 'left-[calc(var(--sidebar-width)+1.25rem)]';
+      ? 'calc(var(--sidebar-width-icon) + 1.25rem)'
+      : 'calc(var(--sidebar-width) + 1.25rem)';
 
   return (
     <SidebarInset className="grid grid-cols-1 grid-rows-[auto_1fr_auto] relative overflow-y-auto bg-transparent">
@@ -21,8 +21,8 @@ export const Main = ({ children }: { children: ReactNode }) => {
       <div
         className={cn(
           'fixed top-4 z-[60] hidden md:block pointer-events-none transition-[left] duration-200 ease-linear',
-          triggerLeftClass,
         )}
+        style={{ left: triggerLeft }}
       >
         <div className="pointer-events-auto">
           <SidebarTrigger className="-ml-1" />

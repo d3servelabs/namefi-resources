@@ -1,4 +1,4 @@
-import type { OriginRuntime } from '@/lib/origin';
+import type { OriginRuntime } from '@/lib/origin/types';
 import type { FC } from 'react';
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils/namefi-flavor';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';

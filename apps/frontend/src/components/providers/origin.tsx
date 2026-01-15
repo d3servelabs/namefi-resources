@@ -1,6 +1,6 @@
 'use client';
 
-import type { OriginRuntime } from '@/lib/origin';
+import type { OriginRuntime } from '@/lib/origin/types';
 import { type PropsWithChildren, createContext, useContext } from 'react';
 
 const OriginContext = createContext<OriginRuntime | undefined>(undefined);

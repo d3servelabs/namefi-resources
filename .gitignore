@@ -195,6 +195,9 @@ dist
 /.next/
 /out/
 
+# frontend benchmark outputs
+apps/frontend/.benchmarks/
+
 # production
 /build
 

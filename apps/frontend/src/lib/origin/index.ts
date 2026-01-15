@@ -1,4 +1,4 @@
 export * from './types';
 export * from './utils';
-export * from './utils.server';
+export { getOriginRuntime } from './utils.server';
 export * from './config';

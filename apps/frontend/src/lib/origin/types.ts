@@ -93,3 +93,7 @@ export interface OriginInfo {
   thirdPartyHostname: string | null;
   config: OriginConfig;
 }
+
+export type OriginRuntime = OriginInfo & {
+  origin: string | null;
+};

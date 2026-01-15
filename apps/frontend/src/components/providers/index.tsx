@@ -1,4 +1,4 @@
-import { getOriginRuntime } from '@/lib/origin';
+import { getOriginRuntime } from '@/lib/origin/utils.server';
 import { InteractionLoggersProvider } from '@/components/providers/analytics';
 import { OriginProvider } from '@/components/providers/origin';
 import { CookieConsentProvider } from '@/components/providers/cookie-consent';

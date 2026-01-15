@@ -3,7 +3,7 @@ import OriginBackground from '@/components/origin-background';
 import { AppSidebar } from '@/components/sidebars';
 import { SidebarProvider } from '@/components/ui/shadcn/sidebar';
 import { Toaster } from '@/components/ui/shadcn/sonner';
-import { getOriginRuntime } from '@/lib/origin';
+import { getOriginRuntime } from '@/lib/origin/utils.server';
 import { cn } from '@/lib/cn';
 import { Providers } from '@/components/providers';
 import { AddToCartFromUrl } from '@/components/add-to-cart-from-url';
