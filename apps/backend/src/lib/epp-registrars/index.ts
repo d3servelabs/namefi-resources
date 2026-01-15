@@ -17,17 +17,20 @@ import { getDynadotRegistrars } from './dynadot';
 // Add CentralNic if configured
 export const sldRegistrar = createRegistrarService({
   registrars: (connection) => {
-    const { gdg, regular } = getDynadotRegistrars(connection);
-    const registrars: Record<Registrars, AbstractRegistrarService> = {
-      [Registrars.Route53]: new R53RegistrarService({
+    const registrars: Record<Registrars, AbstractRegistrarService> = {};
+
+    if (config.ALLOW_LIVE_REGISTRARS) {
+      const { gdg, regular } = getDynadotRegistrars(connection);
+
+      registrars[Registrars.Route53] = new R53RegistrarService({
         region: config.AWS_REGION,
         accessKeyId: secrets.AWS_ACCESS_KEY_ID,
         secretAccessKey: secrets.AWS_SECRET_ACCESS_KEY,
         connection,
-      }),
-      [Registrars.DynadotGdg]: gdg,
-      [Registrars.DynadotRegular]: regular,
-    };
+      });
+      registrars[Registrars.DynadotGdg] = gdg;
+      registrars[Registrars.DynadotRegular] = regular;
+    }
 
     const centralnicKey = config.CENTRALNIC_KEY;
     if (centralnicKey) {

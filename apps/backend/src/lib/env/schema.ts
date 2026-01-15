@@ -231,6 +231,7 @@ export const configSchema = z.object({
       }),
     )
     .default([]),
+  ALLOW_LIVE_REGISTRARS: z.boolean().default(false),
 });
 
 export type ConfigInput = z.input<typeof configSchema>;

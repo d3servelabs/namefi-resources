@@ -50,6 +50,7 @@ const productionConfig: ConfigInput = {
       baseUrl: 'http://ns4.namefi.io:8181',
     },
   ],
+  ALLOW_LIVE_REGISTRARS: true,
 };
 
 export default productionConfig;
