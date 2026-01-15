@@ -3116,7 +3116,9 @@ export const adminRouter = createTRPCRouter({
               columnSql = sql`${ordersTable.nftWalletAddress}`;
               break;
             case 'userId':
-              columnSql = sql`${usersTable.id}`;
+              if (!userId) {
+                columnSql = sql`${usersTable.id}`;
+              }
               break;
           }
 

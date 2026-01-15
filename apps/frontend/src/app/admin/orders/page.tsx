@@ -326,7 +326,6 @@ function OrdersTable() {
   const filterConfig = useMemo(
     () => ({
       userEmail: { type: 'text' as const, label: 'User Email' },
-      userId: { type: 'text' as const, label: 'User ID' },
       nftWalletAddress: { type: 'text' as const, label: 'Receiving Wallet' },
       status: { type: 'text' as const, label: 'Status' },
       nftChainId: {
