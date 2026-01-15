@@ -28,6 +28,21 @@ const SEND_TO_SLACK_DIRECT = false;
 
 const MAX_GRACE_PERIOD_DAYS = 45;
 
+const NFT_MANAGEMENT_ADMIN_URL = 'https://astra.namefi.io/admin/nft-management';
+
+function getGitHubActionsUrl(): string {
+  const serverUrl = process.env.GITHUB_SERVER_URL || 'https://github.com';
+  const repository =
+    process.env.GITHUB_REPOSITORY || 'd3servelabs/namefi-astra';
+  const runId = process.env.GITHUB_RUN_ID;
+
+  if (runId) {
+    return `${serverUrl}/${repository}/actions/runs/${runId}`;
+  }
+
+  return `${serverUrl}/${repository}/actions`;
+}
+
 export interface ReportMetrics {
   totalNfts: number;
   expiredDomains: number;
@@ -752,6 +767,7 @@ export async function formatNftManagementReport(
 
   const reportDate = format(new Date(), 'yyyy-MM-dd');
   const title = `${reportDate} Comprehensive NFT Management Report`;
+  const githubActionsUrl = getGitHubActionsUrl();
 
   const totalRecentWorkflows =
     metrics.activeWorkflows.burnWorkflows +
@@ -880,7 +896,8 @@ export async function formatNftManagementReport(
     '## System Information',
     `**Report Generated:** ${new Date().toISOString()}`,
     '**Data Source:** Direct database queries (namefiNftOwnersView, indexedDomainsTable)',
-    '**Admin Panel:** Available at https://astra.namefi.io/admin/nft-management',
+    `**Admin Panel:** ${NFT_MANAGEMENT_ADMIN_URL}`,
+    `**GitHub Actions:** ${githubActionsUrl}`,
     '',
     '## Quick Actions Available',
     `- **Burn expired NFTs** - Use admin panel or API
@@ -900,7 +917,7 @@ export async function formatNftManagementReport(
     '',
     '---',
     '*This report is generated automatically using the comprehensive NFT management system.*',
-    '*For detailed analysis, visit the admin panel or review individual NFT records.*',
+    `*For detailed analysis, visit the [admin panel](${NFT_MANAGEMENT_ADMIN_URL}) or review individual NFT records.*`,
   ];
 
   const content = sections.join('\n\n');

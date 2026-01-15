@@ -85,7 +85,8 @@ export const NftManagementReport = buildTemplate<NftManagementReportProps>(
 
 **Report Generated:** 2025-01-30T14:00:12.345Z
 **Data Source:** Direct database queries (namefiNftOwnersView, indexedDomainsTable)
-**Admin Panel:** Available at /admin/nft-management
+**Admin Panel:** https://astra.namefi.io/admin/nft-management
+**GitHub Actions:** https://github.com/d3servelabs/namefi-astra/actions
 
 ## 📋 Quick Actions Available
 
@@ -123,7 +124,7 @@ export const NftManagementReport = buildTemplate<NftManagementReportProps>(
 ---
 
 *This report is generated automatically using the comprehensive NFT management system.*
-*For detailed analysis, visit the admin panel or review individual NFT records.*`,
+*For detailed analysis, visit the [admin panel](https://astra.namefi.io/admin/nft-management) or review individual NFT records.*`,
   },
 );
 
