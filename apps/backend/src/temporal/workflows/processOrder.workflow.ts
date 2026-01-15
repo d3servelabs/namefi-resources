@@ -675,31 +675,61 @@ export async function processOrderWorkflow(
     }
 
     setStepStatus('notification', 'IN_PROGRESS');
-    const notificationSummary = await _notifyUserOrderProcessed(
-      orderDetails,
-      orderItemResults,
-      amountToRefund,
-    );
-    updateNotification({
-      status: notificationSummary.status,
-      message: notificationSummary.message,
-    });
+    if (workflow.patched('update-order-details-before-notification')) {
+      const updatedOrder = await getOrderDetailsOrThrow(input.orderId);
+      const notificationSummary = await _notifyUserOrderProcessed(
+        updatedOrder,
+        orderItemResults,
+        amountToRefund,
+      );
+      updateNotification({
+        status: notificationSummary.status,
+        message: notificationSummary.message,
+      });
 
-    if (notificationSummary.status === 'FAILED') {
-      setStepStatus(
-        'notification',
-        'FAILED',
-        notificationSummary.message ??
-          'Unable to send confirmation at this time',
-      );
-    } else if (notificationSummary.status === 'SKIPPED') {
-      setStepStatus(
-        'notification',
-        'SKIPPED',
-        notificationSummary.message ?? 'Notification skipped',
-      );
+      if (notificationSummary.status === 'FAILED') {
+        setStepStatus(
+          'notification',
+          'FAILED',
+          notificationSummary.message ??
+            'Unable to send confirmation at this time',
+        );
+      } else if (notificationSummary.status === 'SKIPPED') {
+        setStepStatus(
+          'notification',
+          'SKIPPED',
+          notificationSummary.message ?? 'Notification skipped',
+        );
+      } else {
+        setStepStatus('notification', 'COMPLETED');
+      }
     } else {
-      setStepStatus('notification', 'COMPLETED');
+      const notificationSummary = await _notifyUserOrderProcessed(
+        orderDetails,
+        orderItemResults,
+        amountToRefund,
+      );
+      updateNotification({
+        status: notificationSummary.status,
+        message: notificationSummary.message,
+      });
+
+      if (notificationSummary.status === 'FAILED') {
+        setStepStatus(
+          'notification',
+          'FAILED',
+          notificationSummary.message ??
+            'Unable to send confirmation at this time',
+        );
+      } else if (notificationSummary.status === 'SKIPPED') {
+        setStepStatus(
+          'notification',
+          'SKIPPED',
+          notificationSummary.message ?? 'Notification skipped',
+        );
+      } else {
+        setStepStatus('notification', 'COMPLETED');
+      }
     }
 
     setPhase('COMPLETED');
