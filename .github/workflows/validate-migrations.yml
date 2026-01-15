@@ -130,11 +130,18 @@ jobs:
         run: |
           set -euo pipefail
 
+          CHECK_RESULT="${{ needs.check-for-sql-changes.result }}"
           HAS_SQL="${{ needs.check-for-sql-changes.outputs.has_sql_changes }}"
           RUN_RESULT="${{ needs.validate-migrations-run.result }}"
 
+          echo "check-for-sql-changes.result=$CHECK_RESULT"
           echo "has_sql_changes=$HAS_SQL"
           echo "validate-migrations-run.result=$RUN_RESULT"
+
+          if [[ "$CHECK_RESULT" != "success" ]]; then
+            echo "SQL change detection job did not succeed; cannot determine whether to skip migration test."
+            exit 1
+          fi
 
           if [[ "$HAS_SQL" != "true" ]]; then
             echo "No SQL changes; skipping migration test."
