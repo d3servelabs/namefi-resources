@@ -5,7 +5,16 @@ alwaysApply: false
 ---
 # git / gt related
 
-## Never execute `git commit` or `git push` commands unless I explicitly ask you to
+## Approval requirement
+
+- If running **as a Cursor Cloud Agent**, you may proceed directly with `git add`, `git commit`, and `git push` as needed to complete the task.
+- If **not** running as a Cloud Agent (e.g. local/non-agent assistance), never execute `git add`, `git commit`, or `git push` unless I explicitly ask you to.
+
+## Cloud Agent PR behavior (when committing)
+
+- If running **as a Cursor Cloud Agent** and you are committing work, you must ensure there is an open PR for the current branch:
+  - If there is **no PR yet** for the current branch, create one (via `gh pr create`) after pushing.
+  - If there is **already a PR** for the current branch, push commits to update it (and do not create a new PR).
 
 ## Summarize code change
 
@@ -13,7 +22,7 @@ alwaysApply: false
 
 - You need to make a judgement: if this is a small file change, the <git_commit_message> should only be one single line; If it's more than 100 lines of code change (excluding documentation and comments), or non-trivial code change, <git_commit_messsage> should be one line conventional commit style plus a multi line bullet points
 
-- Run `git log -n 100 --pretty=format:"%h %s" | cat` to the recent commit history to understand the conventional commit message style and scopes being used for <git_commit_message>
+- Run `git --no-pager log -n 100 --pretty=format:"%h %s"` to the recent commit history to understand the conventional commit message style and scopes being used for <git_commit_message>
 
 ## When asked for `gt create`
 This is graphite function to create a NEW pull request on top of the one below (new_branch_name), which has the following usage `gt create <new_branch_name> -m <git_commit_message>`. 
