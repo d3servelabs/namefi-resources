@@ -865,6 +865,7 @@ function MyDomainsTable(props: {
     setSorting,
     setPageSize,
     resetToDefaults,
+    isLoaded,
   } = useTablePreferences({
     tableId: `my-domains-${kind}`,
     defaultPreferences: {
@@ -876,13 +877,15 @@ function MyDomainsTable(props: {
 
   const { columnVisibility, sorting, pageSize } = preferences;
 
-  const prevColumnVisibility = useRef<VisibilityState>(columnVisibility);
+  const prevColumnVisibility = useRef<VisibilityState | null>(null);
   const isMobile = useIsMobile();
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
+    if (!isLoaded) return;
     if (isMobile) {
-      prevColumnVisibility.current = columnVisibility;
-      setColumnVisibility((_prev) => ({
+      if (prevColumnVisibility.current === null) {
+        prevColumnVisibility.current = columnVisibility;
+      }
+      setColumnVisibility({
         select: true,
         account: false,
         normalizedDomainName: true,
@@ -892,11 +895,12 @@ function MyDomainsTable(props: {
         urlForward: false,
         listForSale: false,
         actions: true,
-      }));
-    } else {
-      setColumnVisibility(prevColumnVisibility.current ?? columnVisibility);
+      });
+    } else if (prevColumnVisibility.current !== null) {
+      setColumnVisibility(prevColumnVisibility.current);
+      prevColumnVisibility.current = null;
     }
-  }, [isMobile]);
+  }, [isMobile, isLoaded, columnVisibility, setColumnVisibility]);
 
   // Initialize autoRenewCache from domain data when domains are loaded
   useEffect(() => {
