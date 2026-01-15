@@ -19,6 +19,7 @@ export type ChargeStripeWorkflowInput = {
 export type ChargeStripeWorkflowOutput = {
   paymentIntentId: string;
   paymentIntentStatus: Stripe.PaymentIntent.Status;
+  paymentMethodId: string | undefined;
 };
 
 export async function chargeStripeWorkflow({
@@ -41,9 +42,19 @@ export async function chargeStripeWorkflow({
     paymentMethodId,
   });
 
+  let updatedPaymentMethod = stripePaymentIntent.payment_method ?? undefined;
+  if (updatedPaymentMethod) {
+    // handle the case where payment_method is an object (learn more: stripe expand)
+    updatedPaymentMethod =
+      typeof updatedPaymentMethod === 'string'
+        ? updatedPaymentMethod
+        : updatedPaymentMethod.id;
+  }
+
   return {
     paymentIntentId: stripePaymentIntent.id,
     paymentIntentStatus: stripePaymentIntent.status,
+    paymentMethodId: updatedPaymentMethod,
   };
 }
 

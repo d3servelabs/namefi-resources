@@ -329,6 +329,12 @@ export type UpdatePaymentInput = Pick<
 > &
   Required<Pick<PaymentUpdate, 'id'>>;
 
+export type UpdatePaymentMetadata = Pick<
+  PaymentUpdate,
+  'nfscPaymentDetails' | 'stripePaymentDetails'
+> &
+  Required<Pick<PaymentUpdate, 'id'>>;
+
 export async function updatePayment({
   id,
   status,
@@ -347,6 +353,84 @@ export async function updatePayment({
       status: paymentsTable.status,
       paymentProviderReferenceId: paymentsTable.paymentProviderReferenceId,
     });
+
+  if (isNil(updatedPayment)) {
+    throw new UpdatePaymentFailure({ paymentId: id });
+  }
+
+  return updatedPayment;
+}
+
+export async function updatePaymentMetadata({
+  id,
+  nfscPaymentDetails,
+  stripePaymentDetails,
+}: UpdatePaymentMetadata) {
+  if (!nfscPaymentDetails && !stripePaymentDetails) {
+    throw ApplicationFailure.create({
+      type: 'PAYMENT_DETAILS_MISSING',
+      message: 'Payment details are missing',
+    });
+  }
+
+  const [payment] = await db
+    .select()
+    .from(paymentsTable)
+    .where(eq(paymentsTable.id, id));
+
+  if (!payment) {
+    throw ApplicationFailure.create({
+      type: 'NOT_FOUND',
+      message: `Payment with id ${id} not found`,
+    });
+  }
+
+  let updates = {};
+  switch (payment.paymentProvider) {
+    case 'NFSC_BASE':
+    case 'NFSC_ETHEREUM':
+    case 'NFSC_ETHEREUM_SEPOLIA':
+      if (!nfscPaymentDetails) {
+        throw ApplicationFailure.create({
+          type: 'PAYMENT_DETAILS_MISSING',
+          message: 'NFSC payment details are missing',
+        });
+      }
+      updates = {
+        nfscPaymentDetails: {
+          ...(payment.nfscPaymentDetails ?? {}),
+          ...nfscPaymentDetails,
+        },
+      };
+      break;
+    case 'STRIPE':
+      if (!stripePaymentDetails) {
+        throw ApplicationFailure.create({
+          type: 'PAYMENT_DETAILS_MISSING',
+          message: 'Stripe payment details are missing',
+        });
+      }
+      updates = {
+        stripePaymentDetails: {
+          ...(payment.stripePaymentDetails ?? {}),
+          ...stripePaymentDetails,
+        },
+      };
+      break;
+    default:
+      throw ApplicationFailure.create({
+        type: 'INVALID_PAYMENT_PROVIDER',
+        message: 'Invalid payment provider',
+      });
+  }
+
+  const [updatedPayment] = await db
+    .update(paymentsTable)
+    .set({
+      ...updates,
+    })
+    .where(eq(paymentsTable.id, id))
+    .returning();
 
   if (isNil(updatedPayment)) {
     throw new UpdatePaymentFailure({ paymentId: id });

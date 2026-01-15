@@ -11,6 +11,7 @@ import { TEMPORAL_ENUMS, TEMPORAL_QUEUES, shortRunningOpts } from '../shared';
 import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';
 import { chargeStripeWorkflow } from './chargeStripe.workflow';
 import { chargeNfscWorkflow } from './mint.workflow';
+import { catchAndAlertLocally } from '../shared/workflow-helpers';
 
 export const NFSC_PAYMENT_PROVIDERS = paymentProviderEnum.enumValues.filter(
   (provider) => provider.startsWith('NFSC_'),
@@ -36,12 +37,13 @@ export async function chargeUserWorkflow({
   userId,
   metadata,
 }: ChargeUserWorkflowInput): Promise<ChargeUserWorkflowOutput> {
-  const { getPaymentDetails, updatePayment } = typedProxyActivities({
-    temporalEnum: TEMPORAL_ENUMS.DEFAULT,
-    options: {
-      ...shortRunningOpts,
-    },
-  });
+  const { getPaymentDetails, updatePayment, updatePaymentMetadata } =
+    typedProxyActivities({
+      temporalEnum: TEMPORAL_ENUMS.DEFAULT,
+      options: {
+        ...shortRunningOpts,
+      },
+    });
 
   const {
     amountInUSDCents,
@@ -71,7 +73,7 @@ export async function chargeUserWorkflow({
   // MARK: Execute Charge ChildWorkflow based on PaymentProvider
   if (paymentProvider === paymentProviderSchema.enum.STRIPE) {
     try {
-      const { paymentIntentId, paymentIntentStatus } =
+      const { paymentIntentId, paymentIntentStatus, paymentMethodId } =
         await workflow.executeChild(chargeStripeWorkflow, {
           args: [
             {
@@ -91,6 +93,19 @@ export async function chargeUserWorkflow({
         paymentIntentStatus,
       });
       paymentProviderReferenceId = paymentIntentId;
+      void catchAndAlertLocally(
+        async () => {
+          await updatePaymentMetadata({
+            id: paymentId,
+            stripePaymentDetails: {
+              paymentMethodId,
+            },
+          });
+        },
+        {
+          message: `Error while updating payment metadata for payment ${paymentId}`,
+        },
+      );
     } catch (error) {
       workflow.log.error(
         `Error while executing ChargeStripe workflow. workflowId: charge-stripe-${paymentId}, cause: ${JSON.stringify(error)}`,

@@ -149,7 +149,7 @@ type GetProcessedOrderEmailInput = {
    * @remarks
    * This is either the last 4 digits of the card number or the wallet address for crypto payments.
    */
-  paymentMethodIdentifier: string;
+  paymentMethodIdentifier?: string;
   refund?: {
     amountInUsd: number;
     status: 'SUCCEEDED' | 'FAILED' | 'PROCESSING';
@@ -201,18 +201,22 @@ export async function getProcessedOrderEmail({
 
   const paymentMethodDisplayName =
     displayNameForPaymentMethod(paymentMethodCharged);
-  let paymentMethodIdentifier = paymentMethodIdentifierRaw;
-  if (paymentMethodCharged === 'STRIPE') {
-    const [_, last4] = await resolve(
-      getStripePaymentMethodPublicIdentifier({
-        paymentMethodId: paymentMethodIdentifierRaw,
-      }),
-    );
-    if (last4) {
-      paymentMethodIdentifier = `....${last4}`;
+  let paymentMethodIdentifier = paymentMethodIdentifierRaw ?? '';
+  if (paymentMethodIdentifierRaw) {
+    if (paymentMethodCharged === 'STRIPE') {
+      const [_, last4] = await resolve(
+        getStripePaymentMethodPublicIdentifier({
+          paymentMethodId: paymentMethodIdentifierRaw,
+        }),
+      );
+      if (last4) {
+        paymentMethodIdentifier = `....${last4}`;
+      }
+    } else {
+      paymentMethodIdentifier = abbreviateEvmAddress(
+        paymentMethodIdentifierRaw,
+      );
     }
-  } else {
-    paymentMethodIdentifier = abbreviateEvmAddress(paymentMethodIdentifierRaw);
   }
 
   const content = React.createElement(ProcessedOrderReport, {
