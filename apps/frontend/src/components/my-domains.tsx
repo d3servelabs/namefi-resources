@@ -875,32 +875,32 @@ function MyDomainsTable(props: {
     },
   });
 
-  const { columnVisibility, sorting, pageSize } = preferences;
+  const {
+    columnVisibility: persistedColumnVisibility,
+    sorting,
+    pageSize,
+  } = preferences;
 
-  const prevColumnVisibility = useRef<VisibilityState | null>(null);
   const isMobile = useIsMobile();
-  useEffect(() => {
-    if (!isLoaded) return;
-    if (isMobile) {
-      if (prevColumnVisibility.current === null) {
-        prevColumnVisibility.current = columnVisibility;
-      }
-      setColumnVisibility({
-        select: true,
-        account: false,
-        normalizedDomainName: true,
-        expirationDate: true,
-        dateTokenized: false,
-        renewPricing: false,
-        urlForward: false,
-        listForSale: false,
-        actions: true,
-      });
-    } else if (prevColumnVisibility.current !== null) {
-      setColumnVisibility(prevColumnVisibility.current);
-      prevColumnVisibility.current = null;
-    }
-  }, [isMobile, isLoaded, columnVisibility, setColumnVisibility]);
+
+  const mobileColumnVisibility: VisibilityState = useMemo(
+    () => ({
+      select: true,
+      account: false,
+      normalizedDomainName: true,
+      expirationDate: true,
+      dateTokenized: false,
+      renewPricing: false,
+      urlForward: false,
+      listForSale: false,
+      actions: true,
+    }),
+    [],
+  );
+
+  const columnVisibility = isMobile
+    ? mobileColumnVisibility
+    : persistedColumnVisibility;
 
   // Initialize autoRenewCache from domain data when domains are loaded
   useEffect(() => {

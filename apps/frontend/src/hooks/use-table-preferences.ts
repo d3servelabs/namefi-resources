@@ -161,29 +161,27 @@ export function useTablePreferences(
   );
 
   useEffect(() => {
+    setIsLoaded(false);
     const stored = loadFromStorage(tableId);
     if (stored) {
-      if (stored.columnVisibility !== undefined) {
-        setColumnVisibilityState(stored.columnVisibility);
-      }
-      if (stored.columnOrder !== undefined) {
-        setColumnOrderState(stored.columnOrder);
-      }
-      if (stored.sorting !== undefined) {
-        setSortingState(stored.sorting);
-      }
-      if (stored.columnSizing !== undefined) {
-        setColumnSizingState(stored.columnSizing);
-      }
-      if (stored.filters !== undefined) {
-        setFiltersState(stored.filters);
-      }
-      if (stored.pageSize !== undefined) {
-        setPageSizeState(stored.pageSize);
-      }
+      setColumnVisibilityState(
+        stored.columnVisibility ?? mergedDefaults.columnVisibility,
+      );
+      setColumnOrderState(stored.columnOrder ?? mergedDefaults.columnOrder);
+      setSortingState(stored.sorting ?? mergedDefaults.sorting);
+      setColumnSizingState(stored.columnSizing ?? mergedDefaults.columnSizing);
+      setFiltersState(stored.filters ?? mergedDefaults.filters);
+      setPageSizeState(stored.pageSize ?? mergedDefaults.pageSize);
+    } else {
+      setColumnVisibilityState(mergedDefaults.columnVisibility);
+      setColumnOrderState(mergedDefaults.columnOrder);
+      setSortingState(mergedDefaults.sorting);
+      setColumnSizingState(mergedDefaults.columnSizing);
+      setFiltersState(mergedDefaults.filters);
+      setPageSizeState(mergedDefaults.pageSize);
     }
     setIsLoaded(true);
-  }, [tableId]);
+  }, [tableId, mergedDefaults]);
 
   const preferences = useMemo<TablePreferences>(
     () => ({
