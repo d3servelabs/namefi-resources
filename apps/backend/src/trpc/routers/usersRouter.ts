@@ -473,6 +473,7 @@ export const usersRouter = createTRPCRouter({
           .select({
             normalizedDomainName: domainConfigTable.normalizedDomainName,
             autoParkEnabled: domainConfigTable.autoParkEnabled,
+            autoEnsEnabled: domainConfigTable.autoEnsEnabled,
             forwardTo: domainConfigTable.forwardTo,
           })
           .from(domainConfigTable)
@@ -566,6 +567,7 @@ export const usersRouter = createTRPCRouter({
           ...nft,
           expirationDate: expirationDates[domainName],
           autoRenewEnabled: preferences?.autoRenewEnabled ?? false,
+          autoEnsEnabled: config?.autoEnsEnabled ?? false,
           dateTokenized,
           dnsStatus: {
             nameservers: indexedDomain?.nameservers ?? [],
@@ -588,6 +590,7 @@ export const usersRouter = createTRPCRouter({
       return nfts.map((nft) => ({
         ...nft,
         autoRenewEnabled: false,
+        autoEnsEnabled: false,
         dateTokenized: null,
         dnsStatus: {
           nameservers: [],

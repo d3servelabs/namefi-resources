@@ -844,6 +844,16 @@ function MyDomainsTable(props: {
   const [autoRenewCache, setAutoRenewCache] = useState<Map<string, boolean>>(
     () => new Map(),
   );
+
+  // State for auto-ENS toggling
+  const [togglingAutoEns, setTogglingAutoEns] = useState<Set<string>>(
+    () => new Set(),
+  );
+
+  // Cache for domain auto-ENS status
+  const [autoEnsCache, setAutoEnsCache] = useState<Map<string, boolean>>(
+    () => new Map(),
+  );
   const [page, setPage] = useState(1);
   const [domainSearch, setDomainSearch] = useState('');
 
@@ -923,6 +933,27 @@ function MyDomainsTable(props: {
     });
   }, [domains]);
 
+  // Initialize autoEnsCache from domain data when domains are loaded
+  useEffect(() => {
+    setAutoEnsCache((prev) => {
+      const next = new Map(prev);
+      let changed = false;
+
+      for (const domain of domains) {
+        const domainName = domain.normalizedDomainName;
+        if (!domainName || prev.has(domainName)) continue;
+
+        // Use autoEnsEnabled from the backend if available
+        if (domain.autoEnsEnabled !== undefined) {
+          next.set(domainName, domain.autoEnsEnabled);
+          changed = true;
+        }
+      }
+
+      return changed ? next : prev;
+    });
+  }, [domains]);
+
   const { hasEmail } = useEmailPrompt();
   const canAnimate = useCanAnimate();
   const { renewDomains } = useDomainRenewal();
@@ -992,6 +1023,53 @@ function MyDomainsTable(props: {
       }
     },
     [trpcClient, autoRenewCache],
+  );
+
+  // Handle auto-ENS toggle for a single domain
+  const handleToggleAutoEns = useCallback(
+    async (domainName: string, enabled: boolean) => {
+      // Snapshot previous value before any state updates (safe for rollback)
+      const prevValue = autoEnsCache.get(domainName) ?? false;
+
+      setTogglingAutoEns((prev) => {
+        const next = new Set(prev);
+        next.add(domainName);
+        return next;
+      });
+      try {
+        // Optimistic update
+        setAutoEnsCache((prev) => {
+          const next = new Map(prev);
+          next.set(domainName, enabled);
+          return next;
+        });
+
+        await trpcClient.domainConfig.updateDomainPreferencesAndConfig.mutate({
+          domainName: domainName as NamefiNormalizedDomain,
+          domainPreferencesAndConfig: {
+            autoEnsEnabled: enabled,
+          },
+        });
+        toast.success(
+          `AutoENS ${enabled ? 'enabled' : 'disabled'} for ${domainName}`,
+        );
+      } catch (error) {
+        // Revert optimistic update to actual previous value
+        setAutoEnsCache((prev) => {
+          const next = new Map(prev);
+          next.set(domainName, prevValue);
+          return next;
+        });
+        toast.error(`Failed to update AutoENS for ${domainName}`);
+      } finally {
+        setTogglingAutoEns((prev) => {
+          const next = new Set(prev);
+          next.delete(domainName);
+          return next;
+        });
+      }
+    },
+    [trpcClient, autoEnsCache],
   );
 
   // Handle batch auto-renewal toggle
@@ -1667,6 +1745,30 @@ function MyDomainsTable(props: {
         size: 180,
       },
       {
+        id: 'autoEns',
+        header: 'AutoENS',
+        cell: ({ row }) => {
+          const domainName = row.getValue('normalizedDomainName') as string;
+          const isToggling = togglingAutoEns.has(domainName);
+          const cachedAutoEns = autoEnsCache.get(domainName);
+          const isAutoEnsEnabled = cachedAutoEns ?? false;
+
+          return (
+            <div className="flex items-center gap-2">
+              <AnimatedAutoRenewToggle
+                checked={isAutoEnsEnabled}
+                onCheckedChange={(checked) =>
+                  handleToggleAutoEns(domainName, checked)
+                }
+                disabled={false}
+                isLoading={isToggling}
+              />
+            </div>
+          );
+        },
+        size: 100,
+      },
+      {
         accessorKey: 'dateTokenized',
         header: 'Date Tokenized',
         cell: ({ row }) => {
@@ -1862,10 +1964,13 @@ function MyDomainsTable(props: {
       handleRowSelectionChange,
       handleToggleAllCurrentPage,
       handleToggleAutoRenew,
+      handleToggleAutoEns,
       pageSelectionState,
       selectedDomainIds,
       togglingAutoRenew,
       autoRenewCache,
+      togglingAutoEns,
+      autoEnsCache,
       isMobile,
       renewalPriceUsdPerYearByTld,
       getCustomRenewalPrice,
