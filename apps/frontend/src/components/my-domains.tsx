@@ -1954,7 +1954,7 @@ function MyDomainsTable(props: {
         searchPlaceholder="Filter domains..."
         filterStrategy={filterStrategy}
         columnVisibility={columnVisibility}
-        onColumnVisibilityChange={setColumnVisibility}
+        onColumnVisibilityChange={isMobile ? undefined : setColumnVisibility}
         emptyMessage="No domains match your filters"
         loadingMessage="Loading domains..."
         paginationVisibility="auto"
