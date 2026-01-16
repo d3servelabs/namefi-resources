@@ -39,6 +39,24 @@ alwaysApply: false
 ## When asked for `gt create`
 This is graphite function to create a NEW pull request on top of the one below (new_branch_name), which has the following usage `gt create <new_branch_name> -m <git_commit_message>`. 
 
+## ClickUp & GitHub Integration Rules
+
+**Precondition:** Apply these rules ONLY if a ClickUp Task ID (e.g., `1abc2de`) or a custom ID matching the pattern `NFI-<number>` is provided in the context.
+
+- **Task ID Format:** Use the hashtag prefix: `#{ID}` (e.g., #NFI-1234).
+- **Commit Messages:** Adhere strictly to Conventional Commits. Place the Task ID in the **footer** (after a blank line) to maintain a valid header.
+  - *Example:*
+    ```
+    feat(ui): add localstorage
+    
+    #NFI-1234
+    ```
+- **PR Titles:** Append the Task ID to the end of the PR title.
+  - *Example:* `feat(ui): add localstorage #NFI-1234`
+- **PR Descriptions:** Ensure the Task ID is included in the description to guarantee the sync between GitHub and ClickUp.
+- **Status Updates:** To trigger an automatic status change in ClickUp via GitHub, use the format `#{ID}[Status Name]` (no spaces) in the commit footer or PR description.
+  - *Example:* `#NFI-1234[In Review]`
+
 ## Respond
 
 Based on the current staged git changes, please summarize them as a branch name and a `git commit` or `gt create` message. Please format message as plaintext with proper handle of newline to be copy and used in terminal. Output in markdown for easy copy-and-paste. 
