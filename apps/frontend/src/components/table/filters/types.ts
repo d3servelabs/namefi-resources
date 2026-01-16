@@ -71,6 +71,15 @@ export interface IFilterStrategy<
   activeFilterCount: number;
   clearAllFilters?: () => void;
 
+  /**
+   * Optional callback to get dynamic suggestion options for a field based on current data
+   */
+  getFieldSuggestions?: (args: {
+    fieldId: string;
+    field: FilterField;
+    filterState: FilterState;
+  }) => { value: string; label: string; type?: 'wallet' }[];
+
   renderFilter?: (props: {
     columnId: string;
     columns: ColumnDef<TData, any>[];

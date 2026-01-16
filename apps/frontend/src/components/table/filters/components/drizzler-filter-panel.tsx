@@ -42,7 +42,14 @@ export function DrizzlerFilterPanel({
   customFiltersConfig,
   onFilterStateChange,
   onClearAll,
-}: DrizzlerFilterPanelProps) {
+  getFieldSuggestions,
+}: DrizzlerFilterPanelProps & {
+  getFieldSuggestions?: (args: {
+    fieldId: string;
+    field: DrizzlerFilterFieldType;
+    filterState: DrizzlerFilterState;
+  }) => { value: string; label: string; type?: 'wallet' }[];
+}) {
   const activeFilterCount =
     Object.keys(filterState.columnFilters).length +
     Object.keys(filterState.customFilters).length;
@@ -156,6 +163,11 @@ export function DrizzlerFilterPanel({
                 {customFilterConfigsArray.map(([fieldId, field]) => {
                   const filterForField = getFilterForField('custom', fieldId);
                   const isActive = !!filterForField;
+                  const suggestions = getFieldSuggestions?.({
+                    fieldId,
+                    field,
+                    filterState,
+                  });
 
                   return (
                     <AccordionItem
@@ -203,6 +215,7 @@ export function DrizzlerFilterPanel({
                             )
                           }
                           onClear={() => handleClearFilter('custom', fieldId)}
+                          suggestions={suggestions}
                         />
                       </AccordionContent>
                     </AccordionItem>
@@ -226,6 +239,11 @@ export function DrizzlerFilterPanel({
                 {columnFilterConfigsArray.map(([fieldId, field]) => {
                   const filterForField = getFilterForField('column', fieldId);
                   const isActive = !!filterForField;
+                  const suggestions = getFieldSuggestions?.({
+                    fieldId,
+                    field,
+                    filterState,
+                  });
 
                   return (
                     <AccordionItem
@@ -273,6 +291,7 @@ export function DrizzlerFilterPanel({
                             )
                           }
                           onClear={() => handleClearFilter('column', fieldId)}
+                          suggestions={suggestions}
                         />
                       </AccordionContent>
                     </AccordionItem>

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Button } from '@/components/ui/shadcn/button';
 import { Input } from '@/components/ui/shadcn/input';
 import {
@@ -9,13 +9,27 @@ import {
   SelectValue,
 } from '@/components/ui/shadcn/select';
 import { DatePickerWithInput } from '@/components/date-picker/date-picker-with-input';
-import { Plus, X } from 'lucide-react';
+import { Plus, X, Check, ChevronsUpDown } from 'lucide-react';
 import type { FilterOperators } from '@samyx/drizzler-filters-sorters';
 import type {
   DrizzlerFilterFieldConfig,
   DrizzlerFilterCondition,
 } from '../types';
-import { useMemo } from 'react';
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from '@/components/ui/shadcn/command';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/shadcn/popover';
+import { cn } from '@/lib/cn';
+import { UserWalletAvatar } from '@/components/user-avatar';
 
 type DrizzlerFilterFieldProps = {
   field: DrizzlerFilterFieldConfig;
@@ -26,6 +40,7 @@ type DrizzlerFilterFieldProps = {
     logicalOperator: 'and' | 'or',
   ) => void;
   onClear: () => void;
+  suggestions?: { value: string; label: string; type?: 'wallet' }[];
 };
 
 // Operator definitions by field type
@@ -109,6 +124,7 @@ function SingleConditionEditor({
   allowedOperators,
   typeSpecificOptions,
   operatorsCustomLabels,
+  suggestions,
   onChange,
   onRemove,
   showRemove,
@@ -119,6 +135,7 @@ function SingleConditionEditor({
   allowedOperators?: FilterOperators[];
   typeSpecificOptions?: DrizzlerFilterFieldConfig['typeSpecificOptions'];
   operatorsCustomLabels?: Record<FilterOperators, string>;
+  suggestions?: { value: string; label: string; type?: 'wallet' }[];
   onChange: (updated: DrizzlerFilterCondition) => void;
   onRemove: () => void;
   showRemove: boolean;
@@ -171,6 +188,8 @@ function SingleConditionEditor({
         : undefined,
   );
 
+  const [comboboxOpen, setComboboxOpen] = useState(false);
+
   useEffect(() => {
     setLocalValue(formatValueForDisplay(condition.value, fieldType));
     if (fieldType === 'date') {
@@ -199,6 +218,105 @@ function SingleConditionEditor({
       value: newValue,
     });
   };
+
+  const renderCombobox = () => (
+    <Popover open={comboboxOpen} onOpenChange={setComboboxOpen} modal>
+      <PopoverTrigger asChild>
+        <Button
+          variant="outline"
+          role="combobox"
+          aria-expanded={comboboxOpen}
+          className="h-9 w-full justify-between font-normal px-3"
+        >
+          {localValue || 'Enter value...'}
+          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent
+        className="w-[300px] p-0"
+        align="start"
+        collisionPadding={10}
+        side="bottom"
+      >
+        <Command>
+          <CommandInput
+            placeholder="Type value..."
+            value={localValue}
+            onValueChange={(val) => {
+              setLocalValue(val);
+              // Allow free typing
+              let processedValue: string | number = val;
+              if (fieldType === 'number') {
+                const trimmed = val.trim();
+                if (trimmed !== '') {
+                  const num = Number(trimmed);
+                  if (!Number.isNaN(num)) {
+                    processedValue = num;
+                    handleValueChange(processedValue);
+                  }
+                } else {
+                  handleValueChange(undefined);
+                }
+              } else {
+                handleValueChange(val);
+              }
+            }}
+          />
+          <CommandList>
+            <CommandEmpty className="py-2 px-4 text-sm text-muted-foreground">
+              No matching suggestions. You can still use the typed value.
+            </CommandEmpty>
+            <CommandGroup heading="Suggestions">
+              {suggestions?.map((suggestion) => (
+                <CommandItem
+                  key={suggestion.value}
+                  value={suggestion.label} // Use label for filtering if user types
+                  onSelect={() => {
+                    handleValueChange(
+                      fieldType === 'number'
+                        ? Number(suggestion.value)
+                        : suggestion.value,
+                    );
+                    setLocalValue(suggestion.value); // Keep value in input
+                    setComboboxOpen(false);
+                  }}
+                >
+                  <Check
+                    className={cn(
+                      'mr-2 h-4 w-4',
+                      localValue === suggestion.value
+                        ? 'opacity-100'
+                        : 'opacity-0',
+                    )}
+                  />
+                  {suggestion.type === 'wallet' ? (
+                    <div className="flex items-center gap-2">
+                      <UserWalletAvatar
+                        address={suggestion.value}
+                        className="h-6 w-6"
+                      />
+                      <span className="font-mono text-sm">
+                        {suggestion.label}
+                      </span>
+                    </div>
+                  ) : (
+                    <div className="flex flex-col">
+                      <span>{suggestion.label}</span>
+                      {suggestion.label !== suggestion.value && (
+                        <span className="text-xs text-muted-foreground">
+                          {suggestion.value}
+                        </span>
+                      )}
+                    </div>
+                  )}
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </CommandList>
+        </Command>
+      </PopoverContent>
+    </Popover>
+  );
 
   return (
     <div className="flex gap-2 items-start">
@@ -266,6 +384,8 @@ function SingleConditionEditor({
               placeholder="Select date..."
               className="flex flex-col gap-2"
             />
+          ) : suggestions && suggestions.length > 0 ? (
+            renderCombobox()
           ) : (
             <Input
               type={fieldType === 'number' ? 'number' : 'text'}
@@ -320,6 +440,7 @@ export function DrizzlerFilterField({
   logicalOperator,
   onChange,
   onClear,
+  suggestions,
 }: DrizzlerFilterFieldProps) {
   const conditions: DrizzlerFilterCondition[] = useMemo(() => {
     if (!_conditions || _conditions.length === 0) {
@@ -393,6 +514,7 @@ export function DrizzlerFilterField({
               allowedOperators={field.allowedOperators}
               typeSpecificOptions={field.typeSpecificOptions}
               operatorsCustomLabels={field.operatorsCustomLabels}
+              suggestions={suggestions}
               onChange={(updated) => handleUpdateCondition(index, updated)}
               onRemove={() => handleRemoveCondition(index)}
               showRemove={conditions.length > 1}

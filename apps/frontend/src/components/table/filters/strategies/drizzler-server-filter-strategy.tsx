@@ -20,12 +20,21 @@ export function useDrizzlerServerFilterStrategy<TData = any>({
   filterDisplayOptions,
   customFilters,
   onDrizzlerFilterChange,
+  getFieldSuggestions,
 }: {
   filterConfig?: Record<string, DrizzlerFilterFieldConfig>;
   customFilters?: Record<string, DrizzlerFilterFieldConfig>;
 
   filterDisplayOptions?: FilterDisplayOptions;
   onDrizzlerFilterChange?: (filterState: DrizzlerFilterState) => void;
+  /**
+   * Optional callback to get dynamic suggestion options for a field based on current data
+   */
+  getFieldSuggestions?: (args: {
+    fieldId: string;
+    field: DrizzlerFilterFieldConfig;
+    filterState: DrizzlerFilterState;
+  }) => { value: string; label: string; type?: 'wallet' }[];
 }): DrizzlerServerFilterStrategy<TData> {
   const [filterState, setFilterState] = useState<DrizzlerFilterState>({
     columnFilters: {},
@@ -68,6 +77,7 @@ export function useDrizzlerServerFilterStrategy<TData = any>({
     filterDisplayOptions,
     activeFilterCount,
     onFilterStateChange: _onFilterStateChange,
+    getFieldSuggestions,
     clearAllFilters: useCallback(() => {
       _onFilterStateChange({
         columnFilters: {},
@@ -85,6 +95,7 @@ export function useDrizzlerServerFilterStrategy<TData = any>({
           customFiltersConfig={customFilters ?? {}}
           onFilterStateChange={_onFilterStateChange}
           onClearAll={clearAllFilters}
+          getFieldSuggestions={getFieldSuggestions}
         />
       );
     },

@@ -129,6 +129,11 @@ import {
 
 type DomainRow = AppRouterOutput['users']['getCurrentUserDomains'][number];
 
+const truncateWalletAddress = (address: string): string => {
+  if (address.length <= 10) return address;
+  return `${address.slice(0, 6)}...${address.slice(-4)}`;
+};
+
 const DEFAULT_DOMAIN_LIST_PAGE_SIZE = 500;
 
 function getRenewalPriceUsdPerYearForDomain(
@@ -1261,6 +1266,10 @@ function MyDomainsTable(props: {
     return null;
   }, []);
 
+  // Ref to hold the latest filtered domains for filter suggestions
+  // This avoids circular dependencies between filter strategy and filtered data
+  const filteredDomainsRef = useRef<DomainRow[]>(domains);
+
   const drizzlerFilterConfig = useMemo(
     () => ({
       normalizedDomainName: {
@@ -1302,9 +1311,50 @@ function MyDomainsTable(props: {
     [],
   );
 
+  const getFieldSuggestions = useCallback(
+    ({ fieldId }: { fieldId: string }) => {
+      const data = filteredDomainsRef.current;
+      if (!data) return [];
+
+      if (fieldId === 'ownerAddress') {
+        const uniqueAddresses = Array.from(
+          new Set(
+            data
+              .map((d) => d.ownerAddress)
+              .filter((addr): addr is string => !!addr),
+          ),
+        );
+        return uniqueAddresses.map((addr) => ({
+          value: addr,
+          label: truncateWalletAddress(addr),
+          type: 'wallet' as const,
+        }));
+      }
+
+      if (fieldId === 'normalizedDomainName') {
+        const uniqueNames = Array.from(
+          new Set(
+            data
+              .map((d) => d.normalizedDomainName)
+              .filter((name): name is NonNullable<typeof name> => !!name),
+          ),
+        );
+        // Limit domain suggestions to 50 to avoid performance issues
+        return uniqueNames.slice(0, 50).map((name) => ({
+          value: name,
+          label: name,
+        }));
+      }
+
+      return [];
+    },
+    [],
+  );
+
   const filterStrategy = useDrizzlerServerFilterStrategy<DomainRow>({
     filterConfig: drizzlerFilterConfig as any,
     filterDisplayOptions: { showInHeader: false },
+    getFieldSuggestions,
   });
   const filterState = filterStrategy.filterState;
 
@@ -1345,6 +1395,9 @@ function MyDomainsTable(props: {
     }
     return applyDrizzlerFilterOnDataset(domains, drizzlerFilterOptions);
   }, [domains, drizzlerFilterOptions]);
+
+  // Update ref with latest filtered domains synchronously to ensure suggestions are up to date
+  filteredDomainsRef.current = filteredDomains;
 
   const filteredDomainsBySearch = useMemo(() => {
     const needle = domainSearch.trim().toLowerCase();
