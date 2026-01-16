@@ -5,6 +5,7 @@ import {
   useEffect,
   useCallback,
   useMemo,
+  useRef,
   type Dispatch,
   type SetStateAction,
 } from 'react';
@@ -133,15 +134,17 @@ export function useTablePreferences(
 ): UseTablePreferencesReturn {
   const { tableId, defaultPreferences = {} } = options;
 
+  const defaultPrefsJson = JSON.stringify(defaultPreferences);
   const mergedDefaults = useMemo(
     () => ({
       ...DEFAULT_PREFERENCES,
-      ...defaultPreferences,
+      ...(JSON.parse(defaultPrefsJson) as Partial<TablePreferences>),
     }),
-    [defaultPreferences],
+    [defaultPrefsJson],
   );
 
   const [isLoaded, setIsLoaded] = useState(false);
+  const [loadedTableId, setLoadedTableId] = useState<string | null>(null);
   const [columnVisibility, setColumnVisibilityState] =
     useState<VisibilityState>(mergedDefaults.columnVisibility);
   const [columnOrder, setColumnOrderState] = useState<ColumnOrderState>(
@@ -160,8 +163,12 @@ export function useTablePreferences(
     mergedDefaults.pageSize,
   );
 
+  const tableIdRef = useRef(tableId);
+  tableIdRef.current = tableId;
+
   useEffect(() => {
     setIsLoaded(false);
+    setLoadedTableId(null);
     const stored = loadFromStorage(tableId);
     if (stored) {
       setColumnVisibilityState(
@@ -180,6 +187,7 @@ export function useTablePreferences(
       setFiltersState(mergedDefaults.filters);
       setPageSizeState(mergedDefaults.pageSize);
     }
+    setLoadedTableId(tableId);
     setIsLoaded(true);
   }, [tableId, mergedDefaults]);
 
@@ -196,10 +204,10 @@ export function useTablePreferences(
   );
 
   useEffect(() => {
-    if (isLoaded) {
+    if (isLoaded && loadedTableId === tableId) {
       saveToStorage(tableId, preferences);
     }
-  }, [tableId, preferences, isLoaded]);
+  }, [tableId, preferences, isLoaded, loadedTableId]);
 
   const setColumnVisibility: Dispatch<SetStateAction<VisibilityState>> =
     useCallback((value) => {

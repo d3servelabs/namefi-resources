@@ -99,7 +99,7 @@ export const DnsRecordsTable: FC<DnsRecordsTableProps> = ({
     preferences: { sorting, columnVisibility, filters: columnFilters },
     setSorting,
     setColumnVisibility,
-    setFilters: setColumnFilters,
+    setFilters,
   } = useTablePreferences({
     tableId: `dns-records-${domain}`,
     defaultPreferences: {
@@ -108,6 +108,20 @@ export const DnsRecordsTable: FC<DnsRecordsTableProps> = ({
       filters: [],
     },
   });
+
+  const setColumnFilters = useCallback(
+    (
+      value:
+        | ColumnFiltersState
+        | ((prev: ColumnFiltersState) => ColumnFiltersState),
+    ) => {
+      setFilters((prev) => {
+        const next = typeof value === 'function' ? value(prev) : value;
+        return next.filter((f) => f.id !== 'type');
+      });
+    },
+    [setFilters],
+  );
 
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const [globalFilter, setGlobalFilter] = useState('');
