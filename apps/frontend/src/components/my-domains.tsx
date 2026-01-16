@@ -1749,9 +1749,17 @@ function MyDomainsTable(props: {
         header: 'AutoENS',
         cell: ({ row }) => {
           const domainName = row.getValue('normalizedDomainName') as string;
+          const expirationDate = row.getValue('expirationDate') as
+            | Date
+            | string
+            | null
+            | undefined;
           const isToggling = togglingAutoEns.has(domainName);
           const cachedAutoEns = autoEnsCache.get(domainName);
           const isAutoEnsEnabled = cachedAutoEns ?? false;
+          const isExpired = expirationDate
+            ? isPast(new Date(expirationDate))
+            : false;
 
           return (
             <div className="flex items-center gap-2">
@@ -1760,7 +1768,7 @@ function MyDomainsTable(props: {
                 onCheckedChange={(checked) =>
                   handleToggleAutoEns(domainName, checked)
                 }
-                disabled={false}
+                disabled={isExpired}
                 isLoading={isToggling}
               />
             </div>
