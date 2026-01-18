@@ -14,6 +14,7 @@ export const config = configSchema.parse(
     local: localConfig,
     production: productionConfig,
     test: testConfig,
+    preview: developmentConfig,
   }[ENVIRONMENT],
 );
 export const secrets = secretsSchema.parse(process.env);

@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const configSchema = z.object({
-  TYPE: z.enum(['development', 'production', 'local']),
+  TYPE: z.enum(['development', 'production', 'local', 'preview']),
   BACKEND_URL: z.url(),
   RESOURCES_URL: z.url(),
   FIRST_PARTY_DEPLOYMENT_URL: z.url(),

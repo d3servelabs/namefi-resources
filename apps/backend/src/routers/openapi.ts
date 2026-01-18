@@ -184,7 +184,9 @@ providersRouter.get('/openapi/doc', (c, next) => {
         ? 'http://backend.astra.namefi.io/v-next'
         : process.env.ENVIRONMENT === 'development'
           ? 'http://backend.astra.namefi.dev/v-next'
-          : 'http://localhost:3000/v-next',
+          : process.env.ENVIRONMENT === 'preview'
+            ? 'http://localhost:3000/v-next'
+            : 'http://localhost:3000/v-next',
   })(c, next);
 });
 
