@@ -1,12 +1,12 @@
 import { Context } from '@temporalio/activity';
-import { differenceInHours, format, subHours } from 'date-fns';
+import { differenceInHours, format } from 'date-fns';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { secrets } from '#lib/env';
 import { sendMail } from '../../../mail/mail-client';
 import React from 'react';
 import { render } from '@react-email/components';
 import { db, namefiNftCte } from '@namefi-astra/db';
-import { and, eq, lt, sql, inArray, desc } from 'drizzle-orm';
+import { eq, lt, inArray, desc } from 'drizzle-orm';
 import { namefiNftView, indexedDomainsTable } from '@namefi-astra/db';
 import { createLogger } from '#lib/logger';
 import { sldRegistrar } from '#lib/namefi-registry';
@@ -14,6 +14,7 @@ import { RDAP } from '@namefi-astra/registrars/lib/rdap-whois/rdap_client';
 import { toPunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
 import { ExportExpirationDailyReport } from '../../../mail/templates/export-expiration-daily-report';
 
+const SEND_TO_SLACK_DIRECT = false;
 const logger = createLogger({ name: 'export-expiration-report' });
 
 export interface ExportedDomainInfo {
@@ -788,6 +789,10 @@ export async function sendExportExpirationReportToSlack(
   title: string,
   content: string,
 ): Promise<void> {
+  if (!SEND_TO_SLACK_DIRECT) {
+    logger.info('Skipping Slack notification');
+    return;
+  }
   logger.info('Sending export/expiration report to Slack');
 
   const webhookUrl = secrets.NAMEFI_ASSET_REPORT_SLACK_WEBHOOK_URL;
@@ -894,7 +899,10 @@ export async function sendExportExpirationReportEmail(
     });
 
     await sendMail({
-      to: ['reporting@namefi.io'],
+      to: [
+        'reports+expiry-exports@d3serve.xyz',
+        'asset-report-aaaao27zt2zkdocu7mqxfdxvzm@namefi.slack.com',
+      ],
       subject: title,
       content: {
         html,
