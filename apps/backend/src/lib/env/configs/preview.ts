@@ -48,7 +48,9 @@ const previewConfig: PreviewConfig = {
       'discounts.today',
     ],
   },
-  ALLOW_ALL_ORIGINS: process.env.ALLOW_ALL_ORIGINS?.toLowerCase() === 'true',
+  ALLOW_ALL_ORIGINS: process.env.ALLOW_ALL_ORIGINS
+    ? process.env.ALLOW_ALL_ORIGINS?.toLowerCase() === 'true'
+    : true,
   DYNADOT_BASE_URL: 'https://dynadot.namefi.dev/api3.json',
 
   DNSSEC_DNSKEY_PUBLIC_RECORD:
