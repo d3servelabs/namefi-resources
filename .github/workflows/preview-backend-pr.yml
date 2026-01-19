@@ -1,0 +1,304 @@
+name: Preview Backend (PR)
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+
+env:
+  PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
+  REGION: ${{ vars.GCP_REGION }}
+  REPO_NAME: ${{ vars.REPOSITORY_NAME }}
+
+jobs:
+  detect-changes:
+    name: Detect Backend Changes
+    runs-on: ubuntu-latest
+    outputs:
+      has-backend-changes: ${{ steps.check.outputs.has-backend-changes }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 16
+      - name: Compare the before and after SHAs
+        run: |
+          BEFORE_SHA=${{ github.event.pull_request.before }}
+          AFTER_SHA=${{ github.event.pull_request.after }}
+          echo "Comparing changes from $BEFORE_SHA to $AFTER_SHA"
+          # Example: List changed files
+          git diff --name-only $BEFORE_SHA $AFTER_SHA
+
+      - name: Detect Turbo changes
+        id: turbo-changes
+        uses: ./.github/actions/detect-turbo-changes
+        with:
+          filter: "...[${{ github.event.pull_request.base.sha }}]"
+
+      - name: Check backend changes
+        id: check
+        run: |
+          HAS_BACKEND_CHANGES="${{ contains(fromJSON(steps.turbo-changes.outputs.changed-packages), '@namefi-astra/backend' ) }}"
+          echo "has-backend-changes=$HAS_BACKEND_CHANGES" >> $GITHUB_OUTPUT
+          if [[ "$HAS_BACKEND_CHANGES" == "true" ]]; then
+            echo "Backend changes detected"
+          else
+            echo "No backend changes detected"
+          fi
+
+  build-backend:
+    name: Build Backend Container
+    needs: detect-changes
+    if: needs.detect-changes.outputs.has-backend-changes == 'true'
+    runs-on: "blacksmith-8vcpu-ubuntu-2404"
+    permissions:
+      contents: read
+      id-token: write
+    outputs:
+      image_tag: ${{ steps.set-tag.outputs.image_tag }}
+      image_digest: ${{ steps.resolve-digest.outputs.image_digest }}
+      new_image: ${{ steps.resolve-digest.outputs.new_image }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Google Auth
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
+          service_account: ${{ vars.GCP_WIF_SERVICE_ACCOUNT }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Configure Docker for Artifact Registry
+        run: gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev
+
+      - name: Set Docker tag
+        id: set-tag
+        run: |
+          IMAGE_TAG="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/cloud-run-source-deploy/${{ env.REPO_NAME }}/namefi-astra-api:${{ github.sha }}"
+          echo "image_tag=$IMAGE_TAG" >> $GITHUB_OUTPUT
+
+      - name: Check if Docker image exists
+        id: check-image
+        run: |
+          {
+            IMAGE_TAG="${{ steps.set-tag.outputs.image_tag }}"
+            IMAGE_DETAILS="$(gcloud artifacts docker images describe "$IMAGE_TAG" --format="json" 2>/dev/null)"
+            DIGEST="$(echo "$IMAGE_DETAILS" | jq .image_summary.digest)"
+            if [[ -n "$DIGEST" && "$DIGEST" != "null" ]]; then
+              echo "Image already exists: $IMAGE_TAG"
+              echo "exists=true" >> $GITHUB_OUTPUT
+            else
+              echo "Image does not exist: $IMAGE_TAG"
+              echo "exists=false" >> $GITHUB_OUTPUT
+            fi
+          } || {
+            echo "Failed to check image: $IMAGE_TAG"
+            echo "exists=false" >> $GITHUB_OUTPUT
+          }
+
+      - name: Set up Docker Buildx
+        if: steps.check-image.outputs.exists != 'true'
+        uses: useblacksmith/setup-docker-builder@v1
+
+      - name: Build and Push Container
+        if: steps.check-image.outputs.exists != 'true'
+        uses: useblacksmith/build-push-action@v2
+        with:
+          tags: ${{ steps.set-tag.outputs.image_tag }}
+          push: true
+          context: .
+          file: ./apps/backend/Dockerfile
+
+      - name: Resolve image digest
+        id: resolve-digest
+        run: |
+          IMAGE_TAG="${{ steps.set-tag.outputs.image_tag }}"
+          IMAGE_BASE="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/cloud-run-source-deploy/${{ env.REPO_NAME }}/namefi-astra-api"
+          DIGEST="$(gcloud artifacts docker images describe "$IMAGE_TAG" --format="value(image_summary.digest)")"
+          if [[ -z "$DIGEST" ]]; then
+            echo "Failed to resolve digest for $IMAGE_TAG"
+            exit 1
+          fi
+          NEW_IMAGE="${IMAGE_BASE}@${DIGEST}"
+          echo "image_digest=$DIGEST" >> $GITHUB_OUTPUT
+          echo "new_image=$NEW_IMAGE" >> $GITHUB_OUTPUT
+
+  prepare-database:
+    name: Prepare Neon Branch
+    needs: detect-changes
+    if: needs.detect-changes.outputs.has-backend-changes == 'true'
+    runs-on: "blacksmith-4vcpu-ubuntu-2404"
+    outputs:
+      branch_id: ${{ steps.branch-name.outputs.branch_id }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 16
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: ".bun-version"
+
+      - name: Cache bun dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock') }}
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Set Neon branch name
+        id: branch-name
+        run: echo "branch_id=pr-${{ github.event.pull_request.number }}" >> $GITHUB_OUTPUT
+
+      - name: Create Neon branch
+        run: |
+          BRANCH_ID="${{ steps.branch-name.outputs.branch_id }}"
+          EXISTING_BRANCH=$(bun run neonctl branches list --project-id ${{ secrets.NEON_PROJECT_ID }} --api-key ${{ secrets.NEON_API_KEY }} | grep -w "$BRANCH_ID" || true)
+          if [ ! -z "$EXISTING_BRANCH" ]; then
+            bun run neonctl branches delete "$BRANCH_ID" --project-id ${{ secrets.NEON_PROJECT_ID }} --api-key ${{ secrets.NEON_API_KEY }} --force
+          fi
+          bun run neonctl branches create --name "$BRANCH_ID" --project-id ${{ secrets.NEON_PROJECT_ID }} --api-key ${{ secrets.NEON_API_KEY }}
+
+      - name: Check for SQL migration changes
+        id: check-sql-changes
+        run: |
+          SQL_FILES=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | grep -E '\.sql$' || true)
+          if [[ -n "$SQL_FILES" ]]; then
+            echo "SQL files changed in this diff:"
+            echo "$SQL_FILES"
+            echo "has_sql_changes=true" >> $GITHUB_OUTPUT
+          else
+            echo "No SQL files changed, skipping migrations"
+            echo "has_sql_changes=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Run migrations on PR branch
+        if: steps.check-sql-changes.outputs.has_sql_changes == 'true'
+        working-directory: ./packages/db
+        env:
+          DATABASE_URL: ${{ steps.connection-string.outputs.database_url }}
+        run: |
+          echo "Running migrations on branch: ${{ steps.branch-name.outputs.branch_id }}"
+          bun db:migrate
+
+  deploy-preview:
+    name: Deploy Backend Preview
+    needs: [detect-changes, build-backend, prepare-database]
+    if: needs.detect-changes.outputs.has-backend-changes == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: ".bun-version"
+
+      - name: Install Vercel CLI
+        run: bun add --global neonctl@latest
+
+      - name: Get connection string for PR branch
+        id: connection-string
+        run: |
+          CS=$(bun run neonctl connection-string --branch "${{ needs.prepare-database.outputs.branch_id }}" --project-id ${{ secrets.NEON_PROJECT_ID }} --api-key ${{ secrets.NEON_API_KEY }})
+          echo "database_url=$CS"
+          echo "database_url=$CS" >> $GITHUB_OUTPUT
+
+
+      - name: Install Vercel CLI
+        run: bun add --global vercel@latest
+
+      - name: Google Auth
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
+          service_account: ${{ vars.GCP_WIF_SERVICE_ACCOUNT }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v3
+
+      # - name: Remove existing tagged revision (manual)
+      #   run: |
+      #     TAG="pr-${{ github.event.pull_request.number }}"
+      #     gcloud run services update-traffic namefi-astra-backend-preview --region "${{ env.REGION }}" --project "${{ env.PROJECT_ID }}" --remove-tags "$TAG" --quiet
+      #     REVISION_NAME=$(gcloud run services describe namefi-astra-backend-preview --region "${{ env.REGION }}" --project "${{ env.PROJECT_ID }}" --format="value(status.traffic[?tag='$TAG'].revisionName)")
+      #     if [[ -n "$REVISION_NAME" ]]; then
+      #       gcloud run revisions delete "$REVISION_NAME" --region "${{ env.REGION }}" --project "${{ env.PROJECT_ID }}" --quiet
+      #     fi
+
+      - name: Deploy preview revision
+        id: deploy
+        env:
+          NEW_IMAGE: ${{ needs.build-backend.outputs.new_image }}
+          DATABASE_URL: ${{ steps.connection-string.outputs.database_url }}
+          INFISICAL_TOKEN: ${{ secrets.INFISICAL_DEV_SERVICE_TOKEN }}
+          GCP_HSM_KEYRING_RESOURCE_NAME: ${{ secrets.GCP_HSM_KEYRING_RESOURCE_NAME }}
+        run: |
+          # --quiet flag seems to be not working
+          gcloud config set core/disable_prompts True
+          gcloud beta config set core/disable_prompts True
+
+          echo "NEW_IMAGE=\"$NEW_IMAGE\""
+          echo "DATABASE_URL=\"$DATABASE_URL\""
+          echo "INFISICAL_TOKEN=\"$INFISICAL_TOKEN\""
+          echo "GCP_HSM_KEYRING_RESOURCE_NAME=\"$GCP_HSM_KEYRING_RESOURCE_NAME\""
+
+          TAG="pr-${{ github.event.pull_request.number }}"
+          SHORT_SHA="${GITHUB_SHA::7}"
+          REVISION_SUFFIX="pr-${{ github.event.pull_request.number }}-$SHORT_SHA"
+          gcloud beta run deploy namefi-astra-backend-preview \
+            --container "api" \
+            --image "$NEW_IMAGE" \
+            --set-env-vars="DATABASE_URL=$DATABASE_URL,ENVIRONMENT=preview,INFISICAL_TOKEN=$INFISICAL_TOKEN,GCP_HSM_KEYRING_RESOURCE_NAME=$GCP_HSM_KEYRING_RESOURCE_NAME" \
+            --port='3000' --no-traffic \
+            --container "worker" \
+            --image "$NEW_IMAGE" \
+            --set-env-vars="DATABASE_URL=$DATABASE_URL,ENVIRONMENT=preview,INFISICAL_TOKEN=$INFISICAL_TOKEN,GCP_HSM_KEYRING_RESOURCE_NAME=$GCP_HSM_KEYRING_RESOURCE_NAME" \
+            --revision-suffix "$REVISION_SUFFIX" \
+            --no-traffic \
+            --tag "$TAG" \
+            --region "${{ env.REGION }}" \
+            --project "${{ env.PROJECT_ID }}" \
+            --quiet
+
+      - name: Get tagged URL
+        id: tagged-url
+        run: |
+          TAG="pr-${{ github.event.pull_request.number }}"
+          REVISION_TAG_URL=$(gcloud run services describe namefi-astra-backend-preview --region "${{ env.REGION }}" --project "${{ env.PROJECT_ID }}" --format="json" | jq -r ".status.traffic.[] | select(.tag == \"$TAG\") | .url" )
+          if [[ -z "$REVISION_TAG_URL" ]]; then
+            echo "Failed to resolve tagged URL for $TAG"
+            exit 1
+          fi
+          echo "revision_tag_url=$REVISION_TAG_URL" >> $GITHUB_OUTPUT
+
+      - name: Update Vercel preview env
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_ASTRA_PROJECT_ID }}
+        run: |
+          REVISION_TAG_URL="${{ steps.tagged-url.outputs.revision_tag_url }}"
+          BRANCH_NAME="${{ github.head_ref }}"
+          printf "%s" "$REVISION_TAG_URL" | vercel env add BACKEND_URL --force preview "$BRANCH_NAME" --scope="$VERCEL_ORG_ID" --token="${{ secrets.VERCEL_ACCOUNT_TOKEN }}"
+
+      - name: Deploy Vercel
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_ASTRA_PROJECT_ID }}
+        run: |
+          # options from meta githubCommitRef, githubCommitSha
+          DEPLOYMENT_URL="$(vercel ls --scope="$VERCEL_ORG_ID" --token="${{ secrets.VERCEL_ACCOUNT_TOKEN }}" -m githubCommitSha=$GITHUB_SHA --no-color --environment=preview 2>&1 | tail -1)"
+          vercel redeploy --no-wait --scope="$VERCEL_ORG_ID" --token="${{ secrets.VERCEL_ACCOUNT_TOKEN }}" "$DEPLOYMENT_URL"

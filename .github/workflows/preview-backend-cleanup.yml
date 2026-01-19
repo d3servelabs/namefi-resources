@@ -1,0 +1,69 @@
+name: Cleanup Backend Preview (PR)
+
+on:
+  pull_request:
+    types:
+      - closed
+
+env:
+  PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
+  REGION: ${{ vars.GCP_REGION }}
+
+jobs:
+  cleanup-preview:
+    name: Cleanup Backend Preview Resources
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Google Auth
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
+          service_account: ${{ vars.GCP_WIF_SERVICE_ACCOUNT }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Remove Cloud Run tag and revision
+        run: |
+          TAG="pr-${{ github.event.pull_request.number }}"
+          REVISION_NAME=$(gcloud run services describe namefi-astra-backend-preview --region "${{ env.REGION }}" --project "${{ env.PROJECT_ID }}" --format="json" | jq -r ".status.traffic.[] | select(.tag == \"$TAG\") | .revisionName")
+          if [[ -z "$REVISION_NAME" ]]; then
+            echo "No revision found for tag $TAG"
+            exit 0
+          fi
+          gcloud run services update-traffic namefi-astra-backend-preview --region "${{ env.REGION }}" --project "${{ env.PROJECT_ID }}" --remove-tags "$TAG" --quiet
+          gcloud run revisions delete "$REVISION_NAME" --region "${{ env.REGION }}" --project "${{ env.PROJECT_ID }}" --quiet
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: ".bun-version"
+
+      - name: Cache bun dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock') }}
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Delete Neon branch
+        run: |
+          BRANCH_ID="pr-${{ github.event.pull_request.number }}"
+          EXISTING_BRANCH=$(bun run neonctl branches list --project-id ${{ secrets.NEON_PROJECT_ID }} --api-key ${{ secrets.NEON_API_KEY }} | grep -w "$BRANCH_ID" || true)
+          if [ ! -z "$EXISTING_BRANCH" ]; then
+            bun run neonctl branches delete "$BRANCH_ID" --project-id ${{ secrets.NEON_PROJECT_ID }} --api-key ${{ secrets.NEON_API_KEY }} --force
+          else
+            echo "Neon branch not found: $BRANCH_ID"
+          fi
