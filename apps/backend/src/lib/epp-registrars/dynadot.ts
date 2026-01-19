@@ -6,7 +6,9 @@ import { Registrars } from '@namefi-astra/registrars/registrars/registrars-keys'
 import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
 import { CENTRALNIC_OTE_TLDS } from './centralnic';
 
-export const getDynadotRegistrars = (connection: any) => {
+let _dynadotRegistrars: ReturnType<typeof initDynadotRegistrars> | null = null;
+
+export const initDynadotRegistrars = (connection: any) => {
   const dynadotGdg = new DynadotRegistrarService({
     apiKey: secrets.DYNADOT_GDG_API_KEY,
 
@@ -30,7 +32,6 @@ export const getDynadotRegistrars = (connection: any) => {
       },
     },
   });
-
   const regular = new DynadotRegistrarService({
     apiKey: secrets.DYNADOT_REGULAR_API_KEY,
 
@@ -64,4 +65,11 @@ export const getDynadotRegistrars = (connection: any) => {
     gdg: dynadotGdg,
     regular,
   };
+};
+export const getDynadotRegistrars = (connection: any) => {
+  if (!_dynadotRegistrars) {
+    _dynadotRegistrars = initDynadotRegistrars(connection);
+  }
+
+  return _dynadotRegistrars;
 };

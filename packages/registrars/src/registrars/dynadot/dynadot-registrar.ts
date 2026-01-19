@@ -91,6 +91,9 @@ const DEFAULT_HOOKS = {
 export class DynadotRegistrarService extends AbstractRegistrarService {
   readonly logger: pino.Logger;
   private readonly client: Dynadot;
+  getClient() {
+    return this.client;
+  }
 
   cache: NodeCache = new NodeCache({
     stdTTL: 60 * 60 * 12, // 12 hours in seconds
