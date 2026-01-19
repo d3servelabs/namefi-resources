@@ -6,3 +6,6 @@
 
 ## Frontend
 - [Frontend Benchmark (Next.js dev cold/hot)](./dev-guides/frontend-benchmark.md)
+
+## Analytics
+- [Backend Analytics Events](./dev-guides/backend-analytics-events.md)
