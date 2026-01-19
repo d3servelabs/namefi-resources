@@ -1,19 +1,30 @@
 'use client';
 
 import { CartCard } from '@/components/cart-card';
+import { PageShell } from '@/components/page-shell';
 import { useCartContext } from '@/components/providers/cart';
+import { Button } from '@/components/ui/shadcn/button';
 import { cn } from '@/lib/cn';
-import { useTRPCClient } from '@/lib/trpc';
 import type { AddToCartParams } from '@/hooks/use-cart';
+import { useTRPCClient } from '@/lib/trpc';
 import {
   isDomainImportable,
   isDomainRegistrable,
 } from '@namefi-astra/common/domain-availability';
-import { namefiNormalizedDomainSchema } from '@namefi-astra/utils/namefi-flavor';
-import { Loader2, CheckCircle2, AlertTriangle, Circle } from 'lucide-react';
+import {
+  namefiNormalizedDomainSchema,
+  type NamefiNormalizedDomain,
+} from '@namefi-astra/utils/namefi-flavor';
+import { AlertTriangle, CheckCircle2, Circle, Loader2 } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useMemo, useRef, useState, type ReactElement } from 'react';
-import { PageShell } from '@/components/page-shell';
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ReactElement,
+} from 'react';
 
 const PARAM_KEY = 'add_to_cart';
 
@@ -43,12 +54,13 @@ const STATUS_ICON: Record<StepStatus, ReactElement> = {
 
 type Summary = {
   requested: string[];
-  valid: string[];
+  valid: NamefiNormalizedDomain[];
   invalid: string[];
-  alreadyInCart: string[];
-  added: string[];
-  importOnly: string[];
-  unsupported: string[];
+  alreadyInCart: NamefiNormalizedDomain[];
+  readyToAdd: NamefiNormalizedDomain[];
+  added: NamefiNormalizedDomain[];
+  importOnly: NamefiNormalizedDomain[];
+  unsupported: NamefiNormalizedDomain[];
 };
 
 export default function AddFromUrlPage() {
@@ -64,10 +76,12 @@ export default function AddFromUrlPage() {
     valid: [],
     invalid: [],
     alreadyInCart: [],
+    readyToAdd: [],
     added: [],
     importOnly: [],
     unsupported: [],
   });
+  const [payload, setPayload] = useState<AddToCartParams[]>([]);
   const [error, setError] = useState<string | null>(null);
   const processingRef = useRef(false);
 
@@ -98,7 +112,7 @@ export default function AddFromUrlPage() {
           .map((d) => d.trim().toLowerCase())
           .filter(Boolean);
 
-        const valid: string[] = [];
+        const valid: NamefiNormalizedDomain[] = [];
         const invalid: string[] = [];
         requested.forEach((domain) => {
           const parsed = namefiNormalizedDomainSchema.safeParse(domain);
@@ -112,13 +126,16 @@ export default function AddFromUrlPage() {
           (domain) => !alreadyInCart.includes(domain),
         );
 
-        setSummary((prev) => ({
-          ...prev,
+        setSummary({
           requested,
           valid: dedupedValid,
           invalid,
           alreadyInCart,
-        }));
+          readyToAdd: [],
+          added: [],
+          importOnly: [],
+          unsupported: [],
+        });
         setStepStatus((prev) => ({ ...prev, parse: 'done', fetch: 'active' }));
 
         const availability = toLookup.length
@@ -127,12 +144,11 @@ export default function AddFromUrlPage() {
             })
           : [];
 
-        setStepStatus((prev) => ({ ...prev, fetch: 'done', add: 'active' }));
+        const importOnly: NamefiNormalizedDomain[] = [];
+        const unsupported: NamefiNormalizedDomain[] = [];
+        const readyToAdd: NamefiNormalizedDomain[] = [];
 
-        const importOnly: string[] = [];
-        const unsupported: string[] = [];
-
-        const payload: AddToCartParams[] = availability.flatMap((info) => {
+        const nextPayload: AddToCartParams[] = availability.flatMap((info) => {
           if (!isDomainRegistrable(info)) {
             if (isDomainImportable(info)) {
               importOnly.push(info.domain);
@@ -141,6 +157,7 @@ export default function AddFromUrlPage() {
             }
             return [];
           }
+          readyToAdd.push(info.domain);
           const durationInYears = info.durationValidationInYears?.min ?? 1;
           return [
             {
@@ -151,47 +168,96 @@ export default function AddFromUrlPage() {
           ];
         });
 
-        const added =
-          payload.length > 0
-            ? (await addItem(payload)).map((i) => i.normalizedDomainName)
-            : [];
-
+        setPayload(nextPayload);
         setSummary((prev) => ({
           ...prev,
-          added,
+          readyToAdd,
           importOnly,
           unsupported,
         }));
-        setStepStatus((prev) => ({ ...prev, add: 'done', redirect: 'active' }));
+        setStepStatus((prev) => ({ ...prev, fetch: 'done', add: 'pending' }));
       } catch (err) {
         console.error('Failed to process add_to_cart param', err);
         setError(
           err instanceof Error
             ? err.message
-            : 'Something went wrong while adding to cart.',
+            : 'Something went wrong while validating your domains.',
         );
-        setStepStatus((prev) => ({
-          ...prev,
-          add: 'error',
-          redirect: 'active',
-        }));
-      } finally {
-        setTimeout(() => {
-          router.replace('/cart');
-        }, 600);
+        setStepStatus((prev) => ({ ...prev, fetch: 'error' }));
       }
     };
 
     void run();
-  }, [addItem, isDomainInCart, router, searchParams, trpcClient]);
+  }, [isDomainInCart, router, searchParams, trpcClient]);
+
+  const handleConfirmAdd = useCallback(async () => {
+    if (!payload.length || stepStatus.add === 'active') return;
+    setStepStatus((prev) => ({ ...prev, add: 'active' }));
+    setError(null);
+
+    try {
+      const added =
+        payload.length > 0
+          ? (await addItem(payload)).map((i) => i.normalizedDomainName)
+          : [];
+
+      setSummary((prev) => {
+        const skipped = prev.readyToAdd.filter(
+          (domain) => !added.includes(domain),
+        );
+        const mergedAlreadyInCart = skipped.length
+          ? Array.from(new Set([...prev.alreadyInCart, ...skipped]))
+          : prev.alreadyInCart;
+        return {
+          ...prev,
+          added,
+          alreadyInCart: mergedAlreadyInCart,
+        };
+      });
+
+      setStepStatus((prev) => ({ ...prev, add: 'done', redirect: 'active' }));
+      setTimeout(() => {
+        router.replace('/cart');
+      }, 600);
+    } catch (err) {
+      console.error('Failed to add to cart', err);
+      setError(
+        err instanceof Error
+          ? err.message
+          : 'Something went wrong while adding to cart.',
+      );
+      setStepStatus((prev) => ({ ...prev, add: 'error' }));
+    }
+  }, [addItem, payload, router, stepStatus.add]);
+
+  const readyLabel = stepStatus.add === 'done' ? 'Added' : 'Ready to add';
+  const readyData =
+    stepStatus.add === 'done' ? summary.added : summary.readyToAdd;
 
   const detailItems = [
-    { label: 'Added', data: summary.added },
+    { label: readyLabel, data: readyData },
     { label: 'Already in cart', data: summary.alreadyInCart },
     { label: 'Requires transfer code', data: summary.importOnly },
     { label: 'Unsupported/unavailable', data: summary.unsupported },
     { label: 'Invalid', data: summary.invalid },
   ].filter((item) => item.data.length > 0);
+
+  const showConfirm =
+    stepStatus.fetch === 'done' && stepStatus.redirect !== 'active';
+  const canConfirm =
+    payload.length > 0 &&
+    stepStatus.fetch === 'done' &&
+    stepStatus.add !== 'active' &&
+    stepStatus.redirect !== 'active';
+  const confirmLabel =
+    stepStatus.add === 'active'
+      ? 'Adding to cart...'
+      : stepStatus.add === 'error'
+        ? 'Try again'
+        : 'Add to cart';
+  const confirmHelper = payload.length
+    ? 'Review the details above, then confirm.'
+    : 'No registrable domains found to add.';
 
   return (
     <PageShell size="narrow" padding="relaxed">
@@ -256,12 +322,23 @@ export default function AddFromUrlPage() {
               </div>
             )}
 
-            {error ? (
+            {showConfirm && (
+              <div className="space-y-2">
+                <p className="text-sm text-muted-foreground">{confirmHelper}</p>
+                <Button onClick={handleConfirmAdd} disabled={!canConfirm}>
+                  {confirmLabel}
+                </Button>
+              </div>
+            )}
+
+            {error && (
               <div className="flex items-center gap-2 text-sm text-destructive">
                 <AlertTriangle className="h-4 w-4" />
                 <span>{error}</span>
               </div>
-            ) : (
+            )}
+
+            {stepStatus.redirect === 'active' && !error && (
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <Loader2 className="h-4 w-4 animate-spin" />
                 Redirecting to your cart…

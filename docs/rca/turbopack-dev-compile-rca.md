@@ -207,6 +207,16 @@ await browser.close();
 NODE
 ```
 
+**Frontend benchmark (dev cold/hot)**
+```
+export INFISICAL_SERVICE_TOKEN=...
+bun scripts/bench-frontend-dev.ts
+```
+
+Notes:
+- The script deletes `apps/frontend/.next` before each run, starts its own dev server, and writes reports to `apps/frontend/.benchmarks/`.
+- To customize routes, timeouts, base URL, or the dev command, see `docs/dev-guides/frontend-benchmark.md`.
+
 ---
 
 ## Appendix: Raw Log Excerpts
