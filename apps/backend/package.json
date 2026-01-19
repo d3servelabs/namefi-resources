@@ -70,7 +70,7 @@
     "@hono/trpc-server": "^0.3.4",
     "@inquirer/prompts": "^7.6.0",
     "@namefi-astra/ai": "workspace:*",
-    "@namefi-astra/contracts": "workspace:*",
+    "@namefi-astra/common": "workspace:*",
     "@namefi-astra/coredns-client": "workspace:*",
     "@namefi-astra/db": "workspace:*",
     "@namefi-astra/dns-tools": "workspace:*",

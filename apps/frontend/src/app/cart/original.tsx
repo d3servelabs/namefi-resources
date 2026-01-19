@@ -41,12 +41,12 @@ import { InteractionLoggingEventName } from '@/lib/analytics-events';
 import { type AppRouterInput, useTRPC } from '@/lib/trpc';
 import { useFeedback } from '@/components/providers/feedback';
 import type { DeepPartial } from '@/lib/types/utils';
-import { createOrderInputSchema } from '@namefi-astra/contracts/order-input';
+import { createOrderInputSchema } from '@namefi-astra/common/order-input';
 import {
   isNfscPayment,
   isStripePayment,
   paymentProviderSchema,
-} from '@namefi-astra/contracts/payment-provider';
+} from '@namefi-astra/common/payment-provider';
 import { feedbackTriggerSchema } from '@/lib/feedback-triggers';
 import { CHAINS } from '@namefi-astra/utils/chains';
 import { NFSC_CONTRACT_ADDRESS } from '@namefi-astra/utils/contract-addresses';

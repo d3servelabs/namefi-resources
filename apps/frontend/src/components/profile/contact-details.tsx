@@ -22,7 +22,7 @@ import { useCallback, useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
-import { privyCustomMetadataSchema } from '@namefi-astra/contracts/privy-custom-metadata';
+import { privyCustomMetadataSchema } from '@namefi-astra/common/privy-custom-metadata';
 import { useAuth } from '@/hooks/use-auth';
 
 // Helper function to add trimming and empty string handling to a string schema

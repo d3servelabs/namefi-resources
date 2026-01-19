@@ -63,7 +63,7 @@
         "@hono/trpc-server": "^0.3.4",
         "@inquirer/prompts": "^7.6.0",
         "@namefi-astra/ai": "workspace:*",
-        "@namefi-astra/contracts": "workspace:*",
+        "@namefi-astra/common": "workspace:*",
         "@namefi-astra/coredns-client": "workspace:*",
         "@namefi-astra/db": "workspace:*",
         "@namefi-astra/dns-tools": "workspace:*",
@@ -172,7 +172,7 @@
         "@mdx-js/loader": "^3.1.1",
         "@mdx-js/react": "^3.1.1",
         "@namefi-astra/ai": "workspace:*",
-        "@namefi-astra/contracts": "workspace:*",
+        "@namefi-astra/common": "workspace:*",
         "@namefi-astra/env": "workspace:*",
         "@namefi-astra/registrars": "workspace:*",
         "@namefi-astra/utils": "workspace:*",
@@ -406,8 +406,8 @@
         "@namefi-astra/typescript": "workspace:*",
       },
     },
-    "packages/contracts": {
-      "name": "@namefi-astra/contracts",
+    "packages/common": {
+      "name": "@namefi-astra/common",
       "version": "0.0.0",
       "dependencies": {
         "@namefi-astra/utils": "workspace:*",
@@ -1367,7 +1367,7 @@
 
     "@namefi-astra/client": ["@namefi-astra/client@workspace:packages/namefi-client"],
 
-    "@namefi-astra/contracts": ["@namefi-astra/contracts@workspace:packages/contracts"],
+    "@namefi-astra/common": ["@namefi-astra/common@workspace:packages/common"],
 
     "@namefi-astra/coredns-client": ["@namefi-astra/coredns-client@workspace:packages/coredns-client"],
 

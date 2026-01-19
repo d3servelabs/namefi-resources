@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/shadcn/button';
 import { Separator } from '@/components/ui/shadcn/separator';
 import { useEffect, useMemo, useState } from 'react';
 import { CHAINS } from '@namefi-astra/utils/chains';
-import { paymentProviderSchema } from '@namefi-astra/contracts/payment-provider';
+import { paymentProviderSchema } from '@namefi-astra/common/payment-provider';
 import type { AppRouterInput } from '@/lib/trpc';
 import { Loader2 } from 'lucide-react';
 import { NamefiButton } from '../buttons/namefi-button';

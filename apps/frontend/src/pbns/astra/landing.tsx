@@ -30,7 +30,7 @@ import {
   type EppAuthorizationCodesFormData,
   type ImportQuery,
 } from '@/components/search/types';
-import { isDomainImportable } from '@namefi-astra/contracts/domain-availability';
+import { isDomainImportable } from '@namefi-astra/common/domain-availability';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { ArrowLeft, Sparkles } from 'lucide-react';
 import type { MarketingSectionsProps } from './landing-marketing';

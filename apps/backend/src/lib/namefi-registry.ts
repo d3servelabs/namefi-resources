@@ -12,7 +12,7 @@ import {
 } from '@namefi-astra/db';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
-import type { DomainAvailabilityInfo } from '@namefi-astra/contracts/domain-availability';
+import type { DomainAvailabilityInfo } from '@namefi-astra/common/domain-availability';
 import { subDays } from 'date-fns';
 import { ParseResultType, parseDomain } from 'parse-domain';
 import { groupBy, isNil, pluck, filter, isNotNil, last } from 'ramda';

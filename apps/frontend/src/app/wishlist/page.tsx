@@ -6,7 +6,7 @@ import { useSubscription } from '@trpc/tanstack-react-query';
 import { useState, useEffect, useMemo } from 'react';
 import { DomainCard } from '@/components/search/search';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
-import type { DomainAvailabilityInfo } from '@namefi-astra/contracts/domain-availability';
+import type { DomainAvailabilityInfo } from '@namefi-astra/common/domain-availability';
 import { useAuth } from '@/hooks/use-auth';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
 import { PageShell } from '@/components/page-shell';

@@ -29,7 +29,7 @@
     "@mdx-js/loader": "^3.1.1",
     "@mdx-js/react": "^3.1.1",
     "@namefi-astra/ai": "workspace:*",
-    "@namefi-astra/contracts": "workspace:*",
+    "@namefi-astra/common": "workspace:*",
     "@namefi-astra/env": "workspace:*",
     "@namefi-astra/registrars": "workspace:*",
     "@namefi-astra/utils": "workspace:*",

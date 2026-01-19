@@ -4,12 +4,12 @@ import { Badge } from '@/components/ui/shadcn/badge';
 import { Separator } from '@/components/ui/shadcn/separator';
 import { CartItemDurationControl } from '@/components/cart-item-duration-stepper';
 import { formatAmountInUSD } from '@/lib/number';
-import { itemTypeSchema } from '@namefi-astra/contracts/shared-schemas';
+import { itemTypeSchema } from '@namefi-astra/common/shared-schemas';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { Loader2, Trash2 } from 'lucide-react';
 import { useCartRow } from '@/hooks/use-cart-row';
 import type { UnifiedCartItem } from '@/hooks/use-cart';
-import type { DomainAvailabilityInfo } from '@namefi-astra/contracts/domain-availability';
+import type { DomainAvailabilityInfo } from '@namefi-astra/common/domain-availability';
 import { useCallback } from 'react';
 
 interface CartItemProps {

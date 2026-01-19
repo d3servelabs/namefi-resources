@@ -13,8 +13,8 @@ import {
   isDomainRegistrable,
   getDomainPricingForOperation,
   type DomainAvailabilityInfo,
-} from '@namefi-astra/contracts/domain-availability';
-import { itemTypeSchema } from '@namefi-astra/contracts/shared-schemas';
+} from '@namefi-astra/common/domain-availability';
+import { itemTypeSchema } from '@namefi-astra/common/shared-schemas';
 import {
   computeChargesInUsdOrThrow,
   usdToCents,

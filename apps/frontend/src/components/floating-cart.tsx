@@ -13,7 +13,7 @@ import {
 } from 'react';
 import { useInteractionLoggers } from '@/components/providers/analytics';
 import { Button } from './ui/shadcn/button';
-import type { DomainAvailabilityInfo } from '@namefi-astra/contracts/domain-availability';
+import type { DomainAvailabilityInfo } from '@namefi-astra/common/domain-availability';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { SearchMode } from './search/types';
 import { useCart } from '@/hooks/use-cart';

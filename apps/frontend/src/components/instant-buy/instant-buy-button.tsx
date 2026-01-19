@@ -5,7 +5,7 @@ import { Zap } from 'lucide-react';
 import { Button } from '@/components/ui/shadcn/button';
 import { useAuth } from '@/hooks/use-auth';
 import { InstantBuyModal } from './instant-buy-modal';
-import type { DomainAvailabilityInfo } from '@namefi-astra/contracts/domain-availability';
+import type { DomainAvailabilityInfo } from '@namefi-astra/common/domain-availability';
 import {
   Tooltip,
   TooltipContent,

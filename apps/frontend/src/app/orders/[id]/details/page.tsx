@@ -5,7 +5,7 @@ import { CartCard } from '@/components/cart-card';
 import { Button } from '@/components/ui/shadcn/button';
 import { Separator } from '@/components/ui/shadcn/separator';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
-import { itemTypeSchema } from '@namefi-astra/contracts/shared-schemas';
+import { itemTypeSchema } from '@namefi-astra/common/shared-schemas';
 import type {
   PaymentSelect,
   OrderMintTransactionMetadata,

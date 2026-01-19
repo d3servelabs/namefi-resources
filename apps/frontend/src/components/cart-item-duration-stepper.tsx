@@ -1,10 +1,10 @@
 import { DurationStepper } from '@/components/duration-stepper';
 import { useRenewalDurationConstraints } from '@/hooks/use-renewal-duration-constraints';
-import { itemTypeSchema } from '@namefi-astra/contracts/shared-schemas';
+import { itemTypeSchema } from '@namefi-astra/common/shared-schemas';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { Loader2 } from 'lucide-react';
 import type { UnifiedCartItem as CartItem } from '@/hooks/use-cart';
-import type { DomainAvailabilityInfo } from '@namefi-astra/contracts/domain-availability';
+import type { DomainAvailabilityInfo } from '@namefi-astra/common/domain-availability';
 
 // Component to handle duration controls for different cart item types
 export function CartItemDurationControl({

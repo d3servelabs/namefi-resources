@@ -1,5 +1,5 @@
 {
-  "name": "@namefi-astra/contracts",
+  "name": "@namefi-astra/common",
   "version": "0.0.0",
   "private": true,
   "type": "module",

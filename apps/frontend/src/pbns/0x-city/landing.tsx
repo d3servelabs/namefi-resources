@@ -19,7 +19,7 @@ import { Alert, AlertDescription } from '@/components/ui/shadcn/alert';
 import { Content } from './content';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { isDomainImportable } from '@namefi-astra/contracts/domain-availability';
+import { isDomainImportable } from '@namefi-astra/common/domain-availability';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { useSearchFromQuery } from '@/hooks/use-search-from-query';
 import { useFreeMintsGuidance } from '@/components/providers/free-mints-guidance';

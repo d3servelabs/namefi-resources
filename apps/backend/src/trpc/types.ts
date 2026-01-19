@@ -3,8 +3,8 @@ import { z } from 'zod';
 import {
   createOrderInputSchema as baseCreateOrderInputSchema,
   paymentMetadataSchema,
-} from '@namefi-astra/contracts/order-input';
-import type { DomainAvailabilityInfo } from '@namefi-astra/contracts/domain-availability';
+} from '@namefi-astra/common/order-input';
+import type { DomainAvailabilityInfo } from '@namefi-astra/common/domain-availability';
 import {
   checksumWalletAddressSchema,
   namefiNormalizedDomainSchema,
@@ -118,7 +118,7 @@ export {
   isDomainRegistrable,
   isDomainUnsupported,
   getDomainPricingForOperation,
-} from '@namefi-astra/contracts/domain-availability';
+} from '@namefi-astra/common/domain-availability';
 
 export type { DomainAvailabilityInfo };
 
@@ -128,10 +128,10 @@ export {
   privyStorageSchema,
   privyCustomMetadataToPrivyStorage,
   privyStorageToPrivyCustomMetadata,
-} from '@namefi-astra/contracts/privy-custom-metadata';
+} from '@namefi-astra/common/privy-custom-metadata';
 
 export type {
   Address,
   PrivyCustomMetadata,
   PrivyStorage,
-} from '@namefi-astra/contracts/privy-custom-metadata';
+} from '@namefi-astra/common/privy-custom-metadata';

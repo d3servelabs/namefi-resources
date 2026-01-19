@@ -28,7 +28,7 @@ import {
   eppAuthorizationCodesFormSchema,
   SearchResults,
 } from '@/components/search';
-import { isDomainImportable } from '@namefi-astra/contracts/domain-availability';
+import { isDomainImportable } from '@namefi-astra/common/domain-availability';
 import dynamic from 'next/dynamic';
 
 const NewsletterForm = dynamic(

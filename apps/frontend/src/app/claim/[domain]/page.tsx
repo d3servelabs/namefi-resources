@@ -6,7 +6,7 @@ import { useAuth } from '@/hooks/use-auth';
 import { useCartRow } from '@/hooks/use-cart-row';
 import { cn } from '@/lib/cn';
 import { useTRPC } from '@/lib/trpc';
-import type { DomainAvailabilityInfo } from '@namefi-astra/contracts/domain-availability';
+import type { DomainAvailabilityInfo } from '@namefi-astra/common/domain-availability';
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils/namefi-flavor';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { AlertTriangle, ArrowLeft, Loader2 } from 'lucide-react';

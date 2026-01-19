@@ -10,7 +10,7 @@ import { useDebounceValue } from 'usehooks-ts';
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { useSubscription } from '@trpc/tanstack-react-query';
 import { useTRPC, useTRPCClient, type AppRouterOutput } from '@/lib/trpc';
-import type { DomainAvailabilityInfo } from '@namefi-astra/contracts/domain-availability';
+import type { DomainAvailabilityInfo } from '@namefi-astra/common/domain-availability';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { SearchMode } from '@/components/search/types';
 import { parseCSVDomains } from '@/components/search/utils';

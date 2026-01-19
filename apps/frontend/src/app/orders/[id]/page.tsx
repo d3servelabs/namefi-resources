@@ -13,7 +13,7 @@ import {
   type WorkflowProgressPhase,
   useOrderProgress,
 } from '@/hooks/use-order-progress';
-import { orderStatusSchema } from '@namefi-astra/contracts/shared-schemas';
+import { orderStatusSchema } from '@namefi-astra/common/shared-schemas';
 import { getSubDomainAndParentDomainFromNormalizedDomainName } from '@namefi-astra/utils/domain-names';
 import { getTokenIdFromDomainName } from '@namefi-astra/utils/nft-hash';
 import { AuthRequired } from '@/components/auth-required';
