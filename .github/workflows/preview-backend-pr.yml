@@ -200,13 +200,15 @@ jobs:
     permissions:
       contents: read
       id-token: write
+    outputs:
+        revision_tag_url: ${{ steps.tagged-url.outputs.revision_tag_url }}
     steps:
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
         with:
           bun-version-file: ".bun-version"
 
-      - name: Install Vercel CLI
+      - name: Install Neon CLI
         run: bun add --global neonctl@latest
 
       - name: Get connection string for PR branch
@@ -215,10 +217,6 @@ jobs:
           CS=$(bun run neonctl connection-string --branch "${{ needs.prepare-database.outputs.branch_id }}" --project-id ${{ secrets.NEON_PROJECT_ID }} --api-key ${{ secrets.NEON_API_KEY }})
           echo "database_url=$CS"
           echo "database_url=$CS" >> $GITHUB_OUTPUT
-
-
-      - name: Install Vercel CLI
-        run: bun add --global vercel@latest
 
       - name: Google Auth
         id: auth
@@ -229,6 +227,8 @@ jobs:
 
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v3
+        with:
+          install_components: 'beta'
 
       # - name: Remove existing tagged revision (manual)
       #   run: |
@@ -272,7 +272,21 @@ jobs:
             --tag "$TAG" \
             --region "${{ env.REGION }}" \
             --project "${{ env.PROJECT_ID }}" \
-            --quiet
+            --quiet --async
+            RETURN_CODE=$?
+
+            if [[ $RETURN_CODE -ne 0 ]]; then
+              echo "Deployment failed"
+              exit 1
+            fi
+
+            REVISION_NAME="namefi-astra-backend-preview-$REVISION_SUFFIX"
+
+            while [[ $(gcloud run revisions describe "$REVISION_NAME" --project "${{ env.PROJECT_ID }}" --region "${{ env.REGION }}" --format='json' | jq -r '.status.conditions[] | select(.type == "Ready") | .status') != "True" ]]; do
+              echo "Waiting for revision to be ready..."
+              sleep 5
+            done
+            echo "Revision is ready!"
 
       - name: Get tagged URL
         id: tagged-url
@@ -285,12 +299,29 @@ jobs:
           fi
           echo "revision_tag_url=$REVISION_TAG_URL" >> $GITHUB_OUTPUT
 
+
+
+  redeploy-vercel-preview:
+    name: Redeploy Vercel Preview
+    needs: [deploy-preview]
+    if: needs.detect-changes.outputs.has-backend-changes == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: ".bun-version"
+      - name: Install Vercel CLI
+        run: bun add --global vercel@latest
       - name: Update Vercel preview env
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_ASTRA_PROJECT_ID }}
         run: |
-          REVISION_TAG_URL="${{ steps.tagged-url.outputs.revision_tag_url }}"
+          REVISION_TAG_URL="${{ needs.deploy-preview.outputs.revision_tag_url }}"
           BRANCH_NAME="${{ github.head_ref }}"
           printf "%s" "$REVISION_TAG_URL" | vercel env add BACKEND_URL --force preview "$BRANCH_NAME" --scope="$VERCEL_ORG_ID" --token="${{ secrets.VERCEL_ACCOUNT_TOKEN }}"
 
@@ -300,5 +331,5 @@ jobs:
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_ASTRA_PROJECT_ID }}
         run: |
           # options from meta githubCommitRef, githubCommitSha
-          DEPLOYMENT_URL="$(vercel ls --scope="$VERCEL_ORG_ID" --token="${{ secrets.VERCEL_ACCOUNT_TOKEN }}" -m githubCommitSha=$GITHUB_SHA --no-color --environment=preview 2>&1 | tail -1)"
+          DEPLOYMENT_URL="$(vercel ls --scope="$VERCEL_ORG_ID" --token="${{ secrets.VERCEL_ACCOUNT_TOKEN }}" -m githubCommitSha=${{ github.event.pull_request.head.sha }} --no-color --environment=preview 2>&1 | tail -1)"
           vercel redeploy --no-wait --scope="$VERCEL_ORG_ID" --token="${{ secrets.VERCEL_ACCOUNT_TOKEN }}" "$DEPLOYMENT_URL"
