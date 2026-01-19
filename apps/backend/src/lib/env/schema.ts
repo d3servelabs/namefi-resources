@@ -58,7 +58,6 @@ export const secretsSchema = z.object({
   // Google Analytics 4 configuration
   GA4_PROPERTY_ID: z.string().optional(),
   GA4_KEY_FILE_PATH: z.string().optional(),
-  GA_MEASUREMENT_ID: z.string().optional(),
   GA_MEASUREMENT_API_SECRET: z.string().optional(),
 
   // BigQuery configuration
@@ -133,6 +132,8 @@ export const configSchema = z.object({
    * List of first-party domains that are owned by NameFI and allowed to interact with the API.
    */
   NAMEFI_FIRST_PARTY_HOSTNAMES: z.string().array().default([]),
+  // Google Analytics 4 Measurement Protocol configuration
+  GA_MEASUREMENT_ID: z.string().optional(),
   ALLOW_HTTP: z.boolean().default(false),
   ALLOWED_CHAINS: z.number().array().default([]),
   /**

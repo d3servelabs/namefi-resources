@@ -21,6 +21,7 @@ const previewConfig: PreviewConfig = {
   SMTP_HOST: process.env.SMTP_HOST || 'smtp.mail.namefi.dev',
   SMTP_SECURE: process.env.SMTP_SECURE?.toLowerCase() === 'true',
   APP_URL: process.env.APP_URL || 'localhost:3001',
+  GA_MEASUREMENT_ID: process.env.GA_MEASUREMENT_ID || 'G-PHKF9PM32W',
   ALLOW_HTTP: process.env.ALLOW_HTTP?.toLowerCase() === 'true',
   NAMEFI_FIRST_PARTY_HOSTNAMES: (process.env.NAMEFI_FIRST_PARTY_HOSTNAMES
     ? process.env.NAMEFI_FIRST_PARTY_HOSTNAMES.split(',')

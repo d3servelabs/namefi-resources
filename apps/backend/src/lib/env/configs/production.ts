@@ -9,6 +9,7 @@ const productionConfig: ConfigInput = {
   SMTP_SECURE: true,
   SMTP_HOST: 'email-smtp.us-east-1.amazonaws.com',
   APP_URL: 'astra.namefi.io',
+  GA_MEASUREMENT_ID: 'G-S8GRYLE2XF',
   NAMEFI_FIRST_PARTY_HOSTNAMES: [
     'astra.namefi.io',
     'poweredby.namefi.io',

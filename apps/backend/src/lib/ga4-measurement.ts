@@ -1,4 +1,4 @@
-import { secrets } from '#lib/env';
+import { config, secrets } from '#lib/env';
 import { createLogger } from '#lib/logger';
 import type {
   BackendAnalyticsEventName,
@@ -89,12 +89,12 @@ function buildEvent(event: GA4Event): GA4Payload['events'][number] {
 }
 
 function buildRequestUrl(debug = false): string {
-  const measurementId = secrets.GA_MEASUREMENT_ID;
+  const measurementId = config.GA_MEASUREMENT_ID;
   const apiSecret = secrets.GA_MEASUREMENT_API_SECRET;
 
   if (!measurementId || !apiSecret) {
     throw new Error(
-      'GA Measurement Protocol is not configured. Set GA_MEASUREMENT_ID and GA_MEASUREMENT_API_SECRET.',
+      'GA Measurement Protocol is not configured. Set GA_MEASUREMENT_ID in config and GA_MEASUREMENT_API_SECRET in secrets.',
     );
   }
 

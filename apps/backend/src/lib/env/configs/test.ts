@@ -7,6 +7,7 @@ const testConfig: ConfigInput = {
   TEMPORAL_API_URL: 'http://test-temporal-api-url:7233',
   TEMPORAL_NAMESPACE: 'test-temporal-namespace',
   APP_URL: '',
+  GA_MEASUREMENT_ID: 'G-XXXXXXXXXX',
   SMTP_HOST: '',
   SMTP_PORT: 25,
   SMTP_SECURE: false,

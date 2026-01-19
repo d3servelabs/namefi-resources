@@ -12,6 +12,7 @@ const localConfig: ConfigInput = {
   SMTP_HOST: 'smtp.mail.namefi.dev',
   SMTP_SECURE: false,
   APP_URL: 'localhost:3001',
+  GA_MEASUREMENT_ID: 'G-PHKF9PM32W',
   /**
    * When testing with domains other than `localhost`, privy will fail because it will require https
    * to be able to test use `bun with-env dev -- --experimental-https` on the frontend

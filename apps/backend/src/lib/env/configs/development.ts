@@ -11,6 +11,7 @@ const developmentConfig: ConfigInput = {
   SMTP_HOST: 'smtp.mail.namefi.dev',
   SMTP_SECURE: false,
   APP_URL: 'localhost:3001',
+  GA_MEASUREMENT_ID: 'G-PHKF9PM32W',
   NAMEFI_FIRST_PARTY_HOSTNAMES: [
     'astra.namefi.dev',
     'poweredby.namefi.dev',
