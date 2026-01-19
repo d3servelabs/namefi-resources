@@ -6,9 +6,27 @@
  * interface BackendAnalyticsEventMap {
  *   order_completed: { order_id: string; amount_usd: number };
  * }
+ *
+ * GA4 recommends snake_case for event names and parameter keys
  */
-// biome-ignore lint/suspicious/noEmptyInterface: Intentional for declaration merging.
-export interface BackendAnalyticsEventMap {}
+export interface BackendAnalyticsEventMap {
+  // biome-ignore lint/style/useNamingConvention: GA4 event names use snake_case.
+  order_placed: OrderPlacedParams;
+}
+
+type OrderPlacedRequiredParams = {
+  [K in
+    | 'order_id'
+    | 'amount_usd_cents'
+    | 'item_count'
+    | 'payment_count']: K extends 'order_id' ? string : number;
+};
+
+type OrderPlacedOptionalParams = {
+  [K in 'order_source']?: 'checkout' | 'instant_buy';
+};
+
+type OrderPlacedParams = OrderPlacedRequiredParams & OrderPlacedOptionalParams;
 
 export type BackendAnalyticsEventName =
   keyof BackendAnalyticsEventMap extends never

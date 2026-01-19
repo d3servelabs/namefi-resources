@@ -292,7 +292,7 @@ export const ordersRouterOrpc = createTRPCRouter({
       const payments = paymentResult.payments;
 
       // 6. Create order in transaction
-      return await db.transaction(async (tx) => {
+      const order = await db.transaction(async (tx) => {
         // Create payments
         const createdPayments: PaymentSelect[] = [];
         for (const p of payments) {
@@ -378,6 +378,7 @@ export const ordersRouterOrpc = createTRPCRouter({
 
         return order;
       });
+      return order;
     }),
 
   /**

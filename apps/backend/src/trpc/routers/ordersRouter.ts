@@ -55,6 +55,7 @@ import { secrets } from '../../lib/env';
 import pMap from 'p-map';
 import { logger } from '#lib/logger';
 import { config } from '#lib/env';
+import { sendGA4Event } from '#lib/ga4-measurement';
 
 const stripe = new Stripe(secrets.STRIPE_SECRET_KEY);
 type PaymentMethodDetailsOnChain = {
@@ -87,6 +88,40 @@ type OrderProgressPayload = OrderProgressSnapshot & {
 };
 
 const workflowIdForOrder = (orderId: string) => `process-order-${orderId}`;
+
+const trackOrderPlaced = async ({
+  userId,
+  orderId,
+  amountUsdCents,
+  itemCount,
+  paymentCount,
+  orderSource,
+}: {
+  userId: string;
+  orderId: string;
+  amountUsdCents: number;
+  itemCount: number;
+  paymentCount: number;
+  orderSource?: 'checkout' | 'instant_buy';
+}) => {
+  try {
+    await sendGA4Event({
+      userId,
+      event: {
+        name: 'order_placed',
+        params: {
+          order_id: orderId,
+          amount_usd_cents: amountUsdCents,
+          item_count: itemCount,
+          payment_count: paymentCount,
+          order_source: orderSource,
+        },
+      },
+    });
+  } catch (error) {
+    logger.warn({ error, orderId }, 'Failed to send GA order_placed event');
+  }
+};
 
 const ensureOrderOwnership = async (orderId: string, userId: string) => {
   const orderRecord = await db.query.ordersTable.findFirst({
@@ -192,7 +227,7 @@ export const ordersRouter = createTRPCRouter({
 
       const totalAmountInUsdCents = sum(pluck('amountInUSDCents', cartItems));
 
-      return await db.transaction(async (tx) => {
+      const order = await db.transaction(async (tx) => {
         const payment: PaymentSelect = await _createPaymentForOrder(
           {
             totalAmountInUsdCents,
@@ -255,6 +290,15 @@ export const ordersRouter = createTRPCRouter({
         }
         return order;
       });
+      void trackOrderPlaced({
+        userId: ctx.user.id,
+        orderId: order.id,
+        amountUsdCents: order.amountInUSDCents,
+        itemCount: order.items.length,
+        paymentCount: 1,
+        orderSource: 'checkout',
+      });
+      return order;
     }),
 
   getOrder: protectedProcedure
@@ -412,7 +456,7 @@ export const ordersRouter = createTRPCRouter({
         }
       }
 
-      return await db.transaction(async (tx) => {
+      const order = await db.transaction(async (tx) => {
         // 1) Create payments first, capturing each paymentId
         const createdPayments: PaymentSelect[] = [];
         for (const p of payments) {
@@ -488,6 +532,15 @@ export const ordersRouter = createTRPCRouter({
 
         return order;
       });
+      void trackOrderPlaced({
+        userId: ctx.user.id,
+        orderId: order.id,
+        amountUsdCents: order.amountInUSDCents,
+        itemCount: order.items.length,
+        paymentCount: payments.length,
+        orderSource: 'checkout',
+      });
+      return order;
     }),
 
   // Instant buy - single domain purchase without cart
@@ -578,7 +631,7 @@ export const ordersRouter = createTRPCRouter({
       }
 
       // 5. Create order in transaction
-      return await db.transaction(async (tx) => {
+      const order = await db.transaction(async (tx) => {
         // Create payments
         const createdPayments: PaymentSelect[] = [];
         for (const p of payments) {
@@ -669,6 +722,15 @@ export const ordersRouter = createTRPCRouter({
 
         return order;
       });
+      void trackOrderPlaced({
+        userId: ctx.user.id,
+        orderId: order.id,
+        amountUsdCents: order.amountInUSDCents,
+        itemCount: order.items.length,
+        paymentCount: payments.length,
+        orderSource: 'instant_buy',
+      });
+      return order;
     }),
 
   getOrderPaymentMethodsDetails: protectedProcedure

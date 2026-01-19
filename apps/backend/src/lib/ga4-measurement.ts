@@ -5,7 +5,7 @@ import type {
   BackendAnalyticsEventParams,
 } from '#lib/analytics-events';
 
-const logger = createLogger({ module: 'ga4-measurement' });
+const logger = createLogger({ name: 'ga4-measurement' });
 
 const GA4_MEASUREMENT_ENDPOINT = 'https://www.google-analytics.com/mp/collect';
 const GA4_DEBUG_ENDPOINT = 'https://www.google-analytics.com/debug/mp/collect';
@@ -154,11 +154,19 @@ export async function sendGA4Events({
   }
 
   if (debug) {
-    const debugResponse = (await response.json()) as GA4DebugResponse;
-    if (debugResponse?.validationMessages?.length) {
+    try {
+      const debugText = await response.text();
+      const debugResponse = JSON.parse(debugText) as GA4DebugResponse;
+      if (debugResponse?.validationMessages?.length) {
+        logger.warn(
+          { validationMessages: debugResponse.validationMessages },
+          'GA4 Measurement Protocol validation warnings',
+        );
+      }
+    } catch (error) {
       logger.warn(
-        { validationMessages: debugResponse.validationMessages },
-        'GA4 Measurement Protocol validation warnings',
+        { error },
+        'GA4 Measurement Protocol debug response was not valid JSON',
       );
     }
   }
