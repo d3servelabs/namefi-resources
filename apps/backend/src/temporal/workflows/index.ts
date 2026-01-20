@@ -4,6 +4,7 @@ export * from './hello-world.workflow';
 export * from './mint.workflow';
 export * from './processOrder.workflow';
 export * from './processOrderItem.workflow';
+export * from './post-process-order-item.workflow';
 export * from './chargeUser.workflow';
 export * from './refund-user.workflow';
 export * from './finalize-payment.workflow';

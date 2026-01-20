@@ -5,12 +5,18 @@ import {
   dnsRecordsTable,
   domainConfigTable,
 } from '@namefi-astra/db';
+import type { z } from 'zod';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
-import { recordTypeEnum } from '@namefi-astra/zod-dns';
+import {
+  recordSchema,
+  recordTypeEnum,
+  sanitizeDnsRecord,
+} from '@namefi-astra/zod-dns';
 import * as workflow from '@temporalio/workflow';
-import { eq, sql } from 'drizzle-orm';
+import { and, eq, inArray, sql } from 'drizzle-orm';
 import { getZoneRecords, getZonesByName } from '#lib/route53-dns/route53';
 import { PARKED_DOMAIN_RECORDS } from '#services/dns/parking';
+import { validateZone } from '#services/dns/service';
 
 export const getRoute53ZoneRecords = async (zoneId: string) => {
   let marker: string | undefined;
@@ -237,4 +243,118 @@ export const fillZoneFlags = async (
         forwardTo: sql.raw(`excluded.${domainConfigTable.forwardTo.name}`),
       },
     });
+};
+
+type ZoneRecordInput = {
+  type: DnsRecordInsert['type'];
+  name: string;
+  rdata: string;
+  ttl?: number | null;
+};
+
+type ZoneRecordSchemaInput = z.infer<typeof recordSchema>;
+
+type NormalizedRecord = {
+  type: DnsRecordInsert['type'];
+  name: string;
+  rdata: string;
+  ttl: number;
+  class: 'IN';
+};
+
+const sanitizeAndNormalizeRecords = (
+  records: ZoneRecordInput[],
+): NormalizedRecord[] => {
+  return records.map((record) => {
+    const parsed = recordSchema.parse(
+      sanitizeDnsRecord({
+        ...record,
+        ttl: record.ttl ?? 30,
+      }),
+    ) as ZoneRecordSchemaInput;
+    return {
+      type: parsed.type,
+      name: parsed.name,
+      rdata: parsed.rdata,
+      ttl: parsed.ttl,
+      class: 'IN',
+    };
+  });
+};
+
+export const addDnsRecordsForZone = async (
+  zoneName: NamefiNormalizedDomain,
+  records: ZoneRecordInput[],
+) => {
+  const sanitizedRecords = sanitizeAndNormalizeRecords(records);
+  const recordsToInsert: DnsRecordInsert[] = sanitizedRecords.map((record) => ({
+    ...record,
+    zoneName,
+  }));
+
+  await validateZone(zoneName, {
+    addedRecords: sanitizedRecords.map((record) => ({
+      type: record.type,
+      name: record.name,
+      rdata: record.rdata,
+      ttl: record.ttl,
+    })) as ZoneRecordSchemaInput[],
+  });
+
+  await db.insert(dnsRecordsTable).values(recordsToInsert);
+};
+
+export const setDnsRecordsForZone = async (
+  zoneName: NamefiNormalizedDomain,
+  records: ZoneRecordInput[],
+) => {
+  const sanitizedRecords = sanitizeAndNormalizeRecords(records);
+  const recordsToInsert: DnsRecordInsert[] = sanitizedRecords.map((record) => ({
+    ...record,
+    zoneName,
+  }));
+
+  await validateZone(zoneName, {
+    addedRecords: sanitizedRecords.map((record) => ({
+      type: record.type,
+      name: record.name,
+      rdata: record.rdata,
+      ttl: record.ttl,
+    })) as ZoneRecordSchemaInput[],
+  });
+
+  const uniqueKeyRecords = new Map<
+    string,
+    {
+      name: string;
+      type: DnsRecordInsert['type'];
+    }
+  >();
+
+  sanitizedRecords.forEach((record) => {
+    uniqueKeyRecords.set(`${record.name}::${record.type}`, {
+      name: record.name,
+      type: record.type,
+    });
+  });
+
+  await db.transaction(async (tx) => {
+    if (uniqueKeyRecords.size > 0) {
+      await Promise.all(
+        Array.from(uniqueKeyRecords.values()).map(({ name, type }) =>
+          tx
+            .delete(dnsRecordsTable)
+            .where(
+              and(
+                eq(dnsRecordsTable.zoneName, zoneName),
+                eq(dnsRecordsTable.name, name),
+                eq(dnsRecordsTable.type, type),
+              ),
+            ),
+        ),
+      );
+    }
+
+    await tx.insert(dnsRecordsTable).values(recordsToInsert);
+  });
 };

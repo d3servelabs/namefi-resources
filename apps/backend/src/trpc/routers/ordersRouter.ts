@@ -89,7 +89,7 @@ type OrderProgressPayload = OrderProgressSnapshot & {
 
 const workflowIdForOrder = (orderId: string) => `process-order-${orderId}`;
 
-const trackOrderPlaced = async ({
+export const trackOrderPlaced = async ({
   userId,
   orderId,
   amountUsdCents,

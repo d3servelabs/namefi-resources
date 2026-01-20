@@ -202,8 +202,30 @@ export const cartItemMetadataSchema = z.object(claimMetadataShape).loose();
 
 export type CartItemMetadata = z.infer<typeof cartItemMetadataSchema>;
 
+const postProcessDnsRecordSchema = z.object({
+  name: z.string(),
+  type: z.enum(recordTypeValues),
+  rdata: z.string(),
+  ttl: z.number().int().min(0).max(2147483647).optional(),
+});
+
+const postProcessOrderItemActionSchema = z.object({
+  scope: z.literal('dns-records'),
+  action: z.enum(['add', 'set']),
+  records: z.array(postProcessDnsRecordSchema).min(1),
+});
+
+export const postProcessOrderItemSchema = z
+  .object({
+    actions: z.array(postProcessOrderItemActionSchema).min(1),
+  })
+  .loose();
+
+export type PostProcessOrderItem = z.infer<typeof postProcessOrderItemSchema>;
+
 export const orderItemMetadataSchema = cartItemMetadataSchema.extend({
   mintTransaction: orderMintTransactionMetadataSchema.optional(),
+  postProcessOrderItem: postProcessOrderItemSchema.optional(),
 });
 
 export type OrderItemMetadata = z.infer<typeof orderItemMetadataSchema>;

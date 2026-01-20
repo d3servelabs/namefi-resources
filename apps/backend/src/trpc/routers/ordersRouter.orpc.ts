@@ -1,5 +1,6 @@
 import {
   type PaymentSelect,
+  type PostProcessOrderItem,
   db,
   isNfscPayment,
   orderItemsTable,
@@ -14,6 +15,7 @@ import {
   checksumWalletAddressSchema,
   namefiNormalizedDomainSchema,
 } from '@namefi-astra/utils';
+import { recordTypeEnum } from '@namefi-astra/zod-dns';
 import { TRPCError } from '@trpc/server';
 import { and, desc, eq, getTableColumns, ilike } from 'drizzle-orm';
 import { isNil, isNotNil, pluck, sum } from 'ramda';
@@ -45,6 +47,7 @@ import { logger } from '#lib/logger';
 import { config } from '#lib/env';
 import { determinePayments, getUserChainBalances } from '../../lib/payments';
 import { getChain, CHAINS as chains } from '@namefi-astra/utils';
+import { trackOrderPlaced } from './ordersRouter';
 
 const stripe = new Stripe(secrets.STRIPE_SECRET_KEY);
 
@@ -97,6 +100,212 @@ export const instantBuyInputSchema = z.object({
       'Wallet address and chain ID of the wallet that will receive the NFT, defaults to the buyer\'s wallet and "Base Chain"',
     ),
 });
+
+const postProcessRecordSchema = z.object({
+  name: z.string(),
+  type: recordTypeEnum,
+  rdata: z.string(),
+  ttl: z.number().int().min(0).max(2147483647).optional().default(30),
+});
+
+const postProcessOrderItemSchema = z.object({
+  actions: z
+    .array(
+      z.object({
+        scope: z.literal('dns-records'),
+        action: z.enum(['add', 'set']),
+        records: z.array(postProcessRecordSchema).min(1),
+      }),
+    )
+    .min(1),
+});
+
+const registerWithRecordsInputSchema = z.object({
+  normalizedDomainName: namefiNormalizedDomainSchema,
+  durationInYears: z.number().int().min(1).max(10).default(1),
+  records: z.array(postProcessRecordSchema).optional().default([]),
+  nftReceivinggWallet: instantBuyInputSchema.shape.nftReceivinggWallet,
+});
+
+type RegisterDomainInput = z.infer<typeof instantBuyInputSchema>;
+
+type RegisterDomainWithRecordsInput = {
+  ctx: { user: { id: string; privyUserId: string } };
+  input: RegisterDomainInput;
+  postProcessOrderItem?: PostProcessOrderItem;
+};
+
+const buildPostProcessOrderItem = (
+  payload: z.infer<typeof postProcessOrderItemSchema>,
+): PostProcessOrderItem => {
+  return postProcessOrderItemSchema.parse(payload) as PostProcessOrderItem;
+};
+
+const registerDomainWithRecords = async ({
+  ctx,
+  input,
+  postProcessOrderItem,
+}: RegisterDomainWithRecordsInput) => {
+  const { normalizedDomainName, durationInYears } = input;
+
+  // 1. Get user details from Privy
+  const [error, privyUser] = await resolve(
+    privyClient.getUserById(ctx.user.privyUserId),
+  );
+  if (error || isNil(privyUser)) {
+    throw new TRPCError({
+      code: 'BAD_REQUEST',
+      message: 'Could not find user details',
+    });
+  }
+
+  // 2. Validate domain availability and get pricing
+  const validation = await validateDomainForInstantPurchaseOrThrow({
+    normalizedDomainName,
+    durationInYears,
+    user: { id: ctx.user.id, privyUserId: ctx.user.privyUserId },
+  });
+
+  // 3. Get user's linked wallet addresses and chain balances
+  const userWalletAddresses = getPrivyUserLinkedEthereumChecksumWalletAddresses(
+    { privyUser },
+  );
+
+  if (userWalletAddresses.length === 0) {
+    throw new TRPCError({
+      code: 'BAD_REQUEST',
+      message: 'No linked wallet addresses found for user',
+    });
+  }
+  const nftReceivinggWallet = input.nftReceivinggWallet || {
+    walletAddress: userWalletAddresses[0],
+    chainId: config.ALLOWED_CHAINS.includes(chains.base.id)
+      ? chains.base.id
+      : config.ALLOWED_CHAINS[0],
+  };
+
+  // 4. Get chain balances for user's wallets
+  const chainBalances = await getUserChainBalances(userWalletAddresses);
+
+  // 5. Determine payments from NFSC balances
+  const paymentResult = determinePayments({
+    totalAmountInUsdCents: validation.priceInUsdCents,
+    chainBalances,
+    allowedMethods: ['NFSC'], // Only NFSC for API, no Stripe
+    allowZeroPayments: true,
+    defaultWalletAddress: userWalletAddresses[0],
+  });
+
+  if (paymentResult.status === 'INSUFFICIENT_FUNDS') {
+    throw new TRPCError({
+      code: 'BAD_REQUEST',
+      message:
+        paymentResult.errorMessage ??
+        'Insufficient NFSC balance to complete purchase',
+    });
+  }
+
+  const payments = paymentResult.payments;
+
+  // 6. Create order in transaction
+  const order = await db.transaction(async (tx) => {
+    // Create payments
+    const createdPayments: PaymentSelect[] = [];
+    for (const p of payments) {
+      const created = await createPayment(
+        {
+          amountInUsdCents: p.amountInUsdCents,
+          paymentProviderDetails: p.paymentProviderDetails,
+        },
+        { tx },
+      );
+      createdPayments.push(created);
+    }
+
+    // Create order with single item
+    const order = await orderService.createOrderWithExistingMultiplePayments(
+      {
+        amountInUSDCents: validation.priceInUsdCents,
+        userId: ctx.user.id,
+        paymentIds: createdPayments.map((p) => p.id),
+        nftWalletAddress: nftReceivinggWallet.walletAddress,
+        nftChainId: nftReceivinggWallet.chainId,
+        items: [
+          {
+            normalizedDomainName,
+            amountInUSDCents: validation.priceInUsdCents,
+            durationInYears,
+            type: itemTypeSchema.enum.REGISTER,
+            registrar: validation.registrar,
+            metadata: postProcessOrderItem
+              ? { postProcessOrderItem }
+              : undefined,
+          } satisfies CreateOrderItemInput,
+        ],
+      },
+      { tx },
+    );
+
+    // Remove from cart if exists (cleanup)
+    await tx
+      .delete(cartItemsTable)
+      .where(
+        and(
+          eq(cartItemsTable.userId, ctx.user.id),
+          eq(cartItemsTable.normalizedDomainName, normalizedDomainName),
+        ),
+      );
+
+    // Build per-payment metadata map (empty for NFSC payments) and start workflow
+    const paymentsMetadata: {
+      [paymentId: string]: ChargeUserWorkflowInput['metadata'] | undefined;
+    } = {};
+
+    try {
+      await temporalClient.workflow.start(processOrderWorkflow, {
+        args: [
+          {
+            orderId: order.id,
+            paymentsMetadata,
+          },
+        ],
+        taskQueue: TEMPORAL_QUEUES.DOMAINS,
+        workflowId: `process-order-${order.id}`,
+      });
+    } catch (workflowError) {
+      logger.error(
+        { error: workflowError },
+        'Could not start process order workflow for instant buy',
+      );
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message:
+          'Could not initiate the order, please contact support if the issue persists',
+      });
+    }
+
+    logger.info(
+      {
+        orderId: order.id,
+        domain: normalizedDomainName,
+        userId: ctx.user.id,
+        priceInUsdCents: validation.priceInUsdCents,
+      },
+      'Instant buy order created successfully',
+    );
+
+    return order;
+  });
+  void trackOrderPlaced({
+    userId: ctx.user.id,
+    orderId: order.id,
+    amountUsdCents: order.amountInUSDCents,
+    itemCount: order.items.length,
+    paymentCount: payments.length,
+    orderSource: 'instant_buy',
+  });
+  return order;
+};
 
 // Order details schema (for getOrder)
 // We need to handle nullable metadata fields properly since DB returns null but schemas may expect undefined
@@ -231,154 +440,73 @@ export const ordersRouterOrpc = createTRPCRouter({
     .input(instantBuyInputSchema)
     .output(orderOutputSchema)
     .mutation(async ({ ctx, input }) => {
-      const { normalizedDomainName, durationInYears } = input;
-
-      // 1. Get user details from Privy
-      const [error, privyUser] = await resolve(
-        privyClient.getUserById(ctx.user.privyUserId),
-      );
-      if (error || isNil(privyUser)) {
-        throw new TRPCError({
-          code: 'BAD_REQUEST',
-          message: 'Could not find user details',
-        });
-      }
-
-      // 2. Validate domain availability and get pricing
-      const validation = await validateDomainForInstantPurchaseOrThrow({
-        normalizedDomainName,
-        durationInYears,
-        user: { id: ctx.user.id, privyUserId: ctx.user.privyUserId },
+      return registerDomainWithRecords({
+        ctx,
+        input,
       });
+    }),
 
-      // 3. Get user's linked wallet addresses and chain balances
-      const userWalletAddresses =
-        getPrivyUserLinkedEthereumChecksumWalletAddresses({ privyUser });
-
-      if (userWalletAddresses.length === 0) {
-        throw new TRPCError({
-          code: 'BAD_REQUEST',
-          message: 'No linked wallet addresses found for user',
-        });
-      }
-      const nftReceivinggWallet = input.nftReceivinggWallet || {
-        walletAddress: userWalletAddresses[0],
-        chainId: config.ALLOWED_CHAINS.includes(chains.base.id)
-          ? chains.base.id
-          : config.ALLOWED_CHAINS[0],
-      };
-
-      // 4. Get chain balances for user's wallets
-      const chainBalances = await getUserChainBalances(userWalletAddresses);
-
-      // 5. Determine payments from NFSC balances
-      const paymentResult = determinePayments({
-        totalAmountInUsdCents: validation.priceInUsdCents,
-        chainBalances,
-        allowedMethods: ['NFSC'], // Only NFSC for API, no Stripe
-        allowZeroPayments: true,
-        defaultWalletAddress: userWalletAddresses[0],
-      });
-
-      if (paymentResult.status === 'INSUFFICIENT_FUNDS') {
-        throw new TRPCError({
-          code: 'BAD_REQUEST',
-          message:
-            paymentResult.errorMessage ??
-            'Insufficient NFSC balance to complete purchase',
-        });
-      }
-
-      const payments = paymentResult.payments;
-
-      // 6. Create order in transaction
-      const order = await db.transaction(async (tx) => {
-        // Create payments
-        const createdPayments: PaymentSelect[] = [];
-        for (const p of payments) {
-          const created = await createPayment(
-            {
-              amountInUsdCents: p.amountInUsdCents,
-              paymentProviderDetails: p.paymentProviderDetails,
-            },
-            { tx },
-          );
-          createdPayments.push(created);
-        }
-
-        // Create order with single item
-        const order =
-          await orderService.createOrderWithExistingMultiplePayments(
-            {
-              amountInUSDCents: validation.priceInUsdCents,
-              userId: ctx.user.id,
-              paymentIds: createdPayments.map((p) => p.id),
-              nftWalletAddress: nftReceivinggWallet.walletAddress,
-              nftChainId: nftReceivinggWallet.chainId,
-              items: [
+  registerWithRecords: withAudit(
+    protectedProcedure,
+    ({ ctx, input, auditActorExtraInfo, result }) => ({
+      actorType: 'user',
+      actorId: ctx.user?.id || 'unknown',
+      actorExtraInfo: auditActorExtraInfo,
+      resourceType: 'order',
+      resourceId: result.id || '',
+      action: 'register_domain_with_records',
+      extraInput: input,
+    }),
+  )
+    .meta({
+      route: {
+        path: '/orders/register-domain/records',
+        method: 'POST',
+        tags: ['orders'],
+        operationId: 'registerWithRecords',
+        summary: 'Instant register domain with records',
+        description:
+          'Purchase a single domain instantly and apply DNS records after processing.',
+      },
+    })
+    .input(
+      registerWithRecordsInputSchema.describe(
+        `Example payload:
+\`\`\`
+  {
+    "normalizedDomainName": "example.com",
+    "durationInYears": 1,
+    "records": [{ "name": "@", "type": "A", "rdata": "203.0.113.10", "ttl": 30 }, { "name": "www", "type": "CNAME", "rdata": "app.example.net." }] }],
+    "nftReceivingWallet": { "walletAddress": "0x1111111111111111111111111111111111111111", "chainId": 8453 }
+  }
+\`\`\`
+        `,
+      ),
+    )
+    .output(orderOutputSchema)
+    .mutation(async ({ ctx, input }) => {
+      const postProcessOrderItem =
+        input.records?.length > 0
+          ? buildPostProcessOrderItem({
+              actions: [
                 {
-                  normalizedDomainName,
-                  amountInUSDCents: validation.priceInUsdCents,
-                  durationInYears,
-                  type: itemTypeSchema.enum.REGISTER,
-                  registrar: validation.registrar,
-                } satisfies CreateOrderItemInput,
+                  scope: 'dns-records',
+                  action: 'add',
+                  records: input.records,
+                },
               ],
-            },
-            { tx },
-          );
+            })
+          : undefined;
 
-        // Remove from cart if exists (cleanup)
-        await tx
-          .delete(cartItemsTable)
-          .where(
-            and(
-              eq(cartItemsTable.userId, ctx.user.id),
-              eq(cartItemsTable.normalizedDomainName, normalizedDomainName),
-            ),
-          );
-
-        // Build per-payment metadata map (empty for NFSC payments) and start workflow
-        const paymentsMetadata: {
-          [paymentId: string]: ChargeUserWorkflowInput['metadata'] | undefined;
-        } = {};
-
-        try {
-          await temporalClient.workflow.start(processOrderWorkflow, {
-            args: [
-              {
-                orderId: order.id,
-                paymentsMetadata,
-              },
-            ],
-            taskQueue: TEMPORAL_QUEUES.DOMAINS,
-            workflowId: `process-order-${order.id}`,
-          });
-        } catch (workflowError) {
-          logger.error(
-            { error: workflowError },
-            'Could not start process order workflow for instant buy',
-          );
-          throw new TRPCError({
-            code: 'INTERNAL_SERVER_ERROR',
-            message:
-              'Could not initiate the order, please contact support if the issue persists',
-          });
-        }
-
-        logger.info(
-          {
-            orderId: order.id,
-            domain: normalizedDomainName,
-            userId: ctx.user.id,
-            priceInUsdCents: validation.priceInUsdCents,
-          },
-          'Instant buy order created successfully',
-        );
-
-        return order;
+      return registerDomainWithRecords({
+        ctx,
+        input: {
+          normalizedDomainName: input.normalizedDomainName,
+          durationInYears: input.durationInYears,
+          nftReceivinggWallet: input.nftReceivinggWallet,
+        },
+        postProcessOrderItem,
       });
-      return order;
     }),
 
   /**

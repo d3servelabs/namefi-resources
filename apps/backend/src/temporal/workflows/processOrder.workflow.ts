@@ -13,6 +13,8 @@ import type { ChargeUserWorkflowInput } from './chargeUser.workflow';
 import { processOrderItemWorkflow } from './processOrderItem.workflow';
 import { multiChargeWorkflow } from './multi-charge.workflow';
 import { multiRefundWorkflow } from './multi-refund.workflow';
+import { postProcessOrderItemWorkflow } from './post-process-order-item.workflow';
+import { catchAndAlertLocally } from '../shared/workflow-helpers/catch-and-alert-locally';
 
 export type ProcessOrderWorkflowStepStatus =
   | 'PENDING'
@@ -578,6 +580,45 @@ export async function processOrderWorkflow(
           });
         }
       }
+
+      const postProcessItems = succeededItems.filter(
+        (item) => item.metadata?.postProcessOrderItem,
+      );
+      await Promise.all(
+        postProcessItems.map((item) =>
+          catchAndAlertLocally(
+            async () => {
+              const postProcessOrderItem = item.metadata?.postProcessOrderItem;
+              if (!postProcessOrderItem) {
+                return;
+              }
+              await workflow.startChild(postProcessOrderItemWorkflow, {
+                args: [
+                  {
+                    orderItemId: item.id,
+                    userId: orderDetails.order.userId,
+                    normalizedDomainName:
+                      item.normalizedDomainName as NamefiNormalizedDomain,
+                    postProcessOrderItem,
+                  },
+                ],
+                workflowId: `post-process-order-item-[${item.id}]`,
+                taskQueue: TEMPORAL_QUEUES.DOMAINS,
+                retry: { maximumAttempts: 1 },
+                parentClosePolicy: 'ABANDON',
+              });
+            },
+            {
+              message: `Post-process order item failed for ${item.id}`,
+              details: {
+                orderId: input.orderId,
+                orderItemId: item.id,
+              },
+            },
+          ),
+        ),
+      );
+
       if (findStep('post-processing')?.status === 'IN_PROGRESS') {
         setStepStatus('post-processing', 'COMPLETED');
       }
