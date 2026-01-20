@@ -1,0 +1,41 @@
+{
+  "extends": "//",
+  "linter": {
+    "rules": {
+      "correctness": {
+        "noNodejsModules": "error"
+      },
+      "style": {
+        "noProcessEnv": "error",
+        "noRestrictedGlobals": {
+          "level": "error",
+          "options": {
+            "deniedGlobals": {
+              "window": "Do not use browser globals in @namefi-astra/common.",
+              "document": "Do not use browser globals in @namefi-astra/common.",
+              "navigator": "Do not use browser globals in @namefi-astra/common.",
+              "localStorage": "Do not use browser globals in @namefi-astra/common.",
+              "sessionStorage": "Do not use browser globals in @namefi-astra/common."
+            }
+          }
+        },
+        "noRestrictedImports": {
+          "level": "error",
+          "options": {
+            "paths": {
+              "react": "React is not allowed in @namefi-astra/common.",
+              "react-dom": "React is not allowed in @namefi-astra/common.",
+              "next": "Next.js is not allowed in @namefi-astra/common."
+            },
+            "patterns": [
+              {
+                "group": ["next/**", "react/**", "react-dom/**"],
+                "message": "Framework imports are not allowed in @namefi-astra/common."
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}
