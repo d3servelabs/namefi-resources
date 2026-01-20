@@ -7,7 +7,23 @@ The Namefi client is still in alpha. APIs and behavior may change without notice
 
 Start with installation and authentication, then follow the getting started guides.
 
-- [Installation](/docs/installation)
-- [Authentication](/docs/authentication)
-- [Register a Domain](/docs/getting-started/your-first-domain)
-- [Managing Your Balance](/docs/getting-started/your-balance)
+
+<Cards>
+  {
+    [
+      { title: 'Installation', href: '/docs/01-installation' },
+      { title: 'Authentication', href: '/docs/02-authentication' },
+      { title: 'Register a Domain', href: '/docs/03-getting-started/01-your-first-domain' },
+      { title: 'Managing Your Balance', href: '/docs/03-getting-started/02-your-balance' },
+    ].map(
+      ({ title, href, subtitle }) => (
+        <Card
+          href={href}
+          title={title}
+        >
+          {subtitle ? subtitle : ''}
+        </Card>
+      )
+    )
+  }
+</Cards>
