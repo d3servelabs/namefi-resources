@@ -170,6 +170,10 @@ function _safeJson(value: any) {
   let result: any = null;
   try {
     result = JSON.parse(JSON.stringify(value));
+
+    if (typeof value === 'object' && Array.isArray(value)) {
+      result = { array: result }; // due to bigquery error `Array specified for non-repeated field: extrainput.`
+    }
   } catch (error) {
     console.warn('Error serializing value to JSON', error);
   }
