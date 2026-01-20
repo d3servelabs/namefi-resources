@@ -6,6 +6,14 @@ on:
       - opened
       - synchronize
       - reopened
+    branches-ignore:
+    - prod
+    - gtmq_spec_* # GraphiteMergeQueue
+    - "*_nopreview_*"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 env:
   PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
@@ -13,8 +21,34 @@ env:
   REPO_NAME: ${{ vars.REPOSITORY_NAME }}
 
 jobs:
+  head-branch-gate:
+    name: Check Head Branch Ignore Rules
+    runs-on: ubuntu-latest
+    outputs:
+      should_run: ${{ steps.gate.outputs.should_run }}
+    steps:
+      - name: Evaluate head branch
+        id: gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          HEAD_REF="${{ github.event.pull_request.head.ref }}"
+
+          case "$HEAD_REF" in
+            prod|gtmq_spec_*|*_nopreview_*)
+              echo "Head branch '$HEAD_REF' matches ignore rules; skipping."
+              echo "should_run=false" >> "$GITHUB_OUTPUT"
+              ;;
+            *)
+              echo "Head branch '$HEAD_REF' allowed; continuing."
+              echo "should_run=true" >> "$GITHUB_OUTPUT"
+              ;;
+          esac
+
   detect-changes:
     name: Detect Backend Changes
+    needs: head-branch-gate
+    if: needs.head-branch-gate.outputs.should_run == 'true'
     runs-on: ubuntu-latest
     outputs:
       has-backend-changes: ${{ steps.check.outputs.has-backend-changes }}
