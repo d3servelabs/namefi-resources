@@ -100,6 +100,10 @@ const nextConfig = {
         source: '/domain/:path*',
         destination: '/domains/:path*',
       },
+      {
+        source: '/docs/',
+        destination: process.env.API_DOCS_URL || 'https://docs.namefi.io/docs/',
+      },
     ];
   },
   async redirects() {
