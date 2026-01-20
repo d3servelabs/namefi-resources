@@ -1,6 +1,6 @@
 {
   "name": "@namefi-astra/frontend",
-  "version": "0.3.67-beta",
+  "version": "0.3.68-beta",
   "type": "module",
   "private": true,
   "scripts": {
