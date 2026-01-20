@@ -1,6 +1,7 @@
 'use client';
 
 import { config } from '@/lib/env';
+import { normalizeStripeAmountInSubunits } from '@/lib/stripe-amount';
 import { useTheme } from 'next-themes';
 import { Elements } from '@stripe/react-stripe-js';
 import {
@@ -44,7 +45,7 @@ export function StripeProvider({
       return {
         mode: 'payment',
         currency: 'usd',
-        amount: amount,
+        amount: normalizeStripeAmountInSubunits(amount),
         capture_method: 'automatic',
         appearance,
         customerSessionClientSecret,
