@@ -13,7 +13,10 @@ import { formatEther, parseEther } from 'viem';
 import { Hono } from 'hono';
 import { createLogger } from '#lib/logger';
 
-const DYNADOT_BALANCE_TRIGGER_LIMIT = 500;
+const DYNADOT_BALANCE_TRIGGER_LIMIT = Object.freeze({
+  gdg: 400,
+  regular: 200,
+});
 
 const BALANCE_THRESHOLD = Object.freeze({
   [CHAINS.mainnet.id]: parseEther('0.025'),
@@ -56,10 +59,7 @@ async function checkBalance(chainId: number, address: `0x${string}`) {
   };
 }
 
-async function checkDynadotBalance(
-  dynadot: Dynadot,
-  limit: number = DYNADOT_BALANCE_TRIGGER_LIMIT,
-) {
+async function checkDynadotBalance(dynadot: Dynadot, limit: number) {
   const response = await dynadot.command(
     DynadotCommand.get_account_balance,
     {},
@@ -76,6 +76,7 @@ async function checkDynadotBalance(
       };
     }
     return {
+      balance: balance.Amount,
       status:
         Number.parseFloat(balance.Amount) > limit
           ? 'BalanceAboveLimit'
@@ -89,8 +90,11 @@ async function checkDynadotBalance(
 
 async function checkAllDynadotBalances() {
   const dynadot = await getDynadotRegistrars(undefined);
-  const balance = await pProps(dynadot, async (dynadot) =>
-    checkDynadotBalance(dynadot.getClient()),
+  const balance = await pProps(dynadot, async (dynadot, key) =>
+    checkDynadotBalance(
+      dynadot.getClient(),
+      DYNADOT_BALANCE_TRIGGER_LIMIT[key],
+    ),
   );
   return balance;
 }
