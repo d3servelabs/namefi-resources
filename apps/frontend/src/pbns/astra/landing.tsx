@@ -2,7 +2,6 @@
 
 import { useState, useCallback, useEffect, useMemo, useRef } from 'react';
 import Link from 'next/link';
-import dynamic from 'next/dynamic';
 import {
   motion,
   AnimatePresence,
@@ -33,22 +32,8 @@ import {
 import { isDomainImportable } from '@namefi-astra/common/domain-availability';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { ArrowLeft, Sparkles } from 'lucide-react';
-import type { MarketingSectionsProps } from './landing-marketing';
-
-const MarketingSections = dynamic<MarketingSectionsProps>(
-  () =>
-    import('./landing-marketing').then((module) => module.MarketingSections),
-  {
-    ssr: false,
-    loading: () => <div className="mx-auto max-w-6xl px-6 pb-32" />,
-  },
-);
-
-const FloatingCart = dynamic(
-  () =>
-    import('@/components/floating-cart').then((module) => module.FloatingCart),
-  { ssr: false },
-);
+import { MarketingSections } from './landing-marketing';
+import { FloatingCart } from '@/components/floating-cart';
 
 const HERO_HEADING = 'Next generation domain platform with blockchain and AI';
 const HERO_SUBTITLE =
