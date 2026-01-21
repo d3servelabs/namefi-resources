@@ -415,6 +415,17 @@ export const freeClaimsRouter = createTRPCRouter({
       const { normalizedDomainName, recipientWalletAddress, registrarKey } =
         input;
 
+      // TODO: [HIGH-IMPACT LIMITATION] Hardcoded chainId restricts multi-chain support.
+      // The chainId is hardcoded to 8453 (Base), but the platform supports multiple chains
+      // (config.ALLOWED_CHAINS). This means:
+      // 1. Free claims can only mint NFTs on Base, even if user prefers another chain
+      // 2. If Base network has issues, free claims will fail entirely
+      // 3. Inconsistent with paid orders which allow chain selection via nftMetadata.nftChainId
+      // Impact: High - Limits user flexibility and creates inconsistent behavior between
+      // free claims and paid orders. Users expecting multi-chain support will be confused.
+      // Fix: Accept chainId as input parameter (with validation against ALLOWED_CHAINS)
+      // or derive from user preferences/wallet network.
+      // Note: This same issue exists in the processClaim mutation above.
       const chainId = 8453; // Base chain ID
 
       const durationInYears = 1;

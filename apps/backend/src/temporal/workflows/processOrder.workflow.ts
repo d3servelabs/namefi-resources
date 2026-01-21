@@ -48,6 +48,15 @@ export type ProcessOrderWorkflowItemStatus =
   | 'FAILED'
   | 'CANCELLED';
 
+// TODO: [HIGH-IMPACT BUG] Missing 'RENEW' type in ProcessOrderWorkflowItemProgress.
+// The itemTypeEnum in schema.ts defines three types: 'REGISTER', 'IMPORT', 'RENEW',
+// but this interface only includes 'REGISTER' | 'IMPORT'. This causes:
+// 1. Type assertion errors when processing RENEW orders (line ~353: item.type as 'REGISTER' | 'IMPORT')
+// 2. Incorrect workflow state tracking for renewal orders
+// 3. Potential runtime errors or silent failures when renewals are processed
+// Impact: High - Renewal orders may not be tracked correctly in the workflow state,
+// leading to incorrect order progress reporting and potential customer confusion.
+// Fix: Add 'RENEW' to the type union: type: 'REGISTER' | 'IMPORT' | 'RENEW'
 export interface ProcessOrderWorkflowItemProgress {
   itemId: string;
   domain: NamefiNormalizedDomain;

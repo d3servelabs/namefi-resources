@@ -444,6 +444,14 @@ export const dnsRecordsTable = pgTable(
     class: text('class').notNull().default('IN'),
     ttl: integer('ttl').notNull().default(60),
     rdata: text('rdata').notNull(),
+    // TODO: [HIGH-IMPACT TYPE SAFETY] Using $type<any>() defeats TypeScript's type checking.
+    // This allows any data to be stored in metadata without compile-time validation, which can lead to:
+    // 1. Runtime errors when accessing expected properties that don't exist
+    // 2. Inconsistent data shapes across records making queries unreliable
+    // 3. Difficulty refactoring or understanding what metadata is expected
+    // Impact: High - Could cause runtime crashes or silent data corruption.
+    // Fix: Define a proper Zod schema for DNS record metadata (e.g., z.object({ source?: z.string(), ... }))
+    // and use .$type<z.infer<typeof dnsRecordMetadataSchema>>() for type safety.
     metadata: jsonb('metadata').default({}).$type<any>(),
     ...timestamps,
   },
@@ -746,6 +754,13 @@ export const domainExportTrackingTable = pgTable(
 
     // Approval tracking for safe NFT burning
     clientApprovedAt: timestamp('client_approved_at'),
+    // TODO: [HIGH-IMPACT BUG] Column name typo: 'verfyingAdminId' should be 'verifyingAdminId'.
+    // This typo in the database column name ('verifying_admin_id' is correct in SQL but the JS property
+    // is misspelled as 'verfyingAdminId') will cause confusion and potential bugs when accessing this
+    // field in application code. Any code using `row.verfyingAdminId` works, but developers may
+    // mistakenly use `row.verifyingAdminId` (correct spelling) which would be undefined.
+    // Impact: Medium-High - Could cause silent failures in admin verification workflows.
+    // Fix: Requires a database migration to rename the column and update all references.
     verfyingAdminId: uuid('verifying_admin_id'),
     adminVerifiedAt: timestamp('admin_verified_at'),
 
@@ -1029,6 +1044,16 @@ export const huntEntityTypeEnum = pgEnum('hunt_entity_type', [
  * - USER upvotes DOMAIN: sourceType='USER', sourceId=userId, targetType='DOMAIN', targetId=domainName, action='UPVOTE'
  * - USER submits DOMAIN: sourceType='USER', sourceId=userId, targetType='DOMAIN', targetId=domainName, action='SUBMIT'
  * - USER upvotes USER: sourceType='USER', sourceId=userId, targetType='USER', targetId=otherUserId, action='UPVOTE'
+ *
+ * TODO: [HIGH-IMPACT DATA INTEGRITY] Missing referential integrity for USER entity types.
+ * When sourceType='USER' or targetType='USER', the corresponding sourceId/targetId should
+ * reference usersTable.id, but there's no foreign key constraint. This means:
+ * 1. If a user is deleted, their hunt edges become orphaned (sourceId/targetId point to non-existent users)
+ * 2. Invalid user IDs can be inserted without database-level validation
+ * 3. Queries joining hunt_edges with users may silently return incomplete results
+ * Impact: High - Could lead to data corruption and incorrect leaderboard/stats calculations.
+ * Fix: Consider adding a trigger or application-level cleanup when users are deleted,
+ * or restructure to use proper foreign keys with conditional constraints.
  */
 export const huntEdgesTable = pgTable(
   'hunt_edges',
@@ -1365,11 +1390,24 @@ export const freeClaimsTable = pgTable(
       sql`(${table.claimingStatus} != 'CLAIMED') OR (${table.claimedDomainName} IS NOT NULL AND ${table.claimedAt} IS NOT NULL)`,
     ),
     // Ensure either exactDomainName or parentDomain is provided
+    // TODO: [HIGH-IMPACT DATA INTEGRITY] This check allows BOTH exactDomainName AND parentDomain to be set,
+    // but the business logic likely requires XOR (exactly one must be set, not both).
+    // Current: (exactDomainName IS NOT NULL) OR (parentDomain IS NOT NULL) - allows both to be set
+    // Should be: (exactDomainName IS NOT NULL) XOR (parentDomain IS NOT NULL)
+    // SQL XOR: ((exactDomainName IS NULL) <> (parentDomain IS NULL))
+    // Impact: High - Could create ambiguous claims where both exact and parent domain are specified,
+    // leading to unpredictable claim matching behavior.
     check(
       'free_claims_domain_check',
-      sql`(${table.exactDomainName} IS NOT NULL) OR (${table.parentDomain} IS NOT NULL)`, //todo use xor here (add implementation for xor)
+      sql`(${table.exactDomainName} IS NOT NULL) OR (${table.parentDomain} IS NOT NULL)`,
     ),
-    // user can only have one claim for a given domain in a given groupOrCampaignKey
+    // TODO: [HIGH-IMPACT DATA INTEGRITY] Incomplete unique constraint - missing parentDomain.
+    // This constraint only prevents duplicate claims for the same exactDomainName, but a user could
+    // have multiple claims for the same parentDomain in the same campaign (when exactDomainName is NULL).
+    // This could allow users to accumulate unlimited parent-domain claims for the same campaign.
+    // Impact: High - Could lead to abuse of free claim system for parent-domain based claims.
+    // Fix: Consider adding a separate unique constraint for (userId, groupOrCampaignKey, parentDomain)
+    // or use a partial unique index.
     unique('free_claims_user_domain_unique').on(
       table.userId,
       table.groupOrCampaignKey,

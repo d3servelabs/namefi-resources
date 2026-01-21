@@ -510,6 +510,16 @@ export const ordersRouter = createTRPCRouter({
           return acc;
         }, {});
 
+        // TODO: [HIGH-IMPACT RACE CONDITION] Temporal workflow started inside database transaction.
+        // If the workflow.start() call succeeds but the transaction later fails to commit
+        // (e.g., due to serialization conflict), the workflow will be running for an order
+        // that doesn't exist in the database. Conversely, if the transaction commits but
+        // workflow.start() fails, we have an order without a processing workflow.
+        // Current mitigation: The catch block throws, rolling back the transaction.
+        // However, Temporal workflow start is not transactional with the database.
+        // Impact: High - Could lead to orphaned workflows or orders stuck in PENDING state.
+        // Fix: Consider starting the workflow AFTER the transaction commits, with a separate
+        // cleanup mechanism for orders that fail to start their workflow.
         try {
           await temporalClient.workflow.start(processOrderWorkflow, {
             args: [
