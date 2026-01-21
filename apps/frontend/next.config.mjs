@@ -57,11 +57,6 @@ const nextConfig = {
     // Favor per-module imports for large libraries to reduce dev compile time.
     optimizePackageImports: ['date-fns', 'ramda', 'lucide-react'],
   },
-  turbopack: {
-    resolveAlias: {
-      '@radix-ui/react-compose-refs': './src/lib/radix/compose-refs-debug.ts',
-    },
-  },
   env: {
     version: packageJson.version,
     name: packageJson.name,
