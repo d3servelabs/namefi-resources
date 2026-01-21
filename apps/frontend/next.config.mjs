@@ -25,6 +25,7 @@ const { config: appConfig } = await jiti.import('./src/lib/env/load');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  productionBrowserSourceMaps: true,
   cacheComponents: false,
   compiler: {
     define: {
