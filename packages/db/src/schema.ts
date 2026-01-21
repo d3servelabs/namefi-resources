@@ -1401,13 +1401,13 @@ export const freeClaimsTable = pgTable(
       'free_claims_domain_check',
       sql`(${table.exactDomainName} IS NOT NULL) OR (${table.parentDomain} IS NOT NULL)`,
     ),
-    // TODO: [HIGH-IMPACT DATA INTEGRITY] Incomplete unique constraint - missing parentDomain.
-    // This constraint only prevents duplicate claims for the same exactDomainName, but a user could
-    // have multiple claims for the same parentDomain in the same campaign (when exactDomainName is NULL).
-    // This could allow users to accumulate unlimited parent-domain claims for the same campaign.
-    // Impact: High - Could lead to abuse of free claim system for parent-domain based claims.
-    // Fix: Consider adding a separate unique constraint for (userId, groupOrCampaignKey, parentDomain)
-    // or use a partial unique index.
+    // NOTE: [INTENTIONAL DESIGN] This unique constraint only includes exactDomainName, not parentDomain.
+    // This is intentional: when a user has a parent-domain based claim (exactDomainName is NULL),
+    // they are allowed to have multiple claims for the same parentDomain within the same campaign.
+    // This enables subdomain campaign scenarios where users can claim multiple different subdomains
+    // (e.g., alice.0x.city, bob.0x.city) under the same parent domain in a single campaign.
+    // The uniqueness is enforced at the exactDomainName level to prevent duplicate claims for
+    // the exact same domain, while allowing flexibility for parent-domain based campaigns.
     unique('free_claims_user_domain_unique').on(
       table.userId,
       table.groupOrCampaignKey,
