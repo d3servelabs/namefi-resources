@@ -102,8 +102,12 @@ const nextConfig = {
         destination: '/domains/:path*',
       },
       {
-        source: '/docs/',
-        destination: process.env.API_DOCS_URL || 'https://docs.namefi.io/docs/',
+        source: '/docs',
+        destination: `${appConfig.DOCS_URL}/docs`,
+      },
+      {
+        source: '/docs/:path*',
+        destination: `${appConfig.DOCS_URL}/docs/:path*`,
       },
     ];
   },

@@ -6,6 +6,7 @@ const productionConfig: ConfigInput = {
   TYPE: 'production',
   BACKEND_URL: 'https://backend.astra.namefi.io',
   RESOURCES_URL: 'https://r.namefi.io',
+  DOCS_URL: 'https://docs.namefi.io',
   FIRST_PARTY_DEPLOYMENT_URL: 'https://namefi.io',
   GA_MEASUREMENT_ID: 'G-S8GRYLE2XF',
   PRIVY_APP_ID: 'cm23ds44v09x0oyiqqa7blr8i',

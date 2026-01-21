@@ -4,6 +4,7 @@ export const configSchema = z.object({
   TYPE: z.enum(['development', 'production', 'local', 'preview']),
   BACKEND_URL: z.url(),
   RESOURCES_URL: z.url(),
+  DOCS_URL: z.url(),
   FIRST_PARTY_DEPLOYMENT_URL: z.url(),
   GA_MEASUREMENT_ID: z.string(),
   PRIVY_APP_ID: z.string(),

@@ -10,6 +10,7 @@ const previewConfig: PreviewConfig = {
   TYPE: 'preview',
   BACKEND_URL: process.env.BACKEND_URL || 'http://localhost:3000',
   RESOURCES_URL: process.env.RESOURCES_URL || 'https://localhost:3002',
+  DOCS_URL: process.env.DOCS_URL || 'https://localhost:3003',
   FIRST_PARTY_DEPLOYMENT_URL:
     process.env.FIRST_PARTY_DEPLOYMENT_URL || 'http://localhost:5050',
   GA_MEASUREMENT_ID: process.env.GA_MEASUREMENT_ID || 'G-PHKF9PM32W',
