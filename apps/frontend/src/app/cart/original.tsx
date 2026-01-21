@@ -63,6 +63,7 @@ import {
   MultiPaymentCard,
   type MultiPaymentSelectionChange,
 } from '@/components/payment-method/multi-payment-card';
+import { normalizeCreateOrderV2PaymentsToSafeIntCents } from '@/lib/payment-normalization';
 
 type CreateOrderV2Input = AppRouterInput['orders']['createOrderV2'];
 const DEFAULT_CHAIN_ID = config.ALLOWED_CHAINS.includes(CHAINS.base.id)
@@ -123,7 +124,7 @@ export default function CartPage() {
       onSettled: () => {
         refetchCart();
       },
-      onError: (err) => console.error('reflectChanges error', err),
+      onError: (_err) => {},
     });
 
   const checkCartItemsForUpdates = useCallback(async () => {
@@ -521,11 +522,23 @@ export default function CartPage() {
 
       if (multiPayment.enabled) {
         if (!multiPayment.isValid) return;
-        const payments = multiPayment.payments;
+
+        // Normalize payments to safe integer cents for backend schema validation.
+        // Backend requires z.number().int() and exact totals. See payment-normalization.ts for details.
+        const normalizeResult = normalizeCreateOrderV2PaymentsToSafeIntCents({
+          payments: multiPayment.payments,
+          totalAmountInUsdCents,
+        });
+
+        if (!normalizeResult.success) {
+          setErrorMessage(normalizeResult.error);
+          setIsErrorDialogOpen(true);
+          return;
+        }
 
         createOrderV2({
           cartItemIds: items.map((item) => item.id),
-          payments,
+          payments: normalizeResult.payments,
           nftMetadata: {
             nftWalletAddress: selectedNftWalletAddress,
             nftChainId: DEFAULT_CHAIN_ID,
@@ -542,9 +555,7 @@ export default function CartPage() {
           nftChainId: DEFAULT_CHAIN_ID,
         },
       });
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (_error) {}
   }, [
     checkCartItemsForUpdates,
     createOrder,
@@ -553,6 +564,7 @@ export default function CartPage() {
     checkoutWithCartRequestPaymentMethodDetails,
     items,
     selectedNftWalletAddress,
+    totalAmountInUsdCents,
   ]);
 
   const handleMultiPaymentSelectionChange = useCallback(
@@ -615,8 +627,7 @@ export default function CartPage() {
       });
       await clearCart();
       setCartItemsChangesSummary(undefined);
-    } catch (error) {
-      console.error('clearCart error', error);
+    } catch (_error) {
     } finally {
       setIsClearingCart(false);
       setIsClearCartDialogOpen(false);

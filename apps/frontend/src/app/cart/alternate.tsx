@@ -51,6 +51,7 @@ import {
   useState,
 } from 'react';
 import { getPaymentProviderForChain } from '@/components/payment-method/hybrid-payment-utils';
+import { normalizeCreateOrderV2PaymentsToSafeIntCents } from '@/lib/payment-normalization';
 
 type CreateOrderV2Input = AppRouterInput['orders']['createOrderV2'];
 
@@ -210,17 +211,29 @@ export default function CartPage() {
           return;
         }
 
+        // Normalize payments to safe integer cents for backend schema validation.
+        // Backend requires z.number().int() and exact totals. See payment-normalization.ts for details.
+        const normalizeResult = normalizeCreateOrderV2PaymentsToSafeIntCents({
+          payments,
+          totalAmountInUsdCents,
+        });
+
+        if (!normalizeResult.success) {
+          setErrorMessage(normalizeResult.error);
+          setIsErrorDialogOpen(true);
+          return;
+        }
+
         // Always use createOrderV2 for hybrid payments
         createOrder({
           cartItemIds: items.map((item) => item.id),
-          payments,
+          payments: normalizeResult.payments,
           nftMetadata: {
             nftWalletAddress: selectedNftWalletAddress,
             nftChainId: selectedNftChainId ?? defaultChainId,
           },
         });
-      } catch (error) {
-        console.error(error);
+      } catch (_error) {
       } finally {
         setExplicitlyCheckingCartItemsForUpdates(false);
       }
@@ -231,6 +244,7 @@ export default function CartPage() {
       selectedNftWalletAddress,
       selectedNftChainId,
       defaultChainId,
+      totalAmountInUsdCents,
     ],
   );
 
@@ -250,8 +264,7 @@ export default function CartPage() {
       });
       await clearCart();
       await cartChangesSummaryCardRef.current?.checkCartItemsForUpdates();
-    } catch (error) {
-      console.error('clearCart error', error);
+    } catch (_error) {
     } finally {
       setIsClearingCart(false);
       setIsClearCartDialogOpen(false);
@@ -566,7 +579,7 @@ const CartChangesSummaryCard = forwardRef<
         onSettled?.();
         refetchCart();
       },
-      onError: (err) => console.error('reflectChanges error', err),
+      onError: (_err) => {},
     });
 
   const checkCartItemsForUpdates = useCallback(async () => {
