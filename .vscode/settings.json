@@ -61,7 +61,5 @@
     "Vercel",
     "viem"
   ],
-  "chatgpt.openOnStartup": true,
-  "frontMatter.dashboard.openOnStart": false,
-  "frontMatter.panel.openOnSupportedFile": true
+  "chatgpt.openOnStartup": true
 }
