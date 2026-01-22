@@ -217,6 +217,12 @@ jobs:
             echo "has_sql_changes=false" >> $GITHUB_OUTPUT
           fi
 
+      - name: Get connection string for PR branch
+        id: connection-string
+        run: |
+          CS=$(bun run neonctl connection-string --branch "${{ steps.branch-name.outputs.branch_id }}" --project-id ${{ secrets.NEON_PROJECT_ID }} --api-key ${{ secrets.NEON_API_KEY }})
+          echo "database_url=$CS" >> $GITHUB_OUTPUT
+
       - name: Run migrations on PR branch
         if: steps.check-sql-changes.outputs.has_sql_changes == 'true'
         working-directory: ./packages/db
