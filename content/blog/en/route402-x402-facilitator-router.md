@@ -20,7 +20,7 @@ So we built **Route402**: a **multi-tenant x402 facilitator router** that preten
 
 > Proxies are cheap. Settlements are not.
 
-#### The problem (a.k.a. “why is this code in my app?”)
+## The problem (a.k.a. “why is this code in my app?”)
 
 The initial integration is always straightforward:
 
@@ -38,7 +38,7 @@ Then reality happens:
 
 At this point, your app becomes the router. Which is a terrible job for an app.
 
-#### The shape of the solution
+## The shape of the solution
 
 Route402 does one boring (and therefore useful) thing:
 
@@ -57,7 +57,7 @@ Route402 does one boring (and therefore useful) thing:
 
 Your app calls Route402. Route402 calls the right upstream provider.
 
-#### Control plane vs data plane
+## Control plane vs data plane
 
 I like systems where you can draw a line between “humans messing with config” and “machines handling traffic”.
 
@@ -67,8 +67,6 @@ Route402 has:
 - **Data plane (facade endpoints):** authenticate → evaluate → route → call upstream → normalize → log.
 
 This matters because it keeps your application code out of the “who are we settling with today?” decision.
-
----
 
 ## Multi-tenancy + RBAC (the unsexy prerequisite)
 
@@ -83,8 +81,6 @@ And yes, RBAC is enforced server-side — because “the UI hides the button” 
 
 Viewers can’t see secrets. Admins can rotate keys. Owners can manage org membership. You get the idea.
 
----
-
 ## Credentials: encrypted at rest (AES-256-GCM)
 
 Facilitator credentials are stored encrypted in the database.
@@ -94,8 +90,6 @@ Facilitator credentials are stored encrypted in the database.
 - Decryption only happens in-memory inside request scope.
 
 This is one of those “not negotiable” features. If your DB leaks, the goal is: **the attacker still doesn’t have your upstream facilitator creds**.
-
----
 
 ## Capabilities: don’t route nonsense
 
@@ -110,8 +104,6 @@ This is the difference between:
 - and “we matched rule #2, but the chosen provider literally can’t do Base, so… no.”
 
 We refresh capability caches when a connection is saved, and also on a schedule (see jobs later).
-
----
 
 ## Routing rules: YAML (because shipping code for routing is silly)
 
@@ -145,8 +137,6 @@ Predicates are boring on purpose:
 
 No regex golf. No arbitrary code execution. Just deterministic routing you can review in a PR without having to light a candle.
 
----
-
 ## Verify vs settle: this is where people get hurt
 
 There are two endpoints that *look* similar and behave very differently:
@@ -156,7 +146,7 @@ There are two endpoints that *look* similar and behave very differently:
 
 Treating them the same is how you end up writing postmortems.
 
-#### `/verify`: conservative fallback is fine
+### `/verify`: conservative fallback is fine
 
 For `verify` we do:
 
@@ -175,7 +165,7 @@ For debuggability, we emit:
 
 Because “it routed somewhere” is not an explanation.
 
-#### `/settle`: no improvisation (sticky or bust)
+### `/settle`: no improvisation (sticky or bust)
 
 For `settle`, we do something stricter:
 
@@ -192,7 +182,7 @@ This eliminates a whole class of “oops we retried and hit another provider” 
 
 > If you load-balance settlement, you will have a bad time.
 
-#### “Unknown” outcomes (the reality of networks)
+### Unknown outcomes (the reality of networks)
 
 Sometimes upstreams time out or return something ambiguous. In that case:
 
@@ -202,8 +192,6 @@ Sometimes upstreams time out or return something ambiguous. In that case:
 * enqueue a reconciliation job
 
 This gives you a clean operational path to determine what happened later, without lying to callers.
-
----
 
 ## Adapters: normalize the mess
 
@@ -217,8 +205,6 @@ Adapters normalize provider-specific details into one response shape, and we avo
 
 This is also where you future-proof yourself: swapping providers becomes a config change, not an application refactor.
 
----
-
 ## Background jobs (Trigger.dev): reliability without latency
 
 Some work is important but doesn’t belong on the request path:
@@ -227,8 +213,6 @@ Some work is important but doesn’t belong on the request path:
 * **Settlement reconciliation**: retry/check unknown settlements idempotently
 
 This keeps your P95s honest and your operators sane.
-
----
 
 ## Observability: log decisions, not secrets
 
@@ -244,8 +228,6 @@ Every request produces a routing decision record:
 The dashboard lets you filter by connection/rule/status/time and compute basic latency stats.
 
 The goal is simple: you should be able to answer **“what happened and why?”** without printing secrets to stdout and hoping nobody screenshots it.
-
----
 
 ## Calling the facade (what your app actually does)
 
@@ -274,9 +256,7 @@ You’ll get a normalized response and headers like:
 
 …and now when someone pings you with “hey verify is failing”, you don’t have to guess where it routed.
 
----
-
-## Pro-Tips (earned the hard way)
+## Pro tips (earned the hard way)
 
 1. **Treat settlement as a state machine**, not a boolean.
 2. **Persist routing decisions** for settle. You don’t want “best effort” here.
@@ -286,7 +266,7 @@ You’ll get a normalized response and headers like:
 
 ---
 
-#### Fin
+## Closing
 
 Route402 is not novel in the academic sense — it’s just the set of pragmatic constraints you end up implementing once you’ve shipped a few integrations and survived a few retries.
 
