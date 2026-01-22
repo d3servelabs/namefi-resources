@@ -28,6 +28,10 @@ const nextConfig: NextConfig = {
   experimental: {
     turbopackFileSystemCacheForDev: true,
   },
+  typescript: {
+    // Note: validate is run on CI with build
+    ignoreBuildErrors: true,
+  },
 };
 
 // biome-ignore lint/style/noDefaultExport: Next.js requires a default export for the config file.

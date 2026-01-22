@@ -17,6 +17,10 @@ const nextConfig: NextConfig = {
   experimental: {
     turbopackFileSystemCacheForDev: true,
   },
+  typescript: {
+    // Note: validate is run on CI with build
+    ignoreBuildErrors: true,
+  },
 };
 
 export default nextConfig;
