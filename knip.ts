@@ -12,7 +12,7 @@ import type { KnipConfig } from 'knip';
  * 1. Remove it from this list
  * 2. Run `bun run knip` to verify it's no longer needed
  */
-const knownUsedDependencies = {
+const knownUsedDependencies: Record<string, string[]> = {
   // Tailwind CSS v4 and related packages - used via @tailwindcss/postcss in postcss.config.mjs
   tailwind: [
     'tailwindcss',
@@ -155,4 +155,5 @@ const config: KnipConfig = {
   },
 };
 
+// biome-ignore lint/style/noDefaultExport: knip requires default export for configuration
 export default config;
