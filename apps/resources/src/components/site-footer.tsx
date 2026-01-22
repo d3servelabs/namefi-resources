@@ -2,7 +2,6 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useCookieConsent } from '@/components/providers/cookie-consent';
 import {
   TwitterIcon,
   Linkedin,
@@ -12,6 +11,7 @@ import {
   Youtube,
   ArrowUpRight,
 } from 'lucide-react';
+import { useConsentManager } from '@c15t/nextjs';
 
 const SOCIAL_LINKS = [
   {
@@ -93,7 +93,7 @@ const FOOTER_SECTIONS: Array<{
 const YEAR = new Date().getFullYear();
 
 export function SiteFooter() {
-  const { openConsent } = useCookieConsent();
+  const { setIsPrivacyDialogOpen } = useConsentManager();
 
   return (
     <footer className="border-t border-white/10 bg-background/90 py-16 md:py-24">
@@ -164,7 +164,7 @@ export function SiteFooter() {
               type="button"
               className="text-white/70 transition hover:text-white"
               aria-label="Open cookie settings dialog"
-              onClick={openConsent}
+              onClick={() => setIsPrivacyDialogOpen(true)}
             >
               Cookie Settings
             </button>

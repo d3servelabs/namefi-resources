@@ -11,6 +11,7 @@ import { useState } from 'react';
 import {
   BaseGenerator,
   baseFormSchema,
+  type BaseFormInput,
   type BaseFormData,
 } from './shared/base-generator';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
@@ -27,6 +28,7 @@ import type {
 import { GenerationUsage } from '@/components/ai-generation/generation-usage';
 import { toast } from 'sonner';
 
+type OnboardingFormInput = BaseFormInput;
 type OnboardingFormData = BaseFormData;
 
 export function AIOnboardingOneShot({
@@ -39,8 +41,8 @@ export function AIOnboardingOneShot({
   const logoMutation = useLogoGeneration({ domain: undefined });
   const posterMutation = usePosterGeneration({ domain: undefined });
 
-  const defaultValues: OnboardingFormData = {
-    domain: '' as NamefiNormalizedDomain,
+  const defaultValues: OnboardingFormInput = {
+    domain: '',
     description: '',
   };
 
@@ -105,7 +107,7 @@ export function AIOnboardingOneShot({
           </p>
 
           <GenerationUsage className="mb-6" />
-          <BaseGenerator<OnboardingFormData>
+          <BaseGenerator
             onSubmit={(values) => {
               void handleCreateBrand(values);
             }}

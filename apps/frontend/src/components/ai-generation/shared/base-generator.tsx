@@ -7,9 +7,9 @@ import { useEffect, useRef, useState, type ReactNode } from 'react';
 import {
   useForm,
   type UseFormReturn,
-  type FieldValues,
   type DefaultValues,
   type FieldPath,
+  type Resolver,
 } from 'react-hook-form';
 import { z } from 'zod';
 import { DomainField, DescriptionField } from './form-fields';
@@ -33,17 +33,29 @@ export const baseFormSchema = z.object({
   description: z.string().optional(),
 });
 
-export type BaseFormData = z.infer<typeof baseFormSchema>;
+export type BaseFormInput = z.input<typeof baseFormSchema>;
+export type BaseFormOutput = z.output<typeof baseFormSchema>;
+export type BaseFormData = BaseFormOutput;
 
-interface BaseGeneratorProps<T extends FieldValues & BaseFormData> {
-  onSubmit: (data: T) => void;
+type BaseGeneratorSchema = z.ZodTypeAny;
+type BaseGeneratorInput<TSchema extends BaseGeneratorSchema> =
+  z.input<TSchema> & BaseFormInput;
+type BaseGeneratorOutput<TSchema extends BaseGeneratorSchema> =
+  z.output<TSchema> & BaseFormOutput;
+
+interface BaseGeneratorProps<TSchema extends BaseGeneratorSchema> {
+  onSubmit: (data: BaseGeneratorOutput<TSchema>) => void;
   isLoading?: boolean;
   disabled?: boolean;
   fixedDomain?: NamefiNormalizedDomain;
-  formSchema: z.ZodType<T>;
-  defaultValues: DefaultValues<T>;
+  formSchema: TSchema;
+  defaultValues: DefaultValues<BaseGeneratorInput<TSchema>>;
   children?: (props: {
-    form: UseFormReturn<T>;
+    form: UseFormReturn<
+      BaseGeneratorInput<TSchema>,
+      unknown,
+      BaseGeneratorOutput<TSchema>
+    >;
     openPanel: string | null;
     setOpenPanel: (panel: string | null) => void;
     domainToUse: string;
@@ -57,11 +69,17 @@ interface BaseGeneratorProps<T extends FieldValues & BaseFormData> {
   domainSelectOnly?: boolean;
   domainOnlyDomainsWithLogos?: boolean;
   onDomainChange?: (domain: string) => void;
-  onFormReady?: (form: UseFormReturn<T>) => void;
+  onFormReady?: (
+    form: UseFormReturn<
+      BaseGeneratorInput<TSchema>,
+      unknown,
+      BaseGeneratorOutput<TSchema>
+    >,
+  ) => void;
   onPosterRequest?: (generation: Generation) => void;
 }
 
-export function BaseGenerator<T extends FieldValues & BaseFormData>({
+export function BaseGenerator<TSchema extends BaseGeneratorSchema>({
   onSubmit,
   isLoading,
   disabled,
@@ -77,7 +95,9 @@ export function BaseGenerator<T extends FieldValues & BaseFormData>({
   domainOnlyDomainsWithLogos = false,
   onDomainChange,
   onFormReady,
-}: BaseGeneratorProps<T>) {
+}: BaseGeneratorProps<TSchema>) {
+  type FormInput = BaseGeneratorInput<TSchema>;
+  type FormOutput = BaseGeneratorOutput<TSchema>;
   const [openPanel, setOpenPanel] = useState<string | null>(null);
 
   const trpc = useTRPC();
@@ -91,12 +111,14 @@ export function BaseGenerator<T extends FieldValues & BaseFormData>({
 
   const usageErrorNotifiedRef = useRef(false);
 
-  const form = useForm<T>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<FormInput, unknown, FormOutput>({
+    resolver: zodResolver(
+      formSchema as unknown as z.ZodType<FormOutput, FormInput>,
+    ) as Resolver<FormInput, unknown, FormOutput>,
     defaultValues: {
       ...defaultValues,
       domain: fixedDomain || defaultValues.domain,
-    } as DefaultValues<T>,
+    } as DefaultValues<FormInput>,
     mode: 'onChange',
     reValidateMode: 'onChange',
   });
@@ -115,7 +137,7 @@ export function BaseGenerator<T extends FieldValues & BaseFormData>({
     if (onFormReady) onFormReady(form);
   }, [onFormReady, form]);
 
-  const handleSubmit = (data: T) => {
+  const handleSubmit = (data: FormOutput) => {
     const domainToUse = fixedDomain || data.domain;
 
     onSubmit({
@@ -124,7 +146,8 @@ export function BaseGenerator<T extends FieldValues & BaseFormData>({
     });
   };
 
-  const domainToUse = fixedDomain || form.watch('domain' as FieldPath<T>);
+  const domainToUse =
+    fixedDomain || form.watch('domain' as FieldPath<FormInput>);
 
   useEffect(() => {
     if (onDomainChange && typeof domainToUse === 'string') {
@@ -145,7 +168,7 @@ export function BaseGenerator<T extends FieldValues & BaseFormData>({
             {/* Domain Input */}
             <DomainField
               control={form.control}
-              name={'domain' as FieldPath<T>}
+              name={'domain' as FieldPath<FormInput>}
               fixedDomain={fixedDomain}
               placeholder={domainPlaceholder}
               selectOnly={domainSelectOnly}
@@ -164,7 +187,7 @@ export function BaseGenerator<T extends FieldValues & BaseFormData>({
             {openPanel === 'description' && (
               <DescriptionField
                 control={form.control}
-                name={'description' as FieldPath<T>}
+                name={'description' as FieldPath<FormInput>}
               />
             )}
           </CardContent>

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, type Resolver } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useTRPC } from '@/lib/trpc';
@@ -77,7 +77,8 @@ const createGiftSchema = z
     }
   });
 
-type CreateGiftForm = z.infer<typeof createGiftSchema>;
+type CreateGiftFormInput = z.input<typeof createGiftSchema>;
+type CreateGiftFormOutput = z.output<typeof createGiftSchema>;
 
 interface CreateGiftDialogProps {
   open: boolean;
@@ -102,10 +103,14 @@ export function CreateGiftDialog({
     }),
   );
 
-  const form = useForm<CreateGiftForm>({
-    resolver: zodResolver(createGiftSchema),
+  const form = useForm<CreateGiftFormInput, unknown, CreateGiftFormOutput>({
+    resolver: zodResolver(createGiftSchema) as Resolver<
+      CreateGiftFormInput,
+      unknown,
+      CreateGiftFormOutput
+    >,
     defaultValues: {
-      pbnDomain: forcedPbnDomain,
+      pbnDomain: forcedPbnDomain ?? '',
       giftType: 'exact',
       reserveHold: true,
       expirationDate: null,
@@ -139,7 +144,7 @@ export function CreateGiftDialog({
     }),
   );
 
-  const onSubmit = (data: CreateGiftForm) => {
+  const onSubmit = (data: CreateGiftFormOutput) => {
     setIsSubmitting(true);
     const isParent = data.giftType === 'parent';
     const reserveHold = !isParent && !!data.reserveHold;
@@ -168,7 +173,12 @@ export function CreateGiftDialog({
         </DialogHeader>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <form
+            onSubmit={form.handleSubmit((data) =>
+              onSubmit(createGiftSchema.parse(data)),
+            )}
+            className="space-y-4"
+          >
             {/* PBN Domain Selection */}
             <FormField
               control={form.control}

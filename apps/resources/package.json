@@ -21,6 +21,8 @@
   },
   "dependencies": {
     "@bprogress/next": "^3.2.12",
+    "@c15t/nextjs": "^1.8.2",
+    "@c15t/scripts": "^1.0.1",
     "@formatjs/intl-localematcher": "^0.5.4",
     "@mdx-js/loader": "^3.1.1",
     "@mdx-js/react": "^3.1.1",
@@ -31,7 +33,6 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "gray-matter": "^4.0.3",
-    "js-cookie": "^3.0.5",
     "lucide-react": "^0.525.0",
     "motion": "^12.10.4",
     "negotiator": "^1.0.0",

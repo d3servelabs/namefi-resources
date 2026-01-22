@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, type Resolver } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { withAdminGuard } from '@/components/admin/admin-guard';
@@ -104,7 +104,8 @@ const createDomainSchema = z.object({
   setupNamefiDev: z.boolean().default(false),
 });
 
-type CreateDomainFormData = z.infer<typeof createDomainSchema>;
+type CreateDomainFormInput = z.input<typeof createDomainSchema>;
+type CreateDomainFormData = z.output<typeof createDomainSchema>;
 
 interface SearchedUser {
   id: string;
@@ -707,8 +708,12 @@ function CreateDomainForm({
 
   const trpc = useTRPC();
 
-  const form = useForm<CreateDomainFormData>({
-    resolver: zodResolver(createDomainSchema),
+  const form = useForm<CreateDomainFormInput, unknown, CreateDomainFormData>({
+    resolver: zodResolver(createDomainSchema) as Resolver<
+      CreateDomainFormInput,
+      unknown,
+      CreateDomainFormData
+    >,
     defaultValues: {
       normalizedDomainName: '',
       additionalAllowedHostnames: [],
@@ -749,7 +754,12 @@ function CreateDomainForm({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <form
+        onSubmit={form.handleSubmit((data) =>
+          onSubmit(createDomainSchema.parse(data)),
+        )}
+        className="space-y-6"
+      >
         {/* Basic Domain Info */}
         <div className="space-y-4">
           <h3 className="text-lg font-medium">Domain Configuration</h3>

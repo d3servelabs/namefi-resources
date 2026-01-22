@@ -1,7 +1,11 @@
 import { getOriginRuntime } from '@/lib/origin/utils.server';
 import { InteractionLoggersProvider } from '@/components/providers/analytics';
 import { OriginProvider } from '@/components/providers/origin';
-import { CookieConsentProvider } from '@/components/providers/cookie-consent';
+import {
+  ConsentManagerProvider,
+  CookieBanner,
+  ConsentManagerDialog,
+} from '@c15t/nextjs';
 import { NuqsAdapter } from 'nuqs/adapters/next/app';
 import type { PropsWithChildren, FC } from 'react';
 import { CartProvider } from './cart';
@@ -15,6 +19,7 @@ import { PreAuthSignalsProvider } from '@/components/providers/pre-auth-signals'
 import { AdminFeatureFlagsProvider } from '@/components/admin/feature-flags/context';
 import { WagmiProvider } from './wagmi';
 import { FeedbackProvider } from './feedback';
+import { ConsentManagerClient } from '@/components/providers/consent-manager-client';
 
 export const Providers: FC<PropsWithChildren> = async ({ children }) => {
   const originInfo = await getOriginRuntime();
@@ -26,21 +31,32 @@ export const Providers: FC<PropsWithChildren> = async ({ children }) => {
             <NuqsAdapter>
               <ProgressProvider>
                 <WagmiProvider>
-                  <CookieConsentProvider>
-                    <PreAuthSignalsProvider>
-                      <InteractionLoggersProvider>
-                        <WishlistProvider>
-                          <CartProvider>
-                            <AdminFeatureFlagsProvider>
-                              <FreeMintsGuidanceProvider>
-                                <FeedbackProvider>{children}</FeedbackProvider>
-                              </FreeMintsGuidanceProvider>
-                            </AdminFeatureFlagsProvider>
-                          </CartProvider>
-                        </WishlistProvider>
-                      </InteractionLoggersProvider>
-                    </PreAuthSignalsProvider>
-                  </CookieConsentProvider>
+                  <ConsentManagerProvider
+                    options={{
+                      mode: 'offline',
+                      consentCategories: ['necessary', 'measurement'],
+                    }}
+                  >
+                    <ConsentManagerClient>
+                      <CookieBanner />
+                      <ConsentManagerDialog />
+                      <PreAuthSignalsProvider>
+                        <InteractionLoggersProvider>
+                          <WishlistProvider>
+                            <CartProvider>
+                              <AdminFeatureFlagsProvider>
+                                <FreeMintsGuidanceProvider>
+                                  <FeedbackProvider>
+                                    {children}
+                                  </FeedbackProvider>
+                                </FreeMintsGuidanceProvider>
+                              </AdminFeatureFlagsProvider>
+                            </CartProvider>
+                          </WishlistProvider>
+                        </InteractionLoggersProvider>
+                      </PreAuthSignalsProvider>
+                    </ConsentManagerClient>
+                  </ConsentManagerProvider>
                 </WagmiProvider>
               </ProgressProvider>
             </NuqsAdapter>

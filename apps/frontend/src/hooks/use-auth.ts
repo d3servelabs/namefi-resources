@@ -12,9 +12,9 @@ import { privyStorageToPrivyCustomMetadata } from '@namefi-astra/common/privy-cu
 import { useEmailPrompt } from './use-email-prompt';
 import { useCartContext } from '@/components/providers/cart';
 import { config } from '@/lib/env';
-import { useCookieConsent } from '@/components/providers/cookie-consent';
 import { usePreAuthSignals } from '@/components/providers/pre-auth-signals';
 import { TRPCClientError } from '@trpc/client';
+import { useConsentManager } from '@c15t/nextjs';
 
 type LoginCallbacks = Parameters<typeof usePrivyLogin>[0];
 type LogoutCallbacks = Parameters<typeof usePrivyLogout>[0];
@@ -102,7 +102,8 @@ export function useAuth() {
 
 export function useLogin(callbacks?: LoginCallbacks) {
   const { showEmailPrompt } = useEmailPrompt();
-  const { consent } = useCookieConsent();
+  const { has } = useConsentManager();
+  const hasMeasurement = has('measurement');
   const trpcClient = useTRPCClient();
   const { stagePreAuthAugmentations } = usePreAuthSignals();
 
@@ -113,7 +114,7 @@ export function useLogin(callbacks?: LoginCallbacks) {
           showEmailPrompt();
         }
 
-        if (consent === 'accepted') {
+        if (hasMeasurement && config.GA_MEASUREMENT_ID) {
           try {
             const userData = await trpcClient.users.getUser.query();
             if (userData?.id) {
@@ -145,7 +146,7 @@ export function useLogin(callbacks?: LoginCallbacks) {
     showEmailPrompt,
     callbacks,
     trpcClient,
-    consent,
+    hasMeasurement,
     stagePreAuthAugmentations,
   ]);
 
@@ -165,14 +166,15 @@ export function useLogin(callbacks?: LoginCallbacks) {
 
 export function useLogout(callbacks?: LogoutCallbacks) {
   const { clearLocalCart } = useCartContext();
-  const { consent } = useCookieConsent();
+  const { has } = useConsentManager();
+  const hasMeasurement = has('measurement');
 
   const combinedCallbacks = useMemo(
     () => ({
       onSuccess: () => {
         clearLocalCart();
 
-        if (consent === 'accepted') {
+        if (hasMeasurement && config.GA_MEASUREMENT_ID) {
           window.gtag?.('config', config.GA_MEASUREMENT_ID, {
             user_id: null,
             update: true,
@@ -182,7 +184,7 @@ export function useLogout(callbacks?: LogoutCallbacks) {
         callbacks?.onSuccess?.();
       },
     }),
-    [clearLocalCart, callbacks, consent],
+    [clearLocalCart, callbacks, hasMeasurement],
   );
 
   const { logout } = usePrivyLogout(combinedCallbacks);

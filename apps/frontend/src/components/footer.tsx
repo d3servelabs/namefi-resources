@@ -1,7 +1,6 @@
 'use client';
 
 import { cn } from '@/lib/cn';
-import { useCookieConsent } from '@/components/providers/cookie-consent';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
@@ -20,6 +19,7 @@ import {
   Youtube,
 } from 'lucide-react';
 import { useOrigin } from '@/components/providers/origin';
+import { useConsentManager } from '@c15t/nextjs';
 
 export type FooterProps = HTMLAttributes<HTMLDivElement>;
 
@@ -104,7 +104,7 @@ export const Footer: ForwardRefExoticComponent<FooterProps> = forwardRef<
   { className, ...rest }: FooterProps,
   ref: ForwardedRef<HTMLDivElement>,
 ) {
-  const { openConsent } = useCookieConsent();
+  const { setIsPrivacyDialogOpen } = useConsentManager();
   const origin = useOrigin();
   const isAstra = origin?.isFirstPartyOrigin ?? false;
 
@@ -202,7 +202,7 @@ export const Footer: ForwardRefExoticComponent<FooterProps> = forwardRef<
               type="button"
               className="text-white/70 transition hover:text-white"
               aria-label="Open cookie settings dialog"
-              onClick={openConsent}
+              onClick={() => setIsPrivacyDialogOpen(true)}
             >
               Cookie Settings
             </button>

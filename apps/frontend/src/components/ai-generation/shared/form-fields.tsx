@@ -24,8 +24,11 @@ import { cn } from '@/lib/cn';
 import type { Control, FieldPath, FieldValues } from 'react-hook-form';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 
-export interface DomainFieldProps<T extends FieldValues> {
-  control: Control<T>;
+export interface DomainFieldProps<
+  T extends FieldValues,
+  TTransformedValues = T,
+> {
+  control: Control<T, any, TTransformedValues>;
   name: FieldPath<T>;
   fixedDomain?: NamefiNormalizedDomain;
   placeholder?: string;
@@ -33,14 +36,14 @@ export interface DomainFieldProps<T extends FieldValues> {
   onlyDomainsWithLogos?: boolean;
 }
 
-export function DomainField<T extends FieldValues>({
+export function DomainField<T extends FieldValues, TTransformedValues = T>({
   control,
   name,
   fixedDomain,
   placeholder = 'Enter your domain (e.g., example.com)',
   selectOnly = false,
   onlyDomainsWithLogos = false,
-}: DomainFieldProps<T>) {
+}: DomainFieldProps<T, TTransformedValues>) {
   if (fixedDomain) {
     return (
       <div className="mb-6">
@@ -53,7 +56,7 @@ export function DomainField<T extends FieldValues>({
 
   return (
     <FormField
-      control={control}
+      control={control as unknown as Control<T>}
       name={name}
       render={({ field }) => (
         <DomainFieldWithSuggestions
@@ -197,24 +200,27 @@ function DomainFieldWithSuggestions({
   );
 }
 
-interface DescriptionFieldProps<T extends FieldValues> {
-  control: Control<T>;
+interface DescriptionFieldProps<T extends FieldValues, TTransformedValues = T> {
+  control: Control<T, any, TTransformedValues>;
   name: FieldPath<T>;
   label?: string;
   placeholder?: string;
   rows?: number;
 }
 
-export function DescriptionField<T extends FieldValues>({
+export function DescriptionField<
+  T extends FieldValues,
+  TTransformedValues = T,
+>({
   control,
   name,
   label = 'Describe your brand (optional)',
   placeholder = 'Tell us more about your brand vision',
   rows = 4,
-}: DescriptionFieldProps<T>) {
+}: DescriptionFieldProps<T, TTransformedValues>) {
   return (
     <FormField
-      control={control}
+      control={control as unknown as Control<T>}
       name={name}
       render={({ field }) => (
         <FormItem className="mt-6">

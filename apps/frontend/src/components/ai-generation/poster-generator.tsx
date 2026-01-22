@@ -58,7 +58,8 @@ const posterFormSchema = baseFormSchema.extend({
     .default('gemini-3-pro-image-preview'),
 });
 
-type PosterFormData = z.infer<typeof posterFormSchema>;
+type PosterFormInput = z.input<typeof posterFormSchema>;
+type PosterFormData = z.output<typeof posterFormSchema>;
 
 export type { PosterFormData };
 
@@ -84,7 +85,11 @@ export function PosterGenerator({
   const [selectedDomain, setSelectedDomain] = useState<string>('');
   const [showAdvanced, setShowAdvanced] = useState(false);
   const trpc = useTRPC();
-  const formRef = useRef<UseFormReturn<PosterFormData> | null>(null);
+  const formRef = useRef<UseFormReturn<
+    PosterFormInput,
+    unknown,
+    PosterFormData
+  > | null>(null);
   const defaultValues = useMemo(() => {
     return {
       domain: fixedDomain || '',
