@@ -125,8 +125,12 @@ const knownUsedDependencies = {
   registrars: ['axios-logger'],
 };
 
-// Flatten all known dependencies into a single array
-const ignoreDependencies = Object.values(knownUsedDependencies).flat();
+// Flatten all known dependencies into a single array and deduplicate
+// Note: Some dependencies appear in multiple categories (e.g., ramda, limiter, pino-opentelemetry-transport)
+// because they are used by multiple packages independently. Deduplication ensures a clean final list.
+const ignoreDependencies = [
+  ...new Set(Object.values(knownUsedDependencies).flat()),
+];
 
 const config: KnipConfig = {
   ignore: [
