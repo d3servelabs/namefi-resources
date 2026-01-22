@@ -9,13 +9,13 @@ on:
 
 env:
   ENVIRONMENT: test
-  NODE_OPTIONS: --max-old-space-size=4096
+  NODE_OPTIONS: --max-old-space-size=8192
   TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
   TURBO_TEAM: ${{ vars.TURBO_TEAM }}
 
 jobs:
   validate:
-    runs-on: "blacksmith-4vcpu-ubuntu-2404"
+    runs-on: "blacksmith-8vcpu-ubuntu-2404"
     steps:
       - uses: actions/checkout@v4
         with:
