@@ -1,5 +1,5 @@
 ---
-title: "Route402 — an x402 facilitator router (because hardcoding vendors is not a personality trait)"
+title: "Introducing Route402 — an x402 facilitator router"
 date: '2026-01-22'
 language: en
 tags: ['infrastructure', 'payments', 'x402']
@@ -14,11 +14,16 @@ There are two kinds of problems in payments-ish systems:
 1. The ones you *think* you have (“I just need to call `/verify` and `/settle`”).
 2. The ones you discover the moment you add a second facilitator provider and realize you’ve built a routing problem, a secrets problem, and an idempotency problem… all at once.
 
-x402 is neat because it standardizes the shape of “paywall-ish” flows. But the moment you have **multiple facilitators** (or multiple environments, or multiple teams, or multiple networks), your application starts accruing logic that it really shouldn’t own.
+[x402](https://www.x402.org/) is neat because it standardizes the shape of “paywall-ish” flows. But the moment you have **multiple facilitators** (or multiple environments, or multiple teams, or multiple networks), your application starts accruing logic that it really shouldn’t own.
 
 So we built **Route402**: a **multi-tenant x402 facilitator router** that pretends to be *one* facilitator to your app, while actually proxying to *many* upstream facilitators — safely, deterministically, and with just enough operational tooling to not hate yourself later.
 
 > Proxies are cheap. Settlements are not.
+
+## Links
+
+- [Source code](https://github.com/d3servelabs/labs-route-402)
+- [Deployed app](https://labs-route-402.vercel.app/)
 
 ## The problem (a.k.a. “why is this code in my app?”)
 
@@ -30,7 +35,7 @@ The initial integration is always straightforward:
 
 Then reality happens:
 
-- You want Coinbase CDP in prod, but thirdweb in staging.
+- You want [Coinbase CDP](https://www.coinbase.com/developer-platform) in prod, but [thirdweb](https://thirdweb.com/) in staging.
 - One provider supports `(scheme=exact, network=base)` but not the rest.
 - You want USDC on Base to go one place, everything else somewhere else.
 - You want to rotate credentials without redeploying apps.
@@ -68,7 +73,7 @@ Route402 has:
 
 This matters because it keeps your application code out of the “who are we settling with today?” decision.
 
-## Multi-tenancy + RBAC (the unsexy prerequisite)
+## Multi-tenancy + [RBAC](https://csrc.nist.gov/glossary/term/role_based_access_control) (the unsexy prerequisite)
 
 Route402 is structured as:
 
@@ -81,11 +86,11 @@ And yes, RBAC is enforced server-side — because “the UI hides the button” 
 
 Viewers can’t see secrets. Admins can rotate keys. Owners can manage org membership. You get the idea.
 
-## Credentials: encrypted at rest (AES-256-GCM)
+## Credentials: encrypted at rest ([AES-256-GCM](https://www.nist.gov/publications/recommendation-block-cipher-modes-operation-galoiscounter-mode-gcm-and-gmac))
 
 Facilitator credentials are stored encrypted in the database.
 
-- A master key (`ROUTE402_MASTER_KEY`) derives **per-project keys** (HKDF).
+- A master key (`ROUTE402_MASTER_KEY`) derives **per-project keys** ([HKDF](https://www.rfc-editor.org/rfc/rfc5869.html)).
 - Values are encrypted with **AES‑256‑GCM**.
 - Decryption only happens in-memory inside request scope.
 
@@ -105,7 +110,7 @@ This is the difference between:
 
 We refresh capability caches when a connection is saved, and also on a schedule (see jobs later).
 
-## Routing rules: YAML (because shipping code for routing is silly)
+## Routing rules: [YAML](https://yaml.org/) (because shipping code for routing is silly)
 
 The routing DSL is intentionally small. It’s ordered, **first match wins**, with a `default`.
 
@@ -205,7 +210,7 @@ Adapters normalize provider-specific details into one response shape, and we avo
 
 This is also where you future-proof yourself: swapping providers becomes a config change, not an application refactor.
 
-## Background jobs (Trigger.dev): reliability without latency
+## Background jobs ([Trigger.dev](https://trigger.dev/docs)): reliability without latency
 
 Some work is important but doesn’t belong on the request path:
 
