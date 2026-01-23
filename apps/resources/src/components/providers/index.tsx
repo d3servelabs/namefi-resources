@@ -7,13 +7,15 @@ import {
 } from '@c15t/nextjs';
 import { ConsentManagerClient } from './consent-manager-client';
 import { GoogleAnalyticsCookieConsentGated } from '@/components/ga';
+import { config } from '@/lib/env';
 
 export function Providers({ children }: PropsWithChildren) {
   return (
     <ProgressProvider>
       <ConsentManagerProvider
         options={{
-          mode: 'offline',
+          mode: 'c15t',
+          backendURL: `${config.BACKEND_URL}/c15t`,
           consentCategories: ['necessary', 'measurement'],
         }}
       >

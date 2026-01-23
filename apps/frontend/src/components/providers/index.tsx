@@ -1,4 +1,5 @@
 import { getOriginRuntime } from '@/lib/origin/utils.server';
+import { config } from '@/lib/env';
 import { InteractionLoggersProvider } from '@/components/providers/analytics';
 import { OriginProvider } from '@/components/providers/origin';
 import {
@@ -33,7 +34,8 @@ export const Providers: FC<PropsWithChildren> = async ({ children }) => {
                 <WagmiProvider>
                   <ConsentManagerProvider
                     options={{
-                      mode: 'offline',
+                      mode: 'c15t',
+                      backendURL: `${config.BACKEND_URL}/c15t`,
                       consentCategories: ['necessary', 'measurement'],
                     }}
                   >
