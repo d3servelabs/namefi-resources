@@ -17,6 +17,10 @@ import { and, eq, inArray, sql } from 'drizzle-orm';
 import { getZoneRecords, getZonesByName } from '#lib/route53-dns/route53';
 import { PARKED_DOMAIN_RECORDS } from '#services/dns/parking';
 import { validateZone } from '#services/dns/service';
+import { sendGA4Event } from '#lib/ga4-measurement';
+import { createLogger } from '#lib/logger';
+
+const logger = createLogger({ module: 'dns-activities' });
 
 export const getRoute53ZoneRecords = async (zoneId: string) => {
   let marker: string | undefined;
@@ -358,3 +362,40 @@ export const setDnsRecordsForZone = async (
     await tx.insert(dnsRecordsTable).values(recordsToInsert);
   });
 };
+
+export async function trackDnsRecordsPropagated({
+  userId,
+  orderId,
+  orderItemId,
+  normalizedDomainName,
+  recordCount,
+  actionTypes,
+}: {
+  userId: string;
+  orderId?: string;
+  orderItemId: string;
+  normalizedDomainName: NamefiNormalizedDomain;
+  recordCount: number;
+  actionTypes?: string;
+}) {
+  try {
+    await sendGA4Event({
+      userId,
+      event: {
+        name: 'dns_records_propagated',
+        params: {
+          order_id: orderId,
+          order_item_id: orderItemId,
+          normalized_domain_name: normalizedDomainName,
+          record_count: recordCount,
+          action_types: actionTypes,
+        },
+      },
+    });
+  } catch (error) {
+    logger.warn(
+      { error, orderId, orderItemId, userId, normalizedDomainName },
+      'Failed to send GA dns_records_propagated event',
+    );
+  }
+}

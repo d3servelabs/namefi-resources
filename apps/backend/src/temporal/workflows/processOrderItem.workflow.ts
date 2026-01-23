@@ -41,6 +41,7 @@ export async function processOrderItemWorkflow(
     updateOrderItemStatusOrThrow,
     recordOrderMintTransaction,
     criticalAlertNamefi,
+    trackDomainAcquisition,
   } = typedProxyActivities({
     temporalEnum: TEMPORAL_ENUMS.DEFAULT,
     options: {
@@ -103,6 +104,25 @@ export async function processOrderItemWorkflow(
             error: mintMetadataError.message,
           });
         }
+      }
+
+      try {
+        await trackDomainAcquisition({
+          userId,
+          orderId: input.orderId,
+          orderItemId: input.itemId,
+          normalizedDomainName,
+          operationType,
+          registrarKey,
+          durationInYears,
+          chainId,
+        });
+      } catch (error) {
+        workflow.log.warn(
+          `Failed to track domain_acquisition event for order item ${input.itemId}: ${
+            error instanceof Error ? error.message : String(error)
+          }`,
+        );
       }
     }
 

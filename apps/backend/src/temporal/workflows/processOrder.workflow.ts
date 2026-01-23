@@ -152,6 +152,7 @@ const {
   getOrderDetailsOrThrow,
   updateOrderItemStatusOrThrow,
   updateOrderStatusOrThrow,
+  trackPaymentProcessed,
 } = typedProxyActivities({
   temporalEnum: TEMPORAL_ENUMS.DEFAULT,
   options: {
@@ -444,6 +445,23 @@ export async function processOrderWorkflow(
       });
       updatePayment('CHARGED');
       setStepStatus('payments', 'COMPLETED');
+      try {
+        await trackPaymentProcessed({
+          userId: orderDetails.order.userId,
+          orderId: input.orderId,
+          amountInUsdCents: orderDetails.order.amountInUSDCents,
+          paymentCount: orderDetails.payments.length,
+          paymentProviders: orderDetails.payments.map(
+            (payment) => payment.paymentProvider,
+          ),
+        });
+      } catch (error) {
+        workflow.log.warn(
+          `Failed to track payment_processed event for order ${input.orderId}: ${
+            error instanceof Error ? error.message : String(error)
+          }`,
+        );
+      }
     } catch (error) {
       for (const item of orderDetails.items) {
         const [updateStatusError] = await resolve(
@@ -604,6 +622,7 @@ export async function processOrderWorkflow(
               await workflow.startChild(postProcessOrderItemWorkflow, {
                 args: [
                   {
+                    orderId: input.orderId,
                     orderItemId: item.id,
                     userId: orderDetails.order.userId,
                     normalizedDomainName:

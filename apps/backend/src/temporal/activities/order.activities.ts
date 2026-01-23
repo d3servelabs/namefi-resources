@@ -1,4 +1,4 @@
-import type { OrderStatus } from '@namefi-astra/db/types';
+import type { OrderStatus, PaymentProvider } from '@namefi-astra/db/types';
 import {
   orderService,
   type CreateOrderItemInput,
@@ -14,6 +14,7 @@ import {
 import { eq, and, sql, inArray } from 'drizzle-orm';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { logger } from '#lib/logger';
+import { sendGA4Event } from '#lib/ga4-measurement';
 
 export function getOrderDetailsOrThrow(orderId: string) {
   return orderService.getOrderDetailsOrThrow(orderId);
@@ -61,6 +62,90 @@ export async function updateOrderStatusOrThrow({
   }
 
   return updatedOrder;
+}
+
+export async function trackPaymentProcessed({
+  userId,
+  orderId,
+  amountInUsdCents,
+  paymentCount,
+  paymentProviders,
+}: {
+  userId: string;
+  orderId: string;
+  amountInUsdCents: number;
+  paymentCount: number;
+  paymentProviders: PaymentProvider[];
+}) {
+  const uniqueProviders = Array.from(new Set(paymentProviders));
+  const paymentProvider =
+    uniqueProviders.length === 1 ? uniqueProviders[0] : undefined;
+  const paymentProvidersParam =
+    uniqueProviders.length > 1 ? uniqueProviders.join(',') : undefined;
+
+  try {
+    await sendGA4Event({
+      userId,
+      event: {
+        name: 'payment_processed',
+        params: {
+          order_id: orderId,
+          amount_usd_cents: amountInUsdCents,
+          payment_count: paymentCount,
+          payment_provider: paymentProvider,
+          payment_providers: paymentProvidersParam,
+        },
+      },
+    });
+  } catch (error) {
+    logger.warn(
+      { error, orderId, userId },
+      'Failed to send GA payment_processed event',
+    );
+  }
+}
+
+export async function trackDomainAcquisition({
+  userId,
+  orderId,
+  orderItemId,
+  normalizedDomainName,
+  operationType,
+  registrarKey,
+  durationInYears,
+  chainId,
+}: {
+  userId: string;
+  orderId: string;
+  orderItemId: string;
+  normalizedDomainName: NamefiNormalizedDomain;
+  operationType: 'REGISTER' | 'IMPORT';
+  registrarKey?: string;
+  durationInYears?: number;
+  chainId?: number;
+}) {
+  try {
+    await sendGA4Event({
+      userId,
+      event: {
+        name: 'domain_acquisition',
+        params: {
+          order_id: orderId,
+          order_item_id: orderItemId,
+          normalized_domain_name: normalizedDomainName,
+          operation_type: operationType,
+          registrar_key: registrarKey,
+          duration_years: durationInYears,
+          chain_id: chainId,
+        },
+      },
+    });
+  } catch (error) {
+    logger.warn(
+      { error, orderId, orderItemId, userId, normalizedDomainName },
+      'Failed to send GA domain_acquisition event',
+    );
+  }
 }
 
 /**
@@ -199,6 +284,8 @@ export type OrderActivities = {
   getOrderDetailsOrThrow: typeof getOrderDetailsOrThrow;
   updateOrderItemStatusOrThrow: typeof updateOrderItemStatusOrThrow;
   updateOrderStatusOrThrow: typeof updateOrderStatusOrThrow;
+  trackPaymentProcessed: typeof trackPaymentProcessed;
+  trackDomainAcquisition: typeof trackDomainAcquisition;
   updateOrderAndItemStatusOrThrow: typeof updateOrderAndItemStatusOrThrow;
   recordOrderMintTransaction: typeof recordOrderMintTransaction;
 };

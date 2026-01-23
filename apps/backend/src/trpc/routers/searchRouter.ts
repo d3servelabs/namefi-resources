@@ -9,6 +9,7 @@ import {
   type DomainAvailabilityInfo,
   getDomainListInfo,
 } from '#lib/namefi-registry';
+import { sendGA4Event } from '#lib/ga4-measurement';
 import {
   authedOrPublicProcedure,
   createTRPCRouter,
@@ -29,6 +30,39 @@ import { toPunycodeDomainName } from '@namefi-astra/registrars/lib/data/validati
 import { resolveNs } from 'node:dns/promises';
 import { parseDomainName } from '@namefi-astra/utils/parse-domain-name';
 
+const trackUserBeginSearch = async ({
+  userId,
+  clientId,
+  searchTerm,
+  parentDomain,
+}: {
+  userId?: string;
+  clientId?: string | null;
+  searchTerm: string;
+  parentDomain?: string;
+}) => {
+  if (!searchTerm) return;
+  if (!userId && !clientId) return;
+  try {
+    await sendGA4Event({
+      userId,
+      clientId: clientId ?? undefined,
+      event: {
+        name: 'user_begin_search',
+        params: {
+          search_term: searchTerm,
+          parent_domain: parentDomain,
+        },
+      },
+    });
+  } catch (error) {
+    logger.warn(
+      { error, userId, clientId: clientId ?? undefined, searchTerm },
+      'Failed to send GA search event',
+    );
+  }
+};
+
 export const searchRouter = createTRPCRouter({
   isDomainAvailable: authedOrPublicProcedure
     .input(
@@ -40,6 +74,16 @@ export const searchRouter = createTRPCRouter({
     )
     .query(async ({ input, ctx }) => {
       const { domain } = input;
+      // TODO: Replace requestId fallback with stable GA clientId from frontend (_ga/gtag).
+      const clientId = ctx.sessionId ?? ctx.honoVars?.requestId ?? null;
+      if (ctx.user?.id || clientId) {
+        void trackUserBeginSearch({
+          userId: ctx.user?.id,
+          clientId,
+          searchTerm: domain,
+          parentDomain: ctx.poweredByNamefiDomain ?? undefined,
+        });
+      }
 
       const availability = await getDomainListInfo([domain], ctx.user);
 
@@ -86,6 +130,16 @@ export const searchRouter = createTRPCRouter({
       const { query, page = 1, pageSize } = input;
       const parentDomain =
         input.parentDomain ?? ctx.poweredByNamefiDomain ?? undefined;
+      // TODO: Replace requestId fallback with stable GA clientId from frontend (_ga/gtag).
+      const clientId = ctx.sessionId ?? ctx.honoVars?.requestId ?? null;
+      if (page === 1 && (ctx.user?.id || clientId)) {
+        void trackUserBeginSearch({
+          userId: ctx.user?.id,
+          clientId,
+          searchTerm: query.trim(),
+          parentDomain,
+        });
+      }
       return generateDomainSuggestions(query, parentDomain, page, pageSize);
     }),
 
@@ -102,6 +156,17 @@ export const searchRouter = createTRPCRouter({
       if (domains.length === 0 || signal?.aborted) {
         yield* [];
         return;
+      }
+
+      // TODO: Replace requestId fallback with stable GA clientId from frontend (_ga/gtag).
+      const clientId = ctx.sessionId ?? ctx.honoVars?.requestId ?? null;
+      if (ctx.user?.id || clientId) {
+        void trackUserBeginSearch({
+          userId: ctx.user?.id,
+          clientId,
+          searchTerm: domains[0],
+          parentDomain: ctx.poweredByNamefiDomain ?? undefined,
+        });
       }
 
       const firstDomainResult = await getDomainListInfoWithAbortSignal(

@@ -12,6 +12,16 @@
 export interface BackendAnalyticsEventMap {
   // biome-ignore lint/style/useNamingConvention: GA4 event names use snake_case.
   order_placed: OrderPlacedParams;
+  // biome-ignore lint/style/useNamingConvention: GA4 event names use snake_case.
+  user_begin_search: UserBeginSearchParams;
+  // biome-ignore lint/style/useNamingConvention: GA4 event names use snake_case.
+  payment_processed: PaymentProcessedParams;
+  // biome-ignore lint/style/useNamingConvention: GA4 event names use snake_case.
+  domain_acquisition: DomainAcquisitionParams;
+  // biome-ignore lint/style/useNamingConvention: GA4 event names use snake_case.
+  dns_records_propagated: DnsRecordsPropagatedParams;
+  // biome-ignore lint/style/useNamingConvention: GA4 event names use snake_case.
+  parking_ready: ParkingReadyParams;
 }
 
 type OrderPlacedRequiredParams = {
@@ -27,6 +37,42 @@ type OrderPlacedOptionalParams = {
 };
 
 type OrderPlacedParams = OrderPlacedRequiredParams & OrderPlacedOptionalParams;
+
+type UserBeginSearchParams = {
+  search_term: string;
+  parent_domain?: string;
+};
+
+type PaymentProcessedParams = {
+  order_id: string;
+  amount_usd_cents: number;
+  payment_count: number;
+  payment_provider?: string;
+  payment_providers?: string;
+};
+
+type DomainAcquisitionParams = {
+  order_id: string;
+  order_item_id: string;
+  normalized_domain_name: string;
+  operation_type: 'REGISTER' | 'IMPORT';
+  registrar_key?: string;
+  duration_years?: number;
+  chain_id?: number;
+};
+
+type DnsRecordsPropagatedParams = {
+  order_id?: string;
+  order_item_id: string;
+  normalized_domain_name: string;
+  record_count: number;
+  action_types?: string;
+};
+
+type ParkingReadyParams = {
+  normalized_domain_name: string;
+  override_existing_records?: boolean;
+};
 
 export type BackendAnalyticsEventName =
   keyof BackendAnalyticsEventMap extends never
