@@ -17,6 +17,7 @@ import { trackingRouter } from './routers/tracking';
 import { webhooksRouter } from './routers/webhooks';
 import { availabilityRouter } from './routers/availability';
 import { publicAiRouter } from './routers/public-ai';
+import { c15tRouter } from './routers/c15t';
 import { createContext } from './trpc';
 import { appRouter } from './trpc/routers/appRouter';
 import { validateAndCreateSearchAttributes } from '#temporal/operator/search-attributes';
@@ -68,7 +69,15 @@ app.use(async (...args) => {
       return null; // Block other origins
     },
     allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
-    allowHeaders: ['Content-Type', 'Authorization', 'x-api-key'],
+    allowHeaders: [
+      'Content-Type',
+      'Authorization',
+      'x-api-key',
+      'x-request-id',
+      'x-c15t-country',
+      'x-c15t-region',
+      'accept-language',
+    ],
     credentials: true, // Allow cookies if needed
   })(...args);
 });
@@ -106,6 +115,7 @@ app.route('/webhooks', webhooksRouter);
 app.route('/altcha', altchaRouter);
 app.route('/monitors', monitorsRouter);
 app.route('v-next', providersRouter);
+app.route('/c15t', c15tRouter);
 
 app.get('/configfi', (c) => {
   return c.json({

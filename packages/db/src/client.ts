@@ -4,6 +4,7 @@ import type { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { secrets } from './lib/env';
 import * as relations from './relations';
 import * as schema from './schema';
+import * as c15tschema from './schemas/c15t';
 import { InMemoryDrizzleCache } from '@samyx/drizzler-utils/cache';
 
 type Schema = typeof schema & typeof relations;
@@ -19,7 +20,7 @@ switch (secrets.DATABASE_DRIVER) {
     neonConfig.webSocketConstructor = ws.default;
     const pool = new Pool({ connectionString: secrets.DATABASE_URL });
     db = drizzle(pool, {
-      schema: { ...schema, ...relations },
+      schema: { ...schema, ...relations, ...c15tschema },
       cache: new InMemoryDrizzleCache(
         30_000,
         process.env.LOG_LEVEL === 'trace',
@@ -33,7 +34,7 @@ switch (secrets.DATABASE_DRIVER) {
 
     const pool = new Pool({ connectionString: secrets.DATABASE_URL });
     db = drizzle(pool, {
-      schema: { ...schema, ...relations },
+      schema: { ...schema, ...relations, ...c15tschema },
       cache: new InMemoryDrizzleCache(
         30_000,
         process.env.LOG_LEVEL === 'trace',

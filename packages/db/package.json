@@ -22,6 +22,7 @@
     "check:unsafe": "biome check --write --unsafe ."
   },
   "dependencies": {
+    "@c15t/backend": "^1.8.0",
     "@namefi-astra/env": "workspace:*",
     "@namefi-astra/utils": "workspace:*",
     "@namefi-astra/zod-dns": "workspace:*",
