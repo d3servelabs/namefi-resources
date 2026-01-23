@@ -2,12 +2,16 @@ import * as chains from 'viem/chains';
 import type { ConfigInput } from '../schema';
 import { POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES } from '../consts';
 
+// Dynamic port support: use environment variables if set by dev runner
+const backendPort = process.env.PORT || '3000';
+const frontendPort = process.env.FRONTEND_PORT || '5050';
+
 const localConfig: ConfigInput = {
   TYPE: 'local',
-  BACKEND_URL: 'http://localhost:3000',
+  BACKEND_URL: process.env.BACKEND_URL || `http://localhost:${backendPort}`,
   RESOURCES_URL: 'https://localhost:3002',
+  FIRST_PARTY_DEPLOYMENT_URL: `https://localhost:${frontendPort}`,
   DOCS_URL: 'https://localhost:3003',
-  FIRST_PARTY_DEPLOYMENT_URL: 'https://localhost:5050',
   GA_MEASUREMENT_ID: 'G-PHKF9PM32W',
   PRIVY_APP_ID: 'cm2lx4u5a03x3rtgp4keapmrb',
   STRIPE_PUBLISHABLE_KEY:

@@ -2,12 +2,19 @@ import * as chains from 'viem/chains';
 import type { ConfigInput } from '../schema';
 import { Registrars } from '@namefi-astra/registrars/registrars/registrars-keys';
 
+// Dynamic port support: use environment variables if set by dev runner
+const backendPort = Number(process.env.PORT) || 3000;
+const temporalServerPort = process.env.TEMPORAL_SERVER_PORT || '7233';
+const temporalWorkerPort = process.env.TEMPORAL_WORKER_PORT || '3001';
+
 const localConfig: ConfigInput = {
+  PORT: backendPort,
   LOG_LEVEL: 'debug',
   PRIVY_APP_ID: 'cm2lx4u5a03x3rtgp4keapmrb',
-  TEMPORAL_API_URL: 'localhost:7233',
+  TEMPORAL_API_URL:
+    process.env.TEMPORAL_API_URL || `localhost:${temporalServerPort}`,
   TEMPORAL_NAMESPACE: 'default',
-  TEMPORAL_WORKER_PORT: 3001,
+  TEMPORAL_WORKER_PORT: Number(temporalWorkerPort),
   SMTP_PORT: 2025,
   SMTP_HOST: 'smtp.mail.namefi.dev',
   SMTP_SECURE: false,

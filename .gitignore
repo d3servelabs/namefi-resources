@@ -226,8 +226,8 @@ next-env.d.ts
 .vars
 
 # temporal
-.namefi-astra-local-temporal.db
-*-local-temporal.db
+.namefi-astra-local-temporal*.db
+*-local-temporal*.db
 
 temp/
 tmp/
