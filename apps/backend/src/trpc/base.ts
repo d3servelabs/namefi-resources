@@ -214,6 +214,32 @@ export const createContext = async (
     originBypassedByApiKey,
   });
 
+  // Check for skip auth header in dev/preview environments
+  // This allows frontend to bypass auth for local development testing
+  let skipAuthTestUser: UserSelect | null = null;
+  const skipAuthHeader = c.req.header('X-Skip-Auth');
+  const environment = process.env.ENVIRONMENT;
+  const isDevEnvironment =
+    environment === 'local' ||
+    environment === 'development' ||
+    environment === 'preview';
+
+  if (skipAuthHeader === '1' && isDevEnvironment) {
+    logger.info('[skip-auth] Skip auth header detected in dev environment');
+    // Create a mock test user for skip auth mode
+    skipAuthTestUser = {
+      id: 'skip-auth-mock-user-id',
+      privyUserId: 'skip-auth-mock-privy-user-id',
+      primaryEmail: 'tester+alice@d3serve.xyz',
+      displayName: 'Skip Auth Test User',
+      mainWalletAddress: null,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      lastSignInAt: new Date(),
+      lastAccessedSessionAt: new Date(),
+    } as UserSelect;
+  }
+
   return {
     req: c.req,
     res: c.res,
@@ -227,8 +253,9 @@ export const createContext = async (
     poweredByNamefiDomain,
     /**
      * A test user we can provide to return when verifyUserAuthAndCreation is called from tests
+     * Also used for skip auth mode in dev/preview environments
      */
-    testUser: null as UserSelect | null,
+    testUser: skipAuthTestUser,
     sessionId: null as string | null,
     honoVars: c.var as {
       requestId: string;

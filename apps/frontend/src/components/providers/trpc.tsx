@@ -165,7 +165,34 @@ export function TrpcProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
+// Check if skip auth is active from localStorage
+function isSkipAuthActive(): boolean {
+  if (typeof window === 'undefined') return false;
+  const environment = config.TYPE;
+  const isDevEnvironment =
+    environment === 'local' ||
+    environment === 'development' ||
+    environment === 'preview';
+  if (!isDevEnvironment) return false;
+  try {
+    return window.localStorage.getItem('namefi-skip-auth') === '1';
+  } catch {
+    return false;
+  }
+}
+
 async function getHeaders() {
+  const skipAuth = isSkipAuthActive();
+
+  // If skip auth is active, send the skip auth header instead of the real token
+  if (skipAuth) {
+    console.log('[skip-auth] Adding X-Skip-Auth header to tRPC request');
+    return {
+      'Content-Type': 'application/json',
+      'X-Skip-Auth': '1',
+    };
+  }
+
   const token = await getAccessToken();
   return {
     'Content-Type': 'application/json',
