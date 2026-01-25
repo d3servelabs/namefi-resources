@@ -15,6 +15,7 @@ import { config } from '@/lib/env';
 import { usePreAuthSignals } from '@/components/providers/pre-auth-signals';
 import { TRPCClientError } from '@trpc/client';
 import { useConsentManager } from '@c15t/nextjs';
+import { useSkipAuth, SKIP_AUTH_MOCK_USER } from './use-skip-auth';
 
 type LoginCallbacks = Parameters<typeof usePrivyLogin>[0];
 type LogoutCallbacks = Parameters<typeof usePrivyLogout>[0];
@@ -23,6 +24,7 @@ const identifiedConsentUserIds = new Set<string>();
 
 export function useAuth() {
   const { authenticated, ready, user: originalPrivyUser } = usePrivy();
+  const { isSkipAuthActive } = useSkipAuth();
   const { identifyUser } = useConsentManager();
 
   const trpc = useTRPC();
@@ -98,12 +100,45 @@ export function useAuth() {
     });
   }, [authenticated, identifyUser, ready, userQuery.data?.id]);
 
+  if (isSkipAuthActive) {
+    const mockUser = {
+      id: SKIP_AUTH_MOCK_USER.id,
+      privyUserId: SKIP_AUTH_MOCK_USER.privyUserId,
+      primaryEmail: SKIP_AUTH_MOCK_USER.email,
+      displayName: 'Skip Auth Test User',
+      mainWalletAddress: null,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+    const mockPrivyUser = {
+      id: SKIP_AUTH_MOCK_USER.privyUserId,
+      email: { address: SKIP_AUTH_MOCK_USER.email },
+      customMetadata: privyStorageToPrivyCustomMetadata.parse(undefined),
+    };
+    return {
+      ready: true,
+      isAuthenticated: true,
+      isImpersonating: false,
+      isLoading: false,
+      isImpersonationLoading: false,
+      isSkipAuthActive: true,
+      user: mockUser as any,
+      privyUser: mockPrivyUser as any,
+      rawPrivyUser: mockPrivyUser as any,
+      impersonation: {
+        originalPrivyUser: null,
+        targetPrivyUser: null,
+      },
+    };
+  }
+
   return {
     ready,
     isAuthenticated: ready && authenticated && !!userQuery.data?.privyUserId,
     isImpersonating: Boolean(impersonation.data?.impersonating),
     isLoading: !ready || userQuery.isLoading,
     isImpersonationLoading: impersonation.isLoading,
+    isSkipAuthActive: false,
     user: ready && authenticated ? userQuery.data : undefined,
     privyUser: privyUserWithCustomMetadata,
     rawPrivyUser: privyUser,

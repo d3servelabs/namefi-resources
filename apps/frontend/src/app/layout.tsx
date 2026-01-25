@@ -14,6 +14,7 @@ import { Suspense, type PropsWithChildren } from 'react';
 import DatadogRum from '@/components/datadog-rum';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import ImpersonationBanner from '@/components/ImpersonationBanner';
+import SkipAuthBanner from '@/components/SkipAuthBanner';
 import './globals.css';
 
 const geistSans = Geist({
@@ -59,6 +60,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
               <Main>{children}</Main>
             </SidebarProvider>
             <ImpersonationBanner />
+            <SkipAuthBanner />
           </Providers>
         </Suspense>
       </body>
