@@ -1,5 +1,6 @@
 ---
 description: Trigger when the user asks to create/submit a pull request (PR), stack changes, manage branches, perform git operations, or explicitly mentions "graphite", "gt", or "stacking".
+# Note: Empty globs array is intentional - this is a context-based rule triggered by the description field, not file patterns
 globs:
 alwaysApply: false
 ---
