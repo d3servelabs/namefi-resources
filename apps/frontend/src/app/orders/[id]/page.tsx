@@ -66,7 +66,8 @@ const processingCopyByStep: Record<
   },
   payments: {
     title: 'Collecting payment',
-    description: 'We are charging your payment method securely.',
+    description:
+      'We are processing your payment. Blockchain payments may take 30+ seconds for transaction confirmation.',
   },
   items: {
     title: 'Registering your domains',

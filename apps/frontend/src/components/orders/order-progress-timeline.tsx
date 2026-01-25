@@ -29,7 +29,8 @@ const orderStepDisplayInfo: Record<OrderStepId, StepDisplayInfo> = {
   },
   payments: {
     label: 'Collecting payment',
-    helper: 'Confirming the payment method you selected.',
+    helper:
+      'Confirming your payment. Blockchain payments may take 30+ seconds for transaction confirmation.',
   },
   items: {
     label: 'Registering domains',
