@@ -421,7 +421,7 @@ export default function OrderPage({ params }: OrderPageProps) {
               />
             </motion.div>
           )}
-          {!isFailedOrder && !isImportOnly && (
+          {!isFailedOrder && (!isImportOnly || viewState === 'success') && (
             <motion.div>
               <NftCarousel
                 items={orderItems}
