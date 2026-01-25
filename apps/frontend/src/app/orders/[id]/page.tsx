@@ -227,8 +227,10 @@ export default function OrderPage({ params }: OrderPageProps) {
 
   const activeProgressCopy = orderProgress.activeStep?.id
     ? isImportOrder
-      ? importProcessingCopyByStep[orderProgress.activeStep.id]
-      : processingCopyByStep[orderProgress.activeStep.id]
+      ? (importProcessingCopyByStep[orderProgress.activeStep.id] ??
+        defaultImportProcessingCopy)
+      : (processingCopyByStep[orderProgress.activeStep.id] ??
+        defaultProcessingCopy)
     : isImportOrder
       ? defaultImportProcessingCopy
       : defaultProcessingCopy;
