@@ -28,6 +28,11 @@ import { ShareOrder } from '@/components/orders/share-order';
 import { PaymentDetailsSummary } from '@/components/orders/payment-details-summary';
 import { NftCarousel } from '@/components/orders/nft-carousel';
 import { OrderNotFound } from '@/components/orders/order-not-found';
+import {
+  ImportOrderStatus,
+  hasImportItems,
+  isImportOnlyOrder,
+} from '@/components/orders/import-order-status';
 import { motion, AnimatePresence } from 'motion/react';
 import { PageShell } from '@/components/page-shell';
 import { Button } from '@/components/ui/shadcn/button';
@@ -91,6 +96,50 @@ const processingCopyByStep: Record<
     description:
       'We will email you the final summary once everything is ready.',
   },
+};
+
+const importProcessingCopyByStep: Record<
+  OrderProgressStepId,
+  { title: string; description: string }
+> = {
+  'order-details': {
+    title: 'Checking your import details',
+    description: 'We are verifying your wallet and domain selections.',
+  },
+  payments: {
+    title: 'Collecting payment',
+    description:
+      'We are processing your payment. Blockchain payments may take 30+ seconds for transaction confirmation.',
+  },
+  items: {
+    title: 'Initiating domain transfer',
+    description:
+      'We are submitting the transfer request to your current registrar.',
+  },
+  'post-processing': {
+    title: 'Transfer in progress',
+    description:
+      'Your old registrar will contact you to confirm the transfer. This typically takes 5-7 days.',
+  },
+  'final-status': {
+    title: 'Completing your import',
+    description:
+      'We are finalizing the transfer and preparing your domain NFT.',
+  },
+  refund: {
+    title: 'Refunding any failed items',
+    description: 'Refunds are being initiated for domains we could not import.',
+  },
+  notification: {
+    title: 'Sending confirmation',
+    description:
+      'We will email you the final summary once everything is ready.',
+  },
+};
+
+const defaultImportProcessingCopy = {
+  title: 'Importing your domain',
+  description: 'We are initiating the transfer from your current registrar.',
 };
 
 export default function OrderPage({ params }: OrderPageProps) {
@@ -173,9 +222,16 @@ export default function OrderPage({ params }: OrderPageProps) {
     enabled: isAuthenticated,
   });
 
+  const isImportOrder = useMemo(() => hasImportItems(items), [items]);
+  const isImportOnly = useMemo(() => isImportOnlyOrder(items), [items]);
+
   const activeProgressCopy = orderProgress.activeStep?.id
-    ? processingCopyByStep[orderProgress.activeStep.id]
-    : defaultProcessingCopy;
+    ? isImportOrder
+      ? importProcessingCopyByStep[orderProgress.activeStep.id]
+      : processingCopyByStep[orderProgress.activeStep.id]
+    : isImportOrder
+      ? defaultImportProcessingCopy
+      : defaultProcessingCopy;
 
   const orderItems = useMemo(() => {
     if (!items) {
@@ -352,7 +408,12 @@ export default function OrderPage({ params }: OrderPageProps) {
         </div>
 
         <AnimatePresence>
-          {viewState !== 'success' && !isFailedOrder && (
+          {viewState !== 'success' && !isFailedOrder && isImportOnly && (
+            <motion.div className="mb-8">
+              <ImportOrderStatus items={items} />
+            </motion.div>
+          )}
+          {viewState !== 'success' && !isFailedOrder && !isImportOnly && (
             <motion.div className="mb-8">
               <OrderProgressTimeline
                 progress={orderProgress.data ?? null}
@@ -360,7 +421,7 @@ export default function OrderPage({ params }: OrderPageProps) {
               />
             </motion.div>
           )}
-          {!isFailedOrder && (
+          {!isFailedOrder && !isImportOnly && (
             <motion.div>
               <NftCarousel
                 items={orderItems}

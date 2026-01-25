@@ -81,6 +81,10 @@ export const ProcessedOrderReport = buildTemplate<ProcessedOrderProps>(
       (item) => item.type === 'REGISTER',
     );
 
+    const processingImportItems = processingItems.filter(
+      (item) => item.type === 'IMPORT',
+    );
+
     let introMessage = `Your order ${orderId} has been processed.`;
 
     if (failedItems.length > 0 && successfulItems.length > 0) {
@@ -265,6 +269,52 @@ export const ProcessedOrderReport = buildTemplate<ProcessedOrderProps>(
               ? `A refund of $${refund.amountInUsd.toFixed(2)} has been ${refund.status === 'SUCCEEDED' ? 'processed' : refund.status === 'FAILED' ? 'failed' : 'initiated'} to your original payment method. For failed items, please try again or contact support@namefi.io if the problem persists.`
               : 'For failed items, please try again or contact support@namefi.io if the problem persists.'}
           </ReactMarkdown>
+        )}
+
+        {processingImportItems.length > 0 && (
+          <div
+            style={{
+              marginTop: '20px',
+              padding: '16px',
+              backgroundColor: '#fff8e6',
+              border: '1px solid #ffd666',
+              borderRadius: '8px',
+            }}
+          >
+            <h3
+              style={{
+                margin: '0 0 12px 0',
+                fontSize: '16px',
+                fontWeight: 'bold',
+                color: '#d48806',
+              }}
+            >
+              About Your Domain Import
+            </h3>
+            <div style={{ color: '#614700', fontSize: '14px' }}>
+              <p style={{ margin: '0 0 8px 0' }}>
+                <strong>What happens next:</strong>
+              </p>
+              <ul style={{ margin: '0 0 12px 0', paddingLeft: '20px' }}>
+                <li style={{ marginBottom: '6px' }}>
+                  Your current registrar will send you an email to confirm the
+                  transfer. Please check your inbox (and spam folder).
+                </li>
+                <li style={{ marginBottom: '6px' }}>
+                  The transfer process typically takes <strong>5-7 days</strong>{' '}
+                  by default.
+                </li>
+                <li style={{ marginBottom: '6px' }}>
+                  You can <strong>expedite the transfer</strong> by approving it
+                  in your old registrar&apos;s dashboard.
+                </li>
+              </ul>
+              <p style={{ margin: '0', fontSize: '13px', color: '#8c6d1f' }}>
+                Once the transfer is approved, we will automatically complete
+                the process and mint your domain NFT.
+              </p>
+            </div>
+          </div>
         )}
 
         <Button
