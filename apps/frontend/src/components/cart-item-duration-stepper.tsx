@@ -18,15 +18,6 @@ export function CartItemDurationControl({
   onDurationChange: (itemId: string, newDuration: number) => void;
   isDisabled: boolean;
 }) {
-  // For IMPORT items, always show "1 year" (no duration control)
-  if (item.type === itemTypeSchema.enum.IMPORT) {
-    return (
-      <div className="w-32 h-10 flex items-center justify-center text-sm text-muted-foreground bg-muted/50 rounded-md">
-        1 year
-      </div>
-    );
-  }
-
   // For RENEW items, use specialized renewal constraints
   if (item.type === itemTypeSchema.enum.RENEW) {
     return (
@@ -38,7 +29,7 @@ export function CartItemDurationControl({
     );
   }
 
-  // For REGISTER items, use standard duration validation
+  // For REGISTER and IMPORT items, use standard duration validation
   return (
     <DurationStepper
       value={item.durationInYears}
