@@ -65,14 +65,20 @@ import {
   namefiNftCte,
   namefiNftOwnersCte,
   namefiNftOwnersView,
+  orderItemsTable,
+  ordersTable,
 } from '@namefi-astra/db';
-import { eq } from 'drizzle-orm';
+import { and, desc, eq, inArray } from 'drizzle-orm';
 import type { DomainRegistration } from '@namefi-astra/registrars/lib/abstract-registrar/data/domain';
 import type { WithRegistrar } from '@namefi-astra/registrars/registrars/main-registrar';
 import { config } from '#lib/env';
 import { RenewOption } from '@namefi-astra/registrars/lib/abstract-registrar/data/renew-option';
 import { audit, createAuditRecord, ResourceType } from '#lib/auditor';
 import { isNotNil } from 'ramda';
+import { addDays } from 'date-fns';
+
+/** Number of days after import during which export is not allowed (ICANN rule) */
+const TRANSFER_LOCK_DAYS = 60;
 
 /**
  * Unified EIP-712 type definitions for domain actions.
@@ -598,6 +604,12 @@ export const domainConfigRouter = createContractTRPCRouter<
           message: 'Export is only supported for traditional domains',
         });
       }
+
+      // Enforce ICANN 60-day transfer lock
+      await assertDomainNotInTransferLock(
+        toPunycodeDomainName(input.payload.domainName),
+      );
+
       await temporalClient.workflow.start(prepareDomainForExportWorkflow, {
         args: [
           {
@@ -628,8 +640,14 @@ export const domainConfigRouter = createContractTRPCRouter<
         return {
           supportsExport: false,
           message: 'Domain does not support export',
+          dateTokenized: null,
         };
       }
+
+      // Query the most recent order item createdAt for this domain (dateTokenized)
+      // This represents when the domain was most recently imported/registered with Namefi
+      // Using desc() to get the latest import, as ICANN's 60-day lock applies after each transfer
+      const dateTokenized = await getDomainImportDate(domainName);
 
       let workflowStatus: WorkflowExecutionStatusName | undefined;
       try {
@@ -655,6 +673,7 @@ export const domainConfigRouter = createContractTRPCRouter<
         supportsExport,
         readyToExport,
         pendingRequestToEnableExport,
+        dateTokenized,
         message: pendingRequestToEnableExport
           ? 'Domain is being prepared for export'
           : !readyToExport
@@ -700,6 +719,9 @@ export const domainConfigRouter = createContractTRPCRouter<
           message: 'Domain does not support export',
         });
       }
+
+      // Enforce ICANN 60-day transfer lock
+      await assertDomainNotInTransferLock(domainName);
 
       const readyToExport = await areExportConditionsMet(domainName);
 
@@ -1351,4 +1373,67 @@ type DomainFeatureFlags = {
   customDnssecManagement: BaseFeatureConfig;
   domainPreferencesManagement: BaseFeatureConfig;
   domainExport: BaseFeatureConfig;
+};
+/**
+ * Get the most recent import/registration date for a domain.
+ * Uses desc() to get the latest import, as ICANN's 60-day lock applies after each transfer.
+ */
+const getDomainImportDate = async (
+  domainName: NamefiNormalizedDomain,
+): Promise<Date | null> => {
+  const orderItems = await db
+    .select({
+      createdAt: orderItemsTable.createdAt,
+    })
+    .from(orderItemsTable)
+    .leftJoin(ordersTable, eq(orderItemsTable.orderId, ordersTable.id))
+    .where(
+      and(
+        eq(orderItemsTable.normalizedDomainName, domainName),
+        inArray(orderItemsTable.type, ['IMPORT', 'REGISTER']),
+        eq(orderItemsTable.status, 'SUCCEEDED'),
+      ),
+    )
+    .orderBy(desc(orderItemsTable.createdAt))
+    .limit(1);
+
+  return orderItems[0]?.createdAt ?? null;
+};
+
+/**
+ * Check if a domain is within the ICANN 60-day transfer lock period.
+ * Returns the date when export will be available, or null if export is already allowed.
+ */
+const getTransferLockEndDate = async (
+  domainName: NamefiNormalizedDomain,
+): Promise<Date | null> => {
+  const importDate = await getDomainImportDate(domainName);
+  if (!importDate) {
+    // No import record found, allow export
+    return null;
+  }
+
+  const lockEndDate = addDays(importDate, TRANSFER_LOCK_DAYS);
+  if (new Date() >= lockEndDate) {
+    // Lock period has passed
+    return null;
+  }
+
+  return lockEndDate;
+};
+
+/**
+ * Throws a TRPCError if the domain is within the 60-day transfer lock period.
+ */
+const assertDomainNotInTransferLock = async (
+  domainName: NamefiNormalizedDomain,
+): Promise<void> => {
+  const lockEndDate = await getTransferLockEndDate(domainName);
+  if (lockEndDate) {
+    const formattedDate = lockEndDate.toISOString().split('T')[0];
+    throw new TRPCError({
+      code: 'FORBIDDEN',
+      message: `Domain is within the 60-day ICANN transfer lock period. Export will be available on ${formattedDate}.`,
+    });
+  }
 };

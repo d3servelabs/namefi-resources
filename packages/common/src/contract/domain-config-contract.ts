@@ -171,6 +171,7 @@ const domainExportDetailsSchema = z.object({
   readyToExport: z.boolean().optional(),
   pendingRequestToEnableExport: z.boolean().optional(),
   message: z.string().optional(),
+  dateTokenized: z.date().nullable().optional(),
 });
 
 const getAuthCodeOutputSchema = z.object({

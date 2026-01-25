@@ -84,9 +84,23 @@ gt sync --no-interactive
    - `gt modify`: ALWAYS use `--no-edit` OR `-m "new message"` with `-a` flag
    - General: Consider appending `--no-interactive` or `--no-pager` if the command supports it and might hang.
 
+## Important: Use `gt` Commands, Not `git`
+
+### Syncing with Remote
+- **ALWAYS use `gt sync`** instead of `git pull --rebase` or `git rebase`
+- Using raw git rebase commands causes branch divergence that Graphite cannot track
+- If you see "branch has diverged from Graphite's tracking", use `gt track <branch> --force` to fix
+
+### Pushing Changes
+- **Prefer `gt submit`** over `git push` when possible
+- If `gt submit` fails due to merged parent PRs, use `gt sync` first, then retry
+- As fallback: `git push origin <branch> --force-with-lease` works but bypasses Graphite tracking
+
 ## Command Reference
 - `gt create <branch-name> [-m "msg"] [--all] [--no-interactive]`: Create new stacked branch.
 - `gt submit [--stack] [--reviewers <user>] [--no-interactive]`: Push and create PRs.
 - `gt modify [-a] [--no-edit] [-m "new message"]`: Update current branch and restack children.
 - `gt sync [--no-interactive]`: Update from remote and cleanup.
+- `gt track <branch> [--force]`: Re-track a diverged branch.
+- `gt ls [--stack]`: View branches and stack structure.
 - `gt pr`: Open PR in browser.

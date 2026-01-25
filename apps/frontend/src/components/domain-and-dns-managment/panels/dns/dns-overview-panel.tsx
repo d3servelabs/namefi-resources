@@ -19,7 +19,13 @@ import {
   useSuspenseQuery,
 } from '@tanstack/react-query';
 import { isNil } from 'ramda';
-import { useMemo, useRef, useState } from 'react';
+import {
+  type MouseEventHandler,
+  type ReactNode,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { toast } from 'sonner';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import {
@@ -45,12 +51,25 @@ import {
   AlertDescription,
   AlertTitle,
 } from '@namefi-astra/ui/components/shadcn/alert';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@namefi-astra/ui/components/shadcn/alert-dialog';
 import { useSignTypedData } from '@/hooks/use-sign-typed-data';
 import {
   RequestWalletConnection,
   type RequestWalletConnectionRef,
 } from '@/components/dialogs/request-wallet-connection';
 import { useAccount } from 'wagmi';
+import { addDays, format } from 'date-fns';
+
+/** Number of days after import during which export is not allowed (ICANN rule) */
+const TRANSFER_LOCK_DAYS = process.env.ENVIRONMENT === 'production' ? 60 : 0;
 
 /**
  * Unified EIP-712 types for domain actions.
@@ -624,6 +643,7 @@ export const DomainExportSection = ({
         onRequestedWalletConnected={handleGetAuthCodeInner}
         actionDescription="to get the auth code"
       />
+
       <div className="flex flex-wrap items-center justify-between rounded-2xl bg-zinc-900 border border-zinc-800 p-4 gap-y-2">
         <div className="space-y-0.5">
           <div className="flex items-center gap-2">
@@ -696,17 +716,19 @@ export const DomainExportSection = ({
               )}
             </div>
           ) : (
-            <AsyncButton
-              onClick={handleRequestExport}
-              disabled={disabled || isRequestingExport}
-              loadingText="Requesting Export..."
-              loadingIcon={<Loader2 className="h-4 w-4 animate-spin mr-2" />}
-              size="sm"
-              className="w-full sm:w-auto"
-            >
-              <ExternalLink className="h-4 w-4 mr-2" />
-              Request Export
-            </AsyncButton>
+            <TransferLockGuard domainExportDetails={domainExportDetails}>
+              <AsyncButton
+                onClick={handleRequestExport}
+                disabled={disabled || isRequestingExport}
+                loadingText="Requesting Export..."
+                loadingIcon={<Loader2 className="h-4 w-4 animate-spin mr-2" />}
+                size="sm"
+                className="w-full sm:w-auto"
+              >
+                <ExternalLink className="h-4 w-4 mr-2" />
+                Request Export
+              </AsyncButton>
+            </TransferLockGuard>
           )}
         </div>
       </div>
@@ -943,3 +965,73 @@ export const PendingTransferSection = ({
     </>
   );
 };
+
+function TransferLockGuard({
+  domainExportDetails,
+  children,
+}: {
+  domainExportDetails: AppRouterOutput['domainConfig']['getDomainExportDetails'];
+  children: ReactNode;
+}) {
+  const [showTransferLockDialog, setShowTransferLockDialog] = useState(false);
+
+  // Calculate the export available date for display in the dialog
+  const exportAvailableDate = domainExportDetails?.dateTokenized
+    ? addDays(new Date(domainExportDetails.dateTokenized), TRANSFER_LOCK_DAYS)
+    : null;
+
+  const handleClick: MouseEventHandler<HTMLDivElement> = (e) => {
+    // Check if domain is within the 60-day transfer lock period
+    if (exportAvailableDate && new Date() < exportAvailableDate) {
+      e.preventDefault();
+      e.stopPropagation();
+      setShowTransferLockDialog(true);
+      return;
+    }
+  };
+
+  return (
+    <>
+      {/** biome-ignore lint/a11y/noStaticElementInteractions: <explanation> */}
+      {/** biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
+      <div className="contents" onClick={handleClick}>
+        {children}
+      </div>
+      {/* 60-day ICANN transfer lock dialog */}
+      <AlertDialog
+        open={showTransferLockDialog}
+        onOpenChange={setShowTransferLockDialog}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              Export Available{' '}
+              {exportAvailableDate
+                ? format(exportAvailableDate, 'yyyy-MM-dd')
+                : ''}
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              Domains are locked for 60 days after import per ICANN policy.
+              {domainExportDetails?.dateTokenized && (
+                <>
+                  {' '}
+                  This domain was imported on{' '}
+                  {format(
+                    new Date(domainExportDetails.dateTokenized),
+                    'yyyy-MM-dd',
+                  )}
+                  .
+                </>
+              )}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogAction onClick={() => setShowTransferLockDialog(false)}>
+              Got It
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
+  );
+}

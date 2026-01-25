@@ -1,0 +1,13 @@
+---
+description: Trigger when agent encounters errors, gets stuck, user corrects agent behavior, or user provides guidance to overcome obstacles.
+globs:
+alwaysApply: false
+---
+# Learning from Errors
+
+When user helps you past a hurdle:
+1. Append learning to `.cursor/session-learnings-{YYYYMMDD-HHMMSS}.md` (create on first error of session)
+2. At task end, propose rule updates:
+   - **Update existing**: if learning relates to a tool/workflow with existing `.mdc` file
+   - **Create new**: if learning covers a distinct pattern not yet documented
+   - Include: trigger condition, what went wrong, correct approach
