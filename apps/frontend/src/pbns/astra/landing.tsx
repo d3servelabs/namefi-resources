@@ -35,7 +35,8 @@ import { ArrowLeft, Sparkles } from 'lucide-react';
 import { MarketingSections } from './landing-marketing';
 import { FloatingCart } from '@/components/floating-cart';
 
-const HERO_HEADING = 'Next generation domain platform with blockchain and AI';
+const HERO_HEADING =
+  'Namefi: Next generation domain platform with blockchain and AI';
 const HERO_SUBTITLE =
   'Faster, cheaper and verifiable. The best way to own domains.';
 
