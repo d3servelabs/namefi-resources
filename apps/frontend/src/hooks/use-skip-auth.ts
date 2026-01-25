@@ -14,7 +14,18 @@ export const SKIP_AUTH_MOCK_USER = {
 } as const;
 
 function isDevEnvironment(): boolean {
-  return config.TYPE === 'local' || config.TYPE === 'development';
+  const isDev =
+    config.TYPE === 'local' ||
+    config.TYPE === 'development' ||
+    config.TYPE === 'preview';
+  if (typeof window !== 'undefined') {
+    console.log(
+      '[skip-auth] Environment check:',
+      `config.TYPE="${config.TYPE}"`,
+      `isDevEnvironment=${isDev}`,
+    );
+  }
+  return isDev;
 }
 
 function getSkipAuthFromStorage(): boolean {
@@ -47,14 +58,24 @@ export function useSkipAuth() {
   const [isBannerDismissed, setIsBannerDismissed] = useState(false);
 
   useEffect(() => {
-    if (!isDevEnvironment()) {
+    const isDev = isDevEnvironment();
+    console.log('[skip-auth] useEffect triggered:', {
+      isDev,
+      pathname,
+      searchParamsString: searchParams.toString(),
+    });
+
+    if (!isDev) {
+      console.log('[skip-auth] Not in dev environment, disabling skip auth');
       setIsSkipAuthActive(false);
       return;
     }
 
     const urlParam = searchParams.get(SKIP_AUTH_URL_PARAM);
+    console.log('[skip-auth] URL param value:', urlParam);
 
     if (urlParam === '1') {
+      console.log('[skip-auth] Activating skip auth from URL param');
       setSkipAuthInStorage(true);
       setIsSkipAuthActive(true);
       const newParams = new URLSearchParams(searchParams.toString());
@@ -62,8 +83,10 @@ export function useSkipAuth() {
       const newUrl = newParams.toString()
         ? `${pathname}?${newParams.toString()}`
         : pathname;
+      console.log('[skip-auth] Redirecting to:', newUrl);
       router.replace(newUrl);
     } else if (urlParam === '0') {
+      console.log('[skip-auth] Deactivating skip auth from URL param');
       setSkipAuthInStorage(false);
       setIsSkipAuthActive(false);
       const newParams = new URLSearchParams(searchParams.toString());
@@ -71,9 +94,12 @@ export function useSkipAuth() {
       const newUrl = newParams.toString()
         ? `${pathname}?${newParams.toString()}`
         : pathname;
+      console.log('[skip-auth] Redirecting to:', newUrl);
       router.replace(newUrl);
     } else {
-      setIsSkipAuthActive(getSkipAuthFromStorage());
+      const storedValue = getSkipAuthFromStorage();
+      console.log('[skip-auth] No URL param, checking storage:', storedValue);
+      setIsSkipAuthActive(storedValue);
     }
   }, [searchParams, router, pathname]);
 
