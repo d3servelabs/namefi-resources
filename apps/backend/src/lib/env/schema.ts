@@ -247,6 +247,12 @@ export const configSchema = z.object({
    * Should be set for local/dev/preview environments and left empty for production.
    */
   SKIP_AUTH_USER_EMAIL: z.string().email().optional(),
+  /**
+   * User ID to use when skip_auth is enabled.
+   * Takes precedence over SKIP_AUTH_USER_EMAIL if both are set.
+   * Use this when the test user doesn't have an email address.
+   */
+  SKIP_AUTH_USER_ID: z.string().uuid().optional(),
 });
 
 export type ConfigInput = z.input<typeof configSchema>;

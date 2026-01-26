@@ -28,11 +28,29 @@ export async function getSkipAuthTestUser(
     return null;
   }
 
-  // Check if a skip auth user email is configured
+  // Check if a skip auth user ID is configured (takes precedence over email)
+  const skipAuthUserId = config.SKIP_AUTH_USER_ID;
+  if (skipAuthUserId) {
+    const user = await db.query.usersTable.findFirst({
+      where: eq(usersTable.id, skipAuthUserId),
+    });
+
+    if (!user) {
+      logger.warn(
+        { skipAuthUserId },
+        'Skip auth user not found in database by ID. Please ensure the user exists.',
+      );
+      return null;
+    }
+
+    return user;
+  }
+
+  // Fall back to email lookup if no user ID is configured
   const skipAuthUserEmail = config.SKIP_AUTH_USER_EMAIL;
   if (!skipAuthUserEmail) {
     logger.warn(
-      'Skip auth header detected but SKIP_AUTH_USER_EMAIL is not configured',
+      'Skip auth header detected but neither SKIP_AUTH_USER_ID nor SKIP_AUTH_USER_EMAIL is configured',
     );
     return null;
   }

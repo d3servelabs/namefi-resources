@@ -84,7 +84,7 @@ const previewConfig: PreviewConfig = {
       baseUrl: 'http://ns4.namefi.dev:8181',
     },
   ],
-  SKIP_AUTH_USER_EMAIL: 'dev-team@d3serve.xyz',
+  SKIP_AUTH_USER_ID: '202832e8-304f-4f4a-81c9-df32fd1e5364',
 };
 
 export default previewConfig;

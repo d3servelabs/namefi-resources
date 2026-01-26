@@ -1,10 +1,10 @@
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
 
 const mockUser = {
-  id: 'real-user-id-from-db',
-  privyUserId: 'real-privy-user-id',
-  primaryEmail: 'dev-team@d3serve.xyz',
-  stripeCustomerId: null,
+  id: '202832e8-304f-4f4a-81c9-df32fd1e5364',
+  privyUserId: 'did:privy:cmceg96bx012bl40lr9tyhyod',
+  primaryEmail: null,
+  stripeCustomerId: 'cus_SZfPkid1y4kptX',
   subscribeToEmails: true,
   createdAt: new Date('2024-01-01'),
   updatedAt: new Date('2024-01-01'),
@@ -27,14 +27,16 @@ vi.mock('@namefi-astra/db', () => ({
     },
   },
   usersTable: {
+    id: 'id',
     primaryEmail: 'primary_email',
   },
 }));
 
-// Mock the config module
+// Mock the config module - use user ID instead of email
 vi.mock('#lib/env', () => ({
   config: {
-    SKIP_AUTH_USER_EMAIL: 'dev-team@d3serve.xyz',
+    SKIP_AUTH_USER_ID: '202832e8-304f-4f4a-81c9-df32fd1e5364',
+    SKIP_AUTH_USER_EMAIL: undefined,
   },
 }));
 
@@ -87,9 +89,8 @@ describe('Skip Auth Environment Gating', () => {
     it('should return user from database when X-Skip-Auth header is "1" in local', async () => {
       const result = await getSkipAuthTestUser('1', 'local');
       expect(result).not.toBeNull();
-      expect(result?.primaryEmail).toBe('dev-team@d3serve.xyz');
-      expect(result?.id).toBe('real-user-id-from-db');
-      expect(result?.privyUserId).toBe('real-privy-user-id');
+      expect(result?.id).toBe('202832e8-304f-4f4a-81c9-df32fd1e5364');
+      expect(result?.privyUserId).toBe('did:privy:cmceg96bx012bl40lr9tyhyod');
     });
 
     it('should return null when X-Skip-Auth header is absent in local', async () => {
@@ -112,7 +113,7 @@ describe('Skip Auth Environment Gating', () => {
     it('should return user from database when X-Skip-Auth header is "1" in development', async () => {
       const result = await getSkipAuthTestUser('1', 'development');
       expect(result).not.toBeNull();
-      expect(result?.primaryEmail).toBe('dev-team@d3serve.xyz');
+      expect(result?.id).toBe('202832e8-304f-4f4a-81c9-df32fd1e5364');
     });
 
     it('should return null when X-Skip-Auth header is absent in development', async () => {
@@ -171,21 +172,21 @@ describe('Skip Auth Environment Gating', () => {
       expect(result).toHaveProperty('lastAccessedSessionAt');
     });
 
-    it('should use the correct test email address', async () => {
+    it('should use the correct test user ID', async () => {
       const result = await getSkipAuthTestUser('1', 'local');
-      expect(result?.primaryEmail).toBe('dev-team@d3serve.xyz');
+      expect(result?.id).toBe('202832e8-304f-4f4a-81c9-df32fd1e5364');
     });
   });
 
   describe('User not found in database', () => {
-    it('should return null and log warning when user is not found', async () => {
+    it('should return null and log warning when user is not found by ID', async () => {
       mockFindFirst = vi.fn().mockResolvedValue(undefined);
 
       const result = await getSkipAuthTestUser('1', 'local');
       expect(result).toBeNull();
       expect(mockLoggerWarn).toHaveBeenCalledWith(
-        { skipAuthUserEmail: 'dev-team@d3serve.xyz' },
-        'Skip auth user not found in database. Please ensure the user exists.',
+        { skipAuthUserId: '202832e8-304f-4f4a-81c9-df32fd1e5364' },
+        'Skip auth user not found in database by ID. Please ensure the user exists.',
       );
     });
   });
