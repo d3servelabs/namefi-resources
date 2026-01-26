@@ -1,5 +1,6 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import { use, useEffect, useMemo, useRef, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
@@ -22,18 +23,11 @@ import { useOrigin } from '@/components/providers/origin';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
 import { Unauthorized } from '@/components/unauthorized';
 import { useCartContext } from '@/components/providers/cart';
-import { OrderProgressTimeline } from '@/components/orders/order-progress-timeline';
-import { InternalAIGenerations } from '@/components/orders/internal-ai-generations';
-import { ShareOrder } from '@/components/orders/share-order';
-import { PaymentDetailsSummary } from '@/components/orders/payment-details-summary';
-import { NftCarousel } from '@/components/orders/nft-carousel';
 import { OrderNotFound } from '@/components/orders/order-not-found';
 import {
-  ImportOrderStatus,
   hasImportItems,
   isImportOnlyOrder,
 } from '@/components/orders/import-order-status';
-import { motion, AnimatePresence } from 'motion/react';
 import { PageShell } from '@/components/page-shell';
 import { Button } from '@/components/ui/shadcn/button';
 import { Textarea } from '@/components/ui/shadcn/textarea';
@@ -47,6 +41,50 @@ import {
 } from '@/components/ui/shadcn/dialog';
 import { Label } from '@/components/ui/shadcn/label';
 import { Check, Copy } from 'lucide-react';
+
+// Dynamically import heavy visualization components to reduce first-hit compile time
+const OrderProgressTimeline = dynamic(
+  () =>
+    import('@/components/orders/order-progress-timeline').then(
+      (mod) => mod.OrderProgressTimeline,
+    ),
+  { ssr: false, loading: () => <Skeleton className="h-32 w-full" /> },
+);
+
+const NftCarousel = dynamic(
+  () =>
+    import('@/components/orders/nft-carousel').then((mod) => mod.NftCarousel),
+  { ssr: false, loading: () => <Skeleton className="h-64 w-full" /> },
+);
+
+const PaymentDetailsSummary = dynamic(
+  () =>
+    import('@/components/orders/payment-details-summary').then(
+      (mod) => mod.PaymentDetailsSummary,
+    ),
+  { ssr: false },
+);
+
+const ShareOrder = dynamic(
+  () => import('@/components/orders/share-order').then((mod) => mod.ShareOrder),
+  { ssr: false },
+);
+
+const InternalAIGenerations = dynamic(
+  () =>
+    import('@/components/orders/internal-ai-generations').then(
+      (mod) => mod.InternalAIGenerations,
+    ),
+  { ssr: false },
+);
+
+const ImportOrderStatus = dynamic(
+  () =>
+    import('@/components/orders/import-order-status').then(
+      (mod) => mod.ImportOrderStatus,
+    ),
+  { ssr: false, loading: () => <Skeleton className="h-32 w-full" /> },
+);
 
 interface OrderPageProps {
   params: Promise<{ id: string }>;
@@ -409,50 +447,48 @@ export default function OrderPage({ params }: OrderPageProps) {
           )}
         </div>
 
-        <AnimatePresence>
-          {viewState !== 'success' && !isFailedOrder && isImportOnly && (
-            <motion.div className="mb-8">
-              <ImportOrderStatus items={items} />
-            </motion.div>
-          )}
-          {viewState !== 'success' && !isFailedOrder && !isImportOnly && (
-            <motion.div className="mb-8">
-              <OrderProgressTimeline
-                progress={orderProgress.data ?? null}
-                workflowPhase={timelinePhase}
-              />
-            </motion.div>
-          )}
-          {!isFailedOrder && (!isImportOnly || viewState === 'success') && (
-            <motion.div>
-              <NftCarousel
-                items={orderItems}
-                origin={origin}
-                isCompletedOrder={isCompletedOrder}
-                domainAction={isRecipientSelf ? 'manage' : 'share'}
-                onShare={
-                  isRecipientSelf ? undefined : () => setShareDialogOpen(true)
-                }
-              />
-            </motion.div>
-          )}
-          {(viewState === 'success' || viewState === 'failed') && (
-            <motion.div>
-              {orderDetails && (
-                <PaymentDetailsSummary orderWithPayments={orderDetails} />
-              )}
-            </motion.div>
-          )}
-          {viewState === 'success' && !isFailedOrder && (
-            <motion.div>
-              <ShareOrder origin={origin} shareMessage={shareMessage} />
-              <InternalAIGenerations
-                domains={uniqueDomains}
-                internalAIGenerations={internalAiGenerations}
-              />
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {viewState !== 'success' && !isFailedOrder && isImportOnly && (
+          <div className="mb-8">
+            <ImportOrderStatus items={items} />
+          </div>
+        )}
+        {viewState !== 'success' && !isFailedOrder && !isImportOnly && (
+          <div className="mb-8">
+            <OrderProgressTimeline
+              progress={orderProgress.data ?? null}
+              workflowPhase={timelinePhase}
+            />
+          </div>
+        )}
+        {!isFailedOrder && (!isImportOnly || viewState === 'success') && (
+          <div>
+            <NftCarousel
+              items={orderItems}
+              origin={origin}
+              isCompletedOrder={isCompletedOrder}
+              domainAction={isRecipientSelf ? 'manage' : 'share'}
+              onShare={
+                isRecipientSelf ? undefined : () => setShareDialogOpen(true)
+              }
+            />
+          </div>
+        )}
+        {(viewState === 'success' || viewState === 'failed') && (
+          <div>
+            {orderDetails && (
+              <PaymentDetailsSummary orderWithPayments={orderDetails} />
+            )}
+          </div>
+        )}
+        {viewState === 'success' && !isFailedOrder && (
+          <div>
+            <ShareOrder origin={origin} shareMessage={shareMessage} />
+            <InternalAIGenerations
+              domains={uniqueDomains}
+              internalAIGenerations={internalAiGenerations}
+            />
+          </div>
+        )}
 
         <div className="flex gap-4 mb-8">
           <NamefiButton

@@ -25,7 +25,16 @@ const { config: appConfig } = await jiti.import('./src/lib/env/load');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  cacheComponents: false,
+  // Transpile workspace packages that export TypeScript sources directly.
+  // This enables better Turbopack caching and more consistent compilation.
+  transpilePackages: [
+    '@namefi-astra/ai',
+    '@namefi-astra/common',
+    '@namefi-astra/env',
+    '@namefi-astra/registrars',
+    '@namefi-astra/utils',
+    '@namefi-astra/zod-dns',
+  ],
   compiler: {
     define: {
       'process.env.LOADED_CONFIG': JSON.stringify(appConfig),
@@ -54,7 +63,14 @@ const nextConfig = {
     authInterrupts: true,
     turbopackFileSystemCacheForDev: true,
     // Favor per-module imports for large libraries to reduce dev compile time.
-    optimizePackageImports: ['date-fns', 'ramda', 'lucide-react'],
+    optimizePackageImports: [
+      'date-fns',
+      'ramda',
+      'lucide-react',
+      '@tanstack/react-query',
+      '@tanstack/react-table',
+      'motion/react',
+    ],
   },
   env: {
     version: packageJson.version,

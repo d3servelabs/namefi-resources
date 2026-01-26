@@ -2,11 +2,7 @@ import { getOriginRuntime } from '@/lib/origin/utils.server';
 import { config } from '@/lib/env';
 import { InteractionLoggersProvider } from '@/components/providers/analytics';
 import { OriginProvider } from '@/components/providers/origin';
-import {
-  ConsentManagerProvider,
-  CookieBanner,
-  ConsentManagerDialog,
-} from '@c15t/nextjs';
+import { ConsentManagerProvider } from '@c15t/nextjs';
 import { NuqsAdapter } from 'nuqs/adapters/next/app';
 import type { PropsWithChildren, FC } from 'react';
 import { CartProvider } from './cart';
@@ -15,12 +11,11 @@ import { SessionsProvider } from './privy';
 import { ThemeProvider } from './theme';
 import { TrpcProvider } from './trpc';
 import { WishlistProvider } from './wishlist';
-import { FreeMintsGuidanceProvider } from './free-mints-guidance';
 import { PreAuthSignalsProvider } from '@/components/providers/pre-auth-signals';
-import { AdminFeatureFlagsProvider } from '@/components/admin/feature-flags/context';
 import { WagmiProvider } from './wagmi';
-import { FeedbackProvider } from './feedback';
 import { ConsentManagerClient } from '@/components/providers/consent-manager-client';
+import { DeferredProviders } from './deferred-providers';
+import { ConsentUIComponents } from './consent-ui-lazy';
 
 export const Providers: FC<PropsWithChildren> = async ({ children }) => {
   const originInfo = await getOriginRuntime();
@@ -40,19 +35,12 @@ export const Providers: FC<PropsWithChildren> = async ({ children }) => {
                     }}
                   >
                     <ConsentManagerClient>
-                      <CookieBanner />
-                      <ConsentManagerDialog />
+                      <ConsentUIComponents />
                       <PreAuthSignalsProvider>
                         <InteractionLoggersProvider>
                           <WishlistProvider>
                             <CartProvider>
-                              <AdminFeatureFlagsProvider>
-                                <FreeMintsGuidanceProvider>
-                                  <FeedbackProvider>
-                                    {children}
-                                  </FeedbackProvider>
-                                </FreeMintsGuidanceProvider>
-                              </AdminFeatureFlagsProvider>
+                              <DeferredProviders>{children}</DeferredProviders>
                             </CartProvider>
                           </WishlistProvider>
                         </InteractionLoggersProvider>

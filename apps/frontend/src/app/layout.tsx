@@ -12,7 +12,7 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { Suspense, type PropsWithChildren } from 'react';
 import DatadogRum from '@/components/datadog-rum';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import ReactQueryDevtoolsWrapper from '@/components/react-query-devtools-lazy';
 import ImpersonationBanner from '@/components/ImpersonationBanner';
 import SkipAuthBanner from '@/components/SkipAuthBanner';
 import './globals.css';
@@ -51,7 +51,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
         <Suspense>
           <Providers>
             <GoogleAnalyticsCookieConsentGated />
-            <ReactQueryDevtools initialIsOpen={false} />
+            <ReactQueryDevtoolsWrapper />
             <OriginBackground />
             <Toaster expand={true} visibleToasts={3} />
             <AddToCartFromUrl />

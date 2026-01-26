@@ -39,7 +39,8 @@ import {
   SelectValue,
 } from '@/components/ui/shadcn/select';
 import { Label } from '@/components/ui/shadcn/label';
-import confetti from 'canvas-confetti';
+import { triggerCelebrationAtPosition } from '@/components/my-domains/confetti-celebration';
+import { AutoRenewToggle } from '@/components/my-domains/auto-renew-toggle';
 import { useInteractionLoggers } from '@/components/providers/analytics';
 import { InteractionLoggingEventName } from '@/lib/analytics-events';
 import { CHAINS } from '@namefi-astra/utils/chains';
@@ -63,7 +64,6 @@ import Link from 'next/link';
 import {
   type FC,
   type HTMLAttributes,
-  type CSSProperties,
   Suspense,
   useCallback,
   useEffect,
@@ -77,9 +77,15 @@ import {
   differenceInYears,
   isPast,
 } from 'date-fns';
-import { motion, AnimatePresence, MotionConfig } from 'motion/react';
-import NumberFlow, { NumberFlowGroup, useCanAnimate } from '@number-flow/react';
+import dynamic from 'next/dynamic';
 import { Separator } from '@/components/ui/shadcn/separator';
+
+// Lazy-load the floating action panel to keep motion/react and @number-flow/react
+// out of the initial /domains client bundle
+const FloatingActionPanel = dynamic(
+  () => import('@/components/my-domains/floating-action-panel'),
+  { ssr: false },
+);
 import {
   Tabs,
   TabsContent,
@@ -194,321 +200,8 @@ const formatExpirationDateISO = (
   return expiry.toISOString().slice(0, 10);
 };
 
-// Animated Auto-Renew Toggle with celebration
-interface AnimatedAutoRenewToggleProps {
-  checked: boolean;
-  onCheckedChange: (
-    checked: boolean,
-    position: { x: number; y: number } | null,
-  ) => void;
-  disabled?: boolean;
-  isLoading?: boolean;
-}
-
-const triggerCelebrationAtPosition = (x: number, y: number) => {
-  const colors = ['#22c55e', '#4ade80', '#86efac', '#bbf7d0', '#dcfce7'];
-
-  // Small burst from the toggle position
-  confetti({
-    particleCount: 30,
-    spread: 50,
-    origin: { x, y },
-    colors,
-    startVelocity: 15,
-    gravity: 0.6,
-    scalar: 0.5,
-    ticks: 40,
-    shapes: ['circle'],
-    drift: 0,
-  });
-};
-
-const AnimatedAutoRenewToggle: FC<AnimatedAutoRenewToggleProps> = ({
-  checked,
-  onCheckedChange,
-  disabled = false,
-  isLoading = false,
-}) => {
-  const buttonRef = useRef<HTMLButtonElement>(null);
-
-  const handleToggle = useCallback(() => {
-    if (disabled || isLoading) return;
-
-    const newValue = !checked;
-
-    // Calculate position for potential celebration (passed to handler)
-    let position: { x: number; y: number } | null = null;
-    if (newValue && buttonRef.current) {
-      const rect = buttonRef.current.getBoundingClientRect();
-      position = {
-        x: (rect.left + rect.width / 2) / window.innerWidth,
-        y: (rect.top + rect.height / 2) / window.innerHeight,
-      };
-    }
-
-    onCheckedChange(newValue, position);
-  }, [checked, onCheckedChange, disabled, isLoading]);
-
-  // Determine thumb style based on loading state
-  const thumbStyle: CSSProperties = isLoading
-    ? {
-        animation: checked
-          ? 'oscillateOn 0.8s ease-in-out infinite'
-          : 'oscillateOff 0.8s ease-in-out infinite',
-      }
-    : {
-        transform: checked ? 'translateX(28px)' : 'translateX(0)',
-        transition: 'transform 0.3s ease',
-      };
-
-  // Ghost style for ON, muted yellow for OFF
-  const trackStyle: CSSProperties = {
-    background: checked
-      ? 'rgba(34, 197, 94, 0.08)' // Green ghost (ultra subtle)
-      : 'rgba(234, 179, 8, 0.25)', // Yellow muted
-    transition: 'background 0.3s ease',
-  };
-
-  const thumbColor = checked ? 'rgba(34, 197, 94, 0.5)' : '#ca8a04'; // Semi-transparent green for ON (ghost), dark yellow for OFF
-
-  return (
-    <motion.button
-      ref={buttonRef}
-      type="button"
-      role="switch"
-      aria-checked={checked}
-      disabled={disabled || isLoading}
-      onClick={handleToggle}
-      className={cn(
-        'relative inline-flex h-7 w-14 shrink-0 cursor-pointer items-center rounded-full border-0 transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
-        (disabled || isLoading) && 'cursor-not-allowed opacity-50',
-      )}
-      style={trackStyle}
-      whileTap={{ scale: disabled ? 1 : 0.95 }}
-    >
-      {/* ON/OFF text labels */}
-      <span
-        className="absolute left-2 top-1/2 -translate-y-1/2 text-[9px] font-semibold leading-none tracking-wider transition-colors duration-300 pointer-events-none"
-        style={{
-          color: checked ? 'rgba(255, 255, 255, 0.7)' : 'transparent',
-        }}
-      >
-        ON
-      </span>
-      <span
-        className="absolute right-2 top-1/2 -translate-y-1/2 text-[9px] font-semibold leading-none tracking-wider transition-colors duration-300 pointer-events-none"
-        style={{
-          color: checked ? 'transparent' : 'rgba(255, 255, 255, 0.7)',
-        }}
-      >
-        OFF
-      </span>
-
-      {/* Thumb */}
-      <span
-        className="pointer-events-none absolute block rounded-full shadow-lg ring-0"
-        style={{
-          ...thumbStyle,
-          width: '22px',
-          height: '22px',
-          top: '3px',
-          left: '3px',
-          background: thumbColor,
-        }}
-      />
-    </motion.button>
-  );
-};
-
-// Bulk Auto-Renew Toggle with three states: off, mixed, on
+// Import BulkAutoRenewState type for use in this file
 type BulkAutoRenewState = 'off' | 'mixed' | 'on';
-
-interface BulkAutoRenewToggleProps {
-  state: BulkAutoRenewState;
-  onStateChange: (
-    newState: 'off' | 'on',
-    position: { x: number; y: number } | null,
-  ) => void;
-  disabled?: boolean;
-  isLoading?: boolean;
-}
-
-const BulkAutoRenewToggle: FC<BulkAutoRenewToggleProps> = ({
-  state,
-  onStateChange,
-  disabled = false,
-  isLoading = false,
-}) => {
-  const handleClick = useCallback(
-    (e: React.MouseEvent<HTMLButtonElement>) => {
-      if (disabled || isLoading) return;
-
-      const rect = e.currentTarget.getBoundingClientRect();
-      const clickX = e.clientX - rect.left;
-      const midpoint = rect.width / 2;
-
-      // UX: Click position determines state (left=off, right=on)
-      // This allows users to explicitly choose the desired state
-      // rather than cycling through states, which is clearer for bulk actions
-      // when domains have mixed auto-renew states
-      const newState = clickX < midpoint ? 'off' : 'on';
-
-      // Calculate position for potential celebration
-      let position: { x: number; y: number } | null = null;
-      if (newState === 'on') {
-        position = {
-          x: (rect.left + rect.width / 2) / window.innerWidth,
-          y: (rect.top + rect.height / 2) / window.innerHeight,
-        };
-      }
-
-      onStateChange(newState, position);
-    },
-    [onStateChange, disabled, isLoading],
-  );
-
-  // Keyboard handler for accessibility
-  const handleKeyDown = useCallback(
-    (e: React.KeyboardEvent<HTMLButtonElement>) => {
-      if (disabled || isLoading) return;
-
-      switch (e.key) {
-        case 'ArrowLeft':
-          e.preventDefault();
-          onStateChange('off', null);
-          break;
-        case 'ArrowRight':
-          e.preventDefault();
-          onStateChange('on', null);
-          break;
-        case 'Enter':
-        case ' ':
-          e.preventDefault();
-          // Toggle: if on -> off, otherwise (off or mixed) -> on
-          onStateChange(state === 'on' ? 'off' : 'on', null);
-          break;
-      }
-    },
-    [onStateChange, disabled, isLoading, state],
-  );
-
-  // Determine thumb position: off=left (0), mixed=center (8px), on=right (28px)
-  const getThumbTransform = () => {
-    if (isLoading) return undefined; // Will use animation instead
-    switch (state) {
-      case 'off':
-        return 'translateX(0)';
-      case 'mixed':
-        return 'translateX(8px)'; // Center position for 36px toggle with 14px thumb
-      case 'on':
-        return 'translateX(28px)';
-    }
-  };
-
-  // Get animation based on state to match static positions
-  const getLoadingAnimation = () => {
-    switch (state) {
-      case 'on':
-        return 'oscillateOn 0.8s ease-in-out infinite';
-      case 'mixed':
-        return 'oscillateMixed 0.8s ease-in-out infinite';
-      case 'off':
-        return 'oscillateOff 0.8s ease-in-out infinite';
-    }
-  };
-
-  // Determine thumb style based on loading state
-  const thumbStyle: CSSProperties = isLoading
-    ? {
-        animation: getLoadingAnimation(),
-      }
-    : {
-        transform: getThumbTransform(),
-        transition: 'transform 0.3s ease',
-      };
-
-  // Track background color based on state (ghost for ON, muted yellow for OFF)
-  const getTrackStyle = (): CSSProperties => {
-    switch (state) {
-      case 'on':
-        return { background: 'rgba(34, 197, 94, 0.08)' }; // Green ghost (ultra subtle)
-      case 'mixed':
-        return { background: 'rgba(234, 179, 8, 0.25)' }; // Yellow muted
-      case 'off':
-        return { background: 'rgba(234, 179, 8, 0.25)' }; // Yellow muted
-    }
-  };
-
-  // Thumb color based on state
-  const getThumbColor = () => {
-    switch (state) {
-      case 'on':
-        return 'rgba(34, 197, 94, 0.5)'; // Semi-transparent green (ghost)
-      case 'mixed':
-        return '#ca8a04'; // Dark yellow/amber
-      case 'off':
-        return '#ca8a04'; // Dark yellow
-    }
-  };
-
-  // Show text labels only when not in mixed state
-  const showTextLabels = state !== 'mixed';
-
-  return (
-    <motion.button
-      type="button"
-      role="checkbox"
-      aria-checked={state === 'mixed' ? 'mixed' : state === 'on'}
-      disabled={disabled || isLoading}
-      onClick={handleClick}
-      onKeyDown={handleKeyDown}
-      className={cn(
-        'relative inline-flex h-7 shrink-0 cursor-pointer items-center rounded-full border-0 transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
-        showTextLabels ? 'w-14' : 'w-9', // Wider when showing text labels
-        (disabled || isLoading) && 'cursor-not-allowed opacity-50',
-      )}
-      style={getTrackStyle()}
-      whileTap={{ scale: disabled ? 1 : 0.95 }}
-    >
-      {/* ON/OFF text labels - only show when not mixed */}
-      {showTextLabels && (
-        <>
-          <span
-            className="absolute left-2 top-1/2 -translate-y-1/2 text-[9px] font-semibold leading-none tracking-wider transition-colors duration-300 pointer-events-none"
-            style={{
-              color:
-                state === 'on' ? 'rgba(255, 255, 255, 0.7)' : 'transparent',
-            }}
-          >
-            ON
-          </span>
-          <span
-            className="absolute right-2 top-1/2 -translate-y-1/2 text-[9px] font-semibold leading-none tracking-wider transition-colors duration-300 pointer-events-none"
-            style={{
-              color:
-                state === 'off' ? 'rgba(255, 255, 255, 0.7)' : 'transparent',
-            }}
-          >
-            OFF
-          </span>
-        </>
-      )}
-
-      {/* Thumb */}
-      <span
-        className="pointer-events-none absolute block rounded-full shadow-lg ring-0"
-        style={{
-          ...thumbStyle,
-          width: state === 'mixed' ? '14px' : '22px', // Smaller thumb for mixed state
-          height: state === 'mixed' ? '14px' : '22px',
-          top: state === 'mixed' ? '7px' : '3px', // Center vertically for mixed (28-14)/2 = 7px
-          left: '3px',
-          background: getThumbColor(),
-        }}
-      />
-    </motion.button>
-  );
-};
 
 const RenewPricePremiumInfo: FC<{ domainName: string }> = ({ domainName }) => {
   const [open, setOpen] = useState(false);
@@ -960,7 +653,6 @@ function MyDomainsTable(props: {
   }, [domains]);
 
   const { hasEmail } = useEmailPrompt();
-  const canAnimate = useCanAnimate();
   const { renewDomains } = useDomainRenewal();
 
   const handleListForSaleClick = useCallback(
@@ -1759,13 +1451,14 @@ function MyDomainsTable(props: {
                 <span className="text-sm font-medium text-foreground">
                   Auto
                 </span>
-                <AnimatedAutoRenewToggle
+                <AutoRenewToggle
                   checked={isAutoRenewEnabled}
                   onCheckedChange={(checked, position) =>
                     handleToggleAutoRenew(domainName, checked, position)
                   }
                   disabled={isExpired}
                   isLoading={isToggling}
+                  ariaLabel={`Auto-renew ${domainName}`}
                 />
               </div>
 
@@ -1816,13 +1509,14 @@ function MyDomainsTable(props: {
 
           return (
             <div className="flex items-center gap-2">
-              <AnimatedAutoRenewToggle
+              <AutoRenewToggle
                 checked={isAutoEnsEnabled}
                 onCheckedChange={(checked) =>
                   handleToggleAutoEns(domainName, checked)
                 }
                 disabled={isExpired}
                 isLoading={isToggling}
+                ariaLabel={`Auto-ENS ${domainName}`}
               />
             </div>
           );
@@ -2127,188 +1821,18 @@ function MyDomainsTable(props: {
         showPageSizeSelector={false}
       />
 
-      {/* Floating Action Panel */}
-      <AnimatePresence>
-        {selectedDomainCount > 0 && (
-          <motion.div
-            initial={{ y: 100, scale: 0.95 }}
-            animate={{ y: 0, scale: 1 }}
-            exit={{ y: 100, scale: 0.95 }}
-            transition={{
-              type: 'spring',
-              damping: 20,
-              stiffness: 300,
-              duration: 0.4,
-            }}
-            layout
-            className="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50"
-          >
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              className="backdrop-blur-2xl bg-background/30 border border-border/50 rounded-2xl shadow-2xl shadow-black/20"
-              style={{
-                background: 'rgba(255, 255, 255, 0.1)',
-                backdropFilter: 'blur(20px) saturate(180%)',
-                WebkitBackdropFilter: 'blur(20px) saturate(180%)',
-              }}
-            >
-              <div className="px-6 py-4">
-                <MotionConfig
-                  transition={{
-                    layout: canAnimate
-                      ? { duration: 0.9, bounce: 0, type: 'spring' }
-                      : { duration: 0 },
-                  }}
-                >
-                  <div className="flex items-center gap-6">
-                    {/* Selection Count */}
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-primary/20 border border-primary/30 rounded-full flex items-center justify-center">
-                        <NumberFlow
-                          value={selectedDomainCount}
-                          className="text-primary font-bold text-sm"
-                          style={
-                            {
-                              '--number-flow-char-height': '0.85em',
-                              '--number-flow-mask-height': '0.3em',
-                            } as CSSProperties
-                          }
-                        />
-                      </div>
-                      <span className="font-semibold text-foreground text-sm">
-                        selected
-                      </span>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={clearSelection}
-                        className="h-6 w-6 rounded-full hover:bg-muted"
-                      >
-                        <X className="w-4 h-4" />
-                      </Button>
-                    </div>
-
-                    <Separator
-                      orientation="vertical"
-                      className="h-8! bg-foreground/30"
-                    />
-
-                    {/* Actions */}
-                    <div className="flex items-center gap-2">
-                      {/* Auto-Renew Toggle */}
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <div className="flex items-center gap-2 px-2 py-1 rounded-md bg-muted/30">
-                            <span className="text-xs text-muted-foreground">
-                              Auto
-                            </span>
-                            <BulkAutoRenewToggle
-                              state={bulkAutoRenewState}
-                              onStateChange={handleBulkAutoRenewToggle}
-                              disabled={selectedDomainCount === 0}
-                              isLoading={togglingAutoRenew.size > 0}
-                            />
-                          </div>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          {bulkAutoRenewState === 'mixed'
-                            ? 'Mixed states - click left to disable all, right to enable all'
-                            : bulkAutoRenewState === 'on'
-                              ? 'Auto-renew enabled - click left to disable'
-                              : 'Auto-renew disabled - click right to enable'}
-                        </TooltipContent>
-                      </Tooltip>
-
-                      <Separator
-                        orientation="vertical"
-                        className="h-4 bg-border mx-1"
-                      />
-
-                      {/* Renew Now */}
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={() => {
-                              if (renewableDomainsCount === 0) return;
-                              setRenewNowModalDomains(
-                                renewableDomains.map((domain) => ({
-                                  normalizedDomainName:
-                                    domain.normalizedDomainName ?? '',
-                                  expirationDate: domain.expirationDate,
-                                })),
-                              );
-                            }}
-                            className="h-8 w-8 hover:bg-muted"
-                            disabled={renewableDomainsCount === 0}
-                          >
-                            <CalendarPlus className="w-4 h-4" />
-                          </Button>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          Renew {renewableDomainsCount} domain
-                          {renewableDomainsCount !== 1 ? 's' : ''}
-                        </TooltipContent>
-                      </Tooltip>
-
-                      <Separator
-                        orientation="vertical"
-                        className="h-4 bg-border mx-1"
-                      />
-
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={() => setBatchAction('web')}
-                            className="h-8 w-8"
-                          >
-                            <Globe className="w-4 h-4" />
-                          </Button>
-                        </TooltipTrigger>
-                        <TooltipContent>Set Web Records</TooltipContent>
-                      </Tooltip>
-
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={() => setBatchAction('forward')}
-                            className="h-8 w-8"
-                          >
-                            <LinkIcon className="w-4 h-4" />
-                          </Button>
-                        </TooltipTrigger>
-                        <TooltipContent>Set URL Forwarding</TooltipContent>
-                      </Tooltip>
-
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={() => setBatchAction('ens')}
-                            className="h-8 w-8"
-                          >
-                            <Hexagon className="w-4 h-4" />
-                          </Button>
-                        </TooltipTrigger>
-                        <TooltipContent>Set ENS Record</TooltipContent>
-                      </Tooltip>
-                    </div>
-                  </div>
-                </MotionConfig>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Floating Action Panel - lazy loaded to keep motion/react out of initial bundle */}
+      <FloatingActionPanel
+        selectedDomainCount={selectedDomainCount}
+        bulkAutoRenewState={bulkAutoRenewState}
+        onBulkAutoRenewToggle={handleBulkAutoRenewToggle}
+        isTogglingAutoRenew={togglingAutoRenew.size > 0}
+        onClearSelection={clearSelection}
+        renewableDomainsCount={renewableDomainsCount}
+        renewableDomains={renewableDomains}
+        onRenewNow={(domains) => setRenewNowModalDomains(domains)}
+        onBatchAction={setBatchAction}
+      />
       <BatchDnsDialog
         isOpen={batchAction !== null}
         onOpenChange={(open) => !open && setBatchAction(null)}

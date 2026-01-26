@@ -14,7 +14,6 @@ import {
   SidebarMenuSub,
 } from '@/components/ui/shadcn/sidebar';
 import { ChevronRight, Globe, History } from 'lucide-react';
-import { AnimatePresence, motion } from 'motion/react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
@@ -45,29 +44,23 @@ export function SidebarDomains({ name, domains }: RecentDomainsProps) {
             <CollapsibleContent>
               <SidebarGroupContent>
                 <SidebarMenuSub>
-                  <motion.div layout="size">
-                    <AnimatePresence>
-                      {domains.map((domain) => {
-                        const href = `/domains/${domain}`;
-                        return (
-                          <motion.div key={domain}>
-                            <SidebarMenuItem key={domain}>
-                              <SidebarMenuButton
-                                tooltip={domain}
-                                isActive={href === pathname}
-                                asChild={true}
-                              >
-                                <Link href={href}>
-                                  <Globe className="size-4" />
-                                  <span className="truncate">{domain}</span>
-                                </Link>
-                              </SidebarMenuButton>
-                            </SidebarMenuItem>
-                          </motion.div>
-                        );
-                      })}
-                    </AnimatePresence>
-                  </motion.div>
+                  {domains.map((domain) => {
+                    const href = `/domains/${domain}`;
+                    return (
+                      <SidebarMenuItem key={domain}>
+                        <SidebarMenuButton
+                          tooltip={domain}
+                          isActive={href === pathname}
+                          asChild={true}
+                        >
+                          <Link href={href}>
+                            <Globe className="size-4" />
+                            <span className="truncate">{domain}</span>
+                          </Link>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    );
+                  })}
                 </SidebarMenuSub>
               </SidebarGroupContent>
             </CollapsibleContent>

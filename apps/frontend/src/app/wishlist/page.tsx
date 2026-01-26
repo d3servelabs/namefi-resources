@@ -4,7 +4,7 @@ import { useWishlist } from '@/hooks/use-wishlist';
 import { useTRPC } from '@/lib/trpc';
 import { useSubscription } from '@trpc/tanstack-react-query';
 import { useState, useEffect, useMemo } from 'react';
-import { DomainCard } from '@/components/search/search';
+import { DomainCard } from '@/components/search/domain-card';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import type { DomainAvailabilityInfo } from '@namefi-astra/common/domain-availability';
 import { useAuth } from '@/hooks/use-auth';

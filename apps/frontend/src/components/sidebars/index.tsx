@@ -1,5 +1,6 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import { BrandLogo } from '@/components/brand-logo';
 import { UserDropdown } from '@/components/dropdowns/user-dropdown';
 import { SidebarItems } from '@/components/sidebars/sidebar-items';
@@ -12,13 +13,7 @@ import {
   useSidebar,
 } from '@/components/ui/shadcn/sidebar';
 import { SidebarRail } from '@/components/ui/sidebar-rail';
-import { useAuth } from '@/hooks/use-auth';
-import { useRecentDomains } from '@/hooks/use-recent-domains';
-import { useWishlist } from '@/hooks/use-wishlist';
-import { useFreeMints } from '@/hooks/use-free-mints';
 import type { NavItem } from '@/lib/types/nav-item';
-import { useTRPC } from '@/lib/trpc';
-import { useQuery } from '@tanstack/react-query';
 import {
   ClipboardList,
   Compass,
@@ -30,9 +25,7 @@ import {
   Heart,
   Gift,
 } from 'lucide-react';
-import { useMemo } from 'react';
-import { SidebarDomains } from './sidebar-domains';
-import { motion, AnimatePresence } from 'motion/react';
+import { useEffect, useState } from 'react';
 
 const ITEMS: NavItem[] = [
   { title: 'Discover', href: '/', icon: Compass },
@@ -46,105 +39,32 @@ const ITEMS: NavItem[] = [
   { title: 'Hunt', href: '/hunt', icon: TrendingUp },
 ];
 
+const AppSidebarHydratedContent = dynamic(
+  () =>
+    import('@/components/sidebars/app-sidebar-hydrated').then(
+      (mod) => mod.AppSidebarHydratedContent,
+    ),
+  {
+    ssr: false,
+    loading: () => <SidebarItems items={ITEMS} />,
+  },
+);
+
+const AppSidebarHydratedFooter = dynamic(
+  () =>
+    import('@/components/sidebars/app-sidebar-hydrated').then(
+      (mod) => mod.AppSidebarHydratedFooter,
+    ),
+  { ssr: false },
+);
+
 export function AppSidebar() {
   const { state } = useSidebar();
+  const [hasHydrated, setHasHydrated] = useState(false);
 
-  const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
-  const trpc = useTRPC();
-
-  // Move useWishlist to top level
-  const { wishlistData, isWishlistLoading } = useWishlist();
-
-  // Free mints data
-  const {
-    availableCount: availableFreeMintsCount,
-    isLoading: isFreeMintsLoading,
-  } = useFreeMints();
-
-  const {
-    data,
-    isError: isManagerEntryPointViewableError,
-    isFetching: isManagerEntryPointViewableFetching,
-    isLoading: isManagerEntryPointViewableLoading,
-  } = useQuery({
-    ...trpc.users.getManagerPageEntrypointViewable.queryOptions(),
-    enabled: !isAuthLoading && isAuthenticated,
-  });
-
-  const frontendVersion = useMemo(() => {
-    return {
-      version: process.env.version,
-      name: process.env.name,
-    };
+  useEffect(() => {
+    setHasHydrated(true);
   }, []);
-
-  const backendVersion = useQuery(trpc.version.queryOptions());
-
-  const showManageEntrypoint = useMemo(() => {
-    if (
-      !isAuthenticated ||
-      isManagerEntryPointViewableLoading ||
-      isManagerEntryPointViewableFetching ||
-      isManagerEntryPointViewableError ||
-      !data
-    ) {
-      return false;
-    }
-
-    return data.viewable;
-  }, [
-    data,
-    isAuthenticated,
-    isManagerEntryPointViewableError,
-    isManagerEntryPointViewableFetching,
-    isManagerEntryPointViewableLoading,
-  ]);
-
-  const { recentDomains } = useRecentDomains({
-    newlyVisitedDomain: '',
-  });
-
-  const domains = useMemo(
-    () => recentDomains?.toReversed() ?? [],
-    [recentDomains],
-  );
-
-  const items = useMemo(() => {
-    return ITEMS.filter((item) => {
-      if (item.title.toLowerCase() === 'manage') {
-        return showManageEntrypoint;
-      }
-      return true;
-    }).map((item) => {
-      if (item.href === '/wishlist') {
-        return {
-          ...item,
-          badge:
-            !(isWishlistLoading || isAuthLoading) && wishlistData
-              ? { content: wishlistData.length }
-              : undefined,
-        };
-      }
-      if (item.href === '/free-mints') {
-        return {
-          ...item,
-          badge:
-            !(isFreeMintsLoading || isAuthLoading) &&
-            availableFreeMintsCount > 0
-              ? { content: availableFreeMintsCount }
-              : undefined,
-        };
-      }
-      return item;
-    });
-  }, [
-    showManageEntrypoint,
-    wishlistData,
-    isWishlistLoading,
-    isAuthLoading,
-    isFreeMintsLoading,
-    availableFreeMintsCount,
-  ]);
 
   const isCollapsed = state === 'collapsed';
 
@@ -161,37 +81,15 @@ export function AppSidebar() {
       </SidebarHeader>
 
       <SidebarContent>
-        <SidebarItems items={items} />
-        {domains.length > 0 && (
-          <SidebarDomains name="Recent domains" domains={domains} />
-        )}
+        {!hasHydrated && <SidebarItems items={ITEMS} />}
+        {hasHydrated && <AppSidebarHydratedContent items={ITEMS} />}
       </SidebarContent>
 
       <SidebarFooter>
-        <motion.div className="flex flex-col gap-2 w-full" layout>
-          <AnimatePresence initial={false}>
-            <motion.div layout key="user-dropdown">
-              <UserDropdown forceExpanded={false} />
-            </motion.div>
-            {!isCollapsed && (
-              <motion.div
-                key="sidebar-version-info"
-                className="grid grid-cols-2 gap-1 text-xs font-medium text-secondary-foreground/40"
-              >
-                <div className="flex flex-row px-2 gap-1">
-                  <span className="whitespace-nowrap">
-                    App: {frontendVersion.version}
-                  </span>
-                </div>
-                <div className="flex flex-row gap-1">
-                  <span className="whitespace-nowrap">
-                    API: {backendVersion.data?.version}
-                  </span>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </motion.div>
+        <div className="flex flex-col gap-2 w-full">
+          <UserDropdown forceExpanded={false} />
+          <AppSidebarHydratedFooter isCollapsed={isCollapsed} />
+        </div>
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
