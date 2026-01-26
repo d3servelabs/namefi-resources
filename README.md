@@ -21,10 +21,17 @@ export INFISICAL_SERVICE_TOKEN=<your-infisical-token> # Ask Victor for it
 Then, start the dev server
 
 ```bash
-bun run dev
+infisical run --token=$INFISICAL_SERVICE_TOKEN -- bun run dev
 ```
 
-The dev runner will automatically allocate an available port block and display the URLs for each service. Ports are dynamically assigned to allow multiple dev instances to run concurrently.
+The dev runner will automatically allocate an available port block and display the URLs for each service. By default (first run), services are available at:
+
+1. Backend API at [http://localhost:3000](http://localhost:3000)
+2. Frontend at [http://localhost:3001](http://localhost:3001)
+3. Email Preview at [http://localhost:3002](http://localhost:3002)
+4. Temporal UI at [http://localhost:3005](http://localhost:3005)
+
+Ports are dynamically assigned to allow multiple dev instances to run concurrently (3000-3005, 3100-3105, etc.).
 
 ## Installing the prerequisites and dependencies
 

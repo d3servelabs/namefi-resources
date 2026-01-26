@@ -25,8 +25,8 @@ The script:
 ## Common options
 - `--runs 1`
 - `--routes /,/orders,/tlds`
-- `--base-url https://localhost:<port>` (port is dynamically allocated)
-- `--dev-cmd "bun run dev"` (uses dynamic port allocation)
+- `--base-url https://localhost:3001` (default frontend port, dynamically allocated)
+- `--dev-cmd "infisical run --token=$INFISICAL_SERVICE_TOKEN -- bun run dev"`
 - `--output apps/frontend/.benchmarks/my-run.md`
 - `--timeout-ms 180000` (dev server ready timeout)
 - `--phase-timeout-ms 300000` (route compile timeout)
@@ -36,6 +36,6 @@ The script:
 ### Use HTTP (no experimental https)
 ```
 bun scripts/bench-frontend-dev.ts \
-  --dev-cmd "bun run dev" \
-  --base-url http://localhost:<port>
+  --dev-cmd "infisical run --token=$INFISICAL_SERVICE_TOKEN -- bun run dev" \
+  --base-url http://localhost:3001
 ```

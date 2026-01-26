@@ -70,18 +70,18 @@ This project requires:
 export INFISICAL_SERVICE_TOKEN=<your-token>
 
 # Start all services (includes backend API, frontend, temporal server & worker, email server)
-# Ports are dynamically allocated and displayed on startup
-bun run dev
+# Ports are dynamically allocated and displayed on startup (default: 3000-3005)
+infisical run --token=$INFISICAL_SERVICE_TOKEN -- bun run dev
 
 # Start only backend API and frontend (minimal setup)
-bun run dev:base
+infisical run --token=$INFISICAL_SERVICE_TOKEN -- bun run dev:base
 
 # Individual services (use :internal variants for manual port control)
-bun run dev:backend:api      # Backend API server
-bun run dev:frontend         # Frontend
-bun run dev:backend:temporal # Temporal worker
-bun run dev:backend:email    # Email development server
-bun run dev:temporal-server  # Temporal server
+bun run dev:backend:api      # Backend API server (default: 3000)
+bun run dev:frontend         # Frontend (default: 3001)
+bun run dev:backend:temporal # Temporal worker (default: 3003)
+bun run dev:backend:email    # Email development server (default: 3002)
+bun run dev:temporal-server  # Temporal server (default: 3004)
 ```
 
 #### Code Quality & Testing
