@@ -41,8 +41,7 @@ jobs:
           bun install
 
       - name: Run Chromatic
-        uses: chromaui/action@latest
-        with:
-          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
-          workingDir: apps/storybook
-          exitOnceUploaded: true
+        run: infisical run --token=$INFISICAL_SERVICE_TOKEN --env=dev -- bun run chromatic --exit-once-uploaded --exit-zero-on-changes
+        working-directory: apps/storybook
+        env:
+          INFISICAL_SERVICE_TOKEN: ${{ secrets.INFISICAL_SERVICE_TOKEN }}
