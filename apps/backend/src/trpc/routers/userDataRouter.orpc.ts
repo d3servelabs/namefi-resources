@@ -11,6 +11,7 @@ import {
   freeClaimSelectSchema,
 } from '@namefi-astra/db';
 import {
+  checksumWalletAddressSchema,
   namefiNormalizedDomainSchema,
   type NamefiNormalizedDomain,
 } from '@namefi-astra/utils';
@@ -26,6 +27,10 @@ import {
 } from '../utils';
 import { nftIdFromDomainName } from '@namefi-astra/utils/nft-hash';
 import { logger } from '#lib/logger';
+import {
+  requestNfscFaucet,
+  requestNfscFaucetForPrimaryWallet,
+} from '#lib/faucet/nfsc-faucet';
 import { getDomainsExpirationDatesFromIndex } from '../../temporal/activities/domain/renew.activities';
 import {
   getUserUnusedClaims,
@@ -53,6 +58,13 @@ const userDomainSchema = z.object({
   tokenId: z.string(),
   expirationDate: z.date().nullable(),
   dnsStatus: dnsStatusSchema,
+});
+
+const nfscFaucetResponseSchema = z.object({
+  status: z.literal('started'),
+  workflowId: z.string(),
+  walletAddress: checksumWalletAddressSchema,
+  nextEligibleAt: z.date(),
 });
 
 // Schema for claim eligibility output
@@ -317,6 +329,76 @@ export const userDataRouterOrpc = createTRPCRouter({
           },
         }));
       }
+    }),
+
+  requestNfscFaucet: protectedProcedure
+    .meta({
+      route: {
+        path: '/user/faucet',
+        method: 'POST',
+        tags: ['user', 'balance'],
+        operationId: 'requestNfscFaucet',
+        summary: 'Request NFSC faucet',
+        description:
+          'Request NFSC test tokens on Sepolia. Rate limited by user and wallet address.',
+      },
+    })
+    .input(z.object({ walletAddress: checksumWalletAddressSchema.optional() }))
+    .output(nfscFaucetResponseSchema)
+    .mutation(async ({ ctx, input }) => {
+      let result: Awaited<ReturnType<typeof requestNfscFaucet>>;
+
+      if (input.walletAddress !== undefined) {
+        const walletAddress = input.walletAddress;
+        const [privyError, privyUser] = await resolve(
+          privyClient.getUserById(ctx.user.privyUserId),
+        );
+
+        if (privyError || isNil(privyUser)) {
+          throw new TRPCError({
+            code: 'PRECONDITION_FAILED',
+            message: 'Could not find user details',
+          });
+        }
+
+        const walletAddresses =
+          getPrivyUserLinkedEthereumChecksumWalletAddresses({
+            privyUser,
+          });
+        const hasWallet = walletAddresses.some(
+          (address) => address.toLowerCase() === walletAddress.toLowerCase(),
+        );
+
+        if (!hasWallet) {
+          throw new TRPCError({
+            code: 'FORBIDDEN',
+            message: 'Wallet address is not linked to user',
+          });
+        }
+
+        result = await requestNfscFaucet({
+          walletAddress,
+        });
+      } else {
+        result = await requestNfscFaucetForPrimaryWallet({
+          userId: ctx.user.id,
+          privyUserId: ctx.user.privyUserId,
+        });
+      }
+
+      if (result.status === 'rate_limited') {
+        throw new TRPCError({
+          code: 'TOO_MANY_REQUESTS',
+          message: `NFSC faucet rate limited until ${result.nextEligibleAt.toISOString()}`,
+        });
+      }
+
+      return {
+        status: 'started',
+        workflowId: result.workflowId,
+        walletAddress: result.walletAddress,
+        nextEligibleAt: result.nextEligibleAt,
+      };
     }),
 
   /**

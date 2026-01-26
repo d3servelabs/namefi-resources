@@ -1,9 +1,13 @@
 import { type UserSelect, db, usersTable } from '@namefi-astra/db';
+import { CHAINS } from '@namefi-astra/utils';
 import { eq, sql } from 'drizzle-orm';
 import { privyClient } from '../trpc/utils';
-import { secrets } from '#lib/env';
+import { config, secrets } from '#lib/env';
 import { debounceTime, groupBy, mergeMap, Subject, bufferTime } from 'rxjs';
 import { logger } from '#lib/logger';
+import { temporalClient } from '#temporal/client';
+import { TEMPORAL_QUEUES } from '#temporal/shared/enums';
+import { mintDevSignupNfscWorkflow } from '#temporal/workflows/mint-dev-signup-nfsc.workflow';
 
 /**
  * Shared authentication utility for verifying Privy auth tokens
@@ -75,6 +79,48 @@ export async function verifyUserAuthAndGetUser(
         })
         .returning();
       user = newUser[0];
+
+      if (config.DEV_NFSC_ENABLED && config.DEV_NFSC_SIGNUP_MINT_AMOUNT > 0) {
+        const workflowInput = {
+          userId: user.id,
+          privyUserId: user.privyUserId,
+          chainId: CHAINS.sepolia.id,
+          amountInUsd: config.DEV_NFSC_SIGNUP_MINT_AMOUNT,
+        };
+        const workflowId = mintDevSignupNfscWorkflow.generateId({
+          userId: user.id,
+        });
+
+        try {
+          await temporalClient.workflow.start(mintDevSignupNfscWorkflow, {
+            workflowId,
+            taskQueue: TEMPORAL_QUEUES.DEFAULT,
+            args: [workflowInput],
+            workflowRunTimeout: '3 days',
+            workflowIdReusePolicy: 'ALLOW_DUPLICATE',
+            workflowIdConflictPolicy: 'USE_EXISTING',
+            searchAttributes: {
+              callerType: ['system'],
+              caller: ['auth.signup'],
+              userId: [user.id],
+              affectedResources: ['nfsc', `nfsc:${user.id}`],
+            },
+            memo: {
+              description: 'Dev signup NFSC mint workflow',
+              userId: user.id,
+              privyUserId: user.privyUserId,
+              amountInUsd: config.DEV_NFSC_SIGNUP_MINT_AMOUNT,
+              chainId: CHAINS.sepolia.id,
+              timestamp: new Date().toISOString(),
+            },
+          });
+        } catch (error) {
+          logger.error(
+            { error, userId: user.id },
+            'Failed to start dev signup NFSC mint workflow',
+          );
+        }
+      }
     } else {
       // Update timestamps for existing user
       updateUserLastSignInAtSubject.next({

@@ -2,6 +2,7 @@
 export * from './chargeStripe.workflow';
 export * from './hello-world.workflow';
 export * from './mint.workflow';
+export * from './mint-dev-signup-nfsc.workflow';
 export * from './processOrder.workflow';
 export * from './processOrderItem.workflow';
 export * from './post-process-order-item.workflow';

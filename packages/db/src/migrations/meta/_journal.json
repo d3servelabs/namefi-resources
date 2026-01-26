@@ -547,6 +547,13 @@
       "when": 1769120290870,
       "tag": "0077_flimsy_colossus",
       "breakpoints": true
+    },
+    {
+      "idx": 78,
+      "version": "7",
+      "when": 1769427479300,
+      "tag": "0078_mute_leper_queen",
+      "breakpoints": true
     }
   ]
 }

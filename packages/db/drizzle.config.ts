@@ -6,7 +6,6 @@ export default defineDrizzleConfig({
   schema: [
     './src/schema.ts',
     './src/schemas/internal.ts',
-    './src/schemas/c15t.ts',
     // './src/schemas/onchain-indexers/index.ts', //TODO
   ],
   out: './src/migrations',

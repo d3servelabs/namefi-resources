@@ -182,6 +182,10 @@ export const configSchema = z.object({
       SOCIAL: 'ai-social',
     }),
   DISALLOW_LIVE_PAYMENT_METHODS: z.boolean().optional().default(false),
+  DEV_NFSC_ENABLED: z.boolean().default(false),
+  DEV_NFSC_SIGNUP_MINT_AMOUNT: z.number().default(0),
+  DEV_NFSC_FAUCET_AMOUNT: z.number().default(0),
+  DEV_NFSC_FAUCET_COOLDOWN_HOURS: z.number().default(6),
   /**
    * Maximum number of AI generations allowed per user per month
    */

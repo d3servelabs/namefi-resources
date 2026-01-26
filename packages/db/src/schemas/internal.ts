@@ -1,4 +1,11 @@
-import { text, timestamp, jsonb, pgSchema, index } from 'drizzle-orm/pg-core';
+import {
+  text,
+  timestamp,
+  jsonb,
+  pgSchema,
+  index,
+  uuid,
+} from 'drizzle-orm/pg-core';
 
 /**
  * Unlogged table for Privy user cache
@@ -57,5 +64,27 @@ export const privyUsersTableSchema = internalSchema.table(
     index('idx_privy_wallets').using('gin', table.wallets),
     index('idx_privy_twitter_username').on(table.twitterUsername),
     index('idx_privy_expires_at').on(table.expiresAt),
+  ],
+);
+
+export const nfscFaucetRequestsTableSchema = internalSchema.table(
+  'nfsc_faucet_requests',
+  {
+    requestKey: text('request_key').primaryKey().notNull(),
+    userId: uuid('user_id'),
+    walletAddress: text('wallet_address').notNull(),
+    lastRequestedAt: timestamp('last_requested_at').notNull(),
+    createdAt: timestamp('created_at').notNull().defaultNow(),
+    updatedAt: timestamp('updated_at')
+      .notNull()
+      .defaultNow()
+      .$onUpdate(() => new Date()),
+  },
+  (table) => [
+    index('idx_nfsc_faucet_requests_user_id').on(table.userId),
+    index('idx_nfsc_faucet_requests_wallet').on(table.walletAddress),
+    index('idx_nfsc_faucet_requests_last_requested_at').on(
+      table.lastRequestedAt,
+    ),
   ],
 );

@@ -70,6 +70,7 @@ const FOOTER_SECTIONS: Array<{
       { label: 'Domain Hunt', href: '/hunt' },
       { label: 'Newsletter', href: '/newsletter' },
       { label: 'Flush DNS', href: '/dns-cache' },
+      { label: 'NFSC Faucet (sandbox)', href: '/faucet' },
     ],
   },
   {

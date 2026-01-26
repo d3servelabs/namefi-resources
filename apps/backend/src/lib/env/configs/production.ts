@@ -16,6 +16,10 @@ const productionConfig: ConfigInput = {
     'namefi.io',
   ],
   ALLOWED_CHAINS: [chains.mainnet.id, chains.base.id],
+  DEV_NFSC_ENABLED: false,
+  DEV_NFSC_SIGNUP_MINT_AMOUNT: 0,
+  DEV_NFSC_FAUCET_AMOUNT: 0,
+  DEV_NFSC_FAUCET_COOLDOWN_HOURS: 6,
   EMAIL_ADDRESS_TO_OWNED_HOSTNAMES_MAP: {
     'dev-team@d3serve.xyz': [
       '0x.city',

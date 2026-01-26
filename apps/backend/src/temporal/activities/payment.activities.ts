@@ -41,7 +41,10 @@ import { switchCaseOrDefault, resolve } from '@namefi-astra/utils';
 import type { Chain } from 'viem';
 import { logger } from '#lib/logger';
 import { getNfscBalanceInUSD } from './mint/mint.activities';
-import { privyClient } from '../../trpc/utils';
+import {
+  getPrivyUserLinkedEthereumChecksumWalletAddresses,
+  privyClient,
+} from '../../trpc/utils';
 import type { WalletWithMetadata } from '@privy-io/server-auth';
 import { $withTransaction } from '@namefi-astra/db';
 import { ApplicationFailure } from '@temporalio/common';
@@ -496,6 +499,70 @@ export async function getPreferredEvmWalletAddressToBeCharged(
     throw new Error('Invalid wallet address');
   }
   return result.data;
+}
+
+export async function getUserLinkedEvmWallet({
+  userId,
+}: {
+  userId: string;
+}): Promise<ChecksumWalletAddress[]> {
+  const user = await db.query.usersTable.findFirst({
+    where: (usersTable, { eq }) => eq(usersTable.id, userId),
+    columns: { privyUserId: true },
+  });
+
+  if (!user) {
+    throw new Error(`User not found for wallet lookup: ${userId}`);
+  }
+
+  const privyUser = await privyClient.getUserById(user.privyUserId);
+  if (!privyUser) {
+    logger.warn(
+      { userId, privyUserId: user.privyUserId },
+      'Privy user not found during wallet lookup',
+    );
+    throw new Error(
+      `User not found for wallet lookup: ${userId} ${user.privyUserId}`,
+    );
+  }
+
+  return getPrivyUserLinkedEthereumChecksumWalletAddresses({ privyUser });
+}
+
+export async function assertAndGetUserLinkedEvmWallet({
+  userId,
+}: {
+  userId: string;
+}): Promise<ChecksumWalletAddress[]> {
+  const user = await db.query.usersTable.findFirst({
+    where: (usersTable, { eq }) => eq(usersTable.id, userId),
+    columns: { privyUserId: true },
+  });
+
+  if (!user) {
+    throw new Error(`User not found for wallet lookup: ${userId}`);
+  }
+
+  const privyUser = await privyClient.getUserById(user.privyUserId);
+  if (!privyUser) {
+    logger.warn(
+      { userId, privyUserId: user.privyUserId },
+      'Privy user not found during wallet lookup',
+    );
+    throw new Error(
+      `Privy User not found for wallet lookup: ${userId} ${user.privyUserId}`,
+    );
+  }
+
+  const walletAddresses =
+    await getPrivyUserLinkedEthereumChecksumWalletAddresses({ privyUser });
+  if (!walletAddresses.length) {
+    throw new Error(
+      `User has no linked Ethereum wallets: ${userId} ${user.privyUserId}`,
+    );
+  }
+
+  return walletAddresses;
 }
 
 /**

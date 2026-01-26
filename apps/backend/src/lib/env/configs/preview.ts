@@ -31,6 +31,18 @@ const previewConfig: PreviewConfig = {
     ? process.env.ALLOWED_CHAINS.split(',').map((value) => Number(value))
     : [chains.sepolia.id]
   ).filter((chainId) => !Number.isNaN(chainId)),
+  DEV_NFSC_ENABLED: process.env.DEV_NFSC_ENABLED
+    ? process.env.DEV_NFSC_ENABLED.toLowerCase() === 'true'
+    : true,
+  DEV_NFSC_SIGNUP_MINT_AMOUNT: process.env.DEV_NFSC_SIGNUP_MINT_AMOUNT
+    ? Number(process.env.DEV_NFSC_SIGNUP_MINT_AMOUNT)
+    : 100,
+  DEV_NFSC_FAUCET_AMOUNT: process.env.DEV_NFSC_FAUCET_AMOUNT
+    ? Number(process.env.DEV_NFSC_FAUCET_AMOUNT)
+    : 20,
+  DEV_NFSC_FAUCET_COOLDOWN_HOURS: process.env.DEV_NFSC_FAUCET_COOLDOWN_HOURS
+    ? Number(process.env.DEV_NFSC_FAUCET_COOLDOWN_HOURS)
+    : 6,
 
   EMAIL_ADDRESS_TO_OWNED_HOSTNAMES_MAP: {
     'dev-team@d3serve.xyz': [

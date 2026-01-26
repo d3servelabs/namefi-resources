@@ -12,6 +12,7 @@ import {
   orderItemsTable,
 } from '@namefi-astra/db';
 import {
+  checksumWalletAddressSchema,
   namefiNormalizedDomainSchema,
   type NamefiNormalizedDomain,
 } from '@namefi-astra/utils';
@@ -24,6 +25,7 @@ import { and, eq, sql, inArray, ilike, gte, or } from 'drizzle-orm';
 import { isEmpty, isNil, isNotEmpty, isNotNil, pluck } from 'ramda';
 import { z } from 'zod';
 import { config, secrets } from '#lib/env';
+import { verifySolution } from 'altcha-lib';
 import {
   getQualifyingPromoDomainNamesFromPrivyLinkedAccount,
   userQualifiesForDomainNamePromo,
@@ -33,6 +35,7 @@ import {
   authedOrPublicProcedure,
   createTRPCRouter,
   protectedProcedure,
+  publicProcedure,
   auditedAdminProcedureWithPermissions,
   withAudit,
 } from '../base';
@@ -57,6 +60,8 @@ import { audit, createAuditRecord } from '#lib/auditor';
 import { deleteCookie, setCookie } from 'hono/cookie';
 import { getDomainsExpirationDatesFromIndex } from '../../temporal/activities/domain/renew.activities';
 import { resolveEnsNameToAddress } from '#lib/crypto/ens';
+import { requestNfscFaucet } from '#lib/faucet/nfsc-faucet';
+import { temporalClient } from '#temporal/client';
 
 if (!secrets.ALCHEMY_API_KEY) {
   throw new Error('Cannot create Ethereum public client');
@@ -331,6 +336,94 @@ export const usersRouter = createTRPCRouter({
   getMyPermissions: protectedProcedure.query(async ({ ctx }) => {
     return (ctx.userPermissions ?? []) as Permission[];
   }),
+
+  requestNfscFaucet: publicProcedure
+    .input(
+      z.object({
+        walletAddress: checksumWalletAddressSchema,
+        altcha: z.string().nullable(),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      if (!input.altcha) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Altcha verification is required',
+        });
+      }
+
+      const verified = await verifySolution(
+        input.altcha,
+        secrets.ALTCHA_HMAC_KEY,
+      );
+      if (!verified) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Invalid Altcha payload',
+        });
+      }
+
+      const result = await requestNfscFaucet({
+        walletAddress: input.walletAddress,
+      });
+
+      if (result.status === 'rate_limited') {
+        return {
+          status: 'rate_limited' as const,
+          walletAddress: result.walletAddress,
+          nextEligibleAt: result.nextEligibleAt,
+        };
+      }
+
+      return {
+        status: 'started' as const,
+        workflowId: result.workflowId,
+        walletAddress: result.walletAddress,
+        nextEligibleAt: result.nextEligibleAt,
+      };
+    }),
+
+  getNfscFaucetStatus: publicProcedure
+    .input(
+      z.object({
+        workflowId: z.string().min(1),
+      }),
+    )
+    .query(async ({ input }) => {
+      const { workflowId } = input;
+
+      if (!workflowId.startsWith('faucet-mint-nfsc-')) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Invalid workflow id',
+        });
+      }
+
+      try {
+        const handle = temporalClient.workflow.getHandle(workflowId);
+        const description = await handle.describe();
+        const status = description.status?.name ?? 'UNKNOWN';
+
+        if (status === 'COMPLETED') {
+          const txHash = await handle.result();
+          return { status, txHash };
+        }
+
+        return { status, txHash: null };
+      } catch (error) {
+        if (error instanceof Error && error.message.includes('not found')) {
+          return { status: 'NOT_FOUND', txHash: null };
+        }
+        logger.error(
+          { error, workflowId },
+          'Failed to fetch NFSC faucet workflow status',
+        );
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to fetch faucet status',
+        });
+      }
+    }),
 
   updatePrivyCustomMetadata: withAudit(
     protectedProcedure,

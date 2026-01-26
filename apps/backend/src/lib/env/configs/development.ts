@@ -20,6 +20,10 @@ const developmentConfig: ConfigInput = {
   ],
   ALLOW_ALL_ORIGINS: false,
   ALLOWED_CHAINS: [chains.sepolia.id],
+  DEV_NFSC_ENABLED: true,
+  DEV_NFSC_SIGNUP_MINT_AMOUNT: 100,
+  DEV_NFSC_FAUCET_AMOUNT: 20,
+  DEV_NFSC_FAUCET_COOLDOWN_HOURS: 6,
   EMAIL_ADDRESS_TO_OWNED_HOSTNAMES_MAP: {
     'dev-team@d3serve.xyz': [
       '0x.city',
