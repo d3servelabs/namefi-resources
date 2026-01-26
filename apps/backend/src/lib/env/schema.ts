@@ -241,16 +241,9 @@ export const configSchema = z.object({
     .default([]),
   ALLOW_LIVE_REGISTRARS: z.boolean().default(false),
   /**
-   * Email address of the user to use when skip_auth is enabled.
-   * When set, the backend will look up this user from the database
-   * instead of creating a mock user that doesn't exist.
-   * Should be set for local/dev/preview environments and left empty for production.
-   */
-  SKIP_AUTH_USER_EMAIL: z.string().email().optional(),
-  /**
-   * User ID to use when skip_auth is enabled.
-   * Takes precedence over SKIP_AUTH_USER_EMAIL if both are set.
-   * Use this when the test user doesn't have an email address.
+   * User ID to use when skip_auth is enabled in local/development environments.
+   * The backend will look up this user from the database.
+   * Should be set for local/dev environments and left empty for production.
    */
   SKIP_AUTH_USER_ID: z.string().uuid().optional(),
 });

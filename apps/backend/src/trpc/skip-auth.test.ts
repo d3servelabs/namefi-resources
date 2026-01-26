@@ -32,11 +32,10 @@ vi.mock('@namefi-astra/db', () => ({
   },
 }));
 
-// Mock the config module - use user ID instead of email
+// Mock the config module
 vi.mock('#lib/env', () => ({
   config: {
     SKIP_AUTH_USER_ID: '202832e8-304f-4f4a-81c9-df32fd1e5364',
-    SKIP_AUTH_USER_EMAIL: undefined,
   },
 }));
 
@@ -192,21 +191,13 @@ describe('Skip Auth Environment Gating', () => {
   });
 });
 
-// TODO: The following code paths require testing but are difficult to test with
+// TODO: The following code path requires testing but is difficult to test with
 // bun's vitest implementation which doesn't support vi.resetModules() or vi.doMock():
 //
-// 1. Email fallback path (when SKIP_AUTH_USER_ID is undefined but SKIP_AUTH_USER_EMAIL is set):
-//    - Tests the email lookup branch in skip-auth.ts lines 49-71
+// 1. SKIP_AUTH_USER_ID not configured:
+//    - Tests the warning at skip-auth.ts lines 33-37
 //    - Would require vi.doMock or config injection to override SKIP_AUTH_USER_ID to undefined
 //
-// 2. Neither ID nor email configured:
-//    - Tests the warning at skip-auth.ts lines 51-56
-//    - Would require both SKIP_AUTH_USER_ID and SKIP_AUTH_USER_EMAIL to be undefined
-//
-// 3. User not found by email:
-//    - Tests the warning at skip-auth.ts lines 63-68
-//    - Would require SKIP_AUTH_USER_ID undefined and email lookup to return no user
-//
-// To properly test these paths, consider refactoring getSkipAuthTestUser to accept
+// To properly test this path, consider refactoring getSkipAuthTestUser to accept
 // config as a parameter for dependency injection, which would allow easier testing
 // of different configuration scenarios without module-level mock manipulation.
