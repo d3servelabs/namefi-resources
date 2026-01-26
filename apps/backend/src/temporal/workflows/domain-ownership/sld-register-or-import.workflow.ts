@@ -10,8 +10,16 @@ import {
   matchAny,
 } from '@namefi-astra/utils';
 import * as workflow from '@temporalio/workflow';
-import { TEMPORAL_ENUMS, shortRunningOpts } from '../../shared';
+import {
+  TEMPORAL_ENUMS,
+  TEMPORAL_QUEUES,
+  shortRunningOpts,
+} from '../../shared';
 import { typedProxyActivities } from '../../shared/workflow-helpers';
+import {
+  extendDomainRegistrationWorkflow,
+  type ExtendDomainRegistrationWorkflowInput,
+} from './extend-registration.workflow';
 
 interface SldRegisterOrImportWorkflowInput {
   operationType: 'REGISTER' | 'IMPORT';
@@ -200,6 +208,31 @@ export async function sldRegisterOrImportWorkflow(
           `Status: ${registrarRes.status}`,
           `Message: ${registrarRes.message}`,
         ],
+      });
+    }
+
+    // For multi-year imports, EPP transfer only adds 1 year.
+    // We need to perform additional renewal operations for years 2+.
+    if (isImport && input.durationInYears > 1) {
+      const additionalYears = input.durationInYears - 1;
+      workflow.log.info(
+        `Multi-year import: performing ${additionalYears} additional year(s) of renewal after transfer`,
+      );
+
+      const renewalInput: ExtendDomainRegistrationWorkflowInput = {
+        ownerAddress: input.recipientWalletAddress,
+        normalizedDomainName: input.normalizedDomainName,
+        durationInYears: additionalYears,
+        userId: '', // Not available in this context, but not required for the renewal operation
+        updateDomainIndex: false, // Will be updated after the full import completes
+      };
+
+      await workflow.executeChild(extendDomainRegistrationWorkflow, {
+        args: [renewalInput],
+        taskQueue: TEMPORAL_QUEUES.DOMAINS,
+        workflowId: `import-renewal-${input.normalizedDomainName}-${additionalYears}y`,
+        workflowIdReusePolicy: 'ALLOW_DUPLICATE',
+        parentClosePolicy: 'REQUEST_CANCEL',
       });
     }
 
