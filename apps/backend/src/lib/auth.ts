@@ -115,7 +115,7 @@ export async function verifyUserAuthAndGetUser(
             },
           });
         } catch (error) {
-          logger.error(
+          logger.fatal(
             { error, userId: user.id },
             'Failed to start dev signup NFSC mint workflow',
           );
@@ -214,7 +214,7 @@ updateUserLastSignInAtSubject
       });
       await db.execute(sql.join(updateStatements, sql`;\n`));
     } catch (error) {
-      logger.error({ error }, 'Failed to update user last sign in at');
+      logger.warn({ error }, 'Failed to update user last sign in at');
     }
   });
 

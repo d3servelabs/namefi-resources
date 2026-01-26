@@ -139,7 +139,7 @@ function setupLimiter({
     }
   });
   limiter.on('error', (error) => {
-    logger.error({ error }, 'Limiter error');
+    logger.debug({ error }, 'Limiter error');
   });
 
   limiter?.connection?.on('error', (error) => {

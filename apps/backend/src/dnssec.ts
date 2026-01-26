@@ -77,7 +77,7 @@ dnssecRouter.get('/', async (c) => {
 // biome-ignore lint/suspicious/useAwait: to be added
 dnssecRouter.use('/*', async (c) => {
   _logger.assign({ query: c.req.query() });
-  _logger.error(`Unhandled request: ${c.req.method} ${c.req.url}`);
+  _logger.trace(`Unhandled request: ${c.req.method} ${c.req.url}`);
   c.status(404);
   return c.json({
     error: 'Not Found',

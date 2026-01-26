@@ -322,8 +322,7 @@ export async function enableAutoDnssecForDomain(
 
     _logger.debug('EnableDnssec Temporal Workflow Started Successfully');
   } catch (error) {
-    _logger.fatal('EnableDnssec Temporal Workflow Start Failed');
-    _logger.error({ error }, 'Temporal Error');
+    _logger.fatal({ error }, 'EnableDnssec Temporal Workflow Start Failed');
     throw error;
   }
 }
@@ -405,8 +404,7 @@ export async function disableDnssecForDomain(
 
     _logger.debug('DisableDnssec Temporal Workflow Started Successfully');
   } catch (error) {
-    _logger.fatal('DisableDnssec Temporal Workflow Start Failed');
-    _logger.error('Temporal Error', error);
+    _logger.fatal({ error }, 'DisableDnssec Temporal Workflow Start Failed');
     throw error;
   }
 }
@@ -467,9 +465,7 @@ export async function checkDsRecordExists(
 
     return false;
   } catch (error: any) {
-    _logger.error(
-      `Failed to check DS record for "${domain}": ${error.message}`,
-    );
+    _logger.warn(`Failed to check DS record for "${domain}": ${error.message}`);
     throw error;
   }
 }

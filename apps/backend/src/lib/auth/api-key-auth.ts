@@ -86,7 +86,7 @@ export async function getUserAndPrivyUserFromApiKeyContext(
     const privyUser = await privyClient.getUser(user.privyUserId);
     return { user, privyUser };
   } catch (error) {
-    logger.error(
+    logger.trace(
       { error, userId: user.id },
       'Failed to fetch Privy user for API key auth',
     );

@@ -94,7 +94,7 @@ export async function authenticateWithPlainApiKey(
       if (isValid) {
         // Update last used timestamp (fire and forget)
         updateApiKeyLastUsed(apiKeyRecord.id).catch((err) => {
-          logger.error(
+          logger.warn(
             { err, apiKeyId: apiKeyRecord.id },
             'Failed to update API key last used',
           );
@@ -110,7 +110,7 @@ export async function authenticateWithPlainApiKey(
 
     return { success: false, error: 'Invalid API key' };
   } catch (error) {
-    logger.error({ error }, 'Error authenticating with PLAIN API key');
+    logger.trace({ error }, 'Error authenticating with PLAIN API key');
     return { success: false, error: 'Authentication failed' };
   }
 }

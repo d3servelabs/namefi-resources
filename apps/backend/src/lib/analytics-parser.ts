@@ -224,7 +224,7 @@ export function parseDnsAnalyticsReportData(
 
     return parsed;
   } catch (error) {
-    logger.error({ error }, 'Failed to parse DNS analytics report data');
+    logger.warn({ error }, 'Failed to parse DNS analytics report data');
     // Fail closed with minimal structure to avoid crashing callers
     return {
       summary: {

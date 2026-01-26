@@ -175,9 +175,8 @@ export const getDomainPreferencesAndConfig = async (
         domainName,
         domainConfig.ownerAddress,
       );
-    logger.trace({ userDomainPreferences }, 'User domain preferences');
   } catch (error) {
-    logger.error({ error }, 'Error getting user domain preferences');
+    logger.warn({ error }, 'Error getting user domain preferences');
     throw error;
   }
 

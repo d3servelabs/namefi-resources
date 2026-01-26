@@ -209,9 +209,7 @@ export async function getPropagatedNameservers(
     // Format nameservers with trailing dots
     return foundNameservers;
   } catch (error: any) {
-    _logger.error(
-      `Failed to get nameservers for "${domain}": ${error.message}`,
-    );
+    _logger.warn(`Failed to get nameservers for "${domain}": ${error.message}`);
     throw error;
   }
 }

@@ -110,7 +110,7 @@ export async function flushDnsCache(
     if (result.status === 'fulfilled') {
       return result.value;
     }
-    logger.error(
+    logger.warn(
       { serverName, error: result.reason, zone: normalizedZone, recordType },
       'Failed to flush DNS cache',
     );
