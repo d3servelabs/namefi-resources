@@ -78,18 +78,11 @@ export async function sldRegisterOrImportWorkflow(
     temporalEnum: TEMPORAL_ENUMS.DOMAINS,
     options: {
       startToCloseTimeout: '30 seconds',
-      retry: isImport
-        ? {
-            initialInterval: '1 minute',
-            backoffCoefficient: 4,
-            maximumInterval: '4 hours',
-            // no max attempts
-          }
-        : {
-            initialInterval: '5 seconds',
-            backoffCoefficient: 2,
-            maximumInterval: '15 minutes',
-          },
+      retry: {
+        initialInterval: '3 minutes',
+        backoffCoefficient: 1,
+        maximumInterval: '3 minutes',
+      },
     },
   });
 
