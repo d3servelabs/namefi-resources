@@ -119,6 +119,7 @@ export const paymentProviderEnum = pgEnum('payment_provider', [
  */
 export const usersTable = pgTable('users', {
   ...randomUuid,
+  /** @deprecated */
   primaryEmail: text('primary_email').unique(),
   stripeCustomerId: text('stripe_customer_id').unique(),
   privyUserId: text('privy_user_id').notNull().unique(),
