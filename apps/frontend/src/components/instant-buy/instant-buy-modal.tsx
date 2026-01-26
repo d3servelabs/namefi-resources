@@ -71,7 +71,10 @@ export function InstantBuyModal({
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
   const { linkedWallets } = useLinkedWallets();
   const linkedWalletAddresses = useMemo(
-    () => linkedWallets.map((wallet) => wallet.address) as `0x${string}`[],
+    () =>
+      linkedWallets.map(
+        (wallet: { address: string }) => wallet.address,
+      ) as `0x${string}`[],
     [linkedWallets],
   );
 

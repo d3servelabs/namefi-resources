@@ -60,7 +60,7 @@ export function SelectWallet({
         >{`${isMobile ? getShortAddress(selectWalletAddress ?? '') : selectWalletAddress}`}</SelectValue>
       </SelectTrigger>
       <SelectContent>
-        {linkedWalletAddresses.map((walletAddress) => (
+        {linkedWalletAddresses.map((walletAddress: string) => (
           <SelectItem key={`${walletAddress}`} value={`${walletAddress}`}>
             <div className="flex items-center gap-2">
               <Badge>Linked</Badge>

@@ -75,7 +75,7 @@ export default function CartPage() {
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
   const { linkedWallets: _linkedWallets } = useLinkedWallets();
   const _linkedWalletsAddresses = _linkedWallets.map(
-    (wallet) => wallet.address,
+    (wallet: { address: string }) => wallet.address,
   ) as `0x${string}`[];
   // biome-ignore lint/correctness/useExhaustiveDependencies: We need to do this to avoid unnecessary re-renders
   const linkedWalletAddresses = useMemo(

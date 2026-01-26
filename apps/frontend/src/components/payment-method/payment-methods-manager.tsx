@@ -48,6 +48,7 @@ import {
   useLinkedWalletAddresses,
   useLinkedWallets,
 } from '@/hooks/use-user-wallet-addresses';
+import type { WalletWithMetadata } from '@privy-io/react-auth';
 import { prop, groupBy, range } from 'ramda';
 import type { WalletProvider } from '../ui/untitled/wallet-card';
 import { mapPrivyWalletToProvider } from '@/hooks/use-privy-wallet-card-data';
@@ -515,14 +516,14 @@ function UserWalletCardsGrid(props: {}) {
         walletAddress: chainBalance.walletAddress,
         balances: [chainBalance],
         linkedWallet: linkedWallets.find(
-          (w) =>
+          (w: WalletWithMetadata) =>
             w.address.toLowerCase() ===
             chainBalance.walletAddress.toLowerCase(),
         ),
       }));
     }
     // Default: one card per wallet with all chains combined
-    return linkedWallets.map((linkedWallet) => ({
+    return linkedWallets.map((linkedWallet: WalletWithMetadata) => ({
       key: linkedWallet.address,
       walletAddress: linkedWallet.address as `0x${string}`,
       balances:
@@ -550,7 +551,7 @@ function UserWalletCardsGrid(props: {}) {
 
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {cardItems.map((item) => {
+        {cardItems.map((item: (typeof cardItems)[number]) => {
           const { key, walletAddress, balances, linkedWallet } = item;
           const isHovered = hoveredCardId === key;
           const provider = forceNfscVariant

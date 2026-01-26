@@ -1,4 +1,8 @@
-import { useWallets } from '@privy-io/react-auth';
+import {
+  useWallets,
+  type LinkedAccountWithMetadata,
+  type WalletWithMetadata,
+} from '@privy-io/react-auth';
 import { useAuth } from './use-auth';
 import { useMemo } from 'react';
 
@@ -45,7 +49,9 @@ export function useLinkedWalletAddresses() {
       return [];
     }
 
-    return linkedWallets.map((linkedWallet) => linkedWallet.address);
+    return linkedWallets.map(
+      (linkedWallet: WalletWithMetadata) => linkedWallet.address,
+    );
   }, [linkedWalletsReady, linkedWallets]);
 
   return { linkedWalletsReady, linkedWalletAddresses };
@@ -65,15 +71,21 @@ export function useLinkedWallets() {
     return privyUserReady && authenticated && privyUser;
   }, [authenticated, privyUser, privyUserReady]);
 
-  const linkedWallets = useMemo(() => {
+  const linkedWallets = useMemo((): WalletWithMetadata[] => {
     if (!linkedWalletsReady) {
       return [];
     }
 
     return (
-      privyUser?.linkedAccounts
-        .filter((linkedAccount) => linkedAccount.type === 'wallet')
-        .filter((linkedWallet) => linkedWallet.chainType === 'ethereum') ?? []
+      (privyUser?.linkedAccounts
+        .filter(
+          (linkedAccount: LinkedAccountWithMetadata) =>
+            linkedAccount.type === 'wallet',
+        )
+        .filter(
+          (linkedWallet: LinkedAccountWithMetadata) =>
+            (linkedWallet as WalletWithMetadata).chainType === 'ethereum',
+        ) as WalletWithMetadata[]) ?? []
     );
   }, [linkedWalletsReady, privyUser]);
 

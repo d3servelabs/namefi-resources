@@ -5,6 +5,7 @@ import { NFSCWalletCard } from './nfsc-wallet-card';
 import type { WalletProvider } from './wallet-card';
 import { useUserChainBalances } from '@/hooks/use-user-chain-balances';
 import { useLinkedWallets } from '@/hooks/use-user-wallet-addresses';
+import type { WalletWithMetadata } from '@privy-io/react-auth';
 
 interface ConnectedNFSCWalletCardProps {
   address: `0x${string}`;
@@ -30,7 +31,9 @@ export function ConnectedNFSCWalletCard({
 
   // Get all wallet addresses for balance query
   const walletAddresses = useMemo(() => {
-    return linkedWallets.map((wallet) => wallet.address as `0x${string}`);
+    return linkedWallets.map(
+      (wallet: WalletWithMetadata) => wallet.address as `0x${string}`,
+    );
   }, [linkedWallets]);
 
   const { chainBalances, isLoadingBalance } = useUserChainBalances({

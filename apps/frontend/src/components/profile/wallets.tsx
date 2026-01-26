@@ -123,7 +123,7 @@ export const Wallets = ({ className, ...rest }: WalletsProps) => {
           </div>
         ) : (
           <div className="space-y-4">
-            {linkedWallets.map((wallet) => (
+            {linkedWallets.map((wallet: WalletWithMetadata) => (
               <div
                 key={wallet.address}
                 className="flex items-center justify-between rounded-lg border p-4"
