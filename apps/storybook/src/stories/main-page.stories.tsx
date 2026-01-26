@@ -296,6 +296,10 @@ const meta = {
       default: 'dark',
       values: [{ name: 'dark', value: '#04050A' }],
     },
+    chromatic: {
+      delay: 1000,
+      pauseAnimationAtEnd: true,
+    },
   },
   tags: ['autodocs'],
 } satisfies Meta<typeof MainPageLanding>;
