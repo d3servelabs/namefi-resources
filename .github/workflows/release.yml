@@ -117,28 +117,17 @@ jobs:
         id: check-changes
         run: |
           FORCE_RELEASE="${{ github.event.inputs.forceRelease }}"
-          CHANGED_PACKAGES='${{ steps.detect.outputs.changed-packages }}'
           HAS_CHANGES="${{ steps.detect.outputs.has-changes }}"
+
+          # Use fromJSON and contains to check for frontend/backend changes
+          HAS_FRONTEND_CHANGES="${{ contains(fromJSON(steps.detect.outputs.changed-packages), '@namefi-astra/frontend') }}"
+          HAS_BACKEND_CHANGES="${{ contains(fromJSON(steps.detect.outputs.changed-packages), '@namefi-astra/backend') }}"
 
           echo "Force release: $FORCE_RELEASE"
           echo "Has changes: $HAS_CHANGES"
-          echo "Changed packages: $CHANGED_PACKAGES"
-
-          # Check if frontend or backend are in the changed packages
-          HAS_FRONTEND_CHANGES="false"
-          HAS_BACKEND_CHANGES="false"
-
-          if [ "$HAS_CHANGES" == "true" ]; then
-            # Parse the JSON array to check for frontend/backend
-            if echo "$CHANGED_PACKAGES" | grep -q "@namefi-astra/frontend"; then
-              HAS_FRONTEND_CHANGES="true"
-              echo "Frontend changes detected"
-            fi
-            if echo "$CHANGED_PACKAGES" | grep -q "@namefi-astra/backend"; then
-              HAS_BACKEND_CHANGES="true"
-              echo "Backend changes detected"
-            fi
-          fi
+          echo "Changed packages: ${{ steps.detect.outputs.changed-packages }}"
+          echo "Has frontend changes: $HAS_FRONTEND_CHANGES"
+          echo "Has backend changes: $HAS_BACKEND_CHANGES"
 
           echo "has-frontend-changes=$HAS_FRONTEND_CHANGES" >> $GITHUB_OUTPUT
           echo "has-backend-changes=$HAS_BACKEND_CHANGES" >> $GITHUB_OUTPUT
