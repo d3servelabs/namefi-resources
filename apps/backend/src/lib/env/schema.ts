@@ -112,6 +112,7 @@ export const secretsSchema = z.object({
       return Buffer.from(val, 'base64').toString('utf-8');
     }),
   NAMEFI_ALERT_SLACK_WEBHOOK_URL: z.string().url().optional(),
+  NAMEFI_ORDER_ALERT_SLACK_WEBHOOK_URL: z.string().url().optional(),
   DNS_CACHE_SERVERS_API_KEY: z.string().optional(),
 });
 

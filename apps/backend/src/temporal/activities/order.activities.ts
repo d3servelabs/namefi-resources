@@ -15,6 +15,8 @@ import { eq, and, sql, inArray } from 'drizzle-orm';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { logger } from '#lib/logger';
 import { sendGA4Event } from '#lib/ga4-measurement';
+import { config, secrets } from '#lib/env';
+import { Context } from '@temporalio/activity';
 
 export function getOrderDetailsOrThrow(orderId: string) {
   return orderService.getOrderDetailsOrThrow(orderId);
@@ -408,4 +410,114 @@ export async function createAutoRenewOrder({
   );
 
   return { orderId: order.id };
+}
+
+export interface SendOrderCompletionSlackAlertInput {
+  orderId: string;
+  userId: string;
+  userEmail?: string;
+  walletAddress?: string;
+  domains: Array<{
+    normalizedDomainName: NamefiNormalizedDomain;
+    type: 'REGISTER' | 'IMPORT';
+    status: 'SUCCEEDED' | 'FAILED';
+  }>;
+  workflowId: string;
+  runId: string;
+}
+
+export async function sendOrderCompletionSlackAlert(
+  input: SendOrderCompletionSlackAlertInput,
+): Promise<void> {
+  const ctx = Context.current();
+  const webhookUrl = secrets.NAMEFI_ORDER_ALERT_SLACK_WEBHOOK_URL;
+
+  if (!webhookUrl) {
+    ctx.log.warn(
+      'No order alert Slack webhook URL configured, skipping Slack notification',
+    );
+    return;
+  }
+
+  const succeededDomains = input.domains.filter(
+    (d) => d.status === 'SUCCEEDED',
+  );
+  if (succeededDomains.length === 0) {
+    ctx.log.info('No succeeded domains, skipping Slack notification');
+    return;
+  }
+
+  const temporalUrl = `https://cloud.temporal.io/namespaces/${encodeURIComponent(config.TEMPORAL_NAMESPACE)}/workflows/${encodeURIComponent(input.workflowId)}/${encodeURIComponent(input.runId)}/history`;
+
+  const userIdentifier = input.userEmail
+    ? input.userEmail
+    : input.walletAddress
+      ? `${input.walletAddress.slice(0, 6)}...${input.walletAddress.slice(-4)}`
+      : 'someone';
+
+  const registerDomains = succeededDomains.filter((d) => d.type === 'REGISTER');
+  const importDomains = succeededDomains.filter((d) => d.type === 'IMPORT');
+
+  let operationType: string;
+  if (registerDomains.length > 0 && importDomains.length > 0) {
+    operationType = 'register and transfer';
+  } else if (importDomains.length > 0) {
+    operationType = 'transfer';
+  } else {
+    operationType = 'register';
+  }
+
+  const domainList = succeededDomains
+    .map((d) => d.normalizedDomainName)
+    .slice(0, 5)
+    .join(', ');
+  const additionalCount = succeededDomains.length - 5;
+  const domainDisplay =
+    additionalCount > 0
+      ? `${domainList} (+${additionalCount} more)`
+      : domainList;
+
+  const message = `:tada: ${userIdentifier} has just made an order to "${operationType}" ${succeededDomains.length} domain${succeededDomains.length > 1 ? 's' : ''}: ${domainDisplay}`;
+
+  try {
+    const slackMessage = {
+      blocks: [
+        {
+          type: 'section',
+          text: {
+            type: 'mrkdwn',
+            text: message,
+          },
+        },
+        {
+          type: 'context',
+          elements: [
+            {
+              type: 'mrkdwn',
+              text: `<${temporalUrl}|View workflow details>`,
+            },
+          ],
+        },
+      ],
+    };
+
+    const response = await fetch(webhookUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(slackMessage),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+
+    ctx.log.info('Successfully sent order completion alert to Slack');
+  } catch (error) {
+    ctx.log.error('Failed to send order completion alert to Slack', {
+      error: error instanceof Error ? error.message : String(error),
+    });
+    throw error;
+  }
 }

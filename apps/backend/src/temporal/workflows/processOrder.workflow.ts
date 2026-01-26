@@ -801,6 +801,17 @@ export async function processOrderWorkflow(
       }
     }
 
+    // Send Slack notification for order completion (non-blocking)
+    await catchAndAlertLocally(
+      async () => {
+        await _sendOrderCompletionSlackAlert(orderDetails, orderItemResults);
+      },
+      {
+        message: `Failed to send Slack order completion alert for order ${input.orderId}`,
+        details: { orderId: input.orderId },
+      },
+    );
+
     setPhase('COMPLETED');
     state.timestamps.completedAt = temporalNow();
   } catch (e) {
@@ -941,4 +952,49 @@ async function _notifyUserOrderProcessed(
       message,
     };
   }
+}
+
+async function _sendOrderCompletionSlackAlert(
+  orderDetails: Awaited<ReturnType<typeof getOrderDetailsOrThrow>>,
+  orderItemsResults: PromiseSettledResult<void>[],
+): Promise<void> {
+  const { sendOrderCompletionSlackAlert } = typedProxyActivities({
+    temporalEnum: TEMPORAL_ENUMS.DEFAULT,
+    options: {
+      ...shortRunningOpts,
+    },
+  });
+
+  const { maybeGetUserEmail } = typedProxyActivities({
+    temporalEnum: TEMPORAL_ENUMS.NOTIFY,
+    options: {
+      ...shortRunningOpts,
+    },
+  });
+
+  const userEmail = await maybeGetUserEmail(orderDetails.order.userId);
+  const walletAddress = orderDetails.order.nftWalletAddress;
+
+  const info = workflow.workflowInfo();
+  const workflowId = info.workflowId;
+  const runId = info.runId;
+
+  const domains = orderDetails.items.map((item, index) => ({
+    normalizedDomainName: item.normalizedDomainName,
+    type: (item.type as 'REGISTER' | 'IMPORT') ?? 'REGISTER',
+    status:
+      orderItemsResults[index].status === 'fulfilled'
+        ? ('SUCCEEDED' as const)
+        : ('FAILED' as const),
+  }));
+
+  await sendOrderCompletionSlackAlert({
+    orderId: orderDetails.order.id,
+    userId: orderDetails.order.userId,
+    userEmail: userEmail ?? undefined,
+    walletAddress: walletAddress ?? undefined,
+    domains,
+    workflowId,
+    runId,
+  });
 }
