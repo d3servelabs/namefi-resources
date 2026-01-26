@@ -12,6 +12,11 @@ on:
           - squash
           - merge
           - rebase
+      forceRelease:
+        description: 'Force release even if no changes detected in apps/frontend or apps/backend'
+        required: false
+        default: false
+        type: boolean
   schedule:
     # Run daily at 11:00 UTC
     - cron: '0 11 * * *'
@@ -56,10 +61,109 @@ jobs:
             echo "This workflow was triggered by the daily schedule (11:00 UTC) but will not create a release." >> $GITHUB_STEP_SUMMARY
           fi
 
-  auth-namefi-bot:
-    name: Get NameFi Bot Info
+  detect-changes:
+    name: Detect Changes in Apps
     needs: check-auto-deploy
     if: needs.check-auto-deploy.outputs.should-deploy == 'true'
+    runs-on: 'blacksmith-4vcpu-ubuntu-2204'
+    outputs:
+      should-release: ${{ steps.check-changes.outputs.should-release }}
+      changed-packages: ${{ steps.detect.outputs.changed-packages }}
+      has-frontend-changes: ${{ steps.check-changes.outputs.has-frontend-changes }}
+      has-backend-changes: ${{ steps.check-changes.outputs.has-backend-changes }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: ".bun-version"
+
+      - name: Cache bun dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock') }}
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Get latest release tag
+        id: get-tag
+        run: |
+          # Get the latest astra release tag
+          LATEST_TAG=$(git tag -l 'astra/v*' --sort=-version:refname | head -n 1)
+          if [ -z "$LATEST_TAG" ]; then
+            echo "No previous release tag found, will proceed with release"
+            echo "latest-tag=" >> $GITHUB_OUTPUT
+            echo "filter=...[HEAD^]" >> $GITHUB_OUTPUT
+          else
+            echo "Latest release tag: $LATEST_TAG"
+            echo "latest-tag=$LATEST_TAG" >> $GITHUB_OUTPUT
+            echo "filter=...[$LATEST_TAG]" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Detect changed packages
+        id: detect
+        uses: ./.github/actions/detect-turbo-changes
+        with:
+          filter: ${{ steps.get-tag.outputs.filter }}
+
+      - name: Check for frontend/backend changes
+        id: check-changes
+        run: |
+          FORCE_RELEASE="${{ github.event.inputs.forceRelease }}"
+          CHANGED_PACKAGES='${{ steps.detect.outputs.changed-packages }}'
+          HAS_CHANGES="${{ steps.detect.outputs.has-changes }}"
+
+          echo "Force release: $FORCE_RELEASE"
+          echo "Has changes: $HAS_CHANGES"
+          echo "Changed packages: $CHANGED_PACKAGES"
+
+          # Check if frontend or backend are in the changed packages
+          HAS_FRONTEND_CHANGES="false"
+          HAS_BACKEND_CHANGES="false"
+
+          if [ "$HAS_CHANGES" == "true" ]; then
+            # Parse the JSON array to check for frontend/backend
+            if echo "$CHANGED_PACKAGES" | grep -q "@namefi-astra/frontend"; then
+              HAS_FRONTEND_CHANGES="true"
+              echo "Frontend changes detected"
+            fi
+            if echo "$CHANGED_PACKAGES" | grep -q "@namefi-astra/backend"; then
+              HAS_BACKEND_CHANGES="true"
+              echo "Backend changes detected"
+            fi
+          fi
+
+          echo "has-frontend-changes=$HAS_FRONTEND_CHANGES" >> $GITHUB_OUTPUT
+          echo "has-backend-changes=$HAS_BACKEND_CHANGES" >> $GITHUB_OUTPUT
+
+          # Determine if we should release
+          if [ "$FORCE_RELEASE" == "true" ]; then
+            echo "Force release enabled, proceeding with release"
+            echo "should-release=true" >> $GITHUB_OUTPUT
+          elif [ "$HAS_FRONTEND_CHANGES" == "true" ] || [ "$HAS_BACKEND_CHANGES" == "true" ]; then
+            echo "Changes detected in frontend or backend, proceeding with release"
+            echo "should-release=true" >> $GITHUB_OUTPUT
+          else
+            echo "No changes detected in frontend or backend, skipping release"
+            echo "should-release=false" >> $GITHUB_OUTPUT
+            echo "## ⏭️ Release Skipped - No Changes" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "No changes were detected in \`apps/frontend\` or \`apps/backend\` since the last release." >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "To force a release anyway, trigger the workflow manually with \`forceRelease: true\`" >> $GITHUB_STEP_SUMMARY
+          fi
+
+  auth-namefi-bot:
+    name: Get NameFi Bot Info
+    needs: [check-auto-deploy, detect-changes]
+    if: needs.check-auto-deploy.outputs.should-deploy == 'true' && needs.detect-changes.outputs.should-release == 'true'
     runs-on: ubuntu-latest
     outputs:
       app-slug: ${{ steps.app-token.outputs.app-slug }}
@@ -485,6 +589,7 @@ jobs:
     name: Release Summary
     needs:
       - check-auto-deploy
+      - detect-changes
       - auth-namefi-bot
       - check-deployment-status
       - update-versions
@@ -503,6 +608,19 @@ jobs:
             echo "The scheduled release was skipped because auto-deploy is disabled." >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
             echo "To enable automatic releases, set the repository variable \`AUTO_DEPLOY=true\`" >> $GITHUB_STEP_SUMMARY
+            exit 0
+          fi
+
+          # Check if release was skipped due to no changes
+          if [[ "${{ needs.detect-changes.outputs.should-release }}" != "true" ]]; then
+            echo "## ⏭️ Release Skipped - No Changes" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "No changes were detected in \`apps/frontend\` or \`apps/backend\` since the last release." >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "- **Frontend changes**: ${{ needs.detect-changes.outputs.has-frontend-changes }}" >> $GITHUB_STEP_SUMMARY
+            echo "- **Backend changes**: ${{ needs.detect-changes.outputs.has-backend-changes }}" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "To force a release anyway, trigger the workflow manually with \`forceRelease: true\`" >> $GITHUB_STEP_SUMMARY
             exit 0
           fi
 
