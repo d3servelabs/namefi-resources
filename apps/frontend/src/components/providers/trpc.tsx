@@ -181,7 +181,7 @@ function isSkipAuthActive(): boolean {
   }
 }
 
-async function getHeaders() {
+async function getHeaders(): Promise<Record<string, string>> {
   const skipAuth = isSkipAuthActive();
 
   // If skip auth is active, send the skip auth header instead of the real token
@@ -194,8 +194,11 @@ async function getHeaders() {
   }
 
   const token = await getAccessToken();
-  return {
+  const headers: Record<string, string> = {
     'Content-Type': 'application/json',
-    ...(token ? { Authorization: `Bearer ${token}` } : {}),
   };
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
+  return headers;
 }
