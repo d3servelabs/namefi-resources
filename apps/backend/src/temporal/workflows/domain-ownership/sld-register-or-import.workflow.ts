@@ -223,14 +223,14 @@ export async function sldRegisterOrImportWorkflow(
         ownerAddress: input.recipientWalletAddress,
         normalizedDomainName: input.normalizedDomainName,
         durationInYears: additionalYears,
-        userId: '', // Not available in this context, but not required for the renewal operation
+        userId: '', // TODO: userId is required by ExtendDomainRegistrationWorkflowInput but unused in helper functions. Consider making it optional in the type definition.
         updateDomainIndex: false, // Will be updated after the full import completes
       };
 
       await workflow.executeChild(extendDomainRegistrationWorkflow, {
         args: [renewalInput],
         taskQueue: TEMPORAL_QUEUES.DOMAINS,
-        workflowId: `import-renewal-${input.normalizedDomainName}-${additionalYears}y`,
+        workflowId: `import-renewal-${input.normalizedDomainName}-${additionalYears}y-${Date.now()}`,
         workflowIdReusePolicy: 'ALLOW_DUPLICATE',
         parentClosePolicy: 'REQUEST_CANCEL',
       });
