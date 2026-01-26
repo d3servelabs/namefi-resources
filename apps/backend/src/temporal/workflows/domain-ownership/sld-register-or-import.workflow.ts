@@ -245,18 +245,31 @@ export async function sldRegisterOrImportWorkflow(
           { renewalError },
         );
 
-        await criticalAlertNamefi({
-          workflowInfo: workflow.workflowInfo(),
-          message: 'Multi-year Import Partial Failure',
-          level: 'error',
-          input,
-          transferSucceeded: true,
-          renewalsSucceeded: false,
-          requestedYears: input.durationInYears,
-          completedYears: 1,
-          failedRenewalYears: additionalYears,
-          renewalError: renewalError?.message || String(renewalError),
-        });
+        // Wrap alert in try-catch to ensure alerting errors don't fail the workflow.
+        // The transfer succeeded, so we must preserve that outcome.
+        try {
+          await criticalAlertNamefi({
+            workflowInfo: workflow.workflowInfo(),
+            message: 'Multi-year Import Partial Failure',
+            level: 'error',
+            input,
+            transferSucceeded: true,
+            renewalsSucceeded: false,
+            requestedYears: input.durationInYears,
+            completedYears: 1,
+            failedRenewalYears: additionalYears,
+            renewalError: renewalError?.message || String(renewalError),
+          });
+        } catch (alertError: any) {
+          workflow.log.error(
+            'Failed to send critical alert for multi-year import partial failure',
+            {
+              alertError: alertError?.message || String(alertError),
+              renewalError: renewalError?.message || String(renewalError),
+              normalizedDomainName: input.normalizedDomainName,
+            },
+          );
+        }
 
         // Continue to return domain details - the transfer succeeded so the domain exists with 1 year.
         // Admins will be notified to manually resolve the missing renewal years.
