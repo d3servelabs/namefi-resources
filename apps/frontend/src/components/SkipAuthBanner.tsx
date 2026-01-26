@@ -21,6 +21,9 @@ export default function SkipAuthBanner() {
         <Unlock className="h-4 w-4" />
         <span className="text-sm font-medium">Auth Skipped (Dev Mode)</span>
         <span className="text-xs opacity-80">{mockUser.email}</span>
+        {/* Two X buttons with different icon sizes for visual hierarchy:
+            - Larger X (h-4 w-4): "Disable skip auth" - permanent action, clears localStorage
+            - Smaller X (h-3 w-3): "Dismiss banner" - temporary, banner returns on navigation */}
         <Button
           size="icon"
           variant="ghost"

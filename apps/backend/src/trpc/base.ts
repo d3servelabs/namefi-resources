@@ -215,7 +215,7 @@ export const createContext = async (
     originBypassedByApiKey,
   });
 
-  // Check for skip auth header in dev/preview environments
+  // Check for skip auth header in local/development environments
   // This allows frontend to bypass auth for local development testing
   const skipAuthHeader = c.req.header('X-Skip-Auth');
   const skipAuthTestUser = getSkipAuthTestUser(
@@ -223,7 +223,10 @@ export const createContext = async (
     process.env.ENVIRONMENT,
   );
   if (skipAuthTestUser) {
-    logger.info('[skip-auth] Skip auth header detected in dev environment');
+    logger.info(
+      { skipAuthEmail: skipAuthTestUser.primaryEmail },
+      'Skip auth header detected in dev environment',
+    );
   }
 
   return {

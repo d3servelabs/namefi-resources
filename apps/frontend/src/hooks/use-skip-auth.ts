@@ -2,7 +2,13 @@
 
 import { config } from '@/lib/env';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
-import { useEffect, useState, useCallback, useRef } from 'react';
+import {
+  useEffect,
+  useState,
+  useCallback,
+  useRef,
+  useSyncExternalStore,
+} from 'react';
 
 const SKIP_AUTH_STORAGE_KEY = 'namefi-skip-auth';
 const SKIP_AUTH_URL_PARAM = 'skip_auth';
@@ -18,13 +24,6 @@ function isDevEnvironment(): boolean {
     config.TYPE === 'local' ||
     config.TYPE === 'development' ||
     config.TYPE === 'preview';
-  if (typeof window !== 'undefined') {
-    console.log(
-      '[skip-auth] Environment check:',
-      `config.TYPE="${config.TYPE}"`,
-      `isDevEnvironment=${isDev}`,
-    );
-  }
   return isDev;
 }
 
@@ -45,64 +44,78 @@ function setSkipAuthInStorage(enabled: boolean): void {
     } else {
       window.localStorage.removeItem(SKIP_AUTH_STORAGE_KEY);
     }
+    // Dispatch a custom event so all hook instances can sync
+    window.dispatchEvent(new CustomEvent('skip-auth-change'));
   } catch {
     // Ignore storage errors
   }
+}
+
+// Subscribe to storage changes for cross-instance synchronization
+function subscribeToSkipAuthChanges(callback: () => void): () => void {
+  const handleChange = () => callback();
+  window.addEventListener('skip-auth-change', handleChange);
+  window.addEventListener('storage', handleChange);
+  return () => {
+    window.removeEventListener('skip-auth-change', handleChange);
+    window.removeEventListener('storage', handleChange);
+  };
+}
+
+// Server snapshot always returns false
+function getServerSnapshot(): boolean {
+  return false;
 }
 
 export function useSkipAuth() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
-  const [isSkipAuthActive, setIsSkipAuthActive] = useState(false);
+
+  // Cache devEnvironment check to avoid multiple calls
+  const devEnvironment = isDevEnvironment();
+
+  // Use useSyncExternalStore for cross-instance state synchronization
+  // This ensures all hook instances stay in sync when localStorage changes
+  const isSkipAuthActive = useSyncExternalStore(
+    subscribeToSkipAuthChanges,
+    () => devEnvironment && getSkipAuthFromStorage(),
+    getServerSnapshot,
+  );
+
   const [isBannerDismissed, setIsBannerDismissed] = useState(false);
 
   useEffect(() => {
-    const isDev = isDevEnvironment();
-    console.log('[skip-auth] useEffect triggered:', {
-      isDev,
-      pathname,
-      searchParamsString: searchParams.toString(),
-    });
-
-    if (!isDev) {
-      console.log('[skip-auth] Not in dev environment, disabling skip auth');
-      setIsSkipAuthActive(false);
+    if (!devEnvironment) {
       return;
     }
 
     const urlParam = searchParams.get(SKIP_AUTH_URL_PARAM);
-    console.log('[skip-auth] URL param value:', urlParam);
 
     if (urlParam === '1') {
-      console.log('[skip-auth] Activating skip auth from URL param');
       setSkipAuthInStorage(true);
-      setIsSkipAuthActive(true);
+      // Reset banner dismissed state when re-enabling via URL
+      setIsBannerDismissed(false);
       const newParams = new URLSearchParams(searchParams.toString());
       newParams.delete(SKIP_AUTH_URL_PARAM);
       const newUrl = newParams.toString()
         ? `${pathname}?${newParams.toString()}`
         : pathname;
-      console.log('[skip-auth] Redirecting to:', newUrl);
       router.replace(newUrl);
     } else if (urlParam === '0') {
-      console.log('[skip-auth] Deactivating skip auth from URL param');
       setSkipAuthInStorage(false);
-      setIsSkipAuthActive(false);
       const newParams = new URLSearchParams(searchParams.toString());
       newParams.delete(SKIP_AUTH_URL_PARAM);
       const newUrl = newParams.toString()
         ? `${pathname}?${newParams.toString()}`
         : pathname;
-      console.log('[skip-auth] Redirecting to:', newUrl);
       router.replace(newUrl);
-    } else {
-      const storedValue = getSkipAuthFromStorage();
-      console.log('[skip-auth] No URL param, checking storage:', storedValue);
-      setIsSkipAuthActive(storedValue);
     }
-  }, [searchParams, router, pathname]);
+  }, [searchParams, router, pathname, devEnvironment]);
 
+  // Reset banner dismissed state on pathname change only (not query params).
+  // Query-only navigation (e.g., filters, pagination) intentionally does not
+  // reset the banner to avoid annoying users during normal browsing.
   const prevPathnameRef = useRef(pathname);
   useEffect(() => {
     if (prevPathnameRef.current !== pathname) {
@@ -117,15 +130,14 @@ export function useSkipAuth() {
 
   const disableSkipAuth = useCallback(() => {
     setSkipAuthInStorage(false);
-    setIsSkipAuthActive(false);
   }, []);
 
   return {
-    isSkipAuthActive: isDevEnvironment() && isSkipAuthActive,
+    isSkipAuthActive,
     isBannerDismissed,
     dismissBanner,
     disableSkipAuth,
     mockUser: SKIP_AUTH_MOCK_USER,
-    isDevEnvironment: isDevEnvironment(),
+    isDevEnvironment: devEnvironment,
   };
 }

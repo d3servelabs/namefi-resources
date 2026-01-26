@@ -57,11 +57,11 @@ describe('Skip Auth Environment Gating', () => {
     });
   });
 
-  describe('Preview environment (should allow skip auth)', () => {
-    it('should return mock user when X-Skip-Auth header is "1" in preview', () => {
+  describe('Preview environment (should NOT allow skip auth - security)', () => {
+    // Preview deployments are public-facing and must NOT allow auth bypass
+    it('should return null when X-Skip-Auth header is "1" in preview', () => {
       const result = getSkipAuthTestUser('1', 'preview');
-      expect(result).not.toBeNull();
-      expect(result?.primaryEmail).toBe('tester+alice@d3serve.xyz');
+      expect(result).toBeNull();
     });
 
     it('should return null when X-Skip-Auth header is absent in preview', () => {

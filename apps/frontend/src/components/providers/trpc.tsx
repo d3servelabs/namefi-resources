@@ -166,6 +166,9 @@ export function TrpcProvider({ children }: { children: React.ReactNode }) {
 }
 
 // Check if skip auth is active from localStorage
+// NOTE: This logic is intentionally duplicated from use-skip-auth.ts because
+// this file cannot use React hooks. Keep the environment check and storage key
+// in sync with useSkipAuth() in apps/frontend/src/hooks/use-skip-auth.ts
 function isSkipAuthActive(): boolean {
   if (typeof window === 'undefined') return false;
   const environment = config.TYPE;

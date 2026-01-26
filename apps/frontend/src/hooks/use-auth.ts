@@ -35,7 +35,8 @@ export function useAuth() {
 
   const userQuery = useQuery(
     trpc.users.getUser.queryOptions(undefined, {
-      enabled: !definitelyNotAuthenticated,
+      // Disable query when skip-auth is active to avoid unnecessary UNAUTHORIZED traffic
+      enabled: !definitelyNotAuthenticated && !isSkipAuthActive,
       retry(failureCount, error) {
         if (definitelyNotAuthenticated || failureCount > 2) {
           return false;
@@ -54,7 +55,8 @@ export function useAuth() {
 
   const impersonation = useQuery(
     trpc.users.getImpersonationStatus.queryOptions(undefined, {
-      enabled: !definitelyNotAuthenticated,
+      // Disable query when skip-auth is active to avoid unnecessary UNAUTHORIZED traffic
+      enabled: !definitelyNotAuthenticated && !isSkipAuthActive,
       retry(failureCount, error) {
         if (definitelyNotAuthenticated || failureCount > 1) {
           return false;
@@ -110,10 +112,18 @@ export function useAuth() {
       createdAt: new Date(),
       updatedAt: new Date(),
     };
+    // Mock PrivyUser with all required properties to prevent runtime crashes
+    // in components that access wallet, linkedAccounts, phone, or google fields
     const mockPrivyUser = {
       id: SKIP_AUTH_MOCK_USER.privyUserId,
       email: { address: SKIP_AUTH_MOCK_USER.email },
       customMetadata: privyStorageToPrivyCustomMetadata.parse(undefined),
+      // Required properties to prevent crashes in user-avatar.tsx, payment-methods-manager.tsx,
+      // use-user-wallet-addresses.ts, and contact-accounts.tsx
+      wallet: null,
+      linkedAccounts: [] as unknown[],
+      phone: null,
+      google: null,
     };
     return {
       ready: true,
