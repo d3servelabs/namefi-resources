@@ -657,7 +657,7 @@ export async function sendEmailNotificationForRenewResult({
   availableBalanceInNfsc: number;
   availableOffChainPaymentMethods: string[];
 }) {
-  const populatedTemplate = React.createElement(DomainRenewReport, {
+  const originalOrderDetails = {
     recipientName: userEmail,
     recipientUserId: userId,
     recipientEmail: userEmail,
@@ -672,7 +672,29 @@ export async function sendEmailNotificationForRenewResult({
     refundAmountInUsd,
     refundStatus,
     orderId,
-  });
+  };
+  // [clickup:NFI-5273] We don't want user to see failed, instead send them to Namefi Dev Team
+  const noFailedRenewals = domainLdhRenewFailed.length === 0;
+  const noSuccessfullRenewals = domainLdhRenewSucceeded.length === 0;
+
+  if (noSuccessfullRenewals && noFailedRenewals) {
+    // Namefi Dev Team is already alerted as a part of renew report
+    return;
+  }
+
+  const adjustedOrderDetails = noFailedRenewals
+    ? originalOrderDetails
+    : {
+        ...originalOrderDetails,
+        domainLdhRenewFailed: [],
+        //payments are removed, otherwise it'll confuse the user because some items are removed from the list
+        payments: [],
+      };
+
+  const populatedTemplate = React.createElement(
+    DomainRenewReport,
+    adjustedOrderDetails,
+  );
 
   const html = await render(populatedTemplate, {
     pretty: true,
