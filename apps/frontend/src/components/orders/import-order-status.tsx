@@ -4,7 +4,10 @@ import { useMemo } from 'react';
 import { Info, Clock, Mail, ArrowRight, Check } from 'lucide-react';
 import { cn } from '@/lib/cn';
 import type { OrderItemSelect } from '@namefi-astra/db';
-import { itemTypeSchema } from '@namefi-astra/common/shared-schemas';
+import {
+  itemTypeSchema,
+  orderStatusSchema,
+} from '@namefi-astra/common/shared-schemas';
 
 interface ImportOrderStatusProps {
   items: OrderItemSelect[];
@@ -36,13 +39,14 @@ export function ImportOrderStatus({
   className,
 }: ImportOrderStatusProps) {
   const importItems = useMemo(
-    () => items.filter((item) => item.type === itemTypeSchema.enum.IMPORT),
+    () =>
+      items.filter(
+        (item) =>
+          item.type === itemTypeSchema.enum.IMPORT &&
+          item.status !== orderStatusSchema.enum.FAILED &&
+          item.status !== orderStatusSchema.enum.CANCELLED,
+      ),
     [items],
-  );
-
-  const importDomains = useMemo(
-    () => importItems.map((item) => item.normalizedDomainName),
-    [importItems],
   );
 
   if (importItems.length === 0) {
@@ -50,9 +54,9 @@ export function ImportOrderStatus({
   }
 
   const domainLabel =
-    importDomains.length === 1
-      ? importDomains[0]
-      : `${importDomains.length} domains`;
+    importItems.length === 1
+      ? importItems[0].normalizedDomainName
+      : `${importItems.length} domains`;
 
   return (
     <div className={cn('space-y-6', className)}>
@@ -167,20 +171,22 @@ export function ImportOrderStatus({
         </div>
       </div>
 
-      {importDomains.length > 0 && (
+      {importItems.length > 0 && (
         <div className="rounded-2xl border border-border bg-background/60 p-6 shadow-sm">
           <h3 className="text-sm font-medium text-muted-foreground mb-4">
-            {importDomains.length === 1
+            {importItems.length === 1
               ? 'Domain being imported'
               : 'Domains being imported'}
           </h3>
           <div className="space-y-2">
-            {importDomains.map((domain) => (
+            {importItems.map((item) => (
               <div
-                key={domain}
+                key={item.id}
                 className="flex items-center justify-between p-3 rounded-lg bg-muted/30"
               >
-                <span className="font-medium text-lg">{domain}</span>
+                <span className="font-medium text-lg">
+                  {item.normalizedDomainName}
+                </span>
                 <span className="text-sm text-muted-foreground px-2 py-1 rounded bg-yellow-500/10 text-yellow-400 border border-yellow-500/20">
                   Transferring
                 </span>
