@@ -430,7 +430,7 @@ export async function sendOrderCompletionSlackAlert(
   input: SendOrderCompletionSlackAlertInput,
 ): Promise<void> {
   const ctx = Context.current();
-  const webhookUrl = secrets.NAMEFI_ORDER_ALERT_SLACK_WEBHOOK_URL;
+  const webhookUrl = secrets.NAMEFI_COWBELL_SLACK_WEBHOOK_URL;
 
   if (!webhookUrl) {
     ctx.log.warn(
