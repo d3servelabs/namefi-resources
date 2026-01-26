@@ -4,6 +4,7 @@ import {
   poweredbyNamefiDomainsTable,
   usersTable,
 } from '@namefi-astra/db';
+import { getSkipAuthTestUser } from './skip-auth';
 import { initTRPC } from '@trpc/server';
 import { TRPCError } from '@trpc/server';
 import type { FetchCreateContextFnOptions } from '@trpc/server/adapters/fetch';
@@ -216,28 +217,13 @@ export const createContext = async (
 
   // Check for skip auth header in dev/preview environments
   // This allows frontend to bypass auth for local development testing
-  let skipAuthTestUser: UserSelect | null = null;
   const skipAuthHeader = c.req.header('X-Skip-Auth');
-  const environment = process.env.ENVIRONMENT;
-  const isDevEnvironment =
-    environment === 'local' ||
-    environment === 'development' ||
-    environment === 'preview';
-
-  if (skipAuthHeader === '1' && isDevEnvironment) {
+  const skipAuthTestUser = getSkipAuthTestUser(
+    skipAuthHeader,
+    process.env.ENVIRONMENT,
+  );
+  if (skipAuthTestUser) {
     logger.info('[skip-auth] Skip auth header detected in dev environment');
-    // Create a mock test user for skip auth mode
-    skipAuthTestUser = {
-      id: 'skip-auth-mock-user-id',
-      privyUserId: 'skip-auth-mock-privy-user-id',
-      primaryEmail: 'tester+alice@d3serve.xyz',
-      stripeCustomerId: null,
-      subscribeToEmails: true,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      lastSignInAt: new Date(),
-      lastAccessedSessionAt: new Date(),
-    };
   }
 
   return {
