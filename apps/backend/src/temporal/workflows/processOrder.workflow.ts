@@ -501,6 +501,46 @@ export async function processOrderWorkflow(
     setPhase('PROCESSING_ITEMS');
     setStepStatus('items', 'IN_PROGRESS');
 
+    // Send early notification for orders containing import items
+    // Import orders can take 5-7 days to complete, so we notify users immediately
+    // Wrapped in workflow.patched() to handle in-flight workflows during deployment
+    if (workflow.patched('early-import-notification')) {
+      const hasImportItems = orderDetails.items.some(
+        (item) => item.type === 'IMPORT',
+      );
+      if (hasImportItems) {
+        try {
+          // Re-fetch order details to ensure payment fields are populated after charge
+          const refreshedOrderDetails = await getOrderDetailsOrThrow(
+            input.orderId,
+          );
+          const notificationResult = await _notifyUserImportOrderSubmitted(
+            refreshedOrderDetails,
+          );
+          if (notificationResult.status === 'SENT') {
+            workflow.log.info(
+              `Sent early notification for import order ${input.orderId}`,
+            );
+          } else if (notificationResult.status === 'FAILED') {
+            workflow.log.warn(
+              `Early notification for import order ${input.orderId} failed${notificationResult.message ? `: ${notificationResult.message}` : ''}`,
+            );
+          } else {
+            workflow.log.info(
+              `Early notification for import order ${input.orderId} was ${notificationResult.status.toLowerCase()}${notificationResult.message ? `: ${notificationResult.message}` : ''}`,
+            );
+          }
+        } catch (error) {
+          // Don't fail the workflow if early notification fails
+          workflow.log.warn(
+            `Failed to send early notification for import order ${input.orderId}: ${
+              error instanceof Error ? error.message : String(error)
+            }`,
+          );
+        }
+      }
+    }
+
     const orderItemPromises = orderDetails.items.map((item) => {
       updateItem(item.id, {
         status: 'PROCESSING',
@@ -841,6 +881,66 @@ export async function processOrderWorkflow(
   }
 }
 
+/**
+ * Payment provider priority for selecting which payment to show in notifications.
+ * Stripe is preferred as it's more user-relevant than crypto payments.
+ */
+const PAYMENT_PROVIDER_PRIORITY = [
+  'STRIPE',
+  'NFSC_ETHEREUM_SEPOLIA',
+  'NFSC_BASE',
+  'NFSC_ETHEREUM',
+] as const;
+
+/**
+ * Get the priority rank for a payment provider.
+ * Returns the index in PAYMENT_PROVIDER_PRIORITY, or Infinity for unknown providers
+ * to ensure they sort after all known providers.
+ */
+function _getProviderRank(provider: string): number {
+  const index = PAYMENT_PROVIDER_PRIORITY.indexOf(
+    provider as (typeof PAYMENT_PROVIDER_PRIORITY)[number],
+  );
+  return index === -1 ? Number.POSITIVE_INFINITY : index;
+}
+
+/**
+ * Select the best payment for notification purposes and extract the payment method identifier.
+ * Returns the chosen payment provider and its identifier (Stripe payment method ID or wallet address).
+ * Returns undefined for both fields if no known payment provider is found.
+ */
+function _selectPaymentForNotification(
+  payments: Awaited<ReturnType<typeof getOrderDetailsOrThrow>>['payments'],
+): {
+  paymentMethodCharged: (typeof PAYMENT_PROVIDER_PRIORITY)[number] | undefined;
+  paymentMethodIdentifier: string | undefined;
+} {
+  const chosenPayment = [...payments].sort(
+    (a, b) =>
+      _getProviderRank(a.paymentProvider) - _getProviderRank(b.paymentProvider),
+  )[0];
+
+  // If no payment or the chosen payment has an unknown provider, return undefined
+  if (
+    !chosenPayment ||
+    _getProviderRank(chosenPayment.paymentProvider) === Number.POSITIVE_INFINITY
+  ) {
+    return {
+      paymentMethodCharged: undefined,
+      paymentMethodIdentifier: undefined,
+    };
+  }
+
+  const paymentMethodCharged =
+    chosenPayment.paymentProvider as (typeof PAYMENT_PROVIDER_PRIORITY)[number];
+  const paymentMethodIdentifier =
+    paymentMethodCharged === 'STRIPE'
+      ? chosenPayment.stripePaymentDetails?.paymentMethodId
+      : chosenPayment.nfscPaymentDetails?.walletAddress;
+
+  return { paymentMethodCharged, paymentMethodIdentifier };
+}
+
 async function postProcessOrder() {
   const { triggerGenerateAndUpdateDataForDomains } = typedProxyActivities({
     temporalEnum: TEMPORAL_ENUMS.INDEXERS,
@@ -885,24 +985,10 @@ async function _notifyUserOrderProcessed(
     workflow.log.warn(message);
     return { status: 'SKIPPED', message };
   }
-  // Prefer a user-relevant payment for notifications (Stripe first)
-  const priority = [
-    'STRIPE',
-    'NFSC_ETHEREUM_SEPOLIA',
-    'NFSC_BASE',
-    'NFSC_ETHEREUM',
-  ];
-  const chosenPayment = [...orderDetails.payments].sort(
-    (a, b) =>
-      priority.indexOf(a.paymentProvider) - priority.indexOf(b.paymentProvider),
-  )[0];
-  const paymentMethodCharged = chosenPayment?.paymentProvider;
-  const paymentMethodIdentifier =
-    paymentMethodCharged === 'STRIPE'
-      ? chosenPayment?.stripePaymentDetails?.paymentMethodId
-      : chosenPayment?.nfscPaymentDetails?.walletAddress;
+  const { paymentMethodCharged, paymentMethodIdentifier } =
+    _selectPaymentForNotification(orderDetails.payments);
 
-  if (!paymentMethodIdentifier) {
+  if (!paymentMethodCharged || !paymentMethodIdentifier) {
     const message = `Failed to notify user for order ${orderDetails.order.id}. Payment method identifier is missing`;
     workflow.upsertMemo({
       notifyUserOrderProcessed: {
@@ -951,6 +1037,69 @@ async function _notifyUserOrderProcessed(
       status: 'FAILED',
       message,
     };
+  }
+}
+
+/**
+ * Send an early notification for import orders immediately after payment is charged.
+ * This notifies users that their import order has been submitted and is being processed,
+ * since domain transfers can take 5-7 days to complete.
+ */
+async function _notifyUserImportOrderSubmitted(
+  orderDetails: Awaited<ReturnType<typeof getOrderDetailsOrThrow>>,
+): Promise<NotificationResult> {
+  const { notifyUserOrderProcessed, maybeGetUserEmail } = typedProxyActivities({
+    temporalEnum: TEMPORAL_ENUMS.NOTIFY,
+    options: {
+      ...shortRunningOpts,
+    },
+  });
+
+  const userEmail = await maybeGetUserEmail(orderDetails.order.userId);
+  if (!userEmail) {
+    const message = 'User has no primary email';
+    workflow.log.warn(
+      `Skipping early import notification for order ${orderDetails.order.id}. ${message}`,
+    );
+    return { status: 'SKIPPED', message };
+  }
+
+  const { paymentMethodCharged, paymentMethodIdentifier } =
+    _selectPaymentForNotification(orderDetails.payments);
+
+  if (!paymentMethodCharged || !paymentMethodIdentifier) {
+    const message = 'Payment method identifier is missing';
+    workflow.log.warn(
+      `Skipping early import notification for order ${orderDetails.order.id}. ${message}`,
+    );
+    return { status: 'SKIPPED', message };
+  }
+
+  try {
+    // For import items, set status to 'PROCESSING' to trigger the import info section in the email
+    // For non-import items (if any), also set to 'PROCESSING' since they haven't been processed yet
+    await notifyUserOrderProcessed({
+      orderId: orderDetails.order.id,
+      recipientName: userEmail,
+      recipientEmail: userEmail,
+      items: orderDetails.items.map((item) => ({
+        normalizedDomainName: item.normalizedDomainName,
+        duration: item.durationInYears,
+        priceInUsdCents: item.amountInUSDCents,
+        status: 'PROCESSING',
+        type: item.type,
+      })),
+      chargedAmountInUsdCents: orderDetails.order.amountInUSDCents,
+      paymentMethodCharged,
+      paymentMethodIdentifier,
+    });
+    return { status: 'SENT' };
+  } catch (e) {
+    workflow.log.error(
+      `Failed to send early import notification for order ${orderDetails.order.id}. Error: ${e}`,
+    );
+    const message = e instanceof Error ? e.message : String(e);
+    return { status: 'FAILED', message };
   }
 }
 
