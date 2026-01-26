@@ -20,6 +20,10 @@ export const secretsSchema = z.object({
   ALCHEMY_API_KEY: z.string(),
   SMTP_PASSWORD: z.string().optional(),
   SMTP_USERNAME: z.string().optional(),
+  EMAIL_TRACKING_JWT_SECRET: z
+    .string()
+    .optional()
+    .default('--dev-jwt-secret--'),
   GCP_HSM_KEYRING_RESOURCE_NAME: z.string().optional(),
   LOCAL_SIGNER_PRIVATE_KEY: z.string().optional(),
   LOCAL_SIGNER_MNEMONIC: z.string().optional(),

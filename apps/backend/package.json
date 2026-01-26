@@ -119,6 +119,7 @@
     "hono-pino-logger": "^1.0.0",
     "hono-rate-limiter": "^0.4.2",
     "iso-countries-lookup": "^2.0.8",
+    "jose": "^6.0.12",
     "limiter": "^2.1.0",
     "mnemonist": "^0.40.3",
     "mongoose": "^8.16.0",

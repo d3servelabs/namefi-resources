@@ -14,6 +14,7 @@ import { isHostnameAllowed } from '#lib/hostname-validation';
 import { dnssecRouter } from './dnssec';
 import { nsJsonRouter } from './ns-json';
 import { trackingRouter } from './routers/tracking';
+import { emailAnalyticsRouter } from './routers/email-analytics';
 import { webhooksRouter } from './routers/webhooks';
 import { availabilityRouter } from './routers/availability';
 import { publicAiRouter } from './routers/public-ai';
@@ -108,6 +109,7 @@ app.use(
 
 app.route('v1/ns-json', nsJsonRouter);
 app.route('v1/dns/tracking', trackingRouter);
+app.route('v1/email', emailAnalyticsRouter);
 app.route('v1/dnssec', dnssecRouter);
 app.route('v1/availability', availabilityRouter);
 app.route('v1/public/ai', publicAiRouter);

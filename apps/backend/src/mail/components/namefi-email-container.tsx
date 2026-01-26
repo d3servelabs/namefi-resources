@@ -8,6 +8,7 @@ import {
   Tailwind,
 } from '@react-email/components';
 import * as styles from '../styles';
+import { EmailTrackingPixel, useEmailTrackingUrl } from './email-tracking';
 import { NamefiFooter } from './namefi-footer';
 import { NamefiHeader } from './namefi-header';
 // biome-ignore lint/style/useImportType: required for react-email
@@ -25,6 +26,10 @@ export function NamefiEmailContainer({
   footer?: React.ReactNode | 'default' | undefined | null | false;
   header?: React.ReactNode | 'default' | undefined | null | false;
 }) {
+  const trackingUrl = useEmailTrackingUrl();
+  const trackingPixel = trackingUrl ? (
+    <EmailTrackingPixel trackingUrl={trackingUrl} />
+  ) : null;
   return (
     <Tailwind>
       <Html>
@@ -72,6 +77,7 @@ export function NamefiEmailContainer({
               {children}
               {isNotNil(footer) &&
                 (footer === 'default' ? <NamefiFooter /> : footer)}
+              {trackingPixel}
             </Section>
           </Container>
         </Body>
