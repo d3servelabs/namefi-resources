@@ -213,6 +213,8 @@ export async function sldRegisterOrImportWorkflow(
 
     // For multi-year imports, EPP transfer only adds 1 year.
     // We need to perform additional renewal operations for years 2+.
+    // If the renewal fails, we alert admins but still return success for the transfer portion.
+    // The domain will have 1 year instead of the requested duration - admins must manually resolve.
     if (isImport && input.durationInYears > 1) {
       const additionalYears = input.durationInYears - 1;
       workflow.log.info(
@@ -224,18 +226,45 @@ export async function sldRegisterOrImportWorkflow(
         normalizedDomainName: input.normalizedDomainName,
         durationInYears: additionalYears,
         userId: '', // TODO: userId is required by ExtendDomainRegistrationWorkflowInput but unused in helper functions. Consider making it optional in the type definition.
-        updateDomainIndex: false, // Will be updated after the full import completes
+        updateDomainIndex: true, // Update index after renewal to reflect the new expiration
       };
 
-      await workflow.executeChild(extendDomainRegistrationWorkflow, {
-        args: [renewalInput],
-        taskQueue: TEMPORAL_QUEUES.DOMAINS,
-        workflowId: `import-renewal-${input.normalizedDomainName}-${additionalYears}y-${Date.now()}`,
-        workflowIdReusePolicy: 'ALLOW_DUPLICATE',
-        parentClosePolicy: 'REQUEST_CANCEL',
-      });
+      try {
+        await workflow.executeChild(extendDomainRegistrationWorkflow, {
+          args: [renewalInput],
+          taskQueue: TEMPORAL_QUEUES.DOMAINS,
+          workflowId: `import-renewal-${input.normalizedDomainName}-${additionalYears}y-${Date.now()}`,
+          workflowIdReusePolicy: 'ALLOW_DUPLICATE',
+          parentClosePolicy: 'REQUEST_CANCEL',
+        });
+      } catch (renewalError: any) {
+        // Transfer succeeded but renewal failed - this is a partial success scenario.
+        // Alert admins so they can manually extend the domain or issue a refund for the renewal portion.
+        workflow.log.error(
+          `Multi-year import partial failure: transfer succeeded but renewal failed for ${input.normalizedDomainName}`,
+          { renewalError },
+        );
+
+        await criticalAlertNamefi({
+          workflowInfo: workflow.workflowInfo(),
+          message: 'Multi-year Import Partial Failure',
+          level: 'error',
+          input,
+          transferSucceeded: true,
+          renewalsSucceeded: false,
+          requestedYears: input.durationInYears,
+          completedYears: 1,
+          failedRenewalYears: additionalYears,
+          renewalError: renewalError?.message || String(renewalError),
+        });
+
+        // Continue to return domain details - the transfer succeeded so the domain exists with 1 year.
+        // Admins will be notified to manually resolve the missing renewal years.
+      }
     }
 
+    // Fetch and return domain details. This also ensures the domain index is updated
+    // with the current state from the registrar.
     return getDomainDetails(input.normalizedDomainName as PunycodeDomainName);
   } catch (error: any) {
     workflow.log.error(error);
