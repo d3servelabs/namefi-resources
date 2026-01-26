@@ -3,7 +3,7 @@ import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
 const mockUser = {
   id: 'real-user-id-from-db',
   privyUserId: 'real-privy-user-id',
-  primaryEmail: 'tester+alice@d3serve.xyz',
+  primaryEmail: 'dev-team@d3serve.xyz',
   stripeCustomerId: null,
   subscribeToEmails: true,
   createdAt: new Date('2024-01-01'),
@@ -34,7 +34,7 @@ vi.mock('@namefi-astra/db', () => ({
 // Mock the config module
 vi.mock('#lib/env', () => ({
   config: {
-    SKIP_AUTH_USER_EMAIL: 'tester+alice@d3serve.xyz',
+    SKIP_AUTH_USER_EMAIL: 'dev-team@d3serve.xyz',
   },
 }));
 
@@ -87,7 +87,7 @@ describe('Skip Auth Environment Gating', () => {
     it('should return user from database when X-Skip-Auth header is "1" in local', async () => {
       const result = await getSkipAuthTestUser('1', 'local');
       expect(result).not.toBeNull();
-      expect(result?.primaryEmail).toBe('tester+alice@d3serve.xyz');
+      expect(result?.primaryEmail).toBe('dev-team@d3serve.xyz');
       expect(result?.id).toBe('real-user-id-from-db');
       expect(result?.privyUserId).toBe('real-privy-user-id');
     });
@@ -112,7 +112,7 @@ describe('Skip Auth Environment Gating', () => {
     it('should return user from database when X-Skip-Auth header is "1" in development', async () => {
       const result = await getSkipAuthTestUser('1', 'development');
       expect(result).not.toBeNull();
-      expect(result?.primaryEmail).toBe('tester+alice@d3serve.xyz');
+      expect(result?.primaryEmail).toBe('dev-team@d3serve.xyz');
     });
 
     it('should return null when X-Skip-Auth header is absent in development', async () => {
@@ -173,7 +173,7 @@ describe('Skip Auth Environment Gating', () => {
 
     it('should use the correct test email address', async () => {
       const result = await getSkipAuthTestUser('1', 'local');
-      expect(result?.primaryEmail).toBe('tester+alice@d3serve.xyz');
+      expect(result?.primaryEmail).toBe('dev-team@d3serve.xyz');
     });
   });
 
@@ -184,7 +184,7 @@ describe('Skip Auth Environment Gating', () => {
       const result = await getSkipAuthTestUser('1', 'local');
       expect(result).toBeNull();
       expect(mockLoggerWarn).toHaveBeenCalledWith(
-        { skipAuthUserEmail: 'tester+alice@d3serve.xyz' },
+        { skipAuthUserEmail: 'dev-team@d3serve.xyz' },
         'Skip auth user not found in database. Please ensure the user exists.',
       );
     });

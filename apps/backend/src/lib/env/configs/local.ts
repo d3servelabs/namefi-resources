@@ -73,7 +73,7 @@ const localConfig: ConfigInput = {
       baseUrl: 'http://ns4.namefi.dev:8181',
     },
   ],
-  SKIP_AUTH_USER_EMAIL: 'tester+alice@d3serve.xyz',
+  SKIP_AUTH_USER_EMAIL: 'dev-team@d3serve.xyz',
 };
 
 export default localConfig;
