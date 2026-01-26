@@ -197,117 +197,107 @@ describe('computeChargesInUsdFromDomainAvailabilityInfo', () => {
     importPrice,
   });
 
-  describe('IMPORT operation with PER_YEAR pricing', () => {
-    const perYearImportPricing: PricingDetails = {
-      type: 'PER_YEAR',
-      price: { amount: 15.99, currency: 'USD' },
-    };
-
+  describe('IMPORT operation with PER_YEAR pricing (import price for year 1, renewal price for years 2+)', () => {
     const pricingDetails = createDomainPricingDetails(
       { type: 'PER_YEAR', price: { amount: 10.99, currency: 'USD' } },
       { type: 'PER_YEAR', price: { amount: 12.99, currency: 'USD' } },
-      perYearImportPricing,
+      { type: 'PER_YEAR', price: { amount: 15.99, currency: 'USD' } },
     );
 
-    it('should compute import charges for 1 year', () => {
+    it('should compute import charges for 1 year (import price only)', () => {
       const result = computeChargesInUsdFromDomainAvailabilityInfo(
         { pricingDetails },
         1,
         'IMPORT',
       );
-      expect(result).toBe(15.99);
+      expect(result).toBe(15.99); // import price for year 1
     });
 
-    it('should compute import charges for multiple years (linear scaling)', () => {
-      const result = computeChargesInUsdFromDomainAvailabilityInfo(
-        { pricingDetails },
-        3,
-        'IMPORT',
-      );
-      expect(result).toBe(47.97); // 15.99 * 3
-    });
-
-    it('should compute import charges for 5 years', () => {
-      const result = computeChargesInUsdFromDomainAvailabilityInfo(
-        { pricingDetails },
-        5,
-        'IMPORT',
-      );
-      expect(result).toBe(79.95); // 15.99 * 5
-    });
-
-    it('should compute import charges for 10 years', () => {
-      const result = computeChargesInUsdFromDomainAvailabilityInfo(
-        { pricingDetails },
-        10,
-        'IMPORT',
-      );
-      expect(result).toBe(159.9); // 15.99 * 10
-    });
-  });
-
-  describe('IMPORT operation with MULTI_YEAR pricing', () => {
-    const multiYearImportPricing: PricingDetails = {
-      type: 'MULTI_YEAR',
-      price: {
-        1: { amount: 15.99, currency: 'USD' },
-        2: { amount: 29.99, currency: 'USD' },
-        3: { amount: 42.99, currency: 'USD' },
-        5: { amount: 69.99, currency: 'USD' },
-        10: { amount: 129.99, currency: 'USD' },
-      },
-    };
-
-    const pricingDetails = createDomainPricingDetails(
-      { type: 'PER_YEAR', price: { amount: 10.99, currency: 'USD' } },
-      { type: 'PER_YEAR', price: { amount: 12.99, currency: 'USD' } },
-      multiYearImportPricing,
-    );
-
-    it('should compute import charges for 1 year from multi-year table', () => {
-      const result = computeChargesInUsdFromDomainAvailabilityInfo(
-        { pricingDetails },
-        1,
-        'IMPORT',
-      );
-      expect(result).toBe(15.99);
-    });
-
-    it('should compute import charges for 2 years from multi-year table', () => {
+    it('should compute import charges for 2 years (import + 1 renewal)', () => {
       const result = computeChargesInUsdFromDomainAvailabilityInfo(
         { pricingDetails },
         2,
         'IMPORT',
       );
-      expect(result).toBe(29.99);
+      expect(result).toBe(28.98); // 15.99 (import) + 12.99 (1 year renewal)
     });
 
-    it('should compute import charges for 5 years from multi-year table', () => {
+    it('should compute import charges for 3 years (import + 2 renewals)', () => {
+      const result = computeChargesInUsdFromDomainAvailabilityInfo(
+        { pricingDetails },
+        3,
+        'IMPORT',
+      );
+      expect(result).toBe(41.97); // 15.99 (import) + 25.98 (2 years renewal @ 12.99/yr)
+    });
+
+    it('should compute import charges for 5 years (import + 4 renewals)', () => {
       const result = computeChargesInUsdFromDomainAvailabilityInfo(
         { pricingDetails },
         5,
         'IMPORT',
       );
-      expect(result).toBe(69.99);
+      expect(result).toBe(67.95); // 15.99 (import) + 51.96 (4 years renewal @ 12.99/yr)
     });
 
-    it('should compute import charges for 10 years from multi-year table', () => {
+    it('should compute import charges for 10 years (import + 9 renewals)', () => {
       const result = computeChargesInUsdFromDomainAvailabilityInfo(
         { pricingDetails },
         10,
         'IMPORT',
       );
-      expect(result).toBe(129.99);
+      expect(result).toBe(132.9); // 15.99 (import) + 116.91 (9 years renewal @ 12.99/yr)
+    });
+  });
+
+  describe('IMPORT operation with MULTI_YEAR import pricing (import price for year 1, renewal for years 2+)', () => {
+    const multiYearImportPricing: PricingDetails = {
+      type: 'MULTI_YEAR',
+      price: {
+        1: { amount: 20.0, currency: 'USD' },
+      },
+    };
+
+    const pricingDetails = createDomainPricingDetails(
+      { type: 'PER_YEAR', price: { amount: 10.99, currency: 'USD' } },
+      { type: 'PER_YEAR', price: { amount: 12.0, currency: 'USD' } },
+      multiYearImportPricing,
+    );
+
+    it('should compute import charges for 1 year from multi-year import table', () => {
+      const result = computeChargesInUsdFromDomainAvailabilityInfo(
+        { pricingDetails },
+        1,
+        'IMPORT',
+      );
+      expect(result).toBe(20.0); // import price for year 1
     });
 
-    it('should throw error for duration not in multi-year import pricing table', () => {
-      expect(() =>
-        computeChargesInUsdFromDomainAvailabilityInfo(
-          { pricingDetails },
-          4,
-          'IMPORT',
-        ),
-      ).toThrow('Invalid duration, no price found');
+    it('should compute import charges for 2 years (import + 1 renewal)', () => {
+      const result = computeChargesInUsdFromDomainAvailabilityInfo(
+        { pricingDetails },
+        2,
+        'IMPORT',
+      );
+      expect(result).toBe(32.0); // 20.0 (import) + 12.0 (1 year renewal)
+    });
+
+    it('should compute import charges for 5 years (import + 4 renewals)', () => {
+      const result = computeChargesInUsdFromDomainAvailabilityInfo(
+        { pricingDetails },
+        5,
+        'IMPORT',
+      );
+      expect(result).toBe(68.0); // 20.0 (import) + 48.0 (4 years renewal @ 12.0/yr)
+    });
+
+    it('should compute import charges for 10 years (import + 9 renewals)', () => {
+      const result = computeChargesInUsdFromDomainAvailabilityInfo(
+        { pricingDetails },
+        10,
+        'IMPORT',
+      );
+      expect(result).toBe(128.0); // 20.0 (import) + 108.0 (9 years renewal @ 12.0/yr)
     });
   });
 
@@ -336,13 +326,13 @@ describe('computeChargesInUsdFromDomainAvailabilityInfo', () => {
       expect(result).toBe(24.0); // 12.0 * 2
     });
 
-    it('should use importPrice for IMPORT operation', () => {
+    it('should use importPrice for year 1 and renewalPrice for years 2+ for IMPORT operation', () => {
       const result = computeChargesInUsdFromDomainAvailabilityInfo(
         { pricingDetails },
         2,
         'IMPORT',
       );
-      expect(result).toBe(30.0); // 15.0 * 2
+      expect(result).toBe(27.0); // 15.0 (import year 1) + 12.0 (renewal year 2)
     });
   });
 

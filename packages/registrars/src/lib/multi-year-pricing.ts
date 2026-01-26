@@ -14,25 +14,59 @@ export type PriceFromDomainAvailabilityInfo = {
  * @param operation - The operation to compute the charges for (must be one of 'REGISTER', 'RENEW', 'IMPORT')
  * @returns The charges for the given duration
  * @throws Error if duration is not an integer, less than 1, or greater than 10
+ *
+ * Note: For IMPORT operations, the first year uses importPrice and subsequent years use renewalPrice.
+ * This is because EPP transfer operations only add 1 year, so additional years require renewal operations.
  */
 export function computeChargesInUsdFromDomainAvailabilityInfo(
   { pricingDetails }: PriceFromDomainAvailabilityInfo,
   _durationInYears: number,
   operation: 'REGISTER' | 'RENEW' | 'IMPORT',
 ) {
+  const durationInYears = z
+    .number()
+    .int('Duration must be an integer')
+    .min(1, 'Invalid duration')
+    .max(10, 'Invalid duration')
+    .parse(_durationInYears);
+
+  if (operation === 'IMPORT') {
+    if (!pricingDetails.importPrice) {
+      throw new Error(
+        'No pricing details found for the given operation: IMPORT',
+      );
+    }
+    const firstYearCharge = computeChargesInUsdOrThrow(
+      pricingDetails.importPrice,
+      1,
+    );
+
+    if (durationInYears === 1) {
+      return firstYearCharge;
+    }
+
+    if (!pricingDetails.renewalPrice) {
+      throw new Error('No renewal pricing details found for multi-year import');
+    }
+    const additionalYearsCharge = computeChargesInUsdOrThrow(
+      pricingDetails.renewalPrice,
+      durationInYears - 1,
+    );
+
+    return firstYearCharge + additionalYearsCharge;
+  }
+
   const _pricingDetails =
     operation === 'REGISTER'
       ? pricingDetails.registrationPrice
-      : operation === 'RENEW'
-        ? pricingDetails.renewalPrice
-        : pricingDetails.importPrice;
+      : pricingDetails.renewalPrice;
 
   if (!_pricingDetails) {
     throw new Error(
       `No pricing details found for the given operation: ${operation}`,
     );
   }
-  return computeChargesInUsdOrThrow(_pricingDetails, _durationInYears);
+  return computeChargesInUsdOrThrow(_pricingDetails, durationInYears);
 }
 
 /**
