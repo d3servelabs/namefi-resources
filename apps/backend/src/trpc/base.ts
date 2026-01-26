@@ -231,13 +231,13 @@ export const createContext = async (
       id: 'skip-auth-mock-user-id',
       privyUserId: 'skip-auth-mock-privy-user-id',
       primaryEmail: 'tester+alice@d3serve.xyz',
-      displayName: 'Skip Auth Test User',
-      mainWalletAddress: null,
+      stripeCustomerId: null,
+      subscribeToEmails: true,
       createdAt: new Date(),
       updatedAt: new Date(),
       lastSignInAt: new Date(),
       lastAccessedSessionAt: new Date(),
-    } as UserSelect;
+    };
   }
 
   return {
