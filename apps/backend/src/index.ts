@@ -77,6 +77,7 @@ app.use(async (...args) => {
       'x-c15t-country',
       'x-c15t-region',
       'accept-language',
+      'x-skip-auth',
     ],
     credentials: true, // Allow cookies if needed
   })(...args);

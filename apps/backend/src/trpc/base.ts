@@ -218,7 +218,7 @@ export const createContext = async (
   // Check for skip auth header in local/development environments
   // This allows frontend to bypass auth for local development testing
   const skipAuthHeader = c.req.header('X-Skip-Auth');
-  const skipAuthTestUser = getSkipAuthTestUser(
+  const skipAuthTestUser = await getSkipAuthTestUser(
     skipAuthHeader,
     process.env.ENVIRONMENT,
   );

@@ -1,8 +1,11 @@
-import type { UserSelect } from '@namefi-astra/db';
+import { type UserSelect, db, usersTable } from '@namefi-astra/db';
+import { eq } from 'drizzle-orm';
+import { config } from '#lib/env';
+import { logger } from '#lib/logger';
 
 /**
  * Determines if skip auth should be enabled based on the header and environment.
- * Returns a mock test user if skip auth is enabled, null otherwise.
+ * If enabled, looks up the configured test user from the database.
  *
  * Skip auth is ONLY allowed in local/development environments.
  * Preview and production environments are public-facing and must NOT allow skip auth.
@@ -10,30 +13,42 @@ import type { UserSelect } from '@namefi-astra/db';
  *
  * @param skipAuthHeader - The value of the X-Skip-Auth header
  * @param environment - The current environment (process.env.ENVIRONMENT)
- * @returns A mock UserSelect if skip auth is enabled, null otherwise
+ * @returns The real user from the database if skip auth is enabled and user exists, null otherwise
  */
-export function getSkipAuthTestUser(
+export async function getSkipAuthTestUser(
   skipAuthHeader: string | undefined,
   environment: string | undefined,
-): UserSelect | null {
+): Promise<UserSelect | null> {
   // SECURITY: Only allow skip auth in truly local environments.
   // Preview deployments are public-facing and must NOT allow auth bypass.
   const isDevEnvironment =
     environment === 'local' || environment === 'development';
 
-  if (skipAuthHeader === '1' && isDevEnvironment) {
-    return {
-      id: 'skip-auth-mock-user-id',
-      privyUserId: 'skip-auth-mock-privy-user-id',
-      primaryEmail: 'tester+alice@d3serve.xyz',
-      stripeCustomerId: null,
-      subscribeToEmails: true,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      lastSignInAt: new Date(),
-      lastAccessedSessionAt: new Date(),
-    };
+  if (skipAuthHeader !== '1' || !isDevEnvironment) {
+    return null;
   }
 
-  return null;
+  // Check if a skip auth user email is configured
+  const skipAuthUserEmail = config.SKIP_AUTH_USER_EMAIL;
+  if (!skipAuthUserEmail) {
+    logger.warn(
+      'Skip auth header detected but SKIP_AUTH_USER_EMAIL is not configured',
+    );
+    return null;
+  }
+
+  // Look up the real user from the database by email
+  const user = await db.query.usersTable.findFirst({
+    where: eq(usersTable.primaryEmail, skipAuthUserEmail),
+  });
+
+  if (!user) {
+    logger.warn(
+      { skipAuthUserEmail },
+      'Skip auth user not found in database. Please ensure the user exists.',
+    );
+    return null;
+  }
+
+  return user;
 }

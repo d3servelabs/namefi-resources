@@ -53,6 +53,7 @@ const developmentConfig: ConfigInput = {
       baseUrl: 'http://ns3.namefi.dev:8181',
     },
   ],
+  SKIP_AUTH_USER_EMAIL: 'tester+alice@d3serve.xyz',
 };
 
 export default developmentConfig;
