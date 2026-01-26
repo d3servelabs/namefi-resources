@@ -569,16 +569,23 @@ export const verifyUserAuthAndCreation = t.middleware<TrpcContextWithUser>(
       let user = ctx.user;
       let sessionId = ctx.sessionId;
       if (!user) {
-        const authHeader = ctx.req?.header?.('Authorization');
-        if (!authHeader?.startsWith('Bearer ')) {
-          throw new TRPCError({
-            code: 'UNAUTHORIZED',
-            message: ctx.apiAuthResult?.error ?? 'Invalid authorization header',
-          });
+        // Check for skip auth test user first (set in createContext when X-Skip-Auth header is present)
+        if (ctx.testUser) {
+          user = ctx.testUser;
+          sessionId = null;
+        } else {
+          const authHeader = ctx.req?.header?.('Authorization');
+          if (!authHeader?.startsWith('Bearer ')) {
+            throw new TRPCError({
+              code: 'UNAUTHORIZED',
+              message:
+                ctx.apiAuthResult?.error ?? 'Invalid authorization header',
+            });
+          }
+          const result = await requireUserAuth(authHeader, ctx.testUser);
+          user = result.user;
+          sessionId = result.sessionId;
         }
-        const result = await requireUserAuth(authHeader, ctx.testUser);
-        user = result.user;
-        sessionId = result.sessionId;
       }
 
       const result = await processUserAuthContext({
@@ -617,13 +624,19 @@ export const maybeVerifyUserAuthAndCreation =
     let user = ctx.user;
     let sessionId = ctx.sessionId;
     if (!user) {
-      const authHeader = ctx.req?.header?.('Authorization');
-      if (!authHeader?.startsWith('Bearer ')) {
-        return next({ ctx });
+      // Check for skip auth test user first (set in createContext when X-Skip-Auth header is present)
+      if (ctx.testUser) {
+        user = ctx.testUser;
+        sessionId = null;
+      } else {
+        const authHeader = ctx.req?.header?.('Authorization');
+        if (!authHeader?.startsWith('Bearer ')) {
+          return next({ ctx });
+        }
+        const result = await requireUserAuth(authHeader, ctx.testUser);
+        user = result.user;
+        sessionId = result.sessionId;
       }
-      const result = await requireUserAuth(authHeader, ctx.testUser);
-      user = result.user;
-      sessionId = result.sessionId;
     }
 
     const result = await processUserAuthContext({
