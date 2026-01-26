@@ -297,7 +297,7 @@ const meta = {
       values: [{ name: 'dark', value: '#04050A' }],
     },
     chromatic: {
-      delay: 1000,
+      delay: 3000,
       pauseAnimationAtEnd: true,
     },
   },
