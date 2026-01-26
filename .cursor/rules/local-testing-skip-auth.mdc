@@ -1,0 +1,68 @@
+---
+description: Trigger when agent is validating local changes, previewing frontend, testing UI, or using browser tools to verify code changes
+globs:
+alwaysApply: false
+---
+# Local Testing with Skip Auth
+
+When validating or previewing local frontend changes using browser automation tools (MCP browser, etc.), **always use the `skip_auth` feature** to bypass authentication—unless testing authentication functionality itself.
+
+## How to Enable Skip Auth
+
+Add `?skip_auth=1` to the URL when navigating to the local frontend:
+
+```
+http://localhost:3001/?skip_auth=1
+```
+
+Or append to any route:
+
+```
+http://localhost:3001/my-domains?skip_auth=1
+```
+
+## Behavior
+
+- **`?skip_auth=1`**: Enables auth bypass, persists to localStorage, simulates login as test user (`tester+alice@d3serve.xyz`)
+- **`?skip_auth=0`**: Disables the bypass and clears localStorage flag
+- An amber warning banner appears at bottom-right when skip auth is active
+- The banner is dismissible but reappears on navigation
+
+## When to Use
+
+**Use skip_auth when:**
+- Validating UI changes in local/development environment
+- Previewing components that require authentication
+- Testing authenticated API calls locally
+- Quick iteration on features without manual login
+
+**Do NOT use skip_auth when:**
+- Testing authentication flow itself (login, logout, session handling)
+- Testing unauthorized access behavior
+- Validating auth guards or permission checks
+- Testing the skip_auth feature itself
+
+## Environment Restrictions
+
+- **Backend**: Only works in `local` or `development` environments (blocked in preview/production)
+- **Frontend**: Shows banner in local/development/preview (but backend will reject in preview)
+
+## Example Browser Navigation
+
+When using MCP browser tools to validate changes:
+
+```typescript
+// Good: Start with skip_auth enabled
+browser_navigate({ url: "http://localhost:3001/?skip_auth=1" });
+
+// Then navigate to any authenticated page
+browser_navigate({ url: "http://localhost:3001/my-domains" });
+// skip_auth persists via localStorage
+
+// To disable when done
+browser_navigate({ url: "http://localhost:3001/?skip_auth=0" });
+```
+
+## Reference
+
+Feature implemented in: https://github.com/d3servelabs/namefi-astra/pull/3065
