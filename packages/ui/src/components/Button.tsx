@@ -42,10 +42,12 @@ export function Button({
   variant,
   size,
   children,
+  type = 'button',
   ...props
 }: ButtonProps) {
   return (
     <button
+      type={type}
       className={cn(buttonVariants({ variant, size, className }))}
       {...props}
     >
