@@ -90,9 +90,9 @@ This phase is critical for ensuring UI quality and providing visual evidence for
 
 1. **Start the development server**:
    ```bash
-   bun run dev:frontend
+   bun run dev
    ```
-   The frontend runs on port 5050.
+   Ports are dynamically allocated and displayed on startup.
 
 2. **Open the page in browser** and navigate to the component
 

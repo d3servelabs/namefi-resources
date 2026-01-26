@@ -14,8 +14,8 @@ Brief description of the bug/error.
 
 ### 2. Environment
 - **Environment type**: Local dev / Staging / Production
-- **Frontend URL**: e.g., `http://localhost:5050`
-- **Backend URL**: e.g., `http://localhost:3000`
+- **Frontend URL**: e.g., `http://localhost:<port>` (ports are dynamically allocated)
+- **Backend URL**: e.g., `http://localhost:<port>` (ports are dynamically allocated)
 - **Branch**: Current git branch name
 - **Relevant versions/configs** if applicable
 

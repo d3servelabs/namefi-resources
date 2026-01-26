@@ -5,7 +5,6 @@ This benchmark uses `scripts/bench-frontend-dev.ts` to capture cold and hot comp
 ## Prereqs
 - Bun installed.
 - `INFISICAL_SERVICE_TOKEN` exported (or pass a custom `--dev-cmd`).
-- Port 5050 free (default dev port).
 
 ## Quick start
 ```
@@ -26,8 +25,8 @@ The script:
 ## Common options
 - `--runs 1`
 - `--routes /,/orders,/tlds`
-- `--base-url https://localhost:5050`
-- `--dev-cmd "infisical run --token=$INFISICAL_SERVICE_TOKEN -- bun dev -- --experimental-https"`
+- `--base-url https://localhost:<port>` (port is dynamically allocated)
+- `--dev-cmd "bun run dev"` (uses dynamic port allocation)
 - `--output apps/frontend/.benchmarks/my-run.md`
 - `--timeout-ms 180000` (dev server ready timeout)
 - `--phase-timeout-ms 300000` (route compile timeout)
@@ -37,6 +36,6 @@ The script:
 ### Use HTTP (no experimental https)
 ```
 bun scripts/bench-frontend-dev.ts \
-  --dev-cmd "infisical run --token=$INFISICAL_SERVICE_TOKEN -- bun dev" \
-  --base-url http://localhost:5050
+  --dev-cmd "bun run dev" \
+  --base-url http://localhost:<port>
 ```

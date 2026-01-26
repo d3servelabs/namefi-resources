@@ -21,15 +21,10 @@ export INFISICAL_SERVICE_TOKEN=<your-infisical-token> # Ask Victor for it
 Then, start the dev server
 
 ```bash
-infisical run --token=$INFISICAL_SERVICE_TOKEN -- bun dev -- --experimental-https
+bun run dev
 ```
 
-Then you can validate your setup by accessing
-
-1. the app frontend at [http://localhost:5050](http://localhost:5050)
-2. the backend api server at [http://localhost:3000](http://localhost:3000)
-3. the backend email server at [http://localhost:3005](http://localhost:3005)
-4. the temporal server at [http://localhost:8233](http://localhost:8233)
+The dev runner will automatically allocate an available port block and display the URLs for each service. Ports are dynamically assigned to allow multiple dev instances to run concurrently.
 
 ## Installing the prerequisites and dependencies
 
