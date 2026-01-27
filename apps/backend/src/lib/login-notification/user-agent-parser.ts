@@ -50,9 +50,9 @@ function detectOS(ua: string): string {
   }
   if (/Android/i.test(ua)) return 'Android';
 
-  if (/Linux/i.test(ua)) return 'Linux';
   if (/Ubuntu/i.test(ua)) return 'Ubuntu';
   if (/CrOS/i.test(ua)) return 'Chrome OS';
+  if (/Linux/i.test(ua)) return 'Linux';
 
   return 'Unknown OS';
 }
