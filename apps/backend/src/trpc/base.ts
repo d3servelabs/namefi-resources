@@ -653,9 +653,24 @@ export const maybeVerifyUserAuthAndCreation =
         if (!authHeader?.startsWith('Bearer ')) {
           return next({ ctx });
         }
-        const result = await requireUserAuth(authHeader, ctx.testUser);
-        user = result.user;
-        sessionId = result.sessionId;
+        const authResult = await requireUserAuth(authHeader, ctx.testUser);
+        user = authResult.user;
+        sessionId = authResult.sessionId;
+
+        // Trigger login notification email for new sessions (same as verifyUserAuthAndCreation)
+        if (sessionId && authResult.tokenIssuedAt) {
+          const ipAddress =
+            ctx.honoVars?.connInfo?.remote?.address ?? 'unknown';
+          const userAgent = ctx.req?.header?.('User-Agent') ?? '';
+          triggerLoginNotification({
+            user,
+            sessionId,
+            ipAddress,
+            userAgent,
+            isNewUser: authResult.isNewUser,
+            tokenIssuedAt: authResult.tokenIssuedAt,
+          });
+        }
       }
     }
 
