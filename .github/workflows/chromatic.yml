@@ -5,7 +5,6 @@ on:
     branches-ignore:
       - prod
     paths:
-      - "apps/storybook/**"
       - "packages/ui/**"
       - "apps/frontend/src/app/globals.css"
 
@@ -42,6 +41,6 @@ jobs:
 
       - name: Run Chromatic
         run: ../../node_modules/.bin/infisical run --token=$INFISICAL_SERVICE_TOKEN --env=dev -- bun run chromatic --exit-once-uploaded --exit-zero-on-changes
-        working-directory: apps/storybook
+        working-directory: apps/frontend
         env:
           INFISICAL_SERVICE_TOKEN: ${{ secrets.INFISICAL_SERVICE_TOKEN }}

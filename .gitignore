@@ -239,3 +239,6 @@ settings.local.json
 .COMMITMSG*
 
 *.cpuprofile
+
+*storybook.log
+storybook-static
