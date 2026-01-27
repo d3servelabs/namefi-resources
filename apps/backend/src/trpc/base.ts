@@ -29,6 +29,7 @@ import { userPermissionsTable, db as appDb } from '@namefi-astra/db';
 import { Permission } from '@namefi-astra/utils';
 import { eq, sql } from 'drizzle-orm';
 import { verifyUserAuthAndGetUser, requireUserAuth } from '#lib/auth';
+import { triggerLoginNotification } from '#lib/login-notification';
 import {
   audit,
   createAuditRecord,
@@ -568,6 +569,8 @@ export const verifyUserAuthAndCreation = t.middleware<TrpcContextWithUser>(
     try {
       let user = ctx.user;
       let sessionId = ctx.sessionId;
+      let isNewUser = false;
+      let tokenIssuedAt: Date | null = null;
       if (!user) {
         // Check for skip auth test user first (set in createContext when X-Skip-Auth header is present)
         if (ctx.testUser) {
@@ -582,9 +585,26 @@ export const verifyUserAuthAndCreation = t.middleware<TrpcContextWithUser>(
                 ctx.apiAuthResult?.error ?? 'Invalid authorization header',
             });
           }
-          const result = await requireUserAuth(authHeader, ctx.testUser);
-          user = result.user;
-          sessionId = result.sessionId;
+          const authResult = await requireUserAuth(authHeader, ctx.testUser);
+          user = authResult.user;
+          sessionId = authResult.sessionId;
+          isNewUser = authResult.isNewUser;
+          tokenIssuedAt = authResult.tokenIssuedAt;
+
+          // Trigger login notification email for new sessions
+          if (sessionId && tokenIssuedAt) {
+            const ipAddress =
+              ctx.honoVars?.connInfo?.remote?.address ?? 'unknown';
+            const userAgent = ctx.req?.header?.('User-Agent') ?? '';
+            triggerLoginNotification({
+              user,
+              sessionId,
+              ipAddress,
+              userAgent,
+              isNewUser,
+              tokenIssuedAt,
+            });
+          }
         }
       }
 

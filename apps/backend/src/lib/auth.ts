@@ -18,6 +18,8 @@ export interface AuthResult {
   user: UserSelect | null;
   sessionId: string | null;
   error?: string;
+  isNewUser?: boolean;
+  tokenIssuedAt?: Date;
 }
 
 /**
@@ -68,7 +70,9 @@ export async function verifyUserAuthAndGetUser(
       .$withCache();
 
     // Create new user if doesn't exist
+    let isNewUser = false;
     if (!user) {
+      isNewUser = true;
       // TODO: handle this via webhook
       const newUser = await db
         .insert(usersTable)
@@ -130,7 +134,12 @@ export async function verifyUserAuthAndGetUser(
       });
     }
 
-    return { user, sessionId: userClaims.sessionId ?? null };
+    return {
+      user,
+      sessionId: userClaims.sessionId ?? null,
+      isNewUser,
+      tokenIssuedAt: lastSignInAt,
+    };
   } catch (error) {
     // Return null user with error info for debugging
     return {
@@ -153,9 +162,19 @@ export async function verifyUserAuthAndGetUser(
 export async function requireUserAuth(
   authHeader?: string,
   testUser?: UserSelect | null,
-): Promise<{ user: UserSelect; sessionId: string | null }> {
+): Promise<{
+  user: UserSelect;
+  sessionId: string | null;
+  isNewUser: boolean;
+  tokenIssuedAt: Date | null;
+}> {
   if (testUser) {
-    return { user: testUser, sessionId: null };
+    return {
+      user: testUser,
+      sessionId: null,
+      isNewUser: false,
+      tokenIssuedAt: null,
+    };
   }
 
   if (!authHeader?.startsWith('Bearer ')) {
@@ -171,6 +190,8 @@ export async function requireUserAuth(
   return {
     user: result.user,
     sessionId: result.sessionId,
+    isNewUser: result.isNewUser ?? false,
+    tokenIssuedAt: result.tokenIssuedAt ?? null,
   };
 }
 
