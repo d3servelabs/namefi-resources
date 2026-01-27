@@ -27,6 +27,8 @@ import type {
 } from '@namefi-astra/ai/types';
 import { GenerationUsage } from '@/components/ai-generation/generation-usage';
 import { toast } from 'sonner';
+import { useFeedback } from '@/components/providers/feedback';
+import { feedbackTriggerSchema } from '@/lib/feedback-triggers';
 
 type OnboardingFormInput = BaseFormInput;
 type OnboardingFormData = BaseFormData;
@@ -40,6 +42,7 @@ export function AIOnboardingOneShot({
 
   const logoMutation = useLogoGeneration({ domain: undefined });
   const posterMutation = usePosterGeneration({ domain: undefined });
+  const { requestFeedback } = useFeedback();
 
   const defaultValues: OnboardingFormInput = {
     domain: '',
@@ -84,6 +87,8 @@ export function AIOnboardingOneShot({
       toast.success('Brand assets generated', {
         description: 'Check the gallery to see your new logo and poster.',
       });
+      // Trigger feedback for logo generation milestone
+      requestFeedback(feedbackTriggerSchema.enum.MILESTONE_LOGO_GENERATED);
       if (onFinishAction) onFinishAction();
     } catch (error) {
       const message =

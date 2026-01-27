@@ -29,6 +29,8 @@ import {
   formValuesToDnsRecord,
 } from '../schemas';
 import { DnsRecordForm } from './dns-record-form';
+import { useFeedback } from '@/components/providers/feedback';
+import { feedbackTriggerSchema } from '@/lib/feedback-triggers';
 
 export type AddEditRecordsDialogProps = {
   records?: DnsRecordSelect[];
@@ -144,6 +146,7 @@ export function AddEditRecordsDialog({
   );
 
   const queryClient = useQueryClient();
+  const { requestFeedback } = useFeedback();
 
   const handleSubmit = useCallback(async () => {
     const allFormsValid = forms.every((form) => form.isValid);
@@ -208,6 +211,9 @@ export function AddEditRecordsDialog({
         queryKey: trpc.dnsRecords.getRecords.queryKey({ zoneName }),
       });
 
+      // Trigger feedback for DNS update milestone
+      requestFeedback(feedbackTriggerSchema.enum.MILESTONE_DNS_UPDATED);
+
       onOpenChange?.(false);
     } catch (error) {
       if (error instanceof TRPCClientError) {
@@ -271,6 +277,7 @@ export function AddEditRecordsDialog({
     queryClient,
     onOpenChange,
     trpc.dnsRecords.getRecords.queryKey,
+    requestFeedback,
   ]);
 
   const handleValues = useCallback(

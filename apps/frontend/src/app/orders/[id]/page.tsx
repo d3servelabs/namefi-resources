@@ -23,6 +23,8 @@ import { useOrigin } from '@/components/providers/origin';
 import { Skeleton } from '@/components/ui/shadcn/skeleton';
 import { Unauthorized } from '@/components/unauthorized';
 import { useCartContext } from '@/components/providers/cart';
+import { useFeedback } from '@/components/providers/feedback';
+import { feedbackTriggerSchema } from '@/lib/feedback-triggers';
 import { OrderNotFound } from '@/components/orders/order-not-found';
 import {
   hasImportItems,
@@ -191,6 +193,7 @@ export default function OrderPage({ params }: OrderPageProps) {
 
   // This sets the cart count to 0 after the order is created
   const { refetchCart } = useCartContext();
+  const { requestFeedback } = useFeedback();
   useEffect(() => {
     refetchCart();
   }, [refetchCart]);
@@ -314,6 +317,21 @@ export default function OrderPage({ params }: OrderPageProps) {
     }
     prevWorkflowPhase.current = workflowPhase;
   }, [workflowPhase, refetchOrderDetails, refetchInternalAiGenerations]);
+
+  // Track if we've already triggered feedback for this order
+  const hasFeedbackTriggeredRef = useRef(false);
+
+  // Trigger feedback when order completes successfully (domain acquired milestone)
+  useEffect(() => {
+    if (
+      isCompletedOrder &&
+      !hasFeedbackTriggeredRef.current &&
+      orderItems.length > 0
+    ) {
+      hasFeedbackTriggeredRef.current = true;
+      requestFeedback(feedbackTriggerSchema.enum.MILESTONE_DOMAIN_ACQUIRED);
+    }
+  }, [isCompletedOrder, orderItems.length, requestFeedback]);
 
   const viewState: 'loading' | 'processing' | 'success' | 'failed' = (() => {
     if (!hasOrderDetails) {

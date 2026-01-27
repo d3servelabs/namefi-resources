@@ -11,6 +11,8 @@ import { useState, useRef } from 'react';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import type { Generation } from './shared/types';
 import { usePosterFlow } from './poster-flow-context';
+import { useFeedback } from '@/components/providers/feedback';
+import { feedbackTriggerSchema } from '@/lib/feedback-triggers';
 
 interface LogoTabProps {
   existingGenerations?: Generation[];
@@ -30,6 +32,7 @@ export function LogoTab({
     domain: brandDomain,
   });
   const { openPoster } = usePosterFlow();
+  const { requestFeedback } = useFeedback();
 
   const handleGenerateLogo = (data: LogoFormData) => {
     lastGenerationParams.current = data;
@@ -39,6 +42,8 @@ export function LogoTab({
     generateLogoMutation.mutate(payload, {
       onSuccess: (result) => {
         setLatestGeneration(result);
+        // Trigger feedback for logo generation milestone
+        requestFeedback(feedbackTriggerSchema.enum.MILESTONE_LOGO_GENERATED);
       },
     });
   };
