@@ -560,6 +560,32 @@ async function processUserAuthContext(
 }
 
 /**
+ * Triggers login notification email for new sessions.
+ * Extracted as a helper to avoid duplication between auth middlewares.
+ */
+function maybeNotifyLogin(params: {
+  user: UserSelect;
+  sessionId: string | null;
+  tokenIssuedAt: Date | null;
+  isNewUser: boolean;
+  ctx: TrpcContext;
+}): void {
+  const { user, sessionId, tokenIssuedAt, isNewUser, ctx } = params;
+  if (sessionId && tokenIssuedAt) {
+    const ipAddress = ctx.honoVars?.connInfo?.remote?.address ?? 'unknown';
+    const userAgent = ctx.req?.header?.('User-Agent') ?? '';
+    triggerLoginNotification({
+      user,
+      sessionId,
+      ipAddress,
+      userAgent,
+      isNewUser,
+      tokenIssuedAt,
+    });
+  }
+}
+
+/**
  * Middleware for verifying a user's privy authentication token and creating a user if they don't exist.
  *
  * This middleware will verify the user's privy authentication token, fetch the user from the database, and add the user to the context.
@@ -591,20 +617,13 @@ export const verifyUserAuthAndCreation = t.middleware<TrpcContextWithUser>(
           isNewUser = authResult.isNewUser;
           tokenIssuedAt = authResult.tokenIssuedAt;
 
-          // Trigger login notification email for new sessions
-          if (sessionId && tokenIssuedAt) {
-            const ipAddress =
-              ctx.honoVars?.connInfo?.remote?.address ?? 'unknown';
-            const userAgent = ctx.req?.header?.('User-Agent') ?? '';
-            triggerLoginNotification({
-              user,
-              sessionId,
-              ipAddress,
-              userAgent,
-              isNewUser,
-              tokenIssuedAt,
-            });
-          }
+          maybeNotifyLogin({
+            user,
+            sessionId,
+            tokenIssuedAt,
+            isNewUser,
+            ctx,
+          });
         }
       }
 
@@ -657,20 +676,13 @@ export const maybeVerifyUserAuthAndCreation =
         user = authResult.user;
         sessionId = authResult.sessionId;
 
-        // Trigger login notification email for new sessions (same as verifyUserAuthAndCreation)
-        if (sessionId && authResult.tokenIssuedAt) {
-          const ipAddress =
-            ctx.honoVars?.connInfo?.remote?.address ?? 'unknown';
-          const userAgent = ctx.req?.header?.('User-Agent') ?? '';
-          triggerLoginNotification({
-            user,
-            sessionId,
-            ipAddress,
-            userAgent,
-            isNewUser: authResult.isNewUser,
-            tokenIssuedAt: authResult.tokenIssuedAt,
-          });
-        }
+        maybeNotifyLogin({
+          user,
+          sessionId,
+          tokenIssuedAt: authResult.tokenIssuedAt,
+          isNewUser: authResult.isNewUser,
+          ctx,
+        });
       }
     }
 
