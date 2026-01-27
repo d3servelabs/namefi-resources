@@ -176,24 +176,42 @@ export async function getProcessedOrderEmail({
     (item) => item.type === 'REGISTER',
   );
 
+  const successfulImports = successfulItems.filter(
+    (item) => item.type === 'IMPORT',
+  );
+  const successfulRenewals = successfulItems.filter(
+    (item) => item.type === 'RENEW',
+  );
+
   let subject: string;
   if (failedItems.length > 0 && successfulItems.length > 0) {
-    subject = `[Namefi] Order ${orderId} - Partially Processed`;
+    subject = '[Namefi] Your Order Needs Attention';
   } else if (failedItems.length > 0) {
-    subject = `[Namefi] Order ${orderId} - Processing Failed`;
+    subject = '[Namefi] We Need Your Attention';
   } else if (processingItems.length > 0) {
-    subject = `[Namefi] Order ${orderId} - Still Processing`;
+    subject = '[Namefi] Your Order is Being Processed';
+  } else if (successfulImports.length > 0) {
+    if (successfulImports.length === 1) {
+      const domainName = domainToUnicode(
+        successfulImports[0].normalizedDomainName,
+      );
+      subject = `[Namefi] Welcome to Namefi, ${domainName}!`;
+    } else {
+      subject = '[Namefi] Your Domains Have Arrived!';
+    }
+  } else if (successfulRenewals.length > 0) {
+    subject = '[Namefi] Your Domain Renewal is Complete';
   } else if (successfulRegistrations.length > 0) {
     if (successfulRegistrations.length === 1) {
       const domainName = domainToUnicode(
         successfulRegistrations[0].normalizedDomainName,
       );
-      subject = `[Namefi] Congratulations! Your domain ${domainName} is ready!`;
+      subject = `[Namefi] ${domainName} is Yours!`;
     } else {
-      subject = `[Namefi] Congratulations! Your ${successfulRegistrations.length} domains are ready!`;
+      subject = '[Namefi] Your New Domains Are Ready!';
     }
   } else {
-    subject = `[Namefi] Order ${orderId} - Successfully Processed`;
+    subject = '[Namefi] An Update About Your Recent Order';
   }
 
   // Defensive: avoid SMTP header injection via CRLF in subject.

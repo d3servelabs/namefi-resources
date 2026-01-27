@@ -13,6 +13,7 @@ import { usePoweredByNamefiDomain } from '../components/powered-by-namefi-url-co
 import { buildTemplate } from '../components/build-template';
 import { NamefiEmailLinks } from '../email-links';
 import pluralize from 'pluralize';
+import { getChain } from '@namefi-astra/utils';
 
 export type ProcessedOrderItem = {
   normalizedDomainName: string;
@@ -21,6 +22,8 @@ export type ProcessedOrderItem = {
   status: 'SUCCEEDED' | 'FAILED' | 'PROCESSING';
   failureReason?: string;
   type: 'IMPORT' | 'RENEW' | 'REGISTER';
+  mintTxHash?: string;
+  chainId?: number;
 };
 
 export type ProcessedOrderProps = {
@@ -257,6 +260,27 @@ export const ProcessedOrderReport = buildTemplate<ProcessedOrderProps>(
                         ? 'Succeeded'
                         : 'Failed'}
                   </span>
+                  {item.status === 'SUCCEEDED' &&
+                    item.mintTxHash &&
+                    item.chainId && (
+                      <div style={{ marginTop: '4px' }}>
+                        <a
+                          href={
+                            getTxExplorerUrl(item.chainId, item.mintTxHash) ??
+                            ''
+                          }
+                          style={{
+                            fontSize: '12px',
+                            color: '#0066cc',
+                            textDecoration: 'underline',
+                          }}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          View NFT
+                        </a>
+                      </div>
+                    )}
                   {item.failureReason && (
                     <div
                       style={{
@@ -429,6 +453,9 @@ export const ProcessedOrderReport = buildTemplate<ProcessedOrderProps>(
         priceInUsdCents: 1299,
         status: 'SUCCEEDED',
         type: 'REGISTER',
+        mintTxHash:
+          '0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef',
+        chainId: 8453,
       },
       {
         normalizedDomainName: 'example.org',
@@ -444,6 +471,9 @@ export const ProcessedOrderReport = buildTemplate<ProcessedOrderProps>(
         priceInUsdCents: 2598,
         status: 'SUCCEEDED',
         type: 'REGISTER',
+        mintTxHash:
+          '0xabcdef1234567890abcdef1234567890abcdef1234567890abcdef12345678',
+        chainId: 8453,
       },
       {
         normalizedDomainName: 'example2.org',
@@ -491,6 +521,20 @@ function getDomainWithIdn(domain: string) {
   return unicodeDomain === punycodeDomain
     ? domain
     : `${unicodeDomain} (${punycodeDomain})`;
+}
+
+function getTxExplorerUrl(
+  chainId: number | undefined,
+  txHash: string | undefined,
+): string | null {
+  if (!chainId || !txHash) return null;
+  const chain = getChain(chainId);
+  const baseUrl = chain?.blockExplorers?.default?.url;
+  if (!baseUrl) return null;
+  const normalizedBaseUrl = baseUrl.endsWith('/')
+    ? baseUrl.slice(0, -1)
+    : baseUrl;
+  return `${normalizedBaseUrl}/tx/${txHash}`;
 }
 
 function formatDomainList(
