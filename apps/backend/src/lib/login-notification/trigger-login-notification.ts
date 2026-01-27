@@ -19,6 +19,12 @@ export interface LoginNotificationRequest {
 
 const loginNotificationSubject = new Subject<LoginNotificationRequest>();
 
+/**
+ * In-memory session deduplication to prevent duplicate notification emails.
+ * This works within a single process instance. For multi-instance deployments,
+ * consider using a shared cache (e.g., Redis) with TTL for deduplication.
+ * Current deployment model assumes single-instance backend processing.
+ */
 const recentlyProcessedSessions = new Set<string>();
 const SESSION_DEDUP_TTL_MS = 10 * 60 * 1000;
 
