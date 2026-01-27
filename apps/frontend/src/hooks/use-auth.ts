@@ -7,7 +7,7 @@ import {
   type User as PrivyUser,
 } from '@privy-io/react-auth';
 import { useQuery } from '@tanstack/react-query';
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { privyStorageToPrivyCustomMetadata } from '@namefi-astra/common/privy-custom-metadata';
 import { useEmailPrompt } from './use-email-prompt';
 import { useCartContext } from '@/components/providers/cart';
@@ -16,16 +16,14 @@ import { usePreAuthSignals } from '@/components/providers/pre-auth-signals';
 import { TRPCClientError } from '@trpc/client';
 import { useConsentManager } from '@c15t/nextjs';
 import { useSkipAuth, SKIP_AUTH_MOCK_USER } from './use-skip-auth';
+import { useConsentIdentify } from './use-consent-identify';
 
 type LoginCallbacks = Parameters<typeof usePrivyLogin>[0];
 type LogoutCallbacks = Parameters<typeof usePrivyLogout>[0];
 
-const identifiedConsentUserIds = new Set<string>();
-
 export function useAuth() {
   const { authenticated, ready, user: originalPrivyUser } = usePrivy();
   const { isSkipAuthActive } = useSkipAuth();
-  const { identifyUser } = useConsentManager();
 
   const trpc = useTRPC();
 
@@ -91,16 +89,11 @@ export function useAuth() {
     };
   }, [privyUser]);
 
-  useEffect(() => {
-    if (!ready || !authenticated) return;
-    const userId = userQuery.data?.id;
-    if (!userId) return;
-    if (identifiedConsentUserIds.has(userId)) return;
-    identifiedConsentUserIds.add(userId);
-    void identifyUser({ id: userId, identityProvider: 'namefi' }).catch(() => {
-      identifiedConsentUserIds.delete(userId);
-    });
-  }, [authenticated, identifyUser, ready, userQuery.data?.id]);
+  useConsentIdentify({
+    ready,
+    authenticated,
+    userId: userQuery.data?.id,
+  });
 
   if (isSkipAuthActive) {
     const mockUser = {
