@@ -1,6 +1,8 @@
 import { BiMap } from 'mnemonist';
 
 export const dnsRecordTypeCodes = BiMap.from({
+  ANY: 255, // Any record
+
   // Most Common Record Types
   A: 1, // IPv4 address record
   AAAA: 28, // IPv6 address record

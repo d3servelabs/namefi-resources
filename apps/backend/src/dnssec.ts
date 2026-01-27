@@ -33,9 +33,9 @@ dnssecRouter.get('/', async (c) => {
   const qnameResult = fqdnLowercaseSchema.safeParse(c.req.query('name'));
 
   if (!qnameResult.success) {
-    c.status(400);
+    c.status(412);
     return c.json({
-      error: 'Bad Request',
+      error: 'Precondition Failed',
       message: `Invalid parameters, expecting name and type but got errors. ${
         qnameResult.error ? `name: ${qnameResult.error}` : ''
       }`,

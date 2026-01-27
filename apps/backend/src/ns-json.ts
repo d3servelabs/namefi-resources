@@ -78,9 +78,15 @@ nsJsonRouter.get('/', async (c) => {
   }
 
   const { name: qname, type: qtype } = requestQueryResult.data;
-
+  /**
+   * https://www.rfc-editor.org/rfc/rfc8482#section-4.3
+   * Responding with `A` record for `ANY`
+   */
   // convert qtype to RecordType (string enum)
-  const qTypeString = dnsRecordTypeCodes.inverse.get(qtype);
+  const qTypeString =
+    qtype === dnsRecordTypeCodes.get('ANY')
+      ? 'A'
+      : dnsRecordTypeCodes.inverse.get(qtype);
   const qTypeEnumParseResult = recordTypeEnum.safeParse(qTypeString);
 
   if (!qTypeEnumParseResult.success) {
@@ -90,9 +96,9 @@ nsJsonRouter.get('/', async (c) => {
         Answer: [],
       });
     }
-    c.status(400);
+    c.status(412);
     return c.json({
-      error: 'Bad Request',
+      error: 'Precondition Failed',
       message: `Invalid DNS record type: ${qTypeString}`,
     });
   }
@@ -103,9 +109,9 @@ nsJsonRouter.get('/', async (c) => {
     recordName = fqdnLowercaseToNamefiNormalizedDomain(qname);
   } catch (err) {
     _logger.warn({ err }, 'Domain normalisation failed');
-    c.status(400);
+    c.status(412);
     return c.json({
-      error: 'Bad Request',
+      error: 'Precondition Failed',
       message: (err as Error).message,
     });
   }
