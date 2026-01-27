@@ -2,10 +2,16 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { Landing } from '@/pbns/astra/landing';
 import type { OriginRuntime } from '@/lib/origin/types';
 import { FreeMintsGuidanceProvider } from '@/components/providers/free-mints-guidance';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { PreAuthSignalsProvider } from '@/components/providers/pre-auth-signals';
+import { InteractionLoggersProvider } from '@/components/providers/analytics';
+import { OriginProvider } from '@/components/providers/origin';
+import { TrpcProvider } from '@/components/providers/trpc';
+import { CartProvider } from '@/components/providers/cart';
+import { WishlistProvider } from '@/components/providers/wishlist';
+import { SidebarProvider } from '@/components/ui/shadcn/sidebar';
+import { ConsentManagerProvider } from '@c15t/nextjs';
 import { NuqsAdapter } from 'nuqs/adapters/react';
-import { createContext, type ReactNode } from 'react';
-import type { InteractionLoggingEvent } from '@/lib/analytics-events';
+import type { ReactNode } from 'react';
 
 const mockOriginRuntime: OriginRuntime = {
   isFirstPartyOrigin: true,
@@ -27,48 +33,29 @@ const mockOriginRuntime: OriginRuntime = {
   },
 };
 
-const MockInteractionLoggersContext = createContext<{
-  logEventWithInteractionLoggers: (event: InteractionLoggingEvent) => void;
-}>({
-  logEventWithInteractionLoggers: () => {
-    // no-op for storybook
-  },
-});
-
-function MockInteractionLoggersProvider({ children }: { children: ReactNode }) {
-  return (
-    <MockInteractionLoggersContext.Provider
-      value={{
-        logEventWithInteractionLoggers: (_event) => {
-          // no-op for storybook
-        },
-      }}
-    >
-      {children}
-    </MockInteractionLoggersContext.Provider>
-  );
-}
-
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      retry: false,
-      staleTime: Number.POSITIVE_INFINITY,
-    },
-  },
-});
-
 function StoryProviders({ children }: { children: ReactNode }) {
   return (
-    <QueryClientProvider client={queryClient}>
-      <NuqsAdapter>
-        <FreeMintsGuidanceProvider>
-          <MockInteractionLoggersProvider>
-            {children}
-          </MockInteractionLoggersProvider>
-        </FreeMintsGuidanceProvider>
-      </NuqsAdapter>
-    </QueryClientProvider>
+    <OriginProvider originInfo={mockOriginRuntime}>
+      <TrpcProvider>
+        <NuqsAdapter>
+          <ConsentManagerProvider options={{ mode: 'opt-in' }}>
+            <PreAuthSignalsProvider>
+              <InteractionLoggersProvider>
+                <WishlistProvider>
+                  <CartProvider>
+                    <SidebarProvider defaultOpen={false}>
+                      <FreeMintsGuidanceProvider>
+                        {children}
+                      </FreeMintsGuidanceProvider>
+                    </SidebarProvider>
+                  </CartProvider>
+                </WishlistProvider>
+              </InteractionLoggersProvider>
+            </PreAuthSignalsProvider>
+          </ConsentManagerProvider>
+        </NuqsAdapter>
+      </TrpcProvider>
+    </OriginProvider>
   );
 }
 
