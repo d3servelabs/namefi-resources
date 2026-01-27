@@ -79,9 +79,15 @@ export const DomainExportComplete = buildTemplate<DomainExportCompleteProps>(
           see you again soon!
         </Text>
 
-        <Button style={styles.button} href={'https://namefi.io'}>
+        <Button
+          style={styles.button}
+          href={NamefiEmailLinks.domains({
+            poweredByNamefiDomain: usePoweredByNamefiDomain(),
+          })}
+        >
           Explore More Domains
         </Button>
+        <GoToDashboard />
       </NamefiEmailContainer>
     );
   },

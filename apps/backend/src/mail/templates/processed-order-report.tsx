@@ -88,19 +88,19 @@ export const ProcessedOrderReport = buildTemplate<ProcessedOrderProps>(
       (item) => item.type === 'IMPORT',
     );
 
-    // Determine the primary operation type for better messaging
-    const hasImports = items.some((item) => item.type === 'IMPORT');
-    const hasRegistrations = items.some((item) => item.type === 'REGISTER');
-    const hasRenewals = items.some((item) => item.type === 'RENEW');
-
-    let introMessage = '';
-
     const successfulImportItems = successfulItems.filter(
       (item) => item.type === 'IMPORT',
     );
     const successfulRenewalItems = successfulItems.filter(
       (item) => item.type === 'RENEW',
     );
+
+    const safeRecipientName =
+      recipientName && recipientName.trim().length > 0
+        ? recipientName
+        : 'there';
+
+    let introMessage = '';
 
     if (failedItems.length > 0 && successfulItems.length > 0) {
       introMessage =
@@ -110,28 +110,16 @@ export const ProcessedOrderReport = buildTemplate<ProcessedOrderProps>(
         failedItems.map((item) => item.normalizedDomainName),
       );
       introMessage = `We ran into some issues with your order for ${failedDomains.text}. Don't worry - we're here to help you sort this out.`;
-    } else if (processingItems.length > 0 && successfulItems.length === 0) {
+    } else if (processingItems.length > 0) {
       const processingDomains = formatDomainList(
         processingItems.map((item) => item.normalizedDomainName),
       );
-      introMessage = `Your order is on its way! We're working on ${processingDomains.text} and will update you soon.`;
-    } else if (
-      successfulRegistrations.length > 0 &&
-      failedItems.length === 0 &&
-      processingItems.length === 0
-    ) {
-      if (successfulRegistrations.length === 1) {
-        const domain = getDomainWithIdn(
-          successfulRegistrations[0].normalizedDomainName,
-        );
-        introMessage = `Great news! **${domain}** is officially yours. Your new domain is ready and waiting for you to make it shine.`;
+      if (successfulItems.length > 0) {
+        introMessage = `Your order is being processed. We're still working on ${processingDomains.text} and will update you once complete.`;
       } else {
-        const regDomains = formatDomainList(
-          successfulRegistrations.map((item) => item.normalizedDomainName),
-        );
-        introMessage = `Exciting news! ${regDomains.text} are officially yours. They're all set up and ready for you to start building.`;
+        introMessage = `Your order is on its way! We're working on ${processingDomains.text} and will update you soon.`;
       }
-    } else if (hasImports && successfulImportItems.length > 0) {
+    } else if (successfulImportItems.length > 0) {
       if (successfulImportItems.length === 1) {
         const domain = getDomainWithIdn(
           successfulImportItems[0].normalizedDomainName,
@@ -143,7 +131,7 @@ export const ProcessedOrderReport = buildTemplate<ProcessedOrderProps>(
         );
         introMessage = `Welcome home! ${importDomains.text} have been successfully imported to Namefi.`;
       }
-    } else if (hasRenewals && successfulRenewalItems.length > 0) {
+    } else if (successfulRenewalItems.length > 0) {
       if (successfulRenewalItems.length === 1) {
         const domain = getDomainWithIdn(
           successfulRenewalItems[0].normalizedDomainName,
@@ -155,14 +143,26 @@ export const ProcessedOrderReport = buildTemplate<ProcessedOrderProps>(
         );
         introMessage = `You're all set! ${renewDomains.text} have been renewed, so you can keep doing what you do best.`;
       }
+    } else if (successfulRegistrations.length > 0) {
+      if (successfulRegistrations.length === 1) {
+        const domain = getDomainWithIdn(
+          successfulRegistrations[0].normalizedDomainName,
+        );
+        introMessage = `Great news! **${domain}** is officially yours. Your new domain is ready and waiting for you to make it shine.`;
+      } else {
+        const regDomains = formatDomainList(
+          successfulRegistrations.map((item) => item.normalizedDomainName),
+        );
+        introMessage = `Exciting news! ${regDomains.text} are officially yours. They're all set up and ready for you to start building.`;
+      }
     } else {
       introMessage = "Your order has been processed. Here's what happened:";
     }
 
-    const messageMarkdown =
-      `Hi ${recipientName ?? 'there'},\n\n` + introMessage;
+    const messageMarkdown = `Hi ${safeRecipientName},\n\n${introMessage}`;
 
     // Generate a more user-friendly email title based on order outcome
+    // Priority order matches intro message: failed > processing > imports > renewals > registrations
     const getEmailTitle = () => {
       if (failedItems.length > 0 && successfulItems.length === 0) {
         const failedDomainsTitleText = formatDomainList(
@@ -170,13 +170,13 @@ export const ProcessedOrderReport = buildTemplate<ProcessedOrderProps>(
         ).titleText;
         return `[Namefi] We Need Your Attention: ${failedDomainsTitleText}`;
       }
-      if (processingItems.length > 0 && successfulItems.length === 0) {
+      if (processingItems.length > 0) {
         const processingDomainsTitleText = formatDomainList(
           processingItems.map((item) => item.normalizedDomainName),
         ).titleText;
         return `[Namefi] Processing: ${processingDomainsTitleText}`;
       }
-      if (hasImports && successfulImportItems.length > 0) {
+      if (successfulImportItems.length > 0) {
         if (successfulImportItems.length === 1) {
           return `[Namefi] Welcome to Namefi, ${getDomainWithIdn(successfulImportItems[0].normalizedDomainName)}!`;
         }
@@ -185,7 +185,7 @@ export const ProcessedOrderReport = buildTemplate<ProcessedOrderProps>(
         ).titleText;
         return `[Namefi] Your Domains Have Arrived: ${importDomainsTitleText}`;
       }
-      if (hasRenewals && successfulRenewalItems.length > 0) {
+      if (successfulRenewalItems.length > 0) {
         if (successfulRenewalItems.length === 1) {
           return `[Namefi] Renewed: ${getDomainWithIdn(successfulRenewalItems[0].normalizedDomainName)}`;
         }
@@ -260,15 +260,17 @@ export const ProcessedOrderReport = buildTemplate<ProcessedOrderProps>(
                         ? 'Succeeded'
                         : 'Failed'}
                   </span>
-                  {item.status === 'SUCCEEDED' &&
-                    item.mintTxHash &&
-                    item.chainId && (
+                  {(() => {
+                    const nftUrl =
+                      item.status === 'SUCCEEDED' &&
+                      item.mintTxHash &&
+                      item.chainId
+                        ? getTxExplorerUrl(item.chainId, item.mintTxHash)
+                        : null;
+                    return nftUrl ? (
                       <div style={{ marginTop: '4px' }}>
                         <a
-                          href={
-                            getTxExplorerUrl(item.chainId, item.mintTxHash) ??
-                            ''
-                          }
+                          href={nftUrl}
                           style={{
                             fontSize: '12px',
                             color: '#0066cc',
@@ -280,7 +282,8 @@ export const ProcessedOrderReport = buildTemplate<ProcessedOrderProps>(
                           View NFT
                         </a>
                       </div>
-                    )}
+                    ) : null;
+                  })()}
                   {item.failureReason && (
                     <div
                       style={{
