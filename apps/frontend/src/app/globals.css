@@ -173,6 +173,32 @@
   }
 }
 
+@layer components {
+  .c15t-customize-like-reject {
+    background-color: var(--button-background-color) !important;
+    color: var(--button-text) !important;
+    box-shadow: var(--button-shadow-neutral) !important;
+  }
+
+  .c15t-customize-like-reject:hover:not(:disabled) {
+    background-color: transparent !important;
+    box-shadow: var(--button-shadow-neutral-hover) !important;
+    color: var(--button-text-hover) !important;
+  }
+
+  .c15t-dark .c15t-customize-like-reject {
+    background-color: var(--button-background-color-dark) !important;
+    color: var(--button-text-dark) !important;
+    box-shadow: var(--button-shadow-neutral-dark) !important;
+  }
+
+  .c15t-dark .c15t-customize-like-reject:hover:not(:disabled) {
+    background-color: transparent !important;
+    box-shadow: var(--button-shadow-neutral-hover-dark) !important;
+    color: var(--button-text-hover-dark) !important;
+  }
+}
+
 html,
 body {
   scrollbar-gutter: stable both-edges;

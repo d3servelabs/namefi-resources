@@ -17,6 +17,18 @@ export function Providers({ children }: PropsWithChildren) {
           mode: 'c15t',
           backendURL: `${config.BACKEND_URL}/c15t`,
           consentCategories: ['necessary', 'measurement'],
+          react: {
+            theme: {
+              'banner.footer.sub-group': 'order-1 sm:order-2 sm:ml-auto',
+              'banner.footer.customize-button':
+                'order-2 sm:order-1 c15t-customize-like-reject',
+              'banner.footer.accept-button':
+                '!bg-brand-primary !text-primary-foreground hover:!bg-brand-primary/90 !shadow-none',
+              'widget.footer.accept-button':
+                '!bg-brand-primary !text-primary-foreground hover:!bg-brand-primary/90 !shadow-none',
+              'widget.footer.save-button': 'c15t-customize-like-reject',
+            },
+          },
         }}
       >
         <ConsentManagerClient>
