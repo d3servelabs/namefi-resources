@@ -328,8 +328,14 @@ export default function OrderPage({ params }: OrderPageProps) {
       !hasFeedbackTriggeredRef.current &&
       orderItems.length > 0
     ) {
-      hasFeedbackTriggeredRef.current = true;
-      requestFeedback(feedbackTriggerSchema.enum.MILESTONE_DOMAIN_ACQUIRED);
+      const wasTriggered = requestFeedback(
+        feedbackTriggerSchema.enum.MILESTONE_DOMAIN_ACQUIRED,
+      );
+      // Only mark as triggered if the feedback was actually shown
+      // (requestFeedback returns false during hydration or if cooldown is active)
+      if (wasTriggered) {
+        hasFeedbackTriggeredRef.current = true;
+      }
     }
   }, [isCompletedOrder, orderItems.length, requestFeedback]);
 
