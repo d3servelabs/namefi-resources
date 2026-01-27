@@ -65,6 +65,9 @@ export async function sendMail({
       content: att.content,
       contentType: att.contentType || 'text/plain',
     })),
+    headers: {
+      ses: 'no-track',
+    },
   });
 
   return info;

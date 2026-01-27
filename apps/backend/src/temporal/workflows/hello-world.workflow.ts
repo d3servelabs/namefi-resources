@@ -44,3 +44,23 @@ export async function testAlertWorkflow(name: string): Promise<string> {
   // Return a message
   return `Completed greeting workflow for ${name}`;
 }
+
+export async function testEmailWorkflow(name: string): Promise<string> {
+  const { sendStyledEmailNotification } = typedProxyActivities({
+    temporalEnum: TEMPORAL_ENUMS.NOTIFY,
+    options: {
+      ...shortRunningOpts,
+    },
+  });
+
+  await sendStyledEmailNotification({
+    title: 'Test Email',
+    messageMarkdown: '##This is a test email\n\n [homepage](https://namefi.io)',
+    showGoToDashboard: true,
+    to: ['dev-team@namefi.io'],
+    subject: 'Test Email',
+  });
+
+  // Return a message
+  return `Completed greeting workflow for ${name}`;
+}
