@@ -7,6 +7,8 @@ on:
     paths:
       - "packages/ui/**"
       - "apps/frontend/src/app/globals.css"
+      - "apps/frontend/src/stories/**"
+      - "apps/frontend/src/components/**"
 
 env:
   NODE_OPTIONS: --max-old-space-size=8192
